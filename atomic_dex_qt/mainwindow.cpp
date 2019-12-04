@@ -6,6 +6,11 @@ MainWindow::MainWindow(QWidget *parent)
         : QMainWindow(parent), m_ui(new Ui::MainWindow),
           m_status_bar_contents("loaded", new QProgressBar(statusBar())) {
     m_ui->setupUi(this);
+    initStatusBar();
+}
+
+void MainWindow::initStatusBar() const noexcept {
+    m_status_bar_contents.m_progress_bar->setObjectName("MainProgressBar");
     statusBar()->showMessage(m_status_bar_contents.default_msg);
     statusBar()->addPermanentWidget(m_status_bar_contents.m_progress_bar);
     m_status_bar_contents.m_progress_bar->setVisible(false);

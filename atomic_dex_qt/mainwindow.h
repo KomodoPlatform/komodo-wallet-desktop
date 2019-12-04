@@ -30,6 +30,8 @@ public:
 private:
     Ui::MainWindow *m_ui;
     StatusBarContents m_status_bar_contents;
+
+    void initStatusBar() const noexcept;
 };
 
 #endif // MAINWINDOW_H
