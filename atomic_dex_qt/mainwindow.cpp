@@ -1,4 +1,6 @@
 
+#include <QApplication>
+#include <QDebug>
 #include "mainwindow.h"
 #include "./ui_mainwindow.h"
 
@@ -7,6 +9,7 @@ MainWindow::MainWindow(QWidget *parent)
           m_status_bar_contents("loaded", new QProgressBar(statusBar())) {
     m_ui->setupUi(this);
     initStatusBar();
+    qDebug() << qApp->applicationDirPath();
 }
 
 void MainWindow::initStatusBar() const noexcept {
