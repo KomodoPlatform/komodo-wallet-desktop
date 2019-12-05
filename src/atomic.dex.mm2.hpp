@@ -16,16 +16,26 @@
 
 #pragma once
 
+#include <thread>
+#include <atomic>
+#include <reproc++/reproc.hpp>
 #include <antara/gaming/ecs/system.hpp>
 
 namespace atomic_dex {
     namespace ag = antara::gaming;
 
     class mm2 : public ag::ecs::pre_update_system<mm2> {
+        reproc::process mm2_instance_;
+        std::atomic<bool> mm2_initialized_{false};
+        std::thread mm2_init_thread_;
     public:
-        mm2(entt::registry &registry) noexcept;
+        explicit mm2(entt::registry &registry) noexcept;
+
+        ~mm2() noexcept;
 
         void update() noexcept final;
+
+        [[nodiscard]] const std::atomic<bool> &is_mm2_initialized() const noexcept;
     };
 }
 
