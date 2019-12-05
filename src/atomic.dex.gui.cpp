@@ -32,6 +32,7 @@ namespace {
 namespace atomic_dex {
     //! Platform dependent code
     void gui::reload_code() {
+        DVLOG_F(loguru::Verbosity_INFO, "reloading code");
 #if defined(__APPLE__) || defined(__linux__)
         live_.tryReload();
 #endif
@@ -57,17 +58,17 @@ namespace atomic_dex {
 namespace atomic_dex {
     void gui::on_key_pressed(const ag::event::key_pressed &evt) noexcept {
         if (evt.key == ag::input::r && evt.control) {
-            reload_code();
+            //reload_code();
         }
     }
 
     gui::gui(entt::registry &registry) noexcept : system(registry) {
-        init_live_coding();
+        //init_live_coding();
         this->dispatcher_.sink<ag::event::key_pressed>().connect<&gui::on_key_pressed>(*this);
     }
 
     void gui::update() noexcept {
-        update_live_coding();
+        //update_live_coding();
         //! Menu bar
         auto &canvas = entity_registry_.ctx<ag::graphics::canvas_2d>();
         auto[x, y] = canvas.canvas.size;
