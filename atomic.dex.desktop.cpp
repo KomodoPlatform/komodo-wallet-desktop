@@ -18,6 +18,7 @@
 
 int main()
 {
+    loguru::set_thread_name("main thread");
     atomic_dex::application app;
     return app.run();
 }

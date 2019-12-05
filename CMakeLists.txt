@@ -113,7 +113,8 @@ add_executable(${PROJECT_NAME} MACOSX_BUNDLE ${ICON}
         src/atomic.dex.app.cpp
         src/atomic.dex.gui.cpp
         src/atomic.dex.mm2.cpp
-        src/atomic.dex.gui.widgets.cpp)
+        src/atomic.dex.gui.widgets.cpp
+        src/atomic.dex.coins.config.cpp)
 
 target_include_directories(${PROJECT_NAME} PUBLIC src)
 

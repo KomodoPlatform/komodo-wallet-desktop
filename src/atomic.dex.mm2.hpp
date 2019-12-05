@@ -17,6 +17,7 @@
 #pragma once
 
 #include <thread>
+#include <vector>
 #include <atomic>
 #include <reproc++/reproc.hpp>
 #include <antara/gaming/ecs/system.hpp>
@@ -28,6 +29,8 @@ namespace atomic_dex {
         reproc::process mm2_instance_;
         std::atomic<bool> mm2_initialized_{false};
         std::thread mm2_init_thread_;
+        using coins_enabled_array = std::vector<std::string>;
+        coins_enabled_array active_coins_;
     public:
         explicit mm2(entt::registry &registry) noexcept;
 

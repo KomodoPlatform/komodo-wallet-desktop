@@ -14,15 +14,4 @@
  *                                                                            *
  ******************************************************************************/
 
-#pragma once
-
-#include <algorithm>
-#include <cmath>
-#include <imgui.h>
-#include <imgui_internal.h>
-
-namespace atomic_dex::widgets {
-    void LoadingIndicatorCircle(const char *label, const float indicator_radius,
-                                const ImVec4 &main_color, const ImVec4 &backdrop_color,
-                                const int circle_count, const float speed);
-}
+#include "atomic.dex.coins.config.hpp"

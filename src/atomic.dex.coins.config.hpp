@@ -16,13 +16,16 @@
 
 #pragma once
 
-#include <algorithm>
-#include <cmath>
-#include <imgui.h>
-#include <imgui_internal.h>
+#include <vector>
+#include <string>
 
-namespace atomic_dex::widgets {
-    void LoadingIndicatorCircle(const char *label, const float indicator_radius,
-                                const ImVec4 &main_color, const ImVec4 &backdrop_color,
-                                const int circle_count, const float speed);
+namespace atomic_dex {
+    struct coins_config {
+        std::string ticker;
+        std::string name;
+        std::string fname; ///< nice name
+        using electrum_servers = std::vector<std::string>;
+        electrum_servers electrum_urls;
+        std::string explorer_url; ///< usefull for transaction, take this url and append transaction id
+    };
 }
