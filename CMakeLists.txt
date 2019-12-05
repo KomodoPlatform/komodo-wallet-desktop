@@ -46,6 +46,7 @@ endif ()
 ##! We set extras modules from the SDK that we want to use, here we will use the SFML module.
 set(USE_SFML_ANTARA_WRAPPER ON)
 set(USE_IMGUI_ANTARA_WRAPPER ON)
+set(ENABLE_BLOCKCHAIN_MODULES ON)
 
 ##! We fetch our dependence
 if (APPLE)
@@ -131,7 +132,7 @@ magic_game_app_image_generation("${CMAKE_CURRENT_SOURCE_DIR}/data/linux"
         )
 
 ##! We link the SDK modules that we want to use to our executable
-target_link_libraries(${PROJECT_NAME} PUBLIC antara::world antara::sfml)
+target_link_libraries(${PROJECT_NAME} PUBLIC antara::world antara::sfml reproc++ nlohmann_json::nlohmann_json antara::http_client)
 
 ##! Move assets
 if (WIN32)

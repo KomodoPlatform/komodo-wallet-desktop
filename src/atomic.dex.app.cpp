@@ -18,12 +18,14 @@
 #include <antara/gaming/sfml/input.system.hpp>
 #include "atomic.dex.gui.hpp"
 #include "atomic.dex.app.hpp"
+#include "atomic.dex.mm2.hpp"
 
 namespace atomic_dex {
     application::application() noexcept {
         auto &graphic_system = system_manager_.create_system<ag::sfml::graphic_system>();
         system_manager_.create_system<ag::sfml::input_system>(graphic_system.get_window());
         system_manager_.create_system<atomic_dex::gui>();
+        system_manager_.create_system<atomic_dex::mm2>();
         system_manager_.prioritize_system<atomic_dex::gui, ag::sfml::graphic_system>();
     }
 }

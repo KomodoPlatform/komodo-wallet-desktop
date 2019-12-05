@@ -16,3 +16,9 @@
 
 #include "atomic.dex.mm2.hpp"
 
+namespace atomic_dex {
+    mm2::mm2(entt::registry &registry) noexcept : system(registry) {}
+
+    void mm2::update() noexcept {}
+}
+

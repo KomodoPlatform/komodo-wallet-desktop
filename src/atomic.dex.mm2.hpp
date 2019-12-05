@@ -15,3 +15,18 @@
  ******************************************************************************/
 
 #pragma once
+
+#include <antara/gaming/ecs/system.hpp>
+
+namespace atomic_dex {
+    namespace ag = antara::gaming;
+
+    class mm2 : public ag::ecs::pre_update_system<mm2> {
+    public:
+        mm2(entt::registry &registry) noexcept;
+
+        void update() noexcept final;
+    };
+}
+
+REFL_AUTO(type(atomic_dex::mm2))
