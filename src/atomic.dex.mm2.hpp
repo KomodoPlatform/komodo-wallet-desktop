@@ -24,8 +24,6 @@ namespace atomic_dex {
 
     class mm2 : public ag::ecs::pre_update_system<mm2> {
         reproc::process mm2_instance_;
-        //! Maybe change it latter ?
-        static constexpr const char *passphrase_{"atomicdexpassphrase"};
     public:
         mm2(entt::registry &registry) noexcept;
         ~mm2() noexcept;
