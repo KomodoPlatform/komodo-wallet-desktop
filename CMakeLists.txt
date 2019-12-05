@@ -15,13 +15,16 @@ project(atomic-dex-desktop DESCRIPTION "An awesome atomic-dex-desktop" LANGUAGES
 if (NOT "${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
     if (NOT "${CMAKE_CXX_COMPILER_ID}" STREQUAL "AppleClang")
         message(FATAL_ERROR "Only Clang is supported (minimum LLVM 8.0)")
-    endif()
+    endif ()
 endif ()
 
 ##! We will let know the SDK if our on Linux
 if (${CMAKE_SYSTEM_NAME} STREQUAL "Linux")
     set(LINUX TRUE)
 endif ()
+
+##! Options
+option(ENABLE_CODE_RELOAD_UNIX "Use address sanitizer" OFF)
 
 ##! We include the module from CMake for fetching dependencies
 include(FetchContent)
@@ -30,7 +33,7 @@ include(FetchContent)
 FetchContent_Declare(
         antara-gaming-sdk
         URL https://github.com/KomodoPlatform/antara-gaming-sdk/archive/master.zip
-        
+
 )
 
 if (UNIX)
@@ -38,7 +41,7 @@ if (UNIX)
             jetlive
             URL https://github.com/ddovod/jet-live/archive/master.zip
     )
-endif()
+endif ()
 
 ##! We set extras modules from the SDK that we want to use, here we will use the SFML module.
 set(USE_SFML_ANTARA_WRAPPER ON)
@@ -75,21 +78,23 @@ endif ()
 
 #FetchContent_MakeAvailable(antara-gaming-sdk)
 FetchContent_GetProperties(antara-gaming-sdk)
-if(NOT antara-gaming-sdk_POPULATED)
+if (NOT antara-gaming-sdk_POPULATED)
     FetchContent_Populate(antara-gaming-sdk)
     add_subdirectory(${antara-gaming-sdk_SOURCE_DIR} ${antara-gaming-sdk_BINARY_DIR} EXCLUDE_FROM_ALL)
-endif()
+endif ()
 
-if (UNIX)
+if (UNIX AND ENABLE_CODE_RELOAD_UNIX)
+    target_compile_definitions(${PROJECT_NAME} PUBLIC -DENABLE_CODE_RELOAD_UNIX)
     FetchContent_GetProperties(jetlive)
-    if(NOT jetlive_POPULATED)
+    if (NOT jetlive_POPULATED)
         FetchContent_Populate(jetlive)
         include(${jetlive_SOURCE_DIR}/cmake/jet_live_setup.cmake) # setup needed compiler and linker flags, include this file in your root CMakeLists.txt
         set(JET_LIVE_BUILD_EXAMPLE OFF)
         set(JET_LIVE_SHARED ON)
         add_subdirectory(${jetlive_SOURCE_DIR} ${jetlive_BINARY_DIR} EXCLUDE_FROM_ALL)
-    endif()
-endif()
+        target_link_libraries(${PROJECT_NAME} PUBLIC jet-live)
+    endif ()
+endif ()
 
 ##! Calling this macros provided by the sdk will if you are on Apple init the environment for this OS (std::filesystem).
 init_antara_env()
@@ -105,7 +110,8 @@ configure_icon_osx(data/osx/kmd_logo.icns ICON kmd_logo.icns)
 add_executable(${PROJECT_NAME} MACOSX_BUNDLE ${ICON}
         atomic.dex.desktop.cpp
         src/atomic.dex.app.cpp
-        src/atomic.dex.gui.cpp)
+        src/atomic.dex.gui.cpp
+        src/atomic.dex.mm2.cpp)
 
 target_include_directories(${PROJECT_NAME} PUBLIC src)
 
@@ -141,8 +147,4 @@ if (APPLE)
             )
     file(COPY assets DESTINATION ${CMAKE_BINARY_DIR}/bin/${PROJECT_NAME}.app/Contents/Resources)
     include(data/osx/sfml_atomicdex_install.cmake)
-endif()
-
-if (UNIX)
-    target_link_libraries(${PROJECT_NAME} PUBLIC jet-live)
-endif()
+endif ()

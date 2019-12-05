@@ -16,7 +16,7 @@
 
 #pragma once
 
-#if defined(__APPLE__) || defined(__linux__)
+#if defined(ENABLE_CODE_RELOAD_UNIX)
 
 #include <jet/live/Live.hpp>
 
@@ -30,7 +30,7 @@ namespace atomic_dex {
     class gui final : public ag::ecs::post_update_system<gui> {
         void reload_code();
 
-#if defined(__APPLE__) || defined(__linux__)
+#if defined(ENABLE_CODE_RELOAD_UNIX)
         jet::Live live_;
 #endif
     public:

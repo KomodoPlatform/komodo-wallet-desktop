@@ -33,13 +33,13 @@ namespace atomic_dex {
     //! Platform dependent code
     void gui::reload_code() {
         DVLOG_F(loguru::Verbosity_INFO, "reloading code");
-#if defined(__APPLE__) || defined(__linux__)
+#if defined(ENABLE_CODE_RELOAD_UNIX)
         live_.tryReload();
 #endif
     }
 
     void gui::init_live_coding() {
-#if defined(__APPLE__) || defined(__linux__)
+#if defined(ENABLE_CODE_RELOAD_UNIX)
         while (!live_.isInitialized()) {
             std::this_thread::sleep_for(std::chrono::milliseconds(100));
             live_.update();
@@ -49,7 +49,7 @@ namespace atomic_dex {
     }
 
     void gui::update_live_coding() {
-#if defined(__APPLE__) || defined(__linux__)
+#if defined(ENABLE_CODE_RELOAD_UNIX)
         live_.update();
 #endif
     }
