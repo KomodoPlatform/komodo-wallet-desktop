@@ -35,6 +35,18 @@ namespace atomic_dex {
         if (ec) {
             DVLOG_F(loguru::Verbosity_ERROR, "error: {}", ec.message());
         }
+
+
+        mm2_init_thread_ = std::thread([this]() {
+            using namespace std::chrono_literals;
+            auto ec = this->mm2_instance_.wait(5s);
+            if (ec == reproc::error::wait_timeout) {
+                DVLOG_F(loguru::Verbosity_INFO, "mm2 is initialized");
+                this->mm2_initialized_ = true;
+            } else {
+                DVLOG_F(loguru::Verbosity_ERROR, "error: {}", ec.message());
+            }
+        });
     }
 
     void mm2::update() noexcept {
@@ -51,6 +63,11 @@ namespace atomic_dex {
         if (ec) {
             VLOG_SCOPE_F(loguru::Verbosity_ERROR, "error: %s", ec.message().c_str());
         }
+        mm2_init_thread_.join();
+    }
+
+    const std::atomic<bool>& mm2::is_mm2_initialized() const noexcept {
+        return mm2_initialized_;
     }
 }
 

@@ -149,3 +149,6 @@ if (APPLE)
     file(COPY assets DESTINATION ${CMAKE_BINARY_DIR}/bin/${PROJECT_NAME}.app/Contents/Resources)
     include(data/osx/sfml_atomicdex_install.cmake)
 endif ()
+
+
+target_enable_tsan(${PROJECT_NAME})
