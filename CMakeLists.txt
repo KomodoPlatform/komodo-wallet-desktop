@@ -45,6 +45,34 @@ set(USE_SFML_ANTARA_WRAPPER ON)
 set(USE_IMGUI_ANTARA_WRAPPER ON)
 
 ##! We fetch our dependence
+if (APPLE)
+    FetchContent_Declare(mm2
+            URL http://195.201.0.6/mm2/mm2-latest-Darwin.zip)
+elseif (LINUX)
+    FetchContent_Declare(mm2
+            URL http://195.201.0.6/mm2/mm2-latest-Linux.zip)
+else ()
+    FetchContent_Declare(mm2
+            URL http://195.201.0.6/mm2/mm2-latest-Windows_NT.zip)
+endif ()
+
+FetchContent_Declare(jl777-coins
+        URL https://github.com/jl777/coins/archive/master.zip)
+
+FetchContent_MakeAvailable(mm2 jl777-coins)
+##! Configure our needs.
+if (UNIX)
+    configure_file(${jl777-coins_SOURCE_DIR}/coins ${CMAKE_CURRENT_SOURCE_DIR}/assets/tools/mm2/coins.json COPYONLY)
+    configure_file(${jl777-coins_SOURCE_DIR}/coins ${CMAKE_CURRENT_SOURCE_DIR}/assets/tools/mm2/coins COPYONLY)
+    configure_file(${mm2_SOURCE_DIR}/mm2 ${CMAKE_CURRENT_SOURCE_DIR}/assets/tools/mm2/mm2 COPYONLY)
+    file(COPY ${jl777-coins_SOURCE_DIR}/electrums DESTINATION ${CMAKE_CURRENT_SOURCE_DIR}/assets/tools/mm2/)
+else ()
+    configure_file(${jl777-coins_SOURCE_DIR}/coins ${CMAKE_BINARY_DIR}/bin/${CMAKE_BUILD_TYPE}/assets/tools/mm2/coins.json COPYONLY)
+    configure_file(${jl777-coins_SOURCE_DIR}/coins ${CMAKE_BINARY_DIR}/bin/${CMAKE_BUILD_TYPE}/assets/tools/mm2/coins COPYONLY)
+    configure_file(${mm2_SOURCE_DIR}/mm2.exe ${CMAKE_BINARY_DIR}/bin/${CMAKE_BUILD_TYPE}/assets/tools/mm2/mm2.exe COPYONLY)
+    file(COPY ${jl777-coins_SOURCE_DIR}/electrums DESTINATION ${CMAKE_BINARY_DIR}/bin/${CMAKE_BUILD_TYPE}/assets/tools/mm2/)
+endif ()
+
 #FetchContent_MakeAvailable(antara-gaming-sdk)
 FetchContent_GetProperties(antara-gaming-sdk)
 if(NOT antara-gaming-sdk_POPULATED)
