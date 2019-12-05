@@ -17,20 +17,57 @@
 #include <imgui.h>
 #include <antara/gaming/graphics/component.canvas.hpp>
 #include <antara/gaming/event/quit.game.hpp>
+#include <antara/gaming/event/key.pressed.hpp>
 #include "atomic.dex.gui.hpp"
 
 namespace {
     void gui_menubar() noexcept {
         if (ImGui::BeginMenuBar()) {
+            if (ImGui::MenuItem("Open", "Ctrl+O")) { /* Do stuff */ }
             ImGui::EndMenuBar();
         }
     }
 }
 
 namespace atomic_dex {
-    gui::gui(entt::registry &registry) noexcept : system(registry) {}
+    //! Platform dependent code
+    void gui::reload_code() {
+#if defined(__APPLE__) || defined(__linux__)
+        live_.tryReload();
+#endif
+    }
+
+    void gui::init_live_coding() {
+#if defined(__APPLE__) || defined(__linux__)
+        while (!live_.isInitialized()) {
+            std::this_thread::sleep_for(std::chrono::milliseconds(100));
+            live_.update();
+        }
+        live_.update();
+#endif
+    }
+
+    void gui::update_live_coding() {
+#if defined(__APPLE__) || defined(__linux__)
+        live_.update();
+#endif
+    }
+}
+
+namespace atomic_dex {
+    void gui::on_key_pressed(const ag::event::key_pressed &evt) noexcept {
+        if (evt.key == ag::input::r && evt.control) {
+            reload_code();
+        }
+    }
+
+    gui::gui(entt::registry &registry) noexcept : system(registry) {
+        init_live_coding();
+        this->dispatcher_.sink<ag::event::key_pressed>().connect<&gui::on_key_pressed>(*this);
+    }
 
     void gui::update() noexcept {
+        update_live_coding();
         //! Menu bar
         auto &canvas = entity_registry_.ctx<ag::graphics::canvas_2d>();
         auto[x, y] = canvas.canvas.size;

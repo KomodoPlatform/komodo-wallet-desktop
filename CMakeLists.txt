@@ -33,6 +33,13 @@ FetchContent_Declare(
         
 )
 
+if (UNIX)
+    FetchContent_Declare(
+            jetlive
+            URL https://github.com/ddovod/jet-live/archive/master.zip
+    )
+endif()
+
 ##! We set extras modules from the SDK that we want to use, here we will use the SFML module.
 set(USE_SFML_ANTARA_WRAPPER ON)
 set(USE_IMGUI_ANTARA_WRAPPER ON)
@@ -43,6 +50,17 @@ FetchContent_GetProperties(antara-gaming-sdk)
 if(NOT antara-gaming-sdk_POPULATED)
     FetchContent_Populate(antara-gaming-sdk)
     add_subdirectory(${antara-gaming-sdk_SOURCE_DIR} ${antara-gaming-sdk_BINARY_DIR} EXCLUDE_FROM_ALL)
+endif()
+
+if (UNIX)
+    FetchContent_GetProperties(jetlive)
+    if(NOT jetlive_POPULATED)
+        FetchContent_Populate(jetlive)
+        include(${jetlive_SOURCE_DIR}/cmake/jet_live_setup.cmake) # setup needed compiler and linker flags, include this file in your root CMakeLists.txt
+        set(JET_LIVE_BUILD_EXAMPLE OFF)
+        set(JET_LIVE_SHARED ON)
+        add_subdirectory(${jetlive_SOURCE_DIR} ${jetlive_BINARY_DIR} EXCLUDE_FROM_ALL)
+    endif()
 endif()
 
 ##! Calling this macros provided by the sdk will if you are on Apple init the environment for this OS (std::filesystem).
@@ -95,4 +113,8 @@ if (APPLE)
             )
     file(COPY assets DESTINATION ${CMAKE_BINARY_DIR}/bin/${PROJECT_NAME}.app/Contents/Resources)
     include(data/osx/sfml_atomicdex_install.cmake)
+endif()
+
+if (UNIX)
+    target_link_libraries(${PROJECT_NAME} PUBLIC jet-live)
 endif()
