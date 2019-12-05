@@ -19,6 +19,14 @@
 #include <antara/gaming/event/quit.game.hpp>
 #include "atomic.dex.gui.hpp"
 
+namespace {
+    void gui_menubar() noexcept {
+        if (ImGui::BeginMenuBar()) {
+            ImGui::EndMenuBar();
+        }
+    }
+}
+
 namespace atomic_dex {
     gui::gui(entt::registry &registry) noexcept : system(registry) {}
 
@@ -34,7 +42,7 @@ namespace atomic_dex {
         bool active = true;
         ImGui::Begin("Atomic Dex", &active, ImGuiWindowFlags_MenuBar | ImGuiWindowFlags_NoCollapse);
         if (not active) { this->dispatcher_.trigger<ag::event::quit_game>(0); }
-        if (ImGui::BeginMenuBar()) { ImGui::EndMenuBar(); }
+        gui_menubar();
         ImGui::End();
     }
 }
