@@ -14,11 +14,43 @@
  *                                                                            *
  ******************************************************************************/
 
+#include <array>
+#include <filesystem>
+#include <antara/gaming/core/real.path.hpp>
 #include "atomic.dex.mm2.hpp"
+#include "atomic.dex.mm2.config.hpp"
 
 namespace atomic_dex {
-    mm2::mm2(entt::registry &registry) noexcept : system(registry) {}
+    mm2::mm2(entt::registry &registry) noexcept : system(registry) {
+        atomic_dex::mm2_config cfg{};
+        nlohmann::json json_cfg;
+        nlohmann::to_json(json_cfg, cfg);
+        std::filesystem::path tools_path = ag::core::assets_real_path() / "tools/mm2/";
+        DVLOG_F(loguru::Verbosity_INFO, "command line {}", json_cfg.dump());
+        std::array<std::string, 2> args = {(tools_path / "mm2").string(), json_cfg.dump()};
+        auto ec = mm2_instance_.start(args, reproc::options{nullptr, tools_path.string().c_str(),
+                                                            {reproc::redirect::inherit,
+                                                             reproc::redirect::inherit,
+                                                             reproc::redirect::inherit}});
+        if (ec) {
+            DVLOG_F(loguru::Verbosity_ERROR, "error: {}", ec.message());
+        }
+    }
 
-    void mm2::update() noexcept {}
+    void mm2::update() noexcept {
+    }
+
+    mm2::~mm2() noexcept {
+        reproc::stop_actions stop_actions = {
+                {reproc::stop::terminate, reproc::milliseconds(2000)},
+                {reproc::stop::kill,      reproc::milliseconds(5000)},
+                {reproc::stop::wait,      reproc::milliseconds(2000)}
+        };
+
+        auto ec = mm2_instance_.stop(stop_actions);
+        if (ec) {
+            VLOG_SCOPE_F(loguru::Verbosity_ERROR, "error: %s", ec.message().c_str());
+        }
+    }
 }
 

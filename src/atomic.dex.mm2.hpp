@@ -16,15 +16,19 @@
 
 #pragma once
 
+#include <reproc++/reproc.hpp>
 #include <antara/gaming/ecs/system.hpp>
 
 namespace atomic_dex {
     namespace ag = antara::gaming;
 
     class mm2 : public ag::ecs::pre_update_system<mm2> {
+        reproc::process mm2_instance_;
+        //! Maybe change it latter ?
+        static constexpr const char *passphrase_{"atomicdexpassphrase"};
     public:
         mm2(entt::registry &registry) noexcept;
-
+        ~mm2() noexcept;
         void update() noexcept final;
     };
 }
