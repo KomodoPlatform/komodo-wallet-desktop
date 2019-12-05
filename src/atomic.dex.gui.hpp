@@ -23,6 +23,7 @@
 #endif
 
 #include <antara/gaming/ecs/system.hpp>
+#include "atomic.dex.mm2.hpp"
 
 namespace atomic_dex {
     namespace ag = antara::gaming;
@@ -36,13 +37,16 @@ namespace atomic_dex {
     public:
         void on_key_pressed(const ag::event::key_pressed &evt) noexcept;
 
-        explicit gui(entt::registry &registry) noexcept;
+        explicit gui(entt::registry &registry, atomic_dex::mm2& mm2_system) noexcept;
 
         void update() noexcept final;
 
         void init_live_coding();
 
         void update_live_coding();
+
+    private:
+        atomic_dex::mm2& mm2_system_;
     };
 }
 

@@ -19,6 +19,8 @@
 #include <antara/gaming/event/quit.game.hpp>
 #include <antara/gaming/event/key.pressed.hpp>
 #include "atomic.dex.gui.hpp"
+#include "atomic.dex.gui.widgets.hpp"
+#include "atomic.dex.mm2.hpp"
 
 // Helpers
 namespace {
@@ -216,7 +218,7 @@ namespace atomic_dex {
         }
     }
 
-    gui::gui(entt::registry &registry) noexcept : system(registry) {
+    gui::gui(entt::registry &registry, atomic_dex::mm2& mm2_system) noexcept : system(registry), mm2_system_(mm2_system) {
         //init_live_coding();
         this->dispatcher_.sink<ag::event::key_pressed>().connect<&gui::on_key_pressed>(*this);
 
@@ -225,6 +227,8 @@ namespace atomic_dex {
 
     void gui::update() noexcept {
         //update_live_coding();
+
+
         //! Menu bar
         auto &canvas = entity_registry_.ctx<ag::graphics::canvas_2d>();
         auto[x, y] = canvas.canvas.size;
@@ -236,23 +240,26 @@ namespace atomic_dex {
         bool active = true;
         ImGui::Begin("Atomic Dex", &active, ImGuiWindowFlags_MenuBar | ImGuiWindowFlags_NoCollapse);
         if (not active) { this->dispatcher_.trigger<ag::event::quit_game>(0); }
-        gui_menubar();
 
-
-        if(ImGui::BeginTabBar("##Tabs", ImGuiTabBarFlags_None)) {
-            if (ImGui::BeginTabItem("Portfolio")) {
-                gui_portfolio();
-                ImGui::EndTabItem();
-            }
-            if (ImGui::BeginTabItem("Trade")) {
-                ImGui::Text("Work in progress");
-                ImGui::EndTabItem();
-            }
-
-            ImGui::EndTabBar();
+        if(!mm2_system_.is_mm2_initialized()) {
+            atomic_dex::widgets::LoadingIndicatorCircle("foo", 30.f, ImVec4(sf::Color::White), ImVec4(sf::Color::Black), 8, 1.f);
         }
+        else {
+            gui_menubar();
 
+            if(ImGui::BeginTabBar("##Tabs", ImGuiTabBarFlags_None)) {
+                if (ImGui::BeginTabItem("Portfolio")) {
+                    gui_portfolio();
+                    ImGui::EndTabItem();
+                }
+                if (ImGui::BeginTabItem("Trade")) {
+                    ImGui::Text("Work in progress");
+                    ImGui::EndTabItem();
+                }
 
+                ImGui::EndTabBar();
+            }
+        }
 
         ImGui::End();
     }

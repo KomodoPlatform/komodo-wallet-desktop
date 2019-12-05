@@ -26,7 +26,7 @@ namespace atomic_dex {
         system_manager_.create_system<ag::sfml::input_system>(graphic_system.get_window());
         //! MM2 system need to be created before the GUI and give the instance to the gui
         auto& mm2_system = system_manager_.create_system<atomic_dex::mm2>();
-        system_manager_.create_system<atomic_dex::gui>();
+        system_manager_.create_system<atomic_dex::gui>(mm2_system);
         system_manager_.prioritize_system<atomic_dex::gui, ag::sfml::graphic_system>();
     }
 }
