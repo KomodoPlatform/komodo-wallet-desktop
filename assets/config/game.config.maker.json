@@ -1,0 +1,20 @@
+{
+  "background_color": [
+    0,
+    0,
+    0,
+    255
+  ],
+  "canvas_height": 1080.0,
+  "canvas_width": 1920.0,
+  "custom_canvas_height": true,
+  "custom_canvas_width": true,
+  "native_desktop_mode": false,
+  "scale_mode": "fit",
+  "window_height": 1080.0,
+  "window_title": "Atomic Dex Desktop",
+  "window_width": 1920.0,
+  "mouse_grabbed": false,
+  "mouse_visible": true,
+  "vsync": false
+}
