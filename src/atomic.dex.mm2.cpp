@@ -25,6 +25,18 @@
 namespace {
     namespace ag = antara::gaming;
 
+    void update_coin_status(const std::string &ticker) {
+        std::filesystem::path cfg_path = ag::core::assets_real_path() / "config";
+        std::ifstream ifs(cfg_path / "active.coins.json");
+        assert(ifs.is_open());
+        nlohmann::json config_json_data;
+        ifs >> config_json_data;
+        if (config_json_data.find(ticker) != config_json_data.end()) {
+            return;
+        }
+        config_json_data.push_back(ticker);
+    }
+
     void spawn_mm2_instance(reproc::process &mm2_instance, std::atomic<bool> &mm2_initialized,
                             std::thread &mm2_init_thread, atomic_dex::mm2 &mm2) noexcept {
         atomic_dex::mm2_config cfg{};
@@ -175,14 +187,20 @@ namespace atomic_dex {
         return destination;
     }
 
-    bool mm2::enable_coin(const std::string &ticker) const noexcept {
+    bool mm2::enable_coin(const std::string &ticker) noexcept {
         auto &&coin_info = coins_informations_.at(ticker);
+        if (coin_info.currently_enabled) return true;
         ::mm2::api::electrum_request request{
                 .coin_name = coin_info.ticker,
                 .servers = coin_info.electrum_urls,
                 .with_tx_history = true};
         auto answer = ::mm2::api::rpc_electrum(std::move(request));
-        return answer.result == "success";
+        if (answer.result != "success") {
+            return false;
+        }
+        coin_info.currently_enabled = true;
+        update_coin_status(ticker);
+        return true;
     }
 
     bool mm2::enable_default_coins() noexcept {

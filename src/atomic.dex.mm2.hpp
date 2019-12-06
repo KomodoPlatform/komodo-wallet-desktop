@@ -37,7 +37,7 @@ namespace atomic_dex {
         coins_registry coins_informations_;
     public:
         bool enable_default_coins() noexcept;
-        bool enable_coin(const std::string& ticker) const noexcept;
+        bool enable_coin(const std::string& ticker) noexcept;
 
         explicit mm2(entt::registry &registry) noexcept;
 
