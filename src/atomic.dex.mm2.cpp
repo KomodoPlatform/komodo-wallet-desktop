@@ -62,6 +62,10 @@ namespace {
             nlohmann::json config_json_data;
             ifs >> config_json_data;
             config_json_data.get_to(active_coins);
+        } else {
+            std::ofstream ofs(cfg_path / "active.coins.json");
+            assert(ofs.is_open());
+            ofs << "[]";
         }
         DVLOG_F(loguru::Verbosity_INFO, "There is {} active coins", active_coins.size());
     }
