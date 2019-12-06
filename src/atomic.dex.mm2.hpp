@@ -36,6 +36,9 @@ namespace atomic_dex {
         using coins_registry = std::unordered_map<std::string, atomic_dex::coins_config>;
         coins_registry coins_informations_;
     public:
+        bool enable_default_coins() noexcept;
+        bool enable_coin(const std::string& ticker) const noexcept;
+
         explicit mm2(entt::registry &registry) noexcept;
 
         ~mm2() noexcept;

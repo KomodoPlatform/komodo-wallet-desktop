@@ -14,4 +14,18 @@
  *                                                                            *
  ******************************************************************************/
 
+#include <loguru.hpp>
 #include "atomic.dex.coins.config.hpp"
+
+namespace atomic_dex {
+    void to_json(nlohmann::json &j, const atomic_dex::electrum_server &cfg) {
+        LOG_SCOPE_FUNCTION(INFO);
+        j["url"] = cfg.url;
+        if (cfg.protocol.has_value()) {
+            j["protocol"] = cfg.protocol.value();
+        }
+        if (cfg.disable_cert_verification.has_value()) {
+            j["disable_cert_verification"] = cfg.disable_cert_verification.value();
+        }
+    }
+}

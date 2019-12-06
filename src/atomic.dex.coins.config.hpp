@@ -19,6 +19,7 @@
 #include <vector>
 #include <string>
 #include <optional>
+#include <nlohmann/json.hpp>
 
 namespace atomic_dex {
 
@@ -27,6 +28,8 @@ namespace atomic_dex {
         std::optional<std::string> protocol{"TCP"};
         std::optional<bool> disable_cert_verification{false};
     };
+
+    void to_json(nlohmann::json &j, const electrum_server &cfg);
 
     struct coins_config {
         std::string ticker;

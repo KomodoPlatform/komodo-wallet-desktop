@@ -20,12 +20,13 @@
 #include <antara/gaming/core/real.path.hpp>
 #include "atomic.dex.mm2.hpp"
 #include "atomic.dex.mm2.config.hpp"
+#include "atomic.dex.mm2.api.hpp"
 
 namespace {
     namespace ag = antara::gaming;
 
     void spawn_mm2_instance(reproc::process &mm2_instance, std::atomic<bool> &mm2_initialized,
-                            std::thread &mm2_init_thread) noexcept {
+                            std::thread &mm2_init_thread, atomic_dex::mm2 &mm2) noexcept {
         atomic_dex::mm2_config cfg{};
         nlohmann::json json_cfg;
         nlohmann::to_json(json_cfg, cfg);
@@ -41,12 +42,13 @@ namespace {
         }
 
 
-        mm2_init_thread = std::thread([&mm2_instance, &mm2_initialized]() {
+        mm2_init_thread = std::thread([&mm2_instance, &mm2_initialized, &mm2]() {
             loguru::set_thread_name("mm2 init thread");
             using namespace std::chrono_literals;
             auto ec = mm2_instance.wait(5s);
             if (ec == reproc::error::wait_timeout) {
                 DVLOG_F(loguru::Verbosity_INFO, "mm2 is initialized");
+                mm2.enable_default_coins();
                 mm2_initialized = true;
             } else {
                 DVLOG_F(loguru::Verbosity_ERROR, "error: {}", ec.message());
@@ -128,7 +130,7 @@ namespace {
 
 namespace atomic_dex {
     mm2::mm2(entt::registry &registry) noexcept : system(registry) {
-        spawn_mm2_instance(mm2_instance_, mm2_initialized_, mm2_init_thread_);
+        spawn_mm2_instance(mm2_instance_, mm2_initialized_, mm2_init_thread_, *this);
         check_coin_enabled(active_coins_);
         retrieve_coins_information(coins_informations_);
     }
@@ -171,6 +173,25 @@ namespace atomic_dex {
             }
         }
         return destination;
+    }
+
+    bool mm2::enable_coin(const std::string &ticker) const noexcept {
+        auto &&coin_info = coins_informations_.at(ticker);
+        ::mm2::api::electrum_request request{
+                .coin_name = coin_info.ticker,
+                .servers = coin_info.electrum_urls,
+                .with_tx_history = true};
+        auto answer = ::mm2::api::rpc_electrum(std::move(request));
+        return answer.result == "success";
+    }
+
+    bool mm2::enable_default_coins() noexcept {
+        auto result = true;
+        auto coins = get_enabled_coins();
+        for (auto &&current_coin : coins) {
+            result &= enable_coin(current_coin.ticker);
+        }
+        return result;
     }
 }
 

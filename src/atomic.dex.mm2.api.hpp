@@ -18,22 +18,35 @@
 
 #include <string>
 #include <vector>
+#include <restclient-cpp/restclient.h>
+#include <loguru.hpp>
+#include <nlohmann/json.hpp>
 #include "atomic.dex.coins.config.hpp"
 
-namespace mm2::api
-{
-    struct electrum_request
-    {
+namespace mm2::api {
+    static constexpr const char* endpoint = "http://127.0.0.1:7783";
+
+    struct electrum_request {
         std::string coin_name;
-        std::vector<atomic_dex::electrum_server> url_servers;
+        std::vector<atomic_dex::electrum_server> servers;
         bool with_tx_history{true};
     };
 
-    struct electrum_answer
-    {
+    struct electrum_answer {
         std::string address;
         std::string balance;
         std::string result;
         int rpc_result_code;
+        std::string raw_result;
     };
+
+    void to_json(nlohmann::json &j, const electrum_request &cfg);
+
+    void from_json(const nlohmann::json &j, electrum_answer &answer);
+
+
+    electrum_answer rpc_electrum(electrum_request&& request);
+
+    template<typename RpcReturnType>
+    static RpcReturnType rpc_process_answer(const RestClient::Response &resp) noexcept;
 }
