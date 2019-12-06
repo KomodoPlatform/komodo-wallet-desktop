@@ -14,6 +14,7 @@
  *                                                                            *
  ******************************************************************************/
 
+#include <antara/gaming/timer/time.step.hpp>
 #include "atomic.dex.gui.widgets.hpp"
 
 namespace atomic_dex {
@@ -24,7 +25,6 @@ namespace atomic_dex {
             return;
         }
 
-        ImGuiContext &g = *GImGui;
         const ImGuiID id = window->GetID(label);
 
         const ImVec2 pos = window->DC.CursorPos;
@@ -36,7 +36,8 @@ namespace atomic_dex {
         if (!ImGui::ItemAdd(bb, id)) {
             return;
         }
-        const float t = g.Time;
+
+        const float t = antara::gaming::timer::time_step::get_fixed_delta_time();
         const auto degree_offset = 2.0f * IM_PI / circle_count;
         for (int i = 0; i < circle_count; ++i) {
             const auto x = indicator_radius * std::sin(degree_offset * i);

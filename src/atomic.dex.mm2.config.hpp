@@ -22,17 +22,6 @@
 namespace atomic_dex {
     using nlohmann::json;
 
-    inline json get_untyped(const json &j, const char *property) {
-        if (j.find(property) != j.end()) {
-            return j.at(property).get<json>();
-        }
-        return json();
-    }
-
-    inline json get_untyped(const json &j, std::string property) {
-        return get_untyped(j, property.data());
-    }
-
     struct mm2_config {
         std::string gui{"MM2GUI"};
         int64_t netid{9999};
@@ -45,9 +34,7 @@ namespace atomic_dex {
         std::string passphrase{"thisIsTheNewProjectSeed2019##"};
         std::string rpc_password{"atomix_dex_mm2_passphrase"};
     };
-}
 
-namespace nlohmann {
     void from_json(const json &j, atomic_dex::mm2_config &cfg);
 
     void to_json(json &j, const atomic_dex::mm2_config &cfg);
@@ -69,4 +56,3 @@ namespace nlohmann {
         j["rpc_password"] = cfg.rpc_password;
     }
 }
-

@@ -25,7 +25,7 @@ namespace atomic_dex {
         std::filesystem::path fonts_path = antara::gaming::core::assets_real_path() / "fonts";
         auto imGuiIO = ImGui::GetIO();
         imGuiIO.Fonts->Clear();
-        imGuiIO.Fonts->AddFontFromFileTTF((fonts_path / "Ruda-Bold.ttf").c_str(), 15.0f);
+        imGuiIO.Fonts->AddFontFromFileTTF((fonts_path / "Ruda-Bold.ttf").string().c_str(), 15.0f);
         ImGui::SFML::UpdateFontTexture();
 
         ImGui::GetStyle().FrameRounding = 4.0f;

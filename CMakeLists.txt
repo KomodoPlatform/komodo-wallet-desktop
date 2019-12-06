@@ -11,6 +11,10 @@ set(CMAKE_CXX_STANDARD 17)
 ##! Our Project title, here atomic-dex-desktop.
 project(atomic-dex-desktop DESCRIPTION "An awesome atomic-dex-desktop" LANGUAGES CXX VERSION 1.0.0)
 
+if (WIN32)
+    set(BUILD_SHARED_LIBS OFF CACHE BOOL "Override option" FORCE)
+endif()
+
 ##! The SDK need's clang as main compiler.
 if (NOT "${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
     if (NOT "${CMAKE_CXX_COMPILER_ID}" STREQUAL "AppleClang")
@@ -71,10 +75,10 @@ if (UNIX)
     configure_file(${mm2_SOURCE_DIR}/mm2 ${CMAKE_CURRENT_SOURCE_DIR}/assets/tools/mm2/mm2 COPYONLY)
     file(COPY ${jl777-coins_SOURCE_DIR}/electrums DESTINATION ${CMAKE_CURRENT_SOURCE_DIR}/assets/tools/mm2/)
 else ()
-    configure_file(${jl777-coins_SOURCE_DIR}/coins ${CMAKE_BINARY_DIR}/bin/${CMAKE_BUILD_TYPE}/assets/tools/mm2/coins.json COPYONLY)
-    configure_file(${jl777-coins_SOURCE_DIR}/coins ${CMAKE_BINARY_DIR}/bin/${CMAKE_BUILD_TYPE}/assets/tools/mm2/coins COPYONLY)
-    configure_file(${mm2_SOURCE_DIR}/mm2.exe ${CMAKE_BINARY_DIR}/bin/${CMAKE_BUILD_TYPE}/assets/tools/mm2/mm2.exe COPYONLY)
-    file(COPY ${jl777-coins_SOURCE_DIR}/electrums DESTINATION ${CMAKE_BINARY_DIR}/bin/${CMAKE_BUILD_TYPE}/assets/tools/mm2/)
+    configure_file(${jl777-coins_SOURCE_DIR}/coins ${CMAKE_BINARY_DIR}/bin/assets/tools/mm2/coins.json COPYONLY)
+    configure_file(${jl777-coins_SOURCE_DIR}/coins ${CMAKE_BINARY_DIR}/bin/assets/tools/mm2/coins COPYONLY)
+    configure_file(${mm2_SOURCE_DIR}/mm2.exe ${CMAKE_BINARY_DIR}/bin/assets/tools/mm2/mm2.exe COPYONLY)
+    file(COPY ${jl777-coins_SOURCE_DIR}/electrums DESTINATION ${CMAKE_BINARY_DIR}/bin/assets/tools/mm2/)
 endif ()
 
 #FetchContent_MakeAvailable(antara-gaming-sdk)
@@ -136,12 +140,20 @@ magic_game_app_image_generation("${CMAKE_CURRENT_SOURCE_DIR}/data/linux"
         )
 
 ##! We link the SDK modules that we want to use to our executable
+set(BUILD_SHARED_LIBS OFF CACHE BOOL "Override option" FORCE)
+
 target_link_libraries(${PROJECT_NAME} PUBLIC antara::world antara::sfml reproc++ nlohmann_json::nlohmann_json antara::http_client)
 
 ##! Move assets
 if (WIN32)
     file(COPY assets DESTINATION ${CMAKE_BINARY_DIR}/bin/)
-    import_antara_dlls(${PROJECT_NAME})
+    get_target_property(target_runtime_directory ${PROJECT_NAME} RUNTIME_OUTPUT_DIRECTORY)
+    ADD_CUSTOM_COMMAND(TARGET ${PROJECT_NAME} POST_BUILD
+            COMMAND ${CMAKE_COMMAND} -E copy_directory "${SFML_SOURCE_DIR}/extlibs/bin/x64" "${target_runtime_directory}"
+            COMMENT "copying dlls …"
+            $<TARGET_FILE_DIR:${PROJECT_NAME}>
+            )
+    #import_antara_dlls(${PROJECT_NAME})
 endif ()
 
 if (APPLE)
