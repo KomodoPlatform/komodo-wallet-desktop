@@ -211,5 +211,9 @@ namespace atomic_dex {
         }
         return result;
     }
+
+    const coins_config &mm2::get_coin_info(const std::string &ticker) const noexcept {
+        return coins_informations_.at(ticker);
+    }
 }
 

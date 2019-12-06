@@ -138,31 +138,31 @@ namespace
         }
     }
 
-    void gui_portfolio_coins_list() noexcept
+    void gui_portfolio_coins_list(atomic_dex::mm2& mm2) noexcept
     {
         ImGui::BeginChild("left pane", ImVec2(150, 0), true);
         int i = 0;
-        for (auto it = assets.begin(); it != assets.end(); ++it, ++i) {
-            auto &asset = it->second;
-            if (ImGui::Selectable(asset.full_name().c_str(), selected == i)) {
+        auto assets_contents = mm2.get_enabled_coins();
+        for (auto it = assets_contents.begin(); it != assets_contents.end(); ++it, ++i) {
+            auto &asset = *it;
+            if (ImGui::Selectable(asset.fname.c_str(), selected == i)) {
                 selected = i;
-                curr_asset_code = asset.coin.code;
+                curr_asset_code = asset.ticker;
             }
         }
         ImGui::EndChild();
     }
 
-    void gui_portfolio_coin_details() noexcept
+    void gui_portfolio_coin_details(atomic_dex::mm2& mm2) noexcept
     {
         // Right
-        auto &curr_asset = assets[curr_asset_code];
+        auto &curr_asset = mm2.get_coin_info(curr_asset_code);
         ImGui::BeginChild("item view",
                           ImVec2(0, -ImGui::GetFrameHeightWithSpacing())); // Leave room for 1 line below us
         {
-            ImGui::TextWrapped("%s", curr_asset.full_name(true).c_str());
+            ImGui::TextWrapped("%s", curr_asset.fname.c_str());
             ImGui::Separator();
-            ImGui::Text(std::string("Balance: %lf %s (%s)").c_str(), curr_asset.balance, curr_asset.coin.code.c_str(),
-                        curr_asset.to_usd_str().c_str());
+            ImGui::Text(std::string("Balance: %lf %s (%s)").c_str(), 0, curr_asset.ticker.c_str(), "0");
             ImGui::Separator();
             if (ImGui::BeginTabBar("##Tabs", ImGuiTabBarFlags_None)) {
                 if (ImGui::BeginTabItem("Transactions")) {
@@ -189,7 +189,7 @@ namespace
         ImGui::EndChild();
     }
 
-    void gui_portfolio() noexcept
+    void gui_portfolio(atomic_dex::mm2& mm2) noexcept
     {
         ImGui::Text("Total Balance: %s", usd_str(get_total_balance()).c_str());
 
@@ -198,11 +198,11 @@ namespace
         }
 
         // Left
-        gui_portfolio_coins_list();
+        gui_portfolio_coins_list(mm2);
 
         // Right
         ImGui::SameLine();
-        gui_portfolio_coin_details();
+        gui_portfolio_coin_details(mm2);
     }
 }
 
@@ -311,7 +311,7 @@ namespace atomic_dex
 
             if (ImGui::BeginTabBar("##Tabs", ImGuiTabBarFlags_None)) {
                 if (ImGui::BeginTabItem("Portfolio")) {
-                    gui_portfolio();
+                    gui_portfolio(mm2_system_);
                     ImGui::EndTabItem();
                 }
                 if (ImGui::BeginTabItem("Trade")) {

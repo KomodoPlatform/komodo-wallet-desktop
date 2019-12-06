@@ -52,6 +52,8 @@ namespace atomic_dex {
 
         //! Get coins that can be activated
         std::vector<coins_config> get_enableable_coins() const noexcept;
+
+        const coins_config& get_coin_info(const std::string& ticker) const noexcept;
     };
 }
 
