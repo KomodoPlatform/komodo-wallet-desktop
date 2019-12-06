@@ -15,15 +15,24 @@
  ******************************************************************************/
 
 #include <antara/gaming/sfml/graphic.system.hpp>
+#include <antara/gaming/resources/resources.system.hpp>
+#include <antara/gaming/sfml/resources.manager.hpp>
 #include <antara/gaming/sfml/input.system.hpp>
+#include <antara/gaming/ecs/virtual.input.system.hpp>
 #include "atomic.dex.gui.hpp"
 #include "atomic.dex.app.hpp"
 #include "atomic.dex.mm2.hpp"
 
 namespace atomic_dex {
     application::application() noexcept {
+        //! Load the resources system
+        entity_registry_.set<ag::sfml::resources_system>(entity_registry_);
+
         auto &graphic_system = system_manager_.create_system<ag::sfml::graphic_system>();
         system_manager_.create_system<ag::sfml::input_system>(graphic_system.get_window());
+        //! Create virtual input system
+        system_manager_.create_system<ag::ecs::virtual_input_system>();
+
         //! MM2 system need to be created before the GUI and give the instance to the gui
         auto& mm2_system = system_manager_.create_system<atomic_dex::mm2>();
         system_manager_.create_system<atomic_dex::gui>(mm2_system);
