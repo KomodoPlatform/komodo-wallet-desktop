@@ -43,6 +43,12 @@ namespace atomic_dex {
         void update() noexcept final;
 
         [[nodiscard]] const std::atomic<bool> &is_mm2_initialized() const noexcept;
+
+        //! Get coins that are currently activated
+        std::vector<coins_config> get_enabled_coins() const noexcept;
+
+        //! Get coins that can be activated
+        std::vector<coins_config> get_enableable_coins() const noexcept;
     };
 }
 

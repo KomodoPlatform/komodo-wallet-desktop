@@ -148,6 +148,7 @@ target_link_libraries(${PROJECT_NAME} PUBLIC antara::world
         antara::sfml_graphic
         antara::sfml_input
         reproc++
+        joboccara::pipes
         nlohmann_json::nlohmann_json
         antara::http_client)
 

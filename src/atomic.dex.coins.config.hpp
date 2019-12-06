@@ -25,6 +25,7 @@ namespace atomic_dex {
         std::string fname; ///< nice name
         using electrum_servers = std::vector<std::string>;
         electrum_servers electrum_urls;
-        std::string explorer_url; ///< usefull for transaction, take this url and append transaction id
+        bool currently_enabled{false};
+        std::string explorer_url{""}; ///< usefull for transaction, take this url and append transaction id
     };
 }

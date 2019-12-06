@@ -95,10 +95,12 @@ namespace {
                     atomic_dex::coins_config current_coin{
                             .ticker = current_ticker,
                             .fname = element.at("fname").get<std::string>(),
-                            .electrum_urls = get_electrum_for_this_coin(current_ticker)
+                            .electrum_urls = get_electrum_for_this_coin(current_ticker),
+                            .currently_enabled = false
                     };
                     if (current_coin.electrum_urls.size()) {
-                        DVLOG_F(loguru::Verbosity_INFO, "coin {} is mm2 compatible, adding...\n nb electrum_urls found: {}",
+                        DVLOG_F(loguru::Verbosity_INFO,
+                                "coin {} is mm2 compatible, adding...\n nb electrum_urls found: {}",
                                 current_ticker, current_coin.electrum_urls.size());
                         coins_registry[current_ticker] = std::move(current_coin);
                     }
@@ -136,6 +138,25 @@ namespace atomic_dex {
 
     const std::atomic<bool> &mm2::is_mm2_initialized() const noexcept {
         return mm2_initialized_;
+    }
+
+    std::vector<coins_config> mm2::get_enabled_coins() const noexcept {
+        std::vector<coins_config> destination;
+        //! Active coins is persistent on disk, field from coins_information is at runtime.
+        for (auto&& current_ticker : active_coins_) {
+            destination.push_back(coins_informations_.at(current_ticker));
+        }
+        return destination;
+    }
+
+    std::vector<coins_config> mm2::get_enableable_coins() const noexcept {
+        std::vector<coins_config> destination;
+        for (auto&& [key, value]: coins_informations_) {
+            if (not value.currently_enabled) {
+                destination.push_back(value);
+            }
+        }
+        return destination;
     }
 }
 
