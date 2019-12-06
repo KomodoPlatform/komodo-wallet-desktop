@@ -84,19 +84,6 @@ if (NOT antara-gaming-sdk_POPULATED)
     add_subdirectory(${antara-gaming-sdk_SOURCE_DIR} ${antara-gaming-sdk_BINARY_DIR} EXCLUDE_FROM_ALL)
 endif ()
 
-if (UNIX AND ENABLE_CODE_RELOAD_UNIX)
-    target_compile_definitions(${PROJECT_NAME} PUBLIC -DENABLE_CODE_RELOAD_UNIX)
-    FetchContent_GetProperties(jetlive)
-    if (NOT jetlive_POPULATED)
-        FetchContent_Populate(jetlive)
-        include(${jetlive_SOURCE_DIR}/cmake/jet_live_setup.cmake) # setup needed compiler and linker flags, include this file in your root CMakeLists.txt
-        set(JET_LIVE_BUILD_EXAMPLE OFF)
-        set(JET_LIVE_SHARED ON)
-        add_subdirectory(${jetlive_SOURCE_DIR} ${jetlive_BINARY_DIR} EXCLUDE_FROM_ALL)
-        target_link_libraries(${PROJECT_NAME} PUBLIC jet-live)
-    endif ()
-endif ()
-
 ##! Calling this macros provided by the sdk will if you are on Apple init the environment for this OS (std::filesystem).
 init_antara_env()
 
@@ -115,6 +102,20 @@ add_executable(${PROJECT_NAME} MACOSX_BUNDLE ${ICON}
         src/atomic.dex.mm2.cpp
         src/atomic.dex.gui.widgets.cpp
         src/atomic.dex.coins.config.cpp)
+
+if (UNIX AND ENABLE_CODE_RELOAD_UNIX)
+    target_compile_definitions(${PROJECT_NAME} PUBLIC -DENABLE_CODE_RELOAD_UNIX)
+    FetchContent_GetProperties(jetlive)
+    if (NOT jetlive_POPULATED)
+        FetchContent_Populate(jetlive)
+        include(${jetlive_SOURCE_DIR}/cmake/jet_live_setup.cmake) # setup needed compiler and linker flags, include this file in your root CMakeLists.txt
+        set(JET_LIVE_BUILD_EXAMPLE OFF CACHE BOOL "Override option" FORCE)
+        set(JET_LIVE_SHARED ON CACHE BOOL "Override option" FORCE)
+        add_subdirectory(${jetlive_SOURCE_DIR} ${jetlive_BINARY_DIR} EXCLUDE_FROM_ALL)
+        target_link_libraries(${PROJECT_NAME} PUBLIC jet-live)
+    endif ()
+endif ()
+
 
 target_include_directories(${PROJECT_NAME} PUBLIC src)
 

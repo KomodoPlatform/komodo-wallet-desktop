@@ -18,6 +18,7 @@
 
 #if defined(ENABLE_CODE_RELOAD_UNIX)
 
+#include <jet/live/Utility.hpp>
 #include <jet/live/Live.hpp>
 
 #endif
@@ -32,7 +33,7 @@ namespace atomic_dex {
         void reload_code();
 
 #if defined(ENABLE_CODE_RELOAD_UNIX)
-        jet::Live live_;
+        std::unique_ptr<jet::Live> live_{nullptr};
 #endif
     public:
         void on_key_pressed(const ag::event::key_pressed &evt) noexcept;

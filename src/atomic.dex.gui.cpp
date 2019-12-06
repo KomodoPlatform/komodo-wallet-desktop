@@ -23,22 +23,27 @@
 #include "atomic.dex.mm2.hpp"
 
 // Helpers
-namespace {
+namespace
+{
     template<typename T>
-    static std::string to_string_precise(const T a_value, const int n = 2) {
+    static std::string to_string_precise(const T a_value, const int n = 2)
+    {
         std::ostringstream out;
         out.precision(n);
         out << std::fixed << a_value;
         return out.str();
     }
 
-    std::string usd_str(double amt) {
+    std::string usd_str(double amt)
+    {
         return "$" + to_string_precise(amt) + " USD";
     }
 }
 
-namespace {
-    struct coin {
+namespace
+{
+    struct coin
+    {
         int id;
         std::string code;
         std::string name;
@@ -48,26 +53,31 @@ namespace {
 
         double usd_price;
 
-        bool is_standalone() {
+        bool is_standalone()
+        {
             return base == "";
         }
     };
 
-    struct asset {
+    struct asset
+    {
         coin coin;
         double balance;
         std::string address;
 
-        std::string full_name(bool show_base = false) {
+        std::string full_name(bool show_base = false)
+        {
             return coin.name + " (" + coin.code + ")" +
-                (show_base && !coin.is_standalone() ? ", based on " + coin.base : "");
+                   (show_base && !coin.is_standalone() ? ", based on " + coin.base : "");
         }
 
-        double to_usd() {
+        double to_usd()
+        {
             return balance * coin.usd_price;
         }
 
-        std::string to_usd_str() {
+        std::string to_usd_str()
+        {
             return usd_str(to_usd());
         }
     };
@@ -78,12 +88,14 @@ namespace {
     static std::string curr_asset_code;
     static int selected = 0;
 
-    void init_coin(int id, const std::string& code, const std::string& name, const std::string& base = "") {
-        coins[code] = { id, code, name, base, 1337.0 };
-        assets[code] = { coins[code], 0.0 };
+    void init_coin(int id, const std::string &code, const std::string &name, const std::string &base = "")
+    {
+        coins[code] = {id, code, name, base, 1337.0};
+        assets[code] = {coins[code], 0.0};
     }
 
-    void fill_coins() {
+    void fill_coins()
+    {
         // Clear coins
         {
             coins.clear();
@@ -99,22 +111,26 @@ namespace {
         }
     }
 
-    double get_total_balance() {
+    double get_total_balance()
+    {
         double sum{0.0};
         for (auto it = assets.begin(); it != assets.end(); ++it)
             sum += it->second.balance;
         return sum;
     }
 
-    void init() noexcept {
+    void init() noexcept
+    {
         fill_coins();
         curr_asset_code = assets.begin()->second.coin.code;
     }
 }
 
 // GUI Draw
-namespace {
-    void gui_menubar() noexcept {
+namespace
+{
+    void gui_menubar() noexcept
+    {
         if (ImGui::BeginMenuBar()) {
             if (ImGui::MenuItem("Open", "Ctrl+O")) { /* Do stuff */ }
             if (ImGui::MenuItem("Settings", "Ctrl+O")) { /* Do stuff */ }
@@ -122,7 +138,8 @@ namespace {
         }
     }
 
-    void gui_portfolio_coins_list() noexcept {
+    void gui_portfolio_coins_list() noexcept
+    {
         ImGui::BeginChild("left pane", ImVec2(150, 0), true);
         int i = 0;
         for (auto it = assets.begin(); it != assets.end(); ++it, ++i) {
@@ -135,14 +152,17 @@ namespace {
         ImGui::EndChild();
     }
 
-    void gui_portfolio_coin_details() noexcept {
+    void gui_portfolio_coin_details() noexcept
+    {
         // Right
         auto &curr_asset = assets[curr_asset_code];
-        ImGui::BeginChild("item view", ImVec2(0, -ImGui::GetFrameHeightWithSpacing())); // Leave room for 1 line below us
+        ImGui::BeginChild("item view",
+                          ImVec2(0, -ImGui::GetFrameHeightWithSpacing())); // Leave room for 1 line below us
         {
             ImGui::TextWrapped("%s", curr_asset.full_name(true).c_str());
             ImGui::Separator();
-            ImGui::Text(std::string("Balance: %lf %s (%s)").c_str(), curr_asset.balance, curr_asset.coin.code.c_str(), curr_asset.to_usd_str().c_str());
+            ImGui::Text(std::string("Balance: %lf %s (%s)").c_str(), curr_asset.balance, curr_asset.coin.code.c_str(),
+                        curr_asset.to_usd_str().c_str());
             ImGui::Separator();
             if (ImGui::BeginTabBar("##Tabs", ImGuiTabBarFlags_None)) {
                 if (ImGui::BeginTabItem("Transactions")) {
@@ -169,10 +189,11 @@ namespace {
         ImGui::EndChild();
     }
 
-    void gui_portfolio() noexcept {
+    void gui_portfolio() noexcept
+    {
         ImGui::Text("Total Balance: %s", usd_str(get_total_balance()).c_str());
 
-        if(ImGui::Button("Enable a coin")) {
+        if (ImGui::Button("Enable a coin")) {
 
         }
 
@@ -185,48 +206,88 @@ namespace {
     }
 }
 
-namespace atomic_dex {
+namespace atomic_dex
+{
+#if defined(ENABLE_CODE_RELOAD_UNIX)
     //! Platform dependent code
-    void gui::reload_code() {
+    class AtomicDexHotCodeListener : public jet::ILiveListener
+    {
+    public:
+        void onLog(jet::LogSeverity severity, const std::string &message) override
+        {
+            std::string severityString;
+            auto verbosity = loguru::Verbosity_INFO;
+            switch (severity) {
+                case jet::LogSeverity::kDebug:
+                    severityString.append("[D]");
+                    verbosity = loguru::Verbosity_INFO;
+                    break;
+                case jet::LogSeverity::kInfo:
+                    severityString.append("[I]");
+                    verbosity = loguru::Verbosity_INFO;
+                    break;
+                case jet::LogSeverity::kWarning:
+                    severityString.append("[W]");
+                    verbosity = loguru::Verbosity_WARNING;
+                    break;
+                case jet::LogSeverity::kError:
+                    severityString.append("[E]");
+                    verbosity = loguru::Verbosity_ERROR;
+                    break;
+            }
+            DVLOG_F(verbosity, "{}", message);
+        }
+    };
+#endif
+
+    void gui::reload_code()
+    {
         DVLOG_F(loguru::Verbosity_INFO, "reloading code");
 #if defined(ENABLE_CODE_RELOAD_UNIX)
-        live_.tryReload();
+        live_->tryReload();
 #endif
     }
 
-    void gui::init_live_coding() {
+    void gui::init_live_coding()
+    {
 #if defined(ENABLE_CODE_RELOAD_UNIX)
-        while (!live_.isInitialized()) {
+        live_ = jet::make_unique<jet::Live>(jet::make_unique<AtomicDexHotCodeListener>());
+        while (!live_->isInitialized()) {
             std::this_thread::sleep_for(std::chrono::milliseconds(100));
-            live_.update();
+            live_->update();
         }
-        live_.update();
+        live_->update();
 #endif
     }
 
-    void gui::update_live_coding() {
+    void gui::update_live_coding()
+    {
 #if defined(ENABLE_CODE_RELOAD_UNIX)
-        live_.update();
+        live_->update();
 #endif
     }
 }
 
-namespace atomic_dex {
-    void gui::on_key_pressed(const ag::event::key_pressed &evt) noexcept {
+namespace atomic_dex
+{
+    void gui::on_key_pressed(const ag::event::key_pressed &evt) noexcept
+    {
         if (evt.key == ag::input::r && evt.control) {
-            //reload_code();
+            reload_code();
         }
     }
 
-    gui::gui(entt::registry &registry, atomic_dex::mm2& mm2_system) noexcept : system(registry), mm2_system_(mm2_system) {
-        //init_live_coding();
+    gui::gui(entt::registry &registry, atomic_dex::mm2 &mm2_system) noexcept : system(registry), mm2_system_(mm2_system)
+    {
+        init_live_coding();
         this->dispatcher_.sink<ag::event::key_pressed>().connect<&gui::on_key_pressed>(*this);
 
         init();
     }
 
-    void gui::update() noexcept {
-        //update_live_coding();
+    void gui::update() noexcept
+    {
+        update_live_coding();
 
 
         //! Menu bar
@@ -241,13 +302,13 @@ namespace atomic_dex {
         ImGui::Begin("Atomic Dex", &active, ImGuiWindowFlags_MenuBar | ImGuiWindowFlags_NoCollapse);
         if (not active) { this->dispatcher_.trigger<ag::event::quit_game>(0); }
 
-        if(!mm2_system_.is_mm2_initialized()) {
-            atomic_dex::widgets::LoadingIndicatorCircle("foo", 30.f, ImVec4(sf::Color::White), ImVec4(sf::Color::Black), 8, 1.f);
-        }
-        else {
+        if (!mm2_system_.is_mm2_initialized()) {
+            atomic_dex::widgets::LoadingIndicatorCircle("foo", 30.f, ImVec4(sf::Color::White), ImVec4(sf::Color::Black),
+                                                        8, 1.f);
+        } else {
             gui_menubar();
 
-            if(ImGui::BeginTabBar("##Tabs", ImGuiTabBarFlags_None)) {
+            if (ImGui::BeginTabBar("##Tabs", ImGuiTabBarFlags_None)) {
                 if (ImGui::BeginTabItem("Portfolio")) {
                     gui_portfolio();
                     ImGui::EndTabItem();
