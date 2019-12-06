@@ -18,6 +18,7 @@
 #include <antara/gaming/graphics/component.canvas.hpp>
 #include <antara/gaming/event/quit.game.hpp>
 #include <antara/gaming/event/key.pressed.hpp>
+#include <IconsFontAwesome5.h>
 #include "atomic.dex.gui.hpp"
 #include "atomic.dex.gui.widgets.hpp"
 #include "atomic.dex.mm2.hpp"
@@ -162,7 +163,7 @@ namespace
         {
             ImGui::TextWrapped("%s", curr_asset.fname.c_str());
             ImGui::Separator();
-            ImGui::Text(std::string("Balance: %lf %s (%s)").c_str(), 0, curr_asset.ticker.c_str(), "0");
+            ImGui::Text(std::string(std::string(ICON_FA_BALANCE_SCALE) + " Balance: %lf %s (%s)").c_str(), 0, curr_asset.ticker.c_str(), "0");
             ImGui::Separator();
             if (ImGui::BeginTabBar("##Tabs", ImGuiTabBarFlags_None)) {
                 if (ImGui::BeginTabItem("Transactions")) {

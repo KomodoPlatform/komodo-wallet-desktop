@@ -16,6 +16,7 @@
 
 #include <antara/gaming/core/real.path.hpp>
 #include <imgui-SFML.h>
+#include <IconsFontAwesome5.h>
 #include "atomic.dex.gui.style.hpp"
 
 namespace atomic_dex {
@@ -26,6 +27,12 @@ namespace atomic_dex {
         auto imGuiIO = ImGui::GetIO();
         imGuiIO.Fonts->Clear();
         imGuiIO.Fonts->AddFontFromFileTTF((fonts_path / "Ruda-Bold.ttf").string().c_str(), 15.0f);
+
+        static const ImWchar icons_ranges[] = { ICON_MIN_FA, ICON_MAX_FA, 0 };
+        ImFontConfig icons_config; icons_config.MergeMode = true; icons_config.PixelSnapH = true;
+
+        imGuiIO.Fonts->AddFontFromFileTTF( (fonts_path / FONT_ICON_FILE_NAME_FAS).string().c_str(), 16.0f, &icons_config, icons_ranges );
+
         ImGui::SFML::UpdateFontTexture();
 
         ImGui::GetStyle().FrameRounding = 4.0f;

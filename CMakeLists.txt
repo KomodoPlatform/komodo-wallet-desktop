@@ -47,6 +47,11 @@ if (UNIX)
     )
 endif ()
 
+FetchContent_Declare(
+        iconfontcppheaders
+        URL https://github.com/juliettef/IconFontCppHeaders/archive/master.zip
+)
+
 ##! We set extras modules from the SDK that we want to use, here we will use the SFML module.
 set(USE_SFML_ANTARA_WRAPPER ON)
 set(USE_IMGUI_ANTARA_WRAPPER ON)
@@ -67,7 +72,7 @@ endif ()
 FetchContent_Declare(jl777-coins
         URL https://github.com/jl777/coins/archive/master.zip)
 
-FetchContent_MakeAvailable(mm2 jl777-coins)
+FetchContent_MakeAvailable(mm2 jl777-coins iconfontcppheaders)
 ##! Configure our needs.
 if (UNIX)
     configure_file(${jl777-coins_SOURCE_DIR}/coins ${CMAKE_CURRENT_SOURCE_DIR}/assets/tools/mm2/coins.json COPYONLY)
@@ -122,8 +127,7 @@ if (UNIX AND ENABLE_CODE_RELOAD_UNIX)
     endif ()
 endif ()
 
-
-target_include_directories(${PROJECT_NAME} PUBLIC src)
+target_include_directories(${PROJECT_NAME} PUBLIC src ${iconfontcppheaders_SOURCE_DIR})
 
 ##! Setting output directory
 set_target_properties(${PROJECT_NAME}
