@@ -65,12 +65,56 @@ namespace {
         }
         DVLOG_F(loguru::Verbosity_INFO, "There is {} active coins", active_coins.size());
     }
+
+    std::vector<std::string> get_electrum_for_this_coin(const std::string &ticker) {
+        std::vector<std::string> electrum_urls;
+        std::filesystem::path electrum_cfg_path = ag::core::assets_real_path() / "tools/mm2/electrums";
+        if (std::filesystem::exists(electrum_cfg_path / ticker)) {
+            std::ifstream ifs(electrum_cfg_path / ticker);
+            assert(ifs.is_open());
+            nlohmann::json config_json_data;
+            ifs >> config_json_data;
+            for (auto &&element: config_json_data) {
+                electrum_urls.push_back(element.at("url").get<std::string>());
+            }
+        }
+        return electrum_urls;
+    }
+
+    bool
+    retrieve_coins_information(std::unordered_map<std::string, atomic_dex::coins_config> &coins_registry) noexcept {
+        std::filesystem::path tools_path = ag::core::assets_real_path() / "tools/mm2/";
+        if (std::filesystem::exists(tools_path / "coins.json")) {
+            std::ifstream ifs(tools_path / "coins.json");
+            assert(ifs.is_open());
+            nlohmann::json config_json_data;
+            ifs >> config_json_data;
+            for (auto &&element: config_json_data) {
+                if (element.find("mm2") != element.end()) {
+                    auto current_ticker = element.at("coin").get<std::string>();
+                    atomic_dex::coins_config current_coin{
+                            .ticker = current_ticker,
+                            .fname = element.at("fname").get<std::string>(),
+                            .electrum_urls = get_electrum_for_this_coin(current_ticker)
+                    };
+                    if (current_coin.electrum_urls.size()) {
+                        DVLOG_F(loguru::Verbosity_INFO, "coin {} is mm2 compatible, adding...\n nb electrum_urls found: {}",
+                                current_ticker, current_coin.electrum_urls.size());
+                        coins_registry[current_ticker] = std::move(current_coin);
+                    }
+                }
+            }
+            return true;
+        }
+        return false;
+    }
 }
 
 namespace atomic_dex {
     mm2::mm2(entt::registry &registry) noexcept : system(registry) {
         spawn_mm2_instance(mm2_instance_, mm2_initialized_, mm2_init_thread_);
         check_coin_enabled(active_coins_);
+        retrieve_coins_information(coins_informations_);
     }
 
     void mm2::update() noexcept {

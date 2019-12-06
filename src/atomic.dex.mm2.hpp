@@ -21,6 +21,8 @@
 #include <atomic>
 #include <reproc++/reproc.hpp>
 #include <antara/gaming/ecs/system.hpp>
+#include <unordered_map>
+#include "atomic.dex.coins.config.hpp"
 
 namespace atomic_dex {
     namespace ag = antara::gaming;
@@ -31,6 +33,8 @@ namespace atomic_dex {
         std::thread mm2_init_thread_;
         using coins_enabled_array = std::vector<std::string>;
         coins_enabled_array active_coins_;
+        using coins_registry = std::unordered_map<std::string, atomic_dex::coins_config>;
+        coins_registry coins_informations_;
     public:
         explicit mm2(entt::registry &registry) noexcept;
 

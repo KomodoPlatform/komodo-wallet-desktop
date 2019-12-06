@@ -22,7 +22,6 @@
 namespace atomic_dex {
     struct coins_config {
         std::string ticker;
-        std::string name;
         std::string fname; ///< nice name
         using electrum_servers = std::vector<std::string>;
         electrum_servers electrum_urls;
