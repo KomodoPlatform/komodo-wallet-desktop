@@ -14,7 +14,7 @@
   "window_height": 1080.0,
   "window_title": "Atomic Dex Desktop",
   "window_width": 1920.0,
-  "no_style": true,
+  "no_style": false,
   "mouse_grabbed": false,
   "mouse_visible": true,
   "vsync": true
