@@ -142,7 +142,14 @@ magic_game_app_image_generation("${CMAKE_CURRENT_SOURCE_DIR}/data/linux"
 ##! We link the SDK modules that we want to use to our executable
 set(BUILD_SHARED_LIBS OFF CACHE BOOL "Override option" FORCE)
 
-target_link_libraries(${PROJECT_NAME} PUBLIC antara::world antara::sfml reproc++ nlohmann_json::nlohmann_json antara::http_client)
+target_link_libraries(${PROJECT_NAME} PUBLIC antara::world
+        antara::sfml_resources
+        antara::sfml_extras
+        antara::sfml_graphic
+        antara::sfml_input
+        reproc++
+        nlohmann_json::nlohmann_json
+        antara::http_client)
 
 ##! Move assets
 if (WIN32)
@@ -153,7 +160,6 @@ if (WIN32)
             COMMENT "copying dlls …"
             $<TARGET_FILE_DIR:${PROJECT_NAME}>
             )
-    #import_antara_dlls(${PROJECT_NAME})
 endif ()
 
 if (APPLE)

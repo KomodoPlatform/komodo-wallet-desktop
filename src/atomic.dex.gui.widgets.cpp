@@ -37,7 +37,7 @@ namespace atomic_dex {
             return;
         }
 
-        const float t = antara::gaming::timer::time_step::get_fixed_delta_time();
+        const float t = ImGui::GetCurrentContext()->Time;
         const auto degree_offset = 2.0f * IM_PI / circle_count;
         for (int i = 0; i < circle_count; ++i) {
             const auto x = indicator_radius * std::sin(degree_offset * i);

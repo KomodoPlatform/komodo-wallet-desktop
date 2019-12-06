@@ -293,8 +293,8 @@ namespace atomic_dex
 
         //! Menu bar
         auto &canvas = entity_registry_.ctx<ag::graphics::canvas_2d>();
-        auto[x, y] = canvas.canvas.size;
-        auto[pos_x, pos_y] = canvas.canvas.position;
+        auto[x, y] = canvas.window.size;
+        auto[pos_x, pos_y] = canvas.window.position;
 
         ImGui::SetNextWindowSize(ImVec2(x, y));
         ImGui::SetNextWindowPos(ImVec2(pos_x, pos_y));
