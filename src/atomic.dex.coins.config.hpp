@@ -18,12 +18,20 @@
 
 #include <vector>
 #include <string>
+#include <optional>
 
 namespace atomic_dex {
+
+    struct electrum_server {
+        std::string url;
+        std::optional<std::string> protocol{"TCP"};
+        std::optional<bool> disable_cert_verification{false};
+    };
+
     struct coins_config {
         std::string ticker;
         std::string fname; ///< nice name
-        using electrum_servers = std::vector<std::string>;
+        using electrum_servers = std::vector<electrum_server>;
         electrum_servers electrum_urls;
         bool currently_enabled{false};
         std::string explorer_url{""}; ///< usefull for transaction, take this url and append transaction id

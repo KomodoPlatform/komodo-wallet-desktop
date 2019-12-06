@@ -70,8 +70,8 @@ namespace {
         DVLOG_F(loguru::Verbosity_INFO, "There is {} active coins", active_coins.size());
     }
 
-    std::vector<std::string> get_electrum_for_this_coin(const std::string &ticker) {
-        std::vector<std::string> electrum_urls;
+    std::vector<atomic_dex::electrum_server> get_electrum_for_this_coin(const std::string &ticker) {
+        std::vector<atomic_dex::electrum_server> electrum_urls;
         std::filesystem::path electrum_cfg_path = ag::core::assets_real_path() / "tools/mm2/electrums";
         if (std::filesystem::exists(electrum_cfg_path / ticker)) {
             std::ifstream ifs(electrum_cfg_path / ticker);
@@ -79,7 +79,17 @@ namespace {
             nlohmann::json config_json_data;
             ifs >> config_json_data;
             for (auto &&element: config_json_data) {
-                electrum_urls.push_back(element.at("url").get<std::string>());
+                atomic_dex::electrum_server current_electrum_infos{
+                        .url = element.at("url").get<std::string>()
+                };
+                if (element.find("protocol") != element.end()) {
+                    current_electrum_infos.protocol = element.at("protocol").get<std::string>();
+                }
+                if (element.find("disable_cert_verification") != element.end()) {
+                    current_electrum_infos.disable_cert_verification = element.at(
+                            "disable_cert_verification").get<bool>();
+                }
+                electrum_urls.push_back(std::move(current_electrum_infos));
             }
         }
         return electrum_urls;
@@ -147,7 +157,7 @@ namespace atomic_dex {
     std::vector<coins_config> mm2::get_enabled_coins() const noexcept {
         std::vector<coins_config> destination;
         //! Active coins is persistent on disk, field from coins_information is at runtime.
-        for (auto&& current_ticker : active_coins_) {
+        for (auto &&current_ticker : active_coins_) {
             destination.push_back(coins_informations_.at(current_ticker));
         }
         return destination;
@@ -155,7 +165,7 @@ namespace atomic_dex {
 
     std::vector<coins_config> mm2::get_enableable_coins() const noexcept {
         std::vector<coins_config> destination;
-        for (auto&& [key, value]: coins_informations_) {
+        for (auto&&[key, value]: coins_informations_) {
             if (not value.currently_enabled) {
                 destination.push_back(value);
             }

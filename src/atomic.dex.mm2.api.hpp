@@ -15,3 +15,25 @@
  ******************************************************************************/
 
 #pragma once
+
+#include <string>
+#include <vector>
+#include "atomic.dex.coins.config.hpp"
+
+namespace mm2::api
+{
+    struct electrum_request
+    {
+        std::string coin_name;
+        std::vector<atomic_dex::electrum_server> url_servers;
+        bool with_tx_history{true};
+    };
+
+    struct electrum_answer
+    {
+        std::string address;
+        std::string balance;
+        std::string result;
+        int rpc_result_code;
+    };
+}
