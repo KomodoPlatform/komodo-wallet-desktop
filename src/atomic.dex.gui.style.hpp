@@ -16,40 +16,9 @@
 
 #pragma once
 
-#if defined(ENABLE_CODE_RELOAD_UNIX)
+#include <imgui.h>
 
-#include <jet/live/Utility.hpp>
-#include <jet/live/Live.hpp>
-
-#endif
-
-#include <antara/gaming/ecs/system.hpp>
-#include "atomic.dex.gui.style.hpp"
-#include "atomic.dex.mm2.hpp"
-
-namespace atomic_dex {
-    namespace ag = antara::gaming;
-
-    class gui final : public ag::ecs::post_update_system<gui> {
-        void reload_code();
-
-#if defined(ENABLE_CODE_RELOAD_UNIX)
-        std::unique_ptr<jet::Live> live_{nullptr};
-#endif
-    public:
-        void on_key_pressed(const ag::event::key_pressed &evt) noexcept;
-
-        explicit gui(entt::registry &registry, atomic_dex::mm2& mm2_system) noexcept;
-
-        void update() noexcept final;
-
-        void init_live_coding();
-
-        void update_live_coding();
-
-    private:
-        atomic_dex::mm2& mm2_system_;
-    };
+namespace atomic_dex::style
+{
+    void apply();
 }
-
-REFL_AUTO(type(atomic_dex::gui))

@@ -280,6 +280,7 @@ namespace atomic_dex
     gui::gui(entt::registry &registry, atomic_dex::mm2 &mm2_system) noexcept : system(registry), mm2_system_(mm2_system)
     {
         init_live_coding();
+        atomic_dex::style::apply();
         this->dispatcher_.sink<ag::event::key_pressed>().connect<&gui::on_key_pressed>(*this);
 
         init();
