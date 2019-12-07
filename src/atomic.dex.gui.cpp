@@ -303,7 +303,7 @@ namespace atomic_dex {
         ImGui::SetNextWindowPos(ImVec2(pos_x, pos_y));
         ImGui::SetNextWindowFocus();
         bool active = true;
-        ImGui::Begin("Atomic Dex", &active,
+        ImGui::Begin("Atomic Dex Lol", &active,
                      ImGuiWindowFlags_MenuBar | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoResize);
         if (not active) { this->dispatcher_.trigger<ag::event::quit_game>(0); }
 
