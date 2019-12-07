@@ -18,8 +18,7 @@
 
 
 namespace {
-    nlohmann::json template_request(std::string method_name) noexcept
-    {
+    nlohmann::json template_request(std::string method_name) noexcept {
         LOG_SCOPE_FUNCTION(INFO);
         return {{"method",   method_name},
                 {"userpass", "atomix_dex_mm2_passphrase"}};
@@ -39,6 +38,19 @@ namespace mm2::api {
         j["coin"] = cfg.coin_name;
         j["servers"] = cfg.servers;
         j["tx_history"] = cfg.with_tx_history;
+    }
+
+    void to_json(nlohmann::json &j, const balance_request &cfg) {
+        LOG_SCOPE_FUNCTION(INFO);
+        j["coin"] = cfg.coin;
+    }
+
+    void from_json(const nlohmann::json &j, balance_answer &cfg) {
+        LOG_SCOPE_FUNCTION(INFO);
+        j.at("address").get_to(cfg.address);
+        j.at("balance").get_to(cfg.balance);
+        j.at("coin").get_to(cfg.coin);
+        j.at("locked_by_swaps").get_to(cfg.locked_by_swaps);
     }
 
     template<typename RpcReturnType>
@@ -74,5 +86,14 @@ namespace mm2::api {
         DVLOG_F(loguru::Verbosity_INFO, "request: %s", json_data.dump().c_str());
         auto resp = RestClient::post(endpoint, "application/json", json_data.dump());
         return rpc_process_answer<electrum_answer>(resp);
+    }
+
+    balance_answer rpc_balance(balance_request &&request) {
+        LOG_SCOPE_FUNCTION(INFO);
+        auto json_data = template_request("my_balance");
+        to_json(json_data, request);
+        DVLOG_F(loguru::Verbosity_INFO, "request: %s", json_data.dump().c_str());
+        auto resp = RestClient::post(endpoint, "application/json", json_data.dump());
+        return rpc_process_answer<balance_answer>(resp);
     }
 }

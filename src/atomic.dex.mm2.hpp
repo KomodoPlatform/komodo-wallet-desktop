@@ -17,27 +17,40 @@
 #pragma once
 
 #include <thread>
+#include <mutex>
 #include <vector>
 #include <atomic>
 #include <reproc++/reproc.hpp>
 #include <antara/gaming/ecs/system.hpp>
 #include <unordered_map>
 #include "atomic.dex.coins.config.hpp"
+#include "atomic.dex.mm2.api.hpp"
+#include "atomic.dex.utilities.hpp"
 
 namespace atomic_dex {
     namespace ag = antara::gaming;
 
     class mm2 : public ag::ecs::pre_update_system<mm2> {
         reproc::process mm2_instance_;
-        std::atomic<bool> mm2_initialized_{false};
+        std::atomic<bool> mm2_running_{false};
         std::thread mm2_init_thread_;
+        std::mutex balance_mutex;
+        std::mutex coins_registry_mutex;
+        std::thread mm2_fetch_balance_thread;
+        timed_waiter balance_thread_timer;
         using coins_enabled_array = std::vector<std::string>;
         coins_enabled_array active_coins_;
         using coins_registry = std::unordered_map<std::string, atomic_dex::coins_config>;
         coins_registry coins_informations_;
+        using balance_registry = std::unordered_map<std::string, ::mm2::api::balance_answer>;
+        balance_registry balance_informations_;
+
+        void fetch_balance_thread();
+        void spawn_mm2_instance() noexcept;
     public:
         bool enable_default_coins() noexcept;
-        bool enable_coin(const std::string& ticker) noexcept;
+
+        bool enable_coin(const std::string &ticker) noexcept;
 
         explicit mm2(entt::registry &registry) noexcept;
 
@@ -47,6 +60,8 @@ namespace atomic_dex {
 
         [[nodiscard]] const std::atomic<bool> &is_mm2_initialized() const noexcept;
 
+        std::string my_balance(const std::string &ticker) noexcept;
+
         //! Get coins that are currently activated
         std::vector<coins_config> get_enabled_coins() const noexcept;
 
@@ -54,7 +69,7 @@ namespace atomic_dex {
         std::vector<coins_config> get_enableable_coins() const noexcept;
 
         //! Get Specific info about one coin
-        const coins_config& get_coin_info(const std::string& ticker) const noexcept;
+        const coins_config &get_coin_info(const std::string &ticker) const noexcept;
     };
 }
 

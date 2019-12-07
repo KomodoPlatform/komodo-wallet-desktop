@@ -37,36 +37,6 @@ namespace {
         config_json_data.push_back(ticker);
     }
 
-    void spawn_mm2_instance(reproc::process &mm2_instance, std::atomic<bool> &mm2_initialized,
-                            std::thread &mm2_init_thread, atomic_dex::mm2 &mm2) noexcept {
-        atomic_dex::mm2_config cfg{};
-        nlohmann::json json_cfg;
-        nlohmann::to_json(json_cfg, cfg);
-        std::filesystem::path tools_path = ag::core::assets_real_path() / "tools/mm2/";
-        DVLOG_F(loguru::Verbosity_INFO, "command line {}", json_cfg.dump());
-        std::array<std::string, 2> args = {(tools_path / "mm2").string(), json_cfg.dump()};
-        auto ec = mm2_instance.start(args, reproc::options{nullptr, tools_path.string().c_str(),
-                                                           {reproc::redirect::inherit,
-                                                            reproc::redirect::inherit,
-                                                            reproc::redirect::inherit}});
-        if (ec) {
-            DVLOG_F(loguru::Verbosity_ERROR, "error: {}", ec.message());
-        }
-
-
-        mm2_init_thread = std::thread([&mm2_instance, &mm2_initialized, &mm2]() {
-            loguru::set_thread_name("mm2 init thread");
-            using namespace std::chrono_literals;
-            auto ec = mm2_instance.wait(5s);
-            if (ec == reproc::error::wait_timeout) {
-                DVLOG_F(loguru::Verbosity_INFO, "mm2 is initialized");
-                mm2.enable_default_coins();
-                mm2_initialized = true;
-            } else {
-                DVLOG_F(loguru::Verbosity_ERROR, "error: {}", ec.message());
-            }
-        });
-    }
 
     void check_coin_enabled(std::vector<std::string> &active_coins) noexcept {
         std::filesystem::path cfg_path = ag::core::assets_real_path() / "config";
@@ -142,15 +112,17 @@ namespace {
 
 namespace atomic_dex {
     mm2::mm2(entt::registry &registry) noexcept : system(registry) {
-        spawn_mm2_instance(mm2_instance_, mm2_initialized_, mm2_init_thread_, *this);
+        spawn_mm2_instance();
         check_coin_enabled(active_coins_);
         retrieve_coins_information(coins_informations_);
+
     }
 
     void mm2::update() noexcept {
     }
 
     mm2::~mm2() noexcept {
+        mm2_running_ = false;
         reproc::stop_actions stop_actions = {
                 {reproc::stop::terminate, reproc::milliseconds(2000)},
                 {reproc::stop::kill,      reproc::milliseconds(5000)},
@@ -161,11 +133,13 @@ namespace atomic_dex {
         if (ec) {
             VLOG_SCOPE_F(loguru::Verbosity_ERROR, "error: %s", ec.message().c_str());
         }
+        balance_thread_timer.interrupt();
         mm2_init_thread_.join();
+        mm2_fetch_balance_thread.join();
     }
 
     const std::atomic<bool> &mm2::is_mm2_initialized() const noexcept {
-        return mm2_initialized_;
+        return mm2_running_;
     }
 
     std::vector<coins_config> mm2::get_enabled_coins() const noexcept {
@@ -214,6 +188,65 @@ namespace atomic_dex {
 
     const coins_config &mm2::get_coin_info(const std::string &ticker) const noexcept {
         return coins_informations_.at(ticker);
+    }
+
+    std::string mm2::my_balance(const std::string &ticker) noexcept {
+        std::scoped_lock lock(balance_mutex);
+        if (!balance_informations_.count(ticker)) return "0";
+        std::string balance = balance_informations_.at(ticker).balance;
+        return balance;
+    }
+
+    void mm2::fetch_balance_thread() {
+        loguru::set_thread_name("fetch balance thread");
+        using namespace std::chrono_literals;
+        std::vector<coins_config> coins;
+        do {
+            DVLOG_F(loguru::Verbosity_INFO, "Fetching coins balance");
+            {
+                std::scoped_lock lock(coins_registry_mutex);
+                coins = get_enabled_coins();
+            }
+
+            {
+                std::scoped_lock lock(this->balance_mutex);
+                for (auto &&current_coin : coins) {
+                    ::mm2::api::balance_request request{.coin = current_coin.ticker};
+                    balance_informations_[current_coin.ticker] = ::mm2::api::rpc_balance(std::move(request));
+                }
+            }
+        } while (not balance_thread_timer.wait_for(30s));
+    }
+
+    void mm2::spawn_mm2_instance() noexcept {
+        atomic_dex::mm2_config cfg{};
+        nlohmann::json json_cfg;
+        nlohmann::to_json(json_cfg, cfg);
+        std::filesystem::path tools_path = ag::core::assets_real_path() / "tools/mm2/";
+        DVLOG_F(loguru::Verbosity_INFO, "command line {}", json_cfg.dump());
+        std::array<std::string, 2> args = {(tools_path / "mm2").string(), json_cfg.dump()};
+        auto ec = this->mm2_instance_.start(args, reproc::options{nullptr, tools_path.string().c_str(),
+                                                                  {reproc::redirect::inherit,
+                                                                   reproc::redirect::inherit,
+                                                                   reproc::redirect::inherit}});
+        if (ec) {
+            DVLOG_F(loguru::Verbosity_ERROR, "error: {}", ec.message());
+        }
+
+
+        this->mm2_init_thread_ = std::thread([this]() {
+            loguru::set_thread_name("mm2 init thread");
+            using namespace std::chrono_literals;
+            auto ec = mm2_instance_.wait(5s);
+            if (ec == reproc::error::wait_timeout) {
+                DVLOG_F(loguru::Verbosity_INFO, "mm2 is initialized");
+                this->enable_default_coins();
+                mm2_running_ = true;
+                mm2_fetch_balance_thread = std::thread([this]() { this->fetch_balance_thread(); });
+            } else {
+                DVLOG_F(loguru::Verbosity_ERROR, "error: {}", ec.message());
+            }
+        });
     }
 }
 

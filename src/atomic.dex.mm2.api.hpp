@@ -44,8 +44,28 @@ namespace mm2::api {
 
     void from_json(const nlohmann::json &j, electrum_answer &answer);
 
-
     electrum_answer rpc_electrum(electrum_request&& request);
+
+    struct balance_request
+    {
+        std::string coin;
+    };
+
+    struct balance_answer
+    {
+        std::string address;
+        std::string balance;
+        std::string coin;
+        std::string locked_by_swaps;
+        int rpc_result_code;
+        std::string raw_result;
+    };
+
+    void to_json(nlohmann::json &j, const balance_request &cfg);
+
+    void from_json(const nlohmann::json &j, balance_answer &cfg);
+
+    balance_answer rpc_balance(balance_request &&request);
 
     template<typename RpcReturnType>
     static RpcReturnType rpc_process_answer(const RestClient::Response &resp) noexcept;

@@ -154,7 +154,8 @@ namespace {
         {
             ImGui::TextWrapped("%s", curr_asset.fname.c_str());
             ImGui::Separator();
-            ImGui::Text(std::string(std::string(ICON_FA_BALANCE_SCALE) + " Balance: %lf %s (%s)").c_str(), 0,
+            ImGui::Text(std::string(std::string(ICON_FA_BALANCE_SCALE) + " Balance: %s %s (%s)").c_str(),
+                        mm2.my_balance(curr_asset.ticker).c_str(),
                         curr_asset.ticker.c_str(), "0");
             ImGui::Separator();
             if (ImGui::BeginTabBar("##Tabs", ImGuiTabBarFlags_None)) {
@@ -275,7 +276,8 @@ namespace atomic_dex {
         for (auto &&p: coins_info) {
             if (std::filesystem::exists(texture_path / "icons" / str_to_lower(p.ticker + ".png"))) {
                 DVLOG_F(loguru::Verbosity_INFO, "loading {}", p.ticker);
-                sf::Texture& texture = resource_system.load_texture(std::string("icons/" + str_to_lower(p.ticker + ".png")).c_str());
+                sf::Texture &texture = resource_system.load_texture(
+                        std::string("icons/" + str_to_lower(p.ticker + ".png")).c_str());
                 texture.setSmooth(true);
                 sf::Sprite spr;
                 spr.setScale(0.25f, 0.25f);
