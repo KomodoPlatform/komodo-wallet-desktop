@@ -309,7 +309,7 @@ namespace atomic_dex {
                      ImGuiWindowFlags_MenuBar | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoResize);
         if (not active) { this->dispatcher_.trigger<ag::event::quit_game>(0); }
 
-        if (!mm2_system_.is_mm2_initialized()) {
+        if (!mm2_system_.is_mm2_running()) {
             atomic_dex::widgets::LoadingIndicatorCircle("foo", 30.f, ImVec4(sf::Color::White), ImVec4(sf::Color::Black),
                                                         8, 1.f);
         } else {

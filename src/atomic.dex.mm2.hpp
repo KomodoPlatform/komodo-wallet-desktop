@@ -34,10 +34,10 @@ namespace atomic_dex {
         reproc::process mm2_instance_;
         std::atomic<bool> mm2_running_{false};
         std::thread mm2_init_thread_;
-        std::mutex balance_mutex;
-        std::mutex coins_registry_mutex;
-        std::thread mm2_fetch_balance_thread;
-        timed_waiter balance_thread_timer;
+        std::mutex balance_mutex_;
+        std::mutex coins_registry_mutex_;
+        std::thread mm2_fetch_balance_thread_;
+        timed_waiter balance_thread_timer_;
         using coins_enabled_array = std::vector<std::string>;
         coins_enabled_array active_coins_;
         using coins_registry = std::unordered_map<std::string, atomic_dex::coins_config>;
@@ -46,7 +46,9 @@ namespace atomic_dex {
         balance_registry balance_informations_;
 
         void fetch_balance_thread();
+
         void spawn_mm2_instance() noexcept;
+
     public:
         bool enable_default_coins() noexcept;
 
@@ -58,7 +60,7 @@ namespace atomic_dex {
 
         void update() noexcept final;
 
-        [[nodiscard]] const std::atomic<bool> &is_mm2_initialized() const noexcept;
+        [[nodiscard]] const std::atomic<bool> &is_mm2_running() const noexcept;
 
         std::string my_balance(const std::string &ticker) noexcept;
 

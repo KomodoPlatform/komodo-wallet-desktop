@@ -133,12 +133,12 @@ namespace atomic_dex {
         if (ec) {
             VLOG_SCOPE_F(loguru::Verbosity_ERROR, "error: %s", ec.message().c_str());
         }
-        balance_thread_timer.interrupt();
+        balance_thread_timer_.interrupt();
         mm2_init_thread_.join();
-        mm2_fetch_balance_thread.join();
+        mm2_fetch_balance_thread_.join();
     }
 
-    const std::atomic<bool> &mm2::is_mm2_initialized() const noexcept {
+    const std::atomic<bool> &mm2::is_mm2_running() const noexcept {
         return mm2_running_;
     }
 
@@ -191,7 +191,7 @@ namespace atomic_dex {
     }
 
     std::string mm2::my_balance(const std::string &ticker) noexcept {
-        std::scoped_lock lock(balance_mutex);
+        std::scoped_lock lock(balance_mutex_);
         if (!balance_informations_.count(ticker)) return "0";
         std::string balance = balance_informations_.at(ticker).balance;
         return balance;
@@ -204,18 +204,18 @@ namespace atomic_dex {
         do {
             DVLOG_F(loguru::Verbosity_INFO, "Fetching coins balance");
             {
-                std::scoped_lock lock(coins_registry_mutex);
+                std::scoped_lock lock(coins_registry_mutex_);
                 coins = get_enabled_coins();
             }
 
             {
-                std::scoped_lock lock(this->balance_mutex);
+                std::scoped_lock lock(this->balance_mutex_);
                 for (auto &&current_coin : coins) {
                     ::mm2::api::balance_request request{.coin = current_coin.ticker};
                     balance_informations_[current_coin.ticker] = ::mm2::api::rpc_balance(std::move(request));
                 }
             }
-        } while (not balance_thread_timer.wait_for(30s));
+        } while (not balance_thread_timer_.wait_for(30s));
     }
 
     void mm2::spawn_mm2_instance() noexcept {
@@ -242,7 +242,7 @@ namespace atomic_dex {
                 DVLOG_F(loguru::Verbosity_INFO, "mm2 is initialized");
                 this->enable_default_coins();
                 mm2_running_ = true;
-                mm2_fetch_balance_thread = std::thread([this]() { this->fetch_balance_thread(); });
+                mm2_fetch_balance_thread_ = std::thread([this]() { this->fetch_balance_thread(); });
             } else {
                 DVLOG_F(loguru::Verbosity_ERROR, "error: {}", ec.message());
             }
