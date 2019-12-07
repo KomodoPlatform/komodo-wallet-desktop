@@ -28,7 +28,7 @@ if (${CMAKE_SYSTEM_NAME} STREQUAL "Linux")
 endif ()
 
 ##! Options
-option(ENABLE_CODE_RELOAD_UNIX "Use address sanitizer" OFF)
+option(ENABLE_CODE_RELOAD_UNIX "Enable hot-code reloading on unix" OFF)
 
 ##! We include the module from CMake for fetching dependencies
 include(FetchContent)
