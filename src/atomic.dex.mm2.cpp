@@ -248,9 +248,7 @@ namespace atomic_dex {
         bm::cpp_dec_float_50 balance(answer.balance);
         bm::cpp_dec_float_50 locked_funds(answer.locked_by_swaps);
         auto final_balance = balance - locked_funds;
-        std::stringstream ss;
-        ss << std::setprecision(std::numeric_limits<bm::cpp_dec_float_50>::max_digits10) << final_balance;
-        return ss.str();
+        return final_balance.convert_to<std::string>();
     }
 
     std::string mm2::my_balance(const std::string &ticker) const noexcept {
