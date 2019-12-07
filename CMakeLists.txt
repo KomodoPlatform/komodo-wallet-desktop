@@ -12,6 +12,7 @@ set(CMAKE_CXX_STANDARD 17)
 project(atomic-dex-desktop DESCRIPTION "An awesome atomic-dex-desktop" LANGUAGES CXX VERSION 1.0.0)
 
 if (WIN32)
+    find_package(ZLIB)
     set(BUILD_SHARED_LIBS OFF CACHE BOOL "Override option" FORCE)
 endif ()
 
@@ -184,3 +185,20 @@ if (APPLE)
 endif ()
 
 target_enable_tsan(${PROJECT_NAME})
+
+if (WIN32)
+    init_windows_env()
+    get_target_property(_target_cxx_options ${PROJECT_NAME} COMPILE_OPTIONS)
+    get_target_property(_target_cxx_flags ${PROJECT_NAME} COMPILE_FLAGS)
+    message(STATUS "target flag -> ${_target_cxx_flags}")
+    message(STATUS "target options -> ${_target_cxx_options}")
+    message(STATUS "global flags -> ${CMAKE_CXX_FLAGS} ${CMAKE_CXX_FLAGS_DEBUG} ${CMAKE_CXX_FLAGS_RELEASE}")
+    get_target_property(_opt_old Folly::folly INTERFACE_COMPILE_OPTIONS)
+    message(STATUS "INTERFACE OPTIONS -> ${_opt_old}")
+    ## tmp replace all fcking folly flags
+    if (NOT ClangCL)
+        set_target_properties(Folly::folly PROPERTIES INTERFACE_COMPILE_OPTIONS "")
+        message(STATUS "Override some flags")
+        target_compile_options(${PROJECT_NAME} PUBLIC -Wno-ignored-attributes -Wno-deprecated-declarations -Wno-sign-compare)
+    endif()
+endif()
