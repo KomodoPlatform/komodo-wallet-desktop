@@ -25,13 +25,12 @@
 #include "atomic.dex.coins.config.hpp"
 #include "atomic.dex.mm2.api.hpp"
 #include "atomic.dex.utilities.hpp"
+#include "atomic.dex.mm2.error.code.hpp"
 
-namespace atomic_dex
-{
+namespace atomic_dex {
     namespace ag = antara::gaming;
 
-    class mm2 : public ag::ecs::pre_update_system<mm2>
-    {
+    class mm2 : public ag::ecs::pre_update_system<mm2> {
         reproc::process mm2_instance_;
         std::atomic<bool> mm2_running_{false};
         std::thread mm2_init_thread_;
@@ -61,8 +60,9 @@ namespace atomic_dex
 
         [[nodiscard]] const std::atomic<bool> &is_mm2_running() const noexcept;
 
-        std::string my_balance(const std::string &ticker) const noexcept;
-        std::string my_balance_with_locked_funds(const std::string& ticker) const noexcept;
+        std::string my_balance(const std::string &ticker, std::error_code& ec) const noexcept;
+
+        std::string my_balance_with_locked_funds(const std::string &ticker, std::error_code& ec) const noexcept;
 
         //! Get coins that are currently activated
         std::vector<coins_config> get_enabled_coins() const noexcept;

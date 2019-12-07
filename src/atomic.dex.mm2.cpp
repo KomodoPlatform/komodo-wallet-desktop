@@ -241,8 +241,11 @@ namespace atomic_dex {
         });
     }
 
-    std::string mm2::my_balance_with_locked_funds(const std::string &ticker) const noexcept {
-        if (balance_informations_.find(ticker) == balance_informations_.cend()) return "0";
+    std::string mm2::my_balance_with_locked_funds(const std::string &ticker, std::error_code &ec) const noexcept {
+        if (balance_informations_.find(ticker) == balance_informations_.cend()) {
+            ec = mm2_error::balance_of_a_non_enabled_coin;
+            return "0";
+        }
         ::mm2::api::balance_answer answer = balance_informations_.at(ticker);
         namespace bm = boost::multiprecision;
         bm::cpp_dec_float_50 balance(answer.balance);
@@ -251,8 +254,11 @@ namespace atomic_dex {
         return final_balance.convert_to<std::string>();
     }
 
-    std::string mm2::my_balance(const std::string &ticker) const noexcept {
-        if (balance_informations_.find(ticker) == balance_informations_.cend()) return "0";
+    std::string mm2::my_balance(const std::string &ticker, std::error_code &ec) const noexcept {
+        if (balance_informations_.find(ticker) == balance_informations_.cend()) {
+            ec = mm2_error::balance_of_a_non_enabled_coin;
+            return "0";
+        }
         return balance_informations_.at(ticker).balance;
     }
 }

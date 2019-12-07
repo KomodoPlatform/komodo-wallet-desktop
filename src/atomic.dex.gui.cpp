@@ -154,8 +154,10 @@ namespace {
         {
             ImGui::TextWrapped("%s", curr_asset.fname.c_str());
             ImGui::Separator();
+            std::error_code ec;
+
             ImGui::Text(std::string(std::string(ICON_FA_BALANCE_SCALE) + " Balance: %s %s (%s)").c_str(),
-                        mm2.my_balance(curr_asset.ticker).c_str(),
+                        mm2.my_balance(curr_asset.ticker, ec).c_str(),
                         curr_asset.ticker.c_str(), "0");
             ImGui::Separator();
             if (ImGui::BeginTabBar("##Tabs", ImGuiTabBarFlags_None)) {

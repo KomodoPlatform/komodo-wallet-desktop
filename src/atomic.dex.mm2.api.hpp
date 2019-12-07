@@ -67,6 +67,35 @@ namespace mm2::api {
 
     balance_answer rpc_balance(balance_request &&request);
 
+    struct withdraw_fee
+    {
+        std::optional<std::string> amount; ///< btc, kmd based coins
+        std::optional<std::string> total_fee; ///< eth based coins
+    };
+
+    struct withdraw_request
+    {
+        std::string coin;
+        std::string to; ///< coins will be withdraw to this address
+        std::string amount; ///< ignored if max is true
+        bool max{false};
+    };
+
+    struct withdraw_answer
+    {
+        std::vector<std::string> from;
+        std::vector<std::string> to;
+        withdraw_fee fee_details;
+        std::string tx_hash;
+        std::string tx_hex;
+        std::string my_balance_change;
+        std::string received_by_me;
+        std::string spent_by_me;
+        std::string total_amount;
+        int rpc_result_code;
+        std::string result;
+    };
+
     template<typename RpcReturnType>
     static RpcReturnType rpc_process_answer(const RestClient::Response &resp) noexcept;
 }
