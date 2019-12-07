@@ -148,7 +148,7 @@ namespace {
 
     void gui_portfolio_coin_details(atomic_dex::mm2 &mm2) noexcept {
         // Right
-        auto &curr_asset = mm2.get_coin_info(curr_asset_code);
+        const auto curr_asset = mm2.get_coin_info(curr_asset_code);
         ImGui::BeginChild("item view",
                           ImVec2(0, -ImGui::GetFrameHeightWithSpacing())); // Leave room for 1 line below us
         {

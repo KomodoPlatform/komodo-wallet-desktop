@@ -22,10 +22,12 @@
 #include "atomic.dex.mm2.config.hpp"
 #include "atomic.dex.mm2.api.hpp"
 
-namespace {
+namespace
+{
     namespace ag = antara::gaming;
 
-    void update_coin_status(const std::string &ticker) {
+    void update_coin_status(const std::string &ticker)
+    {
         std::filesystem::path cfg_path = ag::core::assets_real_path() / "config";
         std::ifstream ifs(cfg_path / "active.coins.json");
         assert(ifs.is_open());
@@ -38,7 +40,8 @@ namespace {
     }
 
 
-    void check_coin_enabled(std::vector<std::string> &active_coins) noexcept {
+    void check_coin_enabled(std::vector<std::string> &active_coins) noexcept
+    {
         std::filesystem::path cfg_path = ag::core::assets_real_path() / "config";
         if (std::filesystem::exists(cfg_path / "active.coins.json")) {
             std::ifstream ifs(cfg_path / "active.coins.json");
@@ -54,7 +57,8 @@ namespace {
         DVLOG_F(loguru::Verbosity_INFO, "There is {} active coins", active_coins.size());
     }
 
-    std::vector<atomic_dex::electrum_server> get_electrum_for_this_coin(const std::string &ticker) {
+    std::vector<atomic_dex::electrum_server> get_electrum_for_this_coin(const std::string &ticker)
+    {
         std::vector<atomic_dex::electrum_server> electrum_urls;
         std::filesystem::path electrum_cfg_path = ag::core::assets_real_path() / "tools/mm2/electrums";
         if (std::filesystem::exists(electrum_cfg_path / ticker)) {
@@ -80,7 +84,8 @@ namespace {
     }
 
     bool
-    retrieve_coins_information(folly::ConcurrentHashMap<std::string, atomic_dex::coins_config> &coins_registry) noexcept {
+    retrieve_coins_information(folly::ConcurrentHashMap<std::string, atomic_dex::coins_config> &coins_registry) noexcept
+    {
         std::filesystem::path tools_path = ag::core::assets_real_path() / "tools/mm2/";
         if (std::filesystem::exists(tools_path / "coins.json")) {
             std::ifstream ifs(tools_path / "coins.json");
@@ -110,17 +115,21 @@ namespace {
     }
 }
 
-namespace atomic_dex {
-    mm2::mm2(entt::registry &registry) noexcept : system(registry) {
+namespace atomic_dex
+{
+    mm2::mm2(entt::registry &registry) noexcept : system(registry)
+    {
         spawn_mm2_instance();
         check_coin_enabled(active_coins_);
         retrieve_coins_information(coins_informations_);
     }
 
-    void mm2::update() noexcept {
+    void mm2::update() noexcept
+    {
     }
 
-    mm2::~mm2() noexcept {
+    mm2::~mm2() noexcept
+    {
         mm2_running_ = false;
         reproc::stop_actions stop_actions = {
                 {reproc::stop::terminate, reproc::milliseconds(2000)},
@@ -137,11 +146,13 @@ namespace atomic_dex {
         mm2_fetch_balance_thread_.join();
     }
 
-    const std::atomic<bool> &mm2::is_mm2_running() const noexcept {
+    const std::atomic<bool> &mm2::is_mm2_running() const noexcept
+    {
         return mm2_running_;
     }
 
-    std::vector<coins_config> mm2::get_enabled_coins() const noexcept {
+    std::vector<coins_config> mm2::get_enabled_coins() const noexcept
+    {
         std::vector<coins_config> destination;
         //! Active coins is persistent on disk, field from coins_information is at runtime.
         for (auto &&current_ticker : active_coins_) {
@@ -150,7 +161,8 @@ namespace atomic_dex {
         return destination;
     }
 
-    std::vector<coins_config> mm2::get_enableable_coins() const noexcept {
+    std::vector<coins_config> mm2::get_enableable_coins() const noexcept
+    {
         std::vector<coins_config> destination;
         for (auto&&[key, value]: coins_informations_) {
             if (not value.currently_enabled) {
@@ -160,7 +172,8 @@ namespace atomic_dex {
         return destination;
     }
 
-    bool mm2::enable_coin(const std::string &ticker) noexcept {
+    bool mm2::enable_coin(const std::string &ticker) noexcept
+    {
         auto coin_info = coins_informations_.at(ticker);
         if (coin_info.currently_enabled) return true;
         ::mm2::api::electrum_request request{
@@ -177,7 +190,8 @@ namespace atomic_dex {
         return true;
     }
 
-    bool mm2::enable_default_coins() noexcept {
+    bool mm2::enable_default_coins() noexcept
+    {
         auto result = true;
         auto coins = get_enabled_coins();
         for (auto &&current_coin : coins) {
@@ -186,39 +200,38 @@ namespace atomic_dex {
         return result;
     }
 
-    const coins_config mm2::get_coin_info(const std::string &ticker) const noexcept {
+    coins_config mm2::get_coin_info(const std::string &ticker) const noexcept
+    {
         return coins_informations_.at(ticker);
     }
 
-    std::string mm2::my_balance(const std::string &ticker) const noexcept {
-        std::scoped_lock lock(balance_mutex_);
-        if (!balance_informations_.count(ticker)) return "0";
-        std::string balance = balance_informations_.at(ticker).balance;
-        return balance;
+    std::string mm2::my_balance(const std::string &ticker) const noexcept
+    {
+        if (balance_informations_.find(ticker) == balance_informations_.cend()) return "0";
+        return balance_informations_.at(ticker).balance;
     }
 
-    void mm2::fetch_balance_thread() {
+    void mm2::fetch_balance_thread()
+    {
         loguru::set_thread_name("fetch balance thread");
         using namespace std::chrono_literals;
         std::vector<coins_config> coins;
         do {
             DVLOG_F(loguru::Verbosity_INFO, "Fetching coins balance");
+            coins = get_enabled_coins();
             {
-//                std::scoped_lock lock(coins_registry_mutex_);
-                coins = get_enabled_coins();
-            }
-
-            {
-                std::scoped_lock lock(this->balance_mutex_);
+                //std::scoped_lock lock(this->balance_mutex_);
                 for (auto &&current_coin : coins) {
                     ::mm2::api::balance_request request{.coin = current_coin.ticker};
-                    balance_informations_[current_coin.ticker] = ::mm2::api::rpc_balance(std::move(request));
+                    balance_informations_.insert_or_assign(current_coin.ticker,
+                                                           ::mm2::api::rpc_balance(std::move(request)));
                 }
             }
         } while (not balance_thread_timer_.wait_for(30s));
     }
 
-    void mm2::spawn_mm2_instance() noexcept {
+    void mm2::spawn_mm2_instance() noexcept
+    {
         atomic_dex::mm2_config cfg{};
         nlohmann::json json_cfg;
         nlohmann::to_json(json_cfg, cfg);

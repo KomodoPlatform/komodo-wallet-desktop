@@ -17,10 +17,8 @@
 #pragma once
 
 #include <thread>
-#include <mutex>
 #include <vector>
 #include <atomic>
-#include <unordered_map>
 #include <folly/concurrency/ConcurrentHashMap.h>
 #include <reproc++/reproc.hpp>
 #include <antara/gaming/ecs/system.hpp>
@@ -28,22 +26,22 @@
 #include "atomic.dex.mm2.api.hpp"
 #include "atomic.dex.utilities.hpp"
 
-namespace atomic_dex {
+namespace atomic_dex
+{
     namespace ag = antara::gaming;
 
-    class mm2 : public ag::ecs::pre_update_system<mm2> {
+    class mm2 : public ag::ecs::pre_update_system<mm2>
+    {
         reproc::process mm2_instance_;
         std::atomic<bool> mm2_running_{false};
         std::thread mm2_init_thread_;
-        mutable std::mutex balance_mutex_;
-        //mutable std::mutex coins_registry_mutex_;
         std::thread mm2_fetch_balance_thread_;
         timed_waiter balance_thread_timer_;
         using coins_enabled_array = std::vector<std::string>;
         coins_enabled_array active_coins_;
         using coins_registry = folly::ConcurrentHashMap<std::string, atomic_dex::coins_config>;
         coins_registry coins_informations_;
-        using balance_registry = std::unordered_map<std::string, ::mm2::api::balance_answer>;
+        using balance_registry = folly::ConcurrentHashMap<std::string, ::mm2::api::balance_answer>;
         balance_registry balance_informations_;
 
         void fetch_balance_thread();
@@ -72,7 +70,7 @@ namespace atomic_dex {
         std::vector<coins_config> get_enableable_coins() const noexcept;
 
         //! Get Specific info about one coin
-        const coins_config get_coin_info(const std::string &ticker) const noexcept;
+        coins_config get_coin_info(const std::string &ticker) const noexcept;
     };
 }
 

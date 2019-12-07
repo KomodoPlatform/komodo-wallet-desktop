@@ -13,7 +13,7 @@ project(atomic-dex-desktop DESCRIPTION "An awesome atomic-dex-desktop" LANGUAGES
 
 if (WIN32)
     set(BUILD_SHARED_LIBS OFF CACHE BOOL "Override option" FORCE)
-endif()
+endif ()
 
 ##! The SDK need's clang as main compiler.
 if (NOT "${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
