@@ -149,6 +149,7 @@ magic_game_app_image_generation("${CMAKE_CURRENT_SOURCE_DIR}/data/linux"
 ##! We link the SDK modules that we want to use to our executable
 set(BUILD_SHARED_LIBS OFF CACHE BOOL "Override option" FORCE)
 
+find_package(folly CONFIG REQUIRED)
 target_link_libraries(${PROJECT_NAME} PUBLIC antara::world
         antara::sfml_resources
         antara::sfml_extras
@@ -157,7 +158,9 @@ target_link_libraries(${PROJECT_NAME} PUBLIC antara::world
         reproc++
         joboccara::pipes
         nlohmann_json::nlohmann_json
-        antara::http_client)
+        antara::http_client
+        Folly::folly
+        Folly::folly_deps)
 
 ##! Move assets
 if (WIN32)
@@ -179,6 +182,5 @@ if (APPLE)
     file(COPY assets DESTINATION ${CMAKE_BINARY_DIR}/bin/${PROJECT_NAME}.app/Contents/Resources)
     include(data/osx/sfml_atomicdex_install.cmake)
 endif ()
-
 
 target_enable_tsan(${PROJECT_NAME})

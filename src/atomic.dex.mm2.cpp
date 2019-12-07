@@ -80,7 +80,7 @@ namespace {
     }
 
     bool
-    retrieve_coins_information(std::unordered_map<std::string, atomic_dex::coins_config> &coins_registry) noexcept {
+    retrieve_coins_information(folly::ConcurrentHashMap<std::string, atomic_dex::coins_config> &coins_registry) noexcept {
         std::filesystem::path tools_path = ag::core::assets_real_path() / "tools/mm2/";
         if (std::filesystem::exists(tools_path / "coins.json")) {
             std::ifstream ifs(tools_path / "coins.json");
@@ -100,7 +100,7 @@ namespace {
                         DVLOG_F(loguru::Verbosity_INFO,
                                 "coin {} is mm2 compatible, adding...\n nb electrum_urls found: {}",
                                 current_ticker, current_coin.electrum_urls.size());
-                        coins_registry[current_ticker] = std::move(current_coin);
+                        coins_registry.insert_or_assign(current_ticker, std::move(current_coin));
                     }
                 }
             }
@@ -115,7 +115,6 @@ namespace atomic_dex {
         spawn_mm2_instance();
         check_coin_enabled(active_coins_);
         retrieve_coins_information(coins_informations_);
-
     }
 
     void mm2::update() noexcept {
@@ -162,7 +161,7 @@ namespace atomic_dex {
     }
 
     bool mm2::enable_coin(const std::string &ticker) noexcept {
-        auto &&coin_info = coins_informations_.at(ticker);
+        auto coin_info = coins_informations_.at(ticker);
         if (coin_info.currently_enabled) return true;
         ::mm2::api::electrum_request request{
                 .coin_name = coin_info.ticker,
@@ -173,6 +172,7 @@ namespace atomic_dex {
             return false;
         }
         coin_info.currently_enabled = true;
+        coins_informations_.assign(coin_info.ticker, coin_info);
         update_coin_status(ticker);
         return true;
     }
@@ -186,7 +186,7 @@ namespace atomic_dex {
         return result;
     }
 
-    const coins_config &mm2::get_coin_info(const std::string &ticker) const noexcept {
+    const coins_config mm2::get_coin_info(const std::string &ticker) const noexcept {
         return coins_informations_.at(ticker);
     }
 
@@ -204,7 +204,7 @@ namespace atomic_dex {
         do {
             DVLOG_F(loguru::Verbosity_INFO, "Fetching coins balance");
             {
-                std::scoped_lock lock(coins_registry_mutex_);
+//                std::scoped_lock lock(coins_registry_mutex_);
                 coins = get_enabled_coins();
             }
 
