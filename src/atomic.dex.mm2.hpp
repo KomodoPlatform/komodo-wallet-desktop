@@ -62,6 +62,7 @@ namespace atomic_dex
         [[nodiscard]] const std::atomic<bool> &is_mm2_running() const noexcept;
 
         std::string my_balance(const std::string &ticker) const noexcept;
+        std::string my_balance_with_locked_funds(const std::string& ticker) const noexcept;
 
         //! Get coins that are currently activated
         std::vector<coins_config> get_enabled_coins() const noexcept;
