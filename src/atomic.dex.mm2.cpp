@@ -190,7 +190,7 @@ namespace atomic_dex {
         return coins_informations_.at(ticker);
     }
 
-    std::string mm2::my_balance(const std::string &ticker) noexcept {
+    std::string mm2::my_balance(const std::string &ticker) const noexcept {
         std::scoped_lock lock(balance_mutex_);
         if (!balance_informations_.count(ticker)) return "0";
         std::string balance = balance_informations_.at(ticker).balance;
