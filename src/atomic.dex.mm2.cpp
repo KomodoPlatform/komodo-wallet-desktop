@@ -193,19 +193,16 @@ namespace atomic_dex {
     }
 
     void mm2::fetch_balance_thread() {
-        loguru::set_thread_name("fetch balance thread");
+        loguru::set_thread_name("balance thread");
         using namespace std::chrono_literals;
         std::vector<coins_config> coins;
         do {
             DVLOG_F(loguru::Verbosity_INFO, "Fetching coins balance");
             coins = get_enabled_coins();
-            {
-                //std::scoped_lock lock(this->balance_mutex_);
-                for (auto &&current_coin : coins) {
-                    ::mm2::api::balance_request request{.coin = current_coin.ticker};
-                    balance_informations_.insert_or_assign(current_coin.ticker,
-                                                           ::mm2::api::rpc_balance(std::move(request)));
-                }
+            for (auto &&current_coin : coins) {
+                ::mm2::api::balance_request request{.coin = current_coin.ticker};
+                balance_informations_.insert_or_assign(current_coin.ticker,
+                                                       ::mm2::api::rpc_balance(std::move(request)));
             }
         } while (not balance_thread_timer_.wait_for(30s));
     }

@@ -18,13 +18,14 @@
 
 #include <string>
 #include <vector>
+#include <optional>
 #include <restclient-cpp/restclient.h>
 #include <loguru.hpp>
 #include <nlohmann/json.hpp>
 #include "atomic.dex.coins.config.hpp"
 
 namespace mm2::api {
-    static constexpr const char* endpoint = "http://127.0.0.1:7783";
+    static constexpr const char *endpoint = "http://127.0.0.1:7783";
 
     struct electrum_request {
         std::string coin_name;
@@ -44,15 +45,13 @@ namespace mm2::api {
 
     void from_json(const nlohmann::json &j, electrum_answer &answer);
 
-    electrum_answer rpc_electrum(electrum_request&& request);
+    electrum_answer rpc_electrum(electrum_request &&request);
 
-    struct balance_request
-    {
+    struct balance_request {
         std::string coin;
     };
 
-    struct balance_answer
-    {
+    struct balance_answer {
         std::string address;
         std::string balance;
         std::string coin;
@@ -67,22 +66,19 @@ namespace mm2::api {
 
     balance_answer rpc_balance(balance_request &&request);
 
-    struct withdraw_fee
-    {
+    struct withdraw_fee {
         std::optional<std::string> amount; ///< btc, kmd based coins
         std::optional<std::string> total_fee; ///< eth based coins
     };
 
-    struct withdraw_request
-    {
+    struct withdraw_request {
         std::string coin;
         std::string to; ///< coins will be withdraw to this address
         std::string amount; ///< ignored if max is true
         bool max{false};
     };
 
-    struct withdraw_answer
-    {
+    struct withdraw_answer {
         std::vector<std::string> from;
         std::vector<std::string> to;
         withdraw_fee fee_details;
