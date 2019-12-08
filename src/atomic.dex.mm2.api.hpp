@@ -90,6 +90,69 @@ namespace mm2::api {
         std::string total_amount;
         int rpc_result_code;
         std::string result;
+        std::string raw_result;
+    };
+
+    struct tx_history_request {
+        std::string coin;
+        std::size_t limit;
+    };
+
+    struct transaction_data {
+        std::size_t timestamp;
+        std::vector<std::string> from;
+        std::vector<std::string> to;
+        std::size_t confirmations;
+        std::string coin;
+        std::size_t block_height;
+        std::string internal_id;
+        std::string spent_by_me;
+        std::string received_by_me;
+        std::string my_balance_change;
+        std::string total_amount;
+        std::string tx_hash;
+        std::string tx_hex;
+    };
+
+    struct sync_status_additional_error {
+        std::string message;
+        int code;
+    };
+
+    struct sync_status_eth_erc_20_coins {
+        std::size_t blocks_left;
+    };
+
+    struct sync_status_regular_coins {
+        std::size_t transactions_left;
+    };
+
+    struct sync_status_additional_infos {
+        std::optional<sync_status_additional_error> error; ///< in case of error
+        std::optional<sync_status_eth_erc_20_coins> erc_infos; ///< eth/erc20 related coins
+        std::optional<sync_status_regular_coins> regular_infos; ///< kmd/btc/utxo related coins
+    };
+
+    struct t_sync_status {
+        std::string state; ///< NotEnabled, NotStarted, InProgress, Error, Finished
+        sync_status_additional_infos additional_infos;
+    };
+
+    struct tx_history_answer_success {
+        std::string from_id;
+        std::size_t skipped;
+        std::size_t limit;
+        std::size_t current_block;
+        std::size_t total;
+        std::vector<transaction_data> transactions;
+        t_sync_status sync_status;
+        std::string raw_result; ///< internal
+        int rpc_result_code; ///< internal
+    };
+
+    struct tx_history_answer {
+        std::optional<std::string> error;
+        std::optional<tx_history_answer_success> result;
     };
 
     template<typename RpcReturnType>
