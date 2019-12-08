@@ -118,7 +118,8 @@ namespace {
             ImGui::Separator();
             if (ImGui::BeginTabBar("##Tabs", ImGuiTabBarFlags_None)) {
                 if (ImGui::BeginTabItem("Transactions")) {
-                    auto tx_history = mm2.get_tx_history(curr_asset.ticker);
+                    std::error_code ec;
+                    auto tx_history = mm2.get_tx_history(curr_asset.ticker, ec);
                     if(tx_history.size() > 0) {
                         for(std::size_t i = 0; i < tx_history.size(); ++i) {
                             auto& tx = tx_history[i];
