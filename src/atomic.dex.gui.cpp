@@ -172,12 +172,34 @@ namespace {
         ImGui::EndChild();
     }
 
+    void gui_enable_coins() {
+        if (ImGui::Button("Enable a coin"))
+            ImGui::OpenPopup("Enable coins");
+
+        if (ImGui::BeginPopupModal("Enable coins", NULL, ImGuiWindowFlags_AlwaysAutoResize)) {
+            ImGui::Text("All those beautiful files will be deleted.\nThis operation cannot be undone!\n\n");
+            ImGui::Separator();
+
+            static int dummy_i = 0;
+            ImGui::Combo("Combo", &dummy_i, "Delete\0Delete harder\0");
+
+            static bool dont_ask_me_next_time = false;
+            ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(0, 0));
+            ImGui::Checkbox("Don't ask me next time", &dont_ask_me_next_time);
+            ImGui::PopStyleVar();
+
+            if (ImGui::Button("OK", ImVec2(120, 0))) { ImGui::CloseCurrentPopup(); }
+            ImGui::SetItemDefaultFocus();
+            ImGui::SameLine();
+            if (ImGui::Button("Cancel", ImVec2(120, 0))) { ImGui::CloseCurrentPopup(); }
+            ImGui::EndPopup();
+        }
+    }
+
     void gui_portfolio(atomic_dex::mm2 &mm2) noexcept {
         ImGui::Text("Total Balance: %s", usd_str(get_total_balance()).c_str());
 
-        if (ImGui::Button("Enable a coin")) {
-
-        }
+        gui_enable_coins();
 
         // Left
         gui_portfolio_coins_list(mm2);
