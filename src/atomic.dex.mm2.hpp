@@ -30,11 +30,27 @@
 namespace atomic_dex {
     namespace ag = antara::gaming;
 
+	struct tx_infos
+	{
+        bool am_i_sender;
+        std::size_t confirmations;
+        std::vector<std::string> from;
+        std::vector<std::string> to;
+        std::string date;
+        std::size_t timestamp;
+        std::string tx_hash;
+        std::string fees;
+        std::string my_balance_change;
+        std::string total_amount;
+        std::size_t block_height;
+        std::error_code ec{ mm2_error::success };
+	};
+	
     class mm2 : public ag::ecs::pre_update_system<mm2> {
         reproc::process mm2_instance_;
         std::atomic<bool> mm2_running_{false};
         std::thread mm2_init_thread_;
-        std::thread mm2_fetch_balance_thread_;
+        std::thread mm2_fetch_infos_thread_;
         timed_waiter balance_thread_timer_;
         using coins_enabled_array = std::vector<std::string>;
         coins_enabled_array active_coins_;
@@ -42,8 +58,10 @@ namespace atomic_dex {
         coins_registry coins_informations_;
         using balance_registry = folly::ConcurrentHashMap<std::string, ::mm2::api::balance_answer>;
         balance_registry balance_informations_;
+        using tx_history_registry = folly::ConcurrentHashMap<std::string, std::vector<tx_infos>>;
+        tx_history_registry tx_informations_;
 
-        void fetch_balance_thread();
+        void fetch_infos_thread();
 
         void spawn_mm2_instance() noexcept;
 
@@ -64,14 +82,17 @@ namespace atomic_dex {
 
         std::string my_balance_with_locked_funds(const std::string &ticker, std::error_code& ec) const noexcept;
 
+    	//! Last 50 transactions maximum
+        [[nodiscard]] std::vector<tx_infos> get_tx_history(const std::string& ticker) const noexcept;
+
         //! Get coins that are currently activated
-        std::vector<coins_config> get_enabled_coins() const noexcept;
+        [[nodiscard]] std::vector<coins_config> get_enabled_coins() const noexcept;
 
         //! Get coins that can be activated
-        std::vector<coins_config> get_enableable_coins() const noexcept;
+        [[nodiscard]] std::vector<coins_config> get_enableable_coins() const noexcept;
 
         //! Get Specific info about one coin
-        coins_config get_coin_info(const std::string &ticker) const noexcept;
+        [[nodiscard]] coins_config get_coin_info(const std::string &ticker) const noexcept;
     };
 }
 
