@@ -305,7 +305,6 @@ namespace atomic_dex {
 
         ImGui::SetNextWindowSize(ImVec2(x, y));
         ImGui::SetNextWindowPos(ImVec2(pos_x, pos_y));
-        ImGui::SetNextWindowFocus();
         bool active = true;
         ImGui::Begin("atomicDEX", &active,
                      ImGuiWindowFlags_MenuBar | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoResize);
