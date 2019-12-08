@@ -37,6 +37,12 @@ namespace {
                 return "You try to retrieve the balance of an unactivated coin";
             case mm2_error::unknown_error:
                 return "Unknown error happened";
+            case mm2_error::tx_history_of_a_non_enabled_coin:
+                return "You try to retrieve the transaction history of an unactivated coin";
+            case mm2_error::rpc_withdraw_error:
+                return "An RPC error occur when processing the withdraw request, please check your request or the application log.";
+            case mm2_error::rpc_send_raw_transaction_error:
+                return "An RPC error occur when processing the send_raw_transaction request, please check your tx_hex or the application log.";
         }
     }
 

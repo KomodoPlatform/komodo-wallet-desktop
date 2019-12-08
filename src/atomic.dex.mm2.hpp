@@ -30,8 +30,7 @@
 namespace atomic_dex {
     namespace ag = antara::gaming;
 
-	struct tx_infos
-	{
+    struct tx_infos {
         bool am_i_sender;
         std::size_t confirmations;
         std::vector<std::string> from;
@@ -43,9 +42,9 @@ namespace atomic_dex {
         std::string my_balance_change;
         std::string total_amount;
         std::size_t block_height;
-        std::error_code ec{ mm2_error::success };
-	};
-	
+        std::error_code ec{mm2_error::success};
+    };
+
     class mm2 : public ag::ecs::pre_update_system<mm2> {
         reproc::process mm2_instance_;
         std::atomic<bool> mm2_running_{false};
@@ -78,12 +77,19 @@ namespace atomic_dex {
 
         [[nodiscard]] const std::atomic<bool> &is_mm2_running() const noexcept;
 
-        std::string my_balance(const std::string &ticker, std::error_code& ec) const noexcept;
+        std::string my_balance(const std::string &ticker, std::error_code &ec) const noexcept;
 
-        std::string my_balance_with_locked_funds(const std::string &ticker, std::error_code& ec) const noexcept;
+        std::string my_balance_with_locked_funds(const std::string &ticker, std::error_code &ec) const noexcept;
 
-    	//! Last 50 transactions maximum
-        [[nodiscard]] std::vector<tx_infos> get_tx_history(const std::string& ticker, std::error_code &ec) const noexcept;
+        [[nodiscard]] ::mm2::api::withdraw_answer
+        withdraw(::mm2::api::withdraw_request &&request, std::error_code &ec) const noexcept;
+
+        [[nodiscard]] ::mm2::api::send_raw_transaction_answer
+        broadcast(::mm2::api::send_raw_transaction_request &&request, std::error_code &ec) const noexcept;
+
+        //! Last 50 transactions maximum
+        [[nodiscard]] std::vector<tx_infos>
+        get_tx_history(const std::string &ticker, std::error_code &ec) const noexcept;
 
         //! Get coins that are currently activated
         [[nodiscard]] std::vector<coins_config> get_enabled_coins() const noexcept;

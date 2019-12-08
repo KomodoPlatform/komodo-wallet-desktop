@@ -23,6 +23,8 @@ enum class mm2_error {
     success,
     balance_of_a_non_enabled_coin,
     tx_history_of_a_non_enabled_coin,
+    rpc_withdraw_error,
+    rpc_send_raw_transaction_error,
     unknown_error
 };
 
