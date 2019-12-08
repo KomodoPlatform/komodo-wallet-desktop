@@ -34,14 +34,6 @@ namespace {
     sf::Color bright_color(0, 149, 143);
     sf::Color dark_color(25, 40, 56);
 
-    template<typename T>
-    static std::string to_string_precise(const T a_value, const int n = 2) {
-        std::ostringstream out;
-        out.precision(n);
-        out << std::fixed << a_value;
-        return out.str();
-    }
-
     std::string usd_str(const std::string& amt) {
         return amt + " USD";
     }
@@ -54,7 +46,6 @@ namespace {
 
     struct asset {
         coin coin;
-        double balance;
     };
 
     std::unordered_map<std::string, coin> coins;
@@ -66,7 +57,7 @@ namespace {
 
     void init_coin(int id, const std::string &code, const std::string &name, const std::string &base = "") {
         coins[code] = {code};
-        assets[code] = {coins[code], 0.0};
+        assets[code] = {coins[code]};
     }
 
     void fill_coins() {
@@ -87,9 +78,28 @@ namespace {
 
     void set_style() {
         ImGuiStyle& style = ImGui::GetStyle();
+
         style.Colors[ImGuiCol_TitleBg] = ImVec4(dark_color);
         style.Colors[ImGuiCol_Header] = ImVec4(bright_color);
+
         style.WindowRounding = 0.f;
+        style.FrameRounding = 4.f;
+
+        style.WindowPadding.x = 16.f;
+        style.WindowPadding.y = 16.f;
+        style.FramePadding.x = 8.f;
+        style.FramePadding.y = 8.f;
+        style.DisplaySafeAreaPadding.x = 4.f;
+        style.DisplaySafeAreaPadding.y = 4.f;
+        style.DisplayWindowPadding.x = 4.f;
+        style.DisplayWindowPadding.y = 4.f;
+
+        style.ItemSpacing.x = 4.f;
+        style.ItemSpacing.y = 12.f;
+        style.ItemInnerSpacing.x = 4.f;
+        style.ItemInnerSpacing.y = 4.f;
+        style.IndentSpacing = 4.f;
+        style.ColumnsMinSpacing = 4.f;
     }
 
     void init() noexcept {
@@ -129,8 +139,7 @@ namespace {
     void gui_portfolio_coin_details(atomic_dex::mm2 &mm2) noexcept {
         // Right
         const auto curr_asset = mm2.get_coin_info(curr_asset_code);
-        ImGui::BeginChild("item view",
-                          ImVec2(0, -ImGui::GetFrameHeightWithSpacing())); // Leave room for 1 line below us
+        ImGui::BeginChild("item view", ImVec2(0, -ImGui::GetFrameHeightWithSpacing()), true); // Leave room for 1 line below us
         {
             ImGui::TextWrapped("%s", curr_asset.fname.c_str());
             ImGui::Separator();
@@ -147,7 +156,8 @@ namespace {
                         for(std::size_t i = 0; i < tx_history.size(); ++i) {
                             auto& tx = tx_history[i];
                             ImGui::Text("%s", tx.am_i_sender ? "Sent" : "Received"); ImGui::SameLine(300);
-                                ImGui::TextColored(ImVec4(sf::Color::Green), "%s%s %s", tx.am_i_sender ? "-" : "+", tx.my_balance_change.c_str(), curr_asset.ticker.c_str());
+                                ImGui::TextColored(ImVec4(tx.am_i_sender ? sf::Color(255, 52, 0) : sf::Color(80, 255, 118)),
+                                        "%s%s %s", tx.am_i_sender ? "-" : "+", tx.my_balance_change.c_str(), curr_asset.ticker.c_str());
                             ImGui::TextColored(ImVec4(sf::Color(128, 128, 128)), "%s", tx.am_i_sender ? tx.to[0].c_str() : tx.from[0].c_str()); ImGui::SameLine(300);
                                 ImGui::TextColored(ImVec4(sf::Color(128, 128, 128)), "%s", usd_str("1234").c_str());
                             if(i != tx_history.size() - 1) ImGui::Separator();
