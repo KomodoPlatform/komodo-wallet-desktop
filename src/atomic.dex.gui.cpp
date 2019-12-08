@@ -92,7 +92,16 @@ namespace {
         return sum;
     }
 
+    void set_style() {
+        ImGuiStyle& style = ImGui::GetStyle();
+        style.Colors[ImGuiCol_TitleBg] = ImVec4(dark_color);
+        style.Colors[ImGuiCol_Header] = ImVec4(bright_color);
+        style.WindowRounding = 0.f;
+    }
+
     void init() noexcept {
+        set_style();
+
         fill_coins();
         curr_asset_code = assets.begin()->second.coin.code;
     }
@@ -274,7 +283,6 @@ namespace atomic_dex {
 
     void gui::update() noexcept {
         update_live_coding();
-
 
         //! Menu bar
         auto &canvas = entity_registry_.ctx<ag::graphics::canvas_2d>();
