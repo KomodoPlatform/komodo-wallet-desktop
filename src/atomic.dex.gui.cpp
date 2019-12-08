@@ -87,7 +87,7 @@ namespace {
     }
 
     void gui_portfolio_coins_list(atomic_dex::mm2 &mm2) noexcept {
-        ImGui::BeginChild("left pane", ImVec2(150, 0), true);
+        ImGui::BeginChild("left pane", ImVec2(180, 0), true);
         int i = 0;
         auto assets_contents = mm2.get_enabled_coins();
         for (auto it = assets_contents.begin(); it != assets_contents.end(); ++it, ++i) {
