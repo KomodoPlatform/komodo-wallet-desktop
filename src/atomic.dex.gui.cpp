@@ -31,6 +31,9 @@
 namespace fs = std::filesystem;
 // Helpers
 namespace {
+    sf::Color bright_color(0, 149, 143);
+    sf::Color dark_color(25, 40, 56);
+
     template<typename T>
     static std::string to_string_precise(const T a_value, const int n = 2) {
         std::ostringstream out;
@@ -286,8 +289,10 @@ namespace atomic_dex {
         if (not active) { this->dispatcher_.trigger<ag::event::quit_game>(0); }
 
         if (!mm2_system_.is_mm2_running()) {
-            atomic_dex::widgets::LoadingIndicatorCircle("foo", 30.f, ImVec4(sf::Color::White), ImVec4(sf::Color::Black),
-                                                        8, 1.f);
+            const float radius = 30.0f;
+            ImGui::SetCursorPos(ImVec2((ImGui::GetWindowSize().x) * 0.5f - radius*2, (ImGui::GetWindowSize().y) * 0.5f - radius*2));
+            atomic_dex::widgets::LoadingIndicatorCircle("foo", radius, ImVec4(bright_color), ImVec4(dark_color),
+                                                        9, 1.5f);
         } else {
             gui_menubar();
 
