@@ -334,10 +334,11 @@ namespace atomic_dex {
         if (not active) { this->dispatcher_.trigger<ag::event::quit_game>(0); }
 
         if (!mm2_system_.is_mm2_running()) {
+            ImGui::Text("Loading, please wait...");
             const float radius = 30.0f;
-            ImGui::SetCursorPos(ImVec2((ImGui::GetWindowSize().x) * 0.5f - radius*2, (ImGui::GetWindowSize().y) * 0.5f - radius*2));
-            atomic_dex::widgets::LoadingIndicatorCircle("foo", radius, ImVec4(bright_color), ImVec4(dark_color),
-                                                        9, 1.5f);
+            ImVec2 position((ImGui::GetWindowSize().x) * 0.5f - radius*2, (ImGui::GetWindowSize().y) * 0.5f - radius*2);
+            ImGui::SetCursorPos(position);
+            atomic_dex::widgets::LoadingIndicatorCircle("foo", radius, ImVec4(bright_color), ImVec4(dark_color), 9, 1.5f);
         } else {
             gui_menubar();
 
