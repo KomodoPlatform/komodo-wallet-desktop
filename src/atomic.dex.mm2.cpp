@@ -335,10 +335,11 @@ namespace atomic_dex
 		return final_balance.convert_to<std::string>();
 	}
 
-	std::vector<tx_infos> mm2::get_tx_history(const std::string& ticker) const noexcept
+	std::vector<tx_infos> mm2::get_tx_history(const std::string& ticker, std::error_code& ec) const noexcept
 	{
 		if (tx_informations_.find(ticker) == tx_informations_.cend())
 		{
+		    ec = mm2_error::tx_history_of_a_non_enabled_coin;
 			return {};
 		}
 		return tx_informations_.at(ticker);
