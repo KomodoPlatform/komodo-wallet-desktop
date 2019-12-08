@@ -40,41 +40,10 @@ namespace {
 }
 
 namespace {
-    struct coin {
-        std::string code;
-    };
-
-    struct asset {
-        coin coin;
-    };
-
-    std::unordered_map<std::string, coin> coins;
-    std::unordered_map<std::string, asset> assets;
     std::unordered_map<std::string, sf::Sprite> icons;
 
-    static std::string curr_asset_code;
+    static std::string curr_asset_code = "";
     static int selected = 0;
-
-    void init_coin(int id, const std::string &code, const std::string &name, const std::string &base = "") {
-        coins[code] = {code};
-        assets[code] = {coins[code]};
-    }
-
-    void fill_coins() {
-        // Clear coins
-        {
-            coins.clear();
-            assets.clear();
-        }
-
-        // Fill coins
-        {
-            int id = 0;
-            init_coin(id++, "KMD", "Komodo");
-            init_coin(id++, "RICK", "Rick", "KMD");
-            init_coin(id++, "MORTY", "Morty", "KMD");
-        }
-    }
 
     void set_style() {
         ImGuiStyle& style = ImGui::GetStyle();
@@ -104,9 +73,6 @@ namespace {
 
     void init() noexcept {
         set_style();
-
-        fill_coins();
-        curr_asset_code = assets.begin()->second.coin.code;
     }
 }
 
@@ -126,6 +92,7 @@ namespace {
         auto assets_contents = mm2.get_enabled_coins();
         for (auto it = assets_contents.begin(); it != assets_contents.end(); ++it, ++i) {
             auto &asset = *it;
+            if(curr_asset_code == "") curr_asset_code = asset.ticker;
             ImGui::Image(icons.at(asset.ticker));
             ImGui::SameLine();
             if (ImGui::Selectable(asset.fname.c_str(), selected == i)) {
