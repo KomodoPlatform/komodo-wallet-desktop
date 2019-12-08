@@ -42,8 +42,8 @@ namespace {
         return out.str();
     }
 
-    std::string usd_str(double amt) {
-        return "$" + to_string_precise(amt) + " USD";
+    std::string usd_str(const std::string& amt) {
+        return amt + " USD";
     }
 }
 
@@ -83,13 +83,6 @@ namespace {
             init_coin(id++, "RICK", "Rick", "KMD");
             init_coin(id++, "MORTY", "Morty", "KMD");
         }
-    }
-
-    double get_total_balance() {
-        double sum{0.0};
-        for (auto it = assets.begin(); it != assets.end(); ++it)
-            sum += it->second.balance;
-        return sum;
     }
 
     void set_style() {
@@ -149,7 +142,19 @@ namespace {
             ImGui::Separator();
             if (ImGui::BeginTabBar("##Tabs", ImGuiTabBarFlags_None)) {
                 if (ImGui::BeginTabItem("Transactions")) {
-                    ImGui::Text("Work in progress, transactions will be listed here");
+                    auto tx_history = mm2.get_tx_history(curr_asset.ticker);
+                    if(tx_history.size() > 0) {
+                        for(std::size_t i = 0; i < tx_history.size(); ++i) {
+                            auto& tx = tx_history[i];
+                            ImGui::Text("%s", tx.am_i_sender ? "Sent" : "Received"); ImGui::SameLine(300);
+                                ImGui::TextColored(ImVec4(sf::Color::Green), "%s%s %s", tx.am_i_sender ? "-" : "+", tx.my_balance_change.c_str(), curr_asset.ticker.c_str());
+                            ImGui::TextColored(ImVec4(sf::Color(128, 128, 128)), "%s", tx.am_i_sender ? tx.to[0].c_str() : tx.from[0].c_str()); ImGui::SameLine(300);
+                                ImGui::TextColored(ImVec4(sf::Color(128, 128, 128)), "%s", usd_str("1234").c_str());
+                            if(i != tx_history.size() - 1) ImGui::Separator();
+                        }
+                    }
+                    else ImGui::Text("No transactions");
+
                     ImGui::EndTabItem();
                 }
 
@@ -197,7 +202,7 @@ namespace {
     }
 
     void gui_portfolio(atomic_dex::mm2 &mm2) noexcept {
-        ImGui::Text("Total Balance: %s", usd_str(get_total_balance()).c_str());
+        ImGui::Text("Total Balance: %s", usd_str("1337").c_str());
 
         gui_enable_coins();
 
