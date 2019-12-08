@@ -83,7 +83,7 @@ namespace atomic_dex {
         std::string my_balance_with_locked_funds(const std::string &ticker, std::error_code& ec) const noexcept;
 
     	//! Last 50 transactions maximum
-        [[nodiscard]] std::vector<tx_infos> get_tx_history(const std::string& ticker) const noexcept;
+        [[nodiscard]] std::vector<tx_infos> get_tx_history(const std::string& ticker, std::error_code &ec) const noexcept;
 
         //! Get coins that are currently activated
         [[nodiscard]] std::vector<coins_config> get_enabled_coins() const noexcept;
