@@ -53,6 +53,19 @@ namespace mm2::api {
         j.at("locked_by_swaps").get_to(cfg.locked_by_swaps);
     }
 
+
+    void from_json(const nlohmann::json &j, sync_status_additional_error &answer) {
+        LOG_SCOPE_FUNCTION(INFO);
+        j.at("code").get_to(answer.code);
+        j.at("message").get_to(answer.message);
+    }
+
+
+    void from_json(const nlohmann::json &j, sync_status_eth_erc_20_coins &answer) {
+        LOG_SCOPE_FUNCTION(INFO);
+        j.at("blocks_left").get_to(answer.blocks_left);
+    }
+
     template<typename RpcReturnType>
     RpcReturnType rpc_process_answer(const RestClient::Response &resp) noexcept {
         LOG_SCOPE_FUNCTION(INFO);

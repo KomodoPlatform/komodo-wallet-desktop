@@ -153,6 +153,7 @@ set(BUILD_SHARED_LIBS OFF CACHE BOOL "Override option" FORCE)
 
 find_package(folly CONFIG REQUIRED)
 find_package(Boost REQUIRED)
+find_package(date CONFIG REQUIRED)
 target_link_libraries(${PROJECT_NAME} PUBLIC antara::world
         antara::sfml_resources
         antara::sfml_extras
@@ -164,7 +165,9 @@ target_link_libraries(${PROJECT_NAME} PUBLIC antara::world
         antara::http_client
         Folly::folly
         Folly::folly_deps
-        Boost::headers)
+        Boost::headers
+        date::date
+        date::tz)
 
 ##! Move assets
 if (WIN32)

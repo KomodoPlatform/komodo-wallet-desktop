@@ -119,9 +119,13 @@ namespace mm2::api {
         int code;
     };
 
+    void from_json(const nlohmann::json &j, sync_status_additional_error &answer);
+
     struct sync_status_eth_erc_20_coins {
         std::size_t blocks_left;
     };
+
+    void from_json(const nlohmann::json &j, sync_status_eth_erc_20_coins& answer);
 
     struct sync_status_regular_coins {
         std::size_t transactions_left;
