@@ -46,37 +46,12 @@ namespace {
 
 namespace {
     struct coin {
-        int id;
         std::string code;
-        std::string name;
-
-        // Like RICK and MORTY are based on KMD
-        std::string base;
-
-        double usd_price;
-
-        bool is_standalone() {
-            return base == "";
-        }
     };
 
     struct asset {
         coin coin;
         double balance;
-        std::string address;
-
-        std::string full_name(bool show_base = false) {
-            return coin.name + " (" + coin.code + ")" +
-                   (show_base && !coin.is_standalone() ? ", based on " + coin.base : "");
-        }
-
-        double to_usd() {
-            return balance * coin.usd_price;
-        }
-
-        std::string to_usd_str() {
-            return usd_str(to_usd());
-        }
     };
 
     std::unordered_map<std::string, coin> coins;
@@ -87,7 +62,7 @@ namespace {
     static int selected = 0;
 
     void init_coin(int id, const std::string &code, const std::string &name, const std::string &base = "") {
-        coins[code] = {id, code, name, base, 1337.0};
+        coins[code] = {code};
         assets[code] = {coins[code], 0.0};
     }
 
