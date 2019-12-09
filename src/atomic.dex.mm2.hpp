@@ -52,7 +52,7 @@ namespace atomic_dex {
         std::thread mm2_fetch_infos_thread_;
         timed_waiter balance_thread_timer_;
         using coins_registry = folly::ConcurrentHashMap<std::string, atomic_dex::coin_config>;
-        coins_registry coins_informations_;
+        coins_registry& coins_informations_{this->entity_registry_.set<coins_registry>()};
         using balance_registry = folly::ConcurrentHashMap<std::string, ::mm2::api::balance_answer>;
         balance_registry &balance_informations_{this->entity_registry_.set<balance_registry>()};
         using tx_history_registry = folly::ConcurrentHashMap<std::string, std::vector<tx_infos>>;
