@@ -51,12 +51,10 @@ namespace atomic_dex {
         std::thread mm2_init_thread_;
         std::thread mm2_fetch_infos_thread_;
         timed_waiter balance_thread_timer_;
-        using coins_enabled_array = std::vector<std::string>;
-        coins_enabled_array active_coins_;
-        using coins_registry = folly::ConcurrentHashMap<std::string, atomic_dex::coins_config>;
+        using coins_registry = folly::ConcurrentHashMap<std::string, atomic_dex::coin_config>;
         coins_registry coins_informations_;
         using balance_registry = folly::ConcurrentHashMap<std::string, ::mm2::api::balance_answer>;
-        balance_registry balance_informations_;
+        balance_registry &balance_informations_{this->entity_registry_.set<balance_registry>()};
         using tx_history_registry = folly::ConcurrentHashMap<std::string, std::vector<tx_infos>>;
         tx_history_registry tx_informations_;
 
@@ -91,14 +89,17 @@ namespace atomic_dex {
         [[nodiscard]] std::vector<tx_infos>
         get_tx_history(const std::string &ticker, std::error_code &ec) const noexcept;
 
-        //! Get coins that are currently activated
-        [[nodiscard]] std::vector<coins_config> get_enabled_coins() const noexcept;
+        //! Get coins that are currently enabled
+        [[nodiscard]] std::vector<coin_config> get_enabled_coins() const noexcept;
+
+        //! Get coins that are active, but may be not enabled
+        [[nodiscard]] std::vector<coin_config> get_active_coins() const noexcept;
 
         //! Get coins that can be activated
-        [[nodiscard]] std::vector<coins_config> get_enableable_coins() const noexcept;
+        [[nodiscard]] std::vector<coin_config> get_enableable_coins() const noexcept;
 
         //! Get Specific info about one coin
-        [[nodiscard]] coins_config get_coin_info(const std::string &ticker) const noexcept;
+        [[nodiscard]] coin_config get_coin_info(const std::string &ticker) const noexcept;
     };
 }
 

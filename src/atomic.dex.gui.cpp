@@ -95,7 +95,7 @@ namespace {
             if(curr_asset_code == "") curr_asset_code = asset.ticker;
             ImGui::Image(icons.at(asset.ticker));
             ImGui::SameLine();
-            if (ImGui::Selectable(asset.fname.c_str(), selected == i)) {
+            if (ImGui::Selectable(asset.name.c_str(), selected == i)) {
                 selected = i;
                 curr_asset_code = asset.ticker;
             }
@@ -108,7 +108,7 @@ namespace {
         const auto curr_asset = mm2.get_coin_info(curr_asset_code);
         ImGui::BeginChild("item view", ImVec2(0, -ImGui::GetFrameHeightWithSpacing()), true); // Leave room for 1 line below us
         {
-            ImGui::TextWrapped("%s", curr_asset.fname.c_str());
+            ImGui::TextWrapped("%s", curr_asset.name.c_str());
             ImGui::Separator();
             std::error_code ec;
 

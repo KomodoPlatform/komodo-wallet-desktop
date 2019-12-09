@@ -28,85 +28,30 @@ namespace {
 
     void update_coin_status(const std::string &ticker) {
         std::filesystem::path cfg_path = ag::core::assets_real_path() / "config";
-        std::ifstream ifs(cfg_path / "active.coins.json");
+        std::ifstream ifs(cfg_path / "coins.json");
         assert(ifs.is_open());
         nlohmann::json config_json_data;
         ifs >> config_json_data;
-        if (config_json_data.find(ticker) != config_json_data.end()) {
-            return;
-        }
-        config_json_data.push_back(ticker);
-    }
+        config_json_data.at(ticker)["active"] = true;
+        ifs.close();
 
-
-    void check_coin_enabled(std::vector<std::string> &active_coins) noexcept {
-        std::filesystem::path cfg_path = ag::core::assets_real_path() / "config";
-        if (std::filesystem::exists(cfg_path / "active.coins.json")) {
-            std::ifstream ifs(cfg_path / "active.coins.json");
-            assert(ifs.is_open());
-            nlohmann::json config_json_data;
-            ifs >> config_json_data;
-            config_json_data.get_to(active_coins);
-        } else {
-            std::ofstream ofs(cfg_path / "active.coins.json");
-            assert(ofs.is_open());
-            ofs << "[]";
-        }
-        DVLOG_F(loguru::Verbosity_INFO, "There is {} active coins", active_coins.size());
-    }
-
-    std::vector<atomic_dex::electrum_server> get_electrum_for_this_coin(const std::string &ticker) {
-        std::vector<atomic_dex::electrum_server> electrum_urls;
-        std::filesystem::path electrum_cfg_path = ag::core::assets_real_path() / "tools/mm2/electrums";
-        if (std::filesystem::exists(electrum_cfg_path / ticker)) {
-            std::ifstream ifs(electrum_cfg_path / ticker);
-            assert(ifs.is_open());
-            nlohmann::json config_json_data;
-            ifs >> config_json_data;
-            for (auto &&element : config_json_data) {
-                atomic_dex::electrum_server current_electrum_infos{
-                        .url = element.at("url").get<std::string>()
-                };
-                if (element.find("protocol") != element.end()) {
-                    current_electrum_infos.protocol = element.at("protocol").get<std::string>();
-                }
-                if (element.find("disable_cert_verification") != element.end()) {
-                    current_electrum_infos.disable_cert_verification = element.at(
-                            "disable_cert_verification").get<bool
-                    >();
-                }
-                electrum_urls.push_back(std::move(current_electrum_infos));
-            }
-        }
-        return electrum_urls;
+        //! Discard contents and rewrite all ?
+        std::ofstream ofs(cfg_path / "coins.json", std::ios::trunc);
+        assert(ofs.is_open());
+        ofs << config_json_data;
     }
 
     bool
     retrieve_coins_information(
-            folly::ConcurrentHashMap<std::string, atomic_dex::coins_config> &coins_registry) noexcept {
-        std::filesystem::path tools_path = ag::core::assets_real_path() / "tools/mm2/";
-        if (std::filesystem::exists(tools_path / "coins.json")) {
-            std::ifstream ifs(tools_path / "coins.json");
+            folly::ConcurrentHashMap<std::string, atomic_dex::coin_config> &coins_registry) noexcept {
+        std::filesystem::path cfg_path = ag::core::assets_real_path() / "config";
+        if (std::filesystem::exists(cfg_path / "coins.json")) {
+            std::ifstream ifs(cfg_path / "coins.json");
             assert(ifs.is_open());
             nlohmann::json config_json_data;
             ifs >> config_json_data;
-            for (auto &&element : config_json_data) {
-                if (element.find("mm2") != element.end()) {
-                    auto current_ticker = element.at("coin").get<std::string>();
-                    atomic_dex::coins_config current_coin{
-                            .ticker = current_ticker,
-                            .fname = element.at("fname").get<std::string>(),
-                            .electrum_urls = get_electrum_for_this_coin(current_ticker),
-                            .currently_enabled = false
-                    };
-                    if (current_coin.electrum_urls.size()) {
-                        DVLOG_F(loguru::Verbosity_INFO,
-                                "coin {} is mm2 compatible, adding...\n nb electrum_urls found: {}",
-                                current_ticker, current_coin.electrum_urls.size());
-                        coins_registry.insert_or_assign(current_ticker, std::move(current_coin));
-                    }
-                }
-            }
+            auto res = config_json_data.get<std::unordered_map<std::string, atomic_dex::coin_config>>();
+            for (auto&&[key, value]: res) coins_registry.insert_or_assign(key, value);
             return true;
         }
         return false;
@@ -115,9 +60,8 @@ namespace {
 
 namespace atomic_dex {
     mm2::mm2(entt::registry &registry) noexcept : system(registry) {
-        spawn_mm2_instance();
-        check_coin_enabled(active_coins_);
         retrieve_coins_information(coins_informations_);
+        spawn_mm2_instance();
     }
 
     void mm2::update() noexcept {
@@ -144,19 +88,30 @@ namespace atomic_dex {
         return mm2_running_;
     }
 
-    std::vector<coins_config> mm2::get_enabled_coins() const noexcept {
-        std::vector<coins_config> destination;
-        //! Active coins is persistent on disk, field from coins_information is at runtime.
-        for (auto &&current_ticker : active_coins_) {
-            destination.push_back(coins_informations_.at(current_ticker));
+    std::vector<coin_config> mm2::get_enabled_coins() const noexcept {
+        std::vector<coin_config> destination;
+        for (auto &&[key, value] : coins_informations_) {
+            if (value.currently_enabled) {
+                destination.push_back(value);
+            }
         }
         return destination;
     }
 
-    std::vector<coins_config> mm2::get_enableable_coins() const noexcept {
-        std::vector<coins_config> destination;
+    std::vector<coin_config> mm2::get_enableable_coins() const noexcept {
+        std::vector<coin_config> destination;
         for (auto&&[key, value] : coins_informations_) {
             if (not value.currently_enabled) {
+                destination.push_back(value);
+            }
+        }
+        return destination;
+    }
+
+    std::vector<coin_config> mm2::get_active_coins() const noexcept {
+        std::vector<coin_config> destination;
+        for (auto&&[key, value] : coins_informations_) {
+            if (value.active) {
                 destination.push_back(value);
             }
         }
@@ -176,28 +131,31 @@ namespace atomic_dex {
             return false;
         }
         coin_info.currently_enabled = true;
+        coin_info.active = true;
         coins_informations_.assign(coin_info.ticker, coin_info);
-        update_coin_status(ticker);
+        if (not coin_info.active) {
+            update_coin_status(ticker);
+        }
         return true;
     }
 
     bool mm2::enable_default_coins() noexcept {
         auto result = true;
-        auto coins = get_enabled_coins();
+        auto coins = get_active_coins();
         for (auto &&current_coin : coins) {
             result &= enable_coin(current_coin.ticker);
         }
         return result;
     }
 
-    coins_config mm2::get_coin_info(const std::string &ticker) const noexcept {
+    coin_config mm2::get_coin_info(const std::string &ticker) const noexcept {
         return coins_informations_.at(ticker);
     }
 
     void mm2::fetch_infos_thread() {
         loguru::set_thread_name("balance thread");
         using namespace std::chrono_literals;
-        std::vector<coins_config> coins;
+        std::vector<coin_config> coins;
         do {
             DVLOG_F(loguru::Verbosity_INFO, "Fetching coins balance");
             coins = get_enabled_coins();

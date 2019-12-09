@@ -30,13 +30,17 @@ namespace atomic_dex {
     };
 
     void to_json(nlohmann::json &j, const electrum_server &cfg);
+    void from_json(const nlohmann::json &j, electrum_server& cfg);
 
-    struct coins_config {
+    struct coin_config {
         std::string ticker;
-        std::string fname; ///< nice name
+        std::string name; ///< nice name
         using electrum_servers = std::vector<electrum_server>;
         electrum_servers electrum_urls;
         bool currently_enabled{false};
-        std::string explorer_url{""}; ///< usefull for transaction, take this url and append transaction id
+        bool active{false};
+        std::vector<std::string> explorer_url; ///< usefull for transaction, take this url and append transaction id
     };
+
+    void from_json(const nlohmann::json &j, coin_config& cfg);
 }

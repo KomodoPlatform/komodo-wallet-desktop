@@ -76,16 +76,14 @@ FetchContent_Declare(jl777-coins
 FetchContent_MakeAvailable(mm2 jl777-coins iconfontcppheaders)
 ##! Configure our needs.
 if (UNIX)
-    configure_file(${jl777-coins_SOURCE_DIR}/coins ${CMAKE_CURRENT_SOURCE_DIR}/assets/tools/mm2/coins.json COPYONLY)
     configure_file(${jl777-coins_SOURCE_DIR}/coins ${CMAKE_CURRENT_SOURCE_DIR}/assets/tools/mm2/coins COPYONLY)
     configure_file(${mm2_SOURCE_DIR}/mm2 ${CMAKE_CURRENT_SOURCE_DIR}/assets/tools/mm2/mm2 COPYONLY)
-    file(COPY ${jl777-coins_SOURCE_DIR}/electrums DESTINATION ${CMAKE_CURRENT_SOURCE_DIR}/assets/tools/mm2/)
+    #file(COPY ${jl777-coins_SOURCE_DIR}/electrums DESTINATION ${CMAKE_CURRENT_SOURCE_DIR}/assets/tools/mm2/)
     file(COPY ${jl777-coins_SOURCE_DIR}/icons DESTINATION ${CMAKE_CURRENT_SOURCE_DIR}/assets/textures/)
 else ()
-    configure_file(${jl777-coins_SOURCE_DIR}/coins ${CMAKE_BINARY_DIR}/bin/assets/tools/mm2/coins.json COPYONLY)
     configure_file(${jl777-coins_SOURCE_DIR}/coins ${CMAKE_BINARY_DIR}/bin/assets/tools/mm2/coins COPYONLY)
     configure_file(${mm2_SOURCE_DIR}/mm2.exe ${CMAKE_BINARY_DIR}/bin/assets/tools/mm2/mm2.exe COPYONLY)
-    file(COPY ${jl777-coins_SOURCE_DIR}/electrums DESTINATION ${CMAKE_BINARY_DIR}/bin/assets/tools/mm2/)
+    #file(COPY ${jl777-coins_SOURCE_DIR}/electrums DESTINATION ${CMAKE_BINARY_DIR}/bin/assets/tools/mm2/)
     file(COPY ${jl777-coins_SOURCE_DIR}/icons DESTINATION ${CMAKE_CURRENT_SOURCE_DIR}/assets/textures/)
 endif ()
 
