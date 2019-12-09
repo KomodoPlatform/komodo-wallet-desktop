@@ -88,7 +88,7 @@ namespace {
             auto &asset = *it;
             if (curr_asset_code == "") curr_asset_code = asset.ticker;
 //            ImGui::Image(icons.at(asset.ticker));
-            ImGui::SameLine();
+            //ImGui::SameLine();
             if (ImGui::Selectable(asset.name.c_str(), selected == i)) {
                 selected = i;
                 curr_asset_code = asset.ticker;
@@ -262,10 +262,6 @@ namespace atomic_dex {
 
     gui::gui(entt::registry &registry, atomic_dex::mm2 &mm2_system) noexcept : system(registry),
                                                                                mm2_system_(mm2_system) {
-        auto str_to_lower = [](std::string s) {
-            std::transform(s.begin(), s.end(), s.begin(), [](unsigned char c) { return std::tolower(c); });
-            return s;
-        };
         init_live_coding();
         atomic_dex::style::apply();
         this->dispatcher_.sink<ag::event::key_pressed>().connect<&gui::on_key_pressed>(*this);

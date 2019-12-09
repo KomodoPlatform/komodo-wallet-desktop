@@ -54,8 +54,8 @@ FetchContent_Declare(
 )
 
 ##! We set extras modules from the SDK that we want to use, here we will use the SFML module.
-set(USE_GLFW_ANTARA_WRAPPER OFF)
-set(USE_SFML_ANTARA_WRAPPER ON)
+set(USE_GLFW_ANTARA_WRAPPER ON)
+set(USE_SFML_ANTARA_WRAPPER OFF)
 set(USE_IMGUI_ANTARA_WRAPPER ON)
 set(ENABLE_BLOCKCHAIN_MODULES ON)
 
@@ -176,12 +176,14 @@ endif ()
 ##! Move assets
 if (WIN32)
     file(COPY assets DESTINATION ${CMAKE_BINARY_DIR}/bin/)
-    get_target_property(target_runtime_directory ${PROJECT_NAME} RUNTIME_OUTPUT_DIRECTORY)
-    ADD_CUSTOM_COMMAND(TARGET ${PROJECT_NAME} POST_BUILD
-            COMMAND ${CMAKE_COMMAND} -E copy_directory "${SFML_SOURCE_DIR}/extlibs/bin/x64" "${target_runtime_directory}"
-            COMMENT "copying dlls …"
-            $<TARGET_FILE_DIR:${PROJECT_NAME}>
-            )
+    if (USE_SFML_ANTARA_WRAPPER)
+        get_target_property(target_runtime_directory ${PROJECT_NAME} RUNTIME_OUTPUT_DIRECTORY)
+        ADD_CUSTOM_COMMAND(TARGET ${PROJECT_NAME} POST_BUILD
+                COMMAND ${CMAKE_COMMAND} -E copy_directory "${SFML_SOURCE_DIR}/extlibs/bin/x64" "${target_runtime_directory}"
+                COMMENT "copying dlls …"
+                $<TARGET_FILE_DIR:${PROJECT_NAME}>
+                )
+    endif()
 endif ()
 
 if (APPLE)
