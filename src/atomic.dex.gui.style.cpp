@@ -28,7 +28,8 @@
 namespace atomic_dex {
 
     void style::apply() {
-
+        ImVec4 bright_color{0, 149.f / 255.f, 143.f / 255.f, 1};
+        ImVec4 dark_color{25.f / 255.f, 40.f / 255.f, 56.f / 255.f, 1};
         std::filesystem::path fonts_path = antara::gaming::core::assets_real_path() / "fonts";
         auto imGuiIO = ImGui::GetIO();
         imGuiIO.Fonts->Clear();
@@ -39,7 +40,8 @@ namespace atomic_dex {
         icons_config.MergeMode = true;
         icons_config.PixelSnapH = true;
 
-        imGuiIO.Fonts->AddFontFromFileTTF((fonts_path / FONT_ICON_FILE_NAME_FAS).string().c_str(), 16.0f, &icons_config,
+        imGuiIO.Fonts->AddFontFromFileTTF((fonts_path / FONT_ICON_FILE_NAME_FAS).string().c_str(),
+                                          16.0f / antara::gaming::core::get_scaling_factor().first, &icons_config,
                                           icons_ranges);
 
 #if defined(ATOMIC_DEX_SFML)
@@ -48,7 +50,6 @@ namespace atomic_dex {
 
         ImGui::GetStyle().FrameRounding = 4.0f;
         ImGui::GetStyle().GrabRounding = 4.0f;
-
         ImVec4 *colors = ImGui::GetStyle().Colors;
         colors[ImGuiCol_Text] = ImVec4(0.95f, 0.96f, 0.98f, 1.00f);
         colors[ImGuiCol_TextDisabled] = ImVec4(0.36f, 0.42f, 0.47f, 1.00f);
@@ -98,5 +99,28 @@ namespace atomic_dex {
         colors[ImGuiCol_NavWindowingHighlight] = ImVec4(1.00f, 1.00f, 1.00f, 0.70f);
         colors[ImGuiCol_NavWindowingDimBg] = ImVec4(0.80f, 0.80f, 0.80f, 0.20f);
         colors[ImGuiCol_ModalWindowDimBg] = ImVec4(0.80f, 0.80f, 0.80f, 0.35f);
+
+        auto &style = ImGui::GetStyle();
+        style.Colors[ImGuiCol_TitleBg] = ImVec4(dark_color);
+        style.Colors[ImGuiCol_Header] = ImVec4(bright_color);
+
+        style.WindowRounding = 0.f;
+        style.FrameRounding = 4.f;
+
+        style.WindowPadding.x = 16.f;
+        style.WindowPadding.y = 16.f;
+        style.FramePadding.x = 8.f;
+        style.FramePadding.y = 8.f;
+        style.DisplaySafeAreaPadding.x = 4.f;
+        style.DisplaySafeAreaPadding.y = 4.f;
+        style.DisplayWindowPadding.x = 4.f;
+        style.DisplayWindowPadding.y = 4.f;
+
+        style.ItemSpacing.x = 4.f;
+        style.ItemSpacing.y = 12.f;
+        style.ItemInnerSpacing.x = 4.f;
+        style.ItemInnerSpacing.y = 4.f;
+        style.IndentSpacing = 4.f;
+        style.ColumnsMinSpacing = 4.f;
     }
 }

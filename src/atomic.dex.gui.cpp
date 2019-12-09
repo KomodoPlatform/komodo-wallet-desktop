@@ -38,36 +38,6 @@ namespace {
 namespace {
     static std::string curr_asset_code = "";
     static int selected = 0;
-
-    void set_style() {
-        ImGuiStyle &style = ImGui::GetStyle();
-
-        style.Colors[ImGuiCol_TitleBg] = ImVec4(dark_color);
-        style.Colors[ImGuiCol_Header] = ImVec4(bright_color);
-
-        style.WindowRounding = 0.f;
-        style.FrameRounding = 4.f;
-
-        style.WindowPadding.x = 16.f;
-        style.WindowPadding.y = 16.f;
-        style.FramePadding.x = 8.f;
-        style.FramePadding.y = 8.f;
-        style.DisplaySafeAreaPadding.x = 4.f;
-        style.DisplaySafeAreaPadding.y = 4.f;
-        style.DisplayWindowPadding.x = 4.f;
-        style.DisplayWindowPadding.y = 4.f;
-
-        style.ItemSpacing.x = 4.f;
-        style.ItemSpacing.y = 12.f;
-        style.ItemInnerSpacing.x = 4.f;
-        style.ItemInnerSpacing.y = 4.f;
-        style.IndentSpacing = 4.f;
-        style.ColumnsMinSpacing = 4.f;
-    }
-
-    void init() noexcept {
-        set_style();
-    }
 }
 
 // GUI Draw
@@ -265,8 +235,6 @@ namespace atomic_dex {
         init_live_coding();
         atomic_dex::style::apply();
         this->dispatcher_.sink<ag::event::key_pressed>().connect<&gui::on_key_pressed>(*this);
-
-        init();
     }
 
     void gui::update() noexcept {
