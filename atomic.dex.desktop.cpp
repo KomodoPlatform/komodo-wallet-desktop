@@ -16,8 +16,10 @@
 
 #include "atomic.dex.app.hpp"
 
-int main()
+int main(int argc, char *argv[])
 {
+    (void)argc;
+    (void)argv;
     loguru::set_thread_name("main thread");
     atomic_dex::application app;
     return app.run();
