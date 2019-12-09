@@ -19,9 +19,28 @@
 namespace atomic_dex {
     atomic_dex::coinpaprika_provider::coinpaprika_provider(entt::registry &registry) : system(registry) {
         disable();
+        this->dispatcher_.sink<atomic_dex::mm2_started>().connect<&coinpaprika_provider::on_mm2_started>(*this);
+
     }
 
     void coinpaprika_provider::update() noexcept {
 
+    }
+
+    coinpaprika_provider::~coinpaprika_provider() noexcept {
+        provider_thread_timer_.interrupt();
+        provider_rates_thread_.join();
+    }
+
+    void coinpaprika_provider::on_mm2_started([[maybe_unused]] const atomic_dex::mm2_started &evt) noexcept {
+        LOG_SCOPE_FUNCTION(INFO);
+        provider_rates_thread_ = std::thread([this]() {
+            loguru::set_thread_name("paprika thread");
+            LOG_SCOPE_F(INFO, "paprika thread started");
+            using namespace std::chrono_literals;
+            do {
+                DLOG_F(INFO, "refreshing rate conversion from coinpaprika");
+            } while (not provider_thread_timer_.wait_for(30s));
+        });
     }
 }

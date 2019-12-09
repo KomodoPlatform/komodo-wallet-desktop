@@ -22,6 +22,7 @@
 #include "atomic.dex.mm2.hpp"
 #include "atomic.dex.mm2.config.hpp"
 #include "atomic.dex.mm2.api.hpp"
+#include "atomic.dex.events.hpp"
 
 namespace {
     namespace ag = antara::gaming;
@@ -226,6 +227,7 @@ namespace atomic_dex {
                 this->enable_default_coins();
                 mm2_running_ = true;
                 mm2_fetch_infos_thread_ = std::thread([this]() { this->fetch_infos_thread(); });
+                this->dispatcher_.trigger<atomic_dex::mm2_started>();
             } else {
                 DVLOG_F(loguru::Verbosity_ERROR, "error: {}", ec.message());
             }
