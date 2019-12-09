@@ -114,7 +114,8 @@ add_executable(${PROJECT_NAME} MACOSX_BUNDLE ${ICON}
         src/atomic.dex.gui.style.cpp
         src/atomic.dex.gui.widgets.cpp
         src/atomic.dex.coins.config.cpp
-        src/atomic.dex.mm2.error.code.cpp)
+        src/atomic.dex.mm2.error.code.cpp
+        src/atomic.dex.provider.coinpaprika.cpp)
 
 if (UNIX AND ENABLE_CODE_RELOAD_UNIX)
     target_compile_definitions(${PROJECT_NAME} PUBLIC -DENABLE_CODE_RELOAD_UNIX)
