@@ -16,14 +16,10 @@
 
 #include <filesystem>
 #include <imgui.h>
-#include <imgui-SFML.h>
 #include <antara/gaming/graphics/component.canvas.hpp>
 #include <antara/gaming/event/quit.game.hpp>
 #include <antara/gaming/event/key.pressed.hpp>
-#include <antara/gaming/sfml/resources.manager.hpp>
 #include <IconsFontAwesome5.h>
-#include <SFML/Graphics/Sprite.hpp>
-#include <SFML/Graphics/Texture.hpp>
 #include "atomic.dex.gui.hpp"
 #include "atomic.dex.gui.widgets.hpp"
 #include "atomic.dex.mm2.hpp"
@@ -31,22 +27,20 @@
 namespace fs = std::filesystem;
 // Helpers
 namespace {
-    sf::Color bright_color(0, 149, 143);
-    sf::Color dark_color(25, 40, 56);
+    ImVec4 bright_color{0, 149.f / 255.f, 143.f / 255.f, 1};
+    ImVec4 dark_color{25.f / 255.f, 40.f / 255.f, 56.f / 255.f, 1};
 
-    std::string usd_str(const std::string& amt) {
+    std::string usd_str(const std::string &amt) {
         return amt + " USD";
     }
 }
 
 namespace {
-    std::unordered_map<std::string, sf::Sprite> icons;
-
     static std::string curr_asset_code = "";
     static int selected = 0;
 
     void set_style() {
-        ImGuiStyle& style = ImGui::GetStyle();
+        ImGuiStyle &style = ImGui::GetStyle();
 
         style.Colors[ImGuiCol_TitleBg] = ImVec4(dark_color);
         style.Colors[ImGuiCol_Header] = ImVec4(bright_color);
@@ -92,8 +86,8 @@ namespace {
         auto assets_contents = mm2.get_enabled_coins();
         for (auto it = assets_contents.begin(); it != assets_contents.end(); ++it, ++i) {
             auto &asset = *it;
-            if(curr_asset_code == "") curr_asset_code = asset.ticker;
-            ImGui::Image(icons.at(asset.ticker));
+            if (curr_asset_code == "") curr_asset_code = asset.ticker;
+//            ImGui::Image(icons.at(asset.ticker));
             ImGui::SameLine();
             if (ImGui::Selectable(asset.name.c_str(), selected == i)) {
                 selected = i;
@@ -106,7 +100,8 @@ namespace {
     void gui_portfolio_coin_details(atomic_dex::mm2 &mm2) noexcept {
         // Right
         const auto curr_asset = mm2.get_coin_info(curr_asset_code);
-        ImGui::BeginChild("item view", ImVec2(0, -ImGui::GetFrameHeightWithSpacing()), true); // Leave room for 1 line below us
+        ImGui::BeginChild("item view", ImVec2(0, -ImGui::GetFrameHeightWithSpacing()),
+                          true); // Leave room for 1 line below us
         {
             ImGui::TextWrapped("%s", curr_asset.name.c_str());
             ImGui::Separator();
@@ -120,18 +115,25 @@ namespace {
                 if (ImGui::BeginTabItem("Transactions")) {
                     std::error_code ec;
                     auto tx_history = mm2.get_tx_history(curr_asset.ticker, ec);
-                    if(tx_history.size() > 0) {
-                        for(std::size_t i = 0; i < tx_history.size(); ++i) {
-                            auto& tx = tx_history[i];
-                            ImGui::Text("%s", tx.am_i_sender ? "Sent" : "Received"); ImGui::SameLine(300);
-                                ImGui::TextColored(ImVec4(tx.am_i_sender ? sf::Color(255, 52, 0) : sf::Color(80, 255, 118)),
-                                        "%s%s %s", tx.am_i_sender ? "-" : "+", tx.my_balance_change.c_str(), curr_asset.ticker.c_str());
-                            ImGui::TextColored(ImVec4(sf::Color(128, 128, 128)), "%s", tx.am_i_sender ? tx.to[0].c_str() : tx.from[0].c_str()); ImGui::SameLine(300);
-                                ImGui::TextColored(ImVec4(sf::Color(128, 128, 128)), "%s", usd_str("1234").c_str());
-                            if(i != tx_history.size() - 1) ImGui::Separator();
+                    if (tx_history.size() > 0) {
+                        for (std::size_t i = 0; i < tx_history.size(); ++i) {
+                            auto &tx = tx_history[i];
+                            ImGui::Text("%s", tx.am_i_sender ? "Sent" : "Received");
+                            ImGui::SameLine(300);
+                            ImGui::TextColored(
+                                    ImVec4(tx.am_i_sender ? ImVec4(1, 52.f / 255.f, 0, 1.f) : ImVec4(80.f / 255.f, 1,
+                                                                                                     118.f / 255.f,
+                                                                                                     1.f)),
+                                    "%s%s %s", tx.am_i_sender ? "-" : "+", tx.my_balance_change.c_str(),
+                                    curr_asset.ticker.c_str());
+                            ImGui::TextColored(ImVec4(128.f / 255.f, 128.f / 255.f, 128.f / 255.f, 1.f), "%s",
+                                               tx.am_i_sender ? tx.to[0].c_str() : tx.from[0].c_str());
+                            ImGui::SameLine(300);
+                            ImGui::TextColored(ImVec4(128.f / 255.f, 128.f / 255.f, 128.f / 255.f, 1.f), "%s",
+                                               usd_str("1234").c_str());
+                            if (i != tx_history.size() - 1) ImGui::Separator();
                         }
-                    }
-                    else ImGui::Text("No transactions");
+                    } else ImGui::Text("No transactions");
 
                     ImGui::EndTabItem();
                 }
@@ -264,21 +266,6 @@ namespace atomic_dex {
             std::transform(s.begin(), s.end(), s.begin(), [](unsigned char c) { return std::tolower(c); });
             return s;
         };
-        auto &resource_system = entity_registry_.ctx<ag::sfml::resources_system>();
-        auto coins_info = mm2_system_.get_enableable_coins();
-        auto texture_path = ag::core::assets_real_path() / "textures";
-        for (auto &&p: coins_info) {
-            if (std::filesystem::exists(texture_path / "icons" / str_to_lower(p.ticker + ".png"))) {
-                DVLOG_F(loguru::Verbosity_INFO, "loading {}", p.ticker);
-                sf::Texture &texture = resource_system.load_texture(
-                        std::string("icons/" + str_to_lower(p.ticker + ".png")).c_str());
-                texture.setSmooth(true);
-                sf::Sprite spr;
-                spr.setScale(0.25f, 0.25f);
-                spr.setTexture(texture);
-                icons[p.ticker] = std::move(spr);
-            }
-        }
         init_live_coding();
         atomic_dex::style::apply();
         this->dispatcher_.sink<ag::event::key_pressed>().connect<&gui::on_key_pressed>(*this);
@@ -298,15 +285,18 @@ namespace atomic_dex {
         ImGui::SetNextWindowPos(ImVec2(pos_x, pos_y));
         bool active = true;
         ImGui::Begin("atomicDEX", &active,
-                     ImGuiWindowFlags_MenuBar | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoTitleBar);
+                     ImGuiWindowFlags_MenuBar | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoResize |
+                     ImGuiWindowFlags_NoTitleBar);
         if (not active) { this->dispatcher_.trigger<ag::event::quit_game>(0); }
 
         if (!mm2_system_.is_mm2_running()) {
             ImGui::Text("Loading, please wait...");
             const float radius = 30.0f;
-            ImVec2 position((ImGui::GetWindowSize().x) * 0.5f - radius*2, (ImGui::GetWindowSize().y) * 0.5f - radius*2);
+            ImVec2 position((ImGui::GetWindowSize().x) * 0.5f - radius * 2,
+                            (ImGui::GetWindowSize().y) * 0.5f - radius * 2);
             ImGui::SetCursorPos(position);
-            atomic_dex::widgets::LoadingIndicatorCircle("foo", radius, ImVec4(bright_color), ImVec4(dark_color), 9, 1.5f);
+            atomic_dex::widgets::LoadingIndicatorCircle("foo", radius, ImVec4(bright_color), ImVec4(dark_color), 9,
+                                                        1.5f);
         } else {
             gui_menubar();
 

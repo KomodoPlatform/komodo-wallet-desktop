@@ -15,7 +15,13 @@
  ******************************************************************************/
 
 #include <antara/gaming/core/real.path.hpp>
+
+#if defined(ATOMIC_DEX_SFML)
+
 #include <imgui-SFML.h>
+
+#endif
+
 #include <IconsFontAwesome5.h>
 #include "atomic.dex.gui.style.hpp"
 
@@ -28,17 +34,22 @@ namespace atomic_dex {
         imGuiIO.Fonts->Clear();
         imGuiIO.Fonts->AddFontFromFileTTF((fonts_path / "Ruda-Bold.ttf").string().c_str(), 15.0f);
 
-        static const ImWchar icons_ranges[] = { ICON_MIN_FA, ICON_MAX_FA, 0 };
-        ImFontConfig icons_config; icons_config.MergeMode = true; icons_config.PixelSnapH = true;
+        static const ImWchar icons_ranges[] = {ICON_MIN_FA, ICON_MAX_FA, 0};
+        ImFontConfig icons_config;
+        icons_config.MergeMode = true;
+        icons_config.PixelSnapH = true;
 
-        imGuiIO.Fonts->AddFontFromFileTTF( (fonts_path / FONT_ICON_FILE_NAME_FAS).string().c_str(), 16.0f, &icons_config, icons_ranges );
+        imGuiIO.Fonts->AddFontFromFileTTF((fonts_path / FONT_ICON_FILE_NAME_FAS).string().c_str(), 16.0f, &icons_config,
+                                          icons_ranges);
 
+#if defined(ATOMIC_DEX_SFML)
         ImGui::SFML::UpdateFontTexture();
+#endif
 
         ImGui::GetStyle().FrameRounding = 4.0f;
         ImGui::GetStyle().GrabRounding = 4.0f;
 
-        ImVec4* colors = ImGui::GetStyle().Colors;
+        ImVec4 *colors = ImGui::GetStyle().Colors;
         colors[ImGuiCol_Text] = ImVec4(0.95f, 0.96f, 0.98f, 1.00f);
         colors[ImGuiCol_TextDisabled] = ImVec4(0.36f, 0.42f, 0.47f, 1.00f);
         colors[ImGuiCol_WindowBg] = ImVec4(0.11f, 0.15f, 0.17f, 1.00f);

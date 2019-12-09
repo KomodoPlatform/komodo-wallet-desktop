@@ -54,6 +54,7 @@ FetchContent_Declare(
 )
 
 ##! We set extras modules from the SDK that we want to use, here we will use the SFML module.
+set(USE_GLFW_ANTARA_WRAPPER OFF)
 set(USE_SFML_ANTARA_WRAPPER ON)
 set(USE_IMGUI_ANTARA_WRAPPER ON)
 set(ENABLE_BLOCKCHAIN_MODULES ON)
@@ -78,12 +79,10 @@ FetchContent_MakeAvailable(mm2 jl777-coins iconfontcppheaders)
 if (UNIX)
     configure_file(${jl777-coins_SOURCE_DIR}/coins ${CMAKE_CURRENT_SOURCE_DIR}/assets/tools/mm2/coins COPYONLY)
     configure_file(${mm2_SOURCE_DIR}/mm2 ${CMAKE_CURRENT_SOURCE_DIR}/assets/tools/mm2/mm2 COPYONLY)
-    #file(COPY ${jl777-coins_SOURCE_DIR}/electrums DESTINATION ${CMAKE_CURRENT_SOURCE_DIR}/assets/tools/mm2/)
     file(COPY ${jl777-coins_SOURCE_DIR}/icons DESTINATION ${CMAKE_CURRENT_SOURCE_DIR}/assets/textures/)
 else ()
     configure_file(${jl777-coins_SOURCE_DIR}/coins ${CMAKE_BINARY_DIR}/bin/assets/tools/mm2/coins COPYONLY)
     configure_file(${mm2_SOURCE_DIR}/mm2.exe ${CMAKE_BINARY_DIR}/bin/assets/tools/mm2/mm2.exe COPYONLY)
-    #file(COPY ${jl777-coins_SOURCE_DIR}/electrums DESTINATION ${CMAKE_BINARY_DIR}/bin/assets/tools/mm2/)
     file(COPY ${jl777-coins_SOURCE_DIR}/icons DESTINATION ${CMAKE_CURRENT_SOURCE_DIR}/assets/textures/)
 endif ()
 
@@ -153,11 +152,9 @@ set(BUILD_SHARED_LIBS OFF CACHE BOOL "Override option" FORCE)
 find_package(folly CONFIG REQUIRED)
 find_package(Boost REQUIRED)
 find_package(date CONFIG REQUIRED)
-target_link_libraries(${PROJECT_NAME} PUBLIC antara::world
-        antara::sfml_resources
-        antara::sfml_extras
-        antara::sfml_graphic
-        antara::sfml_input
+target_link_libraries(${PROJECT_NAME} PUBLIC
+        antara::world
+        antara::event
         reproc++
         joboccara::pipes
         nlohmann_json::nlohmann_json
@@ -167,6 +164,14 @@ target_link_libraries(${PROJECT_NAME} PUBLIC antara::world
         Boost::headers
         date::date
         date::tz)
+
+if (USE_SFML_ANTARA_WRAPPER)
+    add_definitions(-DATOMIC_DEX_SFML)
+    target_link_libraries(${PROJECT_NAME} PUBLIC antara::sfml)
+elseif (USE_GLFW_ANTARA_WRAPPER)
+    add_definitions(-DATOMIC_DEX_GLFW)
+    target_link_libraries(${PROJECT_NAME} PUBLIC antara::glfw)
+endif ()
 
 ##! Move assets
 if (WIN32)
@@ -180,13 +185,15 @@ if (WIN32)
 endif ()
 
 if (APPLE)
-    ADD_CUSTOM_COMMAND(TARGET ${PROJECT_NAME} POST_BUILD
-            COMMAND ${CMAKE_COMMAND} -E copy_directory "${SFML_SOURCE_DIR}/extlibs/libs-osx/Frameworks" "${CMAKE_BINARY_DIR}/bin/${PROJECT_NAME}.app/Contents/Frameworks"
-            COMMENT "copying frameworks …"
-            $<TARGET_FILE_DIR:${PROJECT_NAME}>
-            )
+    if (USE_SFML_ANTARA_WRAPPER)
+        ADD_CUSTOM_COMMAND(TARGET ${PROJECT_NAME} POST_BUILD
+                COMMAND ${CMAKE_COMMAND} -E copy_directory "${SFML_SOURCE_DIR}/extlibs/libs-osx/Frameworks" "${CMAKE_BINARY_DIR}/bin/${PROJECT_NAME}.app/Contents/Frameworks"
+                COMMENT "copying frameworks …"
+                $<TARGET_FILE_DIR:${PROJECT_NAME}>
+                )
+    endif ()
     file(COPY assets DESTINATION ${CMAKE_BINARY_DIR}/bin/${PROJECT_NAME}.app/Contents/Resources)
-    include(data/osx/sfml_atomicdex_install.cmake)
+    include(data/osx/atomicdex_install.cmake)
 endif ()
 
 target_enable_tsan(${PROJECT_NAME})
@@ -205,5 +212,5 @@ if (WIN32)
         set_target_properties(Folly::folly PROPERTIES INTERFACE_COMPILE_OPTIONS "")
         message(STATUS "Override some flags")
         target_compile_options(${PROJECT_NAME} PUBLIC -Wno-ignored-attributes -Wno-deprecated-declarations -Wno-sign-compare)
-    endif()
-endif()
+    endif ()
+endif ()

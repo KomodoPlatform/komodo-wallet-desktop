@@ -14,10 +14,17 @@
  *                                                                            *
  ******************************************************************************/
 
-#include <antara/gaming/sfml/graphic.system.hpp>
-#include <antara/gaming/resources/resources.system.hpp>
-#include <antara/gaming/sfml/resources.manager.hpp>
-#include <antara/gaming/sfml/input.system.hpp>
+#if defined(ATOMIC_DEX_GLFW)
+    #include <antara/gaming/glfw/graphic.system.hpp>
+    #include <antara/gaming/glfw/input.system.hpp>
+#endif
+#if defined(ATOMIC_DEX_SFML)
+//#include <antara/gaming/resources/resources.system.hpp>
+//#include <antara/gaming/sfml/resources.manager.hpp>
+    #include <antara/gaming/sfml/graphic.system.hpp>
+    #include <antara/gaming/sfml/input.system.hpp>
+#endif
+
 #include <antara/gaming/ecs/virtual.input.system.hpp>
 #include "atomic.dex.gui.hpp"
 #include "atomic.dex.app.hpp"
@@ -27,10 +34,17 @@
 namespace atomic_dex {
     application::application() noexcept {
         //! Load the resources system
-        entity_registry_.set<ag::sfml::resources_system>(entity_registry_);
+        //entity_registry_.set<ag::sfml::resources_system>(entity_registry_);
+#if defined(ATOMIC_DEX_GLFW)
+        auto &graphic_system = system_manager_.create_system<ag::glfw::graphic_system>();
+        system_manager_.create_system<ag::glfw::input_system>(graphic_system.get_window());
+#endif
 
+#if defined(ATOMIC_DEX_SFML)
         auto &graphic_system = system_manager_.create_system<ag::sfml::graphic_system>();
         system_manager_.create_system<ag::sfml::input_system>(graphic_system.get_window());
+#endif
+
         //! Create virtual input system
         system_manager_.create_system<ag::ecs::virtual_input_system>();
 
@@ -38,6 +52,11 @@ namespace atomic_dex {
         auto &mm2_system = system_manager_.create_system<atomic_dex::mm2>();
         system_manager_.create_system<atomic_dex::gui>(mm2_system);
         system_manager_.create_system<atomic_dex::coinpaprika_provider>();
+#if defined(ATOMIC_DEX_GLFW)
+        system_manager_.prioritize_system<atomic_dex::gui, ag::glfw::graphic_system>();
+#endif
+#if defined(ATOMIC_DEX_SFML)
         system_manager_.prioritize_system<atomic_dex::gui, ag::sfml::graphic_system>();
+#endif
     }
 }

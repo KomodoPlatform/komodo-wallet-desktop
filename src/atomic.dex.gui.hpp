@@ -24,6 +24,7 @@
 #endif
 
 #include <antara/gaming/ecs/system.hpp>
+#include <antara/gaming/event/key.pressed.hpp>
 #include "atomic.dex.gui.style.hpp"
 #include "atomic.dex.mm2.hpp"
 
