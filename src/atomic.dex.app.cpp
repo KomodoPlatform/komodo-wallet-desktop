@@ -25,6 +25,12 @@
     #include <antara/gaming/sfml/input.system.hpp>
 #endif
 
+#if defined(ATOMIC_DEX_SDL)
+    #include <antara/gaming/sdl/graphic.system.hpp>
+    #include <antara/gaming/sdl/input.system.hpp>
+#endif
+
+
 #include <antara/gaming/ecs/virtual.input.system.hpp>
 #include "atomic.dex.gui.hpp"
 #include "atomic.dex.app.hpp"
@@ -34,7 +40,6 @@
 namespace atomic_dex {
     application::application() noexcept {
         //! Load the resources system
-        //entity_registry_.set<ag::sfml::resources_system>(entity_registry_);
 #if defined(ATOMIC_DEX_GLFW)
         auto &graphic_system = system_manager_.create_system<ag::glfw::graphic_system>();
         system_manager_.create_system<ag::glfw::input_system>(graphic_system.get_window());
@@ -43,6 +48,11 @@ namespace atomic_dex {
 #if defined(ATOMIC_DEX_SFML)
         auto &graphic_system = system_manager_.create_system<ag::sfml::graphic_system>();
         system_manager_.create_system<ag::sfml::input_system>(graphic_system.get_window());
+#endif
+
+#if defined(ATOMIC_DEX_SDL)
+        auto &graphic_system = system_manager_.create_system<ag::sdl::graphic_system>();
+        system_manager_.create_system<ag::sdl::input_system>(graphic_system.get_window());
 #endif
 
         //! Create virtual input system
@@ -57,6 +67,9 @@ namespace atomic_dex {
 #endif
 #if defined(ATOMIC_DEX_SFML)
         system_manager_.prioritize_system<atomic_dex::gui, ag::sfml::graphic_system>();
+#endif
+#if defined(ATOMIC_DEX_SDL)
+        system_manager_.prioritize_system<atomic_dex::gui, ag::sdl::graphic_system>();
 #endif
     }
 }

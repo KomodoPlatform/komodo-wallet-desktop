@@ -54,7 +54,8 @@ FetchContent_Declare(
 )
 
 ##! We set extras modules from the SDK that we want to use, here we will use the SFML module.
-set(USE_GLFW_ANTARA_WRAPPER ON)
+set(USE_GLFW_ANTARA_WRAPPER OFF)
+set(USE_SDL_ANTARA_WRAPPER ON)
 set(USE_SFML_ANTARA_WRAPPER OFF)
 set(USE_IMGUI_ANTARA_WRAPPER ON)
 set(ENABLE_BLOCKCHAIN_MODULES ON)
@@ -171,6 +172,9 @@ if (USE_SFML_ANTARA_WRAPPER)
 elseif (USE_GLFW_ANTARA_WRAPPER)
     add_definitions(-DATOMIC_DEX_GLFW)
     target_link_libraries(${PROJECT_NAME} PUBLIC antara::glfw)
+elseif(USE_SDL_ANTARA_WRAPPER)
+    add_definitions(-DATOMIC_DEX_SDL)
+    target_link_libraries(${PROJECT_NAME} PUBLIC antara::sdl)
 endif ()
 
 ##! Move assets

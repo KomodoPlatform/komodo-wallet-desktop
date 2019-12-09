@@ -245,13 +245,11 @@ namespace atomic_dex {
         auto[x, y] = canvas.window.size;
         auto[pos_x, pos_y] = canvas.window.position;
 
-        ImGui::SetNextWindowSize(ImVec2(x, y));
-        ImGui::SetNextWindowPos(ImVec2(pos_x, pos_y));
+        ImGui::SetNextWindowSize(ImVec2(x, y), ImGuiCond_Once);
+        //ImGui::SetNextWindowPos(ImVec2(pos_x, pos_y));
         bool active = true;
-        ImGui::Begin("atomicDEX", &active,
-                     ImGuiWindowFlags_MenuBar | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoResize |
-                     ImGuiWindowFlags_NoTitleBar);
-        if (not active) { this->dispatcher_.trigger<ag::event::quit_game>(0); }
+        ImGui::Begin("atomicDEX", &active,ImGuiWindowFlags_NoCollapse);
+        if (not active && mm2_system_.is_mm2_running()) { this->dispatcher_.trigger<ag::event::quit_game>(0); }
 
         if (!mm2_system_.is_mm2_running()) {
             ImGui::Text("Loading, please wait...");

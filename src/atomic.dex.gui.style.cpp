@@ -22,16 +22,20 @@
 
 #endif
 
+#include <imgui.h>
+#include <imgui_internal.h>
+
 #include <IconsFontAwesome5.h>
 #include "atomic.dex.gui.style.hpp"
 
 namespace atomic_dex {
 
     void style::apply() {
+        auto &g = *ImGui::GetCurrentContext();
         ImVec4 bright_color{0, 149.f / 255.f, 143.f / 255.f, 1};
         ImVec4 dark_color{25.f / 255.f, 40.f / 255.f, 56.f / 255.f, 1};
-        std::filesystem::path fonts_path = antara::gaming::core::assets_real_path() / "fonts";
         auto imGuiIO = ImGui::GetIO();
+        std::filesystem::path fonts_path = antara::gaming::core::assets_real_path() / "fonts";
         imGuiIO.Fonts->Clear();
         imGuiIO.Fonts->AddFontFromFileTTF((fonts_path / "Ruda-Bold.ttf").string().c_str(), 15.0f);
 
@@ -41,7 +45,7 @@ namespace atomic_dex {
         icons_config.PixelSnapH = true;
 
         imGuiIO.Fonts->AddFontFromFileTTF((fonts_path / FONT_ICON_FILE_NAME_FAS).string().c_str(),
-                                          16.0f / antara::gaming::core::get_scaling_factor().first, &icons_config,
+                                          16.0f, &icons_config,
                                           icons_ranges);
 
 #if defined(ATOMIC_DEX_SFML)
