@@ -54,8 +54,7 @@ namespace {
             if (gui_vars.curr_asset_code == "") gui_vars.curr_asset_code = asset.ticker;
 //            ImGui::Image(icons.at(asset.ticker));
             //ImGui::SameLine();
-            if (ImGui::Selectable(asset.name.c_str(), gui_vars.selected == i)) {
-                gui_vars.selected = i;
+            if (ImGui::Selectable(asset.name.c_str(), asset.ticker == gui_vars.curr_asset_code)) {
                 gui_vars.curr_asset_code = asset.ticker;
             }
         }
