@@ -234,7 +234,7 @@ namespace mm2::api {
         LOG_SCOPE_FUNCTION(INFO);
         auto json_data = template_request("my_balance");
         to_json(json_data, request);
-        DVLOG_F(loguru::Verbosity_INFO, "request: %s", json_data.dump().c_str());
+        DVLOG_F(loguru::Verbosity_INFO, "request: {}", json_data.dump());
         const auto resp = RestClient::post(endpoint, "application/json", json_data.dump());
         return rpc_process_answer<balance_answer>(resp);
     }

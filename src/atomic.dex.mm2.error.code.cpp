@@ -43,6 +43,10 @@ namespace {
                 return "An RPC error occur when processing the withdraw request, please check your request or the application log.";
             case mm2_error::rpc_send_raw_transaction_error:
                 return "An RPC error occur when processing the send_raw_transaction request, please check your tx_hex or the application log.";
+            case mm2_error::invalid_fiat_for_rate_conversion:
+                return "You try to convert to a fiat that is not supported, only USD and EUR supported";
+            case mm2_error::unknown_ticker_for_rate_conversion:
+                return "You try to convert from an unknown ticker, are you trying to convert from a test-coin ?";
         }
     }
 

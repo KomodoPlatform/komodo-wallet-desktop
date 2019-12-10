@@ -39,6 +39,7 @@ namespace atomic_dex {
         electrum_servers electrum_urls;
         bool currently_enabled{false};
         bool active{false};
+        std::string coinpaprika_id;
         std::vector<std::string> explorer_url; ///< usefull for transaction, take this url and append transaction id
     };
 

@@ -27,6 +27,7 @@
 #include <antara/gaming/event/key.pressed.hpp>
 #include "atomic.dex.gui.style.hpp"
 #include "atomic.dex.mm2.hpp"
+#include "atomic.dex.provider.coinpaprika.hpp"
 
 namespace atomic_dex {
     namespace ag = antara::gaming;
@@ -40,7 +41,8 @@ namespace atomic_dex {
     public:
         void on_key_pressed(const ag::event::key_pressed &evt) noexcept;
 
-        explicit gui(entt::registry &registry, atomic_dex::mm2& mm2_system) noexcept;
+        explicit gui(entt::registry &registry, atomic_dex::mm2& mm2_system,
+                atomic_dex::coinpaprika_provider& paprika_system) noexcept;
 
         void update() noexcept final;
 
@@ -50,6 +52,7 @@ namespace atomic_dex {
 
     private:
         atomic_dex::mm2& mm2_system_;
+        atomic_dex::coinpaprika_provider& paprika_system_;
     };
 }
 

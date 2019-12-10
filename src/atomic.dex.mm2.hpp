@@ -46,12 +46,13 @@ namespace atomic_dex {
     };
 
     class mm2 : public ag::ecs::pre_update_system<mm2> {
+    private:
+        using coins_registry = folly::ConcurrentHashMap<std::string, atomic_dex::coin_config>;
         reproc::process mm2_instance_;
         std::atomic<bool> mm2_running_{false};
         std::thread mm2_init_thread_;
         std::thread mm2_fetch_infos_thread_;
         timed_waiter balance_thread_timer_;
-        using coins_registry = folly::ConcurrentHashMap<std::string, atomic_dex::coin_config>;
         coins_registry& coins_informations_{this->entity_registry_.set<coins_registry>()};
         using balance_registry = folly::ConcurrentHashMap<std::string, ::mm2::api::balance_answer>;
         balance_registry &balance_informations_{this->entity_registry_.set<balance_registry>()};

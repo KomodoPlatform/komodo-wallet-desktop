@@ -67,7 +67,7 @@ namespace {
         ImGui::EndChild();
     }
 
-    void gui_portfolio_coin_details(atomic_dex::mm2 &mm2) noexcept {
+    void gui_portfolio_coin_details(atomic_dex::mm2 &mm2, atomic_dex::coinpaprika_provider &paprika_system) noexcept {
         // Right
         const auto curr_asset = mm2.get_coin_info(curr_asset_code);
         ImGui::BeginChild("item view", ImVec2(0, -ImGui::GetFrameHeightWithSpacing()),
@@ -77,9 +77,10 @@ namespace {
             ImGui::Separator();
             std::error_code ec;
 
-            ImGui::Text(std::string(std::string(ICON_FA_BALANCE_SCALE) + " Balance: %s %s (%s)").c_str(),
+            ImGui::Text(std::string(std::string(ICON_FA_BALANCE_SCALE) + " Balance: %s %s (%s USD)").c_str(),
                         mm2.my_balance(curr_asset.ticker, ec).c_str(),
-                        curr_asset.ticker.c_str(), "0");
+                        curr_asset.ticker.c_str(),
+                        paprika_system.get_price_in_fiat("USD", curr_asset.ticker, ec).c_str());
             ImGui::Separator();
             if (ImGui::BeginTabBar("##Tabs", ImGuiTabBarFlags_None)) {
                 if (ImGui::BeginTabItem("Transactions")) {
@@ -151,7 +152,7 @@ namespace {
         }
     }
 
-    void gui_portfolio(atomic_dex::mm2 &mm2) noexcept {
+    void gui_portfolio(atomic_dex::mm2 &mm2, atomic_dex::coinpaprika_provider &paprika_system) noexcept {
         ImGui::Text("Total Balance: %s", usd_str("1337").c_str());
 
         gui_enable_coins();
@@ -161,7 +162,7 @@ namespace {
 
         // Right
         ImGui::SameLine();
-        gui_portfolio_coin_details(mm2);
+        gui_portfolio_coin_details(mm2, paprika_system);
     }
 }
 
@@ -230,8 +231,10 @@ namespace atomic_dex {
         }
     }
 
-    gui::gui(entt::registry &registry, atomic_dex::mm2 &mm2_system) noexcept : system(registry),
-                                                                               mm2_system_(mm2_system) {
+    gui::gui(entt::registry &registry, atomic_dex::mm2 &mm2_system,
+             atomic_dex::coinpaprika_provider &paprika_system) noexcept : system(registry),
+                                                                          mm2_system_(mm2_system),
+                                                                          paprika_system_(paprika_system) {
         init_live_coding();
         atomic_dex::style::apply();
         this->dispatcher_.sink<ag::event::key_pressed>().connect<&gui::on_key_pressed>(*this);
@@ -243,12 +246,10 @@ namespace atomic_dex {
         //! Menu bar
         auto &canvas = entity_registry_.ctx<ag::graphics::canvas_2d>();
         auto[x, y] = canvas.window.size;
-        auto[pos_x, pos_y] = canvas.window.position;
 
         ImGui::SetNextWindowSize(ImVec2(x, y), ImGuiCond_Once);
-        //ImGui::SetNextWindowPos(ImVec2(pos_x, pos_y));
         bool active = true;
-        ImGui::Begin("atomicDEX", &active,ImGuiWindowFlags_NoCollapse);
+        ImGui::Begin("atomicDEX", &active, ImGuiWindowFlags_NoCollapse);
         if (not active && mm2_system_.is_mm2_running()) { this->dispatcher_.trigger<ag::event::quit_game>(0); }
 
         if (!mm2_system_.is_mm2_running()) {
@@ -264,7 +265,7 @@ namespace atomic_dex {
 
             if (ImGui::BeginTabBar("##Tabs", ImGuiTabBarFlags_None)) {
                 if (ImGui::BeginTabItem("Portfolio")) {
-                    gui_portfolio(mm2_system_);
+                    gui_portfolio(mm2_system_, paprika_system_);
                     ImGui::EndTabItem();
                 }
                 if (ImGui::BeginTabItem("Trade")) {

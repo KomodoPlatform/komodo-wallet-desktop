@@ -60,8 +60,8 @@ namespace atomic_dex {
 
         //! MM2 system need to be created before the GUI and give the instance to the gui
         auto &mm2_system = system_manager_.create_system<atomic_dex::mm2>();
-        system_manager_.create_system<atomic_dex::gui>(mm2_system);
-        system_manager_.create_system<atomic_dex::coinpaprika_provider>();
+        auto &paprika_system = system_manager_.create_system<atomic_dex::coinpaprika_provider>(mm2_system);
+        system_manager_.create_system<atomic_dex::gui>(mm2_system, paprika_system);
 #if defined(ATOMIC_DEX_GLFW)
         system_manager_.prioritize_system<atomic_dex::gui, ag::glfw::graphic_system>();
 #endif

@@ -47,6 +47,7 @@ namespace atomic_dex {
         j.at("electrum").get_to(cfg.electrum_urls);
         j.at("active").get_to(cfg.active);
         j.at("currently_enabled").get_to(cfg.currently_enabled);
+        j.at("coinpaprika_id").get_to(cfg.coinpaprika_id);
         j.at("explorer_url").get_to(cfg.explorer_url);
     }
 }
