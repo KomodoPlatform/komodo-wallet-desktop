@@ -129,16 +129,15 @@ namespace {
             ImGui::OpenPopup("Enable coins");
 
         if (ImGui::BeginPopupModal("Enable coins", NULL, ImGuiWindowFlags_AlwaysAutoResize)) {
-            ImGui::Text("Select the coins you want to add to your portfolio.");
-
-            ImGui::Separator();
-
             auto enableable_coins = mm2.get_enableable_coins();
+            ImGui::Text(enableable_coins.empty() ? "All coins are already enabled!" : "Select the coins you want to add to your portfolio.");
+
+            if(!enableable_coins.empty()) ImGui::Separator();
+
             auto& select_list = gui_vars.enableable_coins_select_list;
             // Extend the size of selectables list if the new list is bigger
-            if(enableable_coins.size() > select_list.size()) {
+            if(enableable_coins.size() > select_list.size())
                 select_list.resize(enableable_coins.size(), false);
-            }
 
             // Create the list
             for(std::size_t i = 0; i < enableable_coins.size(); ++i) {
@@ -149,18 +148,23 @@ namespace {
             }
 
             bool close = false;
-            if (ImGui::Button("Enable", ImVec2(120, 0))) {
-                // Enable selected coins
-                for(std::size_t i = 0; i < enableable_coins.size(); ++i) {
-                    if(select_list[i])
-                        mm2.enable_coin(enableable_coins[i].ticker);
-                }
-                close = true;
+            if(enableable_coins.empty()) {
+                if(ImGui::Button("Okay")) close = true;
             }
+            else {
+                if (ImGui::Button("Enable", ImVec2(120, 0))) {
+                    // Enable selected coins
+                    for(std::size_t i = 0; i < enableable_coins.size(); ++i) {
+                        if(select_list[i])
+                            mm2.enable_coin(enableable_coins[i].ticker);
+                    }
+                    close = true;
+                }
 
-            ImGui::SameLine();
+                ImGui::SameLine();
 
-            if(ImGui::Button("Cancel", ImVec2(120, 0))) close = true;
+                if(ImGui::Button("Cancel", ImVec2(120, 0))) close = true;
+            }
 
             if(close) {
                 // Reset the list
