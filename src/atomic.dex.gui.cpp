@@ -332,11 +332,9 @@ namespace atomic_dex {
                 // If entered trade,
                 if(!in_trade_prev && in_trade) {
                     this->dispatcher_.trigger<atomic_dex::gui_enter_trading>();
-                    std::cout << "enter trading" << std::endl;
                 }
                 else if(in_trade_prev && !in_trade){
                     this->dispatcher_.trigger<atomic_dex::gui_leave_trading>();
-                    std::cout << "leave trading" << std::endl;
                 }
                 in_trade_prev = in_trade;
 
