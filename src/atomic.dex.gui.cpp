@@ -64,7 +64,7 @@ namespace {
     void gui_transaction_details_modal(bool open_modal) {
         if(open_modal) ImGui::OpenPopup("Transaction Details");
 
-        if (ImGui::BeginPopupModal("Transaction Details", NULL, ImGuiWindowFlags_AlwaysAutoResize)) {
+        if (ImGui::BeginPopupModal("Transaction Details", NULL, ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoMove)) {
             if(ImGui::Button("Cancel", ImVec2(120, 0))) {
                 ImGui::CloseCurrentPopup();
             }
@@ -151,8 +151,7 @@ namespace {
     void gui_enable_coins(atomic_dex::mm2 &mm2, atomic_dex::gui_variables& gui_vars) {
         if (ImGui::Button("Enable a coin"))
             ImGui::OpenPopup("Enable coins");
-
-        if (ImGui::BeginPopupModal("Enable coins", NULL, ImGuiWindowFlags_AlwaysAutoResize)) {
+        if (ImGui::BeginPopupModal("Enable coins", NULL, ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoMove )) {
             auto enableable_coins = mm2.get_enableable_coins();
             ImGui::Text(enableable_coins.empty() ? "All coins are already enabled!" : "Select the coins you want to add to your portfolio.");
 
@@ -288,9 +287,7 @@ namespace atomic_dex {
         atomic_dex::style::apply();
         this->dispatcher_.sink<ag::event::key_pressed>().connect<&gui::on_key_pressed>(*this);
 
-        ImGuiIO &io = ImGui::GetIO();
-        io.ConfigViewportsNoAutoMerge = false;
-        io.ConfigViewportsNoDefaultParent = false;
+
     }
 
     void gui::update() noexcept {
@@ -304,7 +301,9 @@ namespace atomic_dex {
         bool active = true;
         ImGui::Begin("atomicDEX", &active, ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_MenuBar);
         if (not active && mm2_system_.is_mm2_running()) { this->dispatcher_.trigger<ag::event::quit_game>(0); }
-
+        ImGuiIO &io = ImGui::GetIO();
+        io.ConfigViewportsNoAutoMerge = false;
+        io.ConfigViewportsNoDefaultParent = false;
         if (!mm2_system_.is_mm2_running()) {
             ImGui::Text("Loading, please wait...");
             const float radius = 30.0f;
