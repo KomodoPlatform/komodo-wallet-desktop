@@ -195,6 +195,41 @@ namespace mm2::api {
         j.at("tx_hash").get_to(answer.tx_hash);
     }
 
+    void to_json(nlohmann::json &j, const orderbook_request &request) {
+        j["base"] = request.base;
+        j["rel"] = request.rel;
+    }
+
+
+    void from_json(const nlohmann::json &j, order_contents &contents) {
+        j.at("coin").get_to(contents.coin);
+        j.at("address").get_to(contents.address);
+        j.at("price").get_to(contents.price);
+        j.at("maxvolume").get_to(contents.maxvolume);
+        j.at("pubkey").get_to(contents.pubkey);
+        j.at("age").get_to(contents.age);
+        j.at("zcredits").get_to(contents.zcredits);
+    }
+
+    void from_json(const nlohmann::json &j, orderbook_answer answer) {
+        j.at("base").get_to(answer.base);
+        j.at("rel").get_to(answer.rel);
+        j.at("askdepth").get_to(answer.askdepth);
+        j.at("biddepth").get_to(answer.biddepth);
+        j.at("bids").get_to(answer.bids);
+        j.at("asks").get_to(answer.asks);
+        j.at("numasks").get_to(answer.numasks);
+        j.at("numbids").get_to(answer.numbids);
+        j.at("netid").get_to(answer.netid);
+        j.at("timestamp").get_to(answer.timestamp);
+        using namespace date;
+        auto sys_time = std::chrono::system_clock::from_time_t(answer.timestamp);
+        const auto date = year_month_day(floor<days>(sys_time));
+        std::stringstream ss;
+        ss << date;
+        answer.human_timestamp = ss.str();
+    }
+
     template<typename RpcReturnType>
     RpcReturnType rpc_process_answer(const RestClient::Response &resp) noexcept {
         LOG_SCOPE_FUNCTION(INFO);
@@ -264,5 +299,14 @@ namespace mm2::api {
         DVLOG_F(loguru::Verbosity_INFO, "request: %s", json_data.dump().c_str());
         const auto resp = RestClient::post(endpoint, "application/json", json_data.dump());
         return rpc_process_answer<send_raw_transaction_answer>(resp);
+    }
+
+    orderbook_answer rpc_orderbook(orderbook_request &&request) {
+        LOG_SCOPE_FUNCTION(INFO);
+        auto json_data = template_request("orderbook");
+        to_json(json_data, request);
+        DVLOG_F(loguru::Verbosity_INFO, "request: %s", json_data.dump().c_str());
+        const auto resp = RestClient::post(endpoint, "application/json", json_data.dump());
+        return rpc_process_answer<orderbook_answer>(resp);
     }
 }

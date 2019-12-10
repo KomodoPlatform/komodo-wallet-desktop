@@ -50,16 +50,24 @@ namespace atomic_dex {
         using coins_registry = folly::ConcurrentHashMap<std::string, atomic_dex::coin_config>;
         reproc::process mm2_instance_;
         std::atomic<bool> mm2_running_{false};
+        std::atomic<bool> orderbook_thread_active{false};
         std::thread mm2_init_thread_;
         std::thread mm2_fetch_infos_thread_;
+        std::thread mm2_fetch_current_orderbook_thread_;
         timed_waiter balance_thread_timer_;
+        timed_waiter current_orderbook_thread_timer_;
         coins_registry& coins_informations_{this->entity_registry_.set<coins_registry>()};
         using balance_registry = folly::ConcurrentHashMap<std::string, ::mm2::api::balance_answer>;
         balance_registry &balance_informations_{this->entity_registry_.set<balance_registry>()};
         using tx_history_registry = folly::ConcurrentHashMap<std::string, std::vector<tx_infos>>;
         tx_history_registry tx_informations_;
+        //! Key will be RICK/MORTY
+        using orderbook_registry = folly::ConcurrentHashMap<std::string, ::mm2::api::orderbook_answer>;
+        orderbook_registry current_orderbook_;
 
         void fetch_infos_thread();
+
+        void fetch_current_orderbook_thread();
 
         void spawn_mm2_instance() noexcept;
 

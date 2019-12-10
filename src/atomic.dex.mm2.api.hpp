@@ -215,17 +215,20 @@ namespace mm2::api {
         std::string rel;
     };
 
+    void to_json(nlohmann::json& j, const orderbook_request& request);
+
     struct order_contents
     {
-        std::string ticker;
+        std::string coin;
         std::string address;
         std::string price;
         std::string maxvolume;
         std::string pubkey;
         std::size_t age;
-        std::size_t credits;
+        std::size_t zcredits;
     };
 
+    void from_json(const nlohmann::json& j, order_contents& contents);
 
     struct orderbook_answer {
         std::size_t askdepth;
@@ -244,6 +247,10 @@ namespace mm2::api {
         std::string raw_result;
         int rpc_result_code;
     };
+
+    void from_json(const nlohmann::json& j, orderbook_answer answer);
+
+    orderbook_answer rpc_orderbook(orderbook_request &&request);
 
     template<typename RpcReturnType>
     static RpcReturnType rpc_process_answer(const RestClient::Response &resp) noexcept;

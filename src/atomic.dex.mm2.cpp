@@ -18,6 +18,7 @@
 #include <fstream>
 #include <filesystem>
 #include <boost/multiprecision/cpp_dec_float.hpp>
+#include <boost/algorithm/string/split.hpp>
 #include <antara/gaming/core/real.path.hpp>
 #include "atomic.dex.mm2.hpp"
 #include "atomic.dex.mm2.config.hpp"
@@ -81,6 +82,8 @@ namespace atomic_dex {
             VLOG_SCOPE_F(loguru::Verbosity_ERROR, "error: %s", ec.message().c_str());
         }
         balance_thread_timer_.interrupt();
+        current_orderbook_thread_timer_.interrupt();
+        mm2_fetch_current_orderbook_thread_.join();
         mm2_init_thread_.join();
         mm2_fetch_infos_thread_.join();
     }
@@ -151,6 +154,27 @@ namespace atomic_dex {
 
     coin_config mm2::get_coin_info(const std::string &ticker) const noexcept {
         return coins_informations_.at(ticker);
+    }
+
+    void mm2::fetch_current_orderbook_thread() {
+        loguru::set_thread_name("orderbook thread");
+        using namespace std::chrono_literals;
+        do {
+            DLOG_F(INFO, "Fetch current orderbook");
+            //! If thread is not active ex: we are not on the trading page anymore, we continue sleeping.
+            if (not this->orderbook_thread_active || this->current_orderbook_.empty()) {
+                DLOG_F(WARNING, "Nothing todo, sleeping...");
+                continue;
+            }
+            std::string current = (*this->current_orderbook_.begin()).first;
+            std::vector<std::string> results;
+            boost::split(results, current, [](char c) { return c == '/'; });
+            ::mm2::api::orderbook_request request{.base = results[0], .rel = results[1]};
+            auto answer = ::mm2::api::rpc_orderbook(std::move(request));
+            if (answer.rpc_result_code != -1) {
+                this->current_orderbook_.insert_or_assign(current, answer);
+            }
+        } while (not current_orderbook_thread_timer_.wait_for(60s));
     }
 
     void mm2::fetch_infos_thread() {
@@ -227,6 +251,7 @@ namespace atomic_dex {
                 this->enable_default_coins();
                 mm2_running_ = true;
                 mm2_fetch_infos_thread_ = std::thread([this]() { this->fetch_infos_thread(); });
+                mm2_fetch_current_orderbook_thread_ = std::thread([this]() { this->fetch_current_orderbook_thread(); });
                 this->dispatcher_.trigger<atomic_dex::mm2_started>();
             } else {
                 DVLOG_F(loguru::Verbosity_ERROR, "error: {}", ec.message());

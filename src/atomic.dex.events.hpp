@@ -20,4 +20,9 @@
 
 namespace atomic_dex {
     using mm2_started = entt::tag<"mm2_started"_hs>;
+
+    struct orderbook_refresh {
+        std::string base;
+        std::string rel;
+    };
 }
