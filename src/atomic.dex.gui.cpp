@@ -101,7 +101,9 @@ namespace {
                                                tx.am_i_sender ? tx.to[0].c_str() : tx.from[0].c_str());
                             ImGui::SameLine(300);
                             ImGui::TextColored(ImVec4(128.f / 255.f, 128.f / 255.f, 128.f / 255.f, 1.f), "%s",
-                                               usd_str("1234").c_str());
+                                               usd_str(paprika_system.get_price_in_fiat_from_tx("USD",
+                                                                                                curr_asset.ticker, tx,
+                                                                                                ec)).c_str());
                             if (i != tx_history.size() - 1) ImGui::Separator();
                         }
                     } else ImGui::Text("No transactions");
@@ -153,7 +155,8 @@ namespace {
     }
 
     void gui_portfolio(atomic_dex::mm2 &mm2, atomic_dex::coinpaprika_provider &paprika_system) noexcept {
-        ImGui::Text("Total Balance: %s", usd_str("1337").c_str());
+        std::error_code ec;
+        ImGui::Text("Total Balance: %s", usd_str(paprika_system.get_price_in_fiat_all("USD", ec)).c_str());
 
         gui_enable_coins();
 

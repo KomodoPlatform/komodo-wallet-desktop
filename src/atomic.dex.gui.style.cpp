@@ -31,7 +31,6 @@
 namespace atomic_dex {
 
     void style::apply() {
-        auto &g = *ImGui::GetCurrentContext();
         ImVec4 bright_color{0, 149.f / 255.f, 143.f / 255.f, 1};
         ImVec4 dark_color{25.f / 255.f, 40.f / 255.f, 56.f / 255.f, 1};
         auto imGuiIO = ImGui::GetIO();
@@ -52,8 +51,24 @@ namespace atomic_dex {
         ImGui::SFML::UpdateFontTexture();
 #endif
 
-        ImGui::GetStyle().FrameRounding = 4.0f;
-        ImGui::GetStyle().GrabRounding = 4.0f;
+        auto &style = ImGui::GetStyle();
+        style.FrameRounding = 4.0f;
+        style.GrabRounding = 4.0f;
+        style.WindowRounding = 0.f;
+        style.WindowPadding.x = 16.f;
+        style.WindowPadding.y = 16.f;
+        style.FramePadding.x = 8.f;
+        style.FramePadding.y = 8.f;
+        style.DisplaySafeAreaPadding.x = 4.f;
+        style.DisplaySafeAreaPadding.y = 4.f;
+        style.DisplayWindowPadding.x = 4.f;
+        style.DisplayWindowPadding.y = 4.f;
+        style.ItemSpacing.x = 4.f;
+        style.ItemSpacing.y = 12.f;
+        style.ItemInnerSpacing.x = 4.f;
+        style.ItemInnerSpacing.y = 4.f;
+        style.IndentSpacing = 4.f;
+        style.ColumnsMinSpacing = 4.f;
         ImVec4 *colors = ImGui::GetStyle().Colors;
         colors[ImGuiCol_Text] = ImVec4(0.95f, 0.96f, 0.98f, 1.00f);
         colors[ImGuiCol_TextDisabled] = ImVec4(0.36f, 0.42f, 0.47f, 1.00f);
@@ -65,7 +80,6 @@ namespace atomic_dex {
         colors[ImGuiCol_FrameBg] = ImVec4(0.20f, 0.25f, 0.29f, 1.00f);
         colors[ImGuiCol_FrameBgHovered] = ImVec4(0.12f, 0.20f, 0.28f, 1.00f);
         colors[ImGuiCol_FrameBgActive] = ImVec4(0.09f, 0.12f, 0.14f, 1.00f);
-        colors[ImGuiCol_TitleBg] = ImVec4(0.09f, 0.12f, 0.14f, 0.65f);
         colors[ImGuiCol_TitleBgActive] = ImVec4(0.08f, 0.10f, 0.12f, 1.00f);
         colors[ImGuiCol_TitleBgCollapsed] = ImVec4(0.00f, 0.00f, 0.00f, 0.51f);
         colors[ImGuiCol_MenuBarBg] = ImVec4(0.15f, 0.18f, 0.22f, 1.00f);
@@ -79,7 +93,6 @@ namespace atomic_dex {
         colors[ImGuiCol_Button] = ImVec4(0.20f, 0.25f, 0.29f, 1.00f);
         colors[ImGuiCol_ButtonHovered] = ImVec4(0.28f, 0.56f, 1.00f, 1.00f);
         colors[ImGuiCol_ButtonActive] = ImVec4(0.06f, 0.53f, 0.98f, 1.00f);
-        colors[ImGuiCol_Header] = ImVec4(0.20f, 0.25f, 0.29f, 0.55f);
         colors[ImGuiCol_HeaderHovered] = ImVec4(0.26f, 0.59f, 0.98f, 0.80f);
         colors[ImGuiCol_HeaderActive] = ImVec4(0.26f, 0.59f, 0.98f, 1.00f);
         colors[ImGuiCol_Separator] = ImVec4(0.20f, 0.25f, 0.29f, 1.00f);
@@ -103,28 +116,7 @@ namespace atomic_dex {
         colors[ImGuiCol_NavWindowingHighlight] = ImVec4(1.00f, 1.00f, 1.00f, 0.70f);
         colors[ImGuiCol_NavWindowingDimBg] = ImVec4(0.80f, 0.80f, 0.80f, 0.20f);
         colors[ImGuiCol_ModalWindowDimBg] = ImVec4(0.80f, 0.80f, 0.80f, 0.35f);
-
-        auto &style = ImGui::GetStyle();
-        style.Colors[ImGuiCol_TitleBg] = ImVec4(dark_color);
-        style.Colors[ImGuiCol_Header] = ImVec4(bright_color);
-
-        style.WindowRounding = 0.f;
-        style.FrameRounding = 4.f;
-
-        style.WindowPadding.x = 16.f;
-        style.WindowPadding.y = 16.f;
-        style.FramePadding.x = 8.f;
-        style.FramePadding.y = 8.f;
-        style.DisplaySafeAreaPadding.x = 4.f;
-        style.DisplaySafeAreaPadding.y = 4.f;
-        style.DisplayWindowPadding.x = 4.f;
-        style.DisplayWindowPadding.y = 4.f;
-
-        style.ItemSpacing.x = 4.f;
-        style.ItemSpacing.y = 12.f;
-        style.ItemInnerSpacing.x = 4.f;
-        style.ItemInnerSpacing.y = 4.f;
-        style.IndentSpacing = 4.f;
-        style.ColumnsMinSpacing = 4.f;
+        colors[ImGuiCol_TitleBg] = ImVec4(dark_color);
+        colors[ImGuiCol_Header] = ImVec4(bright_color);
     }
 }
