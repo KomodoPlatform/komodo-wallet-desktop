@@ -306,8 +306,8 @@ namespace atomic_dex {
         if (!mm2_system_.is_mm2_running()) {
             ImGui::Text("Loading, please wait...");
             const float radius = 30.0f;
-            ImVec2 position((ImGui::GetWindowSize().x) * 0.5f - radius * 2,
-                            (ImGui::GetWindowSize().y) * 0.5f - radius * 2);
+            ImVec2 position((ImGui::GetWindowSize().x) * 0.5f - radius,
+                            (ImGui::GetWindowSize().y) * 0.5f - radius);
             ImGui::SetCursorPos(position);
             atomic_dex::widgets::LoadingIndicatorCircle("foo", radius, ImVec4(bright_color), ImVec4(dark_color), 9,
                                                         1.5f);
