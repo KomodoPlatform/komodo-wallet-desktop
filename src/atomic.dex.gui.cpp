@@ -35,11 +35,6 @@ namespace {
     }
 }
 
-namespace {
-    static std::string curr_asset_code = "";
-    static int selected = 0;
-}
-
 // GUI Draw
 namespace {
     void gui_menubar() noexcept {
@@ -50,26 +45,26 @@ namespace {
         }
     }
 
-    void gui_portfolio_coins_list(atomic_dex::mm2 &mm2) noexcept {
+    void gui_portfolio_coins_list(atomic_dex::mm2 &mm2, atomic_dex::gui_variables& gui_vars) noexcept {
         ImGui::BeginChild("left pane", ImVec2(180, 0), true);
         int i = 0;
         auto assets_contents = mm2.get_enabled_coins();
         for (auto it = assets_contents.begin(); it != assets_contents.end(); ++it, ++i) {
             auto &asset = *it;
-            if (curr_asset_code == "") curr_asset_code = asset.ticker;
+            if (gui_vars.curr_asset_code == "") gui_vars.curr_asset_code = asset.ticker;
 //            ImGui::Image(icons.at(asset.ticker));
             //ImGui::SameLine();
-            if (ImGui::Selectable(asset.name.c_str(), selected == i)) {
-                selected = i;
-                curr_asset_code = asset.ticker;
+            if (ImGui::Selectable(asset.name.c_str(), gui_vars.selected == i)) {
+                gui_vars.selected = i;
+                gui_vars.curr_asset_code = asset.ticker;
             }
         }
         ImGui::EndChild();
     }
 
-    void gui_portfolio_coin_details(atomic_dex::mm2 &mm2, atomic_dex::coinpaprika_provider &paprika_system) noexcept {
+    void gui_portfolio_coin_details(atomic_dex::mm2 &mm2, atomic_dex::coinpaprika_provider &paprika_system, atomic_dex::gui_variables& gui_vars) noexcept {
         // Right
-        const auto curr_asset = mm2.get_coin_info(curr_asset_code);
+        const auto curr_asset = mm2.get_coin_info(gui_vars.curr_asset_code);
         ImGui::BeginChild("item view", ImVec2(0, -ImGui::GetFrameHeightWithSpacing()),
                           true); // Leave room for 1 line below us
         {
@@ -130,42 +125,66 @@ namespace {
         ImGui::EndChild();
     }
 
-    void gui_enable_coins() {
+    void gui_enable_coins(atomic_dex::mm2 &mm2, atomic_dex::gui_variables& gui_vars) {
         if (ImGui::Button("Enable a coin"))
             ImGui::OpenPopup("Enable coins");
 
         if (ImGui::BeginPopupModal("Enable coins", NULL, ImGuiWindowFlags_AlwaysAutoResize)) {
-            ImGui::Text("All those beautiful files will be deleted.\nThis operation cannot be undone!\n\n");
+            ImGui::Text("Select the coins you want to add to your portfolio.");
+
             ImGui::Separator();
 
-            static int dummy_i = 0;
-            ImGui::Combo("Combo", &dummy_i, "Delete\0Delete harder\0");
+            auto enableable_coins = mm2.get_enableable_coins();
+            auto& select_list = gui_vars.enableable_coins_select_list;
+            // Extend the size of selectables list if the new list is bigger
+            if(enableable_coins.size() > select_list.size()) {
+                select_list.resize(enableable_coins.size(), false);
+            }
 
-            static bool dont_ask_me_next_time = false;
-            ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(0, 0));
-            ImGui::Checkbox("Don't ask me next time", &dont_ask_me_next_time);
-            ImGui::PopStyleVar();
+            // Create the list
+            for(std::size_t i = 0; i < enableable_coins.size(); ++i) {
+                auto& coin = enableable_coins[i];
 
-            if (ImGui::Button("OK", ImVec2(120, 0))) { ImGui::CloseCurrentPopup(); }
-            ImGui::SetItemDefaultFocus();
+                if(ImGui::Selectable((coin.name + " (" + coin.ticker + ")").c_str(), select_list[i], ImGuiSelectableFlags_DontClosePopups))
+                    select_list[i] = !select_list[i];
+            }
+
+            bool close = false;
+            if (ImGui::Button("Enable", ImVec2(120, 0))) {
+                // Enable selected coins
+                for(std::size_t i = 0; i < enableable_coins.size(); ++i) {
+                    if(select_list[i])
+                        mm2.enable_coin(enableable_coins[i].ticker);
+                }
+                close = true;
+            }
+
             ImGui::SameLine();
-            if (ImGui::Button("Cancel", ImVec2(120, 0))) { ImGui::CloseCurrentPopup(); }
+
+            if(ImGui::Button("Cancel", ImVec2(120, 0))) close = true;
+
+            if(close) {
+                // Reset the list
+                std::fill(select_list.begin(), select_list.end(), false);
+                ImGui::CloseCurrentPopup();
+            }
+
             ImGui::EndPopup();
         }
     }
 
-    void gui_portfolio(atomic_dex::mm2 &mm2, atomic_dex::coinpaprika_provider &paprika_system) noexcept {
+    void gui_portfolio(atomic_dex::mm2 &mm2, atomic_dex::coinpaprika_provider &paprika_system, atomic_dex::gui_variables& gui_vars) noexcept {
         std::error_code ec;
         ImGui::Text("Total Balance: %s", usd_str(paprika_system.get_price_in_fiat_all("USD", ec)).c_str());
 
-        gui_enable_coins();
+        gui_enable_coins(mm2, gui_vars);
 
         // Left
-        gui_portfolio_coins_list(mm2);
+        gui_portfolio_coins_list(mm2, gui_vars);
 
         // Right
         ImGui::SameLine();
-        gui_portfolio_coin_details(mm2, paprika_system);
+        gui_portfolio_coin_details(mm2, paprika_system, gui_vars);
     }
 }
 
@@ -252,7 +271,7 @@ namespace atomic_dex {
 
         ImGui::SetNextWindowSize(ImVec2(x, y), ImGuiCond_Once);
         bool active = true;
-        ImGui::Begin("atomicDEX", &active, ImGuiWindowFlags_NoCollapse);
+        ImGui::Begin("atomicDEX", &active, ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_MenuBar);
         if (not active && mm2_system_.is_mm2_running()) { this->dispatcher_.trigger<ag::event::quit_game>(0); }
 
         if (!mm2_system_.is_mm2_running()) {
@@ -268,7 +287,7 @@ namespace atomic_dex {
 
             if (ImGui::BeginTabBar("##Tabs", ImGuiTabBarFlags_None)) {
                 if (ImGui::BeginTabItem("Portfolio")) {
-                    gui_portfolio(mm2_system_, paprika_system_);
+                    gui_portfolio(mm2_system_, paprika_system_, gui_vars_);
                     ImGui::EndTabItem();
                 }
                 if (ImGui::BeginTabItem("Trade")) {
