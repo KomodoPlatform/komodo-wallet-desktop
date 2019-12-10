@@ -58,7 +58,6 @@ namespace atomic_dex {
     class coinpaprika_provider final : public ag::ecs::pre_update_system<coinpaprika_provider> {
         //! use it like map.at(USD).at("BTC"); returns "8000" dollars for 1 btc
         using providers_registry = folly::ConcurrentHashMap<std::string, std::string>;
-        //using fiat_provider_registry = folly::ConcurrentHashMap<std::string, providers_registry>;
         providers_registry usd_rate_providers_{};
         providers_registry eur_rate_providers_{};
         std::unordered_set<std::string> supported_fiat_{"USD", "EUR"};
@@ -69,12 +68,14 @@ namespace atomic_dex {
 
         ~coinpaprika_provider() noexcept final;
 
+        std::string get_rate_conversion(const std::string& fiat, const std::string &ticker, std::error_code& ec) const noexcept;
+
         //! Fiat can be USD or EUR
         std::string get_price_in_fiat(const std::string& fiat, const std::string& ticker, std::error_code& ec) const noexcept;
 
         std::string get_price_in_fiat_all(const std::string& fiat, std::error_code& ec) const noexcept;
 
-        std::string get_price_in_fiat_from_tx(const std::string& fiat, const std::string& ticker, const tx_infos& tx, std::error_code& ec) const noexcept;;
+        std::string get_price_in_fiat_from_tx(const std::string& fiat, const std::string& ticker, const tx_infos& tx, std::error_code& ec) const noexcept;
 
         void on_mm2_started(const atomic_dex::mm2_started &evt) noexcept;
 

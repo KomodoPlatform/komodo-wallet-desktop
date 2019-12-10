@@ -89,20 +89,9 @@ namespace atomic_dex {
         } else if (instance_.get_coin_info(ticker).coinpaprika_id == "test-coin") {
             return "0.00";
         }
-        std::string price;
-        if (fiat == "USD") {
-            //! Do it as usd;
-            if (usd_rate_providers_.find(ticker) == usd_rate_providers_.cend()) {
-                ec = mm2_error::unknown_ticker_for_rate_conversion;
-                return "";
-            }
-            price = usd_rate_providers_.at(ticker);
-        } else if (fiat == "EUR") {
-            if (eur_rate_providers_.find(ticker) == eur_rate_providers_.cend()) {
-                ec = mm2_error::unknown_ticker_for_rate_conversion;
-                return "";
-            }
-            price = eur_rate_providers_.at(ticker);
+        std::string price = get_rate_conversion(fiat, ticker, ec);
+        if (ec) {
+            return "";
         }
         std::error_code t_ec;
         std::string amount = instance_.my_balance(ticker, t_ec);
@@ -114,7 +103,6 @@ namespace atomic_dex {
         bm::cpp_dec_float_50 price_f(price);
         bm::cpp_dec_float_50 amount_f(amount);
         auto final_price = price_f * amount_f;
-        LOG_F(INFO, "{} = {} * {}", final_price.convert_to<std::string>(), price_f.str(), amount_f.str());
         std::stringstream ss;
         ss.precision(2);
         ss << final_price;
@@ -150,6 +138,25 @@ namespace atomic_dex {
                                                                 const tx_infos &tx,
                                                                 std::error_code &ec) const noexcept {
         std::string amount = tx.am_i_sender ? tx.my_balance_change.substr(1) : tx.my_balance_change;
+        std::string current_price = get_rate_conversion(fiat, ticker, ec);
+        if (ec) {
+            return "";
+        }
+        bm::cpp_dec_float_50 amount_f(amount);
+        bm::cpp_dec_float_50 current_price_f(current_price);
+        auto final_price = amount_f * current_price_f;
+        std::stringstream ss;
+        ss.precision(2);
+        ss << final_price;
+        std::string final_price_str = ss.str();
+        if (tx.am_i_sender) {
+            final_price_str = "-" + final_price_str;
+        }
+        return final_price_str;
+    }
+
+    std::string coinpaprika_provider::get_rate_conversion(const std::string &fiat, const std::string &ticker,
+                                                          std::error_code &ec) const noexcept {
         std::string current_price;
         if (fiat == "USD") {
             //! Do it as usd;
@@ -165,18 +172,7 @@ namespace atomic_dex {
             }
             current_price = eur_rate_providers_.at(ticker);
         }
-        bm::cpp_dec_float_50 amount_f(amount);
-        bm::cpp_dec_float_50 current_price_f(current_price);
-        auto final_price = amount_f * current_price_f;
-        //LOG_F(INFO, "{} * {} = {}", amount_f.str(), current_price_f.str(), final_price.convert_to<std::string>());
-        std::stringstream ss;
-        ss.precision(2);
-        ss << final_price;
-        std::string final_price_str = ss.str();
-        if (tx.am_i_sender) {
-            final_price_str = "-" + final_price_str;
-        }
-        return final_price_str;
+        return current_price;
     }
 
     namespace coinpaprika::api {
