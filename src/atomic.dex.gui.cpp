@@ -263,6 +263,10 @@ namespace atomic_dex {
         init_live_coding();
         atomic_dex::style::apply();
         this->dispatcher_.sink<ag::event::key_pressed>().connect<&gui::on_key_pressed>(*this);
+
+        ImGuiIO &io = ImGui::GetIO();
+        io.ConfigViewportsNoAutoMerge = false;
+        io.ConfigViewportsNoDefaultParent = false;
     }
 
     void gui::update() noexcept {
