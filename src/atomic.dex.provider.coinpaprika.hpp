@@ -81,6 +81,7 @@ namespace atomic_dex {
                                               std::error_code &ec) const noexcept;
 
         void on_mm2_started(const atomic_dex::mm2_started &evt) noexcept;
+        void on_coin_enabled(const atomic_dex::coin_enabled &evt) noexcept;
 
         void update() noexcept final;
 

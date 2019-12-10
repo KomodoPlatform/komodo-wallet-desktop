@@ -41,6 +41,7 @@ namespace {
         std::ofstream ofs(cfg_path / "coins.json", std::ios::trunc);
         assert(ofs.is_open());
         ofs << config_json_data;
+
     }
 
     bool
@@ -135,11 +136,15 @@ namespace atomic_dex {
             return false;
         }
         coin_info.currently_enabled = true;
-        coin_info.active = true;
         coins_informations_.assign(coin_info.ticker, coin_info);
         if (not coin_info.active) {
             update_coin_status(ticker);
+            coin_info.active = true;
         }
+        this->dispatcher_.trigger<atomic_dex::coin_enabled>(ticker);
+        ::mm2::api::balance_request balance_request{.coin = ticker};
+        balance_informations_.insert_or_assign(ticker,
+                                               ::mm2::api::rpc_balance(std::move(balance_request)));
         return true;
     }
 

@@ -52,6 +52,7 @@ namespace atomic_dex {
             registry), instance_(mm2_instance) {
         disable();
         this->dispatcher_.sink<atomic_dex::mm2_started>().connect<&coinpaprika_provider::on_mm2_started>(*this);
+        this->dispatcher_.sink<atomic_dex::coin_enabled>().connect<&coinpaprika_provider::on_coin_enabled>(*this);
     }
 
     void coinpaprika_provider::update() noexcept {
@@ -96,8 +97,9 @@ namespace atomic_dex {
         std::error_code t_ec;
         std::string amount = instance_.my_balance(ticker, t_ec);
         if (t_ec) {
+            ec = t_ec;
             LOG_F(ERROR, "my_balance error: {}", t_ec.message());
-            return "";
+            return "0.00";
         }
 
         bm::cpp_dec_float_50 price_f(price);
@@ -126,8 +128,10 @@ namespace atomic_dex {
                 ec.clear(); //! Reset
                 continue;
             }
-            current_price_f = bm::cpp_dec_float_50(current_price);
-            final_price_f += current_price_f;
+            if (not current_price.empty()) {
+                current_price_f = bm::cpp_dec_float_50(current_price);
+                final_price_f += current_price_f;
+            }
         }
         std::stringstream ss;
         ss.precision(2);
@@ -139,6 +143,7 @@ namespace atomic_dex {
                                                                 const std::string &ticker,
                                                                 const tx_infos &tx,
                                                                 std::error_code &ec) const noexcept {
+        if (instance_.get_coin_info(ticker).coinpaprika_id == "test-coin") return "0.00";
         std::string amount = tx.am_i_sender ? tx.my_balance_change.substr(1) : tx.my_balance_change;
         std::string current_price = get_rate_conversion(fiat, ticker, ec);
         if (ec) {
@@ -175,6 +180,12 @@ namespace atomic_dex {
             current_price = eur_rate_providers_.at(ticker);
         }
         return current_price;
+    }
+
+    void coinpaprika_provider::on_coin_enabled(const atomic_dex::coin_enabled &evt) noexcept {
+        auto config = instance_.get_coin_info(evt.ticker);
+        process_provider(config, usd_rate_providers_, "usd-us-dollars");
+        process_provider(config, eur_rate_providers_, "eur-euro");
     }
 
     namespace coinpaprika::api {
