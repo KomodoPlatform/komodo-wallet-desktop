@@ -321,11 +321,7 @@ namespace atomic_dex {
         auto &canvas = entity_registry_.ctx<ag::graphics::canvas_2d>();
         auto[x, y] = canvas.window.size;
 
-#if defined(ENABLE_CODE_RELOAD_UNIX)
-        ImGui::SetNextWindowSize(ImVec2(1920 / 2, 1080 / 2), ImGuiCond_Once);
-#else
         ImGui::SetNextWindowSize(ImVec2(x, y), ImGuiCond_Once);
-#endif
         bool active = true;
         ImGui::Begin("atomicDEX", &active, ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_MenuBar);
         if (not active && mm2_system_.is_mm2_running()) { this->dispatcher_.trigger<ag::event::quit_game>(0); }
