@@ -114,6 +114,7 @@ namespace atomic_dex {
         bm::cpp_dec_float_50 price_f(price);
         bm::cpp_dec_float_50 amount_f(amount);
         auto final_price = price_f * amount_f;
+        LOG_F(INFO, "{} = {} * {}", final_price.convert_to<std::string>(), price_f.str(), amount_f.str());
         std::stringstream ss;
         ss.precision(2);
         ss << final_price;
@@ -149,14 +150,25 @@ namespace atomic_dex {
                                                                 const tx_infos &tx,
                                                                 std::error_code &ec) const noexcept {
         std::string amount = tx.am_i_sender ? tx.my_balance_change.substr(1) : tx.my_balance_change;
-        std::string current_price = get_price_in_fiat(fiat, ticker, ec);
-        if (ec) {
-            LOG_F(WARNING, "error when converting {} to {}, err: {}", ticker, fiat, ec.message());
-            return "0";
+        std::string current_price;
+        if (fiat == "USD") {
+            //! Do it as usd;
+            if (usd_rate_providers_.find(ticker) == usd_rate_providers_.cend()) {
+                ec = mm2_error::unknown_ticker_for_rate_conversion;
+                return "";
+            }
+            current_price = usd_rate_providers_.at(ticker);
+        } else if (fiat == "EUR") {
+            if (eur_rate_providers_.find(ticker) == eur_rate_providers_.cend()) {
+                ec = mm2_error::unknown_ticker_for_rate_conversion;
+                return "";
+            }
+            current_price = eur_rate_providers_.at(ticker);
         }
         bm::cpp_dec_float_50 amount_f(amount);
         bm::cpp_dec_float_50 current_price_f(current_price);
         auto final_price = amount_f * current_price_f;
+        //LOG_F(INFO, "{} * {} = {}", amount_f.str(), current_price_f.str(), final_price.convert_to<std::string>());
         std::stringstream ss;
         ss.precision(2);
         ss << final_price;
