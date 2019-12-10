@@ -130,35 +130,59 @@ namespace {
         ImGui::EndChild();
     }
 
-    void gui_enable_coins() {
+    void gui_enable_coins(atomic_dex::mm2 &mm2, std::vector<bool>& enableable_coins_select_list) {
         if (ImGui::Button("Enable a coin"))
             ImGui::OpenPopup("Enable coins");
 
         if (ImGui::BeginPopupModal("Enable coins", NULL, ImGuiWindowFlags_AlwaysAutoResize)) {
-            ImGui::Text("All those beautiful files will be deleted.\nThis operation cannot be undone!\n\n");
+            ImGui::Text("Select the coins you want to add to your portfolio.");
+
             ImGui::Separator();
 
-            static int dummy_i = 0;
-            ImGui::Combo("Combo", &dummy_i, "Delete\0Delete harder\0");
+            auto enableable_coins = mm2.get_enableable_coins();
 
-            static bool dont_ask_me_next_time = false;
-            ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(0, 0));
-            ImGui::Checkbox("Don't ask me next time", &dont_ask_me_next_time);
-            ImGui::PopStyleVar();
+            // Extend the size of selectables list if the new list is bigger
+            if(enableable_coins.size() > enableable_coins_select_list.size()) {
+                enableable_coins_select_list.resize(enableable_coins.size(), false);
+            }
 
-            if (ImGui::Button("OK", ImVec2(120, 0))) { ImGui::CloseCurrentPopup(); }
-            ImGui::SetItemDefaultFocus();
+            // Create the list
+            for(std::size_t i = 0; i < enableable_coins.size(); ++i) {
+                auto& coin = enableable_coins[i];
+
+                if(ImGui::Selectable((coin.name + " (" + coin.ticker + ")").c_str(), enableable_coins_select_list[i], ImGuiSelectableFlags_DontClosePopups))
+                    enableable_coins_select_list[i] = !enableable_coins_select_list[i];
+            }
+
+            bool close = false;
+            if (ImGui::Button("Enable", ImVec2(120, 0))) {
+                // Enable selected coins
+                for(std::size_t i = 0; i < enableable_coins.size(); ++i) {
+                    if(enableable_coins_select_list[i])
+                        mm2.enable_coin(enableable_coins[i].ticker);
+                }
+                close = true;
+            }
+
             ImGui::SameLine();
-            if (ImGui::Button("Cancel", ImVec2(120, 0))) { ImGui::CloseCurrentPopup(); }
+
+            if(ImGui::Button("Cancel", ImVec2(120, 0))) close = true;
+
+            if(close) {
+                // Reset the list
+                std::fill(enableable_coins_select_list.begin(), enableable_coins_select_list.end(), false);
+                ImGui::CloseCurrentPopup();
+            }
+
             ImGui::EndPopup();
         }
     }
 
-    void gui_portfolio(atomic_dex::mm2 &mm2, atomic_dex::coinpaprika_provider &paprika_system) noexcept {
+    void gui_portfolio(atomic_dex::mm2 &mm2, atomic_dex::coinpaprika_provider &paprika_system, std::vector<bool>& enableable_coins_select_list) noexcept {
         std::error_code ec;
         ImGui::Text("Total Balance: %s", usd_str(paprika_system.get_price_in_fiat_all("USD", ec)).c_str());
 
-        gui_enable_coins();
+        gui_enable_coins(mm2, enableable_coins_select_list);
 
         // Left
         gui_portfolio_coins_list(mm2);
@@ -268,7 +292,7 @@ namespace atomic_dex {
 
             if (ImGui::BeginTabBar("##Tabs", ImGuiTabBarFlags_None)) {
                 if (ImGui::BeginTabItem("Portfolio")) {
-                    gui_portfolio(mm2_system_, paprika_system_);
+                    gui_portfolio(mm2_system_, paprika_system_, enableable_coins_select_list_);
                     ImGui::EndTabItem();
                 }
                 if (ImGui::BeginTabItem("Trade")) {

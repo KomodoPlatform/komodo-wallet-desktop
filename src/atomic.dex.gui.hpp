@@ -51,6 +51,7 @@ namespace atomic_dex {
         void update_live_coding();
 
     private:
+        std::vector<bool> enableable_coins_select_list_;
         atomic_dex::mm2& mm2_system_;
         atomic_dex::coinpaprika_provider& paprika_system_;
     };
