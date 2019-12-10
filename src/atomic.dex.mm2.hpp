@@ -26,6 +26,7 @@
 #include "atomic.dex.mm2.api.hpp"
 #include "atomic.dex.utilities.hpp"
 #include "atomic.dex.mm2.error.code.hpp"
+#include "atomic.dex.events.hpp"
 
 namespace atomic_dex {
     namespace ag = antara::gaming;
@@ -74,6 +75,8 @@ namespace atomic_dex {
         void process_balance(const std::string& ticker) noexcept;
 
     public:
+        void on_gui_enter_trading(const gui_enter_trading& evt) noexcept;
+        void on_gui_leave_trading(const gui_leave_trading& evt) noexcept;
         bool enable_default_coins() noexcept;
 
         bool enable_coin(const std::string &ticker) noexcept;

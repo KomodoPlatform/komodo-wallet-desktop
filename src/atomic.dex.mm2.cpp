@@ -63,6 +63,8 @@ namespace {
 
 namespace atomic_dex {
     mm2::mm2(entt::registry &registry) noexcept : system(registry) {
+        this->dispatcher_.sink<atomic_dex::gui_enter_trading>().connect<&mm2::on_gui_enter_trading>(*this);
+        this->dispatcher_.sink<atomic_dex::gui_leave_trading>().connect<&mm2::on_gui_leave_trading>(*this);
         retrieve_coins_information(coins_informations_);
         spawn_mm2_instance();
     }
@@ -311,5 +313,13 @@ namespace atomic_dex {
         ::mm2::api::balance_request balance_request{.coin = ticker};
         balance_informations_.insert_or_assign(ticker,
                                                ::mm2::api::rpc_balance(std::move(balance_request)));
+    }
+
+    void mm2::on_gui_enter_trading([[maybe_unused]] const gui_enter_trading &evt) noexcept {
+        this->orderbook_thread_active = true;
+    }
+
+    void mm2::on_gui_leave_trading([[maybe_unused]] const gui_leave_trading &evt) noexcept {
+        this->orderbook_thread_active = false;
     }
 }
