@@ -210,6 +210,41 @@ namespace mm2::api {
 
     send_raw_transaction_answer rpc_send_raw_transaction(send_raw_transaction_request &&request);
 
+    struct orderbook_request {
+        std::string base;
+        std::string rel;
+    };
+
+    struct order_contents
+    {
+        std::string ticker;
+        std::string address;
+        std::string price;
+        std::string maxvolume;
+        std::string pubkey;
+        std::size_t age;
+        std::size_t credits;
+    };
+
+
+    struct orderbook_answer {
+        std::size_t askdepth;
+        std::size_t biddepth;
+        std::vector<order_contents> asks;
+        std::vector<order_contents> bids;
+        std::string base;
+        std::string rel;
+        std::size_t numasks;
+        std::size_t numbids;
+        std::size_t timestamp;
+        std::size_t netid;
+        std::string human_timestamp; //! Moment of the orderbook request human readeable
+
+        //! Internal
+        std::string raw_result;
+        int rpc_result_code;
+    };
+
     template<typename RpcReturnType>
     static RpcReturnType rpc_process_answer(const RestClient::Response &resp) noexcept;
 }
