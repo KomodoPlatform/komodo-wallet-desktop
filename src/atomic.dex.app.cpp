@@ -52,6 +52,7 @@ namespace atomic_dex {
 
 #if defined(ATOMIC_DEX_SDL)
         auto &graphic_system = system_manager_.create_system<ag::sdl::graphic_system>();
+        graphic_system.set_framerate_limit(30);
         system_manager_.create_system<ag::sdl::input_system>(graphic_system.get_window());
 #endif
 
