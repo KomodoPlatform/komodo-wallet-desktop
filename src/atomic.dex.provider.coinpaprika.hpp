@@ -68,14 +68,17 @@ namespace atomic_dex {
 
         ~coinpaprika_provider() noexcept final;
 
-        std::string get_rate_conversion(const std::string& fiat, const std::string &ticker, std::error_code& ec) const noexcept;
+        std::string
+        get_rate_conversion(const std::string &fiat, const std::string &ticker, std::error_code &ec) const noexcept;
 
         //! Fiat can be USD or EUR
-        std::string get_price_in_fiat(const std::string& fiat, const std::string& ticker, std::error_code& ec) const noexcept;
+        std::string get_price_in_fiat(const std::string &fiat, const std::string &ticker, std::error_code &ec,
+                                      bool skip_precision = false) const noexcept;
 
-        std::string get_price_in_fiat_all(const std::string& fiat, std::error_code& ec) const noexcept;
+        std::string get_price_in_fiat_all(const std::string &fiat, std::error_code &ec) const noexcept;
 
-        std::string get_price_in_fiat_from_tx(const std::string& fiat, const std::string& ticker, const tx_infos& tx, std::error_code& ec) const noexcept;
+        std::string get_price_in_fiat_from_tx(const std::string &fiat, const std::string &ticker, const tx_infos &tx,
+                                              std::error_code &ec) const noexcept;
 
         void on_mm2_started(const atomic_dex::mm2_started &evt) noexcept;
 

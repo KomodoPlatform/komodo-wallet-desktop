@@ -82,7 +82,7 @@ namespace atomic_dex {
     }
 
     std::string coinpaprika_provider::get_price_in_fiat(const std::string &fiat, const std::string &ticker,
-                                                        std::error_code &ec) const noexcept {
+                                                        std::error_code &ec, bool skip_precision) const noexcept {
         if (!supported_fiat_.count(fiat)) {
             ec = mm2_error::invalid_fiat_for_rate_conversion;
             return "";
@@ -104,7 +104,9 @@ namespace atomic_dex {
         bm::cpp_dec_float_50 amount_f(amount);
         auto final_price = price_f * amount_f;
         std::stringstream ss;
-        ss.precision(2);
+        if (not skip_precision) {
+            ss.precision(2);
+        }
         ss << final_price;
         return ss.str();
     }
@@ -118,7 +120,7 @@ namespace atomic_dex {
         for (auto &&current_coin : coins) {
             if (current_coin.coinpaprika_id == "test-coin")
                 continue;
-            current_price = get_price_in_fiat(fiat, current_coin.ticker, ec);
+            current_price = get_price_in_fiat(fiat, current_coin.ticker, ec, true);
             if (ec) {
                 LOG_F(WARNING, "error when converting {} to {}, err: {}", current_coin.ticker, fiat, ec.message());
                 ec.clear(); //! Reset
