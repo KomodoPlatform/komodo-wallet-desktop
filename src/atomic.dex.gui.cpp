@@ -61,7 +61,9 @@ namespace {
         ImGui::EndChild();
     }
 
-    void gui_transaction_details_modal(bool open_modal) {
+    void gui_transaction_details_modal(atomic_dex::coinpaprika_provider &paprika_system, bool open_modal, const atomic_dex::coin_config& curr_asset, const atomic_dex::tx_infos& tx) {
+        ImGui::PushID(tx.tx_hash.c_str());
+
         if(open_modal) ImGui::OpenPopup("Transaction Details");
 
         if (ImGui::BeginPopupModal("Transaction Details", NULL, ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoMove)) {
@@ -69,8 +71,28 @@ namespace {
                 ImGui::CloseCurrentPopup();
             }
 
+            std::error_code ec;
+            ImGui::Text("%s", tx.am_i_sender ? "Sent" : "Received");
+            ImGui::SameLine(300);
+            ImGui::TextColored(
+                    ImVec4(tx.am_i_sender ? ImVec4(1, 52.f / 255.f, 0, 1.f) : ImVec4(80.f / 255.f, 1,
+                                                                                     118.f / 255.f,
+                                                                                     1.f)),
+                    "%s%s %s", tx.am_i_sender ? "-" : "+", tx.my_balance_change.c_str(),
+                    curr_asset.ticker.c_str());
+            ImGui::TextColored(ImVec4(128.f / 255.f, 128.f / 255.f, 128.f / 255.f, 1.f), "%s",
+                               tx.am_i_sender ? tx.to[0].c_str() : tx.from[0].c_str());
+            ImGui::SameLine(300);
+            ImGui::TextColored(ImVec4(128.f / 255.f, 128.f / 255.f, 128.f / 255.f, 1.f), "%s",
+                               usd_str(paprika_system.get_price_in_fiat_from_tx("USD",
+                                                                                curr_asset.ticker, tx,
+                                                                                ec)).c_str());
+
+
             ImGui::EndPopup();
         }
+
+        ImGui::PopID();
     }
 
     void gui_portfolio_coin_details(atomic_dex::mm2 &mm2, atomic_dex::coinpaprika_provider &paprika_system, atomic_dex::gui_variables& gui_vars) noexcept {
@@ -94,9 +116,9 @@ namespace {
                     if (tx_history.size() > 0) {
                         for (std::size_t i = 0; i < tx_history.size(); ++i) {
                             bool open_modal = false;
-                            ImGui::BeginChild("tx details");
+                            auto &tx = tx_history[i];
+                            ImGui::BeginGroup();
                             {
-                                auto &tx = tx_history[i];
                                 ImGui::Text("%s", tx.am_i_sender ? "Sent" : "Received");
                                 ImGui::SameLine(300);
                                 ImGui::TextColored(
@@ -113,13 +135,13 @@ namespace {
                                                                                                     curr_asset.ticker, tx,
                                                                                                     ec)).c_str());
                             }
-                            ImGui::EndChild();
+                            ImGui::EndGroup();
                             if(ImGui::IsItemClicked()) {
                                 open_modal = true;
                             }
 
                             // Transaction Details modal
-                            gui_transaction_details_modal(open_modal);
+                            gui_transaction_details_modal(paprika_system, open_modal, curr_asset, tx);
 
                             if (i != tx_history.size() - 1) ImGui::Separator();
                         }
