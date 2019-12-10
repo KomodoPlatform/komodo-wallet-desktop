@@ -19,6 +19,7 @@
 #include <antara/gaming/graphics/component.canvas.hpp>
 #include <antara/gaming/event/quit.game.hpp>
 #include <antara/gaming/event/key.pressed.hpp>
+#include <antara/gaming/core/open.url.browser.hpp>
 #include <IconsFontAwesome5.h>
 #include "atomic.dex.gui.hpp"
 #include "atomic.dex.gui.widgets.hpp"
@@ -27,6 +28,7 @@
 namespace fs = std::filesystem;
 // Helpers
 namespace {
+    ImVec4 value_color(128.f / 255.f, 128.f / 255.f, 128.f / 255.f, 1.f);
     ImVec4 bright_color{0, 149.f / 255.f, 143.f / 255.f, 1};
     ImVec4 dark_color{25.f / 255.f, 40.f / 255.f, 56.f / 255.f, 1};
 
@@ -70,27 +72,66 @@ namespace {
         if(open_modal) ImGui::OpenPopup("Transaction Details");
 
         if (ImGui::BeginPopupModal("Transaction Details", NULL, ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoMove)) {
-            if(ImGui::Button("Cancel", ImVec2(120, 0))) {
-                ImGui::CloseCurrentPopup();
-            }
-
             std::error_code ec;
+
+            ImGui::Separator();
+
             ImGui::Text("%s", tx.am_i_sender ? "Sent" : "Received");
-            ImGui::SameLine(300);
             ImGui::TextColored(
                     ImVec4(tx.am_i_sender ? ImVec4(1, 52.f / 255.f, 0, 1.f) : ImVec4(80.f / 255.f, 1,
                                                                                      118.f / 255.f,
                                                                                      1.f)),
                     "%s%s %s", tx.am_i_sender ? "-" : "+", tx.my_balance_change.c_str(),
                     curr_asset.ticker.c_str());
-            ImGui::TextColored(ImVec4(128.f / 255.f, 128.f / 255.f, 128.f / 255.f, 1.f), "%s",
-                               tx.am_i_sender ? tx.to[0].c_str() : tx.from[0].c_str());
             ImGui::SameLine(300);
-            ImGui::TextColored(ImVec4(128.f / 255.f, 128.f / 255.f, 128.f / 255.f, 1.f), "%s",
-                               usd_str(paprika_system.get_price_in_fiat_from_tx("USD",
-                                                                                curr_asset.ticker, tx,
-                                                                                ec)).c_str());
+            ImGui::TextColored(value_color, "%s", usd_str(paprika_system.get_price_in_fiat_from_tx("USD", curr_asset.ticker, tx, ec)).c_str());
 
+            ImGui::Separator();
+
+            ImGui::Text("Date");
+            ImGui::TextColored(value_color, "%s", tx.date.c_str());
+
+            ImGui::Separator();
+
+            ImGui::Text("From");
+            for(auto& addr : tx.from)
+                ImGui::TextColored(value_color, "%s", addr.c_str());
+
+            ImGui::Separator();
+
+            ImGui::Text("To");
+            for(auto& addr : tx.to)
+                ImGui::TextColored(value_color, "%s", addr.c_str());
+
+            ImGui::Separator();
+
+            ImGui::Text("Fees");
+            ImGui::TextColored(value_color, "%s", tx.fees.c_str());
+
+            ImGui::Separator();
+
+            ImGui::Text("Transaction Hash");
+            ImGui::TextColored(value_color, "%s", tx.tx_hash.c_str());
+
+            ImGui::Separator();
+
+            ImGui::Text("Block Height");
+            ImGui::TextColored(value_color, "%s", std::to_string(tx.block_height).c_str());
+
+            ImGui::Separator();
+
+            ImGui::Text("Confirmations");
+            ImGui::TextColored(value_color, "%s", std::to_string(tx.confirmations).c_str());
+
+            ImGui::Separator();
+
+            if(ImGui::Button("Close"))
+                ImGui::CloseCurrentPopup();
+
+            ImGui::SameLine();
+
+            if(ImGui::Button("View in Explorer"))
+                antara::gaming::core::open_url_browser(curr_asset.explorer_url[0] + "tx/" + tx.tx_hash);
 
             ImGui::EndPopup();
         }
@@ -130,10 +171,10 @@ namespace {
                                                                                                          1.f)),
                                         "%s%s %s", tx.am_i_sender ? "-" : "+", tx.my_balance_change.c_str(),
                                         curr_asset.ticker.c_str());
-                                ImGui::TextColored(ImVec4(128.f / 255.f, 128.f / 255.f, 128.f / 255.f, 1.f), "%s",
+                                ImGui::TextColored(value_color, "%s",
                                                    tx.am_i_sender ? tx.to[0].c_str() : tx.from[0].c_str());
                                 ImGui::SameLine(300);
-                                ImGui::TextColored(ImVec4(128.f / 255.f, 128.f / 255.f, 128.f / 255.f, 1.f), "%s",
+                                ImGui::TextColored(value_color, "%s",
                                                    usd_str(paprika_system.get_price_in_fiat_from_tx("USD",
                                                                                                     curr_asset.ticker, tx,
                                                                                                     ec)).c_str());
@@ -196,7 +237,7 @@ namespace {
 
             bool close = false;
             if(enableable_coins.empty()) {
-                if(ImGui::Button("Okay")) close = true;
+                if(ImGui::Button("Close")) close = true;
             }
             else {
                 if (ImGui::Button("Enable", ImVec2(120, 0))) {
