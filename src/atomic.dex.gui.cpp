@@ -316,14 +316,30 @@ namespace atomic_dex {
             gui_menubar();
 
             if (ImGui::BeginTabBar("##Tabs", ImGuiTabBarFlags_None)) {
+                static bool in_trade_prev = false;
+                bool in_trade = false;
+
                 if (ImGui::BeginTabItem("Portfolio")) {
                     gui_portfolio(mm2_system_, paprika_system_, gui_vars_);
                     ImGui::EndTabItem();
                 }
                 if (ImGui::BeginTabItem("Trade")) {
+                    in_trade = true;
+
                     ImGui::Text("Work in progress");
                     ImGui::EndTabItem();
                 }
+
+                // If entered trade,
+                if(!in_trade_prev && in_trade) {
+                    this->dispatcher_.trigger<atomic_dex::gui_enter_trading>();
+                    std::cout << "enter trading" << std::endl;
+                }
+                else if(in_trade_prev && !in_trade){
+                    this->dispatcher_.trigger<atomic_dex::gui_leave_trading>();
+                    std::cout << "leave trading" << std::endl;
+                }
+                in_trade_prev = in_trade;
 
                 ImGui::EndTabBar();
             }
