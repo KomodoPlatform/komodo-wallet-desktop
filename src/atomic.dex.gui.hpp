@@ -35,7 +35,6 @@ namespace atomic_dex {
     struct gui_variables {
         std::vector<bool> enableable_coins_select_list;
         std::string curr_asset_code = "";
-        int selected = 0;
     };
 
     class gui final : public ag::ecs::post_update_system<gui> {
