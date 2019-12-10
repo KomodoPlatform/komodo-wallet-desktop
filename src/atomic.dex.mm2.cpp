@@ -142,9 +142,7 @@ namespace atomic_dex {
             coin_info.active = true;
         }
         this->dispatcher_.trigger<atomic_dex::coin_enabled>(ticker);
-        ::mm2::api::balance_request balance_request{.coin = ticker};
-        balance_informations_.insert_or_assign(ticker,
-                                               ::mm2::api::rpc_balance(std::move(balance_request)));
+        process_balance(ticker);
         return true;
     }
 
@@ -190,9 +188,7 @@ namespace atomic_dex {
             DVLOG_F(loguru::Verbosity_INFO, "Fetching coins balance");
             coins = get_enabled_coins();
             for (auto &&current_coin : coins) {
-                ::mm2::api::balance_request request{.coin = current_coin.ticker};
-                balance_informations_.insert_or_assign(current_coin.ticker,
-                                                       ::mm2::api::rpc_balance(std::move(request)));
+                process_balance(current_coin.ticker);
                 ::mm2::api::tx_history_request tx_request{.coin = current_coin.ticker, .limit = 50};
                 auto answer = ::mm2::api::rpc_my_tx_history(std::move(tx_request));
                 if (answer.error.has_value()) {
@@ -309,5 +305,11 @@ namespace atomic_dex {
             ec = mm2_error::rpc_send_raw_transaction_error;
         }
         return result;
+    }
+
+    void mm2::process_balance(const std::string &ticker) noexcept {
+        ::mm2::api::balance_request balance_request{.coin = ticker};
+        balance_informations_.insert_or_assign(ticker,
+                                               ::mm2::api::rpc_balance(std::move(balance_request)));
     }
 }

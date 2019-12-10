@@ -86,13 +86,13 @@ namespace atomic_dex {
                                                         std::error_code &ec, bool skip_precision) const noexcept {
         if (!supported_fiat_.count(fiat)) {
             ec = mm2_error::invalid_fiat_for_rate_conversion;
-            return "";
+            return "0.00";
         } else if (instance_.get_coin_info(ticker).coinpaprika_id == "test-coin") {
             return "0.00";
         }
         std::string price = get_rate_conversion(fiat, ticker, ec);
         if (ec) {
-            return "";
+            return "0.00";
         }
         std::error_code t_ec;
         std::string amount = instance_.my_balance(ticker, t_ec);
@@ -110,7 +110,7 @@ namespace atomic_dex {
             ss.precision(2);
         }
         ss << final_price;
-        return ss.str();
+        return ss.str() == "0" ? "0.00" : ss.str();
     }
 
     std::string
@@ -147,7 +147,7 @@ namespace atomic_dex {
         std::string amount = tx.am_i_sender ? tx.my_balance_change.substr(1) : tx.my_balance_change;
         std::string current_price = get_rate_conversion(fiat, ticker, ec);
         if (ec) {
-            return "";
+            return "0.00";
         }
         bm::cpp_dec_float_50 amount_f(amount);
         bm::cpp_dec_float_50 current_price_f(current_price);
@@ -169,13 +169,13 @@ namespace atomic_dex {
             //! Do it as usd;
             if (usd_rate_providers_.find(ticker) == usd_rate_providers_.cend()) {
                 ec = mm2_error::unknown_ticker_for_rate_conversion;
-                return "";
+                return "0.00";
             }
             current_price = usd_rate_providers_.at(ticker);
         } else if (fiat == "EUR") {
             if (eur_rate_providers_.find(ticker) == eur_rate_providers_.cend()) {
                 ec = mm2_error::unknown_ticker_for_rate_conversion;
-                return "";
+                return "0.00";
             }
             current_price = eur_rate_providers_.at(ticker);
         }
