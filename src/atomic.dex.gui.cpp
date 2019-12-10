@@ -320,7 +320,7 @@ namespace atomic_dex {
 
         ImGui::SetNextWindowSize(ImVec2(x, y), ImGuiCond_Once);
         bool active = true;
-        ImGui::Begin("atomicDEX", &active, ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_MenuBar | ImGuiWindowFlags_NoResize);
+        ImGui::Begin("atomicDEX", &active, ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_MenuBar);
         if (not active && mm2_system_.is_mm2_running()) { this->dispatcher_.trigger<ag::event::quit_game>(0); }
         ImGuiIO &io = ImGui::GetIO();
         io.ConfigViewportsNoAutoMerge = false;
