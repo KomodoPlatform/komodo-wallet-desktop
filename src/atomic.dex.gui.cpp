@@ -76,8 +76,7 @@ namespace {
     void gui_portfolio_coin_details(atomic_dex::mm2 &mm2, atomic_dex::coinpaprika_provider &paprika_system, atomic_dex::gui_variables& gui_vars) noexcept {
         // Right
         const auto curr_asset = mm2.get_coin_info(gui_vars.curr_asset_code);
-        ImGui::BeginChild("item view", ImVec2(0, -ImGui::GetFrameHeightWithSpacing()),
-                          true); // Leave room for 1 line below us
+        ImGui::BeginChild("item view", ImVec2(0, 0), true);
         {
             ImGui::TextWrapped("%s", curr_asset.name.c_str());
             ImGui::Separator();
