@@ -61,7 +61,8 @@ namespace {
         ImGui::EndChild();
     }
 
-    void gui_transaction_details_modal(bool open_modal) {
+    void gui_transaction_details_modal(atomic_dex::coinpaprika_provider &paprika_system, bool open_modal, const atomic_dex::coin_config& curr_asset, const atomic_dex::tx_infos& tx) {
+        ImGui::PushID(tx.tx_hash.c_str());
 
         if(open_modal) ImGui::OpenPopup("Transaction Details");
 
