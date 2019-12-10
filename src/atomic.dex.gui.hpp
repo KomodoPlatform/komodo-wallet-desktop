@@ -33,6 +33,7 @@ namespace atomic_dex {
     namespace ag = antara::gaming;
 
     struct gui_variables {
+        ImVec2 main_window_size;
         std::vector<bool> enableable_coins_select_list;
         std::string curr_asset_code = "";
     };
