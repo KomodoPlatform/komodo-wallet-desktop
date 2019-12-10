@@ -44,7 +44,7 @@ FetchContent_Declare(
 if (UNIX)
     FetchContent_Declare(
             jetlive
-            URL https://github.com/ddovod/jet-live/archive/macos_10.15.zip
+            URL https://github.com/ddovod/jet-live/archive/master.zip
     )
 endif ()
 

@@ -38,8 +38,6 @@ namespace atomic_dex {
     };
 
     class gui final : public ag::ecs::post_update_system<gui> {
-        void reload_code();
-
 #if defined(ENABLE_CODE_RELOAD_UNIX)
         std::unique_ptr<jet::Live> live_{nullptr};
 #endif
@@ -52,7 +50,7 @@ namespace atomic_dex {
         void update() noexcept final;
 
         void init_live_coding();
-
+        void reload_code();
         void update_live_coding();
 
     private:

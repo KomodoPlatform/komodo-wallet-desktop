@@ -37,10 +37,13 @@ namespace {
 
 // GUI Draw
 namespace {
-    void gui_menubar() noexcept {
+    void gui_menubar([[maybe_unused]] atomic_dex::gui& system) noexcept {
         if (ImGui::BeginMenuBar()) {
             if (ImGui::MenuItem("Open", "Ctrl+O")) { /* Do stuff */ }
             if (ImGui::MenuItem("Settings", "Ctrl+O")) { /* Do stuff */ }
+#if defined(ENABLE_CODE_RELOAD_UNIX)
+            if (ImGui::MenuItem("Code Reloading", "Ctrl+O")) { system.reload_code(); }
+#endif
             ImGui::EndMenuBar();
         }
     }
@@ -318,7 +321,11 @@ namespace atomic_dex {
         auto &canvas = entity_registry_.ctx<ag::graphics::canvas_2d>();
         auto[x, y] = canvas.window.size;
 
+#if defined(ENABLE_CODE_RELOAD_UNIX)
+        ImGui::SetNextWindowSize(ImVec2(1920 / 2, 1080 / 2), ImGuiCond_Once);
+#else
         ImGui::SetNextWindowSize(ImVec2(x, y), ImGuiCond_Once);
+#endif
         bool active = true;
         ImGui::Begin("atomicDEX", &active, ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_MenuBar | ImGuiWindowFlags_NoResize);
         if (not active && mm2_system_.is_mm2_running()) { this->dispatcher_.trigger<ag::event::quit_game>(0); }
@@ -334,7 +341,7 @@ namespace atomic_dex {
             atomic_dex::widgets::LoadingIndicatorCircle("foo", radius, ImVec4(bright_color), ImVec4(dark_color), 9,
                                                         1.5f);
         } else {
-            gui_menubar();
+            gui_menubar(*this);
 
             if (ImGui::BeginTabBar("##Tabs", ImGuiTabBarFlags_None)) {
                 static bool in_trade_prev = false;

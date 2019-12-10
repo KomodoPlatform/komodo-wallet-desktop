@@ -316,10 +316,12 @@ namespace atomic_dex {
     }
 
     void mm2::on_gui_enter_trading([[maybe_unused]] const gui_enter_trading &evt) noexcept {
+        LOG_SCOPE_FUNCTION(INFO);
         this->orderbook_thread_active = true;
     }
 
     void mm2::on_gui_leave_trading([[maybe_unused]] const gui_leave_trading &evt) noexcept {
+        LOG_SCOPE_FUNCTION(INFO);
         this->orderbook_thread_active = false;
     }
 }
