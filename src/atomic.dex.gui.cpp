@@ -76,8 +76,7 @@ namespace {
     void gui_portfolio_coin_details(atomic_dex::mm2 &mm2, atomic_dex::coinpaprika_provider &paprika_system, atomic_dex::gui_variables& gui_vars) noexcept {
         // Right
         const auto curr_asset = mm2.get_coin_info(gui_vars.curr_asset_code);
-        ImGui::BeginChild("item view", ImVec2(0, -ImGui::GetFrameHeightWithSpacing()),
-                          true); // Leave room for 1 line below us
+        ImGui::BeginChild("item view", ImVec2(0, 0), true);
         {
             ImGui::TextWrapped("%s", curr_asset.name.c_str());
             ImGui::Separator();
@@ -299,7 +298,7 @@ namespace atomic_dex {
 
         ImGui::SetNextWindowSize(ImVec2(x, y), ImGuiCond_Once);
         bool active = true;
-        ImGui::Begin("atomicDEX", &active, ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_MenuBar);
+        ImGui::Begin("atomicDEX", &active, ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_MenuBar | ImGuiWindowFlags_NoResize);
         if (not active && mm2_system_.is_mm2_running()) { this->dispatcher_.trigger<ag::event::quit_game>(0); }
         ImGuiIO &io = ImGui::GetIO();
         io.ConfigViewportsNoAutoMerge = false;
@@ -316,14 +315,30 @@ namespace atomic_dex {
             gui_menubar();
 
             if (ImGui::BeginTabBar("##Tabs", ImGuiTabBarFlags_None)) {
+                static bool in_trade_prev = false;
+                bool in_trade = false;
+
                 if (ImGui::BeginTabItem("Portfolio")) {
                     gui_portfolio(mm2_system_, paprika_system_, gui_vars_);
                     ImGui::EndTabItem();
                 }
                 if (ImGui::BeginTabItem("Trade")) {
+                    in_trade = true;
+
                     ImGui::Text("Work in progress");
                     ImGui::EndTabItem();
                 }
+
+                // If entered trade,
+                if(!in_trade_prev && in_trade) {
+                    this->dispatcher_.trigger<atomic_dex::gui_enter_trading>();
+                    std::cout << "enter trading" << std::endl;
+                }
+                else if(in_trade_prev && !in_trade){
+                    this->dispatcher_.trigger<atomic_dex::gui_leave_trading>();
+                    std::cout << "leave trading" << std::endl;
+                }
+                in_trade_prev = in_trade;
 
                 ImGui::EndTabBar();
             }
