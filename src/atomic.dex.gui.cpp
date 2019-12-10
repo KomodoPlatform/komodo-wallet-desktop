@@ -94,7 +94,7 @@ namespace {
                     if (tx_history.size() > 0) {
                         for (std::size_t i = 0; i < tx_history.size(); ++i) {
                             bool open_modal = false;
-                            ImGui::BeginChild("tx details");
+                            ImGui::BeginGroup();
                             {
                                 auto &tx = tx_history[i];
                                 ImGui::Text("%s", tx.am_i_sender ? "Sent" : "Received");
@@ -113,7 +113,7 @@ namespace {
                                                                                                     curr_asset.ticker, tx,
                                                                                                     ec)).c_str());
                             }
-                            ImGui::EndChild();
+                            ImGui::EndGroup();
                             if(ImGui::IsItemClicked()) {
                                 open_modal = true;
                             }
