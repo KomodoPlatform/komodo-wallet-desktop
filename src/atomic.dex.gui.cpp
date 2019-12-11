@@ -52,20 +52,29 @@ namespace {
         }
     }
 
-    void gui_portfolio_coins_list(atomic_dex::gui& gui, atomic_dex::mm2 &mm2, atomic_dex::gui_variables &gui_vars) noexcept {
+    void
+    gui_portfolio_coins_list(atomic_dex::gui &gui, atomic_dex::mm2 &mm2, atomic_dex::gui_variables &gui_vars) noexcept {
         ImGui::BeginChild("left pane", ImVec2(180, 0), true);
         int i = 0;
         auto assets_contents = mm2.get_enabled_coins();
         for (auto it = assets_contents.begin(); it != assets_contents.end(); ++it, ++i) {
             auto &asset = *it;
             if (gui_vars.curr_asset_code == "") gui_vars.curr_asset_code = asset.ticker;
-            auto& icons = gui.get_icons();
+            auto &icons = gui.get_icons();
             auto img = icons.at(asset.ticker);
-            ImGui::Image((void*)(intptr_t)(img.id), ImVec2{static_cast<float>(img.width), static_cast<float>(img.height)});
-            ImGui::SameLine();
-            if (ImGui::Selectable(asset.name.c_str(), asset.ticker == gui_vars.curr_asset_code)) {
+            if (ImGui::Selectable(("##" + asset.name).c_str(), asset.ticker == gui_vars.curr_asset_code)) {
                 gui_vars.curr_asset_code = asset.ticker;
             }
+            ImGui::SameLine();
+            auto orig_pos = ImGui::GetCursorPos();
+            ImGui::SetCursorPos({ImGui::GetCursorPos().x,
+                                 ImGui::GetCursorPos().y - (img.height - ImGui::GetFont()->FontSize / 2) / 2});
+            ImGui::Image((void *) (intptr_t) (img.id),
+                         ImVec2{static_cast<float>(img.width), static_cast<float>(img.height)});
+            ImGui::SameLine();
+            ImGui::SetCursorPos(orig_pos);
+            ImGui::SetCursorPosX(ImGui::GetCursorPos().x + img.width + 5);
+            ImGui::Text("%s", asset.name.c_str());
         }
         ImGui::EndChild();
     }
@@ -282,7 +291,7 @@ namespace {
     }
 
     void gui_portfolio(atomic_dex::mm2 &mm2, atomic_dex::coinpaprika_provider &paprika_system,
-                       atomic_dex::gui_variables &gui_vars, atomic_dex::gui& gui) noexcept {
+                       atomic_dex::gui_variables &gui_vars, atomic_dex::gui &gui) noexcept {
         std::error_code ec;
         ImGui::Text("Total Balance: %s", usd_str(paprika_system.get_price_in_fiat_all("USD", ec)).c_str());
 
@@ -367,7 +376,7 @@ namespace atomic_dex {
                                                                           mm2_system_(mm2_system),
                                                                           paprika_system_(paprika_system) {
         std::filesystem::path p = antara::gaming::core::assets_real_path() / "textures";
-        for(auto& p: fs::directory_iterator(p)) {
+        for (auto &p: fs::directory_iterator(p)) {
             antara::gaming::sdl::opengl_image img;
             bool res = antara::gaming::sdl::load_image(p, img);
             if (!res) continue;
