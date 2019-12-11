@@ -215,10 +215,9 @@ namespace mm2::api {
         std::string rel;
     };
 
-    void to_json(nlohmann::json& j, const orderbook_request& request);
+    void to_json(nlohmann::json &j, const orderbook_request &request);
 
-    struct order_contents
-    {
+    struct order_contents {
         std::string coin;
         std::string address;
         std::string price;
@@ -228,7 +227,7 @@ namespace mm2::api {
         std::size_t zcredits;
     };
 
-    void from_json(const nlohmann::json& j, order_contents& contents);
+    void from_json(const nlohmann::json &j, order_contents &contents);
 
     struct orderbook_answer {
         std::size_t askdepth;
@@ -248,21 +247,11 @@ namespace mm2::api {
         int rpc_result_code;
     };
 
-    void from_json(const nlohmann::json& j, orderbook_answer answer);
+    void from_json(const nlohmann::json &j, orderbook_answer answer);
 
     orderbook_answer rpc_orderbook(orderbook_request &&request);
 
-    struct buy_request {
-        std::string base;
-        std::string rel;
-        std::string price;
-        std::string volume;
-    };
-
-    void to_json(nlohmann::json& j, const buy_request& request);
-
-    struct trading_order_contents
-    {
+    struct trading_order_contents {
         std::string action;
         std::string base;
         std::string base_amount;
@@ -276,13 +265,22 @@ namespace mm2::api {
         std::string uuid;
     };
 
-    void from_json(const nlohmann::json& j, trading_order_contents& contents);
+    void from_json(const nlohmann::json &j, trading_order_contents &contents);
+
+    struct buy_request {
+        std::string base;
+        std::string rel;
+        std::string price;
+        std::string volume;
+    };
+
+    void to_json(nlohmann::json &j, const buy_request &request);
 
     struct buy_answer_success {
         trading_order_contents contents;
     };
 
-    void from_json(const nlohmann::json &j, buy_answer_success& contents);
+    void from_json(const nlohmann::json &j, buy_answer_success &contents);
 
     struct buy_answer {
         std::optional<std::string> error;
@@ -291,9 +289,35 @@ namespace mm2::api {
         std::string raw_result;
     };
 
-    void from_json(const nlohmann::json &j, buy_answer& answer);
+    void from_json(const nlohmann::json &j, buy_answer &answer);
 
-    buy_answer rpc_buy(buy_request&& buy_request);
+    buy_answer rpc_buy(buy_request &&request);
+
+    struct sell_request {
+        std::string base;
+        std::string rel;
+        std::string price;
+        std::string volume;
+    };
+
+    void to_json(nlohmann::json &j, const sell_request &request);
+
+    struct sell_answer_success {
+        trading_order_contents contents;
+    };
+
+    void from_json(const nlohmann::json &j, sell_answer_success &contents);
+
+    struct sell_answer {
+        std::optional<std::string> error;
+        std::optional<sell_answer_success> result;
+        int rpc_result_code;
+        std::string raw_result;
+    };
+
+    void from_json(const nlohmann::json &j, sell_answer &answer);
+
+    sell_answer rpc_sell(sell_request &&request);
 
     template<typename RpcReturnType>
     static RpcReturnType rpc_process_answer(const RestClient::Response &resp) noexcept;

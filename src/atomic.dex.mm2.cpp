@@ -102,6 +102,9 @@ namespace atomic_dex {
                 destination.push_back(value);
             }
         }
+        std::sort(begin(destination), end(destination), [](auto&& lhs, auto&& rhs) {
+            return lhs.ticker < rhs.ticker;
+        });
         return destination;
     }
 

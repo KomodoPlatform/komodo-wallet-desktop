@@ -264,6 +264,26 @@ namespace mm2::api {
         }
     }
 
+    void to_json(nlohmann::json &j, const sell_request &request) {
+        j["base"] = request.base;
+        j["price"] = request.price;
+        j["rel"] = request.rel;
+        j["volume"] = request.volume;
+    }
+
+    void from_json(const nlohmann::json &j, sell_answer_success &contents) {
+        j.get_to(contents.contents);
+    }
+
+    void from_json(const nlohmann::json &j, sell_answer &answer) {
+        LOG_SCOPE_FUNCTION(INFO);
+        if (j.count("error") == 1) {
+            answer.error = j.at("error").get<std::string>();
+        } else {
+            answer.result = j.at("result").get<sell_answer_success>();
+        }
+    }
+
     template<typename RpcReturnType>
     RpcReturnType rpc_process_answer(const RestClient::Response &resp) noexcept {
         LOG_SCOPE_FUNCTION(INFO);
@@ -351,5 +371,14 @@ namespace mm2::api {
         DVLOG_F(loguru::Verbosity_INFO, "request: %s", json_data.dump().c_str());
         const auto resp = RestClient::post(endpoint, "application/json", json_data.dump());
         return rpc_process_answer<buy_answer>(resp);
+    }
+
+    sell_answer rpc_sell(sell_request &&request) {
+        LOG_SCOPE_FUNCTION(INFO);
+        auto json_data = template_request("sell");
+        to_json(json_data, request);
+        DVLOG_F(loguru::Verbosity_INFO, "request: %s", json_data.dump().c_str());
+        const auto resp = RestClient::post(endpoint, "application/json", json_data.dump());
+        return rpc_process_answer<sell_answer>(resp);
     }
 }
