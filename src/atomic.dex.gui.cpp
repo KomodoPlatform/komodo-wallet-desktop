@@ -16,11 +16,13 @@
 
 #include <filesystem>
 #include <imgui.h>
+#include <boost/algorithm/string/case_conv.hpp>
+#include <IconsFontAwesome5.h>
 #include <antara/gaming/graphics/component.canvas.hpp>
 #include <antara/gaming/event/quit.game.hpp>
 #include <antara/gaming/event/key.pressed.hpp>
 #include <antara/gaming/core/open.url.browser.hpp>
-#include <IconsFontAwesome5.h>
+#include <antara/gaming/core/real.path.hpp>
 #include "atomic.dex.gui.hpp"
 #include "atomic.dex.gui.widgets.hpp"
 #include "atomic.dex.mm2.hpp"
@@ -50,15 +52,17 @@ namespace {
         }
     }
 
-    void gui_portfolio_coins_list(atomic_dex::mm2 &mm2, atomic_dex::gui_variables &gui_vars) noexcept {
+    void gui_portfolio_coins_list(atomic_dex::gui& gui, atomic_dex::mm2 &mm2, atomic_dex::gui_variables &gui_vars) noexcept {
         ImGui::BeginChild("left pane", ImVec2(180, 0), true);
         int i = 0;
         auto assets_contents = mm2.get_enabled_coins();
         for (auto it = assets_contents.begin(); it != assets_contents.end(); ++it, ++i) {
             auto &asset = *it;
             if (gui_vars.curr_asset_code == "") gui_vars.curr_asset_code = asset.ticker;
-//            ImGui::Image(icons.at(asset.ticker));
-            //ImGui::SameLine();
+            auto& icons = gui.get_icons();
+            auto img = icons.at(asset.ticker);
+            ImGui::Image((void*)(intptr_t)(img.id), ImVec2{static_cast<float>(img.width), static_cast<float>(img.height)});
+            ImGui::SameLine();
             if (ImGui::Selectable(asset.name.c_str(), asset.ticker == gui_vars.curr_asset_code)) {
                 gui_vars.curr_asset_code = asset.ticker;
             }
@@ -278,14 +282,14 @@ namespace {
     }
 
     void gui_portfolio(atomic_dex::mm2 &mm2, atomic_dex::coinpaprika_provider &paprika_system,
-                       atomic_dex::gui_variables &gui_vars) noexcept {
+                       atomic_dex::gui_variables &gui_vars, atomic_dex::gui& gui) noexcept {
         std::error_code ec;
         ImGui::Text("Total Balance: %s", usd_str(paprika_system.get_price_in_fiat_all("USD", ec)).c_str());
 
         gui_enable_coins(mm2, gui_vars);
 
         // Left
-        gui_portfolio_coins_list(mm2, gui_vars);
+        gui_portfolio_coins_list(gui, mm2, gui_vars);
 
         // Right
         ImGui::SameLine();
@@ -362,11 +366,17 @@ namespace atomic_dex {
              atomic_dex::coinpaprika_provider &paprika_system) noexcept : system(registry),
                                                                           mm2_system_(mm2_system),
                                                                           paprika_system_(paprika_system) {
+        std::filesystem::path p = antara::gaming::core::assets_real_path() / "textures";
+        for(auto& p: fs::directory_iterator(p)) {
+            antara::gaming::sdl::opengl_image img;
+            bool res = antara::gaming::sdl::load_image(p, img);
+            if (!res) continue;
+            icons_.insert_or_assign(boost::algorithm::to_upper_copy(p.path().stem().string()), img);
+        }
+
         init_live_coding();
         atomic_dex::style::apply();
         this->dispatcher_.sink<ag::event::key_pressed>().connect<&gui::on_key_pressed>(*this);
-
-
     }
 
     void gui::update() noexcept {
@@ -400,7 +410,7 @@ namespace atomic_dex {
                 bool in_trade = false;
 
                 if (ImGui::BeginTabItem("Portfolio")) {
-                    gui_portfolio(mm2_system_, paprika_system_, gui_vars_);
+                    gui_portfolio(mm2_system_, paprika_system_, gui_vars_, *this);
                     ImGui::EndTabItem();
                 }
                 if (ImGui::BeginTabItem("Trade")) {

@@ -25,6 +25,7 @@
 
 #include <antara/gaming/ecs/system.hpp>
 #include <antara/gaming/event/key.pressed.hpp>
+#include <antara/gaming/sdl/sdl.opengl.image.loading.hpp>
 #include "atomic.dex.gui.style.hpp"
 #include "atomic.dex.mm2.hpp"
 #include "atomic.dex.provider.coinpaprika.hpp"
@@ -43,6 +44,8 @@ namespace atomic_dex {
         std::unique_ptr<jet::Live> live_{nullptr};
 #endif
     public:
+        using icons_registry = folly::ConcurrentHashMap<std::string, antara::gaming::sdl::opengl_image>;
+
         void on_key_pressed(const ag::event::key_pressed &evt) noexcept;
 
         explicit gui(entt::registry &registry, atomic_dex::mm2& mm2_system,
@@ -53,8 +56,10 @@ namespace atomic_dex {
         void init_live_coding();
         void reload_code();
         void update_live_coding();
+        const icons_registry& get_icons() const noexcept {return icons_;}
 
     private:
+        folly::ConcurrentHashMap<std::string, antara::gaming::sdl::opengl_image> icons_;
         gui_variables gui_vars_;
         atomic_dex::mm2& mm2_system_;
         atomic_dex::coinpaprika_provider& paprika_system_;

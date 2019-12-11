@@ -158,6 +158,7 @@ namespace atomic_dex {
     }
 
     coin_config mm2::get_coin_info(const std::string &ticker) const noexcept {
+        if (coins_informations_.find(ticker) == coins_informations_.cend()) return {};
         return coins_informations_.at(ticker);
     }
 
