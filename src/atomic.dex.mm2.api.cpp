@@ -21,7 +21,7 @@ namespace {
     nlohmann::json template_request(std::string method_name) noexcept {
         LOG_SCOPE_FUNCTION(INFO);
         return {
-                {"method",   method_name},
+                {"method",   std::move(method_name)},
                 {"userpass", "atomix_dex_mm2_passphrase"}
         };
     }
@@ -105,7 +105,7 @@ namespace mm2::api {
         j.at("tx_hex").get_to(cfg.tx_hex);
 
         using namespace date;
-        auto sys_time = std::chrono::system_clock::from_time_t(cfg.timestamp);
+        const auto sys_time = std::chrono::system_clock::from_time_t(cfg.timestamp);
         const auto date = year_month_day(floor<days>(sys_time));
         std::stringstream ss;
         ss << date;

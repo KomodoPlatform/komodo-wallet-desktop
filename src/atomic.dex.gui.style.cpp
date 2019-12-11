@@ -31,19 +31,19 @@
 namespace atomic_dex {
 
     void style::apply() {
-        ImVec4 bright_color{0, 149.f / 255.f, 143.f / 255.f, 1};
-        ImVec4 dark_color{25.f / 255.f, 40.f / 255.f, 56.f / 255.f, 1};
-        auto imGuiIO = ImGui::GetIO();
-        std::filesystem::path fonts_path = antara::gaming::core::assets_real_path() / "fonts";
-        imGuiIO.Fonts->Clear();
-        imGuiIO.Fonts->AddFontFromFileTTF((fonts_path / "Ruda-Bold.ttf").string().c_str(), 15.0f);
+	    const ImVec4 bright_color{0, 149.f / 255.f, 143.f / 255.f, 1};
+	    const ImVec4 dark_color{25.f / 255.f, 40.f / 255.f, 56.f / 255.f, 1};
+        auto im_gui_io = ImGui::GetIO();
+	    const auto fonts_path = antara::gaming::core::assets_real_path() / "fonts";
+        im_gui_io.Fonts->Clear();
+        im_gui_io.Fonts->AddFontFromFileTTF((fonts_path / "Ruda-Bold.ttf").string().c_str(), 15.0f);
 
         static const ImWchar icons_ranges[] = {ICON_MIN_FA, ICON_MAX_FA, 0};
         ImFontConfig icons_config;
         icons_config.MergeMode = true;
         icons_config.PixelSnapH = true;
 
-        imGuiIO.Fonts->AddFontFromFileTTF((fonts_path / FONT_ICON_FILE_NAME_FAS).string().c_str(),
+        im_gui_io.Fonts->AddFontFromFileTTF((fonts_path / FONT_ICON_FILE_NAME_FAS).string().c_str(),
                                           16.0f, &icons_config,
                                           icons_ranges);
 

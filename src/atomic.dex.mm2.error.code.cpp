@@ -48,6 +48,7 @@ namespace {
             case mm2_error::unknown_ticker_for_rate_conversion:
                 return "You try to convert from an unknown ticker, are you trying to convert from a test-coin ?";
         }
+        return "";
     }
 
     const mm2_error_category_impl err_categ{};

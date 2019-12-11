@@ -14,8 +14,11 @@
  *                                                                            *
  ******************************************************************************/
 
-#include <antara/gaming/timer/time.step.hpp>
 #include "atomic.dex.gui.widgets.hpp"
+#include <algorithm>
+#include <antara/gaming/timer/time.step.hpp>
+#include <cmath>
+#include <imgui_internal.h>
 
 namespace atomic_dex {
     void widgets::LoadingIndicatorCircle(const char *label, const float indicator_radius, const ImVec4 &main_color,
@@ -37,12 +40,13 @@ namespace atomic_dex {
             return;
         }
 
-        const float t = ImGui::GetCurrentContext()->Time;
-        const auto degree_offset = 2.0f * IM_PI / circle_count;
+        const auto t = static_cast<float>(ImGui::GetCurrentContext()->Time);
+        const auto degree_offset = 2.0f * IM_PI / static_cast<float>(circle_count);
         for (int i = 0; i < circle_count; ++i) {
-            const auto x = indicator_radius * std::sin(degree_offset * i);
-            const auto y = indicator_radius * std::cos(degree_offset * i);
-            const auto growth = std::max(0.0f, std::sin(t * speed - i * degree_offset));
+	        const auto idx_f = static_cast<float>(i);
+            const auto x = indicator_radius * std::sin(degree_offset * idx_f);
+            const auto y = indicator_radius * std::cos(degree_offset * idx_f);
+            const auto growth = std::max(0.0f, std::sin(t * speed - idx_f * degree_offset));
             ImVec4 color;
             color.x = main_color.x * growth + backdrop_color.x * (1.0f - growth);
             color.y = main_color.y * growth + backdrop_color.y * (1.0f - growth);

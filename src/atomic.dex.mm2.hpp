@@ -46,7 +46,7 @@ namespace atomic_dex {
         std::error_code ec{mm2_error::success};
     };
 
-    class mm2 : public ag::ecs::pre_update_system<mm2> {
+    class mm2 final : public ag::ecs::pre_update_system<mm2> {
     private:
         using coins_registry = folly::ConcurrentHashMap<std::string, atomic_dex::coin_config>;
         reproc::process mm2_instance_;

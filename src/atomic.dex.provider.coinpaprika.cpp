@@ -35,9 +35,9 @@ namespace {
     template<typename Provider>
     void
     process_provider(const atomic_dex::coin_config &current_coin, Provider &rate_providers, const std::string &fiat) {
-        auto base = current_coin.coinpaprika_id;
+	    const auto base = current_coin.coinpaprika_id;
         //! do usd first
-        price_converter_request request{.base_currency_id = base,
+	    const price_converter_request request{.base_currency_id = base,
                 .quote_currency_id = fiat,
                 .amount = 1};
         auto answer = price_converter(request);
@@ -91,21 +91,21 @@ namespace atomic_dex {
         } else if (instance_.get_coin_info(ticker).coinpaprika_id == "test-coin") {
             return "0.00";
         }
-        std::string price = get_rate_conversion(fiat, ticker, ec);
+        const auto price = get_rate_conversion(fiat, ticker, ec);
         if (ec) {
             return "0.00";
         }
         std::error_code t_ec;
-        std::string amount = instance_.my_balance(ticker, t_ec);
+        const auto amount = instance_.my_balance(ticker, t_ec);
         if (t_ec) {
             ec = t_ec;
             LOG_F(ERROR, "my_balance error: {}", t_ec.message());
             return "0.00";
         }
 
-        bm::cpp_dec_float_50 price_f(price);
-        bm::cpp_dec_float_50 amount_f(amount);
-        auto final_price = price_f * amount_f;
+        const bm::cpp_dec_float_50 price_f(price);
+        const bm::cpp_dec_float_50 amount_f(amount);
+        const auto final_price = price_f * amount_f;
         std::stringstream ss;
         if (not skip_precision) {
             ss.precision(2);
@@ -118,19 +118,17 @@ namespace atomic_dex {
     coinpaprika_provider::get_price_in_fiat_all(const std::string &fiat, std::error_code &ec) const noexcept {
         auto coins = instance_.get_enabled_coins();
         bm::cpp_dec_float_50 final_price_f = 0;
-        std::string current_price;
-        bm::cpp_dec_float_50 current_price_f = 0;
         for (auto &&current_coin : coins) {
             if (current_coin.coinpaprika_id == "test-coin")
                 continue;
-            current_price = get_price_in_fiat(fiat, current_coin.ticker, ec, true);
+            std::string current_price = get_price_in_fiat(fiat, current_coin.ticker, ec, true);
             if (ec) {
                 LOG_F(WARNING, "error when converting {} to {}, err: {}", current_coin.ticker, fiat, ec.message());
                 ec.clear(); //! Reset
                 continue;
             }
             if (not current_price.empty()) {
-                current_price_f = bm::cpp_dec_float_50(current_price);
+	            const auto current_price_f = bm::cpp_dec_float_50(current_price);
                 final_price_f += current_price_f;
             }
         }
@@ -145,14 +143,14 @@ namespace atomic_dex {
                                                                 const tx_infos &tx,
                                                                 std::error_code &ec) const noexcept {
         if (instance_.get_coin_info(ticker).coinpaprika_id == "test-coin") return "0.00";
-        std::string amount = tx.am_i_sender ? tx.my_balance_change.substr(1) : tx.my_balance_change;
-        std::string current_price = get_rate_conversion(fiat, ticker, ec);
+        const auto amount = tx.am_i_sender ? tx.my_balance_change.substr(1) : tx.my_balance_change;
+        const auto current_price = get_rate_conversion(fiat, ticker, ec);
         if (ec) {
             return "0.00";
         }
-        bm::cpp_dec_float_50 amount_f(amount);
-        bm::cpp_dec_float_50 current_price_f(current_price);
-        auto final_price = amount_f * current_price_f;
+        const bm::cpp_dec_float_50 amount_f(amount);
+        const bm::cpp_dec_float_50 current_price_f(current_price);
+        const auto final_price = amount_f * current_price_f;
         std::stringstream ss;
         ss.precision(2);
         ss << final_price;
@@ -184,7 +182,7 @@ namespace atomic_dex {
     }
 
     void coinpaprika_provider::on_coin_enabled(const atomic_dex::coin_enabled &evt) noexcept {
-        auto config = instance_.get_coin_info(evt.ticker);
+	    const auto config = instance_.get_coin_info(evt.ticker);
         process_provider(config, usd_rate_providers_, "usd-us-dollars");
         process_provider(config, eur_rate_providers_, "eur-euro");
     }
@@ -216,7 +214,7 @@ namespace atomic_dex {
             LOG_SCOPE_FUNCTION(INFO);
 
             using namespace std::string_literals;
-            std::string url = std::string(coinpaprika_endpoint) + "price-converter?base_currency_id="s +
+            const auto url = std::string(coinpaprika_endpoint) + "price-converter?base_currency_id="s +
                               request.base_currency_id +
                               "&quote_currency_id="s + request.quote_currency_id + "&amount=1";
             DVLOG_F(loguru::Verbosity_INFO, "url: {}", url);
@@ -235,7 +233,7 @@ namespace atomic_dex {
                 return answer;
             }
             try {
-                auto json_answer = nlohmann::json::parse(resp.body);
+	            const auto json_answer = nlohmann::json::parse(resp.body);
                 from_json(json_answer, answer);
                 answer.rpc_result_code = resp.code;
                 answer.raw_result = resp.body;

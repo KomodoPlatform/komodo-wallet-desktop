@@ -66,7 +66,7 @@ namespace atomic_dex {
     public:
         coinpaprika_provider(entt::registry &registry, mm2 &mm2_instance);
 
-        ~coinpaprika_provider() noexcept final;
+        ~coinpaprika_provider() noexcept;
 
         std::string
         get_rate_conversion(const std::string &fiat, const std::string &ticker, std::error_code &ec) const noexcept;
@@ -83,6 +83,7 @@ namespace atomic_dex {
         void on_mm2_started(const atomic_dex::mm2_started &evt) noexcept;
         void on_coin_enabled(const atomic_dex::coin_enabled &evt) noexcept;
 
+        // ReSharper disable once CppFinalFunctionInFinalClass
         void update() noexcept final;
 
     private:
