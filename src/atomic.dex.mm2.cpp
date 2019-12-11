@@ -145,6 +145,7 @@ namespace atomic_dex {
         }
         this->dispatcher_.trigger<atomic_dex::coin_enabled>(ticker);
         process_balance(ticker);
+        process_tx(ticker);
         return true;
     }
 
@@ -192,36 +193,7 @@ namespace atomic_dex {
             coins = get_enabled_coins();
             for (auto &&current_coin : coins) {
                 process_balance(current_coin.ticker);
-                ::mm2::api::tx_history_request tx_request{.coin = current_coin.ticker, .limit = 50};
-                auto answer = ::mm2::api::rpc_my_tx_history(std::move(tx_request));
-                if (answer.error.has_value()) {
-                    VLOG_F(loguru::Verbosity_ERROR, "tx error: {}", answer.error.value());
-                } else if (answer.rpc_result_code != -1 && answer.result.has_value()) {
-                    std::vector<tx_infos> out;
-                    for (auto &&current : answer.result.value().transactions) {
-                        tx_infos current_info{
-                                .am_i_sender = current.my_balance_change[0] == '-',
-                                .my_balance_change = current.my_balance_change,
-                                .block_height = current.block_height,
-                                .date = current.timestamp_as_date,
-                                .from = current.from,
-                                .to = current.to,
-                                .total_amount = current.total_amount,
-                                .fees = current.fee_details.normal_fees.has_value()
-                                        ? current.fee_details.normal_fees.value().amount
-                                        : current.fee_details.erc_fees.value().total_fee,
-                                .ec = mm2_error::success,
-                                .confirmations = current.confirmations.has_value() ? current.confirmations.value() : 0,
-                                .timestamp = current.timestamp,
-                                .tx_hash = current.tx_hash
-                        };
-                        out.push_back(std::move(current_info));
-                    }
-                    std::sort(begin(out), end(out), [](auto &&a, auto &&b) {
-                        return a.timestamp < b.timestamp;
-                    });
-                    tx_informations_.insert_or_assign(current_coin.ticker, std::move(out));
-                }
+                process_tx(current_coin.ticker);
             }
         } while (not balance_thread_timer_.wait_for(30s));
     }
@@ -314,6 +286,39 @@ namespace atomic_dex {
         ::mm2::api::balance_request balance_request{.coin = ticker};
         balance_informations_.insert_or_assign(ticker,
                                                ::mm2::api::rpc_balance(std::move(balance_request)));
+    }
+
+    void mm2::process_tx(const std::string &ticker) noexcept {
+        ::mm2::api::tx_history_request tx_request{.coin = ticker, .limit = 50};
+        auto answer = ::mm2::api::rpc_my_tx_history(std::move(tx_request));
+        if (answer.error.has_value()) {
+            VLOG_F(loguru::Verbosity_ERROR, "tx error: {}", answer.error.value());
+        } else if (answer.rpc_result_code != -1 && answer.result.has_value()) {
+            std::vector<tx_infos> out;
+            for (auto &&current : answer.result.value().transactions) {
+                tx_infos current_info{
+                        .am_i_sender = current.my_balance_change[0] == '-',
+                        .my_balance_change = current.my_balance_change,
+                        .block_height = current.block_height,
+                        .date = current.timestamp_as_date,
+                        .from = current.from,
+                        .to = current.to,
+                        .total_amount = current.total_amount,
+                        .fees = current.fee_details.normal_fees.has_value()
+                                ? current.fee_details.normal_fees.value().amount
+                                : current.fee_details.erc_fees.value().total_fee,
+                        .ec = mm2_error::success,
+                        .confirmations = current.confirmations.has_value() ? current.confirmations.value() : 0,
+                        .timestamp = current.timestamp,
+                        .tx_hash = current.tx_hash
+                };
+                out.push_back(std::move(current_info));
+            }
+            std::sort(begin(out), end(out), [](auto &&a, auto &&b) {
+                return a.timestamp < b.timestamp;
+            });
+            tx_informations_.insert_or_assign(ticker, std::move(out));
+        }
     }
 
     void mm2::on_gui_enter_trading([[maybe_unused]] const gui_enter_trading &evt) noexcept {

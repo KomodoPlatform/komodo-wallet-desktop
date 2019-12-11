@@ -343,4 +343,13 @@ namespace mm2::api {
         const auto resp = RestClient::post(endpoint, "application/json", json_data.dump());
         return rpc_process_answer<orderbook_answer>(resp);
     }
+
+    buy_answer rpc_buy(buy_request &&request) {
+        LOG_SCOPE_FUNCTION(INFO);
+        auto json_data = template_request("buy");
+        to_json(json_data, request);
+        DVLOG_F(loguru::Verbosity_INFO, "request: %s", json_data.dump().c_str());
+        const auto resp = RestClient::post(endpoint, "application/json", json_data.dump());
+        return rpc_process_answer<buy_answer>(resp);
+    }
 }

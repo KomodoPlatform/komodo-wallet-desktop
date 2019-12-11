@@ -73,6 +73,7 @@ namespace atomic_dex {
         void spawn_mm2_instance() noexcept;
 
         void process_balance(const std::string& ticker) noexcept;
+        void process_tx(const std::string& ticker) noexcept;
 
     public:
         void on_gui_enter_trading(const gui_enter_trading& evt) noexcept;

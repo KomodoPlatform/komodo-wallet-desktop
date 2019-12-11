@@ -293,6 +293,8 @@ namespace mm2::api {
 
     void from_json(const nlohmann::json &j, buy_answer& answer);
 
+    buy_answer rpc_buy(buy_request&& buy_request);
+
     template<typename RpcReturnType>
     static RpcReturnType rpc_process_answer(const RestClient::Response &resp) noexcept;
 }
