@@ -230,11 +230,38 @@ namespace mm2::api {
         answer.human_timestamp = ss.str();
     }
 
-    void to_json(nlohmann::json& j, buy_request& request) {
-        j.at("base").get_to(request.base);
-        j.at("price").get_to(request.price);
-        j.at("rel").get_to(request.rel);
-        j.at("volume").get_to(request.volume);
+    void to_json(nlohmann::json &j, buy_request &request) {
+        j["base"] = request.base;
+        j["price"] = request.price;
+        j["rel"] = request.rel;
+        j["volume"] = request.volume;
+    }
+
+    void from_json(const nlohmann::json &j, trading_order_contents &contents) {
+        j.at("base").get_to(contents.base);
+        j.at("base_amount").get_to(contents.base_amount);
+        j.at("base_amount_rat").get_to(contents.base_amount_rat);
+        j.at("rel").get_to(contents.rel);
+        j.at("rel_amount").get_to(contents.rel_amount);
+        j.at("rel_amount_rat").get_to(contents.rel_amount_rat);
+        j.at("method").get_to(contents.method);
+        j.at("action").get_to(contents.action);
+        j.at("uuid").get_to(contents.uuid);
+        j.at("sender_pubkey").get_to(contents.sender_pubkey);
+        j.at("dest_pub_key").get_to(contents.dest_pub_key);
+    }
+
+    void from_json(const nlohmann::json &j, buy_answer_success &contents) {
+        j.get_to(contents.contents);
+    }
+
+    void from_json(const nlohmann::json &j, buy_answer &answer) {
+        LOG_SCOPE_FUNCTION(INFO);
+        if (j.count("error") == 1) {
+            answer.error = j.at("error").get<std::string>();
+        } else {
+            answer.result = j.at("result").get<buy_answer_success>();
+        }
     }
 
     template<typename RpcReturnType>

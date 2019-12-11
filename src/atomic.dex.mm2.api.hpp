@@ -259,7 +259,39 @@ namespace mm2::api {
         std::string volume;
     };
 
-    void to_json(nlohmann::json& j, buy_request& request);
+    void to_json(nlohmann::json& j, const buy_request& request);
+
+    struct trading_order_contents
+    {
+        std::string action;
+        std::string base;
+        std::string base_amount;
+        std::string base_amount_rat;
+        std::string dest_pub_key;
+        std::string method;
+        std::string rel;
+        std::string rel_amount;
+        std::string rel_amount_rat;
+        std::string sender_pubkey;
+        std::string uuid;
+    };
+
+    void from_json(const nlohmann::json& j, trading_order_contents& contents);
+
+    struct buy_answer_success {
+        trading_order_contents contents;
+    };
+
+    void from_json(const nlohmann::json &j, buy_answer_success& contents);
+
+    struct buy_answer {
+        std::optional<std::string> error;
+        std::optional<buy_answer_success> result;
+        int rpc_result_code;
+        std::string raw_result;
+    };
+
+    void from_json(const nlohmann::json &j, buy_answer& answer);
 
     template<typename RpcReturnType>
     static RpcReturnType rpc_process_answer(const RestClient::Response &resp) noexcept;

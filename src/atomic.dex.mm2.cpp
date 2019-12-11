@@ -180,7 +180,7 @@ namespace atomic_dex {
             if (answer.rpc_result_code != -1) {
                 this->current_orderbook_.insert_or_assign(current, answer);
             }
-        } while (not current_orderbook_thread_timer_.wait_for(60s));
+        } while (not current_orderbook_thread_timer_.wait_for(5s));
     }
 
     void mm2::fetch_infos_thread() {
