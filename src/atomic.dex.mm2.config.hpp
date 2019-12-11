@@ -19,40 +19,44 @@
 #include <cstdlib> ///< std::getenv
 #include <nlohmann/json.hpp>
 
-namespace atomic_dex {
-    using nlohmann::json;
+namespace atomic_dex
+{
+	using nlohmann::json;
 
-    struct mm2_config {
-        std::string gui{"MM2GUI"};
-        int64_t netid{9999};
+	struct mm2_config
+	{
+		std::string gui{"MM2GUI"};
+		int64_t netid{9999};
 #ifdef _WIN32
-        std::string userhome{std::getenv("HOMEPATH")};
+		std::string userhome{std::getenv("HOMEPATH")};
 #else
         std::string userhome{std::getenv("HOME")};
 #endif
-        //TODO: Handle passphrase
-        std::string passphrase{"thisIsTheNewProjectSeed2019##"};
-        std::string rpc_password{"atomix_dex_mm2_passphrase"};
-    };
+		//TODO: Handle passphrase
+		std::string passphrase{"thisIsTheNewProjectSeed2019##"};
+		std::string rpc_password{"atomix_dex_mm2_passphrase"};
+	};
 
-    void from_json(const json &j, atomic_dex::mm2_config &cfg);
+	void from_json(const json& j, atomic_dex::mm2_config& cfg);
 
-    void to_json(json &j, const atomic_dex::mm2_config &cfg);
+	void to_json(json& j, const atomic_dex::mm2_config& cfg);
 
-    inline void from_json(const json &j, atomic_dex::mm2_config &cfg) {
-        cfg.gui = j.at("gui").get<std::string>();
-        cfg.netid = j.at("netid").get<int64_t>();
-        cfg.userhome = j.at("userhome").get<std::string>();
-        cfg.passphrase = j.at("passphrase").get<std::string>();
-        cfg.rpc_password = j.at("rpc_password").get<std::string>();
-    }
+	inline void from_json(const json& j, atomic_dex::mm2_config& cfg)
+	{
+		cfg.gui = j.at("gui").get<std::string>();
+		cfg.netid = j.at("netid").get<int64_t>();
+		cfg.userhome = j.at("userhome").get<std::string>();
+		cfg.passphrase = j.at("passphrase").get<std::string>();
+		cfg.rpc_password = j.at("rpc_password").get<std::string>();
+	}
 
-    inline void to_json(json &j, const atomic_dex::mm2_config &cfg) {
-        j = json::object();
-        j["gui"] = cfg.gui;
-        j["netid"] = cfg.netid;
-        j["userhome"] = cfg.userhome;
-        j["passphrase"] = cfg.passphrase;
-        j["rpc_password"] = cfg.rpc_password;
-    }
+	inline void to_json(json& j, const atomic_dex::mm2_config& cfg)
+	{
+		j = json::object();
+		j["gui"] = cfg.gui;
+		j["netid"] = cfg.netid;
+		j["userhome"] = cfg.userhome;
+		j["passphrase"] = cfg.passphrase;
+		j["rpc_password"] = cfg.rpc_password;
+	}
 }

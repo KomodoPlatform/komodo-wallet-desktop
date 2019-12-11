@@ -19,22 +19,24 @@
 #include <system_error>
 #include <type_traits>
 
-enum class mm2_error {
-    success,
-    balance_of_a_non_enabled_coin,
-    tx_history_of_a_non_enabled_coin,
-    rpc_withdraw_error,
-    rpc_send_raw_transaction_error,
-    invalid_fiat_for_rate_conversion,
-    unknown_ticker_for_rate_conversion,
-    unknown_error
+enum class mm2_error
+{
+	success,
+	balance_of_a_non_enabled_coin,
+	tx_history_of_a_non_enabled_coin,
+	rpc_withdraw_error,
+	rpc_send_raw_transaction_error,
+	invalid_fiat_for_rate_conversion,
+	unknown_ticker_for_rate_conversion,
+	unknown_error
 };
 
-namespace std {
-
-    template<>
-    struct is_error_code_enum<mm2_error> : true_type {
-    };
+namespace std
+{
+	template <>
+	struct is_error_code_enum<mm2_error> : true_type
+	{
+	};
 }
 
 std::error_code make_error_code(mm2_error error) noexcept;

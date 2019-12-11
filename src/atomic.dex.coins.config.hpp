@@ -21,27 +21,29 @@
 #include <optional>
 #include <nlohmann/json.hpp>
 
-namespace atomic_dex {
+namespace atomic_dex
+{
+	struct electrum_server
+	{
+		std::string url;
+		std::optional<std::string> protocol{"TCP"};
+		std::optional<bool> disable_cert_verification{false};
+	};
 
-    struct electrum_server {
-        std::string url;
-        std::optional<std::string> protocol{"TCP"};
-        std::optional<bool> disable_cert_verification{false};
-    };
+	void to_json(nlohmann::json& j, const electrum_server& cfg);
+	void from_json(const nlohmann::json& j, electrum_server& cfg);
 
-    void to_json(nlohmann::json &j, const electrum_server &cfg);
-    void from_json(const nlohmann::json &j, electrum_server& cfg);
+	struct coin_config
+	{
+		std::string ticker;
+		std::string name; ///< nice name
+		using electrum_servers = std::vector<electrum_server>;
+		electrum_servers electrum_urls;
+		bool currently_enabled{false};
+		bool active{false};
+		std::string coinpaprika_id;
+		std::vector<std::string> explorer_url; ///< usefull for transaction, take this url and append transaction id
+	};
 
-    struct coin_config {
-        std::string ticker;
-        std::string name; ///< nice name
-        using electrum_servers = std::vector<electrum_server>;
-        electrum_servers electrum_urls;
-        bool currently_enabled{false};
-        bool active{false};
-        std::string coinpaprika_id;
-        std::vector<std::string> explorer_url; ///< usefull for transaction, take this url and append transaction id
-    };
-
-    void from_json(const nlohmann::json &j, coin_config& cfg);
+	void from_json(const nlohmann::json& j, coin_config& cfg);
 }

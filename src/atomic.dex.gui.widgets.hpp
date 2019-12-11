@@ -18,8 +18,9 @@
 
 #include <imgui.h>
 
-namespace atomic_dex::widgets {
-    void LoadingIndicatorCircle(const char *label, float indicator_radius,
-                                const ImVec4 &main_color, const ImVec4 &backdrop_color,
-                                int circle_count, float speed);
+namespace atomic_dex::widgets
+{
+	void LoadingIndicatorCircle(const char* label, float indicator_radius,
+	                            const ImVec4& main_color, const ImVec4& backdrop_color,
+	                            int circle_count, float speed);
 }

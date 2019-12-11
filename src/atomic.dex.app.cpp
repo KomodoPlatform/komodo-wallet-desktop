@@ -26,8 +26,8 @@
 #endif
 
 #if defined(ATOMIC_DEX_SDL)
-    #include <antara/gaming/sdl/graphic.system.hpp>
-    #include <antara/gaming/sdl/input.system.hpp>
+#include <antara/gaming/sdl/graphic.system.hpp>
+#include <antara/gaming/sdl/input.system.hpp>
 #endif
 
 
@@ -37,9 +37,11 @@
 #include "atomic.dex.mm2.hpp"
 #include "atomic.dex.provider.coinpaprika.hpp"
 
-namespace atomic_dex {
-    application::application() noexcept {
-        //! Load the resources system
+namespace atomic_dex
+{
+	application::application() noexcept
+	{
+		//! Load the resources system
 #if defined(ATOMIC_DEX_GLFW)
         auto &graphic_system = system_manager_.create_system<ag::glfw::graphic_system>();
         system_manager_.create_system<ag::glfw::input_system>(graphic_system.get_window());
@@ -51,18 +53,18 @@ namespace atomic_dex {
 #endif
 
 #if defined(ATOMIC_DEX_SDL)
-        auto &graphic_system = system_manager_.create_system<ag::sdl::graphic_system>();
-        graphic_system.set_framerate_limit(30);
-        system_manager_.create_system<ag::sdl::input_system>(graphic_system.get_window());
+		auto& graphic_system = system_manager_.create_system<ag::sdl::graphic_system>();
+		graphic_system.set_framerate_limit(30);
+		system_manager_.create_system<ag::sdl::input_system>(graphic_system.get_window());
 #endif
 
-        //! Create virtual input system
-        system_manager_.create_system<ag::ecs::virtual_input_system>();
+		//! Create virtual input system
+		system_manager_.create_system<ag::ecs::virtual_input_system>();
 
-        //! MM2 system need to be created before the GUI and give the instance to the gui
-        auto &mm2_system = system_manager_.create_system<atomic_dex::mm2>();
-        auto &paprika_system = system_manager_.create_system<atomic_dex::coinpaprika_provider>(mm2_system);
-        system_manager_.create_system<atomic_dex::gui>(mm2_system, paprika_system);
+		//! MM2 system need to be created before the GUI and give the instance to the gui
+		auto& mm2_system = system_manager_.create_system<atomic_dex::mm2>();
+		auto& paprika_system = system_manager_.create_system<atomic_dex::coinpaprika_provider>(mm2_system);
+		system_manager_.create_system<atomic_dex::gui>(mm2_system, paprika_system);
 #if defined(ATOMIC_DEX_GLFW)
         system_manager_.prioritize_system<atomic_dex::gui, ag::glfw::graphic_system>();
 #endif
@@ -70,7 +72,7 @@ namespace atomic_dex {
         system_manager_.prioritize_system<atomic_dex::gui, ag::sfml::graphic_system>();
 #endif
 #if defined(ATOMIC_DEX_SDL)
-        system_manager_.prioritize_system<atomic_dex::gui, ag::sdl::graphic_system>();
+		system_manager_.prioritize_system<atomic_dex::gui, ag::sdl::graphic_system>();
 #endif
-    }
+	}
 }

@@ -422,8 +422,8 @@ namespace atomic_dex
 
 	gui::gui(entt::registry& registry, atomic_dex::mm2& mm2_system,
 	         atomic_dex::coinpaprika_provider& paprika_system) : system(registry),
-	                                                                      mm2_system_(mm2_system),
-	                                                                      paprika_system_(paprika_system)
+	                                                             mm2_system_(mm2_system),
+	                                                             paprika_system_(paprika_system)
 	{
 		const auto p = antara::gaming::core::assets_real_path() / "textures";
 		for (auto& directory_entry : fs::directory_iterator(p))

@@ -18,16 +18,20 @@
 
 #include <entt/entity/helper.hpp>
 
-namespace atomic_dex {
-    using mm2_started = entt::tag<"mm2_started"_hs>;
-    using gui_enter_trading = entt::tag<"gui_enter_trading"_hs>;
-    using gui_leave_trading = entt::tag<"gui_leave_trading"_hs>;
+namespace atomic_dex
+{
+	using mm2_started = entt::tag<"mm2_started"_hs>;
+	using gui_enter_trading = entt::tag<"gui_enter_trading"_hs>;
+	using gui_leave_trading = entt::tag<"gui_leave_trading"_hs>;
 
-    struct coin_enabled {
-        std::string ticker;
-    };
-    struct orderbook_refresh {
-        std::string base;
-        std::string rel;
-    };
+	struct coin_enabled
+	{
+		std::string ticker;
+	};
+
+	struct orderbook_refresh
+	{
+		std::string base;
+		std::string rel;
+	};
 }

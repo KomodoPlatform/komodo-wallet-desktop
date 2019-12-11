@@ -20,5 +20,5 @@
 
 namespace atomic_dex::style
 {
-    void apply();
+	void apply();
 }

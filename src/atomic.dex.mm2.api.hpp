@@ -24,301 +24,332 @@
 #include <nlohmann/json.hpp>
 #include "atomic.dex.coins.config.hpp"
 
-namespace mm2::api {
-    static constexpr const char *endpoint = "http://127.0.0.1:7783";
-
-    struct electrum_request {
-        std::string coin_name;
-        std::vector<atomic_dex::electrum_server> servers;
-        bool with_tx_history{true};
-    };
-
-    struct electrum_answer {
-        std::string address;
-        std::string balance;
-        std::string result;
-        int rpc_result_code;
-        std::string raw_result;
-    };
-
-    void to_json(nlohmann::json &j, const electrum_request &cfg);
-
-    void from_json(const nlohmann::json &j, electrum_answer &answer);
-
-    electrum_answer rpc_electrum(electrum_request &&request);
-
-    struct balance_request {
-        std::string coin;
-    };
-
-    struct balance_answer {
-        std::string address;
-        std::string balance;
-        std::string coin;
-        std::string locked_by_swaps;
-        int rpc_result_code;
-        std::string raw_result;
-    };
-
-    void to_json(nlohmann::json &j, const balance_request &cfg);
-
-    void from_json(const nlohmann::json &j, balance_answer &cfg);
-
-    balance_answer rpc_balance(balance_request &&request);
-
-    struct fee_regular_coin {
-        std::string amount;
-    };
-
-    void from_json(const nlohmann::json &j, fee_regular_coin &cfg);
-
-    struct fee_erc_coin {
-        std::string coin;
-        std::size_t gas;
-        std::string gas_price;
-        std::string total_fee;
-    };
-
-    void from_json(const nlohmann::json &j, fee_erc_coin &cfg);
-
-    struct fees_data {
-        std::optional<fee_regular_coin> normal_fees; ///< btc, kmd based coins
-        std::optional<fee_erc_coin> erc_fees; ///< eth based coins
-    };
-
-    void from_json(const nlohmann::json &j, fees_data &cfg);
-
-
-    struct tx_history_request {
-        std::string coin;
-        std::size_t limit;
-    };
-
-    void to_json(nlohmann::json &j, const tx_history_request &cfg);
-
-    struct transaction_data {
-        std::size_t timestamp;
-        std::vector<std::string> from;
-        std::vector<std::string> to;
-        fees_data fee_details;
-        std::optional<std::size_t> confirmations;
-        std::string coin;
-        std::size_t block_height;
-        std::string internal_id;
-        std::string spent_by_me;
-        std::string received_by_me;
-        std::string my_balance_change;
-        std::string total_amount;
-        std::string tx_hash;
-        std::string tx_hex;
-        std::string timestamp_as_date; ///< human readeable timestamp
-    };
-
-    void from_json(const nlohmann::json &j, transaction_data &cfg);
-
-    struct sync_status_additional_error {
-        std::string message;
-        int code;
-    };
-
-    void from_json(const nlohmann::json &j, sync_status_additional_error &answer);
-
-    struct sync_status_eth_erc_20_coins {
-        std::size_t blocks_left;
-    };
-
-    void from_json(const nlohmann::json &j, sync_status_eth_erc_20_coins &answer);
-
-    struct sync_status_regular_coins {
-        std::size_t transactions_left;
-    };
-
-    void from_json(const nlohmann::json &j, sync_status_regular_coins &answer);
-
-    struct sync_status_additional_infos {
-        std::optional<sync_status_additional_error> error; ///< in case of error
-        std::optional<sync_status_eth_erc_20_coins> erc_infos; ///< eth/erc20 related coins
-        std::optional<sync_status_regular_coins> regular_infos; ///< kmd/btc/utxo related coins
-    };
-
-    void from_json(const nlohmann::json &j, sync_status_additional_infos &answer);
-
-    struct t_sync_status {
-        std::string state; ///< NotEnabled, NotStarted, InProgress, Error, Finished
-        std::optional<sync_status_additional_infos> additional_info;
-    };
-
-    void from_json(const nlohmann::json &j, t_sync_status &answer);
-
-    struct tx_history_answer_success {
-        std::string from_id;
-        std::size_t skipped;
-        std::size_t limit;
-        std::size_t current_block;
-        std::size_t total;
-        std::vector<transaction_data> transactions;
-        t_sync_status sync_status;
-    };
-
-    void from_json(const nlohmann::json &j, tx_history_answer_success &answer);
-
-    struct tx_history_answer {
-        std::optional<std::string> error;
-        std::optional<tx_history_answer_success> result;
-        std::string raw_result; ///< internal
-        int rpc_result_code; ///< internal
-    };
-
-    void from_json(const nlohmann::json &j, tx_history_answer &answer);
-
-    tx_history_answer rpc_my_tx_history(tx_history_request &&request);
-
-    struct withdraw_request {
-        std::string coin;
-        std::string to; ///< coins will be withdraw to this address
-        std::string amount; ///< ignored if max is true
-        bool max{false};
-    };
-
-    void to_json(nlohmann::json &j, const withdraw_request &cfg);
-
-    struct withdraw_answer {
-        std::optional<transaction_data> result;
-        std::optional<std::string> error;
-        std::string raw_result; ///< internal
-        int rpc_result_code; ///< internal
-    };
-
-    void from_json(const nlohmann::json &j, withdraw_answer &answer);
-
-    withdraw_answer rpc_withdraw(withdraw_request &&request);
-
-    struct send_raw_transaction_request {
-        std::string coin;
-        std::string tx_hex;
-    };
-
-    void to_json(nlohmann::json &j, const send_raw_transaction_request &cfg);
-
-    struct send_raw_transaction_answer {
-        std::string tx_hash;
-        std::string raw_result; ///< internal
-        int rpc_result_code; ///< internal
-    };
-
-    void from_json(const nlohmann::json &j, send_raw_transaction_answer &answer);
-
-    send_raw_transaction_answer rpc_send_raw_transaction(send_raw_transaction_request &&request);
-
-    struct orderbook_request {
-        std::string base;
-        std::string rel;
-    };
-
-    void to_json(nlohmann::json &j, const orderbook_request &request);
-
-    struct order_contents {
-        std::string coin;
-        std::string address;
-        std::string price;
-        std::string maxvolume;
-        std::string pubkey;
-        std::size_t age;
-        std::size_t zcredits;
-    };
-
-    void from_json(const nlohmann::json &j, order_contents &contents);
-
-    struct orderbook_answer {
-        std::size_t askdepth;
-        std::size_t biddepth;
-        std::vector<order_contents> asks;
-        std::vector<order_contents> bids;
-        std::string base;
-        std::string rel;
-        std::size_t numasks;
-        std::size_t numbids;
-        std::size_t timestamp;
-        std::size_t netid;
-        std::string human_timestamp; //! Moment of the orderbook request human readeable
-
-        //! Internal
-        std::string raw_result;
-        int rpc_result_code;
-    };
-
-    void from_json(const nlohmann::json &j, orderbook_answer answer);
-
-    orderbook_answer rpc_orderbook(orderbook_request &&request);
-
-    struct trading_order_contents {
-        std::string action;
-        std::string base;
-        std::string base_amount;
-        std::string base_amount_rat;
-        std::string dest_pub_key;
-        std::string method;
-        std::string rel;
-        std::string rel_amount;
-        std::string rel_amount_rat;
-        std::string sender_pubkey;
-        std::string uuid;
-    };
-
-    void from_json(const nlohmann::json &j, trading_order_contents &contents);
-
-    struct buy_request {
-        std::string base;
-        std::string rel;
-        std::string price;
-        std::string volume;
-    };
-
-    void to_json(nlohmann::json &j, const buy_request &request);
-
-    struct buy_answer_success {
-        trading_order_contents contents;
-    };
-
-    void from_json(const nlohmann::json &j, buy_answer_success &contents);
-
-    struct buy_answer {
-        std::optional<std::string> error;
-        std::optional<buy_answer_success> result;
-        int rpc_result_code;
-        std::string raw_result;
-    };
-
-    void from_json(const nlohmann::json &j, buy_answer &answer);
-
-    buy_answer rpc_buy(buy_request &&request);
-
-    struct sell_request {
-        std::string base;
-        std::string rel;
-        std::string price;
-        std::string volume;
-    };
-
-    void to_json(nlohmann::json &j, const sell_request &request);
-
-    struct sell_answer_success {
-        trading_order_contents contents;
-    };
-
-    void from_json(const nlohmann::json &j, sell_answer_success &contents);
-
-    struct sell_answer {
-        std::optional<std::string> error;
-        std::optional<sell_answer_success> result;
-        int rpc_result_code;
-        std::string raw_result;
-    };
-
-    void from_json(const nlohmann::json &j, sell_answer &answer);
-
-    sell_answer rpc_sell(sell_request &&request);
-
-    template<typename RpcReturnType>
-    static RpcReturnType rpc_process_answer(const RestClient::Response &resp) noexcept;
+namespace mm2::api
+{
+	static constexpr const char* endpoint = "http://127.0.0.1:7783";
+
+	struct electrum_request
+	{
+		std::string coin_name;
+		std::vector<atomic_dex::electrum_server> servers;
+		bool with_tx_history{true};
+	};
+
+	struct electrum_answer
+	{
+		std::string address;
+		std::string balance;
+		std::string result;
+		int rpc_result_code;
+		std::string raw_result;
+	};
+
+	void to_json(nlohmann::json& j, const electrum_request& cfg);
+
+	void from_json(const nlohmann::json& j, electrum_answer& answer);
+
+	electrum_answer rpc_electrum(electrum_request&& request);
+
+	struct balance_request
+	{
+		std::string coin;
+	};
+
+	struct balance_answer
+	{
+		std::string address;
+		std::string balance;
+		std::string coin;
+		std::string locked_by_swaps;
+		int rpc_result_code;
+		std::string raw_result;
+	};
+
+	void to_json(nlohmann::json& j, const balance_request& cfg);
+
+	void from_json(const nlohmann::json& j, balance_answer& cfg);
+
+	balance_answer rpc_balance(balance_request&& request);
+
+	struct fee_regular_coin
+	{
+		std::string amount;
+	};
+
+	void from_json(const nlohmann::json& j, fee_regular_coin& cfg);
+
+	struct fee_erc_coin
+	{
+		std::string coin;
+		std::size_t gas;
+		std::string gas_price;
+		std::string total_fee;
+	};
+
+	void from_json(const nlohmann::json& j, fee_erc_coin& cfg);
+
+	struct fees_data
+	{
+		std::optional<fee_regular_coin> normal_fees; ///< btc, kmd based coins
+		std::optional<fee_erc_coin> erc_fees; ///< eth based coins
+	};
+
+	void from_json(const nlohmann::json& j, fees_data& cfg);
+
+
+	struct tx_history_request
+	{
+		std::string coin;
+		std::size_t limit;
+	};
+
+	void to_json(nlohmann::json& j, const tx_history_request& cfg);
+
+	struct transaction_data
+	{
+		std::size_t timestamp;
+		std::vector<std::string> from;
+		std::vector<std::string> to;
+		fees_data fee_details;
+		std::optional<std::size_t> confirmations;
+		std::string coin;
+		std::size_t block_height;
+		std::string internal_id;
+		std::string spent_by_me;
+		std::string received_by_me;
+		std::string my_balance_change;
+		std::string total_amount;
+		std::string tx_hash;
+		std::string tx_hex;
+		std::string timestamp_as_date; ///< human readeable timestamp
+	};
+
+	void from_json(const nlohmann::json& j, transaction_data& cfg);
+
+	struct sync_status_additional_error
+	{
+		std::string message;
+		int code;
+	};
+
+	void from_json(const nlohmann::json& j, sync_status_additional_error& answer);
+
+	struct sync_status_eth_erc_20_coins
+	{
+		std::size_t blocks_left;
+	};
+
+	void from_json(const nlohmann::json& j, sync_status_eth_erc_20_coins& answer);
+
+	struct sync_status_regular_coins
+	{
+		std::size_t transactions_left;
+	};
+
+	void from_json(const nlohmann::json& j, sync_status_regular_coins& answer);
+
+	struct sync_status_additional_infos
+	{
+		std::optional<sync_status_additional_error> error; ///< in case of error
+		std::optional<sync_status_eth_erc_20_coins> erc_infos; ///< eth/erc20 related coins
+		std::optional<sync_status_regular_coins> regular_infos; ///< kmd/btc/utxo related coins
+	};
+
+	void from_json(const nlohmann::json& j, sync_status_additional_infos& answer);
+
+	struct t_sync_status
+	{
+		std::string state; ///< NotEnabled, NotStarted, InProgress, Error, Finished
+		std::optional<sync_status_additional_infos> additional_info;
+	};
+
+	void from_json(const nlohmann::json& j, t_sync_status& answer);
+
+	struct tx_history_answer_success
+	{
+		std::string from_id;
+		std::size_t skipped;
+		std::size_t limit;
+		std::size_t current_block;
+		std::size_t total;
+		std::vector<transaction_data> transactions;
+		t_sync_status sync_status;
+	};
+
+	void from_json(const nlohmann::json& j, tx_history_answer_success& answer);
+
+	struct tx_history_answer
+	{
+		std::optional<std::string> error;
+		std::optional<tx_history_answer_success> result;
+		std::string raw_result; ///< internal
+		int rpc_result_code; ///< internal
+	};
+
+	void from_json(const nlohmann::json& j, tx_history_answer& answer);
+
+	tx_history_answer rpc_my_tx_history(tx_history_request&& request);
+
+	struct withdraw_request
+	{
+		std::string coin;
+		std::string to; ///< coins will be withdraw to this address
+		std::string amount; ///< ignored if max is true
+		bool max{false};
+	};
+
+	void to_json(nlohmann::json& j, const withdraw_request& cfg);
+
+	struct withdraw_answer
+	{
+		std::optional<transaction_data> result;
+		std::optional<std::string> error;
+		std::string raw_result; ///< internal
+		int rpc_result_code; ///< internal
+	};
+
+	void from_json(const nlohmann::json& j, withdraw_answer& answer);
+
+	withdraw_answer rpc_withdraw(withdraw_request&& request);
+
+	struct send_raw_transaction_request
+	{
+		std::string coin;
+		std::string tx_hex;
+	};
+
+	void to_json(nlohmann::json& j, const send_raw_transaction_request& cfg);
+
+	struct send_raw_transaction_answer
+	{
+		std::string tx_hash;
+		std::string raw_result; ///< internal
+		int rpc_result_code; ///< internal
+	};
+
+	void from_json(const nlohmann::json& j, send_raw_transaction_answer& answer);
+
+	send_raw_transaction_answer rpc_send_raw_transaction(send_raw_transaction_request&& request);
+
+	struct orderbook_request
+	{
+		std::string base;
+		std::string rel;
+	};
+
+	void to_json(nlohmann::json& j, const orderbook_request& request);
+
+	struct order_contents
+	{
+		std::string coin;
+		std::string address;
+		std::string price;
+		std::string maxvolume;
+		std::string pubkey;
+		std::size_t age;
+		std::size_t zcredits;
+	};
+
+	void from_json(const nlohmann::json& j, order_contents& contents);
+
+	struct orderbook_answer
+	{
+		std::size_t askdepth;
+		std::size_t biddepth;
+		std::vector<order_contents> asks;
+		std::vector<order_contents> bids;
+		std::string base;
+		std::string rel;
+		std::size_t numasks;
+		std::size_t numbids;
+		std::size_t timestamp;
+		std::size_t netid;
+		std::string human_timestamp; //! Moment of the orderbook request human readeable
+
+		//! Internal
+		std::string raw_result;
+		int rpc_result_code;
+	};
+
+	void from_json(const nlohmann::json& j, orderbook_answer answer);
+
+	orderbook_answer rpc_orderbook(orderbook_request&& request);
+
+	struct trading_order_contents
+	{
+		std::string action;
+		std::string base;
+		std::string base_amount;
+		std::string base_amount_rat;
+		std::string dest_pub_key;
+		std::string method;
+		std::string rel;
+		std::string rel_amount;
+		std::string rel_amount_rat;
+		std::string sender_pubkey;
+		std::string uuid;
+	};
+
+	void from_json(const nlohmann::json& j, trading_order_contents& contents);
+
+	struct buy_request
+	{
+		std::string base;
+		std::string rel;
+		std::string price;
+		std::string volume;
+	};
+
+	void to_json(nlohmann::json& j, const buy_request& request);
+
+	struct buy_answer_success
+	{
+		trading_order_contents contents;
+	};
+
+	void from_json(const nlohmann::json& j, buy_answer_success& contents);
+
+	struct buy_answer
+	{
+		std::optional<std::string> error;
+		std::optional<buy_answer_success> result;
+		int rpc_result_code;
+		std::string raw_result;
+	};
+
+	void from_json(const nlohmann::json& j, buy_answer& answer);
+
+	buy_answer rpc_buy(buy_request&& request);
+
+	struct sell_request
+	{
+		std::string base;
+		std::string rel;
+		std::string price;
+		std::string volume;
+	};
+
+	void to_json(nlohmann::json& j, const sell_request& request);
+
+	struct sell_answer_success
+	{
+		trading_order_contents contents;
+	};
+
+	void from_json(const nlohmann::json& j, sell_answer_success& contents);
+
+	struct sell_answer
+	{
+		std::optional<std::string> error;
+		std::optional<sell_answer_success> result;
+		int rpc_result_code;
+		std::string raw_result;
+	};
+
+	void from_json(const nlohmann::json& j, sell_answer& answer);
+
+	sell_answer rpc_sell(sell_request&& request);
+
+	template <typename RpcReturnType>
+	static RpcReturnType rpc_process_answer(const RestClient::Response& resp) noexcept;
 }

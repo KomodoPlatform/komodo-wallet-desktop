@@ -20,8 +20,10 @@
 
 namespace ag = antara::gaming;
 
-namespace atomic_dex {
-    struct application : ag::world::app {
-        application() noexcept;
-    };
+namespace atomic_dex
+{
+	struct application : ag::world::app
+	{
+		application() noexcept;
+	};
 }
