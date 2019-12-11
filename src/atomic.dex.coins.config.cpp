@@ -19,7 +19,7 @@
 
 namespace atomic_dex
 {
-	void to_json(nlohmann::json& j, const atomic_dex::electrum_server& cfg)
+	void to_json(nlohmann::json& j, const electrum_server& cfg)
 	{
 		LOG_SCOPE_FUNCTION(INFO);
 		j["url"] = cfg.url;

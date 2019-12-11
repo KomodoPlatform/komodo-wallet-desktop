@@ -51,8 +51,8 @@ namespace atomic_dex
 
 		void on_key_pressed(const ag::event::key_pressed& evt) noexcept;
 
-		explicit gui(entt::registry& registry, atomic_dex::mm2& mm2_system,
-		             atomic_dex::coinpaprika_provider& paprika_system);
+		explicit gui(entt::registry& registry, mm2& mm2_system,
+		             coinpaprika_provider& paprika_system);
 
 		// ReSharper disable once CppFinalFunctionInFinalClass
 		void update() noexcept final;
@@ -65,8 +65,8 @@ namespace atomic_dex
 	private:
 		folly::ConcurrentHashMap<std::string, antara::gaming::sdl::opengl_image> icons_;
 		gui_variables gui_vars_;
-		atomic_dex::mm2& mm2_system_;
-		atomic_dex::coinpaprika_provider& paprika_system_;
+		mm2& mm2_system_;
+		coinpaprika_provider& paprika_system_;
 	};
 }
 

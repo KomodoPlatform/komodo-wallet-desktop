@@ -50,7 +50,7 @@ namespace
 		folly::ConcurrentHashMap<std::string, atomic_dex::coin_config>& coins_registry) noexcept
 	{
 		const auto cfg_path = ag::core::assets_real_path() / "config";
-		if (std::filesystem::exists(cfg_path / "coins.json"))
+		if (exists(cfg_path / "coins.json"))
 		{
 			std::ifstream ifs(cfg_path / "coins.json");
 			assert(ifs.is_open());
@@ -68,8 +68,8 @@ namespace atomic_dex
 {
 	mm2::mm2(entt::registry& registry) noexcept : system(registry)
 	{
-		this->dispatcher_.sink<atomic_dex::gui_enter_trading>().connect < &mm2::on_gui_enter_trading > (*this);
-		this->dispatcher_.sink<atomic_dex::gui_leave_trading>().connect < &mm2::on_gui_leave_trading > (*this);
+		this->dispatcher_.sink<gui_enter_trading>().connect < &mm2::on_gui_enter_trading > (*this);
+		this->dispatcher_.sink<gui_leave_trading>().connect < &mm2::on_gui_leave_trading > (*this);
 		retrieve_coins_information(coins_informations_);
 		spawn_mm2_instance();
 	}
@@ -156,7 +156,7 @@ namespace atomic_dex
 			.servers = coin_info.electrum_urls,
 			.with_tx_history = true
 		};
-		auto answer = ::mm2::api::rpc_electrum(std::move(request));
+		auto answer = rpc_electrum(std::move(request));
 		if (answer.result != "success")
 		{
 			return false;
@@ -168,7 +168,7 @@ namespace atomic_dex
 			update_coin_status(ticker);
 			coin_info.active = true;
 		}
-		this->dispatcher_.trigger<atomic_dex::coin_enabled>(ticker);
+		this->dispatcher_.trigger<coin_enabled>(ticker);
 		process_balance(ticker);
 		process_tx(ticker);
 		return true;
@@ -208,7 +208,7 @@ namespace atomic_dex
 			std::vector<std::string> results;
 			boost::split(results, current, [](char c) { return c == '/'; });
 			::mm2::api::orderbook_request request{.base = results[0], .rel = results[1]};
-			auto answer = ::mm2::api::rpc_orderbook(std::move(request));
+			auto answer = rpc_orderbook(std::move(request));
 			if (answer.rpc_result_code != -1)
 			{
 				this->current_orderbook_.insert_or_assign(current, answer);
@@ -236,8 +236,8 @@ namespace atomic_dex
 
 	void mm2::spawn_mm2_instance() noexcept
 	{
-		atomic_dex::mm2_config cfg{};
-		nlohmann::json json_cfg;
+		mm2_config cfg{};
+		json json_cfg;
 		nlohmann::to_json(json_cfg, cfg);
 		const auto tools_path = ag::core::assets_real_path() / "tools/mm2/";
 		DVLOG_F(loguru::Verbosity_INFO, "command line {}", json_cfg.dump());
@@ -268,7 +268,7 @@ namespace atomic_dex
 				mm2_running_ = true;
 				mm2_fetch_infos_thread_ = std::thread([this]() { this->fetch_infos_thread(); });
 				mm2_fetch_current_orderbook_thread_ = std::thread([this]() { this->fetch_current_orderbook_thread(); });
-				this->dispatcher_.trigger<atomic_dex::mm2_started>();
+				this->dispatcher_.trigger<mm2_started>();
 			}
 			else
 			{
@@ -315,7 +315,7 @@ namespace atomic_dex
 	::mm2::api::withdraw_answer
 	mm2::withdraw(::mm2::api::withdraw_request&& request, std::error_code& ec) const noexcept
 	{
-		auto result = ::mm2::api::rpc_withdraw(std::move(request));
+		auto result = rpc_withdraw(std::move(request));
 		if (result.error.has_value())
 		{
 			ec = mm2_error::rpc_withdraw_error;
@@ -326,7 +326,7 @@ namespace atomic_dex
 	::mm2::api::send_raw_transaction_answer
 	mm2::broadcast(::mm2::api::send_raw_transaction_request&& request, std::error_code& ec) const noexcept
 	{
-		auto result = ::mm2::api::rpc_send_raw_transaction(std::move(request));
+		auto result = rpc_send_raw_transaction(std::move(request));
 		if (result.rpc_result_code == -1)
 		{
 			ec = mm2_error::rpc_send_raw_transaction_error;
@@ -334,17 +334,17 @@ namespace atomic_dex
 		return result;
 	}
 
-	void mm2::process_balance(const std::string& ticker) noexcept
+	void mm2::process_balance(const std::string& ticker) const noexcept
 	{
 		::mm2::api::balance_request balance_request{.coin = ticker};
 		balance_informations_.insert_or_assign(ticker,
-		                                       ::mm2::api::rpc_balance(std::move(balance_request)));
+		                                       rpc_balance(std::move(balance_request)));
 	}
 
 	void mm2::process_tx(const std::string& ticker) noexcept
 	{
 		::mm2::api::tx_history_request tx_request{.coin = ticker, .limit = 50};
-		auto answer = ::mm2::api::rpc_my_tx_history(std::move(tx_request));
+		auto answer = rpc_my_tx_history(std::move(tx_request));
 		if (answer.error.has_value())
 		{
 			VLOG_F(loguru::Verbosity_ERROR, "tx error: {}", answer.error.value());

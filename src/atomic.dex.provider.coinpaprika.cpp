@@ -56,14 +56,14 @@ namespace atomic_dex
 {
 	namespace bm = boost::multiprecision;
 
-	atomic_dex::coinpaprika_provider::coinpaprika_provider(entt::registry& registry, mm2& mm2_instance) : system(
-		                                                                                                      registry),
-	                                                                                                      instance_(
-		                                                                                                      mm2_instance)
+	coinpaprika_provider::coinpaprika_provider(entt::registry& registry, mm2& mm2_instance) : system(
+		                                                                                          registry),
+	                                                                                          instance_(
+		                                                                                          mm2_instance)
 	{
 		disable();
-		this->dispatcher_.sink<atomic_dex::mm2_started>().connect < &coinpaprika_provider::on_mm2_started > (*this);
-		this->dispatcher_.sink<atomic_dex::coin_enabled>().connect<&coinpaprika_provider::on_coin_enabled>(*this);
+		this->dispatcher_.sink<mm2_started>().connect < &coinpaprika_provider::on_mm2_started > (*this);
+		this->dispatcher_.sink<coin_enabled>().connect<&coinpaprika_provider::on_coin_enabled>(*this);
 	}
 
 	void coinpaprika_provider::update() noexcept
@@ -76,7 +76,7 @@ namespace atomic_dex
 		provider_rates_thread_.join();
 	}
 
-	void coinpaprika_provider::on_mm2_started([[maybe_unused]] const atomic_dex::mm2_started& evt) noexcept
+	void coinpaprika_provider::on_mm2_started([[maybe_unused]] const mm2_started& evt) noexcept
 	{
 		LOG_SCOPE_FUNCTION(INFO);
 		provider_rates_thread_ = std::thread([this]()
@@ -108,7 +108,7 @@ namespace atomic_dex
 			ec = mm2_error::invalid_fiat_for_rate_conversion;
 			return "0.00";
 		}
-		else if (instance_.get_coin_info(ticker).coinpaprika_id == "test-coin")
+		if (instance_.get_coin_info(ticker).coinpaprika_id == "test-coin")
 		{
 			return "0.00";
 		}
@@ -218,7 +218,7 @@ namespace atomic_dex
 		return current_price;
 	}
 
-	void coinpaprika_provider::on_coin_enabled(const atomic_dex::coin_enabled& evt) noexcept
+	void coinpaprika_provider::on_coin_enabled(const coin_enabled& evt) noexcept
 	{
 		const auto config = instance_.get_coin_info(evt.ticker);
 		process_provider(config, usd_rate_providers_, "usd-us-dollars");
@@ -235,7 +235,7 @@ namespace atomic_dex
 			j["amount"] = evt.amount;
 		}
 
-		void from_json(const nlohmann::json& j, coinpaprika::api::price_converter_answer& evt)
+		void from_json(const nlohmann::json& j, price_converter_answer& evt)
 		{
 			LOG_SCOPE_FUNCTION(INFO);
 			evt.base_currency_id = j.at("base_currency_id").get<std::string>();
@@ -245,7 +245,7 @@ namespace atomic_dex
 			evt.quote_currency_name = j.at("quote_currency_name").get<std::string>();
 			evt.quote_price_last_updated = j.at("quote_price_last_updated").get<std::string>();
 			evt.amount = j.at("amount").get<int64_t>();
-			atomic_dex::utils::my_json_sax sx;
+			utils::my_json_sax sx;
 			nlohmann::json::sax_parse(j.dump(), &sx);
 			evt.price = sx.float_as_string;
 			std::replace(evt.price.begin(), evt.price.end(), ',', '.');
@@ -270,7 +270,7 @@ namespace atomic_dex
 				answer.raw_result = resp.body;
 				return answer;
 			}
-			else if (resp.code == 429)
+			if (resp.code == 429)
 			{
 				DVLOG_F(loguru::Verbosity_WARNING, "rpc answer code is 429 (Too Many requests)");
 				answer.rpc_result_code = resp.code;

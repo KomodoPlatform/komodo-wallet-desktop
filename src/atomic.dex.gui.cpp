@@ -420,22 +420,22 @@ namespace atomic_dex
 		}
 	}
 
-	gui::gui(entt::registry& registry, atomic_dex::mm2& mm2_system,
-	         atomic_dex::coinpaprika_provider& paprika_system) : system(registry),
-	                                                             mm2_system_(mm2_system),
-	                                                             paprika_system_(paprika_system)
+	gui::gui(entt::registry& registry, mm2& mm2_system,
+	         coinpaprika_provider& paprika_system) : system(registry),
+	                                                 mm2_system_(mm2_system),
+	                                                 paprika_system_(paprika_system)
 	{
 		const auto p = antara::gaming::core::assets_real_path() / "textures";
 		for (auto& directory_entry : fs::directory_iterator(p))
 		{
 			antara::gaming::sdl::opengl_image img{};
-			const auto res = antara::gaming::sdl::load_image(directory_entry, img);
+			const auto res = load_image(directory_entry, img);
 			if (!res) continue;
 			icons_.insert_or_assign(boost::algorithm::to_upper_copy(directory_entry.path().stem().string()), img);
 		}
 
 		init_live_coding();
-		atomic_dex::style::apply();
+		style::apply();
 		this->dispatcher_.sink<ag::event::key_pressed>().connect<&gui::on_key_pressed>(*this);
 	}
 
@@ -462,8 +462,8 @@ namespace atomic_dex
 			const ImVec2 position((ImGui::GetWindowSize().x) * 0.5f - radius,
 			                      (ImGui::GetWindowSize().y) * 0.5f - radius);
 			ImGui::SetCursorPos(position);
-			atomic_dex::widgets::LoadingIndicatorCircle("foo", radius, ImVec4(bright_color), ImVec4(dark_color), 9,
-			                                            1.5f);
+			widgets::LoadingIndicatorCircle("foo", radius, ImVec4(bright_color), ImVec4(dark_color), 9,
+			                                1.5f);
 		}
 		else
 		{
@@ -490,11 +490,11 @@ namespace atomic_dex
 				// If entered trade,
 				if (!in_trade_prev && in_trade)
 				{
-					this->dispatcher_.trigger<atomic_dex::gui_enter_trading>();
+					this->dispatcher_.trigger<gui_enter_trading>();
 				}
 				else if (in_trade_prev && !in_trade)
 				{
-					this->dispatcher_.trigger<atomic_dex::gui_leave_trading>();
+					this->dispatcher_.trigger<gui_leave_trading>();
 				}
 				in_trade_prev = in_trade;
 

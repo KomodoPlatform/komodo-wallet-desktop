@@ -62,9 +62,9 @@ namespace atomic_dex
 		system_manager_.create_system<ag::ecs::virtual_input_system>();
 
 		//! MM2 system need to be created before the GUI and give the instance to the gui
-		auto& mm2_system = system_manager_.create_system<atomic_dex::mm2>();
-		auto& paprika_system = system_manager_.create_system<atomic_dex::coinpaprika_provider>(mm2_system);
-		system_manager_.create_system<atomic_dex::gui>(mm2_system, paprika_system);
+		auto& mm2_system = system_manager_.create_system<mm2>();
+		auto& paprika_system = system_manager_.create_system<coinpaprika_provider>(mm2_system);
+		system_manager_.create_system<gui>(mm2_system, paprika_system);
 #if defined(ATOMIC_DEX_GLFW)
         system_manager_.prioritize_system<atomic_dex::gui, ag::glfw::graphic_system>();
 #endif
@@ -72,7 +72,7 @@ namespace atomic_dex
         system_manager_.prioritize_system<atomic_dex::gui, ag::sfml::graphic_system>();
 #endif
 #if defined(ATOMIC_DEX_SDL)
-		system_manager_.prioritize_system<atomic_dex::gui, ag::sdl::graphic_system>();
+		system_manager_.prioritize_system<gui, ag::sdl::graphic_system>();
 #endif
 	}
 }

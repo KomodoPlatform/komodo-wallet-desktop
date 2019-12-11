@@ -37,11 +37,11 @@ namespace atomic_dex
 		std::string rpc_password{"atomix_dex_mm2_passphrase"};
 	};
 
-	void from_json(const json& j, atomic_dex::mm2_config& cfg);
+	void from_json(const json& j, mm2_config& cfg);
 
-	void to_json(json& j, const atomic_dex::mm2_config& cfg);
+	void to_json(json& j, const mm2_config& cfg);
 
-	inline void from_json(const json& j, atomic_dex::mm2_config& cfg)
+	inline void from_json(const json& j, mm2_config& cfg)
 	{
 		cfg.gui = j.at("gui").get<std::string>();
 		cfg.netid = j.at("netid").get<int64_t>();
@@ -50,7 +50,7 @@ namespace atomic_dex
 		cfg.rpc_password = j.at("rpc_password").get<std::string>();
 	}
 
-	inline void to_json(json& j, const atomic_dex::mm2_config& cfg)
+	inline void to_json(json& j, const mm2_config& cfg)
 	{
 		j = json::object();
 		j["gui"] = cfg.gui;

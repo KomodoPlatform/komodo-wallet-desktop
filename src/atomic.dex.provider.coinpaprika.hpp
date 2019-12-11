@@ -85,8 +85,8 @@ namespace atomic_dex
 		std::string get_price_in_fiat_from_tx(const std::string& fiat, const std::string& ticker, const tx_infos& tx,
 		                                      std::error_code& ec) const noexcept;
 
-		void on_mm2_started(const atomic_dex::mm2_started& evt) noexcept;
-		void on_coin_enabled(const atomic_dex::coin_enabled& evt) noexcept;
+		void on_mm2_started(const mm2_started& evt) noexcept;
+		void on_coin_enabled(const coin_enabled& evt) noexcept;
 
 		// ReSharper disable once CppFinalFunctionInFinalClass
 		void update() noexcept final;

@@ -51,7 +51,7 @@ namespace atomic_dex
 	class mm2 final : public ag::ecs::pre_update_system<mm2>
 	{
 	private:
-		using coins_registry = folly::ConcurrentHashMap<std::string, atomic_dex::coin_config>;
+		using coins_registry = folly::ConcurrentHashMap<std::string, coin_config>;
 		reproc::process mm2_instance_;
 		std::atomic<bool> mm2_running_{false};
 		std::atomic<bool> orderbook_thread_active{false};
@@ -75,7 +75,7 @@ namespace atomic_dex
 
 		void spawn_mm2_instance() noexcept;
 
-		void process_balance(const std::string& ticker) noexcept;
+		void process_balance(const std::string& ticker) const noexcept;
 		void process_tx(const std::string& ticker) noexcept;
 
 	public:
@@ -89,7 +89,7 @@ namespace atomic_dex
 
 		~mm2() noexcept;
 
-		void update() noexcept final;
+		void update() noexcept;
 
 		[[nodiscard]] const std::atomic<bool>& is_mm2_running() const noexcept;
 
