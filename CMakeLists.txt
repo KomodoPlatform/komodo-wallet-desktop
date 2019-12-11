@@ -170,7 +170,7 @@ if (USE_SFML_ANTARA_WRAPPER)
 elseif (USE_GLFW_ANTARA_WRAPPER)
     add_definitions(-DATOMIC_DEX_GLFW)
     target_link_libraries(${PROJECT_NAME} PUBLIC antara::glfw)
-elseif(USE_SDL_ANTARA_WRAPPER)
+elseif (USE_SDL_ANTARA_WRAPPER)
     add_definitions(-DATOMIC_DEX_SDL)
     target_link_libraries(${PROJECT_NAME} PUBLIC antara::sdl)
 endif ()
@@ -185,7 +185,7 @@ if (WIN32)
                 COMMENT "copying dlls …"
                 $<TARGET_FILE_DIR:${PROJECT_NAME}>
                 )
-    endif()
+    endif ()
 endif ()
 
 if (APPLE)

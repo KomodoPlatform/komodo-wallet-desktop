@@ -252,6 +252,15 @@ namespace mm2::api {
 
     orderbook_answer rpc_orderbook(orderbook_request &&request);
 
+    struct buy_request {
+        std::string base;
+        std::string rel;
+        std::string price;
+        std::string volume;
+    };
+
+    void to_json(nlohmann::json& j, buy_request& request);
+
     template<typename RpcReturnType>
     static RpcReturnType rpc_process_answer(const RestClient::Response &resp) noexcept;
 }

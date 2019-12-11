@@ -6,6 +6,8 @@
 !.vscode/launch.json
 !.vscode/extensions.json
 
+build
+imgui.ini
 ### macOS template
 # General 
 .DS_Store
@@ -509,3 +511,5 @@ messy_playground/blockchain/*/assets/sounds/intro2.wav
 assets/fonts/sansation.ttf
 assets/tools
 /assets/textures/icons/
+.vscode/launch.json
+.vscode/settings.json

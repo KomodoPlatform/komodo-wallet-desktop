@@ -14,8 +14,9 @@
  *                                                                            *
  ******************************************************************************/
 
-#include <restclient-cpp/restclient.h>
+#include <algorithm>
 #include <boost/multiprecision/cpp_dec_float.hpp>
+#include <restclient-cpp/restclient.h>
 #include "atomic.dex.provider.coinpaprika.hpp"
 
 namespace {
@@ -208,6 +209,7 @@ namespace atomic_dex {
             atomic_dex::utils::my_json_sax sx;
             nlohmann::json::sax_parse(j.dump(), &sx);
             evt.price = sx.float_as_string;
+            std::replace(evt.price.begin(), evt.price.end(), ',', '.');
         }
 
         price_converter_answer price_converter(const price_converter_request &request) {

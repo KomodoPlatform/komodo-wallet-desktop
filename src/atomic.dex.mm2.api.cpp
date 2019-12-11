@@ -230,6 +230,13 @@ namespace mm2::api {
         answer.human_timestamp = ss.str();
     }
 
+    void to_json(nlohmann::json& j, buy_request& request) {
+        j.at("base").get_to(request.base);
+        j.at("price").get_to(request.price);
+        j.at("rel").get_to(request.rel);
+        j.at("volume").get_to(request.volume);
+    }
+
     template<typename RpcReturnType>
     RpcReturnType rpc_process_answer(const RestClient::Response &resp) noexcept {
         LOG_SCOPE_FUNCTION(INFO);
