@@ -53,6 +53,9 @@ namespace
 			return "You try to convert to a fiat that is not supported, only USD and EUR supported";
 		case mm2_error::unknown_ticker_for_rate_conversion:
 			return "You try to convert from an unknown ticker, are you trying to convert from a test-coin ?";
+		case mm2_error::orderbook_empty:
+			return "You try to retrieve an orderbook but you didn't load any coin (base / rel)";
+		default: ;
 		}
 		return "";
 	}

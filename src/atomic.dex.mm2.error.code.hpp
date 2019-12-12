@@ -28,6 +28,7 @@ enum class mm2_error
 	rpc_send_raw_transaction_error,
 	invalid_fiat_for_rate_conversion,
 	unknown_ticker_for_rate_conversion,
+	orderbook_empty,
 	unknown_error
 };
 

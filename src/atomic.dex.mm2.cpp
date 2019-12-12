@@ -192,6 +192,18 @@ namespace atomic_dex
 		return coins_informations_.at(ticker);
 	}
 
+	::mm2::api::orderbook_answer mm2::get_current_orderbook(std::error_code &ec) const noexcept
+	{
+		if (this->current_orderbook_.empty())
+		{
+			ec = mm2_error::orderbook_empty;
+			return {};
+		} else
+		{
+			return this->current_orderbook_.begin()->second;
+		}
+	}
+
 	void mm2::process_orderbook(const std::string& base, const std::string& rel)
 	{
 		::mm2::api::orderbook_request request{.base = base, .rel = rel};

@@ -543,6 +543,16 @@ namespace atomic_dex
 						this->dispatcher_.trigger<orderbook_refresh>(current_base, current_rel);
 					}
 
+					if (not current_base.empty() && not current_rel.empty()) {
+						ImGui::Text("Orderbook:");
+						ImGui::Columns(4, "orderbook_columns");
+						ImGui::Separator();
+						ImGui::Text("Buy Coin"); ImGui::NextColumn();
+						ImGui::Text("Sell Coin"); ImGui::NextColumn();
+						ImGui::Text("%s", (current_base + " Volume").c_str()); ImGui::NextColumn();
+						ImGui::Text("%s", (current_rel + " price per " + current_base).c_str()); ImGui::NextColumn();
+						ImGui::Separator();
+					}
 
 					ImGui::EndTabItem();
 				}

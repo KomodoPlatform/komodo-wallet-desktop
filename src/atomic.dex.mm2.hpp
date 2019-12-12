@@ -119,6 +119,7 @@ namespace atomic_dex
 
 		//! Get Specific info about one coin
 		[[nodiscard]] coin_config get_coin_info(const std::string& ticker) const noexcept;
+		[[nodiscard]] ::mm2::api::orderbook_answer get_current_orderbook(std::error_code &ec) const noexcept;
 		void process_orderbook(const std::string& base, const std::string& rel);
 	};
 }
