@@ -189,7 +189,7 @@ namespace
 			ImGui::Separator();
 			std::error_code ec;
 
-			ImGui::Text(std::string(std::string(ICON_FA_BALANCE_SCALE) + " Balance: %s %s (%s USD)").c_str(),
+			ImGui::Text(std::string(std::string(reinterpret_cast<const char *>(ICON_FA_BALANCE_SCALE)) + " Balance: %s %s (%s USD)").c_str(),
 					mm2.my_balance(curr_asset.ticker, ec).c_str(),
 					curr_asset.ticker.c_str(),
 					paprika_system.get_price_in_fiat("USD", curr_asset.ticker, ec).c_str());
