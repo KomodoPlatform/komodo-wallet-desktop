@@ -636,6 +636,40 @@ namespace atomic_dex
 						ImGui::Begin("Buy/Sell Window", nullptr);
 						{
 							ImGui::Text("Buy %s", locked_base.c_str());
+
+							ImGui::Text("Price: ");
+							ImGui::SameLine();
+							ImGui::SetNextItemWidth(200.f);
+							auto filter = [](ImGuiInputTextCallbackData* data)
+							{
+								std::string str_data = "";
+								if (data->UserData != nullptr)
+								{
+									str_data = static_cast<char *>(data->UserData);
+								}
+								auto c = data->EventChar;
+								auto n = std::count(begin(str_data), end(str_data), '.');
+								if (n == 1 && c == '.')
+								{
+									return 1;
+								}
+								int valid = !(std::isdigit(c) || c == '.');
+								
+								return valid;
+							};
+							/*
+							 *  struct TextFilters { static int FilterImGuiLetters(ImGuiInputTextCallbackData* data) { if (data->EventChar < 256 && strchr("imgui", (char)data->EventChar)) return 0; return 1; } };
+            static char buf6[64] = ""; ImGui::InputText("\"imgui\" letters", buf6, 64, ImGuiInputTextFlags_CallbackCharFilter, TextFilters::FilterImGuiLetters);
+							 */
+							static char price_buf[20];
+							ImGui::InputText("##price", price_buf, IM_ARRAYSIZE(price_buf), ImGuiInputTextFlags_CallbackCharFilter, filter, price_buf);
+
+							ImGui::Text("Amount: ");
+							ImGui::SameLine();
+							ImGui::SetNextItemWidth(200.f);
+							static char amount_buf[20];
+							ImGui::InputText("##amount", amount_buf, IM_ARRAYSIZE(amount_buf), ImGuiInputTextFlags_CallbackCharFilter, filter, amount_buf);
+							
 						}
 						ImGui::End();
 					}

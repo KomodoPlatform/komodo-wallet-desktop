@@ -14,10 +14,24 @@
  *                                                                            *
  ******************************************************************************/
 
+#ifdef _MSC_VER
+#define NOMINMAX
+#include <Windows.h>
+#include "API/LPP_API.h"
+#endif
 #include "atomic.dex.app.hpp"
 
 int main(int argc, char *argv[])
 {
+#ifdef _MSC_VER
+    HMODULE livePP = lpp::lppLoadAndRegister(L"LivePP", "Quickstart");
+
+    // enable Live++
+    lpp::lppEnableAllCallingModulesSync(livePP);
+
+    // enable Live++'s exception handler/error recovery
+    lpp::lppInstallExceptionHandler(livePP);
+#endif
     (void)argc;
     (void)argv;
     loguru::set_thread_name("main thread");
