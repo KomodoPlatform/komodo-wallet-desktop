@@ -375,19 +375,17 @@ namespace atomic_dex
 			{
 				tx_infos current_info{
 					.am_i_sender = current.my_balance_change[0] == '-',
-					.my_balance_change = current.my_balance_change,
-					.block_height = current.block_height,
-					.date = current.timestamp_as_date,
+					.confirmations = current.confirmations.has_value() ? current.confirmations.value() : 0,
 					.from = current.from,
 					.to = current.to,
-					.total_amount = current.total_amount,
-					.fees = current.fee_details.normal_fees.has_value()
-						        ? current.fee_details.normal_fees.value().amount
-						        : current.fee_details.erc_fees.value().total_fee,
-					.ec = mm2_error::success,
-					.confirmations = current.confirmations.has_value() ? current.confirmations.value() : 0,
+					.date = current.timestamp_as_date,
 					.timestamp = current.timestamp,
-					.tx_hash = current.tx_hash
+					.tx_hash = current.tx_hash,
+					.fees = current.fee_details.normal_fees.has_value() ? current.fee_details.normal_fees.value().amount : current.fee_details.erc_fees.value().total_fee,
+					.my_balance_change = current.my_balance_change,
+					.total_amount = current.total_amount,
+					.block_height = current.block_height,
+					.ec = mm2_error::success,
 				};
 				out.push_back(std::move(current_info));
 			}
