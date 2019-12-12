@@ -271,7 +271,7 @@ namespace mm2::api
 		int rpc_result_code;
 	};
 
-	void from_json(const nlohmann::json& j, orderbook_answer answer);
+	void from_json(const nlohmann::json& j, orderbook_answer& answer);
 
 	orderbook_answer rpc_orderbook(orderbook_request&& request);
 

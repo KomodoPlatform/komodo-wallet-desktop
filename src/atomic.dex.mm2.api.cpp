@@ -15,6 +15,7 @@
  ******************************************************************************/
 
 #include <date/date.h>
+#include <boost/algorithm/string/trim.hpp>
 #include "atomic.dex.mm2.api.hpp"
 
 namespace
@@ -246,13 +247,14 @@ namespace mm2::api
 		j.at("coin").get_to(contents.coin);
 		j.at("address").get_to(contents.address);
 		j.at("price").get_to(contents.price);
+        boost::trim_right_if(contents.price, boost::is_any_of("0"));
 		j.at("maxvolume").get_to(contents.maxvolume);
 		j.at("pubkey").get_to(contents.pubkey);
 		j.at("age").get_to(contents.age);
 		j.at("zcredits").get_to(contents.zcredits);
 	}
 
-	void from_json(const nlohmann::json& j, orderbook_answer answer)
+	void from_json(const nlohmann::json& j, orderbook_answer& answer)
 	{
 		j.at("base").get_to(answer.base);
 		j.at("rel").get_to(answer.rel);
