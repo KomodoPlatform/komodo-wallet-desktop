@@ -369,6 +369,44 @@ namespace mm2::api
 
 	cancel_order_answer rpc_cancel_order(cancel_order_request&& request);
 
+	struct cancel_data
+	{
+		//! If by == Pair
+		std::optional<std::pair<std::string, std::string>> pair;
+
+		//! If by == Coin
+		std::optional<std::string> ticker;
+	};
+
+	void to_json(nlohmann::json& j, const cancel_data& cfg);
+
+	struct cancel_type
+	{
+		std::string type{"All"};
+		std::optional<cancel_data> data{std::nullopt};
+	};
+
+	void to_json(nlohmann::json& j, const cancel_type& cfg);
+
+	struct cancel_all_orders_request
+	{
+		cancel_type cancel_by;
+	};
+
+	void to_json(nlohmann::json& j, const cancel_all_orders_request& cfg);
+
+	struct cancel_all_orders_answer
+	{
+		std::vector<std::string> cancelled;
+		std::vector<std::string> currently_matching;
+		int rpc_result_code;
+		std::string raw_result;
+	};
+
+	void from_json(const nlohmann::json& j, cancel_all_orders_answer& answer);
+
+	cancel_all_orders_answer rpc_cancel_all_orders(cancel_all_orders_request&& request);
+
 	template <typename RpcReturnType>
 	static RpcReturnType rpc_process_answer(const RestClient::Response& resp) noexcept;
 }

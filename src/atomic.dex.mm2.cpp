@@ -70,6 +70,7 @@ namespace atomic_dex
 	{
 		this->dispatcher_.sink<gui_enter_trading>().connect < &mm2::on_gui_enter_trading > (*this);
 		this->dispatcher_.sink<gui_leave_trading>().connect < &mm2::on_gui_leave_trading > (*this);
+		this->dispatcher_.sink<orderbook_refresh>().connect<&mm2::on_refresh_orderbook>(*this);
 		retrieve_coins_information(coins_informations_);
 		spawn_mm2_instance();
 	}
@@ -191,6 +192,17 @@ namespace atomic_dex
 		return coins_informations_.at(ticker);
 	}
 
+	void mm2::process_orderbook(const std::string& base, const std::string& rel)
+	{
+		::mm2::api::orderbook_request request{.base = base, .rel = rel};
+		auto answer = rpc_orderbook(std::move(request));
+		if (answer.rpc_result_code != -1)
+		{
+			this->current_orderbook_.clear();
+			this->current_orderbook_.insert_or_assign(base + "/" + rel, answer);
+		}
+	}
+
 	void mm2::fetch_current_orderbook_thread()
 	{
 		loguru::set_thread_name("orderbook thread");
@@ -207,12 +219,7 @@ namespace atomic_dex
 			std::string current = (*this->current_orderbook_.begin()).first;
 			std::vector<std::string> results;
 			boost::split(results, current, [](char c) { return c == '/'; });
-			::mm2::api::orderbook_request request{.base = results[0], .rel = results[1]};
-			auto answer = rpc_orderbook(std::move(request));
-			if (answer.rpc_result_code != -1)
-			{
-				this->current_orderbook_.insert_or_assign(current, answer);
-			}
+			process_orderbook(results[0], results[1]);
 		}
 		while (not current_orderbook_thread_timer_.wait_for(5s));
 	}
@@ -377,6 +384,20 @@ namespace atomic_dex
 				return a.timestamp < b.timestamp;
 			});
 			tx_informations_.insert_or_assign(ticker, std::move(out));
+		}
+	}
+
+	void mm2::on_refresh_orderbook(const orderbook_refresh& evt) noexcept
+	{
+		LOG_SCOPE_FUNCTION(INFO);
+		const auto key = evt.base + "/" + evt.rel;
+		if (current_orderbook_.find(key) == current_orderbook_.cend())
+		{
+			process_orderbook(evt.base, evt.rel);
+		}
+		else
+		{
+			DLOG_F(WARNING, "This book is already loaded, skipping");
 		}
 	}
 

@@ -79,6 +79,7 @@ namespace atomic_dex
 		void process_tx(const std::string& ticker) noexcept;
 
 	public:
+		void on_refresh_orderbook(const orderbook_refresh& evt) noexcept;
 		void on_gui_enter_trading(const gui_enter_trading& evt) noexcept;
 		void on_gui_leave_trading(const gui_leave_trading& evt) noexcept;
 		bool enable_default_coins() noexcept;
@@ -118,6 +119,7 @@ namespace atomic_dex
 
 		//! Get Specific info about one coin
 		[[nodiscard]] coin_config get_coin_info(const std::string& ticker) const noexcept;
+		void process_orderbook(const std::string& base, const std::string& rel);
 	};
 }
 

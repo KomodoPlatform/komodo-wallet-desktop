@@ -477,4 +477,52 @@ namespace mm2::api
 		const auto resp = RestClient::post(endpoint, "application/json", json_data.dump());
 		return rpc_process_answer<cancel_order_answer>(resp);
 	}
+
+	void to_json(nlohmann::json& j, const cancel_data& cfg)
+	{
+		LOG_SCOPE_FUNCTION(INFO);
+		if (cfg.pair.has_value())
+		{
+			auto [base, rel] = cfg.pair.value();
+			j["base"] = base;
+			j["rel"] = rel;
+		}
+		else if (cfg.ticker.has_value())
+		{
+			j["ticker"] = cfg.ticker.value();
+		}
+	}
+
+	void to_json(nlohmann::json& j, const cancel_type& cfg)
+	{
+		LOG_SCOPE_FUNCTION(INFO);
+		j["type"] = cfg.type;
+		if (cfg.type != "All" && cfg.data.has_value())
+		{
+			j["data"] = cfg.data.value();
+		}
+	}
+
+	void to_json(nlohmann::json& j, const cancel_all_orders_request& cfg)
+	{
+		LOG_SCOPE_FUNCTION(INFO);
+		j["cancel_by"] = cfg.cancel_by;
+	}
+
+	void from_json(const nlohmann::json& j, cancel_all_orders_answer& answer)
+	{
+		LOG_SCOPE_FUNCTION(INFO);
+		j.at("result").at("cancelled").get_to(answer.cancelled);
+		j.at("result").at("currently_matching").get_to(answer.currently_matching);
+	}
+
+	cancel_all_orders_answer rpc_cancel_all_orders(cancel_all_orders_request&& request)
+	{
+		LOG_SCOPE_FUNCTION(INFO);
+		auto json_data = template_request("cancel_all_orders");
+		to_json(json_data, request);
+		DVLOG_F(loguru::Verbosity_INFO, "request: %s", json_data.dump().c_str());
+		const auto resp = RestClient::post(endpoint, "application/json", json_data.dump());
+		return rpc_process_answer<cancel_all_orders_answer>(resp);
+	}
 }

@@ -483,7 +483,67 @@ namespace atomic_dex
 				{
 					in_trade = true;
 
-					ImGui::Text("Work in progress");
+					//ImGui::Text("Work in progress");
+
+					//! TODO: REMOVE THIS TMP !!!! (for testing trading part)
+					static std::string current_base = "";
+					static std::string current_rel = "";
+
+					const float remaining_width = ImGui::GetContentRegionAvail().x - ImGui::GetStyle().ItemSpacing.x;
+
+					ImGui::Text("Choose Base coin");
+					ImGui::SameLine();
+					ImGui::SetCursorPosX(ImGui::GetCursorPosX() + remaining_width / 6);
+					ImGui::Text("Choose Rel coin");
+					ImGui::SetNextItemWidth(remaining_width / 6);
+					if (ImGui::BeginCombo("##left", current_base.c_str()))
+					{
+						auto coins = mm2_system_.get_enabled_coins();
+						for (auto&& current : coins)
+						{
+							if (current.ticker == current_rel) continue;
+							const bool is_selected = current.ticker == current_base;
+							if (ImGui::Selectable(current.ticker.c_str(), is_selected))
+							{
+								current_base = current.ticker;
+							}
+							if (is_selected)
+							{
+								ImGui::SetItemDefaultFocus();
+							}
+						}
+						ImGui::EndCombo();
+					}
+
+					ImGui::SameLine();
+					ImGui::SetNextItemWidth(remaining_width / 6);
+					if (ImGui::BeginCombo("##right", current_rel.c_str()))
+					{
+						const auto coins = mm2_system_.get_enabled_coins();
+						
+						for (auto&& current : coins)
+						{
+							if (current.ticker == current_base) continue;
+							const bool is_selected = current.ticker == current_rel;
+							if (ImGui::Selectable(current.ticker.c_str(), is_selected))
+							{
+								current_rel = current.ticker;
+							}
+							if (is_selected)
+							{
+								ImGui::SetItemDefaultFocus();
+							}
+						}
+						
+						ImGui::EndCombo();
+					}
+					ImGui::SameLine();
+					if (ImGui::Button("Load") && not current_base.empty() && not current_rel.empty())
+					{
+						this->dispatcher_.trigger<orderbook_refresh>(current_base, current_rel);
+					}
+
+
 					ImGui::EndTabItem();
 				}
 
