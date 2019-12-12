@@ -455,9 +455,6 @@ namespace atomic_dex
 		gui_vars_.main_window_size = ImGui::GetWindowSize();
 		if (not active && mm2_system_.is_mm2_running())
 		{ this->dispatcher_.trigger<ag::event::quit_game>(0); }
-		ImGuiIO& io = ImGui::GetIO();
-		io.ConfigViewportsNoAutoMerge = false;
-		io.ConfigViewportsNoDefaultParent = false;
 		if (!mm2_system_.is_mm2_running())
 		{
 			ImGui::Text("Loading, please wait...");
@@ -479,11 +476,17 @@ namespace atomic_dex
 
 				if (ImGui::BeginTabItem("Portfolio"))
 				{
+					ImGuiIO& io = ImGui::GetIO();
+					io.ConfigViewportsNoAutoMerge = false;
+					io.ConfigViewportsNoDefaultParent = false;
 					gui_portfolio(mm2_system_, paprika_system_, gui_vars_, *this);
 					ImGui::EndTabItem();
 				}
 				if (ImGui::BeginTabItem("Trade"))
 				{
+					ImGuiIO& io = ImGui::GetIO();
+					io.ConfigViewportsNoAutoMerge = true;
+					io.ConfigViewportsNoDefaultParent = true;
 					in_trade = true;
 
 					//ImGui::Text("Work in progress");
@@ -491,6 +494,8 @@ namespace atomic_dex
 					//! TODO: REMOVE THIS TMP !!!! (for testing trading part)
 					static std::string current_base = "";
 					static std::string current_rel = "";
+					static std::string locked_base = "";
+					static std::string locked_rel = "";
 
 					const float remaining_width = ImGui::GetContentRegionAvail().x - ImGui::GetStyle().ItemSpacing.x;
 
@@ -543,79 +548,96 @@ namespace atomic_dex
 					ImGui::SameLine();
 					if (ImGui::Button("Load") && not current_base.empty() && not current_rel.empty())
 					{
+						locked_base = current_base;
+						locked_rel = current_rel;
 						this->dispatcher_.trigger<orderbook_refresh>(current_base, current_rel);
 					}
 
-					if (not current_base.empty() && not current_rel.empty())
+					if (not locked_base.empty() && not locked_rel.empty())
 					{
-						using namespace boost::algorithm;
-						ImGui::Text("Ask Orderbook:");
-						ImGui::Columns(4, "orderbook_columns_asks");
-						ImGui::Separator();
-						ImGui::Text("Buy Coin");
-						ImGui::NextColumn();
-						ImGui::Text("Sell Coin");
-						ImGui::NextColumn();
-						ImGui::Text("%s", (current_base + " Volume").c_str());
-						ImGui::NextColumn();
-						ImGui::Text("%s", (current_rel + " price per " + current_base).c_str());
-						ImGui::NextColumn();
-						ImGui::Separator();
-
-						std::error_code ec;
-						auto book = mm2_system_.get_current_orderbook(ec);
-						if (!ec)
+						ImGui::SetNextWindowSize(ImVec2(x, y), ImGuiCond_Once);
+						ImGui::Begin("Orderbook Window", nullptr);
 						{
-							//auto rng = ranges::views::concat(book.asks, book.bids);
-							for (const ::mm2::api::order_contents& content : book.asks)
+							ImGui::Text("Ask Orderbook:");
+							ImGui::Columns(4, "orderbook_columns_asks");
+							ImGui::Separator();
+							ImGui::Text("Buy Coin");
+							ImGui::NextColumn();
+							ImGui::Text("Sell Coin");
+							ImGui::NextColumn();
+							ImGui::Text("%s", (locked_base + " Volume").c_str());
+							ImGui::NextColumn();
+							ImGui::Text("%s", (locked_rel + " price per " + locked_base).c_str());
+							ImGui::NextColumn();
+							ImGui::Separator();
+
+							std::error_code ec;
+							auto book = mm2_system_.get_current_orderbook(ec);
+							if (!ec)
 							{
-								ImGui::Text("%s", current_base.c_str());
-								ImGui::NextColumn();
-								ImGui::Text("%s", current_rel.c_str());
-								ImGui::NextColumn();
-								ImGui::Text("%s", content.maxvolume.c_str());
-								ImGui::NextColumn();
-								ImGui::Text("%s", content.price.c_str());
-								ImGui::NextColumn();
+								//auto rng = ranges::views::concat(book.asks, book.bids);
+								for (const ::mm2::api::order_contents& content : book.asks)
+								{
+									ImGui::Text("%s", locked_base.c_str());
+									ImGui::NextColumn();
+									ImGui::Text("%s", locked_rel.c_str());
+									ImGui::NextColumn();
+									ImGui::Text("%s", content.maxvolume.c_str());
+									ImGui::NextColumn();
+									ImGui::Text("%s", content.price.c_str());
+									ImGui::NextColumn();
+								}
 							}
-						}
-						else
-						{
-							DLOG_F(WARNING, "{}", ec.message());
-						}
-
-						ImGui::NewLine();
-						ImGui::Text("Bids Orderbook:");
-						ImGui::Columns(4, "orderbook_columns_bids");
-						ImGui::Separator();
-						ImGui::Text("Buy Coin");
-						ImGui::NextColumn();
-						ImGui::Text("Sell Coin");
-						ImGui::NextColumn();
-						ImGui::Text("%s", (current_rel + " Volume").c_str());
-						ImGui::NextColumn();
-						ImGui::Text("%s", (current_rel + " price per " + current_base).c_str());
-						ImGui::NextColumn();
-						ImGui::Separator();
-
-						if (!ec)
-						{
-							for (const ::mm2::api::order_contents& content : book.bids)
+							else
 							{
-								ImGui::Text("%s", current_rel.c_str());
-								ImGui::NextColumn();
-								ImGui::Text("%s", current_base.c_str());
-								ImGui::NextColumn();
-								ImGui::Text("%s", content.maxvolume.c_str());
-								ImGui::NextColumn();
-								ImGui::Text("%s", content.price.c_str());
-								ImGui::NextColumn();
+								DLOG_F(WARNING, "{}", ec.message());
 							}
+
+							ImGui::Columns(1);
+							ImGui::NewLine();
+							ImGui::Text("Bids Orderbook:");
+							ImGui::Columns(4, "orderbook_columns_bids");
+							ImGui::Separator();
+							ImGui::Text("Buy Coin");
+							ImGui::NextColumn();
+							ImGui::Text("Sell Coin");
+							ImGui::NextColumn();
+							ImGui::Text("%s", (locked_rel + " Volume").c_str());
+							ImGui::NextColumn();
+							ImGui::Text("%s", (locked_rel + " price per " + locked_base).c_str());
+							ImGui::NextColumn();
+							ImGui::Separator();
+
+							if (!ec)
+							{
+								for (const ::mm2::api::order_contents& content : book.bids)
+								{
+									ImGui::Text("%s", locked_rel.c_str());
+									ImGui::NextColumn();
+									ImGui::Text("%s", locked_base.c_str());
+									ImGui::NextColumn();
+									ImGui::Text("%s", content.maxvolume.c_str());
+									ImGui::NextColumn();
+									ImGui::Text("%s", content.price.c_str());
+									ImGui::NextColumn();
+								}
+							}
+							else
+							{
+								DLOG_F(WARNING, "{}", ec.message());
+							}
+
+
+							ImGui::Columns(1);
 						}
-						else
+						ImGui::End();
+
+						ImGui::SetNextWindowSize(ImVec2(x, y), ImGuiCond_Once);
+						ImGui::Begin("Buy/Sell Window", nullptr);
 						{
-							DLOG_F(WARNING, "{}", ec.message());
+							ImGui::Text("Buy %s", locked_base.c_str());
 						}
+						ImGui::End();
 					}
 
 					ImGui::EndTabItem();
