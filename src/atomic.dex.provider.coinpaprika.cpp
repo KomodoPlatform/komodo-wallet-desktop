@@ -48,7 +48,10 @@ namespace
 		};
 		auto answer = price_converter(request);
 		retry(answer, request);
-		rate_providers.insert_or_assign(current_coin.ticker, answer.price);
+		if (answer.raw_result.find("error") == std::string::npos)
+		{
+			rate_providers.insert_or_assign(current_coin.ticker, answer.price);
+		}
 	}
 }
 

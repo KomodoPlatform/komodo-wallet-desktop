@@ -113,5 +113,33 @@
     ],
     "active": true,
     "currently_enabled": false
+  },
+  "CHIPS": {
+    "coin": "CHIPS",
+    "asset": "CHIPS",
+    "type": "Smart Chain",
+    "name": "Chips",
+    "rpcport": 57776,
+    "txversion": 4,
+    "overwintered": 1,
+    "mm2": 1,
+    "coingecko_id": "test-coin",
+    "coinpaprika_id": "chips-chip",
+    "electrum": [
+      {
+        "url": "electrum3.cipig.net:10053"
+      },
+      {
+        "url": "electrum2.cipig.net:10053"
+      },
+      {
+        "url": "electrum1.cipig.net:10053"
+      }
+    ],
+    "explorer_url": [
+      "https://explorer.chips.cash"
+    ],
+    "active": false,
+    "currently_enabled": false
   }
 }
