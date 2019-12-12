@@ -350,6 +350,25 @@ namespace mm2::api
 
 	sell_answer rpc_sell(sell_request&& request);
 
+	struct cancel_order_request
+	{
+		std::string uuid;
+	};
+
+	void to_json(nlohmann::json& j, const cancel_order_request& request);
+
+	struct cancel_order_answer
+	{
+		std::optional<std::string> result;
+		std::optional<std::string> error;
+		int rpc_result_code;
+		std::string raw_result;
+	};
+
+	void from_json(const nlohmann::json& j, cancel_order_answer& answer);
+
+	cancel_order_answer rpc_cancel_order(cancel_order_request&& request);
+
 	template <typename RpcReturnType>
 	static RpcReturnType rpc_process_answer(const RestClient::Response& resp) noexcept;
 }

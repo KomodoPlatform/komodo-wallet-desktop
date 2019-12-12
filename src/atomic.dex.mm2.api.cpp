@@ -339,6 +339,25 @@ namespace mm2::api
 		}
 	}
 
+	void to_json(nlohmann::json& j, const cancel_order_request& request)
+	{
+		LOG_SCOPE_FUNCTION(INFO);
+		j["uuid"] = request.uuid;
+	}
+
+	void from_json(const nlohmann::json& j, cancel_order_answer& answer)
+	{
+		LOG_SCOPE_FUNCTION(INFO);
+		if (j.count("error") == 1)
+		{
+			answer.error = j.at("error").get<std::string>();
+		}
+		else
+		{
+			answer.result = j.at("result").get<std::string>();
+		}
+	}
+
 	template <typename RpcReturnType>
 	RpcReturnType rpc_process_answer(const RestClient::Response& resp) noexcept
 	{
@@ -447,5 +466,15 @@ namespace mm2::api
 		DVLOG_F(loguru::Verbosity_INFO, "request: %s", json_data.dump().c_str());
 		const auto resp = RestClient::post(endpoint, "application/json", json_data.dump());
 		return rpc_process_answer<sell_answer>(resp);
+	}
+
+	cancel_order_answer rpc_cancel_order(cancel_order_request&& request)
+	{
+		LOG_SCOPE_FUNCTION(INFO);
+		auto json_data = template_request("cancel_order");
+		to_json(json_data, request);
+		DVLOG_F(loguru::Verbosity_INFO, "request: %s", json_data.dump().c_str());
+		const auto resp = RestClient::post(endpoint, "application/json", json_data.dump());
+		return rpc_process_answer<cancel_order_answer>(resp);
 	}
 }
