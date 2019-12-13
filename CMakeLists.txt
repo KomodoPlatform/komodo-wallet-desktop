@@ -32,6 +32,7 @@ endif ()
 
 ##! Options
 option(ENABLE_CODE_RELOAD_UNIX "Enable hot-code reloading on unix" OFF)
+option(ENABLE_CODE_RELOAD_WINDOWS "Enable hot-code reloading on windows" OFF)
 
 ##! We include the module from CMake for fetching dependencies
 include(FetchContent)
@@ -206,7 +207,8 @@ target_enable_tsan(${PROJECT_NAME})
 
 if (WIN32)
     init_windows_env()
-    if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "MSVC")
+    if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "MSVC" AND ENABLE_CODE_RELOAD_WINDOWS)
+        target_compile_definitions(${PROJECT_NAME} PUBLIC -DENABLE_CODE_RELOAD_WINDOWS)
         #target_compile_options(${PROJECT_NAME} PUBLIC /ho)
         target_link_options(${PROJECT_NAME} PUBLIC /DEBUG:FULL)
         target_include_directories(${PROJECT_NAME} PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/API)

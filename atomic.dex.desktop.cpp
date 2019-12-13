@@ -14,7 +14,7 @@
  *                                                                            *
  ******************************************************************************/
 
-#ifdef _MSC_VER
+#ifdef ENABLE_CODE_RELOAD_WINDOWS
 #define NOMINMAX
 #include <Windows.h>
 #include "API/LPP_API.h"
@@ -23,7 +23,7 @@
 
 int main(int argc, char *argv[])
 {
-#ifdef _MSC_VER
+#ifdef ENABLE_CODE_RELOAD_WINDOWS
     HMODULE livePP = lpp::lppLoadAndRegister(L"LivePP", "Quickstart");
 
     // enable Live++
