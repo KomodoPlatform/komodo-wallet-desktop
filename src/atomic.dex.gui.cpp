@@ -24,6 +24,7 @@
 #include <antara/gaming/event/key.pressed.hpp>
 #include <antara/gaming/core/open.url.browser.hpp>
 #include <antara/gaming/core/real.path.hpp>
+#include <imgui_internal.h>
 #include "atomic.dex.gui.hpp"
 #include "atomic.dex.gui.widgets.hpp"
 #include "atomic.dex.mm2.hpp"
@@ -667,18 +668,33 @@ namespace atomic_dex
 							std::string total = "";
 							std::string current_price = price_buf;
 							std::string current_amount = amount_buf;
+							t_float_50 total_balance;
 							if (not current_price.empty() && not current_amount.empty())
 							{
 								boost::multiprecision::cpp_dec_float_50 current_price_f(current_price);
 								boost::multiprecision::cpp_dec_float_50 current_amount_f(current_amount);
-								auto total_balance = current_price_f * current_amount_f;
+								total_balance = current_price_f * current_amount_f;
 								total = total_balance.convert_to<std::string>();
 							}
 							ImGui::SameLine();
 							ImGui::InputText("##total", total.data(), total.size(), ImGuiInputTextFlags_ReadOnly);
 							std::string button_text = "BUY " + locked_base;
-							if (ImGui::Button(button_text.c_str())) {
 
+							bool enable = mm2_system_.do_i_have_enough_funds(locked_rel, total_balance);
+
+							if (not enable) {
+								std::error_code ec;
+								ImGui::TextColored(ImVec4(1, 0, 0, 1), "You don't have enough funds, you have %s %s",
+										mm2_system_.my_balance_with_locked_funds(locked_rel, ec).c_str(),
+										locked_rel.c_str());
+								ImGui::PushItemFlag(ImGuiItemFlags_Disabled, true);
+								ImGui::PushStyleVar(ImGuiStyleVar_Alpha, ImGui::GetStyle().Alpha * 0.5f);
+							}
+							if (ImGui::Button(button_text.c_str())) {
+							}
+							if (not enable) {
+								ImGui::PopItemFlag();
+								ImGui::PopStyleVar();
 							}
 						}
 						ImGui::EndChild();
@@ -721,19 +737,33 @@ namespace atomic_dex
 							std::string total = "";
 							std::string current_price = price_buf;
 							std::string current_amount = amount_buf;
+							t_float_50 total_balance = 0;
 							if (not current_price.empty() && not current_amount.empty())
 							{
 								boost::multiprecision::cpp_dec_float_50 current_price_f(current_price);
 								boost::multiprecision::cpp_dec_float_50 current_amount_f(current_amount);
-								auto total_balance = current_price_f * current_amount_f;
+								total_balance = current_price_f * current_amount_f;
 								total = total_balance.convert_to<std::string>();
 							}
 							ImGui::SameLine();
 							ImGui::InputText("##total", total.data(), total.size(), ImGuiInputTextFlags_ReadOnly);
 							std::string button_text = "SELL " + locked_base;
 
-							if (ImGui::Button(button_text.c_str())) {
+							bool enable = mm2_system_.do_i_have_enough_funds(locked_base, total_balance);
 
+							if (not enable) {
+								std::error_code ec;
+								ImGui::TextColored(ImVec4(1, 0, 0, 1), "You don't have enough funds, you have %s %s",
+										mm2_system_.my_balance_with_locked_funds(locked_base, ec).c_str(),
+										locked_base.c_str());
+								ImGui::PushItemFlag(ImGuiItemFlags_Disabled, true);
+								ImGui::PushStyleVar(ImGuiStyleVar_Alpha, ImGui::GetStyle().Alpha * 0.5f);
+							}
+							if (ImGui::Button(button_text.c_str())) {
+							}
+							if (not enable) {
+								ImGui::PopItemFlag();
+								ImGui::PopStyleVar();
 							}
 						}
 						ImGui::EndChild();
