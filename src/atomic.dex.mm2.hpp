@@ -26,7 +26,6 @@
 #include <antara/gaming/ecs/system.hpp>
 #include "atomic.dex.coins.config.hpp"
 #include "atomic.dex.mm2.api.hpp"
-#include "atomic.dex.utilities.hpp"
 #include "atomic.dex.mm2.error.code.hpp"
 #include "atomic.dex.events.hpp"
 
@@ -103,8 +102,8 @@ namespace atomic_dex
 		std::string my_balance_with_locked_funds(const std::string& ticker, std::error_code& ec) const noexcept;
 
 		::mm2::api::buy_answer place_buy_order(::mm2::api::buy_request&& request,
-				const bm::cpp_dec_float_50 &total,
-				std::error_code &ec) const noexcept;
+		                                       const bm::cpp_dec_float_50& total,
+		                                       std::error_code& ec) const noexcept;
 
 		[[nodiscard]] ::mm2::api::withdraw_answer
 		withdraw(::mm2::api::withdraw_request&& request, std::error_code& ec) const noexcept;
@@ -127,7 +126,7 @@ namespace atomic_dex
 
 		//! Get Specific info about one coin
 		[[nodiscard]] coin_config get_coin_info(const std::string& ticker) const noexcept;
-		[[nodiscard]] ::mm2::api::orderbook_answer get_current_orderbook(std::error_code &ec) const noexcept;
+		[[nodiscard]] ::mm2::api::orderbook_answer get_current_orderbook(std::error_code& ec) const noexcept;
 		void process_orderbook(const std::string& base, const std::string& rel);
 	};
 }
