@@ -42,3 +42,7 @@ namespace std
 }
 
 std::error_code make_error_code(mm2_error error) noexcept;
+
+namespace atomic_dex {
+	using mm2_ec = std::error_code;
+}

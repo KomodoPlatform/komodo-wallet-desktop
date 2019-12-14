@@ -31,9 +31,9 @@
 
 //! Project Headers
 #include "atomic.dex.coins.config.hpp"
+#include "atomic.dex.events.hpp"
 #include "atomic.dex.mm2.api.hpp"
 #include "atomic.dex.mm2.error.code.hpp"
-#include "atomic.dex.events.hpp"
 #include "atomic.dex.utilities.hpp"
 
 namespace atomic_dex
@@ -54,36 +54,42 @@ namespace atomic_dex
 		std::string my_balance_change;
 		std::string total_amount;
 		std::size_t block_height;
-		std::error_code ec{ mm2_error::success };
+		mm2_ec ec{ mm2_error::success };
 	};
+
+	//! Public typedefs
+	using t_transactions = std::vector<tx_infos>;
+	using t_float_50 = bm::cpp_dec_float_50;
+	using t_coins = std::vector<coin_config>;
 
 	class mm2 final : public ag::ecs::pre_update_system<mm2>
 	{
 	private:
 		//! Private typedefs
-		using coins_registry = folly::ConcurrentHashMap<std::string, coin_config>;
-		using balance_registry = folly::ConcurrentHashMap<std::string, ::mm2::api::balance_answer>;
-		using tx_history_registry = folly::ConcurrentHashMap<std::string, std::vector<tx_infos>>;
-		using orderbook_registry = folly::ConcurrentHashMap<std::string, ::mm2::api::orderbook_answer>;
+		using t_mm2_time_point = std::chrono::high_resolution_clock::time_point;
+		using t_coins_registry = folly::ConcurrentHashMap<std::string, coin_config>;
+		using t_balance_registry = folly::ConcurrentHashMap<std::string, ::mm2::api::balance_answer>;
+		using t_tx_history_registry = folly::ConcurrentHashMap<std::string, std::vector<tx_infos>>;
+		using t_orderbook_registry = folly::ConcurrentHashMap<std::string, ::mm2::api::orderbook_answer>;
 
 		//! Process
 		reproc::process mm2_instance_;
 
 		//! Timers
-		std::chrono::high_resolution_clock::time_point orderbook_clock_;
-		std::chrono::high_resolution_clock::time_point info_clock_;
+		t_mm2_time_point orderbook_clock_;
+		t_mm2_time_point info_clock_;
 
 		//! Atomicity / Threads
-		std::atomic<bool> mm2_running_{ false };
-		std::atomic<bool> orderbook_thread_active{ false };
+		std::atomic_bool mm2_running_{ false };
+		std::atomic_bool orderbook_thread_active{ false };
 		thread_pool tasks_pool_{ 6 };
 		std::thread mm2_init_thread_;
 
 		//! Concurent Registry.
-		coins_registry& coins_informations_{ this->entity_registry_.set<coins_registry>() };
-		balance_registry& balance_informations_{ this->entity_registry_.set<balance_registry>() };
-		tx_history_registry tx_informations_;
-		orderbook_registry current_orderbook_;
+		t_coins_registry& coins_informations_{ entity_registry_.set<t_coins_registry>() };
+		t_balance_registry& balance_informations_{ entity_registry_.set<t_balance_registry>() };
+		t_tx_history_registry tx_informations_;
+		t_orderbook_registry current_orderbook_;
 
 		void spawn_mm2_instance() noexcept;
 
@@ -128,48 +134,43 @@ namespace atomic_dex
 		[[nodiscard]] const std::atomic<bool>& is_mm2_running() const noexcept;
 
 		//! Retrieve my balance for a given ticker as a string.
-		std::string my_balance(const std::string& ticker, std::error_code& ec) const noexcept;
+		std::string my_balance(const std::string& ticker, mm2_ec& ec) const noexcept;
 
 		//! Retrieve my balance with lockeds funds for a given ticker as a string.
-		std::string my_balance_with_locked_funds(const std::string& ticker, std::error_code& ec) const noexcept;
+		std::string my_balance_with_locked_funds(const std::string& ticker, mm2_ec& ec) const noexcept;
 
 		//! Place a buy order, Doesn't work if i don't have enough funds.
-		::mm2::api::buy_answer place_buy_order(::mm2::api::buy_request&& request,
-				const bm::cpp_dec_float_50& total,
-				std::error_code& ec) const noexcept;
+		t_buy_answer place_buy_order(t_buy_request&& request, const t_float_50& total, mm2_ec& ec) const noexcept;
 
 		//! Withdraw Money to another address
-		[[nodiscard]] ::mm2::api::withdraw_answer
-		withdraw(::mm2::api::withdraw_request&& request, std::error_code& ec) const noexcept;
+		[[nodiscard]] t_withdraw_answer withdraw(t_withdraw_request&& request, mm2_ec& ec) const noexcept;
 
 		//! Broadcast a raw transaction on the blockchain
-		[[nodiscard]] ::mm2::api::send_raw_transaction_answer
-		broadcast(::mm2::api::send_raw_transaction_request&& request, std::error_code& ec) const noexcept;
+		[[nodiscard]] t_broadcast_answer broadcast(t_broadcast_request&& request, mm2_ec& ec) const noexcept;
 
 		//! Last 50 transactions maximum
-		[[nodiscard]] std::vector<tx_infos>
-		get_tx_history(const std::string& ticker, std::error_code& ec) const noexcept;
+		[[nodiscard]] t_transactions get_tx_history(const std::string& ticker, mm2_ec& ec) const noexcept;
 
 		//! Get coins that are currently enabled
-		[[nodiscard]] std::vector<coin_config> get_enabled_coins() const noexcept;
+		[[nodiscard]] t_coins get_enabled_coins() const noexcept;
 
 		//! Get coins that are active, but may be not enabled
-		[[nodiscard]] std::vector<coin_config> get_active_coins() const noexcept;
+		[[nodiscard]] t_coins get_active_coins() const noexcept;
 
 		//! Get coins that can be activated
-		[[nodiscard]] std::vector<coin_config> get_enableable_coins() const noexcept;
+		[[nodiscard]] t_coins get_enableable_coins() const noexcept;
 
 		//! Get Specific info about one coin
 		[[nodiscard]] coin_config get_coin_info(const std::string& ticker) const noexcept;
 
 		//! Get Current orderbook
-		[[nodiscard]] ::mm2::api::orderbook_answer get_current_orderbook(std::error_code& ec) const noexcept;
+		[[nodiscard]] t_orderbook_answer get_current_orderbook(mm2_ec& ec) const noexcept;
 
 		//! Get balance with locked funds for a given ticker as a boost::multiprecision::cpp_dec_float_50.
-		bm::cpp_dec_float_50 get_balance_with_locked_funds(const std::string& ticker) const;
+		t_float_50 get_balance_with_locked_funds(const std::string& ticker) const;
 
-		//! Call
-		bool do_i_have_enough_funds(const std::string& ticker, bm::cpp_dec_float_50 amount) const;;
+		//! Return true if we the balance of the `ticker` > amount, false otherwise.
+		bool do_i_have_enough_funds(const std::string& ticker, const t_float_50& amount) const;
 	};
 }
 

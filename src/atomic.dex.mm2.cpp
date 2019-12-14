@@ -14,18 +14,24 @@
  *                                                                            *
  ******************************************************************************/
 
+//! C++ System Headers 
 #include <array>
-#include <future>
-#include <fstream>
 #include <filesystem>
+#include <fstream>
+#include <future>
+
+//! Dependencies Headers
 #include <boost/multiprecision/cpp_dec_float.hpp>
 #include <boost/algorithm/string/split.hpp>
+
+//! SDK Headers
 #include <antara/gaming/core/real.path.hpp>
+
+//! Project Headers
 #include "atomic.dex.mm2.hpp"
 #include "atomic.dex.mm2.config.hpp"
-#include "atomic.dex.mm2.api.hpp"
-#include "atomic.dex.events.hpp"
 
+//! Anonymous functions
 namespace
 {
 	namespace ag = antara::gaming;
@@ -121,14 +127,14 @@ namespace atomic_dex
 		mm2_init_thread_.join();
 	}
 
-	const std::atomic<bool>& mm2::is_mm2_running() const noexcept
+	const std::atomic_bool& mm2::is_mm2_running() const noexcept
 	{
 		return mm2_running_;
 	}
 
-	std::vector<coin_config> mm2::get_enabled_coins() const noexcept
+	t_coins mm2::get_enabled_coins() const noexcept
 	{
-		std::vector<coin_config> destination;
+		t_coins destination;
 		for (auto&&[key, value] : coins_informations_)
 		{
 			if (value.currently_enabled)
@@ -143,27 +149,27 @@ namespace atomic_dex
 		return destination;
 	}
 
-	std::vector<coin_config> mm2::get_enableable_coins() const noexcept
+	t_coins mm2::get_enableable_coins() const noexcept
 	{
-		std::vector<coin_config> destination;
+		t_coins destination;
 		for (auto&&[key, value] : coins_informations_)
 		{
 			if (not value.currently_enabled)
 			{
-				destination.push_back(value);
+				destination.emplace_back(value);
 			}
 		}
 		return destination;
 	}
 
-	std::vector<coin_config> mm2::get_active_coins() const noexcept
+	t_coins mm2::get_active_coins() const noexcept
 	{
-		std::vector<coin_config> destination;
+		t_coins destination;
 		for (auto&&[key, value] : coins_informations_)
 		{
 			if (value.active)
 			{
-				destination.push_back(value);
+				destination.emplace_back(value);
 			}
 		}
 		return destination;
@@ -173,7 +179,7 @@ namespace atomic_dex
 	{
 		auto coin_info = coins_informations_.at(ticker);
 		if (coin_info.currently_enabled) return true;
-		::mm2::api::electrum_request request{
+		t_electrum_request request{
 				.coin_name = coin_info.ticker,
 				.servers = coin_info.electrum_urls,
 				.with_tx_history = true
@@ -229,7 +235,7 @@ namespace atomic_dex
 		return coins_informations_.at(ticker);
 	}
 
-	::mm2::api::orderbook_answer mm2::get_current_orderbook(std::error_code& ec) const noexcept
+	t_orderbook_answer mm2::get_current_orderbook(mm2_ec& ec) const noexcept
 	{
 		if (this->current_orderbook_.empty())
 		{
@@ -244,7 +250,7 @@ namespace atomic_dex
 
 	void mm2::process_orderbook(const std::string& base, const std::string& rel)
 	{
-		::mm2::api::orderbook_request request{ .base = base, .rel = rel };
+		t_orderbook_request request{ .base = base, .rel = rel };
 		auto answer = rpc_orderbook(std::move(request));
 		if (answer.rpc_result_code != -1)
 		{
@@ -276,7 +282,7 @@ namespace atomic_dex
 	{
 		loguru::set_thread_name("info thread");
 		DVLOG_F(loguru::Verbosity_INFO, "Fetching Infos");
-		std::vector<coin_config> coins = get_enabled_coins();
+		t_coins coins = get_enabled_coins();
 		std::vector<std::future<void>> futures;
 		for (auto&& current_coin : coins)
 		{
@@ -338,28 +344,27 @@ namespace atomic_dex
 		});
 	}
 
-	std::string mm2::my_balance_with_locked_funds(const std::string& ticker, std::error_code& ec) const noexcept
+	std::string mm2::my_balance_with_locked_funds(const std::string& ticker, mm2_ec& ec) const noexcept
 	{
 		if (balance_informations_.find(ticker) == balance_informations_.cend())
 		{
 			ec = mm2_error::balance_of_a_non_enabled_coin;
 			return "0";
 		}
-		namespace bm = boost::multiprecision;
-		bm::cpp_dec_float_50 final_balance = get_balance_with_locked_funds(ticker);
+		t_float_50 final_balance = get_balance_with_locked_funds(ticker);
 		return final_balance.convert_to<std::string>();
 	}
 
-	bm::cpp_dec_float_50 mm2::get_balance_with_locked_funds(const std::string& ticker) const
+	t_float_50 mm2::get_balance_with_locked_funds(const std::string& ticker) const
 	{
 		const auto answer = balance_informations_.at(ticker);
-		const bm::cpp_dec_float_50 balance(answer.balance);
-		const bm::cpp_dec_float_50 locked_funds(answer.locked_by_swaps);
+		const t_float_50 balance(answer.balance);
+		const t_float_50 locked_funds(answer.locked_by_swaps);
 		auto final_balance = balance - locked_funds;
 		return final_balance;
 	}
 
-	std::vector<tx_infos> mm2::get_tx_history(const std::string& ticker, std::error_code& ec) const noexcept
+	t_transactions mm2::get_tx_history(const std::string& ticker, mm2_ec& ec) const noexcept
 	{
 		if (tx_informations_.find(ticker) == tx_informations_.cend())
 		{
@@ -369,7 +374,7 @@ namespace atomic_dex
 		return tx_informations_.at(ticker);
 	}
 
-	std::string mm2::my_balance(const std::string& ticker, std::error_code& ec) const noexcept
+	std::string mm2::my_balance(const std::string& ticker, mm2_ec& ec) const noexcept
 	{
 		if (balance_informations_.find(ticker) == balance_informations_.cend())
 		{
@@ -379,8 +384,7 @@ namespace atomic_dex
 		return balance_informations_.at(ticker).balance;
 	}
 
-	::mm2::api::withdraw_answer
-	mm2::withdraw(::mm2::api::withdraw_request&& request, std::error_code& ec) const noexcept
+	t_withdraw_answer mm2::withdraw(t_withdraw_request&& request, mm2_ec& ec) const noexcept
 	{
 		auto result = rpc_withdraw(std::move(request));
 		if (result.error.has_value())
@@ -390,8 +394,7 @@ namespace atomic_dex
 		return result;
 	}
 
-	::mm2::api::send_raw_transaction_answer
-	mm2::broadcast(::mm2::api::send_raw_transaction_request&& request, std::error_code& ec) const noexcept
+	t_broadcast_answer mm2::broadcast(t_broadcast_request&& request, mm2_ec& ec) const noexcept
 	{
 		auto result = rpc_send_raw_transaction(std::move(request));
 		if (result.rpc_result_code == -1)
@@ -403,14 +406,13 @@ namespace atomic_dex
 
 	void mm2::process_balance(const std::string& ticker) const noexcept
 	{
-		::mm2::api::balance_request balance_request{ .coin = ticker };
-		balance_informations_.insert_or_assign(ticker,
-				rpc_balance(std::move(balance_request)));
+		t_balance_request balance_request{ .coin = ticker };
+		balance_informations_.insert_or_assign(ticker, rpc_balance(std::move(balance_request)));
 	}
 
 	void mm2::process_tx(const std::string& ticker) noexcept
 	{
-		::mm2::api::tx_history_request tx_request{ .coin = ticker, .limit = 50 };
+		t_tx_history_request tx_request{ .coin = ticker, .limit = 50 };
 		auto answer = rpc_my_tx_history(std::move(tx_request));
 		if (answer.error.has_value())
 		{
@@ -418,7 +420,8 @@ namespace atomic_dex
 		}
 		else if (answer.rpc_result_code != -1 && answer.result.has_value())
 		{
-			std::vector<tx_infos> out;
+			t_transactions out;
+			out.reserve(answer.result.value().transactions.size());
 			for (auto&& current : answer.result.value().transactions)
 			{
 				tx_infos current_info{
@@ -473,12 +476,10 @@ namespace atomic_dex
 		this->orderbook_thread_active = false;
 	}
 
-	::mm2::api::buy_answer
-	mm2::place_buy_order(::mm2::api::buy_request&& request, const bm::cpp_dec_float_50& total,
-			std::error_code& ec) const noexcept
+	t_buy_answer mm2::place_buy_order(t_buy_request&& request, const t_float_50& total, mm2_ec& ec) const noexcept
 	{
 		LOG_SCOPE_FUNCTION(INFO);
-		std::error_code balance_ec;
+		mm2_ec balance_ec;
 		if (not do_i_have_enough_funds(request.rel, total))
 		{
 			ec = mm2_error::balance_not_enough_found;
@@ -487,7 +488,7 @@ namespace atomic_dex
 		return {};
 	}
 
-	bool mm2::do_i_have_enough_funds(const std::string& ticker, bm::cpp_dec_float_50 amount) const
+	bool mm2::do_i_have_enough_funds(const std::string& ticker, const t_float_50& amount) const
 	{
 		auto funds = get_balance_with_locked_funds(ticker);
 		return funds > amount;
