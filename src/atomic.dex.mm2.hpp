@@ -134,10 +134,10 @@ namespace atomic_dex
 		[[nodiscard]] const std::atomic<bool>& is_mm2_running() const noexcept;
 
 		//! Retrieve my balance for a given ticker as a string.
-		std::string my_balance(const std::string& ticker, mm2_ec& ec) const noexcept;
+		[[nodiscard]] std::string my_balance(const std::string& ticker, mm2_ec& ec) const noexcept;
 
 		//! Retrieve my balance with lockeds funds for a given ticker as a string.
-		std::string my_balance_with_locked_funds(const std::string& ticker, mm2_ec& ec) const noexcept;
+		[[nodiscard]] std::string my_balance_with_locked_funds(const std::string& ticker, mm2_ec& ec) const noexcept;
 
 		//! Place a buy order, Doesn't work if i don't have enough funds.
 		t_buy_answer place_buy_order(t_buy_request&& request, const t_float_50& total, mm2_ec& ec) const noexcept;
@@ -167,10 +167,10 @@ namespace atomic_dex
 		[[nodiscard]] t_orderbook_answer get_current_orderbook(mm2_ec& ec) const noexcept;
 
 		//! Get balance with locked funds for a given ticker as a boost::multiprecision::cpp_dec_float_50.
-		t_float_50 get_balance_with_locked_funds(const std::string& ticker) const;
+		[[nodiscard]] t_float_50 get_balance_with_locked_funds(const std::string& ticker) const;
 
 		//! Return true if we the balance of the `ticker` > amount, false otherwise.
-		bool do_i_have_enough_funds(const std::string& ticker, const t_float_50& amount) const;
+		[[nodiscard]] bool do_i_have_enough_funds(const std::string& ticker, const t_float_50& amount) const;
 	};
 }
 
