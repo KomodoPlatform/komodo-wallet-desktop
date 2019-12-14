@@ -21,6 +21,14 @@
 #endif
 #include "atomic.dex.app.hpp"
 
+#include <folly/SharedMutex.h>
+
+namespace folly {
+// Explicitly instantiate SharedMutex here:
+	template class SharedMutexImpl<true>;
+	template class SharedMutexImpl<false>;
+}
+
 int main(int argc, char *argv[])
 {
 #ifdef ENABLE_CODE_RELOAD_WINDOWS

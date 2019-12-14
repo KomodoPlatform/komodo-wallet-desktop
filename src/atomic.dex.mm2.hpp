@@ -22,12 +22,12 @@
 #include <boost/multiprecision/cpp_dec_float.hpp>
 #include <folly/concurrency/ConcurrentHashMap.h>
 #include <reproc++/reproc.hpp>
-#include <taskflow/taskflow.hpp>
 #include <antara/gaming/ecs/system.hpp>
 #include "atomic.dex.coins.config.hpp"
 #include "atomic.dex.mm2.api.hpp"
 #include "atomic.dex.mm2.error.code.hpp"
 #include "atomic.dex.events.hpp"
+#include "atomic.dex.utilities.hpp"
 
 namespace atomic_dex
 {
@@ -53,9 +53,7 @@ namespace atomic_dex
 	class mm2 final : public ag::ecs::pre_update_system<mm2>
 	{
 	private:
-		tf::Executor executor_;
-		tf::Taskflow orderbook_flow_;
-		tf::Taskflow info_flow_;
+		thread_pool tasks_pool_{6};
 		std::chrono::high_resolution_clock::time_point orderbook_clock_;
 		std::chrono::high_resolution_clock::time_point info_clock_;
 		using coins_registry = folly::ConcurrentHashMap<std::string, coin_config>;
@@ -78,8 +76,8 @@ namespace atomic_dex
 
 		void spawn_mm2_instance() noexcept;
 
-		void process_balance(const std::string& ticker) const noexcept;
-		void process_tx(const std::string& ticker) noexcept;
+		void process_balance(std::string ticker) const noexcept;
+		void process_tx(std::string ticker) noexcept;
 
 	public:
 		void on_refresh_orderbook(const orderbook_refresh& evt) noexcept;
@@ -87,7 +85,7 @@ namespace atomic_dex
 		void on_gui_leave_trading(const gui_leave_trading& evt) noexcept;
 		bool enable_default_coins() noexcept;
 
-		bool enable_coin(const std::string& ticker) noexcept;
+		bool enable_coin(std::string ticker) noexcept;
 
 		explicit mm2(entt::registry& registry) noexcept;
 
