@@ -91,19 +91,11 @@ namespace atomic_dex
 			{
 				this->fetch_current_orderbook_thread();
 			});
-			/*std::async(std::launch::async, [this]()
-			{
-				this->fetch_current_orderbook_thread();
-			});*/
 			orderbook_clock_ = std::chrono::high_resolution_clock::now();
 		}
 
 		if (s_info >= 30s)
 		{
-			/*std::async(std::launch::async, [this]()
-			{
-				this->fetch_infos_thread();
-			});*/
 			tasks_pool_.enqueue([this]()
 			{
 				this->fetch_infos_thread();
@@ -177,7 +169,7 @@ namespace atomic_dex
 		return destination;
 	}
 
-	bool mm2::enable_coin(std::string ticker) noexcept
+	bool mm2::enable_coin(const std::string& ticker) noexcept
 	{
 		auto coin_info = coins_informations_.at(ticker);
 		if (coin_info.currently_enabled) return true;
@@ -211,18 +203,6 @@ namespace atomic_dex
 			loguru::set_thread_name("tx thread");
 			process_tx(ticker);
 		});
-		/*auto res = std::async(std::launch::async, [this, ticker]()
-		{
-			loguru::set_thread_name("balance thread");
-			process_balance(ticker);
-		});
-		auto res_tx = std::async(std::launch::async, [this, ticker]()
-		{
-			loguru::set_thread_name("tx thread");
-			process_tx(ticker);
-		});
-		res.get();
-		res_tx.get();*/
 		return true;
 	}
 
@@ -230,19 +210,16 @@ namespace atomic_dex
 	{
 		std::atomic<std::size_t> result{ 1 };
 		auto coins = get_active_coins();
+		std::vector<std::future<void>> futures;
 		for (auto&& current_coin : coins)
 		{
-			tasks_pool_.enqueue([this, ticker = current_coin.ticker]()
+			futures.emplace_back(tasks_pool_.enqueue([this, ticker = current_coin.ticker]()
 			{
 				loguru::set_thread_name("enable thread");
 				this->enable_coin(ticker);
-			});
-			/*std::async(std::launch::async, [this, ticker = current_coin.ticker]()
-			{
-				loguru::set_thread_name("enable thread");
-				this->enable_coin(ticker);
-			});*/
+			}));
 		}
+		for (auto&& fut: futures) fut.get();
 		return result.load() == 1;
 	}
 
@@ -303,12 +280,12 @@ namespace atomic_dex
 		std::vector<std::future<void>> futures;
 		for (auto&& current_coin : coins)
 		{
-			futures.push_back(std::async(std::launch::async, [this, ticker = current_coin.ticker]()
+			futures.emplace_back(tasks_pool_.enqueue([this, ticker = current_coin.ticker]()
 			{
 				loguru::set_thread_name("balance thread");
 				process_balance(ticker);
 			}));
-			futures.push_back(std::async(std::launch::async, [this, ticker = current_coin.ticker]()
+			futures.emplace_back(tasks_pool_.enqueue([this, ticker = current_coin.ticker]()
 			{
 				loguru::set_thread_name("tx thread");
 				process_tx(ticker);
@@ -346,7 +323,7 @@ namespace atomic_dex
 		{
 			loguru::set_thread_name("mm2 init thread");
 			using namespace std::chrono_literals;
-			const auto ec = mm2_instance_.wait(5s);
+			const auto ec = mm2_instance_.wait(2s);
 			if (ec == reproc::error::wait_timeout)
 			{
 				DVLOG_F(loguru::Verbosity_INFO, "mm2 is initialized");
@@ -368,12 +345,18 @@ namespace atomic_dex
 			ec = mm2_error::balance_of_a_non_enabled_coin;
 			return "0";
 		}
-		const auto answer = balance_informations_.at(ticker);
 		namespace bm = boost::multiprecision;
+		bm::cpp_dec_float_50 final_balance = get_balance_with_locked_funds(ticker);
+		return final_balance.convert_to<std::string>();
+	}
+
+	bm::cpp_dec_float_50 mm2::get_balance_with_locked_funds(const std::string& ticker) const
+	{
+		const auto answer = balance_informations_.at(ticker);
 		const bm::cpp_dec_float_50 balance(answer.balance);
 		const bm::cpp_dec_float_50 locked_funds(answer.locked_by_swaps);
 		auto final_balance = balance - locked_funds;
-		return final_balance.convert_to<std::string>();
+		return final_balance;
 	}
 
 	std::vector<tx_infos> mm2::get_tx_history(const std::string& ticker, std::error_code& ec) const noexcept
@@ -418,14 +401,14 @@ namespace atomic_dex
 		return result;
 	}
 
-	void mm2::process_balance(std::string ticker) const noexcept
+	void mm2::process_balance(const std::string& ticker) const noexcept
 	{
 		::mm2::api::balance_request balance_request{ .coin = ticker };
 		balance_informations_.insert_or_assign(ticker,
 				rpc_balance(std::move(balance_request)));
 	}
 
-	void mm2::process_tx(std::string ticker) noexcept
+	void mm2::process_tx(const std::string& ticker) noexcept
 	{
 		::mm2::api::tx_history_request tx_request{ .coin = ticker, .limit = 50 };
 		auto answer = rpc_my_tx_history(std::move(tx_request));
@@ -496,19 +479,17 @@ namespace atomic_dex
 	{
 		LOG_SCOPE_FUNCTION(INFO);
 		std::error_code balance_ec;
-		std::string my_balance = my_balance_with_locked_funds(request.rel, balance_ec);
-		if (balance_ec)
+		if (not do_i_have_enough_funds(request.rel, total))
 		{
-			ec = balance_ec;
-			return {};
-		}
-		bm::cpp_dec_float_50 balance_f(my_balance);
-		if (balance_f < total)
-		{
-			//! Not enough found;
 			ec = mm2_error::balance_not_enough_found;
 			return {};
 		}
 		return {};
+	}
+
+	bool mm2::do_i_have_enough_funds(const std::string& ticker, bm::cpp_dec_float_50 amount) const
+	{
+		auto funds = get_balance_with_locked_funds(ticker);
+		return funds > amount;
 	}
 }
