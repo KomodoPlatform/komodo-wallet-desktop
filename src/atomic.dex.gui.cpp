@@ -485,9 +485,6 @@ namespace atomic_dex
 				}
 				if (ImGui::BeginTabItem("Trade"))
 				{
-					//ImGuiIO& io = ImGui::GetIO();
-					//io.ConfigViewportsNoAutoMerge = true;
-					//io.ConfigViewportsNoDefaultParent = true;
 					in_trade = true;
 
 					//ImGui::Text("Work in progress");
@@ -680,7 +677,9 @@ namespace atomic_dex
 							ImGui::SameLine();
 							ImGui::InputText("##total", total.data(), total.size(), ImGuiInputTextFlags_ReadOnly);
 							std::string button_text = "BUY " + locked_base;
-							ImGui::Button(button_text.c_str());
+							if (ImGui::Button(button_text.c_str())) {
+
+							}
 						}
 						ImGui::EndChild();
 
@@ -732,7 +731,10 @@ namespace atomic_dex
 							ImGui::SameLine();
 							ImGui::InputText("##total", total.data(), total.size(), ImGuiInputTextFlags_ReadOnly);
 							std::string button_text = "SELL " + locked_base;
-							ImGui::Button(button_text.c_str());
+
+							if (ImGui::Button(button_text.c_str())) {
+
+							}
 						}
 						ImGui::EndChild();
 					}

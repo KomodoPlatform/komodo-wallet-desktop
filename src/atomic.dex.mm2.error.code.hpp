@@ -29,6 +29,7 @@ enum class mm2_error
 	invalid_fiat_for_rate_conversion,
 	unknown_ticker_for_rate_conversion,
 	orderbook_empty,
+	balance_not_enough_found,
 	unknown_error
 };
 

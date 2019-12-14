@@ -55,7 +55,8 @@ namespace
 			return "You try to convert from an unknown ticker, are you trying to convert from a test-coin ?";
 		case mm2_error::orderbook_empty:
 			return "You try to retrieve an orderbook but you didn't load any coin (base / rel)";
-		default: ;
+		case mm2_error::balance_not_enough_found:
+			return "You don't have enough funds for this operation, sorry.";
 		}
 		return "";
 	}

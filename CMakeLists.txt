@@ -151,6 +151,7 @@ magic_game_app_image_generation("${CMAKE_CURRENT_SOURCE_DIR}/data/linux"
 ##! We link the SDK modules that we want to use to our executable
 set(BUILD_SHARED_LIBS OFF CACHE BOOL "Override option" FORCE)
 
+find_package(Cpp-Taskflow CONFIG REQUIRED)
 find_package(folly CONFIG REQUIRED)
 find_package(Boost REQUIRED)
 find_package(date CONFIG REQUIRED)
@@ -165,7 +166,8 @@ target_link_libraries(${PROJECT_NAME} PUBLIC
         Folly::folly_deps
         Boost::headers
         date::date
-        date::tz)
+        date::tz
+        Cpp-Taskflow::Cpp-Taskflow)
 
 if (USE_SFML_ANTARA_WRAPPER)
     add_definitions(-DATOMIC_DEX_SFML)

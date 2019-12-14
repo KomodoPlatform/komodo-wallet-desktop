@@ -19,8 +19,10 @@
 #include <thread>
 #include <vector>
 #include <atomic>
+#include <boost/multiprecision/cpp_dec_float.hpp>
 #include <folly/concurrency/ConcurrentHashMap.h>
 #include <reproc++/reproc.hpp>
+#include <taskflow/taskflow.hpp>
 #include <antara/gaming/ecs/system.hpp>
 #include "atomic.dex.coins.config.hpp"
 #include "atomic.dex.mm2.api.hpp"
@@ -30,6 +32,7 @@
 
 namespace atomic_dex
 {
+	namespace bm = boost::multiprecision;
 	namespace ag = antara::gaming;
 
 	struct tx_infos
@@ -51,15 +54,16 @@ namespace atomic_dex
 	class mm2 final : public ag::ecs::pre_update_system<mm2>
 	{
 	private:
+		tf::Executor executor_;
+		tf::Taskflow orderbook_flow_;
+		tf::Taskflow info_flow_;
+		std::chrono::high_resolution_clock::time_point orderbook_clock_;
+		std::chrono::high_resolution_clock::time_point info_clock_;
 		using coins_registry = folly::ConcurrentHashMap<std::string, coin_config>;
 		reproc::process mm2_instance_;
 		std::atomic<bool> mm2_running_{false};
 		std::atomic<bool> orderbook_thread_active{false};
 		std::thread mm2_init_thread_;
-		std::thread mm2_fetch_infos_thread_;
-		std::thread mm2_fetch_current_orderbook_thread_;
-		timed_waiter balance_thread_timer_;
-		timed_waiter current_orderbook_thread_timer_;
 		coins_registry& coins_informations_{this->entity_registry_.set<coins_registry>()};
 		using balance_registry = folly::ConcurrentHashMap<std::string, ::mm2::api::balance_answer>;
 		balance_registry& balance_informations_{this->entity_registry_.set<balance_registry>()};
@@ -97,6 +101,10 @@ namespace atomic_dex
 		std::string my_balance(const std::string& ticker, std::error_code& ec) const noexcept;
 
 		std::string my_balance_with_locked_funds(const std::string& ticker, std::error_code& ec) const noexcept;
+
+		::mm2::api::buy_answer place_buy_order(::mm2::api::buy_request&& request,
+				const bm::cpp_dec_float_50 &total,
+				std::error_code &ec) const noexcept;
 
 		[[nodiscard]] ::mm2::api::withdraw_answer
 		withdraw(::mm2::api::withdraw_request&& request, std::error_code& ec) const noexcept;
