@@ -56,10 +56,8 @@ FetchContent_Declare(
         URL https://github.com/juliettef/IconFontCppHeaders/archive/master.zip
 )
 
-##! We set extras modules from the SDK that we want to use, here we will use the SFML module.
-set(USE_GLFW_ANTARA_WRAPPER OFF)
+##! We set extras modules from the SDK that we want to use, here we will use the SDL module.
 set(USE_SDL_ANTARA_WRAPPER ON)
-set(USE_SFML_ANTARA_WRAPPER OFF)
 set(USE_IMGUI_ANTARA_WRAPPER ON)
 set(ENABLE_BLOCKCHAIN_MODULES ON)
 
@@ -140,8 +138,8 @@ set_target_properties(${PROJECT_NAME}
         )
 
 magic_game_app_image_generation("${CMAKE_CURRENT_SOURCE_DIR}/data/linux"
-        "org.antara.gaming.sfml.wolf3d.desktop"
-        "org.antara.gaming.sfml.wolf3d.appdata.xml"
+        "org.antara.gaming.atomicdex.desktop"
+        "org.antara.gaming.atomicdex.appdata.xml"
         "komodo_icon.png"
         atomic-dex-desktop
         AntaraAtomicDexAppDir
@@ -165,40 +163,15 @@ target_link_libraries(${PROJECT_NAME} PUBLIC
         Folly::folly_deps
         Boost::headers
         date::date
-        date::tz)
-
-if (USE_SFML_ANTARA_WRAPPER)
-    add_definitions(-DATOMIC_DEX_SFML)
-    target_link_libraries(${PROJECT_NAME} PUBLIC antara::sfml)
-elseif (USE_GLFW_ANTARA_WRAPPER)
-    add_definitions(-DATOMIC_DEX_GLFW)
-    target_link_libraries(${PROJECT_NAME} PUBLIC antara::glfw)
-elseif (USE_SDL_ANTARA_WRAPPER)
-    add_definitions(-DATOMIC_DEX_SDL)
-    target_link_libraries(${PROJECT_NAME} PUBLIC antara::sdl)
-endif ()
+        date::tz
+        antara::sdl)
 
 ##! Move assets
 if (WIN32)
     file(COPY assets DESTINATION ${CMAKE_BINARY_DIR}/bin/)
-    if (USE_SFML_ANTARA_WRAPPER)
-        get_target_property(target_runtime_directory ${PROJECT_NAME} RUNTIME_OUTPUT_DIRECTORY)
-        ADD_CUSTOM_COMMAND(TARGET ${PROJECT_NAME} POST_BUILD
-                COMMAND ${CMAKE_COMMAND} -E copy_directory "${SFML_SOURCE_DIR}/extlibs/bin/x64" "${target_runtime_directory}"
-                COMMENT "copying dlls …"
-                $<TARGET_FILE_DIR:${PROJECT_NAME}>
-                )
-    endif ()
 endif ()
 
 if (APPLE)
-    if (USE_SFML_ANTARA_WRAPPER)
-        ADD_CUSTOM_COMMAND(TARGET ${PROJECT_NAME} POST_BUILD
-                COMMAND ${CMAKE_COMMAND} -E copy_directory "${SFML_SOURCE_DIR}/extlibs/libs-osx/Frameworks" "${CMAKE_BINARY_DIR}/bin/${PROJECT_NAME}.app/Contents/Frameworks"
-                COMMENT "copying frameworks …"
-                $<TARGET_FILE_DIR:${PROJECT_NAME}>
-                )
-    endif ()
     file(COPY assets DESTINATION ${CMAKE_BINARY_DIR}/bin/${PROJECT_NAME}.app/Contents/Resources)
     include(data/osx/atomicdex_install.cmake)
 endif ()

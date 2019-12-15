@@ -1,5 +1,5 @@
 <component type="desktop-application">
-    <id>org.antara.gaming.sfml.wolf3d.desktop</id>
+    <id>org.antara.gaming.atomicdex.desktop</id>
     <metadata_license>MIT</metadata_license>
     <project_license>MIT</project_license>
     <name>atomic-dex</name>
@@ -7,7 +7,7 @@
     <description>
         <p>Written in c++17</p>
     </description>
-    <launchable type="desktop-id">org.antara.gaming.sfml.atomicdex.desktop</launchable>
+    <launchable type="desktop-id">org.antara.gaming.atomicdex.desktop</launchable>
     <url type="homepage">https://github.com/KomodoPlatform/antara-gaming-sdk</url>
     <screenshots>
         <screenshot type="default">
@@ -15,6 +15,6 @@
         </screenshot>
     </screenshots>
     <provides>
-        <id>org.antara.gaming.sfml.atomicdex.desktop</id>
+        <id>org.antara.gaming.atomicdex.desktop</id>
     </provides>
 </component>
