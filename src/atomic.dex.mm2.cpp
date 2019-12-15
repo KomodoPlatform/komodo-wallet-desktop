@@ -444,7 +444,7 @@ namespace atomic_dex
 			}
 			std::sort(begin(out), end(out), [](auto&& a, auto&& b)
 			{
-				return a.timestamp < b.timestamp;
+				return a.timestamp > b.timestamp;
 			});
 			tx_informations_.insert_or_assign(ticker, std::move(out));
 		}
@@ -485,7 +485,12 @@ namespace atomic_dex
 			ec = mm2_error::balance_not_enough_found;
 			return {};
 		}
-		return {};
+		auto answer = ::mm2::api::rpc_buy(std::move(request));
+		if (answer.error.has_value()) {
+			ec = mm2_error::rpc_buy_error;
+			return {};
+		}
+		return answer;
 	}
 
 	bool mm2::do_i_have_enough_funds(const std::string& ticker, const t_float_50& amount) const

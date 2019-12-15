@@ -57,6 +57,8 @@ namespace
 			return "You try to retrieve an orderbook but you didn't load any coin (base / rel)";
 		case mm2_error::balance_not_enough_found:
 			return "You don't have enough funds for this operation, sorry.";
+		case mm2_error::rpc_buy_error:
+			return "An RPC error occur when processing the buy request, please check your request or the application log.";
 		}
 		return "";
 	}

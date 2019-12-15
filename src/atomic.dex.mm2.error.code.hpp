@@ -26,6 +26,7 @@ enum class mm2_error
 	tx_history_of_a_non_enabled_coin,
 	rpc_withdraw_error,
 	rpc_send_raw_transaction_error,
+	rpc_buy_error,
 	invalid_fiat_for_rate_conversion,
 	unknown_ticker_for_rate_conversion,
 	orderbook_empty,

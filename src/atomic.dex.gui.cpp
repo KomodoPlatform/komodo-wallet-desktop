@@ -691,6 +691,12 @@ namespace atomic_dex
 								ImGui::PushStyleVar(ImGuiStyleVar_Alpha, ImGui::GetStyle().Alpha * 0.5f);
 							}
 							if (ImGui::Button(button_text.c_str())) {
+								t_buy_request request{.base = locked_base, .rel = locked_rel, .price = current_price, .volume = current_amount};
+								std::error_code ec;
+								mm2_system_.place_buy_order(std::move(request), total_balance, ec);
+								if (ec) {
+									LOG_F(ERROR, "{}", ec.message());
+								}
 							}
 							if (not enable) {
 								ImGui::PopItemFlag();
