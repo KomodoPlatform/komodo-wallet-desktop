@@ -217,6 +217,7 @@ namespace atomic_dex
 		std::atomic<std::size_t> result{ 1 };
 		auto coins = get_active_coins();
 		std::vector<std::future<void>> futures;
+		futures.reserve(coins.size());
 		for (auto&& current_coin : coins)
 		{
 			futures.emplace_back(tasks_pool_.enqueue([this, ticker = current_coin.ticker]()
