@@ -78,9 +78,9 @@ namespace atomic_dex
     {
         orderbook_clock_ = std::chrono::high_resolution_clock::now();
         info_clock_      = std::chrono::high_resolution_clock::now();
-        this->dispatcher_.sink<gui_enter_trading>().connect<&mm2::on_gui_enter_trading>(*this);
-        this->dispatcher_.sink<gui_leave_trading>().connect<&mm2::on_gui_leave_trading>(*this);
-        this->dispatcher_.sink<orderbook_refresh>().connect<&mm2::on_refresh_orderbook>(*this);
+        dispatcher_.sink<gui_enter_trading>().connect<&mm2::on_gui_enter_trading>(*this);
+        dispatcher_.sink<gui_leave_trading>().connect<&mm2::on_gui_leave_trading>(*this);
+        dispatcher_.sink<orderbook_refresh>().connect<&mm2::on_refresh_orderbook>(*this);
         retrieve_coins_information(coins_informations_);
         spawn_mm2_instance();
     }
@@ -95,13 +95,13 @@ namespace atomic_dex
         const auto s_info = std::chrono::duration_cast<std::chrono::seconds>(now - info_clock_);
         if (s >= 5s)
         {
-            tasks_pool_.enqueue([this]() { this->fetch_current_orderbook_thread(); });
+            tasks_pool_.enqueue([this]() { fetch_current_orderbook_thread(); });
             orderbook_clock_ = std::chrono::high_resolution_clock::now();
         }
 
         if (s_info >= 30s)
         {
-            tasks_pool_.enqueue([this]() { this->fetch_infos_thread(); });
+            tasks_pool_.enqueue([this]() { fetch_infos_thread(); });
             info_clock_ = std::chrono::high_resolution_clock::now();
         }
     }
@@ -165,7 +165,7 @@ namespace atomic_dex
         if (coin_info.currently_enabled) return true;
         t_electrum_request request{.coin_name = coin_info.ticker, .servers = coin_info.electrum_urls, .with_tx_history = true};
         auto               answer = rpc_electrum(std::move(request));
-        if (answer.result != "success") { return false; }
+        if (answer.result not_eq "success") { return false; }
         coin_info.currently_enabled = true;
         coins_informations_.assign(coin_info.ticker, coin_info);
         if (not coin_info.active)
@@ -173,7 +173,7 @@ namespace atomic_dex
             update_coin_status(ticker);
             coin_info.active = true;
         }
-        this->dispatcher_.trigger<coin_enabled>(ticker);
+        dispatcher_.trigger<coin_enabled>(ticker);
 
         tasks_pool_.enqueue([this, ticker]() {
             loguru::set_thread_name("balance thread");
@@ -202,7 +202,7 @@ namespace atomic_dex
         {
             futures.emplace_back(tasks_pool_.enqueue([this, ticker = current_coin.ticker]() {
                 loguru::set_thread_name("enable thread");
-                this->enable_coin(ticker);
+                enable_coin(ticker);
             }));
         }
 
@@ -220,14 +220,14 @@ namespace atomic_dex
     t_orderbook_answer
     mm2::get_current_orderbook(mm2_ec& ec) const noexcept
     {
-        if (this->current_orderbook_.empty())
+        if (current_orderbook_.empty())
         {
             ec = mm2_error::orderbook_empty;
             return {};
         }
         else
         {
-            return this->current_orderbook_.begin()->second;
+            return current_orderbook_.begin()->second;
         }
     }
 
@@ -237,10 +237,10 @@ namespace atomic_dex
         t_orderbook_request request{.base = base, .rel = rel};
         auto                answer = rpc_orderbook(std::move(request));
 
-        if (answer.rpc_result_code != -1)
+        if (answer.rpc_result_code not_eq -1)
         {
-            this->current_orderbook_.clear();
-            this->current_orderbook_.insert_or_assign(base + "/" + rel, answer);
+            current_orderbook_.clear();
+            current_orderbook_.insert_or_assign(base + "/" + rel, answer);
         }
     }
 
@@ -250,12 +250,12 @@ namespace atomic_dex
         loguru::set_thread_name("orderbook thread");
         DLOG_F(INFO, "Fetch current orderbook");
         //! If thread is not active ex: we are not on the trading page anymore, we continue sleeping.
-        if (not this->orderbook_thread_active || this->current_orderbook_.empty())
+        if (not orderbook_thread_active or current_orderbook_.empty())
         {
             DLOG_F(WARNING, "Nothing todo, sleeping...");
             return;
         }
-        std::string              current = (*this->current_orderbook_.begin()).first;
+        std::string              current = (*current_orderbook_.begin()).first;
         std::vector<std::string> results;
         boost::split(results, current, [](char c) { return c == '/'; });
         process_orderbook(results[0], results[1]);
@@ -306,16 +306,16 @@ namespace atomic_dex
         if (ec) { DVLOG_F(loguru::Verbosity_ERROR, "error: {}", ec.message()); }
 
 
-        this->mm2_init_thread_ = std::thread([this]() {
+        mm2_init_thread_ = std::thread([this]() {
             loguru::set_thread_name("mm2 init thread");
             using namespace std::chrono_literals;
             const auto ec = mm2_instance_.wait(2s);
             if (ec == reproc::error::wait_timeout)
             {
                 DVLOG_F(loguru::Verbosity_INFO, "mm2 is initialized");
-                this->enable_default_coins();
+                enable_default_coins();
                 mm2_running_ = true;
-                this->dispatcher_.trigger<mm2_started>();
+                dispatcher_.trigger<mm2_started>();
             }
             else
             {
@@ -403,7 +403,7 @@ namespace atomic_dex
         t_tx_history_request tx_request{.coin = ticker, .limit = 50};
         auto                 answer = rpc_my_tx_history(std::move(tx_request));
         if (answer.error.has_value()) { VLOG_F(loguru::Verbosity_ERROR, "tx error: {}", answer.error.value()); }
-        else if (answer.rpc_result_code != -1 && answer.result.has_value())
+        else if (answer.rpc_result_code not_eq -1 and answer.result.has_value())
         {
             t_transactions out;
             out.reserve(answer.result.value().transactions.size());
@@ -447,14 +447,14 @@ namespace atomic_dex
     mm2::on_gui_enter_trading([[maybe_unused]] const gui_enter_trading& evt) noexcept
     {
         LOG_SCOPE_FUNCTION(INFO);
-        this->orderbook_thread_active = true;
+        orderbook_thread_active = true;
     }
 
     void
     mm2::on_gui_leave_trading([[maybe_unused]] const gui_leave_trading& evt) noexcept
     {
         LOG_SCOPE_FUNCTION(INFO);
-        this->orderbook_thread_active = false;
+        orderbook_thread_active = false;
     }
 
     t_buy_answer

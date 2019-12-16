@@ -377,7 +377,7 @@ namespace mm2::api
         LOG_SCOPE_FUNCTION(INFO);
         RpcReturnType answer;
         DVLOG_F(loguru::Verbosity_INFO, "resp: {}", resp.body);
-        if (resp.code != 200)
+        if (resp.code not_eq 200)
         {
             DVLOG_F(loguru::Verbosity_WARNING, "rpc answer code is not 200");
             answer.rpc_result_code = resp.code;
@@ -521,7 +521,7 @@ namespace mm2::api
     {
         LOG_SCOPE_FUNCTION(INFO);
         j["type"] = cfg.type;
-        if (cfg.type != "All" && cfg.data.has_value()) { j["data"] = cfg.data.value(); }
+        if (cfg.type not_eq "All" and cfg.data.has_value()) { j["data"] = cfg.data.value(); }
     }
 
     void

@@ -47,16 +47,15 @@ namespace
     void
     process_provider(const atomic_dex::coin_config& current_coin, Provider& rate_providers, const std::string& fiat)
     {
-        const auto base = current_coin.coinpaprika_id;
-        //! do usd first
+        const auto                    base = current_coin.coinpaprika_id;
         const price_converter_request request{.base_currency_id = base, .quote_currency_id = fiat, .amount = 1};
         auto                          answer = price_converter(request);
+
         retry(answer, request);
+
         if (answer.raw_result.find("error") == std::string::npos) { rate_providers.insert_or_assign(current_coin.ticker, answer.price); }
         else
-        {
             rate_providers.insert_or_assign(current_coin.ticker, "0.00");
-        }
     }
 } // namespace
 
@@ -67,8 +66,8 @@ namespace atomic_dex
     coinpaprika_provider::coinpaprika_provider(entt::registry& registry, mm2& mm2_instance) : system(registry), instance_(mm2_instance)
     {
         disable();
-        this->dispatcher_.sink<mm2_started>().connect<&coinpaprika_provider::on_mm2_started>(*this);
-        this->dispatcher_.sink<coin_enabled>().connect<&coinpaprika_provider::on_coin_enabled>(*this);
+        dispatcher_.sink<mm2_started>().connect<&coinpaprika_provider::on_mm2_started>(*this);
+        dispatcher_.sink<coin_enabled>().connect<&coinpaprika_provider::on_coin_enabled>(*this);
     }
 
     void
