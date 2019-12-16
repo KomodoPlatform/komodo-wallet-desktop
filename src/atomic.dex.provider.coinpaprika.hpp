@@ -71,7 +71,7 @@ namespace atomic_dex
     class coinpaprika_provider final : public ag::ecs::pre_update_system<coinpaprika_provider>
     {
         //! Typedefs
-        using t_providers_registry = folly::ConcurrentHashMap<std::string, std::string>;
+        using t_providers_registry      = folly::ConcurrentHashMap<std::string, std::string>;
         using t_supported_fiat_registry = std::unordered_set<std::string>;
 
         mm2&                      m_mm2_instance;
@@ -81,7 +81,7 @@ namespace atomic_dex
         std::thread               m_provider_rates_thread;
         timed_waiter              m_provider_thread_timer;
 
-    public:
+      public:
         coinpaprika_provider(entt::registry& registry, mm2& mm2_instance);
 
         ~coinpaprika_provider() noexcept;
@@ -89,19 +89,17 @@ namespace atomic_dex
         std::string get_rate_conversion(const std::string& fiat, const std::string& ticker, std::error_code& ec) const noexcept;
 
         //! Fiat can be USD or EUR
-        std::string
-        get_price_in_fiat(const std::string& fiat, const std::string& ticker, std::error_code& ec, bool skip_precision = false) const noexcept;
+        std::string get_price_in_fiat(const std::string& fiat, const std::string& ticker, std::error_code& ec, bool skip_precision = false) const noexcept;
 
         std::string get_price_in_fiat_all(const std::string& fiat, std::error_code& ec) const noexcept;
 
-        std::string
-        get_price_in_fiat_from_tx(const std::string& fiat, const std::string& ticker, const tx_infos& tx, std::error_code& ec) const noexcept;
+        std::string get_price_in_fiat_from_tx(const std::string& fiat, const std::string& ticker, const tx_infos& tx, std::error_code& ec) const noexcept;
 
         void on_mm2_started(const mm2_started& evt) noexcept;
         void on_coin_enabled(const coin_enabled& evt) noexcept;
 
         // ReSharper disable once CppFinalFunctionInFinalClass
-        void update() noexcept final;        
+        void update() noexcept final;
     };
 } // namespace atomic_dex
 

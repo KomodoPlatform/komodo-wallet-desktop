@@ -1,7 +1,7 @@
 ---
 Language: Cpp
 BasedOnStyle: LLVM
-ColumnLimit: 150
+ColumnLimit: 160
 IndentWidth: 4
 MaxEmptyLinesToKeep: 2
 NamespaceIndentation: All
@@ -31,21 +31,6 @@ SortIncludes: true
 SpaceBeforeAssignmentOperators: true
 SpaceBeforeRangeBasedForLoopColon: false
 BreakBeforeBraces: Allman
-#BraceWrapping:
-#  AfterCaseLabel: true
-#  AfterClass: true
-#  AfterControlStatement: true
-#  AfterEnum: true
-#  AfterFunction: true
-#  AfterNamespace: true
-#  AfterStruct: true
-#  AfterUnion: true
-#  AfterExternBlock: false
-#  BeforeCatch: true
-#  BeforeElse: true
-#  SplitEmptyFunction: true
-#  SplitEmptyRecord: true
-#  SplitEmptyNamespace: true
 ---
 Language: JavaScript
 BasedOnStyle: LLVM

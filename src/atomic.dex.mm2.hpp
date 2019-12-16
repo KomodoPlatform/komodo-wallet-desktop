@@ -132,7 +132,7 @@ namespace atomic_dex
         bool enable_coin(const std::string& ticker) noexcept;
 
         //! Called every ticks, and execute tasks if the timer expire.
-        void update() noexcept;
+        void update() noexcept final;
 
         //! Is MM2 Process correctly running ?
         [[nodiscard]] const std::atomic_bool& is_mm2_running() const noexcept;
