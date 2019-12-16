@@ -104,8 +104,8 @@ namespace atomic_dex
     }
 
     std::string
-    coinpaprika_provider::get_price_in_fiat(const std::string& fiat, const std::string& ticker, std::error_code& ec,
-                                            bool skip_precision) const noexcept
+    coinpaprika_provider::get_price_in_fiat(
+        const std::string& fiat, const std::string& ticker, std::error_code& ec, bool skip_precision) const noexcept
     {
         if (!supported_fiat_.count(fiat))
         {
@@ -161,8 +161,8 @@ namespace atomic_dex
     }
 
     std::string
-    coinpaprika_provider::get_price_in_fiat_from_tx(const std::string& fiat, const std::string& ticker, const tx_infos& tx,
-                                                    std::error_code& ec) const noexcept
+    coinpaprika_provider::get_price_in_fiat_from_tx(
+        const std::string& fiat, const std::string& ticker, const tx_infos& tx, std::error_code& ec) const noexcept
     {
         if (instance_.get_coin_info(ticker).coinpaprika_id == "test-coin") return "0.00";
         const auto amount        = tx.am_i_sender ? tx.my_balance_change.substr(1) : tx.my_balance_change;

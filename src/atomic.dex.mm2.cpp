@@ -298,11 +298,9 @@ namespace atomic_dex
 
         DVLOG_F(loguru::Verbosity_INFO, "command line {}", json_cfg.dump());
 
-        const std::array<std::string, 2> args = {(tools_path / "mm2").string(), json_cfg.dump()};
-        const auto                       ec =
-            mm2_instance_.start(args, reproc::options{nullptr,
-                                                      tools_path.string().c_str(),
-                                                      {reproc::redirect::inherit, reproc::redirect::inherit, reproc::redirect::inherit}});
+        const std::array<std::string, 2> args          = {(tools_path / "mm2").string(), json_cfg.dump()};
+        reproc::redirect                 redirect_type = reproc::redirect::inherit;
+        const auto ec = mm2_instance_.start(args, {nullptr, tools_path.string().c_str(), {redirect_type, redirect_type, redirect_type}});
         if (ec) { DVLOG_F(loguru::Verbosity_ERROR, "error: {}", ec.message()); }
 
 

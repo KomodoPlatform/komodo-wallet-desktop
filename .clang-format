@@ -9,6 +9,7 @@ TabWidth: 4
 AllowShortBlocksOnASingleLine: true
 AlignConsecutiveAssignments: true
 AlignConsecutiveDeclarations: true
+AlignAfterOpenBracket: AlwaysBreak
 AlignEscapedNewlines: Right
 AlignTrailingComments: true
 AllowShortFunctionsOnASingleLine: All
@@ -17,7 +18,6 @@ AllowShortLambdasOnASingleLine: All
 AllowShortLoopsOnASingleLine: true
 AlwaysBreakAfterReturnType: AllDefinitions
 AlwaysBreakTemplateDeclarations: Yes
-BreakBeforeBraces: Custom
 BreakConstructorInitializers: AfterColon
 BreakInheritanceList: AfterColon
 Cpp11BracedListStyle: true
@@ -30,21 +30,22 @@ SortUsingDeclarations: true
 SortIncludes: true
 SpaceBeforeAssignmentOperators: true
 SpaceBeforeRangeBasedForLoopColon: false
-BraceWrapping:
-  AfterCaseLabel: true
-  AfterClass: true
-  AfterControlStatement: true
-  AfterEnum: true
-  AfterFunction: true
-  AfterNamespace: true
-  AfterStruct: true
-  AfterUnion: true
-  AfterExternBlock: false
-  BeforeCatch: true
-  BeforeElse: true
-  SplitEmptyFunction: true
-  SplitEmptyRecord: true
-  SplitEmptyNamespace: true
+BreakBeforeBraces: Allman
+#BraceWrapping:
+#  AfterCaseLabel: true
+#  AfterClass: true
+#  AfterControlStatement: true
+#  AfterEnum: true
+#  AfterFunction: true
+#  AfterNamespace: true
+#  AfterStruct: true
+#  AfterUnion: true
+#  AfterExternBlock: false
+#  BeforeCatch: true
+#  BeforeElse: true
+#  SplitEmptyFunction: true
+#  SplitEmptyRecord: true
+#  SplitEmptyNamespace: true
 ---
 Language: JavaScript
 BasedOnStyle: LLVM

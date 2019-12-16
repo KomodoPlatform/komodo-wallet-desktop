@@ -33,8 +33,9 @@
 namespace atomic_dex
 {
     void
-    widgets::LoadingIndicatorCircle(const char* label, const float indicator_radius, const ImVec4& main_color, const ImVec4& backdrop_color,
-                                    const int circle_count, const float speed)
+    widgets::LoadingIndicatorCircle(
+        const char* label, const float indicator_radius, const ImVec4& main_color, const ImVec4& backdrop_color, const int circle_count,
+        const float speed)
     {
         ImGuiWindow* window = ImGui::GetCurrentWindow();
         if (window->SkipItems) { return; }
@@ -61,8 +62,9 @@ namespace atomic_dex
             color.y = main_color.y * growth + backdrop_color.y * (1.0f - growth);
             color.z = main_color.z * growth + backdrop_color.z * (1.0f - growth);
             color.w = 1.0f;
-            window->DrawList->AddCircleFilled(ImVec2(pos.x + indicator_radius + x, pos.y + indicator_radius - y),
-                                              circle_radius + growth * circle_radius, ImGui::GetColorU32(color));
+            window->DrawList->AddCircleFilled(
+                ImVec2(pos.x + indicator_radius + x, pos.y + indicator_radius - y), circle_radius + growth * circle_radius,
+                ImGui::GetColorU32(color));
         }
     }
 } // namespace atomic_dex

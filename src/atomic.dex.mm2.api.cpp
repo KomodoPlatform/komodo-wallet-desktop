@@ -554,7 +554,9 @@ namespace mm2::api
     from_json(const nlohmann::json& j, my_orders_answer& answer)
     {
         static_cast<void>(answer);
-        auto filler_functor = [](const std::string& key, const nlohmann::json& value, std::map<std::size_t, my_order_contents>& out) {
+        // clang-format off
+        auto filler_functor = [](const std::string& key, const nlohmann::json& value, std::map<std::size_t, my_order_contents>& out)
+        {
             const auto        time_key = value.at("created_at").get<std::size_t>();
             my_order_contents contents{.order_id         = key,
                                        .available_amount = value.at("available_amount").get<std::string>(),
@@ -563,6 +565,8 @@ namespace mm2::api
                                        .timestamp        = time_key};
             out.try_emplace(time_key, std::move(contents));
         };
+        // clang-format on
+
         for (auto&& [key, value]: j.at("result").at("maker_orders").items()) { filler_functor(key, value, answer.maker_orders); }
         for (auto&& [key, value]: j.at("result").at("taker_orders").items()) { filler_functor(key, value, answer.taker_orders); }
     }

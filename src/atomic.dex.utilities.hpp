@@ -110,8 +110,9 @@ namespace atomic_dex::utils
         }
 
         bool
-        parse_error([[maybe_unused]] std::size_t position, [[maybe_unused]] const std::string& last_token,
-                    [[maybe_unused]] const nlohmann::detail::exception& ex) override
+        parse_error(
+            [[maybe_unused]] std::size_t position, [[maybe_unused]] const std::string& last_token,
+            [[maybe_unused]] const nlohmann::detail::exception& ex) override
         {
             return false;
         };

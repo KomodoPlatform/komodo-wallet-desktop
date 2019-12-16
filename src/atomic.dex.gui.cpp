@@ -93,8 +93,9 @@ namespace
             auto orig_pos = ImGui::GetCursorPos();
             ImGui::SetCursorPos({ImGui::GetCursorPos().x,
                                  ImGui::GetCursorPos().y - (static_cast<float>(img.height) - ImGui::GetFont()->FontSize / 2.f) / 2.f});
-            ImGui::Image(reinterpret_cast<void*>(static_cast<intptr_t>(img.id)),
-                         ImVec2{static_cast<float>(img.width), static_cast<float>(img.height)});
+            ImGui::Image(
+                reinterpret_cast<void*>(static_cast<intptr_t>(img.id)),
+                ImVec2{static_cast<float>(img.width), static_cast<float>(img.height)});
             ImGui::SameLine();
             ImGui::SetCursorPos(orig_pos);
             ImGui::SetCursorPosX(ImGui::GetCursorPos().x + static_cast<float>(img.width) + 5.f);
@@ -104,9 +105,9 @@ namespace
     }
 
     void
-    gui_transaction_details_modal(atomic_dex::coinpaprika_provider& paprika_system, bool open_modal,
-                                  const atomic_dex::coin_config& curr_asset, const atomic_dex::tx_infos& tx,
-                                  atomic_dex::gui_variables& gui_vars)
+    gui_transaction_details_modal(
+        atomic_dex::coinpaprika_provider& paprika_system, bool open_modal, const atomic_dex::coin_config& curr_asset,
+        const atomic_dex::tx_infos& tx, atomic_dex::gui_variables& gui_vars)
     {
         ImGui::PushID(tx.tx_hash.c_str());
 
@@ -122,11 +123,12 @@ namespace
             ImGui::Separator();
 
             ImGui::Text("%s", tx.am_i_sender ? "Sent" : "Received");
-            ImGui::TextColored(ImVec4(tx.am_i_sender ? ImVec4(1, 52.f / 255.f, 0, 1.f) : ImVec4(80.f / 255.f, 1, 118.f / 255.f, 1.f)),
-                               "%s%s %s", tx.am_i_sender ? "-" : "+", tx.my_balance_change.c_str(), curr_asset.ticker.c_str());
+            ImGui::TextColored(
+                ImVec4(tx.am_i_sender ? ImVec4(1, 52.f / 255.f, 0, 1.f) : ImVec4(80.f / 255.f, 1, 118.f / 255.f, 1.f)), "%s%s %s",
+                tx.am_i_sender ? "-" : "+", tx.my_balance_change.c_str(), curr_asset.ticker.c_str());
             ImGui::SameLine(300);
-            ImGui::TextColored(value_color, "%s",
-                               usd_str(paprika_system.get_price_in_fiat_from_tx("USD", curr_asset.ticker, tx, ec)).c_str());
+            ImGui::TextColored(
+                value_color, "%s", usd_str(paprika_system.get_price_in_fiat_from_tx("USD", curr_asset.ticker, tx, ec)).c_str());
 
             ImGui::Separator();
 
@@ -178,8 +180,8 @@ namespace
     }
 
     void
-    gui_portfolio_coin_details(atomic_dex::mm2& mm2, atomic_dex::coinpaprika_provider& paprika_system,
-                               atomic_dex::gui_variables& gui_vars) noexcept
+    gui_portfolio_coin_details(
+        atomic_dex::mm2& mm2, atomic_dex::coinpaprika_provider& paprika_system, atomic_dex::gui_variables& gui_vars) noexcept
     {
         // Right
         const auto curr_asset = mm2.get_coin_info(gui_vars.curr_asset_code);
@@ -189,9 +191,10 @@ namespace
             ImGui::Separator();
             std::error_code ec;
 
-            ImGui::Text(std::string(std::string(reinterpret_cast<const char*>(ICON_FA_BALANCE_SCALE)) + " Balance: %s %s (%s USD)").c_str(),
-                        mm2.my_balance(curr_asset.ticker, ec).c_str(), curr_asset.ticker.c_str(),
-                        paprika_system.get_price_in_fiat("USD", curr_asset.ticker, ec).c_str());
+            ImGui::Text(
+                std::string(std::string(reinterpret_cast<const char*>(ICON_FA_BALANCE_SCALE)) + " Balance: %s %s (%s USD)").c_str(),
+                mm2.my_balance(curr_asset.ticker, ec).c_str(), curr_asset.ticker.c_str(),
+                paprika_system.get_price_in_fiat("USD", curr_asset.ticker, ec).c_str());
             ImGui::Separator();
             if (ImGui::BeginTabBar("##Tabs", ImGuiTabBarFlags_None))
             {
@@ -259,8 +262,8 @@ namespace
         if (ImGui::BeginPopupModal("Enable coins", nullptr, ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoMove))
         {
             auto enableable_coins = mm2.get_enableable_coins();
-            ImGui::Text(enableable_coins.empty() ? "All coins are already enabled!"
-                                                 : "Select the coins you want to add to your portfolio.");
+            ImGui::Text(
+                enableable_coins.empty() ? "All coins are already enabled!" : "Select the coins you want to add to your portfolio.");
 
             if (!enableable_coins.empty()) ImGui::Separator();
 
@@ -311,8 +314,8 @@ namespace
     }
 
     void
-    gui_portfolio(atomic_dex::mm2& mm2, atomic_dex::coinpaprika_provider& paprika_system, atomic_dex::gui_variables& gui_vars,
-                  atomic_dex::gui& gui)
+    gui_portfolio(
+        atomic_dex::mm2& mm2, atomic_dex::coinpaprika_provider& paprika_system, atomic_dex::gui_variables& gui_vars, atomic_dex::gui& gui)
     {
         std::error_code ec;
         ImGui::Text("Total Balance: %s", usd_str(paprika_system.get_price_in_fiat_all("USD", ec)).c_str());
@@ -521,8 +524,9 @@ namespace atomic_dex
 
                     if (not locked_base.empty() && not locked_rel.empty())
                     {
-                        ImGui::BeginChild("Orderbook Window", ImVec2(0, 400), true,
-                                          ImGuiWindowFlags_AlwaysVerticalScrollbar | ImGuiWindowFlags_AlwaysHorizontalScrollbar);
+                        ImGui::BeginChild(
+                            "Orderbook Window", ImVec2(0, 400), true,
+                            ImGuiWindowFlags_AlwaysVerticalScrollbar | ImGuiWindowFlags_AlwaysHorizontalScrollbar);
                         {
                             ImGui::Text("Ask Orderbook:");
                             ImGui::Columns(4, "orderbook_columns_asks");
@@ -618,15 +622,16 @@ namespace atomic_dex
                             };
 
                             static char price_buf[20];
-                            ImGui::InputText("##price", price_buf, IM_ARRAYSIZE(price_buf), ImGuiInputTextFlags_CallbackCharFilter, filter,
-                                             price_buf);
+                            ImGui::InputText(
+                                "##price", price_buf, IM_ARRAYSIZE(price_buf), ImGuiInputTextFlags_CallbackCharFilter, filter, price_buf);
 
                             ImGui::Text("Amount: ");
                             ImGui::SameLine();
                             ImGui::SetNextItemWidth(200.f);
                             static char amount_buf[20];
-                            ImGui::InputText("##amount", amount_buf, IM_ARRAYSIZE(amount_buf), ImGuiInputTextFlags_CallbackCharFilter,
-                                             filter, amount_buf);
+                            ImGui::InputText(
+                                "##amount", amount_buf, IM_ARRAYSIZE(amount_buf), ImGuiInputTextFlags_CallbackCharFilter, filter,
+                                amount_buf);
                             ImGui::Text("Total: ");
                             std::string total          = "";
                             std::string current_price  = price_buf;
@@ -648,8 +653,9 @@ namespace atomic_dex
                             if (not enable)
                             {
                                 std::error_code ec;
-                                ImGui::TextColored(ImVec4(1, 0, 0, 1), "You don't have enough funds, you have %s %s",
-                                                   mm2_system_.my_balance_with_locked_funds(locked_rel, ec).c_str(), locked_rel.c_str());
+                                ImGui::TextColored(
+                                    ImVec4(1, 0, 0, 1), "You don't have enough funds, you have %s %s",
+                                    mm2_system_.my_balance_with_locked_funds(locked_rel, ec).c_str(), locked_rel.c_str());
                                 ImGui::PushItemFlag(ImGuiItemFlags_Disabled, true);
                                 ImGui::PushStyleVar(ImGuiStyleVar_Alpha, ImGui::GetStyle().Alpha * 0.5f);
                             }
@@ -689,15 +695,16 @@ namespace atomic_dex
                             };
 
                             static char price_buf[20];
-                            ImGui::InputText("##price", price_buf, IM_ARRAYSIZE(price_buf), ImGuiInputTextFlags_CallbackCharFilter, filter,
-                                             price_buf);
+                            ImGui::InputText(
+                                "##price", price_buf, IM_ARRAYSIZE(price_buf), ImGuiInputTextFlags_CallbackCharFilter, filter, price_buf);
 
                             ImGui::Text("Amount: ");
                             ImGui::SameLine();
                             ImGui::SetNextItemWidth(200.f);
                             static char amount_buf[20];
-                            ImGui::InputText("##amount", amount_buf, IM_ARRAYSIZE(amount_buf), ImGuiInputTextFlags_CallbackCharFilter,
-                                             filter, amount_buf);
+                            ImGui::InputText(
+                                "##amount", amount_buf, IM_ARRAYSIZE(amount_buf), ImGuiInputTextFlags_CallbackCharFilter, filter,
+                                amount_buf);
                             ImGui::Text("Total: ");
                             std::string total          = "";
                             std::string current_price  = price_buf;
@@ -719,8 +726,9 @@ namespace atomic_dex
                             if (not enable)
                             {
                                 std::error_code ec;
-                                ImGui::TextColored(ImVec4(1, 0, 0, 1), "You don't have enough funds, you have %s %s",
-                                                   mm2_system_.my_balance_with_locked_funds(locked_base, ec).c_str(), locked_base.c_str());
+                                ImGui::TextColored(
+                                    ImVec4(1, 0, 0, 1), "You don't have enough funds, you have %s %s",
+                                    mm2_system_.my_balance_with_locked_funds(locked_base, ec).c_str(), locked_base.c_str());
                                 ImGui::PushItemFlag(ImGuiItemFlags_Disabled, true);
                                 ImGui::PushStyleVar(ImGuiStyleVar_Alpha, ImGui::GetStyle().Alpha * 0.5f);
                             }
