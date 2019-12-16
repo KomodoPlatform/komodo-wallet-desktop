@@ -76,33 +76,33 @@ namespace atomic_dex
 {
     mm2::mm2(entt::registry& registry) noexcept : system(registry)
     {
-        orderbook_clock_ = std::chrono::high_resolution_clock::now();
-        info_clock_      = std::chrono::high_resolution_clock::now();
+        m_orderbook_clock = std::chrono::high_resolution_clock::now();
+        m_info_clock      = std::chrono::high_resolution_clock::now();
         dispatcher_.sink<gui_enter_trading>().connect<&mm2::on_gui_enter_trading>(*this);
         dispatcher_.sink<gui_leave_trading>().connect<&mm2::on_gui_leave_trading>(*this);
         dispatcher_.sink<orderbook_refresh>().connect<&mm2::on_refresh_orderbook>(*this);
-        retrieve_coins_information(coins_informations_);
+        retrieve_coins_information(m_coins_informations);
         spawn_mm2_instance();
     }
 
     void
     mm2::update() noexcept
     {
-        if (not mm2_running_) return;
+        if (not m_mm2_running) return;
         using namespace std::chrono_literals;
         const auto now    = std::chrono::high_resolution_clock::now();
-        const auto s      = std::chrono::duration_cast<std::chrono::seconds>(now - orderbook_clock_);
-        const auto s_info = std::chrono::duration_cast<std::chrono::seconds>(now - info_clock_);
+        const auto s      = std::chrono::duration_cast<std::chrono::seconds>(now - m_orderbook_clock);
+        const auto s_info = std::chrono::duration_cast<std::chrono::seconds>(now - m_info_clock);
         if (s >= 5s)
         {
-            tasks_pool_.enqueue([this]() { fetch_current_orderbook_thread(); });
-            orderbook_clock_ = std::chrono::high_resolution_clock::now();
+            m_tasks_pool.enqueue([this]() { fetch_current_orderbook_thread(); });
+            m_orderbook_clock = std::chrono::high_resolution_clock::now();
         }
 
         if (s_info >= 30s)
         {
-            tasks_pool_.enqueue([this]() { fetch_infos_thread(); });
-            info_clock_ = std::chrono::high_resolution_clock::now();
+            m_tasks_pool.enqueue([this]() { fetch_infos_thread(); });
+            m_info_clock = std::chrono::high_resolution_clock::now();
         }
     }
 
@@ -112,23 +112,23 @@ namespace atomic_dex
                                                    {reproc::stop::kill, reproc::milliseconds(5000)},
                                                    {reproc::stop::wait, reproc::milliseconds(2000)}};
 
-        mm2_running_  = false;
-        const auto ec = mm2_instance_.stop(stop_actions);
+        m_mm2_running  = false;
+        const auto ec = m_mm2_instance.stop(stop_actions);
         if (ec) { VLOG_SCOPE_F(loguru::Verbosity_ERROR, "error: %s", ec.message().c_str()); }
-        mm2_init_thread_.join();
+        m_mm2_init_thread.join();
     }
 
     const std::atomic_bool&
     mm2::is_mm2_running() const noexcept
     {
-        return mm2_running_;
+        return m_mm2_running;
     }
 
     t_coins
     mm2::get_enabled_coins() const noexcept
     {
         t_coins destination;
-        for (auto&& [key, value]: coins_informations_)
+        for (auto&& [key, value]: m_coins_informations)
         {
             if (value.currently_enabled) { destination.push_back(value); }
         }
@@ -140,7 +140,7 @@ namespace atomic_dex
     mm2::get_enableable_coins() const noexcept
     {
         t_coins destination;
-        for (auto&& [key, value]: coins_informations_)
+        for (auto&& [key, value]: m_coins_informations)
         {
             if (not value.currently_enabled) { destination.emplace_back(value); }
         }
@@ -151,7 +151,7 @@ namespace atomic_dex
     mm2::get_active_coins() const noexcept
     {
         t_coins destination;
-        for (auto&& [key, value]: coins_informations_)
+        for (auto&& [key, value]: m_coins_informations)
         {
             if (value.active) { destination.emplace_back(value); }
         }
@@ -161,13 +161,13 @@ namespace atomic_dex
     bool
     mm2::enable_coin(const std::string& ticker) noexcept
     {
-        auto coin_info = coins_informations_.at(ticker);
+        auto coin_info = m_coins_informations.at(ticker);
         if (coin_info.currently_enabled) return true;
         t_electrum_request request{.coin_name = coin_info.ticker, .servers = coin_info.electrum_urls, .with_tx_history = true};
         auto               answer = rpc_electrum(std::move(request));
         if (answer.result not_eq "success") { return false; }
         coin_info.currently_enabled = true;
-        coins_informations_.assign(coin_info.ticker, coin_info);
+        m_coins_informations.assign(coin_info.ticker, coin_info);
         if (not coin_info.active)
         {
             update_coin_status(ticker);
@@ -175,12 +175,12 @@ namespace atomic_dex
         }
         dispatcher_.trigger<coin_enabled>(ticker);
 
-        tasks_pool_.enqueue([this, ticker]() {
+        m_tasks_pool.enqueue([this, ticker]() {
             loguru::set_thread_name("balance thread");
             process_balance(ticker);
         });
 
-        tasks_pool_.enqueue([this, ticker]() {
+        m_tasks_pool.enqueue([this, ticker]() {
             loguru::set_thread_name("tx thread");
             process_tx(ticker);
         });
@@ -200,7 +200,7 @@ namespace atomic_dex
 
         for (auto&& current_coin: coins)
         {
-            futures.emplace_back(tasks_pool_.enqueue([this, ticker = current_coin.ticker]() {
+            futures.emplace_back(m_tasks_pool.enqueue([this, ticker = current_coin.ticker]() {
                 loguru::set_thread_name("enable thread");
                 enable_coin(ticker);
             }));
@@ -213,21 +213,21 @@ namespace atomic_dex
     coin_config
     mm2::get_coin_info(const std::string& ticker) const noexcept
     {
-        if (coins_informations_.find(ticker) == coins_informations_.cend()) return {};
-        return coins_informations_.at(ticker);
+        if (m_coins_informations.find(ticker) == m_coins_informations.cend()) return {};
+        return m_coins_informations.at(ticker);
     }
 
     t_orderbook_answer
     mm2::get_current_orderbook(mm2_ec& ec) const noexcept
     {
-        if (current_orderbook_.empty())
+        if (m_current_orderbook.empty())
         {
             ec = mm2_error::orderbook_empty;
             return {};
         }
         else
         {
-            return current_orderbook_.begin()->second;
+            return m_current_orderbook.begin()->second;
         }
     }
 
@@ -239,8 +239,8 @@ namespace atomic_dex
 
         if (answer.rpc_result_code not_eq -1)
         {
-            current_orderbook_.clear();
-            current_orderbook_.insert_or_assign(base + "/" + rel, answer);
+            m_current_orderbook.clear();
+            m_current_orderbook.insert_or_assign(base + "/" + rel, answer);
         }
     }
 
@@ -250,12 +250,12 @@ namespace atomic_dex
         loguru::set_thread_name("orderbook thread");
         DLOG_F(INFO, "Fetch current orderbook");
         //! If thread is not active ex: we are not on the trading page anymore, we continue sleeping.
-        if (not orderbook_thread_active or current_orderbook_.empty())
+        if (not m_orderbook_thread_active or m_current_orderbook.empty())
         {
             DLOG_F(WARNING, "Nothing todo, sleeping...");
             return;
         }
-        std::string              current = (*current_orderbook_.begin()).first;
+        std::string              current = (*m_current_orderbook.begin()).first;
         std::vector<std::string> results;
         boost::split(results, current, [](char c) { return c == '/'; });
         process_orderbook(results[0], results[1]);
@@ -270,15 +270,15 @@ namespace atomic_dex
         std::vector<std::future<void>> futures;
         for (auto&& current_coin: coins)
         {
-            futures.emplace_back(tasks_pool_.enqueue([this, ticker = current_coin.ticker]() {
+            futures.emplace_back(m_tasks_pool.enqueue([this, ticker = current_coin.ticker]() {
                 loguru::set_thread_name("balance thread");
                 process_balance(ticker);
             }));
-            futures.emplace_back(tasks_pool_.enqueue([this, ticker = current_coin.ticker]() {
+            futures.emplace_back(m_tasks_pool.enqueue([this, ticker = current_coin.ticker]() {
                 loguru::set_thread_name("tx thread");
                 process_tx(ticker);
             }));
-            futures.emplace_back(tasks_pool_.enqueue([this, ticker = current_coin.ticker]() {
+            futures.emplace_back(m_tasks_pool.enqueue([this, ticker = current_coin.ticker]() {
                 loguru::set_thread_name("orders thread");
                 process_orders(ticker);
             }));
@@ -300,19 +300,19 @@ namespace atomic_dex
 
         const std::array<std::string, 2> args          = {(tools_path / "mm2").string(), json_cfg.dump()};
         reproc::redirect                 redirect_type = reproc::redirect::inherit;
-        const auto ec = mm2_instance_.start(args, {nullptr, tools_path.string().c_str(), {redirect_type, redirect_type, redirect_type}});
+        const auto ec = m_mm2_instance.start(args, {nullptr, tools_path.string().c_str(), {redirect_type, redirect_type, redirect_type}});
         if (ec) { DVLOG_F(loguru::Verbosity_ERROR, "error: {}", ec.message()); }
 
 
-        mm2_init_thread_ = std::thread([this]() {
+        m_mm2_init_thread = std::thread([this]() {
             loguru::set_thread_name("mm2 init thread");
             using namespace std::chrono_literals;
-            const auto ec = mm2_instance_.wait(2s);
+            const auto ec = m_mm2_instance.wait(2s);
             if (ec == reproc::error::wait_timeout)
             {
                 DVLOG_F(loguru::Verbosity_INFO, "mm2 is initialized");
                 enable_default_coins();
-                mm2_running_ = true;
+                m_mm2_running = true;
                 dispatcher_.trigger<mm2_started>();
             }
             else
@@ -325,7 +325,7 @@ namespace atomic_dex
     std::string
     mm2::my_balance_with_locked_funds(const std::string& ticker, mm2_ec& ec) const noexcept
     {
-        if (balance_informations_.find(ticker) == balance_informations_.cend())
+        if (m_balance_informations.find(ticker) == m_balance_informations.cend())
         {
             ec = mm2_error::balance_of_a_non_enabled_coin;
             return "0";
@@ -337,7 +337,7 @@ namespace atomic_dex
     t_float_50
     mm2::get_balance_with_locked_funds(const std::string& ticker) const
     {
-        const auto       answer = balance_informations_.at(ticker);
+        const auto       answer = m_balance_informations.at(ticker);
         const t_float_50 balance(answer.balance);
         const t_float_50 locked_funds(answer.locked_by_swaps);
         auto             final_balance = balance - locked_funds;
@@ -347,23 +347,23 @@ namespace atomic_dex
     t_transactions
     mm2::get_tx_history(const std::string& ticker, mm2_ec& ec) const noexcept
     {
-        if (tx_informations_.find(ticker) == tx_informations_.cend())
+        if (m_tx_informations.find(ticker) == m_tx_informations.cend())
         {
             ec = mm2_error::tx_history_of_a_non_enabled_coin;
             return {};
         }
-        return tx_informations_.at(ticker);
+        return m_tx_informations.at(ticker);
     }
 
     std::string
     mm2::my_balance(const std::string& ticker, mm2_ec& ec) const noexcept
     {
-        if (balance_informations_.find(ticker) == balance_informations_.cend())
+        if (m_balance_informations.find(ticker) == m_balance_informations.cend())
         {
             ec = mm2_error::balance_of_a_non_enabled_coin;
             return "0";
         }
-        return balance_informations_.at(ticker).balance;
+        return m_balance_informations.at(ticker).balance;
     }
 
     t_withdraw_answer
@@ -386,13 +386,13 @@ namespace atomic_dex
     mm2::process_balance(const std::string& ticker) const noexcept
     {
         t_balance_request balance_request{.coin = ticker};
-        balance_informations_.insert_or_assign(ticker, rpc_balance(std::move(balance_request)));
+        m_balance_informations.insert_or_assign(ticker, rpc_balance(std::move(balance_request)));
     }
 
     void
     mm2::process_orders(const std::string& ticker) noexcept
     {
-        orders_registry_.insert_or_assign(ticker, ::mm2::api::rpc_my_orders());
+        m_orders_registry.insert_or_assign(ticker, ::mm2::api::rpc_my_orders());
     }
 
     void
@@ -425,7 +425,7 @@ namespace atomic_dex
                 out.push_back(std::move(current_info));
             }
             std::sort(begin(out), end(out), [](auto&& a, auto&& b) { return a.timestamp > b.timestamp; });
-            tx_informations_.insert_or_assign(ticker, std::move(out));
+            m_tx_informations.insert_or_assign(ticker, std::move(out));
         }
     }
 
@@ -434,7 +434,7 @@ namespace atomic_dex
     {
         LOG_SCOPE_FUNCTION(INFO);
         const auto key = evt.base + "/" + evt.rel;
-        if (current_orderbook_.find(key) == current_orderbook_.cend()) { process_orderbook(evt.base, evt.rel); }
+        if (m_current_orderbook.find(key) == m_current_orderbook.cend()) { process_orderbook(evt.base, evt.rel); }
         else
         {
             DLOG_F(WARNING, "This book is already loaded, skipping");
@@ -445,14 +445,14 @@ namespace atomic_dex
     mm2::on_gui_enter_trading([[maybe_unused]] const gui_enter_trading& evt) noexcept
     {
         LOG_SCOPE_FUNCTION(INFO);
-        orderbook_thread_active = true;
+        m_orderbook_thread_active = true;
     }
 
     void
     mm2::on_gui_leave_trading([[maybe_unused]] const gui_leave_trading& evt) noexcept
     {
         LOG_SCOPE_FUNCTION(INFO);
-        orderbook_thread_active = false;
+        m_orderbook_thread_active = false;
     }
 
     t_buy_answer

@@ -70,15 +70,18 @@ namespace atomic_dex
 
     class coinpaprika_provider final : public ag::ecs::pre_update_system<coinpaprika_provider>
     {
-        //! use it like map.at(USD).at("BTC"); returns "8000" dollars for 1 btc
-        using providers_registry = folly::ConcurrentHashMap<std::string, std::string>;
-        providers_registry              usd_rate_providers_{};
-        providers_registry              eur_rate_providers_{};
-        std::unordered_set<std::string> supported_fiat_{"USD", "EUR"};
-        std::thread                     provider_rates_thread_;
-        timed_waiter                    provider_thread_timer_;
+        //! Typedefs
+        using t_providers_registry = folly::ConcurrentHashMap<std::string, std::string>;
+        using t_supported_fiat_registry = std::unordered_set<std::string>;
 
-      public:
+        mm2&                      m_mm2_instance;
+        t_providers_registry      m_usd_rate_providers{};
+        t_providers_registry      m_eur_rate_providers{};
+        t_supported_fiat_registry m_supported_fiat_registry{"USD", "EUR"};
+        std::thread               m_provider_rates_thread;
+        timed_waiter              m_provider_thread_timer;
+
+    public:
         coinpaprika_provider(entt::registry& registry, mm2& mm2_instance);
 
         ~coinpaprika_provider() noexcept;
@@ -87,23 +90,18 @@ namespace atomic_dex
 
         //! Fiat can be USD or EUR
         std::string
-        get_price_in_fiat(const std::string& fiat, const std::string& ticker, std::error_code& ec, bool skip_precision = false) const
-            noexcept;
+        get_price_in_fiat(const std::string& fiat, const std::string& ticker, std::error_code& ec, bool skip_precision = false) const noexcept;
 
         std::string get_price_in_fiat_all(const std::string& fiat, std::error_code& ec) const noexcept;
 
         std::string
-        get_price_in_fiat_from_tx(const std::string& fiat, const std::string& ticker, const tx_infos& tx, std::error_code& ec) const
-            noexcept;
+        get_price_in_fiat_from_tx(const std::string& fiat, const std::string& ticker, const tx_infos& tx, std::error_code& ec) const noexcept;
 
         void on_mm2_started(const mm2_started& evt) noexcept;
         void on_coin_enabled(const coin_enabled& evt) noexcept;
 
         // ReSharper disable once CppFinalFunctionInFinalClass
-        void update() noexcept final;
-
-      private:
-        mm2& instance_;
+        void update() noexcept final;        
     };
 } // namespace atomic_dex
 

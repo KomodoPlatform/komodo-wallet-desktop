@@ -64,7 +64,6 @@ namespace atomic_dex
 
     class mm2 final : public ag::ecs::pre_update_system<mm2>
     {
-      private:
         //! Private typedefs
         using t_mm2_time_point      = std::chrono::high_resolution_clock::time_point;
         using t_coins_registry      = folly::ConcurrentHashMap<std::string, coin_config>;
@@ -74,24 +73,24 @@ namespace atomic_dex
         using t_orderbook_registry  = folly::ConcurrentHashMap<std::string, ::mm2::api::orderbook_answer>;
 
         //! Process
-        reproc::process mm2_instance_;
+        reproc::process  m_mm2_instance;
 
         //! Timers
-        t_mm2_time_point orderbook_clock_;
-        t_mm2_time_point info_clock_;
+        t_mm2_time_point m_orderbook_clock;
+        t_mm2_time_point m_info_clock;
 
         //! Atomicity / Threads
-        std::atomic_bool mm2_running_{false};
-        std::atomic_bool orderbook_thread_active{false};
-        thread_pool      tasks_pool_{6};
-        std::thread      mm2_init_thread_;
+        std::atomic_bool m_mm2_running{false};
+        std::atomic_bool m_orderbook_thread_active{false};
+        thread_pool      m_tasks_pool{6};
+        std::thread      m_mm2_init_thread;
 
         //! Concurent Registry.
-        t_coins_registry&     coins_informations_{entity_registry_.set<t_coins_registry>()};
-        t_balance_registry&   balance_informations_{entity_registry_.set<t_balance_registry>()};
-        t_tx_history_registry tx_informations_;
-        t_my_orders           orders_registry_;
-        t_orderbook_registry  current_orderbook_;
+        t_coins_registry&     m_coins_informations{entity_registry_.set<t_coins_registry>()};
+        t_balance_registry&   m_balance_informations{entity_registry_.set<t_balance_registry>()};
+        t_tx_history_registry m_tx_informations;
+        t_my_orders           m_orders_registry;
+        t_orderbook_registry  m_current_orderbook;
 
         void spawn_mm2_instance() noexcept;
 

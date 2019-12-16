@@ -16,8 +16,8 @@
 
 #ifdef ENABLE_CODE_RELOAD_WINDOWS
 #    define NOMINMAX
-#    include "API/LPP_API.h"
 #    include <Windows.h>
+#    include "API/LPP_API.h"
 #endif
 
 //! Folly Headers

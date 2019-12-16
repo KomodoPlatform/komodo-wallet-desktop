@@ -63,7 +63,7 @@ namespace atomic_dex
 {
     namespace bm = boost::multiprecision;
 
-    coinpaprika_provider::coinpaprika_provider(entt::registry& registry, mm2& mm2_instance) : system(registry), instance_(mm2_instance)
+    coinpaprika_provider::coinpaprika_provider(entt::registry& registry, mm2& mm2_instance) : system(registry), m_mm2_instance(mm2_instance)
     {
         disable();
         dispatcher_.sink<mm2_started>().connect<&coinpaprika_provider::on_mm2_started>(*this);
@@ -77,29 +77,29 @@ namespace atomic_dex
 
     coinpaprika_provider::~coinpaprika_provider() noexcept
     {
-        provider_thread_timer_.interrupt();
-        provider_rates_thread_.join();
+        m_provider_thread_timer.interrupt();
+        m_provider_rates_thread.join();
     }
 
     void
     coinpaprika_provider::on_mm2_started([[maybe_unused]] const mm2_started& evt) noexcept
     {
         LOG_SCOPE_FUNCTION(INFO);
-        provider_rates_thread_ = std::thread([this]() {
+        m_provider_rates_thread = std::thread([this]() {
             loguru::set_thread_name("paprika thread");
             LOG_SCOPE_F(INFO, "paprika thread started");
             using namespace std::chrono_literals;
             do
             {
                 DLOG_F(INFO, "refreshing rate conversion from coinpaprika");
-                auto coins = instance_.get_enabled_coins();
+                auto coins = m_mm2_instance.get_enabled_coins();
                 for (auto&& current_coin: coins)
                 {
                     if (current_coin.coinpaprika_id == "test-coin") continue;
-                    process_provider(current_coin, usd_rate_providers_, "usd-us-dollars");
-                    process_provider(current_coin, eur_rate_providers_, "eur-euro");
+                    process_provider(current_coin, m_usd_rate_providers, "usd-us-dollars");
+                    process_provider(current_coin, m_eur_rate_providers, "eur-euro");
                 }
-            } while (not provider_thread_timer_.wait_for(30s));
+            } while (not m_provider_thread_timer.wait_for(30s));
         });
     }
 
@@ -107,16 +107,16 @@ namespace atomic_dex
     coinpaprika_provider::get_price_in_fiat(
         const std::string& fiat, const std::string& ticker, std::error_code& ec, bool skip_precision) const noexcept
     {
-        if (!supported_fiat_.count(fiat))
+        if (!m_supported_fiat_registry.count(fiat))
         {
             ec = mm2_error::invalid_fiat_for_rate_conversion;
             return "0.00";
         }
-        if (instance_.get_coin_info(ticker).coinpaprika_id == "test-coin") { return "0.00"; }
+        if (m_mm2_instance.get_coin_info(ticker).coinpaprika_id == "test-coin") { return "0.00"; }
         const auto price = get_rate_conversion(fiat, ticker, ec);
         if (ec) { return "0.00"; }
         std::error_code t_ec;
-        const auto      amount = instance_.my_balance(ticker, t_ec);
+        const auto      amount = m_mm2_instance.my_balance(ticker, t_ec);
         if (t_ec)
         {
             ec = t_ec;
@@ -136,7 +136,7 @@ namespace atomic_dex
     std::string
     coinpaprika_provider::get_price_in_fiat_all(const std::string& fiat, std::error_code& ec) const noexcept
     {
-        auto                 coins         = instance_.get_enabled_coins();
+        auto                 coins         = m_mm2_instance.get_enabled_coins();
         bm::cpp_dec_float_50 final_price_f = 0;
         for (auto&& current_coin: coins)
         {
@@ -164,7 +164,7 @@ namespace atomic_dex
     coinpaprika_provider::get_price_in_fiat_from_tx(
         const std::string& fiat, const std::string& ticker, const tx_infos& tx, std::error_code& ec) const noexcept
     {
-        if (instance_.get_coin_info(ticker).coinpaprika_id == "test-coin") return "0.00";
+        if (m_mm2_instance.get_coin_info(ticker).coinpaprika_id == "test-coin") return "0.00";
         const auto amount        = tx.am_i_sender ? tx.my_balance_change.substr(1) : tx.my_balance_change;
         const auto current_price = get_rate_conversion(fiat, ticker, ec);
         if (ec) { return "0.00"; }
@@ -186,21 +186,21 @@ namespace atomic_dex
         if (fiat == "USD")
         {
             //! Do it as usd;
-            if (usd_rate_providers_.find(ticker) == usd_rate_providers_.cend())
+            if (m_usd_rate_providers.find(ticker) == m_usd_rate_providers.cend())
             {
                 ec = mm2_error::unknown_ticker_for_rate_conversion;
                 return "0.00";
             }
-            current_price = usd_rate_providers_.at(ticker);
+            current_price = m_usd_rate_providers.at(ticker);
         }
         else if (fiat == "EUR")
         {
-            if (eur_rate_providers_.find(ticker) == eur_rate_providers_.cend())
+            if (m_eur_rate_providers.find(ticker) == m_eur_rate_providers.cend())
             {
                 ec = mm2_error::unknown_ticker_for_rate_conversion;
                 return "0.00";
             }
-            current_price = eur_rate_providers_.at(ticker);
+            current_price = m_eur_rate_providers.at(ticker);
         }
         return current_price;
     }
@@ -208,9 +208,9 @@ namespace atomic_dex
     void
     coinpaprika_provider::on_coin_enabled(const coin_enabled& evt) noexcept
     {
-        const auto config = instance_.get_coin_info(evt.ticker);
-        process_provider(config, usd_rate_providers_, "usd-us-dollars");
-        process_provider(config, eur_rate_providers_, "eur-euro");
+        const auto config = m_mm2_instance.get_coin_info(evt.ticker);
+        process_provider(config, m_usd_rate_providers, "usd-us-dollars");
+        process_provider(config, m_eur_rate_providers, "eur-euro");
     }
 
     namespace coinpaprika::api
