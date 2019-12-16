@@ -451,7 +451,7 @@ namespace atomic_dex
 		auto& canvas = entity_registry_.ctx<ag::graphics::canvas_2d>();
 		auto[x, y] = canvas.window.size;
 
-		ImGui::SetNextWindowSize(ImVec2(x, y), ImGuiCond_Once);
+		ImGui::SetNextWindowSize(ImVec2(x, y), ImGuiCond_FirstUseEver);
 		bool active = true;
 		ImGui::Begin("atomicDEX", &active, ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_MenuBar);
 		gui_vars_.main_window_size = ImGui::GetWindowSize();

@@ -69,6 +69,7 @@ namespace atomic_dex
 		using t_mm2_time_point = std::chrono::high_resolution_clock::time_point;
 		using t_coins_registry = folly::ConcurrentHashMap<std::string, coin_config>;
 		using t_balance_registry = folly::ConcurrentHashMap<std::string, ::mm2::api::balance_answer>;
+		using t_my_orders = folly::ConcurrentHashMap<std::string, ::mm2::api::my_orders_answer>;
 		using t_tx_history_registry = folly::ConcurrentHashMap<std::string, std::vector<tx_infos>>;
 		using t_orderbook_registry = folly::ConcurrentHashMap<std::string, ::mm2::api::orderbook_answer>;
 
@@ -89,6 +90,7 @@ namespace atomic_dex
 		t_coins_registry& coins_informations_{ entity_registry_.set<t_coins_registry>() };
 		t_balance_registry& balance_informations_{ entity_registry_.set<t_balance_registry>() };
 		t_tx_history_registry tx_informations_;
+		t_my_orders orders_registry_;
 		t_orderbook_registry current_orderbook_;
 
 		void spawn_mm2_instance() noexcept;
@@ -101,6 +103,9 @@ namespace atomic_dex
 
 		//! Refresh the balance registry (internal)
 		void process_balance(const std::string& ticker) const noexcept;
+
+		//! Refresh the orders registry (internal)
+		void process_orders(const std::string& ticker) noexcept;
 
 		//! Refresh the transaction registry (internal)
 		void process_tx(const std::string& ticker) noexcept;
@@ -131,7 +136,7 @@ namespace atomic_dex
 		void update() noexcept;
 
 		//! Is MM2 Process correctly running ?
-		[[nodiscard]] const std::atomic<bool>& is_mm2_running() const noexcept;
+		[[nodiscard]] const std::atomic_bool& is_mm2_running() const noexcept;
 
 		//! Retrieve my balance for a given ticker as a string.
 		[[nodiscard]] std::string my_balance(const std::string& ticker, mm2_ec& ec) const noexcept;

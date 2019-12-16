@@ -24,8 +24,8 @@ namespace
 	{
 		LOG_SCOPE_FUNCTION(INFO);
 		return {
-			{"method", std::move(method_name)},
-			{"userpass", "atomix_dex_mm2_passphrase"}
+				{ "method",   std::move(method_name) },
+				{ "userpass", "atomix_dex_mm2_passphrase" }
 		};
 	}
 }
@@ -247,7 +247,7 @@ namespace mm2::api
 		j.at("coin").get_to(contents.coin);
 		j.at("address").get_to(contents.address);
 		j.at("price").get_to(contents.price);
-        boost::trim_right_if(contents.price, boost::is_any_of("0"));
+		boost::trim_right_if(contents.price, boost::is_any_of("0"));
 		j.at("maxvolume").get_to(contents.maxvolume);
 		j.at("pubkey").get_to(contents.pubkey);
 		j.at("age").get_to(contents.age);
@@ -360,7 +360,7 @@ namespace mm2::api
 		}
 	}
 
-	template <typename RpcReturnType>
+	template<typename RpcReturnType>
 	RpcReturnType rpc_process_answer(const RestClient::Response& resp) noexcept
 	{
 		LOG_SCOPE_FUNCTION(INFO);
@@ -485,7 +485,7 @@ namespace mm2::api
 		LOG_SCOPE_FUNCTION(INFO);
 		if (cfg.pair.has_value())
 		{
-			auto [base, rel] = cfg.pair.value();
+			auto[base, rel] = cfg.pair.value();
 			j["base"] = base;
 			j["rel"] = rel;
 		}
@@ -526,5 +526,41 @@ namespace mm2::api
 		DVLOG_F(loguru::Verbosity_INFO, "request: %s", json_data.dump().c_str());
 		const auto resp = RestClient::post(endpoint, "application/json", json_data.dump());
 		return rpc_process_answer<cancel_all_orders_answer>(resp);
+	}
+
+	void from_json(const nlohmann::json& j, my_orders_answer& answer)
+	{
+		static_cast<void>(answer);
+		auto filler_functor = [](const std::string& key, const nlohmann::json& value,
+				std::map<std::size_t, my_order_contents>& out)
+		{
+			auto time_key = value.at("created_at").get<std::size_t>();
+			my_order_contents contents{
+					.timestamp = time_key,
+					.order_id = key,
+					.cancellable = value.at("cancellable").get<bool>(),
+					.base = value.at("base").get<std::string>(),
+					.available_amount = value.at("available_amount").get<std::string>() };
+			out.try_emplace(time_key, std::move(contents));
+		};
+		for (auto&&[key, value] : j.at("result").at("maker_orders").items())
+		{
+			DLOG_F(INFO, "key {}, value {}", key.c_str(), value.dump());
+			filler_functor(key, value, answer.maker_orders);
+		}
+		for (auto&&[key, value] : j.at("result").at("taker_orders").items())
+		{
+			DLOG_F(INFO, "key {}, value {}", key.c_str(), value.dump());
+			filler_functor(key, value, answer.taker_orders);
+		}
+	}
+
+	my_orders_answer rpc_my_orders() noexcept
+	{
+		LOG_SCOPE_FUNCTION(INFO);
+		auto json_data = template_request("my_orders");
+		DVLOG_F(loguru::Verbosity_INFO, "request: %s", json_data.dump().c_str());
+		const auto resp = RestClient::post(endpoint, "application/json", json_data.dump());
+		return rpc_process_answer<my_orders_answer>(resp);
 	}
 }

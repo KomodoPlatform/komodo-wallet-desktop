@@ -19,6 +19,7 @@
 #include <string>
 #include <vector>
 #include <optional>
+
 #include <restclient-cpp/restclient.h>
 #include <loguru.hpp>
 #include <nlohmann/json.hpp>
@@ -406,6 +407,27 @@ namespace mm2::api
 	void from_json(const nlohmann::json& j, cancel_all_orders_answer& answer);
 
 	cancel_all_orders_answer rpc_cancel_all_orders(cancel_all_orders_request&& request);
+
+	struct my_order_contents
+	{
+		std::string order_id;
+		std::string available_amount;
+		std::string base;
+		bool cancellable;
+		std::size_t timestamp;
+	};
+
+	struct my_orders_answer
+	{
+		std::map<std::size_t, my_order_contents> maker_orders;
+		std::map<std::size_t, my_order_contents> taker_orders;
+		int rpc_result_code;
+		std::string raw_result;
+	};
+
+	void from_json(const nlohmann::json& j, my_orders_answer& answer);
+
+	my_orders_answer rpc_my_orders() noexcept;
 
 	template <typename RpcReturnType>
 	static RpcReturnType rpc_process_answer(const RestClient::Response& resp) noexcept;

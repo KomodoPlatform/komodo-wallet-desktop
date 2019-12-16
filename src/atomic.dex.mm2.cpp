@@ -297,6 +297,11 @@ namespace atomic_dex
 				loguru::set_thread_name("tx thread");
 				process_tx(ticker);
 			}));
+			futures.emplace_back(tasks_pool_.enqueue([this, ticker = current_coin.ticker]()
+			{
+				loguru::set_thread_name("orders thread");
+				process_orders(ticker);
+			}));
 		}
 		for (auto&& fut: futures)
 		{
@@ -411,6 +416,11 @@ namespace atomic_dex
 		balance_informations_.insert_or_assign(ticker, rpc_balance(std::move(balance_request)));
 	}
 
+	void mm2::process_orders(const std::string& ticker) noexcept
+	{
+		orders_registry_.insert_or_assign(ticker, ::mm2::api::rpc_my_orders());
+	}
+
 	void mm2::process_tx(const std::string& ticker) noexcept
 	{
 		t_tx_history_request tx_request{ .coin = ticker, .limit = 50 };
@@ -487,7 +497,8 @@ namespace atomic_dex
 			return {};
 		}
 		auto answer = ::mm2::api::rpc_buy(std::move(request));
-		if (answer.error.has_value()) {
+		if (answer.error.has_value())
+		{
 			ec = mm2_error::rpc_buy_error;
 			return {};
 		}
