@@ -24,8 +24,8 @@ namespace
 	{
 		LOG_SCOPE_FUNCTION(INFO);
 		return {
-				{ "method",   std::move(method_name) },
-				{ "userpass", "atomix_dex_mm2_passphrase" }
+			{"method", std::move(method_name)},
+			{"userpass", "atomix_dex_mm2_passphrase"}
 		};
 	}
 }
@@ -360,7 +360,7 @@ namespace mm2::api
 		}
 	}
 
-	template<typename RpcReturnType>
+	template <typename RpcReturnType>
 	RpcReturnType rpc_process_answer(const RestClient::Response& resp) noexcept
 	{
 		LOG_SCOPE_FUNCTION(INFO);
@@ -485,7 +485,7 @@ namespace mm2::api
 		LOG_SCOPE_FUNCTION(INFO);
 		if (cfg.pair.has_value())
 		{
-			auto[base, rel] = cfg.pair.value();
+			auto [base, rel] = cfg.pair.value();
 			j["base"] = base;
 			j["rel"] = rel;
 		}
@@ -532,25 +532,24 @@ namespace mm2::api
 	{
 		static_cast<void>(answer);
 		auto filler_functor = [](const std::string& key, const nlohmann::json& value,
-				std::map<std::size_t, my_order_contents>& out)
+		                         std::map<std::size_t, my_order_contents>& out)
 		{
-			auto time_key = value.at("created_at").get<std::size_t>();
+			const auto time_key = value.at("created_at").get<std::size_t>();
 			my_order_contents contents{
-					.timestamp = time_key,
-					.order_id = key,
-					.cancellable = value.at("cancellable").get<bool>(),
-					.base = value.at("base").get<std::string>(),
-					.available_amount = value.at("available_amount").get<std::string>() };
+				.order_id = key,
+				.available_amount = value.at("available_amount").get<std::string>(),
+				.base = value.at("base").get<std::string>(),
+				.cancellable = value.at("cancellable").get<bool>(),
+				.timestamp = time_key
+			};
 			out.try_emplace(time_key, std::move(contents));
 		};
-		for (auto&&[key, value] : j.at("result").at("maker_orders").items())
+		for (auto&& [key, value] : j.at("result").at("maker_orders").items())
 		{
-			DLOG_F(INFO, "key {}, value {}", key.c_str(), value.dump());
 			filler_functor(key, value, answer.maker_orders);
 		}
-		for (auto&&[key, value] : j.at("result").at("taker_orders").items())
+		for (auto&& [key, value] : j.at("result").at("taker_orders").items())
 		{
-			DLOG_F(INFO, "key {}, value {}", key.c_str(), value.dump());
 			filler_functor(key, value, answer.taker_orders);
 		}
 	}
