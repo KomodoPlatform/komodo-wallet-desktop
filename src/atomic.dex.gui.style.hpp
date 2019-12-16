@@ -16,9 +16,10 @@
 
 #pragma once
 
+//! Dependencies Headers
 #include <imgui.h>
 
 namespace atomic_dex::style
 {
-	void apply();
+    void apply();
 }

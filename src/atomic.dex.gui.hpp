@@ -18,56 +18,62 @@
 
 #if defined(ENABLE_CODE_RELOAD_UNIX)
 
-#include <jet/live/Utility.hpp>
-#include <jet/live/Live.hpp>
+#    include <jet/live/Live.hpp>
+#    include <jet/live/Utility.hpp>
 
 #endif
 
+//! SDK Headers
 #include <antara/gaming/ecs/system.hpp>
 #include <antara/gaming/event/key.pressed.hpp>
 #include <antara/gaming/sdl/sdl.opengl.image.loading.hpp>
+
+//! Project Headers
 #include "atomic.dex.gui.style.hpp"
 #include "atomic.dex.mm2.hpp"
 #include "atomic.dex.provider.coinpaprika.hpp"
 
 namespace atomic_dex
 {
-	namespace ag = antara::gaming;
+    namespace ag = antara::gaming;
 
-	struct gui_variables
-	{
-		ImVec2 main_window_size;
-		std::vector<bool> enableable_coins_select_list;
-		std::string curr_asset_code = "";
-	};
+    struct gui_variables
+    {
+        ImVec2            main_window_size;
+        std::vector<bool> enableable_coins_select_list;
+        std::string       curr_asset_code = "";
+    };
 
-	class gui final : public ag::ecs::post_update_system<gui>
-	{
+    class gui final : public ag::ecs::post_update_system<gui>
+    {
 #if defined(ENABLE_CODE_RELOAD_UNIX)
         std::unique_ptr<jet::Live> live_{nullptr};
 #endif
-	public:
-		using icons_registry = folly::ConcurrentHashMap<std::string, antara::gaming::sdl::opengl_image>;
+      public:
+        using icons_registry = folly::ConcurrentHashMap<std::string, antara::gaming::sdl::opengl_image>;
 
-		void on_key_pressed(const ag::event::key_pressed& evt) noexcept;
+        void on_key_pressed(const ag::event::key_pressed& evt) noexcept;
 
-		explicit gui(entt::registry& registry, mm2& mm2_system,
-		             coinpaprika_provider& paprika_system);
+        explicit gui(entt::registry& registry, mm2& mm2_system, coinpaprika_provider& paprika_system);
 
-		// ReSharper disable once CppFinalFunctionInFinalClass
-		void update() noexcept final;
+        // ReSharper disable once CppFinalFunctionInFinalClass
+        void update() noexcept final;
 
-		void init_live_coding();
-		void reload_code();
-		void update_live_coding();
-		const icons_registry& get_icons() const noexcept { return icons_; }
+        void init_live_coding();
+        void reload_code();
+        void update_live_coding();
+        const icons_registry&
+        get_icons() const noexcept
+        {
+            return icons_;
+        }
 
-	private:
-		folly::ConcurrentHashMap<std::string, antara::gaming::sdl::opengl_image> icons_;
-		gui_variables gui_vars_;
-		mm2& mm2_system_;
-		coinpaprika_provider& paprika_system_;
-	};
-}
+      private:
+        folly::ConcurrentHashMap<std::string, antara::gaming::sdl::opengl_image> icons_;
+        gui_variables                                                            gui_vars_;
+        mm2&                                                                     mm2_system_;
+        coinpaprika_provider&                                                    paprika_system_;
+    };
+} // namespace atomic_dex
 
 REFL_AUTO(type(atomic_dex::gui))

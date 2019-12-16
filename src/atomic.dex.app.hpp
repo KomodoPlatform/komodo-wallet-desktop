@@ -16,14 +16,15 @@
 
 #pragma once
 
+//! SDK Headers
 #include <antara/gaming/world/world.app.hpp>
 
 namespace ag = antara::gaming;
 
 namespace atomic_dex
 {
-	struct application : ag::world::app
-	{
-		application() noexcept;
-	};
-}
+    struct application : ag::world::app
+    {
+        application() noexcept;
+    };
+} // namespace atomic_dex

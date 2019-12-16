@@ -16,34 +16,36 @@
 
 #pragma once
 
+//! C++ System Headers
 #include <system_error>
 #include <type_traits>
 
 enum class mm2_error
 {
-	success,
-	balance_of_a_non_enabled_coin,
-	tx_history_of_a_non_enabled_coin,
-	rpc_withdraw_error,
-	rpc_send_raw_transaction_error,
-	rpc_buy_error,
-	invalid_fiat_for_rate_conversion,
-	unknown_ticker_for_rate_conversion,
-	orderbook_empty,
-	balance_not_enough_found,
-	unknown_error
+    success,
+    balance_of_a_non_enabled_coin,
+    tx_history_of_a_non_enabled_coin,
+    rpc_withdraw_error,
+    rpc_send_raw_transaction_error,
+    rpc_buy_error,
+    invalid_fiat_for_rate_conversion,
+    unknown_ticker_for_rate_conversion,
+    orderbook_empty,
+    balance_not_enough_found,
+    unknown_error
 };
 
 namespace std
 {
-	template <>
-	struct is_error_code_enum<mm2_error> : true_type
-	{
-	};
-}
+    template <>
+    struct is_error_code_enum<mm2_error> : true_type
+    {
+    };
+} // namespace std
 
 std::error_code make_error_code(mm2_error error) noexcept;
 
-namespace atomic_dex {
-	using mm2_ec = std::error_code;
-}
+namespace atomic_dex
+{
+    using mm2_ec = std::error_code;
+} // namespace atomic_dex

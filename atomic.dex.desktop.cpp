@@ -15,21 +15,26 @@
  ******************************************************************************/
 
 #ifdef ENABLE_CODE_RELOAD_WINDOWS
-#define NOMINMAX
-#include <Windows.h>
-#include "API/LPP_API.h"
+#    define NOMINMAX
+#    include "API/LPP_API.h"
+#    include <Windows.h>
 #endif
-#include "atomic.dex.app.hpp"
 
+//! Folly Headers
 #include <folly/SharedMutex.h>
 
-namespace folly {
-// Explicitly instantiate SharedMutex here:
-	template class SharedMutexImpl<true>;
-	template class SharedMutexImpl<false>;
-}
+//! Project Headers
+#include "atomic.dex.app.hpp"
 
-int main(int argc, char *argv[])
+namespace folly
+{
+    // Explicitly instantiate SharedMutex here:
+    template class SharedMutexImpl<true>;
+    template class SharedMutexImpl<false>;
+} // namespace folly
+
+int
+main(int argc, char* argv[])
 {
 #ifdef ENABLE_CODE_RELOAD_WINDOWS
     HMODULE livePP = lpp::lppLoadAndRegister(L"LivePP", "Quickstart");

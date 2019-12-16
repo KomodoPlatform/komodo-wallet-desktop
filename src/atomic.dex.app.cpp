@@ -15,31 +15,33 @@
  ******************************************************************************/
 
 
+//! SDK Headers
+#include <antara/gaming/ecs/virtual.input.system.hpp>
 #include <antara/gaming/sdl/graphic.system.hpp>
 #include <antara/gaming/sdl/input.system.hpp>
-#include <antara/gaming/ecs/virtual.input.system.hpp>
 
-#include "atomic.dex.gui.hpp"
+//! Project Headers
 #include "atomic.dex.app.hpp"
+#include "atomic.dex.gui.hpp"
 #include "atomic.dex.mm2.hpp"
 #include "atomic.dex.provider.coinpaprika.hpp"
 
 namespace atomic_dex
 {
-	application::application() noexcept
-	{
-		auto& graphic_system = system_manager_.create_system<ag::sdl::graphic_system>();
-		graphic_system.set_framerate_limit(30);
-		system_manager_.create_system<ag::sdl::input_system>(graphic_system.get_window());
+    application::application() noexcept
+    {
+        auto& graphic_system = system_manager_.create_system<ag::sdl::graphic_system>();
+        graphic_system.set_framerate_limit(30);
+        system_manager_.create_system<ag::sdl::input_system>(graphic_system.get_window());
 
-		//! Create virtual input system
-		system_manager_.create_system<ag::ecs::virtual_input_system>();
+        //! Create virtual input system
+        system_manager_.create_system<ag::ecs::virtual_input_system>();
 
-		//! MM2 system need to be created before the GUI and give the instance to the gui
-		auto& mm2_system = system_manager_.create_system<mm2>();
-		auto& paprika_system = system_manager_.create_system<coinpaprika_provider>(mm2_system);
-		system_manager_.create_system<gui>(mm2_system, paprika_system);
+        //! MM2 system need to be created before the GUI and give the instance to the gui
+        auto& mm2_system     = system_manager_.create_system<mm2>();
+        auto& paprika_system = system_manager_.create_system<coinpaprika_provider>(mm2_system);
+        system_manager_.create_system<gui>(mm2_system, paprika_system);
 
-		system_manager_.prioritize_system<gui, ag::sdl::graphic_system>();
-	}
-}
+        system_manager_.prioritize_system<gui, ag::sdl::graphic_system>();
+    }
+} // namespace atomic_dex

@@ -1,10 +1,35 @@
 ---
 Language: Cpp
 BasedOnStyle: LLVM
-AccessModifierOffset: -4
-AlignOperands: false
-AlignTrailingComments: false
+ColumnLimit: 140
+IndentWidth: 4
+MaxEmptyLinesToKeep: 2
+NamespaceIndentation: All
+TabWidth: 4
+AllowShortBlocksOnASingleLine: true
+AlignConsecutiveAssignments: true
+AlignConsecutiveDeclarations: true
+AlignEscapedNewlines: Right
+AlignTrailingComments: true
+AllowShortFunctionsOnASingleLine: All
+AllowShortIfStatementsOnASingleLine: Always
+AllowShortLambdasOnASingleLine: All
+AllowShortLoopsOnASingleLine: true
+AlwaysBreakAfterReturnType: AllDefinitions
 AlwaysBreakTemplateDeclarations: Yes
+BreakBeforeBraces: Custom
+BreakConstructorInitializers: AfterColon
+BreakInheritanceList: AfterColon
+Cpp11BracedListStyle: true
+FixNamespaceComments: true
+IndentPPDirectives: AfterHash
+IncludeBlocks: Preserve
+KeepEmptyLinesAtTheStartOfBlocks: false
+PointerAlignment: Left
+SortUsingDeclarations: true
+SortIncludes: true
+SpaceBeforeAssignmentOperators: true
+SpaceBeforeRangeBasedForLoopColon: false
 BraceWrapping:
   AfterCaseLabel: true
   AfterClass: true
@@ -20,15 +45,6 @@ BraceWrapping:
   SplitEmptyFunction: true
   SplitEmptyRecord: true
   SplitEmptyNamespace: true
-BreakBeforeBraces: Custom
-BreakConstructorInitializers: AfterColon
-BreakConstructorInitializersBeforeComma: False
-ColumnLimit: 180
-ConstructorInitializerAllOnOneLineOrOnePerLine: False
-IndentWidth: 4
-MaxEmptyLinesToKeep: 2
-NamespaceIndentation: All
-TabWidth: 4
 ---
 Language: JavaScript
 BasedOnStyle: LLVM
