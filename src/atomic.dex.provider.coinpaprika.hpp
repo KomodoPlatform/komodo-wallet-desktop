@@ -43,7 +43,6 @@ namespace atomic_dex
         {
             std::string base_currency_id;
             std::string quote_currency_id;
-            std::size_t amount{1};
         };
 
         struct price_converter_answer

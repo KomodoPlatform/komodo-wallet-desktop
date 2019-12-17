@@ -58,7 +58,7 @@ namespace
     }
 
     bool
-    retrieve_coins_information(folly::ConcurrentHashMap<std::string, atomic_dex::coin_config>& coins_registry) noexcept
+    retrieve_coins_information(folly::ConcurrentHashMap<std::string, atomic_dex::coin_config>& coins_registry)
     {
         const auto cfg_path = ag::core::assets_real_path() / "config";
         if (exists(cfg_path / "coins.json"))
@@ -68,7 +68,7 @@ namespace
             nlohmann::json config_json_data;
             ifs >> config_json_data;
             auto res = config_json_data.get<std::unordered_map<std::string, atomic_dex::coin_config>>();
-            for (auto&& [key, value]: res) coins_registry.insert_or_assign(key, value);
+            for (auto&& [key, value]: res) { coins_registry.insert_or_assign(key, value); }
             return true;
         }
         return false;
@@ -77,7 +77,7 @@ namespace
 
 namespace atomic_dex
 {
-    mm2::mm2(entt::registry& registry) noexcept : system(registry)
+    mm2::mm2(entt::registry& registry) : system(registry)
     {
         m_orderbook_clock = std::chrono::high_resolution_clock::now();
         m_info_clock      = std::chrono::high_resolution_clock::now();
@@ -95,7 +95,7 @@ namespace atomic_dex
     {
         using namespace std::chrono_literals;
 
-        if (not m_mm2_running) return;
+        if (not m_mm2_running) { return; }
 
         const auto now    = std::chrono::high_resolution_clock::now();
         const auto s      = std::chrono::duration_cast<std::chrono::seconds>(now - m_orderbook_clock);
@@ -176,11 +176,11 @@ namespace atomic_dex
     }
 
     bool
-    mm2::enable_coin(const std::string& ticker) noexcept
+    mm2::enable_coin(const std::string& ticker)
     {
         auto coin_info = m_coins_informations.at(ticker);
 
-        if (coin_info.currently_enabled) return true;
+        if (coin_info.currently_enabled) { return true; }
 
         t_electrum_request request{.coin_name = coin_info.ticker, .servers = coin_info.electrum_urls, .with_tx_history = true};
         auto               answer = rpc_electrum(std::move(request));
@@ -229,15 +229,15 @@ namespace atomic_dex
             }));
         }
 
-        for (auto&& fut: futures) fut.get();
+        for (auto&& fut: futures) { fut.get(); }
 
         return result.load() == 1;
     }
 
     coin_config
-    mm2::get_coin_info(const std::string& ticker) const noexcept
+    mm2::get_coin_info(const std::string& ticker) const
     {
-        if (m_coins_informations.find(ticker) == m_coins_informations.cend()) return {};
+        if (m_coins_informations.find(ticker) == m_coins_informations.cend()) { return {}; }
         return m_coins_informations.at(ticker);
     }
 
@@ -316,7 +316,7 @@ namespace atomic_dex
     }
 
     void
-    mm2::spawn_mm2_instance() noexcept
+    mm2::spawn_mm2_instance()
     {
         mm2_config cfg{};
         json       json_cfg;
@@ -335,9 +335,9 @@ namespace atomic_dex
             using namespace std::chrono_literals;
             loguru::set_thread_name("mm2 init thread");
 
-            const auto ec = m_mm2_instance.wait(2s);
+            const auto wait_ec = m_mm2_instance.wait(2s);
 
-            if (ec == reproc::error::wait_timeout)
+            if (wait_ec == reproc::error::wait_timeout)
             {
                 DVLOG_F(loguru::Verbosity_INFO, "mm2 is initialized");
                 enable_default_coins();
@@ -346,13 +346,13 @@ namespace atomic_dex
             }
             else
             {
-                DVLOG_F(loguru::Verbosity_ERROR, "error: {}", ec.message());
+                DVLOG_F(loguru::Verbosity_ERROR, "error: {}", wait_ec.message());
             }
         });
     }
 
     std::string
-    mm2::my_balance_with_locked_funds(const std::string& ticker, mm2_ec& ec) const noexcept
+    mm2::my_balance_with_locked_funds(const std::string& ticker, mm2_ec& ec) const
     {
         if (m_balance_informations.find(ticker) == m_balance_informations.cend())
         {
@@ -377,7 +377,7 @@ namespace atomic_dex
     }
 
     t_transactions
-    mm2::get_tx_history(const std::string& ticker, mm2_ec& ec) const noexcept
+    mm2::get_tx_history(const std::string& ticker, mm2_ec& ec) const
     {
         if (m_tx_informations.find(ticker) == m_tx_informations.cend())
         {
@@ -389,7 +389,7 @@ namespace atomic_dex
     }
 
     std::string
-    mm2::my_balance(const std::string& ticker, mm2_ec& ec) const noexcept
+    mm2::my_balance(const std::string& ticker, mm2_ec& ec) const
     {
         if (m_balance_informations.find(ticker) == m_balance_informations.cend())
         {
@@ -401,7 +401,7 @@ namespace atomic_dex
     }
 
     t_withdraw_answer
-    mm2::withdraw(t_withdraw_request&& request, mm2_ec& ec) const noexcept
+    mm2::withdraw(t_withdraw_request&& request, mm2_ec& ec) noexcept
     {
         auto result = rpc_withdraw(std::move(request));
         if (result.error.has_value()) { ec = mm2_error::rpc_withdraw_error; }
@@ -409,7 +409,7 @@ namespace atomic_dex
     }
 
     t_broadcast_answer
-    mm2::broadcast(t_broadcast_request&& request, mm2_ec& ec) const noexcept
+    mm2::broadcast(t_broadcast_request&& request, mm2_ec& ec) noexcept
     {
         auto result = rpc_send_raw_transaction(std::move(request));
         if (result.rpc_result_code == -1) { ec = mm2_error::rpc_send_raw_transaction_error; }
@@ -417,22 +417,22 @@ namespace atomic_dex
     }
 
     void
-    mm2::process_balance(const std::string& ticker) const noexcept
+    mm2::process_balance(const std::string& ticker) const
     {
         t_balance_request balance_request{.coin = ticker};
         m_balance_informations.insert_or_assign(ticker, rpc_balance(std::move(balance_request)));
     }
 
     void
-    mm2::process_orders(const std::string& ticker) noexcept
+    mm2::process_orders(const std::string& ticker)
     {
         m_orders_registry.insert_or_assign(ticker, ::mm2::api::rpc_my_orders());
     }
 
     void
-    mm2::process_tx(const std::string& ticker) noexcept
+    mm2::process_tx(const std::string& ticker)
     {
-        t_tx_history_request tx_request{.coin = ticker, .limit = 50};
+        t_tx_history_request tx_request{.coin = ticker, .limit = g_tx_max_limit};
         auto                 answer = rpc_my_tx_history(std::move(tx_request));
 
         if (answer.error.has_value()) { VLOG_F(loguru::Verbosity_ERROR, "tx error: {}", answer.error.value()); }
@@ -468,7 +468,7 @@ namespace atomic_dex
     }
 
     void
-    mm2::on_refresh_orderbook(const orderbook_refresh& evt) noexcept
+    mm2::on_refresh_orderbook(const orderbook_refresh& evt)
     {
         LOG_SCOPE_FUNCTION(INFO);
 
@@ -497,7 +497,7 @@ namespace atomic_dex
     }
 
     t_buy_answer
-    mm2::place_buy_order(t_buy_request&& request, const t_float_50& total, mm2_ec& ec) const noexcept
+    mm2::place_buy_order(t_buy_request&& request, const t_float_50& total, mm2_ec& ec) const
     {
         LOG_SCOPE_FUNCTION(INFO);
 

@@ -62,6 +62,12 @@ namespace atomic_dex
     using t_float_50     = bm::cpp_dec_float_50;
     using t_coins        = std::vector<coin_config>;
 
+    constexpr std::size_t operator"" _sz(unsigned long long n) { return n; }
+
+    //! Constants
+    inline constexpr const std::size_t g_tx_max_limit{50_sz};
+    inline constexpr const std::size_t g_nb_workers{6_sz};
+
     class mm2 final : public ag::ecs::pre_update_system<mm2>
     {
         //! Private typedefs
@@ -73,7 +79,7 @@ namespace atomic_dex
         using t_orderbook_registry  = folly::ConcurrentHashMap<std::string, ::mm2::api::orderbook_answer>;
 
         //! Process
-        reproc::process  m_mm2_instance;
+        reproc::process m_mm2_instance;
 
         //! Timers
         t_mm2_time_point m_orderbook_clock;
@@ -82,17 +88,17 @@ namespace atomic_dex
         //! Atomicity / Threads
         std::atomic_bool m_mm2_running{false};
         std::atomic_bool m_orderbook_thread_active{false};
-        thread_pool      m_tasks_pool{6};
+        thread_pool      m_tasks_pool{g_nb_workers};
         std::thread      m_mm2_init_thread;
 
-        //! Concurent Registry.
+        //! Concurrent Registry.
         t_coins_registry&     m_coins_informations{entity_registry_.set<t_coins_registry>()};
         t_balance_registry&   m_balance_informations{entity_registry_.set<t_balance_registry>()};
         t_tx_history_registry m_tx_informations;
         t_my_orders           m_orders_registry;
         t_orderbook_registry  m_current_orderbook;
 
-        void spawn_mm2_instance() noexcept;
+        void spawn_mm2_instance();
 
         //! Refresh the current info (internally call process_balance and process_tx)
         void fetch_infos_thread();
@@ -101,26 +107,32 @@ namespace atomic_dex
         void fetch_current_orderbook_thread();
 
         //! Refresh the balance registry (internal)
-        void process_balance(const std::string& ticker) const noexcept;
+        void process_balance(const std::string& ticker) const;
 
         //! Refresh the orders registry (internal)
-        void process_orders(const std::string& ticker) noexcept;
+        void process_orders(const std::string& ticker);
 
         //! Refresh the transaction registry (internal)
-        void process_tx(const std::string& ticker) noexcept;
+        void process_tx(const std::string& ticker);
 
         //! Refresh the orderbook registry (internal)
         void process_orderbook(const std::string& base, const std::string& rel);
 
       public:
         //! Constructor
-        explicit mm2(entt::registry& registry) noexcept;
+        explicit mm2(entt::registry& registry);
+
+        //! Delete useless operator
+        mm2(const mm2& other) = delete;
+		mm2(const mm2&& other) = delete;
+		mm2& operator=(const mm2& other) = delete;
+		mm2& operator=(const mm2&& other) = delete;
 
         //! Destructor
         ~mm2() noexcept final;
 
         //! Events
-        void on_refresh_orderbook(const orderbook_refresh& evt) noexcept;
+        void on_refresh_orderbook(const orderbook_refresh& evt);
 
         void on_gui_enter_trading(const gui_enter_trading& evt) noexcept;
 
@@ -129,7 +141,7 @@ namespace atomic_dex
         //! Enable coins
         bool enable_default_coins() noexcept;
 
-        bool enable_coin(const std::string& ticker) noexcept;
+        bool enable_coin(const std::string& ticker);
 
         //! Called every ticks, and execute tasks if the timer expire.
         void update() noexcept final;
@@ -138,22 +150,22 @@ namespace atomic_dex
         [[nodiscard]] const std::atomic_bool& is_mm2_running() const noexcept;
 
         //! Retrieve my balance for a given ticker as a string.
-        [[nodiscard]] std::string my_balance(const std::string& ticker, mm2_ec& ec) const noexcept;
+        [[nodiscard]] std::string my_balance(const std::string& ticker, mm2_ec& ec) const;
 
-        //! Retrieve my balance with lockeds funds for a given ticker as a string.
-        [[nodiscard]] std::string my_balance_with_locked_funds(const std::string& ticker, mm2_ec& ec) const noexcept;
+        //! Retrieve my balance with locked funds for a given ticker as a string.
+        [[nodiscard]] std::string my_balance_with_locked_funds(const std::string& ticker, mm2_ec& ec) const;
 
         //! Place a buy order, Doesn't work if i don't have enough funds.
-        t_buy_answer place_buy_order(t_buy_request&& request, const t_float_50& total, mm2_ec& ec) const noexcept;
+        t_buy_answer place_buy_order(t_buy_request&& request, const t_float_50& total, mm2_ec& ec) const;
 
         //! Withdraw Money to another address
-        [[nodiscard]] t_withdraw_answer withdraw(t_withdraw_request&& request, mm2_ec& ec) const noexcept;
+        [[nodiscard]] static t_withdraw_answer withdraw(t_withdraw_request&& request, mm2_ec& ec) noexcept;
 
         //! Broadcast a raw transaction on the blockchain
-        [[nodiscard]] t_broadcast_answer broadcast(t_broadcast_request&& request, mm2_ec& ec) const noexcept;
+        [[nodiscard]] static t_broadcast_answer broadcast(t_broadcast_request&& request, mm2_ec& ec) noexcept;
 
         //! Last 50 transactions maximum
-        [[nodiscard]] t_transactions get_tx_history(const std::string& ticker, mm2_ec& ec) const noexcept;
+        [[nodiscard]] t_transactions get_tx_history(const std::string& ticker, mm2_ec& ec) const;
 
         //! Get coins that are currently enabled
         [[nodiscard]] t_coins get_enabled_coins() const noexcept;
@@ -165,7 +177,7 @@ namespace atomic_dex
         [[nodiscard]] t_coins get_enableable_coins() const noexcept;
 
         //! Get Specific info about one coin
-        [[nodiscard]] coin_config get_coin_info(const std::string& ticker) const noexcept;
+        [[nodiscard]] coin_config get_coin_info(const std::string& ticker) const;
 
         //! Get Current orderbook
         [[nodiscard]] t_orderbook_answer get_current_orderbook(mm2_ec& ec) const noexcept;
