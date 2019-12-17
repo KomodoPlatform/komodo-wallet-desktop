@@ -58,7 +58,7 @@ namespace
     }
 
     bool
-    retrieve_coins_information(folly::ConcurrentHashMap<std::string, atomic_dex::coin_config>& coins_registry)
+    retrieve_coins_information(atomic_dex::t_coins_registry& coins_registry)
     {
         const auto cfg_path = ag::core::assets_real_path() / "config";
         if (exists(cfg_path / "coins.json"))
