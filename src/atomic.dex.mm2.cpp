@@ -178,7 +178,7 @@ namespace atomic_dex
     bool
     mm2::enable_coin(const std::string& ticker)
     {
-        auto coin_info = m_coins_informations.at(ticker);
+        coin_config coin_info = m_coins_informations.at(ticker);
 
         if (coin_info.currently_enabled) { return true; }
 

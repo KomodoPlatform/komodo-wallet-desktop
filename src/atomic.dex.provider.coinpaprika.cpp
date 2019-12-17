@@ -94,20 +94,25 @@ namespace atomic_dex
     coinpaprika_provider::on_mm2_started([[maybe_unused]] const mm2_started& evt) noexcept
     {
         LOG_SCOPE_FUNCTION(INFO);
+
         m_provider_rates_thread = std::thread([this]() {
             loguru::set_thread_name("paprika thread");
             LOG_SCOPE_F(INFO, "paprika thread started");
+
             using namespace std::chrono_literals;
             do
             {
                 DLOG_F(INFO, "refreshing rate conversion from coinpaprika");
-                auto coins = m_mm2_instance.get_enabled_coins();
+
+                t_coins coins = m_mm2_instance.get_enabled_coins();
+
                 for (auto&& current_coin: coins)
                 {
-                    if (current_coin.coinpaprika_id == "test-coin") continue;
+                    if (current_coin.coinpaprika_id == "test-coin") { continue; }
                     process_provider(current_coin, m_usd_rate_providers, "usd-us-dollars");
                     process_provider(current_coin, m_eur_rate_providers, "eur-euro");
                 }
+
             } while (not m_provider_thread_timer.wait_for(30s));
         });
     }
@@ -120,11 +125,16 @@ namespace atomic_dex
             ec = mm2_error::invalid_fiat_for_rate_conversion;
             return "0.00";
         }
+
         if (m_mm2_instance.get_coin_info(ticker).coinpaprika_id == "test-coin") { return "0.00"; }
+
         const auto price = get_rate_conversion(fiat, ticker, ec);
+
         if (ec) { return "0.00"; }
+
         std::error_code t_ec;
         const auto      amount = m_mm2_instance.my_balance(ticker, t_ec);
+
         if (t_ec)
         {
             ec = t_ec;
@@ -136,35 +146,44 @@ namespace atomic_dex
         const bm::cpp_dec_float_50 amount_f(amount);
         const auto                 final_price = price_f * amount_f;
         std::stringstream          ss;
+
         if (not skip_precision) { ss.precision(2); }
         ss << final_price;
+
         return ss.str() == "0" ? "0.00" : ss.str();
     }
 
     std::string
     coinpaprika_provider::get_price_in_fiat_all(const std::string& fiat, std::error_code& ec) const noexcept
     {
-        auto                 coins         = m_mm2_instance.get_enabled_coins();
+        t_coins              coins         = m_mm2_instance.get_enabled_coins();
         bm::cpp_dec_float_50 final_price_f = 0;
+        std::string          current_price = "";
+        std::stringstream    ss;
+
         for (auto&& current_coin: coins)
         {
             if (current_coin.coinpaprika_id == "test-coin") { continue; }
-            std::string current_price = get_price_in_fiat(fiat, current_coin.ticker, ec, true);
+
+            current_price = get_price_in_fiat(fiat, current_coin.ticker, ec, true);
+
             if (ec)
             {
                 LOG_F(WARNING, "error when converting {} to {}, err: {}", current_coin.ticker, fiat, ec.message());
                 ec.clear(); //! Reset
                 continue;
             }
+
             if (not current_price.empty())
             {
                 const auto current_price_f = bm::cpp_dec_float_50(current_price);
                 final_price_f += current_price_f;
             }
         }
-        std::stringstream ss;
+
         ss.precision(2);
         ss << final_price_f;
+
         return ss.str();
     }
 
@@ -218,6 +237,7 @@ namespace atomic_dex
     coinpaprika_provider::on_coin_enabled(const coin_enabled& evt) noexcept
     {
         const auto config = m_mm2_instance.get_coin_info(evt.ticker);
+
         process_provider(config, m_usd_rate_providers, "usd-us-dollars");
         process_provider(config, m_eur_rate_providers, "eur-euro");
     }
@@ -228,6 +248,7 @@ namespace atomic_dex
         to_json(nlohmann::json& j, const price_converter_request& evt)
         {
             LOG_SCOPE_FUNCTION(INFO);
+
             j["base_currency_id"]  = evt.base_currency_id;
             j["quote_currency_id"] = evt.quote_currency_id;
             j["amount"]            = 1;
@@ -263,11 +284,10 @@ namespace atomic_dex
             auto&& [base_id, quote_id] = request;
             const auto url  = g_coinpaprika_endpoint + "price-converter?base_currency_id="s + base_id + "&quote_currency_id="s + quote_id + "&amount=1"s;
             const auto resp = RestClient::get(url);
+            price_converter_answer answer;
 
             DVLOG_F(loguru::Verbosity_INFO, "url: {}", url);
             DVLOG_F(loguru::Verbosity_INFO, "resp: {}", resp.body);
-
-            price_converter_answer answer;
 
             if (resp.code == http_code::bad_request)
             {
