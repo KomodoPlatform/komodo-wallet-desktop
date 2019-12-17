@@ -59,6 +59,24 @@ namespace
 namespace
 {
     void
+    gui_coin_name_img(const atomic_dex::gui& gui, const atomic_dex::coin_config& asset)
+    {
+        const auto& icons = gui.get_icons();
+        const auto& img = icons.at(asset.ticker);
+
+        auto orig_text_pos = ImGui::GetCursorPos();
+        const float custom_img_size = img.height * 0.8f;
+        ImGui::SetCursorPos({ImGui::GetCursorPos().x, ImGui::GetCursorPos().y - (custom_img_size - ImGui::GetFont()->FontSize * 1.15f) * 0.5f});
+        ImGui::Image(reinterpret_cast<void*>(static_cast<intptr_t>(img.id)), ImVec2{custom_img_size, custom_img_size});
+        auto pos_after_img = ImGui::GetCursorPos();
+        ImGui::SameLine();
+        ImGui::SetCursorPos(orig_text_pos);
+        ImGui::SetCursorPosX(ImGui::GetCursorPos().x + custom_img_size + 5.f);
+        ImGui::TextWrapped("%s", asset.name.c_str());
+        ImGui::SetCursorPos(pos_after_img);
+    }
+
+    void
     gui_menubar([[maybe_unused]] atomic_dex::gui& system) noexcept
     {
         if (ImGui::BeginMenuBar())
@@ -86,17 +104,10 @@ namespace
         {
             auto& asset = *it;
             if (gui_vars.curr_asset_code.empty()) gui_vars.curr_asset_code = asset.ticker;
-            auto&      icons = gui.get_icons();
-            const auto img   = icons.at(asset.ticker);
             if (ImGui::Selectable(("##" + asset.name).c_str(), asset.ticker == gui_vars.curr_asset_code)) { gui_vars.curr_asset_code = asset.ticker; }
             ImGui::SameLine();
-            auto orig_pos = ImGui::GetCursorPos();
-            ImGui::SetCursorPos({ImGui::GetCursorPos().x, ImGui::GetCursorPos().y - (static_cast<float>(img.height) - ImGui::GetFont()->FontSize / 2.f) / 2.f});
-            ImGui::Image(reinterpret_cast<void*>(static_cast<intptr_t>(img.id)), ImVec2{static_cast<float>(img.width), static_cast<float>(img.height)});
-            ImGui::SameLine();
-            ImGui::SetCursorPos(orig_pos);
-            ImGui::SetCursorPosX(ImGui::GetCursorPos().x + static_cast<float>(img.width) + 5.f);
-            ImGui::Text("%s", asset.name.c_str());
+
+            gui_coin_name_img(gui, asset);
         }
         ImGui::EndChild();
     }
@@ -176,14 +187,16 @@ namespace
     }
 
     void
-    gui_portfolio_coin_details(atomic_dex::mm2& mm2, atomic_dex::coinpaprika_provider& paprika_system, atomic_dex::gui_variables& gui_vars) noexcept
+    gui_portfolio_coin_details(atomic_dex::gui& gui, atomic_dex::mm2& mm2, atomic_dex::coinpaprika_provider& paprika_system, atomic_dex::gui_variables& gui_vars) noexcept
     {
         // Right
         const auto curr_asset = mm2.get_coin_info(gui_vars.curr_asset_code);
         ImGui::BeginChild("item view", ImVec2(0, 0), true);
         {
-            ImGui::TextWrapped("%s", curr_asset.name.c_str());
+            gui_coin_name_img(gui, curr_asset);
+
             ImGui::Separator();
+
             std::error_code ec;
 
             ImGui::Text(
@@ -307,7 +320,7 @@ namespace
     }
 
     void
-    gui_portfolio(atomic_dex::mm2& mm2, atomic_dex::coinpaprika_provider& paprika_system, atomic_dex::gui_variables& gui_vars, atomic_dex::gui& gui)
+    gui_portfolio(atomic_dex::gui& gui, atomic_dex::mm2& mm2, atomic_dex::coinpaprika_provider& paprika_system, atomic_dex::gui_variables& gui_vars)
     {
         std::error_code ec;
         ImGui::Text("Total Balance: %s", usd_str(paprika_system.get_price_in_fiat_all("USD", ec)).c_str());
@@ -319,7 +332,7 @@ namespace
 
         // Right
         ImGui::SameLine();
-        gui_portfolio_coin_details(mm2, paprika_system, gui_vars);
+        gui_portfolio_coin_details(gui, mm2, paprika_system, gui_vars);
     }
 } // namespace
 
@@ -455,7 +468,7 @@ namespace atomic_dex
                     ImGuiIO& io                       = ImGui::GetIO();
                     io.ConfigViewportsNoAutoMerge     = false;
                     io.ConfigViewportsNoDefaultParent = false;
-                    gui_portfolio(mm2_system_, paprika_system_, gui_vars_, *this);
+                    gui_portfolio(*this, mm2_system_, paprika_system_, gui_vars_);
                     ImGui::EndTabItem();
                 }
                 if (ImGui::BeginTabItem("Trade"))
