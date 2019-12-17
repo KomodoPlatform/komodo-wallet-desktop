@@ -121,7 +121,7 @@ namespace
 
             ImGui::Text("%s", tx.am_i_sender ? "Sent" : "Received");
             ImGui::TextColored(
-                ImVec4(tx.am_i_sender ? ImVec4(1, 52.f / 255.f, 0, 1.f) : ImVec4(80.f / 255.f, 1, 118.f / 255.f, 1.f)), "%s%s %s", tx.am_i_sender ? "-" : "+",
+                ImVec4(tx.am_i_sender ? ImVec4(1, 52.f / 255.f, 0, 1.f) : ImVec4(80.f / 255.f, 1, 118.f / 255.f, 1.f)), "%s%s %s", tx.am_i_sender ? "" : "+",
                 tx.my_balance_change.c_str(), curr_asset.ticker.c_str());
             ImGui::SameLine(300);
             ImGui::TextColored(value_color, "%s", usd_str(paprika_system.get_price_in_fiat_from_tx("USD", curr_asset.ticker, tx, ec)).c_str());
@@ -209,7 +209,7 @@ namespace
                                 ImGui::SameLine(300);
                                 ImGui::TextColored(
                                     ImVec4(tx.am_i_sender ? ImVec4(1, 52.f / 255.f, 0, 1.f) : ImVec4(80.f / 255.f, 1, 118.f / 255.f, 1.f)), "%s%s %s",
-                                    tx.am_i_sender ? "-" : "+", tx.my_balance_change.c_str(), curr_asset.ticker.c_str());
+                                    tx.am_i_sender ? "" : "+", tx.my_balance_change.c_str(), curr_asset.ticker.c_str());
                                 ImGui::TextColored(value_color, "%s", tx.am_i_sender ? tx.to[0].c_str() : tx.from[0].c_str());
                                 ImGui::SameLine(300);
                                 ImGui::TextColored(
