@@ -37,7 +37,7 @@ namespace atomic_dex
 #endif
         // TODO: Handle passphrase
         std::string passphrase{"thisIsTheNewProjectSeed2019##"};
-        std::string rpc_password{"atomix_dex_mm2_passphrase"};
+        std::string rpc_password{"atomic_dex_mm2_passphrase"};
     };
 
     void from_json(const json& j, mm2_config& cfg);

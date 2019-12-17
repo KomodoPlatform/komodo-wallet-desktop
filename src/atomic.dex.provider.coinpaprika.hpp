@@ -73,6 +73,7 @@ namespace atomic_dex
         using t_providers_registry      = folly::ConcurrentHashMap<std::string, std::string>;
         using t_supported_fiat_registry = std::unordered_set<std::string>;
 
+        //! Private fields
         mm2&                      m_mm2_instance;
         t_providers_registry      m_usd_rate_providers{};
         t_providers_registry      m_eur_rate_providers{};
@@ -81,23 +82,30 @@ namespace atomic_dex
         timed_waiter              m_provider_thread_timer;
 
       public:
+        //! Constructor
         coinpaprika_provider(entt::registry& registry, mm2& mm2_instance);
 
-        ~coinpaprika_provider() noexcept;
+        //! Destructor
+        ~coinpaprika_provider() noexcept final;
 
+        //! Get the rate conversion for the given fiat.
         std::string get_rate_conversion(const std::string& fiat, const std::string& ticker, std::error_code& ec) const noexcept;
 
         //! Fiat can be USD or EUR
         std::string get_price_in_fiat(const std::string& fiat, const std::string& ticker, std::error_code& ec, bool skip_precision = false) const noexcept;
 
+        //! Get the whole balance in the given fiat.
         std::string get_price_in_fiat_all(const std::string& fiat, std::error_code& ec) const noexcept;
 
+        //! Get the price in fiat from a transaction.
         std::string get_price_in_fiat_from_tx(const std::string& fiat, const std::string& ticker, const tx_infos& tx, std::error_code& ec) const noexcept;
 
+        //! Event that occur when the mm2 process is launched correctly.
         void on_mm2_started(const mm2_started& evt) noexcept;
+
+        //! Event that occur when a coin is correctly enabled.
         void on_coin_enabled(const coin_enabled& evt) noexcept;
 
-        // ReSharper disable once CppFinalFunctionInFinalClass
         void update() noexcept final;
     };
 } // namespace atomic_dex

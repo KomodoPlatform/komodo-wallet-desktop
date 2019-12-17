@@ -25,12 +25,6 @@
 
 namespace
 {
-    nlohmann::json
-    template_request(std::string method_name) noexcept
-    {
-        LOG_SCOPE_FUNCTION(INFO);
-        return {{"method", std::move(method_name)}, {"userpass", "atomix_dex_mm2_passphrase"}};
-    }
 } // namespace
 
 namespace mm2::api
@@ -256,16 +250,22 @@ namespace mm2::api
         j.at("coin").get_to(contents.coin);
         j.at("address").get_to(contents.address);
         j.at("price").get_to(contents.price);
-        boost::trim_right_if(contents.price, boost::is_any_of("0"));
         j.at("maxvolume").get_to(contents.maxvolume);
         j.at("pubkey").get_to(contents.pubkey);
         j.at("age").get_to(contents.age);
         j.at("zcredits").get_to(contents.zcredits);
+
+        boost::trim_right_if(contents.price, boost::is_any_of("0"));
     }
 
     void
     from_json(const nlohmann::json& j, orderbook_answer& answer)
     {
+        using namespace date;
+
+        std::stringstream                     ss;
+        std::chrono::system_clock::time_point sys_time;
+
         j.at("base").get_to(answer.base);
         j.at("rel").get_to(answer.rel);
         j.at("askdepth").get_to(answer.askdepth);
@@ -276,10 +276,10 @@ namespace mm2::api
         j.at("numbids").get_to(answer.numbids);
         j.at("netid").get_to(answer.netid);
         j.at("timestamp").get_to(answer.timestamp);
-        using namespace date;
-        auto              sys_time = std::chrono::system_clock::from_time_t(answer.timestamp);
-        const auto        date     = year_month_day(floor<days>(sys_time));
-        std::stringstream ss;
+
+        sys_time        = std::chrono::system_clock::from_time_t(answer.timestamp);
+        const auto date = year_month_day(floor<days>(sys_time));
+
         ss << date;
         answer.human_timestamp = ss.str();
     }
@@ -298,10 +298,8 @@ namespace mm2::api
     {
         j.at("base").get_to(contents.base);
         j.at("base_amount").get_to(contents.base_amount);
-        j.at("base_amount_rat").get_to(contents.base_amount_rat);
         j.at("rel").get_to(contents.rel);
         j.at("rel_amount").get_to(contents.rel_amount);
-        j.at("rel_amount_rat").get_to(contents.rel_amount_rat);
         j.at("method").get_to(contents.method);
         j.at("action").get_to(contents.action);
         j.at("uuid").get_to(contents.uuid);
@@ -319,6 +317,7 @@ namespace mm2::api
     from_json(const nlohmann::json& j, buy_answer& answer)
     {
         LOG_SCOPE_FUNCTION(INFO);
+
         if (j.count("error") == 1) { answer.error = j.at("error").get<std::string>(); }
         else
         {
@@ -345,6 +344,7 @@ namespace mm2::api
     from_json(const nlohmann::json& j, sell_answer& answer)
     {
         LOG_SCOPE_FUNCTION(INFO);
+
         if (j.count("error") == 1) { answer.error = j.at("error").get<std::string>(); }
         else
         {
@@ -356,6 +356,7 @@ namespace mm2::api
     to_json(nlohmann::json& j, const cancel_order_request& request)
     {
         LOG_SCOPE_FUNCTION(INFO);
+
         j["uuid"] = request.uuid;
     }
 
@@ -363,6 +364,7 @@ namespace mm2::api
     from_json(const nlohmann::json& j, cancel_order_answer& answer)
     {
         LOG_SCOPE_FUNCTION(INFO);
+
         if (j.count("error") == 1) { answer.error = j.at("error").get<std::string>(); }
         else
         {
@@ -370,13 +372,79 @@ namespace mm2::api
         }
     }
 
+    void
+    to_json(nlohmann::json& j, const cancel_data& cfg)
+    {
+        LOG_SCOPE_FUNCTION(INFO);
+
+        if (cfg.pair.has_value())
+        {
+            auto [base, rel] = cfg.pair.value();
+            j["base"]        = base;
+            j["rel"]         = rel;
+        }
+        else if (cfg.ticker.has_value())
+        {
+            j["ticker"] = cfg.ticker.value();
+        }
+    }
+
+    void
+    to_json(nlohmann::json& j, const cancel_type& cfg)
+    {
+        LOG_SCOPE_FUNCTION(INFO);
+
+        j["type"] = cfg.type;
+        if (cfg.type not_eq "All" and cfg.data.has_value()) { j["data"] = cfg.data.value(); }
+    }
+
+    void
+    to_json(nlohmann::json& j, const cancel_all_orders_request& cfg)
+    {
+        LOG_SCOPE_FUNCTION(INFO);
+
+        j["cancel_by"] = cfg.cancel_by;
+    }
+
+    void
+    from_json(const nlohmann::json& j, cancel_all_orders_answer& answer)
+    {
+        LOG_SCOPE_FUNCTION(INFO);
+
+        j.at("result").at("cancelled").get_to(answer.cancelled);
+        j.at("result").at("currently_matching").get_to(answer.currently_matching);
+    }
+
+    void
+    from_json(const nlohmann::json& j, my_orders_answer& answer)
+    {
+        static_cast<void>(answer);
+        // clang-format off
+        auto filler_functor = [](const std::string& key, const nlohmann::json& value, std::map<std::size_t, my_order_contents>& out)
+        {
+          const auto        time_key = value.at("created_at").get<std::size_t>();
+          my_order_contents contents{.order_id         = key,
+              .available_amount = value.at("available_amount").get<std::string>(),
+              .base             = value.at("base").get<std::string>(),
+              .cancellable      = value.at("cancellable").get<bool>(),
+              .timestamp        = time_key};
+          out.try_emplace(time_key, std::move(contents));
+        };
+        // clang-format on
+
+        for (auto&& [key, value]: j.at("result").at("maker_orders").items()) { filler_functor(key, value, answer.maker_orders); }
+        for (auto&& [key, value]: j.at("result").at("taker_orders").items()) { filler_functor(key, value, answer.taker_orders); }
+    }
+
     template <typename RpcReturnType>
     RpcReturnType
     rpc_process_answer(const RestClient::Response& resp) noexcept
     {
         LOG_SCOPE_FUNCTION(INFO);
-        RpcReturnType answer;
         DVLOG_F(loguru::Verbosity_INFO, "resp: {}", resp.body);
+
+        RpcReturnType answer;
+
         if (resp.code not_eq 200)
         {
             DVLOG_F(loguru::Verbosity_WARNING, "rpc answer code is not 200");
@@ -398,186 +466,111 @@ namespace mm2::api
             answer.rpc_result_code = -1;
             answer.raw_result      = error.what();
         }
+
         return answer;
     }
 
     electrum_answer
     rpc_electrum(electrum_request&& request)
     {
-        LOG_SCOPE_FUNCTION(INFO);
-        auto json_data = template_request("electrum");
-        to_json(json_data, request);
-        DVLOG_F(loguru::Verbosity_INFO, "request: %s", json_data.dump().c_str());
-        const auto resp = RestClient::post(endpoint, "application/json", json_data.dump());
-        return rpc_process_answer<electrum_answer>(resp);
+        return process_rpc<electrum_request, electrum_answer>(std::forward<electrum_request>(request), "electrum");
     }
 
     balance_answer
     rpc_balance(balance_request&& request)
     {
-        LOG_SCOPE_FUNCTION(INFO);
-        auto json_data = template_request("my_balance");
-        to_json(json_data, request);
-        DVLOG_F(loguru::Verbosity_INFO, "request: {}", json_data.dump());
-        const auto resp = RestClient::post(endpoint, "application/json", json_data.dump());
-        return rpc_process_answer<balance_answer>(resp);
+        return process_rpc<balance_request, balance_answer>(std::forward<balance_request>(request), "my_balance");
     }
 
     tx_history_answer
     rpc_my_tx_history(tx_history_request&& request)
     {
-        LOG_SCOPE_FUNCTION(INFO);
-        auto json_data = template_request("my_tx_history");
-        to_json(json_data, request);
-        DVLOG_F(loguru::Verbosity_INFO, "request: %s", json_data.dump().c_str());
-        const auto resp = RestClient::post(endpoint, "application/json", json_data.dump());
-        return rpc_process_answer<tx_history_answer>(resp);
+        return process_rpc<tx_history_request, tx_history_answer>(std::forward<tx_history_request>(request), "my_tx_history");
     }
 
     withdraw_answer
     rpc_withdraw(withdraw_request&& request)
     {
-        LOG_SCOPE_FUNCTION(INFO);
-        auto json_data = template_request("withdraw");
-        to_json(json_data, request);
-        DVLOG_F(loguru::Verbosity_INFO, "request: %s", json_data.dump().c_str());
-        const auto resp = RestClient::post(endpoint, "application/json", json_data.dump());
-        return rpc_process_answer<withdraw_answer>(resp);
+        return process_rpc<withdraw_request, withdraw_answer>(std::forward<withdraw_request>(request), "withdraw");
     }
 
     send_raw_transaction_answer
     rpc_send_raw_transaction(send_raw_transaction_request&& request)
     {
-        LOG_SCOPE_FUNCTION(INFO);
-        auto json_data = template_request("send_raw_transaction");
-        to_json(json_data, request);
-        DVLOG_F(loguru::Verbosity_INFO, "request: %s", json_data.dump().c_str());
-        const auto resp = RestClient::post(endpoint, "application/json", json_data.dump());
-        return rpc_process_answer<send_raw_transaction_answer>(resp);
+        using atomic_dex::t_broadcast_answer;
+        using atomic_dex::t_broadcast_request;
+
+        return process_rpc<t_broadcast_request, t_broadcast_answer>(std::forward<t_broadcast_request>(request), "send_raw_transaction");
     }
 
     orderbook_answer
     rpc_orderbook(orderbook_request&& request)
     {
-        LOG_SCOPE_FUNCTION(INFO);
-        auto json_data = template_request("orderbook");
-        to_json(json_data, request);
-        DVLOG_F(loguru::Verbosity_INFO, "request: %s", json_data.dump().c_str());
-        const auto resp = RestClient::post(endpoint, "application/json", json_data.dump());
-        return rpc_process_answer<orderbook_answer>(resp);
+        return process_rpc<orderbook_request, orderbook_answer>(std::forward<orderbook_request>(request), "orderbook");
     }
 
     buy_answer
     rpc_buy(buy_request&& request)
     {
-        LOG_SCOPE_FUNCTION(INFO);
-        auto json_data = template_request("buy");
-        to_json(json_data, request);
-        DVLOG_F(loguru::Verbosity_INFO, "request: %s", json_data.dump().c_str());
-        const auto resp = RestClient::post(endpoint, "application/json", json_data.dump());
-        return rpc_process_answer<buy_answer>(resp);
+        return process_rpc<buy_request, buy_answer>(std::forward<buy_request>(request), "buy");
     }
 
     sell_answer
     rpc_sell(sell_request&& request)
     {
-        LOG_SCOPE_FUNCTION(INFO);
-        auto json_data = template_request("sell");
-        to_json(json_data, request);
-        DVLOG_F(loguru::Verbosity_INFO, "request: %s", json_data.dump().c_str());
-        const auto resp = RestClient::post(endpoint, "application/json", json_data.dump());
-        return rpc_process_answer<sell_answer>(resp);
+        return process_rpc<sell_request, sell_answer>(std::forward<sell_request>(request), "sell");
     }
 
     cancel_order_answer
     rpc_cancel_order(cancel_order_request&& request)
     {
-        LOG_SCOPE_FUNCTION(INFO);
-        auto json_data = template_request("cancel_order");
-        to_json(json_data, request);
-        DVLOG_F(loguru::Verbosity_INFO, "request: %s", json_data.dump().c_str());
-        const auto resp = RestClient::post(endpoint, "application/json", json_data.dump());
-        return rpc_process_answer<cancel_order_answer>(resp);
-    }
-
-    void
-    to_json(nlohmann::json& j, const cancel_data& cfg)
-    {
-        LOG_SCOPE_FUNCTION(INFO);
-        if (cfg.pair.has_value())
-        {
-            auto [base, rel] = cfg.pair.value();
-            j["base"]        = base;
-            j["rel"]         = rel;
-        }
-        else if (cfg.ticker.has_value())
-        {
-            j["ticker"] = cfg.ticker.value();
-        }
-    }
-
-    void
-    to_json(nlohmann::json& j, const cancel_type& cfg)
-    {
-        LOG_SCOPE_FUNCTION(INFO);
-        j["type"] = cfg.type;
-        if (cfg.type not_eq "All" and cfg.data.has_value()) { j["data"] = cfg.data.value(); }
-    }
-
-    void
-    to_json(nlohmann::json& j, const cancel_all_orders_request& cfg)
-    {
-        LOG_SCOPE_FUNCTION(INFO);
-        j["cancel_by"] = cfg.cancel_by;
-    }
-
-    void
-    from_json(const nlohmann::json& j, cancel_all_orders_answer& answer)
-    {
-        LOG_SCOPE_FUNCTION(INFO);
-        j.at("result").at("cancelled").get_to(answer.cancelled);
-        j.at("result").at("currently_matching").get_to(answer.currently_matching);
+        return process_rpc<cancel_order_request, cancel_order_answer>(std::forward<cancel_order_request>(request), "cancel_order");
     }
 
     cancel_all_orders_answer
     rpc_cancel_all_orders(cancel_all_orders_request&& request)
     {
-        LOG_SCOPE_FUNCTION(INFO);
-        auto json_data = template_request("cancel_all_orders");
-        to_json(json_data, request);
-        DVLOG_F(loguru::Verbosity_INFO, "request: %s", json_data.dump().c_str());
-        const auto resp = RestClient::post(endpoint, "application/json", json_data.dump());
-        return rpc_process_answer<cancel_all_orders_answer>(resp);
-    }
-
-    void
-    from_json(const nlohmann::json& j, my_orders_answer& answer)
-    {
-        static_cast<void>(answer);
-        // clang-format off
-        auto filler_functor = [](const std::string& key, const nlohmann::json& value, std::map<std::size_t, my_order_contents>& out)
-        {
-            const auto        time_key = value.at("created_at").get<std::size_t>();
-            my_order_contents contents{.order_id         = key,
-                                       .available_amount = value.at("available_amount").get<std::string>(),
-                                       .base             = value.at("base").get<std::string>(),
-                                       .cancellable      = value.at("cancellable").get<bool>(),
-                                       .timestamp        = time_key};
-            out.try_emplace(time_key, std::move(contents));
-        };
-        // clang-format on
-
-        for (auto&& [key, value]: j.at("result").at("maker_orders").items()) { filler_functor(key, value, answer.maker_orders); }
-        for (auto&& [key, value]: j.at("result").at("taker_orders").items()) { filler_functor(key, value, answer.taker_orders); }
+        return process_rpc<cancel_all_orders_request, cancel_all_orders_answer>(std::forward<cancel_all_orders_request>(request), "cancel_all_orders");
     }
 
     my_orders_answer
     rpc_my_orders() noexcept
     {
         LOG_SCOPE_FUNCTION(INFO);
-        auto json_data = template_request("my_orders");
+
+        nlohmann::json       json_data = template_request("my_orders");
+        RestClient::Response resp;
+
         DVLOG_F(loguru::Verbosity_INFO, "request: %s", json_data.dump().c_str());
-        const auto resp = RestClient::post(endpoint, "application/json", json_data.dump());
+
+        resp = RestClient::post(g_endpoint, "application/json", json_data.dump());
+
         return rpc_process_answer<my_orders_answer>(resp);
+    }
+
+    template <typename TRequest, typename TAnswer>
+    static TAnswer
+    process_rpc(TRequest&& request, std::string rpc_command)
+    {
+        LOG_F(INFO, "Processing rpc call: {}", rpc_command);
+
+        nlohmann::json       json_data = template_request(std::move(rpc_command));
+        RestClient::Response resp;
+
+        to_json(json_data, request);
+
+        DVLOG_F(loguru::Verbosity_INFO, "request: %s", json_data.dump().c_str());
+
+        resp = RestClient::post(g_endpoint, "application/json", json_data.dump());
+
+        return rpc_process_answer<TAnswer>(resp);
+    }
+
+    nlohmann::json
+    template_request(std::string method_name) noexcept
+    {
+        LOG_SCOPE_FUNCTION(INFO);
+
+        return {{"method", std::move(method_name)}, {"userpass", "atomic_dex_mm2_passphrase"}};
     }
 } // namespace mm2::api

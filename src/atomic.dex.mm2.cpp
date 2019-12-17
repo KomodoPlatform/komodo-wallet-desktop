@@ -242,7 +242,7 @@ namespace atomic_dex
     }
 
     t_orderbook_answer
-    mm2::get_current_orderbook(mm2_ec& ec) const noexcept
+    mm2::get_current_orderbook(t_mm2_ec& ec) const noexcept
     {
         if (m_current_orderbook.empty())
         {
@@ -352,7 +352,7 @@ namespace atomic_dex
     }
 
     std::string
-    mm2::my_balance_with_locked_funds(const std::string& ticker, mm2_ec& ec) const
+    mm2::my_balance_with_locked_funds(const std::string& ticker, t_mm2_ec& ec) const
     {
         if (m_balance_informations.find(ticker) == m_balance_informations.cend())
         {
@@ -377,7 +377,7 @@ namespace atomic_dex
     }
 
     t_transactions
-    mm2::get_tx_history(const std::string& ticker, mm2_ec& ec) const
+    mm2::get_tx_history(const std::string& ticker, t_mm2_ec& ec) const
     {
         if (m_tx_informations.find(ticker) == m_tx_informations.cend())
         {
@@ -389,7 +389,7 @@ namespace atomic_dex
     }
 
     std::string
-    mm2::my_balance(const std::string& ticker, mm2_ec& ec) const
+    mm2::my_balance(const std::string& ticker, t_mm2_ec& ec) const
     {
         if (m_balance_informations.find(ticker) == m_balance_informations.cend())
         {
@@ -401,7 +401,7 @@ namespace atomic_dex
     }
 
     t_withdraw_answer
-    mm2::withdraw(t_withdraw_request&& request, mm2_ec& ec) noexcept
+    mm2::withdraw(t_withdraw_request&& request, t_mm2_ec& ec) noexcept
     {
         auto result = rpc_withdraw(std::move(request));
         if (result.error.has_value()) { ec = mm2_error::rpc_withdraw_error; }
@@ -409,7 +409,7 @@ namespace atomic_dex
     }
 
     t_broadcast_answer
-    mm2::broadcast(t_broadcast_request&& request, mm2_ec& ec) noexcept
+    mm2::broadcast(t_broadcast_request&& request, t_mm2_ec& ec) noexcept
     {
         auto result = rpc_send_raw_transaction(std::move(request));
         if (result.rpc_result_code == -1) { ec = mm2_error::rpc_send_raw_transaction_error; }
@@ -497,11 +497,11 @@ namespace atomic_dex
     }
 
     t_buy_answer
-    mm2::place_buy_order(t_buy_request&& request, const t_float_50& total, mm2_ec& ec) const
+    mm2::place_buy_order(t_buy_request&& request, const t_float_50& total, t_mm2_ec& ec) const
     {
         LOG_SCOPE_FUNCTION(INFO);
 
-        mm2_ec balance_ec;
+        t_mm2_ec balance_ec;
 
         if (not do_i_have_enough_funds(request.rel, total))
         {

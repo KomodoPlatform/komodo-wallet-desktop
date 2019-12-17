@@ -54,7 +54,7 @@ namespace atomic_dex
         std::string              my_balance_change;
         std::string              total_amount;
         std::size_t              block_height;
-        mm2_ec                   ec{mm2_error::success};
+        t_mm2_ec                 ec{mm2_error::success};
     };
 
     //! Public typedefs
@@ -150,22 +150,22 @@ namespace atomic_dex
         [[nodiscard]] const std::atomic_bool& is_mm2_running() const noexcept;
 
         //! Retrieve my balance for a given ticker as a string.
-        [[nodiscard]] std::string my_balance(const std::string& ticker, mm2_ec& ec) const;
+        [[nodiscard]] std::string my_balance(const std::string& ticker, t_mm2_ec& ec) const;
 
         //! Retrieve my balance with locked funds for a given ticker as a string.
-        [[nodiscard]] std::string my_balance_with_locked_funds(const std::string& ticker, mm2_ec& ec) const;
+        [[nodiscard]] std::string my_balance_with_locked_funds(const std::string& ticker, t_mm2_ec& ec) const;
 
         //! Place a buy order, Doesn't work if i don't have enough funds.
-        t_buy_answer place_buy_order(t_buy_request&& request, const t_float_50& total, mm2_ec& ec) const;
+        t_buy_answer place_buy_order(t_buy_request&& request, const t_float_50& total, t_mm2_ec& ec) const;
 
         //! Withdraw Money to another address
-        [[nodiscard]] static t_withdraw_answer withdraw(t_withdraw_request&& request, mm2_ec& ec) noexcept;
+        [[nodiscard]] static t_withdraw_answer withdraw(t_withdraw_request&& request, t_mm2_ec& ec) noexcept;
 
         //! Broadcast a raw transaction on the blockchain
-        [[nodiscard]] static t_broadcast_answer broadcast(t_broadcast_request&& request, mm2_ec& ec) noexcept;
+        [[nodiscard]] static t_broadcast_answer broadcast(t_broadcast_request&& request, t_mm2_ec& ec) noexcept;
 
         //! Last 50 transactions maximum
-        [[nodiscard]] t_transactions get_tx_history(const std::string& ticker, mm2_ec& ec) const;
+        [[nodiscard]] t_transactions get_tx_history(const std::string& ticker, t_mm2_ec& ec) const;
 
         //! Get coins that are currently enabled
         [[nodiscard]] t_coins get_enabled_coins() const noexcept;
@@ -180,7 +180,7 @@ namespace atomic_dex
         [[nodiscard]] coin_config get_coin_info(const std::string& ticker) const;
 
         //! Get Current orderbook
-        [[nodiscard]] t_orderbook_answer get_current_orderbook(mm2_ec& ec) const noexcept;
+        [[nodiscard]] t_orderbook_answer get_current_orderbook(t_mm2_ec& ec) const noexcept;
 
         //! Get balance with locked funds for a given ticker as a boost::multiprecision::cpp_dec_float_50.
         [[nodiscard]] t_float_50 get_balance_with_locked_funds(const std::string& ticker) const;

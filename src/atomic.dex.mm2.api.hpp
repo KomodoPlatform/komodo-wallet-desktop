@@ -31,7 +31,7 @@
 
 namespace mm2::api
 {
-    static constexpr const char* endpoint = "http://127.0.0.1:7783";
+    inline constexpr const char* g_endpoint = "http://127.0.0.1:7783";
 
     struct electrum_request
     {
@@ -285,12 +285,10 @@ namespace mm2::api
         std::string action;
         std::string base;
         std::string base_amount;
-        std::string base_amount_rat;
         std::string dest_pub_key;
         std::string method;
         std::string rel;
         std::string rel_amount;
-        std::string rel_amount_rat;
         std::string sender_pubkey;
         std::string uuid;
     };
@@ -435,6 +433,12 @@ namespace mm2::api
 
     template <typename RpcReturnType>
     static RpcReturnType rpc_process_answer(const RestClient::Response& resp) noexcept;
+
+    nlohmann::json
+    template_request(std::string method_name) noexcept;
+
+    template <typename TRequest, typename TAnswer>
+    TAnswer static process_rpc(TRequest&& request, std::string rpc_command);
 } // namespace mm2::api
 
 namespace atomic_dex

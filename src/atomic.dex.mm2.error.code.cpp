@@ -19,12 +19,12 @@
 
 namespace
 {
-    class mm2_error_category_impl : public std::error_category
+    class mm2_error_category_impl final : public std::error_category
     {
       public:
-        [[nodiscard]] const char* name() const noexcept override;
+        [[nodiscard]] const char* name() const noexcept final;
 
-        [[nodiscard]] std::string message(int code) const noexcept override;
+        [[nodiscard]] std::string message(int code) const noexcept final;
     };
 
     const char*
@@ -67,11 +67,11 @@ namespace
         return "";
     }
 
-    const mm2_error_category_impl err_categ{};
+    const mm2_error_category_impl g_err_categ{};
 } // namespace
 
 std::error_code
 make_error_code(mm2_error error) noexcept
 {
-    return {static_cast<int>(error), err_categ};
+    return {static_cast<int>(error), g_err_categ};
 }
