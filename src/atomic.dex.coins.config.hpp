@@ -38,9 +38,9 @@ namespace atomic_dex
 
     struct coin_config
     {
-        std::string ticker;
-        std::string name; ///< nice name
         using electrum_servers = std::vector<electrum_server>;
+        std::string              ticker;
+        std::string              name; ///< nice name
         electrum_servers         electrum_urls;
         bool                     currently_enabled{false};
         bool                     active{false};

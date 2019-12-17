@@ -176,7 +176,8 @@ if (APPLE)
     include(data/osx/atomicdex_install.cmake)
 endif ()
 
-target_enable_tsan(${PROJECT_NAME})
+#target_enable_tsan(${PROJECT_NAME})
+target_enable_asan(${PROJECT_NAME})
 
 if (WIN32)
     init_windows_env()

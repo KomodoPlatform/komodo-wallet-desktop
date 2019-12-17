@@ -58,9 +58,10 @@ namespace atomic_dex
     };
 
     //! Public typedefs
-    using t_transactions = std::vector<tx_infos>;
-    using t_float_50     = bm::cpp_dec_float_50;
-    using t_coins        = std::vector<coin_config>;
+    using t_coins_registry = folly::ConcurrentHashMap<std::string, coin_config>;
+    using t_transactions   = std::vector<tx_infos>;
+    using t_float_50       = bm::cpp_dec_float_50;
+    using t_coins          = std::vector<coin_config>;
 
     constexpr std::size_t operator"" _sz(unsigned long long n) { return n; }
 
@@ -70,9 +71,9 @@ namespace atomic_dex
 
     class mm2 final : public ag::ecs::pre_update_system<mm2>
     {
+      private:
         //! Private typedefs
         using t_mm2_time_point      = std::chrono::high_resolution_clock::time_point;
-        using t_coins_registry      = folly::ConcurrentHashMap<std::string, coin_config>;
         using t_balance_registry    = folly::ConcurrentHashMap<std::string, ::mm2::api::balance_answer>;
         using t_my_orders           = folly::ConcurrentHashMap<std::string, ::mm2::api::my_orders_answer>;
         using t_tx_history_registry = folly::ConcurrentHashMap<std::string, std::vector<tx_infos>>;
@@ -123,10 +124,10 @@ namespace atomic_dex
         explicit mm2(entt::registry& registry);
 
         //! Delete useless operator
-        mm2(const mm2& other) = delete;
-		mm2(const mm2&& other) = delete;
-		mm2& operator=(const mm2& other) = delete;
-		mm2& operator=(const mm2&& other) = delete;
+        mm2(const mm2& other)  = delete;
+        mm2(const mm2&& other) = delete;
+        mm2& operator=(const mm2& other) = delete;
+        mm2& operator=(const mm2&& other) = delete;
 
         //! Destructor
         ~mm2() noexcept final;
