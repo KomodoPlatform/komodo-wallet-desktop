@@ -226,7 +226,7 @@ namespace mm2::api
         }
         else
         {
-            answer.result = j.at("result").get<transaction_data>();
+            answer.result = j.get<transaction_data>();
         }
     }
 
