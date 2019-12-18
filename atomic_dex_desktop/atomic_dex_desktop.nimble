@@ -20,6 +20,7 @@ when defined(windows):
 when defined(linux):
     binDir = "bin/AtomicDexAppDir/usr/bin"
     cpDir("assets", "bin/AtomicDexAppDir/usr/share/assets")
+    exec("chmod +x bin/AtomicDexAppDir/usr/share/assets/tools/mm2/mm2")
     exec("mkdir -p bin/AtomicDexAppDir/usr/share/icons/hicolor/128x128/apps/ && mkdir -p bin/AtomicDexAppDir/usr/share/metainfo/ && mkdir -p bin/AtomicDexAppDir/usr/share/applications/")
     cpFile("data/linux/komodo_icon.png", "bin/AtomicDexAppDir/usr/share/icons/hicolor/128x128/apps/komodo_icon.png")
     cpFile("data/linux/org.antara.gaming.atomicdex.appdata.xml", "bin/AtomicDexAppDir/usr/share/metainfo/org.antara.gaming.atomicdex.appdata.xml")

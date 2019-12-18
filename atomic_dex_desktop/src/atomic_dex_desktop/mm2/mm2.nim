@@ -18,6 +18,7 @@ proc set_passphrase*(passphrase: string) =
 
 proc init_process*()  =
     var tools_path = (get_assets_path() & "/tools/mm2").normalizedPath
+    echo tools_path
     let j = %*{"gui": mm2_cfg.gui, "netid": mm2_cfg.netid, "userhome": mm2_cfg.userhome, "passphrase": mm2_cfg.passphrase, "rpc_password": mm2_cfg.rpc_password}
     try: 
         mm2_instance = startProcess(command=tools_path & "/mm2", args=[pretty(j)], env = nil, options={poParentStreams}, workingDir=tools_path)

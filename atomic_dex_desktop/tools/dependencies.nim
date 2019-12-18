@@ -1,4 +1,5 @@
 import os
+import osproc
 import asyncdispatch, httpclient
 
 when defined(windows):
@@ -58,6 +59,9 @@ when defined(windows):
             target_dir & "/" & filename)
 
 extract_zip(target_dir & "/" & filename, os.CurDir & "/assets/tools/mm2")
+
+when defined(linux):
+    discard execCmd("chmod +x " & os.CurDir & "/assets/tools/mm2/mm2")
 
 var git_target = "https://github.com/jl777/coins/archive/master.zip"
 
