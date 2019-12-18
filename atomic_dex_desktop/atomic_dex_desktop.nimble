@@ -14,6 +14,7 @@ import os
 when defined(macosx):
     binDir = "bin/atomic_dex_desktop.app/Contents/MacOS"
     cpFile("data/osx/Info.plist", "bin/atomic_dex_desktop.app/Contents/Info.plist")
+    cpDir("assets", "bin/atomic_dex_desktop.app/Contents/Resources/assets")
 # Dependencies
 
 requires "nim >= 1.0.4"
