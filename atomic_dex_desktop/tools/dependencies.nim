@@ -1,5 +1,9 @@
 import os
 import asyncdispatch, httpclient
+
+when defined(windows):
+    #{.passC: "-I"  & os.getEnv("VCPKG_ROOT") & "/installed/x64-windows/include"}
+    {.passL: "-lz"}
 import zip/zipfiles
 
 if os.existsDir(os.CurDir & "/assets/tools/mm2"):
@@ -41,6 +45,11 @@ proc extract_zip(file: string, output: string) =
 when defined(macosx):
     filename = target_filename & "_darwin" & target_file_extensions
     waitFor async_download_files("http://195.201.0.6/mm2/mm2-latest-Darwin.zip",
+            target_dir & "/" & filename)
+
+when defined(windows):
+    filename = target_filename & "_windows" & target_file_extensions
+    waitFor async_download_files("http://195.201.0.6/mm2/mm2-latest-Windows_NT.zip",
             target_dir & "/" & filename)
 
 extract_zip(target_dir & "/" & filename, os.CurDir & "/assets/tools/mm2")
