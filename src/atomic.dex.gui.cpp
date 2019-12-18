@@ -218,7 +218,7 @@ namespace
                             auto& tx         = tx_history[i];
                             ImGui::BeginGroup();
                             {
-                                ImGui::Text("%s", tx.am_i_sender ? "Sent" : "Received");
+                                ImGui::Text("%s", tx.date.c_str());
                                 ImGui::SameLine(300);
                                 ImGui::TextColored(
                                     ImVec4(tx.am_i_sender ? ImVec4(1, 52.f / 255.f, 0, 1.f) : ImVec4(80.f / 255.f, 1, 118.f / 255.f, 1.f)), "%s%s %s",
