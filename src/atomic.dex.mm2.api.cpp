@@ -221,9 +221,7 @@ namespace mm2::api
     from_json(const nlohmann::json& j, withdraw_answer& answer)
     {
         LOG_SCOPE_FUNCTION(INFO);
-        if (j.count("error") >= 1) {
-            answer.error = j.at("error").get<std::string>();
-        }
+        if (j.count("error") >= 1) { answer.error = j.at("error").get<std::string>(); }
         else
         {
             answer.result = j.get<transaction_data>();
@@ -568,10 +566,6 @@ namespace mm2::api
     process_rpc(TRequest&& request, std::string rpc_command)
     {
         LOG_F(INFO, "Processing rpc call: {}", rpc_command);
-
-        if (rpc_command == "withdraw") {
-            int i = 42;
-        }
 
         nlohmann::json       json_data = template_request(std::move(rpc_command));
         RestClient::Response resp;

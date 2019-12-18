@@ -60,7 +60,7 @@ when defined(windows):
 
 extract_zip(target_dir & "/" & filename, os.CurDir & "/assets/tools/mm2")
 
-when defined(linux):
+when defined(linux) or defined(macosx):
     discard execCmd("chmod +x " & os.CurDir & "/assets/tools/mm2/mm2")
 
 var git_target = "https://github.com/jl777/coins/archive/master.zip"
