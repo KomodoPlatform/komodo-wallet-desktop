@@ -312,8 +312,11 @@ namespace
                         ImGui::PopID();
                         ImGui::SameLine();
                         ImGui::PushID("MAX");
+
+                        auto balance = mm2.my_balance(curr_asset.ticker, ec);
+
                         if (ImGui::Button("MAX")) {
-                            copy_str(mm2.my_balance(curr_asset.ticker, ec), amount_input.data(), amount_input.size());
+                            copy_str(balance, amount_input.data(), amount_input.size());
                         }
                         ImGui::PopID();
 
@@ -323,7 +326,7 @@ namespace
 
                         ImGui::PushID("Send");
                         if (ImGui::Button("Send")) {
-                            mm2::api::withdraw_request request{curr_asset.ticker, address_input.data(), amount_input.data()};
+                            mm2::api::withdraw_request request{curr_asset.ticker, address_input.data(), amount_input.data(), strcmp(amount_input.data(), balance.c_str()) == 0};
                             answer = mm2::api::rpc_withdraw(std::move(request));
                         }
                         ImGui::PopID();
