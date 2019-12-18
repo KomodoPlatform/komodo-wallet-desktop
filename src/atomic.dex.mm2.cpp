@@ -526,4 +526,14 @@ namespace atomic_dex
         auto funds = get_balance_with_locked_funds(ticker);
         return funds > amount;
     }
+
+    std::string mm2::address(const std::string& ticker, t_mm2_ec& ec) const noexcept
+    {
+        if (m_balance_informations.find(ticker) == m_balance_informations.cend())
+        {
+            ec = mm2_error::unknown_ticker;
+            return "Invalid";
+        }
+        return m_balance_informations.at(ticker).address;
+    }
 } // namespace atomic_dex

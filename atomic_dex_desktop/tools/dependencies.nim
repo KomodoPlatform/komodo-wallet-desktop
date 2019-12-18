@@ -7,7 +7,6 @@ if os.existsDir(os.CurDir & "/assets/tools/mm2"):
     quit(0)
 
 var client = newAsyncHttpClient()
-
 var target_dir = os.CurDir & "/tmp"
 var target_filename = "mm2"
 var target_file_extensions = ".zip"
@@ -23,21 +22,34 @@ proc onProgressChanged(total, progress, speed: BiggestInt) {.async.} =
 
 client.onProgressChanged = onProgressChanged
 
-proc asyncProc() {.async.} =
-    echo "Downloading mm2"
-    when defined(macosx):
-        filename = target_filename & "_darwin" & target_file_extensions
-        await client.downloadFile("http://195.201.0.6/mm2/mm2-latest-Darwin.zip",
-                target_dir & "/" & filename)
-    echo "Downloading Finished"
+proc async_download_files(file: string, output: string) {.async.} =
+    echo "Downloading " & file
+    await client.downloadFile(file, output)
+    echo "Downloading " & file & " Finished."
 
-waitFor asyncProc()
 
-var z: ZipArchive
-echo "Opening: " & target_dir & "/" & filename
-if not z.open(target_dir & "/" & filename):
-    echo "Opening zip failed"
-    quit(1)
-z.extractAll(os.CurDir & "/assets/tools/mm2")
+proc extract_zip(file: string, output: string) =
+    var z: ZipArchive
+    echo "Opening: " & file
+    if not z.open(file):
+        echo "Opening zip failed"
+        quit(1)
+    echo "Extracting: " & file    
+    z.extractAll(output)
+    echo "Extracting: " & file & " finished."
 
+when defined(macosx):
+    filename = target_filename & "_darwin" & target_file_extensions
+    waitFor async_download_files("http://195.201.0.6/mm2/mm2-latest-Darwin.zip",
+            target_dir & "/" & filename)
+
+extract_zip(target_dir & "/" & filename, os.CurDir & "/assets/tools/mm2")
+
+var git_target = "https://github.com/jl777/coins/archive/master.zip"
+
+waitFor async_download_files(git_target, target_dir & "/coins.zip")
+extract_zip(target_dir & "/coins.zip", target_dir & "/coins")
+os.copyFile(target_dir & "/coins/coins-master/coins", os.CurDir & "/assets/tools/mm2/coins")
+
+echo "Removing: " & target_dir & " directory."
 os.removeDir(target_dir)

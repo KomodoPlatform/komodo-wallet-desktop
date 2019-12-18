@@ -63,6 +63,8 @@ namespace
         case mm2_error::rpc_buy_error:
             return "An RPC error occur when processing the buy request, please check your request or the application "
                    "log.";
+        case mm2_error::unknown_ticker:
+            return "You try to retrieve information from an Unknown ticker.";
         }
         return "";
     }
