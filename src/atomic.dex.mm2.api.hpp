@@ -417,6 +417,7 @@ namespace mm2::api
         std::string base;
         bool        cancellable;
         std::size_t timestamp;
+        std::string human_timestamp;
     };
 
     struct my_orders_answer

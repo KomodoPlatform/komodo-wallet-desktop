@@ -422,12 +422,20 @@ namespace mm2::api
         // clang-format off
         auto filler_functor = [](const std::string& key, const nlohmann::json& value, std::map<std::size_t, my_order_contents>& out)
         {
+          using namespace date;
           const auto        time_key = value.at("created_at").get<std::size_t>();
+          const auto        sys_time = std::chrono::system_clock::from_time_t(time_key);
+          const auto        date     = year_month_day(floor<days>(sys_time));
+          std::stringstream ss;
+
+          ss << date;
+
           my_order_contents contents{.order_id         = key,
               .available_amount = value.at("available_amount").get<std::string>(),
               .base             = value.at("base").get<std::string>(),
               .cancellable      = value.at("cancellable").get<bool>(),
-              .timestamp        = time_key};
+              .timestamp        = time_key,
+              .human_timestamp  = ss.str()};
           out.try_emplace(time_key, std::move(contents));
         };
         // clang-format on
