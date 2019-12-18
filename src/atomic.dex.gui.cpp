@@ -54,9 +54,11 @@ namespace
 // Helpers
 namespace
 {
+    ImVec4 success_color(128.f / 255.f, 128.f / 255.f, 128.f / 255.f, 1.f);
     ImVec4 value_color(128.f / 255.f, 128.f / 255.f, 128.f / 255.f, 1.f);
     ImVec4 bright_color{0, 149.f / 255.f, 143.f / 255.f, 1};
     ImVec4 dark_color{25.f / 255.f, 40.f / 255.f, 56.f / 255.f, 1};
+    ImVec4 error_color{255.f / 255.f, 20.f / 255.f, 20.f / 255.f, 1};
 
     std::string
     usd_str(const std::string& amt)
@@ -298,25 +300,73 @@ namespace
 
                 if (ImGui::BeginTabItem("Send"))
                 {
-                    static char address_input[100] = "";
-                    static char amount_input[100] = "";
+                    auto& vars = gui_vars.send_coin[curr_asset.ticker];
+                    auto& answer = vars.answer;
+                    auto& address_input = vars.address_input;
+                    auto& amount_input = vars.amount_input;
 
-                    ImGui::PushID("Address");
-                    ImGui::InputText("Address", address_input, IM_ARRAYSIZE(address_input), ImGuiInputTextFlags_CallbackCharFilter, crypto_address_filter, address_input);
-                    ImGui::PopID();
+                    if(answer.error.has_value() || !answer.result.has_value()) {
+                        ImGui::PushID("Amount");
+                        ImGui::InputText("Amount", amount_input.data(), amount_input.size(), ImGuiInputTextFlags_CallbackCharFilter, crypto_amount_filter, amount_input.data());
+                        ImGui::PopID();
+                        ImGui::SameLine();
+                        ImGui::PushID("MAX");
+                        if (ImGui::Button("MAX")) {
+                            copy_str(mm2.my_balance(curr_asset.ticker, ec), amount_input.data(), amount_input.size());
+                        }
+                        ImGui::PopID();
 
-                    ImGui::PushID("Amount");
-                    ImGui::InputText("Amount", amount_input, IM_ARRAYSIZE(amount_input), ImGuiInputTextFlags_CallbackCharFilter, crypto_amount_filter, amount_input);
-                    ImGui::PopID();
-                    ImGui::SameLine();
-                    ImGui::PushID("MAX");
-                    if (ImGui::Button("MAX")) {
-                        copy_str(mm2.my_balance(curr_asset.ticker, ec), amount_input, 100);
+                        ImGui::PushID("Address");
+                        ImGui::InputText("Address", address_input.data(), address_input.size(), ImGuiInputTextFlags_CallbackCharFilter, crypto_address_filter, address_input.data());
+                        ImGui::PopID();
+
+                        ImGui::PushID("Send");
+                        if (ImGui::Button("Send")) {
+                            mm2::api::withdraw_request request{curr_asset.ticker, address_input.data(), amount_input.data()};
+                            answer = mm2::api::rpc_withdraw(std::move(request));
+                        }
+                        ImGui::PopID();
+
+                        if(answer.result.has_value()) {
+                            ImGui::TextColored(error_color, "Will send %s", answer.result.value().total_amount.c_str());
+                        }
+                        else {
+                            ImGui::TextColored(error_color, "No result");
+                        }
+
+                        if(answer.error.has_value()) {
+                            ImGui::TextColored(error_color, "%s", answer.error.value().c_str());
+                        }
+                        else {
+                            ImGui::TextColored(error_color, "No errors");
+                        }
                     }
-                    ImGui::PopID();
+                    else {
+                        auto result = answer.result.value();
 
-                    if (ImGui::Button("Send")) {
+                        ImGui::Text("You are sending");
+                        ImGui::TextColored(bright_color, "%s", result.total_amount.c_str());
 
+                        ImGui::Separator();
+                        ImGui::Text("To address");
+                        for (auto& addr: result.to) ImGui::TextColored(value_color, "%s", addr.c_str());
+
+                        ImGui::Separator();
+                        ImGui::Text("Fee");
+                        ImGui::TextColored(value_color, "%s", result.fee_details.normal_fees.value().amount.c_str());
+
+
+                        ImGui::PushID("Cancel");
+                        if (ImGui::Button("Cancel")) {
+                            answer = {};
+                        }
+                        ImGui::PopID();
+
+                        ImGui::PushID("Confirm");
+                        if (ImGui::Button("Confirm")) {
+                            // TODO: Broadcast withdraw
+                        }
+                        ImGui::PopID();
                     }
 
                     ImGui::EndTabItem();
@@ -710,8 +760,7 @@ namespace atomic_dex
                             if (not enable)
                             {
                                 std::error_code ec;
-                                ImGui::TextColored(
-                                    ImVec4(1, 0, 0, 1), "You don't have enough funds, you have %s %s",
+                                ImGui::TextColored(error_color, "You don't have enough funds, you have %s %s",
                                     mm2_system_.my_balance_with_locked_funds(locked_rel, ec).c_str(), locked_rel.c_str());
                                 ImGui::PushItemFlag(ImGuiItemFlags_Disabled, true);
                                 ImGui::PushStyleVar(ImGuiStyleVar_Alpha, ImGui::GetStyle().Alpha * 0.5f);
@@ -769,8 +818,7 @@ namespace atomic_dex
                             if (not enable)
                             {
                                 std::error_code ec;
-                                ImGui::TextColored(
-                                    ImVec4(1, 0, 0, 1), "You don't have enough funds, you have %s %s",
+                                ImGui::TextColored(error_color, "You don't have enough funds, you have %s %s",
                                     mm2_system_.my_balance_with_locked_funds(locked_base, ec).c_str(), locked_base.c_str());
                                 ImGui::PushItemFlag(ImGuiItemFlags_Disabled, true);
                                 ImGui::PushStyleVar(ImGuiStyleVar_Alpha, ImGui::GetStyle().Alpha * 0.5f);

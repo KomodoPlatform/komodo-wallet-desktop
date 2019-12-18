@@ -42,6 +42,14 @@ namespace atomic_dex
         ImVec2            main_window_size;
         std::vector<bool> enableable_coins_select_list;
         std::string       curr_asset_code = "";
+
+        struct send_coin_vars {
+            t_withdraw_answer answer;
+            std::array<char, 100> address_input;
+            std::array<char, 100> amount_input;
+        };
+
+        std::unordered_map<std::string, send_coin_vars> send_coin;
     };
 
     class gui final : public ag::ecs::post_update_system<gui>
