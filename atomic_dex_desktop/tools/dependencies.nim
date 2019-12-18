@@ -47,6 +47,11 @@ when defined(macosx):
     waitFor async_download_files("http://195.201.0.6/mm2/mm2-latest-Darwin.zip",
             target_dir & "/" & filename)
 
+when defined(linux):
+    filename = target_filename & "_linux" & target_file_extensions
+    waitFor async_download_files("http://195.201.0.6/mm2/mm2-latest-Linux.zip",
+            target_dir & "/" & filename)
+
 when defined(windows):
     filename = target_filename & "_windows" & target_file_extensions
     waitFor async_download_files("http://195.201.0.6/mm2/mm2-latest-Windows_NT.zip",
