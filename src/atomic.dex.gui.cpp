@@ -307,6 +307,11 @@ namespace
 
                     bool has_error = answer.rpc_result_code != 200;
                     if(has_error || !answer.result.has_value()) {
+                        ImGui::PushID("Address");
+                        ImGui::InputText("Address", address_input.data(), address_input.size(), ImGuiInputTextFlags_CallbackCharFilter, crypto_address_filter, address_input.data());
+                        ImGui::PopID();
+
+
                         ImGui::PushID("Amount");
                         ImGui::InputText("Amount", amount_input.data(), amount_input.size(), ImGuiInputTextFlags_CallbackCharFilter, crypto_amount_filter, amount_input.data());
                         ImGui::PopID();
@@ -318,10 +323,6 @@ namespace
                         if (ImGui::Button("MAX")) {
                             copy_str(balance, amount_input.data(), amount_input.size());
                         }
-                        ImGui::PopID();
-
-                        ImGui::PushID("Address");
-                        ImGui::InputText("Address", address_input.data(), address_input.size(), ImGuiInputTextFlags_CallbackCharFilter, crypto_address_filter, address_input.data());
                         ImGui::PopID();
 
                         ImGui::PushID("Send");
