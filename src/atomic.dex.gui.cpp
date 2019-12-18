@@ -41,6 +41,16 @@
 
 namespace fs = std::filesystem;
 
+// General Utility
+namespace
+{
+    void copy_str(const std::string& input, char *dst, size_t dst_size)
+    {
+        strncpy(dst, input.c_str(), dst_size - 1);
+        dst[dst_size - 1] = '\0';
+    }
+}
+
 // Helpers
 namespace
 {
@@ -245,7 +255,15 @@ namespace
 
                 if (ImGui::BeginTabItem("Receive"))
                 {
-                    ImGui::Text("Work in progress, will receive coins here");
+                    static char address_read_only[100];
+
+                    std::error_code ec;
+                    auto addr = mm2.address(curr_asset.ticker, ec);
+                    copy_str(addr, address_read_only, 100);
+
+                    ImGui::Text("Share the address below to receive coins");
+                    ImGui::InputText("##receive_address", address_read_only, addr.length(), ImGuiInputTextFlags_ReadOnly | ImGuiInputTextFlags_AutoSelectAll);
+
                     ImGui::EndTabItem();
                 }
 
