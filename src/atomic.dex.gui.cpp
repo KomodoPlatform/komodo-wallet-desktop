@@ -368,6 +368,8 @@ namespace
                         }
                         ImGui::PopID();
 
+                        ImGui::SameLine();
+
                         ImGui::PushID("Confirm");
                         if (ImGui::Button("Confirm")) {
                             // TODO: Broadcast withdraw
