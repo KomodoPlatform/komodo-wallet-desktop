@@ -292,13 +292,33 @@ namespace
                     ImGui::PushItemWidth(addr.length() * ImGui::GetFont()->FontSize * 0.5f);
                     ImGui::InputText("##receive_address", address_read_only, addr.length(), ImGuiInputTextFlags_ReadOnly | ImGuiInputTextFlags_AutoSelectAll);
                     ImGui::PopItemWidth();
+
                     ImGui::EndTabItem();
                 }
 
                 if (ImGui::BeginTabItem("Send"))
                 {
-                    ImGui::Text("Work in progress, will send coins here");
-                    if (ImGui::Button("Send")) {}
+                    static char address_input[100] = "";
+                    static char amount_input[100] = "";
+
+                    ImGui::PushID("Address");
+                    ImGui::InputText("Address", address_input, IM_ARRAYSIZE(address_input), ImGuiInputTextFlags_CallbackCharFilter, crypto_address_filter, address_input);
+                    ImGui::PopID();
+
+                    ImGui::PushID("Amount");
+                    ImGui::InputText("Amount", amount_input, IM_ARRAYSIZE(amount_input), ImGuiInputTextFlags_CallbackCharFilter, crypto_amount_filter, amount_input);
+                    ImGui::PopID();
+                    ImGui::SameLine();
+                    ImGui::PushID("MAX");
+                    if (ImGui::Button("MAX")) {
+                        copy_str(mm2.my_balance(curr_asset.ticker, ec), amount_input, 100);
+                    }
+                    ImGui::PopID();
+
+                    if (ImGui::Button("Send")) {
+
+                    }
+
                     ImGui::EndTabItem();
                 }
 
