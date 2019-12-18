@@ -65,6 +65,32 @@ namespace
     }
 } // namespace
 
+// Input filters
+namespace
+{
+    auto crypto_amount_filter = [](ImGuiInputTextCallbackData* data) {
+      std::string str_data = "";
+      if (data->UserData != nullptr) { str_data = static_cast<char*>(data->UserData); }
+      auto c = data->EventChar;
+      auto n = std::count(begin(str_data), end(str_data), '.');
+      if (n == 1 && c == '.') { return 1; }
+      int valid = !(std::isdigit(c) || c == '.');
+
+      return valid;
+    };
+
+    auto crypto_address_filter = [](ImGuiInputTextCallbackData* data) {
+      std::string str_data = "";
+      if (data->UserData != nullptr) { str_data = static_cast<char*>(data->UserData); }
+      auto c = data->EventChar;
+
+      int valid = str_data.length() < 40 &&
+          ((c >= '0' && c <= '9') || (c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z'));
+
+      return valid ? 0 : 1;
+    };
+}
+
 // GUI Draw
 namespace
 {
@@ -634,25 +660,15 @@ namespace atomic_dex
                             ImGui::Text("Price: ");
                             ImGui::SameLine();
                             ImGui::SetNextItemWidth(200.f);
-                            auto filter = [](ImGuiInputTextCallbackData* data) {
-                                std::string str_data = "";
-                                if (data->UserData != nullptr) { str_data = static_cast<char*>(data->UserData); }
-                                auto c = data->EventChar;
-                                auto n = std::count(begin(str_data), end(str_data), '.');
-                                if (n == 1 && c == '.') { return 1; }
-                                int valid = !(std::isdigit(c) || c == '.');
-
-                                return valid;
-                            };
 
                             static char price_buf[20];
-                            ImGui::InputText("##price", price_buf, IM_ARRAYSIZE(price_buf), ImGuiInputTextFlags_CallbackCharFilter, filter, price_buf);
+                            ImGui::InputText("##price", price_buf, IM_ARRAYSIZE(price_buf), ImGuiInputTextFlags_CallbackCharFilter, crypto_amount_filter, price_buf);
 
                             ImGui::Text("Amount: ");
                             ImGui::SameLine();
                             ImGui::SetNextItemWidth(200.f);
                             static char amount_buf[20];
-                            ImGui::InputText("##amount", amount_buf, IM_ARRAYSIZE(amount_buf), ImGuiInputTextFlags_CallbackCharFilter, filter, amount_buf);
+                            ImGui::InputText("##amount", amount_buf, IM_ARRAYSIZE(amount_buf), ImGuiInputTextFlags_CallbackCharFilter, crypto_amount_filter, amount_buf);
                             ImGui::Text("Total: ");
                             std::string total          = "";
                             std::string current_price  = price_buf;
@@ -703,25 +719,15 @@ namespace atomic_dex
                             ImGui::Text("Price: ");
                             ImGui::SameLine();
                             ImGui::SetNextItemWidth(200.f);
-                            auto filter = [](ImGuiInputTextCallbackData* data) {
-                                std::string str_data = "";
-                                if (data->UserData != nullptr) { str_data = static_cast<char*>(data->UserData); }
-                                auto c = data->EventChar;
-                                auto n = std::count(begin(str_data), end(str_data), '.');
-                                if (n == 1 && c == '.') { return 1; }
-                                int valid = !(std::isdigit(c) || c == '.');
-
-                                return valid;
-                            };
 
                             static char price_buf[20];
-                            ImGui::InputText("##price", price_buf, IM_ARRAYSIZE(price_buf), ImGuiInputTextFlags_CallbackCharFilter, filter, price_buf);
+                            ImGui::InputText("##price", price_buf, IM_ARRAYSIZE(price_buf), ImGuiInputTextFlags_CallbackCharFilter, crypto_amount_filter, price_buf);
 
                             ImGui::Text("Amount: ");
                             ImGui::SameLine();
                             ImGui::SetNextItemWidth(200.f);
                             static char amount_buf[20];
-                            ImGui::InputText("##amount", amount_buf, IM_ARRAYSIZE(amount_buf), ImGuiInputTextFlags_CallbackCharFilter, filter, amount_buf);
+                            ImGui::InputText("##amount", amount_buf, IM_ARRAYSIZE(amount_buf), ImGuiInputTextFlags_CallbackCharFilter, crypto_amount_filter, amount_buf);
                             ImGui::Text("Total: ");
                             std::string total          = "";
                             std::string current_price  = price_buf;
