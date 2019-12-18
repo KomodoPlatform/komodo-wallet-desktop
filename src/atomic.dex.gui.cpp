@@ -262,8 +262,10 @@ namespace
                     copy_str(addr, address_read_only, 100);
 
                     ImGui::Text("Share the address below to receive coins");
-                    ImGui::InputText("##receive_address", address_read_only, addr.length(), ImGuiInputTextFlags_ReadOnly | ImGuiInputTextFlags_AutoSelectAll);
 
+                    ImGui::PushItemWidth(addr.length() * ImGui::GetFont()->FontSize * 0.5f);
+                    ImGui::InputText("##receive_address", address_read_only, addr.length(), ImGuiInputTextFlags_ReadOnly | ImGuiInputTextFlags_AutoSelectAll);
+                    ImGui::PopItemWidth();
                     ImGui::EndTabItem();
                 }
 
