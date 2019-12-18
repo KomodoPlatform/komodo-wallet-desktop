@@ -305,7 +305,8 @@ namespace
                     auto& address_input = vars.address_input;
                     auto& amount_input = vars.amount_input;
 
-                    if(answer.error.has_value() || !answer.result.has_value()) {
+                    bool has_error = answer.rpc_result_code != 200;
+                    if(has_error || !answer.result.has_value()) {
                         ImGui::PushID("Amount");
                         ImGui::InputText("Amount", amount_input.data(), amount_input.size(), ImGuiInputTextFlags_CallbackCharFilter, crypto_amount_filter, amount_input.data());
                         ImGui::PopID();
@@ -334,8 +335,9 @@ namespace
                             ImGui::TextColored(error_color, "No result");
                         }
 
-                        if(answer.error.has_value()) {
-                            ImGui::TextColored(error_color, "%s", answer.error.value().c_str());
+                        if(has_error) {
+                            // TODO: Make this readable
+                            ImGui::TextColored(error_color, "%s", answer.raw_result.c_str());
                         }
                         else {
                             ImGui::TextColored(error_color, "No errors");
