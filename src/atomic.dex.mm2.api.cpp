@@ -126,14 +126,14 @@ namespace mm2::api
 
         using namespace date;
         using namespace std::chrono;
-        const auto sys_time = std::chrono::system_clock::from_time_t(cfg.timestamp);
+        const auto sys_time = system_clock::from_time_t(cfg.timestamp);
         const auto tps      = floor<seconds>(sys_time);
         const auto dp       = floor<days>(tps);
         const auto date     = year_month_day(floor<days>(tps));
-        auto       time     = date::make_time(tps - dp);
+        auto       time     = make_time(tps - dp);
 
         std::stringstream ss;
-        ss << date << " " << time;
+        ss << date << "   " << time;
         cfg.timestamp_as_date = ss.str();
     }
 
