@@ -175,13 +175,13 @@ namespace
             ImGui::SameLine(300);
             ImGui::TextColored(value_color, "%s", usd_str(paprika_system.get_price_in_fiat_from_tx("USD", curr_asset.ticker, tx, ec)).c_str());
 
+            if(tx.timestamp != 0) {
+                ImGui::Separator();
+                ImGui::Text("Date");
+                ImGui::TextColored(value_color, "%s", tx.date.c_str());
+            }
+
             ImGui::Separator();
-
-            ImGui::Text("Date");
-            ImGui::TextColored(value_color, "%s", tx.date.c_str());
-
-            ImGui::Separator();
-
             ImGui::Text("From");
             for (auto& addr: tx.from) ImGui::TextColored(value_color, "%s", addr.c_str());
 
@@ -256,7 +256,7 @@ namespace
                             auto& tx         = tx_history[i];
                             ImGui::BeginGroup();
                             {
-                                ImGui::Text("%s", tx.date.c_str());
+                                ImGui::Text("%s", tx.timestamp == 0 ? "" : tx.date.c_str());
                                 ImGui::SameLine(300);
                                 ImGui::TextColored(
                                     ImVec4(tx.am_i_sender ? ImVec4(1, 52.f / 255.f, 0, 1.f) : ImVec4(80.f / 255.f, 1, 118.f / 255.f, 1.f)), "%s%s %s",
@@ -302,11 +302,52 @@ namespace
                 {
                     auto& vars = gui_vars.send_coin[curr_asset.ticker];
                     auto& answer = vars.answer;
+                    auto& broadcast_answer = vars.broadcast_answer;
                     auto& address_input = vars.address_input;
                     auto& amount_input = vars.amount_input;
 
                     bool has_error = answer.rpc_result_code != 200;
-                    if(has_error || !answer.result.has_value()) {
+
+                    if(!broadcast_answer.tx_hash.empty() || !broadcast_answer.raw_result.empty()) {
+                        bool has_error = broadcast_answer.rpc_result_code == -1;
+                        if(has_error) {
+                            ImGui::Text("Transaction Failed!");
+
+                            // TODO: Make this readable
+                            ImGui::Separator();
+                            ImGui::PushID("Error code");
+                            ImGui::Text("Error code");
+                            ImGui::PopID();
+                            ImGui::TextColored(error_color, "%d", broadcast_answer.rpc_result_code);
+
+                            ImGui::Separator();
+                            ImGui::PushID("Error details");
+                            ImGui::Text("Error details");
+                            ImGui::PopID();
+                            ImGui::TextColored(error_color, "%s", broadcast_answer.raw_result.c_str());
+                        }
+                        else {
+                            ImGui::TextColored(bright_color, "Transaction Succeed!");
+
+                            ImGui::Separator();
+                            ImGui::PushID("Transaction Hash");
+                            ImGui::Text("Transaction Hash");
+                            ImGui::PopID();
+                            ImGui::TextColored(value_color, "%s", broadcast_answer.tx_hash.c_str());
+
+                            ImGui::Separator();
+
+                            ImGui::PushID("Okay");
+                            if (ImGui::Button("Okay")) vars.clear();
+                            ImGui::PopID();
+
+                            ImGui::SameLine();
+                            ImGui::PushID("View in Explorer");
+                            if (ImGui::Button("View in Explorer")) antara::gaming::core::open_url_browser(curr_asset.explorer_url[0] + "tx/" + broadcast_answer.tx_hash);
+                            ImGui::PopID();
+                        }
+                    }
+                    else if(has_error || !answer.result.has_value()) {
                         ImGui::PushID("Address");
                         ImGui::InputText("Address", address_input.data(), address_input.size(), ImGuiInputTextFlags_CallbackCharFilter, crypto_address_filter, address_input.data());
                         ImGui::PopID();
@@ -327,17 +368,10 @@ namespace
 
                         ImGui::PushID("Send");
                         if (ImGui::Button("Send")) {
-                            mm2::api::withdraw_request request{curr_asset.ticker, address_input.data(), amount_input.data(), strcmp(amount_input.data(), balance.c_str()) == 0};
+                            mm2::api::withdraw_request request{curr_asset.ticker, address_input.data(), amount_input.data(), balance == amount_input.data()};
                             answer = mm2::api::rpc_withdraw(std::move(request));
                         }
                         ImGui::PopID();
-
-                        if(answer.result.has_value()) {
-                            ImGui::TextColored(error_color, "Will send %s", answer.result.value().total_amount.c_str());
-                        }
-                        else {
-                            ImGui::TextColored(error_color, "No result");
-                        }
 
                         if(has_error) {
                             // TODO: Make this readable
@@ -351,7 +385,7 @@ namespace
                         auto result = answer.result.value();
 
                         ImGui::Text("You are sending");
-                        ImGui::TextColored(bright_color, "%s", result.total_amount.c_str());
+                        ImGui::TextColored(bright_color, "%s", amount_input.data());
 
                         ImGui::Separator();
                         ImGui::Text("To address");
@@ -361,18 +395,16 @@ namespace
                         ImGui::Text("Fee");
                         ImGui::TextColored(value_color, "%s", result.fee_details.normal_fees.value().amount.c_str());
 
-
                         ImGui::PushID("Cancel");
-                        if (ImGui::Button("Cancel")) {
-                            answer = {};
-                        }
+                        if (ImGui::Button("Cancel")) vars.clear();
                         ImGui::PopID();
 
                         ImGui::SameLine();
 
                         ImGui::PushID("Confirm");
                         if (ImGui::Button("Confirm")) {
-                            // TODO: Broadcast withdraw
+                            broadcast_answer = mm2::api::rpc_send_raw_transaction({curr_asset.ticker, result.tx_hex});
+
                         }
                         ImGui::PopID();
                     }
