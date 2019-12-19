@@ -233,7 +233,7 @@ namespace mm2::api
     to_json(nlohmann::json& j, const send_raw_transaction_request& cfg)
     {
         j["coin"] = cfg.coin;
-        j["hex"]  = cfg.tx_hex;
+        j["tx_hex"]  = cfg.tx_hex;
     }
 
     void
