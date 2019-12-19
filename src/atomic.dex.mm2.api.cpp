@@ -466,7 +466,9 @@ namespace mm2::api
         {
             DVLOG_F(loguru::Verbosity_WARNING, "rpc answer code is not 200");
             if constexpr (doom::meta::is_detected_v<have_error_field, RpcReturnType>) {
-                answer.error = nlohmann::json::parse(resp.body).get<std::string>();
+                if constexpr (std::is_same_v<std::string, decltype(answer.error)>) {
+                    answer.error = nlohmann::json::parse(resp.body).get<std::string>();
+                }
             }
             answer.rpc_result_code = resp.code;
             answer.raw_result      = resp.body;
