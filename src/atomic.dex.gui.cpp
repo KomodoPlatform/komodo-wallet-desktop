@@ -175,13 +175,13 @@ namespace
             ImGui::SameLine(300);
             ImGui::TextColored(value_color, "%s", usd_str(paprika_system.get_price_in_fiat_from_tx("USD", curr_asset.ticker, tx, ec)).c_str());
 
+            if(tx.timestamp != 0) {
+                ImGui::Separator();
+                ImGui::Text("Date");
+                ImGui::TextColored(value_color, "%s", tx.date.c_str());
+            }
+
             ImGui::Separator();
-
-            ImGui::Text("Date");
-            ImGui::TextColored(value_color, "%s", tx.date.c_str());
-
-            ImGui::Separator();
-
             ImGui::Text("From");
             for (auto& addr: tx.from) ImGui::TextColored(value_color, "%s", addr.c_str());
 
@@ -256,7 +256,7 @@ namespace
                             auto& tx         = tx_history[i];
                             ImGui::BeginGroup();
                             {
-                                ImGui::Text("%s", tx.date.c_str());
+                                ImGui::Text("%s", tx.timestamp == 0 ? "" : tx.date.c_str());
                                 ImGui::SameLine(300);
                                 ImGui::TextColored(
                                     ImVec4(tx.am_i_sender ? ImVec4(1, 52.f / 255.f, 0, 1.f) : ImVec4(80.f / 255.f, 1, 118.f / 255.f, 1.f)), "%s%s %s",
