@@ -1,5 +1,9 @@
 import os
 
+when defined(windows):
+  {.passL: "-L" & os.getEnv("VCPKG_ROOT") & "/installed/x64-windows-static/lib -lfolly -lWs2_32 -lboost_thread-vc140-mt -ldouble-conversion -lglog -lgflags_static -lshlwapi -levent -ladvapi32".}
+  {.passC: "-std=c++17 -I" & os.getEnv("VCPKG_ROOT") & "/installed/x64-windows-static/include".}
+
 when defined(macosx):
   {.passL: "-L" & os.getEnv("VCPKG_ROOT") & "/installed/x64-osx/lib -lfolly -ldouble-conversion -lgflags -lglog".}
   {.passC: "-std=c++17 -I" & os.getEnv("VCPKG_ROOT") & "/installed/x64-osx/include".}

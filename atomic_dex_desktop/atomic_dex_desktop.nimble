@@ -32,6 +32,7 @@ when defined(linux):
 
 requires "nim >= 1.0.4"
 requires "ui_workflow_nim >= 0.3.0"
+requires "jsonschema"
 
 task download_deps, "Download MM2 Dependencies":
     exec "nim c -r tools/dependencies.nim"

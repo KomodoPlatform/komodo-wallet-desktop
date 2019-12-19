@@ -19,5 +19,4 @@ proc main() =
     antara_update(ctx)
 
 when isMainModule:
-  echo "salut"
-  #main()
+  main()
