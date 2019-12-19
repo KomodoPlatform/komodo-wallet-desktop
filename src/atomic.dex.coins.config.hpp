@@ -45,6 +45,7 @@ namespace atomic_dex
         bool                     currently_enabled{false};
         bool                     active{false};
         std::string              coinpaprika_id;
+        bool                     is_erc_20{false};
         std::vector<std::string> explorer_url; ///< usefull for transaction, take this url and append transaction id
     };
 
