@@ -1,9 +1,11 @@
 import atomic_dex_desktop/utils/assets
 import atomic_dex_desktop/mm2/mm2
 import atomic_dex_desktop/gui/gui
+import atomic_dex_desktop/coins/coins_cfg
 import ui_workflow_nim
 
 proc main() =
+  coins_cfg.parse_cfg()
   mm2.init_process()
   defer: mm2.close_process()
   var ctx = antara_ui_create("AtomicDex", 200, 200)

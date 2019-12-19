@@ -10,6 +10,7 @@
     "mm2": 1,
     "coingecko_id": "bitcoin",
     "coinpaprika_id": "btc-bitcoin",
+    "is_erc_20": false,
     "electrum": [
       {
         "url": "electrum3.cipig.net:10000"
@@ -41,6 +42,7 @@
     "mm2": 1,
     "coingecko_id": "komodo",
     "coinpaprika_id": "kmd-komodo",
+    "is_erc_20": false,
     "electrum": [
       {
         "url": "electrum3.cipig.net:10001"
@@ -69,6 +71,7 @@
     "mm2": 1,
     "coingecko_id": "test-coin",
     "coinpaprika_id": "test-coin",
+    "is_erc_20": false,
     "electrum": [
       {
         "url": "electrum3.cipig.net:10017"
@@ -97,6 +100,7 @@
     "mm2": 1,
     "coingecko_id": "test-coin",
     "coinpaprika_id": "test-coin",
+    "is_erc_20": false,
     "electrum": [
       {
         "url": "electrum3.cipig.net:10018"
@@ -125,6 +129,7 @@
     "mm2": 1,
     "coingecko_id": "test-coin",
     "coinpaprika_id": "chips-chip",
+    "is_erc_20": false,
     "electrum": [
       {
         "url": "electrum3.cipig.net:10053"
