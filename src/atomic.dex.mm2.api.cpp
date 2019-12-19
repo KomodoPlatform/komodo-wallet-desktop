@@ -19,6 +19,7 @@
 
 //! Dependencies Headers
 #include <date/date.h>
+#include <meta/detection/detection.hpp>
 
 //! Project Headers
 #include "atomic.dex.mm2.api.hpp"
@@ -449,6 +450,9 @@ namespace mm2::api
         for (auto&& [key, value]: j.at("result").at("taker_orders").items()) { filler_functor(key, value, answer.taker_orders); }
     }
 
+    template<typename T>
+    using have_error_field = decltype(std::declval<T &>().error.has_value());
+
     template <typename RpcReturnType>
     RpcReturnType
     rpc_process_answer(const RestClient::Response& resp) noexcept
@@ -461,6 +465,9 @@ namespace mm2::api
         if (resp.code not_eq 200)
         {
             DVLOG_F(loguru::Verbosity_WARNING, "rpc answer code is not 200");
+            if constexpr (doom::meta::is_detected_v<have_error_field, RpcReturnType>) {
+                answer.error = nlohmann::json::parse(resp.body).get<std::string>();
+            }
             answer.rpc_result_code = resp.code;
             answer.raw_result      = resp.body;
             return answer;

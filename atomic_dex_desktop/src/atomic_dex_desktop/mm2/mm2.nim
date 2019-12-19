@@ -21,9 +21,8 @@ proc init_process*()  =
     var tools_path = (get_assets_path() & "/tools/mm2").normalizedPath
     try: 
         mm2_instance = startProcess(command=tools_path & "/mm2", args=[$$mm2_cfg], env = nil, options={poParentStreams}, workingDir=tools_path)
-    except OSError:
-        let msg = getCurrentExceptionMsg()
-        echo "Got exception OSError with message ", msg
+    except OSError as e:
+        echo "Got exception OSError with message ", e.msg
     finally:
         echo "Fine."
 
