@@ -1,14 +1,17 @@
 import json
+import sequtils
 import options
 import jsonschema
 
 type
     ElectrumServer = object
-        url: string 
+        url: string
+        protocol: Option[string]
+        disable_cert_verification: Option[bool]
     CoinConfig* = object
         ticker: string
         name: string
-        electrum_urls: ElectrumServer
+        electrum_urls: seq[ElectrumServer]
         currently_enabled: bool
         active: bool
         coinpaprika_id: bool
@@ -21,25 +24,12 @@ jsonSchema:
         url: string
         protocol ?: string
         disable_cert_verification ?: bool
-
-
-when isMainModule:
-    import unittest
-    var schema = create(ElectrumServerParams, "salut", none(string), none(bool))
-    check schema.JsonNode.isValid(ElectrumServerParams) == true
-    echo "Oui"
-
-    var jsonNode = parseJson("""
-        {
-        "url": "electrum3.cipig.net:10000"
-        }""")
-
-    check jsonNode.isValid(ElectrumServerParams) == true
-
-    jsonNode = parseJson("""
-        {
-        "foo": "electrum3.cipig.net:10000"
-        }""")
-
-    check jsonNode.isValid(ElectrumServerParams) == false
-
+    CoinConfigParams:
+        ticker: string
+        name: string
+        electrum_urls: ElectrumServerParams[]
+        currently_enabled: bool
+        active: bool
+        coinpaprika_id: bool
+        is_erc_20: bool
+        explorer_url: string[]
