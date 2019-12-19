@@ -35,5 +35,7 @@ jsonNode = parseJson("""
 check jsonNode.isValid(ElectrumServerParams) == true
 whenValid(jsonNode, ElectrumServerParams):
     echo jsonNode["url"]
+    echo typeof(jsonNode)
+    echo typeof(jsonNode["disable_cert_verification"])
     if jsonNode["disable_cert_verification"].isSome:
         echo jsonNode["disable_cert_verification"].get()

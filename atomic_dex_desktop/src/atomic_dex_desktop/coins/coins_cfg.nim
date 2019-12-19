@@ -6,8 +6,6 @@ import jsonschema
 import ../utils/assets
 import ../folly/hashmap
 
-var coins_registry: ConcurrentReg[string, JsonNode]
-
 jsonSchema:
   ElectrumServerParams:
     url: string
@@ -34,6 +32,8 @@ jsonSchema:
     active: bool
     currently_enabled: bool
 
+var coins_registry: ConcurrentReg[string, CoinConfigParams]
+
 template whenValid*(data, kind, body) =
   if data.isValid(kind):
     var data = kind(data)
@@ -44,7 +44,17 @@ proc parse_cfg*() =
   let jsonNode = parseJson(entire_file)
   for key in jsonNode.keys:
     if jsonNode[key].isValid(CoinConfigParams):
-      assert(coins_registry.cm_insert_or_assign(key, jsonNode[key]).second == true, "should insert correctly")
+      assert(coins_registry.cm_insert_or_assign(key, CoinConfigParams(jsonNode[key])).second == true, "should insert correctly")
     else:
       echo jsonNode[key], " is invalid"
   echo "Coins config correctly launched: ", coins_registry.cm_size()
+
+proc get_active_coins*() : seq[CoinConfigParams] =
+    var destinations: seq[CoinConfigParams]
+    for _, value in coins_registry:
+        if value["active"].getBool:
+            destinations.add(value)
+    return destinations
+
+proc get_coin_info*(ticker: string): CoinConfigParams =
+    return coins_registry.cm_at(ticker)
