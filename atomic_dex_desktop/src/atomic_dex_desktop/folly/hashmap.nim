@@ -8,6 +8,10 @@ when defined(macosx):
   {.passL: "-L" & os.getEnv("VCPKG_ROOT") & "/installed/x64-osx/lib -lfolly -ldouble-conversion -lgflags -lglog".}
   {.passC: "-std=c++17 -I" & os.getEnv("VCPKG_ROOT") & "/installed/x64-osx/include".}
 
+when defined(linux):
+  {.passL: "-L" & os.getEnv("VCPKG_ROOT") & "/installed/x64-linux/lib -lfolly -pthread -ldouble-conversion -lglog -lgflags".}
+  {.passC: "-std=c++17 -I" & os.getEnv("VCPKG_ROOT") & "/installed/x64-linux/include".}
+
 const folly_header = "<folly/concurrency/ConcurrentHashMap.h>"
 
 type
