@@ -547,4 +547,15 @@ namespace atomic_dex
         }
         return m_orders_registry.at(ticker);
     }
+
+    std::vector<::mm2::api::my_orders_answer>
+    mm2::get_orders(t_mm2_ec& ec) const noexcept
+    {
+        auto coins = get_enabled_coins();
+        std::vector<::mm2::api::my_orders_answer> out;
+        for (auto &&coin: coins) {
+            out.emplace_back(get_orders(coin.ticker, ec));
+        }
+        return out;
+    }
 } // namespace atomic_dex
