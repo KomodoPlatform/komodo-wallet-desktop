@@ -186,6 +186,9 @@ namespace atomic_dex
         //! Get Current orderbook
         [[nodiscard]] t_orderbook_answer get_current_orderbook(t_mm2_ec& ec) const noexcept;
 
+        //! Get orders
+        [[nodiscard]] ::mm2::api::my_orders_answer get_orders(const std::string& ticker, t_mm2_ec& ec) const noexcept;
+
         //! Get balance with locked funds for a given ticker as a boost::multiprecision::cpp_dec_float_50.
         [[nodiscard]] t_float_50 get_balance_with_locked_funds(const std::string& ticker) const;
 

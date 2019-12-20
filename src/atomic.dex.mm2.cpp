@@ -536,4 +536,15 @@ namespace atomic_dex
         }
         return m_balance_informations.at(ticker).address;
     }
+
+    ::mm2::api::my_orders_answer
+    mm2::get_orders(const std::string& ticker, t_mm2_ec& ec) const noexcept
+    {
+        if (m_orders_registry.find(ticker) == m_orders_registry.cend())
+        {
+            ec = mm2_error::unknown_ticker;
+            return {};
+        }
+        return m_orders_registry.at(ticker);
+    }
 } // namespace atomic_dex
