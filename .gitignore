@@ -523,3 +523,6 @@ assets/tools
 /atomic_dex_desktop/src/atomic_dex_desktop/coins/coins_cfg.exe
 /atomic_dex_desktop/tests/test_assets.ilk
 
+/atomic_dex_desktop/src/atomic_dex_desktop/coins/coins_cfg.exe
+/atomic_dex_desktop/src/atomic_dex_desktop/coins/coins_cfg.exe
+/atomic_dex_desktop/tests/test_coins_cfg.exe

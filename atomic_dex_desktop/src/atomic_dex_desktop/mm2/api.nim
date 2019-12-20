@@ -23,6 +23,7 @@ jsonSchema:
         error: string
         
 export ElectrumRequestParams
+export `[]`
 export ElectrumAnswerSuccess
 export ElectrumAnswerError
 

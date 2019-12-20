@@ -1,11 +1,13 @@
 import os, osproc
 import marshal
 import json
+import hashes
 import threadpool
 import ./worker
 import ../gui/gui
 import ../utils/assets
 import ../coins/coins_cfg
+import ../folly/hashmap
 import ./api
 
 type
@@ -34,10 +36,25 @@ proc mm2_init_thread() =
         sleep(2000)
         gui.set_gui_running(true)
 
+
+proc enable_coin*(ticker: string) =
+    echo is_ticker_present(ticker)
+    var coin_info = coins_registry.cm_at(ticker.hash)
+    #try:
+    #    var coin_info = get_coin_info(ticker)
+    #except std_out_of_range as ex:
+    #    echo ex.what()
+    if coin_info["currently_enabled"].getBool:
+        return    
+    #echo typeof(coin_info["electrum"])
+    #var other = ElectrumServerParams[]
+    #var req = create(ElectrumRequestParams, ticker, , true)
+    
+
 proc enable_default_coins() =
     var coins = get_active_coins()
     for _, v in coins:
-        echo v["coin"]
+        enable_coin(v["coin"].getStr)
 
 proc init_process*()  =
     spawn mm2_init_thread()
@@ -50,6 +67,4 @@ proc close_process*() =
         mm2_instance.terminate
         mm2_instance.close
 
-proc enable_coin*(ticker: string) =
-    echo "lol"
     

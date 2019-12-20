@@ -2,7 +2,7 @@ import os
 
 when defined(windows):
   {.passL: "-L" & os.getEnv("VCPKG_ROOT") & "/installed/x64-windows-static/lib -lfolly -lWs2_32 -lboost_thread-vc140-mt -ldouble-conversion -lglog -lgflags_static -lshlwapi -levent -ladvapi32".}
-  {.passC: "-std=c++17 -I" & os.getEnv("VCPKG_ROOT") & "/installed/x64-windows-static/include".}
+  {.passC: "-std=c++17 -DGLOG_NO_ABBREVIATED_SEVERITIES -DNOMINMAX -I" & os.getEnv("VCPKG_ROOT") & "/installed/x64-windows-static/include".}
 
 when defined(macosx):
   {.passL: "-L" & os.getEnv("VCPKG_ROOT") & "/installed/x64-osx/lib -lfolly -ldouble-conversion -lgflags -lglog".}
@@ -32,6 +32,7 @@ type
 ##! Map
 proc cm_insert_or_assign*[K, V](instance: ConcurrentReg[K, V], key: K, value: V): StdPair[ConcurrentRegIt[K, V], bool] {.importcpp: "#.insert_or_assign(#, #)", header: folly_header.}
 proc cm_at*[K, V](instance: ConcurrentReg[K, V], key: K): V {.importcpp: "#.at(#)", header: folly_header.}
+proc cm_find*[K, V](instance: ConcurrentReg[K, V], key: K): ConcurrentRegIt[K, V] {.importcpp: "#.find(#)", header: folly_header.}
 proc cm_begin*[K, V](instance: ConcurrentReg[K, V]): ConcurrentRegIt[K, V] {.importcpp: "#.begin()", header: folly_header.}
 proc cm_end*[K, V](instance: ConcurrentReg[K, V]): ConcurrentRegIt[K, V] {.importcpp: "#.end()", header: folly_header.}
 proc cm_size*[K, V](instance: ConcurrentReg[K, V]): int {.importcpp: "#.size()", header: folly_header.}
@@ -56,3 +57,13 @@ iterator pairs*[K, V](range: ConcurrentReg[K, V]): (K, V) =
     pr = *current[]
     ++current[]
     yield (pr.first(), pr.second())
+
+
+type
+  std_exception* {.importcpp: "std::exception", header: "<exception>".} = object
+
+type
+  std_out_of_range* {.importcpp: "std::out_of_range", header: "<stdexcept>".} = object
+
+proc what*(s: std_exception): cstring {.importcpp: "((char *)#.what())".}
+proc what*(s: std_out_of_range): cstring {.importcpp: "((char *)#.what())".}
