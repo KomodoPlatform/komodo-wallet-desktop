@@ -3,6 +3,7 @@ import marshal
 import json
 import hashes
 import threadpool
+import options
 import ./worker
 import ../gui/gui
 import ../utils/assets
@@ -24,18 +25,6 @@ var mm2_instance : Process = nil
 proc set_passphrase*(passphrase: string) =
     mm2_cfg.passphrase = passphrase
 
-proc mm2_init_thread() =
-    {.gcsafe.}:
-        var tools_path = (get_assets_path() & "/tools/mm2").normalizedPath
-        try: 
-            mm2_instance = startProcess(command=tools_path & "/mm2", args=[$$mm2_cfg], env = nil, options={poParentStreams}, workingDir=tools_path)
-        except OSError as e:
-            echo "Got exception OSError with message ", e.msg
-        finally:
-            echo "Fine."
-        sleep(2000)
-        gui.set_gui_running(true)
-
 
 proc enable_coin*(ticker: string) =
     {.gcsafe.}:
@@ -47,6 +36,9 @@ proc enable_coin*(ticker: string) =
             res.add(ElectrumServerParams(keys))
         var req = create(ElectrumRequestParams, ticker, res, true)
         var answer = rpc_electrum(req)
+        if answer.error.isSome:
+            echo answer.error.get()["error"].getStr
+
     
 
 proc enable_default_coins() =
@@ -55,11 +47,22 @@ proc enable_default_coins() =
         spawn enable_coin(v["coin"].getStr)
     sync()    
 
+proc mm2_init_thread() =
+    {.gcsafe.}:
+        var tools_path = (get_assets_path() & "/tools/mm2").normalizedPath
+        try: 
+            mm2_instance = startProcess(command=tools_path & "/mm2", args=[$$mm2_cfg], env = nil, options={poParentStreams}, workingDir=tools_path)
+        except OSError as e:
+            echo "Got exception OSError with message ", e.msg
+        finally:
+            echo "Fine."
+        sleep(2000)
+        gui.set_gui_running(true)
+        enable_default_coins()
+        launchMM2Worker()
+
 proc init_process*()  =
     spawn mm2_init_thread()
-    sync()
-    enable_default_coins()
-    launchMM2Worker()
 
 proc close_process*() =
     if not mm2_instance.isNil:
