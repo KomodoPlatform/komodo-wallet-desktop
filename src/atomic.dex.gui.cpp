@@ -457,6 +457,10 @@ namespace
             ImGui::TextColored(value_color, "%s", info.human_timestamp.c_str());
             ImGui::TextColored(value_color, "Order ID: %s", info.order_id.c_str());
 
+            if (ImGui::Button("Cancel##cancel_order")) {
+                mm2::api::rpc_cancel_order({ info.order_id });
+            }
+
             auto next = it;
             if(++next != orders.end()) ImGui::Separator();
         }
@@ -955,6 +959,16 @@ namespace atomic_dex
                                 std::error_code ec;
                                 auto orders = mm2_system_.get_orders(current_base, ec);
 
+
+                                if(!orders.maker_orders.empty() || !orders.taker_orders.empty()) {
+                                    if (ImGui::Button("Cancel All Orders##cancel_all_orders")) {
+                                        ::mm2::api::cancel_data cd;
+                                        cd.ticker = current_base;
+                                        ::mm2::api::rpc_cancel_all_orders({{"Coin", cd}});
+                                    }
+
+                                    ImGui::Separator();
+                                }
                                 // Maker
                                 if(!orders.maker_orders.empty()) {
                                     ImGui::TextColored(bright_color, "Maker Orders (%lu)", orders.maker_orders.size());
