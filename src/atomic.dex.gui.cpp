@@ -638,17 +638,17 @@ namespace atomic_dex
                             // ImGui::Text("Work in progress");
 
                             //! TODO: REMOVE THIS TMP !!!! (for testing trading part)
-                            static std::string current_base = "";
-                            static std::string current_rel  = "";
-                            static std::string locked_base  = "";
-                            static std::string locked_rel   = "";
+                            static std::string current_base;
+                            static std::string current_rel;
+                            static std::string locked_base;
+                            static std::string locked_rel;
 
                             const float remaining_width = ImGui::GetContentRegionAvail().x - ImGui::GetStyle().ItemSpacing.x;
 
-                            ImGui::Text("Choose Base coin");
+                            ImGui::Text("Sell");
                             ImGui::SameLine();
                             ImGui::SetCursorPosX(ImGui::GetCursorPosX() + remaining_width / 6);
-                            ImGui::Text("Choose Rel coin");
+                            ImGui::Text("Receive");
                             ImGui::SetNextItemWidth(remaining_width / 6);
                             if (ImGui::BeginCombo("##left", current_base.c_str()))
                             {
