@@ -439,6 +439,7 @@ namespace mm2::api
           my_order_contents contents{.order_id         = key,
               .available_amount = value.at("available_amount").get<std::string>(),
               .base             = value.at("base").get<std::string>(),
+              .rel              = value.at("rel").get<std::string>(),
               .cancellable      = value.at("cancellable").get<bool>(),
               .timestamp        = time_key,
               .human_timestamp  = ss.str()};

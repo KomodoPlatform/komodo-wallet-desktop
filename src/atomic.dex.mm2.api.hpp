@@ -415,6 +415,7 @@ namespace mm2::api
         std::string order_id;
         std::string available_amount;
         std::string base;
+        std::string rel;
         bool        cancellable;
         std::size_t timestamp;
         std::string human_timestamp;
