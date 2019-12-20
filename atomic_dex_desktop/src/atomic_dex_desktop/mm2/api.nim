@@ -18,7 +18,7 @@ jsonSchema:
     ElectrumAnswerSuccess:
         address: string
         balance: string
-        result: string
+        "result": string
     ElectrumAnswerError:
         error: string
         
@@ -36,24 +36,24 @@ proc onProgressChanged(total, progress, speed: BiggestInt) {.async.} =
 
 proc templateRequest(jsonData: JsonNode, method_name: string) =
     echo $(%*method_name)
-    jsonData["method"] = method_name
-    jsonData["userpass"] = "atomic_dex_rpc_password"
+    jsonData["method"] = method_name.newJString
+    jsonData["userpass"] = "atomic_dex_rpc_password".newJString
 
-proc rpc_electrum*(req: ElectrumRequestParams) : ElectrumAnswer {.async.} =
+proc rpc_electrum*(req: ElectrumRequestParams) : ElectrumAnswer =
     var client = newAsyncHttpClient()
     client.onProgressChanged = onProgressChanged
     client.headers = newHttpHeaders({ "Content-Type": "application/json" })
     let jsonData = req.JsonNode
-    templateRequest("electrum", jsonData)
+    templateRequest(jsonData, "electrum")
     let fut_response = client.request(g_endpoint, httpMethod = HttpPost, body = $jsonData)
-    await fut_response
-    let response: AsyncResponse = fut_response.read
-    let json = jsonParse(response.body)
+    #waitFor fut_response
+    #let response: AsyncResponse = fut_response.read
+    #let json = parseJson(response.body)
     var res: ElectrumAnswer
-    if json.isValid(ElectrumAnswerSuccess):
-        res.success = some(ElectrumAnswerSuccess(json))
-    elif json.isValid(ElectrumAnswerError):
-        res.error = some(ElectrumAnswerError(json))
+    #if json.isValid(ElectrumAnswerSuccess):
+    #    res.success = some(ElectrumAnswerSuccess(json))
+    #elif json.isValid(ElectrumAnswerError):
+    #    res.error = some(ElectrumAnswerError(json))
     return res
 
     

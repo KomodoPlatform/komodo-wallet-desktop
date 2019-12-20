@@ -5,6 +5,7 @@ import threadpool
 import ./worker
 import ../gui/gui
 import ../utils/assets
+import ./api
 
 type
     MM2Config = object
@@ -41,3 +42,8 @@ proc close_process*() =
     if not mm2_instance.isNil:
         mm2_instance.terminate
         mm2_instance.close
+
+
+proc enable_coin*(ticker: string) =
+    echo "lol"
+    

@@ -553,6 +553,7 @@ namespace atomic_dex
     {
         auto coins = get_enabled_coins();
         std::vector<::mm2::api::my_orders_answer> out;
+        out.reserve(coins.size());
         for (auto &&coin: coins) {
             out.emplace_back(get_orders(coin.ticker, ec));
         }
