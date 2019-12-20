@@ -616,8 +616,8 @@ namespace atomic_dex
 
             if (ImGui::BeginTabBar("##Tabs", ImGuiTabBarFlags_None))
             {
-                static bool in_trade_prev = false;
-                bool        in_trade      = false;
+                static bool in_exchange_prev = false;
+                bool        in_exchange      = false;
 
                 if (ImGui::BeginTabItem("Portfolio"))
                 {
@@ -627,263 +627,292 @@ namespace atomic_dex
                     gui_portfolio(*this, mm2_system_, paprika_system_, gui_vars_);
                     ImGui::EndTabItem();
                 }
-                if (ImGui::BeginTabItem("Trade"))
+
+                if (ImGui::BeginTabItem("Exchange"))
                 {
-                    in_trade = true;
-
-                    // ImGui::Text("Work in progress");
-
-                    //! TODO: REMOVE THIS TMP !!!! (for testing trading part)
-                    static std::string current_base = "";
-                    static std::string current_rel  = "";
-                    static std::string locked_base  = "";
-                    static std::string locked_rel   = "";
-
-                    const float remaining_width = ImGui::GetContentRegionAvail().x - ImGui::GetStyle().ItemSpacing.x;
-
-                    ImGui::Text("Choose Base coin");
-                    ImGui::SameLine();
-                    ImGui::SetCursorPosX(ImGui::GetCursorPosX() + remaining_width / 6);
-                    ImGui::Text("Choose Rel coin");
-                    ImGui::SetNextItemWidth(remaining_width / 6);
-                    if (ImGui::BeginCombo("##left", current_base.c_str()))
+                    in_exchange = true;
+                    if (ImGui::BeginTabBar("##ExchangeTabs", ImGuiTabBarFlags_None))
                     {
-                        auto coins = mm2_system_.get_enabled_coins();
-                        for (auto&& current: coins)
+                        if (ImGui::BeginTabItem("Trade"))
                         {
-                            if (current.ticker == current_rel) continue;
-                            const bool is_selected = current.ticker == current_base;
-                            if (ImGui::Selectable(current.ticker.c_str(), is_selected)) { current_base = current.ticker; }
-                            if (is_selected) { ImGui::SetItemDefaultFocus(); }
-                        }
-                        ImGui::EndCombo();
-                    }
+                            // ImGui::Text("Work in progress");
 
-                    ImGui::SameLine();
-                    ImGui::SetNextItemWidth(remaining_width / 6);
-                    if (ImGui::BeginCombo("##right", current_rel.c_str()))
-                    {
-                        const auto coins = mm2_system_.get_enabled_coins();
+                            //! TODO: REMOVE THIS TMP !!!! (for testing trading part)
+                            static std::string current_base = "";
+                            static std::string current_rel  = "";
+                            static std::string locked_base  = "";
+                            static std::string locked_rel   = "";
 
-                        for (auto&& current: coins)
-                        {
-                            if (current.ticker == current_base) continue;
-                            const bool is_selected = current.ticker == current_rel;
-                            if (ImGui::Selectable(current.ticker.c_str(), is_selected)) { current_rel = current.ticker; }
-                            if (is_selected) { ImGui::SetItemDefaultFocus(); }
-                        }
+                            const float remaining_width = ImGui::GetContentRegionAvail().x - ImGui::GetStyle().ItemSpacing.x;
 
-                        ImGui::EndCombo();
-                    }
-                    ImGui::SameLine();
-                    if (ImGui::Button("Load") && not current_base.empty() && not current_rel.empty())
-                    {
-                        locked_base = current_base;
-                        locked_rel  = current_rel;
-                        this->dispatcher_.trigger<orderbook_refresh>(current_base, current_rel);
-                    }
-
-                    if (not locked_base.empty() && not locked_rel.empty())
-                    {
-                        ImGui::BeginChild(
-                            "Orderbook Window", ImVec2(0, 400), true, ImGuiWindowFlags_AlwaysVerticalScrollbar | ImGuiWindowFlags_AlwaysHorizontalScrollbar);
-                        {
-                            ImGui::Text("Ask Orderbook:");
-                            ImGui::Columns(4, "orderbook_columns_asks");
-                            ImGui::Separator();
-                            ImGui::Text("Buy Coin");
-                            ImGui::NextColumn();
-                            ImGui::Text("Sell Coin");
-                            ImGui::NextColumn();
-                            ImGui::Text("%s", (locked_base + " Volume").c_str());
-                            ImGui::NextColumn();
-                            ImGui::Text("%s", (locked_rel + " price per " + locked_base).c_str());
-                            ImGui::NextColumn();
-                            ImGui::Separator();
-
-                            std::error_code ec;
-                            auto            book = mm2_system_.get_current_orderbook(ec);
-                            if (!ec)
+                            ImGui::Text("Choose Base coin");
+                            ImGui::SameLine();
+                            ImGui::SetCursorPosX(ImGui::GetCursorPosX() + remaining_width / 6);
+                            ImGui::Text("Choose Rel coin");
+                            ImGui::SetNextItemWidth(remaining_width / 6);
+                            if (ImGui::BeginCombo("##left", current_base.c_str()))
                             {
-                                // auto rng = ranges::views::concat(book.asks, book.bids);
-                                for (const ::mm2::api::order_contents& content: book.asks)
+                                auto coins = mm2_system_.get_enabled_coins();
+                                for (auto&& current: coins)
                                 {
-                                    ImGui::Text("%s", locked_base.c_str());
-                                    ImGui::NextColumn();
-                                    ImGui::Text("%s", locked_rel.c_str());
-                                    ImGui::NextColumn();
-                                    ImGui::Text("%s", content.maxvolume.c_str());
-                                    ImGui::NextColumn();
-                                    ImGui::Text("%s", content.price.c_str());
-                                    ImGui::NextColumn();
+                                    if (current.ticker == current_rel) continue;
+                                    const bool is_selected = current.ticker == current_base;
+                                    if (ImGui::Selectable(current.ticker.c_str(), is_selected)) { current_base = current.ticker; }
+                                    if (is_selected) { ImGui::SetItemDefaultFocus(); }
                                 }
-                            }
-                            else
-                            {
-                                DLOG_F(WARNING, "{}", ec.message());
+                                ImGui::EndCombo();
                             }
 
-                            ImGui::Columns(1);
-                            ImGui::NewLine();
-                            ImGui::Text("Bids Orderbook:");
-                            ImGui::Columns(4, "orderbook_columns_bids");
-                            ImGui::Separator();
-                            ImGui::Text("Buy Coin");
-                            ImGui::NextColumn();
-                            ImGui::Text("Sell Coin");
-                            ImGui::NextColumn();
-                            ImGui::Text("%s", (locked_rel + " Volume").c_str());
-                            ImGui::NextColumn();
-                            ImGui::Text("%s", (locked_rel + " price per " + locked_base).c_str());
-                            ImGui::NextColumn();
-                            ImGui::Separator();
-
-                            if (!ec)
+                            ImGui::SameLine();
+                            ImGui::SetNextItemWidth(remaining_width / 6);
+                            if (ImGui::BeginCombo("##right", current_rel.c_str()))
                             {
-                                for (const ::mm2::api::order_contents& content: book.bids)
+                                const auto coins = mm2_system_.get_enabled_coins();
+
+                                for (auto&& current: coins)
                                 {
-                                    ImGui::Text("%s", locked_rel.c_str());
-                                    ImGui::NextColumn();
-                                    ImGui::Text("%s", locked_base.c_str());
-                                    ImGui::NextColumn();
-                                    ImGui::Text("%s", content.maxvolume.c_str());
-                                    ImGui::NextColumn();
-                                    ImGui::Text("%s", content.price.c_str());
-                                    ImGui::NextColumn();
+                                    if (current.ticker == current_base) continue;
+                                    const bool is_selected = current.ticker == current_rel;
+                                    if (ImGui::Selectable(current.ticker.c_str(), is_selected)) { current_rel = current.ticker; }
+                                    if (is_selected) { ImGui::SetItemDefaultFocus(); }
                                 }
+
+                                ImGui::EndCombo();
                             }
-                            else
+                            ImGui::SameLine();
+                            if (ImGui::Button("Load") && not current_base.empty() && not current_rel.empty())
                             {
-                                DLOG_F(WARNING, "{}", ec.message());
+                                locked_base = current_base;
+                                locked_rel  = current_rel;
+                                this->dispatcher_.trigger<orderbook_refresh>(current_base, current_rel);
+                            }
+
+                            if (not locked_base.empty() && not locked_rel.empty())
+                            {
+                                ImGui::BeginChild(
+                                    "Orderbook Window", ImVec2(0, 400), true,
+                                    ImGuiWindowFlags_AlwaysVerticalScrollbar | ImGuiWindowFlags_AlwaysHorizontalScrollbar);
+                                {
+                                    ImGui::Text("Ask Orderbook:");
+                                    ImGui::Columns(4, "orderbook_columns_asks");
+                                    ImGui::Separator();
+                                    ImGui::Text("Buy Coin");
+                                    ImGui::NextColumn();
+                                    ImGui::Text("Sell Coin");
+                                    ImGui::NextColumn();
+                                    ImGui::Text("%s", (locked_base + " Volume").c_str());
+                                    ImGui::NextColumn();
+                                    ImGui::Text("%s", (locked_rel + " price per " + locked_base).c_str());
+                                    ImGui::NextColumn();
+                                    ImGui::Separator();
+
+                                    std::error_code ec;
+                                    auto            book = mm2_system_.get_current_orderbook(ec);
+                                    if (!ec)
+                                    {
+                                        // auto rng = ranges::views::concat(book.asks, book.bids);
+                                        for (const ::mm2::api::order_contents& content: book.asks)
+                                        {
+                                            ImGui::Text("%s", locked_base.c_str());
+                                            ImGui::NextColumn();
+                                            ImGui::Text("%s", locked_rel.c_str());
+                                            ImGui::NextColumn();
+                                            ImGui::Text("%s", content.maxvolume.c_str());
+                                            ImGui::NextColumn();
+                                            ImGui::Text("%s", content.price.c_str());
+                                            ImGui::NextColumn();
+                                        }
+                                    }
+                                    else
+                                    {
+                                        DLOG_F(WARNING, "{}", ec.message());
+                                    }
+
+                                    ImGui::Columns(1);
+                                    ImGui::NewLine();
+                                    ImGui::Text("Bids Orderbook:");
+                                    ImGui::Columns(4, "orderbook_columns_bids");
+                                    ImGui::Separator();
+                                    ImGui::Text("Buy Coin");
+                                    ImGui::NextColumn();
+                                    ImGui::Text("Sell Coin");
+                                    ImGui::NextColumn();
+                                    ImGui::Text("%s", (locked_rel + " Volume").c_str());
+                                    ImGui::NextColumn();
+                                    ImGui::Text("%s", (locked_rel + " price per " + locked_base).c_str());
+                                    ImGui::NextColumn();
+                                    ImGui::Separator();
+
+                                    if (!ec)
+                                    {
+                                        for (const ::mm2::api::order_contents& content: book.bids)
+                                        {
+                                            ImGui::Text("%s", locked_rel.c_str());
+                                            ImGui::NextColumn();
+                                            ImGui::Text("%s", locked_base.c_str());
+                                            ImGui::NextColumn();
+                                            ImGui::Text("%s", content.maxvolume.c_str());
+                                            ImGui::NextColumn();
+                                            ImGui::Text("%s", content.price.c_str());
+                                            ImGui::NextColumn();
+                                        }
+                                    }
+                                    else
+                                    {
+                                        DLOG_F(WARNING, "{}", ec.message());
+                                    }
+
+
+                                    ImGui::Columns(1);
+                                }
+                                ImGui::EndChild();
+
+
+                                ImGui::BeginChild("Buy/Sell Window", ImVec2(500, 500), true);
+                                {
+                                    ImGui::Text("Buy %s", locked_base.c_str());
+
+                                    ImGui::Text("Price: ");
+                                    ImGui::SameLine();
+                                    ImGui::SetNextItemWidth(200.f);
+
+                                    static char price_buf[20];
+                                    ImGui::InputText(
+                                        "##price", price_buf, IM_ARRAYSIZE(price_buf), ImGuiInputTextFlags_CallbackCharFilter, crypto_amount_filter, price_buf);
+
+                                    ImGui::Text("Amount: ");
+                                    ImGui::SameLine();
+                                    ImGui::SetNextItemWidth(200.f);
+                                    static char amount_buf[20];
+                                    ImGui::InputText(
+                                        "##amount", amount_buf, IM_ARRAYSIZE(amount_buf), ImGuiInputTextFlags_CallbackCharFilter, crypto_amount_filter,
+                                        amount_buf);
+                                    ImGui::Text("Total: ");
+                                    std::string total          = "";
+                                    std::string current_price  = price_buf;
+                                    std::string current_amount = amount_buf;
+                                    t_float_50  total_balance;
+                                    if (not current_price.empty() && not current_amount.empty())
+                                    {
+                                        boost::multiprecision::cpp_dec_float_50 current_price_f(current_price);
+                                        boost::multiprecision::cpp_dec_float_50 current_amount_f(current_amount);
+                                        total_balance = current_price_f * current_amount_f;
+                                        total         = total_balance.convert_to<std::string>();
+                                    }
+                                    ImGui::SameLine();
+                                    ImGui::InputText("##total", total.data(), total.size(), ImGuiInputTextFlags_ReadOnly);
+                                    std::string button_text = "BUY " + locked_base;
+
+                                    bool enable = mm2_system_.do_i_have_enough_funds(locked_rel, total_balance);
+
+                                    if (not enable)
+                                    {
+                                        std::error_code ec;
+                                        ImGui::TextColored(
+                                            error_color, "You don't have enough funds, you have %s %s",
+                                            mm2_system_.my_balance_with_locked_funds(locked_rel, ec).c_str(), locked_rel.c_str());
+                                        ImGui::PushItemFlag(ImGuiItemFlags_Disabled, true);
+                                        ImGui::PushStyleVar(ImGuiStyleVar_Alpha, ImGui::GetStyle().Alpha * 0.5f);
+                                    }
+                                    if (ImGui::Button(button_text.c_str()))
+                                    {
+                                        t_buy_request   request{.base = locked_base, .rel = locked_rel, .price = current_price, .volume = current_amount};
+                                        std::error_code ec;
+                                        mm2_system_.place_buy_order(std::move(request), total_balance, ec);
+                                        if (ec) { LOG_F(ERROR, "{}", ec.message()); }
+                                    }
+                                    if (not enable)
+                                    {
+                                        ImGui::PopItemFlag();
+                                        ImGui::PopStyleVar();
+                                    }
+                                }
+                                ImGui::EndChild();
+
+                                ImGui::SameLine();
+                                ImGui::BeginChild("Sell Window", ImVec2(500, 500), true);
+                                {
+                                    ImGui::Text("Sell %s", locked_base.c_str());
+
+                                    ImGui::Text("Price: ");
+                                    ImGui::SameLine();
+                                    ImGui::SetNextItemWidth(200.f);
+
+                                    static char price_buf[20];
+                                    ImGui::InputText(
+                                        "##price", price_buf, IM_ARRAYSIZE(price_buf), ImGuiInputTextFlags_CallbackCharFilter, crypto_amount_filter, price_buf);
+
+                                    ImGui::Text("Amount: ");
+                                    ImGui::SameLine();
+                                    ImGui::SetNextItemWidth(200.f);
+                                    static char amount_buf[20];
+                                    ImGui::InputText(
+                                        "##amount", amount_buf, IM_ARRAYSIZE(amount_buf), ImGuiInputTextFlags_CallbackCharFilter, crypto_amount_filter,
+                                        amount_buf);
+                                    ImGui::Text("Total: ");
+                                    std::string total          = "";
+                                    std::string current_price  = price_buf;
+                                    std::string current_amount = amount_buf;
+                                    t_float_50  total_balance  = 0;
+                                    if (not current_price.empty() && not current_amount.empty())
+                                    {
+                                        boost::multiprecision::cpp_dec_float_50 current_price_f(current_price);
+                                        boost::multiprecision::cpp_dec_float_50 current_amount_f(current_amount);
+                                        total_balance = current_price_f * current_amount_f;
+                                        total         = total_balance.convert_to<std::string>();
+                                    }
+                                    ImGui::SameLine();
+                                    ImGui::InputText("##total", total.data(), total.size(), ImGuiInputTextFlags_ReadOnly);
+                                    std::string button_text = "SELL " + locked_base;
+
+                                    bool enable = mm2_system_.do_i_have_enough_funds(locked_base, total_balance);
+
+                                    if (not enable)
+                                    {
+                                        std::error_code ec;
+                                        ImGui::TextColored(
+                                            error_color, "You don't have enough funds, you have %s %s",
+                                            mm2_system_.my_balance_with_locked_funds(locked_base, ec).c_str(), locked_base.c_str());
+                                        ImGui::PushItemFlag(ImGuiItemFlags_Disabled, true);
+                                        ImGui::PushStyleVar(ImGuiStyleVar_Alpha, ImGui::GetStyle().Alpha * 0.5f);
+                                    }
+                                    if (ImGui::Button(button_text.c_str())) {}
+                                    if (not enable)
+                                    {
+                                        ImGui::PopItemFlag();
+                                        ImGui::PopStyleVar();
+                                    }
+                                }
+                                ImGui::EndChild();
                             }
 
 
-                            ImGui::Columns(1);
+                            ImGui::EndTabItem();
                         }
-                        ImGui::EndChild();
 
 
-                        ImGui::BeginChild("Buy/Sell Window", ImVec2(500, 500), true);
-                        {
-                            ImGui::Text("Buy %s", locked_base.c_str());
-
-                            ImGui::Text("Price: ");
-                            ImGui::SameLine();
-                            ImGui::SetNextItemWidth(200.f);
-
-                            static char price_buf[20];
-                            ImGui::InputText("##price", price_buf, IM_ARRAYSIZE(price_buf), ImGuiInputTextFlags_CallbackCharFilter, crypto_amount_filter, price_buf);
-
-                            ImGui::Text("Amount: ");
-                            ImGui::SameLine();
-                            ImGui::SetNextItemWidth(200.f);
-                            static char amount_buf[20];
-                            ImGui::InputText("##amount", amount_buf, IM_ARRAYSIZE(amount_buf), ImGuiInputTextFlags_CallbackCharFilter, crypto_amount_filter, amount_buf);
-                            ImGui::Text("Total: ");
-                            std::string total          = "";
-                            std::string current_price  = price_buf;
-                            std::string current_amount = amount_buf;
-                            t_float_50  total_balance;
-                            if (not current_price.empty() && not current_amount.empty())
-                            {
-                                boost::multiprecision::cpp_dec_float_50 current_price_f(current_price);
-                                boost::multiprecision::cpp_dec_float_50 current_amount_f(current_amount);
-                                total_balance = current_price_f * current_amount_f;
-                                total         = total_balance.convert_to<std::string>();
-                            }
-                            ImGui::SameLine();
-                            ImGui::InputText("##total", total.data(), total.size(), ImGuiInputTextFlags_ReadOnly);
-                            std::string button_text = "BUY " + locked_base;
-
-                            bool enable = mm2_system_.do_i_have_enough_funds(locked_rel, total_balance);
-
-                            if (not enable)
-                            {
-                                std::error_code ec;
-                                ImGui::TextColored(error_color, "You don't have enough funds, you have %s %s",
-                                    mm2_system_.my_balance_with_locked_funds(locked_rel, ec).c_str(), locked_rel.c_str());
-                                ImGui::PushItemFlag(ImGuiItemFlags_Disabled, true);
-                                ImGui::PushStyleVar(ImGuiStyleVar_Alpha, ImGui::GetStyle().Alpha * 0.5f);
-                            }
-                            if (ImGui::Button(button_text.c_str()))
-                            {
-                                t_buy_request   request{.base = locked_base, .rel = locked_rel, .price = current_price, .volume = current_amount};
-                                std::error_code ec;
-                                mm2_system_.place_buy_order(std::move(request), total_balance, ec);
-                                if (ec) { LOG_F(ERROR, "{}", ec.message()); }
-                            }
-                            if (not enable)
-                            {
-                                ImGui::PopItemFlag();
-                                ImGui::PopStyleVar();
-                            }
+                        if (ImGui::BeginTabItem("Orders")) {
+                            ImGui::Text("Work in progress");
+                            ImGui::EndTabItem();
                         }
-                        ImGui::EndChild();
 
-                        ImGui::SameLine();
-                        ImGui::BeginChild("Sell Window", ImVec2(500, 500), true);
-                        {
-                            ImGui::Text("Sell %s", locked_base.c_str());
-
-                            ImGui::Text("Price: ");
-                            ImGui::SameLine();
-                            ImGui::SetNextItemWidth(200.f);
-
-                            static char price_buf[20];
-                            ImGui::InputText("##price", price_buf, IM_ARRAYSIZE(price_buf), ImGuiInputTextFlags_CallbackCharFilter, crypto_amount_filter, price_buf);
-
-                            ImGui::Text("Amount: ");
-                            ImGui::SameLine();
-                            ImGui::SetNextItemWidth(200.f);
-                            static char amount_buf[20];
-                            ImGui::InputText("##amount", amount_buf, IM_ARRAYSIZE(amount_buf), ImGuiInputTextFlags_CallbackCharFilter, crypto_amount_filter, amount_buf);
-                            ImGui::Text("Total: ");
-                            std::string total          = "";
-                            std::string current_price  = price_buf;
-                            std::string current_amount = amount_buf;
-                            t_float_50  total_balance  = 0;
-                            if (not current_price.empty() && not current_amount.empty())
-                            {
-                                boost::multiprecision::cpp_dec_float_50 current_price_f(current_price);
-                                boost::multiprecision::cpp_dec_float_50 current_amount_f(current_amount);
-                                total_balance = current_price_f * current_amount_f;
-                                total         = total_balance.convert_to<std::string>();
-                            }
-                            ImGui::SameLine();
-                            ImGui::InputText("##total", total.data(), total.size(), ImGuiInputTextFlags_ReadOnly);
-                            std::string button_text = "SELL " + locked_base;
-
-                            bool enable = mm2_system_.do_i_have_enough_funds(locked_base, total_balance);
-
-                            if (not enable)
-                            {
-                                std::error_code ec;
-                                ImGui::TextColored(error_color, "You don't have enough funds, you have %s %s",
-                                    mm2_system_.my_balance_with_locked_funds(locked_base, ec).c_str(), locked_base.c_str());
-                                ImGui::PushItemFlag(ImGuiItemFlags_Disabled, true);
-                                ImGui::PushStyleVar(ImGuiStyleVar_Alpha, ImGui::GetStyle().Alpha * 0.5f);
-                            }
-                            if (ImGui::Button(button_text.c_str())) {}
-                            if (not enable)
-                            {
-                                ImGui::PopItemFlag();
-                                ImGui::PopStyleVar();
-                            }
+                        if (ImGui::BeginTabItem("History")) {
+                            ImGui::Text("Work in progress");
+                            ImGui::EndTabItem();
                         }
-                        ImGui::EndChild();
+
+                        ImGui::EndTabBar();
                     }
-
-
                     ImGui::EndTabItem();
                 }
 
-                // If entered trade,
-                if (!in_trade_prev && in_trade) { this->dispatcher_.trigger<gui_enter_trading>(); }
-                else if (in_trade_prev && !in_trade)
+                // If entered exchange,
+                if (!in_exchange_prev && in_exchange) { this->dispatcher_.trigger<gui_enter_trading>(); }
+                else if (in_exchange_prev && !in_exchange)
                 {
                     this->dispatcher_.trigger<gui_leave_trading>();
                 }
-                in_trade_prev = in_trade;
+                in_exchange_prev = in_exchange;
 
                 ImGui::EndTabBar();
             }
