@@ -1,6 +1,8 @@
 import os, osproc
 import marshal
 import json
+import threadpool
+import ../gui/gui
 import ../utils/assets
 
 type
@@ -17,14 +19,20 @@ var mm2_instance : Process = nil
 proc set_passphrase*(passphrase: string) =
     mm2_cfg.passphrase = passphrase
 
+proc mm2_init_thread() =
+    {.gcsafe.}:
+        var tools_path = (get_assets_path() & "/tools/mm2").normalizedPath
+        try: 
+            mm2_instance = startProcess(command=tools_path & "/mm2", args=[$$mm2_cfg], env = nil, options={poParentStreams}, workingDir=tools_path)
+        except OSError as e:
+            echo "Got exception OSError with message ", e.msg
+        finally:
+            echo "Fine."
+        sleep(2000)
+        gui.set_gui_running(true)
+
 proc init_process*()  =
-    var tools_path = (get_assets_path() & "/tools/mm2").normalizedPath
-    try: 
-        mm2_instance = startProcess(command=tools_path & "/mm2", args=[$$mm2_cfg], env = nil, options={poParentStreams}, workingDir=tools_path)
-    except OSError as e:
-        echo "Got exception OSError with message ", e.msg
-    finally:
-        echo "Fine."
+    spawn mm2_init_thread()
 
 proc close_process*() =
     if not mm2_instance.isNil:

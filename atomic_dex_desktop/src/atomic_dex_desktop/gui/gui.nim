@@ -1,16 +1,18 @@
 import ui_workflow_nim
+import std/atomics
+import ./widgets
 
 var
   is_open = true
-  mm2_is_running = true
+  mm2_is_running* : Atomic[bool] 
+
+mm2_is_running.store(false, moRelaxed)
+
+let
+  bright_color = ImVec4(x: 0.0, y: 149.0 / 255.0, z: 143.0 / 255.0, w: 1.0)
+  dark_color = ImVec4(x: 25.0 / 255.0, y: 40.0 / 255.0, z: 56.0 / 255.0, w: 1.0)
 
 proc set_komodo_style*() =
-  let
-    bright_color = ImVec4(x: 0.0, y: 149.0 / 255.0, z: 143.0 /
-                    255.0, w: 1.0)
-    dark_color = ImVec4(x: 25.0 / 255.0, y: 40.0 / 255.0, z: 56.0 /
-                    255.0, w: 1.0)
-
   var style = igGetStyle()
   style.frameRounding = 4.0
   style.grabRounding = 4.0
@@ -135,7 +137,13 @@ proc set_komodo_style*() =
   style.colors[ImGuiCol.Header.int32] = bright_color
 
 proc waiting_view() =
-  echo "Waiting view"
+  igText("Loading, please wait...")
+  let
+    radius = 30.0
+    pos = ImVec2(x: igGetWindowSize().x * 0.5f - radius, y: igGetWindowSize().y * 0.5f - radius)
+  igSetCursorPos(pos)
+  loadingIndicatorCircle("foo", radius, bright_color, dark_color, 9, 1.5)
+
 
 proc main_menu_bar() =
   if igBeginMenuBar():
@@ -143,35 +151,40 @@ proc main_menu_bar() =
       echo "Open"
     igEndMenuBar()
   else:
-    echo "Nop"  
+    echo "Nop"
 
 proc portfolio_enable_coin_view() =
-    if igButton("Enable a coin"): 
-      igOpenPopup("Enable coins")
-    var popup_is_open = true
-    if igBeginPopupModal("Enable coins", addr popup_is_open, (ImGuiWindowFlags.AlwaysAutoResize.int32 or ImGuiWindowFlags.NoMove.int32).ImGuiWindowFlags):
-      if not popup_is_open:
-        igCloseCurrentPopup()
-      igEndPopup()
+  if igButton("Enable a coin"):
+    igOpenPopup("Enable coins")
+  var popup_is_open = true
+  if igBeginPopupModal("Enable coins", addr popup_is_open, (ImGuiWindowFlags.AlwaysAutoResize.int32 or
+      ImGuiWindowFlags.NoMove.int32).ImGuiWindowFlags):
+    if not popup_is_open:
+      igCloseCurrentPopup()
+    igEndPopup()
 
 proc portfolio_view() =
-    igText("Total Balance: 0 USD")
-    portfolio_enable_coin_view()
+  igText("Total Balance: 0 USD")
+  portfolio_enable_coin_view()
 
 proc main_view() =
-    main_menu_bar()
-    if igBeginTabBar("##Tabs", ImGuiTabBarFlags.None):
-      if (igBeginTabItem("Portfolio")):
-        portfolio_view()
-        igEndTabItem()
-      igEndTabBar()
+  main_menu_bar()
+  if igBeginTabBar("##Tabs", ImGuiTabBarFlags.None):
+    if (igBeginTabItem("Portfolio")):
+      portfolio_view()
+      igEndTabItem()
+    igEndTabBar()
+
+proc set_gui_running*(data: bool) =
+  mm2_is_running.store(data)
 
 proc update*(ctx: ptr t_antara_ui) =
   igSetNextWindowSize(ImVec2(x: 1280, y: 720), ImGuiCond.FirstUseEver)
-  igBegin("atomicDex", addr is_open, (ImGuiWindowFlags.NoCollapse.int32 or ImGuiWindowFlags.MenuBar.int32).ImGuiWindowFlags)
+  igBegin("atomicDex", addr is_open, (ImGuiWindowFlags.NoCollapse.int32 or
+      ImGuiWindowFlags.MenuBar.int32).ImGuiWindowFlags)
   if not is_open:
     antara_close_window(ctx)
-  if not mm2_is_running:
+  if mm2_is_running.load() == false:
     waiting_view()
   else:
     main_view()

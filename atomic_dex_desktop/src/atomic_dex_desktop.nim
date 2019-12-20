@@ -16,7 +16,6 @@ proc main() =
   gui.set_komodo_style()
   while antara_is_running(ctx) == 0:
     antara_pre_update(ctx)
-    #antara_show_demo(ctx)
     gui.update(ctx)
     antara_update(ctx)
 
