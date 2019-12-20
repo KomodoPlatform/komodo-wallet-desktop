@@ -32,6 +32,7 @@ jsonSchema:
     active: bool
     currently_enabled: bool
 
+export ElectrumServerParams
 var coins_registry: ConcurrentReg[string, CoinConfigParams]
 
 template whenValid*(data, kind, body) =

@@ -2,6 +2,7 @@ import os, osproc
 import marshal
 import json
 import threadpool
+import ./worker
 import ../gui/gui
 import ../utils/assets
 
@@ -33,6 +34,8 @@ proc mm2_init_thread() =
 
 proc init_process*()  =
     spawn mm2_init_thread()
+    sync()
+    launchMM2Worker()
 
 proc close_process*() =
     if not mm2_instance.isNil:
