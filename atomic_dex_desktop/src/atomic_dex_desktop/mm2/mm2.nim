@@ -5,6 +5,7 @@ import threadpool
 import ./worker
 import ../gui/gui
 import ../utils/assets
+import ../coins/coins_cfg
 import ./api
 
 type
@@ -33,16 +34,21 @@ proc mm2_init_thread() =
         sleep(2000)
         gui.set_gui_running(true)
 
+proc enable_default_coins() =
+    var coins = get_active_coins()
+    for _, v in coins:
+        echo v["coin"]
+
 proc init_process*()  =
     spawn mm2_init_thread()
     sync()
+    enable_default_coins()
     launchMM2Worker()
 
 proc close_process*() =
     if not mm2_instance.isNil:
         mm2_instance.terminate
         mm2_instance.close
-
 
 proc enable_coin*(ticker: string) =
     echo "lol"
