@@ -101,21 +101,37 @@ namespace
 namespace
 {
     void
-    gui_coin_name_img(const atomic_dex::gui& gui, const atomic_dex::coin_config& asset)
+    gui_coin_name_img(const atomic_dex::gui& gui, const std::string ticker, const std::string name = "", bool name_first = false)
     {
         const auto& icons = gui.get_icons();
-        const auto& img = icons.at(asset.ticker);
+        const auto& img = icons.at(ticker);
+
+        const auto text = !name.empty() ? name : ticker;
+        if(name_first) {
+            ImGui::TextWrapped("%s", text.c_str());
+            ImGui::SameLine();
+            ImGui::SetCursorPosX(ImGui::GetCursorPos().x + 5.f);
+        }
 
         auto orig_text_pos = ImGui::GetCursorPos();
         const float custom_img_size = img.height * 0.8f;
         ImGui::SetCursorPos({ImGui::GetCursorPos().x, ImGui::GetCursorPos().y - (custom_img_size - ImGui::GetFont()->FontSize * 1.15f) * 0.5f});
         ImGui::Image(reinterpret_cast<void*>(static_cast<intptr_t>(img.id)), ImVec2{custom_img_size, custom_img_size});
-        auto pos_after_img = ImGui::GetCursorPos();
-        ImGui::SameLine();
-        ImGui::SetCursorPos(orig_text_pos);
-        ImGui::SetCursorPosX(ImGui::GetCursorPos().x + custom_img_size + 5.f);
-        ImGui::TextWrapped("%s", asset.name.c_str());
-        ImGui::SetCursorPos(pos_after_img);
+
+        if(!name_first) {
+            auto pos_after_img = ImGui::GetCursorPos();
+            ImGui::SameLine();
+            ImGui::SetCursorPos(orig_text_pos);
+            ImGui::SetCursorPosX(ImGui::GetCursorPos().x + custom_img_size + 5.f);
+            ImGui::TextWrapped("%s", text.c_str());
+            ImGui::SetCursorPos(pos_after_img);
+        }
+    }
+
+    void
+    gui_coin_name_img(const atomic_dex::gui& gui, const atomic_dex::coin_config& asset)
+    {
+        gui_coin_name_img(gui, asset.ticker, asset.name);
     }
 
     void
@@ -420,6 +436,30 @@ namespace
             }
         }
         ImGui::EndChild();
+    }
+
+    void gui_orders_list(atomic_dex::gui& gui, const std::map<std::size_t, mm2::api::my_order_contents>& orders) {
+        for(auto it = orders.begin(); it != orders.end(); ++it) {
+            auto& info = it->second;
+
+            gui_coin_name_img(gui, info.base);
+            ImGui::SameLine();
+            ImGui::SetCursorPosX(180);
+            ImGui::Text("< >");
+            ImGui::SameLine();
+            ImGui::SetCursorPosX(300);
+            gui_coin_name_img(gui, info.rel, "", true);
+
+            ImGui::TextColored(loss_color, "%s %s", info.available_amount.c_str(), info.base.c_str());
+
+            ImGui::TextColored(value_color, "Price: %s", info.price.c_str());
+            ImGui::SameLine(250);
+            ImGui::TextColored(value_color, "%s", info.human_timestamp.c_str());
+            ImGui::TextColored(value_color, "Order ID: %s", info.order_id.c_str());
+
+            auto next = it;
+            if(++next != orders.end()) ImGui::Separator();
+        }
     }
 
     void
@@ -896,7 +936,41 @@ namespace atomic_dex
 
 
                         if (ImGui::BeginTabItem("Orders")) {
-                            ImGui::Text("Work in progress");
+                            static std::string current_base;
+
+                            if (ImGui::BeginCombo("##left", current_base.c_str()))
+                            {
+                                auto coins = mm2_system_.get_enabled_coins();
+                                for (auto&& current: coins)
+                                {
+                                    const bool is_selected = current.ticker == current_base;
+                                    if (ImGui::Selectable(current.ticker.c_str(), is_selected)) { current_base = current.ticker; }
+                                    if (is_selected) { ImGui::SetItemDefaultFocus(); }
+                                }
+                                ImGui::EndCombo();
+                            }
+                            if(current_base.empty()) ImGui::Text("Please select a coin to see the orders");
+
+                            if(!current_base.empty()) {
+                                std::error_code ec;
+                                auto orders = mm2_system_.get_orders(current_base, ec);
+
+                                // Maker
+                                if(!orders.maker_orders.empty()) {
+                                    ImGui::TextColored(bright_color, "Maker Orders (%lu)", orders.maker_orders.size());
+                                    gui_orders_list(*this, orders.maker_orders);
+
+                                    if(!orders.taker_orders.empty()) ImGui::Separator();
+                                }
+
+                                // Trader
+                                if(!orders.taker_orders.empty()) {
+                                    ImGui::TextColored(bright_color, "Taker Orders (%lu)", orders.taker_orders.size());
+                                    gui_orders_list(*this, orders.taker_orders);
+                                }
+                            }
+
+
                             ImGui::EndTabItem();
                         }
 
