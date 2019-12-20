@@ -12,7 +12,7 @@ let g_endpoint = "http://127.0.0.1:7783"
 
 jsonSchema:
     ElectrumRequestParams:
-        coin_name: string
+        coin: string
         servers: ElectrumServerParams[]
         with_tx_history : bool
     ElectrumAnswerSuccess:
@@ -24,6 +24,7 @@ jsonSchema:
         
 export ElectrumRequestParams
 export `[]`
+export `create`
 export ElectrumAnswerSuccess
 export ElectrumAnswerError
 
@@ -46,6 +47,7 @@ proc rpc_electrum*(req: ElectrumRequestParams) : ElectrumAnswer =
     client.headers = newHttpHeaders({ "Content-Type": "application/json" })
     let jsonData = req.JsonNode
     templateRequest(jsonData, "electrum")
+    echo $jsonData
     let response = client.request(g_endpoint, httpMethod = HttpPost, body = $jsonData)
     let json = parseJson(response.body)
     var res: ElectrumAnswer
