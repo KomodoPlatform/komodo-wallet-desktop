@@ -54,11 +54,15 @@ namespace
 // Helpers
 namespace
 {
-    ImVec4 success_color(128.f / 255.f, 128.f / 255.f, 128.f / 255.f, 1.f);
     ImVec4 value_color(128.f / 255.f, 128.f / 255.f, 128.f / 255.f, 1.f);
     ImVec4 bright_color{0, 149.f / 255.f, 143.f / 255.f, 1};
     ImVec4 dark_color{25.f / 255.f, 40.f / 255.f, 56.f / 255.f, 1};
+
+    ImVec4 success_color(128.f / 255.f, 128.f / 255.f, 128.f / 255.f, 1.f);
     ImVec4 error_color{255.f / 255.f, 20.f / 255.f, 20.f / 255.f, 1};
+
+    ImVec4 loss_color{1, 52.f / 255.f, 0, 1.f};
+    ImVec4 gain_color{80.f / 255.f, 1, 118.f / 255.f, 1.f};
 
     std::string
     usd_str(const std::string& amt)
@@ -170,7 +174,7 @@ namespace
 
             ImGui::Text("%s", tx.am_i_sender ? "Sent" : "Received");
             ImGui::TextColored(
-                ImVec4(tx.am_i_sender ? ImVec4(1, 52.f / 255.f, 0, 1.f) : ImVec4(80.f / 255.f, 1, 118.f / 255.f, 1.f)), "%s%s %s", tx.am_i_sender ? "" : "+",
+                ImVec4(tx.am_i_sender ? loss_color : gain_color), "%s%s %s", tx.am_i_sender ? "" : "+",
                 tx.my_balance_change.c_str(), curr_asset.ticker.c_str());
             ImGui::SameLine(300);
             ImGui::TextColored(value_color, "%s", usd_str(paprika_system.get_price_in_fiat_from_tx("USD", curr_asset.ticker, tx, ec)).c_str());
@@ -259,7 +263,7 @@ namespace
                                 ImGui::Text("%s", tx.timestamp == 0 ? "" : tx.date.c_str());
                                 ImGui::SameLine(300);
                                 ImGui::TextColored(
-                                    ImVec4(tx.am_i_sender ? ImVec4(1, 52.f / 255.f, 0, 1.f) : ImVec4(80.f / 255.f, 1, 118.f / 255.f, 1.f)), "%s%s %s",
+                                    ImVec4(tx.am_i_sender ? loss_color : gain_color), "%s%s %s",
                                     tx.am_i_sender ? "" : "+", tx.my_balance_change.c_str(), curr_asset.ticker.c_str());
                                 ImGui::TextColored(value_color, "%s", tx.am_i_sender ? tx.to[0].c_str() : tx.from[0].c_str());
                                 ImGui::SameLine(300);
