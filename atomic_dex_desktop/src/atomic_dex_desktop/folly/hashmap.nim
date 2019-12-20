@@ -7,6 +7,16 @@ when defined(windows):
 when defined(macosx):
   {.passL: "-L" & os.getEnv("VCPKG_ROOT") & "/installed/x64-osx/lib -lfolly -ldouble-conversion -lgflags -lglog".}
   {.passC: "-std=c++17 -I" & os.getEnv("VCPKG_ROOT") & "/installed/x64-osx/include".}
+  when defined(sanitizer):
+    {.emit: """
+    #include <folly/SharedMutex.h>
+    namespace folly
+    {
+        // Explicitly instantiate SharedMutex here:
+        template class SharedMutexImpl<true>;
+        template class SharedMutexImpl<false>;
+    } 
+""".}
 
 when defined(linux):
   {.passL: "-L" & os.getEnv("VCPKG_ROOT") & "/installed/x64-linux/lib -lfolly -pthread -ldouble-conversion -lglog -lgflags".}

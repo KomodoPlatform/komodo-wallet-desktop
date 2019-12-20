@@ -4,6 +4,10 @@ import atomic_dex_desktop/gui/gui
 import atomic_dex_desktop/coins/coins_cfg
 import ui_workflow_nim
 
+when defined(sanitizer) and defined(macosx):
+  {.passC: "-fsanitize=thread -fno-omit-frame-pointer"}
+  {.passL: "-fsanitize=thread -fno-omit-frame-pointer"}
+
 proc main() =
   coins_cfg.parse_cfg()
   mm2.init_process()
