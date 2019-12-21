@@ -740,7 +740,7 @@ namespace atomic_dex
 
                             if (not locked_base.empty() && not locked_rel.empty())
                             {
-                                ImGui::BeginChild("Sell Window", ImVec2(0, 0), true);
+                                ImGui::BeginChild("Sell Window", ImVec2(0, 300), true);
                                 {
                                     ImGui::Text("Sell %s", locked_base.c_str());
 
@@ -759,21 +759,18 @@ namespace atomic_dex
                                     ImGui::InputText(
                                         "##amount", amount_buf, IM_ARRAYSIZE(amount_buf), ImGuiInputTextFlags_CallbackCharFilter, crypto_amount_filter,
                                         amount_buf);
-                                    ImGui::Text("Total: ");
                                     std::string total;
                                     std::string current_price  = price_buf;
                                     std::string current_amount = amount_buf;
                                     boost::multiprecision::cpp_dec_float_50 current_price_f{};
                                     boost::multiprecision::cpp_dec_float_50 current_amount_f{};
-                                    if (not current_price.empty() && not current_amount.empty())
+                                    bool fields_are_filled = not current_price.empty() && not current_amount.empty();
+                                    if (fields_are_filled)
                                     {
                                         current_price_f.assign(current_price);
                                         current_amount_f.assign(current_amount);
                                         total = (current_price_f * current_amount_f).convert_to<std::string>();
                                     }
-                                    ImGui::SameLine();
-                                    ImGui::Text("%s", total.c_str());
-                                    std::string button_text = "SELL " + locked_base;
 
                                     bool enable = mm2_system_.do_i_have_enough_funds(locked_base, current_amount_f);
 
@@ -786,7 +783,11 @@ namespace atomic_dex
                                         ImGui::PushItemFlag(ImGuiItemFlags_Disabled, true);
                                         ImGui::PushStyleVar(ImGuiStyleVar_Alpha, ImGui::GetStyle().Alpha * 0.5f);
                                     }
-                                    if (ImGui::Button(button_text.c_str())) {}
+                                    else {
+                                        ImGui::TextColored(bright_color, "You'll receive %s %s", total.c_str(), locked_rel.c_str());
+                                    }
+
+                                    if (ImGui::Button(("SELL " + locked_base).c_str())) {}
                                     if (not enable)
                                     {
                                         ImGui::PopItemFlag();
