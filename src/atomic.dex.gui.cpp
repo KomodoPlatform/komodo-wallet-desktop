@@ -744,21 +744,18 @@ namespace atomic_dex
                                 {
                                     ImGui::Text("Sell %s", locked_base.c_str());
 
-                                    ImGui::Text("Price: ");
-                                    ImGui::SameLine();
-                                    ImGui::SetNextItemWidth(200.f);
-
                                     static char price_buf[20];
-                                    ImGui::InputText(
-                                        "##price", price_buf, IM_ARRAYSIZE(price_buf), ImGuiInputTextFlags_CallbackCharFilter, crypto_amount_filter, price_buf);
-
-                                    ImGui::Text("Amount: ");
-                                    ImGui::SameLine();
-                                    ImGui::SetNextItemWidth(200.f);
                                     static char amount_buf[20];
-                                    ImGui::InputText(
-                                        "##amount", amount_buf, IM_ARRAYSIZE(amount_buf), ImGuiInputTextFlags_CallbackCharFilter, crypto_amount_filter,
-                                        amount_buf);
+
+                                    ImGui::PushID("Price");
+                                    ImGui::InputText("Price", price_buf, IM_ARRAYSIZE(price_buf), ImGuiInputTextFlags_CallbackCharFilter, crypto_amount_filter, price_buf);
+                                    ImGui::PopID();
+
+                                    ImGui::PushID("Amount");
+                                    ImGui::InputText("Amount", amount_buf, IM_ARRAYSIZE(amount_buf), ImGuiInputTextFlags_CallbackCharFilter, crypto_amount_filter, amount_buf);
+                                    ImGui::PopID();
+
+
                                     std::string total;
                                     std::string current_price  = price_buf;
                                     std::string current_amount = amount_buf;
@@ -784,7 +781,7 @@ namespace atomic_dex
                                         ImGui::PushStyleVar(ImGuiStyleVar_Alpha, ImGui::GetStyle().Alpha * 0.5f);
                                     }
                                     else {
-                                        ImGui::TextColored(bright_color, "You'll receive %s %s", total.c_str(), locked_rel.c_str());
+                                        if(fields_are_filled) ImGui::TextColored(bright_color, "You'll receive %s %s", total.c_str(), locked_rel.c_str());
                                     }
 
                                     if (ImGui::Button(("SELL " + locked_base).c_str())) {}
