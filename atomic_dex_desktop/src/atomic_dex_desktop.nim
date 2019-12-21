@@ -4,15 +4,21 @@ import atomic_dex_desktop/gui/gui
 import atomic_dex_desktop/coins/coins_cfg
 import ui_workflow_nim
 
-when defined(sanitizer) and defined(macosx):
+when defined(tsanitizer) and defined(macosx):
   {.passC: "-fsanitize=thread -fno-omit-frame-pointer"}
   {.passL: "-fsanitize=thread -fno-omit-frame-pointer"}
 
+when defined(asanitizer) and defined(macosx):
+  {.passC: "-fsanitize=address -fno-omit-frame-pointer"}
+  {.passL: "-fsanitize=address -fno-omit-frame-pointer"}
+
 proc main() =
+  
   coins_cfg.parse_cfg()
   mm2.init_process()
   defer: mm2.close_process()
   var ctx = antara_ui_create("AtomicDex", 200, 200)
+  gui.init(ctx)
   defer: antara_ui_destroy(ctx)
   echo get_assets_path() & "/fonts/Ruda-Bold.ttf"
   antara_load_font(ctx, get_assets_path() & "/fonts/Ruda-Bold.ttf", 15.0)

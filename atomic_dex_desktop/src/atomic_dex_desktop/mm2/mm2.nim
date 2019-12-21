@@ -28,7 +28,8 @@ proc set_passphrase*(passphrase: string) =
 
 proc enable_coin*(ticker: string) =
     {.gcsafe.}:
-        var coin_info = coins_registry.cm_at(ticker.hash)
+        echo "lol"
+        var coin_info = get_coin_info(ticker)
         if coin_info["currently_enabled"].getBool:
             return
         var res: seq[ElectrumServerParams]
@@ -38,14 +39,19 @@ proc enable_coin*(ticker: string) =
         var answer = rpc_electrum(req)
         if answer.error.isSome:
             echo answer.error.get()["error"].getStr
-
+        else:
+            var current : CoinConfigParams
+            deepCopy(current, coin_info)
+            current.JsonNode["currently_enabled"] = newJBool(true)
+            update_coin_info(ticker, coin_info, current)
+            #GC_unref(coin_info)
     
 
 proc enable_default_coins() =
     var coins = get_active_coins()
     for _, v in coins:
-        spawn enable_coin(v["coin"].getStr)
-    sync()    
+        enable_coin(v["coin"].getStr)
+    #sync()    
 
 proc mm2_init_thread() =
     {.gcsafe.}:

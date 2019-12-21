@@ -1,10 +1,23 @@
 import ui_workflow_nim
 import std/atomics
+import asyncdispatch
+import sequtils
+import hashes
+import json
+import strutils
+import os
+import ../coins/coins_cfg
+import ../utils/assets
+import ../folly/hashmap
+import ../utils/utility
 import ./widgets
 
 var
   is_open = true
+  cur_asset_ticker = "" 
   mm2_is_running* : Atomic[bool] 
+  icons: ConcurrentReg[int, t_antara_image]
+  enableable_coins_select_list: seq[bool]
 
 mm2_is_running.store(false, moRelaxed)
 
@@ -156,16 +169,73 @@ proc main_menu_bar() =
 proc portfolio_enable_coin_view() =
   if igButton("Enable a coin"):
     igOpenPopup("Enable coins")
-  var popup_is_open = true
+  var 
+    popup_is_open = true
+    close = false
   if igBeginPopupModal("Enable coins", addr popup_is_open, (ImGuiWindowFlags.AlwaysAutoResize.int32 or
       ImGuiWindowFlags.NoMove.int32).ImGuiWindowFlags):
-    if not popup_is_open:
+    var coins = get_enableable_coins()
+    igText(coins.len == 0 ?  "All coins are already enabled!" ! "Select the coins you want to add to your portfolio.")
+    if coins.len == 0:
+      igSeparator()
+    var select_list = enableable_coins_select_list
+    if coins.len > select_list.len:
+      select_list.setLen(coins.len)
+    for i, coin in coins:
+      if igSelectable(coin["name"].getStr & " (" & coin["coin"].getStr & ")", select_list[i], ImGuiSelectableFlags.DontClosePopups):
+        select_list[i] = not select_list[i]
+    if coins.len == 0 and igButton("Close"):
+        close = true
+    else:
+      if igButton("Enable", ImVec2(x: 120.0, y: 0.0)):
+        close = true
+      igSameLine()
+      if igButton("Cancel", ImVec2(x: 120.0, y: 0.0)):
+        close = true
+    if not popup_is_open or close:
+      enableable_coins_select_list.applyIt(false)
       igCloseCurrentPopup()
     igEndPopup()
+
+proc porfolio_gui_coin_name_img(ticker: string, name: string = "", name_first = false) =
+  let 
+    icon = icons.cm_at(ticker.hash)
+    text = name.len > 0 ? name ! ticker
+  if name_first:
+    igTextWrapped(text)
+    igSameLine()
+    igSetCursorPosX(igGetCursorPosX() + 5.0)
+  let 
+    orig_text_pos = igGetCursorPos()
+    custom_img_size = icon.height.float32 * 0.8
+  igSetCursorPos(ImVec2(x: orig_text_pos.x, y: orig_text_pos.y - (custom_img_size - igGetFont().fontSize * 1.15) * 0.5))
+  igImage(ImTextureID(cast[pointer](cast[ptr cuint](icon.id))), ImVec2(x: custom_img_size, y: custom_img_size))
+  if name_first == false:
+    var pos_after_img = igGetCursorPos()
+    igSameLine()
+    igSetCursorPos(orig_text_pos)
+    igSetCursorPosX(igGetCursorPos().x + custom_img_size + 5.0)
+    igTextWrapped(text)
+    igSetCursorPos(pos_after_img)
+
+  
+
+proc portfolio_coins_list_view() =
+  igBeginChild("left pane", ImVec2(x: 180, y: 0), true)
+  var coins = get_enabled_coins()
+  for i, v in(coins):
+    if cur_asset_ticker.len == 0:
+      cur_asset_ticker = v["coin"].getStr
+    if igSelectable("##" & v["coin"].getStr, v["coin"].getStr == cur_asset_ticker):
+      cur_asset_ticker = v["coin"].getStr
+    igSameLine()
+    porfolio_gui_coin_name_img(v["coin"].getStr)
+  igEndChild()
 
 proc portfolio_view() =
   igText("Total Balance: 0 USD")
   portfolio_enable_coin_view()
+  portfolio_coins_list_view()
 
 proc main_view() =
   main_menu_bar()
@@ -189,3 +259,14 @@ proc update*(ctx: ptr t_antara_ui) =
   else:
     main_view()
   igEnd()
+
+proc load_img(ctx: ptr t_antara_ui, id: string, path: string) {.async.} =
+  discard icons.cm_insert_or_assign(id.hash, antara_load_image_ws(ctx, path))
+
+proc init*(ctx: ptr t_antara_ui) =
+  var textures_path = get_assets_path() & "/textures"
+  for kind, path in walkDir(textures_path):
+    var id = path.extractFilename.changeFileExt("").toUpperAscii
+    asyncCheck load_img(ctx, id, path)
+
+

@@ -7,7 +7,7 @@ when defined(windows):
 when defined(macosx):
   {.passL: "-L" & os.getEnv("VCPKG_ROOT") & "/installed/x64-osx/lib -lfolly -ldouble-conversion -lgflags -lglog".}
   {.passC: "-std=c++17 -I" & os.getEnv("VCPKG_ROOT") & "/installed/x64-osx/include".}
-  when defined(sanitizer):
+  when defined(tsanitizer):
     {.emit: """
     #include <folly/SharedMutex.h>
     namespace folly
@@ -27,10 +27,13 @@ const folly_header = "<folly/concurrency/ConcurrentHashMap.h>"
 type
   ConcurrentReg*[K, V] {.importcpp"folly::ConcurrentHashMap", header: folly_header, byref.} = object
   ConcurrentRegIt*[K, V] {.importcpp"folly::ConcurrentHashMap<'0, '1>::const_iterator", header: folly_header, byref.} = object
-  StdPair*[K, V] {.importcpp: "std::pair", header: "<utility>".} = object
+  StdPair*[K, V] {.importcpp: "std::pair", header: "<utility>", byref.} = object
 
 ##! Map
 proc cm_insert_or_assign*[K, V](instance: ConcurrentReg[K, V], key: K, value: V): StdPair[ConcurrentRegIt[K, V], bool] {.importcpp: "#.insert_or_assign(#, #)", header: folly_header.}
+proc cm_assign*[K, V](instance: ConcurrentReg[K, V], key: K, value: V) {.importcpp: "#.assign(#, #)", header: folly_header.}
+proc cm_assign_if_equal*[K, V](instance: ConcurrentReg[K, V], key: K, desired: V, value: V) {.importcpp: "#.assign_if_equal(#, #, #)", header: folly_header.}
+proc cm_erase*[K, V](instance: ConcurrentReg[K, V], key: K) {.importcpp: "#.erase(#)", header: folly_header.}
 proc cm_at*[K, V](instance: ConcurrentReg[K, V], key: K): V {.importcpp: "#.at(#)", header: folly_header.}
 proc cm_find*[K, V](instance: ConcurrentReg[K, V], key: K): ConcurrentRegIt[K, V] {.importcpp: "#.find(#)", header: folly_header.}
 proc cm_begin*[K, V](instance: ConcurrentReg[K, V]): ConcurrentRegIt[K, V] {.importcpp: "#.begin()", header: folly_header.}
@@ -38,13 +41,16 @@ proc cm_end*[K, V](instance: ConcurrentReg[K, V]): ConcurrentRegIt[K, V] {.impor
 proc cm_size*[K, V](instance: ConcurrentReg[K, V]): int {.importcpp: "#.size()", header: folly_header.}
 
 ##! Iterator
-proc `*`*[K, V](instance: ConcurrentRegIt[K, V]): StdPair[K, V] {.importcpp: "*#".}
+proc `*`*[K, V](instance: ConcurrentRegIt[K, V]): StdPair[K, V] {.importcpp: "*#"}
+proc `$`*[K, V](instance: ConcurrentRegIt[K, V]): ptr StdPair[K, V] {.importcpp: "std::addressof(*#)"}
 proc `++`*[K, V](instance: ConcurrentRegIt[K, V]) {.importcpp: "++#".}
 proc `!=`*[K, V](lhs: ConcurrentRegIt[K, V], rhs: ConcurrentRegIt[K, V]): bool {.importcpp: "# != #".}
 
 ##! Map
 proc first*[K, V](instance: StdPair[K, V]): K {.importcpp: "#.first", header: "<utility>".}
 proc second*[K, V](instance: StdPair[K, V]): V {.importcpp: "#.second", header: "<utility>".}
+#proc first_ptr*[K, V](instance: ptr StdPair[K, V]): K {.importcpp: "#->first", header: "<utility>".}
+#proc second_ptr*[K, V](instance: ptr StdPair[K, V]): V {.importcpp: "#->second", header: "<utility>".}
 
 ##! Iterator Nim
 iterator pairs*[K, V](range: ConcurrentReg[K, V]): (K, V) =
@@ -57,6 +63,8 @@ iterator pairs*[K, V](range: ConcurrentReg[K, V]): (K, V) =
     pr = *current[]
     ++current[]
     yield (pr.first(), pr.second())
+  dealloc(current)
+  dealloc(last)
 
 
 type
