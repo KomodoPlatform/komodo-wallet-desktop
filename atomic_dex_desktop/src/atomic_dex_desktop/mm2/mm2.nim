@@ -4,8 +4,8 @@ import json
 import hashes
 import threadpool
 import options
+import std/atomics
 import ./worker
-import ../gui/gui
 import ../utils/assets
 import ../coins/coins_cfg
 import ../folly/hashmap
@@ -20,7 +20,10 @@ type
         rpc_password: string
 
 var mm2_cfg : MM2Config = MM2Config(gui: "MM2GUI", netid: 9999, userhome: os.getHomeDir(), passphrase: "thisIsTheNewProjectSeed2019##", rpc_password: "atomic_dex_rpc_password")
+var mm2_fully_running*: Atomic[bool]
 var mm2_instance : Process = nil
+
+mm2_fully_running.store(false, moRelaxed)
 
 proc set_passphrase*(passphrase: string) =
     mm2_cfg.passphrase = passphrase
@@ -28,7 +31,6 @@ proc set_passphrase*(passphrase: string) =
 
 proc enable_coin*(ticker: string) =
     {.gcsafe.}:
-        echo "lol"
         var coin_info = get_coin_info(ticker)
         if coin_info["currently_enabled"].getBool:
             return
@@ -50,8 +52,8 @@ proc enable_coin*(ticker: string) =
 proc enable_default_coins() =
     var coins = get_active_coins()
     for _, v in coins:
-        enable_coin(v["coin"].getStr)
-    #sync()    
+        spawn enable_coin(v["coin"].getStr)
+    sync()    
 
 proc mm2_init_thread() =
     {.gcsafe.}:
@@ -63,7 +65,7 @@ proc mm2_init_thread() =
         finally:
             echo "Fine."
         sleep(2000)
-        gui.set_gui_running(true)
+        mm2_fully_running.store(true)
         enable_default_coins()
         launchMM2Worker()
 

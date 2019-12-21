@@ -1,13 +1,14 @@
 import ui_workflow_nim
-import std/atomics
 import asyncdispatch
 import sequtils
+import atomics
 import hashes
 import json
 import strutils
 import os
 import ../coins/coins_cfg
 import ../utils/assets
+import ../mm2/mm2
 import ../folly/hashmap
 import ../utils/utility
 import ./widgets
@@ -15,11 +16,8 @@ import ./widgets
 var
   is_open = true
   cur_asset_ticker = "" 
-  mm2_is_running* : Atomic[bool] 
   icons: ConcurrentReg[int, t_antara_image]
   enableable_coins_select_list: seq[bool]
-
-mm2_is_running.store(false, moRelaxed)
 
 let
   bright_color = ImVec4(x: 0.0, y: 149.0 / 255.0, z: 143.0 / 255.0, w: 1.0)
@@ -178,16 +176,20 @@ proc portfolio_enable_coin_view() =
     igText(coins.len == 0 ?  "All coins are already enabled!" ! "Select the coins you want to add to your portfolio.")
     if coins.len == 0:
       igSeparator()
-    var select_list = enableable_coins_select_list
-    if coins.len > select_list.len:
-      select_list.setLen(coins.len)
+    if coins.len > enableable_coins_select_list.len:
+      enableable_coins_select_list.setLen(coins.len)
+      enableable_coins_select_list.applyIt(false)
     for i, coin in coins:
-      if igSelectable(coin["name"].getStr & " (" & coin["coin"].getStr & ")", select_list[i], ImGuiSelectableFlags.DontClosePopups):
-        select_list[i] = not select_list[i]
+      if igSelectable(coin["name"].getStr & " (" & coin["coin"].getStr & ")", enableable_coins_select_list[i], ImGuiSelectableFlags.DontClosePopups):
+        enableable_coins_select_list[i] = enableable_coins_select_list[i] == false
+        echo enableable_coins_select_list[i]
     if coins.len == 0 and igButton("Close"):
         close = true
     else:
       if igButton("Enable", ImVec2(x: 120.0, y: 0.0)):
+        for i, v in enableable_coins_select_list:
+            if v == true:
+              enable_coin(coins[i]["coin"].getStr)
         close = true
       igSameLine()
       if igButton("Cancel", ImVec2(x: 120.0, y: 0.0)):
@@ -245,16 +247,13 @@ proc main_view() =
       igEndTabItem()
     igEndTabBar()
 
-proc set_gui_running*(data: bool) =
-  mm2_is_running.store(data)
-
 proc update*(ctx: ptr t_antara_ui) =
   igSetNextWindowSize(ImVec2(x: 1280, y: 720), ImGuiCond.FirstUseEver)
   igBegin("atomicDex", addr is_open, (ImGuiWindowFlags.NoCollapse.int32 or
       ImGuiWindowFlags.MenuBar.int32).ImGuiWindowFlags)
   if not is_open:
     antara_close_window(ctx)
-  if mm2_is_running.load() == false:
+  if mm2_fully_running.load() == false:
     waiting_view()
   else:
     main_view()
