@@ -740,6 +740,61 @@ namespace atomic_dex
 
                             if (not locked_base.empty() && not locked_rel.empty())
                             {
+                                ImGui::BeginChild("Sell Window", ImVec2(0, 0), true);
+                                {
+                                    ImGui::Text("Sell %s", locked_base.c_str());
+
+                                    ImGui::Text("Price: ");
+                                    ImGui::SameLine();
+                                    ImGui::SetNextItemWidth(200.f);
+
+                                    static char price_buf[20];
+                                    ImGui::InputText(
+                                        "##price", price_buf, IM_ARRAYSIZE(price_buf), ImGuiInputTextFlags_CallbackCharFilter, crypto_amount_filter, price_buf);
+
+                                    ImGui::Text("Amount: ");
+                                    ImGui::SameLine();
+                                    ImGui::SetNextItemWidth(200.f);
+                                    static char amount_buf[20];
+                                    ImGui::InputText(
+                                        "##amount", amount_buf, IM_ARRAYSIZE(amount_buf), ImGuiInputTextFlags_CallbackCharFilter, crypto_amount_filter,
+                                        amount_buf);
+                                    ImGui::Text("Total: ");
+                                    std::string total          = "";
+                                    std::string current_price  = price_buf;
+                                    std::string current_amount = amount_buf;
+                                    t_float_50  total_balance  = 0;
+                                    if (not current_price.empty() && not current_amount.empty())
+                                    {
+                                        boost::multiprecision::cpp_dec_float_50 current_price_f(current_price);
+                                        boost::multiprecision::cpp_dec_float_50 current_amount_f(current_amount);
+                                        total_balance = current_price_f * current_amount_f;
+                                        total         = total_balance.convert_to<std::string>();
+                                    }
+                                    ImGui::SameLine();
+                                    ImGui::InputText("##total", total.data(), total.size(), ImGuiInputTextFlags_ReadOnly);
+                                    std::string button_text = "SELL " + locked_base;
+
+                                    bool enable = mm2_system_.do_i_have_enough_funds(locked_base, total_balance);
+
+                                    if (not enable)
+                                    {
+                                        std::error_code ec;
+                                        ImGui::TextColored(
+                                            error_color, "You don't have enough funds, you have %s %s",
+                                            mm2_system_.my_balance_with_locked_funds(locked_base, ec).c_str(), locked_base.c_str());
+                                        ImGui::PushItemFlag(ImGuiItemFlags_Disabled, true);
+                                        ImGui::PushStyleVar(ImGuiStyleVar_Alpha, ImGui::GetStyle().Alpha * 0.5f);
+                                    }
+                                    if (ImGui::Button(button_text.c_str())) {}
+                                    if (not enable)
+                                    {
+                                        ImGui::PopItemFlag();
+                                        ImGui::PopStyleVar();
+                                    }
+                                }
+                                ImGui::EndChild();
+
                                 ImGui::BeginChild(
                                     "Orderbook Window", ImVec2(0, 400), true,
                                     ImGuiWindowFlags_AlwaysVerticalScrollbar | ImGuiWindowFlags_AlwaysHorizontalScrollbar);
@@ -817,126 +872,7 @@ namespace atomic_dex
                                     ImGui::Columns(1);
                                 }
                                 ImGui::EndChild();
-
-
-                                ImGui::BeginChild("Buy/Sell Window", ImVec2(500, 500), true);
-                                {
-                                    ImGui::Text("Buy %s", locked_base.c_str());
-
-                                    ImGui::Text("Price: ");
-                                    ImGui::SameLine();
-                                    ImGui::SetNextItemWidth(200.f);
-
-                                    static char price_buf[20];
-                                    ImGui::InputText(
-                                        "##price", price_buf, IM_ARRAYSIZE(price_buf), ImGuiInputTextFlags_CallbackCharFilter, crypto_amount_filter, price_buf);
-
-                                    ImGui::Text("Amount: ");
-                                    ImGui::SameLine();
-                                    ImGui::SetNextItemWidth(200.f);
-                                    static char amount_buf[20];
-                                    ImGui::InputText(
-                                        "##amount", amount_buf, IM_ARRAYSIZE(amount_buf), ImGuiInputTextFlags_CallbackCharFilter, crypto_amount_filter,
-                                        amount_buf);
-                                    ImGui::Text("Total: ");
-                                    std::string total          = "";
-                                    std::string current_price  = price_buf;
-                                    std::string current_amount = amount_buf;
-                                    t_float_50  total_balance;
-                                    if (not current_price.empty() && not current_amount.empty())
-                                    {
-                                        boost::multiprecision::cpp_dec_float_50 current_price_f(current_price);
-                                        boost::multiprecision::cpp_dec_float_50 current_amount_f(current_amount);
-                                        total_balance = current_price_f * current_amount_f;
-                                        total         = total_balance.convert_to<std::string>();
-                                    }
-                                    ImGui::SameLine();
-                                    ImGui::InputText("##total", total.data(), total.size(), ImGuiInputTextFlags_ReadOnly);
-                                    std::string button_text = "BUY " + locked_base;
-
-                                    bool enable = mm2_system_.do_i_have_enough_funds(locked_rel, total_balance);
-
-                                    if (not enable)
-                                    {
-                                        std::error_code ec;
-                                        ImGui::TextColored(
-                                            error_color, "You don't have enough funds, you have %s %s",
-                                            mm2_system_.my_balance_with_locked_funds(locked_rel, ec).c_str(), locked_rel.c_str());
-                                        ImGui::PushItemFlag(ImGuiItemFlags_Disabled, true);
-                                        ImGui::PushStyleVar(ImGuiStyleVar_Alpha, ImGui::GetStyle().Alpha * 0.5f);
-                                    }
-                                    if (ImGui::Button(button_text.c_str()))
-                                    {
-                                        t_buy_request   request{.base = locked_base, .rel = locked_rel, .price = current_price, .volume = current_amount};
-                                        std::error_code ec;
-                                        mm2_system_.place_buy_order(std::move(request), total_balance, ec);
-                                        if (ec) { LOG_F(ERROR, "{}", ec.message()); }
-                                    }
-                                    if (not enable)
-                                    {
-                                        ImGui::PopItemFlag();
-                                        ImGui::PopStyleVar();
-                                    }
-                                }
-                                ImGui::EndChild();
-
-                                ImGui::SameLine();
-                                ImGui::BeginChild("Sell Window", ImVec2(500, 500), true);
-                                {
-                                    ImGui::Text("Sell %s", locked_base.c_str());
-
-                                    ImGui::Text("Price: ");
-                                    ImGui::SameLine();
-                                    ImGui::SetNextItemWidth(200.f);
-
-                                    static char price_buf[20];
-                                    ImGui::InputText(
-                                        "##price", price_buf, IM_ARRAYSIZE(price_buf), ImGuiInputTextFlags_CallbackCharFilter, crypto_amount_filter, price_buf);
-
-                                    ImGui::Text("Amount: ");
-                                    ImGui::SameLine();
-                                    ImGui::SetNextItemWidth(200.f);
-                                    static char amount_buf[20];
-                                    ImGui::InputText(
-                                        "##amount", amount_buf, IM_ARRAYSIZE(amount_buf), ImGuiInputTextFlags_CallbackCharFilter, crypto_amount_filter,
-                                        amount_buf);
-                                    ImGui::Text("Total: ");
-                                    std::string total          = "";
-                                    std::string current_price  = price_buf;
-                                    std::string current_amount = amount_buf;
-                                    t_float_50  total_balance  = 0;
-                                    if (not current_price.empty() && not current_amount.empty())
-                                    {
-                                        boost::multiprecision::cpp_dec_float_50 current_price_f(current_price);
-                                        boost::multiprecision::cpp_dec_float_50 current_amount_f(current_amount);
-                                        total_balance = current_price_f * current_amount_f;
-                                        total         = total_balance.convert_to<std::string>();
-                                    }
-                                    ImGui::SameLine();
-                                    ImGui::InputText("##total", total.data(), total.size(), ImGuiInputTextFlags_ReadOnly);
-                                    std::string button_text = "SELL " + locked_base;
-
-                                    bool enable = mm2_system_.do_i_have_enough_funds(locked_base, total_balance);
-
-                                    if (not enable)
-                                    {
-                                        std::error_code ec;
-                                        ImGui::TextColored(
-                                            error_color, "You don't have enough funds, you have %s %s",
-                                            mm2_system_.my_balance_with_locked_funds(locked_base, ec).c_str(), locked_base.c_str());
-                                        ImGui::PushItemFlag(ImGuiItemFlags_Disabled, true);
-                                        ImGui::PushStyleVar(ImGuiStyleVar_Alpha, ImGui::GetStyle().Alpha * 0.5f);
-                                    }
-                                    if (ImGui::Button(button_text.c_str())) {}
-                                    if (not enable)
-                                    {
-                                        ImGui::PopItemFlag();
-                                        ImGui::PopStyleVar();
-                                    }
-                                }
-                                ImGui::EndChild();
                             }
-
 
                             ImGui::EndTabItem();
                         }
