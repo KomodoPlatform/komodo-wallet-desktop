@@ -760,22 +760,22 @@ namespace atomic_dex
                                         "##amount", amount_buf, IM_ARRAYSIZE(amount_buf), ImGuiInputTextFlags_CallbackCharFilter, crypto_amount_filter,
                                         amount_buf);
                                     ImGui::Text("Total: ");
-                                    std::string total          = "";
+                                    std::string total;
                                     std::string current_price  = price_buf;
                                     std::string current_amount = amount_buf;
-                                    t_float_50  total_balance  = 0;
+                                    boost::multiprecision::cpp_dec_float_50 current_price_f{};
+                                    boost::multiprecision::cpp_dec_float_50 current_amount_f{};
                                     if (not current_price.empty() && not current_amount.empty())
                                     {
-                                        boost::multiprecision::cpp_dec_float_50 current_price_f(current_price);
-                                        boost::multiprecision::cpp_dec_float_50 current_amount_f(current_amount);
-                                        total_balance = current_price_f * current_amount_f;
-                                        total         = total_balance.convert_to<std::string>();
+                                        current_price_f.assign(current_price);
+                                        current_amount_f.assign(current_amount);
+                                        total = (current_price_f * current_amount_f).convert_to<std::string>();
                                     }
                                     ImGui::SameLine();
-                                    ImGui::InputText("##total", total.data(), total.size(), ImGuiInputTextFlags_ReadOnly);
+                                    ImGui::Text("%s", total.c_str());
                                     std::string button_text = "SELL " + locked_base;
 
-                                    bool enable = mm2_system_.do_i_have_enough_funds(locked_base, total_balance);
+                                    bool enable = mm2_system_.do_i_have_enough_funds(locked_base, current_amount_f);
 
                                     if (not enable)
                                     {
