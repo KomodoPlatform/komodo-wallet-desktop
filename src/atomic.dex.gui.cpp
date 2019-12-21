@@ -681,8 +681,11 @@ namespace atomic_dex
                     in_exchange = true;
                     if (ImGui::BeginTabBar("##ExchangeTabs", ImGuiTabBarFlags_None))
                     {
-                        if (ImGui::BeginTabItem("Trade"))
+                        static bool trigger_trade_tab = false;
+                        if (ImGui::BeginTabItem("Trade", nullptr, trigger_trade_tab ? ImGuiTabItemFlags_SetSelected : 0))
                         {
+                            trigger_trade_tab = false;
+
                             // ImGui::Text("Work in progress");
 
                             //! TODO: REMOVE THIS TMP !!!! (for testing trading part)
@@ -968,6 +971,13 @@ namespace atomic_dex
                                     }
 
                                     ImGui::Separator();
+                                }
+                                else {
+                                    ImGui::Text("No orders.");
+
+                                    if (ImGui::Button("Create an order##no_orders_create_an_order")) {
+                                        trigger_trade_tab = true;
+                                    }
                                 }
                                 // Maker
                                 if(!orders.maker_orders.empty()) {
