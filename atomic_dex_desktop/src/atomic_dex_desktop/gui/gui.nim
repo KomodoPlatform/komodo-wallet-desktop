@@ -9,7 +9,7 @@ import os
 import ../coins/coins_cfg
 import ../utils/assets
 import ../mm2/mm2
-import ../folly/hashmap
+import ../cpp_bindings/folly/hashmap
 import ../utils/utility
 import ./widgets
 
@@ -202,7 +202,7 @@ proc portfolio_enable_coin_view() =
 
 proc porfolio_gui_coin_name_img(ticker: string, name: string = "", name_first = false) =
   let 
-    icon = icons.cm_at(ticker.hash)
+    icon = icons.at(ticker.hash)
     text = name.len > 0 ? name ! ticker
   if name_first:
     igTextWrapped(text)
@@ -261,10 +261,10 @@ proc update*(ctx: ptr t_antara_ui) =
   igEnd()
 
 proc load_img(ctx: ptr t_antara_ui, id: string, path: string) {.async.} =
-  discard icons.cm_insert_or_assign(id.hash, antara_load_image_ws(ctx, path))
+  discard icons.insertOrAssign(id.hash, antara_load_image_ws(ctx, path))
 
 proc init*(ctx: ptr t_antara_ui) =
-  var textures_path = get_assets_path() & "/textures"
+  var textures_path = getAssetsPath() & "/textures"
   for kind, path in walkDir(textures_path):
     var id = path.extractFilename.changeFileExt("").toUpperAscii
     asyncCheck load_img(ctx, id, path)

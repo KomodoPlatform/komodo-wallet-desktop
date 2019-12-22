@@ -1,16 +1,19 @@
-import os, osproc
-import marshal
+## Standard Import
 import json
-import hashes
-import threadpool
+import marshal
 import options
+import os
+import osproc
 import std/atomics
-import ./worker
-import ../utils/assets
-import ../coins/coins_cfg
-import ../folly/hashmap
-import ./api
+import threadpool
 
+##! Project Headers
+import ./api
+import ../coins/coins_cfg
+import ../utils/assets
+import ./worker
+
+##! Type declarations
 type
     MM2Config = object
         gui: string
@@ -19,23 +22,26 @@ type
         passphrase: string
         rpc_password: string
 
-var mm2_cfg : MM2Config = MM2Config(gui: "MM2GUI", netid: 9999, userhome: os.getHomeDir(), passphrase: "thisIsTheNewProjectSeed2019##", rpc_password: "atomic_dex_rpc_password")
-var mm2_fully_running*: Atomic[bool]
-var mm2_instance : Process = nil
+##! Global variable Declaration
+var 
+    mm2Cfg : MM2Config = MM2Config(gui: "MM2GUI", netid: 9999, userhome: os.getHomeDir(), passphrase: "thisIsTheNewProjectSeed2019##", rpc_password: "atomic_dex_rpc_password")
+    mm2FullyRunning*: Atomic[bool]
+    mm2Instance : Process = nil
 
-mm2_fully_running.store(false, moRelaxed)
+## Initialization
+mm2FullyRunning.store(false, moRelaxed)
 
+##! Public function
 proc set_passphrase*(passphrase: string) =
-    mm2_cfg.passphrase = passphrase
+    mm2Cfg.passphrase = passphrase
 
-
-proc enable_coin*(ticker: string) =
+proc enableCoin*(ticker: string) =
     {.gcsafe.}:
-        var coin_info = get_coin_info(ticker)
-        if coin_info["currently_enabled"].getBool:
+        var coinInfo = getCoinInfo(ticker)
+        if coinInfo["currently_enabled"].getBool:
             return
         var res: seq[ElectrumServerParams]
-        for keys in coin_info["electrum"]:
+        for keys in coinInfo["electrum"]:
             res.add(ElectrumServerParams(keys))
         var req = create(ElectrumRequestParams, ticker, res, true)
         var answer = rpc_electrum(req)
@@ -43,38 +49,38 @@ proc enable_coin*(ticker: string) =
             echo answer.error.get()["error"].getStr
         else:
             var current : CoinConfigParams
-            deepCopy(current, coin_info)
+            deepCopy(current, coinInfo)
             current.JsonNode["currently_enabled"] = newJBool(true)
             current.JsonNode["active"] = newJBool(true)
-            update_coin_info(ticker, coin_info, current)
+            updateCoinInfo(ticker, coinInfo, current)
     
 
-proc enable_default_coins() =
-    var coins = get_active_coins()
+proc enableDefaultCoins() =
+    var coins = getActiveCoins()
     for _, v in coins:
-        spawn enable_coin(v["coin"].getStr)
+        spawn enableCoin(v["coin"].getStr)
     sync()    
 
-proc mm2_init_thread() =
+proc mm2InitThread() =
     {.gcsafe.}:
-        var tools_path = (get_assets_path() & "/tools/mm2").normalizedPath
+        var toolsPath = (getAssetsPath() & "/tools/mm2").normalizedPath
         try: 
-            mm2_instance = startProcess(command=tools_path & "/mm2", args=[$$mm2_cfg], env = nil, options={poParentStreams}, workingDir=tools_path)
+            mm2Instance = startProcess(command=toolsPath & "/mm2", args=[$$mm2_cfg], env = nil, options={poParentStreams}, workingDir=toolsPath)
         except OSError as e:
             echo "Got exception OSError with message ", e.msg
         finally:
             echo "Fine."
         sleep(2000)
-        mm2_fully_running.store(true)
-        enable_default_coins()
+        mm2FullyRunning.store(true)
+        enableDefaultCoins()
         launchMM2Worker()
 
-proc init_process*()  =
-    spawn mm2_init_thread()
+proc initProcess*()  =
+    spawn mm2InitThread()
 
-proc close_process*() =
-    if not mm2_instance.isNil:
-        mm2_instance.terminate
-        mm2_instance.close
+proc closeProcess*() =
+    if not mm2Instance.isNil:
+        mm2Instance.terminate
+        mm2Instance.close
 
     
