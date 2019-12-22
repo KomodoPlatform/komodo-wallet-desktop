@@ -779,61 +779,91 @@ namespace atomic_dex
                             {
                                 std::error_code ec;
                                 auto book = mm2_system_.get_current_orderbook(ec);
-                                ImGui::Columns(3, "full_orderbook");
+
+                                ImGui::BeginChild("Sell Window", ImVec2(275, 0), true);
                                 {
-                                    ImGui::BeginChild("Sell Window", ImVec2(0, 0), true);
+                                    auto& sell_answer = vars.sell_request_answer;
+
+                                    gui_coin_name_img(*this, locked_base);
+
+                                    ImGui::SameLine();
+                                    ImGui::Text("(%s)", mm2_system_.my_balance(locked_base, ec).c_str());
+
+                                    ImGui::Separator();
+
+                                    auto& coin_vars = vars.trade_sell_coin[locked_base];
+                                    auto& price_input = coin_vars.price_input;
+                                    auto& amount_input = coin_vars.amount_input;
+
+                                    ImGui::SetNextItemWidth(125.0f);
+                                    ImGui::InputText("Volume##trade_sell_volume", amount_input.data(), amount_input.size(), ImGuiInputTextFlags_CallbackCharFilter, input_filter_coin_amount, amount_input.data());
+
+                                    ImGui::SetNextItemWidth(125.0f);
+                                    ImGui::InputText("Price##trade_sell_price", price_input.data(), price_input.size(), ImGuiInputTextFlags_CallbackCharFilter, input_filter_coin_amount, price_input.data());
+
+                                    std::string total;
+                                    std::string current_price  = price_input.data();
+                                    std::string current_amount = amount_input.data();
+                                    boost::multiprecision::cpp_dec_float_50 current_price_f{};
+                                    boost::multiprecision::cpp_dec_float_50 current_amount_f{};
+                                    bool fields_are_filled = not current_price.empty() && not current_amount.empty();
+                                    if (fields_are_filled)
                                     {
-                                        gui_coin_name_img(*this, locked_base);
+                                        current_price_f.assign(current_price);
+                                        current_amount_f.assign(current_amount);
+                                        total = (current_price_f * current_amount_f).convert_to<std::string>();
+                                    }
+
+                                    bool has_funds = current_amount.empty() || mm2_system_.do_i_have_enough_funds(locked_base, current_amount_f);
+                                    bool enable = fields_are_filled && has_funds;
+
+                                    if(!has_funds) {
+                                        std::error_code ec;
+
+                                        ImGui::TextColored(error_color, "Not enough funds, you have %s %s", mm2_system_.my_balance_with_locked_funds(locked_base, ec).c_str(), locked_base.c_str());
+                                    }
+
+                                    if (not enable)
+                                    {
+                                        gui_disable_items();
+                                    }
+                                    else {
+                                        if(fields_are_filled) ImGui::TextColored(bright_color, "You'll receive %s %s", total.c_str(), locked_rel.c_str());
+                                    }
+
+                                    if (ImGui::Button("Sell")) {
+                                        t_sell_request request{.base = locked_base, .rel = locked_rel, .price = current_price, .volume = current_amount};
+                                        std::error_code ec;
+                                        sell_answer = mm2_system_.place_sell_order(std::move(request), current_amount_f, ec);
+
+                                        if (ec) { LOG_F(ERROR, "{}", ec.message()); }
+                                    }
+                                    if (not enable) gui_enable_items();
+
+                                    if(sell_answer.rpc_result_code == -1) {
+                                        ImGui::Separator();
+                                        ImGui::Text("Failed to sell");
 
                                         ImGui::Separator();
+                                        ImGui::Text("Error code");
+                                        ImGui::TextColored(error_color, "%d", sell_answer.rpc_result_code);
 
-                                        auto& coin_vars = vars.trade_sell_coin[locked_base];
-                                        auto& price_input = coin_vars.price_input;
-                                        auto& amount_input = coin_vars.amount_input;
-
-                                        ImGui::SetNextItemWidth(125.0f);
-                                        ImGui::InputText("Volume##trade_sell_volume", amount_input.data(), amount_input.size(), ImGuiInputTextFlags_CallbackCharFilter, input_filter_coin_amount, amount_input.data());
-
-                                        ImGui::SetNextItemWidth(125.0f);
-                                        ImGui::InputText("Price##trade_sell_price", price_input.data(), price_input.size(), ImGuiInputTextFlags_CallbackCharFilter, input_filter_coin_amount, price_input.data());
-
-                                        std::string total;
-                                        std::string current_price  = price_input.data();
-                                        std::string current_amount = amount_input.data();
-                                        boost::multiprecision::cpp_dec_float_50 current_price_f{};
-                                        boost::multiprecision::cpp_dec_float_50 current_amount_f{};
-                                        bool fields_are_filled = not current_price.empty() && not current_amount.empty();
-                                        if (fields_are_filled)
-                                        {
-                                            current_price_f.assign(current_price);
-                                            current_amount_f.assign(current_amount);
-                                            total = (current_price_f * current_amount_f).convert_to<std::string>();
-                                        }
-
-                                        bool has_funds = current_amount.empty() || mm2_system_.do_i_have_enough_funds(locked_base, current_amount_f);
-                                        bool enable = fields_are_filled && has_funds;
-
-                                        if(!has_funds) {
-                                            std::error_code ec;
-
-                                            ImGui::TextColored(error_color, "Not enough funds, you have %s %s", mm2_system_.my_balance_with_locked_funds(locked_base, ec).c_str(), locked_base.c_str());
-                                        }
-
-                                        if (not enable)
-                                        {
-                                            gui_disable_items();
-                                        }
-                                        else {
-                                            if(fields_are_filled) ImGui::TextColored(bright_color, "You'll receive %s %s", total.c_str(), locked_rel.c_str());
-                                        }
-
-                                        if (ImGui::Button("Sell")) {}
-                                        if (not enable) gui_enable_items();
+                                        ImGui::Separator();
+                                        ImGui::Text("Error details");
+                                        ImGui::TextColored(error_color, "%s", sell_answer.raw_result.c_str());
                                     }
-                                    ImGui::EndChild();
+                                    else if(not sell_answer.raw_result.empty()) {
+                                        ImGui::Separator();
+                                        ImGui::TextColored(bright_color, "Sell order placed!");
+                                        ImGui::TextColored(bright_color, "Please wait until it appears at order list");
+                                    }
+                                }
+                                ImGui::EndChild();
 
-                                    ImGui::NextColumn();
-
+                                ImGui::SameLine();
+                                ImGui::BeginGroup();
+                                ImGui::Columns(2, "full_orderbook");
+                                {
                                     ImGui::BeginChild("Sell_Orderbook", ImVec2(0, 0), true);
                                     gui_orderbook_table(*this, locked_base, locked_rel, "Sell", book.asks, ec);
                                     ImGui::EndChild();
@@ -843,9 +873,9 @@ namespace atomic_dex
                                     ImGui::BeginChild("Buy_Orderbook", ImVec2(0, 0), true);
                                     gui_orderbook_table(*this, locked_base, locked_rel, "Buy", book.bids, ec);
                                     ImGui::EndChild();
-
                                 }
                                 ImGui::Columns(1);
+                                ImGui::EndGroup();
                             }
 
                             ImGui::EndTabItem();

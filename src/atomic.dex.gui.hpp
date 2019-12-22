@@ -53,6 +53,7 @@ namespace atomic_dex
             std::string current_rel;
             std::string locked_base;
             std::string locked_rel;
+            t_sell_answer sell_request_answer;
 
             std::unordered_map<std::string, trade_sell_coin_vars> trade_sell_coin;
         } trade_page;
