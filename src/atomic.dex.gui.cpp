@@ -783,6 +783,8 @@ namespace atomic_dex
                                 {
                                     ImGui::BeginChild("Sell Window", ImVec2(0, 0), true);
                                     {
+                                        auto& sell_answer = vars.sell_request_answer;
+
                                         gui_coin_name_img(*this, locked_base);
 
                                         ImGui::SameLine();
@@ -833,10 +835,28 @@ namespace atomic_dex
                                         if (ImGui::Button("Sell")) {
                                             t_sell_request request{.base = locked_base, .rel = locked_rel, .price = current_price, .volume = current_amount};
                                             std::error_code ec;
-                                            mm2_system_.place_sell_order(std::move(request), current_amount_f, ec);
+                                            sell_answer = mm2_system_.place_sell_order(std::move(request), current_amount_f, ec);
+
                                             if (ec) { LOG_F(ERROR, "{}", ec.message()); }
                                         }
                                         if (not enable) gui_enable_items();
+
+                                        if(sell_answer.rpc_result_code == -1) {
+                                            ImGui::Separator();
+                                            ImGui::Text("Transaction Failed!");
+
+                                            ImGui::Separator();
+                                            ImGui::Text("Error code");
+                                            ImGui::TextColored(error_color, "%d", sell_answer.rpc_result_code);
+
+                                            ImGui::Separator();
+                                            ImGui::Text("Error details");
+                                            ImGui::TextColored(error_color, "%s", sell_answer.raw_result.c_str());
+                                        }
+                                        else if(not sell_answer.raw_result.empty()) {
+                                            ImGui::Separator();
+                                            ImGui::TextColored(bright_color, "Transaction Succeed!");
+                                        }
                                     }
                                     ImGui::EndChild();
 
