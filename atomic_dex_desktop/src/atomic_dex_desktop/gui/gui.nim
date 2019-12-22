@@ -257,7 +257,7 @@ proc update*(ctx: ptr t_antara_ui) =
       ImGuiWindowFlags.MenuBar.int32).ImGuiWindowFlags)
   if not is_open:
     antara_close_window(ctx)
-  if mm2FullyRunning.load() == false:
+  if mm2FullyRunning.load() == false or getEnabledCoins().len != getActiveCoins().len:
     waitingView()
   else:
     mainView()

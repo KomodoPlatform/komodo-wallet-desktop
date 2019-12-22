@@ -74,19 +74,18 @@ namespace
 // Input filters
 namespace
 {
-    auto crypto_amount_filter = [](ImGuiInputTextCallbackData* data) {
-      std::string str_data = "";
+    int input_filter_coin_amount(ImGuiInputTextCallbackData* data) {
+      std::string str_data;
       if (data->UserData != nullptr) { str_data = static_cast<char*>(data->UserData); }
       auto c = data->EventChar;
       auto n = std::count(begin(str_data), end(str_data), '.');
       if (n == 1 && c == '.') { return 1; }
-      int valid = !(std::isdigit(c) || c == '.');
 
-      return valid;
-    };
+      return std::isdigit(c) || c == '.' ? 0 : 1;
+    }
 
-    auto crypto_address_filter = [](ImGuiInputTextCallbackData* data) {
-      std::string str_data = "";
+    int input_filter_coin_address(ImGuiInputTextCallbackData* data) {
+      std::string str_data;
       if (data->UserData != nullptr) { str_data = static_cast<char*>(data->UserData); }
       auto c = data->EventChar;
 
@@ -94,7 +93,7 @@ namespace
           ((c >= '0' && c <= '9') || (c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z'));
 
       return valid ? 0 : 1;
-    };
+    }
 }
 
 // GUI Draw
@@ -116,7 +115,7 @@ namespace
         auto orig_text_pos = ImGui::GetCursorPos();
         const float custom_img_size = img.height * 0.8f;
         ImGui::SetCursorPos({ImGui::GetCursorPos().x, ImGui::GetCursorPos().y - (custom_img_size - ImGui::GetFont()->FontSize * 1.15f) * 0.5f});
-        ImGui::Image(reinterpret_cast<void*>(static_cast<intptr_t>(img.id)), ImVec2{custom_img_size, custom_img_size});
+        ImGui::Image(reinterpret_cast<ImTextureID>(img.id), ImVec2{custom_img_size, custom_img_size});
 
         if(!name_first) {
             auto pos_after_img = ImGui::GetCursorPos();
@@ -139,9 +138,6 @@ namespace
     {
         if (ImGui::BeginMenuBar())
         {
-            if (ImGui::MenuItem("Open", "Ctrl+O"))
-            { /* Do stuff */
-            }
             if (ImGui::MenuItem("Settings", "Ctrl+O"))
             { /* Do stuff */
             }
@@ -156,7 +152,7 @@ namespace
     gui_portfolio_coins_list(atomic_dex::gui& gui, atomic_dex::mm2& mm2, atomic_dex::gui_variables& gui_vars)
     {
         ImGui::BeginChild("left pane", ImVec2(180, 0), true);
-        int  i               = 0;
+        int  i = 0;
         auto assets_contents = mm2.get_enabled_coins();
         for (auto it = assets_contents.begin(); it != assets_contents.end(); ++it, ++i)
         {
@@ -171,18 +167,14 @@ namespace
     }
 
     void
-    gui_transaction_details_modal(
-        atomic_dex::coinpaprika_provider& paprika_system, bool open_modal, const atomic_dex::coin_config& curr_asset, const atomic_dex::tx_infos& tx,
-        atomic_dex::gui_variables& gui_vars)
+    gui_transaction_details_modal(atomic_dex::coinpaprika_provider& paprika_system, bool open_modal, const atomic_dex::coin_config& curr_asset, const atomic_dex::tx_infos& tx, atomic_dex::gui_variables& gui_vars)
     {
         ImGui::PushID(tx.tx_hash.c_str());
 
         if (open_modal) ImGui::OpenPopup("Transaction Details");
 
-        bool open = true;
-
-        ImGui::SetNextWindowSizeConstraints({0, 0}, {gui_vars.main_window_size.x - 50, gui_vars.main_window_size.y - 50});
-        if (ImGui::BeginPopupModal("Transaction Details", &open, ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoMove))
+        ImGui::SetNextWindowSizeConstraints({0, 0}, {0, gui_vars.main_window_size.y - 50});
+        if (ImGui::BeginPopupModal("Transaction Details", nullptr, ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoMove))
         {
             std::error_code ec;
 
@@ -257,17 +249,16 @@ namespace
 
             std::error_code ec;
 
-            ImGui::Text(
-                std::string(std::string(reinterpret_cast<const char*>(ICON_FA_BALANCE_SCALE)) + " Balance: %s %s (%s USD)").c_str(),
-                mm2.my_balance(curr_asset.ticker, ec).c_str(), curr_asset.ticker.c_str(),
-                paprika_system.get_price_in_fiat("USD", curr_asset.ticker, ec).c_str());
+            ImGui::Text(std::string(std::string(reinterpret_cast<const char*>(ICON_FA_BALANCE_SCALE)) + " Balance: %s %s (%s USD)").c_str(),
+                        mm2.my_balance(curr_asset.ticker, ec).c_str(), curr_asset.ticker.c_str(),
+                        paprika_system.get_price_in_fiat("USD", curr_asset.ticker, ec).c_str());
             ImGui::Separator();
             if (ImGui::BeginTabBar("##Tabs", ImGuiTabBarFlags_None))
             {
                 if (ImGui::BeginTabItem("Transactions"))
                 {
                     std::error_code error_code;
-                    auto            tx_history = mm2.get_tx_history(curr_asset.ticker, error_code);
+                    auto tx_history = mm2.get_tx_history(curr_asset.ticker, error_code);
                     if (not tx_history.empty())
                     {
                         for (std::size_t i = 0; i < tx_history.size(); ++i)
@@ -283,8 +274,7 @@ namespace
                                     tx.am_i_sender ? "" : "+", tx.my_balance_change.c_str(), curr_asset.ticker.c_str());
                                 ImGui::TextColored(value_color, "%s", tx.am_i_sender ? tx.to[0].c_str() : tx.from[0].c_str());
                                 ImGui::SameLine(300);
-                                ImGui::TextColored(
-                                    value_color, "%s", usd_str(paprika_system.get_price_in_fiat_from_tx("USD", curr_asset.ticker, tx, error_code)).c_str());
+                                ImGui::TextColored(value_color, "%s", usd_str(paprika_system.get_price_in_fiat_from_tx("USD", curr_asset.ticker, tx, error_code)).c_str());
                             }
                             ImGui::EndGroup();
                             if (ImGui::IsItemClicked()) { open_modal = true; }
@@ -295,24 +285,24 @@ namespace
                             if (i != tx_history.size() - 1) ImGui::Separator();
                         }
                     }
-                    else
-                        ImGui::Text("No transactions");
+                    else ImGui::Text("No transactions");
 
                     ImGui::EndTabItem();
                 }
 
                 if (ImGui::BeginTabItem("Receive"))
                 {
-                    static char address_read_only[100];
+                    auto& vars = gui_vars.receive_page;
+                    auto& address_read_only = vars.address_read_only;
 
                     std::error_code ec;
                     auto addr = mm2.address(curr_asset.ticker, ec);
-                    copy_str(addr, address_read_only, 100);
+                    copy_str(addr, address_read_only.data(), address_read_only.size());
 
                     ImGui::Text("Share the address below to receive coins");
 
                     ImGui::PushItemWidth(addr.length() * ImGui::GetFont()->FontSize * 0.5f);
-                    ImGui::InputText("##receive_address", address_read_only, addr.length(), ImGuiInputTextFlags_ReadOnly | ImGuiInputTextFlags_AutoSelectAll);
+                    ImGui::InputText("##receive_address", address_read_only.data(), addr.length(), ImGuiInputTextFlags_ReadOnly | ImGuiInputTextFlags_AutoSelectAll);
                     ImGui::PopItemWidth();
 
                     ImGui::EndTabItem();
@@ -328,70 +318,58 @@ namespace
 
                     bool has_error = answer.rpc_result_code != 200;
 
+                    // Transaction result
                     if(!broadcast_answer.tx_hash.empty() || !broadcast_answer.raw_result.empty()) {
-                        bool has_error = broadcast_answer.rpc_result_code == -1;
+                        has_error = broadcast_answer.rpc_result_code == -1;
+                        // Failed transaction
                         if(has_error) {
                             ImGui::Text("Transaction Failed!");
 
-                            // TODO: Make this readable
+                            // TODO: Make this error text readable
                             ImGui::Separator();
-                            ImGui::PushID("Error code");
                             ImGui::Text("Error code");
-                            ImGui::PopID();
                             ImGui::TextColored(error_color, "%d", broadcast_answer.rpc_result_code);
 
                             ImGui::Separator();
-                            ImGui::PushID("Error details");
                             ImGui::Text("Error details");
-                            ImGui::PopID();
                             ImGui::TextColored(error_color, "%s", broadcast_answer.raw_result.c_str());
                         }
+                        // Successful transaction
                         else {
                             ImGui::TextColored(bright_color, "Transaction Succeed!");
 
                             ImGui::Separator();
-                            ImGui::PushID("Transaction Hash");
                             ImGui::Text("Transaction Hash");
-                            ImGui::PopID();
                             ImGui::TextColored(value_color, "%s", broadcast_answer.tx_hash.c_str());
 
                             ImGui::Separator();
 
-                            ImGui::PushID("Okay");
                             if (ImGui::Button("Okay")) vars.clear();
-                            ImGui::PopID();
 
                             ImGui::SameLine();
-                            ImGui::PushID("View in Explorer");
-                            if (ImGui::Button("View in Explorer")) antara::gaming::core::open_url_browser(curr_asset.explorer_url[0] + "tx/" + broadcast_answer.tx_hash);
-                            ImGui::PopID();
+                            if (ImGui::Button("View in Explorer##tx_modal_view_transaction_button")) antara::gaming::core::open_url_browser(curr_asset.explorer_url[0] + "tx/" + broadcast_answer.tx_hash);
                         }
                     }
+                    // Input page
                     else if(has_error || !answer.result.has_value()) {
-                        ImGui::PushID("Address");
-                        ImGui::InputText("Address", address_input.data(), address_input.size(), ImGuiInputTextFlags_CallbackCharFilter, crypto_address_filter, address_input.data());
-                        ImGui::PopID();
+                        const float width = 35 * ImGui::GetFont()->FontSize * 0.5f;
+                        ImGui::SetNextItemWidth(width);
+                        ImGui::InputText("Address##send_coin_address_input", address_input.data(), address_input.size(), ImGuiInputTextFlags_CallbackCharFilter, input_filter_coin_address, address_input.data());
 
-
-                        ImGui::PushID("Amount");
-                        ImGui::InputText("Amount", amount_input.data(), amount_input.size(), ImGuiInputTextFlags_CallbackCharFilter, crypto_amount_filter, amount_input.data());
-                        ImGui::PopID();
+                        ImGui::SetNextItemWidth(width);
+                        ImGui::InputText("Amount##send_coin_amount_input", amount_input.data(), amount_input.size(), ImGuiInputTextFlags_CallbackCharFilter, input_filter_coin_amount, amount_input.data());
                         ImGui::SameLine();
-                        ImGui::PushID("MAX");
 
                         auto balance = mm2.my_balance(curr_asset.ticker, ec);
 
-                        if (ImGui::Button("MAX")) {
+                        if (ImGui::Button("MAX##send_coin_max_amount_button")) {
                             copy_str(balance, amount_input.data(), amount_input.size());
                         }
-                        ImGui::PopID();
 
-                        ImGui::PushID("Send");
-                        if (ImGui::Button("Send")) {
+                        if (ImGui::Button("Send##send_coin_button")) {
                             mm2::api::withdraw_request request{curr_asset.ticker, address_input.data(), amount_input.data(), balance == amount_input.data()};
                             answer = mm2::api::rpc_withdraw(std::move(request));
                         }
-                        ImGui::PopID();
 
                         if(has_error) {
                             // TODO: Make this readable
@@ -415,18 +393,13 @@ namespace
                         ImGui::Text("Fee");
                         ImGui::TextColored(value_color, "%s", result.fee_details.normal_fees.value().amount.c_str());
 
-                        ImGui::PushID("Cancel");
-                        if (ImGui::Button("Cancel")) vars.clear();
-                        ImGui::PopID();
+                        if (ImGui::Button("Cancel##cancel_send")) vars.clear();
 
                         ImGui::SameLine();
 
-                        ImGui::PushID("Confirm");
-                        if (ImGui::Button("Confirm")) {
+                        if (ImGui::Button("Confirm##confirm_send")) {
                             broadcast_answer = mm2::api::rpc_send_raw_transaction({curr_asset.ticker, result.tx_hex});
-
                         }
-                        ImGui::PopID();
                     }
 
                     ImGui::EndTabItem();
@@ -537,6 +510,51 @@ namespace
         // Right
         ImGui::SameLine();
         gui_portfolio_coin_details(gui, mm2, paprika_system, gui_vars);
+    }
+
+    void gui_amount_per_coin(const atomic_dex::gui& gui, const std::string& base, const std::string& rel) {
+        gui_coin_name_img(gui, rel);
+        ImGui::SameLine();
+        ImGui::Text("amount per");
+        ImGui::SameLine();
+        gui_coin_name_img(gui, base);
+    }
+
+    void gui_orderbook_table(const atomic_dex::gui& gui, const std::string& base, const std::string& rel, const std::string& action, const std::vector<mm2::api::order_contents>& list, std::error_code ec) {
+        ImGui::Columns(2, ("orderbook_columns_" + action).c_str());
+
+        gui_coin_name_img(gui, action == "Buy" ? rel : base);
+        ImGui::SameLine();
+        ImGui::Text("Sellers, Volume");
+        ImGui::NextColumn();
+        gui_amount_per_coin(gui, base, rel);
+
+        if(!list.empty()) {
+            ImGui::Separator();
+
+            if (!ec)
+            {
+                for (const auto & content : list) {
+                    ImGui::NextColumn();
+                    ImGui::Text("%s", content.maxvolume.c_str());
+                    ImGui::NextColumn();
+                    ImGui::Text("%s", content.price.c_str());
+                }
+            }
+            else DLOG_F(WARNING, "{}", ec.message());
+        }
+
+        ImGui::Columns(1);
+    }
+
+    void gui_disable_items() {
+        ImGui::PushItemFlag(ImGuiItemFlags_Disabled, true);
+        ImGui::PushStyleVar(ImGuiStyleVar_Alpha, ImGui::GetStyle().Alpha * 0.5f);
+    }
+
+    void gui_enable_items() {
+        ImGui::PopStyleVar();
+        ImGui::PopItemFlag();
     }
 } // namespace
 
@@ -664,8 +682,10 @@ namespace atomic_dex
 
             if (ImGui::BeginTabBar("##Tabs", ImGuiTabBarFlags_None))
             {
-                static bool in_exchange_prev = false;
-                bool        in_exchange      = false;
+                auto& vars = gui_vars_.main_tabs_page;
+                auto& in_exchange = vars.in_exchange;
+                auto& in_exchange_prev = vars.in_exchange_prev;
+                auto& trigger_trade_tab = vars.trigger_trade_tab;
 
                 if (ImGui::BeginTabItem("Portfolio"))
                 {
@@ -681,18 +701,15 @@ namespace atomic_dex
                     in_exchange = true;
                     if (ImGui::BeginTabBar("##ExchangeTabs", ImGuiTabBarFlags_None))
                     {
-                        static bool trigger_trade_tab = false;
                         if (ImGui::BeginTabItem("Trade", nullptr, trigger_trade_tab ? ImGuiTabItemFlags_SetSelected : 0))
                         {
                             trigger_trade_tab = false;
 
-                            // ImGui::Text("Work in progress");
-
-                            //! TODO: REMOVE THIS TMP !!!! (for testing trading part)
-                            static std::string current_base;
-                            static std::string current_rel;
-                            static std::string locked_base;
-                            static std::string locked_rel;
+                            auto& vars = gui_vars_.trade_page;
+                            auto& current_base = vars.current_base;
+                            auto& current_rel = vars.current_rel;
+                            auto& locked_base = vars.locked_base;
+                            auto& locked_rel = vars.locked_rel;
 
                             const float remaining_width = ImGui::GetContentRegionAvail().x - ImGui::GetStyle().ItemSpacing.x;
 
@@ -731,8 +748,28 @@ namespace atomic_dex
                                 ImGui::EndCombo();
                             }
                             ImGui::SameLine();
-                            if (ImGui::Button("Load") && not current_base.empty() && not current_rel.empty())
+
+                            bool coins_are_selected = not current_base.empty() && not current_rel.empty();
+
+                            if(!coins_are_selected) gui_disable_items();
+
+                            bool load_orderbook = false;
+                            if (ImGui::Button("Load") && not current_base.empty() && not current_rel.empty()) {
+                                load_orderbook = true;
+                            }
+
+                            ImGui::SameLine();
+                            if (ImGui::Button("Swap") && not current_base.empty() && not current_rel.empty())
                             {
+                                auto tmp = current_base;
+                                current_base = current_rel;
+                                current_rel = tmp;
+                                load_orderbook = true;
+                            }
+
+                            if (!coins_are_selected) gui_enable_items();
+
+                            if(load_orderbook) {
                                 locked_base = current_base;
                                 locked_rel  = current_rel;
                                 this->dispatcher_.trigger<orderbook_refresh>(current_base, current_rel);
@@ -740,136 +777,75 @@ namespace atomic_dex
 
                             if (not locked_base.empty() && not locked_rel.empty())
                             {
-                                ImGui::BeginChild("Sell Window", ImVec2(0, 300), true);
+                                std::error_code ec;
+                                auto book = mm2_system_.get_current_orderbook(ec);
+                                ImGui::Columns(3, "full_orderbook");
                                 {
-                                    ImGui::Text("Sell %s", locked_base.c_str());
-
-                                    static char price_buf[20];
-                                    static char amount_buf[20];
-
-                                    ImGui::PushID("Price");
-                                    ImGui::InputText("Price", price_buf, IM_ARRAYSIZE(price_buf), ImGuiInputTextFlags_CallbackCharFilter, crypto_amount_filter, price_buf);
-                                    ImGui::PopID();
-
-                                    ImGui::PushID("Amount");
-                                    ImGui::InputText("Amount", amount_buf, IM_ARRAYSIZE(amount_buf), ImGuiInputTextFlags_CallbackCharFilter, crypto_amount_filter, amount_buf);
-                                    ImGui::PopID();
-
-
-                                    std::string total;
-                                    std::string current_price  = price_buf;
-                                    std::string current_amount = amount_buf;
-                                    boost::multiprecision::cpp_dec_float_50 current_price_f{};
-                                    boost::multiprecision::cpp_dec_float_50 current_amount_f{};
-                                    bool fields_are_filled = not current_price.empty() && not current_amount.empty();
-                                    if (fields_are_filled)
+                                    ImGui::BeginChild("Sell Window", ImVec2(0, 0), true);
                                     {
-                                        current_price_f.assign(current_price);
-                                        current_amount_f.assign(current_amount);
-                                        total = (current_price_f * current_amount_f).convert_to<std::string>();
-                                    }
+                                        gui_coin_name_img(*this, locked_base);
 
-                                    bool enable = mm2_system_.do_i_have_enough_funds(locked_base, current_amount_f);
+                                        ImGui::Separator();
 
-                                    if (not enable)
-                                    {
-                                        std::error_code ec;
-                                        ImGui::TextColored(
-                                            error_color, "You don't have enough funds, you have %s %s",
-                                            mm2_system_.my_balance_with_locked_funds(locked_base, ec).c_str(), locked_base.c_str());
-                                        ImGui::PushItemFlag(ImGuiItemFlags_Disabled, true);
-                                        ImGui::PushStyleVar(ImGuiStyleVar_Alpha, ImGui::GetStyle().Alpha * 0.5f);
-                                    }
-                                    else {
-                                        if(fields_are_filled) ImGui::TextColored(bright_color, "You'll receive %s %s", total.c_str(), locked_rel.c_str());
-                                    }
+                                        auto& coin_vars = vars.trade_sell_coin[locked_base];
+                                        auto& price_input = coin_vars.price_input;
+                                        auto& amount_input = coin_vars.amount_input;
 
-                                    if (ImGui::Button(("SELL " + locked_base).c_str())) {}
-                                    if (not enable)
-                                    {
-                                        ImGui::PopItemFlag();
-                                        ImGui::PopStyleVar();
-                                    }
-                                }
-                                ImGui::EndChild();
+                                        ImGui::SetNextItemWidth(125.0f);
+                                        ImGui::InputText("Volume##trade_sell_volume", amount_input.data(), amount_input.size(), ImGuiInputTextFlags_CallbackCharFilter, input_filter_coin_amount, amount_input.data());
 
-                                ImGui::BeginChild(
-                                    "Orderbook Window", ImVec2(0, 400), true,
-                                    ImGuiWindowFlags_AlwaysVerticalScrollbar | ImGuiWindowFlags_AlwaysHorizontalScrollbar);
-                                {
-                                    ImGui::Text("Ask Orderbook:");
-                                    ImGui::Columns(4, "orderbook_columns_asks");
-                                    ImGui::Separator();
-                                    ImGui::Text("Buy Coin");
-                                    ImGui::NextColumn();
-                                    ImGui::Text("Sell Coin");
-                                    ImGui::NextColumn();
-                                    ImGui::Text("%s", (locked_base + " Volume").c_str());
-                                    ImGui::NextColumn();
-                                    ImGui::Text("%s", (locked_rel + " price per " + locked_base).c_str());
-                                    ImGui::NextColumn();
-                                    ImGui::Separator();
+                                        ImGui::SetNextItemWidth(125.0f);
+                                        ImGui::InputText("Price##trade_sell_price", price_input.data(), price_input.size(), ImGuiInputTextFlags_CallbackCharFilter, input_filter_coin_amount, price_input.data());
 
-                                    std::error_code ec;
-                                    auto            book = mm2_system_.get_current_orderbook(ec);
-                                    if (!ec)
-                                    {
-                                        // auto rng = ranges::views::concat(book.asks, book.bids);
-                                        for (const ::mm2::api::order_contents& content: book.asks)
+                                        std::string total;
+                                        std::string current_price  = price_input.data();
+                                        std::string current_amount = amount_input.data();
+                                        boost::multiprecision::cpp_dec_float_50 current_price_f{};
+                                        boost::multiprecision::cpp_dec_float_50 current_amount_f{};
+                                        bool fields_are_filled = not current_price.empty() && not current_amount.empty();
+                                        if (fields_are_filled)
                                         {
-                                            ImGui::Text("%s", locked_base.c_str());
-                                            ImGui::NextColumn();
-                                            ImGui::Text("%s", locked_rel.c_str());
-                                            ImGui::NextColumn();
-                                            ImGui::Text("%s", content.maxvolume.c_str());
-                                            ImGui::NextColumn();
-                                            ImGui::Text("%s", content.price.c_str());
-                                            ImGui::NextColumn();
+                                            current_price_f.assign(current_price);
+                                            current_amount_f.assign(current_amount);
+                                            total = (current_price_f * current_amount_f).convert_to<std::string>();
                                         }
-                                    }
-                                    else
-                                    {
-                                        DLOG_F(WARNING, "{}", ec.message());
-                                    }
 
-                                    ImGui::Columns(1);
-                                    ImGui::NewLine();
-                                    ImGui::Text("Bids Orderbook:");
-                                    ImGui::Columns(4, "orderbook_columns_bids");
-                                    ImGui::Separator();
-                                    ImGui::Text("Buy Coin");
-                                    ImGui::NextColumn();
-                                    ImGui::Text("Sell Coin");
-                                    ImGui::NextColumn();
-                                    ImGui::Text("%s", (locked_rel + " Volume").c_str());
-                                    ImGui::NextColumn();
-                                    ImGui::Text("%s", (locked_rel + " price per " + locked_base).c_str());
-                                    ImGui::NextColumn();
-                                    ImGui::Separator();
+                                        bool has_funds = current_amount.empty() || mm2_system_.do_i_have_enough_funds(locked_base, current_amount_f);
+                                        bool enable = fields_are_filled && has_funds;
 
-                                    if (!ec)
-                                    {
-                                        for (const ::mm2::api::order_contents& content: book.bids)
+                                        if(!has_funds) {
+                                            std::error_code ec;
+
+                                            ImGui::TextColored(error_color, "Not enough funds, you have %s %s", mm2_system_.my_balance_with_locked_funds(locked_base, ec).c_str(), locked_base.c_str());
+                                        }
+
+                                        if (not enable)
                                         {
-                                            ImGui::Text("%s", locked_rel.c_str());
-                                            ImGui::NextColumn();
-                                            ImGui::Text("%s", locked_base.c_str());
-                                            ImGui::NextColumn();
-                                            ImGui::Text("%s", content.maxvolume.c_str());
-                                            ImGui::NextColumn();
-                                            ImGui::Text("%s", content.price.c_str());
-                                            ImGui::NextColumn();
+                                            gui_disable_items();
                                         }
-                                    }
-                                    else
-                                    {
-                                        DLOG_F(WARNING, "{}", ec.message());
-                                    }
+                                        else {
+                                            if(fields_are_filled) ImGui::TextColored(bright_color, "You'll receive %s %s", total.c_str(), locked_rel.c_str());
+                                        }
 
+                                        if (ImGui::Button("Sell")) {}
+                                        if (not enable) gui_enable_items();
+                                    }
+                                    ImGui::EndChild();
 
-                                    ImGui::Columns(1);
+                                    ImGui::NextColumn();
+
+                                    ImGui::BeginChild("Sell_Orderbook", ImVec2(0, 0), true);
+                                    gui_orderbook_table(*this, locked_base, locked_rel, "Sell", book.asks, ec);
+                                    ImGui::EndChild();
+
+                                    ImGui::NextColumn();
+
+                                    ImGui::BeginChild("Buy_Orderbook", ImVec2(0, 0), true);
+                                    gui_orderbook_table(*this, locked_base, locked_rel, "Buy", book.bids, ec);
+                                    ImGui::EndChild();
+
                                 }
-                                ImGui::EndChild();
+                                ImGui::Columns(1);
                             }
 
                             ImGui::EndTabItem();
@@ -877,12 +853,13 @@ namespace atomic_dex
 
 
                         if (ImGui::BeginTabItem("Orders")) {
-                            static std::string current_base;
+                            auto& orders_vars = gui_vars_.orders_page;
+                            auto& current_base = orders_vars.current_base;
 
                             if (ImGui::BeginCombo("##left", current_base.c_str()))
                             {
                                 auto coins = mm2_system_.get_enabled_coins();
-                                for (auto&& current: coins)
+                                for (auto&& current : coins)
                                 {
                                     const bool is_selected = current.ticker == current_base;
                                     if (ImGui::Selectable(current.ticker.c_str(), is_selected)) { current_base = current.ticker; }
@@ -890,12 +867,12 @@ namespace atomic_dex
                                 }
                                 ImGui::EndCombo();
                             }
+
                             if(current_base.empty()) ImGui::Text("Please select a coin to see the orders");
 
                             if(!current_base.empty()) {
                                 std::error_code ec;
                                 auto orders = mm2_system_.get_orders(current_base, ec);
-
 
                                 if(!orders.maker_orders.empty() || !orders.taker_orders.empty()) {
                                     if (ImGui::Button("Cancel All Orders##cancel_all_orders")) {
