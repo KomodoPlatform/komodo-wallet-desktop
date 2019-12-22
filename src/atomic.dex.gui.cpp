@@ -74,8 +74,8 @@ namespace
 // Input filters
 namespace
 {
-    auto crypto_amount_filter = [](ImGuiInputTextCallbackData* data) {
-      std::string str_data = "";
+    int input_filter_coin_amount(ImGuiInputTextCallbackData* data) {
+      std::string str_data;
       if (data->UserData != nullptr) { str_data = static_cast<char*>(data->UserData); }
       auto c = data->EventChar;
       auto n = std::count(begin(str_data), end(str_data), '.');
@@ -83,10 +83,10 @@ namespace
       int valid = !(std::isdigit(c) || c == '.');
 
       return valid;
-    };
+    }
 
-    auto crypto_address_filter = [](ImGuiInputTextCallbackData* data) {
-      std::string str_data = "";
+    int input_filter_coin_address(ImGuiInputTextCallbackData* data) {
+      std::string str_data;
       if (data->UserData != nullptr) { str_data = static_cast<char*>(data->UserData); }
       auto c = data->EventChar;
 
@@ -94,7 +94,7 @@ namespace
           ((c >= '0' && c <= '9') || (c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z'));
 
       return valid ? 0 : 1;
-    };
+    }
 }
 
 // GUI Draw
@@ -372,12 +372,12 @@ namespace
                         const float width = 34 * ImGui::GetFont()->FontSize * 0.5f;
                         ImGui::SetNextItemWidth(width);
                         ImGui::PushID("Address");
-                        ImGui::InputText("Address", address_input.data(), address_input.size(), ImGuiInputTextFlags_CallbackCharFilter, crypto_address_filter, address_input.data());
+                        ImGui::InputText("Address", address_input.data(), address_input.size(), ImGuiInputTextFlags_CallbackCharFilter, input_filter_coin_address, address_input.data());
                         ImGui::PopID();
 
                         ImGui::SetNextItemWidth(width);
                         ImGui::PushID("Amount");
-                        ImGui::InputText("Amount", amount_input.data(), amount_input.size(), ImGuiInputTextFlags_CallbackCharFilter, crypto_amount_filter, amount_input.data());
+                        ImGui::InputText("Amount", amount_input.data(), amount_input.size(), ImGuiInputTextFlags_CallbackCharFilter, input_filter_coin_amount, amount_input.data());
                         ImGui::PopID();
                         ImGui::SameLine();
                         ImGui::PushID("MAX");
@@ -799,12 +799,12 @@ namespace atomic_dex
 
                                         ImGui::SetNextItemWidth(125.0f);
                                         ImGui::PushID("Volume");
-                                        ImGui::InputText((locked_base + " Volume").c_str(), amount_input.data(), amount_input.size(), ImGuiInputTextFlags_CallbackCharFilter, crypto_amount_filter, amount_input.data());
+                                        ImGui::InputText((locked_base + " Volume").c_str(), amount_input.data(), amount_input.size(), ImGuiInputTextFlags_CallbackCharFilter, input_filter_coin_amount, amount_input.data());
                                         ImGui::PopID();
 
                                         ImGui::SetNextItemWidth(125.0f);
                                         ImGui::PushID("Price");
-                                        ImGui::InputText((locked_rel + " amount per " + locked_base).c_str(), price_input.data(), price_input.size(), ImGuiInputTextFlags_CallbackCharFilter, crypto_amount_filter, price_input.data());
+                                        ImGui::InputText((locked_rel + " amount per " + locked_base).c_str(), price_input.data(), price_input.size(), ImGuiInputTextFlags_CallbackCharFilter, input_filter_coin_amount, price_input.data());
                                         ImGui::PopID();
 
 
