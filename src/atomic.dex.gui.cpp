@@ -830,7 +830,12 @@ namespace atomic_dex
                                             if(fields_are_filled) ImGui::TextColored(bright_color, "You'll receive %s %s", total.c_str(), locked_rel.c_str());
                                         }
 
-                                        if (ImGui::Button("Sell")) {}
+                                        if (ImGui::Button("Sell")) {
+                                            t_sell_request request{.base = locked_base, .rel = locked_rel, .price = current_price, .volume = current_amount};
+                                            std::error_code ec;
+                                            mm2_system_.place_sell_order(std::move(request), current_amount_f, ec);
+                                            if (ec) { LOG_F(ERROR, "{}", ec.message()); }
+                                        }
                                         if (not enable) gui_enable_items();
                                     }
                                     ImGui::EndChild();
