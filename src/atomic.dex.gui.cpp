@@ -563,7 +563,7 @@ namespace
             }
             else DLOG_F(WARNING, "{}", ec.message());
         }
-        
+
         ImGui::Columns(1);
         ImGui::Separator();
     }
@@ -769,73 +769,76 @@ namespace atomic_dex
 
                             if (not locked_base.empty() && not locked_rel.empty())
                             {
-                                ImGui::BeginChild("Sell Window", ImVec2(300.0f, 0), true);
-                                {
-                                    ImGui::Text("Sell %s", locked_base.c_str());
-
-                                    static char price_buf[20];
-                                    static char amount_buf[20];
-
-                                    ImGui::PushID("Price");
-                                    ImGui::InputText("Unit Price", price_buf, IM_ARRAYSIZE(price_buf), ImGuiInputTextFlags_CallbackCharFilter, crypto_amount_filter, price_buf);
-                                    ImGui::PopID();
-
-                                    ImGui::PushID("Amount");
-                                    ImGui::InputText("Amount", amount_buf, IM_ARRAYSIZE(amount_buf), ImGuiInputTextFlags_CallbackCharFilter, crypto_amount_filter, amount_buf);
-                                    ImGui::PopID();
-
-
-                                    std::string total;
-                                    std::string current_price  = price_buf;
-                                    std::string current_amount = amount_buf;
-                                    boost::multiprecision::cpp_dec_float_50 current_price_f{};
-                                    boost::multiprecision::cpp_dec_float_50 current_amount_f{};
-                                    bool fields_are_filled = not current_price.empty() && not current_amount.empty();
-                                    if (fields_are_filled)
-                                    {
-                                        current_price_f.assign(current_price);
-                                        current_amount_f.assign(current_amount);
-                                        total = (current_price_f * current_amount_f).convert_to<std::string>();
-                                    }
-
-                                    bool enable = mm2_system_.do_i_have_enough_funds(locked_base, current_amount_f);
-
-                                    if (not enable)
-                                    {
-                                        std::error_code ec;
-                                        ImGui::TextColored(
-                                            error_color, "You don't have enough funds, you have %s %s",
-                                            mm2_system_.my_balance_with_locked_funds(locked_base, ec).c_str(), locked_base.c_str());
-                                        ImGui::PushItemFlag(ImGuiItemFlags_Disabled, true);
-                                        ImGui::PushStyleVar(ImGuiStyleVar_Alpha, ImGui::GetStyle().Alpha * 0.5f);
-                                    }
-                                    else {
-                                        if(fields_are_filled) ImGui::TextColored(bright_color, "You'll receive %s %s", total.c_str(), locked_rel.c_str());
-                                    }
-
-                                    if (ImGui::Button(("SELL " + locked_base).c_str())) {}
-                                    if (not enable)
-                                    {
-                                        ImGui::PopItemFlag();
-                                        ImGui::PopStyleVar();
-                                    }
-                                }
-                                ImGui::EndChild();
-
-                                ImGui::SameLine();
-
                                 std::error_code ec;
                                 auto book = mm2_system_.get_current_orderbook(ec);
-                                ImGui::BeginChild("Buy_Orderbook", ImVec2(300, 0), true);
-                                gui_orderbook_table("Buy", book.bids, ec);
-                                ImGui::EndChild();
+                                ImGui::Columns(3, "full_orderbook");
+                                {
+                                    ImGui::BeginChild("Sell Window", ImVec2(0, 0), true);
+                                    {
+                                        ImGui::Text("Sell %s", locked_base.c_str());
 
-                                ImGui::SameLine();
+                                        static char price_buf[20];
+                                        static char amount_buf[20];
 
-                                ImGui::BeginChild("Sell_Orderbook", ImVec2(300, 0), true);
-                                gui_orderbook_table("Sell", book.asks, ec);
-                                ImGui::EndChild();
+                                        ImGui::PushID("Price");
+                                        ImGui::InputText("Unit Price", price_buf, IM_ARRAYSIZE(price_buf), ImGuiInputTextFlags_CallbackCharFilter, crypto_amount_filter, price_buf);
+                                        ImGui::PopID();
 
+                                        ImGui::PushID("Amount");
+                                        ImGui::InputText("Amount", amount_buf, IM_ARRAYSIZE(amount_buf), ImGuiInputTextFlags_CallbackCharFilter, crypto_amount_filter, amount_buf);
+                                        ImGui::PopID();
+
+
+                                        std::string total;
+                                        std::string current_price  = price_buf;
+                                        std::string current_amount = amount_buf;
+                                        boost::multiprecision::cpp_dec_float_50 current_price_f{};
+                                        boost::multiprecision::cpp_dec_float_50 current_amount_f{};
+                                        bool fields_are_filled = not current_price.empty() && not current_amount.empty();
+                                        if (fields_are_filled)
+                                        {
+                                            current_price_f.assign(current_price);
+                                            current_amount_f.assign(current_amount);
+                                            total = (current_price_f * current_amount_f).convert_to<std::string>();
+                                        }
+
+                                        bool enable = mm2_system_.do_i_have_enough_funds(locked_base, current_amount_f);
+
+                                        if (not enable)
+                                        {
+                                            std::error_code ec;
+                                            ImGui::TextColored(
+                                                error_color, "You don't have enough funds, you have %s %s",
+                                                mm2_system_.my_balance_with_locked_funds(locked_base, ec).c_str(), locked_base.c_str());
+                                            ImGui::PushItemFlag(ImGuiItemFlags_Disabled, true);
+                                            ImGui::PushStyleVar(ImGuiStyleVar_Alpha, ImGui::GetStyle().Alpha * 0.5f);
+                                        }
+                                        else {
+                                            if(fields_are_filled) ImGui::TextColored(bright_color, "You'll receive %s %s", total.c_str(), locked_rel.c_str());
+                                        }
+
+                                        if (ImGui::Button("Submit")) {}
+                                        if (not enable)
+                                        {
+                                            ImGui::PopItemFlag();
+                                            ImGui::PopStyleVar();
+                                        }
+                                    }
+                                    ImGui::EndChild();
+
+                                    ImGui::NextColumn();
+
+                                    ImGui::BeginChild("Buy_Orderbook", ImVec2(0, 0), true);
+                                    gui_orderbook_table("Buy", book.bids, ec);
+                                    ImGui::EndChild();
+
+                                    ImGui::NextColumn();
+
+                                    ImGui::BeginChild("Sell_Orderbook", ImVec2(0, 0), true);
+                                    gui_orderbook_table("Sell", book.asks, ec);
+                                    ImGui::EndChild();
+                                }
+                                ImGui::Columns(1);
                             }
 
                             ImGui::EndTabItem();
