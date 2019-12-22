@@ -747,10 +747,14 @@ namespace atomic_dex
                                     static char price_buf[20];
                                     static char amount_buf[20];
 
+                                    const float width = 125.0f;
+                                    ImGui::SetNextItemWidth(width);
                                     ImGui::PushID("Price");
-                                    ImGui::InputText("Price", price_buf, IM_ARRAYSIZE(price_buf), ImGuiInputTextFlags_CallbackCharFilter, crypto_amount_filter, price_buf);
+                                    std::string price_text = "Price of 1 " + locked_base;
+                                    ImGui::InputText(price_text.c_str(), price_buf, IM_ARRAYSIZE(price_buf), ImGuiInputTextFlags_CallbackCharFilter, crypto_amount_filter, price_buf);
                                     ImGui::PopID();
 
+                                    ImGui::SetNextItemWidth(width);
                                     ImGui::PushID("Amount");
                                     ImGui::InputText("Amount", amount_buf, IM_ARRAYSIZE(amount_buf), ImGuiInputTextFlags_CallbackCharFilter, crypto_amount_filter, amount_buf);
                                     ImGui::PopID();
