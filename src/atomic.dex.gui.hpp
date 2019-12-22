@@ -76,6 +76,12 @@ namespace atomic_dex
             std::array<char, 100> amount_input{};
         };
 
+        struct main_tabs_vars {
+            bool in_exchange_prev{false};
+            bool in_exchange{false};
+            bool trigger_trade_tab{false};
+        } main_tabs_page;
+
         std::unordered_map<std::string, send_coin_vars> send_coin;
     };
 

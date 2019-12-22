@@ -696,8 +696,10 @@ namespace atomic_dex
 
             if (ImGui::BeginTabBar("##Tabs", ImGuiTabBarFlags_None))
             {
-                static bool in_exchange_prev = false;
-                bool        in_exchange      = false;
+                auto& vars = gui_vars_.main_tabs_page;
+                auto& in_exchange = vars.in_exchange;
+                auto& in_exchange_prev = vars.in_exchange_prev;
+                auto& trigger_trade_tab = vars.trigger_trade_tab;
 
                 if (ImGui::BeginTabItem("Portfolio"))
                 {
@@ -713,7 +715,6 @@ namespace atomic_dex
                     in_exchange = true;
                     if (ImGui::BeginTabBar("##ExchangeTabs", ImGuiTabBarFlags_None))
                     {
-                        static bool trigger_trade_tab = false;
                         if (ImGui::BeginTabItem("Trade", nullptr, trigger_trade_tab ? ImGuiTabItemFlags_SetSelected : 0))
                         {
                             trigger_trade_tab = false;
@@ -828,7 +829,7 @@ namespace atomic_dex
                                                 std::error_code ec;
 
                                                 ImGui::TextColored(
-                                                error_color, "You don't have enough funds, you have %s %s",
+                                                error_color, "Not enough funds, you have %s %s",
                                                 mm2_system_.my_balance_with_locked_funds(locked_base, ec).c_str(), locked_base.c_str());
                                             }
 
