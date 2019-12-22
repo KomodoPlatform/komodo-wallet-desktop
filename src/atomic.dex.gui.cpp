@@ -795,8 +795,7 @@ namespace atomic_dex
 
                                 ImGui::SameLine();
                                 ImGui::BeginChild(
-                                    "Orderbook Window", ImVec2(0, 0), true,
-                                    ImGuiWindowFlags_AlwaysVerticalScrollbar | ImGuiWindowFlags_AlwaysHorizontalScrollbar);
+                                    "Orderbook Window", ImVec2(0, 0), true);
                                 {
                                     ImGui::Text("Ask Orderbook:");
                                     ImGui::Columns(4, "orderbook_columns_asks");
