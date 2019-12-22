@@ -740,21 +740,17 @@ namespace atomic_dex
 
                             if (not locked_base.empty() && not locked_rel.empty())
                             {
-                                ImGui::BeginChild("Sell Window", ImVec2(0, 300), true);
+                                ImGui::BeginChild("Sell Window", ImVec2(300.0f, 0), true);
                                 {
                                     ImGui::Text("Sell %s", locked_base.c_str());
 
                                     static char price_buf[20];
                                     static char amount_buf[20];
 
-                                    const float width = 125.0f;
-                                    ImGui::SetNextItemWidth(width);
                                     ImGui::PushID("Price");
-                                    std::string price_text = "Price of 1 " + locked_base;
-                                    ImGui::InputText(price_text.c_str(), price_buf, IM_ARRAYSIZE(price_buf), ImGuiInputTextFlags_CallbackCharFilter, crypto_amount_filter, price_buf);
+                                    ImGui::InputText("Unit Price", price_buf, IM_ARRAYSIZE(price_buf), ImGuiInputTextFlags_CallbackCharFilter, crypto_amount_filter, price_buf);
                                     ImGui::PopID();
 
-                                    ImGui::SetNextItemWidth(width);
                                     ImGui::PushID("Amount");
                                     ImGui::InputText("Amount", amount_buf, IM_ARRAYSIZE(amount_buf), ImGuiInputTextFlags_CallbackCharFilter, crypto_amount_filter, amount_buf);
                                     ImGui::PopID();
@@ -797,8 +793,9 @@ namespace atomic_dex
                                 }
                                 ImGui::EndChild();
 
+                                ImGui::SameLine();
                                 ImGui::BeginChild(
-                                    "Orderbook Window", ImVec2(0, 400), true,
+                                    "Orderbook Window", ImVec2(0, 0), true,
                                     ImGuiWindowFlags_AlwaysVerticalScrollbar | ImGuiWindowFlags_AlwaysHorizontalScrollbar);
                                 {
                                     ImGui::Text("Ask Orderbook:");
