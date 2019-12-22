@@ -59,8 +59,12 @@ iterator pairs*[K, V](range: ConcurrentReg[K, V]): (K, V) =
   last[] = range.cEnd()
   while current[] != last[]:
     var pr: StdPair[K, V]
+    var f: K
+    var s: V
     pr = *current[]
+    deepCopy(f, pr.first())
+    deepCopy(s, pr.second())
     ++current[]
-    yield (pr.first(), pr.second())
+    yield (f, s)
   dealloc(current)
   dealloc(last)

@@ -15,6 +15,10 @@ import ../coins/coins_cfg
 ## Local global module variable
 let lgEndpoint = "http://127.0.0.1:7783"
 
+proc processPost(data: JsonNode) : string =
+    var client = newHttpClient()
+    result = client.postContent(lgEndpoint, body = $data)
+
 jsonSchema:
     ElectrumRequestParams:
         coin: string
@@ -26,10 +30,21 @@ jsonSchema:
         "result": string
     ElectrumAnswerError:
         error: string
-        
+    BalanceRequestParams:
+        coin: string
+    BalanceAnswerSuccess:
+        address: string
+        balance: string
+        locked_by_swaps: string
+        coin: string
+    BalanceAnswerError:
+        error: string      
+
 export ElectrumRequestParams
 export ElectrumAnswerSuccess
 export ElectrumAnswerError
+export BalanceRequestParams
+export BalanceAnswerSuccess
 export `[]`
 export `unsafeAccess`
 export `create`
@@ -38,6 +53,10 @@ export `create`
 type ElectrumAnswer = object
         success*: Option[ElectrumAnswerSuccess]
         error*:  Option[ElectrumAnswerError]
+
+type BalanceAnswer = object
+       success*: Option[BalanceAnswerSuccess]
+       error*: Option[BalanceAnswerError]
 
 ##! Local Functions
 proc onProgressChanged(total, progress, speed: BiggestInt) =
@@ -50,18 +69,28 @@ proc templateRequest(jsonData: JsonNode, method_name: string) =
 
 ##! Global Function
 proc rpcElectrum*(req: ElectrumRequestParams) : ElectrumAnswer =
-    var client = newHttpClient()
-    client.onProgressChanged = onProgressChanged
-    client.headers = newHttpHeaders({ "Content-Type": "application/json" })
     let jsonData = req.JsonNode
     templateRequest(jsonData, "electrum")
-    let response = client.request(lgEndpoint, httpMethod = HttpPost, body = $jsonData)
-    let json = parseJson(response.body)
-    var res: ElectrumAnswer
-    if json.isValid(ElectrumAnswerSuccess):
-        res.success = some(ElectrumAnswerSuccess(json))
-    elif json.isValid(ElectrumAnswerError):
-        res.error = some(ElectrumAnswerError(json))
-    return res
+    try:
+        let json = processPost(jsonData).parseJson()
+        if json.isValid(ElectrumAnswerSuccess):
+            result.success = some(ElectrumAnswerSuccess(json))
+        elif json.isValid(ElectrumAnswerError):
+            result.error = some(ElectrumAnswerError(json))
+    except HttpRequestError as e:
+        echo "Got exception HttpRequestError: ", e.msg
+        result.error = some(ElectrumAnswerError(%*{"error": e.msg}))
 
-    
+
+proc rpcBalance*(req: BalanceRequestParams) : BalanceAnswer =
+    let jsonData = req.JsonNode
+    templateRequest(jsonData, "my_balance")
+    try:
+        let json = processPost(jsonData).parseJson()
+        if json.isValid(BalanceAnswerSuccess):
+            result.success = some(BalanceAnswerSuccess(json))
+        elif json.isValid(BalanceAnswerError):
+            result.error = some(BalanceAnswerError(json))
+    except HttpRequestError as e:
+        echo "Got exception HttpRequestError: ", e.msg
+        result.error = some(BalanceAnswerError(%*{"error": e.msg}))

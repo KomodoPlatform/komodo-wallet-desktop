@@ -1,10 +1,15 @@
+##! STD Headers
 import threadpool
 import asyncdispatch
 import os
 
+import ./balance
+
 proc allTasks30s() {.async.} =
     await sleepAsync(1)
-    echo "allTasks30s"
+    var asyncresults = newseq[Future[void]](1)
+    asyncresults[0] = taskResfreshBalance()
+    await all(asyncresults)
 
 proc taskFoo() {.async.} =
     echo "taskFoo"
@@ -15,14 +20,10 @@ proc taskBar() {.async.} =
 proc allTasks5s() {.async.} =
     await sleepAsync(1)
     echo "allTasks5s"
-    let foo = taskFoo()
-    let bar = taskBar()
-    await foo
-    await bar
 
 proc task30SecondsAsync() {.async.} =
     asyncCheck allTasks30s()
-    await sleepAsync(30000)
+    await sleepAsync(5000)
 
 proc task30Seconds() =
     while true:
