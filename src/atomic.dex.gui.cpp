@@ -715,13 +715,11 @@ namespace atomic_dex
                         {
                             trigger_trade_tab = false;
 
-                            // ImGui::Text("Work in progress");
-
-                            //! TODO: REMOVE THIS TMP !!!! (for testing trading part)
-                            static std::string current_base;
-                            static std::string current_rel;
-                            static std::string locked_base;
-                            static std::string locked_rel;
+                            auto& vars = gui_vars_.trade_coin;
+                            auto& current_base = vars.current_base;
+                            auto& current_rel = vars.current_rel;
+                            auto& locked_base = vars.locked_base;
+                            auto& locked_rel = vars.locked_rel;
 
                             const float remaining_width = ImGui::GetContentRegionAvail().x - ImGui::GetStyle().ItemSpacing.x;
 

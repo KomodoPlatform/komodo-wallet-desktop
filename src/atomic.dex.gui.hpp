@@ -54,6 +54,13 @@ namespace atomic_dex
             std::array<char, 100> amount_input;
         };
 
+        struct trade_vars {
+            std::string current_base;
+            std::string current_rel;
+            std::string locked_base;
+            std::string locked_rel;
+        } trade_coin;
+
         std::unordered_map<std::string, send_coin_vars> send_coin;
     };
 
