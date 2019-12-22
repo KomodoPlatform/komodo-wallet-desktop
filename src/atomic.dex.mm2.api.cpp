@@ -127,15 +127,9 @@ namespace mm2::api
 
         using namespace date;
         using namespace std::chrono;
-        const auto sys_time = system_clock::from_time_t(cfg.timestamp);
-        const auto tps      = floor<seconds>(sys_time);
-        const auto dp       = floor<days>(tps);
-        const auto date     = year_month_day(floor<days>(tps));
-        auto       time     = make_time(tps - dp);
-
-        std::stringstream ss;
-        ss << date << "   " << time;
-        cfg.timestamp_as_date = ss.str();
+        date::sys_seconds tp{seconds{cfg.timestamp}};
+        std::string       s   = date::format("%Y-%m-%d %I:%M:%S", tp);
+        cfg.timestamp_as_date = std::move(s);
     }
 
     void
@@ -232,8 +226,8 @@ namespace mm2::api
     void
     to_json(nlohmann::json& j, const send_raw_transaction_request& cfg)
     {
-        j["coin"] = cfg.coin;
-        j["tx_hex"]  = cfg.tx_hex;
+        j["coin"]   = cfg.coin;
+        j["tx_hex"] = cfg.tx_hex;
     }
 
     void
@@ -269,9 +263,6 @@ namespace mm2::api
     {
         using namespace date;
 
-        std::stringstream                     ss;
-        std::chrono::system_clock::time_point sys_time;
-
         j.at("base").get_to(answer.base);
         j.at("rel").get_to(answer.rel);
         j.at("askdepth").get_to(answer.askdepth);
@@ -283,11 +274,8 @@ namespace mm2::api
         j.at("netid").get_to(answer.netid);
         j.at("timestamp").get_to(answer.timestamp);
 
-        sys_time        = std::chrono::system_clock::from_time_t(answer.timestamp);
-        const auto date = year_month_day(floor<days>(sys_time));
-
-        ss << date;
-        answer.human_timestamp = ss.str();
+        sys_time<std::chrono::milliseconds> tp{std::chrono::milliseconds{answer.timestamp}};
+        answer.human_timestamp = date::format("%Y-%m-%d %I:%M:%S", tp);
     }
 
     void
@@ -430,11 +418,7 @@ namespace mm2::api
         {
           using namespace date;
           const auto        time_key = value.at("created_at").get<std::size_t>();
-          const auto        sys_time = std::chrono::system_clock::from_time_t(time_key);
-          const auto        date     = year_month_day(floor<days>(sys_time));
-          std::stringstream ss;
-
-          ss << date;
+          sys_time<std::chrono::milliseconds> tp{std::chrono::milliseconds{time_key}};
 
           my_order_contents contents{.order_id         = key,
               .available_amount = value.at("available_amount").get<std::string>(),
@@ -443,7 +427,7 @@ namespace mm2::api
               .rel              = value.at("rel").get<std::string>(),
               .cancellable      = value.at("cancellable").get<bool>(),
               .timestamp        = time_key,
-              .human_timestamp  = ss.str()};
+              .human_timestamp  = date::format("%Y-%m-%d %I:%M:%S", tp)};
           out.try_emplace(time_key, std::move(contents));
         };
         // clang-format on
@@ -452,8 +436,8 @@ namespace mm2::api
         for (auto&& [key, value]: j.at("result").at("taker_orders").items()) { filler_functor(key, value, answer.taker_orders); }
     }
 
-    template<typename T>
-    using have_error_field = decltype(std::declval<T &>().error.has_value());
+    template <typename T>
+    using have_error_field = decltype(std::declval<T&>().error.has_value());
 
     template <typename RpcReturnType>
     RpcReturnType
@@ -467,10 +451,9 @@ namespace mm2::api
         if (resp.code not_eq 200)
         {
             DVLOG_F(loguru::Verbosity_WARNING, "rpc answer code is not 200");
-            if constexpr (doom::meta::is_detected_v<have_error_field, RpcReturnType>) {
-                if constexpr (std::is_same_v<std::string, decltype(answer.error)>) {
-                    answer.error = nlohmann::json::parse(resp.body).get<std::string>();
-                }
+            if constexpr (doom::meta::is_detected_v<have_error_field, RpcReturnType>)
+            {
+                if constexpr (std::is_same_v<std::string, decltype(answer.error)>) { answer.error = nlohmann::json::parse(resp.body).get<std::string>(); }
             }
             answer.rpc_result_code = resp.code;
             answer.raw_result      = resp.body;
