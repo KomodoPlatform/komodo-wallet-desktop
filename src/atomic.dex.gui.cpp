@@ -759,7 +759,7 @@ namespace atomic_dex
                             }
 
                             ImGui::SameLine();
-                            if (ImGui::Button("Swap & Load") && not current_base.empty() && not current_rel.empty())
+                            if (ImGui::Button("Swap") && not current_base.empty() && not current_rel.empty())
                             {
                                 auto tmp = current_base;
                                 current_base = current_rel;
