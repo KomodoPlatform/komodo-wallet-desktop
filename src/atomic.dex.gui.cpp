@@ -369,11 +369,13 @@ namespace
                         }
                     }
                     else if(has_error || !answer.result.has_value()) {
+                        const float width = 34 * ImGui::GetFont()->FontSize * 0.5f;
+                        ImGui::SetNextItemWidth(width);
                         ImGui::PushID("Address");
                         ImGui::InputText("Address", address_input.data(), address_input.size(), ImGuiInputTextFlags_CallbackCharFilter, crypto_address_filter, address_input.data());
                         ImGui::PopID();
 
-
+                        ImGui::SetNextItemWidth(width);
                         ImGui::PushID("Amount");
                         ImGui::InputText("Amount", amount_input.data(), amount_input.size(), ImGuiInputTextFlags_CallbackCharFilter, crypto_amount_filter, amount_input.data());
                         ImGui::PopID();
