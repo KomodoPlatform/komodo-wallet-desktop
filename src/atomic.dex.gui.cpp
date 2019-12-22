@@ -715,7 +715,7 @@ namespace atomic_dex
                         {
                             trigger_trade_tab = false;
 
-                            auto& vars = gui_vars_.trade_coin;
+                            auto& vars = gui_vars_.trade_page;
                             auto& current_base = vars.current_base;
                             auto& current_rel = vars.current_rel;
                             auto& locked_base = vars.locked_base;
@@ -865,7 +865,8 @@ namespace atomic_dex
 
 
                         if (ImGui::BeginTabItem("Orders")) {
-                            static std::string current_base;
+                            auto& vars = gui_vars_.orders_page;
+                            auto& current_base = vars.current_base;
 
                             if (ImGui::BeginCombo("##left", current_base.c_str()))
                             {

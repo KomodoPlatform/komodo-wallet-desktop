@@ -43,17 +43,6 @@ namespace atomic_dex
         std::vector<bool> enableable_coins_select_list;
         std::string       curr_asset_code = "";
 
-        struct send_coin_vars {
-            void clear() {
-                answer = {};
-                broadcast_answer = {};
-            }
-            t_withdraw_answer answer;
-            t_broadcast_answer broadcast_answer;
-            std::array<char, 100> address_input;
-            std::array<char, 100> amount_input;
-        };
-
         struct trade_vars {
             struct trade_sell_coin_vars {
                 std::array<char, 100> price_input;
@@ -66,7 +55,22 @@ namespace atomic_dex
             std::string locked_rel;
 
             std::unordered_map<std::string, trade_sell_coin_vars> trade_sell_coin;
-        } trade_coin;
+        } trade_page;
+
+        struct orders_vars {
+            std::string current_base;
+        } orders_page;
+
+        struct send_coin_vars {
+            void clear() {
+                answer = {};
+                broadcast_answer = {};
+            }
+            t_withdraw_answer answer;
+            t_broadcast_answer broadcast_answer;
+            std::array<char, 100> address_input{};
+            std::array<char, 100> amount_input{};
+        };
 
         std::unordered_map<std::string, send_coin_vars> send_coin;
     };
