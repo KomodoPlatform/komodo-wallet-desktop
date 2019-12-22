@@ -788,24 +788,25 @@ namespace atomic_dex
                                     {
                                         ImGui::Text("Sell %s", locked_base.c_str());
 
-                                        static char price_buf[20];
-                                        static char amount_buf[20];
 
+                                        auto& coin_vars = vars.trade_sell_coin[locked_base];
+                                        auto& price_input = coin_vars.price_input;
+                                        auto& amount_input = coin_vars.amount_input;
 
                                         ImGui::SetNextItemWidth(125.0f);
                                         ImGui::PushID("Volume");
-                                        ImGui::InputText((locked_base + " Volume").c_str(), amount_buf, IM_ARRAYSIZE(amount_buf), ImGuiInputTextFlags_CallbackCharFilter, crypto_amount_filter, amount_buf);
+                                        ImGui::InputText((locked_base + " Volume").c_str(), amount_input.data(), amount_input.size(), ImGuiInputTextFlags_CallbackCharFilter, crypto_amount_filter, amount_input.data());
                                         ImGui::PopID();
 
                                         ImGui::SetNextItemWidth(125.0f);
                                         ImGui::PushID("Price");
-                                        ImGui::InputText((locked_rel + " amount per " + locked_base).c_str(), price_buf, IM_ARRAYSIZE(price_buf), ImGuiInputTextFlags_CallbackCharFilter, crypto_amount_filter, price_buf);
+                                        ImGui::InputText((locked_rel + " amount per " + locked_base).c_str(), price_input.data(), price_input.size(), ImGuiInputTextFlags_CallbackCharFilter, crypto_amount_filter, price_input.data());
                                         ImGui::PopID();
 
 
                                         std::string total;
-                                        std::string current_price  = price_buf;
-                                        std::string current_amount = amount_buf;
+                                        std::string current_price  = price_input.data();
+                                        std::string current_amount = amount_input.data();
                                         boost::multiprecision::cpp_dec_float_50 current_price_f{};
                                         boost::multiprecision::cpp_dec_float_50 current_amount_f{};
                                         bool fields_are_filled = not current_price.empty() && not current_amount.empty();
@@ -865,7 +866,7 @@ namespace atomic_dex
                             if (ImGui::BeginCombo("##left", current_base.c_str()))
                             {
                                 auto coins = mm2_system_.get_enabled_coins();
-                                for (auto&& current: coins)
+                                for (auto&& current : coins)
                                 {
                                     const bool is_selected = current.ticker == current_base;
                                     if (ImGui::Selectable(current.ticker.c_str(), is_selected)) { current_base = current.ticker; }
