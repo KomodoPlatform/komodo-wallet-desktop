@@ -20,8 +20,8 @@ proc guiMainLoop(ctx: ptr t_antara_ui) =
 
 proc main() =
   coins_cfg.parseCfg()
-  mm2.init_process()
-  defer: mm2.close_process()
+  mm2.initProcess()
+  defer: mm2.closeProcess()
   var ctx = antara_ui_create("AtomicDex", 200, 200)
   gui.init(ctx)
   defer: antara_ui_destroy(ctx)

@@ -147,7 +147,7 @@ proc set_komodo_style*() =
   style.colors[ImGuiCol.TitleBg.int32] = dark_color
   style.colors[ImGuiCol.Header.int32] = bright_color
 
-proc waiting_view() =
+proc waitingView() =
   igText("Loading, please wait...")
   let
     radius = 30.0
@@ -240,7 +240,7 @@ proc portfolio_view() =
   portfolio_enable_coin_view()
   portfolio_coins_list_view()
 
-proc main_view() =
+proc mainView() =
   main_menu_bar()
   if igBeginTabBar("##Tabs", ImGuiTabBarFlags.None):
     if (igBeginTabItem("Portfolio")):
@@ -255,18 +255,18 @@ proc update*(ctx: ptr t_antara_ui) =
   if not is_open:
     antara_close_window(ctx)
   if mm2_fully_running.load() == false:
-    waiting_view()
+    waitingView()
   else:
-    main_view()
+    mainView()
   igEnd()
 
-proc load_img(ctx: ptr t_antara_ui, id: string, path: string) {.async.} =
+proc loadImg(ctx: ptr t_antara_ui, id: string, path: string) {.async.} =
   discard icons.insertOrAssign(id.hash, antara_load_image_ws(ctx, path))
 
 proc init*(ctx: ptr t_antara_ui) =
   var textures_path = getAssetsPath() & "/textures"
   for kind, path in walkDir(textures_path):
     var id = path.extractFilename.changeFileExt("").toUpperAscii
-    asyncCheck load_img(ctx, id, path)
+    asyncCheck loadImg(ctx, id, path)
 
 
