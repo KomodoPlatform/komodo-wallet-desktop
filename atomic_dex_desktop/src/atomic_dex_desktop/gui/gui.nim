@@ -1,29 +1,34 @@
-import ui_workflow_nim
+##! Standard Import
 import asyncdispatch
-import sequtils
 import atomics
 import hashes
 import json
-import strutils
 import os
+import sequtils
+import strutils
+
+##! Dependencies Import
+import ui_workflow_nim
+
+##! Project Import
 import ../coins/coins_cfg
-import ../utils/assets
-import ../mm2/mm2
 import ../cpp_bindings/folly/hashmap
+import ../mm2/mm2
+import ../utils/assets
 import ../utils/utility
 import ./widgets
 
 var
   is_open = true
-  cur_asset_ticker = "" 
+  curAssetTicker = "" 
   icons: ConcurrentReg[int, t_antara_image]
-  enableable_coins_select_list: seq[bool]
+  enableableCoinsSelectList: seq[bool]
 
 let
   bright_color = ImVec4(x: 0.0, y: 149.0 / 255.0, z: 143.0 / 255.0, w: 1.0)
   dark_color = ImVec4(x: 25.0 / 255.0, y: 40.0 / 255.0, z: 56.0 / 255.0, w: 1.0)
 
-proc set_komodo_style*() =
+proc setKomodoStyle*() =
   var style = igGetStyle()
   style.frameRounding = 4.0
   style.grabRounding = 4.0
@@ -157,7 +162,7 @@ proc waitingView() =
     loadingIndicatorCircle("foo", radius, bright_color, dark_color, 9, 1.5)
 
 
-proc main_menu_bar() =
+proc mainMenuBar() =
   if igBeginMenuBar():
     if igMenuItem("Open", "Ctrl+A"):
       echo "Open"
@@ -165,42 +170,42 @@ proc main_menu_bar() =
   else:
     echo "Nop"
 
-proc portfolio_enable_coin_view() =
+proc portfolioEnableCoinView() =
   if igButton("Enable a coin"):
     igOpenPopup("Enable coins")
   var 
-    popup_is_open = true
+    popupIsOpen = true
     close = false
-  if igBeginPopupModal("Enable coins", addr popup_is_open, (ImGuiWindowFlags.AlwaysAutoResize.int32 or
+  if igBeginPopupModal("Enable coins", addr popupIsOpen, (ImGuiWindowFlags.AlwaysAutoResize.int32 or
       ImGuiWindowFlags.NoMove.int32).ImGuiWindowFlags):
     var coins = get_enableable_coins()
     igText(coins.len == 0 ?  "All coins are already enabled!" ! "Select the coins you want to add to your portfolio.")
     if coins.len == 0:
       igSeparator()
-    if coins.len > enableable_coins_select_list.len:
-      enableable_coins_select_list.setLen(coins.len)
-      enableable_coins_select_list.applyIt(false)
+    if coins.len > enableableCoinsSelectList.len:
+      enableableCoinsSelectList.setLen(coins.len)
+      enableableCoinsSelectList.applyIt(false)
     for i, coin in coins:
-      if igSelectable(coin["name"].getStr & " (" & coin["coin"].getStr & ")", enableable_coins_select_list[i], ImGuiSelectableFlags.DontClosePopups):
-        enableable_coins_select_list[i] = enableable_coins_select_list[i] == false
-        echo enableable_coins_select_list[i]
+      if igSelectable(coin["name"].getStr & " (" & coin["coin"].getStr & ")", enableableCoinsSelectList[i], ImGuiSelectableFlags.DontClosePopups):
+        enableableCoinsSelectList[i] = enableableCoinsSelectList[i] == false
+        echo enableableCoinsSelectList[i]
     if coins.len == 0 and igButton("Close"):
         close = true
     else:
       if igButton("Enable", ImVec2(x: 120.0, y: 0.0)):
-        for i, v in enableable_coins_select_list:
+        for i, v in enableableCoinsSelectList:
             if v == true:
               enable_coin(coins[i]["coin"].getStr)
         close = true
       igSameLine()
       if igButton("Cancel", ImVec2(x: 120.0, y: 0.0)):
         close = true
-    if not popup_is_open or close:
-      enableable_coins_select_list.applyIt(false)
+    if not popupIsOpen or close:
+      enableableCoinsSelectList.applyIt(false)
       igCloseCurrentPopup()
     igEndPopup()
 
-proc porfolio_gui_coin_name_img(ticker: string, name: string = "", name_first = false) =
+proc portfolioGuiCoinNameImg(ticker: string, name: string = "", name_first = false) =
   let 
     icon = icons.at(ticker.hash)
     text = name.len > 0 ? name ! ticker
@@ -209,42 +214,40 @@ proc porfolio_gui_coin_name_img(ticker: string, name: string = "", name_first = 
     igSameLine()
     igSetCursorPosX(igGetCursorPosX() + 5.0)
   let 
-    orig_text_pos = ImVec2(x: igGetCursorPosX(), y: igGetCursorPosY())
-    custom_img_size = icon.height.float32 * 0.8
-  igSetCursorPos(ImVec2(x: orig_text_pos.x, y: orig_text_pos.y - (custom_img_size - igGetFont().fontSize * 1.15) * 0.5))
-  igImage(ImTextureID(cast[pointer](cast[ptr cuint](icon.id))), ImVec2(x: custom_img_size, y: custom_img_size))
+    origTextPos = ImVec2(x: igGetCursorPosX(), y: igGetCursorPosY())
+    customImgSize = icon.height.float32 * 0.8
+  igSetCursorPos(ImVec2(x: origTextPos.x, y: origTextPos.y - (customImgSize - igGetFont().fontSize * 1.15) * 0.5))
+  igImage(ImTextureID(cast[pointer](cast[ptr cuint](icon.id))), ImVec2(x: customImgSize, y: customImgSize))
   if name_first == false:
-    var pos_after_img = ImVec2(x: igGetCursorPosX(), y: igGetCursorPosY())
+    var posAfterImg = ImVec2(x: igGetCursorPosX(), y: igGetCursorPosY())
     igSameLine()
-    igSetCursorPos(orig_text_pos)
-    igSetCursorPosX(igGetCursorPosX() + custom_img_size + 5.0)
+    igSetCursorPos(origTextPos)
+    igSetCursorPosX(igGetCursorPosX() + customImgSize + 5.0)
     igTextWrapped(text)
-    igSetCursorPos(pos_after_img)
+    igSetCursorPos(posAfterImg)
 
-  
-
-proc portfolio_coins_list_view() =
+proc portfolioCoinsListView() =
   igBeginChild("left pane", ImVec2(x: 180, y: 0), true)
-  var coins = get_enabled_coins()
+  var coins = getEnabledCoins()
   for i, v in(coins):
-    if cur_asset_ticker.len == 0:
-      cur_asset_ticker = v["coin"].getStr
-    if igSelectable("##" & v["coin"].getStr, v["coin"].getStr == cur_asset_ticker):
-      cur_asset_ticker = v["coin"].getStr
+    if curAssetTicker.len == 0:
+      curAssetTicker = v["coin"].getStr
+    if igSelectable("##" & v["coin"].getStr, v["coin"].getStr == curAssetTicker):
+      curAssetTicker = v["coin"].getStr
     igSameLine()
-    porfolio_gui_coin_name_img(v["coin"].getStr)
+    portfolioGuiCoinNameImg(v["coin"].getStr)
   igEndChild()
 
-proc portfolio_view() =
+proc portfolioView() =
   igText("Total Balance: 0 USD")
-  portfolio_enable_coin_view()
-  portfolio_coins_list_view()
+  portfolioEnableCoinView()
+  portfolioCoinsListView()
 
 proc mainView() =
-  main_menu_bar()
+  mainMenuBar()
   if igBeginTabBar("##Tabs", ImGuiTabBarFlags.None):
     if (igBeginTabItem("Portfolio")):
-      portfolio_view()
+      portfolioView()
       igEndTabItem()
     igEndTabBar()
 

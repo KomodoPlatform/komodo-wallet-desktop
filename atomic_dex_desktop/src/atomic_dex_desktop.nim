@@ -25,7 +25,6 @@ proc main() =
   var ctx = antara_ui_create("AtomicDex", 200, 200)
   gui.init(ctx)
   defer: antara_ui_destroy(ctx)
-  echo getAssetsPath() & "/fonts/Ruda-Bold.ttf"
   antara_load_font(ctx, getAssetsPath() & "/fonts/Ruda-Bold.ttf", 15.0)
   antara_awesome_load_font(ctx, getAssetsPath() & "/fonts/fa-solid-900.ttf", 16.0)
   gui.set_komodo_style()
