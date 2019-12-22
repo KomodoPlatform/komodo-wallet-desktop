@@ -760,8 +760,21 @@ namespace atomic_dex
                                 ImGui::EndCombo();
                             }
                             ImGui::SameLine();
+                            bool load_orderbook = false;
                             if (ImGui::Button("Load") && not current_base.empty() && not current_rel.empty())
                             {
+                                load_orderbook = true;
+                            }
+                            ImGui::SameLine();
+                            if (ImGui::Button("Swap & Load") && not current_base.empty() && not current_rel.empty())
+                            {
+                                auto tmp = current_base;
+                                current_base = current_rel;
+                                current_rel = tmp;
+                                load_orderbook = true;
+                            }
+
+                            if(load_orderbook) {
                                 locked_base = current_base;
                                 locked_rel  = current_rel;
                                 this->dispatcher_.trigger<orderbook_refresh>(current_base, current_rel);
