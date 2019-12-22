@@ -28,6 +28,7 @@ enum class mm2_error
     rpc_withdraw_error,
     rpc_send_raw_transaction_error,
     rpc_buy_error,
+    rpc_sell_error,
     invalid_fiat_for_rate_conversion,
     unknown_ticker,
     unknown_ticker_for_rate_conversion,

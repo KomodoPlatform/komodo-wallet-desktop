@@ -65,6 +65,9 @@ namespace
                    "log.";
         case mm2_error::unknown_ticker:
             return "You try to retrieve information from an Unknown ticker.";
+        case mm2_error::rpc_sell_error:
+            return "An RPC error occur when processing the sell request, please check your request or the application "
+                   "log.";
         }
         return "";
     }

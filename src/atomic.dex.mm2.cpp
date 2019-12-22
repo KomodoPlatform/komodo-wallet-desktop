@@ -527,7 +527,8 @@ namespace atomic_dex
         return funds > amount;
     }
 
-    std::string mm2::address(const std::string& ticker, t_mm2_ec& ec) const noexcept
+    std::string
+    mm2::address(const std::string& ticker, t_mm2_ec& ec) const noexcept
     {
         if (m_balance_informations.find(ticker) == m_balance_informations.cend())
         {
@@ -551,12 +552,34 @@ namespace atomic_dex
     std::vector<::mm2::api::my_orders_answer>
     mm2::get_orders(t_mm2_ec& ec) const noexcept
     {
-        auto coins = get_enabled_coins();
+        auto                                      coins = get_enabled_coins();
         std::vector<::mm2::api::my_orders_answer> out;
         out.reserve(coins.size());
-        for (auto &&coin: coins) {
-            out.emplace_back(get_orders(coin.ticker, ec));
-        }
+        for (auto&& coin: coins) { out.emplace_back(get_orders(coin.ticker, ec)); }
         return out;
+    }
+
+    t_sell_answer
+    mm2::place_sell_order(t_sell_request&& request, const t_float_50& total, t_mm2_ec& ec) const
+    {
+        LOG_SCOPE_FUNCTION(INFO);
+
+        t_mm2_ec balance_ec;
+
+        if (not do_i_have_enough_funds(request.rel, total))
+        {
+            ec = mm2_error::balance_not_enough_found;
+            return {};
+        }
+
+        auto answer = ::mm2::api::rpc_sell(std::move(request));
+
+        if (answer.error.has_value())
+        {
+            ec = mm2_error::rpc_sell_error;
+            return {};
+        }
+
+        return answer;
     }
 } // namespace atomic_dex

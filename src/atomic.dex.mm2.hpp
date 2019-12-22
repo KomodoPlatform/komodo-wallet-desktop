@@ -162,6 +162,9 @@ namespace atomic_dex
         //! Place a buy order, Doesn't work if i don't have enough funds.
         t_buy_answer place_buy_order(t_buy_request&& request, const t_float_50& total, t_mm2_ec& ec) const;
 
+        //! Place a buy order, Doesn't work if i don't have enough funds.
+        t_sell_answer place_sell_order(t_sell_request&& request, const t_float_50& total, t_mm2_ec& ec) const;;
+
         //! Withdraw Money to another address
         [[nodiscard]] static t_withdraw_answer withdraw(t_withdraw_request&& request, t_mm2_ec& ec) noexcept;
 
