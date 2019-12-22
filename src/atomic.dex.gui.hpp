@@ -61,6 +61,10 @@ namespace atomic_dex
             std::string current_base;
         } orders_page;
 
+        struct receive_vars {
+            std::array<char, 100> address_read_only{};
+        } receive_page;
+
         struct send_coin_vars {
             void clear() {
                 answer = {};

@@ -303,16 +303,17 @@ namespace
 
                 if (ImGui::BeginTabItem("Receive"))
                 {
-                    static char address_read_only[100];
+                    auto& vars = gui_vars.receive_page;
+                    auto& address_read_only = vars.address_read_only;
 
                     std::error_code ec;
                     auto addr = mm2.address(curr_asset.ticker, ec);
-                    copy_str(addr, address_read_only, 100);
+                    copy_str(addr, address_read_only.data(), 100);
 
                     ImGui::Text("Share the address below to receive coins");
 
                     ImGui::PushItemWidth(addr.length() * ImGui::GetFont()->FontSize * 0.5f);
-                    ImGui::InputText("##receive_address", address_read_only, addr.length(), ImGuiInputTextFlags_ReadOnly | ImGuiInputTextFlags_AutoSelectAll);
+                    ImGui::InputText("##receive_address", address_read_only.data(), addr.length(), ImGuiInputTextFlags_ReadOnly | ImGuiInputTextFlags_AutoSelectAll);
                     ImGui::PopItemWidth();
 
                     ImGui::EndTabItem();
