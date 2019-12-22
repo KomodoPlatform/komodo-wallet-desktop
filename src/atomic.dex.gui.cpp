@@ -785,6 +785,9 @@ namespace atomic_dex
                                     {
                                         gui_coin_name_img(*this, locked_base);
 
+                                        ImGui::SameLine();
+                                        ImGui::Text("(%s)", mm2_system_.my_balance(locked_base, ec).c_str());
+
                                         ImGui::Separator();
 
                                         auto& coin_vars = vars.trade_sell_coin[locked_base];
