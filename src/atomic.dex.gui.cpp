@@ -539,13 +539,13 @@ namespace
         gui_portfolio_coin_details(gui, mm2, paprika_system, gui_vars);
     }
 
-    void gui_orderbook_table(const std::string& type, const std::vector<mm2::api::order_contents>& list, std::error_code ec) {
-        ImGui::Text("%s", (type + " Orders").c_str());
-        ImGui::Columns(2, ("orderbook_columns_" + type).c_str());
+    void gui_orderbook_table(const std::string& base, const std::string& rel, const std::string& action, const std::vector<mm2::api::order_contents>& list, std::error_code ec) {
+        ImGui::Text("%s", (action == "Buy" ? (rel + " Sellers") : (base + " Sellers")).c_str());
+        ImGui::Columns(2, ("orderbook_columns_" + action).c_str());
         ImGui::Separator();
-        ImGui::Text("Volume");
+        ImGui::Text("%s Volume", (action == "Buy" ? rel : base).c_str());
         ImGui::NextColumn();
-        ImGui::Text("Unit Price");
+        ImGui::Text("%s amount per %s", rel.c_str(), base.c_str());
 
         if(!list.empty()) {
             ImGui::Separator();
@@ -780,12 +780,15 @@ namespace atomic_dex
                                         static char price_buf[20];
                                         static char amount_buf[20];
 
-                                        ImGui::PushID("Price");
-                                        ImGui::InputText("Unit Price", price_buf, IM_ARRAYSIZE(price_buf), ImGuiInputTextFlags_CallbackCharFilter, crypto_amount_filter, price_buf);
+
+                                        ImGui::SetNextItemWidth(125.0f);
+                                        ImGui::PushID("Volume");
+                                        ImGui::InputText((locked_base + " Volume").c_str(), amount_buf, IM_ARRAYSIZE(amount_buf), ImGuiInputTextFlags_CallbackCharFilter, crypto_amount_filter, amount_buf);
                                         ImGui::PopID();
 
-                                        ImGui::PushID("Amount");
-                                        ImGui::InputText("Amount", amount_buf, IM_ARRAYSIZE(amount_buf), ImGuiInputTextFlags_CallbackCharFilter, crypto_amount_filter, amount_buf);
+                                        ImGui::SetNextItemWidth(125.0f);
+                                        ImGui::PushID("Price");
+                                        ImGui::InputText((locked_rel + " amount per " + locked_base).c_str(), price_buf, IM_ARRAYSIZE(price_buf), ImGuiInputTextFlags_CallbackCharFilter, crypto_amount_filter, price_buf);
                                         ImGui::PopID();
 
 
@@ -829,13 +832,13 @@ namespace atomic_dex
                                     ImGui::NextColumn();
 
                                     ImGui::BeginChild("Buy_Orderbook", ImVec2(0, 0), true);
-                                    gui_orderbook_table("Buy", book.bids, ec);
+                                    gui_orderbook_table(locked_base, locked_rel, "Buy", book.bids, ec);
                                     ImGui::EndChild();
 
                                     ImGui::NextColumn();
 
                                     ImGui::BeginChild("Sell_Orderbook", ImVec2(0, 0), true);
-                                    gui_orderbook_table("Sell", book.asks, ec);
+                                    gui_orderbook_table(locked_base, locked_rel, "Sell", book.asks, ec);
                                     ImGui::EndChild();
                                 }
                                 ImGui::Columns(1);
