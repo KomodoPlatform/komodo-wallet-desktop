@@ -6,6 +6,7 @@ import json
 import os
 import sequtils
 import strutils
+import threadpool
 
 ##! Dependencies Import
 import ui_workflow_nim
@@ -194,7 +195,7 @@ proc portfolioEnableCoinView() =
       if igButton("Enable", ImVec2(x: 120.0, y: 0.0)):
         for i, v in enableableCoinsSelectList:
             if v == true:
-              enable_coin(coins[i]["coin"].getStr)
+              spawn enable_coin(coins[i]["coin"].getStr)
         close = true
       igSameLine()
       if igButton("Cancel", ImVec2(x: 120.0, y: 0.0)):
@@ -256,7 +257,7 @@ proc update*(ctx: ptr t_antara_ui) =
       ImGuiWindowFlags.MenuBar.int32).ImGuiWindowFlags)
   if not is_open:
     antara_close_window(ctx)
-  if mm2FullyRunning.load() == false:
+  if mm2FullyRunning.load() == false or getEnabledCoins().len != getActiveCoins().len:
     waitingView()
   else:
     mainView()
