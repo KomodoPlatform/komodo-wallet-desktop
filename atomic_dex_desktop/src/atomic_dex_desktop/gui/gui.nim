@@ -151,9 +151,10 @@ proc waiting_view() =
   igText("Loading, please wait...")
   let
     radius = 30.0
-    pos = ImVec2(x: igGetWindowSize().x * 0.5f - radius, y: igGetWindowSize().y * 0.5f - radius)
+    pos = ImVec2(x: igGetWindowWidth() * 0.5f - radius, y: igGetWindowHeight() * 0.5f - radius)
   igSetCursorPos(pos)
-  loadingIndicatorCircle("foo", radius, bright_color, dark_color, 9, 1.5)
+  when not defined(windows):
+    loadingIndicatorCircle("foo", radius, bright_color, dark_color, 9, 1.5)
 
 
 proc main_menu_bar() =
@@ -208,15 +209,15 @@ proc porfolio_gui_coin_name_img(ticker: string, name: string = "", name_first = 
     igSameLine()
     igSetCursorPosX(igGetCursorPosX() + 5.0)
   let 
-    orig_text_pos = igGetCursorPos()
+    orig_text_pos = ImVec2(x: igGetCursorPosX(), y: igGetCursorPosY())
     custom_img_size = icon.height.float32 * 0.8
   igSetCursorPos(ImVec2(x: orig_text_pos.x, y: orig_text_pos.y - (custom_img_size - igGetFont().fontSize * 1.15) * 0.5))
   igImage(ImTextureID(cast[pointer](cast[ptr cuint](icon.id))), ImVec2(x: custom_img_size, y: custom_img_size))
   if name_first == false:
-    var pos_after_img = igGetCursorPos()
+    var pos_after_img = ImVec2(x: igGetCursorPosX(), y: igGetCursorPosY())
     igSameLine()
     igSetCursorPos(orig_text_pos)
-    igSetCursorPosX(igGetCursorPos().x + custom_img_size + 5.0)
+    igSetCursorPosX(igGetCursorPosX() + custom_img_size + 5.0)
     igTextWrapped(text)
     igSetCursorPos(pos_after_img)
 

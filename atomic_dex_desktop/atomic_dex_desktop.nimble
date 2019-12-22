@@ -31,7 +31,7 @@ when defined(linux):
             exec("curl https://github.com/linuxdeploy/linuxdeploy/releases/download/continuous/linuxdeploy-x86_64.AppImage -o linuxdeploy-x86-64.AppImage")
 
 requires "nim >= 1.0.4"
-requires "ui_workflow_nim >= 0.6.0"
+requires "ui_workflow_nim >= 0.7.0"
 requires "jsonschema"
 
 task download_deps, "Download MM2 Dependencies":
