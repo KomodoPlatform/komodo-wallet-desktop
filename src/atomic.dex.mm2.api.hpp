@@ -449,6 +449,8 @@ namespace atomic_dex
     using t_balance_request    = ::mm2::api::balance_request;
     using t_buy_answer         = ::mm2::api::buy_answer;
     using t_buy_request        = ::mm2::api::buy_request;
+    using t_sell_answer        = ::mm2::api::sell_answer;
+    using t_sell_request       = ::mm2::api::sell_request;
     using t_withdraw_request   = ::mm2::api::withdraw_request;
     using t_withdraw_answer    = ::mm2::api::withdraw_answer;
     using t_broadcast_request  = ::mm2::api::send_raw_transaction_request;
