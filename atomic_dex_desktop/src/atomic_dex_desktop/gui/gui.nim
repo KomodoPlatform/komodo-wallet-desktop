@@ -188,7 +188,6 @@ proc portfolioEnableCoinView() =
     for i, coin in coins:
       if igSelectable(coin["name"].getStr & " (" & coin["coin"].getStr & ")", enableableCoinsSelectList[i], ImGuiSelectableFlags.DontClosePopups):
         enableableCoinsSelectList[i] = enableableCoinsSelectList[i] == false
-        echo enableableCoinsSelectList[i]
     if coins.len == 0 and igButton("Close"):
         close = true
     else:
@@ -257,7 +256,7 @@ proc update*(ctx: ptr t_antara_ui) =
       ImGuiWindowFlags.MenuBar.int32).ImGuiWindowFlags)
   if not is_open:
     antara_close_window(ctx)
-  if mm2_fully_running.load() == false:
+  if mm2FullyRunning.load() == false:
     waitingView()
   else:
     mainView()

@@ -36,6 +36,6 @@ proc task5Seconds() =
     while true:
         waitFor task5SecondsAsync()
 
-proc launchMM2Worker*() =    
+proc launchMM2Worker*() =   
     spawn task30Seconds()
     spawn task5Seconds()

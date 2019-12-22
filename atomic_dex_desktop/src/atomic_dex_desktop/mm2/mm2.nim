@@ -58,8 +58,7 @@ proc enableCoin*(ticker: string) =
 proc enableDefaultCoins() =
     var coins = getActiveCoins()
     for _, v in coins:
-        spawn enableCoin(v["coin"].getStr)
-    sync()    
+        spawn enableCoin(v["coin"].getStr)    
 
 proc mm2InitThread() =
     {.gcsafe.}:
@@ -70,10 +69,11 @@ proc mm2InitThread() =
             echo "Got exception OSError with message ", e.msg
         finally:
             echo "Fine."
-        sleep(2000)
-        mm2FullyRunning.store(true)
-        enableDefaultCoins()
-        launchMM2Worker()
+    sleep(2000)
+    mm2FullyRunning.store(true)
+    enableDefaultCoins()
+    launchMM2Worker()
+        
 
 proc initProcess*()  =
     spawn mm2InitThread()
