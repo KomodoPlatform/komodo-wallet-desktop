@@ -45,8 +45,10 @@ namespace atomic_dex
 
         struct trade_vars {
             struct trade_sell_coin_vars {
-                std::array<char, 100> price_input;
-                std::array<char, 100> amount_input;
+                std::array<char, 100> price_input_buy;
+                std::array<char, 100> amount_input_buy;
+                std::array<char, 100> price_input_sell;
+                std::array<char, 100> amount_input_sell;
             };
 
             std::string current_base;
@@ -54,6 +56,7 @@ namespace atomic_dex
             std::string locked_base;
             std::string locked_rel;
             t_sell_answer sell_request_answer;
+            t_buy_answer buy_request_answer;
 
             std::unordered_map<std::string, trade_sell_coin_vars> trade_sell_coin;
         } trade_page;
