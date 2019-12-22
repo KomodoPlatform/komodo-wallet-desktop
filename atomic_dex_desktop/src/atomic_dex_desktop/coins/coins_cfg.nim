@@ -1,6 +1,7 @@
 import json
 import sequtils
 import options
+import algorithm
 import tables
 import hashes
 import jsonschema
@@ -41,11 +42,6 @@ export create
 export unsafeAccess
 var coins_registry: ConcurrentReg[int, CoinConfigParams]
 
-template whenValid*(data, kind, body) =
-  if data.isValid(kind):
-    var data = kind(data)
-    body
-
 proc parse_cfg*() =
   let entire_file = readFile(get_assets_path() & "/config/coins.json")
   let jsonNode = parseJson(entire_file)
@@ -58,37 +54,27 @@ proc parse_cfg*() =
   echo "Coins config correctly launched: ", coins_registry.cm_size()
 
 proc get_active_coins*() : seq[CoinConfigParams] =
-    var destinations: seq[CoinConfigParams]
     for _, value in coins_registry:
         if value.JsonNode.isValid(CoinConfigParams) and value["active"].getBool:
-            destinations.add(value)
-    return destinations
+            result.add(value)
+    result
 
 proc get_enabled_coins*() : seq[CoinConfigParams] =
-    var destinations: seq[CoinConfigParams]
     for key, value in coins_registry:
         if value["currently_enabled"].getBool:
-            destinations.add(value)
-    return destinations
+            result.add(value)
+    result.sort(proc (a, b: CoinConfigParams): int = cmp(a["coin"].getStr, b["coin"].getStr))
 
 proc get_enableable_coins*() : seq[CoinConfigParams] =
-    var destinations: seq[CoinConfigParams]
     for key, value in coins_registry:
         if not value["currently_enabled"].getBool:
-            destinations.add(value)
-    return destinations
+            result.add(value)
 
-proc get_coin_info*(ticker: string): CoinConfigParams =
-    var current : CoinConfigParams            
-    var res = coins_registry.cm_at(ticker.hash)
-    return res
+proc get_coin_info*(ticker: string): CoinConfigParams =   
+    coins_registry.cm_at(ticker.hash)
 
 proc update_coin_info*(ticker: string, current: CoinConfigParams, desired: CoinConfigParams) =
   coins_registry.cm_assign_if_equal(ticker.hash, current, desired)
 
 proc is_ticker_present*(ticker: string): bool =
-    return coins_registry.cm_find(ticker.hash) != coins_registry.cm_end()
-
-proc dump_registry*() =
-    for key, _ in coins_registry:
-        echo "key: [", key, "]"
+    coins_registry.cm_find(ticker.hash) != coins_registry.cm_end()

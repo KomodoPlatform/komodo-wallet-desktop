@@ -45,8 +45,8 @@ proc enable_coin*(ticker: string) =
             var current : CoinConfigParams
             deepCopy(current, coin_info)
             current.JsonNode["currently_enabled"] = newJBool(true)
+            current.JsonNode["active"] = newJBool(true)
             update_coin_info(ticker, coin_info, current)
-            #GC_unref(coin_info)
     
 
 proc enable_default_coins() =
