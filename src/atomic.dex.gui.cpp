@@ -817,14 +817,18 @@ namespace atomic_dex
                                             total = (current_price_f * current_amount_f).convert_to<std::string>();
                                         }
 
-                                        bool enable = mm2_system_.do_i_have_enough_funds(locked_base, current_amount_f);
+                                        bool enable = fields_are_filled && mm2_system_.do_i_have_enough_funds(locked_base, current_amount_f);
 
                                         if (not enable)
                                         {
-                                            std::error_code ec;
-                                            ImGui::TextColored(
+                                            if(fields_are_filled) {
+                                                std::error_code ec;
+
+                                                ImGui::TextColored(
                                                 error_color, "You don't have enough funds, you have %s %s",
                                                 mm2_system_.my_balance_with_locked_funds(locked_base, ec).c_str(), locked_base.c_str());
+                                            }
+
                                             ImGui::PushItemFlag(ImGuiItemFlags_Disabled, true);
                                             ImGui::PushStyleVar(ImGuiStyleVar_Alpha, ImGui::GetStyle().Alpha * 0.5f);
                                         }
