@@ -538,6 +538,35 @@ namespace
         ImGui::SameLine();
         gui_portfolio_coin_details(gui, mm2, paprika_system, gui_vars);
     }
+
+    void gui_orderbook_table(const std::string& type, const std::vector<mm2::api::order_contents>& list, std::error_code ec) {
+        ImGui::Text("%s", (type + " Orders").c_str());
+        ImGui::Columns(2, ("orderbook_columns_" + type).c_str());
+        ImGui::Separator();
+        ImGui::Text("Volume");
+        ImGui::NextColumn();
+        ImGui::Text("Unit Price");
+
+        if(!list.empty()) {
+            ImGui::Separator();
+
+            if (!ec)
+            {
+                for (std::size_t i = 0; i < list.size(); ++i)
+                {
+                    const auto& content = list[i];
+                    ImGui::NextColumn();
+                    ImGui::Text("%s", content.maxvolume.c_str());
+                    ImGui::NextColumn();
+                    ImGui::Text("%s", content.price.c_str());
+                }
+            }
+            else DLOG_F(WARNING, "{}", ec.message());
+        }
+        
+        ImGui::Columns(1);
+        ImGui::Separator();
+    }
 } // namespace
 
 namespace atomic_dex
@@ -794,82 +823,19 @@ namespace atomic_dex
                                 ImGui::EndChild();
 
                                 ImGui::SameLine();
-                                ImGui::BeginChild(
-                                    "Orderbook Window", ImVec2(0, 0), true);
-                                {
-                                    ImGui::Text("Ask Orderbook:");
-                                    ImGui::Columns(4, "orderbook_columns_asks");
-                                    ImGui::Separator();
-                                    ImGui::Text("Buy Coin");
-                                    ImGui::NextColumn();
-                                    ImGui::Text("Sell Coin");
-                                    ImGui::NextColumn();
-                                    ImGui::Text("%s", (locked_base + " Volume").c_str());
-                                    ImGui::NextColumn();
-                                    ImGui::Text("%s", (locked_rel + " price per " + locked_base).c_str());
-                                    ImGui::NextColumn();
-                                    ImGui::Separator();
 
-                                    std::error_code ec;
-                                    auto            book = mm2_system_.get_current_orderbook(ec);
-                                    if (!ec)
-                                    {
-                                        // auto rng = ranges::views::concat(book.asks, book.bids);
-                                        for (const ::mm2::api::order_contents& content: book.asks)
-                                        {
-                                            ImGui::Text("%s", locked_base.c_str());
-                                            ImGui::NextColumn();
-                                            ImGui::Text("%s", locked_rel.c_str());
-                                            ImGui::NextColumn();
-                                            ImGui::Text("%s", content.maxvolume.c_str());
-                                            ImGui::NextColumn();
-                                            ImGui::Text("%s", content.price.c_str());
-                                            ImGui::NextColumn();
-                                        }
-                                    }
-                                    else
-                                    {
-                                        DLOG_F(WARNING, "{}", ec.message());
-                                    }
-
-                                    ImGui::Columns(1);
-                                    ImGui::NewLine();
-                                    ImGui::Text("Bids Orderbook:");
-                                    ImGui::Columns(4, "orderbook_columns_bids");
-                                    ImGui::Separator();
-                                    ImGui::Text("Buy Coin");
-                                    ImGui::NextColumn();
-                                    ImGui::Text("Sell Coin");
-                                    ImGui::NextColumn();
-                                    ImGui::Text("%s", (locked_rel + " Volume").c_str());
-                                    ImGui::NextColumn();
-                                    ImGui::Text("%s", (locked_rel + " price per " + locked_base).c_str());
-                                    ImGui::NextColumn();
-                                    ImGui::Separator();
-
-                                    if (!ec)
-                                    {
-                                        for (const ::mm2::api::order_contents& content: book.bids)
-                                        {
-                                            ImGui::Text("%s", locked_rel.c_str());
-                                            ImGui::NextColumn();
-                                            ImGui::Text("%s", locked_base.c_str());
-                                            ImGui::NextColumn();
-                                            ImGui::Text("%s", content.maxvolume.c_str());
-                                            ImGui::NextColumn();
-                                            ImGui::Text("%s", content.price.c_str());
-                                            ImGui::NextColumn();
-                                        }
-                                    }
-                                    else
-                                    {
-                                        DLOG_F(WARNING, "{}", ec.message());
-                                    }
-
-
-                                    ImGui::Columns(1);
-                                }
+                                std::error_code ec;
+                                auto book = mm2_system_.get_current_orderbook(ec);
+                                ImGui::BeginChild("Buy_Orderbook", ImVec2(300, 0), true);
+                                gui_orderbook_table("Buy", book.bids, ec);
                                 ImGui::EndChild();
+
+                                ImGui::SameLine();
+
+                                ImGui::BeginChild("Sell_Orderbook", ImVec2(300, 0), true);
+                                gui_orderbook_table("Sell", book.asks, ec);
+                                ImGui::EndChild();
+
                             }
 
                             ImGui::EndTabItem();
