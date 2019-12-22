@@ -1,12 +1,20 @@
-import json
-import sequtils
-import options
-import tables
+##! Standard Import
+import algorithm
 import hashes
-import jsonschema
-import ../utils/assets
-import ../folly/hashmap
+import json
+import options
+import sequtils
+import tables
 
+##! Dependencies Import
+import jsonschema
+
+##! Project Import
+import ../cpp_bindings/folly/hashmap
+import ../cpp_bindings/std/pair
+import ../utils/assets
+
+##! Schema definitions
 jsonSchema:
   ElectrumServerParams:
     url: string
@@ -39,56 +47,44 @@ export `[]`
 export `[]=`
 export create
 export unsafeAccess
-var coins_registry: ConcurrentReg[int, CoinConfigParams]
 
-template whenValid*(data, kind, body) =
-  if data.isValid(kind):
-    var data = kind(data)
-    body
+##! Global variable
+var coinsRegistry: ConcurrentReg[int, CoinConfigParams]
 
-proc parse_cfg*() =
-  let entire_file = readFile(get_assets_path() & "/config/coins.json")
-  let jsonNode = parseJson(entire_file)
+##! Public functions
+proc parseCfg*() =
+  let entireFile = readFile(getAssetsPath() & "/config/coins.json")
+  let jsonNode = parseJson(entireFile)
   for key in jsonNode.keys:
     if jsonNode[key].isValid(CoinConfigParams):
       var res = CoinConfigParams(jsonNode[key])
-      assert(coins_registry.cm_insert_or_assign(key.hash,  res).second == true, "should insert correctly")
+      assert(coinsRegistry.insertOrAssign(key.hash,  res).second == true, "should insert correctly")
     else:
       echo jsonNode[key], " is invalid"
-  echo "Coins config correctly launched: ", coins_registry.cm_size()
+  echo "Coins config correctly launched: ", coinsRegistry.size()
 
-proc get_active_coins*() : seq[CoinConfigParams] =
-    var destinations: seq[CoinConfigParams]
-    for _, value in coins_registry:
+proc getActiveCoins*() : seq[CoinConfigParams] =
+    for _, value in coinsRegistry:
         if value.JsonNode.isValid(CoinConfigParams) and value["active"].getBool:
-            destinations.add(value)
-    return destinations
+            result.add(value)
+    result
 
-proc get_enabled_coins*() : seq[CoinConfigParams] =
-    var destinations: seq[CoinConfigParams]
-    for key, value in coins_registry:
+proc getEnabledCoins*() : seq[CoinConfigParams] =
+    for key, value in coinsRegistry:
         if value["currently_enabled"].getBool:
-            destinations.add(value)
-    return destinations
+            result.add(value)
+    result.sort(proc (a, b: CoinConfigParams): int = cmp(a["coin"].getStr, b["coin"].getStr))
 
-proc get_enableable_coins*() : seq[CoinConfigParams] =
-    var destinations: seq[CoinConfigParams]
-    for key, value in coins_registry:
+proc getEnableableCoins*() : seq[CoinConfigParams] =
+    for key, value in coinsRegistry:
         if not value["currently_enabled"].getBool:
-            destinations.add(value)
-    return destinations
+            result.add(value)
 
-proc get_coin_info*(ticker: string): CoinConfigParams =
-    var current : CoinConfigParams            
-    var res = coins_registry.cm_at(ticker.hash)
-    return res
+proc getCoinInfo*(ticker: string): CoinConfigParams =   
+    coinsRegistry.at(ticker.hash)
 
-proc update_coin_info*(ticker: string, current: CoinConfigParams, desired: CoinConfigParams) =
-  coins_registry.cm_assign_if_equal(ticker.hash, current, desired)
+proc updateCoinInfo*(ticker: string, current: CoinConfigParams, desired: CoinConfigParams) =
+  coinsRegistry.assignIfEqual(ticker.hash, current, desired)
 
-proc is_ticker_present*(ticker: string): bool =
-    return coins_registry.cm_find(ticker.hash) != coins_registry.cm_end()
-
-proc dump_registry*() =
-    for key, _ in coins_registry:
-        echo "key: [", key, "]"
+proc isTickerPresent*(ticker: string): bool =
+    coinsRegistry.find(ticker.hash) != coinsRegistry.cEnd()
