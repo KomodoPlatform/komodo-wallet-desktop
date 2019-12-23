@@ -877,11 +877,11 @@ namespace atomic_dex
                             {
                                 ImGui::BeginChild("Sell Window", ImVec2(275, 0), true);
                                 {
-                                    gui_buy_sell_coin(*this, mm2_system_, gui_vars_, locked_base, locked_rel, "Sell");
+                                    gui_buy_sell_coin(*this, mm2_system_, gui_vars_, locked_base, locked_rel, "Buy");
 
                                     ImGui::Separator();
 
-                                    gui_buy_sell_coin(*this, mm2_system_, gui_vars_, locked_base, locked_rel, "Buy");
+                                    gui_buy_sell_coin(*this, mm2_system_, gui_vars_, locked_base, locked_rel, "Sell");
                                 }
                                 ImGui::EndChild();
 
