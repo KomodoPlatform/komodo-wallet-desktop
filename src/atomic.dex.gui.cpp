@@ -598,13 +598,15 @@ namespace
             total = total_amount.convert_to<std::string>();
         }
 
-        bool has_funds = current_amount.empty() || mm2.do_i_have_enough_funds(base, current_amount_f);
+        bool has_funds = current_amount.empty() || mm2.do_i_have_enough_funds(action == "Sell" ? base : rel, action == "Sell" ? current_amount_f : total_amount);
         bool enable = fields_are_filled && has_funds;
 
         if(!has_funds) {
             std::error_code ec;
 
-            ImGui::TextColored(error_color, "Not enough funds, you have %s %s", mm2.my_balance_with_locked_funds(base, ec).c_str(), base.c_str());
+            ImGui::TextColored(error_color, "Not enough funds, you have %s %s",
+                mm2.my_balance_with_locked_funds(action == "Sell" ? base : rel, ec).c_str(),
+                (action == "Sell" ? base : rel).c_str());
         }
 
         if (not enable)
@@ -650,7 +652,7 @@ namespace
         }
         else if(not raw_result.empty()) {
             ImGui::Separator();
-            ImGui::TextColored(bright_color, "Sell order placed!");
+            ImGui::TextColored(bright_color, "%s order placed!", action.c_str());
             ImGui::TextColored(bright_color, "Please wait until it appears at order list");
         }
     }
