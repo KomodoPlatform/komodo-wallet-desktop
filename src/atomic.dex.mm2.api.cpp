@@ -14,8 +14,12 @@
  *                                                                            *
  ******************************************************************************/
 
+//! C++ System Headers
+#include <sstream>
+
 //! Boost Headers
 #include <boost/algorithm/string/trim.hpp>
+#include <boost/multiprecision/cpp_dec_float.hpp>
 
 //! Dependencies Headers
 #include <date/date.h>
@@ -26,6 +30,20 @@
 
 namespace
 {
+    namespace bm = boost::multiprecision;
+
+    std::string
+    adjust_precision(const std::string& current)
+    {
+        std::string          result = "";
+        std::stringstream    ss;
+        bm::cpp_dec_float_50 current_f(current);
+
+        ss << std::setprecision(8) << current_f;
+        result = ss.str();
+
+        return result;
+    }
 } // namespace
 
 namespace mm2::api
@@ -256,6 +274,8 @@ namespace mm2::api
         j.at("zcredits").get_to(contents.zcredits);
 
         boost::trim_right_if(contents.price, boost::is_any_of("0"));
+        contents.price     = adjust_precision(contents.price);
+        contents.maxvolume = adjust_precision(contents.maxvolume);
     }
 
     void
@@ -420,9 +440,10 @@ namespace mm2::api
           const auto        time_key = value.at("created_at").get<std::size_t>();
           sys_time<std::chrono::milliseconds> tp{std::chrono::milliseconds{time_key}};
 
-          my_order_contents contents{.order_id         = key,
-              .available_amount = value.at("available_amount").get<std::string>(),
-              .price            = value.at("price").get<std::string>(),
+          my_order_contents contents{
+              .order_id         = key,
+              .available_amount = adjust_precision(value.at("available_amount").get<std::string>()),
+              .price            = adjust_precision(value.at("price").get<std::string>()),
               .base             = value.at("base").get<std::string>(),
               .rel              = value.at("rel").get<std::string>(),
               .cancellable      = value.at("cancellable").get<bool>(),
