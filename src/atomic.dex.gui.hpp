@@ -43,12 +43,19 @@ namespace atomic_dex
         std::vector<bool> enableable_coins_select_list;
         std::string       curr_asset_code = "";
 
+        struct login_vars {
+            bool logged_in{false};
+
+            std::array<char, 100> password_input{};
+            bool show_password{false};
+        } login_page;
+
         struct trade_vars {
             struct trade_sell_coin_vars {
-                std::array<char, 100> price_input_buy;
-                std::array<char, 100> amount_input_buy;
-                std::array<char, 100> price_input_sell;
-                std::array<char, 100> amount_input_sell;
+                std::array<char, 100> price_input_buy{};
+                std::array<char, 100> amount_input_buy{};
+                std::array<char, 100> price_input_sell{};
+                std::array<char, 100> amount_input_sell{};
             };
 
             std::string current_base;
