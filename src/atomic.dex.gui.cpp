@@ -125,9 +125,6 @@ namespace
             ImGui::TextWrapped("%s", text.c_str());
             ImGui::SetCursorPos(pos_after_img);
         }
-        else {
-            ImGui::SetCursorPos(orig_text_pos);
-        }
     }
 
     void
