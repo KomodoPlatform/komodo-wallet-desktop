@@ -33,6 +33,7 @@
 //! Project Headers
 #include "atomic.dex.mm2.config.hpp"
 #include "atomic.dex.mm2.hpp"
+#include "atomic.threadpool.hpp"
 
 //! Anonymous functions
 namespace
@@ -103,13 +104,13 @@ namespace atomic_dex
 
         if (s >= 5s)
         {
-            m_tasks_pool.enqueue([this]() { fetch_current_orderbook_thread(); });
+            spawn([this]() { fetch_current_orderbook_thread(); });
             m_orderbook_clock = std::chrono::high_resolution_clock::now();
         }
 
         if (s_info >= 30s)
         {
-            m_tasks_pool.enqueue([this]() { fetch_infos_thread(); });
+            spawn([this]() { fetch_infos_thread(); });
             m_info_clock = std::chrono::high_resolution_clock::now();
         }
     }
@@ -196,12 +197,12 @@ namespace atomic_dex
             coin_info.active = true;
         }
 
-        m_tasks_pool.enqueue([this, ticker]() {
+        spawn([this, ticker]() {
             loguru::set_thread_name("balance thread");
             process_balance(ticker);
         });
 
-        m_tasks_pool.enqueue([this, ticker]() {
+        spawn([this, ticker]() {
             loguru::set_thread_name("tx thread");
             process_tx(ticker);
         });
@@ -223,13 +224,13 @@ namespace atomic_dex
 
         for (auto&& current_coin: coins)
         {
-            futures.emplace_back(m_tasks_pool.enqueue([this, ticker = current_coin.ticker]() {
+            futures.emplace_back(spawn([this, ticker = current_coin.ticker]() {
                 loguru::set_thread_name("enable thread");
                 enable_coin(ticker);
             }));
         }
 
-        for (auto&& fut: futures) { fut.get(); }
+        //for (auto&& fut: futures) { fut.get(); }
 
         return result.load() == 1;
     }
@@ -298,15 +299,15 @@ namespace atomic_dex
 
         for (auto&& current_coin: coins)
         {
-            futures.emplace_back(m_tasks_pool.enqueue([this, ticker = current_coin.ticker]() {
+            futures.emplace_back(spawn([this, ticker = current_coin.ticker]() {
                 loguru::set_thread_name("balance thread");
                 process_balance(ticker);
             }));
-            futures.emplace_back(m_tasks_pool.enqueue([this, ticker = current_coin.ticker]() {
+            futures.emplace_back(spawn([this, ticker = current_coin.ticker]() {
                 loguru::set_thread_name("tx thread");
                 process_tx(ticker);
             }));
-            futures.emplace_back(m_tasks_pool.enqueue([this, ticker = current_coin.ticker]() {
+            futures.emplace_back(spawn([this, ticker = current_coin.ticker]() {
                 loguru::set_thread_name("orders thread");
                 process_orders(ticker);
             }));

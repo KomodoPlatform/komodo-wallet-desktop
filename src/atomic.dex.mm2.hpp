@@ -89,7 +89,7 @@ namespace atomic_dex
         //! Atomicity / Threads
         std::atomic_bool m_mm2_running{false};
         std::atomic_bool m_orderbook_thread_active{false};
-        thread_pool      m_tasks_pool{g_nb_workers};
+        //thread_pool      m_tasks_pool{g_nb_workers};
         std::thread      m_mm2_init_thread;
 
         //! Concurrent Registry.
