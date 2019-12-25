@@ -308,7 +308,7 @@ namespace
 
         if (open_modal) ImGui::OpenPopup("Transaction Details");
 
-        ImGui::SetNextWindowSizeConstraints({0, 0}, {0, gui_vars.main_window_size.y - 50});
+        ImGui::SetNextWindowSizeConstraints({0, 0}, {gui_vars.main_window_size.x - 50, gui_vars.main_window_size.y - 50});
         if (ImGui::BeginPopupModal("Transaction Details", nullptr, ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoMove))
         {
             std::error_code ec;
