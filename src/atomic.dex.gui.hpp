@@ -41,6 +41,7 @@ namespace atomic_dex
     {
         ImVec2            main_window_size;
         std::vector<bool> enableable_coins_select_list;
+        std::vector<std::string> enableable_coins_select_list_tickers;
         std::string       curr_asset_code = "";
 
         struct startup_vars

@@ -141,6 +141,9 @@ namespace atomic_dex
         //! Enable coins
         bool enable_default_coins() noexcept;
 
+        //! Enable multiple coins
+        void enable_multiple_coins(const std::vector<std::string>& tickers) noexcept;;
+
         bool enable_coin(const std::string& ticker);
 
         //! Called every ticks, and execute tasks if the timer expire.

@@ -38,6 +38,7 @@
 #include "atomic.dex.gui.hpp"
 #include "atomic.dex.gui.widgets.hpp"
 #include "atomic.dex.mm2.hpp"
+#include "atomic.threadpool.hpp"
 
 namespace fs = std::filesystem;
 
@@ -334,7 +335,7 @@ namespace
 
         if (open_modal) ImGui::OpenPopup("Transaction Details");
 
-        ImGui::SetNextWindowSizeConstraints({0, 0}, {gui_vars.main_window_size.x - 50, gui_vars.main_window_size.y - 50});
+        ImGui::SetNextWindowSizeConstraints({0, 0}, {0, gui_vars.main_window_size.y - 50});
         if (ImGui::BeginPopupModal("Transaction Details", nullptr, ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoMove))
         {
             std::error_code ec;
@@ -631,6 +632,7 @@ namespace
             if (!enableable_coins.empty()) ImGui::Separator();
 
             auto& select_list = gui_vars.enableable_coins_select_list;
+            auto& select_list_t = gui_vars.enableable_coins_select_list_tickers;
             // Extend the size of selectables list if the new list is bigger
             if (enableable_coins.size() > select_list.size()) select_list.resize(enableable_coins.size(), false);
 
@@ -640,7 +642,10 @@ namespace
                 auto& coin = enableable_coins[i];
 
                 if (ImGui::Selectable((coin.name + " (" + coin.ticker + ")").c_str(), select_list[i], ImGuiSelectableFlags_DontClosePopups))
+                {
+                    select_list_t.emplace_back(coin.ticker);
                     select_list[i] = !select_list[i];
+                }
             }
 
             bool close = false;
@@ -653,10 +658,9 @@ namespace
                 if (ImGui::Button("Enable", ImVec2(120, 0)))
                 {
                     // Enable selected coins
-                    for (std::size_t i = 0; i < enableable_coins.size(); ++i)
-                    {
-                        if (select_list[i]) mm2.enable_coin(enableable_coins[i].ticker);
-                    }
+                    atomic_dex::spawn([&mm2, select_list_cpy = select_list_t](){
+                        mm2.enable_multiple_coins(select_list_cpy);
+                    });
                     close = true;
                 }
 
@@ -669,6 +673,7 @@ namespace
             {
                 // Reset the list
                 std::fill(select_list.begin(), select_list.end(), false);
+                select_list_t.clear();
                 ImGui::CloseCurrentPopup();
             }
 

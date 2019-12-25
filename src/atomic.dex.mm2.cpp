@@ -41,7 +41,7 @@ namespace
     namespace ag = antara::gaming;
 
     void
-    update_coin_status(const std::string& ticker)
+    update_coin_status(const std::vector<std::string> tickers)
     {
         std::filesystem::path cfg_path = ag::core::assets_real_path() / "config";
         std::ifstream         ifs(cfg_path / "coins.json");
@@ -49,10 +49,12 @@ namespace
 
         assert(ifs.is_open());
         ifs >> config_json_data;
-        config_json_data.at(ticker)["active"] = true;
+
+        for (auto&& ticker: tickers) { config_json_data.at(ticker)["active"] = true; }
+
         ifs.close();
 
-        //! Discard contents and rewrite all ?
+        //! Write contents
         std::ofstream ofs(cfg_path / "coins.json", std::ios::trunc);
         assert(ofs.is_open());
         ofs << config_json_data;
@@ -191,11 +193,11 @@ namespace atomic_dex
         coin_info.currently_enabled = true;
         m_coins_informations.assign(coin_info.ticker, coin_info);
 
-        if (not coin_info.active)
+        /*if (not coin_info.active)
         {
             update_coin_status(ticker);
             coin_info.active = true;
-        }
+        }*/
 
         spawn([this, ticker]() {
             loguru::set_thread_name("balance thread");
@@ -230,9 +232,22 @@ namespace atomic_dex
             }));
         }
 
-        //for (auto&& fut: futures) { fut.get(); }
-
         return result.load() == 1;
+    }
+
+    void
+    mm2::enable_multiple_coins(const std::vector<std::string>& tickers) noexcept
+    {
+        for (const auto& ticker: tickers)
+        {
+            spawn([this, &ticker]() {
+                loguru::set_thread_name("enable multiple coins");
+                enable_coin(ticker);
+            });
+        }
+
+        assert(tickers.size() > 0);
+        update_coin_status(tickers);
     }
 
     coin_config
