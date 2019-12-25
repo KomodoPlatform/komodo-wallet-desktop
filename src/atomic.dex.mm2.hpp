@@ -143,8 +143,8 @@ namespace atomic_dex
 
         //! Enable multiple coins
         void enable_multiple_coins(const std::vector<std::string>& tickers) noexcept;
-        ;
 
+        //! Enable single coin
         bool enable_coin(const std::string& ticker);
 
         //! Called every ticks, and execute tasks if the timer expire.
@@ -167,7 +167,6 @@ namespace atomic_dex
 
         //! Place a buy order, Doesn't work if i don't have enough funds.
         t_sell_answer place_sell_order(t_sell_request&& request, const t_float_50& total, t_mm2_ec& ec) const;
-        ;
 
         //! Withdraw Money to another address
         [[nodiscard]] static t_withdraw_answer withdraw(t_withdraw_request&& request, t_mm2_ec& ec) noexcept;
