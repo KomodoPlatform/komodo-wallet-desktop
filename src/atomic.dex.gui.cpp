@@ -149,32 +149,37 @@ namespace
         gui_coin_name_img(gui, asset.ticker, asset.name);
     }
 
-    void gui_login_page(atomic_dex::gui& gui, atomic_dex::gui_variables& gui_vars) {
-        auto& vars = gui_vars.login_page;
+    void gui_login_page(atomic_dex::gui& gui, atomic_dex::gui_variables& gui_vars)
+    {
+        auto& vars           = gui_vars.login_page;
         auto& password_input = vars.password_input;
-        auto& show_password = vars.show_password;
+        auto& show_password  = vars.show_password;
 
         const auto& icons = gui.get_icons();
-        const auto& img = icons.at("APP_LOGO");
+        const auto& img   = icons.at("APP_LOGO");
 
         const float custom_img_size = img.height * 0.8f;
 
-        ImGui::SetCursorPos(ImVec2{(ImGui::GetWindowSize().x - custom_img_size) * 0.5f, (ImGui::GetWindowSize().y - custom_img_size) * 0.5f});
+        ImGui::SetCursorPos(ImVec2{(ImGui::GetWindowSize().x - custom_img_size) * 0.5f, (ImGui::GetWindowSize().y - custom_img_size) * 0.4f});
         ImGui::Image(reinterpret_cast<ImTextureID>(img.id), ImVec2{custom_img_size, custom_img_size});
 
-        ImGui::Text("Login");
-        ImGuiInputTextFlags password_flags = ImGuiInputTextFlags_CallbackCharFilter;
-        if(!show_password) password_flags |= ImGuiInputTextFlags_Password;
-        ImGui::SetNextItemWidth(300.f);
-        ImGui::InputText("Password##login_page_password_input", password_input.data(), password_input.size(),
-             password_flags, input_filter_password, password_input.data());
-        if(ImGui::Button((std::string(show_password ? "Hide" : "Show") + " Password##login_page_show_password_button").c_str())) {
-            show_password = !show_password;
+        const ImVec2 child_size{ 392.f, 140.f};
+        ImGui::SetCursorPosX((ImGui::GetWindowSize().x - child_size.x) * 0.5f);
+        ImGui::SetCursorPosY(ImGui::GetCursorPosY() + 20.0f);
+        ImGui::BeginChild("##login_page_child", child_size, true);
+        {
+            ImGui::Text("Login");
+            ImGuiInputTextFlags password_flags = ImGuiInputTextFlags_CallbackCharFilter;
+            if (!show_password) password_flags |= ImGuiInputTextFlags_Password;
+            ImGui::SetNextItemWidth(300.f);
+            ImGui::InputText(
+                "Password##login_page_password_input", password_input.data(), password_input.size(), password_flags, input_filter_password, password_input.data());
+            if (ImGui::Button((std::string(show_password ? "Hide" : "Show") + " Password##login_page_show_password_button").c_str()))
+            { show_password = !show_password; }
+            ImGui::SameLine();
+            if (ImGui::Button("Login##login_page_login_button")) { vars.logged_in = true; }
         }
-        ImGui::SameLine();
-        if(ImGui::Button("Login##login_page_login_button")) {
-            vars.logged_in = true;
-        }
+        ImGui::EndChild();
     }
 
     void
