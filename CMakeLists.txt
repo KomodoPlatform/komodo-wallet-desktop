@@ -67,6 +67,7 @@ FetchContent_Declare(
 ##! We set extras modules from the SDK that we want to use, here we will use the SDL module.
 set(USE_SDL_ANTARA_WRAPPER ON)
 set(USE_IMGUI_ANTARA_WRAPPER ON)
+set(ANTARA_USE_VCPKG ON)
 set(ENABLE_BLOCKCHAIN_MODULES ON)
 
 ##! We fetch our dependence
@@ -160,6 +161,7 @@ set(BUILD_SHARED_LIBS OFF CACHE BOOL "Override option" FORCE)
 find_package(folly CONFIG REQUIRED)
 find_package(Boost REQUIRED)
 find_package(date CONFIG REQUIRED)
+find_package(nlohmann_json CONFIG REQUIRED)
 target_link_libraries(${PROJECT_NAME} PUBLIC
         antara::world
         antara::event
