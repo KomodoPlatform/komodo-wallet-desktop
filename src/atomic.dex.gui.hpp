@@ -50,9 +50,18 @@ namespace atomic_dex
                 enum { NONE, SEED_CREATION, SEED_RECOVERY } current_page = NONE;
             } new_user_page;
 
+            struct seed_creation_vars
+            {
+                std::array<char, 3000> generated_seed_read_only{};
+                std::array<char, 3000> generated_seed_confirm{};
+                std::array<char, 100> password_input{};
+                bool                  show_password{false};
+                std::string error_text;
+            } seed_creation_page;
+
             struct login_vars
             {
-                bool logged_in{false};
+                bool logged_in{true};
 
                 std::array<char, 100> password_input{};
                 bool                  show_password{false};

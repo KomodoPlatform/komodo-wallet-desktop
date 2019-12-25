@@ -149,30 +149,80 @@ namespace
         gui_coin_name_img(gui, asset.ticker, asset.name);
     }
 
+    void gui_password_input(std::array<char, 100>& password_input, bool& show_password)
+    {
+        ImGuiInputTextFlags password_flags = ImGuiInputTextFlags_CallbackCharFilter;
+        if (!show_password) password_flags |= ImGuiInputTextFlags_Password;
+        ImGui::Text("Password");
+        ImGui::SetNextItemWidth(300.0f);
+        ImGui::InputText("##login_page_password_input", password_input.data(), password_input.size(), password_flags, input_filter_password, password_input.data());
+        ImGui::SameLine();
+        if (ImGui::Button((std::string(show_password ? "Hide" : "Show") + "##login_page_show_password_button").c_str())) { show_password = !show_password; }
+    }
+
     void gui_login_page(atomic_dex::gui_variables& gui_vars)
     {
         auto& vars = gui_vars.startup_page.login_page;
-        auto& password_input = vars.password_input;
-        auto& show_password  = vars.show_password;
 
-        const ImVec2 child_size{ 392.f, 140.f};
+        const ImVec2 child_size{ 385.f, 175.f};
         ImGui::SetCursorPosX((ImGui::GetWindowSize().x - child_size.x) * 0.5f);
         ImGui::BeginChild("##login_page_child", child_size, true);
         {
             ImGui::Text("Login");
-            ImGuiInputTextFlags password_flags = ImGuiInputTextFlags_CallbackCharFilter;
-            if (!show_password) password_flags |= ImGuiInputTextFlags_Password;
-            ImGui::SetNextItemWidth(300.f);
-            ImGui::InputText(
-                "Password##login_page_password_input", password_input.data(), password_input.size(), password_flags, input_filter_password, password_input.data());
-            if (ImGui::Button((std::string(show_password ? "Hide" : "Show") + " Password##login_page_show_password_button").c_str()))
-            { show_password = !show_password; }
-            ImGui::SameLine();
+            gui_password_input(vars.password_input, vars.show_password);
+            ImGui::Separator();
             if (ImGui::Button("Login##login_page_login_button")) { vars.logged_in = true; }
         }
         ImGui::EndChild();
     }
 
+    void gui_seed_creation(atomic_dex::gui_variables& gui_vars)
+    {
+        auto& new_user_page_vars = gui_vars.startup_page.new_user_page;
+        auto& vars = gui_vars.startup_page.seed_creation_page;
+        auto& generated_seed_read_only  = vars.generated_seed_read_only;
+        auto& generated_seed_confirm  = vars.generated_seed_confirm;
+        auto& error_text  = vars.error_text;
+        auto& password_input  = vars.password_input;
+        auto& show_password  = vars.show_password;
+
+        // TODO: Remove this placeholder
+        copy_str("handyman sierra quickly gluten gallstone customize subsector wobbling cheer grunt magnitude disposal usual alarm lukewarm passivism atlas amiable rounding nimbly decimeter frenzied deafness uproar radar", generated_seed_read_only.data(), generated_seed_read_only.size());
+
+        const ImVec2 child_size{ 385.f, 330.f};
+        ImGui::SetCursorPosX((ImGui::GetWindowSize().x - child_size.x) * 0.5f);
+        ImGui::BeginChild("##seed_creation_child", child_size, true);
+        {
+            ImGui::Text("Generated Seed");
+            ImGui::SetNextItemWidth(300.0f);
+            ImGui::InputText("##generated_seed_read_only", generated_seed_read_only.data(), generated_seed_read_only.size(), ImGuiInputTextFlags_ReadOnly | ImGuiInputTextFlags_AutoSelectAll);
+            ImGui::Text("Confirm Seed");
+            ImGui::SetNextItemWidth(300.0f);
+            ImGui::InputText("##generated_seed_confirmation", generated_seed_confirm.data(), generated_seed_confirm.size());
+            gui_password_input(password_input, show_password);
+            ImGui::Separator();
+            if (ImGui::Button("Back##back_to_new_user_page_button")) { new_user_page_vars.current_page = new_user_page_vars.NONE; }
+            ImGui::SameLine();
+            if (ImGui::Button("Confirm##back_to_new_user_page_button")) {
+                if(strcmp(generated_seed_confirm.data(), "") == 0) {
+                    error_text = "Please fill the Confirm Seed field!";
+                }
+                else if(strcmp(password_input.data(), "") == 0) {
+                    error_text = "Please fill the Password field!";
+                }
+                else if(generated_seed_read_only != generated_seed_confirm) {
+                    error_text = "Generated Seed and Confirm Seed do not match!";
+                }
+                else {
+                    // TODO: Create user here, seed should exist after this, will redirect to login page
+                    new_user_page_vars.current_page = new_user_page_vars.NONE;
+                    gui_vars.startup_page.seed_exists = true;
+                }
+            }
+            ImGui::TextColored(error_color, "%s", error_text.c_str());
+        }
+        ImGui::EndChild();
+    }
 
     void gui_new_user_page(atomic_dex::gui_variables& gui_vars)
     {
@@ -194,7 +244,7 @@ namespace
             ImGui::EndChild();
         }
         else {
-//            if(current_page == vars.SEED_CREATION) gui_seed_creation();
+            if(current_page == vars.SEED_CREATION) gui_seed_creation(gui_vars);
 //            else if(current_page == vars.SEED_RECOVERY) gui_seed_recovery();
         }
     }
@@ -206,7 +256,7 @@ namespace
 
         const float custom_img_size = img.height * 0.8f;
 
-        ImGui::SetCursorPos(ImVec2{(ImGui::GetWindowSize().x - custom_img_size) * 0.5f, (ImGui::GetWindowSize().y - custom_img_size) * 0.4f});
+        ImGui::SetCursorPos(ImVec2{(ImGui::GetWindowSize().x - custom_img_size) * 0.5f, (ImGui::GetWindowSize().y - custom_img_size) * 0.3f});
         ImGui::Image(reinterpret_cast<ImTextureID>(img.id), ImVec2{custom_img_size, custom_img_size});
         ImGui::SetCursorPosY(ImGui::GetCursorPosY() + 20.0f);
 
