@@ -127,6 +127,20 @@ namespace
 namespace
 {
     void
+    gui_disable_items(bool only_visual = false)
+    {
+        if(!only_visual) ImGui::PushItemFlag(ImGuiItemFlags_Disabled, true);
+        ImGui::PushStyleVar(ImGuiStyleVar_Alpha, ImGui::GetStyle().Alpha * 0.5f);
+    }
+
+    void
+    gui_enable_items(bool only_visual = false)
+    {
+        ImGui::PopStyleVar();
+        if(!only_visual) ImGui::PopItemFlag();
+    }
+
+    void
     gui_coin_name_img(const atomic_dex::gui& gui, const std::string ticker, const std::string name = "", bool name_first = false)
     {
         const auto& icons = gui.get_icons();
@@ -215,9 +229,11 @@ namespace
         {
             ImGui::Text("Generated Seed");
             ImGui::SetNextItemWidth(300.0f);
+            gui_disable_items(true);
             ImGui::InputText(
                 "##generated_seed_read_only", generated_seed_read_only.data(), generated_seed_read_only.size(),
                 ImGuiInputTextFlags_ReadOnly | ImGuiInputTextFlags_AutoSelectAll);
+            gui_enable_items(true);
             ImGui::Text("Confirm Seed");
             ImGui::SetNextItemWidth(300.0f);
             ImGui::InputText("##generated_seed_confirmation", generated_seed_confirm.data(), generated_seed_confirm.size());
@@ -739,20 +755,6 @@ namespace
         }
 
         ImGui::Columns(1);
-    }
-
-    void
-    gui_disable_items()
-    {
-        ImGui::PushItemFlag(ImGuiItemFlags_Disabled, true);
-        ImGui::PushStyleVar(ImGuiStyleVar_Alpha, ImGui::GetStyle().Alpha * 0.5f);
-    }
-
-    void
-    gui_enable_items()
-    {
-        ImGui::PopStyleVar();
-        ImGui::PopItemFlag();
     }
 
     void
