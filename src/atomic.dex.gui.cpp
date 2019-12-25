@@ -149,10 +149,18 @@ namespace
         gui_coin_name_img(gui, asset.ticker, asset.name);
     }
 
-    void gui_login_page(atomic_dex::gui_variables& gui_vars) {
+    void gui_login_page(atomic_dex::gui& gui, atomic_dex::gui_variables& gui_vars) {
         auto& vars = gui_vars.login_page;
         auto& password_input = vars.password_input;
         auto& show_password = vars.show_password;
+
+        const auto& icons = gui.get_icons();
+        const auto& img = icons.at("APP_LOGO");
+
+        const float custom_img_size = img.height * 0.8f;
+
+        ImGui::SetCursorPos(ImVec2{(ImGui::GetWindowSize().x - custom_img_size) * 0.5f, (ImGui::GetWindowSize().y - custom_img_size) * 0.5f});
+        ImGui::Image(reinterpret_cast<ImTextureID>(img.id), ImVec2{custom_img_size, custom_img_size});
 
         ImGui::Text("Login");
         ImGuiInputTextFlags password_flags = ImGuiInputTextFlags_CallbackCharFilter;
@@ -791,6 +799,7 @@ namespace atomic_dex
     gui::update() noexcept
     {
         update_live_coding();
+        //update_live_coding();
 
         //! Menu bar
         auto& canvas = entity_registry_.ctx<ag::graphics::canvas_2d>();
@@ -812,7 +821,7 @@ namespace atomic_dex
         else
         {
             if(!gui_vars_.login_page.logged_in) {
-                gui_login_page(gui_vars_);
+                gui_login_page(*this, gui_vars_);
             }
             else {
                 gui_menubar(*this);
