@@ -14,9 +14,11 @@
  *                                                                            *
  ******************************************************************************/
 
+//! PCH Headers
+#include "atomic.dex.pch.hpp"
+
 //! Project Headers
 #include "atomic.dex.gui.style.hpp"
-#include "atomic.dex.pch.hpp"
 
 namespace atomic_dex
 {

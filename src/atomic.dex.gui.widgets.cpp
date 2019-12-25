@@ -20,9 +20,9 @@
 namespace atomic_dex
 {
     void
-    widgets::LoadingIndicatorCircle(
-        const char* label, const float indicator_radius, const ImVec4& main_color, const ImVec4& backdrop_color, const int circle_count,
-        const float speed)
+    widgets::loading_indicator_circle(
+        const char* label, float indicator_radius, const ImVec4& main_color, const ImVec4& backdrop_color, int circle_count,
+        float speed)
     {
         //const ImGuiID id = ImGui::GetID(label);
 

@@ -16,9 +16,11 @@
 
 #pragma once
 
+//! PCH Headers
+#include "atomic.dex.pch.hpp"
+
 //! Project Headers
 #include "atomic.dex.coins.config.hpp"
-#include "atomic.dex.pch.hpp"
 
 namespace mm2::api
 {

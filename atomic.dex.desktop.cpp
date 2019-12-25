@@ -14,16 +14,11 @@
  *                                                                            *
  ******************************************************************************/
 
-//! Project Headers
-#include "atomic.dex.app.hpp"
+//! PCH Headers
 #include "atomic.dex.pch.hpp"
 
-namespace folly
-{
-    // Explicitly instantiate SharedMutex here:
-    template class SharedMutexImpl<true>;
-    template class SharedMutexImpl<false>;
-} // namespace folly
+//! Project Headers
+#include "atomic.dex.app.hpp"
 
 int
 main(int argc, char* argv[])

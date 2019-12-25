@@ -16,6 +16,9 @@
 
 #pragma once
 
+//! PCH Headers
+#include "atomic.dex.pch.hpp"
+
 //! Project Headers
 #include "atomic.dex.gui.style.hpp"
 #include "atomic.dex.mm2.hpp"

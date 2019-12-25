@@ -68,6 +68,13 @@
 #include <folly/SharedMutex.h>
 #include <folly/concurrency/ConcurrentHashMap.h>
 
+namespace folly
+{
+    // Explicitly instantiate SharedMutex here:
+    template class SharedMutexImpl<true>;
+    template class SharedMutexImpl<false>;
+} // namespace folly
+
 //! Boost Headers
 #include <boost/algorithm/string/case_conv.hpp>
 #include <boost/algorithm/string/split.hpp>

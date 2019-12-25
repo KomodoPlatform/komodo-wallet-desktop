@@ -16,10 +16,12 @@
 
 #pragma once
 
+//! PCH Headers
+#include "atomic.dex.pch.hpp"
+
 //! Project Headers
 #include "atomic.dex.events.hpp"
 #include "atomic.dex.mm2.hpp"
-#include "atomic.dex.pch.hpp"
 #include "atomic.dex.utilities.hpp"
 
 namespace atomic_dex

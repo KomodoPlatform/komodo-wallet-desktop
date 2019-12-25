@@ -17,7 +17,6 @@
 //! Project Headers
 #include "atomic.dex.gui.hpp"
 #include "atomic.dex.gui.widgets.hpp"
-#include "atomic.dex.mm2.hpp"
 #include "atomic.threadpool.hpp"
 
 namespace fs = std::filesystem;
@@ -965,7 +964,7 @@ namespace atomic_dex
             const float  radius = 30.0f;
             const ImVec2 position((ImGui::GetWindowSize().x) * 0.5f - radius, (ImGui::GetWindowSize().y) * 0.5f - radius);
             ImGui::SetCursorPos(position);
-            widgets::LoadingIndicatorCircle("foo", radius, ImVec4(bright_color), ImVec4(dark_color), 9, 1.5f);
+            widgets::loading_indicator_circle("foo", radius, ImVec4(bright_color), ImVec4(dark_color), 9, 1.5f);
         }
         else
         {
