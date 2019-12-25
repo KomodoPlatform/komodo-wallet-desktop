@@ -14,17 +14,9 @@
  *                                                                            *
  ******************************************************************************/
 
-#ifdef ENABLE_CODE_RELOAD_WINDOWS
-#    define NOMINMAX
-#    include <Windows.h>
-#    include "API/LPP_API.h"
-#endif
-
-//! Folly Headers
-#include <folly/SharedMutex.h>
-
 //! Project Headers
 #include "atomic.dex.app.hpp"
+#include "atomic.dex.pch.hpp"
 
 namespace folly
 {

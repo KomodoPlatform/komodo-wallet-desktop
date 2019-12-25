@@ -14,26 +14,6 @@
  *                                                                            *
  ******************************************************************************/
 
-//! C++ System Headers
-#include <filesystem>
-
-//! Boost Headers
-#include <boost/algorithm/string/case_conv.hpp>
-#include <boost/multiprecision/cpp_dec_float.hpp>
-
-//! Dependencies Headers
-#include <IconsFontAwesome5.h>
-#include <entt/signal/dispatcher.hpp>
-#include <imgui.h>
-#include <imgui_internal.h>
-
-//! SDK Headers
-#include <antara/gaming/core/open.url.browser.hpp>
-#include <antara/gaming/core/real.path.hpp>
-#include <antara/gaming/event/key.pressed.hpp>
-#include <antara/gaming/event/quit.game.hpp>
-#include <antara/gaming/graphics/component.canvas.hpp>
-
 //! Project Headers
 #include "atomic.dex.gui.hpp"
 #include "atomic.dex.gui.widgets.hpp"
@@ -129,7 +109,7 @@ namespace
     void
     gui_disable_items(bool only_visual = false)
     {
-        if(!only_visual) ImGui::PushItemFlag(ImGuiItemFlags_Disabled, true);
+        if (!only_visual) ImGui::PushItemFlag(ImGuiItemFlags_Disabled, true);
         ImGui::PushStyleVar(ImGuiStyleVar_Alpha, ImGui::GetStyle().Alpha * 0.5f);
     }
 
@@ -137,7 +117,7 @@ namespace
     gui_enable_items(bool only_visual = false)
     {
         ImGui::PopStyleVar();
-        if(!only_visual) ImGui::PopItemFlag();
+        if (!only_visual) ImGui::PopItemFlag();
     }
 
     void
@@ -647,7 +627,7 @@ namespace
 
             if (!enableable_coins.empty()) ImGui::Separator();
 
-            auto& select_list = gui_vars.enableable_coins_select_list;
+            auto& select_list   = gui_vars.enableable_coins_select_list;
             auto& select_list_t = gui_vars.enableable_coins_select_list_tickers;
             // Extend the size of selectables list if the new list is bigger
             if (enableable_coins.size() > select_list.size()) select_list.resize(enableable_coins.size(), false);
@@ -674,9 +654,7 @@ namespace
                 if (ImGui::Button("Enable", ImVec2(120, 0)))
                 {
                     // Enable selected coins
-                    atomic_dex::spawn([&mm2, select_list_cpy = select_list_t](){
-                        mm2.enable_multiple_coins(select_list_cpy);
-                    });
+                    atomic_dex::spawn([&mm2, select_list_cpy = select_list_t]() { mm2.enable_multiple_coins(select_list_cpy); });
                     close = true;
                 }
 

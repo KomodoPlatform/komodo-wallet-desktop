@@ -16,18 +16,6 @@
 
 #pragma once
 
-#if defined(ENABLE_CODE_RELOAD_UNIX)
-
-#    include <jet/live/Live.hpp>
-#    include <jet/live/Utility.hpp>
-
-#endif
-
-//! SDK Headers
-#include <antara/gaming/ecs/system.hpp>
-#include <antara/gaming/event/key.pressed.hpp>
-#include <antara/gaming/sdl/sdl.opengl.image.loading.hpp>
-
 //! Project Headers
 #include "atomic.dex.gui.style.hpp"
 #include "atomic.dex.mm2.hpp"

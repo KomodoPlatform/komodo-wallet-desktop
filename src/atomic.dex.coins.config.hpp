@@ -16,13 +16,8 @@
 
 #pragma once
 
-//! C++ System headers
-#include <optional>
-#include <string>
-#include <vector>
-
-//! Dependencies Headers
-#include <nlohmann/json.hpp>
+//! Project Headers
+#include "atomic.dex.pch.hpp"
 
 namespace atomic_dex
 {

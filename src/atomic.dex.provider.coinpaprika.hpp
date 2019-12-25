@@ -16,21 +16,10 @@
 
 #pragma once
 
-//! C++ System Headers
-#include <thread>
-
-//! Folly Headers
-#include <folly/concurrency/ConcurrentHashMap.h>
-
-//! Dependencies Headers
-#include <nlohmann/json.hpp>
-
-//! SDK Headers
-#include <antara/gaming/ecs/system.hpp>
-
 //! Project Headers
 #include "atomic.dex.events.hpp"
 #include "atomic.dex.mm2.hpp"
+#include "atomic.dex.pch.hpp"
 #include "atomic.dex.utilities.hpp"
 
 namespace atomic_dex

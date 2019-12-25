@@ -8,6 +8,14 @@ cmake_minimum_required(VERSION 3.14)
 ##! C++ Standard needed by the SDK is 17
 set(CMAKE_CXX_STANDARD 17)
 
+option(USE_UNITY_BUILD OFF)
+
+if (USE_UNITY_BUILD)
+    set(CMAKE_EXPORT_COMPILE_COMMANDS OFF)
+else ()
+    set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+endif()
+
 ##! Our Project title, here atomic-dex-desktop.
 project(atomic-dex-desktop DESCRIPTION "An awesome atomic-dex-desktop" LANGUAGES CXX VERSION 1.0.0)
 
@@ -178,6 +186,16 @@ endif ()
 
 #target_enable_tsan(${PROJECT_NAME})
 target_enable_ubsan(${PROJECT_NAME})
+if (CMAKE_VERSION VERSION_GREATER 3.15)
+    set(IMGUI_SOURCE_DIR ${CMAKE_CURRENT_BINARY_DIR}/_deps/imgui-src/examples)
+    if (USE_UNITY_BUILD)
+        set_target_properties(${PROJECT_NAME} PROPERTIES UNITY_BUILD ON)
+        set_property(SOURCE ${IMGUI_SOURCE_DIR}/imgui_impl_osx.mm PROPERTY SKIP_UNITY_BUILD_INCLUSION ON)
+        set_source_files_properties(${IMGUI_SOURCE_DIR}/imgui_impl_osx.mm PROPERTIES SKIP_UNITY_BUILD_INCLUSION ON)
+    endif()
+    set_source_files_properties(${IMGUI_SOURCE_DIR}/imgui_impl_osx.mm PROPERTIES SKIP_PRECOMPILE_HEADERS ON)
+    target_precompile_headers(${PROJECT_NAME} PRIVATE src/atomic.dex.pch.hpp)
+endif()
 
 if (WIN32)
     init_windows_env()

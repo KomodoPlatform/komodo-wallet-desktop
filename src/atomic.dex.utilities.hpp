@@ -1,11 +1,7 @@
 #pragma once
 
 //! C++ System Headers
-#include <condition_variable>
-#include <functional>
-#include <future>
-#include <mutex>
-#include <queue>
+#include "atomic.dex.pch.hpp"
 
 struct timed_waiter
 {

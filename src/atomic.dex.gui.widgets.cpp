@@ -14,25 +14,8 @@
  *                                                                            *
  ******************************************************************************/
 
-//! C System Headers
-#include <cmath>
-
-//! C++ System Headers
-#include <algorithm>
-
-//! Dependencies Headers
-#include <imgui.h>
-//#include <imgui_internal.h>
-
-//! SDK Headers
-#include <antara/gaming/timer/time.step.hpp>
-
 //! Project Headers
 #include "atomic.dex.gui.widgets.hpp"
-
-#ifndef IM_PI
-    #define IM_PI                           3.14159265358979323846f
-#endif
 
 namespace atomic_dex
 {

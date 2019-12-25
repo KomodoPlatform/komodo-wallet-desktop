@@ -16,11 +16,7 @@
 
 #pragma once
 
-//! C++ System Headers
-#include <string>
-
-//! Dependencies Headers
-#include <entt/entity/helper.hpp>
+#include "atomic.dex.pch.hpp"
 
 namespace atomic_dex
 {

@@ -16,7 +16,7 @@
 
 #pragma once
 
-#include <imgui.h>
+#include "atomic.dex.pch.hpp"
 
 namespace atomic_dex::widgets
 {

@@ -14,17 +14,6 @@
  *                                                                            *
  ******************************************************************************/
 
-//! C++ System Headers
-#include <sstream>
-
-//! Boost Headers
-#include <boost/algorithm/string/trim.hpp>
-#include <boost/multiprecision/cpp_dec_float.hpp>
-
-//! Dependencies Headers
-#include <date/date.h>
-#include <meta/detection/detection.hpp>
-
 //! Project Headers
 #include "atomic.dex.mm2.api.hpp"
 

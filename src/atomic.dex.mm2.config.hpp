@@ -16,11 +16,8 @@
 
 #pragma once
 
-//! C System Headers
-#include <cstdlib> ///< std::getenv
-
-//! Dependencies Headers
-#include <nlohmann/json.hpp>
+//! Project Headers
+#include "atomic.dex.pch.hpp"
 
 namespace atomic_dex
 {

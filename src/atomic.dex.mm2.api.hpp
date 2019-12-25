@@ -16,18 +16,9 @@
 
 #pragma once
 
-//! C++ System Headers
-#include <optional>
-#include <string>
-#include <vector>
-
-//! Dependencies Headers
-#include <loguru.hpp>
-#include <nlohmann/json.hpp>
-#include <restclient-cpp/restclient.h>
-
 //! Project Headers
 #include "atomic.dex.coins.config.hpp"
+#include "atomic.dex.pch.hpp"
 
 namespace mm2::api
 {

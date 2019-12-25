@@ -16,8 +16,8 @@
 
 #pragma once
 
-//! SDK Headers
-#include <antara/gaming/world/world.app.hpp>
+//! Project Headers
+#include "atomic.dex.pch.hpp"
 
 namespace ag = antara::gaming;
 

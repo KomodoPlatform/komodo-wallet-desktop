@@ -14,9 +14,6 @@
  *                                                                            *
  ******************************************************************************/
 
-//! Dependencies Headers
-#include <loguru.hpp>
-
 //! Project Headers
 #include "atomic.dex.coins.config.hpp"
 

@@ -16,9 +16,6 @@
 
 #pragma once
 
-//! Project Headers
-#include "atomic.dex.utilities.hpp"
-
 inline constexpr std::size_t g_max_threads = 8ull;
 
 namespace atomic_dex

@@ -14,22 +14,6 @@
  *                                                                            *
  ******************************************************************************/
 
-//! C++ System Headers
-#include <array>
-#include <filesystem>
-#include <fstream>
-#include <future>
-
-//! Boost Headers
-#include <boost/algorithm/string/split.hpp>
-#include <boost/multiprecision/cpp_dec_float.hpp>
-
-//! Dependencies Headers
-#include <entt/signal/dispatcher.hpp>
-
-//! SDK Headers
-#include <antara/gaming/core/real.path.hpp>
-
 //! Project Headers
 #include "atomic.dex.mm2.config.hpp"
 #include "atomic.dex.mm2.hpp"

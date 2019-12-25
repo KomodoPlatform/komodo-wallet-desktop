@@ -14,16 +14,9 @@
  *                                                                            *
  ******************************************************************************/
 
-//! Dependencies Headers
-#include <IconsFontAwesome5.h>
-#include <imgui.h>
-#include <imgui_internal.h>
-
-//! SDK Headers
-#include <antara/gaming/core/real.path.hpp>
-
 //! Project Headers
 #include "atomic.dex.gui.style.hpp"
+#include "atomic.dex.pch.hpp"
 
 namespace atomic_dex
 {

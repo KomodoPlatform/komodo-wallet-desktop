@@ -14,12 +14,6 @@
  *                                                                            *
  ******************************************************************************/
 
-
-//! SDK Headers
-#include <antara/gaming/ecs/virtual.input.system.hpp>
-#include <antara/gaming/sdl/graphic.system.hpp>
-#include <antara/gaming/sdl/input.system.hpp>
-
 //! Project Headers
 #include "atomic.dex.app.hpp"
 #include "atomic.dex.gui.hpp"

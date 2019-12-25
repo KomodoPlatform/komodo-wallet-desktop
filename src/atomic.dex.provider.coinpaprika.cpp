@@ -14,15 +14,6 @@
  *                                                                            *
  ******************************************************************************/
 
-//! C++ System Headers
-#include <algorithm>
-
-//! Boost Headers
-#include <boost/multiprecision/cpp_dec_float.hpp>
-
-//! Dependencies Headers
-#include <restclient-cpp/restclient.h>
-
 //! Project Headers
 #include "atomic.dex.provider.coinpaprika.hpp"
 

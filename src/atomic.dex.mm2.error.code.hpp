@@ -17,8 +17,7 @@
 #pragma once
 
 //! C++ System Headers
-#include <system_error>
-#include <type_traits>
+#include "atomic.dex.pch.hpp"
 
 enum class mm2_error
 {

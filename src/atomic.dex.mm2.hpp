@@ -16,25 +16,12 @@
 
 #pragma once
 
-//! C++ System Headers
-#include <atomic>
-#include <thread>
-#include <vector>
-
-//! Dependencies Headers
-#include <boost/align.hpp>
-#include <boost/multiprecision/cpp_dec_float.hpp>
-#include <folly/concurrency/ConcurrentHashMap.h>
-#include <reproc++/reproc.hpp>
-
-//! SDK Headers
-#include <antara/gaming/ecs/system.hpp>
-
 //! Project Headers
 #include "atomic.dex.coins.config.hpp"
 #include "atomic.dex.events.hpp"
 #include "atomic.dex.mm2.api.hpp"
 #include "atomic.dex.mm2.error.code.hpp"
+#include "atomic.dex.pch.hpp"
 #include "atomic.dex.utilities.hpp"
 
 namespace atomic_dex
@@ -58,10 +45,9 @@ namespace atomic_dex
         t_mm2_ec                 ec{mm2_error::success};
     };
 
+    using t_allocator = folly::AlignedSysAllocator<std::uint8_t, folly::FixedAlign<64>>;
     template <typename Key, typename Value>
-    using t_concurrent_reg = folly::ConcurrentHashMap<Key, Value, std::hash<Key>, std::equal_to<>, boost::alignment::aligned_allocator<uint8_t, 64>>;
-
-    //! Public typedefs
+    using t_concurrent_reg = folly::ConcurrentHashMap<Key, Value, std::hash<Key>, std::equal_to<>, t_allocator>;
     using t_coins_registry = t_concurrent_reg<std::string, coin_config>;
     using t_transactions   = std::vector<tx_infos>;
     using t_float_50       = bm::cpp_dec_float_50;
