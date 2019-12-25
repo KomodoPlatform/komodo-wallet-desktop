@@ -70,7 +70,7 @@ namespace atomic_dex
     class coinpaprika_provider final : public ag::ecs::pre_update_system<coinpaprika_provider>
     {
         //! Typedefs
-        using t_providers_registry      = folly::ConcurrentHashMap<std::string, std::string>;
+        using t_providers_registry      = t_concurrent_reg<std::string, std::string>;
         using t_supported_fiat_registry = std::unordered_set<std::string>;
 
         //! Private fields

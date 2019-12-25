@@ -177,7 +177,7 @@ if (APPLE)
 endif ()
 
 #target_enable_tsan(${PROJECT_NAME})
-target_enable_asan(${PROJECT_NAME})
+target_enable_ubsan(${PROJECT_NAME})
 
 if (WIN32)
     init_windows_env()
