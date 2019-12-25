@@ -109,9 +109,6 @@ namespace atomic_dex
         //! Refresh the balance registry (internal)
         void process_balance(const std::string& ticker) const;
 
-        //! Refresh the orders registry (internal)
-        void process_orders(const std::string& ticker);
-
         //! Refresh the transaction registry (internal)
         void process_tx(const std::string& ticker);
 
@@ -131,6 +128,9 @@ namespace atomic_dex
         //! Destructor
         ~mm2() noexcept final;
 
+        //! Refresh the orders registry (internal)
+        void process_orders(const std::string& ticker);
+
         //! Events
         void on_refresh_orderbook(const orderbook_refresh& evt);
 
@@ -142,7 +142,8 @@ namespace atomic_dex
         bool enable_default_coins() noexcept;
 
         //! Enable multiple coins
-        void enable_multiple_coins(const std::vector<std::string>& tickers) noexcept;;
+        void enable_multiple_coins(const std::vector<std::string>& tickers) noexcept;
+        ;
 
         bool enable_coin(const std::string& ticker);
 
@@ -165,7 +166,8 @@ namespace atomic_dex
         t_buy_answer place_buy_order(t_buy_request&& request, const t_float_50& total, t_mm2_ec& ec) const;
 
         //! Place a buy order, Doesn't work if i don't have enough funds.
-        t_sell_answer place_sell_order(t_sell_request&& request, const t_float_50& total, t_mm2_ec& ec) const;;
+        t_sell_answer place_sell_order(t_sell_request&& request, const t_float_50& total, t_mm2_ec& ec) const;
+        ;
 
         //! Withdraw Money to another address
         [[nodiscard]] static t_withdraw_answer withdraw(t_withdraw_request&& request, t_mm2_ec& ec) noexcept;
@@ -192,7 +194,7 @@ namespace atomic_dex
         [[nodiscard]] t_orderbook_answer get_current_orderbook(t_mm2_ec& ec) const noexcept;
 
         //! Get orders
-        [[nodiscard]] ::mm2::api::my_orders_answer get_orders(const std::string& ticker, t_mm2_ec& ec) const noexcept;
+        [[nodiscard]] ::mm2::api::my_orders_answer              get_orders(const std::string& ticker, t_mm2_ec& ec) const noexcept;
         [[nodiscard]] std::vector<::mm2::api::my_orders_answer> get_orders(t_mm2_ec& ec) const noexcept;
 
         //! Get balance with locked funds for a given ticker as a boost::multiprecision::cpp_dec_float_50.
