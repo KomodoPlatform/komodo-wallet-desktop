@@ -149,23 +149,14 @@ namespace
         gui_coin_name_img(gui, asset.ticker, asset.name);
     }
 
-    void gui_login_page(atomic_dex::gui& gui, atomic_dex::gui_variables& gui_vars)
+    void gui_login_page(atomic_dex::gui_variables& gui_vars)
     {
-        auto& vars           = gui_vars.login_page;
+        auto& vars = gui_vars.startup_page.login_page;
         auto& password_input = vars.password_input;
         auto& show_password  = vars.show_password;
 
-        const auto& icons = gui.get_icons();
-        const auto& img   = icons.at("APP_LOGO");
-
-        const float custom_img_size = img.height * 0.8f;
-
-        ImGui::SetCursorPos(ImVec2{(ImGui::GetWindowSize().x - custom_img_size) * 0.5f, (ImGui::GetWindowSize().y - custom_img_size) * 0.4f});
-        ImGui::Image(reinterpret_cast<ImTextureID>(img.id), ImVec2{custom_img_size, custom_img_size});
-
         const ImVec2 child_size{ 392.f, 140.f};
         ImGui::SetCursorPosX((ImGui::GetWindowSize().x - child_size.x) * 0.5f);
-        ImGui::SetCursorPosY(ImGui::GetCursorPosY() + 20.0f);
         ImGui::BeginChild("##login_page_child", child_size, true);
         {
             ImGui::Text("Login");
@@ -180,6 +171,20 @@ namespace
             if (ImGui::Button("Login##login_page_login_button")) { vars.logged_in = true; }
         }
         ImGui::EndChild();
+    }    
+    
+    void gui_startup_page(atomic_dex::gui& gui, atomic_dex::gui_variables& gui_vars)
+    {
+        const auto& icons = gui.get_icons();
+        const auto& img   = icons.at("APP_LOGO");
+
+        const float custom_img_size = img.height * 0.8f;
+
+        ImGui::SetCursorPos(ImVec2{(ImGui::GetWindowSize().x - custom_img_size) * 0.5f, (ImGui::GetWindowSize().y - custom_img_size) * 0.4f});
+        ImGui::Image(reinterpret_cast<ImTextureID>(img.id), ImVec2{custom_img_size, custom_img_size});
+        ImGui::SetCursorPosY(ImGui::GetCursorPosY() + 20.0f);
+
+        gui_login_page(gui_vars);
     }
 
     void
@@ -825,8 +830,8 @@ namespace atomic_dex
         }
         else
         {
-            if(!gui_vars_.login_page.logged_in) {
-                gui_login_page(*this, gui_vars_);
+            if(!gui_vars_.startup_page.login_page.logged_in) {
+                gui_startup_page(*this, gui_vars_);
             }
             else {
                 gui_menubar(*this);
