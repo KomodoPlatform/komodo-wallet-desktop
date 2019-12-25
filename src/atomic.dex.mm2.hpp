@@ -22,6 +22,7 @@
 #include <vector>
 
 //! Dependencies Headers
+#include <boost/align.hpp>
 #include <boost/multiprecision/cpp_dec_float.hpp>
 #include <folly/concurrency/ConcurrentHashMap.h>
 #include <reproc++/reproc.hpp>
@@ -57,8 +58,11 @@ namespace atomic_dex
         t_mm2_ec                 ec{mm2_error::success};
     };
 
+    template <typename Key, typename Value>
+    using t_concurrent_reg = folly::ConcurrentHashMap<Key, Value, std::hash<Key>, std::equal_to<>, boost::alignment::aligned_allocator<uint8_t>>;
+
     //! Public typedefs
-    using t_coins_registry = folly::ConcurrentHashMap<std::string, coin_config>;
+    using t_coins_registry = t_concurrent_reg<std::string, coin_config>;
     using t_transactions   = std::vector<tx_infos>;
     using t_float_50       = bm::cpp_dec_float_50;
     using t_coins          = std::vector<coin_config>;
@@ -73,11 +77,12 @@ namespace atomic_dex
     {
       private:
         //! Private typedefs
-        using t_mm2_time_point      = std::chrono::high_resolution_clock::time_point;
-        using t_balance_registry    = folly::ConcurrentHashMap<std::string, ::mm2::api::balance_answer>;
-        using t_my_orders           = folly::ConcurrentHashMap<std::string, ::mm2::api::my_orders_answer>;
-        using t_tx_history_registry = folly::ConcurrentHashMap<std::string, std::vector<tx_infos>>;
-        using t_orderbook_registry  = folly::ConcurrentHashMap<std::string, ::mm2::api::orderbook_answer>;
+        using t_mm2_time_point = std::chrono::high_resolution_clock::time_point;
+
+        using t_balance_registry    = t_concurrent_reg<std::string, ::mm2::api::balance_answer>;
+        using t_my_orders           = t_concurrent_reg<std::string, ::mm2::api::my_orders_answer>;
+        using t_tx_history_registry = t_concurrent_reg<std::string, std::vector<tx_infos>>;
+        using t_orderbook_registry  = t_concurrent_reg<std::string, ::mm2::api::orderbook_answer>;
 
         //! Process
         reproc::process m_mm2_instance;
