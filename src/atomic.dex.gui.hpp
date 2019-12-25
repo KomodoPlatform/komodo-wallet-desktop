@@ -45,6 +45,11 @@ namespace atomic_dex
 
         struct startup_vars
         {
+            struct new_user_vars
+            {
+                enum { NONE, SEED_CREATION, SEED_RECOVERY } current_page = NONE;
+            } new_user_page;
+
             struct login_vars
             {
                 bool logged_in{false};
@@ -52,6 +57,8 @@ namespace atomic_dex
                 std::array<char, 100> password_input{};
                 bool                  show_password{false};
             } login_page;
+
+            bool seed_exists{false};
         } startup_page;
 
         struct trade_vars {

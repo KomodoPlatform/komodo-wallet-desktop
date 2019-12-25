@@ -171,8 +171,34 @@ namespace
             if (ImGui::Button("Login##login_page_login_button")) { vars.logged_in = true; }
         }
         ImGui::EndChild();
-    }    
-    
+    }
+
+
+    void gui_new_user_page(atomic_dex::gui_variables& gui_vars)
+    {
+        auto& vars = gui_vars.startup_page.new_user_page;
+        auto& current_page = vars.current_page;
+
+        if(current_page == vars.NONE) {
+            const ImVec2 child_size{ 210.f, 63.f};
+            ImGui::SetCursorPosX((ImGui::GetWindowSize().x - child_size.x) * 0.5f);
+            ImGui::BeginChild("##login_page_child", child_size, true);
+            {
+                if (ImGui::Button("Seed Recovery##new_user_page_recover_seed_button"))
+                    current_page = vars.SEED_RECOVERY;
+
+                ImGui::SameLine();
+                if (ImGui::Button("New User##new_user_page_create_new_user_button"))
+                    current_page = vars.SEED_CREATION;
+            }
+            ImGui::EndChild();
+        }
+        else {
+//            if(current_page == vars.SEED_CREATION) gui_seed_creation();
+//            else if(current_page == vars.SEED_RECOVERY) gui_seed_recovery();
+        }
+    }
+
     void gui_startup_page(atomic_dex::gui& gui, atomic_dex::gui_variables& gui_vars)
     {
         const auto& icons = gui.get_icons();
@@ -184,7 +210,12 @@ namespace
         ImGui::Image(reinterpret_cast<ImTextureID>(img.id), ImVec2{custom_img_size, custom_img_size});
         ImGui::SetCursorPosY(ImGui::GetCursorPosY() + 20.0f);
 
-        gui_login_page(gui_vars);
+        if(gui_vars.startup_page.seed_exists) {
+            gui_login_page(gui_vars);
+        }
+        else {
+            gui_new_user_page(gui_vars);
+        }
     }
 
     void
