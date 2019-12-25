@@ -59,7 +59,7 @@ namespace atomic_dex
     };
 
     template <typename Key, typename Value>
-    using t_concurrent_reg = folly::ConcurrentHashMap<Key, Value, std::hash<Key>, std::equal_to<>, boost::alignment::aligned_allocator<uint8_t>>;
+    using t_concurrent_reg = folly::ConcurrentHashMap<Key, Value, std::hash<Key>, std::equal_to<>, boost::alignment::aligned_allocator<uint8_t, 64>>;
 
     //! Public typedefs
     using t_coins_registry = t_concurrent_reg<std::string, coin_config>;
