@@ -825,7 +825,7 @@ namespace
         auto& coin_vars    = vars.trade_sell_coin[base];
         auto& price_input  = action == "Buy" ? coin_vars.price_input_buy : coin_vars.price_input_sell;
         auto& amount_input = action == "Buy" ? coin_vars.amount_input_buy : coin_vars.amount_input_sell;
-        auto& error_text  = action == "Sell" ? coin_vars.sell_error_text : coin_vars.buy_error_text;
+        auto& error_text   = action == "Sell" ? coin_vars.sell_error_text : coin_vars.buy_error_text;
 
         ImGui::SetNextItemWidth(125.0f);
         ImGui::InputText(
@@ -891,11 +891,13 @@ namespace
 
             mm2.process_orders(base);
 
-            if (ec) {
+            if (ec)
+            {
                 LOG_F(ERROR, "{}", ec.message());
                 error_text = ec.message();
             }
-            else {
+            else
+            {
                 error_text = "";
             }
         }
@@ -906,9 +908,7 @@ namespace
         auto raw_result      = action == "Sell" ? sell_answer.raw_result : buy_answer.raw_result;
         auto rpc_result_code = action == "Sell" ? sell_answer.rpc_result_code : buy_answer.rpc_result_code;
 
-        if(error_text != "") {
-            ImGui::TextWrapped("%s", error_text.c_str());
-        }
+        if (!error_text.empty()) { ImGui::TextWrapped("%s", error_text.c_str()); }
         else if (rpc_result_code == -1)
         {
             ImGui::Separator();
