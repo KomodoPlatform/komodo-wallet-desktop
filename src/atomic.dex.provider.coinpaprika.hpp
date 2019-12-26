@@ -22,41 +22,10 @@
 //! Project Headers
 #include "atomic.dex.events.hpp"
 #include "atomic.dex.mm2.hpp"
-#include "atomic.dex.utilities.hpp"
 
 namespace atomic_dex
 {
     namespace ag = antara::gaming;
-
-    namespace coinpaprika::api
-    {
-        struct price_converter_request
-        {
-            std::string base_currency_id;
-            std::string quote_currency_id;
-        };
-
-        struct price_converter_answer
-        {
-            std::string base_currency_id;
-            std::string base_currency_name;
-            std::string base_price_last_updated;
-            std::string quote_currency_id;
-            std::string quote_currency_name;
-            std::string quote_price_last_updated;
-            std::size_t amount;
-            std::string price; ///< we need trick here
-            int         rpc_result_code;
-            std::string raw_result;
-        };
-
-        void to_json(nlohmann::json& j, const price_converter_request& evt);
-
-        void from_json(const nlohmann::json& j, price_converter_answer& evt);
-
-        price_converter_answer price_converter(const price_converter_request& request);
-    } // namespace coinpaprika::api
-
 
     class coinpaprika_provider final : public ag::ecs::pre_update_system<coinpaprika_provider>
     {

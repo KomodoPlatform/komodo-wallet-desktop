@@ -16,26 +16,20 @@
 
 //! Project Headers
 #include "atomic.dex.provider.coinpaprika.hpp"
+#include "atomic.dex.http.code.hpp"
+#include "atomic.dex.provider.coinpaprika.api.hpp"
 
 namespace
 {
     //! Using namespace
     using namespace std::chrono_literals;
+    using namespace atomic_dex;
     using namespace atomic_dex::coinpaprika::api;
-
-    //! Constants
-    constexpr const char* g_coinpaprika_endpoint = "https://api.coinpaprika.com/v1/";
-
-    enum http_code
-    {
-        bad_request       = 400,
-        too_many_requests = 429
-    };
 
     void
     retry(price_converter_answer& answer, const price_converter_request& request)
     {
-        while (answer.rpc_result_code == http_code::too_many_requests)
+        while (answer.rpc_result_code == e_http_code::too_many_requests)
         {
             DLOG_F(WARNING, "too many request retry");
             std::this_thread::sleep_for(1s);
@@ -232,83 +226,4 @@ namespace atomic_dex
         process_provider(config, m_usd_rate_providers, "usd-us-dollars");
         process_provider(config, m_eur_rate_providers, "eur-euro");
     }
-
-    namespace coinpaprika::api
-    {
-        void
-        to_json(nlohmann::json& j, const price_converter_request& evt)
-        {
-            LOG_SCOPE_FUNCTION(INFO);
-
-            j["base_currency_id"]  = evt.base_currency_id;
-            j["quote_currency_id"] = evt.quote_currency_id;
-            j["amount"]            = 1;
-        }
-
-        void
-        from_json(const nlohmann::json& j, price_converter_answer& evt)
-        {
-            LOG_SCOPE_FUNCTION(INFO);
-
-            utils::my_json_sax sx;
-            nlohmann::json::sax_parse(j.dump(), &sx);
-
-            evt.base_currency_id         = j.at("base_currency_id").get<std::string>();
-            evt.base_currency_name       = j.at("base_currency_name").get<std::string>();
-            evt.base_price_last_updated  = j.at("base_price_last_updated").get<std::string>();
-            evt.quote_currency_id        = j.at("quote_currency_id").get<std::string>();
-            evt.quote_currency_name      = j.at("quote_currency_name").get<std::string>();
-            evt.quote_price_last_updated = j.at("quote_price_last_updated").get<std::string>();
-            evt.amount                   = j.at("amount").get<int64_t>();
-            evt.price                    = sx.float_as_string;
-
-            std::replace(evt.price.begin(), evt.price.end(), ',', '.');
-        }
-
-        price_converter_answer
-        price_converter(const price_converter_request& request)
-        {
-            using namespace std::string_literals;
-
-            LOG_SCOPE_FUNCTION(INFO);
-
-            auto&& [base_id, quote_id] = request;
-            const auto url  = g_coinpaprika_endpoint + "price-converter?base_currency_id="s + base_id + "&quote_currency_id="s + quote_id + "&amount=1"s;
-            const auto resp = RestClient::get(url);
-            price_converter_answer answer;
-
-            DVLOG_F(loguru::Verbosity_INFO, "url: {}", url);
-            DVLOG_F(loguru::Verbosity_INFO, "resp: {}", resp.body);
-
-            if (resp.code == http_code::bad_request)
-            {
-                DVLOG_F(loguru::Verbosity_WARNING, "rpc answer code is 400 (Bad Parameters)");
-                answer.rpc_result_code = resp.code;
-                answer.raw_result      = resp.body;
-                return answer;
-            }
-            if (resp.code == http_code::too_many_requests)
-            {
-                DVLOG_F(loguru::Verbosity_WARNING, "rpc answer code is 429 (Too Many requests)");
-                answer.rpc_result_code = resp.code;
-                answer.raw_result      = resp.body;
-                return answer;
-            }
-            try
-            {
-                const auto json_answer = nlohmann::json::parse(resp.body);
-                from_json(json_answer, answer);
-                answer.rpc_result_code = resp.code;
-                answer.raw_result      = resp.body;
-            }
-            catch (const std::exception& error)
-            {
-                VLOG_F(loguru::Verbosity_ERROR, "{}", error.what());
-                answer.rpc_result_code = -1;
-                answer.raw_result      = error.what();
-            }
-
-            return answer;
-        }
-    } // namespace coinpaprika::api
 } // namespace atomic_dex
