@@ -18,25 +18,19 @@
 #include "atomic.dex.pch.hpp"
 
 //! Project Headers
-#include "atomic.dex.app.hpp"
 #include "atomic.dex.kill.hpp"
 
-int
-main(int argc, char* argv[])
+namespace atomic_dex
 {
-#ifdef ENABLE_CODE_RELOAD_WINDOWS
-    HMODULE livePP = lpp::lppLoadAndRegister(L"LivePP", "Quickstart");
-
-    // enable Live++
-    lpp::lppEnableAllCallingModulesSync(livePP);
-
-    // enable Live++'s exception handler/error recovery
-    lpp::lppInstallExceptionHandler(livePP);
+    void
+    kill_executable(const char* exec_name)
+    {
+#if defined(__APPLE__) || defined(__linux__)
+        std::string cmd_line = "killall " + std::string(exec_name);
+        std::system(cmd_line.c_str());
+#else
+        std::string cmd_line = "taskkill /F /IM " + std::string(exec_name) + ".exe /T";
+        std::system(cmd_line.c_str());
 #endif
-    (void)argc;
-    (void)argv;
-    atomic_dex::kill_executable("mm2");
-    loguru::set_thread_name("main thread");
-    atomic_dex::application app;
-    return app.run();
-}
+    }
+} // namespace atomic_dex

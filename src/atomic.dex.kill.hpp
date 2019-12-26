@@ -14,29 +14,8 @@
  *                                                                            *
  ******************************************************************************/
 
-//! PCH Headers
-#include "atomic.dex.pch.hpp"
+#pragma once
 
-//! Project Headers
-#include "atomic.dex.app.hpp"
-#include "atomic.dex.kill.hpp"
-
-int
-main(int argc, char* argv[])
-{
-#ifdef ENABLE_CODE_RELOAD_WINDOWS
-    HMODULE livePP = lpp::lppLoadAndRegister(L"LivePP", "Quickstart");
-
-    // enable Live++
-    lpp::lppEnableAllCallingModulesSync(livePP);
-
-    // enable Live++'s exception handler/error recovery
-    lpp::lppInstallExceptionHandler(livePP);
-#endif
-    (void)argc;
-    (void)argv;
-    atomic_dex::kill_executable("mm2");
-    loguru::set_thread_name("main thread");
-    atomic_dex::application app;
-    return app.run();
+namespace atomic_dex {
+    void kill_executable(const char* exec_name);
 }
