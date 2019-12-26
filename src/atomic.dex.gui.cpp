@@ -676,8 +676,10 @@ namespace
 
             if (ImGui::Button("Cancel##cancel_order"))
             {
-                mm2::api::rpc_cancel_order({info.order_id});
-                mm2.process_orders(info.base);
+                atomic_dex::spawn([&mm2, info]() {
+                    mm2::api::rpc_cancel_order({info.order_id});
+                    mm2.process_orders(info.base);
+                });
             }
 
             auto next = it;
@@ -876,30 +878,32 @@ namespace
 
         if (ImGui::Button((action + "##buy_sell_coin_submit_button").c_str()))
         {
-            std::error_code ec;
+            atomic_dex::spawn([&mm2, &sell_answer, &buy_answer, &error_text, action, base, rel, current_price, current_amount, current_amount_f, total_amount]() {
+                std::error_code ec;
 
-            if (action == "Sell")
-            {
-                atomic_dex::t_sell_request request{.base = base, .rel = rel, .price = current_price, .volume = current_amount};
-                sell_answer = mm2.place_sell_order(std::move(request), current_amount_f, ec);
-            }
-            else
-            {
-                atomic_dex::t_buy_request request{.base = base, .rel = rel, .price = current_price, .volume = current_amount};
-                buy_answer = mm2.place_buy_order(std::move(request), total_amount, ec);
-            }
+                if (action == "Sell")
+                {
+                    atomic_dex::t_sell_request request{.base = base, .rel = rel, .price = current_price, .volume = current_amount};
+                    sell_answer = mm2.place_sell_order(std::move(request), current_amount_f, ec);
+                }
+                else
+                {
+                    atomic_dex::t_buy_request request{.base = base, .rel = rel, .price = current_price, .volume = current_amount};
+                    buy_answer = mm2.place_buy_order(std::move(request), total_amount, ec);
+                }
 
-            mm2.process_orders(base);
+                mm2.process_orders(base);
 
-            if (ec)
-            {
-                LOG_F(ERROR, "{}", ec.message());
-                error_text = ec.message();
-            }
-            else
-            {
-                error_text = "";
-            }
+                if (ec)
+                {
+                    LOG_F(ERROR, "{}", ec.message());
+                    error_text = ec.message();
+                }
+                else
+                {
+                    error_text = "";
+                }
+            });
         }
 
         if (not enable) gui_enable_items();
@@ -1214,10 +1218,12 @@ namespace atomic_dex
                                     {
                                         if (ImGui::Button("Cancel All Orders##cancel_all_orders"))
                                         {
-                                            ::mm2::api::cancel_data cd;
-                                            cd.ticker = current_base;
-                                            ::mm2::api::rpc_cancel_all_orders({{"Coin", cd}});
-                                            mm2_system_.process_orders(current_base);
+                                            atomic_dex::spawn([this, current_base]() {
+                                                ::mm2::api::cancel_data cd;
+                                                cd.ticker = current_base;
+                                                ::mm2::api::rpc_cancel_all_orders({{"Coin", cd}});
+                                                mm2_system_.process_orders(current_base);
+                                            });
                                         }
 
                                         ImGui::Separator();
