@@ -84,6 +84,8 @@ namespace atomic_dex
                 std::array<char, 100> amount_input_buy{};
                 std::array<char, 100> price_input_sell{};
                 std::array<char, 100> amount_input_sell{};
+                std::string   sell_error_text;
+                std::string   buy_error_text;
             };
 
             std::string   current_base;

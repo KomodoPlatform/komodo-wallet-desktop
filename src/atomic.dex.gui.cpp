@@ -653,7 +653,7 @@ namespace
     }
 
     void
-    gui_orders_list(atomic_dex::gui& gui, const std::map<std::size_t, mm2::api::my_order_contents>& orders)
+    gui_orders_list(atomic_dex::gui& gui, atomic_dex::mm2& mm2, const std::map<std::size_t, mm2::api::my_order_contents>& orders)
     {
         for (auto it = orders.begin(); it != orders.end(); ++it)
         {
@@ -674,7 +674,11 @@ namespace
             ImGui::TextColored(value_color, "%s", info.human_timestamp.c_str());
             ImGui::TextColored(value_color, "Order ID: %s", info.order_id.c_str());
 
-            if (ImGui::Button("Cancel##cancel_order")) { mm2::api::rpc_cancel_order({info.order_id}); }
+            if (ImGui::Button("Cancel##cancel_order"))
+            {
+                mm2::api::rpc_cancel_order({info.order_id});
+                mm2.process_orders(info.base);
+            }
 
             auto next = it;
             if (++next != orders.end()) ImGui::Separator();
@@ -814,12 +818,14 @@ namespace
         gui_coin_name_img(gui, base, "", true);
 
         ImGui::SameLine();
+
         std::error_code ec;
         ImGui::Text("(%s)", mm2.my_balance(base, ec).c_str());
 
         auto& coin_vars    = vars.trade_sell_coin[base];
         auto& price_input  = action == "Buy" ? coin_vars.price_input_buy : coin_vars.price_input_sell;
         auto& amount_input = action == "Buy" ? coin_vars.amount_input_buy : coin_vars.amount_input_sell;
+        auto& error_text  = action == "Sell" ? coin_vars.sell_error_text : coin_vars.buy_error_text;
 
         ImGui::SetNextItemWidth(125.0f);
         ImGui::InputText(
@@ -883,15 +889,27 @@ namespace
                 buy_answer = mm2.place_buy_order(std::move(request), total_amount, ec);
             }
 
-            if (ec) { LOG_F(ERROR, "{}", ec.message()); }
+            mm2.process_orders(base);
+
+            if (ec) {
+                LOG_F(ERROR, "{}", ec.message());
+                error_text = ec.message();
+            }
+            else {
+                error_text = "";
+            }
         }
+
         if (not enable) gui_enable_items();
 
 
         auto raw_result      = action == "Sell" ? sell_answer.raw_result : buy_answer.raw_result;
         auto rpc_result_code = action == "Sell" ? sell_answer.rpc_result_code : buy_answer.rpc_result_code;
 
-        if (rpc_result_code == -1)
+        if(error_text != "") {
+            ImGui::TextWrapped("%s", error_text.c_str());
+        }
+        else if (rpc_result_code == -1)
         {
             ImGui::Separator();
             ImGui::Text("Failed to sell");
@@ -1199,6 +1217,7 @@ namespace atomic_dex
                                             ::mm2::api::cancel_data cd;
                                             cd.ticker = current_base;
                                             ::mm2::api::rpc_cancel_all_orders({{"Coin", cd}});
+                                            mm2_system_.process_orders(current_base);
                                         }
 
                                         ImGui::Separator();
@@ -1213,7 +1232,7 @@ namespace atomic_dex
                                     if (!orders.maker_orders.empty())
                                     {
                                         ImGui::TextColored(bright_color, "Maker Orders (%lu)", orders.maker_orders.size());
-                                        gui_orders_list(*this, orders.maker_orders);
+                                        gui_orders_list(*this, mm2_system_, orders.maker_orders);
 
                                         if (!orders.taker_orders.empty()) ImGui::Separator();
                                     }
@@ -1222,7 +1241,7 @@ namespace atomic_dex
                                     if (!orders.taker_orders.empty())
                                     {
                                         ImGui::TextColored(bright_color, "Taker Orders (%lu)", orders.taker_orders.size());
-                                        gui_orders_list(*this, orders.taker_orders);
+                                        gui_orders_list(*this, mm2_system_, orders.taker_orders);
                                     }
                                 }
 
