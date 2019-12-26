@@ -171,18 +171,39 @@ namespace
     void
     gui_login_page(atomic_dex::gui_variables& gui_vars)
     {
-        auto& vars = gui_vars.startup_page.login_page;
+        auto& vars           = gui_vars.startup_page.login_page;
+        auto& password_input = vars.password_input;
+        auto& show_password  = vars.show_password;
+        auto& error_text     = vars.error_text;
 
-        const ImVec2 child_size{385.f, 175.f};
+        const ImVec2 child_size{385.f, 215.f};
         ImGui::SetCursorPosX((ImGui::GetWindowSize().x - child_size.x) * 0.5f);
         ImGui::BeginChild("##login_page_child", child_size, true);
         {
             ImGui::Text("Login");
-            gui_password_input(vars.password_input, vars.show_password);
             ImGui::Separator();
-            if (ImGui::Button("Login##login_page_login_button")) { vars.logged_in = true; }
+            gui_password_input(password_input, show_password);
+            ImGui::Separator();
+            if (ImGui::Button("Login##login_page_login_button"))
+            {
+                if (strcmp(password_input.data(), "") == 0) { error_text = "Please fill the Password field!"; }
+                else
+                {
+                    // TODO: Login here
+                    vars.logged_in = true;
+                }
+            }
+            ImGui::TextColored(error_color, "%s", error_text.c_str());
         }
         ImGui::EndChild();
+    }
+
+    void
+    gui_open_login_page(atomic_dex::gui_variables& gui_vars)
+    {
+        auto& new_user_page_vars          = gui_vars.startup_page.new_user_page;
+        new_user_page_vars.current_page   = new_user_page_vars.NONE;
+        gui_vars.startup_page.seed_exists = true;
     }
 
     void
@@ -192,9 +213,9 @@ namespace
         auto& vars                     = gui_vars.startup_page.seed_creation_page;
         auto& generated_seed_read_only = vars.generated_seed_read_only;
         auto& generated_seed_confirm   = vars.generated_seed_confirm;
-        auto& error_text               = vars.error_text;
         auto& password_input           = vars.password_input;
         auto& show_password            = vars.show_password;
+        auto& error_text               = vars.error_text;
 
         // TODO: Remove this placeholder
         copy_str(
@@ -202,10 +223,13 @@ namespace
             "rounding nimbly decimeter frenzied deafness uproar radar",
             generated_seed_read_only.data(), generated_seed_read_only.size());
 
-        const ImVec2 child_size{385.f, 330.f};
+        const ImVec2 child_size{385.f, 390.f};
         ImGui::SetCursorPosX((ImGui::GetWindowSize().x - child_size.x) * 0.5f);
         ImGui::BeginChild("##seed_creation_child", child_size, true);
         {
+            ImGui::Text("New User");
+            ImGui::Separator();
+            ImGui::Text("Please note this seed somewhere, you will need it");
             ImGui::Text("Generated Seed");
             ImGui::SetNextItemWidth(300.0f);
             gui_disable_items(true);
@@ -220,7 +244,7 @@ namespace
             ImGui::Separator();
             if (ImGui::Button("Back##back_to_new_user_page_button")) { new_user_page_vars.current_page = new_user_page_vars.NONE; }
             ImGui::SameLine();
-            if (ImGui::Button("Confirm##back_to_new_user_page_button"))
+            if (ImGui::Button("Confirm##seed_creation_confirm_button"))
             {
                 if (strcmp(generated_seed_confirm.data(), "") == 0) { error_text = "Please fill the Confirm Seed field!"; }
                 else if (strcmp(password_input.data(), "") == 0)
@@ -234,8 +258,49 @@ namespace
                 else
                 {
                     // TODO: Create user here, seed should exist after this, will redirect to login page
-                    new_user_page_vars.current_page   = new_user_page_vars.NONE;
-                    gui_vars.startup_page.seed_exists = true;
+                    gui_open_login_page(gui_vars);
+                }
+            }
+            ImGui::TextColored(error_color, "%s", error_text.c_str());
+        }
+        ImGui::EndChild();
+    }
+
+
+    void
+    gui_seed_recovery(atomic_dex::gui_variables& gui_vars)
+    {
+        auto& new_user_page_vars = gui_vars.startup_page.new_user_page;
+        auto& vars               = gui_vars.startup_page.seed_recovery_page;
+        auto& seed_input         = vars.seed_input;
+        auto& password_input     = vars.password_input;
+        auto& show_password      = vars.show_password;
+        auto& error_text         = vars.error_text;
+
+        const ImVec2 child_size{385.f, 290.f};
+        ImGui::SetCursorPosX((ImGui::GetWindowSize().x - child_size.x) * 0.5f);
+        ImGui::BeginChild("##seed_creation_child", child_size, true);
+        {
+            ImGui::Text("Recovery");
+            ImGui::Separator();
+            ImGui::Text("Seed");
+            ImGui::SetNextItemWidth(300.0f);
+            ImGui::InputText("##seed_recovery_seed_input", seed_input.data(), seed_input.size());
+            gui_password_input(password_input, show_password);
+            ImGui::Separator();
+            if (ImGui::Button("Back##seed_recovery_back_to_new_user_page_button")) { new_user_page_vars.current_page = new_user_page_vars.NONE; }
+            ImGui::SameLine();
+            if (ImGui::Button("Confirm##seed_recovery_confirm_button"))
+            {
+                if (strcmp(seed_input.data(), "") == 0) { error_text = "Please fill the Seed field!"; }
+                else if (strcmp(password_input.data(), "") == 0)
+                {
+                    error_text = "Please fill the Password field!";
+                }
+                else
+                {
+                    // TODO: Recover user here, seed should exist after this, will redirect to login page
+                    gui_open_login_page(gui_vars);
                 }
             }
             ImGui::TextColored(error_color, "%s", error_text.c_str());
@@ -265,7 +330,8 @@ namespace
         else
         {
             if (current_page == vars.SEED_CREATION) gui_seed_creation(gui_vars);
-            //            else if(current_page == vars.SEED_RECOVERY) gui_seed_recovery();
+            else if (current_page == vars.SEED_RECOVERY)
+                gui_seed_recovery(gui_vars);
         }
     }
 
@@ -277,7 +343,7 @@ namespace
 
         const float custom_img_size = img.height * 0.8f;
 
-        ImGui::SetCursorPos(ImVec2{(ImGui::GetWindowSize().x - custom_img_size) * 0.5f, (ImGui::GetWindowSize().y - custom_img_size) * 0.3f});
+        ImGui::SetCursorPos(ImVec2{(ImGui::GetWindowSize().x - custom_img_size) * 0.5f, (ImGui::GetWindowSize().y - custom_img_size) * 0.2f});
         ImGui::Image(reinterpret_cast<ImTextureID>(img.id), ImVec2{custom_img_size, custom_img_size});
         ImGui::SetCursorPosY(ImGui::GetCursorPosY() + 20.0f);
 

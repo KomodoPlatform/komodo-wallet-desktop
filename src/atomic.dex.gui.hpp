@@ -56,12 +56,21 @@ namespace atomic_dex
                 std::string            error_text;
             } seed_creation_page;
 
+            struct seed_recovery_vars
+            {
+                std::array<char, 3000> seed_input{};
+                std::array<char, 100>  password_input{};
+                bool                   show_password{false};
+                std::string            error_text;
+            } seed_recovery_page;
+
             struct login_vars
             {
                 bool logged_in{true};
 
                 std::array<char, 100> password_input{};
                 bool                  show_password{false};
+                std::string           error_text;
             } login_page;
 
             bool seed_exists{false};
