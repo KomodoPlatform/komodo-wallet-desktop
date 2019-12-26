@@ -878,32 +878,33 @@ namespace
 
         if (ImGui::Button((action + "##buy_sell_coin_submit_button").c_str()))
         {
-            atomic_dex::spawn([&mm2, &sell_answer, &buy_answer, &error_text, action, base, rel, current_price, current_amount, current_amount_f, total_amount]() {
-                std::error_code ec;
+            atomic_dex::spawn(
+                [&mm2, &sell_answer, &buy_answer, &error_text, action, base, rel, current_price, current_amount, current_amount_f, total_amount]() {
+                    std::error_code ec;
 
-                if (action == "Sell")
-                {
-                    atomic_dex::t_sell_request request{.base = base, .rel = rel, .price = current_price, .volume = current_amount};
-                    sell_answer = mm2.place_sell_order(std::move(request), current_amount_f, ec);
-                }
-                else
-                {
-                    atomic_dex::t_buy_request request{.base = base, .rel = rel, .price = current_price, .volume = current_amount};
-                    buy_answer = mm2.place_buy_order(std::move(request), total_amount, ec);
-                }
+                    if (action == "Sell")
+                    {
+                        atomic_dex::t_sell_request request{.base = base, .rel = rel, .price = current_price, .volume = current_amount};
+                        sell_answer = mm2.place_sell_order(std::move(request), current_amount_f, ec);
+                    }
+                    else
+                    {
+                        atomic_dex::t_buy_request request{.base = base, .rel = rel, .price = current_price, .volume = current_amount};
+                        buy_answer = mm2.place_buy_order(std::move(request), total_amount, ec);
+                    }
 
-                mm2.process_orders(base);
+                    mm2.process_orders(base);
 
-                if (ec)
-                {
-                    LOG_F(ERROR, "{}", ec.message());
-                    error_text = ec.message();
-                }
-                else
-                {
-                    error_text = "";
-                }
-            });
+                    if (ec)
+                    {
+                        LOG_F(ERROR, "{}", ec.message());
+                        error_text = ec.message();
+                    }
+                    else
+                    {
+                        error_text = "";
+                    }
+                });
         }
 
         if (not enable) gui_enable_items();
