@@ -177,12 +177,6 @@ namespace atomic_dex
         coin_info.currently_enabled = true;
         m_coins_informations.assign(coin_info.ticker, coin_info);
 
-        /*if (not coin_info.active)
-        {
-            update_coin_status(ticker);
-            coin_info.active = true;
-        }*/
-
         spawn([this, ticker]() {
             loguru::set_thread_name("balance thread");
             process_balance(ticker);
@@ -294,7 +288,17 @@ namespace atomic_dex
         t_coins                        coins = get_enabled_coins();
         std::vector<std::future<void>> futures;
 
-        futures.reserve(coins.size() * 3);
+        futures.reserve(coins.size() * 2 + 2);
+
+        futures.emplace_back(spawn([this]() {
+            loguru::set_thread_name("swaps thread");
+            process_swaps();
+        }));
+
+        futures.emplace_back(spawn([this]() {
+          loguru::set_thread_name("orders thread");
+          process_orders();
+        }));
 
         for (auto&& current_coin: coins)
         {
@@ -305,10 +309,6 @@ namespace atomic_dex
             futures.emplace_back(spawn([this, ticker = current_coin.ticker]() {
                 loguru::set_thread_name("tx thread");
                 process_tx(ticker);
-            }));
-            futures.emplace_back(spawn([this, ticker = current_coin.ticker]() {
-                loguru::set_thread_name("orders thread");
-                process_orders(ticker);
             }));
         }
 
@@ -424,9 +424,17 @@ namespace atomic_dex
     }
 
     void
-    mm2::process_orders(const std::string& ticker)
+    mm2::process_swaps()
     {
-        m_orders_registry.insert_or_assign(ticker, ::mm2::api::rpc_my_orders());
+        t_my_recent_swaps_request request{.limit = 50};
+        auto                      answer = rpc_my_recent_swaps(std::move(request));
+        if (answer.result.has_value()) { m_swaps_registry.insert_or_assign("result", answer.result.value()); }
+    }
+
+    void
+    mm2::process_orders()
+    {
+        m_orders_registry.insert_or_assign("result", ::mm2::api::rpc_my_orders());
     }
 
     void

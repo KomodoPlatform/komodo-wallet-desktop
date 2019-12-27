@@ -678,7 +678,7 @@ namespace
             {
                 atomic_dex::spawn([&mm2, info]() {
                     mm2::api::rpc_cancel_order({info.order_id});
-                    mm2.process_orders(info.base);
+                    mm2.process_orders();
                 });
             }
 
@@ -893,7 +893,7 @@ namespace
                         buy_answer = mm2.place_buy_order(std::move(request), total_amount, ec);
                     }
 
-                    mm2.process_orders(base);
+                    mm2.process_orders();
 
                     if (ec)
                     {
@@ -1223,7 +1223,7 @@ namespace atomic_dex
                                                 ::mm2::api::cancel_data cd;
                                                 cd.ticker = current_base;
                                                 ::mm2::api::rpc_cancel_all_orders({{"Coin", cd}});
-                                                mm2_system_.process_orders(current_base);
+                                                mm2_system_.process_orders();
                                             });
                                         }
 

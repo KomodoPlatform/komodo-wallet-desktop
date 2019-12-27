@@ -473,19 +473,21 @@ namespace mm2::api
 
 namespace atomic_dex
 {
-    using t_balance_request    = ::mm2::api::balance_request;
-    using t_balance_answer     = ::mm2::api::balance_answer;
-    using t_buy_answer         = ::mm2::api::buy_answer;
-    using t_buy_request        = ::mm2::api::buy_request;
-    using t_my_orders_answer   = ::mm2::api::my_orders_answer;
-    using t_sell_answer        = ::mm2::api::sell_answer;
-    using t_sell_request       = ::mm2::api::sell_request;
-    using t_withdraw_request   = ::mm2::api::withdraw_request;
-    using t_withdraw_answer    = ::mm2::api::withdraw_answer;
-    using t_broadcast_request  = ::mm2::api::send_raw_transaction_request;
-    using t_broadcast_answer   = ::mm2::api::send_raw_transaction_answer;
-    using t_orderbook_request  = ::mm2::api::orderbook_request;
-    using t_orderbook_answer   = ::mm2::api::orderbook_answer;
-    using t_electrum_request   = ::mm2::api::electrum_request;
-    using t_tx_history_request = ::mm2::api::tx_history_request;
+    using t_balance_request         = ::mm2::api::balance_request;
+    using t_balance_answer          = ::mm2::api::balance_answer;
+    using t_buy_answer              = ::mm2::api::buy_answer;
+    using t_buy_request             = ::mm2::api::buy_request;
+    using t_my_orders_answer        = ::mm2::api::my_orders_answer;
+    using t_sell_answer             = ::mm2::api::sell_answer;
+    using t_sell_request            = ::mm2::api::sell_request;
+    using t_withdraw_request        = ::mm2::api::withdraw_request;
+    using t_withdraw_answer         = ::mm2::api::withdraw_answer;
+    using t_broadcast_request       = ::mm2::api::send_raw_transaction_request;
+    using t_broadcast_answer        = ::mm2::api::send_raw_transaction_answer;
+    using t_orderbook_request       = ::mm2::api::orderbook_request;
+    using t_orderbook_answer        = ::mm2::api::orderbook_answer;
+    using t_electrum_request        = ::mm2::api::electrum_request;
+    using t_tx_history_request      = ::mm2::api::tx_history_request;
+    using t_my_recent_swaps_answer  = ::mm2::api::my_recent_swaps_answer_success;
+    using t_my_recent_swaps_request = ::mm2::api::my_recent_swaps_request;
 } // namespace atomic_dex

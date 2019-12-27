@@ -68,6 +68,7 @@ namespace atomic_dex
         using t_my_orders           = t_concurrent_reg<t_ticker, t_my_orders_answer>;
         using t_tx_history_registry = t_concurrent_reg<t_ticker, t_transactions>;
         using t_orderbook_registry  = t_concurrent_reg<t_ticker, t_orderbook_answer>;
+        using t_swaps_registry      = t_concurrent_reg<t_ticker, t_my_recent_swaps_answer>;
 
         //! Process
         reproc::process m_mm2_instance;
@@ -87,6 +88,7 @@ namespace atomic_dex
         t_tx_history_registry m_tx_informations;
         t_my_orders           m_orders_registry;
         t_orderbook_registry  m_current_orderbook;
+        t_swaps_registry      m_swaps_registry;
 
         void spawn_mm2_instance();
 
@@ -98,6 +100,9 @@ namespace atomic_dex
 
         //! Refresh the balance registry (internal)
         void process_balance(const std::string& ticker) const;
+
+        //! Refresh the swaps history
+        void process_swaps();
 
         //! Refresh the transaction registry (internal)
         void process_tx(const std::string& ticker);
@@ -119,7 +124,7 @@ namespace atomic_dex
         ~mm2() noexcept final;
 
         //! Refresh the orders registry (internal)
-        void process_orders(const std::string& ticker);
+        void process_orders();
 
         //! Events
         void on_refresh_orderbook(const orderbook_refresh& evt);
