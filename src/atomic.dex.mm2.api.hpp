@@ -490,4 +490,5 @@ namespace atomic_dex
     using t_tx_history_request      = ::mm2::api::tx_history_request;
     using t_my_recent_swaps_answer  = ::mm2::api::my_recent_swaps_answer_success;
     using t_my_recent_swaps_request = ::mm2::api::my_recent_swaps_request;
+    using t_my_order_contents       = ::mm2::api::my_order_contents;
 } // namespace atomic_dex

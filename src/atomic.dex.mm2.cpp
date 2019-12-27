@@ -210,6 +210,20 @@ namespace atomic_dex
             }));
         }
 
+        for (auto&& fut: futures) {
+            fut.get();
+        }
+
+        spawn([this]() {
+            loguru::set_thread_name("swaps thread");
+            process_swaps();
+        });
+
+        spawn([this]() {
+            loguru::set_thread_name("orders thread");
+            process_orders();
+        });
+
         return result.load() == 1;
     }
 
@@ -296,8 +310,8 @@ namespace atomic_dex
         }));
 
         futures.emplace_back(spawn([this]() {
-          loguru::set_thread_name("orders thread");
-          process_orders();
+            loguru::set_thread_name("orders thread");
+            process_orders();
         }));
 
         for (auto&& current_coin: coins)
@@ -549,12 +563,18 @@ namespace atomic_dex
     ::mm2::api::my_orders_answer
     mm2::get_orders(const std::string& ticker, t_mm2_ec& ec) const noexcept
     {
-        if (m_orders_registry.find(ticker) == m_orders_registry.cend())
-        {
-            ec = mm2_error::unknown_ticker;
-            return {};
-        }
-        return m_orders_registry.at(ticker);
+        static_cast<void>(ec);
+        auto  result                = m_orders_registry.at("result");
+        auto& taker                 = result.taker_orders;
+        auto& maker                 = result.maker_orders;
+        auto  is_ticker_not_present = [&ticker](const std::pair<std::size_t, t_my_order_contents>& contents) {
+            return contents.second.base != ticker || contents.second.rel != ticker;
+        };
+
+        erase_if(taker, is_ticker_not_present);
+        erase_if(maker, is_ticker_not_present);
+
+        return result;
     }
 
     std::vector<::mm2::api::my_orders_answer>
