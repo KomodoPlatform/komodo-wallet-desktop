@@ -20,6 +20,7 @@
 
 //! C System Headers
 #include <cctype>
+#include <climits>
 #include <cmath>
 #include <csignal>
 #include <cstddef>
@@ -62,6 +63,16 @@
 #include <utility>
 #include <variant>
 #include <vector>
+
+//! Global Helpers
+constexpr std::size_t operator"" _sz(unsigned long long n) { return n; }
+
+template <typename T>
+constexpr std::size_t
+bit_size() noexcept
+{
+    return sizeof(T) * CHAR_BIT;
+}
 
 //! Folly Headers
 #include <folly/Memory.h>

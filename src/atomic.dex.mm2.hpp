@@ -47,30 +47,27 @@ namespace atomic_dex
         t_mm2_ec                 ec{mm2_error::success};
     };
 
-    using t_allocator = folly::AlignedSysAllocator<std::uint8_t, folly::FixedAlign<64>>;
+    using t_allocator = folly::AlignedSysAllocator<std::uint8_t, folly::FixedAlign<bit_size<std::size_t>()>>;
     template <typename Key, typename Value>
     using t_concurrent_reg = folly::ConcurrentHashMap<Key, Value, std::hash<Key>, std::equal_to<>, t_allocator>;
-    using t_coins_registry = t_concurrent_reg<std::string, coin_config>;
+    using t_ticker         = std::string;
+    using t_coins_registry = t_concurrent_reg<t_ticker, coin_config>;
     using t_transactions   = std::vector<tx_infos>;
     using t_float_50       = bm::cpp_dec_float_50;
     using t_coins          = std::vector<coin_config>;
 
-    constexpr std::size_t operator"" _sz(unsigned long long n) { return n; }
-
     //! Constants
     inline constexpr const std::size_t g_tx_max_limit{50_sz};
-    inline constexpr const std::size_t g_nb_workers{6_sz};
 
     class mm2 final : public ag::ecs::pre_update_system<mm2>
     {
       private:
         //! Private typedefs
-        using t_mm2_time_point = std::chrono::high_resolution_clock::time_point;
-
-        using t_balance_registry    = t_concurrent_reg<std::string, ::mm2::api::balance_answer>;
-        using t_my_orders           = t_concurrent_reg<std::string, ::mm2::api::my_orders_answer>;
-        using t_tx_history_registry = t_concurrent_reg<std::string, std::vector<tx_infos>>;
-        using t_orderbook_registry  = t_concurrent_reg<std::string, ::mm2::api::orderbook_answer>;
+        using t_mm2_time_point      = std::chrono::high_resolution_clock::time_point;
+        using t_balance_registry    = t_concurrent_reg<t_ticker, t_balance_answer>;
+        using t_my_orders           = t_concurrent_reg<t_ticker, t_my_orders_answer>;
+        using t_tx_history_registry = t_concurrent_reg<t_ticker, t_transactions>;
+        using t_orderbook_registry  = t_concurrent_reg<t_ticker, t_orderbook_answer>;
 
         //! Process
         reproc::process m_mm2_instance;

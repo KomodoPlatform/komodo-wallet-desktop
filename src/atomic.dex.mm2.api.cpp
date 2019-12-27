@@ -449,6 +449,36 @@ namespace mm2::api
         for (auto&& [key, value]: j.at("result").at("taker_orders").items()) { filler_functor(key, value, answer.taker_orders); }
     }
 
+    void
+    to_json(nlohmann::json& j, const my_recent_swaps_request& request)
+    {
+        j["limit"] = request.limit;
+        if (request.from_uuid.has_value()) { j["from_uuid"] = request.from_uuid.value(); }
+    }
+
+    void
+    from_json(const nlohmann::json& j, swap_contents& contents)
+    {
+        j.at("error_events").get_to(contents.error_events);
+    }
+
+    void
+    from_json(const nlohmann::json& j, my_recent_swaps_answer_success& results)
+    {
+        j.at("swaps").get_to(results.swaps);
+        j.at("limit").get_to(results.limit);
+    }
+
+    void
+    from_json(const nlohmann::json& j, my_recent_swaps_answer& answer)
+    {
+        if (j.find("result") != j.end()) { answer.result = j.at("result").get<my_recent_swaps_answer_success>(); }
+        else if (j.find("error") != j.end())
+        {
+            answer.error = j.at("error").get<std::string>();
+        }
+    }
+
     template <typename T>
     using have_error_field = decltype(std::declval<T&>().error.has_value());
 
@@ -488,6 +518,13 @@ namespace mm2::api
         }
 
         return answer;
+    }
+
+
+    my_recent_swaps_answer
+    rpc_my_recent_swaps(my_recent_swaps_request&& request)
+    {
+        return process_rpc<my_recent_swaps_request, my_recent_swaps_answer>(std::forward<my_recent_swaps_request>(request), "my_recent_swaps");
     }
 
     electrum_answer

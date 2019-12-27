@@ -427,11 +427,45 @@ namespace mm2::api
 
     my_orders_answer rpc_my_orders() noexcept;
 
+    struct my_recent_swaps_request
+    {
+        std::size_t                limit{50ull};
+        std::optional<std::string> from_uuid;
+    };
+
+    void to_json(nlohmann::json& j, const my_recent_swaps_request& request);
+
+    struct swap_contents
+    {
+        std::vector<std::string> error_events;
+    };
+
+    void from_json(const nlohmann::json& j, swap_contents& contents);
+
+    struct my_recent_swaps_answer_success
+    {
+        std::vector<swap_contents> swaps;
+        std::size_t                limit;
+    };
+
+    void from_json(const nlohmann::json& j, my_recent_swaps_answer_success& results);
+
+    struct my_recent_swaps_answer
+    {
+        std::optional<my_recent_swaps_answer_success> result;
+        std::optional<std::string>                    error;
+        int                                           rpc_result_code;
+        std::string                                   raw_result;
+    };
+
+    void from_json(const nlohmann::json& j, my_recent_swaps_answer& answer);
+
+    my_recent_swaps_answer rpc_my_recent_swaps(my_recent_swaps_request&& request);
+
     template <typename RpcReturnType>
     static RpcReturnType rpc_process_answer(const RestClient::Response& resp) noexcept;
 
-    nlohmann::json
-    template_request(std::string method_name) noexcept;
+    nlohmann::json template_request(std::string method_name) noexcept;
 
     template <typename TRequest, typename TAnswer>
     TAnswer static process_rpc(TRequest&& request, std::string rpc_command);
@@ -440,8 +474,10 @@ namespace mm2::api
 namespace atomic_dex
 {
     using t_balance_request    = ::mm2::api::balance_request;
+    using t_balance_answer     = ::mm2::api::balance_answer;
     using t_buy_answer         = ::mm2::api::buy_answer;
     using t_buy_request        = ::mm2::api::buy_request;
+    using t_my_orders_answer   = ::mm2::api::my_orders_answer;
     using t_sell_answer        = ::mm2::api::sell_answer;
     using t_sell_request       = ::mm2::api::sell_request;
     using t_withdraw_request   = ::mm2::api::withdraw_request;

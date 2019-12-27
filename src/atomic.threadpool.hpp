@@ -16,7 +16,10 @@
 
 #pragma once
 
-inline constexpr std::size_t g_max_threads = 8ull;
+//! PCH Headers
+#include "atomic.dex.pch.hpp"
+
+inline constexpr std::size_t g_max_threads = 8_sz;
 
 namespace atomic_dex
 {
