@@ -73,9 +73,12 @@ namespace
     double_to_str(const atomic_dex::t_float_50& d)
     {
         std::stringstream ss;
-        ss.precision(16);
-        ss << d;
-        return ss.str();
+        ss.precision(8);
+        ss << std::fixed << d;
+        auto result = ss.str();
+        boost::trim_right_if(result, boost::is_any_of("0"));
+        boost::trim_right_if(result, boost::is_any_of("."));
+        return result;
     }
 
     bool
