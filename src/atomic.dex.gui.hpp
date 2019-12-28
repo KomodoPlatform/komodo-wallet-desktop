@@ -134,7 +134,8 @@ namespace atomic_dex
 
         std::unordered_map<std::string, send_coin_vars> send_coin;
 
-        struct console_vars {
+        struct console_vars
+        {
             bool is_open{false};
         } console;
     };
@@ -150,9 +151,7 @@ namespace atomic_dex
         void on_key_pressed(const ag::event::key_pressed& evt) noexcept;
 
         explicit gui(entt::registry& registry, mm2& mm2_system, coinpaprika_provider& paprika_system);
-        ~gui() {
-            loguru::remove_all_callbacks();
-        }
+        ~gui() { loguru::remove_all_callbacks(); }
 
         // ReSharper disable once CppFinalFunctionInFinalClass
         void update() noexcept final;
@@ -169,13 +168,16 @@ namespace atomic_dex
 
         static void log_to_console(void* user_data, const loguru::Message& message);
 
-        const auto& get_console_buffer() const noexcept {
+        const auto&
+        get_console_buffer() const noexcept
+        {
             return console_log_vars_.str;
         }
 
-        struct console_log_vars {
+        struct console_log_vars
+        {
             boost::circular_buffer<std::string> buffer{1000};
-            std::string str;
+            std::string                         str;
         };
 
       private:

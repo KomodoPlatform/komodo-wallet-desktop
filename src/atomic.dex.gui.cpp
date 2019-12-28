@@ -123,6 +123,22 @@ namespace
 namespace
 {
     void
+    gui_enable_viewport()
+    {
+        ImGuiIO& io                       = ImGui::GetIO();
+        io.ConfigViewportsNoAutoMerge     = true;
+        io.ConfigViewportsNoDefaultParent = true;
+    }
+
+    void
+    gui_disable_viewport()
+    {
+        ImGuiIO& io                       = ImGui::GetIO();
+        io.ConfigViewportsNoAutoMerge     = false;
+        io.ConfigViewportsNoDefaultParent = false;
+    }
+
+    void
     gui_disable_items(bool only_visual = false)
     {
         if (!only_visual) ImGui::PushItemFlag(ImGuiItemFlags_Disabled, true);
@@ -167,11 +183,21 @@ namespace
     }
 
     void
-    gui_logs_console(const atomic_dex::gui& gui) {
-        auto logs = gui.get_console_buffer();
+    gui_logs_console(const atomic_dex::gui& gui, atomic_dex::gui_variables& gui_vars)
+    {
+        gui_enable_viewport();
 
-        ImGui::Text("Console");
-        ImGui::InputTextMultiline("##console_text", &logs, ImVec2(ImGui::GetContentRegionAvailWidth(), 200), ImGuiInputTextFlags_ReadOnly);
+        bool active = true;
+        ImGui::SetNextWindowSize(ImVec2(1000, 500), ImGuiCond_FirstUseEver);
+        ImGui::Begin("Console", &active, ImGuiWindowFlags_NoCollapse);
+        if(!active) gui_vars.console.is_open = false;
+
+        auto logs = gui.get_console_buffer();
+        ImGui::InputTextMultiline("##console_text", &logs, ImGui::GetContentRegionAvail(), ImGuiInputTextFlags_ReadOnly);
+
+        ImGui::End();
+
+        gui_disable_viewport();
     }
 
     void
@@ -380,12 +406,16 @@ namespace
     }
 
     void
-    gui_menubar([[maybe_unused]] atomic_dex::gui& system) noexcept
+    gui_menubar([[maybe_unused]] atomic_dex::gui& system, atomic_dex::gui_variables& gui_vars) noexcept
     {
         if (ImGui::BeginMenuBar())
         {
             if (ImGui::MenuItem("Settings", "Ctrl+O"))
             { /* Do stuff */
+            }
+            if (ImGui::MenuItem("Console", "Ctrl+K"))
+            {
+                gui_vars.console.is_open = true;
             }
 #if defined(ENABLE_CODE_RELOAD_UNIX)
             if (ImGui::MenuItem("Code Reloading", "Ctrl+O")) { system.reload_code(); }
@@ -1055,11 +1085,12 @@ namespace atomic_dex
         loguru::add_callback("console_logger", log_to_console, &console_log_vars_, loguru::Verbosity_INFO);
     }
 
-    void gui::log_to_console(void* user_data, const loguru::Message& message)
+    void
+    gui::log_to_console(void* user_data, const loguru::Message& message)
     {
         // Add the message
         auto vars = reinterpret_cast<console_log_vars*>(user_data);
-        vars->buffer.push_back(fmt::format("{0}{1}", message.indentation, message.message));
+        vars->buffer.push_back(fmt::format("{0}{1}{2}{3}", message.preamble, message.indentation, message.prefix, message.message));
         vars->str = boost::algorithm::join(vars->buffer, "\n");
     }
 
@@ -1092,9 +1123,7 @@ namespace atomic_dex
             if (!gui_vars_.startup_page.login_page.logged_in) { gui_startup_page(*this, gui_vars_); }
             else
             {
-                gui_menubar(*this);
-
-                /*if(gui_vars_.console.is_open)*/ gui_logs_console(*this);
+                gui_menubar(*this, gui_vars_);
 
                 if (ImGui::BeginTabBar("##Tabs", ImGuiTabBarFlags_None))
                 {
@@ -1105,9 +1134,7 @@ namespace atomic_dex
 
                     if (ImGui::BeginTabItem("Portfolio"))
                     {
-                        ImGuiIO& io                       = ImGui::GetIO();
-                        io.ConfigViewportsNoAutoMerge     = false;
-                        io.ConfigViewportsNoDefaultParent = false;
+                        gui_disable_viewport();
                         gui_portfolio(*this, mm2_system_, paprika_system_, gui_vars_);
                         ImGui::EndTabItem();
                     }
@@ -1315,5 +1342,8 @@ namespace atomic_dex
         }
 
         ImGui::End();
+
+
+        if(gui_vars_.console.is_open) gui_logs_console(*this, gui_vars_);
     }
 } // namespace atomic_dex
