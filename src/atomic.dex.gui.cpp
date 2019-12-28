@@ -171,7 +171,7 @@ namespace
         auto logs = gui.get_console_buffer();
 
         ImGui::Text("Console");
-        ImGui::InputTextMultiline("##console_text", &logs, ImVec2(0, 0), ImGuiInputTextFlags_ReadOnly | ImGuiInputTextFlags_AutoSelectAll);
+        ImGui::InputTextMultiline("##console_text", &logs, ImVec2(ImGui::GetContentRegionAvailWidth(), 200), ImGuiInputTextFlags_ReadOnly);
     }
 
     void
@@ -1059,19 +1059,8 @@ namespace atomic_dex
     {
         // Add the message
         auto vars = reinterpret_cast<console_log_vars*>(user_data);
-        vars->buffer.push_back(fmt::format("{0}{1}", message.prefix, message.message));
+        vars->buffer.push_back(fmt::format("{0}{1}", message.indentation, message.message));
         vars->str = boost::algorithm::join(vars->buffer, "\n");
-        // Refresh the str
-        /*if(vars->buffer.size() < 300) {
-            std::cout << "Buffer size: " << vars->buffer.size() << "  std::string size" << vars->str.size() << std::endl;
-            vars->str.clear();
-
-            for(std::size_t i = 0; i < vars->buffer.size(); ++i) {
-                auto& line = vars->buffer[i];
-                vars->str += line.message;
-                vars->str += '\n';
-            }
-        }*/
     }
 
 

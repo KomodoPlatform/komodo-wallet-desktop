@@ -174,7 +174,7 @@ namespace atomic_dex
         }
 
         struct console_log_vars {
-            boost::circular_buffer<std::string> buffer{300};
+            boost::circular_buffer<std::string> buffer{1000};
             std::string str;
         };
 
