@@ -119,7 +119,7 @@ namespace atomic_dex
             t_withdraw_answer     answer;
             t_broadcast_answer    broadcast_answer;
             std::array<char, 100> address_input{};
-            std::array<char, 100> amount_input{};
+            double amount_input{0.0};
         };
 
         struct main_tabs_vars

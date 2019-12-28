@@ -32,7 +32,7 @@ namespace
     }
 } // namespace
 
-// Helpers
+// Global Constants
 namespace
 {
     ImVec4 value_color(128.f / 255.f, 128.f / 255.f, 128.f / 255.f, 1.f);
@@ -45,6 +45,14 @@ namespace
     ImVec4 loss_color{1, 52.f / 255.f, 0, 1.f};
     ImVec4 gain_color{80.f / 255.f, 1, 118.f / 255.f, 1.f};
 
+    const double input_slow_step_crypto = 0.1;
+    const double input_fast_step_crypto = 1.0;
+    const char* input_format_crypto = "%.8f";
+}
+
+// Helpers
+namespace
+{
     std::string
     usd_str(const std::string& amt)
     {
@@ -59,6 +67,18 @@ namespace
         if (allow_symbols && (c >= '!' && c <= '@')) valid = true;
 
         return valid;
+    }
+
+    std::string double_to_str(const double& d) {
+        std::string str{std::to_string(d)};
+        auto last_not = str.find_last_not_of('0');
+        int offset = last_not == str.find('.') ? 0 : 1;
+        str.erase(last_not + offset, std::string::npos);
+        return str;
+    }
+
+    bool compare_double(const double& d, const std::string& str) {
+        return str == double_to_str(d);
     }
 } // namespace
 
@@ -439,12 +459,12 @@ namespace
             ImGui::Separator();
 
             ImGui::Text("Block Height");
-            ImGui::TextColored(value_color, "%s", std::to_string(tx.block_height).c_str());
+            ImGui::TextColored(value_color, "%lu", tx.block_height);
 
             ImGui::Separator();
 
             ImGui::Text("Confirmations");
-            ImGui::TextColored(value_color, "%s", std::to_string(tx.confirmations).c_str());
+            ImGui::TextColored(value_color, "%lu", tx.confirmations);
 
             ImGui::Separator();
 
@@ -595,18 +615,16 @@ namespace
                             input_filter_coin_address, address_input.data());
 
                         ImGui::SetNextItemWidth(width);
-                        ImGui::InputText(
-                            "Amount##send_coin_amount_input", amount_input.data(), amount_input.size(), ImGuiInputTextFlags_CallbackCharFilter,
-                            input_filter_coin_amount, amount_input.data());
+                        ImGui::InputDouble("Amount##send_coin_amount_input", &amount_input, input_slow_step_crypto, input_fast_step_crypto, input_format_crypto);
                         ImGui::SameLine();
 
                         auto balance = mm2.my_balance(curr_asset.ticker, ec);
 
-                        if (ImGui::Button("MAX##send_coin_max_amount_button")) { copy_str(balance, amount_input.data(), amount_input.size()); }
+                        if (ImGui::Button("MAX##send_coin_max_amount_button")) { amount_input = std::stod(balance); }
 
                         if (ImGui::Button("Send##send_coin_button"))
                         {
-                            mm2::api::withdraw_request request{curr_asset.ticker, address_input.data(), amount_input.data(), balance == amount_input.data()};
+                            mm2::api::withdraw_request request{curr_asset.ticker, address_input.data(), double_to_str(amount_input), compare_double(amount_input, balance) };
                             answer = mm2::api::rpc_withdraw(std::move(request));
                         }
 
@@ -625,7 +643,7 @@ namespace
                         auto result = answer.result.value();
 
                         ImGui::Text("You are sending");
-                        ImGui::TextColored(bright_color, "%s", amount_input.data());
+                        ImGui::TextColored(bright_color, "%lf", amount_input);
 
                         ImGui::Separator();
                         ImGui::Text("To address");
