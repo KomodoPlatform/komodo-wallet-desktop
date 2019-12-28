@@ -31,9 +31,11 @@ namespace
         std::stringstream    ss;
         bm::cpp_dec_float_50 current_f(current);
 
-        ss << std::setprecision(8) << current_f;
+        ss << std::fixed << std::setprecision(8) << current_f;
         result = ss.str();
 
+        boost::trim_right_if(result, boost::is_any_of("0"));
+        boost::trim_right_if(result, boost::is_any_of("."));
         return result;
     }
 } // namespace
