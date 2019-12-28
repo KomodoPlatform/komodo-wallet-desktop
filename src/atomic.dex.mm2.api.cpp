@@ -45,7 +45,6 @@ namespace mm2::api
     void
     from_json(const nlohmann::json& j, electrum_answer& cfg)
     {
-        LOG_SCOPE_FUNCTION(INFO);
         j.at("address").get_to(cfg.address);
         j.at("balance").get_to(cfg.balance);
         j.at("result").get_to(cfg.result);
@@ -54,7 +53,6 @@ namespace mm2::api
     void
     to_json(nlohmann::json& j, const electrum_request& cfg)
     {
-        LOG_SCOPE_FUNCTION(INFO);
         j["coin"]       = cfg.coin_name;
         j["servers"]    = cfg.servers;
         j["tx_history"] = cfg.with_tx_history;
@@ -63,14 +61,12 @@ namespace mm2::api
     void
     to_json(nlohmann::json& j, const balance_request& cfg)
     {
-        LOG_SCOPE_FUNCTION(INFO);
         j["coin"] = cfg.coin;
     }
 
     void
     from_json(const nlohmann::json& j, balance_answer& cfg)
     {
-        LOG_SCOPE_FUNCTION(INFO);
         j.at("address").get_to(cfg.address);
         j.at("balance").get_to(cfg.balance);
         j.at("coin").get_to(cfg.coin);
@@ -80,14 +76,12 @@ namespace mm2::api
     void
     from_json(const nlohmann::json& j, fee_regular_coin& cfg)
     {
-        LOG_SCOPE_FUNCTION(INFO);
         j.at("amount").get_to(cfg.amount);
     }
 
     void
     from_json(const nlohmann::json& j, fee_erc_coin& cfg)
     {
-        LOG_SCOPE_FUNCTION(INFO);
         j.at("coin").get_to(cfg.coin);
         j.at("gas").get_to(cfg.gas);
         j.at("gas_price").get_to(cfg.gas_price);
@@ -97,7 +91,6 @@ namespace mm2::api
     void
     from_json(const nlohmann::json& j, fees_data& cfg)
     {
-        LOG_SCOPE_FUNCTION(INFO);
         if (j.count("amount") == 1)
         {
             cfg.normal_fees = fee_regular_coin{};
@@ -113,7 +106,6 @@ namespace mm2::api
     void
     to_json(nlohmann::json& j, const tx_history_request& cfg)
     {
-        LOG_SCOPE_FUNCTION(INFO);
         j["coin"]  = cfg.coin;
         j["limit"] = cfg.limit;
     }
@@ -121,7 +113,6 @@ namespace mm2::api
     void
     from_json(const nlohmann::json& j, transaction_data& cfg)
     {
-        LOG_SCOPE_FUNCTION(INFO);
         j.at("block_height").get_to(cfg.block_height);
         j.at("coin").get_to(cfg.coin);
         if (j.count("confirmations") == 1) { cfg.confirmations = j.at("confirmations").get<std::size_t>(); }
@@ -147,7 +138,6 @@ namespace mm2::api
     void
     from_json(const nlohmann::json& j, sync_status_additional_error& answer)
     {
-        LOG_SCOPE_FUNCTION(INFO);
         j.at("code").get_to(answer.code);
         j.at("message").get_to(answer.message);
     }
@@ -156,21 +146,18 @@ namespace mm2::api
     void
     from_json(const nlohmann::json& j, sync_status_eth_erc_20_coins& answer)
     {
-        LOG_SCOPE_FUNCTION(INFO);
         j.at("blocks_left").get_to(answer.blocks_left);
     }
 
     void
     from_json(const nlohmann::json& j, sync_status_regular_coins& answer)
     {
-        LOG_SCOPE_FUNCTION(INFO);
         j.at("transactions_left").get_to(answer.transactions_left);
     }
 
     void
     from_json(const nlohmann::json& j, sync_status_additional_infos& answer)
     {
-        LOG_SCOPE_FUNCTION(INFO);
         if (j.count("error") == 1) { answer.error = j.get<sync_status_additional_error>(); }
         else if (j.count("blocks_left") == 1)
         {
@@ -185,7 +172,6 @@ namespace mm2::api
     void
     from_json(const nlohmann::json& j, t_sync_status& answer)
     {
-        LOG_SCOPE_FUNCTION(INFO);
         j.at("state").get_to(answer.state);
         if (j.count("additional_info") == 1) { answer.additional_info = j.at("additional_info").get<sync_status_additional_infos>(); }
     }
@@ -193,7 +179,6 @@ namespace mm2::api
     void
     from_json(const nlohmann::json& j, tx_history_answer_success& answer)
     {
-        LOG_SCOPE_FUNCTION(INFO);
         if (not j.at("from_id").is_null()) j.at("from_id").get_to(answer.from_id);
         j.at("current_block").get_to(answer.current_block);
         j.at("limit").get_to(answer.limit);
@@ -206,7 +191,6 @@ namespace mm2::api
     void
     from_json(const nlohmann::json& j, tx_history_answer& answer)
     {
-        LOG_SCOPE_FUNCTION(INFO);
         if (j.count("error") == 1) { answer.error = j.at("error").get<std::string>(); }
         else
         {
@@ -217,7 +201,6 @@ namespace mm2::api
     void
     to_json(nlohmann::json& j, const withdraw_request& cfg)
     {
-        LOG_SCOPE_FUNCTION(INFO);
         j["coin"]   = cfg.coin;
         j["amount"] = cfg.amount;
         j["to"]     = cfg.to;
@@ -227,7 +210,6 @@ namespace mm2::api
     void
     from_json(const nlohmann::json& j, withdraw_answer& answer)
     {
-        LOG_SCOPE_FUNCTION(INFO);
         if (j.count("error") >= 1) { answer.error = j.at("error").get<std::string>(); }
         else
         {
@@ -324,8 +306,6 @@ namespace mm2::api
     void
     from_json(const nlohmann::json& j, buy_answer& answer)
     {
-        LOG_SCOPE_FUNCTION(INFO);
-
         if (j.count("error") == 1) { answer.error = j.at("error").get<std::string>(); }
         else
         {
@@ -351,8 +331,6 @@ namespace mm2::api
     void
     from_json(const nlohmann::json& j, sell_answer& answer)
     {
-        LOG_SCOPE_FUNCTION(INFO);
-
         if (j.count("error") == 1) { answer.error = j.at("error").get<std::string>(); }
         else
         {
@@ -363,16 +341,12 @@ namespace mm2::api
     void
     to_json(nlohmann::json& j, const cancel_order_request& request)
     {
-        LOG_SCOPE_FUNCTION(INFO);
-
         j["uuid"] = request.uuid;
     }
 
     void
     from_json(const nlohmann::json& j, cancel_order_answer& answer)
     {
-        LOG_SCOPE_FUNCTION(INFO);
-
         if (j.count("error") == 1) { answer.error = j.at("error").get<std::string>(); }
         else
         {
@@ -383,8 +357,6 @@ namespace mm2::api
     void
     to_json(nlohmann::json& j, const cancel_data& cfg)
     {
-        LOG_SCOPE_FUNCTION(INFO);
-
         if (cfg.pair.has_value())
         {
             auto [base, rel] = cfg.pair.value();
@@ -400,8 +372,6 @@ namespace mm2::api
     void
     to_json(nlohmann::json& j, const cancel_type& cfg)
     {
-        LOG_SCOPE_FUNCTION(INFO);
-
         j["type"] = cfg.type;
         if (cfg.type not_eq "All" and cfg.data.has_value()) { j["data"] = cfg.data.value(); }
     }
@@ -409,16 +379,12 @@ namespace mm2::api
     void
     to_json(nlohmann::json& j, const cancel_all_orders_request& cfg)
     {
-        LOG_SCOPE_FUNCTION(INFO);
-
         j["cancel_by"] = cfg.cancel_by;
     }
 
     void
     from_json(const nlohmann::json& j, cancel_all_orders_answer& answer)
     {
-        LOG_SCOPE_FUNCTION(INFO);
-
         j.at("result").at("cancelled").get_to(answer.cancelled);
         j.at("result").at("currently_matching").get_to(answer.currently_matching);
     }
@@ -488,7 +454,6 @@ namespace mm2::api
     RpcReturnType
     rpc_process_answer(const RestClient::Response& resp) noexcept
     {
-        LOG_SCOPE_FUNCTION(INFO);
         DVLOG_F(loguru::Verbosity_INFO, "resp: {}", resp.body);
 
         RpcReturnType answer;
@@ -595,8 +560,6 @@ namespace mm2::api
     my_orders_answer
     rpc_my_orders() noexcept
     {
-        LOG_SCOPE_FUNCTION(INFO);
-
         nlohmann::json       json_data = template_request("my_orders");
         RestClient::Response resp;
 
@@ -628,8 +591,6 @@ namespace mm2::api
     nlohmann::json
     template_request(std::string method_name) noexcept
     {
-        LOG_SCOPE_FUNCTION(INFO);
-
         return {{"method", std::move(method_name)}, {"userpass", "atomic_dex_mm2_passphrase"}};
     }
 } // namespace mm2::api
