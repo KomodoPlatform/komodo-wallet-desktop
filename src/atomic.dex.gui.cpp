@@ -47,8 +47,8 @@ namespace
 
     const double input_slow_step_crypto = 0.1;
     const double input_fast_step_crypto = 1.0;
-    const char* input_format_crypto = "%.8f";
-}
+    const char*  input_format_crypto    = "%.8f";
+} // namespace
 
 // Helpers
 namespace
@@ -69,15 +69,19 @@ namespace
         return valid;
     }
 
-    std::string double_to_str(const double& d) {
+    std::string
+    double_to_str(const double& d)
+    {
         std::string str{std::to_string(d)};
-        auto last_not = str.find_last_not_of('0');
-        int offset = last_not == str.find('.') ? 0 : 1;
+        auto        last_not = str.find_last_not_of('0');
+        int         offset   = last_not == str.find('.') ? 0 : 1;
         str.erase(last_not + offset, std::string::npos);
         return str;
     }
 
-    bool compare_double(const double& d, const std::string& str) {
+    bool
+    compare_double(const double& d, const std::string& str)
+    {
         return str == double_to_str(d);
     }
 } // namespace
@@ -603,7 +607,8 @@ namespace
                             input_filter_coin_address, address_input.data());
 
                         ImGui::SetNextItemWidth(width);
-                        ImGui::InputDouble("Amount##send_coin_amount_input", &amount_input, input_slow_step_crypto, input_fast_step_crypto, input_format_crypto);
+                        ImGui::InputDouble(
+                            "Amount##send_coin_amount_input", &amount_input, input_slow_step_crypto, input_fast_step_crypto, input_format_crypto);
                         ImGui::SameLine();
 
                         auto balance = mm2.my_balance(curr_asset.ticker, ec);
@@ -612,7 +617,8 @@ namespace
 
                         if (ImGui::Button("Send##send_coin_button"))
                         {
-                            mm2::api::withdraw_request request{curr_asset.ticker, address_input.data(), double_to_str(amount_input), compare_double(amount_input, balance) };
+                            mm2::api::withdraw_request request{curr_asset.ticker, address_input.data(), double_to_str(amount_input),
+                                                               compare_double(amount_input, balance)};
                             answer = mm2::api::rpc_withdraw(std::move(request));
                         }
 
@@ -833,12 +839,12 @@ namespace
         auto& coin_vars    = vars.trade_sell_coin[base];
         auto& price_input  = action == "Buy" ? coin_vars.price_input_buy : coin_vars.price_input_sell;
         auto& amount_input = action == "Buy" ? coin_vars.amount_input_buy : coin_vars.amount_input_sell;
-        auto& error_text   = action == "Sell" ? coin_vars.sell_error_text : coin_vars.buy_error_text;
+        auto& error_text   = action == "Buy" ? coin_vars.buy_error_text : coin_vars.sell_error_text;
 
-        ImGui::SetNextItemWidth(125.0f);
+        ImGui::SetNextItemWidth(160.0f);
         ImGui::InputDouble(("Volume##trade_sell_volume" + action).c_str(), &amount_input, input_slow_step_crypto, input_fast_step_crypto, input_format_crypto);
 
-        ImGui::SetNextItemWidth(125.0f);
+        ImGui::SetNextItemWidth(160.0f);
         ImGui::InputDouble(("Price##trade_sell_price" + action).c_str(), &price_input, input_slow_step_crypto, input_fast_step_crypto, input_format_crypto);
 
         std::string                             total;

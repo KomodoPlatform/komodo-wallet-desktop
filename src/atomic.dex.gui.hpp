@@ -80,12 +80,12 @@ namespace atomic_dex
         {
             struct trade_sell_coin_vars
             {
-                double price_input_buy{0.0};
-                double amount_input_buy{0.0};
-                double price_input_sell{0.0};
-                double amount_input_sell{0.0};
-                std::string   sell_error_text;
-                std::string   buy_error_text;
+                double      price_input_buy{0.0};
+                double      amount_input_buy{0.0};
+                double      price_input_sell{0.0};
+                double      amount_input_sell{0.0};
+                std::string sell_error_text;
+                std::string buy_error_text;
             };
 
             std::string   current_base;
@@ -119,7 +119,7 @@ namespace atomic_dex
             t_withdraw_answer     answer;
             t_broadcast_answer    broadcast_answer;
             std::array<char, 100> address_input{};
-            double amount_input{0.0};
+            double                amount_input{0.0};
         };
 
         struct main_tabs_vars
