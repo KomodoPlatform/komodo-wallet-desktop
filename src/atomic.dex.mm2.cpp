@@ -210,9 +210,7 @@ namespace atomic_dex
             }));
         }
 
-        for (auto&& fut: futures) {
-            fut.get();
-        }
+        for (auto&& fut: futures) { fut.get(); }
 
         spawn([this]() {
             loguru::set_thread_name("swaps thread");
@@ -585,6 +583,12 @@ namespace atomic_dex
         out.reserve(coins.size());
         for (auto&& coin: coins) { out.emplace_back(get_orders(coin.ticker, ec)); }
         return out;
+    }
+
+    t_my_recent_swaps_answer
+    mm2::get_swaps() const noexcept
+    {
+        return m_swaps_registry.at("result");
     }
 
     t_sell_answer
