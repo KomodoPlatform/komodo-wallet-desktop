@@ -19,6 +19,9 @@
 #include "atomic.dex.gui.widgets.hpp"
 #include "atomic.threadpool.hpp"
 
+//! ImGui Headers
+#include <imgui_stdlib.h>
+
 namespace fs = std::filesystem;
 
 // General Utility
@@ -161,6 +164,18 @@ namespace
             ImGui::TextWrapped("%s", text.c_str());
             ImGui::SetCursorPos(pos_after_img);
         }
+    }
+
+    void
+    gui_logs_console(const atomic_dex::gui& gui) {
+        auto logs = gui.get_console_buffer();
+
+        ImGui::Text("Console");
+        ImGui::BeginChild("##login_page_child", {0, 300.0f}, true);
+        {
+            ImGui::InputTextMultiline("##console_text", &logs, ImVec2(0, 0), ImGuiInputTextFlags_ReadOnly | ImGuiInputTextFlags_AutoSelectAll);
+        }
+        ImGui::EndChild();
     }
 
     void
@@ -1040,7 +1055,29 @@ namespace atomic_dex
         init_live_coding();
         style::apply();
         this->dispatcher_.sink<ag::event::key_pressed>().connect<&gui::on_key_pressed>(*this);
+
+        loguru::add_callback("console_logger", log_to_console, &console_log_vars_, loguru::Verbosity_INFO);
     }
+
+    void gui::log_to_console(void* user_data, const loguru::Message& message)
+    {
+        // Add the message
+        auto vars = reinterpret_cast<console_log_vars*>(user_data);
+        vars->buffer.push_back(message);
+
+        // Refresh the str
+        if(vars->buffer.size() < 300) {
+            std::cout << "Buffer size: " << vars->buffer.size() << "  std::string size" << vars->str.size() << std::endl;
+            vars->str.clear();
+
+            for(std::size_t i = 0; i < vars->buffer.size(); ++i) {
+                auto& line = vars->buffer[i];
+                vars->str += line.message;
+                vars->str += '\n';
+            }
+        }
+    }
+
 
     void
     gui::update() noexcept
@@ -1071,6 +1108,8 @@ namespace atomic_dex
             else
             {
                 gui_menubar(*this);
+
+                /*if(gui_vars_.console.is_open)*/ gui_logs_console(*this);
 
                 if (ImGui::BeginTabBar("##Tabs", ImGuiTabBarFlags_None))
                 {

@@ -24,6 +24,9 @@
 #include "atomic.dex.mm2.hpp"
 #include "atomic.dex.provider.coinpaprika.hpp"
 
+//! Boost Headers
+#include <boost/circular_buffer.hpp>
+
 namespace atomic_dex
 {
     namespace ag = antara::gaming;
@@ -130,6 +133,10 @@ namespace atomic_dex
         } main_tabs_page;
 
         std::unordered_map<std::string, send_coin_vars> send_coin;
+
+        struct console_vars {
+            bool is_open{false};
+        } console;
     };
 
     class gui final : public ag::ecs::post_update_system<gui>
@@ -157,7 +164,20 @@ namespace atomic_dex
             return icons_;
         }
 
+        static void log_to_console(void* user_data, const loguru::Message& message);
+
+        const auto& get_console_buffer() const noexcept {
+            return console_log_vars_.str;
+        }
+
+        struct console_log_vars {
+            boost::circular_buffer<loguru::Message> buffer{300};
+            std::string str;
+        };
+
       private:
+        console_log_vars console_log_vars_;
+
         t_concurrent_reg<std::string, antara::gaming::sdl::opengl_image> icons_;
         gui_variables                                                    gui_vars_;
         mm2&                                                             mm2_system_;
