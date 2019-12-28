@@ -47,7 +47,7 @@ namespace
 
     const double input_slow_step_crypto = 0.1;
     const double input_fast_step_crypto = 1.0;
-    const char*  input_format_crypto    = "%.8g";
+    const char*  input_format_crypto    = "%.8lf";
 } // namespace
 
 // Helpers
