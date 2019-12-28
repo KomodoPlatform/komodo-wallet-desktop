@@ -171,11 +171,7 @@ namespace
         auto logs = gui.get_console_buffer();
 
         ImGui::Text("Console");
-        ImGui::BeginChild("##login_page_child", {0, 300.0f}, true);
-        {
-            ImGui::InputTextMultiline("##console_text", &logs, ImVec2(0, 0), ImGuiInputTextFlags_ReadOnly | ImGuiInputTextFlags_AutoSelectAll);
-        }
-        ImGui::EndChild();
+        ImGui::InputTextMultiline("##console_text", &logs, ImVec2(0, 0), ImGuiInputTextFlags_ReadOnly | ImGuiInputTextFlags_AutoSelectAll);
     }
 
     void
