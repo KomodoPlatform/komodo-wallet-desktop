@@ -70,13 +70,12 @@ namespace
     }
 
     std::string
-    double_to_str(const double& d)
+    double_to_str(const atomic_dex::t_float_50& d)
     {
-        std::string str{std::to_string(d)};
-        auto        last_not = str.find_last_not_of('0');
-        int         offset   = last_not == str.find('.') ? 0 : 1;
-        str.erase(last_not + offset, std::string::npos);
-        return str;
+        std::stringstream ss;
+        ss.precision(16);
+        ss << d;
+        return ss.str();
     }
 
     bool
