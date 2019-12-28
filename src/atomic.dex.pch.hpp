@@ -104,6 +104,7 @@ namespace folly
 #include <boost/algorithm/string/case_conv.hpp>
 #include <boost/algorithm/string/split.hpp>
 #include <boost/algorithm/string/trim.hpp>
+#include <boost/algorithm/string/join.hpp>
 #include <boost/multiprecision/cpp_dec_float.hpp>
 
 //! Other dependencies Headers

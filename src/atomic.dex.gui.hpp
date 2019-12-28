@@ -150,6 +150,9 @@ namespace atomic_dex
         void on_key_pressed(const ag::event::key_pressed& evt) noexcept;
 
         explicit gui(entt::registry& registry, mm2& mm2_system, coinpaprika_provider& paprika_system);
+        ~gui() {
+            loguru::remove_all_callbacks();
+        }
 
         // ReSharper disable once CppFinalFunctionInFinalClass
         void update() noexcept final;
@@ -171,7 +174,7 @@ namespace atomic_dex
         }
 
         struct console_log_vars {
-            boost::circular_buffer<loguru::Message> buffer{300};
+            boost::circular_buffer<std::string> buffer{300};
             std::string str;
         };
 

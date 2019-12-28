@@ -1063,10 +1063,10 @@ namespace atomic_dex
     {
         // Add the message
         auto vars = reinterpret_cast<console_log_vars*>(user_data);
-        vars->buffer.push_back(message);
-
+        vars->buffer.push_back(fmt::format("{0}{1}", message.prefix, message.message));
+        vars->str = boost::algorithm::join(vars->buffer, "\n");
         // Refresh the str
-        if(vars->buffer.size() < 300) {
+        /*if(vars->buffer.size() < 300) {
             std::cout << "Buffer size: " << vars->buffer.size() << "  std::string size" << vars->str.size() << std::endl;
             vars->str.clear();
 
@@ -1075,7 +1075,7 @@ namespace atomic_dex
                 vars->str += line.message;
                 vars->str += '\n';
             }
-        }
+        }*/
     }
 
 
