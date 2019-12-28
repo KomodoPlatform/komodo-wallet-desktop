@@ -882,7 +882,7 @@ namespace
         {
             if (fields_are_filled)
                 ImGui::TextColored(
-                    bright_color, "You'll receive %s %s", (action == "Buy" ? current_amount_f.convert_to<std::string>() : total).c_str(),
+                    bright_color, "You'll receive %s %s", double_to_str(action == "Buy" ? current_amount_f : total_amount).c_str(),
                     (action == "Sell" ? rel : base).c_str());
         }
 
