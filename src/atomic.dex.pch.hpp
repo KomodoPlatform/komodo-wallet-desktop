@@ -112,6 +112,7 @@ namespace folly
 #include <entt/entity/helper.hpp>
 #include <entt/signal/dispatcher.hpp>
 #include <imgui.h>
+#include <imgui_stdlib.h>
 #include <imgui_internal.h>
 #include <loguru.hpp>
 #include <meta/detection/detection.hpp>
