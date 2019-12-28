@@ -80,10 +80,10 @@ namespace atomic_dex
         {
             struct trade_sell_coin_vars
             {
-                std::array<char, 100> price_input_buy{};
-                std::array<char, 100> amount_input_buy{};
-                std::array<char, 100> price_input_sell{};
-                std::array<char, 100> amount_input_sell{};
+                double price_input_buy{0.0};
+                double amount_input_buy{0.0};
+                double price_input_sell{0.0};
+                double amount_input_sell{0.0};
                 std::string   sell_error_text;
                 std::string   buy_error_text;
             };

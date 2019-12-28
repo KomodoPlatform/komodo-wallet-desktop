@@ -98,18 +98,6 @@ namespace
     }
 
     int
-    input_filter_coin_amount(ImGuiInputTextCallbackData* data)
-    {
-        std::string str_data;
-        if (data->UserData != nullptr) { str_data = static_cast<char*>(data->UserData); }
-        auto c = data->EventChar;
-        auto n = std::count(begin(str_data), end(str_data), '.');
-        if (n == 1 && c == '.') { return 1; }
-
-        return std::isdigit(c) || c == '.' ? 0 : 1;
-    }
-
-    int
     input_filter_coin_address(ImGuiInputTextCallbackData* data)
     {
         std::string str_data;
@@ -848,18 +836,14 @@ namespace
         auto& error_text   = action == "Sell" ? coin_vars.sell_error_text : coin_vars.buy_error_text;
 
         ImGui::SetNextItemWidth(125.0f);
-        ImGui::InputText(
-            ("Volume##trade_sell_volume" + action).c_str(), amount_input.data(), amount_input.size(), ImGuiInputTextFlags_CallbackCharFilter,
-            input_filter_coin_amount, amount_input.data());
+        ImGui::InputDouble(("Volume##trade_sell_volume" + action).c_str(), &amount_input, input_slow_step_crypto, input_fast_step_crypto, input_format_crypto);
 
         ImGui::SetNextItemWidth(125.0f);
-        ImGui::InputText(
-            ("Price##trade_sell_price" + action).c_str(), price_input.data(), price_input.size(), ImGuiInputTextFlags_CallbackCharFilter,
-            input_filter_coin_amount, price_input.data());
+        ImGui::InputDouble(("Price##trade_sell_price" + action).c_str(), &price_input, input_slow_step_crypto, input_fast_step_crypto, input_format_crypto);
 
         std::string                             total;
-        std::string                             current_price  = price_input.data();
-        std::string                             current_amount = amount_input.data();
+        std::string                             current_price  = double_to_str(price_input);
+        std::string                             current_amount = double_to_str(amount_input);
         boost::multiprecision::cpp_dec_float_50 current_price_f{};
         boost::multiprecision::cpp_dec_float_50 current_amount_f{};
         boost::multiprecision::cpp_dec_float_50 total_amount;
