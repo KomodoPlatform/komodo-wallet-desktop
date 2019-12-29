@@ -380,6 +380,9 @@ namespace atomic_dex
     t_float_50
     mm2::get_balance_with_locked_funds(const std::string& ticker) const
     {
+        if (m_balance_informations.find(ticker) == m_balance_informations.end()) {
+            return 0;
+        }
         const auto       answer = m_balance_informations.at(ticker);
         const t_float_50 balance(answer.balance);
         const t_float_50 locked_funds(answer.locked_by_swaps);

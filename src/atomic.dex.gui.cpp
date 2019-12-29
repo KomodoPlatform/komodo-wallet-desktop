@@ -190,7 +190,7 @@ namespace
         bool active = true;
         ImGui::SetNextWindowSize(ImVec2(1000, 500), ImGuiCond_FirstUseEver);
         ImGui::Begin("Console", &active, ImGuiWindowFlags_NoCollapse);
-        if(!active) gui_vars.console.is_open = false;
+        if (!active) gui_vars.console.is_open = false;
 
         auto logs = gui.get_console_buffer();
         ImGui::InputTextMultiline("##console_text", &logs, ImGui::GetContentRegionAvail(), ImGuiInputTextFlags_ReadOnly);
@@ -411,14 +411,13 @@ namespace
     {
         if (ImGui::BeginPopupModal("Settings##settings_modal", nullptr, ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoMove))
         {
-
             // Languages
             auto& vars = gui_vars.settings;
 
             auto& curr_lang = vars.curr_lang;
             if (ImGui::BeginCombo("Language##settings_language", curr_lang.c_str()))
             {
-                for (auto&& l : vars.available_languages)
+                for (auto&& l: vars.available_languages)
                 {
                     const bool is_selected = curr_lang == l;
                     if (ImGui::Selectable(l.c_str(), is_selected)) { curr_lang = l; }
@@ -432,7 +431,7 @@ namespace
             auto& curr_fiat = vars.curr_fiat;
             if (ImGui::BeginCombo("Fiat##settings_fiat", curr_fiat.c_str()))
             {
-                for (auto&& f : vars.available_fiats)
+                for (auto&& f: vars.available_fiats)
                 {
                     const bool is_selected = curr_fiat == f;
                     if (ImGui::Selectable(f.c_str(), is_selected)) { curr_fiat = f; }
@@ -458,17 +457,11 @@ namespace
     {
         if (ImGui::BeginMenuBar())
         {
-            if (ImGui::MenuItem("Settings", "Ctrl+O"))
-            {
-                ImGui::OpenPopup("Settings##settings_modal");
-            }
+            if (ImGui::MenuItem("Settings", "Ctrl+O")) { ImGui::OpenPopup("Settings##settings_modal"); }
 
             gui_settings_modal(gui_vars);
 
-            if (ImGui::MenuItem("Console", "Ctrl+K"))
-            {
-                gui_vars.console.is_open = true;
-            }
+            if (ImGui::MenuItem("Console", "Ctrl+K")) { gui_vars.console.is_open = true; }
 #if defined(ENABLE_CODE_RELOAD_UNIX)
             if (ImGui::MenuItem("Code Reloading", "Ctrl+O")) { system.reload_code(); }
 #endif
@@ -924,7 +917,9 @@ namespace
 
         ImGui::Text("%s", action.c_str());
         ImGui::SameLine();
+
         gui_coin_name_img(gui, base, "", true);
+
 
         ImGui::SameLine();
 
@@ -949,6 +944,7 @@ namespace
         boost::multiprecision::cpp_dec_float_50 current_amount_f{};
         boost::multiprecision::cpp_dec_float_50 total_amount;
         bool                                    fields_are_filled = not current_price.empty() && not current_amount.empty();
+
         if (fields_are_filled)
         {
             current_price_f.assign(current_price);
@@ -1278,7 +1274,6 @@ namespace atomic_dex
                                         gui_buy_sell_coin(*this, mm2_system_, gui_vars_, locked_base, locked_rel, "Sell");
                                     }
                                     ImGui::EndChild();
-
                                     ImGui::SameLine();
                                     ImGui::BeginGroup();
                                     ImGui::Columns(2, "full_orderbook");
@@ -1396,6 +1391,6 @@ namespace atomic_dex
         ImGui::End();
 
 
-        if(gui_vars_.console.is_open) gui_logs_console(*this, gui_vars_);
+        if (gui_vars_.console.is_open) gui_logs_console(*this, gui_vars_);
     }
 } // namespace atomic_dex
