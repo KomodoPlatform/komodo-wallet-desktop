@@ -138,6 +138,22 @@ namespace atomic_dex
         {
             bool is_open{false};
         } console;
+
+
+        struct settings_vars
+        {
+            std::string curr_lang;
+            std::vector<std::string> available_languages;
+
+            settings_vars() {
+                available_languages.emplace_back("English");
+                available_languages.emplace_back("French");
+                available_languages.emplace_back("German");
+                available_languages.emplace_back("Turkish");
+
+                curr_lang = available_languages[0];
+            }
+        } settings;
     };
 
     class gui final : public ag::ecs::post_update_system<gui>
