@@ -411,12 +411,10 @@ namespace
     {
         if (ImGui::BeginPopupModal("Settings##settings_modal", nullptr, ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoMove))
         {
-            ImGui::Text("Settings");
-
-            ImGui::Separator();
 
             // Languages
             auto& vars = gui_vars.settings;
+
             auto& curr_lang = vars.curr_lang;
             if (ImGui::BeginCombo("Language##settings_language", curr_lang.c_str()))
             {
@@ -424,6 +422,20 @@ namespace
                 {
                     const bool is_selected = curr_lang == l;
                     if (ImGui::Selectable(l.c_str(), is_selected)) { curr_lang = l; }
+                    if (is_selected) { ImGui::SetItemDefaultFocus(); }
+                }
+                ImGui::EndCombo();
+            }
+
+            ImGui::Separator();
+
+            auto& curr_fiat = vars.curr_fiat;
+            if (ImGui::BeginCombo("Fiat##settings_fiat", curr_fiat.c_str()))
+            {
+                for (auto&& f : vars.available_fiats)
+                {
+                    const bool is_selected = curr_fiat == f;
+                    if (ImGui::Selectable(f.c_str(), is_selected)) { curr_fiat = f; }
                     if (is_selected) { ImGui::SetItemDefaultFocus(); }
                 }
                 ImGui::EndCombo();

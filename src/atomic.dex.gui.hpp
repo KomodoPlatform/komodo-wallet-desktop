@@ -142,16 +142,27 @@ namespace atomic_dex
 
         struct settings_vars
         {
+            // Language
             std::string curr_lang;
             std::vector<std::string> available_languages;
 
+            // Fiat
+            std::string curr_fiat;
+            std::vector<std::string> available_fiats;
+
             settings_vars() {
+                // Language
                 available_languages.emplace_back("English");
                 available_languages.emplace_back("French");
                 available_languages.emplace_back("German");
                 available_languages.emplace_back("Turkish");
-
                 curr_lang = available_languages[0];
+
+                // Fiat
+                available_fiats.emplace_back("USD");
+                available_fiats.emplace_back("EUR");
+                available_fiats.emplace_back("TRY");
+                curr_fiat = available_fiats[0];
             }
         } settings;
     };
