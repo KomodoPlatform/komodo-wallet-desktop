@@ -61,6 +61,11 @@ if (UNIX)
 endif ()
 
 FetchContent_Declare(
+        bip39_external
+        URL https://github.com/edwardstock/bip3x/archive/master.zip
+)
+
+FetchContent_Declare(
         iconfontcppheaders
         URL https://github.com/juliettef/IconFontCppHeaders/archive/master.zip
 )
@@ -86,7 +91,7 @@ endif ()
 FetchContent_Declare(jl777-coins
         URL https://github.com/jl777/coins/archive/master.zip)
 
-FetchContent_MakeAvailable(mm2 jl777-coins iconfontcppheaders)
+FetchContent_MakeAvailable(mm2 jl777-coins iconfontcppheaders bip39_external)
 ##! Configure our needs.
 if (UNIX)
     configure_file(${jl777-coins_SOURCE_DIR}/coins ${CMAKE_CURRENT_SOURCE_DIR}/assets/tools/mm2/coins COPYONLY)
@@ -126,7 +131,8 @@ add_executable(${PROJECT_NAME} MACOSX_BUNDLE ${ICON}
         src/atomic.dex.mm2.error.code.cpp
         src/atomic.dex.provider.coinpaprika.cpp
         src/atomic.dex.provider.coinpaprika.api.cpp
-        src/atomic.dex.kill.cpp)
+        src/atomic.dex.kill.cpp
+        src/atomic.dex.security.cpp)
 
 if (UNIX AND ENABLE_CODE_RELOAD_UNIX)
     target_compile_definitions(${PROJECT_NAME} PUBLIC -DENABLE_CODE_RELOAD_UNIX)

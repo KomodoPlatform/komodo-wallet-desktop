@@ -221,6 +221,7 @@ namespace atomic_dex
     void
     coinpaprika_provider::on_coin_enabled(const coin_enabled& evt) noexcept
     {
+        LOG_SCOPE_FUNCTION(INFO);
         const auto config = m_mm2_instance.get_coin_info(evt.ticker);
 
         process_provider(config, m_usd_rate_providers, "usd-us-dollars");

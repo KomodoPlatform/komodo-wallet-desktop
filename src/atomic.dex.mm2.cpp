@@ -177,14 +177,14 @@ namespace atomic_dex
         coin_info.currently_enabled = true;
         m_coins_informations.assign(coin_info.ticker, coin_info);
 
-        spawn([this, ticker]() {
+        spawn([this, copy_ticker = ticker]() {
             loguru::set_thread_name("balance thread");
-            process_balance(ticker);
+            process_balance(copy_ticker);
         });
 
-        spawn([this, ticker]() {
+        spawn([this, copy_ticker = ticker]() {
             loguru::set_thread_name("tx thread");
-            process_tx(ticker);
+            process_tx(copy_ticker);
         });
 
         dispatcher_.trigger<coin_enabled>(ticker);
@@ -230,13 +230,12 @@ namespace atomic_dex
     {
         for (const auto& ticker: tickers)
         {
-            spawn([this, &ticker]() {
+            spawn([this, ticker]() {
                 loguru::set_thread_name("enable multiple coins");
                 enable_coin(ticker);
             });
         }
 
-        assert(tickers.size() > 0);
         update_coin_status(tickers);
     }
 
