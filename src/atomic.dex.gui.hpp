@@ -41,15 +41,13 @@ namespace atomic_dex
 
         struct startup_vars
         {
-            struct new_user_vars
+            enum
             {
-                enum
-                {
-                    NONE,
-                    SEED_CREATION,
-                    SEED_RECOVERY
-                } current_page = NONE;
-            } new_user_page;
+                NONE,
+                LOGIN,
+                SEED_CREATION,
+                SEED_RECOVERY
+            } current_page = NONE;
 
             struct seed_creation_vars
             {
@@ -78,6 +76,7 @@ namespace atomic_dex
             } login_page;
 
             bool seed_exists{false};
+            bool in_login_page{false};
         } startup_page;
 
         struct trade_vars

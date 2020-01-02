@@ -222,7 +222,8 @@ namespace
     void
     gui_login_page(entt::dispatcher& dispatcher, atomic_dex::gui_variables& gui_vars)
     {
-        auto& vars           = gui_vars.startup_page.login_page;
+        auto& startup        = gui_vars.startup_page;
+        auto& vars           = startup.login_page;
         auto& password_input = vars.password_input;
         auto& show_password  = vars.show_password;
         auto& error_text     = vars.error_text;
@@ -270,6 +271,8 @@ namespace
                     }
                 }
             }
+            ImGui::SameLine();
+            if (ImGui::Button("Seed Recovery##login_page_recover_seed_button")) startup.current_page = startup.SEED_RECOVERY;
             ImGui::TextColored(error_color, "%s", error_text.c_str());
         }
         ImGui::EndChild();
@@ -281,16 +284,16 @@ namespace
         gui_vars.startup_page.seed_exists = gui_vars.wallet_data.seed_exists();
         if (gui_vars.startup_page.seed_exists)
         {
-            auto& new_user_page_vars        = gui_vars.startup_page.new_user_page;
-            new_user_page_vars.current_page = new_user_page_vars.NONE;
+            auto& startup        = gui_vars.startup_page;
+            startup.current_page = startup.LOGIN;
         }
     }
 
     void
     gui_seed_creation(entt::dispatcher& dispatcher, atomic_dex::gui_variables& gui_vars)
     {
-        auto& new_user_page_vars       = gui_vars.startup_page.new_user_page;
-        auto& vars                     = gui_vars.startup_page.seed_creation_page;
+        auto& startup                  = gui_vars.startup_page;
+        auto& vars                     = startup.seed_creation_page;
         auto& generated_seed_read_only = vars.generated_seed_read_only;
         auto& generated_seed_confirm   = vars.generated_seed_confirm;
         auto& password_input           = vars.password_input;
@@ -322,7 +325,7 @@ namespace
             ImGui::InputText("##generated_seed_confirmation", generated_seed_confirm.data(), generated_seed_confirm.size());
             gui_password_input(password_input, show_password);
             ImGui::Separator();
-            if (ImGui::Button("Back##back_to_new_user_page_button")) { new_user_page_vars.current_page = new_user_page_vars.NONE; }
+            if (ImGui::Button("Back##back_to_new_user_page_button")) { startup.current_page = startup.NONE; }
             ImGui::SameLine();
             if (ImGui::Button("Confirm##seed_creation_confirm_button"))
             {
@@ -368,12 +371,12 @@ namespace
     void
     gui_seed_recovery(atomic_dex::gui_variables& gui_vars)
     {
-        auto& new_user_page_vars = gui_vars.startup_page.new_user_page;
-        auto& vars               = gui_vars.startup_page.seed_recovery_page;
-        auto& seed_input         = vars.seed_input;
-        auto& password_input     = vars.password_input;
-        auto& show_password      = vars.show_password;
-        auto& error_text         = vars.error_text;
+        auto& startup        = gui_vars.startup_page;
+        auto& vars           = startup.seed_recovery_page;
+        auto& seed_input     = vars.seed_input;
+        auto& password_input = vars.password_input;
+        auto& show_password  = vars.show_password;
+        auto& error_text     = vars.error_text;
 
         const ImVec2 child_size{385.f, 290.f};
         ImGui::SetCursorPosX((ImGui::GetWindowSize().x - child_size.x) * 0.5f);
@@ -386,7 +389,7 @@ namespace
             ImGui::InputText("##seed_recovery_seed_input", seed_input.data(), seed_input.size());
             gui_password_input(password_input, show_password);
             ImGui::Separator();
-            if (ImGui::Button("Back##seed_recovery_back_to_new_user_page_button")) { new_user_page_vars.current_page = new_user_page_vars.NONE; }
+            if (ImGui::Button("Back##seed_recovery_back_to_new_user_page_button")) { startup.current_page = startup.NONE; }
             ImGui::SameLine();
             if (ImGui::Button("Confirm##seed_recovery_confirm_button"))
             {
@@ -409,26 +412,26 @@ namespace
     void
     gui_new_user_page(entt::dispatcher& dispatcher, atomic_dex::gui_variables& gui_vars)
     {
-        auto& vars         = gui_vars.startup_page.new_user_page;
-        auto& current_page = vars.current_page;
+        auto& startup      = gui_vars.startup_page;
+        auto& current_page = startup.current_page;
 
-        if (current_page == vars.NONE)
+        if (current_page == startup.NONE)
         {
             const ImVec2 child_size{210.f, 63.f};
             ImGui::SetCursorPosX((ImGui::GetWindowSize().x - child_size.x) * 0.5f);
             ImGui::BeginChild("##login_page_child", child_size, true);
             {
-                if (ImGui::Button("Seed Recovery##new_user_page_recover_seed_button")) current_page = vars.SEED_RECOVERY;
+                if (ImGui::Button("Seed Recovery##new_user_page_recover_seed_button")) current_page = startup.SEED_RECOVERY;
 
                 ImGui::SameLine();
-                if (ImGui::Button("New User##new_user_page_create_new_user_button")) current_page = vars.SEED_CREATION;
+                if (ImGui::Button("New User##new_user_page_create_new_user_button")) current_page = startup.SEED_CREATION;
             }
             ImGui::EndChild();
         }
         else
         {
-            if (current_page == vars.SEED_CREATION) gui_seed_creation(dispatcher, gui_vars);
-            else if (current_page == vars.SEED_RECOVERY)
+            if (current_page == startup.SEED_CREATION) gui_seed_creation(dispatcher, gui_vars);
+            else if (current_page == startup.SEED_RECOVERY)
                 gui_seed_recovery(gui_vars);
         }
     }
@@ -445,7 +448,8 @@ namespace
         ImGui::Image(reinterpret_cast<ImTextureID>(img.id), ImVec2{custom_img_size, custom_img_size});
         ImGui::SetCursorPosY(ImGui::GetCursorPosY() + 20.0f);
 
-        if (gui_vars.startup_page.seed_exists) { gui_login_page(dispatcher, gui_vars); }
+        auto& startup = gui_vars.startup_page;
+        if (startup.seed_exists && startup.current_page == startup.LOGIN) { gui_login_page(dispatcher, gui_vars); }
         else
         {
             gui_new_user_page(dispatcher, gui_vars);
@@ -1182,6 +1186,7 @@ namespace atomic_dex
         // Initialize the wallet
         {
             gui_vars_.startup_page.seed_exists = gui_vars_.wallet_data.seed_exists();
+            if (gui_vars_.startup_page.seed_exists) gui_vars_.startup_page.current_page = gui_vars_.startup_page.LOGIN;
         }
     }
 
