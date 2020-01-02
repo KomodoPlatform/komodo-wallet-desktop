@@ -220,7 +220,7 @@ namespace
     }
 
     void
-    gui_login_page(atomic_dex::gui_variables& gui_vars)
+    gui_login_page(entt::dispatcher& dispatcher, atomic_dex::gui_variables& gui_vars)
     {
         auto& vars           = gui_vars.startup_page.login_page;
         auto& password_input = vars.password_input;
@@ -240,8 +240,33 @@ namespace
                 if (strcmp(password_input.data(), "") == 0) { error_text = "Please fill the Password field!"; }
                 else
                 {
-                    // TODO: Login here
-                    vars.logged_in = true;
+                    // Derive password
+                    std::error_code ec;
+                    gui_vars.wallet_data.key = atomic_dex::derive_password(password_input.data(), ec);
+                    if (ec)
+                    {
+                        DLOG_F(WARNING, "{}", ec.message());
+                        if (ec == dextop_error::derive_password_failed)
+                        {
+                            error_text = "Derive password failed!";
+                            dispatcher.trigger<atomic_dex::ag::event::quit_game>(1);
+                        }
+                    }
+                    else
+                    {
+                        // Decrypt seed
+                        auto seed = atomic_dex::decrypt(gui_vars.wallet_data.seed_path, gui_vars.wallet_data.key.data(), ec);
+
+                        if (ec == dextop_error::wrong_password) { error_text = "Wrong password!"; }
+                        else if (ec == dextop_error::corrupted_file)
+                        {
+                            error_text = "Corrupted seed file, failed to decrypt!";
+                        }
+                        else
+                        {
+                            vars.logged_in = true;
+                        }
+                    }
                 }
             }
             ImGui::TextColored(error_color, "%s", error_text.c_str());
@@ -419,7 +444,7 @@ namespace
         ImGui::Image(reinterpret_cast<ImTextureID>(img.id), ImVec2{custom_img_size, custom_img_size});
         ImGui::SetCursorPosY(ImGui::GetCursorPosY() + 20.0f);
 
-        if (gui_vars.startup_page.seed_exists) { gui_login_page(gui_vars); }
+        if (gui_vars.startup_page.seed_exists) { gui_login_page(dispatcher, gui_vars); }
         else
         {
             gui_new_user_page(dispatcher, gui_vars);
