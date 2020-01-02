@@ -252,13 +252,16 @@ namespace
     void
     gui_open_login_page(atomic_dex::gui_variables& gui_vars)
     {
-        auto& new_user_page_vars          = gui_vars.startup_page.new_user_page;
-        new_user_page_vars.current_page   = new_user_page_vars.NONE;
-        gui_vars.startup_page.seed_exists = true;
+        gui_vars.startup_page.seed_exists = gui_vars.wallet_data.seed_exists();
+        if (gui_vars.startup_page.seed_exists)
+        {
+            auto& new_user_page_vars        = gui_vars.startup_page.new_user_page;
+            new_user_page_vars.current_page = new_user_page_vars.NONE;
+        }
     }
 
     void
-    gui_seed_creation(atomic_dex::gui_variables& gui_vars)
+    gui_seed_creation(entt::dispatcher& dispatcher, atomic_dex::gui_variables& gui_vars)
     {
         auto& new_user_page_vars       = gui_vars.startup_page.new_user_page;
         auto& vars                     = gui_vars.startup_page.seed_creation_page;
@@ -308,8 +311,26 @@ namespace
                 }
                 else
                 {
-                    // TODO: Create user here, seed should exist after this, will redirect to login page
-                    gui_open_login_page(gui_vars);
+                    // Derive password
+                    std::error_code ec;
+                    gui_vars.wallet_data.key = atomic_dex::derive_password(password_input.data(), ec);
+                    if (ec)
+                    {
+                        DLOG_F(WARNING, "{}", ec.message());
+                        if (ec == dextop_error::derive_password_failed)
+                        {
+                            error_text = "Derive password failed!";
+                            dispatcher.trigger<atomic_dex::ag::event::quit_game>(1);
+                        }
+                    }
+                    else
+                    {
+                        // Encrypt seed
+                        atomic_dex::encrypt(gui_vars.wallet_data.seed_path, generated_seed_read_only.data(), gui_vars.wallet_data.key.data());
+
+                        // Open login page
+                        gui_open_login_page(gui_vars);
+                    }
                 }
             }
             ImGui::TextColored(error_color, "%s", error_text.c_str());
@@ -360,7 +381,7 @@ namespace
     }
 
     void
-    gui_new_user_page(atomic_dex::gui_variables& gui_vars)
+    gui_new_user_page(entt::dispatcher& dispatcher, atomic_dex::gui_variables& gui_vars)
     {
         auto& vars         = gui_vars.startup_page.new_user_page;
         auto& current_page = vars.current_page;
@@ -380,14 +401,14 @@ namespace
         }
         else
         {
-            if (current_page == vars.SEED_CREATION) gui_seed_creation(gui_vars);
+            if (current_page == vars.SEED_CREATION) gui_seed_creation(dispatcher, gui_vars);
             else if (current_page == vars.SEED_RECOVERY)
                 gui_seed_recovery(gui_vars);
         }
     }
 
     void
-    gui_startup_page(atomic_dex::gui& gui, atomic_dex::gui_variables& gui_vars)
+    gui_startup_page(entt::dispatcher& dispatcher, atomic_dex::gui& gui, atomic_dex::gui_variables& gui_vars)
     {
         const auto& icons = gui.get_icons();
         const auto& img   = icons.at("APP_LOGO");
@@ -401,7 +422,7 @@ namespace
         if (gui_vars.startup_page.seed_exists) { gui_login_page(gui_vars); }
         else
         {
-            gui_new_user_page(gui_vars);
+            gui_new_user_page(dispatcher, gui_vars);
         }
     }
 
@@ -1131,6 +1152,11 @@ namespace atomic_dex
         this->dispatcher_.sink<ag::event::key_pressed>().connect<&gui::on_key_pressed>(*this);
 
         loguru::add_callback("console_logger", log_to_console, &console_log_vars_, loguru::Verbosity_INFO);
+
+        // Initialize the wallet
+        {
+            gui_vars_.startup_page.seed_exists = gui_vars_.wallet_data.seed_exists();
+        }
     }
 
     void
@@ -1168,7 +1194,7 @@ namespace atomic_dex
         }
         else
         {
-            if (!gui_vars_.startup_page.login_page.logged_in) { gui_startup_page(*this, gui_vars_); }
+            if (!gui_vars_.startup_page.login_page.logged_in) { gui_startup_page(dispatcher_, *this, gui_vars_); }
             else
             {
                 gui_menubar(*this, gui_vars_);

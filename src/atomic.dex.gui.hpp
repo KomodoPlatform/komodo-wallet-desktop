@@ -23,6 +23,7 @@
 #include "atomic.dex.gui.style.hpp"
 #include "atomic.dex.mm2.hpp"
 #include "atomic.dex.provider.coinpaprika.hpp"
+#include "atomic.dex.security.hpp"
 
 //! Boost Headers
 #include <boost/circular_buffer.hpp>
@@ -69,7 +70,7 @@ namespace atomic_dex
 
             struct login_vars
             {
-                bool logged_in{true};
+                bool logged_in{false};
 
                 std::array<char, 100> password_input{};
                 bool                  show_password{false};
@@ -143,14 +144,15 @@ namespace atomic_dex
         struct settings_vars
         {
             // Language
-            std::string curr_lang;
+            std::string              curr_lang;
             std::vector<std::string> available_languages;
 
             // Fiat
-            std::string curr_fiat;
+            std::string              curr_fiat;
             std::vector<std::string> available_fiats;
 
-            settings_vars() {
+            settings_vars()
+            {
                 // Language
                 available_languages.emplace_back("English");
                 available_languages.emplace_back("French");
@@ -165,6 +167,19 @@ namespace atomic_dex
                 curr_fiat = available_fiats[0];
             }
         } settings;
+
+        struct wallet_data_vars
+        {
+            t_password_key key;
+            std::string    mnemonic;
+
+            const std::filesystem::path seed_path = ag::core::assets_real_path() / "config/encrypted.seed";
+            bool
+            seed_exists()
+            {
+                return std::filesystem::exists(seed_path);
+            }
+        } wallet_data;
     };
 
     class gui final : public ag::ecs::post_update_system<gui>
