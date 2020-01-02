@@ -171,7 +171,6 @@ namespace atomic_dex
         struct wallet_data_vars
         {
             t_password_key key;
-            std::string    mnemonic;
 
             const std::filesystem::path seed_path = ag::core::assets_real_path() / "config/encrypted.seed";
             bool

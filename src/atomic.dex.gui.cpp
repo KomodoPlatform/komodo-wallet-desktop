@@ -264,6 +264,7 @@ namespace
                         }
                         else
                         {
+                            // TODO: Use the decrypted seed to login
                             vars.logged_in = true;
                         }
                     }
