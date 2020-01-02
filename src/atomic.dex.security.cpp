@@ -20,11 +20,11 @@
 
 namespace
 {
-    inline constexpr std::size_t g_salt_len    = crypto_pwhash_SALTBYTES;
-    inline constexpr std::size_t g_key_len     = crypto_secretstream_xchacha20poly1305_KEYBYTES;
-    inline constexpr std::size_t g_chunk_size  = 4096;
-    inline constexpr std::size_t g_buff_len    = (g_chunk_size + crypto_secretstream_xchacha20poly1305_ABYTES);
-    inline constexpr std::size_t g_header_size = crypto_secretstream_xchacha20poly1305_HEADERBYTES;
+    constexpr std::size_t g_salt_len    = crypto_pwhash_SALTBYTES;
+    constexpr std::size_t g_key_len     = crypto_secretstream_xchacha20poly1305_KEYBYTES;
+    constexpr std::size_t g_chunk_size  = 4096;
+    constexpr std::size_t g_buff_len    = (g_chunk_size + crypto_secretstream_xchacha20poly1305_ABYTES);
+    constexpr std::size_t g_header_size = crypto_secretstream_xchacha20poly1305_HEADERBYTES;
 } // namespace
 
 namespace atomic_dex
@@ -46,10 +46,7 @@ namespace atomic_dex
             ec = dextop_error::derive_password_failed;
             return generated_crypto_key;
         }
-        else
-        {
-            LOG_F(INFO, "Key generated successfully");
-        }
+        LOG_F(INFO, "Key generated successfully");
 
         return generated_crypto_key;
     }
