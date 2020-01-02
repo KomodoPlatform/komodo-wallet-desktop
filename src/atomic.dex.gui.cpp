@@ -236,6 +236,8 @@ namespace
             ImGui::Separator();
             gui_password_input(password_input, show_password);
             ImGui::Separator();
+            if (ImGui::Button("Seed Recovery##login_page_recover_seed_button")) startup.current_page = startup.SEED_RECOVERY;
+            ImGui::SameLine();
             if (ImGui::Button("Login##login_page_login_button"))
             {
                 if (strcmp(password_input.data(), "") == 0) { error_text = "Please fill the Password field!"; }
@@ -271,8 +273,6 @@ namespace
                     }
                 }
             }
-            ImGui::SameLine();
-            if (ImGui::Button("Seed Recovery##login_page_recover_seed_button")) startup.current_page = startup.SEED_RECOVERY;
             ImGui::TextColored(error_color, "%s", error_text.c_str());
         }
         ImGui::EndChild();
@@ -369,7 +369,7 @@ namespace
 
 
     void
-    gui_seed_recovery(atomic_dex::gui_variables& gui_vars)
+    gui_seed_recovery(entt::dispatcher& dispatcher, atomic_dex::gui_variables& gui_vars)
     {
         auto& startup        = gui_vars.startup_page;
         auto& vars           = startup.seed_recovery_page;
@@ -400,8 +400,26 @@ namespace
                 }
                 else
                 {
-                    // TODO: Recover user here, seed should exist after this, will redirect to login page
-                    gui_open_login_page(gui_vars);
+                    // Derive password
+                    std::error_code ec;
+                    gui_vars.wallet_data.key = atomic_dex::derive_password(password_input.data(), ec);
+                    if (ec)
+                    {
+                        DLOG_F(WARNING, "{}", ec.message());
+                        if (ec == dextop_error::derive_password_failed)
+                        {
+                            error_text = "Derive password failed!";
+                            dispatcher.trigger<atomic_dex::ag::event::quit_game>(1);
+                        }
+                    }
+                    else
+                    {
+                        // Encrypt seed
+                        atomic_dex::encrypt(gui_vars.wallet_data.seed_path, seed_input.data(), gui_vars.wallet_data.key.data());
+
+                        // Login page
+                        gui_open_login_page(gui_vars);
+                    }
                 }
             }
             ImGui::TextColored(error_color, "%s", error_text.c_str());
@@ -432,7 +450,7 @@ namespace
         {
             if (current_page == startup.SEED_CREATION) gui_seed_creation(dispatcher, gui_vars);
             else if (current_page == startup.SEED_RECOVERY)
-                gui_seed_recovery(gui_vars);
+                gui_seed_recovery(dispatcher, gui_vars);
         }
     }
 
@@ -1204,7 +1222,6 @@ namespace atomic_dex
     gui::update() noexcept
     {
         update_live_coding();
-        // update_live_coding();
 
         //! Menu bar
         auto& canvas = entity_registry_.ctx<ag::graphics::canvas_2d>();
