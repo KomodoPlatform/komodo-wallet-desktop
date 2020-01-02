@@ -17,37 +17,9 @@
 #pragma once
 
 //! PCH Headers
-#include "atomic.dex.pch.hpp"
-
-enum class dextop_error
-{
-    success,
-    balance_of_a_non_enabled_coin,
-    tx_history_of_a_non_enabled_coin,
-    rpc_withdraw_error,
-    rpc_send_raw_transaction_error,
-    rpc_buy_error,
-    rpc_sell_error,
-    derive_password_failed,
-    invalid_fiat_for_rate_conversion,
-    unknown_ticker,
-    unknown_ticker_for_rate_conversion,
-    orderbook_empty,
-    balance_not_enough_found,
-    unknown_error
-};
-
-namespace std
-{
-    template <>
-    struct is_error_code_enum<dextop_error> : true_type
-    {
-    };
-} // namespace std
-
-std::error_code make_error_code(dextop_error error) noexcept;
+#include <atomic.dex.pch.hpp>
 
 namespace atomic_dex
 {
-    using t_mm2_ec = std::error_code;
-} // namespace atomic_dex
+    auto derive_password(const std::string& password, std::error_code& ec);
+}

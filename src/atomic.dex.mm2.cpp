@@ -251,7 +251,7 @@ namespace atomic_dex
     {
         if (m_current_orderbook.empty())
         {
-            ec = mm2_error::orderbook_empty;
+            ec = dextop_error::orderbook_empty;
             return {};
         }
         return m_current_orderbook.begin()->second;
@@ -367,7 +367,7 @@ namespace atomic_dex
     {
         if (m_balance_informations.find(ticker) == m_balance_informations.cend())
         {
-            ec = mm2_error::balance_of_a_non_enabled_coin;
+            ec = dextop_error::balance_of_a_non_enabled_coin;
             return "0";
         }
 
@@ -395,7 +395,7 @@ namespace atomic_dex
     {
         if (m_tx_informations.find(ticker) == m_tx_informations.cend())
         {
-            ec = mm2_error::tx_history_of_a_non_enabled_coin;
+            ec = dextop_error::tx_history_of_a_non_enabled_coin;
             return {};
         }
 
@@ -407,7 +407,7 @@ namespace atomic_dex
     {
         if (m_balance_informations.find(ticker) == m_balance_informations.cend())
         {
-            ec = mm2_error::balance_of_a_non_enabled_coin;
+            ec = dextop_error::balance_of_a_non_enabled_coin;
             return "0";
         }
 
@@ -418,7 +418,7 @@ namespace atomic_dex
     mm2::withdraw(t_withdraw_request&& request, t_mm2_ec& ec) noexcept
     {
         auto result = rpc_withdraw(std::move(request));
-        if (result.error.has_value()) { ec = mm2_error::rpc_withdraw_error; }
+        if (result.error.has_value()) { ec = dextop_error::rpc_withdraw_error; }
         return result;
     }
 
@@ -426,7 +426,7 @@ namespace atomic_dex
     mm2::broadcast(t_broadcast_request&& request, t_mm2_ec& ec) noexcept
     {
         auto result = rpc_send_raw_transaction(std::move(request));
-        if (result.rpc_result_code == -1) { ec = mm2_error::rpc_send_raw_transaction_error; }
+        if (result.rpc_result_code == -1) { ec = dextop_error::rpc_send_raw_transaction_error; }
         return result;
     }
 
@@ -478,7 +478,7 @@ namespace atomic_dex
                     .my_balance_change = current.my_balance_change,
                     .total_amount      = current.total_amount,
                     .block_height      = current.block_height,
-                    .ec                = mm2_error::success,
+                    .ec                = dextop_error::success,
                 };
                 out.push_back(std::move(current_info));
             }
@@ -527,7 +527,7 @@ namespace atomic_dex
 
         if (not do_i_have_enough_funds(request.rel, total))
         {
-            ec = mm2_error::balance_not_enough_found;
+            ec = dextop_error::balance_not_enough_found;
             return {};
         }
 
@@ -535,7 +535,7 @@ namespace atomic_dex
 
         if (answer.error.has_value())
         {
-            ec = mm2_error::rpc_buy_error;
+            ec = dextop_error::rpc_buy_error;
             return {};
         }
 
@@ -554,7 +554,7 @@ namespace atomic_dex
     {
         if (m_balance_informations.find(ticker) == m_balance_informations.cend())
         {
-            ec = mm2_error::unknown_ticker;
+            ec = dextop_error::unknown_ticker;
             return "Invalid";
         }
         return m_balance_informations.at(ticker).address;
@@ -602,7 +602,7 @@ namespace atomic_dex
 
         if (not do_i_have_enough_funds(request.rel, total))
         {
-            ec = mm2_error::balance_not_enough_found;
+            ec = dextop_error::balance_not_enough_found;
             return {};
         }
 
@@ -610,7 +610,7 @@ namespace atomic_dex
 
         if (answer.error.has_value())
         {
-            ec = mm2_error::rpc_sell_error;
+            ec = dextop_error::rpc_sell_error;
             return {};
         }
 

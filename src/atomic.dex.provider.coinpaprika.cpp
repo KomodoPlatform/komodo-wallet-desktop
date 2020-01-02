@@ -107,7 +107,7 @@ namespace atomic_dex
     {
         if (m_supported_fiat_registry.count(fiat) == 0u)
         {
-            ec = mm2_error::invalid_fiat_for_rate_conversion;
+            ec = dextop_error::invalid_fiat_for_rate_conversion;
             return "0.00";
         }
 
@@ -200,7 +200,7 @@ namespace atomic_dex
             //! Do it as usd;
             if (m_usd_rate_providers.find(ticker) == m_usd_rate_providers.cend())
             {
-                ec = mm2_error::unknown_ticker_for_rate_conversion;
+                ec = dextop_error::unknown_ticker_for_rate_conversion;
                 return "0.00";
             }
             current_price = m_usd_rate_providers.at(ticker);
@@ -209,7 +209,7 @@ namespace atomic_dex
         {
             if (m_eur_rate_providers.find(ticker) == m_eur_rate_providers.cend())
             {
-                ec = mm2_error::unknown_ticker_for_rate_conversion;
+                ec = dextop_error::unknown_ticker_for_rate_conversion;
                 return "0.00";
             }
             current_price = m_eur_rate_providers.at(ticker);

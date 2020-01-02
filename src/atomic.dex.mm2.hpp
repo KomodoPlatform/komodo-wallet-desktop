@@ -44,7 +44,7 @@ namespace atomic_dex
         std::string              my_balance_change;
         std::string              total_amount;
         std::size_t              block_height;
-        t_mm2_ec                 ec{mm2_error::success};
+        t_mm2_ec                 ec{dextop_error::success};
     };
 
     using t_allocator = folly::AlignedSysAllocator<std::uint8_t, folly::FixedAlign<bit_size<std::size_t>()>>;

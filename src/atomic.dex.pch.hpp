@@ -102,9 +102,9 @@ namespace folly
 
 //! Boost Headers
 #include <boost/algorithm/string/case_conv.hpp>
+#include <boost/algorithm/string/join.hpp>
 #include <boost/algorithm/string/split.hpp>
 #include <boost/algorithm/string/trim.hpp>
-#include <boost/algorithm/string/join.hpp>
 #include <boost/multiprecision/cpp_dec_float.hpp>
 
 //! Other dependencies Headers
@@ -113,13 +113,14 @@ namespace folly
 #include <entt/entity/helper.hpp>
 #include <entt/signal/dispatcher.hpp>
 #include <imgui.h>
-#include <imgui_stdlib.h>
 #include <imgui_internal.h>
+#include <imgui_stdlib.h>
 #include <loguru.hpp>
 #include <meta/detection/detection.hpp>
 #include <nlohmann/json.hpp>
 #include <reproc++/reproc.hpp>
 #include <restclient-cpp/restclient.h>
+#include <sodium.h>
 
 
 #ifndef IM_PI

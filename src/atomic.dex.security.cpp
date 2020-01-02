@@ -14,40 +14,40 @@
  *                                                                            *
  ******************************************************************************/
 
-#pragma once
+//! Project Headers
+#include "atomic.dex.security.hpp"
+#include "atomic.dex.mm2.error.code.hpp"
 
-//! PCH Headers
-#include "atomic.dex.pch.hpp"
-
-enum class dextop_error
+namespace
 {
-    success,
-    balance_of_a_non_enabled_coin,
-    tx_history_of_a_non_enabled_coin,
-    rpc_withdraw_error,
-    rpc_send_raw_transaction_error,
-    rpc_buy_error,
-    rpc_sell_error,
-    derive_password_failed,
-    invalid_fiat_for_rate_conversion,
-    unknown_ticker,
-    unknown_ticker_for_rate_conversion,
-    orderbook_empty,
-    balance_not_enough_found,
-    unknown_error
-};
-
-namespace std
-{
-    template <>
-    struct is_error_code_enum<dextop_error> : true_type
-    {
-    };
-} // namespace std
-
-std::error_code make_error_code(dextop_error error) noexcept;
+    inline constexpr std::size_t g_salt_len = crypto_pwhash_SALTBYTES;
+    inline constexpr std::size_t g_key_len  = crypto_secretstream_xchacha20poly1305_KEYBYTES;
+} // namespace
 
 namespace atomic_dex
 {
-    using t_mm2_ec = std::error_code;
+    auto
+    derive_password(const std::string& password, std::error_code& ec)
+    {
+        LOG_SCOPE_FUNCTION(INFO);
+        std::array<unsigned char, g_salt_len> salt{};
+        std::array<unsigned char, g_key_len>  generated_crypto_key{};
+
+        sodium_memzero(salt.data(), salt.size());
+        // randombytes_buf(salt.data(), salt.size());
+
+        if (crypto_pwhash(
+                generated_crypto_key.data(), generated_crypto_key.size(), password.c_str(), password.size(), salt.data(), crypto_pwhash_OPSLIMIT_INTERACTIVE,
+                crypto_pwhash_MEMLIMIT_INTERACTIVE, crypto_pwhash_ALG_DEFAULT) != 0)
+        {
+            ec = dextop_error::derive_password_failed;
+            return generated_crypto_key;
+        }
+        else
+        {
+            LOG_F(INFO, "Key generated successfully");
+        }
+
+        return generated_crypto_key;
+    }
 } // namespace atomic_dex

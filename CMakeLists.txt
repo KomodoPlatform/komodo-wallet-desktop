@@ -61,11 +61,6 @@ if (UNIX)
 endif ()
 
 FetchContent_Declare(
-        bip39_external
-        URL https://github.com/edwardstock/bip3x/archive/master.zip
-)
-
-FetchContent_Declare(
         iconfontcppheaders
         URL https://github.com/juliettef/IconFontCppHeaders/archive/master.zip
 )
@@ -91,7 +86,7 @@ endif ()
 FetchContent_Declare(jl777-coins
         URL https://github.com/jl777/coins/archive/master.zip)
 
-FetchContent_MakeAvailable(mm2 jl777-coins iconfontcppheaders bip39_external)
+FetchContent_MakeAvailable(mm2 jl777-coins iconfontcppheaders)
 ##! Configure our needs.
 if (UNIX)
     configure_file(${jl777-coins_SOURCE_DIR}/coins ${CMAKE_CURRENT_SOURCE_DIR}/assets/tools/mm2/coins COPYONLY)
@@ -171,6 +166,7 @@ find_package(folly CONFIG REQUIRED)
 find_package(Boost REQUIRED)
 find_package(date CONFIG REQUIRED)
 find_package(nlohmann_json CONFIG REQUIRED)
+find_package(unofficial-sodium CONFIG REQUIRED)
 target_link_libraries(${PROJECT_NAME} PUBLIC
         antara::world
         antara::event
@@ -183,7 +179,8 @@ target_link_libraries(${PROJECT_NAME} PUBLIC
         Boost::headers
         date::date
         date::tz
-        antara::sdl)
+        antara::sdl
+        unofficial-sodium::sodium)
 
 ##! Move assets
 if (WIN32)
