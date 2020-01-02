@@ -245,7 +245,7 @@ namespace
                 {
                     // Derive password
                     std::error_code ec;
-                    gui_vars.wallet_data.key = atomic_dex::derive_password(password_input.data(), ec);
+                    auto key = atomic_dex::derive_password(password_input.data(), ec);
                     if (ec)
                     {
                         DLOG_F(WARNING, "{}", ec.message());
@@ -258,7 +258,7 @@ namespace
                     else
                     {
                         // Decrypt seed
-                        auto seed = atomic_dex::decrypt(gui_vars.wallet_data.seed_path, gui_vars.wallet_data.key.data(), ec);
+                        auto seed = atomic_dex::decrypt(gui_vars.wallet_data.seed_path, key.data(), ec);
 
                         if (ec == dextop_error::wrong_password) { error_text = "Wrong password!"; }
                         else if (ec == dextop_error::corrupted_file)
@@ -342,7 +342,7 @@ namespace
                 {
                     // Derive password
                     std::error_code ec;
-                    gui_vars.wallet_data.key = atomic_dex::derive_password(password_input.data(), ec);
+                    auto key = atomic_dex::derive_password(password_input.data(), ec);
                     if (ec)
                     {
                         DLOG_F(WARNING, "{}", ec.message());
@@ -355,7 +355,7 @@ namespace
                     else
                     {
                         // Encrypt seed
-                        atomic_dex::encrypt(gui_vars.wallet_data.seed_path, generated_seed_read_only.data(), gui_vars.wallet_data.key.data());
+                        atomic_dex::encrypt(gui_vars.wallet_data.seed_path, generated_seed_read_only.data(), key.data());
 
                         // Open login page
                         gui_open_login_page(gui_vars);
@@ -402,7 +402,7 @@ namespace
                 {
                     // Derive password
                     std::error_code ec;
-                    gui_vars.wallet_data.key = atomic_dex::derive_password(password_input.data(), ec);
+                    auto key = atomic_dex::derive_password(password_input.data(), ec);
                     if (ec)
                     {
                         DLOG_F(WARNING, "{}", ec.message());
@@ -415,7 +415,7 @@ namespace
                     else
                     {
                         // Encrypt seed
-                        atomic_dex::encrypt(gui_vars.wallet_data.seed_path, seed_input.data(), gui_vars.wallet_data.key.data());
+                        atomic_dex::encrypt(gui_vars.wallet_data.seed_path, seed_input.data(), key.data());
 
                         // Login page
                         gui_open_login_page(gui_vars);
