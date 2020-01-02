@@ -20,8 +20,11 @@
 
 namespace
 {
-    inline constexpr std::size_t g_salt_len = crypto_pwhash_SALTBYTES;
-    inline constexpr std::size_t g_key_len  = crypto_secretstream_xchacha20poly1305_KEYBYTES;
+    inline constexpr std::size_t g_salt_len    = crypto_pwhash_SALTBYTES;
+    inline constexpr std::size_t g_key_len     = crypto_secretstream_xchacha20poly1305_KEYBYTES;
+    inline constexpr std::size_t g_chunk_size  = 4096;
+    inline constexpr std::size_t g_buff_len    = (g_chunk_size + crypto_secretstream_xchacha20poly1305_ABYTES);
+    inline constexpr std::size_t g_header_size = crypto_secretstream_xchacha20poly1305_HEADERBYTES;
 } // namespace
 
 namespace atomic_dex
@@ -49,5 +52,70 @@ namespace atomic_dex
         }
 
         return generated_crypto_key;
+    }
+
+    void
+    encrypt(std::filesystem::path target_path, const char* mnemonic, const unsigned char* key)
+    {
+        LOG_SCOPE_FUNCTION(INFO);
+
+        std::array<unsigned char, g_chunk_size>     buf_in{};
+        std::array<unsigned char, g_buff_len>       buf_out{};
+        std::array<unsigned char, g_header_size>    header{};
+        crypto_secretstream_xchacha20poly1305_state st;
+        std::ofstream                               fp_t(target_path, std::ios::binary);
+        unsigned long long                          out_len;
+        unsigned char                               tag;
+        std::stringstream                           mnemonic_ss;
+
+        mnemonic_ss << mnemonic;
+        crypto_secretstream_xchacha20poly1305_init_push(&st, header.data(), key);
+        fp_t.write(reinterpret_cast<const char*>(header.data()), header.size());
+        do
+        {
+            mnemonic_ss.read(reinterpret_cast<char*>(buf_in.data()), buf_in.size());
+            tag = mnemonic_ss.eof() ? crypto_secretstream_xchacha20poly1305_TAG_FINAL : 0;
+            crypto_secretstream_xchacha20poly1305_push(&st, buf_out.data(), &out_len, buf_in.data(), mnemonic_ss.gcount(), nullptr, 0, tag);
+            fp_t.write(reinterpret_cast<const char*>(buf_out.data()), (size_t)out_len);
+        } while (not mnemonic_ss.eof());
+    }
+
+    std::string
+    decrypt(std::filesystem::path encrypted_file_path, const unsigned char* key, std::error_code& ec)
+    {
+        LOG_SCOPE_FUNCTION(INFO);
+
+        std::array<unsigned char, g_buff_len>       buf_in{};
+        std::array<unsigned char, g_chunk_size>     buf_out{};
+        std::array<unsigned char, g_header_size>    header{};
+        std::stringstream                           out;
+        crypto_secretstream_xchacha20poly1305_state st;
+        std::ifstream                               fp_s(encrypted_file_path, std::ios::binary);
+        unsigned long long                          out_len;
+        unsigned char                               tag;
+
+        fp_s.read(reinterpret_cast<char*>(header.data()), header.size());
+        if (crypto_secretstream_xchacha20poly1305_init_pull(&st, header.data(), key) != 0)
+        {
+            ec = dextop_error::wrong_password;
+            return "";
+        }
+        do
+        {
+            fp_s.read(reinterpret_cast<char*>(buf_in.data()), buf_in.size());
+            if (crypto_secretstream_xchacha20poly1305_pull(&st, buf_out.data(), &out_len, &tag, buf_in.data(), fp_s.gcount(), nullptr, 0) != 0)
+            {
+                ec = dextop_error::corrupted_file;
+                return "";
+            }
+            if (tag == crypto_secretstream_xchacha20poly1305_TAG_FINAL && not fp_s.eof())
+            {
+                ec = dextop_error::corrupted_file;
+                return "";
+            }
+            out.write(reinterpret_cast<const char*>(buf_out.data()), out_len);
+        } while (not fp_s.eof());
+
+        return out.str();
     }
 } // namespace atomic_dex

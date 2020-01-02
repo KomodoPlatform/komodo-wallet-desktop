@@ -22,4 +22,6 @@
 namespace atomic_dex
 {
     auto derive_password(const std::string& password, std::error_code& ec);
-}
+    void encrypt(std::filesystem::path target_path, const char* mnemonic, const unsigned char* key);
+    std::string decrypt(std::filesystem::path encrypted_file_path, const unsigned char* key, std::error_code& ec);
+} // namespace atomic_dex

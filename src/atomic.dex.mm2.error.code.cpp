@@ -70,6 +70,10 @@ namespace
                    "log.";
         case dextop_error::derive_password_failed:
             return "Derivation of the password using libsodium failed.";
+        case dextop_error::wrong_password:
+            return "Wrong password";
+        case dextop_error::corrupted_file:
+            return "Did you try to modify an encrypted file ? Don't do that, delete your encrypted file and regenerate or import a key";
         }
         return "";
     }

@@ -29,6 +29,8 @@ enum class dextop_error
     rpc_buy_error,
     rpc_sell_error,
     derive_password_failed,
+    wrong_password,
+    corrupted_file,
     invalid_fiat_for_rate_conversion,
     unknown_ticker,
     unknown_ticker_for_rate_conversion,
