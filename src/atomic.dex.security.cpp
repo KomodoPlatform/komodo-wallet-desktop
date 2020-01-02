@@ -18,18 +18,10 @@
 #include "atomic.dex.security.hpp"
 #include "atomic.dex.mm2.error.code.hpp"
 
-namespace
-{
-    constexpr std::size_t g_salt_len    = crypto_pwhash_SALTBYTES;
-    constexpr std::size_t g_key_len     = crypto_secretstream_xchacha20poly1305_KEYBYTES;
-    constexpr std::size_t g_chunk_size  = 4096;
-    constexpr std::size_t g_buff_len    = (g_chunk_size + crypto_secretstream_xchacha20poly1305_ABYTES);
-    constexpr std::size_t g_header_size = crypto_secretstream_xchacha20poly1305_HEADERBYTES;
-} // namespace
 
 namespace atomic_dex
 {
-    auto
+    t_password_key
     derive_password(const std::string& password, std::error_code& ec)
     {
         LOG_SCOPE_FUNCTION(INFO);
