@@ -44,7 +44,7 @@ namespace atomic_dex
     }
 
     void
-    encrypt(std::filesystem::path target_path, const char* mnemonic, const unsigned char* key)
+    encrypt(const std::filesystem::path& target_path, const char* mnemonic, const unsigned char* key)
     {
         LOG_SCOPE_FUNCTION(INFO);
 
@@ -70,7 +70,7 @@ namespace atomic_dex
     }
 
     std::string
-    decrypt(std::filesystem::path encrypted_file_path, const unsigned char* key, std::error_code& ec)
+    decrypt(const std::filesystem::path& encrypted_file_path, const unsigned char* key, std::error_code& ec)
     {
         LOG_SCOPE_FUNCTION(INFO);
 
