@@ -189,7 +189,7 @@ namespace
 
         bool active = true;
         ImGui::SetNextWindowSize(ImVec2(1000, 500), ImGuiCond_FirstUseEver);
-        ImGui::Begin(my_json_texts["logs_console_title"].c_str(), &active, ImGuiWindowFlags_NoCollapse);
+        ImGui::Begin(gui.get_texts()["logs_console_title"].get<std::string>().c_str(), &active, ImGuiWindowFlags_NoCollapse);
         if (!active) gui_vars.console.is_open = false;
 
         auto logs = gui.get_console_buffer();
@@ -207,21 +207,21 @@ namespace
     }
 
     void
-    gui_password_input(std::array<char, 100>& password_input, bool& show_password)
+    gui_password_input(atomic_dex::gui& gui, std::array<char, 100>& password_input, bool& show_password)
     {
         ImGuiInputTextFlags password_flags = ImGuiInputTextFlags_CallbackCharFilter;
         if (!show_password) password_flags |= ImGuiInputTextFlags_Password;
-        ImGui::Text(my_json_texts["password_input_name"].c_str());
+        ImGui::Text("%s", gui.get_texts()["password_input_name"].get<std::string>().c_str());
         ImGui::SetNextItemWidth(300.0f);
         ImGui::InputText(
             "##login_page_password_input", password_input.data(), password_input.size(), password_flags, input_filter_password, password_input.data());
         ImGui::SameLine();
-        if (ImGui::Button((std::string(show_password ? my_json_texts["hide_password_name"].c_str() : my_json_texts["show_password_name"].c_str()) +
+        if (ImGui::Button((std::string(show_password ? gui.get_texts()["hide_password_name"].get<std::string>().c_str() : gui.get_texts()["show_password_name"].get<std::string>().c_str()) +
             "##login_page_show_password_button").c_str())) { show_password = !show_password; }
     }
 
     void
-    gui_login_page(entt::dispatcher& dispatcher, atomic_dex::gui_variables& gui_vars)
+    gui_login_page(entt::dispatcher& dispatcher, atomic_dex::gui& gui, atomic_dex::gui_variables& gui_vars)
     {
         auto& startup        = gui_vars.startup_page;
         auto& vars           = startup.login_page;
@@ -233,13 +233,13 @@ namespace
         ImGui::SetCursorPosX((ImGui::GetWindowSize().x - child_size.x) * 0.5f);
         ImGui::BeginChild("##login_page_child", child_size, true);
         {
-            ImGui::Text(my_json_texts["login_page_title"].c_str());
+            ImGui::Text("%s", gui.get_texts()["login_page_title"].get<std::string>().c_str());
             ImGui::Separator();
-            gui_password_input(password_input, show_password);
+            gui_password_input(gui, password_input, show_password);
             ImGui::Separator();
-            if (ImGui::Button((my_json_texts["login_page_recover_seed_button"] + "##login_page_recover_seed_button").c_str())) startup.current_page = startup.SEED_RECOVERY;
+            if (ImGui::Button((gui.get_texts()["login_page_recover_seed_button"].get<std::string>() + "##login_page_recover_seed_button").c_str())) startup.current_page = startup.SEED_RECOVERY;
             ImGui::SameLine();
-            if (ImGui::Button((my_json_texts["login_page_login_button"] + "##login_page_login_button").c_str()))
+            if (ImGui::Button((gui.get_texts()["login_page_login_button"].get<std::string>() + "##login_page_login_button").c_str()))
             {
                 if (strcmp(password_input.data(), "") == 0) { error_text = "Please fill the Password field!"; }
                 else
@@ -290,7 +290,7 @@ namespace
     }
 
     void
-    gui_seed_creation(entt::dispatcher& dispatcher, atomic_dex::gui_variables& gui_vars)
+    gui_seed_creation(entt::dispatcher& dispatcher, atomic_dex::gui& gui, atomic_dex::gui_variables& gui_vars)
     {
         auto& startup                  = gui_vars.startup_page;
         auto& vars                     = startup.seed_creation_page;
@@ -310,33 +310,33 @@ namespace
         ImGui::SetCursorPosX((ImGui::GetWindowSize().x - child_size.x) * 0.5f);
         ImGui::BeginChild("##seed_creation_child", child_size, true);
         {
-            ImGui::Text(my_json_texts["seed_creation_title"].c_str());
+            ImGui::Text("%s", gui.get_texts()["seed_creation_title"].get<std::string>().c_str());
             ImGui::Separator();
-            ImGui::Text(my_json_texts["seed_creation_warning"].c_str());
-            ImGui::Text(my_json_texts["seed_creation_generated_seed"].c_str());
+            ImGui::Text("%s", gui.get_texts()["seed_creation_warning"].get<std::string>().c_str());
+            ImGui::Text("%s", gui.get_texts()["seed_creation_generated_seed"].get<std::string>().c_str());
             ImGui::SetNextItemWidth(300.0f);
             gui_disable_items(true);
             ImGui::InputText(
                 "##generated_seed_read_only", generated_seed_read_only.data(), generated_seed_read_only.size(),
                 ImGuiInputTextFlags_ReadOnly | ImGuiInputTextFlags_AutoSelectAll);
             gui_enable_items(true);
-            ImGui::Text(my_json_texts["seed_creation_confirm_seed"].c_str());
+            ImGui::Text("%s", gui.get_texts()["seed_creation_confirm_seed"].get<std::string>().c_str());
             ImGui::SetNextItemWidth(300.0f);
             ImGui::InputText("##generated_seed_confirmation", generated_seed_confirm.data(), generated_seed_confirm.size());
-            gui_password_input(password_input, show_password);
+            gui_password_input(gui, password_input, show_password);
             ImGui::Separator();
-            if (ImGui::Button((my_json_texts["seed_creation_back_to_new_user_page_button"] + "##seed_creation_back_to_new_user_page_button").c_str())) { startup.current_page = startup.NONE; }
+            if (ImGui::Button((gui.get_texts()["seed_creation_back_to_new_user_page_button"].get<std::string>() + "##seed_creation_back_to_new_user_page_button").c_str())) { startup.current_page = startup.NONE; }
             ImGui::SameLine();
-            if (ImGui::Button((my_json_texts["seed_creation_confirm_button"] + "##seed_creation_confirm_button").c_str()))
+            if (ImGui::Button((gui.get_texts()["seed_creation_confirm_button"].get<std::string>() + "##seed_creation_confirm_button").c_str()))
             {
-                if (strcmp(generated_seed_confirm.data(), "") == 0) { error_text = my_json_texts["seed_creation_confirm_seed_empty_error"]; }
+                if (strcmp(generated_seed_confirm.data(), "") == 0) { error_text = gui.get_texts()["seed_creation_confirm_seed_empty_error"].get<std::string>(); }
                 else if (strcmp(password_input.data(), "") == 0)
                 {
-                    error_text = my_json_texts["seed_creation_password_empty_error"];
+                    error_text = gui.get_texts()["seed_creation_password_empty_error"].get<std::string>();
                 }
                 else if (generated_seed_read_only != generated_seed_confirm)
                 {
-                    error_text = my_json_texts["seed_creation_seeds_dont_match_error"];
+                    error_text = gui.get_texts()["seed_creation_seeds_dont_match_error"].get<std::string>();
                 }
                 else
                 {
@@ -367,7 +367,7 @@ namespace
     }
 
     void
-    gui_seed_recovery(entt::dispatcher& dispatcher, atomic_dex::gui_variables& gui_vars)
+    gui_seed_recovery(entt::dispatcher& dispatcher, atomic_dex::gui& gui, atomic_dex::gui_variables& gui_vars)
     {
         auto& startup        = gui_vars.startup_page;
         auto& vars           = startup.seed_recovery_page;
@@ -380,21 +380,21 @@ namespace
         ImGui::SetCursorPosX((ImGui::GetWindowSize().x - child_size.x) * 0.5f);
         ImGui::BeginChild("##seed_creation_child", child_size, true);
         {
-            ImGui::Text(my_json_texts["seed_recovery_title"].c_str());
+            ImGui::Text("%s", gui.get_texts()["seed_recovery_title"].get<std::string>().c_str());
             ImGui::Separator();
-            ImGui::Text(my_json_texts["seed_recovery_seed_input_name"].c_str());
+            ImGui::Text("%s", gui.get_texts()["seed_recovery_seed_input_name"].get<std::string>().c_str());
             ImGui::SetNextItemWidth(300.0f);
             ImGui::InputText("##seed_recovery_seed_input", seed_input.data(), seed_input.size());
-            gui_password_input(password_input, show_password);
+            gui_password_input(gui, password_input, show_password);
             ImGui::Separator();
-            if (ImGui::Button((my_json_texts["seed_recovery_back_to_new_user_page_button"] + "##seed_recovery_back_to_new_user_page_button").c_str())) { startup.current_page = startup.NONE; }
+            if (ImGui::Button((gui.get_texts()["seed_recovery_back_to_new_user_page_button"].get<std::string>() + "##seed_recovery_back_to_new_user_page_button").c_str())) { startup.current_page = startup.NONE; }
             ImGui::SameLine();
-            if (ImGui::Button((my_json_texts["seed_recovery_confirm_button"] + "##seed_recovery_confirm_button").c_str()))
+            if (ImGui::Button((gui.get_texts()["seed_recovery_confirm_button"].get<std::string>() + "##seed_recovery_confirm_button").c_str()))
             {
-                if (strcmp(seed_input.data(), "") == 0) { error_text = my_json_texts["seed_recovery_seed_empty_error"]; }
+                if (strcmp(seed_input.data(), "") == 0) { error_text = gui.get_texts()["seed_recovery_seed_empty_error"].get<std::string>(); }
                 else if (strcmp(password_input.data(), "") == 0)
                 {
-                    error_text = my_json_texts["seed_recovery_password_empty_error"];
+                    error_text = gui.get_texts()["seed_recovery_password_empty_error"].get<std::string>();
                 }
                 else
                 {
@@ -425,7 +425,7 @@ namespace
     }
 
     void
-    gui_new_user_page(entt::dispatcher& dispatcher, atomic_dex::gui_variables& gui_vars)
+    gui_new_user_page(entt::dispatcher& dispatcher, atomic_dex::gui& gui, atomic_dex::gui_variables& gui_vars)
     {
         auto& startup      = gui_vars.startup_page;
         auto& current_page = startup.current_page;
@@ -436,17 +436,17 @@ namespace
             ImGui::SetCursorPosX((ImGui::GetWindowSize().x - child_size.x) * 0.5f);
             ImGui::BeginChild("##login_page_child", child_size, true);
             {
-                if (ImGui::Button((my_json_texts["new_user_page_recover_seed_button"] + "##new_user_page_recover_seed_button").c_str())) current_page = startup.SEED_RECOVERY;
+                if (ImGui::Button((gui.get_texts()["new_user_page_recover_seed_button"].get<std::string>() + "##new_user_page_recover_seed_button").c_str())) current_page = startup.SEED_RECOVERY;
                 ImGui::SameLine();
-                if (ImGui::Button((my_json_texts["new_user_page_create_new_user_button"] + "##new_user_page_create_new_user_button").c_str())) current_page = startup.SEED_CREATION;
+                if (ImGui::Button((gui.get_texts()["new_user_page_create_new_user_button"].get<std::string>() + "##new_user_page_create_new_user_button").c_str())) current_page = startup.SEED_CREATION;
             }
             ImGui::EndChild();
         }
         else
         {
-            if (current_page == startup.SEED_CREATION) gui_seed_creation(dispatcher, gui_vars);
+            if (current_page == startup.SEED_CREATION) gui_seed_creation(dispatcher, gui, gui_vars);
             else if (current_page == startup.SEED_RECOVERY)
-                gui_seed_recovery(dispatcher, gui_vars);
+                gui_seed_recovery(dispatcher, gui, gui_vars);
         }
     }
 
@@ -463,23 +463,23 @@ namespace
         ImGui::SetCursorPosY(ImGui::GetCursorPosY() + 20.0f);
 
         auto& startup = gui_vars.startup_page;
-        if (startup.seed_exists && startup.current_page == startup.LOGIN) { gui_login_page(dispatcher, gui_vars); }
+        if (startup.seed_exists && startup.current_page == startup.LOGIN) { gui_login_page(dispatcher, gui, gui_vars); }
         else
         {
-            gui_new_user_page(dispatcher, gui_vars);
+            gui_new_user_page(dispatcher, gui, gui_vars);
         }
     }
 
     void
-    gui_settings_modal(atomic_dex::gui_variables& gui_vars)
+    gui_settings_modal(atomic_dex::gui& gui, atomic_dex::gui_variables& gui_vars)
     {
-        if (ImGui::BeginPopupModal((my_json_texts["settings_modal_title"] + "##settings_modal").c_str(), nullptr, ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoMove))
+        if (ImGui::BeginPopupModal((gui.get_texts()["settings_modal_title"].get<std::string>() + "##settings_modal").c_str(), nullptr, ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoMove))
         {
             // Languages
             auto& vars = gui_vars.settings;
 
             auto& curr_lang = vars.curr_lang;
-            if (ImGui::BeginCombo((my_json_texts["settings_language"] + "##settings_language").c_str(), curr_lang.c_str()))
+            if (ImGui::BeginCombo((gui.get_texts()["settings_language"].get<std::string>() + "##settings_language").c_str(), curr_lang.c_str()))
             {
                 for (auto&& l: vars.available_languages)
                 {
@@ -493,7 +493,7 @@ namespace
             ImGui::Separator();
 
             auto& curr_fiat = vars.curr_fiat;
-            if (ImGui::BeginCombo((my_json_texts["settings_fiat"] + "##settings_fiat").c_str(), curr_fiat.c_str()))
+            if (ImGui::BeginCombo((gui.get_texts()["settings_fiat"].get<std::string>() + "##settings_fiat").c_str(), curr_fiat.c_str()))
             {
                 for (auto&& f: vars.available_fiats)
                 {
@@ -506,7 +506,7 @@ namespace
 
             ImGui::Separator();
 
-            if (ImGui::Button(my_json_texts["settings_close_button"].c_str()))
+            if (ImGui::Button(gui.get_texts()["settings_close_button"].get<std::string>().c_str()))
             {
                 // TODO: Do required changes
                 ImGui::CloseCurrentPopup();
@@ -517,17 +517,17 @@ namespace
     }
 
     void
-    gui_menubar([[maybe_unused]] atomic_dex::gui& system, atomic_dex::gui_variables& gui_vars) noexcept
+    gui_menubar([[maybe_unused]] atomic_dex::gui& gui, atomic_dex::gui_variables& gui_vars) noexcept
     {
         if (ImGui::BeginMenuBar())
         {
-            if (ImGui::MenuItem(my_json_texts["menu_item_settings"].c_str(), "Ctrl+G")) { ImGui::OpenPopup((my_json_texts["settings_modal_title"] + "##settings_modal").c_str()); }
+            if (ImGui::MenuItem(gui.get_texts()["menu_item_settings"].get<std::string>().c_str(), "Ctrl+G")) { ImGui::OpenPopup((gui.get_texts()["settings_modal_title"].get<std::string>() + "##settings_modal").c_str()); }
 
-            gui_settings_modal(gui_vars);
+            gui_settings_modal(gui, gui_vars);
 
-            if (ImGui::MenuItem(my_json_texts["menu_item_console"].c_str(), "Ctrl+K")) { gui_vars.console.is_open = true; }
+            if (ImGui::MenuItem(gui.get_texts()["menu_item_console"].get<std::string>().c_str(), "Ctrl+K")) { gui_vars.console.is_open = true; }
 #if defined(ENABLE_CODE_RELOAD_UNIX)
-            if (ImGui::MenuItem(my_json_texts["menu_item_code_reloading"].c_str(), "Ctrl+O")) { system.reload_code(); }
+            if (ImGui::MenuItem(gui.get_texts()["menu_item_code_reloading"].get<std::string>().c_str(), "Ctrl+O")) { gui.reload_code(); }
 #endif
             ImGui::EndMenuBar();
         }
@@ -552,22 +552,22 @@ namespace
     }
 
     void
-    gui_transaction_details_modal(
+    gui_transaction_details_modal(atomic_dex::gui& gui,
         atomic_dex::coinpaprika_provider& paprika_system, bool open_modal, const atomic_dex::coin_config& curr_asset, const atomic_dex::tx_infos& tx,
         atomic_dex::gui_variables& gui_vars)
     {
         ImGui::PushID(tx.tx_hash.c_str());
 
-        if (open_modal) ImGui::OpenPopup(my_json_texts["tx_details_title"].c_str());
+        if (open_modal) ImGui::OpenPopup(gui.get_texts()["tx_details_title"].get<std::string>().c_str());
 
         ImGui::SetNextWindowSizeConstraints({0, 0}, {gui_vars.main_window_size.x - 50, gui_vars.main_window_size.y - 50});
-        if (ImGui::BeginPopupModal(my_json_texts["tx_details_title"].c_str(), nullptr, ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoMove))
+        if (ImGui::BeginPopupModal(gui.get_texts()["tx_details_title"].get<std::string>().c_str(), nullptr, ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoMove))
         {
             std::error_code ec;
 
             ImGui::Separator();
 
-            ImGui::Text("%s", tx.am_i_sender ? my_json_texts["tx_details_sent"].c_str() : my_json_texts["tx_details_received"].c_str());
+            ImGui::Text("%s", tx.am_i_sender ? gui.get_texts()["tx_details_sent"].get<std::string>().c_str() : gui.get_texts()["tx_details_received"].get<std::string>().c_str());
             ImGui::TextColored(
                 ImVec4(tx.am_i_sender ? loss_color : gain_color), "%s%s %s", tx.am_i_sender ? "" : "+", tx.my_balance_change.c_str(),
                 curr_asset.ticker.c_str());
@@ -577,46 +577,46 @@ namespace
             if (tx.timestamp != 0)
             {
                 ImGui::Separator();
-                ImGui::Text(my_json_texts["tx_details_date"].c_str());
+                ImGui::Text("%s", gui.get_texts()["tx_details_date"].get<std::string>().c_str());
                 ImGui::TextColored(value_color, "%s", tx.date.c_str());
             }
 
             ImGui::Separator();
-            ImGui::Text(my_json_texts["tx_details_from"].c_str());
+            ImGui::Text("%s", gui.get_texts()["tx_details_from"].get<std::string>().c_str());
             for (auto& addr: tx.from) ImGui::TextColored(value_color, "%s", addr.c_str());
 
             ImGui::Separator();
 
-            ImGui::Text(my_json_texts["tx_details_to"].c_str());
+            ImGui::Text("%s", gui.get_texts()["tx_details_to"].get<std::string>().c_str());
             for (auto& addr: tx.to) ImGui::TextColored(value_color, "%s", addr.c_str());
 
             ImGui::Separator();
 
-            ImGui::Text(my_json_texts["tx_details_fees"].c_str());
+            ImGui::Text("%s", gui.get_texts()["tx_details_fees"].get<std::string>().c_str());
             ImGui::TextColored(value_color, "%s", tx.fees.c_str());
 
             ImGui::Separator();
 
-            ImGui::Text(my_json_texts["tx_details_tx_hash"].c_str());
+            ImGui::Text("%s", gui.get_texts()["tx_details_tx_hash"].get<std::string>().c_str());
             ImGui::TextColored(value_color, "%s", tx.tx_hash.c_str());
 
             ImGui::Separator();
 
-            ImGui::Text(my_json_texts["tx_details_block_height"].c_str());
+            ImGui::Text("%s", gui.get_texts()["tx_details_block_height"].get<std::string>().c_str());
             ImGui::TextColored(value_color, "%lu", tx.block_height);
 
             ImGui::Separator();
 
-            ImGui::Text(my_json_texts["tx_details_confirmations"].c_str());
+            ImGui::Text("%s", gui.get_texts()["tx_details_confirmations"].get<std::string>().c_str());
             ImGui::TextColored(value_color, "%lu", tx.confirmations);
 
             ImGui::Separator();
 
-            if (ImGui::Button(my_json_texts["tx_details_close_button"].c_str())) ImGui::CloseCurrentPopup();
+            if (ImGui::Button(gui.get_texts()["tx_details_close_button"].get<std::string>().c_str())) ImGui::CloseCurrentPopup();
 
             ImGui::SameLine();
 
-            if (ImGui::Button(my_json_texts["tx_details_close_button"].c_str())) antara::gaming::core::open_url_browser(curr_asset.explorer_url[0] + "tx/" + tx.tx_hash);
+            if (ImGui::Button(gui.get_texts()["tx_details_view_in_explorer"].get<std::string>().c_str())) antara::gaming::core::open_url_browser(curr_asset.explorer_url[0] + "tx/" + tx.tx_hash);
 
             ImGui::EndPopup();
         }
@@ -642,13 +642,13 @@ namespace
 
             ImGui::Text(
                 std::string(std::string(reinterpret_cast<const char*>(ICON_FA_BALANCE_SCALE)) + " %s: %s %s (%s USD)").c_str(),
-                my_json_texts["coin_details_balance"].c_str(),
+                gui.get_texts()["coin_details_balance"].get<std::string>().c_str(),
                 mm2.my_balance(curr_asset.ticker, ec).c_str(), curr_asset.ticker.c_str(),
                 paprika_system.get_price_in_fiat("USD", curr_asset.ticker, ec).c_str());
             ImGui::Separator();
             if (ImGui::BeginTabBar("##Tabs", ImGuiTabBarFlags_None))
             {
-                if (ImGui::BeginTabItem(my_json_texts["coin_details_transactions_tab"].c_str()))
+                if (ImGui::BeginTabItem(gui.get_texts()["coin_details_transactions_tab"].get<std::string>().c_str()))
                 {
                     std::error_code error_code;
                     auto            tx_history = mm2.get_tx_history(curr_asset.ticker, error_code);
@@ -674,18 +674,18 @@ namespace
                             if (ImGui::IsItemClicked()) { open_modal = true; }
 
                             // Transaction Details modal
-                            gui_transaction_details_modal(paprika_system, open_modal, curr_asset, tx, gui_vars);
+                            gui_transaction_details_modal(gui, paprika_system, open_modal, curr_asset, tx, gui_vars);
 
                             if (i != tx_history.size() - 1) ImGui::Separator();
                         }
                     }
                     else
-                        ImGui::Text(my_json_texts["coin_details_transactions_page_no_transactions"].c_str());
+                        ImGui::Text("%s", gui.get_texts()["coin_details_transactions_page_no_transactions"].get<std::string>().c_str());
 
                     ImGui::EndTabItem();
                 }
 
-                if (ImGui::BeginTabItem(my_json_texts["coin_details_receive_tab"].c_str()))
+                if (ImGui::BeginTabItem(gui.get_texts()["coin_details_receive_tab"].get<std::string>().c_str()))
                 {
                     auto& vars              = gui_vars.receive_page;
                     auto& address_read_only = vars.address_read_only;
@@ -694,7 +694,7 @@ namespace
                     auto            addr = mm2.address(curr_asset.ticker, ec);
                     copy_str(addr, address_read_only.data(), address_read_only.size());
 
-                    ImGui::Text(my_json_texts["coin_details_receive_page_address_info_message"].c_str());
+                    ImGui::Text("%s", gui.get_texts()["coin_details_receive_page_address_info_message"].get<std::string>().c_str());
 
                     ImGui::PushItemWidth(addr.length() * ImGui::GetFont()->FontSize * 0.5f);
                     ImGui::InputText(
@@ -704,7 +704,7 @@ namespace
                     ImGui::EndTabItem();
                 }
 
-                if (ImGui::BeginTabItem(my_json_texts["coin_details_send_tab"].c_str()))
+                if (ImGui::BeginTabItem(gui.get_texts()["coin_details_send_tab"].get<std::string>().c_str()))
                 {
                     auto& vars             = gui_vars.send_coin[curr_asset.ticker];
                     auto& answer           = vars.answer;
@@ -721,32 +721,32 @@ namespace
                         // Failed transaction
                         if (has_error)
                         {
-                            ImGui::Text(my_json_texts["send_coin_tx_results_failed"].c_str());
+                            ImGui::Text("%s", gui.get_texts()["send_coin_tx_results_failed"].get<std::string>().c_str());
 
                             // TODO: Make this error text readable
                             ImGui::Separator();
-                            ImGui::Text(my_json_texts["send_coin_tx_results_error_code"].c_str());
+                            ImGui::Text("%s", gui.get_texts()["send_coin_tx_results_error_code"].get<std::string>().c_str());
                             ImGui::TextColored(error_color, "%d", broadcast_answer.rpc_result_code);
 
                             ImGui::Separator();
-                            ImGui::Text(my_json_texts["send_coin_tx_results_error_details"].c_str());
+                            ImGui::Text("%s", gui.get_texts()["send_coin_tx_results_error_details"].get<std::string>().c_str());
                             ImGui::TextColored(error_color, "%s", broadcast_answer.raw_result.c_str());
                         }
                         // Successful transaction
                         else
                         {
-                            ImGui::TextColored(bright_color, my_json_texts["send_coin_tx_results_succeed"].c_str());
+                            ImGui::TextColored(bright_color, "%s", gui.get_texts()["send_coin_tx_results_succeed"].get<std::string>().c_str());
 
                             ImGui::Separator();
-                            ImGui::Text(my_json_texts["send_coin_tx_results_tx_hash"].c_str());
+                            ImGui::Text("%s", gui.get_texts()["send_coin_tx_results_tx_hash"].get<std::string>().c_str());
                             ImGui::TextColored(value_color, "%s", broadcast_answer.tx_hash.c_str());
 
                             ImGui::Separator();
 
-                            if (ImGui::Button(my_json_texts["send_coin_tx_results_okay_button"].c_str())) vars.clear();
+                            if (ImGui::Button(gui.get_texts()["send_coin_tx_results_okay_button"].get<std::string>().c_str())) vars.clear();
 
                             ImGui::SameLine();
-                            if (ImGui::Button((my_json_texts["send_coin_tx_results_view_in_explorer"] + "##tx_modal_view_transaction_button").c_str()))
+                            if (ImGui::Button((gui.get_texts()["send_coin_tx_results_view_in_explorer"].get<std::string>() + "##tx_modal_view_transaction_button").c_str()))
                                 antara::gaming::core::open_url_browser(curr_asset.explorer_url[0] + "tx/" + broadcast_answer.tx_hash);
                         }
                     }
@@ -756,19 +756,19 @@ namespace
                         const float width = 35 * ImGui::GetFont()->FontSize * 0.5f;
                         ImGui::SetNextItemWidth(width);
                         ImGui::InputText(
-                            (my_json_texts["send_coin_address_input"] + "##send_coin_address_input").c_str(), address_input.data(), address_input.size(), ImGuiInputTextFlags_CallbackCharFilter,
+                            (gui.get_texts()["send_coin_address_input"].get<std::string>() + "##send_coin_address_input").c_str(), address_input.data(), address_input.size(), ImGuiInputTextFlags_CallbackCharFilter,
                             input_filter_coin_address, address_input.data());
 
                         ImGui::SetNextItemWidth(width);
                         ImGui::InputDouble(
-                            (my_json_texts["send_coin_amount_input"] + "##send_coin_amount_input")).c_str(), &amount_input, input_slow_step_crypto, input_fast_step_crypto, input_format_crypto);
+                            (gui.get_texts()["send_coin_amount_input"].get<std::string>() + "##send_coin_amount_input").c_str(), &amount_input, input_slow_step_crypto, input_fast_step_crypto, input_format_crypto);
                         ImGui::SameLine();
 
                         auto balance = mm2.my_balance(curr_asset.ticker, ec);
 
-                        if (ImGui::Button((my_json_texts["send_coin_max_amount_button"] + "##send_coin_max_amount_button").c_str())) { amount_input = std::stod(balance); }
+                        if (ImGui::Button((gui.get_texts()["send_coin_max_amount_button"].get<std::string>() + "##send_coin_max_amount_button").c_str())) { amount_input = std::stod(balance); }
 
-                        if (ImGui::Button((my_json_texts["send_coin_send_button"] + "##send_coin_send_button").c_str()))
+                        if (ImGui::Button((gui.get_texts()["send_coin_send_button"].get<std::string>() + "##send_coin_send_button").c_str()))
                         {
                             mm2::api::withdraw_request request{curr_asset.ticker, address_input.data(), double_to_str(amount_input),
                                                                compare_double(amount_input, balance)};
@@ -782,29 +782,29 @@ namespace
                         }
                         else
                         {
-                            ImGui::TextColored(error_color, my_json_texts["send_coin_send_button"].c_str());
+                            ImGui::TextColored(error_color, "%s", gui.get_texts()["send_coin_send_button"].get<std::string>().c_str());
                         }
                     }
                     else
                     {
                         auto result = answer.result.value();
 
-                        ImGui::Text(my_json_texts["send_coin_confirmation_amount"].c_str());
+                        ImGui::Text("%s", gui.get_texts()["send_coin_confirmation_amount"].get<std::string>().c_str());
                         ImGui::TextColored(bright_color, "%lf", amount_input);
 
                         ImGui::Separator();
-                        ImGui::Text(my_json_texts["send_coin_confirmation_to_address"].c_str());
+                        ImGui::Text("%s", gui.get_texts()["send_coin_confirmation_to_address"].get<std::string>().c_str());
                         for (auto& addr: result.to) ImGui::TextColored(value_color, "%s", addr.c_str());
 
                         ImGui::Separator();
-                        ImGui::Text(my_json_texts["send_coin_confirmation_fee"].c_str());
+                        ImGui::Text("%s", gui.get_texts()["send_coin_confirmation_fee"].get<std::string>().c_str());
                         ImGui::TextColored(value_color, "%s", result.fee_details.normal_fees.value().amount.c_str());
 
-                        if (ImGui::Button((my_json_texts["send_coin_confirmation_cancel_button"] + "##send_coin_confirmation_cancel_button").c_str())) vars.clear();
+                        if (ImGui::Button((gui.get_texts()["send_coin_confirmation_cancel_button"].get<std::string>() + "##send_coin_confirmation_cancel_button").c_str())) vars.clear();
 
                         ImGui::SameLine();
 
-                        if (ImGui::Button((my_json_texts["send_coin_confirmation_confirm_button"] + "##send_coin_confirmation_confirm_button").c_str()))
+                        if (ImGui::Button((gui.get_texts()["send_coin_confirmation_confirm_button"].get<std::string>() + "##send_coin_confirmation_confirm_button").c_str()))
                         { broadcast_answer = mm2::api::rpc_send_raw_transaction({curr_asset.ticker, result.tx_hex}); }
                     }
 
@@ -834,12 +834,12 @@ namespace
 
             ImGui::TextColored(loss_color, "%s %s", info.available_amount.c_str(), info.base.c_str());
 
-            ImGui::TextColored(value_color, "%s: %s", my_json_texts["orders_list_price"].c_str(), info.price.c_str());
+            ImGui::TextColored(value_color, "%s: %s", gui.get_texts()["orders_list_price"].get<std::string>().c_str(), info.price.c_str());
             ImGui::SameLine(250);
             ImGui::TextColored(value_color, "%s", info.human_timestamp.c_str());
-            ImGui::TextColored(value_color, "%s: %s", my_json_texts["orders_list_order_id"].c_str(), info.order_id.c_str());
+            ImGui::TextColored(value_color, "%s: %s", gui.get_texts()["orders_list_order_id"].get<std::string>().c_str(), info.order_id.c_str());
 
-            if (ImGui::Button((my_json_texts["orders_list_cancel_button"] + "##cancel_order").c_str()))
+            if (ImGui::Button((gui.get_texts()["orders_list_cancel_button"].get<std::string>() + "##cancel_order").c_str()))
             {
                 atomic_dex::spawn([&mm2, info]() {
                     mm2::api::rpc_cancel_order({info.order_id});
@@ -853,13 +853,13 @@ namespace
     }
 
     void
-    gui_enable_coins(atomic_dex::mm2& mm2, atomic_dex::gui_variables& gui_vars)
+    gui_enable_coins(atomic_dex::gui& gui, atomic_dex::mm2& mm2, atomic_dex::gui_variables& gui_vars)
     {
-        if (ImGui::Button(my_json_texts["enable_coins_enable_a_coin_button"].c_str())) ImGui::OpenPopup(my_json_texts["enable_coins_popup_name"].c_str());
-        if (ImGui::BeginPopupModal(my_json_texts["enable_coins_popup_name"].c_str(), nullptr, ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoMove))
+        if (ImGui::Button(gui.get_texts()["enable_coins_enable_a_coin_button"].get<std::string>().c_str())) ImGui::OpenPopup(gui.get_texts()["enable_coins_popup_name"].get<std::string>().c_str());
+        if (ImGui::BeginPopupModal(gui.get_texts()["enable_coins_popup_name"].get<std::string>().c_str(), nullptr, ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoMove))
         {
             auto enableable_coins = mm2.get_enableable_coins();
-            ImGui::Text(enableable_coins.empty() ? my_json_texts["enable_coins_empty_list"].c_str() : my_json_texts["enable_coins_select_coins_text"].c_str());
+            ImGui::Text("%s", enableable_coins.empty() ? gui.get_texts()["enable_coins_empty_list"].get<std::string>().c_str() : gui.get_texts()["enable_coins_select_coins_text"].get<std::string>().c_str());
 
             if (!enableable_coins.empty()) ImGui::Separator();
 
@@ -883,11 +883,11 @@ namespace
             bool close = false;
             if (enableable_coins.empty())
             {
-                if (ImGui::Button(my_json_texts["enable_coins_close_button"].c_str())) close = true;
+                if (ImGui::Button(gui.get_texts()["enable_coins_close_button"].get<std::string>().c_str())) close = true;
             }
             else
             {
-                if (ImGui::Button(my_json_texts["enable_coins_enable_button"].c_str(), ImVec2(120, 0)))
+                if (ImGui::Button(gui.get_texts()["enable_coins_enable_button"].get<std::string>().c_str(), ImVec2(120, 0)))
                 {
                     // Enable selected coins
                     atomic_dex::spawn([&mm2, select_list_cpy = select_list_t]() { mm2.enable_multiple_coins(select_list_cpy); });
@@ -896,7 +896,7 @@ namespace
 
                 ImGui::SameLine();
 
-                if (ImGui::Button(my_json_texts["enable_coins_cancel_button"].c_str(), ImVec2(120, 0))) close = true;
+                if (ImGui::Button(gui.get_texts()["enable_coins_cancel_button"].get<std::string>().c_str(), ImVec2(120, 0))) close = true;
             }
 
             if (close)
@@ -915,9 +915,9 @@ namespace
     gui_portfolio(atomic_dex::gui& gui, atomic_dex::mm2& mm2, atomic_dex::coinpaprika_provider& paprika_system, atomic_dex::gui_variables& gui_vars)
     {
         std::error_code ec;
-        ImGui::Text("%s: %s", my_json_texts["portfolio_total_balance"].c_str(), usd_str(paprika_system.get_price_in_fiat_all("USD", ec)).c_str());
+        ImGui::Text("%s: %s", gui.get_texts()["portfolio_total_balance"].get<std::string>().c_str(), usd_str(paprika_system.get_price_in_fiat_all("USD", ec)).c_str());
 
-        gui_enable_coins(mm2, gui_vars);
+        gui_enable_coins(gui, mm2, gui_vars);
 
         // Left
         gui_portfolio_coins_list(gui, mm2, gui_vars);
@@ -932,7 +932,7 @@ namespace
     {
         gui_coin_name_img(gui, rel);
         ImGui::SameLine();
-        ImGui::Text(my_json_texts["x_amount_per_y"].c_str());
+        ImGui::Text("%s", gui.get_texts()["x_amount_per_y"].get<std::string>().c_str());
         ImGui::SameLine();
         gui_coin_name_img(gui, base);
     }
@@ -946,7 +946,7 @@ namespace
 
         gui_coin_name_img(gui, action == "Buy" ? rel : base);
         ImGui::SameLine();
-        ImGui::Text(my_json_texts["orderbook_table_x_sellers_volume_list_title"].c_str());
+        ImGui::Text("%s", gui.get_texts()["orderbook_table_x_sellers_volume_list_title"].get<std::string>().c_str());
         ImGui::NextColumn();
         gui_amount_per_coin(gui, base, rel);
 
@@ -980,7 +980,7 @@ namespace
         auto& sell_answer = vars.sell_request_answer;
         auto& buy_answer  = vars.buy_request_answer;
 
-        auto action_localized = action == "Buy" ? my_json_texts["buy_sell_coin_action_buy"] : my_json_texts["buy_sell_coin_action_sell"];
+        auto action_localized = action == "Buy" ? gui.get_texts()["buy_sell_coin_action_buy"].get<std::string>() : gui.get_texts()["buy_sell_coin_action_sell"].get<std::string>();
         ImGui::Text("%s", action_localized.c_str());
         ImGui::SameLine();
 
@@ -997,10 +997,10 @@ namespace
         auto& error_text   = action == "Buy" ? coin_vars.buy_error_text : coin_vars.sell_error_text;
 
         ImGui::SetNextItemWidth(160.0f);
-        ImGui::InputDouble((my_json_texts["buy_sell_coin_volume"] + "##trade_sell_volume" + action).c_str(), &amount_input, input_slow_step_crypto, input_fast_step_crypto, input_format_crypto);
+        ImGui::InputDouble((gui.get_texts()["buy_sell_coin_volume"].get<std::string>() + "##trade_sell_volume" + action).c_str(), &amount_input, input_slow_step_crypto, input_fast_step_crypto, input_format_crypto);
 
         ImGui::SetNextItemWidth(160.0f);
-        ImGui::InputDouble((my_json_texts["buy_sell_coin_price"] + "##trade_sell_price" + action).c_str(), &price_input, input_slow_step_crypto, input_fast_step_crypto, input_format_crypto);
+        ImGui::InputDouble((gui.get_texts()["buy_sell_coin_price"].get<std::string>() + "##trade_sell_price" + action).c_str(), &price_input, input_slow_step_crypto, input_fast_step_crypto, input_format_crypto);
 
         std::string                             total;
         std::string                             current_price  = double_to_str(price_input);
@@ -1027,7 +1027,7 @@ namespace
             std::error_code ec;
 
             ImGui::TextColored(
-                error_color, "%s %s %s", my_json_texts["buy_sell_coin_not_enough_funds_you_have"].c_str(), mm2.my_balance_with_locked_funds(action == "Sell" ? base : rel, ec).c_str(),
+                error_color, "%s %s %s", gui.get_texts()["buy_sell_coin_not_enough_funds_you_have"].get<std::string>().c_str(), mm2.my_balance_with_locked_funds(action == "Sell" ? base : rel, ec).c_str(),
                 (action == "Sell" ? base : rel).c_str());
         }
 
@@ -1036,7 +1036,7 @@ namespace
         {
             if (fields_are_filled)
                 ImGui::TextColored(
-                    bright_color, "%s %s %s", my_json_texts["buy_sell_coin_youll_receive"].c_str(), double_to_str(action == "Buy" ? current_amount_f : total_amount).c_str(),
+                    bright_color, "%s %s %s", gui.get_texts()["buy_sell_coin_youll_receive"].get<std::string>().c_str(), double_to_str(action == "Buy" ? current_amount_f : total_amount).c_str(),
                     (action == "Sell" ? rel : base).c_str());
         }
 
@@ -1081,21 +1081,21 @@ namespace
         else if (rpc_result_code == -1)
         {
             ImGui::Separator();
-            ImGui::Text(my_json_texts["buy_sell_coin_error_failed_to_sell"].c_str());
+            ImGui::Text("%s", gui.get_texts()["buy_sell_coin_error_failed_to_sell"].get<std::string>().c_str());
 
             ImGui::Separator();
-            ImGui::Text(my_json_texts["buy_sell_coin_error_code"].c_str());
+            ImGui::Text("%s", gui.get_texts()["buy_sell_coin_error_code"].get<std::string>().c_str());
             ImGui::TextColored(error_color, "%d", rpc_result_code);
 
             ImGui::Separator();
-            ImGui::Text(my_json_texts["buy_sell_coin_error_details"].c_str());
+            ImGui::Text("%s", gui.get_texts()["buy_sell_coin_error_details"].get<std::string>().c_str());
             ImGui::TextColored(error_color, "%s", raw_result.c_str());
         }
         else if (not raw_result.empty())
         {
             ImGui::Separator();
-            ImGui::TextColored(bright_color, "%s", action == "Buy" ? my_json_texts["buy_sell_coin_result_buy_order_placed"].c_str() : my_json_texts["buy_sell_coin_result_sell_order_placed"].c_str());
-            ImGui::TextColored(bright_color, "%s", my_json_texts["buy_sell_coin_order_complete_info"].c_str());
+            ImGui::TextColored(bright_color, "%s", action == "Buy" ? gui.get_texts()["buy_sell_coin_result_buy_order_placed"].get<std::string>().c_str() : gui.get_texts()["buy_sell_coin_result_sell_order_placed"].get<std::string>().c_str());
+            ImGui::TextColored(bright_color, "%s", gui.get_texts()["buy_sell_coin_order_complete_info"].get<std::string>().c_str());
         }
     }
 } // namespace
@@ -1202,6 +1202,9 @@ namespace atomic_dex
             gui_vars_.startup_page.seed_exists = gui_vars_.wallet_data.seed_exists();
             if (gui_vars_.startup_page.seed_exists) gui_vars_.startup_page.current_page = gui_vars_.startup_page.LOGIN;
         }
+
+        // Load languages
+        load_languages();
     }
 
     void
@@ -1216,6 +1219,8 @@ namespace atomic_dex
     void
     gui::update() noexcept
     {
+        auto& gui = *this;
+
         update_live_coding();
 
         //! Menu bar
@@ -1224,12 +1229,12 @@ namespace atomic_dex
 
         ImGui::SetNextWindowSize(ImVec2(x, y), ImGuiCond_FirstUseEver);
         bool active = true;
-        ImGui::Begin(my_json_texts["main_window_title"].c_str(), &active, ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_MenuBar);
+        ImGui::Begin(gui.get_texts()["main_window_title"].get<std::string>().c_str(), &active, ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_MenuBar);
         gui_vars_.main_window_size = ImGui::GetWindowSize();
         if (not active && mm2_system_.is_mm2_running()) { this->dispatcher_.trigger<ag::event::quit_game>(0); }
         if (!mm2_system_.is_mm2_running())
         {
-            ImGui::Text(my_json_texts["first_launch_loading_text"].c_str());
+            ImGui::Text("%s", gui.get_texts()["first_launch_loading_text"].get<std::string>().c_str());
             const float  radius = 30.0f;
             const ImVec2 position((ImGui::GetWindowSize().x) * 0.5f - radius, (ImGui::GetWindowSize().y) * 0.5f - radius);
             ImGui::SetCursorPos(position);
@@ -1249,19 +1254,19 @@ namespace atomic_dex
                     auto& in_exchange_prev  = vars.in_exchange_prev;
                     auto& trigger_trade_tab = vars.trigger_trade_tab;
 
-                    if (ImGui::BeginTabItem(my_json_texts["main_tabs_portfolio"].c_str()))
+                    if (ImGui::BeginTabItem(gui.get_texts()["main_tabs_portfolio"].get<std::string>().c_str()))
                     {
                         gui_disable_viewport();
                         gui_portfolio(*this, mm2_system_, paprika_system_, gui_vars_);
                         ImGui::EndTabItem();
                     }
 
-                    if (ImGui::BeginTabItem(my_json_texts["main_tabs_exchange"].c_str()))
+                    if (ImGui::BeginTabItem(gui.get_texts()["main_tabs_exchange"].get<std::string>().c_str()))
                     {
                         in_exchange = true;
                         if (ImGui::BeginTabBar("##ExchangeTabs", ImGuiTabBarFlags_None))
                         {
-                            if (ImGui::BeginTabItem(my_json_texts["exchange_page_tabs_trade"].c_str(), nullptr, trigger_trade_tab ? ImGuiTabItemFlags_SetSelected : 0))
+                            if (ImGui::BeginTabItem(gui.get_texts()["exchange_page_tabs_trade"].get<std::string>().c_str(), nullptr, trigger_trade_tab ? ImGuiTabItemFlags_SetSelected : 0))
                             {
                                 trigger_trade_tab = false;
 
@@ -1273,7 +1278,7 @@ namespace atomic_dex
 
                                 const float remaining_width = ImGui::GetContentRegionAvail().x - ImGui::GetStyle().ItemSpacing.x;
 
-                                ImGui::Text(my_json_texts["exchange_page_trade_tab_select_pairs_info"].c_str());
+                                ImGui::Text("%s", gui.get_texts()["exchange_page_trade_tab_select_pairs_info"].get<std::string>().c_str());
 
                                 ImGui::SetNextItemWidth(remaining_width / 6);
                                 if (ImGui::BeginCombo("##left", current_base.c_str()))
@@ -1312,10 +1317,10 @@ namespace atomic_dex
                                 if (!coins_are_selected) gui_disable_items();
 
                                 bool load_orderbook = false;
-                                if (ImGui::Button(my_json_texts["exchange_page_trade_tab_load_button"].c_str()) && not current_base.empty() && not current_rel.empty()) { load_orderbook = true; }
+                                if (ImGui::Button(gui.get_texts()["exchange_page_trade_tab_load_button"].get<std::string>().c_str()) && not current_base.empty() && not current_rel.empty()) { load_orderbook = true; }
 
                                 ImGui::SameLine();
-                                if (ImGui::Button(my_json_texts["exchange_page_trade_tab_swap_button"].c_str()) && not current_base.empty() && not current_rel.empty())
+                                if (ImGui::Button(gui.get_texts()["exchange_page_trade_tab_swap_button"].get<std::string>().c_str()) && not current_base.empty() && not current_rel.empty())
                                 {
                                     auto tmp       = current_base;
                                     current_base   = current_rel;
@@ -1368,7 +1373,7 @@ namespace atomic_dex
                             }
 
 
-                            if (ImGui::BeginTabItem(my_json_texts["exchange_page_tabs_orders"].c_str()))
+                            if (ImGui::BeginTabItem(gui.get_texts()["exchange_page_tabs_orders"].get<std::string>().c_str()))
                             {
                                 auto& orders_vars  = gui_vars_.orders_page;
                                 auto& current_base = orders_vars.current_base;
@@ -1385,7 +1390,7 @@ namespace atomic_dex
                                     ImGui::EndCombo();
                                 }
 
-                                if (current_base.empty()) ImGui::Text(my_json_texts["exchange_page_trade_tab_select_a_coin"].c_str());
+                                if (current_base.empty()) ImGui::Text("%s", gui.get_texts()["exchange_page_trade_tab_select_a_coin"].get<std::string>().c_str());
 
                                 if (!current_base.empty())
                                 {
@@ -1394,7 +1399,7 @@ namespace atomic_dex
 
                                     if (!orders.maker_orders.empty() || !orders.taker_orders.empty())
                                     {
-                                        if (ImGui::Button((my_json_texts["exchange_page_trade_tab_cancel_all_orders_button"] + "##cancel_all_orders").c_str()))
+                                        if (ImGui::Button((gui.get_texts()["exchange_page_trade_tab_cancel_all_orders_button"].get<std::string>() + "##cancel_all_orders").c_str()))
                                         {
                                             atomic_dex::spawn([this, current_base]() {
                                                 ::mm2::api::cancel_data cd;
@@ -1408,14 +1413,14 @@ namespace atomic_dex
                                     }
                                     else
                                     {
-                                        ImGui::Text(my_json_texts["exchange_page_trade_tab_no_orders_text"].c_str());
+                                        ImGui::Text("%s", gui.get_texts()["exchange_page_trade_tab_no_orders_text"].get<std::string>().c_str());
 
-                                        if (ImGui::Button((my_json_texts["exchange_page_trade_tab_create_an_order_button"] + "##no_orders_create_an_order").c_str())) { trigger_trade_tab = true; }
+                                        if (ImGui::Button((gui.get_texts()["exchange_page_trade_tab_create_an_order_button"].get<std::string>() + "##no_orders_create_an_order").c_str())) { trigger_trade_tab = true; }
                                     }
                                     // Maker
                                     if (!orders.maker_orders.empty())
                                     {
-                                        ImGui::TextColored(bright_color, "%s (%lu)", my_json_texts["exchange_page_trade_tab_maker_orders"].c_str(), orders.maker_orders.size());
+                                        ImGui::TextColored(bright_color, "%s (%lu)", gui.get_texts()["exchange_page_trade_tab_maker_orders"].get<std::string>().c_str(), orders.maker_orders.size());
                                         gui_orders_list(*this, mm2_system_, orders.maker_orders);
 
                                         if (!orders.taker_orders.empty()) ImGui::Separator();
@@ -1424,7 +1429,7 @@ namespace atomic_dex
                                     // Trader
                                     if (!orders.taker_orders.empty())
                                     {
-                                        ImGui::TextColored(bright_color, "%s (%lu)", my_json_texts["exchange_page_trade_tab_taker_orders"].c_str(), orders.taker_orders.size());
+                                        ImGui::TextColored(bright_color, "%s (%lu)", gui.get_texts()["exchange_page_trade_tab_taker_orders"].get<std::string>().c_str(), orders.taker_orders.size());
                                         gui_orders_list(*this, mm2_system_, orders.taker_orders);
                                     }
                                 }
@@ -1433,9 +1438,9 @@ namespace atomic_dex
                                 ImGui::EndTabItem();
                             }
 
-                            if (ImGui::BeginTabItem(my_json_texts["exchange_page_tabs_history"].c_str()))
+                            if (ImGui::BeginTabItem(gui.get_texts()["exchange_page_tabs_history"].get<std::string>().c_str()))
                             {
-                                ImGui::Text(my_json_texts["work_in_progress"].c_str());
+                                ImGui::Text("%s", gui.get_texts()["work_in_progress"].get<std::string>().c_str());
                                 ImGui::EndTabItem();
                             }
 

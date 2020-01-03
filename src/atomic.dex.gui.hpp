@@ -154,15 +154,12 @@ namespace atomic_dex
             {
                 // Language
                 available_languages.emplace_back("English");
-                available_languages.emplace_back("French");
-                available_languages.emplace_back("German");
                 available_languages.emplace_back("Turkish");
                 curr_lang = available_languages[0];
 
                 // Fiat
                 available_fiats.emplace_back("USD");
                 available_fiats.emplace_back("EUR");
-                available_fiats.emplace_back("TRY");
                 curr_fiat = available_fiats[0];
             }
         } settings;
@@ -218,6 +215,11 @@ namespace atomic_dex
             std::string                         str;
         };
 
+
+        const nlohmann::json& get_texts() const {
+            return texts.at(gui_vars_.settings.curr_lang);
+        }
+
       private:
         console_log_vars console_log_vars_;
 
@@ -225,6 +227,26 @@ namespace atomic_dex
         gui_variables                                                    gui_vars_;
         mm2&                                                             mm2_system_;
         coinpaprika_provider&                                            paprika_system_;
+
+        // Language
+        std::unordered_map<std::string, nlohmann::json> texts;
+
+        void load_language(const std::string& language) {
+            auto path = ag::core::assets_real_path() / "fonts/texts" / (language + ".json");
+            std::ifstream inf(path);
+            if(!inf) return;
+
+            std::stringstream infSS;
+            infSS << inf.rdbuf();
+            inf.close();
+
+            texts[language] = nlohmann::json::parse(infSS.str());
+        }
+
+        void load_languages() {
+            load_language("English");
+            load_language("Turkish");
+        }
     };
 } // namespace atomic_dex
 
