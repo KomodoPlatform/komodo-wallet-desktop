@@ -38,7 +38,7 @@ main(int argc, char* argv[])
     assert(sodium_init() == 0);
     atomic_dex::kill_executable("mm2");
     loguru::g_preamble_uptime = false;
-    loguru::g_preamble_date = false;
+    loguru::g_preamble_date   = false;
     loguru::set_thread_name("main thread");
     atomic_dex::application app;
     return app.run();

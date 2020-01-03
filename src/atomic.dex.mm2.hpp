@@ -90,8 +90,6 @@ namespace atomic_dex
         t_orderbook_registry  m_current_orderbook;
         t_swaps_registry      m_swaps_registry;
 
-        void spawn_mm2_instance();
-
         //! Refresh the current info (internally call process_balance and process_tx)
         void fetch_infos_thread();
 
@@ -132,6 +130,9 @@ namespace atomic_dex
         void on_gui_enter_trading(const gui_enter_trading& evt) noexcept;
 
         void on_gui_leave_trading(const gui_leave_trading& evt) noexcept;
+
+        //! Spawn mm2 instance with given seed
+        void spawn_mm2_instance(std::string passphrase = "thisIsTheNewProjectSeed2019##");
 
         //! Enable coins
         bool enable_default_coins() noexcept;

@@ -13,7 +13,7 @@ AlignAfterOpenBracket: AlwaysBreak
 AlignEscapedNewlines: Right
 AlignTrailingComments: true
 AllowShortFunctionsOnASingleLine: All
-AllowShortIfStatementsOnASingleLine: Always
+AllowShortIfStatementsOnASingleLine: Never
 AllowShortLambdasOnASingleLine: All
 AllowShortLoopsOnASingleLine: true
 AlwaysBreakAfterReturnType: AllDefinitions

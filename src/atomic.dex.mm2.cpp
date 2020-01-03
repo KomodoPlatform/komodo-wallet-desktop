@@ -82,7 +82,10 @@ namespace atomic_dex
     {
         using namespace std::chrono_literals;
 
-        if (not m_mm2_running) { return; }
+        if (not m_mm2_running)
+        {
+            return;
+        }
 
         const auto now    = std::chrono::high_resolution_clock::now();
         const auto s      = std::chrono::duration_cast<std::chrono::seconds>(now - m_orderbook_clock);
@@ -110,7 +113,10 @@ namespace atomic_dex
         m_mm2_running = false;
         const auto ec = m_mm2_instance.stop(stop_actions);
 
-        if (ec) { VLOG_SCOPE_F(loguru::Verbosity_ERROR, "error: %s", ec.message().c_str()); }
+        if (ec)
+        {
+            VLOG_SCOPE_F(loguru::Verbosity_ERROR, "error: %s", ec.message().c_str());
+        }
 
         m_mm2_init_thread.join();
     }
@@ -128,7 +134,10 @@ namespace atomic_dex
 
         for (auto&& [key, value]: m_coins_informations)
         {
-            if (value.currently_enabled) { destination.push_back(value); }
+            if (value.currently_enabled)
+            {
+                destination.push_back(value);
+            }
         }
 
         std::sort(begin(destination), end(destination), [](auto&& lhs, auto&& rhs) { return lhs.ticker < rhs.ticker; });
@@ -143,7 +152,10 @@ namespace atomic_dex
 
         for (auto&& [key, value]: m_coins_informations)
         {
-            if (not value.currently_enabled) { destination.emplace_back(value); }
+            if (not value.currently_enabled)
+            {
+                destination.emplace_back(value);
+            }
         }
 
         return destination;
@@ -156,7 +168,10 @@ namespace atomic_dex
 
         for (auto&& [key, value]: m_coins_informations)
         {
-            if (value.active) { destination.emplace_back(value); }
+            if (value.active)
+            {
+                destination.emplace_back(value);
+            }
         }
 
         return destination;
@@ -167,12 +182,18 @@ namespace atomic_dex
     {
         coin_config coin_info = m_coins_informations.at(ticker);
 
-        if (coin_info.currently_enabled) { return true; }
+        if (coin_info.currently_enabled)
+        {
+            return true;
+        }
 
         t_electrum_request request{.coin_name = coin_info.ticker, .servers = coin_info.electrum_urls, .with_tx_history = true};
         auto               answer = rpc_electrum(std::move(request));
 
-        if (answer.result not_eq "success") { return false; }
+        if (answer.result not_eq "success")
+        {
+            return false;
+        }
 
         coin_info.currently_enabled = true;
         m_coins_informations.assign(coin_info.ticker, coin_info);
@@ -242,7 +263,10 @@ namespace atomic_dex
     coin_config
     mm2::get_coin_info(const std::string& ticker) const
     {
-        if (m_coins_informations.find(ticker) == m_coins_informations.cend()) { return {}; }
+        if (m_coins_informations.find(ticker) == m_coins_informations.cend())
+        {
+            return {};
+        }
         return m_coins_informations.at(ticker);
     }
 
@@ -327,9 +351,9 @@ namespace atomic_dex
     }
 
     void
-    mm2::spawn_mm2_instance()
+    mm2::spawn_mm2_instance(std::string passphrase)
     {
-        mm2_config cfg{};
+        mm2_config cfg{.passphrase = std::move(passphrase)};
         json       json_cfg;
         const auto tools_path = ag::core::assets_real_path() / "tools/mm2/";
 
@@ -340,7 +364,10 @@ namespace atomic_dex
         reproc::redirect                 redirect_type = reproc::redirect::inherit;
         const auto                       ec = m_mm2_instance.start(args, {nullptr, tools_path.string().c_str(), {redirect_type, redirect_type, redirect_type}});
 
-        if (ec) { DVLOG_F(loguru::Verbosity_ERROR, "error: {}", ec.message()); }
+        if (ec)
+        {
+            DVLOG_F(loguru::Verbosity_ERROR, "error: {}", ec.message());
+        }
 
         m_mm2_init_thread = std::thread([this]() {
             using namespace std::chrono_literals;
@@ -379,7 +406,8 @@ namespace atomic_dex
     t_float_50
     mm2::get_balance_with_locked_funds(const std::string& ticker) const
     {
-        if (m_balance_informations.find(ticker) == m_balance_informations.end()) {
+        if (m_balance_informations.find(ticker) == m_balance_informations.end())
+        {
             return 0;
         }
         const auto       answer = m_balance_informations.at(ticker);
@@ -418,7 +446,10 @@ namespace atomic_dex
     mm2::withdraw(t_withdraw_request&& request, t_mm2_ec& ec) noexcept
     {
         auto result = rpc_withdraw(std::move(request));
-        if (result.error.has_value()) { ec = dextop_error::rpc_withdraw_error; }
+        if (result.error.has_value())
+        {
+            ec = dextop_error::rpc_withdraw_error;
+        }
         return result;
     }
 
@@ -426,7 +457,10 @@ namespace atomic_dex
     mm2::broadcast(t_broadcast_request&& request, t_mm2_ec& ec) noexcept
     {
         auto result = rpc_send_raw_transaction(std::move(request));
-        if (result.rpc_result_code == -1) { ec = dextop_error::rpc_send_raw_transaction_error; }
+        if (result.rpc_result_code == -1)
+        {
+            ec = dextop_error::rpc_send_raw_transaction_error;
+        }
         return result;
     }
 
@@ -442,7 +476,10 @@ namespace atomic_dex
     {
         t_my_recent_swaps_request request{.limit = 50};
         auto                      answer = rpc_my_recent_swaps(std::move(request));
-        if (answer.result.has_value()) { m_swaps_registry.insert_or_assign("result", answer.result.value()); }
+        if (answer.result.has_value())
+        {
+            m_swaps_registry.insert_or_assign("result", answer.result.value());
+        }
     }
 
     void
@@ -457,7 +494,10 @@ namespace atomic_dex
         t_tx_history_request tx_request{.coin = ticker, .limit = g_tx_max_limit};
         auto                 answer = rpc_my_tx_history(std::move(tx_request));
 
-        if (answer.error.has_value()) { VLOG_F(loguru::Verbosity_ERROR, "tx error: {}", answer.error.value()); }
+        if (answer.error.has_value())
+        {
+            VLOG_F(loguru::Verbosity_ERROR, "tx error: {}", answer.error.value());
+        }
         else if (answer.rpc_result_code not_eq -1 and answer.result.has_value())
         {
             t_transactions out;
@@ -466,6 +506,7 @@ namespace atomic_dex
             for (auto&& current: answer.result.value().transactions)
             {
                 tx_infos current_info{
+
                     .am_i_sender   = current.my_balance_change[0] == '-',
                     .confirmations = current.confirmations.has_value() ? current.confirmations.value() : 0,
                     .from          = current.from,
@@ -496,7 +537,10 @@ namespace atomic_dex
 
         const auto key = evt.base + "/" + evt.rel;
 
-        if (m_current_orderbook.find(key) == m_current_orderbook.cend()) { process_orderbook(evt.base, evt.rel); }
+        if (m_current_orderbook.find(key) == m_current_orderbook.cend())
+        {
+            process_orderbook(evt.base, evt.rel);
+        }
         else
         {
             DLOG_F(WARNING, "This book is already loaded, skipping");
