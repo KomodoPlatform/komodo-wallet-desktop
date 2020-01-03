@@ -128,7 +128,5 @@
     "exchange_page_trade_tab_no_orders_text": "No orders.",
     "exchange_page_trade_tab_create_an_order_button": "Create an order",
     "exchange_page_trade_tab_maker_orders": "Maker Orders",
-    "exchange_page_trade_tab_taker_orders": "Taker Orders",
-
-    "exchange_page_history_": "Taker Orders"
+    "exchange_page_trade_tab_taker_orders": "Taker Orders"
 }
