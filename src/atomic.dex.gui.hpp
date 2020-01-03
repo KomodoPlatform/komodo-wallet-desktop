@@ -222,7 +222,9 @@ namespace atomic_dex
             return texts.at(gui_vars_.settings.curr_lang);
         }
 
-        std::string get_text(const char* label) const {
+        std::string
+        get_text(const char* label) const
+        {
             return get_texts()[label].get<std::string>();
         }
 
