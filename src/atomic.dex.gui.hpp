@@ -216,7 +216,9 @@ namespace atomic_dex
         };
 
 
-        const nlohmann::json& get_texts() const {
+        const nlohmann::json&
+        get_texts() const
+        {
             return texts.at(gui_vars_.settings.curr_lang);
         }
 
@@ -231,10 +233,13 @@ namespace atomic_dex
         // Language
         std::unordered_map<std::string, nlohmann::json> texts;
 
-        void load_language(const std::string& language) {
-            auto path = ag::core::assets_real_path() / "fonts/texts" / (language + ".json");
+        void
+        load_language(const std::string& language)
+        {
+            auto          path = ag::core::assets_real_path() / "fonts/texts" / (language + ".json");
             std::ifstream inf(path);
-            if(!inf) return;
+            if (!inf)
+                return;
 
             std::stringstream infSS;
             infSS << inf.rdbuf();
@@ -243,7 +248,9 @@ namespace atomic_dex
             texts[language] = nlohmann::json::parse(infSS.str());
         }
 
-        void load_languages() {
+        void
+        load_languages()
+        {
             load_language("English");
             load_language("Turkish");
         }
