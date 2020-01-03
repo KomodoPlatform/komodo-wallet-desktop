@@ -1,0 +1,133 @@
+{
+    "main_window_title": "atomicDEX",
+    "first_launch_loading_text": "Yükleniyor, lütfen bekleyin...",
+    "work_in_progress": "Yapım aşamasında",
+
+    "logs_console_title": "Konsol",
+    "password_input_name": "Parola",
+    "hide_password_name": "Sakla",
+    "show_password_name": "Göster",
+    
+    "login_page_title": "Giriş",
+    "login_page_recover_seed_button": "Seed Kurtarma",
+    "login_page_login_button": "Gir",
+
+    "seed_creation_title": "Yeni Kullanıcı",
+    "seed_creation_warning": "Lütfen bu seed'i saklayın, ihtiyacınız olacak",
+    "seed_creation_generated_seed": "Üretilmiş Seed",
+    "seed_creation_confirm_seed": "Seed Onayı",
+    "seed_creation_back_to_new_user_page_button": "Geri",
+    "seed_creation_confirm_button": "Onayla",
+    "seed_creation_confirm_seed_empty_error": "Lütfen Seed Onayı alanını doldurun.",
+    "seed_creation_password_empty_error": "Lütfen Parola alanını doldurun.",
+    "seed_creation_seeds_dont_match_error": "Üretilmiş Seed ve Seed Onayı aynı değil!",
+
+    "seed_recovery_title": "Kurtarma",
+    "seed_recovery_seed_input_name": "Seed",
+    "seed_recovery_back_to_new_user_page_button": "Geri",
+    "seed_recovery_confirm_button": "Onayla",
+    "seed_recovery_seed_empty_error": "Lütfen Seed alanını doldurun.",
+    "seed_recovery_password_empty_error": "Lütfen Parola alanını doldurun.",
+
+    "new_user_page_recover_seed_button": "Seed Kurtarma",
+    "new_user_page_create_new_user_button": "Yeni Kullanıcı",
+
+    "settings_modal_title": "Ayarlar",
+    "settings_language": "Dil",
+    "settings_fiat": "Döviz",
+    "settings_close_button": "Kapat",
+
+    "menu_item_settings": "Ayarlar",
+    "menu_item_console": "Konsol",
+    "menu_item_code_reloading": "Kod Yüklemesi",
+
+    "tx_details_title": "İşlem Detayı",
+    "tx_details_sent": "Yollandı",
+    "tx_details_received": "Alındı",
+    "tx_details_date": "Tarih",
+    "tx_details_from": "Gönderici",
+    "tx_details_to": "Alıcı",
+    "tx_details_fees": "Fees",
+    "tx_details_tx_hash": "İşlem Hash'i",
+    "tx_details_block_height": "Blok Uzunluğu",
+    "tx_details_confirmations": "Onay Sayısı",
+    "tx_details_close_button": "Kapat",
+    "tx_details_view_in_explorer": "Web'de gör",
+
+    "coin_details_balance": "Bakiye",
+    "coin_details_transactions_tab": "İşlemler",
+    "coin_details_transactions_page_no_transactions": "İşlem yok.",
+    "coin_details_receive_tab": "Al",
+    "coin_details_receive_page_address_info_message": "Coin edinmek için aşağıdaki adresi paylaşın",
+    "coin_details_send_tab": "Gönder",
+
+    "send_coin_tx_results_failed": "Transaction Failed!",
+    "send_coin_tx_results_error_code": "Error Code",
+    "send_coin_tx_results_error_details": "Error Details",
+
+    "send_coin_address_input": "Address",
+    "send_coin_amount_input": "Amount",
+    "send_coin_max_amount_button": "MAX",
+    "send_coin_send_button": "Send",
+    "send_coin_no_errors_text": "No errors",
+
+    "send_coin_confirmation_amount": "You are sending",
+    "send_coin_confirmation_to_address": "To address",
+    "send_coin_confirmation_fee": "Fee",
+    "send_coin_confirmation_cancel_button": "Cancel",
+    "send_coin_confirmation_confirm_button": "Confirm",
+
+    "send_coin_tx_results_succeed": "Transaction Succeed!",
+    "send_coin_tx_results_tx_hash": "Transaction Hash",
+    "send_coin_tx_results_okay_button": "Okay",
+    "send_coin_tx_results_view_in_explorer": "View in Explorer",
+
+    "orders_list_price": "Price",
+    "orders_list_order_id": "Order ID",
+    "orders_list_cancel_button": "Cancel",
+
+    "enable_coins_enable_a_coin_button": "Enable a coin",
+    "enable_coins_popup_name": "Enable coins",
+    "enable_coins_empty_list": "All coins are already enabled!",
+    "enable_coins_select_coins_text": "Select the coins you want to add to your portfolio.",
+    "enable_coins_close_button": "Close",
+    "enable_coins_enable_button": "Enable",
+    "enable_coins_cancel_button": "Cancel",
+
+    "portfolio_total_balance": "Total Balance",
+    "x_amount_per_y": "amount per",
+
+    "orderbook_table_x_sellers_volume_list_title": "Sellers, Volume",
+
+    "buy_sell_coin_action_buy": "Buy",
+    "buy_sell_coin_action_sell": "Sell",
+    "buy_sell_coin_volume": "Volume",
+    "buy_sell_coin_not_enough_funds_you_have": "Not enough funds, you have",
+    "buy_sell_coin_youll_receive": "You'll receive",
+    "buy_sell_coin_error_failed_to_sell": "Failed to sell",
+    "buy_sell_coin_error_code": "Error code",
+    "buy_sell_coin_error_details": "Error details",
+    "buy_sell_coin_result_buy_order_placed": "Buy order placed!",
+    "buy_sell_coin_result_sell_order_placed": "Sell order placed!",
+    "buy_sell_coin_order_complete_info": "Please wait until it appears at order list",
+
+    "main_tabs_portfolio": "Portfolio",
+    "main_tabs_exchange": "Exchange",
+
+    "exchange_page_tabs_trade": "Trade",
+    "exchange_page_tabs_orders": "Orders",
+    "exchange_page_tabs_history": "History",
+
+    "exchange_page_trade_tab_select_pairs_info": "Select the pair you want to trade",
+    "exchange_page_trade_tab_load_button": "Load",
+    "exchange_page_trade_tab_swap_button": "Swap",
+
+    "exchange_page_trade_tab_select_a_coin": "Please select a coin to see the orders",
+    "exchange_page_trade_tab_cancel_all_orders_button": "Cancel All Orders",
+    "exchange_page_trade_tab_no_orders_text": "No orders.",
+    "exchange_page_trade_tab_create_an_order_button": "Create an order",
+    "exchange_page_trade_tab_maker_orders": "Maker Orders",
+    "exchange_page_trade_tab_taker_orders": "Taker Orders",
+
+    "exchange_page_history_": "Taker Orders",
+}
