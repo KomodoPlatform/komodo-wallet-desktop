@@ -102,6 +102,7 @@
     "buy_sell_coin_action_buy": "Buy",
     "buy_sell_coin_action_sell": "Sell",
     "buy_sell_coin_volume": "Volume",
+    "buy_sell_coin_price": "Price",
     "buy_sell_coin_not_enough_funds_you_have": "Not enough funds, you have",
     "buy_sell_coin_youll_receive": "You'll receive",
     "buy_sell_coin_error_failed_to_sell": "Failed to sell",
@@ -129,5 +130,5 @@
     "exchange_page_trade_tab_maker_orders": "Maker Orders",
     "exchange_page_trade_tab_taker_orders": "Taker Orders",
 
-    "exchange_page_history_": "Taker Orders",
+    "exchange_page_history_": "Taker Orders"
 }

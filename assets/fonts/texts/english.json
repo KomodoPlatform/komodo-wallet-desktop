@@ -15,7 +15,7 @@
     "seed_creation_title": "New User",
     "seed_creation_warning": "Please note this seed somewhere, you will need it",
     "seed_creation_generated_seed": "Generate Seed",
-    "seed_creation_confirm_seed": "Generate Seed",
+    "seed_creation_confirm_seed": "Confirm Seed",
     "seed_creation_back_to_new_user_page_button": "Back",
     "seed_creation_confirm_button": "Confirm",
     "seed_creation_confirm_seed_empty_error": "Please fill the Confirm Seed field!",
@@ -43,7 +43,7 @@
 
     "tx_details_title": "Transaction Details",
     "tx_details_sent": "Sent",
-    "tx_details_receive": "Receive",
+    "tx_details_received": "Received",
     "tx_details_date": "Date",
     "tx_details_from": "From",
     "tx_details_to": "To",
@@ -102,6 +102,7 @@
     "buy_sell_coin_action_buy": "Buy",
     "buy_sell_coin_action_sell": "Sell",
     "buy_sell_coin_volume": "Volume",
+    "buy_sell_coin_price": "Price",
     "buy_sell_coin_not_enough_funds_you_have": "Not enough funds, you have",
     "buy_sell_coin_youll_receive": "You'll receive",
     "buy_sell_coin_error_failed_to_sell": "Failed to sell",
@@ -129,5 +130,5 @@
     "exchange_page_trade_tab_maker_orders": "Maker Orders",
     "exchange_page_trade_tab_taker_orders": "Taker Orders",
 
-    "exchange_page_history_": "Taker Orders",
+    "exchange_page_history_": "Taker Orders"
 }
