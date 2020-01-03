@@ -1561,7 +1561,8 @@ namespace atomic_dex
                                 if (!current_base.empty())
                                 {
                                     std::error_code ec;
-                                    auto            orders = mm2_system_.get_orders(current_base, ec);
+
+                                    auto orders = mm2_system_.get_orders(current_base, ec);
 
                                     if (!orders.maker_orders.empty() || !orders.taker_orders.empty())
                                     {
