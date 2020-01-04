@@ -279,13 +279,9 @@ namespace
                         // Decrypt seed
                         auto seed = atomic_dex::decrypt(gui_vars.wallet_data.seed_path, key.data(), ec);
 
-                        if (ec == dextop_error::wrong_password)
+                        if (ec == dextop_error::corrupted_file_or_wrong_password)
                         {
-                            error_text = "Wrong password!";
-                        }
-                        else if (ec == dextop_error::corrupted_file_or_wrong_password)
-                        {
-                            error_text = "Corrupted seed file, failed to decrypt!";
+                            error_text = ec.message();
                         }
                         else
                         {

@@ -73,7 +73,7 @@ namespace
         case dextop_error::wrong_password:
             return "Wrong password";
         case dextop_error::corrupted_file_or_wrong_password:
-            return "Did you try to modify an encrypted file ? Don't do that, delete your encrypted file and regenerate or import a key";
+            return "Wrong password, or the seed file is corrupted.";
         }
         return "";
     }
