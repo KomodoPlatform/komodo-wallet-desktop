@@ -441,6 +441,9 @@ namespace mm2::api
         std::string uuid;
         std::string taker_coin;
         std::string maker_coin;
+        std::string taker_amount;
+        std::string maker_amount;
+        std::string type;
     };
 
     void from_json(const nlohmann::json& j, swap_contents& contents);

@@ -462,6 +462,9 @@ namespace mm2::api
         j.at("uuid").get_to(contents.uuid);
         j.at("taker_coin").get_to(contents.taker_coin);
         j.at("maker_coin").get_to(contents.maker_coin);
+        j.at("taker_amount").get_to(contents.taker_amount);
+        j.at("maker_amount").get_to(contents.maker_amount);
+        j.at("type").get_to(contents.type);
     }
 
     void
