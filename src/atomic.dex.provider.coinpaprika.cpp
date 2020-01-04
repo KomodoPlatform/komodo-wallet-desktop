@@ -72,7 +72,10 @@ namespace atomic_dex
     coinpaprika_provider::~coinpaprika_provider() noexcept
     {
         m_provider_thread_timer.interrupt();
-        m_provider_rates_thread.join();
+        if (m_provider_rates_thread.joinable())
+        {
+            m_provider_rates_thread.join();
+        }
     }
 
     void

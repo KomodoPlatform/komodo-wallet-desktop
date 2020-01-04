@@ -117,7 +117,10 @@ namespace atomic_dex
             VLOG_SCOPE_F(loguru::Verbosity_ERROR, "error: %s", ec.message().c_str());
         }
 
-        m_mm2_init_thread.join();
+        if (m_mm2_init_thread.joinable())
+        {
+            m_mm2_init_thread.join();
+        }
     }
 
     const std::atomic_bool&
