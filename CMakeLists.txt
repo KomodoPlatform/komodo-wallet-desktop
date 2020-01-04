@@ -118,6 +118,7 @@ add_executable(${PROJECT_NAME} MACOSX_BUNDLE ${ICON}
         atomic.dex.desktop.cpp
         src/atomic.dex.app.cpp
         src/atomic.dex.gui.cpp
+        src/atomic.dex.gui.v2.cpp
         src/atomic.dex.mm2.cpp
         src/atomic.dex.mm2.api.cpp
         src/atomic.dex.gui.style.cpp

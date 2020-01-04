@@ -65,6 +65,8 @@
 #include <vector>
 
 //! Global Helpers
+namespace fs = std::filesystem;
+
 constexpr std::size_t operator"" _sz(unsigned long long n) { return n; }
 
 template <typename T>
@@ -80,7 +82,10 @@ erase_if(std::map<Key, T, Compare, Alloc>& c, Pred pred)
 {
     for (auto i = c.begin(), last = c.end(); i != last;)
     {
-        if (pred(*i)) { i = c.erase(i); }
+        if (pred(*i))
+        {
+            i = c.erase(i);
+        }
         else
         {
             ++i;
@@ -140,3 +145,5 @@ namespace folly
 #include <antara/gaming/sdl/sdl.opengl.image.loading.hpp>
 #include <antara/gaming/timer/time.step.hpp>
 #include <antara/gaming/world/world.app.hpp>
+
+namespace ag = antara::gaming;
