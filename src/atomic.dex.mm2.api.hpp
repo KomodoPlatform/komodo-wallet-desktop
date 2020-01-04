@@ -438,6 +438,9 @@ namespace mm2::api
     struct swap_contents
     {
         std::vector<std::string> error_events;
+        std::string uuid;
+        std::string taker_coin;
+        std::string maker_coin;
     };
 
     void from_json(const nlohmann::json& j, swap_contents& contents);

@@ -459,6 +459,9 @@ namespace mm2::api
     from_json(const nlohmann::json& j, swap_contents& contents)
     {
         j.at("error_events").get_to(contents.error_events);
+        j.at("uuid").get_to(contents.uuid);
+        j.at("taker_coin").get_to(contents.taker_coin);
+        j.at("maker_coin").get_to(contents.maker_coin);
     }
 
     void
