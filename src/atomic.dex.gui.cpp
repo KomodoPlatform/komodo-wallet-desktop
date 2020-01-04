@@ -1032,6 +1032,34 @@ namespace
     }
 
     void
+    gui_trade_order_select_coin(const atomic_dex::gui& gui, atomic_dex::mm2& mm2, atomic_dex::gui_variables& gui_vars)
+    {
+        auto& orders_vars  = gui_vars.orders_page;
+        auto& current_base = orders_vars.current_base;
+
+        if (ImGui::BeginCombo("##trade_order_coins_select", current_base.c_str()))
+        {
+            auto coins = mm2.get_enabled_coins();
+            for (auto&& current: coins)
+            {
+                const bool is_selected = current.ticker == current_base;
+                if (ImGui::Selectable(current.ticker.c_str(), is_selected))
+                {
+                    current_base = current.ticker;
+                }
+                if (is_selected)
+                {
+                    ImGui::SetItemDefaultFocus();
+                }
+            }
+            ImGui::EndCombo();
+        }
+
+        if (current_base.empty())
+            ImGui::Text("%s", gui.get_text("exchange_page_trade_tab_select_a_coin").c_str());
+    }
+
+    void
     gui_orderbook_table(
         const atomic_dex::gui& gui, const std::string& base, const std::string& rel, const std::string& action,
         const std::vector<mm2::api::order_contents>& list, std::error_code ec)
@@ -1520,26 +1548,7 @@ namespace atomic_dex
                             auto& orders_vars  = gui_vars_.orders_page;
                             auto& current_base = orders_vars.current_base;
 
-                            if (ImGui::BeginCombo("##left", current_base.c_str()))
-                            {
-                                auto coins = mm2_system_.get_enabled_coins();
-                                for (auto&& current: coins)
-                                {
-                                    const bool is_selected = current.ticker == current_base;
-                                    if (ImGui::Selectable(current.ticker.c_str(), is_selected))
-                                    {
-                                        current_base = current.ticker;
-                                    }
-                                    if (is_selected)
-                                    {
-                                        ImGui::SetItemDefaultFocus();
-                                    }
-                                }
-                                ImGui::EndCombo();
-                            }
-
-                            if (current_base.empty())
-                                ImGui::Text("%s", gui.get_text("exchange_page_trade_tab_select_a_coin").c_str());
+                            gui_trade_order_select_coin(*this, mm2_system_, gui_vars_);
 
                             if (!current_base.empty())
                             {
@@ -1596,7 +1605,8 @@ namespace atomic_dex
 
                         if (ImGui::BeginTabItem(gui.get_text("exchange_page_tabs_history").c_str()))
                         {
-                            ImGui::Text("%s", gui.get_text("work_in_progress").c_str());
+                            gui_trade_order_select_coin(*this, mm2_system_, gui_vars_);
+
                             ImGui::EndTabItem();
                         }
 
