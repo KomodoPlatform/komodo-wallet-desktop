@@ -282,6 +282,7 @@ namespace
                         if (ec == dextop_error::corrupted_file_or_wrong_password)
                         {
                             error_text = ec.message();
+                            LOGF(WARNING, ec.message());
                         }
                         else
                         {
