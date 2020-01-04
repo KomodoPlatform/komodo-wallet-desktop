@@ -283,7 +283,7 @@ namespace
                         {
                             error_text = "Wrong password!";
                         }
-                        else if (ec == dextop_error::corrupted_file)
+                        else if (ec == dextop_error::corrupted_file_or_wrong_password)
                         {
                             error_text = "Corrupted seed file, failed to decrypt!";
                         }

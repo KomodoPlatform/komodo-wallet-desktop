@@ -94,12 +94,12 @@ namespace atomic_dex
             fp_s.read(reinterpret_cast<char*>(buf_in.data()), buf_in.size());
             if (crypto_secretstream_xchacha20poly1305_pull(&st, buf_out.data(), &out_len, &tag, buf_in.data(), fp_s.gcount(), nullptr, 0) != 0)
             {
-                ec = dextop_error::corrupted_file;
+                ec = dextop_error::corrupted_file_or_wrong_password;
                 return "";
             }
             if (tag == crypto_secretstream_xchacha20poly1305_TAG_FINAL && not fp_s.eof())
             {
-                ec = dextop_error::corrupted_file;
+                ec = dextop_error::corrupted_file_or_wrong_password;
                 return "";
             }
             out.write(reinterpret_cast<const char*>(buf_out.data()), out_len);

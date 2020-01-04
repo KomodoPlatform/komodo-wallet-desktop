@@ -72,7 +72,7 @@ namespace
             return "Derivation of the password using libsodium failed.";
         case dextop_error::wrong_password:
             return "Wrong password";
-        case dextop_error::corrupted_file:
+        case dextop_error::corrupted_file_or_wrong_password:
             return "Did you try to modify an encrypted file ? Don't do that, delete your encrypted file and regenerate or import a key";
         }
         return "";

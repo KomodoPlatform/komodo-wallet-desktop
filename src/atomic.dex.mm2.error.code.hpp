@@ -30,7 +30,7 @@ enum class dextop_error
     rpc_sell_error,
     derive_password_failed,
     wrong_password,
-    corrupted_file,
+    corrupted_file_or_wrong_password,
     invalid_fiat_for_rate_conversion,
     unknown_ticker,
     unknown_ticker_for_rate_conversion,
