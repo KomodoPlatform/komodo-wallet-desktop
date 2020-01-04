@@ -614,7 +614,7 @@ namespace atomic_dex
         auto& taker                 = result.taker_orders;
         auto& maker                 = result.maker_orders;
         auto  is_ticker_not_present = [&ticker](const std::pair<std::size_t, t_my_order_contents>& contents) {
-            return contents.second.base != ticker || contents.second.rel != ticker;
+            return contents.second.base != ticker && contents.second.rel != ticker;
         };
 
         erase_if(taker, is_ticker_not_present);
