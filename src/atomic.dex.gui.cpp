@@ -713,7 +713,7 @@ namespace
             ImGui::Separator();
 
             std::error_code ec;
-            const auto& curr_fiat = gui_vars.settings.curr_fiat;
+            const auto&     curr_fiat = gui_vars.settings.curr_fiat;
             ImGui::Text(
                 std::string(std::string(reinterpret_cast<const char*>(ICON_FA_BALANCE_SCALE)) + " %s: %s %s (%s %s)").c_str(),
                 gui.get_text("coin_details_balance").c_str(), mm2.my_balance(curr_asset.ticker, ec).c_str(), curr_asset.ticker.c_str(),
@@ -1041,7 +1041,8 @@ namespace
     {
         ImGui::Columns(2, ("orderbook_columns_" + action).c_str());
 
-        gui_coin_name_img(gui, action == "Buy" ? rel : base);
+        bool selling = action == "Sell";
+        gui_coin_name_img(gui, selling ? base : rel);
         ImGui::SameLine();
         ImGui::Text("%s", gui.get_text("orderbook_table_x_sellers_volume_list_title").c_str());
         ImGui::NextColumn();
@@ -1077,7 +1078,9 @@ namespace
         auto& sell_answer = vars.sell_request_answer;
         auto& buy_answer  = vars.buy_request_answer;
 
-        auto action_localized = action == "Buy" ? gui.get_text("buy_sell_coin_action_buy") : gui.get_text("buy_sell_coin_action_sell");
+        bool selling = action == "Sell";
+
+        auto action_localized = selling ? gui.get_text("buy_sell_coin_action_sell") : gui.get_text("buy_sell_coin_action_buy");
         ImGui::Text("%s", action_localized.c_str());
         ImGui::SameLine();
 
@@ -1089,9 +1092,9 @@ namespace
         ImGui::Text("(%s)", mm2.my_balance(base, ec).c_str());
 
         auto& coin_vars    = vars.trade_sell_coin[base];
-        auto& price_input  = action == "Buy" ? coin_vars.price_input_buy : coin_vars.price_input_sell;
-        auto& amount_input = action == "Buy" ? coin_vars.amount_input_buy : coin_vars.amount_input_sell;
-        auto& error_text   = action == "Buy" ? coin_vars.buy_error_text : coin_vars.sell_error_text;
+        auto& price_input  = selling ? coin_vars.price_input_sell : coin_vars.price_input_buy;
+        auto& amount_input = selling ? coin_vars.amount_input_sell : coin_vars.amount_input_buy;
+        auto& error_text   = selling ? coin_vars.sell_error_text : coin_vars.buy_error_text;
 
         ImGui::SetNextItemWidth(160.0f);
         ImGui::InputDouble(
@@ -1141,16 +1144,16 @@ namespace
             if (fields_are_filled)
                 ImGui::TextColored(
                     bright_color, "%s %s %s", gui.get_text("buy_sell_coin_youll_receive").c_str(),
-                    double_to_str(action == "Buy" ? current_amount_f : total_amount).c_str(), (action == "Sell" ? rel : base).c_str());
+                    double_to_str(selling ? total_amount : current_amount_f).c_str(), (selling ? rel : base).c_str());
         }
 
         if (ImGui::Button((action_localized + "##buy_sell_coin_submit_button").c_str()))
         {
             atomic_dex::spawn(
-                [&mm2, &sell_answer, &buy_answer, &error_text, action, base, rel, current_price, current_amount, current_amount_f, total_amount]() {
+                [&mm2, &sell_answer, &buy_answer, &error_text, action, selling, base, rel, current_price, current_amount, current_amount_f, total_amount]() {
                     std::error_code ec;
 
-                    if (action == "Sell")
+                    if (selling)
                     {
                         atomic_dex::t_sell_request request{.base = base, .rel = rel, .price = current_price, .volume = current_amount};
                         sell_answer = mm2.place_sell_order(std::move(request), current_amount_f, ec);
@@ -1179,8 +1182,8 @@ namespace
             gui_enable_items();
 
 
-        auto raw_result      = action == "Sell" ? sell_answer.raw_result : buy_answer.raw_result;
-        auto rpc_result_code = action == "Sell" ? sell_answer.rpc_result_code : buy_answer.rpc_result_code;
+        auto raw_result      = selling ? sell_answer.raw_result : buy_answer.raw_result;
+        auto rpc_result_code = selling ? sell_answer.rpc_result_code : buy_answer.rpc_result_code;
 
         if (!error_text.empty())
         {
@@ -1204,8 +1207,7 @@ namespace
             ImGui::Separator();
             ImGui::TextColored(
                 bright_color, "%s",
-                action == "Buy" ? gui.get_text("buy_sell_coin_result_buy_order_placed").c_str()
-                                : gui.get_text("buy_sell_coin_result_sell_order_placed").c_str());
+                selling ? gui.get_text("buy_sell_coin_result_sell_order_placed").c_str() : gui.get_text("buy_sell_coin_result_buy_order_placed").c_str());
             ImGui::TextColored(bright_color, "%s", gui.get_text("buy_sell_coin_order_complete_info").c_str());
         }
     }
