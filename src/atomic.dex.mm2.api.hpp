@@ -446,6 +446,8 @@ namespace mm2::api
     {
         std::vector<swap_contents> swaps;
         std::size_t                limit;
+        std::size_t                skipped;
+        std::size_t                total;
     };
 
     void from_json(const nlohmann::json& j, my_recent_swaps_answer_success& results);

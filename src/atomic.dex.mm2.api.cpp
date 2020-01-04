@@ -466,6 +466,8 @@ namespace mm2::api
     {
         j.at("swaps").get_to(results.swaps);
         j.at("limit").get_to(results.limit);
+        j.at("skipped").get_to(results.skipped);
+        j.at("total").get_to(results.total);
     }
 
     void
