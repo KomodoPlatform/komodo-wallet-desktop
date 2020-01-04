@@ -417,7 +417,7 @@ namespace
             ImGui::Separator();
             if (ImGui::Button((gui.get_text("seed_recovery_back_to_new_user_page_button") + "##seed_recovery_back_to_new_user_page_button").c_str()))
             {
-                startup.current_page = startup.NONE;
+                startup.current_page = gui_vars.startup_page.seed_exists ? startup.LOGIN : startup.NONE;
             }
             ImGui::SameLine();
             if (ImGui::Button((gui.get_text("seed_recovery_confirm_button") + "##seed_recovery_confirm_button").c_str()))
