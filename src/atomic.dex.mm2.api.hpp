@@ -435,15 +435,37 @@ namespace mm2::api
 
     void to_json(nlohmann::json& j, const my_recent_swaps_request& request);
 
+    struct finished_event
+    {
+        std::size_t timestamp;
+        std::string human_date;
+    };
+
+    struct started_data
+    {
+        std::size_t lock_duration;
+    };
+
+    void from_json(const nlohmann::json& j, started_data& contents);
+
+    struct started_event
+    {
+        std::size_t timestamp;
+        std::string human_date;
+        started_data data;
+    };
+
     struct swap_contents
     {
+        using t_event_registry = std::unordered_map<std::string, std::variant<finished_event, started_event>>;
         std::vector<std::string> error_events;
-        std::string uuid;
-        std::string taker_coin;
-        std::string maker_coin;
-        std::string taker_amount;
-        std::string maker_amount;
-        std::string type;
+        t_event_registry         events;
+        std::string              uuid;
+        std::string              taker_coin;
+        std::string              maker_coin;
+        std::string              taker_amount;
+        std::string              maker_amount;
+        std::string              type;
     };
 
     void from_json(const nlohmann::json& j, swap_contents& contents);
