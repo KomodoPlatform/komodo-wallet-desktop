@@ -236,7 +236,7 @@ namespace
     }
 
     void
-    gui_login_page(entt::dispatcher& dispatcher, atomic_dex::gui& gui, atomic_dex::gui_variables& gui_vars)
+    gui_login_page(entt::dispatcher& dispatcher, atomic_dex::gui& gui, atomic_dex::mm2& mm2, atomic_dex::gui_variables& gui_vars)
     {
         auto& startup        = gui_vars.startup_page;
         auto& vars           = startup.login_page;
@@ -289,7 +289,7 @@ namespace
                         }
                         else
                         {
-                            // TODO: Use the decrypted seed to login
+                            mm2.spawn_mm2_instance();
                             vars.logged_in = true;
                         }
                     }
@@ -488,7 +488,7 @@ namespace
     }
 
     void
-    gui_startup_page(entt::dispatcher& dispatcher, atomic_dex::gui& gui, atomic_dex::gui_variables& gui_vars)
+    gui_startup_page(entt::dispatcher& dispatcher, atomic_dex::gui& gui, atomic_dex::mm2& mm2, atomic_dex::gui_variables& gui_vars)
     {
         const auto& icons = gui.get_icons();
         const auto& img   = icons.at("APP_LOGO");
@@ -502,7 +502,7 @@ namespace
         auto& startup = gui_vars.startup_page;
         if (startup.seed_exists && startup.current_page == startup.LOGIN)
         {
-            gui_login_page(dispatcher, gui, gui_vars);
+            gui_login_page(dispatcher, gui, mm2, gui_vars);
         }
         else
         {
@@ -1349,11 +1349,16 @@ namespace atomic_dex
         bool active = true;
         ImGui::Begin(gui.get_text("main_window_title").c_str(), &active, ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_MenuBar);
         gui_vars_.main_window_size = ImGui::GetWindowSize();
-        if (not active && mm2_system_.is_mm2_running())
+        if (not active)
         {
             this->dispatcher_.trigger<ag::event::quit_game>(0);
         }
-        if (!mm2_system_.is_mm2_running())
+
+        if (!gui_vars_.startup_page.login_page.logged_in)
+        {
+            gui_startup_page(dispatcher_, *this, mm2_system_, gui_vars_);
+        }
+        else if (!mm2_system_.is_mm2_running())
         {
             ImGui::Text("%s", gui.get_text("first_launch_loading_text").c_str());
             const float  radius = 30.0f;
@@ -1363,268 +1368,261 @@ namespace atomic_dex
         }
         else
         {
-            if (!gui_vars_.startup_page.login_page.logged_in)
-            {
-                gui_startup_page(dispatcher_, *this, gui_vars_);
-            }
-            else
-            {
-                gui_menubar(*this, gui_vars_);
+            gui_menubar(*this, gui_vars_);
 
-                if (ImGui::BeginTabBar("##Tabs", ImGuiTabBarFlags_None))
+            if (ImGui::BeginTabBar("##Tabs", ImGuiTabBarFlags_None))
+            {
+                auto& vars              = gui_vars_.main_tabs_page;
+                auto& in_exchange       = vars.in_exchange;
+                auto& in_exchange_prev  = vars.in_exchange_prev;
+                auto& trigger_trade_tab = vars.trigger_trade_tab;
+
+                if (ImGui::BeginTabItem(gui.get_text("main_tabs_portfolio").c_str()))
                 {
-                    auto& vars              = gui_vars_.main_tabs_page;
-                    auto& in_exchange       = vars.in_exchange;
-                    auto& in_exchange_prev  = vars.in_exchange_prev;
-                    auto& trigger_trade_tab = vars.trigger_trade_tab;
+                    gui_disable_viewport();
+                    gui_portfolio(*this, mm2_system_, paprika_system_, gui_vars_);
+                    ImGui::EndTabItem();
+                }
 
-                    if (ImGui::BeginTabItem(gui.get_text("main_tabs_portfolio").c_str()))
+                if (ImGui::BeginTabItem(gui.get_text("main_tabs_exchange").c_str()))
+                {
+                    in_exchange = true;
+                    if (ImGui::BeginTabBar("##ExchangeTabs", ImGuiTabBarFlags_None))
                     {
-                        gui_disable_viewport();
-                        gui_portfolio(*this, mm2_system_, paprika_system_, gui_vars_);
-                        ImGui::EndTabItem();
-                    }
-
-                    if (ImGui::BeginTabItem(gui.get_text("main_tabs_exchange").c_str()))
-                    {
-                        in_exchange = true;
-                        if (ImGui::BeginTabBar("##ExchangeTabs", ImGuiTabBarFlags_None))
+                        if (ImGui::BeginTabItem(
+                                gui.get_text("exchange_page_tabs_trade").c_str(), nullptr, trigger_trade_tab ? ImGuiTabItemFlags_SetSelected : 0))
                         {
-                            if (ImGui::BeginTabItem(
-                                    gui.get_text("exchange_page_tabs_trade").c_str(), nullptr, trigger_trade_tab ? ImGuiTabItemFlags_SetSelected : 0))
+                            trigger_trade_tab = false;
+
+                            auto& vars         = gui_vars_.trade_page;
+                            auto& current_base = vars.current_base;
+                            auto& current_rel  = vars.current_rel;
+                            auto& locked_base  = vars.locked_base;
+                            auto& locked_rel   = vars.locked_rel;
+
+                            const float remaining_width = ImGui::GetContentRegionAvail().x - ImGui::GetStyle().ItemSpacing.x;
+
+                            ImGui::Text("%s", gui.get_text("exchange_page_trade_tab_select_pairs_info").c_str());
+
+                            ImGui::SetNextItemWidth(remaining_width / 6);
+                            if (ImGui::BeginCombo("##left", current_base.c_str()))
                             {
-                                trigger_trade_tab = false;
-
-                                auto& vars         = gui_vars_.trade_page;
-                                auto& current_base = vars.current_base;
-                                auto& current_rel  = vars.current_rel;
-                                auto& locked_base  = vars.locked_base;
-                                auto& locked_rel   = vars.locked_rel;
-
-                                const float remaining_width = ImGui::GetContentRegionAvail().x - ImGui::GetStyle().ItemSpacing.x;
-
-                                ImGui::Text("%s", gui.get_text("exchange_page_trade_tab_select_pairs_info").c_str());
-
-                                ImGui::SetNextItemWidth(remaining_width / 6);
-                                if (ImGui::BeginCombo("##left", current_base.c_str()))
+                                auto coins = mm2_system_.get_enabled_coins();
+                                for (auto&& current: coins)
                                 {
-                                    auto coins = mm2_system_.get_enabled_coins();
-                                    for (auto&& current: coins)
+                                    if (current.ticker == current_rel)
+                                        continue;
+                                    const bool is_selected = current.ticker == current_base;
+                                    if (ImGui::Selectable(current.ticker.c_str(), is_selected))
                                     {
-                                        if (current.ticker == current_rel)
-                                            continue;
-                                        const bool is_selected = current.ticker == current_base;
-                                        if (ImGui::Selectable(current.ticker.c_str(), is_selected))
-                                        {
-                                            current_base = current.ticker;
-                                        }
-                                        if (is_selected)
-                                        {
-                                            ImGui::SetItemDefaultFocus();
-                                        }
+                                        current_base = current.ticker;
                                     }
-                                    ImGui::EndCombo();
-                                }
-
-                                ImGui::SameLine();
-                                ImGui::SetNextItemWidth(remaining_width / 6);
-                                if (ImGui::BeginCombo("##right", current_rel.c_str()))
-                                {
-                                    const auto coins = mm2_system_.get_enabled_coins();
-
-                                    for (auto&& current: coins)
+                                    if (is_selected)
                                     {
-                                        if (current.ticker == current_base)
-                                            continue;
-                                        const bool is_selected = current.ticker == current_rel;
-                                        if (ImGui::Selectable(current.ticker.c_str(), is_selected))
-                                        {
-                                            current_rel = current.ticker;
-                                        }
-                                        if (is_selected)
-                                        {
-                                            ImGui::SetItemDefaultFocus();
-                                        }
+                                        ImGui::SetItemDefaultFocus();
                                     }
-
-                                    ImGui::EndCombo();
                                 }
-                                ImGui::SameLine();
-
-                                bool coins_are_selected = not current_base.empty() && not current_rel.empty();
-
-                                if (!coins_are_selected)
-                                    gui_disable_items();
-
-                                bool load_orderbook = false;
-                                if (ImGui::Button(gui.get_text("exchange_page_trade_tab_load_button").c_str()) && not current_base.empty() &&
-                                    not current_rel.empty())
-                                {
-                                    load_orderbook = true;
-                                }
-
-                                ImGui::SameLine();
-                                if (ImGui::Button(gui.get_text("exchange_page_trade_tab_swap_button").c_str()) && not current_base.empty() &&
-                                    not current_rel.empty())
-                                {
-                                    auto tmp       = current_base;
-                                    current_base   = current_rel;
-                                    current_rel    = tmp;
-                                    load_orderbook = true;
-                                }
-
-                                if (!coins_are_selected)
-                                    gui_enable_items();
-
-                                if (load_orderbook)
-                                {
-                                    locked_base = current_base;
-                                    locked_rel  = current_rel;
-                                    this->dispatcher_.trigger<orderbook_refresh>(current_base, current_rel);
-                                }
-
-                                if (not locked_base.empty() && not locked_rel.empty())
-                                {
-                                    ImGui::BeginChild("Sell_Window", ImVec2(275, 0), true);
-                                    {
-                                        gui_buy_sell_coin(*this, mm2_system_, gui_vars_, locked_base, locked_rel, "Buy");
-
-                                        ImGui::Separator();
-
-                                        gui_buy_sell_coin(*this, mm2_system_, gui_vars_, locked_base, locked_rel, "Sell");
-                                    }
-                                    ImGui::EndChild();
-                                    ImGui::SameLine();
-                                    ImGui::BeginGroup();
-                                    ImGui::Columns(2, "full_orderbook");
-                                    {
-                                        std::error_code ec;
-                                        auto            book = mm2_system_.get_current_orderbook(ec);
-
-                                        ImGui::BeginChild("Sell_Orderbook", ImVec2(0, 0), true);
-                                        gui_orderbook_table(*this, locked_base, locked_rel, "Sell", book.asks, ec);
-                                        ImGui::EndChild();
-
-                                        ImGui::NextColumn();
-
-                                        ImGui::BeginChild("Buy_Orderbook", ImVec2(0, 0), true);
-                                        gui_orderbook_table(*this, locked_base, locked_rel, "Buy", book.bids, ec);
-                                        ImGui::EndChild();
-                                    }
-                                    ImGui::Columns(1);
-                                    ImGui::EndGroup();
-                                }
-
-                                ImGui::EndTabItem();
+                                ImGui::EndCombo();
                             }
 
-
-                            if (ImGui::BeginTabItem(gui.get_text("exchange_page_tabs_orders").c_str()))
+                            ImGui::SameLine();
+                            ImGui::SetNextItemWidth(remaining_width / 6);
+                            if (ImGui::BeginCombo("##right", current_rel.c_str()))
                             {
-                                auto& orders_vars  = gui_vars_.orders_page;
-                                auto& current_base = orders_vars.current_base;
+                                const auto coins = mm2_system_.get_enabled_coins();
 
-                                if (ImGui::BeginCombo("##left", current_base.c_str()))
+                                for (auto&& current: coins)
                                 {
-                                    auto coins = mm2_system_.get_enabled_coins();
-                                    for (auto&& current: coins)
+                                    if (current.ticker == current_base)
+                                        continue;
+                                    const bool is_selected = current.ticker == current_rel;
+                                    if (ImGui::Selectable(current.ticker.c_str(), is_selected))
                                     {
-                                        const bool is_selected = current.ticker == current_base;
-                                        if (ImGui::Selectable(current.ticker.c_str(), is_selected))
-                                        {
-                                            current_base = current.ticker;
-                                        }
-                                        if (is_selected)
-                                        {
-                                            ImGui::SetItemDefaultFocus();
-                                        }
+                                        current_rel = current.ticker;
                                     }
-                                    ImGui::EndCombo();
+                                    if (is_selected)
+                                    {
+                                        ImGui::SetItemDefaultFocus();
+                                    }
                                 }
 
-                                if (current_base.empty())
-                                    ImGui::Text("%s", gui.get_text("exchange_page_trade_tab_select_a_coin").c_str());
+                                ImGui::EndCombo();
+                            }
+                            ImGui::SameLine();
 
-                                if (!current_base.empty())
+                            bool coins_are_selected = not current_base.empty() && not current_rel.empty();
+
+                            if (!coins_are_selected)
+                                gui_disable_items();
+
+                            bool load_orderbook = false;
+                            if (ImGui::Button(gui.get_text("exchange_page_trade_tab_load_button").c_str()) && not current_base.empty() &&
+                                not current_rel.empty())
+                            {
+                                load_orderbook = true;
+                            }
+
+                            ImGui::SameLine();
+                            if (ImGui::Button(gui.get_text("exchange_page_trade_tab_swap_button").c_str()) && not current_base.empty() &&
+                                not current_rel.empty())
+                            {
+                                auto tmp       = current_base;
+                                current_base   = current_rel;
+                                current_rel    = tmp;
+                                load_orderbook = true;
+                            }
+
+                            if (!coins_are_selected)
+                                gui_enable_items();
+
+                            if (load_orderbook)
+                            {
+                                locked_base = current_base;
+                                locked_rel  = current_rel;
+                                this->dispatcher_.trigger<orderbook_refresh>(current_base, current_rel);
+                            }
+
+                            if (not locked_base.empty() && not locked_rel.empty())
+                            {
+                                ImGui::BeginChild("Sell_Window", ImVec2(275, 0), true);
+                                {
+                                    gui_buy_sell_coin(*this, mm2_system_, gui_vars_, locked_base, locked_rel, "Buy");
+
+                                    ImGui::Separator();
+
+                                    gui_buy_sell_coin(*this, mm2_system_, gui_vars_, locked_base, locked_rel, "Sell");
+                                }
+                                ImGui::EndChild();
+                                ImGui::SameLine();
+                                ImGui::BeginGroup();
+                                ImGui::Columns(2, "full_orderbook");
                                 {
                                     std::error_code ec;
+                                    auto            book = mm2_system_.get_current_orderbook(ec);
 
-                                    auto orders = mm2_system_.get_orders(current_base, ec);
+                                    ImGui::BeginChild("Sell_Orderbook", ImVec2(0, 0), true);
+                                    gui_orderbook_table(*this, locked_base, locked_rel, "Sell", book.asks, ec);
+                                    ImGui::EndChild();
 
-                                    if (!orders.maker_orders.empty() || !orders.taker_orders.empty())
+                                    ImGui::NextColumn();
+
+                                    ImGui::BeginChild("Buy_Orderbook", ImVec2(0, 0), true);
+                                    gui_orderbook_table(*this, locked_base, locked_rel, "Buy", book.bids, ec);
+                                    ImGui::EndChild();
+                                }
+                                ImGui::Columns(1);
+                                ImGui::EndGroup();
+                            }
+
+                            ImGui::EndTabItem();
+                        }
+
+
+                        if (ImGui::BeginTabItem(gui.get_text("exchange_page_tabs_orders").c_str()))
+                        {
+                            auto& orders_vars  = gui_vars_.orders_page;
+                            auto& current_base = orders_vars.current_base;
+
+                            if (ImGui::BeginCombo("##left", current_base.c_str()))
+                            {
+                                auto coins = mm2_system_.get_enabled_coins();
+                                for (auto&& current: coins)
+                                {
+                                    const bool is_selected = current.ticker == current_base;
+                                    if (ImGui::Selectable(current.ticker.c_str(), is_selected))
                                     {
-                                        if (ImGui::Button((gui.get_text("exchange_page_trade_tab_cancel_all_orders_button") + "##cancel_all_orders").c_str()))
-                                        {
-                                            atomic_dex::spawn([this, current_base]() {
-                                                ::mm2::api::cancel_data cd;
-                                                cd.ticker = current_base;
-                                                ::mm2::api::rpc_cancel_all_orders({{"Coin", cd}});
-                                                mm2_system_.process_orders();
-                                            });
-                                        }
-
-                                        ImGui::Separator();
+                                        current_base = current.ticker;
                                     }
-                                    else
+                                    if (is_selected)
                                     {
-                                        ImGui::Text("%s", gui.get_text("exchange_page_trade_tab_no_orders_text").c_str());
-
-                                        if (ImGui::Button(
-                                                (gui.get_text("exchange_page_trade_tab_create_an_order_button") + "##no_orders_create_an_order").c_str()))
-                                        {
-                                            trigger_trade_tab = true;
-                                        }
-                                    }
-                                    // Maker
-                                    if (!orders.maker_orders.empty())
-                                    {
-                                        ImGui::TextColored(
-                                            bright_color, "%s (%lu)", gui.get_text("exchange_page_trade_tab_maker_orders").c_str(), orders.maker_orders.size());
-                                        gui_orders_list(*this, mm2_system_, orders.maker_orders);
-
-                                        if (!orders.taker_orders.empty())
-                                            ImGui::Separator();
-                                    }
-
-                                    // Trader
-                                    if (!orders.taker_orders.empty())
-                                    {
-                                        ImGui::TextColored(
-                                            bright_color, "%s (%lu)", gui.get_text("exchange_page_trade_tab_taker_orders").c_str(), orders.taker_orders.size());
-                                        gui_orders_list(*this, mm2_system_, orders.taker_orders);
+                                        ImGui::SetItemDefaultFocus();
                                     }
                                 }
-
-
-                                ImGui::EndTabItem();
+                                ImGui::EndCombo();
                             }
 
-                            if (ImGui::BeginTabItem(gui.get_text("exchange_page_tabs_history").c_str()))
+                            if (current_base.empty())
+                                ImGui::Text("%s", gui.get_text("exchange_page_trade_tab_select_a_coin").c_str());
+
+                            if (!current_base.empty())
                             {
-                                ImGui::Text("%s", gui.get_text("work_in_progress").c_str());
-                                ImGui::EndTabItem();
+                                std::error_code ec;
+
+                                auto orders = mm2_system_.get_orders(current_base, ec);
+
+                                if (!orders.maker_orders.empty() || !orders.taker_orders.empty())
+                                {
+                                    if (ImGui::Button((gui.get_text("exchange_page_trade_tab_cancel_all_orders_button") + "##cancel_all_orders").c_str()))
+                                    {
+                                        atomic_dex::spawn([this, current_base]() {
+                                            ::mm2::api::cancel_data cd;
+                                            cd.ticker = current_base;
+                                            ::mm2::api::rpc_cancel_all_orders({{"Coin", cd}});
+                                            mm2_system_.process_orders();
+                                        });
+                                    }
+
+                                    ImGui::Separator();
+                                }
+                                else
+                                {
+                                    ImGui::Text("%s", gui.get_text("exchange_page_trade_tab_no_orders_text").c_str());
+
+                                    if (ImGui::Button((gui.get_text("exchange_page_trade_tab_create_an_order_button") + "##no_orders_create_an_order").c_str()))
+                                    {
+                                        trigger_trade_tab = true;
+                                    }
+                                }
+                                // Maker
+                                if (!orders.maker_orders.empty())
+                                {
+                                    ImGui::TextColored(
+                                        bright_color, "%s (%lu)", gui.get_text("exchange_page_trade_tab_maker_orders").c_str(), orders.maker_orders.size());
+                                    gui_orders_list(*this, mm2_system_, orders.maker_orders);
+
+                                    if (!orders.taker_orders.empty())
+                                        ImGui::Separator();
+                                }
+
+                                // Trader
+                                if (!orders.taker_orders.empty())
+                                {
+                                    ImGui::TextColored(
+                                        bright_color, "%s (%lu)", gui.get_text("exchange_page_trade_tab_taker_orders").c_str(), orders.taker_orders.size());
+                                    gui_orders_list(*this, mm2_system_, orders.taker_orders);
+                                }
                             }
 
-                            ImGui::EndTabBar();
+
+                            ImGui::EndTabItem();
                         }
-                        ImGui::EndTabItem();
-                    }
 
-                    // If entered exchange,
-                    if (!in_exchange_prev && in_exchange)
-                    {
-                        this->dispatcher_.trigger<gui_enter_trading>();
-                    }
-                    else if (in_exchange_prev && !in_exchange)
-                    {
-                        this->dispatcher_.trigger<gui_leave_trading>();
-                    }
-                    in_exchange_prev = in_exchange;
+                        if (ImGui::BeginTabItem(gui.get_text("exchange_page_tabs_history").c_str()))
+                        {
+                            ImGui::Text("%s", gui.get_text("work_in_progress").c_str());
+                            ImGui::EndTabItem();
+                        }
 
-                    ImGui::EndTabBar();
+                        ImGui::EndTabBar();
+                    }
+                    ImGui::EndTabItem();
                 }
+
+                // If entered exchange,
+                if (!in_exchange_prev && in_exchange)
+                {
+                    this->dispatcher_.trigger<gui_enter_trading>();
+                }
+                else if (in_exchange_prev && !in_exchange)
+                {
+                    this->dispatcher_.trigger<gui_leave_trading>();
+                }
+                in_exchange_prev = in_exchange;
+
+                ImGui::EndTabBar();
             }
         }
+
 
         ImGui::End();
 

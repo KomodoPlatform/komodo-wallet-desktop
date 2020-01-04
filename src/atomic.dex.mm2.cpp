@@ -74,7 +74,6 @@ namespace atomic_dex
         dispatcher_.sink<orderbook_refresh>().connect<&mm2::on_refresh_orderbook>(*this);
 
         retrieve_coins_information(m_coins_informations);
-        spawn_mm2_instance();
     }
 
     void
