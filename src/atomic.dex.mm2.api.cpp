@@ -456,6 +456,12 @@ namespace mm2::api
     }
 
     void
+    from_json(const nlohmann::json& j, started_data& contents)
+    {
+        j.at("lock_duration").get_to(contents.lock_duration);
+    }
+
+    void
     from_json(const nlohmann::json& j, swap_contents& contents)
     {
         j.at("error_events").get_to(contents.error_events);
@@ -465,6 +471,26 @@ namespace mm2::api
         j.at("taker_amount").get_to(contents.taker_amount);
         j.at("maker_amount").get_to(contents.maker_amount);
         j.at("type").get_to(contents.type);
+        using namespace date;
+        using namespace std::chrono;
+        for (auto&& content: j.at("events"))
+        {
+            const nlohmann::json& j_evt      = content.at("event");
+            auto                  timestamp  = j_evt.at("timestamp").get<std::size_t>();
+            date::sys_seconds     tp         = date::sys_seconds{seconds{timestamp}};
+            std::string           human_date = date::format("%d %m %Y %I:%M:%S", tp);
+            auto                  evt_type   = j_evt.at("type").get<std::string>();
+
+            if (evt_type == "Finished")
+            {
+                contents.events[evt_type] = finished_event{.timestamp = timestamp, .human_date = std::move(human_date)};
+            }
+            else if (evt_type == "Started")
+            {
+                auto data                 = j_evt.at("data").get<started_data>();
+                contents.events[evt_type] = started_event{.timestamp = timestamp, .human_date = std::move(human_date), .data = std::move(data)};
+            }
+        }
     }
 
     void
