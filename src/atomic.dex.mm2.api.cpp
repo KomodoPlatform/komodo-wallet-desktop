@@ -115,7 +115,10 @@ namespace mm2::api
     {
         j.at("block_height").get_to(cfg.block_height);
         j.at("coin").get_to(cfg.coin);
-        if (j.count("confirmations") == 1) { cfg.confirmations = j.at("confirmations").get<std::size_t>(); }
+        if (j.count("confirmations") == 1)
+        {
+            cfg.confirmations = j.at("confirmations").get<std::size_t>();
+        }
         j.at("fee_details").get_to(cfg.fee_details);
         j.at("from").get_to(cfg.from);
         j.at("internal_id").get_to(cfg.internal_id);
@@ -158,7 +161,10 @@ namespace mm2::api
     void
     from_json(const nlohmann::json& j, sync_status_additional_infos& answer)
     {
-        if (j.count("error") == 1) { answer.error = j.get<sync_status_additional_error>(); }
+        if (j.count("error") == 1)
+        {
+            answer.error = j.get<sync_status_additional_error>();
+        }
         else if (j.count("blocks_left") == 1)
         {
             answer.erc_infos = j.get<sync_status_eth_erc_20_coins>();
@@ -173,13 +179,17 @@ namespace mm2::api
     from_json(const nlohmann::json& j, t_sync_status& answer)
     {
         j.at("state").get_to(answer.state);
-        if (j.count("additional_info") == 1) { answer.additional_info = j.at("additional_info").get<sync_status_additional_infos>(); }
+        if (j.count("additional_info") == 1)
+        {
+            answer.additional_info = j.at("additional_info").get<sync_status_additional_infos>();
+        }
     }
 
     void
     from_json(const nlohmann::json& j, tx_history_answer_success& answer)
     {
-        if (not j.at("from_id").is_null()) j.at("from_id").get_to(answer.from_id);
+        if (not j.at("from_id").is_null())
+            j.at("from_id").get_to(answer.from_id);
         j.at("current_block").get_to(answer.current_block);
         j.at("limit").get_to(answer.limit);
         j.at("skipped").get_to(answer.skipped);
@@ -191,7 +201,10 @@ namespace mm2::api
     void
     from_json(const nlohmann::json& j, tx_history_answer& answer)
     {
-        if (j.count("error") == 1) { answer.error = j.at("error").get<std::string>(); }
+        if (j.count("error") == 1)
+        {
+            answer.error = j.at("error").get<std::string>();
+        }
         else
         {
             answer.result = j.at("result").get<tx_history_answer_success>();
@@ -210,7 +223,10 @@ namespace mm2::api
     void
     from_json(const nlohmann::json& j, withdraw_answer& answer)
     {
-        if (j.count("error") >= 1) { answer.error = j.at("error").get<std::string>(); }
+        if (j.count("error") >= 1)
+        {
+            answer.error = j.at("error").get<std::string>();
+        }
         else
         {
             answer.result = j.get<transaction_data>();
@@ -306,7 +322,10 @@ namespace mm2::api
     void
     from_json(const nlohmann::json& j, buy_answer& answer)
     {
-        if (j.count("error") == 1) { answer.error = j.at("error").get<std::string>(); }
+        if (j.count("error") == 1)
+        {
+            answer.error = j.at("error").get<std::string>();
+        }
         else
         {
             answer.result = j.at("result").get<buy_answer_success>();
@@ -331,7 +350,10 @@ namespace mm2::api
     void
     from_json(const nlohmann::json& j, sell_answer& answer)
     {
-        if (j.count("error") == 1) { answer.error = j.at("error").get<std::string>(); }
+        if (j.count("error") == 1)
+        {
+            answer.error = j.at("error").get<std::string>();
+        }
         else
         {
             answer.result = j.at("result").get<sell_answer_success>();
@@ -347,7 +369,10 @@ namespace mm2::api
     void
     from_json(const nlohmann::json& j, cancel_order_answer& answer)
     {
-        if (j.count("error") == 1) { answer.error = j.at("error").get<std::string>(); }
+        if (j.count("error") == 1)
+        {
+            answer.error = j.at("error").get<std::string>();
+        }
         else
         {
             answer.result = j.at("result").get<std::string>();
@@ -373,7 +398,10 @@ namespace mm2::api
     to_json(nlohmann::json& j, const cancel_type& cfg)
     {
         j["type"] = cfg.type;
-        if (cfg.type not_eq "All" and cfg.data.has_value()) { j["data"] = cfg.data.value(); }
+        if (cfg.type not_eq "All" and cfg.data.has_value())
+        {
+            j["data"] = cfg.data.value();
+        }
     }
 
     void
@@ -421,7 +449,10 @@ namespace mm2::api
     to_json(nlohmann::json& j, const my_recent_swaps_request& request)
     {
         j["limit"] = request.limit;
-        if (request.from_uuid.has_value()) { j["from_uuid"] = request.from_uuid.value(); }
+        if (request.from_uuid.has_value())
+        {
+            j["from_uuid"] = request.from_uuid.value();
+        }
     }
 
     void
@@ -440,7 +471,10 @@ namespace mm2::api
     void
     from_json(const nlohmann::json& j, my_recent_swaps_answer& answer)
     {
-        if (j.find("result") != j.end()) { answer.result = j.at("result").get<my_recent_swaps_answer_success>(); }
+        if (j.find("result") != j.end())
+        {
+            answer.result = j.at("result").get<my_recent_swaps_answer_success>();
+        }
         else if (j.find("error") != j.end())
         {
             answer.error = j.at("error").get<std::string>();
@@ -463,7 +497,10 @@ namespace mm2::api
             DVLOG_F(loguru::Verbosity_WARNING, "rpc answer code is not 200");
             if constexpr (doom::meta::is_detected_v<have_error_field, RpcReturnType>)
             {
-                if constexpr (std::is_same_v<std::string, decltype(answer.error)>) { answer.error = nlohmann::json::parse(resp.body).get<std::string>(); }
+                if constexpr (std::is_same_v<std::string, decltype(answer.error)>)
+                {
+                    answer.error = nlohmann::json::parse(resp.body).get<std::string>();
+                }
             }
             answer.rpc_result_code = resp.code;
             answer.raw_result      = resp.body;
