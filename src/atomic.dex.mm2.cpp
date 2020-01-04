@@ -73,6 +73,7 @@ namespace atomic_dex
         dispatcher_.sink<gui_leave_trading>().connect<&mm2::on_gui_leave_trading>(*this);
         dispatcher_.sink<orderbook_refresh>().connect<&mm2::on_refresh_orderbook>(*this);
 
+        m_swaps_registry.insert("result", t_my_recent_swaps_answer{.total = 0});
         retrieve_coins_information(m_coins_informations);
     }
 
