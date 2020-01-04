@@ -902,26 +902,34 @@ namespace
     }
 
     void
+    gui_orders_list_entry(atomic_dex::gui& gui, const std::string& uuid, const std::string& date,
+            const std::string& maker_coin, const std::string& taker_coin,
+            const std::string& maker_amount, const std::string& taker_amount) {
+        gui_coin_name_img(gui, maker_coin);
+        ImGui::SameLine();
+        ImGui::SetCursorPosX(180);
+        ImGui::Text("< >");
+        ImGui::SameLine();
+        ImGui::SetCursorPosX(300);
+        gui_coin_name_img(gui, taker_coin, "", true);
+
+        ImGui::TextColored(loss_color, "%s %s", maker_amount.c_str(), maker_coin.c_str());
+        if(taker_amount != "") {
+            ImGui::SameLine(250);
+            ImGui::TextColored(loss_color, "%s %s", taker_amount.c_str(), taker_coin.c_str());
+        }
+        ImGui::TextColored(value_color, "%s", date.c_str());
+        ImGui::TextColored(value_color, "%s: %s", gui.get_text("orders_list_order_id").c_str(), uuid.c_str());
+    }
+
+    void
     gui_orders_list(atomic_dex::gui& gui, atomic_dex::mm2& mm2, const std::map<std::size_t, mm2::api::my_order_contents>& orders)
     {
         for (auto it = orders.begin(); it != orders.end(); ++it)
         {
             auto& info = it->second;
 
-            gui_coin_name_img(gui, info.base);
-            ImGui::SameLine();
-            ImGui::SetCursorPosX(180);
-            ImGui::Text("< >");
-            ImGui::SameLine();
-            ImGui::SetCursorPosX(300);
-            gui_coin_name_img(gui, info.rel, "", true);
-
-            ImGui::TextColored(loss_color, "%s %s", info.available_amount.c_str(), info.base.c_str());
-
-            ImGui::TextColored(value_color, "%s: %s", gui.get_text("orders_list_price").c_str(), info.price.c_str());
-            ImGui::SameLine(250);
-            ImGui::TextColored(value_color, "%s", info.human_timestamp.c_str());
-            ImGui::TextColored(value_color, "%s: %s", gui.get_text("orders_list_order_id").c_str(), info.order_id.c_str());
+            gui_orders_list_entry(gui, info.order_id, info.human_timestamp, info.base, info.rel, info.available_amount, "");
 
             if (ImGui::Button((gui.get_text("orders_list_cancel_button") + "##cancel_order").c_str()))
             {
@@ -1605,7 +1613,17 @@ namespace atomic_dex
 
                         if (ImGui::BeginTabItem(gui.get_text("exchange_page_tabs_history").c_str()))
                         {
-                            gui_trade_order_select_coin(*this, mm2_system_, gui_vars_);
+                            auto orders = mm2_system_.get_swaps().swaps;
+
+                            for (auto it = orders.begin(); it != orders.end(); ++it)
+                            {
+                                auto& info = *it;
+                                gui_orders_list_entry(gui, info.uuid, "", info.maker_coin, info.taker_coin, info.maker_amount, info.taker_amount);
+
+                                auto next = it;
+                                if (++next != orders.end())
+                                    ImGui::Separator();
+                            }
 
                             ImGui::EndTabItem();
                         }
