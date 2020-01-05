@@ -27,7 +27,7 @@ namespace
     std::string
     adjust_precision(const std::string& current)
     {
-        std::string          result = "";
+        std::string          result;
         std::stringstream    ss;
         bm::cpp_dec_float_50 current_f(current);
 
