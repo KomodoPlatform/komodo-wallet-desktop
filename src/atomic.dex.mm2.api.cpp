@@ -470,6 +470,8 @@ namespace mm2::api
         j.at("maker_coin").get_to(contents.maker_coin);
         j.at("taker_amount").get_to(contents.taker_amount);
         j.at("maker_amount").get_to(contents.maker_amount);
+        adjust_precision(contents.taker_amount);
+        adjust_precision(contents.maker_amount);
         j.at("type").get_to(contents.type);
         using namespace date;
         using namespace std::chrono;
