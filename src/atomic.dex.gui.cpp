@@ -22,6 +22,9 @@
 //! ImGui Headers
 #include <imgui_stdlib.h>
 
+// C++ System Headers
+#include <variant>
+
 namespace fs = std::filesystem;
 
 // General Utility
@@ -914,7 +917,7 @@ namespace
         gui_coin_name_img(gui, taker_coin, "", true);
 
         ImGui::TextColored(loss_color, "%s %s", maker_amount.c_str(), maker_coin.c_str());
-        if(taker_amount != "") {
+        if(!taker_amount.empty()) {
             ImGui::SameLine(250);
             ImGui::TextColored(loss_color, "%s %s", taker_amount.c_str(), taker_coin.c_str());
         }
@@ -1618,7 +1621,13 @@ namespace atomic_dex
                             for (auto it = orders.begin(); it != orders.end(); ++it)
                             {
                                 auto& info = *it;
-                                gui_orders_list_entry(gui, info.uuid, "", info.maker_coin, info.taker_coin, info.maker_amount, info.taker_amount);
+                                auto& events = info.events;
+
+                                std::string date;
+                                if(auto needle = events.find("Finished"); needle != events.end())
+                                    date = std::get<::mm2::api::finished_event>(needle->second).human_date;
+
+                                gui_orders_list_entry(gui, info.uuid, date, info.maker_coin, info.taker_coin, info.maker_amount, info.taker_amount);
 
                                 auto next = it;
                                 if (++next != orders.end())
