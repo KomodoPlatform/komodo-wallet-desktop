@@ -48,6 +48,32 @@ namespace mm2::api
 
     electrum_answer rpc_electrum(electrum_request&& request);
 
+    struct disable_coin_request
+    {
+        std::string coin;
+    };
+
+    void to_json(nlohmann::json& j, const disable_coin_request& req);
+
+    struct disable_coin_answer_success
+    {
+        std::string coin;
+    };
+
+    void from_json(const nlohmann::json& j, disable_coin_answer_success& resp);
+
+    struct disable_coin_answer
+    {
+        std::optional<std::string>                 error;
+        std::optional<disable_coin_answer_success> result;
+        int                                        rpc_result_code;
+        std::string                                raw_result;
+    };
+
+    void from_json(const nlohmann::json& j, disable_coin_answer& resp);
+
+    disable_coin_answer rpc_disable_coin(disable_coin_request&& request);
+
     struct balance_request
     {
         std::string coin;
@@ -450,8 +476,8 @@ namespace mm2::api
 
     struct started_event
     {
-        std::size_t timestamp;
-        std::string human_date;
+        std::size_t  timestamp;
+        std::string  human_date;
         started_data data;
     };
 

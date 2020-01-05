@@ -59,6 +59,31 @@ namespace mm2::api
     }
 
     void
+    to_json(nlohmann::json& j, const disable_coin_request& req)
+    {
+        j["coin"] = req.coin;
+    }
+
+    void
+    from_json(const nlohmann::json& j, disable_coin_answer_success& resp)
+    {
+        j.at("coin").get_to(resp.coin);
+    }
+
+    void
+    from_json(const nlohmann::json& j, disable_coin_answer& resp)
+    {
+        if (j.count("error") == 1)
+        {
+            resp.error = j.get<std::string>();
+        }
+        else if (j.count("result") == 1)
+        {
+            resp.result = j.at("result").get<disable_coin_answer_success>();
+        }
+    }
+
+    void
     to_json(nlohmann::json& j, const balance_request& cfg)
     {
         j["coin"] = cfg.coin;
@@ -632,6 +657,12 @@ namespace mm2::api
     rpc_cancel_all_orders(cancel_all_orders_request&& request)
     {
         return process_rpc<cancel_all_orders_request, cancel_all_orders_answer>(std::forward<cancel_all_orders_request>(request), "cancel_all_orders");
+    }
+
+    disable_coin_answer
+    rpc_disable_coin(disable_coin_request&& request)
+    {
+        return process_rpc<disable_coin_request, disable_coin_answer>(std::forward<disable_coin_request>(request), "disable_coin");
     }
 
     my_orders_answer
