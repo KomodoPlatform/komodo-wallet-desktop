@@ -477,10 +477,10 @@ namespace mm2::api
         using namespace std::chrono;
         for (auto&& content: j.at("events"))
         {
+            using sys_milliseconds           = sys_time<std::chrono::milliseconds>;
             const nlohmann::json& j_evt      = content.at("event");
             auto                  timestamp  = content.at("timestamp").get<std::size_t>();
-            sys_time<std::chrono::milliseconds> tp{std::chrono::milliseconds{timestamp}};
-
+            sys_milliseconds      tp         = sys_milliseconds{std::chrono::milliseconds{timestamp}};
             std::string           human_date = date::format("%F    %T", tp);
             auto                  evt_type   = j_evt.at("type").get<std::string>();
 
