@@ -464,23 +464,26 @@ namespace mm2::api
     void
     from_json(const nlohmann::json& j, swap_contents& contents)
     {
+        using namespace date;
+        using namespace std::chrono;
+
         j.at("error_events").get_to(contents.error_events);
         j.at("uuid").get_to(contents.uuid);
         j.at("taker_coin").get_to(contents.taker_coin);
         j.at("maker_coin").get_to(contents.maker_coin);
         j.at("taker_amount").get_to(contents.taker_amount);
         j.at("maker_amount").get_to(contents.maker_amount);
+        j.at("type").get_to(contents.type);
+
         contents.taker_amount = adjust_precision(contents.taker_amount);
         contents.maker_amount = adjust_precision(contents.maker_amount);
-        j.at("type").get_to(contents.type);
-        using namespace date;
-        using namespace std::chrono;
+
         for (auto&& content: j.at("events"))
         {
             using sys_milliseconds           = sys_time<std::chrono::milliseconds>;
             const nlohmann::json& j_evt      = content.at("event");
             auto                  timestamp  = content.at("timestamp").get<std::size_t>();
-            sys_milliseconds      tp         = sys_milliseconds{std::chrono::milliseconds{timestamp}};
+            auto                  tp         = sys_milliseconds{std::chrono::milliseconds{timestamp}};
             std::string           human_date = date::format("%F    %T", tp);
             auto                  evt_type   = j_evt.at("type").get<std::string>();
 
