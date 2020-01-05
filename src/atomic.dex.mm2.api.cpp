@@ -479,7 +479,9 @@ namespace mm2::api
         {
             const nlohmann::json& j_evt      = content.at("event");
             auto                  timestamp  = content.at("timestamp").get<std::size_t>();
-            date::sys_seconds     tp         = date::sys_seconds{seconds{timestamp}};
+            //date::sys_seconds     tp         = date::sys_seconds{seconds{timestamp}};
+            sys_time<std::chrono::milliseconds> tp{std::chrono::milliseconds{timestamp}};
+
             std::string           human_date = date::format("%d %m %Y %I:%M:%S", tp);
             auto                  evt_type   = j_evt.at("type").get<std::string>();
 
