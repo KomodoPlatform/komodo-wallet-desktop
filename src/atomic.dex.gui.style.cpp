@@ -39,7 +39,7 @@ namespace atomic_dex
 
         ImFontConfig         letter_config;
         static const ImWchar letter_ranges[] = {0x20, 0xFFFF, 0};
-        im_gui_io.Fonts->AddFontFromFileTTF((fonts_path / "Ubuntu-R.ttf").string().c_str(), 15.0f, &letter_config, letter_ranges);
+        im_gui_io.Fonts->AddFontFromFileTTF((fonts_path / "Rubik-Regular.ttf").string().c_str(), 15.0f, &letter_config, letter_ranges);
         im_gui_io.Fonts->AddFontFromFileTTF((fonts_path / FONT_ICON_FILE_NAME_FAS).string().c_str(), 16.0f, &icons_config, icons_ranges);
 
         auto& style                            = ImGui::GetStyle();
