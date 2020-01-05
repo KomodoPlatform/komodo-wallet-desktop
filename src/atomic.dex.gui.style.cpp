@@ -36,7 +36,7 @@ namespace atomic_dex
         icons_config.PixelSnapH = true;
 
         im_gui_io.Fonts->Clear();
-        im_gui_io.Fonts->AddFontFromFileTTF((fonts_path / "Ruda-Bold.ttf").string().c_str(), 15.0f);
+        im_gui_io.Fonts->AddFontFromFileTTF((fonts_path / "Ubuntu-R.ttf").string().c_str(), 15.0f);
         im_gui_io.Fonts->AddFontFromFileTTF((fonts_path / FONT_ICON_FILE_NAME_FAS).string().c_str(), 16.0f, &icons_config, icons_ranges);
 
         auto& style                            = ImGui::GetStyle();
