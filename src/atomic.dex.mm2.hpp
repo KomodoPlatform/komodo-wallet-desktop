@@ -146,6 +146,9 @@ namespace atomic_dex
         //! Disable a single coin
         bool disable_coin(const std::string& ticker, std::error_code& ec) noexcept;
 
+        //! Disable multiple coins, prefer this function if you want persistent disabling
+        void disable_multiple_coins(const std::vector<std::string>& tickers) noexcept;
+
         //! Called every ticks, and execute tasks if the timer expire.
         void update() noexcept final;
 

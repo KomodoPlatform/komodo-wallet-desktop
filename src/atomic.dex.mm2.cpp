@@ -25,7 +25,7 @@ namespace
     namespace ag = antara::gaming;
 
     void
-    update_coin_status(const std::vector<std::string> tickers)
+    update_coin_status(const std::vector<std::string> tickers, bool status = true)
     {
         std::filesystem::path cfg_path = ag::core::assets_real_path() / "config";
         std::ifstream         ifs(cfg_path / "coins.json");
@@ -34,7 +34,7 @@ namespace
         assert(ifs.is_open());
         ifs >> config_json_data;
 
-        for (auto&& ticker: tickers) { config_json_data.at(ticker)["active"] = true; }
+        for (auto&& ticker: tickers) { config_json_data.at(ticker)["active"] = status; }
 
         ifs.close();
 
@@ -289,6 +289,26 @@ namespace atomic_dex
     }
 
     void
+    mm2::disable_multiple_coins(const std::vector<std::string>& tickers) noexcept
+    {
+        LOG_SCOPE_FUNCTION(INFO);
+
+        for (const auto& ticker: tickers)
+        {
+            spawn([this, ticker]() {
+                loguru::set_thread_name("disable multiple coins");
+                std::error_code ec;
+                disable_coin(ticker, ec);
+                if (ec) {
+                    LOG_F(WARNING, "{}", ec.message());
+                }
+            });
+        }
+
+        update_coin_status(tickers, false);
+    }
+
+    void
     mm2::enable_multiple_coins(const std::vector<std::string>& tickers) noexcept
     {
         for (const auto& ticker: tickers)
@@ -299,7 +319,7 @@ namespace atomic_dex
             });
         }
 
-        update_coin_status(tickers);
+        update_coin_status(tickers, true);
     }
 
     coin_config
