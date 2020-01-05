@@ -30,6 +30,11 @@ namespace atomic_dex
         std::string ticker;
     };
 
+    struct coin_disabled
+    {
+        std::string ticker;
+    };
+
     struct orderbook_refresh
     {
         std::string base;

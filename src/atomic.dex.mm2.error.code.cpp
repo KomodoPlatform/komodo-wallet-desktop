@@ -74,6 +74,12 @@ namespace
             return "Wrong password";
         case dextop_error::corrupted_file_or_wrong_password:
             return "Wrong password, or the seed file is corrupted.";
+        case dextop_error::disable_unknown_coin:
+            return "You try to disable un unknown ticker, did you enable it before ?";
+        case dextop_error::active_swap_is_using_the_coin:
+            return "There're active swaps, try disabling it later.";
+        case dextop_error::order_is_matched_at_the_moment:
+            return "There're currently matching orders, try disabling it later.";
         }
         return "";
     }

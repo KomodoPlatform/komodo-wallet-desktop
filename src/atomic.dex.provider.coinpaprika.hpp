@@ -66,6 +66,9 @@ namespace atomic_dex
         //! Event that occur when a coin is correctly enabled.
         void on_coin_enabled(const coin_enabled& evt) noexcept;
 
+        //! Event that occur when a coin is correctly disabled.
+        void on_coin_disabled(const coin_disabled& evt) noexcept;
+
         void update() noexcept final;
     };
 } // namespace atomic_dex

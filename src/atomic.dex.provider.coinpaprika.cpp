@@ -62,6 +62,7 @@ namespace atomic_dex
         disable();
         dispatcher_.sink<mm2_started>().connect<&coinpaprika_provider::on_mm2_started>(*this);
         dispatcher_.sink<coin_enabled>().connect<&coinpaprika_provider::on_coin_enabled>(*this);
+        dispatcher_.sink<coin_disabled>().connect<&coinpaprika_provider::on_coin_disabled>(*this);
     }
 
     void
@@ -229,5 +230,15 @@ namespace atomic_dex
 
         process_provider(config, m_usd_rate_providers, "usd-us-dollars");
         process_provider(config, m_eur_rate_providers, "eur-euro");
+    }
+
+    void
+    coinpaprika_provider::on_coin_disabled(const coin_disabled& evt) noexcept
+    {
+        LOG_SCOPE_FUNCTION(INFO);
+        const auto config = m_mm2_instance.get_coin_info(evt.ticker);
+
+        m_usd_rate_providers.erase(config.ticker);
+        m_eur_rate_providers.erase(config.ticker);
     }
 } // namespace atomic_dex

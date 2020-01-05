@@ -143,6 +143,9 @@ namespace atomic_dex
         //! Enable single coin
         bool enable_coin(const std::string& ticker);
 
+        //! Disable a single coin
+        bool disable_coin(const std::string& ticker, std::error_code& ec) noexcept;
+
         //! Called every ticks, and execute tasks if the timer expire.
         void update() noexcept final;
 

@@ -181,6 +181,45 @@ namespace atomic_dex
     }
 
     bool
+    mm2::disable_coin(const std::string& ticker, std::error_code& ec) noexcept
+    {
+        coin_config coin_info = m_coins_informations.at(ticker);
+        if (not coin_info.currently_enabled)
+        {
+            return true;
+        }
+
+        t_disable_coin_request request{.coin = ticker};
+        auto                   answer = rpc_disable_coin(std::move(request));
+
+        if (answer.error.has_value())
+        {
+            std::string error = answer.error.value();
+            if (error.find("such coin") != std::string::npos)
+            {
+                ec = dextop_error::disable_unknown_coin;
+                return false;
+            }
+            else if (error.find("active swaps") != std::string::npos)
+            {
+                ec = dextop_error::active_swap_is_using_the_coin;
+                return false;
+            }
+            else if (error.find("matching orders") != std::string::npos)
+            {
+                ec = dextop_error::order_is_matched_at_the_moment;
+                return false;
+            }
+        }
+
+        coin_info.currently_enabled = false;
+        m_coins_informations.assign(coin_info.ticker, coin_info);
+
+        dispatcher_.trigger<coin_disabled>(ticker);
+        return true;
+    }
+
+    bool
     mm2::enable_coin(const std::string& ticker)
     {
         coin_config coin_info = m_coins_informations.at(ticker);
