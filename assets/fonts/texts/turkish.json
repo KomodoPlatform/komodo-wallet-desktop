@@ -83,7 +83,7 @@
     "send_coin_tx_results_view_in_explorer": "Web'de görüntüle",
 
     "orders_list_price": "Fiyat",
-    "orders_list_order_id": "Emir ID",
+    "orders_list_order_id": "UUID",
     "orders_list_cancel_button": "İptal",
 
     "enable_coins_enable_a_coin_button": "Coin aktif et",

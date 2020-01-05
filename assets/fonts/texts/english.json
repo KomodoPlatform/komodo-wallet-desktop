@@ -83,7 +83,7 @@
     "send_coin_tx_results_view_in_explorer": "View in Explorer",
 
     "orders_list_price": "Price",
-    "orders_list_order_id": "Order ID",
+    "orders_list_order_id": "UUID",
     "orders_list_cancel_button": "Cancel",
 
     "enable_coins_enable_a_coin_button": "Enable a coin",
