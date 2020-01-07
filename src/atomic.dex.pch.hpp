@@ -110,10 +110,20 @@ namespace folly
 #include <boost/algorithm/string/join.hpp>
 #include <boost/algorithm/string/split.hpp>
 #include <boost/algorithm/string/trim.hpp>
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wunused-parameter"
 #include <boost/multiprecision/cpp_dec_float.hpp>
+#pragma clang diagnostic pop
 
 //! Other dependencies Headers
 #include <IconsFontAwesome5.h>
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wunused-function"
+#pragma clang diagnostic ignored "-Wunused-parameter"
+#pragma clang diagnostic ignored "-Wignored-qualifiers"
+#include <bitcoin/bitcoin/wallet/mnemonic.hpp>
+#pragma clang diagnostic pop
+
 #include <date/date.h>
 #include <entt/entity/helper.hpp>
 #include <entt/signal/dispatcher.hpp>

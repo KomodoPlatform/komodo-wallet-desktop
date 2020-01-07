@@ -168,6 +168,13 @@ find_package(Boost REQUIRED)
 find_package(date CONFIG REQUIRED)
 find_package(nlohmann_json CONFIG REQUIRED)
 find_package(unofficial-sodium CONFIG REQUIRED)
+find_library(unofficial-bitcoin-external bitcoin)
+find_path(unofficial-btc-headers bitcoin/bitcoin.hpp)
+message(STATUS "btc -> ${unofficial-bitcoin-external} ${unofficial-btc-headers}")
+add_library(unofficial-bitcoin INTERFACE)
+target_link_libraries(unofficial-bitcoin INTERFACE ${unofficial-bitcoin-external})
+target_include_directories(unofficial-bitcoin INTERFACE ${unofficial-btc-headers})
+add_library(unofficial-btc::bitcoin ALIAS unofficial-bitcoin)
 target_link_libraries(${PROJECT_NAME} PUBLIC
         antara::world
         antara::event
@@ -181,6 +188,7 @@ target_link_libraries(${PROJECT_NAME} PUBLIC
         date::date
         date::tz
         antara::sdl
+        unofficial-btc::bitcoin
         unofficial-sodium::sodium)
 
 ##! Move assets
