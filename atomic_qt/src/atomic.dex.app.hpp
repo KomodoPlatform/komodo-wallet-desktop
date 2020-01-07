@@ -39,13 +39,9 @@ namespace atomic_dex
         coinpaprika_provider& get_paprika() noexcept;
         entt::dispatcher&     get_dispatcher() noexcept;
 
-      public slots:
         void launch();
 
-      private slots:
-        void tick();
-
       private:
-        void tick_next();
+        void tick();
     };
 } // namespace atomic_dex

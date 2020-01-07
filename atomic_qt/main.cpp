@@ -33,6 +33,7 @@ main(int argc, char* argv[])
         Qt::QueuedConnection);
 
     engine.load(url);
+
     atomic_app.launch();
     return app.exec();
 }

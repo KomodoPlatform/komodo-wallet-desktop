@@ -14,6 +14,8 @@
  *                                                                            *
  ******************************************************************************/
 
+#include <QTimer>
+
 //! Project Headers
 #include "atomic.dex.app.hpp"
 #include "atomic.dex.mm2.hpp"
@@ -24,21 +26,15 @@ namespace atomic_dex
     void
     application::launch()
     {
-        tick_next();
-    }
-
-    void
-    application::tick_next()
-    {
-        // Trigger the tick() invokation when the event loop runs next time
-        QMetaObject::invokeMethod(this, "tick", Qt::QueuedConnection);
+        auto timer = new QTimer(this);
+        connect(timer, &QTimer::timeout, this, &application::tick);
+        timer->start();
     }
 
     void
     application::tick()
     {
         this->process_one_frame();
-        tick_next();
     }
 
     mm2&
