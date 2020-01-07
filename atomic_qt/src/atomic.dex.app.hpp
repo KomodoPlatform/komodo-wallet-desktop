@@ -21,6 +21,10 @@
 //! PCH Headers
 #include "atomic.dex.pch.hpp"
 
+//! Project Headers
+#include "atomic.dex.mm2.hpp"
+#include "atomic.dex.provider.coinpaprika.hpp"
+
 namespace ag = antara::gaming;
 
 namespace atomic_dex
@@ -30,6 +34,10 @@ namespace atomic_dex
         Q_OBJECT
       public:
         explicit application(QObject* pParent = nullptr) noexcept;
+
+        mm2&                  get_mm2() noexcept;
+        coinpaprika_provider& get_paprika() noexcept;
+        entt::dispatcher&     get_dispatcher() noexcept;
 
       public slots:
         void launch();

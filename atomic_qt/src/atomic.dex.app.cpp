@@ -41,10 +41,28 @@ namespace atomic_dex
         tick_next();
     }
 
+    mm2&
+    application::get_mm2() noexcept
+    {
+        return this->system_manager_.get_system<mm2>();
+    }
+
+    coinpaprika_provider&
+    application::get_paprika() noexcept
+    {
+        return this->system_manager_.get_system<coinpaprika_provider>();
+    }
+
+    entt::dispatcher&
+    application::get_dispatcher() noexcept
+    {
+        return this->dispatcher_;
+    }
+
     application::application(QObject* pParent) noexcept : QObject(pParent)
     {
         //! MM2 system need to be created before the GUI and give the instance to the gui
         auto& mm2_system = system_manager_.create_system<mm2>();
-        auto& paprika_system = system_manager_.create_system<coinpaprika_provider>(mm2_system);
+        system_manager_.create_system<coinpaprika_provider>(mm2_system);
     }
 } // namespace atomic_dex
