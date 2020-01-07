@@ -18,11 +18,10 @@ main(int argc, char* argv[])
     loguru::g_preamble_date   = false;
     loguru::set_thread_name("main thread");
     atomic_dex::application atomic_app;
+
     //! QT
     QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
-
     QGuiApplication app(argc, argv);
-
     QQmlApplicationEngine engine;
     const QUrl            url(QStringLiteral("qrc:/main.qml"));
     QObject::connect(
@@ -32,6 +31,7 @@ main(int argc, char* argv[])
                 QCoreApplication::exit(-1);
         },
         Qt::QueuedConnection);
+
     engine.load(url);
     atomic_app.launch();
     return app.exec();

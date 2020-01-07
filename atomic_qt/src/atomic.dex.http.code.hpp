@@ -14,37 +14,13 @@
  *                                                                            *
  ******************************************************************************/
 
-//! Project Headers
-#include "atomic.dex.app.hpp"
-#include "atomic.dex.mm2.hpp"
-#include "atomic.dex.provider.coinpaprika.hpp"
+#pragma once
 
 namespace atomic_dex
 {
-    void
-    application::launch()
+    enum e_http_code
     {
-        tick_next();
-    }
-
-    void
-    application::tick_next()
-    {
-        // Trigger the tick() invokation when the event loop runs next time
-        QMetaObject::invokeMethod(this, "tick", Qt::QueuedConnection);
-    }
-
-    void
-    application::tick()
-    {
-        this->process_one_frame();
-        tick_next();
-    }
-
-    application::application(QObject* pParent) noexcept : QObject(pParent)
-    {
-        //! MM2 system need to be created before the GUI and give the instance to the gui
-        auto& mm2_system = system_manager_.create_system<mm2>();
-        auto& paprika_system = system_manager_.create_system<coinpaprika_provider>(mm2_system);
-    }
-} // namespace atomic_dex
+        bad_request       = 400,
+        too_many_requests = 429
+    };
+}

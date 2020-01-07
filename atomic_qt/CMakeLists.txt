@@ -98,6 +98,8 @@ else ()
             src/atomic.dex.coins.config.cpp
             src/atomic.dex.mm2.api.cpp
             src/atomic.dex.mm2.error.code.cpp
+            src/atomic.dex.provider.coinpaprika.api.cpp
+            src/atomic.dex.provider.coinpaprika.cpp
             qml.qrc
             ${TS_FILES}
             )

@@ -14,37 +14,38 @@
  *                                                                            *
  ******************************************************************************/
 
-//! Project Headers
-#include "atomic.dex.app.hpp"
-#include "atomic.dex.mm2.hpp"
-#include "atomic.dex.provider.coinpaprika.hpp"
+#pragma once
+
+#include "atomic.dex.pch.hpp"
 
 namespace atomic_dex
 {
-    void
-    application::launch()
+    namespace coinpaprika::api
     {
-        tick_next();
-    }
+        struct price_converter_request
+        {
+            std::string base_currency_id;
+            std::string quote_currency_id;
+        };
 
-    void
-    application::tick_next()
-    {
-        // Trigger the tick() invokation when the event loop runs next time
-        QMetaObject::invokeMethod(this, "tick", Qt::QueuedConnection);
-    }
+        struct price_converter_answer
+        {
+            std::string base_currency_id;
+            std::string base_currency_name;
+            std::string base_price_last_updated;
+            std::string quote_currency_id;
+            std::string quote_currency_name;
+            std::string quote_price_last_updated;
+            std::size_t amount;
+            std::string price; ///< we need trick here
+            int         rpc_result_code;
+            std::string raw_result;
+        };
 
-    void
-    application::tick()
-    {
-        this->process_one_frame();
-        tick_next();
-    }
+        void to_json(nlohmann::json& j, const price_converter_request& evt);
 
-    application::application(QObject* pParent) noexcept : QObject(pParent)
-    {
-        //! MM2 system need to be created before the GUI and give the instance to the gui
-        auto& mm2_system = system_manager_.create_system<mm2>();
-        auto& paprika_system = system_manager_.create_system<coinpaprika_provider>(mm2_system);
-    }
-} // namespace atomic_dex
+        void from_json(const nlohmann::json& j, price_converter_answer& evt);
+
+        price_converter_answer price_converter(const price_converter_request& request);
+    } // namespace coinpaprika::api
+}
