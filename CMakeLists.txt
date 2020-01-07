@@ -111,7 +111,7 @@ init_antara_env()
 get_resources_basics_assets(${CMAKE_CURRENT_SOURCE_DIR})
 
 ##! Osx bundle icon
-set(ICON src/atomic.dex.gui.v2.credentials.view.cpp src/atomic.dex.gui.v2.waiting.view.cpp src/atomic.dex.gui.v2.portfolio.view.cpp src/atomic.dex.gui.v2.trading.view.cpp)
+set(ICON)
 configure_icon_osx(data/osx/kmd_logo.icns ICON kmd_logo.icns)
 
 ##! We create the executable with the project name

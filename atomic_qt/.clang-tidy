@@ -1,0 +1,12 @@
+Checks: '-*,
+        modernize-*,
+        bugprone-*,
+        clang-analyzer-*,
+        clang-analyzer-cplusplus*,
+        boost-*,
+        cert-*,
+        cppcoreguidelines-*,
+        performance-*,
+        portability-*,
+        readability-*,
+        -modernize-use-trailing-return-type'
