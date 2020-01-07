@@ -1,9 +1,13 @@
 #include <QGuiApplication>
 #include <QQmlApplicationEngine>
 
+//! PCH Headers
+#include "atomic.dex.pch.hpp"
+
 int
 main(int argc, char* argv[])
 {
+    assert(sodium_init() == 0);
     QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
 
     QGuiApplication app(argc, argv);

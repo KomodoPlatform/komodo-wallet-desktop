@@ -69,29 +69,50 @@ set(ICON)
 configure_icon_osx(data/osx/kmd_logo.icns ICON kmd_logo.icns)
 ##! End antara
 
-
+find_package(folly CONFIG REQUIRED)
+find_package(Boost REQUIRED)
 find_package(Qt5 COMPONENTS Core Quick LinguistTools REQUIRED)
+find_package(unofficial-sodium CONFIG REQUIRED)
+find_library(unofficial-bitcoin-external bitcoin)
+find_path(unofficial-btc-headers bitcoin/bitcoin.hpp)
+message(STATUS "Found libbtc -> ${unofficial-bitcoin-external} ${unofficial-btc-headers}")
+add_library(unofficial-bitcoin INTERFACE)
+target_link_libraries(unofficial-bitcoin INTERFACE ${unofficial-bitcoin-external})
+target_include_directories(unofficial-bitcoin INTERFACE ${unofficial-btc-headers})
+add_library(unofficial-btc::bitcoin ALIAS unofficial-bitcoin)
 
 set(TS_FILES atomic_qt_en_US.ts)
 
-if(ANDROID)
+if (ANDROID)
     add_library(atomic_qt SHARED
-      main.cpp
-      qml.qrc
-      ${TS_FILES}
-    )
-else()
+            main.cpp
+            qml.qrc
+            ${TS_FILES}
+            )
+else ()
     add_executable(atomic_qt MACOSX_BUNDLE ${ICON}
-      main.cpp
-      qml.qrc
-      ${TS_FILES}
-    )
-endif()
+            main.cpp
+            qml.qrc
+            ${TS_FILES}
+            )
+endif ()
+
 
 target_compile_definitions(atomic_qt
-  PRIVATE $<$<OR:$<CONFIG:Debug>,$<CONFIG:RelWithDebInfo>>:QT_QML_DEBUG>)
+        PRIVATE $<$<OR:$<CONFIG:Debug>,$<CONFIG:RelWithDebInfo>>:QT_QML_DEBUG>)
+target_include_directories(atomic_qt PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/src)
 target_link_libraries(atomic_qt
-  PRIVATE Qt5::Core Qt5::Quick)
+        PRIVATE
+        Qt5::Core
+        Qt5::Quick
+        antara::world
+        unofficial-sodium::sodium
+        unofficial-btc::bitcoin
+        reproc++
+        antara::http_client
+        Folly::folly
+        Folly::folly_deps
+        )
 
 qt5_create_translation(QM_FILES ${CMAKE_SOURCE_DIR} ${TS_FILES})
 
