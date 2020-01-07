@@ -310,6 +310,7 @@ namespace
                         }
                         else
                         {
+                            startup.clear();
                             mm2.spawn_mm2_instance(seed);
                             vars.logged_in = true;
                         }

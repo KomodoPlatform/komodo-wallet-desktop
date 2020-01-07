@@ -56,6 +56,14 @@ namespace atomic_dex
                 std::array<char, 100>  password_input{};
                 bool                   show_password{false};
                 std::string            error_text;
+
+                void clear() {
+                    generated_seed_read_only = {};
+                    generated_seed_confirm = {};
+                    password_input = {};
+                    show_password = false;
+                    error_text.clear();
+                }
             } seed_creation_page;
 
             struct seed_recovery_vars
@@ -64,6 +72,13 @@ namespace atomic_dex
                 std::array<char, 100>  password_input{};
                 bool                   show_password{false};
                 std::string            error_text;
+
+                void clear() {
+                    seed_input = {};
+                    password_input = {};
+                    show_password = false;
+                    error_text.clear();
+                }
             } seed_recovery_page;
 
             struct login_vars
@@ -73,10 +88,22 @@ namespace atomic_dex
                 std::array<char, 100> password_input{};
                 bool                  show_password{false};
                 std::string           error_text;
+
+                void clear() {
+                    password_input = {};
+                    show_password = false;
+                    error_text.clear();
+                }
             } login_page;
 
             bool seed_exists{false};
             bool in_login_page{false};
+
+            void clear() {
+                login_page.clear();
+                seed_recovery_page.clear();
+                seed_creation_page.clear();
+            }
         } startup_page;
 
         struct trade_vars
