@@ -310,7 +310,7 @@ namespace
                         }
                         else
                         {
-                            mm2.spawn_mm2_instance();
+                            mm2.spawn_mm2_instance(seed);
                             vars.logged_in = true;
                         }
                     }
