@@ -58,9 +58,9 @@ namespace atomic_dex
                 std::string            error_text;
 
                 void clear() {
-                    generated_seed_read_only = {};
-                    generated_seed_confirm = {};
-                    password_input = {};
+                    sodium_memzero(generated_seed_read_only.data(), generated_seed_read_only.size());
+                    sodium_memzero(generated_seed_confirm.data(), generated_seed_confirm.size());
+                    sodium_memzero(password_input.data(), password_input.size());
                     show_password = false;
                     error_text.clear();
                 }
@@ -74,8 +74,8 @@ namespace atomic_dex
                 std::string            error_text;
 
                 void clear() {
-                    seed_input = {};
-                    password_input = {};
+                    sodium_memzero(seed_input.data(), seed_input.size());
+                    sodium_memzero(password_input.data(), password_input.size());
                     show_password = false;
                     error_text.clear();
                 }
@@ -90,7 +90,7 @@ namespace atomic_dex
                 std::string           error_text;
 
                 void clear() {
-                    password_input = {};
+                    sodium_memzero(password_input.data(), password_input.size());
                     show_password = false;
                     error_text.clear();
                 }
