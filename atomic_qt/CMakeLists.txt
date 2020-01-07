@@ -92,6 +92,12 @@ if (ANDROID)
 else ()
     add_executable(atomic_qt MACOSX_BUNDLE ${ICON}
             main.cpp
+            src/atomic.dex.kill.cpp
+            src/atomic.dex.app.cpp
+            src/atomic.dex.mm2.cpp
+            src/atomic.dex.coins.config.cpp
+            src/atomic.dex.mm2.api.cpp
+            src/atomic.dex.mm2.error.code.cpp
             qml.qrc
             ${TS_FILES}
             )
