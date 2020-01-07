@@ -132,7 +132,7 @@ namespace atomic_dex
         void on_gui_leave_trading(const gui_leave_trading& evt) noexcept;
 
         //! Spawn mm2 instance with given seed
-        void spawn_mm2_instance(std::string passphrase = "thisIsTheNewProjectSeed2019##");
+        void spawn_mm2_instance(std::string passphrase);
 
         //! Enable coins
         bool enable_default_coins() noexcept;
