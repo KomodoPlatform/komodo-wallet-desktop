@@ -25,6 +25,9 @@
 // C++ System Headers
 #include <variant>
 
+// Bitcoin Headers
+#include <bitcoin/bitcoin/utility/pseudo_random.hpp>
+
 namespace fs = std::filesystem;
 
 // General Utility
@@ -126,6 +129,24 @@ namespace
         int valid = str_data.length() < 40 && is_digit_or_letter(c);
 
         return valid ? 0 : 1;
+    }
+} // namespace
+
+// Bitcoin functions
+namespace
+{
+    std::string
+    generate_mnemonic()
+    {
+        // 128, 160, 192, 224, 256 bits of Entropy are valid
+        // We generate 256 bits of Entropy
+        bc::data_chunk my_entropy_256(32); // 32 bytes = 256 bits
+
+        bc::pseudo_random_fill(my_entropy_256);
+
+        // Instantiate mnemonic word_list
+        bc::wallet::word_list words = bc::wallet::create_mnemonic(my_entropy_256);
+        return bc::join(words);
     }
 } // namespace
 
@@ -322,12 +343,6 @@ namespace
         auto& show_password            = vars.show_password;
         auto& error_text               = vars.error_text;
 
-        // TODO: Remove this placeholder
-        copy_str(
-            "handyman sierra quickly gluten gallstone customize subsector wobbling cheer grunt magnitude disposal usual alarm lukewarm passivism atlas amiable "
-            "rounding nimbly decimeter frenzied deafness uproar radar",
-            generated_seed_read_only.data(), generated_seed_read_only.size());
-
         const ImVec2 child_size{385.f, 390.f};
         ImGui::SetCursorPosX((ImGui::GetWindowSize().x - child_size.x) * 0.5f);
         ImGui::BeginChild("##seed_creation_child", child_size, true);
@@ -474,7 +489,13 @@ namespace
                     current_page = startup.SEED_RECOVERY;
                 ImGui::SameLine();
                 if (ImGui::Button((gui.get_text("new_user_page_create_new_user_button") + "##new_user_page_create_new_user_button").c_str()))
+                {
+                    // Generate a mnemonic
+                    auto& seed = gui_vars.startup_page.seed_creation_page.generated_seed_read_only;
+                    copy_str(generate_mnemonic(), seed.data(), seed.size());
+
                     current_page = startup.SEED_CREATION;
+                }
             }
             ImGui::EndChild();
         }
