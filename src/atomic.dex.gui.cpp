@@ -610,6 +610,18 @@ namespace
             {
                 gui_vars.curr_asset_code = asset.ticker;
             }
+            if (ImGui::BeginPopupContextItem())
+            {
+                if (ImGui::Selectable(("Disable " + asset.ticker).c_str()))
+                {
+                    atomic_dex::spawn([&mm2, ticker = asset.ticker]() { mm2.disable_multiple_coins({ticker}); });
+                }
+                if (ImGui::Selectable("Close"))
+                {
+                    ImGui::CloseCurrentPopup();
+                }
+                ImGui::EndPopup();
+            }
             ImGui::SameLine();
 
             gui_coin_name_img(gui, asset);
@@ -905,9 +917,10 @@ namespace
     }
 
     void
-    gui_orders_list_entry(atomic_dex::gui& gui, const std::string& uuid, const std::string& date,
-            const std::string& maker_coin, const std::string& taker_coin,
-            const std::string& maker_amount, const std::string& taker_amount) {
+    gui_orders_list_entry(
+        atomic_dex::gui& gui, const std::string& uuid, const std::string& date, const std::string& maker_coin, const std::string& taker_coin,
+        const std::string& maker_amount, const std::string& taker_amount)
+    {
         gui_coin_name_img(gui, maker_coin);
         ImGui::SameLine();
         ImGui::SetCursorPosX(180);
@@ -917,7 +930,8 @@ namespace
         gui_coin_name_img(gui, taker_coin, "", true);
 
         ImGui::TextColored(loss_color, "%s %s", maker_amount.c_str(), maker_coin.c_str());
-        if(!taker_amount.empty()) {
+        if (!taker_amount.empty())
+        {
             ImGui::SameLine(250);
             ImGui::TextColored(loss_color, "%s %s", taker_amount.c_str(), taker_coin.c_str());
         }
@@ -1620,11 +1634,11 @@ namespace atomic_dex
 
                             for (auto it = orders.begin(); it != orders.end(); ++it)
                             {
-                                auto& info = *it;
+                                auto& info   = *it;
                                 auto& events = info.events;
 
                                 std::string date;
-                                if(auto needle = events.find("Finished"); needle != events.end())
+                                if (auto needle = events.find("Finished"); needle != events.end())
                                     date = std::get<::mm2::api::finished_event>(needle->second).human_date;
 
                                 gui_orders_list_entry(gui, info.uuid, date, info.maker_coin, info.taker_coin, info.maker_amount, info.taker_amount);
