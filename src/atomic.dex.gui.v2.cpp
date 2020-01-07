@@ -51,7 +51,9 @@ namespace atomic_dex
             {
                 this->dispatcher_.trigger<ag::event::quit_game>(0);
             }
-            switch (m_current_state) {
+
+            switch (m_current_state)
+            {
             case e_gui_state::first_run_view:
                 first_run_view();
                 break;
@@ -62,8 +64,10 @@ namespace atomic_dex
                 waiting_view();
                 break;
             case e_gui_state::portoflio_view:
+                portfolio_view();
                 break;
             case e_gui_state::trading_view:
+                trading_view();
                 break;
             }
         }

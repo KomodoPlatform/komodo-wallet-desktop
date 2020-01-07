@@ -14,38 +14,12 @@
  *                                                                            *
  ******************************************************************************/
 
-#pragma once
-
-//! PCH Headers
-#include "atomic.dex.pch.hpp"
-
-//! Project Headers
-#include "atomic.dex.gui.v2.state.hpp"
-#include "atomic.dex.mm2.hpp"
-#include "atomic.dex.provider.coinpaprika.hpp"
-
+#include "atomic.dex.gui.v2.hpp"
 
 namespace atomic_dex
 {
-    class gui_v2 final : public ag::ecs::post_update_system<gui_v2>
+    void
+    gui_v2::trading_view()
     {
-        mm2&                  m_mm2_instance;
-        coinpaprika_provider& m_paprika_system;
-        e_gui_state           m_current_state;
-
-        void first_run_view();
-        void login_view();
-        void waiting_view();
-        void portfolio_view();
-        void trading_view();
-
-      public:
-        //! Constructor
-        explicit gui_v2(entt::registry& registry, mm2& mm2_system, coinpaprika_provider& paprika_system);
-
-        //! Public member method
-        void update() noexcept final;
-    };
+    }
 } // namespace atomic_dex
-
-REFL_AUTO(type(atomic_dex::gui_v2))
