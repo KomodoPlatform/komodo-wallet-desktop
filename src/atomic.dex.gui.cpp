@@ -25,9 +25,6 @@
 // C++ System Headers
 #include <variant>
 
-// Bitcoin Headers
-#include <bitcoin/bitcoin/utility/pseudo_random.hpp>
-
 namespace fs = std::filesystem;
 
 // General Utility

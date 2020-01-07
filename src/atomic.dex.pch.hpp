@@ -121,6 +121,7 @@ namespace folly
 #pragma clang diagnostic ignored "-Wunused-function"
 #pragma clang diagnostic ignored "-Wunused-parameter"
 #pragma clang diagnostic ignored "-Wignored-qualifiers"
+#include <bitcoin/bitcoin/utility/pseudo_random.hpp>
 #include <bitcoin/bitcoin/wallet/mnemonic.hpp>
 #pragma clang diagnostic pop
 
