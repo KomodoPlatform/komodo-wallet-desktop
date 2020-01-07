@@ -42,6 +42,7 @@ endif ()
 ##! Options
 option(ENABLE_CODE_RELOAD_UNIX "Enable hot-code reloading on unix" OFF)
 option(ENABLE_CODE_RELOAD_WINDOWS "Enable hot-code reloading on windows" OFF)
+option(USE_V2_UI "Enable V2 UI" OFF)
 
 ##! We include the module from CMake for fetching dependencies
 include(FetchContent)
@@ -110,7 +111,7 @@ init_antara_env()
 get_resources_basics_assets(${CMAKE_CURRENT_SOURCE_DIR})
 
 ##! Osx bundle icon
-set(ICON)
+set(ICON src/atomic.dex.gui.v2.credentials.view.cpp src/atomic.dex.gui.v2.waiting.view.cpp)
 configure_icon_osx(data/osx/kmd_logo.icns ICON kmd_logo.icns)
 
 ##! We create the executable with the project name
@@ -119,6 +120,8 @@ add_executable(${PROJECT_NAME} MACOSX_BUNDLE ${ICON}
         src/atomic.dex.app.cpp
         src/atomic.dex.gui.cpp
         src/atomic.dex.gui.v2.cpp
+        src/atomic.dex.gui.v2.credentials.view.cpp
+        src/atomic.dex.gui.v2.waiting.view.cpp
         src/atomic.dex.mm2.cpp
         src/atomic.dex.mm2.api.cpp
         src/atomic.dex.gui.style.cpp
@@ -129,6 +132,11 @@ add_executable(${PROJECT_NAME} MACOSX_BUNDLE ${ICON}
         src/atomic.dex.provider.coinpaprika.api.cpp
         src/atomic.dex.kill.cpp
         src/atomic.dex.security.cpp)
+
+
+if (USE_V2_UI)
+    target_compile_definitions(${PROJECT_NAME} PUBLIC -DATOMICDEX_V2_UI)
+endif()
 
 if (UNIX AND ENABLE_CODE_RELOAD_UNIX)
     target_compile_definitions(${PROJECT_NAME} PUBLIC -DENABLE_CODE_RELOAD_UNIX)

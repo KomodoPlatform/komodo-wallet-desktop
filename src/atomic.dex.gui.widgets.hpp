@@ -23,4 +23,19 @@ namespace atomic_dex::widgets
 {
     void
     loading_indicator_circle(const char* label, float indicator_radius, const ImVec4& main_color, const ImVec4& backdrop_color, int circle_count, float speed);
-}
+} // namespace atomic_dex::widgets
+
+class im_scoped_window
+{
+    bool m_visible;
+
+  public:
+    template <typename... Args>
+    im_scoped_window(Args&&... args) : m_visible(ImGui::Begin(std::forward<Args>(args)...))
+    {
+    }
+
+    ~im_scoped_window() { ImGui::End(); }
+
+    explicit operator bool() { return m_visible; }
+};

@@ -17,6 +17,7 @@
 //! Project Headers
 #include "atomic.dex.app.hpp"
 #include "atomic.dex.gui.hpp"
+#include "atomic.dex.gui.v2.hpp"
 #include "atomic.dex.mm2.hpp"
 #include "atomic.dex.provider.coinpaprika.hpp"
 
@@ -34,8 +35,12 @@ namespace atomic_dex
         //! MM2 system need to be created before the GUI and give the instance to the gui
         auto& mm2_system     = system_manager_.create_system<mm2>();
         auto& paprika_system = system_manager_.create_system<coinpaprika_provider>(mm2_system);
+#ifdef ATOMICDEX_V2_UI
+        system_manager_.create_system<gui_v2>(mm2_system, paprika_system);
+        system_manager_.prioritize_system<gui_v2, ag::sdl::graphic_system>();
+#else
         system_manager_.create_system<gui>(mm2_system, paprika_system);
-
         system_manager_.prioritize_system<gui, ag::sdl::graphic_system>();
+#endif
     }
 } // namespace atomic_dex
