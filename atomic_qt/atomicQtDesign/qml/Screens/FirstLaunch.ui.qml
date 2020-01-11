@@ -9,8 +9,8 @@ import "../Components"
 import "../Constants"
 
 SetupPage {
-    image_scale: 0.4
-    image_path: General.image_path + "komodo-logo.png"
+    image_scale: 0.7
+    image_path: General.image_path + "komodo-icon.png"
     title: "Welcome!"
     content: RowLayout {
         id: buttons_list
