@@ -15,14 +15,18 @@ SetupPage {
     content: ColumnLayout {
         id: rows
 
+        width: 175
+
         TextFieldWithTitle {
             id: seed_input
             title: qsTr("Seed")
+            field.placeholderText: qsTr("Enter the seed")
         }
 
         TextFieldWithTitle {
             id: password_input
             title: qsTr("Password")
+            field.placeholderText: qsTr("Enter a new password")
         }
 
         RowLayout {
