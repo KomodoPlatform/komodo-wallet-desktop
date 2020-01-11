@@ -1,0 +1,2 @@
+singleton General General.qml
+singleton Style Style.qml
