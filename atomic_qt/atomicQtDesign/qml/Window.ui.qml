@@ -4,8 +4,8 @@ import "Constants"
 
 Rectangle {
     color: "#1E2938"
-    width: Style.width
-    height: Style.height
+    width: General.width
+    height: General.height
 
     //    FirstLaunch {
     //        id: welcome_page
