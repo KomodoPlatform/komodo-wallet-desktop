@@ -1,5 +1,4 @@
 import QtQuick 2.12
-import atomicQtDesign 1.0
 import QtQuick.Layouts 1.3
 import Qt.SafeRenderer 1.1
 import QtQuick.Studio.Effects 1.0
@@ -20,3 +19,9 @@ ColumnLayout {
         Layout.fillWidth: true
     }
 }
+
+/*##^##
+Designer {
+    D{i:0;autoSize:true;height:480;width:640}
+}
+##^##*/

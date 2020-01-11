@@ -1,11 +1,12 @@
 import QtQuick 2.12
-import atomicQtDesign 1.0
 import QtQuick.Layouts 1.3
 import Qt.SafeRenderer 1.1
 import QtQuick.Studio.Effects 1.0
 import QtQuick.Studio.Components 1.0
 import QtQuick.Controls 2.3
 import QtQuick.Controls.Material 2.12
+import "../Components"
+import "../Constants"
 
 Item {
     id: root
@@ -17,7 +18,7 @@ Item {
         antialiasing: true
         scale: 0.5
         fillMode: Image.PreserveAspectFit
-        source: "assets/komodo-icon.png"
+        source: General.image_path + "komodo-icon.png"
     }
 
     ColumnLayout {
@@ -31,7 +32,7 @@ Item {
             id: image
             Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
             fillMode: Image.PreserveAspectFit
-            source: "assets/setup-wallet-restore-2.svg"
+            source: General.image_path + "setup-wallet-restore-2.svg"
         }
 
         PaneWithTitle {
