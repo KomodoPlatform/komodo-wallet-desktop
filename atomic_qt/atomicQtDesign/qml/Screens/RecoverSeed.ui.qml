@@ -8,49 +8,34 @@ import QtQuick.Controls.Material 2.12
 import "../Components"
 import "../Constants"
 
-Item {
-    ColumnLayout {
-        id: window_layout
-        anchors.horizontalCenter: parent.horizontalCenter
-        anchors.verticalCenter: parent.verticalCenter
-        transformOrigin: Item.Center
-        spacing: 20
+SetupPage {
+    image_scale: 0.7
+    image_path: General.image_path + "setup-wallet-restore-2.svg"
+    title: "Recovery"
+    content: ColumnLayout {
+        id: rows
 
-        Image {
-            id: image
-            Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
-            fillMode: Image.PreserveAspectFit
-            source: General.image_path + "setup-wallet-restore-2.svg"
+        TextFieldWithTitle {
+            id: seed_input
+            title: qsTr("Seed")
         }
 
-        PaneWithTitle {
-            title: "Recovery"
-            inside: ColumnLayout {
-                id: rows
+        TextFieldWithTitle {
+            id: password_input
+            title: qsTr("Password")
+        }
 
-                TextFieldWithTitle {
-                    id: seed_input
-                    title: qsTr("Seed")
-                }
+        RowLayout {
+            id: columns
 
-                TextFieldWithTitle {
-                    id: password_input
-                    title: qsTr("Password")
-                }
+            Button {
+                id: back_button
+                text: qsTr("Back")
+            }
 
-                RowLayout {
-                    id: columns
-
-                    Button {
-                        id: back_button
-                        text: qsTr("Back")
-                    }
-
-                    Button {
-                        id: confirm_button
-                        text: qsTr("Confirm")
-                    }
-                }
+            Button {
+                id: confirm_button
+                text: qsTr("Confirm")
             }
         }
     }

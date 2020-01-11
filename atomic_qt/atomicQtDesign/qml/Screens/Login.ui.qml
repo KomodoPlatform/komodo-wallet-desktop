@@ -8,53 +8,30 @@ import QtQuick.Controls.Material 2.12
 import "../Components"
 import "../Constants"
 
-Item {
-    ColumnLayout {
-        id: window_layout
-        anchors.horizontalCenter: parent.horizontalCenter
-        anchors.verticalCenter: parent.verticalCenter
-        transformOrigin: Item.Center
-        spacing: 20
+SetupPage {
+    image_scale: 0.7
+    image_path: General.image_path + "setup-logs.svg"
+    title: "Login"
+    content: ColumnLayout {
+        id: rows
 
-        Rectangle {
-            id: rectangle
-            color: "#283547"
-            radius: 100
-            implicitWidth: image.implicitWidth
-            implicitHeight: image.implicitHeight
-            Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
-            Image {
-                id: image
-                source: General.image_path + "setup-logs.svg"
-                scale: 0.7
-                antialiasing: true
-            }
+        TextFieldWithTitle {
+            id: password_input
+            title: qsTr("Password")
+            field.placeholderText: qsTr("Enter your password")
         }
 
-        PaneWithTitle {
-            title: "Login"
-            inside: ColumnLayout {
-                id: rows
+        RowLayout {
+            id: columns
 
-                TextFieldWithTitle {
-                    id: password_input
-                    title: qsTr("Password")
-                    field.placeholderText: qsTr("Enter your password")
-                }
+            Button {
+                id: recover_seed_button
+                text: qsTr("Recover Seed")
+            }
 
-                RowLayout {
-                    id: columns
-
-                    Button {
-                        id: recover_seed_button
-                        text: qsTr("Recover Seed")
-                    }
-
-                    Button {
-                        id: confirm_button
-                        text: qsTr("LOGIN")
-                    }
-                }
+            Button {
+                id: confirm_button
+                text: qsTr("LOGIN")
             }
         }
     }

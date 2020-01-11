@@ -8,62 +8,45 @@ import QtQuick.Controls.Material 2.12
 import "../Components"
 import "../Constants"
 
-Item {
-    ColumnLayout {
-        id: window_layout
-        anchors.horizontalCenter: parent.horizontalCenter
-        anchors.verticalCenter: parent.verticalCenter
-        transformOrigin: Item.Center
-        spacing: 20
+SetupPage {
+    image_scale: 0.7
+    image_path: General.image_path + "setup-welcome-wallet.svg"
+    title: "New User"
+    content: ColumnLayout {
+        id: rows
+        width: 400
 
-        Image {
-            id: image
-            Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
-            fillMode: Image.PreserveAspectFit
-            source: General.image_path + "setup-welcome-wallet.svg"
-            scale: 1
+        TextFieldWithTitle {
+            id: generated_seed
+            title: qsTr("Generated Seed")
+            // TODO: Delete this text
+            field.readOnly: true
+            field.text: "this is a test seed gossip rubber flee just connect manual any salmon limb suffer now turkey essence naive daughter system begin quantum page"
         }
 
-        PaneWithTitle {
-            title: "New User"
+        TextFieldWithTitle {
+            id: confirm_seed_input
+            title: qsTr("Confirm Seed")
+            field.placeholderText: qsTr("Enter the generated seed here")
+        }
 
-            inside: ColumnLayout {
-                id: rows
-                width: 400
+        TextFieldWithTitle {
+            id: password_input
+            title: qsTr("Password")
+            field.placeholderText: qsTr("Enter a password for your wallet")
+        }
 
-                TextFieldWithTitle {
-                    id: generated_seed
-                    title: qsTr("Generated Seed")
-                    // TODO: Delete this text
-                    field.readOnly: true
-                    field.text: "this is a test seed gossip rubber flee just connect manual any salmon limb suffer now turkey essence naive daughter system begin quantum page"
-                }
+        RowLayout {
+            id: columns
 
-                TextFieldWithTitle {
-                    id: confirm_seed_input
-                    title: qsTr("Confirm Seed")
-                    field.placeholderText: qsTr("Enter the generated seed here")
-                }
+            Button {
+                id: back_button
+                text: qsTr("Back")
+            }
 
-                TextFieldWithTitle {
-                    id: password_input
-                    title: qsTr("Password")
-                    field.placeholderText: qsTr("Enter a password for your wallet")
-                }
-
-                RowLayout {
-                    id: columns
-
-                    Button {
-                        id: back_button
-                        text: qsTr("Back")
-                    }
-
-                    Button {
-                        id: confirm_button
-                        text: qsTr("Create")
-                    }
-                }
+            Button {
+                id: confirm_button
+                text: qsTr("Create")
             }
         }
     }

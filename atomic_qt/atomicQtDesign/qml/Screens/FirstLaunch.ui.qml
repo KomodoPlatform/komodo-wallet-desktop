@@ -8,46 +8,24 @@ import QtQuick.Controls.Material 2.12
 import "../Components"
 import "../Constants"
 
-Item {
-    ColumnLayout {
-        id: window_layout
-        anchors.horizontalCenter: parent.horizontalCenter
+SetupPage {
+    image_scale: 0.4
+    image_path: General.image_path + "komodo-logo.png"
+    title: "Welcome!"
+    content: RowLayout {
+        id: buttons_list
         anchors.verticalCenter: parent.verticalCenter
-        transformOrigin: Item.Center
-        spacing: 100
+        anchors.horizontalCenter: parent.horizontalCenter
+        spacing: Style.itemPadding
 
-        Image {
-            id: komodo_logo
-            Layout.fillHeight: false
-            Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
-            fillMode: Image.PreserveAspectFit
-            source: General.image_path + "komodo-logo.png"
+        Button {
+            id: new_user_button
+            text: qsTr("New User")
         }
 
-        Column {
-            id: column
-            Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
-            spacing: Style.paneTitleOffset
-
-            PaneWithTitle {
-                title: "Welcome!"
-                inside: RowLayout {
-                    id: buttons_list
-                    anchors.verticalCenter: parent.verticalCenter
-                    anchors.horizontalCenter: parent.horizontalCenter
-                    spacing: Style.itemPadding
-
-                    Button {
-                        id: new_user_button
-                        text: qsTr("New User")
-                    }
-
-                    Button {
-                        id: seed_recovery
-                        text: qsTr("Recover Seed")
-                    }
-                }
-            }
+        Button {
+            id: seed_recovery
+            text: qsTr("Recover Seed")
         }
     }
 }
