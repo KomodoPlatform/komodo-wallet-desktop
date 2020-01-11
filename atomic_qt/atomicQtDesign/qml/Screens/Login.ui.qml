@@ -9,13 +9,6 @@ import "../Components"
 import "../Constants"
 
 Item {
-    Image {
-        id: image1
-        antialiasing: true
-        scale: 0.5
-        source: General.image_path + "komodo-icon.png"
-    }
-
     ColumnLayout {
         id: window_layout
         anchors.horizontalCenter: parent.horizontalCenter
