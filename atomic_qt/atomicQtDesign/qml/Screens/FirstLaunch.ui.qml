@@ -9,8 +9,6 @@ import "../Components"
 import "../Constants"
 
 Item {
-    id: root
-
     ColumnLayout {
         id: window_layout
         anchors.horizontalCenter: parent.horizontalCenter

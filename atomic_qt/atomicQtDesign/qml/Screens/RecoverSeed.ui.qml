@@ -9,15 +9,10 @@ import "../Components"
 import "../Constants"
 
 Item {
-    id: root
-
     Image {
         id: image1
-        x: 0
-        y: 0
         antialiasing: true
         scale: 0.5
-        fillMode: Image.PreserveAspectFit
         source: General.image_path + "komodo-icon.png"
     }
 
