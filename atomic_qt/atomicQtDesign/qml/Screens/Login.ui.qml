@@ -23,11 +23,19 @@ Item {
         transformOrigin: Item.Center
         spacing: 20
 
-        Image {
-            id: image
+        Rectangle {
+            id: rectangle
+            color: "#283547"
+            radius: 100
+            implicitWidth: image.implicitWidth
+            implicitHeight: image.implicitHeight
             Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
-            fillMode: Image.PreserveAspectFit
-            source: General.image_path + "setup-logs.svg"
+            Image {
+                id: image
+                source: General.image_path + "setup-logs.svg"
+                scale: 0.7
+                antialiasing: true
+            }
         }
 
         PaneWithTitle {
