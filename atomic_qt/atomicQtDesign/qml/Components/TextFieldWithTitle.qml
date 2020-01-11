@@ -8,7 +8,7 @@ import QtQuick.Controls.Material 2.12
 
 ColumnLayout {
     property alias title: title_text.text
-    property alias input_text: input_field.text
+    property alias field: input_field
 
     DefaultText {
         id: title_text
@@ -17,6 +17,7 @@ ColumnLayout {
     TextField {
         id: input_field
         Layout.fillWidth: true
+        selectByMouse: true
     }
 }
 

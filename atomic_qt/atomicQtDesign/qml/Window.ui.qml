@@ -8,11 +8,16 @@ Rectangle {
     height: General.height
 
     //    FirstLaunch {
-    //        id: welcome_page
+    //        id: welcome_screen
     //        anchors.fill: parent
     //    }
-    RecoverSeed {
-        id: recover_seed_page
+
+    //    RecoverSeed {
+    //        id: recover_seed_screen
+    //        anchors.fill: parent
+    //    }
+    NewUser {
+        id: new_user_screen
         anchors.fill: parent
     }
 }
