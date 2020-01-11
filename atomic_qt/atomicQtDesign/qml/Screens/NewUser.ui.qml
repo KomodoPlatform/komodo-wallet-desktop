@@ -36,11 +36,13 @@ Item {
 
             inside: ColumnLayout {
                 id: rows
+                width: 400
 
                 TextFieldWithTitle {
                     id: generated_seed
                     title: qsTr("Generated Seed")
                     // TODO: Delete this text
+                    field.readOnly: true
                     field.text: "this is a test seed gossip rubber flee just connect manual any salmon limb suffer now turkey essence naive daughter system begin quantum page"
                 }
 
