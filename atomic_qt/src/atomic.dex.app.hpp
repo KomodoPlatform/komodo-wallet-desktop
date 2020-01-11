@@ -41,6 +41,8 @@ namespace atomic_dex
 
         void launch();
 
+        Q_INVOKABLE QString get_mnemonic();
+
       private:
         void tick();
     };

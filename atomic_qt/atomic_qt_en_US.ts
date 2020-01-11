@@ -4,6 +4,7 @@
 <context>
     <name>main</name>
     <message>
+        <location filename="cmake-build-debug/bin/atomic_qt.app/Contents/Resources/assets/gui/main.qml" line="10"/>
         <location filename="qt_assets/gui/main.qml" line="10"/>
         <source>AtomicDex</source>
         <translation type="unfinished"></translation>

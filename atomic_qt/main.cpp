@@ -1,5 +1,6 @@
 #include <QGuiApplication>
 #include <QQmlApplicationEngine>
+#include <QtQml>
 
 //! PCH Headers
 #include "atomic.dex.pch.hpp"
@@ -33,6 +34,7 @@ main(int argc, char* argv[])
         Qt::QueuedConnection);
 
     engine.load(url);
+    engine.rootContext()->setContextProperty("atomic_app", &atomic_app);
 
     atomic_app.launch();
     return app.exec();
