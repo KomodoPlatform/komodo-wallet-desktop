@@ -15,10 +15,8 @@ SetupPage {
     content: ColumnLayout {
         id: rows
 
-        TextFieldWithTitle {
+        PasswordField {
             id: password_input
-            title: qsTr("Password")
-            field.placeholderText: qsTr("Enter your password")
         }
 
         RowLayout {

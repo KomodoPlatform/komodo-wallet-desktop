@@ -30,10 +30,8 @@ SetupPage {
             field.placeholderText: qsTr("Enter the generated seed here")
         }
 
-        TextFieldWithTitle {
+        PasswordField {
             id: password_input
-            title: qsTr("Password")
-            field.placeholderText: qsTr("Enter a password for your wallet")
         }
 
         RowLayout {

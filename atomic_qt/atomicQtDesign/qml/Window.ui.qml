@@ -16,6 +16,7 @@ Rectangle {
     //        id: recover_seed_screen
     //        anchors.fill: parent
     //    }
+
     //    NewUser {
     //        id: new_user_screen
     //        anchors.fill: parent
