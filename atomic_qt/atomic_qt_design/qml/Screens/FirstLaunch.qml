@@ -6,6 +6,11 @@ import "../Components"
 import "../Constants"
 
 SetupPage {
+    id: page
+
+    function onClickedNewUser() {}
+    function onClickedRecoverSeed() {}
+
     image_scale: 0.7
     image_path: General.image_path + "komodo-icon.png"
     title: "Welcome!"
@@ -16,13 +21,15 @@ SetupPage {
         spacing: Style.itemPadding
 
         Button {
-            id: new_user_button
+            id: button_new_user
             text: qsTr("New User")
+            onClicked: onClickedNewUser()
         }
 
         Button {
-            id: seed_recovery
+            id: button_seed_recovery
             text: qsTr("Recover Seed")
+            onClicked: onClickedRecoverSeed()
         }
     }
 }
