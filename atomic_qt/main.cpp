@@ -22,10 +22,13 @@ main(int argc, char* argv[])
 
     //! QT
     QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
-    QGuiApplication app(argc, argv);
+    QGuiApplication       app(argc, argv);
     QQmlApplicationEngine engine;
     engine.addImportPath("qrc:/atomic_qt_design/imports");
-    const QUrl            url(QStringLiteral("qrc:/atomic_qt_design/qml/main.qml"));
+    engine.addImportPath("qrc:/atomic_qt_design/Constants");
+    qmlRegisterSingletonType(QUrl("qrc:/atomic_qt_design/qml/Constants/General.qml"), "App", 1, 0, "General");
+    qmlRegisterSingletonType(QUrl("qrc:/atomic_qt_design/qml/Constants/Style.qml"), "App", 1, 0, "Style");
+    const QUrl url(QStringLiteral("qrc:/atomic_qt_design/qml/main.qml"));
     QObject::connect(
         &engine, &QQmlApplicationEngine::objectCreated, &app,
         [url](QObject* obj, const QUrl& objUrl) {
