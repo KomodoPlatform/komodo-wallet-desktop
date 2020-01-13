@@ -4,8 +4,6 @@ import "Constants"
 
 Rectangle {
     color: "#1E2938"
-    width: General.width
-    height: General.height
 
     //    FirstLaunch {
     //        id: welcome_screen
@@ -26,3 +24,10 @@ Rectangle {
         anchors.fill: parent
     }
 }
+
+/*##^##
+Designer {
+    D{i:0;autoSize:true;height:480;width:640}
+}
+##^##*/
+
