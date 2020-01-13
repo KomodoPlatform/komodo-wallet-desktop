@@ -8,7 +8,7 @@ Rectangle {
     color: "#1E2938"
 
     function firstPage() {
-        return false ? idx_first_launch : idx_login
+        return atomic_app.first_run() ? idx_first_launch : idx_login
     }
 
     readonly property int idx_first_launch: 0
