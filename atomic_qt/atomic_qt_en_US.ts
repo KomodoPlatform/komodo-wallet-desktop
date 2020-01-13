@@ -509,14 +509,14 @@
     </message>
 </context>
 <context>
-    <name>FirstLaunch.ui</name>
+    <name>FirstLaunch</name>
     <message>
-        <location filename="atomic_qt_design/qml/Screens/FirstLaunch.ui.qml" line="20"/>
+        <location filename="atomic_qt_design/qml/Screens/FirstLaunch.qml" line="23"/>
         <source>New User</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="atomic_qt_design/qml/Screens/FirstLaunch.ui.qml" line="25"/>
+        <location filename="atomic_qt_design/qml/Screens/FirstLaunch.qml" line="28"/>
         <source>Recover Seed</source>
         <translation type="unfinished"></translation>
     </message>
@@ -666,42 +666,42 @@
     </message>
 </context>
 <context>
-    <name>Login.ui</name>
+    <name>Login</name>
     <message>
-        <location filename="atomic_qt_design/qml/Screens/Login.ui.qml" line="24"/>
+        <location filename="atomic_qt_design/qml/Screens/Login.qml" line="24"/>
         <source>Recover Seed</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="atomic_qt_design/qml/Screens/Login.ui.qml" line="29"/>
+        <location filename="atomic_qt_design/qml/Screens/Login.qml" line="29"/>
         <source>Login</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
-    <name>NewUser.ui</name>
+    <name>NewUser</name>
     <message>
-        <location filename="atomic_qt_design/qml/Screens/NewUser.ui.qml" line="18"/>
+        <location filename="atomic_qt_design/qml/Screens/NewUser.qml" line="18"/>
         <source>Generated Seed</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="atomic_qt_design/qml/Screens/NewUser.ui.qml" line="26"/>
+        <location filename="atomic_qt_design/qml/Screens/NewUser.qml" line="26"/>
         <source>Confirm Seed</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="atomic_qt_design/qml/Screens/NewUser.ui.qml" line="27"/>
+        <location filename="atomic_qt_design/qml/Screens/NewUser.qml" line="27"/>
         <source>Enter the generated seed here</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="atomic_qt_design/qml/Screens/NewUser.ui.qml" line="39"/>
+        <location filename="atomic_qt_design/qml/Screens/NewUser.qml" line="39"/>
         <source>Back</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="atomic_qt_design/qml/Screens/NewUser.ui.qml" line="44"/>
+        <location filename="atomic_qt_design/qml/Screens/NewUser.qml" line="44"/>
         <source>Create</source>
         <translation type="unfinished"></translation>
     </message>
@@ -850,24 +850,24 @@
     </message>
 </context>
 <context>
-    <name>RecoverSeed.ui</name>
+    <name>RecoverSeed</name>
     <message>
-        <location filename="atomic_qt_design/qml/Screens/RecoverSeed.ui.qml" line="19"/>
+        <location filename="atomic_qt_design/qml/Screens/RecoverSeed.qml" line="19"/>
         <source>Seed</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="atomic_qt_design/qml/Screens/RecoverSeed.ui.qml" line="20"/>
+        <location filename="atomic_qt_design/qml/Screens/RecoverSeed.qml" line="20"/>
         <source>Enter the seed</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="atomic_qt_design/qml/Screens/RecoverSeed.ui.qml" line="32"/>
+        <location filename="atomic_qt_design/qml/Screens/RecoverSeed.qml" line="32"/>
         <source>Back</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="atomic_qt_design/qml/Screens/RecoverSeed.ui.qml" line="37"/>
+        <location filename="atomic_qt_design/qml/Screens/RecoverSeed.qml" line="37"/>
         <source>Confirm</source>
         <translation type="unfinished"></translation>
     </message>
