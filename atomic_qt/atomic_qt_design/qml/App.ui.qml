@@ -45,7 +45,7 @@ Rectangle {
             name: "Login"
             when: atomic_app.first_run() === false
             PropertyChanges {
-                target: current_page
+                target: root
                 current_page: "login"
             }
         }
