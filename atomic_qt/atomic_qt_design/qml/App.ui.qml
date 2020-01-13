@@ -3,27 +3,53 @@ import "Screens"
 import "Constants"
 
 Rectangle {
+    id: root
     color: "#1E2938"
 
-    //    FirstLaunch {
-    //        id: welcome_screen
-    //        anchors.fill: parent
-    //    }
+    property string current_page: "login"
 
-    //    RecoverSeed {
-    //        id: recover_seed_screen
-    //        anchors.fill: parent
-    //    }
+    FirstLaunch {
+        id: welcome_screen
+        anchors.fill: parent
+        visible: current_page == "first_launch"
+    }
 
-    //    NewUser {
-    //        id: new_user_screen
-    //        anchors.fill: parent
-    //    }
+    RecoverSeed {
+        id: recover_seed_screen
+        anchors.fill: parent
+        visible: current_page == "recover_seed"
+    }
+
+    NewUser {
+        id: new_user_screen
+        anchors.fill: parent
+        visible: current_page == "new_user"
+    }
 
     Login {
         id: login_screen
         anchors.fill: parent
+        visible: current_page == "login"
     }
+
+    states: [
+        State {
+            name: "FirstLaunch"
+            when: atomic_app.first_run() === true
+            PropertyChanges {
+                target: root
+                current_page: "first_launch"
+            }
+        },
+        State {
+            name: "Login"
+            when: atomic_app.first_run() === false
+            PropertyChanges {
+                target: current_page
+                current_page: "login"
+            }
+        }
+    ]
 }
 
 /*##^##
