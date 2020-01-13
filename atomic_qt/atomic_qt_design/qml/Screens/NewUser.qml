@@ -6,6 +6,9 @@ import "../Components"
 import "../Constants"
 
 SetupPage {
+    function onClickedBack() {}
+    function onClickedCreate() {}
+
     image_scale: 0.7
     image_path: General.image_path + "setup-welcome-wallet.svg"
     title: "New User"
@@ -16,8 +19,9 @@ SetupPage {
         TextFieldWithTitle {
             id: generated_seed
             title: qsTr("Generated Seed")
-            // TODO: Delete this text
             field.readOnly: true
+
+            // TODO: Delete this text
             field.text: "this is a test seed gossip rubber flee just connect manual any salmon limb suffer now turkey essence naive daughter system begin quantum page"
         }
 
@@ -37,11 +41,13 @@ SetupPage {
             Button {
                 id: back_button
                 text: qsTr("Back")
+                onClicked: onClickedBack()
             }
 
             Button {
                 id: confirm_button
                 text: qsTr("Create")
+                onClicked: onClickedCreate()
             }
         }
     }
