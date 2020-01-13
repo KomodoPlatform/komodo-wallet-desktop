@@ -4,7 +4,8 @@
         <file>atomic_qt_design/qml/main.qml</file>
         <file>atomic_qt_design/assets/fonts/Rubik-Regular.ttf</file>
         <file>atomic_qt_design/assets/images/setup-logs.svg</file>
-        <file>atomic_qt_design/qml/Window.ui.qml</file>
+        <file>atomic_qt_design/qml/App.ui.qml</file>
+        <file>qtquickcontrols2.conf</file>
         <file>atomic_qt_design/qml/Screens/Login.ui.qml</file>
         <file>atomic_qt_design/qml/Screens/NewUser.ui.qml</file>
         <file>atomic_qt_design/qml/Screens/RecoverSeed.ui.qml</file>
