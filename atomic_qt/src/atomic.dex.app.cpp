@@ -23,6 +23,12 @@
 
 namespace atomic_dex
 {
+    bool
+    atomic_dex::application::first_run()
+    {
+        return fs::exists(ag::core::assets_real_path() / "config/encrypted.seed");
+    }
+
     void
     application::launch()
     {
