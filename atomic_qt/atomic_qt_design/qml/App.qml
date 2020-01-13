@@ -8,7 +8,7 @@ Rectangle {
     color: "#1E2938"
 
     function firstPage() {
-        return atomic_app.first_run() ? idx_first_launch : idx_login
+        return MockAPI.getAtomicApp().first_run() ? idx_first_launch : idx_login
     }
 
     readonly property int idx_first_launch: 0
@@ -53,3 +53,9 @@ Rectangle {
         }
     }
 }
+
+/*##^##
+Designer {
+    D{i:0;autoSize:true;height:480;width:640}
+}
+##^##*/
