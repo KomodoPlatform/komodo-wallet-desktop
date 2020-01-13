@@ -6,13 +6,16 @@ import "../Components"
 import "../Constants"
 
 SetupPage {
+    function onClickedBack() {}
+    function onClickedConfirm() {}
+
     image_scale: 0.7
     image_path: General.image_path + "setup-wallet-restore-2.svg"
     title: "Recovery"
     content: ColumnLayout {
         id: rows
 
-        width: 175
+        width: 400
 
         TextFieldWithTitle {
             id: seed_input
@@ -30,11 +33,13 @@ SetupPage {
             Button {
                 id: back_button
                 text: qsTr("Back")
+                onClicked: onClickedBack()
             }
 
             Button {
                 id: confirm_button
                 text: qsTr("Confirm")
+                onClicked: onClickedConfirm()
             }
         }
     }

@@ -7,11 +7,16 @@ Rectangle {
     id: root
     color: "#1E2938"
 
+    function firstPage() {
+        return false ? idx_first_launch : idx_login
+    }
+
     readonly property int idx_first_launch: 0
     readonly property int idx_recover_seed: 1
     readonly property int idx_new_user: 2
     readonly property int idx_login: 3
-    property int current_page: idx_first_launch
+    property int current_page: firstPage()
+
     StackLayout {
         id: stack_layout
         anchors.fill: parent
@@ -23,7 +28,13 @@ Rectangle {
             function onClickedRecoverSeed() { current_page = idx_recover_seed }
         }
 
-        RecoverSeed {}
+        RecoverSeed {
+            function onClickedBack() { current_page = firstPage() }
+            function onClickedConfirm() {
+                // TODO: Recover wallet here
+                console.log("Recovering wallet...")
+            }
+        }
 
         NewUser {
             function onClickedBack() { current_page = idx_first_launch }
