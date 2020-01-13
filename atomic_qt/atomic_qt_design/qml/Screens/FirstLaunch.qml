@@ -6,8 +6,6 @@ import "../Components"
 import "../Constants"
 
 SetupPage {
-    id: page
-
     function onClickedNewUser() {}
     function onClickedRecoverSeed() {}
 

@@ -27,6 +27,12 @@ Rectangle {
 
         NewUser {}
 
-        Login {}
+        Login {
+            function onClickedRecoverSeed() { current_page = idx_recover_seed }
+            function onClickedLogin() {
+                // TODO: Login here
+                console.log("Logging in...")
+            }
+        }
     }
 }

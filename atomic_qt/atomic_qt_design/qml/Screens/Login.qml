@@ -6,6 +6,9 @@ import "../Components"
 import "../Constants"
 
 SetupPage {
+    function onClickedRecoverSeed() {}
+    function onClickedLogin() {}
+
     image_scale: 0.7
     image_path: General.image_path + "setup-logs.svg"
     title: "Login"
@@ -22,11 +25,13 @@ SetupPage {
             Button {
                 id: recover_seed_button
                 text: qsTr("Recover Seed")
+                onClicked: onClickedRecoverSeed()
             }
 
             Button {
                 id: confirm_button
                 text: qsTr("Login")
+                onClicked: onClickedLogin()
             }
         }
     }
