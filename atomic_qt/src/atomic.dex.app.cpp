@@ -34,7 +34,7 @@ namespace atomic_dex
     {
         auto timer = new QTimer(this);
         connect(timer, &QTimer::timeout, this, &application::tick);
-        timer->start();
+        timer->start(8);
     }
 
     QString
