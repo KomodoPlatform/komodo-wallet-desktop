@@ -15,8 +15,6 @@ SetupPage {
     image_path: General.image_path + "komodo-icon.png"
     title: "Welcome!"
     content: RowLayout {
-        anchors.verticalCenter: parent.verticalCenter
-        anchors.horizontalCenter: parent.horizontalCenter
         spacing: Style.itemPadding
 
         Button {
