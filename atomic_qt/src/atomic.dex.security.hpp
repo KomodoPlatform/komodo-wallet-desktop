@@ -16,37 +16,23 @@
 
 #pragma once
 
-#include <QObject>
-
 //! PCH Headers
-#include "atomic.dex.pch.hpp"
+#include <atomic.dex.pch.hpp>
 
-//! Project Headers
-#include "atomic.dex.mm2.hpp"
-#include "atomic.dex.provider.coinpaprika.hpp"
+namespace
+{
+    constexpr std::size_t g_salt_len    = crypto_pwhash_SALTBYTES;
+    constexpr std::size_t g_key_len     = crypto_secretstream_xchacha20poly1305_KEYBYTES;
+    constexpr std::size_t g_chunk_size  = 4096;
+    constexpr std::size_t g_buff_len    = (g_chunk_size + crypto_secretstream_xchacha20poly1305_ABYTES);
+    constexpr std::size_t g_header_size = crypto_secretstream_xchacha20poly1305_HEADERBYTES;
 
-namespace ag = antara::gaming;
+    using t_password_key = std::array<unsigned char, g_key_len>;
+} // namespace
 
 namespace atomic_dex
 {
-    struct application : public QObject, public ag::world::app
-    {
-        Q_OBJECT
-      public:
-        explicit application(QObject* pParent = nullptr) noexcept;
-
-        mm2&                  get_mm2() noexcept;
-        coinpaprika_provider& get_paprika() noexcept;
-        entt::dispatcher&     get_dispatcher() noexcept;
-
-        void launch();
-
-        Q_INVOKABLE QString get_mnemonic();
-        Q_INVOKABLE bool first_run();
-        Q_INVOKABLE bool login(const QString& password);
-        Q_INVOKABLE bool create(const QString& password, QString& seed);
-
-      private:
-        void tick();
-    };
+    t_password_key derive_password(const std::string& password, std::error_code& ec);
+    void encrypt(const std::filesystem::path& target_path, const char* mnemonic, const unsigned char* key);
+    std::string decrypt(const std::filesystem::path& encrypted_file_path, const unsigned char* key, std::error_code& ec);
 } // namespace atomic_dex

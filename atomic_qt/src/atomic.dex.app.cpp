@@ -20,9 +20,67 @@
 #include "atomic.dex.app.hpp"
 #include "atomic.dex.mm2.hpp"
 #include "atomic.dex.provider.coinpaprika.hpp"
+#include "atomic.dex.security.hpp"
 
 namespace atomic_dex
 {
+    bool
+    atomic_dex::application::create(const QString& password, QString& seed)
+    {
+        std::error_code ec;
+        auto            key = atomic_dex::derive_password(password.toStdString(), ec);
+        if (ec)
+        {
+            DLOG_F(WARNING, "{}", ec.message());
+            if (ec == dextop_error::derive_password_failed)
+            {
+                return false;
+            }
+        }
+        else
+        {
+            const std::filesystem::path seed_path = ag::core::assets_real_path() / "config/encrypted.seed";
+            // Encrypt seed
+            atomic_dex::encrypt(seed_path, seed.toStdString().data(), key.data());
+            sodium_memzero(&seed, seed.size());
+            sodium_memzero(key.data(), key.size());
+
+            return true;
+        }
+        return false;
+    }
+
+    bool
+    atomic_dex::application::login(const QString& password)
+    {
+        std::error_code ec;
+        auto            key = atomic_dex::derive_password(password.toStdString(), ec);
+        if (ec)
+        {
+            DLOG_F(WARNING, "{}", ec.message());
+            if (ec == dextop_error::derive_password_failed)
+            {
+                return false;
+            }
+        }
+        else
+        {
+            const std::filesystem::path seed_path = ag::core::assets_real_path() / "config/encrypted.seed";
+            auto                        seed      = atomic_dex::decrypt(seed_path, key.data(), ec);
+            if (ec == dextop_error::corrupted_file_or_wrong_password)
+            {
+                LOG_F(WARNING, "{}", ec.message());
+                return false;
+            }
+            else
+            {
+                get_mm2().spawn_mm2_instance(seed);
+                return true;
+            }
+        }
+        return false;
+    }
+
     bool
     atomic_dex::application::first_run()
     {
