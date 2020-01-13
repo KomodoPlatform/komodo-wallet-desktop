@@ -3,9 +3,8 @@ import QtQuick 2.10
 
 QtObject {
     function getAtomicApp() {
-        console.log(atomic_app.first_run())
         const design_editor = typeof atomic_app === "undefined"
-        return design_editor ? mockAPI() : atomic_app
+        return !design_editor ? atomic_app : mockAPI()
     }
 
     function mockAPI() {
