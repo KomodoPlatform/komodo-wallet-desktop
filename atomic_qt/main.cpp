@@ -24,6 +24,8 @@ main(int argc, char* argv[])
     QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
     QGuiApplication       app(argc, argv);
     QQmlApplicationEngine engine;
+    engine.rootContext()->setContextProperty("atomic_app", &atomic_app);
+
     engine.addImportPath("qrc:/atomic_qt_design/imports");
     engine.addImportPath("qrc:/atomic_qt_design/Constants");
     qmlRegisterSingletonType(QUrl("qrc:/atomic_qt_design/qml/Constants/General.qml"), "App", 1, 0, "General");
@@ -39,7 +41,7 @@ main(int argc, char* argv[])
         Qt::QueuedConnection);
 
     engine.load(url);
-    engine.rootContext()->setContextProperty("atomic_app", &atomic_app);
+
 
     atomic_app.launch();
     return app.exec();
