@@ -35,7 +35,7 @@ Rectangle {
     states: [
         State {
             name: "FirstLaunch"
-            when: atomic_app.first_run() === true
+            when: atomic_app.first_run()
             PropertyChanges {
                 target: root
                 current_page: "first_launch"
@@ -43,7 +43,7 @@ Rectangle {
         },
         State {
             name: "Login"
-            when: atomic_app.first_run() === false
+            when: !atomic_app.first_run()
             PropertyChanges {
                 target: root
                 current_page: "login"
