@@ -10,7 +10,7 @@ Column {
     spacing: Style.paneTitleOffset
 
     property string title
-    property alias content: pane.contentItem
+    property alias content: inner_space.sourceComponent
 
     DefaultText {
         text: qsTr(title)
@@ -22,6 +22,10 @@ Column {
         background: Rectangle {
             color: "#283547"
             radius: Style.rectangleCornerRadius
+        }
+
+        Loader {
+            id: inner_space
         }
     }
 }
