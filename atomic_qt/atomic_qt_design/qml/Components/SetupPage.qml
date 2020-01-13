@@ -7,8 +7,8 @@ import "../Constants"
 Item {
     property alias image_path: image.source
     property alias image_scale: image.scale
-    property alias title: content.title
-    property alias content: content.inside
+    property alias title: pane.title
+    property alias content: pane.content
 
     ColumnLayout {
         id: window_layout
@@ -35,7 +35,7 @@ Item {
         }
 
         PaneWithTitle {
-            id: content
+            id: pane
         }
     }
 }
