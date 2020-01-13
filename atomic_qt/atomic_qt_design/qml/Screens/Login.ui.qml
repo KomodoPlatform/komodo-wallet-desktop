@@ -29,7 +29,7 @@ SetupPage {
 
             Button {
                 id: confirm_button
-                text: qsTr("LOGIN")
+                text: qsTr("Login")
             }
         }
     }
