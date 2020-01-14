@@ -4,9 +4,10 @@ import QtQuick.Controls 2.3
 import QtQuick.Controls.Material 2.12
 
 TextFieldWithTitle {
-    field.echoMode: TextInput.Password
+    hidable: true
     title: qsTr("Password")
     field.placeholderText: qsTr("Enter a password for your wallet")
+
 }
 
 /*##^##

@@ -6,13 +6,28 @@ import QtQuick.Controls.Material 2.12
 ColumnLayout {
     property alias title: title_text.text
     property alias field: input_field
+    property bool hidable: false
 
-    DefaultText {
-        id: title_text
+    property bool hiding: true
+
+    RowLayout {
+        DefaultText {
+            id: title_text
+        }
+
+        Button {
+            id: button_show_hide
+            visible: hidable
+            text: hiding ? qsTr("Show") : qsTr("Hide")
+            onClicked: hiding = !hiding
+        }
     }
 
     TextField {
         id: input_field
+
+        echoMode: hidable && hiding ? TextInput.Password : TextInput.Normal
+
         Layout.fillWidth: true
         selectByMouse: true
     }
