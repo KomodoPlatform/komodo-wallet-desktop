@@ -11,7 +11,12 @@ SetupPage {
 
     // Local
     function onClickedLogin(password) {
-        MockAPI.getAtomicApp().login(password)
+        if(MockAPI.getAtomicApp().login(password)) {
+            console.log("Success: Login")
+        }
+        else {
+            console.log("Failed: Login")
+        }
     }
 
     image_scale: 0.7

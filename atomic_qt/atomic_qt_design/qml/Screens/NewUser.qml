@@ -11,7 +11,12 @@ SetupPage {
 
     // Local
     function onClickedCreate(password, generated_seed, confirm_seed) {
-        MockAPI.getAtomicApp().create(password, generated_seed)
+        if(MockAPI.getAtomicApp().create(password, generated_seed)) {
+            console.log("Success: Create wallet")
+        }
+        else {
+            console.log("Failed: Create wallet")
+        }
     }
 
     image_scale: 0.7

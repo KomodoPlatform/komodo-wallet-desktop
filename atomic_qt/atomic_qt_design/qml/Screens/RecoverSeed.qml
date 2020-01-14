@@ -11,7 +11,12 @@ SetupPage {
 
     // Local
     function onClickedConfirm(password, seed) {
-        MockAPI.getAtomicApp().create(password, seed)
+        if(MockAPI.getAtomicApp().create(password, seed)) {
+            console.log("Success: Recover seed")
+        }
+        else {
+            console.log("Failed: Recover seed")
+        }
     }
 
     image_scale: 0.7
