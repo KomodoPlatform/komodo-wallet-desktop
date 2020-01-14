@@ -27,7 +27,7 @@ SetupPage {
     content: ColumnLayout {
         width: 400
 
-        TextFieldWithTitle {
+        TextAreaWithTitle {
             id: input_seed
             title: qsTr("Seed")
             field.placeholderText: qsTr("Enter the seed")
