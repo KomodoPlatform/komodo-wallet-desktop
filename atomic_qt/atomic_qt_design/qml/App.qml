@@ -34,10 +34,6 @@ Rectangle {
 
         NewUser {
             function onClickedBack() { current_page = idx_first_launch }
-            function onClickedCreate() {
-                // TODO: Create wallet here
-                console.log("Creating wallet...")
-            }
         }
 
         Login {

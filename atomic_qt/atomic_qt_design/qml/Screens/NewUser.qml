@@ -10,47 +10,43 @@ SetupPage {
     function onClickedBack() {}
 
     // Local
-    function onClickedCreate() {}
+    function onClickedCreate(password, generated_seed, confirm_seed) {
+        MockAPI.getAtomicApp().create(password, generated_seed)
+    }
 
     image_scale: 0.7
     image_path: General.image_path + "setup-welcome-wallet.svg"
     title: "New User"
+
     content: ColumnLayout {
-        id: rows
         width: 400
 
         TextFieldWithTitle {
-            id: generated_seed
+            id: input_generated_seed
             title: qsTr("Generated Seed")
             field.readOnly: true
-
-            // TODO: Delete this text
             field.text: MockAPI.getAtomicApp().get_mnemonic()
         }
 
         TextFieldWithTitle {
-            id: confirm_seed_input
+            id: input_confirm_seed
             title: qsTr("Confirm Seed")
             field.placeholderText: qsTr("Enter the generated seed here")
         }
 
         PasswordField {
-            id: password_input
+            id: input_password
         }
 
         RowLayout {
-            id: columns
-
             Button {
-                id: back_button
                 text: qsTr("Back")
                 onClicked: onClickedBack()
             }
 
             Button {
-                id: confirm_button
                 text: qsTr("Create")
-                onClicked: onClickedCreate()
+                onClicked: onClickedCreate(input_password.field.text, input_generated_seed.field.text, input_confirm_seed.field.text)
             }
         }
     }
