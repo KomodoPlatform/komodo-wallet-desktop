@@ -28,14 +28,14 @@ SetupPage {
     content: ColumnLayout {
         width: 400
 
-        TextFieldWithTitle {
+        TextAreaWithTitle {
             id: input_generated_seed
             title: qsTr("Generated Seed")
-            field.readOnly: true
             field.text: MockAPI.getAtomicApp().get_mnemonic()
+            field.readOnly: true
         }
 
-        TextFieldWithTitle {
+        TextAreaWithTitle {
             id: input_confirm_seed
             title: qsTr("Confirm Seed")
             field.placeholderText: qsTr("Enter the generated seed here")
