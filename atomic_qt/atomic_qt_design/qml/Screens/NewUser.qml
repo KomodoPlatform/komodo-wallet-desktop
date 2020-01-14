@@ -64,7 +64,7 @@ SetupPage {
         DefaultText {
             text: text_error
             color: Style.colorRed
-            visible: text.length
+            visible: text !== ''
         }
     }
 }

@@ -8,13 +8,14 @@ QtObject {
     }
 
     // Mock variables
-    property bool seed_exists: false
+    property string saved_seed
+    property string saved_password
 
     // Mock API
     function mockAPI() {
         return {
             first_run: () => {
-                return !seed_exists
+                return saved_seed === ''
             },
 
             get_mnemonic: () => {
@@ -23,7 +24,8 @@ QtObject {
 
             login: (password) => {
                 console.log("Logging in with password:" + password)
-                return true
+
+                return password === saved_password
             },
 
             create: (password, seed) => {
@@ -31,9 +33,10 @@ QtObject {
                 console.log(seed)
                 console.log(password)
 
-                seed_exists = true
+                saved_seed = seed
+                saved_password = password
 
-                return seed_exists
+                return saved_password !== ''
             },
 
             enabled_coins: [
