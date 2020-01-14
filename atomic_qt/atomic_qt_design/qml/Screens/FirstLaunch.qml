@@ -6,6 +6,7 @@ import "../Components"
 import "../Constants"
 
 SetupPage {
+    // Override
     function onClickedNewUser() {}
     function onClickedRecoverSeed() {}
 

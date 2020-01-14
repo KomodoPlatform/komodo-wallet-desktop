@@ -6,7 +6,7 @@ import "../Components"
 import "../Constants"
 
 SetupPage {
-    // Overloaded
+    // Override
     function onClickedRecoverSeed() {}
 
     // Local

@@ -6,7 +6,10 @@ import "../Components"
 import "../Constants"
 
 SetupPage {
+    // Override
     function onClickedBack() {}
+
+    // Local
     function onClickedCreate() {}
 
     image_scale: 0.7
