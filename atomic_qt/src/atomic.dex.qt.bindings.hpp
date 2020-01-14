@@ -31,20 +31,34 @@ namespace atomic_dex
         Q_OBJECT
       public:
         explicit qt_coin_config(QObject* parent = nullptr);
-        QString ticker;
-        QString name;
+        QString m_ticker;
+        QString m_name;
+
+        Q_PROPERTY(QString ticker READ get_ticker CONSTANT MEMBER ticker)
+        Q_PROPERTY(QString name READ get_name CONSTANT MEMBER name)
+
+        QString
+        get_ticker()
+        {
+            return m_ticker;
+        }
+
+        QString
+        get_name()
+        {
+            return m_name;
+        }
     };
 
-    QObjectList
-    inline to_qt_binding(t_coins&& coins, QObject* parent)
+    QObjectList inline to_qt_binding(t_coins&& coins, QObject* parent)
     {
         QObjectList out;
         out.reserve(coins.size());
         for (auto&& coin: coins)
         {
-            auto* obj   = new qt_coin_config(parent);
-            obj->ticker = QString::fromStdString(coin.ticker);
-            obj->name   = QString::fromStdString(coin.name);
+            auto* obj     = new qt_coin_config(parent);
+            obj->m_ticker = QString::fromStdString(coin.ticker);
+            obj->m_name   = QString::fromStdString(coin.name);
             out.append(obj);
         }
         return out;
