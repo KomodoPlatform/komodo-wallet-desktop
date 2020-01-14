@@ -8,7 +8,6 @@ Window {
     visible: true
     width: General.width
     height: General.height
-    color: "#000000"
     title: qsTr("atomicDEX")
 
     App {

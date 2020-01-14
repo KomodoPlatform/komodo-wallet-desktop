@@ -21,7 +21,7 @@ QtObject {
             },
             login: function(password) {
                 console.log("Logging in with password:" + password)
-                return false
+                return true
             },
             create: function(password, seed) {
                 console.log("Creating the seed with password:")

@@ -2,9 +2,9 @@ import QtQuick 2.12
 import QtQuick.Layouts 1.3
 import "Screens"
 import "Constants"
+import "Components"
 
 Rectangle {
-    id: root
     color: "#1E2938"
 
     function firstPage() {
@@ -15,10 +15,10 @@ Rectangle {
     readonly property int idx_recover_seed: 1
     readonly property int idx_new_user: 2
     readonly property int idx_login: 3
+    readonly property int idx_dashboard: 4
     property int current_page: firstPage()
 
     StackLayout {
-        id: stack_layout
         anchors.fill: parent
 
         currentIndex: current_page
@@ -40,6 +40,15 @@ Rectangle {
 
         Login {
             function onClickedRecoverSeed() { current_page = idx_recover_seed }
+            function postLoginSuccess() { current_page = idx_dashboard }
+        }
+
+        Item {
+            DefaultText {
+                text: "Very Minimalistic Dashboard"
+                anchors.horizontalCenter: parent.horizontalCenter
+                anchors.verticalCenter: parent.verticalCenter
+            }
         }
     }
 }

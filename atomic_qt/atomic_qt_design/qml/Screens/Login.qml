@@ -8,11 +8,13 @@ import "../Constants"
 SetupPage {
     // Override
     function onClickedRecoverSeed() {}
+    function postLoginSuccess() {}
 
     // Local
     function onClickedLogin(password) {
         if(MockAPI.getAtomicApp().login(password)) {
             console.log("Success: Login")
+            postLoginSuccess()
         }
         else {
             console.log("Failed: Login")
