@@ -25,7 +25,7 @@
 namespace atomic_dex
 {
     bool
-    atomic_dex::application::create(const QString& password, QString& seed)
+    atomic_dex::application::create(const QString& password, const QString& seed)
     {
         std::error_code ec;
         auto            key = atomic_dex::derive_password(password.toStdString(), ec);
@@ -42,7 +42,7 @@ namespace atomic_dex
             const std::filesystem::path seed_path = ag::core::assets_real_path() / "config/encrypted.seed";
             // Encrypt seed
             atomic_dex::encrypt(seed_path, seed.toStdString().data(), key.data());
-            sodium_memzero(&seed, seed.size());
+            //sodium_memzero(&seed, seed.size());
             sodium_memzero(key.data(), key.size());
 
             return true;
