@@ -30,7 +30,7 @@ namespace atomic_dex
     {
         Q_OBJECT
       public:
-        qt_coin_config(QObject* parent) : QObject(parent) {}
+        explicit qt_coin_config(QObject* parent = nullptr);
         QString ticker;
         QString name;
     };

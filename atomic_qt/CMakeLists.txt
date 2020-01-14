@@ -99,6 +99,7 @@ else ()
             src/atomic.dex.mm2.api.cpp
             src/atomic.dex.mm2.error.code.cpp
             src/atomic.dex.provider.coinpaprika.api.cpp
+            src/atomic.dex.qt.bindings.cpp
             src/atomic.dex.provider.coinpaprika.cpp
             src/atomic.dex.security.cpp
             qml.qrc
