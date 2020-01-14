@@ -30,10 +30,6 @@ Rectangle {
 
         RecoverSeed {
             function onClickedBack() { current_page = firstPage() }
-            function onClickedConfirm() {
-                // TODO: Recover wallet here
-                console.log("Recovering wallet...")
-            }
         }
 
         NewUser {

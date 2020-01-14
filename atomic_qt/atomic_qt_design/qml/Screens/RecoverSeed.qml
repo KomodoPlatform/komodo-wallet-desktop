@@ -10,39 +10,35 @@ SetupPage {
     function onClickedBack() {}
 
     // Local
-    function onClickedConfirm() {}
+    function onClickedConfirm(password, seed) {
+        MockAPI.getAtomicApp().create(password, seed)
+    }
 
     image_scale: 0.7
     image_path: General.image_path + "setup-wallet-restore-2.svg"
     title: "Recovery"
     content: ColumnLayout {
-        id: rows
-
         width: 400
 
         TextFieldWithTitle {
-            id: seed_input
+            id: input_seed
             title: qsTr("Seed")
             field.placeholderText: qsTr("Enter the seed")
         }
 
         PasswordField {
-            id: password_input
+            id: input_password
         }
 
         RowLayout {
-            id: columns
-
             Button {
-                id: back_button
                 text: qsTr("Back")
                 onClicked: onClickedBack()
             }
 
             Button {
-                id: confirm_button
                 text: qsTr("Confirm")
-                onClicked: onClickedConfirm()
+                onClicked: onClickedConfirm(input_password.field.text, input_seed.field.text)
             }
         }
     }
