@@ -26,6 +26,12 @@
 
 namespace atomic_dex
 {
+    QObjectList
+    atomic_dex::application::get_enabled_coins() const noexcept
+    {
+        return m_enabled_coins;
+    }
+
     bool
     atomic_dex::application::create(const QString& password, const QString& seed)
     {

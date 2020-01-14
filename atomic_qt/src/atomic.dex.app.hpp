@@ -32,22 +32,26 @@ namespace atomic_dex
     struct application : public QObject, public ag::world::app
     {
         Q_OBJECT
+        Q_PROPERTY(QList<QObject*> enabled_coins READ get_enabled_coins NOTIFY enabled_coins_changed)
       public:
         explicit application(QObject* pParent = nullptr) noexcept;
 
         mm2&                  get_mm2() noexcept;
         coinpaprika_provider& get_paprika() noexcept;
         entt::dispatcher&     get_dispatcher() noexcept;
+        QObjectList           get_enabled_coins() const noexcept;
 
         void launch();
 
         Q_INVOKABLE QString get_mnemonic();
-        Q_INVOKABLE bool first_run();
-        Q_INVOKABLE bool login(const QString& password);
-        Q_INVOKABLE bool create(const QString& password, const QString& seed);
+        Q_INVOKABLE bool    first_run();
+        Q_INVOKABLE bool    login(const QString& password);
+        Q_INVOKABLE bool    create(const QString& password, const QString& seed);
 
+      signals:
+        void enabled_coins_changed();
       private:
-        void tick();
+        void        tick();
         QObjectList m_enabled_coins;
     };
 } // namespace atomic_dex
