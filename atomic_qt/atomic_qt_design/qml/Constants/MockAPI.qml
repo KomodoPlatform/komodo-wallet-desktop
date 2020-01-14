@@ -13,17 +13,17 @@ QtObject {
     // Mock API
     function mockAPI() {
         return {
-            first_run: function() {
+            first_run: () => {
                 return !seed_exists
             },
-            get_mnemonic: function() {
+            get_mnemonic: () => {
                 return "this is a test seed gossip rubber flee just connect manual any salmon limb suffer now turkey essence naive daughter system begin quantum page"
             },
-            login: function(password) {
+            login: (password) => {
                 console.log("Logging in with password:" + password)
                 return true
             },
-            create: function(password, seed) {
+            create: (password, seed) => {
                 console.log("Creating the seed with password:")
                 console.log(seed)
                 console.log(password)

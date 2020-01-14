@@ -56,7 +56,7 @@ Rectangle {
                 Button {
                     text: "Print Coins"
                     Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
-                    onClicked: function() {
+                    onClicked: () => {
                         console.log(JSON.stringify(MockAPI.getAtomicApp().enabled_coins, null, 4))
                     }
                 }
