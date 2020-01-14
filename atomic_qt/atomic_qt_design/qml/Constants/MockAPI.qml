@@ -16,20 +16,24 @@ QtObject {
             first_run: () => {
                 return !seed_exists
             },
+
             get_mnemonic: () => {
                 return "this is a test seed gossip rubber flee just connect manual any salmon limb suffer now turkey essence naive daughter system begin quantum page"
             },
+
             login: (password) => {
                 console.log("Logging in with password:" + password)
                 return true
             },
+
             create: (password, seed) => {
                 console.log("Creating the seed with password:")
                 console.log(seed)
                 console.log(password)
 
                 seed_exists = true
-                return true
+
+                return seed_exists
             },
 
             enabled_coins: [

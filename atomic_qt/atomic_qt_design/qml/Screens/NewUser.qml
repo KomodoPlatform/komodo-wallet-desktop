@@ -18,8 +18,11 @@ SetupPage {
         }
         else {
             console.log("Failed: Create wallet")
+            text_error = "Failed to create a wallet"
         }
     }
+
+    property string text_error
 
     image_scale: 0.7
     image_path: General.image_path + "setup-welcome-wallet.svg"
@@ -56,6 +59,12 @@ SetupPage {
                 text: qsTr("Create")
                 onClicked: onClickedCreate(input_password.field.text, input_generated_seed.field.text, input_confirm_seed.field.text)
             }
+        }
+
+        DefaultText {
+            text: text_error
+            color: Style.colorRed
+            visible: text.length
         }
     }
 }

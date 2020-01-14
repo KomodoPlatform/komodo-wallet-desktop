@@ -12,4 +12,6 @@ QtObject {
     readonly property int rectangleCornerRadius: 12
     readonly property int itemPadding: 12
     readonly property int paneTitleOffset: 6
+
+    readonly property string colorRed: "#DC0333"
 }

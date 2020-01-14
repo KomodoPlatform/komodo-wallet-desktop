@@ -18,8 +18,11 @@ SetupPage {
         }
         else {
             console.log("Failed: Recover seed")
+            text_error = "Failed to recover the seed"
         }
     }
+
+    property string text_error
 
     image_scale: 0.7
     image_path: General.image_path + "setup-wallet-restore-2.svg"
@@ -47,6 +50,12 @@ SetupPage {
                 text: qsTr("Confirm")
                 onClicked: onClickedConfirm(input_password.field.text, input_seed.field.text)
             }
+        }
+
+        DefaultText {
+            text: text_error
+            color: Style.colorRed
+            visible: text.length
         }
     }
 }

@@ -18,8 +18,11 @@ SetupPage {
         }
         else {
             console.log("Failed: Login")
+            text_error = "Failed to login"
         }
     }
+
+    property string text_error
 
     image_scale: 0.7
     image_path: General.image_path + "setup-logs.svg"
@@ -39,6 +42,12 @@ SetupPage {
                 text: qsTr("Login")
                 onClicked: onClickedLogin(input_password.field.text)
             }
+        }
+
+        DefaultText {
+            text: text_error
+            color: Style.colorRed
+            visible: text.length
         }
     }
 }
