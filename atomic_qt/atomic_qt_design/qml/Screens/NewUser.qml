@@ -33,6 +33,7 @@ SetupPage {
             title: qsTr("Generated Seed")
             field.text: MockAPI.getAtomicApp().get_mnemonic()
             field.readOnly: true
+            copyable: true
         }
 
         TextAreaWithTitle {
@@ -64,4 +65,3 @@ Designer {
     D{i:0;autoSize:true;height:480;width:640}
 }
 ##^##*/
-

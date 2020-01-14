@@ -6,9 +6,18 @@ import QtQuick.Controls.Material 2.12
 ColumnLayout {
     property alias title: title_text.text
     property alias field: input_field
+    property bool copyable: false
 
-    DefaultText {
-        id: title_text
+    RowLayout {
+        DefaultText {
+            id: title_text
+        }
+
+        Button {
+            height: 24
+            visible: copyable
+            text: qsTr("WIP Copy")
+        }
     }
 
     TextArea {
@@ -19,8 +28,4 @@ ColumnLayout {
     }
 }
 
-/*##^##
-Designer {
-    D{i:0;autoSize:true;height:480;width:640}
-}
-##^##*/
+
