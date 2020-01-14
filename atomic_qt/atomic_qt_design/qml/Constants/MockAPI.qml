@@ -7,10 +7,14 @@ QtObject {
         return !design_editor ? atomic_app : mockAPI()
     }
 
+    // Mock variables
+    property bool seed_exists: false
+
+    // Mock API
     function mockAPI() {
         return {
             first_run: function() {
-                return true
+                return !seed_exists
             },
             get_mnemonic: function() {
                 return "this is a test seed gossip rubber flee just connect manual any salmon limb suffer now turkey essence naive daughter system begin quantum page"
@@ -23,7 +27,9 @@ QtObject {
                 console.log("Creating the seed with password:")
                 console.log(seed)
                 console.log(password)
-                return false
+
+                seed_exists = true
+                return true
             },
         }
     }

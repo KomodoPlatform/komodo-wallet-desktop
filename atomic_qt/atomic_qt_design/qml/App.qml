@@ -30,10 +30,12 @@ Rectangle {
 
         RecoverSeed {
             function onClickedBack() { current_page = firstPage() }
+            function postConfirmSuccess() { current_page = firstPage() }
         }
 
         NewUser {
             function onClickedBack() { current_page = idx_first_launch }
+            function postCreateSuccess() { current_page = firstPage() }
         }
 
         Login {

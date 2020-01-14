@@ -8,11 +8,13 @@ import "../Constants"
 SetupPage {
     // Override
     function onClickedBack() {}
+    function postConfirmSuccess() {}
 
     // Local
     function onClickedConfirm(password, seed) {
         if(MockAPI.getAtomicApp().create(password, seed)) {
             console.log("Success: Recover seed")
+            postConfirmSuccess()
         }
         else {
             console.log("Failed: Recover seed")

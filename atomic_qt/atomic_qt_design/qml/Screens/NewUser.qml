@@ -8,11 +8,13 @@ import "../Constants"
 SetupPage {
     // Override
     function onClickedBack() {}
+    function postCreateSuccess() {}
 
     // Local
     function onClickedCreate(password, generated_seed, confirm_seed) {
         if(MockAPI.getAtomicApp().create(password, generated_seed)) {
             console.log("Success: Create wallet")
+            postCreateSuccess()
         }
         else {
             console.log("Failed: Create wallet")
