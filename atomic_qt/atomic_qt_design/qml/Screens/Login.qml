@@ -6,32 +6,36 @@ import "../Components"
 import "../Constants"
 
 SetupPage {
+    // Override
     function onClickedRecoverSeed() {}
-    function onClickedLogin() {}
+
+    // Local
+    function onClickedLogin(password) {
+        if(MockAPI.getAtomicApp().login(password)) {
+            console.log("Success: Login")
+        }
+        else {
+            console.log("Failed: Login")
+        }
+    }
 
     image_scale: 0.7
     image_path: General.image_path + "setup-logs.svg"
     title: "Login"
     content: ColumnLayout {
-        id: rows
-
         PasswordField {
-            id: password_input
+            id: input_password
         }
 
         RowLayout {
-            id: columns
-
             Button {
-                id: recover_seed_button
                 text: qsTr("Recover Seed")
                 onClicked: onClickedRecoverSeed()
             }
 
             Button {
-                id: confirm_button
                 text: qsTr("Login")
-                onClicked: onClickedLogin()
+                onClicked: onClickedLogin(input_password.field.text)
             }
         }
     }

@@ -10,11 +10,21 @@ QtObject {
     function mockAPI() {
         return {
             first_run: function() {
-                return false
+                return true
             },
             get_mnemonic: function() {
                 return "this is a test seed gossip rubber flee just connect manual any salmon limb suffer now turkey essence naive daughter system begin quantum page"
-            }
+            },
+            login: function(password) {
+                console.log("Logging in with password:" + password)
+                return false
+            },
+            create: function(password, seed) {
+                console.log("Creating the seed with password:")
+                console.log(seed)
+                console.log(password)
+                return false
+            },
         }
     }
 }

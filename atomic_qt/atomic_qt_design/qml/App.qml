@@ -30,26 +30,14 @@ Rectangle {
 
         RecoverSeed {
             function onClickedBack() { current_page = firstPage() }
-            function onClickedConfirm() {
-                // TODO: Recover wallet here
-                console.log("Recovering wallet...")
-            }
         }
 
         NewUser {
             function onClickedBack() { current_page = idx_first_launch }
-            function onClickedCreate() {
-                // TODO: Create wallet here
-                console.log("Creating wallet...")
-            }
         }
 
         Login {
             function onClickedRecoverSeed() { current_page = idx_recover_seed }
-            function onClickedLogin() {
-                // TODO: Login here
-                console.log("Logging in...")
-            }
         }
     }
 }
