@@ -1,5 +1,7 @@
 import QtQuick 2.12
 import QtQuick.Layouts 1.3
+import QtQuick.Controls 2.3
+import QtQuick.Controls.Material 2.12
 import "Screens"
 import "Constants"
 import "Components"
@@ -44,14 +46,26 @@ Rectangle {
         }
 
         Item {
-            DefaultText {
-                text: "Very Minimalistic Dashboard"
-                anchors.horizontalCenter: parent.horizontalCenter
-                anchors.verticalCenter: parent.verticalCenter
+            ColumnLayout {
+                anchors.centerIn: parent
+
+                DefaultText {
+                    text: "Very Minimalistic Dashboard"
+                }
+
+                Button {
+                    text: "Print Coins"
+                    Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
+                    onClicked: function() {
+                        console.log(JSON.stringify(MockAPI.getAtomicApp().enabled_coins, null, 4))
+                    }
+                }
             }
         }
     }
 }
+
+
 
 /*##^##
 Designer {

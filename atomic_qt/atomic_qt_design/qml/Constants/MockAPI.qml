@@ -31,6 +31,13 @@ QtObject {
                 seed_exists = true
                 return true
             },
+
+            enabled_coins: [
+                { ticker: "BTC", name: "Bitcoin" },
+                { ticker: "KMD", name: "Komodo" },
+                { ticker: "RICK", name: "Rick" },
+                { ticker: "MORTY", name: "Morty" },
+            ],
         }
     }
 }
