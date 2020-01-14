@@ -14,9 +14,12 @@ ColumnLayout {
         }
 
         Button {
-            height: 24
             visible: copyable
-            text: qsTr("WIP Copy")
+            text: qsTr("Copy")
+            onClicked: () => {
+                input_field.selectAll()
+                input_field.copy()
+            }
         }
     }
 
