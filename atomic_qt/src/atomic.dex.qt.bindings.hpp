@@ -21,33 +21,32 @@
 //! PCH Headers
 #include "atomic.dex.pch.hpp"
 
-//! Project Headers
+//!
 #include "atomic.dex.mm2.hpp"
-#include "atomic.dex.provider.coinpaprika.hpp"
-
-namespace ag = antara::gaming;
 
 namespace atomic_dex
 {
-    struct application : public QObject, public ag::world::app
+    struct qt_coin_config : QObject
     {
         Q_OBJECT
       public:
-        explicit application(QObject* pParent = nullptr) noexcept;
-
-        mm2&                  get_mm2() noexcept;
-        coinpaprika_provider& get_paprika() noexcept;
-        entt::dispatcher&     get_dispatcher() noexcept;
-
-        void launch();
-
-        Q_INVOKABLE QString get_mnemonic();
-        Q_INVOKABLE bool first_run();
-        Q_INVOKABLE bool login(const QString& password);
-        Q_INVOKABLE bool create(const QString& password, const QString& seed);
-
-      private:
-        void tick();
-        QObjectList m_enabled_coins;
+        qt_coin_config(QObject* parent) : QObject(parent) {}
+        QString ticker;
+        QString name;
     };
+
+    QObjectList
+    inline to_qt_binding(t_coins&& coins, QObject* parent)
+    {
+        QObjectList out;
+        out.reserve(coins.size());
+        for (auto&& coin: coins)
+        {
+            auto* obj   = new qt_coin_config(parent);
+            obj->ticker = QString::fromStdString(coin.ticker);
+            obj->name   = QString::fromStdString(coin.name);
+            out.append(obj);
+        }
+        return out;
+    }
 } // namespace atomic_dex

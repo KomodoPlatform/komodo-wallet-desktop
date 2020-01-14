@@ -14,12 +14,14 @@
  *                                                                            *
  ******************************************************************************/
 
+#include <QDebug>
 #include <QTimer>
 
 //! Project Headers
 #include "atomic.dex.app.hpp"
 #include "atomic.dex.mm2.hpp"
 #include "atomic.dex.provider.coinpaprika.hpp"
+#include "atomic.dex.qt.bindings.hpp"
 #include "atomic.dex.security.hpp"
 
 namespace atomic_dex
@@ -42,7 +44,7 @@ namespace atomic_dex
             const std::filesystem::path seed_path = ag::core::assets_real_path() / "config/encrypted.seed";
             // Encrypt seed
             atomic_dex::encrypt(seed_path, seed.toStdString().data(), key.data());
-            //sodium_memzero(&seed, seed.size());
+            // sodium_memzero(&seed, seed.size());
             sodium_memzero(key.data(), key.size());
 
             return true;
@@ -111,6 +113,12 @@ namespace atomic_dex
     application::tick()
     {
         this->process_one_frame();
+        auto& mm2 = get_mm2();
+        if (mm2.is_mm2_running())
+        {
+            auto coins            = mm2.get_enabled_coins();
+            this->m_enabled_coins = to_qt_binding(std::move(coins), this);
+        }
     }
 
     mm2&

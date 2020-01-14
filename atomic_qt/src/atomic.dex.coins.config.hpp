@@ -16,6 +16,8 @@
 
 #pragma once
 
+#include <QObject>
+
 //! PCH Headers
 #include "atomic.dex.pch.hpp"
 
@@ -33,6 +35,7 @@ namespace atomic_dex
 
     struct coin_config
     {
+      public:
         using electrum_servers = std::vector<electrum_server>;
         std::string              ticker;
         std::string              name; ///< nice name
