@@ -6,10 +6,12 @@ import "../Components"
 import "../Constants"
 
 SetupPage {
+    // Overloaded
     function onClickedRecoverSeed() {}
+
+    // Local
     function onClickedLogin(password) {
-        //MockAPI.getAtomicApp().login(password)
-        console.log("Logging in with password:" + password)
+        MockAPI.getAtomicApp().login(password)
     }
 
     image_scale: 0.7
