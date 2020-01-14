@@ -7,31 +7,28 @@ import "../Constants"
 
 SetupPage {
     function onClickedRecoverSeed() {}
-    function onClickedLogin() {}
+    function onClickedLogin(password) {
+        //MockAPI.getAtomicApp().login(password)
+        console.log("Logging in with password:" + password)
+    }
 
     image_scale: 0.7
     image_path: General.image_path + "setup-logs.svg"
     title: "Login"
     content: ColumnLayout {
-        id: rows
-
         PasswordField {
-            id: password_input
+            id: input_password
         }
 
         RowLayout {
-            id: columns
-
             Button {
-                id: recover_seed_button
                 text: qsTr("Recover Seed")
                 onClicked: onClickedRecoverSeed()
             }
 
             Button {
-                id: confirm_button
                 text: qsTr("Login")
-                onClicked: onClickedLogin()
+                onClicked: onClickedLogin(input_password.field.text)
             }
         }
     }
