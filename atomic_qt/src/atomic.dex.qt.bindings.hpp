@@ -33,18 +33,25 @@ namespace atomic_dex
         explicit qt_coin_config(QObject* parent = nullptr);
         QString m_ticker;
         QString m_name;
+        bool    m_active;
 
-        Q_PROPERTY(QString ticker READ get_ticker CONSTANT MEMBER ticker)
-        Q_PROPERTY(QString name READ get_name CONSTANT MEMBER name)
+        Q_PROPERTY(bool active READ get_active CONSTANT MEMBER m_active)
+        Q_PROPERTY(QString ticker READ get_ticker CONSTANT MEMBER m_ticker)
+        Q_PROPERTY(QString name READ get_name CONSTANT MEMBER m_name)
 
-        QString
-        get_ticker()
+        [[nodiscard]] bool get_active() const noexcept
+        {
+            return m_active;
+        }
+
+        [[nodiscard]] QString
+        get_ticker() const noexcept
         {
             return m_ticker;
         }
 
-        QString
-        get_name()
+        [[nodiscard]] QString
+        get_name() const noexcept
         {
             return m_name;
         }
@@ -59,6 +66,7 @@ namespace atomic_dex
             auto* obj     = new qt_coin_config(parent);
             obj->m_ticker = QString::fromStdString(coin.ticker);
             obj->m_name   = QString::fromStdString(coin.name);
+            obj->m_active = coin.active;
             out.append(obj);
         }
         return out;

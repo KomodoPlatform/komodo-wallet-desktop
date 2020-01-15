@@ -122,9 +122,13 @@ namespace atomic_dex
         auto& mm2 = get_mm2();
         if (mm2.is_mm2_running())
         {
-            auto coins            = mm2.get_enabled_coins();
-            this->m_enabled_coins = to_qt_binding(std::move(coins), this);
-            emit enabled_coins_changed();
+            //! Enabled coins stuff
+            {
+                auto coins = mm2.get_enabled_coins();
+                this->m_enabled_coins.clear();
+                this->m_enabled_coins = to_qt_binding(std::move(coins), this);
+                emit enabled_coins_changed();
+            }
         }
     }
 
