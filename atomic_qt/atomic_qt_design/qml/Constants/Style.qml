@@ -29,5 +29,6 @@ QtObject {
     readonly property string colorTheme4: "#2B6680"
     readonly property string colorTheme5: "#26456B"
     readonly property string colorTheme6: "#283547"
-    readonly property string colorTheme7: "#1E2938"
+    readonly property string colorTheme7: "#232F40"
+    readonly property string colorTheme8: "#1E2938"
 }

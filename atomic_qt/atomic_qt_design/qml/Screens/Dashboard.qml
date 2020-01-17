@@ -8,14 +8,14 @@ import "../Constants"
 Item {
     Rectangle {
         id: main
-        color: "yellow"
+        color: Style.colorTheme6
         width: parent.width - sidebar.width
         height: parent.height
     }
 
     Rectangle {
         id: sidebar
-        color: "blue"
+        color: Style.colorTheme8
         width: 300
         height: parent.height
         x: parent.width - width

@@ -7,7 +7,7 @@ import "Constants"
 import "Components"
 
 Rectangle {
-    color: Style.colorTheme7
+    color: Style.colorTheme8
 
     function firstPage() {
         return MockAPI.getAtomicApp().first_run() ? idx_first_launch : idx_login
@@ -23,7 +23,7 @@ Rectangle {
     StackLayout {
         anchors.fill: parent
 
-        currentIndex: current_page
+        currentIndex: idx_dashboard//current_page
 
         FirstLaunch {
             function onClickedNewUser() { current_page = idx_new_user }
