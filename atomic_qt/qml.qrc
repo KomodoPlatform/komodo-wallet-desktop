@@ -16,6 +16,7 @@
         <file>atomic_qt_design/qml/Screens/Login.qml</file>
         <file>atomic_qt_design/qml/Screens/NewUser.qml</file>
         <file>atomic_qt_design/qml/Screens/RecoverSeed.qml</file>
+        <file>atomic_qt_design/qml/Screens/Dashboard.qml</file>
         <file>atomic_qt_design/qml/Constants/General.qml</file>
         <file>atomic_qt_design/qml/Constants/Style.qml</file>
         <file>atomic_qt_design/qml/Components/DefaultText.qml</file>
