@@ -16,9 +16,15 @@ Item {
     Rectangle {
         id: sidebar
         color: Style.colorTheme8
-        width: 300
+        width: 150
         height: parent.height
         x: parent.width - width
+
+        Sidebar {
+            anchors.left: parent.left
+            anchors.leftMargin: 20
+
+        }
     }
 }
 /*##^##

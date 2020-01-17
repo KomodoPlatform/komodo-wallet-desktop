@@ -23,7 +23,7 @@ Rectangle {
     StackLayout {
         anchors.fill: parent
 
-        currentIndex: idx_dashboard//current_page
+        currentIndex: current_page
 
         FirstLaunch {
             function onClickedNewUser() { current_page = idx_new_user }

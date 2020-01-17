@@ -7,31 +7,40 @@ import "../Constants"
 ColumnLayout {
     id: window_layout
 
-    anchors.horizontalCenter: parent.horizontalCenter
     anchors.verticalCenter: parent.verticalCenter
     transformOrigin: Item.Center
-    spacing: 20
+    spacing: 0
 
-    Rectangle {
-        id: rectangle
-        color: Style.colorTheme6
-        radius: 100
-        implicitWidth: image.implicitHeight
-        implicitHeight: image.implicitHeight
-        Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
-        Image {
-            id: image
-            Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
-            anchors.horizontalCenter: parent.horizontalCenter
-            anchors.verticalCenter: parent.verticalCenter
-            antialiasing: true
-        }
+    SidebarLine {
+        text: "Wallet"
+        image: General.image_path + "menu-assets-white.svg"
     }
 
-    PaneWithTitle {
-        id: pane
+    SidebarLine {
+        text: "DEX"
+        image: General.image_path + "menu-exchange-white.svg"
+    }
+
+    SidebarLine {
+        text: "News"
+        image: General.image_path + "menu-news-white.svg"
+    }
+
+    SidebarLine {
+        id: dapps_line
+        text: "DApps"
+        image: General.image_path + "menu-dapp.svg"
+    }
+
+    SidebarLine {
+        anchors.top: dapps_line.bottom
+        anchors.topMargin: dapps_line.height * 0.5
+        text: "Settings"
+        image: General.image_path + "menu-settings-white.svg"
     }
 }
+
+
 
 
 
