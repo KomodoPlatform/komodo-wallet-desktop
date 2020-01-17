@@ -40,6 +40,12 @@ SetupPage {
             id: input_password
         }
 
+        PasswordField {
+            id: input_confirm_password
+            title: qsTr("Confirm Password")
+            field.placeholderText: qsTr("Enter the same password to confirm")
+        }
+
         RowLayout {
             Button {
                 text: qsTr("Back")
@@ -49,6 +55,7 @@ SetupPage {
             Button {
                 text: qsTr("Confirm")
                 onClicked: onClickedConfirm(input_password.field.text, input_seed.field.text)
+                enabled: input_seed.field.acceptableInput && input_password.field.acceptableInput && input_confirm_password.field.acceptableInput
             }
         }
 
