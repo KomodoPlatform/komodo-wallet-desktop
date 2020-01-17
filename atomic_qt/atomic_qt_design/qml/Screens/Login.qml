@@ -28,6 +28,7 @@ SetupPage {
     image_path: General.image_path + "setup-logs.svg"
     title: "Login"
     content: ColumnLayout {
+        width: 275
         PasswordField {
             id: input_password
         }
