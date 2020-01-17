@@ -10,6 +10,11 @@
         <file>atomic_qt_design/assets/images/dashboard-eye-hide.svg</file>
         <file>atomic_qt_design/assets/images/dashboard-copy.svg</file>
         <file>atomic_qt_design/assets/images/komodo-icon.png</file>
+        <file>atomic_qt_design/assets/images/menu-settings-white.svg</file>
+        <file>atomic_qt_design/assets/images/menu-dapp.svg</file>
+        <file>atomic_qt_design/assets/images/menu-news-white.svg</file>
+        <file>atomic_qt_design/assets/images/menu-exchange-white.svg</file>
+        <file>atomic_qt_design/assets/images/menu-assets-white.svg</file>
         <file>atomic_qt_design/qml/App.qml</file>
         <file>qtquickcontrols2.conf</file>
         <file>atomic_qt_design/qml/Screens/FirstLaunch.qml</file>
@@ -21,6 +26,7 @@
         <file>atomic_qt_design/qml/Constants/General.qml</file>
         <file>atomic_qt_design/qml/Constants/Style.qml</file>
         <file>atomic_qt_design/qml/Components/Sidebar.qml</file>
+        <file>atomic_qt_design/qml/Components/SidebarLine.qml</file>
         <file>atomic_qt_design/qml/Components/DefaultText.qml</file>
         <file>atomic_qt_design/qml/Components/PaneWithTitle.qml</file>
         <file>atomic_qt_design/qml/Components/PasswordField.qml</file>
