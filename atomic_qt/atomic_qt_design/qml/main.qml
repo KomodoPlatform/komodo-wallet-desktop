@@ -34,12 +34,18 @@ Window {
     }
 
 
-    flags: Qt.FramelessWindowHint |
-           Qt.WindowMinimizeButtonHint |
-           Qt.Window
+    flags: Qt.FramelessWindowHint|Qt.MacWindowToolBarButtonHint|Qt.WindowMinimizeButtonHint|Qt.WindowMaximizeButtonHint
 
     property int titlebar_wrapper_size:40
 
+    function magic() {
+        flags = Qt.Window | Qt.CustomizeWindowHint | Qt.WindowMinMaxButtonsHint
+        window.showMinimized()
+    }
+
+    onVisibilityChanged: {
+        flags = Qt.FramelessWindowHint|Qt.MacWindowToolBarButtonHint|Qt.WindowMinimizeButtonHint|Qt.WindowMaximizeButtonHint
+    }
     App {
         Rectangle{
             id:titlebar
@@ -84,7 +90,7 @@ Window {
                 hoverEnabled: true
                 onEntered: appminimize.color="#ddd"
                 onExited: appminimize.color=Style.colorTheme8
-                onClicked: showMinimized()
+                onClicked: magic()
             }
         }
         }
