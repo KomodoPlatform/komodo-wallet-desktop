@@ -6,20 +6,19 @@ import "../Components"
 import "../Constants"
 
 Item {
-    ColumnLayout {
-        anchors.centerIn: parent
+    Rectangle {
+        id: main
+        color: "yellow"
+        width: parent.width - sidebar.width
+        height: parent.height
+    }
 
-        DefaultText {
-            text: "Very Minimalistic Dashboard"
-        }
-
-        Button {
-            text: "Print Coins"
-            Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
-            onClicked: () => {
-                console.log(JSON.stringify(MockAPI.getAtomicApp().enabled_coins, null, 4))
-            }
-        }
+    Rectangle {
+        id: sidebar
+        color: "blue"
+        width: 300
+        height: parent.height
+        x: parent.width - width
     }
 }
 /*##^##
