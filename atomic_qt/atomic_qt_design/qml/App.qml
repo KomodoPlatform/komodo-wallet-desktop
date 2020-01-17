@@ -45,22 +45,8 @@ Rectangle {
             function postLoginSuccess() { current_page = idx_dashboard }
         }
 
-        Item {
-            ColumnLayout {
-                anchors.centerIn: parent
+        Dashboard {
 
-                DefaultText {
-                    text: "Very Minimalistic Dashboard"
-                }
-
-                Button {
-                    text: "Print Coins"
-                    Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
-                    onClicked: () => {
-                        console.log(JSON.stringify(MockAPI.getAtomicApp().enabled_coins, null, 4))
-                    }
-                }
-            }
         }
     }
 }
