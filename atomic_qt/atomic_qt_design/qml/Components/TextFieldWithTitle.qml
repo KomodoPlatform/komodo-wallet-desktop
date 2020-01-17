@@ -2,6 +2,7 @@ import QtQuick 2.12
 import QtQuick.Layouts 1.3
 import QtQuick.Controls 2.3
 import QtQuick.Controls.Material 2.12
+import "../Constants"
 
 ColumnLayout {
     property alias title: title_text.text
@@ -14,13 +15,6 @@ ColumnLayout {
         DefaultText {
             id: title_text
         }
-
-        Button {
-            id: button_show_hide
-            visible: hidable
-            text: hiding ? qsTr("Show") : qsTr("Hide")
-            onClicked: hiding = !hiding
-        }
     }
 
     TextField {
@@ -30,6 +24,24 @@ ColumnLayout {
 
         Layout.fillWidth: true
         selectByMouse: true
+
+        Image {
+            visible: hidable
+            id: clearText
+            anchors.right: parent.right
+            anchors.verticalCenter: parent.verticalCenter
+            anchors.verticalCenterOffset: input_field.height * -0.0625
+            antialiasing: true
+            source: General.image_path + "dashboard-eye" + (hiding ? "" : "-hide") + ".svg"
+            scale: 0.8
+
+            MouseArea {
+                id: clear
+                anchors { horizontalCenter: parent.horizontalCenter; verticalCenter: parent.verticalCenter }
+                height: input_field.height; width: input_field.height
+                onClicked: hiding = !hiding
+            }
+        }
     }
 }
 
