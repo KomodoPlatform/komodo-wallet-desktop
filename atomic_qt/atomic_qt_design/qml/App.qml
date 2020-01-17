@@ -7,7 +7,7 @@ import "Constants"
 import "Components"
 
 Rectangle {
-    color: "#1E2938"
+    color: Style.colorTheme7
 
     function firstPage() {
         return MockAPI.getAtomicApp().first_run() ? idx_first_launch : idx_login

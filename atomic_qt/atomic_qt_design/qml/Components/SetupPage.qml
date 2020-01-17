@@ -20,7 +20,7 @@ Item {
 
         Rectangle {
             id: rectangle
-            color: "#283547"
+            color: Style.colorTheme6
             radius: 100
             implicitWidth: image.implicitHeight
             implicitHeight: image.implicitHeight
