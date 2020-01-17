@@ -25,18 +25,17 @@ ColumnLayout {
         Layout.fillWidth: true
         selectByMouse: true
 
+        // Hide button
         Image {
+            source: General.image_path + "dashboard-eye" + (hiding ? "" : "-hide") + ".svg"
             visible: hidable
-            id: clearText
+            scale: 0.8
             anchors.right: parent.right
             anchors.verticalCenter: parent.verticalCenter
             anchors.verticalCenterOffset: input_field.height * -0.0625
             antialiasing: true
-            source: General.image_path + "dashboard-eye" + (hiding ? "" : "-hide") + ".svg"
-            scale: 0.8
 
             MouseArea {
-                id: clear
                 anchors { horizontalCenter: parent.horizontalCenter; verticalCenter: parent.verticalCenter }
                 height: input_field.height; width: input_field.height
                 onClicked: hiding = !hiding
