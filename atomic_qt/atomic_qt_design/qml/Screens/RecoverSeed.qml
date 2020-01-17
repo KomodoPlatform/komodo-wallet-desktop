@@ -55,7 +55,12 @@ SetupPage {
             Button {
                 text: qsTr("Confirm")
                 onClicked: onClickedConfirm(input_password.field.text, input_seed.field.text)
-                enabled: input_seed.field.acceptableInput && input_password.field.acceptableInput && input_confirm_password.field.acceptableInput
+                enabled:     // Fields are not empty
+                             input_seed.field.text.length !== '' &&
+                             input_password.field.acceptableInput === true &&
+                             input_confirm_password.field.acceptableInput === true &&
+                             // Correct confirm fields
+                             input_password.field.text === input_confirm_password.field.text
             }
         }
 

@@ -27,7 +27,7 @@ ColumnLayout {
         id: input_field
         Layout.fillWidth: true
         selectByMouse: true
-        wrapMode: TextEdit.WordWrap
+        wrapMode: TextEdit.Wrap
     }
 }
 

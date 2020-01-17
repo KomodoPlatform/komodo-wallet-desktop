@@ -41,7 +41,8 @@ SetupPage {
             Button {
                 text: qsTr("Login")
                 onClicked: onClickedLogin(input_password.field.text)
-                enabled: input_password.field.acceptableInput
+                enabled:    // Fields are not empty
+                            input_password.field.acceptableInput === true
             }
         }
 

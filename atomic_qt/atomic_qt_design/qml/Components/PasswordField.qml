@@ -7,6 +7,7 @@ TextFieldWithTitle {
     hidable: true
     title: qsTr("Password")
     field.placeholderText: qsTr("Enter a password for your wallet")
+    field.validator: RegExpValidator { regExp: /\S+/ }
 }
 
 /*##^##
