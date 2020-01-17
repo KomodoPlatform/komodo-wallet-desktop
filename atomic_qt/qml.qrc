@@ -6,6 +6,8 @@
         <file>atomic_qt_design/assets/images/setup-logs.svg</file>
         <file>atomic_qt_design/assets/images/setup-welcome-wallet.svg</file>
         <file>atomic_qt_design/assets/images/setup-wallet-restore-2.svg</file>
+        <file>atomic_qt_design/assets/images/dashboard-eye.svg</file>
+        <file>atomic_qt_design/assets/images/dashboard-eye-hide.svg</file>
         <file>atomic_qt_design/assets/images/komodo-icon.png</file>
         <file>atomic_qt_design/qml/App.qml</file>
         <file>qtquickcontrols2.conf</file>
