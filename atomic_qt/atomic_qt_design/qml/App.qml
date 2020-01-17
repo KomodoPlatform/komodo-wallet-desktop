@@ -7,7 +7,7 @@ import "Constants"
 import "Components"
 
 Rectangle {
-    color: "#1E2938"
+    color: Style.colorTheme8
 
     function firstPage() {
         return MockAPI.getAtomicApp().first_run() ? idx_first_launch : idx_login
@@ -23,7 +23,7 @@ Rectangle {
     StackLayout {
         anchors.fill: parent
 
-        currentIndex: current_page
+        currentIndex: idx_dashboard//current_page
 
         FirstLaunch {
             function onClickedNewUser() { current_page = idx_new_user }
@@ -45,22 +45,8 @@ Rectangle {
             function postLoginSuccess() { current_page = idx_dashboard }
         }
 
-        Item {
-            ColumnLayout {
-                anchors.centerIn: parent
+        Dashboard {
 
-                DefaultText {
-                    text: "Very Minimalistic Dashboard"
-                }
-
-                Button {
-                    text: "Print Coins"
-                    Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
-                    onClicked: () => {
-                        console.log(JSON.stringify(MockAPI.getAtomicApp().enabled_coins, null, 4))
-                    }
-                }
-            }
         }
     }
 }

@@ -20,7 +20,7 @@ Column {
         id: pane
 
         background: Rectangle {
-            color: "#283547"
+            color: Style.colorTheme6
             radius: Style.rectangleCornerRadius
         }
 

@@ -7,7 +7,7 @@ import "../Constants"
 Text {
     font.family: "Rubik"
     font.pointSize: Style.textSize
-    color: "white"
+    color: Style.colorWhite1
 }
 
 /*##^##
