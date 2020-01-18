@@ -17,12 +17,20 @@
 #import <AppKit/AppKit.h>
 #include "atomic.dex.osx.manager.hpp"
 
+static NSColor *colorFromRGB(unsigned char r, unsigned char g, unsigned char b)
+{
+    return [NSColor colorWithCalibratedRed:(r/255.0f) green:(g/255.0f) blue:(b/255.0f) alpha:1.0];
+}
+
 void atomic_dex::mac_window_setup(long winid)
 {
     NSView *nativeView = reinterpret_cast<NSView *>(winid);
     NSWindow* nativeWindow = [nativeView window];
+    NSWindowStyleMask windowMask = NSWindowStyleMaskFullSizeContentView | NSWindowStyleMaskBorderless | NSWindowStyleMaskTitled | NSWindowStyleMaskClosable | NSWindowStyleMaskMiniaturizable | NSWindowStyleMaskResizable;
+    [nativeWindow setStyleMask: windowMask];
     [nativeWindow setTitlebarAppearsTransparent:YES];
-    NSColor *myColor = [NSColor colorWithCalibratedRed:0.12 green:0.16 blue:0.22 alpha:1.0f];
+    NSColor *myColor = colorFromRGB(30, 41, 56);
+    [myColor set];
     [nativeWindow setBackgroundColor: myColor];
     [nativeWindow setTitleVisibility: static_cast<NSWindowTitleVisibility>(1)];
 }
