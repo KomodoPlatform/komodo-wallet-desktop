@@ -4,6 +4,8 @@ import QtQuick.Controls 2.3
 import QtQuick.Controls.Material 2.12
 import "../Components"
 import "../Constants"
+import "../Exchange"
+import "../Sidebar"
 
 Item {
     id: dashboard
