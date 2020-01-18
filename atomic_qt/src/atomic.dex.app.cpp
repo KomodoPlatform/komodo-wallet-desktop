@@ -17,10 +17,10 @@
 #include <QDebug>
 #include <QTimer>
 #ifdef __APPLE__
-#include <QGuiApplication>
-#include <QWindowList>
-#include <QWindow>
-#include "atomic.dex.osx.manager.hpp"
+#    include "atomic.dex.osx.manager.hpp"
+#    include <QGuiApplication>
+#    include <QWindow>
+#    include <QWindowList>
 #endif
 
 //! Project Headers
