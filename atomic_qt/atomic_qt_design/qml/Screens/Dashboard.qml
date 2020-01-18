@@ -17,7 +17,6 @@ Item {
         width: parent.width - sidebar.width
         height: parent.height
 
-
         StackLayout {
             anchors.centerIn: parent
 
@@ -25,12 +24,13 @@ Item {
 
             currentIndex: current_page
 
+
             DefaultText {
                 text: qsTr("Wallet")
             }
 
-            DefaultText {
-                text: qsTr("DEX")
+            Exchange {
+                Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
             }
 
             DefaultText {

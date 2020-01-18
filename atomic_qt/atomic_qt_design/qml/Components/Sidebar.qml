@@ -18,7 +18,7 @@ ColumnLayout {
     }
 
     SidebarLine {
-        dashboard_index: General.idx_dashboard_dex
+        dashboard_index: General.idx_dashboard_exchange
         text: qsTr("DEX")
         image: General.image_path + "menu-exchange-white.svg"
         Layout.fillWidth: true

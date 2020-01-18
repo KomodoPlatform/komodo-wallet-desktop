@@ -25,6 +25,7 @@
         <file>atomic_qt_design/qml/Screens/Dashboard.qml</file>
         <file>atomic_qt_design/qml/Constants/General.qml</file>
         <file>atomic_qt_design/qml/Constants/Style.qml</file>
+        <file>atomic_qt_design/qml/Components/Exchange.qml</file>
         <file>atomic_qt_design/qml/Components/Sidebar.qml</file>
         <file>atomic_qt_design/qml/Components/SidebarLine.qml</file>
         <file>atomic_qt_design/qml/Components/DefaultText.qml</file>
