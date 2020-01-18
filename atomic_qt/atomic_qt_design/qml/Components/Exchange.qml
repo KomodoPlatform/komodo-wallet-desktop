@@ -5,6 +5,8 @@ import QtQuick.Controls.Material 2.12
 import "../Constants"
 
 ColumnLayout {
+    id: exchange
+
     property int current_page: General.idx_exchange_trade
 
     spacing: 20
@@ -15,24 +17,24 @@ ColumnLayout {
 
         spacing: 40
 
-        DefaultText {
+        ExchangeTab {
+            dashboard_index: General.idx_exchange_trade
             text: "Trade"
-            font.pointSize: Style.textSize2
         }
 
-        DefaultText {
+        ExchangeTab {
+            dashboard_index: General.idx_exchange_orders
             text: "Orders"
-            font.pointSize: Style.textSize2
         }
 
-        DefaultText {
+        ExchangeTab {
+            dashboard_index: General.idx_exchange_history
             text: "History"
-            font.pointSize: Style.textSize2
         }
 
-        DefaultText {
+        ExchangeTab {
+            dashboard_index: General.idx_exchange_orderbook
             text: "Orderbook"
-            font.pointSize: Style.textSize2
         }
     }
 
