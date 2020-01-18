@@ -1,6 +1,7 @@
 #include <QGuiApplication>
-#include <QWindow>
 #include <QQmlApplicationEngine>
+#include <QWindow>
+#include <QDebug>
 #include <QtQml>
 
 //! PCH Headers
@@ -13,6 +14,21 @@
 #ifdef __APPLE__
 #    include "atomic.dex.osx.manager.hpp"
 #endif
+
+class my_gui_app : public QGuiApplication
+{
+  public:
+    template <typename... Args>
+    my_gui_app(Args&&... args) : QGuiApplication(std::forward<Args>(args)...)
+    {
+    }
+  public slots:
+    void onApplicationStateChanged(Qt::ApplicationState state)
+    {
+        qDebug() << "something happen";
+    };
+
+};
 
 int
 main(int argc, char* argv[])
@@ -27,7 +43,7 @@ main(int argc, char* argv[])
 
     //! QT
     QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
-    QGuiApplication       app(argc, argv);
+    my_gui_app            app(argc, argv);
     QQmlApplicationEngine engine;
     engine.rootContext()->setContextProperty("atomic_app", &atomic_app);
 
@@ -50,9 +66,10 @@ main(int argc, char* argv[])
 
 #ifdef __APPLE__
     QWindowList windows = QGuiApplication::allWindows();
-    QWindow* win = windows.first();
+    QWindow*    win     = windows.first();
     atomic_dex::mac_window_setup(win->winId());
 #endif
     atomic_app.launch();
+
     return app.exec();
 }

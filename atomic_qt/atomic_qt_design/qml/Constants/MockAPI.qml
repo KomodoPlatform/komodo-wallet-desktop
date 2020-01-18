@@ -14,6 +14,9 @@ QtObject {
     // Mock API
     function mockAPI() {
         return {
+            change_state: (visibility) => {
+              console.log(visibility)
+            },
             first_run: () => {
                 return saved_seed === ''
             },

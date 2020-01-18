@@ -43,6 +43,7 @@ namespace atomic_dex
 
         void launch();
 
+        Q_INVOKABLE void    change_state(int visibility);
         Q_INVOKABLE QString get_mnemonic();
         Q_INVOKABLE bool    first_run();
         Q_INVOKABLE bool    login(const QString& password);

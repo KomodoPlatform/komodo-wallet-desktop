@@ -16,6 +16,12 @@
 
 #include <QDebug>
 #include <QTimer>
+#ifdef __APPLE__
+#include <QGuiApplication>
+#include <QWindowList>
+#include <QWindow>
+#include "atomic.dex.osx.manager.hpp"
+#endif
 
 //! Project Headers
 #include "atomic.dex.app.hpp"
@@ -26,6 +32,24 @@
 
 namespace atomic_dex
 {
+    void
+    atomic_dex::application::change_state(int visibility)
+    {
+#ifdef __APPLE__
+        qDebug() << visibility;
+        if (visibility == 5)
+        {
+            QWindowList windows = QGuiApplication::allWindows();
+            QWindow*    win     = windows.first();
+            atomic_dex::mac_window_setup(win->winId(), true);
+        } else {
+            QWindowList windows = QGuiApplication::allWindows();
+            QWindow*    win     = windows.first();
+            atomic_dex::mac_window_setup(win->winId(), false);
+        }
+#endif
+    }
+
     QObjectList
     atomic_dex::application::get_enabled_coins() const noexcept
     {

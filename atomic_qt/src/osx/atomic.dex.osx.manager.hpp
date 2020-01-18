@@ -18,5 +18,6 @@
 
 namespace atomic_dex
 {
-    void mac_window_setup(long winid);
+    void mac_window_setup(long winid, bool fullscreen = false);
+    void reset_title_bar_color(long winid);
 }

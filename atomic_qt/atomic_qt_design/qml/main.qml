@@ -10,7 +10,7 @@ Window {
     height: General.height
     title: qsTr("atomicDEX")
     flags: Qt.Window | Qt.WindowMaximizeButtonHint | Qt.WindowFullscreenButtonHint
-
+    onVisibilityChanged: MockAPI.getAtomicApp().change_state(visibility)
     App {
         anchors.fill: parent
     }
