@@ -9,7 +9,7 @@ Window {
     width: General.width
     height: General.height
     title: qsTr("atomicDEX")
-
+    flags: Qt.Window | Qt.WindowMaximizeButtonHint | Qt.WindowFullscreenButtonHint
     App {
 
         anchors.fill: parent
