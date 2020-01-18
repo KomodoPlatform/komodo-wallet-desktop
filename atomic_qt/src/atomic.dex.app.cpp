@@ -37,15 +37,10 @@ namespace atomic_dex
     {
 #ifdef __APPLE__
         qDebug() << visibility;
-        if (visibility == 5)
         {
             QWindowList windows = QGuiApplication::allWindows();
             QWindow*    win     = windows.first();
-            atomic_dex::mac_window_setup(win->winId(), true);
-        } else {
-            QWindowList windows = QGuiApplication::allWindows();
-            QWindow*    win     = windows.first();
-            atomic_dex::mac_window_setup(win->winId(), false);
+            atomic_dex::mac_window_setup(win->winId(), visibility == QWindow::FullScreen);
         }
 #endif
     }
