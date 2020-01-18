@@ -6,6 +6,8 @@ import "../Components"
 import "../Constants"
 
 Item {
+    Layout.fillWidth: true
+
     Rectangle {
         color: Style.colorTheme6
         width: parent.width - sidebar.width
@@ -29,8 +31,7 @@ Item {
         }
 
         Sidebar {
-            anchors.left: parent.left
-            anchors.leftMargin: 20
+            width: parent.width
             anchors.verticalCenter: parent.verticalCenter
         }
     }
