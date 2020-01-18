@@ -28,7 +28,7 @@ ColumnLayout {
     SidebarLine {
         id: dapps_line
         text: "DApps"
-        image: General.image_path + "menu-dapp.svg"
+        image: General.image_path + "menu-dapp-white.svg"
     }
 
     SidebarLine {

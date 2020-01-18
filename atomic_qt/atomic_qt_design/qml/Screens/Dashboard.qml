@@ -7,7 +7,6 @@ import "../Constants"
 
 Item {
     Rectangle {
-        id: main
         color: Style.colorTheme6
         width: parent.width - sidebar.width
         height: parent.height
