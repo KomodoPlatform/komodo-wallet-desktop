@@ -1,4 +1,5 @@
 #include <QGuiApplication>
+#include <QWindow>
 #include <QQmlApplicationEngine>
 #include <QtQml>
 
@@ -8,6 +9,10 @@
 //! Project Headers
 #include "atomic.dex.app.hpp"
 #include "atomic.dex.kill.hpp"
+
+#ifdef __APPLE__
+#    include "atomic.dex.osx.manager.hpp"
+#endif
 
 int
 main(int argc, char* argv[])
@@ -43,6 +48,11 @@ main(int argc, char* argv[])
     engine.load(url);
 
 
+#ifdef __APPLE__
+    QWindowList windows = QGuiApplication::allWindows();
+    QWindow* win = windows.first();
+    atomic_dex::mac_window_setup(win->winId());
+#endif
     atomic_app.launch();
     return app.exec();
 }

@@ -25,7 +25,7 @@ struct timed_waiter
     std::unique_lock<std::mutex>
     lock() const
     {
-        return std::unique_lock<std::mutex>(m);
+        return std::unique_lock<std::mutex>(m, std::try_to_lock);
     }
 
     mutable std::mutex              m;

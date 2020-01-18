@@ -102,6 +102,7 @@ else ()
             src/atomic.dex.qt.bindings.cpp
             src/atomic.dex.provider.coinpaprika.cpp
             src/atomic.dex.security.cpp
+            $<$<PLATFORM_ID:Darwin>:src/osx/atomic.dex.osx.manager.mm>
             qml.qrc
             ${TS_FILES}
             )
@@ -110,7 +111,7 @@ endif ()
 
 target_compile_definitions(atomic_qt
         PRIVATE $<$<OR:$<CONFIG:Debug>,$<CONFIG:RelWithDebInfo>>:QT_QML_DEBUG>)
-target_include_directories(atomic_qt PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/src)
+target_include_directories(atomic_qt PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/src  $<$<PLATFORM_ID:Darwin>:${CMAKE_CURRENT_SOURCE_DIR}/src/osx>)
 target_link_libraries(atomic_qt
         PRIVATE
         Qt5::Core
