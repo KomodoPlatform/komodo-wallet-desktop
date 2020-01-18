@@ -23,7 +23,7 @@ Item {
         Sidebar {
             anchors.left: parent.left
             anchors.leftMargin: 20
-
+            anchors.verticalCenter: parent.verticalCenter
         }
     }
 }

@@ -7,7 +7,6 @@ import "../Constants"
 ColumnLayout {
     id: window_layout
 
-    anchors.verticalCenter: parent.verticalCenter
     transformOrigin: Item.Center
     spacing: 0
 
@@ -33,9 +32,8 @@ ColumnLayout {
     }
 
     SidebarLine {
-        anchors.top: dapps_line.bottom
-        anchors.topMargin: dapps_line.height * 0.5
         text: "Settings"
+        Layout.topMargin: dapps_line.height * 0.5
         image: General.image_path + "menu-settings-white.svg"
     }
 }
