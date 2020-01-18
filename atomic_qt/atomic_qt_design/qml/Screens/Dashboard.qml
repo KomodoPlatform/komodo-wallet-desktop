@@ -19,6 +19,15 @@ Item {
         height: parent.height
         x: parent.width - width
 
+        Image {
+            source: General.image_path + "komodo-icon.png"
+            anchors.horizontalCenter: parent.horizontalCenter
+            y: parent.width * 0.25
+            transformOrigin: Item.Center
+            width: 64
+            fillMode: Image.PreserveAspectFit
+        }
+
         Sidebar {
             anchors.left: parent.left
             anchors.leftMargin: 20
