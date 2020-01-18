@@ -11,32 +11,37 @@ ColumnLayout {
     spacing: 0
 
     SidebarLine {
-        text: "Wallet"
+        dashboard_index: General.idx_dashboard_wallet
+        text: qsTr("Wallet")
         image: General.image_path + "menu-assets-white.svg"
         Layout.fillWidth: true
     }
 
     SidebarLine {
-        text: "DEX"
+        dashboard_index: General.idx_dashboard_dex
+        text: qsTr("DEX")
         image: General.image_path + "menu-exchange-white.svg"
         Layout.fillWidth: true
     }
 
     SidebarLine {
-        text: "News"
+        dashboard_index: General.idx_dashboard_news
+        text: qsTr("News")
         image: General.image_path + "menu-news-white.svg"
         Layout.fillWidth: true
     }
 
     SidebarLine {
+        dashboard_index: General.idx_dashboard_dapps
         id: dapps_line
-        text: "DApps"
+        text: qsTr("DApps")
         image: General.image_path + "menu-dapp-white.svg"
         Layout.fillWidth: true
     }
 
     SidebarLine {
-        text: "Settings"
+        dashboard_index: General.idx_dashboard_settings
+        text: qsTr("Settings")
         Layout.topMargin: dapps_line.height * 0.5
         image: General.image_path + "menu-settings-white.svg"
         Layout.fillWidth: true

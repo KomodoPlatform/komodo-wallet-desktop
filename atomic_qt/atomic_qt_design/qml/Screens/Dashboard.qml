@@ -6,14 +6,48 @@ import "../Components"
 import "../Constants"
 
 Item {
+    id: dashboard
     Layout.fillWidth: true
 
+    property int current_page: General.idx_dashboard_wallet
+
+    // Left side
     Rectangle {
         color: Style.colorTheme6
         width: parent.width - sidebar.width
         height: parent.height
+
+
+        StackLayout {
+            anchors.centerIn: parent
+
+            transformOrigin: Item.Center
+
+            currentIndex: current_page
+
+            DefaultText {
+                text: qsTr("Wallet")
+            }
+
+            DefaultText {
+                text: qsTr("DEX")
+            }
+
+            DefaultText {
+                text: qsTr("News")
+            }
+
+            DefaultText {
+                text: qsTr("DApps")
+            }
+
+            DefaultText {
+                text: qsTr("Settings")
+            }
+        }
     }
 
+    // Sidebar, right side
     Rectangle {
         id: sidebar
         color: Style.colorTheme8

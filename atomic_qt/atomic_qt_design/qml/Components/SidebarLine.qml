@@ -6,14 +6,11 @@ import QtGraphicalEffects 1.0
 import "../Constants"
 
 Item {
+    property int dashboard_index
     property alias image: img.source
     property alias text: txt.text
 
     height: 48
-
-
-    property bool highlight: true
-
 
     Image {
         id: img
@@ -36,14 +33,14 @@ Item {
         anchors.left: parent.left
         anchors.leftMargin: img.anchors.leftMargin + Style.textSize * 2.5
         anchors.verticalCenter: parent.verticalCenter
-        color: highlight ? Style.colorTheme0 : Style.colorWhite1
+        color: dashboard.current_page === dashboard_index ? Style.colorTheme0 : Style.colorWhite1
     }
 
     MouseArea {
         width: parent.width
         height: parent.height
         onClicked: function() {
-            highlight = !highlight
+            dashboard.current_page = dashboard_index
         }
     }
 }
