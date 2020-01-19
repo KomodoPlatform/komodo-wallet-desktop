@@ -51,6 +51,12 @@ namespace atomic_dex
         return m_enabled_coins;
     }
 
+    QObjectList
+    atomic_dex::application::get_enableable_coins() const noexcept
+    {
+        return m_enableable_coins;
+    }
+
     bool
     atomic_dex::application::create(const QString& password, const QString& seed)
     {
@@ -147,6 +153,14 @@ namespace atomic_dex
                 this->m_enabled_coins.clear();
                 this->m_enabled_coins = to_qt_binding(std::move(coins), this);
                 emit enabled_coins_changed();
+            }
+
+            //! Enableable coins
+            {
+                auto coins = mm2.get_enableable_coins();
+                this->m_enableable_coins.clear();
+                this->m_enableable_coins = to_qt_binding(std::move(coins), this);
+                emit enableable_coins_changed();
             }
         }
     }

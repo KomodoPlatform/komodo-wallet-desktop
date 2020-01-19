@@ -33,6 +33,7 @@ namespace atomic_dex
     {
         Q_OBJECT
         Q_PROPERTY(QList<QObject*> enabled_coins READ get_enabled_coins NOTIFY enabled_coins_changed)
+        Q_PROPERTY(QList<QObject*> enableable_coins READ get_enableable_coins NOTIFY enableable_coins_changed)
       public:
         explicit application(QObject* pParent = nullptr) noexcept;
 
@@ -40,6 +41,7 @@ namespace atomic_dex
         coinpaprika_provider& get_paprika() noexcept;
         entt::dispatcher&     get_dispatcher() noexcept;
         QObjectList           get_enabled_coins() const noexcept;
+        QObjectList           get_enableable_coins() const noexcept;
 
         void launch();
 
@@ -51,8 +53,10 @@ namespace atomic_dex
 
       signals:
         void enabled_coins_changed();
+        void enableable_coins_changed();
       private:
         void        tick();
         QObjectList m_enabled_coins;
+        QObjectList m_enableable_coins;
     };
 } // namespace atomic_dex
