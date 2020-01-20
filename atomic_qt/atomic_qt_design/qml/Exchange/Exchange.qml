@@ -39,10 +39,8 @@ ColumnLayout {
         }
     }
 
-    Rectangle {
+    HorizontalLine {
         width: tabs.width * 1.1
-        height: 1
-        color: Style.colorWhite5
     }
 
     // Bottom content
