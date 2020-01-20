@@ -10,6 +10,17 @@ QtObject {
 
     readonly property int textSize: 16
     readonly property int textSize2: 24
+    readonly property int textSize3: 36
+    readonly property int textSize4: 48
+    readonly property int textSize5: 60
+    readonly property int textSize6: 72
+    readonly property int textSize7: 84
+    readonly property int textSize8: 96
+    readonly property int textSize9: 108
+    readonly property int textSize10: 120
+    readonly property int textSize11: 132
+    readonly property int textSize12: 144
+
     readonly property int rectangleCornerRadius: 12
     readonly property int itemPadding: 12
     readonly property int paneTitleOffset: 6
