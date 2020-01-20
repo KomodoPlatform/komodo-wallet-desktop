@@ -57,18 +57,20 @@ namespace atomic_dex
         }
     };
 
+    inline QObject* to_qt_binding(t_coins::value_type&& coin, QObject* parent)
+    {
+        auto* obj     = new qt_coin_config(parent);
+        obj->m_ticker = QString::fromStdString(coin.ticker);
+        obj->m_name   = QString::fromStdString(coin.name);
+        obj->m_active = coin.active;
+        return obj;
+    }
+
     QObjectList inline to_qt_binding(t_coins&& coins, QObject* parent)
     {
         QObjectList out;
         out.reserve(coins.size());
-        for (auto&& coin: coins)
-        {
-            auto* obj     = new qt_coin_config(parent);
-            obj->m_ticker = QString::fromStdString(coin.ticker);
-            obj->m_name   = QString::fromStdString(coin.name);
-            obj->m_active = coin.active;
-            out.append(obj);
-        }
+        for (auto&& coin: coins) { out.append(to_qt_binding(std::move(coin), parent)); }
         return out;
     }
 } // namespace atomic_dex

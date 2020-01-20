@@ -29,6 +29,14 @@ namespace ag = antara::gaming;
 
 namespace atomic_dex
 {
+    struct current_coin_info : QObject
+    {
+        Q_OBJECT
+      public:
+        QString  selected_coin_name;
+        QObject* selected_coin_info;
+    };
+
     struct application : public QObject, public ag::world::app
     {
         Q_OBJECT
@@ -54,9 +62,11 @@ namespace atomic_dex
       signals:
         void enabled_coins_changed();
         void enableable_coins_changed();
+
       private:
-        void        tick();
-        QObjectList m_enabled_coins;
-        QObjectList m_enableable_coins;
+        void              tick();
+        QObjectList       m_enabled_coins;
+        QObjectList       m_enableable_coins;
+        current_coin_info m_coin_info;
     };
 } // namespace atomic_dex
