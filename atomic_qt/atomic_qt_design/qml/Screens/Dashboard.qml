@@ -4,6 +4,7 @@ import QtQuick.Controls 2.3
 import QtQuick.Controls.Material 2.12
 import "../Components"
 import "../Constants"
+import "../Wallet"
 import "../Exchange"
 import "../Sidebar"
 
@@ -27,8 +28,8 @@ Item {
             currentIndex: current_page
 
 
-            DefaultText {
-                text: qsTr("Wallet")
+            Wallet {
+
             }
 
             Exchange {
