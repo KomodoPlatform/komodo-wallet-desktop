@@ -25,15 +25,13 @@ Item {
 
             transformOrigin: Item.Center
 
-            currentIndex: current_page
-
 
             Wallet {
 
             }
 
             Exchange {
-                Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
+
             }
 
             DefaultText {

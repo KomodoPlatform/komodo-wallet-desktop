@@ -5,64 +5,72 @@ import QtQuick.Controls.Material 2.12
 import "../Components"
 import "../Constants"
 
-ColumnLayout {
+Item {
     id: exchange
-
     property int current_page: General.idx_exchange_trade
 
-    spacing: 20
-    // Top tabs
-    RowLayout {
-        id: tabs
-        Layout.alignment: Qt.AlignHCenter
+    ColumnLayout {
+        anchors.horizontalCenter: parent.horizontalCenter
+        anchors.verticalCenter: parent.verticalCenter
 
-        spacing: 40
+        Layout.fillWidth: true
 
-        ExchangeTab {
-            dashboard_index: General.idx_exchange_trade
-            text: "Trade"
+        spacing: 20
+        // Top tabs
+        RowLayout {
+            id: tabs
+            Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
+
+            spacing: 40
+
+            ExchangeTab {
+                dashboard_index: General.idx_exchange_trade
+                text: "Trade"
+            }
+
+            ExchangeTab {
+                dashboard_index: General.idx_exchange_orders
+                text: "Orders"
+            }
+
+            ExchangeTab {
+                dashboard_index: General.idx_exchange_history
+                text: "History"
+            }
+
+            ExchangeTab {
+                dashboard_index: General.idx_exchange_orderbook
+                text: "Orderbook"
+            }
         }
 
-        ExchangeTab {
-            dashboard_index: General.idx_exchange_orders
-            text: "Orders"
+        HorizontalLine {
+            width: tabs.width * 1.1
+            Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
         }
 
-        ExchangeTab {
-            dashboard_index: General.idx_exchange_history
-            text: "History"
-        }
+        // Bottom content
+        StackLayout {
+            Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
+            transformOrigin: Item.Center
 
-        ExchangeTab {
-            dashboard_index: General.idx_exchange_orderbook
-            text: "Orderbook"
-        }
-    }
+            currentIndex: current_page
 
-    HorizontalLine {
-        width: tabs.width * 1.1
-    }
+            DefaultText {
+                text: qsTr("Content-Trade")
+            }
 
-    // Bottom content
-    StackLayout {
-        transformOrigin: Item.Center
+            DefaultText {
+                text: qsTr("Content-Orders")
+            }
 
-        currentIndex: current_page
+            DefaultText {
+                text: qsTr("Content-History")
+            }
 
-        DefaultText {
-            text: qsTr("Content-Trade")
-        }
-
-        DefaultText {
-            text: qsTr("Content-Orders")
-        }
-
-        DefaultText {
-            text: qsTr("Content-History")
-        }
-
-        DefaultText {
-            text: qsTr("Content-Orderbook")
+            DefaultText {
+                text: qsTr("Content-Orderbook")
+            }
         }
     }
 }
@@ -74,9 +82,8 @@ ColumnLayout {
 
 
 
-
 /*##^##
 Designer {
-    D{i:0;autoSize:true;height:264;width:150}
+    D{i:0;autoSize:true;height:264;width:1200}
 }
 ##^##*/

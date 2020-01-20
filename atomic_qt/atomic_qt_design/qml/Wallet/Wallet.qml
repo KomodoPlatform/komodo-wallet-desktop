@@ -30,7 +30,7 @@ RowLayout {
                 Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
 
                 DefaultText {
-                    text: "3.333 KMC"
+                    text: "3.333 KMD"
                     Layout.alignment: Qt.AlignRight
                     font.pointSize: Style.textSize5
                 }
