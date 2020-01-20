@@ -21,7 +21,7 @@ Item {
         height: parent.height
 
         StackLayout {
-            anchors.centerIn: parent
+            anchors.fill: parent
 
             transformOrigin: Item.Center
 
@@ -75,6 +75,6 @@ Item {
 }
 /*##^##
 Designer {
-    D{i:0;autoSize:true;height:480;width:640}
+    D{i:0;autoSize:true;height:480;width:1200}
 }
 ##^##*/

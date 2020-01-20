@@ -11,71 +11,80 @@ RowLayout {
     property int current_page: General.idx_exchange_trade
 
     spacing: 0
+    Layout.fillWidth: true
 
     // Left side, main
-    ColumnLayout {
-        width: parent.width - coins_bar.width
-        Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
-
-        spacing: 30
-
+    Item {
+        Layout.fillHeight: true
+        Layout.fillWidth: true
         ColumnLayout {
+            id: wallet_layout
+            width: 600
+            anchors.verticalCenter: parent.verticalCenter
+            anchors.horizontalCenter: parent.horizontalCenter
             Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
 
-            DefaultText {
-                text: "3.333 KMC"
-                Layout.alignment: Qt.AlignRight
-                font.pointSize: Style.textSize5
+            spacing: 30
+
+            ColumnLayout {
+                Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
+
+                DefaultText {
+                    text: "3.333 KMC"
+                    Layout.alignment: Qt.AlignRight
+                    font.pointSize: Style.textSize5
+                }
+
+                DefaultText {
+                    text: "1.78 EUR"
+                    Layout.topMargin: -15
+                    Layout.rightMargin: 4
+                    Layout.alignment: Qt.AlignRight
+                    font.pointSize: Style.textSize2
+                    color: Style.colorWhite4
+                }
             }
 
-            DefaultText {
-                text: "1.78 EUR"
-                Layout.topMargin: -15
-                Layout.rightMargin: 4
-                Layout.alignment: Qt.AlignRight
-                font.pointSize: Style.textSize2
-                color: Style.colorWhite4
+            RowLayout {
+                width: parent.width * 0.6
+
+                Layout.topMargin: -10
+                Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
+
+                spacing: 50
+
+                Button {
+                    text: "Send"
+                    leftPadding: parent.width * 0.075
+                    rightPadding: parent.width * 0.075
+                }
+
+                Button {
+                    text: "Receive"
+                    leftPadding: parent.width * 0.075
+                    rightPadding: parent.width * 0.075
+                }
+
+                Button {
+                    text: "Swap"
+                    leftPadding: parent.width * 0.075
+                    rightPadding: parent.width * 0.075
+                }
             }
-        }
 
-        RowLayout {
-            id: buttons_row
-            Layout.topMargin: -10
-            Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
-
-            spacing: 50
-
-            Button {
-                text: "Send"
+            HorizontalLine {
                 Layout.fillWidth: true
             }
-
-            Button {
-                text: "Receive"
-                Layout.fillWidth: true
-            }
-
-            Button {
-                text: "Swap"
-                Layout.fillWidth: true
-            }
         }
-
-        HorizontalLine {
-            Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
-            width: buttons_row.width * 1.25
-            x: -(width - buttons_row.width) * 0.5
-            Layout.fillWidth: true
-        }
-
     }
 
     // Coins bar at right side
     Rectangle {
         id: coins_bar
+        Layout.alignment: Qt.AlignRight
         width: 100
-        height: parent.height
-        color: Style.colorTheme5
+        Layout.fillHeight: true
+        color: Style.colorTheme7
     }
 }
 
@@ -89,6 +98,6 @@ RowLayout {
 
 /*##^##
 Designer {
-    D{i:0;autoSize:true;height:264;width:150}
+    D{i:0;autoSize:true;height:264;width:1200}
 }
 ##^##*/
