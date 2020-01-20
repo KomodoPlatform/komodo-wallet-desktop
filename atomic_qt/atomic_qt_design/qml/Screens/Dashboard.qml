@@ -21,6 +21,8 @@ Item {
         height: parent.height
 
         StackLayout {
+            currentIndex: current_page
+
             anchors.fill: parent
 
             transformOrigin: Item.Center
