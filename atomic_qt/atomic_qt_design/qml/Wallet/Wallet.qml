@@ -70,6 +70,27 @@ RowLayout {
                     leftPadding: parent.width * 0.075
                     rightPadding: parent.width * 0.075
                 }
+
+                Button {
+                    background: Rectangle {
+                        color: "#36a8aa"
+                        border.width: 1
+                        border.color: "#36a8aa"
+                        radius: 20
+                        MouseArea{
+                                  anchors.fill: parent
+                                  hoverEnabled: true
+                                  onPressed: parent.color = "#2b6680"
+                                  onReleased: parent.color = "#36a8aa"
+                                  onEntered: parent.color = "#318795"
+                                  onExited: parent.color = "#36a8aa"
+                               }
+                    }
+
+                    leftPadding: parent.width * 0.075
+                    rightPadding: parent.width * 0.075
+                    text: "Send"
+                }
             }
 
             HorizontalLine {
