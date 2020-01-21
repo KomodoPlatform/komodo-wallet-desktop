@@ -83,24 +83,31 @@ RowLayout {
     Rectangle {
         id: coins_bar
         Layout.alignment: Qt.AlignRight
-        width: 400
+        width: 125
         Layout.fillHeight: true
         color: Style.colorTheme7
 
         ListView {
-            anchors.fill: parent
+            anchors.horizontalCenter: parent.horizontalCenter
+            anchors.verticalCenter: parent.verticalCenter
+            implicitWidth: contentItem.childrenRect.width
+            implicitHeight: contentItem.childrenRect.height
 
             model: ListModel {
                 id: coin_list
             }
 
-            delegate: Row {
+            delegate: Rectangle {
+                color: "transparent"
                 anchors.horizontalCenter: parent.horizontalCenter
-                Layout.fillWidth: true
-
-                spacing: 10
+                width: coins_bar.width
+                height: 50
 
                 Image {
+                    id: icon
+                    anchors.left: parent.left
+                    anchors.leftMargin: 20
+
                     source: General.image_path + "coins/" + ticker.toLowerCase() + ".png"
                     fillMode: Image.PreserveAspectFit
                     width: Style.textSize2
@@ -108,6 +115,9 @@ RowLayout {
                 }
 
                 DefaultText {
+                    anchors.left: icon.right
+                    anchors.leftMargin: 5
+
                     text: ticker
                     anchors.verticalCenter: parent.verticalCenter
                 }
