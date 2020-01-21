@@ -9,13 +9,17 @@ import "../Constants"
 DefaultText {
     property int dashboard_index
 
+    property bool hovered: false
+
     id: txt
     font.pointSize: Style.textSize2
     font.family: "Montserrat"
     font.bold: exchange.current_page === dashboard_index
-    color: font.bold ? Style.colorWhite1 : Style.colorWhite4
+    color: font.bold ? Style.colorWhite1 : hovered ? Style.colorWhite4 : Style.colorWhite5
 
     MouseArea {
+        hoverEnabled: true
+        onHoveredChanged: hovered = containsMouse
         width: parent.width
         height: parent.height
         onClicked: function() {

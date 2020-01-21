@@ -17,7 +17,6 @@ RowLayout {
 
     Component.onCompleted: fillCoinList()
 
-    property int current_page: General.idx_exchange_trade
     property string current_coin: ""
 
     spacing: 0
