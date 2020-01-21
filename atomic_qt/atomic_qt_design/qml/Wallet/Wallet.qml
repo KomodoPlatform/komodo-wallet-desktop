@@ -8,6 +8,13 @@ import "../Constants"
 RowLayout {
     id: wallet
 
+    function fillCoinList() {
+        coin_list.clear()
+        coin_list.append(MockAPI.getAtomicApp().enabled_coins)
+    }
+
+    Component.onCompleted: fillCoinList()
+
     property int current_page: General.idx_exchange_trade
 
     spacing: 0
@@ -76,9 +83,36 @@ RowLayout {
     Rectangle {
         id: coins_bar
         Layout.alignment: Qt.AlignRight
-        width: 100
+        width: 400
         Layout.fillHeight: true
         color: Style.colorTheme7
+
+        ListView {
+            anchors.fill: parent
+
+            model: ListModel {
+                id: coin_list
+            }
+
+            delegate: Row {
+                anchors.horizontalCenter: parent.horizontalCenter
+                Layout.fillWidth: true
+
+                spacing: 10
+
+                Image {
+                    source: General.image_path + "coins/" + ticker.toLowerCase() + ".png"
+                    fillMode: Image.PreserveAspectFit
+                    width: Style.textSize2
+                    anchors.verticalCenter: parent.verticalCenter
+                }
+
+                DefaultText {
+                    text: ticker
+                    anchors.verticalCenter: parent.verticalCenter
+                }
+            }
+        }
     }
 }
 
