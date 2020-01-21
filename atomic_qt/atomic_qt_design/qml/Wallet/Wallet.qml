@@ -9,13 +9,16 @@ RowLayout {
     id: wallet
 
     function fillCoinList() {
+        const coins = MockAPI.getAtomicApp().enabled_coins
         coin_list.clear()
-        coin_list.append(MockAPI.getAtomicApp().enabled_coins)
+        coin_list.append(coins)
+        current_coin = coins[0].ticker
     }
 
     Component.onCompleted: fillCoinList()
 
     property int current_page: General.idx_exchange_trade
+    property string current_coin: ""
 
     spacing: 0
     Layout.fillWidth: true
@@ -37,7 +40,7 @@ RowLayout {
                 Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
 
                 DefaultText {
-                    text: "3.333 KMD"
+                    text: "3.333 " + current_coin
                     Layout.alignment: Qt.AlignRight
                     font.pointSize: Style.textSize5
                 }
@@ -98,11 +101,21 @@ RowLayout {
             }
 
             delegate: Rectangle {
-                color: "transparent"
+                property bool hovered: false
+
+                color: current_coin == ticker ? Style.colorTheme2 : hovered ? Style.colorTheme4 : "transparent"
                 anchors.horizontalCenter: parent.horizontalCenter
                 width: coins_bar.width
                 height: 50
 
+                MouseArea {
+                    anchors.fill: parent
+                    hoverEnabled: true
+                    onHoveredChanged: hovered = containsMouse
+                    onClicked: current_coin = ticker
+                }
+
+                // Icon
                 Image {
                     id: icon
                     anchors.left: parent.left
@@ -114,6 +127,7 @@ RowLayout {
                     anchors.verticalCenter: parent.verticalCenter
                 }
 
+                // Name
                 DefaultText {
                     anchors.left: icon.right
                     anchors.leftMargin: 5
