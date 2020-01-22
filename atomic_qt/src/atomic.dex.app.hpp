@@ -34,10 +34,12 @@ namespace atomic_dex
         Q_OBJECT
         Q_PROPERTY(QString ticker READ get_ticker WRITE set_ticker NOTIFY ticker_changed)
       public:
-        QString  get_ticker() const noexcept;
-        void     set_ticker(QString ticker) noexcept;
+        explicit current_coin_info(QObject* pParent = nullptr) noexcept;
+        QString get_ticker() const noexcept;
+        void    set_ticker(QString ticker) noexcept;
       signals:
         void ticker_changed();
+
       public:
         QString  selected_coin_name;
         QObject* selected_coin_info;
@@ -48,12 +50,15 @@ namespace atomic_dex
         Q_OBJECT
         Q_PROPERTY(QList<QObject*> enabled_coins READ get_enabled_coins NOTIFY enabled_coins_changed)
         Q_PROPERTY(QList<QObject*> enableable_coins READ get_enableable_coins NOTIFY enableable_coins_changed)
+        Q_PROPERTY(QObject* current_coin_info READ get_current_coin_info NOTIFY coin_info_changed)
+
       public:
         explicit application(QObject* pParent = nullptr) noexcept;
 
         mm2&                  get_mm2() noexcept;
         coinpaprika_provider& get_paprika() noexcept;
         entt::dispatcher&     get_dispatcher() noexcept;
+        QObject*              get_current_coin_info() const noexcept;
         QObjectList           get_enabled_coins() const noexcept;
         QObjectList           get_enableable_coins() const noexcept;
 
@@ -68,11 +73,12 @@ namespace atomic_dex
       signals:
         void enabled_coins_changed();
         void enableable_coins_changed();
+        void coin_info_changed();
 
       private:
-        void              tick();
-        QObjectList       m_enabled_coins;
-        QObjectList       m_enableable_coins;
-        current_coin_info m_coin_info;
+        void               tick();
+        QObjectList        m_enabled_coins;
+        QObjectList        m_enableable_coins;
+        current_coin_info* m_coin_info;
     };
 } // namespace atomic_dex

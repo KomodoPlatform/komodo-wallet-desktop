@@ -159,11 +159,12 @@ namespace atomic_dex
         auto& mm2 = get_mm2();
         if (mm2.is_mm2_running())
         {
-            if (m_coin_info.get_ticker().isEmpty() && not m_enabled_coins.empty())
+            if (m_coin_info->get_ticker().isEmpty() && not m_enabled_coins.empty())
             {
                 auto coin = mm2.get_enabled_coins().front();
-                m_coin_info.set_ticker(QString::fromStdString(coin.ticker));
-                emit m_coin_info.ticker_changed();
+                m_coin_info->set_ticker(QString::fromStdString(coin.ticker));
+                emit m_coin_info->ticker_changed();
+                emit coin_info_changed();
             }
 
             //! Enabled coins stuff
@@ -202,7 +203,15 @@ namespace atomic_dex
         return this->dispatcher_;
     }
 
-    application::application(QObject* pParent) noexcept : QObject(pParent)
+    QObject*
+    atomic_dex::application::get_current_coin_info() const noexcept
+    {
+        return m_coin_info;
+    }
+
+    atomic_dex::current_coin_info::current_coin_info(QObject* pParent) noexcept : QObject(pParent) {}
+
+    application::application(QObject* pParent) noexcept : QObject(pParent), m_coin_info(new current_coin_info(this))
     {
         //! MM2 system need to be created before the GUI and give the instance to the gui
         auto& mm2_system = system_manager_.create_system<mm2>();
