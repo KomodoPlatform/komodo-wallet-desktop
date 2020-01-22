@@ -10,7 +10,7 @@ Rectangle {
     color: Style.colorTheme8
 
     function firstPage() {
-        return MockAPI.app().first_run() ? idx_first_launch : idx_login
+        return API.app().first_run() ? idx_first_launch : idx_login
     }
 
     readonly property int idx_first_launch: 0

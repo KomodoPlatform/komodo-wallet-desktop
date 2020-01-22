@@ -12,7 +12,7 @@ SetupPage {
 
     // Local
     function onClickedLogin(password) {
-        if(MockAPI.app().login(password)) {
+        if(API.app().login(password)) {
             console.log("Success: Login")
             postLoginSuccess()
         }
