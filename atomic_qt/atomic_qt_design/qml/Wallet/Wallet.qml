@@ -91,7 +91,7 @@ RowLayout {
             delegate: Rectangle {
                 property bool hovered: false
 
-                color: current_coin == model.modelData.ticker ? Style.colorTheme2 : hovered ? Style.colorTheme4 : "transparent"
+                color: current_coin === model.modelData.ticker ? Style.colorTheme2 : hovered ? Style.colorTheme4 : "transparent"
                 anchors.horizontalCenter: parent.horizontalCenter
                 width: coins_bar.width
                 height: 50
