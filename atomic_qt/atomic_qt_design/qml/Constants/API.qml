@@ -13,8 +13,8 @@ QtObject {
 
     // Mock API
     property var mockAPI: ({
-        current_coin: {
-            ticker: ""
+        current_coin_info: {
+            ticker: "MORTY"
         },
 
         change_state: (visibility) => {
