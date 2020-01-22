@@ -4,11 +4,11 @@ import QtQuick 2.10
 QtObject {
     property bool design_editor: typeof atomic_app === "undefined"
 
-    function get() { return !design_editor ? atomic_app : mockAPI }
+    function get() { return design_editor ? mockAPI : atomic_app }
 
-    Component.onCompleted: refresh_mockapi.running = design_editor
     property Timer refresh_mockapi: Timer {
         interval: 64
+        running: design_editor
         repeat: true
         onTriggered: mockAPI = mockAPI
     }
@@ -18,7 +18,7 @@ QtObject {
     property string saved_password
     property var mockAPI: ({
         current_coin_info: {
-            ticker: "MORTY"
+            ticker: "RICK"
         },
 
         change_state: (visibility) => {
