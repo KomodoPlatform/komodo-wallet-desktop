@@ -10,7 +10,7 @@ Rectangle {
     color: Style.colorTheme8
 
     function firstPage() {
-        return API.app().first_run() ? idx_first_launch : idx_login
+        return API.get().first_run() ? idx_first_launch : idx_login
     }
 
     readonly property int idx_first_launch: 0

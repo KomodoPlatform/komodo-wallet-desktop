@@ -2,7 +2,7 @@ pragma Singleton
 import QtQuick 2.10
 
 QtObject {
-    function app() {
+    function get() {
         const design_editor = typeof atomic_app === "undefined"
         return !design_editor ? atomic_app : mockAPI
     }

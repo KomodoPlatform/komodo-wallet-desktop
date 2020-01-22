@@ -12,7 +12,7 @@ SetupPage {
 
     // Local
     function onClickedLogin(password) {
-        if(API.app().login(password)) {
+        if(API.get().login(password)) {
             console.log("Success: Login")
             postLoginSuccess()
         }
