@@ -12,7 +12,7 @@ SetupPage {
 
     // Local
     function onClickedCreate(password, generated_seed, confirm_seed) {
-        if(MockAPI.getAtomicApp().create(password, generated_seed)) {
+        if(MockAPI.app().create(password, generated_seed)) {
             console.log("Success: Create wallet")
             postCreateSuccess()
         }
@@ -34,7 +34,7 @@ SetupPage {
         TextAreaWithTitle {
             id: input_generated_seed
             title: qsTr("Generated Seed")
-            field.text: MockAPI.getAtomicApp().get_mnemonic()
+            field.text: MockAPI.app().get_mnemonic()
             field.readOnly: true
             copyable: true
         }

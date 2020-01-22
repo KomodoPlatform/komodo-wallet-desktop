@@ -86,7 +86,7 @@ RowLayout {
             implicitWidth: contentItem.childrenRect.width
             implicitHeight: contentItem.childrenRect.height
 
-            model: MockAPI.getAtomicApp().enabled_coins
+            model: MockAPI.app().enabled_coins
 
             delegate: Rectangle {
                 property bool hovered: false

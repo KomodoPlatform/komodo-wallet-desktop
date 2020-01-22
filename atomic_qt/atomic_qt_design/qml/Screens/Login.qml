@@ -12,7 +12,7 @@ SetupPage {
 
     // Local
     function onClickedLogin(password) {
-        if(MockAPI.getAtomicApp().login(password)) {
+        if(MockAPI.app().login(password)) {
             console.log("Success: Login")
             postLoginSuccess()
         }
