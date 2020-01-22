@@ -275,6 +275,8 @@ namespace atomic_dex
 
         for (auto&& fut: futures) { fut.get(); }
 
+        this->dispatcher_.trigger<enabled_coins_event>();
+
         spawn([this]() {
             loguru::set_thread_name("swaps thread");
             process_swaps();

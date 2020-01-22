@@ -167,7 +167,7 @@ namespace atomic_dex
                 emit coinInfoChanged();
             }
 
-            //! Enabled coins stuff
+            /*//! Enabled coins stuff
             {
                 auto coins = mm2.get_enabled_coins();
                 this->m_enabled_coins.clear();
@@ -181,7 +181,7 @@ namespace atomic_dex
                 this->m_enableable_coins.clear();
                 this->m_enableable_coins = to_qt_binding(std::move(coins), this);
                 emit enableableCoinsChanged();
-            }
+            }*/
         }
     }
 
@@ -216,5 +216,17 @@ namespace atomic_dex
         //! MM2 system need to be created before the GUI and give the instance to the gui
         auto& mm2_system = system_manager_.create_system<mm2>();
         system_manager_.create_system<coinpaprika_provider>(mm2_system);
+
+        get_dispatcher().sink<enabled_coins_event>().connect<&application::on_enabled_coins_event>(*this);
+    }
+
+    void
+    atomic_dex::application::on_enabled_coins_event(const enabled_coins_event&) noexcept
+    {
+        auto& mm2   = get_mm2();
+        auto  coins = mm2.get_enabled_coins();
+        this->m_enabled_coins.clear();
+        this->m_enabled_coins = to_qt_binding(std::move(coins), this);
+        emit enabledCoinsChanged();
     }
 } // namespace atomic_dex

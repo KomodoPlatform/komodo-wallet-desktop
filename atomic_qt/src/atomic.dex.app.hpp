@@ -55,6 +55,7 @@ namespace atomic_dex
       public:
         explicit application(QObject* pParent = nullptr) noexcept;
 
+        void on_enabled_coins_event(const enabled_coins_event&) noexcept;
         mm2&                  get_mm2() noexcept;
         coinpaprika_provider& get_paprika() noexcept;
         entt::dispatcher&     get_dispatcher() noexcept;

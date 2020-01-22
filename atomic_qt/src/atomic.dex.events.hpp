@@ -21,9 +21,10 @@
 
 namespace atomic_dex
 {
-    using mm2_started       = entt::tag<"mm2_started"_hs>;
-    using gui_enter_trading = entt::tag<"gui_enter_trading"_hs>;
-    using gui_leave_trading = entt::tag<"gui_leave_trading"_hs>;
+    using mm2_started         = entt::tag<"mm2_started"_hs>;
+    using gui_enter_trading   = entt::tag<"gui_enter_trading"_hs>;
+    using gui_leave_trading   = entt::tag<"gui_leave_trading"_hs>;
+    using enabled_coins_event = entt::tag<"gui_enabled_coins"_hs>;
 
     struct coin_enabled
     {
