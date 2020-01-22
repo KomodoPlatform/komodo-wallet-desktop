@@ -2,17 +2,6 @@ pragma Singleton
 import QtQuick 2.10
 
 QtObject {
-    property bool design_editor: typeof atomic_app === "undefined"
-
-    function get() { return design_editor ? mockAPI : atomic_app }
-
-    property Timer refresh_mockapi: Timer {
-        interval: 64
-        running: design_editor
-        repeat: true
-        onTriggered: mockAPI = mockAPI
-    }
-
     // Mock API
     property string saved_seed
     property string saved_password
@@ -57,4 +46,16 @@ QtObject {
             { ticker: "MORTY", name: "Morty" },
         ],
     })
+
+    // Stuff to make it work both in C++ and Design Studio
+    property bool design_editor: typeof atomic_app === "undefined"
+
+    function get() { return design_editor ? mockAPI : atomic_app }
+
+    property Timer refresh_mockapi: Timer {
+        interval: 64
+        running: design_editor
+        repeat: true
+        onTriggered: mockAPI = mockAPI
+    }
 }
