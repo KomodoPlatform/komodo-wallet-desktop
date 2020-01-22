@@ -4,7 +4,7 @@ import QtQuick 2.10
 QtObject {
     function app() {
         const design_editor = typeof atomic_app === "undefined"
-        return !design_editor ? atomic_app : mockAPI()
+        return !design_editor ? atomic_app : mockAPI
     }
 
     // Mock variables
@@ -12,43 +12,45 @@ QtObject {
     property string saved_password
 
     // Mock API
-    function mockAPI() {
-        return {
-            change_state: (visibility) => {
-              console.log(visibility)
-            },
+    property var mockAPI: ({
+        current_coin: {
+            ticker: ""
+        },
 
-            first_run: () => {
-                return saved_seed === ''
-            },
+        change_state: (visibility) => {
+          console.log(visibility)
+        },
 
-            get_mnemonic: () => {
-                return "this is a test seed gossip rubber flee just connect manual any salmon limb suffer now turkey essence naive daughter system begin quantum page"
-            },
+        first_run: () => {
+            return saved_seed === ''
+        },
 
-            login: (password) => {
-                console.log("Logging in with password:" + password)
+        get_mnemonic: () => {
+            return "this is a test seed gossip rubber flee just connect manual any salmon limb suffer now turkey essence naive daughter system begin quantum page"
+        },
 
-                return password === saved_password
-            },
+        login: (password) => {
+            console.log("Logging in with password:" + password)
 
-            create: (password, seed) => {
-                console.log("Creating the seed with password:")
-                console.log(seed)
-                console.log(password)
+            return password === saved_password
+        },
 
-                saved_seed = seed
-                saved_password = password
+        create: (password, seed) => {
+            console.log("Creating the seed with password:")
+            console.log(seed)
+            console.log(password)
 
-                return saved_password !== ''
-            },
+            saved_seed = seed
+            saved_password = password
 
-            enabled_coins: [
-                { ticker: "BTC", name: "Bitcoin" },
-                { ticker: "KMD", name: "Komodo" },
-                { ticker: "RICK", name: "Rick" },
-                { ticker: "MORTY", name: "Morty" },
-            ],
-        }
-    }
+            return saved_password !== ''
+        },
+
+        enabled_coins: [
+            { ticker: "BTC", name: "Bitcoin" },
+            { ticker: "KMD", name: "Komodo" },
+            { ticker: "RICK", name: "Rick" },
+            { ticker: "MORTY", name: "Morty" },
+        ],
+    })
 }
