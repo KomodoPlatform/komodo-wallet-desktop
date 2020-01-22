@@ -8,8 +8,6 @@ import "../Constants"
 RowLayout {
     id: wallet
 
-    property string current_coin: ""
-
     spacing: 0
     Layout.fillWidth: true
 
@@ -30,7 +28,7 @@ RowLayout {
                 Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
 
                 DefaultText {
-                    text: "3.333 " + current_coin
+                    text: "3.333 " + API.get().current_coin_info.ticker
                     Layout.alignment: Qt.AlignRight
                     font.pointSize: Style.textSize5
                 }
@@ -91,7 +89,7 @@ RowLayout {
             delegate: Rectangle {
                 property bool hovered: false
 
-                color: current_coin === model.modelData.ticker ? Style.colorTheme2 : hovered ? Style.colorTheme4 : "transparent"
+                color: API.get().current_coin_info.ticker === model.modelData.ticker ? Style.colorTheme2 : hovered ? Style.colorTheme4 : "transparent"
                 anchors.horizontalCenter: parent.horizontalCenter
                 width: coins_bar.width
                 height: 50
@@ -100,7 +98,7 @@ RowLayout {
                     anchors.fill: parent
                     hoverEnabled: true
                     onHoveredChanged: hovered = containsMouse
-                    onClicked: current_coin = model.modelData.ticker
+                    onClicked: API.get().current_coin_info.ticker = model.modelData.ticker
                 }
 
                 // Icon
