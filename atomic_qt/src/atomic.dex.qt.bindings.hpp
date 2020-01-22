@@ -16,6 +16,8 @@
 
 #pragma once
 
+#include <QAbstractListModel>
+#include <QHash>
 #include <QObject>
 
 //! PCH Headers
@@ -26,6 +28,35 @@
 
 namespace atomic_dex
 {
+    class qt_coins_model : public QAbstractListModel
+    {
+        Q_OBJECT
+      public:
+        explicit qt_coins_model(QObject* pParent = nullptr) noexcept;
+
+        int      rowCount(const QModelIndex&) const override;
+        QVariant data(const QModelIndex& index, int role) const override;
+
+        bool
+        clear() noexcept
+        {
+            beginResetModel();
+            m_items.clear();
+            endResetModel();
+            return true;
+        }
+
+      public slots:
+        void insert(QObject* item);
+        void remove(QObject* item);
+
+      protected:
+        QHash<int, QByteArray> roleNames() const override;
+
+      private:
+        QVector<QObject*> m_items;
+    };
+
     struct qt_coin_config : QObject
     {
         Q_OBJECT
@@ -57,7 +88,8 @@ namespace atomic_dex
         }
     };
 
-    inline QObject* to_qt_binding(t_coins::value_type&& coin, QObject* parent)
+    inline QObject*
+    to_qt_binding(t_coins::value_type&& coin, QObject* parent)
     {
         auto* obj     = new qt_coin_config(parent);
         obj->m_ticker = QString::fromStdString(coin.ticker);

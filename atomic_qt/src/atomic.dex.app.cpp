@@ -58,13 +58,13 @@ namespace atomic_dex
         emit ticker_changed();
     }
 
-    QObjectList
+    qt_coins_model*
     atomic_dex::application::get_enabled_coins() const noexcept
     {
         return m_enabled_coins;
     }
 
-    QObjectList
+    qt_coins_model*
     atomic_dex::application::get_enableable_coins() const noexcept
     {
         return m_enableable_coins;
@@ -160,7 +160,7 @@ namespace atomic_dex
         auto& mm2 = get_mm2();
         if (mm2.is_mm2_running())
         {
-            if (m_coin_info->get_ticker().isEmpty() && not m_enabled_coins.empty())
+            if (m_coin_info->get_ticker().isEmpty() && not mm2.get_enabled_coins().empty())
             {
                 auto coin = mm2.get_enabled_coins().front();
                 m_coin_info->set_ticker(QString::fromStdString(coin.ticker));
@@ -170,16 +170,16 @@ namespace atomic_dex
             //! Enabled coins stuff
             {
                 auto coins = mm2.get_enabled_coins();
-                this->m_enabled_coins.clear();
-                this->m_enabled_coins = to_qt_binding(std::move(coins), this);
+                this->m_enabled_coins->clear();
+                for (auto&& coin: coins) { this->m_enabled_coins->insert(to_qt_binding(std::move(coin), this)); }
                 emit enabled_coins_changed();
             }
 
             //! Enableable coins
             {
                 auto coins = mm2.get_enableable_coins();
-                this->m_enableable_coins.clear();
-                this->m_enableable_coins = to_qt_binding(std::move(coins), this);
+                this->m_enableable_coins->clear();
+                for (auto&& coin: coins) { this->m_enableable_coins->insert(to_qt_binding(std::move(coin), this)); }
                 emit enableable_coins_changed();
             }
         }
@@ -211,7 +211,8 @@ namespace atomic_dex
 
     atomic_dex::current_coin_info::current_coin_info(QObject* pParent) noexcept : QObject(pParent) {}
 
-    application::application(QObject* pParent) noexcept : QObject(pParent), m_coin_info(new current_coin_info(this))
+    application::application(QObject* pParent) noexcept :
+        QObject(pParent), m_enabled_coins(new qt_coins_model(this)), m_enableable_coins(new qt_coins_model(this)), m_coin_info(new current_coin_info(this))
     {
         //! MM2 system need to be created before the GUI and give the instance to the gui
         auto& mm2_system = system_manager_.create_system<mm2>();
