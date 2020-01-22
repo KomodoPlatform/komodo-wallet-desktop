@@ -78,6 +78,49 @@ RowLayout {
         Layout.fillHeight: true
         color: Style.colorTheme7
 
+        // Add button
+        Rectangle {
+            id: add_coin_button
+
+            width: 32; height: width
+            property bool hovered: false
+            color: "transparent"
+            border.color: hovered ? Style.colorTheme0 : Style.colorTheme3
+            border.width: 2
+            radius: 100
+
+            Rectangle {
+                width: parent.border.width
+                height: parent.width * 0.5
+                radius: parent.radius
+                color: parent.border.color
+                anchors.verticalCenter: parent.verticalCenter
+                anchors.horizontalCenter: parent.horizontalCenter
+            }
+
+            Rectangle {
+                width: parent.width * 0.5
+                height: parent.border.width
+                radius: parent.radius
+                color: parent.border.color
+                anchors.verticalCenter: parent.verticalCenter
+                anchors.horizontalCenter: parent.horizontalCenter
+            }
+
+            MouseArea {
+                anchors.fill: parent
+                hoverEnabled: true
+                onHoveredChanged: add_coin_button.hovered = containsMouse
+                onClicked: console.log("add button")
+            }
+
+            anchors.bottom: parent.bottom
+            anchors.bottomMargin: parent.width * 0.5 - height * 0.5
+            anchors.horizontalCenter: parent.horizontalCenter
+        }
+
+
+        // Coins list
         ListView {
             anchors.horizontalCenter: parent.horizontalCenter
             anchors.verticalCenter: parent.verticalCenter
@@ -136,6 +179,6 @@ RowLayout {
 
 /*##^##
 Designer {
-    D{i:0;autoSize:true;height:264;width:1200}
+    D{i:0;autoSize:true;height:600;width:1200}
 }
 ##^##*/
