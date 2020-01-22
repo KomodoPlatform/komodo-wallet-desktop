@@ -2,16 +2,20 @@ pragma Singleton
 import QtQuick 2.10
 
 QtObject {
-    function get() {
-        const design_editor = typeof atomic_app === "undefined"
-        return !design_editor ? atomic_app : mockAPI
+    property bool design_editor: typeof atomic_app === "undefined"
+
+    function get() { return !design_editor ? atomic_app : mockAPI }
+
+    Component.onCompleted: refresh_mockapi.running = design_editor
+    property Timer refresh_mockapi: Timer {
+        interval: 64
+        repeat: true
+        onTriggered: mockAPI = mockAPI
     }
 
-    // Mock variables
+    // Mock API
     property string saved_seed
     property string saved_password
-
-    // Mock API
     property var mockAPI: ({
         current_coin_info: {
             ticker: "MORTY"
