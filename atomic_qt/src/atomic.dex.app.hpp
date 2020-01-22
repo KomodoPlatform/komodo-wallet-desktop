@@ -32,6 +32,12 @@ namespace atomic_dex
     struct current_coin_info : QObject
     {
         Q_OBJECT
+        Q_PROPERTY(QString ticker READ get_ticker WRITE set_ticker NOTIFY ticker_changed)
+      public:
+        QString  get_ticker() const noexcept;
+        void     set_ticker(QString ticker) noexcept;
+      signals:
+        void ticker_changed();
       public:
         QString  selected_coin_name;
         QObject* selected_coin_info;

@@ -8,15 +8,6 @@ import "../Constants"
 RowLayout {
     id: wallet
 
-    function fillCoinList() {
-        const coins = MockAPI.getAtomicApp().enabled_coins
-        coin_list.clear()
-        coin_list.append(coins)
-        current_coin = coins[0].ticker
-    }
-
-    Component.onCompleted: fillCoinList()
-
     property string current_coin: ""
 
     spacing: 0
@@ -95,9 +86,7 @@ RowLayout {
             implicitWidth: contentItem.childrenRect.width
             implicitHeight: contentItem.childrenRect.height
 
-            model: ListModel {
-                id: coin_list
-            }
+            model: MockAPI.getAtomicApp().enabled_coins
 
             delegate: Rectangle {
                 property bool hovered: false

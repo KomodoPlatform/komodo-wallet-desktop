@@ -45,6 +45,18 @@ namespace atomic_dex
 #endif
     }
 
+    QString
+    atomic_dex::current_coin_info::get_ticker() const noexcept
+    {
+        return selected_coin_name;
+    }
+
+    void
+    atomic_dex::current_coin_info::set_ticker(QString ticker) noexcept
+    {
+        selected_coin_name = std::move(ticker);
+    }
+
     QObjectList
     atomic_dex::application::get_enabled_coins() const noexcept
     {
@@ -147,6 +159,13 @@ namespace atomic_dex
         auto& mm2 = get_mm2();
         if (mm2.is_mm2_running())
         {
+            if (m_coin_info.get_ticker().isEmpty() && not m_enabled_coins.empty())
+            {
+                auto coin = mm2.get_enabled_coins().front();
+                m_coin_info.set_ticker(QString::fromStdString(coin.ticker));
+                emit m_coin_info.ticker_changed();
+            }
+
             //! Enabled coins stuff
             {
                 auto coins = mm2.get_enabled_coins();
