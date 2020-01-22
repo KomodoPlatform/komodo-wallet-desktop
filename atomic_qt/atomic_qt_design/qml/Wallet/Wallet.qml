@@ -13,6 +13,15 @@ RowLayout {
     spacing: 0
     Layout.fillWidth: true
 
+    Timer {
+        running: true
+        interval: 15000
+        onTriggered: () => {
+                         coin_list.clear()
+                         coin_list.append(MockAPI.getAtomicApp().enabled_coins)
+                     }
+    }
+
     // Left side, main
     Item {
         Layout.fillHeight: true
@@ -86,12 +95,14 @@ RowLayout {
             implicitWidth: contentItem.childrenRect.width
             implicitHeight: contentItem.childrenRect.height
 
-            model: MockAPI.getAtomicApp().enabled_coins
+            model: ListModel {
+                id: coin_list
+            }
 
             delegate: Rectangle {
                 property bool hovered: false
 
-                color: current_coin === model.modelData.ticker ? Style.colorTheme2 : hovered ? Style.colorTheme4 : "transparent"
+                color: current_coin === ticker ? Style.colorTheme2 : hovered ? Style.colorTheme4 : "transparent"
                 anchors.horizontalCenter: parent.horizontalCenter
                 width: coins_bar.width
                 height: 50
@@ -100,7 +111,7 @@ RowLayout {
                     anchors.fill: parent
                     hoverEnabled: true
                     onHoveredChanged: hovered = containsMouse
-                    onClicked: current_coin = model.modelData.ticker
+                    onClicked: current_coin = ticker
                 }
 
                 // Icon
@@ -109,7 +120,7 @@ RowLayout {
                     anchors.left: parent.left
                     anchors.leftMargin: 20
 
-                    source: General.image_path + "coins/" + model.modelData.ticker.toLowerCase() + ".png"
+                    source: General.image_path + "coins/" + ticker.toLowerCase() + ".png"
                     fillMode: Image.PreserveAspectFit
                     width: Style.textSize2
                     anchors.verticalCenter: parent.verticalCenter
@@ -120,7 +131,7 @@ RowLayout {
                     anchors.left: icon.right
                     anchors.leftMargin: 5
 
-                    text: model.modelData.ticker
+                    text: ticker
                     anchors.verticalCenter: parent.verticalCenter
                 }
             }
