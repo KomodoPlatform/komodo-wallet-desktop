@@ -164,7 +164,7 @@ namespace atomic_dex
             {
                 auto coin = mm2.get_enabled_coins().front();
                 m_coin_info->set_ticker(QString::fromStdString(coin.ticker));
-                emit coin_info_changed();
+                emit coinInfoChanged();
             }
 
             //! Enabled coins stuff
@@ -172,7 +172,7 @@ namespace atomic_dex
                 auto coins = mm2.get_enabled_coins();
                 this->m_enabled_coins.clear();
                 this->m_enabled_coins = to_qt_binding(std::move(coins), this);
-                emit enabled_coins_changed();
+                emit enabledCoinsChanged();
             }
 
             //! Enableable coins
@@ -180,7 +180,7 @@ namespace atomic_dex
                 auto coins = mm2.get_enableable_coins();
                 this->m_enableable_coins.clear();
                 this->m_enableable_coins = to_qt_binding(std::move(coins), this);
-                emit enableable_coins_changed();
+                emit enableableCoinsChanged();
             }
         }
     }

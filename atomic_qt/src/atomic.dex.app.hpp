@@ -48,9 +48,9 @@ namespace atomic_dex
     struct application : public QObject, public ag::world::app
     {
         Q_OBJECT
-        Q_PROPERTY(QList<QObject*> enabled_coins READ get_enabled_coins NOTIFY enabled_coins_changed)
-        Q_PROPERTY(QList<QObject*> enableable_coins READ get_enableable_coins NOTIFY enableable_coins_changed)
-        Q_PROPERTY(QObject* current_coin_info READ get_current_coin_info NOTIFY coin_info_changed)
+        Q_PROPERTY(QList<QObject*> enabled_coins READ get_enabled_coins NOTIFY enabledCoinsChanged)
+        Q_PROPERTY(QList<QObject*> enableable_coins READ get_enableable_coins NOTIFY enableableCoinsChanged)
+        Q_PROPERTY(QObject* current_coin_info READ get_current_coin_info NOTIFY coinInfoChanged)
 
       public:
         explicit application(QObject* pParent = nullptr) noexcept;
@@ -71,9 +71,9 @@ namespace atomic_dex
         Q_INVOKABLE bool    create(const QString& password, const QString& seed);
 
       signals:
-        void enabled_coins_changed();
-        void enableable_coins_changed();
-        void coin_info_changed();
+        void enabledCoinsChanged();
+        void enableableCoinsChanged();
+        void coinInfoChanged();
 
       private:
         void               tick();
