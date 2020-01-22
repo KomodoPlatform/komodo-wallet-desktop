@@ -27,6 +27,7 @@
         <file>atomic_qt_design/qml/Screens/RecoverSeed.qml</file>
         <file>atomic_qt_design/qml/Screens/Dashboard.qml</file>
         <file>atomic_qt_design/qml/Constants/General.qml</file>
+        <file>atomic_qt_design/qml/Constants/API.qml</file>
         <file>atomic_qt_design/qml/Constants/Style.qml</file>
         <file>atomic_qt_design/qml/Exchange/Exchange.qml</file>
         <file>atomic_qt_design/qml/Exchange/ExchangeTab.qml</file>
