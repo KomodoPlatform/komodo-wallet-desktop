@@ -125,13 +125,6 @@ RowLayout {
                 }
             }
         }
-
-        Connections {
-            target: MockAPI.getAtomicApp()
-            onEnabledCoinsChanged: {
-                console.log("Enabled coins changed!")
-            }
-        }
     }
 }
 
