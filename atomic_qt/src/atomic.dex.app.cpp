@@ -55,6 +55,7 @@ namespace atomic_dex
     atomic_dex::current_coin_info::set_ticker(QString ticker) noexcept
     {
         selected_coin_name = std::move(ticker);
+        emit ticker_changed();
     }
 
     QObjectList
@@ -163,7 +164,6 @@ namespace atomic_dex
             {
                 auto coin = mm2.get_enabled_coins().front();
                 m_coin_info->set_ticker(QString::fromStdString(coin.ticker));
-                emit m_coin_info->ticker_changed();
                 emit coin_info_changed();
             }
 
