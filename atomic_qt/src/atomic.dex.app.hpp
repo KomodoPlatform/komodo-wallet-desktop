@@ -24,7 +24,6 @@
 //! Project Headers
 #include "atomic.dex.mm2.hpp"
 #include "atomic.dex.provider.coinpaprika.hpp"
-#include "atomic.dex.qt.bindings.hpp"
 
 namespace ag = antara::gaming;
 
@@ -49,8 +48,8 @@ namespace atomic_dex
     struct application : public QObject, public ag::world::app
     {
         Q_OBJECT
-        Q_PROPERTY(qt_coins_model* enabled_coins READ get_enabled_coins NOTIFY enabled_coins_changed)
-        Q_PROPERTY(qt_coins_model* enableable_coins READ get_enableable_coins NOTIFY enableable_coins_changed)
+        Q_PROPERTY(QList<QObject*> enabled_coins READ get_enabled_coins NOTIFY enabled_coins_changed)
+        Q_PROPERTY(QList<QObject*> enableable_coins READ get_enableable_coins NOTIFY enableable_coins_changed)
         Q_PROPERTY(QObject* current_coin_info READ get_current_coin_info NOTIFY coin_info_changed)
 
       public:
@@ -60,8 +59,8 @@ namespace atomic_dex
         coinpaprika_provider& get_paprika() noexcept;
         entt::dispatcher&     get_dispatcher() noexcept;
         QObject*              get_current_coin_info() const noexcept;
-        qt_coins_model*       get_enabled_coins() const noexcept;
-        qt_coins_model*       get_enableable_coins() const noexcept;
+        QObjectList           get_enabled_coins() const noexcept;
+        QObjectList           get_enableable_coins() const noexcept;
 
         void launch();
 
@@ -78,8 +77,8 @@ namespace atomic_dex
 
       private:
         void               tick();
-        qt_coins_model*    m_enabled_coins;
-        qt_coins_model*    m_enableable_coins;
+        QObjectList        m_enabled_coins;
+        QObjectList        m_enableable_coins;
         current_coin_info* m_coin_info;
     };
 } // namespace atomic_dex
