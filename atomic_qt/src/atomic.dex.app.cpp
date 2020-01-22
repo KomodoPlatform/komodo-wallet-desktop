@@ -224,9 +224,17 @@ namespace atomic_dex
     atomic_dex::application::on_enabled_coins_event(const enabled_coins_event&) noexcept
     {
         auto& mm2   = get_mm2();
-        auto  coins = mm2.get_enabled_coins();
-        this->m_enabled_coins.clear();
-        this->m_enabled_coins = to_qt_binding(std::move(coins), this);
-        emit enabledCoinsChanged();
+        {
+            auto coins = mm2.get_enabled_coins();
+            this->m_enabled_coins.clear();
+            this->m_enabled_coins = to_qt_binding(std::move(coins), this);
+            emit enabledCoinsChanged();
+        }
+        {
+            auto coins = mm2.get_enableable_coins();
+            this->m_enableable_coins.clear();
+            this->m_enableable_coins = to_qt_binding(std::move(coins), this);
+            emit enableableCoinsChanged();
+        }
     }
 } // namespace atomic_dex
