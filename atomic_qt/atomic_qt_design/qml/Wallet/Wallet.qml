@@ -91,7 +91,7 @@ RowLayout {
             delegate: Rectangle {
                 property bool hovered: false
 
-                color: current_coin === model.modelData.ticker ? Style.colorTheme2 : hovered ? Style.colorTheme4 : "transparent"
+                color: current_coin === model.item.ticker ? Style.colorTheme2 : hovered ? Style.colorTheme4 : "transparent"
                 anchors.horizontalCenter: parent.horizontalCenter
                 width: coins_bar.width
                 height: 50
@@ -100,7 +100,7 @@ RowLayout {
                     anchors.fill: parent
                     hoverEnabled: true
                     onHoveredChanged: hovered = containsMouse
-                    onClicked: current_coin = model.modelData.ticker
+                    onClicked: current_coin = model.item.ticker
                 }
 
                 // Icon
@@ -109,7 +109,7 @@ RowLayout {
                     anchors.left: parent.left
                     anchors.leftMargin: 20
 
-                    source: General.image_path + "coins/" + model.modelData.ticker.toLowerCase() + ".png"
+                    source: General.image_path + "coins/" + model.item.ticker.toLowerCase() + ".png"
                     fillMode: Image.PreserveAspectFit
                     width: Style.textSize2
                     anchors.verticalCenter: parent.verticalCenter
@@ -120,7 +120,7 @@ RowLayout {
                     anchors.left: icon.right
                     anchors.leftMargin: 5
 
-                    text: model.modelData.ticker
+                    text: model.item.ticker
                     anchors.verticalCenter: parent.verticalCenter
                 }
             }
