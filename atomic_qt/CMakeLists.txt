@@ -41,7 +41,7 @@ elseif (LINUX)
             URL http://195.201.0.6/mm2/mm2-latest-Linux.zip)
 else ()
     FetchContent_Declare(mm2
-            URL http://1s95.201.0.6/mm2/mm2-latest-Windows_NT.zip)
+            URL http://195.201.0.6/mm2/mm2-latest-Windows_NT.zip)
 endif ()
 
 FetchContent_Declare(jl777-coins
