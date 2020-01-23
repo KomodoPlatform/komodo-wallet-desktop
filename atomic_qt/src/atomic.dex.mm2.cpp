@@ -440,7 +440,7 @@ namespace atomic_dex
             using namespace std::chrono_literals;
             loguru::set_thread_name("mm2 init thread");
 
-            const auto wait_ec = m_mm2_instance.wait(1s);
+            const auto wait_ec = m_mm2_instance.wait(2s);
 
             if (wait_ec == reproc::error::wait_timeout)
             {
