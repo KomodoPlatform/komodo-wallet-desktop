@@ -14,39 +14,6 @@ Item {
 
     property int current_page: General.idx_dashboard_wallet
 
-    // Open Enable Coin Modal
-    Popup {
-        id: enable_coin_modal
-        anchors.centerIn: dashboard
-        modal: true
-        focus: true
-        closePolicy: Popup.CloseOnEscape | Popup.CloseOnPressOutside
-
-        // Inside modal
-        ColumnLayout {
-            DefaultText {
-                text: qsTr("Enable coins")
-                font.pointSize: Style.textSize2
-            }
-
-            DefaultText {
-                text: qsTr("...coins will be here...")
-            }
-
-            // Buttons
-            RowLayout {
-                Button {
-                    text: qsTr("Close")
-                    onClicked: enable_coin_modal.close()
-                }
-                Button {
-                    text: qsTr("Enable")
-                    onClicked: console.log("Enable coins!")
-                }
-            }
-        }
-    }
-
     // Left side
     Rectangle {
         color: Style.colorTheme6
@@ -105,7 +72,15 @@ Item {
             anchors.verticalCenter: parent.verticalCenter
         }
     }
+
+    // Modals
+    EnableCoinModal {
+        id: enable_coin_modal
+    }
 }
+
+
+
 /*##^##
 Designer {
     D{i:0;autoSize:true;height:480;width:1200}
