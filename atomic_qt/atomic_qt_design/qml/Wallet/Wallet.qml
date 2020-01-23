@@ -125,13 +125,13 @@ RowLayout {
             anchors.centerIn: Overlay.overlay
         }
 
-
         // Coins list
         ListView {
             anchors.horizontalCenter: parent.horizontalCenter
             anchors.verticalCenter: parent.verticalCenter
             implicitWidth: contentItem.childrenRect.width
-            implicitHeight: contentItem.childrenRect.height
+            implicitHeight: Math.min(contentItem.childrenRect.height, parent.height - coins_bar.width * 2)
+            clip: true
 
             model: API.get().enabled_coins
 
