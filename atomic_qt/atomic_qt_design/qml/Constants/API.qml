@@ -21,6 +21,10 @@ QtObject {
            { ticker : "CHIPS", name: "Chips" }
         ],
 
+        enable_coins: (coins) => {
+          console.log("Enabling coins: ", coins)
+        },
+
         change_state: (visibility) => {
           console.log(visibility)
         },

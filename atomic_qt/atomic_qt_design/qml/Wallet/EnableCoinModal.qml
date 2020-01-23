@@ -17,6 +17,11 @@ Popup {
       selected_to_enable = selected_to_enable
     }
 
+    function enableCoins() {
+        API.get().enable_coins(Object.keys(selected_to_enable))
+        enable_coin_modal.close()
+    }
+
     // Inside modal
     ColumnLayout {
         id: modal_layout
@@ -82,7 +87,7 @@ Popup {
             Button {
                 text: qsTr("Enable")
                 Layout.fillWidth: true
-                onClicked: console.log(JSON.stringify(API.get().enableable_coins))
+                onClicked: enableCoins()
             }
         }
     }
