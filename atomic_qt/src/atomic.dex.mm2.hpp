@@ -141,7 +141,7 @@ namespace atomic_dex
         void enable_multiple_coins(const std::vector<std::string>& tickers) noexcept;
 
         //! Enable single coin
-        bool enable_coin(const std::string& ticker);
+        bool enable_coin(const std::string& ticker, bool emit_event = false);
 
         //! Disable a single coin
         bool disable_coin(const std::string& ticker, std::error_code& ec) noexcept;

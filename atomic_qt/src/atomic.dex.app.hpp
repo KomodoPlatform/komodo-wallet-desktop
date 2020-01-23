@@ -16,6 +16,7 @@
 
 #pragma once
 
+#include <QStringList>
 #include <QObject>
 
 //! PCH Headers
@@ -70,6 +71,7 @@ namespace atomic_dex
         Q_INVOKABLE bool    first_run();
         Q_INVOKABLE bool    login(const QString& password);
         Q_INVOKABLE bool    create(const QString& password, const QString& seed);
+        Q_INVOKABLE bool    enable_coins(const QStringList& coins);
 
 
       signals:

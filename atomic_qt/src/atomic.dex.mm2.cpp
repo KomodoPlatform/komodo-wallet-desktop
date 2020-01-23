@@ -220,7 +220,7 @@ namespace atomic_dex
     }
 
     bool
-    mm2::enable_coin(const std::string& ticker)
+    mm2::enable_coin(const std::string& ticker, bool emit_event)
     {
         coin_config coin_info = m_coins_informations.at(ticker);
 
@@ -251,6 +251,9 @@ namespace atomic_dex
         });
 
         dispatcher_.trigger<coin_enabled>(ticker);
+        if (emit_event) {
+            this->dispatcher_.trigger<enabled_coins_event>();
+        }
         return true;
     }
 
@@ -317,7 +320,7 @@ namespace atomic_dex
         {
             spawn([this, ticker]() {
                 loguru::set_thread_name("enable multiple coins");
-                enable_coin(ticker);
+                enable_coin(ticker, true);
             });
         }
 
