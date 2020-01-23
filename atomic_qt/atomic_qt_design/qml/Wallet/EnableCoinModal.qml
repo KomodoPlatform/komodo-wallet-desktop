@@ -11,6 +11,12 @@ Popup {
     focus: true
     closePolicy: Popup.CloseOnEscape | Popup.CloseOnPressOutside
 
+    property var selected_to_enable: ({})
+    function markToEnable(ticker) {
+      selected_to_enable[ticker] = selected_to_enable[ticker] === undefined ? true : !selected_to_enable[ticker]
+      selected_to_enable = selected_to_enable
+    }
+
     // Inside modal
     ColumnLayout {
         id: modal_layout
@@ -30,9 +36,8 @@ Popup {
 
             delegate: Rectangle {
                 property bool hovered: false
-                property bool selected: false
 
-                color: selected ? Style.colorTheme2 : hovered ? Style.colorTheme4 : "transparent"
+                color: selected_to_enable[model.modelData.ticker] ? Style.colorTheme2 : hovered ? Style.colorTheme4 : "transparent"
 
                 width: 250
                 height: 50
@@ -41,7 +46,7 @@ Popup {
                     anchors.fill: parent
                     hoverEnabled: true
                     onHoveredChanged: hovered = containsMouse
-                    //onClicked: API.get().current_coin_info.ticker = model.modelData.ticker
+                    onClicked: markToEnable(model.modelData.ticker)
                 }
 
                 // Icon
