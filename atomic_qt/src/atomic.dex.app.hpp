@@ -71,12 +71,14 @@ namespace atomic_dex
         Q_INVOKABLE bool    login(const QString& password);
         Q_INVOKABLE bool    create(const QString& password, const QString& seed);
 
+
       signals:
         void enabledCoinsChanged();
         void enableableCoinsChanged();
         void coinInfoChanged();
 
       private:
+        std::atomic_bool   m_refresh_enabled_coin_event{false};
         void               tick();
         QObjectList        m_enabled_coins;
         QObjectList        m_enableable_coins;
