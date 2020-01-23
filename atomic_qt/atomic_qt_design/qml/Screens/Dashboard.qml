@@ -76,6 +76,7 @@ Item {
     // Modals
     EnableCoinModal {
         id: enable_coin_modal
+        anchors.centerIn: parent
     }
 }
 

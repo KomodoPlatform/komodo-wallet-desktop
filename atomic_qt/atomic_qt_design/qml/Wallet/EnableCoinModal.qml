@@ -7,7 +7,6 @@ import "../Constants"
 
 // Open Enable Coin Modal
 Popup {
-    anchors.centerIn: dashboard
     modal: true
     focus: true
     closePolicy: Popup.CloseOnEscape | Popup.CloseOnPressOutside
@@ -31,7 +30,7 @@ Popup {
             }
             Button {
                 text: qsTr("Enable")
-                onClicked: console.log("Enable coins!")
+                onClicked: console.log(JSON.stringify(API.get().enableable_coins))
             }
         }
     }
