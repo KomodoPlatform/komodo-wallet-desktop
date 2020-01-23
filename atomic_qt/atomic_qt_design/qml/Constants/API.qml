@@ -22,7 +22,21 @@ QtObject {
         ],
 
         enable_coins: (coins) => {
-          console.log("Enabling coins: ", coins)
+            console.log("Enabling coins: ", coins)
+
+            // Remove coins from enableable_coins, add them to enabled_coins
+            for(let c of coins) {
+               mockAPI.enableable_coins = mockAPI.enableable_coins.filter(obj => {
+                   if(obj.ticker === c) {
+                       mockAPI.enabled_coins.push(obj)
+
+                       return false
+                   }
+
+                   return true
+               });
+
+            }
         },
 
         change_state: (visibility) => {
