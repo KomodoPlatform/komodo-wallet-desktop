@@ -10,6 +10,17 @@ QtObject {
             ticker: "RICK"
         },
 
+        enabled_coins: [
+           { ticker: "RICK", name: "Rick" },
+           { ticker: "MORTY", name: "Morty" },
+        ],
+
+        enableable_coins: [
+           { ticker : "BTC", name: "Bitcoin" },
+           { ticker : "KMD", name: "Komodo" },
+           { ticker : "CHIPS", name: "Chips" }
+        ],
+
         change_state: (visibility) => {
           console.log(visibility)
         },
@@ -37,14 +48,7 @@ QtObject {
             saved_password = password
 
             return saved_password !== ''
-        },
-
-        enabled_coins: [
-            { ticker: "BTC", name: "Bitcoin" },
-            { ticker: "KMD", name: "Komodo" },
-            { ticker: "RICK", name: "Rick" },
-            { ticker: "MORTY", name: "Morty" },
-        ],
+        }
     })
 
     // Stuff to make it work both in C++ and Design Studio
