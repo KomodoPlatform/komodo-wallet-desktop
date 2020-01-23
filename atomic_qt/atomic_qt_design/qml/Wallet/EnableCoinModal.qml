@@ -13,23 +13,70 @@ Popup {
 
     // Inside modal
     ColumnLayout {
+        id: modal_layout
+
         DefaultText {
             text: qsTr("Enable coins")
             font.pointSize: Style.textSize2
         }
 
-        DefaultText {
-            text: qsTr("...coins will be here...")
+        // List
+        ListView {
+            implicitWidth: contentItem.childrenRect.width
+            implicitHeight: contentItem.childrenRect.height
+
+            model: API.get().enableable_coins
+            clip: true
+
+            delegate: Rectangle {
+                property bool hovered: false
+                property bool selected: false
+
+                color: selected ? Style.colorTheme2 : hovered ? Style.colorTheme4 : "transparent"
+
+                width: 250
+                height: 50
+
+                MouseArea {
+                    anchors.fill: parent
+                    hoverEnabled: true
+                    onHoveredChanged: hovered = containsMouse
+                    //onClicked: API.get().current_coin_info.ticker = model.modelData.ticker
+                }
+
+                // Icon
+                Image {
+                    id: icon
+                    anchors.left: parent.left
+                    anchors.leftMargin: 20
+
+                    source: General.image_path + "coins/" + model.modelData.ticker.toLowerCase() + ".png"
+                    fillMode: Image.PreserveAspectFit
+                    width: Style.textSize2
+                    anchors.verticalCenter: parent.verticalCenter
+                }
+
+                // Name
+                DefaultText {
+                    anchors.left: icon.right
+                    anchors.leftMargin: Style.iconTextMargin
+
+                    text: model.modelData.name + " (" + model.modelData.ticker + ")"
+                    anchors.verticalCenter: parent.verticalCenter
+                }
+            }
         }
 
         // Buttons
         RowLayout {
             Button {
                 text: qsTr("Close")
+                Layout.fillWidth: true
                 onClicked: enable_coin_modal.close()
             }
             Button {
                 text: qsTr("Enable")
+                Layout.fillWidth: true
                 onClicked: console.log(JSON.stringify(API.get().enableable_coins))
             }
         }
