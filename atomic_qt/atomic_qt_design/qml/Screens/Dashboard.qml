@@ -33,7 +33,7 @@ Item {
             }
 
             Exchange {
-
+                id: exchange
             }
 
             DefaultText {
