@@ -28,16 +28,20 @@ Item {
         color: txt.color
     }
 
+    property bool hovered: false
 
     DefaultText {
         id: txt
         anchors.left: parent.left
         anchors.leftMargin: img.anchors.leftMargin + Style.textSize * 2.5
         anchors.verticalCenter: parent.verticalCenter
-        color: dashboard.current_page === dashboard_index ? Style.colorTheme0 : Style.colorWhite1
+        font.bold: dashboard.current_page === dashboard_index
+        color: font.bold ? Style.colorTheme0 : hovered ? Style.colorWhite1 : Style.colorWhite4
     }
 
     MouseArea {
+        hoverEnabled: true
+        onHoveredChanged: hovered = containsMouse
         width: parent.width
         height: parent.height
         onClicked: function() {
