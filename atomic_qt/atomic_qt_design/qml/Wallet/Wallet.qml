@@ -54,16 +54,23 @@ RowLayout {
 
                 spacing: 50
 
-                DefaultButton {
+                Button {
                     text: "Send"
+                    leftPadding: parent.width * 0.075
+                    rightPadding: parent.width * 0.075
                 }
 
-                DefaultButton {
+                Button {
                     text: "Receive"
+                    leftPadding: parent.width * 0.075
+                    rightPadding: parent.width * 0.075
                 }
 
-                DefaultButton {
+                Button {
                     text: "Swap"
+                    leftPadding: parent.width * 0.075
+                    rightPadding: parent.width * 0.075
+                    onClicked: onClickedSwap()
                 }
             }
 
