@@ -8,6 +8,8 @@ Window {
     visible: true
     width: General.width
     height: General.height
+    minimumWidth: General.minimumWidth
+    minimumHeight: General.minimumHeight
     title: qsTr("atomicDEX")
     flags: Qt.Window | Qt.WindowMaximizeButtonHint | Qt.WindowFullscreenButtonHint
     onVisibilityChanged: API.get().change_state(visibility)
