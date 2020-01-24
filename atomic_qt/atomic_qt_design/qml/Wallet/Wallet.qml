@@ -18,9 +18,10 @@ RowLayout {
         ColumnLayout {
             id: wallet_layout
             width: 600
-            anchors.verticalCenter: parent.verticalCenter
             anchors.horizontalCenter: parent.horizontalCenter
-            Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
+            anchors.top: parent.top
+            anchors.topMargin: 50
+            anchors.bottom: parent.bottom
 
             spacing: 30
 
@@ -69,12 +70,22 @@ RowLayout {
             // Separator line
             HorizontalLine {
                 Layout.fillWidth: true
-                visible: API.get().transactions.length > 0
+            }
+
+            DefaultText {
+                visible: API.get().transactions.length === 0
+                text: qsTr("No transactions")
+                font.pointSize: Style.textSize
+                color: Style.colorWhite4
+                Layout.alignment: Qt.AlignHCenter
             }
 
             Transactions {
                 Layout.fillWidth: true
+                Layout.fillHeight: true
+                implicitHeight: Math.min(contentItem.childrenRect.height, wallet.height*0.5)
             }
+            implicitHeight: Math.min(contentItem.childrenRect.height, wallet.height*0.5)
         }
     }
 
