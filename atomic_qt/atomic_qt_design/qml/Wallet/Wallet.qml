@@ -69,6 +69,7 @@ RowLayout {
             // Separator line
             HorizontalLine {
                 Layout.fillWidth: true
+                visible: API.get().transactions.length > 0
             }
 
             Transactions {
