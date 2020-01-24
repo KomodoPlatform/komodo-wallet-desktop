@@ -24,6 +24,7 @@ RowLayout {
 
             spacing: 30
 
+            // Balance texts
             ColumnLayout {
                 Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
 
@@ -43,6 +44,7 @@ RowLayout {
                 }
             }
 
+            // Send, Receive buttons at top
             RowLayout {
                 width: parent.width * 0.6
 
@@ -64,7 +66,12 @@ RowLayout {
                 }
             }
 
+            // Separator line
             HorizontalLine {
+                Layout.fillWidth: true
+            }
+
+            Transactions {
                 Layout.fillWidth: true
             }
         }
