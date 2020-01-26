@@ -120,6 +120,8 @@ namespace folly
 #include <bitcoin/bitcoin/utility/pseudo_random.hpp>
 #include <bitcoin/bitcoin/wallet/mnemonic.hpp>
 #pragma clang diagnostic pop
+#elif defined(_WIN32) || defined(WIN32)
+#include <wally.hpp>
 #endif
 
 #include <date/date.h>

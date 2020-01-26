@@ -16,6 +16,15 @@
 
 #include <QDebug>
 #include <QTimer>
+
+#if defined(_WIN32) || defined(WIN32)
+#    define WIN32_LEAN_AND_MEAN
+#    define NOMINMAX
+#    include <windows.h>
+
+#    include <wincrypt.h>
+#endif
+
 #ifdef __APPLE__
 #    include "atomic.dex.osx.manager.hpp"
 #    include <QGuiApplication>
@@ -29,6 +38,45 @@
 #include "atomic.dex.provider.coinpaprika.hpp"
 #include "atomic.dex.qt.bindings.hpp"
 #include "atomic.dex.security.hpp"
+
+namespace
+{
+#if defined(_WIN32) || defined(WIN32)
+    bool
+    acquire_context(HCRYPTPROV* ctx)
+    {
+        if (!CryptAcquireContext(ctx, nullptr, nullptr, PROV_RSA_FULL, 0))
+        {
+            return CryptAcquireContext(ctx, nullptr, nullptr, PROV_RSA_FULL, CRYPT_NEWKEYSET);
+        }
+        return true;
+    }
+
+
+    size_t
+    sysrandom(void* dst, size_t dstlen)
+    {
+        HCRYPTPROV ctx;
+        if (!acquire_context(&ctx))
+        {
+            throw std::runtime_error("Unable to initialize Win32 crypt library.");
+        }
+
+        BYTE* buffer = reinterpret_cast<BYTE*>(dst);
+        if (!CryptGenRandom(ctx, dstlen, buffer))
+        {
+            throw std::runtime_error("Unable to generate random bytes.");
+        }
+
+        if (!CryptReleaseContext(ctx, 0))
+        {
+            throw std::runtime_error("Unable to release Win32 crypt library.");
+        }
+
+        return dstlen;
+    }
+#endif
+} // namespace
 
 namespace atomic_dex
 {
@@ -176,6 +224,15 @@ namespace atomic_dex
         // Instantiate mnemonic word_list
         bc::wallet::word_list words = bc::wallet::create_mnemonic(my_entropy_256);
         return QString::fromStdString(bc::join(words));
+#elif defined(_WIN32) || defined(WIN32)
+        std::array<unsigned char, WALLY_SECP_RANDOMIZE_LEN> data;
+        sysrandom(data.data(), data.size());
+        char*  output;
+        words* output_words;
+        assert(WALLY_OK == bip39_get_wordlist(NULL, &output_words));
+        assert(WALLY_OK == bip39_mnemonic_from_bytes(output_words, data.data(), data.size(), &output));
+        assert(WALLY_OK == bip39_mnemonic_validate(output_words, output));
+        return output;
 #else
         return QString("FAKE LINUX WINDOWS SEED");
 #endif
@@ -215,7 +272,7 @@ namespace atomic_dex
             if (not m_coin_info->get_ticker().isEmpty() && not m_enabled_coins.empty())
             {
                 std::error_code ec;
-                QString target_balance = QString::fromStdString(mm2.my_balance(this->m_coin_info->get_ticker().toStdString(), ec));
+                QString         target_balance = QString::fromStdString(mm2.my_balance(this->m_coin_info->get_ticker().toStdString(), ec));
                 this->m_coin_info->set_balance(target_balance);
             }
         }

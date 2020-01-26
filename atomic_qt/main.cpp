@@ -19,6 +19,9 @@ int
 main(int argc, char* argv[])
 {
     //! Project
+#if defined(_WIN32) || defined(WIN32)
+    assert(wally_init(0) == WALLY_OK);
+#endif
     assert(sodium_init() == 0);
     atomic_dex::kill_executable("mm2");
     loguru::g_preamble_uptime = false;
@@ -37,6 +40,7 @@ main(int argc, char* argv[])
     qmlRegisterSingletonType(QUrl("qrc:/atomic_qt_design/qml/Constants/General.qml"), "App", 1, 0, "General");
     qmlRegisterSingletonType(QUrl("qrc:/atomic_qt_design/qml/Constants/Style.qml"), "App", 1, 0, "Style");
     qmlRegisterSingletonType(QUrl("qrc:/atomic_qt_design/qml/Constants/API.qml"), "App", 1, 0, "API");
+
     const QUrl url(QStringLiteral("qrc:/atomic_qt_design/qml/main.qml"));
     QObject::connect(
         &engine, &QQmlApplicationEngine::objectCreated, &app,
@@ -56,5 +60,9 @@ main(int argc, char* argv[])
 #endif
     atomic_app.launch();
 
-    return app.exec();
+    auto res = app.exec();
+#if defined(_WIN32) || defined(WIN32)
+    assert(wally_cleanup(0) == WALLY_OK);
+#endif
+    return res;
 }

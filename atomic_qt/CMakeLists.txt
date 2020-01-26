@@ -90,6 +90,10 @@ add_library(unofficial-bitcoin INTERFACE)
 if (APPLE)
     target_link_libraries(unofficial-bitcoin INTERFACE ${unofficial-bitcoin-external})
     target_include_directories(unofficial-bitcoin INTERFACE ${unofficial-btc-headers})
+elseif(WIN32)
+    target_link_directories(unofficial-bitcoin INTERFACE wally)
+    target_link_libraries(unofficial-bitcoin INTERFACE wally)
+    target_include_directories(unofficial-bitcoin INTERFACE wally)
 endif()
 add_library(unofficial-btc::bitcoin ALIAS unofficial-bitcoin)
 
@@ -157,6 +161,7 @@ magic_game_app_image_generation("${CMAKE_CURRENT_SOURCE_DIR}/data/linux"
 ##! Move assets
 if (WIN32)
     file(COPY assets DESTINATION ${CMAKE_BINARY_DIR}/bin/)
+    configure_file(wally/wally.dll ${CMAKE_BINARY_DIR}/bin/ COPYONLY)
     set_target_properties(Folly::folly PROPERTIES INTERFACE_COMPILE_OPTIONS "")
 endif ()
 
