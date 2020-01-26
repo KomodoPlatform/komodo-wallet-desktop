@@ -242,7 +242,8 @@ namespace atomic_dex
     application::tick()
     {
         this->process_one_frame();
-        auto& mm2 = get_mm2();
+        auto& mm2     = get_mm2();
+        auto& paprika = get_paprika();
         if (mm2.is_mm2_running())
         {
             if (m_coin_info->get_ticker().isEmpty() && not m_enabled_coins.empty())
@@ -274,6 +275,19 @@ namespace atomic_dex
                 std::error_code ec;
                 QString         target_balance = QString::fromStdString(mm2.my_balance(this->m_coin_info->get_ticker().toStdString(), ec));
                 this->m_coin_info->set_balance(target_balance);
+
+                if (this->m_current_fiat == "USD")
+                {
+                    ec          = std::error_code();
+                    auto amount = QString::fromStdString(
+                        paprika.get_price_in_fiat(this->m_current_fiat.toStdString(), this->m_coin_info->get_ticker().toStdString(), ec));
+                    qDebug() << ec.message().data();
+                    qDebug() << amount;
+                    if (ec)
+                    {
+                        this->m_coin_info->set_fiat_amount(amount);
+                    }
+                }
             }
         }
     }
@@ -303,6 +317,19 @@ namespace atomic_dex
     }
 
     atomic_dex::current_coin_info::current_coin_info(QObject* pParent) noexcept : QObject(pParent) {}
+
+    QString
+    current_coin_info::get_fiat_amount() const noexcept
+    {
+        return this->selected_coin_fiat_amount;
+    }
+
+    void
+    current_coin_info::set_fiat_amount(QString fiat_amount) noexcept
+    {
+        this->selected_coin_fiat_amount = std::move(fiat_amount);
+        emit fiat_amount_changed();
+    }
 
     application::application(QObject* pParent) noexcept : QObject(pParent), m_coin_info(new current_coin_info(this))
     {

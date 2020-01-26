@@ -11,7 +11,8 @@ QtObject {
 
         current_coin_info: {
             ticker: "RICK",
-            balance: "3.33"
+            balance: "3.33",
+            fiat_amount: "0"
         },
 
         enabled_coins: [

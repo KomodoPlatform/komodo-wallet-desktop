@@ -44,7 +44,7 @@ RowLayout {
                 }
 
                 DefaultText {
-                    text: "0 " + API.get().fiat
+                    text: API.get().current_coin_info.fiat_amount + " " + API.get().fiat
                     Layout.topMargin: -15
                     Layout.rightMargin: 4
                     Layout.alignment: Qt.AlignRight

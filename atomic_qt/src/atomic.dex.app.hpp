@@ -35,6 +35,7 @@ namespace atomic_dex
         Q_OBJECT
         Q_PROPERTY(QString ticker READ get_ticker WRITE set_ticker NOTIFY ticker_changed)
         Q_PROPERTY(QString balance READ get_balance WRITE set_balance NOTIFY balance_changed)
+        Q_PROPERTY(QString fiat_amount READ get_fiat_amount WRITE set_fiat_amount NOTIFY fiat_amount_changed);
       public:
         explicit current_coin_info(QObject* pParent = nullptr) noexcept;
         QString get_ticker() const noexcept;
@@ -43,13 +44,17 @@ namespace atomic_dex
         QString get_balance() const noexcept;
         void    set_balance(QString balance) noexcept;
 
+        QString get_fiat_amount() const noexcept;
+        void set_fiat_amount(QString fiat_amount) noexcept;
       signals:
         void ticker_changed();
         void balance_changed();
+        void fiat_amount_changed();
 
       public:
         QString selected_coin_name;
         QString selected_coin_balance;
+        QString selected_coin_fiat_amount{"0"};
     };
 
     struct application : public QObject, public ag::world::app
