@@ -2,6 +2,7 @@ import QtQuick 2.12
 import QtQuick.Layouts 1.3
 import QtQuick.Controls 2.3
 import QtQuick.Controls.Material 2.12
+import QtGraphicalEffects 1.0
 import "../Components"
 import "../Constants"
 
@@ -110,6 +111,36 @@ RowLayout {
         width: 125
         Layout.fillHeight: true
         color: Style.colorTheme7
+
+        // Search button
+        Image {
+            id: search_button
+
+            source: General.image_path + "exchange-search.svg"
+
+            width: 32; height: width
+
+            anchors.top: parent.top
+            anchors.topMargin: parent.width * 0.5 - height * 0.5
+            anchors.horizontalCenter: parent.horizontalCenter
+
+            visible: false
+        }
+        ColorOverlay {
+            id: search_button_overlay
+            property bool hovered: false
+
+            anchors.fill: search_button
+            source: search_button
+            color: search_button_overlay.hovered ? Style.colorWhite1 : Style.colorWhite4
+
+            MouseArea {
+                anchors.fill: parent
+                hoverEnabled: true
+                onHoveredChanged: search_button_overlay.hovered = containsMouse
+                onClicked: console.log("Search")
+            }
+        }
 
         // Add button
         Rectangle {
