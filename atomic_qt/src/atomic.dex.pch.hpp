@@ -128,6 +128,11 @@ namespace folly
 #include <entt/signal/dispatcher.hpp>
 #include <loguru.hpp>
 #include <meta/detection/detection.hpp>
+#if defined(_WIN32) || defined(WIN32)
+    #define and &&
+    #define or ||
+    #define not !
+#endif
 #include <nlohmann/json.hpp>
 #include <reproc++/reproc.hpp>
 #include <restclient-cpp/restclient.h>

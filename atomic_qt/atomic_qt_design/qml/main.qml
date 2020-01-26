@@ -11,7 +11,6 @@ Window {
     minimumWidth: General.minimumWidth
     minimumHeight: General.minimumHeight
     title: qsTr("atomicDEX")
-    flags: Qt.Window | Qt.WindowMaximizeButtonHint | Qt.WindowFullscreenButtonHint
     onVisibilityChanged: API.get().change_state(visibility)
     App {
         anchors.fill: parent

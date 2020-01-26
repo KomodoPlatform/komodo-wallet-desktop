@@ -12,6 +12,12 @@ set(CMAKE_AUTORCC ON)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
+
+if (WIN32)
+    find_package(ZLIB)
+    set(BUILD_SHARED_LIBS OFF CACHE BOOL "Override option" FORCE)
+endif ()
+
 ##! Antara
 ##! We include the module from CMake for fetching dependencies
 include(FetchContent)
@@ -151,6 +157,7 @@ magic_game_app_image_generation("${CMAKE_CURRENT_SOURCE_DIR}/data/linux"
 ##! Move assets
 if (WIN32)
     file(COPY assets DESTINATION ${CMAKE_BINARY_DIR}/bin/)
+    set_target_properties(Folly::folly PROPERTIES INTERFACE_COMPILE_OPTIONS "")
 endif ()
 
 if (APPLE)
