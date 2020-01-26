@@ -38,7 +38,7 @@ RowLayout {
                 Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
 
                 DefaultText {
-                    text: "3.333 " + API.get().current_coin_info.ticker
+                    text: API.get().current_coin_info.balance + " " +  API.get().current_coin_info.ticker
                     Layout.alignment: Qt.AlignRight
                     font.pointSize: Style.textSize5
                 }

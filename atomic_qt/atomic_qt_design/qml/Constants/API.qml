@@ -7,7 +7,8 @@ QtObject {
     property string saved_password
     property var mockAPI: ({
         current_coin_info: {
-            ticker: "RICK"
+            ticker: "RICK",
+            balance: "3.33"
         },
 
         enabled_coins: [

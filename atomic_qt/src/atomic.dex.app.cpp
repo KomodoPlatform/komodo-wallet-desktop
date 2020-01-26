@@ -46,6 +46,19 @@ namespace atomic_dex
     }
 
     QString
+    atomic_dex::current_coin_info::get_balance() const noexcept
+    {
+        return selected_coin_balance;
+    }
+
+    void
+    atomic_dex::current_coin_info::set_balance(QString balance) noexcept
+    {
+        this->selected_coin_balance = std::move(balance);
+        emit balance_changed();
+    }
+
+    QString
     atomic_dex::current_coin_info::get_ticker() const noexcept
     {
         return selected_coin_name;
@@ -193,6 +206,13 @@ namespace atomic_dex
                     emit enableableCoinsChanged();
                 }
                 m_refresh_enabled_coin_event = false;
+            }
+
+            if (not m_coin_info->get_ticker().isEmpty() && not m_enabled_coins.empty())
+            {
+                std::error_code ec;
+                QString target_balance = QString::fromStdString(mm2.my_balance(this->m_coin_info->get_ticker().toStdString(), ec));
+                this->m_coin_info->set_balance(target_balance);
             }
         }
     }
