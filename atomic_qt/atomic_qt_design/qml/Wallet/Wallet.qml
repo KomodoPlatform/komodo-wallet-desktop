@@ -44,7 +44,7 @@ RowLayout {
                 }
 
                 DefaultText {
-                    text: "1.78 EUR"
+                    text: "0 " + API.get().fiat
                     Layout.topMargin: -15
                     Layout.rightMargin: 4
                     Layout.alignment: Qt.AlignRight

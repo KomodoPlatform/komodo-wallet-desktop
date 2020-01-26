@@ -258,4 +258,17 @@ namespace atomic_dex
         LOG_SCOPE_FUNCTION(INFO);
         m_refresh_enabled_coin_event = true;
     }
+
+    QString
+    application::get_current_fiat() const noexcept
+    {
+        return this->m_current_fiat;
+    }
+
+    void
+    application::set_current_fiat(QString current_fiat) noexcept
+    {
+        this->m_current_fiat = std::move(current_fiat);
+        emit on_fiat_changed();
+    }
 } // namespace atomic_dex

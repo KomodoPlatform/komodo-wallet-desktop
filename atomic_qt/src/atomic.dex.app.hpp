@@ -16,8 +16,8 @@
 
 #pragma once
 
-#include <QStringList>
 #include <QObject>
+#include <QStringList>
 
 //! PCH Headers
 #include "atomic.dex.pch.hpp"
@@ -43,13 +43,13 @@ namespace atomic_dex
         QString get_balance() const noexcept;
         void    set_balance(QString balance) noexcept;
 
-    signals:
+      signals:
         void ticker_changed();
         void balance_changed();
 
       public:
-        QString  selected_coin_name;
-        QString  selected_coin_balance;
+        QString selected_coin_name;
+        QString selected_coin_balance;
     };
 
     struct application : public QObject, public ag::world::app
@@ -58,17 +58,20 @@ namespace atomic_dex
         Q_PROPERTY(QList<QObject*> enabled_coins READ get_enabled_coins NOTIFY enabledCoinsChanged)
         Q_PROPERTY(QList<QObject*> enableable_coins READ get_enableable_coins NOTIFY enableableCoinsChanged)
         Q_PROPERTY(QObject* current_coin_info READ get_current_coin_info NOTIFY coinInfoChanged)
+        Q_PROPERTY(QString fiat READ get_current_fiat WRITE set_current_fiat NOTIFY on_fiat_changed)
 
       public:
         explicit application(QObject* pParent = nullptr) noexcept;
 
-        void on_enabled_coins_event(const enabled_coins_event&) noexcept;
+        void                  on_enabled_coins_event(const enabled_coins_event&) noexcept;
         mm2&                  get_mm2() noexcept;
         coinpaprika_provider& get_paprika() noexcept;
         entt::dispatcher&     get_dispatcher() noexcept;
         QObject*              get_current_coin_info() const noexcept;
         QObjectList           get_enabled_coins() const noexcept;
         QObjectList           get_enableable_coins() const noexcept;
+        QString               get_current_fiat() const noexcept;
+        void                  set_current_fiat(QString current_fiat) noexcept;
 
         void launch();
 
@@ -84,12 +87,14 @@ namespace atomic_dex
         void enabledCoinsChanged();
         void enableableCoinsChanged();
         void coinInfoChanged();
+        void on_fiat_changed();
 
       private:
         std::atomic_bool   m_refresh_enabled_coin_event{false};
         void               tick();
         QObjectList        m_enabled_coins;
         QObjectList        m_enableable_coins;
+        QString            m_current_fiat{"USD"};
         current_coin_info* m_coin_info;
     };
 } // namespace atomic_dex

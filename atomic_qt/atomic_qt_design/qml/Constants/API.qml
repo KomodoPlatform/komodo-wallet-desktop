@@ -6,6 +6,9 @@ QtObject {
     property string saved_seed
     property string saved_password
     property var mockAPI: ({
+
+        fiat: "USD",
+
         current_coin_info: {
             ticker: "RICK",
             balance: "3.33"
