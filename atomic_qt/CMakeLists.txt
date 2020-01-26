@@ -32,11 +32,15 @@ if (NOT antara-gaming-sdk_POPULATED)
     add_subdirectory(${antara-gaming-sdk_SOURCE_DIR} ${antara-gaming-sdk_BINARY_DIR} EXCLUDE_FROM_ALL)
 endif ()
 
+if (${CMAKE_SYSTEM_NAME} STREQUAL "Linux")
+    set(LINUX TRUE)
+endif()
+
 ##! We fetch our dependence
 if (APPLE)
     FetchContent_Declare(mm2
             URL http://195.201.0.6/mm2/mm2-latest-Darwin.zip)
-elseif (LINUX)
+elseif (UNIX AND NOT APPLE)
     FetchContent_Declare(mm2
             URL http://195.201.0.6/mm2/mm2-latest-Linux.zip)
 else ()
@@ -77,8 +81,10 @@ find_library(unofficial-bitcoin-external bitcoin)
 find_path(unofficial-btc-headers bitcoin/bitcoin.hpp)
 message(STATUS "Found libbtc -> ${unofficial-bitcoin-external} ${unofficial-btc-headers}")
 add_library(unofficial-bitcoin INTERFACE)
-target_link_libraries(unofficial-bitcoin INTERFACE ${unofficial-bitcoin-external})
-target_include_directories(unofficial-bitcoin INTERFACE ${unofficial-btc-headers})
+if (APPLE)
+    target_link_libraries(unofficial-bitcoin INTERFACE ${unofficial-bitcoin-external})
+    target_include_directories(unofficial-bitcoin INTERFACE ${unofficial-btc-headers})
+endif()
 add_library(unofficial-btc::bitcoin ALIAS unofficial-bitcoin)
 
 set(TS_FILES atomic_qt_en_US.ts)
@@ -137,7 +143,7 @@ magic_game_app_image_generation("${CMAKE_CURRENT_SOURCE_DIR}/data/linux"
         "org.antara.gaming.atomicdex.desktop"
         "org.antara.gaming.atomicdex.appdata.xml"
         "komodo_icon.png"
-        atomic-dex-desktop
+        atomic_qt
         AntaraAtomicDexAppDir
         ${CMAKE_CURRENT_SOURCE_DIR}/assets
         )

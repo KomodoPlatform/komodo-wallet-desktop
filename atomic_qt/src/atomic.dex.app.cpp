@@ -168,6 +168,7 @@ namespace atomic_dex
     QString
     atomic_dex::application::get_mnemonic()
     {
+#ifdef __APPLE__
         bc::data_chunk my_entropy_256(32); // 32 bytes = 256 bits
 
         bc::pseudo_random_fill(my_entropy_256);
@@ -175,6 +176,9 @@ namespace atomic_dex
         // Instantiate mnemonic word_list
         bc::wallet::word_list words = bc::wallet::create_mnemonic(my_entropy_256);
         return QString::fromStdString(bc::join(words));
+#else
+        return QString("FAKE LINUX WINDOWS SEED");
+#endif
     }
 
     void

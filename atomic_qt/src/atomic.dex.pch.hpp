@@ -111,6 +111,7 @@ namespace folly
 #include <boost/multiprecision/cpp_dec_float.hpp>
 #pragma clang diagnostic pop
 
+#ifdef __APPLE__
 //! Other dependencies Headers
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wunused-function"
@@ -119,8 +120,10 @@ namespace folly
 #include <bitcoin/bitcoin/utility/pseudo_random.hpp>
 #include <bitcoin/bitcoin/wallet/mnemonic.hpp>
 #pragma clang diagnostic pop
+#endif
 
 #include <date/date.h>
+#define ENTT_STANDARD_CPP
 #include <entt/entity/helper.hpp>
 #include <entt/signal/dispatcher.hpp>
 #include <loguru.hpp>
