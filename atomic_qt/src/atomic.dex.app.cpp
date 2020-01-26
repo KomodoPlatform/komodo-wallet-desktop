@@ -281,9 +281,7 @@ namespace atomic_dex
                     ec          = std::error_code();
                     auto amount = QString::fromStdString(
                         paprika.get_price_in_fiat(this->m_current_fiat.toStdString(), this->m_coin_info->get_ticker().toStdString(), ec));
-                    qDebug() << ec.message().data();
-                    qDebug() << amount;
-                    if (ec)
+                    if (!ec)
                     {
                         this->m_coin_info->set_fiat_amount(amount);
                     }

@@ -344,6 +344,24 @@
     </message>
 </context>
 <context>
+    <name>Dashboard</name>
+    <message>
+        <location filename="atomic_qt_design/qml/Screens/Dashboard.qml" line="40"/>
+        <source>News</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="atomic_qt_design/qml/Screens/Dashboard.qml" line="44"/>
+        <source>DApps</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="atomic_qt_design/qml/Screens/Dashboard.qml" line="48"/>
+        <source>Settings</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>DirectionalBlurItemSpecifics</name>
     <message>
         <location filename="atomic_qt_design/imports/QtQuick/Studio/Effects/designer/DirectionalBlurItemSpecifics.qml" line="18"/>
@@ -472,6 +490,47 @@
     <message>
         <location filename="atomic_qt_design/imports/QtQuick/Studio/Effects/designer/DropShadowItemSpecifics.qml" line="147"/>
         <source>When set to true, the exterior of the item is padded with a transparent edge, making sampling outside the source texture use transparency instead of the edge pixels.</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>EnableCoinModal</name>
+    <message>
+        <location filename="atomic_qt_design/qml/Wallet/EnableCoinModal.qml" line="30"/>
+        <source>Enable coins</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="atomic_qt_design/qml/Wallet/EnableCoinModal.qml" line="83"/>
+        <source>Close</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="atomic_qt_design/qml/Wallet/EnableCoinModal.qml" line="88"/>
+        <source>Enable</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>Exchange</name>
+    <message>
+        <location filename="atomic_qt_design/qml/Exchange/Exchange.qml" line="60"/>
+        <source>Content-Trade</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="atomic_qt_design/qml/Exchange/Exchange.qml" line="64"/>
+        <source>Content-Orders</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="atomic_qt_design/qml/Exchange/Exchange.qml" line="68"/>
+        <source>Content-History</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="atomic_qt_design/qml/Exchange/Exchange.qml" line="72"/>
+        <source>Content-Orderbook</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -997,6 +1056,34 @@
     </message>
 </context>
 <context>
+    <name>Sidebar</name>
+    <message>
+        <location filename="atomic_qt_design/qml/Sidebar/Sidebar.qml" line="15"/>
+        <source>Wallet</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="atomic_qt_design/qml/Sidebar/Sidebar.qml" line="22"/>
+        <source>DEX</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="atomic_qt_design/qml/Sidebar/Sidebar.qml" line="29"/>
+        <source>News</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="atomic_qt_design/qml/Sidebar/Sidebar.qml" line="37"/>
+        <source>DApps</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="atomic_qt_design/qml/Sidebar/Sidebar.qml" line="44"/>
+        <source>Settings</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>SvgPathItemSpecifics</name>
     <message>
         <location filename="atomic_qt_design/imports/QtQuick/Studio/Components/designer/SvgPathItemSpecifics.qml" line="13"/>
@@ -1129,6 +1216,14 @@
     </message>
 </context>
 <context>
+    <name>Wallet</name>
+    <message>
+        <location filename="atomic_qt_design/qml/Wallet/Wallet.qml" line="92"/>
+        <source>No transactions</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>ZoomBlurItemSpecifics</name>
     <message>
         <location filename="atomic_qt_design/imports/QtQuick/Studio/Effects/designer/ZoomBlurItemSpecifics.qml" line="19"/>
@@ -1199,7 +1294,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="atomic_qt_design/qml/main.qml" line="11"/>
+        <location filename="atomic_qt_design/qml/main.qml" line="13"/>
         <source>atomicDEX</source>
         <translation type="unfinished"></translation>
     </message>
