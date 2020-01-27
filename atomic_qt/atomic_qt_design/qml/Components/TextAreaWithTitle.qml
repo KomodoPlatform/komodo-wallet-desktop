@@ -27,8 +27,7 @@ ColumnLayout {
             visible: copyable
             scale: 0.8
             anchors.right: parent.right
-            anchors.verticalCenter: parent.verticalCenter
-            anchors.verticalCenterOffset: input_field.height * -0.0625
+            y: -height
             antialiasing: true
 
             MouseArea {
