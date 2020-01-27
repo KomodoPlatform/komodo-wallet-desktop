@@ -36,6 +36,7 @@ namespace atomic_dex
         Q_OBJECT
         Q_PROPERTY(QString ticker READ get_ticker WRITE set_ticker NOTIFY ticker_changed)
         Q_PROPERTY(QString balance READ get_balance WRITE set_balance NOTIFY balance_changed)
+        Q_PROPERTY(QString address READ get_address WRITE set_address NOTIFY address_changed)
         Q_PROPERTY(QString fiat_amount READ get_fiat_amount WRITE set_fiat_amount NOTIFY fiat_amount_changed);
         Q_PROPERTY(QList<QObject*> transactions READ get_transactions WRITE set_transactions NOTIFY transactionsChanged)
 
@@ -46,6 +47,8 @@ namespace atomic_dex
         void        set_transactions(QObjectList transactions) noexcept;
         QString     get_ticker() const noexcept;
         void        set_ticker(QString ticker) noexcept;
+        QString     get_address() const noexcept;
+        void        set_address(QString address) noexcept;
 
         QString get_balance() const noexcept;
         void    set_balance(QString balance) noexcept;
@@ -55,12 +58,14 @@ namespace atomic_dex
       signals:
         void ticker_changed();
         void balance_changed();
+        void address_changed();
         void fiat_amount_changed();
         void transactionsChanged();
 
       public:
         QString           selected_coin_name;
         QString           selected_coin_balance;
+        QString           selected_coin_address;
         QString           selected_coin_fiat_amount{"0"};
         QObjectList       selected_coin_transactions;
         entt::dispatcher& m_dispatcher;
@@ -116,5 +121,6 @@ namespace atomic_dex
         QObjectList        m_enableable_coins;
         QString            m_current_fiat{"USD"};
         current_coin_info* m_coin_info;
+        void               refresh_address(mm2& mm2);
     };
 } // namespace atomic_dex

@@ -284,12 +284,14 @@ namespace atomic_dex
             {
                 refresh_transactions(mm2);
                 refresh_fiat_balance(mm2, paprika);
+                refresh_address(mm2);
                 m_refresh_current_ticker_infos = false;
             }
 
             if (not m_coin_info->get_ticker().isEmpty() && not m_enabled_coins.empty())
             {
                 refresh_fiat_balance(mm2, paprika);
+                refresh_address(mm2);
             }
         }
     }
@@ -374,6 +376,18 @@ namespace atomic_dex
         this->selected_coin_transactions = std::move(transactions);
         emit transactionsChanged();
     }
+    QString
+    current_coin_info::get_address() const noexcept
+    {
+        return selected_coin_address;
+    }
+
+    void
+    current_coin_info::set_address(QString address) noexcept
+    {
+        this->selected_coin_address = std::move(address);
+        emit address_changed();
+    }
 
     application::application(QObject* pParent) noexcept : QObject(pParent), m_coin_info(new current_coin_info(dispatcher_, this))
     {
@@ -410,5 +424,12 @@ namespace atomic_dex
     {
         LOG_SCOPE_FUNCTION(INFO);
         m_refresh_current_ticker_infos = true;
+    }
+    void
+    application::refresh_address(mm2& mm2)
+    {
+        std::error_code ec;
+        auto            address = QString::fromStdString(mm2.address(m_coin_info->get_ticker().toStdString(), ec));
+        this->m_coin_info->set_address(address);
     }
 } // namespace atomic_dex
