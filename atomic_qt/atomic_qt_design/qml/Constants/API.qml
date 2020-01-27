@@ -12,7 +12,14 @@ QtObject {
         current_coin_info: {
             ticker: "RICK",
             balance: "3.33",
-            fiat_amount: "0"
+            fiat_amount: "0",
+            transactions: [
+                { received: true, amount: "7.777 KMD", amount_fiat: "4.24 EUR", date: "6. Jan 2020 13:37" },
+                { received: false, amount: "4.444 KMD", amount_fiat: "2.73 EUR", date: "1. Jan 2020 13:38" },
+                { received: false, amount: "0.13371337 KMD", amount_fiat: "0.72233 EUR", date: "15. May 2019 13:38" },
+                { received: true, amount: "61.232553 KMD", amount_fiat: "32.24 EUR", date: "2. Feb 2019 17:37" },
+                { received: false, amount: "553.42223522 KMD", amount_fiat: "335.31 EUR", date: "17. Oct 1963 14:26" }
+            ]
         },
 
         enabled_coins: [
@@ -43,14 +50,6 @@ QtObject {
 
             }
         },
-
-        transactions: [
-           { received: true, amount: "7.777 KMD", amount_fiat: "4.24 EUR", date: "6. Jan 2020 13:37" },
-           { received: false, amount: "4.444 KMD", amount_fiat: "2.73 EUR", date: "1. Jan 2020 13:38" },
-           { received: false, amount: "0.13371337 KMD", amount_fiat: "0.72233 EUR", date: "15. May 2019 13:38" },
-           { received: true, amount: "61.232553 KMD", amount_fiat: "32.24 EUR", date: "2. Feb 2019 17:37" },
-           { received: false, amount: "553.42223522 KMD", amount_fiat: "335.31 EUR", date: "17. Oct 1963 14:26" }
-        ],
 
         change_state: (visibility) => {
           console.log(visibility)

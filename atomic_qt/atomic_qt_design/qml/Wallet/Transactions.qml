@@ -10,7 +10,7 @@ ListView {
     implicitWidth: contentItem.childrenRect.width
     implicitHeight: contentItem.childrenRect.height
 
-    model: API.get().transactions
+    model: API.get().current_coin_info.transactions
     clip: true
 
     // Row

@@ -88,7 +88,7 @@ RowLayout {
             }
 
             DefaultText {
-                visible: API.get().transactions.length === 0
+                visible: API.get().current_coin_info.transactions.length === 0
                 text: qsTr("No transactions")
                 font.pointSize: Style.textSize
                 color: Style.colorWhite4
