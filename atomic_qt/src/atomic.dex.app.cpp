@@ -267,7 +267,7 @@ namespace atomic_dex
                 }
                 {
                     auto coins = mm2.get_enableable_coins();
-                    refresh_coin(coins, m_enabled_coins);
+                    refresh_coin(coins, m_enableable_coins);
                     emit enableableCoinsChanged();
                 }
                 {
