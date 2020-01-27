@@ -77,6 +77,14 @@ Popup {
             }
         }
 
+
+        // Info text
+        DefaultText {
+            visible: API.get().enableable_coins.length === 0
+
+            text: qsTr("All coins are already enabled!")
+        }
+
         // Buttons
         RowLayout {
             Button {
@@ -85,6 +93,7 @@ Popup {
                 onClicked: enable_coin_modal.close()
             }
             Button {
+                visible: API.get().enableable_coins.length > 0
                 text: qsTr("Enable")
                 Layout.fillWidth: true
                 onClicked: enableCoins()
