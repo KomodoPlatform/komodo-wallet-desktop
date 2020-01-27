@@ -72,6 +72,12 @@ RowLayout {
                     text: "Receive"
                     leftPadding: parent.width * 0.075
                     rightPadding: parent.width * 0.075
+                    onClicked: receive_modal.open()
+                }
+
+                // Modals
+                ReceiveModal {
+                    id: receive_modal
                 }
 
                 Button {

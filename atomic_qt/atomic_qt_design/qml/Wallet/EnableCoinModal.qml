@@ -7,6 +7,8 @@ import "../Constants"
 
 // Open Enable Coin Modal
 Popup {
+    id: root
+    anchors.centerIn: Overlay.overlay
     modal: true
     focus: true
     closePolicy: Popup.CloseOnEscape | Popup.CloseOnPressOutside
@@ -90,7 +92,7 @@ Popup {
             Button {
                 text: qsTr("Close")
                 Layout.fillWidth: true
-                onClicked: enable_coin_modal.close()
+                onClicked: root.close()
             }
             Button {
                 visible: API.get().enableable_coins.length > 0

@@ -10,6 +10,7 @@ QtObject {
         fiat: "USD",
 
         current_coin_info: {
+            address: "RH8WgfYXbeMgF96vCqfKo47TkFApNXkQM2",
             ticker: "RICK",
             balance: "3.33",
             fiat_amount: "0",
