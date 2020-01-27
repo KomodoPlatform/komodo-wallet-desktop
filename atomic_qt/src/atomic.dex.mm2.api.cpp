@@ -159,7 +159,7 @@ namespace mm2::api
         using namespace date;
         using namespace std::chrono;
         date::sys_seconds tp{seconds{cfg.timestamp}};
-        std::string       s   = date::format("%Y-%m-%d %I:%M:%S", tp);
+        std::string       s   = date::format("%e. %b %Y %I:%M", tp);
         cfg.timestamp_as_date = std::move(s);
     }
 
