@@ -37,14 +37,14 @@ ListView {
 
             // Crypto
             DefaultText {
-                text: (model.modelData.received ? "+" : "-") + " " + model.modelData.amount
+                text: (model.modelData.received ? "+" : "-") + " " + model.modelData.amount + " " + API.get().current_coin_info.ticker
                 Layout.alignment: Qt.AlignRight
                 font.pointSize: Style.textSize2
             }
 
             // Fiat
             DefaultText {
-                text: model.modelData.amount_fiat
+                text: model.modelData.amount_fiat + " " + API.get().fiat
                 Layout.topMargin: -10
                 Layout.rightMargin: 4
                 Layout.alignment: Qt.AlignRight
