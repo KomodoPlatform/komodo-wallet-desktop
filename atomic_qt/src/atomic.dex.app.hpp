@@ -41,7 +41,7 @@ namespace atomic_dex
 
 
       public:
-        explicit current_coin_info(QObject* pParent = nullptr) noexcept;
+        explicit current_coin_info(entt::dispatcher& dispatcher, QObject* pParent = nullptr) noexcept;
         QObjectList get_transactions() const noexcept;
         void        set_transactions(QObjectList transactions) noexcept;
         QString     get_ticker() const noexcept;
@@ -59,10 +59,11 @@ namespace atomic_dex
         void transactionsChanged();
 
       public:
-        QString     selected_coin_name;
-        QString     selected_coin_balance;
-        QString     selected_coin_fiat_amount{"0"};
-        QObjectList selected_coin_transactions;
+        QString           selected_coin_name;
+        QString           selected_coin_balance;
+        QString           selected_coin_fiat_amount{"0"};
+        QObjectList       selected_coin_transactions;
+        entt::dispatcher& m_dispatcher;
     };
 
     struct application : public QObject, public ag::world::app
@@ -81,6 +82,7 @@ namespace atomic_dex
         explicit application(QObject* pParent = nullptr) noexcept;
 
         void                  on_enabled_coins_event(const enabled_coins_event&) noexcept;
+        void                  on_change_ticker_event(const change_ticker_event&) noexcept;
         mm2&                  get_mm2() noexcept;
         coinpaprika_provider& get_paprika() noexcept;
         entt::dispatcher&     get_dispatcher() noexcept;
@@ -108,6 +110,7 @@ namespace atomic_dex
 
       private:
         std::atomic_bool   m_refresh_enabled_coin_event{false};
+        std::atomic_bool   m_refresh_current_ticker_infos{false};
         void               tick();
         QObjectList        m_enabled_coins;
         QObjectList        m_enableable_coins;

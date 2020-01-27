@@ -116,6 +116,7 @@ namespace atomic_dex
     atomic_dex::current_coin_info::set_ticker(QString ticker) noexcept
     {
         selected_coin_name = std::move(ticker);
+        this->m_dispatcher.trigger<change_ticker_event>();
         emit ticker_changed();
     }
 
@@ -279,6 +280,13 @@ namespace atomic_dex
                 m_refresh_enabled_coin_event = false;
             }
 
+            if (m_refresh_current_ticker_infos)
+            {
+                refresh_transactions(mm2);
+                refresh_fiat_balance(mm2, paprika);
+                m_refresh_current_ticker_infos = false;
+            }
+
             if (not m_coin_info->get_ticker().isEmpty() && not m_enabled_coins.empty())
             {
                 refresh_fiat_balance(mm2, paprika);
@@ -339,7 +347,7 @@ namespace atomic_dex
         return m_coin_info;
     }
 
-    atomic_dex::current_coin_info::current_coin_info(QObject* pParent) noexcept : QObject(pParent) {}
+    atomic_dex::current_coin_info::current_coin_info(entt::dispatcher& dispatcher, QObject* pParent) noexcept : QObject(pParent), m_dispatcher(dispatcher) {}
 
     QString
     current_coin_info::get_fiat_amount() const noexcept
@@ -367,12 +375,13 @@ namespace atomic_dex
         emit transactionsChanged();
     }
 
-    application::application(QObject* pParent) noexcept : QObject(pParent), m_coin_info(new current_coin_info(this))
+    application::application(QObject* pParent) noexcept : QObject(pParent), m_coin_info(new current_coin_info(dispatcher_, this))
     {
         //! MM2 system need to be created before the GUI and give the instance to the gui
         auto& mm2_system = system_manager_.create_system<mm2>();
         system_manager_.create_system<coinpaprika_provider>(mm2_system);
 
+        get_dispatcher().sink<change_ticker_event>().connect<&application::on_change_ticker_event>(*this);
         get_dispatcher().sink<enabled_coins_event>().connect<&application::on_enabled_coins_event>(*this);
     }
 
@@ -394,5 +403,12 @@ namespace atomic_dex
     {
         this->m_current_fiat = std::move(current_fiat);
         emit on_fiat_changed();
+    }
+
+    void
+    application::on_change_ticker_event(const change_ticker_event&) noexcept
+    {
+        LOG_SCOPE_FUNCTION(INFO);
+        m_refresh_current_ticker_infos = true;
     }
 } // namespace atomic_dex
