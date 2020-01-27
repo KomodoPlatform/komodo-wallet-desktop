@@ -25,6 +25,7 @@ namespace atomic_dex
     using gui_enter_trading   = entt::tag<"gui_enter_trading"_hs>;
     using gui_leave_trading   = entt::tag<"gui_leave_trading"_hs>;
     using enabled_coins_event = entt::tag<"gui_enabled_coins"_hs>;
+    using change_ticker_event = entt::tag<"gui_change_ticker"_hs>;
 
     struct coin_enabled
     {
