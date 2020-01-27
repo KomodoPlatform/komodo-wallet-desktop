@@ -31,19 +31,19 @@ namespace atomic_dex
         Q_OBJECT
       public:
         explicit qt_transactions(QObject* parent = nullptr);
-        bool    m_receiver;
+        bool    m_received;
         QString m_amount;
         QString m_amount_fiat;
         QString m_date;
 
-        Q_PROPERTY(bool receiver READ get_receiver CONSTANT MEMBER m_receiver)
+        Q_PROPERTY(bool received READ get_received CONSTANT MEMBER m_received)
         Q_PROPERTY(QString amount READ get_amount CONSTANT MEMBER m_amount)
         Q_PROPERTY(QString amount_fiat READ get_amount_fiat CONSTANT MEMBER m_amount_fiat)
         Q_PROPERTY(QString date READ get_date CONSTANT MEMBER m_date)
 
-        [[nodiscard]] bool get_receiver() const noexcept
+        [[nodiscard]] bool get_received() const noexcept
         {
-            return m_receiver;
+            return m_received;
         }
 
         [[nodiscard]] QString
@@ -101,7 +101,7 @@ namespace atomic_dex
     {
         auto* obj          = new qt_transactions(parent);
         obj->m_amount      = QString::fromStdString(tx.total_amount);
-        obj->m_receiver    = !tx.am_i_sender;
+        obj->m_received    = !tx.am_i_sender;
         obj->m_date        = QString::fromStdString(tx.date);
         obj->m_amount_fiat = "0";
         return obj;
