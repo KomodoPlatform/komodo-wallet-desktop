@@ -26,6 +26,45 @@
 
 namespace atomic_dex
 {
+    struct qt_transactions : QObject
+    {
+        Q_OBJECT
+      public:
+        explicit qt_transactions(QObject* parent = nullptr);
+        bool    m_receiver;
+        QString m_amount;
+        QString m_amount_fiat;
+        QString m_date;
+
+        Q_PROPERTY(bool receiver READ get_receiver CONSTANT MEMBER m_receiver)
+        Q_PROPERTY(QString amount READ get_amount CONSTANT MEMBER m_amount)
+        Q_PROPERTY(QString amount_fiat READ get_amount_fiat CONSTANT MEMBER m_amount_fiat)
+        Q_PROPERTY(QString date READ get_date CONSTANT MEMBER m_date)
+
+        [[nodiscard]] bool get_receiver() const noexcept
+        {
+            return m_receiver;
+        }
+
+        [[nodiscard]] QString
+        get_amount() const noexcept
+        {
+            return m_amount;
+        }
+
+        [[nodiscard]] QString
+        get_amount_fiat() const noexcept
+        {
+            return m_amount_fiat;
+        }
+
+        [[nodiscard]] QString
+        get_date() const noexcept
+        {
+            return m_date;
+        }
+    };
+
     struct qt_coin_config : QObject
     {
         Q_OBJECT
@@ -57,7 +96,27 @@ namespace atomic_dex
         }
     };
 
-    inline QObject* to_qt_binding(t_coins::value_type&& coin, QObject* parent)
+    inline QObject*
+    to_qt_binding(tx_infos&& tx, QObject* parent)
+    {
+        auto* obj          = new qt_transactions(parent);
+        obj->m_amount      = QString::fromStdString(tx.total_amount);
+        obj->m_receiver    = !tx.am_i_sender;
+        obj->m_date        = QString::fromStdString(tx.date);
+        obj->m_amount_fiat = "0";
+        return obj;
+    }
+
+    QObjectList inline to_qt_binding(t_transactions&& transactions, QObject* parent)
+    {
+        QObjectList out;
+        out.reserve(transactions.size());
+        for (auto&& tx: transactions) { out.append(to_qt_binding(std::move(tx), parent)); }
+        return out;
+    }
+
+    inline QObject*
+    to_qt_binding(t_coins::value_type&& coin, QObject* parent)
     {
         auto* obj     = new qt_coin_config(parent);
         obj->m_ticker = QString::fromStdString(coin.ticker);

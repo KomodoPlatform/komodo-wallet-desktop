@@ -255,38 +255,63 @@ namespace atomic_dex
 
             if (m_refresh_enabled_coin_event)
             {
+                auto refresh_coin = [this](auto&& coins_container, auto&& coins_list) {
+                    coins_list.clear();
+                    coins_list = to_qt_binding(std::move(coins_container), this);
+                };
+
                 {
                     auto coins = mm2.get_enabled_coins();
-                    this->m_enabled_coins.clear();
-                    this->m_enabled_coins = to_qt_binding(std::move(coins), this);
+                    refresh_coin(coins, m_enabled_coins);
                     emit enabledCoinsChanged();
                 }
                 {
                     auto coins = mm2.get_enableable_coins();
-                    this->m_enableable_coins.clear();
-                    this->m_enableable_coins = to_qt_binding(std::move(coins), this);
+                    refresh_coin(coins, m_enabled_coins);
                     emit enableableCoinsChanged();
+                }
+                {
+                    if (not m_coin_info->get_ticker().isEmpty())
+                    {
+                        refresh_transactions(mm2);
+                    }
                 }
                 m_refresh_enabled_coin_event = false;
             }
 
             if (not m_coin_info->get_ticker().isEmpty() && not m_enabled_coins.empty())
             {
-                std::error_code ec;
-                QString         target_balance = QString::fromStdString(mm2.my_balance(this->m_coin_info->get_ticker().toStdString(), ec));
-                this->m_coin_info->set_balance(target_balance);
-
-                if (this->m_current_fiat == "USD")
-                {
-                    ec          = std::error_code();
-                    auto amount = QString::fromStdString(
-                        paprika.get_price_in_fiat(this->m_current_fiat.toStdString(), this->m_coin_info->get_ticker().toStdString(), ec));
-                    if (!ec)
-                    {
-                        this->m_coin_info->set_fiat_amount(amount);
-                    }
-                }
+                refresh_fiat_balance(mm2, paprika);
             }
+        }
+    }
+
+    void
+    application::refresh_fiat_balance(const mm2& mm2, const coinpaprika_provider& paprika)
+    {
+        std::error_code ec;
+        QString         target_balance = QString::fromStdString(mm2.my_balance(m_coin_info->get_ticker().toStdString(), ec));
+        m_coin_info->set_balance(target_balance);
+
+        if (m_current_fiat == "USD" || m_current_fiat == "EUR")
+        {
+            ec          = std::error_code();
+            auto amount = QString::fromStdString(paprika.get_price_in_fiat(m_current_fiat.toStdString(), m_coin_info->get_ticker().toStdString(), ec));
+            if (!ec)
+            {
+                m_coin_info->set_fiat_amount(amount);
+            }
+        }
+    }
+
+    void
+    application::refresh_transactions(const mm2& mm2)
+    {
+        std::error_code ec;
+        auto            txs = mm2.get_tx_history(m_coin_info->get_ticker().toStdString(), ec);
+        if (!ec)
+        {
+            m_coin_info->set_transactions(to_qt_binding(std::move(txs), this));
         }
     }
 
@@ -327,6 +352,19 @@ namespace atomic_dex
     {
         this->selected_coin_fiat_amount = std::move(fiat_amount);
         emit fiat_amount_changed();
+    }
+    QObjectList
+    current_coin_info::get_transactions() const noexcept
+    {
+        return this->selected_coin_transactions;
+    }
+
+    void
+    current_coin_info::set_transactions(QObjectList transactions) noexcept
+    {
+        this->selected_coin_transactions.clear();
+        this->selected_coin_transactions = std::move(transactions);
+        emit transactionsChanged();
     }
 
     application::application(QObject* pParent) noexcept : QObject(pParent), m_coin_info(new current_coin_info(this))

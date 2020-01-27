@@ -25,6 +25,7 @@
 //! Project Headers
 #include "atomic.dex.mm2.hpp"
 #include "atomic.dex.provider.coinpaprika.hpp"
+#include "atomic.dex.qt.bindings.hpp"
 
 namespace ag = antara::gaming;
 
@@ -36,25 +37,32 @@ namespace atomic_dex
         Q_PROPERTY(QString ticker READ get_ticker WRITE set_ticker NOTIFY ticker_changed)
         Q_PROPERTY(QString balance READ get_balance WRITE set_balance NOTIFY balance_changed)
         Q_PROPERTY(QString fiat_amount READ get_fiat_amount WRITE set_fiat_amount NOTIFY fiat_amount_changed);
+        Q_PROPERTY(QList<QObject*> transactions READ get_transactions WRITE set_transactions NOTIFY transactionsChanged)
+
+
       public:
         explicit current_coin_info(QObject* pParent = nullptr) noexcept;
-        QString get_ticker() const noexcept;
-        void    set_ticker(QString ticker) noexcept;
+        QObjectList get_transactions() const noexcept;
+        void        set_transactions(QObjectList transactions) noexcept;
+        QString     get_ticker() const noexcept;
+        void        set_ticker(QString ticker) noexcept;
 
         QString get_balance() const noexcept;
         void    set_balance(QString balance) noexcept;
 
         QString get_fiat_amount() const noexcept;
-        void set_fiat_amount(QString fiat_amount) noexcept;
+        void    set_fiat_amount(QString fiat_amount) noexcept;
       signals:
         void ticker_changed();
         void balance_changed();
         void fiat_amount_changed();
+        void transactionsChanged();
 
       public:
-        QString selected_coin_name;
-        QString selected_coin_balance;
-        QString selected_coin_fiat_amount{"0"};
+        QString     selected_coin_name;
+        QString     selected_coin_balance;
+        QString     selected_coin_fiat_amount{"0"};
+        QObjectList selected_coin_transactions;
     };
 
     struct application : public QObject, public ag::world::app
@@ -64,6 +72,10 @@ namespace atomic_dex
         Q_PROPERTY(QList<QObject*> enableable_coins READ get_enableable_coins NOTIFY enableableCoinsChanged)
         Q_PROPERTY(QObject* current_coin_info READ get_current_coin_info NOTIFY coinInfoChanged)
         Q_PROPERTY(QString fiat READ get_current_fiat WRITE set_current_fiat NOTIFY on_fiat_changed)
+
+      private:
+        void refresh_transactions(const mm2& mm2);
+        void refresh_fiat_balance(const mm2& mm2, const coinpaprika_provider& paprika);
 
       public:
         explicit application(QObject* pParent = nullptr) noexcept;
