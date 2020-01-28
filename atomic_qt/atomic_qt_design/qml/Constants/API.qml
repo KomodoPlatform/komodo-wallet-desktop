@@ -79,6 +79,12 @@ QtObject {
             saved_password = password
 
             return saved_password !== ''
+        },
+
+        prepare_send_coin: (address, amount) => {
+           console.log("Sending " + amount + " to " + address)
+
+           return {}
         }
     })
 

@@ -31,13 +31,10 @@ Popup {
         }
 
         // Amount input
-        TextFieldWithTitle {
+        AmountField {
             id: input_amount
             title: qsTr("Amount to send")
             field.placeholderText: qsTr("Enter the amount to send")
-            field.validator: RegExpValidator {
-                regExp: /(0|([1-9][0-9]*))(\.[0-9]{1,8})?/
-            }
         }
 
         // Buttons
@@ -53,9 +50,8 @@ Popup {
                 onClicked: () => {
                     if(input_amount.field.acceptableInput)
                         console.log("Send to " + input_address.field.text + ", amount: " + input_amount.field.text)
-                    else {
-                        console.log("Input not acceptable " + input_amount.field.text)
-                    }
+
+                    API.get().prepare_send_coin(input_address.field.text, input_amount.field.text)
                 }
             }
         }
