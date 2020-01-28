@@ -12,9 +12,11 @@ Popup {
     modal: true
     focus: true
     closePolicy: Popup.CloseOnEscape | Popup.CloseOnPressOutside
+    width: 365
 
     // Inside modal
     ColumnLayout {
+        width: parent.width
         // Title
         DefaultText {
             text: qsTr("Send")
@@ -22,7 +24,7 @@ Popup {
         }
 
         // Send address
-        TextAreaWithTitle {
+        TextFieldWithTitle {
             title: qsTr("Recipient's address")
             field.placeholderText: qsTr("Enter address of the recipient")
             field.wrapMode: TextEdit.NoWrap
