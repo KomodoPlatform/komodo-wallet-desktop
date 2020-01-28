@@ -25,9 +25,21 @@ Popup {
 
         // Send address
         TextFieldWithTitle {
+            id: input_address
             title: qsTr("Recipient's address")
             field.placeholderText: qsTr("Enter address of the recipient")
-            field.wrapMode: TextEdit.NoWrap
+        }
+
+        // Amount input
+        TextFieldWithTitle {
+            id: input_amount
+            title: qsTr("Amount to send")
+            field.placeholderText: qsTr("Enter the amount to send")
+            field.validator: DoubleValidator {
+                bottom: 0
+                decimals: 1
+                notation: DoubleValidator.StandardNotation
+            }
         }
 
         // Buttons
@@ -36,6 +48,17 @@ Popup {
                 text: qsTr("Close")
                 Layout.fillWidth: true
                 onClicked: root.close()
+            }
+            Button {
+                text: qsTr("Send")
+                Layout.fillWidth: true
+                onClicked: () => {
+                    if(input_amount.field.acceptableInput)
+                        console.log("Send to " + input_address.field.text + ", amount: " + input_amount.field.text)
+                    else {
+                        console.log("Input not acceptable " + input_amount.field.text)
+                    }
+                }
             }
         }
     }
