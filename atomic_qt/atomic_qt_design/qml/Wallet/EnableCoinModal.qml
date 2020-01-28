@@ -21,7 +21,7 @@ Popup {
 
     function enableCoins() {
         API.get().enable_coins(Object.keys(selected_to_enable))
-        enable_coin_modal.close()
+        root.close()
     }
 
     // Inside modal
