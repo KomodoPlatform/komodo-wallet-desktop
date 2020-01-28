@@ -14,6 +14,11 @@ Popup {
     closePolicy: Popup.CloseOnEscape | Popup.CloseOnPressOutside
     width: 365
 
+    // Local
+    function prepareSendCoin(address, amount) {
+        API.get().prepare_send_coin(address, amount)
+    }
+
     // Inside modal
     ColumnLayout {
         width: parent.width
@@ -53,12 +58,7 @@ Popup {
                          input_address.field.acceptableInput &&
                          input_amount.field.acceptableInput
 
-                onClicked: () => {
-                    if(input_amount.field.acceptableInput)
-                        console.log("Send to " + input_address.field.text + ", amount: " + input_amount.field.text)
-
-                    API.get().prepare_send_coin(input_address.field.text, input_amount.field.text)
-                }
+                onClicked: prepareSendCoin(input_address.field.text, input_amount.field.text)
             }
         }
     }
