@@ -32,8 +32,7 @@ namespace atomic_dex
 #else
         std::string userhome{std::getenv("HOME")};
 #endif
-        // TODO: Handle passphrase
-        std::string passphrase{"thisIsTheNewProjectSeed2019##"};
+        std::string passphrase;
         std::string rpc_password{"atomic_dex_mm2_passphrase"};
     };
 
