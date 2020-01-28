@@ -49,7 +49,9 @@ Popup {
                 Layout.fillWidth: true
 
                 enabled: input_address.field.text != "" &&
-                         input_amount.field.text != ""
+                         input_amount.field.text != "" &&
+                         input_address.field.acceptableInput &&
+                         input_amount.field.acceptableInput
 
                 onClicked: () => {
                     if(input_amount.field.acceptableInput)
