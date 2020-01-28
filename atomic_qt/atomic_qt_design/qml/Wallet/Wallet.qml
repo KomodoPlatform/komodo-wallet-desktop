@@ -66,6 +66,11 @@ RowLayout {
                     text: "Send"
                     leftPadding: parent.width * 0.075
                     rightPadding: parent.width * 0.075
+                    onClicked: send_modal.open()
+                }
+
+                SendModal {
+                    id: send_modal
                 }
 
                 Button {
@@ -75,7 +80,6 @@ RowLayout {
                     onClicked: receive_modal.open()
                 }
 
-                // Modals
                 ReceiveModal {
                     id: receive_modal
                 }

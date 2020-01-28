@@ -48,6 +48,7 @@
         <file>atomic_qt_design/qml/Components/TextAreaWithTitle.qml</file>
         <file>atomic_qt_design/qml/Wallet/Wallet.qml</file>
         <file>atomic_qt_design/qml/Wallet/ReceiveModal.qml</file>
+        <file>atomic_qt_design/qml/Wallet/SendModal.qml</file>
         <file>atomic_qt_design/qml/Wallet/EnableCoinModal.qml</file>
         <file>atomic_qt_design/qml/Wallet/Transactions.qml</file>
     </qresource>
