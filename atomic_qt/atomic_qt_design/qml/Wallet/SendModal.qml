@@ -24,7 +24,7 @@ Popup {
         }
 
         // Send address
-        TextFieldWithTitle {
+        AddressField {
             id: input_address
             title: qsTr("Recipient's address")
             field.placeholderText: qsTr("Enter address of the recipient")
@@ -47,6 +47,10 @@ Popup {
             Button {
                 text: qsTr("Send")
                 Layout.fillWidth: true
+
+                enabled: input_address.field.text != "" &&
+                         input_amount.field.text != ""
+
                 onClicked: () => {
                     if(input_amount.field.acceptableInput)
                         console.log("Send to " + input_address.field.text + ", amount: " + input_amount.field.text)
