@@ -217,11 +217,29 @@ RowLayout {
                 width: coins_bar.width
                 height: 50
 
+                // Click area
                 MouseArea {
                     anchors.fill: parent
                     hoverEnabled: true
                     onHoveredChanged: hovered = containsMouse
-                    onClicked: API.get().current_coin_info.ticker = model.modelData.ticker
+
+                    acceptedButtons: Qt.LeftButton | Qt.RightButton
+                    onClicked: {
+                        if (mouse.button === Qt.RightButton) context_menu.popup()
+                        else API.get().current_coin_info.ticker = model.modelData.ticker
+                    }
+                    onPressAndHold: {
+                        if (mouse.source === Qt.MouseEventNotSynthesized) context_menu.popup()
+                    }
+                }
+
+                // Right click menu
+                Menu {
+                    id: context_menu
+                    Action {
+                        text: "Disable " + model.modelData.ticker
+                        onTriggered: console.log("Disabling... " + model.modelData.ticker)
+                    }
                 }
 
                 // Icon
