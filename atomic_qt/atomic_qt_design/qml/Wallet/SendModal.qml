@@ -35,10 +35,8 @@ Popup {
             id: input_amount
             title: qsTr("Amount to send")
             field.placeholderText: qsTr("Enter the amount to send")
-            field.validator: DoubleValidator {
-                bottom: 0
-                decimals: 1
-                notation: DoubleValidator.StandardNotation
+            field.validator: RegExpValidator {
+                regExp: /(0|([1-9][0-9]*))(\.[0-9]{1,8})?/
             }
         }
 
