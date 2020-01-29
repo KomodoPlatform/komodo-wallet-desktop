@@ -149,8 +149,10 @@ RowLayout {
                 hoverEnabled: true
                 onHoveredChanged: search_button_overlay.hovered = containsMouse
                 onClicked: {
+                    input_coin_filter.text = ""
                     input_coin_filter.visible = !input_coin_filter.visible
-                    if(!input_coin_filter.visible) input_coin_filter.text = ""
+                    if(input_coin_filter.visible)
+                        input_coin_filter.focus = true
                 }
             }
         }
