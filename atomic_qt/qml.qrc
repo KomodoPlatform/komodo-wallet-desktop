@@ -32,6 +32,7 @@
         <file>atomic_qt_design/qml/Screens/NewUser.qml</file>
         <file>atomic_qt_design/qml/Screens/RecoverSeed.qml</file>
         <file>atomic_qt_design/qml/Screens/Dashboard.qml</file>
+        <file>atomic_qt_design/qml/Screens/InitialLoading.qml</file>
         <file>atomic_qt_design/qml/Constants/General.qml</file>
         <file>atomic_qt_design/qml/Constants/API.qml</file>
         <file>atomic_qt_design/qml/Constants/Style.qml</file>
