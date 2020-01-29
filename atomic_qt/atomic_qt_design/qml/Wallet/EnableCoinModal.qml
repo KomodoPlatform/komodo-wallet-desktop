@@ -33,12 +33,21 @@ Popup {
             font.pointSize: Style.textSize2
         }
 
+        // Search input
+        TextField {
+            id: input_coin_filter
+
+            Layout.fillWidth: true
+            placeholderText: qsTr("Search")
+            selectByMouse: true
+        }
+
         // List
         ListView {
             implicitWidth: contentItem.childrenRect.width
             implicitHeight: contentItem.childrenRect.height
 
-            model: API.get().enableable_coins
+            model: General.filterCoins(API.get().enableable_coins, input_coin_filter.text)
             clip: true
 
             delegate: Rectangle {
