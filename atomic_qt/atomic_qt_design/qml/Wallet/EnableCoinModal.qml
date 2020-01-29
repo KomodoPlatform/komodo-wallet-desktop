@@ -15,7 +15,9 @@ Popup {
 
     property var selected_to_enable: ({})
     function markToEnable(ticker) {
-      selected_to_enable[ticker] = selected_to_enable[ticker] === undefined ? true : !selected_to_enable[ticker]
+      if(selected_to_enable[ticker] === undefined) selected_to_enable[ticker] = true
+      else delete selected_to_enable[ticker]
+
       selected_to_enable = selected_to_enable
     }
 
