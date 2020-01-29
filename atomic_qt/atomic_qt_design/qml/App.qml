@@ -43,10 +43,14 @@ Rectangle {
 
         Login {
             function onClickedRecoverSeed() { current_page = idx_recover_seed }
-            function postLoginSuccess() { current_page = idx_initial_loading }
+            function postLoginSuccess() {
+                initial_loading.check_loading_complete.running = true
+                current_page = idx_initial_loading
+            }
         }
 
         InitialLoading {
+            id: initial_loading
             function onLoaded() { current_page = idx_dashboard }
         }
 
