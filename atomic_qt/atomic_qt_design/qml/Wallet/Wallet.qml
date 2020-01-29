@@ -142,14 +142,29 @@ RowLayout {
 
             anchors.fill: search_button
             source: search_button
-            color: search_button_overlay.hovered ? Style.colorWhite1 : Style.colorWhite4
+            color: search_button_overlay.hovered || input_coin_filter.visible ? Style.colorWhite1 : Style.colorWhite4
 
             MouseArea {
                 anchors.fill: parent
                 hoverEnabled: true
                 onHoveredChanged: search_button_overlay.hovered = containsMouse
-                onClicked: console.log("Search")
+                onClicked: input_coin_filter.visible = !input_coin_filter.visible
             }
+        }
+
+        // Search button
+        TextField {
+            id: input_coin_filter
+
+            anchors.top: search_button.bottom
+            anchors.horizontalCenter: parent.horizontalCenter
+
+            placeholderText: qsTr("Search")
+            selectByMouse: true
+
+            visible: false
+
+            width: parent.width * 0.8
         }
 
         // Add button
