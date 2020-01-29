@@ -434,7 +434,7 @@ namespace atomic_dex
     }
 
     QObject*
-    application::send(const QString& address, const QString& amount, bool max)
+    application::prepare_send(const QString& address, const QString& amount, bool max)
     {
         atomic_dex::t_withdraw_request req{
             .to = address.toStdString(), .coin = m_coin_info->get_ticker().toStdString(), .max = max, .amount = amount.toStdString()};
