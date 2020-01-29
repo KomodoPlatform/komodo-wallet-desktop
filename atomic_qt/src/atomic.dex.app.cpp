@@ -432,4 +432,14 @@ namespace atomic_dex
         auto            address = QString::fromStdString(mm2.address(m_coin_info->get_ticker().toStdString(), ec));
         this->m_coin_info->set_address(address);
     }
+
+    QObject*
+    application::send(const QString& address, const QString& amount, bool max)
+    {
+        atomic_dex::t_withdraw_request req{
+            .to = address.toStdString(), .coin = m_coin_info->get_ticker().toStdString(), .max = max, .amount = amount.toStdString()};
+        std::error_code ec;
+        auto            answer = mm2::withdraw(std::move(req), ec);
+        return to_qt_binding(std::move(answer), this);
+    }
 } // namespace atomic_dex

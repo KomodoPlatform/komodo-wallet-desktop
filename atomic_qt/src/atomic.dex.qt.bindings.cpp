@@ -19,5 +19,6 @@
 namespace atomic_dex
 {
     qt_coin_config::qt_coin_config(QObject* parent) : QObject(parent) {}
+    qt_send_answer::qt_send_answer(QObject* parent) : QObject(parent) {}
     qt_transactions::qt_transactions(QObject* parent) : QObject(parent) {}
 } // namespace atomic_dex

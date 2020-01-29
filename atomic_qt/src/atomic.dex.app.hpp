@@ -99,12 +99,13 @@ namespace atomic_dex
 
         void launch();
 
-        Q_INVOKABLE void    change_state(int visibility);
-        Q_INVOKABLE QString get_mnemonic();
-        Q_INVOKABLE bool    first_run();
-        Q_INVOKABLE bool    login(const QString& password);
-        Q_INVOKABLE bool    create(const QString& password, const QString& seed);
-        Q_INVOKABLE bool    enable_coins(const QStringList& coins);
+        Q_INVOKABLE QObject* send(const QString& address, const QString& amount, bool max = false);
+        Q_INVOKABLE void     change_state(int visibility);
+        Q_INVOKABLE QString  get_mnemonic();
+        Q_INVOKABLE bool     first_run();
+        Q_INVOKABLE bool     login(const QString& password);
+        Q_INVOKABLE bool     create(const QString& password, const QString& seed);
+        Q_INVOKABLE bool     enable_coins(const QStringList& coins);
 
 
       signals:
