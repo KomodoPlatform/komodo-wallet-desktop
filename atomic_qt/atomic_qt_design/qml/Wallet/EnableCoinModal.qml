@@ -105,6 +105,7 @@ Popup {
             }
             Button {
                 visible: API.get().enableable_coins.length > 0
+                enabled: Object.keys(selected_to_enable).length > 0
                 text: qsTr("Enable")
                 Layout.fillWidth: true
                 onClicked: enableCoins()
