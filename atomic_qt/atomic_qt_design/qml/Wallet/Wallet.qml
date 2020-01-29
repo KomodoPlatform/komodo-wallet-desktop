@@ -157,7 +157,7 @@ RowLayout {
             }
         }
 
-        // Search button
+        // Search input
         TextField {
             id: input_coin_filter
 
@@ -227,7 +227,7 @@ RowLayout {
             implicitHeight: Math.min(contentItem.childrenRect.height, parent.height - coins_bar.width * 2)
             clip: true
 
-            model: API.get().enabled_coins.filter(c => c.ticker.indexOf(input_coin_filter.text.toUpperCase()) !== -1)
+            model: General.filterCoins(API.get().enableable_coins, input_coin_filter.text)
 
             delegate: Rectangle {
                 property bool hovered: false
