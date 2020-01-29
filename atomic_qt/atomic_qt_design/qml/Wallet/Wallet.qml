@@ -227,7 +227,7 @@ RowLayout {
             implicitHeight: Math.min(contentItem.childrenRect.height, parent.height - coins_bar.width * 2)
             clip: true
 
-            model: General.filterCoins(API.get().enableable_coins, input_coin_filter.text)
+            model: General.filterCoins(API.get().enabled_coins, input_coin_filter.text)
 
             delegate: Rectangle {
                 property bool hovered: false
