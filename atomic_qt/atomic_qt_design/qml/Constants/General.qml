@@ -19,4 +19,8 @@ QtObject {
     readonly property int idx_exchange_orders: 1
     readonly property int idx_exchange_history: 2
     readonly property int idx_exchange_orderbook: 3
+
+    function filterCoins(list, text) {
+        return list.filter(c => c.ticker.indexOf(text.toUpperCase()) !== -1 || c.name.toUpperCase().indexOf(text.toUpperCase()) !== -1)
+    }
 }

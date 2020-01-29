@@ -15,7 +15,9 @@ Popup {
 
     property var selected_to_enable: ({})
     function markToEnable(ticker) {
-      selected_to_enable[ticker] = selected_to_enable[ticker] === undefined ? true : !selected_to_enable[ticker]
+      if(selected_to_enable[ticker] === undefined) selected_to_enable[ticker] = true
+      else delete selected_to_enable[ticker]
+
       selected_to_enable = selected_to_enable
     }
 
@@ -33,12 +35,21 @@ Popup {
             font.pointSize: Style.textSize2
         }
 
+        // Search input
+        TextField {
+            id: input_coin_filter
+
+            Layout.fillWidth: true
+            placeholderText: qsTr("Search")
+            selectByMouse: true
+        }
+
         // List
         ListView {
             implicitWidth: contentItem.childrenRect.width
             implicitHeight: contentItem.childrenRect.height
 
-            model: API.get().enableable_coins
+            model: General.filterCoins(API.get().enableable_coins, input_coin_filter.text)
             clip: true
 
             delegate: Rectangle {
@@ -96,6 +107,7 @@ Popup {
             }
             Button {
                 visible: API.get().enableable_coins.length > 0
+                enabled: Object.keys(selected_to_enable).length > 0
                 text: qsTr("Enable")
                 Layout.fillWidth: true
                 onClicked: enableCoins()
