@@ -26,6 +26,37 @@
 
 namespace atomic_dex
 {
+    struct qt_send_answer : QObject
+    {
+        Q_OBJECT
+      public:
+        explicit qt_send_answer(QObject* parent = nullptr);
+        bool    m_has_error;
+        QString m_error_message;
+        QString m_tx_hex;
+
+        Q_PROPERTY(bool has_error READ get_error CONSTANT MEMBER m_has_error)
+        Q_PROPERTY(QString error_message READ get_error_message CONSTANT MEMBER m_error_message)
+        Q_PROPERTY(QString tx_hex READ get_tx_hex CONSTANT MEMBER m_tx_hex)
+
+        [[nodiscard]] bool get_error() const noexcept
+        {
+            return m_has_error;
+        }
+
+        [[nodiscard]] QString
+        get_error_message() const noexcept
+        {
+            return m_error_message;
+        }
+
+        [[nodiscard]] QString
+        get_tx_hex() const noexcept
+        {
+            return m_tx_hex;
+        }
+    };
+
     struct qt_transactions : QObject
     {
         Q_OBJECT
@@ -131,5 +162,15 @@ namespace atomic_dex
         out.reserve(coins.size());
         for (auto&& coin: coins) { out.append(to_qt_binding(std::move(coin), parent)); }
         return out;
+    }
+
+    inline QObject*
+    to_qt_binding(t_withdraw_answer&& answer, QObject* parent)
+    {
+        auto* obj            = new qt_send_answer(parent);
+        obj->m_has_error     = answer.error.has_value();
+        obj->m_error_message = answer.error.has_value() ? QString::fromStdString(answer.error.value()) : "";
+        obj->m_tx_hex        = answer.result.has_value() ? QString::fromStdString(answer.result.value().tx_hex) : "";
+        return obj;
     }
 } // namespace atomic_dex
