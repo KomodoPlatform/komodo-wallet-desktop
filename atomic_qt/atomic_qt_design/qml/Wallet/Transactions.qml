@@ -68,6 +68,12 @@ ListView {
             fillMode: Image.PreserveAspectFit
             width: Style.textSize2
             anchors.verticalCenter: parent.verticalCenter
+
+            MouseArea {
+                anchors { horizontalCenter: parent.horizontalCenter; verticalCenter: parent.verticalCenter }
+                height: parent.height * 2; width: height
+                onClicked: console.log("Info")
+            }
         }
     }
 }
