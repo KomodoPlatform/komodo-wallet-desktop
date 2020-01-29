@@ -17,7 +17,8 @@ Rectangle {
     readonly property int idx_recover_seed: 1
     readonly property int idx_new_user: 2
     readonly property int idx_login: 3
-    readonly property int idx_dashboard: 4
+    readonly property int idx_initial_loading: 4
+    readonly property int idx_dashboard: 5
     property int current_page: firstPage()
 
     StackLayout {
@@ -42,7 +43,11 @@ Rectangle {
 
         Login {
             function onClickedRecoverSeed() { current_page = idx_recover_seed }
-            function postLoginSuccess() { current_page = idx_dashboard }
+            function postLoginSuccess() { current_page = idx_initial_loading }
+        }
+
+        InitialLoading {
+            function onLoaded() { current_page = idx_dashboard }
         }
 
         Dashboard {

@@ -67,7 +67,11 @@ QtObject {
         login: (password) => {
             console.log("Logging in with password:" + password)
 
-            return password === saved_password
+            const correct = password === saved_password
+
+            if(correct) initialize_mm2.running = true
+
+            return correct
         },
 
         create: (password, seed) => {
@@ -81,12 +85,32 @@ QtObject {
             return saved_password !== ''
         },
 
+        initial_loading_status: "initializing_mm2",
+
         prepare_send_coin: (address, amount) => {
            console.log("Sending " + amount + " to " + address)
 
            return {}
         }
     })
+
+    // Simulate initial loading
+    property Timer initialize_mm2: Timer {
+        interval: 1000
+        onTriggered: {
+            mockAPI.initial_loading_status = "enabling_coins"
+            mockAPI = mockAPI
+            enable_coins.running = true
+        }
+    }
+    property Timer enable_coins: Timer {
+        interval: 2000
+        onTriggered: {
+            mockAPI.initial_loading_status = "complete"
+            mockAPI = mockAPI
+        }
+    }
+
 
     // Stuff to make it work both in C++ and Design Studio
     property bool design_editor: typeof atomic_app === "undefined"

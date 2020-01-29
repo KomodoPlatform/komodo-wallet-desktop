@@ -12,7 +12,7 @@ SetupPage {
 
     image_scale: 0.7
     image_path: General.image_path + "komodo-icon.png"
-    title: "Welcome!"
+    title: qsTr("Welcome!")
     content: RowLayout {
         spacing: Style.itemPadding
 
