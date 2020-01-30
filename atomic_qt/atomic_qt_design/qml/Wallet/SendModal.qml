@@ -16,7 +16,15 @@ Popup {
 
     // Local
     function prepareSendCoin(address, amount) {
-        API.get().prepare_send_coin(address, amount)
+        let result = API.get().prepare_send_coin(address, amount, parseFloat(API.get().current_coin_info.balance) === parseFloat(amount))
+
+        if(result.has_error) {
+            text_error.text = result.error_message
+        }
+        else {
+            text_date.text = result.date
+            // TODO: Change page
+        }
     }
 
     // Inside modal
@@ -50,7 +58,7 @@ Popup {
                 onClicked: root.close()
             }
             Button {
-                text: qsTr("Send")
+                text: qsTr("Prepare")
                 Layout.fillWidth: true
 
                 enabled: input_address.field.text != "" &&
