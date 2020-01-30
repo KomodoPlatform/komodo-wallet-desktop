@@ -190,7 +190,7 @@ Popup {
                 Button {
                     text: qsTr("View at Explorer")
                     Layout.fillWidth: true
-                    onClicked: Qt.openUrlExternally("http://www.stackoverflow.com/")
+                    onClicked: Qt.openUrlExternally(API.get().current_coin_info.explorer_url + "tx/" + tx_hash)
                 }
             }
         }

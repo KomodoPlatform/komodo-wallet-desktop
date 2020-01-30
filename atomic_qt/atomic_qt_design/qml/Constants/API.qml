@@ -14,6 +14,7 @@ QtObject {
             ticker: "RICK",
             balance: "3.33",
             fiat_amount: "0",
+            explorer_url: "https://rick.explorer.dexstats.info/",
             transactions: [
                 { received: true, amount: "7.777", amount_fiat: "4.24", date: "6. Jan 2020 13:37" },
                 { received: false, amount: "4.444", amount_fiat: "2.73", date: "1. Jan 2020 13:38" },
