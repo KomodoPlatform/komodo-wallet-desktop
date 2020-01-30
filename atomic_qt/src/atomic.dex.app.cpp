@@ -442,4 +442,13 @@ namespace atomic_dex
         auto            answer = mm2::withdraw(std::move(req), ec);
         return to_qt_binding(std::move(answer), this);
     }
+
+    QString
+    application::send(const QString& tx_hex)
+    {
+        atomic_dex::t_broadcast_request  req{.tx_hex = tx_hex.toStdString(), .coin = m_coin_info->get_ticker().toStdString()};
+        std::error_code ec;
+        auto answer = mm2::broadcast(std::move(req), ec);
+        return QString::fromStdString(answer.tx_hash);
+    }
 } // namespace atomic_dex
