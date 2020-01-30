@@ -87,11 +87,22 @@ QtObject {
 
         initial_loading_status: "initializing_mm2",
 
-        prepare_send_coin: (address, amount) => {
-           console.log("Sending " + amount + " to " + address)
+        prepare_send_coin: (address, amount, max=true) => {
+           console.log("Preparing to send " + amount + " to " + address)
 
-           return {}
-        }
+           return {
+               has_error: false,
+               error_message: "",
+               tx_hex: "abcdefghijklmnopqrstuvwxyz",
+               date: "17. Oct 1963 14:26"
+           }
+        },
+
+       send: (tx_hex) => {
+          console.log("Sending tx hex:" + tx_hex)
+
+          return "abcdefghijklmnopqrstuvwxyz"
+       }
     })
 
     // Simulate initial loading
