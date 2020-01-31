@@ -29,38 +29,77 @@ Item {
         anchors.horizontalCenter: parent.horizontalCenter
 
         width: 1000
+        height: parent.height
         spacing: 20
 
         // Select coins row
+        Rectangle {
+            Layout.alignment: Qt.AlignHCenter
+            implicitWidth: childrenRect.width
+            implicitHeight: childrenRect.height
+
+            color: Style.colorTheme7
+            radius: Style.rectangleCornerRadius
+
+            RowLayout {
+                // Base
+                ComboBox {
+                    id: combo_base
+                    Layout.preferredWidth: 250
+                    Layout.leftMargin: 15
+                    Layout.topMargin: 10
+                    Layout.bottomMargin: 10
+
+                    model: convertToFullName(baseCoins())
+                    onCurrentTextChanged: base = baseCoins()[currentIndex].ticker
+                }
+
+                Image {
+                    source: General.image_path + "exchange-exchange.svg"
+                }
+
+                // Rel Base
+                ComboBox {
+                    id: combo_rel
+                    Layout.preferredWidth: 250
+                    Layout.rightMargin: 15
+
+                    model: convertToFullName(relCoins())
+                    onCurrentTextChanged: rel = relCoins()[currentIndex].ticker
+                }
+            }
+        }
+
+        // Bottom part
         RowLayout {
             Layout.fillWidth: true
-            // Base
-            ComboBox {
-                id: combo_base
-                Layout.preferredWidth: 250
-                model: convertToFullName(baseCoins())
-                onCurrentTextChanged: base = baseCoins()[currentIndex].ticker
+            Layout.fillHeight: true
+
+            // Left side
+            Rectangle {
+                color: Style.colorTheme7
+                radius: Style.rectangleCornerRadius
+                Layout.preferredWidth: 300
+                Layout.fillHeight: true
+
+                DefaultText {
+                    Layout.alignment: Qt.AlignHCenter
+                    text: "Rel: " + rel
+                }
             }
 
-            Image {
-                source: General.image_path + "exchange-exchange.svg"
+            // Right side
+            Rectangle {
+                color: Style.colorTheme7
+                radius: Style.rectangleCornerRadius
+                Layout.fillWidth: true
+                Layout.fillHeight: true
+
+                DefaultText {
+                    Layout.alignment: Qt.AlignHCenter
+                    text: "Base: " + base
+                }
             }
-
-            // Rel Base
-            ComboBox {
-                id: combo_rel
-                Layout.preferredWidth: 250
-                model: convertToFullName(relCoins())
-                onCurrentTextChanged: rel = relCoins()[currentIndex].ticker
-            }
-        }
-
-        DefaultText {
-            text: "Base: " + base
-        }
-
-        DefaultText {
-            text: "Rel: " + rel
         }
     }
 }
