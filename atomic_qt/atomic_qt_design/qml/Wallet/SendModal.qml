@@ -13,7 +13,6 @@ Popup {
     focus: true
     closePolicy: Popup.CloseOnEscape | Popup.CloseOnPressOutside
     onClosed: if(stack_layout.currentIndex === 2) closeAndReset()
-    width: 365
 
     // Local
     property string tx_hex
@@ -53,10 +52,11 @@ Popup {
     // Inside modal
     StackLayout {
         id: stack_layout
-        width: parent.width
 
         // Prepare Page
         ColumnLayout {
+            Layout.fillWidth: true
+
             // Title
             DefaultText {
                 text: qsTr("Prepare to Send")
