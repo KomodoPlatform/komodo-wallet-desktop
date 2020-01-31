@@ -11,14 +11,21 @@ Rectangle {
     radius: Style.rectangleCornerRadius
 
     ColumnLayout {
+        width: parent.width
+
         DefaultText {
-            Layout.leftMargin: 15
-            Layout.topMargin: 15
+            Layout.topMargin: 10
+            Layout.bottomMargin: 5
 
             id: title
-            text: "Orderbook"
+            text: qsTr("Orderbook")
             Layout.alignment: Qt.AlignHCenter
             font.pointSize: Style.textSize2
+        }
+
+        HorizontalLine {
+            Layout.fillWidth: true
+            color: Style.colorWhite8
         }
     }
 }
@@ -30,3 +37,9 @@ Rectangle {
 
 
 
+
+/*##^##
+Designer {
+    D{i:0;autoSize:true;height:480;width:640}
+}
+##^##*/
