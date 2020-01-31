@@ -66,6 +66,11 @@ Item {
 
                 Image {
                     source: General.image_path + "exchange-exchange.svg"
+
+                    MouseArea {
+                        anchors.fill: parent
+                        onClicked: changeBase(rel)
+                    }
                 }
 
                 // Rel Base
