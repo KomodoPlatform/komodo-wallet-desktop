@@ -8,6 +8,10 @@ import "../../Constants"
 Item {
     id: exchange_trade
 
+    function changeBase(ticker) {
+        combo_base.currentIndex = baseCoins().map(c => c.ticker).indexOf(ticker)
+    }
+
     function convertToFullName(coins) {
         return coins.map(c => c.name + " (" + c.ticker + ")")
     }
