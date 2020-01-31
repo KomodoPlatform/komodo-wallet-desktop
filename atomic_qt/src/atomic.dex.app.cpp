@@ -485,4 +485,16 @@ namespace atomic_dex
         auto answer = get_mm2().place_buy_order(std::move(req), total_amount, ec);
         return answer.error.has_value();
     }
+
+    bool
+    application::place_sell_order(const QString& base, const QString& rel, const QString& price, const QString& volume)
+    {
+        t_float_50 amount_f;
+        amount_f.assign(volume.toStdString());
+
+        t_sell_request req{.base = base.toStdString(), .rel = rel.toStdString(), .price = price.toStdString(), .volume = volume.toStdString()};
+        std::error_code ec;
+        auto answer = get_mm2().place_sell_order(std::move(req), amount_f, ec);
+        return answer.error.has_value();
+    }
 } // namespace atomic_dex
