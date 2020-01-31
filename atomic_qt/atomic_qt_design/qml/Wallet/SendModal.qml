@@ -112,21 +112,15 @@ Popup {
                 font.pointSize: Style.textSize2
             }
 
-            // Address title
-            DefaultText {
-                text: qsTr("Recipient's address:")
-            }
-            // Address value
-            DefaultText {
+            // Address
+            TextWithTitle {
+                title: qsTr("Recipient's address:")
                 text: input_address.field.text
             }
 
-            // Amount title
-            DefaultText {
-                text: qsTr("Amount:")
-            }
-            // Amount value
-            DefaultText {
+            // Amount
+            TextWithTitle {
+                title: qsTr("Amount:")
                 text: input_amount.field.text + " " + API.get().current_coin_info.ticker
             }
 
@@ -153,30 +147,21 @@ Popup {
                 font.pointSize: Style.textSize2
             }
 
-            // Address title
-            DefaultText {
-                text: qsTr("Recipient's address:")
-            }
-            // Address value
-            DefaultText {
+            // Address
+            TextWithTitle {
+                title: qsTr("Recipient's address:")
                 text: input_address.field.text
             }
 
-            // Amount title
-            DefaultText {
-                text: qsTr("Amount:")
-            }
-            // Amount value
-            DefaultText {
+            // Amount
+            TextWithTitle {
+                title: qsTr("Amount:")
                 text: input_amount.field.text + " " + API.get().current_coin_info.ticker
             }
 
-            // Transaction Hash title
-            DefaultText {
-                text: qsTr("Transaction Hash:")
-            }
-            // Transaction Hash value
-            DefaultText {
+            // Transaction Hash
+            TextWithTitle {
+                title: qsTr("Transaction Hash:")
                 text: tx_hash
             }
 
