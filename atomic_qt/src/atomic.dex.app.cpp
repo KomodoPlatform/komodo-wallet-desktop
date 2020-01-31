@@ -144,6 +144,16 @@ namespace atomic_dex
     }
 
     bool
+    application::disable_coins(const QStringList& coins)
+    {
+        std::vector<std::string> coins_std;
+        coins_std.reserve(coins.size());
+        for (auto&& coin: coins) { coins_std.push_back(coin.toStdString()); }
+        get_mm2().disable_multiple_coins(coins_std);
+        return false;
+    }
+
+    bool
     atomic_dex::application::create(const QString& password, const QString& seed)
     {
         std::error_code ec;
@@ -406,6 +416,7 @@ namespace atomic_dex
         get_dispatcher().sink<change_ticker_event>().connect<&application::on_change_ticker_event>(*this);
         get_dispatcher().sink<enabled_coins_event>().connect<&application::on_enabled_coins_event>(*this);
         get_dispatcher().sink<tx_fetch_finished>().connect<&application::on_tx_fetch_finished_event>(*this);
+        get_dispatcher().sink<coin_disabled>().connect<&application::on_coin_disabled_event>(*this);
     }
 
     void
@@ -509,6 +520,13 @@ namespace atomic_dex
     application::get_mm2() const noexcept
     {
         return this->system_manager_.get_system<mm2>();
-        ;
     }
+
+    void
+    application::on_coin_disabled_event(const coin_disabled&) noexcept
+    {
+        LOG_SCOPE_FUNCTION(INFO);
+        m_refresh_enabled_coin_event = true;
+    }
+
 } // namespace atomic_dex

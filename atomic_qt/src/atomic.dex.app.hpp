@@ -49,12 +49,10 @@ namespace atomic_dex
         void        set_ticker(QString ticker) noexcept;
         QString     get_address() const noexcept;
         void        set_address(QString address) noexcept;
-
-        QString get_balance() const noexcept;
-        void    set_balance(QString balance) noexcept;
-
-        QString get_fiat_amount() const noexcept;
-        void    set_fiat_amount(QString fiat_amount) noexcept;
+        QString     get_balance() const noexcept;
+        void        set_balance(QString balance) noexcept;
+        QString     get_fiat_amount() const noexcept;
+        void        set_fiat_amount(QString fiat_amount) noexcept;
       signals:
         void ticker_changed();
         void balance_changed();
@@ -89,6 +87,7 @@ namespace atomic_dex
         void                  on_enabled_coins_event(const enabled_coins_event&) noexcept;
         void                  on_change_ticker_event(const change_ticker_event&) noexcept;
         void                  on_tx_fetch_finished_event(const tx_fetch_finished&) noexcept;
+        void                  on_coin_disabled_event(const coin_disabled&) noexcept;
         mm2&                  get_mm2() noexcept;
         const mm2&            get_mm2() const noexcept;
         coinpaprika_provider& get_paprika() noexcept;
@@ -98,8 +97,7 @@ namespace atomic_dex
         QObjectList           get_enableable_coins() const noexcept;
         QString               get_current_fiat() const noexcept;
         void                  set_current_fiat(QString current_fiat) noexcept;
-
-        void launch();
+        void                  launch();
 
         Q_INVOKABLE QObject* prepare_send(const QString& address, const QString& amount, bool max = false);
         Q_INVOKABLE QString  send(const QString& tx_hex);
@@ -112,6 +110,7 @@ namespace atomic_dex
         Q_INVOKABLE bool     place_buy_order(const QString& base, const QString& rel, const QString& price, const QString& volume);
         Q_INVOKABLE bool     place_sell_order(const QString& base, const QString& rel, const QString& price, const QString& volume);
         Q_INVOKABLE bool     do_i_have_enough_funds(const QString& ticker, const QString& amount) const;
+        Q_INVOKABLE bool     disable_coins(const QStringList& coins);
 
 
       signals:
@@ -124,11 +123,13 @@ namespace atomic_dex
         std::atomic_bool   m_refresh_enabled_coin_event{false};
         std::atomic_bool   m_refresh_current_ticker_infos{false};
         std::atomic_bool   m_refresh_transaction_only{false};
-        void               tick();
         QObjectList        m_enabled_coins;
         QObjectList        m_enableable_coins;
         QString            m_current_fiat{"USD"};
         current_coin_info* m_coin_info;
-        void               refresh_address(mm2& mm2);
+
+      private:
+        void tick();
+        void refresh_address(mm2& mm2);
     };
 } // namespace atomic_dex
