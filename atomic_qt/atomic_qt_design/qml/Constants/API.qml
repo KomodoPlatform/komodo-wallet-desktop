@@ -140,6 +140,16 @@ QtObject {
 
         do_i_have_enough_funds: (ticker, amount) => {
             return parseFloat(mockAPI.current_coin_info.balance) >= parseFloat(amount)
+        },
+
+        get_balance: (ticker) => {
+            switch(ticker) {
+               case "BTC": return "5.555"
+               case "KMD": return "5.555"
+               case "CHIPS": return "5.555"
+               case "RICK": return "3.33"
+               case "MORTY": return "5.555"
+            }
         }
     })
 
