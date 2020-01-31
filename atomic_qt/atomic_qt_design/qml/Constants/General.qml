@@ -6,7 +6,7 @@ QtObject {
     readonly property int height: 800
     readonly property int minimumWidth: 960
     readonly property int minimumHeight: 600
-    readonly property string assets_path: "../../assets/"
+    readonly property string assets_path: Qt.resolvedUrl(".") + "../../assets/"
     readonly property string image_path: assets_path + "images/"
 
     readonly property int idx_dashboard_wallet: 0
