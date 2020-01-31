@@ -56,8 +56,8 @@ Item {
 
             currentIndex: current_page
 
-            DefaultText {
-                text: qsTr("Content-Trade")
+            Trade {
+
             }
 
             DefaultText {
