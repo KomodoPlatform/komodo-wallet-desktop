@@ -50,10 +50,16 @@ Item {
 
             RowLayout {
                 // Base
+                Image {
+                    Layout.leftMargin: 15
+                    source: base === "" ? base : General.coin_icons_path + base + ".png"
+                    Layout.preferredWidth: 32
+                    Layout.preferredHeight: Layout.preferredWidth
+                }
+
                 ComboBox {
                     id: combo_base
                     Layout.preferredWidth: 250
-                    Layout.leftMargin: 15
                     Layout.topMargin: 10
                     Layout.bottomMargin: 10
 
@@ -77,10 +83,15 @@ Item {
                 ComboBox {
                     id: combo_rel
                     Layout.preferredWidth: 250
-                    Layout.rightMargin: 15
 
                     model: convertToFullName(relCoins())
                     onCurrentTextChanged: rel = relCoins()[currentIndex].ticker
+                }
+                Image {
+                    Layout.rightMargin: 15
+                    source: base === "" ? base : General.coin_icons_path + rel + ".png"
+                    Layout.preferredWidth: 32
+                    Layout.preferredHeight: Layout.preferredWidth
                 }
             }
         }
