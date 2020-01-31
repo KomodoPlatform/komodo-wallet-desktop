@@ -33,6 +33,17 @@ Rectangle {
         }
     }
 
+    function amountToReceive(sell, base, rel, price, volume) {
+        return sell ? (parseFloat(price) * parseFloat(volume)) + " " + rel : volume + " " + base
+    }
+
+    function fieldsAreFilled() {
+        return input_price.field.text !== "" &&
+                input_volume.field.text !== "" &&
+                parseFloat(input_price.field.text) > 0 &&
+                parseFloat(input_volume.field.text) > 0
+    }
+
     color: Style.colorTheme7
     radius: Style.rectangleCornerRadius
 
@@ -74,6 +85,7 @@ Rectangle {
             field.placeholderText: qsTr("Enter the price")
         }
 
+        // Not enough funds error
         DefaultText {
             Layout.leftMargin: 10
             Layout.rightMargin: Layout.leftMargin
@@ -88,17 +100,27 @@ Rectangle {
 
         // Action button
         Button {
+            id: action_button
             Layout.leftMargin: 10
             Layout.rightMargin: Layout.leftMargin
             Layout.fillWidth: true
 
             text: sell ? qsTr("Sell") : qsTr("Buy")
-            enabled: input_price.field.text !== "" &&
-                     input_volume.field.text !== "" &&
-                     parseFloat(input_price.field.text) > 0 &&
-                     parseFloat(input_volume.field.text) > 0 &&
-                     hasEnoughFunds(sell, base, rel, input_price.field.text, input_volume.field.text)
+            enabled: fieldsAreFilled() && hasEnoughFunds(sell, base, rel, input_price.field.text, input_volume.field.text)
             onClicked: sell ? sellCoin(base, rel, input_price.field.text, input_volume.field.text) : buyCoin(base, rel, input_price.field.text, input_volume.field.text)
+        }
+
+        // Amount to receive
+        DefaultText {
+            Layout.leftMargin: 10
+            Layout.rightMargin: Layout.leftMargin
+
+            color: Style.colorGreen
+
+            text: qsTr("You'll receive:") + "\n" + amountToReceive(sell, base, rel, input_price.field.text, input_volume.field.text)
+            wrapMode: Text.Wrap
+            visible: action_button.enabled
+            Layout.maximumWidth: parent.width - Layout.leftMargin * 2
         }
     }
 }
