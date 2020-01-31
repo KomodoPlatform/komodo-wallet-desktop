@@ -545,4 +545,12 @@ namespace atomic_dex
         m_refresh_enabled_coin_event = true;
     }
 
+    QString
+    application::get_balance(const QString& coin)
+    {
+        std::error_code ec;
+        auto res =  get_mm2().my_balance(coin.toStdString(), ec);
+        return QString::fromStdString(res);
+    }
+
 } // namespace atomic_dex

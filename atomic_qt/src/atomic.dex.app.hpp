@@ -112,6 +112,7 @@ namespace atomic_dex
         Q_INVOKABLE bool     login(const QString& password);
         Q_INVOKABLE bool     create(const QString& password, const QString& seed);
         Q_INVOKABLE bool     enable_coins(const QStringList& coins);
+        Q_INVOKABLE QString  get_balance(const QString& coin);
         Q_INVOKABLE bool     place_buy_order(const QString& base, const QString& rel, const QString& price, const QString& volume);
         Q_INVOKABLE bool     place_sell_order(const QString& base, const QString& rel, const QString& price, const QString& volume);
         Q_INVOKABLE bool     do_i_have_enough_funds(const QString& ticker, const QString& amount) const;
