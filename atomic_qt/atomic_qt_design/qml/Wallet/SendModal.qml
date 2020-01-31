@@ -15,32 +15,33 @@ Popup {
     onClosed: if(stack_layout.currentIndex === 2) closeAndReset()
 
     // Local
-    property string tx_hex
-    property string tx_hash
+    readonly property var default_prepare_send_coin_result: ({ has_error: false, error_message: "", tx_hex: "", date: "", fees: "", explorer_url: "" })
+    property var prepare_send_coin_result: default_prepare_send_coin_result
+    property string send_result
 
     function prepareSendCoin(address, amount) {
-        let result = API.get().prepare_send_coin(address, amount, parseFloat(API.get().current_coin_info.balance) === parseFloat(amount))
+        prepare_send_coin_result = API.get().prepare_send_coin(address, amount, parseFloat(API.get().current_coin_info.balance) === parseFloat(amount))
 
-        if(result.has_error) {
-            text_error.text = result.error_message
+        if(prepare_send_coin_result.has_error) {
+            text_error.text = prepare_send_coin_result.error_message
         }
         else {
             text_error.text = ""
 
             // Change page
-            tx_hex = result.tx_hex
             stack_layout.currentIndex = 1
         }
     }
 
     function sendCoin() {
-        tx_hash = API.get().send(tx_hex)
+        send_result = API.get().send(prepare_send_coin_result)
         stack_layout.currentIndex = 2
     }
 
     function closeAndReset() {
-        tx_hex = ""
-        tx_hash = ""
+        prepare_send_coin_result = default_prepare_send_coin_result
+        send_result = ""
+
         input_address.field.text = ""
         input_amount.field.text = ""
         text_error.text = ""
@@ -124,6 +125,18 @@ Popup {
                 text: input_amount.field.text + " " + API.get().current_coin_info.ticker
             }
 
+            // Fees
+            TextWithTitle {
+                title: qsTr("Fees:")
+                text: prepare_send_coin_result.fees
+            }
+
+            // Date
+            TextWithTitle {
+                title: qsTr("Date:")
+                text: prepare_send_coin_result.date
+            }
+
             // Buttons
             RowLayout {
                 Button {
@@ -159,10 +172,22 @@ Popup {
                 text: input_amount.field.text + " " + API.get().current_coin_info.ticker
             }
 
+            // Fees
+            TextWithTitle {
+                title: qsTr("Fees:")
+                text: prepare_send_coin_result.fees
+            }
+
+            // Date
+            TextWithTitle {
+                title: qsTr("Date:")
+                text: prepare_send_coin_result.date
+            }
+
             // Transaction Hash
             TextWithTitle {
                 title: qsTr("Transaction Hash:")
-                text: tx_hash
+                text: send_result
             }
 
             // Buttons
@@ -175,7 +200,7 @@ Popup {
                 Button {
                     text: qsTr("View at Explorer")
                     Layout.fillWidth: true
-                    onClicked: Qt.openUrlExternally(API.get().current_coin_info.explorer_url + "tx/" + tx_hash)
+                    onClicked: Qt.openUrlExternally(prepare_send_coin_result.explorer_url + "tx/" + send_result)
                 }
             }
         }

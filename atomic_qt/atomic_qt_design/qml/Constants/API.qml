@@ -92,10 +92,12 @@ QtObject {
            console.log("Preparing to send " + amount + " to " + address)
 
            return {
-               has_error: false,
-               error_message: "",
-               tx_hex: "abcdefghijklmnopqrstuvwxyz",
-               date: "17. Oct 1963 14:26"
+                has_error: false,
+                error_message: "",
+                tx_hex: "abcdefghijklmnopqrstuvwxyz",
+                date: "17. Oct 1963 14:26",
+                fees: "0.0000125",
+                explorer_url: "https://rick.explorer.dexstats.info/",
            }
         },
 
