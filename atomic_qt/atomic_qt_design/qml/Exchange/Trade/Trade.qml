@@ -77,9 +77,11 @@ Item {
 
             // Left side
             ColumnLayout {
+                Layout.preferredWidth: 0.3
+
                 // Buy
                 OrderForm {
-                    Layout.preferredWidth: 300
+                    Layout.fillWidth: true
                     Layout.fillHeight: true
 
                     sell: false
@@ -89,7 +91,7 @@ Item {
 
                 // Sell
                 OrderForm {
-                    Layout.preferredWidth: 300
+                    Layout.fillWidth: true
                     Layout.fillHeight: true
 
                     sell: true

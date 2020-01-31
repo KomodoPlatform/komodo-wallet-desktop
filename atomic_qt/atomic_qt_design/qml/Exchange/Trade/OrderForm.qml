@@ -17,14 +17,39 @@ Rectangle {
     radius: Style.rectangleCornerRadius
 
     ColumnLayout {
+        width: parent.width
+
         DefaultText {
+            id: title
+
             Layout.leftMargin: 15
             Layout.topMargin: 15
+            Layout.bottomMargin: 5
 
-            id: title
             text: (sell ? qsTr("Sell") : qsTr("Buy")) + " " + base
-            Layout.alignment: Qt.AlignHCenter
             font.pointSize: Style.textSize2
+        }
+
+        HorizontalLine {
+            Layout.fillWidth: true
+            color: Style.colorWhite5
+        }
+
+        // Volume
+        AmountField {
+            id: input_volume
+            Layout.topMargin: 10
+            Layout.leftMargin: 10
+            Layout.rightMargin: 10
+            title: "Volume"
+        }
+
+        // Price
+        AmountField {
+            id: input_price
+            Layout.leftMargin: 10
+            Layout.rightMargin: 10
+            title: "Price"
         }
     }
 }
@@ -36,3 +61,9 @@ Rectangle {
 
 
 
+
+/*##^##
+Designer {
+    D{i:0;autoSize:true;height:480;width:640}
+}
+##^##*/
