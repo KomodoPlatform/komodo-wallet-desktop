@@ -16,8 +16,7 @@ SetupPage {
         interval: 64
         repeat: true
         onTriggered: {
-            // TODO: Remove the undefined case when C++ side is implemented
-            if(API.get().initial_loading_status === undefined || API.get().initial_loading_status === "complete") {
+            if(API.get().initial_loading_status === "complete") {
                 running = false
                 onLoaded()
             }
