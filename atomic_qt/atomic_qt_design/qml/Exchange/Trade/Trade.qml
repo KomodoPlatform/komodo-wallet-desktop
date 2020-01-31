@@ -10,7 +10,15 @@ Item {
 
     function changeBase(ticker) {
         combo_base.currentIndex = baseCoins().map(c => c.ticker).indexOf(ticker)
+        base = ticker
     }
+
+    function swapPair() {
+        const curr_base = base
+        changeBase(rel)
+        combo_rel.currentIndex = relCoins().map(c => c.ticker).indexOf(curr_base)
+    }
+
 
     function reset() {
         order_form_sell.reset()
@@ -75,7 +83,7 @@ Item {
 
                     MouseArea {
                         anchors.fill: parent
-                        onClicked: changeBase(rel)
+                        onClicked: swapPair()
                     }
                 }
 
