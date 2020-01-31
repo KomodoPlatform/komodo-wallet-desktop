@@ -259,6 +259,7 @@ RowLayout {
                     Action {
                         text: "Disable " + model.modelData.ticker
                         onTriggered: API.get().disable_coins([model.modelData.ticker])
+                        enabled: API.get().enabled_coins.length > 1
                     }
                 }
 
