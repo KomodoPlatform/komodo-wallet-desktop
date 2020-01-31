@@ -90,6 +90,7 @@ namespace atomic_dex
         void                  on_change_ticker_event(const change_ticker_event&) noexcept;
         void                  on_tx_fetch_finished_event(const tx_fetch_finished&) noexcept;
         mm2&                  get_mm2() noexcept;
+        const mm2&            get_mm2() const noexcept;
         coinpaprika_provider& get_paprika() noexcept;
         entt::dispatcher&     get_dispatcher() noexcept;
         QObject*              get_current_coin_info() const noexcept;
@@ -110,6 +111,7 @@ namespace atomic_dex
         Q_INVOKABLE bool     enable_coins(const QStringList& coins);
         Q_INVOKABLE bool     place_buy_order(const QString& base, const QString& rel, const QString& price, const QString& volume);
         Q_INVOKABLE bool     place_sell_order(const QString& base, const QString& rel, const QString& price, const QString& volume);
+        Q_INVOKABLE bool     do_i_have_enough_funds(const QString& ticker, const QString& amount) const;
 
 
       signals:

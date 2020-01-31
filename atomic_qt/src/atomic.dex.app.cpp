@@ -480,9 +480,9 @@ namespace atomic_dex
         amount_f.assign(volume.toStdString());
         total_amount = price_f * amount_f;
 
-        t_buy_request req{.base = base.toStdString(), .rel = rel.toStdString(), .price = price.toStdString(), .volume = volume.toStdString()};
+        t_buy_request   req{.base = base.toStdString(), .rel = rel.toStdString(), .price = price.toStdString(), .volume = volume.toStdString()};
         std::error_code ec;
-        auto answer = get_mm2().place_buy_order(std::move(req), total_amount, ec);
+        auto            answer = get_mm2().place_buy_order(std::move(req), total_amount, ec);
         return answer.error.has_value();
     }
 
@@ -492,9 +492,23 @@ namespace atomic_dex
         t_float_50 amount_f;
         amount_f.assign(volume.toStdString());
 
-        t_sell_request req{.base = base.toStdString(), .rel = rel.toStdString(), .price = price.toStdString(), .volume = volume.toStdString()};
+        t_sell_request  req{.base = base.toStdString(), .rel = rel.toStdString(), .price = price.toStdString(), .volume = volume.toStdString()};
         std::error_code ec;
-        auto answer = get_mm2().place_sell_order(std::move(req), amount_f, ec);
+        auto            answer = get_mm2().place_sell_order(std::move(req), amount_f, ec);
         return answer.error.has_value();
+    }
+
+    bool
+    application::do_i_have_enough_funds(const QString& ticker, const QString& amount) const
+    {
+        t_float_50 amount_f(amount.toStdString());
+        return get_mm2().do_i_have_enough_funds(ticker.toStdString(), amount_f);
+    }
+
+    const mm2&
+    application::get_mm2() const noexcept
+    {
+        return this->system_manager_.get_system<mm2>();
+        ;
     }
 } // namespace atomic_dex
