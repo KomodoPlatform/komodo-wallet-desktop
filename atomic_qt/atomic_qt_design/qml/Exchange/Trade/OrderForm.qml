@@ -14,12 +14,20 @@ Rectangle {
     // Local
     property string action_result
 
+    function reset(reset_result=true) {
+        if(reset_result) action_result = ""
+        input_price.field.text = ""
+        input_volume.field.text = ""
+    }
+
     function sellCoin(base, rel, price, volume) {
         action_result = API.get().place_sell_order(base, rel, price, volume) ? "success" : "error"
+        if(action_result === "success") reset(false)
     }
 
     function buyCoin(base, rel, price, volume) {
         action_result = API.get().place_buy_order(base, rel, price, volume) ? "success" : "error"
+        if(action_result === "success") reset(false)
     }
 
     function hasEnoughFunds(sell, base, rel, price, volume) {
@@ -58,7 +66,7 @@ Rectangle {
             Layout.topMargin: 10
             Layout.bottomMargin: 5
 
-            text: (sell ? qsTr("Sell") : qsTr("Buy")) + " " + base + qsTr(" for ") + rel
+            text: (sell ? qsTr("Sell") : qsTr("Buy")) + " " + base
             font.pointSize: Style.textSize2
         }
 

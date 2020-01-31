@@ -12,6 +12,11 @@ Item {
         combo_base.currentIndex = baseCoins().map(c => c.ticker).indexOf(ticker)
     }
 
+    function reset() {
+        order_form_sell.reset()
+        order_form_buy.reset()
+    }
+
     function convertToFullName(coins) {
         return coins.map(c => c.name + " (" + c.ticker + ")")
     }
@@ -53,7 +58,10 @@ Item {
                     Layout.bottomMargin: 10
 
                     model: convertToFullName(baseCoins())
-                    onCurrentTextChanged: base = baseCoins()[currentIndex].ticker
+                    onCurrentTextChanged: {
+                        base = baseCoins()[currentIndex].ticker
+                        reset()
+                    }
                 }
 
                 Image {
@@ -85,18 +93,22 @@ Item {
                 Layout.minimumWidth: 300
                 Layout.maximumWidth: Layout.minimumWidth
 
-//                // Buy
-//                OrderForm {
-//                    Layout.fillWidth: true
-//                    Layout.fillHeight: true
+                // Buy
+                OrderForm {
+                    id: order_form_buy
+                    Layout.fillWidth: true
+                    Layout.fillHeight: true
 
-//                    sell: false
-//                    base: exchange_trade.base
-//                    rel: exchange_trade.rel
-//                }
+                    sell: false
+                    base: exchange_trade.base
+                    rel: exchange_trade.rel
+
+                    visible: false
+                }
 
                 // Sell
                 OrderForm {
+                    id: order_form_sell
                     Layout.fillWidth: true
                     Layout.fillHeight: true
 
