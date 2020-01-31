@@ -73,7 +73,7 @@ Popup {
                     anchors.left: parent.left
                     anchors.leftMargin: 20
 
-                    source: General.image_path + "coins/" + model.modelData.ticker.toLowerCase() + ".png"
+                    source: General.coin_icons_path + model.modelData.ticker.toLowerCase() + ".png"
                     fillMode: Image.PreserveAspectFit
                     width: Style.textSize2
                     anchors.verticalCenter: parent.verticalCenter
