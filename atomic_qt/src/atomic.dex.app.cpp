@@ -120,6 +120,12 @@ namespace atomic_dex
         emit ticker_changed();
     }
 
+    QString
+    atomic_dex::current_coin_info::get_explorer_url() const noexcept
+    {
+        return selected_coin_url;
+    }
+
     QObjectList
     atomic_dex::application::get_enabled_coins() const noexcept
     {
@@ -297,6 +303,7 @@ namespace atomic_dex
                 refresh_transactions(mm2);
                 refresh_fiat_balance(mm2, paprika);
                 refresh_address(mm2);
+                m_coin_info->set_explorer_url(QString::fromStdString(get_mm2().get_coin_info(m_coin_info->get_ticker().toStdString()).explorer_url[0]));
                 m_refresh_current_ticker_infos = false;
             }
 
@@ -408,6 +415,13 @@ namespace atomic_dex
         emit address_changed();
     }
 
+    void
+    current_coin_info::set_explorer_url(QString url) noexcept
+    {
+        this->selected_coin_url = std::move(url);
+        emit explorer_url_changed();
+    }
+
     application::application(QObject* pParent) noexcept : QObject(pParent), m_coin_info(new current_coin_info(dispatcher_, this))
     {
         //! MM2 system need to be created before the GUI and give the instance to the gui
@@ -446,6 +460,7 @@ namespace atomic_dex
         LOG_SCOPE_FUNCTION(INFO);
         m_refresh_current_ticker_infos = true;
     }
+
     void
     application::refresh_address(mm2& mm2)
     {

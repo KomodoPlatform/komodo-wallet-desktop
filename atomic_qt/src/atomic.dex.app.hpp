@@ -38,6 +38,7 @@ namespace atomic_dex
         Q_PROPERTY(QString balance READ get_balance WRITE set_balance NOTIFY balance_changed)
         Q_PROPERTY(QString address READ get_address WRITE set_address NOTIFY address_changed)
         Q_PROPERTY(QString fiat_amount READ get_fiat_amount WRITE set_fiat_amount NOTIFY fiat_amount_changed);
+        Q_PROPERTY(QString explorer_url READ get_explorer_url WRITE set_explorer_url NOTIFY explorer_url_changed);
         Q_PROPERTY(QList<QObject*> transactions READ get_transactions WRITE set_transactions NOTIFY transactionsChanged)
 
 
@@ -51,12 +52,15 @@ namespace atomic_dex
         void        set_address(QString address) noexcept;
         QString     get_balance() const noexcept;
         void        set_balance(QString balance) noexcept;
+        QString     get_explorer_url() const noexcept;
+        void        set_explorer_url(QString url) noexcept;
         QString     get_fiat_amount() const noexcept;
         void        set_fiat_amount(QString fiat_amount) noexcept;
       signals:
         void ticker_changed();
         void balance_changed();
         void address_changed();
+        void explorer_url_changed();
         void fiat_amount_changed();
         void transactionsChanged();
 
@@ -65,6 +69,7 @@ namespace atomic_dex
         QString           selected_coin_balance;
         QString           selected_coin_address;
         QString           selected_coin_fiat_amount{"0"};
+        QString           selected_coin_url;
         QObjectList       selected_coin_transactions;
         entt::dispatcher& m_dispatcher;
     };
