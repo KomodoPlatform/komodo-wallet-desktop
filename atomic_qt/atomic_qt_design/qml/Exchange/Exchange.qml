@@ -51,7 +51,6 @@ Item {
 
         // Bottom content
         StackLayout {
-            Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
             transformOrigin: Item.Center
 
             currentIndex: current_page

@@ -8,6 +8,8 @@ import "../Constants"
 Item {
     id: exchange_trade
 
+    height: 500
+
     function convertToFullName(coins) {
         return coins.map(c => c.name + " (" + c.ticker + ")")
     }
@@ -34,7 +36,6 @@ Item {
         // Base
         ComboBox {
             id: combo_base
-            width: 400
             model: convertToFullName(baseCoins())
             onCurrentTextChanged: base = baseCoins()[currentIndex].ticker
         }
@@ -42,7 +43,6 @@ Item {
         // Rel Base
         ComboBox {
             id: combo_rel
-            width: 400
             model: convertToFullName(relCoins())
             onCurrentTextChanged: rel = relCoins()[currentIndex].ticker
         }
@@ -64,8 +64,4 @@ Item {
 
 
 
-/*##^##
-Designer {
-    D{i:0;autoSize:true;height:264;width:1200}
-}
-##^##*/
+
