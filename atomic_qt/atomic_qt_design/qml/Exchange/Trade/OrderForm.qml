@@ -59,15 +59,23 @@ Rectangle {
     ColumnLayout {
         width: parent.width
 
-        DefaultText {
-            id: title
+        RowLayout {
+            DefaultText {
+                id: title
 
-            Layout.leftMargin: 15
-            Layout.topMargin: 10
-            Layout.bottomMargin: 5
+                Layout.leftMargin: 15
+                Layout.topMargin: 10
+                Layout.bottomMargin: 5
 
-            text: (sell ? qsTr("Sell") : qsTr("Buy")) + " " + base
-            font.pointSize: Style.textSize2
+                text: (sell ? qsTr("Sell") : qsTr("Buy")) + " " + base
+                font.pointSize: Style.textSize2
+            }
+
+            Image {
+                source: base === "" ? base : General.coin_icons_path + base + ".png"
+                Layout.preferredWidth: 32
+                Layout.preferredHeight: Layout.preferredWidth
+            }
         }
 
         HorizontalLine {
