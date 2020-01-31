@@ -258,7 +258,7 @@ RowLayout {
                     id: context_menu
                     Action {
                         text: "Disable " + model.modelData.ticker
-                        onTriggered: console.log("Disabling... " + model.modelData.ticker)
+                        onTriggered: API.get().disable_coins([model.modelData.ticker])
                     }
                 }
 

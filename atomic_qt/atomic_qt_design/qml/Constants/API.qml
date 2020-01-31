@@ -105,6 +105,17 @@ QtObject {
           return "abcdefghijklmnopqrstuvwxyz"
        },
 
+       disable_coins: (coins) => {
+          for(let c of coins) {
+                mockAPI.enabled_coins = mockAPI.enabled_coins.filter(ec => {
+                    const keep = ec.ticker !== c
+                    if(!keep) mockAPI.enableable_coins.push(ec)
+                    return keep
+                })
+                console.log("Disabling " + c)
+           }
+       },
+
        on_gui_enter_dex: () => {
            console.log("on_gui_enter_dex")
        },
