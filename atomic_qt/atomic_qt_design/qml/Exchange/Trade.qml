@@ -8,6 +8,21 @@ import "../Constants"
 Item {
     id: exchange_trade
 
+    function convertToFullName(coins) {
+        return coins.map(c => c.name + " (" + c.ticker + ")")
+    }
+
+    function baseCoins() {
+        return API.get().enabled_coins
+    }
+
+    function relCoins() {
+        return API.get().enabled_coins.filter(c => c.ticker !== base)
+    }
+
+    property string base
+    property string rel
+
     ColumnLayout {
         anchors.horizontalCenter: parent.horizontalCenter
         anchors.verticalCenter: parent.verticalCenter
@@ -16,22 +31,28 @@ Item {
 
         spacing: 20
 
-        function convertToFullName(coins) {
-            return coins.map(c => c.name + " (" + c.ticker + ")")
-        }
-
         // Base
         ComboBox {
             id: combo_base
             width: 400
-            model: convertToFullName(API.get().enabled_coins)
+            model: convertToFullName(baseCoins())
+            onCurrentTextChanged: base = baseCoins()[currentIndex].ticker
         }
 
         // Rel Base
         ComboBox {
             id: combo_rel
             width: 400
-            //model: convertToFullName(API.get().enabled_coins.filter(c => c.ticker !== combo_base.model[combo_base.currentIndex]))
+            model: convertToFullName(relCoins())
+            onCurrentTextChanged: rel = relCoins()[currentIndex].ticker
+        }
+
+        DefaultText {
+            text: "Base: " + base
+        }
+
+        DefaultText {
+            text: "Rel: " + rel
         }
     }
 }
