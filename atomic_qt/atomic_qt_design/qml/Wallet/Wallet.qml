@@ -34,22 +34,30 @@ RowLayout {
             spacing: 30
 
             // Balance texts
-            ColumnLayout {
+            RowLayout {
                 Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
+                ColumnLayout {
+                    id: balance_layout
+                    DefaultText {
+                        text: API.get().current_coin_info.balance + " " +  API.get().current_coin_info.ticker
+                        Layout.alignment: Qt.AlignRight
+                        font.pointSize: Style.textSize5
+                    }
 
-                DefaultText {
-                    text: API.get().current_coin_info.balance + " " +  API.get().current_coin_info.ticker
-                    Layout.alignment: Qt.AlignRight
-                    font.pointSize: Style.textSize5
+                    DefaultText {
+                        text: API.get().current_coin_info.fiat_amount + " " + API.get().fiat
+                        Layout.topMargin: -15
+                        Layout.rightMargin: 4
+                        Layout.alignment: Qt.AlignRight
+                        font.pointSize: Style.textSize2
+                        color: Style.colorWhite4
+                    }
                 }
-
-                DefaultText {
-                    text: API.get().current_coin_info.fiat_amount + " " + API.get().fiat
-                    Layout.topMargin: -15
-                    Layout.rightMargin: 4
-                    Layout.alignment: Qt.AlignRight
-                    font.pointSize: Style.textSize2
-                    color: Style.colorWhite4
+                Image {
+                    source: General.coinIcon(API.get().current_coin_info.ticker)
+                    Layout.leftMargin: 10
+                    Layout.preferredHeight: balance_layout.childrenRect.height
+                    Layout.preferredWidth: Layout.preferredHeight
                 }
             }
 
