@@ -594,6 +594,7 @@ namespace atomic_dex
             std::sort(begin(out), end(out), [](auto&& a, auto&& b) { return a.timestamp > b.timestamp; });
 
             m_tx_informations.insert_or_assign(ticker, std::move(out));
+            this->dispatcher_.trigger<tx_fetch_finished>();
         }
     }
 

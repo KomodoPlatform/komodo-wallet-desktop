@@ -288,6 +288,13 @@ namespace atomic_dex
                 m_refresh_current_ticker_infos = false;
             }
 
+            if (m_refresh_transaction_only)
+            {
+                DLOG_F(INFO, "{}", "refreshing transactions");
+                refresh_transactions(mm2);
+                m_refresh_transaction_only = false;
+            }
+
             if (not m_coin_info->get_ticker().isEmpty() && not m_enabled_coins.empty())
             {
                 refresh_fiat_balance(mm2, paprika);
@@ -397,6 +404,7 @@ namespace atomic_dex
 
         get_dispatcher().sink<change_ticker_event>().connect<&application::on_change_ticker_event>(*this);
         get_dispatcher().sink<enabled_coins_event>().connect<&application::on_enabled_coins_event>(*this);
+        get_dispatcher().sink<tx_fetch_finished>().connect<&application::on_tx_fetch_finished_event>(*this);
     }
 
     void
@@ -451,5 +459,12 @@ namespace atomic_dex
         std::error_code                 ec;
         auto                            answer = mm2::broadcast(std::move(req), ec);
         return QString::fromStdString(answer.tx_hash);
+    }
+
+    void
+    application::on_tx_fetch_finished_event(const tx_fetch_finished&) noexcept
+    {
+        LOG_SCOPE_FUNCTION(INFO);
+        m_refresh_transaction_only = true;
     }
 } // namespace atomic_dex

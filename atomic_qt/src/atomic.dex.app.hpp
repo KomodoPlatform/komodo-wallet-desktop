@@ -88,6 +88,7 @@ namespace atomic_dex
 
         void                  on_enabled_coins_event(const enabled_coins_event&) noexcept;
         void                  on_change_ticker_event(const change_ticker_event&) noexcept;
+        void                  on_tx_fetch_finished_event(const tx_fetch_finished&) noexcept;
         mm2&                  get_mm2() noexcept;
         coinpaprika_provider& get_paprika() noexcept;
         entt::dispatcher&     get_dispatcher() noexcept;
@@ -118,6 +119,7 @@ namespace atomic_dex
       private:
         std::atomic_bool   m_refresh_enabled_coin_event{false};
         std::atomic_bool   m_refresh_current_ticker_infos{false};
+        std::atomic_bool   m_refresh_transaction_only{false};
         void               tick();
         QObjectList        m_enabled_coins;
         QObjectList        m_enableable_coins;
