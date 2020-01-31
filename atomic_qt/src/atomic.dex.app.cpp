@@ -433,6 +433,8 @@ namespace atomic_dex
         get_dispatcher().sink<enabled_coins_event>().connect<&application::on_enabled_coins_event>(*this);
         get_dispatcher().sink<tx_fetch_finished>().connect<&application::on_tx_fetch_finished_event>(*this);
         get_dispatcher().sink<coin_disabled>().connect<&application::on_coin_disabled_event>(*this);
+        get_dispatcher().sink<mm2_initialized>().connect<&application::on_mm2_initialized_event>(*this);
+        get_dispatcher().sink<mm2_started>().connect<&application::on_mm2_started_event>(*this);
     }
 
     void
@@ -579,4 +581,17 @@ namespace atomic_dex
         emit on_status_changed();
     }
 
+    void
+    application::on_mm2_initialized_event(const mm2_initialized&) noexcept
+    {
+        LOG_SCOPE_FUNCTION(INFO);
+        this->set_status("enabling_coins");
+    }
+
+    void
+    application::on_mm2_started_event(const mm2_started&) noexcept
+    {
+        LOG_SCOPE_FUNCTION(INFO);
+        this->set_status("complete");
+    }
 } // namespace atomic_dex

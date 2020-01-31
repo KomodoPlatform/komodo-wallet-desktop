@@ -445,6 +445,7 @@ namespace atomic_dex
             if (wait_ec == reproc::error::wait_timeout)
             {
                 DVLOG_F(loguru::Verbosity_INFO, "mm2 is initialized");
+                dispatcher_.trigger<mm2_initialized>();
                 enable_default_coins();
                 m_mm2_running = true;
                 dispatcher_.trigger<mm2_started>();

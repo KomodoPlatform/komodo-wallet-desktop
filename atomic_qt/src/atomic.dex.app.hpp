@@ -94,6 +94,8 @@ namespace atomic_dex
         void                  on_change_ticker_event(const change_ticker_event&) noexcept;
         void                  on_tx_fetch_finished_event(const tx_fetch_finished&) noexcept;
         void                  on_coin_disabled_event(const coin_disabled&) noexcept;
+        void                  on_mm2_initialized_event(const mm2_initialized&) noexcept;
+        void                  on_mm2_started_event(const mm2_started&) noexcept;
         mm2&                  get_mm2() noexcept;
         const mm2&            get_mm2() const noexcept;
         coinpaprika_provider& get_paprika() noexcept;
