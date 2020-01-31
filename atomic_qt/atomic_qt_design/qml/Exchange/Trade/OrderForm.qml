@@ -9,16 +9,17 @@ import "../../Constants"
 Rectangle {
     property string base
     property string rel
-
     property bool sell
 
     // Local
+    property string action_result
+
     function sellCoin(base, rel, price, volume) {
-        console.log(`Selling ${volume} ${base} for ${price} ${rel} each`)
+        action_result = API.get().place_sell_order(base, rel, price, volume) ? "success" : "error"
     }
 
     function buyCoin(base, rel, price, volume) {
-        console.log(`Buying ${volume} ${base} for ${price} ${rel} each`)
+        action_result = API.get().place_buy_order(base, rel, price, volume) ? "success" : "error"
     }
 
     function hasEnoughFunds(sell, base, rel, price, volume) {
@@ -79,7 +80,7 @@ Rectangle {
         // Price
         AmountField {
             id: input_price
-            Layout.leftMargin: 10
+            Layout.leftMargin: input_volume.Layout.leftMargin
             Layout.rightMargin: Layout.leftMargin
             title: qsTr("Price")
             field.placeholderText: qsTr("Enter the price")
@@ -87,21 +88,21 @@ Rectangle {
 
         // Not enough funds error
         DefaultText {
-            Layout.leftMargin: 10
+            Layout.leftMargin: input_volume.Layout.leftMargin
             Layout.rightMargin: Layout.leftMargin
+            Layout.maximumWidth: parent.width - Layout.leftMargin * 2
+            wrapMode: Text.Wrap
+            visible: !hasEnoughFunds(sell, base, rel, input_price.field.text, input_volume.field.text)
 
             color: Style.colorRed
 
             text: qsTr("Not enough funds.") + "\n" + qsTr("You have ") + API.get().get_balance(sell ? base : rel) + " " + (sell ? base : rel)
-            wrapMode: Text.Wrap
-            visible: !hasEnoughFunds(sell, base, rel, input_price.field.text, input_volume.field.text)
-            Layout.maximumWidth: parent.width - Layout.leftMargin * 2
         }
 
         // Action button
         Button {
             id: action_button
-            Layout.leftMargin: 10
+            Layout.leftMargin: input_volume.Layout.leftMargin
             Layout.rightMargin: Layout.leftMargin
             Layout.fillWidth: true
 
@@ -112,15 +113,28 @@ Rectangle {
 
         // Amount to receive
         DefaultText {
-            Layout.leftMargin: 10
+            Layout.leftMargin: input_volume.Layout.leftMargin
             Layout.rightMargin: Layout.leftMargin
+            Layout.maximumWidth: parent.width - Layout.leftMargin * 2
+            wrapMode: Text.Wrap
+            visible: action_button.enabled
 
             color: Style.colorGreen
 
             text: qsTr("You'll receive:") + "\n" + amountToReceive(sell, base, rel, input_price.field.text, input_volume.field.text)
-            wrapMode: Text.Wrap
-            visible: action_button.enabled
+        }
+
+        // Result
+        DefaultText {
+            Layout.leftMargin: input_volume.Layout.leftMargin
+            Layout.rightMargin: Layout.leftMargin
             Layout.maximumWidth: parent.width - Layout.leftMargin * 2
+            wrapMode: Text.Wrap
+            visible: action_result !== ""
+
+            color: action_result === "success" ? Style.colorGreen : Style.colorRed
+
+            text: action_result === "success" ? qsTr("Successfully placed the order!") : qsTr("Failed to place the order.")
         }
     }
 }
