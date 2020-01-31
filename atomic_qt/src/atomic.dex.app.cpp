@@ -209,6 +209,7 @@ namespace atomic_dex
     void
     application::launch()
     {
+        this->system_manager_.start();
         auto timer = new QTimer(this);
         connect(timer, &QTimer::timeout, this, &application::tick);
         timer->start(8);
@@ -286,6 +287,13 @@ namespace atomic_dex
                 refresh_fiat_balance(mm2, paprika);
                 refresh_address(mm2);
                 m_refresh_current_ticker_infos = false;
+            }
+
+            if (m_refresh_transaction_only)
+            {
+                DLOG_F(INFO, "{}", "refreshing transactions");
+                refresh_transactions(mm2);
+                m_refresh_transaction_only = false;
             }
 
             if (not m_coin_info->get_ticker().isEmpty() && not m_enabled_coins.empty())
@@ -397,6 +405,7 @@ namespace atomic_dex
 
         get_dispatcher().sink<change_ticker_event>().connect<&application::on_change_ticker_event>(*this);
         get_dispatcher().sink<enabled_coins_event>().connect<&application::on_enabled_coins_event>(*this);
+        get_dispatcher().sink<tx_fetch_finished>().connect<&application::on_tx_fetch_finished_event>(*this);
     }
 
     void
@@ -440,15 +449,66 @@ namespace atomic_dex
             .to = address.toStdString(), .coin = m_coin_info->get_ticker().toStdString(), .max = max, .amount = amount.toStdString()};
         std::error_code ec;
         auto            answer = mm2::withdraw(std::move(req), ec);
-        return to_qt_binding(std::move(answer), this);
+        auto            coin   = get_mm2().get_coin_info(m_coin_info->get_ticker().toStdString());
+        return to_qt_binding(std::move(answer), this, QString::fromStdString(coin.explorer_url[0]));
     }
 
     QString
     application::send(const QString& tx_hex)
     {
-        atomic_dex::t_broadcast_request  req{.tx_hex = tx_hex.toStdString(), .coin = m_coin_info->get_ticker().toStdString()};
-        std::error_code ec;
-        auto answer = mm2::broadcast(std::move(req), ec);
+        atomic_dex::t_broadcast_request req{.tx_hex = tx_hex.toStdString(), .coin = m_coin_info->get_ticker().toStdString()};
+        std::error_code                 ec;
+        auto                            answer = mm2::broadcast(std::move(req), ec);
         return QString::fromStdString(answer.tx_hash);
+    }
+
+    void
+    application::on_tx_fetch_finished_event(const tx_fetch_finished&) noexcept
+    {
+        LOG_SCOPE_FUNCTION(INFO);
+        m_refresh_transaction_only = true;
+    }
+
+    bool
+    application::place_buy_order(const QString& base, const QString& rel, const QString& price, const QString& volume)
+    {
+        t_float_50 price_f;
+        t_float_50 amount_f;
+        t_float_50 total_amount;
+
+        price_f.assign(price.toStdString());
+        amount_f.assign(volume.toStdString());
+        total_amount = price_f * amount_f;
+
+        t_buy_request   req{.base = base.toStdString(), .rel = rel.toStdString(), .price = price.toStdString(), .volume = volume.toStdString()};
+        std::error_code ec;
+        auto            answer = get_mm2().place_buy_order(std::move(req), total_amount, ec);
+        return answer.error.has_value();
+    }
+
+    bool
+    application::place_sell_order(const QString& base, const QString& rel, const QString& price, const QString& volume)
+    {
+        t_float_50 amount_f;
+        amount_f.assign(volume.toStdString());
+
+        t_sell_request  req{.base = base.toStdString(), .rel = rel.toStdString(), .price = price.toStdString(), .volume = volume.toStdString()};
+        std::error_code ec;
+        auto            answer = get_mm2().place_sell_order(std::move(req), amount_f, ec);
+        return answer.error.has_value();
+    }
+
+    bool
+    application::do_i_have_enough_funds(const QString& ticker, const QString& amount) const
+    {
+        t_float_50 amount_f(amount.toStdString());
+        return get_mm2().do_i_have_enough_funds(ticker.toStdString(), amount_f);
+    }
+
+    const mm2&
+    application::get_mm2() const noexcept
+    {
+        return this->system_manager_.get_system<mm2>();
+        ;
     }
 } // namespace atomic_dex

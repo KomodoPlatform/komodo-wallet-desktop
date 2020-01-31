@@ -35,15 +35,30 @@ namespace atomic_dex
         QString m_error_message;
         QString m_tx_hex;
         QString m_human_date;
+        QString m_fees;
+        QString m_explorer_url;
 
         Q_PROPERTY(bool has_error READ get_error CONSTANT MEMBER m_has_error)
         Q_PROPERTY(QString error_message READ get_error_message CONSTANT MEMBER m_error_message)
         Q_PROPERTY(QString tx_hex READ get_tx_hex CONSTANT MEMBER m_tx_hex)
         Q_PROPERTY(QString date READ get_date CONSTANT MEMBER m_human_date)
+        Q_PROPERTY(QString fees READ get_fees CONSTANT MEMBER m_fees)
+        Q_PROPERTY(QString explorer_url READ get_explorer_url CONSTANT MEMBER m_explorer_url)
+
+        [[nodiscard]] QString get_explorer_url() const noexcept
+        {
+            return m_explorer_url;
+        }
 
         [[nodiscard]] bool get_error() const noexcept
         {
             return m_has_error;
+        }
+
+        [[nodiscard]] QString
+        get_fees() const noexcept
+        {
+            return m_fees;
         }
 
         [[nodiscard]] QString
@@ -173,13 +188,21 @@ namespace atomic_dex
     }
 
     inline QObject*
-    to_qt_binding(t_withdraw_answer&& answer, QObject* parent)
+    to_qt_binding(t_withdraw_answer&& answer, QObject* parent, QString explorer_url)
     {
         auto* obj            = new qt_send_answer(parent);
         obj->m_has_error     = answer.error.has_value();
         obj->m_error_message = QString::fromStdString(answer.error.value_or(""));
         obj->m_tx_hex        = answer.result.has_value() ? QString::fromStdString(answer.result.value().tx_hex) : "";
         obj->m_human_date    = answer.result.has_value() ? QString::fromStdString(answer.result.value().timestamp_as_date) : "";
+        if (answer.result.has_value())
+        {
+            auto& current = answer.result.value();
+            auto  fees =
+                current.fee_details.normal_fees.has_value() ? current.fee_details.normal_fees.value().amount : current.fee_details.erc_fees.value().total_fee;
+            obj->m_fees = answer.result.has_value() ? QString::fromStdString(fees) : "";
+            obj->m_explorer_url = std::move(explorer_url);
+        }
         return obj;
     }
 } // namespace atomic_dex

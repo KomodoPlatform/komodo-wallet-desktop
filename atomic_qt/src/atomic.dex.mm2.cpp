@@ -558,6 +558,7 @@ namespace atomic_dex
     void
     mm2::process_tx(const std::string& ticker)
     {
+        LOG_SCOPE_FUNCTION(INFO);
         t_tx_history_request tx_request{.coin = ticker, .limit = g_tx_max_limit};
         auto                 answer = rpc_my_tx_history(std::move(tx_request));
 
@@ -594,6 +595,7 @@ namespace atomic_dex
             std::sort(begin(out), end(out), [](auto&& a, auto&& b) { return a.timestamp > b.timestamp; });
 
             m_tx_informations.insert_or_assign(ticker, std::move(out));
+            this->dispatcher_.trigger<tx_fetch_finished>();
         }
     }
 
