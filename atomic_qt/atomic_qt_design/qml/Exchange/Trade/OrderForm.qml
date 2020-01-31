@@ -12,12 +12,21 @@ Rectangle {
 
     property bool sell
 
+    // Local
     function sellCoin(base, rel, price, volume) {
         console.log(`Selling ${volume} ${base} for ${price} ${rel} each`)
     }
 
     function buyCoin(base, rel, price, volume) {
         console.log(`Buying ${volume} ${base} for ${price} ${rel} each`)
+    }
+
+    function hasEnoughFunds(sell, base, rel, price, volume) {
+        if(sell) return API.get().do_i_have_enough_funds(base, volume)
+        else {
+            const needed_amount = parseFloat(price) * parseFloat(volume)
+            return API.get().do_i_have_enough_funds(rel, needed_amount)
+        }
     }
 
     color: Style.colorTheme7
@@ -71,7 +80,8 @@ Rectangle {
             enabled: input_price.field.text !== "" &&
                      input_volume.field.text !== "" &&
                      parseFloat(input_price.field.text) > 0 &&
-                     parseFloat(input_volume.field.text) > 0
+                     parseFloat(input_volume.field.text) > 0 &&
+                     hasEnoughFunds(sell, base, rel, input_price.field.text, input_volume.field.text)
             onClicked: sell ? sellCoin(base, rel, input_price.field.text, input_volume.field.text) : buyCoin(base, rel, input_price.field.text, input_volume.field.text)
         }
     }

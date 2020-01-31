@@ -124,7 +124,23 @@ QtObject {
 
        on_gui_leave_dex: () => {
            console.log("on_gui_leave_dex")
-       }
+       },
+
+        place_sell_order: (base, rel, price, volume) => {
+            console.log(`Selling ${volume} ${base} for ${price} ${rel} each`)
+
+            return true
+        },
+
+        place_buy_order: (base, rel, price, volume) => {
+            console.log(`Buying ${volume} ${base} for ${price} ${rel} each`)
+
+            return true
+        },
+
+        do_i_have_enough_funds: (ticker, amount) => {
+            return parseFloat(mockAPI.current_coin_info.balance) >= parseFloat(amount)
+        }
     })
 
     // Simulate initial loading
