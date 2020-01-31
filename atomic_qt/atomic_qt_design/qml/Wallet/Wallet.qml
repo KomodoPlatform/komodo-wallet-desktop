@@ -11,9 +11,9 @@ RowLayout {
 
     // Local
     function onClickedSwap() {
-        // TODO: Select left coin as current coin
         dashboard.current_page = General.idx_dashboard_exchange
         exchange.current_page = General.idx_exchange_trade
+        exchange.changeBase(API.get().current_coin_info.ticker)
     }
 
     spacing: 0

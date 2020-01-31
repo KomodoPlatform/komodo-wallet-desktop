@@ -9,16 +9,25 @@ import "../../Constants"
 Rectangle {
     property string base
     property string rel
-
     property bool sell
 
     // Local
+    property string action_result
+
+    function reset(reset_result=true) {
+        if(reset_result) action_result = ""
+        input_price.field.text = ""
+        input_volume.field.text = ""
+    }
+
     function sellCoin(base, rel, price, volume) {
-        console.log(`Selling ${volume} ${base} for ${price} ${rel} each`)
+        action_result = API.get().place_sell_order(base, rel, price, volume) ? "success" : "error"
+        if(action_result === "success") reset(false)
     }
 
     function buyCoin(base, rel, price, volume) {
-        console.log(`Buying ${volume} ${base} for ${price} ${rel} each`)
+        action_result = API.get().place_buy_order(base, rel, price, volume) ? "success" : "error"
+        if(action_result === "success") reset(false)
     }
 
     function hasEnoughFunds(sell, base, rel, price, volume) {
@@ -31,6 +40,17 @@ Rectangle {
             const needed_amount = parseFloat(price) * parseFloat(volume)
             return API.get().do_i_have_enough_funds(rel, needed_amount)
         }
+    }
+
+    function amountToReceive(sell, base, rel, price, volume) {
+        return sell ? (parseFloat(price) * parseFloat(volume)) + " " + rel : volume + " " + base
+    }
+
+    function fieldsAreFilled() {
+        return input_price.field.text !== "" &&
+                input_volume.field.text !== "" &&
+                parseFloat(input_price.field.text) > 0 &&
+                parseFloat(input_volume.field.text) > 0
     }
 
     color: Style.colorTheme7
@@ -46,7 +66,7 @@ Rectangle {
             Layout.topMargin: 10
             Layout.bottomMargin: 5
 
-            text: (sell ? qsTr("Sell") : qsTr("Buy")) + " " + base + qsTr(" for ") + rel
+            text: (sell ? qsTr("Sell") : qsTr("Buy")) + " " + base
             font.pointSize: Style.textSize2
         }
 
@@ -68,37 +88,61 @@ Rectangle {
         // Price
         AmountField {
             id: input_price
-            Layout.leftMargin: 10
+            Layout.leftMargin: input_volume.Layout.leftMargin
             Layout.rightMargin: Layout.leftMargin
             title: qsTr("Price")
             field.placeholderText: qsTr("Enter the price")
         }
 
+        // Not enough funds error
         DefaultText {
-            Layout.leftMargin: 10
+            Layout.leftMargin: input_volume.Layout.leftMargin
             Layout.rightMargin: Layout.leftMargin
+            Layout.maximumWidth: parent.width - Layout.leftMargin * 2
+            wrapMode: Text.Wrap
+            visible: !hasEnoughFunds(sell, base, rel, input_price.field.text, input_volume.field.text)
 
             color: Style.colorRed
 
             text: qsTr("Not enough funds.") + "\n" + qsTr("You have ") + API.get().get_balance(sell ? base : rel) + " " + (sell ? base : rel)
-            wrapMode: Text.Wrap
-            visible: !hasEnoughFunds(sell, base, rel, input_price.field.text, input_volume.field.text)
-            Layout.maximumWidth: parent.width - Layout.leftMargin * 2
         }
 
         // Action button
         Button {
-            Layout.leftMargin: 10
+            id: action_button
+            Layout.leftMargin: input_volume.Layout.leftMargin
             Layout.rightMargin: Layout.leftMargin
             Layout.fillWidth: true
 
             text: sell ? qsTr("Sell") : qsTr("Buy")
-            enabled: input_price.field.text !== "" &&
-                     input_volume.field.text !== "" &&
-                     parseFloat(input_price.field.text) > 0 &&
-                     parseFloat(input_volume.field.text) > 0 &&
-                     hasEnoughFunds(sell, base, rel, input_price.field.text, input_volume.field.text)
+            enabled: fieldsAreFilled() && hasEnoughFunds(sell, base, rel, input_price.field.text, input_volume.field.text)
             onClicked: sell ? sellCoin(base, rel, input_price.field.text, input_volume.field.text) : buyCoin(base, rel, input_price.field.text, input_volume.field.text)
+        }
+
+        // Amount to receive
+        DefaultText {
+            Layout.leftMargin: input_volume.Layout.leftMargin
+            Layout.rightMargin: Layout.leftMargin
+            Layout.maximumWidth: parent.width - Layout.leftMargin * 2
+            wrapMode: Text.Wrap
+            visible: action_button.enabled
+
+            color: Style.colorGreen
+
+            text: qsTr("You'll receive:") + "\n" + amountToReceive(sell, base, rel, input_price.field.text, input_volume.field.text)
+        }
+
+        // Result
+        DefaultText {
+            Layout.leftMargin: input_volume.Layout.leftMargin
+            Layout.rightMargin: Layout.leftMargin
+            Layout.maximumWidth: parent.width - Layout.leftMargin * 2
+            wrapMode: Text.Wrap
+            visible: action_result !== ""
+
+            color: action_result === "success" ? Style.colorGreen : Style.colorRed
+
+            text: action_result === "success" ? qsTr("Successfully placed the order!") : qsTr("Failed to place the order.")
         }
     }
 }

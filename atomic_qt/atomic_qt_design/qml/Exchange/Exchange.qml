@@ -10,6 +10,10 @@ Item {
     id: exchange
     property int current_page: General.idx_exchange_trade
 
+    function changeBase(ticker) {
+        exchange_trade.changeBase(ticker)
+    }
+
     ColumnLayout {
         anchors.horizontalCenter: parent.horizontalCenter
         anchors.verticalCenter: parent.verticalCenter
@@ -62,6 +66,7 @@ Item {
             currentIndex: current_page
 
             Trade {
+                id: exchange_trade
             }
 
             DefaultText {
