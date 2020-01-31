@@ -103,6 +103,14 @@ QtObject {
           console.log("Sending tx hex:" + tx_hex)
 
           return "abcdefghijklmnopqrstuvwxyz"
+       },
+
+       on_gui_enter_dex: () => {
+           console.log("on_gui_enter_dex")
+       },
+
+       on_gui_leave_dex: () => {
+           console.log("on_gui_leave_dex")
        }
     })
 

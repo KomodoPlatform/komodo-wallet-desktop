@@ -14,6 +14,11 @@ Item {
 
     property int current_page: General.idx_dashboard_wallet
 
+    onCurrent_pageChanged: {
+        if(current_page === General.idx_dashboard_exchange) API.get().on_gui_enter_dex()
+        else API.get().on_gui_leave_dex()
+    }
+
     // Left side
     Rectangle {
         color: Style.colorTheme6
