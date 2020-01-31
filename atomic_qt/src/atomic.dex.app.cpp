@@ -210,6 +210,7 @@ namespace atomic_dex
             }
             else
             {
+                this->set_status("initializing_mm2");
                 get_mm2().spawn_mm2_instance(seed);
                 return true;
             }
@@ -510,7 +511,7 @@ namespace atomic_dex
         t_buy_request   req{.base = base.toStdString(), .rel = rel.toStdString(), .price = price.toStdString(), .volume = volume.toStdString()};
         std::error_code ec;
         auto            answer = get_mm2().place_buy_order(std::move(req), total_amount, ec);
-        return answer.error.has_value();
+        return !answer.error.has_value();
     }
 
     bool
@@ -522,7 +523,7 @@ namespace atomic_dex
         t_sell_request  req{.base = base.toStdString(), .rel = rel.toStdString(), .price = price.toStdString(), .volume = volume.toStdString()};
         std::error_code ec;
         auto            answer = get_mm2().place_sell_order(std::move(req), amount_f, ec);
-        return answer.error.has_value();
+        return !answer.error.has_value();
     }
 
     bool
@@ -563,6 +564,19 @@ namespace atomic_dex
     application::on_gui_leave_dex()
     {
         this->dispatcher_.trigger<gui_leave_trading>();
+    }
+
+    QString
+    application::get_status() const noexcept
+    {
+        return m_current_status;
+    }
+
+    void
+    application::set_status(QString status) noexcept
+    {
+        this->m_current_status = std::move(status);
+        emit on_status_changed();
     }
 
 } // namespace atomic_dex

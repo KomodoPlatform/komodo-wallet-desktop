@@ -81,6 +81,7 @@ namespace atomic_dex
         Q_PROPERTY(QList<QObject*> enableable_coins READ get_enableable_coins NOTIFY enableableCoinsChanged)
         Q_PROPERTY(QObject* current_coin_info READ get_current_coin_info NOTIFY coinInfoChanged)
         Q_PROPERTY(QString fiat READ get_current_fiat WRITE set_current_fiat NOTIFY on_fiat_changed)
+        Q_PROPERTY(QString initial_loading_status READ get_status WRITE set_status NOTIFY on_status_changed)
 
       private:
         void refresh_transactions(const mm2& mm2);
@@ -102,6 +103,8 @@ namespace atomic_dex
         QObjectList           get_enableable_coins() const noexcept;
         QString               get_current_fiat() const noexcept;
         void                  set_current_fiat(QString current_fiat) noexcept;
+        QString               get_status() const noexcept;
+        void                  set_status(QString status) noexcept;
         void                  launch();
 
         Q_INVOKABLE QObject* prepare_send(const QString& address, const QString& amount, bool max = false);
@@ -126,6 +129,7 @@ namespace atomic_dex
         void enableableCoinsChanged();
         void coinInfoChanged();
         void on_fiat_changed();
+        void on_status_changed();
 
       private:
         std::atomic_bool   m_refresh_enabled_coin_event{false};
@@ -134,6 +138,7 @@ namespace atomic_dex
         QObjectList        m_enabled_coins;
         QObjectList        m_enableable_coins;
         QString            m_current_fiat{"USD"};
+        QString            m_current_status{"None"};
         current_coin_info* m_coin_info;
 
       private:
