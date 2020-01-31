@@ -19,7 +19,7 @@ Rectangle {
     readonly property int idx_login: 3
     readonly property int idx_initial_loading: 4
     readonly property int idx_dashboard: 5
-    property int current_page: firstPage()
+    property int current_page: API.design_editor ? idx_dashboard : firstPage()
 
     StackLayout {
         anchors.fill: parent
