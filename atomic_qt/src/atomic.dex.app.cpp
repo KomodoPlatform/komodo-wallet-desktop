@@ -150,6 +150,7 @@ namespace atomic_dex
         coins_std.reserve(coins.size());
         for (auto&& coin: coins) { coins_std.push_back(coin.toStdString()); }
         get_mm2().disable_multiple_coins(coins_std);
+        m_coin_info->set_ticker("");
         return false;
     }
 
