@@ -468,4 +468,21 @@ namespace atomic_dex
         LOG_SCOPE_FUNCTION(INFO);
         m_refresh_transaction_only = true;
     }
+
+    bool
+    application::place_buy_order(const QString& base, const QString& rel, const QString& price, const QString& volume)
+    {
+        t_float_50 price_f;
+        t_float_50 amount_f;
+        t_float_50 total_amount;
+
+        price_f.assign(price.toStdString());
+        amount_f.assign(volume.toStdString());
+        total_amount = price_f * amount_f;
+
+        t_buy_request req{.base = base.toStdString(), .rel = rel.toStdString(), .price = price.toStdString(), .volume = volume.toStdString()};
+        std::error_code ec;
+        auto answer = get_mm2().place_buy_order(std::move(req), total_amount, ec);
+        return answer.error.has_value();
+    }
 } // namespace atomic_dex
