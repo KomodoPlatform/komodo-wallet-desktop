@@ -68,6 +68,10 @@ Rectangle {
             Layout.fillWidth: true
 
             text: sell ? qsTr("Sell") : qsTr("Buy")
+            enabled: input_price.field.text !== "" &&
+                     input_volume.field.text !== "" &&
+                     parseFloat(input_price.field.text) > 0 &&
+                     parseFloat(input_volume.field.text) > 0
             onClicked: sell ? sellCoin(base, rel, input_price.field.text, input_volume.field.text) : buyCoin(base, rel, input_price.field.text, input_volume.field.text)
         }
     }
