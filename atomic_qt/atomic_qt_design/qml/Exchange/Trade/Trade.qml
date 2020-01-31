@@ -8,8 +8,6 @@ import "../../Constants"
 Item {
     id: exchange_trade
 
-    height: 500
-
     function convertToFullName(coins) {
         return coins.map(c => c.name + " (" + c.ticker + ")")
     }
@@ -28,7 +26,7 @@ Item {
     ColumnLayout {
         anchors.horizontalCenter: parent.horizontalCenter
 
-        width: 1000
+        width: parent.width
         height: parent.height
         spacing: 20
 
@@ -75,19 +73,22 @@ Item {
             Layout.fillWidth: true
             Layout.fillHeight: true
 
+            spacing: parent.spacing
+
             // Left side
             ColumnLayout {
+                spacing: parent.spacing
                 Layout.preferredWidth: 0.3
 
-                // Buy
-                OrderForm {
-                    Layout.fillWidth: true
-                    Layout.fillHeight: true
+//                // Buy
+//                OrderForm {
+//                    Layout.fillWidth: true
+//                    Layout.fillHeight: true
 
-                    sell: false
-                    base: exchange_trade.base
-                    rel: exchange_trade.rel
-                }
+//                    sell: false
+//                    base: exchange_trade.base
+//                    rel: exchange_trade.rel
+//                }
 
                 // Sell
                 OrderForm {
@@ -117,3 +118,9 @@ Item {
 
 
 
+
+/*##^##
+Designer {
+    D{i:0;autoSize:true;height:480;width:640}
+}
+##^##*/

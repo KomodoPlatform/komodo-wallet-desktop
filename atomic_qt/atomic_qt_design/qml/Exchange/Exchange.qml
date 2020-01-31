@@ -14,14 +14,15 @@ Item {
         anchors.horizontalCenter: parent.horizontalCenter
         anchors.verticalCenter: parent.verticalCenter
 
-        Layout.fillWidth: true
+        anchors.fill: parent
 
         spacing: 20
+
         // Top tabs
         RowLayout {
             id: tabs
             Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
-
+            Layout.topMargin: 30
             spacing: 40
 
             ExchangeTab {
@@ -52,12 +53,15 @@ Item {
 
         // Bottom content
         StackLayout {
-            transformOrigin: Item.Center
+            Layout.fillWidth: true
+            Layout.fillHeight: true
+            Layout.bottomMargin: 15
+            Layout.leftMargin: Layout.bottomMargin
+            Layout.rightMargin: Layout.bottomMargin
 
             currentIndex: current_page
 
             Trade {
-
             }
 
             DefaultText {
