@@ -72,12 +72,12 @@ Rectangle {
             }
 
             Image {
-                source: base === "" ? base : General.coin_icons_path + base + ".png"
+                source: base === "" ? "" : General.coin_icons_path + base + ".png"
                 Layout.preferredWidth: 32
                 Layout.preferredHeight: Layout.preferredWidth
             }
             DefaultText {
-                text: "(" + API.get().get_balance(base) + ")"
+                text: base === "" ? "" : "(" + API.get().get_balance(base) + ")"
                 font.pointSize: Style.textSize
             }
         }
