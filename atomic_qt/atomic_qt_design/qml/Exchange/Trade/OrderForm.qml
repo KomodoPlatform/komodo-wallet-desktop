@@ -72,7 +72,7 @@ Rectangle {
             }
 
             Image {
-                source: base === "" ? "" : General.coin_icons_path + base + ".png"
+                source: General.coinIcon(base)
                 Layout.preferredWidth: 32
                 Layout.preferredHeight: Layout.preferredWidth
             }

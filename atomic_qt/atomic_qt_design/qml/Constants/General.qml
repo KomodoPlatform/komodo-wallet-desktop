@@ -9,6 +9,9 @@ QtObject {
     readonly property string assets_path: Qt.resolvedUrl(".") + "../../assets/"
     readonly property string image_path: assets_path + "images/"
     readonly property string coin_icons_path: image_path + "coins/"
+    function coinIcon(ticker) {
+        return ticker === "" ? "" : coin_icons_path + ticker.toLowerCase() + ".png"
+    }
 
     readonly property int idx_dashboard_wallet: 0
     readonly property int idx_dashboard_exchange: 1

@@ -52,7 +52,7 @@ Item {
                 // Base
                 Image {
                     Layout.leftMargin: 15
-                    source: base === "" ? base : General.coin_icons_path + base + ".png"
+                    source: General.coinIcon(base)
                     Layout.preferredWidth: 32
                     Layout.preferredHeight: Layout.preferredWidth
                 }
@@ -90,7 +90,7 @@ Item {
 
                 Image {
                     Layout.rightMargin: 15
-                    source: base === "" ? base : General.coin_icons_path + rel + ".png"
+                    source: General.coinIcon(rel)
                     Layout.preferredWidth: 32
                     Layout.preferredHeight: Layout.preferredWidth
                 }
