@@ -78,7 +78,8 @@ Item {
             // Left side
             ColumnLayout {
                 spacing: parent.spacing
-                Layout.preferredWidth: 0.3
+                Layout.minimumWidth: 300
+                Layout.maximumWidth: Layout.minimumWidth
 
 //                // Buy
 //                OrderForm {

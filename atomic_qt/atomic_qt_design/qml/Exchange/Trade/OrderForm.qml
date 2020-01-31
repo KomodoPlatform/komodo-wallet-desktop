@@ -12,6 +12,14 @@ Rectangle {
 
     property bool sell
 
+    function sellCoin(base, rel, price, volume) {
+        console.log(`Selling ${volume} ${base} for ${price} ${rel} each`)
+    }
+
+    function buyCoin(base, rel, price, volume) {
+        console.log(`Buying ${volume} ${base} for ${price} ${rel} each`)
+    }
+
     color: Style.colorTheme7
     radius: Style.rectangleCornerRadius
 
@@ -25,7 +33,7 @@ Rectangle {
             Layout.topMargin: 10
             Layout.bottomMargin: 5
 
-            text: (sell ? qsTr("Sell") : qsTr("Buy")) + " " + base
+            text: (sell ? qsTr("Sell") : qsTr("Buy")) + " " + base + qsTr(" for ") + rel
             font.pointSize: Style.textSize2
         }
 
@@ -40,7 +48,7 @@ Rectangle {
             Layout.topMargin: 10
             Layout.leftMargin: 10
             Layout.rightMargin: 10
-            title: "Volume"
+            title: qsTr("Volume")
             field.placeholderText: qsTr("Enter the amount")
         }
 
@@ -49,8 +57,18 @@ Rectangle {
             id: input_price
             Layout.leftMargin: 10
             Layout.rightMargin: 10
-            title: "Price"
+            title: qsTr("Price")
             field.placeholderText: qsTr("Enter the price")
+        }
+
+        // Action button
+        Button {
+            Layout.leftMargin: 10
+            Layout.rightMargin: 10
+            Layout.fillWidth: true
+
+            text: sell ? qsTr("Sell") : qsTr("Buy")
+            onClicked: sell ? sellCoin(base, rel, input_price.field.text, input_volume.field.text) : buyCoin(base, rel, input_price.field.text, input_volume.field.text)
         }
     }
 }
