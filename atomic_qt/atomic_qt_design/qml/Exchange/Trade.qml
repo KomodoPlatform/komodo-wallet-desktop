@@ -33,18 +33,21 @@ Item {
 
         spacing: 20
 
-        // Base
-        ComboBox {
-            id: combo_base
-            model: convertToFullName(baseCoins())
-            onCurrentTextChanged: base = baseCoins()[currentIndex].ticker
-        }
+        // Select coins row
+        RowLayout {
+            // Base
+            ComboBox {
+                id: combo_base
+                model: convertToFullName(baseCoins())
+                onCurrentTextChanged: base = baseCoins()[currentIndex].ticker
+            }
 
-        // Rel Base
-        ComboBox {
-            id: combo_rel
-            model: convertToFullName(relCoins())
-            onCurrentTextChanged: rel = relCoins()[currentIndex].ticker
+            // Rel Base
+            ComboBox {
+                id: combo_rel
+                model: convertToFullName(relCoins())
+                onCurrentTextChanged: rel = relCoins()[currentIndex].ticker
+            }
         }
 
         DefaultText {
