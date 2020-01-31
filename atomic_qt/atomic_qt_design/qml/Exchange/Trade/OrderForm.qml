@@ -86,7 +86,7 @@ Rectangle {
         // Volume
         AmountField {
             id: input_volume
-            Layout.leftMargin: 10
+            Layout.leftMargin: title.Layout.leftMargin
             Layout.rightMargin: Layout.leftMargin
             Layout.topMargin: Layout.leftMargin
             title: qsTr("Volume")

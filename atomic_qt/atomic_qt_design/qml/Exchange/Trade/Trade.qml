@@ -37,7 +37,7 @@ Item {
 
         width: parent.width
         height: parent.height
-        spacing: 20
+        spacing: 15
 
         // Select coins row
         Rectangle {
@@ -87,6 +87,7 @@ Item {
                     model: convertToFullName(relCoins())
                     onCurrentTextChanged: rel = relCoins()[currentIndex].ticker
                 }
+
                 Image {
                     Layout.rightMargin: 15
                     source: base === "" ? base : General.coin_icons_path + rel + ".png"
