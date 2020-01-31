@@ -76,6 +76,10 @@ Rectangle {
                 Layout.preferredWidth: 32
                 Layout.preferredHeight: Layout.preferredWidth
             }
+            DefaultText {
+                text: "(" + API.get().get_balance(base) + ")"
+                font.pointSize: Style.textSize
+            }
         }
 
         HorizontalLine {
