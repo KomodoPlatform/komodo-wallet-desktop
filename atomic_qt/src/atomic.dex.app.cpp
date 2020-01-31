@@ -549,8 +549,20 @@ namespace atomic_dex
     application::get_balance(const QString& coin)
     {
         std::error_code ec;
-        auto res =  get_mm2().my_balance(coin.toStdString(), ec);
+        auto            res = get_mm2().my_balance(coin.toStdString(), ec);
         return QString::fromStdString(res);
+    }
+
+    void
+    application::on_gui_enter_dex()
+    {
+        this->dispatcher_.trigger<gui_enter_trading>();
+    }
+
+    void
+    application::on_gui_leave_dex()
+    {
+        this->dispatcher_.trigger<gui_leave_trading>();
     }
 
 } // namespace atomic_dex

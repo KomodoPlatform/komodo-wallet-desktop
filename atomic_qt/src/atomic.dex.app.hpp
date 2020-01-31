@@ -107,6 +107,8 @@ namespace atomic_dex
         Q_INVOKABLE QObject* prepare_send(const QString& address, const QString& amount, bool max = false);
         Q_INVOKABLE QString  send(const QString& tx_hex);
         Q_INVOKABLE void     change_state(int visibility);
+        Q_INVOKABLE void     on_gui_enter_dex();
+        Q_INVOKABLE void     on_gui_leave_dex();
         Q_INVOKABLE QString  get_mnemonic();
         Q_INVOKABLE bool     first_run();
         Q_INVOKABLE bool     login(const QString& password);
