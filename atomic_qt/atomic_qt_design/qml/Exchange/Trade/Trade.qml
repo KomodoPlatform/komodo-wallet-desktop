@@ -76,29 +76,32 @@ Item {
             Layout.fillHeight: true
 
             // Left side
-            Rectangle {
-                color: Style.colorTheme7
-                radius: Style.rectangleCornerRadius
-                Layout.preferredWidth: 300
-                Layout.fillHeight: true
+            ColumnLayout {
+                // Buy
+                OrderForm {
+                    Layout.preferredWidth: 300
+                    Layout.fillHeight: true
 
-                DefaultText {
-                    Layout.alignment: Qt.AlignHCenter
-                    text: "Rel: " + rel
+                    sell: false
+                    base: exchange_trade.base
+                    rel: exchange_trade.rel
+                }
+
+                // Sell
+                OrderForm {
+                    Layout.preferredWidth: 300
+                    Layout.fillHeight: true
+
+                    sell: true
+                    base: exchange_trade.base
+                    rel: exchange_trade.rel
                 }
             }
 
             // Right side
-            Rectangle {
-                color: Style.colorTheme7
-                radius: Style.rectangleCornerRadius
+            Orderbook {
                 Layout.fillWidth: true
                 Layout.fillHeight: true
-
-                DefaultText {
-                    Layout.alignment: Qt.AlignHCenter
-                    text: "Base: " + base
-                }
             }
         }
     }
