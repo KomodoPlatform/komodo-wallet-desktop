@@ -209,6 +209,7 @@ namespace atomic_dex
     void
     application::launch()
     {
+        this->system_manager_.start();
         auto timer = new QTimer(this);
         connect(timer, &QTimer::timeout, this, &application::tick);
         timer->start(8);
