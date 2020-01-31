@@ -27,24 +27,29 @@ Item {
 
     ColumnLayout {
         anchors.horizontalCenter: parent.horizontalCenter
-        anchors.verticalCenter: parent.verticalCenter
 
-        Layout.fillWidth: true
-
+        width: 1000
         spacing: 20
 
         // Select coins row
         RowLayout {
+            Layout.fillWidth: true
             // Base
             ComboBox {
                 id: combo_base
+                Layout.preferredWidth: 250
                 model: convertToFullName(baseCoins())
                 onCurrentTextChanged: base = baseCoins()[currentIndex].ticker
+            }
+
+            Image {
+                source: General.image_path + "exchange-exchange.svg"
             }
 
             // Rel Base
             ComboBox {
                 id: combo_rel
+                Layout.preferredWidth: 250
                 model: convertToFullName(relCoins())
                 onCurrentTextChanged: rel = relCoins()[currentIndex].ticker
             }
