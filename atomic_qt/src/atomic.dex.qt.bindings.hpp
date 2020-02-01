@@ -154,8 +154,11 @@ namespace atomic_dex
     to_qt_binding(tx_infos&& tx, QObject* parent)
     {
         auto* obj          = new qt_transactions(parent);
-        obj->m_amount      = QString::fromStdString(tx.total_amount);
+        obj->m_amount      = QString::fromStdString(tx.my_balance_change);
         obj->m_received    = !tx.am_i_sender;
+        if (tx.am_i_sender) {
+            obj->m_amount = obj->m_amount.right(1);
+        }
         obj->m_date        = QString::fromStdString(tx.date);
         obj->m_amount_fiat = "0";
         return obj;
