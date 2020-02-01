@@ -594,4 +594,10 @@ namespace atomic_dex
         LOG_SCOPE_FUNCTION(INFO);
         this->set_status("complete");
     }
+
+    void
+    application::set_current_orderbook(const QString& base, const QString& rel)
+    {
+        this->dispatcher_.trigger<orderbook_refresh>(base.toStdString(), rel.toStdString());
+    }
 } // namespace atomic_dex
