@@ -66,9 +66,23 @@ namespace atomic_dex
         Q_OBJECT
       public:
         explicit qt_my_orders(QObject* parent = nullptr);
-
         QObjectList m_taker_orders;
         QObjectList m_maker_orders;
+
+        Q_PROPERTY(QObjectList taker_orders READ get_taker_orders CONSTANT MEMBER m_taker_orders)
+        Q_PROPERTY(QObjectList maker_orders READ get_maker_orders CONSTANT MEMBER m_maker_orders)
+
+        [[nodiscard]] QObjectList
+        get_taker_orders() const noexcept
+        {
+            return m_taker_orders;
+        }
+
+        [[nodiscard]] QObjectList
+        get_maker_orders() const noexcept
+        {
+            return m_maker_orders;
+        }
     };
 
     struct qt_ordercontent : QObject
