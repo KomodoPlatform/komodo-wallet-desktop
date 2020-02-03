@@ -33,7 +33,7 @@ ListView {
         ColumnLayout {
             anchors.verticalCenter: parent.verticalCenter
             anchors.right: parent.right
-            anchors.rightMargin: 250
+            anchors.rightMargin: 450
 
             // Crypto
             DefaultText {
@@ -53,10 +53,10 @@ ListView {
             }
         }
 
-        // Name
+        // Date
         DefaultText {
             anchors.right: parent.right
-            anchors.rightMargin: 50
+            anchors.rightMargin: 170
             text: model.modelData.date
             anchors.verticalCenter: parent.verticalCenter
         }
