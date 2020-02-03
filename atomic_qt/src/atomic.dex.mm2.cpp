@@ -425,7 +425,7 @@ namespace atomic_dex
         const auto tools_path = ag::core::assets_real_path() / "tools/mm2/";
 
         nlohmann::to_json(json_cfg, cfg);
-        DVLOG_F(loguru::Verbosity_INFO, "command line {}", json_cfg.dump());
+        //DVLOG_F(loguru::Verbosity_INFO, "command line {}", json_cfg.dump());
 
         const std::array<std::string, 2> args          = {(tools_path / "mm2").string(), json_cfg.dump()};
         reproc::redirect                 redirect_type = reproc::redirect::inherit;
