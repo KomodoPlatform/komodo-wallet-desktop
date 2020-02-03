@@ -120,8 +120,8 @@ namespace atomic_dex
 
         Q_PROPERTY(QString rel READ get_rel CONSTANT MEMBER m_rel)
         Q_PROPERTY(QString base READ get_base CONSTANT MEMBER m_base)
-        Q_PROPERTY(QObjectList bids READ get_bids CONSTANT MEMBER m_bids)
-        Q_PROPERTY(QObjectList asks READ get_asks CONSTANT MEMBER m_asks)
+        Q_PROPERTY(QList<QObject*> bids READ get_bids CONSTANT MEMBER m_bids)
+        Q_PROPERTY(QList<QObject*> asks READ get_asks CONSTANT MEMBER m_asks)
 
         [[nodiscard]] QObjectList get_bids() const noexcept
         {
@@ -280,7 +280,7 @@ namespace atomic_dex
         obj->m_received = !tx.am_i_sender;
         if (tx.am_i_sender)
         {
-            obj->m_amount = obj->m_amount.remove(0,1);
+            obj->m_amount = obj->m_amount.remove(0, 1);
         }
         obj->m_date        = QString::fromStdString(tx.date);
         obj->m_amount_fiat = "0";
@@ -291,9 +291,7 @@ namespace atomic_dex
     {
         QObjectList out;
         out.reserve(transactions.size());
-        for (auto&& tx: transactions) {
-            out.append(to_qt_binding(std::move(tx), parent));
-        }
+        for (auto&& tx: transactions) { out.append(to_qt_binding(std::move(tx), parent)); }
         return out;
     }
 
@@ -341,11 +339,13 @@ namespace atomic_dex
         obj->m_rel  = QString::fromStdString(answer.rel);
         obj->m_base = QString::fromStdString(answer.base);
         obj->m_bids.reserve(answer.bids.size());
+        obj->m_asks.reserve(answer.asks.size());
         for (auto&& bid: answer.bids)
         {
             auto* q_bid        = new qt_ordercontent(parent);
             q_bid->m_maxvolume = QString::fromStdString(bid.maxvolume);
             q_bid->m_price     = QString::fromStdString(bid.price);
+            obj->m_bids.append(q_bid);
         }
 
         for (auto&& ask: answer.asks)
@@ -353,6 +353,7 @@ namespace atomic_dex
             auto* q_ask        = new qt_ordercontent(parent);
             q_ask->m_maxvolume = QString::fromStdString(ask.maxvolume);
             q_ask->m_price     = QString::fromStdString(ask.price);
+            obj->m_asks.append(q_ask);
         }
         return obj;
     }
