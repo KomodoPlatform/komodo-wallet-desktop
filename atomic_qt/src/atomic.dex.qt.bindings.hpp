@@ -16,6 +16,7 @@
 
 #pragma once
 
+#include <QDebug>
 #include <QObject>
 
 //! PCH Headers
@@ -72,8 +73,7 @@ namespace atomic_dex
         Q_PROPERTY(QObjectList taker_orders READ get_taker_orders CONSTANT MEMBER m_taker_orders)
         Q_PROPERTY(QObjectList maker_orders READ get_maker_orders CONSTANT MEMBER m_maker_orders)
 
-        [[nodiscard]] QObjectList
-        get_taker_orders() const noexcept
+        [[nodiscard]] QObjectList get_taker_orders() const noexcept
         {
             return m_taker_orders;
         }
@@ -280,7 +280,7 @@ namespace atomic_dex
         obj->m_received = !tx.am_i_sender;
         if (tx.am_i_sender)
         {
-            obj->m_amount = obj->m_amount.right(1);
+            obj->m_amount = obj->m_amount.remove(0,1);
         }
         obj->m_date        = QString::fromStdString(tx.date);
         obj->m_amount_fiat = "0";
@@ -291,7 +291,9 @@ namespace atomic_dex
     {
         QObjectList out;
         out.reserve(transactions.size());
-        for (auto&& tx: transactions) { out.append(to_qt_binding(std::move(tx), parent)); }
+        for (auto&& tx: transactions) {
+            out.append(to_qt_binding(std::move(tx), parent));
+        }
         return out;
     }
 
