@@ -26,6 +26,68 @@
 
 namespace atomic_dex
 {
+    struct qt_ordercontent : QObject
+    {
+        Q_OBJECT
+      public:
+        explicit qt_ordercontent(QObject* parent = nullptr);
+        QString m_price;
+        QString m_maxvolume;
+
+        Q_PROPERTY(QString price READ get_price CONSTANT MEMBER m_price)
+        Q_PROPERTY(QString maxvolume READ get_maxvolume CONSTANT MEMBER m_maxvolume)
+
+        [[nodiscard]] QString get_price() const noexcept
+        {
+            return m_price;
+        }
+
+        [[nodiscard]] QString
+        get_maxvolume() const noexcept
+        {
+            return m_maxvolume;
+        }
+    };
+
+    struct qt_orderbook : QObject
+    {
+        Q_OBJECT
+      public:
+        explicit qt_orderbook(QObject* parent = nullptr);
+        QObjectList m_bids;
+        QObjectList m_asks;
+        QString     m_base;
+        QString     m_rel;
+
+        Q_PROPERTY(QString rel READ get_rel CONSTANT MEMBER m_rel)
+        Q_PROPERTY(QString base READ get_base CONSTANT MEMBER m_base)
+        Q_PROPERTY(QObjectList bids READ get_bids CONSTANT MEMBER m_bids)
+        Q_PROPERTY(QObjectList asks READ get_asks CONSTANT MEMBER m_asks)
+
+        [[nodiscard]] QObjectList get_bids() const noexcept
+        {
+            return m_bids;
+        }
+
+        [[nodiscard]] QObjectList
+        get_asks() const noexcept
+        {
+            return m_asks;
+        }
+
+        [[nodiscard]] QString
+        get_rel() const noexcept
+        {
+            return m_rel;
+        }
+
+        [[nodiscard]] QString
+        get_base() const noexcept
+        {
+            return m_base;
+        }
+    };
+
     struct qt_send_answer : QObject
     {
         Q_OBJECT
@@ -50,7 +112,8 @@ namespace atomic_dex
             return m_explorer_url;
         }
 
-        [[nodiscard]] bool get_error() const noexcept
+        [[nodiscard]] bool
+        get_error() const noexcept
         {
             return m_has_error;
         }
@@ -153,10 +216,11 @@ namespace atomic_dex
     inline QObject*
     to_qt_binding(tx_infos&& tx, QObject* parent)
     {
-        auto* obj          = new qt_transactions(parent);
-        obj->m_amount      = QString::fromStdString(tx.my_balance_change);
-        obj->m_received    = !tx.am_i_sender;
-        if (tx.am_i_sender) {
+        auto* obj       = new qt_transactions(parent);
+        obj->m_amount   = QString::fromStdString(tx.my_balance_change);
+        obj->m_received = !tx.am_i_sender;
+        if (tx.am_i_sender)
+        {
             obj->m_amount = obj->m_amount.right(1);
         }
         obj->m_date        = QString::fromStdString(tx.date);
@@ -203,8 +267,31 @@ namespace atomic_dex
             auto& current = answer.result.value();
             auto  fees =
                 current.fee_details.normal_fees.has_value() ? current.fee_details.normal_fees.value().amount : current.fee_details.erc_fees.value().total_fee;
-            obj->m_fees = answer.result.has_value() ? QString::fromStdString(fees) : "";
+            obj->m_fees         = answer.result.has_value() ? QString::fromStdString(fees) : "";
             obj->m_explorer_url = std::move(explorer_url);
+        }
+        return obj;
+    }
+
+    inline QObject*
+    to_qt_binding(t_orderbook_answer&& answer, QObject* parent)
+    {
+        auto* obj   = new qt_orderbook(parent);
+        obj->m_rel  = QString::fromStdString(answer.rel);
+        obj->m_base = QString::fromStdString(answer.base);
+        obj->m_bids.reserve(answer.bids.size());
+        for (auto&& bid: answer.bids)
+        {
+            auto* q_bid        = new qt_ordercontent(parent);
+            q_bid->m_maxvolume = QString::fromStdString(bid.maxvolume);
+            q_bid->m_price     = QString::fromStdString(bid.price);
+        }
+
+        for (auto&& ask: answer.asks)
+        {
+            auto* q_ask        = new qt_ordercontent(parent);
+            q_ask->m_maxvolume = QString::fromStdString(ask.maxvolume);
+            q_ask->m_price     = QString::fromStdString(ask.price);
         }
         return obj;
     }

@@ -600,4 +600,12 @@ namespace atomic_dex
     {
         this->dispatcher_.trigger<orderbook_refresh>(base.toStdString(), rel.toStdString());
     }
+
+    QObject*
+    application::get_orderbook()
+    {
+        std::error_code ec;
+        auto            answer = get_mm2().get_current_orderbook(ec);
+        return to_qt_binding(std::move(answer), this);
+    }
 } // namespace atomic_dex

@@ -123,6 +123,7 @@ namespace atomic_dex
         Q_INVOKABLE bool     place_buy_order(const QString& base, const QString& rel, const QString& price, const QString& volume);
         Q_INVOKABLE bool     place_sell_order(const QString& base, const QString& rel, const QString& price, const QString& volume);
         Q_INVOKABLE void     set_current_orderbook(const QString& base, const QString& rel);
+        Q_INVOKABLE QObject* get_orderbook();
         Q_INVOKABLE bool     do_i_have_enough_funds(const QString& ticker, const QString& amount) const;
         Q_INVOKABLE bool     disable_coins(const QStringList& coins);
 
