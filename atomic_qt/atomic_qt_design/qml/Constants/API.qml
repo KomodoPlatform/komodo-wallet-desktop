@@ -88,7 +88,7 @@ QtObject {
 
         initial_loading_status: "initializing_mm2",
 
-        prepare_send_coin: (address, amount, max=true) => {
+        prepare_send: (address, amount, max=true) => {
            console.log("Preparing to send " + amount + " to " + address)
 
            return {
