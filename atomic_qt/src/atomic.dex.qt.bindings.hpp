@@ -26,6 +26,51 @@
 
 namespace atomic_dex
 {
+    struct qt_my_order_contents : QObject
+    {
+        Q_OBJECT
+      public:
+        explicit qt_my_order_contents(QObject* parent = nullptr);
+        QString m_order_id;
+        QString m_date;
+        QString m_base;
+        QString m_rel;
+        bool    m_cancellable;
+        QString m_available_amount;
+        QString m_price;
+
+        Q_PROPERTY(QString price READ get_price CONSTANT MEMBER m_price)
+        Q_PROPERTY(QString date READ get_date CONSTANT MEMBER m_date)
+        Q_PROPERTY(QString base READ get_base CONSTANT MEMBER m_base)
+
+        [[nodiscard]] QString get_base() const noexcept
+        {
+            return m_base;
+        }
+
+        [[nodiscard]] QString
+        get_price() const noexcept
+        {
+            return m_price;
+        }
+
+        [[nodiscard]] QString
+        get_date() const noexcept
+        {
+            return m_date;
+        }
+    };
+
+    struct qt_my_orders : QObject
+    {
+        Q_OBJECT
+      public:
+        explicit qt_my_orders(QObject* parent = nullptr);
+
+        QObjectList m_taker_orders;
+        QObjectList m_maker_orders;
+    };
+
     struct qt_ordercontent : QObject
     {
         Q_OBJECT
@@ -293,6 +338,34 @@ namespace atomic_dex
             q_ask->m_maxvolume = QString::fromStdString(ask.maxvolume);
             q_ask->m_price     = QString::fromStdString(ask.price);
         }
+        return obj;
+    }
+
+    inline QObject*
+    to_qt_binding(t_my_orders_answer&& answer, QObject* parent)
+    {
+        auto* obj = new qt_my_orders(parent);
+
+        auto functor = [&parent, &obj](auto&& collection, bool is_taker) {
+            for (auto&& cur_taker: collection)
+            {
+                auto* qt_cur_order   = new qt_my_order_contents(parent);
+                qt_cur_order->m_rel  = QString::fromStdString(cur_taker.second.rel);
+                qt_cur_order->m_base = QString::fromStdString(cur_taker.second.base);
+                qt_cur_order->m_date = QString::fromStdString(cur_taker.second.human_timestamp);
+                if (is_taker)
+                {
+                    obj->m_taker_orders.append(qt_cur_order);
+                }
+                else
+                {
+                    obj->m_maker_orders.append(qt_cur_order);
+                }
+            }
+        };
+
+        functor(answer.taker_orders, true);
+        functor(answer.maker_orders, false);
         return obj;
     }
 } // namespace atomic_dex

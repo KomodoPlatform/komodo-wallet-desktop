@@ -608,4 +608,18 @@ namespace atomic_dex
         auto            answer = get_mm2().get_current_orderbook(ec);
         return to_qt_binding(std::move(answer), this);
     }
+
+    QVariantMap
+    application::get_my_orders()
+    {
+        auto&       mm2 = get_mm2();
+        QVariantMap output;
+        auto        coins = mm2.get_enabled_coins();
+        for (auto&& coin: coins)
+        {
+            std::error_code ec;
+            output.insert(QString::fromStdString(coin.ticker), QVariant::fromValue(to_qt_binding(mm2.get_orders(coin.ticker, ec), this)));
+        }
+        return output;
+    }
 } // namespace atomic_dex
