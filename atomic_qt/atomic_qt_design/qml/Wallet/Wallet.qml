@@ -25,7 +25,7 @@ RowLayout {
         Layout.fillWidth: true
         ColumnLayout {
             id: wallet_layout
-            width: 600
+            width: 900
             anchors.horizontalCenter: parent.horizontalCenter
             anchors.top: parent.top
             anchors.topMargin: 50
