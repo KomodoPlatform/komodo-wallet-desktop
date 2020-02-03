@@ -12,7 +12,7 @@ Popup {
     modal: true
     focus: true
     closePolicy: Popup.CloseOnEscape | Popup.CloseOnPressOutside
-    onClosed: if(stack_layout.currentIndex === 2) closeAndReset()
+    onClosed: if(stack_layout.currentIndex === 2) reset(true)
 
     // Local
     readonly property var default_prepare_send_result: ({ has_error: false, error_message: "", tx_hex: "", date: "", fees: "", explorer_url: "" })
@@ -38,7 +38,7 @@ Popup {
         stack_layout.currentIndex = 2
     }
 
-    function closeAndReset() {
+    function reset(close = false) {
         prepare_send_result = default_prepare_send_result
         send_result = ""
 
@@ -46,7 +46,7 @@ Popup {
         input_amount.field.text = ""
         text_error.text = ""
 
-        root.close()
+        if(close) root.close()
         stack_layout.currentIndex = 0
     }
 
@@ -195,7 +195,7 @@ Popup {
                 Button {
                     text: qsTr("Close")
                     Layout.fillWidth: true
-                    onClicked: closeAndReset()
+                    onClicked: reset(true)
                 }
                 Button {
                     text: qsTr("View at Explorer")
