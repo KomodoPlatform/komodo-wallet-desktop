@@ -46,6 +46,7 @@ Popup {
 
         // List
         ListView {
+            ScrollBar.vertical: ScrollBar {}
             implicitWidth: contentItem.childrenRect.width
             implicitHeight: contentItem.childrenRect.height
 

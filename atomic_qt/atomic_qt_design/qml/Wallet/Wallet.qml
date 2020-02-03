@@ -229,6 +229,7 @@ RowLayout {
 
         // Coins list
         ListView {
+            ScrollBar.vertical: ScrollBar {}
             anchors.horizontalCenter: parent.horizontalCenter
             anchors.verticalCenter: parent.verticalCenter
             implicitWidth: contentItem.childrenRect.width

@@ -36,6 +36,7 @@ ColumnLayout {
 
     ListView {
         id: list
+        ScrollBar.vertical: ScrollBar {}
         Layout.topMargin: Style.textSize*2
         Layout.fillWidth: true
         Layout.fillHeight: true

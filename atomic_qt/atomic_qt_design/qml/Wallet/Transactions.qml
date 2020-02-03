@@ -7,6 +7,7 @@ import "../Constants"
 
 // List
 ListView {
+    ScrollBar.vertical: ScrollBar {}
     implicitWidth: contentItem.childrenRect.width
     implicitHeight: contentItem.childrenRect.height
 
@@ -64,6 +65,7 @@ ListView {
         // Info button
         Image {
             anchors.right: parent.right
+            anchors.rightMargin: 50
             source: General.image_path + "dashboard-info.svg"
             fillMode: Image.PreserveAspectFit
             width: Style.textSize2

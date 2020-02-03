@@ -14,11 +14,9 @@ Rectangle {
     property var orderbook_asks_model
 
     function updateOrderbook() {
-        console.log("Fetching Orderbook...")
         const ob = API.get().get_orderbook()
         orderbook_bids_model = ob.bids
         orderbook_asks_model = ob.asks
-        //console.log(JSON.stringify(ob))
     }
 
     Timer {
