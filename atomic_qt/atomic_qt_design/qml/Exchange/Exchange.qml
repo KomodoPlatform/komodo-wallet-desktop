@@ -43,15 +43,10 @@ Item {
                 dashboard_index: General.idx_exchange_history
                 text: "History"
             }
-
-            ExchangeTab {
-                dashboard_index: General.idx_exchange_orderbook
-                text: "Orderbook"
-            }
         }
 
         HorizontalLine {
-            width: tabs.width * 1.1
+            width: tabs.width * 1.25
             Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
         }
 
