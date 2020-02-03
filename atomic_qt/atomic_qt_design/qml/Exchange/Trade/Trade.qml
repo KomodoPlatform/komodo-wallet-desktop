@@ -19,6 +19,11 @@ Item {
         combo_rel.currentIndex = relCoins().map(c => c.ticker).indexOf(curr_base)
     }
 
+    function setPair() {
+        console.log("SET PAIR: " + base + " - " + rel)
+        API.get().set_current_orderbook(base, rel)
+        orderbook.updateOrderbook()
+    }
 
     function reset() {
         order_form_sell.reset()
@@ -39,6 +44,9 @@ Item {
 
     property string base
     property string rel
+
+    onBaseChanged: setPair()
+    onRelChanged: setPair()
 
     ColumnLayout {
         anchors.horizontalCenter: parent.horizontalCenter
@@ -145,6 +153,7 @@ Item {
 
             // Right side
             Orderbook {
+                id: orderbook
                 Layout.fillWidth: true
                 Layout.fillHeight: true
             }

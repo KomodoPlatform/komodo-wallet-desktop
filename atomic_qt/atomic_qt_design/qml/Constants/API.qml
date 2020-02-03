@@ -151,6 +151,14 @@ QtObject {
                case "RICK": return "3.33"
                case "MORTY": return "5.555"
             }
+        },
+
+        get_orderbook: () => {
+            return {"objectName":"","rel":"KMD","base":"BTC","bids":[{"objectName":"","price":"13464.38669719","maxvolume":"11532.93309343"},{"objectName":"","price":"14443466.19983841","maxvolume":"96666670.24104699"},{"objectName":"","price":"13466.19983841","maxvolume":"970.24104699"},{"objectName":"","price":"13466.19983841","maxvolume":"970.24104699"},{"objectName":"","price":"13326.22601279","maxvolume":"3421.7998824"},{"objectName":"","price":"13326.22601279","maxvolume":"3421.7998824"},{"objectName":"","price":"14705.88235294","maxvolume":"98"},{"objectName":"","price":"10559","maxvolume":"82.3602"}],"asks":[{"objectName":"","price":"17857.14285714","maxvolume":"0.01096449"},{"objectName":"","price":"14443466.19983841","maxvolume":"96666670.24104699"},{"objectName":"","price":"14013.43345341","maxvolume":"1.6377538"}]}
+        },
+
+        set_current_orderbook: (base, rel) => {
+            console.log("Setting current orderbook: " + base + " - " + rel)
         }
     })
 
