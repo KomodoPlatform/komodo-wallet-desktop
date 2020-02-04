@@ -605,6 +605,10 @@ namespace atomic_dex
                     .block_height      = current.block_height,
                     .ec                = dextop_error::success,
                 };
+                if (get_coin_info(ticker).is_erc_20)
+                {
+                    current_info.tx_hash = "0x" + current_info.tx_hash;
+                }
                 out.push_back(std::move(current_info));
             }
 
