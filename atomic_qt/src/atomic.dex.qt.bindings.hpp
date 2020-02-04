@@ -208,20 +208,20 @@ namespace atomic_dex
         Q_OBJECT
       public:
         explicit qt_transactions(QObject* parent = nullptr);
-        bool        m_received;
-        QString     m_amount;
-        QString     m_amount_fiat;
-        QString     m_date;
-        QString     m_tx_hash;
-        QString     m_fees;
-        QStringList m_to;
-        QStringList m_from;
-        std::size_t m_blockheight;
-        std::size_t m_confirmations;
+        bool         m_received;
+        QString      m_amount;
+        QString      m_amount_fiat;
+        QString      m_date;
+        QString      m_tx_hash;
+        QString      m_fees;
+        QStringList  m_to;
+        QStringList  m_from;
+        unsigned int m_blockheight;
+        unsigned int m_confirmations;
 
         Q_PROPERTY(bool received READ get_received CONSTANT MEMBER m_received)
-        Q_PROPERTY(std::size_t blockheight READ get_blockheight CONSTANT MEMBER m_blockheight)
-        Q_PROPERTY(std::size_t confirmations READ get_confirmations CONSTANT MEMBER m_confirmations)
+        Q_PROPERTY(unsigned int blockheight READ get_blockheight CONSTANT MEMBER m_blockheight)
+        Q_PROPERTY(unsigned int confirmations READ get_confirmations CONSTANT MEMBER m_confirmations)
         Q_PROPERTY(QString amount READ get_amount CONSTANT MEMBER m_amount)
         Q_PROPERTY(QString amount_fiat READ get_amount_fiat CONSTANT MEMBER m_amount_fiat)
         Q_PROPERTY(QString date READ get_date CONSTANT MEMBER m_date)
@@ -230,12 +230,12 @@ namespace atomic_dex
         Q_PROPERTY(QStringList to READ get_to CONSTANT MEMBER m_to)
         Q_PROPERTY(QStringList from READ get_from CONSTANT MEMBER m_from)
 
-        [[nodiscard]] std::size_t get_confirmations() const noexcept
+        [[nodiscard]] unsigned int get_confirmations() const noexcept
         {
             return m_confirmations;
         }
 
-        [[nodiscard]] std::size_t
+        [[nodiscard]] unsigned int
         get_blockheight() const noexcept
         {
             return m_blockheight;
