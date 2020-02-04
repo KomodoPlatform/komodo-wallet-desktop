@@ -613,6 +613,12 @@ namespace mm2::api
         return process_rpc<my_recent_swaps_request, my_recent_swaps_answer>(std::forward<my_recent_swaps_request>(request), "my_recent_swaps");
     }
 
+    enable_answer
+    rpc_enable(enable_request&& request)
+    {
+        return process_rpc<enable_request, enable_answer>(std::forward<enable_request>(request), "enable");
+    }
+
     electrum_answer
     rpc_electrum(electrum_request&& request)
     {

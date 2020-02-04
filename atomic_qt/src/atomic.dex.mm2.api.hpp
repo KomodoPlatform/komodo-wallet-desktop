@@ -48,6 +48,8 @@ namespace mm2::api
 
     void from_json(const nlohmann::json& j, const enable_answer& cfg);
 
+    enable_answer rpc_enable(enable_request&& request);
+
     struct electrum_request
     {
         std::string                              coin_name;
@@ -565,6 +567,7 @@ namespace atomic_dex
     using t_orderbook_request       = ::mm2::api::orderbook_request;
     using t_orderbook_answer        = ::mm2::api::orderbook_answer;
     using t_electrum_request        = ::mm2::api::electrum_request;
+    using t_enable_request          = ::mm2::api::enable_request;
     using t_disable_coin_request    = ::mm2::api::disable_coin_request;
     using t_tx_history_request      = ::mm2::api::tx_history_request;
     using t_my_recent_swaps_answer  = ::mm2::api::my_recent_swaps_answer_success;

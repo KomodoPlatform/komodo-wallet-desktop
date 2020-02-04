@@ -240,8 +240,12 @@ namespace atomic_dex
         }
         else
         {
-            LOG_F(WARNING, "{}", "Not implemented yet");
-            return false;
+            t_enable_request request{.coin_name = coin_info.ticker, .urls = coin_info.eth_urls.value()};
+            auto             answer = rpc_enable(std::move(request));
+            if (answer.result not_eq "success")
+            {
+                return false;
+            }
         }
 
 
