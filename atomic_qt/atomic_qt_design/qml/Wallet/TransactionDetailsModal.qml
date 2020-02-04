@@ -24,14 +24,14 @@ Popup {
         // Amount
         TextWithTitle {
             title: qsTr("Amount:")
-            text: (details.received ? "+" : "-") + details.amount + " " + API.get().current_coin_info.ticker + " (" + details.amount_fiat + " " + API.get().fiat + ")"
+            text: (details.received ? "+" : "-") + General.formatCrypto(details.amount, API.get().current_coin_info.ticker, details.amount_fiat, API.get().fiat)
             value_color: details.received ? Style.colorGreen : Style.colorRed
         }
 
         // Fees
         TextWithTitle {
             title: qsTr("Fees:")
-            text: details.fees + " " + API.get().current_coin_info.ticker
+            text: General.formatCrypto(details.fees, API.get().current_coin_info.ticker)
         }
 
         // Date

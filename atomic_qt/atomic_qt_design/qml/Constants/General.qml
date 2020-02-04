@@ -26,4 +26,17 @@ QtObject {
     function filterCoins(list, text) {
         return list.filter(c => c.ticker.indexOf(text.toUpperCase()) !== -1 || c.name.toUpperCase().indexOf(text.toUpperCase()) !== -1)
     }
+
+    function formatFiat(amount, fiat) {
+        const symbols = {
+            "USD": "$",
+            "EUR": "€"
+        }
+
+        return symbols[fiat] + amount
+    }
+
+    function formatCrypto(amount, ticker, fiat_amount, fiat) {
+        return amount + " " + ticker + (fiat_amount ? " (" + formatFiat(fiat_amount, fiat) + ")" : "")
+    }
 }

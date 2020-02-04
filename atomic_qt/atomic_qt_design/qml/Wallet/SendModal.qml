@@ -118,13 +118,13 @@ Popup {
             // Amount
             TextWithTitle {
                 title: qsTr("Amount:")
-                text: input_amount.field.text + " " + API.get().current_coin_info.ticker
+                text: General.formatCrypto(input_amount.field.text, API.get().current_coin_info.ticker)
             }
 
             // Fees
             TextWithTitle {
                 title: qsTr("Fees:")
-                text: prepare_send_result.fees
+                text: General.formatCrypto(prepare_send_result.fees, API.get().current_coin_info.ticker)
             }
 
             // Date
@@ -163,7 +163,7 @@ Popup {
             // Amount
             TextWithTitle {
                 title: qsTr("Amount:")
-                text: input_amount.field.text + " " + API.get().current_coin_info.ticker
+                text: General.formatCrypto(input_amount.field.text, API.get().current_coin_info.ticker)
             }
 
             // Fees
