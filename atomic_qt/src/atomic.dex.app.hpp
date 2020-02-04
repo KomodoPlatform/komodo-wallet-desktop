@@ -82,6 +82,7 @@ namespace atomic_dex
         Q_PROPERTY(QList<QObject*> enableable_coins READ get_enableable_coins NOTIFY enableableCoinsChanged)
         Q_PROPERTY(QObject* current_coin_info READ get_current_coin_info NOTIFY coinInfoChanged)
         Q_PROPERTY(QString fiat READ get_current_fiat WRITE set_current_fiat NOTIFY on_fiat_changed)
+        Q_PROPERTY(QString balance_fiat_all READ get_balance_fiat_all WRITE set_current_balance_fiat_all NOTIFY on_fiat_balance_all_changed)
         Q_PROPERTY(QString initial_loading_status READ get_status WRITE set_status NOTIFY on_status_changed)
 
       private:
@@ -106,6 +107,8 @@ namespace atomic_dex
         QObjectList           get_enableable_coins() const noexcept;
         QString               get_current_fiat() const noexcept;
         void                  set_current_fiat(QString current_fiat) noexcept;
+        QString               get_balance_fiat_all() const noexcept;
+        void                  set_current_balance_fiat_all(QString current_fiat) noexcept;
         QString               get_status() const noexcept;
         void                  set_status(QString status) noexcept;
         void                  launch();
@@ -135,6 +138,7 @@ namespace atomic_dex
         void enableableCoinsChanged();
         void coinInfoChanged();
         void on_fiat_changed();
+        void on_fiat_balance_all_changed();
         void on_status_changed();
 
       private:
@@ -145,6 +149,7 @@ namespace atomic_dex
         QObjectList        m_enableable_coins;
         QString            m_current_fiat{"USD"};
         QString            m_current_status{"None"};
+        QString            m_current_balance_all{"0.00"};
         current_coin_info* m_coin_info;
 
       private:

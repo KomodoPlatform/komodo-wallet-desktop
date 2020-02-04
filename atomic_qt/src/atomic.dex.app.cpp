@@ -315,6 +315,13 @@ namespace atomic_dex
                 m_refresh_transaction_only = false;
             }
 
+            std::error_code ec;
+            auto            fiat_balance_std = paprika.get_price_in_fiat_all(m_current_fiat.toStdString(), ec);
+            if (!ec)
+            {
+                this->set_current_balance_fiat_all(QString::fromStdString(fiat_balance_std));
+            }
+
             if (not m_coin_info->get_ticker().isEmpty() && not m_enabled_coins.empty())
             {
                 refresh_fiat_balance(mm2, paprika);
@@ -382,6 +389,19 @@ namespace atomic_dex
     current_coin_info::get_fiat_amount() const noexcept
     {
         return this->selected_coin_fiat_amount;
+    }
+
+
+    QString
+    atomic_dex::application::get_balance_fiat_all() const noexcept
+    {
+        return m_current_balance_all;
+    }
+
+    void
+    atomic_dex::application::set_current_balance_fiat_all(QString current_fiat_all_balance) noexcept
+    {
+        this->m_current_balance_all = std::move(current_fiat_all_balance);
     }
 
     void
