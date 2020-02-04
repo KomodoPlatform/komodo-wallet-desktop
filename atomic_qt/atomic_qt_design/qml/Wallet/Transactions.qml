@@ -74,8 +74,13 @@ ListView {
             MouseArea {
                 anchors { horizontalCenter: parent.horizontalCenter; verticalCenter: parent.verticalCenter }
                 height: parent.height * 2; width: height
-                onClicked: console.log("Info")
+                onClicked: tx_details_modal.open()
             }
+        }
+
+        TransactionDetailsModal {
+            id: tx_details_modal
+            details: model.modelData
         }
     }
 }
