@@ -50,12 +50,6 @@ namespace atomic_dex
     }
 
     void
-    from_json(const nlohmann::json& j, eth_node& cfg)
-    {
-        j.at("url").get_to(cfg.url);
-    }
-
-    void
     from_json(const nlohmann::json& j, coin_config& cfg)
     {
         LOG_SCOPE_FUNCTION(INFO);
@@ -67,7 +61,7 @@ namespace atomic_dex
         }
         if (j.count("eth_nodes") > 0)
         {
-            cfg.eth_urls = j.at("eth_nodes").get<std::vector<eth_node>>();
+            cfg.eth_urls = j.at("eth_nodes").get<std::vector<std::string>>();
         }
         j.at("active").get_to(cfg.active);
         j.at("currently_enabled").get_to(cfg.currently_enabled);

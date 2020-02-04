@@ -43,6 +43,15 @@ namespace
 namespace mm2::api
 {
     void
+    to_json(nlohmann::json& j, const enable_request& cfg)
+    {
+        j["coin"]                  = cfg.coin_name;
+        j["gas_station_url"]       = cfg.gas_station_url;
+        j["swap_contract_address"] = cfg.swap_contract_address;
+        j["urls"]                  = cfg.urls;
+    }
+
+    void
     from_json(const nlohmann::json& j, electrum_answer& cfg)
     {
         j.at("address").get_to(cfg.address);

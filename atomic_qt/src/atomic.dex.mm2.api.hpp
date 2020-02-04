@@ -26,6 +26,17 @@ namespace mm2::api
 {
     inline constexpr const char* g_endpoint = "http://127.0.0.1:7783";
 
+    //! Only for erc 20
+    struct enable_request
+    {
+        std::string              coin_name;
+        std::vector<std::string> urls;
+        std::string              swap_contract_address{"0x8500AFc0bc5214728082163326C2FF0C73f4a871"};
+        std::string              gas_station_url{"https://ethgasstation.info/json/ethgasAPI.json"};
+    };
+
+    void to_json(nlohmann::json& j, const enable_request& cfg);
+
     struct electrum_request
     {
         std::string                              coin_name;

@@ -30,20 +30,15 @@ namespace atomic_dex
         std::optional<bool>        disable_cert_verification{false};
     };
 
-    struct eth_node
-    {
-        std::string url;
-    };
-
     void to_json(nlohmann::json& j, const electrum_server& cfg);
     void from_json(const nlohmann::json& j, electrum_server& cfg);
-    void from_json(const nlohmann::json& j, eth_node& cfg);
 
     struct coin_config
     {
       public:
-        using electrum_servers = std::vector<electrum_server>;
-        using eth_nodes        = std::vector<eth_node>;
+        static constexpr const char* erc_gas_stations = "https://ethgasstation.info/json/ethgasAPI.json";
+        using electrum_servers                        = std::vector<electrum_server>;
+        using eth_nodes                               = std::vector<std::string>;
         std::string                     ticker;
         std::string                     name; ///< nice name
         std::optional<electrum_servers> electrum_urls;
