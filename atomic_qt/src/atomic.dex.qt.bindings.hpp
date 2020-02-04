@@ -208,12 +208,14 @@ namespace atomic_dex
         Q_OBJECT
       public:
         explicit qt_transactions(QObject* parent = nullptr);
-        bool    m_received;
-        QString m_amount;
-        QString m_amount_fiat;
-        QString m_date;
-        QString m_tx_hash;
-        QString m_fees;
+        bool        m_received;
+        QString     m_amount;
+        QString     m_amount_fiat;
+        QString     m_date;
+        QString     m_tx_hash;
+        QString     m_fees;
+        QStringList m_to;
+        QStringList m_from;
 
         Q_PROPERTY(bool received READ get_received CONSTANT MEMBER m_received)
         Q_PROPERTY(QString amount READ get_amount CONSTANT MEMBER m_amount)
@@ -221,8 +223,22 @@ namespace atomic_dex
         Q_PROPERTY(QString date READ get_date CONSTANT MEMBER m_date)
         Q_PROPERTY(QString tx_hash READ get_tx_hash CONSTANT MEMBER m_tx_hash)
         Q_PROPERTY(QString fees READ get_fees CONSTANT MEMBER m_fees)
+        Q_PROPERTY(QStringList to READ get_to CONSTANT MEMBER m_to)
+        Q_PROPERTY(QStringList from READ get_from CONSTANT MEMBER m_from)
 
-        [[nodiscard]] QString get_fees() const noexcept
+        [[nodiscard]] QStringList get_to() const noexcept
+        {
+            return m_to;
+        }
+
+        [[nodiscard]] QStringList
+        get_from() const noexcept
+        {
+            return m_from;
+        }
+
+        [[nodiscard]] QString
+        get_fees() const noexcept
         {
             return m_fees;
         }
@@ -303,6 +319,10 @@ namespace atomic_dex
         obj->m_amount_fiat = std::move(fiat_amount);
         obj->m_tx_hash     = QString::fromStdString(tx.tx_hash);
         obj->m_fees        = QString::fromStdString(tx.fees);
+        obj->m_from.reserve(tx.from.size());
+        for (auto&& cur: tx.from) { obj->m_from.append(QString::fromStdString(cur)); }
+        obj->m_to.reserve(tx.to.size());
+        for (auto&& cur: tx.to) { obj->m_to.append(QString::fromStdString(cur)); }
         return obj;
     }
 
