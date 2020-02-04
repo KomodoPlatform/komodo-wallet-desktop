@@ -410,6 +410,7 @@ namespace atomic_dex
     atomic_dex::application::set_current_balance_fiat_all(QString current_fiat_all_balance) noexcept
     {
         this->m_current_balance_all = std::move(current_fiat_all_balance);
+        emit on_fiat_balance_all_changed();
     }
 
     void
