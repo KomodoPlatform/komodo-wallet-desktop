@@ -112,6 +112,7 @@ namespace mm2::api
     {
         j.at("address").get_to(cfg.address);
         j.at("balance").get_to(cfg.balance);
+        cfg.balance = adjust_precision(cfg.balance);
         j.at("coin").get_to(cfg.coin);
         j.at("locked_by_swaps").get_to(cfg.locked_by_swaps);
     }
