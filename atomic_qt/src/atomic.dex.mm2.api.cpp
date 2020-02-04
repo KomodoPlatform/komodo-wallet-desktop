@@ -52,6 +52,14 @@ namespace mm2::api
     }
 
     void
+    from_json(const nlohmann::json& j, enable_answer& cfg)
+    {
+        j.at("address").get_to(cfg.address);
+        j.at("balance").get_to(cfg.balance);
+        j.at("result").get_to(cfg.result);
+    }
+
+    void
     from_json(const nlohmann::json& j, electrum_answer& cfg)
     {
         j.at("address").get_to(cfg.address);

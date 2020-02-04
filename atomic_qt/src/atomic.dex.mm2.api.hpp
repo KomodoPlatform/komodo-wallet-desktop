@@ -37,6 +37,17 @@ namespace mm2::api
 
     void to_json(nlohmann::json& j, const enable_request& cfg);
 
+    struct enable_answer
+    {
+        std::string address;
+        std::string balance;
+        std::string result;
+        std::string raw_result;
+        int         rpc_result_code;
+    };
+
+    void from_json(const nlohmann::json& j, const enable_answer& cfg);
+
     struct electrum_request
     {
         std::string                              coin_name;
