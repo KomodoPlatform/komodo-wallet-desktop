@@ -8,7 +8,6 @@ QtObject {
                                              pixelSize: Qt.application.font.pixelSize
                                          })
 
-    readonly property int modalTitleMargin: 10
 
     readonly property int textSize: 16
     readonly property int textSize2: 24
@@ -55,4 +54,7 @@ QtObject {
     readonly property string colorTheme6: "#283547"
     readonly property string colorTheme7: "#232F40"
     readonly property string colorTheme8: "#1E2938"
+
+    readonly property int modalTitleMargin: 10
+    readonly property string modalValueColor: Style.colorWhite4
 }

@@ -15,6 +15,6 @@ ColumnLayout {
 
     DefaultText {
         id: text
-        color: Style.colorWhite4
+        color: Style.modalValueColor
     }
 }

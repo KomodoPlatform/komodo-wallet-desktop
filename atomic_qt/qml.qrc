@@ -65,5 +65,7 @@
         <file>atomic_qt_design/qml/Wallet/SendModal.qml</file>
         <file>atomic_qt_design/qml/Wallet/EnableCoinModal.qml</file>
         <file>atomic_qt_design/qml/Wallet/Transactions.qml</file>
+        <file>atomic_qt_design/qml/Wallet/TransactionDetailsModal.qml</file>
+        <file>atomic_qt_design/qml/Wallet/AddressList.qml</file>
     </qresource>
 </RCC>
