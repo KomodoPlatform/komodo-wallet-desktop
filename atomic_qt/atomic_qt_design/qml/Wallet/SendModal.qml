@@ -34,7 +34,7 @@ Popup {
     }
 
     function sendCoin() {
-        send_result = API.get().send(prepare_send_result)
+        send_result = API.get().send(prepare_send_result.tx_hex)
         stack_layout.currentIndex = 2
     }
 
