@@ -64,6 +64,10 @@ Popup {
                 font.pointSize: Style.textSize2
             }
 
+            HorizontalLine {
+                Layout.fillWidth: true
+            }
+
             // Send address
             AddressField {
                 id: input_address
@@ -113,6 +117,10 @@ Popup {
                 font.pointSize: Style.textSize2
             }
 
+            HorizontalLine {
+                Layout.fillWidth: true
+            }
+
             // Address
             TextWithTitle {
                 title: qsTr("Recipient's address:")
@@ -158,6 +166,10 @@ Popup {
             DefaultText {
                 text: qsTr("Transaction Complete!")
                 font.pointSize: Style.textSize2
+            }
+
+            HorizontalLine {
+                Layout.fillWidth: true
             }
 
             // Address

@@ -21,6 +21,10 @@ Popup {
             font.pointSize: Style.textSize2
         }
 
+        HorizontalLine {
+            Layout.fillWidth: true
+        }
+
         // Receive address
         TextAreaWithTitle {
             title: qsTr("Share this address to receive coins")
