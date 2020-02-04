@@ -23,20 +23,24 @@ QtObject {
     readonly property int idx_exchange_orders: 1
     readonly property int idx_exchange_history: 2
 
+    function diffPrefix(received) {
+        return received === "" ? "" : received === true ? "+ " :  "- "
+    }
+
     function filterCoins(list, text) {
         return list.filter(c => c.ticker.indexOf(text.toUpperCase()) !== -1 || c.name.toUpperCase().indexOf(text.toUpperCase()) !== -1)
     }
 
-    function formatFiat(amount, fiat) {
+    function formatFiat(received, amount, fiat) {
         const symbols = {
             "USD": "$",
             "EUR": "€"
         }
 
-        return symbols[fiat] + amount
+        return diffPrefix(received) + symbols[fiat] + amount
     }
 
-    function formatCrypto(amount, ticker, fiat_amount, fiat) {
-        return amount + " " + ticker + (fiat_amount ? " (" + formatFiat(fiat_amount, fiat) + ")" : "")
+    function formatCrypto(received, amount, ticker, fiat_amount, fiat) {
+        return diffPrefix(received) + amount + " " + ticker + (fiat_amount ? " (" + formatFiat("", fiat_amount, fiat) + ")" : "")
     }
 }

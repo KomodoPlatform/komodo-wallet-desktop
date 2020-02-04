@@ -39,13 +39,13 @@ RowLayout {
                 ColumnLayout {
                     id: balance_layout
                     DefaultText {
-                        text: General.formatCrypto(API.get().current_coin_info.balance, API.get().current_coin_info.ticker)
+                        text: General.formatCrypto("", API.get().current_coin_info.balance, API.get().current_coin_info.ticker)
                         Layout.alignment: Qt.AlignRight
                         font.pointSize: Style.textSize5
                     }
 
                     DefaultText {
-                        text: General.formatFiat(API.get().current_coin_info.fiat_amount, API.get().fiat)
+                        text: General.formatFiat("", API.get().current_coin_info.fiat_amount, API.get().fiat)
                         Layout.topMargin: -15
                         Layout.rightMargin: 4
                         Layout.alignment: Qt.AlignRight
@@ -136,7 +136,7 @@ RowLayout {
             anchors.topMargin: search_button.anchors.topMargin * 0.5 - font.pointSize * 0.5
             anchors.horizontalCenter: parent.horizontalCenter
 
-            text: General.formatFiat(API.get().balance_fiat_all, API.get().fiat)
+            text: General.formatFiat("", API.get().balance_fiat_all, API.get().fiat)
         }
 
         // Search button
