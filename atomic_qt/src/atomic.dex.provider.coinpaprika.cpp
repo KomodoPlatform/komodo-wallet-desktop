@@ -190,7 +190,6 @@ namespace atomic_dex
         ss.precision(2);
         ss << final_price;
         std::string final_price_str = ss.str();
-        if (tx.am_i_sender) { final_price_str = "-" + final_price_str; }
         return final_price_str;
     }
 
