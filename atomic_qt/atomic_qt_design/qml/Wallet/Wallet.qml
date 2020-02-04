@@ -126,9 +126,19 @@ RowLayout {
     Rectangle {
         id: coins_bar
         Layout.alignment: Qt.AlignRight
-        width: 125
+        width: 150
         Layout.fillHeight: true
         color: Style.colorTheme7
+
+
+        // Balance
+        DefaultText {
+            anchors.top: parent.top
+            anchors.topMargin: search_button.anchors.topMargin * 0.5 - font.pointSize*0.5
+            anchors.horizontalCenter: parent.horizontalCenter
+
+            text: API.get().balance_fiat_all + " " + API.get().fiat
+        }
 
         // Search button
         Image {

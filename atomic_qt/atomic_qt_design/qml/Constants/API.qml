@@ -6,6 +6,7 @@ QtObject {
     property string saved_seed
     property string saved_password
     property var mockAPI: ({
+        balance_fiat_all: "12345678.90",
 
         fiat: "USD",
 
