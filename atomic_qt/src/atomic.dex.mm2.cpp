@@ -583,6 +583,7 @@ namespace atomic_dex
         }
         else if (answer.rpc_result_code not_eq -1 and answer.result.has_value())
         {
+            t_tx_state     state{.state = answer.result.value().sync_status.state, .current_block = answer.result.value().current_block};
             t_transactions out;
             out.reserve(answer.result.value().transactions.size());
 
@@ -610,6 +611,7 @@ namespace atomic_dex
             std::sort(begin(out), end(out), [](auto&& a, auto&& b) { return a.timestamp > b.timestamp; });
 
             m_tx_informations.insert_or_assign(ticker, std::move(out));
+            m_tx_state.insert_or_assign(ticker, std::move(state));
             this->dispatcher_.trigger<tx_fetch_finished>();
         }
     }
@@ -743,5 +745,17 @@ namespace atomic_dex
         }
 
         return answer;
+    }
+
+    t_tx_state
+    mm2::get_tx_state(const std::string& ticker, t_mm2_ec& ec) const
+    {
+        if (m_tx_state.find(ticker) == m_tx_state.cend())
+        {
+            ec = dextop_error::tx_history_of_a_non_enabled_coin;
+            return {};
+        }
+
+        return m_tx_state.at(ticker);
     }
 } // namespace atomic_dex

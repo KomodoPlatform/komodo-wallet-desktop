@@ -47,10 +47,17 @@ namespace atomic_dex
         t_mm2_ec                 ec{dextop_error::success};
     };
 
+    struct tx_state
+    {
+        std::string state;
+        std::size_t current_block;
+    };
+
     using t_allocator = folly::AlignedSysAllocator<std::uint8_t, folly::FixedAlign<bit_size<std::size_t>()>>;
     template <typename Key, typename Value>
     using t_concurrent_reg = folly::ConcurrentHashMap<Key, Value, std::hash<Key>, std::equal_to<>, t_allocator>;
     using t_ticker         = std::string;
+    using t_tx_state       = tx_state;
     using t_coins_registry = t_concurrent_reg<t_ticker, coin_config>;
     using t_transactions   = std::vector<tx_infos>;
     using t_float_50       = bm::cpp_dec_float_50;
@@ -67,6 +74,7 @@ namespace atomic_dex
         using t_balance_registry    = t_concurrent_reg<t_ticker, t_balance_answer>;
         using t_my_orders           = t_concurrent_reg<t_ticker, t_my_orders_answer>;
         using t_tx_history_registry = t_concurrent_reg<t_ticker, t_transactions>;
+        using t_tx_state_registry   = t_concurrent_reg<t_ticker, t_tx_state>;
         using t_orderbook_registry  = t_concurrent_reg<t_ticker, t_orderbook_answer>;
         using t_swaps_registry      = t_concurrent_reg<t_ticker, t_my_recent_swaps_answer>;
 
@@ -86,6 +94,7 @@ namespace atomic_dex
         t_coins_registry&     m_coins_informations{entity_registry_.set<t_coins_registry>()};
         t_balance_registry&   m_balance_informations{entity_registry_.set<t_balance_registry>()};
         t_tx_history_registry m_tx_informations;
+        t_tx_state_registry   m_tx_state;
         t_my_orders           m_orders_registry;
         t_orderbook_registry  m_current_orderbook;
         t_swaps_registry      m_swaps_registry;
@@ -178,6 +187,10 @@ namespace atomic_dex
 
         //! Last 50 transactions maximum
         [[nodiscard]] t_transactions get_tx_history(const std::string& ticker, t_mm2_ec& ec) const;
+
+        //! Last 50 transactions maximum
+        [[nodiscard]] t_tx_state get_tx_state(const std::string& ticker, t_mm2_ec& ec) const;
+
 
         //! Get coins that are currently enabled
         [[nodiscard]] t_coins get_enabled_coins() const noexcept;

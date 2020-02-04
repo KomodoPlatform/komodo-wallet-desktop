@@ -351,11 +351,19 @@ namespace atomic_dex
     void
     application::refresh_transactions(const mm2& mm2)
     {
+        LOG_SCOPE_FUNCTION(INFO);
         std::error_code ec;
         auto            txs = mm2.get_tx_history(m_coin_info->get_ticker().toStdString(), ec);
         if (!ec)
         {
             m_coin_info->set_transactions(to_qt_binding(std::move(txs), this, get_paprika(), m_current_fiat, m_coin_info->get_ticker().toStdString()));
+        }
+        auto tx_state = mm2.get_tx_state(m_coin_info->get_ticker().toStdString(), ec);
+
+        if (!ec)
+        {
+            m_coin_info->set_tx_state(QString::fromStdString(tx_state.state));
+            m_coin_info->set_tx_current_block(tx_state.current_block);
         }
     }
 
@@ -441,6 +449,32 @@ namespace atomic_dex
     {
         this->selected_coin_url = std::move(url);
         emit explorer_url_changed();
+    }
+
+    void
+    current_coin_info::set_tx_state(QString state) noexcept
+    {
+        this->selected_coin_state = std::move(state);
+        emit tx_state_changed();
+    }
+
+    QString
+    current_coin_info::get_tx_state() const noexcept
+    {
+        return this->selected_coin_state;
+    }
+
+    unsigned int
+    current_coin_info::get_tx_current_block() const noexcept
+    {
+        return this->selected_coin_block;
+    }
+
+    void
+    current_coin_info::set_tx_current_block(unsigned int block) noexcept
+    {
+        this->selected_coin_block = std::move(block);
+        emit tx_current_block_changed();
     }
 
     application::application(QObject* pParent) noexcept : QObject(pParent), m_coin_info(new current_coin_info(dispatcher_, this))
