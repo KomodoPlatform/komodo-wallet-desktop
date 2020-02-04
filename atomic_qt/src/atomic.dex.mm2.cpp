@@ -231,7 +231,7 @@ namespace atomic_dex
 
         if (not coin_info.is_erc_20)
         {
-            t_electrum_request request{.coin_name = coin_info.ticker, .servers = coin_info.electrum_urls, .with_tx_history = true};
+            t_electrum_request request{.coin_name = coin_info.ticker, .servers = coin_info.electrum_urls.value(), .with_tx_history = true};
             auto               answer = rpc_electrum(std::move(request));
             if (answer.result not_eq "success")
             {

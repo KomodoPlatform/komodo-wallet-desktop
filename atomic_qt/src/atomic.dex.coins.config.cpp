@@ -24,16 +24,34 @@ namespace atomic_dex
     {
         LOG_SCOPE_FUNCTION(INFO);
         j["url"] = cfg.url;
-        if (cfg.protocol.has_value()) { j["protocol"] = cfg.protocol.value(); }
-        if (cfg.disable_cert_verification.has_value()) { j["disable_cert_verification"] = cfg.disable_cert_verification.value(); }
+        if (cfg.protocol.has_value())
+        {
+            j["protocol"] = cfg.protocol.value();
+        }
+        if (cfg.disable_cert_verification.has_value())
+        {
+            j["disable_cert_verification"] = cfg.disable_cert_verification.value();
+        }
     }
 
     void
     from_json(const nlohmann::json& j, electrum_server& cfg)
     {
         LOG_SCOPE_FUNCTION(INFO);
-        if (j.count("protocol") == 1) { cfg.protocol = j.at("protocol").get<std::string>(); }
-        if (j.count("disable_cert_verification") == 1) { cfg.disable_cert_verification = j.at("disable_cert_verification").get<bool>(); }
+        if (j.count("protocol") == 1)
+        {
+            cfg.protocol = j.at("protocol").get<std::string>();
+        }
+        if (j.count("disable_cert_verification") == 1)
+        {
+            cfg.disable_cert_verification = j.at("disable_cert_verification").get<bool>();
+        }
+        j.at("url").get_to(cfg.url);
+    }
+
+    void
+    from_json(const nlohmann::json& j, eth_node& cfg)
+    {
         j.at("url").get_to(cfg.url);
     }
 
@@ -43,7 +61,14 @@ namespace atomic_dex
         LOG_SCOPE_FUNCTION(INFO);
         j.at("coin").get_to(cfg.ticker);
         j.at("name").get_to(cfg.name);
-        j.at("electrum").get_to(cfg.electrum_urls);
+        if (j.count("electrum") > 0)
+        {
+            cfg.electrum_urls = j.at("electrum").get<std::vector<electrum_server>>();
+        }
+        if (j.count("eth_nodes") > 0)
+        {
+            cfg.eth_urls = j.at("eth_nodes").get<std::vector<eth_node>>();
+        }
         j.at("active").get_to(cfg.active);
         j.at("currently_enabled").get_to(cfg.currently_enabled);
         j.at("coinpaprika_id").get_to(cfg.coinpaprika_id);

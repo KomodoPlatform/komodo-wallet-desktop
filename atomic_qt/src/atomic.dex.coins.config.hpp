@@ -30,21 +30,29 @@ namespace atomic_dex
         std::optional<bool>        disable_cert_verification{false};
     };
 
+    struct eth_node
+    {
+        std::string url;
+    };
+
     void to_json(nlohmann::json& j, const electrum_server& cfg);
     void from_json(const nlohmann::json& j, electrum_server& cfg);
+    void from_json(const nlohmann::json& j, eth_node& cfg);
 
     struct coin_config
     {
       public:
         using electrum_servers = std::vector<electrum_server>;
-        std::string              ticker;
-        std::string              name; ///< nice name
-        electrum_servers         electrum_urls;
-        bool                     currently_enabled{false};
-        bool                     active{false};
-        std::string              coinpaprika_id;
-        bool                     is_erc_20{false};
-        std::vector<std::string> explorer_url; ///< usefull for transaction, take this url and append transaction id
+        using eth_nodes        = std::vector<eth_node>;
+        std::string                     ticker;
+        std::string                     name; ///< nice name
+        std::optional<electrum_servers> electrum_urls;
+        std::optional<eth_nodes>        eth_urls;
+        bool                            currently_enabled{false};
+        bool                            active{false};
+        std::string                     coinpaprika_id;
+        bool                            is_erc_20{false};
+        std::vector<std::string>        explorer_url; ///< usefull for transaction, take this url and append transaction id
     };
 
     void from_json(const nlohmann::json& j, coin_config& cfg);

@@ -40,15 +40,15 @@
     "coingecko_id": "ethereum",
     "coinpaprika_id": "eth-ethereum",
     "is_erc_20": true,
-    "electrum": [
+    "eth_nodes": [
       {
-        "url": "http://195.201.0.6:8555"
+        "url": "http://eth1.cipig.net:8555"
       },
       {
-        "url": "http://195.201.0.6:8555"
+        "url": "http://eth2.cipig.net:8555"
       },
       {
-        "url": "http://195.201.0.6:8555"
+        "url": "http://eth3.cipig.net:8555"
       }
     ],
     "explorer_url": [
