@@ -33,6 +33,7 @@ namespace mm2::api
         std::vector<std::string> urls;
         std::string              swap_contract_address{"0x8500AFc0bc5214728082163326C2FF0C73f4a871"};
         std::string              gas_station_url{"https://ethgasstation.info/json/ethgasAPI.json"};
+        bool                     with_tx_history{true};
     };
 
     void to_json(nlohmann::json& j, const enable_request& cfg);

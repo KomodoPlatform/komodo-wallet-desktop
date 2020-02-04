@@ -29,18 +29,13 @@
     "currently_enabled": false
   },
   "ETH": {
+    "active": false,
     "coin": "ETH",
-    "name": "Ethereum",
-    "type": "ERC-20",
-    "rpcport": 80,
-    "pubtype": 0,
-    "p2shtype": 5,
-    "wiftype": 128,
-    "mm2": 1,
     "coingecko_id": "ethereum",
     "coinpaprika_id": "eth-ethereum",
-    "is_erc_20": true,
+    "currently_enabled": false,
     "eth_nodes": [
+      "http://195.201.0.6:8555",
       "http://eth1.cipig.net:8555",
       "http://eth2.cipig.net:8555",
       "http://eth3.cipig.net:8555"
@@ -48,8 +43,14 @@
     "explorer_url": [
       "https://etherscan.io/"
     ],
-    "active": false,
-    "currently_enabled": false
+    "is_erc_20": true,
+    "mm2": 1,
+    "name": "Ethereum",
+    "p2shtype": 5,
+    "pubtype": 0,
+    "rpcport": 80,
+    "type": "ERC-20",
+    "wiftype": 128
   },
   "KMD": {
     "coin": "KMD",

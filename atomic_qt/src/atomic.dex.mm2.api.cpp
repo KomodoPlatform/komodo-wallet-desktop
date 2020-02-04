@@ -49,6 +49,7 @@ namespace mm2::api
         j["gas_station_url"]       = cfg.gas_station_url;
         j["swap_contract_address"] = cfg.swap_contract_address;
         j["urls"]                  = cfg.urls;
+        j["tx_history"]            = cfg.with_tx_history;
     }
 
     void
