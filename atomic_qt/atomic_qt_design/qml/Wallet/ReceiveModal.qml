@@ -15,15 +15,8 @@ Popup {
 
     // Inside modal
     ColumnLayout {
-        // Title
-        DefaultText {
-            text: qsTr("Receive")
-            font.pointSize: Style.textSize2
-        }
-
-        HorizontalLine {
-            Layout.fillWidth: true
-            Layout.bottomMargin: Style.modalTitleMargin
+        ModalHeader {
+            title: qsTr("Receive")
         }
 
         // Receive address

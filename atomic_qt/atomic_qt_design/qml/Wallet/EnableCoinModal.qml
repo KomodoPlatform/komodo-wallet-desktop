@@ -29,10 +29,8 @@ Popup {
     // Inside modal
     ColumnLayout {
         id: modal_layout
-
-        DefaultText {
-            text: qsTr("Enable coins")
-            font.pointSize: Style.textSize2
+        ModalHeader {
+            title: qsTr("Enable coins")
         }
 
         // Search input

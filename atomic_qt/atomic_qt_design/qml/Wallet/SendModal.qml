@@ -58,15 +58,8 @@ Popup {
         ColumnLayout {
             Layout.fillWidth: true
 
-            // Title
-            DefaultText {
-                text: qsTr("Prepare to Send")
-                font.pointSize: Style.textSize2
-            }
-
-            HorizontalLine {
-                Layout.fillWidth: true
-                Layout.bottomMargin: Style.modalTitleMargin
+            ModalHeader {
+                title: qsTr("Prepare to Send")
             }
 
             // Send address
@@ -112,15 +105,8 @@ Popup {
 
         // Send Page
         ColumnLayout {
-            // Title
-            DefaultText {
-                text: qsTr("Send")
-                font.pointSize: Style.textSize2
-            }
-
-            HorizontalLine {
-                Layout.fillWidth: true
-                Layout.bottomMargin: Style.modalTitleMargin
+            ModalHeader {
+                title: qsTr("Send")
             }
 
             // Address
@@ -164,15 +150,8 @@ Popup {
 
         // Result Page
         ColumnLayout {
-            // Title
-            DefaultText {
-                text: qsTr("Transaction Complete!")
-                font.pointSize: Style.textSize2
-            }
-
-            HorizontalLine {
-                Layout.fillWidth: true
-                Layout.bottomMargin: Style.modalTitleMargin
+            ModalHeader {
+                title: qsTr("Transaction Complete!")
             }
 
             // Address
