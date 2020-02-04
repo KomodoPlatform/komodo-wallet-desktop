@@ -66,6 +66,7 @@ Popup {
 
             HorizontalLine {
                 Layout.fillWidth: true
+                Layout.bottomMargin: Style.modalTitleMargin
             }
 
             // Send address
@@ -119,6 +120,7 @@ Popup {
 
             HorizontalLine {
                 Layout.fillWidth: true
+                Layout.bottomMargin: Style.modalTitleMargin
             }
 
             // Address
@@ -170,6 +172,7 @@ Popup {
 
             HorizontalLine {
                 Layout.fillWidth: true
+                Layout.bottomMargin: Style.modalTitleMargin
             }
 
             // Address

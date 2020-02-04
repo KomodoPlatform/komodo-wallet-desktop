@@ -23,6 +23,7 @@ Popup {
 
         HorizontalLine {
             Layout.fillWidth: true
+            Layout.bottomMargin: Style.modalTitleMargin
         }
 
         // Receive address
