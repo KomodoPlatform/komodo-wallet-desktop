@@ -212,13 +212,29 @@ namespace atomic_dex
         QString m_amount;
         QString m_amount_fiat;
         QString m_date;
+        QString m_tx_hash;
+        QString m_fees;
 
         Q_PROPERTY(bool received READ get_received CONSTANT MEMBER m_received)
         Q_PROPERTY(QString amount READ get_amount CONSTANT MEMBER m_amount)
         Q_PROPERTY(QString amount_fiat READ get_amount_fiat CONSTANT MEMBER m_amount_fiat)
         Q_PROPERTY(QString date READ get_date CONSTANT MEMBER m_date)
+        Q_PROPERTY(QString tx_hash READ get_tx_hash CONSTANT MEMBER m_tx_hash)
+        Q_PROPERTY(QString fees READ get_fees CONSTANT MEMBER m_fees)
 
-        [[nodiscard]] bool get_received() const noexcept
+        [[nodiscard]] QString get_fees() const noexcept
+        {
+            return m_fees;
+        }
+
+        [[nodiscard]] QString
+        get_tx_hash() const noexcept
+        {
+            return m_tx_hash;
+        }
+
+        [[nodiscard]] bool
+        get_received() const noexcept
         {
             return m_received;
         }
@@ -285,16 +301,20 @@ namespace atomic_dex
         }
         obj->m_date        = QString::fromStdString(tx.date);
         obj->m_amount_fiat = std::move(fiat_amount);
+        obj->m_tx_hash     = QString::fromStdString(tx.tx_hash);
+        obj->m_fees        = QString::fromStdString(tx.fees);
         return obj;
     }
 
-    QObjectList inline to_qt_binding(t_transactions&& transactions, QObject* parent, coinpaprika_provider& paprika, const QString& fiat, const std::string& ticker)
+    QObjectList inline to_qt_binding(
+        t_transactions&& transactions, QObject* parent, coinpaprika_provider& paprika, const QString& fiat, const std::string& ticker)
     {
         QObjectList out;
         out.reserve(transactions.size());
-        for (auto&& tx: transactions) {
+        for (auto&& tx: transactions)
+        {
             std::error_code ec;
-            auto fiat_amount = QString::fromStdString(paprika.get_price_in_fiat_from_tx(fiat.toStdString(), ticker, tx, ec));
+            auto            fiat_amount = QString::fromStdString(paprika.get_price_in_fiat_from_tx(fiat.toStdString(), ticker, tx, ec));
             out.append(to_qt_binding(std::move(tx), parent, fiat_amount));
         }
         return out;
