@@ -229,13 +229,21 @@ namespace atomic_dex
             return true;
         }
 
-        t_electrum_request request{.coin_name = coin_info.ticker, .servers = coin_info.electrum_urls, .with_tx_history = true};
-        auto               answer = rpc_electrum(std::move(request));
-
-        if (answer.result not_eq "success")
+        if (not coin_info.is_erc_20)
         {
+            t_electrum_request request{.coin_name = coin_info.ticker, .servers = coin_info.electrum_urls, .with_tx_history = true};
+            auto               answer = rpc_electrum(std::move(request));
+            if (answer.result not_eq "success")
+            {
+                return false;
+            }
+        }
+        else
+        {
+            LOG_F(WARNING, "{}", "Not implemented yet");
             return false;
         }
+
 
         coin_info.currently_enabled = true;
         m_coins_informations.assign(coin_info.ticker, coin_info);
@@ -251,7 +259,8 @@ namespace atomic_dex
         });
 
         dispatcher_.trigger<coin_enabled>(ticker);
-        if (emit_event) {
+        if (emit_event)
+        {
             this->dispatcher_.trigger<enabled_coins_event>();
         }
         return true;
@@ -304,7 +313,8 @@ namespace atomic_dex
                 loguru::set_thread_name("disable multiple coins");
                 std::error_code ec;
                 disable_coin(ticker, ec);
-                if (ec) {
+                if (ec)
+                {
                     LOG_F(WARNING, "{}", ec.message());
                 }
             });
@@ -425,7 +435,7 @@ namespace atomic_dex
         const auto tools_path = ag::core::assets_real_path() / "tools/mm2/";
 
         nlohmann::to_json(json_cfg, cfg);
-        //DVLOG_F(loguru::Verbosity_INFO, "command line {}", json_cfg.dump());
+        // DVLOG_F(loguru::Verbosity_INFO, "command line {}", json_cfg.dump());
 
         const std::array<std::string, 2> args          = {(tools_path / "mm2").string(), json_cfg.dump()};
         reproc::redirect                 redirect_type = reproc::redirect::inherit;

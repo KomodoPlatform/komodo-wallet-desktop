@@ -28,6 +28,35 @@
     "active": false,
     "currently_enabled": false
   },
+  "ETH": {
+    "coin": "ETH",
+    "name": "Ethereum",
+    "type": "ERC-20",
+    "rpcport": 80,
+    "pubtype": 0,
+    "p2shtype": 5,
+    "wiftype": 128,
+    "mm2": 1,
+    "coingecko_id": "ethereum",
+    "coinpaprika_id": "eth-ethereum",
+    "is_erc_20": true,
+    "electrum": [
+      {
+        "url": "http://195.201.0.6:8555"
+      },
+      {
+        "url": "http://195.201.0.6:8555"
+      },
+      {
+        "url": "http://195.201.0.6:8555"
+      }
+    ],
+    "explorer_url": [
+      "https://etherscan.io/"
+    ],
+    "active": false,
+    "currently_enabled": false
+  },
   "KMD": {
     "coin": "KMD",
     "name": "Komodo",
