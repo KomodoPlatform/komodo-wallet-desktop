@@ -24,6 +24,7 @@
 
 //!
 #include "atomic.dex.mm2.hpp"
+#include "atomic.dex.provider.coinpaprika.hpp"
 
 namespace atomic_dex
 {
@@ -273,7 +274,7 @@ namespace atomic_dex
     };
 
     inline QObject*
-    to_qt_binding(tx_infos&& tx, QObject* parent)
+    to_qt_binding(tx_infos&& tx, QObject* parent, QString fiat_amount)
     {
         auto* obj       = new qt_transactions(parent);
         obj->m_amount   = QString::fromStdString(tx.my_balance_change);
@@ -283,15 +284,19 @@ namespace atomic_dex
             obj->m_amount = obj->m_amount.remove(0, 1);
         }
         obj->m_date        = QString::fromStdString(tx.date);
-        obj->m_amount_fiat = "0";
+        obj->m_amount_fiat = std::move(fiat_amount);
         return obj;
     }
 
-    QObjectList inline to_qt_binding(t_transactions&& transactions, QObject* parent)
+    QObjectList inline to_qt_binding(t_transactions&& transactions, QObject* parent, coinpaprika_provider& paprika, const QString& fiat, const std::string& ticker)
     {
         QObjectList out;
         out.reserve(transactions.size());
-        for (auto&& tx: transactions) { out.append(to_qt_binding(std::move(tx), parent)); }
+        for (auto&& tx: transactions) {
+            std::error_code ec;
+            auto fiat_amount = QString::fromStdString(paprika.get_price_in_fiat_from_tx(fiat.toStdString(), ticker, tx, ec));
+            out.append(to_qt_binding(std::move(tx), parent, fiat_amount));
+        }
         return out;
     }
 

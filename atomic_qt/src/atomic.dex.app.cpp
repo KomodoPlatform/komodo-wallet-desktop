@@ -348,7 +348,7 @@ namespace atomic_dex
         auto            txs = mm2.get_tx_history(m_coin_info->get_ticker().toStdString(), ec);
         if (!ec)
         {
-            m_coin_info->set_transactions(to_qt_binding(std::move(txs), this));
+            m_coin_info->set_transactions(to_qt_binding(std::move(txs), this, get_paprika(), m_current_fiat, m_coin_info->get_ticker().toStdString()));
         }
     }
 
