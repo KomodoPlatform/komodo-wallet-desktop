@@ -60,7 +60,6 @@ namespace atomic_dex
     using t_tx_state       = tx_state;
     using t_coins_registry = t_concurrent_reg<t_ticker, coin_config>;
     using t_transactions   = std::vector<tx_infos>;
-    using t_float_50       = bm::cpp_dec_float_50;
     using t_coins          = std::vector<coin_config>;
 
     //! Constants

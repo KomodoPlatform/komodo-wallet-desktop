@@ -109,19 +109,20 @@ namespace folly
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wunused-parameter"
 #include <boost/multiprecision/cpp_dec_float.hpp>
+using t_float_50 = boost::multiprecision::cpp_dec_float_50;
 #pragma clang diagnostic pop
 
 #ifdef __APPLE__
 //! Other dependencies Headers
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wunused-function"
-#pragma clang diagnostic ignored "-Wunused-parameter"
-#pragma clang diagnostic ignored "-Wignored-qualifiers"
-#include <bitcoin/bitcoin/utility/pseudo_random.hpp>
-#include <bitcoin/bitcoin/wallet/mnemonic.hpp>
-#pragma clang diagnostic pop
+#    pragma clang diagnostic push
+#    pragma clang diagnostic ignored "-Wunused-function"
+#    pragma clang diagnostic ignored "-Wunused-parameter"
+#    pragma clang diagnostic ignored "-Wignored-qualifiers"
+#    include <bitcoin/bitcoin/utility/pseudo_random.hpp>
+#    include <bitcoin/bitcoin/wallet/mnemonic.hpp>
+#    pragma clang diagnostic pop
 #elif defined(_WIN32) || defined(WIN32)
-#include <wally.hpp>
+#    include <wally.hpp>
 #endif
 
 #include <date/date.h>
@@ -131,9 +132,9 @@ namespace folly
 #include <loguru.hpp>
 #include <meta/detection/detection.hpp>
 #if defined(_WIN32) || defined(WIN32)
-    #define and &&
-    #define or ||
-    #define not !
+#    define and &&
+#    define or ||
+#    define not !
 #endif
 #include <nlohmann/json.hpp>
 #include <reproc++/reproc.hpp>

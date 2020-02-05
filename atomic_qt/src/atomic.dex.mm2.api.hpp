@@ -456,14 +456,17 @@ namespace mm2::api
 
     struct my_order_contents
     {
+        //! New
         std::string order_id;
-        std::string available_amount;
         std::string price;
         std::string base;
         std::string rel;
         bool        cancellable;
         std::size_t timestamp;
         std::string human_timestamp;
+        std::string order_type;
+        std::string base_amount;
+        std::string rel_amount;
     };
 
     struct my_orders_answer

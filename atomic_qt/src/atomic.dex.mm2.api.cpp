@@ -466,7 +466,7 @@ namespace mm2::api
     {
         static_cast<void>(answer);
         // clang-format off
-        auto filler_functor = [](const std::string& key, const nlohmann::json& value, std::map<std::size_t, my_order_contents>& out)
+        auto filler_functor = [](const std::string& key, const nlohmann::json& value, std::map<std::size_t, my_order_contents>& out, bool is_maker)
         {
           using namespace date;
           const auto        time_key = value.at("created_at").get<std::size_t>();
@@ -474,19 +474,22 @@ namespace mm2::api
 
           my_order_contents contents{
               .order_id         = key,
-              .available_amount = adjust_precision(value.at("available_amount").get<std::string>()),
-              .price            = adjust_precision(value.at("price").get<std::string>()),
-              .base             = value.at("base").get<std::string>(),
-              .rel              = value.at("rel").get<std::string>(),
+              .price            = is_maker ? adjust_precision(value.at("price").get<std::string>()) : "0",
+              .base             = is_maker ? value.at("base").get<std::string>() : value.at("request").at("base").get<std::string>(),
+              .rel              = is_maker ? value.at("rel").get<std::string>() : value.at("request").at("rel").get<std::string>(),
               .cancellable      = value.at("cancellable").get<bool>(),
               .timestamp        = time_key,
+              .order_type       = is_maker ? "maker" : "taker",
+              .base_amount      = is_maker ? value.at("max_base_vol").get<std::string>() : value.at("request").at("base_amount").get<std::string>(),
+              .rel_amount       = is_maker ? (t_float_50(contents.price) * t_float_50(contents.base_amount)).convert_to<std::string>() : value.at("request").at("rel_amount").get<std::string>(),
               .human_timestamp  = date::format("%Y-%m-%d %I:%M:%S", tp)};
           out.try_emplace(time_key, std::move(contents));
         };
+        t_float_50 f("50");
         // clang-format on
 
-        for (auto&& [key, value]: j.at("result").at("maker_orders").items()) { filler_functor(key, value, answer.maker_orders); }
-        for (auto&& [key, value]: j.at("result").at("taker_orders").items()) { filler_functor(key, value, answer.taker_orders); }
+        for (auto&& [key, value]: j.at("result").at("maker_orders").items()) { filler_functor(key, value, answer.maker_orders, true); }
+        for (auto&& [key, value]: j.at("result").at("taker_orders").items()) { filler_functor(key, value, answer.taker_orders, false); }
     }
 
     void
@@ -696,7 +699,7 @@ namespace mm2::api
         nlohmann::json       json_data = template_request("my_orders");
         RestClient::Response resp;
 
-        DVLOG_F(loguru::Verbosity_INFO, "request: %s", json_data.dump().c_str());
+        DVLOG_F(loguru::Verbosity_INFO, "request: {}", json_data.dump().c_str());
 
         resp = RestClient::post(g_endpoint, "application/json", json_data.dump());
 
