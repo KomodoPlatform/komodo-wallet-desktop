@@ -538,7 +538,7 @@ namespace mm2::api
             else if (evt_type == "Started")
             {
                 auto data                 = j_evt.at("data").get<started_data>();
-                contents.events[evt_type] = started_event{.timestamp = timestamp, .human_date = std::move(human_date), .data = std::move(data)};
+                contents.events[evt_type] = started_event{.timestamp = timestamp, .human_date = std::move(human_date), .data = data};
             }
         }
     }
