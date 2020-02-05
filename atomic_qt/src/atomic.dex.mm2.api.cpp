@@ -485,7 +485,6 @@ namespace mm2::api
               .human_timestamp  = date::format("%Y-%m-%d %I:%M:%S", tp)};
           out.try_emplace(time_key, std::move(contents));
         };
-        t_float_50 f("50");
         // clang-format on
 
         for (auto&& [key, value]: j.at("result").at("maker_orders").items()) { filler_functor(key, value, answer.maker_orders, true); }
