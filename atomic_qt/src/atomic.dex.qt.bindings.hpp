@@ -44,8 +44,22 @@ namespace atomic_dex
         Q_PROPERTY(QString price READ get_price CONSTANT MEMBER m_price)
         Q_PROPERTY(QString date READ get_date CONSTANT MEMBER m_date)
         Q_PROPERTY(QString base READ get_base CONSTANT MEMBER m_base)
+        Q_PROPERTY(bool cancellable READ is_cancellable CONSTANT MEMBER m_cancellable)
+        Q_PROPERTY(QString available_amount READ get_available_amount CONSTANT MEMBER m_available_amount)
 
-        [[nodiscard]] QString get_base() const noexcept
+        [[nodiscard]] bool is_cancellable() const noexcept
+        {
+            return m_cancellable;
+        }
+
+        [[nodiscard]] QString
+        get_available_amount() const noexcept
+        {
+            return m_available_amount;
+        }
+
+        [[nodiscard]] QString
+        get_base() const noexcept
         {
             return m_base;
         }
@@ -427,12 +441,15 @@ namespace atomic_dex
         auto* obj = new qt_my_orders(parent);
 
         auto functor = [&parent, &obj](auto&& collection, bool is_taker) {
-            for (auto&& cur_taker: collection)
+            for (auto&& cur_order: collection)
             {
-                auto* qt_cur_order   = new qt_my_order_contents(parent);
-                qt_cur_order->m_rel  = QString::fromStdString(cur_taker.second.rel);
-                qt_cur_order->m_base = QString::fromStdString(cur_taker.second.base);
-                qt_cur_order->m_date = QString::fromStdString(cur_taker.second.human_timestamp);
+                auto* qt_cur_order               = new qt_my_order_contents(parent);
+                qt_cur_order->m_rel              = QString::fromStdString(cur_order.second.rel);
+                qt_cur_order->m_base             = QString::fromStdString(cur_order.second.base);
+                qt_cur_order->m_date             = QString::fromStdString(cur_order.second.human_timestamp);
+                qt_cur_order->m_cancellable      = cur_order.second.cancellable;
+                qt_cur_order->m_available_amount = QString::fromStdString(cur_order.second.available_amount);
+
                 if (is_taker)
                 {
                     obj->m_taker_orders.append(qt_cur_order);
