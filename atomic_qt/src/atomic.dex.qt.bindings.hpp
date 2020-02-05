@@ -39,6 +39,7 @@ namespace atomic_dex
         QString m_rel;
         bool    m_cancellable;
         QString m_base_amount;
+        QString m_rel_amount;
         QString m_price;
 
         Q_PROPERTY(QString price READ get_price CONSTANT MEMBER m_price)
@@ -47,8 +48,16 @@ namespace atomic_dex
         Q_PROPERTY(QString rel READ get_rel CONSTANT MEMBER m_rel)
         Q_PROPERTY(bool cancellable READ is_cancellable CONSTANT MEMBER m_cancellable)
         Q_PROPERTY(QString base_amount READ get_base_amount CONSTANT MEMBER m_base_amount)
+        Q_PROPERTY(QString rel_amount READ get_rel_amount CONSTANT MEMBER m_rel_amount)
+        Q_PROPERTY(QString uuid READ get_uuid CONSTANT MEMBER m_order_id)
 
-        [[nodiscard]] bool is_cancellable() const noexcept
+        [[nodiscard]] QString get_uuid() const noexcept
+        {
+            return m_order_id;
+        }
+
+        [[nodiscard]] bool
+        is_cancellable() const noexcept
         {
             return m_cancellable;
         }
@@ -57,6 +66,12 @@ namespace atomic_dex
         get_base_amount() const noexcept
         {
             return m_base_amount;
+        }
+
+        [[nodiscard]] QString
+        get_rel_amount() const noexcept
+        {
+            return m_rel_amount;
         }
 
         [[nodiscard]] QString
@@ -456,6 +471,8 @@ namespace atomic_dex
                 qt_cur_order->m_date        = QString::fromStdString(cur_order.second.human_timestamp);
                 qt_cur_order->m_cancellable = cur_order.second.cancellable;
                 qt_cur_order->m_base_amount = QString::fromStdString(cur_order.second.base_amount);
+                qt_cur_order->m_rel_amount  = QString::fromStdString(cur_order.second.rel_amount);
+                qt_cur_order->m_order_id    = QString::fromStdString(cur_order.second.order_id);
 
                 if (is_taker)
                 {
