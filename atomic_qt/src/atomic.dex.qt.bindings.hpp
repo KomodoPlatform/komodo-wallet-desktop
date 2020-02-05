@@ -44,6 +44,7 @@ namespace atomic_dex
         Q_PROPERTY(QString price READ get_price CONSTANT MEMBER m_price)
         Q_PROPERTY(QString date READ get_date CONSTANT MEMBER m_date)
         Q_PROPERTY(QString base READ get_base CONSTANT MEMBER m_base)
+        Q_PROPERTY(QString rel READ get_rel CONSTANT MEMBER m_rel)
         Q_PROPERTY(bool cancellable READ is_cancellable CONSTANT MEMBER m_cancellable)
         Q_PROPERTY(QString base_amount READ get_base_amount CONSTANT MEMBER m_base_amount)
 
@@ -62,6 +63,12 @@ namespace atomic_dex
         get_base() const noexcept
         {
             return m_base;
+        }
+
+        [[nodiscard]] QString
+        get_rel() const noexcept
+        {
+            return m_rel;
         }
 
         [[nodiscard]] QString
