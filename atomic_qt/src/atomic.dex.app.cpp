@@ -504,6 +504,17 @@ namespace atomic_dex
     }
 
     void
+    atomic_dex::application::cancel_all_orders()
+    {
+        auto& mm2 = get_mm2();
+        atomic_dex::spawn([&mm2]() {
+            ::mm2::api::cancel_all_orders_request req;
+            ::mm2::api::rpc_cancel_all_orders(std::move(req));
+            mm2.process_orders();
+        });
+    }
+
+    void
     atomic_dex::application::on_enabled_coins_event(const enabled_coins_event&) noexcept
     {
         LOG_SCOPE_FUNCTION(INFO);
