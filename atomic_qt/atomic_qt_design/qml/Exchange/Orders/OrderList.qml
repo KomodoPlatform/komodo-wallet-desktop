@@ -26,6 +26,7 @@ Rectangle {
 
     ColumnLayout {
         width: parent.width
+        height: parent.height
 
         DefaultText {
             id: title
@@ -58,7 +59,7 @@ Rectangle {
             ScrollBar.vertical: ScrollBar {}
             Layout.topMargin: Style.textSize*2
             Layout.fillWidth: true
-            implicitHeight: contentItem.childrenRect.height
+            Layout.fillHeight: true
 
             clip: true
 
