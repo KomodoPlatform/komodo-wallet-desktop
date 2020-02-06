@@ -146,7 +146,38 @@ QtObject {
 
         set_current_orderbook: (base, rel) => {
             console.log("Setting current orderbook: " + base + " - " + rel)
-        }
+        },
+
+        get_my_orders: () => {
+               return {
+                   "BTC": {
+                     "orders": {
+                       "maker_order": [
+                         {
+                           "rel": "KMD",
+                           "base": "BTC",
+                           "date": "19 Janvier 2020",
+                           "cancellable": true,
+                           "base_amount": "1",
+                           "rel_amount": "1",
+                           "order_id": "4321"
+                         }
+                       ],
+                       "taker_order": [
+                         {
+                           "rel": "ETH",
+                           "base": "BTC",
+                           "date": "20 Janvier 2020",
+                           "cancellable": true,
+                           "base_amount": "1",
+                           "rel_amount": "1",
+                           "order_id": "1234"
+                         }
+                       ]
+                     }
+                   }
+                 }
+           }
     })
 
     // Simulate initial loading
