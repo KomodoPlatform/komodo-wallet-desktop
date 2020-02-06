@@ -76,6 +76,13 @@ Item {
                         base = baseCoins()[currentIndex].ticker
                     }
                 }
+
+                Button {
+                    text: qsTr("Cancel All Orders")
+                    enabled: getOrders().maker_order.length > 0 || getOrders().taker_order.length > 0
+                    onClicked: API.get().cancel_all_orders()
+                    Layout.rightMargin: 15
+                }
             }
         }
 
