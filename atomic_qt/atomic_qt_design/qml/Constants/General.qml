@@ -44,6 +44,14 @@ QtObject {
         return diffPrefix(received) + amount + " " + ticker + (fiat_amount ? " (" + formatFiat("", fiat_amount, fiat) + ")" : "")
     }
 
+    function fullCoinName(name, ticker) {
+        return name + " (" + ticker + ")"
+    }
+
+    function fullNamesOfCoins(coins) {
+        return coins.map(c => fullCoinName(c.name, c.ticker))
+    }
+
     function hasEnoughFunds(sell, base, rel, price, volume) {
         if(sell) {
             if(volume === "") return true

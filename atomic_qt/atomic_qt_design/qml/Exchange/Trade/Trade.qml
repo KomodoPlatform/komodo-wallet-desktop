@@ -30,10 +30,6 @@ Item {
         order_form_buy.reset()
     }
 
-    function convertToFullName(coins) {
-        return coins.map(c => c.name + " (" + c.ticker + ")")
-    }
-
     function baseCoins() {
         return API.get().enabled_coins
     }
@@ -79,7 +75,7 @@ Item {
                     Layout.topMargin: 10
                     Layout.bottomMargin: 10
 
-                    model: convertToFullName(baseCoins())
+                    model: General.fullNamesOfCoins(baseCoins())
                     onCurrentTextChanged: {
                         base = baseCoins()[currentIndex].ticker
                         reset()
@@ -95,12 +91,12 @@ Item {
                     }
                 }
 
-                // Rel Base
+                // Rel
                 ComboBox {
                     id: combo_rel
                     Layout.preferredWidth: 250
 
-                    model: convertToFullName(relCoins())
+                    model: General.fullNamesOfCoins(relCoins())
                     onCurrentTextChanged: rel = relCoins()[currentIndex].ticker
                 }
 
