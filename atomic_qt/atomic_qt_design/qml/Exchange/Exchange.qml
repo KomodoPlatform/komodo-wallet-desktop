@@ -5,6 +5,7 @@ import QtQuick.Controls.Material 2.12
 import "../Components"
 import "../Constants"
 import "./Trade"
+import "./Orders"
 
 Item {
     id: exchange
@@ -73,7 +74,7 @@ Item {
             }
 
             DefaultText {
-                text: qsTr("Content-Orderbook")
+                text: qsTr("Content-History")
             }
         }
     }
