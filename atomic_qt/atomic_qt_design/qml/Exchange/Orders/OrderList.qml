@@ -7,9 +7,20 @@ import "../../Constants"
 
 Rectangle {
     property alias title: title.text
-    property alias model: list.model
+    property alias items: list.model
     property string type
 
+    // Override
+    function postCancelOrder() {}
+
+    // Local
+    function onCancelOrder(order_id) {
+        API.get().cancel_order(order_id)
+        postCancelOrder()
+    }
+
+    Layout.fillWidth: true
+    Layout.fillHeight: true
     color: Style.colorTheme7
     radius: Style.rectangleCornerRadius
 
@@ -33,7 +44,7 @@ Rectangle {
         // No orders
         DefaultText {
             wrapMode: Text.Wrap
-            visible: model.length === 0
+            visible: items.length === 0
             Layout.alignment: Qt.AlignHCenter
             Layout.topMargin: 20
             color: Style.colorWhite5
@@ -53,17 +64,100 @@ Rectangle {
 
             // Row
             delegate: Rectangle {
-                color: Style.colorTheme6
+                color: "transparent"
                 width: list.width
-                implicitHeight: childrenRect.height
-                Layout.topMargin: 10
+                height: 200
 
-                DefaultText {
-                    text: model.modelData.date
-                }
+                ColumnLayout {
+                    width: parent.width * 0.8
+                    height: parent.height
+                    anchors.horizontalCenter: parent.horizontalCenter
 
-                DefaultText {
-                    text: model.modelData.base_amount
+                    // Content
+                    Rectangle {
+                        color: "transparent"
+                        Layout.fillWidth: true
+                        Layout.fillHeight: true
+
+                        // Base Icon
+                        Image {
+                            id: base_icon
+                            source: General.coinIcon(model.modelData.base)
+                            fillMode: Image.PreserveAspectFit
+                            width: Style.textSize3
+                            anchors.left: parent.left
+                            anchors.leftMargin: parent.width * 0
+                        }
+
+                        // Rel Icon
+                        Image {
+                            id: rel_icon
+                            source: General.coinIcon(model.modelData.rel)
+                            fillMode: Image.PreserveAspectFit
+                            width: Style.textSize3
+                            anchors.right: parent.right
+                            anchors.rightMargin: parent.width * 0
+                        }
+
+                        // Base Amount
+                        DefaultText {
+                            id: base_amount
+                            text: "~ " + General.formatCrypto("", model.modelData.base_amount, model.modelData.base)
+                            anchors.left: parent.left
+                            anchors.top: base_icon.bottom
+                            anchors.topMargin: 10
+                        }
+
+                        // Swap icon
+                        Image {
+                            source: General.image_path + "exchange-exchange.svg"
+                            anchors.top: base_amount.top
+                            anchors.horizontalCenter: parent.horizontalCenter
+                        }
+
+                        // Rel Amount
+                        DefaultText {
+                            text: "~ " + General.formatCrypto("", model.modelData.rel_amount, model.modelData.rel)
+                            anchors.right: parent.right
+                            anchors.top: base_amount.top
+                        }
+
+                        // UUID
+                        DefaultText {
+                            id: uuid
+                            text: "UUID: " + model.modelData.order_id
+                            color: Style.colorTheme2
+                            anchors.top: base_amount.bottom
+                            anchors.topMargin: base_amount.anchors.topMargin
+
+                        }
+
+                        // Date
+                        DefaultText {
+                            id: date
+                            text: model.modelData.date
+                            color: Style.colorTheme2
+                            anchors.top: uuid.bottom
+                            anchors.topMargin: base_amount.anchors.topMargin
+                        }
+
+                        // Cancel button
+                        Button {
+                            visible: model.modelData.cancellable
+                            anchors.right: parent.right
+                            anchors.top: date.top
+                            text: qsTr("Cancel")
+                            onClicked: onCancelOrder(model.modelData.order_id)
+                        }
+                    }
+
+                    HorizontalLine {
+                        visible: index !== items.length -1
+                        Layout.fillWidth: true
+                        color: Style.colorWhite9
+                        Layout.topMargin: 25
+                        Layout.bottomMargin: Layout.topMargin
+                    }
                 }
             }
         }

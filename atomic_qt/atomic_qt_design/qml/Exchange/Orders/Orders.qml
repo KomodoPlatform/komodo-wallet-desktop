@@ -87,19 +87,23 @@ Item {
             spacing: parent.spacing
 
             OrderList {
-                Layout.fillWidth: true
-                Layout.fillHeight: true
                 title: qsTr("Maker Orders")
-                model: getOrders().maker_order
+                items: getOrders().maker_order
                 type: qsTr("maker")
+
+                function postCancelOrder() {
+                    updateOrders()
+                }
             }
 
             OrderList {
-                Layout.fillWidth: true
-                Layout.fillHeight: true
                 title: qsTr("Taker Orders")
-                model: getOrders().taker_order
+                items: getOrders().taker_order
                 type: qsTr("taker")
+
+                function postCancelOrder() {
+                    updateOrders()
+                }
             }
         }
     }
