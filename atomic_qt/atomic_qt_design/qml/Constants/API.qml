@@ -148,6 +148,14 @@ QtObject {
             console.log("Setting current orderbook: " + base + " - " + rel)
         },
 
+       cancel_order: (order_id) => {
+
+      },
+
+       cancel_all_orders: () => {
+
+      },
+
         get_my_orders: () => {
                return {
                    "BTC": {
