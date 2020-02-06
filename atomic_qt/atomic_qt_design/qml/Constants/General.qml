@@ -43,4 +43,16 @@ QtObject {
     function formatCrypto(received, amount, ticker, fiat_amount, fiat) {
         return diffPrefix(received) + amount + " " + ticker + (fiat_amount ? " (" + formatFiat("", fiat_amount, fiat) + ")" : "")
     }
+
+    function hasEnoughFunds(sell, base, rel, price, volume) {
+        if(sell) {
+            if(volume === "") return true
+            return API.get().do_i_have_enough_funds(base, volume)
+        }
+        else {
+            if(price === "") return true
+            const needed_amount = parseFloat(price) * parseFloat(volume)
+            return API.get().do_i_have_enough_funds(rel, needed_amount)
+        }
+    }
 }

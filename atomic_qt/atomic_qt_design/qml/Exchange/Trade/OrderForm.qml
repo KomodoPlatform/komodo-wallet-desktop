@@ -30,18 +30,6 @@ Rectangle {
         if(action_result === "success") reset(false)
     }
 
-    function hasEnoughFunds(sell, base, rel, price, volume) {
-        if(sell) {
-            if(volume === "") return true
-            return API.get().do_i_have_enough_funds(base, volume)
-        }
-        else {
-            if(price === "") return true
-            const needed_amount = parseFloat(price) * parseFloat(volume)
-            return API.get().do_i_have_enough_funds(rel, needed_amount)
-        }
-    }
-
     function amountToReceive(sell, base, rel, price, volume) {
         return sell ? (parseFloat(price) * parseFloat(volume)) + " " + rel : volume + " " + base
     }
@@ -112,7 +100,7 @@ Rectangle {
             Layout.rightMargin: Layout.leftMargin
             Layout.maximumWidth: parent.width - Layout.leftMargin * 2
             wrapMode: Text.Wrap
-            visible: !hasEnoughFunds(sell, base, rel, input_price.field.text, input_volume.field.text)
+            visible: !General.hasEnoughFunds(sell, base, rel, input_price.field.text, input_volume.field.text)
 
             color: Style.colorRed
 
@@ -127,7 +115,7 @@ Rectangle {
             Layout.fillWidth: true
 
             text: sell ? qsTr("Sell") : qsTr("Buy")
-            enabled: fieldsAreFilled() && hasEnoughFunds(sell, base, rel, input_price.field.text, input_volume.field.text)
+            enabled: fieldsAreFilled() && General.hasEnoughFunds(sell, base, rel, input_price.field.text, input_volume.field.text)
             onClicked: sell ? sellCoin(base, rel, input_price.field.text, input_volume.field.text) : buyCoin(base, rel, input_price.field.text, input_volume.field.text)
         }
 

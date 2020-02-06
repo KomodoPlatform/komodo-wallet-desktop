@@ -50,6 +50,10 @@ Popup {
         stack_layout.currentIndex = 0
     }
 
+    function hasFunds() {
+        return General.hasEnoughFunds(true, API.get().current_coin_info.ticker, "", "", input_amount.field.text)
+    }
+
     // Inside modal
     StackLayout {
         id: stack_layout
@@ -76,6 +80,16 @@ Popup {
                 field.placeholderText: qsTr("Enter the amount to send")
             }
 
+            // Not enough funds error
+            DefaultText {
+                wrapMode: Text.Wrap
+                visible: !hasFunds()
+
+                color: Style.colorRed
+
+                text: qsTr("Not enough funds.") + "\n" + qsTr("You have ") + API.get().get_balance(API.get().current_coin_info.ticker) + " " + API.get().current_coin_info.ticker
+            }
+
             DefaultText {
                 id: text_error
                 color: Style.colorRed
@@ -96,7 +110,8 @@ Popup {
                     enabled: input_address.field.text != "" &&
                              input_amount.field.text != "" &&
                              input_address.field.acceptableInput &&
-                             input_amount.field.acceptableInput
+                             input_amount.field.acceptableInput &&
+                             hasFunds()
 
                     onClicked: prepareSendCoin(input_address.field.text, input_amount.field.text)
                 }
