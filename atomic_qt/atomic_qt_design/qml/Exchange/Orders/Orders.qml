@@ -77,6 +77,18 @@ Item {
             Layout.fillHeight: true
 
             spacing: parent.spacing
+
+            OrderList {
+                Layout.fillWidth: true
+                Layout.fillHeight: true
+                title: qsTr("Maker Orders")
+            }
+
+            OrderList {
+                Layout.fillWidth: true
+                Layout.fillHeight: true
+                title: qsTr("Taker Orders")
+            }
         }
     }
 }
