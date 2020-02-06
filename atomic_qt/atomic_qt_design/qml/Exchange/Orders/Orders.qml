@@ -18,6 +18,14 @@ Item {
         return API.get().enabled_coins
     }
 
+    function getOrders() {
+        if(base === "" || all_orders[base] === undefined) {
+            return { maker_order: [], taker_order: [] }
+        }
+
+        return all_orders[base].orders
+    }
+
     property string base
     property var all_orders: ({})
 
@@ -82,12 +90,16 @@ Item {
                 Layout.fillWidth: true
                 Layout.fillHeight: true
                 title: qsTr("Maker Orders")
+                model: getOrders().maker_order
+                type: qsTr("maker")
             }
 
             OrderList {
                 Layout.fillWidth: true
                 Layout.fillHeight: true
                 title: qsTr("Taker Orders")
+                model: getOrders().taker_order
+                type: qsTr("taker")
             }
         }
     }

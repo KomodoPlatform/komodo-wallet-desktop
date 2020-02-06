@@ -15,10 +15,10 @@ QtObject {
         enabled_coins: [
            { ticker: "RICK", name: "Rick" },
            { ticker: "MORTY", name: "Morty" },
+           { ticker: "BTC", name: "Bitcoin" },
         ],
 
         enableable_coins: [
-           { ticker: "BTC", name: "Bitcoin" },
            { ticker: "KMD", name: "Komodo" },
            { ticker: "CHIPS", name: "Chips" }
         ],
@@ -161,7 +161,16 @@ QtObject {
                            "base_amount": "1",
                            "rel_amount": "1",
                            "order_id": "4321"
-                         }
+                         },
+                       {
+                         "rel": "KMD",
+                         "base": "BTC",
+                         "date": "19 Janvier 2020",
+                         "cancellable": true,
+                         "base_amount": "1",
+                         "rel_amount": "1",
+                         "order_id": "4321"
+                       }
                        ],
                        "taker_order": [
                          {
@@ -172,7 +181,16 @@ QtObject {
                            "base_amount": "1",
                            "rel_amount": "1",
                            "order_id": "1234"
-                         }
+                         },
+                       {
+                         "rel": "ETH",
+                         "base": "BTC",
+                         "date": "20 Janvier 2020",
+                         "cancellable": true,
+                         "base_amount": "1",
+                         "rel_amount": "1",
+                         "order_id": "1234"
+                       }
                        ]
                      }
                    }

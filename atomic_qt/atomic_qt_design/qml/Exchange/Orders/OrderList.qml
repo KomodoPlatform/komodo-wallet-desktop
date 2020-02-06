@@ -7,6 +7,8 @@ import "../../Constants"
 
 Rectangle {
     property alias title: title.text
+    property alias model: list.model
+    property string type
 
     color: Style.colorTheme7
     radius: Style.rectangleCornerRadius
@@ -26,6 +28,44 @@ Rectangle {
         HorizontalLine {
             Layout.fillWidth: true
             color: Style.colorWhite8
+        }
+
+        // No orders
+        DefaultText {
+            wrapMode: Text.Wrap
+            visible: model.length === 0
+            Layout.alignment: Qt.AlignHCenter
+            Layout.topMargin: 20
+            color: Style.colorWhite5
+
+            text: qsTr("You don't have any ") + type + qsTr(" orders.")
+        }
+
+        // List
+        ListView {
+            id: list
+            ScrollBar.vertical: ScrollBar {}
+            Layout.topMargin: Style.textSize*2
+            Layout.fillWidth: true
+            implicitHeight: contentItem.childrenRect.height
+
+            clip: true
+
+            // Row
+            delegate: Rectangle {
+                color: Style.colorTheme6
+                width: list.width
+                implicitHeight: childrenRect.height
+                Layout.topMargin: 10
+
+                DefaultText {
+                    text: model.modelData.date
+                }
+
+                DefaultText {
+                    text: model.modelData.base_amount
+                }
+            }
         }
     }
 }
