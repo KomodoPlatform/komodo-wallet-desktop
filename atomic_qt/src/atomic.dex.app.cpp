@@ -38,6 +38,7 @@
 #include "atomic.dex.provider.coinpaprika.hpp"
 #include "atomic.dex.qt.bindings.hpp"
 #include "atomic.dex.security.hpp"
+#include "atomic.threadpool.hpp"
 
 namespace
 {
@@ -490,6 +491,16 @@ namespace atomic_dex
         get_dispatcher().sink<coin_disabled>().connect<&application::on_coin_disabled_event>(*this);
         get_dispatcher().sink<mm2_initialized>().connect<&application::on_mm2_initialized_event>(*this);
         get_dispatcher().sink<mm2_started>().connect<&application::on_mm2_started_event>(*this);
+    }
+
+    void
+    atomic_dex::application::cancel_order(const QString& order_id)
+    {
+        auto& mm2 = get_mm2();
+        atomic_dex::spawn([&mm2, order_id]() {
+            ::mm2::api::rpc_cancel_order({order_id.toStdString()});
+            mm2.process_orders();
+        });
     }
 
     void
