@@ -65,12 +65,8 @@ Item {
                 id: exchange_trade
             }
 
-            DefaultText {
-                text: qsTr("Content-Orders")
-            }
+            Orders {
 
-            DefaultText {
-                text: qsTr("Content-History")
             }
 
             DefaultText {
