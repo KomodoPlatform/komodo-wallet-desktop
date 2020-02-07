@@ -515,6 +515,19 @@ namespace atomic_dex
     }
 
     void
+    application::cancel_all_orders_by_ticker(const QString& ticker)
+    {
+        auto& mm2 = get_mm2();
+        atomic_dex::spawn([&mm2, &ticker]() {
+            ::mm2::api::cancel_data cd;
+            cd.ticker = ticker.toStdString();
+            ::mm2::api::cancel_all_orders_request req{{"Coin", cd}};
+            ::mm2::api::rpc_cancel_all_orders(std::move(req));
+            mm2.process_orders();
+        });
+    }
+
+    void
     atomic_dex::application::on_enabled_coins_event(const enabled_coins_event&) noexcept
     {
         LOG_SCOPE_FUNCTION(INFO);

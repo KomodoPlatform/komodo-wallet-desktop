@@ -131,6 +131,7 @@ namespace atomic_dex
         Q_INVOKABLE QString  get_mnemonic();
         Q_INVOKABLE void     cancel_order(const QString& order_id);
         Q_INVOKABLE void     cancel_all_orders();
+        Q_INVOKABLE void     cancel_all_orders_by_ticker(const QString& ticker);
         Q_INVOKABLE bool     first_run();
         Q_INVOKABLE bool     login(const QString& password);
         Q_INVOKABLE bool     create(const QString& password, const QString& seed);
