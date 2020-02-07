@@ -23,7 +23,7 @@ Item {
             return { maker_orders: [], taker_orders: [] }
         }
 
-        return all_orders[base].orders
+        return all_orders[base]
     }
 
     property string base
