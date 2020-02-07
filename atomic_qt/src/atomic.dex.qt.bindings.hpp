@@ -41,12 +41,14 @@ namespace atomic_dex
         QString m_base_amount;
         QString m_rel_amount;
         QString m_price;
+        bool    m_am_i_maker;
 
         Q_PROPERTY(QString price READ get_price CONSTANT MEMBER m_price)
         Q_PROPERTY(QString date READ get_date CONSTANT MEMBER m_date)
         Q_PROPERTY(QString base READ get_base CONSTANT MEMBER m_base)
         Q_PROPERTY(QString rel READ get_rel CONSTANT MEMBER m_rel)
         Q_PROPERTY(bool cancellable READ is_cancellable CONSTANT MEMBER m_cancellable)
+        Q_PROPERTY(bool am_i_maker READ is_maker CONSTANT MEMBER m_am_i_maker)
         Q_PROPERTY(QString base_amount READ get_base_amount CONSTANT MEMBER m_base_amount)
         Q_PROPERTY(QString rel_amount READ get_rel_amount CONSTANT MEMBER m_rel_amount)
         Q_PROPERTY(QString uuid READ get_uuid CONSTANT MEMBER m_order_id)
@@ -60,6 +62,12 @@ namespace atomic_dex
         is_cancellable() const noexcept
         {
             return m_cancellable;
+        }
+
+        [[nodiscard]] bool
+        is_maker() const noexcept
+        {
+            return m_am_i_maker;
         }
 
         [[nodiscard]] QString
@@ -477,6 +485,7 @@ namespace atomic_dex
                 qt_cur_order->m_base_amount = QString::fromStdString(cur_order.second.base_amount);
                 qt_cur_order->m_rel_amount  = QString::fromStdString(cur_order.second.rel_amount);
                 qt_cur_order->m_order_id    = QString::fromStdString(cur_order.second.order_id);
+                qt_cur_order->m_am_i_maker  = cur_order.second.order_type == "maker";
 
                 if (is_taker)
                 {
