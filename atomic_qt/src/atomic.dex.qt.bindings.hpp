@@ -99,6 +99,8 @@ namespace atomic_dex
         }
     };
 
+    using qt_my_order_contents_ptr = qt_my_order_contents*;
+
     struct qt_my_orders : QObject
     {
         Q_OBJECT
@@ -107,8 +109,8 @@ namespace atomic_dex
         QObjectList m_taker_orders;
         QObjectList m_maker_orders;
 
-        Q_PROPERTY(QObjectList taker_orders READ get_taker_orders CONSTANT MEMBER m_taker_orders)
-        Q_PROPERTY(QObjectList maker_orders READ get_maker_orders CONSTANT MEMBER m_maker_orders)
+        Q_PROPERTY(QList<QObject*> taker_orders READ get_taker_orders CONSTANT MEMBER m_taker_orders)
+        Q_PROPERTY(QList<QObject*> maker_orders READ get_maker_orders CONSTANT MEMBER m_maker_orders)
 
         [[nodiscard]] QObjectList get_taker_orders() const noexcept
         {
@@ -121,6 +123,8 @@ namespace atomic_dex
             return m_maker_orders;
         }
     };
+
+    using qt_my_orders_ptr = qt_my_orders*;
 
     struct qt_ordercontent : QObject
     {
@@ -490,3 +494,6 @@ namespace atomic_dex
         return obj;
     }
 } // namespace atomic_dex
+
+Q_DECLARE_METATYPE(atomic_dex::qt_my_orders_ptr);
+Q_DECLARE_METATYPE(atomic_dex::qt_my_order_contents_ptr);
