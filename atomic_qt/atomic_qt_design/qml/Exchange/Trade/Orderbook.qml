@@ -70,7 +70,7 @@ Rectangle {
 
             OrderbookListView {
                 model: orderbook_asks_model
-                value_color: Style.colorGreen
+                value_color: Style.colorRed
             }
 
             VerticalLine {
@@ -80,7 +80,7 @@ Rectangle {
 
             OrderbookListView {
                 model: orderbook_bids_model
-                value_color: Style.colorRed
+                value_color: Style.colorGreen
             }
         }
     }
