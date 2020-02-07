@@ -57,7 +57,6 @@ Rectangle {
         ListView {
             id: list
             ScrollBar.vertical: ScrollBar {}
-            Layout.topMargin: Style.textSize*2
             Layout.fillWidth: true
             Layout.fillHeight: true
 
@@ -76,6 +75,7 @@ Rectangle {
 
                     // Content
                     Rectangle {
+                        Layout.topMargin: 12.5
                         color: "transparent"
                         Layout.fillWidth: true
                         Layout.fillHeight: true
@@ -87,7 +87,7 @@ Rectangle {
                             fillMode: Image.PreserveAspectFit
                             width: Style.textSize3
                             anchors.left: parent.left
-                            anchors.leftMargin: parent.width * 0
+                            anchors.leftMargin: parent.width * 0.25
                         }
 
                         // Rel Icon
@@ -97,7 +97,7 @@ Rectangle {
                             fillMode: Image.PreserveAspectFit
                             width: Style.textSize3
                             anchors.right: parent.right
-                            anchors.rightMargin: parent.width * 0
+                            anchors.rightMargin: parent.width * 0.25
                         }
 
                         // Base Amount
@@ -157,7 +157,7 @@ Rectangle {
                         Layout.fillWidth: true
                         color: Style.colorWhite9
                         Layout.topMargin: 25
-                        Layout.bottomMargin: Layout.topMargin
+                        Layout.bottomMargin: 12.5
                     }
                 }
             }
