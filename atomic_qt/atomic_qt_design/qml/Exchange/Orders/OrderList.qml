@@ -14,8 +14,8 @@ Rectangle {
     function postCancelOrder() {}
 
     // Local
-    function onCancelOrder(order_id) {
-        API.get().cancel_order(order_id)
+    function onCancelOrder(uuid) {
+        API.get().cancel_order(uuid)
         postCancelOrder()
     }
 
@@ -126,7 +126,7 @@ Rectangle {
                         // UUID
                         DefaultText {
                             id: uuid
-                            text: "UUID: " + model.modelData.order_id
+                            text: "UUID: " + model.modelData.uuid
                             color: Style.colorTheme2
                             anchors.top: base_amount.bottom
                             anchors.topMargin: base_amount.anchors.topMargin
@@ -148,7 +148,7 @@ Rectangle {
                             anchors.right: parent.right
                             anchors.top: date.top
                             text: qsTr("Cancel")
-                            onClicked: onCancelOrder(model.modelData.order_id)
+                            onClicked: onCancelOrder(model.modelData.uuid)
                         }
                     }
 
