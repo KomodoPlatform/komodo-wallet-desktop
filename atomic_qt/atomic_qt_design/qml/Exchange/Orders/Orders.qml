@@ -39,6 +39,10 @@ Item {
         onTriggered: updateOrders()
     }
 
+    Component.onCompleted: {
+        API.get().myOrdersUpdated.connect(updateOrders)
+    }
+
     ColumnLayout {
         anchors.horizontalCenter: parent.horizontalCenter
 

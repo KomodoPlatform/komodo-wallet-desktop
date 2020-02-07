@@ -6,6 +6,12 @@ QtObject {
     property string saved_seed
     property string saved_password
     property var mockAPI: ({
+        // Signals
+        myOrdersUpdated: {
+           connect: (func) => { console.log("Connecting function") }
+       },
+
+        // Other
         balance_fiat_all: "12345678.90",
 
         fiat: "USD",
@@ -156,7 +162,7 @@ QtObject {
 
       },
 
-        get_my_orders: () => { return {"BTC":{"objectName":"","taker_orders":[],"maker_orders":[]},"CHIPS":{"objectName":"","taker_orders":[],"maker_orders":[]},"ETH":{"objectName":"","taker_orders":[],"maker_orders":[]},"KMD":{"objectName":"","taker_orders":[],"maker_orders":[]},"MORTY":{"objectName":"","taker_orders":[],"maker_orders":[{"objectName":"","price":"","date":"2020-02-07 12:56:49.539","base":"MORTY","rel":"RICK","cancellable":true,"base_amount":"7","rel_amount":"861","uuid":"68f67cb1-874d-40dd-abe0-5a46afcdde32"}]},"RICK":{"objectName":"","taker_orders":[],"maker_orders":[{"objectName":"","price":"","date":"2020-02-07 12:56:49.539","base":"MORTY","rel":"RICK","cancellable":true,"base_amount":"7","rel_amount":"861","uuid":"68f67cb1-874d-40dd-abe0-5a46afcdde32"}]}}}
+        get_my_orders: () => { return {"BTC":{"objectName":"","taker_orders":[],"maker_orders":[]},"CHIPS":{"objectName":"","taker_orders":[],"maker_orders":[]},"ETH":{"objectName":"","taker_orders":[],"maker_orders":[]},"KMD":{"objectName":"","taker_orders":[],"maker_orders":[]},"MORTY":{"objectName":"","taker_orders":[],"maker_orders":[{"objectName":"","price":"","date":"2020-02-07 09:31:50.430","base":"MORTY","rel":"RICK","cancellable":true,"am_i_maker":true,"base_amount":"7","rel_amount":"861","uuid":"dc13abf1-3262-4dcb-9891-e04d4cb63d33"},{"objectName":"","price":"","date":"2020-02-07 09:32:03.124","base":"RICK","rel":"MORTY","cancellable":true,"am_i_maker":true,"base_amount":"10","rel_amount":"50","uuid":"7cab68d5-2de5-4c29-980c-1a72620f38bf"},{"objectName":"","price":"","date":"2020-02-07 09:32:22.688","base":"RICK","rel":"MORTY","cancellable":true,"am_i_maker":true,"base_amount":"3","rel_amount":"9","uuid":"db5059db-94da-4a1e-b2e1-cef603f796c5"}]},"RICK":{"objectName":"","taker_orders":[],"maker_orders":[{"objectName":"","price":"","date":"2020-02-07 09:31:50.430","base":"MORTY","rel":"RICK","cancellable":true,"am_i_maker":true,"base_amount":"7","rel_amount":"861","uuid":"dc13abf1-3262-4dcb-9891-e04d4cb63d33"},{"objectName":"","price":"","date":"2020-02-07 09:32:03.124","base":"RICK","rel":"MORTY","cancellable":true,"am_i_maker":true,"base_amount":"10","rel_amount":"50","uuid":"7cab68d5-2de5-4c29-980c-1a72620f38bf"},{"objectName":"","price":"","date":"2020-02-07 09:32:22.688","base":"RICK","rel":"MORTY","cancellable":true,"am_i_maker":true,"base_amount":"3","rel_amount":"9","uuid":"db5059db-94da-4a1e-b2e1-cef603f796c5"}]}} }
     })
 
     // Simulate initial loading
