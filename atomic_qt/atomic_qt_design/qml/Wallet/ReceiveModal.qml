@@ -12,9 +12,11 @@ Popup {
     modal: true
     focus: true
     closePolicy: Popup.CloseOnEscape | Popup.CloseOnPressOutside
-
+    width: 400
     // Inside modal
     ColumnLayout {
+        width: parent.width
+
         ModalHeader {
             title: qsTr("Receive")
         }
