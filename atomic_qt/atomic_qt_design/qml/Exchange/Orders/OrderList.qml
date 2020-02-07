@@ -6,7 +6,7 @@ import "../../Components"
 import "../../Constants"
 
 Rectangle {
-    property alias title: title.text
+    property string title
     property alias items: list.model
     property string type
 
@@ -29,7 +29,7 @@ Rectangle {
         height: parent.height
 
         DefaultText {
-            id: title
+            text: title + " (" + items.length + ")"
 
             Layout.alignment: Qt.AlignHCenter | Qt.AlignTop
             Layout.topMargin: 10
