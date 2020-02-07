@@ -108,6 +108,7 @@ namespace atomic_dex
         void                  on_coin_disabled_event(const coin_disabled&) noexcept;
         void                  on_mm2_initialized_event(const mm2_initialized&) noexcept;
         void                  on_mm2_started_event(const mm2_started&) noexcept;
+        void                  on_cancel_order_event(const cancel_order_finished &) noexcept;
         mm2&                  get_mm2() noexcept;
         const mm2&            get_mm2() const noexcept;
         coinpaprika_provider& get_paprika() noexcept;
@@ -153,6 +154,7 @@ namespace atomic_dex
         void on_fiat_changed();
         void on_fiat_balance_all_changed();
         void on_status_changed();
+        void myOrdersUpdated();
 
       private:
         std::atomic_bool   m_refresh_enabled_coin_event{false};

@@ -491,15 +491,17 @@ namespace atomic_dex
         get_dispatcher().sink<coin_disabled>().connect<&application::on_coin_disabled_event>(*this);
         get_dispatcher().sink<mm2_initialized>().connect<&application::on_mm2_initialized_event>(*this);
         get_dispatcher().sink<mm2_started>().connect<&application::on_mm2_started_event>(*this);
+        get_dispatcher().sink<cancel_order_finished>().connect<&application::on_cancel_order_event>(*this);
     }
 
     void
     atomic_dex::application::cancel_order(const QString& order_id)
     {
         auto& mm2 = get_mm2();
-        atomic_dex::spawn([&mm2, order_id]() {
+        atomic_dex::spawn([&mm2, order_id, this]() {
             ::mm2::api::rpc_cancel_order({order_id.toStdString()});
             mm2.process_orders();
+            this->get_dispatcher().trigger<cancel_order_finished>();
         });
     }
 
@@ -507,10 +509,11 @@ namespace atomic_dex
     atomic_dex::application::cancel_all_orders()
     {
         auto& mm2 = get_mm2();
-        atomic_dex::spawn([&mm2]() {
+        atomic_dex::spawn([&mm2, this]() {
             ::mm2::api::cancel_all_orders_request req;
             ::mm2::api::rpc_cancel_all_orders(std::move(req));
             mm2.process_orders();
+            this->get_dispatcher().trigger<cancel_order_finished>();
         });
     }
 
@@ -518,12 +521,13 @@ namespace atomic_dex
     application::cancel_all_orders_by_ticker(const QString& ticker)
     {
         auto& mm2 = get_mm2();
-        atomic_dex::spawn([&mm2, &ticker]() {
+        atomic_dex::spawn([&mm2, &ticker, this]() {
             ::mm2::api::cancel_data cd;
             cd.ticker = ticker.toStdString();
             ::mm2::api::cancel_all_orders_request req{{"Coin", cd}};
             ::mm2::api::rpc_cancel_all_orders(std::move(req));
             mm2.process_orders();
+            this->get_dispatcher().trigger<cancel_order_finished>();
         });
     }
 
@@ -711,5 +715,11 @@ namespace atomic_dex
             output.insert(QString::fromStdString(coin.ticker), QVariant::fromValue(to_qt_binding(mm2.get_orders(coin.ticker, ec), this)));
         }
         return output;
+    }
+
+    void
+    application::on_cancel_order_event(const cancel_order_finished&) noexcept
+    {
+        emit myOrdersUpdated();
     }
 } // namespace atomic_dex

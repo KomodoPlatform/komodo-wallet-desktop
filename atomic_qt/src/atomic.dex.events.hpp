@@ -21,13 +21,14 @@
 
 namespace atomic_dex
 {
-    using mm2_started         = entt::tag<"mm2_started"_hs>;
-    using gui_enter_trading   = entt::tag<"gui_enter_trading"_hs>;
-    using gui_leave_trading   = entt::tag<"gui_leave_trading"_hs>;
-    using mm2_initialized     = entt::tag<"mm2_running_and_enabling"_hs>;
-    using enabled_coins_event = entt::tag<"gui_enabled_coins"_hs>;
-    using change_ticker_event = entt::tag<"gui_change_ticker"_hs>;
-    using tx_fetch_finished   = entt::tag<"gui_tx_fetch_finished"_hs>;
+    using mm2_started           = entt::tag<"mm2_started"_hs>;
+    using gui_enter_trading     = entt::tag<"gui_enter_trading"_hs>;
+    using gui_leave_trading     = entt::tag<"gui_leave_trading"_hs>;
+    using mm2_initialized       = entt::tag<"mm2_running_and_enabling"_hs>;
+    using enabled_coins_event   = entt::tag<"gui_enabled_coins"_hs>;
+    using change_ticker_event   = entt::tag<"gui_change_ticker"_hs>;
+    using tx_fetch_finished     = entt::tag<"gui_tx_fetch_finished"_hs>;
+    using cancel_order_finished = entt::tag<"gui_cancel_order_finished"_hs>;
 
     struct coin_enabled
     {
