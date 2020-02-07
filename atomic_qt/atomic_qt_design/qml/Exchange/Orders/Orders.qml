@@ -11,7 +11,6 @@ Item {
     function updateOrders() {
         all_orders = API.get().get_my_orders()
         update_timer.running = true
-        console.log(baseCoins())
     }
 
     function baseCoins() {
@@ -20,7 +19,7 @@ Item {
 
     function getOrders() {
         if(base === "" || all_orders[base] === undefined) {
-            return { maker_order: [], taker_order: [] }
+            return { maker_orders: [], taker_orders: [] }
         }
 
         return all_orders[base].orders
@@ -79,7 +78,7 @@ Item {
 
                 Button {
                     text: qsTr("Cancel All Orders")
-                    enabled: getOrders().maker_order.length > 0 || getOrders().taker_order.length > 0
+                    enabled: getOrders().maker_orders.length > 0 || getOrders().taker_orders.length > 0
                     onClicked: API.get().cancel_all_orders()
                     Layout.rightMargin: 15
                 }
@@ -95,7 +94,7 @@ Item {
 
             OrderList {
                 title: qsTr("Maker Orders")
-                items: getOrders().maker_order
+                items: getOrders().maker_orders
                 type: qsTr("maker")
 
                 function postCancelOrder() {
@@ -105,7 +104,7 @@ Item {
 
             OrderList {
                 title: qsTr("Taker Orders")
-                items: getOrders().taker_order
+                items: getOrders().taker_orders
                 type: qsTr("taker")
 
                 function postCancelOrder() {

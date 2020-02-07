@@ -160,7 +160,7 @@ QtObject {
                return {
                    "BTC": {
                      "orders": {
-                       "maker_order": [
+                       "maker_orders": [
                          {
                            "rel": "KMD",
                            "base": "BTC",
@@ -180,7 +180,7 @@ QtObject {
                          "order_id": "4321"
                        }
                        ],
-                       "taker_order": [
+                       "taker_orders": [
                          {
                            "rel": "ETH",
                            "base": "BTC",
