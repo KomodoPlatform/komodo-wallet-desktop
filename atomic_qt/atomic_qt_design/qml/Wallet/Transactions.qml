@@ -63,20 +63,28 @@ ListView {
         }
 
         // Info button
-        Image {
+        Button {
             anchors.right: parent.right
             anchors.rightMargin: 50
-            source: General.image_path + "dashboard-info.svg"
-            fillMode: Image.PreserveAspectFit
-            width: Style.textSize2
             anchors.verticalCenter: parent.verticalCenter
-
-            MouseArea {
-                anchors { horizontalCenter: parent.horizontalCenter; verticalCenter: parent.verticalCenter }
-                height: parent.height * 2; width: height
-                onClicked: tx_details_modal.open()
-            }
+            text: qsTr("Details")
+            onClicked: tx_details_modal.open()
         }
+
+//        Image {
+//            anchors.right: parent.right
+//            anchors.rightMargin: 50
+//            source: General.image_path + "dashboard-info.svg"
+//            fillMode: Image.PreserveAspectFit
+//            width: Style.textSize2
+//            anchors.verticalCenter: parent.verticalCenter
+
+//            MouseArea {
+//                anchors { horizontalCenter: parent.horizontalCenter; verticalCenter: parent.verticalCenter }
+//                height: parent.height * 2; width: height
+//                onClicked: tx_details_modal.open()
+//            }
+//        }
 
         TransactionDetailsModal {
             id: tx_details_modal
