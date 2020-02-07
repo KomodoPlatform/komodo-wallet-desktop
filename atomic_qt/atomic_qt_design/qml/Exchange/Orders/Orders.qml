@@ -26,6 +26,10 @@ Item {
         return all_orders[base]
     }
 
+    function changeTicker(ticker) {
+        combo_base.currentIndex = baseCoins().map(c => c.ticker).indexOf(ticker)
+    }
+
     property string base
     property var all_orders: ({})
 
