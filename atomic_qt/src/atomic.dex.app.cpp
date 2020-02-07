@@ -491,7 +491,7 @@ namespace atomic_dex
         get_dispatcher().sink<coin_disabled>().connect<&application::on_coin_disabled_event>(*this);
         get_dispatcher().sink<mm2_initialized>().connect<&application::on_mm2_initialized_event>(*this);
         get_dispatcher().sink<mm2_started>().connect<&application::on_mm2_started_event>(*this);
-        get_dispatcher().sink<cancel_order_finished>().connect<&application::on_cancel_order_event>(*this);
+        get_dispatcher().sink<refresh_order_needed>().connect<&application::on_refresh_order_event>(*this);
     }
 
     void
@@ -501,7 +501,7 @@ namespace atomic_dex
         atomic_dex::spawn([&mm2, order_id, this]() {
             ::mm2::api::rpc_cancel_order({order_id.toStdString()});
             mm2.process_orders();
-            this->get_dispatcher().trigger<cancel_order_finished>();
+            this->get_dispatcher().trigger<refresh_order_needed>();
         });
     }
 
@@ -513,7 +513,7 @@ namespace atomic_dex
             ::mm2::api::cancel_all_orders_request req;
             ::mm2::api::rpc_cancel_all_orders(std::move(req));
             mm2.process_orders();
-            this->get_dispatcher().trigger<cancel_order_finished>();
+            this->get_dispatcher().trigger<refresh_order_needed>();
         });
     }
 
@@ -527,7 +527,7 @@ namespace atomic_dex
             ::mm2::api::cancel_all_orders_request req{{"Coin", cd}};
             ::mm2::api::rpc_cancel_all_orders(std::move(req));
             mm2.process_orders();
-            this->get_dispatcher().trigger<cancel_order_finished>();
+            this->get_dispatcher().trigger<refresh_order_needed>();
         });
     }
 
@@ -607,6 +607,8 @@ namespace atomic_dex
         t_buy_request   req{.base = base.toStdString(), .rel = rel.toStdString(), .price = price.toStdString(), .volume = volume.toStdString()};
         std::error_code ec;
         auto            answer = get_mm2().place_buy_order(std::move(req), total_amount, ec);
+        get_mm2().process_orders();
+        on_refresh_order_event({});
         return !answer.error.has_value();
     }
 
@@ -619,6 +621,8 @@ namespace atomic_dex
         t_sell_request  req{.base = base.toStdString(), .rel = rel.toStdString(), .price = price.toStdString(), .volume = volume.toStdString()};
         std::error_code ec;
         auto            answer = get_mm2().place_sell_order(std::move(req), amount_f, ec);
+        get_mm2().process_orders();
+        on_refresh_order_event({});
         return !answer.error.has_value();
     }
 
@@ -718,8 +722,9 @@ namespace atomic_dex
     }
 
     void
-    application::on_cancel_order_event(const cancel_order_finished&) noexcept
+    application::on_refresh_order_event(const refresh_order_needed&) noexcept
     {
+        LOG_SCOPE_FUNCTION(INFO);
         emit myOrdersUpdated();
     }
 } // namespace atomic_dex

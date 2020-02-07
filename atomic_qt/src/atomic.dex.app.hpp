@@ -108,7 +108,7 @@ namespace atomic_dex
         void                  on_coin_disabled_event(const coin_disabled&) noexcept;
         void                  on_mm2_initialized_event(const mm2_initialized&) noexcept;
         void                  on_mm2_started_event(const mm2_started&) noexcept;
-        void                  on_cancel_order_event(const cancel_order_finished &) noexcept;
+        void                  on_refresh_order_event(const refresh_order_needed&) noexcept;
         mm2&                  get_mm2() noexcept;
         const mm2&            get_mm2() const noexcept;
         coinpaprika_provider& get_paprika() noexcept;

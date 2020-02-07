@@ -28,7 +28,7 @@ namespace atomic_dex
     using enabled_coins_event   = entt::tag<"gui_enabled_coins"_hs>;
     using change_ticker_event   = entt::tag<"gui_change_ticker"_hs>;
     using tx_fetch_finished     = entt::tag<"gui_tx_fetch_finished"_hs>;
-    using cancel_order_finished = entt::tag<"gui_cancel_order_finished"_hs>;
+    using refresh_order_needed  = entt::tag<"gui_refresh_order_needed"_hs>;
 
     struct coin_enabled
     {
