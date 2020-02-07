@@ -83,7 +83,7 @@ Rectangle {
                         // Base Icon
                         Image {
                             id: base_icon
-                            source: General.coinIcon(model.modelData.base)
+                            source: General.coinIcon(model.modelData.am_i_maker ? model.modelData.base : model.modelData.rel)
                             fillMode: Image.PreserveAspectFit
                             width: Style.textSize3
                             anchors.left: parent.left
@@ -93,7 +93,7 @@ Rectangle {
                         // Rel Icon
                         Image {
                             id: rel_icon
-                            source: General.coinIcon(model.modelData.rel)
+                            source: General.coinIcon(model.modelData.am_i_maker ? model.modelData.rel : model.modelData.base)
                             fillMode: Image.PreserveAspectFit
                             width: Style.textSize3
                             anchors.right: parent.right
@@ -103,7 +103,8 @@ Rectangle {
                         // Base Amount
                         DefaultText {
                             id: base_amount
-                            text: "~ " + General.formatCrypto("", model.modelData.base_amount, model.modelData.base)
+                            text: "~ " + General.formatCrypto("", model.modelData.am_i_maker ? model.modelData.base_amount : model.modelData.rel_amount,
+                                                                  model.modelData.am_i_maker ? model.modelData.base : model.modelData.rel)
                             anchors.left: parent.left
                             anchors.top: base_icon.bottom
                             anchors.topMargin: 10
@@ -118,7 +119,8 @@ Rectangle {
 
                         // Rel Amount
                         DefaultText {
-                            text: "~ " + General.formatCrypto("", model.modelData.rel_amount, model.modelData.rel)
+                            text: "~ " + General.formatCrypto("", model.modelData.am_i_maker ? model.modelData.rel_amount : model.modelData.base_amount,
+                                                                  model.modelData.am_i_maker ? model.modelData.rel : model.modelData.base)
                             anchors.right: parent.right
                             anchors.top: base_amount.top
                         }
@@ -130,7 +132,6 @@ Rectangle {
                             color: Style.colorTheme2
                             anchors.top: base_amount.bottom
                             anchors.topMargin: base_amount.anchors.topMargin
-
                         }
 
                         // Date
