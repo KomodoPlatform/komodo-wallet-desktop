@@ -346,12 +346,20 @@ namespace atomic_dex
         QString m_ticker;
         QString m_name;
         bool    m_active;
+        bool    m_claimable;
 
         Q_PROPERTY(bool active READ get_active CONSTANT MEMBER m_active)
+        Q_PROPERTY(bool is_claimable READ is_claimable_coin CONSTANT MEMBER m_claimable)
         Q_PROPERTY(QString ticker READ get_ticker CONSTANT MEMBER m_ticker)
         Q_PROPERTY(QString name READ get_name CONSTANT MEMBER m_name)
 
-        [[nodiscard]] bool get_active() const noexcept
+        [[nodiscard]] bool is_claimable_coin() const noexcept
+        {
+            return m_claimable;
+        }
+
+        [[nodiscard]] bool
+        get_active() const noexcept
         {
             return m_active;
         }
@@ -409,10 +417,11 @@ namespace atomic_dex
     inline QObject*
     to_qt_binding(t_coins::value_type&& coin, QObject* parent)
     {
-        auto* obj     = new qt_coin_config(parent);
-        obj->m_ticker = QString::fromStdString(coin.ticker);
-        obj->m_name   = QString::fromStdString(coin.name);
-        obj->m_active = coin.active;
+        auto* obj        = new qt_coin_config(parent);
+        obj->m_ticker    = QString::fromStdString(coin.ticker);
+        obj->m_name      = QString::fromStdString(coin.name);
+        obj->m_active    = coin.active;
+        obj->m_claimable = coin.is_claimable;
         return obj;
     }
 

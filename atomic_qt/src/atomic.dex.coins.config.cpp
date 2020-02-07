@@ -63,6 +63,7 @@ namespace atomic_dex
         {
             cfg.eth_urls = j.at("eth_nodes").get<std::vector<std::string>>();
         }
+        cfg.is_claimable = j.count("is_claimable") > 0;
         j.at("active").get_to(cfg.active);
         j.at("currently_enabled").get_to(cfg.currently_enabled);
         j.at("coinpaprika_id").get_to(cfg.coinpaprika_id);

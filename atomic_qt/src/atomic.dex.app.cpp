@@ -305,6 +305,7 @@ namespace atomic_dex
                 refresh_transactions(mm2);
                 refresh_fiat_balance(mm2, paprika);
                 refresh_address(mm2);
+                m_coin_info->set_claimable(get_mm2().get_coin_info(m_coin_info->get_ticker().toStdString()).is_claimable);
                 m_coin_info->set_explorer_url(QString::fromStdString(get_mm2().get_coin_info(m_coin_info->get_ticker().toStdString()).explorer_url[0]));
                 m_refresh_current_ticker_infos = false;
             }
@@ -477,6 +478,19 @@ namespace atomic_dex
     {
         this->selected_coin_block = std::move(block);
         emit tx_current_block_changed();
+    }
+
+    void
+    current_coin_info::set_claimable(bool claimable) noexcept
+    {
+        this->selected_coin_is_claimable = claimable;
+        emit claimable_changed();
+    }
+
+    bool
+    current_coin_info::is_claimable_ticker() const noexcept
+    {
+        return this->selected_coin_is_claimable;
     }
 
     application::application(QObject* pParent) noexcept : QObject(pParent), m_coin_info(new current_coin_info(dispatcher_, this))

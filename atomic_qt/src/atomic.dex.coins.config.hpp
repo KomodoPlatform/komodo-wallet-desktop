@@ -43,6 +43,7 @@ namespace atomic_dex
         std::string                     name; ///< nice name
         std::optional<electrum_servers> electrum_urls;
         std::optional<eth_nodes>        eth_urls;
+        bool                            is_claimable{false};
         bool                            currently_enabled{false};
         bool                            active{false};
         std::string                     coinpaprika_id;
