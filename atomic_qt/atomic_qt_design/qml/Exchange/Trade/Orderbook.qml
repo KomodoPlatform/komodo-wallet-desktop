@@ -7,6 +7,8 @@ import "../../Constants"
 
 // Right side
 Rectangle {
+    property alias timer: orderbook_timer
+
     color: Style.colorTheme7
     radius: Style.rectangleCornerRadius
 
@@ -20,7 +22,7 @@ Rectangle {
     }
 
     Timer {
-        running: true
+        id: orderbook_timer
         repeat: true
         interval: 5000
         onTriggered: updateOrderbook()

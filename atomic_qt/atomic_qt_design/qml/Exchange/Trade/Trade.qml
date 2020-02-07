@@ -19,10 +19,16 @@ Item {
         combo_rel.currentIndex = relCoins().map(c => c.ticker).indexOf(curr_base)
     }
 
+    function validBaseRel() {
+        return base && rel && base !== "" && rel !== "" && base !== rel
+    }
+
     function setPair() {
         console.log("SET PAIR: " + base + " - " + rel)
-        API.get().set_current_orderbook(base, rel)
-        orderbook.updateOrderbook()
+        if(validBaseRel()) {
+            API.get().set_current_orderbook(base, rel)
+            orderbook.updateOrderbook()
+        }
     }
 
     function reset() {
@@ -152,6 +158,7 @@ Item {
                 id: orderbook
                 Layout.fillWidth: true
                 Layout.fillHeight: true
+                timer.running: validBaseRel()
             }
         }
     }
