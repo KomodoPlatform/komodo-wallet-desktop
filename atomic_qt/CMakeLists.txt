@@ -117,6 +117,7 @@ else ()
             src/atomic.dex.provider.coinpaprika.api.cpp
             src/atomic.dex.qt.bindings.cpp
             src/atomic.dex.provider.coinpaprika.cpp
+            src/atomic.dex.qt.current.coin.infos.cpp
             src/atomic.dex.security.cpp
             $<$<PLATFORM_ID:Darwin>:src/osx/atomic.dex.osx.manager.mm>
             qml.qrc

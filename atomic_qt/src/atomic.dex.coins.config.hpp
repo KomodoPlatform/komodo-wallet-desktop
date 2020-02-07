@@ -44,6 +44,7 @@ namespace atomic_dex
         std::optional<electrum_servers> electrum_urls;
         std::optional<eth_nodes>        eth_urls;
         bool                            is_claimable{false};
+        std::string                     minimal_claim_amount{"0"};
         bool                            currently_enabled{false};
         bool                            active{false};
         std::string                     coinpaprika_id;

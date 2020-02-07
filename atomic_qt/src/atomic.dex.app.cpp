@@ -94,39 +94,6 @@ namespace atomic_dex
 #endif
     }
 
-    QString
-    atomic_dex::current_coin_info::get_balance() const noexcept
-    {
-        return selected_coin_balance;
-    }
-
-    void
-    atomic_dex::current_coin_info::set_balance(QString balance) noexcept
-    {
-        this->selected_coin_balance = std::move(balance);
-        emit balance_changed();
-    }
-
-    QString
-    atomic_dex::current_coin_info::get_ticker() const noexcept
-    {
-        return selected_coin_name;
-    }
-
-    void
-    atomic_dex::current_coin_info::set_ticker(QString ticker) noexcept
-    {
-        selected_coin_name = std::move(ticker);
-        this->m_dispatcher.trigger<change_ticker_event>();
-        emit ticker_changed();
-    }
-
-    QString
-    atomic_dex::current_coin_info::get_explorer_url() const noexcept
-    {
-        return selected_coin_url;
-    }
-
     QObjectList
     atomic_dex::application::get_enabled_coins() const noexcept
     {
@@ -393,15 +360,6 @@ namespace atomic_dex
         return m_coin_info;
     }
 
-    atomic_dex::current_coin_info::current_coin_info(entt::dispatcher& dispatcher, QObject* pParent) noexcept : QObject(pParent), m_dispatcher(dispatcher) {}
-
-    QString
-    current_coin_info::get_fiat_amount() const noexcept
-    {
-        return this->selected_coin_fiat_amount;
-    }
-
-
     QString
     atomic_dex::application::get_balance_fiat_all() const noexcept
     {
@@ -413,84 +371,6 @@ namespace atomic_dex
     {
         this->m_current_balance_all = std::move(current_fiat_all_balance);
         emit on_fiat_balance_all_changed();
-    }
-
-    void
-    current_coin_info::set_fiat_amount(QString fiat_amount) noexcept
-    {
-        this->selected_coin_fiat_amount = std::move(fiat_amount);
-        emit fiat_amount_changed();
-    }
-    QObjectList
-    current_coin_info::get_transactions() const noexcept
-    {
-        return this->selected_coin_transactions;
-    }
-
-    void
-    current_coin_info::set_transactions(QObjectList transactions) noexcept
-    {
-        this->selected_coin_transactions.clear();
-        this->selected_coin_transactions = std::move(transactions);
-        emit transactionsChanged();
-    }
-    QString
-    current_coin_info::get_address() const noexcept
-    {
-        return selected_coin_address;
-    }
-
-    void
-    current_coin_info::set_address(QString address) noexcept
-    {
-        this->selected_coin_address = std::move(address);
-        emit address_changed();
-    }
-
-    void
-    current_coin_info::set_explorer_url(QString url) noexcept
-    {
-        this->selected_coin_url = std::move(url);
-        emit explorer_url_changed();
-    }
-
-    void
-    current_coin_info::set_tx_state(QString state) noexcept
-    {
-        this->selected_coin_state = std::move(state);
-        emit tx_state_changed();
-    }
-
-    QString
-    current_coin_info::get_tx_state() const noexcept
-    {
-        return this->selected_coin_state;
-    }
-
-    unsigned int
-    current_coin_info::get_tx_current_block() const noexcept
-    {
-        return this->selected_coin_block;
-    }
-
-    void
-    current_coin_info::set_tx_current_block(unsigned int block) noexcept
-    {
-        this->selected_coin_block = std::move(block);
-        emit tx_current_block_changed();
-    }
-
-    void
-    current_coin_info::set_claimable(bool claimable) noexcept
-    {
-        this->selected_coin_is_claimable = claimable;
-        emit claimable_changed();
-    }
-
-    bool
-    current_coin_info::is_claimable_ticker() const noexcept
-    {
-        return this->selected_coin_is_claimable;
     }
 
     application::application(QObject* pParent) noexcept : QObject(pParent), m_coin_info(new current_coin_info(dispatcher_, this))

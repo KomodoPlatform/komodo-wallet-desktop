@@ -57,6 +57,7 @@
     "name": "Komodo",
     "type": "Smart Chain",
     "is_claimable": true,
+    "minimal_claim_amount": "10",
     "rpcport": 7771,
     "pubtype": 60,
     "p2shtype": 85,
