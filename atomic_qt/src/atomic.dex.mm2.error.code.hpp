@@ -39,6 +39,8 @@ enum class dextop_error
     unknown_ticker_for_rate_conversion,
     orderbook_empty,
     balance_not_enough_found,
+    claim_not_enough_funds,
+    ticker_is_not_claimable,
     unknown_error
 };
 

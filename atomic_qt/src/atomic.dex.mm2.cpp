@@ -762,4 +762,37 @@ namespace atomic_dex
 
         return m_tx_state.at(ticker);
     }
+
+    bool
+    mm2::is_claiming_ready(const std::string& ticker) const noexcept
+    {
+        using namespace std::chrono_literals;
+        namespace bfs             = boost::filesystem;
+        auto lock_claim_file_path = bfs::temp_directory_path() / (ticker + ".claim.lock");
+        if (not bfs::exists(lock_claim_file_path))
+        {
+            return true;
+        }
+        auto tp = std::chrono::system_clock::from_time_t(bfs::last_write_time(lock_claim_file_path));
+        if (tp - std::chrono::system_clock::now() > 1h)
+        {
+            bfs::remove(lock_claim_file_path);
+            return true;
+        }
+        return false;
+    }
+
+    t_withdraw_answer
+    mm2::claim_rewards(const std::string& ticker, t_mm2_ec& ec) noexcept
+    {
+        const auto& info = get_coin_info(ticker);
+        if (not info.is_claimable || not do_i_have_enough_funds(ticker, t_float_50(info.minimal_claim_amount)))
+        {
+            ec = not info.is_claimable ? dextop_error::ticker_is_not_claimable : dextop_error::claim_not_enough_funds;
+            return {};
+        }
+        t_withdraw_request req{.max = true, .coin = ticker, .amount = "0", .to = m_balance_informations.at(ticker).address};
+        auto               answer = ::mm2::api::rpc_withdraw(std::move(req));
+        return answer;
+    }
 } // namespace atomic_dex

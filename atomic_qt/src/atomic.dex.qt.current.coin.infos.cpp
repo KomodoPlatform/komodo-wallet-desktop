@@ -24,7 +24,6 @@ namespace atomic_dex
     atomic_dex::current_coin_info::current_coin_info(entt::dispatcher& dispatcher, QObject* pParent) noexcept : QObject(pParent), m_dispatcher(dispatcher) {}
 
     //! Properties
-
     QString
     atomic_dex::current_coin_info::get_balance() const noexcept
     {
