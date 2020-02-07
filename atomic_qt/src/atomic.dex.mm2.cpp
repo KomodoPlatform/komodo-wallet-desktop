@@ -767,16 +767,16 @@ namespace atomic_dex
     mm2::is_claiming_ready(const std::string& ticker) const noexcept
     {
         using namespace std::chrono_literals;
-        namespace bfs             = boost::filesystem;
-        auto lock_claim_file_path = bfs::temp_directory_path() / (ticker + ".claim.lock");
-        if (not bfs::exists(lock_claim_file_path))
+        auto lock_claim_file_path = fs::temp_directory_path() / (ticker + ".claim.lock");
+
+        if (not fs::exists(lock_claim_file_path))
         {
             return true;
         }
-        auto tp = std::chrono::system_clock::from_time_t(bfs::last_write_time(lock_claim_file_path));
-        if (tp - std::chrono::system_clock::now() > 1h)
+
+        if (fs::last_write_time(lock_claim_file_path) - fs::file_time_type::clock::now() > 1h)
         {
-            bfs::remove(lock_claim_file_path);
+            fs::remove(lock_claim_file_path);
             return true;
         }
         return false;
