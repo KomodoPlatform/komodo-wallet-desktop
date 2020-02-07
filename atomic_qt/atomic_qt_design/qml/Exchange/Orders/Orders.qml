@@ -10,6 +10,7 @@ Item {
 
     function updateOrders() {
         all_orders = API.get().get_my_orders()
+        console.log("ALL ORDERS HERE:" + JSON.stringify(all_orders))
         update_timer.running = true
     }
 
