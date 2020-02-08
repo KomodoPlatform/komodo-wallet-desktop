@@ -196,6 +196,9 @@ namespace atomic_dex
         //! Claim rewards
         t_withdraw_answer claim_rewards(const std::string& ticker, t_mm2_ec& ec) noexcept;
 
+        //! Send Rewards
+        t_broadcast_answer send_rewards(t_broadcast_request&& req, t_mm2_ec& ec) noexcept;
+
         //! Get coins that are currently enabled
         [[nodiscard]] t_coins get_enabled_coins() const noexcept;
 

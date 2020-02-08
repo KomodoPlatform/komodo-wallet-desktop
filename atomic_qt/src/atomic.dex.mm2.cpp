@@ -770,6 +770,7 @@ namespace atomic_dex
         using namespace std::chrono_literals;
         auto lock_claim_file_path = fs::temp_directory_path() / (ticker + ".claim.lock");
 
+        DLOG_F(INFO, "checking if {} exist", lock_claim_file_path.string());
         if (not fs::exists(lock_claim_file_path))
         {
             return true;
@@ -795,13 +796,22 @@ namespace atomic_dex
         }
         t_withdraw_request req{.max = true, .coin = ticker, .amount = "0", .to = m_balance_informations.at(ticker).address};
         auto               answer = ::mm2::api::rpc_withdraw(std::move(req));
-        if (answer.result.has_value())
+        return answer;
+    }
+
+    t_broadcast_answer
+    mm2::send_rewards(t_broadcast_request&& req, t_mm2_ec& ec) noexcept
+    {
+        LOG_SCOPE_FUNCTION(INFO);
+        auto ticker = req.coin;
+        auto b_answer = mm2::broadcast(std::move(req), ec);
+        if (!ec)
         {
             auto          lock_claim_file_path = fs::temp_directory_path() / (ticker + ".claim.lock");
             std::ofstream ofs(lock_claim_file_path.string());
             assert(ofs);
             DLOG_F(INFO, "created file {}", lock_claim_file_path.string());
         }
-        return answer;
+        return b_answer;
     }
 } // namespace atomic_dex
