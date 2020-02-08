@@ -143,15 +143,15 @@ namespace atomic_dex
     }
 
     QString
-    current_coin_info::get_claimable_amount() const noexcept
+    current_coin_info::get_minimal_balance_for_asking_rewards() const noexcept
     {
-        return this->selected_coin_claimable_amount;
+        return this->selected_coin_minimal_balance_for_asking_rewards;
     }
 
     void
-    current_coin_info::set_claimable_amount(QString amount) noexcept
+    current_coin_info::set_minimal_balance_for_asking_rewards(QString amount) noexcept
     {
-        this->selected_coin_claimable_amount = std::move(amount);
-        emit claimable_amount_changed();
+        this->selected_coin_minimal_balance_for_asking_rewards = std::move(amount);
+        emit minimal_balance_for_asking_rewards_changed();
     }
 } // namespace atomic_dex
