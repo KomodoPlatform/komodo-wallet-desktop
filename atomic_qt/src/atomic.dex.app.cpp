@@ -471,6 +471,12 @@ namespace atomic_dex
         return to_qt_binding(std::move(answer), this, QString::fromStdString(coin.explorer_url[0]));
     }
 
+    bool
+    atomic_dex::application::is_claiming_ready(const QString& ticker)
+    {
+        return get_mm2().is_claiming_ready(ticker.toStdString());
+    }
+
     QString
     application::send(const QString& tx_hex)
     {
