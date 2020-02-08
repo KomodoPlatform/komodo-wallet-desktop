@@ -8,6 +8,13 @@ import "../Constants"
 // Open Enable Coin Modal
 Popup {
     id: root
+
+    function canClaim() {
+        return API.get().current_coin_info.is_claimable === true &&
+                API.get().do_i_have_enough_funds(API.get().current_coin_info.ticker, API.get().current_coin_info.minimal_balance_for_asking_rewards) &&
+                API.get().is_claiming_ready(API.get().current_coin_info.ticker)
+    }
+
     anchors.centerIn: Overlay.overlay
     modal: true
     focus: true
