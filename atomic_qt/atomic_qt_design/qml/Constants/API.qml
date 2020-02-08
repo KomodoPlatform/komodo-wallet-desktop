@@ -171,6 +171,11 @@ QtObject {
        is_claiming_ready: (ticker) => { return true },
        claim_rewards: (ticker) => { return {"objectName":"","has_error":false,"error_message":"","tx_hex":"0400008085202f8902755d841b4ecff907a7f49633af202e29363e3ed71fdc1918c5541648fc20ff36010000006a4730440220418adfffe0bc798af13d0241e6e45c4a2d4080a3dcdd90b497c31d155a52666c0220690ca5e11d9ddd681aae7a2eca137104701621961a5ca21bdb593c8cc6d20198012103f813f322d82167027f635f08686fdc615f2f98d8f5f49091dafc62d520666aa5ffffffff2de18d8aefe1967610ac76547ac70a56a724b25cb855e1451f63a327a3976107000000006b483045022100d49b5a5d6a5b9fcb368208cb1fb29eeed0fe864d6ef62d78e82f1fdc150d115d022078e119b15e63a7b1e5f927d8497d2269b91dddb42de5ea18d74662ecbd2558a7012103f813f322d82167027f635f08686fdc615f2f98d8f5f49091dafc62d520666aa5ffffffff0108365b3f000000001976a914561ccb4cb9159a1ba1b81c133507ea950e065edc88ac8dcd3e5e000000000000000000000000000000","date":" 8. Feb 2020 03:15","balance_change":"0.00147216","fees":"0.00001","explorer_url":"https://kmdexplorer.io/"} },
 
+                               send_rewards: (tx_hex) => {
+                                  console.log("Sending tx hex:" + tx_hex)
+
+                                  return "abcdefghijklmnopqrstuvwxyz"
+                               },
         })
 
     // Simulate initial loading

@@ -34,7 +34,7 @@ Popup {
     }
 
     function claimRewards() {
-        send_result = API.get().send(prepare_claim_rewards_result.tx_hex)
+        send_result = API.get().send_rewards(prepare_claim_rewards_result.tx_hex)
         console.log(JSON.stringify(API.get().claim_rewards(API.get().current_coin_info.ticker)))
         stack_layout.currentIndex = 1
     }
