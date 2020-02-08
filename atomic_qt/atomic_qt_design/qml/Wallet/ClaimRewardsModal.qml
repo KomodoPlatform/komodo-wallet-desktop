@@ -21,6 +21,7 @@ Popup {
 
     function prepareClaimRewards() {
         stack_layout.currentIndex = 0
+        reset()
 
         prepare_claim_rewards_result = API.get().claim_rewards(API.get().current_coin_info.ticker)
         console.log(JSON.stringify(prepare_claim_rewards_result))
@@ -38,20 +39,16 @@ Popup {
         stack_layout.currentIndex = 1
     }
 
-    function reset(close = false) {
+    function reset() {
         prepare_claim_rewards_result = default_prepare_claim_rewards_result
         send_result = ""
         text_error.text = ""
-
-        if(close) root.close()
-        stack_layout.currentIndex = 0
     }
 
     anchors.centerIn: Overlay.overlay
     modal: true
     focus: true
     closePolicy: Popup.CloseOnEscape | Popup.CloseOnPressOutside
-    onClosed: if(stack_layout.currentIndex === 1) reset(true)
 
     // Inside modal
     StackLayout {
@@ -95,7 +92,7 @@ Popup {
             result: prepare_claim_rewards_result
             tx_hash: send_result
 
-            function onClose() { reset(true) }
+            function onClose() { root.close() }
         }
     }
 }
