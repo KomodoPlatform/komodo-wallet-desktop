@@ -776,8 +776,9 @@ namespace atomic_dex
             return true;
         }
 
-        if (fs::last_write_time(lock_claim_file_path) - fs::file_time_type::clock::now() > 1h)
+        if (fs::file_time_type::clock::now() - fs::last_write_time(lock_claim_file_path) > 1h)
         {
+            DLOG_F(INFO, "1 hour expire, removing {}", lock_claim_file_path.string());
             fs::remove(lock_claim_file_path);
             return true;
         }
