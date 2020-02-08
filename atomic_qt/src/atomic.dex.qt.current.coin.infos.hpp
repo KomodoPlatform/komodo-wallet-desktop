@@ -30,7 +30,8 @@ namespace atomic_dex
     {
         Q_OBJECT
         Q_PROPERTY(bool is_claimable READ is_claimable_ticker WRITE set_claimable NOTIFY claimable_changed)
-        Q_PROPERTY(QString claimable_amount READ get_claimable_amount WRITE set_claimable_amount NOTIFY claimable_amount_changed)
+        Q_PROPERTY(QString minimal_balance_for_asking_rewards READ get_minimal_balance_for_asking_rewards WRITE set_minimal_balance_for_asking_rewards NOTIFY
+                       minimal_balance_for_asking_rewards_changed)
         Q_PROPERTY(QString ticker READ get_ticker WRITE set_ticker NOTIFY ticker_changed)
         Q_PROPERTY(QString balance READ get_balance WRITE set_balance NOTIFY balance_changed)
         Q_PROPERTY(QString address READ get_address WRITE set_address NOTIFY address_changed)
@@ -44,8 +45,8 @@ namespace atomic_dex
         explicit current_coin_info(entt::dispatcher& dispatcher, QObject* pParent = nullptr) noexcept;
         [[nodiscard]] bool         is_claimable_ticker() const noexcept;
         void                       set_claimable(bool claimable) noexcept;
-        [[nodiscard]] QString      get_claimable_amount() const noexcept;
-        void                       set_claimable_amount(QString amount) noexcept;
+        [[nodiscard]] QString      get_minimal_balance_for_asking_rewards() const noexcept;
+        void                       set_minimal_balance_for_asking_rewards(QString amount) noexcept;
         [[nodiscard]] QString      get_tx_state() const noexcept;
         void                       set_tx_state(QString state) noexcept;
         [[nodiscard]] unsigned int get_tx_current_block() const noexcept;
@@ -69,7 +70,7 @@ namespace atomic_dex
         void balance_changed();
         void address_changed();
         void claimable_changed();
-        void claimable_amount_changed();
+        void minimal_balance_for_asking_rewards_changed();
         void explorer_url_changed();
         void fiat_amount_changed();
         void transactionsChanged();
@@ -84,7 +85,7 @@ namespace atomic_dex
         unsigned int      selected_coin_block;
         QObjectList       selected_coin_transactions;
         bool              selected_coin_is_claimable;
-        QString           selected_coin_claimable_amount{"0"};
+        QString           selected_coin_minimal_balance_for_asking_rewards{"0"};
         entt::dispatcher& m_dispatcher;
     };
 } // namespace atomic_dex
