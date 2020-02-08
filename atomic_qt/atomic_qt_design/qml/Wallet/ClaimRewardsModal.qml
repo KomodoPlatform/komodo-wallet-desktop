@@ -23,43 +23,78 @@ Popup {
         if(canClaim()) {
             prepare_claim_rewards_result = API.get().claim_rewards(API.get().current_coin_info.ticker)
             console.log(JSON.stringify(prepare_claim_rewards_result))
+            if(prepare_claim_rewards_result.has_error) {
+                text_error.text = prepare_claim_rewards_result.error_message
+            }
+            else {
+                text_error.text = ""
+            }
         }
     }
 
     function claimRewards() {
         send_result = API.get().send(prepare_claim_rewards_result.tx_hex)
         console.log(JSON.stringify(API.get().claim_rewards(API.get().current_coin_info.ticker)))
+        stack_layout.currentIndex = 1
+    }
+
+    function reset(close = false) {
+        prepare_claim_rewards_result = default_prepare_claim_rewards_result
+        send_result = ""
+        text_error.text = ""
+
+        if(close) root.close()
+        stack_layout.currentIndex = 0
     }
 
     anchors.centerIn: Overlay.overlay
     modal: true
     focus: true
     closePolicy: Popup.CloseOnEscape | Popup.CloseOnPressOutside
-    width: 400
+
     // Inside modal
-    ColumnLayout {
-        width: parent.width
+    StackLayout {
+        id: stack_layout
 
-        ModalHeader {
-            title: qsTr("Claim your ") + API.get().current_coin_info.ticker + qsTr(" reward?")
+        ColumnLayout {
+            Layout.fillWidth: true
+
+            ModalHeader {
+                title: qsTr("Claim your ") + API.get().current_coin_info.ticker + qsTr(" reward?")
+            }
+
+            DefaultText {
+                visible: text_error.text === ""
+                text: qsTr("You will receive ") + General.formatCrypto("", prepare_claim_rewards_result.balance_change, API.get().current_coin_info.ticker)
+            }
+
+            DefaultText {
+                id: text_error
+                color: Style.colorRed
+                visible: text !== ''
+            }
+
+            // Buttons
+            RowLayout {
+                Button {
+                    text: qsTr("Cancel")
+                    Layout.fillWidth: true
+                    onClicked: root.close()
+                }
+                Button {
+                    text: qsTr("Confirm")
+                    Layout.fillWidth: true
+                    onClicked: claimRewards()
+                }
+            }
         }
 
-        DefaultText {
-            text: qsTr("You will receive ") + General.formatCrypto("", prepare_claim_rewards_result.balance_change, API.get().current_coin_info.ticker)
-        }
+        // Result Page
+        SendResult {
+            result: prepare_claim_rewards_result
+            tx_hash: send_result
 
-        // Buttons
-        RowLayout {
-            Button {
-                text: qsTr("Cancel")
-                Layout.fillWidth: true
-                onClicked: root.close()
-            }
-            Button {
-                text: qsTr("Confirm")
-                Layout.fillWidth: true
-                onClicked: claimRewards()
-            }
+            function onClose() { reset(true) }
         }
     }
 }

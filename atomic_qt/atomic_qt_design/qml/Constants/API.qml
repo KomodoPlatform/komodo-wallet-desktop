@@ -88,6 +88,7 @@ QtObject {
            return {
                 has_error: false,
                 error_message: "",
+                balance_change: amount,
                 tx_hex: "abcdefghijklmnopqrstuvwxyz",
                 date: "17. Oct 1963 14:26",
                 fees: "0.0000125",

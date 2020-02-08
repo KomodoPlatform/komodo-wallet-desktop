@@ -66,6 +66,7 @@
         <file>atomic_qt_design/qml/Wallet/ClaimRewardsModal.qml</file>
         <file>atomic_qt_design/qml/Wallet/ReceiveModal.qml</file>
         <file>atomic_qt_design/qml/Wallet/SendModal.qml</file>
+        <file>atomic_qt_design/qml/Wallet/SendResult.qml</file>
         <file>atomic_qt_design/qml/Wallet/EnableCoinModal.qml</file>
         <file>atomic_qt_design/qml/Wallet/Transactions.qml</file>
         <file>atomic_qt_design/qml/Wallet/TransactionDetailsModal.qml</file>

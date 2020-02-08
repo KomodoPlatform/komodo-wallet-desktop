@@ -164,54 +164,13 @@ Popup {
         }
 
         // Result Page
-        ColumnLayout {
-            ModalHeader {
-                title: qsTr("Transaction Complete!")
-            }
+        SendResult {
+            result: prepare_send_result
+            address: input_address.field.text
+            tx_hash: send_result
+            custom_amount: input_amount.field.text
 
-            // Address
-            TextWithTitle {
-                title: qsTr("Recipient's address:")
-                text: input_address.field.text
-            }
-
-            // Amount
-            TextWithTitle {
-                title: qsTr("Amount:")
-                text: General.formatCrypto("", input_amount.field.text, API.get().current_coin_info.ticker)
-            }
-
-            // Fees
-            TextWithTitle {
-                title: qsTr("Fees:")
-                text: prepare_send_result.fees
-            }
-
-            // Date
-            TextWithTitle {
-                title: qsTr("Date:")
-                text: prepare_send_result.date
-            }
-
-            // Transaction Hash
-            TextWithTitle {
-                title: qsTr("Transaction Hash:")
-                text: send_result
-            }
-
-            // Buttons
-            RowLayout {
-                Button {
-                    text: qsTr("Close")
-                    Layout.fillWidth: true
-                    onClicked: reset(true)
-                }
-                Button {
-                    text: qsTr("View at Explorer")
-                    Layout.fillWidth: true
-                    onClicked: Qt.openUrlExternally(prepare_send_result.explorer_url + "tx/" + send_result)
-                }
-            }
+            function onClose() { reset(true) }
         }
     }
 }
