@@ -104,6 +104,8 @@ RowLayout {
                     text: qsTr("Claim Rewards")
                     leftPadding: parent.width * button_margin
                     rightPadding: leftPadding
+
+                    visible: API.get().current_coin_info.is_claimable === true
                     onClicked: claim_rewards_modal.open()
                 }
 
