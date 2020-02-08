@@ -107,7 +107,10 @@ RowLayout {
 
                     visible: API.get().current_coin_info.is_claimable === true
                     enabled: claim_rewards_modal.canClaim()
-                    onClicked: claim_rewards_modal.open()
+                    onClicked: {
+                        claim_rewards_modal.prepareClaimRewards()
+                        claim_rewards_modal.open()
+                    }
                 }
 
                 ClaimRewardsModal {
