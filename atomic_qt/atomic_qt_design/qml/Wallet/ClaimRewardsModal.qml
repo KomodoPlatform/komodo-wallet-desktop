@@ -21,15 +21,14 @@ Popup {
 
     function prepareClaimRewards() {
         stack_layout.currentIndex = 0
-        if(canClaim()) {
-            prepare_claim_rewards_result = API.get().claim_rewards(API.get().current_coin_info.ticker)
-            console.log(JSON.stringify(prepare_claim_rewards_result))
-            if(prepare_claim_rewards_result.has_error) {
-                text_error.text = prepare_claim_rewards_result.error_message
-            }
-            else {
-                text_error.text = ""
-            }
+
+        prepare_claim_rewards_result = API.get().claim_rewards(API.get().current_coin_info.ticker)
+        console.log(JSON.stringify(prepare_claim_rewards_result))
+        if(prepare_claim_rewards_result.has_error) {
+            text_error.text = prepare_claim_rewards_result.error_message
+        }
+        else {
+            text_error.text = ""
         }
     }
 
