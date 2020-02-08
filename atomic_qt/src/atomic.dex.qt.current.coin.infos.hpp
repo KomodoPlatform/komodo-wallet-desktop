@@ -30,6 +30,7 @@ namespace atomic_dex
     {
         Q_OBJECT
         Q_PROPERTY(bool is_claimable READ is_claimable_ticker WRITE set_claimable NOTIFY claimable_changed)
+        Q_PROPERTY(QString claimable_amount READ get_claimable_amount WRITE set_claimable_amount NOTIFY claimable_amount_changed)
         Q_PROPERTY(QString ticker READ get_ticker WRITE set_ticker NOTIFY ticker_changed)
         Q_PROPERTY(QString balance READ get_balance WRITE set_balance NOTIFY balance_changed)
         Q_PROPERTY(QString address READ get_address WRITE set_address NOTIFY address_changed)
@@ -41,24 +42,26 @@ namespace atomic_dex
 
       public:
         explicit current_coin_info(entt::dispatcher& dispatcher, QObject* pParent = nullptr) noexcept;
-        bool         is_claimable_ticker() const noexcept;
-        void         set_claimable(bool claimable) noexcept;
-        QString      get_tx_state() const noexcept;
-        void         set_tx_state(QString state) noexcept;
-        unsigned int get_tx_current_block() const noexcept;
-        void         set_tx_current_block(unsigned int block) noexcept;
-        QObjectList  get_transactions() const noexcept;
-        void         set_transactions(QObjectList transactions) noexcept;
-        QString      get_ticker() const noexcept;
-        void         set_ticker(QString ticker) noexcept;
-        QString      get_address() const noexcept;
-        void         set_address(QString address) noexcept;
-        QString      get_balance() const noexcept;
-        void         set_balance(QString balance) noexcept;
-        QString      get_explorer_url() const noexcept;
-        void         set_explorer_url(QString url) noexcept;
-        QString      get_fiat_amount() const noexcept;
-        void         set_fiat_amount(QString fiat_amount) noexcept;
+        [[nodiscard]] bool         is_claimable_ticker() const noexcept;
+        void                       set_claimable(bool claimable) noexcept;
+        [[nodiscard]] QString      get_claimable_amount() const noexcept;
+        void                       set_claimable_amount(QString amount) noexcept;
+        [[nodiscard]] QString      get_tx_state() const noexcept;
+        void                       set_tx_state(QString state) noexcept;
+        [[nodiscard]] unsigned int get_tx_current_block() const noexcept;
+        void                       set_tx_current_block(unsigned int block) noexcept;
+        [[nodiscard]] QObjectList  get_transactions() const noexcept;
+        void                       set_transactions(QObjectList transactions) noexcept;
+        [[nodiscard]] QString      get_ticker() const noexcept;
+        void                       set_ticker(QString ticker) noexcept;
+        [[nodiscard]] QString      get_address() const noexcept;
+        void                       set_address(QString address) noexcept;
+        [[nodiscard]] QString      get_balance() const noexcept;
+        void                       set_balance(QString balance) noexcept;
+        [[nodiscard]] QString      get_explorer_url() const noexcept;
+        void                       set_explorer_url(QString url) noexcept;
+        [[nodiscard]] QString      get_fiat_amount() const noexcept;
+        void                       set_fiat_amount(QString fiat_amount) noexcept;
       signals:
         void ticker_changed();
         void tx_state_changed();
@@ -66,6 +69,7 @@ namespace atomic_dex
         void balance_changed();
         void address_changed();
         void claimable_changed();
+        void claimable_amount_changed();
         void explorer_url_changed();
         void fiat_amount_changed();
         void transactionsChanged();
@@ -80,6 +84,7 @@ namespace atomic_dex
         unsigned int      selected_coin_block;
         QObjectList       selected_coin_transactions;
         bool              selected_coin_is_claimable;
+        QString           selected_coin_claimable_amount{"0"};
         entt::dispatcher& m_dispatcher;
     };
 } // namespace atomic_dex

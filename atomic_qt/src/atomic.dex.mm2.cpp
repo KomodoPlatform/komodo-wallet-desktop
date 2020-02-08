@@ -762,4 +762,46 @@ namespace atomic_dex
 
         return m_tx_state.at(ticker);
     }
+
+    bool
+    mm2::is_claiming_ready(const std::string& ticker) const noexcept
+    {
+        LOG_SCOPE_FUNCTION(INFO);
+        using namespace std::chrono_literals;
+        auto lock_claim_file_path = fs::temp_directory_path() / (ticker + ".claim.lock");
+
+        if (not fs::exists(lock_claim_file_path))
+        {
+            return true;
+        }
+
+        if (fs::last_write_time(lock_claim_file_path) - fs::file_time_type::clock::now() > 1h)
+        {
+            fs::remove(lock_claim_file_path);
+            return true;
+        }
+        return false;
+    }
+
+    t_withdraw_answer
+    mm2::claim_rewards(const std::string& ticker, t_mm2_ec& ec) noexcept
+    {
+        LOG_SCOPE_FUNCTION(INFO);
+        const auto& info = get_coin_info(ticker);
+        if (not info.is_claimable || not do_i_have_enough_funds(ticker, t_float_50(info.minimal_claim_amount)))
+        {
+            ec = not info.is_claimable ? dextop_error::ticker_is_not_claimable : dextop_error::claim_not_enough_funds;
+            return {};
+        }
+        t_withdraw_request req{.max = true, .coin = ticker, .amount = "0", .to = m_balance_informations.at(ticker).address};
+        auto               answer = ::mm2::api::rpc_withdraw(std::move(req));
+        if (answer.result.has_value())
+        {
+            auto          lock_claim_file_path = fs::temp_directory_path() / (ticker + ".claim.lock");
+            std::ofstream ofs(lock_claim_file_path.string());
+            assert(ofs);
+            DLOG_F(INFO, "created file {}", lock_claim_file_path.string());
+        }
+        return answer;
+    }
 } // namespace atomic_dex

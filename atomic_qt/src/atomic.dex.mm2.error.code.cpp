@@ -80,6 +80,10 @@ namespace
             return "There're active swaps, try disabling it later.";
         case dextop_error::order_is_matched_at_the_moment:
             return "There're currently matching orders, try disabling it later.";
+        case dextop_error::claim_not_enough_funds:
+            return "You try to claim rewards but you don't have enough funds.";
+        case dextop_error::ticker_is_not_claimable:
+            return "You try to claim rewards from a ticker that don't have rewards feature";
         }
         return "";
     }

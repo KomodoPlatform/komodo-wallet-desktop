@@ -272,8 +272,10 @@ namespace atomic_dex
                 refresh_transactions(mm2);
                 refresh_fiat_balance(mm2, paprika);
                 refresh_address(mm2);
-                m_coin_info->set_claimable(get_mm2().get_coin_info(m_coin_info->get_ticker().toStdString()).is_claimable);
-                m_coin_info->set_explorer_url(QString::fromStdString(get_mm2().get_coin_info(m_coin_info->get_ticker().toStdString()).explorer_url[0]));
+                const auto& info = get_mm2().get_coin_info(m_coin_info->get_ticker().toStdString());
+                m_coin_info->set_claimable(info.is_claimable);
+                m_coin_info->set_claimable_amount(QString::fromStdString(info.minimal_claim_amount));
+                m_coin_info->set_explorer_url(QString::fromStdString(info.explorer_url[0]));
                 m_refresh_current_ticker_infos = false;
             }
 
@@ -469,6 +471,29 @@ namespace atomic_dex
         auto            answer = mm2::withdraw(std::move(req), ec);
         auto            coin   = get_mm2().get_coin_info(m_coin_info->get_ticker().toStdString());
         return to_qt_binding(std::move(answer), this, QString::fromStdString(coin.explorer_url[0]));
+    }
+
+    bool
+    atomic_dex::application::is_claiming_ready(const QString& ticker)
+    {
+        return get_mm2().is_claiming_ready(ticker.toStdString());
+    }
+
+    QObject*
+    atomic_dex::application::claim_rewards(const QString& ticker)
+    {
+        std::error_code ec;
+        auto            answer = get_mm2().claim_rewards(ticker.toStdString(), ec);
+        if (not answer.error.has_value())
+        {
+            if (ec)
+            {
+                answer.error = ec.message();
+            }
+        }
+        auto coin = get_mm2().get_coin_info(m_coin_info->get_ticker().toStdString());
+        auto obj  = to_qt_binding(std::move(answer), this, QString::fromStdString(coin.explorer_url[0]));
+        return obj;
     }
 
     QString
