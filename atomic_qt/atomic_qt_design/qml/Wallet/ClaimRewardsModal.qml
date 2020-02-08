@@ -20,6 +20,7 @@ Popup {
     }
 
     function prepareClaimRewards() {
+        stack_layout.currentIndex = 0
         if(canClaim()) {
             prepare_claim_rewards_result = API.get().claim_rewards(API.get().current_coin_info.ticker)
             console.log(JSON.stringify(prepare_claim_rewards_result))
@@ -51,6 +52,7 @@ Popup {
     modal: true
     focus: true
     closePolicy: Popup.CloseOnEscape | Popup.CloseOnPressOutside
+    onClosed: if(stack_layout.currentIndex === 1) reset(true)
 
     // Inside modal
     StackLayout {
