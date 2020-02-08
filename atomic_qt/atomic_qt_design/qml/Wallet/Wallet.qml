@@ -16,6 +16,7 @@ RowLayout {
         exchange.changeBase(API.get().current_coin_info.ticker)
     }
 
+    readonly property double button_margin: 0.05
     spacing: 0
     Layout.fillWidth: true
 
@@ -71,9 +72,9 @@ RowLayout {
                 spacing: 50
 
                 Button {
-                    text: "Send"
-                    leftPadding: parent.width * 0.075
-                    rightPadding: parent.width * 0.075
+                    text: qsTr("Send")
+                    leftPadding: parent.width * button_margin
+                    rightPadding: leftPadding
                     onClicked: send_modal.open()
                 }
 
@@ -82,9 +83,9 @@ RowLayout {
                 }
 
                 Button {
-                    text: "Receive"
-                    leftPadding: parent.width * 0.075
-                    rightPadding: parent.width * 0.075
+                    text: qsTr("Receive")
+                    leftPadding: parent.width * button_margin
+                    rightPadding: leftPadding
                     onClicked: receive_modal.open()
                 }
 
@@ -93,10 +94,21 @@ RowLayout {
                 }
 
                 Button {
-                    text: "Swap"
-                    leftPadding: parent.width * 0.075
-                    rightPadding: parent.width * 0.075
+                    text: qsTr("Swap")
+                    leftPadding: parent.width * button_margin
+                    rightPadding: leftPadding
                     onClicked: onClickedSwap()
+                }
+
+                Button {
+                    text: qsTr("Claim Rewards")
+                    leftPadding: parent.width * button_margin
+                    rightPadding: leftPadding
+                    onClicked: claim_rewards_modal.open()
+                }
+
+                ClaimRewardsModal {
+                    id: claim_rewards_modal
                 }
             }
 

@@ -9,7 +9,7 @@ import "./Orders"
 
 Item {
     id: exchange
-    property int current_page: API.design_editor ? General.idx_exchange_orders : General.idx_exchange_trade
+    property int current_page: API.design_editor ? General.idx_exchange_trade : General.idx_exchange_trade
 
     function postOrderSuccess(ticker) {
         exchange_orders.changeTicker(ticker)
