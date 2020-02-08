@@ -141,4 +141,17 @@ namespace atomic_dex
         this->selected_coin_block = std::move(block);
         emit tx_current_block_changed();
     }
+
+    QString
+    current_coin_info::get_claimable_amount() const noexcept
+    {
+        return this->selected_coin_claimable_amount;
+    }
+
+    void
+    current_coin_info::set_claimable_amount(QString amount) noexcept
+    {
+        this->selected_coin_claimable_amount = std::move(amount);
+        emit claimable_amount_changed();
+    }
 } // namespace atomic_dex
