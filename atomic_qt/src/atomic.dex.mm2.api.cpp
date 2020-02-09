@@ -508,6 +508,12 @@ namespace mm2::api
     }
 
     void
+    from_json(const nlohmann::json& j, error_data& contents)
+    {
+        j.at("error").get_to(contents.error_message);
+    }
+
+    void
     from_json(const nlohmann::json& j, swap_contents& contents)
     {
         using namespace date;
@@ -540,7 +546,17 @@ namespace mm2::api
             else if (evt_type == "Started")
             {
                 auto data                 = j_evt.at("data").get<started_data>();
-                contents.events[evt_type] = started_event{.timestamp = timestamp, .human_date = std::move(human_date), .data = data};
+                contents.events[evt_type] = started_event{.timestamp = timestamp, .human_date = std::move(human_date), .data = std::move(data)};
+            }
+            else if (evt_type == "StartFailed")
+            {
+                auto data                 = j_evt.at("data").get<error_data>();
+                contents.events[evt_type] = start_failed_event{.timestamp = timestamp, .human_date = std::move(human_date), .data = std::move(data)};
+            }
+            else if (evt_type == "NegotiateFailed")
+            {
+                auto data                 = j_evt.at("data").get<error_data>();
+                contents.events[evt_type] = negotiate_failed_event{.timestamp = timestamp, .human_date = std::move(human_date), .data = std::move(data)};
             }
         }
     }
@@ -728,4 +744,5 @@ namespace mm2::api
     {
         return {{"method", std::move(method_name)}, {"userpass", "atomic_dex_mm2_passphrase"}};
     }
+
 } // namespace mm2::api

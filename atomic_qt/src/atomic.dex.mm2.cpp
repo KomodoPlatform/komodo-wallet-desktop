@@ -804,7 +804,7 @@ namespace atomic_dex
     mm2::send_rewards(t_broadcast_request&& req, t_mm2_ec& ec) noexcept
     {
         LOG_SCOPE_FUNCTION(INFO);
-        auto ticker = req.coin;
+        auto ticker   = req.coin;
         auto b_answer = mm2::broadcast(std::move(req), ec);
         if (!ec)
         {

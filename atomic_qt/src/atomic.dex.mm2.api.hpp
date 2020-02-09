@@ -509,9 +509,30 @@ namespace mm2::api
         started_data data;
     };
 
+    struct error_data
+    {
+        std::string error_message;
+    };
+
+    void from_json(const nlohmann::json& j, error_data& contents);
+
+    struct start_failed_event
+    {
+        std::size_t timestamp;
+        std::string human_date;
+        error_data  data;
+    };
+
+    struct negotiate_failed_event
+    {
+        std::size_t timestamp;
+        std::string human_date;
+        error_data  data;
+    };
+
     struct swap_contents
     {
-        using t_event_registry = std::unordered_map<std::string, std::variant<finished_event, started_event>>;
+        using t_event_registry = std::unordered_map<std::string, std::variant<finished_event, started_event, start_failed_event, negotiate_failed_event>>;
         std::vector<std::string> error_events;
         t_event_registry         events;
         std::string              uuid;
