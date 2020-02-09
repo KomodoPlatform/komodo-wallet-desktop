@@ -36,6 +36,8 @@ namespace atomic_dex
     struct application : public QObject, public ag::world::app
     {
         Q_OBJECT
+
+        //! Properties
         Q_PROPERTY(QList<QObject*> enabled_coins READ get_enabled_coins NOTIFY enabledCoinsChanged)
         Q_PROPERTY(QList<QObject*> enableable_coins READ get_enableable_coins NOTIFY enableableCoinsChanged)
         Q_PROPERTY(QObject* current_coin_info READ get_current_coin_info NOTIFY coinInfoChanged)
@@ -44,19 +46,26 @@ namespace atomic_dex
         Q_PROPERTY(QString initial_loading_status READ get_status WRITE set_status NOTIFY on_status_changed)
 
       private:
+        //! Private function
         void refresh_transactions(const mm2& mm2);
         void refresh_fiat_balance(const mm2& mm2, const coinpaprika_provider& paprika);
+        void refresh_address(mm2& mm2);
+        void tick();
 
       public:
+        //! Constructor
         explicit application(QObject* pParent = nullptr) noexcept;
 
-        void                  on_enabled_coins_event(const enabled_coins_event&) noexcept;
-        void                  on_change_ticker_event(const change_ticker_event&) noexcept;
-        void                  on_tx_fetch_finished_event(const tx_fetch_finished&) noexcept;
-        void                  on_coin_disabled_event(const coin_disabled&) noexcept;
-        void                  on_mm2_initialized_event(const mm2_initialized&) noexcept;
-        void                  on_mm2_started_event(const mm2_started&) noexcept;
-        void                  on_refresh_order_event(const refresh_order_needed&) noexcept;
+        //! entt::dispatcher events
+        void on_enabled_coins_event(const enabled_coins_event&) noexcept;
+        void on_change_ticker_event(const change_ticker_event&) noexcept;
+        void on_tx_fetch_finished_event(const tx_fetch_finished&) noexcept;
+        void on_coin_disabled_event(const coin_disabled&) noexcept;
+        void on_mm2_initialized_event(const mm2_initialized&) noexcept;
+        void on_mm2_started_event(const mm2_started&) noexcept;
+        void on_refresh_order_event(const refresh_order_needed&) noexcept;
+
+        //! Properties Getter
         mm2&                  get_mm2() noexcept;
         const mm2&            get_mm2() const noexcept;
         coinpaprika_provider& get_paprika() noexcept;
@@ -65,13 +74,18 @@ namespace atomic_dex
         QObjectList           get_enabled_coins() const noexcept;
         QObjectList           get_enableable_coins() const noexcept;
         QString               get_current_fiat() const noexcept;
-        void                  set_current_fiat(QString current_fiat) noexcept;
         QString               get_balance_fiat_all() const noexcept;
-        void                  set_current_balance_fiat_all(QString current_fiat) noexcept;
         QString               get_status() const noexcept;
-        void                  set_status(QString status) noexcept;
-        void                  launch();
 
+        //! Properties Setter
+        void set_current_fiat(QString current_fiat) noexcept;
+        void set_current_balance_fiat_all(QString current_fiat) noexcept;
+        void set_status(QString status) noexcept;
+
+        //! Launch the internal loop for the SDK.
+        void launch();
+
+        //! Bind to the QML Worlds
         Q_INVOKABLE QObject* prepare_send(const QString& address, const QString& amount, bool max = false);
         Q_INVOKABLE QString  send(const QString& tx_hex);
         Q_INVOKABLE QString  send_rewards(const QString& tx_hex);
@@ -94,12 +108,13 @@ namespace atomic_dex
         Q_INVOKABLE bool     do_i_have_enough_funds(const QString& ticker, const QString& amount) const;
         Q_INVOKABLE bool     disable_coins(const QStringList& coins);
         Q_INVOKABLE bool     is_claiming_ready(const QString& ticker);
-        Q_INVOKABLE QObject* claim_rewards(const QString& ticker);
+        Q_INVOKABLE QObject*    claim_rewards(const QString& ticker);
         Q_INVOKABLE QVariantMap get_my_orders();
         Q_INVOKABLE QVariantMap get_recent_swaps();
 
 
       signals:
+        //! Signals to the QML Worlds
         void enabledCoinsChanged();
         void enableableCoinsChanged();
         void coinInfoChanged();
@@ -109,6 +124,7 @@ namespace atomic_dex
         void myOrdersUpdated();
 
       private:
+        //! Private members
         std::atomic_bool   m_refresh_enabled_coin_event{false};
         std::atomic_bool   m_refresh_current_ticker_infos{false};
         std::atomic_bool   m_refresh_transaction_only{false};
@@ -118,9 +134,5 @@ namespace atomic_dex
         QString            m_current_status{"None"};
         QString            m_current_balance_all{"0.00"};
         current_coin_info* m_coin_info;
-
-      private:
-        void tick();
-        void refresh_address(mm2& mm2);
     };
 } // namespace atomic_dex
