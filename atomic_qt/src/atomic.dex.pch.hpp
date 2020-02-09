@@ -89,6 +89,9 @@ erase_if(std::map<Key, T, Compare, Alloc>& c, Pred pred)
     }
 }
 
+template<class... Ts> struct overloaded : Ts... { using Ts::operator()...; };
+template<class... Ts> overloaded(Ts...) -> overloaded<Ts...>;
+
 //! Folly Headers
 #include <folly/Memory.h>
 #include <folly/SharedMutex.h>

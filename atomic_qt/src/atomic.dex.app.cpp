@@ -15,6 +15,8 @@
  ******************************************************************************/
 
 #include <QDebug>
+#include <QJsonDocument>
+#include <QJsonObject>
 #include <QTimer>
 
 #if defined(_WIN32) || defined(WIN32)
@@ -654,5 +656,27 @@ namespace atomic_dex
     {
         LOG_SCOPE_FUNCTION(INFO);
         emit myOrdersUpdated();
+    }
+
+    QVariantMap
+    application::get_recent_swaps()
+    {
+        QVariantMap out;
+        const auto& swaps = get_mm2().get_swaps();
+
+        for (auto&& swap: swaps.swaps)
+        {
+            nlohmann::json j2 = {{"maker_coin", swap.maker_coin},
+                                 {"taker_coin", swap.taker_coin},
+                                 {"maker_amount", swap.maker_amount},
+                                 {"taker_amount", swap.taker_amount},
+                                 {"type", swap.type},
+                                 {"events", swap.events},
+                                 {"my_info", swap.my_info}};
+
+            auto out_swap = QJsonDocument::fromJson(QString::fromStdString(j2.dump()).toUtf8());
+            out.insert(QString::fromStdString(swap.uuid), QVariant(out_swap));
+        }
+        return out;
     }
 } // namespace atomic_dex

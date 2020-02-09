@@ -529,8 +529,9 @@ namespace mm2::api
 
         contents.taker_amount = adjust_precision(contents.taker_amount);
         contents.maker_amount = adjust_precision(contents.maker_amount);
-
-        for (auto&& content: j.at("events"))
+        contents.events       = j.at("events");
+        contents.my_info      = j.at("my_info");
+        /*for (auto&& content: j.at("events"))
         {
             using sys_milliseconds           = sys_time<std::chrono::milliseconds>;
             const nlohmann::json& j_evt      = content.at("event");
@@ -558,7 +559,7 @@ namespace mm2::api
                 auto data                 = j_evt.at("data").get<error_data>();
                 contents.events[evt_type] = negotiate_failed_event{.timestamp = timestamp, .human_date = std::move(human_date), .data = std::move(data)};
             }
-        }
+        }*/
     }
 
     void
