@@ -529,9 +529,9 @@ namespace mm2::api
 
         contents.taker_amount = adjust_precision(contents.taker_amount);
         contents.maker_amount = adjust_precision(contents.maker_amount);
-        contents.events       = j.at("events");
-        contents.my_info      = j.at("my_info");
-        /*for (auto&& content: j.at("events"))
+        contents.events       = nlohmann::json::array();
+        contents.my_info = j.at("my_info");
+        for (auto&& content: j.at("events"))
         {
             using sys_milliseconds           = sys_time<std::chrono::milliseconds>;
             const nlohmann::json& j_evt      = content.at("event");
@@ -540,26 +540,17 @@ namespace mm2::api
             std::string           human_date = date::format("%F    %T", tp);
             auto                  evt_type   = j_evt.at("type").get<std::string>();
 
-            if (evt_type == "Finished")
+            if (j_evt.count("data") == 0)
             {
-                contents.events[evt_type] = finished_event{.timestamp = timestamp, .human_date = std::move(human_date)};
+                nlohmann::json jf_evt = {evt_type, {{"human_timestamp", human_date}}};
+                contents.events.push_back(jf_evt);
             }
-            else if (evt_type == "Started")
+            else
             {
-                auto data                 = j_evt.at("data").get<started_data>();
-                contents.events[evt_type] = started_event{.timestamp = timestamp, .human_date = std::move(human_date), .data = std::move(data)};
+                nlohmann::json jf_evt = {evt_type, {{"human_timestamp", human_date}, {"data", j_evt.at("data")}}};
+                contents.events.push_back(jf_evt);
             }
-            else if (evt_type == "StartFailed")
-            {
-                auto data                 = j_evt.at("data").get<error_data>();
-                contents.events[evt_type] = start_failed_event{.timestamp = timestamp, .human_date = std::move(human_date), .data = std::move(data)};
-            }
-            else if (evt_type == "NegotiateFailed")
-            {
-                auto data                 = j_evt.at("data").get<error_data>();
-                contents.events[evt_type] = negotiate_failed_event{.timestamp = timestamp, .human_date = std::move(human_date), .data = std::move(data)};
-            }
-        }*/
+        }
     }
 
     void
