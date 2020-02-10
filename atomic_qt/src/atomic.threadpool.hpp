@@ -36,7 +36,8 @@ namespace atomic_dex
                         {
                             std::unique_lock<std::mutex> lock(this->queue_mutex);
                             this->condition.wait(lock, [this] { return this->stop or !this->tasks.empty(); });
-                            if (this->stop && this->tasks.empty()) return;
+                            if (this->stop && this->tasks.empty())
+                                return;
                             task = std::move(this->tasks.front());
                             this->tasks.pop();
                         }
@@ -85,7 +86,10 @@ namespace atomic_dex
             std::unique_lock<std::mutex> lock(queue_mutex);
 
             // don't allow enqueueing after stopping the pool
-            if (stop) { throw std::runtime_error("enqueue on stopped thread_pool"); }
+            if (stop)
+            {
+                throw std::runtime_error("enqueue on stopped thread_pool");
+            }
 
             tasks.emplace(std::move(task));
         }
