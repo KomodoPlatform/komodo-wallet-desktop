@@ -534,6 +534,7 @@ namespace mm2::api
     {
         // using t_event_registry = std::unordered_map<std::string, std::variant<finished_event, started_event, start_failed_event, negotiate_failed_event>>;
         std::vector<std::string> error_events;
+        std::vector<std::string> success_events;
         nlohmann::json           events;
         nlohmann::json           my_info;
         std::string              uuid;

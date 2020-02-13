@@ -672,6 +672,7 @@ namespace atomic_dex
                                  {"maker_amount", swap.maker_amount},
                                  {"taker_amount", swap.taker_amount},
                                  {"error_events", swap.error_events},
+                                 {"success_events", swap.success_events},
                                  {"type", swap.type},
                                  {"events", swap.events},
                                  {"my_info", swap.my_info}};
