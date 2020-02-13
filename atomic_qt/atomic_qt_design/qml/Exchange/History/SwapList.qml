@@ -18,10 +18,6 @@ Rectangle {
         postCancelOrder()
     }
 
-    function getStatusColor(order) {
-        return Style.colorGreen
-    }
-
     Layout.fillWidth: true
     Layout.fillHeight: true
     color: Style.colorTheme7
@@ -140,7 +136,7 @@ Rectangle {
                         // Date
                         DefaultText {
                             id: date
-                            text: model.modelData.date
+                            text: model.modelData.events[model.modelData.events.length-1].human_timestamp
                             color: Style.colorTheme2
                             anchors.top: uuid.bottom
                             anchors.topMargin: base_amount.anchors.topMargin
@@ -149,10 +145,9 @@ Rectangle {
                         // Cancel button
                         DefaultText {
                             color: getStatusColor(model.modelData)
-                            visible: model.modelData.cancellable
                             anchors.right: parent.right
                             anchors.top: date.top
-                            text: qsTr("Status Text")
+                            text: qsTr(getStatusText(model.modelData))
                         }
                     }
 
@@ -166,6 +161,48 @@ Rectangle {
                 }
             }
         }
+    }
+
+
+    // Status Info
+    readonly property int status_swap_matching: 0
+    readonly property int status_swap_matched: 1
+    readonly property int status_swap_ongoing: 2
+    readonly property int status_swap_successful: 3
+    readonly property int status_swap_failed: 4
+
+    function getStatus(swap) {
+        if(swap.events.length === 0) return status_swap_matching
+
+        const last_state = swap.events[swap.events.length-1].state
+
+        if(last_state === "Started") return status_swap_matched
+        if(last_state === "Finished") {
+            for(const e of swap.events) {
+               if(swap.error_events.indexOf(e.status) !== -1)
+                   return status_swap_failed
+            }
+
+            return status_swap_successful
+        }
+
+        return status_swap_ongoing
+    }
+
+    function getStatusColor(swap) {
+        const status = getStatus(swap)
+        return status === status_swap_matching ? Style.colorOrange :
+               status === status_swap_matched ? Style.colorOrange :
+               status === status_swap_ongoing ? Style.colorOrange :
+               status === status_swap_successful ? Style.colorGreen : Style.colorRed
+    }
+
+    function getStatusText(swap) {
+        const status = getStatus(swap)
+        return status === status_swap_matching ? "Order Matching":
+               status === status_swap_matched ? "Order Matched":
+               status === status_swap_ongoing ? "Swap Ongoing":
+               status === status_swap_successful ? "Swap Successful" : "Swap Failed"
     }
 }
 

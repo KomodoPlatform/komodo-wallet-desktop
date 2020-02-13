@@ -15,7 +15,6 @@ Item {
 
     function updateOrders() {
         all_orders = API.get().get_recent_swaps()
-        console.log("ALL HISTORY ORDERS:" + JSON.stringify(all_orders))
     }
 
     function getOrders() {
