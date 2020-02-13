@@ -68,7 +68,7 @@ QtObject {
         let orders = all_orders
 
         Object.keys(orders).map((key, index) => {
-          orders[key].swap_id = key;
+          orders[key].uuid = key;
         })
 
         const arr = Object.values(orders).sort((a, b) => b.events[b.events.length-1].timestamp - a.events[a.events.length-1].timestamp)

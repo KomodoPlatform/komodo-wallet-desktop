@@ -4,6 +4,7 @@ import QtQuick.Controls 2.3
 import QtQuick.Controls.Material 2.12
 import "../../Components"
 import "../../Constants"
+import ".."
 
 Rectangle {
     property string title
@@ -63,104 +64,17 @@ Rectangle {
             clip: true
 
             // Row
-            delegate: Rectangle {
-                color: "transparent"
-                width: list.width
-                height: 200
-
-                ColumnLayout {
-                    width: parent.width * 0.8
-                    height: parent.height
-                    anchors.horizontalCenter: parent.horizontalCenter
-
-                    // Content
-                    Rectangle {
-                        Layout.topMargin: 12.5
-                        color: "transparent"
-                        Layout.fillWidth: true
-                        Layout.fillHeight: true
-
-                        // Base Icon
-                        Image {
-                            id: base_icon
-                            source: General.coinIcon(model.modelData.am_i_maker ? model.modelData.base : model.modelData.rel)
-                            fillMode: Image.PreserveAspectFit
-                            width: Style.textSize3
-                            anchors.left: parent.left
-                            anchors.leftMargin: parent.width * 0.25
-                        }
-
-                        // Rel Icon
-                        Image {
-                            id: rel_icon
-                            source: General.coinIcon(model.modelData.am_i_maker ? model.modelData.rel : model.modelData.base)
-                            fillMode: Image.PreserveAspectFit
-                            width: Style.textSize3
-                            anchors.right: parent.right
-                            anchors.rightMargin: parent.width * 0.25
-                        }
-
-                        // Base Amount
-                        DefaultText {
-                            id: base_amount
-                            text: "~ " + General.formatCrypto("", model.modelData.am_i_maker ? model.modelData.base_amount : model.modelData.rel_amount,
-                                                                  model.modelData.am_i_maker ? model.modelData.base : model.modelData.rel)
-                            anchors.left: parent.left
-                            anchors.top: base_icon.bottom
-                            anchors.topMargin: 10
-                        }
-
-                        // Swap icon
-                        Image {
-                            source: General.image_path + "exchange-exchange.svg"
-                            anchors.top: base_amount.top
-                            anchors.horizontalCenter: parent.horizontalCenter
-                        }
-
-                        // Rel Amount
-                        DefaultText {
-                            text: "~ " + General.formatCrypto("", model.modelData.am_i_maker ? model.modelData.rel_amount : model.modelData.base_amount,
-                                                                  model.modelData.am_i_maker ? model.modelData.rel : model.modelData.base)
-                            anchors.right: parent.right
-                            anchors.top: base_amount.top
-                        }
-
-                        // UUID
-                        DefaultText {
-                            id: uuid
-                            text: "UUID: " + model.modelData.uuid
-                            color: Style.colorTheme2
-                            anchors.top: base_amount.bottom
-                            anchors.topMargin: base_amount.anchors.topMargin
-                        }
-
-                        // Date
-                        DefaultText {
-                            id: date
-                            text: model.modelData.date
-                            color: Style.colorTheme2
-                            anchors.top: uuid.bottom
-                            anchors.topMargin: base_amount.anchors.topMargin
-                        }
-
-                        // Cancel button
-                        Button {
-                            visible: model.modelData.cancellable
-                            anchors.right: parent.right
-                            anchors.top: date.top
-                            text: qsTr("Cancel")
-                            onClicked: onCancelOrder(model.modelData.uuid)
-                        }
+            delegate: OrderLine {
+                item: (() => {
+                    let o = model.modelData
+                    o.my_info = {
+                        my_coin: o.am_i_maker ? o.base : o.rel,
+                        my_amount: o.am_i_maker ? o.base_amount : o.rel_amount,
+                        other_coin: o.am_i_maker ? o.rel : o.base,
+                        other_amount: o.am_i_maker ? o.rel_amount : o.base_amount,
                     }
-
-                    HorizontalLine {
-                        visible: index !== items.length -1
-                        Layout.fillWidth: true
-                        color: Style.colorWhite9
-                        Layout.topMargin: 25
-                        Layout.bottomMargin: 12.5
-                    }
-                }
+                    return o
+                })()
             }
         }
     }
