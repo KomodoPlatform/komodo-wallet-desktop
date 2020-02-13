@@ -675,8 +675,7 @@ namespace atomic_dex
                                  {"my_info", swap.my_info}};
 
             auto out_swap = QJsonDocument::fromJson(QString::fromStdString(j2.dump()).toUtf8());
-            qDebug() << out_swap;
-            out.insert(QString::fromStdString(swap.uuid), QVariant(out_swap));
+            out.insert(QString::fromStdString(swap.uuid), out_swap.toVariant());
         }
         return out;
     }
