@@ -115,6 +115,10 @@ RowLayout {
 
                 ClaimRewardsModal {
                     id: claim_rewards_modal
+
+                    function postClaim() {
+                        claim_rewards_modal.enabled = claim_rewards_modal.canClaim()
+                    }
                 }
             }
 

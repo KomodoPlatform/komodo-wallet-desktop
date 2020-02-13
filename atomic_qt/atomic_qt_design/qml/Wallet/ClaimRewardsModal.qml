@@ -13,6 +13,10 @@ Popup {
     property var prepare_claim_rewards_result: default_prepare_claim_rewards_result
     property string send_result
 
+    // Override
+    function postClaim() {}
+
+    // Local
     function canClaim() {
         return API.get().current_coin_info.is_claimable === true &&
                 API.get().do_i_have_enough_funds(API.get().current_coin_info.ticker, API.get().current_coin_info.minimal_balance_for_asking_rewards) &&
@@ -37,6 +41,7 @@ Popup {
         send_result = API.get().send_rewards(prepare_claim_rewards_result.tx_hex)
         console.log(JSON.stringify(API.get().claim_rewards(API.get().current_coin_info.ticker)))
         stack_layout.currentIndex = 1
+        postClaim()
     }
 
     function reset() {
