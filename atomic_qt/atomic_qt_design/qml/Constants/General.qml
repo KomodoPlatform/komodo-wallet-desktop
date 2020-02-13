@@ -71,7 +71,7 @@ QtObject {
           orders[key].swap_id = key;
         })
 
-        const arr = Object.values(orders)
+        const arr = Object.values(orders).sort((a, b) => b.events[b.events.length-1].timestamp - a.events[a.events.length-1].timestamp)
 
         return finished_only ? arr.filter(o => {
             for(let e of o.events)
