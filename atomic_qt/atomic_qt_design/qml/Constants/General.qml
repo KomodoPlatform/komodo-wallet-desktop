@@ -63,4 +63,21 @@ QtObject {
             return API.get().do_i_have_enough_funds(rel, needed_amount)
         }
     }
+
+    function filterRecentSwaps(all_orders, finished_only) {
+        let orders = all_orders
+
+        Object.keys(orders).map((key, index) => {
+          orders[key].swap_id = key;
+        })
+
+        const arr = Object.values(orders)
+
+        return finished_only ? arr.filter(o => {
+            for(let e of o.events)
+                if(e.state === "Finished") return true
+
+            return false
+        }) : arr
+    }
 }

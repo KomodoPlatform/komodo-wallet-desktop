@@ -6,6 +6,7 @@ import "../Components"
 import "../Constants"
 import "./Trade"
 import "./Orders"
+import "./History"
 
 Item {
     id: exchange
@@ -48,6 +49,9 @@ Item {
             ExchangeTab {
                 dashboard_index: General.idx_exchange_history
                 text: "History"
+                function preClick() {
+                    exchange_history.onOpened()
+                }
             }
         }
 
@@ -74,8 +78,8 @@ Item {
                 id: exchange_orders
             }
 
-            DefaultText {
-                text: qsTr("Content-History")
+            History {
+                id: exchange_history
             }
         }
     }

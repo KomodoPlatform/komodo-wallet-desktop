@@ -11,6 +11,9 @@ DefaultText {
 
     property bool hovered: false
 
+    // Override
+    function preClick() {}
+
     id: txt
     font.pointSize: Style.textSize2
     font.family: "Montserrat"
@@ -24,6 +27,7 @@ DefaultText {
         height: parent.height
         onClicked: function() {
             exchange.current_page = dashboard_index
+            preClick()
         }
     }
 }
