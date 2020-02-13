@@ -45,6 +45,8 @@
         <file>atomic_qt_design/qml/Exchange/Trade/OrderForm.qml</file>
         <file>atomic_qt_design/qml/Exchange/Orders/Orders.qml</file>
         <file>atomic_qt_design/qml/Exchange/Orders/OrderList.qml</file>
+        <file>atomic_qt_design/qml/Exchange/History/History.qml</file>
+        <file>atomic_qt_design/qml/Exchange/History/SwapList.qml</file>
         <file>atomic_qt_design/qml/Exchange/Exchange.qml</file>
         <file>atomic_qt_design/qml/Exchange/ExchangeTab.qml</file>
         <file>atomic_qt_design/qml/Sidebar/Sidebar.qml</file>
