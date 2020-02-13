@@ -544,12 +544,12 @@ namespace mm2::api
 
             if (j_evt.count("data") == 0)
             {
-                nlohmann::json jf_evt = {{"state", evt_type}, {"human_timestamp", human_date}};
+                nlohmann::json jf_evt = {{"state", evt_type}, {"human_timestamp", human_date}, {"timestamp", timestamp}};
                 contents.events.push_back(jf_evt);
             }
             else
             {
-                nlohmann::json jf_evt = {{"state", evt_type}, {"human_timestamp", human_date}, {"data", j_evt.at("data")}};
+                nlohmann::json jf_evt = {{"state", evt_type}, {"human_timestamp", human_date}, {"data", j_evt.at("data")}, {"timestamp", timestamp}};
                 contents.events.push_back(jf_evt);
             }
         }
