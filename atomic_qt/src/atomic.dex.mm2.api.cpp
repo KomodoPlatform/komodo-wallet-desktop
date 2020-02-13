@@ -530,7 +530,7 @@ namespace mm2::api
         contents.taker_amount = adjust_precision(contents.taker_amount);
         contents.maker_amount = adjust_precision(contents.maker_amount);
         contents.events       = nlohmann::json::array();
-        contents.my_info = j.at("my_info");
+        contents.my_info      = j.at("my_info");
         for (auto&& content: j.at("events"))
         {
             using sys_milliseconds           = sys_time<std::chrono::milliseconds>;
@@ -542,12 +542,12 @@ namespace mm2::api
 
             if (j_evt.count("data") == 0)
             {
-                nlohmann::json jf_evt = {evt_type, {{"human_timestamp", human_date}}};
+                nlohmann::json jf_evt = {{"state", evt_type}, {"human_timestamp", human_date}};
                 contents.events.push_back(jf_evt);
             }
             else
             {
-                nlohmann::json jf_evt = {evt_type, {{"human_timestamp", human_date}, {"data", j_evt.at("data")}}};
+                nlohmann::json jf_evt = {{"state", evt_type}, {"human_timestamp", human_date}, {"data", j_evt.at("data")}};
                 contents.events.push_back(jf_evt);
             }
         }
