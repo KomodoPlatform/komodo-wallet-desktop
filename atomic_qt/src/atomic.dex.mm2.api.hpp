@@ -532,7 +532,7 @@ namespace mm2::api
 
     struct swap_contents
     {
-        //using t_event_registry = std::unordered_map<std::string, std::variant<finished_event, started_event, start_failed_event, negotiate_failed_event>>;
+        // using t_event_registry = std::unordered_map<std::string, std::variant<finished_event, started_event, start_failed_event, negotiate_failed_event>>;
         std::vector<std::string> error_events;
         nlohmann::json           events;
         nlohmann::json           my_info;
@@ -542,6 +542,7 @@ namespace mm2::api
         std::string              taker_amount;
         std::string              maker_amount;
         std::string              type;
+        bool                     funds_recoverable;
     };
 
     void from_json(const nlohmann::json& j, swap_contents& contents);

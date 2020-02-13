@@ -526,6 +526,7 @@ namespace mm2::api
         j.at("taker_amount").get_to(contents.taker_amount);
         j.at("maker_amount").get_to(contents.maker_amount);
         j.at("type").get_to(contents.type);
+        j.at("recoverable").get_to(contents.funds_recoverable);
 
         contents.taker_amount = adjust_precision(contents.taker_amount);
         contents.maker_amount = adjust_precision(contents.maker_amount);
