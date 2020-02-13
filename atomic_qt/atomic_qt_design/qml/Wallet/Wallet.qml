@@ -101,6 +101,7 @@ RowLayout {
                 }
 
                 Button {
+                    id: button_claim_rewards
                     text: qsTr("Claim Rewards")
                     leftPadding: parent.width * button_margin
                     rightPadding: leftPadding
@@ -117,7 +118,7 @@ RowLayout {
                     id: claim_rewards_modal
 
                     function postClaim() {
-                        claim_rewards_modal.enabled = claim_rewards_modal.canClaim()
+                        button_claim_rewards.enabled = claim_rewards_modal.canClaim()
                     }
                 }
             }
