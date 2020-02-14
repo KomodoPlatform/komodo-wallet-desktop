@@ -68,16 +68,29 @@ QtObject {
         let orders = all_orders
 
         Object.keys(orders).map((key, index) => {
-          orders[key].uuid = key;
+          orders[key].uuid = key
+          orders[key].is_recent_swap = true
         })
 
-        const arr = Object.values(orders).sort((a, b) => b.events[b.events.length-1].timestamp - a.events[a.events.length-1].timestamp)
+        let arr = Object.values(orders).sort((a, b) => b.events[b.events.length-1].timestamp - a.events[a.events.length-1].timestamp)
 
-        return finished_only ? arr.filter(o => {
-            for(let e of o.events)
-                if(e.state === "Finished") return true
+        // Filter by finished
+        if(finished_option !== undefined && finished_option !== "")
+            arr = arr.filter(o => {
+                for(let e of o.events) {
+                    if(e.state === "Finished")
+                        return finished_option === "include"
+                }
 
-            return false
-        }) : arr
+                return finished_option === "exclude"
+            })
+
+        // Filter by ticker
+        if(ticker)
+            arr = arr.filter(o => o.my_info.my_coin === ticker || o.my_info.other_coin === ticker)
+
+        return arr
+    }
+
     }
 }
