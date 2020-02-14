@@ -79,6 +79,15 @@ Rectangle {
                 anchors.topMargin: base_amount.anchors.topMargin
             }
 
+            // Cancel button
+            Button {
+                visible: item.cancellable !== undefined && item.cancellable
+                anchors.right: parent.right
+                anchors.verticalCenter: rel_icon.verticalCenter
+                text: qsTr("Cancel")
+                onClicked: onCancelOrder(model.modelData.uuid)
+            }
+
             // Date
             DefaultText {
                 id: date
@@ -95,15 +104,6 @@ Rectangle {
                 anchors.right: parent.right
                 anchors.top: date.top
                 text: visible ? qsTr(getStatusTextWithPrefix(item)) : ''
-            }
-
-            // Cancel button
-            Button {
-                visible: item.cancellable !== undefined && item.cancellable
-                anchors.right: parent.right
-                anchors.top: date.top
-                text: qsTr("Cancel")
-                onClicked: onCancelOrder(model.modelData.uuid)
             }
         }
 
