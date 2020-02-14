@@ -93,6 +93,7 @@ namespace atomic_dex
         Q_INVOKABLE void     on_gui_enter_dex();
         Q_INVOKABLE void     on_gui_leave_dex();
         Q_INVOKABLE void     refresh_infos();
+        Q_INVOKABLE void     refresh_orders_and_swaps();
         Q_INVOKABLE QString  get_mnemonic();
         Q_INVOKABLE void     cancel_order(const QString& order_id);
         Q_INVOKABLE void     cancel_all_orders();

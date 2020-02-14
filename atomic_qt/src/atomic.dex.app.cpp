@@ -696,4 +696,15 @@ namespace atomic_dex
             dispatcher.trigger<refresh_order_needed>();
         });
     }
+
+    void
+    application::refresh_orders_and_swaps()
+    {
+        auto& mm2 = get_mm2();
+        spawn([&mm2, &dispatcher = dispatcher_]() {
+            mm2.process_swaps();
+            mm2.process_orders();
+            dispatcher.trigger<refresh_order_needed>();
+        });
+    }
 } // namespace atomic_dex
