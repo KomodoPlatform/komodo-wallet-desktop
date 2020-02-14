@@ -64,11 +64,7 @@ Rectangle {
 
             // Row
             delegate: OrderLine {
-                item: (() => {
-                   let o = model.modelData
-                   o.date = o.events[o.events.length-1].human_timestamp
-                   return o
-               })()
+                item: General.formatOrder(model.modelData)
             }
         }
     }

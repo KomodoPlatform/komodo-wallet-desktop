@@ -17,7 +17,7 @@ Item {
     }
 
     function getRecentSwaps() {
-        return General.filterRecentSwaps(all_recent_swaps, true)
+        return General.filterRecentSwaps(all_recent_swaps, "include")
     }
 
     property var all_recent_swaps: ({})

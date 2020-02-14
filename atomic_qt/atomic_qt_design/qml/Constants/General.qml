@@ -64,7 +64,7 @@ QtObject {
         }
     }
 
-    function filterRecentSwaps(all_orders, finished_only) {
+    function filterRecentSwaps(all_orders, finished_option, ticker) {
         let orders = all_orders
 
         Object.keys(orders).map((key, index) => {
@@ -92,5 +92,18 @@ QtObject {
         return arr
     }
 
+    function formatOrder(o) {
+        if(o.is_recent_swap) {
+            o.date = o.events[o.events.length-1].human_timestamp
+        }
+        else {
+            o.my_info = {
+                my_coin: o.am_i_maker ? o.base : o.rel,
+                my_amount: o.am_i_maker ? o.base_amount : o.rel_amount,
+                other_coin: o.am_i_maker ? o.rel : o.base,
+                other_amount: o.am_i_maker ? o.rel_amount : o.base_amount,
+            }
+        }
+        return o
     }
 }
