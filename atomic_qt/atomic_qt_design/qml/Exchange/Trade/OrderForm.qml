@@ -22,6 +22,26 @@ Rectangle {
 
     function onOrderSuccess() {
         reset(false)
+        refresh_timer.restart()
+        stop_refreshing.restart()
+    }
+
+    Timer {
+        id: refresh_timer
+        repeat: true
+        interval: 500
+        triggeredOnStart: true
+        onTriggered: {
+            API.get().refresh_orders_and_swaps()
+        }
+    }
+
+    Timer {
+        id: stop_refreshing
+        interval: 10000
+        onTriggered: {
+            refresh_timer.stop()
+        }
     }
 
     function sellCoin(base, rel, price, volume) {

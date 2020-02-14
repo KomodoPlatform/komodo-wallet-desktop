@@ -183,6 +183,10 @@ QtObject {
 
         refresh_infos: () => {
             console.log("refresh infos!")
+        },
+
+        refresh_orders_and_swaps: () => {
+            console.log("refresh_orders_and_swaps!")
         }
     })
 
