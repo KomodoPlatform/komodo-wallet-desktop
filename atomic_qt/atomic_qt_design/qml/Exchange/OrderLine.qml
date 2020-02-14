@@ -9,6 +9,7 @@ import "../Constants"
 Rectangle {
     property var item: model.modelData
 
+
     color: "transparent"
     width: list.width
     height: 200
@@ -99,7 +100,7 @@ Rectangle {
 
             // Status Text
             DefaultText {
-                visible: item.events !== undefined
+                visible: item.events !== undefined || item.am_i_maker === false
                 color: visible ? getStatusColor(item) : ''
                 anchors.right: parent.right
                 anchors.top: date.top
@@ -125,7 +126,7 @@ Rectangle {
     readonly property int status_swap_failed: 4
 
     function getStatus(swap) {
-        if(swap.events.length === 0) return status_swap_matching
+        if(swap.am_i_maker !== undefined && !swap.am_i_maker) return status_swap_matching
 
         const last_state = swap.events[swap.events.length-1].state
 
