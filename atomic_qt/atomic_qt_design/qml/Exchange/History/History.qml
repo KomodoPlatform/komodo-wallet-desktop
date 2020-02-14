@@ -8,27 +8,26 @@ import "../../Constants"
 Item {
     id: exchange_history
 
-
     function onOpened() {
-        updateOrders()
+        updateRecentSwaps()
     }
 
-    function updateOrders() {
-        all_orders = API.get().get_recent_swaps()
+    function updateRecentSwaps() {
+        all_recent_swaps = API.get().get_recent_swaps()
     }
 
-    function getOrders() {
-        return General.filterRecentSwaps(all_orders, true)
+    function getRecentSwaps() {
+        return General.filterRecentSwaps(all_recent_swaps, true)
     }
 
-    property var all_orders: ({})
+    property var all_recent_swaps: ({})
 
     Timer {
         id: update_timer
         running: exchange.current_page === General.idx_exchange_history
         repeat: true
         interval: 5000
-        onTriggered: updateOrders()
+        onTriggered: updateRecentSwaps()
     }
 
     ColumnLayout {
@@ -40,7 +39,7 @@ Item {
 
         SwapList {
             title: qsTr("Recent Swaps")
-            items: getOrders()
+            items: getRecentSwaps()
         }
     }
 }
