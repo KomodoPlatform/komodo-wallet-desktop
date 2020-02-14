@@ -22,7 +22,6 @@ Rectangle {
 
     function onOrderSuccess() {
         reset(false)
-        exchange.postOrderSuccess(base)
     }
 
     function sellCoin(base, rel, price, volume) {
