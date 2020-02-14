@@ -31,17 +31,13 @@ Rectangle {
         repeat: true
         interval: 500
         triggeredOnStart: true
-        onTriggered: {
-            API.get().refresh_orders_and_swaps()
-        }
+        onTriggered: API.get().refresh_orders_and_swaps()
     }
 
     Timer {
         id: stop_refreshing
-        interval: 10000
-        onTriggered: {
-            refresh_timer.stop()
-        }
+        interval: 5000
+        onTriggered: refresh_timer.stop()
     }
 
     function sellCoin(base, rel, price, volume) {
