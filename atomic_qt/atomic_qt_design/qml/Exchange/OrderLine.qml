@@ -82,7 +82,7 @@ Rectangle {
 
             // Cancel button
             Button {
-                visible: item.cancellable !== undefined && item.cancellable && item.am_i_maker
+                visible: item.cancellable !== undefined && item.cancellable
                 anchors.right: parent.right
                 anchors.verticalCenter: rel_icon.verticalCenter
                 text: qsTr("Cancel")

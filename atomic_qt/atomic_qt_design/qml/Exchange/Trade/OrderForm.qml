@@ -28,13 +28,11 @@ Rectangle {
     function sellCoin(base, rel, price, volume) {
         action_result = API.get().place_sell_order(base, rel, price, volume) ? "success" : "error"
         if(action_result === "success") onOrderSuccess()
-        console.log("SELL ORDER!!!")
     }
 
     function buyCoin(base, rel, price, volume) {
         action_result = API.get().place_buy_order(base, rel, price, volume) ? "success" : "error"
         if(action_result === "success") onOrderSuccess()
-        console.log("BUY ORDER!!!")
     }
 
     function amountToReceive(sell, base, rel, price, volume) {
