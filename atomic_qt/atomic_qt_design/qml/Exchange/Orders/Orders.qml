@@ -8,9 +8,13 @@ import "../../Constants"
 Item {
     id: exchange_orders
 
+    function getRecentSwaps(ticker) {
+        return General.filterRecentSwaps(all_recent_swaps, "exclude", ticker)
+    }
+
     function updateOrders() {
         all_orders = API.get().get_my_orders()
-        console.log("ALL ORDERS HERE:" + JSON.stringify(all_orders))
+        all_recent_swaps = API.get().get_recent_swaps()
         update_timer.running = true
     }
 
@@ -19,11 +23,19 @@ Item {
     }
 
     function getOrders() {
-        if(base === "" || all_orders[base] === undefined) {
-            return { maker_orders: [], taker_orders: [] }
+        let mixed_orders = { maker_orders: [], taker_orders: [] }
+
+        if(base !== "" && all_orders[base] !== undefined) {
+            getRecentSwaps(base).map(s => {
+                mixed_orders[s.type === "Taker" ? "taker_orders" : "maker_orders"].push(s)
+            })
+
+            mixed_orders.taker_orders = mixed_orders.taker_orders.concat(all_orders[base].taker_orders)
+            mixed_orders.maker_orders = mixed_orders.maker_orders.concat(all_orders[base].maker_orders)
         }
 
-        return all_orders[base]
+        console.log(JSON.stringify(mixed_orders))
+        return mixed_orders
     }
 
     function changeTicker(ticker) {
@@ -32,6 +44,7 @@ Item {
 
     property string base
     property var all_orders: ({})
+    property var all_recent_swaps: ({})
 
     onBaseChanged: updateOrders()
 
@@ -39,7 +52,7 @@ Item {
         id: update_timer
         running: false
         repeat: true
-        interval: 30000
+        interval: 5000
         onTriggered: updateOrders()
     }
 
