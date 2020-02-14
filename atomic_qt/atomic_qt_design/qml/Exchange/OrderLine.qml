@@ -145,7 +145,7 @@ Rectangle {
 
     function getStatusColor(swap) {
         const status = getStatus(swap)
-        return status === status_swap_matching ? Style.colorOrange :
+        return status === status_swap_matching ? Style.colorYellow :
                status === status_swap_matched ? Style.colorOrange :
                status === status_swap_ongoing ? Style.colorOrange :
                status === status_swap_successful ? Style.colorGreen : Style.colorRed
