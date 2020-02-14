@@ -8,6 +8,15 @@ import "../../Constants"
 Item {
     id: exchange_orders
 
+    function onOpened() {
+        // Force a refresh, myOrdersUpdated will call updateOrders once it's done
+        API.get().refresh_infos()
+    }
+
+    Component.onCompleted: {
+        API.get().myOrdersUpdated.connect(updateOrders)
+    }
+
     function getRecentSwaps(ticker) {
         return General.filterRecentSwaps(all_recent_swaps, "exclude", ticker)
     }
@@ -55,10 +64,6 @@ Item {
         repeat: true
         interval: 5000
         onTriggered: updateOrders()
-    }
-
-    Component.onCompleted: {
-        API.get().myOrdersUpdated.connect(updateOrders)
     }
 
     ColumnLayout {

@@ -182,7 +182,7 @@ QtObject {
        },
 
         refresh_infos: () => {
-
+            console.log("refresh infos!")
         }
     })
 

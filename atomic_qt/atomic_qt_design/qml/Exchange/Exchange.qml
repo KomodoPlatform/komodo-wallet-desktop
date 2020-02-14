@@ -39,12 +39,15 @@ Item {
             ExchangeTab {
                 dashboard_index: General.idx_exchange_orders
                 text: "Orders"
+                function onClick() {
+                    exchange_orders.onOpened()
+                }
             }
 
             ExchangeTab {
                 dashboard_index: General.idx_exchange_history
                 text: "History"
-                function preClick() {
+                function onClick() {
                     exchange_history.onOpened()
                 }
             }

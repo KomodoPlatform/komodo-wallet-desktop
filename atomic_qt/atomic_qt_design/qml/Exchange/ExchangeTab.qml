@@ -12,7 +12,7 @@ DefaultText {
     property bool hovered: false
 
     // Override
-    function preClick() {}
+    function onClick() {}
 
     id: txt
     font.pointSize: Style.textSize2
@@ -27,7 +27,7 @@ DefaultText {
         height: parent.height
         onClicked: function() {
             exchange.current_page = dashboard_index
-            preClick()
+            onClick()
         }
     }
 }
