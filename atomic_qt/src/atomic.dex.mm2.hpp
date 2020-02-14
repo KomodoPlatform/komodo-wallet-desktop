@@ -98,17 +98,11 @@ namespace atomic_dex
         t_orderbook_registry  m_current_orderbook;
         t_swaps_registry      m_swaps_registry;
 
-        //! Refresh the current info (internally call process_balance and process_tx)
-        void fetch_infos_thread();
-
         //! Refresh the current orderbook (internally call process_orderbook)
         void fetch_current_orderbook_thread();
 
         //! Refresh the balance registry (internal)
         void process_balance(const std::string& ticker) const;
-
-        //! Refresh the swaps history
-        void process_swaps();
 
         //! Refresh the transaction registry (internal)
         void process_tx(const std::string& ticker);
@@ -141,6 +135,12 @@ namespace atomic_dex
 
         //! Spawn mm2 instance with given seed
         void spawn_mm2_instance(std::string passphrase);
+
+        //! Refresh the current info (internally call process_balance and process_tx)
+        void fetch_infos_thread();
+
+        //! Refresh the swaps history
+        void process_swaps();
 
         //! Enable coins
         bool enable_default_coins() noexcept;

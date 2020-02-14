@@ -281,6 +281,12 @@ namespace atomic_dex
                 m_refresh_current_ticker_infos = false;
             }
 
+            if (m_refresh_orders_needed)
+            {
+                emit myOrdersUpdated();
+                m_refresh_orders_needed = false;
+            }
+
             if (m_refresh_transaction_only)
             {
                 DLOG_F(INFO, "{}", "refreshing transactions");
@@ -537,8 +543,7 @@ namespace atomic_dex
         t_buy_request   req{.base = base.toStdString(), .rel = rel.toStdString(), .price = price.toStdString(), .volume = volume.toStdString()};
         std::error_code ec;
         auto            answer = get_mm2().place_buy_order(std::move(req), total_amount, ec);
-        get_mm2().process_orders();
-        on_refresh_order_event({});
+
         return !answer.error.has_value();
     }
 
@@ -551,8 +556,7 @@ namespace atomic_dex
         t_sell_request  req{.base = base.toStdString(), .rel = rel.toStdString(), .price = price.toStdString(), .volume = volume.toStdString()};
         std::error_code ec;
         auto            answer = get_mm2().place_sell_order(std::move(req), amount_f, ec);
-        get_mm2().process_orders();
-        on_refresh_order_event({});
+
         return !answer.error.has_value();
     }
 
@@ -655,7 +659,7 @@ namespace atomic_dex
     application::on_refresh_order_event(const refresh_order_needed&) noexcept
     {
         LOG_SCOPE_FUNCTION(INFO);
-        emit myOrdersUpdated();
+        this->m_refresh_orders_needed = true;
     }
 
     QVariantMap
@@ -681,5 +685,15 @@ namespace atomic_dex
             out.insert(QString::fromStdString(swap.uuid), out_swap.toVariant());
         }
         return out;
+    }
+
+    void
+    application::refresh_infos()
+    {
+        auto& mm2 = get_mm2();
+        spawn([&mm2, &dispatcher = dispatcher_]() {
+            mm2.fetch_infos_thread();
+            dispatcher.trigger<refresh_order_needed>();
+        });
     }
 } // namespace atomic_dex

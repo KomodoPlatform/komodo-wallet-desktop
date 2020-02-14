@@ -92,6 +92,7 @@ namespace atomic_dex
         Q_INVOKABLE void     change_state(int visibility);
         Q_INVOKABLE void     on_gui_enter_dex();
         Q_INVOKABLE void     on_gui_leave_dex();
+        Q_INVOKABLE void     refresh_infos();
         Q_INVOKABLE QString  get_mnemonic();
         Q_INVOKABLE void     cancel_order(const QString& order_id);
         Q_INVOKABLE void     cancel_all_orders();
@@ -127,6 +128,7 @@ namespace atomic_dex
         //! Private members
         std::atomic_bool   m_refresh_enabled_coin_event{false};
         std::atomic_bool   m_refresh_current_ticker_infos{false};
+        std::atomic_bool   m_refresh_orders_needed{false};
         std::atomic_bool   m_refresh_transaction_only{false};
         QObjectList        m_enabled_coins;
         QObjectList        m_enableable_coins;
