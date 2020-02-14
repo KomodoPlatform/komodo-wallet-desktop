@@ -94,7 +94,7 @@ Rectangle {
                 color: visible ? getStatusColor(item) : ''
                 anchors.right: parent.right
                 anchors.top: date.top
-                text: visible ? qsTr(getStatusText(item)) : ''
+                text: visible ? qsTr(getStatusTextWithPrefix(item)) : ''
             }
 
             // Cancel button
@@ -156,6 +156,18 @@ Rectangle {
                status === status_swap_matched ? "Order Matched":
                status === status_swap_ongoing ? "Swap Ongoing":
                status === status_swap_successful ? "Swap Successful" : "Swap Failed"
+    }
+
+    function getStatusStep(swap) {
+        const status = getStatus(swap)
+        return status === status_swap_matching ? "0/3":
+               status === status_swap_matched ? "1/3":
+               status === status_swap_ongoing ? "2/3":
+               status === status_swap_successful ? "✓" : "✘"
+    }
+
+    function getStatusTextWithPrefix(swap) {
+        return getStatusStep(swap) + " " + getStatusText(swap)
     }
 }
 
