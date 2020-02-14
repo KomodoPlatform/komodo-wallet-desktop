@@ -26,15 +26,16 @@ Item {
         let mixed_orders = { maker_orders: [], taker_orders: [] }
 
         if(base !== "" && all_orders[base] !== undefined) {
+            // Add recent swaps
             getRecentSwaps(base).map(s => {
                 mixed_orders[s.type === "Taker" ? "taker_orders" : "maker_orders"].push(s)
             })
 
+            // Add normal orders
             mixed_orders.taker_orders = mixed_orders.taker_orders.concat(all_orders[base].taker_orders)
             mixed_orders.maker_orders = mixed_orders.maker_orders.concat(all_orders[base].maker_orders)
         }
 
-        console.log(JSON.stringify(mixed_orders))
         return mixed_orders
     }
 
