@@ -121,7 +121,12 @@ Rectangle {
         anchors.fill: parent
         hoverEnabled: true
         onHoveredChanged: hovered = containsMouse
+        onClicked: order_modal.open()
     }
+
+    OrderModal {
+        id: order_modal
+        details: model.modelData
     }
 
 
