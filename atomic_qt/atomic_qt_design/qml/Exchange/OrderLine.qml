@@ -60,6 +60,7 @@ Rectangle {
             for(const e of swap.events) {
                if(swap.error_events.indexOf(e.status) !== -1)
                    return status_swap_failed
+               }
             }
 
             return status_swap_successful
