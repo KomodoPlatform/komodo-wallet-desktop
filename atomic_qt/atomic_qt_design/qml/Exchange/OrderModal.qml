@@ -13,6 +13,13 @@ Popup {
     focus: true
     closePolicy: Popup.CloseOnEscape | Popup.CloseOnPressOutside
 
+    background: Rectangle {
+        color: Style.colorTheme6
+        width: root.width
+        height: root.height
+    }
+
+
     width: 650
     property var details
 
