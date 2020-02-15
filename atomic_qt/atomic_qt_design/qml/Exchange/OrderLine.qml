@@ -44,6 +44,7 @@ Rectangle {
 
 
     // Status Info
+    readonly property int status_swap_not_swap: -1
     readonly property int status_swap_matching: 0
     readonly property int status_swap_matched: 1
     readonly property int status_swap_ongoing: 2
@@ -51,17 +52,20 @@ Rectangle {
     readonly property int status_swap_failed: 4
 
     function getSwapError(swap) {
-        for(let i = swap.events.length - 1; i > 0; --i) {
-            const e = swap.events[i]
-           if(swap.error_events.indexOf(e.state) !== -1) {
-               return e.state
-           }
+        if(swap.is_recent_swap) {
+            for(let i = swap.events.length - 1; i > 0; --i) {
+                const e = swap.events[i]
+               if(swap.error_events.indexOf(e.state) !== -1) {
+                   return e.state
+               }
+            }
         }
 
         return ''
     }
 
     function getStatus(swap) {
+        if(!swap.is_recent_swap) return status_swap_not_swap
         if(swap.am_i_maker !== undefined && !swap.am_i_maker) return status_swap_matching
 
         const last_state = swap.events[swap.events.length-1].state
