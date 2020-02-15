@@ -48,7 +48,7 @@ Rectangle {
         source: General.image_path + "exchange-exchange.svg"
         width: base_amount.font.pointSize
         height: width
-        anchors.top: base_amount.top
+        anchors.verticalCenter: base_icon.bottom
         anchors.horizontalCenter: parent.horizontalCenter
     }
 
@@ -77,7 +77,7 @@ Rectangle {
         visible: !in_modal && (item.events !== undefined || item.am_i_maker === false)
         color: visible ? getStatusColor(item) : ''
         anchors.horizontalCenter: parent.horizontalCenter
-        anchors.verticalCenter: rel_icon.verticalCenter
+        anchors.top: base_icon.top
         text: visible ? qsTr(getStatusTextWithPrefix(item)) : ''
     }
 
