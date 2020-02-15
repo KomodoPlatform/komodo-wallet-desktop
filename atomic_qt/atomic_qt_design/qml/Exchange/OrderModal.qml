@@ -13,12 +13,24 @@ Popup {
     focus: true
     closePolicy: Popup.CloseOnEscape | Popup.CloseOnPressOutside
 
+    width: 600
     property var details
 
     // Inside modal
     ColumnLayout {
+        width: parent.width
+        height: parent.height
+
         ModalHeader {
             title: details.is_recent_swap ? qsTr("Swap Details") : qsTr("Order Details")
+        }
+
+        OrderContent {
+            Layout.topMargin: 10
+            width: 500
+            height: 150
+            Layout.alignment: Qt.AlignHCenter
+            item: details
         }
 
         // Amount
