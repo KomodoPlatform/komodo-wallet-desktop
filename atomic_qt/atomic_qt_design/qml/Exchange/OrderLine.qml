@@ -58,7 +58,7 @@ Rectangle {
         if(last_state === "Started") return status_swap_matched
         if(last_state === "Finished") {
             for(const e of swap.events) {
-               if(swap.error_events.indexOf(e.status) !== -1)
+               if(swap.error_events.indexOf(e.state) !== -1) {
                    return status_swap_failed
                }
             }
