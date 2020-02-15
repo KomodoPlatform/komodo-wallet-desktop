@@ -69,8 +69,8 @@ Popup {
                 onClicked: {
                     const maker_id = getSwapPaymentID(details, false)
                     const taker_id = getSwapPaymentID(details, true)
-                    if(maker_id !== '') Qt.openUrlExternally(API.get().current_coin_info.explorer_url + "tx/" + maker_id)
-                    if(taker_id !== '') Qt.openUrlExternally(API.get().current_coin_info.explorer_url + "tx/" + taker_id)
+                    if(maker_id !== '') Qt.openUrlExternally(API.get().get_coin_info(details.maker_coin).explorer_url + "tx/" + maker_id)
+                    if(taker_id !== '') Qt.openUrlExternally(API.get().get_coin_info(details.taker_coin).explorer_url + "tx/" + taker_id)
                 }
             }
         }
