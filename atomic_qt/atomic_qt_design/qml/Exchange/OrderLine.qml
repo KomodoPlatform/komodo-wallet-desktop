@@ -8,9 +8,9 @@ import "../Constants"
 
 Rectangle {
     property var item: model.modelData
+    property bool hovered: false
 
-
-    color: "transparent"
+    color: hovered ? Style.colorTheme8 : "transparent"
     width: list.width
     height: 175
 
@@ -115,6 +115,12 @@ Rectangle {
         width: parent.width
         color: Style.colorWhite9
         anchors.top: col_layout.bottom
+    }
+
+    MouseArea {
+        anchors.fill: parent
+        hoverEnabled: true
+        onHoveredChanged: hovered = containsMouse
     }
     }
 
