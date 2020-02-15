@@ -51,7 +51,7 @@ DefaultModal {
         OrderContent {
             Layout.topMargin: 25
             width: 500
-            height: 90
+            height: 120
             Layout.alignment: Qt.AlignHCenter
             item: details
             in_modal: true
