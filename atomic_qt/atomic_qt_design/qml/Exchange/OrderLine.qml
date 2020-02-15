@@ -67,8 +67,8 @@ Rectangle {
     }
 
     function getStatus(swap) {
-        if(!swap.is_recent_swap) return status_swap_not_swap
         if(swap.am_i_maker !== undefined && !swap.am_i_maker) return status_swap_matching
+        if(!swap.is_recent_swap) return status_swap_not_swap
 
         const last_state = swap.events[swap.events.length-1].state
 
