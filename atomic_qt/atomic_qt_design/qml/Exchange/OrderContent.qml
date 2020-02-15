@@ -72,13 +72,13 @@ Rectangle {
         anchors.topMargin: base_amount.anchors.topMargin
     }
 
-    // Cancel button
-    Button {
-        visible: !in_modal && item.cancellable !== undefined && item.cancellable
-        anchors.right: parent.right
+    // Status Text
+    DefaultText {
+        visible: !in_modal && (item.events !== undefined || item.am_i_maker === false)
+        color: visible ? getStatusColor(item) : ''
+        anchors.horizontalCenter: parent.horizontalCenter
         anchors.verticalCenter: rel_icon.verticalCenter
-        text: qsTr("Cancel")
-        onClicked: onCancelOrder(item.uuid)
+        text: visible ? qsTr(getStatusTextWithPrefix(item)) : ''
     }
 
     // Date
@@ -91,12 +91,12 @@ Rectangle {
         anchors.topMargin: base_amount.anchors.topMargin
     }
 
-    // Status Text
-    DefaultText {
-        visible: !in_modal && (item.events !== undefined || item.am_i_maker === false)
-        color: visible ? getStatusColor(item) : ''
+    // Cancel button
+    Button {
+        visible: !in_modal && item.cancellable !== undefined && item.cancellable
         anchors.right: parent.right
-        anchors.top: date.top
-        text: visible ? qsTr(getStatusTextWithPrefix(item)) : ''
+        anchors.bottom: date.bottom
+        text: qsTr("Cancel")
+        onClicked: onCancelOrder(item.uuid)
     }
 }

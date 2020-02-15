@@ -27,7 +27,7 @@ Rectangle {
     }
 
     OrderContent {
-        width: parent.width * 0.8
+        width: parent.width * 0.9
         height: 200
 
         anchors.horizontalCenter: parent.horizontalCenter
