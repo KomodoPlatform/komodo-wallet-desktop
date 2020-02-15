@@ -74,11 +74,11 @@ Rectangle {
 
     // Cancel button
     Button {
-        visible: item.cancellable !== undefined && item.cancellable
+        visible: !in_modal && item.cancellable !== undefined && item.cancellable
         anchors.right: parent.right
         anchors.verticalCenter: rel_icon.verticalCenter
         text: qsTr("Cancel")
-        onClicked: onCancelOrder(model.modelData.uuid)
+        onClicked: onCancelOrder(item.uuid)
     }
 
     // Date

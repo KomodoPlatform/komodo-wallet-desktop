@@ -104,6 +104,15 @@ DefaultModal {
                 Layout.fillWidth: true
                 onClicked: root.close()
             }
+
+            // Cancel button
+            Button {
+                visible: details.cancellable !== undefined && details.cancellable
+                Layout.fillWidth: true
+                text: qsTr("Cancel")
+                onClicked: onCancelOrder(details.uuid)
+            }
+
             Button {
                 text: qsTr("View at Explorer")
                 Layout.fillWidth: true
