@@ -12,16 +12,17 @@ Rectangle {
 
     color: "transparent"
     width: list.width
-    height: 200
+    height: 175
 
     ColumnLayout {
+        id: col_layout
         width: parent.width * 0.8
         height: parent.height
         anchors.horizontalCenter: parent.horizontalCenter
 
         // Content
         Rectangle {
-            Layout.topMargin: 12.5
+            Layout.topMargin: 20
             color: "transparent"
             Layout.fillWidth: true
             Layout.fillHeight: true
@@ -107,14 +108,14 @@ Rectangle {
                 text: visible ? qsTr(getStatusTextWithPrefix(item)) : ''
             }
         }
+    }
 
-        HorizontalLine {
-            visible: index !== items.length -1
-            Layout.fillWidth: true
-            color: Style.colorWhite9
-            Layout.topMargin: 25
-            Layout.bottomMargin: 12.5
-        }
+    HorizontalLine {
+        visible: index !== items.length -1
+        width: parent.width
+        color: Style.colorWhite9
+        anchors.top: col_layout.bottom
+    }
     }
 
 
