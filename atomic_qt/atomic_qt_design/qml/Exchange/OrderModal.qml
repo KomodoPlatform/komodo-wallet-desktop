@@ -26,6 +26,13 @@ Popup {
             title: details.is_recent_swap ? qsTr("Swap Details") : qsTr("Order Details")
         }
 
+        // Base
+        Image {
+            visible: getStatus(details) === status_swap_successful
+            Layout.alignment: Qt.AlignHCenter
+            source: General.image_path + "exchange-trade-complete.svg"
+        }
+
         OrderContent {
             Layout.topMargin: 10
             width: 500
