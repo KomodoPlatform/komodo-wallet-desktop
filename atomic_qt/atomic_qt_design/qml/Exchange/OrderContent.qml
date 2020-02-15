@@ -9,6 +9,7 @@ import "../Constants"
 // Content
 Rectangle {
     property var item
+    property bool hide_status: false
 
     color: "transparent"
     height: 200
@@ -87,7 +88,7 @@ Rectangle {
 
     // Status Text
     DefaultText {
-        visible: item.events !== undefined || item.am_i_maker === false
+        visible: !hide_status && (item.events !== undefined || item.am_i_maker === false)
         color: visible ? getStatusColor(item) : ''
         anchors.right: parent.right
         anchors.top: date.top

@@ -54,6 +54,7 @@ DefaultModal {
             height: 150
             Layout.alignment: Qt.AlignHCenter
             item: details
+            hide_status: true
         }
 
         // Error ID
