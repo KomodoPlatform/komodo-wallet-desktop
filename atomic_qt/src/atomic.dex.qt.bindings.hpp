@@ -360,6 +360,7 @@ namespace atomic_dex
       public:
         explicit qt_coin_config(QObject* parent = nullptr);
         QString m_ticker;
+        QString m_explorer_url;
         QString m_name;
         bool    m_active;
         bool    m_claimable;
@@ -370,8 +371,15 @@ namespace atomic_dex
         Q_PROPERTY(QString minimal_balance_for_asking_rewards READ get_minimal_balance_for_asking_rewards CONSTANT MEMBER m_minimal_balance_for_asking_rewards)
         Q_PROPERTY(QString ticker READ get_ticker CONSTANT MEMBER m_ticker)
         Q_PROPERTY(QString name READ get_name CONSTANT MEMBER m_name)
+        Q_PROPERTY(QString explorer_url READ get_explorer_url CONSTANT MEMBER m_explorer_url)
 
-        [[nodiscard]] bool is_claimable_coin() const noexcept
+        [[nodiscard]] QString get_explorer_url() const noexcept
+        {
+            return m_explorer_url;
+        }
+
+        [[nodiscard]] bool
+        is_claimable_coin() const noexcept
         {
             return m_claimable;
         }
@@ -446,6 +454,7 @@ namespace atomic_dex
         obj->m_name                               = QString::fromStdString(coin.name);
         obj->m_active                             = coin.active;
         obj->m_claimable                          = coin.is_claimable;
+        obj->m_explorer_url                       = QString::fromStdString(coin.explorer_url[0]);
         obj->m_minimal_balance_for_asking_rewards = QString::fromStdString(coin.minimal_claim_amount);
         return obj;
     }

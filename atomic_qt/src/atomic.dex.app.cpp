@@ -707,4 +707,10 @@ namespace atomic_dex
             dispatcher.trigger<refresh_order_needed>();
         });
     }
+
+    QObject*
+    application::get_coin_info(const QString& ticker)
+    {
+        return to_qt_binding(get_mm2().get_coin_info(ticker.toStdString()), this);
+    }
 } // namespace atomic_dex
