@@ -22,11 +22,30 @@ DefaultModal {
             title: details.is_recent_swap ? qsTr("Swap Details") : qsTr("Order Details")
         }
 
-        // Base
-        Image {
-            visible: getStatus(details) === status_swap_successful
-            Layout.alignment: Qt.AlignHCenter
-            source: General.image_path + "exchange-trade-complete.svg"
+        // Top part
+        ColumnLayout {
+            visible: details.is_recent_swap !== undefined
+
+            // Complete image
+            Image {
+                visible: details.is_recent_swap ? getStatus(details) === status_swap_successful : false
+                Layout.alignment: Qt.AlignHCenter
+                source: General.image_path + "exchange-trade-complete.svg"
+            }
+
+            // Status Text
+            DefaultText {
+                Layout.alignment: Qt.AlignHCenter
+                Layout.bottomMargin: 10
+                font.pointSize: Style.textSize2
+                visible: !hide_status && (item.events !== undefined || item.am_i_maker === false)
+                color: visible ? getStatusColor(item) : ''
+                text: visible ? qsTr(getStatusTextWithPrefix(item)) : ''
+            }
+
+            HorizontalLine {
+                Layout.fillWidth: true
+            }
         }
 
         OrderContent {
