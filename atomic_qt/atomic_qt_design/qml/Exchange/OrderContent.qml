@@ -12,7 +12,6 @@ Rectangle {
     property bool in_modal: false
 
     color: "transparent"
-    height: 200
 
     // Base Icon
     Image {

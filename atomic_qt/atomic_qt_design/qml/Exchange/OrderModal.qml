@@ -49,12 +49,17 @@ DefaultModal {
         }
 
         OrderContent {
-            Layout.topMargin: 10
+            Layout.topMargin: 25
             width: 500
-            height: 150
+            height: 90
             Layout.alignment: Qt.AlignHCenter
             item: details
             in_modal: true
+        }
+
+        HorizontalLine {
+            Layout.fillWidth: true
+            Layout.bottomMargin: 20
         }
 
         // Date

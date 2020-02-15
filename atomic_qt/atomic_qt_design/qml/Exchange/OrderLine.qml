@@ -28,6 +28,8 @@ Rectangle {
 
     OrderContent {
         width: parent.width * 0.8
+        height: 200
+
         anchors.horizontalCenter: parent.horizontalCenter
         anchors.top: parent.top
         anchors.topMargin: 20
