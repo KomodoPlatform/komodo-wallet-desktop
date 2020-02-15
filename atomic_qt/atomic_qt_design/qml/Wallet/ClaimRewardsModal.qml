@@ -6,7 +6,7 @@ import "../Components"
 import "../Constants"
 
 // Open Enable Coin Modal
-Popup {
+DefaultModal {
     id: root
 
     readonly property var default_prepare_claim_rewards_result: ({ has_error: false, error_message: "", tx_hex: "", date: "", balance_change: "", fees:"", explorer_url: ""})
@@ -49,11 +49,6 @@ Popup {
         send_result = ""
         text_error.text = ""
     }
-
-    anchors.centerIn: Overlay.overlay
-    modal: true
-    focus: true
-    closePolicy: Popup.CloseOnEscape | Popup.CloseOnPressOutside
 
     // Inside modal
     StackLayout {

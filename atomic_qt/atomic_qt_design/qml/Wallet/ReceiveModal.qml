@@ -6,12 +6,9 @@ import "../Components"
 import "../Constants"
 
 // Open Enable Coin Modal
-Popup {
+DefaultModal {
     id: root
-    anchors.centerIn: Overlay.overlay
-    modal: true
-    focus: true
-    closePolicy: Popup.CloseOnEscape | Popup.CloseOnPressOutside
+
     width: 400
     // Inside modal
     ColumnLayout {
