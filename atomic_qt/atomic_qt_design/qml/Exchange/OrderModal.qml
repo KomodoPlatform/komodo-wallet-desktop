@@ -33,41 +33,18 @@ Popup {
             item: details
         }
 
-        // Amount
+        // Taker Payment ID
         TextWithTitle {
-            title: qsTr("Amount:")
-            text: General.formatCrypto(details.received, details.amount, API.get().current_coin_info.ticker, details.amount_fiat, API.get().fiat)
-            value_color: details.received ? Style.colorGreen : Style.colorRed
+            title: qsTr("Taker Payment ID:")
+            text: getSwapPaymentID(details, true)
+            visible: text !== ''
         }
 
-        // Fees
+        // Maker Payment ID
         TextWithTitle {
-            title: qsTr("Fees:")
-            text: General.formatCrypto("", details.fees, API.get().current_coin_info.ticker)
-        }
-
-        // Date
-        TextWithTitle {
-            title: qsTr("Date:")
-            text: details.date
-        }
-
-        // Transaction Hash
-        TextWithTitle {
-            title: qsTr("Transaction Hash:")
-            text: details.tx_hash
-        }
-
-        // Confirmations
-        TextWithTitle {
-            title: qsTr("Confirmations:")
-            text: details.confirmations
-        }
-
-        // Block Height
-        TextWithTitle {
-            title: qsTr("Block Height:")
-            text: details.blockheight
+            title: qsTr("Maker Payment ID:")
+            text: getSwapPaymentID(details, false)
+            visible: text !== ''
         }
 
         // Buttons
@@ -80,7 +57,13 @@ Popup {
             Button {
                 text: qsTr("View at Explorer")
                 Layout.fillWidth: true
-                onClicked: Qt.openUrlExternally(API.get().current_coin_info.explorer_url + "tx/" + details.tx_hash)
+                visible: getSwapPaymentID(details, false) !== ''|| getSwapPaymentID(details, true) !== ''
+                onClicked: {
+                    const maker_id = getSwapPaymentID(details, false)
+                    const taker_id = getSwapPaymentID(details, true)
+                    if(maker_id !== '') Qt.openUrlExternally(API.get().current_coin_info.explorer_url + "tx/" + maker_id)
+                    if(taker_id !== '') Qt.openUrlExternally(API.get().current_coin_info.explorer_url + "tx/" + taker_id)
+                }
             }
         }
     }

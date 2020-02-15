@@ -61,7 +61,7 @@ Rectangle {
     // UUID
     DefaultText {
         id: uuid
-        text: "UUID: " + item.uuid
+        text: (item.is_recent_swap ? qsTr("Swap ID") : qsTr("UUID")) + ": " + item.uuid
         color: Style.colorTheme2
         anchors.top: base_amount.bottom
         anchors.topMargin: base_amount.anchors.topMargin
