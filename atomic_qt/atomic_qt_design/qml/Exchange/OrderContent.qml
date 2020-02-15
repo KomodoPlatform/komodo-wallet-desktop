@@ -81,6 +81,7 @@ Rectangle {
     // Date
     DefaultText {
         id: date
+        visible: !in_modal
         text: item.date
         color: Style.colorTheme2
         anchors.top: uuid.bottom

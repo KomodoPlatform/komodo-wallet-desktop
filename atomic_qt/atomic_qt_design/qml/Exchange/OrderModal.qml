@@ -57,6 +57,13 @@ DefaultModal {
             in_modal: true
         }
 
+        // Date
+        TextWithTitle {
+            title: qsTr("Date:")
+            text: details.date
+            visible: text !== ''
+        }
+
         // Swap ID / UUID
         TextWithTitle {
             title: (item.is_recent_swap ? qsTr("Swap ID") : qsTr("UUID")) + ": "
