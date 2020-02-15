@@ -239,12 +239,23 @@ namespace mm2::api
 
     tx_history_answer rpc_my_tx_history(tx_history_request&& request);
 
+    struct withdraw_fees
+    {
+        std::string                type;      ///< UtxoFixed, UtxoPerKbyte, EthGas
+        std::optional<std::string> amount;    ///< for utxo only
+        std::optional<std::string> gas_price; ///< price EthGas
+        std::optional<std::string> gas_limit;   ///< sets the gas limit for transaction
+    };
+
+    void to_json(nlohmann::json& j, const withdraw_fees& cfg);
+
     struct withdraw_request
     {
-        std::string coin;
-        std::string to;     ///< coins will be withdraw to this address
-        std::string amount; ///< ignored if max is true
-        bool        max{false};
+        std::string                  coin;
+        std::string                  to;                 ///< coins will be withdraw to this address
+        std::string                  amount;             ///< ignored if max is true
+        std::optional<withdraw_fees> fees{std::nullopt}; ///< ignored if std::nullopt
+        bool                         max{false};
     };
 
     void to_json(nlohmann::json& j, const withdraw_request& cfg);
