@@ -13,13 +13,14 @@ Popup {
     focus: true
     closePolicy: Popup.CloseOnEscape | Popup.CloseOnPressOutside
 
-    width: 600
+    width: 650
     property var details
 
     // Inside modal
     ColumnLayout {
         width: parent.width
         height: parent.height
+        anchors.horizontalCenter: parent.horizontalCenter
 
         ModalHeader {
             title: details.is_recent_swap ? qsTr("Swap Details") : qsTr("Order Details")
@@ -31,6 +32,13 @@ Popup {
             height: 150
             Layout.alignment: Qt.AlignHCenter
             item: details
+        }
+
+        // Error ID
+        TextWithTitle {
+            title: qsTr("Error ID:")
+            text: getSwapError(details)
+            visible: text !== ''
         }
 
         // Taker Payment ID

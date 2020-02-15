@@ -50,21 +50,24 @@ Rectangle {
     readonly property int status_swap_successful: 3
     readonly property int status_swap_failed: 4
 
+    function getSwapError(swap) {
+        for(let i = swap.events.length - 1; i > 0; --i) {
+            const e = swap.events[i]
+           if(swap.error_events.indexOf(e.state) !== -1) {
+               return e.state
+           }
+        }
+
+        return ''
+    }
+
     function getStatus(swap) {
         if(swap.am_i_maker !== undefined && !swap.am_i_maker) return status_swap_matching
 
         const last_state = swap.events[swap.events.length-1].state
 
         if(last_state === "Started") return status_swap_matched
-        if(last_state === "Finished") {
-            for(const e of swap.events) {
-               if(swap.error_events.indexOf(e.state) !== -1) {
-                   return status_swap_failed
-               }
-            }
-
-            return status_swap_successful
-        }
+        if(last_state === "Finished") return getSwapError(swap) === '' ? status_swap_successful : status_swap_failed
 
         return status_swap_ongoing
     }
