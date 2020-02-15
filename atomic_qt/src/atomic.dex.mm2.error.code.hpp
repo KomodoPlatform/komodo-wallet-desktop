@@ -41,6 +41,7 @@ enum class dextop_error
     balance_not_enough_found,
     claim_not_enough_funds,
     ticker_is_not_claimable,
+    order_not_available_yet,
     unknown_error
 };
 

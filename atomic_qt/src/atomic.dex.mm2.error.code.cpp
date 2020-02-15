@@ -84,6 +84,8 @@ namespace
             return "You try to claim rewards but you don't have enough funds.";
         case dextop_error::ticker_is_not_claimable:
             return "You try to claim rewards from a ticker that don't have rewards feature";
+        case dextop_error::order_not_available_yet:
+            return "You try to retrieve orders, but it's not fetched yet, please try again later.";
         }
         return "";
     }

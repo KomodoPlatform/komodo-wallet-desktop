@@ -697,7 +697,11 @@ namespace atomic_dex
     ::mm2::api::my_orders_answer
     mm2::get_orders(const std::string& ticker, t_mm2_ec& ec) const noexcept
     {
-        static_cast<void>(ec);
+        if (m_orders_registry.find("result") == m_orders_registry.cend())
+        {
+            ec = dextop_error::order_not_available_yet;
+            return {};
+        }
         auto  result                = m_orders_registry.at("result");
         auto& taker                 = result.taker_orders;
         auto& maker                 = result.maker_orders;
