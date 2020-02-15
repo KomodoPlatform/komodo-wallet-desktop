@@ -50,6 +50,7 @@
         <file>atomic_qt_design/qml/Exchange/Exchange.qml</file>
         <file>atomic_qt_design/qml/Exchange/ExchangeTab.qml</file>
         <file>atomic_qt_design/qml/Exchange/OrderLine.qml</file>
+        <file>atomic_qt_design/qml/Exchange/OrderModal.qml</file>
         <file>atomic_qt_design/qml/Sidebar/Sidebar.qml</file>
         <file>atomic_qt_design/qml/Sidebar/SidebarLine.qml</file>
         <file>atomic_qt_design/qml/Components/AddressField.qml</file>
