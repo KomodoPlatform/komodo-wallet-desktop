@@ -54,7 +54,14 @@ DefaultModal {
             height: 150
             Layout.alignment: Qt.AlignHCenter
             item: details
-            hide_status: true
+            in_modal: true
+        }
+
+        // Swap ID / UUID
+        TextWithTitle {
+            title: (item.is_recent_swap ? qsTr("Swap ID") : qsTr("UUID")) + ": "
+            text: details.uuid
+            visible: text !== ''
         }
 
         // Error ID

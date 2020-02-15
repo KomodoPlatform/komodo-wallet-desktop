@@ -9,7 +9,7 @@ import "../Constants"
 // Content
 Rectangle {
     property var item
-    property bool hide_status: false
+    property bool in_modal: false
 
     color: "transparent"
     height: 200
@@ -62,6 +62,7 @@ Rectangle {
     // UUID
     DefaultText {
         id: uuid
+        visible: !in_modal
         text: (item.is_recent_swap ? qsTr("Swap ID") : qsTr("UUID")) + ": " + item.uuid
         color: Style.colorTheme2
         anchors.top: base_amount.bottom
@@ -88,7 +89,7 @@ Rectangle {
 
     // Status Text
     DefaultText {
-        visible: !hide_status && (item.events !== undefined || item.am_i_maker === false)
+        visible: !in_modal && (item.events !== undefined || item.am_i_maker === false)
         color: visible ? getStatusColor(item) : ''
         anchors.right: parent.right
         anchors.top: date.top
