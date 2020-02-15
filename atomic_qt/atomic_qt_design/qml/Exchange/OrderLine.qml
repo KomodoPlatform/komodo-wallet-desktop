@@ -7,115 +7,40 @@ import "../Components"
 import "../Constants"
 
 Rectangle {
-    property var item: model.modelData
+    property var item
+    property bool hovered: false
 
+    color: hovered ? Style.colorTheme8 : "transparent"
+    width: parent.width
+    height: 175
 
-    color: "transparent"
-    width: list.width
-    height: 200
-
-    ColumnLayout {
-        width: parent.width * 0.8
-        height: parent.height
-        anchors.horizontalCenter: parent.horizontalCenter
-
-        // Content
-        Rectangle {
-            Layout.topMargin: 12.5
-            color: "transparent"
-            Layout.fillWidth: true
-            Layout.fillHeight: true
-
-            // Base Icon
-            Image {
-                id: base_icon
-                source: General.coinIcon(item.my_info.my_coin)
-                fillMode: Image.PreserveAspectFit
-                width: Style.textSize3
-                anchors.left: parent.left
-                anchors.leftMargin: parent.width * 0.25
-            }
-
-            // Rel Icon
-            Image {
-                id: rel_icon
-                source: General.coinIcon(item.my_info.other_coin)
-                fillMode: Image.PreserveAspectFit
-                width: Style.textSize3
-                anchors.right: parent.right
-                anchors.rightMargin: parent.width * 0.25
-            }
-
-            // Base Amount
-            DefaultText {
-                id: base_amount
-                text: "~ " + General.formatCrypto("", item.my_info.my_amount,
-                                                      item.my_info.my_coin)
-                anchors.left: parent.left
-                anchors.top: base_icon.bottom
-                anchors.topMargin: 10
-            }
-
-            // Swap icon
-            Image {
-                source: General.image_path + "exchange-exchange.svg"
-                anchors.top: base_amount.top
-                anchors.horizontalCenter: parent.horizontalCenter
-            }
-
-            // Rel Amount
-            DefaultText {
-                text: "~ " + General.formatCrypto("", item.my_info.other_amount,
-                                                      item.my_info.other_coin)
-                anchors.right: parent.right
-                anchors.top: base_amount.top
-            }
-
-            // UUID
-            DefaultText {
-                id: uuid
-                text: "UUID: " + item.uuid
-                color: Style.colorTheme2
-                anchors.top: base_amount.bottom
-                anchors.topMargin: base_amount.anchors.topMargin
-            }
-
-            // Cancel button
-            Button {
-                visible: item.cancellable !== undefined && item.cancellable
-                anchors.right: parent.right
-                anchors.verticalCenter: rel_icon.verticalCenter
-                text: qsTr("Cancel")
-                onClicked: onCancelOrder(model.modelData.uuid)
-            }
-
-            // Date
-            DefaultText {
-                id: date
-                text: item.date
-                color: Style.colorTheme2
-                anchors.top: uuid.bottom
-                anchors.topMargin: base_amount.anchors.topMargin
-            }
-
-            // Status Text
-            DefaultText {
-                visible: item.events !== undefined || item.am_i_maker === false
-                color: visible ? getStatusColor(item) : ''
-                anchors.right: parent.right
-                anchors.top: date.top
-                text: visible ? qsTr(getStatusTextWithPrefix(item)) : ''
-            }
-        }
-
-        HorizontalLine {
-            visible: index !== items.length -1
-            Layout.fillWidth: true
-            color: Style.colorWhite9
-            Layout.topMargin: 25
-            Layout.bottomMargin: 12.5
-        }
+    MouseArea {
+        anchors.fill: parent
+        hoverEnabled: true
+        onHoveredChanged: hovered = containsMouse
+        onClicked: order_modal.open()
     }
+
+    OrderModal {
+        id: order_modal
+        details: item
+    }
+
+    OrderContent {
+        width: parent.width * 0.8
+        anchors.horizontalCenter: parent.horizontalCenter
+        anchors.top: parent.top
+        anchors.topMargin: 20
+        item: parent.item
+    }
+
+    HorizontalLine {
+        visible: index !== items.length -1
+        width: parent.width
+        color: Style.colorWhite9
+        anchors.bottom: parent.bottom
+    }
+
 
 
     // Status Info
@@ -133,8 +58,9 @@ Rectangle {
         if(last_state === "Started") return status_swap_matched
         if(last_state === "Finished") {
             for(const e of swap.events) {
-               if(swap.error_events.indexOf(e.status) !== -1)
+               if(swap.error_events.indexOf(e.state) !== -1) {
                    return status_swap_failed
+               }
             }
 
             return status_swap_successful
@@ -169,6 +95,19 @@ Rectangle {
 
     function getStatusTextWithPrefix(swap) {
         return getStatusStep(swap) + " " + getStatusText(swap)
+    }
+
+    function getSwapPaymentID(swap, is_taker) {
+        if(swap.events !== undefined) {
+            const search_name = is_taker ? "TakerPaymentSent" : "MakerPaymentSpent"
+            for(const e of swap.events) {
+               if(e.state === search_name) {
+                   return e.data.tx_hash
+               }
+            }
+        }
+
+        return ''
     }
 }
 

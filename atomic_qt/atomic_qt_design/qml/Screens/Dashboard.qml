@@ -12,7 +12,7 @@ Item {
     id: dashboard
     Layout.fillWidth: true
 
-    property int current_page: API.design_editor ? General.idx_dashboard_wallet : General.idx_dashboard_wallet
+    property int current_page: API.design_editor ? General.idx_dashboard_exchange : General.idx_dashboard_wallet
 
     onCurrent_pageChanged: {
         if(current_page === General.idx_dashboard_exchange) API.get().on_gui_enter_dex()
