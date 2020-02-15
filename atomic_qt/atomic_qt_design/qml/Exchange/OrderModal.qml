@@ -22,35 +22,28 @@ DefaultModal {
             title: details.is_recent_swap ? qsTr("Swap Details") : qsTr("Order Details")
         }
 
-        // Top part
-        ColumnLayout {
-            visible: details.is_recent_swap !== undefined
+        // Complete image
+        Image {
+            visible: details.is_recent_swap !== undefined && getStatus(details) === status_swap_successful
+            Layout.alignment: Qt.AlignHCenter
+            source: General.image_path + "exchange-trade-complete.svg"
+        }
 
-            // Complete image
-            Image {
-                visible: details.is_recent_swap ? getStatus(details) === status_swap_successful : false
-                Layout.alignment: Qt.AlignHCenter
-                source: General.image_path + "exchange-trade-complete.svg"
-            }
-
-            // Status Text
-            DefaultText {
-                Layout.alignment: Qt.AlignHCenter
-                Layout.bottomMargin: 10
-                font.pointSize: Style.textSize2
-                visible: !hide_status && (item.events !== undefined || item.am_i_maker === false)
-                color: visible ? getStatusColor(item) : ''
-                text: visible ? qsTr(getStatusTextWithPrefix(item)) : ''
-            }
-
-            HorizontalLine {
-                Layout.fillWidth: true
-            }
+        // Status Text
+        DefaultText {
+            Layout.alignment: Qt.AlignHCenter
+            Layout.topMargin: 20
+            font.pointSize: Style.textSize3
+            visible: details.is_recent_swap !== undefined && (details.events !== undefined || details.am_i_maker === false)
+            color: visible ? getStatusColor(item) : ''
+            text: visible ? qsTr(getStatusTextWithPrefix(item)) : ''
         }
 
         OrderContent {
             Layout.topMargin: 25
-            width: 500
+            Layout.fillWidth: true
+            Layout.leftMargin: 20
+            Layout.rightMargin: Layout.leftMargin
             height: 120
             Layout.alignment: Qt.AlignHCenter
             item: details
@@ -60,6 +53,7 @@ DefaultModal {
         HorizontalLine {
             Layout.fillWidth: true
             Layout.bottomMargin: 20
+            color: Style.colorWhite8
         }
 
         // Date
