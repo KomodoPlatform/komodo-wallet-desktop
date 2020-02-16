@@ -34,7 +34,7 @@ DefaultModal {
             Layout.alignment: Qt.AlignHCenter
             Layout.topMargin: 20
             font.pointSize: Style.textSize3
-            visible: details.is_recent_swap !== undefined && (details.events !== undefined || details.am_i_maker === false)
+            visible: getStatus(details) !== status_swap_not_swap && (details.events !== undefined || details.am_i_maker === false)
             color: visible ? getStatusColor(item) : ''
             text: visible ? qsTr(getStatusTextWithPrefix(item)) : ''
         }
