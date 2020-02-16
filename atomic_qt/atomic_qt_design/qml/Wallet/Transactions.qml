@@ -21,6 +21,8 @@ ListView {
         implicitWidth: parent.width
         height: 65
 
+        visible: model.modelData.timestamp !== 0
+
         // Icon
         Image {
             id: received_icon
