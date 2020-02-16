@@ -510,6 +510,8 @@ namespace atomic_dex
         atomic_dex::t_broadcast_request req{.tx_hex = tx_hex.toStdString(), .coin = m_coin_info->get_ticker().toStdString()};
         std::error_code                 ec;
         auto                            answer = mm2::broadcast(std::move(req), ec);
+        m_refresh_current_ticker_infos         = true;
+        refresh_infos();
         return QString::fromStdString(answer.tx_hash);
     }
 
@@ -519,6 +521,8 @@ namespace atomic_dex
         atomic_dex::t_broadcast_request req{.tx_hex = tx_hex.toStdString(), .coin = m_coin_info->get_ticker().toStdString()};
         std::error_code                 ec;
         auto                            answer = get_mm2().send_rewards(std::move(req), ec);
+        m_refresh_current_ticker_infos         = true;
+        refresh_infos();
         return QString::fromStdString(answer.tx_hash);
     }
 
