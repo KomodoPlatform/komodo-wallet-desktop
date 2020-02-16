@@ -8,7 +8,6 @@ import "../../Constants"
 Item {
     id: exchange_trade
 
-    function changeBase(ticker) {
     property string prev_base
     property string prev_rel
 
