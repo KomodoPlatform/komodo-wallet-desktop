@@ -741,7 +741,7 @@ namespace atomic_dex
         if (not do_i_have_enough_funds(request.rel, total))
         {
             ec = dextop_error::balance_not_enough_found;
-            return {};
+            return {.error = ec.message()};
         }
 
         auto answer = ::mm2::api::rpc_sell(std::move(request));
