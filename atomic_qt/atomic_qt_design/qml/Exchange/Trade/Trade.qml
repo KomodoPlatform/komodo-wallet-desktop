@@ -70,6 +70,8 @@ Item {
                 reset()
                 API.get().set_current_orderbook(base, rel)
                 orderbook.updateOrderbook()
+
+                exchange.onTradeTickerChanged(base)
             }
         }
     }

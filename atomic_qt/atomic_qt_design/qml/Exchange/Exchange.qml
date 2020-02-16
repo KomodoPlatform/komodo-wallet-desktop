@@ -16,6 +16,10 @@ Item {
         exchange_trade.open(ticker)
     }
 
+    function onTradeTickerChanged(ticker) {
+        exchange_orders.changeTicker(ticker)
+    }
+
     ColumnLayout {
         anchors.horizontalCenter: parent.horizontalCenter
         anchors.verticalCenter: parent.verticalCenter
