@@ -738,7 +738,7 @@ namespace atomic_dex
 
         t_mm2_ec balance_ec;
 
-        if (not do_i_have_enough_funds(request.rel, total))
+        if (not do_i_have_enough_funds(request.base, total))
         {
             ec = dextop_error::balance_not_enough_found;
             return {.error = ec.message()};
