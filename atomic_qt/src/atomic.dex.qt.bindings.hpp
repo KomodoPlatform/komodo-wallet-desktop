@@ -276,6 +276,7 @@ namespace atomic_dex
         QString      m_amount;
         QString      m_amount_fiat;
         QString      m_date;
+        int          m_timestamp;
         QString      m_tx_hash;
         QString      m_fees;
         QStringList  m_to;
@@ -286,6 +287,7 @@ namespace atomic_dex
         Q_PROPERTY(bool received READ get_received CONSTANT MEMBER m_received)
         Q_PROPERTY(unsigned int blockheight READ get_blockheight CONSTANT MEMBER m_blockheight)
         Q_PROPERTY(unsigned int confirmations READ get_confirmations CONSTANT MEMBER m_confirmations)
+        Q_PROPERTY(int timestamp READ get_timestamp CONSTANT MEMBER m_timestamp)
         Q_PROPERTY(QString amount READ get_amount CONSTANT MEMBER m_amount)
         Q_PROPERTY(QString amount_fiat READ get_amount_fiat CONSTANT MEMBER m_amount_fiat)
         Q_PROPERTY(QString date READ get_date CONSTANT MEMBER m_date)
@@ -294,7 +296,13 @@ namespace atomic_dex
         Q_PROPERTY(QStringList to READ get_to CONSTANT MEMBER m_to)
         Q_PROPERTY(QStringList from READ get_from CONSTANT MEMBER m_from)
 
-        [[nodiscard]] unsigned int get_confirmations() const noexcept
+        [[nodiscard]] int get_timestamp() const noexcept
+        {
+            return m_timestamp;
+        }
+
+        [[nodiscard]] unsigned int
+        get_confirmations() const noexcept
         {
             return m_confirmations;
         }
@@ -420,6 +428,7 @@ namespace atomic_dex
             obj->m_amount = obj->m_amount.remove(0, 1);
         }
         obj->m_date        = QString::fromStdString(tx.date);
+        obj->m_timestamp   = tx.timestamp;
         obj->m_amount_fiat = std::move(fiat_amount);
         obj->m_tx_hash     = QString::fromStdString(tx.tx_hash);
         obj->m_fees        = QString::fromStdString(tx.fees);
