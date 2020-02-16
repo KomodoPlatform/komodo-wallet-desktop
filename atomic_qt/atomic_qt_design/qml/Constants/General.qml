@@ -98,10 +98,10 @@ QtObject {
         }
         else {
             o.my_info = {
-                my_coin: o.am_i_maker ? o.base : o.rel,
-                my_amount: o.am_i_maker ? o.base_amount : o.rel_amount,
-                other_coin: o.am_i_maker ? o.rel : o.base,
-                other_amount: o.am_i_maker ? o.rel_amount : o.base_amount,
+                my_coin: o.base,
+                my_amount: o.base_amount,
+                other_coin: o.rel,
+                other_amount: o.rel_amount
             }
         }
         return o
