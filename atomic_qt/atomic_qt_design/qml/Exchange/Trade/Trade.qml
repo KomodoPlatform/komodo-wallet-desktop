@@ -103,7 +103,10 @@ Item {
                     Layout.preferredWidth: 250
 
                     model: General.fullNamesOfCoins(relCoins())
-                    onCurrentTextChanged: rel = relCoins()[currentIndex].ticker
+                    onCurrentTextChanged: {
+                        rel = relCoins()[currentIndex].ticker
+                        reset()
+                    }
                 }
 
                 Image {
