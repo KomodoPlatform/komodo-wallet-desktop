@@ -27,7 +27,13 @@ SetupPage {
     image_path: General.image_path + "komodo-icon.png"
     title: qsTr("Loading, please wait")
     content: RowLayout {
-        spacing: Style.itemPadding
+        spacing: -10
+
+
+        BusyIndicator {
+            Layout.alignment: Qt.AlignHCenter
+            scale: 0.5
+        }
 
         DefaultText {
             // TODO: Remove these if statements, localization will take care of that

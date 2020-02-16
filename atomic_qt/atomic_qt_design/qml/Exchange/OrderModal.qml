@@ -29,6 +29,13 @@ DefaultModal {
             source: General.image_path + "exchange-trade-complete.svg"
         }
 
+        BusyIndicator {
+            visible: details.is_recent_swap !== undefined &&
+                     getStatus(details) !== status_swap_successful &&
+                     getStatus(details) !== status_swap_failed
+            Layout.alignment: Qt.AlignHCenter
+        }
+
         // Status Text
         DefaultText {
             Layout.alignment: Qt.AlignHCenter
