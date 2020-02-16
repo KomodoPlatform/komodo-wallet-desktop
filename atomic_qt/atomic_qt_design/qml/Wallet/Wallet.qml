@@ -13,7 +13,7 @@ RowLayout {
     function onClickedSwap() {
         dashboard.current_page = General.idx_dashboard_exchange
         exchange.current_page = General.idx_exchange_trade
-        exchange.changeBase(API.get().current_coin_info.ticker)
+        exchange.openTradeView(API.get().current_coin_info.ticker)
     }
 
     readonly property double button_margin: 0.05

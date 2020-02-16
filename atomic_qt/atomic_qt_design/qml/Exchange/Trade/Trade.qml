@@ -9,26 +9,51 @@ Item {
     id: exchange_trade
 
     function changeBase(ticker) {
-        combo_base.currentIndex = baseCoins().map(c => c.ticker).indexOf(ticker)
-        base = ticker
+    property string prev_base
+    property string prev_rel
+
+    function open(ticker) {
+        setTicker(combo_base, ticker)
+    }
+
+    function getCoins() {
+        return API.get().enabled_coins
+    }
+
+    function getTicker(combo) {
+        if(combo.currentIndex === -1) return ''
+
+        return getCoins()[combo.currentIndex].ticker
+    }
+
+    function setTicker(combo, ticker) {
+        combo.currentIndex = getCoins().map(c => c.ticker).indexOf(ticker)
     }
 
     function swapPair() {
+        let base = getTicker(combo_base)
+        let rel = getTicker(combo_rel)
+
+        // Fill previous ones if they are blank
+        if(prev_base === '') prev_base = getCoins().filter(c => c.ticker !== rel)[0].ticker
+        if(prev_rel === '') prev_rel = getCoins().filter(c => c.ticker !== base)[0].ticker
+
+        // Get different value if they are same
+        if(base === rel) {
+            if(base !== prev_base) base = prev_base
+            else if(rel !== prev_rel) rel = prev_rel
+        }
+
+        // Swap
         const curr_base = base
-        changeBase(rel)
-        combo_rel.currentIndex = relCoins().map(c => c.ticker).indexOf(curr_base)
+        setTicker(combo_base, rel)
+        setTicker(combo_rel, curr_base)
     }
 
     function validBaseRel() {
-        return base && rel && base !== "" && rel !== "" && base !== rel
-    }
-
-    function setPair() {
-        console.log("SET PAIR: " + base + " - " + rel)
-        if(validBaseRel()) {
-            API.get().set_current_orderbook(base, rel)
-            orderbook.updateOrderbook()
-        }
+        const base = getTicker(combo_base)
+        const rel = getTicker(combo_rel)
+        return base !== '' && rel !== '' && base !== rel
     }
 
     function reset() {
@@ -36,19 +61,19 @@ Item {
         order_form_buy.reset()
     }
 
-    function baseCoins() {
-        return API.get().enabled_coins
+    function setPair() {
+        const base = getTicker(combo_base)
+        const rel = getTicker(combo_rel)
+
+        if(base === rel) swapPair()
+        else {
+            if(validBaseRel()) {
+                reset()
+                API.get().set_current_orderbook(base, rel)
+                orderbook.updateOrderbook()
+            }
+        }
     }
-
-    function relCoins() {
-        return API.get().enabled_coins.filter(c => c.ticker !== base)
-    }
-
-    property string base
-    property string rel
-
-    onBaseChanged: setPair()
-    onRelChanged: setPair()
 
     ColumnLayout {
         anchors.horizontalCenter: parent.horizontalCenter
@@ -70,7 +95,7 @@ Item {
                 // Base
                 Image {
                     Layout.leftMargin: 15
-                    source: General.coinIcon(base)
+                    source: General.coinIcon(getTicker(combo_base))
                     Layout.preferredWidth: 32
                     Layout.preferredHeight: Layout.preferredWidth
                 }
@@ -81,10 +106,10 @@ Item {
                     Layout.topMargin: 10
                     Layout.bottomMargin: 10
 
-                    model: General.fullNamesOfCoins(baseCoins())
+                    model: General.fullNamesOfCoins(getCoins())
                     onCurrentTextChanged: {
-                        base = baseCoins()[currentIndex].ticker
-                        reset()
+                        setPair()
+                        prev_base = getTicker(combo_base)
                     }
                 }
 
@@ -102,16 +127,16 @@ Item {
                     id: combo_rel
                     Layout.preferredWidth: 250
 
-                    model: General.fullNamesOfCoins(relCoins())
+                    model: General.fullNamesOfCoins(getCoins())
                     onCurrentTextChanged: {
-                        rel = relCoins()[currentIndex].ticker
-                        reset()
+                        setPair()
+                        prev_rel = getTicker(combo_rel)
                     }
                 }
 
                 Image {
                     Layout.rightMargin: 15
-                    source: General.coinIcon(rel)
+                    source: General.coinIcon(getTicker(combo_rel))
                     Layout.preferredWidth: 32
                     Layout.preferredHeight: Layout.preferredWidth
                 }
@@ -138,8 +163,8 @@ Item {
                     Layout.fillHeight: true
 
                     sell: false
-                    base: exchange_trade.base
-                    rel: exchange_trade.rel
+                    base: getTicker(combo_base)
+                    rel: getTicker(combo_rel)
 
                     visible: false
                 }
@@ -151,8 +176,8 @@ Item {
                     Layout.fillHeight: true
 
                     sell: true
-                    base: exchange_trade.base
-                    rel: exchange_trade.rel
+                    base: getTicker(combo_base)
+                    rel: getTicker(combo_rel)
                 }
             }
 
