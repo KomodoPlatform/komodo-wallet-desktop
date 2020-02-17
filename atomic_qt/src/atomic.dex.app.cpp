@@ -131,7 +131,7 @@ namespace atomic_dex
     }
 
     bool
-    atomic_dex::application::create(const QString& password, const QString& seed)
+    atomic_dex::application::create(const QString& password, const QString& seed, const QString& wallet_name)
     {
         std::error_code ec;
         auto            key = atomic_dex::derive_password(password.toStdString(), ec);
@@ -145,7 +145,8 @@ namespace atomic_dex
         }
         else
         {
-            const std::filesystem::path seed_path = ag::core::assets_real_path() / "config/encrypted.seed";
+            using namespace std::string_literals;
+            const std::filesystem::path seed_path = ag::core::assets_real_path() / ("config/"s + wallet_name.toStdString() + ".seed"s);
             // Encrypt seed
             atomic_dex::encrypt(seed_path, seed.toStdString().data(), key.data());
             // sodium_memzero(&seed, seed.size());
@@ -157,7 +158,7 @@ namespace atomic_dex
     }
 
     bool
-    atomic_dex::application::login(const QString& password)
+    atomic_dex::application::login(const QString& password, const QString& wallet_name)
     {
         std::error_code ec;
         auto            key = atomic_dex::derive_password(password.toStdString(), ec);
@@ -171,7 +172,8 @@ namespace atomic_dex
         }
         else
         {
-            const std::filesystem::path seed_path = ag::core::assets_real_path() / "config/encrypted.seed";
+            using namespace std::string_literals;
+            const std::filesystem::path seed_path = ag::core::assets_real_path() / ("config/"s + wallet_name.toStdString() + ".seed"s);
             auto                        seed      = atomic_dex::decrypt(seed_path, key.data(), ec);
             if (ec == dextop_error::corrupted_file_or_wrong_password)
             {
@@ -716,5 +718,19 @@ namespace atomic_dex
     application::get_coin_info(const QString& ticker)
     {
         return to_qt_binding(get_mm2().get_coin_info(ticker.toStdString()), this);
+    }
+
+    QStringList
+    application::get_wallets() const
+    {
+        QStringList out;
+        for (auto&& p: std::filesystem::directory_iterator(ag::core::assets_real_path() / "config"))
+        {
+            if (p.path().extension().string() == ".seed")
+            {
+                out.push_back(QString::fromStdString(p.path().stem().string()));
+            }
+        }
+        return out;
     }
 } // namespace atomic_dex
