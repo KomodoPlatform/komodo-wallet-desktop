@@ -68,7 +68,6 @@ Thumbs.db
 
 # Binaries
 # --------
-*.dll
 *.exe
 
 /assets/tools/mm2/
