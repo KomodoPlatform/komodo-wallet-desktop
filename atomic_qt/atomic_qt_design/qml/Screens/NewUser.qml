@@ -69,11 +69,10 @@ SetupPage {
                 text: qsTr("Create")
                 onClicked: onClickedCreate(input_password.field.text, input_generated_seed.field.text, input_confirm_seed.field.text, input_wallet_name.field.text)
                 enabled:    // Fields are not empty
-                            input_wallet_name.field.text.length !== '' &&
+                            input_wallet_name.field.acceptableInput === true &&
                             input_confirm_seed.field.text.length !== '' &&
                             input_password.field.acceptableInput === true &&
                             input_confirm_password.field.acceptableInput === true &&
-                            input_wallet_name.field.acceptableInput === true &&
                             // Correct confirm fields
                             input_generated_seed.field.text === input_confirm_seed.field.text &&
                             input_password.field.text === input_confirm_password.field.text

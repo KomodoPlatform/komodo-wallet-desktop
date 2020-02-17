@@ -11,8 +11,8 @@ SetupPage {
     function postConfirmSuccess() {}
 
     // Local
-    function onClickedConfirm(password, seed) {
-        if(API.get().create(password, seed)) {
+    function onClickedConfirm(password, seed, wallet_name) {
+        if(API.get().create(password, seed, wallet_name)) {
             console.log("Success: Recover seed")
             postConfirmSuccess()
         }
@@ -29,6 +29,10 @@ SetupPage {
     title: "Recovery"
     content: ColumnLayout {
         width: 400
+
+        WalletNameField {
+            id: input_wallet_name
+        }
 
         TextAreaWithTitle {
             id: input_seed
@@ -54,8 +58,9 @@ SetupPage {
 
             Button {
                 text: qsTr("Confirm")
-                onClicked: onClickedConfirm(input_password.field.text, input_seed.field.text)
+                onClicked: onClickedConfirm(input_password.field.text, input_seed.field.text, input_wallet_name.field.text)
                 enabled:     // Fields are not empty
+                             input_wallet_name.field.acceptableInput === true &&
                              input_seed.field.text.length !== '' &&
                              input_password.field.acceptableInput === true &&
                              input_confirm_password.field.acceptableInput === true &&
