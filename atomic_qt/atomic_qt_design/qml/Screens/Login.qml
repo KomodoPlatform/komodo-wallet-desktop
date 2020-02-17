@@ -12,7 +12,7 @@ SetupPage {
 
     // Local
     function onClickedLogin(password) {
-        if(API.get().login(password, API.get().get_default_wallet_name())) {
+        if(API.get().login(password, def_wallet_name)) {
             console.log("Success: Login")
             postLoginSuccess()
         }
@@ -22,11 +22,18 @@ SetupPage {
         }
     }
 
+    function updateDefaultWalletName() {
+        def_wallet_name = API.get().get_default_wallet_name()
+    }
+
+    Component.onCompleted: updateDefaultWalletName()
+
+    property string def_wallet_name
     property string text_error
 
     image_scale: 0.7
     image_path: General.image_path + "setup-logs.svg"
-    title: qsTr("Login") + ": " + API.get().get_default_wallet_name()
+    title: qsTr("Login") + ": " + def_wallet_name
     content: ColumnLayout {
         width: 275
         PasswordField {

@@ -15,10 +15,12 @@ Rectangle {
 
     function onDisconnect() { openFirstLaunch() }
 
-    function openFirstLaunch() {
-        current_page = firstPage()
+    function openFirstLaunch(force) {
+        current_page = force ? idx_first_launch : firstPage()
         first_launch.updateWallets()
     }
+
+    Component.onCompleted: openFirstLaunch()
 
     readonly property int idx_first_launch: 0
     readonly property int idx_recover_seed: 1
@@ -26,7 +28,7 @@ Rectangle {
     readonly property int idx_login: 3
     readonly property int idx_initial_loading: 4
     readonly property int idx_dashboard: 5
-    property int current_page: API.design_editor ? idx_dashboard : firstPage()
+    property int current_page: API.design_editor ? idx_dashboard : 1337
 
     StackLayout {
         anchors.fill: parent
@@ -51,7 +53,7 @@ Rectangle {
         }
 
         Login {
-            function onClickedBack() { openFirstLaunch() }
+            function onClickedBack() { openFirstLaunch(true) }
             function postLoginSuccess() {
                 initial_loading.check_loading_complete.running = true
                 current_page = idx_initial_loading

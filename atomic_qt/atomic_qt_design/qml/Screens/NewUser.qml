@@ -13,6 +13,7 @@ SetupPage {
     // Local
     function onClickedCreate(password, generated_seed, confirm_seed, wallet_name) {
         if(API.get().create(password, generated_seed, wallet_name)) {
+            API.get().set_default_wallet(wallet_name)
             console.log("Success: Create wallet")
             postCreateSuccess()
         }
