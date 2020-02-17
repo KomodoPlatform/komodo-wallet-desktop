@@ -12,7 +12,7 @@ SetupPage {
 
     // Local
     function onClickedLogin(password) {
-        if(API.get().login(password)) {
+        if(API.get().login(password, API.get().get_default_wallet_name())) {
             console.log("Success: Login")
             postLoginSuccess()
         }
