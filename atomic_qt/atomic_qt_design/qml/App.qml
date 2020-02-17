@@ -13,7 +13,12 @@ Rectangle {
         return !API.get().first_run() && API.get().is_there_a_default_wallet() ? idx_login : idx_first_launch
     }
 
-    function onDisconnect() { current_page = idx_first_launch }
+    function onDisconnect() { openFirstLaunch() }
+
+    function openFirstLaunch() {
+        current_page = firstPage()
+        first_launch.updateWallets()
+    }
 
     readonly property int idx_first_launch: 0
     readonly property int idx_recover_seed: 1
@@ -29,23 +34,24 @@ Rectangle {
         currentIndex: current_page
 
         FirstLaunch {
+            id: first_launch
             function onClickedNewUser() { current_page = idx_new_user }
             function onClickedRecoverSeed() { current_page = idx_recover_seed }
             function onClickedWallet() { current_page = idx_login }
         }
 
         RecoverSeed {
-            function onClickedBack() { current_page = firstPage() }
-            function postConfirmSuccess() { current_page = firstPage() }
+            function onClickedBack() { openFirstLaunch() }
+            function postConfirmSuccess() { openFirstLaunch() }
         }
 
         NewUser {
-            function onClickedBack() { current_page = idx_first_launch }
-            function postCreateSuccess() { current_page = firstPage() }
+            function onClickedBack() { openFirstLaunch() }
+            function postCreateSuccess() { openFirstLaunch() }
         }
 
         Login {
-            function onClickedRecoverSeed() { current_page = idx_recover_seed }
+            function onClickedBack() { openFirstLaunch() }
             function postLoginSuccess() {
                 initial_loading.check_loading_complete.running = true
                 current_page = idx_initial_loading

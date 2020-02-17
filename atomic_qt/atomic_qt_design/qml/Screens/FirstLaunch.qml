@@ -11,19 +11,29 @@ SetupPage {
     function onClickedRecoverSeed() {}
     function onClickedWallet() {}
 
+    // Local
+    function updateWallets() {
+        wallets = API.get().get_wallets()
+    }
+
+    property var wallets: ([])
+
     image_scale: 0.7
     image_path: General.image_path + "komodo-icon.png"
     title: qsTr("Welcome!")
     content: ColumnLayout {
         RowLayout {
+            Layout.fillWidth: true
             spacing: Style.itemPadding
 
             Button {
                 text: qsTr("New User")
+                Layout.fillWidth: true
                 onClicked: onClickedNewUser()
             }
 
             Button {
+                Layout.fillWidth: true
                 text: qsTr("Recover Seed")
                 onClicked: onClickedRecoverSeed()
             }
@@ -46,15 +56,15 @@ SetupPage {
             implicitHeight: contentItem.childrenRect.height
             clip: true
 
-            model: API.get().get_wallets()
+            model: wallets
 
             delegate: Rectangle {
                 property bool hovered: false
 
-                color: hovered ? Style.colorTheme4 : "transparent"
+                color: hovered ? Style.colorTheme7 : "transparent"
                 anchors.horizontalCenter: parent.horizontalCenter
-                width: 200
-                height: 50
+                width: 300
+                height: 30
 
                 // Click area
                 MouseArea {
@@ -72,8 +82,16 @@ SetupPage {
                     anchors.left: parent.left
                     anchors.leftMargin: 5
 
-                    text: model.modelData
+                    text: " ⚬   " + model.modelData
                     anchors.verticalCenter: parent.verticalCenter
+                }
+
+                // Line
+                HorizontalLine {
+                    visible: index !== wallets.length - 1
+                    width: parent.width
+                    color: Style.colorWhite9
+                    anchors.bottom: parent.bottom
                 }
             }
         }

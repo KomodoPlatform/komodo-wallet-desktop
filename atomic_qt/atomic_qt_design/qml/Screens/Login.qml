@@ -7,7 +7,7 @@ import "../Constants"
 
 SetupPage {
     // Override
-    function onClickedRecoverSeed() {}
+    function onClickedBack() {}
     function postLoginSuccess() {}
 
     // Local
@@ -26,7 +26,7 @@ SetupPage {
 
     image_scale: 0.7
     image_path: General.image_path + "setup-logs.svg"
-    title: "Login"
+    title: qsTr("Login") + ": " + API.get().get_default_wallet_name()
     content: ColumnLayout {
         width: 275
         PasswordField {
@@ -35,8 +35,8 @@ SetupPage {
 
         RowLayout {
             Button {
-                text: qsTr("Recover Seed")
-                onClicked: onClickedRecoverSeed()
+                text: qsTr("Back")
+                onClicked: onClickedBack()
             }
 
             Button {
