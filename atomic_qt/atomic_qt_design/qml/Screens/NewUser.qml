@@ -11,8 +11,8 @@ SetupPage {
     function postCreateSuccess() {}
 
     // Local
-    function onClickedCreate(password, generated_seed, confirm_seed) {
-        if(API.get().create(password, generated_seed)) {
+    function onClickedCreate(password, generated_seed, confirm_seed, wallet_name) {
+        if(API.get().create(password, generated_seed, wallet_name)) {
             console.log("Success: Create wallet")
             postCreateSuccess()
         }
@@ -30,6 +30,10 @@ SetupPage {
 
     content: ColumnLayout {
         width: 400
+
+        WalletNameField {
+            id: input_wallet_name
+        }
 
         TextAreaWithTitle {
             id: input_generated_seed
@@ -63,8 +67,9 @@ SetupPage {
 
             Button {
                 text: qsTr("Create")
-                onClicked: onClickedCreate(input_password.field.text, input_generated_seed.field.text, input_confirm_seed.field.text)
+                onClicked: onClickedCreate(input_password.field.text, input_generated_seed.field.text, input_confirm_seed.field.text, input_wallet_name.field.text)
                 enabled:    // Fields are not empty
+                            input_wallet_name.field.acceptableInput === true &&
                             input_confirm_seed.field.text.length !== '' &&
                             input_password.field.acceptableInput === true &&
                             input_confirm_password.field.acceptableInput === true &&

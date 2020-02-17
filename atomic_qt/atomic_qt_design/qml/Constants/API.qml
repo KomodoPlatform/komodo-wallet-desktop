@@ -64,8 +64,8 @@ QtObject {
             return "this is a test seed gossip rubber flee just connect manual any salmon limb suffer now turkey essence naive daughter system begin quantum page"
         },
 
-        login: (password) => {
-            console.log("Logging in with password:" + password)
+        login: (password, wallet_name) => {
+            console.log(wallet_name + " wallet: Logging in with password:" + password)
 
             const correct = password === saved_password
 
@@ -74,10 +74,17 @@ QtObject {
             return correct
         },
 
-        create: (password, seed) => {
+       is_there_a_default_wallet: () => { return true },
+       get_default_wallet_name: () => { return "naezith" },
+        disconnect: () => {},
+        delete_wallet: () => {},
+
+
+        create: (password, seed, wallet_name) => {
             console.log("Creating the seed with password:")
             console.log(seed)
             console.log(password)
+            console.log(wallet_name)
 
             saved_seed = seed
             saved_password = password
@@ -192,7 +199,9 @@ QtObject {
 
         refresh_orders_and_swaps: () => {
             console.log("refresh_orders_and_swaps!")
-        }
+        },
+
+        get_wallets: () => { return ["encrypted"] }
     })
 
     // Simulate initial loading
