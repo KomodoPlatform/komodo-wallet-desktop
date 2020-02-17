@@ -103,7 +103,7 @@ namespace atomic_dex
         Q_INVOKABLE QStringList get_wallets() const;
         Q_INVOKABLE bool        is_there_a_default_wallet() const;
         Q_INVOKABLE QString     get_default_wallet_name() const;
-        Q_INVOKABLE bool        disconnect_default_wallet() const;
+        Q_INVOKABLE bool        disconnect();
         Q_INVOKABLE bool        create(const QString& password, const QString& seed, const QString& wallet_name);
         Q_INVOKABLE bool        enable_coins(const QStringList& coins);
         Q_INVOKABLE QString     get_balance(const QString& coin);
@@ -118,6 +118,7 @@ namespace atomic_dex
         Q_INVOKABLE QObject*    get_coin_info(const QString& ticker);
         Q_INVOKABLE QVariantMap get_my_orders();
         Q_INVOKABLE QVariantMap get_recent_swaps();
+        Q_INVOKABLE bool delete_wallet(const QString& wallet_name) const;
 
 
       signals:
@@ -136,6 +137,7 @@ namespace atomic_dex
         std::atomic_bool   m_refresh_current_ticker_infos{false};
         std::atomic_bool   m_refresh_orders_needed{false};
         std::atomic_bool   m_refresh_transaction_only{false};
+        bool               m_need_a_full_refresh_of_mm2{false};
         QObjectList        m_enabled_coins;
         QObjectList        m_enableable_coins;
         QString            m_current_fiat{"USD"};

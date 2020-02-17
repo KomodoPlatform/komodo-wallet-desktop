@@ -187,6 +187,7 @@ namespace atomic_dex
                     std::ofstream ofs((ag::core::assets_real_path() / "config/default.wallet"s).string());
                     ofs << wallet_name.toStdString();
                 }
+
                 this->set_status("initializing_mm2");
                 get_mm2().spawn_mm2_instance(seed);
                 return true;
@@ -198,7 +199,7 @@ namespace atomic_dex
     bool
     atomic_dex::application::first_run()
     {
-        return get_wallets().size() == 0;
+        return get_wallets().empty();
     }
 
     void
@@ -239,6 +240,11 @@ namespace atomic_dex
     application::tick()
     {
         this->process_one_frame();
+        if (this->m_need_a_full_refresh_of_mm2)
+        {
+            system_manager_.create_system<mm2>();
+            this->m_need_a_full_refresh_of_mm2 = false;
+        }
         auto& mm2     = get_mm2();
         auto& paprika = get_paprika();
         if (mm2.is_mm2_running())
@@ -759,8 +765,17 @@ namespace atomic_dex
     }
 
     bool
-    application::disconnect_default_wallet() const
+    application::disconnect()
     {
+        system_manager_.mark_system<mm2>();
+        this->m_need_a_full_refresh_of_mm2 = true;
         return fs::remove(ag::core::assets_real_path() / "config/default.wallet");
+    }
+
+    bool
+    application::delete_wallet(const QString& wallet_name) const
+    {
+        using namespace std::string_literals;
+        return fs::remove(ag::core::assets_real_path() / ("config/"s + wallet_name.toStdString() + ".seed"s));
     }
 } // namespace atomic_dex
