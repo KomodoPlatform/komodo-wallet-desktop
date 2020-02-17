@@ -182,6 +182,11 @@ namespace atomic_dex
             }
             else
             {
+                if (not fs::exists(ag::core::assets_real_path() / "config/default.wallet"s))
+                {
+                    std::ofstream ofs((ag::core::assets_real_path() / "config/default.wallet"s).string());
+                    ofs << wallet_name.toStdString();
+                }
                 this->set_status("initializing_mm2");
                 get_mm2().spawn_mm2_instance(seed);
                 return true;
@@ -193,7 +198,7 @@ namespace atomic_dex
     bool
     atomic_dex::application::first_run()
     {
-        return not fs::exists(ag::core::assets_real_path() / "config/encrypted.seed");
+        return get_wallets().size() == 0;
     }
 
     void
@@ -732,5 +737,24 @@ namespace atomic_dex
             }
         }
         return out;
+    }
+
+    bool
+    application::is_there_a_default_wallet() const
+    {
+        return fs::exists(ag::core::assets_real_path() / "config/default.wallet");
+    }
+
+    QString
+    application::get_default_wallet_name() const
+    {
+        if (is_there_a_default_wallet())
+        {
+            std::ifstream ifs(ag::core::assets_real_path() / "config/default.wallet");
+            assert(ifs);
+            std::string str((std::istreambuf_iterator<char>(ifs)), std::istreambuf_iterator<char>());
+            return QString::fromStdString(str);
+        }
+        return "nonexistent";
     }
 } // namespace atomic_dex
