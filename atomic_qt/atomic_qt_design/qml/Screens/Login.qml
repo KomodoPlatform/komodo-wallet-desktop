@@ -26,7 +26,7 @@ SetupPage {
 
     image_scale: 0.7
     image_path: General.image_path + "setup-logs.svg"
-    title: "Login"
+    title: qsTr("Login") + ": " + API.get().get_default_wallet_name()
     content: ColumnLayout {
         width: 275
         PasswordField {
