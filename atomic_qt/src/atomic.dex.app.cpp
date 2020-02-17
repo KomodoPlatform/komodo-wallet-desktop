@@ -152,11 +152,9 @@ namespace atomic_dex
             // sodium_memzero(&seed, seed.size());
             sodium_memzero(key.data(), key.size());
 
-            if (not fs::exists(ag::core::assets_real_path() / "config/default.wallet"s))
-            {
-                std::ofstream ofs((ag::core::assets_real_path() / "config/default.wallet"s).string());
-                ofs << wallet_name.toStdString();
-            }
+            std::ofstream ofs((ag::core::assets_real_path() / "config/default.wallet"s).string());
+            ofs << wallet_name.toStdString();
+
             return true;
         }
         return false;
