@@ -240,7 +240,8 @@ namespace atomic_dex
     application::tick()
     {
         this->process_one_frame();
-        if (this->m_need_a_full_refresh_of_mm2) {
+        if (this->m_need_a_full_refresh_of_mm2)
+        {
             system_manager_.create_system<mm2>();
             this->m_need_a_full_refresh_of_mm2 = false;
         }
@@ -769,5 +770,12 @@ namespace atomic_dex
         system_manager_.mark_system<mm2>();
         this->m_need_a_full_refresh_of_mm2 = true;
         return fs::remove(ag::core::assets_real_path() / "config/default.wallet");
+    }
+
+    bool
+    application::delete_wallet(const QString& wallet_name) const
+    {
+        using namespace std::string_literals;
+        return fs::remove(ag::core::assets_real_path() / ("config/"s + wallet_name.toStdString() + ".seed"s));
     }
 } // namespace atomic_dex

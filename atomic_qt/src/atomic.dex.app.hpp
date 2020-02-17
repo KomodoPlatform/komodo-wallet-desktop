@@ -118,6 +118,7 @@ namespace atomic_dex
         Q_INVOKABLE QObject*    get_coin_info(const QString& ticker);
         Q_INVOKABLE QVariantMap get_my_orders();
         Q_INVOKABLE QVariantMap get_recent_swaps();
+        Q_INVOKABLE bool delete_wallet(const QString& wallet_name) const;
 
 
       signals:
