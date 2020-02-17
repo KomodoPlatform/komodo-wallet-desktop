@@ -13,13 +13,15 @@ Rectangle {
         return !API.get().first_run() && API.get().is_there_a_default_wallet() ? idx_login : idx_first_launch
     }
 
+    function onDisconnect() { current_page = idx_first_launch }
+
     readonly property int idx_first_launch: 0
     readonly property int idx_recover_seed: 1
     readonly property int idx_new_user: 2
     readonly property int idx_login: 3
     readonly property int idx_initial_loading: 4
     readonly property int idx_dashboard: 5
-    property int current_page: API.design_editor ? firstPage() : firstPage()
+    property int current_page: API.design_editor ? idx_dashboard : firstPage()
 
     StackLayout {
         anchors.fill: parent

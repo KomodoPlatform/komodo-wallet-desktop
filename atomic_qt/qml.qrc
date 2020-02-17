@@ -79,5 +79,6 @@
         <file>atomic_qt_design/qml/Wallet/Transactions.qml</file>
         <file>atomic_qt_design/qml/Wallet/TransactionDetailsModal.qml</file>
         <file>atomic_qt_design/qml/Wallet/AddressList.qml</file>
+        <file>atomic_qt_design/qml/Settings/Settings.qml</file>
     </qresource>
 </RCC>

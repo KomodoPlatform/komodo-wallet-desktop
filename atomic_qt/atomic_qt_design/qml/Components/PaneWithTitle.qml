@@ -9,9 +9,10 @@ Column {
     Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
     spacing: Style.paneTitleOffset
 
+
     property string title
     property alias content: inner_space.sourceComponent
-
+    property string color: Style.colorTheme6
     DefaultText {
         text: qsTr(title)
     }
@@ -20,7 +21,7 @@ Column {
         id: pane
 
         background: Rectangle {
-            color: Style.colorTheme6
+            color: column.color
             radius: Style.rectangleCornerRadius
         }
 

@@ -6,13 +6,15 @@ import "../Components"
 import "../Constants"
 import "../Wallet"
 import "../Exchange"
+import "../Settings"
 import "../Sidebar"
 
 Item {
     id: dashboard
+
     Layout.fillWidth: true
 
-    property int current_page: API.design_editor ? General.idx_dashboard_exchange : General.idx_dashboard_wallet
+    property int current_page: API.design_editor ? General.idx_dashboard_settings : General.idx_dashboard_wallet
 
     onCurrent_pageChanged: {
         if(current_page === General.idx_dashboard_exchange) API.get().on_gui_enter_dex()
@@ -32,7 +34,6 @@ Item {
 
             transformOrigin: Item.Center
 
-
             Wallet {
 
             }
@@ -49,8 +50,8 @@ Item {
                 text: qsTr("DApps")
             }
 
-            DefaultText {
-                text: qsTr("Settings")
+            Settings {
+                Layout.alignment: Qt.AlignCenter
             }
         }
     }

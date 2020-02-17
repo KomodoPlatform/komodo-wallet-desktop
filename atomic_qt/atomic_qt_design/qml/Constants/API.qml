@@ -78,7 +78,7 @@ QtObject {
        get_default_wallet_name: () => { return "naezith" },
        set_default_wallet: (name) => { },
         disconnect: () => {},
-        delete_wallet: () => {},
+        delete_wallet: (wallet_name) => {},
 
 
         create: (password, seed, wallet_name) => {
