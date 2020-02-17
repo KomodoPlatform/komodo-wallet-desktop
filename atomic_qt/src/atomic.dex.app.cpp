@@ -152,6 +152,11 @@ namespace atomic_dex
             // sodium_memzero(&seed, seed.size());
             sodium_memzero(key.data(), key.size());
 
+            if (not fs::exists(ag::core::assets_real_path() / "config/default.wallet"s))
+            {
+                std::ofstream ofs((ag::core::assets_real_path() / "config/default.wallet"s).string());
+                ofs << wallet_name.toStdString();
+            }
             return true;
         }
         return false;
@@ -182,12 +187,6 @@ namespace atomic_dex
             }
             else
             {
-                if (not fs::exists(ag::core::assets_real_path() / "config/default.wallet"s))
-                {
-                    std::ofstream ofs((ag::core::assets_real_path() / "config/default.wallet"s).string());
-                    ofs << wallet_name.toStdString();
-                }
-
                 this->set_status("initializing_mm2");
                 get_mm2().spawn_mm2_instance(seed);
                 return true;
@@ -777,5 +776,19 @@ namespace atomic_dex
     {
         using namespace std::string_literals;
         return fs::remove(ag::core::assets_real_path() / ("config/"s + wallet_name.toStdString() + ".seed"s));
+    }
+
+    void
+    application::set_default_wallet(const QString& name)
+    {
+        using namespace std::string_literals;
+        if (not fs::exists(ag::core::assets_real_path() / "config/default.wallet"s))
+        {
+            std::ofstream ofs((ag::core::assets_real_path() / "config/default.wallet"s).string());
+            ofs << name.toStdString();
+        } else {
+            std::ofstream ofs((ag::core::assets_real_path() / "config/default.wallet"s).string(), std::ios_base::out | std::ios_base::trunc);
+            ofs << name.toStdString();
+        }
     }
 } // namespace atomic_dex
