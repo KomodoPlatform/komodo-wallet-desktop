@@ -798,6 +798,8 @@ namespace atomic_dex
             std::ofstream ofs((ag::core::assets_real_path() / "config/default.wallet"s).string(), std::ios_base::out | std::ios_base::trunc);
             ofs << name.toStdString();
         }
+
+        this->set_wallet_default_name(name);
     }
 
     void
@@ -811,5 +813,18 @@ namespace atomic_dex
         get_dispatcher().sink<mm2_initialized>().connect<&application::on_mm2_initialized_event>(*this);
         get_dispatcher().sink<mm2_started>().connect<&application::on_mm2_started_event>(*this);
         get_dispatcher().sink<refresh_order_needed>().connect<&application::on_refresh_order_event>(*this);
+    }
+
+    QString
+    application::get_wallet_default_name() const noexcept
+    {
+        return m_current_default_wallet;
+    }
+
+    void
+    application::set_wallet_default_name(QString wallet_name) noexcept
+    {
+        this->m_current_default_wallet = std::move(wallet_name);
+        emit on_wallet_default_name_changed();
     }
 } // namespace atomic_dex

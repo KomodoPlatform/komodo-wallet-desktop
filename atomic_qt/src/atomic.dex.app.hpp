@@ -42,6 +42,7 @@ namespace atomic_dex
         Q_PROPERTY(QList<QObject*> enableable_coins READ get_enableable_coins NOTIFY enableableCoinsChanged)
         Q_PROPERTY(QObject* current_coin_info READ get_current_coin_info NOTIFY coinInfoChanged)
         Q_PROPERTY(QString fiat READ get_current_fiat WRITE set_current_fiat NOTIFY on_fiat_changed)
+        Q_PROPERTY(QString wallet_default_name READ get_wallet_default_name WRITE set_wallet_default_name NOTIFY on_wallet_default_name_changed)
         Q_PROPERTY(QString balance_fiat_all READ get_balance_fiat_all WRITE set_current_balance_fiat_all NOTIFY on_fiat_balance_all_changed)
         Q_PROPERTY(QString initial_loading_status READ get_status WRITE set_status NOTIFY on_status_changed)
 
@@ -76,10 +77,12 @@ namespace atomic_dex
         QObjectList           get_enableable_coins() const noexcept;
         QString               get_current_fiat() const noexcept;
         QString               get_balance_fiat_all() const noexcept;
+        QString               get_wallet_default_name() const noexcept;
         QString               get_status() const noexcept;
 
         //! Properties Setter
         void set_current_fiat(QString current_fiat) noexcept;
+        void set_wallet_default_name(QString wallet_default_name) noexcept;
         void set_current_balance_fiat_all(QString current_fiat) noexcept;
         void set_status(QString status) noexcept;
 
@@ -131,6 +134,7 @@ namespace atomic_dex
         void on_fiat_changed();
         void on_fiat_balance_all_changed();
         void on_status_changed();
+        void on_wallet_default_name_changed();
         void myOrdersUpdated();
 
       private:
@@ -145,6 +149,7 @@ namespace atomic_dex
         QString            m_current_fiat{"USD"};
         QString            m_current_status{"None"};
         QString            m_current_balance_all{"0.00"};
+        QString            m_current_default_wallet{""};
         current_coin_info* m_coin_info;
     };
 } // namespace atomic_dex
