@@ -757,4 +757,10 @@ namespace atomic_dex
         }
         return "nonexistent";
     }
+
+    bool
+    application::disconnect_default_wallet() const
+    {
+        return fs::remove(ag::core::assets_real_path() / "config/default.wallet");
+    }
 } // namespace atomic_dex

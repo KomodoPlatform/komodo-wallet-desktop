@@ -103,6 +103,7 @@ namespace atomic_dex
         Q_INVOKABLE QStringList get_wallets() const;
         Q_INVOKABLE bool        is_there_a_default_wallet() const;
         Q_INVOKABLE QString     get_default_wallet_name() const;
+        Q_INVOKABLE bool        disconnect_default_wallet() const;
         Q_INVOKABLE bool        create(const QString& password, const QString& seed, const QString& wallet_name);
         Q_INVOKABLE bool        enable_coins(const QStringList& coins);
         Q_INVOKABLE QString     get_balance(const QString& coin);
