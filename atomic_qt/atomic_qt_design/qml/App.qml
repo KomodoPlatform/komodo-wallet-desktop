@@ -10,7 +10,7 @@ Rectangle {
     color: Style.colorTheme8
 
     function firstPage() {
-        return API.get().first_run() ? idx_first_launch : idx_login
+        return !API.get().first_run() && API.get().is_there_a_default_wallet() ? idx_login : idx_first_launch
     }
 
     readonly property int idx_first_launch: 0
@@ -19,7 +19,7 @@ Rectangle {
     readonly property int idx_login: 3
     readonly property int idx_initial_loading: 4
     readonly property int idx_dashboard: 5
-    property int current_page: API.design_editor ? idx_dashboard : firstPage()
+    property int current_page: API.design_editor ? firstPage() : firstPage()
 
     StackLayout {
         anchors.fill: parent
