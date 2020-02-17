@@ -76,6 +76,9 @@ QtObject {
 
        is_there_a_default_wallet: () => { return true },
        get_default_wallet_name: () => { return "naezith" },
+        disconnect: () => {},
+        delete_wallet: () => {},
+
 
         create: (password, seed, wallet_name) => {
             console.log("Creating the seed with password:")
