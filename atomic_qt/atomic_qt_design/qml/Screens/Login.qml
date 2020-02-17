@@ -7,7 +7,7 @@ import "../Constants"
 
 SetupPage {
     // Override
-    function onClickedRecoverSeed() {}
+    function onClickedBack() {}
     function postLoginSuccess() {}
 
     // Local
@@ -35,8 +35,8 @@ SetupPage {
 
         RowLayout {
             Button {
-                text: qsTr("Recover Seed")
-                onClicked: onClickedRecoverSeed()
+                text: qsTr("Back")
+                onClicked: onClickedBack()
             }
 
             Button {

@@ -11,6 +11,13 @@ SetupPage {
     function onClickedRecoverSeed() {}
     function onClickedWallet() {}
 
+    // Local
+    function updateWallets() {
+        wallets = API.get().get_wallets()
+    }
+
+    property var wallets: ([])
+
     image_scale: 0.7
     image_path: General.image_path + "komodo-icon.png"
     title: qsTr("Welcome!")
@@ -49,7 +56,7 @@ SetupPage {
             implicitHeight: contentItem.childrenRect.height
             clip: true
 
-            model: API.get().get_wallets()
+            model: wallets
 
             delegate: Rectangle {
                 property bool hovered: false
@@ -75,13 +82,13 @@ SetupPage {
                     anchors.left: parent.left
                     anchors.leftMargin: 5
 
-                    text: model.modelData
+                    text: " ⚬   " + model.modelData
                     anchors.verticalCenter: parent.verticalCenter
                 }
 
                 // Line
                 HorizontalLine {
-                    visible: index !== items.length -1
+                    visible: index !== wallets.length - 1
                     width: parent.width
                     color: Style.colorWhite9
                     anchors.bottom: parent.bottom
