@@ -29,6 +29,7 @@ Rectangle {
         FirstLaunch {
             function onClickedNewUser() { current_page = idx_new_user }
             function onClickedRecoverSeed() { current_page = idx_recover_seed }
+            function onClickedWallet() { current_page = idx_login }
         }
 
         RecoverSeed {
