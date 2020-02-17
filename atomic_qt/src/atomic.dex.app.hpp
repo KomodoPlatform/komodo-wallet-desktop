@@ -50,6 +50,7 @@ namespace atomic_dex
         void refresh_transactions(const mm2& mm2);
         void refresh_fiat_balance(const mm2& mm2, const coinpaprika_provider& paprika);
         void refresh_address(mm2& mm2);
+        void connect_signals();
         void tick();
 
       public:

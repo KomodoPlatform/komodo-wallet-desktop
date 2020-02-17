@@ -122,6 +122,10 @@ namespace atomic_dex
         {
             m_mm2_init_thread.join();
         }
+
+        dispatcher_.sink<gui_enter_trading>().disconnect<&mm2::on_gui_enter_trading>(*this);
+        dispatcher_.sink<gui_leave_trading>().disconnect<&mm2::on_gui_leave_trading>(*this);
+        dispatcher_.sink<orderbook_refresh>().disconnect<&mm2::on_refresh_orderbook>(*this);
     }
 
     const std::atomic_bool&

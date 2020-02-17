@@ -241,7 +241,10 @@ namespace atomic_dex
         this->process_one_frame();
         if (this->m_need_a_full_refresh_of_mm2)
         {
-            system_manager_.create_system<mm2>();
+            auto& mm2_s = system_manager_.create_system<mm2>();
+            system_manager_.create_system<coinpaprika_provider>(mm2_s);
+
+            connect_signals();
             this->m_need_a_full_refresh_of_mm2 = false;
         }
         auto& mm2     = get_mm2();
@@ -401,13 +404,7 @@ namespace atomic_dex
         auto& mm2_system = system_manager_.create_system<mm2>();
         system_manager_.create_system<coinpaprika_provider>(mm2_system);
 
-        get_dispatcher().sink<change_ticker_event>().connect<&application::on_change_ticker_event>(*this);
-        get_dispatcher().sink<enabled_coins_event>().connect<&application::on_enabled_coins_event>(*this);
-        get_dispatcher().sink<tx_fetch_finished>().connect<&application::on_tx_fetch_finished_event>(*this);
-        get_dispatcher().sink<coin_disabled>().connect<&application::on_coin_disabled_event>(*this);
-        get_dispatcher().sink<mm2_initialized>().connect<&application::on_mm2_initialized_event>(*this);
-        get_dispatcher().sink<mm2_started>().connect<&application::on_mm2_started_event>(*this);
-        get_dispatcher().sink<refresh_order_needed>().connect<&application::on_refresh_order_event>(*this);
+        connect_signals();
     }
 
     void
@@ -767,6 +764,15 @@ namespace atomic_dex
     application::disconnect()
     {
         system_manager_.mark_system<mm2>();
+        system_manager_.mark_system<coinpaprika_provider>();
+        get_dispatcher().sink<change_ticker_event>().disconnect<&application::on_change_ticker_event>(*this);
+        get_dispatcher().sink<enabled_coins_event>().disconnect<&application::on_enabled_coins_event>(*this);
+        get_dispatcher().sink<tx_fetch_finished>().disconnect<&application::on_tx_fetch_finished_event>(*this);
+        get_dispatcher().sink<coin_disabled>().disconnect<&application::on_coin_disabled_event>(*this);
+        get_dispatcher().sink<mm2_initialized>().disconnect<&application::on_mm2_initialized_event>(*this);
+        get_dispatcher().sink<mm2_started>().disconnect<&application::on_mm2_started_event>(*this);
+        get_dispatcher().sink<refresh_order_needed>().disconnect<&application::on_refresh_order_event>(*this);
+
         this->m_need_a_full_refresh_of_mm2 = true;
         return fs::remove(ag::core::assets_real_path() / "config/default.wallet");
     }
@@ -786,9 +792,24 @@ namespace atomic_dex
         {
             std::ofstream ofs((ag::core::assets_real_path() / "config/default.wallet"s).string());
             ofs << name.toStdString();
-        } else {
+        }
+        else
+        {
             std::ofstream ofs((ag::core::assets_real_path() / "config/default.wallet"s).string(), std::ios_base::out | std::ios_base::trunc);
             ofs << name.toStdString();
         }
+    }
+
+    void
+    application::connect_signals()
+    {
+        LOG_SCOPE_FUNCTION(INFO);
+        get_dispatcher().sink<change_ticker_event>().connect<&application::on_change_ticker_event>(*this);
+        get_dispatcher().sink<enabled_coins_event>().connect<&application::on_enabled_coins_event>(*this);
+        get_dispatcher().sink<tx_fetch_finished>().connect<&application::on_tx_fetch_finished_event>(*this);
+        get_dispatcher().sink<coin_disabled>().connect<&application::on_coin_disabled_event>(*this);
+        get_dispatcher().sink<mm2_initialized>().connect<&application::on_mm2_initialized_event>(*this);
+        get_dispatcher().sink<mm2_started>().connect<&application::on_mm2_started_event>(*this);
+        get_dispatcher().sink<refresh_order_needed>().connect<&application::on_refresh_order_event>(*this);
     }
 } // namespace atomic_dex

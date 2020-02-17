@@ -59,6 +59,7 @@ namespace atomic_dex
 
     coinpaprika_provider::coinpaprika_provider(entt::registry& registry, mm2& mm2_instance) : system(registry), m_mm2_instance(mm2_instance)
     {
+        LOG_SCOPE_FUNCTION(INFO);
         disable();
         dispatcher_.sink<mm2_started>().connect<&coinpaprika_provider::on_mm2_started>(*this);
         dispatcher_.sink<coin_enabled>().connect<&coinpaprika_provider::on_coin_enabled>(*this);
@@ -72,11 +73,15 @@ namespace atomic_dex
 
     coinpaprika_provider::~coinpaprika_provider() noexcept
     {
+        LOG_SCOPE_FUNCTION(INFO);
         m_provider_thread_timer.interrupt();
         if (m_provider_rates_thread.joinable())
         {
             m_provider_rates_thread.join();
         }
+        dispatcher_.sink<mm2_started>().disconnect<&coinpaprika_provider::on_mm2_started>(*this);
+        dispatcher_.sink<coin_enabled>().disconnect<&coinpaprika_provider::on_coin_enabled>(*this);
+        dispatcher_.sink<coin_disabled>().disconnect<&coinpaprika_provider::on_coin_disabled>(*this);
     }
 
     void
