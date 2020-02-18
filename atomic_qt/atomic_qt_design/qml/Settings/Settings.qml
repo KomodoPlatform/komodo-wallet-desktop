@@ -7,6 +7,11 @@ import "../Components"
 import "../Constants"
 
 Item {
+    function disconnect() {
+        API.get().disconnect()
+        onDisconnect()
+    }
+
     ColumnLayout {
         anchors.centerIn: parent
         DefaultText {
@@ -28,17 +33,13 @@ Item {
                     text: qsTr("Delete Wallet")
                     onClicked: {
                         API.get().delete_wallet(API.get().wallet_default_name)
-                        API.get().disconnect()
-                        onDisconnect()
+                        disconnect()
                     }
                 }
 
                 Button {
                     text: qsTr("Log out")
-                    onClicked: {
-                        API.get().disconnect()
-                        onDisconnect()
-                    }
+                    onClicked: disconnect()
                 }
             }
         }
