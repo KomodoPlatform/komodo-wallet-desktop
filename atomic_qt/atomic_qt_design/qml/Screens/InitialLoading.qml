@@ -27,11 +27,10 @@ SetupPage {
     image_path: General.image_path + "komodo-icon.png"
     title: qsTr("Loading, please wait")
     content: RowLayout {
-        spacing: -10
-
-
         BusyIndicator {
             Layout.alignment: Qt.AlignHCenter
+            Layout.leftMargin: -15
+            Layout.rightMargin: Layout.leftMargin
             scale: 0.5
         }
 
