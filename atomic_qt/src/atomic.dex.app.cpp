@@ -154,7 +154,7 @@ namespace atomic_dex
 
             std::ofstream ofs((ag::core::assets_real_path() / "config/default.wallet"s).string());
             ofs << wallet_name.toStdString();
-            set_default_wallet(wallet_name);
+            set_wallet_default_name(wallet_name);
 
             return true;
         }
@@ -404,6 +404,9 @@ namespace atomic_dex
         system_manager_.create_system<coinpaprika_provider>(mm2_system);
 
         connect_signals();
+        if (is_there_a_default_wallet()) {
+            set_wallet_default_name(get_default_wallet_name());
+        }
     }
 
     void
@@ -774,7 +777,6 @@ namespace atomic_dex
 
         this->m_need_a_full_refresh_of_mm2 = true;
 
-        set_default_wallet("");
         return fs::remove(ag::core::assets_real_path() / "config/default.wallet");
     }
 
@@ -783,24 +785,6 @@ namespace atomic_dex
     {
         using namespace std::string_literals;
         return fs::remove(ag::core::assets_real_path() / ("config/"s + wallet_name.toStdString() + ".seed"s));
-    }
-
-    void
-    application::set_default_wallet(const QString& name)
-    {
-        using namespace std::string_literals;
-        if (not fs::exists(ag::core::assets_real_path() / "config/default.wallet"s))
-        {
-            std::ofstream ofs((ag::core::assets_real_path() / "config/default.wallet"s).string());
-            ofs << name.toStdString();
-        }
-        else
-        {
-            std::ofstream ofs((ag::core::assets_real_path() / "config/default.wallet"s).string(), std::ios_base::out | std::ios_base::trunc);
-            ofs << name.toStdString();
-        }
-
-        this->set_wallet_default_name(name);
     }
 
     void
@@ -825,6 +809,22 @@ namespace atomic_dex
     void
     application::set_wallet_default_name(QString wallet_name) noexcept
     {
+        using namespace std::string_literals;
+        if (wallet_name == "") {
+            fs::remove(ag::core::assets_real_path() / "config/default.wallet");
+            return;
+        }
+        if (not fs::exists(ag::core::assets_real_path() / "config/default.wallet"s))
+        {
+            std::ofstream ofs((ag::core::assets_real_path() / "config/default.wallet"s).string());
+            ofs << wallet_name.toStdString();
+        }
+        else
+        {
+            std::ofstream ofs((ag::core::assets_real_path() / "config/default.wallet"s).string(), std::ios_base::out | std::ios_base::trunc);
+            ofs << wallet_name.toStdString();
+        }
+
         this->m_current_default_wallet = std::move(wallet_name);
         emit on_wallet_default_name_changed();
     }
