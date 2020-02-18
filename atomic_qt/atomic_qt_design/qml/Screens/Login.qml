@@ -37,12 +37,13 @@ SetupPage {
     content: ColumnLayout {
         function reset() {
             login.reset()
-            input_password.field.text = ""
+            input_password.reset()
         }
 
         width: 275
-        PasswordField {
+        PasswordForm {
             id: input_password
+            confirm: false
         }
 
         RowLayout {

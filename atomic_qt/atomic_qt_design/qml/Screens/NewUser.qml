@@ -49,15 +49,8 @@ SetupPage {
             field.placeholderText: qsTr("Enter the generated seed here")
         }
 
-        PasswordField {
+        PasswordForm {
             id: input_password
-            hide_hint: true
-        }
-
-        PasswordField {
-            id: input_confirm_password
-            title: qsTr("Confirm Password")
-            field.placeholderText: qsTr("Enter the same password to confirm")
         }
 
         RowLayout {
@@ -73,10 +66,8 @@ SetupPage {
                             input_wallet_name.field.acceptableInput === true &&
                             input_confirm_seed.field.text.length !== '' &&
                             input_password.isValid() &&
-                            input_confirm_password.isValid() &&
                             // Correct confirm fields
-                            input_generated_seed.field.text === input_confirm_seed.field.text &&
-                            input_password.field.text === input_confirm_password.field.text
+                            input_generated_seed.field.text === input_confirm_seed.field.text
             }
         }
 
