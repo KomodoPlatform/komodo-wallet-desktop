@@ -6,20 +6,26 @@ import "../Components"
 import "../Constants"
 
 SetupPage {
+    id: login
     // Override
     function onClickedBack() {}
     function postLoginSuccess() {}
 
     // Local
+    function reset() {
+        text_error = ""
+    }
+
     function onClickedLogin(password) {
         if(API.get().login(password, API.get().wallet_default_name)) {
             console.log("Success: Login")
-            text_error = ""
             postLoginSuccess()
+            return true
         }
         else {
             console.log("Failed: Login")
             text_error = "Failed to login"
+            return false
         }
     }
 
@@ -29,6 +35,11 @@ SetupPage {
     image_path: General.image_path + "setup-logs.svg"
     title: qsTr("Login") + ": " + API.get().wallet_default_name
     content: ColumnLayout {
+        function reset() {
+            login.reset()
+            input_password.field.text = ""
+        }
+
         width: 275
         PasswordField {
             id: input_password
@@ -39,15 +50,17 @@ SetupPage {
                 text: qsTr("Back")
                 onClicked: {
                     API.get().wallet_default_name = ""
-                    text_error = ""
-                    input_password.field.text = ""
+                    reset()
                     onClickedBack()
                 }
             }
 
             Button {
                 text: qsTr("Login")
-                onClicked: onClickedLogin(input_password.field.text)
+                onClicked: {
+                    if(onClickedLogin(input_password.field.text))
+                        reset()
+                }
                 enabled:    // Fields are not empty
                             input_password.field.acceptableInput === true
             }
