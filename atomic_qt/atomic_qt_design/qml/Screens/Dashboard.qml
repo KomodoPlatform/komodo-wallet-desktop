@@ -16,6 +16,10 @@ Item {
 
     property int current_page: API.design_editor ? General.idx_dashboard_settings : General.idx_dashboard_wallet
 
+    function reset() {
+        current_page = General.idx_dashboard_wallet
+    }
+
     onCurrent_pageChanged: {
         if(current_page === General.idx_dashboard_exchange) API.get().on_gui_enter_dex()
         else API.get().on_gui_leave_dex()

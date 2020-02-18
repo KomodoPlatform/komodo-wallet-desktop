@@ -57,6 +57,7 @@ Rectangle {
             function postLoginSuccess() {
                 initial_loading.check_loading_complete.running = true
                 current_page = idx_initial_loading
+                dashboard.reset()
             }
         }
 
@@ -66,7 +67,7 @@ Rectangle {
         }
 
         Dashboard {
-
+            id: dashboard
         }
     }
 }
