@@ -82,7 +82,7 @@ SetupPage {
                     anchors.left: parent.left
                     anchors.leftMargin: 5
 
-                    text: " ⚬   " + model.modelData
+                    text: Style.listItemPrefix + model.modelData
                     anchors.verticalCenter: parent.verticalCenter
                 }
 

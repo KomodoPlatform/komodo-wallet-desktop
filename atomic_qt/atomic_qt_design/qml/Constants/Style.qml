@@ -8,7 +8,9 @@ QtObject {
                                              pixelSize: Qt.application.font.pixelSize
                                          })
 
+    readonly property string listItemPrefix:  " ⚬   "
 
+    readonly property int textSizeSmall: 10
     readonly property int textSize: 16
     readonly property int textSize2: 24
     readonly property int textSize3: 36

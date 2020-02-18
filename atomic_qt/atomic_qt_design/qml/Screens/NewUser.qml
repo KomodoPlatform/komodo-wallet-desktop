@@ -51,6 +51,7 @@ SetupPage {
 
         PasswordField {
             id: input_password
+            hide_hint: true
         }
 
         PasswordField {
