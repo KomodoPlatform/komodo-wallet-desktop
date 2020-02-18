@@ -21,12 +21,24 @@ Item {
             width: 400
             height: 200
 
-            Button {
+            RowLayout {
                 anchors.centerIn: parent
-                text: qsTr("Log out")
-                onClicked: {
-                    API.get().disconnect()
-                    onDisconnect()
+
+                Button {
+                    text: qsTr("Delete Wallet")
+                    onClicked: {
+                        API.get().delete_wallet(API.get().wallet_default_name)
+                        API.get().disconnect()
+                        onDisconnect()
+                    }
+                }
+
+                Button {
+                    text: qsTr("Log out")
+                    onClicked: {
+                        API.get().disconnect()
+                        onDisconnect()
+                    }
                 }
             }
         }
