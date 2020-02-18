@@ -61,8 +61,7 @@ SetupPage {
                     if(onClickedLogin(input_password.field.text))
                         reset()
                 }
-                enabled:    // Fields are not empty
-                            input_password.field.acceptableInput === true
+                enabled: input_password.isValid()
             }
         }
 

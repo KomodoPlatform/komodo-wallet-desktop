@@ -62,8 +62,8 @@ SetupPage {
                 enabled:     // Fields are not empty
                              input_wallet_name.field.acceptableInput === true &&
                              input_seed.field.text.length !== '' &&
-                             input_password.field.acceptableInput === true &&
-                             input_confirm_password.field.acceptableInput === true &&
+                             input_password.isValid() &&
+                             input_confirm_password.isValid() &&
                              // Correct confirm fields
                              input_password.field.text === input_confirm_password.field.text
             }

@@ -12,6 +12,7 @@ QtObject {
        },
 
         // Other
+        get_regex_password_policy: () => { return new RegExp(/^(?=.{16,})(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[@#$%{}[\]()\/\\'\"`~,;:.<>+\-_=!^&*|?]).*$/)},
         wallet_default_name: "",
 
         balance_fiat_all: "12345678.90",
