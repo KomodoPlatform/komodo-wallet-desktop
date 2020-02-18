@@ -13,7 +13,6 @@ SetupPage {
     // Local
     function onClickedConfirm(password, seed, wallet_name) {
         if(API.get().create(password, seed, wallet_name)) {
-            API.get().set_default_wallet(wallet_name)
             console.log("Success: Recover seed")
             postConfirmSuccess()
         }

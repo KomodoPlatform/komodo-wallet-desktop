@@ -72,7 +72,7 @@ SetupPage {
                     hoverEnabled: true
                     onHoveredChanged: hovered = containsMouse
                     onClicked: {
-                        API.get().set_default_wallet(model.modelData)
+                        API.get().wallet_default_name = model.modelData
                         onClickedWallet()
                     }
                 }

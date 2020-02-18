@@ -12,6 +12,8 @@ QtObject {
        },
 
         // Other
+        wallet_default_name: "",
+
         balance_fiat_all: "12345678.90",
 
         fiat: "USD",
@@ -75,8 +77,6 @@ QtObject {
         },
 
        is_there_a_default_wallet: () => { return true },
-       get_default_wallet_name: () => { return "naezith" },
-       set_default_wallet: (name) => { },
         disconnect: () => {},
         delete_wallet: (wallet_name) => {},
 

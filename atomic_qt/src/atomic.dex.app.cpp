@@ -772,6 +772,8 @@ namespace atomic_dex
         get_dispatcher().sink<refresh_order_needed>().disconnect<&application::on_refresh_order_event>(*this);
 
         this->m_need_a_full_refresh_of_mm2 = true;
+
+        set_default_wallet("");
         return fs::remove(ag::core::assets_real_path() / "config/default.wallet");
     }
 
