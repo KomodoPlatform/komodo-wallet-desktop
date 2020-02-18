@@ -107,4 +107,10 @@ namespace atomic_dex
 
         return out.str();
     }
+
+    const char*
+    get_regex_password_policy()
+    {
+        return g_regex_password_policy;
+    }
 } // namespace atomic_dex

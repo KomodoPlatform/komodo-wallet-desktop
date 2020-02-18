@@ -828,4 +828,10 @@ namespace atomic_dex
         this->m_current_default_wallet = std::move(wallet_name);
         emit on_wallet_default_name_changed();
     }
+
+    QString
+    atomic_dex::application::get_regex_password_policy() const noexcept
+    {
+        return QString(::atomic_dex::get_regex_password_policy());
+    }
 } // namespace atomic_dex
