@@ -154,6 +154,7 @@ namespace atomic_dex
 
             std::ofstream ofs((ag::core::assets_real_path() / "config/default.wallet"s).string());
             ofs << wallet_name.toStdString();
+            set_default_wallet(wallet_name);
 
             return true;
         }
