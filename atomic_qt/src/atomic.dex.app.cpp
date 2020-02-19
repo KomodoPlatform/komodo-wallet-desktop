@@ -664,7 +664,7 @@ namespace atomic_dex
                 j_out.push_back(current_j_bid);
             }
             auto out_orderbook = QJsonDocument::fromJson(QString::fromStdString(j_out.dump()).toUtf8());
-            out.insert(QString::fromStdString(current_orderbook.base), out_orderbook.toVariant());
+            out.insert(QString::fromStdString(current_orderbook.rel), out_orderbook.toVariant());
         }
         return out;
     }

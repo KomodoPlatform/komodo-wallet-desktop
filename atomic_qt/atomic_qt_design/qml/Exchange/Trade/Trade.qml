@@ -68,7 +68,7 @@ Item {
         else {
             if(validBaseRel()) {
                 reset()
-                API.get().set_current_orderbook(base, rel)
+                API.get().set_current_orderbook(base)
                 orderbook.updateOrderbook()
 
                 exchange.onTradeTickerChanged(base)
