@@ -86,6 +86,38 @@
     "active": false,
     "currently_enabled": false
   },
+  "DEX": {
+    "coin": "DEX",
+    "name": "Dex",
+    "type": "Smart Chain",
+    "rpcport": 7771,
+    "pubtype": 60,
+    "p2shtype": 85,
+    "wiftype": 188,
+    "txversion": 4,
+    "overwintered": 1,
+    "txfee": 1000,
+    "mm2": 1,
+    "coingecko_id": "test-coin",
+    "coinpaprika_id": "test-coin",
+    "is_erc_20": false,
+    "electrum": [
+      {
+        "url": "electrum1.cipig.net:10006"
+      },
+      {
+        "url": "electrum2.cipig.net:10006"
+      },
+      {
+        "url": "electrum3.cipig.net:10006"
+      }
+    ],
+    "explorer_url": [
+      "https://kmdexplorer.io/"
+    ],
+    "active": false,
+    "currently_enabled": false
+  },
   "RICK": {
     "coin": "RICK",
     "asset": "RICK",
