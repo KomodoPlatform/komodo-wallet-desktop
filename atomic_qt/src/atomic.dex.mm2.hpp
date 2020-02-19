@@ -74,7 +74,7 @@ namespace atomic_dex
         using t_my_orders           = t_concurrent_reg<t_ticker, t_my_orders_answer>;
         using t_tx_history_registry = t_concurrent_reg<t_ticker, t_transactions>;
         using t_tx_state_registry   = t_concurrent_reg<t_ticker, t_tx_state>;
-        using t_orderbook_registry  = t_concurrent_reg<t_ticker, t_orderbook_answer>;
+        using t_orderbook_registry  = t_concurrent_reg<t_ticker, std::vector<t_orderbook_answer>>;
         using t_swaps_registry      = t_concurrent_reg<t_ticker, t_my_recent_swaps_answer>;
 
         //! Process
@@ -108,7 +108,7 @@ namespace atomic_dex
         void process_tx(const std::string& ticker);
 
         //! Refresh the orderbook registry (internal)
-        void process_orderbook(const std::string& base, const std::string& rel);
+        void process_orderbook(const std::string& base);
 
       public:
         //! Constructor
@@ -212,7 +212,7 @@ namespace atomic_dex
         [[nodiscard]] coin_config get_coin_info(const std::string& ticker) const;
 
         //! Get Current orderbook
-        [[nodiscard]] t_orderbook_answer get_current_orderbook(t_mm2_ec& ec) const noexcept;
+        [[nodiscard]] std::vector<t_orderbook_answer> get_current_orderbook(t_mm2_ec& ec) const noexcept;
 
         //! Get orders
         [[nodiscard]] ::mm2::api::my_orders_answer              get_orders(const std::string& ticker, t_mm2_ec& ec) const noexcept;

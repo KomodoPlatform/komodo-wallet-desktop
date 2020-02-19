@@ -355,7 +355,7 @@ namespace atomic_dex
         return m_coins_informations.at(ticker);
     }
 
-    t_orderbook_answer
+    std::vector<t_orderbook_answer>
     mm2::get_current_orderbook(t_mm2_ec& ec) const noexcept
     {
         if (m_current_orderbook.empty())
@@ -367,16 +367,34 @@ namespace atomic_dex
     }
 
     void
-    mm2::process_orderbook(const std::string& base, const std::string& rel)
+    mm2::process_orderbook(const std::string& base)
     {
-        t_orderbook_request request{.base = base, .rel = rel};
+        auto&&                          coins = get_enabled_coins();
+        std::vector<t_orderbook_answer> out;
+        out.reserve(coins.size() - 1);
+        for (auto&& current_coin: coins)
+        {
+            if (current_coin.ticker != base)
+            {
+                t_orderbook_request request{.base = base, .rel = current_coin.ticker};
+                auto                answer = rpc_orderbook(std::move(request));
+                if (answer.rpc_result_code not_eq -1)
+                {
+                    out.emplace_back(answer);
+                }
+            }
+        }
+        if (not out.empty()) {
+            m_current_orderbook.insert_or_assign(base, out);
+        }
+        /*t_orderbook_request request{.base = base, .rel = rel};
         auto                answer = rpc_orderbook(std::move(request));
 
         if (answer.rpc_result_code not_eq -1)
         {
             m_current_orderbook.clear();
             m_current_orderbook.insert_or_assign(base + "/" + rel, answer);
-        }
+        }*/
     }
 
     void
@@ -392,11 +410,11 @@ namespace atomic_dex
             return;
         }
 
-        std::string              current = (*m_current_orderbook.begin()).first;
-        std::vector<std::string> results;
+        std::string current = (*m_current_orderbook.begin()).first;
+        // std::vector<std::string> results;
 
-        boost::split(results, current, [](char c) { return c == '/'; });
-        process_orderbook(results[0], results[1]);
+        // boost::split(results, current, [](char c) { return c == '/'; });
+        process_orderbook(current);
     }
 
     void
@@ -629,11 +647,11 @@ namespace atomic_dex
     {
         LOG_SCOPE_FUNCTION(INFO);
 
-        const auto key = evt.base + "/" + evt.rel;
+        const auto key = evt.base;
 
         if (m_current_orderbook.find(key) == m_current_orderbook.cend())
         {
-            process_orderbook(evt.base, evt.rel);
+            process_orderbook(evt.base);
         }
         else
         {

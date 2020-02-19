@@ -404,7 +404,8 @@ namespace atomic_dex
         system_manager_.create_system<coinpaprika_provider>(mm2_system);
 
         connect_signals();
-        if (is_there_a_default_wallet()) {
+        if (is_there_a_default_wallet())
+        {
             set_wallet_default_name(get_default_wallet_name());
         }
     }
@@ -643,17 +644,29 @@ namespace atomic_dex
     }
 
     void
-    application::set_current_orderbook(const QString& base, const QString& rel)
+    application::set_current_orderbook(const QString& base)
     {
-        this->dispatcher_.trigger<orderbook_refresh>(base.toStdString(), rel.toStdString());
+        this->dispatcher_.trigger<orderbook_refresh>(base.toStdString());
     }
 
-    QObject*
+    QVariantMap
     application::get_orderbook()
     {
+        QVariantMap     out;
         std::error_code ec;
         auto            answer = get_mm2().get_current_orderbook(ec);
-        return to_qt_binding(std::move(answer), this);
+        for (auto&& current_orderbook: answer)
+        {
+            nlohmann::json j_out = nlohmann::json::array();
+            for (auto&& current_bid: current_orderbook.bids) {
+                nlohmann::json current_j_bid = {{"volume", current_bid.maxvolume},
+                                                {"price", current_bid.price}};
+                j_out.push_back(current_j_bid);
+            }
+            auto out_orderbook = QJsonDocument::fromJson(QString::fromStdString(j_out.dump()).toUtf8());
+            out.insert(QString::fromStdString(current_orderbook.base), out_orderbook.toVariant());
+        }
+        return out;
     }
 
     QVariantMap
@@ -810,7 +823,8 @@ namespace atomic_dex
     application::set_wallet_default_name(QString wallet_name) noexcept
     {
         using namespace std::string_literals;
-        if (wallet_name == "") {
+        if (wallet_name == "")
+        {
             fs::remove(ag::core::assets_real_path() / "config/default.wallet");
             return;
         }
