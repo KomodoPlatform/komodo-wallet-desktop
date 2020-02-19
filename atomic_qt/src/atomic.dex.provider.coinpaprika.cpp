@@ -142,7 +142,7 @@ namespace atomic_dex
         std::stringstream          ss;
 
         if (not skip_precision) { ss.precision(2); }
-        ss << final_price;
+        ss << std::fixed << final_price;
 
         return ss.str() == "0" ? "0.00" : ss.str();
     }
@@ -176,8 +176,7 @@ namespace atomic_dex
         }
 
         ss.precision(2);
-        ss << final_price_f;
-
+        ss << std::fixed << final_price_f;
         return ss.str();
     }
 
@@ -193,7 +192,7 @@ namespace atomic_dex
         const auto                 final_price = amount_f * current_price_f;
         std::stringstream          ss;
         ss.precision(2);
-        ss << final_price;
+        ss << std::fixed << final_price;
         std::string final_price_str = ss.str();
         return final_price_str;
     }
