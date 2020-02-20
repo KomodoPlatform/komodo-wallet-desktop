@@ -60,10 +60,19 @@ Rectangle {
     color: Style.colorTheme7
     radius: Style.rectangleCornerRadius
 
-    implicitWidth: childrenRect.width
-    implicitHeight: childrenRect.height
+    implicitWidth: form_layout.width
+    implicitHeight: form_layout.height
+
+    DefaultText {
+        font.pointSize: Style.textSize2
+        text: qsTr(my_side ? "Sell" : "Receive")
+        anchors.horizontalCenter: parent.horizontalCenter
+        anchors.bottom: form_layout.top
+        anchors.bottomMargin: combo.Layout.rightMargin * 0.5
+    }
 
     ColumnLayout {
+        id: form_layout
         width: 300
         RowLayout {
             Image {

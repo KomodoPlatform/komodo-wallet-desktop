@@ -82,15 +82,6 @@ Item {
         }
     }
 
-
-    DefaultText {
-        anchors.bottom: form.top
-        anchors.bottomMargin: 5
-        anchors.horizontalCenter: parent.horizontalCenter
-        text: qsTr("TRADE")
-        font.pointSize: Style.textSize3
-    }
-
     ColumnLayout {
         id: form
         anchors.centerIn: parent
