@@ -11,10 +11,9 @@ ColumnLayout {
 
     property bool hiding: true
 
-    RowLayout {
-        DefaultText {
-            id: title_text
-        }
+    DefaultText {
+        id: title_text
+        visible: text !== ''
     }
 
     TextField {
