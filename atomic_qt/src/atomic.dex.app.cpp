@@ -658,9 +658,9 @@ namespace atomic_dex
         for (auto&& current_orderbook: answer)
         {
             nlohmann::json j_out = nlohmann::json::array();
-            for (auto&& current_bid: current_orderbook.bids) {
-                nlohmann::json current_j_bid = {{"volume", current_bid.maxvolume},
-                                                {"price", current_bid.price}};
+            for (auto&& current_bid: current_orderbook.bids)
+            {
+                nlohmann::json current_j_bid = {{"volume", current_bid.maxvolume}, {"price", current_bid.price}};
                 j_out.push_back(current_j_bid);
             }
             auto out_orderbook = QJsonDocument::fromJson(QString::fromStdString(j_out.dump()).toUtf8());
@@ -847,5 +847,16 @@ namespace atomic_dex
     atomic_dex::application::get_regex_password_policy() const noexcept
     {
         return QString(::atomic_dex::get_regex_password_policy());
+    }
+
+    QVariantMap
+    application::get_trade_infos(const QString& ticker, const QString& amount)
+    {
+        QVariantMap out;
+        out.insert("trade_fee", QString::fromStdString(get_mm2().get_trade_fee_str(ticker.toStdString(), amount.toStdString(), false)));
+        if (get_mm2().get_coin_info(ticker.toStdString()).is_erc_20) {
+            out.insert("is_ticker_of_fees_eth", true);
+        }
+        return out;
     }
 } // namespace atomic_dex
