@@ -44,6 +44,16 @@ SetupPage {
         PasswordForm {
             id: input_password
             confirm: false
+            field.onAccepted: {
+                // TODO: Remove this part at release
+                if(API.get().wallet_default_name === 'TestNaezith') {
+                    input_password.field.text = '1234567890-qwertY'
+                    onClickedLogin(input_password.field.text)
+                }
+                else {
+                    login_button.click()
+                }
+            }
         }
 
         RowLayout {
@@ -57,6 +67,7 @@ SetupPage {
             }
 
             Button {
+                id: login_button
                 text: qsTr("Login")
                 onClicked: {
                     if(onClickedLogin(input_password.field.text))
