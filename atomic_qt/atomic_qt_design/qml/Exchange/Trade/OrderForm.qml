@@ -93,7 +93,6 @@ Rectangle {
             Layout.rightMargin: combo.Layout.rightMargin
             Layout.topMargin: Layout.rightMargin
             Layout.bottomMargin: Layout.rightMargin
-            title: my_side ? qsTr("Sell") : qsTr("Receive")
             field.placeholderText: my_side ? qsTr("Amount to sell") : qsTr("Amount to receive")
             field.onTextChanged: capVolume()
         }
