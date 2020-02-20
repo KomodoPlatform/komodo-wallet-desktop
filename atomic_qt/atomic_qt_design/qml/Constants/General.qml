@@ -62,7 +62,7 @@ QtObject {
     }
 
     function getTickersAndBalances(coins) {
-        return coins.map(c => tickerAndBalance(c.ticker))
+        return coins.map(c => c.ticker + " (" + c.balance + ")")
     }
 
     function hasEnoughFunds(sell, base, rel, price, volume) {

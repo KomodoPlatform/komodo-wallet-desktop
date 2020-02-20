@@ -15,8 +15,26 @@ Item {
         setTicker(combo_base, ticker)
     }
 
-    function getCoins() {
-        return API.get().enabled_coins
+    function getCoins(my_side) {
+        const coins = API.get().enabled_coins
+        if(my_side === undefined) return coins
+
+        // Filter for Sell
+        if(my_side) {
+            return coins.filter(c => {
+                c.balance = API.get().get_balance(c.ticker)
+
+                return c.balance !== '' && parseFloat(c.balance) > 0
+            })
+        }
+        // Filter for Receive
+        else {
+            return coins
+        }
+    }
+
+    function getReceiveCoins() {
+        return getCoins()
     }
 
     function getTicker(is_base) {
@@ -33,8 +51,8 @@ Item {
         let rel = getTicker(false)
 
         // Fill previous ones if they are blank
-        if(prev_base === '') prev_base = getCoins().filter(c => c.ticker !== rel)[0].ticker
-        if(prev_rel === '') prev_rel = getCoins().filter(c => c.ticker !== base)[0].ticker
+        if(prev_base === '') prev_base = form_base.getAnyAvailableCoin(rel)
+        if(prev_rel === '') prev_rel = form_rel.getAnyAvailableCoin(base)
 
         // Get different value if they are same
         if(base === rel) {

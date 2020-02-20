@@ -10,29 +10,46 @@ Rectangle {
     property alias field: input_volume.field
     property bool my_side: false
 
+    function getFilteredCoins() {
+        return getCoins(my_side)
+    }
+
+    function getAnyAvailableCoin(filter_ticker) {
+        let coins = getFilteredCoins()
+        if(filter_ticker !== undefined || filter_ticker !== '')
+            coins = coins.filter(c => c.ticker !== filter_ticker)
+        return coins[0].ticker
+    }
+
+    function fieldsAreFilled() {
+        return input_volume.field.text !== '' && parseFloat(input_volume.field.text) > 0
+    }
 
     function isValid() {
-        const fields_are_filled = input_volume.field.text !== '' && parseFloat(input_volume.field.text) > 0
-
-        if(!my_side) return fields_are_filled
+        if(!my_side) return fieldsAreFilled()
 
         const ticker = getTicker()
 
         // Try to fit once more
-        if(!API.get().do_i_have_enough_funds(ticker, input_volume.field.text))
-            capVolume()
+        capVolume()
 
-        return fields_are_filled && API.get().do_i_have_enough_funds(ticker, input_volume.field.text)
+        return fieldsAreFilled() && API.get().do_i_have_enough_funds(ticker, input_volume.field.text)
     }
 
     function getTicker() {
         if(combo.currentIndex === -1) return ''
 
-        return getCoins()[combo.currentIndex].ticker
+        return getFilteredCoins()[combo.currentIndex].ticker
     }
 
     function setTicker(ticker) {
-        combo.currentIndex = getCoins().map(c => c.ticker).indexOf(ticker)
+        combo.currentIndex = getFilteredCoins().map(c => c.ticker).indexOf(ticker)
+
+        // If it doesn't exist, pick an existing one
+        if(combo.currentIndex === -1) {
+            setTicker(getAnyAvailableCoin())
+        }
+
         capVolume()
     }
 
@@ -77,7 +94,7 @@ Rectangle {
         RowLayout {
             Image {
                 Layout.leftMargin: combo.Layout.rightMargin
-                source: General.coinIcon(getTicker(combo))
+                source: General.coinIcon(getTicker())
                 Layout.preferredWidth: 32
                 Layout.preferredHeight: Layout.preferredWidth
             }
@@ -88,11 +105,11 @@ Rectangle {
                 Layout.topMargin: 10
                 Layout.rightMargin: 15
 
-                model: my_side ? General.getTickersAndBalances(getCoins()): General.getTickers(getCoins())
+                model: my_side ? General.getTickersAndBalances(getFilteredCoins()): General.getTickers(getFilteredCoins())
                 onCurrentTextChanged: {
                     setPair()
-                    if(my_side) prev_base = getTicker(combo)
-                    else prev_rel = getTicker(combo)
+                    if(my_side) prev_base = getTicker()
+                    else prev_rel = getTicker()
 
                     capVolume()
                 }

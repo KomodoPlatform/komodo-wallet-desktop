@@ -159,9 +159,9 @@ QtObject {
 
         get_balance: (ticker) => {
             switch(ticker) {
-               case "BTC": return "5.555"
+               case "BTC": return "0"
                case "KMD": return "5.555"
-               case "CHIPS": return "5.555"
+               case "CHIPS": return "0"
                case "RICK": return "3.33"
                case "MORTY": return "5.555"
             }
