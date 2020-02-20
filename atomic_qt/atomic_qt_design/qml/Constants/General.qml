@@ -56,6 +56,15 @@ QtObject {
         return coins.map(c => c.ticker)
     }
 
+
+    function tickerAndBalance(ticker) {
+        return ticker + " (" + API.get().get_balance(ticker) + ")"
+    }
+
+    function getTickersAndBalances(coins) {
+        return coins.map(c => tickerAndBalance(c.ticker))
+    }
+
     function hasEnoughFunds(sell, base, rel, price, volume) {
         if(sell) {
             if(volume === "") return true
