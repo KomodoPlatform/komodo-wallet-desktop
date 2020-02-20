@@ -120,6 +120,21 @@ namespace mm2::api
 
     balance_answer rpc_balance(balance_request&& request);
 
+    struct trade_fee_request
+    {
+        std::string coin;
+    };
+
+    void to_json(nlohmann::json& j, const trade_fee_request &cfg);
+
+    struct trade_fee_answer
+    {
+        std::string amount;
+        std::string coin;
+    };
+
+    void from_json(const nlohmann::json& j, trade_fee_answer& cfg);
+
     struct fee_regular_coin
     {
         std::string amount;
@@ -244,7 +259,7 @@ namespace mm2::api
         std::string                type;      ///< UtxoFixed, UtxoPerKbyte, EthGas
         std::optional<std::string> amount;    ///< for utxo only
         std::optional<std::string> gas_price; ///< price EthGas
-        std::optional<std::string> gas_limit;   ///< sets the gas limit for transaction
+        std::optional<std::string> gas_limit; ///< sets the gas limit for transaction
     };
 
     void to_json(nlohmann::json& j, const withdraw_fees& cfg);

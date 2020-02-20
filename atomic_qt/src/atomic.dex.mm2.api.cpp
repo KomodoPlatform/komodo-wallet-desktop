@@ -316,6 +316,11 @@ namespace mm2::api
         j["rel"]  = request.rel;
     }
 
+    void
+    to_json(nlohmann::json& j, const trade_fee_request& cfg)
+    {
+        j["coin"] = cfg.coin;
+    }
 
     void
     from_json(const nlohmann::json& j, order_contents& contents)
@@ -351,6 +356,13 @@ namespace mm2::api
 
         sys_time<std::chrono::milliseconds> tp{std::chrono::milliseconds{answer.timestamp}};
         answer.human_timestamp = date::format("%Y-%m-%d %I:%M:%S", tp);
+    }
+
+    void
+    from_json(const nlohmann::json& j, trade_fee_answer& cfg)
+    {
+        j.at("amount").get_to(cfg.amount);
+        j.at("coin").get_to(cfg.coin);
     }
 
     void
@@ -757,4 +769,5 @@ namespace mm2::api
     {
         return {{"method", std::move(method_name)}, {"userpass", "atomic_dex_mm2_passphrase"}};
     }
+
 } // namespace mm2::api
