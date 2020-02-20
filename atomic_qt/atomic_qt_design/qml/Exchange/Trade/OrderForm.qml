@@ -91,6 +91,15 @@ Rectangle {
         }
 
         RowLayout {
+            Button {
+                Layout.leftMargin: combo.Layout.rightMargin
+                Layout.topMargin: Layout.rightMargin
+                Layout.bottomMargin: Layout.rightMargin
+                visible: my_side
+                text: qsTr("MAX")
+                onClicked: input_volume.field.text = getMaxVolume()
+            }
+
             AmountField {
                 id: input_volume
                 Layout.fillWidth: true
@@ -100,15 +109,6 @@ Rectangle {
                 Layout.bottomMargin: Layout.rightMargin
                 field.placeholderText: my_side ? qsTr("Amount to sell") : qsTr("Amount to receive")
                 field.onTextChanged: capVolume()
-            }
-
-            Button {
-                Layout.rightMargin: combo.Layout.rightMargin
-                Layout.topMargin: Layout.rightMargin
-                Layout.bottomMargin: Layout.rightMargin
-                visible: my_side
-                text: qsTr("MAX")
-                onClicked: input_volume.field.text = getMaxVolume()
             }
         }
     }
