@@ -7,7 +7,22 @@ import "../../Constants"
 
 // Right side
 Rectangle {
+    property alias field: input_volume.field
     property bool my_side: false
+
+    function isValid() {
+        const fields_are_filled = input_volume.field.text !== '' && parseFloat(input_volume.field.text) > 0
+
+        if(!my_side) return fields_are_filled
+
+        const ticker = getTicker()
+
+        // Try to fit once more
+        if(!API.get().do_i_have_enough_funds(ticker, input_volume.field.text))
+            capVolume()
+
+        return fields_are_filled && API.get().do_i_have_enough_funds(ticker, input_volume.field.text)
+    }
 
     function getTicker() {
         if(combo.currentIndex === -1) return ''
@@ -17,6 +32,7 @@ Rectangle {
 
     function setTicker(ticker) {
         combo.currentIndex = getCoins().map(c => c.ticker).indexOf(ticker)
+        capVolume()
     }
 
     function reset() {

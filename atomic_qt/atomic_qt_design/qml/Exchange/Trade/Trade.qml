@@ -75,17 +75,38 @@ Item {
         }
     }
 
+    function trade(base, rel, base_volume, rel_volume) {
+        action_result = API.get().trade(base, rel, base_volume, rel_volume) ? "success" : "error"
+        if(action_result === "success") {
+            reset()
+        }
+    }
+
     ColumnLayout {
         anchors.centerIn: parent
         spacing: 15
 
+        // Sell
         OrderForm {
             id: form_base
+            Layout.fillWidth: true
             my_side: true
         }
 
+        // Receive
         OrderForm {
+            Layout.fillWidth: true
             id: form_rel
+        }
+
+        // Trade button
+        Button {
+            id: action_button
+            Layout.fillWidth: true
+
+            text: qsTr("Trade")
+            enabled: form_base.isValid() && form_rel.isValid()
+            onClicked: tradeCoin(getTicker(true), getTicker(false), form_base.field.text, form_rel.field.text)
         }
     }
 }

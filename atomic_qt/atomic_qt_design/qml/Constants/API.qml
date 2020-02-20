@@ -147,6 +147,12 @@ QtObject {
             return true
         },
 
+       trade: (base, rel, base_volume, rel_volume) => {
+           console.log(`Selling ${base_volume} ${base} for ${rel_volume} ${rel}`)
+
+           return true
+       },
+
         do_i_have_enough_funds: (ticker, amount) => {
             return parseFloat(mockAPI.current_coin_info.balance) >= parseFloat(amount)
         },
