@@ -93,6 +93,16 @@ Item {
             my_side: true
         }
 
+        Image {
+            source: General.image_path + "exchange-switch.svg"
+            Layout.alignment: Qt.AlignHCenter
+
+            MouseArea {
+                anchors.fill: parent
+                onClicked: swapPair()
+            }
+        }
+
         // Receive
         OrderForm {
             Layout.fillWidth: true
