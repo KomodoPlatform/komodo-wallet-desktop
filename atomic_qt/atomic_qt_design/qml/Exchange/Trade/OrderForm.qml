@@ -7,176 +7,88 @@ import "../../Constants"
 
 // Right side
 Rectangle {
-    property string base
-    property string rel
-    property bool sell
+    property bool my_side: false
 
-    // Local
-    property string action_result
+    function getTicker() {
+        if(combo.currentIndex === -1) return ''
 
-    function reset(reset_result=true) {
-        if(reset_result) action_result = ""
-        input_price.field.text = ""
-        input_volume.field.text = ""
+        return getCoins()[combo.currentIndex].ticker
     }
 
-    function onOrderSuccess() {
-        reset(false)
-        refresh_timer.restart()
-        stop_refreshing.restart()
+    function setTicker(ticker) {
+        combo.currentIndex = getCoins().map(c => c.ticker).indexOf(ticker)
     }
 
-    Timer {
-        id: refresh_timer
-        repeat: true
-        interval: 500
-        triggeredOnStart: true
-        onTriggered: API.get().refresh_orders_and_swaps()
+    function reset() {
+        if(my_side) {
+            input_volume.field.text = getMaxVolume()
+        }
+        else {
+            input_volume.field.text = ''
+        }
     }
 
-    Timer {
-        id: stop_refreshing
-        interval: 5000
-        onTriggered: refresh_timer.stop()
+    function getMaxVolume() {
+        return API.get().get_balance(getTicker())
     }
 
-    function sellCoin(base, rel, price, volume) {
-        action_result = API.get().place_sell_order(base, rel, price, volume) ? "success" : "error"
-        if(action_result === "success") onOrderSuccess()
-    }
-
-    function buyCoin(base, rel, price, volume) {
-        action_result = API.get().place_buy_order(base, rel, price, volume) ? "success" : "error"
-        if(action_result === "success") onOrderSuccess()
-    }
-
-    function amountToReceive(sell, base, rel, price, volume) {
-        return sell ? (parseFloat(price) * parseFloat(volume)) + " " + rel : volume + " " + base
-    }
-
-    function fieldsAreFilled() {
-        return input_price.field.text !== "" &&
-                input_volume.field.text !== "" &&
-                parseFloat(input_price.field.text) > 0 &&
-                parseFloat(input_volume.field.text) > 0
+    function capVolume() {
+        if(my_side && input_volume.field.acceptableInput) {
+            const cap = parseFloat(getMaxVolume())
+            const amt = parseFloat(input_volume.field.text)
+            if(amt > cap) input_volume.field.text = cap
+        }
     }
 
     color: Style.colorTheme7
     radius: Style.rectangleCornerRadius
 
-    ColumnLayout {
-        width: parent.width
+    implicitWidth: childrenRect.width
+    implicitHeight: childrenRect.height
 
-        RowLayout {
-            DefaultText {
-                id: title
+    RowLayout {
+        Image {
+            Layout.leftMargin: combo.Layout.rightMargin
+            source: General.coinIcon(getTicker(combo))
+            Layout.preferredWidth: 32
+            Layout.preferredHeight: Layout.preferredWidth
+        }
 
-                Layout.leftMargin: 15
-                Layout.topMargin: 10
-                Layout.bottomMargin: 5
+        ComboBox {
+            id: combo
+            Layout.preferredWidth: 125
+            Layout.topMargin: 10
+            Layout.bottomMargin: 10
+            Layout.rightMargin: 15
 
-                text: (sell ? qsTr("Sell") : qsTr("Buy")) + " " + base
-                font.pointSize: Style.textSize2
-            }
+            model: General.getTickers(getCoins())
+            onCurrentTextChanged: {
+                setPair()
+                if(my_side) prev_base = getTicker(combo)
+                else prev_rel = getTicker(combo)
 
-            Image {
-                source: General.coinIcon(base)
-                Layout.preferredWidth: 32
-                Layout.preferredHeight: Layout.preferredWidth
-            }
-            DefaultText {
-                text: base === "" ? "" : "(" + API.get().get_balance(base) + ")"
-                font.pointSize: Style.textSize
+                capVolume()
             }
         }
 
-        HorizontalLine {
-            Layout.fillWidth: true
-            color: Style.colorWhite8
-        }
-
-        // Volume
         AmountField {
             id: input_volume
-            Layout.leftMargin: title.Layout.leftMargin
-            Layout.rightMargin: Layout.leftMargin
-            Layout.topMargin: Layout.leftMargin
-            title: qsTr("Volume")
-            field.placeholderText: qsTr("Enter the amount")
+            Layout.preferredWidth: field.font.pointSize*10
+            Layout.rightMargin: combo.Layout.rightMargin
+            Layout.topMargin: Layout.rightMargin
+            Layout.bottomMargin: Layout.rightMargin
+            title: my_side ? qsTr("Sell") : qsTr("Receive")
+            field.placeholderText: my_side ? qsTr("Amount to sell") : qsTr("Amount to receive")
+            field.onTextChanged: capVolume()
         }
 
-        // Price
-        AmountField {
-            id: input_price
-            Layout.leftMargin: input_volume.Layout.leftMargin
-            Layout.rightMargin: Layout.leftMargin
-            title: qsTr("Price")
-            field.placeholderText: qsTr("Enter the price")
-        }
-
-        // Not enough funds error
-        DefaultText {
-            Layout.leftMargin: input_volume.Layout.leftMargin
-            Layout.rightMargin: Layout.leftMargin
-            Layout.maximumWidth: parent.width - Layout.leftMargin * 2
-            wrapMode: Text.Wrap
-            visible: !General.hasEnoughFunds(sell, base, rel, input_price.field.text, input_volume.field.text)
-
-            color: Style.colorRed
-
-            text: qsTr("Not enough funds.") + "\n" + qsTr("You have ") + API.get().get_balance(sell ? base : rel) + " " + (sell ? base : rel)
-        }
-
-        // Action button
         Button {
-            id: action_button
-            Layout.leftMargin: input_volume.Layout.leftMargin
-            Layout.rightMargin: Layout.leftMargin
-            Layout.fillWidth: true
-
-            text: sell ? qsTr("Sell") : qsTr("Buy")
-            enabled: fieldsAreFilled() && General.hasEnoughFunds(sell, base, rel, input_price.field.text, input_volume.field.text)
-            onClicked: sell ? sellCoin(base, rel, input_price.field.text, input_volume.field.text) : buyCoin(base, rel, input_price.field.text, input_volume.field.text)
-        }
-
-        // Amount to receive
-        DefaultText {
-            Layout.leftMargin: input_volume.Layout.leftMargin
-            Layout.rightMargin: Layout.leftMargin
-            Layout.maximumWidth: parent.width - Layout.leftMargin * 2
-            wrapMode: Text.Wrap
-            visible: action_button.enabled
-
-            color: Style.colorGreen
-
-            text: qsTr("You'll receive:") + "\n" + amountToReceive(sell, base, rel, input_price.field.text, input_volume.field.text)
-        }
-
-        // Result
-        DefaultText {
-            Layout.leftMargin: input_volume.Layout.leftMargin
-            Layout.rightMargin: Layout.leftMargin
-            Layout.maximumWidth: parent.width - Layout.leftMargin * 2
-            wrapMode: Text.Wrap
-            visible: action_result !== ""
-
-            color: action_result === "success" ? Style.colorGreen : Style.colorRed
-
-            text: action_result === "success" ? qsTr("Successfully placed the order!") : qsTr("Failed to place the order.")
+            Layout.rightMargin: combo.Layout.rightMargin
+            Layout.topMargin: Layout.rightMargin
+            Layout.bottomMargin: Layout.rightMargin
+            visible: my_side
+            text: qsTr("MAX")
+            onClicked: input_volume.field.text = getMaxVolume()
         }
     }
 }
-
-
-
-
-
-
-
-
-
-/*##^##
-Designer {
-    D{i:0;autoSize:true;height:480;width:640}
-}
-##^##*/

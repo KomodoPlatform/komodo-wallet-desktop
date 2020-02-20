@@ -42,8 +42,6 @@
         <file>atomic_qt_design/qml/Constants/API.qml</file>
         <file>atomic_qt_design/qml/Constants/Style.qml</file>
         <file>atomic_qt_design/qml/Exchange/Trade/Trade.qml</file>
-        <file>atomic_qt_design/qml/Exchange/Trade/OrderbookListView.qml</file>
-        <file>atomic_qt_design/qml/Exchange/Trade/Orderbook.qml</file>
         <file>atomic_qt_design/qml/Exchange/Trade/OrderForm.qml</file>
         <file>atomic_qt_design/qml/Exchange/Orders/Orders.qml</file>
         <file>atomic_qt_design/qml/Exchange/Orders/OrderList.qml</file>

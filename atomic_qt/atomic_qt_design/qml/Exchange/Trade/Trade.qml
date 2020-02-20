@@ -19,19 +19,18 @@ Item {
         return API.get().enabled_coins
     }
 
-    function getTicker(combo) {
-        if(combo.currentIndex === -1) return ''
-
-        return getCoins()[combo.currentIndex].ticker
+    function getTicker(is_base) {
+        return is_base ? form_base.getTicker() : form_rel.getTicker()
     }
 
-    function setTicker(combo, ticker) {
-        combo.currentIndex = getCoins().map(c => c.ticker).indexOf(ticker)
+    function setTicker(is_base, ticker) {
+        if(is_base) form_base.setTicker(ticker)
+        else form_rel.setTicker(ticker)
     }
 
     function swapPair() {
-        let base = getTicker(combo_base)
-        let rel = getTicker(combo_rel)
+        let base = getTicker(true)
+        let rel = getTicker(false)
 
         // Fill previous ones if they are blank
         if(prev_base === '') prev_base = getCoins().filter(c => c.ticker !== rel)[0].ticker
@@ -45,31 +44,31 @@ Item {
 
         // Swap
         const curr_base = base
-        setTicker(combo_base, rel)
-        setTicker(combo_rel, curr_base)
+        setTicker(true, rel)
+        setTicker(false, curr_base)
     }
 
     function validBaseRel() {
-        const base = getTicker(combo_base)
-        const rel = getTicker(combo_rel)
+        const base = getTicker(true)
+        const rel = getTicker(false)
         return base !== '' && rel !== '' && base !== rel
     }
 
     function reset() {
-        order_form_sell.reset()
-        order_form_buy.reset()
+        form_base.reset()
+        form_rel.reset()
     }
 
     function setPair() {
-        const base = getTicker(combo_base)
-        const rel = getTicker(combo_rel)
+        const base = getTicker(true)
+        const rel = getTicker(false)
 
         if(base === rel) swapPair()
         else {
             if(validBaseRel()) {
                 reset()
                 API.get().set_current_orderbook(base)
-                orderbook.updateOrderbook()
+                //orderbook.updateOrderbook()
 
                 exchange.onTradeTickerChanged(base)
             }
@@ -77,118 +76,16 @@ Item {
     }
 
     ColumnLayout {
-        anchors.horizontalCenter: parent.horizontalCenter
-
-        width: parent.width
-        height: parent.height
+        anchors.centerIn: parent
         spacing: 15
 
-        // Select coins row
-        Rectangle {
-            Layout.alignment: Qt.AlignHCenter
-            implicitWidth: childrenRect.width
-            implicitHeight: childrenRect.height
-
-            color: Style.colorTheme7
-            radius: Style.rectangleCornerRadius
-
-            RowLayout {
-                // Base
-                Image {
-                    Layout.leftMargin: 15
-                    source: General.coinIcon(getTicker(combo_base))
-                    Layout.preferredWidth: 32
-                    Layout.preferredHeight: Layout.preferredWidth
-                }
-
-                ComboBox {
-                    id: combo_base
-                    Layout.preferredWidth: 250
-                    Layout.topMargin: 10
-                    Layout.bottomMargin: 10
-
-                    model: General.fullNamesOfCoins(getCoins())
-                    onCurrentTextChanged: {
-                        setPair()
-                        prev_base = getTicker(combo_base)
-                    }
-                }
-
-                Image {
-                    source: General.image_path + "exchange-exchange.svg"
-
-                    MouseArea {
-                        anchors.fill: parent
-                        onClicked: swapPair()
-                    }
-                }
-
-                // Rel
-                ComboBox {
-                    id: combo_rel
-                    Layout.preferredWidth: 250
-
-                    model: General.fullNamesOfCoins(getCoins())
-                    onCurrentTextChanged: {
-                        setPair()
-                        prev_rel = getTicker(combo_rel)
-                    }
-                }
-
-                Image {
-                    Layout.rightMargin: 15
-                    source: General.coinIcon(getTicker(combo_rel))
-                    Layout.preferredWidth: 32
-                    Layout.preferredHeight: Layout.preferredWidth
-                }
-            }
+        OrderForm {
+            id: form_base
+            my_side: true
         }
 
-        // Bottom part
-        RowLayout {
-            Layout.fillWidth: true
-            Layout.fillHeight: true
-
-            spacing: parent.spacing
-
-            // Left side
-            ColumnLayout {
-                spacing: parent.spacing
-                Layout.minimumWidth: 300
-                Layout.maximumWidth: Layout.minimumWidth
-
-                // Buy
-                OrderForm {
-                    id: order_form_buy
-                    Layout.fillWidth: true
-                    Layout.fillHeight: true
-
-                    sell: false
-                    base: getTicker(combo_base)
-                    rel: getTicker(combo_rel)
-
-                    visible: false
-                }
-
-                // Sell
-                OrderForm {
-                    id: order_form_sell
-                    Layout.fillWidth: true
-                    Layout.fillHeight: true
-
-                    sell: true
-                    base: getTicker(combo_base)
-                    rel: getTicker(combo_rel)
-                }
-            }
-
-            // Right side
-            Orderbook {
-                id: orderbook
-                Layout.fillWidth: true
-                Layout.fillHeight: true
-                timer.running: validBaseRel()
-            }
+        OrderForm {
+            id: form_rel
         }
     }
 }

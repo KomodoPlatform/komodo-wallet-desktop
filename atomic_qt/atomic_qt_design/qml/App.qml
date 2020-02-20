@@ -16,6 +16,11 @@ Rectangle {
     function onDisconnect() { openFirstLaunch() }
 
     function openFirstLaunch(force) {
+        if(API.design_editor) {
+            current_page = idx_dashboard
+            return
+        }
+
         current_page = force ? idx_first_launch : firstPage()
         first_launch.updateWallets()
     }
@@ -28,7 +33,7 @@ Rectangle {
     readonly property int idx_login: 3
     readonly property int idx_initial_loading: 4
     readonly property int idx_dashboard: 5
-    property int current_page: API.design_editor ? idx_dashboard : 1337
+    property int current_page
 
     StackLayout {
         anchors.fill: parent

@@ -166,7 +166,7 @@ QtObject {
         },
 
         set_current_orderbook: (base) => {
-            console.log("Setting current orderbook: " + base + " - " + rel)
+            console.log("Setting current orderbook: " + base)
         },
 
        cancel_order: (order_id) => {

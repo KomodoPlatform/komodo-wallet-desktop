@@ -52,6 +52,10 @@ QtObject {
         return coins.map(c => fullCoinName(c.name, c.ticker))
     }
 
+    function getTickers(coins) {
+        return coins.map(c => c.ticker)
+    }
+
     function hasEnoughFunds(sell, base, rel, price, volume) {
         if(sell) {
             if(volume === "") return true
