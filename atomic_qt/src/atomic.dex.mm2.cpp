@@ -384,7 +384,8 @@ namespace atomic_dex
                 }
             }
         }
-        if (not out.empty()) {
+        if (not out.empty())
+        {
             m_current_orderbook.insert_or_assign(base, out);
         }
         /*t_orderbook_request request{.base = base, .rel = rel};
@@ -840,5 +841,26 @@ namespace atomic_dex
             DLOG_F(INFO, "created file {}", lock_claim_file_path.string());
         }
         return b_answer;
+    }
+
+    t_float_50
+    mm2::get_trade_fee(const std::string& ticker, const std::string& amount, bool is_max) const
+    {
+        t_float_50 sell_amount_f(amount);
+        if (is_max)
+        {
+            std::error_code ec;
+            sell_amount_f = t_float_50(my_balance(ticker, ec));
+        }
+        return t_float_50(1) / (t_float_50(777) * sell_amount_f);
+    }
+
+    std::string
+    mm2::get_trade_fee_str(const std::string& ticker, const std::string& sell_amount, bool is_max) const
+    {
+        std::stringstream ss;
+        ss.precision(8);
+        ss << std::fixed << get_trade_fee(ticker, sell_amount, is_max);
+        return ss.str();
     }
 } // namespace atomic_dex
