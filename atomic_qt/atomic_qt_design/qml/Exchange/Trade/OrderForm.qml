@@ -10,6 +10,7 @@ Rectangle {
     property alias field: input_volume.field
     property bool my_side: false
 
+
     function isValid() {
         const fields_are_filled = input_volume.field.text !== '' && parseFloat(input_volume.field.text) > 0
 
@@ -62,48 +63,53 @@ Rectangle {
     implicitWidth: childrenRect.width
     implicitHeight: childrenRect.height
 
-    RowLayout {
-        Image {
-            Layout.leftMargin: combo.Layout.rightMargin
-            source: General.coinIcon(getTicker(combo))
-            Layout.preferredWidth: 32
-            Layout.preferredHeight: Layout.preferredWidth
-        }
+    ColumnLayout {
+        width: 300
+        RowLayout {
+            Image {
+                Layout.leftMargin: combo.Layout.rightMargin
+                source: General.coinIcon(getTicker(combo))
+                Layout.preferredWidth: 32
+                Layout.preferredHeight: Layout.preferredWidth
+            }
 
-        ComboBox {
-            id: combo
-            Layout.preferredWidth: 125
-            Layout.topMargin: 10
-            Layout.bottomMargin: 10
-            Layout.rightMargin: 15
+            ComboBox {
+                id: combo
+                Layout.fillWidth: true
+                Layout.topMargin: 10
+                Layout.rightMargin: 15
 
-            model: General.getTickers(getCoins())
-            onCurrentTextChanged: {
-                setPair()
-                if(my_side) prev_base = getTicker(combo)
-                else prev_rel = getTicker(combo)
+                model: my_side ? General.getTickersAndBalances(getCoins()): General.getTickers(getCoins())
+                onCurrentTextChanged: {
+                    setPair()
+                    if(my_side) prev_base = getTicker(combo)
+                    else prev_rel = getTicker(combo)
 
-                capVolume()
+                    capVolume()
+                }
             }
         }
 
-        AmountField {
-            id: input_volume
-            Layout.preferredWidth: field.font.pointSize*10
-            Layout.rightMargin: combo.Layout.rightMargin
-            Layout.topMargin: Layout.rightMargin
-            Layout.bottomMargin: Layout.rightMargin
-            field.placeholderText: my_side ? qsTr("Amount to sell") : qsTr("Amount to receive")
-            field.onTextChanged: capVolume()
-        }
+        RowLayout {
+            AmountField {
+                id: input_volume
+                Layout.fillWidth: true
+                Layout.rightMargin: combo.Layout.rightMargin
+                Layout.leftMargin: Layout.rightMargin
+                Layout.topMargin: Layout.rightMargin
+                Layout.bottomMargin: Layout.rightMargin
+                field.placeholderText: my_side ? qsTr("Amount to sell") : qsTr("Amount to receive")
+                field.onTextChanged: capVolume()
+            }
 
-        Button {
-            Layout.rightMargin: combo.Layout.rightMargin
-            Layout.topMargin: Layout.rightMargin
-            Layout.bottomMargin: Layout.rightMargin
-            visible: my_side
-            text: qsTr("MAX")
-            onClicked: input_volume.field.text = getMaxVolume()
+            Button {
+                Layout.rightMargin: combo.Layout.rightMargin
+                Layout.topMargin: Layout.rightMargin
+                Layout.bottomMargin: Layout.rightMargin
+                visible: my_side
+                text: qsTr("MAX")
+                onClicked: input_volume.field.text = getMaxVolume()
+            }
         }
     }
 }

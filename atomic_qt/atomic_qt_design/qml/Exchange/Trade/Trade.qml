@@ -94,29 +94,30 @@ Item {
     ColumnLayout {
         id: form
         anchors.centerIn: parent
-        spacing: 15
+        RowLayout {
+            spacing: 15
 
-        // Sell
-        OrderForm {
-            id: form_base
-            Layout.fillWidth: true
-            my_side: true
-        }
-
-        Image {
-            source: General.image_path + "exchange-switch.svg"
-            Layout.alignment: Qt.AlignHCenter
-
-            MouseArea {
-                anchors.fill: parent
-                onClicked: swapPair()
+            // Sell
+            OrderForm {
+                id: form_base
+                Layout.fillWidth: true
+                my_side: true
             }
-        }
 
-        // Receive
-        OrderForm {
-            Layout.fillWidth: true
-            id: form_rel
+            Image {
+                source: General.image_path + "exchange-exchange.svg"
+                Layout.alignment: Qt.AlignVCenter
+
+                MouseArea {
+                    anchors.fill: parent
+                    onClicked: swapPair()
+                }
+            }
+
+            // Receive
+            OrderForm {
+                id: form_rel
+            }
         }
 
         // Trade button
