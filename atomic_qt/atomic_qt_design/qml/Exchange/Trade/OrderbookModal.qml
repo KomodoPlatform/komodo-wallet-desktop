@@ -20,6 +20,7 @@ DefaultModal {
     }
 
     width: 900
+    height: 600
 
     function getOrderList() {
         const ob = getCurrentOrderbook()
@@ -36,13 +37,16 @@ DefaultModal {
         id: modal_layout
 
         width: parent.width
+        height: parent.height
 
         ModalHeader {
-            title: qsTr("Orders")
+            title: qsTr("Orderbook")
+            bottomMargin: 0
         }
 
         // List
         ListView {
+            Layout.alignment: Qt.AlignTop
             id: list
             ScrollBar.vertical: ScrollBar {}
             implicitWidth: contentItem.childrenRect.width
@@ -109,6 +113,7 @@ DefaultModal {
 
         // Buttons
         RowLayout {
+            Layout.alignment: Qt.AlignBottom
             Button {
                 text: qsTr("Close")
                 Layout.fillWidth: true
