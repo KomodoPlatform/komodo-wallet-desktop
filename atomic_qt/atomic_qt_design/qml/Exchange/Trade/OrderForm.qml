@@ -7,8 +7,11 @@ import "../../Constants"
 
 // Right side
 Rectangle {
+    id: root
+
     property alias field: input_volume.field
     property bool my_side: false
+    property bool enabled: true
 
     function getVolume() {
         return input_volume.field.text === '' ? '0' :  input_volume.field.text
@@ -105,6 +108,9 @@ Rectangle {
 
             ComboBox {
                 id: combo
+
+                enabled: root.enabled
+
                 Layout.fillWidth: true
                 Layout.topMargin: 10
                 Layout.rightMargin: 15
@@ -148,12 +154,15 @@ Rectangle {
 
             AmountField {
                 id: input_volume
+                field.enabled: root.enabled
+
                 Layout.fillWidth: true
                 Layout.rightMargin: combo.Layout.rightMargin
                 Layout.leftMargin: Layout.rightMargin
                 Layout.topMargin: Layout.rightMargin
                 Layout.bottomMargin: Layout.rightMargin
-                field.placeholderText: my_side ? qsTr("Amount to sell") : qsTr("Amount to receive")
+                field.placeholderText: my_side ? qsTr("Amount to sell") :
+                                                 field.enabled ? qsTr("Amount to receive") : qsTr("Please fill the send amount")
                 field.onTextChanged: capVolume()
             }
         }

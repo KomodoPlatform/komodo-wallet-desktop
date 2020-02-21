@@ -163,6 +163,7 @@ Item {
             // Receive
             OrderForm {
                 id: form_rel
+                enabled: form_base.fieldsAreFilled()
             }
         }
 
