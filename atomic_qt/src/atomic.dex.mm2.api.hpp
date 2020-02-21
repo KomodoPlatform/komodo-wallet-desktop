@@ -125,15 +125,19 @@ namespace mm2::api
         std::string coin;
     };
 
-    void to_json(nlohmann::json& j, const trade_fee_request &cfg);
+    void to_json(nlohmann::json& j, const trade_fee_request& cfg);
 
     struct trade_fee_answer
     {
         std::string amount;
         std::string coin;
+        std::string raw_result;      ///< internal
+        int         rpc_result_code; ///< internal
     };
 
     void from_json(const nlohmann::json& j, trade_fee_answer& cfg);
+
+    trade_fee_answer rpc_get_trade_fee(trade_fee_request&& req);
 
     struct fee_regular_coin
     {

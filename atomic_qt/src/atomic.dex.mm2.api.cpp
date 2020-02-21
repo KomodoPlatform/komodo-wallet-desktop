@@ -697,6 +697,12 @@ namespace mm2::api
         return process_rpc<t_broadcast_request, t_broadcast_answer>(std::forward<t_broadcast_request>(request), "send_raw_transaction");
     }
 
+    trade_fee_answer
+    rpc_get_trade_fee(trade_fee_request&& req)
+    {
+        return process_rpc<trade_fee_request, trade_fee_answer>(std::forward<trade_fee_request>(req), "get_trade_fee");
+    }
+
     orderbook_answer
     rpc_orderbook(orderbook_request&& request)
     {
