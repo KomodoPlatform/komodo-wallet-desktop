@@ -130,7 +130,7 @@ Item {
     }
 
     function getReceiveAmount(price) {
-        return (parseFloat(form_base.getVolume()) * parseFloat(price)).toFixed(8)
+        return (parseFloat(form_base.getVolume()) / parseFloat(price)).toFixed(8)
     }
 
     function getSendAmountAfterFees(amount) {
