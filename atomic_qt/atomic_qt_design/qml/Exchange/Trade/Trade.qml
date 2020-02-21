@@ -137,11 +137,6 @@ Item {
             Image {
                 source: General.image_path + "exchange-exchange.svg"
                 Layout.alignment: Qt.AlignVCenter
-
-                MouseArea {
-                    anchors.fill: parent
-                    onClicked: swapPair()
-                }
             }
 
             // Receive
