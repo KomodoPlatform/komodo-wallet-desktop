@@ -75,7 +75,16 @@ DefaultModal {
                     anchors.fill: parent
                     hoverEnabled: true
                     onHoveredChanged: hovered = containsMouse
-                    //onClicked: onCoinClicked(model.modelData.ticker)
+                    onClicked: {
+                        setTicker(model.modelData.ticker)
+                        root.close()
+                        if(getOrderCount(model.modelData.ticker) === 0) {
+
+                        }
+                        else {
+                            orderbook_modal.open()
+                        }
+                    }
                 }
 
                 // Icon

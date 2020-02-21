@@ -36,6 +36,14 @@ Item {
         updateOrderbook()
     }
 
+    function getCurrentOrderbook() {
+        if(orderbook_model === undefined) return []
+
+        const cb = orderbook_model[getTicker()]
+
+        return cb === undefined ? [] : cb
+    }
+
     function getCoins(my_side) {
         const coins = API.get().enabled_coins
         if(my_side === undefined) return coins
@@ -119,6 +127,10 @@ Item {
         if(action_result === "success") {
             reset()
         }
+    }
+
+    function getReceiveAmount(price) {
+        return (parseFloat(form_base.getVolume()) * parseFloat(price)).toFixed(8)
     }
 
     ColumnLayout {

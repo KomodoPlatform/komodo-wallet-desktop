@@ -10,6 +10,10 @@ Rectangle {
     property alias field: input_volume.field
     property bool my_side: false
 
+    function getVolume() {
+        return input_volume.field.text === '' ? '0' :  input_volume.field.text
+    }
+
     function getFilteredCoins() {
         return getCoins(my_side)
     }
@@ -124,6 +128,10 @@ Rectangle {
 
                 OrderReceiveModal {
                     id: order_receive_modal
+                }
+
+                OrderbookModal {
+                    id: orderbook_modal
                 }
             }
         }
