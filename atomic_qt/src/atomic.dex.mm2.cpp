@@ -384,18 +384,7 @@ namespace atomic_dex
                 }
             }
         }
-        if (not out.empty())
-        {
-            m_current_orderbook.insert_or_assign(base, out);
-        }
-        /*t_orderbook_request request{.base = base, .rel = rel};
-        auto                answer = rpc_orderbook(std::move(request));
-
-        if (answer.rpc_result_code not_eq -1)
-        {
-            m_current_orderbook.clear();
-            m_current_orderbook.insert_or_assign(base + "/" + rel, answer);
-        }*/
+        m_current_orderbook.insert_or_assign(base, out);
     }
 
     void
@@ -412,9 +401,6 @@ namespace atomic_dex
         }
 
         std::string current = (*m_current_orderbook.begin()).first;
-        // std::vector<std::string> results;
-
-        // boost::split(results, current, [](char c) { return c == '/'; });
         process_orderbook(current);
     }
 
@@ -650,14 +636,7 @@ namespace atomic_dex
 
         const auto key = evt.base;
 
-        if (m_current_orderbook.find(key) == m_current_orderbook.cend())
-        {
-            process_orderbook(evt.base);
-        }
-        else
-        {
-            DLOG_F(WARNING, "This book is already loaded, skipping");
-        }
+        process_orderbook(evt.base);
     }
 
     void
