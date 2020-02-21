@@ -22,16 +22,6 @@ DefaultModal {
     width: 900
     height: 600
 
-    function getOrderList() {
-        const ob = getCurrentOrderbook()
-
-        return ["header"].concat(ob)
-    }
-
-    function isOrderLine(idx) {
-        return idx > 0
-    }
-
     // Inside modal
     ColumnLayout {
         id: modal_layout
@@ -44,22 +34,73 @@ DefaultModal {
             bottomMargin: 0
         }
 
+        // List header
+        Rectangle {
+            color: "transparent"
+
+            Layout.alignment: Qt.AlignTop
+
+            Layout.fillWidth: true
+
+            height: 50
+
+            // Price
+            DefaultText {
+                id: price_header
+                anchors.right: parent.right
+                anchors.rightMargin: parent.width * 0.77
+
+                text: qsTr("Price")
+                color: Style.colorWhite1
+                anchors.verticalCenter: parent.verticalCenter
+            }
+
+            // Volume
+            DefaultText {
+                id: volume_header
+                anchors.right: parent.right
+                anchors.rightMargin: parent.width * 0.44
+
+                text: qsTr("Volume")
+                color: Style.colorWhite1
+                anchors.verticalCenter: parent.verticalCenter
+            }
+
+            // Receive amount
+            DefaultText {
+                id: receive_header
+                anchors.right: parent.right
+                anchors.rightMargin: parent.width * 0.11
+
+                text: qsTr("Receive")
+                color: Style.colorWhite1
+                anchors.verticalCenter: parent.verticalCenter
+            }
+
+            // Line
+            HorizontalLine {
+                width: parent.width
+                color: Style.colorWhite5
+                anchors.bottom: parent.bottom
+            }
+        }
+
         // List
         ListView {
-            Layout.alignment: Qt.AlignTop
             id: list
+            Layout.alignment: Qt.AlignTop
+            Layout.fillWidth: true
+            Layout.fillHeight: true
             ScrollBar.vertical: ScrollBar {}
-            implicitWidth: contentItem.childrenRect.width
-            implicitHeight: contentItem.childrenRect.height
 
-            model: getOrderList()
+            model: getCurrentOrderbook()
 
             clip: true
 
             delegate: Rectangle {
                 property bool hovered: false
 
-                color: hovered && model.modelData !== 'header' ? Style.colorTheme4 : "transparent"
+                color: hovered ? Style.colorTheme4 : "transparent"
 
                 width: modal_layout.width
                 height: 50
@@ -68,44 +109,44 @@ DefaultModal {
                     anchors.fill: parent
                     hoverEnabled: true
                     onHoveredChanged: hovered = containsMouse
-                    onClicked: isOrderLine(index) ? chooseOrder(model.modelData.ticker) : undefined
+                    onClicked: chooseOrder(model.modelData.ticker)
                 }
 
                 // Price
                 DefaultText {
                     anchors.right: parent.right
-                    anchors.rightMargin: parent.width * 0.77
+                    anchors.rightMargin: price_header.anchors.rightMargin
 
-                    text: isOrderLine(index) ? model.modelData.price : qsTr("Price")
-                    color: isOrderLine(index) ? Style.colorWhite4 : Style.colorWhite1
+                    text: model.modelData.price
+                    color: Style.colorWhite4
                     anchors.verticalCenter: parent.verticalCenter
                 }
 
                 // Volume
                 DefaultText {
                     anchors.right: parent.right
-                    anchors.rightMargin: parent.width * 0.44
+                    anchors.rightMargin: volume_header.anchors.rightMargin
 
-                    text: isOrderLine(index) ? model.modelData.volume : qsTr("Volume")
-                    color: isOrderLine(index) ? Style.colorWhite4 : Style.colorWhite1
+                    text: model.modelData.volume
+                    color: Style.colorWhite4
                     anchors.verticalCenter: parent.verticalCenter
                 }
 
                 // Receive amount
                 DefaultText {
                     anchors.right: parent.right
-                    anchors.rightMargin: parent.width * 0.11
+                    anchors.rightMargin: receive_header.anchors.rightMargin
 
-                    text: isOrderLine(index) ? getReceiveAmount(model.modelData.price) + " " + getTicker() : qsTr("Receive")
-                    color: isOrderLine(index) ? Style.colorWhite4 : Style.colorWhite1
+                    text: getReceiveAmount(model.modelData.price) + " " + getTicker()
+                    color: Style.colorWhite4
                     anchors.verticalCenter: parent.verticalCenter
                 }
 
                 // Line
                 HorizontalLine {
-                    visible: index !== getOrderList().length - 1
+                    visible: index !== getCurrentOrderbook().length - 1
                     width: parent.width
-                    color: isOrderLine(index) ? Style.colorWhite9 : Style.colorWhite5
+                    color: Style.colorWhite9
                     anchors.bottom: parent.bottom
                 }
             }
