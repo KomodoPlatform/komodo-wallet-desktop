@@ -15,7 +15,7 @@ Item {
     property var orderbook_model
 
     function updateOrderbook() {
-        orderbook_model = API.get().get_orderbook()
+        orderbook_model = API.get().get_orderbook(getTicker(true))
         orderbook_timer.running = true
     }
 
@@ -28,7 +28,7 @@ Item {
 
     // Trade
     function open(ticker) {
-        setTicker(combo_base, ticker)
+        setTicker(true, ticker)
         onOpened()
     }
 
@@ -107,17 +107,16 @@ Item {
     }
 
     function setPair() {
-        const base = getTicker(true)
-        const rel = getTicker(false)
-
-        if(base === rel) swapPair()
+        if(getTicker(true) === getTicker(false)) swapPair()
         else {
             if(validBaseRel()) {
                 reset()
-                API.get().set_current_orderbook(base)
+
+                const new_base = getTicker(true)
+                API.get().set_current_orderbook(new_base)
                 updateOrderbook()
 
-                exchange.onTradeTickerChanged(base)
+                exchange.onTradeTickerChanged(new_base)
             }
         }
     }

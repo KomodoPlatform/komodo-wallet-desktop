@@ -9,19 +9,6 @@ import "../../Constants"
 DefaultModal {
     id: root
 
-    property var selected_to_enable: ({})
-    function markToEnable(ticker) {
-      if(selected_to_enable[ticker] === undefined) selected_to_enable[ticker] = true
-      else delete selected_to_enable[ticker]
-
-      selected_to_enable = selected_to_enable
-    }
-
-    function enableCoins() {
-        API.get().enable_coins(Object.keys(selected_to_enable))
-        root.close()
-    }
-
     function getOrderCount(ticker) {
         if(orderbook_model === undefined) return 0
 
@@ -59,8 +46,7 @@ DefaultModal {
             implicitWidth: contentItem.childrenRect.width
             implicitHeight: contentItem.childrenRect.height
 
-            model: General.filterCoins(getFilteredCoins().sort((a, b) => getOrderCount(b.ticker) - getOrderCount(a.ticker)),
-                                       input_coin_filter.text)
+            model: General.filterCoins(getFilteredCoins().sort((a, b) => getOrderCount(b.ticker) - getOrderCount(a.ticker)), input_coin_filter.text)
             clip: true
 
             delegate: Rectangle {
