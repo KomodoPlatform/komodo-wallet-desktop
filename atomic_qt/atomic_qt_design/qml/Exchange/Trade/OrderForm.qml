@@ -72,9 +72,9 @@ Rectangle {
 
     function capVolume() {
         if(my_side && input_volume.field.acceptableInput) {
-            const cap = parseFloat(getMaxVolume())
             const amt = parseFloat(input_volume.field.text)
-            if(amt > cap) input_volume.field.text = cap
+            const cap_with_fees = getSendAmountAfterFees(getMaxVolume())
+            if(amt > cap_with_fees) input_volume.field.text = cap_with_fees.toString()
         }
     }
 

@@ -133,6 +133,15 @@ Item {
         return (parseFloat(form_base.getVolume()) * parseFloat(price)).toFixed(8)
     }
 
+    function getSendAmountAfterFees(amount) {
+        const base = getTicker(true)
+        const rel = getTicker(false)
+
+        if(base === '' || rel === '') return 0
+
+        return parseFloat(API.get().get_trade_infos(getTicker(true), getTicker(false), amount).input_final_value)
+    }
+
     ColumnLayout {
         id: form
         anchors.centerIn: parent
