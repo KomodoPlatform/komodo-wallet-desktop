@@ -356,14 +356,14 @@ namespace atomic_dex
     }
 
     std::vector<t_orderbook_answer>
-    mm2::get_current_orderbook(t_mm2_ec& ec) const noexcept
+    mm2::get_orderbook(const std::string& ticker, t_mm2_ec& ec) const noexcept
     {
         if (m_current_orderbook.empty())
         {
             ec = dextop_error::orderbook_empty;
             return {};
         }
-        return m_current_orderbook.begin()->second;
+        return m_current_orderbook.at(ticker);
     }
 
     void
