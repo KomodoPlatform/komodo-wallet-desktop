@@ -631,4 +631,6 @@ namespace atomic_dex
     using t_my_recent_swaps_answer  = ::mm2::api::my_recent_swaps_answer_success;
     using t_my_recent_swaps_request = ::mm2::api::my_recent_swaps_request;
     using t_my_order_contents       = ::mm2::api::my_order_contents;
+    using t_get_trade_fee_request   = ::mm2::api::trade_fee_request;
+    using t_get_trade_fee_answer    = ::mm2::api::trade_fee_answer;
 } // namespace atomic_dex

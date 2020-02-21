@@ -852,11 +852,22 @@ namespace atomic_dex
     QVariantMap
     application::get_trade_infos(const QString& ticker, const QString& amount)
     {
-        QVariantMap out;
+        QVariantMap             out;
+        auto                    trade_fee_f = get_mm2().get_trade_fee(ticker.toStdString(), amount.toStdString(), false);
+        t_get_trade_fee_request req{.coin = ticker.toStdString()};
+        auto                    answer        = ::mm2::api::rpc_get_trade_fee(std::move(req));
+        auto                    tx_fee_f      = t_float_50(answer.amount) * 2;
+        auto                    tx_fee_value  = QString::fromStdString(tx_fee_f.convert_to<std::string>());
+        auto                    final_balance = (t_float_50(amount.toStdString()) - (trade_fee_f + tx_fee_f));
+        std::stringstream       ss;
+        ss.precision(8);
+        ss << std::fixed << final_balance;
+        auto final_balance_qt = QString::fromStdString(ss.str());
+
         out.insert("trade_fee", QString::fromStdString(get_mm2().get_trade_fee_str(ticker.toStdString(), amount.toStdString(), false)));
-        if (get_mm2().get_coin_info(ticker.toStdString()).is_erc_20) {
-            out.insert("is_ticker_of_fees_eth", true);
-        }
+        out.insert("tx_fee", tx_fee_value);
+        out.insert("is_ticker_of_fees_eth", get_mm2().get_coin_info(ticker.toStdString()).is_erc_20);
+        out.insert("input_final_value", final_balance_qt);
         return out;
     }
 } // namespace atomic_dex

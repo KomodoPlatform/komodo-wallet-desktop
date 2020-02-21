@@ -361,8 +361,8 @@ namespace mm2::api
     void
     from_json(const nlohmann::json& j, trade_fee_answer& cfg)
     {
-        j.at("amount").get_to(cfg.amount);
-        j.at("coin").get_to(cfg.coin);
+        j.at("result").at("amount").get_to(cfg.amount);
+        j.at("result").at("coin").get_to(cfg.coin);
     }
 
     void
