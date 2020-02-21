@@ -113,6 +113,18 @@ Rectangle {
 
                     capVolume()
                 }
+
+                MouseArea {
+                    visible: !my_side
+                    anchors.fill: parent
+                    onClicked: {
+                        order_receive_modal.open()
+                    }
+                }
+
+                OrderReceiveModal {
+                    id: order_receive_modal
+                }
             }
         }
 

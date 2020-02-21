@@ -11,8 +11,29 @@ Item {
     property string prev_base
     property string prev_rel
 
+    // Orderbook
+    property var orderbook_model
+
+    function updateOrderbook() {
+        orderbook_model = API.get().get_orderbook()
+        orderbook_timer.running = true
+    }
+
+    Timer {
+        id: orderbook_timer
+        repeat: true
+        interval: 5000
+        onTriggered: updateOrderbook()
+    }
+
+    // Trade
     function open(ticker) {
         setTicker(combo_base, ticker)
+        onOpened()
+    }
+
+    function onOpened() {
+        updateOrderbook()
     }
 
     function getCoins(my_side) {
@@ -29,7 +50,7 @@ Item {
         }
         // Filter for Receive
         else {
-            return coins
+            return coins.filter(c => c.ticker !== getTicker(true))
         }
     }
 
@@ -86,7 +107,7 @@ Item {
             if(validBaseRel()) {
                 reset()
                 API.get().set_current_orderbook(base)
-                //orderbook.updateOrderbook()
+                updateOrderbook()
 
                 exchange.onTradeTickerChanged(base)
             }

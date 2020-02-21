@@ -38,6 +38,9 @@ Item {
             ExchangeTab {
                 dashboard_index: General.idx_exchange_trade
                 text: "Trade"
+                function onClick() {
+                    exchange_trade.onOpened()
+                }
             }
 
             ExchangeTab {

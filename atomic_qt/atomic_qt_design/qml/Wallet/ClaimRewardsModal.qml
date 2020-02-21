@@ -5,7 +5,6 @@ import QtQuick.Controls.Material 2.12
 import "../Components"
 import "../Constants"
 
-// Open Enable Coin Modal
 DefaultModal {
     id: root
 
