@@ -650,11 +650,11 @@ namespace atomic_dex
     }
 
     QVariantMap
-    application::get_orderbook()
+    application::get_orderbook(const QString& ticker)
     {
         QVariantMap     out;
         std::error_code ec;
-        auto            answer = get_mm2().get_current_orderbook(ec);
+        auto            answer = get_mm2().get_orderbook(ticker.toStdString(),ec);
         for (auto&& current_orderbook: answer)
         {
             nlohmann::json j_out = nlohmann::json::array();

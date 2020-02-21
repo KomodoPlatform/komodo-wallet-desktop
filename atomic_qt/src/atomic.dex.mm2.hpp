@@ -217,7 +217,7 @@ namespace atomic_dex
         void apply_erc_fees(const std::string& ticker, t_float_50& value);;
 
         //! Get Current orderbook
-        [[nodiscard]] std::vector<t_orderbook_answer> get_current_orderbook(t_mm2_ec& ec) const noexcept;
+        [[nodiscard]] std::vector<t_orderbook_answer> get_orderbook(const std::string& ticker, t_mm2_ec& ec) const noexcept;
 
         //! Get orders
         [[nodiscard]] ::mm2::api::my_orders_answer              get_orders(const std::string& ticker, t_mm2_ec& ec) const noexcept;
