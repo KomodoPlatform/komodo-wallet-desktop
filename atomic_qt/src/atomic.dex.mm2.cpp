@@ -863,4 +863,15 @@ namespace atomic_dex
         ss << std::fixed << get_trade_fee(ticker, sell_amount, is_max);
         return ss.str();
     }
+
+    void
+    mm2::apply_erc_fees(const std::string& ticker, t_float_50& value)
+    {
+        if (get_coin_info(ticker).is_erc_20)
+        {
+            t_get_trade_fee_request rec_req{.coin = ticker};
+            t_float_50              rec_amount = t_float_50(::mm2::api::rpc_get_trade_fee(std::move(rec_req)).amount);
+            value += rec_amount;
+        }
+    }
 } // namespace atomic_dex

@@ -89,8 +89,13 @@ erase_if(std::map<Key, T, Compare, Alloc>& c, Pred pred)
     }
 }
 
-template<class... Ts> struct overloaded : Ts... { using Ts::operator()...; };
-template<class... Ts> overloaded(Ts...) -> overloaded<Ts...>;
+template <class... Ts>
+struct overloaded : Ts...
+{
+    using Ts::operator()...;
+};
+template <class... Ts>
+overloaded(Ts...)->overloaded<Ts...>;
 
 //! Folly Headers
 #include <folly/Memory.h>
@@ -114,6 +119,16 @@ namespace folly
 #pragma clang diagnostic ignored "-Wunused-parameter"
 #include <boost/multiprecision/cpp_dec_float.hpp>
 using t_float_50 = boost::multiprecision::cpp_dec_float_50;
+
+inline std::string
+get_formated_float(t_float_50 value)
+{
+    std::stringstream ss;
+    ss.precision(8);
+    ss << std::fixed << std::move(value);
+    return ss.str();
+}
+
 #pragma clang diagnostic pop
 
 #ifdef __APPLE__

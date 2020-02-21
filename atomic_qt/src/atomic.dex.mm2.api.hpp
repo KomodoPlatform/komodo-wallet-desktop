@@ -120,6 +120,25 @@ namespace mm2::api
 
     balance_answer rpc_balance(balance_request&& request);
 
+    struct trade_fee_request
+    {
+        std::string coin;
+    };
+
+    void to_json(nlohmann::json& j, const trade_fee_request& cfg);
+
+    struct trade_fee_answer
+    {
+        std::string amount;
+        std::string coin;
+        std::string raw_result;      ///< internal
+        int         rpc_result_code; ///< internal
+    };
+
+    void from_json(const nlohmann::json& j, trade_fee_answer& cfg);
+
+    trade_fee_answer rpc_get_trade_fee(trade_fee_request&& req);
+
     struct fee_regular_coin
     {
         std::string amount;
@@ -244,7 +263,7 @@ namespace mm2::api
         std::string                type;      ///< UtxoFixed, UtxoPerKbyte, EthGas
         std::optional<std::string> amount;    ///< for utxo only
         std::optional<std::string> gas_price; ///< price EthGas
-        std::optional<std::string> gas_limit;   ///< sets the gas limit for transaction
+        std::optional<std::string> gas_limit; ///< sets the gas limit for transaction
     };
 
     void to_json(nlohmann::json& j, const withdraw_fees& cfg);
@@ -612,4 +631,6 @@ namespace atomic_dex
     using t_my_recent_swaps_answer  = ::mm2::api::my_recent_swaps_answer_success;
     using t_my_recent_swaps_request = ::mm2::api::my_recent_swaps_request;
     using t_my_order_contents       = ::mm2::api::my_order_contents;
+    using t_get_trade_fee_request   = ::mm2::api::trade_fee_request;
+    using t_get_trade_fee_answer    = ::mm2::api::trade_fee_answer;
 } // namespace atomic_dex

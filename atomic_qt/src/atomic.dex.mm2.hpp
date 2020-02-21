@@ -214,6 +214,8 @@ namespace atomic_dex
         [[nodiscard]] t_float_50 get_trade_fee(const std::string& ticker, const std::string& sell_amount, bool is_max) const;
         [[nodiscard]] std::string get_trade_fee_str(const std::string& ticker, const std::string& sell_amount, bool is_max) const;
 
+        void apply_erc_fees(const std::string& ticker, t_float_50& value);;
+
         //! Get Current orderbook
         [[nodiscard]] std::vector<t_orderbook_answer> get_current_orderbook(t_mm2_ec& ec) const noexcept;
 
