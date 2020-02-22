@@ -57,23 +57,36 @@ Rectangle {
         capVolume()
     }
 
+    function getMaxVolume() {
+        return API.get().get_balance(getTicker())
+    }
+
+    function getMaxTradableVolume() {
+        return getSendAmountAfterFees(getMaxVolume(), false)
+    }
+
+    function setMax() {
+        console.log(getMaxVolume())
+        input_volume.field.text = getMaxTradableVolume()
+        console.log("Setting MAX: " + input_volume.field.text + " - " + getTicker())
+    }
+
     function reset() {
         if(my_side) {
-            input_volume.field.text = getMaxVolume()
+            setMax()
+            console.log("At reset")
         }
         else {
             input_volume.field.text = ''
         }
     }
 
-    function getMaxVolume() {
-        return API.get().get_balance(getTicker())
-    }
-
     function capVolume() {
-        if(my_side && input_volume.field.acceptableInput) {
+        console.log("Before cap value " + input_volume.field.text)
+        if(inCurrentPage() && my_side && input_volume.field.acceptableInput) {
+            console.log("Checking to cap " + input_volume.field.text)
             const amt = parseFloat(input_volume.field.text)
-            const cap_with_fees = getSendAmountAfterFees(getMaxVolume())
+            const cap_with_fees = getMaxTradableVolume()
             if(amt > cap_with_fees) input_volume.field.text = cap_with_fees.toString()
         }
     }
@@ -146,7 +159,7 @@ Rectangle {
                 Layout.bottomMargin: Layout.rightMargin
                 visible: my_side
                 text: qsTr("MAX")
-                onClicked: input_volume.field.text = getMaxVolume()
+                onClicked: setMax()
             }
 
             AmountField {

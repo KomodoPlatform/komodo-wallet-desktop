@@ -13,28 +13,13 @@ Item {
 
     // Cache Trade Info
     property var curr_trade_info: ({"input_final_value": "0", "is_ticker_of_fees_eth": false, "trade_fee": "0", "tx_fee": "0"})
-    property string cache_base_ticker
-    property string cache_rel_ticker
-    property string cache_send_amount
 
-    function updateTradeInfo(base, rel, amount) {
-        curr_trade_info = API.get().get_trade_infos(base, rel, amount)
-        cache_base_ticker = base
-        cache_rel_ticker = rel
-        cache_send_amount = amount
-    }
+    function getTradeInfo(base, rel, amount, set_as_current=true) {
+        const info = API.get().get_trade_infos(base, rel, amount)
 
-    function getTradeInfo(base, rel, amount) {
-        if(base !== undefined && rel !== undefined && amount !== undefined &&
-           base !== ''        && rel !== ''        && amount !== '') {
-            if(base !== cache_base_ticker ||
-               rel !== cache_rel_ticker ||
-               parseFloat(form_base.getVolume()) !== parseFloat(cache_send_amount)) {
-                updateTradeInfo(base, rel, amount)
-            }
-        }
+        if(set_as_current) curr_trade_info = info
 
-        return curr_trade_info
+        return info
     }
 
     // Orderbook
@@ -49,6 +34,17 @@ Item {
     function updateOrderbook() {
         orderbook_model = API.get().get_orderbook(getTicker(true))
         orderbook_timer.running = true
+        updateTradeInfo()
+    }
+
+    function updateTradeInfo() {
+        const base = getTicker(true)
+        const rel = getTicker(false)
+        const amount = form_base.getVolume()
+        if(base !== undefined && rel !== undefined && amount !== undefined &&
+           base !== ''        && rel !== ''        && amount !== '' && amount !== '0') {
+            getTradeInfo(base, rel, amount)
+        }
     }
 
     Timer {
@@ -66,6 +62,7 @@ Item {
 
     function onOpened() {
         updateOrderbook()
+        reset()
     }
 
     function getCurrentOrderbook() {
@@ -161,14 +158,12 @@ Item {
     }
 
     function getSendAmountAfterFees(amount) {
-        if(!inCurrentPage()) return 0
-
         const base = getTicker(true)
         const rel = getTicker(false)
 
         if(base === '' || rel === '') return 0
 
-        return parseFloat(getTradeInfo(getTicker(true), getTicker(false), amount).input_final_value)
+        return parseFloat(getTradeInfo(getTicker(true), getTicker(false), amount, false).input_final_value)
     }
 
     function getReceiveAmount(price) {
