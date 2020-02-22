@@ -46,7 +46,8 @@ SetupPage {
             confirm: false
             field.onAccepted: {
                 // TODO: Remove this part at release
-                if(API.get().wallet_default_name === 'TestNaezith') {
+                if(API.get().wallet_default_name === 'TestNaezith' ||
+                   API.get().wallet_default_name === 'TestEmptyWallet') {
                     input_password.field.text = '1234567890-qwertY'
                 }
 
