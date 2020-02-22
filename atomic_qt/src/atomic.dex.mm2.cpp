@@ -93,6 +93,7 @@ namespace atomic_dex
 
         if (s >= 5s)
         {
+            spawn([this]() { process_fees(); });
             spawn([this]() { fetch_current_orderbook_thread(); });
             m_orderbook_clock = std::chrono::high_resolution_clock::now();
         }
@@ -363,15 +364,21 @@ namespace atomic_dex
             ec = dextop_error::orderbook_empty;
             return {};
         }
+        if (m_current_orderbook.find(ticker) == m_current_orderbook.cend())
+        {
+            ec = dextop_error::orderbook_ticker_not_found;
+            return {};
+        }
         return m_current_orderbook.at(ticker);
     }
 
     void
-    mm2::process_orderbook(const std::string& base)
+    mm2::process_orderbook(std::string base)
     {
         auto&&                          coins = get_enabled_coins();
         std::vector<t_orderbook_answer> out;
         out.reserve(coins.size() - 1);
+
         for (auto&& current_coin: coins)
         {
             if (current_coin.ticker != base)
@@ -394,14 +401,18 @@ namespace atomic_dex
         DLOG_F(INFO, "Fetch current orderbook");
 
         //! If thread is not active ex: we are not on the trading page anymore, we continue sleeping.
-        if (not m_orderbook_thread_active or m_current_orderbook.empty())
+        if (not m_orderbook_thread_active)
         {
             DLOG_F(WARNING, "Nothing todo, sleeping...");
             return;
         }
 
-        std::string current = (*m_current_orderbook.begin()).first;
-        process_orderbook(current);
+        // std::string current = (*m_current_orderbook.begin()).first;
+
+        this->m_orderbook_mutex.try_lock();
+        std::string copy = m_current_orderbook_ticker;
+        this->m_orderbook_mutex.unlock();
+        process_orderbook(m_current_orderbook_ticker);
     }
 
     void
@@ -580,6 +591,28 @@ namespace atomic_dex
     }
 
     void
+    mm2::process_fees()
+    {
+        loguru::set_thread_name("fees thread");
+        LOG_SCOPE_FUNCTION(INFO);
+        t_coins                        coins = get_enabled_coins();
+        std::vector<std::future<void>> futures;
+
+        futures.reserve(coins.size());
+
+        for (auto&& current_coin: coins)
+        {
+            futures.emplace_back(spawn([this, ticker = current_coin.ticker]() {
+                t_get_trade_fee_request req{.coin = ticker};
+                auto                    answer = ::mm2::api::rpc_get_trade_fee(std::move(req));
+                this->m_trade_fees_registry.insert_or_assign(ticker, answer);
+            }));
+        }
+
+        for (auto&& fut: futures) { fut.get(); }
+    }
+
+    void
     mm2::process_tx(const std::string& ticker)
     {
         LOG_SCOPE_FUNCTION(INFO);
@@ -636,7 +669,15 @@ namespace atomic_dex
 
         const auto key = evt.base;
 
-        process_orderbook(evt.base);
+        {
+            std::scoped_lock lock(m_orderbook_mutex);
+            this->m_current_orderbook_ticker = evt.base;
+        }
+
+        spawn([this]() {
+            loguru::set_thread_name("r_book thread");
+            fetch_current_orderbook_thread();
+        });
     }
 
     void
@@ -849,8 +890,14 @@ namespace atomic_dex
         if (get_coin_info(ticker).is_erc_20)
         {
             t_get_trade_fee_request rec_req{.coin = ticker};
-            t_float_50              rec_amount = t_float_50(::mm2::api::rpc_get_trade_fee(std::move(rec_req)).amount);
+            t_float_50              rec_amount = t_float_50(get_trade_fixed_fee(ticker).amount);
             value += rec_amount;
         }
+    }
+
+    t_get_trade_fee_answer
+    mm2::get_trade_fixed_fee(const std::string& ticker) const
+    {
+        return m_trade_fees_registry.at(ticker);
     }
 } // namespace atomic_dex

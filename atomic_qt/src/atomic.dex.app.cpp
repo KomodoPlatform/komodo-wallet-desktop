@@ -654,7 +654,12 @@ namespace atomic_dex
     {
         QVariantMap     out;
         std::error_code ec;
-        auto            answer = get_mm2().get_orderbook(ticker.toStdString(),ec);
+        auto            answer = get_mm2().get_orderbook(ticker.toStdString(), ec);
+        if (ec == dextop_error::orderbook_ticker_not_found)
+        {
+            LOG_F(WARNING, "{}", ec.message());
+            return out;
+        }
         for (auto&& current_orderbook: answer)
         {
             nlohmann::json j_out = nlohmann::json::array();
@@ -854,8 +859,8 @@ namespace atomic_dex
     {
         QVariantMap             out;
         auto                    trade_fee_f = get_mm2().get_trade_fee(ticker.toStdString(), amount.toStdString(), false);
-        t_get_trade_fee_request req{.coin = ticker.toStdString()};
-        auto                    answer   = ::mm2::api::rpc_get_trade_fee(std::move(req));
+        //t_get_trade_fee_request req{.coin = ticker.toStdString()};
+        auto                    answer   = get_mm2().get_trade_fixed_fee(ticker.toStdString());
         t_float_50              tx_fee_f = t_float_50(answer.amount) * 2;
         get_mm2().apply_erc_fees(receive_ticker.toStdString(), tx_fee_f);
         auto tx_fee_value     = QString::fromStdString(tx_fee_f.convert_to<std::string>());

@@ -76,10 +76,14 @@ namespace atomic_dex
         using t_tx_state_registry   = t_concurrent_reg<t_ticker, t_tx_state>;
         using t_orderbook_registry  = t_concurrent_reg<t_ticker, std::vector<t_orderbook_answer>>;
         using t_swaps_registry      = t_concurrent_reg<t_ticker, t_my_recent_swaps_answer>;
+        using t_fees_registry       = t_concurrent_reg<t_ticker, t_get_trade_fee_answer>;
 
         //! Process
         reproc::process m_mm2_instance;
 
+        //! Current orderbook
+        std::string m_current_orderbook_ticker{"RICK"};
+        std::mutex  m_orderbook_mutex;
         //! Timers
         t_mm2_time_point m_orderbook_clock;
         t_mm2_time_point m_info_clock;
@@ -95,6 +99,7 @@ namespace atomic_dex
         t_tx_history_registry m_tx_informations;
         t_tx_state_registry   m_tx_state;
         t_my_orders           m_orders_registry;
+        t_fees_registry       m_trade_fees_registry;
         t_orderbook_registry  m_current_orderbook;
         t_swaps_registry      m_swaps_registry;
 
@@ -107,8 +112,11 @@ namespace atomic_dex
         //! Refresh the transaction registry (internal)
         void process_tx(const std::string& ticker);
 
+        //! Refresh the fees registry (internal)
+        void process_fees();
+
         //! Refresh the orderbook registry (internal)
-        void process_orderbook(const std::string& base);
+        void process_orderbook(std::string base);
 
       public:
         //! Constructor
@@ -211,10 +219,13 @@ namespace atomic_dex
         //! Get Specific info about one coin
         [[nodiscard]] coin_config get_coin_info(const std::string& ticker) const;
 
-        [[nodiscard]] t_float_50 get_trade_fee(const std::string& ticker, const std::string& sell_amount, bool is_max) const;
+        [[nodiscard]] t_float_50  get_trade_fee(const std::string& ticker, const std::string& sell_amount, bool is_max) const;
         [[nodiscard]] std::string get_trade_fee_str(const std::string& ticker, const std::string& sell_amount, bool is_max) const;
 
-        void apply_erc_fees(const std::string& ticker, t_float_50& value);;
+        [[nodiscard]] t_get_trade_fee_answer  get_trade_fixed_fee(const std::string& ticker) const;
+
+        void apply_erc_fees(const std::string& ticker, t_float_50& value);
+        ;
 
         //! Get Current orderbook
         [[nodiscard]] std::vector<t_orderbook_answer> get_orderbook(const std::string& ticker, t_mm2_ec& ec) const noexcept;
