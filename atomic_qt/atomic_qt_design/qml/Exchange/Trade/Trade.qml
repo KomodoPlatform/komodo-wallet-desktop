@@ -15,7 +15,9 @@ Item {
     property var orderbook_model
 
     function inCurrentPage() {
-        return  dashboard.current_page === idx_dashboard && exchange.current_page === General.idx_exchange_trade
+        return  app.current_page === idx_dashboard &&
+                dashboard.current_page === General.idx_dashboard_exchange &&
+                exchange.current_page === General.idx_exchange_trade
     }
 
     function updateOrderbook() {

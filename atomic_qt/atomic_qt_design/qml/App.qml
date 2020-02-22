@@ -7,6 +7,8 @@ import "Constants"
 import "Components"
 
 Rectangle {
+    id: app
+
     color: Style.colorTheme8
 
     function firstPage() {
