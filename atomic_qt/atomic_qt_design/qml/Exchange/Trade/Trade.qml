@@ -15,11 +15,14 @@ Item {
     property var curr_trade_info: ({"input_final_value": "0", "is_ticker_of_fees_eth": false, "trade_fee": "0", "tx_fee": "0"})
 
     function getTradeInfo(base, rel, amount, set_as_current=true) {
-        const info = API.get().get_trade_infos(base, rel, amount)
+        if(inCurrentPage()) {
+            const info = API.get().get_trade_infos(base, rel, amount)
 
-        if(set_as_current) curr_trade_info = info
+            if(set_as_current) curr_trade_info = info
 
-        return info
+            return info
+        }
+        else return curr_trade_info
     }
 
     // Orderbook
