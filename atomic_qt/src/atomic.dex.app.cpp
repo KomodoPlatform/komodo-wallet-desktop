@@ -862,7 +862,10 @@ namespace atomic_dex
         //t_get_trade_fee_request req{.coin = ticker.toStdString()};
         auto                    answer   = get_mm2().get_trade_fixed_fee(ticker.toStdString());
         t_float_50              tx_fee_f = t_float_50(answer.amount) * 2;
-        get_mm2().apply_erc_fees(receive_ticker.toStdString(), tx_fee_f);
+        if (receive_ticker != "")
+        {
+            get_mm2().apply_erc_fees(receive_ticker.toStdString(), tx_fee_f);
+        }
         auto tx_fee_value     = QString::fromStdString(tx_fee_f.convert_to<std::string>());
         auto final_balance    = get_formated_float(t_float_50(amount.toStdString()) - (trade_fee_f + tx_fee_f));
         auto final_balance_qt = QString::fromStdString(final_balance);
