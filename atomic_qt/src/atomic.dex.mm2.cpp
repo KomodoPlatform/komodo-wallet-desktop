@@ -872,7 +872,8 @@ namespace atomic_dex
             std::error_code ec;
             sell_amount_f = t_float_50(my_balance(ticker, ec));
         }
-        return t_float_50(1) / (t_float_50(777) * sell_amount_f);
+        LOG_F(INFO, "{} / ({} * {}) ", 1, 777, amount);
+        return t_float_50(1) / t_float_50(777) * sell_amount_f;
     }
 
     std::string
