@@ -1,0 +1,15 @@
+# Package
+
+version       = "0.1.0"
+author        = "romanszterg"
+description   = "AtomicDex CI utilities"
+license       = "MIT"
+srcDir        = "src"
+bin           = @["ci_tools_atomic_dex"]
+
+
+
+# Dependencies
+
+requires "nim >= 1.0.6"
+requires "docopt"
