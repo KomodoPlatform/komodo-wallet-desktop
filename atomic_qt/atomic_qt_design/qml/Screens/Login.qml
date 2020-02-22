@@ -48,11 +48,9 @@ SetupPage {
                 // TODO: Remove this part at release
                 if(API.get().wallet_default_name === 'TestNaezith') {
                     input_password.field.text = '1234567890-qwertY'
-                    onClickedLogin(input_password.field.text)
                 }
-                else {
-                    login_button.click()
-                }
+
+                onClickedLogin(input_password.field.text)
             }
         }
 
