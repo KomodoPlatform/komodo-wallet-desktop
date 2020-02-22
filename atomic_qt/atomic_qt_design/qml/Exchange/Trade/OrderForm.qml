@@ -163,5 +163,39 @@ Rectangle {
                 field.onTextChanged: capVolume()
             }
         }
+
+        RowLayout {
+            Layout.leftMargin: combo.Layout.rightMargin
+            Layout.bottomMargin: Layout.leftMargin
+
+            ColumnLayout {
+                Layout.alignment: Qt.AlignLeft
+
+                DefaultText {
+                    id: tx_fee_text
+                    text: my_side ? qsTr('Transaction Fee:') : ''
+                    font.pointSize: Style.textSizeSmall
+                }
+
+                DefaultText {
+                    text: my_side ? qsTr('Trading Fee:') : ''
+                    font.pointSize: tx_fee_text.font.pointSize
+                }
+            }
+
+            ColumnLayout {
+                Layout.alignment: Qt.AlignRight
+
+                DefaultText {
+                    text: my_side ? curr_trade_info.tx_fee : ''
+                    font.pointSize: tx_fee_text.font.pointSize
+                }
+
+                DefaultText {
+                    text: my_side ? curr_trade_info.trade_fee : ''
+                    font.pointSize: tx_fee_text.font.pointSize
+                }
+            }
+        }
     }
 }
