@@ -22,7 +22,7 @@ ColumnLayout {
     }
 
     ColumnLayout {
-        spacing: -5
+        spacing: -3
 
         visible: !hide_hint
         Layout.fillWidth: true
