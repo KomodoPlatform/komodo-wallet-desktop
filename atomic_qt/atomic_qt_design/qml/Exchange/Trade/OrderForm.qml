@@ -40,6 +40,7 @@ Rectangle {
         // Try to fit once more
         capVolume()
 
+        console.log("API CALL do_i_have_enough_funds: in OrderForm::isValid for" +  (my_side ? " base " : " rel ") + ticker + " : " + input_volume.field.text)
         return fieldsAreFilled() && API.get().do_i_have_enough_funds(ticker, input_volume.field.text)
     }
 
@@ -70,6 +71,7 @@ Rectangle {
     }
 
     function getMaxVolume() {
+        console.log("API CALL get_balance: in OrderForm::getMaxVolume for" + (my_side ? " base " : " rel ") + getTicker())
         return API.get().get_balance(getTicker())
     }
 

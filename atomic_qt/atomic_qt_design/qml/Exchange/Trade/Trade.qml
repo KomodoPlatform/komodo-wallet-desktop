@@ -15,6 +15,7 @@ Item {
     property var orderbook_model
 
     function updateOrderbook() {
+        console.log("API CALL get_orderbook: in Trade::updateOrderbook for" + getTicker(true))
         orderbook_model = API.get().get_orderbook(getTicker(true))
         orderbook_timer.running = true
     }
@@ -45,12 +46,14 @@ Item {
     }
 
     function getCoins(my_side) {
+        console.log("API CALL enabled_coins: in Trade::getCoins for " + (my_side ? "base" : "rel"))
         const coins = API.get().enabled_coins
         if(my_side === undefined) return coins
 
         // Filter for Sell
         if(my_side) {
             return coins.filter(c => {
+                console.log("API CALL get_balance: in Trade::getCoins for" + c.ticker)
                 c.balance = API.get().get_balance(c.ticker)
 
                 return c.balance !== '' && parseFloat(c.balance) > 0
@@ -113,6 +116,7 @@ Item {
                 reset()
 
                 const new_base = getTicker(true)
+                console.log("API CALL set_current_orderbook: in Trade::setPair for " + new_base)
                 API.get().set_current_orderbook(new_base)
                 updateOrderbook()
 
@@ -122,6 +126,7 @@ Item {
     }
 
     function trade(base, rel, base_volume, rel_volume) {
+        console.log("API CALL trade: in Trade::setPair for " + base + " - " + rel + " : " + base_volume + " FOR " + rel_volume)
         action_result = API.get().trade(base, rel, base_volume, rel_volume) ? "success" : "error"
         if(action_result === "success") {
             reset()
@@ -134,6 +139,7 @@ Item {
 
         if(base === '' || rel === '') return 0
 
+        console.log("API CALL get_trade_infos: in Trade::getSendAmountAfterFees for " + getTicker(true) + " - " + getTicker(false) + " : " + amount)
         return parseFloat(API.get().get_trade_infos(getTicker(true), getTicker(false), amount).input_final_value)
     }
 
