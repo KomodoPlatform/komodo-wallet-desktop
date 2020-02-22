@@ -9,7 +9,6 @@ import "../../Constants"
 DefaultModal {
     id: root
 
-
     function createNewOrder() {
         // Create a new order
     }
