@@ -14,6 +14,10 @@ Item {
     // Orderbook
     property var orderbook_model
 
+    function inCurrentPage() {
+        return exchange.current_page === General.idx_exchange_trade
+    }
+
     function updateOrderbook() {
         console.log("API CALL get_orderbook: in Trade::updateOrderbook for" + getTicker(true))
         orderbook_model = API.get().get_orderbook(getTicker(true))
@@ -134,6 +138,8 @@ Item {
     }
 
     function getSendAmountAfterFees(amount) {
+        if(!inCurrentPage()) return 0
+
         const base = getTicker(true)
         const rel = getTicker(false)
 
