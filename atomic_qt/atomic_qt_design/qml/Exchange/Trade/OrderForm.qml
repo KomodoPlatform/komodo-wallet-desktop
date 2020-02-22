@@ -37,9 +37,6 @@ Rectangle {
 
         const ticker = getTicker()
 
-        // Try to fit once more
-        capVolume()
-
         return fieldsAreFilled() && API.get().do_i_have_enough_funds(ticker, input_volume.field.text)
     }
 

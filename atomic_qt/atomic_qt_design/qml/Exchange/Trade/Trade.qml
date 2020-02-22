@@ -11,6 +11,32 @@ Item {
     property string prev_base
     property string prev_rel
 
+    // Cache Trade Info
+    property var curr_trade_info: ({"input_final_value": "0", "is_ticker_of_fees_eth": false, "trade_fee": "0", "tx_fee": "0"})
+    property string cache_base_ticker
+    property string cache_rel_ticker
+    property string cache_send_amount
+
+    function updateTradeInfo(base, rel, amount) {
+        curr_trade_info = API.get().get_trade_infos(base, rel, amount)
+        cache_base_ticker = base
+        cache_rel_ticker = rel
+        cache_send_amount = amount
+    }
+
+    function getTradeInfo(base, rel, amount) {
+        if(base !== undefined && rel !== undefined && amount !== undefined &&
+           base !== ''        && rel !== ''        && amount !== '') {
+            if(base !== cache_base_ticker ||
+               rel !== cache_rel_ticker ||
+               parseFloat(form_base.getVolume()) !== parseFloat(cache_send_amount)) {
+                updateTradeInfo(base, rel, amount)
+            }
+        }
+
+        return curr_trade_info
+    }
+
     // Orderbook
     property var orderbook_model
 
@@ -142,11 +168,11 @@ Item {
 
         if(base === '' || rel === '') return 0
 
-        return parseFloat(API.get().get_trade_infos(getTicker(true), getTicker(false), amount).input_final_value)
+        return parseFloat(getTradeInfo(getTicker(true), getTicker(false), amount).input_final_value)
     }
 
     function getReceiveAmount(price) {
-        return (getSendAmountAfterFees(form_base.getVolume()) / parseFloat(price)).toFixed(8)
+        return (curr_trade_info.input_final_value / parseFloat(price)).toFixed(8)
     }
 
     ColumnLayout {
