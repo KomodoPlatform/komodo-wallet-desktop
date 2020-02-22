@@ -20,6 +20,22 @@ Item {
         exchange_orders.changeTicker(ticker)
     }
 
+    function onOpened() {
+        if(current_page === General.idx_exchange_trade) {
+            exchange_trade.onOpened()
+        }
+        else if(current_page === General.idx_exchange_orders) {
+            exchange_orders.onOpened()
+        }
+        else if(current_page === General.idx_exchange_history) {
+            exchange_history.onOpened()
+        }
+    }
+
+    onCurrent_pageChanged: {
+        onOpened()
+    }
+
     ColumnLayout {
         anchors.horizontalCenter: parent.horizontalCenter
         anchors.verticalCenter: parent.verticalCenter
@@ -38,25 +54,16 @@ Item {
             ExchangeTab {
                 dashboard_index: General.idx_exchange_trade
                 text: "Trade"
-                function onClick() {
-                    exchange_trade.onOpened()
-                }
             }
 
             ExchangeTab {
                 dashboard_index: General.idx_exchange_orders
                 text: "Orders"
-                function onClick() {
-                    exchange_orders.onOpened()
-                }
             }
 
             ExchangeTab {
                 dashboard_index: General.idx_exchange_history
                 text: "History"
-                function onClick() {
-                    exchange_history.onOpened()
-                }
             }
         }
 

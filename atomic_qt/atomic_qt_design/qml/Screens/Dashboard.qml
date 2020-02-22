@@ -21,7 +21,10 @@ Item {
     }
 
     onCurrent_pageChanged: {
-        if(current_page === General.idx_dashboard_exchange) API.get().on_gui_enter_dex()
+        if(current_page === General.idx_dashboard_exchange) {
+            API.get().on_gui_enter_dex()
+            exchange.onOpened()
+        }
         else API.get().on_gui_leave_dex()
     }
 
