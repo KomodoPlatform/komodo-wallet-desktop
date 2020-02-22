@@ -18,7 +18,9 @@ Item {
         if(inCurrentPage()) {
             const info = API.get().get_trade_infos(base, rel, amount)
 
-            if(set_as_current) curr_trade_info = info
+            if(set_as_current) {
+                curr_trade_info = info
+            }
 
             return info
         }
@@ -160,13 +162,13 @@ Item {
         }
     }
 
-    function getSendAmountAfterFees(amount) {
+    function getSendAmountAfterFees(amount, set_as_current) {
         const base = getTicker(true)
         const rel = getTicker(false)
 
         if(base === '' || rel === '') return 0
 
-        return parseFloat(getTradeInfo(getTicker(true), getTicker(false), amount, false).input_final_value)
+        return parseFloat(getTradeInfo(getTicker(true), getTicker(false), amount, set_as_current).input_final_value)
     }
 
     function getReceiveAmount(price) {

@@ -18,7 +18,6 @@ Rectangle {
     function updateOrderbook() {
         const ob = API.get().get_orderbook()
 
-        console.log(JSON.stringify(ob))
         orderbook_bids_model = ob.bids
         orderbook_asks_model = ob.asks
     }

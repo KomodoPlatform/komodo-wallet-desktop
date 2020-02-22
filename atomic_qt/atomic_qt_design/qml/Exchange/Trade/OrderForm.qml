@@ -61,20 +61,19 @@ Rectangle {
         return API.get().get_balance(getTicker())
     }
 
-    function getMaxTradableVolume() {
-        return getSendAmountAfterFees(getMaxVolume(), false)
+    function getMaxTradableVolume(set_as_current) {
+        // set_as_current should be true if input_volume is updated
+        // if it's called for cap check, it should be false because that's not the current input_volume
+        return getSendAmountAfterFees(getMaxVolume(), set_as_current)
     }
 
     function setMax() {
-        console.log(getMaxVolume())
-        input_volume.field.text = getMaxTradableVolume()
-        console.log("Setting MAX: " + input_volume.field.text + " - " + getTicker())
+        input_volume.field.text = getMaxTradableVolume(true)
     }
 
     function reset() {
         if(my_side) {
             setMax()
-            console.log("At reset")
         }
         else {
             input_volume.field.text = ''
@@ -82,12 +81,14 @@ Rectangle {
     }
 
     function capVolume() {
-        console.log("Before cap value " + input_volume.field.text)
         if(inCurrentPage() && my_side && input_volume.field.acceptableInput) {
-            console.log("Checking to cap " + input_volume.field.text)
             const amt = parseFloat(input_volume.field.text)
-            const cap_with_fees = getMaxTradableVolume()
-            if(amt > cap_with_fees) input_volume.field.text = cap_with_fees.toString()
+            const cap_with_fees = getMaxTradableVolume(false)
+            if(amt > cap_with_fees) {
+                input_volume.field.text = cap_with_fees.toString()
+                // Update the new fees, input_volume changed
+                updateTradeInfo()
+            }
         }
     }
 
