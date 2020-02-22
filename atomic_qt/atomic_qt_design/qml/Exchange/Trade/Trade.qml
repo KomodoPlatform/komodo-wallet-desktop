@@ -175,9 +175,37 @@ Item {
         return (curr_trade_info.input_final_value / parseFloat(price)).toFixed(8)
     }
 
+    // No coins warning
+    ColumnLayout {
+        anchors.centerIn: parent
+        visible: form_base.getTickerList().length === 0
+
+        Image {
+            Layout.alignment: Qt.AlignHCenter
+            source: General.image_path + "setup-wallet-restore-2.svg"
+            Layout.bottomMargin: 30
+        }
+
+        DefaultText {
+            Layout.alignment: Qt.AlignHCenter
+            text: qsTr("You don't have any active coin with enough balance")
+            font.pointSize: Style.textSize2
+        }
+
+        DefaultText {
+            Layout.alignment: Qt.AlignHCenter
+            text: qsTr("Either receive coins or activate the coins which you have enough balance at")
+        }
+    }
+
+    // Form
     ColumnLayout {
         id: form
+
+        visible: form_base.getTickerList().length > 0
+
         anchors.centerIn: parent
+
         RowLayout {
             spacing: 15
 

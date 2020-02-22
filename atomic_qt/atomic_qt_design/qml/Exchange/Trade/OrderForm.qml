@@ -13,6 +13,10 @@ Rectangle {
     property bool my_side: false
     property bool enabled: true
 
+    function getTickerList() {
+        return my_side ? General.getTickersAndBalances(getFilteredCoins()) : General.getTickers(getFilteredCoins())
+    }
+
     function getVolume() {
         return input_volume.field.text === '' ? '0' :  input_volume.field.text
     }
@@ -126,7 +130,7 @@ Rectangle {
                 Layout.topMargin: 10
                 Layout.rightMargin: 15
 
-                model: my_side ? General.getTickersAndBalances(getFilteredCoins()): General.getTickers(getFilteredCoins())
+                model: getTickerList()
                 onCurrentTextChanged: {
                     setPair()
                     if(my_side) prev_base = getTicker()
