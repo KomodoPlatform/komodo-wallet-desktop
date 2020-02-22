@@ -201,12 +201,12 @@ Rectangle {
                 Layout.alignment: Qt.AlignRight
 
                 DefaultText {
-                    text: my_side ? curr_trade_info.tx_fee : ''
+                    text: my_side ? curr_trade_info.tx_fee + ' ' + (curr_trade_info.is_ticker_of_fees_eth ? "ETH" : getTicker(true)) : ''
                     font.pointSize: tx_fee_text.font.pointSize
                 }
 
                 DefaultText {
-                    text: my_side ? curr_trade_info.trade_fee : ''
+                    text: my_side ? curr_trade_info.trade_fee + ' ' + getTicker(true) : ''
                     font.pointSize: tx_fee_text.font.pointSize
                 }
             }
