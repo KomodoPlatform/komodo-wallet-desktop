@@ -42,6 +42,10 @@ Item {
         return General.isZero(base) || General.isZero(rel) ? "0" : (parseFloat(rel) / parseFloat(base)).toString()
     }
 
+    function getCurrentPrice() {
+        return preffered_price === empty_price ? getCalculatedPrice() : preffered_price
+    }
+
     function hasValidPrice() {
         return preffered_price !== empty_price || parseFloat(getCalculatedPrice()) !== 0
     }
@@ -191,8 +195,8 @@ Item {
         }
     }
 
-    function trade(base, rel, base_volume, rel_volume) {
-        action_result = API.get().trade(base, rel, base_volume, rel_volume) ? "success" : "error"
+    function trade(base, rel, base_volume) {
+        action_result = API.get().sell(base, rel, getCurrentPrice(), base_volume) ? "success" : "error"
         if(action_result === "success") {
             reset()
         }
@@ -272,7 +276,7 @@ Item {
 
             text: qsTr("Trade")
             enabled: form_base.isValid() && form_rel.isValid()
-            onClicked: tradeCoin(getTicker(true), getTicker(false), form_base.field.text, form_rel.field.text)
+            onClicked: trade(getTicker(true), getTicker(false), form_base.field.text)
         }
 
         // Price
