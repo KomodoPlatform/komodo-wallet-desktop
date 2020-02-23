@@ -77,6 +77,10 @@ QtObject {
         }
     }
 
+    function isZero(v) {
+        return parseFloat(v) === 0
+    }
+
     function filterRecentSwaps(all_orders, finished_option, ticker) {
         let orders = all_orders
 

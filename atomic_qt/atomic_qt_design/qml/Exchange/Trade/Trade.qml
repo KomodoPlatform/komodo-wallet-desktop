@@ -39,7 +39,7 @@ Item {
         const base = form_base.getVolume()
         const rel = form_rel.getVolume()
 
-        return base === "0" || rel === "0" ? "0" : (parseFloat(rel) / parseFloat(base)).toString()
+        return General.isZero(base) || General.isZero(rel) ? "0" : (parseFloat(rel) / parseFloat(base)).toString()
     }
 
     function hasValidPrice() {

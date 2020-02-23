@@ -14,7 +14,7 @@ Rectangle {
     property bool enabled: true
 
     function canShowFees() {
-        return my_side && getVolume() !== "0"
+        return my_side && !General.isZero(getVolume())
     }
 
     function getTickerList() {
