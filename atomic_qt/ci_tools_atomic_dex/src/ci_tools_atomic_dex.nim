@@ -33,14 +33,14 @@ proc main() =
     download_packages()
   elif args["generate"]:
     if args["release"]:
-      generate_solution("release")
+      generate_solution("Release")
     elif args["debug"]:
-      generate_solution("debug")
+      generate_solution("Debug")
   elif args["build"]:
     if args["release"]:
-      build_atomic_qt("release")
+      build_atomic_qt("Release")
     elif args["debug"]:
-      build_atomic_qt("debug")
+      build_atomic_qt("Debug")
 
 when isMainModule:
   main()
