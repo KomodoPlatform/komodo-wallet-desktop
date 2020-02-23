@@ -61,8 +61,6 @@ Rectangle {
         if(combo.currentIndex === -1) {
             setTicker(getAnyAvailableCoin())
         }
-
-        capVolume()
     }
 
     function getMaxVolume() {
@@ -88,7 +86,7 @@ Rectangle {
         }
     }
 
-    function capVolume() {
+    function onBaseChanged() {
         if(inCurrentPage() && my_side && input_volume.field.acceptableInput) {
             const amt = parseFloat(input_volume.field.text)
             const cap_with_fees = getMaxTradableVolume(false)
@@ -146,8 +144,6 @@ Rectangle {
                     setPair()
                     if(my_side) prev_base = getTicker()
                     else prev_rel = getTicker()
-
-                    capVolume()
                 }
 
                 MouseArea {
@@ -189,7 +185,7 @@ Rectangle {
                 Layout.bottomMargin: Layout.rightMargin
                 field.placeholderText: my_side ? qsTr("Amount to sell") :
                                                  field.enabled ? qsTr("Amount to receive") : qsTr("Please fill the send amount")
-                field.onTextChanged: capVolume()
+                field.onTextChanged: onBaseChanged()
             }
         }
 
