@@ -278,8 +278,8 @@ Item {
         // Price
         DefaultText {
             Layout.alignment: Qt.AlignHCenter
-            text: !hasValidPrice() ? '' : preffered_price === empty_price ? qsTr("Price: ") + getCalculatedPrice() +  " " + getTicker(false) :
-                                                    qsTr("Selected Price: ") + preffered_price
+            text: !hasValidPrice() ? '' : (preffered_price === empty_price ? qsTr("Price: ") + getCalculatedPrice() :
+                                                    qsTr("Selected Price: ") + preffered_price) + " " + getTicker(false)
         }
     }
 }
