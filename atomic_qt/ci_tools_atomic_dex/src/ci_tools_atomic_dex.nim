@@ -1,5 +1,8 @@
-import strutils
-import docopt
+import strutils ##! Official Package
+
+import docopt ##! Dependencies Packages
+
+import vcpkg ##! Local packages
 
 let doc = """
 Atomic Dex CI Tools.
@@ -19,7 +22,8 @@ Options:
 
 proc main() =
   let args = docopt(doc, version = "Atomic Dex CI Tools 0.0.1")
-  echo args
+  if args["--install_vcpkg"]:
+    install_vcpkg()
 
 when isMainModule:
   main()

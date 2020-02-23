@@ -71,3 +71,5 @@ Thumbs.db
 *.exe
 
 /assets/tools/mm2/
+/ci_tools_atomic_dex/vcpkg-repo/
+/ci_tools_atomic_dex/ci_tools_atomic_dex
