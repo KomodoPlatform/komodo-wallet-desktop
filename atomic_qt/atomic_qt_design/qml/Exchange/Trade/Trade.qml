@@ -8,8 +8,32 @@ import "../../Constants"
 Item {
     id: exchange_trade
 
+    property string action_result
     property string prev_base
     property string prev_rel
+
+
+    // Orders page quick refresher, used right after a fresh successful trade
+    Timer {
+        id: refresh_timer
+        repeat: true
+        interval: 500
+        triggeredOnStart: true
+        onTriggered: API.get().refresh_orders_and_swaps()
+    }
+
+    Timer {
+        id: stop_refreshing
+        interval: 5000
+        onTriggered: refresh_timer.stop()
+    }
+
+    function onOrderSuccess() {
+        reset(false)
+        exchange.current_page = General.idx_exchange_orders
+        refresh_timer.restart()
+        stop_refreshing.restart()
+    }
 
 
     // Price
@@ -174,7 +198,8 @@ Item {
         return base !== '' && rel !== '' && base !== rel
     }
 
-    function reset() {
+    function reset(reset_result=true) {
+        if(reset_result) action_result = ""
         resetPreferredPrice()
         form_base.reset()
         form_rel.reset()
@@ -196,9 +221,9 @@ Item {
     }
 
     function trade(base, rel, base_volume) {
-        action_result = API.get().sell(base, rel, getCurrentPrice(), base_volume) ? "success" : "error"
+        action_result = API.get().place_sell_order(base, rel, getCurrentPrice(), base_volume) ? "success" : "error"
         if(action_result === "success") {
-            reset()
+            onOrderSuccess()
         }
     }
 
@@ -284,6 +309,15 @@ Item {
             Layout.alignment: Qt.AlignHCenter
             text: !hasValidPrice() ? '' : (preffered_price === empty_price ? qsTr("Price: ") + getCalculatedPrice() :
                                                     qsTr("Selected Price: ") + preffered_price) + " " + getTicker(false)
+        }
+
+        // Result
+        DefaultText {
+            Layout.alignment: Qt.AlignHCenter
+
+            color: action_result === "success" ? Style.colorGreen : Style.colorRed
+
+            text: action_result === "" ? "" : action_result === "success" ? "" : qsTr("Failed to place the order.")
         }
     }
 }
