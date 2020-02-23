@@ -94,6 +94,9 @@ Rectangle {
                 updateTradeInfo()
             }
         }
+
+        // Rel is dependant on Base if price is set so update that
+        if(my_side) updateRelAmount()
     }
 
     color: Style.colorTheme7
