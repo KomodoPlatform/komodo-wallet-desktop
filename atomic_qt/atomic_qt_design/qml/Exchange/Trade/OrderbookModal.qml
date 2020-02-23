@@ -10,11 +10,13 @@ DefaultModal {
     id: root
 
     function createNewOrder() {
-        // Create a new order
+        prepareCreateMyOwnOrder()
+        root.close()
     }
 
     function chooseOrder(price, volume) {
         // Choose this order
+        selectOrder(price, volume)
         root.close()
     }
 
@@ -108,7 +110,7 @@ DefaultModal {
                     anchors.fill: parent
                     hoverEnabled: true
                     onHoveredChanged: hovered = containsMouse
-                    onClicked: chooseOrder(model.modelData.ticker)
+                    onClicked: chooseOrder(model.modelData.price, model.modelData.volume)
                 }
 
                 // Price
@@ -163,7 +165,7 @@ DefaultModal {
             Button {
                 text: qsTr("Create your own order")
                 Layout.fillWidth: true
-                onClicked: root.close()
+                onClicked: createNewOrder()
             }
         }
     }

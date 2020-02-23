@@ -13,6 +13,10 @@ Rectangle {
     property bool my_side: false
     property bool enabled: true
 
+    function canShowFees() {
+        return my_side && !General.isZero(getVolume())
+    }
+
     function getTickerList() {
         return my_side ? General.getTickersAndBalances(getFilteredCoins()) : General.getTickers(getFilteredCoins())
     }
@@ -57,8 +61,6 @@ Rectangle {
         if(combo.currentIndex === -1) {
             setTicker(getAnyAvailableCoin())
         }
-
-        capVolume()
     }
 
     function getMaxVolume() {
@@ -84,15 +86,22 @@ Rectangle {
         }
     }
 
-    function capVolume() {
+    function onBaseChanged() {
         if(inCurrentPage() && my_side && input_volume.field.acceptableInput) {
             const amt = parseFloat(input_volume.field.text)
             const cap_with_fees = getMaxTradableVolume(false)
             if(amt > cap_with_fees) {
                 input_volume.field.text = cap_with_fees.toString()
-                // Update the new fees, input_volume changed
                 updateTradeInfo()
             }
+        }
+
+        if(my_side) {
+            // Rel is dependant on Base if price is set so update that
+            updateRelAmount()
+
+            // Update the new fees, input_volume might be changed
+            updateTradeInfo()
         }
     }
 
@@ -135,8 +144,6 @@ Rectangle {
                     setPair()
                     if(my_side) prev_base = getTicker()
                     else prev_rel = getTicker()
-
-                    capVolume()
                 }
 
                 MouseArea {
@@ -178,7 +185,7 @@ Rectangle {
                 Layout.bottomMargin: Layout.rightMargin
                 field.placeholderText: my_side ? qsTr("Amount to sell") :
                                                  field.enabled ? qsTr("Amount to receive") : qsTr("Please fill the send amount")
-                field.onTextChanged: capVolume()
+                field.onTextChanged: onBaseChanged()
             }
         }
 
@@ -191,12 +198,12 @@ Rectangle {
 
                 DefaultText {
                     id: tx_fee_text
-                    text: my_side ? qsTr('Transaction Fee:') : ''
+                    text: canShowFees() ? qsTr('Transaction Fee:') : ''
                     font.pointSize: Style.textSizeSmall
                 }
 
                 DefaultText {
-                    text: my_side ? qsTr('Trading Fee:') : ''
+                    text: canShowFees() ? qsTr('Trading Fee:') : ''
                     font.pointSize: tx_fee_text.font.pointSize
                 }
             }
@@ -205,12 +212,12 @@ Rectangle {
                 Layout.alignment: Qt.AlignRight
 
                 DefaultText {
-                    text: my_side ? curr_trade_info.tx_fee + ' ' + (curr_trade_info.is_ticker_of_fees_eth ? "ETH" : getTicker(true)) : ''
+                    text: canShowFees() ? curr_trade_info.tx_fee + ' ' + (curr_trade_info.is_ticker_of_fees_eth ? "ETH" : getTicker(true)) : ''
                     font.pointSize: tx_fee_text.font.pointSize
                 }
 
                 DefaultText {
-                    text: my_side ? curr_trade_info.trade_fee + ' ' + getTicker(true) : ''
+                    text: canShowFees() ? curr_trade_info.trade_fee + ' ' + getTicker(true) : ''
                     font.pointSize: tx_fee_text.font.pointSize
                 }
             }

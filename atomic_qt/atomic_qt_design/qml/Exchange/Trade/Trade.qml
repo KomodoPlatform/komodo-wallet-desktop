@@ -11,6 +11,41 @@ Item {
     property string prev_base
     property string prev_rel
 
+
+    // Price
+    readonly property string empty_price: "0"
+    property string preffered_price: empty_price
+
+    function resetPreferredPrice() {
+        preffered_price = empty_price
+    }
+
+    function prepareCreateMyOwnOrder() {
+        resetPreferredPrice()
+    }
+
+    function selectOrder(price, volume) {
+        preffered_price = price
+        updateRelAmount()
+    }
+
+    function updateRelAmount() {
+        if(preffered_price !== empty_price) {
+            form_rel.field.text = (parseFloat(form_base.getVolume()) * parseFloat(preffered_price)).toFixed(8)
+        }
+    }
+
+    function getCalculatedPrice() {
+        const base = form_base.getVolume()
+        const rel = form_rel.getVolume()
+
+        return General.isZero(base) || General.isZero(rel) ? "0" : (parseFloat(rel) / parseFloat(base)).toString()
+    }
+
+    function hasValidPrice() {
+        return preffered_price !== empty_price || parseFloat(getCalculatedPrice()) !== 0
+    }
+
     // Cache Trade Info
     property var curr_trade_info: ({"input_final_value": "0", "is_ticker_of_fees_eth": false, "trade_fee": "0", "tx_fee": "0"})
 
@@ -136,6 +171,7 @@ Item {
     }
 
     function reset() {
+        resetPreferredPrice()
         form_base.reset()
         form_rel.reset()
     }
@@ -225,6 +261,7 @@ Item {
             OrderForm {
                 id: form_rel
                 enabled: form_base.fieldsAreFilled()
+                field.enabled: enabled && preffered_price === empty_price
             }
         }
 
@@ -236,6 +273,13 @@ Item {
             text: qsTr("Trade")
             enabled: form_base.isValid() && form_rel.isValid()
             onClicked: tradeCoin(getTicker(true), getTicker(false), form_base.field.text, form_rel.field.text)
+        }
+
+        // Price
+        DefaultText {
+            Layout.alignment: Qt.AlignHCenter
+            text: !hasValidPrice() ? '' : preffered_price === empty_price ? qsTr("Price: ") + getCalculatedPrice() +  " " + getTicker(false) :
+                                                    qsTr("Selected Price: ") + preffered_price
         }
     }
 }
