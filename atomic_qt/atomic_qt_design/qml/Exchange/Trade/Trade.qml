@@ -228,13 +228,13 @@ Item {
 
         DefaultText {
             Layout.alignment: Qt.AlignHCenter
-            text: qsTr("You don't have any active coin with enough balance")
+            text: qsTr("No balance available")
             font.pointSize: Style.textSize2
         }
 
         DefaultText {
             Layout.alignment: Qt.AlignHCenter
-            text: qsTr("Either receive coins or activate the coins which you have enough balance at")
+            text: qsTr("Please enable a coin with balance or deposit funds")
         }
     }
 
