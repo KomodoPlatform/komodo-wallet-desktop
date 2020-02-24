@@ -17,16 +17,19 @@ proc fix_osx_libraries(atomic_app_path: string) =
                 (loname: "libboost_thread-mt.dylib", lname: "libboost_locale-mt.dylib"), 
                 (loname: "libboost_thread-mt.dylib", lname: "libboost_log-mt.dylib"),
                 (loname: "libboost_regex-mt.dylib", lname: "libboost_log-mt.dylib"),
+                (loname: "libboost_filesystem-mt.dylib", lname: "libboost_log-mt.dylib"),
                 (loname: "libboost_atomic-mt.dylib", lname: "libboost_log-mt.dylib"),
                 (loname: "libboost_chrono-mt.dylib", lname: "libboost_log-mt.dylib"),
                 (loname: "libboost_date_time-mt.dylib", lname: "libboost_log-mt.dylib"),
                 (loname: "libicuuc.64.dylib", lname: "libicui18n.64.dylib"),
                 (loname: "libicudata.64.dylib", lname: "libicui18n.64.dylib"),
+                (loname: "libicudata.64.dylib", lname: "libicuuc.64.dylib")
                ]
     for idx, info in libs:
         let cmd_fix = "install_name_tool -change @loader_path/" & info.loname & " @executable_path/../Frameworks/" & info.loname & " " & info.lname
         echo "Fixing cmd: " & cmd_fix
         discard osproc.execCmd(cmd_fix)
+    discard osproc.execCmd("install_name_tool -change @executable_path/../Frameworks/libboost_filesystem-mt.dylib @executable_path/../Frameworks/libboost_filesystem.dylib libboost_log-mt.dylib")
     os.setCurrentDir(orig_path)
     echo "CWD: " & os.getCurrentDir()
 
