@@ -35,7 +35,6 @@
     "coinpaprika_id": "eth-ethereum",
     "currently_enabled": false,
     "eth_nodes": [
-      "http://195.201.0.6:8555",
       "http://eth1.cipig.net:8555",
       "http://eth2.cipig.net:8555",
       "http://eth3.cipig.net:8555"
