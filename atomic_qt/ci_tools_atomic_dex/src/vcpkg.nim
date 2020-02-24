@@ -12,7 +12,7 @@ proc build_vcpkg() =
         echo "building vcpkg"
         os.setCurrentDir("vcpkg-repo")
         when defined(windows):
-            discard execCmd("bootstrap-vcpkg.bat")
+            discard execCmd(".\\bootstrap-vcpkg.bat")
         when defined(linux) or defined(macosx):
             discard execCmd("./bootstrap-vcpkg.sh")
         os.setCurrentDir(os.parentDir(os.getCurrentDir()))
@@ -24,7 +24,7 @@ proc set_vcpkg_path*() =
     g_vcpkg_cmake_script_path = os.getCurrentDir().joinPath(
             "vcpkg-repo").joinPath("scripts").joinPath("buildsystems").joinPath("vcpkg.cmake")
     when defined(windows):
-        g_vcpkg_local_path.addFileExt(".exe")
+        discard g_vcpkg_local_path.addFileExt(".exe")
     echo g_vcpkg_local_path
     echo g_vcpkg_cmake_script_path
 

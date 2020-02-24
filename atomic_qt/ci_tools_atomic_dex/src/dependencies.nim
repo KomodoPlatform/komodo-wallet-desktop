@@ -15,7 +15,13 @@ proc download_packages*() =
     echo "Downloading packages ... please wait"
     for idx, package in g_packages:
         if package.head:
-            discard execCmd(g_vcpkg_local_path & " install " & package.name & " --head")
+            when defined(windows):
+                discard execCmd(g_vcpkg_local_path & " install " & package.name & ":x64-windows --head")
+            when defined(linux) or defined(osx):
+                discard execCmd(g_vcpkg_local_path & " install" & package.name & " --head")
         else:
-            discard execCmd(g_vcpkg_local_path & " install " & package.name)
+            when defined(windows):
+                discard execCmd(g_vcpkg_local_path & " install " & package.name & ":x64-windows --head")
+            when defined(linux) or defined(osx):
+                discard execCmd(g_vcpkg_local_path & " install " & package.name)
     echo "Downloading packages finished"
