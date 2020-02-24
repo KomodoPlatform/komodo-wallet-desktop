@@ -5,7 +5,7 @@ let g_packages = [
     (name: "entt", head: true),
     (name: "folly", head: false),
     (name: "doctest", head: false),
-    (name: "fmt", head: true),
+    (name: "fmt", head: false),
     (name: "nlohmann-json", head: false),
     (name: "range-v3", head: false),
     (name: "libsodium", head: false),
@@ -21,7 +21,7 @@ proc download_packages*() =
                 discard execCmd(g_vcpkg_local_path & " install" & package.name & " --head")
         else:
             when defined(windows):
-                discard execCmd(g_vcpkg_local_path & " install " & package.name & ":x64-windows --head")
+                discard execCmd(g_vcpkg_local_path & " install " & package.name & ":x64-windows")
             when defined(linux) or defined(osx):
                 discard execCmd(g_vcpkg_local_path & " install " & package.name)
     echo "Downloading packages finished"
