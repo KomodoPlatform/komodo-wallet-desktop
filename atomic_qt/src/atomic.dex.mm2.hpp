@@ -222,7 +222,7 @@ namespace atomic_dex
         [[nodiscard]] t_float_50  get_trade_fee(const std::string& ticker, const std::string& sell_amount, bool is_max) const;
         [[nodiscard]] std::string get_trade_fee_str(const std::string& ticker, const std::string& sell_amount, bool is_max) const;
 
-        [[nodiscard]] t_get_trade_fee_answer  get_trade_fixed_fee(const std::string& ticker) const;
+        [[nodiscard]] t_get_trade_fee_answer get_trade_fixed_fee(const std::string& ticker) const;
 
         void apply_erc_fees(const std::string& ticker, t_float_50& value);
         ;
@@ -236,6 +236,7 @@ namespace atomic_dex
 
         //! Get Swaps
         [[nodiscard]] t_my_recent_swaps_answer get_swaps() const noexcept;
+        t_my_recent_swaps_answer               get_swaps() noexcept;
 
         //! Get balance with locked funds for a given ticker as a boost::multiprecision::cpp_dec_float_50.
         [[nodiscard]] t_float_50 get_balance_with_locked_funds(const std::string& ticker) const;

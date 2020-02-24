@@ -23,21 +23,6 @@
 namespace
 {
     namespace bm = boost::multiprecision;
-
-    std::string
-    adjust_precision(const std::string& current)
-    {
-        std::string          result;
-        std::stringstream    ss;
-        bm::cpp_dec_float_50 current_f(current);
-
-        ss << std::fixed << std::setprecision(8) << current_f;
-        result = ss.str();
-
-        boost::trim_right_if(result, boost::is_any_of("0"));
-        boost::trim_right_if(result, boost::is_any_of("."));
-        return result;
-    }
 } // namespace
 
 namespace mm2::api
@@ -560,10 +545,12 @@ namespace mm2::api
         j.at("type").get_to(contents.type);
         j.at("recoverable").get_to(contents.funds_recoverable);
 
-        contents.taker_amount = adjust_precision(contents.taker_amount);
-        contents.maker_amount = adjust_precision(contents.maker_amount);
-        contents.events       = nlohmann::json::array();
-        contents.my_info      = j.at("my_info");
+        contents.taker_amount            = adjust_precision(contents.taker_amount);
+        contents.maker_amount            = adjust_precision(contents.maker_amount);
+        contents.events                  = nlohmann::json::array();
+        contents.my_info                 = j.at("my_info");
+        contents.my_info["other_amount"] = adjust_precision(contents.my_info["other_amount"].get<std::string>());
+        contents.my_info["my_amount"]    = adjust_precision(contents.my_info["my_amount"].get<std::string>());
         for (auto&& content: j.at("events"))
         {
             using sys_milliseconds           = sys_time<std::chrono::milliseconds>;

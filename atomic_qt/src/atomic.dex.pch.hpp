@@ -129,6 +129,22 @@ get_formated_float(t_float_50 value)
     return ss.str();
 }
 
+inline std::string
+adjust_precision(const std::string& current)
+{
+    std::string          result;
+    std::stringstream    ss;
+    t_float_50 current_f(current);
+
+    ss << std::fixed << std::setprecision(8) << current_f;
+    result = ss.str();
+
+    boost::trim_right_if(result, boost::is_any_of("0"));
+    boost::trim_right_if(result, boost::is_any_of("."));
+    //std::cerr << "WTF: " << result << std::endl;
+    return result;
+}
+
 #pragma clang diagnostic pop
 
 #ifdef __APPLE__

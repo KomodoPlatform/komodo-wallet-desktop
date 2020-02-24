@@ -774,6 +774,12 @@ namespace atomic_dex
         return m_swaps_registry.at("result");
     }
 
+    t_my_recent_swaps_answer
+    mm2::get_swaps() noexcept
+    {
+        return m_swaps_registry.at("result");
+    }
+
     t_sell_answer
     mm2::place_sell_order(t_sell_request&& request, const t_float_50& total, t_mm2_ec& ec) const
     {

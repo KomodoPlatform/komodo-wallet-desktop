@@ -15,6 +15,7 @@
  ******************************************************************************/
 
 #include <QDebug>
+#include <QJsonArray>
 #include <QJsonDocument>
 #include <QJsonObject>
 #include <QTimer>
@@ -30,6 +31,7 @@
 #ifdef __APPLE__
 #    include "atomic.dex.osx.manager.hpp"
 #    include <QGuiApplication>
+#    include <QJsonArray>
 #    include <QWindow>
 #    include <QWindowList>
 #endif
@@ -699,9 +701,9 @@ namespace atomic_dex
     application::get_recent_swaps()
     {
         QVariantMap out;
-        const auto& swaps = get_mm2().get_swaps();
+        auto        swaps = get_mm2().get_swaps();
 
-        for (auto&& swap: swaps.swaps)
+        for (auto& swap: swaps.swaps)
         {
             nlohmann::json j2 = {{"maker_coin", swap.maker_coin},
                                  {"taker_coin", swap.taker_coin},
@@ -857,10 +859,10 @@ namespace atomic_dex
     QVariantMap
     application::get_trade_infos(const QString& ticker, const QString& receive_ticker, const QString& amount)
     {
-        QVariantMap             out;
-        auto                    trade_fee_f = get_mm2().get_trade_fee(ticker.toStdString(), amount.toStdString(), false);
-        auto                    answer   = get_mm2().get_trade_fixed_fee(ticker.toStdString());
-        t_float_50              tx_fee_f = t_float_50(answer.amount) * 2;
+        QVariantMap out;
+        auto        trade_fee_f = get_mm2().get_trade_fee(ticker.toStdString(), amount.toStdString(), false);
+        auto        answer      = get_mm2().get_trade_fixed_fee(ticker.toStdString());
+        t_float_50  tx_fee_f    = t_float_50(answer.amount) * 2;
         if (receive_ticker != "")
         {
             get_mm2().apply_erc_fees(receive_ticker.toStdString(), tx_fee_f);
