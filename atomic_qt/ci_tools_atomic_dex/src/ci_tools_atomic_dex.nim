@@ -6,6 +6,7 @@ import vcpkg ##! Local packages
 import dependencies
 import generate
 import build
+import bundle
 
 let doc = """
 Atomic Dex CI Tools.
@@ -15,7 +16,7 @@ Usage:
   ci_tools_atomic_dex --install_dependencies
   ci_tools_atomic_dex build (release|debug)
   ci_tools_atomic_dex generate (release|debug)
-  ci_tools_atomic_dex package (release|debug)
+  ci_tools_atomic_dex bundle (release|debug)
   ci_tools_atomic_dex --version
   ci_tools_atomic_dex (-h | --help)
 
@@ -41,6 +42,11 @@ proc main() =
       build_atomic_qt("Release")
     elif args["debug"]:
       build_atomic_qt("Debug")
+  elif args["bundle"]:
+    if args["release"]:
+      bundle("Release")
+    elif args["debug"]:
+      bundle("Debug")
 
 when isMainModule:
   main()
