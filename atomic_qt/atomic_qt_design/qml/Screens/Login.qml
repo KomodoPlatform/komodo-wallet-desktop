@@ -40,19 +40,18 @@ SetupPage {
             input_password.reset()
         }
 
+        function tryLogin() {
+            if(!input_password.isValid()) return
+
+            if(onClickedLogin(input_password.field.text))
+                reset()
+        }
+
         width: 275
         PasswordForm {
             id: input_password
             confirm: false
-            field.onAccepted: {
-                // TODO: Remove this part at release
-                if(API.get().wallet_default_name === 'TestNaezith' ||
-                   API.get().wallet_default_name === 'TestEmptyWallet') {
-                    input_password.field.text = '1234567890-qwertY'
-                }
-
-                onClickedLogin(input_password.field.text)
-            }
+            field.onAccepted: tryLogin()
         }
 
         RowLayout {
@@ -68,10 +67,7 @@ SetupPage {
             Button {
                 id: login_button
                 text: qsTr("Login")
-                onClicked: {
-                    if(onClickedLogin(input_password.field.text))
-                        reset()
-                }
+                onClicked: tryLogin()
                 enabled: input_password.isValid()
             }
         }
