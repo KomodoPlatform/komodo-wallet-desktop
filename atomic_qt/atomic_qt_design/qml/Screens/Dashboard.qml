@@ -14,10 +14,12 @@ Item {
 
     Layout.fillWidth: true
 
+    property int prev_page: -1
     property int current_page: API.design_editor ? General.idx_dashboard_exchange : General.idx_dashboard_wallet
 
     function reset() {
         current_page = General.idx_dashboard_wallet
+        prev_page = -1
 
         // Reset all sections
         wallet.reset()
@@ -28,11 +30,17 @@ Item {
     }
 
     onCurrent_pageChanged: {
-        if(current_page === General.idx_dashboard_exchange) {
-            API.get().on_gui_enter_dex()
-            exchange.onOpened()
+        if(prev_page !== current_page) {
+            if(current_page === General.idx_dashboard_exchange) {
+                API.get().on_gui_enter_dex()
+                exchange.onOpened()
+            }
+            else if(prev_page === General.idx_dashboard_exchange) {
+                API.get().on_gui_leave_dex()
+            }
         }
-        else API.get().on_gui_leave_dex()
+
+        prev_page = current_page
     }
 
     // Left side
