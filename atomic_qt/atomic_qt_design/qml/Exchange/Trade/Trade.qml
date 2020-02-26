@@ -99,7 +99,14 @@ Item {
                 exchange.current_page === General.idx_exchange_trade
     }
 
+    function fillTickersIfEmpty() {
+        form_base.fillIfEmpty()
+        form_rel.fillIfEmpty()
+    }
+
     function updateOrderbook() {
+        fillTickersIfEmpty()
+
         orderbook_model = API.get().get_orderbook(getTicker(true))
         orderbook_timer.running = true
         updateTradeInfo()

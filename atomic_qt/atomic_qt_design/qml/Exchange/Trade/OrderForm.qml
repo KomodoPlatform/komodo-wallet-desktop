@@ -13,6 +13,14 @@ Rectangle {
     property bool my_side: false
     property bool enabled: true
 
+    function setAnyTicker() {
+        setTicker(getAnyAvailableCoin())
+    }
+
+    function fillIfEmpty() {
+        if(getTicker() === '') setAnyTicker()
+    }
+
     function canShowFees() {
         return my_side && !General.isZero(getVolume())
     }
@@ -33,7 +41,7 @@ Rectangle {
         let coins = getFilteredCoins()
         if(filter_ticker !== undefined || filter_ticker !== '')
             coins = coins.filter(c => c.ticker !== filter_ticker)
-        return coins[0].ticker
+        return coins.length > 0 ? coins[0].ticker : ''
     }
 
     function fieldsAreFilled() {
@@ -50,17 +58,32 @@ Rectangle {
 
     function getTicker() {
         if(combo.currentIndex === -1) return ''
+        const coins = getFilteredCoins()
 
-        return getFilteredCoins()[combo.currentIndex].ticker
+        const coin = coins[combo.currentIndex]
+
+        // If invalid index
+        if(coin === undefined) {
+            // If there are other coins, select first
+            if(coins.length > 0) {
+                combo.currentIndex = 0
+                return coins[combo.currentIndex].ticker
+            }
+            // If there isn't any, reset index
+            else {
+                combo.currentIndex = -1
+                return ''
+            }
+        }
+
+        return coin.ticker
     }
 
     function setTicker(ticker) {
         combo.currentIndex = getFilteredCoins().map(c => c.ticker).indexOf(ticker)
 
         // If it doesn't exist, pick an existing one
-        if(combo.currentIndex === -1) {
-            setTicker(getAnyAvailableCoin())
-        }
+        if(combo.currentIndex === -1) setAnyTicker()
     }
 
     function getMaxVolume() {
