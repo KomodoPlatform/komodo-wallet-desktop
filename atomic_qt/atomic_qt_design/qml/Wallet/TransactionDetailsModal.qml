@@ -9,6 +9,10 @@ import "../Constants"
 DefaultModal {
     id: root
 
+    function reset() {
+
+    }
+
     property var details
 
     // Inside modal

@@ -14,6 +14,10 @@ ListView {
     model: API.get().current_coin_info.transactions
     clip: true
 
+    function reset() {
+
+    }
+
     // Row
     delegate: Rectangle {
         id: rectangle

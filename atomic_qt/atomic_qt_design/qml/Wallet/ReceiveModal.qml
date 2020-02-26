@@ -9,6 +9,10 @@ import "../Constants"
 DefaultModal {
     id: root
 
+    function reset() {
+
+    }
+
     width: 400
     // Inside modal
     ColumnLayout {

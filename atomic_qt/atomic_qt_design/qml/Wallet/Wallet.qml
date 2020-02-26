@@ -17,6 +17,13 @@ RowLayout {
     }
 
     function reset() {
+        send_modal.reset(true)
+        receive_modal.reset()
+        claim_rewards_modal.reset()
+        enable_coin_modal.reset()
+
+        transactions.reset()
+        input_coin_filter.reset()
     }
 
     readonly property double button_margin: 0.05
@@ -140,6 +147,7 @@ RowLayout {
             }
 
             Transactions {
+                id: transactions
                 Layout.fillWidth: true
                 Layout.fillHeight: true
                 implicitHeight: Math.min(contentItem.childrenRect.height, wallet.height*0.5)
@@ -203,6 +211,11 @@ RowLayout {
         // Search input
         TextField {
             id: input_coin_filter
+
+            function reset() {
+                visible = false
+                text = ""
+            }
 
             anchors.top: search_button.bottom
             anchors.horizontalCenter: parent.horizontalCenter
