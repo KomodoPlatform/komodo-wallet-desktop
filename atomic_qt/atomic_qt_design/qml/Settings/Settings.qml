@@ -12,6 +12,10 @@ Item {
         onDisconnect()
     }
 
+    function reset() {
+
+    }
+
     ColumnLayout {
         anchors.centerIn: parent
         DefaultText {

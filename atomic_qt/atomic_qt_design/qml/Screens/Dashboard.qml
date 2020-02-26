@@ -18,6 +18,13 @@ Item {
 
     function reset() {
         current_page = General.idx_dashboard_wallet
+
+        // Reset all sections
+        wallet.reset()
+        exchange.reset()
+        news.reset()
+        dapps.reset()
+        settings.reset()
     }
 
     onCurrent_pageChanged: {
@@ -42,7 +49,7 @@ Item {
             transformOrigin: Item.Center
 
             Wallet {
-
+                id: wallet
             }
 
             Exchange {
@@ -50,14 +57,19 @@ Item {
             }
 
             DefaultText {
+                id: news
                 text: qsTr("News")
+                function reset() { }
             }
 
             DefaultText {
+                id: dapps
                 text: qsTr("DApps")
+                function reset() { }
             }
 
             Settings {
+                id: settings
                 Layout.alignment: Qt.AlignCenter
             }
         }

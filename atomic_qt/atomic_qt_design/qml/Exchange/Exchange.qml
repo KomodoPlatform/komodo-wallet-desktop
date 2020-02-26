@@ -12,6 +12,10 @@ Item {
     id: exchange
     property int current_page: API.design_editor ? General.idx_exchange_trade : General.idx_exchange_trade
 
+    function reset() {
+
+    }
+
     function openTradeView(ticker) {
         exchange_trade.open(ticker)
     }

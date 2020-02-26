@@ -16,6 +16,9 @@ RowLayout {
         exchange.openTradeView(API.get().current_coin_info.ticker)
     }
 
+    function reset() {
+    }
+
     readonly property double button_margin: 0.05
     spacing: 0
     Layout.fillWidth: true
