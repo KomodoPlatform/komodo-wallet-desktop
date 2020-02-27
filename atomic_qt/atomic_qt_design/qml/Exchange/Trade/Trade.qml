@@ -38,7 +38,9 @@ Item {
         repeat: true
         interval: 500
         triggeredOnStart: true
-        onTriggered: API.get().refresh_orders_and_swaps()
+        onTriggered: {
+            if(inCurrentPage()) API.get().refresh_orders_and_swaps()
+        }
     }
 
     Timer {
