@@ -103,6 +103,7 @@ DefaultModal {
             title: qsTr("Error Log:")
             field.text: getSwapError(details).data.error
             field.readOnly: true
+            copyable: true
 
             visible: field.text !== ''
         }
