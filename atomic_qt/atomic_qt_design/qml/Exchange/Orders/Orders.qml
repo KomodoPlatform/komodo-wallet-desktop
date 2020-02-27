@@ -17,6 +17,7 @@ Item {
     function reset() {
         all_orders = {}
         all_recent_swaps = {}
+        update_timer.running = false
     }
 
     function onOpened() {
