@@ -94,7 +94,7 @@ DefaultModal {
             Layout.fillHeight: true
             ScrollBar.vertical: ScrollBar {}
 
-            model: getCurrentOrderbook().sort((a, b) => parseFloat(a.price) - parseFloat(b.price))
+            model: getCurrentOrderbook().sort((a, b) => parseFloat(b.price) - parseFloat(a.price))
 
             clip: true
 
