@@ -8,6 +8,17 @@ import "../../Constants"
 Item {
     id: exchange_orders
 
+    property string base
+    property var all_orders: ({})
+    property var all_recent_swaps: ({})
+
+    onBaseChanged: updateOrders()
+
+    function reset() {
+        all_orders = {}
+        all_recent_swaps = {}
+    }
+
     function onOpened() {
         // Force a refresh, myOrdersUpdated will call updateOrders once it's done
         API.get().refresh_infos()
@@ -51,12 +62,6 @@ Item {
     function changeTicker(ticker) {
         combo_base.currentIndex = baseCoins().map(c => c.ticker).indexOf(ticker)
     }
-
-    property string base
-    property var all_orders: ({})
-    property var all_recent_swaps: ({})
-
-    onBaseChanged: updateOrders()
 
     Timer {
         id: update_timer

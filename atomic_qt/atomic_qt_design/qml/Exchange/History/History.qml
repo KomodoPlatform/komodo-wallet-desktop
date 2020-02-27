@@ -8,6 +8,18 @@ import "../../Constants"
 Item {
     id: exchange_history
 
+    property var all_recent_swaps: ({})
+
+    function inCurrentPage() {
+        return exchange.current_page === General.idx_exchange_history
+    }
+
+    function reset() {
+        update_timer.restart()
+        update_timer.running = inCurrentPage()
+        all_recent_swaps = {}
+    }
+
     function onOpened() {
         updateRecentSwaps()
     }
@@ -20,11 +32,9 @@ Item {
         return General.filterRecentSwaps(all_recent_swaps, "include")
     }
 
-    property var all_recent_swaps: ({})
-
     Timer {
         id: update_timer
-        running: exchange.current_page === General.idx_exchange_history
+        running: inCurrentPage()
         repeat: true
         interval: 5000
         onTriggered: updateRecentSwaps()
