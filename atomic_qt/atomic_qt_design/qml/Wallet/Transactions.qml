@@ -49,13 +49,15 @@ ListView {
             fillMode: Image.PreserveAspectFit
             width: Style.textSize2
             anchors.verticalCenter: parent.verticalCenter
+            anchors.right: parent.horizontalCenter
+            anchors.rightMargin: 350
         }
 
         // Amount
         ColumnLayout {
             anchors.verticalCenter: parent.verticalCenter
-            anchors.right: parent.right
-            anchors.rightMargin: 450
+            anchors.right: parent.horizontalCenter
+            anchors.rightMargin: -100
 
             // Crypto
             DefaultText {
@@ -77,8 +79,8 @@ ListView {
 
         // Date
         DefaultText {
-            anchors.right: parent.right
-            anchors.rightMargin: 170
+            anchors.right: parent.horizontalCenter
+            anchors.rightMargin: -380
             text: model.modelData.date
             anchors.verticalCenter: parent.verticalCenter
         }

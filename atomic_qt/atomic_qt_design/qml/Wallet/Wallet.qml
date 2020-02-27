@@ -36,7 +36,7 @@ RowLayout {
         Layout.fillWidth: true
         ColumnLayout {
             id: wallet_layout
-            width: 900
+            width: parent.width
             anchors.horizontalCenter: parent.horizontalCenter
             anchors.top: parent.top
             anchors.topMargin: 50
@@ -135,7 +135,8 @@ RowLayout {
 
             // Separator line
             HorizontalLine {
-                Layout.fillWidth: true
+                width: 720
+                Layout.alignment: Qt.AlignHCenter
             }
 
             DefaultText {
