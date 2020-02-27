@@ -8,11 +8,12 @@ import "../Constants"
 
 Rectangle {
     property var item
+    width: parent.width
+    height: 175
+
     property bool hovered: false
 
     color: hovered ? Style.colorTheme8 : "transparent"
-    width: parent.width
-    height: 175
 
     MouseArea {
         anchors.fill: parent

@@ -21,11 +21,26 @@ ListView {
     // Row
     delegate: Rectangle {
         id: rectangle
-        color: "transparent"
         implicitWidth: parent.width
         height: 65
 
         visible: model.modelData.timestamp !== 0
+
+        property bool hovered: false
+
+        color: hovered ? Style.colorTheme8 : "transparent"
+
+        MouseArea {
+            anchors.fill: parent
+            hoverEnabled: true
+            onHoveredChanged: hovered = containsMouse
+            onClicked: tx_details_modal.open()
+        }
+
+        TransactionDetailsModal {
+            id: tx_details_modal
+            details: model.modelData
+        }
 
         // Icon
         Image {
@@ -66,35 +81,6 @@ ListView {
             anchors.rightMargin: 170
             text: model.modelData.date
             anchors.verticalCenter: parent.verticalCenter
-        }
-
-        // Info button
-        Button {
-            anchors.right: parent.right
-            anchors.rightMargin: 50
-            anchors.verticalCenter: parent.verticalCenter
-            text: qsTr("Details")
-            onClicked: tx_details_modal.open()
-        }
-
-//        Image {
-//            anchors.right: parent.right
-//            anchors.rightMargin: 50
-//            source: General.image_path + "dashboard-info.svg"
-//            fillMode: Image.PreserveAspectFit
-//            width: Style.textSize2
-//            anchors.verticalCenter: parent.verticalCenter
-
-//            MouseArea {
-//                anchors { horizontalCenter: parent.horizontalCenter; verticalCenter: parent.verticalCenter }
-//                height: parent.height * 2; width: height
-//                onClicked: tx_details_modal.open()
-//            }
-//        }
-
-        TransactionDetailsModal {
-            id: tx_details_modal
-            details: model.modelData
         }
     }
 }
