@@ -59,7 +59,6 @@ Rectangle {
             for(let i = swap.events.length - 1; i > 0; --i) {
                 const e = swap.events[i]
                if(swap.error_events.indexOf(e.state) !== -1) {
-                   console.log('FAILED SWAP DETAILS: ' + JSON.stringify(e))
                    return e
                }
             }
