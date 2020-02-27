@@ -58,12 +58,13 @@ Rectangle {
             for(let i = swap.events.length - 1; i > 0; --i) {
                 const e = swap.events[i]
                if(swap.error_events.indexOf(e.state) !== -1) {
-                   return e.state
+                   console.log('FAILED SWAP DETAILS: ' + JSON.stringify(e))
+                   return e
                }
             }
         }
 
-        return ''
+        return { state: '', data: { error: '' } }
     }
 
     function getStatus(swap) {
@@ -73,7 +74,7 @@ Rectangle {
         const last_state = swap.events[swap.events.length-1].state
 
         if(last_state === "Started") return status_swap_matched
-        if(last_state === "Finished") return getSwapError(swap) === '' ? status_swap_successful : status_swap_failed
+        if(last_state === "Finished") return getSwapError(swap).state === '' ? status_swap_successful : status_swap_failed
 
         return status_swap_ongoing
     }

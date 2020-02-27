@@ -80,7 +80,7 @@ DefaultModal {
         // Error ID
         TextWithTitle {
             title: qsTr("Error ID:")
-            text: getSwapError(details)
+            text: getSwapError(details).state
             visible: text !== ''
         }
 
