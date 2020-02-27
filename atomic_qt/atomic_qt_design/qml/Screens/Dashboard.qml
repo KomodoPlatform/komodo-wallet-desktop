@@ -29,6 +29,10 @@ Item {
         settings.reset()
     }
 
+    function inCurrentPage() {
+        return app.current_page === idx_dashboard
+    }
+
     onCurrent_pageChanged: {
         if(prev_page !== current_page) {
             if(current_page === General.idx_dashboard_exchange) {
