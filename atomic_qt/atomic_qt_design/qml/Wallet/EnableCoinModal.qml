@@ -15,7 +15,10 @@ DefaultModal {
         selected_to_enable = {}
     }
 
-    onOpened: reset()
+    function prepareAndOpen() {
+        reset()
+        root.open()
+    }
 
     function markToEnable(ticker) {
       if(selected_to_enable[ticker] === undefined) selected_to_enable[ticker] = true

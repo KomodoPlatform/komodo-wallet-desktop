@@ -261,7 +261,7 @@ RowLayout {
                 anchors.fill: parent
                 hoverEnabled: true
                 onHoveredChanged: add_coin_button.hovered = containsMouse
-                onClicked: enable_coin_modal.open()
+                onClicked: enable_coin_modal.prepareAndOpen()
             }
 
             anchors.bottom: parent.bottom
