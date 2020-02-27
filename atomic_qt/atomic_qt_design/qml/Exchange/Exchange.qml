@@ -19,6 +19,11 @@ Item {
         exchange_orders.reset()
     }
 
+    function inCurrentPage() {
+        return  dashboard.inCurrentPage() &&
+                dashboard.current_page === General.idx_dashboard_exchange
+    }
+
     function openTradeView(ticker) {
         exchange_trade.open(ticker)
     }

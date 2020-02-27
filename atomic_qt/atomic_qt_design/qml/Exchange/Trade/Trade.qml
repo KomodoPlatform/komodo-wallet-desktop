@@ -109,8 +109,7 @@ Item {
     property var orderbook_model
 
     function inCurrentPage() {
-        return  dashboard.inCurrentPage() &&
-                dashboard.current_page === General.idx_dashboard_exchange &&
+        return  exchange.inCurrentPage() &&
                 exchange.current_page === General.idx_exchange_trade
     }
 
