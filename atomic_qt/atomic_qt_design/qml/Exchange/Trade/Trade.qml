@@ -36,7 +36,7 @@ Item {
     Timer {
         id: refresh_timer
         repeat: true
-        interval: 500
+        interval: refresh_faster.running ? 500 : 5000
         triggeredOnStart: true
         onTriggered: {
             if(inCurrentPage()) API.get().refresh_orders_and_swaps()
@@ -44,9 +44,8 @@ Item {
     }
 
     Timer {
-        id: stop_refreshing
-        interval: 5000
-        onTriggered: refresh_timer.stop()
+        id: refresh_faster
+        interval: 10000
     }
 
     Timer {
