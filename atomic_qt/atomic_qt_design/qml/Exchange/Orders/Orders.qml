@@ -12,6 +12,11 @@ Item {
     property var all_orders: ({})
     property var all_recent_swaps: ({})
 
+    function inCurrentPage() {
+        return  exchange.inCurrentPage() &&
+                exchange.current_page === General.idx_exchange_orders
+    }
+
     onBaseChanged: updateOrders()
 
     function reset() {

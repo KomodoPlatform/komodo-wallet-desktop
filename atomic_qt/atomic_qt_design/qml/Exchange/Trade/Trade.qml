@@ -12,6 +12,11 @@ Item {
     property string prev_base
     property string prev_rel
 
+    function inCurrentPage() {
+        return  exchange.inCurrentPage() &&
+                exchange.current_page === General.idx_exchange_trade
+    }
+
     function fullReset() {
         reset()
         prev_base = ''
@@ -107,11 +112,6 @@ Item {
 
     // Orderbook
     property var orderbook_model
-
-    function inCurrentPage() {
-        return  exchange.inCurrentPage() &&
-                exchange.current_page === General.idx_exchange_trade
-    }
 
     function fillTickersIfEmpty() {
         form_base.fillIfEmpty()

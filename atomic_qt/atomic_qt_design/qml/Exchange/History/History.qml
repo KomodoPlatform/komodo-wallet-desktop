@@ -11,7 +11,8 @@ Item {
     property var all_recent_swaps: ({})
 
     function inCurrentPage() {
-        return exchange.current_page === General.idx_exchange_history
+        return  exchange.inCurrentPage() &&
+                exchange.current_page === General.idx_exchange_history
     }
 
     function reset() {
