@@ -61,7 +61,7 @@ Item {
         reset(false)
         exchange.current_page = General.idx_exchange_orders
         refresh_timer.restart()
-        stop_refreshing.restart()
+        refresh_faster.restart()
     }
 
 
