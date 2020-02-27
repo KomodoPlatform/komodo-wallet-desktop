@@ -74,7 +74,9 @@ Item {
         running: false
         repeat: true
         interval: 5000
-        onTriggered: updateOrders()
+        onTriggered: {
+            if(inCurrentPage()) updateOrders()
+        }
     }
 
     ColumnLayout {

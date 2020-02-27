@@ -49,6 +49,15 @@ Item {
         onTriggered: refresh_timer.stop()
     }
 
+    Timer {
+        id: orderbook_timer
+        repeat: true
+        interval: 5000
+        onTriggered: {
+            if(inCurrentPage()) updateOrderbook()
+        }
+    }
+
     function onOrderSuccess() {
         reset(false)
         exchange.current_page = General.idx_exchange_orders
@@ -136,13 +145,6 @@ Item {
            base !== ''        && rel !== ''        && amount !== '' && amount !== '0') {
             getTradeInfo(base, rel, amount)
         }
-    }
-
-    Timer {
-        id: orderbook_timer
-        repeat: true
-        interval: 5000
-        onTriggered: updateOrderbook()
     }
 
     // Trade

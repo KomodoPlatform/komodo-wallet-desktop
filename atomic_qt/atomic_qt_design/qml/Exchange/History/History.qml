@@ -38,7 +38,9 @@ Item {
         running: inCurrentPage()
         repeat: true
         interval: 5000
-        onTriggered: updateRecentSwaps()
+        onTriggered: {
+            if(inCurrentPage()) updateRecentSwaps()
+        }
     }
 
     ColumnLayout {
