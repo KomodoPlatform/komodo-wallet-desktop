@@ -14,7 +14,7 @@ Item {
 
     function reset() {
         current_page = General.idx_exchange_trade
-        exchange_trade.reset(true)
+        exchange_trade.fullReset()
         exchange_history.reset()
         exchange_orders.reset()
     }

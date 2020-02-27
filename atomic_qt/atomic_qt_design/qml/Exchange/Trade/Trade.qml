@@ -12,6 +12,20 @@ Item {
     property string prev_base
     property string prev_rel
 
+    function fullReset() {
+        reset()
+        prev_base = ''
+        prev_rel = ''
+        curr_trade_info = default_curr_trade_info
+        orderbook_timer.running = false
+    }
+
+    function reset(reset_result=true) {
+        if(reset_result) action_result = ""
+        resetPreferredPrice()
+        form_base.reset()
+        form_rel.reset()
+    }
 
     // Orders page quick refresher, used right after a fresh successful trade
     Timer {
@@ -75,7 +89,8 @@ Item {
     }
 
     // Cache Trade Info
-    property var curr_trade_info: ({"input_final_value": "0", "is_ticker_of_fees_eth": false, "trade_fee": "0", "tx_fee": "0"})
+    readonly property var default_curr_trade_info: ({"input_final_value": "0", "is_ticker_of_fees_eth": false, "trade_fee": "0", "tx_fee": "0"})
+    property var curr_trade_info: default_curr_trade_info
 
     function getTradeInfo(base, rel, amount, set_as_current=true) {
         if(inCurrentPage()) {
@@ -203,13 +218,6 @@ Item {
         const base = getTicker(true)
         const rel = getTicker(false)
         return base !== '' && rel !== '' && base !== rel
-    }
-
-    function reset(reset_result=true) {
-        if(reset_result) action_result = ""
-        resetPreferredPrice()
-        form_base.reset()
-        form_rel.reset()
     }
 
     function setPair() {
