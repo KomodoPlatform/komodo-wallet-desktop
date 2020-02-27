@@ -17,6 +17,9 @@ Item {
                 exchange.current_page === General.idx_exchange_trade
     }
 
+    // Override
+    function onOrderSuccess() { }
+
     function fullReset() {
         reset()
         prev_base = ''
@@ -32,22 +35,6 @@ Item {
         form_rel.reset()
     }
 
-    // Orders page quick refresher, used right after a fresh successful trade
-    Timer {
-        id: refresh_timer
-        repeat: true
-        interval: refresh_faster.running ? 500 : 5000
-        triggeredOnStart: true
-        onTriggered: {
-            if(inCurrentPage()) API.get().refresh_orders_and_swaps()
-        }
-    }
-
-    Timer {
-        id: refresh_faster
-        interval: 10000
-    }
-
     Timer {
         id: orderbook_timer
         repeat: true
@@ -55,13 +42,6 @@ Item {
         onTriggered: {
             if(inCurrentPage()) updateOrderbook()
         }
-    }
-
-    function onOrderSuccess() {
-        reset(false)
-        exchange.current_page = General.idx_exchange_orders
-        refresh_timer.restart()
-        refresh_faster.restart()
     }
 
 
