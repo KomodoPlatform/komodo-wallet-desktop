@@ -142,6 +142,7 @@ target_link_libraries(atomic_qt
         Folly::folly
         Folly::folly_deps
         )
+#target_enable_asan(atomic_qt)
 
 #qt5_create_translation(QM_FILES ${CMAKE_SOURCE_DIR} ${TS_FILES})
 

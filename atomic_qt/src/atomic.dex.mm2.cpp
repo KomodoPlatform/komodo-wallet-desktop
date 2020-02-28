@@ -570,7 +570,11 @@ namespace atomic_dex
     mm2::process_balance(const std::string& ticker) const
     {
         t_balance_request balance_request{.coin = ticker};
-        m_balance_informations.insert_or_assign(ticker, rpc_balance(std::move(balance_request)));
+        auto              answer = rpc_balance(std::move(balance_request));
+        if (answer.raw_result.find("error") == std::string::npos)
+        {
+            m_balance_informations.insert_or_assign(ticker, answer);
+        }
     }
 
     void
