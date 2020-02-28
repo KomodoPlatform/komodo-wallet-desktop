@@ -15,9 +15,15 @@ Rectangle {
         return !API.get().first_run() && API.get().is_there_a_default_wallet() ? idx_login : idx_first_launch
     }
 
+    function cleanApp() {
+        dashboard.reset()
+    }
+
     function onDisconnect() { openFirstLaunch() }
 
-    function openFirstLaunch(force) {
+    function openFirstLaunch(force) {        
+        cleanApp()
+
         if(API.design_editor) {
             current_page = idx_dashboard
             return
@@ -64,7 +70,7 @@ Rectangle {
             function postLoginSuccess() {
                 initial_loading.check_loading_complete.running = true
                 current_page = idx_initial_loading
-                dashboard.reset()
+                cleanApp()
             }
         }
 

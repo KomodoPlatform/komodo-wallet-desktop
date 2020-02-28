@@ -12,27 +12,36 @@ Item {
     property string prev_base
     property string prev_rel
 
+    function inCurrentPage() {
+        return  exchange.inCurrentPage() &&
+                exchange.current_page === General.idx_exchange_trade
+    }
 
-    // Orders page quick refresher, used right after a fresh successful trade
+    // Override
+    function onOrderSuccess() { }
+
+    function fullReset() {
+        reset()
+        prev_base = ''
+        prev_rel = ''
+        curr_trade_info = default_curr_trade_info
+        orderbook_timer.running = false
+    }
+
+    function reset(reset_result=true) {
+        if(reset_result) action_result = ""
+        resetPreferredPrice()
+        form_base.reset()
+        form_rel.reset()
+    }
+
     Timer {
-        id: refresh_timer
+        id: orderbook_timer
         repeat: true
-        interval: 500
-        triggeredOnStart: true
-        onTriggered: API.get().refresh_orders_and_swaps()
-    }
-
-    Timer {
-        id: stop_refreshing
         interval: 5000
-        onTriggered: refresh_timer.stop()
-    }
-
-    function onOrderSuccess() {
-        reset(false)
-        exchange.current_page = General.idx_exchange_orders
-        refresh_timer.restart()
-        stop_refreshing.restart()
+        onTriggered: {
+            if(inCurrentPage()) updateOrderbook()
+        }
     }
 
 
@@ -75,7 +84,8 @@ Item {
     }
 
     // Cache Trade Info
-    property var curr_trade_info: ({"input_final_value": "0", "is_ticker_of_fees_eth": false, "trade_fee": "0", "tx_fee": "0"})
+    readonly property var default_curr_trade_info: ({"input_final_value": "0", "is_ticker_of_fees_eth": false, "trade_fee": "0", "tx_fee": "0"})
+    property var curr_trade_info: default_curr_trade_info
 
     function getTradeInfo(base, rel, amount, set_as_current=true) {
         if(inCurrentPage()) {
@@ -92,12 +102,6 @@ Item {
 
     // Orderbook
     property var orderbook_model
-
-    function inCurrentPage() {
-        return  app.current_page === idx_dashboard &&
-                dashboard.current_page === General.idx_dashboard_exchange &&
-                exchange.current_page === General.idx_exchange_trade
-    }
 
     function fillTickersIfEmpty() {
         form_base.fillIfEmpty()
@@ -120,13 +124,6 @@ Item {
            base !== ''        && rel !== ''        && amount !== '' && amount !== '0') {
             getTradeInfo(base, rel, amount)
         }
-    }
-
-    Timer {
-        id: orderbook_timer
-        repeat: true
-        interval: 5000
-        onTriggered: updateOrderbook()
     }
 
     // Trade
@@ -203,13 +200,6 @@ Item {
         const base = getTicker(true)
         const rel = getTicker(false)
         return base !== '' && rel !== '' && base !== rel
-    }
-
-    function reset(reset_result=true) {
-        if(reset_result) action_result = ""
-        resetPreferredPrice()
-        form_base.reset()
-        form_rel.reset()
     }
 
     function setPair() {

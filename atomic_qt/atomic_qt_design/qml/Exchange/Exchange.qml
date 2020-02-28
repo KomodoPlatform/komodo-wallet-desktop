@@ -13,7 +13,15 @@ Item {
     property int current_page: API.design_editor ? General.idx_exchange_trade : General.idx_exchange_trade
 
     function reset() {
+        current_page = General.idx_exchange_trade
+        exchange_trade.fullReset()
+        exchange_history.reset()
+        exchange_orders.reset()
+    }
 
+    function inCurrentPage() {
+        return  dashboard.inCurrentPage() &&
+                dashboard.current_page === General.idx_dashboard_exchange
     }
 
     function openTradeView(ticker) {
@@ -88,6 +96,12 @@ Item {
 
             Trade {
                 id: exchange_trade
+
+                function onOrderSuccess() {
+                    exchange_trade.reset(false)
+                    exchange.current_page = General.idx_exchange_orders
+                    exchange_orders.onOrderPlaced()
+                }
             }
 
             Orders {

@@ -21,7 +21,7 @@ ColumnLayout {
         selectByMouse: true
         wrapMode: TextEdit.Wrap
 
-        // Hide button
+        // Copy button
         Image {
             source: General.image_path + "dashboard-copy.svg"
             visible: copyable

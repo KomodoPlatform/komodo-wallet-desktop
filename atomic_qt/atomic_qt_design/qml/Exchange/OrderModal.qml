@@ -77,13 +77,6 @@ DefaultModal {
             visible: text !== ''
         }
 
-        // Error ID
-        TextWithTitle {
-            title: qsTr("Error ID:")
-            text: getSwapError(details)
-            visible: text !== ''
-        }
-
         // Taker Payment ID
         TextWithTitle {
             title: qsTr("Taker Payment ID:")
@@ -96,6 +89,23 @@ DefaultModal {
             title: qsTr("Maker Payment ID:")
             text: getSwapPaymentID(details, false)
             visible: text !== ''
+        }
+
+        // Error ID
+        TextWithTitle {
+            title: qsTr("Error ID:")
+            text: getSwapError(details).state
+            visible: text !== ''
+        }
+
+        // Error Details
+        TextFieldWithTitle {
+            title: qsTr("Error Log:")
+            field.text: getSwapError(details).data.error
+            field.readOnly: true
+            copyable: true
+
+            visible: field.text !== ''
         }
 
         // Buttons

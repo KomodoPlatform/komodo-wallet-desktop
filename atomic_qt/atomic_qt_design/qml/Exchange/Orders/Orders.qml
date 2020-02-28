@@ -8,6 +8,23 @@ import "../../Constants"
 Item {
     id: exchange_orders
 
+    property string base
+    property var all_orders: ({})
+    property var all_recent_swaps: ({})
+
+    function inCurrentPage() {
+        return  exchange.inCurrentPage() &&
+                exchange.current_page === General.idx_exchange_orders
+    }
+
+    onBaseChanged: updateOrders()
+
+    function reset() {
+        all_orders = {}
+        all_recent_swaps = {}
+        update_timer.running = false
+    }
+
     function onOpened() {
         // Force a refresh, myOrdersUpdated will call updateOrders once it's done
         API.get().refresh_infos()
@@ -52,18 +69,42 @@ Item {
         combo_base.currentIndex = baseCoins().map(c => c.ticker).indexOf(ticker)
     }
 
-    property string base
-    property var all_orders: ({})
-    property var all_recent_swaps: ({})
-
-    onBaseChanged: updateOrders()
-
     Timer {
         id: update_timer
         running: false
         repeat: true
         interval: 5000
-        onTriggered: updateOrders()
+        onTriggered: {
+            if(inCurrentPage()) updateOrders()
+        }
+    }
+
+    // Orders page quick refresher, used right after a fresh successful trade
+    function onOrderPlaced() {
+        refresh_faster.restart()
+        refresh_timer.restart()
+    }
+
+    Timer {
+        id: refresh_timer
+        repeat: true
+        interval: refresh_faster.running ? 500 : 5000
+        triggeredOnStart: true
+        onTriggered: {
+            console.log("Refreshing orders and swaps! Faster: " + refresh_faster.running)
+            if(inCurrentPage()) {
+                console.log("ACTUALLY Refreshing orders and swaps! Faster: " + refresh_faster.running)
+                API.get().refresh_orders_and_swaps()
+            }
+        }
+    }
+
+    Timer {
+        id: refresh_faster
+        interval: 10000
+        onTriggered: {
+            console.log("Refreshing faster for " + interval + " ms!")
+        }
     }
 
     ColumnLayout {

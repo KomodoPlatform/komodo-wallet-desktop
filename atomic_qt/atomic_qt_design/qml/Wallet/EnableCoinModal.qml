@@ -9,11 +9,17 @@ import "../Constants"
 DefaultModal {
     id: root
 
-    function reset() {
+    property var selected_to_enable: ({})
 
+    function reset() {
+        selected_to_enable = {}
     }
 
-    property var selected_to_enable: ({})
+    function prepareAndOpen() {
+        reset()
+        root.open()
+    }
+
     function markToEnable(ticker) {
       if(selected_to_enable[ticker] === undefined) selected_to_enable[ticker] = true
       else delete selected_to_enable[ticker]
