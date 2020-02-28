@@ -82,6 +82,7 @@ RowLayout {
                 spacing: 50
 
                 Button {
+                    enabled: API.get().current_coin_info.state !== "InProgress"
                     text: qsTr("Send")
                     leftPadding: parent.width * button_margin
                     rightPadding: leftPadding
@@ -93,6 +94,7 @@ RowLayout {
                 }
 
                 Button {
+                    enabled: API.get().current_coin_info.state !== "InProgress"
                     text: qsTr("Receive")
                     leftPadding: parent.width * button_margin
                     rightPadding: leftPadding
@@ -104,6 +106,7 @@ RowLayout {
                 }
 
                 Button {
+                    enabled: API.get().current_coin_info.state !== "InProgress"
                     text: qsTr("Swap")
                     leftPadding: parent.width * button_margin
                     rightPadding: leftPadding
@@ -117,7 +120,7 @@ RowLayout {
                     rightPadding: leftPadding
 
                     visible: API.get().current_coin_info.is_claimable === true
-                    enabled: claim_rewards_modal.canClaim()
+                    enabled: API.get().current_coin_info.state !== "InProgress" && claim_rewards_modal.canClaim()
                     onClicked: {
                         claim_rewards_modal.prepareClaimRewards()
                         claim_rewards_modal.open()
@@ -147,12 +150,37 @@ RowLayout {
                 Layout.alignment: Qt.AlignHCenter
             }
 
+
+            // Transactions or loading
+            ColumnLayout {
+                visible: API.get().current_coin_info.state === "InProgress"
+                Layout.alignment: Qt.AlignHCenter
+                Layout.fillHeight: true
+
+                DefaultText {
+                    text: qsTr("Loading")
+                    Layout.alignment: Qt.AlignHCenter
+                    font.pointSize: Style.textSize2
+                }
+
+                BusyIndicator {
+                    Layout.alignment: Qt.AlignHCenter
+                }
+
+                DefaultText {
+                    text: qsTr("Syncing ") + API.get().current_coin_info.current_block + qsTr(" TXs...")
+                    Layout.alignment: Qt.AlignHCenter
+                }
+            }
+
             Transactions {
                 id: transactions
+                visible: API.get().current_coin_info.state !== "InProgress"
                 Layout.fillWidth: true
                 Layout.fillHeight: true
                 implicitHeight: Math.min(contentItem.childrenRect.height, wallet.height*0.5)
             }
+
             implicitHeight: Math.min(contentItem.childrenRect.height, wallet.height*0.5)
         }
     }
