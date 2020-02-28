@@ -152,24 +152,30 @@ RowLayout {
 
 
             // Transactions or loading
-            ColumnLayout {
+            Rectangle {
+                color: "transparent"
                 visible: API.get().current_coin_info.state === "InProgress"
                 Layout.alignment: Qt.AlignHCenter
+                Layout.fillWidth: true
                 Layout.fillHeight: true
 
-                DefaultText {
-                    text: qsTr("Loading")
-                    Layout.alignment: Qt.AlignHCenter
-                    font.pointSize: Style.textSize2
-                }
+                ColumnLayout {
+                    anchors.horizontalCenter: parent.horizontalCenter
+                    anchors.verticalCenter: parent.verticalCenter
+                    DefaultText {
+                        text: qsTr("Loading")
+                        Layout.alignment: Qt.AlignHCenter
+                        font.pointSize: Style.textSize2
+                    }
 
-                BusyIndicator {
-                    Layout.alignment: Qt.AlignHCenter
-                }
+                    BusyIndicator {
+                        Layout.alignment: Qt.AlignHCenter
+                    }
 
-                DefaultText {
-                    text: qsTr("Syncing ") + API.get().current_coin_info.current_block + qsTr(" TXs...")
-                    Layout.alignment: Qt.AlignHCenter
+                    DefaultText {
+                        text: qsTr("Syncing ") + API.get().current_coin_info.current_block + qsTr(" TXs...")
+                        Layout.alignment: Qt.AlignHCenter
+                    }
                 }
             }
 
