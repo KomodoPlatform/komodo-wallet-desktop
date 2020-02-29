@@ -33,7 +33,7 @@ Item {
             RowLayout {
                 anchors.centerIn: parent
 
-                DefaultButton {
+                DangerButton {
                     text: qsTr("Delete Wallet")
                     onClicked: {
                         API.get().delete_wallet(API.get().wallet_default_name)

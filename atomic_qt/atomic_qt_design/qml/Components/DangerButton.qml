@@ -4,10 +4,8 @@ import QtQuick.Controls 2.3
 import QtQuick.Controls.Material 2.12
 import "../Constants"
 
-Button {
-    Material.background: Style.colorTheme5
-    Material.foreground: Style.colorWhite
-    Material.elevation: 1
+DefaultButton {
+    Material.background: Style.colorRed2
 }
 
 /*##^##

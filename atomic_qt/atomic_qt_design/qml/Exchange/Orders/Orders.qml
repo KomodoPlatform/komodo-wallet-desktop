@@ -143,7 +143,7 @@ Item {
                     }
                 }
 
-                DefaultButton {
+                DangerButton {
                     text: qsTr("Cancel All Orders")
                     enabled: getOrders().maker_orders.length > 0 || getOrders().taker_orders.length > 0
                     onClicked: API.get().cancel_all_orders_by_ticker(base)

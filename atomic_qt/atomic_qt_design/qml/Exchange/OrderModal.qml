@@ -117,7 +117,7 @@ DefaultModal {
             }
 
             // Cancel button
-            DefaultButton {
+            DangerButton {
                 visible: details.cancellable !== undefined && details.cancellable
                 Layout.fillWidth: true
                 text: qsTr("Cancel")
