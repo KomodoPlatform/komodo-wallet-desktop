@@ -162,7 +162,7 @@ DefaultModal {
                 onClicked: root.close()
             }
 
-            DefaultButton {
+            PrimaryButton {
                 text: qsTr("Create your own order")
                 Layout.fillWidth: true
                 onClicked: createNewOrder()

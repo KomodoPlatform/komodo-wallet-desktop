@@ -110,7 +110,7 @@ DefaultModal {
                 Layout.fillWidth: true
                 onClicked: root.close()
             }
-            DefaultButton {
+            PrimaryButton {
                 visible: API.get().enableable_coins.length > 0
                 enabled: Object.keys(selected_to_enable).length > 0
                 text: qsTr("Enable")

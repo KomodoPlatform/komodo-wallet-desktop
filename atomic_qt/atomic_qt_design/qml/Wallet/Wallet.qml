@@ -113,7 +113,7 @@ RowLayout {
                     onClicked: onClickedSwap()
                 }
 
-                DefaultButton {
+                PrimaryButton {
                     id: button_claim_rewards
                     text: qsTr("Claim Rewards")
                     leftPadding: parent.width * button_margin

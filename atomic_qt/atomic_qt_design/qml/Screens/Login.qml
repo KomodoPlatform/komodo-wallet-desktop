@@ -64,7 +64,7 @@ SetupPage {
                 }
             }
 
-            DefaultButton {
+            PrimaryButton {
                 id: login_button
                 text: qsTr("Login")
                 onClicked: tryLogin()

@@ -100,7 +100,7 @@ DefaultModal {
                     Layout.fillWidth: true
                     onClicked: root.close()
                 }
-                DefaultButton {
+                PrimaryButton {
                     text: qsTr("Prepare")
                     Layout.fillWidth: true
 
@@ -152,7 +152,7 @@ DefaultModal {
                     Layout.fillWidth: true
                     onClicked: stack_layout.currentIndex = 0
                 }
-                DefaultButton {
+                PrimaryButton {
                     text: qsTr("Send")
                     Layout.fillWidth: true
                     onClicked: sendCoin()

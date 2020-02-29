@@ -26,7 +26,7 @@ SetupPage {
             Layout.fillWidth: true
             spacing: Style.itemPadding
 
-            DefaultButton {
+            PrimaryButton {
                 text: qsTr("New User")
                 Layout.fillWidth: true
                 onClicked: onClickedNewUser()

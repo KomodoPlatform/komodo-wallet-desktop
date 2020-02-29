@@ -78,7 +78,7 @@ DefaultModal {
                     Layout.fillWidth: true
                     onClicked: root.close()
                 }
-                DefaultButton {
+                PrimaryButton {
                     text: qsTr("Confirm")
                     Layout.fillWidth: true
                     onClicked: claimRewards()

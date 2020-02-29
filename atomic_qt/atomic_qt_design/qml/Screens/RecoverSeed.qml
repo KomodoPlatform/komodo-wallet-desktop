@@ -50,7 +50,7 @@ SetupPage {
                 onClicked: onClickedBack()
             }
 
-            DefaultButton {
+            PrimaryButton {
                 text: qsTr("Confirm")
                 onClicked: onClickedConfirm(input_password.field.text, input_seed.field.text, input_wallet_name.field.text)
                 enabled:     // Fields are not empty

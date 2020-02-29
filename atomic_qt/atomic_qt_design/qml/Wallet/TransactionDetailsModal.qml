@@ -75,7 +75,7 @@ DefaultModal {
                 Layout.fillWidth: true
                 onClicked: root.close()
             }
-            DefaultButton {
+            PrimaryButton {
                 text: qsTr("View at Explorer")
                 Layout.fillWidth: true
                 onClicked: Qt.openUrlExternally(API.get().current_coin_info.explorer_url + "tx/" + details.tx_hash)

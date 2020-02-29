@@ -124,7 +124,7 @@ DefaultModal {
                 onClicked: onCancelOrder(details.uuid)
             }
 
-            DefaultButton {
+            PrimaryButton {
                 text: qsTr("View at Explorer")
                 Layout.fillWidth: true
                 visible: getSwapPaymentID(details, false) !== ''|| getSwapPaymentID(details, true) !== ''
