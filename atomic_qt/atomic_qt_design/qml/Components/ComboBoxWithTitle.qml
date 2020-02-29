@@ -14,7 +14,7 @@ ColumnLayout {
         }
     }
 
-    ComboBox {
+    DefaultComboBox {
         id: input_field
         Layout.fillWidth: true
     }

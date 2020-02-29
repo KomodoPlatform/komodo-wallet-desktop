@@ -130,7 +130,7 @@ Item {
                     Layout.preferredHeight: Layout.preferredWidth
                 }
 
-                ComboBox {
+                DefaultComboBox {
                     id: combo_base
                     Layout.preferredWidth: 250
                     Layout.topMargin: 10

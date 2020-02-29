@@ -153,7 +153,7 @@ Rectangle {
                 Layout.preferredHeight: Layout.preferredWidth
             }
 
-            ComboBox {
+            DefaultComboBox {
                 id: combo
 
                 enabled: root.enabled

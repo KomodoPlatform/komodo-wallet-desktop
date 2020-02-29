@@ -101,7 +101,7 @@ Item {
                     Layout.preferredHeight: Layout.preferredWidth
                 }
 
-                ComboBox {
+                DefaultComboBox {
                     id: combo_base
                     Layout.preferredWidth: 250
                     Layout.topMargin: 10
@@ -124,7 +124,7 @@ Item {
                 }
 
                 // Rel
-                ComboBox {
+                DefaultComboBox {
                     id: combo_rel
                     Layout.preferredWidth: 250
 
