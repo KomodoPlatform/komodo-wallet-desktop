@@ -39,59 +39,62 @@ SetupPage {
             }
         }
 
+        // Wallets
+        ColumnLayout {
+            visible: wallets.length > 0
+            // Name
+            DefaultText {
+                Layout.topMargin: 30
+                text: "Wallets"
+            }
 
-        // Name
-        DefaultText {
-            Layout.topMargin: 30
-            text: "Wallets"
-        }
+            HorizontalLine {
+                Layout.fillWidth: true
+            }
 
-        HorizontalLine {
-            Layout.fillWidth: true
-        }
+            ListView {
+                ScrollBar.vertical: ScrollBar {}
+                implicitWidth: contentItem.childrenRect.width
+                implicitHeight: contentItem.childrenRect.height
+                clip: true
 
-        ListView {
-            ScrollBar.vertical: ScrollBar {}
-            implicitWidth: contentItem.childrenRect.width
-            implicitHeight: contentItem.childrenRect.height
-            clip: true
+                model: wallets
 
-            model: wallets
+                delegate: Rectangle {
+                    property bool hovered: false
 
-            delegate: Rectangle {
-                property bool hovered: false
+                    color: hovered ? Style.colorTheme7 : "transparent"
+                    anchors.horizontalCenter: parent.horizontalCenter
+                    width: 300
+                    height: 30
 
-                color: hovered ? Style.colorTheme7 : "transparent"
-                anchors.horizontalCenter: parent.horizontalCenter
-                width: 300
-                height: 30
-
-                // Click area
-                MouseArea {
-                    anchors.fill: parent
-                    hoverEnabled: true
-                    onHoveredChanged: hovered = containsMouse
-                    onClicked: {
-                        API.get().wallet_default_name = model.modelData
-                        onClickedWallet()
+                    // Click area
+                    MouseArea {
+                        anchors.fill: parent
+                        hoverEnabled: true
+                        onHoveredChanged: hovered = containsMouse
+                        onClicked: {
+                            API.get().wallet_default_name = model.modelData
+                            onClickedWallet()
+                        }
                     }
-                }
 
-                // Name
-                DefaultText {
-                    anchors.left: parent.left
-                    anchors.leftMargin: 5
+                    // Name
+                    DefaultText {
+                        anchors.left: parent.left
+                        anchors.leftMargin: 5
 
-                    text: Style.listItemPrefix + model.modelData
-                    anchors.verticalCenter: parent.verticalCenter
-                }
+                        text: Style.listItemPrefix + model.modelData
+                        anchors.verticalCenter: parent.verticalCenter
+                    }
 
-                // Line
-                HorizontalLine {
-                    visible: index !== wallets.length - 1
-                    width: parent.width
-                    color: Style.colorWhite9
-                    anchors.bottom: parent.bottom
+                    // Line
+                    HorizontalLine {
+                        visible: index !== wallets.length - 1
+                        width: parent.width
+                        color: Style.colorWhite9
+                        anchors.bottom: parent.bottom
+                    }
                 }
             }
         }
