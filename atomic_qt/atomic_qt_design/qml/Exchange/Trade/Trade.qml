@@ -234,7 +234,7 @@ Item {
     }
 
     function getReceiveAmount(price) {
-        return (curr_trade_info.input_final_value * parseFloat(price)).toFixed(8)
+        return (parseFloat(form_base.getVolume()) * parseFloat(price)).toFixed(8)
     }
 
     // No coins warning

@@ -91,9 +91,7 @@ Item {
         interval: refresh_faster.running ? 500 : 5000
         triggeredOnStart: true
         onTriggered: {
-            console.log("Refreshing orders and swaps! Faster: " + refresh_faster.running)
             if(inCurrentPage()) {
-                console.log("ACTUALLY Refreshing orders and swaps! Faster: " + refresh_faster.running)
                 API.get().refresh_orders_and_swaps()
             }
         }
