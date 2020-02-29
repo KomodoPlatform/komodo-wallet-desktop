@@ -14,6 +14,7 @@ Popup {
 
     background: Rectangle {
         color: Style.colorTheme6
+        radius: Style.rectangleCornerRadius
         width: root.width
         height: root.height
     }
