@@ -292,7 +292,7 @@ Item {
         }
 
         // Trade button
-        Button {
+        DefaultButton {
             id: action_button
             Layout.fillWidth: true
 

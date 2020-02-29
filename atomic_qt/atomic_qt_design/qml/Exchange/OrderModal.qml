@@ -110,21 +110,21 @@ DefaultModal {
 
         // Buttons
         RowLayout {
-            Button {
+            DefaultButton {
                 text: qsTr("Close")
                 Layout.fillWidth: true
                 onClicked: root.close()
             }
 
             // Cancel button
-            Button {
+            DefaultButton {
                 visible: details.cancellable !== undefined && details.cancellable
                 Layout.fillWidth: true
                 text: qsTr("Cancel")
                 onClicked: onCancelOrder(details.uuid)
             }
 
-            Button {
+            DefaultButton {
                 text: qsTr("View at Explorer")
                 Layout.fillWidth: true
                 visible: getSwapPaymentID(details, false) !== ''|| getSwapPaymentID(details, true) !== ''

@@ -50,12 +50,12 @@ ColumnLayout {
 
     // Buttons
     RowLayout {
-        Button {
+        DefaultButton {
             text: qsTr("Close")
             Layout.fillWidth: true
             onClicked: onClose()
         }
-        Button {
+        DefaultButton {
             text: qsTr("View at Explorer")
             Layout.fillWidth: true
             onClicked: Qt.openUrlExternally(result.explorer_url + "tx/" + tx_hash.text)

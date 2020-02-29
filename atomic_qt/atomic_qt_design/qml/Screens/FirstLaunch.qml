@@ -26,13 +26,13 @@ SetupPage {
             Layout.fillWidth: true
             spacing: Style.itemPadding
 
-            Button {
+            DefaultButton {
                 text: qsTr("New User")
                 Layout.fillWidth: true
                 onClicked: onClickedNewUser()
             }
 
-            Button {
+            DefaultButton {
                 Layout.fillWidth: true
                 text: qsTr("Recover Seed")
                 onClicked: onClickedRecoverSeed()

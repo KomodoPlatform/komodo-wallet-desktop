@@ -92,7 +92,7 @@ Rectangle {
     }
 
     // Cancel button
-    Button {
+    DefaultButton {
         visible: !in_modal && item.cancellable !== undefined && item.cancellable
         anchors.right: parent.right
         anchors.bottom: date.bottom

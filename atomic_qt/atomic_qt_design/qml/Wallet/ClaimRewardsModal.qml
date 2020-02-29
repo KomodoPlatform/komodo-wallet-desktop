@@ -73,12 +73,12 @@ DefaultModal {
 
             // Buttons
             RowLayout {
-                Button {
+                DefaultButton {
                     text: qsTr("Cancel")
                     Layout.fillWidth: true
                     onClicked: root.close()
                 }
-                Button {
+                DefaultButton {
                     text: qsTr("Confirm")
                     Layout.fillWidth: true
                     onClicked: claimRewards()

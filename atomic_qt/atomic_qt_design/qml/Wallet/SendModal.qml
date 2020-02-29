@@ -95,12 +95,12 @@ DefaultModal {
 
             // Buttons
             RowLayout {
-                Button {
+                DefaultButton {
                     text: qsTr("Close")
                     Layout.fillWidth: true
                     onClicked: root.close()
                 }
-                Button {
+                DefaultButton {
                     text: qsTr("Prepare")
                     Layout.fillWidth: true
 
@@ -147,12 +147,12 @@ DefaultModal {
 
             // Buttons
             RowLayout {
-                Button {
+                DefaultButton {
                     text: qsTr("Back")
                     Layout.fillWidth: true
                     onClicked: stack_layout.currentIndex = 0
                 }
-                Button {
+                DefaultButton {
                     text: qsTr("Send")
                     Layout.fillWidth: true
                     onClicked: sendCoin()

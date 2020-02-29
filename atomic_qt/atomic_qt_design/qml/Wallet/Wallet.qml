@@ -81,7 +81,7 @@ RowLayout {
 
                 spacing: 50
 
-                Button {
+                DefaultButton {
                     enabled: API.get().current_coin_info.tx_state !== "InProgress"
                     text: qsTr("Send")
                     leftPadding: parent.width * button_margin
@@ -93,7 +93,7 @@ RowLayout {
                     id: send_modal
                 }
 
-                Button {
+                DefaultButton {
                     enabled: API.get().current_coin_info.tx_state !== "InProgress"
                     text: qsTr("Receive")
                     leftPadding: parent.width * button_margin
@@ -105,7 +105,7 @@ RowLayout {
                     id: receive_modal
                 }
 
-                Button {
+                DefaultButton {
                     enabled: API.get().current_coin_info.tx_state !== "InProgress"
                     text: qsTr("Swap")
                     leftPadding: parent.width * button_margin
@@ -113,7 +113,7 @@ RowLayout {
                     onClicked: onClickedSwap()
                 }
 
-                Button {
+                DefaultButton {
                     id: button_claim_rewards
                     text: qsTr("Claim Rewards")
                     leftPadding: parent.width * button_margin

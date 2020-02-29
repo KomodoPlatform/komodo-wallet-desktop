@@ -188,7 +188,7 @@ Rectangle {
         }
 
         RowLayout {
-            Button {
+            DefaultButton {
                 Layout.leftMargin: combo.Layout.rightMargin
                 Layout.topMargin: Layout.rightMargin
                 Layout.bottomMargin: Layout.rightMargin

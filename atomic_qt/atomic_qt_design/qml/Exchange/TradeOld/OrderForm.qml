@@ -128,7 +128,7 @@ Rectangle {
         }
 
         // Action button
-        Button {
+        DefaultButton {
             id: action_button
             Layout.leftMargin: input_volume.Layout.leftMargin
             Layout.rightMargin: Layout.leftMargin

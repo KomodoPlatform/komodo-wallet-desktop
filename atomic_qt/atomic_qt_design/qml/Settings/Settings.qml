@@ -33,7 +33,7 @@ Item {
             RowLayout {
                 anchors.centerIn: parent
 
-                Button {
+                DefaultButton {
                     text: qsTr("Delete Wallet")
                     onClicked: {
                         API.get().delete_wallet(API.get().wallet_default_name)
@@ -41,7 +41,7 @@ Item {
                     }
                 }
 
-                Button {
+                DefaultButton {
                     text: qsTr("Log out")
                     onClicked: disconnect()
                 }

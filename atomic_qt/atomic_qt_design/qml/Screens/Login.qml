@@ -55,7 +55,7 @@ SetupPage {
         }
 
         RowLayout {
-            Button {
+            DefaultButton {
                 text: qsTr("Back")
                 onClicked: {
                     API.get().wallet_default_name = ""
@@ -64,7 +64,7 @@ SetupPage {
                 }
             }
 
-            Button {
+            DefaultButton {
                 id: login_button
                 text: qsTr("Login")
                 onClicked: tryLogin()

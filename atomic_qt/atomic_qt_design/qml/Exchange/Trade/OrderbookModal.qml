@@ -156,13 +156,13 @@ DefaultModal {
         // Buttons
         RowLayout {
             Layout.alignment: Qt.AlignBottom
-            Button {
+            DefaultButton {
                 text: qsTr("Close")
                 Layout.fillWidth: true
                 onClicked: root.close()
             }
 
-            Button {
+            DefaultButton {
                 text: qsTr("Create your own order")
                 Layout.fillWidth: true
                 onClicked: createNewOrder()

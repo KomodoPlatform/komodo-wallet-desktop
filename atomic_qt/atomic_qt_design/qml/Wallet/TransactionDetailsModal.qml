@@ -70,12 +70,12 @@ DefaultModal {
 
         // Buttons
         RowLayout {
-            Button {
+            DefaultButton {
                 text: qsTr("Close")
                 Layout.fillWidth: true
                 onClicked: root.close()
             }
-            Button {
+            DefaultButton {
                 text: qsTr("View at Explorer")
                 Layout.fillWidth: true
                 onClicked: Qt.openUrlExternally(API.get().current_coin_info.explorer_url + "tx/" + details.tx_hash)

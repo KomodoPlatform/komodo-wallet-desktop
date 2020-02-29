@@ -105,12 +105,12 @@ DefaultModal {
 
         // Buttons
         RowLayout {
-            Button {
+            DefaultButton {
                 text: qsTr("Close")
                 Layout.fillWidth: true
                 onClicked: root.close()
             }
-            Button {
+            DefaultButton {
                 visible: API.get().enableable_coins.length > 0
                 enabled: Object.keys(selected_to_enable).length > 0
                 text: qsTr("Enable")

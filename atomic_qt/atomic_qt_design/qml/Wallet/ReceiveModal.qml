@@ -33,7 +33,7 @@ DefaultModal {
 
         // Buttons
         RowLayout {
-            Button {
+            DefaultButton {
                 text: qsTr("Close")
                 Layout.fillWidth: true
                 onClicked: root.close()
