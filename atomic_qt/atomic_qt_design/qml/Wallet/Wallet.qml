@@ -82,7 +82,7 @@ RowLayout {
                 spacing: 50
 
                 Button {
-                    enabled: API.get().current_coin_info.state !== "InProgress"
+                    enabled: API.get().current_coin_info.tx_state !== "InProgress"
                     text: qsTr("Send")
                     leftPadding: parent.width * button_margin
                     rightPadding: leftPadding
@@ -94,7 +94,7 @@ RowLayout {
                 }
 
                 Button {
-                    enabled: API.get().current_coin_info.state !== "InProgress"
+                    enabled: API.get().current_coin_info.tx_state !== "InProgress"
                     text: qsTr("Receive")
                     leftPadding: parent.width * button_margin
                     rightPadding: leftPadding
@@ -106,7 +106,7 @@ RowLayout {
                 }
 
                 Button {
-                    enabled: API.get().current_coin_info.state !== "InProgress"
+                    enabled: API.get().current_coin_info.tx_state !== "InProgress"
                     text: qsTr("Swap")
                     leftPadding: parent.width * button_margin
                     rightPadding: leftPadding
@@ -120,7 +120,7 @@ RowLayout {
                     rightPadding: leftPadding
 
                     visible: API.get().current_coin_info.is_claimable === true
-                    enabled: API.get().current_coin_info.state !== "InProgress" && claim_rewards_modal.canClaim()
+                    enabled: API.get().current_coin_info.tx_state !== "InProgress" && claim_rewards_modal.canClaim()
                     onClicked: {
                         claim_rewards_modal.prepareClaimRewards()
                         claim_rewards_modal.open()
@@ -143,7 +143,7 @@ RowLayout {
             }
 
             DefaultText {
-                visible: API.get().current_coin_info.transactions.length === 0
+                visible: API.get().current_coin_info.tx_state !== "InProgress" && API.get().current_coin_info.transactions.length === 0
                 text: qsTr("No transactions")
                 font.pointSize: Style.textSize
                 color: Style.colorWhite4
@@ -154,7 +154,7 @@ RowLayout {
             // Transactions or loading
             Rectangle {
                 color: "transparent"
-                visible: API.get().current_coin_info.state === "InProgress"
+                visible: API.get().current_coin_info.tx_state === "InProgress"
                 Layout.alignment: Qt.AlignHCenter
                 Layout.fillWidth: true
                 Layout.fillHeight: true
@@ -173,7 +173,7 @@ RowLayout {
                     }
 
                     DefaultText {
-                        text: qsTr("Syncing ") + API.get().current_coin_info.current_block + qsTr(" TXs...")
+                        text: qsTr("Syncing ") + API.get().current_coin_info.tx_current_block + qsTr(" TXs...")
                         Layout.alignment: Qt.AlignHCenter
                     }
                 }
@@ -181,7 +181,7 @@ RowLayout {
 
             Transactions {
                 id: transactions
-                visible: API.get().current_coin_info.state !== "InProgress"
+                visible: API.get().current_coin_info.tx_state !== "InProgress"
                 Layout.fillWidth: true
                 Layout.fillHeight: true
                 implicitHeight: Math.min(contentItem.childrenRect.height, wallet.height*0.5)
