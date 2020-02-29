@@ -109,15 +109,21 @@ Rectangle {
         }
     }
 
-    function onBaseChanged() {
+    function capVolume() {
         if(inCurrentPage() && my_side && input_volume.field.acceptableInput) {
             const amt = parseFloat(input_volume.field.text)
             const cap_with_fees = getMaxTradableVolume(false)
             if(amt > cap_with_fees) {
                 input_volume.field.text = cap_with_fees.toString()
-                updateTradeInfo()
+                return true
             }
         }
+
+        return false
+    }
+
+    function onBaseChanged() {
+        if(capVolume()) updateTradeInfo()
 
         if(my_side) {
             // Rel is dependant on Base if price is set so update that

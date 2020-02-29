@@ -217,8 +217,9 @@ Item {
         }
     }
 
-    function trade(base, rel, base_volume) {
-        action_result = API.get().place_sell_order(base, rel, getCurrentPrice(), base_volume) ? "success" : "error"
+    function trade(base, rel) {
+        form_base.capVolume()
+        action_result = API.get().place_sell_order(base, rel, getCurrentPrice(), form_base.field.text) ? "success" : "error"
         if(action_result === "success") {
             onOrderSuccess()
         }
@@ -298,7 +299,7 @@ Item {
 
             text: qsTr("Trade")
             enabled: form_base.isValid() && form_rel.isValid()
-            onClicked: trade(getTicker(true), getTicker(false), form_base.field.text)
+            onClicked: trade(getTicker(true), getTicker(false))
         }
 
         // Price
