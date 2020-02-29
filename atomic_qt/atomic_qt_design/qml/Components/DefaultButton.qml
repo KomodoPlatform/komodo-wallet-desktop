@@ -7,7 +7,7 @@ import "../Constants"
 Button {
     Material.background: Style.colorTheme5
     Material.foreground: Style.colorWhite
-    Material.elevation: 1
+    Material.elevation: Style.materialElevation
 }
 
 /*##^##

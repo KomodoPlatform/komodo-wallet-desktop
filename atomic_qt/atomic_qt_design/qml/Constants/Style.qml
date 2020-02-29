@@ -10,6 +10,8 @@ QtObject {
 
     readonly property string listItemPrefix:  " ⚬   "
 
+    readonly property int materialElevation: 1
+
     readonly property int textSizeSmall: 10
     readonly property int textSize: 16
     readonly property int textSize2: 24
