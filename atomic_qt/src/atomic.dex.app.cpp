@@ -227,9 +227,9 @@ namespace atomic_dex
         sysrandom(data.data(), data.size());
         char*  output;
         words* output_words;
-        assert(WALLY_OK == bip39_get_wordlist(NULL, &output_words));
-        assert(WALLY_OK == bip39_mnemonic_from_bytes(output_words, data.data(), data.size(), &output));
-        assert(WALLY_OK == bip39_mnemonic_validate(output_words, output));
+        bip39_get_wordlist(NULL, &output_words);
+        bip39_mnemonic_from_bytes(output_words, data.data(), data.size(), &output);
+        bip39_mnemonic_validate(output_words, output);
         return output;
 #else
         return QString("FAKE LINUX WINDOWS SEED");
