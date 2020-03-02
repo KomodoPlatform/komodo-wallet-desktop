@@ -45,7 +45,7 @@ endif()
 ##! We fetch our dependence
 if (APPLE)
     FetchContent_Declare(mm2
-            URL https://github.com/KomodoPlatform/atomicDEX-API/releases/download/beta-2.0.1680/mm2-0f11b2dd8-Darwin-Release.zip)
+            URL https://github.com/KomodoPlatform/atomicDEX-API/releases/download/beta-2.0.1704/mm2-c82f84db6-Darwin-Release.zip)
 elseif (UNIX AND NOT APPLE)
     FetchContent_Declare(mm2
             URL http://195.201.0.6/mm2/mm2-latest-Linux.zip)
