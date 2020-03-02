@@ -416,7 +416,6 @@ MigrationBackup/
 *.gch
 
 # Libraries
-*.lib
 *.a
 *.la
 *.lo
