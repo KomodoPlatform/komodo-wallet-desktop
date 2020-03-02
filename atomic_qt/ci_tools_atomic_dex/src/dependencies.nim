@@ -4,6 +4,7 @@ import vcpkg
 let g_packages = [
     (name: "entt", head: true),
     (name: "folly", head: false),
+    (name: "boost-multiprecision", head: false),
     (name: "doctest", head: false),
     (name: "fmt", head: false),
     (name: "nlohmann-json", head: false),

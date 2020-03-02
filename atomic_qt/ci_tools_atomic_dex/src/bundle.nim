@@ -50,4 +50,8 @@ proc bundle*(build_type: string) =
         discard osproc.execCmd(bundling_cmd)
         discard os.existsOrCreateDir(bundle_path)
         os.copyFile(atomic_qt_app_path.parentDir().joinPath("atomic_qt.dmg"), bundle_path.joinPath("atomic_qt.dmg"))
+    when defined(windows):
+        let 
+            qt_windeploy_path = os.getEnv("QT_INSTALL_CMAKE_PATH").joinPath("bin").joinPath("windeployqt.exe")
+
     
