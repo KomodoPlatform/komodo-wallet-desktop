@@ -52,6 +52,11 @@ proc bundle*(build_type: string) =
         os.copyFile(atomic_qt_app_path.parentDir().joinPath("atomic_qt.dmg"), bundle_path.joinPath("atomic_qt.dmg"))
     when defined(windows):
         let 
-            qt_windeploy_path = os.getEnv("QT_INSTALL_CMAKE_PATH").joinPath("bin").joinPath("windeployqt.exe")
+            bundle_path = os.getCurrentDir().parentDir().joinPath("bundle-" & build_type)
+            bundle_cmd = "powershell.exe -nologo -noprofile -command \"& { Add-Type -A 'System.IO.Compression.FileSystem'; [IO.Compression.ZipFile]::CreateFromDirectory('bin', 'bin.zip'); }\""
+        discard osproc.execCmd(bundle_cmd)
+        discard os.existsOrCreateDir(bundle_path)
+        os.moveFile("bin.zip", bundle_path.joinPath("bundle.zip"))
+
 
     
