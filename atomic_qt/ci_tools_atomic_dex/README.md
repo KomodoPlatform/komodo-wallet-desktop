@@ -1,6 +1,7 @@
 ## Prerequisites
 
 - CMake 3.14 minimum
+- Git
 - clang C++ 17 compiler (clang-8 minimum) (if OSX Catalina Apple Clang 11.0 will be picked by default)
 - QT_INSTALL_CMAKE_PATH environment variable pointing to the CMake script of QT (for osx/linux)
 - QT_INSTALL_CMAKE_PATH environment variable pointing to msvc_2017x64 for windows
@@ -24,8 +25,9 @@ nimble build
 - Install nim
 
 launch a powershell at admin and run:
+
 ```
-scoop install llvm ninja cmake --global
+scoop install llvm ninja cmake git --global
 nimble build
 ci_tools_atomic_dex.exe build release
 ```
