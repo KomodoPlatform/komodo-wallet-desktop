@@ -51,7 +51,7 @@ elseif (UNIX AND NOT APPLE)
             URL http://195.201.0.6/mm2/mm2-latest-Linux.zip)
 else ()
     FetchContent_Declare(mm2
-            URL http://195.201.0.6/mm2/mm2-latest-Windows_NT.zip)
+            URL https://github.com/KomodoPlatform/atomicDEX-API/releases/download/beta-2.0.1704/mm2-c82f84db6-Windows_NT-Debug.zip)
 endif ()
 
 FetchContent_Declare(jl777-coins
