@@ -153,11 +153,12 @@ RowLayout {
 
             // Transactions or loading
             Rectangle {
+                id: loading_tx
                 color: "transparent"
                 visible: API.get().current_coin_info.tx_state === "InProgress"
                 Layout.alignment: Qt.AlignHCenter
                 Layout.fillWidth: true
-                Layout.fillHeight: true
+                implicitHeight: 100
 
                 ColumnLayout {
                     anchors.horizontalCenter: parent.horizontalCenter
@@ -179,9 +180,15 @@ RowLayout {
                 }
             }
 
+            // Separator line
+            HorizontalLine {
+                visible: loading_tx.visible && transactions.model.length > 0
+                width: 720
+                Layout.alignment: Qt.AlignHCenter
+            }
+
             Transactions {
                 id: transactions
-                visible: API.get().current_coin_info.tx_state !== "InProgress"
                 Layout.fillWidth: true
                 Layout.fillHeight: true
                 implicitHeight: Math.min(contentItem.childrenRect.height, wallet.height*0.5)
