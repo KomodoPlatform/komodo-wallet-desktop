@@ -17,7 +17,7 @@
 //! Project Headers
 #include "atomic.dex.provider.coinpaprika.hpp"
 #include "atomic.dex.http.code.hpp"
-#include "atomic.dex.provider.coinpaprika.api.hpp"
+#include "atomic.threadpool.hpp"
 
 namespace
 {
@@ -26,15 +26,27 @@ namespace
     using namespace atomic_dex;
     using namespace atomic_dex::coinpaprika::api;
 
+    template <typename TAnswer, typename TRequest, typename TFunctorRequest>
     void
-    retry(price_converter_answer& answer, const price_converter_request& request)
+    retry(TAnswer& answer, const TRequest& request, TFunctorRequest&& functor)
     {
         while (answer.rpc_result_code == e_http_code::too_many_requests)
         {
             DLOG_F(WARNING, "too many request retry");
             std::this_thread::sleep_for(1s);
-            answer = price_converter(request);
+            functor(request);
+            // answer = price_converter(request);
         }
+    }
+
+    void
+    process_ticker_infos(const atomic_dex::coin_config& current_coin, atomic_dex::coinpaprika_provider::t_ticker_infos_registry& reg)
+    {
+        const ticker_infos_request request{.ticker_currency_id = current_coin.coinpaprika_id, .ticker_quotes = {"USD", "EUR"}};
+        auto                       answer = tickers_info(request);
+
+        retry(answer, request, [&answer](const ticker_infos_request& request) { answer = tickers_info(request); });
+        reg.insert_or_assign(current_coin.ticker, answer);
     }
 
     template <typename Provider>
@@ -45,9 +57,12 @@ namespace
         const price_converter_request request{.base_currency_id = base, .quote_currency_id = fiat};
         auto                          answer = price_converter(request);
 
-        retry(answer, request);
+        retry(answer, request, [&answer](const price_converter_request& request) { answer = price_converter(request); });
 
-        if (answer.raw_result.find("error") == std::string::npos) { rate_providers.insert_or_assign(current_coin.ticker, answer.price); }
+        if (answer.raw_result.find("error") == std::string::npos)
+        {
+            rate_providers.insert_or_assign(current_coin.ticker, answer.price);
+        }
         else
             rate_providers.insert_or_assign(current_coin.ticker, "0.00");
     }
@@ -102,7 +117,11 @@ namespace atomic_dex
 
                 for (auto&& current_coin: coins)
                 {
-                    if (current_coin.coinpaprika_id == "test-coin") { continue; }
+                    if (current_coin.coinpaprika_id == "test-coin")
+                    {
+                        continue;
+                    }
+                    spawn([this, cur_coin = current_coin]() { process_ticker_infos(cur_coin, this->m_ticker_infos_registry); });
                     process_provider(current_coin, m_usd_rate_providers, "usd-us-dollars");
                     process_provider(current_coin, m_eur_rate_providers, "eur-euro");
                 }
@@ -120,11 +139,17 @@ namespace atomic_dex
             return "0.00";
         }
 
-        if (m_mm2_instance.get_coin_info(ticker).coinpaprika_id == "test-coin") { return "0.00"; }
+        if (m_mm2_instance.get_coin_info(ticker).coinpaprika_id == "test-coin")
+        {
+            return "0.00";
+        }
 
         const auto price = get_rate_conversion(fiat, ticker, ec);
 
-        if (ec) { return "0.00"; }
+        if (ec)
+        {
+            return "0.00";
+        }
 
         std::error_code t_ec;
         const auto      amount = m_mm2_instance.my_balance(ticker, t_ec);
@@ -141,7 +166,10 @@ namespace atomic_dex
         const auto                 final_price = price_f * amount_f;
         std::stringstream          ss;
 
-        if (not skip_precision) { ss.precision(2); }
+        if (not skip_precision)
+        {
+            ss.precision(2);
+        }
         ss << std::fixed << final_price;
 
         return ss.str() == "0" ? "0.00" : ss.str();
@@ -157,7 +185,10 @@ namespace atomic_dex
 
         for (auto&& current_coin: coins)
         {
-            if (current_coin.coinpaprika_id == "test-coin") { continue; }
+            if (current_coin.coinpaprika_id == "test-coin")
+            {
+                continue;
+            }
 
             current_price = get_price_in_fiat(fiat, current_coin.ticker, ec, true);
 
@@ -183,10 +214,16 @@ namespace atomic_dex
     std::string
     coinpaprika_provider::get_price_in_fiat_from_tx(const std::string& fiat, const std::string& ticker, const tx_infos& tx, std::error_code& ec) const noexcept
     {
-        if (m_mm2_instance.get_coin_info(ticker).coinpaprika_id == "test-coin") { return "0.00"; }
+        if (m_mm2_instance.get_coin_info(ticker).coinpaprika_id == "test-coin")
+        {
+            return "0.00";
+        }
         const auto amount        = tx.am_i_sender ? tx.my_balance_change.substr(1) : tx.my_balance_change;
         const auto current_price = get_rate_conversion(fiat, ticker, ec);
-        if (ec) { return "0.00"; }
+        if (ec)
+        {
+            return "0.00";
+        }
         const bm::cpp_dec_float_50 amount_f(amount);
         const bm::cpp_dec_float_50 current_price_f(current_price);
         const auto                 final_price = amount_f * current_price_f;
@@ -231,8 +268,11 @@ namespace atomic_dex
         LOG_SCOPE_FUNCTION(INFO);
         const auto config = m_mm2_instance.get_coin_info(evt.ticker);
 
-        process_provider(config, m_usd_rate_providers, "usd-us-dollars");
-        process_provider(config, m_eur_rate_providers, "eur-euro");
+        if (config.coinpaprika_id != "test-coin")
+        {
+            process_provider(config, m_usd_rate_providers, "usd-us-dollars");
+            process_provider(config, m_eur_rate_providers, "eur-euro");
+        }
     }
 
     void

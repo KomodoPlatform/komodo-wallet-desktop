@@ -59,6 +59,12 @@ namespace atomic_dex
             std::replace(evt.price.begin(), evt.price.end(), ',', '.');
         }
 
+        void
+        from_json(const nlohmann::json& j, ticker_info_answer& evt)
+        {
+            evt.answer = j.at("quotes");
+        }
+
         price_converter_answer
         price_converter(const price_converter_request& request)
         {
@@ -88,6 +94,67 @@ namespace atomic_dex
                 answer.raw_result      = resp.body;
                 return answer;
             }
+            try
+            {
+                const auto json_answer = nlohmann::json::parse(resp.body);
+                from_json(json_answer, answer);
+                answer.rpc_result_code = resp.code;
+                answer.raw_result      = resp.body;
+            }
+            catch (const std::exception& error)
+            {
+                VLOG_F(loguru::Verbosity_ERROR, "{}", error.what());
+                answer.rpc_result_code = -1;
+                answer.raw_result      = error.what();
+            }
+
+            return answer;
+        }
+
+        ticker_info_answer
+        tickers_info(const ticker_infos_request& request)
+        {
+            using ranges::views::ints;
+            using ranges::views::zip;
+            using namespace std::string_literals;
+
+            LOG_SCOPE_FUNCTION(INFO);
+
+            auto&& [ticker_id, quotes] = request;
+            auto url                   = g_coinpaprika_endpoint + "tickers/"s + ticker_id + "?quotes=";
+
+            for (auto&& [cur_quote, idx]: zip(quotes, ints(0u, ranges::unreachable)))
+            {
+                url.append(cur_quote);
+
+                //! Append only if not last element, idx start at 0, if idx + 1 == quotes.size(), we are on the last elemnt, we don't append.
+                if (idx < quotes.size() - 1)
+                {
+                    url.append(",");
+                }
+            }
+
+            const auto         resp = RestClient::get(url);
+            ticker_info_answer answer;
+
+            DVLOG_F(loguru::Verbosity_INFO, "url: {}", url);
+            DVLOG_F(loguru::Verbosity_INFO, "resp: {}", resp.body);
+
+            if (resp.code == e_http_code::bad_request)
+            {
+                DVLOG_F(loguru::Verbosity_WARNING, "rpc answer code is 400 (Bad Parameters)");
+                answer.rpc_result_code = resp.code;
+                answer.raw_result      = resp.body;
+                return answer;
+            }
+            if (resp.code == e_http_code::too_many_requests)
+            {
+                DVLOG_F(loguru::Verbosity_WARNING, "rpc answer code is 429 (Too Many requests)");
+                answer.rpc_result_code = resp.code;
+                answer.raw_result      = resp.body;
+                return answer;
+            }
+
             try
             {
                 const auto json_answer = nlohmann::json::parse(resp.body);
