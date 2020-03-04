@@ -23,8 +23,9 @@ proc generate_solution*(build_type: string) =
                     os.getCurrentDir().parentDir().parentDir() & " -DCMAKE_PREFIX_PATH=" & os.getEnv("QT_INSTALL_CMAKE_PATH")
     when defined(osx):
         cmd_line = cmd_line & " -DVCPKG_APPLOCAL_DEPS=OFF"
-    when defined(windows):
+    when defined(windows) or defined(linux):
         cmd_line = cmd_line & " -DCMAKE_CXX_COMPILER=clang++ -DCMAKE_C_COMPILER=clang"
     echo "cmd line: " & cmd_line
     discard execCmd(cmd_line)
-    discard execCmd(get_windows_deploy_cmd())
+    when defined(windows):
+        discard execCmd(get_windows_deploy_cmd())

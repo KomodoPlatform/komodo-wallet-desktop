@@ -7,6 +7,7 @@ let g_packages = [
     (name: "boost-multiprecision", head: false),
     (name: "doctest", head: false),
     (name: "fmt", head: false),
+    (name: "curl", head: false),
     (name: "nlohmann-json", head: false),
     (name: "range-v3", head: false),
     (name: "libsodium", head: false),
