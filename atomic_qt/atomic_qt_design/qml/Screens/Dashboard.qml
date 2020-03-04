@@ -4,6 +4,8 @@ import QtQuick.Controls 2.3
 import QtQuick.Controls.Material 2.12
 import "../Components"
 import "../Constants"
+
+import "../Portfolio"
 import "../Wallet"
 import "../Exchange"
 import "../Settings"
@@ -15,13 +17,14 @@ Item {
     Layout.fillWidth: true
 
     property int prev_page: -1
-    property int current_page: API.design_editor ? General.idx_dashboard_exchange : General.idx_dashboard_wallet
+    property int current_page: API.design_editor ? General.idx_dashboard_exchange : General.idx_dashboard_portfolio
 
     function reset() {
-        current_page = General.idx_dashboard_wallet
+        current_page = General.idx_dashboard_portfolio
         prev_page = -1
 
         // Reset all sections
+        portfolio.reset()
         wallet.reset()
         exchange.reset()
         news.reset()
@@ -59,6 +62,10 @@ Item {
             anchors.fill: parent
 
             transformOrigin: Item.Center
+
+            Portfolio {
+                id: portfolio
+            }
 
             Wallet {
                 id: wallet

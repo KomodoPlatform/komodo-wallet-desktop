@@ -11,6 +11,13 @@ ColumnLayout {
     spacing: 0
 
     SidebarLine {
+        dashboard_index: General.idx_dashboard_portfolio
+        text: qsTr("Portfolio")
+        image: General.image_path + "menu-assets-portfolio.png"
+        Layout.fillWidth: true
+    }
+
+    SidebarLine {
         dashboard_index: General.idx_dashboard_wallet
         text: qsTr("Wallet")
         image: General.image_path + "menu-assets-white.svg"
