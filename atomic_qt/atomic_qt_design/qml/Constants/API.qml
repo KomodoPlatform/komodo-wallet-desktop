@@ -26,6 +26,12 @@ QtObject {
             return data[ticker]
         },
 
+        get_portfolio_informations: () => [
+            { ticker: "RICK", name: "Rick", price: "12.3", balance: "432.151332", balance_fiat: "5315.4613836", day_change_percent: "25.4" },
+            { ticker: "MORTY", name: "Morty", price: "12.3", balance: "432.151332", balance_fiat: "5315.4613836", day_change_percent: "25.4" },
+            { ticker: "BTC", name: "Bitcoin", price: "12.3", balance: "432.151332", balance_fiat: "5315.4613836", day_change_percent: "25.4" },
+        ],
+
         enabled_coins: [
            { ticker: "RICK", name: "Rick" },
            { ticker: "MORTY", name: "Morty" },
