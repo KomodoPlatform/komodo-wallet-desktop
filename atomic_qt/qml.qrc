@@ -30,6 +30,7 @@
         <file>atomic_qt_design/assets/images/coins/dex.png</file>
         <file>atomic_qt_design/assets/images/coins/rick.png</file>
         <file>atomic_qt_design/assets/images/coins/morty.png</file>
+        <file>atomic_qt_design/assets/images/coins/usdc.png</file>
         <file>atomic_qt_design/qml/App.qml</file>
         <file>qtquickcontrols2.conf</file>
         <file>atomic_qt_design/qml/Screens/FirstLaunch.qml</file>

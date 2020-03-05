@@ -51,6 +51,29 @@
     "type": "ERC-20",
     "wiftype": 128
   },
+  "USDC": {
+    "active": false,
+    "coin": "USDC",
+    "coingecko_id": "usd-coin",
+    "coinpaprika_id": "usdc-usd-coin",
+    "currently_enabled": false,
+    "eth_nodes": [
+      "http://eth1.cipig.net:8555",
+      "http://eth2.cipig.net:8555",
+      "http://eth3.cipig.net:8555"
+    ],
+    "explorer_url": [
+      "https://etherscan.io/"
+    ],
+    "is_erc_20": true,
+    "mm2": 1,
+    "name": "USD Coin",
+    "p2shtype": 5,
+    "pubtype": 0,
+    "rpcport": 80,
+    "type": "ERC-20",
+    "wiftype": 128
+  },
   "KMD": {
     "coin": "KMD",
     "name": "Komodo",
