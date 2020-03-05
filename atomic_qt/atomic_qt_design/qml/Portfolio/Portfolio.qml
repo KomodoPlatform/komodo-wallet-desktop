@@ -56,6 +56,13 @@ ColumnLayout {
 
         height: 50
 
+        // Line
+        HorizontalLine {
+            width: parent.width
+            color: Style.colorWhite5
+            anchors.top: parent.top
+        }
+
         // Coin
         DefaultText {
             id: coin_header
