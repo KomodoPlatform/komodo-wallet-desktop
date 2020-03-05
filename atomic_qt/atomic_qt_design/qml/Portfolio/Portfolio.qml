@@ -147,9 +147,34 @@ ColumnLayout {
         }
     }
 
+    // Transactions or loading
+    Rectangle {
+        id: loading
+        color: "transparent"
+        visible: portfolio_coins.length === 0
+        Layout.alignment: Qt.AlignCenter
+        Layout.fillWidth: true
+        Layout.fillHeight: true
+
+        ColumnLayout {
+            anchors.horizontalCenter: parent.horizontalCenter
+            anchors.verticalCenter: parent.verticalCenter
+            DefaultText {
+                text: qsTr("Loading")
+                Layout.alignment: Qt.AlignHCenter
+                font.pointSize: Style.textSize2
+            }
+
+            BusyIndicator {
+                Layout.alignment: Qt.AlignHCenter
+            }
+        }
+    }
+
     // List
     ListView {
         id: list
+        visible: portfolio_coins.length > 0
         Layout.alignment: Qt.AlignTop
         Layout.fillWidth: true
         Layout.fillHeight: true
