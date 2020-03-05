@@ -862,7 +862,7 @@ namespace atomic_dex
         QVariantMap out;
         auto        trade_fee_f = get_mm2().get_trade_fee(ticker.toStdString(), amount.toStdString(), false);
         auto        answer      = get_mm2().get_trade_fixed_fee(ticker.toStdString());
-        if (answer.amount != "")
+        if (!answer.amount.empty())
         {
             t_float_50 tx_fee_f = t_float_50(answer.amount) * 2;
             if (receive_ticker != "")
