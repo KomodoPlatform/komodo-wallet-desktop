@@ -125,6 +125,7 @@ namespace atomic_dex
         Q_INVOKABLE QString     get_regex_password_policy() const noexcept;
         Q_INVOKABLE bool        delete_wallet(const QString& wallet_name) const;
         Q_INVOKABLE QVariantMap get_trade_infos(const QString& ticker, const QString& receive_ticker, const QString& amount);
+        Q_INVOKABLE QVariantList get_portfolio_informations();
 
 
       signals:

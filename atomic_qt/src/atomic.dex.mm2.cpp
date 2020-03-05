@@ -909,6 +909,6 @@ namespace atomic_dex
     t_get_trade_fee_answer
     mm2::get_trade_fixed_fee(const std::string& ticker) const
     {
-        return m_trade_fees_registry.at(ticker);
+        return m_trade_fees_registry.find(ticker) != m_trade_fees_registry.cend() ? m_trade_fees_registry.at(ticker) : t_get_trade_fee_answer{};
     }
 } // namespace atomic_dex

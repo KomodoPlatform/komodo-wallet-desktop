@@ -862,19 +862,45 @@ namespace atomic_dex
         QVariantMap out;
         auto        trade_fee_f = get_mm2().get_trade_fee(ticker.toStdString(), amount.toStdString(), false);
         auto        answer      = get_mm2().get_trade_fixed_fee(ticker.toStdString());
-        t_float_50  tx_fee_f    = t_float_50(answer.amount) * 2;
-        if (receive_ticker != "")
+        if (answer.amount != "")
         {
-            get_mm2().apply_erc_fees(receive_ticker.toStdString(), tx_fee_f);
-        }
-        auto tx_fee_value     = QString::fromStdString(get_formated_float(tx_fee_f));
-        auto final_balance    = get_formated_float(t_float_50(amount.toStdString()) - (trade_fee_f + tx_fee_f));
-        auto final_balance_qt = QString::fromStdString(final_balance);
+            t_float_50 tx_fee_f = t_float_50(answer.amount) * 2;
+            if (receive_ticker != "")
+            {
+                get_mm2().apply_erc_fees(receive_ticker.toStdString(), tx_fee_f);
+            }
+            auto tx_fee_value     = QString::fromStdString(get_formated_float(tx_fee_f));
+            auto final_balance    = get_formated_float(t_float_50(amount.toStdString()) - (trade_fee_f + tx_fee_f));
+            auto final_balance_qt = QString::fromStdString(final_balance);
 
-        out.insert("trade_fee", QString::fromStdString(get_mm2().get_trade_fee_str(ticker.toStdString(), amount.toStdString(), false)));
-        out.insert("tx_fee", tx_fee_value);
-        out.insert("is_ticker_of_fees_eth", get_mm2().get_coin_info(ticker.toStdString()).is_erc_20);
-        out.insert("input_final_value", final_balance_qt);
+            out.insert("trade_fee", QString::fromStdString(get_mm2().get_trade_fee_str(ticker.toStdString(), amount.toStdString(), false)));
+            out.insert("tx_fee", tx_fee_value);
+            out.insert("is_ticker_of_fees_eth", get_mm2().get_coin_info(ticker.toStdString()).is_erc_20);
+            out.insert("input_final_value", final_balance_qt);
+        }
+        return out;
+    }
+
+    QVariantList
+    application::get_portfolio_informations()
+    {
+        QVariantList   out;
+        nlohmann::json j = nlohmann::json::array();
+
+        auto coins = get_mm2().get_enabled_coins();
+        for (auto&& coin: coins)
+        {
+            std::error_code ec;
+            nlohmann::json  cur_obj{{"ticker", coin.ticker},
+                                   {"name", coin.name},
+                                   {"price", get_paprika().get_rate_conversion(m_current_fiat.toStdString(), coin.ticker, ec)},
+                                   {"balance", get_mm2().my_balance(coin.ticker, ec)},
+                                   {"balance_fiat", get_paprika().get_price_in_fiat(m_current_fiat.toStdString(), coin.ticker, ec)},
+                                   {"rates", get_paprika().get_ticker_infos(coin.ticker).answer}};
+            j.push_back(cur_obj);
+        }
+        QJsonDocument q_json = QJsonDocument::fromJson(QString::fromStdString(j.dump()).toUtf8());
+        out                  = q_json.array().toVariantList();
         return out;
     }
 } // namespace atomic_dex

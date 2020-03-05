@@ -284,4 +284,10 @@ namespace atomic_dex
         m_usd_rate_providers.erase(config.ticker);
         m_eur_rate_providers.erase(config.ticker);
     }
+
+    t_ticker_info_answer
+    coinpaprika_provider::get_ticker_infos(const std::string& ticker) const noexcept
+    {
+        return m_ticker_infos_registry.find(ticker) != m_ticker_infos_registry.cend() ? m_ticker_infos_registry.at(ticker) : t_ticker_info_answer{};
+    }
 } // namespace atomic_dex

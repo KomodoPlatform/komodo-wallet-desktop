@@ -65,6 +65,9 @@ namespace atomic_dex
         //! Get the price in fiat from a transaction.
         std::string get_price_in_fiat_from_tx(const std::string& fiat, const std::string& ticker, const tx_infos& tx, std::error_code& ec) const noexcept;
 
+        //! Get the ticker informations.
+        t_ticker_info_answer get_ticker_infos(const std::string& ticker) const noexcept;
+
         //! Event that occur when the mm2 process is launched correctly.
         void on_mm2_started(const mm2_started& evt) noexcept;
 
