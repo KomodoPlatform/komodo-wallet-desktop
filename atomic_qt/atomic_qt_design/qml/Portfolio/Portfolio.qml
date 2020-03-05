@@ -7,11 +7,10 @@ import "../Components"
 import "../Constants"
 
 // Portfolio
-Rectangle {
+ColumnLayout {
     id: portfolio
     Layout.fillWidth: true
     Layout.fillHeight: true
-    color: Style.colorTheme7
 
     function reset() {
         updatePortfolio()
@@ -39,16 +38,95 @@ Rectangle {
         }
     }
 
-    // Coins list
+    function getColor(data) {
+        return data.rates === null || data.rates[API.get().fiat].percent_change_24h === 0 ? Style.colorWhite4 :
+                data.rates[API.get().fiat].percent_change_24h > 0 ? Style.colorGreen : Style.colorRed
+    }
+
+    // List header
+    Rectangle {
+        color: "transparent"
+
+        Layout.alignment: Qt.AlignTop
+
+        Layout.fillWidth: true
+
+        height: 50
+
+        // Coin
+        DefaultText {
+            id: coin_header
+            anchors.left: parent.left
+            anchors.leftMargin: 40
+
+            text: qsTr("Coin")
+            color: Style.colorWhite1
+            anchors.verticalCenter: parent.verticalCenter
+        }
+
+        // Balance
+        DefaultText {
+            id: balance_header
+            anchors.right: parent.right
+            anchors.rightMargin: parent.width * 0.55
+
+            text: qsTr("Balance")
+            color: Style.colorWhite1
+            anchors.verticalCenter: parent.verticalCenter
+        }
+
+        // Value
+        DefaultText {
+            id: value_header
+            anchors.right: parent.right
+            anchors.rightMargin: parent.width * 0.37
+
+            text: qsTr("Value")
+            color: Style.colorWhite1
+            anchors.verticalCenter: parent.verticalCenter
+        }
+
+        // Change 24h
+        DefaultText {
+            id: change_24h_header
+            anchors.right: parent.right
+            anchors.rightMargin: parent.width * 0.21
+
+            text: qsTr("Change 24h")
+            color: Style.colorWhite1
+            anchors.verticalCenter: parent.verticalCenter
+        }
+
+        // Price
+        DefaultText {
+            id: price_header
+            anchors.right: parent.right
+            anchors.rightMargin: parent.width * 0.05
+
+            text: qsTr("Price")
+            color: Style.colorWhite1
+            anchors.verticalCenter: parent.verticalCenter
+        }
+
+        // Line
+        HorizontalLine {
+            width: parent.width
+            color: Style.colorWhite5
+            anchors.bottom: parent.bottom
+        }
+    }
+
+    // List
     ListView {
+        id: list
+        Layout.alignment: Qt.AlignTop
+        Layout.fillWidth: true
+        Layout.fillHeight: true
         ScrollBar.vertical: ScrollBar {}
-        anchors.horizontalCenter: parent.horizontalCenter
-        anchors.verticalCenter: parent.verticalCenter
-        implicitWidth: contentItem.childrenRect.width
-        implicitHeight: contentItem.childrenRect.height
-        clip: true
 
         model: portfolio_coins
+
+        clip: true
 
         delegate: Rectangle {
             property bool hovered: false
@@ -89,7 +167,7 @@ Rectangle {
             Image {
                 id: icon
                 anchors.left: parent.left
-                anchors.leftMargin: 20
+                anchors.leftMargin: coin_header.anchors.leftMargin
 
                 source: General.image_path + "coins/" + model.modelData.ticker.toLowerCase() + ".png"
                 fillMode: Image.PreserveAspectFit
@@ -102,7 +180,49 @@ Rectangle {
                 anchors.left: icon.right
                 anchors.leftMargin: 5
 
-                text: model.modelData.ticker
+                text: General.fullCoinName(model.modelData.name, model.modelData.ticker)
+                anchors.verticalCenter: parent.verticalCenter
+            }
+
+            // Balance
+            DefaultText {
+                anchors.right: parent.right
+                anchors.rightMargin: balance_header.anchors.rightMargin
+
+                text: model.modelData.balance
+                color: Style.colorWhite4
+                anchors.verticalCenter: parent.verticalCenter
+            }
+
+            // Value
+            DefaultText {
+                anchors.right: parent.right
+                anchors.rightMargin: value_header.anchors.rightMargin
+
+                text: General.formatFiat('', model.modelData.balance_fiat, API.get().fiat)
+                color: Style.colorWhite4
+                anchors.verticalCenter: parent.verticalCenter
+            }
+
+            // Change 24h
+            DefaultText {
+                anchors.right: parent.right
+                anchors.rightMargin: change_24h_header.anchors.rightMargin
+
+                text: model.modelData.rates === null ? '-' :
+                        ((model.modelData.rates[API.get().fiat].percent_change_24h > 0 ? '+' : '') +
+                         (model.modelData.rates[API.get().fiat].percent_change_24h + '%'))
+                color: getColor(model.modelData)
+                anchors.verticalCenter: parent.verticalCenter
+            }
+
+            // Price
+            DefaultText {
+                anchors.right: parent.right
+                anchors.rightMargin: price_header.anchors.rightMargin
+
+                text: General.formatFiat('', model.modelData.price, API.get().fiat)
+                color: getColor(model.modelData)
                 anchors.verticalCenter: parent.verticalCenter
             }
         }
