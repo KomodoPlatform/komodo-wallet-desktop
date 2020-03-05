@@ -3,6 +3,8 @@ import QtQuick.Layouts 1.3
 import QtQuick.Controls 2.3
 import QtQuick.Controls.Material 2.12
 import QtGraphicalEffects 1.0
+//import QtCharts 1.3
+
 import "../Components"
 import "../Constants"
 
@@ -226,6 +228,35 @@ ColumnLayout {
                 color: getColor(model.modelData)
                 anchors.verticalCenter: parent.verticalCenter
             }
+
+//            // Chart code for future
+//            ChartView {
+//                width: 200
+//                height: 100
+//                antialiasing: true
+//                anchors.right: parent.right
+//                anchors.rightMargin: price_header.anchors.rightMargin
+//                anchors.verticalCenter: parent.verticalCenter
+//                legend.visible: false
+
+//                Component.onCompleted: {
+//                    for(let i = 0; i < axes.length; ++i) {
+//                        axes[i].visible = false
+//                    }
+//                }
+
+//                backgroundColor: "transparent"
+//                LineSeries {
+//                    name: "LineSeries"
+//                    XYPoint { x: 0; y: 0 }
+//                    XYPoint { x: 1.1; y: 2.1 }
+//                    XYPoint { x: 1.9; y: 3.3 }
+//                    XYPoint { x: 2.1; y: 2.1 }
+//                    XYPoint { x: 2.9; y: 4.9 }
+//                    XYPoint { x: 3.4; y: 3.0 }
+//                    XYPoint { x: 4.1; y: 3.3 }
+//                }
+//            }
         }
     }
 }
