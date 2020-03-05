@@ -76,40 +76,12 @@ ColumnLayout {
 
 
         // Add button
-        Rectangle {
+        PlusButton {
             id: add_coin_button
 
-            width: 50; height: width
-            property bool hovered: false
-            color: "transparent"
-            border.color: hovered ? Style.colorTheme0 : Style.colorTheme3
-            border.width: 2
-            radius: 100
+            width: 50
 
-            Rectangle {
-                width: parent.border.width
-                height: parent.width * 0.5
-                radius: parent.radius
-                color: parent.border.color
-                anchors.verticalCenter: parent.verticalCenter
-                anchors.horizontalCenter: parent.horizontalCenter
-            }
-
-            Rectangle {
-                width: parent.width * 0.5
-                height: parent.border.width
-                radius: parent.radius
-                color: parent.border.color
-                anchors.verticalCenter: parent.verticalCenter
-                anchors.horizontalCenter: parent.horizontalCenter
-            }
-
-            MouseArea {
-                anchors.fill: parent
-                hoverEnabled: true
-                onHoveredChanged: add_coin_button.hovered = containsMouse
-                onClicked: enable_coin_modal.prepareAndOpen()
-            }
+            mouse_area.onClicked: enable_coin_modal.prepareAndOpen()
 
             anchors.right: parent.right
             anchors.rightMargin: parent.height * 0.5 - width * 0.5
