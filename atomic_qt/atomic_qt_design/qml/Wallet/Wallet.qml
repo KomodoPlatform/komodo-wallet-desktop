@@ -311,12 +311,6 @@ RowLayout {
             anchors.horizontalCenter: parent.horizontalCenter
         }
 
-        // Modals
-        EnableCoinModal {
-            id: enable_coin_modal
-            anchors.centerIn: Overlay.overlay
-        }
-
         // Coins list
         ListView {
             ScrollBar.vertical: ScrollBar {}

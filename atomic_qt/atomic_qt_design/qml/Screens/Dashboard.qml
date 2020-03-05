@@ -56,6 +56,12 @@ Item {
         width: parent.width - sidebar.width
         height: parent.height
 
+        // Modals
+        EnableCoinModal {
+            id: enable_coin_modal
+            anchors.centerIn: Overlay.overlay
+        }
+
         StackLayout {
             currentIndex: current_page
 

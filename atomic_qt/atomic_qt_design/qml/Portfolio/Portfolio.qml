@@ -7,7 +7,6 @@ import QtGraphicalEffects 1.0
 
 import "../Components"
 import "../Constants"
-import "../Wallet"
 
 // Portfolio
 ColumnLayout {
@@ -115,12 +114,6 @@ ColumnLayout {
             anchors.right: parent.right
             anchors.rightMargin: parent.height * 0.5 - width * 0.5
             anchors.verticalCenter: parent.verticalCenter
-        }
-
-        // Modals
-        EnableCoinModal {
-            id: enable_coin_modal
-            anchors.centerIn: Overlay.overlay
         }
     }
 
