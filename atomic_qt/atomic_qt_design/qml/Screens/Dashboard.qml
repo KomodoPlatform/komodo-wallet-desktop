@@ -45,6 +45,10 @@ Item {
             else if(prev_page === General.idx_dashboard_exchange) {
                 API.get().on_gui_leave_dex()
             }
+
+            if(current_page === General.idx_dashboard_portfolio) {
+                portfolio.onOpened()
+            }
         }
 
         prev_page = current_page

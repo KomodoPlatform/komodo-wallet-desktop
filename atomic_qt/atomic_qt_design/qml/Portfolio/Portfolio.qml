@@ -18,6 +18,10 @@ ColumnLayout {
         updatePortfolio()
     }
 
+    function onOpened() {
+        updatePortfolio()
+    }
+
     function inCurrentPage() {
         return  dashboard.inCurrentPage() &&
                 dashboard.current_page === General.idx_dashboard_portfolio
