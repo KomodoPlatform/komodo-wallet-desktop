@@ -57,6 +57,35 @@
     "type": "UTXO",
     "wiftype": 128
   },
+  "DASH": {
+    "active": false,
+    "coin": "DASH",
+    "coingecko_id": "bitcoin",
+    "coinpaprika_id": "dash-dash",
+    "currently_enabled": false,
+    "electrum": [
+      {
+        "url": "electrum1.cipig.net:10061"
+      },
+      {
+        "url": "electrum2.cipig.net:10061"
+      },
+      {
+        "url": "electrum3.cipig.net:10061"
+      }
+    ],
+    "explorer_url": [
+      "https://explorer.dash.org/"
+    ],
+    "is_erc_20": false,
+    "mm2": 1,
+    "name": "Dash",
+    "p2shtype": 5,
+    "pubtype": 0,
+    "rpcport": 10061,
+    "type": "UTXO",
+    "wiftype": 128
+  },
   "ETH": {
     "active": false,
     "coin": "ETH",
