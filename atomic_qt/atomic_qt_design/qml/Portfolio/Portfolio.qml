@@ -122,6 +122,25 @@ ColumnLayout {
             anchors.verticalCenter: parent.verticalCenter
         }
 
+        // Search input
+        TextField {
+            id: input_coin_filter
+
+            function reset() {
+                visible = false
+                text = ""
+            }
+
+            anchors.left: coin_header.left
+            anchors.leftMargin: 60
+            anchors.bottom: bottom_separator.top
+
+            placeholderText: qsTr("Search")
+            selectByMouse: true
+
+            width: 120
+        }
+
         // Balance
         DefaultText {
             id: balance_header
@@ -168,6 +187,7 @@ ColumnLayout {
 
         // Line
         HorizontalLine {
+            id: bottom_separator
             width: parent.width
             color: Style.colorWhite5
             anchors.bottom: parent.bottom
@@ -207,7 +227,7 @@ ColumnLayout {
         Layout.fillHeight: true
         ScrollBar.vertical: ScrollBar {}
 
-        model: portfolio_coins
+        model: General.filterCoins(portfolio_coins, input_coin_filter.text)
 
         clip: true
 
