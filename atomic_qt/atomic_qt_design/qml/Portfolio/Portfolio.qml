@@ -7,6 +7,7 @@ import QtGraphicalEffects 1.0
 
 import "../Components"
 import "../Constants"
+import "../Wallet"
 
 // Portfolio
 ColumnLayout {
@@ -46,25 +47,82 @@ ColumnLayout {
                 data.rates[API.get().fiat].percent_change_24h > 0 ? Style.colorGreen : Style.colorRed
     }
 
-    // Total Title
-    DefaultText {
-        Layout.alignment: Qt.AlignHCenter
-        Layout.topMargin: 50
-        Layout.bottomMargin: 0
-        text: qsTr("TOTAL")
-        font.pointSize: Style.textSize
-        color: Style.colorWhite5
+    // Top part
+    Rectangle {
+        color: "transparent"
+        Layout.fillWidth: true
+        height: 200
+
+        ColumnLayout {
+            anchors.centerIn: parent
+
+            // Total Title
+            DefaultText {
+                Layout.topMargin: 50
+                Layout.bottomMargin: 0
+                Layout.alignment: Qt.AlignHCenter
+                text: qsTr("TOTAL")
+                font.pointSize: Style.textSize
+                color: Style.colorWhite5
+            }
+
+            // Total Balance
+            DefaultText {
+                Layout.alignment: Qt.AlignHCenter
+                Layout.bottomMargin: 30
+                text: General.formatFiat("", API.get().balance_fiat_all, API.get().fiat)
+                font.pointSize: Style.textSize4
+            }
+        }
+
+
+        // Add button
+        Rectangle {
+            id: add_coin_button
+
+            width: 50; height: width
+            property bool hovered: false
+            color: "transparent"
+            border.color: hovered ? Style.colorTheme0 : Style.colorTheme3
+            border.width: 2
+            radius: 100
+
+            Rectangle {
+                width: parent.border.width
+                height: parent.width * 0.5
+                radius: parent.radius
+                color: parent.border.color
+                anchors.verticalCenter: parent.verticalCenter
+                anchors.horizontalCenter: parent.horizontalCenter
+            }
+
+            Rectangle {
+                width: parent.width * 0.5
+                height: parent.border.width
+                radius: parent.radius
+                color: parent.border.color
+                anchors.verticalCenter: parent.verticalCenter
+                anchors.horizontalCenter: parent.horizontalCenter
+            }
+
+            MouseArea {
+                anchors.fill: parent
+                hoverEnabled: true
+                onHoveredChanged: add_coin_button.hovered = containsMouse
+                onClicked: enable_coin_modal.prepareAndOpen()
+            }
+
+            anchors.right: parent.right
+            anchors.rightMargin: parent.height * 0.5 - width * 0.5
+            anchors.verticalCenter: parent.verticalCenter
+        }
+
+        // Modals
+        EnableCoinModal {
+            id: enable_coin_modal
+            anchors.centerIn: Overlay.overlay
+        }
     }
-
-    // Total Balance
-    DefaultText {
-        Layout.alignment: Qt.AlignHCenter
-        Layout.bottomMargin: 30
-        text: General.formatFiat("", API.get().balance_fiat_all, API.get().fiat)
-        font.pointSize: Style.textSize4
-    }
-
-
 
 
     // List header
@@ -323,6 +381,6 @@ ColumnLayout {
 
 /*##^##
 Designer {
-D{i:0;autoSize:true;height:600;width:1200}
+    D{i:0;autoSize:true;height:600;width:1200}
 }
 ##^##*/
