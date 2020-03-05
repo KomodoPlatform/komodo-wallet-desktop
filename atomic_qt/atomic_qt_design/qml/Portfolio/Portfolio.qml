@@ -46,6 +46,27 @@ ColumnLayout {
                 data.rates[API.get().fiat].percent_change_24h > 0 ? Style.colorGreen : Style.colorRed
     }
 
+    // Total Title
+    DefaultText {
+        Layout.alignment: Qt.AlignHCenter
+        Layout.topMargin: 50
+        Layout.bottomMargin: 0
+        text: qsTr("TOTAL")
+        font.pointSize: Style.textSize
+        color: Style.colorWhite5
+    }
+
+    // Total Balance
+    DefaultText {
+        Layout.alignment: Qt.AlignHCenter
+        Layout.bottomMargin: 30
+        text: General.formatFiat("", API.get().balance_fiat_all, API.get().fiat)
+        font.pointSize: Style.textSize4
+    }
+
+
+
+
     // List header
     Rectangle {
         color: "transparent"
