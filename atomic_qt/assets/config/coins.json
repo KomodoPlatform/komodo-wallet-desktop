@@ -161,6 +161,29 @@
     "type": "ERC-20",
     "wiftype": 128
   },
+  "AWC": {
+    "active": false,
+    "coin": "AWC",
+    "coingecko_id": "awc",
+    "coinpaprika_id": "awc-atomic-wallet-coin",
+    "currently_enabled": false,
+    "eth_nodes": [
+      "http://eth1.cipig.net:8555",
+      "http://eth2.cipig.net:8555",
+      "http://eth3.cipig.net:8555"
+    ],
+    "explorer_url": [
+      "https://etherscan.io/"
+    ],
+    "is_erc_20": true,
+    "mm2": 1,
+    "name": "Atomic Wallet Coin",
+    "p2shtype": 5,
+    "pubtype": 0,
+    "rpcport": 8555,
+    "type": "ERC-20",
+    "wiftype": 128
+  },
   "KMD": {
     "coin": "KMD",
     "name": "Komodo",
