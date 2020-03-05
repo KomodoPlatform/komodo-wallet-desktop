@@ -28,6 +28,35 @@
     "active": false,
     "currently_enabled": false
   },
+  "BCH": {
+    "active": false,
+    "coin": "BCH",
+    "coingecko_id": "bitcoin",
+    "coinpaprika_id": "bch-bitcoin-cash",
+    "currently_enabled": false,
+    "electrum": [
+      {
+        "url": "bch.imaginary.cash:50001"
+      },
+      {
+        "url": "electrumx-bch.cryptonermal.net:50001"
+      },
+      {
+        "url": "bch0.kister.net:50001"
+      }
+    ],
+    "explorer_url": [
+      "https://explorer.bitcoin.com/bch/"
+    ],
+    "is_erc_20": false,
+    "mm2": 1,
+    "name": "Bitcoin Cash",
+    "p2shtype": 5,
+    "pubtype": 0,
+    "rpcport": 5001,
+    "type": "UTXO",
+    "wiftype": 128
+  },
   "ETH": {
     "active": false,
     "coin": "ETH",
