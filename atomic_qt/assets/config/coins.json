@@ -86,6 +86,35 @@
     "type": "UTXO",
     "wiftype": 128
   },
+  "LTC": {
+    "active": false,
+    "coin": "LTC",
+    "coingecko_id": "litecoin",
+    "coinpaprika_id": "ltc-litecoin",
+    "currently_enabled": false,
+    "electrum": [
+      {
+        "url": "electrum.ltc.xurious.com:50001"
+      },
+      {
+        "url": "ltc.rentonisk.com:50001"
+      },
+      {
+        "url": "electrum-ltc.bysh.me:50001"
+      }
+    ],
+    "explorer_url": [
+      "https://blockexplorer.one/litecoin/mainnet/"
+    ],
+    "is_erc_20": false,
+    "mm2": 1,
+    "name": "Litecoin",
+    "p2shtype": 5,
+    "pubtype": 0,
+    "rpcport": 10061,
+    "type": "UTXO",
+    "wiftype": 128
+  },
   "ETH": {
     "active": false,
     "coin": "ETH",
