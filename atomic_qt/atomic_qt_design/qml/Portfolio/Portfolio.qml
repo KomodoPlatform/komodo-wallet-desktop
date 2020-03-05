@@ -91,6 +91,25 @@ ColumnLayout {
             anchors.rightMargin: parent.height * 0.5 - width * 0.5
             anchors.verticalCenter: parent.verticalCenter
         }
+
+        // Search input
+        TextField {
+            id: input_coin_filter
+
+            function reset() {
+                visible = false
+                text = ""
+            }
+
+            anchors.horizontalCenter: add_coin_button.horizontalCenter
+            anchors.bottom: parent.bottom
+            anchors.bottomMargin: 10
+
+            placeholderText: qsTr("Search")
+            selectByMouse: true
+
+            width: 120
+        }
     }
 
 
@@ -120,25 +139,6 @@ ColumnLayout {
             text: qsTr("Coin")
             color: Style.colorWhite1
             anchors.verticalCenter: parent.verticalCenter
-        }
-
-        // Search input
-        TextField {
-            id: input_coin_filter
-
-            function reset() {
-                visible = false
-                text = ""
-            }
-
-            anchors.left: coin_header.left
-            anchors.leftMargin: 60
-            anchors.bottom: bottom_separator.top
-
-            placeholderText: qsTr("Search")
-            selectByMouse: true
-
-            width: 120
         }
 
         // Balance
