@@ -25,6 +25,7 @@ ColumnLayout {
 
     function updatePortfolio() {
         portfolio_coins = API.get().get_portfolio_informations()
+                            .sort((a, b) => parseFloat(b.balance_fiat) - parseFloat(a.balance_fiat))
         update_timer.running = true
     }
 
