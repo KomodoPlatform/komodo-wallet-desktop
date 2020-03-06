@@ -84,4 +84,5 @@ namespace atomic_dex
 
 
     using t_ticker_info_answer = coinpaprika::api::ticker_info_answer;
+    using t_ticker_historical_answer = coinpaprika::api::ticker_historical_answer;
 } // namespace atomic_dex

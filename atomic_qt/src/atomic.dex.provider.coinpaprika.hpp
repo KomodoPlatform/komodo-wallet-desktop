@@ -31,20 +31,23 @@ namespace atomic_dex
     class coinpaprika_provider final : public ag::ecs::pre_update_system<coinpaprika_provider>
     {
       public:
-        using t_ticker_infos_registry   = t_concurrent_reg<std::string, t_ticker_info_answer>;
+        using t_ticker_infos_registry      = t_concurrent_reg<std::string, t_ticker_info_answer>;
+        using t_ticker_historical_registry = t_concurrent_reg<std::string, t_ticker_historical_answer>;
+
       private:
         //! Typedefs
         using t_providers_registry      = t_concurrent_reg<std::string, std::string>;
         using t_supported_fiat_registry = std::unordered_set<std::string>;
 
         //! Private fields
-        mm2&                      m_mm2_instance;
-        t_providers_registry      m_usd_rate_providers{};
-        t_providers_registry      m_eur_rate_providers{};
-        t_ticker_infos_registry   m_ticker_infos_registry{};
-        t_supported_fiat_registry m_supported_fiat_registry{"USD", "EUR"};
-        std::thread               m_provider_rates_thread;
-        timed_waiter              m_provider_thread_timer;
+        mm2&                         m_mm2_instance;
+        t_providers_registry         m_usd_rate_providers{};
+        t_providers_registry         m_eur_rate_providers{};
+        t_ticker_infos_registry      m_ticker_infos_registry{};
+        t_ticker_historical_registry m_ticker_historical_registry{};
+        t_supported_fiat_registry    m_supported_fiat_registry{"USD", "EUR"};
+        std::thread                  m_provider_rates_thread;
+        timed_waiter                 m_provider_thread_timer;
 
       public:
         //! Constructor
