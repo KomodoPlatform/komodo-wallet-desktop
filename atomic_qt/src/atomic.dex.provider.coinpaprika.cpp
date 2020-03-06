@@ -277,9 +277,13 @@ namespace atomic_dex
 
         if (config.coinpaprika_id != "test-coin")
         {
-            process_provider(config, m_usd_rate_providers, "usd-us-dollars");
-            process_provider(config, m_eur_rate_providers, "eur-euro");
+            spawn([cfg = config, this](){
+              process_provider(cfg, m_usd_rate_providers, "usd-us-dollars");
+              process_provider(cfg, m_eur_rate_providers, "eur-euro");
+              process_ticker_infos(cfg, m_ticker_infos_registry);
+            });
         }
+
     }
 
     void
