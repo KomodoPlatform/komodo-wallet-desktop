@@ -337,7 +337,7 @@ ColumnLayout {
                 anchors.rightMargin: price_header.anchors.rightMargin
 
                 text: General.formatFiat('', model.modelData.price, API.get().fiat)
-                color: getColor(model.modelData)
+                color: Style.colorWhite6
                 anchors.verticalCenter: parent.verticalCenter
             }
 
