@@ -57,6 +57,7 @@ SetupPage {
         RowLayout {
             DefaultButton {
                 text: qsTr("Back")
+                Layout.fillWidth: true
                 onClicked: {
                     API.get().wallet_default_name = ""
                     reset()
@@ -66,6 +67,7 @@ SetupPage {
 
             PrimaryButton {
                 id: login_button
+                Layout.fillWidth: true
                 text: qsTr("Login")
                 onClicked: tryLogin()
                 enabled: input_password.isValid()

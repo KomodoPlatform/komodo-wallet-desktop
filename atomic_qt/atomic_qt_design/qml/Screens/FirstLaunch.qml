@@ -24,7 +24,6 @@ SetupPage {
     content: ColumnLayout {
         RowLayout {
             Layout.fillWidth: true
-            spacing: Style.itemPadding
 
             DefaultButton {
                 Layout.fillWidth: true
@@ -33,8 +32,8 @@ SetupPage {
             }
 
             PrimaryButton {
-                text: qsTr("New User")
                 Layout.fillWidth: true
+                text: qsTr("New User")
                 onClicked: onClickedNewUser()
             }
         }

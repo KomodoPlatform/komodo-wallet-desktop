@@ -55,11 +55,13 @@ SetupPage {
 
         RowLayout {
             DefaultButton {
+                Layout.fillWidth: true
                 text: qsTr("Back")
                 onClicked: onClickedBack()
             }
 
             PrimaryButton {
+                Layout.fillWidth: true
                 text: qsTr("Create")
                 onClicked: onClickedCreate(input_password.field.text, input_generated_seed.field.text, input_confirm_seed.field.text, input_wallet_name.field.text)
                 enabled:    // Fields are not empty
