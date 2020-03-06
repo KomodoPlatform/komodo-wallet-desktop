@@ -184,6 +184,29 @@
     "type": "ERC-20",
     "wiftype": 128
   },
+  "TUSD": {
+    "active": false,
+    "coin": "TUSD",
+    "coingecko_id": "tusd",
+    "coinpaprika_id": "tusd-trueusd",
+    "currently_enabled": false,
+    "eth_nodes": [
+      "http://eth1.cipig.net:8555",
+      "http://eth2.cipig.net:8555",
+      "http://eth3.cipig.net:8555"
+    ],
+    "explorer_url": [
+      "https://etherscan.io/"
+    ],
+    "is_erc_20": true,
+    "mm2": 1,
+    "name": "True USD",
+    "p2shtype": 5,
+    "pubtype": 0,
+    "rpcport": 8555,
+    "type": "ERC-20",
+    "wiftype": 128
+  },
   "KMD": {
     "coin": "KMD",
     "name": "Komodo",
