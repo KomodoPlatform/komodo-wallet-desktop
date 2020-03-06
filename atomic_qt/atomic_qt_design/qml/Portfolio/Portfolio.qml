@@ -152,22 +152,11 @@ ColumnLayout {
             anchors.verticalCenter: parent.verticalCenter
         }
 
-        // Value
-        DefaultText {
-            id: value_header
-            anchors.right: parent.right
-            anchors.rightMargin: parent.width * 0.37
-
-            text: qsTr("Value")
-            color: Style.colorWhite1
-            anchors.verticalCenter: parent.verticalCenter
-        }
-
         // Change 24h
         DefaultText {
             id: change_24h_header
             anchors.right: parent.right
-            anchors.rightMargin: parent.width * 0.21
+            anchors.rightMargin: parent.width * 0.27
 
             text: qsTr("Change 24h")
             color: Style.colorWhite1
@@ -178,7 +167,7 @@ ColumnLayout {
         DefaultText {
             id: price_header
             anchors.right: parent.right
-            anchors.rightMargin: parent.width * 0.05
+            anchors.rightMargin: coin_header.anchors.leftMargin
 
             text: qsTr("Price")
             color: Style.colorWhite1
@@ -300,6 +289,7 @@ ColumnLayout {
 
             // Ticker
             DefaultText {
+                id: balance_ticker
                 anchors.left: balance_value.right
                 anchors.leftMargin: 5
                 anchors.baseline: balance_value.baseline
@@ -311,11 +301,11 @@ ColumnLayout {
 
             // Value
             DefaultText {
-                anchors.right: parent.right
-                anchors.rightMargin: value_header.anchors.rightMargin
+                anchors.left: balance_ticker.right
+                anchors.leftMargin: 10
 
-                text: General.formatFiat('', model.modelData.balance_fiat, API.get().fiat)
-                color: Style.colorWhite4
+                text: "(" + General.formatFiat('', model.modelData.balance_fiat, API.get().fiat) + ")"
+                color: Style.colorWhite5
                 anchors.verticalCenter: parent.verticalCenter
             }
 
