@@ -281,7 +281,7 @@ ColumnLayout {
             // Name
             DefaultText {
                 anchors.left: icon.right
-                anchors.leftMargin: 5
+                anchors.leftMargin: 10
 
                 text: model.modelData.name
                 anchors.verticalCenter: parent.verticalCenter
