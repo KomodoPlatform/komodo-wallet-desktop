@@ -14,6 +14,16 @@ ColumnLayout {
     Layout.fillWidth: true
     Layout.fillHeight: true
 
+    readonly property int sort_by_name: 0
+    readonly property int sort_by_ticker: 1
+    readonly property int sort_by_value: 2
+    readonly property int sort_by_balance: 3
+    readonly property int sort_by_price: 4
+    readonly property int sort_by_change: 5
+
+    property int current_sort: sort_by_value
+    property bool highest_first: true
+
     function reset() {
         updatePortfolio()
     }
@@ -31,7 +41,7 @@ ColumnLayout {
 
     function updatePortfolio() {
         portfolio_coins = API.get().get_portfolio_informations()
-                            .sort((a, b) => parseFloat(b.balance_fiat) - parseFloat(a.balance_fiat))
+
         update_timer.running = true
     }
 
@@ -217,6 +227,21 @@ ColumnLayout {
         ScrollBar.vertical: ScrollBar {}
 
         model: General.filterCoins(portfolio_coins, input_coin_filter.text)
+                .sort((a, b) => {
+            const order = highest_first ? 1 : -1
+            switch(current_sort) {
+                case sort_by_name:      return (b.name.toUpperCase() > a.name.toUpperCase() ? -1 : 1) * order
+                case sort_by_ticker:    return (b.ticker > a.ticker ? -1 : 1) * order
+                case sort_by_balance:   return (parseFloat(b.balance) - parseFloat(a.balance)) * order
+                case sort_by_price:     return (parseFloat(b.price) - parseFloat(a.price)) * order
+                case sort_by_value:     return (parseFloat(b.balance_fiat) - parseFloat(a.balance_fiat)) * order
+                case sort_by_change:
+                    let val_a = a.rates === null ? -9999999 : a.rates[API.get().fiat].percent_change_24h
+                    let val_b = b.rates === null ? -9999999 : b.rates[API.get().fiat].percent_change_24h
+
+                    return (val_b - val_a) * order
+            }
+        })
 
         clip: true
 
