@@ -38,7 +38,7 @@ QtObject {
             "EUR": "€"
         }
 
-        return diffPrefix(received) + symbols[fiat] + amount
+        return diffPrefix(received) + symbols[fiat] + " " + amount
     }
 
     function formatCrypto(received, amount, ticker, fiat_amount, fiat) {
