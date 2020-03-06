@@ -65,6 +65,12 @@ namespace atomic_dex
             evt.answer = j.at("quotes");
         }
 
+        void
+        from_json(const nlohmann::json& j, ticker_historical_answer& evt)
+        {
+            evt.answer = j;
+        }
+
         price_converter_answer
         price_converter(const price_converter_request& request)
         {
@@ -136,6 +142,54 @@ namespace atomic_dex
 
             const auto         resp = RestClient::get(url);
             ticker_info_answer answer;
+
+            DVLOG_F(loguru::Verbosity_INFO, "url: {}", url);
+            DVLOG_F(loguru::Verbosity_INFO, "resp: {}", resp.body);
+
+            if (resp.code == e_http_code::bad_request)
+            {
+                DVLOG_F(loguru::Verbosity_WARNING, "rpc answer code is 400 (Bad Parameters)");
+                answer.rpc_result_code = resp.code;
+                answer.raw_result      = resp.body;
+                return answer;
+            }
+            if (resp.code == e_http_code::too_many_requests)
+            {
+                DVLOG_F(loguru::Verbosity_WARNING, "rpc answer code is 429 (Too Many requests)");
+                answer.rpc_result_code = resp.code;
+                answer.raw_result      = resp.body;
+                return answer;
+            }
+
+            try
+            {
+                const auto json_answer = nlohmann::json::parse(resp.body);
+                from_json(json_answer, answer);
+                answer.rpc_result_code = resp.code;
+                answer.raw_result      = resp.body;
+            }
+            catch (const std::exception& error)
+            {
+                VLOG_F(loguru::Verbosity_ERROR, "{}", error.what());
+                answer.rpc_result_code = -1;
+                answer.raw_result      = error.what();
+            }
+
+            return answer;
+        }
+
+        ticker_historical_answer
+        ticker_historical(const ticker_historical_request& request)
+        {
+            using namespace std::string_literals;
+
+            LOG_SCOPE_FUNCTION(INFO);
+
+            auto&& [ticker_id, timestamp, interval] = request;
+            auto url = g_coinpaprika_endpoint + "tickers/"s + ticker_id + "/historical?start="s + std::to_string(timestamp) + "&interval="s + interval;
+
+            const auto               resp = RestClient::get(url);
+            ticker_historical_answer answer;
 
             DVLOG_F(loguru::Verbosity_INFO, "url: {}", url);
             DVLOG_F(loguru::Verbosity_INFO, "resp: {}", resp.body);

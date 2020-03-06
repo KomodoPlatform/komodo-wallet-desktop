@@ -22,6 +22,20 @@ namespace atomic_dex
 {
     namespace coinpaprika::api
     {
+        struct ticker_historical_request
+        {
+            std::string ticker_currency_id;
+            std::size_t timestamp{static_cast<size_t>(std::chrono::duration_cast<std::chrono::seconds>((std::chrono::system_clock::now() - std::chrono::hours(168)).time_since_epoch()).count())};
+            std::string interval{"1d"};
+        };
+
+        struct ticker_historical_answer
+        {
+            nlohmann::json answer;
+            int            rpc_result_code;
+            std::string    raw_result;
+        };
+
         struct ticker_infos_request
         {
             std::string              ticker_currency_id;
@@ -61,6 +75,9 @@ namespace atomic_dex
 
         void from_json(const nlohmann::json& j, ticker_info_answer& evt);
 
+        void from_json(const nlohmann::json& j, ticker_historical_answer& evt);
+
+        ticker_historical_answer ticker_historical(const ticker_historical_request& request);
         ticker_info_answer tickers_info(const ticker_infos_request& request);
         price_converter_answer price_converter(const price_converter_request& request);
     } // namespace coinpaprika::api
