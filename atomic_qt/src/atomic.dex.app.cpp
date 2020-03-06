@@ -896,7 +896,8 @@ namespace atomic_dex
                                    {"price", get_paprika().get_rate_conversion(m_current_fiat.toStdString(), coin.ticker, ec, true)},
                                    {"balance", get_mm2().my_balance(coin.ticker, ec)},
                                    {"balance_fiat", get_paprika().get_price_in_fiat(m_current_fiat.toStdString(), coin.ticker, ec)},
-                                   {"rates", get_paprika().get_ticker_infos(coin.ticker).answer}};
+                                   {"rates", get_paprika().get_ticker_infos(coin.ticker).answer},
+                                   {"historical", get_paprika().get_ticker_historical(coin.ticker).answer}};
             j.push_back(cur_obj);
         }
         QJsonDocument q_json = QJsonDocument::fromJson(QString::fromStdString(j.dump()).toUtf8());

@@ -341,7 +341,7 @@
     "overwintered": 1,
     "mm2": 1,
     "coingecko_id": "test-coin",
-    "coinpaprika_id": "chips-chip",
+    "coinpaprika_id": "chips-chips",
     "is_erc_20": false,
     "electrum": [
       {

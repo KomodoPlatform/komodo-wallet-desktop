@@ -71,6 +71,9 @@ namespace atomic_dex
         //! Get the ticker informations.
         t_ticker_info_answer get_ticker_infos(const std::string& ticker) const noexcept;
 
+        //! Get the ticker informations.
+        t_ticker_historical_answer get_ticker_historical(const std::string& ticker) const noexcept;
+
         //! Event that occur when the mm2 process is launched correctly.
         void on_mm2_started(const mm2_started& evt) noexcept;
 

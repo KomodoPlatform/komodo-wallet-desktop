@@ -45,9 +45,24 @@ namespace
         const ticker_infos_request request{.ticker_currency_id = current_coin.coinpaprika_id, .ticker_quotes = {"USD", "EUR"}};
         auto                       answer = tickers_info(request);
 
-        retry(answer, request, [&answer](const ticker_infos_request& request) {
-            answer = tickers_info(request); });
+        retry(answer, request, [&answer](const ticker_infos_request& request) { answer = tickers_info(request); });
         reg.insert_or_assign(current_coin.ticker, answer);
+    }
+
+    void
+    process_ticker_historical(const atomic_dex::coin_config& current_coin, atomic_dex::coinpaprika_provider::t_ticker_historical_registry& reg)
+    {
+        if (current_coin.coinpaprika_id == "test-coin")
+        {
+            return;
+        }
+        const ticker_historical_request request{.ticker_currency_id = current_coin.coinpaprika_id};
+        auto                            answer = ticker_historical(request);
+        retry(answer, request, [&answer](const ticker_historical_request& request) { answer = ticker_historical(request); });
+        if (answer.raw_result.find("error") == std::string::npos)
+        {
+            reg.insert_or_assign(current_coin.ticker, answer);
+        }
     }
 
     template <typename Provider>
@@ -123,6 +138,7 @@ namespace atomic_dex
                         continue;
                     }
                     spawn([this, cur_coin = current_coin]() { process_ticker_infos(cur_coin, this->m_ticker_infos_registry); });
+                    spawn([this, cur_coin = current_coin]() { process_ticker_historical(cur_coin, this->m_ticker_historical_registry); });
                     process_provider(current_coin, m_usd_rate_providers, "usd-us-dollars");
                     process_provider(current_coin, m_eur_rate_providers, "eur-euro");
                 }
@@ -280,8 +296,8 @@ namespace atomic_dex
             process_provider(config, m_usd_rate_providers, "usd-us-dollars");
             process_provider(config, m_eur_rate_providers, "eur-euro");
             process_ticker_infos(config, m_ticker_infos_registry);
+            process_ticker_historical(config, m_ticker_historical_registry);
         }
-
     }
 
     void
@@ -298,5 +314,12 @@ namespace atomic_dex
     coinpaprika_provider::get_ticker_infos(const std::string& ticker) const noexcept
     {
         return m_ticker_infos_registry.find(ticker) != m_ticker_infos_registry.cend() ? m_ticker_infos_registry.at(ticker) : t_ticker_info_answer{};
+    }
+
+    t_ticker_historical_answer
+    coinpaprika_provider::get_ticker_historical(const std::string& ticker) const noexcept
+    {
+        return m_ticker_historical_registry.find(ticker) != m_ticker_historical_registry.cend() ? m_ticker_historical_registry.at(ticker)
+                                                                                                : t_ticker_historical_answer{.answer = nlohmann::json::array()};
     }
 } // namespace atomic_dex
