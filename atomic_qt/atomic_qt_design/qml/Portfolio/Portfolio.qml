@@ -144,8 +144,8 @@ ColumnLayout {
         // Balance
         DefaultText {
             id: balance_header
-            anchors.right: parent.right
-            anchors.rightMargin: parent.width * 0.55
+            anchors.left: parent.left
+            anchors.leftMargin: parent.width * 0.3
 
             text: qsTr("Balance")
             color: Style.colorWhite1
@@ -283,18 +283,30 @@ ColumnLayout {
                 anchors.left: icon.right
                 anchors.leftMargin: 5
 
-                text: General.fullCoinName(model.modelData.name, model.modelData.ticker)
+                text: model.modelData.name
                 anchors.verticalCenter: parent.verticalCenter
             }
 
             // Balance
             DefaultText {
-                anchors.right: parent.right
-                anchors.rightMargin: balance_header.anchors.rightMargin
+                id: balance_value
+                anchors.left: parent.left
+                anchors.leftMargin: balance_header.anchors.leftMargin
 
                 text: model.modelData.balance
                 color: Style.colorWhite4
                 anchors.verticalCenter: parent.verticalCenter
+            }
+
+            // Ticker
+            DefaultText {
+                anchors.left: balance_value.right
+                anchors.leftMargin: 5
+                anchors.baseline: balance_value.baseline
+
+                text: model.modelData.ticker
+                color: Style.colorWhite6
+                font.pointSize: Style.textSize * 0.9
             }
 
             // Value
