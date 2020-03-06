@@ -45,7 +45,8 @@ namespace
         const ticker_infos_request request{.ticker_currency_id = current_coin.coinpaprika_id, .ticker_quotes = {"USD", "EUR"}};
         auto                       answer = tickers_info(request);
 
-        retry(answer, request, [&answer](const ticker_infos_request& request) { answer = tickers_info(request); });
+        retry(answer, request, [&answer](const ticker_infos_request& request) {
+            answer = tickers_info(request); });
         reg.insert_or_assign(current_coin.ticker, answer);
     }
 
@@ -235,7 +236,7 @@ namespace atomic_dex
     }
 
     std::string
-    coinpaprika_provider::get_rate_conversion(const std::string& fiat, const std::string& ticker, std::error_code& ec) const noexcept
+    coinpaprika_provider::get_rate_conversion(const std::string& fiat, const std::string& ticker, std::error_code& ec, bool adjusted) const noexcept
     {
         std::string current_price;
 
@@ -259,6 +260,12 @@ namespace atomic_dex
             current_price = m_eur_rate_providers.at(ticker);
         }
 
+        if (adjusted)
+        {
+            std::stringstream ss;
+            ss << std::fixed << std::setprecision(2) << t_float_50(current_price);
+            current_price = ss.str();
+        }
         return current_price;
     }
 

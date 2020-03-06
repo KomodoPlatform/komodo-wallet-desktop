@@ -893,7 +893,7 @@ namespace atomic_dex
             std::error_code ec;
             nlohmann::json  cur_obj{{"ticker", coin.ticker},
                                    {"name", coin.name},
-                                   {"price", get_paprika().get_rate_conversion(m_current_fiat.toStdString(), coin.ticker, ec)},
+                                   {"price", get_paprika().get_rate_conversion(m_current_fiat.toStdString(), coin.ticker, ec, true)},
                                    {"balance", get_mm2().my_balance(coin.ticker, ec)},
                                    {"balance_fiat", get_paprika().get_price_in_fiat(m_current_fiat.toStdString(), coin.ticker, ec)},
                                    {"rates", get_paprika().get_ticker_infos(coin.ticker).answer}};

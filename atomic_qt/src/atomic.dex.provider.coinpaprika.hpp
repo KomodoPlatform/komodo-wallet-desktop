@@ -54,7 +54,7 @@ namespace atomic_dex
         ~coinpaprika_provider() noexcept final;
 
         //! Get the rate conversion for the given fiat.
-        std::string get_rate_conversion(const std::string& fiat, const std::string& ticker, std::error_code& ec) const noexcept;
+        std::string get_rate_conversion(const std::string& fiat, const std::string& ticker, std::error_code& ec, bool adjusted = false) const noexcept;
 
         //! Fiat can be USD or EUR
         std::string get_price_in_fiat(const std::string& fiat, const std::string& ticker, std::error_code& ec, bool skip_precision = false) const noexcept;
