@@ -81,7 +81,7 @@ configure_icon_osx(data/osx/kmd_logo.icns ICON kmd_logo.icns)
 
 find_package(folly CONFIG REQUIRED)
 find_package(Boost REQUIRED)
-find_package(Qt5 COMPONENTS Core Quick LinguistTools Svg REQUIRED)
+find_package(Qt5 COMPONENTS Core Quick LinguistTools Svg Charts REQUIRED)
 find_package(unofficial-sodium CONFIG REQUIRED)
 find_library(unofficial-bitcoin-external bitcoin)
 find_path(unofficial-btc-headers bitcoin/bitcoin.hpp)
@@ -134,6 +134,7 @@ target_link_libraries(atomic_qt
         Qt5::Core
         Qt5::Quick
         Qt5::Svg
+        Qt5::Charts
         antara::world
         unofficial-sodium::sodium
         unofficial-btc::bitcoin
