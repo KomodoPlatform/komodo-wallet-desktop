@@ -141,47 +141,47 @@ ColumnLayout {
         }
 
         // Coin
-        DefaultText {
+        ColumnHeader {
             id: coin_header
             anchors.left: parent.left
             anchors.leftMargin: 40
+            anchors.verticalCenter: parent.verticalCenter
 
             text: qsTr("Coin")
-            color: Style.colorWhite1
-            anchors.verticalCenter: parent.verticalCenter
+            sort_type: sort_by_name
         }
 
         // Balance
-        DefaultText {
+        ColumnHeader {
             id: balance_header
             anchors.left: parent.left
             anchors.leftMargin: parent.width * 0.3
+            anchors.verticalCenter: parent.verticalCenter
 
             text: qsTr("Balance")
-            color: Style.colorWhite1
-            anchors.verticalCenter: parent.verticalCenter
+            sort_type: sort_by_value
         }
 
         // Change 24h
-        DefaultText {
+        ColumnHeader {
             id: change_24h_header
             anchors.right: parent.right
             anchors.rightMargin: parent.width * 0.27
+            anchors.verticalCenter: parent.verticalCenter
 
             text: qsTr("Change 24h")
-            color: Style.colorWhite1
-            anchors.verticalCenter: parent.verticalCenter
+            sort_type: sort_by_change
         }
 
         // Price
-        DefaultText {
+        ColumnHeader {
             id: price_header
             anchors.right: parent.right
             anchors.rightMargin: coin_header.anchors.leftMargin
+            anchors.verticalCenter: parent.verticalCenter
 
             text: qsTr("Price")
-            color: Style.colorWhite1
-            anchors.verticalCenter: parent.verticalCenter
+            sort_type: sort_by_price
         }
 
         // Line
