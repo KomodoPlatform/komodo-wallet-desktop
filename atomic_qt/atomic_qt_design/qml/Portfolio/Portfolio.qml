@@ -20,6 +20,7 @@ ColumnLayout {
     readonly property int sort_by_balance: 3
     readonly property int sort_by_price: 4
     readonly property int sort_by_change: 5
+    readonly property int sort_by_trend: 6
 
     property int current_sort: sort_by_value
     property bool highest_first: true
@@ -204,6 +205,18 @@ ColumnLayout {
             sort_type: sort_by_change
         }
 
+        // 7-day Trend
+        ColumnHeader {
+            id: trend_7d_header
+            icon_at_left: false
+            anchors.right: parent.right
+            anchors.rightMargin: parent.width * 0.15
+            anchors.verticalCenter: parent.verticalCenter
+
+            text: qsTr("Trend 7d")
+            sort_type: sort_by_trend
+        }
+
         // Price
         ColumnHeader {
             id: price_header
@@ -263,13 +276,14 @@ ColumnLayout {
             const order = highest_first ? 1 : -1
             let val_a
             let val_b
+            let result
             switch(current_sort) {
                 case sort_by_name:      return (b.name.toUpperCase() > a.name.toUpperCase() ? -1 : 1) * order
                 case sort_by_ticker:    return (b.ticker > a.ticker ? -1 : 1) * order
                 case sort_by_value:
                     val_a = parseFloat(a.balance_fiat)
                     val_b = parseFloat(b.balance_fiat)
-                    let result = val_b - val_a
+                    result = val_b - val_a
 
                     if(result === 0) {
                         let val_a = parseFloat(a.balance)
@@ -280,6 +294,7 @@ ColumnLayout {
                     return result * order
                 case sort_by_price:       return (parseFloat(b.price) - parseFloat(a.price)) * order
                 case sort_by_balance:     return (parseFloat(b.balance) - parseFloat(a.balance)) * order
+                case sort_by_trend:       return (parseFloat(b.price) - parseFloat(a.price)) * order
                 case sort_by_change:
                     val_a = a.rates === null ? -9999999 : a.rates[API.get().fiat].percent_change_24h
                     val_b = b.rates === null ? -9999999 : b.rates[API.get().fiat].percent_change_24h
@@ -401,14 +416,14 @@ ColumnLayout {
                 anchors.verticalCenter: parent.verticalCenter
             }
 
-            // Chart code for future
+            // 7d Trend
             ChartView {
                 id: chart
                 width: 200
                 height: 100
                 antialiasing: true
                 anchors.right: parent.right
-                anchors.rightMargin: price_header.anchors.rightMargin * 2.25
+                anchors.rightMargin: trend_7d_header.anchors.rightMargin - width * 0.4
                 anchors.verticalCenter: parent.verticalCenter
                 legend.visible: false
 
