@@ -3,7 +3,7 @@ import QtQuick.Layouts 1.3
 import QtQuick.Controls 2.3
 import QtQuick.Controls.Material 2.12
 import QtGraphicalEffects 1.0
-//import QtCharts 1.3
+import QtCharts 2.3
 
 import "../Components"
 import "../Constants"
@@ -58,6 +58,34 @@ ColumnLayout {
     function getColor(data) {
         return data.rates === null || data.rates[API.get().fiat].percent_change_24h === 0 ? Style.colorWhite4 :
                 data.rates[API.get().fiat].percent_change_24h > 0 ? Style.colorGreen : Style.colorRed
+    }
+
+    function updateChart(chart, historical) {
+        chart.removeAllSeries()
+
+        let i
+        if(historical.length > 0) {
+            // Fill chart
+            let series = chart.createSeries(ChartView.SeriesTypeSpline, "Price", chart.axes[0], chart.axes[1]);
+
+            series.color = Style.colorTheme1
+
+            let min = 999999999
+            let max = -999999999
+            for(i = 0; i < historical.length; ++i) {
+                let price = historical[i].price
+                series.append(i / historical.length, historical[i].price)
+                min = Math.min(min, price)
+                max = Math.max(max, price)
+            }
+
+            chart.axes[1].min = min * 0.99
+            chart.axes[1].max = max * 1.01
+        }
+
+        // Hide background grid
+        for(i = 0; i < chart.axes.length; ++i)
+            chart.axes[i].visible = false
     }
 
     // Top part
@@ -373,34 +401,21 @@ ColumnLayout {
                 anchors.verticalCenter: parent.verticalCenter
             }
 
-//            // Chart code for future
-//            ChartView {
-//                width: 200
-//                height: 100
-//                antialiasing: true
-//                anchors.right: parent.right
-//                anchors.rightMargin: price_header.anchors.rightMargin
-//                anchors.verticalCenter: parent.verticalCenter
-//                legend.visible: false
+            // Chart code for future
+            ChartView {
+                id: chart
+                width: 200
+                height: 100
+                antialiasing: true
+                anchors.right: parent.right
+                anchors.rightMargin: price_header.anchors.rightMargin * 2.25
+                anchors.verticalCenter: parent.verticalCenter
+                legend.visible: false
 
-//                Component.onCompleted: {
-//                    for(let i = 0; i < axes.length; ++i) {
-//                        axes[i].visible = false
-//                    }
-//                }
+                Component.onCompleted: updateChart(chart, model.modelData.historical)
 
-//                backgroundColor: "transparent"
-//                LineSeries {
-//                    name: "LineSeries"
-//                    XYPoint { x: 0; y: 0 }
-//                    XYPoint { x: 1.1; y: 2.1 }
-//                    XYPoint { x: 1.9; y: 3.3 }
-//                    XYPoint { x: 2.1; y: 2.1 }
-//                    XYPoint { x: 2.9; y: 4.9 }
-//                    XYPoint { x: 3.4; y: 3.0 }
-//                    XYPoint { x: 4.1; y: 3.3 }
-//                }
-//            }
+                backgroundColor: "transparent"
+            }
         }
     }
 }
