@@ -1,5 +1,5 @@
 #include <QDebug>
-#include <QGuiApplication>
+#include <QApplication>
 #include <QQmlApplicationEngine>
 #include <QWindow>
 #include <QtQml>
@@ -31,7 +31,7 @@ main(int argc, char* argv[])
 
     //! QT
     QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
-    QGuiApplication       app(argc, argv);
+    QApplication       app(argc, argv);
     QQmlApplicationEngine engine;
     engine.rootContext()->setContextProperty("atomic_app", &atomic_app);
 
