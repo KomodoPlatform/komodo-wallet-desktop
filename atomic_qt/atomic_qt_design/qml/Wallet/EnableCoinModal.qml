@@ -53,6 +53,7 @@ DefaultModal {
             ScrollBar.vertical: ScrollBar {}
             implicitWidth: contentItem.childrenRect.width
             implicitHeight: contentItem.childrenRect.height
+            Layout.maximumHeight: 300
 
             model: General.filterCoins(API.get().enableable_coins, input_coin_filter.text)
             clip: true
@@ -62,7 +63,7 @@ DefaultModal {
 
                 color: selected_to_enable[model.modelData.ticker] ? Style.colorTheme2 : hovered ? Style.colorTheme4 : "transparent"
 
-                width: 250
+                width: 400
                 height: 50
 
                 MouseArea {
