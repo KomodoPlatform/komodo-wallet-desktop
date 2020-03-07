@@ -229,15 +229,28 @@ ColumnLayout {
         model: General.filterCoins(portfolio_coins, input_coin_filter.text)
                 .sort((a, b) => {
             const order = highest_first ? 1 : -1
+            let val_a
+            let val_b
             switch(current_sort) {
                 case sort_by_name:      return (b.name.toUpperCase() > a.name.toUpperCase() ? -1 : 1) * order
                 case sort_by_ticker:    return (b.ticker > a.ticker ? -1 : 1) * order
-                case sort_by_balance:   return (parseFloat(b.balance) - parseFloat(a.balance)) * order
-                case sort_by_price:     return (parseFloat(b.price) - parseFloat(a.price)) * order
-                case sort_by_value:     return (parseFloat(b.balance_fiat) - parseFloat(a.balance_fiat)) * order
+                case sort_by_value:
+                    val_a = parseFloat(a.balance_fiat)
+                    val_b = parseFloat(b.balance_fiat)
+                    let result = val_b - val_a
+
+                    if(result === 0) {
+                        let val_a = parseFloat(a.balance)
+                        let val_b = parseFloat(b.balance)
+                        result = val_b - val_a
+                    }
+
+                    return result * order
+                case sort_by_price:       return (parseFloat(b.price) - parseFloat(a.price)) * order
+                case sort_by_balance:     return (parseFloat(b.balance) - parseFloat(a.balance)) * order
                 case sort_by_change:
-                    let val_a = a.rates === null ? -9999999 : a.rates[API.get().fiat].percent_change_24h
-                    let val_b = b.rates === null ? -9999999 : b.rates[API.get().fiat].percent_change_24h
+                    val_a = a.rates === null ? -9999999 : a.rates[API.get().fiat].percent_change_24h
+                    val_b = b.rates === null ? -9999999 : b.rates[API.get().fiat].percent_change_24h
 
                     return (val_b - val_a) * order
             }
