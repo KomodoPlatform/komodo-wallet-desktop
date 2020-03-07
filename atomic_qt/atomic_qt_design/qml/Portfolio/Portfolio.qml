@@ -143,6 +143,7 @@ ColumnLayout {
         // Coin
         ColumnHeader {
             id: coin_header
+            icon_at_left: true
             anchors.left: parent.left
             anchors.leftMargin: 40
             anchors.verticalCenter: parent.verticalCenter
@@ -154,6 +155,7 @@ ColumnLayout {
         // Balance
         ColumnHeader {
             id: balance_header
+            icon_at_left: true
             anchors.left: parent.left
             anchors.leftMargin: parent.width * 0.3
             anchors.verticalCenter: parent.verticalCenter
@@ -165,6 +167,7 @@ ColumnLayout {
         // Change 24h
         ColumnHeader {
             id: change_24h_header
+            icon_at_left: false
             anchors.right: parent.right
             anchors.rightMargin: parent.width * 0.27
             anchors.verticalCenter: parent.verticalCenter
@@ -176,6 +179,7 @@ ColumnLayout {
         // Price
         ColumnHeader {
             id: price_header
+            icon_at_left: false
             anchors.right: parent.right
             anchors.rightMargin: coin_header.anchors.leftMargin
             anchors.verticalCenter: parent.verticalCenter

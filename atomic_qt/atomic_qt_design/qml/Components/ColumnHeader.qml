@@ -2,6 +2,7 @@ import QtQuick 2.12
 import QtQuick.Layouts 1.3
 import QtQuick.Controls 2.3
 import QtQuick.Controls.Material 2.12
+import QtGraphicalEffects 1.0
 import "../Constants"
 
 Rectangle {
@@ -9,8 +10,10 @@ Rectangle {
     property alias text: title.text
 
     property bool hovered: false
-    color: hovered ? Style.colorTheme7 : "transparent"
-    width: title.width
+    property bool icon_at_left
+
+    color: "transparent"
+    width: text.length * title.font.pointSize
     height: title.height
 
     // Click area
@@ -32,6 +35,34 @@ Rectangle {
     DefaultText {
         id: title
         color: Style.colorWhite1
+        anchors.left: icon_at_left ? parent.left : undefined
+        anchors.right: icon_at_left ? undefined : parent.right
+    }
+
+
+    // Arrow icon
+    Image {
+        id: arrow_icon
+
+        source: General.image_path + "arrow-" + (highest_first ? "down" : "up") + ".svg"
+
+        width: title.font.pointSize * 0.5
+        fillMode: Image.PreserveAspectFit
+
+        anchors.left: icon_at_left ? title.right : undefined
+        anchors.leftMargin: icon_at_left ? 10 : undefined
+        anchors.right: icon_at_left ? undefined : title.left
+        anchors.rightMargin: icon_at_left ? undefined : 10
+        anchors.verticalCenter: title.verticalCenter
+
+        visible: false
+    }
+
+    ColorOverlay {
+        visible: current_sort === sort_type
+        anchors.fill: arrow_icon
+        source: arrow_icon
+        color: title.color
     }
 }
 
