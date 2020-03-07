@@ -3,7 +3,7 @@ import QtQuick.Layouts 1.12
 import QtQuick.Controls 2.12
 import QtQuick.Controls.Material 2.12
 import QtGraphicalEffects 1.0
-import QtCharts 2.3
+import QtCharts 2.14
 
 import "../Components"
 import "../Constants"
