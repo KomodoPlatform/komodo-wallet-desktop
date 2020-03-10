@@ -110,6 +110,7 @@ else ()
             main.cpp
             src/atomic.dex.kill.cpp
             src/atomic.dex.app.cpp
+            src/atomic.dex.cfg.cpp
             src/atomic.dex.mm2.cpp
             src/atomic.dex.coins.config.cpp
             src/atomic.dex.mm2.api.cpp
