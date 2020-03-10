@@ -25,4 +25,9 @@ namespace atomic_dex
         std::string current_lang{"en"};
         std::vector<std::string> available_lang;
     };
+
+    void from_json(const nlohmann::json& j, cfg& config);
+    void change_lang(std::string new_lang);
+    void change_lang(cfg& config, const std::string& new_lang);
+    cfg load_cfg();
 }

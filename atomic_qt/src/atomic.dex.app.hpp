@@ -24,6 +24,7 @@
 #include "atomic.dex.pch.hpp"
 
 //! Project Headers
+#include "atomic.dex.cfg.hpp"
 #include "atomic.dex.mm2.hpp"
 #include "atomic.dex.provider.coinpaprika.hpp"
 #include "atomic.dex.qt.bindings.hpp"
@@ -119,12 +120,12 @@ namespace atomic_dex
         Q_INVOKABLE bool        disable_coins(const QStringList& coins);
         Q_INVOKABLE bool        is_claiming_ready(const QString& ticker);
         Q_INVOKABLE QObject* claim_rewards(const QString& ticker);
-        Q_INVOKABLE QObject*    get_coin_info(const QString& ticker);
-        Q_INVOKABLE QVariantMap get_my_orders();
-        Q_INVOKABLE QVariantMap get_recent_swaps();
-        Q_INVOKABLE QString     get_regex_password_policy() const noexcept;
-        Q_INVOKABLE bool        delete_wallet(const QString& wallet_name) const;
-        Q_INVOKABLE QVariantMap get_trade_infos(const QString& ticker, const QString& receive_ticker, const QString& amount);
+        Q_INVOKABLE QObject*     get_coin_info(const QString& ticker);
+        Q_INVOKABLE QVariantMap  get_my_orders();
+        Q_INVOKABLE QVariantMap  get_recent_swaps();
+        Q_INVOKABLE QString      get_regex_password_policy() const noexcept;
+        Q_INVOKABLE bool         delete_wallet(const QString& wallet_name) const;
+        Q_INVOKABLE QVariantMap  get_trade_infos(const QString& ticker, const QString& receive_ticker, const QString& amount);
         Q_INVOKABLE QVariantList get_portfolio_informations();
 
 
@@ -140,6 +141,8 @@ namespace atomic_dex
         void myOrdersUpdated();
 
       private:
+        //! CFG
+        atomic_dex::cfg m_config{load_cfg()};
         //! Private members
         std::atomic_bool   m_refresh_enabled_coin_event{false};
         std::atomic_bool   m_refresh_current_ticker_infos{false};
