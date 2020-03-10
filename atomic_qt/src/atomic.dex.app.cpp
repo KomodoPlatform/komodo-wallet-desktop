@@ -912,7 +912,7 @@ namespace atomic_dex
     }
 
     void
-    application::set_current_lang(QString current_lang) noexcept
+    application::set_current_lang(const QString& current_lang) noexcept
     {
         this->m_current_lang = current_lang;
         change_lang(m_config, current_lang.toStdString());

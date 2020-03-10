@@ -85,7 +85,7 @@ namespace atomic_dex
 
         //! Properties Setter
         void set_current_fiat(QString current_fiat) noexcept;
-        void set_current_lang(QString current_lang) noexcept;
+        void set_current_lang(const QString& current_lang) noexcept;
         void set_wallet_default_name(QString wallet_default_name) noexcept;
         void set_current_balance_fiat_all(QString current_fiat) noexcept;
         void set_status(QString status) noexcept;
