@@ -904,4 +904,18 @@ namespace atomic_dex
         out                  = q_json.array().toVariantList();
         return out;
     }
+
+    QString
+    application::get_current_lang() const noexcept
+    {
+        return m_current_lang;
+    }
+
+    void
+    application::set_current_lang(QString current_lang) noexcept
+    {
+        this->m_current_lang = current_lang;
+        change_lang(m_config, current_lang.toStdString());
+        on_lang_changed();
+    }
 } // namespace atomic_dex
