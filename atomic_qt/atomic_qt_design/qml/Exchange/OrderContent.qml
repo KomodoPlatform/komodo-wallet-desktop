@@ -66,7 +66,7 @@ Rectangle {
     DefaultText {
         id: uuid
         visible: !in_modal
-        text: (item.is_recent_swap ? qsTr("Swap ID") : qsTr("UUID")) + ": " + item.uuid
+        text: qsTr(item.is_recent_swap ? "Swap ID" : "UUID") + ": " + item.uuid
         color: Style.colorTheme2
         anchors.top: base_amount.bottom
         anchors.topMargin: base_amount.anchors.topMargin
@@ -78,7 +78,7 @@ Rectangle {
         color: visible ? getStatusColor(item) : ''
         anchors.horizontalCenter: parent.horizontalCenter
         anchors.top: base_icon.top
-        text: visible ? qsTr(getStatusTextWithPrefix(item)) : ''
+        text: visible ? getStatusTextWithPrefix(item) : ''
     }
 
     // Date

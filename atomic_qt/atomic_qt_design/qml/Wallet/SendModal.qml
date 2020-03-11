@@ -86,7 +86,7 @@ DefaultModal {
 
                 color: Style.colorRed
 
-                text: qsTr("Not enough funds.") + "\n" + qsTr("You have ") + API.get().get_balance(API.get().current_coin_info.ticker) + " " + API.get().current_coin_info.ticker
+                text: qsTr("Not enough funds.") + "\n" + qsTr("You have %1", "AMT TICKER").arg(General.formatCrypto("", API.get().get_balance(API.get().current_coin_info.ticker), API.get().current_coin_info.ticker))
             }
 
             DefaultText {
@@ -125,25 +125,25 @@ DefaultModal {
 
             // Address
             TextWithTitle {
-                title: qsTr("Recipient's address:")
+                title: qsTr("Recipient's address")
                 text: input_address.field.text
             }
 
             // Amount
             TextWithTitle {
-                title: qsTr("Amount:")
+                title: qsTr("Amount")
                 text: General.formatCrypto("", input_amount.field.text, API.get().current_coin_info.ticker)
             }
 
             // Fees
             TextWithTitle {
-                title: qsTr("Fees:")
+                title: qsTr("Fees")
                 text: General.formatCrypto("", prepare_send_result.fees, API.get().current_coin_info.ticker)
             }
 
             // Date
             TextWithTitle {
-                title: qsTr("Date:")
+                title: qsTr("Date")
                 text: prepare_send_result.date
             }
 

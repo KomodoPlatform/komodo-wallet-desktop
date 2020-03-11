@@ -174,7 +174,7 @@ RowLayout {
                     }
 
                     DefaultText {
-                        text: qsTr("Syncing ") + API.get().current_coin_info.tx_current_block + qsTr(" TXs...")
+                        text: qsTr("Syncing %1 TX(s)...", "", API.get().current_coin_info.tx_current_block).arg(API.get().current_coin_info.tx_current_block)
                         Layout.alignment: Qt.AlignHCenter
                     }
                 }

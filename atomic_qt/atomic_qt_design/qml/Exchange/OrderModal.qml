@@ -19,7 +19,7 @@ DefaultModal {
         anchors.horizontalCenter: parent.horizontalCenter
 
         ModalHeader {
-            title: details.is_recent_swap ? qsTr("Swap Details") : qsTr("Order Details")
+            title: qsTr(details.is_recent_swap ? "Swap Details" : "Order Details")
         }
 
         // Complete image
@@ -43,7 +43,7 @@ DefaultModal {
             font.pointSize: Style.textSize3
             visible: getStatus(details) !== status_swap_not_swap && (details.events !== undefined || details.am_i_maker === false)
             color: visible ? getStatusColor(item) : ''
-            text: visible ? qsTr(getStatusTextWithPrefix(item)) : ''
+            text: visible ? getStatusTextWithPrefix(item) : ''
         }
 
         OrderContent {
@@ -65,42 +65,42 @@ DefaultModal {
 
         // Date
         TextWithTitle {
-            title: qsTr("Date:")
+            title: qsTr("Date")
             text: details.date
             visible: text !== ''
         }
 
         // Swap ID / UUID
         TextWithTitle {
-            title: (item.is_recent_swap ? qsTr("Swap ID") : qsTr("UUID")) + ": "
+            title: qsTr(item.is_recent_swap ? "Swap ID" : "UUID")
             text: details.uuid
             visible: text !== ''
         }
 
         // Taker Payment ID
         TextWithTitle {
-            title: qsTr("Taker Payment ID:")
+            title: qsTr("Taker Payment ID")
             text: getSwapPaymentID(details, true)
             visible: text !== ''
         }
 
         // Maker Payment ID
         TextWithTitle {
-            title: qsTr("Maker Payment ID:")
+            title: qsTr("Maker Payment ID")
             text: getSwapPaymentID(details, false)
             visible: text !== ''
         }
 
         // Error ID
         TextWithTitle {
-            title: qsTr("Error ID:")
+            title: qsTr("Error ID")
             text: getSwapError(details).state
             visible: text !== ''
         }
 
         // Error Details
         TextFieldWithTitle {
-            title: qsTr("Error Log:")
+            title: qsTr("Error Log")
             field.text: getSwapError(details).data.error
             field.readOnly: true
             copyable: true

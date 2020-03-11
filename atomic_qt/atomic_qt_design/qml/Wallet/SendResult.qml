@@ -20,32 +20,32 @@ ColumnLayout {
     // Address
     TextWithTitle {
         id: address
-        title: qsTr("Recipient's address:")
+        title: qsTr("Recipient's address")
         visible: text !== ""
     }
 
     // Amount
     TextWithTitle {
-        title: qsTr("Amount:")
+        title: qsTr("Amount")
         text: General.formatCrypto("", custom_amount !== "" ? custom_amount : result.balance_change, API.get().current_coin_info.ticker)
     }
 
     // Fees
     TextWithTitle {
-        title: qsTr("Fees:")
+        title: qsTr("Fees")
         text: result.fees
     }
 
     // Date
     TextWithTitle {
-        title: qsTr("Date:")
+        title: qsTr("Date")
         text: result.date
     }
 
     // Transaction Hash
     TextWithTitle {
         id: tx_hash
-        title: qsTr("Transaction Hash:")
+        title: qsTr("Transaction Hash")
     }
 
     // Buttons

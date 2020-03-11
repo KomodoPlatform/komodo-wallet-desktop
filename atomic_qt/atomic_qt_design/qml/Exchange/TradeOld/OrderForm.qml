@@ -124,7 +124,7 @@ Rectangle {
 
             color: Style.colorRed
 
-            text: qsTr("Not enough funds.") + "\n" + qsTr("You have ") + API.get().get_balance(sell ? base : rel) + " " + (sell ? base : rel)
+            text: qsTr("Not enough funds.") + "\n" + qsTr("You have %1", "AMT TICKER").arg(General.formatCrypto("", API.get().get_balance(sell ? base : rel),sell ? base : rel))
         }
 
         // Action button
@@ -149,7 +149,7 @@ Rectangle {
 
             color: Style.colorGreen
 
-            text: qsTr("You'll receive:") + "\n" + amountToReceive(sell, base, rel, input_price.field.text, input_volume.field.text)
+            text: qsTr("You'll receive", "AMT TICKER") + ":" + "\n" + amountToReceive(sell, base, rel, input_price.field.text, input_volume.field.text)
         }
 
         // Result

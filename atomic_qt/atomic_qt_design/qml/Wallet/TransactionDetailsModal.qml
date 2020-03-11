@@ -23,38 +23,38 @@ DefaultModal {
 
         // Amount
         TextWithTitle {
-            title: qsTr("Amount:")
+            title: qsTr("Amount")
             text: General.formatCrypto(details.received, details.amount, API.get().current_coin_info.ticker, details.amount_fiat, API.get().fiat)
             value_color: details.received ? Style.colorGreen : Style.colorRed
         }
 
         // Fees
         TextWithTitle {
-            title: qsTr("Fees:")
+            title: qsTr("Fees")
             text: General.formatCrypto("", details.fees, API.get().current_coin_info.ticker)
         }
 
         // Date
         TextWithTitle {
-            title: qsTr("Date:")
+            title: qsTr("Date")
             text: details.date
         }
 
         // Transaction Hash
         TextWithTitle {
-            title: qsTr("Transaction Hash:")
+            title: qsTr("Transaction Hash")
             text: details.tx_hash
         }
 
         // Confirmations
         TextWithTitle {
-            title: qsTr("Confirmations:")
+            title: qsTr("Confirmations")
             text: details.confirmations
         }
 
         // Block Height
         TextWithTitle {
-            title: qsTr("Block Height:")
+            title: qsTr("Block Height")
             text: details.blockheight
         }
 

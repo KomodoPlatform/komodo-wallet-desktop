@@ -51,7 +51,7 @@ Rectangle {
             Layout.topMargin: 20
             color: Style.colorWhite5
 
-            text: qsTr("You don't have any ") + type + qsTr(" orders.")
+            text: qsTr("You don't have any %1 orders.").arg(type)
         }
 
         // List

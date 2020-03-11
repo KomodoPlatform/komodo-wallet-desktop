@@ -59,12 +59,12 @@ DefaultModal {
             Layout.fillWidth: true
 
             ModalHeader {
-                title: qsTr("Claim your ") + API.get().current_coin_info.ticker + qsTr(" reward?")
+                title: qsTr("Claim your %1 reward?", "TICKER").arg(API.get().current_coin_info.ticker)
             }
 
             DefaultText {
                 visible: text_error.text === ""
-                text: qsTr("You will receive ") + General.formatCrypto("", prepare_claim_rewards_result.balance_change, API.get().current_coin_info.ticker)
+                text: qsTr("You will receive %1", "AMT TICKER").arg(General.formatCrypto("", prepare_claim_rewards_result.balance_change, API.get().current_coin_info.ticker))
             }
 
             DefaultText {
