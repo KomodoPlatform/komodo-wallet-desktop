@@ -89,10 +89,10 @@ Rectangle {
 
     function getStatusText(swap) {
         const status = getStatus(swap)
-        return status === status_swap_matching ? "Order Matching":
+        return qsTr(status === status_swap_matching ? "Order Matching":
                status === status_swap_matched ? "Order Matched":
                status === status_swap_ongoing ? "Swap Ongoing":
-               status === status_swap_successful ? "Swap Successful" : "Swap Failed"
+               status === status_swap_successful ? "Swap Successful" : "Swap Failed")
     }
 
     function getStatusStep(swap) {

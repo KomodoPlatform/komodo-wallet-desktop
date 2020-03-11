@@ -35,7 +35,6 @@ SetupPage {
         }
 
         DefaultText {
-            // TODO: Remove these if statements, localization will take care of that
             text: qsTr(API.get().initial_loading_status === "initializing_mm2" ? "Initializing MM2" :
                        API.get().initial_loading_status === "enabling_coins" ? "Enabling coins" :
                        API.get().initial_loading_status === "complete" ? "Complete" : "") + "..."

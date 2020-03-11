@@ -26,7 +26,7 @@ SetupPage {
 
     image_scale: 0.7
     image_path: General.image_path + "setup-wallet-restore-2.svg"
-    title: "Recovery"
+    title: qsTr("Recovery")
     content: ColumnLayout {
         width: 400
 

@@ -44,7 +44,7 @@ SetupPage {
             // Name
             DefaultText {
                 Layout.topMargin: 30
-                text: "Wallets"
+                text: qsTr("Wallets")
             }
 
             HorizontalLine {

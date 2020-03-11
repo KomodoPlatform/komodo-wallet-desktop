@@ -65,17 +65,17 @@ Item {
 
             ExchangeTab {
                 dashboard_index: General.idx_exchange_trade
-                text: "Trade"
+                text: qsTr("Trade")
             }
 
             ExchangeTab {
                 dashboard_index: General.idx_exchange_orders
-                text: "Orders"
+                text: qsTr("Orders")
             }
 
             ExchangeTab {
                 dashboard_index: General.idx_exchange_history
-                text: "History"
+                text: qsTr("History")
             }
         }
 

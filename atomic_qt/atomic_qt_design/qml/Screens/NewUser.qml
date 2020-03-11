@@ -26,7 +26,7 @@ SetupPage {
 
     image_scale: 0.7
     image_path: General.image_path + "setup-welcome-wallet.svg"
-    title: "New User"
+    title: qsTr("New User")
 
     content: ColumnLayout {
         width: 400
