@@ -41,7 +41,7 @@ ColumnLayout {
         }
         DefaultText {
             font.pointSize: Style.textSizeSmall
-            text: Style.listItemPrefix + qsTr("At least 1 special character(eg. !@#$%)")
+            text: Style.listItemPrefix + qsTr("At least 1 special character (eg. !@#$%)")
         }
         DefaultText {
             font.pointSize: Style.textSizeSmall

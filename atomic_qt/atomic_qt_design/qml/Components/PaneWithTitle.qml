@@ -14,7 +14,7 @@ Column {
     property alias content: inner_space.sourceComponent
     property string color: Style.colorTheme6
     DefaultText {
-        text: qsTr(title)
+        text: title
     }
 
     Pane {
