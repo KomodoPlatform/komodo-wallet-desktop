@@ -142,7 +142,7 @@ Rectangle {
 
     DefaultText {
         font.pointSize: Style.textSize2
-        text: qsTr(my_side ? "Sell" : "Receive")
+        text: my_side ? qsTr("Sell") : qsTr("Receive")
         anchors.horizontalCenter: parent.horizontalCenter
         anchors.bottom: form_layout.top
         anchors.bottomMargin: combo.Layout.rightMargin * 0.5
@@ -227,12 +227,12 @@ Rectangle {
 
                 DefaultText {
                     id: tx_fee_text
-                    text: canShowFees() ? qsTr('Transaction Fee:') : ''
+                    text: canShowFees() ? qsTr('Transaction Fee') + ':' : ''
                     font.pointSize: Style.textSizeSmall
                 }
 
                 DefaultText {
-                    text: canShowFees() ? qsTr('Trading Fee:') : ''
+                    text: canShowFees() ? qsTr('Trading Fee') + ':' : ''
                     font.pointSize: tx_fee_text.font.pointSize
                 }
             }

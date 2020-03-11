@@ -19,7 +19,7 @@ DefaultModal {
         anchors.horizontalCenter: parent.horizontalCenter
 
         ModalHeader {
-            title: qsTr(details.is_recent_swap ? "Swap Details" : "Order Details")
+            title: details.is_recent_swap ? qsTr("Swap Details") : qsTr("Order Details")
         }
 
         // Complete image
@@ -72,7 +72,7 @@ DefaultModal {
 
         // Swap ID / UUID
         TextWithTitle {
-            title: qsTr(item.is_recent_swap ? "Swap ID" : "UUID")
+            title: item.is_recent_swap ? qsTr("Swap ID") : qsTr("UUID")
             text: details.uuid
             visible: text !== ''
         }

@@ -324,7 +324,7 @@ RowLayout {
                 Menu {
                     id: context_menu
                     Action {
-                        text: qsTr("Disable ") + model.modelData.ticker
+                        text: qsTr("Disable", "TICKER") + " " + model.modelData.ticker
                         onTriggered: API.get().disable_coins([model.modelData.ticker])
                         enabled: API.get().enabled_coins.length > 2
                     }

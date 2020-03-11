@@ -66,7 +66,7 @@ Rectangle {
     DefaultText {
         id: uuid
         visible: !in_modal
-        text: qsTr(item.is_recent_swap ? "Swap ID" : "UUID") + ": " + item.uuid
+        text: (item.is_recent_swap ? qsTr("Swap ID") : qsTr("UUID")) + ": " + item.uuid
         color: Style.colorTheme2
         anchors.top: base_amount.bottom
         anchors.topMargin: base_amount.anchors.topMargin
