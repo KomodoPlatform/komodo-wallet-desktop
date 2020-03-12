@@ -91,6 +91,15 @@ Rectangle {
         anchors.topMargin: base_amount.anchors.topMargin
     }
 
+    // Maker/Taker
+    DefaultText {
+        visible: !in_modal
+        text: item.am_i_maker ? qsTr("Maker Order"): qsTr("Taker Order")
+        color: Style.colorWhite6
+        anchors.verticalCenter: date.verticalCenter
+        anchors.horizontalCenter: parent.horizontalCenter
+    }
+
     // Cancel button
     DangerButton {
         visible: !in_modal && item.cancellable !== undefined && item.cancellable

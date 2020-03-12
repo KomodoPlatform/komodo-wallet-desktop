@@ -63,11 +63,19 @@ DefaultModal {
             color: Style.colorWhite8
         }
 
+        // Maker/Taker
+        DefaultText {
+            text: details.am_i_maker ? qsTr("Maker Order"): qsTr("Taker Order")
+            color: Style.colorWhite6
+            Layout.alignment: Qt.AlignRight
+        }
+
         // Date
         TextWithTitle {
             title: qsTr("Date")
             text: details.date
             visible: text !== ''
+            Layout.topMargin: -20
         }
 
         // Swap ID / UUID
