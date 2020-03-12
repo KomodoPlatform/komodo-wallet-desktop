@@ -109,7 +109,7 @@ namespace atomic_dex
             }
             catch (const std::exception& error)
             {
-                VLOG_F(loguru::Verbosity_ERROR, "{}", error.what());
+                VLOG_F(loguru::Verbosity_WARNING, "{}", error.what());
                 answer.rpc_result_code = -1;
                 answer.raw_result      = error.what();
             }
@@ -170,7 +170,7 @@ namespace atomic_dex
             }
             catch (const std::exception& error)
             {
-                VLOG_F(loguru::Verbosity_ERROR, "{}", error.what());
+                VLOG_F(loguru::Verbosity_WARNING, "{}", error.what());
                 answer.rpc_result_code = -1;
                 answer.raw_result      = error.what();
             }
@@ -218,7 +218,7 @@ namespace atomic_dex
             }
             catch (const std::exception& error)
             {
-                VLOG_F(loguru::Verbosity_ERROR, "{}", error.what());
+                VLOG_F(loguru::Verbosity_WARNING, "{}", error.what());
                 answer.rpc_result_code = -1;
                 answer.raw_result      = error.what();
             }
