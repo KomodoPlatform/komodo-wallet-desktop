@@ -163,10 +163,6 @@ Item {
         }
     }
 
-    function getReceiveCoins() {
-        return getCoins()
-    }
-
     function getTicker(is_base) {
         return is_base ? form_base.getTicker() : form_rel.getTicker()
     }
