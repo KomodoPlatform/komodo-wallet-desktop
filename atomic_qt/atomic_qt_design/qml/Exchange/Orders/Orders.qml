@@ -160,19 +160,8 @@ Item {
             spacing: parent.spacing
 
             OrderList {
-                title: qsTr("Maker Orders")
-                items: getOrders().maker_orders
-                type: qsTr("maker")
-
-                function postCancelOrder() {
-                    updateOrders()
-                }
-            }
-
-            OrderList {
-                title: qsTr("Taker Orders")
-                items: getOrders().taker_orders
-                type: qsTr("taker")
+                title: qsTr("All %1 Orders", "TICKER").arg(base)
+                items: getOrders().taker_orders.concat(getOrders().maker_orders)
 
                 function postCancelOrder() {
                     updateOrders()

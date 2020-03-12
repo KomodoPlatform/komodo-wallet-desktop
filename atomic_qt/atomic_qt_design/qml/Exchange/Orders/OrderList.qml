@@ -9,7 +9,6 @@ import ".."
 Rectangle {
     property string title
     property alias items: list.model
-    property string type
 
     // Override
     function postCancelOrder() {}
@@ -51,7 +50,7 @@ Rectangle {
             Layout.topMargin: 20
             color: Style.colorWhite5
 
-            text: qsTr("You don't have any %1 orders.").arg(type)
+            text: qsTr("You don't have any orders.")
         }
 
         // List
