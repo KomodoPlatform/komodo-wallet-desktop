@@ -72,7 +72,7 @@ Item {
         const base = form_base.getVolume()
         const rel = form_rel.getVolume()
 
-        return General.isZero(base) || General.isZero(rel) ? "0" : (parseFloat(rel) / parseFloat(base)).toString()
+        return General.isZero(base) || General.isZero(rel) ? "0" : (parseFloat(rel) / parseFloat(base)).toFixed(8).toString()
     }
 
     function getCurrentPrice() {
