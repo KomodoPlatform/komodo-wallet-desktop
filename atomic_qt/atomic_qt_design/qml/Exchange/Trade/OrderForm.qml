@@ -13,6 +13,33 @@ Rectangle {
     property bool my_side: false
     property bool enabled: true
 
+    function update() {
+        updateTickerList()
+    }
+
+    function inCurrentPage() {
+        return exchange_trade.inCurrentPage()
+    }
+
+    property var ticker_list: ([])
+
+    function updateTickerList() {
+        ticker_list = getTickerList()
+
+        update_timer.running = true
+    }
+
+    Timer {
+        id: update_timer
+        running: inCurrentPage()
+        repeat: true
+        interval: 1000
+        onTriggered: {
+            if(inCurrentPage()) updateTickerList()
+        }
+    }
+
+
     function setAnyTicker() {
         setTicker(getAnyAvailableCoin())
     }
@@ -168,11 +195,12 @@ Rectangle {
                 Layout.topMargin: 10
                 Layout.rightMargin: 15
 
-                model: getTickerList()
+                model: ticker_list
                 onCurrentTextChanged: {
                     setPair()
                     if(my_side) prev_base = getTicker()
                     else prev_rel = getTicker()
+                    updateForms(my_side)
                 }
 
                 MouseArea {

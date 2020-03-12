@@ -135,6 +135,20 @@ Item {
     function onOpened() {
         updateOrderbook()
         reset()
+        updateForms()
+    }
+
+    function updateForms(my_side) {
+        if(my_side === undefined) {
+            form_base.update()
+            form_rel.update()
+        }
+        else if(my_side) {
+            form_rel.update()
+        }
+        else {
+            form_base.update()
+        }
     }
 
     function getCurrentOrderbook() {
