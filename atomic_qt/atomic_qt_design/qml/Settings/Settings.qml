@@ -16,7 +16,8 @@ Item {
 
     }
 
-    property var languages: (["USD", "EUR"])
+    property var languages: (["English", "Turkish"])
+    property var fiats: (["USD", "EUR"])
 
     ColumnLayout {
         anchors.centerIn: parent
@@ -43,16 +44,30 @@ Item {
                 id: layout
 
                 ComboBoxWithTitle {
-                    id: combo_lang
+                    id: combo_fiat
                     title: qsTr("Fiat")
                     Layout.fillWidth: true
 
-                    field.model: languages
+                    field.model: fiats
                     field.onCurrentIndexChanged: {
-                        API.get().fiat = languages[field.currentIndex]
+                        API.get().fiat = fiats[field.currentIndex]
                     }
                     Component.onCompleted: {
-                        field.currentIndex = languages.indexOf(API.get().fiat)
+                        field.currentIndex = fiats.indexOf(API.get().fiat)
+                    }
+                }
+
+                ComboBoxWithTitle {
+                    id: combo_lang
+                    title: qsTr("Language")
+                    Layout.fillWidth: true
+
+                    field.model: languages
+                    field.onCurrentTextChanged: {
+                        API.get().language = languages[field.currentIndex]
+                    }
+                    Component.onCompleted: {
+                        field.currentIndex = languages.indexOf(API.get().language)
                     }
                 }
 
