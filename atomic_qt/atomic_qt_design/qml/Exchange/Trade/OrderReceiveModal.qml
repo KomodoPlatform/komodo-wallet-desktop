@@ -92,7 +92,7 @@ DefaultModal {
 
                     text: model.modelData.name + " (" + model.modelData.ticker + ")" + " - " +
                           (getOrderCount(model.modelData.ticker) === 0 ? qsTr("Click to create an order")  :
-                                                   qsTr("Click to see %n order(s)", "", getOrderCount(model.modelData.ticker)).arg(getOrderCount(model.modelData.ticker)))
+                                                   qsTr("Click to see %n order(s)", "", getOrderCount(model.modelData.ticker)))
                     anchors.verticalCenter: parent.verticalCenter
 
                     color: getOrderCount(model.modelData.ticker) === 0 ? Style.colorWhite1 : Style.colorTheme0
