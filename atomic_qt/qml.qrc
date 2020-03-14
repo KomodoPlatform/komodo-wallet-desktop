@@ -2,6 +2,8 @@
     <qresource prefix="/">
         <file>atomic_qt_design/qml/Constants</file>
         <file>atomic_qt_design/qml/main.qml</file>
+        <file>atomic_qt_design/assets/languages/atomic_qt_en.qm</file>
+        <file>atomic_qt_design/assets/languages/atomic_qt_tr.qm</file>
         <file>atomic_qt_design/assets/fonts/Rubik-Regular.ttf</file>
         <file>atomic_qt_design/assets/fonts/Montserrat-Regular.ttf</file>
         <file>atomic_qt_design/assets/images/arrow-up.svg</file>
