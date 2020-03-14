@@ -930,9 +930,9 @@ namespace atomic_dex
             return QLocale::Language::AnyLanguage;
         };
 
-        qDebug() << "setting locale: " << QLocale(get_locale(current_lang)).name();
+        qDebug() << "locale before: " << QLocale().name();
         QLocale::setDefault(get_locale(current_lang));
-        qDebug() << "new locale: " << QLocale().name();
+        qDebug() << "locale after: " << QLocale().name();
         auto res = this->m_translator.load("atomic_qt_" + current_lang,  QLatin1String(":/atomic_qt_design/assets/languages"));
         assert(res);
         this->m_app->installTranslator(&m_translator);
