@@ -919,8 +919,21 @@ namespace atomic_dex
         {
             change_lang(m_config, current_lang.toStdString());
         }
+        auto get_locale = [](const QString current_lang){
+            if (current_lang == "tr") {
+                return QLocale::Language::Turkish;
+            } else if (current_lang == "en") {
+                return QLocale::Language::English;
+            } else if (current_lang == "fr") {
+                return QLocale::Language::French;
+            }
+            return QLocale::Language::AnyLanguage;
+        };
 
-        auto res = this->m_translator.load("atomic_qt_" + current_lang, ":/atomic_qt_design/assets/languages");
+        qDebug() << "setting locale: " << QLocale(get_locale(current_lang)).name();
+        QLocale::setDefault(get_locale(current_lang));
+        qDebug() << "new locale: " << QLocale().name();
+        auto res = this->m_translator.load("atomic_qt_" + current_lang,  QLatin1String(":/atomic_qt_design/assets/languages"));
         assert(res);
         this->m_app->installTranslator(&m_translator);
         on_lang_changed();
