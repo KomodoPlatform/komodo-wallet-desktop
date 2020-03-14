@@ -17,6 +17,8 @@
 #pragma once
 
 #include <QObject>
+#include <QApplication>
+#include <QTranslator>
 #include <QStringList>
 #include <QVariantMap>
 
@@ -89,6 +91,7 @@ namespace atomic_dex
         void set_wallet_default_name(QString wallet_default_name) noexcept;
         void set_current_balance_fiat_all(QString current_fiat) noexcept;
         void set_status(QString status) noexcept;
+        void set_qt_app(QApplication* app) noexcept;
 
         //! Launch the internal loop for the SDK.
         void launch();
@@ -147,6 +150,10 @@ namespace atomic_dex
       private:
         //! CFG
         atomic_dex::cfg m_config{load_cfg()};
+
+        //! QT Application
+        QApplication*   m_app;
+
         //! Private members
         std::atomic_bool   m_refresh_enabled_coin_event{false};
         std::atomic_bool   m_refresh_current_ticker_infos{false};
@@ -155,6 +162,7 @@ namespace atomic_dex
         bool               m_need_a_full_refresh_of_mm2{false};
         QObjectList        m_enabled_coins;
         QObjectList        m_enableable_coins;
+        QTranslator        m_translator;
         QString            m_current_fiat{"USD"};
         QString            m_current_lang{QString::fromStdString(m_config.current_lang)};
         QString            m_current_status{"None"};

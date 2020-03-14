@@ -915,7 +915,20 @@ namespace atomic_dex
     application::set_current_lang(const QString& current_lang) noexcept
     {
         this->m_current_lang = current_lang;
-        change_lang(m_config, current_lang.toStdString());
+        if (m_config.current_lang != current_lang.toStdString())
+        {
+            change_lang(m_config, current_lang.toStdString());
+        }
+
+        auto res = this->m_translator.load("atomic_qt_" + current_lang, ":/atomic_qt_design/assets/languages");
+        assert(res);
+        this->m_app->installTranslator(&m_translator);
         on_lang_changed();
+    }
+
+    void application::set_qt_app(QApplication* app) noexcept
+    {
+        this->m_app = app;
+        set_current_lang(QString::fromStdString(m_config.current_lang));
     }
 } // namespace atomic_dex

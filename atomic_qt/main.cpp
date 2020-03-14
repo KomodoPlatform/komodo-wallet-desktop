@@ -32,6 +32,7 @@ main(int argc, char* argv[])
     //! QT
     QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
     QApplication       app(argc, argv);
+    atomic_app.set_qt_app(&app);
     QQmlApplicationEngine engine;
     engine.rootContext()->setContextProperty("atomic_app", &atomic_app);
 
