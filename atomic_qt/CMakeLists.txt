@@ -97,7 +97,10 @@ elseif(WIN32)
 endif()
 add_library(unofficial-btc::bitcoin ALIAS unofficial-bitcoin)
 
-#set(TS_FILES atomic_qt_en_US.ts)
+set(TS_FILES ${CMAKE_SOURCE_DIR}/atomic_qt_design/assets/languages/atomic_qt_en.ts ${CMAKE_SOURCE_DIR}/atomic_qt_design/assets/languages/atomic_qt_tr.ts)
+qt5_create_translation(QM_FILES ${CMAKE_SOURCE_DIR}/atomic_qt_design/qml ${TS_FILES})
+message(STATUS "${QM_FILES}")
+message(STATUS "${TS_FILES}")
 
 if (ANDROID)
     add_library(atomic_qt SHARED
@@ -122,7 +125,7 @@ else ()
             src/atomic.dex.security.cpp
             $<$<PLATFORM_ID:Darwin>:src/osx/atomic.dex.osx.manager.mm>
             qml.qrc
-            #${TS_FILES}
+            ${QM_FILES}
             )
 endif ()
 
@@ -145,8 +148,6 @@ target_link_libraries(atomic_qt
         Folly::folly_deps
         )
 #target_enable_asan(atomic_qt)
-
-#qt5_create_translation(QM_FILES ${CMAKE_SOURCE_DIR} ${TS_FILES})
 
 ##! Setting output directory
 set_target_properties(${PROJECT_NAME}
