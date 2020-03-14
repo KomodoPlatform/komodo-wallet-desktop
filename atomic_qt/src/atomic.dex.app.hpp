@@ -97,6 +97,7 @@ namespace atomic_dex
         void launch();
 
         //! Bind to the QML Worlds
+        Q_INVOKABLE QStringList get_available_langs() const;;
         Q_INVOKABLE QObject*    prepare_send(const QString& address, const QString& amount, bool max = false);
         Q_INVOKABLE QString     send(const QString& tx_hex);
         Q_INVOKABLE QString     send_rewards(const QString& tx_hex);

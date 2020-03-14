@@ -919,12 +919,17 @@ namespace atomic_dex
         {
             change_lang(m_config, current_lang.toStdString());
         }
-        auto get_locale = [](const QString current_lang){
-            if (current_lang == "tr") {
+        auto get_locale = [](const QString current_lang) {
+            if (current_lang == "tr")
+            {
                 return QLocale::Language::Turkish;
-            } else if (current_lang == "en") {
+            }
+            else if (current_lang == "en")
+            {
                 return QLocale::Language::English;
-            } else if (current_lang == "fr") {
+            }
+            else if (current_lang == "fr")
+            {
                 return QLocale::Language::French;
             }
             return QLocale::Language::AnyLanguage;
@@ -933,15 +938,25 @@ namespace atomic_dex
         qDebug() << "locale before: " << QLocale().name();
         QLocale::setDefault(get_locale(current_lang));
         qDebug() << "locale after: " << QLocale().name();
-        auto res = this->m_translator.load("atomic_qt_" + current_lang,  QLatin1String(":/atomic_qt_design/assets/languages"));
+        auto res = this->m_translator.load("atomic_qt_" + current_lang, QLatin1String(":/atomic_qt_design/assets/languages"));
         assert(res);
         this->m_app->installTranslator(&m_translator);
         on_lang_changed();
     }
 
-    void application::set_qt_app(QApplication* app) noexcept
+    void
+    application::set_qt_app(QApplication* app) noexcept
     {
         this->m_app = app;
         set_current_lang(QString::fromStdString(m_config.current_lang));
+    }
+
+    QStringList
+    application::get_available_langs() const
+    {
+        QStringList out;
+        out.reserve(m_config.available_lang.size());
+        for (auto&& cur_lang: m_config.available_lang) { out.push_back(QString::fromStdString(cur_lang)); }
+        return out;
     }
 } // namespace atomic_dex
