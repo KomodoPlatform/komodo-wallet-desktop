@@ -942,6 +942,7 @@ namespace atomic_dex
         assert(res);
         this->m_app->installTranslator(&m_translator);
         emit on_lang_changed();
+        emit lang_changed();
     }
 
     void
@@ -958,5 +959,11 @@ namespace atomic_dex
         out.reserve(m_config.available_lang.size());
         for (auto&& cur_lang: m_config.available_lang) { out.push_back(QString::fromStdString(cur_lang)); }
         return out;
+    }
+
+    QString
+    application::get_empty_string()
+    {
+        return "";
     }
 } // namespace atomic_dex

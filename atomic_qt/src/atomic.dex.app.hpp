@@ -16,10 +16,10 @@
 
 #pragma once
 
-#include <QObject>
 #include <QApplication>
-#include <QTranslator>
+#include <QObject>
 #include <QStringList>
+#include <QTranslator>
 #include <QVariantMap>
 
 //! PCH Headers
@@ -41,6 +41,7 @@ namespace atomic_dex
         Q_OBJECT
 
         //! Properties
+        Q_PROPERTY(QString empty_string READ get_empty_string NOTIFY lang_changed)
         Q_PROPERTY(QList<QObject*> enabled_coins READ get_enabled_coins NOTIFY enabledCoinsChanged)
         Q_PROPERTY(QList<QObject*> enableable_coins READ get_enableable_coins NOTIFY enableableCoinsChanged)
         Q_PROPERTY(QObject* current_coin_info READ get_current_coin_info NOTIFY coinInfoChanged)
@@ -72,6 +73,7 @@ namespace atomic_dex
         void on_refresh_order_event(const refresh_order_needed&) noexcept;
 
         //! Properties Getter
+        QString               get_empty_string();
         mm2&                  get_mm2() noexcept;
         const mm2&            get_mm2() const noexcept;
         coinpaprika_provider& get_paprika() noexcept;
@@ -97,7 +99,7 @@ namespace atomic_dex
         void launch();
 
         //! Bind to the QML Worlds
-        Q_INVOKABLE QStringList get_available_langs() const;;
+        Q_INVOKABLE QStringList get_available_langs() const;
         Q_INVOKABLE QObject*    prepare_send(const QString& address, const QString& amount, bool max = false);
         Q_INVOKABLE QString     send(const QString& tx_hex);
         Q_INVOKABLE QString     send_rewards(const QString& tx_hex);
@@ -143,6 +145,7 @@ namespace atomic_dex
         void coinInfoChanged();
         void on_fiat_changed();
         void on_lang_changed();
+        void lang_changed();
         void on_fiat_balance_all_changed();
         void on_status_changed();
         void on_wallet_default_name_changed();
@@ -153,7 +156,7 @@ namespace atomic_dex
         atomic_dex::cfg m_config{load_cfg()};
 
         //! QT Application
-        QApplication*   m_app;
+        QApplication* m_app;
 
         //! Private members
         std::atomic_bool   m_refresh_enabled_coin_event{false};
