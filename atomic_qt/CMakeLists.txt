@@ -97,7 +97,10 @@ elseif(WIN32)
 endif()
 add_library(unofficial-btc::bitcoin ALIAS unofficial-bitcoin)
 
-set(TS_FILES ${CMAKE_SOURCE_DIR}/atomic_qt_design/assets/languages/atomic_qt_en.ts ${CMAKE_SOURCE_DIR}/atomic_qt_design/assets/languages/atomic_qt_tr.ts)
+set(TS_FILES
+        ${CMAKE_SOURCE_DIR}/atomic_qt_design/assets/languages/atomic_qt_en.ts
+        ${CMAKE_SOURCE_DIR}/atomic_qt_design/assets/languages/atomic_qt_fr.ts
+        ${CMAKE_SOURCE_DIR}/atomic_qt_design/assets/languages/atomic_qt_tr.ts)
 set_source_files_properties(${TS_FILES} PROPERTIES OUTPUT_LOCATION "${CMAKE_SOURCE_DIR}/atomic_qt_design/assets/languages/")
 qt5_create_translation(QM_FILES ${CMAKE_SOURCE_DIR}/atomic_qt_design/qml ${TS_FILES})
 qt5_add_translation(qmFiles ${TS_FILES})
