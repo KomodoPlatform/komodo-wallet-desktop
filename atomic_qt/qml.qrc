@@ -41,6 +41,9 @@
         <file>atomic_qt_design/assets/images/coins/morty.png</file>
         <file>atomic_qt_design/assets/images/coins/usdc.png</file>
         <file>atomic_qt_design/assets/images/coins/tusd.png</file>
+        <file>atomic_qt_design/assets/images/lang/en.png</file>
+        <file>atomic_qt_design/assets/images/lang/fr.png</file>
+        <file>atomic_qt_design/assets/images/lang/tr.png</file>
         <file>atomic_qt_design/qml/App.qml</file>
         <file>qtquickcontrols2.conf</file>
         <file>atomic_qt_design/qml/Screens/FirstLaunch.qml</file>

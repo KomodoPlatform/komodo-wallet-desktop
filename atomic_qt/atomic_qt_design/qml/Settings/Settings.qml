@@ -56,17 +56,45 @@ Item {
                     }
                 }
 
-                ComboBoxWithTitle {
-                    id: combo_lang
-                    title: qsTr("Language")
-                    Layout.fillWidth: true
-
-                    field.model: API.get().get_available_langs()
-                    field.onCurrentTextChanged: {
-                        API.get().lang = API.get().get_available_langs()[field.currentIndex]
+                RowLayout {
+                    DefaultText {
+                        Layout.alignment: Qt.AlignVCenter
+                        text: qsTr("Language")
                     }
-                    Component.onCompleted: {
-                        field.currentIndex = API.get().get_available_langs().indexOf(API.get().lang)
+                    Image {
+                        Layout.alignment: Qt.AlignBottom
+                        source: General.image_path + "lang/" + API.get().lang + ".png"
+                        fillMode: Image.PreserveAspectFit
+                        scale: 0.5
+                    }
+                }
+
+                Grid {
+                    Layout.topMargin: 10
+                    Layout.bottomMargin: 15
+                    clip: true
+
+                    columns: 8
+                    spacing: 10
+
+                    layoutDirection: Qt.LeftToRight
+
+                    Repeater {
+                        model: API.get().get_available_langs()
+                        delegate: Image {
+                            source: General.image_path + "lang/" + model.modelData + ".png"
+                            fillMode: Image.PreserveAspectFit
+                            width: Style.textSize2
+
+                            // Click area
+                            MouseArea {
+                                anchors.fill: parent
+                                acceptedButtons: Qt.LeftButton | Qt.RightButton
+                                onClicked: {
+                                    API.get().lang = model.modelData
+                                }
+                            }
+                        }
                     }
                 }
 
