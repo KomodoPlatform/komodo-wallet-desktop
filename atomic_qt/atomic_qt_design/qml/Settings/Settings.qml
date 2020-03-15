@@ -70,6 +70,7 @@ Item {
                 }
 
                 Grid {
+                    Layout.alignment: Qt.AlignHCenter
                     Layout.topMargin: 10
                     Layout.bottomMargin: 15
                     clip: true
