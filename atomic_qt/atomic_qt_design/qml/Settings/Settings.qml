@@ -16,7 +16,6 @@ Item {
 
     }
 
-    property var languages: (["English", "Turkish"])
     property var fiats: (["USD", "EUR"])
 
     ColumnLayout {
@@ -62,12 +61,12 @@ Item {
                     title: qsTr("Language")
                     Layout.fillWidth: true
 
-                    field.model: languages
+                    field.model: API.get().get_available_langs()
                     field.onCurrentTextChanged: {
-                        API.get().language = languages[field.currentIndex]
+                        API.get().lang = API.get().get_available_langs()[field.currentIndex]
                     }
                     Component.onCompleted: {
-                        field.currentIndex = languages.indexOf(API.get().language)
+                        field.currentIndex = API.get().get_available_langs().indexOf(API.get().lang)
                     }
                 }
 
