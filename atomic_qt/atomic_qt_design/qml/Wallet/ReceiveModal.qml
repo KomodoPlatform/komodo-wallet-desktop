@@ -19,12 +19,12 @@ DefaultModal {
         width: parent.width
 
         ModalHeader {
-            title: qsTr("Receive")
+            title: API.get().empty_string + (qsTr("Receive"))
         }
 
         // Receive address
         TextAreaWithTitle {
-            title: qsTr("Share this address to receive coins")
+            title: API.get().empty_string + (qsTr("Share this address to receive coins"))
             field.text: API.get().empty_string + (API.get().current_coin_info.address)
             field.readOnly: true
             field.wrapMode: TextEdit.NoWrap

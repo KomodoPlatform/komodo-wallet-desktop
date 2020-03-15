@@ -14,38 +14,38 @@ ColumnLayout {
     function onClose() {}
 
     ModalHeader {
-        title: qsTr("Transaction Complete!")
+        title: API.get().empty_string + (qsTr("Transaction Complete!"))
     }
 
     // Address
     TextWithTitle {
         id: address
-        title: qsTr("Recipient's address")
+        title: API.get().empty_string + (qsTr("Recipient's address"))
         visible: text !== ""
     }
 
     // Amount
     TextWithTitle {
-        title: qsTr("Amount")
+        title: API.get().empty_string + (qsTr("Amount"))
         text: API.get().empty_string + (General.formatCrypto("", custom_amount !== "" ? custom_amount : result.balance_change, API.get().current_coin_info.ticker))
     }
 
     // Fees
     TextWithTitle {
-        title: qsTr("Fees")
+        title: API.get().empty_string + (qsTr("Fees"))
         text: API.get().empty_string + (result.fees)
     }
 
     // Date
     TextWithTitle {
-        title: qsTr("Date")
+        title: API.get().empty_string + (qsTr("Date"))
         text: API.get().empty_string + (result.date)
     }
 
     // Transaction Hash
     TextWithTitle {
         id: tx_hash
-        title: qsTr("Transaction Hash")
+        title: API.get().empty_string + (qsTr("Transaction Hash"))
     }
 
     // Buttons

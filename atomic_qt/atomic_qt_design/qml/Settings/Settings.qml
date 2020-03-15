@@ -44,7 +44,7 @@ Item {
 
                 ComboBoxWithTitle {
                     id: combo_fiat
-                    title: qsTr("Fiat")
+                    title: API.get().empty_string + (qsTr("Fiat"))
                     Layout.fillWidth: true
 
                     field.model: fiats

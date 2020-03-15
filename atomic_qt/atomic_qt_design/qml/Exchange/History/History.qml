@@ -51,7 +51,7 @@ Item {
         spacing: 15
 
         SwapList {
-            title: qsTr("Recent Swaps")
+            title: API.get().empty_string + (qsTr("Recent Swaps"))
             items: getRecentSwaps()
         }
     }

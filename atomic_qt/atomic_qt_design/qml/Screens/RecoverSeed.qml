@@ -26,7 +26,7 @@ SetupPage {
 
     image_scale: 0.7
     image_path: General.image_path + "setup-wallet-restore-2.svg"
-    title: qsTr("Recovery")
+    title: API.get().empty_string + (qsTr("Recovery"))
     content: ColumnLayout {
         width: 400
 
@@ -36,7 +36,7 @@ SetupPage {
 
         TextAreaWithTitle {
             id: input_seed
-            title: qsTr("Seed")
+            title: API.get().empty_string + (qsTr("Seed"))
             field.placeholderText: API.get().empty_string + (qsTr("Enter the seed"))
         }
 

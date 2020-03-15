@@ -160,7 +160,7 @@ Item {
             spacing: parent.spacing
 
             OrderList {
-                title: qsTr("All %1 Orders", "TICKER").arg(base)
+                title: API.get().empty_string + (qsTr("All %1 Orders", "TICKER").arg(base))
                 items: getOrders().taker_orders.concat(getOrders().maker_orders)
 
                 function postCancelOrder() {

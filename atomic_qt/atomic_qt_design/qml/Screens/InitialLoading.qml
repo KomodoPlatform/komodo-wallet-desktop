@@ -25,7 +25,7 @@ SetupPage {
 
     image_scale: 0.7
     image_path: General.image_path + "komodo-icon.png"
-    title: qsTr("Loading, please wait")
+    title: API.get().empty_string + (qsTr("Loading, please wait"))
     content: RowLayout {
         BusyIndicator {
             Layout.alignment: Qt.AlignHCenter

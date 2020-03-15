@@ -20,7 +20,7 @@ SetupPage {
 
     image_scale: 0.7
     image_path: General.image_path + "komodo-icon.png"
-    title: qsTr("Welcome!")
+    title: API.get().empty_string + (qsTr("Welcome!"))
     content: ColumnLayout {
         RowLayout {
             Layout.fillWidth: true

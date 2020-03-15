@@ -18,53 +18,53 @@ DefaultModal {
     // Inside modal
     ColumnLayout {
         ModalHeader {
-            title: qsTr("Transaction Details")
+            title: API.get().empty_string + (qsTr("Transaction Details"))
         }
 
         // Amount
         TextWithTitle {
-            title: qsTr("Amount")
+            title: API.get().empty_string + (qsTr("Amount"))
             text: API.get().empty_string + (General.formatCrypto(details.received, details.amount, API.get().current_coin_info.ticker, details.amount_fiat, API.get().fiat))
             value_color: details.received ? Style.colorGreen : Style.colorRed
         }
 
         // Fees
         TextWithTitle {
-            title: qsTr("Fees")
+            title: API.get().empty_string + (qsTr("Fees"))
             text: API.get().empty_string + (General.formatCrypto("", details.fees, API.get().current_coin_info.ticker))
         }
 
         // Date
         TextWithTitle {
-            title: qsTr("Date")
+            title: API.get().empty_string + (qsTr("Date"))
             text: API.get().empty_string + (details.date)
         }
 
         // Transaction Hash
         TextWithTitle {
-            title: qsTr("Transaction Hash")
+            title: API.get().empty_string + (qsTr("Transaction Hash"))
             text: API.get().empty_string + (details.tx_hash)
         }
 
         // Confirmations
         TextWithTitle {
-            title: qsTr("Confirmations")
+            title: API.get().empty_string + (qsTr("Confirmations"))
             text: API.get().empty_string + (details.confirmations)
         }
 
         // Block Height
         TextWithTitle {
-            title: qsTr("Block Height")
+            title: API.get().empty_string + (qsTr("Block Height"))
             text: API.get().empty_string + (details.blockheight)
         }
 
         AddressList {
-            title: qsTr("From")
+            title: API.get().empty_string + (qsTr("From"))
             model: details.from
         }
 
         AddressList {
-            title: qsTr("To")
+            title: API.get().empty_string + (qsTr("To"))
             model: details.to
         }
 

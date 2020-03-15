@@ -62,20 +62,20 @@ DefaultModal {
             Layout.fillWidth: true
 
             ModalHeader {
-                title: qsTr("Prepare to Send")
+                title: API.get().empty_string + (qsTr("Prepare to Send"))
             }
 
             // Send address
             AddressField {
                 id: input_address
-                title: qsTr("Recipient's address")
+                title: API.get().empty_string + (qsTr("Recipient's address"))
                 field.placeholderText: API.get().empty_string + (qsTr("Enter address of the recipient"))
             }
 
             // Amount input
             AmountField {
                 id: input_amount
-                title: qsTr("Amount to send")
+                title: API.get().empty_string + (qsTr("Amount to send"))
                 field.placeholderText: API.get().empty_string + (qsTr("Enter the amount to send"))
             }
 
@@ -120,30 +120,30 @@ DefaultModal {
         // Send Page
         ColumnLayout {
             ModalHeader {
-                title: qsTr("Send")
+                title: API.get().empty_string + (qsTr("Send"))
             }
 
             // Address
             TextWithTitle {
-                title: qsTr("Recipient's address")
+                title: API.get().empty_string + (qsTr("Recipient's address"))
                 text: API.get().empty_string + (input_address.field.text)
             }
 
             // Amount
             TextWithTitle {
-                title: qsTr("Amount")
+                title: API.get().empty_string + (qsTr("Amount"))
                 text: API.get().empty_string + (General.formatCrypto("", input_amount.field.text, API.get().current_coin_info.ticker))
             }
 
             // Fees
             TextWithTitle {
-                title: qsTr("Fees")
+                title: API.get().empty_string + (qsTr("Fees"))
                 text: API.get().empty_string + (General.formatCrypto("", prepare_send_result.fees, API.get().current_coin_info.ticker))
             }
 
             // Date
             TextWithTitle {
-                title: qsTr("Date")
+                title: API.get().empty_string + (qsTr("Date"))
                 text: API.get().empty_string + (prepare_send_result.date)
             }
 

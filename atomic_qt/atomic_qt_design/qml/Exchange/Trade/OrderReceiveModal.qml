@@ -27,7 +27,7 @@ DefaultModal {
         width: parent.width
 
         ModalHeader {
-            title: qsTr("Receive")
+            title: API.get().empty_string + (qsTr("Receive"))
         }
 
         // Search input

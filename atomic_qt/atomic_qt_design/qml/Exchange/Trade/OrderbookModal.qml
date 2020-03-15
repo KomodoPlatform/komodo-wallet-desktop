@@ -31,7 +31,7 @@ DefaultModal {
         height: parent.height
 
         ModalHeader {
-            title: qsTr("Orderbook")
+            title: API.get().empty_string + (qsTr("Orderbook"))
             bottomMargin: 0
         }
 

@@ -31,7 +31,7 @@ ColumnLayout {
     PasswordField {
         visible: confirm
         id: input_confirm_password
-        title: qsTr("Confirm Password")
+        title: API.get().empty_string + (qsTr("Confirm Password"))
         field.placeholderText: API.get().empty_string + (qsTr("Enter the same password to confirm"))
     }
 }

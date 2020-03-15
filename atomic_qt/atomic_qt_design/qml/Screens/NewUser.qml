@@ -26,7 +26,7 @@ SetupPage {
 
     image_scale: 0.7
     image_path: General.image_path + "setup-welcome-wallet.svg"
-    title: qsTr("New User")
+    title: API.get().empty_string + (qsTr("New User"))
 
     content: ColumnLayout {
         width: 400
@@ -37,7 +37,7 @@ SetupPage {
 
         TextAreaWithTitle {
             id: input_generated_seed
-            title: qsTr("Generated Seed")
+            title: API.get().empty_string + (qsTr("Generated Seed"))
             field.text: API.get().empty_string + (API.get().get_mnemonic())
             field.readOnly: true
             copyable: true
@@ -45,7 +45,7 @@ SetupPage {
 
         TextAreaWithTitle {
             id: input_confirm_seed
-            title: qsTr("Confirm Seed")
+            title: API.get().empty_string + (qsTr("Confirm Seed"))
             field.placeholderText: API.get().empty_string + (qsTr("Enter the generated seed here"))
         }
 

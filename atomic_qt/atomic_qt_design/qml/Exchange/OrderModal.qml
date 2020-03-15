@@ -19,7 +19,7 @@ DefaultModal {
         anchors.horizontalCenter: parent.horizontalCenter
 
         ModalHeader {
-            title: details.is_recent_swap ? qsTr("Swap Details") : qsTr("Order Details")
+            title: API.get().empty_string + (details.is_recent_swap ? qsTr("Swap Details") : qsTr("Order Details"))
         }
 
         // Complete image
@@ -72,7 +72,7 @@ DefaultModal {
 
         // Date
         TextWithTitle {
-            title: qsTr("Date")
+            title: API.get().empty_string + (qsTr("Date"))
             text: API.get().empty_string + (details.date)
             visible: text !== ''
             Layout.topMargin: -20
@@ -80,35 +80,35 @@ DefaultModal {
 
         // Swap ID / UUID
         TextWithTitle {
-            title: item.is_recent_swap ? qsTr("Swap ID") : qsTr("UUID")
+            title: API.get().empty_string + (item.is_recent_swap ? qsTr("Swap ID") : qsTr("UUID"))
             text: API.get().empty_string + (details.uuid)
             visible: text !== ''
         }
 
         // Taker Payment ID
         TextWithTitle {
-            title: qsTr("Taker Payment ID")
+            title: API.get().empty_string + (qsTr("Taker Payment ID"))
             text: API.get().empty_string + (getSwapPaymentID(details, true))
             visible: text !== ''
         }
 
         // Maker Payment ID
         TextWithTitle {
-            title: qsTr("Maker Payment ID")
+            title: API.get().empty_string + (qsTr("Maker Payment ID"))
             text: API.get().empty_string + (getSwapPaymentID(details, false))
             visible: text !== ''
         }
 
         // Error ID
         TextWithTitle {
-            title: qsTr("Error ID")
+            title: API.get().empty_string + (qsTr("Error ID"))
             text: API.get().empty_string + (getSwapError(details).state)
             visible: text !== ''
         }
 
         // Error Details
         TextFieldWithTitle {
-            title: qsTr("Error Log")
+            title: API.get().empty_string + (qsTr("Error Log"))
             field.text: API.get().empty_string + (getSwapError(details).data.error)
             field.readOnly: true
             copyable: true

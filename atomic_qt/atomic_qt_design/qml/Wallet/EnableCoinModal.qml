@@ -36,7 +36,7 @@ DefaultModal {
     ColumnLayout {
         id: modal_layout
         ModalHeader {
-            title: qsTr("Enable coins")
+            title: API.get().empty_string + (qsTr("Enable coins"))
         }
 
         // Search input

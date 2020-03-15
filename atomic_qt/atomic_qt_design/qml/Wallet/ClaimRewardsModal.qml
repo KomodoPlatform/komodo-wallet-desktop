@@ -59,7 +59,7 @@ DefaultModal {
             Layout.fillWidth: true
 
             ModalHeader {
-                title: qsTr("Claim your %1 reward?", "TICKER").arg(API.get().current_coin_info.ticker)
+                title: API.get().empty_string + (qsTr("Claim your %1 reward?", "TICKER").arg(API.get().current_coin_info.ticker))
             }
 
             DefaultText {

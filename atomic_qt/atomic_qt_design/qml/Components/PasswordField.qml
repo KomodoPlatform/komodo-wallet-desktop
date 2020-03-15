@@ -16,7 +16,7 @@ ColumnLayout {
     TextFieldWithTitle {
         id: pw
         hidable: true
-        title: qsTr("Password")
+        title: API.get().empty_string + (qsTr("Password"))
         field.placeholderText: API.get().empty_string + (qsTr("Enter a password for your wallet"))
         field.validator: RegExpValidator { regExp: /\S+/ }
     }

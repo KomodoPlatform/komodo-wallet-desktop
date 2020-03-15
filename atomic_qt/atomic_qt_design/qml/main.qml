@@ -10,7 +10,7 @@ Window {
     height: General.height
     minimumWidth: General.minimumWidth
     minimumHeight: General.minimumHeight
-    title: qsTr("atomicDEX")
+    title: API.get().empty_string + (qsTr("atomicDEX"))
     flags: Qt.Window | Qt.WindowFullscreenButtonHint
     onVisibilityChanged: API.get().change_state(visibility)
     App {
