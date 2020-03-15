@@ -941,7 +941,7 @@ namespace atomic_dex
         auto res = this->m_translator.load("atomic_qt_" + current_lang, QLatin1String(":/atomic_qt_design/assets/languages"));
         assert(res);
         this->m_app->installTranslator(&m_translator);
-        on_lang_changed();
+        emit on_lang_changed();
     }
 
     void
