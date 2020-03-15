@@ -23,7 +23,7 @@ Item {
         DefaultText {
             Layout.alignment: Qt.AlignHCenter
             font.pointSize: Style.textSize2
-            text: qsTr("Settings")
+            text: API.get().empty_string + (qsTr("Settings"))
         }
 
         Rectangle {
@@ -59,7 +59,7 @@ Item {
                 RowLayout {
                     DefaultText {
                         Layout.alignment: Qt.AlignVCenter
-                        text: qsTr("Language")
+                        text: API.get().empty_string + (qsTr("Language"))
                     }
                     Image {
                         Layout.alignment: Qt.AlignBottom
@@ -103,7 +103,7 @@ Item {
                 }
 
                 DangerButton {
-                    text: qsTr("Delete Wallet")
+                    text: API.get().empty_string + (qsTr("Delete Wallet"))
                     Layout.fillWidth: true
                     onClicked: {
                         API.get().delete_wallet(API.get().wallet_default_name)
@@ -113,7 +113,7 @@ Item {
 
                 DefaultButton {
                     Layout.fillWidth: true
-                    text: qsTr("Log out")
+                    text: API.get().empty_string + (qsTr("Log out"))
                     onClicked: disconnect()
                 }
             }

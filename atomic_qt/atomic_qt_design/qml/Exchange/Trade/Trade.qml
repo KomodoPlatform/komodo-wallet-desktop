@@ -261,13 +261,13 @@ Item {
 
         DefaultText {
             Layout.alignment: Qt.AlignHCenter
-            text: qsTr("No balance available")
+            text: API.get().empty_string + (qsTr("No balance available"))
             font.pointSize: Style.textSize2
         }
 
         DefaultText {
             Layout.alignment: Qt.AlignHCenter
-            text: qsTr("Please enable a coin with balance or deposit funds")
+            text: API.get().empty_string + (qsTr("Please enable a coin with balance or deposit funds"))
         }
     }
 
@@ -307,7 +307,7 @@ Item {
             id: action_button
             Layout.fillWidth: true
 
-            text: qsTr("Trade")
+            text: API.get().empty_string + (qsTr("Trade"))
             enabled: form_base.isValid() && form_rel.isValid()
             onClicked: trade(getTicker(true), getTicker(false))
         }
@@ -315,8 +315,8 @@ Item {
         // Price
         DefaultText {
             Layout.alignment: Qt.AlignHCenter
-            text: !hasValidPrice() ? '' : (preffered_price === empty_price ? qsTr("Price") + ": " + getCalculatedPrice() :
-                                                    qsTr("Selected Price") + ": " + preffered_price) + " " + getTicker(false)
+            text: API.get().empty_string + (!hasValidPrice() ? '' : (preffered_price === empty_price ? qsTr("Price") + ": " + getCalculatedPrice() :
+                                                    qsTr("Selected Price") + ": " + preffered_price) + " " + getTicker(false))
         }
 
         // Result
@@ -325,7 +325,7 @@ Item {
 
             color: action_result === "success" ? Style.colorGreen : Style.colorRed
 
-            text: action_result === "" ? "" : action_result === "success" ? "" : qsTr("Failed to place the order.")
+            text: API.get().empty_string + (action_result === "" ? "" : action_result === "success" ? "" : qsTr("Failed to place the order."))
         }
     }
 }

@@ -64,7 +64,7 @@ DefaultModal {
 
             DefaultText {
                 visible: text_error.text === ""
-                text: qsTr("You will receive %1", "AMT TICKER").arg(General.formatCrypto("", prepare_claim_rewards_result.balance_change, API.get().current_coin_info.ticker))
+                text: API.get().empty_string + (qsTr("You will receive %1", "AMT TICKER").arg(General.formatCrypto("", prepare_claim_rewards_result.balance_change, API.get().current_coin_info.ticker)))
             }
 
             DefaultText {
@@ -76,12 +76,12 @@ DefaultModal {
             // Buttons
             RowLayout {
                 DefaultButton {
-                    text: qsTr("Cancel")
+                    text: API.get().empty_string + (qsTr("Cancel"))
                     Layout.fillWidth: true
                     onClicked: root.close()
                 }
                 PrimaryButton {
-                    text: qsTr("Confirm")
+                    text: API.get().empty_string + (qsTr("Confirm"))
                     Layout.fillWidth: true
                     onClicked: claimRewards()
                 }

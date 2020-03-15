@@ -14,7 +14,7 @@ Column {
     property alias content: inner_space.sourceComponent
     property string color: Style.colorTheme6
     DefaultText {
-        text: title
+        text: API.get().empty_string + (title)
     }
 
     Pane {

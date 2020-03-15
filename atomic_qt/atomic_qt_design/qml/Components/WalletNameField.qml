@@ -3,10 +3,11 @@ import QtQuick.Layouts 1.12
 import QtQuick.Controls 2.12
 import QtQuick.Controls.Material 2.12
 
+import "../Constants"
 TextFieldWithTitle {
     id: input_wallet_name
     title: qsTr("Wallet Name")
-    field.placeholderText: qsTr("Enter the name of your wallet here")
+    field.placeholderText: API.get().empty_string + (qsTr("Enter the name of your wallet here"))
     field.validator: RegExpValidator { regExp: /\w+/ }
 }
 

@@ -308,12 +308,12 @@
     <message>
         <location filename="../../qml/Exchange/OrderModal.qml" line="68"/>
         <source>Maker Order</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Ordre du receuveur</translation>
     </message>
     <message>
         <location filename="../../qml/Exchange/OrderModal.qml" line="68"/>
         <source>Taker Order</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Ordre du prenneur</translation>
     </message>
     <message>
         <location filename="../../qml/Exchange/OrderModal.qml" line="75"/>
@@ -323,12 +323,12 @@
     <message>
         <location filename="../../qml/Exchange/OrderModal.qml" line="83"/>
         <source>Swap ID</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Identifiant du Swap</translation>
     </message>
     <message>
         <location filename="../../qml/Exchange/OrderModal.qml" line="83"/>
         <source>UUID</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">UUID</translation>
     </message>
     <message>
         <location filename="../../qml/Exchange/OrderModal.qml" line="90"/>
@@ -353,12 +353,12 @@
     <message>
         <location filename="../../qml/Exchange/OrderModal.qml" line="122"/>
         <source>Close</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Fermer</translation>
     </message>
     <message>
         <location filename="../../qml/Exchange/OrderModal.qml" line="131"/>
         <source>Cancel</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Annuler</translation>
     </message>
     <message>
         <location filename="../../qml/Exchange/OrderModal.qml" line="136"/>
@@ -371,12 +371,12 @@
     <message>
         <location filename="../../qml/Exchange/Trade/OrderReceiveModal.qml" line="30"/>
         <source>Receive</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Recevoir</translation>
     </message>
     <message>
         <location filename="../../qml/Exchange/Trade/OrderReceiveModal.qml" line="38"/>
         <source>Search</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Rechercher</translation>
     </message>
     <message>
         <location filename="../../qml/Exchange/Trade/OrderReceiveModal.qml" line="94"/>
@@ -394,7 +394,7 @@
     <message>
         <location filename="../../qml/Exchange/Trade/OrderReceiveModal.qml" line="106"/>
         <source>Close</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Fermer</translation>
     </message>
 </context>
 <context>
@@ -417,12 +417,12 @@
     <message>
         <location filename="../../qml/Exchange/Trade/OrderbookModal.qml" line="76"/>
         <source>Receive</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Recevoir</translation>
     </message>
     <message>
         <location filename="../../qml/Exchange/Trade/OrderbookModal.qml" line="160"/>
         <source>Close</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Fermer</translation>
     </message>
     <message>
         <location filename="../../qml/Exchange/Trade/OrderbookModal.qml" line="166"/>
@@ -505,7 +505,7 @@
     <message>
         <location filename="../../qml/Portfolio/Portfolio.qml" line="148"/>
         <source>Search</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Rechercher</translation>
     </message>
     <message>
         <location filename="../../qml/Portfolio/Portfolio.qml" line="181"/>
@@ -549,7 +549,7 @@
     <message>
         <location filename="../../qml/Wallet/ReceiveModal.qml" line="22"/>
         <source>Receive</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Recevoir</translation>
     </message>
     <message>
         <location filename="../../qml/Wallet/ReceiveModal.qml" line="27"/>
@@ -559,7 +559,7 @@
     <message>
         <location filename="../../qml/Wallet/ReceiveModal.qml" line="37"/>
         <source>Close</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Fermer</translation>
     </message>
 </context>
 <context>
@@ -582,12 +582,12 @@
     <message>
         <location filename="../../qml/Screens/RecoverSeed.qml" line="50"/>
         <source>Back</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Retour</translation>
     </message>
     <message>
         <location filename="../../qml/Screens/RecoverSeed.qml" line="56"/>
         <source>Confirm</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Confirmer</translation>
     </message>
 </context>
 <context>
@@ -632,7 +632,7 @@
     <message>
         <location filename="../../qml/Wallet/SendModal.qml" line="101"/>
         <source>Close</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Fermer</translation>
     </message>
     <message>
         <location filename="../../qml/Wallet/SendModal.qml" line="106"/>
@@ -663,7 +663,7 @@
     <message>
         <location filename="../../qml/Wallet/SendModal.qml" line="153"/>
         <source>Back</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Retour</translation>
     </message>
 </context>
 <context>
@@ -701,7 +701,7 @@
     <message>
         <location filename="../../qml/Wallet/SendResult.qml" line="54"/>
         <source>Close</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Fermer</translation>
     </message>
     <message>
         <location filename="../../qml/Wallet/SendResult.qml" line="59"/>
@@ -712,12 +712,12 @@
 <context>
     <name>Settings</name>
     <message>
-        <location filename="../../qml/Settings/Settings.qml" line="27"/>
+        <location filename="../../qml/Settings/Settings.qml" line="26"/>
         <source>Settings</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Settings/Settings.qml" line="48"/>
+        <location filename="../../qml/Settings/Settings.qml" line="47"/>
         <source>Fiat</source>
         <translation type="unfinished"></translation>
     </message>
@@ -727,12 +727,12 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Settings/Settings.qml" line="79"/>
+        <location filename="../../qml/Settings/Settings.qml" line="106"/>
         <source>Delete Wallet</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Settings/Settings.qml" line="89"/>
+        <location filename="../../qml/Settings/Settings.qml" line="116"/>
         <source>Log out</source>
         <translation type="unfinished"></translation>
     </message>
@@ -757,12 +757,12 @@
     <message>
         <location filename="../../qml/Sidebar/Sidebar.qml" line="36"/>
         <source>News</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Actualités</translation>
     </message>
     <message>
         <location filename="../../qml/Sidebar/Sidebar.qml" line="44"/>
         <source>DApps</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Applications Décentralisée</translation>
     </message>
     <message>
         <location filename="../../qml/Sidebar/Sidebar.qml" line="51"/>
@@ -793,7 +793,7 @@
     <message>
         <location filename="../../qml/Exchange/Trade/Trade.qml" line="310"/>
         <source>Trade</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Échanger</translation>
     </message>
     <message>
         <location filename="../../qml/Exchange/Trade/Trade.qml" line="318"/>
@@ -861,7 +861,7 @@
     <message>
         <location filename="../../qml/Wallet/TransactionDetailsModal.qml" line="74"/>
         <source>Close</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Fermer</translation>
     </message>
     <message>
         <location filename="../../qml/Wallet/TransactionDetailsModal.qml" line="79"/>
@@ -879,7 +879,7 @@
     <message>
         <location filename="../../qml/Wallet/Wallet.qml" line="98"/>
         <source>Receive</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Recevoir</translation>
     </message>
     <message>
         <location filename="../../qml/Wallet/Wallet.qml" line="110"/>
@@ -912,7 +912,7 @@
     <message>
         <location filename="../../qml/Wallet/Wallet.qml" line="265"/>
         <source>Search</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Rechercher</translation>
     </message>
     <message>
         <location filename="../../qml/Wallet/Wallet.qml" line="327"/>
@@ -924,12 +924,12 @@
 <context>
     <name>WalletNameField</name>
     <message>
-        <location filename="../../qml/Components/WalletNameField.qml" line="8"/>
+        <location filename="../../qml/Components/WalletNameField.qml" line="9"/>
         <source>Wallet Name</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Components/WalletNameField.qml" line="9"/>
+        <location filename="../../qml/Components/WalletNameField.qml" line="10"/>
         <source>Enter the name of your wallet here</source>
         <translation type="unfinished"></translation>
     </message>

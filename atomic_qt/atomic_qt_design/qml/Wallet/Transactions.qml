@@ -61,14 +61,14 @@ ListView {
 
             // Crypto
             DefaultText {
-                text: General.formatCrypto(model.modelData.received, model.modelData.amount, API.get().current_coin_info.ticker)
+                text: API.get().empty_string + (General.formatCrypto(model.modelData.received, model.modelData.amount, API.get().current_coin_info.ticker))
                 Layout.alignment: Qt.AlignRight
                 font.pointSize: Style.textSize2
             }
 
             // Fiat
             DefaultText {
-                text: General.formatFiat(model.modelData.received, model.modelData.amount_fiat, API.get().fiat)
+                text: API.get().empty_string + (General.formatFiat(model.modelData.received, model.modelData.amount_fiat, API.get().fiat))
                 Layout.topMargin: -10
                 Layout.rightMargin: 4
                 Layout.alignment: Qt.AlignRight
@@ -81,7 +81,7 @@ ListView {
         DefaultText {
             anchors.right: parent.horizontalCenter
             anchors.rightMargin: -380
-            text: model.modelData.date
+            text: API.get().empty_string + (model.modelData.date)
             anchors.verticalCenter: parent.verticalCenter
         }
     }

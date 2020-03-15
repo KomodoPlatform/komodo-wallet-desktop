@@ -35,9 +35,9 @@ SetupPage {
         }
 
         DefaultText {
-            text: (API.get().initial_loading_status === "initializing_mm2" ? qsTr("Initializing MM2") :
+            text: API.get().empty_string + ((API.get().initial_loading_status === "initializing_mm2" ? qsTr("Initializing MM2") :
                    API.get().initial_loading_status === "enabling_coins" ? qsTr("Enabling coins") :
-                   API.get().initial_loading_status === "complete" ? qsTr("Complete") : "") + "..."
+                   API.get().initial_loading_status === "complete" ? qsTr("Complete") : "") + "...")
         }
     }
 }

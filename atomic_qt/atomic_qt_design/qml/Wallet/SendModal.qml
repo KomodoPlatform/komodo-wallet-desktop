@@ -69,14 +69,14 @@ DefaultModal {
             AddressField {
                 id: input_address
                 title: qsTr("Recipient's address")
-                field.placeholderText: qsTr("Enter address of the recipient")
+                field.placeholderText: API.get().empty_string + (qsTr("Enter address of the recipient"))
             }
 
             // Amount input
             AmountField {
                 id: input_amount
                 title: qsTr("Amount to send")
-                field.placeholderText: qsTr("Enter the amount to send")
+                field.placeholderText: API.get().empty_string + (qsTr("Enter the amount to send"))
             }
 
             // Not enough funds error
@@ -86,7 +86,7 @@ DefaultModal {
 
                 color: Style.colorRed
 
-                text: qsTr("Not enough funds.") + "\n" + qsTr("You have %1", "AMT TICKER").arg(General.formatCrypto("", API.get().get_balance(API.get().current_coin_info.ticker), API.get().current_coin_info.ticker))
+                text: API.get().empty_string + (qsTr("Not enough funds.") + "\n" + qsTr("You have %1", "AMT TICKER").arg(General.formatCrypto("", API.get().get_balance(API.get().current_coin_info.ticker), API.get().current_coin_info.ticker)))
             }
 
             DefaultText {
@@ -98,12 +98,12 @@ DefaultModal {
             // Buttons
             RowLayout {
                 DefaultButton {
-                    text: qsTr("Close")
+                    text: API.get().empty_string + (qsTr("Close"))
                     Layout.fillWidth: true
                     onClicked: root.close()
                 }
                 PrimaryButton {
-                    text: qsTr("Prepare")
+                    text: API.get().empty_string + (qsTr("Prepare"))
                     Layout.fillWidth: true
 
                     enabled: input_address.field.text != "" &&
@@ -126,36 +126,36 @@ DefaultModal {
             // Address
             TextWithTitle {
                 title: qsTr("Recipient's address")
-                text: input_address.field.text
+                text: API.get().empty_string + (input_address.field.text)
             }
 
             // Amount
             TextWithTitle {
                 title: qsTr("Amount")
-                text: General.formatCrypto("", input_amount.field.text, API.get().current_coin_info.ticker)
+                text: API.get().empty_string + (General.formatCrypto("", input_amount.field.text, API.get().current_coin_info.ticker))
             }
 
             // Fees
             TextWithTitle {
                 title: qsTr("Fees")
-                text: General.formatCrypto("", prepare_send_result.fees, API.get().current_coin_info.ticker)
+                text: API.get().empty_string + (General.formatCrypto("", prepare_send_result.fees, API.get().current_coin_info.ticker))
             }
 
             // Date
             TextWithTitle {
                 title: qsTr("Date")
-                text: prepare_send_result.date
+                text: API.get().empty_string + (prepare_send_result.date)
             }
 
             // Buttons
             RowLayout {
                 DefaultButton {
-                    text: qsTr("Back")
+                    text: API.get().empty_string + (qsTr("Back"))
                     Layout.fillWidth: true
                     onClicked: stack_layout.currentIndex = 0
                 }
                 PrimaryButton {
-                    text: qsTr("Send")
+                    text: API.get().empty_string + (qsTr("Send"))
                     Layout.fillWidth: true
                     onClicked: sendCoin()
                 }

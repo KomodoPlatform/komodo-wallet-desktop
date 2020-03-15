@@ -51,7 +51,7 @@ DefaultModal {
                 anchors.right: parent.right
                 anchors.rightMargin: parent.width * 0.77
 
-                text: qsTr("Price")
+                text: API.get().empty_string + (qsTr("Price"))
                 color: Style.colorWhite1
                 anchors.verticalCenter: parent.verticalCenter
             }
@@ -62,7 +62,7 @@ DefaultModal {
                 anchors.right: parent.right
                 anchors.rightMargin: parent.width * 0.44
 
-                text: qsTr("Volume")
+                text: API.get().empty_string + (qsTr("Volume"))
                 color: Style.colorWhite1
                 anchors.verticalCenter: parent.verticalCenter
             }
@@ -73,7 +73,7 @@ DefaultModal {
                 anchors.right: parent.right
                 anchors.rightMargin: parent.width * 0.11
 
-                text: qsTr("Receive")
+                text: API.get().empty_string + (qsTr("Receive"))
                 color: Style.colorWhite1
                 anchors.verticalCenter: parent.verticalCenter
             }
@@ -118,7 +118,7 @@ DefaultModal {
                     anchors.right: parent.right
                     anchors.rightMargin: price_header.anchors.rightMargin
 
-                    text: model.modelData.price
+                    text: API.get().empty_string + (model.modelData.price)
                     color: Style.colorWhite4
                     anchors.verticalCenter: parent.verticalCenter
                 }
@@ -128,7 +128,7 @@ DefaultModal {
                     anchors.right: parent.right
                     anchors.rightMargin: volume_header.anchors.rightMargin
 
-                    text: model.modelData.volume
+                    text: API.get().empty_string + (model.modelData.volume)
                     color: Style.colorWhite4
                     anchors.verticalCenter: parent.verticalCenter
                 }
@@ -138,7 +138,7 @@ DefaultModal {
                     anchors.right: parent.right
                     anchors.rightMargin: receive_header.anchors.rightMargin
 
-                    text: getReceiveAmount(model.modelData.price) + " " + getTicker()
+                    text: API.get().empty_string + (getReceiveAmount(model.modelData.price) + " " + getTicker())
                     color: Style.colorWhite4
                     anchors.verticalCenter: parent.verticalCenter
                 }
@@ -157,13 +157,13 @@ DefaultModal {
         RowLayout {
             Layout.alignment: Qt.AlignBottom
             DefaultButton {
-                text: qsTr("Close")
+                text: API.get().empty_string + (qsTr("Close"))
                 Layout.fillWidth: true
                 onClicked: root.close()
             }
 
             PrimaryButton {
-                text: qsTr("Create your own order")
+                text: API.get().empty_string + (qsTr("Create your own order"))
                 Layout.fillWidth: true
                 onClicked: createNewOrder()
             }

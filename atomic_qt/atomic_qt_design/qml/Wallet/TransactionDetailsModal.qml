@@ -24,38 +24,38 @@ DefaultModal {
         // Amount
         TextWithTitle {
             title: qsTr("Amount")
-            text: General.formatCrypto(details.received, details.amount, API.get().current_coin_info.ticker, details.amount_fiat, API.get().fiat)
+            text: API.get().empty_string + (General.formatCrypto(details.received, details.amount, API.get().current_coin_info.ticker, details.amount_fiat, API.get().fiat))
             value_color: details.received ? Style.colorGreen : Style.colorRed
         }
 
         // Fees
         TextWithTitle {
             title: qsTr("Fees")
-            text: General.formatCrypto("", details.fees, API.get().current_coin_info.ticker)
+            text: API.get().empty_string + (General.formatCrypto("", details.fees, API.get().current_coin_info.ticker))
         }
 
         // Date
         TextWithTitle {
             title: qsTr("Date")
-            text: details.date
+            text: API.get().empty_string + (details.date)
         }
 
         // Transaction Hash
         TextWithTitle {
             title: qsTr("Transaction Hash")
-            text: details.tx_hash
+            text: API.get().empty_string + (details.tx_hash)
         }
 
         // Confirmations
         TextWithTitle {
             title: qsTr("Confirmations")
-            text: details.confirmations
+            text: API.get().empty_string + (details.confirmations)
         }
 
         // Block Height
         TextWithTitle {
             title: qsTr("Block Height")
-            text: details.blockheight
+            text: API.get().empty_string + (details.blockheight)
         }
 
         AddressList {
@@ -71,12 +71,12 @@ DefaultModal {
         // Buttons
         RowLayout {
             DefaultButton {
-                text: qsTr("Close")
+                text: API.get().empty_string + (qsTr("Close"))
                 Layout.fillWidth: true
                 onClicked: root.close()
             }
             PrimaryButton {
-                text: qsTr("View at Explorer")
+                text: API.get().empty_string + (qsTr("View at Explorer"))
                 Layout.fillWidth: true
                 onClicked: Qt.openUrlExternally(API.get().current_coin_info.explorer_url + "tx/" + details.tx_hash)
             }

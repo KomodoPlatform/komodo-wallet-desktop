@@ -711,12 +711,12 @@
 <context>
     <name>Settings</name>
     <message>
-        <location filename="../../qml/Settings/Settings.qml" line="27"/>
+        <location filename="../../qml/Settings/Settings.qml" line="26"/>
         <source>Settings</source>
         <translation>Ayarlar</translation>
     </message>
     <message>
-        <location filename="../../qml/Settings/Settings.qml" line="48"/>
+        <location filename="../../qml/Settings/Settings.qml" line="47"/>
         <source>Fiat</source>
         <translation>Döviz</translation>
     </message>
@@ -726,12 +726,12 @@
         <translation>Dil</translation>
     </message>
     <message>
-        <location filename="../../qml/Settings/Settings.qml" line="79"/>
+        <location filename="../../qml/Settings/Settings.qml" line="106"/>
         <source>Delete Wallet</source>
         <translation>Cüzdanı Sil</translation>
     </message>
     <message>
-        <location filename="../../qml/Settings/Settings.qml" line="89"/>
+        <location filename="../../qml/Settings/Settings.qml" line="116"/>
         <source>Log out</source>
         <translation>Çıkış</translation>
     </message>
@@ -922,12 +922,12 @@
 <context>
     <name>WalletNameField</name>
     <message>
-        <location filename="../../qml/Components/WalletNameField.qml" line="8"/>
+        <location filename="../../qml/Components/WalletNameField.qml" line="9"/>
         <source>Wallet Name</source>
         <translation>Cüzdan Adı</translation>
     </message>
     <message>
-        <location filename="../../qml/Components/WalletNameField.qml" line="9"/>
+        <location filename="../../qml/Components/WalletNameField.qml" line="10"/>
         <source>Enter the name of your wallet here</source>
         <translation>Cüzdanınızın adını girin</translation>
     </message>

@@ -34,8 +34,8 @@ Rectangle {
     // Base Amount
     DefaultText {
         id: base_amount
-        text: "~ " + General.formatCrypto("", item.my_info.my_amount,
-                                              item.my_info.my_coin)
+        text: API.get().empty_string + ("~ " + General.formatCrypto("", item.my_info.my_amount,
+                                              item.my_info.my_coin))
         font.pointSize: in_modal ? Style.textSize2 : Style.textSize
 
         anchors.left: parent.left
@@ -55,8 +55,8 @@ Rectangle {
     // Rel Amount
     DefaultText {
         id: rel_amount
-        text: "~ " + General.formatCrypto("", item.my_info.other_amount,
-                                              item.my_info.other_coin)
+        text: API.get().empty_string + ("~ " + General.formatCrypto("", item.my_info.other_amount,
+                                              item.my_info.other_coin))
         font.pointSize: base_amount.font.pointSize
         anchors.right: parent.right
         anchors.top: base_amount.top
@@ -66,7 +66,7 @@ Rectangle {
     DefaultText {
         id: uuid
         visible: !in_modal
-        text: (item.is_recent_swap ? qsTr("Swap ID") : qsTr("UUID")) + ": " + item.uuid
+        text: API.get().empty_string + ((item.is_recent_swap ? qsTr("Swap ID") : qsTr("UUID")) + ": " + item.uuid)
         color: Style.colorTheme2
         anchors.top: base_amount.bottom
         anchors.topMargin: base_amount.anchors.topMargin
@@ -78,14 +78,14 @@ Rectangle {
         color: visible ? getStatusColor(item) : ''
         anchors.horizontalCenter: parent.horizontalCenter
         anchors.top: base_icon.top
-        text: visible ? getStatusTextWithPrefix(item) : ''
+        text: API.get().empty_string + (visible ? getStatusTextWithPrefix(item) : '')
     }
 
     // Date
     DefaultText {
         id: date
         visible: !in_modal
-        text: item.date
+        text: API.get().empty_string + (item.date)
         color: Style.colorTheme2
         anchors.top: uuid.bottom
         anchors.topMargin: base_amount.anchors.topMargin
@@ -94,7 +94,7 @@ Rectangle {
     // Maker/Taker
     DefaultText {
         visible: !in_modal
-        text: item.am_i_maker ? qsTr("Maker Order"): qsTr("Taker Order")
+        text: API.get().empty_string + (item.am_i_maker ? qsTr("Maker Order"): qsTr("Taker Order"))
         color: Style.colorWhite6
         anchors.verticalCenter: date.verticalCenter
         anchors.horizontalCenter: parent.horizontalCenter
@@ -105,7 +105,7 @@ Rectangle {
         visible: !in_modal && item.cancellable !== undefined && item.cancellable
         anchors.right: parent.right
         anchors.bottom: date.bottom
-        text: qsTr("Cancel")
+        text: API.get().empty_string + (qsTr("Cancel"))
         onClicked: onCancelOrder(item.uuid)
     }
 }

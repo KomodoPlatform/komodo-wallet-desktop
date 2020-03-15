@@ -27,19 +27,19 @@ ColumnLayout {
     // Amount
     TextWithTitle {
         title: qsTr("Amount")
-        text: General.formatCrypto("", custom_amount !== "" ? custom_amount : result.balance_change, API.get().current_coin_info.ticker)
+        text: API.get().empty_string + (General.formatCrypto("", custom_amount !== "" ? custom_amount : result.balance_change, API.get().current_coin_info.ticker))
     }
 
     // Fees
     TextWithTitle {
         title: qsTr("Fees")
-        text: result.fees
+        text: API.get().empty_string + (result.fees)
     }
 
     // Date
     TextWithTitle {
         title: qsTr("Date")
-        text: result.date
+        text: API.get().empty_string + (result.date)
     }
 
     // Transaction Hash
@@ -51,12 +51,12 @@ ColumnLayout {
     // Buttons
     RowLayout {
         DefaultButton {
-            text: qsTr("Close")
+            text: API.get().empty_string + (qsTr("Close"))
             Layout.fillWidth: true
             onClicked: onClose()
         }
         PrimaryButton {
-            text: qsTr("View at Explorer")
+            text: API.get().empty_string + (qsTr("View at Explorer"))
             Layout.fillWidth: true
             onClicked: Qt.openUrlExternally(result.explorer_url + "tx/" + tx_hash.text)
         }

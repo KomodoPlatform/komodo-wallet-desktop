@@ -6,6 +6,7 @@ QtObject {
     property string saved_seed
     property string saved_password
     property var mockAPI: ({
+        empty_string: '',
         // Signals
         myOrdersUpdated: {
            connect: (func) => { console.log("Connecting function") }

@@ -169,7 +169,7 @@ Rectangle {
 
     DefaultText {
         font.pointSize: Style.textSize2
-        text: my_side ? qsTr("Sell") : qsTr("Receive")
+        text: API.get().empty_string + (my_side ? qsTr("Sell") : qsTr("Receive"))
         anchors.horizontalCenter: parent.horizontalCenter
         anchors.bottom: form_layout.top
         anchors.bottomMargin: combo.Layout.rightMargin * 0.5
@@ -227,7 +227,7 @@ Rectangle {
                 Layout.topMargin: Layout.rightMargin
                 Layout.bottomMargin: Layout.rightMargin
                 visible: my_side
-                text: qsTr("MAX")
+                text: API.get().empty_string + (qsTr("MAX"))
                 onClicked: setMax()
             }
 
@@ -240,8 +240,8 @@ Rectangle {
                 Layout.leftMargin: Layout.rightMargin
                 Layout.topMargin: Layout.rightMargin
                 Layout.bottomMargin: Layout.rightMargin
-                field.placeholderText: my_side ? qsTr("Amount to sell") :
-                                                 field.enabled ? qsTr("Amount to receive") : qsTr("Please fill the send amount")
+                field.placeholderText: API.get().empty_string + (my_side ? qsTr("Amount to sell") :
+                                                 field.enabled ? qsTr("Amount to receive") : qsTr("Please fill the send amount"))
                 field.onTextChanged: onBaseChanged()
             }
         }
@@ -255,12 +255,12 @@ Rectangle {
 
                 DefaultText {
                     id: tx_fee_text
-                    text: canShowFees() ? qsTr('Transaction Fee') + ':' : ''
+                    text: API.get().empty_string + (canShowFees() ? qsTr('Transaction Fee') + ':' : '')
                     font.pointSize: Style.textSizeSmall
                 }
 
                 DefaultText {
-                    text: canShowFees() ? qsTr('Trading Fee') + ':' : ''
+                    text: API.get().empty_string + (canShowFees() ? qsTr('Trading Fee') + ':' : '')
                     font.pointSize: tx_fee_text.font.pointSize
                 }
             }
@@ -269,12 +269,12 @@ Rectangle {
                 Layout.alignment: Qt.AlignRight
 
                 DefaultText {
-                    text: canShowFees() ? curr_trade_info.tx_fee + ' ' + (curr_trade_info.is_ticker_of_fees_eth ? "ETH" : getTicker(true)) : ''
+                    text: API.get().empty_string + (canShowFees() ? curr_trade_info.tx_fee + ' ' + (curr_trade_info.is_ticker_of_fees_eth ? "ETH" : getTicker(true)) : '')
                     font.pointSize: tx_fee_text.font.pointSize
                 }
 
                 DefaultText {
-                    text: canShowFees() ? curr_trade_info.trade_fee + ' ' + getTicker(true) : ''
+                    text: API.get().empty_string + (canShowFees() ? curr_trade_info.trade_fee + ' ' + getTicker(true) : '')
                     font.pointSize: tx_fee_text.font.pointSize
                 }
             }

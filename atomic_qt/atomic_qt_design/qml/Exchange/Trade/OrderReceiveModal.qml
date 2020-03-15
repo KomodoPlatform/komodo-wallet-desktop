@@ -35,7 +35,7 @@ DefaultModal {
             id: input_coin_filter
 
             Layout.fillWidth: true
-            placeholderText: qsTr("Search")
+            placeholderText: API.get().empty_string + (qsTr("Search"))
             selectByMouse: true
         }
 
@@ -90,9 +90,9 @@ DefaultModal {
                     anchors.left: icon.right
                     anchors.leftMargin: Style.iconTextMargin
 
-                    text: model.modelData.name + " (" + model.modelData.ticker + ")" + " - " +
+                    text: API.get().empty_string + (model.modelData.name + " (" + model.modelData.ticker + ")" + " - " +
                           (getOrderCount(model.modelData.ticker) === 0 ? qsTr("Click to create an order")  :
-                                                   qsTr("Click to see %n order(s)", "", getOrderCount(model.modelData.ticker)))
+                                                   qsTr("Click to see %n order(s)", "", getOrderCount(model.modelData.ticker))))
                     anchors.verticalCenter: parent.verticalCenter
 
                     color: getOrderCount(model.modelData.ticker) === 0 ? Style.colorWhite1 : Style.colorTheme0
@@ -103,7 +103,7 @@ DefaultModal {
         // Buttons
         RowLayout {
             DefaultButton {
-                text: qsTr("Close")
+                text: API.get().empty_string + (qsTr("Close"))
                 Layout.fillWidth: true
                 onClicked: root.close()
             }

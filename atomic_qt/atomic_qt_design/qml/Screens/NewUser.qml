@@ -38,7 +38,7 @@ SetupPage {
         TextAreaWithTitle {
             id: input_generated_seed
             title: qsTr("Generated Seed")
-            field.text: API.get().get_mnemonic()
+            field.text: API.get().empty_string + (API.get().get_mnemonic())
             field.readOnly: true
             copyable: true
         }
@@ -46,7 +46,7 @@ SetupPage {
         TextAreaWithTitle {
             id: input_confirm_seed
             title: qsTr("Confirm Seed")
-            field.placeholderText: qsTr("Enter the generated seed here")
+            field.placeholderText: API.get().empty_string + (qsTr("Enter the generated seed here"))
         }
 
         PasswordForm {
@@ -56,13 +56,13 @@ SetupPage {
         RowLayout {
             DefaultButton {
                 Layout.fillWidth: true
-                text: qsTr("Back")
+                text: API.get().empty_string + (qsTr("Back"))
                 onClicked: onClickedBack()
             }
 
             PrimaryButton {
                 Layout.fillWidth: true
-                text: qsTr("Create")
+                text: API.get().empty_string + (qsTr("Create"))
                 onClicked: onClickedCreate(input_password.field.text, input_generated_seed.field.text, input_confirm_seed.field.text, input_wallet_name.field.text)
                 enabled:    // Fields are not empty
                             input_wallet_name.field.acceptableInput === true &&
@@ -73,7 +73,7 @@ SetupPage {
         }
 
         DefaultText {
-            text: text_error
+            text: API.get().empty_string + (text_error)
             color: Style.colorRed
             visible: text !== ''
         }

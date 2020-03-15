@@ -50,13 +50,13 @@ RowLayout {
                 ColumnLayout {
                     id: balance_layout
                     DefaultText {
-                        text: General.formatCrypto("", API.get().current_coin_info.balance, API.get().current_coin_info.ticker)
+                        text: API.get().empty_string + (General.formatCrypto("", API.get().current_coin_info.balance, API.get().current_coin_info.ticker))
                         Layout.alignment: Qt.AlignRight
                         font.pointSize: Style.textSize5
                     }
 
                     DefaultText {
-                        text: General.formatFiat("", API.get().current_coin_info.fiat_amount, API.get().fiat)
+                        text: API.get().empty_string + (General.formatFiat("", API.get().current_coin_info.fiat_amount, API.get().fiat))
                         Layout.topMargin: -15
                         Layout.rightMargin: 4
                         Layout.alignment: Qt.AlignRight
@@ -83,7 +83,7 @@ RowLayout {
 
                 DefaultButton {
                     enabled: API.get().current_coin_info.tx_state !== "InProgress"
-                    text: qsTr("Send")
+                    text: API.get().empty_string + (qsTr("Send"))
                     leftPadding: parent.width * button_margin
                     rightPadding: leftPadding
                     onClicked: send_modal.open()
@@ -95,7 +95,7 @@ RowLayout {
 
                 DefaultButton {
                     enabled: API.get().current_coin_info.tx_state !== "InProgress"
-                    text: qsTr("Receive")
+                    text: API.get().empty_string + (qsTr("Receive"))
                     leftPadding: parent.width * button_margin
                     rightPadding: leftPadding
                     onClicked: receive_modal.open()
@@ -107,7 +107,7 @@ RowLayout {
 
                 DefaultButton {
                     enabled: API.get().current_coin_info.tx_state !== "InProgress"
-                    text: qsTr("Swap")
+                    text: API.get().empty_string + (qsTr("Swap"))
                     leftPadding: parent.width * button_margin
                     rightPadding: leftPadding
                     onClicked: onClickedSwap()
@@ -115,7 +115,7 @@ RowLayout {
 
                 PrimaryButton {
                     id: button_claim_rewards
-                    text: qsTr("Claim Rewards")
+                    text: API.get().empty_string + (qsTr("Claim Rewards"))
                     leftPadding: parent.width * button_margin
                     rightPadding: leftPadding
 
@@ -144,7 +144,7 @@ RowLayout {
 
             DefaultText {
                 visible: API.get().current_coin_info.tx_state !== "InProgress" && API.get().current_coin_info.transactions.length === 0
-                text: qsTr("No transactions")
+                text: API.get().empty_string + (qsTr("No transactions"))
                 font.pointSize: Style.textSize
                 color: Style.colorWhite4
                 Layout.alignment: Qt.AlignHCenter
@@ -164,7 +164,7 @@ RowLayout {
                     anchors.horizontalCenter: parent.horizontalCenter
                     anchors.verticalCenter: parent.verticalCenter
                     DefaultText {
-                        text: qsTr("Loading")
+                        text: API.get().empty_string + (qsTr("Loading"))
                         Layout.alignment: Qt.AlignHCenter
                         font.pointSize: Style.textSize2
                     }
@@ -174,7 +174,7 @@ RowLayout {
                     }
 
                     DefaultText {
-                        text: qsTr("Syncing %n TX(s)...", "", parseInt(API.get().current_coin_info.tx_current_block))
+                        text: API.get().empty_string + (qsTr("Syncing %n TX(s)...", "", parseInt(API.get().current_coin_info.tx_current_block)))
                         Layout.alignment: Qt.AlignHCenter
                     }
                 }
@@ -212,7 +212,7 @@ RowLayout {
             anchors.topMargin: search_button.anchors.topMargin * 0.5 - font.pointSize * 0.5
             anchors.horizontalCenter: parent.horizontalCenter
 
-            text: General.formatFiat("", API.get().balance_fiat_all, API.get().fiat)
+            text: API.get().empty_string + (General.formatFiat("", API.get().balance_fiat_all, API.get().fiat))
         }
 
         // Search button
@@ -262,7 +262,7 @@ RowLayout {
             anchors.top: search_button.bottom
             anchors.horizontalCenter: parent.horizontalCenter
 
-            placeholderText: qsTr("Search")
+            placeholderText: API.get().empty_string + (qsTr("Search"))
             selectByMouse: true
 
             visible: false
@@ -324,7 +324,7 @@ RowLayout {
                 Menu {
                     id: context_menu
                     Action {
-                        text: qsTr("Disable %1", "TICKER").arg(model.modelData.ticker)
+                        text: API.get().empty_string + (qsTr("Disable %1", "TICKER").arg(model.modelData.ticker))
                         onTriggered: API.get().disable_coins([model.modelData.ticker])
                         enabled: API.get().enabled_coins.length > 2
                     }
@@ -347,7 +347,7 @@ RowLayout {
                     anchors.left: icon.right
                     anchors.leftMargin: 5
 
-                    text: model.modelData.ticker
+                    text: API.get().empty_string + (model.modelData.ticker)
                     anchors.verticalCenter: parent.verticalCenter
                 }
             }

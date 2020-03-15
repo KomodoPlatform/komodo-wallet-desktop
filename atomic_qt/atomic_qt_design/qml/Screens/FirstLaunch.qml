@@ -27,13 +27,13 @@ SetupPage {
 
             DefaultButton {
                 Layout.fillWidth: true
-                text: qsTr("Recover Seed")
+                text: API.get().empty_string + (qsTr("Recover Seed"))
                 onClicked: onClickedRecoverSeed()
             }
 
             PrimaryButton {
                 Layout.fillWidth: true
-                text: qsTr("New User")
+                text: API.get().empty_string + (qsTr("New User"))
                 onClicked: onClickedNewUser()
             }
         }
@@ -44,7 +44,7 @@ SetupPage {
             // Name
             DefaultText {
                 Layout.topMargin: 30
-                text: qsTr("Wallets")
+                text: API.get().empty_string + (qsTr("Wallets"))
             }
 
             HorizontalLine {
@@ -83,7 +83,7 @@ SetupPage {
                         anchors.left: parent.left
                         anchors.leftMargin: 5
 
-                        text: Style.listItemPrefix + model.modelData
+                        text: API.get().empty_string + (Style.listItemPrefix + model.modelData)
                         anchors.verticalCenter: parent.verticalCenter
                     }
 

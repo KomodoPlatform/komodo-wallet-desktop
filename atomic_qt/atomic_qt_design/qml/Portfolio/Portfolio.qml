@@ -104,7 +104,7 @@ ColumnLayout {
                 Layout.topMargin: 50
                 Layout.bottomMargin: 0
                 Layout.alignment: Qt.AlignHCenter
-                text: qsTr("TOTAL")
+                text: API.get().empty_string + (qsTr("TOTAL"))
                 font.pointSize: Style.textSize
                 color: Style.colorWhite5
             }
@@ -113,7 +113,7 @@ ColumnLayout {
             DefaultText {
                 Layout.alignment: Qt.AlignHCenter
                 Layout.bottomMargin: 30
-                text: General.formatFiat("", API.get().balance_fiat_all, API.get().fiat)
+                text: API.get().empty_string + (General.formatFiat("", API.get().balance_fiat_all, API.get().fiat))
                 font.pointSize: Style.textSize4
             }
         }
@@ -145,7 +145,7 @@ ColumnLayout {
             anchors.bottom: parent.bottom
             anchors.bottomMargin: 10
 
-            placeholderText: qsTr("Search")
+            placeholderText: API.get().empty_string + (qsTr("Search"))
             selectByMouse: true
 
             width: 120
@@ -178,7 +178,7 @@ ColumnLayout {
             anchors.leftMargin: 40
             anchors.verticalCenter: parent.verticalCenter
 
-            text: qsTr("Coin")
+            text: API.get().empty_string + (qsTr("Coin"))
             sort_type: sort_by_name
         }
 
@@ -190,7 +190,7 @@ ColumnLayout {
             anchors.leftMargin: parent.width * 0.3
             anchors.verticalCenter: parent.verticalCenter
 
-            text: qsTr("Balance")
+            text: API.get().empty_string + (qsTr("Balance"))
             sort_type: sort_by_value
         }
 
@@ -202,7 +202,7 @@ ColumnLayout {
             anchors.rightMargin: parent.width * 0.27
             anchors.verticalCenter: parent.verticalCenter
 
-            text: qsTr("Change 24h")
+            text: API.get().empty_string + (qsTr("Change 24h"))
             sort_type: sort_by_change
         }
 
@@ -214,7 +214,7 @@ ColumnLayout {
             anchors.rightMargin: parent.width * 0.15
             anchors.verticalCenter: parent.verticalCenter
 
-            text: qsTr("Trend 7d")
+            text: API.get().empty_string + (qsTr("Trend 7d"))
             sort_type: sort_by_trend
         }
 
@@ -226,7 +226,7 @@ ColumnLayout {
             anchors.rightMargin: coin_header.anchors.leftMargin
             anchors.verticalCenter: parent.verticalCenter
 
-            text: qsTr("Price")
+            text: API.get().empty_string + (qsTr("Price"))
             sort_type: sort_by_price
         }
 
@@ -252,7 +252,7 @@ ColumnLayout {
             anchors.horizontalCenter: parent.horizontalCenter
             anchors.verticalCenter: parent.verticalCenter
             DefaultText {
-                text: qsTr("Loading")
+                text: API.get().empty_string + (qsTr("Loading"))
                 Layout.alignment: Qt.AlignHCenter
                 font.pointSize: Style.textSize2
             }
@@ -335,7 +335,7 @@ ColumnLayout {
             Menu {
                 id: context_menu
                 Action {
-                    text: qsTr("Disable %1", "TICKER").arg(model.modelData.ticker)
+                    text: API.get().empty_string + (qsTr("Disable %1", "TICKER").arg(model.modelData.ticker))
                     onTriggered: API.get().disable_coins([model.modelData.ticker])
                     enabled: API.get().enabled_coins.length > 2
                 }
@@ -358,7 +358,7 @@ ColumnLayout {
                 anchors.left: icon.right
                 anchors.leftMargin: 10
 
-                text: model.modelData.name
+                text: API.get().empty_string + (model.modelData.name)
                 anchors.verticalCenter: parent.verticalCenter
             }
 
@@ -368,7 +368,7 @@ ColumnLayout {
                 anchors.left: parent.left
                 anchors.leftMargin: balance_header.anchors.leftMargin
 
-                text: model.modelData.balance
+                text: API.get().empty_string + (model.modelData.balance)
                 color: Style.colorWhite4
                 anchors.verticalCenter: parent.verticalCenter
             }
@@ -380,7 +380,7 @@ ColumnLayout {
                 anchors.leftMargin: 5
                 anchors.baseline: balance_value.baseline
 
-                text: model.modelData.ticker
+                text: API.get().empty_string + (model.modelData.ticker)
                 color: Style.colorWhite6
                 font.pointSize: Style.textSize * 0.9
             }
@@ -390,7 +390,7 @@ ColumnLayout {
                 anchors.left: balance_ticker.right
                 anchors.leftMargin: 10
 
-                text: "(" + General.formatFiat('', model.modelData.balance_fiat, API.get().fiat) + ")"
+                text: API.get().empty_string + ("(" + General.formatFiat('', model.modelData.balance_fiat, API.get().fiat) + ")")
                 color: Style.colorWhite5
                 anchors.verticalCenter: parent.verticalCenter
             }
@@ -400,9 +400,9 @@ ColumnLayout {
                 anchors.right: parent.right
                 anchors.rightMargin: change_24h_header.anchors.rightMargin
 
-                text: model.modelData.rates === null ? '-' :
+                text: API.get().empty_string + (model.modelData.rates === null ? '-' :
                         ((model.modelData.rates[API.get().fiat].percent_change_24h > 0 ? '+' : '') +
-                         (model.modelData.rates[API.get().fiat].percent_change_24h + '%'))
+                         (model.modelData.rates[API.get().fiat].percent_change_24h + '%')))
                 color: getColor(model.modelData)
                 anchors.verticalCenter: parent.verticalCenter
             }
@@ -412,7 +412,7 @@ ColumnLayout {
                 anchors.right: parent.right
                 anchors.rightMargin: price_header.anchors.rightMargin
 
-                text: General.formatFiat('', model.modelData.price, API.get().fiat)
+                text: API.get().empty_string + (General.formatFiat('', model.modelData.price, API.get().fiat))
                 color: Style.colorWhite6
                 anchors.verticalCenter: parent.verticalCenter
             }

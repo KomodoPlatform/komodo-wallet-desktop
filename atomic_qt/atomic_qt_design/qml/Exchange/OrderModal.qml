@@ -43,7 +43,7 @@ DefaultModal {
             font.pointSize: Style.textSize3
             visible: getStatus(details) !== status_swap_not_swap && (details.events !== undefined || details.am_i_maker === false)
             color: visible ? getStatusColor(item) : ''
-            text: visible ? getStatusTextWithPrefix(item) : ''
+            text: API.get().empty_string + (visible ? getStatusTextWithPrefix(item) : '')
         }
 
         OrderContent {
@@ -65,7 +65,7 @@ DefaultModal {
 
         // Maker/Taker
         DefaultText {
-            text: details.am_i_maker ? qsTr("Maker Order"): qsTr("Taker Order")
+            text: API.get().empty_string + (details.am_i_maker ? qsTr("Maker Order"): qsTr("Taker Order"))
             color: Style.colorWhite6
             Layout.alignment: Qt.AlignRight
         }
@@ -73,7 +73,7 @@ DefaultModal {
         // Date
         TextWithTitle {
             title: qsTr("Date")
-            text: details.date
+            text: API.get().empty_string + (details.date)
             visible: text !== ''
             Layout.topMargin: -20
         }
@@ -81,35 +81,35 @@ DefaultModal {
         // Swap ID / UUID
         TextWithTitle {
             title: item.is_recent_swap ? qsTr("Swap ID") : qsTr("UUID")
-            text: details.uuid
+            text: API.get().empty_string + (details.uuid)
             visible: text !== ''
         }
 
         // Taker Payment ID
         TextWithTitle {
             title: qsTr("Taker Payment ID")
-            text: getSwapPaymentID(details, true)
+            text: API.get().empty_string + (getSwapPaymentID(details, true))
             visible: text !== ''
         }
 
         // Maker Payment ID
         TextWithTitle {
             title: qsTr("Maker Payment ID")
-            text: getSwapPaymentID(details, false)
+            text: API.get().empty_string + (getSwapPaymentID(details, false))
             visible: text !== ''
         }
 
         // Error ID
         TextWithTitle {
             title: qsTr("Error ID")
-            text: getSwapError(details).state
+            text: API.get().empty_string + (getSwapError(details).state)
             visible: text !== ''
         }
 
         // Error Details
         TextFieldWithTitle {
             title: qsTr("Error Log")
-            field.text: getSwapError(details).data.error
+            field.text: API.get().empty_string + (getSwapError(details).data.error)
             field.readOnly: true
             copyable: true
 
@@ -119,7 +119,7 @@ DefaultModal {
         // Buttons
         RowLayout {
             DefaultButton {
-                text: qsTr("Close")
+                text: API.get().empty_string + (qsTr("Close"))
                 Layout.fillWidth: true
                 onClicked: root.close()
             }
@@ -128,12 +128,12 @@ DefaultModal {
             DangerButton {
                 visible: details.cancellable !== undefined && details.cancellable
                 Layout.fillWidth: true
-                text: qsTr("Cancel")
+                text: API.get().empty_string + (qsTr("Cancel"))
                 onClicked: onCancelOrder(details.uuid)
             }
 
             PrimaryButton {
-                text: qsTr("View at Explorer")
+                text: API.get().empty_string + (qsTr("View at Explorer"))
                 Layout.fillWidth: true
                 visible: getSwapPaymentID(details, false) !== ''|| getSwapPaymentID(details, true) !== ''
                 onClicked: {

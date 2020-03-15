@@ -29,7 +29,7 @@ Rectangle {
         height: parent.height
 
         DefaultText {
-            text: title + " (" + items.length + ")"
+            text: API.get().empty_string + (title + " (" + items.length + ")")
 
             Layout.alignment: Qt.AlignHCenter | Qt.AlignTop
             Layout.topMargin: 10
@@ -50,7 +50,7 @@ Rectangle {
             Layout.topMargin: 20
             color: Style.colorWhite5
 
-            text: qsTr("You don't have recent orders.")
+            text: API.get().empty_string + (qsTr("You don't have recent orders."))
         }
 
         // List

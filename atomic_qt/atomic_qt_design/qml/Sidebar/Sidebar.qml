@@ -12,28 +12,28 @@ ColumnLayout {
 
     SidebarLine {
         dashboard_index: General.idx_dashboard_portfolio
-        text: qsTr("Portfolio")
+        text: API.get().empty_string + (qsTr("Portfolio"))
         image: General.image_path + "menu-assets-portfolio.png"
         Layout.fillWidth: true
     }
 
     SidebarLine {
         dashboard_index: General.idx_dashboard_wallet
-        text: qsTr("Wallet")
+        text: API.get().empty_string + (qsTr("Wallet"))
         image: General.image_path + "menu-assets-white.svg"
         Layout.fillWidth: true
     }
 
     SidebarLine {
         dashboard_index: General.idx_dashboard_exchange
-        text: qsTr("DEX")
+        text: API.get().empty_string + (qsTr("DEX"))
         image: General.image_path + "menu-exchange-white.svg"
         Layout.fillWidth: true
     }
 
     SidebarLine {
         dashboard_index: General.idx_dashboard_news
-        text: qsTr("News")
+        text: API.get().empty_string + (qsTr("News"))
         image: General.image_path + "menu-news-white.svg"
         Layout.fillWidth: true
     }
@@ -41,14 +41,14 @@ ColumnLayout {
     SidebarLine {
         dashboard_index: General.idx_dashboard_dapps
         id: dapps_line
-        text: qsTr("DApps")
+        text: API.get().empty_string + (qsTr("DApps"))
         image: General.image_path + "menu-dapp-white.svg"
         Layout.fillWidth: true
     }
 
     SidebarLine {
         dashboard_index: General.idx_dashboard_settings
-        text: qsTr("Settings")
+        text: API.get().empty_string + (qsTr("Settings"))
         Layout.topMargin: dapps_line.height * 0.5
         image: General.image_path + "menu-settings-white.svg"
         Layout.fillWidth: true

@@ -65,17 +65,17 @@ Item {
 
             ExchangeTab {
                 dashboard_index: General.idx_exchange_trade
-                text: qsTr("Trade")
+                text: API.get().empty_string + (qsTr("Trade"))
             }
 
             ExchangeTab {
                 dashboard_index: General.idx_exchange_orders
-                text: qsTr("Orders")
+                text: API.get().empty_string + (qsTr("Orders"))
             }
 
             ExchangeTab {
                 dashboard_index: General.idx_exchange_history
-                text: qsTr("History")
+                text: API.get().empty_string + (qsTr("History"))
             }
         }
 

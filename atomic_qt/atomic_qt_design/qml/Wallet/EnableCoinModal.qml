@@ -44,7 +44,7 @@ DefaultModal {
             id: input_coin_filter
 
             Layout.fillWidth: true
-            placeholderText: qsTr("Search")
+            placeholderText: API.get().empty_string + (qsTr("Search"))
             selectByMouse: true
         }
 
@@ -90,7 +90,7 @@ DefaultModal {
                     anchors.left: icon.right
                     anchors.leftMargin: Style.iconTextMargin
 
-                    text: model.modelData.name + " (" + model.modelData.ticker + ")"
+                    text: API.get().empty_string + (model.modelData.name + " (" + model.modelData.ticker + ")")
                     anchors.verticalCenter: parent.verticalCenter
                 }
             }
@@ -101,20 +101,20 @@ DefaultModal {
         DefaultText {
             visible: API.get().enableable_coins.length === 0
 
-            text: qsTr("All coins are already enabled!")
+            text: API.get().empty_string + (qsTr("All coins are already enabled!"))
         }
 
         // Buttons
         RowLayout {
             DefaultButton {
-                text: qsTr("Close")
+                text: API.get().empty_string + (qsTr("Close"))
                 Layout.fillWidth: true
                 onClicked: root.close()
             }
             PrimaryButton {
                 visible: API.get().enableable_coins.length > 0
                 enabled: Object.keys(selected_to_enable).length > 0
-                text: qsTr("Enable")
+                text: API.get().empty_string + (qsTr("Enable"))
                 Layout.fillWidth: true
                 onClicked: enableCoins()
             }

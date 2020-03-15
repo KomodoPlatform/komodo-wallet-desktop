@@ -17,7 +17,7 @@ ColumnLayout {
         id: pw
         hidable: true
         title: qsTr("Password")
-        field.placeholderText: qsTr("Enter a password for your wallet")
+        field.placeholderText: API.get().empty_string + (qsTr("Enter a password for your wallet"))
         field.validator: RegExpValidator { regExp: /\S+/ }
     }
 
@@ -29,23 +29,23 @@ ColumnLayout {
 
         DefaultText {
             font.pointSize: Style.textSizeSmall
-            text: Style.listItemPrefix + qsTr("At least 1 lowercase alphabetical character")
+            text: API.get().empty_string + (Style.listItemPrefix + qsTr("At least 1 lowercase alphabetical character"))
         }
         DefaultText {
             font.pointSize: Style.textSizeSmall
-            text: Style.listItemPrefix + qsTr("At least 1 uppercase alphabetical character")
+            text: API.get().empty_string + (Style.listItemPrefix + qsTr("At least 1 uppercase alphabetical character"))
         }
         DefaultText {
             font.pointSize: Style.textSizeSmall
-            text: Style.listItemPrefix + qsTr("At least 1 numeric character")
+            text: API.get().empty_string + (Style.listItemPrefix + qsTr("At least 1 numeric character"))
         }
         DefaultText {
             font.pointSize: Style.textSizeSmall
-            text: Style.listItemPrefix + qsTr("At least 1 special character (eg. !@#$%)")
+            text: API.get().empty_string + (Style.listItemPrefix + qsTr("At least 1 special character (eg. !@#$%)"))
         }
         DefaultText {
             font.pointSize: Style.textSizeSmall
-            text: Style.listItemPrefix + qsTr("At least 16 characters")
+            text: API.get().empty_string + (Style.listItemPrefix + qsTr("At least 16 characters"))
         }
     }
 }

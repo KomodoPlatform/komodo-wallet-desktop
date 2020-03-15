@@ -25,7 +25,7 @@ DefaultModal {
         // Receive address
         TextAreaWithTitle {
             title: qsTr("Share this address to receive coins")
-            field.text: API.get().current_coin_info.address
+            field.text: API.get().empty_string + (API.get().current_coin_info.address)
             field.readOnly: true
             field.wrapMode: TextEdit.NoWrap
             copyable: true
@@ -34,7 +34,7 @@ DefaultModal {
         // Buttons
         RowLayout {
             DefaultButton {
-                text: qsTr("Close")
+                text: API.get().empty_string + (qsTr("Close"))
                 Layout.fillWidth: true
                 onClicked: root.close()
             }

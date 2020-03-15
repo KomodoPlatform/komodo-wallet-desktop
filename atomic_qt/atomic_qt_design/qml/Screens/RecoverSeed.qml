@@ -37,7 +37,7 @@ SetupPage {
         TextAreaWithTitle {
             id: input_seed
             title: qsTr("Seed")
-            field.placeholderText: qsTr("Enter the seed")
+            field.placeholderText: API.get().empty_string + (qsTr("Enter the seed"))
         }
 
         PasswordForm {
@@ -47,13 +47,13 @@ SetupPage {
         RowLayout {
             DefaultButton {
                 Layout.fillWidth: true
-                text: qsTr("Back")
+                text: API.get().empty_string + (qsTr("Back"))
                 onClicked: onClickedBack()
             }
 
             PrimaryButton {
                 Layout.fillWidth: true
-                text: qsTr("Confirm")
+                text: API.get().empty_string + (qsTr("Confirm"))
                 onClicked: onClickedConfirm(input_password.field.text, input_seed.field.text, input_wallet_name.field.text)
                 enabled:     // Fields are not empty
                              input_wallet_name.field.acceptableInput === true &&
@@ -63,7 +63,7 @@ SetupPage {
         }
 
         DefaultText {
-            text: text_error
+            text: API.get().empty_string + (text_error)
             color: Style.colorRed
             visible: text !== ''
         }
