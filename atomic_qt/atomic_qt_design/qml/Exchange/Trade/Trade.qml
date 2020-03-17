@@ -251,7 +251,7 @@ Item {
     // No coins warning
     ColumnLayout {
         anchors.centerIn: parent
-        visible: form_base.getTickerList().length === 0
+        visible: form_base.ticker_list.length === 0
 
         Image {
             Layout.alignment: Qt.AlignHCenter
@@ -275,7 +275,7 @@ Item {
     ColumnLayout {
         id: form
 
-        visible: form_base.getTickerList().length > 0
+        visible: form_base.ticker_list.length > 0
 
         anchors.centerIn: parent
 

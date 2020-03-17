@@ -24,8 +24,8 @@ Rectangle {
     property var ticker_list: ([])
 
     function updateTickerList() {
-        ticker_list = getTickerList()
-
+        ticker_list = my_side ? General.getTickersAndBalances(getFilteredCoins()) : General.getTickers(getFilteredCoins())
+        console.log("Tickers: " + JSON.stringify(ticker_list))
         update_timer.running = true
     }
 
@@ -50,10 +50,6 @@ Rectangle {
 
     function canShowFees() {
         return my_side && !General.isZero(getVolume())
-    }
-
-    function getTickerList() {
-        return my_side ? General.getTickersAndBalances(getFilteredCoins()) : General.getTickers(getFilteredCoins())
     }
 
     function getVolume() {
