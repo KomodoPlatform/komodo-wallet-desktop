@@ -43,7 +43,14 @@ Rectangle {
     readonly property int idx_dashboard: 5
     property int current_page
 
+    NoConnection {
+        id: no_connection_page
+        anchors.fill: parent
+    }
+
     StackLayout {
+        visible: !no_connection_page.visible
+
         anchors.fill: parent
 
         currentIndex: current_page

@@ -187,6 +187,19 @@
     </message>
 </context>
 <context>
+    <name>NoConnection</name>
+    <message>
+        <location filename="../../qml/NoConnection.qml" line="43"/>
+        <source>No connection</source>
+        <translation>Bağlantı yok</translation>
+    </message>
+    <message>
+        <location filename="../../qml/NoConnection.qml" line="53"/>
+        <source>Please make sure you are connected to the internet</source>
+        <translation>Lütfen internete bağlı olduğunuzdan emin olun</translation>
+    </message>
+</context>
+<context>
     <name>OrderContent</name>
     <message>
         <location filename="../../qml/Exchange/OrderContent.qml" line="69"/>
@@ -217,42 +230,42 @@
 <context>
     <name>OrderForm</name>
     <message>
-        <location filename="../../qml/Exchange/Trade/OrderForm.qml" line="172"/>
+        <location filename="../../qml/Exchange/Trade/OrderForm.qml" line="168"/>
         <source>Sell</source>
         <translation>Satılacak</translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/OrderForm.qml" line="172"/>
+        <location filename="../../qml/Exchange/Trade/OrderForm.qml" line="168"/>
         <source>Receive</source>
         <translation>Alınacak</translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/OrderForm.qml" line="230"/>
+        <location filename="../../qml/Exchange/Trade/OrderForm.qml" line="226"/>
         <source>MAX</source>
         <translation>MAKS</translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/OrderForm.qml" line="243"/>
+        <location filename="../../qml/Exchange/Trade/OrderForm.qml" line="239"/>
         <source>Amount to sell</source>
         <translation>Satılacak miktar</translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/OrderForm.qml" line="244"/>
+        <location filename="../../qml/Exchange/Trade/OrderForm.qml" line="240"/>
         <source>Amount to receive</source>
         <translation>Alınacak miktar</translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/OrderForm.qml" line="244"/>
+        <location filename="../../qml/Exchange/Trade/OrderForm.qml" line="240"/>
         <source>Please fill the send amount</source>
         <translation>Lütfen yollanacak miktarı girin</translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/OrderForm.qml" line="258"/>
+        <location filename="../../qml/Exchange/Trade/OrderForm.qml" line="254"/>
         <source>Transaction Fee</source>
         <translation>İşlem Ücreti</translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/OrderForm.qml" line="263"/>
+        <location filename="../../qml/Exchange/Trade/OrderForm.qml" line="259"/>
         <source>Trading Fee</source>
         <translation>Al-Sat Ücreti</translation>
     </message>
@@ -726,12 +739,12 @@
         <translation>Dil</translation>
     </message>
     <message>
-        <location filename="../../qml/Settings/Settings.qml" line="106"/>
+        <location filename="../../qml/Settings/Settings.qml" line="107"/>
         <source>Delete Wallet</source>
         <translation>Cüzdanı Sil</translation>
     </message>
     <message>
-        <location filename="../../qml/Settings/Settings.qml" line="116"/>
+        <location filename="../../qml/Settings/Settings.qml" line="117"/>
         <source>Log out</source>
         <translation>Çıkış</translation>
     </message>
