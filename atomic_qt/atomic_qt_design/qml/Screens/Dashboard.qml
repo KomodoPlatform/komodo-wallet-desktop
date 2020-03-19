@@ -8,7 +8,6 @@ import "../Constants"
 import "../Portfolio"
 import "../Wallet"
 import "../Exchange"
-import "../Settings"
 import "../Sidebar"
 
 Item {
@@ -29,7 +28,6 @@ Item {
         exchange.reset()
         news.reset()
         dapps.reset()
-        settings.reset()
     }
 
     function inCurrentPage() {
@@ -95,11 +93,6 @@ Item {
                 id: dapps
                 text: API.get().empty_string + (qsTr("DApps"))
                 function reset() { }
-            }
-
-            Settings {
-                id: settings
-                Layout.alignment: Qt.AlignCenter
             }
         }
     }

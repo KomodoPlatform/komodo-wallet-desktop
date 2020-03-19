@@ -17,6 +17,7 @@ Rectangle {
 
     function cleanApp() {
         dashboard.reset()
+        settings_modal.reset()
     }
 
     function onDisconnect() { openFirstLaunch() }
@@ -42,6 +43,10 @@ Rectangle {
     readonly property int idx_initial_loading: 4
     readonly property int idx_dashboard: 5
     property int current_page
+
+    SettingsModal {
+        id: settings_modal
+    }
 
     NoConnection {
         id: no_connection_page
