@@ -55,6 +55,7 @@ namespace atomic_dex
         LOG_SCOPE_FUNCTION(INFO);
         j.at("coin").get_to(cfg.ticker);
         j.at("name").get_to(cfg.name);
+        j.at("type").get_to(cfg.type);
         if (j.count("electrum") > 0)
         {
             cfg.electrum_urls = j.at("electrum").get<std::vector<electrum_server>>();
