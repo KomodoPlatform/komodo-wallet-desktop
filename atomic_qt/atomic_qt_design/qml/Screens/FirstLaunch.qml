@@ -4,6 +4,7 @@ import QtQuick.Controls 2.12
 import QtQuick.Controls.Material 2.12
 import "../Components"
 import "../Constants"
+import "../Settings"
 
 SetupPage {
     // Override
@@ -43,7 +44,7 @@ SetupPage {
             visible: wallets.length > 0
             // Name
             DefaultText {
-                Layout.topMargin: 30
+                Layout.topMargin: 10
                 text: API.get().empty_string + (qsTr("Wallets"))
             }
 
@@ -96,6 +97,17 @@ SetupPage {
                     }
                 }
             }
+        }
+
+
+
+        HorizontalLine {
+            Layout.fillWidth: true
+            Layout.bottomMargin: 10
+        }
+
+        Languages {
+            Layout.alignment: Qt.AlignHCenter
         }
     }
 }
