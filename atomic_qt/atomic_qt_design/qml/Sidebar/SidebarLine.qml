@@ -11,10 +11,6 @@ Item {
     property alias image: img.source
     property alias text: txt.text
 
-    function isSettings() {
-        return dashboard_index === General.idx_dashboard_settings
-    }
-
     height: 48
 
     Image {
@@ -39,7 +35,7 @@ Item {
         anchors.left: parent.left
         anchors.leftMargin: img.anchors.leftMargin + Style.textSize * 2.5
         anchors.verticalCenter: parent.verticalCenter
-        font.bold: isSettings() ? settings_modal.visible : dashboard.current_page === dashboard_index
+        font.bold: dashboard.current_page === dashboard_index
         color: font.bold ? Style.colorTheme0 : hovered ? Style.colorWhite1 : Style.colorWhite4
     }
 
@@ -49,9 +45,7 @@ Item {
         width: parent.width
         height: parent.height
         onClicked: function() {
-            if(isSettings()) settings_modal.open()
-
-            else dashboard.current_page = dashboard_index
+            dashboard.current_page = dashboard_index
         }
     }
 }
