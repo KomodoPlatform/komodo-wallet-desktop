@@ -60,43 +60,9 @@ DefaultModal {
             Column {
                 id: col
 
-                ButtonGroup {
-                    id: childGroupUTXO
-                    exclusive: false
-                    checkState: parentBox.checkState
-                }
-
-                CheckBox {
-                    id: parentBox
-                    text: qsTr("Select all coins")
-                    visible: utxo_list.model.length > 0
-                    checkState: childGroupUTXO.checkState
-                }
-
-                Repeater {
-                    id: utxo_list
-
+                CoinList {
+                    group_title: API.get().empty_string + qsTr("Select all coins")
                     model: General.filterCoins(API.get().enableable_coins, input_coin_filter.text)
-                    delegate: CheckBox {
-                        text: API.get().empty_string + "         " + (model.modelData.name + " (" + model.modelData.ticker + ")")
-                        leftPadding: indicator.width
-                        ButtonGroup.group: childGroupUTXO
-
-                        // Icon
-                        Image {
-                            id: icon
-                            anchors.left: parent.left
-                            anchors.leftMargin: parent.leftPadding + 28
-                            source: General.coinIcon(model.modelData.ticker)
-                            fillMode: Image.PreserveAspectFit
-                            width: Style.textSize2
-                            anchors.verticalCenter: parent.verticalCenter
-                        }
-
-                        onCheckStateChanged: {
-                            markToEnable(model.modelData.ticker, checkState === Qt.Checked)
-                        }
-                    }
                 }
             }
         }
