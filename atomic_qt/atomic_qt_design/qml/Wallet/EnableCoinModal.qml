@@ -13,6 +13,7 @@ DefaultModal {
 
     function reset() {
         selected_to_enable = {}
+        input_coin_filter.text = ""
     }
 
     function prepareAndOpen() {
