@@ -33,6 +33,7 @@ namespace atomic_dex
         Q_PROPERTY(QString minimal_balance_for_asking_rewards READ get_minimal_balance_for_asking_rewards WRITE set_minimal_balance_for_asking_rewards NOTIFY
                        minimal_balance_for_asking_rewards_changed)
         Q_PROPERTY(QString ticker READ get_ticker WRITE set_ticker NOTIFY ticker_changed)
+        Q_PROPERTY(QString type READ get_type WRITE set_type NOTIFY type_changed)
         Q_PROPERTY(QString balance READ get_balance WRITE set_balance NOTIFY balance_changed)
         Q_PROPERTY(QString address READ get_address WRITE set_address NOTIFY address_changed)
         Q_PROPERTY(QString fiat_amount READ get_fiat_amount WRITE set_fiat_amount NOTIFY fiat_amount_changed);
@@ -63,6 +64,9 @@ namespace atomic_dex
         void                       set_explorer_url(QString url) noexcept;
         [[nodiscard]] QString      get_fiat_amount() const noexcept;
         void                       set_fiat_amount(QString fiat_amount) noexcept;
+        [[nodiscard]] QString      get_type() const noexcept;
+        void                       set_type(QString type) noexcept;;
+
       signals:
         void ticker_changed();
         void tx_state_changed();
@@ -74,10 +78,12 @@ namespace atomic_dex
         void explorer_url_changed();
         void fiat_amount_changed();
         void transactionsChanged();
+        void type_changed();
 
       public:
         QString           selected_coin_name;
         QString           selected_coin_balance;
+        QString           selected_coin_type;
         QString           selected_coin_address;
         QString           selected_coin_fiat_amount{"0"};
         QString           selected_coin_url;

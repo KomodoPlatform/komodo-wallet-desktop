@@ -154,4 +154,17 @@ namespace atomic_dex
         this->selected_coin_minimal_balance_for_asking_rewards = std::move(amount);
         emit minimal_balance_for_asking_rewards_changed();
     }
+
+    QString
+    atomic_dex::current_coin_info::get_type() const noexcept
+    {
+        return this->selected_coin_type;
+    }
+
+    void
+    atomic_dex::current_coin_info::set_type(QString type) noexcept
+    {
+        this->selected_coin_type = std::move(type);
+        emit type_changed();
+    }
 } // namespace atomic_dex
