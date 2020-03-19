@@ -20,11 +20,11 @@ DefaultModal {
         root.open()
     }
 
-    function markToEnable(ticker) {
-      if(selected_to_enable[ticker] === undefined) selected_to_enable[ticker] = true
-      else delete selected_to_enable[ticker]
+    function markToEnable(ticker, enabled) {
+        if(enabled) selected_to_enable[ticker] = true
+        else delete selected_to_enable[ticker]
 
-      selected_to_enable = selected_to_enable
+        selected_to_enable = selected_to_enable
     }
 
     function enableCoins() {
@@ -48,50 +48,54 @@ DefaultModal {
             selectByMouse: true
         }
 
-        // List
-        ListView {
-            ScrollBar.vertical: ScrollBar {}
-            implicitWidth: contentItem.childrenRect.width
-            implicitHeight: contentItem.childrenRect.height
-            Layout.maximumHeight: 300
-
-            model: General.filterCoins(API.get().enableable_coins, input_coin_filter.text)
+        Flickable {
+            width: 350
+            height: 400
+            contentWidth: col.width
+            contentHeight: col.height
             clip: true
+            ScrollBar.vertical: ScrollBar { }
 
-            delegate: Rectangle {
-                property bool hovered: false
+            Column {
+                id: col
 
-                color: selected_to_enable[model.modelData.ticker] ? Style.colorTheme2 : hovered ? Style.colorTheme4 : "transparent"
-
-                width: 400
-                height: 50
-
-                MouseArea {
-                    anchors.fill: parent
-                    hoverEnabled: true
-                    onHoveredChanged: hovered = containsMouse
-                    onClicked: markToEnable(model.modelData.ticker)
+                ButtonGroup {
+                    id: childGroupUTXO
+                    exclusive: false
+                    checkState: parentBox.checkState
                 }
 
-                // Icon
-                Image {
-                    id: icon
-                    anchors.left: parent.left
-                    anchors.leftMargin: 20
-
-                    source: General.coinIcon(model.modelData.ticker)
-                    fillMode: Image.PreserveAspectFit
-                    width: Style.textSize2
-                    anchors.verticalCenter: parent.verticalCenter
+                CheckBox {
+                    id: parentBox
+                    text: qsTr("Select all coins")
+                    visible: utxo_list.model.length > 0
+                    checkState: childGroupUTXO.checkState
                 }
 
-                // Name
-                DefaultText {
-                    anchors.left: icon.right
-                    anchors.leftMargin: Style.iconTextMargin
+                Repeater {
+                    id: utxo_list
 
-                    text: API.get().empty_string + (model.modelData.name + " (" + model.modelData.ticker + ")")
-                    anchors.verticalCenter: parent.verticalCenter
+                    model: General.filterCoins(API.get().enableable_coins, input_coin_filter.text)
+                    delegate: CheckBox {
+                        text: API.get().empty_string + "         " + (model.modelData.name + " (" + model.modelData.ticker + ")")
+                        leftPadding: indicator.width
+                        ButtonGroup.group: childGroupUTXO
+
+                        // Icon
+                        Image {
+                            id: icon
+                            anchors.left: parent.left
+                            anchors.leftMargin: parent.leftPadding + 28
+                            source: General.coinIcon(model.modelData.ticker)
+                            fillMode: Image.PreserveAspectFit
+                            width: Style.textSize2
+                            anchors.verticalCenter: parent.verticalCenter
+                        }
+
+                        onCheckStateChanged: {
+                            markToEnable(model.modelData.ticker, checkState === Qt.Checked)
+                        }
+                    }
                 }
             }
         }
