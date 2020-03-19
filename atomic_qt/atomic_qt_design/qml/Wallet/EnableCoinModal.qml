@@ -50,6 +50,7 @@ DefaultModal {
         }
 
         Flickable {
+            visible: API.get().enableable_coins.length > 0
             width: 350
             height: 400
             contentWidth: col.width
@@ -61,8 +62,18 @@ DefaultModal {
                 id: col
 
                 CoinList {
-                    group_title: API.get().empty_string + qsTr("Select all coins")
-                    model: General.filterCoins(API.get().enableable_coins, input_coin_filter.text)
+                    group_title: API.get().empty_string + qsTr("Select all UTXO coins")
+                    model: General.filterCoins(API.get().enableable_coins, input_coin_filter.text, "UTXO")
+                }
+
+                CoinList {
+                    group_title: API.get().empty_string + qsTr("Select all SmartChains")
+                    model: General.filterCoins(API.get().enableable_coins, input_coin_filter.text, "Smart Chain")
+                }
+
+                CoinList {
+                    group_title: API.get().empty_string + qsTr("Select all ERC tokens")
+                    model: General.filterCoins(API.get().enableable_coins, input_coin_filter.text, "ERC-20")
                 }
             }
         }

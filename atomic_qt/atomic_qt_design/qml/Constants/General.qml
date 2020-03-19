@@ -28,8 +28,9 @@ QtObject {
         return received === "" ? "" : received === true ? "+ " :  "- "
     }
 
-    function filterCoins(list, text) {
-        return list.filter(c => c.ticker.indexOf(text.toUpperCase()) !== -1 || c.name.toUpperCase().indexOf(text.toUpperCase()) !== -1)
+    function filterCoins(list, text, type) {
+        return list.filter(c => (c.ticker.indexOf(text.toUpperCase()) !== -1 || c.name.toUpperCase().indexOf(text.toUpperCase()) !== -1) &&
+                           (type === undefined || c.type === type))
     }
 
     function formatFiat(received, amount, fiat) {
