@@ -10,7 +10,9 @@ DefaultModal {
     id: root
 
     width: 650
+    readonly property var default_details: ({"is_default": true, "price":"","date":"","base":"","rel":"","cancellable":true,"am_i_maker":true,"base_amount":"1","rel_amount":"1","uuid":""})
     property var details
+    property string current_item_uuid: ""
 
     // Inside modal
     ColumnLayout {
@@ -43,7 +45,7 @@ DefaultModal {
             font.pointSize: Style.textSize3
             visible: getStatus(details) !== status_swap_not_swap && (details.events !== undefined || details.am_i_maker === false)
             color: visible ? getStatusColor(details) : ''
-            text: API.get().empty_string + (visible ? getStatusTextWithPrefix(item) : '')
+            text: API.get().empty_string + (visible ? getStatusTextWithPrefix(details) : '')
         }
 
         OrderContent {

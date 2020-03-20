@@ -10,15 +10,6 @@ Rectangle {
     property string title
     property alias items: list.model
 
-    // Override
-    function postCancelOrder() {}
-
-    // Local
-    function onCancelOrder(uuid) {
-        API.get().cancel_order(uuid)
-        postCancelOrder()
-    }
-
     Layout.fillWidth: true
     Layout.fillHeight: true
     color: Style.colorTheme7

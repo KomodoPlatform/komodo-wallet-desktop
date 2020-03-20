@@ -4,6 +4,7 @@ import QtQuick.Controls 2.12
 import QtQuick.Controls.Material 2.12
 import "../../Components"
 import "../../Constants"
+import ".."
 
 Item {
     id: exchange_history
@@ -53,6 +54,16 @@ Item {
         SwapList {
             title: API.get().empty_string + (qsTr("Recent Swaps"))
             items: getRecentSwaps()
+        }
+    }
+
+    OrderModal {
+        id: order_modal
+        details: General.formatOrder(getRecentSwaps().map(o => o.uuid).indexOf(order_modal.current_item_uuid) !== -1 ?
+                                    getRecentSwaps()[getRecentSwaps().map(o => o.uuid).indexOf(order_modal.current_item_uuid)] : default_details)
+
+        onDetailsChanged: {
+            if(details.is_default) close()
         }
     }
 }

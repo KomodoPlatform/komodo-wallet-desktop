@@ -25,7 +25,6 @@ Rectangle {
 
     function updateTickerList() {
         ticker_list = my_side ? General.getTickersAndBalances(getFilteredCoins()) : General.getTickers(getFilteredCoins())
-        console.log("Tickers: " + JSON.stringify(ticker_list))
         update_timer.running = true
     }
 

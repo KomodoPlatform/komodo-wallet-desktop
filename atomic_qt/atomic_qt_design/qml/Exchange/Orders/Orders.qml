@@ -4,6 +4,7 @@ import QtQuick.Controls 2.12
 import QtQuick.Controls.Material 2.12
 import "../../Components"
 import "../../Constants"
+import ".."
 
 Item {
     id: exchange_orders
@@ -12,6 +13,12 @@ Item {
     property var all_orders: ({})
     property var all_recent_swaps: ({})
     property var all_orders_merged: ([])
+
+    // Local
+    function onCancelOrder(uuid) {
+        API.get().cancel_order(uuid)
+        updateOrders()
+    }
 
     function inCurrentPage() {
         return  exchange.inCurrentPage() &&
@@ -23,7 +30,7 @@ Item {
     function reset() {
         all_orders = {}
         all_recent_swaps = {}
-        all_orders_merged = {}
+        all_orders_merged = []
         update_timer.running = false
     }
 
@@ -181,10 +188,16 @@ Item {
             OrderList {
                 title: API.get().empty_string + (qsTr("All %1 Orders", "TICKER").arg(base))
                 items: all_orders_merged
+            }
+        }
 
-                function postCancelOrder() {
-                    updateOrders()
-                }
+        OrderModal {
+            id: order_modal
+            details: General.formatOrder(all_orders_merged.map(o => o.uuid).indexOf(order_modal.current_item_uuid) !== -1 ?
+                                        all_orders_merged[all_orders_merged.map(o => o.uuid).indexOf(order_modal.current_item_uuid)] : default_details)
+
+            onDetailsChanged: {
+                if(details.is_default) close()
             }
         }
     }
