@@ -154,7 +154,7 @@ Item {
 
                 DangerButton {
                     text: API.get().empty_string + (qsTr("Cancel All Orders"))
-                    enabled: getOrders().maker_orders.length > 0 || getOrders().taker_orders.length > 0
+                    enabled: all_orders_merged.length > 0
                     onClicked: API.get().cancel_all_orders_by_ticker(base)
                     Layout.rightMargin: 15
                 }
