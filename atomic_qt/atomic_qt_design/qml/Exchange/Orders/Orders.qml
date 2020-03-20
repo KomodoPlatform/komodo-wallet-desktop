@@ -11,6 +11,7 @@ Item {
     property string base
     property var all_orders: ({})
     property var all_recent_swaps: ({})
+    property var all_orders_merged: ({})
 
     function inCurrentPage() {
         return  exchange.inCurrentPage() &&
@@ -22,6 +23,7 @@ Item {
     function reset() {
         all_orders = {}
         all_recent_swaps = {}
+        all_orders_merged = {}
         update_timer.running = false
     }
 
@@ -41,6 +43,7 @@ Item {
     function updateOrders() {
         all_orders = API.get().get_my_orders()
         all_recent_swaps = API.get().get_recent_swaps()
+        all_orders_merged = getAllOrders()
         update_timer.running = true
     }
 
@@ -63,6 +66,12 @@ Item {
         }
 
         return mixed_orders
+    }
+
+    function getAllOrders() {
+        let orders = getOrders()
+
+        return orders.taker_orders.concat(orders.maker_orders)
     }
 
     function changeTicker(ticker) {
@@ -161,7 +170,7 @@ Item {
 
             OrderList {
                 title: API.get().empty_string + (qsTr("All %1 Orders", "TICKER").arg(base))
-                items: getOrders().taker_orders.concat(getOrders().maker_orders)
+                items: all_orders_merged
 
                 function postCancelOrder() {
                     updateOrders()
