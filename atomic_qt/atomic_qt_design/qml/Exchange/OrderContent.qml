@@ -34,8 +34,7 @@ Rectangle {
     // Base Amount
     DefaultText {
         id: base_amount
-        text: API.get().empty_string + ("~ " + General.formatCrypto("", item.my_info.my_amount,
-                                              item.my_info.my_coin))
+        text: API.get().empty_string + ("~ " + General.formatCrypto("", item.my_info.my_amount, item.my_info.my_coin))
         font.pointSize: in_modal ? Style.textSize2 : Style.textSize
 
         anchors.left: parent.left
@@ -55,8 +54,7 @@ Rectangle {
     // Rel Amount
     DefaultText {
         id: rel_amount
-        text: API.get().empty_string + ("~ " + General.formatCrypto("", item.my_info.other_amount,
-                                              item.my_info.other_coin))
+        text: API.get().empty_string + ("~ " + General.formatCrypto("", item.my_info.other_amount, item.my_info.other_coin))
         font.pointSize: base_amount.font.pointSize
         anchors.right: parent.right
         anchors.top: base_amount.top

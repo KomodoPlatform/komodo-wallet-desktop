@@ -80,7 +80,7 @@ DefaultModal {
 
         // Swap ID / UUID
         TextWithTitle {
-            title: API.get().empty_string + (item.is_recent_swap ? qsTr("Swap ID") : qsTr("UUID"))
+            title: API.get().empty_string + (details.is_recent_swap ? qsTr("Swap ID") : qsTr("UUID"))
             text: API.get().empty_string + (details.uuid)
             visible: text !== ''
         }
