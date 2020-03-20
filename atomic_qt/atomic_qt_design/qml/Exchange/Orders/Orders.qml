@@ -11,7 +11,7 @@ Item {
     property string base
     property var all_orders: ({})
     property var all_recent_swaps: ({})
-    property var all_orders_merged: ({})
+    property var all_orders_merged: ([])
 
     function inCurrentPage() {
         return  exchange.inCurrentPage() &&
@@ -76,6 +76,16 @@ Item {
 
     function changeTicker(ticker) {
         combo_base.currentIndex = baseCoins().map(c => c.ticker).indexOf(ticker)
+    }
+
+    function cancellableOrderExists() {
+        for(const i in all_orders_merged) {
+            const o = all_orders_merged[i]
+            if(o.cancellable !== undefined && o.cancellable)
+                return true
+        }
+
+        return false
     }
 
     Timer {
@@ -154,7 +164,7 @@ Item {
 
                 DangerButton {
                     text: API.get().empty_string + (qsTr("Cancel All Orders"))
-                    enabled: all_orders_merged.length > 0
+                    enabled: cancellableOrderExists()
                     onClicked: API.get().cancel_all_orders_by_ticker(base)
                     Layout.rightMargin: 15
                 }
