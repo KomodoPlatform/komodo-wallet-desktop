@@ -30,8 +30,15 @@ SetupPage {
     content: ColumnLayout {
         width: 400
 
+        function trySubmit() {
+            if(!submit_button.enabled) return
+
+            onClickedConfirm(input_password.field.text, input_seed.field.text, input_wallet_name.field.text)
+        }
+
         WalletNameField {
             id: input_wallet_name
+            field.onAccepted: trySubmit()
         }
 
         TextAreaWithTitle {
@@ -42,6 +49,9 @@ SetupPage {
 
         PasswordForm {
             id: input_password
+
+            field.onAccepted: trySubmit()
+            confirm_field.onAccepted: trySubmit()
         }
 
         RowLayout {
@@ -52,9 +62,10 @@ SetupPage {
             }
 
             PrimaryButton {
+                id: submit_button
                 Layout.fillWidth: true
                 text: API.get().empty_string + (qsTr("Confirm"))
-                onClicked: onClickedConfirm(input_password.field.text, input_seed.field.text, input_wallet_name.field.text)
+                onClicked: trySubmit()
                 enabled:     // Fields are not empty
                              input_wallet_name.field.acceptableInput === true &&
                              input_seed.field.text !== '' &&

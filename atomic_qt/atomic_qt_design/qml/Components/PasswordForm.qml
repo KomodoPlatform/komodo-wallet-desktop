@@ -6,6 +6,7 @@ import "../Constants"
 
 ColumnLayout {
     property alias field: input_password.field
+    property alias confirm_field: input_confirm_password.field
     property bool confirm: true
 
     function isValid() {

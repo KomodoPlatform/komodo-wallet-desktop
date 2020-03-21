@@ -209,27 +209,27 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Screens/NewUser.qml" line="40"/>
+        <location filename="../../qml/Screens/NewUser.qml" line="46"/>
         <source>Generated Seed</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Screens/NewUser.qml" line="48"/>
+        <location filename="../../qml/Screens/NewUser.qml" line="54"/>
         <source>Confirm Seed</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Screens/NewUser.qml" line="49"/>
+        <location filename="../../qml/Screens/NewUser.qml" line="55"/>
         <source>Enter the generated seed here</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Screens/NewUser.qml" line="59"/>
+        <location filename="../../qml/Screens/NewUser.qml" line="67"/>
         <source>Back</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Screens/NewUser.qml" line="65"/>
+        <location filename="../../qml/Screens/NewUser.qml" line="74"/>
         <source>Create</source>
         <translation type="unfinished"></translation>
     </message>
@@ -603,22 +603,22 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Screens/RecoverSeed.qml" line="39"/>
+        <location filename="../../qml/Screens/RecoverSeed.qml" line="45"/>
         <source>Seed</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Screens/RecoverSeed.qml" line="40"/>
+        <location filename="../../qml/Screens/RecoverSeed.qml" line="46"/>
         <source>Enter the seed</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Screens/RecoverSeed.qml" line="50"/>
+        <location filename="../../qml/Screens/RecoverSeed.qml" line="58"/>
         <source>Back</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Screens/RecoverSeed.qml" line="56"/>
+        <location filename="../../qml/Screens/RecoverSeed.qml" line="65"/>
         <source>Confirm</source>
         <translation type="unfinished"></translation>
     </message>

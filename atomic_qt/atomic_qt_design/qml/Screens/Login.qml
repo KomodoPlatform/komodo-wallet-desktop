@@ -40,8 +40,8 @@ SetupPage {
             input_password.reset()
         }
 
-        function tryLogin() {
-            if(!login_button.enabled) return
+        function trySubmit() {
+            if(!submit_button.enabled) return
 
             if(onClickedLogin(input_password.field.text))
                 reset()
@@ -51,7 +51,7 @@ SetupPage {
         PasswordForm {
             id: input_password
             confirm: false
-            field.onAccepted: tryLogin()
+            field.onAccepted: trySubmit()
         }
 
         RowLayout {
@@ -66,10 +66,10 @@ SetupPage {
             }
 
             PrimaryButton {
-                id: login_button
+                id: submit_button
                 Layout.fillWidth: true
                 text: API.get().empty_string + (qsTr("Login"))
-                onClicked: tryLogin()
+                onClicked: trySubmit()
                 enabled: input_password.isValid()
             }
         }
