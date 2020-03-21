@@ -41,7 +41,7 @@ SetupPage {
         }
 
         function tryLogin() {
-            if(!input_password.isValid()) return
+            if(!login_button.enabled) return
 
             if(onClickedLogin(input_password.field.text))
                 reset()

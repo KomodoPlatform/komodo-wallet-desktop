@@ -42,27 +42,42 @@
 <context>
     <name>EnableCoinModal</name>
     <message>
-        <location filename="../../qml/Wallet/EnableCoinModal.qml" line="39"/>
+        <location filename="../../qml/Wallet/EnableCoinModal.qml" line="40"/>
         <source>Enable coins</source>
         <translation>Kriptopara etkinleştir</translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/EnableCoinModal.qml" line="47"/>
+        <location filename="../../qml/Wallet/EnableCoinModal.qml" line="48"/>
         <source>Search</source>
         <translation>Ara</translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/EnableCoinModal.qml" line="104"/>
+        <location filename="../../qml/Wallet/EnableCoinModal.qml" line="65"/>
+        <source>Select all UTXO coins</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../qml/Wallet/EnableCoinModal.qml" line="70"/>
+        <source>Select all SmartChains</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../qml/Wallet/EnableCoinModal.qml" line="75"/>
+        <source>Select all ERC tokens</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../qml/Wallet/EnableCoinModal.qml" line="86"/>
         <source>All coins are already enabled!</source>
         <translation>Tüm kriptoparalar zaten etkin!</translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/EnableCoinModal.qml" line="110"/>
+        <location filename="../../qml/Wallet/EnableCoinModal.qml" line="92"/>
         <source>Close</source>
         <translation>Kapat</translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/EnableCoinModal.qml" line="117"/>
+        <location filename="../../qml/Wallet/EnableCoinModal.qml" line="99"/>
         <source>Enable</source>
         <translation>Etkinleştir</translation>
     </message>
@@ -84,26 +99,51 @@
         <source>History</source>
         <translation>Geçmiş</translation>
     </message>
+    <message>
+        <location filename="../../qml/Exchange/Exchange.qml" line="162"/>
+        <source>Order Matching</source>
+        <translation type="unfinished">Emir Eşleşiyor</translation>
+    </message>
+    <message>
+        <location filename="../../qml/Exchange/Exchange.qml" line="163"/>
+        <source>Order Matched</source>
+        <translation type="unfinished">Emir Eşleşti</translation>
+    </message>
+    <message>
+        <location filename="../../qml/Exchange/Exchange.qml" line="164"/>
+        <source>Swap Ongoing</source>
+        <translation type="unfinished">Takas Devam Ediyor</translation>
+    </message>
+    <message>
+        <location filename="../../qml/Exchange/Exchange.qml" line="165"/>
+        <source>Swap Successful</source>
+        <translation type="unfinished">Takas Başarılı</translation>
+    </message>
+    <message>
+        <location filename="../../qml/Exchange/Exchange.qml" line="166"/>
+        <source>Swap Failed</source>
+        <translation type="unfinished">Takas Başarısız</translation>
+    </message>
 </context>
 <context>
     <name>FirstLaunch</name>
     <message>
-        <location filename="../../qml/Screens/FirstLaunch.qml" line="23"/>
+        <location filename="../../qml/Screens/FirstLaunch.qml" line="24"/>
         <source>Welcome!</source>
         <translation>Hoş geldiniz!</translation>
     </message>
     <message>
-        <location filename="../../qml/Screens/FirstLaunch.qml" line="30"/>
+        <location filename="../../qml/Screens/FirstLaunch.qml" line="31"/>
         <source>Recover Seed</source>
         <translation>Seed Kurtar</translation>
     </message>
     <message>
-        <location filename="../../qml/Screens/FirstLaunch.qml" line="36"/>
+        <location filename="../../qml/Screens/FirstLaunch.qml" line="37"/>
         <source>New User</source>
         <translation>Yeni Kullanıcı</translation>
     </message>
     <message>
-        <location filename="../../qml/Screens/FirstLaunch.qml" line="47"/>
+        <location filename="../../qml/Screens/FirstLaunch.qml" line="48"/>
         <source>Wallets</source>
         <translation>Cüzdanlar</translation>
     </message>
@@ -111,7 +151,7 @@
 <context>
     <name>History</name>
     <message>
-        <location filename="../../qml/Exchange/History/History.qml" line="54"/>
+        <location filename="../../qml/Exchange/History/History.qml" line="55"/>
         <source>Recent Swaps</source>
         <translation>Son Takaslar</translation>
     </message>
@@ -137,6 +177,14 @@
         <location filename="../../qml/Screens/InitialLoading.qml" line="40"/>
         <source>Complete</source>
         <translation>Tamamlandı</translation>
+    </message>
+</context>
+<context>
+    <name>Languages</name>
+    <message>
+        <location filename="../../qml/Settings/Languages.qml" line="13"/>
+        <source>Language</source>
+        <translation type="unfinished">Dil</translation>
     </message>
 </context>
 <context>
@@ -202,27 +250,27 @@
 <context>
     <name>OrderContent</name>
     <message>
-        <location filename="../../qml/Exchange/OrderContent.qml" line="69"/>
+        <location filename="../../qml/Exchange/OrderContent.qml" line="67"/>
         <source>Swap ID</source>
         <translation>Takas ID</translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/OrderContent.qml" line="69"/>
+        <location filename="../../qml/Exchange/OrderContent.qml" line="67"/>
         <source>UUID</source>
         <translation>UUID</translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/OrderContent.qml" line="97"/>
+        <location filename="../../qml/Exchange/OrderContent.qml" line="95"/>
         <source>Maker Order</source>
         <translation>Yapıcı Emir</translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/OrderContent.qml" line="97"/>
+        <location filename="../../qml/Exchange/OrderContent.qml" line="95"/>
         <source>Taker Order</source>
         <translation>Alıcı Emir</translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/OrderContent.qml" line="108"/>
+        <location filename="../../qml/Exchange/OrderContent.qml" line="106"/>
         <source>Cancel</source>
         <translation>İptal</translation>
     </message>
@@ -230,42 +278,42 @@
 <context>
     <name>OrderForm</name>
     <message>
-        <location filename="../../qml/Exchange/Trade/OrderForm.qml" line="168"/>
+        <location filename="../../qml/Exchange/Trade/OrderForm.qml" line="167"/>
         <source>Sell</source>
         <translation>Satılacak</translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/OrderForm.qml" line="168"/>
+        <location filename="../../qml/Exchange/Trade/OrderForm.qml" line="167"/>
         <source>Receive</source>
         <translation>Alınacak</translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/OrderForm.qml" line="226"/>
+        <location filename="../../qml/Exchange/Trade/OrderForm.qml" line="225"/>
         <source>MAX</source>
         <translation>MAKS</translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/OrderForm.qml" line="239"/>
+        <location filename="../../qml/Exchange/Trade/OrderForm.qml" line="238"/>
         <source>Amount to sell</source>
         <translation>Satılacak miktar</translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/OrderForm.qml" line="240"/>
+        <location filename="../../qml/Exchange/Trade/OrderForm.qml" line="239"/>
         <source>Amount to receive</source>
         <translation>Alınacak miktar</translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/OrderForm.qml" line="240"/>
+        <location filename="../../qml/Exchange/Trade/OrderForm.qml" line="239"/>
         <source>Please fill the send amount</source>
         <translation>Lütfen yollanacak miktarı girin</translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/OrderForm.qml" line="254"/>
+        <location filename="../../qml/Exchange/Trade/OrderForm.qml" line="253"/>
         <source>Transaction Fee</source>
         <translation>İşlem Ücreti</translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/OrderForm.qml" line="259"/>
+        <location filename="../../qml/Exchange/Trade/OrderForm.qml" line="258"/>
         <source>Trading Fee</source>
         <translation>Al-Sat Ücreti</translation>
     </message>
@@ -273,35 +321,30 @@
 <context>
     <name>OrderLine</name>
     <message>
-        <location filename="../../qml/Exchange/OrderLine.qml" line="92"/>
         <source>Order Matching</source>
-        <translation>Emir Eşleşiyor</translation>
+        <translation type="vanished">Emir Eşleşiyor</translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/OrderLine.qml" line="93"/>
         <source>Order Matched</source>
-        <translation>Emir Eşleşti</translation>
+        <translation type="vanished">Emir Eşleşti</translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/OrderLine.qml" line="94"/>
         <source>Swap Ongoing</source>
-        <translation>Takas Devam Ediyor</translation>
+        <translation type="vanished">Takas Devam Ediyor</translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/OrderLine.qml" line="95"/>
         <source>Swap Successful</source>
-        <translation>Takas Başarılı</translation>
+        <translation type="vanished">Takas Başarılı</translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/OrderLine.qml" line="96"/>
         <source>Swap Failed</source>
-        <translation>Takas Başarısız</translation>
+        <translation type="vanished">Takas Başarısız</translation>
     </message>
 </context>
 <context>
     <name>OrderList</name>
     <message>
-        <location filename="../../qml/Exchange/Orders/OrderList.qml" line="53"/>
+        <location filename="../../qml/Exchange/Orders/OrderList.qml" line="44"/>
         <source>You don&apos;t have any orders.</source>
         <translation>Hiç emriniz yok.</translation>
     </message>
@@ -309,72 +352,72 @@
 <context>
     <name>OrderModal</name>
     <message>
-        <location filename="../../qml/Exchange/OrderModal.qml" line="22"/>
+        <location filename="../../qml/Exchange/OrderModal.qml" line="24"/>
         <source>Swap Details</source>
         <translation>Takas Detayları</translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/OrderModal.qml" line="22"/>
+        <location filename="../../qml/Exchange/OrderModal.qml" line="24"/>
         <source>Order Details</source>
         <translation>Emir Detayları</translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/OrderModal.qml" line="68"/>
+        <location filename="../../qml/Exchange/OrderModal.qml" line="70"/>
         <source>Maker Order</source>
         <translation>Satıcı Emri</translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/OrderModal.qml" line="68"/>
+        <location filename="../../qml/Exchange/OrderModal.qml" line="70"/>
         <source>Taker Order</source>
         <translation>Alıcı Emri</translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/OrderModal.qml" line="75"/>
+        <location filename="../../qml/Exchange/OrderModal.qml" line="77"/>
         <source>Date</source>
         <translation>Tarih</translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/OrderModal.qml" line="83"/>
+        <location filename="../../qml/Exchange/OrderModal.qml" line="85"/>
         <source>Swap ID</source>
         <translation>Takas ID</translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/OrderModal.qml" line="83"/>
+        <location filename="../../qml/Exchange/OrderModal.qml" line="85"/>
         <source>UUID</source>
         <translation>UUID</translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/OrderModal.qml" line="90"/>
+        <location filename="../../qml/Exchange/OrderModal.qml" line="92"/>
         <source>Taker Payment ID</source>
         <translation>Alıcı Ödeme ID</translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/OrderModal.qml" line="97"/>
+        <location filename="../../qml/Exchange/OrderModal.qml" line="99"/>
         <source>Maker Payment ID</source>
         <translation>Alıcı Ödeme ID</translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/OrderModal.qml" line="104"/>
+        <location filename="../../qml/Exchange/OrderModal.qml" line="106"/>
         <source>Error ID</source>
         <translation>Hata ID</translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/OrderModal.qml" line="111"/>
+        <location filename="../../qml/Exchange/OrderModal.qml" line="113"/>
         <source>Error Log</source>
         <translation>Hata Kaydı</translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/OrderModal.qml" line="122"/>
+        <location filename="../../qml/Exchange/OrderModal.qml" line="124"/>
         <source>Close</source>
         <translation>Kapat</translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/OrderModal.qml" line="131"/>
+        <location filename="../../qml/Exchange/OrderModal.qml" line="133"/>
         <source>Cancel</source>
         <translation>İptal</translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/OrderModal.qml" line="136"/>
+        <location filename="../../qml/Exchange/OrderModal.qml" line="138"/>
         <source>View at Explorer</source>
         <translation>Explorer&apos;da Görüntüle</translation>
     </message>
@@ -445,12 +488,12 @@
 <context>
     <name>Orders</name>
     <message>
-        <location filename="../../qml/Exchange/Orders/Orders.qml" line="147"/>
+        <location filename="../../qml/Exchange/Orders/Orders.qml" line="173"/>
         <source>Cancel All Orders</source>
         <translation>Tüm Emirleri İptal Et</translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Orders/Orders.qml" line="163"/>
+        <location filename="../../qml/Exchange/Orders/Orders.qml" line="189"/>
         <source>All %1 Orders</source>
         <comment>TICKER</comment>
         <translation>Tüm %1 Emirleri</translation>
@@ -734,17 +777,16 @@
         <translation>Döviz</translation>
     </message>
     <message>
-        <location filename="../../qml/Settings/Settings.qml" line="62"/>
         <source>Language</source>
-        <translation>Dil</translation>
+        <translation type="vanished">Dil</translation>
     </message>
     <message>
-        <location filename="../../qml/Settings/Settings.qml" line="107"/>
+        <location filename="../../qml/Settings/Settings.qml" line="68"/>
         <source>Delete Wallet</source>
         <translation>Cüzdanı Sil</translation>
     </message>
     <message>
-        <location filename="../../qml/Settings/Settings.qml" line="117"/>
+        <location filename="../../qml/Settings/Settings.qml" line="78"/>
         <source>Log out</source>
         <translation>Çıkış</translation>
     </message>
