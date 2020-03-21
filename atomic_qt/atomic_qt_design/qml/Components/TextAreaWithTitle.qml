@@ -21,6 +21,10 @@ ColumnLayout {
         selectByMouse: true
         wrapMode: TextEdit.Wrap
 
+        KeyNavigation.priority: KeyNavigation.BeforeItem
+        KeyNavigation.backtab: nextItemInFocusChain(false)
+        KeyNavigation.tab: nextItemInFocusChain(true)
+
         // Copy button
         Image {
             source: General.image_path + "dashboard-copy.svg"
