@@ -43,6 +43,12 @@ Rectangle {
     readonly property int idx_dashboard: 5
     property int current_page
 
+    onCurrent_pageChanged: {
+        if(current_page === idx_new_user) {
+            new_user.onOpened()
+        }
+    }
+
     NoConnection {
         id: no_connection_page
         anchors.fill: parent
@@ -68,6 +74,7 @@ Rectangle {
         }
 
         NewUser {
+            id: new_user
             function onClickedBack() { openFirstLaunch() }
             function postCreateSuccess() { openFirstLaunch() }
         }

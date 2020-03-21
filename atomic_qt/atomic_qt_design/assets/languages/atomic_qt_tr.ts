@@ -204,32 +204,32 @@
 <context>
     <name>NewUser</name>
     <message>
-        <location filename="../../qml/Screens/NewUser.qml" line="29"/>
+        <location filename="../../qml/Screens/NewUser.qml" line="43"/>
         <source>New User</source>
         <translation>Yeni Kullanıcı</translation>
     </message>
     <message>
-        <location filename="../../qml/Screens/NewUser.qml" line="46"/>
+        <location filename="../../qml/Screens/NewUser.qml" line="69"/>
         <source>Generated Seed</source>
         <translation>Seed Oluştur</translation>
     </message>
     <message>
-        <location filename="../../qml/Screens/NewUser.qml" line="54"/>
+        <location filename="../../qml/Screens/NewUser.qml" line="77"/>
         <source>Confirm Seed</source>
         <translation>Seed&apos;i Onayla</translation>
     </message>
     <message>
-        <location filename="../../qml/Screens/NewUser.qml" line="55"/>
+        <location filename="../../qml/Screens/NewUser.qml" line="78"/>
         <source>Enter the generated seed here</source>
         <translation>Oluşturulmuş Seed&apos;i buraya girin</translation>
     </message>
     <message>
-        <location filename="../../qml/Screens/NewUser.qml" line="67"/>
+        <location filename="../../qml/Screens/NewUser.qml" line="91"/>
         <source>Back</source>
         <translation>Geri</translation>
     </message>
     <message>
-        <location filename="../../qml/Screens/NewUser.qml" line="74"/>
+        <location filename="../../qml/Screens/NewUser.qml" line="101"/>
         <source>Create</source>
         <translation>Oluştur</translation>
     </message>
@@ -540,12 +540,12 @@
 <context>
     <name>PasswordForm</name>
     <message>
-        <location filename="../../qml/Components/PasswordForm.qml" line="34"/>
+        <location filename="../../qml/Components/PasswordForm.qml" line="35"/>
         <source>Confirm Password</source>
         <translation>Parola Doğrulaması</translation>
     </message>
     <message>
-        <location filename="../../qml/Components/PasswordForm.qml" line="35"/>
+        <location filename="../../qml/Components/PasswordForm.qml" line="36"/>
         <source>Enter the same password to confirm</source>
         <translation>Doğrulamak için aynı parolayı girin</translation>
     </message>
@@ -620,27 +620,27 @@
 <context>
     <name>RecoverSeed</name>
     <message>
-        <location filename="../../qml/Screens/RecoverSeed.qml" line="29"/>
+        <location filename="../../qml/Screens/RecoverSeed.qml" line="36"/>
         <source>Recovery</source>
         <translation>Kurtarma</translation>
     </message>
     <message>
-        <location filename="../../qml/Screens/RecoverSeed.qml" line="45"/>
+        <location filename="../../qml/Screens/RecoverSeed.qml" line="61"/>
         <source>Seed</source>
         <translation>Seed</translation>
     </message>
     <message>
-        <location filename="../../qml/Screens/RecoverSeed.qml" line="46"/>
+        <location filename="../../qml/Screens/RecoverSeed.qml" line="62"/>
         <source>Enter the seed</source>
         <translation>Seed&apos;i girin</translation>
     </message>
     <message>
-        <location filename="../../qml/Screens/RecoverSeed.qml" line="58"/>
+        <location filename="../../qml/Screens/RecoverSeed.qml" line="75"/>
         <source>Back</source>
         <translation>Geri</translation>
     </message>
     <message>
-        <location filename="../../qml/Screens/RecoverSeed.qml" line="65"/>
+        <location filename="../../qml/Screens/RecoverSeed.qml" line="85"/>
         <source>Confirm</source>
         <translation>Onayla</translation>
     </message>

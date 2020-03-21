@@ -12,8 +12,16 @@ SetupPage {
     function onClickedBack() {}
     function postCreateSuccess() {}
 
+    property string current_mnemonic
+    property string text_error
+
+    function onOpened() {
+        current_mnemonic = API.get().get_mnemonic()
+    }
+
     // Local
     function reset() {
+        current_mnemonic = ""
         text_error = ""
     }
 
@@ -29,8 +37,6 @@ SetupPage {
             return false
         }
     }
-
-    property string text_error
 
     image_scale: 0.7
     image_path: General.image_path + "setup-welcome-wallet.svg"
@@ -61,7 +67,7 @@ SetupPage {
         TextAreaWithTitle {
             id: input_generated_seed
             title: API.get().empty_string + (qsTr("Generated Seed"))
-            field.text: API.get().empty_string + (API.get().get_mnemonic())
+            field.text: current_mnemonic
             field.readOnly: true
             copyable: true
         }
