@@ -8,8 +8,8 @@ import "../Constants"
 SetupPage {
     id: recover_seed
     // Override
-    function onClickedBack() {}
-    function postConfirmSuccess() {}
+    property var onClickedBack: () => {}
+    property var postConfirmSuccess: () => {}
 
     // Local
     function reset() {

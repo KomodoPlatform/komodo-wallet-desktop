@@ -8,9 +8,9 @@ import "../Settings"
 
 SetupPage {
     // Override
-    function onClickedNewUser() {}
-    function onClickedRecoverSeed() {}
-    function onClickedWallet() {}
+    property var onClickedNewUser: () => {}
+    property var onClickedRecoverSeed: () => {}
+    property var onClickedWallet: () => {}
 
     // Local
     function updateWallets() {

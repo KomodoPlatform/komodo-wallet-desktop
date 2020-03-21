@@ -12,13 +12,14 @@ Item {
     property string prev_base
     property string prev_rel
 
+    // Override
+    property var onOrderSuccess: () => {}
+
+    // Local
     function inCurrentPage() {
         return  exchange.inCurrentPage() &&
                 exchange.current_page === General.idx_exchange_trade
     }
-
-    // Override
-    function onOrderSuccess() { }
 
     function fullReset() {
         reset()

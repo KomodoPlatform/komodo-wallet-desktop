@@ -11,7 +11,7 @@ Rectangle {
     property alias items: list.model
 
     // Override
-    function postCancelOrder() {}
+    property var postCancelOrder: () => {}
 
     // Local
     function onCancelOrder(uuid) {

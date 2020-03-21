@@ -97,7 +97,7 @@ Item {
             Trade {
                 id: exchange_trade
 
-                function onOrderSuccess() {
+                onOrderSuccess: () => {
                     exchange_trade.reset(false)
                     exchange.current_page = General.idx_exchange_orders
                     exchange_orders.onOrderPlaced()

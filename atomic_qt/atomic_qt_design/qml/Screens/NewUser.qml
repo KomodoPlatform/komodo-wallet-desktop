@@ -9,8 +9,8 @@ SetupPage {
     id: new_user
 
     // Override
-    function onClickedBack() {}
-    function postCreateSuccess() {}
+    property var onClickedBack: () => {}
+    property var postCreateSuccess: () => {}
 
     property string current_mnemonic
     property string text_error

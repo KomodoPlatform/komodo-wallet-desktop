@@ -10,7 +10,7 @@ import "../Sidebar"
 
 SetupPage {
     // Override
-    function onLoaded() {}
+    property var onLoaded: () => {}
 
     property Timer check_loading_complete: Timer {
         interval: 64
