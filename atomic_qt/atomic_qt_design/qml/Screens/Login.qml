@@ -8,8 +8,8 @@ import "../Constants"
 SetupPage {
     id: login
     // Override
-    function onClickedBack() {}
-    function postLoginSuccess() {}
+    property var onClickedBack: () => {}
+    property var postLoginSuccess: () => {}
 
     // Local
     function reset() {

@@ -9,8 +9,8 @@ SetupPage {
     id: new_user
 
     // Override
-    function onClickedBack() {}
-    function postCreateSuccess() {}
+    property var onClickedBack: () => {}
+    property var postCreateSuccess: () => {}
 
     property string current_mnemonic
     property string text_error
@@ -70,12 +70,14 @@ SetupPage {
             field.text: current_mnemonic
             field.readOnly: true
             copyable: true
+            onReturn: trySubmit
         }
 
         TextAreaWithTitle {
             id: input_confirm_seed
             title: API.get().empty_string + (qsTr("Confirm Seed"))
             field.placeholderText: API.get().empty_string + (qsTr("Enter the generated seed here"))
+            onReturn: trySubmit
         }
 
         PasswordForm {

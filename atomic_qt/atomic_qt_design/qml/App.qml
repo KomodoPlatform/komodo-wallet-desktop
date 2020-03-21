@@ -25,8 +25,8 @@ Rectangle {
         cleanApp()
 
         if(API.design_editor) {
-            current_page = idx_dashboard
-            return
+            //current_page = idx_dashboard
+            //return
         }
 
         current_page = force ? idx_first_launch : firstPage()
@@ -63,25 +63,25 @@ Rectangle {
 
         FirstLaunch {
             id: first_launch
-            function onClickedNewUser() { current_page = idx_new_user }
-            function onClickedRecoverSeed() { current_page = idx_recover_seed }
-            function onClickedWallet() { current_page = idx_login }
+            onClickedNewUser: () => { current_page = idx_new_user }
+            onClickedRecoverSeed: () => { current_page = idx_recover_seed }
+            onClickedWallet: () => { current_page = idx_login }
         }
 
         RecoverSeed {
-            function onClickedBack() { openFirstLaunch() }
-            function postConfirmSuccess() { openFirstLaunch() }
+            onClickedBack: () => { openFirstLaunch() }
+            postConfirmSuccess: () => { openFirstLaunch() }
         }
 
         NewUser {
             id: new_user
-            function onClickedBack() { openFirstLaunch() }
-            function postCreateSuccess() { openFirstLaunch() }
+            onClickedBack: () => { openFirstLaunch() }
+            postCreateSuccess: () => { openFirstLaunch() }
         }
 
         Login {
-            function onClickedBack() { openFirstLaunch(true) }
-            function postLoginSuccess() {
+            onClickedBack: () => { openFirstLaunch(true) }
+            postLoginSuccess: () => {
                 initial_loading.check_loading_complete.running = true
                 current_page = idx_initial_loading
                 cleanApp()
@@ -90,7 +90,7 @@ Rectangle {
 
         InitialLoading {
             id: initial_loading
-            function onLoaded() { current_page = idx_dashboard }
+            onLoaded: () => { current_page = idx_dashboard }
         }
 
         Dashboard {

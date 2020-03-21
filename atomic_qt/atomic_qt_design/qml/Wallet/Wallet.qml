@@ -130,9 +130,7 @@ RowLayout {
                 ClaimRewardsModal {
                     id: claim_rewards_modal
 
-                    function postClaim() {
-                        button_claim_rewards.enabled = claim_rewards_modal.canClaim()
-                    }
+                    postClaim: () => { button_claim_rewards.enabled = claim_rewards_modal.canClaim() }
                 }
             }
 

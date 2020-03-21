@@ -12,7 +12,7 @@ DefaultText {
     property bool hovered: false
 
     // Override
-    function onClick() {}
+    property var onClick: () => {}
 
     id: txt
     font.pointSize: Style.textSize2

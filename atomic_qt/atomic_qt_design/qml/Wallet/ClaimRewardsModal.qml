@@ -13,7 +13,7 @@ DefaultModal {
     property string send_result
 
     // Override
-    function postClaim() {}
+    property var postClaim: () => {}
 
     // Local
     function canClaim() {
