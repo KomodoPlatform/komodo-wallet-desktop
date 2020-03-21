@@ -8,7 +8,10 @@ ColumnLayout {
     property alias title: title_text.text
     property alias field: input_field
     property bool copyable: false
+    property var onReturn // function
 
+
+    // Local
     function reset() {
         input_field.text = ''
     }
@@ -28,6 +31,12 @@ ColumnLayout {
         KeyNavigation.priority: KeyNavigation.BeforeItem
         KeyNavigation.backtab: nextItemInFocusChain(false)
         KeyNavigation.tab: nextItemInFocusChain(true)
+        Keys.onPressed: {
+            if(onReturn !== undefined && event.key === Qt.Key_Return) {
+                onReturn()
+                event.accepted = true
+            }
+        }
 
         // Copy button
         Image {
