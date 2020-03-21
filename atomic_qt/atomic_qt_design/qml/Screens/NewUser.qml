@@ -6,19 +6,27 @@ import "../Components"
 import "../Constants"
 
 SetupPage {
+    id: new_user
+
     // Override
     function onClickedBack() {}
     function postCreateSuccess() {}
 
     // Local
+    function reset() {
+        text_error = ""
+    }
+
     function onClickedCreate(password, generated_seed, confirm_seed, wallet_name) {
         if(API.get().create(password, generated_seed, wallet_name)) {
             console.log("Success: Create wallet")
             postCreateSuccess()
+            return true
         }
         else {
             console.log("Failed: Create wallet")
             text_error = "Failed to create a wallet"
+            return false
         }
     }
 
@@ -31,10 +39,18 @@ SetupPage {
     content: ColumnLayout {
         width: 400
 
+        function reset() {
+            new_user.reset()
+            input_wallet_name.reset()
+            input_confirm_seed.reset()
+            input_password.reset()
+        }
+
         function trySubmit() {
             if(!submit_button.enabled) return
 
-            onClickedCreate(input_password.field.text, input_generated_seed.field.text, input_confirm_seed.field.text, input_wallet_name.field.text)
+            if(onClickedCreate(input_password.field.text, input_generated_seed.field.text, input_confirm_seed.field.text, input_wallet_name.field.text))
+                reset()
         }
 
         WalletNameField {

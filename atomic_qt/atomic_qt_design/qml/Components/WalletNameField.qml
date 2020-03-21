@@ -9,6 +9,10 @@ TextFieldWithTitle {
     title: API.get().empty_string + (qsTr("Wallet Name"))
     field.placeholderText: API.get().empty_string + (qsTr("Enter the name of your wallet here"))
     field.validator: RegExpValidator { regExp: /\w+/ }
+
+    function reset() {
+        field.text = ''
+    }
 }
 
 /*##^##

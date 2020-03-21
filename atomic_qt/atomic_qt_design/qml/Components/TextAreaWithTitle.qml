@@ -9,6 +9,10 @@ ColumnLayout {
     property alias field: input_field
     property bool copyable: false
 
+    function reset() {
+        input_field.text = ''
+    }
+
     RowLayout {
         DefaultText {
             id: title_text

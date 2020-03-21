@@ -6,19 +6,26 @@ import "../Components"
 import "../Constants"
 
 SetupPage {
+    id: recover_seed
     // Override
     function onClickedBack() {}
     function postConfirmSuccess() {}
 
     // Local
+    function reset() {
+        text_error = ""
+    }
+
     function onClickedConfirm(password, seed, wallet_name) {
         if(API.get().create(password, seed, wallet_name)) {
             console.log("Success: Recover seed")
             postConfirmSuccess()
+            return true
         }
         else {
             console.log("Failed: Recover seed")
             text_error = "Failed to recover the seed"
+            return false
         }
     }
 
@@ -30,10 +37,18 @@ SetupPage {
     content: ColumnLayout {
         width: 400
 
+        function reset() {
+            recover_seed.reset()
+            input_wallet_name.reset()
+            input_seed.reset()
+            input_password.reset()
+        }
+
         function trySubmit() {
             if(!submit_button.enabled) return
 
-            onClickedConfirm(input_password.field.text, input_seed.field.text, input_wallet_name.field.text)
+            if(onClickedConfirm(input_password.field.text, input_seed.field.text, input_wallet_name.field.text))
+                reset()
         }
 
         WalletNameField {
