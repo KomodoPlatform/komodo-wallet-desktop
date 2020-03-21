@@ -73,7 +73,10 @@ SetupPage {
             DefaultButton {
                 Layout.fillWidth: true
                 text: API.get().empty_string + (qsTr("Back"))
-                onClicked: onClickedBack()
+                onClicked: {
+                    reset()
+                    onClickedBack()
+                }
             }
 
             PrimaryButton {
