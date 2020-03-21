@@ -57,7 +57,7 @@ Item {
                 }
 
                 Languages {
-
+                    Layout.alignment: Qt.AlignHCenter
                 }
 
                 HorizontalLine {
