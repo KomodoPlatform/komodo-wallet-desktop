@@ -495,6 +495,22 @@ namespace atomic_dex
         return to_qt_binding(std::move(answer), this, QString::fromStdString(coin.explorer_url[0]));
     }
 
+    QObject*
+    application::prepare_send_fees(
+        const QString& address, const QString& amount, bool is_erc_20, const QString& fees_amount, const QString& gas_price, const QString& gas, bool max)
+    {
+        atomic_dex::t_withdraw_request req{
+            .to = address.toStdString(), .coin = m_coin_info->get_ticker().toStdString(), .max = max, .amount = amount.toStdString()};
+        req.fees = atomic_dex::t_withdraw_fees{.type      = is_erc_20 ? "EthGas" : "UtxoFixed",
+                                               .amount    = fees_amount.toStdString(),
+                                               .gas_price = gas_price.toStdString(),
+                                               .gas_limit = gas.toStdString()};
+        std::error_code ec;
+        auto            answer = mm2::withdraw(std::move(req), ec);
+        auto            coin   = get_mm2().get_coin_info(m_coin_info->get_ticker().toStdString());
+        return to_qt_binding(std::move(answer), this, QString::fromStdString(coin.explorer_url[0]));
+    }
+
     bool
     atomic_dex::application::is_claiming_ready(const QString& ticker)
     {

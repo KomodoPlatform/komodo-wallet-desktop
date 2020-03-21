@@ -619,6 +619,7 @@ namespace atomic_dex
     using t_sell_answer             = ::mm2::api::sell_answer;
     using t_sell_request            = ::mm2::api::sell_request;
     using t_withdraw_request        = ::mm2::api::withdraw_request;
+    using t_withdraw_fees           = ::mm2::api::withdraw_fees;
     using t_withdraw_answer         = ::mm2::api::withdraw_answer;
     using t_broadcast_request       = ::mm2::api::send_raw_transaction_request;
     using t_broadcast_answer        = ::mm2::api::send_raw_transaction_answer;
