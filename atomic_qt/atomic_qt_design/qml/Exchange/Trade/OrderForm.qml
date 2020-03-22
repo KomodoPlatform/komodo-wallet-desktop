@@ -74,6 +74,10 @@ Rectangle {
         return General.fieldExists(curr_trade_info.erc_fees) && parseFloat(curr_trade_info.erc_fees) > 0
     }
 
+    function hasEnoughEthForFees() {
+        return General.isEthEnabled() && API.get().do_i_have_enough_funds("ETH", curr_trade_info.erc_fees)
+    }
+
     function isValid() {
         if(!my_side) return fieldsAreFilled()
 
@@ -81,8 +85,7 @@ Rectangle {
 
         let valid = fieldsAreFilled() && API.get().do_i_have_enough_funds(ticker, input_volume.field.text)
 
-        if(valid && hasEthFees())
-            valid = General.isEthEnabled() && API.get().do_i_have_enough_funds("ETH", curr_trade_info.erc_fees)
+        if(valid && hasEthFees()) valid = hasEnoughEthForFees()
 
         return valid
     }

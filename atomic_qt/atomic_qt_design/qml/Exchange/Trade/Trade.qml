@@ -328,6 +328,15 @@ Item {
 
             text: API.get().empty_string + (action_result === "" ? "" : action_result === "success" ? "" : qsTr("Failed to place the order."))
         }
+
+        // Show ETH error
+        DefaultText {
+            Layout.alignment: Qt.AlignHCenter
+
+            text: API.get().empty_string + ("Not enough ETH for the transaction fee")
+            color: Style.colorRed
+            visible: form_base.hasEthFees() && !form_base.hasEnoughEthForFees()
+        }
     }
 }
 
