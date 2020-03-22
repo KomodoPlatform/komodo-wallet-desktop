@@ -17,7 +17,7 @@ DefaultModal {
     property string send_result
 
     function isERC20() {
-        return API.get().current_coin_info.type !== "ERC-20"
+        return API.get().current_coin_info.type === "ERC-20"
     }
 
     function prepareSendCoin(address, amount, fee_enabled, fee_amount, is_erc_20, gas, gas_price) {
@@ -172,6 +172,7 @@ DefaultModal {
                              input_amount.field.text != "" &&
                              input_address.field.acceptableInput &&
                              input_amount.field.acceptableInput &&
+                             parseFloat(input_amount.field.text) > 0 &&
                              (!custom_fees_switch.checked || (
                                     (!isERC20() && input_custom_fees.field.acceptableInput) ||
                                     (isERC20() && input_custom_fees_gas.field.acceptableInput && input_custom_fees_gas_price.field.acceptableInput)
