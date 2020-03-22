@@ -16,12 +16,14 @@ DefaultModal {
     property var prepare_send_result: default_prepare_send_result
     property string send_result
 
-    function prepareSendCoin(address, amount, fee_enabled, fee_amount, is_erc_20) {
+    function isERC20() {
+        return API.get().current_coin_info.type !== "ERC-20"
+    }
+
+    function prepareSendCoin(address, amount, fee_enabled, fee_amount, is_erc_20, gas, gas_price) {
         const max = parseFloat(API.get().current_coin_info.balance) === parseFloat(amount)
 
         if(fee_enabled) {
-            let gas = ""
-            let gas_price = ""
             prepare_send_result = API.get().prepare_send_fees(address, amount, is_erc_20, fee_amount, gas_price, gas, max)
         }
         else {
@@ -51,6 +53,8 @@ DefaultModal {
         input_address.field.text = ""
         input_amount.field.text = ""
         input_custom_fees.field.text = ""
+        input_custom_fees_gas.field.text = ""
+        input_custom_fees_gas_price.field.text = ""
         custom_fees_switch.checked = false
         text_error.text = ""
 
@@ -109,7 +113,7 @@ DefaultModal {
 
                 // Normal coins, Custom fees input
                 AmountField {
-                    visible: API.get().current_coin_info.type !== "ERC-20"
+                    visible: !isERC20()
 
                     id: input_custom_fees
                     title: API.get().empty_string + (qsTr("Custom Fee") + " [" + API.get().current_coin_info.ticker + "]")
@@ -118,7 +122,7 @@ DefaultModal {
 
                 // ERC-20 coins
                 ColumnLayout {
-                    visible: API.get().current_coin_info.type === "ERC-20"
+                    visible: isERC20()
 
                     // Gas input
                     AmountIntField {
@@ -168,10 +172,15 @@ DefaultModal {
                              input_amount.field.text != "" &&
                              input_address.field.acceptableInput &&
                              input_amount.field.acceptableInput &&
-                             (!custom_fees_switch.checked || input_custom_fees.field.acceptableInput) &&
+                             (!custom_fees_switch.checked || (
+                                    (!isERC20() && input_custom_fees.field.acceptableInput) ||
+                                    (isERC20() && input_custom_fees_gas.field.acceptableInput && input_custom_fees_gas_price.field.acceptableInput)
+                                  )
+                              ) &&
                              hasFunds()
 
-                    onClicked: prepareSendCoin(input_address.field.text, input_amount.field.text, custom_fees_switch.checked, input_custom_fees.field.text, API.get().current_coin_info.type === "ERC-20")
+                    onClicked: prepareSendCoin(input_address.field.text, input_amount.field.text, custom_fees_switch.checked, input_custom_fees.field.text,
+                                               isERC20(), input_custom_fees_gas.field.text, input_custom_fees_gas_price.field.text)
                 }
             }
         }
