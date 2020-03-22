@@ -25,8 +25,8 @@ Rectangle {
         cleanApp()
 
         if(API.design_editor) {
-            //current_page = idx_dashboard
-            //return
+            current_page = idx_dashboard
+            return
         }
 
         current_page = force ? idx_first_launch : firstPage()

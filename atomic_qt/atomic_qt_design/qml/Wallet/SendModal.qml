@@ -79,6 +79,28 @@ DefaultModal {
                 field.placeholderText: API.get().empty_string + (qsTr("Enter the amount to send"))
             }
 
+            // Custom fees switch
+            Switch {
+                id: custom_fees_switch
+                text: API.get().empty_string + (qsTr("Enable Custom Fees"))
+            }
+
+            DefaultText {
+                visible: custom_fees_switch.checked
+                font.pointSize: Style.textSize
+                color: Style.colorRed
+                text: API.get().empty_string + (qsTr("Only use custom fees if you know what you are doing!"))
+            }
+
+            // Custom fees input
+            AmountField {
+                visible: custom_fees_switch.checked
+                id: input_custom_fees
+                title: API.get().empty_string + (qsTr("Custom Fee") + " [" + API.get().current_coin_info.ticker + "]")
+                field.placeholderText: API.get().empty_string + (qsTr("Enter the custom fee"))
+            }
+
+
             // Not enough funds error
             DefaultText {
                 wrapMode: Text.Wrap
