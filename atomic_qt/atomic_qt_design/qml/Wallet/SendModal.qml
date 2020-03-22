@@ -41,6 +41,8 @@ DefaultModal {
 
         input_address.field.text = ""
         input_amount.field.text = ""
+        input_custom_fees.field.text = ""
+        custom_fees_switch.checked = false
         text_error.text = ""
 
         if(close) root.close()
@@ -83,6 +85,7 @@ DefaultModal {
             Switch {
                 id: custom_fees_switch
                 text: API.get().empty_string + (qsTr("Enable Custom Fees"))
+                onCheckedChanged: input_custom_fees.field.text = ""
             }
 
             DefaultText {
@@ -132,6 +135,7 @@ DefaultModal {
                              input_amount.field.text != "" &&
                              input_address.field.acceptableInput &&
                              input_amount.field.acceptableInput &&
+                             (!custom_fees_switch.checked || input_custom_fees.field.acceptableInput) &&
                              hasFunds()
 
                     onClicked: prepareSendCoin(input_address.field.text, input_amount.field.text)
