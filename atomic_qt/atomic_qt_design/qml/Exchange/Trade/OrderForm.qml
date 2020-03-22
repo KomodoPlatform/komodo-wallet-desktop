@@ -70,12 +70,21 @@ Rectangle {
         return input_volume.field.text !== '' && parseFloat(input_volume.field.text) > 0
     }
 
+    function hasEthFees() {
+        return General.fieldExists(curr_trade_info.erc_fees) && parseFloat(curr_trade_info.erc_fees) > 0
+    }
+
     function isValid() {
         if(!my_side) return fieldsAreFilled()
 
         const ticker = getTicker()
 
-        return fieldsAreFilled() && API.get().do_i_have_enough_funds(ticker, input_volume.field.text)
+        let valid = fieldsAreFilled() && API.get().do_i_have_enough_funds(ticker, input_volume.field.text)
+
+        if(valid && hasEthFees())
+            valid = General.isEthEnabled() && API.get().do_i_have_enough_funds("ETH", curr_trade_info.erc_fees)
+
+        return valid
     }
 
     function getTicker() {
@@ -264,7 +273,9 @@ Rectangle {
                 Layout.alignment: Qt.AlignRight
 
                 DefaultText {
-                    text: API.get().empty_string + (canShowFees() ? curr_trade_info.tx_fee + ' ' + (curr_trade_info.is_ticker_of_fees_eth ? "ETH" : getTicker(true)) : '')
+                    text: API.get().empty_string + (canShowFees() ? (curr_trade_info.tx_fee + ' ' + (curr_trade_info.is_ticker_of_fees_eth ? "ETH" : getTicker(true))) +
+                                                                    // ETH Fees
+                                                                    (hasEthFees() ? " + " + curr_trade_info.erc_fees + ' ETH' : '') : '')
                     font.pointSize: tx_fee_text.font.pointSize
                 }
 

@@ -83,6 +83,10 @@ QtObject {
         return parseFloat(v) === 0
     }
 
+    function fieldExists(v) {
+        return v !== undefined && v !== ""
+    }
+
     function filterRecentSwaps(all_orders, finished_option, ticker) {
         let orders = all_orders
 
