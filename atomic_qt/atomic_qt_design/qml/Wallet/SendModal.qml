@@ -175,7 +175,8 @@ DefaultModal {
                              parseFloat(input_amount.field.text) > 0 &&
                              (!custom_fees_switch.checked || (
                                     (!isERC20() && input_custom_fees.field.acceptableInput) ||
-                                    (isERC20() && input_custom_fees_gas.field.acceptableInput && input_custom_fees_gas_price.field.acceptableInput)
+                                    (isERC20() && input_custom_fees_gas.field.acceptableInput && input_custom_fees_gas_price.field.acceptableInput &&
+                                                    parseFloat(input_custom_fees_gas.field.text) > 0 && parseFloat(input_custom_fees_gas_price.field.text) > 0)
                                   )
                               ) &&
                              hasFunds()
