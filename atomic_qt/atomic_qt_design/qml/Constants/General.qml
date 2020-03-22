@@ -139,4 +139,20 @@ QtObject {
 
         return true
     }
+
+    function isEthEnabled() {
+        for(const c of API.get().enabled_coins)
+            if(c.ticker === "ETH") return true
+
+        return false
+    }
+
+    function enableEthIfNeeded() {
+        if(!isEthEnabled() && isEthNeeded()) {
+            API.get().enable_coins(["ETH"])
+            return true
+        }
+
+        return false
+    }
 }

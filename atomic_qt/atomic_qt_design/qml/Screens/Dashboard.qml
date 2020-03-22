@@ -54,6 +54,13 @@ Item {
         prev_page = current_page
     }
 
+    Timer {
+        running: inCurrentPage()
+        interval: 1000
+        repeat: true
+        onTriggered: General.enableEthIfNeeded()
+    }
+
     // Left side
     Rectangle {
         color: Style.colorTheme6
