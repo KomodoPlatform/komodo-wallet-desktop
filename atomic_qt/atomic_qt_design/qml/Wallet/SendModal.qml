@@ -121,14 +121,14 @@ DefaultModal {
                     visible: API.get().current_coin_info.type === "ERC-20"
 
                     // Gas input
-                    AmountField {
+                    AmountIntField {
                         id: input_custom_fees_gas
                         title: API.get().empty_string + (qsTr("Gas") + " [Gwei]")
                         field.placeholderText: API.get().empty_string + (qsTr("Enter the gas limit"))
                     }
 
                     // Gas price input
-                    AmountField {
+                    AmountIntField {
                         id: input_custom_fees_gas_price
                         title: API.get().empty_string + (qsTr("Gas Price") + " [Gwei]")
                         field.placeholderText: API.get().empty_string + (qsTr("Enter the gas price"))
