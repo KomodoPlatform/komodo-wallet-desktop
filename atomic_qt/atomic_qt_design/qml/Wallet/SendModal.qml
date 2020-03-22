@@ -97,19 +97,43 @@ DefaultModal {
                 onCheckedChanged: input_custom_fees.field.text = ""
             }
 
-            DefaultText {
+            // Custom Fees section
+            ColumnLayout {
                 visible: custom_fees_switch.checked
-                font.pointSize: Style.textSize
-                color: Style.colorRed
-                text: API.get().empty_string + (qsTr("Only use custom fees if you know what you are doing!"))
-            }
 
-            // Custom fees input
-            AmountField {
-                visible: custom_fees_switch.checked
-                id: input_custom_fees
-                title: API.get().empty_string + (qsTr("Custom Fee") + " [" + API.get().current_coin_info.ticker + "]")
-                field.placeholderText: API.get().empty_string + (qsTr("Enter the custom fee"))
+                DefaultText {
+                    font.pointSize: Style.textSize
+                    color: Style.colorRed
+                    text: API.get().empty_string + (qsTr("Only use custom fees if you know what you are doing!"))
+                }
+
+                // Normal coins, Custom fees input
+                AmountField {
+                    visible: API.get().current_coin_info.type !== "ERC-20"
+
+                    id: input_custom_fees
+                    title: API.get().empty_string + (qsTr("Custom Fee") + " [" + API.get().current_coin_info.ticker + "]")
+                    field.placeholderText: API.get().empty_string + (qsTr("Enter the custom fee"))
+                }
+
+                // ERC-20 coins
+                ColumnLayout {
+                    visible: API.get().current_coin_info.type === "ERC-20"
+
+                    // Gas input
+                    AmountField {
+                        id: input_custom_fees_gas
+                        title: API.get().empty_string + (qsTr("Gas") + " [Gwei]")
+                        field.placeholderText: API.get().empty_string + (qsTr("Enter the gas limit"))
+                    }
+
+                    // Gas price input
+                    AmountField {
+                        id: input_custom_fees_gas_price
+                        title: API.get().empty_string + (qsTr("Gas Price") + " [Gwei]")
+                        field.placeholderText: API.get().empty_string + (qsTr("Enter the gas price"))
+                    }
+                }
             }
 
 
