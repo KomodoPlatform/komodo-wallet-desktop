@@ -504,7 +504,7 @@ namespace atomic_dex
         req.fees = atomic_dex::t_withdraw_fees{.type      = is_erc_20 ? "EthGas" : "UtxoFixed",
                                                .amount    = fees_amount.toStdString(),
                                                .gas_price = gas_price.toStdString(),
-                                               .gas_limit = gas.toStdString()};
+                                               .gas_limit = not gas.isEmpty() ? std::stoi(gas.toStdString()) : 0};
         std::error_code ec;
         auto            answer = mm2::withdraw(std::move(req), ec);
         auto            coin   = get_mm2().get_coin_info(m_coin_info->get_ticker().toStdString());
@@ -880,17 +880,24 @@ namespace atomic_dex
         auto        answer      = get_mm2().get_trade_fixed_fee(ticker.toStdString());
         if (!answer.amount.empty())
         {
+            t_float_50 erc_fees = 0;
             t_float_50 tx_fee_f = t_float_50(answer.amount) * 2;
             if (receive_ticker != "")
             {
-                get_mm2().apply_erc_fees(receive_ticker.toStdString(), tx_fee_f);
+                get_mm2().apply_erc_fees(receive_ticker.toStdString(), erc_fees);
             }
+
             auto tx_fee_value     = QString::fromStdString(get_formated_float(tx_fee_f));
             auto final_balance    = get_formated_float(t_float_50(amount.toStdString()) - (trade_fee_f + tx_fee_f));
             auto final_balance_qt = QString::fromStdString(final_balance);
 
             out.insert("trade_fee", QString::fromStdString(get_mm2().get_trade_fee_str(ticker.toStdString(), amount.toStdString(), false)));
             out.insert("tx_fee", tx_fee_value);
+            if (erc_fees > 0)
+            {
+                auto erc_value = QString::fromStdString(get_formated_float(erc_fees));
+                out.insert("erc_fees", erc_value);
+            }
             out.insert("is_ticker_of_fees_eth", get_mm2().get_coin_info(ticker.toStdString()).is_erc_20);
             out.insert("input_final_value", final_balance_qt);
         }
