@@ -626,95 +626,115 @@
 <context>
     <name>SendModal</name>
     <message>
-        <location filename="../../qml/Wallet/SendModal.qml" line="76"/>
+        <location filename="../../qml/Wallet/SendModal.qml" line="80"/>
         <source>Prepare to Send</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/SendModal.qml" line="82"/>
-        <location filename="../../qml/Wallet/SendModal.qml" line="163"/>
+        <location filename="../../qml/Wallet/SendModal.qml" line="86"/>
+        <location filename="../../qml/Wallet/SendModal.qml" line="197"/>
         <source>Recipient&apos;s address</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/SendModal.qml" line="83"/>
+        <location filename="../../qml/Wallet/SendModal.qml" line="87"/>
         <source>Enter address of the recipient</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/SendModal.qml" line="89"/>
+        <location filename="../../qml/Wallet/SendModal.qml" line="93"/>
         <source>Amount to send</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/SendModal.qml" line="90"/>
+        <location filename="../../qml/Wallet/SendModal.qml" line="94"/>
         <source>Enter the amount to send</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/SendModal.qml" line="96"/>
+        <location filename="../../qml/Wallet/SendModal.qml" line="100"/>
         <source>Enable Custom Fees</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/SendModal.qml" line="104"/>
+        <location filename="../../qml/Wallet/SendModal.qml" line="111"/>
         <source>Only use custom fees if you know what you are doing!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/SendModal.qml" line="111"/>
+        <location filename="../../qml/Wallet/SendModal.qml" line="119"/>
         <source>Custom Fee</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/SendModal.qml" line="112"/>
+        <location filename="../../qml/Wallet/SendModal.qml" line="120"/>
         <source>Enter the custom fee</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/SendModal.qml" line="123"/>
+        <location filename="../../qml/Wallet/SendModal.qml" line="130"/>
+        <source>Gas</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../qml/Wallet/SendModal.qml" line="131"/>
+        <source>Enter the gas limit</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../qml/Wallet/SendModal.qml" line="137"/>
+        <source>Gas Price</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../qml/Wallet/SendModal.qml" line="138"/>
+        <source>Enter the gas price</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../qml/Wallet/SendModal.qml" line="151"/>
         <source>Not enough funds.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/SendModal.qml" line="123"/>
+        <location filename="../../qml/Wallet/SendModal.qml" line="151"/>
         <source>You have %1</source>
         <comment>AMT TICKER</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/SendModal.qml" line="135"/>
+        <location filename="../../qml/Wallet/SendModal.qml" line="163"/>
         <source>Close</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/SendModal.qml" line="140"/>
+        <location filename="../../qml/Wallet/SendModal.qml" line="168"/>
         <source>Prepare</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/SendModal.qml" line="158"/>
-        <location filename="../../qml/Wallet/SendModal.qml" line="193"/>
+        <location filename="../../qml/Wallet/SendModal.qml" line="192"/>
+        <location filename="../../qml/Wallet/SendModal.qml" line="227"/>
         <source>Send</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/SendModal.qml" line="169"/>
+        <location filename="../../qml/Wallet/SendModal.qml" line="203"/>
         <source>Amount</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/SendModal.qml" line="175"/>
+        <location filename="../../qml/Wallet/SendModal.qml" line="209"/>
         <source>Fees</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/SendModal.qml" line="181"/>
+        <location filename="../../qml/Wallet/SendModal.qml" line="215"/>
         <source>Date</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/SendModal.qml" line="188"/>
+        <location filename="../../qml/Wallet/SendModal.qml" line="222"/>
         <source>Back</source>
         <translation type="unfinished"></translation>
     </message>

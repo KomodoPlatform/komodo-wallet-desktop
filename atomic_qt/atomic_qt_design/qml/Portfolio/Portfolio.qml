@@ -337,7 +337,7 @@ ColumnLayout {
                 Action {
                     text: API.get().empty_string + (qsTr("Disable %1", "TICKER").arg(model.modelData.ticker))
                     onTriggered: API.get().disable_coins([model.modelData.ticker])
-                    enabled: API.get().enabled_coins.length > 2
+                    enabled: General.canDisable(model.modelData.ticker)
                 }
             }
 

@@ -125,4 +125,18 @@ QtObject {
         }
         return o
     }
+
+    function isEthNeeded() {
+        for(const c of API.get().enabled_coins)
+            if(c.type === "ERC-20" && c.ticker !== "ETH") return true
+
+        return false
+    }
+
+    function canDisable(ticker) {
+        if(API.get().enabled_coins.length <= 2) return false
+        if(ticker === "ETH") return !General.isEthNeeded()
+
+        return true
+    }
 }
