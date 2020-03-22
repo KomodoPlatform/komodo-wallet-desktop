@@ -504,7 +504,7 @@ namespace atomic_dex
         req.fees = atomic_dex::t_withdraw_fees{.type      = is_erc_20 ? "EthGas" : "UtxoFixed",
                                                .amount    = fees_amount.toStdString(),
                                                .gas_price = gas_price.toStdString(),
-                                               .gas_limit = gas.toStdString()};
+                                               .gas_limit = not gas.isEmpty() ? std::stoi(gas.toStdString()) : 0};
         std::error_code ec;
         auto            answer = mm2::withdraw(std::move(req), ec);
         auto            coin   = get_mm2().get_coin_info(m_coin_info->get_ticker().toStdString());

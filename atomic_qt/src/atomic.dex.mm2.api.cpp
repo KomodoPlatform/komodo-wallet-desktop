@@ -246,7 +246,7 @@ namespace mm2::api
         j["type"] = cfg.type;
         if (cfg.type == "EthGas")
         {
-            j["gas"]       = cfg.gas_limit.value_or("55000");
+            j["gas"]       = cfg.gas_limit.value_or(55000);
             j["gas_price"] = cfg.gas_price.value();
         }
         else
