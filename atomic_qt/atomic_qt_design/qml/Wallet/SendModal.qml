@@ -16,8 +16,17 @@ DefaultModal {
     property var prepare_send_result: default_prepare_send_result
     property string send_result
 
-    function prepareSendCoin(address, amount) {
-        prepare_send_result = API.get().prepare_send(address, amount, parseFloat(API.get().current_coin_info.balance) === parseFloat(amount))
+    function prepareSendCoin(address, amount, fee_enabled, fee_amount, is_erc_20) {
+        const max = parseFloat(API.get().current_coin_info.balance) === parseFloat(amount)
+
+        if(fee_enabled) {
+            let gas = ""
+            let gas_price = ""
+            prepare_send_result = API.get().prepare_send_fees(address, amount, is_erc_20, fee_amount, gas_price, gas, max)
+        }
+        else {
+            prepare_send_result = API.get().prepare_send(address, amount, max)
+        }
 
         if(prepare_send_result.has_error) {
             text_error.text = prepare_send_result.error_message
@@ -138,7 +147,7 @@ DefaultModal {
                              (!custom_fees_switch.checked || input_custom_fees.field.acceptableInput) &&
                              hasFunds()
 
-                    onClicked: prepareSendCoin(input_address.field.text, input_amount.field.text)
+                    onClicked: prepareSendCoin(input_address.field.text, input_amount.field.text, custom_fees_switch.checked, input_custom_fees.field.text, API.get().current_coin_info.type === "ERC-20")
                 }
             }
         }
