@@ -94,7 +94,6 @@ RowLayout {
                 }
 
                 DefaultButton {
-                    enabled: API.get().current_coin_info.tx_state !== "InProgress"
                     text: API.get().empty_string + (qsTr("Receive"))
                     leftPadding: parent.width * button_margin
                     rightPadding: leftPadding
@@ -106,7 +105,6 @@ RowLayout {
                 }
 
                 DefaultButton {
-                    enabled: API.get().current_coin_info.tx_state !== "InProgress"
                     text: API.get().empty_string + (qsTr("Swap"))
                     leftPadding: parent.width * button_margin
                     rightPadding: leftPadding
