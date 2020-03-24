@@ -21,9 +21,12 @@ DefaultModal {
     }
 
     function prepareSendCoin(address, amount, fee_enabled, fee_amount, is_erc_20, gas, gas_price) {
-        const max = parseFloat(API.get().current_coin_info.balance) === parseFloat(amount)
+        let max = parseFloat(API.get().current_coin_info.balance) === parseFloat(amount)
 
         if(fee_enabled) {
+            if(max === false && !is_erc_20)
+                max = parseFloat(amount) + parseFloat(fee_amount) >= parseFloat(API.get().current_coin_info.balance)
+
             prepare_send_result = API.get().prepare_send_fees(address, amount, is_erc_20, fee_amount, gas_price, gas, max)
         }
         else {
