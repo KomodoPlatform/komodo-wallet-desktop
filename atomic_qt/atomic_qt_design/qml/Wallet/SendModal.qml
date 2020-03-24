@@ -168,10 +168,21 @@ DefaultModal {
             }
 
 
+            // Fee is higher than amount error
+            DefaultText {
+                id: fee_error
+                wrapMode: Text.Wrap
+                visible: feeIsHigherThanAmount()
+
+                color: Style.colorRed
+
+                text: API.get().empty_string + (qsTr("Custom Fee can't be higher than the amount"))
+            }
+
             // Not enough funds error
             DefaultText {
                 wrapMode: Text.Wrap
-                visible: !hasFunds()
+                visible: !fee_error.visible && !hasFunds()
 
                 color: Style.colorRed
 
