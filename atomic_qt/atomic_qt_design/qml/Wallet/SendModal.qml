@@ -65,8 +65,32 @@ DefaultModal {
         stack_layout.currentIndex = 0
     }
 
+    function feeIsHigherThanAmount() {
+        if(!custom_fees_switch.checked) return false
+
+        const amt = parseFloat(input_amount.field.text)
+        const fee_amt = parseFloat(input_custom_fees.field.text)
+
+        return amt < fee_amt
+    }
+
     function hasFunds() {
-        return General.hasEnoughFunds(true, API.get().current_coin_info.ticker, "", "", input_amount.field.text)
+        if(!General.hasEnoughFunds(true, API.get().current_coin_info.ticker, "", "", input_amount.field.text))
+            return false
+
+        if(custom_fees_switch.checked) {
+            if(isERC20()) {
+                // TODO: Handle ERC-20 case
+
+                //if(!General.hasEnoughFunds(true, "ETH", "", "", input_custom_fees_gas.field.text))
+                //    return false
+            }
+            else {
+                if(feeIsHigherThanAmount()) return false
+            }
+        }
+
+        return true
     }
 
     // Inside modal
