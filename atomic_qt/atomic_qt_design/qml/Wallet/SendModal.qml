@@ -87,6 +87,9 @@ DefaultModal {
             }
             else {
                 if(feeIsHigherThanAmount()) return false
+
+                if(!General.hasEnoughFunds(true, API.get().current_coin_info.ticker, "", "", input_custom_fees.field.text))
+                    return false
             }
         }
 
