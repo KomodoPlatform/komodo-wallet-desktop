@@ -1,3 +1,16 @@
+# AtomicDEX-PRO 0.1.1
+
+## [AtomicDEX](https://atomicdex.io) Desktop GUI application for Linux, MacOS and Windows. 
+
+## Get Started
+
+Follow the OS specific [build instructions](https://github.com/KomodoPlatform/atomicDEX-Pro/tree/master/atomic_qt/ci_tools_atomic_dex#linux-quickstart) if you know what you are doing.
+
+We provide pre-built binaries on our [github release page](https://github.com/KomodoPlatform/atomicDEX-Pro/releases).
+
+Please join our [discord server](https://komodoplatform.com/discord) discussions around atomicDEX and general UI/UX feedback.
+
+
 ## Dependencies
 
 ```
