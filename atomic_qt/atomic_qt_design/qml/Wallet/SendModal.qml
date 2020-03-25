@@ -80,10 +80,21 @@ DefaultModal {
 
         if(custom_fees_switch.checked) {
             if(isERC20()) {
-                // TODO: Handle ERC-20 case
+                const ether = 1000000000
+                const gas_limit = parseFloat(input_custom_fees_gas.field.text)
+                const gas_price = parseFloat(input_custom_fees_gas_price.field.text)
+                const fee_eth = (gas_limit * gas_price)/ether
 
-                //if(!General.hasEnoughFunds(true, "ETH", "", "", input_custom_fees_gas.field.text))
-                //    return false
+                if(API.get().current_coin_info.ticker === "ETH") {
+                    const amount = parseFloat(input_amount.field.text)
+                    const total_needed_eth = amount + fee_eth
+                    if(!General.hasEnoughFunds(true, "ETH", "", "", total_needed_eth.toString()))
+                        return false
+                }
+                else {
+                    if(!General.hasEnoughFunds(true, "ETH", "", "", fee_eth.toString()))
+                        return false
+                }
             }
             else {
                 if(feeIsHigherThanAmount()) return false
@@ -94,6 +105,20 @@ DefaultModal {
         }
 
         return true
+    }
+
+    function fieldAreFilled() {
+        return input_address.field.text != "" &&
+             input_amount.field.text != "" &&
+             input_address.field.acceptableInput &&
+             input_amount.field.acceptableInput &&
+             parseFloat(input_amount.field.text) > 0 &&
+             (!custom_fees_switch.checked || (
+                    (!isERC20() && input_custom_fees.field.acceptableInput) ||
+                    (isERC20() && input_custom_fees_gas.field.acceptableInput && input_custom_fees_gas_price.field.acceptableInput &&
+                                    parseFloat(input_custom_fees_gas.field.text) > 0 && parseFloat(input_custom_fees_gas_price.field.text) > 0)
+                  )
+              )
     }
 
     // Inside modal
@@ -185,7 +210,7 @@ DefaultModal {
             // Not enough funds error
             DefaultText {
                 wrapMode: Text.Wrap
-                visible: !fee_error.visible && !hasFunds()
+                visible: !fee_error.visible && fieldAreFilled() && !hasFunds()
 
                 color: Style.colorRed
 
@@ -209,18 +234,7 @@ DefaultModal {
                     text: API.get().empty_string + (qsTr("Prepare"))
                     Layout.fillWidth: true
 
-                    enabled: input_address.field.text != "" &&
-                             input_amount.field.text != "" &&
-                             input_address.field.acceptableInput &&
-                             input_amount.field.acceptableInput &&
-                             parseFloat(input_amount.field.text) > 0 &&
-                             (!custom_fees_switch.checked || (
-                                    (!isERC20() && input_custom_fees.field.acceptableInput) ||
-                                    (isERC20() && input_custom_fees_gas.field.acceptableInput && input_custom_fees_gas_price.field.acceptableInput &&
-                                                    parseFloat(input_custom_fees_gas.field.text) > 0 && parseFloat(input_custom_fees_gas_price.field.text) > 0)
-                                  )
-                              ) &&
-                             hasFunds()
+                    enabled: fieldAreFilled() && hasFunds()
 
                     onClicked: prepareSendCoin(input_address.field.text, input_amount.field.text, custom_fees_switch.checked, input_custom_fees.field.text,
                                                isERC20(), input_custom_fees_gas.field.text, input_custom_fees_gas_price.field.text)
