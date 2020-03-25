@@ -31,3 +31,16 @@ scoop install llvm ninja cmake git --global
 nimble build
 ci_tools_atomic_dex.exe build release
 ```
+
+## Linux QuickStart
+
+## OSX Quick start
+
+- Install QT 5.14
+- Install nim
+```
+curl https://nim-lang.org/choosenim/init.sh -sSf | sh
+sudo apt-get install ninja cmake clang ## Adapt to last version if possible
+nimble build
+./ci_tools_atomic_dex.exe build release
+```
