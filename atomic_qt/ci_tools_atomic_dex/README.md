@@ -34,8 +34,6 @@ ci_tools_atomic_dex.exe build release
 
 ## Linux QuickStart
 
-## OSX Quick start
-
 - Install QT 5.14
 - Install nim
 ```
