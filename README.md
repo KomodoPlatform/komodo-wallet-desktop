@@ -1,4 +1,6 @@
-# AtomicDEX-PRO 0.1.1
+# AtomicDEX-PRO 0.1.1-alpha
+
+[![atomicDEX](https://i.ibb.co/D5GJLWy/adex.png)](https://atomicdex.io)
 
 ## [AtomicDEX](https://atomicdex.io) Desktop GUI application for Linux, MacOS and Windows. 
 
