@@ -123,5 +123,6 @@ sdl2                                      2.0.10-2         Simple DirectMedia La
 zlib                                      1.2.11-5         A compression library
 zstd                                      1.4.0-1          Zstandard - Fast real-time compression algorithm
 boost-integer                             1.71.0           Boost integer module
+wally                                     0.7.7            Useful primitives for wallets (Used on Windows only)
 ```
 

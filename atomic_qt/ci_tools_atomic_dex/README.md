@@ -60,7 +60,7 @@ Open a powershell as admin and type:
 
 `scoop install nim --global`
 
-### Installation of CMake / Clang / Ninja / Git
+### Installation of CMake (Mini 3.14) / Clang (mini 8.0 or AppleClang 11.0) / Ninja / Git
 
 #### Windows
 
@@ -110,4 +110,6 @@ nimble build
 ./ci_tools_atomic_dex.exe build release # Windows
 ./ci_tools_atomic_dex build release # OSX Linux
 ```
+
+
 
