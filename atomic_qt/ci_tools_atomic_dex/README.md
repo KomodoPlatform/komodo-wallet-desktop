@@ -55,11 +55,9 @@ Open a terminal and type:
 
 `curl https://nim-lang.org/choosenim/init.sh -sSf | sh`
 
-on OSX you can alternatively use brew:
+on OSX you can alternatively install `nim` using brew:
 
 `brew install nim`
-
-At the end of the installation you will have a line to add into your `.bashrc` / `.zshrc` shell configuration file. (if you install with the curl tool)
 
 #### Windows
 
@@ -67,7 +65,7 @@ Open a powershell as admin and type:
 
 `scoop install nim --global`
 
-### Installation of CMake (Mini 3.14) / Clang (mini 8.0 or AppleClang 11.0) / Ninja / Git
+### Installing CMake (Mini 3.14) / Clang (mini 8.0 or AppleClang 11.0) / Ninja / Git
 
 #### Windows
 
@@ -82,9 +80,10 @@ scoop install git --global
 
 #### OSX
 
-If you have OSX Catalina, the Apple Clang version is a supported version
+If you have OSX Catalina, the Apple Clang 11.0 version is a supported version
 
 Open a terminal and type:
+
 ```
 brew install cmake ninja git
 ```
