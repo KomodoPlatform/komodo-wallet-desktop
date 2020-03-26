@@ -37,6 +37,7 @@
 #endif
 
 //! Project Headers
+#include "atomic.dex.version.hpp"
 #include "atomic.dex.app.hpp"
 #include "atomic.dex.mm2.hpp"
 #include "atomic.dex.provider.coinpaprika.hpp"
@@ -989,5 +990,11 @@ namespace atomic_dex
     application::get_empty_string()
     {
         return "";
+    }
+
+    QString
+    application::get_version() const noexcept
+    {
+        return QString::fromStdString(atomic_dex::get_version());
     }
 } // namespace atomic_dex
