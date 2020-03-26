@@ -451,7 +451,7 @@
         <location filename="../../qml/Exchange/Trade/OrderReceiveModal.qml" line="95"/>
         <source>Click to see %n order(s)</source>
         <translation>
-            <numerusform>%1 emri görüntüle</numerusform>
+            <numerusform>%n emri görüntüle</numerusform>
         </translation>
     </message>
     <message>
