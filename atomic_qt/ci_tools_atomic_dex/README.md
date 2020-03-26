@@ -52,7 +52,11 @@ Open a terminal and type:
 
 `curl https://nim-lang.org/choosenim/init.sh -sSf | sh`
 
-At the end of the installation you will have a line to add into your `.bashrc` / `.zshrc` shell configuration file.
+on OSX you can alternatively use brew:
+
+`brew install nim`
+
+At the end of the installation you will have a line to add into your `.bashrc` / `.zshrc` shell configuration file. (if you install with the curl tool)
 
 #### Windows
 
