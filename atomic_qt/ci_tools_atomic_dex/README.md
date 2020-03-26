@@ -31,8 +31,7 @@ nimble build
 - Install nim
 
 ```
-curl https://nim-lang.org/choosenim/init.sh -sSf | sh
-brew install ninja cmake
+brew install ninja cmake nim
 cd atomic_qt/ci_tools_atomic_dex
 nimble build
 ./ci_tools_atomic_dex build release
