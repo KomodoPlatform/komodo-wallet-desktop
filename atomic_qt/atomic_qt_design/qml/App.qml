@@ -97,6 +97,16 @@ Rectangle {
             id: dashboard
         }
     }
+
+
+    DefaultText {
+        anchors.right: parent.right
+        anchors.bottom: parent.bottom
+        anchors.bottomMargin: 10
+        anchors.rightMargin: anchors.bottomMargin
+        text: qsTr("version") + ": " + API.get().get_version()
+        font.pointSize: Style.textSizeSmall
+    }
 }
 
 
