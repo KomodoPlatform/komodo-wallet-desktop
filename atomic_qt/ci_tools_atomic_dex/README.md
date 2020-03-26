@@ -32,13 +32,13 @@ export QT_INSTALL_CMAKE_PATH=/Users/romanszterg/Qt/5.14.0/clang_64/lib/cmake
 export QT_ROOT=/Users/romanszterg/Qt/5.14.0
 ```
 
-###### Linux
+##### Linux
 
 In your `~/.bashrc` or `~/.zshrc` you will need:
  * `QT_INSTALL_CMAKE_PATH` equal to the CMake QT PATH
  * `QT_ROOT` equal to the QT Root installation folder
 
-Example 
+Example:
 ```bash
 export QT_INSTALL_CMAKE_PATH=~/Qt/5.14.0/gcc/lib/cmake
 export QT_ROOT=~/Qt/5.14.0
