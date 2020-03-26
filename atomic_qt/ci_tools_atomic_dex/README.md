@@ -1,6 +1,6 @@
 # AtomicDEX Pro alpha build instructions
 
-## Build AtomicDEX
+## Prerequisites
 
 ### Installation of scoop (Windows only)
 
@@ -107,7 +107,7 @@ Make sure that `clang` point to the last version installed using update alternat
 
 **Version 8.0 clang minimum is required and CMake 3.14**
 
-### Building
+## Building
 
 #### Windows
 
