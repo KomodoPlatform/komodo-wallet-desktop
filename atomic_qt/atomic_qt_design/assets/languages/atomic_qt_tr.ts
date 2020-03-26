@@ -6,7 +6,7 @@
     <message>
         <location filename="../../qml/App.qml" line="107"/>
         <source>version</source>
-        <translation type="unfinished"></translation>
+        <translation>versiyon</translation>
     </message>
 </context>
 <context>
@@ -62,17 +62,17 @@
     <message>
         <location filename="../../qml/Wallet/EnableCoinModal.qml" line="65"/>
         <source>Select all UTXO coins</source>
-        <translation type="unfinished"></translation>
+        <translation>Tüm UTXO kriptoparaları seç</translation>
     </message>
     <message>
         <location filename="../../qml/Wallet/EnableCoinModal.qml" line="70"/>
         <source>Select all SmartChains</source>
-        <translation type="unfinished"></translation>
+        <translation>Tüm SmartChain&apos;leri seç</translation>
     </message>
     <message>
         <location filename="../../qml/Wallet/EnableCoinModal.qml" line="75"/>
         <source>Select all ERC tokens</source>
-        <translation type="unfinished"></translation>
+        <translation>Tüm ERC tokenlarını seç</translation>
     </message>
     <message>
         <location filename="../../qml/Wallet/EnableCoinModal.qml" line="86"/>
@@ -110,27 +110,27 @@
     <message>
         <location filename="../../qml/Exchange/Exchange.qml" line="162"/>
         <source>Order Matching</source>
-        <translation type="unfinished">Emir Eşleşiyor</translation>
+        <translation>Emir Eşleşiyor</translation>
     </message>
     <message>
         <location filename="../../qml/Exchange/Exchange.qml" line="163"/>
         <source>Order Matched</source>
-        <translation type="unfinished">Emir Eşleşti</translation>
+        <translation>Emir Eşleşti</translation>
     </message>
     <message>
         <location filename="../../qml/Exchange/Exchange.qml" line="164"/>
         <source>Swap Ongoing</source>
-        <translation type="unfinished">Takas Devam Ediyor</translation>
+        <translation>Takas Devam Ediyor</translation>
     </message>
     <message>
         <location filename="../../qml/Exchange/Exchange.qml" line="165"/>
         <source>Swap Successful</source>
-        <translation type="unfinished">Takas Başarılı</translation>
+        <translation>Takas Başarılı</translation>
     </message>
     <message>
         <location filename="../../qml/Exchange/Exchange.qml" line="166"/>
         <source>Swap Failed</source>
-        <translation type="unfinished">Takas Başarısız</translation>
+        <translation>Takas Başarısız</translation>
     </message>
 </context>
 <context>
@@ -192,7 +192,7 @@
     <message>
         <location filename="../../qml/Settings/Languages.qml" line="13"/>
         <source>Language</source>
-        <translation type="unfinished">Dil</translation>
+        <translation>Dil</translation>
     </message>
 </context>
 <context>
@@ -684,47 +684,47 @@
     <message>
         <location filename="../../qml/Wallet/SendModal.qml" line="155"/>
         <source>Enable Custom Fees</source>
-        <translation type="unfinished"></translation>
+        <translation>Özel Ücretleri Etkinleştir</translation>
     </message>
     <message>
         <location filename="../../qml/Wallet/SendModal.qml" line="166"/>
         <source>Only use custom fees if you know what you are doing!</source>
-        <translation type="unfinished"></translation>
+        <translation>Özel ücretler hakkında bilginiz yoksa kullanmayınız!</translation>
     </message>
     <message>
         <location filename="../../qml/Wallet/SendModal.qml" line="174"/>
         <source>Custom Fee</source>
-        <translation type="unfinished"></translation>
+        <translation>Özel Ücret</translation>
     </message>
     <message>
         <location filename="../../qml/Wallet/SendModal.qml" line="175"/>
         <source>Enter the custom fee</source>
-        <translation type="unfinished"></translation>
+        <translation>Özel ücreti girin</translation>
     </message>
     <message>
         <location filename="../../qml/Wallet/SendModal.qml" line="185"/>
         <source>Gas Limit</source>
-        <translation type="unfinished"></translation>
+        <translation>Gas Limiti</translation>
     </message>
     <message>
         <location filename="../../qml/Wallet/SendModal.qml" line="186"/>
         <source>Enter the gas limit</source>
-        <translation type="unfinished"></translation>
+        <translation>Gas limitini girin</translation>
     </message>
     <message>
         <location filename="../../qml/Wallet/SendModal.qml" line="192"/>
         <source>Gas Price</source>
-        <translation type="unfinished"></translation>
+        <translation>Gas Fiyatı</translation>
     </message>
     <message>
         <location filename="../../qml/Wallet/SendModal.qml" line="193"/>
         <source>Enter the gas price</source>
-        <translation type="unfinished"></translation>
+        <translation>Gas fiyatını girin</translation>
     </message>
     <message>
         <location filename="../../qml/Wallet/SendModal.qml" line="207"/>
         <source>Custom Fee can&apos;t be higher than the amount</source>
-        <translation type="unfinished"></translation>
+        <translation>Özel Ücret miktardan daha yüksek olamaz</translation>
     </message>
     <message>
         <location filename="../../qml/Wallet/SendModal.qml" line="217"/>
