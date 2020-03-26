@@ -81,7 +81,7 @@ export QT_ROOT=~/Qt/5.14.0
 
 ## Build AtomicDex
 
-#### Windows
+### Windows
 
 Open an x64 Visual studio command prompt, go to the `ci_tools_atomic_dex` folder and type:
 
@@ -91,7 +91,7 @@ nimble build
 ./ci_tools_atomic_dex.exe build debug
 ```
 
-#### OSX/Linux
+### OSX/Linux
 
 Open a terminal, go to the `ci_tools_atomic_dex` folder and type:
 
@@ -101,9 +101,9 @@ nimble build
 ./ci_tools_atomic_dex build release
 ```
 
-### Bundle AtomicDex
+## Bundle AtomicDex
 
-#### Windows
+### Windows
 
 Open an x64 Visual studio command prompt, go to the `ci_tools_atomic_dex` folder and type:
 
@@ -115,7 +115,7 @@ nimble build
 ./ci_tools_atomic_dex.exe bundle debug
 ```
 
-#### OSX
+### OSX
 
 Open a terminal, go to the `ci_tools_atomic_dex` folder and type:
 
