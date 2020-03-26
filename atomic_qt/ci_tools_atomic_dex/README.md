@@ -16,7 +16,7 @@
 ### Linux QuickStart
 
 - Install QT 5.14
-- Install nim
+
 ```
 curl https://nim-lang.org/choosenim/init.sh -sSf | sh
 sudo apt-get install ninja cmake clang ## Adapt to last version if possible
@@ -28,7 +28,6 @@ nimble build
 ### MacOS Quick start
 
 - Install QT 5.14
-- Install nim
 
 ```
 brew install ninja cmake nim
