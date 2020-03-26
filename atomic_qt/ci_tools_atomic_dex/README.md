@@ -2,6 +2,15 @@
 
 ## Prerequisites
 
+- Visual Studio 2019 (Windows)
+- Scoop (Windows) (https://scoop.sh/)
+- Clang C++ 17 compiler (clang-8 minimum)
+    - on macOS Catalina, Apple Clang 11.0 is picked by default
+- QT 5.14 minimum (https://www.qt.io/download)  
+- Ninja
+- CMake 3.14 minimum (https://cmake.org/download/)
+- Nim (https://nim-lang.org/install.html)
+
 ### Installation of scoop (Windows only)
 
 Open powershell as admin and type: 
@@ -65,7 +74,7 @@ Open a powershell as admin and type:
 
 `scoop install nim --global`
 
-### Installing CMake (Mini 3.14) / Clang (mini 8.0 or AppleClang 11.0) / Ninja / Git
+### Installing CMake / Clang / Ninja / Git
 
 #### Windows
 
@@ -105,9 +114,7 @@ Make sure that `clang` point to the last version installed using update alternat
 `sudo update-alternatives --install /usr/bin/clang++ clang++ /usr/bin/clang++-9 100`
 `sudo update-alternatives --install /usr/bin/clang clang /usr/bin/clang-9 100`
 
-**Version 8.0 clang minimum is required and CMake 3.14**
-
-## Building
+## Build AtomicDex
 
 #### Windows
 
@@ -129,7 +136,7 @@ nimble build
 ./ci_tools_atomic_dex build release
 ```
 
-### Bundling
+### Bundle AtomicDex
 
 #### Windows
 
