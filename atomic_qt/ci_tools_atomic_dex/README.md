@@ -4,19 +4,22 @@
 
 ### Installation of scoop (Windows only)
 
-Open powershell as admin and type: `Set-ExecutionPolicy RemoteSigned -scope CurrentUser`
+Open powershell as admin and type: 
 
-And then: `Invoke-Expression (New-Object System.Net.WebClient).DownloadString('https://get.scoop.sh')`
+```
+Set-ExecutionPolicy RemoteSigned -scope CurrentUser
+Invoke-Expression (New-Object System.Net.WebClient).DownloadString('https://get.scoop.sh')
+```
 
 ### Installation of qt
 
 Follow the instructions here: https://www.qt.io/download
 
-#### Once QT is installed depends on your platform you will need some env variable:
+**Once QT is installed we add environment variable depending on your platform.**
 
 ##### Windows
 
-- QT_INSTALL_CMAKE_PATH environment variable pointing to msvc_2017x64 for windows
+- add `QT_INSTALL_CMAKE_PATH` environment variable pointing to msvc_2017x64 for windows
 
 Example: `C:\Qt\5.14.1\msvc2017_64`
 
