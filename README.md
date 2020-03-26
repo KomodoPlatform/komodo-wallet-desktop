@@ -1,3 +1,26 @@
+# AtomicDEX-PRO alpha
+
+[![atomicDEX](https://i.ibb.co/D5GJLWy/adex.png)](https://atomicdex.io)
+
+## [AtomicDEX](https://atomicdex.io) Desktop GUI application for Linux, MacOS and Windows. 
+
+## Get Started
+
+Follow the OS specific [build instructions](https://github.com/KomodoPlatform/atomicDEX-Pro/tree/master/atomic_qt/ci_tools_atomic_dex#linux-quickstart) if you know what you are doing.
+
+You can [download](https://github.com/KomodoPlatform/atomicDEX-Pro/releases) the pre-built <b>alpha</b> binaries on our [github release page](https://github.com/KomodoPlatform/atomicDEX-Pro/releases).
+
+Please join our [discord server](https://komodoplatform.com/discord) discussions around atomicDEX and general UI/UX feedback.
+
+## AtomicDEX mobile 
+
+Check out AtomicDEX mobile, available for [Android and iOS](https://atomicdex.io) [![atomicDEX mobile](https://s5.gifyu.com/images/atomicdex_animation_small2.gif)](https://atomicdex.io)
+## License
+
+For details please refer to our [license](https://github.com/KomodoPlatform/atomicDEX-Pro/blob/master/LICENSE).
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
 ## Dependencies
 
 ```
