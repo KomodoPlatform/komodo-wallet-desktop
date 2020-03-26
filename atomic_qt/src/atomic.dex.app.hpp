@@ -86,6 +86,7 @@ namespace atomic_dex
         QString               get_balance_fiat_all() const noexcept;
         QString               get_wallet_default_name() const noexcept;
         QString               get_status() const noexcept;
+        QString               get_version() const noexcept;
 
         //! Properties Setter
         void set_current_fiat(QString current_fiat) noexcept;
