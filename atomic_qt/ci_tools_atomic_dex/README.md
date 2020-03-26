@@ -17,15 +17,15 @@ Follow the instructions here: https://www.qt.io/download
 
 **Once QT is installed we add environment variable depending on your platform.**
 
-##### Windows
+#### Windows
 
 - add `QT_INSTALL_CMAKE_PATH` environment variable pointing to msvc_2017x64 for windows
 
 Example: `C:\Qt\5.14.1\msvc2017_64`
 
-##### OSX
+#### Osx
 
-In your `~/.bashrc` or `~/.zshrc` you will need:
+In your `~/.bashrc` or `~/.zshrc` add:
  * `QT_INSTALL_CMAKE_PATH` equal to the CMake QT PATH
  * `QT_ROOT` equal to the QT Root installation folder
 
@@ -35,7 +35,7 @@ export QT_INSTALL_CMAKE_PATH=/Users/romanszterg/Qt/5.14.0/clang_64/lib/cmake
 export QT_ROOT=/Users/romanszterg/Qt/5.14.0
 ```
 
-##### Linux
+#### Linux
 
 In your `~/.bashrc` or `~/.zshrc` you will need:
  * `QT_INSTALL_CMAKE_PATH` equal to the CMake QT PATH
