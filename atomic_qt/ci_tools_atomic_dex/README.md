@@ -107,15 +107,52 @@ Make sure that `clang` point to the last version installed using update alternat
 
 **Version 8.0 clang minimum is required and CMake 3.14**
 
-### Build the project
+### Building
 
-Go to the `ci_tools_atomic_dex` folder and type:
+#### Windows
+
+Open an x64 Visual studio command prompt, go to the `ci_tools_atomic_dex` folder and type:
 
 ```bash
 nimble build
-./ci_tools_atomic_dex.exe build release # Windows
-./ci_tools_atomic_dex build release # OSX Linux
+./ci_tools_atomic_dex.exe build release
+./ci_tools_atomic_dex.exe build debug
 ```
+
+#### OSX/Linux
+
+Open a terminal, go to the `ci_tools_atomic_dex` folder and type:
+
+```bash
+nimble build
+./ci_tools_atomic_dex build debug
+./ci_tools_atomic_dex build release
+```
+
+### Bundling
+
+#### Windows
+
+Open an x64 Visual studio command prompt, go to the `ci_tools_atomic_dex` folder and type:
+
+```
+nimble build
+./ci_tools_atomic_dex.exe build release
+./ci_tools_atomic_dex.exe bundle release
+./ci_tools_atomic_dex.exe build debug
+./ci_tools_atomic_dex.exe bundle debug
+```
+
+#### OSX
+
+Open a terminal, go to the `ci_tools_atomic_dex` folder and type:
+
+```
+nimble build
+./ci_tools_atomic_dex bundle release
+./ci_tools_atomic_dex bundle debug
+```
+
 
 
 
