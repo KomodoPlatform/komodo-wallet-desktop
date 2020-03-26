@@ -8,6 +8,7 @@ import "../Constants"
 
 ColumnLayout {
     RowLayout {
+        Layout.alignment: Qt.AlignHCenter
         DefaultText {
             Layout.alignment: Qt.AlignVCenter
             text: API.get().empty_string + (qsTr("Language"))
