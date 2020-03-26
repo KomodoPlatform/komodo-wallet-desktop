@@ -4,6 +4,9 @@
 
 ## [AtomicDEX](https://atomicdex.io) Desktop GUI application for Linux, MacOS and Windows. 
 
+[![atomicDEX mobile](https://s5.gifyu.com/images/dextop_optimize_bg.gif)](https://atomicdex.io)
+
+
 ## Get Started
 
 Follow the OS specific [build instructions](https://github.com/KomodoPlatform/atomicDEX-Pro/tree/master/atomic_qt/ci_tools_atomic_dex#linux-quickstart) if you know what you are doing.
