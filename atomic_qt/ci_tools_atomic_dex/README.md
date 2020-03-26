@@ -22,7 +22,7 @@ curl https://nim-lang.org/choosenim/init.sh -sSf | sh
 sudo apt-get install ninja cmake clang ## Adapt to last version if possible
 cd atomic_qt/ci_tools_atomic_dex
 nimble build
-./ci_tools_atomic_dex.exe build release
+./ci_tools_atomic_dex build release
 ```
 
 ### MacOS Quick start
@@ -35,7 +35,7 @@ curl https://nim-lang.org/choosenim/init.sh -sSf | sh
 brew install ninja cmake
 cd atomic_qt/ci_tools_atomic_dex
 nimble build
-./ci_tools_atomic_dex.exe build release
+./ci_tools_atomic_dex build release
 ```
 
 ### Windows Quick start
