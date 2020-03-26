@@ -4,13 +4,12 @@
 
 - Visual Studio 2019 (Windows)
 - Clang C++ 17 compiler (clang-8 minimum)
-    - on macOS Catalina, Apple Clang 11.0 is picked by default
-- QT 5.14 minimum (https://www.qt.io/download)  
+    - on macOS Catalina, Apple Clang 11.0 is picked by default 
 - CMake 3.14 minimum (https://cmake.org/download/)
 
 ### Dependencies
 
-Follow the QT installation instructions here: https://www.qt.io/download
+Follow the QT installation (5.14) instructions here: https://www.qt.io/download
 
 #### Windows
 
