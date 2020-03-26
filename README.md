@@ -4,6 +4,9 @@
 
 ## [AtomicDEX](https://atomicdex.io) Desktop GUI application for Linux, MacOS and Windows. 
 
+[![atomicDEX mobile](https://s5.gifyu.com/images/dextop_optimize_bg.gif)](https://atomicdex.io)
+
+
 ## Get Started
 
 Follow the OS specific [build instructions](https://github.com/KomodoPlatform/atomicDEX-Pro/tree/master/atomic_qt/ci_tools_atomic_dex#linux-quickstart) if you know what you are doing.
@@ -123,5 +126,7 @@ sdl2                                      2.0.10-2         Simple DirectMedia La
 zlib                                      1.2.11-5         A compression library
 zstd                                      1.4.0-1          Zstandard - Fast real-time compression algorithm
 boost-integer                             1.71.0           Boost integer module
+wally                                     0.7.7            Useful primitives for wallets (Used on Windows only)
+antara-ecs                                1.2.1-alpha      SDK Blockchain utilities (Entity component dispatcher)                                     
 ```
 
