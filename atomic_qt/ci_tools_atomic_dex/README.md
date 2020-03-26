@@ -69,8 +69,10 @@ sudo ./llvm.sh 9
 
 Use the most recently installed `clang` version:
 
-`sudo update-alternatives --install /usr/bin/clang++ clang++ /usr/bin/clang++-9 100`
-`sudo update-alternatives --install /usr/bin/clang clang /usr/bin/clang-9 100`
+```
+sudo update-alternatives --install /usr/bin/clang++ clang++ /usr/bin/clang++-9 100
+sudo update-alternatives --install /usr/bin/clang clang /usr/bin/clang-9 100
+```
 
 
 Add the following environment variables to your `~/.bashrc` or `~/.zshrc` profiles:
