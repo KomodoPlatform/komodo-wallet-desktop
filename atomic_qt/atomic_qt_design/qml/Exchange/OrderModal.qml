@@ -42,7 +42,7 @@ DefaultModal {
         DefaultText {
             Layout.alignment: Qt.AlignHCenter
             Layout.topMargin: 20
-            font.pointSize: Style.textSize3
+            font.pixelSize: Style.textSize3
             visible: getStatus(details) !== status_swap_not_swap && (details.events !== undefined || details.am_i_maker === false)
             color: visible ? getStatusColor(details) : ''
             text: API.get().empty_string + (visible ? getStatusTextWithPrefix(details) : '')

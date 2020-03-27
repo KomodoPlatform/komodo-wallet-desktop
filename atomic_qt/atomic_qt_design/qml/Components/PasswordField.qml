@@ -28,23 +28,23 @@ ColumnLayout {
         Layout.fillWidth: true
 
         DefaultText {
-            font.pointSize: Style.textSizeSmall
+            font.pixelSize: Style.textSizeSmall
             text: API.get().empty_string + (Style.listItemPrefix + qsTr("At least 1 lowercase alphabetical character"))
         }
         DefaultText {
-            font.pointSize: Style.textSizeSmall
+            font.pixelSize: Style.textSizeSmall
             text: API.get().empty_string + (Style.listItemPrefix + qsTr("At least 1 uppercase alphabetical character"))
         }
         DefaultText {
-            font.pointSize: Style.textSizeSmall
+            font.pixelSize: Style.textSizeSmall
             text: API.get().empty_string + (Style.listItemPrefix + qsTr("At least 1 numeric character"))
         }
         DefaultText {
-            font.pointSize: Style.textSizeSmall
+            font.pixelSize: Style.textSizeSmall
             text: API.get().empty_string + (Style.listItemPrefix + qsTr("At least 1 special character (eg. !@#$%)"))
         }
         DefaultText {
-            font.pointSize: Style.textSizeSmall
+            font.pixelSize: Style.textSizeSmall
             text: API.get().empty_string + (Style.listItemPrefix + qsTr("At least 16 characters"))
         }
     }

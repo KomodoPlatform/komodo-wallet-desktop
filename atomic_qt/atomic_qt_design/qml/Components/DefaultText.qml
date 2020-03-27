@@ -6,7 +6,7 @@ import "../Constants"
 
 Text {
     font.family: "Rubik"
-    font.pointSize: Style.textSize
+    font.pixelSize: Style.textSize
     color: Style.colorWhite1
 }
 

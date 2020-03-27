@@ -11,7 +11,7 @@ ColumnLayout {
     // Title
     DefaultText {
         id: title
-        font.pointSize: Style.textSize2
+        font.pixelSize: Style.textSize2
     }
 
     HorizontalLine {

@@ -34,7 +34,7 @@ Rectangle {
             Layout.alignment: Qt.AlignHCenter | Qt.AlignTop
             Layout.topMargin: 10
 
-            font.pointSize: Style.textSize2
+            font.pixelSize: Style.textSize2
         }
 
         HorizontalLine {

@@ -105,7 +105,7 @@ Rectangle {
         anchors.bottomMargin: 10
         anchors.rightMargin: anchors.bottomMargin
         text: qsTr("version") + ": " + API.get().get_version()
-        font.pointSize: Style.textSizeSmall
+        font.pixelSize: Style.textSizeSmall
     }
 }
 

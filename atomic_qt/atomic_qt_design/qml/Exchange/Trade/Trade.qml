@@ -263,7 +263,7 @@ Item {
         DefaultText {
             Layout.alignment: Qt.AlignHCenter
             text: API.get().empty_string + (qsTr("No balance available"))
-            font.pointSize: Style.textSize2
+            font.pixelSize: Style.textSize2
         }
 
         DefaultText {

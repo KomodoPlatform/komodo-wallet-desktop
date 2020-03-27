@@ -13,7 +13,7 @@ Rectangle {
     property bool icon_at_left
 
     color: "transparent"
-    width: text.length * title.font.pointSize
+    width: text.length * title.font.pixelSize
     height: title.height
 
     // Click area
@@ -46,7 +46,7 @@ Rectangle {
 
         source: General.image_path + "arrow-" + (highest_first ? "down" : "up") + ".svg"
 
-        width: title.font.pointSize * 0.5
+        width: title.font.pixelSize * 0.5
         fillMode: Image.PreserveAspectFit
 
         anchors.left: icon_at_left ? title.right : undefined
