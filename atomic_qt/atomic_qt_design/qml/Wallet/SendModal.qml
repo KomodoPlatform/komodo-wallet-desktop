@@ -182,7 +182,7 @@ DefaultModal {
                     // Gas input
                     AmountIntField {
                         id: input_custom_fees_gas
-                        title: API.get().empty_string + (qsTr("Gas") + " [Gwei]")
+                        title: API.get().empty_string + (qsTr("Gas Limit") + " [Gwei]")
                         field.placeholderText: API.get().empty_string + (qsTr("Enter the gas limit"))
                     }
 

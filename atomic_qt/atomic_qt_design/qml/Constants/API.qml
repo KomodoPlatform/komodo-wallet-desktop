@@ -13,6 +13,7 @@ QtObject {
        },
 
         // Other
+        get_version: () => { return "0.1.1-alpha" },
         get_regex_password_policy: () => { return new RegExp(/^(?=.{16,})(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[@#$%{}[\]()\/\\'\"`~,;:.<>+\-_=!^&*|?]).*$/)},
         wallet_default_name: "",
 

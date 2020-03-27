@@ -2,7 +2,7 @@ import osproc
 import vcpkg
 
 let g_packages = [
-    (name: "entt", head: true),
+    (name: "entt", head: false),
     (name: "folly", head: false),
     (name: "boost-multiprecision", head: false),
     (name: "doctest", head: false),
@@ -20,7 +20,7 @@ proc download_packages*() =
             when defined(windows):
                 discard execCmd(g_vcpkg_local_path & " install " & package.name & ":x64-windows --head")
             when defined(linux) or defined(osx):
-                discard execCmd(g_vcpkg_local_path & " install" & package.name & " --head")
+                discard execCmd(g_vcpkg_local_path & " install " & package.name & " --head")
         else:
             when defined(windows):
                 discard execCmd(g_vcpkg_local_path & " install " & package.name & ":x64-windows")
