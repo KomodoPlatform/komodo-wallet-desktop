@@ -2,7 +2,7 @@
 
 ## Prerequisites
 
-- Visual Studio 2019 (Windows)
+- Visual Studio 2019 (Windows) with [Desktop development with C++](https://docs.microsoft.com/en-gb/cpp/build/vscpp-step-0-installation?view=vs-2019).
 - Clang C++ 17 compiler (clang-8 minimum)
     - on macOS Catalina, Apple Clang 11.0 is picked by default 
 - CMake 3.14 minimum (https://cmake.org/download/)
@@ -115,10 +115,10 @@ In your x64 Visual Studio command prompt, from within the `ci_tools_atomic_dex` 
 
 ```
 nimble build
-./ci_tools_atomic_dex.exe build release
-./ci_tools_atomic_dex.exe bundle release
-./ci_tools_atomic_dex.exe build debug
-./ci_tools_atomic_dex.exe bundle debug
+ci_tools_atomic_dex.exe build release
+ci_tools_atomic_dex.exe bundle release
+ci_tools_atomic_dex.exe build debug
+ci_tools_atomic_dex.exe bundle debug
 ```
 
 ### OSX
