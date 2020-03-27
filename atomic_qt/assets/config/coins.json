@@ -359,5 +359,34 @@
     ],
     "active": false,
     "currently_enabled": false
+  },
+  "HUSH": {
+  "coin": "HUSH",
+  "asset": "HUSH3",
+  "type": "Smart Chain",
+  "name": "Hush",
+  "rpcport": 18031,
+  "txversion": 4,
+  "overwintered": 1,
+  "mm2": 1,
+  "coingecko_id": "hush",
+  "coinpaprika_id": "hush-hush",
+  "is_erc_20": false,
+  "electrum": [
+    {
+      "url": "electrum1.cipig.net:10064"
+    },
+    {
+      "url": "electrum2.cipig.net:10064"
+    },
+    {
+      "url": "electrum3.cipig.net:10064"
+    }
+  ],
+  "explorer_url": [
+    "https://explorer.myhush.org"
+  ],
+  "active": false,
+  "currently_enabled": false
   }
 }
