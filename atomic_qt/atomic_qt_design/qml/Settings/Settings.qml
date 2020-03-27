@@ -22,7 +22,7 @@ Item {
         anchors.centerIn: parent
         DefaultText {
             Layout.alignment: Qt.AlignHCenter
-            font.pointSize: Style.textSize2
+            font.pixelSize: Style.textSize2
             text: API.get().empty_string + (qsTr("Settings"))
         }
 

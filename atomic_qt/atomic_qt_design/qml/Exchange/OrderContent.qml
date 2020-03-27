@@ -35,7 +35,7 @@ Rectangle {
     DefaultText {
         id: base_amount
         text: API.get().empty_string + ("~ " + General.formatCrypto("", item.my_info.my_amount, item.my_info.my_coin))
-        font.pointSize: in_modal ? Style.textSize2 : Style.textSize
+        font.pixelSize: in_modal ? Style.textSize2 : Style.textSize
 
         anchors.left: parent.left
         anchors.top: base_icon.bottom
@@ -45,7 +45,7 @@ Rectangle {
     // Swap icon
     Image {
         source: General.image_path + "exchange-exchange.svg"
-        width: base_amount.font.pointSize
+        width: base_amount.font.pixelSize
         height: width
         anchors.verticalCenter: base_icon.bottom
         anchors.horizontalCenter: parent.horizontalCenter
@@ -55,7 +55,7 @@ Rectangle {
     DefaultText {
         id: rel_amount
         text: API.get().empty_string + ("~ " + General.formatCrypto("", item.my_info.other_amount, item.my_info.other_coin))
-        font.pointSize: base_amount.font.pointSize
+        font.pixelSize: base_amount.font.pixelSize
         anchors.right: parent.right
         anchors.top: base_amount.top
     }

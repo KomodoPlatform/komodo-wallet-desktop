@@ -175,7 +175,7 @@ Rectangle {
     implicitHeight: form_layout.height
 
     DefaultText {
-        font.pointSize: Style.textSize2
+        font.pixelSize: Style.textSize2
         text: API.get().empty_string + (my_side ? qsTr("Sell") : qsTr("Receive"))
         anchors.horizontalCenter: parent.horizontalCenter
         anchors.bottom: form_layout.top
@@ -263,12 +263,12 @@ Rectangle {
                 DefaultText {
                     id: tx_fee_text
                     text: API.get().empty_string + (canShowFees() ? qsTr('Transaction Fee') + ':' : '')
-                    font.pointSize: Style.textSizeSmall
+                    font.pixelSize: Style.textSizeSmall
                 }
 
                 DefaultText {
                     text: API.get().empty_string + (canShowFees() ? qsTr('Trading Fee') + ':' : '')
-                    font.pointSize: tx_fee_text.font.pointSize
+                    font.pixelSize: tx_fee_text.font.pixelSize
                 }
             }
 
@@ -279,12 +279,12 @@ Rectangle {
                     text: API.get().empty_string + (canShowFees() ? (curr_trade_info.tx_fee + ' ' + (curr_trade_info.is_ticker_of_fees_eth ? "ETH" : getTicker(true))) +
                                                                     // ETH Fees
                                                                     (hasEthFees() ? " + " + curr_trade_info.erc_fees + ' ETH' : '') : '')
-                    font.pointSize: tx_fee_text.font.pointSize
+                    font.pixelSize: tx_fee_text.font.pixelSize
                 }
 
                 DefaultText {
                     text: API.get().empty_string + (canShowFees() ? curr_trade_info.trade_fee + ' ' + getTicker(true) : '')
-                    font.pointSize: tx_fee_text.font.pointSize
+                    font.pixelSize: tx_fee_text.font.pixelSize
                 }
             }
         }

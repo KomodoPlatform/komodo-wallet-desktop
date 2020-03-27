@@ -15,7 +15,7 @@ DefaultText {
     property var onClick: () => {}
 
     id: txt
-    font.pointSize: Style.textSize2
+    font.pixelSize: Style.textSize2
     font.family: "Montserrat"
     font.bold: exchange.current_page === dashboard_index
     color: font.bold ? Style.colorWhite1 : hovered ? Style.colorWhite4 : Style.colorWhite5

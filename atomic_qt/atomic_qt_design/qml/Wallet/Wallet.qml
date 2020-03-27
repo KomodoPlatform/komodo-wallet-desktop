@@ -52,7 +52,7 @@ RowLayout {
                     DefaultText {
                         text: API.get().empty_string + (General.formatCrypto("", API.get().current_coin_info.balance, API.get().current_coin_info.ticker))
                         Layout.alignment: Qt.AlignRight
-                        font.pointSize: Style.textSize5
+                        font.pixelSize: Style.textSize5
                     }
 
                     DefaultText {
@@ -60,7 +60,7 @@ RowLayout {
                         Layout.topMargin: -15
                         Layout.rightMargin: 4
                         Layout.alignment: Qt.AlignRight
-                        font.pointSize: Style.textSize2
+                        font.pixelSize: Style.textSize2
                         color: Style.colorWhite4
                     }
                 }
@@ -141,7 +141,7 @@ RowLayout {
             DefaultText {
                 visible: API.get().current_coin_info.tx_state !== "InProgress" && API.get().current_coin_info.transactions.length === 0
                 text: API.get().empty_string + (qsTr("No transactions"))
-                font.pointSize: Style.textSize
+                font.pixelSize: Style.textSize
                 color: Style.colorWhite4
                 Layout.alignment: Qt.AlignHCenter
             }
@@ -162,7 +162,7 @@ RowLayout {
                     DefaultText {
                         text: API.get().empty_string + (qsTr("Loading"))
                         Layout.alignment: Qt.AlignHCenter
-                        font.pointSize: Style.textSize2
+                        font.pixelSize: Style.textSize2
                     }
 
                     BusyIndicator {
@@ -205,7 +205,7 @@ RowLayout {
         // Balance
         DefaultText {
             anchors.top: parent.top
-            anchors.topMargin: search_button.anchors.topMargin * 0.5 - font.pointSize * 0.5
+            anchors.topMargin: search_button.anchors.topMargin * 0.5 - font.pixelSize * 0.5
             anchors.horizontalCenter: parent.horizontalCenter
 
             text: API.get().empty_string + (General.formatFiat("", API.get().balance_fiat_all, API.get().fiat))

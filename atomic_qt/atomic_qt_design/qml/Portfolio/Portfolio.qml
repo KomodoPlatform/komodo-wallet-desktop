@@ -105,7 +105,7 @@ ColumnLayout {
                 Layout.bottomMargin: 0
                 Layout.alignment: Qt.AlignHCenter
                 text: API.get().empty_string + (qsTr("TOTAL"))
-                font.pointSize: Style.textSize
+                font.pixelSize: Style.textSize
                 color: Style.colorWhite5
             }
 
@@ -114,7 +114,7 @@ ColumnLayout {
                 Layout.alignment: Qt.AlignHCenter
                 Layout.bottomMargin: 30
                 text: API.get().empty_string + (General.formatFiat("", API.get().balance_fiat_all, API.get().fiat))
-                font.pointSize: Style.textSize4
+                font.pixelSize: Style.textSize4
             }
         }
 
@@ -254,7 +254,7 @@ ColumnLayout {
             DefaultText {
                 text: API.get().empty_string + (qsTr("Loading"))
                 Layout.alignment: Qt.AlignHCenter
-                font.pointSize: Style.textSize2
+                font.pixelSize: Style.textSize2
             }
 
             BusyIndicator {
@@ -382,7 +382,7 @@ ColumnLayout {
 
                 text: API.get().empty_string + (model.modelData.ticker)
                 color: Style.colorWhite6
-                font.pointSize: Style.textSize * 0.9
+                font.pixelSize: Style.textSize * 0.9
             }
 
             // Value

@@ -161,7 +161,7 @@ DefaultModal {
                 visible: custom_fees_switch.checked
 
                 DefaultText {
-                    font.pointSize: Style.textSize
+                    font.pixelSize: Style.textSize
                     color: Style.colorRed
                     text: API.get().empty_string + (qsTr("Only use custom fees if you know what you are doing!"))
                 }

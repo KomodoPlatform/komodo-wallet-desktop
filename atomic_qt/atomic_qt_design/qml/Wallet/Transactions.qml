@@ -63,7 +63,7 @@ ListView {
             DefaultText {
                 text: API.get().empty_string + (General.formatCrypto(model.modelData.received, model.modelData.amount, API.get().current_coin_info.ticker))
                 Layout.alignment: Qt.AlignRight
-                font.pointSize: Style.textSize2
+                font.pixelSize: Style.textSize2
             }
 
             // Fiat
@@ -72,7 +72,7 @@ ListView {
                 Layout.topMargin: -10
                 Layout.rightMargin: 4
                 Layout.alignment: Qt.AlignRight
-                font.pointSize: Style.textSize
+                font.pixelSize: Style.textSize
                 color: Style.colorWhite4
             }
         }

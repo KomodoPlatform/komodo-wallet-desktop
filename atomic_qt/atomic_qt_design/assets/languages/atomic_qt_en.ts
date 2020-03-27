@@ -190,7 +190,7 @@
 <context>
     <name>Languages</name>
     <message>
-        <location filename="../../qml/Settings/Languages.qml" line="13"/>
+        <location filename="../../qml/Settings/Languages.qml" line="14"/>
         <source>Language</source>
         <translation type="unfinished"></translation>
     </message>

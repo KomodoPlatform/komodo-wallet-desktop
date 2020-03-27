@@ -42,7 +42,7 @@ Rectangle {
         DefaultText {
             text: API.get().empty_string + (qsTr("No connection"))
             Layout.alignment: Qt.AlignHCenter
-            font.pointSize: Style.textSize3
+            font.pixelSize: Style.textSize3
         }
 
         BusyIndicator {
