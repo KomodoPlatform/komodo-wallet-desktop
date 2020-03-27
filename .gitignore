@@ -528,3 +528,6 @@ assets/tools
 /atomic_dex_desktop/assets/tools/mm2/
 /atomic_dex_desktop/src/
 atomic_qt/atomic_qt_en_US.ts
+
+atomic_qt/ci_tools_atomic_dex/build-*
+atomic_qt/ci_tools_atomic_dex/bundle-*
