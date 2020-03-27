@@ -531,3 +531,4 @@ atomic_qt/atomic_qt_en_US.ts
 
 atomic_qt/ci_tools_atomic_dex/build-*
 atomic_qt/ci_tools_atomic_dex/bundle-*
+win_build_and_run.bat
