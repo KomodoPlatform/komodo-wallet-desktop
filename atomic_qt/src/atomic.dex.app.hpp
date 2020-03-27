@@ -86,7 +86,7 @@ namespace atomic_dex
         QString               get_balance_fiat_all() const noexcept;
         QString               get_wallet_default_name() const noexcept;
         QString               get_status() const noexcept;
-        QString               get_version() const noexcept;
+        Q_INVOKABLE QString   get_version() const noexcept;
 
         //! Properties Setter
         void set_current_fiat(QString current_fiat) noexcept;
@@ -102,7 +102,9 @@ namespace atomic_dex
         //! Bind to the QML Worlds
         Q_INVOKABLE QStringList get_available_langs() const;
         Q_INVOKABLE QObject* prepare_send(const QString& address, const QString& amount, bool max = false);
-        Q_INVOKABLE QObject*    prepare_send_fees(const QString& address, const QString& amount, bool is_erc_20, const QString& fees_amount, const QString& gas_price, const QString& gas, bool max = false);
+        Q_INVOKABLE QObject* prepare_send_fees(
+            const QString& address, const QString& amount, bool is_erc_20, const QString& fees_amount, const QString& gas_price, const QString& gas,
+            bool max = false);
         Q_INVOKABLE QString     send(const QString& tx_hex);
         Q_INVOKABLE QString     send_rewards(const QString& tx_hex);
         Q_INVOKABLE void        change_state(int visibility);
