@@ -139,16 +139,16 @@ Item {
         updateForms()
     }
 
-    function updateForms(my_side) {
+    function updateForms(my_side, new_ticker) {
         if(my_side === undefined) {
             form_base.update()
             form_rel.update()
         }
         else if(my_side) {
-            form_rel.update()
+            form_rel.update(new_ticker)
         }
         else {
-            form_base.update()
+            form_base.update(new_ticker)
         }
     }
 
