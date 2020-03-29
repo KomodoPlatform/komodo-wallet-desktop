@@ -13,8 +13,10 @@ Rectangle {
     property bool my_side: false
     property bool enabled: true
 
-    function update() {
-        updateTickerList()
+    property bool recursive_update: false
+
+    function update(new_ticker) {
+        updateTickerList(new_ticker)
     }
 
     function inCurrentPage() {
@@ -23,7 +25,9 @@ Rectangle {
 
     property var ticker_list: ([])
 
-    function updateTickerList() {
+    function updateTickerList(new_ticker) {
+        recursive_update = new_ticker !== undefined
+
         ticker_list = my_side ? General.getTickersAndBalances(getFilteredCoins()) : General.getTickers(getFilteredCoins())
         update_timer.running = true
     }
@@ -204,10 +208,12 @@ Rectangle {
 
                 model: ticker_list
                 onCurrentTextChanged: {
-                    setPair()
-                    if(my_side) prev_base = getTicker()
-                    else prev_rel = getTicker()
-                    updateForms(my_side)
+                    if(!recursive_update) {
+                        setPair()
+                        if(my_side) prev_base = getTicker()
+                        else prev_rel = getTicker()
+                        updateForms(my_side, combo.currentText)
+                    }
                 }
 
                 MouseArea {

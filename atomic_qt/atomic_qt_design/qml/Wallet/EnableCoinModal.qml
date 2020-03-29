@@ -11,9 +11,26 @@ DefaultModal {
 
     property var selected_to_enable: ({})
 
+    function resetList() {
+        // selected_to_enable = {}
+
+        // Modifying selected_to_enable creates a binding loop
+        // Have to check and then uncheck to affect all child checkboxes
+        coins_utxo.parent_box.checkState = Qt.Checked
+        coins_utxo.parent_box.checkState = Qt.Unchecked
+        coins_smartchains.parent_box.checkState = Qt.Checked
+        coins_smartchains.parent_box.checkState = Qt.Unchecked
+        coins_erc.parent_box.checkState = Qt.Checked
+        coins_erc.parent_box.checkState = Qt.Unchecked
+    }
+
     function reset() {
-        selected_to_enable = {}
+        resetList()
         input_coin_filter.text = ""
+    }
+
+    onClosed: {
+        reset()
     }
 
     function prepareAndOpen() {
@@ -30,6 +47,7 @@ DefaultModal {
 
     function enableCoins() {
         API.get().enable_coins(Object.keys(selected_to_enable))
+        reset()
         root.close()
     }
 
@@ -62,16 +80,19 @@ DefaultModal {
                 id: col
 
                 CoinList {
+                    id: coins_utxo
                     group_title: API.get().empty_string + qsTr("Select all UTXO coins")
                     model: General.filterCoins(API.get().enableable_coins, input_coin_filter.text, "UTXO")
                 }
 
                 CoinList {
+                    id: coins_smartchains
                     group_title: API.get().empty_string + qsTr("Select all SmartChains")
                     model: General.filterCoins(API.get().enableable_coins, input_coin_filter.text, "Smart Chain")
                 }
 
                 CoinList {
+                    id: coins_erc
                     group_title: API.get().empty_string + qsTr("Select all ERC tokens")
                     model: General.filterCoins(API.get().enableable_coins, input_coin_filter.text, "ERC-20")
                 }

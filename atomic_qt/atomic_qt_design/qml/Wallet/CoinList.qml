@@ -6,11 +6,12 @@ import "../Components"
 import "../Constants"
 
 Column {
+    property alias parent_box: parentBox
     property alias group_title: parentBox.text
     property alias model: utxo_list.model
 
     ButtonGroup {
-        id: childGroupUTXO
+        id: childGroup
         exclusive: false
         checkState: parentBox.checkState
     }
@@ -18,7 +19,7 @@ Column {
     CheckBox {
         id: parentBox
         visible: utxo_list.model.length > 0
-        checkState: childGroupUTXO.checkState
+        checkState: childGroup.checkState
     }
 
     Repeater {
@@ -27,7 +28,7 @@ Column {
         delegate: CheckBox {
             text: API.get().empty_string + "         " + (model.modelData.name + " (" + model.modelData.ticker + ")")
             leftPadding: indicator.width
-            ButtonGroup.group: childGroupUTXO
+            ButtonGroup.group: childGroup
 
             // Icon
             Image {
