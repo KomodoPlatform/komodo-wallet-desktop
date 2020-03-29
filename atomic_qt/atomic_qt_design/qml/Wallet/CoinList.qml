@@ -6,6 +6,7 @@ import "../Components"
 import "../Constants"
 
 Column {
+    property alias parent_box: parentBox
     property alias group_title: parentBox.text
     property alias model: utxo_list.model
 
