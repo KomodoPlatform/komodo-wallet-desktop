@@ -30,7 +30,6 @@
 #include <chrono>
 #include <condition_variable>
 #include <exception>
-#include <filesystem>
 #include <fstream>
 #include <functional>
 #include <future>
@@ -61,7 +60,9 @@
 #include <vector>
 
 //! Global Helpers
-namespace fs = std::filesystem;
+#include <boost/filesystem.hpp>
+
+namespace fs = boost::filesystem;
 
 constexpr std::size_t operator"" _sz(unsigned long long n) { return n; }
 

@@ -37,12 +37,12 @@
 #endif
 
 //! Project Headers
-#include "atomic.dex.version.hpp"
 #include "atomic.dex.app.hpp"
 #include "atomic.dex.mm2.hpp"
 #include "atomic.dex.provider.coinpaprika.hpp"
 #include "atomic.dex.qt.bindings.hpp"
 #include "atomic.dex.security.hpp"
+#include "atomic.dex.version.hpp"
 #include "atomic.threadpool.hpp"
 
 namespace
@@ -149,7 +149,7 @@ namespace atomic_dex
         else
         {
             using namespace std::string_literals;
-            const std::filesystem::path seed_path = ag::core::assets_real_path() / ("config/"s + wallet_name.toStdString() + ".seed"s);
+            const fs::path seed_path = ag::core::assets_real_path() / ("config/"s + wallet_name.toStdString() + ".seed"s);
             // Encrypt seed
             atomic_dex::encrypt(seed_path, seed.toStdString().data(), key.data());
             // sodium_memzero(&seed, seed.size());
@@ -180,8 +180,8 @@ namespace atomic_dex
         else
         {
             using namespace std::string_literals;
-            const std::filesystem::path seed_path = ag::core::assets_real_path() / ("config/"s + wallet_name.toStdString() + ".seed"s);
-            auto                        seed      = atomic_dex::decrypt(seed_path, key.data(), ec);
+            const fs::path seed_path = ag::core::assets_real_path() / ("config/"s + wallet_name.toStdString() + ".seed"s);
+            auto           seed      = atomic_dex::decrypt(seed_path, key.data(), ec);
             if (ec == dextop_error::corrupted_file_or_wrong_password)
             {
                 LOG_F(WARNING, "{}", ec.message());
@@ -771,7 +771,7 @@ namespace atomic_dex
     application::get_wallets() const
     {
         QStringList out;
-        for (auto&& p: std::filesystem::directory_iterator(ag::core::assets_real_path() / "config"))
+        for (auto&& p: fs::directory_iterator((ag::core::assets_real_path() / "config")))
         {
             if (p.path().extension().string() == ".seed")
             {
@@ -792,7 +792,7 @@ namespace atomic_dex
     {
         if (is_there_a_default_wallet())
         {
-            std::ifstream ifs(ag::core::assets_real_path() / "config/default.wallet");
+            std::ifstream ifs((ag::core::assets_real_path() / "config/default.wallet").c_str());
             assert(ifs);
             std::string str((std::istreambuf_iterator<char>(ifs)), std::istreambuf_iterator<char>());
             return QString::fromStdString(str);
