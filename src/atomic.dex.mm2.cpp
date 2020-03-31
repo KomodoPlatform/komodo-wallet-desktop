@@ -27,8 +27,8 @@ namespace
     void
     update_coin_status(const std::vector<std::string> tickers, bool status = true)
     {
-        std::filesystem::path cfg_path = ag::core::assets_real_path() / "config";
-        std::ifstream         ifs(cfg_path / "coins.json");
+        fs::path cfg_path = ag::core::assets_real_path() / "config";
+        std::ifstream         ifs((cfg_path / "coins.json").c_str());
         nlohmann::json        config_json_data;
 
         assert(ifs.is_open());
@@ -39,7 +39,7 @@ namespace
         ifs.close();
 
         //! Write contents
-        std::ofstream ofs(cfg_path / "coins.json", std::ios::trunc);
+        std::ofstream ofs((cfg_path / "coins.json").c_str(), std::ios::trunc);
         assert(ofs.is_open());
         ofs << config_json_data;
     }
@@ -50,7 +50,7 @@ namespace
         const auto cfg_path = ag::core::assets_real_path() / "config";
         if (exists(cfg_path / "coins.json"))
         {
-            std::ifstream ifs(cfg_path / "coins.json");
+            std::ifstream ifs((cfg_path / "coins.json").c_str());
             assert(ifs.is_open());
             nlohmann::json config_json_data;
             ifs >> config_json_data;
@@ -833,7 +833,8 @@ namespace atomic_dex
             return true;
         }
 
-        if (fs::file_time_type::clock::now() - fs::last_write_time(lock_claim_file_path) > 1h)
+        std::time_t t = fs::last_write_time(lock_claim_file_path);
+        if (std::chrono::system_clock::now() - std::chrono::system_clock::from_time_t(t) > 1h)
         {
             DLOG_F(INFO, "1 hour expire, removing {}", lock_claim_file_path.string());
             fs::remove(lock_claim_file_path);
