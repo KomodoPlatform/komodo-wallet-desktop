@@ -44,7 +44,7 @@ namespace atomic_dex
     }
 
     void
-    encrypt(const std::filesystem::path& target_path, const char* mnemonic, const unsigned char* key)
+    encrypt(const fs::path& target_path, const char* mnemonic, const unsigned char* key)
     {
         LOG_SCOPE_FUNCTION(INFO);
 
@@ -52,7 +52,7 @@ namespace atomic_dex
         std::array<unsigned char, g_buff_len>       buf_out{};
         std::array<unsigned char, g_header_size>    header{};
         crypto_secretstream_xchacha20poly1305_state st;
-        std::ofstream                               fp_t(target_path, std::ios::binary);
+        std::ofstream                               fp_t(target_path.c_str(), std::ios::binary);
         unsigned long long                          out_len;
         unsigned char                               tag;
         std::stringstream                           mnemonic_ss;
@@ -70,7 +70,7 @@ namespace atomic_dex
     }
 
     std::string
-    decrypt(const std::filesystem::path& encrypted_file_path, const unsigned char* key, std::error_code& ec)
+    decrypt(const fs::path& encrypted_file_path, const unsigned char* key, std::error_code& ec)
     {
         LOG_SCOPE_FUNCTION(INFO);
 
@@ -79,7 +79,7 @@ namespace atomic_dex
         std::array<unsigned char, g_header_size>    header{};
         std::stringstream                           out;
         crypto_secretstream_xchacha20poly1305_state st;
-        std::ifstream                               fp_s(encrypted_file_path, std::ios::binary);
+        std::ifstream                               fp_s(encrypted_file_path.c_str(), std::ios::binary);
         unsigned long long                          out_len;
         unsigned char                               tag;
 

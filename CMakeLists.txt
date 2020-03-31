@@ -80,7 +80,7 @@ configure_icon_osx(data/osx/kmd_logo.icns ICON kmd_logo.icns)
 ##! End antara
 
 find_package(folly CONFIG REQUIRED)
-find_package(Boost REQUIRED)
+find_package(Boost 1.71 REQUIRED COMPONENTS filesystem)
 find_package(Qt5 COMPONENTS Core Quick LinguistTools Svg Charts REQUIRED)
 find_package(unofficial-sodium CONFIG REQUIRED)
 find_library(unofficial-bitcoin-external bitcoin)
@@ -145,6 +145,8 @@ target_link_libraries(atomic_qt
         Qt5::Svg
         Qt5::Charts
         antara::world
+        Boost::filesystem
+        Boost::headers
         unofficial-sodium::sodium
         unofficial-btc::bitcoin
         reproc++

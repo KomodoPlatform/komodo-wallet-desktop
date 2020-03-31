@@ -29,7 +29,7 @@ namespace atomic_dex
     change_lang(std::string new_lang)
     {
         fs::path       cfg_path = ag::core::assets_real_path() / "config";
-        std::ifstream  ifs(cfg_path / "cfg.json");
+        std::ifstream  ifs((cfg_path / "cfg.json").c_str());
         nlohmann::json config_json_data;
 
         assert(ifs.is_open());
@@ -39,7 +39,7 @@ namespace atomic_dex
         ifs.close();
 
         //! Write contents
-        std::ofstream ofs(cfg_path / "cfg.json", std::ios::trunc);
+        std::ofstream ofs((cfg_path / "cfg.json").c_str(), std::ios::trunc);
         assert(ofs.is_open());
         ofs << config_json_data;
     }
@@ -56,7 +56,7 @@ namespace atomic_dex
     {
         cfg            out;
         fs::path       cfg_path = ag::core::assets_real_path() / "config";
-        std::ifstream  ifs(cfg_path / "cfg.json");
+        std::ifstream  ifs((cfg_path / "cfg.json").c_str());
         nlohmann::json config_json_data;
 
         assert(ifs.is_open());
