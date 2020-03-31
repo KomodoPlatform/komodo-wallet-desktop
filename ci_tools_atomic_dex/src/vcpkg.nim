@@ -13,8 +13,10 @@ proc build_vcpkg() =
         os.setCurrentDir("vcpkg-repo")
         when defined(windows):
             discard execCmd(".\\bootstrap-vcpkg.bat")
-        when defined(linux) or defined(macosx):
+        when defined(linux):
             discard execCmd("./bootstrap-vcpkg.sh")
+        when defined(osx):
+             discard execCmd("CXXFLAGS=\"-D_CTERMID_H_\" CXX=g++-9 ./bootstrap-vcpkg.sh")
         os.setCurrentDir(os.parentDir(os.getCurrentDir()))
     else:
         echo "vcpkg already builded, skipping"
@@ -35,7 +37,7 @@ proc install_vcpkg*() =
     set_vcpkg_path()
     if not check_if_vcpkg_exists():
         echo "Installing vcpkg"
-        discard execCmd("git clone https://github.com/microsoft/vcpkg vcpkg-repo")
+        discard execCmd("git clone https://github.com/KomodoPlatform/vcpkg vcpkg-repo")
         build_vcpkg()
         integrate_vcpkg()
     else:
