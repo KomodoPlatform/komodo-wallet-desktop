@@ -80,7 +80,7 @@ configure_icon_osx(data/osx/kmd_logo.icns ICON kmd_logo.icns)
 ##! End antara
 
 find_package(folly CONFIG REQUIRED)
-find_package(Boost 1.71 REQUIRED COMPONENTS filesystem)
+find_package(Boost REQUIRED COMPONENTS filesystem)
 find_package(Qt5 COMPONENTS Core Quick LinguistTools Svg Charts REQUIRED)
 find_package(unofficial-sodium CONFIG REQUIRED)
 find_library(unofficial-bitcoin-external bitcoin)
@@ -134,7 +134,6 @@ else ()
             )
 endif ()
 
-
 target_compile_definitions(atomic_qt
         PRIVATE $<$<OR:$<CONFIG:Debug>,$<CONFIG:RelWithDebInfo>>:QT_QML_DEBUG>)
 target_include_directories(atomic_qt PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/src  $<$<PLATFORM_ID:Darwin>:${CMAKE_CURRENT_SOURCE_DIR}/src/osx>)
@@ -153,6 +152,7 @@ target_link_libraries(atomic_qt
         antara::http_client
         Folly::folly
         Folly::folly_deps
+        $<$<PLATFORM_ID:Darwin>:curl>
         )
 #target_enable_asan(atomic_qt)
 
