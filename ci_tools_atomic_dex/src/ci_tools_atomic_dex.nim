@@ -14,9 +14,10 @@ Atomic Dex CI Tools.
 Usage:
   ci_tools_atomic_dex --install_vcpkg
   ci_tools_atomic_dex --install_dependencies
-  ci_tools_atomic_dex build (release|debug)
-  ci_tools_atomic_dex generate (release|debug)
-  ci_tools_atomic_dex bundle (release|debug)
+  ci_tools_atomic_dex build (release|debug) [--osx_sdk=<sdk_path>] [--compiler=<compiler_path>]
+  ci_tools_atomic_dex clean (full|dependencies|build_directory)
+  ci_tools_atomic_dex generate (release|debug) [--osx_sdk=<sdk_path>] [--compiler=<compiler_path>]
+  ci_tools_atomic_dex bundle (release|debug) [--osx_sdk=<sdk_path>] [--compiler=<compiler_path>]
   ci_tools_atomic_dex --version
   ci_tools_atomic_dex (-h | --help)
 
@@ -34,19 +35,19 @@ proc main() =
     download_packages()
   elif args["generate"]:
     if args["release"]:
-      generate_solution("Release")
+      generate_solution("Release", $args["--osx_sdk"], $args["--compiler"])
     elif args["debug"]:
-      generate_solution("Debug")
+      generate_solution("Debug", $args["--osx_sdk"], $args["--compiler"])
   elif args["build"]:
     if args["release"]:
-      build_atomic_qt("Release")
+      build_atomic_qt("Release", $args["--osx_sdk"], $args["--compiler"])
     elif args["debug"]:
-      build_atomic_qt("Debug")
+      build_atomic_qt("Debug", $args["--osx_sdk"], $args["--compiler"])
   elif args["bundle"]:
     if args["release"]:
-      bundle("Release")
+      bundle("Release", $args["--osx_sdk"], $args["--compiler"])
     elif args["debug"]:
-      bundle("Debug")
+      bundle("Debug", $args["--osx_sdk"], $args["--compiler"])
 
 when isMainModule:
   main()
