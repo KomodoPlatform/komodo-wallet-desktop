@@ -14,16 +14,23 @@
  *                                                                            *
  ******************************************************************************/
 
-#import <AppKit/AppKit.h>
+#include <Availability.h>
 #include "atomic.dex.osx.manager.hpp"
 
+#ifdef __MAC_10_15
+#import <AppKit/AppKit.h>
+#endif
+
+#ifdef __MAC_10_15
 static NSColor *colorFromRGB(unsigned char r, unsigned char g, unsigned char b)
 {
     return [NSColor colorWithCalibratedRed:(r/255.0f) green:(g/255.0f) blue:(b/255.0f) alpha:1.0];
 }
+#endif
 
 void atomic_dex::mac_window_setup(long winid, bool fullscreen)
 {
+#ifdef __MAC_10_15
     NSView *nativeView = reinterpret_cast<NSView *>(winid);
     NSWindow* nativeWindow = [nativeView window];
     NSWindowStyleMask windowMask = NSWindowStyleMaskFullSizeContentView | NSWindowStyleMaskBorderless | NSWindowStyleMaskTitled | NSWindowStyleMaskClosable | NSWindowStyleMaskMiniaturizable | NSWindowStyleMaskResizable;
@@ -36,4 +43,5 @@ void atomic_dex::mac_window_setup(long winid, bool fullscreen)
     [myColor set];
     [nativeWindow setBackgroundColor: myColor];
     [nativeWindow setTitleVisibility: static_cast<NSWindowTitleVisibility>(1)];
+#endif
 }
