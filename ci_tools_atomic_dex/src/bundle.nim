@@ -37,12 +37,14 @@ proc fix_osx_libraries(atomic_app_path: string) =
 proc bundle*(build_type: string, osx_sdk_path: string, compiler_path: string) =
     build_atomic_qt(build_type, osx_sdk_path, compiler_path)
     when defined(osx):
-        let 
+        var 
             qt_macdeploy_path = os.getEnv("QT_ROOT").joinPath("clang_64").joinPath("bin").joinPath("macdeployqt")
             atomic_qt_app_path = os.getCurrentDir().joinPath("bin/atomic_qt.app")
             atomic_qt_qml_dir = os.getCurrentDir().parentDir().parentDir().joinPath("atomic_qt_design/qml")
             bundle_path = os.getCurrentDir().parentDir().joinPath("bundle-" & build_type)
             bundling_cmd = qt_mac_deploy_path & " " & atomic_qt_app_path & " -qmldir=" & atomic_qt_qml_dir & " -dmg"
+        if not os.existsFile(qt_macdeploy_path):
+            qt_macdeploy_path = os.getEnv("QT_ROOT").joinPath("bin").joinPath("macdeployqt")
         echo "Bundling cmd: " & bundling_cmd
         discard osproc.execCmd(bundling_cmd)
         fix_osx_libraries(atomic_qt_app_path)
