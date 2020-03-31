@@ -11,7 +11,7 @@ proc remove_build()=
         os.removeDir("build-Release")
 
 proc clean*(clean_type: string) =
-    echo "WTF: " & clean_type
+    echo "Cleaning"
     if clean_type == "dependencies":
         remove_vcpkg()
     elif clean_type == "build_dir":
