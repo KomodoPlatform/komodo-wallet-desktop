@@ -19,6 +19,7 @@
 #include <climits>
 #include <cmath>
 #include <csignal>
+#include <ctime>
 #include <cstddef>
 #include <cstdlib>
 #include <cstring>
