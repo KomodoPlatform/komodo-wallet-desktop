@@ -22,7 +22,7 @@ proc generate_solution*(build_type: string) =
                     g_vcpkg_cmake_script_path & " " & 
                     os.getCurrentDir().parentDir().parentDir() & " -DCMAKE_PREFIX_PATH=" & os.getEnv("QT_INSTALL_CMAKE_PATH")
     when defined(osx):
-        cmd_line = cmd_line & " -DVCPKG_APPLOCAL_DEPS=OFF"
+        cmd_line = cmd_line & " -DVCPKG_APPLOCAL_DEPS=OFF " & " -DCMAKE_CXX_COMPILER=/usr/local/opt/llvm@9/bin/clang++"
     when defined(windows) or defined(linux):
         cmd_line = cmd_line & " -DCMAKE_CXX_COMPILER=clang++ -DCMAKE_C_COMPILER=clang"
     echo "cmd line: " & cmd_line
