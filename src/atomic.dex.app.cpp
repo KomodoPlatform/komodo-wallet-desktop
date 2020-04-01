@@ -233,7 +233,15 @@ namespace atomic_dex
         bip39_mnemonic_validate(output_words, output);
         return output;
 #else
-        return QString("FAKE LINUX WINDOWS SEED");
+        std::array<unsigned char, WALLY_SECP_RANDOMIZE_LEN> data;
+        boost::random_device device;
+        device.generate(data.begin(), data.end());
+        char*  output;
+        words* output_words;
+        bip39_get_wordlist(NULL, &output_words);
+        bip39_mnemonic_from_bytes(output_words, data.data(), data.size(), &output);
+        bip39_mnemonic_validate(output_words, output);
+        return output;
 #endif
     }
 
