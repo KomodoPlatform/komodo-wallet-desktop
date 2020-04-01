@@ -388,5 +388,34 @@
   ],
   "active": false,
   "currently_enabled": false
+  },
+  "VRSC": {
+    "coin": "VRSC",
+    "asset": "VRSC",
+    "type": "Smart Chain",
+    "name": "Verus Coin",
+    "rpcport": 27486,
+    "txversion": 4,
+    "overwintered": 1,
+    "mm2": 1,
+    "coingecko_id": "verus-coin",
+    "coinpaprika_id": "vrsc-verus-coin",
+    "is_erc_20": false,
+    "electrum": [
+      {
+        "url": "el0.veruscoin.io:17485"
+      },
+      {
+        "url": "el1.veruscoin.io:17485"
+      },
+      {
+        "url": "el2.veruscoin.io:17485"
+      }
+    ],
+    "explorer_url": [
+      "https://explorer.veruscoin.io/"
+    ],
+    "active": true,
+    "currently_enabled": false
   }
 }
