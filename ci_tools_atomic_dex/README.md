@@ -65,6 +65,12 @@ curl https://nim-lang.org/choosenim/init.sh -sSf | sh
 wget https://apt.llvm.org/llvm.sh
 chmod +x llvm.sh
 sudo ./llvm.sh 9
+
+git clone https://github.com/KomodoPlatform/libwally-core.git
+cd libwally-core
+./tools/autogen.sh
+./configure --disable-shared
+sudo make -j2 install
 ```
 
 Use the most recently installed `clang` version:

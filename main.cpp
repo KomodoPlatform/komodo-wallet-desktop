@@ -19,7 +19,7 @@ int
 main(int argc, char* argv[])
 {
     //! Project
-#if defined(_WIN32) || defined(WIN32)
+#if defined(_WIN32) || defined(WIN32) || defined(__linux__)
     assert(wally_init(0) == WALLY_OK);
 #endif
     assert(sodium_init() == 0);
@@ -62,7 +62,7 @@ main(int argc, char* argv[])
     atomic_app.launch();
 
     auto res = app.exec();
-#if defined(_WIN32) || defined(WIN32)
+#if defined(_WIN32) || defined(WIN32) || defined(__linux__)
     assert(wally_cleanup(0) == WALLY_OK);
 #endif
     return res;
