@@ -145,7 +145,6 @@ target_link_libraries(atomic_qt
         Qt5::Charts
         antara::world
         Boost::filesystem
-        Boost::headers
         unofficial-sodium::sodium
         unofficial-btc::bitcoin
         reproc++
