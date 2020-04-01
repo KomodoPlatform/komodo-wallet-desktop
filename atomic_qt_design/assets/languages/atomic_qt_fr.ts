@@ -50,42 +50,42 @@
 <context>
     <name>EnableCoinModal</name>
     <message>
-        <location filename="../../qml/Wallet/EnableCoinModal.qml" line="40"/>
+        <location filename="../../qml/Wallet/EnableCoinModal.qml" line="58"/>
         <source>Enable coins</source>
         <translation type="unfinished">Activer pièces de monnaie</translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/EnableCoinModal.qml" line="48"/>
+        <location filename="../../qml/Wallet/EnableCoinModal.qml" line="66"/>
         <source>Search</source>
         <translation type="unfinished">Rechercher</translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/EnableCoinModal.qml" line="65"/>
+        <location filename="../../qml/Wallet/EnableCoinModal.qml" line="84"/>
         <source>Select all UTXO coins</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/EnableCoinModal.qml" line="70"/>
+        <location filename="../../qml/Wallet/EnableCoinModal.qml" line="90"/>
         <source>Select all SmartChains</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/EnableCoinModal.qml" line="75"/>
+        <location filename="../../qml/Wallet/EnableCoinModal.qml" line="96"/>
         <source>Select all ERC tokens</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/EnableCoinModal.qml" line="86"/>
+        <location filename="../../qml/Wallet/EnableCoinModal.qml" line="107"/>
         <source>All coins are already enabled!</source>
         <translation type="unfinished">Toutes les pièces de monnaie sont déjà activées !</translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/EnableCoinModal.qml" line="92"/>
+        <location filename="../../qml/Wallet/EnableCoinModal.qml" line="113"/>
         <source>Close</source>
         <translation type="unfinished">Fermer</translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/EnableCoinModal.qml" line="99"/>
+        <location filename="../../qml/Wallet/EnableCoinModal.qml" line="120"/>
         <source>Enable</source>
         <translation type="unfinished">Activer</translation>
     </message>
@@ -286,42 +286,42 @@
 <context>
     <name>OrderForm</name>
     <message>
-        <location filename="../../qml/Exchange/Trade/OrderForm.qml" line="179"/>
+        <location filename="../../qml/Exchange/Trade/OrderForm.qml" line="183"/>
         <source>Sell</source>
         <translation type="unfinished">Vendre</translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/OrderForm.qml" line="179"/>
+        <location filename="../../qml/Exchange/Trade/OrderForm.qml" line="183"/>
         <source>Receive</source>
         <translation type="unfinished">Recevoir</translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/OrderForm.qml" line="237"/>
+        <location filename="../../qml/Exchange/Trade/OrderForm.qml" line="243"/>
         <source>MAX</source>
         <translation type="unfinished">MAXIMUM</translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/OrderForm.qml" line="250"/>
+        <location filename="../../qml/Exchange/Trade/OrderForm.qml" line="256"/>
         <source>Amount to sell</source>
         <translation type="unfinished">Montant à vendre</translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/OrderForm.qml" line="251"/>
+        <location filename="../../qml/Exchange/Trade/OrderForm.qml" line="257"/>
         <source>Amount to receive</source>
         <translation type="unfinished">Montant à recevoir</translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/OrderForm.qml" line="251"/>
+        <location filename="../../qml/Exchange/Trade/OrderForm.qml" line="257"/>
         <source>Please fill the send amount</source>
         <translation type="unfinished">Veuillez remplir le montant de la vente</translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/OrderForm.qml" line="265"/>
+        <location filename="../../qml/Exchange/Trade/OrderForm.qml" line="271"/>
         <source>Transaction Fee</source>
         <translation type="unfinished">Frais de transactions</translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/OrderForm.qml" line="270"/>
+        <location filename="../../qml/Exchange/Trade/OrderForm.qml" line="276"/>
         <source>Trading Fee</source>
         <translation type="unfinished">Frais d&apos;échanges</translation>
     </message>
