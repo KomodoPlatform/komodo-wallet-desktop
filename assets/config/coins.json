@@ -417,5 +417,31 @@
     ],
     "active": true,
     "currently_enabled": false
+  },
+  "ILN": {
+    "coin": "ILN",
+    "asset": "ILN",
+    "type": "Smart Chain",
+    "name": "iLien",
+    "rpcport": 12986,
+    "txversion": 4,
+    "overwintered": 1,
+    "mm2": 1,
+    "coingecko_id": "test-coin",
+    "coinpaprika_id": "test-coin",
+    "is_erc_20": false,
+    "electrum": [
+      {
+        "url": "electrum1.ilien.io:65011"
+      },
+      {
+        "url": "electrum2.ilien.io:65011"
+      }
+    ],
+    "explorer_url": [
+      "https://explorer.ilien.io/"
+    ],
+    "active": true,
+    "currently_enabled": false
   }
 }
