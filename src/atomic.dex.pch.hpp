@@ -164,6 +164,9 @@ adjust_precision(const std::string& current)
 #    pragma clang diagnostic pop
 #elif defined(_WIN32) || defined(WIN32)
 #    include <wally.hpp>
+#else
+#    include <boost/random/random_device.hpp>
+#    include <wally.hpp>
 #endif
 
 #include <date/date.h>

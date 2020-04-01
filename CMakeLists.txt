@@ -80,7 +80,7 @@ configure_icon_osx(data/osx/kmd_logo.icns ICON kmd_logo.icns)
 ##! End antara
 
 find_package(folly CONFIG REQUIRED)
-find_package(Boost REQUIRED COMPONENTS filesystem)
+find_package(Boost REQUIRED COMPONENTS filesystem random)
 find_package(Qt5 COMPONENTS Core Quick LinguistTools Svg Charts REQUIRED)
 find_package(unofficial-sodium CONFIG REQUIRED)
 find_library(unofficial-bitcoin-external bitcoin)
@@ -94,6 +94,12 @@ elseif(WIN32)
     target_link_directories(unofficial-bitcoin INTERFACE wally)
     target_link_libraries(unofficial-bitcoin INTERFACE wally)
     target_include_directories(unofficial-bitcoin INTERFACE wally)
+else ()
+    find_library(unofficial-secp secp256k1)
+    find_library(unofficial-wally wallycore)
+    find_path(unofficial-wally-headers wally_core.h)
+    target_link_libraries(unofficial-bitcoin INTERFACE ${unofficial-wally} ${unofficial-secp})
+    target_include_directories(unofficial-bitcoin INTERFACE ${unofficial-wally-headers})
 endif()
 add_library(unofficial-btc::bitcoin ALIAS unofficial-bitcoin)
 
@@ -145,7 +151,7 @@ target_link_libraries(atomic_qt
         Qt5::Charts
         antara::world
         Boost::filesystem
-        Boost::headers
+        $<$<PLATFORM_ID:Linux>:Boost::random>
         unofficial-sodium::sodium
         unofficial-btc::bitcoin
         reproc++
