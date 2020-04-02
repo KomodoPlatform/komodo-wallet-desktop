@@ -74,6 +74,7 @@
         <file>atomic_qt_design/qml/Sidebar/Sidebar.qml</file>
         <file>atomic_qt_design/qml/Sidebar/SidebarLine.qml</file>
         <file>atomic_qt_design/qml/Components/ColumnHeader.qml</file>
+        <file>atomic_qt_design/qml/Components/RightClickMenu.qml</file>
         <file>atomic_qt_design/qml/Components/PlusButton.qml</file>
         <file>atomic_qt_design/qml/Components/AddressField.qml</file>
         <file>atomic_qt_design/qml/Components/AmountField.qml</file>
