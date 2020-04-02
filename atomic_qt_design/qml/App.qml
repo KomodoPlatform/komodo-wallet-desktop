@@ -101,10 +101,20 @@ Rectangle {
 
     DefaultText {
         anchors.right: parent.right
+        anchors.bottom: gui_version.top
+        anchors.bottomMargin: 10
+        anchors.rightMargin: anchors.bottomMargin
+        text: qsTr("mm2 version") + ":    " + API.get().get_mm2_version()
+        font.pixelSize: Style.textSizeSmall
+    }
+
+    DefaultText {
+        id: gui_version
+        anchors.right: parent.right
         anchors.bottom: parent.bottom
         anchors.bottomMargin: 10
         anchors.rightMargin: anchors.bottomMargin
-        text: qsTr("version") + ": " + API.get().get_version()
+        text: qsTr("gui version") + ":    " + API.get().get_version()
         font.pixelSize: Style.textSizeSmall
     }
 }

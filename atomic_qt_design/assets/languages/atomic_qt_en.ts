@@ -5,31 +5,36 @@
     <name>App</name>
     <message>
         <location filename="../../qml/App.qml" line="107"/>
-        <source>version</source>
+        <source>mm2 version</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../qml/App.qml" line="117"/>
+        <source>gui version</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>ClaimRewardsModal</name>
     <message>
-        <location filename="../../qml/Wallet/ClaimRewardsModal.qml" line="62"/>
+        <location filename="../../qml/Wallet/ClaimRewardsModal.qml" line="64"/>
         <source>Claim your %1 reward?</source>
         <comment>TICKER</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/ClaimRewardsModal.qml" line="67"/>
+        <location filename="../../qml/Wallet/ClaimRewardsModal.qml" line="69"/>
         <source>You will receive %1</source>
         <comment>AMT TICKER</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/ClaimRewardsModal.qml" line="79"/>
+        <location filename="../../qml/Wallet/ClaimRewardsModal.qml" line="81"/>
         <source>Cancel</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/ClaimRewardsModal.qml" line="84"/>
+        <location filename="../../qml/Wallet/ClaimRewardsModal.qml" line="86"/>
         <source>Confirm</source>
         <translation type="unfinished"></translation>
     </message>
@@ -632,122 +637,140 @@
     </message>
 </context>
 <context>
+    <name>RightClickMenu</name>
+    <message>
+        <location filename="../../qml/Components/RightClickMenu.qml" line="27"/>
+        <source>Cut</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../qml/Components/RightClickMenu.qml" line="32"/>
+        <source>Copy</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../qml/Components/RightClickMenu.qml" line="37"/>
+        <source>Paste</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>SendModal</name>
     <message>
-        <location filename="../../qml/Wallet/SendModal.qml" line="135"/>
+        <location filename="../../qml/Wallet/SendModal.qml" line="137"/>
         <source>Prepare to Send</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/SendModal.qml" line="141"/>
-        <location filename="../../qml/Wallet/SendModal.qml" line="253"/>
+        <location filename="../../qml/Wallet/SendModal.qml" line="143"/>
+        <location filename="../../qml/Wallet/SendModal.qml" line="255"/>
         <source>Recipient&apos;s address</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/SendModal.qml" line="142"/>
+        <location filename="../../qml/Wallet/SendModal.qml" line="144"/>
         <source>Enter address of the recipient</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/SendModal.qml" line="148"/>
+        <location filename="../../qml/Wallet/SendModal.qml" line="150"/>
         <source>Amount to send</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/SendModal.qml" line="149"/>
+        <location filename="../../qml/Wallet/SendModal.qml" line="151"/>
         <source>Enter the amount to send</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/SendModal.qml" line="155"/>
+        <location filename="../../qml/Wallet/SendModal.qml" line="157"/>
         <source>Enable Custom Fees</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/SendModal.qml" line="166"/>
+        <location filename="../../qml/Wallet/SendModal.qml" line="168"/>
         <source>Only use custom fees if you know what you are doing!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/SendModal.qml" line="174"/>
+        <location filename="../../qml/Wallet/SendModal.qml" line="176"/>
         <source>Custom Fee</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/SendModal.qml" line="175"/>
+        <location filename="../../qml/Wallet/SendModal.qml" line="177"/>
         <source>Enter the custom fee</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/SendModal.qml" line="185"/>
+        <location filename="../../qml/Wallet/SendModal.qml" line="187"/>
         <source>Gas Limit</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/SendModal.qml" line="186"/>
+        <location filename="../../qml/Wallet/SendModal.qml" line="188"/>
         <source>Enter the gas limit</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/SendModal.qml" line="192"/>
+        <location filename="../../qml/Wallet/SendModal.qml" line="194"/>
         <source>Gas Price</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/SendModal.qml" line="193"/>
+        <location filename="../../qml/Wallet/SendModal.qml" line="195"/>
         <source>Enter the gas price</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/SendModal.qml" line="207"/>
+        <location filename="../../qml/Wallet/SendModal.qml" line="209"/>
         <source>Custom Fee can&apos;t be higher than the amount</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/SendModal.qml" line="217"/>
+        <location filename="../../qml/Wallet/SendModal.qml" line="219"/>
         <source>Not enough funds.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/SendModal.qml" line="217"/>
+        <location filename="../../qml/Wallet/SendModal.qml" line="219"/>
         <source>You have %1</source>
         <comment>AMT TICKER</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/SendModal.qml" line="229"/>
+        <location filename="../../qml/Wallet/SendModal.qml" line="231"/>
         <source>Close</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/SendModal.qml" line="234"/>
+        <location filename="../../qml/Wallet/SendModal.qml" line="236"/>
         <source>Prepare</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/SendModal.qml" line="248"/>
-        <location filename="../../qml/Wallet/SendModal.qml" line="283"/>
+        <location filename="../../qml/Wallet/SendModal.qml" line="250"/>
+        <location filename="../../qml/Wallet/SendModal.qml" line="285"/>
         <source>Send</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/SendModal.qml" line="259"/>
+        <location filename="../../qml/Wallet/SendModal.qml" line="261"/>
         <source>Amount</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/SendModal.qml" line="265"/>
+        <location filename="../../qml/Wallet/SendModal.qml" line="267"/>
         <source>Fees</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/SendModal.qml" line="271"/>
+        <location filename="../../qml/Wallet/SendModal.qml" line="273"/>
         <source>Date</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/SendModal.qml" line="278"/>
+        <location filename="../../qml/Wallet/SendModal.qml" line="280"/>
         <source>Back</source>
         <translation type="unfinished"></translation>
     </message>
