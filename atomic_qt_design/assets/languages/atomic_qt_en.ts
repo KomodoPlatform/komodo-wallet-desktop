@@ -5,11 +5,6 @@
     <name>App</name>
     <message>
         <location filename="../../qml/App.qml" line="107"/>
-        <source>mm2 version</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../qml/App.qml" line="117"/>
         <source>gui version</source>
         <translation type="unfinished"></translation>
     </message>
@@ -838,6 +833,11 @@
     <message>
         <location filename="../../qml/Settings/Settings.qml" line="78"/>
         <source>Log out</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../qml/Settings/Settings.qml" line="90"/>
+        <source>mm2 version</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

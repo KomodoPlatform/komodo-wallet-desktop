@@ -9,11 +9,6 @@
     </message>
     <message>
         <location filename="../../qml/App.qml" line="107"/>
-        <source>mm2 version</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../qml/App.qml" line="117"/>
         <source>gui version</source>
         <translation type="unfinished"></translation>
     </message>
@@ -855,6 +850,11 @@
         <location filename="../../qml/Settings/Settings.qml" line="47"/>
         <source>Fiat</source>
         <translation>Döviz</translation>
+    </message>
+    <message>
+        <location filename="../../qml/Settings/Settings.qml" line="90"/>
+        <source>mm2 version</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Language</source>

@@ -24,17 +24,17 @@ MouseArea {
         id: contextMenu
 
         MenuItem {
-            text: qsTr("Cut")
+            text: API.get().empty_string + (qsTr("Cut"))
             enabled: !text_field.readOnly && text_field.selectedText.length > 0
             onTriggered: text_field.cut()
         }
         MenuItem {
-            text: qsTr("Copy")
+            text: API.get().empty_string + (qsTr("Copy"))
             enabled: text_field.selectedText.length > 0
             onTriggered: text_field.copy()
         }
         MenuItem {
-            text: qsTr("Paste")
+            text: API.get().empty_string + (qsTr("Paste"))
             enabled: !text_field.readOnly
             onTriggered: text_field.paste()
         }
