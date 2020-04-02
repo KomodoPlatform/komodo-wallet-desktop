@@ -25,12 +25,12 @@ MouseArea {
 
         MenuItem {
             text: API.get().empty_string + (qsTr("Cut"))
-            enabled: !text_field.readOnly && text_field.selectedText.length > 0
+            enabled: !text_field.readOnly && text_field.selectedText.length > 0 && text_field.echoMode !== TextInput.Password
             onTriggered: text_field.cut()
         }
         MenuItem {
             text: API.get().empty_string + (qsTr("Copy"))
-            enabled: text_field.selectedText.length > 0
+            enabled: text_field.selectedText.length > 0 && text_field.echoMode !== TextInput.Password
             onTriggered: text_field.copy()
         }
         MenuItem {

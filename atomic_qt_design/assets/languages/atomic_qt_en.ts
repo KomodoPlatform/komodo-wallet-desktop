@@ -4,7 +4,7 @@
 <context>
     <name>App</name>
     <message>
-        <location filename="../../qml/App.qml" line="107"/>
+        <location filename="../../qml/App.qml" line="106"/>
         <source>gui version</source>
         <translation type="unfinished"></translation>
     </message>
@@ -37,12 +37,12 @@
 <context>
     <name>Dashboard</name>
     <message>
-        <location filename="../../qml/Screens/Dashboard.qml" line="97"/>
+        <location filename="../../qml/Screens/Dashboard.qml" line="100"/>
         <source>News</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Screens/Dashboard.qml" line="103"/>
+        <location filename="../../qml/Screens/Dashboard.qml" line="106"/>
         <source>DApps</source>
         <translation type="unfinished"></translation>
     </message>
@@ -816,27 +816,27 @@
 <context>
     <name>Settings</name>
     <message>
-        <location filename="../../qml/Settings/Settings.qml" line="26"/>
+        <location filename="../../qml/Settings/Settings.qml" line="31"/>
         <source>Settings</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Settings/Settings.qml" line="47"/>
+        <location filename="../../qml/Settings/Settings.qml" line="52"/>
         <source>Fiat</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Settings/Settings.qml" line="68"/>
+        <location filename="../../qml/Settings/Settings.qml" line="73"/>
         <source>Delete Wallet</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Settings/Settings.qml" line="78"/>
+        <location filename="../../qml/Settings/Settings.qml" line="83"/>
         <source>Log out</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Settings/Settings.qml" line="90"/>
+        <location filename="../../qml/Settings/Settings.qml" line="95"/>
         <source>mm2 version</source>
         <translation type="unfinished"></translation>
     </message>
