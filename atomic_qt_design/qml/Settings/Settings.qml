@@ -69,6 +69,12 @@ Item {
                     Layout.fillWidth: true
                 }
 
+                DefaultButton {
+                    Layout.fillWidth: true
+                    text: API.get().empty_string + (qsTr("Open Logs Folder"))
+                    onClicked: Qt.openUrlExternally("file:///" + API.get().get_log_folder())
+                }
+
                 DangerButton {
                     text: API.get().empty_string + (qsTr("Delete Wallet"))
                     Layout.fillWidth: true
