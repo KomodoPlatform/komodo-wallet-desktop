@@ -1005,4 +1005,17 @@ namespace atomic_dex
     {
         return QString::fromStdString(atomic_dex::get_version());
     }
+
+    QString
+    application::get_mm2_version() const
+    {
+        return QString::fromStdString(::mm2::api::rpc_version());
+    }
+
+    QString
+    application::get_log_folder() const
+    {
+        const fs::path log_path = ag::core::assets_real_path() / "logs";
+        return QString::fromStdString(log_path.c_str());
+    }
 } // namespace atomic_dex

@@ -143,7 +143,6 @@ adjust_precision(const std::string& current)
 
     boost::trim_right_if(result, boost::is_any_of("0"));
     boost::trim_right_if(result, boost::is_any_of("."));
-    // std::cerr << "WTF: " << result << std::endl;
     return result;
 }
 
