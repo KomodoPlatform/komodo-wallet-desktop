@@ -852,7 +852,12 @@
         <translation>Döviz</translation>
     </message>
     <message>
-        <location filename="../../qml/Settings/Settings.qml" line="95"/>
+        <location filename="../../qml/Settings/Settings.qml" line="74"/>
+        <source>Open Logs Folder</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../qml/Settings/Settings.qml" line="101"/>
         <source>mm2 version</source>
         <translation type="unfinished"></translation>
     </message>
@@ -861,12 +866,12 @@
         <translation type="vanished">Dil</translation>
     </message>
     <message>
-        <location filename="../../qml/Settings/Settings.qml" line="73"/>
+        <location filename="../../qml/Settings/Settings.qml" line="79"/>
         <source>Delete Wallet</source>
         <translation>Cüzdanı Sil</translation>
     </message>
     <message>
-        <location filename="../../qml/Settings/Settings.qml" line="83"/>
+        <location filename="../../qml/Settings/Settings.qml" line="89"/>
         <source>Log out</source>
         <translation>Çıkış</translation>
     </message>
