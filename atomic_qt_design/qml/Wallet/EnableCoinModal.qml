@@ -59,7 +59,7 @@ DefaultModal {
         }
 
         // Search input
-        TextField {
+        DefaultTextField {
             id: input_coin_filter
 
             Layout.fillWidth: true

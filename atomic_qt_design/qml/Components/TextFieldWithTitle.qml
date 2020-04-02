@@ -17,7 +17,7 @@ ColumnLayout {
         visible: text !== ''
     }
 
-    TextField {
+    DefaultTextField {
         id: input_field
 
         echoMode: hidable && hiding ? TextInput.Password : TextInput.Normal
