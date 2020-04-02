@@ -39,7 +39,7 @@ e.g.: `set QT_INSTALL_CMAKE_PATH "C:\Qt\5.14.1\msvc2017_64"`
 Ensure you have [brew](https://brew.sh) and the macOS [command line tools](https://developer.apple.com/downloads) installed.
 
 ```shell
-brew install nim cmake ninja git
+brew install nim cmake ninja git gcc
 ```
 
 Add the following environment variables to your `~/.bashrc` or `~/.zshrc` profile:

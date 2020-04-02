@@ -763,4 +763,19 @@ namespace mm2::api
         return {{"method", std::move(method_name)}, {"userpass", "atomic_dex_mm2_passphrase"}};
     }
 
+    std::string
+    rpc_version()
+    {
+        LOG_F(INFO, "Processing rpc call: version");
+        nlohmann::json       json_data = template_request("version");
+        RestClient::Response resp;
+        DVLOG_F(loguru::Verbosity_INFO, "request: {}", json_data.dump());
+        resp = RestClient::post(g_endpoint, "application/json", json_data.dump());
+        if (resp.code == 200) {
+            auto answer = nlohmann::json::parse(resp.body);
+            return answer.at("result").get<std::string>();
+        }
+        return "error occured during rpc_version";
+    }
+
 } // namespace mm2::api
