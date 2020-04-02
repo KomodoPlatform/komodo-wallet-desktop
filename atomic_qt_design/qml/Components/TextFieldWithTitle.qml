@@ -42,23 +42,8 @@ ColumnLayout {
             }
         }
 
-        // Copy button
-        Image {
-            source: General.image_path + "dashboard-copy.svg"
-            visible: copyable
-            scale: 0.8
-            anchors.right: parent.right
-            y: -height
-            antialiasing: true
+        CopyFieldButton {
 
-            MouseArea {
-                anchors { horizontalCenter: parent.horizontalCenter; verticalCenter: parent.verticalCenter }
-                height: input_field.height; width: input_field.height
-                onClicked: () => {
-                    input_field.selectAll()
-                    input_field.copy()
-                }
-            }
         }
     }
 }
