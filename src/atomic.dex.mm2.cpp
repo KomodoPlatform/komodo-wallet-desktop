@@ -27,9 +27,9 @@ namespace
     void
     update_coin_status(const std::vector<std::string> tickers, bool status = true)
     {
-        fs::path cfg_path = ag::core::assets_real_path() / "config";
-        std::ifstream         ifs((cfg_path / "coins.json").c_str());
-        nlohmann::json        config_json_data;
+        fs::path       cfg_path = ag::core::assets_real_path() / "config";
+        std::ifstream  ifs((cfg_path / "coins.json").c_str());
+        nlohmann::json config_json_data;
 
         assert(ifs.is_open());
         ifs >> config_json_data;
@@ -902,8 +902,12 @@ namespace atomic_dex
         if (get_coin_info(ticker).is_erc_20)
         {
             t_get_trade_fee_request rec_req{.coin = ticker};
-            t_float_50              rec_amount = t_float_50(get_trade_fixed_fee(ticker).amount);
-            value += rec_amount;
+            auto                    amount = get_trade_fixed_fee(ticker).amount;
+            if (!amount.empty())
+            {
+                t_float_50 rec_amount = t_float_50(amount);
+                value += rec_amount;
+            }
         }
     }
 
