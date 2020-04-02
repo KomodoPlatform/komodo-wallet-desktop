@@ -26,6 +26,7 @@ namespace mm2::api
 {
     inline constexpr const char* g_endpoint = "http://127.0.0.1:7783";
 
+    std::string rpc_version();
     //! Only for erc 20
     struct enable_request
     {
