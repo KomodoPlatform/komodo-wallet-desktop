@@ -109,6 +109,20 @@ QtObject {
            }
         },
 
+       prepare_send_fees: (address, amount, is_erc_20, fee_amount, gas_price, gas, max) => {
+          console.log("Preparing to send " + amount + " to " + address)
+
+          return {
+               has_error: false,
+               error_message: "",
+               balance_change: amount,
+               tx_hex: "abcdefghijklmnopqrstuvwxyz",
+               date: "17. Oct 1963 14:26",
+               fees: "0.0000125",
+               explorer_url: "https://rick.explorer.dexstats.info/",
+          }
+       },
+
        send: (tx_hex) => {
           console.log("Sending tx hex:" + tx_hex)
 
