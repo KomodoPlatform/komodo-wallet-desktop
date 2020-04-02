@@ -56,8 +56,16 @@ proc bundle*(build_type: string, osx_sdk_path: string, compiler_path: string) =
         os.copyFile(atomic_qt_app_path.parentDir().joinPath("atomic_qt.dmg"), bundle_path.joinPath("atomic_qt.dmg"))
     when defined(windows):
         let 
+            build_path =  os.getCurrentDir().parentDir().joinPath("build-" & build_type).joinPath("bin")
+            dll_path   = os.getCurrentDir().parentDir().joinPath("windows_misc")
             bundle_path = os.getCurrentDir().parentDir().joinPath("bundle-" & build_type)
+            #Copy-Item C:\Code\Trunk -Filter *.csproj.user -Destination C:\Code\F2 -Recurse
+            pwsh_cmd = "Get-ChildItem " & dll_path & " | Copy-Item -Destination " & build_path & " -Recurse -filter *.dll"
+            copy_dll_cmd = "powershell.exe -nologo -noprofile -command \"& { " & pwsh_cmd & " }\""
             bundle_cmd = "powershell.exe -nologo -noprofile -command \"& { Add-Type -A 'System.IO.Compression.FileSystem'; [IO.Compression.ZipFile]::CreateFromDirectory('bin', 'bin.zip'); }\""
+            
+        echo copy_dll_cmd
+        discard osproc.execCmd(copy_dll_cmd)    
         discard osproc.execCmd(bundle_cmd)
         discard os.existsOrCreateDir(bundle_path)
         os.moveFile("bin.zip", bundle_path.joinPath("bundle.zip"))
