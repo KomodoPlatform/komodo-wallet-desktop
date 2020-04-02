@@ -27,6 +27,8 @@ main(int argc, char* argv[])
     loguru::g_preamble_uptime = false;
     loguru::g_preamble_date   = false;
     loguru::set_thread_name("main thread");
+    const fs::path log_path = ag::core::assets_real_path() / "logs/latest_readeable.log";
+    loguru::add_file(log_path.c_str(), loguru::Truncate, loguru::Verbosity_INFO);
     atomic_dex::application atomic_app;
 
     //! QT
