@@ -16,6 +16,11 @@ Item {
 
     }
 
+    function onOpened() {
+        if(mm2_version === '') mm2_version = API.get().get_mm2_version()
+    }
+
+    property string mm2_version: ''
     property var fiats: (["USD", "EUR"])
 
     ColumnLayout {
@@ -80,6 +85,15 @@ Item {
                 }
             }
         }
+    }
+
+    DefaultText {
+        anchors.right: parent.right
+        anchors.bottom: parent.bottom
+        anchors.bottomMargin: 10
+        anchors.rightMargin: anchors.bottomMargin
+        text: API.get().empty_string + (qsTr("mm2 version") + ":    " + mm2_version)
+        font.pixelSize: Style.textSizeSmall
     }
 }
 
