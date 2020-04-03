@@ -13,6 +13,18 @@ ColumnLayout {
         return pw.field.acceptableInput && RegExp(API.get().get_regex_password_policy()).test(pw.field.text)
     }
 
+    function hasEnoughCharacters() {
+        return pw.field.acceptableInput && RegExp(/\S{16,}/).test(pw.field.text)
+    }
+
+    function hintColor(valid) {
+        return valid ? Style.colorGreen : Style.colorRed
+    }
+
+    function hintPrefix(valid) {
+        return " " + (valid ? Style.successCharacter : Style.failureCharacter) + "   "
+    }
+
     TextFieldWithTitle {
         id: pw
         hidable: true
@@ -45,7 +57,8 @@ ColumnLayout {
         }
         DefaultText {
             font.pixelSize: Style.textSizeSmall3
-            text: API.get().empty_string + (Style.listItemPrefix + qsTr("At least 16 characters"))
+            text: API.get().empty_string + (hintPrefix(hasEnoughCharacters()) + qsTr("At least 16 characters"))
+            color: hintColor(hasEnoughCharacters())
         }
     }
 }

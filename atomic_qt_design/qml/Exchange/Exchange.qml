@@ -171,7 +171,7 @@ Item {
         return status === status_swap_matching ? "0/3":
                status === status_swap_matched ? "1/3":
                status === status_swap_ongoing ? "2/3":
-               status === status_swap_successful ? "✓" : "✘"
+               status === status_swap_successful ? Style.successCharacter : Style.failureCharacter
     }
 
     function getStatusTextWithPrefix(swap) {
