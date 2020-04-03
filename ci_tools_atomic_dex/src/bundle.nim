@@ -42,14 +42,17 @@ proc bundle*(build_type: string, osx_sdk_path: string, compiler_path: string) =
         if not os.existsDir(qt_macdeploy_path.parentDir):
             qt_macdeploy_path = os.getEnv("QT_ROOT").joinPath("bin").joinPath("macdeployqt")
         let
-            dmg_name = "\"atomicDEX-Pro\""
+            dmg_name = "atomicDEX-Pro"
             app_name = "atomic_qt"
             atomic_qt_app_dir = os.getCurrentDir().joinPath("bin")
             atomic_qt_app_path = atomic_qt_app_dir.joinPath(app_name & ".app")
             atomic_qt_qml_dir = os.getCurrentDir().parentDir().parentDir().joinPath("atomic_qt_design/qml")
             bundling_cmd = qt_mac_deploy_path & " " & atomic_qt_app_path & " -qmldir=" & atomic_qt_qml_dir
+            bundle_path = os.getCurrentDir().parentDir().joinPath("bundle-" & build_type)
             dmg_packager_path = os.getCurrentDir().parentDir().joinPath("dmg-packager").joinPath("package.sh")
-            dmg_packaging_cmd = dmg_packager_path & " " & dmg_name & " " & app_name & " " & atomic_qt_app_dir & "/"
+            dmg_packaging_cmd = dmg_packager_path & " \"" & dmg_name & "\" " & app_name & " " & atomic_qt_app_dir & "/"
+            created_dmg_path = atomic_qt_app_path.parentDir().joinPath(dmg_name & ".dmg")
+            final_dmg_path = bundle_path.joinPath(dmg_name & ".dmg")
         
         echo "Bundling cmd: " & bundling_cmd
         discard osproc.execCmd(bundling_cmd)
@@ -57,6 +60,12 @@ proc bundle*(build_type: string, osx_sdk_path: string, compiler_path: string) =
 
         echo "DMG Packaging cmd: " & dmg_packaging_cmd
         discard osproc.execCmd(dmg_packaging_cmd)
+
+        echo "Creating bundle folder: " & bundle_path
+        discard os.existsOrCreateDir(bundle_path)
+
+        echo "Copy .dmg to bundle path: " & created_dmg_path & "   to   " & final_dmg_path
+        os.copyFile(created_dmg_path, final_dmg_path)
 
     when defined(windows):
         let 
