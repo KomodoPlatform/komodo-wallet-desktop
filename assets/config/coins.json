@@ -7,7 +7,10 @@
     "pubtype": 0,
     "p2shtype": 5,
     "wiftype": 128,
+    "segwit": true,
+    "txfee": 0,
     "mm2": 1,
+    "required_confirmations": 1,
     "coingecko_id": "bitcoin",
     "coinpaprika_id": "btc-bitcoin",
     "is_erc_20": false,
@@ -49,17 +52,21 @@
       "https://explorer.bitcoin.com/bch/"
     ],
     "is_erc_20": false,
-    "mm2": 1,
-    "name": "Bitcoin Cash",
-    "p2shtype": 5,
-    "pubtype": 0,
-    "rpcport": 5001,
     "type": "UTXO",
-    "wiftype": 128
+    "name": "Bitcoin Cash",
+    "rpcport": 33333,
+    "pubtype": 0,
+    "p2shtype": 5,
+    "wiftype": 128,
+    "txfee": 1000,
+    "segwit": true,
+    "mm2": 1,
+    "required_confirmations": 1
   },
   "DASH": {
     "active": false,
     "coin": "DASH",
+    "name": "Dash",
     "coingecko_id": "bitcoin",
     "coinpaprika_id": "dash-dash",
     "currently_enabled": false,
@@ -78,13 +85,15 @@
       "https://explorer.dash.org/"
     ],
     "is_erc_20": false,
-    "mm2": 1,
-    "name": "Dash",
-    "p2shtype": 5,
-    "pubtype": 0,
-    "rpcport": 10061,
     "type": "UTXO",
-    "wiftype": 128
+    "confpath": "USERHOME/.dashcore/dash.conf",
+    "rpcport": 9998,
+    "pubtype": 76,
+    "p2shtype": 16,
+    "wiftype": 204,
+    "txfee": 0,
+    "mm2": 1,
+    "required_confirmations": 2
   },
   "LTC": {
     "active": false,
@@ -107,13 +116,16 @@
       "https://blockexplorer.one/litecoin/mainnet/"
     ],
     "is_erc_20": false,
-    "mm2": 1,
-    "name": "Litecoin",
-    "p2shtype": 5,
-    "pubtype": 0,
-    "rpcport": 10061,
     "type": "UTXO",
-    "wiftype": 128
+    "name": "Litecoin",
+    "rpcport": 9332,
+    "pubtype": 48,
+    "p2shtype": 50,
+    "wiftype": 176,
+    "txfee": 0,
+    "segwit": true,
+    "mm2": 1,
+    "required_confirmations": 2
   },
   "ETH": {
     "active": false,
@@ -130,13 +142,12 @@
       "https://etherscan.io/"
     ],
     "is_erc_20": true,
+    "type": "ERC-20"
     "mm2": 1,
     "name": "Ethereum",
-    "p2shtype": 5,
-    "pubtype": 0,
+    "etomic": "0x0000000000000000000000000000000000000000",
     "rpcport": 80,
-    "type": "ERC-20",
-    "wiftype": 128
+    "required_confirmations": 3
   },
   "USDC": {
     "active": false,
@@ -153,13 +164,12 @@
       "https://etherscan.io/"
     ],
     "is_erc_20": true,
-    "mm2": 1,
-    "name": "USD Coin",
-    "p2shtype": 5,
-    "pubtype": 0,
-    "rpcport": 80,
     "type": "ERC-20",
-    "wiftype": 128
+    "name": "USD Coin",
+    "etomic": "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48",
+    "rpcport": 80,
+    "mm2": 1,
+    "required_confirmations": 3
   },
   "AWC": {
     "active": false,
@@ -176,13 +186,12 @@
       "https://etherscan.io/"
     ],
     "is_erc_20": true,
-    "mm2": 1,
-    "name": "Atomic Wallet Coin",
-    "p2shtype": 5,
-    "pubtype": 0,
-    "rpcport": 8555,
     "type": "ERC-20",
-    "wiftype": 128
+    "name": "Atomic Wallet Coin",
+    "etomic": "0xaD22f63404f7305e4713CcBd4F296f34770513f4",
+    "rpcport": 80,
+    "mm2": 1,
+    "required_confirmations": 3
   },
   "TUSD": {
     "active": false,
@@ -199,13 +208,12 @@
       "https://etherscan.io/"
     ],
     "is_erc_20": true,
-    "mm2": 1,
-    "name": "True USD",
-    "p2shtype": 5,
-    "pubtype": 0,
-    "rpcport": 8555,
     "type": "ERC-20",
-    "wiftype": 128
+    "name": "True USD",
+    "etomic": "0x0000000000085d4780B73119b644AE5ecd22b376",
+    "rpcport": 80,
+    "mm2": 1,
+    "required_confirmations": 3
   },
   "KMD": {
     "coin": "KMD",
@@ -333,13 +341,18 @@
   },
   "CHIPS": {
     "coin": "CHIPS",
-    "asset": "CHIPS",
-    "type": "Smart Chain",
-    "name": "Chips",
+    "type": "UTXO",
+    "name": "chips",
+    "fname": "Chips",
     "rpcport": 57776,
-    "txversion": 4,
-    "overwintered": 1,
+    "pubtype": 60,
+    "p2shtype": 85,
+    "wiftype": 188,
+    "txfee": 10000,
+    "segwit": true,
     "mm2": 1,
+    "required_confirmations": 2,
+    "requires_notarization": true,
     "coingecko_id": "test-coin",
     "coinpaprika_id": "chips-chips",
     "is_erc_20": false,
