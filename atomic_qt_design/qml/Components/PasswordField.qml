@@ -13,20 +13,24 @@ ColumnLayout {
         return pw.field.acceptableInput && RegExp(API.get().get_regex_password_policy()).test(pw.field.text)
     }
 
-    function hasEnoughCharacters() {
-        return pw.field.acceptableInput && RegExp(/\S{16,}/).test(pw.field.text)
-    }
-
-    function hasEnoughNumericCharacters() {
-        return pw.field.acceptableInput && RegExp(/\S*[0-9]\S*/).test(pw.field.text)
-    }
-
     function hasEnoughUppercaseCharacters() {
         return pw.field.acceptableInput && RegExp(/\S*[A-Z]\S*/).test(pw.field.text)
     }
 
     function hasEnoughLowercaseCharacters() {
         return pw.field.acceptableInput && RegExp(/\S*[a-z]\S*/).test(pw.field.text)
+    }
+
+    function hasEnoughNumericCharacters() {
+        return pw.field.acceptableInput && RegExp(/\S*[0-9]\S*/).test(pw.field.text)
+    }
+
+    function hasEnoughSpecialCharacters() {
+        return pw.field.acceptableInput && RegExp(/\S*[@#$%{}[\]()\/\\'\"`~,;:.<>+\-_=!^&*|?]\S*/).test(pw.field.text)
+    }
+
+    function hasEnoughCharacters() {
+        return pw.field.acceptableInput && RegExp(/\S{16,}/).test(pw.field.text)
     }
 
     function hintColor(valid) {
@@ -68,7 +72,8 @@ ColumnLayout {
         }
         DefaultText {
             font.pixelSize: Style.textSizeSmall3
-            text: API.get().empty_string + (Style.listItemPrefix + qsTr("At least 1 special character (eg. !@#$%)"))
+            text: API.get().empty_string + (hintPrefix(hasEnoughSpecialCharacters()) + qsTr("At least 1 special character (eg. !@#$%)"))
+            color: hintColor(hasEnoughSpecialCharacters())
         }
         DefaultText {
             font.pixelSize: Style.textSizeSmall3
