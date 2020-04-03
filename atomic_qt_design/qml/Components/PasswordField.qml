@@ -21,6 +21,14 @@ ColumnLayout {
         return pw.field.acceptableInput && RegExp(/\S*[0-9]\S*/).test(pw.field.text)
     }
 
+    function hasEnoughUppercaseCharacters() {
+        return pw.field.acceptableInput && RegExp(/\S*[A-Z]\S*/).test(pw.field.text)
+    }
+
+    function hasEnoughLowercaseCharacters() {
+        return pw.field.acceptableInput && RegExp(/\S*[a-z]\S*/).test(pw.field.text)
+    }
+
     function hintColor(valid) {
         return valid ? Style.colorGreen : Style.colorRed
     }
@@ -45,11 +53,13 @@ ColumnLayout {
 
         DefaultText {
             font.pixelSize: Style.textSizeSmall3
-            text: API.get().empty_string + (Style.listItemPrefix + qsTr("At least 1 lowercase alphabetical character"))
+            text: API.get().empty_string + (hintPrefix(hasEnoughLowercaseCharacters()) + qsTr("At least 1 lowercase alphabetical character"))
+            color: hintColor(hasEnoughLowercaseCharacters())
         }
         DefaultText {
             font.pixelSize: Style.textSizeSmall3
-            text: API.get().empty_string + (Style.listItemPrefix + qsTr("At least 1 uppercase alphabetical character"))
+            text: API.get().empty_string + (hintPrefix(hasEnoughUppercaseCharacters()) + qsTr("At least 1 uppercase alphabetical character"))
+            color: hintColor(hasEnoughUppercaseCharacters())
         }
         DefaultText {
             font.pixelSize: Style.textSizeSmall3
