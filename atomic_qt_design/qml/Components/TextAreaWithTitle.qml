@@ -22,39 +22,12 @@ ColumnLayout {
         }
     }
 
-    TextArea {
+    DefaultTextArea {
         id: input_field
         Layout.fillWidth: true
-        selectByMouse: true
-        wrapMode: TextEdit.Wrap
 
-        KeyNavigation.priority: KeyNavigation.BeforeItem
-        KeyNavigation.backtab: nextItemInFocusChain(false)
-        KeyNavigation.tab: nextItemInFocusChain(true)
-        Keys.onPressed: {
-            if(onReturn !== undefined && event.key === Qt.Key_Return) {
-                onReturn()
-                event.accepted = true
-            }
-        }
+        CopyFieldButton {
 
-        // Copy button
-        Image {
-            source: General.image_path + "dashboard-copy.svg"
-            visible: copyable
-            scale: 0.8
-            anchors.right: parent.right
-            y: -height
-            antialiasing: true
-
-            MouseArea {
-                anchors { horizontalCenter: parent.horizontalCenter; verticalCenter: parent.verticalCenter }
-                height: input_field.height; width: input_field.height
-                onClicked: () => {
-                    input_field.selectAll()
-                    input_field.copy()
-                }
-            }
         }
     }
 }

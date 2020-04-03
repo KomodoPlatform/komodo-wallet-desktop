@@ -74,10 +74,12 @@
         <file>atomic_qt_design/qml/Sidebar/Sidebar.qml</file>
         <file>atomic_qt_design/qml/Sidebar/SidebarLine.qml</file>
         <file>atomic_qt_design/qml/Components/ColumnHeader.qml</file>
+        <file>atomic_qt_design/qml/Components/RightClickMenu.qml</file>
         <file>atomic_qt_design/qml/Components/PlusButton.qml</file>
         <file>atomic_qt_design/qml/Components/AddressField.qml</file>
         <file>atomic_qt_design/qml/Components/AmountField.qml</file>
         <file>atomic_qt_design/qml/Components/AmountIntField.qml</file>
+        <file>atomic_qt_design/qml/Components/CopyFieldButton.qml</file>
         <file>atomic_qt_design/qml/Components/PasswordField.qml</file>
         <file>atomic_qt_design/qml/Components/PasswordForm.qml</file>
         <file>atomic_qt_design/qml/Components/WalletNameField.qml</file>
@@ -85,6 +87,8 @@
         <file>atomic_qt_design/qml/Components/PrimaryButton.qml</file>
         <file>atomic_qt_design/qml/Components/DefaultButton.qml</file>
         <file>atomic_qt_design/qml/Components/DefaultText.qml</file>
+        <file>atomic_qt_design/qml/Components/DefaultTextField.qml</file>
+        <file>atomic_qt_design/qml/Components/DefaultTextArea.qml</file>
         <file>atomic_qt_design/qml/Components/DefaultComboBox.qml</file>
         <file>atomic_qt_design/qml/Components/DefaultModal.qml</file>
         <file>atomic_qt_design/qml/Components/PaneWithTitle.qml</file>

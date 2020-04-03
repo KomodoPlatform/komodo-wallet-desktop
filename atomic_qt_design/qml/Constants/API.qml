@@ -13,8 +13,10 @@ QtObject {
        },
 
         // Other
+        get_log_folder: () => { return "D:/Projects/atomicDEX-Pro/atomic_qt_design" },
+        get_mm2_version: () => { return "5.1.1" },
         get_version: () => { return "0.1.1-alpha" },
-        get_regex_password_policy: () => { return new RegExp(/^(?=.{16,})(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[@#$%{}[\]()\/\\'\"`~,;:.<>+\-_=!^&*|?]).*$/)},
+
         wallet_default_name: "",
 
         balance_fiat_all: "12345678.90",
@@ -108,6 +110,20 @@ QtObject {
                 explorer_url: "https://rick.explorer.dexstats.info/",
            }
         },
+
+       prepare_send_fees: (address, amount, is_erc_20, fee_amount, gas_price, gas, max) => {
+          console.log("Preparing to send " + amount + " to " + address)
+
+          return {
+               has_error: false,
+               error_message: "",
+               balance_change: amount,
+               tx_hex: "abcdefghijklmnopqrstuvwxyz",
+               date: "17. Oct 1963 14:26",
+               fees: "0.0000125",
+               explorer_url: "https://rick.explorer.dexstats.info/",
+          }
+       },
 
        send: (tx_hex) => {
           console.log("Sending tx hex:" + tx_hex)

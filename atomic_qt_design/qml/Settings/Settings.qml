@@ -16,6 +16,11 @@ Item {
 
     }
 
+    function onOpened() {
+        if(mm2_version === '') mm2_version = API.get().get_mm2_version()
+    }
+
+    property string mm2_version: ''
     property var fiats: (["USD", "EUR"])
 
     ColumnLayout {
@@ -64,6 +69,12 @@ Item {
                     Layout.fillWidth: true
                 }
 
+                DefaultButton {
+                    Layout.fillWidth: true
+                    text: API.get().empty_string + (qsTr("Open Logs Folder"))
+                    onClicked: Qt.openUrlExternally("file:///" + API.get().get_log_folder())
+                }
+
                 DangerButton {
                     text: API.get().empty_string + (qsTr("Delete Wallet"))
                     Layout.fillWidth: true
@@ -80,6 +91,15 @@ Item {
                 }
             }
         }
+    }
+
+    DefaultText {
+        anchors.right: parent.right
+        anchors.bottom: parent.bottom
+        anchors.bottomMargin: 10
+        anchors.rightMargin: anchors.bottomMargin
+        text: API.get().empty_string + (qsTr("mm2 version") + ":    " + mm2_version)
+        font.pixelSize: Style.textSizeSmall
     }
 }
 

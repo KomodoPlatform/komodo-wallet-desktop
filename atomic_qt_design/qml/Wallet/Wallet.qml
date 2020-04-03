@@ -247,7 +247,7 @@ RowLayout {
         }
 
         // Search input
-        TextField {
+        DefaultTextField {
             id: input_coin_filter
 
             function reset() {

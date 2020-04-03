@@ -98,13 +98,12 @@ Rectangle {
         }
     }
 
-
     DefaultText {
         anchors.right: parent.right
         anchors.bottom: parent.bottom
         anchors.bottomMargin: 10
         anchors.rightMargin: anchors.bottomMargin
-        text: qsTr("version") + ": " + API.get().get_version()
+        text: API.get().empty_string + (qsTr("gui version") + ":    " + API.get().get_version())
         font.pixelSize: Style.textSizeSmall
     }
 }

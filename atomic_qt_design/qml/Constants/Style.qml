@@ -9,10 +9,17 @@ QtObject {
                                          })
 
     readonly property string listItemPrefix:  " ⚬   "
+    readonly property string successCharacter:  "✓"
+    readonly property string failureCharacter:  "✘"
 
     readonly property int materialElevation: 1
 
     readonly property int textSizeSmall: 10
+    readonly property int textSizeSmall1: 11
+    readonly property int textSizeSmall2: 12
+    readonly property int textSizeSmall3: 13
+    readonly property int textSizeSmall4: 14
+    readonly property int textSizeSmall5: 15
     readonly property int textSize: 16
     readonly property int textSize2: 24
     readonly property int textSize3: 36
