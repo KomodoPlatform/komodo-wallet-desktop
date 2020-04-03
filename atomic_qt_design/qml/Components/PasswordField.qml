@@ -46,7 +46,7 @@ ColumnLayout {
         hidable: true
         title: API.get().empty_string + (qsTr("Password"))
         field.placeholderText: API.get().empty_string + (qsTr("Enter a password for your wallet"))
-        field.validator: RegExpValidator { regExp: /\S+/ }
+        field.validator: RegExpValidator { regExp: /[A-Za-z0-9@#$%{}[\]()\/\\'"`~,;:.<>+\-_=!^&*|?]+/ }
     }
 
     ColumnLayout {
