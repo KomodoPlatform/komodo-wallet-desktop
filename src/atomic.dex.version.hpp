@@ -20,6 +20,6 @@ namespace atomic_dex
 {
     constexpr const char* get_version()
     {
-        return "0.1.1-alpha";
+        return "0.1.2-alpha";
     }
 }
