@@ -14,23 +14,23 @@ ColumnLayout {
     }
 
     function hasEnoughUppercaseCharacters() {
-        return pw.field.acceptableInput && RegExp(/\S*[A-Z]\S*/).test(pw.field.text)
+        return pw.field.acceptableInput && RegExp(/(?=.*[A-Z])/).test(pw.field.text)
     }
 
     function hasEnoughLowercaseCharacters() {
-        return pw.field.acceptableInput && RegExp(/\S*[a-z]\S*/).test(pw.field.text)
+        return pw.field.acceptableInput && RegExp(/(?=.*[a-z])/).test(pw.field.text)
     }
 
     function hasEnoughNumericCharacters() {
-        return pw.field.acceptableInput && RegExp(/\S*[0-9]\S*/).test(pw.field.text)
+        return pw.field.acceptableInput && RegExp(/(?=.*[0-9])/).test(pw.field.text)
     }
 
     function hasEnoughSpecialCharacters() {
-        return pw.field.acceptableInput && RegExp(/\S*[@#$%{}[\]()\/\\'\"`~,;:.<>+\-_=!^&*|?]\S*/).test(pw.field.text)
+        return pw.field.acceptableInput && RegExp(/(?=.*[@#$%{}[\]()\/\\'"`~,;:.<>+\-_=!^&*|?])/).test(pw.field.text)
     }
 
     function hasEnoughCharacters() {
-        return pw.field.acceptableInput && RegExp(/\S{16,}/).test(pw.field.text)
+        return pw.field.acceptableInput && RegExp(/(?=.{16,})/).test(pw.field.text)
     }
 
     function hintColor(valid) {
