@@ -10,7 +10,7 @@ ColumnLayout {
     property bool hide_hint: false
 
     function isValid() {
-        return pw.field.acceptableInput && RegExp(API.get().get_regex_password_policy()).test(pw.field.text)
+        return pw.field.acceptableInput && RegExp(/^(?=.{16,})(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[@#$%{}[\]()\/\\'"`~,;:.<>+\-_=!^&*|?]).*$/).test(pw.field.text)
     }
 
     function hasEnoughUppercaseCharacters() {

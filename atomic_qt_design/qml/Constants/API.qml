@@ -16,7 +16,7 @@ QtObject {
         get_log_folder: () => { return "D:/Projects/atomicDEX-Pro/atomic_qt_design" },
         get_mm2_version: () => { return "5.1.1" },
         get_version: () => { return "0.1.1-alpha" },
-        get_regex_password_policy: () => { return new RegExp(/^(?=.{16,})(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[@#$%{}[\]()\/\\'\"`~,;:.<>+\-_=!^&*|?]).*$/)},
+
         wallet_default_name: "",
 
         balance_fiat_all: "12345678.90",
