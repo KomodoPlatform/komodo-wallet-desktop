@@ -17,6 +17,10 @@ ColumnLayout {
         return pw.field.acceptableInput && RegExp(/\S{16,}/).test(pw.field.text)
     }
 
+    function hasEnoughNumericCharacters() {
+        return pw.field.acceptableInput && RegExp(/\S*[0-9]\S*/).test(pw.field.text)
+    }
+
     function hintColor(valid) {
         return valid ? Style.colorGreen : Style.colorRed
     }
@@ -49,7 +53,8 @@ ColumnLayout {
         }
         DefaultText {
             font.pixelSize: Style.textSizeSmall3
-            text: API.get().empty_string + (Style.listItemPrefix + qsTr("At least 1 numeric character"))
+            text: API.get().empty_string + (hintPrefix(hasEnoughNumericCharacters()) + qsTr("At least 1 numeric character"))
+            color: hintColor(hasEnoughNumericCharacters())
         }
         DefaultText {
             font.pixelSize: Style.textSizeSmall3
