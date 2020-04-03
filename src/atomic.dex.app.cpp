@@ -234,7 +234,7 @@ namespace atomic_dex
         return output;
 #else
         std::array<unsigned char, WALLY_SECP_RANDOMIZE_LEN> data;
-        boost::random_device device;
+        boost::random_device                                device;
         device.generate(data.begin(), data.end());
         char*  output;
         words* output_words;
@@ -1017,5 +1017,53 @@ namespace atomic_dex
     {
         const fs::path log_path = ag::core::assets_real_path() / "logs";
         return QString::fromStdString(log_path.c_str());
+    }
+
+    QString
+    application::retrieve_seed(const QString& wallet_name, const QString& password)
+    {
+        std::error_code ec;
+        auto            key = atomic_dex::derive_password(password.toStdString(), ec);
+        if (ec)
+        {
+            DLOG_F(WARNING, "{}", ec.message());
+            if (ec == dextop_error::derive_password_failed)
+            {
+                return "wrong password";
+            }
+        }
+        using namespace std::string_literals;
+        const fs::path seed_path = ag::core::assets_real_path() / ("config/"s + wallet_name.toStdString() + ".seed"s);
+        auto           seed      = atomic_dex::decrypt(seed_path, key.data(), ec);
+        if (ec == dextop_error::corrupted_file_or_wrong_password)
+        {
+            LOG_F(WARNING, "{}", ec.message());
+            return "wrong password";
+        }
+        return QString::fromStdString(seed);
+    }
+
+    bool
+    application::confirm_password(const QString& wallet_name, const QString& password)
+    {
+        std::error_code ec;
+        auto            key = atomic_dex::derive_password(password.toStdString(), ec);
+        if (ec)
+        {
+            DLOG_F(WARNING, "{}", ec.message());
+            if (ec == dextop_error::derive_password_failed)
+            {
+                return false;
+            }
+        }
+        using namespace std::string_literals;
+        const fs::path seed_path = ag::core::assets_real_path() / ("config/"s + wallet_name.toStdString() + ".seed"s);
+        auto           seed      = atomic_dex::decrypt(seed_path, key.data(), ec);
+        if (ec == dextop_error::corrupted_file_or_wrong_password)
+        {
+            LOG_F(WARNING, "{}", ec.message());
+            return false;
+        }
+        return true;
     }
 } // namespace atomic_dex
