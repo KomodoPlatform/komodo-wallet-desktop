@@ -102,6 +102,8 @@ namespace atomic_dex
         //! Bind to the QML Worlds
         Q_INVOKABLE QString get_mm2_version() const;
         Q_INVOKABLE QString get_log_folder() const;
+        Q_INVOKABLE QString retrieve_seed(const QString &wallet_name, const QString& password);
+        Q_INVOKABLE bool confirm_password(const QString &wallet_name, const QString& password);
         Q_INVOKABLE QStringList get_available_langs() const;
         Q_INVOKABLE QObject* prepare_send(const QString& address, const QString& amount, bool max = false);
         Q_INVOKABLE QObject* prepare_send_fees(
