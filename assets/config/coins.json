@@ -142,7 +142,7 @@
       "https://etherscan.io/"
     ],
     "is_erc_20": true,
-    "type": "ERC-20"
+    "type": "ERC-20",
     "mm2": 1,
     "name": "Ethereum",
     "etomic": "0x0000000000000000000000000000000000000000",
