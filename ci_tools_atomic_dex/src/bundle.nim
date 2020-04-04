@@ -12,8 +12,7 @@ proc fix_osx_libraries(atomic_app_path: string) =
     echo "Framework path: " & framework_path 
     os.setCurrentDir(framework_path)
     echo "CWD: " & framework_path
-    let libs = [(loname: "libboost_chrono-mt.dylib", lname: "libboost_locale-mt.dylib"), 
-                (loname: "libboost_system-mt.dylib", lname: "libboost_locale-mt.dylib"),
+    let libs = [(loname: "libboost_chrono-mt.dylib", lname: "libboost_locale-mt.dylib"),
                 (loname: "libboost_thread-mt.dylib", lname: "libboost_locale-mt.dylib"), 
                 (loname: "libboost_thread-mt.dylib", lname: "libboost_log-mt.dylib"),
                 (loname: "libboost_regex-mt.dylib", lname: "libboost_log-mt.dylib"),
@@ -30,6 +29,7 @@ proc fix_osx_libraries(atomic_app_path: string) =
         echo "Fixing cmd: " & cmd_fix
         discard osproc.execCmd(cmd_fix)
     discard osproc.execCmd("install_name_tool -change @executable_path/../Frameworks/libboost_filesystem-mt.dylib @executable_path/../Frameworks/libboost_filesystem.dylib libboost_log-mt.dylib")
+    discard osproc.execCmd("install_name_tool -change @loader_path/libboost_system-mt.dylib @executable_path/../Frameworks/libboost_system.dylib libboost_locale-mt.dylib")
     os.setCurrentDir(orig_path)
     echo "CWD: " & os.getCurrentDir()
 
