@@ -117,12 +117,13 @@ Item {
         updateTradeInfo()
     }
 
-    function updateTradeInfo() {
+    function updateTradeInfo(force=false) {
         const base = getTicker(true)
         const rel = getTicker(false)
         const amount = form_base.getVolume()
-        if(base !== undefined && rel !== undefined && amount !== undefined &&
-           base !== ''        && rel !== ''        && amount !== '' && amount !== '0') {
+        if(force ||
+            (base !== undefined && rel !== undefined && amount !== undefined &&
+             base !== ''        && rel !== ''        && amount !== '' && amount !== '0')) {
             getTradeInfo(base, rel, amount)
         }
     }
@@ -229,7 +230,9 @@ Item {
     }
 
     function trade(base, rel) {
-        form_base.capVolume()
+        updateTradeInfo(true) // Force update trade info
+        form_base.capVolume() // To cap the value for one last time
+
         action_result = API.get().place_sell_order(base, rel, getCurrentPrice(), form_base.field.text) ? "success" : "error"
         if(action_result === "success") {
             onOrderSuccess()
