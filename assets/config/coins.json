@@ -28,7 +28,7 @@
     "explorer_url": [
       "https://blockstream.info/"
     ],
-    "active": false,
+    "active": true,
     "currently_enabled": false
   },
   "BCH": {
@@ -246,7 +246,7 @@
     "explorer_url": [
       "https://kmdexplorer.io/"
     ],
-    "active": false,
+    "active": true,
     "currently_enabled": false
   },
   "DEX": {
@@ -307,7 +307,7 @@
     "explorer_url": [
       "https://rick.kmd.dev/"
     ],
-    "active": true,
+    "active": false,
     "currently_enabled": false
   },
   "MORTY": {
@@ -336,7 +336,7 @@
     "explorer_url": [
       "https://morty.kmd.dev/"
     ],
-    "active": true,
+    "active": false,
     "currently_enabled": false
   },
   "CHIPS": {
@@ -428,7 +428,7 @@
     "explorer_url": [
       "https://explorer.veruscoin.io/"
     ],
-    "active": true,
+    "active": false,
     "currently_enabled": false
   },
   "ILN": {
@@ -454,7 +454,7 @@
     "explorer_url": [
       "https://explorer.ilien.io/"
     ],
-    "active": true,
+    "active": false,
     "currently_enabled": false
   }
 }
