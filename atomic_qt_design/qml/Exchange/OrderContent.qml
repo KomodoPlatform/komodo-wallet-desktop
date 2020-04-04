@@ -63,7 +63,7 @@ Rectangle {
     // UUID
     DefaultText {
         id: uuid
-        visible: !in_modal
+        visible: !in_modal && item.uuid !== ''
         text: API.get().empty_string + ((item.is_recent_swap ? qsTr("Swap ID") : qsTr("UUID")) + ": " + item.uuid)
         color: Style.colorTheme2
         anchors.top: base_amount.bottom
@@ -82,7 +82,7 @@ Rectangle {
     // Date
     DefaultText {
         id: date
-        visible: !in_modal
+        visible: !in_modal && item.date !== ''
         text: API.get().empty_string + (item.date)
         color: Style.colorTheme2
         anchors.top: uuid.bottom
@@ -91,7 +91,7 @@ Rectangle {
 
     // Maker/Taker
     DefaultText {
-        visible: !in_modal
+        visible: !in_modal && item.uuid !== ''
         text: API.get().empty_string + (item.am_i_maker ? qsTr("Maker Order"): qsTr("Taker Order"))
         color: Style.colorWhite6
         anchors.verticalCenter: date.verticalCenter

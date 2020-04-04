@@ -310,14 +310,16 @@ Item {
 
             text: API.get().empty_string + (qsTr("Trade"))
             enabled: form_base.isValid() && form_rel.isValid()
-            onClicked: trade(getTicker(true), getTicker(false))
+            onClicked: confirm_trade_modal.open()
+        }
+
+        ConfirmTradeModal {
+            id: confirm_trade_modal
         }
 
         // Price
-        DefaultText {
+        PriceLine {
             Layout.alignment: Qt.AlignHCenter
-            text: API.get().empty_string + (!hasValidPrice() ? '' : (preffered_price === empty_price ? qsTr("Price") + ": " + getCalculatedPrice() :
-                                                    qsTr("Selected Price") + ": " + preffered_price) + " " + getTicker(false))
         }
 
         // Result
