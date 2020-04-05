@@ -115,6 +115,7 @@
         <file>atomic_qt_design/qml/Wallet/TransactionDetailsModal.qml</file>
         <file>atomic_qt_design/qml/Wallet/AddressList.qml</file>
         <file>atomic_qt_design/qml/Settings/Settings.qml</file>
+        <file>atomic_qt_design/qml/Settings/RecoverSeedModal.qml</file>
         <file>atomic_qt_design/qml/Settings/Languages.qml</file>
     </qresource>
 </RCC>

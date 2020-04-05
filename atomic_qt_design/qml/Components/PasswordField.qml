@@ -8,6 +8,7 @@ ColumnLayout {
     property alias title: pw.title
     property alias field: pw.field
     property bool hide_hint: false
+    property bool new_password: true
 
     function isValid() {
         return pw.field.acceptableInput && RegExp(/^(?=.{16,})(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[@#$%{}[\]()\/\\'"`~,;:.<>+\-_=!^&*|?]).*$/).test(pw.field.text)
@@ -45,7 +46,7 @@ ColumnLayout {
         id: pw
         hidable: true
         title: API.get().empty_string + (qsTr("Password"))
-        field.placeholderText: API.get().empty_string + (qsTr("Enter a password for your wallet"))
+        field.placeholderText: API.get().empty_string + (new_password ? qsTr("Enter a password for your wallet") : qsTr("Enter the password of your wallet"))
         field.validator: RegExpValidator { regExp: /[A-Za-z0-9@#$%{}[\]()\/\\'"`~,;:.<>+\-_=!^&*|?]+/ }
     }
 

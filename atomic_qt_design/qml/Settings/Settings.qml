@@ -75,6 +75,16 @@ Item {
                     onClicked: Qt.openUrlExternally("file:///" + API.get().get_log_folder())
                 }
 
+                DefaultButton {
+                    Layout.fillWidth: true
+                    text: API.get().empty_string + (qsTr("View Seed"))
+                    onClicked: recover_seed_modal.open()
+                }
+
+                RecoverSeedModal {
+                    id: recover_seed_modal
+                }
+
                 DangerButton {
                     text: API.get().empty_string + (qsTr("Delete Wallet"))
                     Layout.fillWidth: true
