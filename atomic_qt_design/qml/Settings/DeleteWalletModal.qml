@@ -9,7 +9,14 @@ import "../Constants"
 DefaultModal {
     id: root
 
+    property bool wrong_password: false
+
     width: 800
+
+    onClosed: {
+        wrong_password = false
+        input_password.reset()
+    }
 
     // Inside modal
     ColumnLayout {
@@ -50,6 +57,19 @@ DefaultModal {
             }
         }
 
+        PasswordForm {
+            id: input_password
+            Layout.fillWidth: true
+            confirm: false
+            field.placeholderText: API.get().empty_string + (qsTr("Enter the password of your wallet"))
+        }
+
+        DefaultText {
+            text: API.get().empty_string + (qsTr("Wrong Password"))
+            color: Style.colorRed
+            visible: wrong_password
+        }
+
         // Buttons
         RowLayout {
             DefaultButton {
@@ -61,11 +81,18 @@ DefaultModal {
             DangerButton {
                 text: API.get().empty_string + (qsTr("Delete"))
                 Layout.fillWidth: true
+                enabled: input_password.isValid()
                 onClicked: {
-                    root.close()
+                    if(API.get().confirm_password(API.get().wallet_default_name, input_password.field.text)) {
+                        root.close()
+                        wrong_password = false
 
-                    API.get().delete_wallet(API.get().wallet_default_name)
-                    disconnect()
+                        API.get().delete_wallet(API.get().wallet_default_name)
+                        disconnect()
+                    }
+                    else {
+                        wrong_password = true
+                    }
                 }
             }
         }
