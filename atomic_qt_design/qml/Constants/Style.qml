@@ -40,6 +40,7 @@ QtObject {
 
     readonly property string colorRed: "#DC0333"
     readonly property string colorRed2: "#891931"
+    readonly property string colorRed3: "#661224"
     readonly property string colorYellow: "#FFC305"
     readonly property string colorOrange: "#F7931A"
     readonly property string colorGreen: "#2FEA8B"

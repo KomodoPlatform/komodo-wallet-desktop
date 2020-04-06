@@ -34,6 +34,7 @@ ColumnLayout {
     }
 
     PasswordField {
+        hide_hint: true
         visible: confirm
         id: input_confirm_password
         title: API.get().empty_string + (qsTr("Confirm Password"))

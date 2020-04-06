@@ -88,10 +88,11 @@ Item {
                 DangerButton {
                     text: API.get().empty_string + (qsTr("Delete Wallet"))
                     Layout.fillWidth: true
-                    onClicked: {
-                        API.get().delete_wallet(API.get().wallet_default_name)
-                        disconnect()
-                    }
+                    onClicked: delete_wallet_modal.open()
+                }
+
+                DeleteWalletModal {
+                    id: delete_wallet_modal
                 }
 
                 DefaultButton {

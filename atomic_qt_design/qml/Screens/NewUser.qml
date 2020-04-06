@@ -43,7 +43,7 @@ SetupPage {
     title: API.get().empty_string + (qsTr("New User"))
 
     content: ColumnLayout {
-        width: 400
+        width: 600
 
         function reset() {
             new_user.reset()
@@ -62,6 +62,34 @@ SetupPage {
         WalletNameField {
             id: input_wallet_name
             field.onAccepted: trySubmit()
+        }
+
+
+        Rectangle {
+            Layout.topMargin: 10
+            Layout.bottomMargin: Layout.topMargin
+            Layout.fillWidth: true
+            color: Style.colorRed3
+            radius: 10
+            height: warning_texts.height + 20
+
+            ColumnLayout {
+                id: warning_texts
+
+                anchors.centerIn: parent
+
+                DefaultText {
+                    Layout.alignment: Qt.AlignHCenter
+                    text: API.get().empty_string + (qsTr("Important: Back up your seed phrase before proceeding!"))
+                }
+
+                DefaultText {
+                    Layout.alignment: Qt.AlignHCenter
+                    text: API.get().empty_string + (qsTr("We recommend storing it offline."))
+                    font.pixelSize: Style.textSizeSmall4
+                    color: Style.colorWhite4
+                }
+            }
         }
 
         TextAreaWithTitle {
