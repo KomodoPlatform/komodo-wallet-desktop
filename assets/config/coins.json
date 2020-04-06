@@ -270,8 +270,7 @@
   "CHIPS": {
     "coin": "CHIPS",
     "type": "UTXO",
-    "name": "chips",
-    "fname": "Chips",
+    "name": "Chips",
     "coingecko_id": "test-coin",
     "coinpaprika_id": "chips-chips",
     "is_erc_20": false,
@@ -287,7 +286,7 @@
       }
     ],
     "explorer_url": [
-      "https://explorer.chips.cash"
+      "https://explorer.chips.cash/"
     ],
     "active": false,
     "currently_enabled": false
@@ -311,7 +310,7 @@
       }
     ],
     "explorer_url": [
-      "https://explorer.myhush.org"
+      "https://explorer.myhush.org/"
     ],
     "active": false,
     "currently_enabled": false
