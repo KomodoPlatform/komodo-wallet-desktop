@@ -25,6 +25,8 @@ QtObject {
         lang: "en",
         get_available_langs: () => ["en", "fr", "tr"],
 
+        confirm_password: (wallet_name, password)  => { return true },
+
         current_coin_info: {"objectName":"", "tx_state": "Finished", "tx_current_block": "1523412", "is_claimable": true, "minimal_balance_for_asking_rewards": "10", "ticker":"MORTY", "balance":"18.20118151","address":"RH8WgfYXbeMgF96vCqfKo47TkFApNXkQM2","fiat_amount":"0.00","explorer_url":"https://morty.kmd.dev/","transactions":[{"objectName":"","received":true,"blockheight":265534,"confirmations":5298,"amount":"7.49999","amount_fiat":"0.00","date":"31. Jan 2020 09:08","tx_hash":"23f575a9b93a8149eb87b7a86675485ba646ab34f510ec5a26d4fc6ceee19e46","fees":"0.00001","to":["RH8WgfYXbeMgF96vCqfKo47TkFApNXkQM2"],"from":["bJPAVNUbZw9jhy5W2xd2WDe4RDpD2QM9Gw"]},{"objectName":"","received":false,"blockheight":265467,"confirmations":5365,"amount":"3.00001","amount_fiat":"0.00","date":"31. Jan 2020 08:03","tx_hash":"68f688d063df2e0464ead45a031771ba5125f2661dc0504274bcdb74f42e3d36","fees":"0.00001","to":["RH8WgfYXbeMgF96vCqfKo47TkFApNXkQM2","bCk3peTFj3qf1w6AzfLscfxPWyzcwZdXHK"],"from":["RH8WgfYXbeMgF96vCqfKo47TkFApNXkQM2"]},{"objectName":"","received":true,"blockheight":230579,"confirmations":40253,"amount":"13.70120151","amount_fiat":"0.00","date":" 7. Jan 2020 10:31","tx_hash":"9479a455413dbb8f57fad7504d360cb66e984a61eb55eca27e9544b11368d13c","fees":"0.00001","to":["RH8WgfYXbeMgF96vCqfKo47TkFApNXkQM2"],"from":["RP5Q1aPXJvNzSvYSfumw3fK3G1UqfHgs63"]}]},
 
         get_coin_info: (ticker) => {
