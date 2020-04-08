@@ -24,7 +24,7 @@ SetupPage {
         }
         else {
             console.log("Failed: Recover seed")
-            text_error = "Failed to recover the seed"
+            text_error = API.get().empty_string + (qsTr("Failed to recover the seed"))
             return false
         }
     }

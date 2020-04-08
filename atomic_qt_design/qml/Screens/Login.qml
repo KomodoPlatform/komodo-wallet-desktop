@@ -24,7 +24,7 @@ SetupPage {
         }
         else {
             console.log("Failed: Login")
-            text_error = "Failed to login"
+            text_error = API.get().empty_string + (qsTr("Failed to login"))
             return false
         }
     }
