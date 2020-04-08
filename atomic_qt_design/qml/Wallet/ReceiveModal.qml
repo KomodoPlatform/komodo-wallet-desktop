@@ -31,6 +31,16 @@ DefaultModal {
             copyable: true
         }
 
+        Image{
+            Layout.alignment: Qt.AlignHCenter
+
+            source: "image://QZXing/encode/" + API.get().current_coin_info.address +
+                            "?correctionLevel=M" +
+                            "&format=qrcode"
+            sourceSize.width: 180
+            sourceSize.height: 180
+        }
+
         // Buttons
         RowLayout {
             DefaultButton {
