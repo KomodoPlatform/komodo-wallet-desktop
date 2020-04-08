@@ -5,7 +5,7 @@ import QtQuick 2.12
 
 ListView {
     function show(text, duration) {
-        model.insert(0, {text: text, duration: duration});
+        model.insert(0, { text: text, duration: duration })
     }
 
     id: root
@@ -29,5 +29,5 @@ ListView {
         Component.onCompleted: show(text, typeof duration === "undefined" ? undefined : duration)
     }
 
-    model: ListModel {id: model}
+    model: ListModel { id: model }
 }

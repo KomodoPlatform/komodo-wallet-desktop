@@ -9,7 +9,7 @@ Rectangle {
         message.text = text;
 
         if (duration !== undefined)
-            time = Math.max(duration, 2 * fadeTime);
+            time = Math.max(duration, 2 * fadeTime)
         else time = defaultTime;
 
         animation.start();
@@ -26,7 +26,7 @@ Rectangle {
     property real margin: 10
 
     anchors {
-        right: parent.right
+        horizontalCenter: parent.horizontalCenter
         margins: margin
     }
 
@@ -36,7 +36,7 @@ Rectangle {
     radius: margin / 3
 
     opacity: 0
-    color: Style.colorTheme3
+    color: Style.colorTheme1
 
     DefaultText {
         id: message
@@ -45,7 +45,7 @@ Rectangle {
         horizontalAlignment: Text.AlignHCenter
         anchors {
             top: parent.top
-            right: parent.right
+            left: parent.left
             margins: margin / 2
         }
         font.pixelSize: Style.textSizeSmall2
@@ -55,9 +55,8 @@ Rectangle {
         id: animation
         running: false
 
-
         NumberAnimation {
-            to: .9
+            to: .7
             duration: fadeTime
         }
 
@@ -71,9 +70,7 @@ Rectangle {
         }
 
         onRunningChanged: {
-            if (!running && selfDestroying) {
-                root.destroy();
-            }
+            if (!running && selfDestroying) root.destroy()
         }
     }
 }
