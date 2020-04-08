@@ -25,8 +25,8 @@ Rectangle {
         cleanApp()
 
         if(API.design_editor) {
-            current_page = idx_dashboard
-            return
+            //current_page = idx_dashboard
+            //return
         }
 
         current_page = force ? idx_first_launch : firstPage()
@@ -105,6 +105,31 @@ Rectangle {
         anchors.rightMargin: anchors.bottomMargin
         text: API.get().empty_string + (qsTr("gui version") + ":    " + API.get().get_version())
         font.pixelSize: Style.textSizeSmall
+    }
+
+
+    ToastManager {
+        id: toast
+    }
+
+    Timer {
+        interval: 1000
+        repeat: true
+        running: true
+        property int i: 0
+        onTriggered: {
+            toast.show("This timer has triggered " + (++i) + " times!");
+        }
+    }
+
+    Timer {
+        interval: 3000
+        repeat: true
+        running: true
+        property int i: 0
+        onTriggered: {
+            toast.show("This important message has been shown " + (++i) + " times.", 5000);
+        }
     }
 }
 
