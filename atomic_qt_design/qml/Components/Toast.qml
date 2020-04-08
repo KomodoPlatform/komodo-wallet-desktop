@@ -36,7 +36,7 @@ Rectangle {
     radius: margin / 3
 
     opacity: 0
-    color: Style.colorTheme5
+    color: Style.colorTheme3
 
     DefaultText {
         id: message
