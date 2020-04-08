@@ -41,6 +41,7 @@ main(int argc, char* argv[])
     atomic_app.set_qt_app(&app);
     QQmlApplicationEngine engine;
     QZXing::registerQMLTypes();
+    QZXing::registerQMLImageProvider(engine);
     engine.rootContext()->setContextProperty("atomic_app", &atomic_app);
 
     engine.addImportPath("qrc:/atomic_qt_design/imports");
