@@ -140,18 +140,25 @@ SetupPage {
                 radius: 10
                 height: warning_texts.height + 20
 
-                ColumnLayout {
+                Column {
                     id: warning_texts
 
                     anchors.centerIn: parent
+                    width: parent.width
+
+                    spacing: 10
 
                     DefaultText {
-                        Layout.alignment: Qt.AlignHCenter
+                        width: parent.width - 40
+                        horizontalAlignment: Text.AlignHCenter
+                        anchors.horizontalCenter: parent.horizontalCenter
                         text: API.get().empty_string + (qsTr("Important: Back up your seed phrase before proceeding!"))
                     }
 
                     DefaultText {
-                        Layout.alignment: Qt.AlignHCenter
+                        width: parent.width - 40
+                        horizontalAlignment: Text.AlignHCenter
+                        anchors.horizontalCenter: parent.horizontalCenter
                         text: API.get().empty_string + (qsTr("We recommend storing it offline."))
                         font.pixelSize: Style.textSizeSmall4
                         color: Style.colorWhite4
@@ -223,20 +230,25 @@ SetupPage {
                 Layout.fillWidth: true
                 color: Style.colorTheme7
                 radius: 10
-                height: warning_texts_2.height + 20
+                height: 160
 
-                ColumnLayout {
+                Column {
                     id: warning_texts_2
 
                     anchors.centerIn: parent
+                    width: parent.width
+
+                    spacing: 30
 
                     DefaultText {
-                        Layout.alignment: Qt.AlignHCenter
+                        width: parent.width - 40
+                        anchors.horizontalCenter: parent.horizontalCenter
                         text: API.get().empty_string + (qsTr("Let's double check your seed phrase"))
                     }
 
                     DefaultText {
-                        Layout.alignment: Qt.AlignHCenter
+                        width: parent.width - 40
+                        anchors.horizontalCenter: parent.horizontalCenter
                         text: API.get().empty_string + (qsTr("Your seed phrase is important - that's why we like to make sure it's correct. We'll ask you three different questions about your seed phrase to make sure you'll be able to easily restore your wallet whenever you want."))
                         font.pixelSize: Style.textSizeSmall4
                         color: Style.colorWhite4
