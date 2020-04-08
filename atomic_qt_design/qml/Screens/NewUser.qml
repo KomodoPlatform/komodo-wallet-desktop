@@ -90,7 +90,7 @@ SetupPage {
     }
 
     image_scale: 0.7
-    image_path: General.image_path + "setup-welcome-wallet.svg"
+    image_path: General.image_path + (form_is_filled ? "settings-seed.svg" : "setup-welcome-wallet.svg")
     title: API.get().empty_string + (qsTr("New User"))
 
     content: ColumnLayout {
