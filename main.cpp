@@ -5,6 +5,7 @@
 #include <QtQml>
 
 #define QZXING_QML
+
 #include "QZXing.h"
 
 //! PCH Headers
