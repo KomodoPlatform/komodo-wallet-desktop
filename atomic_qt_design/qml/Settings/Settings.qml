@@ -67,6 +67,7 @@ Item {
 
                 HorizontalLine {
                     Layout.fillWidth: true
+                    Layout.topMargin: 10
                 }
 
                 DefaultButton {
@@ -83,6 +84,25 @@ Item {
 
                 RecoverSeedModal {
                     id: recover_seed_modal
+                }
+
+                HorizontalLine {
+                    Layout.fillWidth: true
+                }
+
+                DefaultButton {
+                    Layout.fillWidth: true
+                    text: API.get().empty_string + (qsTr("Disclaimer and ToS"))
+                    onClicked: eula.open()
+                }
+
+                EulaModal {
+                    id: eula
+                    close_only: true
+                }
+
+                HorizontalLine {
+                    Layout.fillWidth: true
                 }
 
                 DangerButton {

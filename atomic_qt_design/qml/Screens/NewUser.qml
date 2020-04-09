@@ -121,10 +121,10 @@ SetupPage {
         EulaModal {
             id: eula
             onConfirm: () => {
-                           if(onClickedCreate(input_password.field.text,
-                                               input_generated_seed.field.text,
-                                               input_wallet_name.field.text)) reset()
-                       }
+               if(onClickedCreate(input_password.field.text,
+                                   input_generated_seed.field.text,
+                                   input_wallet_name.field.text)) reset()
+            }
         }
 
         // First page, fill the form
