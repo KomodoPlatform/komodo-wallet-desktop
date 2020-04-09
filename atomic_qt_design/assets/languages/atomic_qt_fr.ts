@@ -35,6 +35,34 @@
     </message>
 </context>
 <context>
+    <name>ConfirmTradeModal</name>
+    <message>
+        <location filename="../../qml/Exchange/Trade/ConfirmTradeModal.qml" line="22"/>
+        <source>Confirm Exchange Details</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../qml/Exchange/Trade/ConfirmTradeModal.qml" line="74"/>
+        <source>This swap request can not be undone and is a final event!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../qml/Exchange/Trade/ConfirmTradeModal.qml" line="80"/>
+        <source>This transaction can take up to 10 mins - DO NOT close this application!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../qml/Exchange/Trade/ConfirmTradeModal.qml" line="89"/>
+        <source>Cancel</source>
+        <translation type="unfinished">Annuler</translation>
+    </message>
+    <message>
+        <location filename="../../qml/Exchange/Trade/ConfirmTradeModal.qml" line="95"/>
+        <source>Confirm</source>
+        <translation type="unfinished">Confirmer</translation>
+    </message>
+</context>
+<context>
     <name>Dashboard</name>
     <message>
         <location filename="../../qml/Screens/Dashboard.qml" line="100"/>
@@ -511,37 +539,37 @@
 <context>
     <name>PasswordField</name>
     <message>
-        <location filename="../../qml/Components/PasswordField.qml" line="19"/>
+        <location filename="../../qml/Components/PasswordField.qml" line="47"/>
         <source>Password</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Components/PasswordField.qml" line="20"/>
+        <location filename="../../qml/Components/PasswordField.qml" line="48"/>
         <source>Enter a password for your wallet</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Components/PasswordField.qml" line="32"/>
+        <location filename="../../qml/Components/PasswordField.qml" line="60"/>
         <source>At least 1 lowercase alphabetical character</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Components/PasswordField.qml" line="36"/>
+        <location filename="../../qml/Components/PasswordField.qml" line="65"/>
         <source>At least 1 uppercase alphabetical character</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Components/PasswordField.qml" line="40"/>
+        <location filename="../../qml/Components/PasswordField.qml" line="70"/>
         <source>At least 1 numeric character</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Components/PasswordField.qml" line="44"/>
+        <location filename="../../qml/Components/PasswordField.qml" line="75"/>
         <source>At least 1 special character (eg. !@#$%)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Components/PasswordField.qml" line="48"/>
+        <location filename="../../qml/Components/PasswordField.qml" line="80"/>
         <source>At least 16 characters</source>
         <translation type="unfinished"></translation>
     </message>
@@ -605,6 +633,19 @@
         <location filename="../../qml/Portfolio/Portfolio.qml" line="338"/>
         <source>Disable %1</source>
         <comment>TICKER</comment>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>PriceLine</name>
+    <message>
+        <location filename="../../qml/Exchange/Trade/PriceLine.qml" line="11"/>
+        <source>Price</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../qml/Exchange/Trade/PriceLine.qml" line="12"/>
+        <source>Selected Price</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -913,32 +954,22 @@
 <context>
     <name>Trade</name>
     <message>
-        <location filename="../../qml/Exchange/Trade/Trade.qml" line="265"/>
+        <location filename="../../qml/Exchange/Trade/Trade.qml" line="268"/>
         <source>No balance available</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/Trade.qml" line="271"/>
+        <location filename="../../qml/Exchange/Trade/Trade.qml" line="274"/>
         <source>Please enable a coin with balance or deposit funds</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/Trade.qml" line="311"/>
+        <location filename="../../qml/Exchange/Trade/Trade.qml" line="314"/>
         <source>Trade</source>
         <translation type="unfinished">Échanger</translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/Trade.qml" line="319"/>
-        <source>Price</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../qml/Exchange/Trade/Trade.qml" line="320"/>
-        <source>Selected Price</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../qml/Exchange/Trade/Trade.qml" line="329"/>
+        <location filename="../../qml/Exchange/Trade/Trade.qml" line="334"/>
         <source>Failed to place the order.</source>
         <translation type="unfinished"></translation>
     </message>

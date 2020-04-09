@@ -25,8 +25,8 @@ Rectangle {
         cleanApp()
 
         if(API.design_editor) {
-            current_page = idx_dashboard
-            return
+            //current_page = idx_dashboard
+            //return
         }
 
         current_page = force ? idx_first_launch : firstPage()
@@ -105,6 +105,10 @@ Rectangle {
         anchors.rightMargin: anchors.bottomMargin
         text: API.get().empty_string + (qsTr("gui version") + ":    " + API.get().get_version())
         font.pixelSize: Style.textSizeSmall
+    }
+
+    ToastManager {
+        id: toast
     }
 }
 
