@@ -50,6 +50,7 @@
         <file>atomic_qt_design/assets/images/lang/tr.png</file>
         <file>atomic_qt_design/qml/App.qml</file>
         <file>qtquickcontrols2.conf</file>
+        <file>atomic_qt_design/qml/Screens/EulaModal.qml</file>
         <file>atomic_qt_design/qml/Screens/FirstLaunch.qml</file>
         <file>atomic_qt_design/qml/Screens/Dashboard.qml</file>
         <file>atomic_qt_design/qml/Screens/Login.qml</file>

@@ -34,13 +34,11 @@ SetupPage {
         return field.acceptableInput
     }
 
-
-    function submitGuess(field, password, generated_seed, confirm_seed, wallet_name) {
+    function submitGuess(field) {
         if(validGuessField(field)) {
             // Check if it's correct
             if(field.text === getWords()[current_word_idx]) {
                 if(isFinalGuess()) {
-                    onClickedCreate(password, generated_seed, confirm_seed, wallet_name)
                     return true
                 }
                 else {
@@ -76,7 +74,7 @@ SetupPage {
         guess_count = 1
     }
 
-    function onClickedCreate(password, generated_seed, confirm_seed, wallet_name) {
+    function onClickedCreate(password, generated_seed, wallet_name) {
         if(API.get().create(password, generated_seed, wallet_name)) {
             console.log("Success: Create wallet")
             postCreateSuccess()
@@ -116,11 +114,17 @@ SetupPage {
         }
 
         function tryGuess() {
-            if(submitGuess(input_seed_word.field,
-                           input_password.field.text,
-                           input_generated_seed.field.text,
-                           input_confirm_seed.field.text,
-                           input_wallet_name.field.text)) reset()
+            // Open EULA if it's the final one
+            if(submitGuess(input_seed_word.field)) eula.open()
+        }
+
+        EulaModal {
+            id: eula
+            onConfirm: () => {
+                           if(onClickedCreate(input_password.field.text,
+                                               input_generated_seed.field.text,
+                                               input_wallet_name.field.text)) reset()
+                       }
         }
 
         // First page, fill the form
