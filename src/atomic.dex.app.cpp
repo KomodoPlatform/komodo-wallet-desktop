@@ -36,6 +36,8 @@
 #    include <QWindowList>
 #endif
 
+/*#define ENABLE_ENCODER_GENERIC
+#include "QZXing.h"*/
 //! Project Headers
 #include "atomic.dex.app.hpp"
 #include "atomic.dex.mm2.hpp"
@@ -1065,5 +1067,11 @@ namespace atomic_dex
             return false;
         }
         return true;
+    }
+    QImage
+    application::get_qr_code(QString text_to_encode, QSize size)
+    {
+        //QImage qrcode = QZXing::encodeData(text_to_encode, QZXing::EncoderFormat_QR_CODE, size);
+        return QImage();
     }
 } // namespace atomic_dex

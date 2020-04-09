@@ -68,6 +68,15 @@ else ()
     configure_file(${mm2_SOURCE_DIR}/mm2.exe ${CMAKE_BINARY_DIR}/bin/assets/tools/mm2/mm2.exe COPYONLY)
 endif ()
 
+FetchContent_Declare(libqr_code
+        URL https://github.com/KomodoPlatform/qzxing/archive/master.zip)
+
+FetchContent_GetProperties(libqr_code)
+if (NOT libqr_code_POPULATED)
+    FetchContent_Populate(libqr_code)
+    add_subdirectory(${libqr_code_SOURCE_DIR}/src ${libqr_code_BINARY_DIR} EXCLUDE_FROM_ALL)
+endif ()
+
 ##! Calling this macros provided by the sdk will if you are on Apple init the environment for this OS (std::filesystem).
 init_antara_env()
 
@@ -142,13 +151,16 @@ endif ()
 
 target_compile_definitions(atomic_qt
         PRIVATE $<$<OR:$<CONFIG:Debug>,$<CONFIG:RelWithDebInfo>>:QT_QML_DEBUG>)
-target_include_directories(atomic_qt PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/src  $<$<PLATFORM_ID:Darwin>:${CMAKE_CURRENT_SOURCE_DIR}/src/osx>)
+target_include_directories(atomic_qt PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/src
+        $<$<PLATFORM_ID:Darwin>:${CMAKE_CURRENT_SOURCE_DIR}/src/osx>
+        ${libqr_code_SOURCE_DIR}/src)
 target_link_libraries(atomic_qt
         PRIVATE
         Qt5::Core
         Qt5::Quick
         Qt5::Svg
         Qt5::Charts
+        qzxing
         antara::world
         Boost::filesystem
         $<$<PLATFORM_ID:Linux>:Boost::random>

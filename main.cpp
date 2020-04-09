@@ -4,6 +4,10 @@
 #include <QWindow>
 #include <QtQml>
 
+#define QZXING_QML
+
+#include "QZXing.h"
+
 //! PCH Headers
 #include "atomic.dex.pch.hpp"
 
@@ -37,6 +41,8 @@ main(int argc, char* argv[])
     QApplication       app(argc, argv);
     atomic_app.set_qt_app(&app);
     QQmlApplicationEngine engine;
+    QZXing::registerQMLTypes();
+    QZXing::registerQMLImageProvider(engine);
     engine.rootContext()->setContextProperty("atomic_app", &atomic_app);
 
     engine.addImportPath("qrc:/atomic_qt_design/imports");

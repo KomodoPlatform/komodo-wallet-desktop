@@ -18,6 +18,8 @@
 
 #include <QApplication>
 #include <QObject>
+#include <QImage>
+#include <QSize>
 #include <QStringList>
 #include <QTranslator>
 #include <QVariantMap>
@@ -101,6 +103,7 @@ namespace atomic_dex
 
         //! Bind to the QML Worlds
         Q_INVOKABLE QString get_mm2_version() const;
+        Q_INVOKABLE QImage  get_qr_code(QString text_to_encode, QSize size);
         Q_INVOKABLE QString get_log_folder() const;
         Q_INVOKABLE QString retrieve_seed(const QString &wallet_name, const QString& password);
         Q_INVOKABLE bool confirm_password(const QString &wallet_name, const QString& password);
