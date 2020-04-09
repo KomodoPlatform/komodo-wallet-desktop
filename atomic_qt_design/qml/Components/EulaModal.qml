@@ -26,7 +26,7 @@ DefaultModal {
         width: parent.width
 
         ModalHeader {
-            title: API.get().empty_string + (qsTr("Disclaimer and ToS"))
+            title: API.get().empty_string + (qsTr("Disclaimer and Terms of Services"))
         }
 
 
