@@ -77,6 +77,7 @@
         <file>atomic_qt_design/qml/Exchange/OrderContent.qml</file>
         <file>atomic_qt_design/qml/Sidebar/Sidebar.qml</file>
         <file>atomic_qt_design/qml/Sidebar/SidebarLine.qml</file>
+        <file>atomic_qt_design/qml/Components/EulaModal.qml</file>
         <file>atomic_qt_design/qml/Components/Toast.qml</file>
         <file>atomic_qt_design/qml/Components/ToastManager.qml</file>
         <file>atomic_qt_design/qml/Components/ColumnHeader.qml</file>

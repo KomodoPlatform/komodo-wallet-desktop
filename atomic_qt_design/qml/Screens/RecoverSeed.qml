@@ -47,8 +47,15 @@ SetupPage {
         function trySubmit() {
             if(!submit_button.enabled) return
 
-            if(onClickedConfirm(input_password.field.text, input_seed.field.text, input_wallet_name.field.text))
-                reset()
+            eula.open()
+        }
+
+        EulaModal {
+            id: eula
+            onConfirm: () => {
+               if(onClickedConfirm(input_password.field.text, input_seed.field.text, input_wallet_name.field.text))
+                   reset()
+            }
         }
 
         WalletNameField {
