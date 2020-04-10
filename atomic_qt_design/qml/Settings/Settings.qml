@@ -37,12 +37,14 @@ Item {
 
             Layout.alignment: Qt.AlignHCenter
 
-            width: layout.childrenRect.width + layout.anchors.leftMargin * 2
+            width: 400
             height: layout.childrenRect.height + layout.anchors.topMargin * 2
 
             ColumnLayout {
                 anchors.left: parent.left
                 anchors.leftMargin: 15
+                anchors.right: parent.right
+                anchors.rightMargin: 15
                 anchors.top: parent.top
                 anchors.topMargin: anchors.leftMargin
                 id: layout
