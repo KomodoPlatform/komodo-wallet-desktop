@@ -103,12 +103,12 @@
     <message>
         <location filename="../../qml/Settings/DeleteWalletModal.qml" line="55"/>
         <source>If so, make sure you record your seed phrase in order to restore your wallet in future.</source>
-        <translation>Öyleyse, cüzdanınızı gelecekte kurtarabilmek için seed satırınızı kaydettiğinizden emin olun.</translation>
+        <translation>Öyleyse, cüzdanınızı gelecekte kurtarabilmeniz için seed satırınızı kaydettiğinizden emin olunuz.</translation>
     </message>
     <message>
         <location filename="../../qml/Settings/DeleteWalletModal.qml" line="64"/>
         <source>Enter the password of your wallet</source>
-        <translation>Cüzdanınızın şifresini girin</translation>
+        <translation>Cüzdanınızın şifresini giriniz</translation>
     </message>
     <message>
         <location filename="../../qml/Settings/DeleteWalletModal.qml" line="68"/>
@@ -404,7 +404,7 @@
     <message>
         <location filename="../../qml/Screens/NewUser.qml" line="185"/>
         <source>Enter the generated seed here</source>
-        <translation>Oluşturulmuş Seed&apos;i buraya girin</translation>
+        <translation>Oluşturulmuş Seed&apos;i buraya giriniz</translation>
     </message>
     <message>
         <location filename="../../qml/Screens/NewUser.qml" line="199"/>
@@ -522,7 +522,7 @@
     <message>
         <location filename="../../qml/Exchange/Trade/OrderForm.qml" line="257"/>
         <source>Please fill the send amount</source>
-        <translation>Lütfen yollanacak miktarı girin</translation>
+        <translation>Lütfen gönderilecek miktarı giriniz</translation>
     </message>
     <message>
         <location filename="../../qml/Exchange/Trade/OrderForm.qml" line="271"/>
@@ -726,7 +726,7 @@
     <message>
         <location filename="../../qml/Components/PasswordField.qml" line="49"/>
         <source>Enter a password for your wallet</source>
-        <translation>Cüzdanınız için bir parola girin</translation>
+        <translation>Cüzdanınız için bir parola giriniz</translation>
     </message>
     <message>
         <location filename="../../qml/Components/PasswordField.qml" line="49"/>
@@ -769,7 +769,7 @@
     <message>
         <location filename="../../qml/Components/PasswordForm.qml" line="41"/>
         <source>Enter the same password to confirm</source>
-        <translation>Doğrulamak için aynı parolayı girin</translation>
+        <translation>Doğrulamak için aynı parolayı giriniz</translation>
     </message>
 </context>
 <context>
@@ -872,7 +872,7 @@
     <message>
         <location filename="../../qml/Screens/RecoverSeed.qml" line="69"/>
         <source>Enter the seed</source>
-        <translation>Seed&apos;i girin</translation>
+        <translation>Seed&apos;i giriniz</translation>
     </message>
     <message>
         <location filename="../../qml/Screens/RecoverSeed.qml" line="82"/>
@@ -957,17 +957,17 @@
     <message>
         <location filename="../../qml/Wallet/SendModal.qml" line="144"/>
         <source>Enter address of the recipient</source>
-        <translation>Alıcının adresini girin</translation>
+        <translation>Alıcının adresini giriniz</translation>
     </message>
     <message>
         <location filename="../../qml/Wallet/SendModal.qml" line="150"/>
         <source>Amount to send</source>
-        <translation>Yollanacak miktar</translation>
+        <translation>Gönderilecek miktar</translation>
     </message>
     <message>
         <location filename="../../qml/Wallet/SendModal.qml" line="151"/>
         <source>Enter the amount to send</source>
-        <translation>Yollanacak miktarı girin</translation>
+        <translation>Gönderilecek miktarı giriniz</translation>
     </message>
     <message>
         <location filename="../../qml/Wallet/SendModal.qml" line="157"/>
@@ -987,7 +987,7 @@
     <message>
         <location filename="../../qml/Wallet/SendModal.qml" line="177"/>
         <source>Enter the custom fee</source>
-        <translation>Özel ücreti girin</translation>
+        <translation>Özel ücreti giriniz</translation>
     </message>
     <message>
         <location filename="../../qml/Wallet/SendModal.qml" line="187"/>
@@ -997,7 +997,7 @@
     <message>
         <location filename="../../qml/Wallet/SendModal.qml" line="188"/>
         <source>Enter the gas limit</source>
-        <translation>Gas limitini girin</translation>
+        <translation>Gas limitini giriniz</translation>
     </message>
     <message>
         <location filename="../../qml/Wallet/SendModal.qml" line="194"/>
@@ -1007,7 +1007,7 @@
     <message>
         <location filename="../../qml/Wallet/SendModal.qml" line="195"/>
         <source>Enter the gas price</source>
-        <translation>Gas fiyatını girin</translation>
+        <translation>Gas fiyatını giriniz</translation>
     </message>
     <message>
         <location filename="../../qml/Wallet/SendModal.qml" line="209"/>
@@ -1039,7 +1039,7 @@
         <location filename="../../qml/Wallet/SendModal.qml" line="250"/>
         <location filename="../../qml/Wallet/SendModal.qml" line="285"/>
         <source>Send</source>
-        <translation>Yolla</translation>
+        <translation>Gönder</translation>
     </message>
     <message>
         <location filename="../../qml/Wallet/SendModal.qml" line="261"/>
@@ -1287,7 +1287,7 @@
     <message>
         <location filename="../../qml/Wallet/Wallet.qml" line="86"/>
         <source>Send</source>
-        <translation>Yolla</translation>
+        <translation>Gönder</translation>
     </message>
     <message>
         <location filename="../../qml/Wallet/Wallet.qml" line="97"/>
@@ -1343,7 +1343,7 @@
     <message>
         <location filename="../../qml/Components/WalletNameField.qml" line="10"/>
         <source>Enter the name of your wallet here</source>
-        <translation>Cüzdanınızın adını girin</translation>
+        <translation>Cüzdanınızın adını giriniz</translation>
     </message>
 </context>
 <context>
