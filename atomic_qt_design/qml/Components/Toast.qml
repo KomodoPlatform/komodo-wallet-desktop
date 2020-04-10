@@ -8,9 +8,8 @@ Rectangle {
     function show(text, duration) {
         message.text = text;
 
-        if (duration !== undefined)
-            time = Math.max(duration, 2 * fadeTime)
-        else time = defaultTime;
+        if (duration === -1) time = defaultTime
+        else time = Math.max(duration, 2 * fadeTime)
 
         animation.start();
     }
@@ -19,7 +18,7 @@ Rectangle {
 
     id: root
 
-    readonly property real defaultTime: 3000
+    readonly property real defaultTime: 2000
     property real time: defaultTime
     readonly property real fadeTime: 300
 
