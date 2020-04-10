@@ -10,7 +10,7 @@
     <message>
         <location filename="../../qml/App.qml" line="106"/>
         <source>gui version</source>
-        <translation type="unfinished"></translation>
+        <translation>gui versiyonu</translation>
     </message>
 </context>
 <context>
@@ -43,27 +43,27 @@
     <message>
         <location filename="../../qml/Exchange/Trade/ConfirmTradeModal.qml" line="22"/>
         <source>Confirm Exchange Details</source>
-        <translation type="unfinished"></translation>
+        <translation>Al-Sat Detaylarını Onayla</translation>
     </message>
     <message>
         <location filename="../../qml/Exchange/Trade/ConfirmTradeModal.qml" line="74"/>
         <source>This swap request can not be undone and is a final event!</source>
-        <translation type="unfinished"></translation>
+        <translation>Bu takas isteği geri döndürülemez!</translation>
     </message>
     <message>
         <location filename="../../qml/Exchange/Trade/ConfirmTradeModal.qml" line="80"/>
         <source>This transaction can take up to 10 mins - DO NOT close this application!</source>
-        <translation type="unfinished"></translation>
+        <translation>Bu işlem 10 dakika kadar sürebilir - Programı KAPATMAYINIZ!</translation>
     </message>
     <message>
         <location filename="../../qml/Exchange/Trade/ConfirmTradeModal.qml" line="89"/>
         <source>Cancel</source>
-        <translation type="unfinished">İptal</translation>
+        <translation>İptal</translation>
     </message>
     <message>
         <location filename="../../qml/Exchange/Trade/ConfirmTradeModal.qml" line="95"/>
         <source>Confirm</source>
-        <translation type="unfinished">Onayla</translation>
+        <translation>Onayla</translation>
     </message>
 </context>
 <context>
@@ -644,12 +644,12 @@
     <message>
         <location filename="../../qml/Exchange/Trade/PriceLine.qml" line="11"/>
         <source>Price</source>
-        <translation type="unfinished">Fiyat</translation>
+        <translation>Fiyat</translation>
     </message>
     <message>
         <location filename="../../qml/Exchange/Trade/PriceLine.qml" line="12"/>
         <source>Selected Price</source>
-        <translation type="unfinished">Seçilen Fiyat</translation>
+        <translation>Seçilen Fiyat</translation>
     </message>
 </context>
 <context>
@@ -703,17 +703,17 @@
     <message>
         <location filename="../../qml/Components/RightClickMenu.qml" line="27"/>
         <source>Cut</source>
-        <translation type="unfinished"></translation>
+        <translation>Kes</translation>
     </message>
     <message>
         <location filename="../../qml/Components/RightClickMenu.qml" line="32"/>
         <source>Copy</source>
-        <translation type="unfinished"></translation>
+        <translation>Kopyala</translation>
     </message>
     <message>
         <location filename="../../qml/Components/RightClickMenu.qml" line="37"/>
         <source>Paste</source>
-        <translation type="unfinished"></translation>
+        <translation>Yapıştır</translation>
     </message>
 </context>
 <context>
@@ -895,12 +895,12 @@
     <message>
         <location filename="../../qml/Settings/Settings.qml" line="74"/>
         <source>Open Logs Folder</source>
-        <translation type="unfinished"></translation>
+        <translation>Log Klasörünü Aç</translation>
     </message>
     <message>
         <location filename="../../qml/Settings/Settings.qml" line="101"/>
         <source>mm2 version</source>
-        <translation type="unfinished"></translation>
+        <translation>mm2 versiyonu</translation>
     </message>
     <message>
         <source>Language</source>
