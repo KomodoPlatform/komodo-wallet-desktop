@@ -4,6 +4,7 @@
     <Version>0.1.2</Version>
     <Title>AtomicDEX Pro Installer</Title>
     <Publisher>Komodo Platform</Publisher>
+    <ProductUrl>https://komodoplatform.com/</ProductUrl>
     <StartMenuDir>AtomicDEX Pro</StartMenuDir>
     <TargetDir>@ApplicationsDirX64@/AtomicDEX Pro</TargetDir>
     <InstallerWindowIcon>installer_icon</InstallerWindowIcon>
