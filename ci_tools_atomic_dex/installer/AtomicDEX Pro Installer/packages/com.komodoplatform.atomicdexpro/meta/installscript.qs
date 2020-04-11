@@ -10,7 +10,7 @@ Component.prototype.createOperations = function() {
                                "@TargetDir@/atomic_qt.exe", 
                                "@StartMenuDir@/AtomicDEX Pro.lnk",
                                "workingDirectory=@TargetDir@", 
-                               "iconPath=@TargetDir@/komodo_logo.ico", "iconId=0",
+                               "iconPath=@TargetDir@/app_icon.ico", "iconId=0",
                                "description=Open README file");
         
         // Desktop Shortcut
@@ -18,7 +18,7 @@ Component.prototype.createOperations = function() {
                             "@TargetDir@/atomic_qt.exe",
                             "@DesktopDir@/AtomicDEX Pro.lnk",
                             "workingDirectory=@TargetDir@",
-                            "iconPath=@TargetDir@/komodo_logo.ico", "iconId=0",
+                            "iconPath=@TargetDir@/app_icon.ico", "iconId=0",
                             "description=Start AtomicDEX Pro");
     }
 }

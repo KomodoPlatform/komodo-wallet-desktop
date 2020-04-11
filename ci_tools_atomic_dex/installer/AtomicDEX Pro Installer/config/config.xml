@@ -6,4 +6,6 @@
     <Publisher>Komodo Platform</Publisher>
     <StartMenuDir>AtomicDEX Pro</StartMenuDir>
     <TargetDir>@ApplicationsDirX64@/AtomicDEX Pro</TargetDir>
+    <InstallerWindowIcon>installer_icon</InstallerWindowIcon>
+    <InstallerApplicationIcon>installer_icon</InstallerApplicationIcon>
 </Installer>
