@@ -7,6 +7,8 @@
     <ProductUrl>https://komodoplatform.com/</ProductUrl>
     <StartMenuDir>AtomicDEX Pro</StartMenuDir>
     <TargetDir>@ApplicationsDirX64@/AtomicDEX Pro</TargetDir>
+    <RunProgram>@TargetDir@/atomic_qt.exe</RunProgram>
+    <RunProgramDescription>Run AtomicDEX Pro now.</RunProgramDescription>
     <InstallerWindowIcon>installer_icon</InstallerWindowIcon>
     <InstallerApplicationIcon>installer_icon</InstallerApplicationIcon>
     <Logo>installer_icon.png</Logo>
