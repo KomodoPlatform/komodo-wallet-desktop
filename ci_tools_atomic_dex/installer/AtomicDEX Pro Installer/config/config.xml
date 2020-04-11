@@ -9,4 +9,5 @@
     <TargetDir>@ApplicationsDirX64@/AtomicDEX Pro</TargetDir>
     <InstallerWindowIcon>installer_icon</InstallerWindowIcon>
     <InstallerApplicationIcon>installer_icon</InstallerApplicationIcon>
+    <Logo>installer_icon.png</Logo>
 </Installer>
