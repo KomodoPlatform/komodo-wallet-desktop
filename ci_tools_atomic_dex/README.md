@@ -138,3 +138,15 @@ nimble build
 ```
 
 
+
+## Create AtomicDEX Pro Installer
+
+### Windows
+
+- [Download](https://download.qt.io/official_releases/qt-installer-framework/) and install Qt Installer Framework.
+
+- Add a `QT_IFW_PATH` environment variable pointing to the Qt Installer Framework folder
+
+e.g.: `set QT_IFW_PATH "C:\Qt\QtIFW-3.2.2"`
+
+- Run `ci_tools_atomic_dex\create_installer.bat` script

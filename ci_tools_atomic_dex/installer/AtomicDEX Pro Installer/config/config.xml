@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Installer>
+    <Name>AtomicDEX Pro</Name>
+    <Version>0.1.2</Version>
+    <Title>AtomicDEX Pro Installer</Title>
+    <Publisher>Komodo Platform</Publisher>
+    <StartMenuDir>AtomicDEX Pro</StartMenuDir>
+    <TargetDir>@ApplicationsDirX64@/AtomicDEX Pro</TargetDir>
+</Installer>
