@@ -8,4 +8,5 @@
         <License name="Disclaimer and Terms of Service" file="license.txt" />
     </Licenses>
     <Default>true</Default>
+    <Script>installscript.qs</Script>
 </Package>
