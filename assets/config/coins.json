@@ -193,6 +193,32 @@
     "active": true,
     "currently_enabled": false
   },
+  "LABS": {
+    "coin": "LABS",
+    "name": "Labs",
+    "type": "Smart Chain",
+    "rpcport": 40265,
+    "mm2": 1,
+    "coingecko_id": "test-coin",
+    "coinpaprika_id": "test-coin",
+    "is_erc_20": false,
+    "electrum": [
+      {
+        "url": "electrum1.cipig.net:10019"
+      },
+      {
+        "url": "electrum2.cipig.net:10019"
+      },
+      {
+        "url": "electrum3.cipig.net:10019"
+      }
+    ],
+    "explorer_url": [
+      "https://labs.explorer.dexstats.info/"
+    ],
+    "active": false,
+    "currently_enabled": false
+  },
   "VOTE2020": {
     "coin": "VOTE2020",
     "name": "Vote2020",
