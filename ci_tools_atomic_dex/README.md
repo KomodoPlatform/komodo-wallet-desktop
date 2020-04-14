@@ -150,3 +150,20 @@ nimble build
 e.g.: `set QT_IFW_PATH "C:\Qt\QtIFW-3.2.2"`
 
 - Run `ci_tools_atomic_dex\create_installer.bat` script
+
+### Linux
+
+- [Download](https://download.qt.io/official_releases/qt-installer-framework/)
+
+- Run the .run file and install it.
+
+```
+chmod +x QtInstallerFramework-linux-x64.run
+./QtInstallerFramework-linux-x64.run
+```
+
+- Add a `QT_IFW_PATH` environment variable pointing to the Qt Installer Framework folder
+
+e.g.: In `.bashrc` add: `export QT_IFW_PATH=~/Qt/QtIFW-3.2.2`
+
+- Run `ci_tools_atomic_dex\create_installer_linux.sh` script
