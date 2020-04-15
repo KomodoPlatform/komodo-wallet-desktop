@@ -58,7 +58,7 @@ export QT_ROOT=/Users/SatoshiNakamoto/Qt/5.14.0
 In your terminal (shell,...) execute:
 
 ```shell
-sudo apt-get install -y ninja-build cmake git
+sudo apt-get install -y ninja-build cmake git gcc-9 g++-9
 
 curl https://nim-lang.org/choosenim/init.sh -sSf | sh
 
