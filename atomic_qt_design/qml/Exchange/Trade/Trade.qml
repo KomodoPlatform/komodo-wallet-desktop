@@ -233,7 +233,11 @@ Item {
         updateTradeInfo(true) // Force update trade info
         form_base.capVolume() // To cap the value for one last time
 
-        action_result = API.get().place_sell_order(base, rel, getCurrentPrice(), form_base.field.text) ? "success" : "error"
+        const price = getCurrentPrice()
+        const volume = form_base.field.text
+        console.log("QML place_sell_order: ", base, " <-> ", rel, "  /  price:", price, "  /  volume:", volume)
+        console.log("QML place_sell_order: trade info:", JSON.stringify(curr_trade_info))
+        action_result = API.get().place_sell_order(base, rel, price, volume) ? "success" : "error"
         if(action_result === "success") {
             onOrderSuccess()
         }
