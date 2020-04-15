@@ -338,9 +338,27 @@ Item {
         DefaultText {
             Layout.alignment: Qt.AlignHCenter
 
-            text: API.get().empty_string + ("Not enough ETH for the transaction fee")
+            text: API.get().empty_string + (qsTr("Not enough ETH for the transaction fee"))
             color: Style.colorRed
             visible: form_base.hasEthFees() && !form_base.hasEnoughEthForFees()
+        }
+
+        // Show min amount error
+        DefaultText {
+            Layout.alignment: Qt.AlignHCenter
+
+            text: API.get().empty_string + (qsTr("Sell amount is lower than minimum trade amount") + " : " + form_base.getMinTradeAmount())
+            color: Style.colorRed
+            visible: form_base.fieldsAreFilled() && !form_base.higherThanMinTradeAmount()
+        }
+
+        // Show min amount error
+        DefaultText {
+            Layout.alignment: Qt.AlignHCenter
+
+            text: API.get().empty_string + (qsTr("Receive amount is lower than minimum trade amount") + " : " + form_rel.getMinTradeAmount())
+            color: Style.colorRed
+            visible: form_rel.fieldsAreFilled() && !form_rel.higherThanMinTradeAmount()
         }
     }
 }
