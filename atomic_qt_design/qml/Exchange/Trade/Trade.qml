@@ -235,7 +235,8 @@ Item {
 
         const price = getCurrentPrice()
         const volume = form_base.field.text
-        console.log("QML place_sell_order: ", base, " <-> ", rel, "  /  price:", price, "  /  volume:", volume)
+        console.log("QML place_sell_order: max balance:", form_base.getMaxVolume())
+        console.log("QML place_sell_order: params:", base, " <-> ", rel, "  /  price:", price, "  /  volume:", volume)
         console.log("QML place_sell_order: trade info:", JSON.stringify(curr_trade_info))
         action_result = API.get().place_sell_order(base, rel, price, volume) ? "success" : "error"
         if(action_result === "success") {
