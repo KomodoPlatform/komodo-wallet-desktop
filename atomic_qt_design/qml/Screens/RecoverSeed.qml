@@ -69,6 +69,11 @@ SetupPage {
             field.placeholderText: API.get().empty_string + (qsTr("Enter the seed"))
         }
 
+        CheckBox {
+            id: allow_custom_seed
+            text: API.get().empty_string + (qsTr("Allow custom seed"))
+        }
+
         PasswordForm {
             id: input_password
 
@@ -94,7 +99,8 @@ SetupPage {
                 enabled:     // Fields are not empty
                              input_wallet_name.field.acceptableInput === true &&
                              input_seed.field.text !== '' &&
-                             input_password.isValid()
+                             input_password.isValid() &&
+                             (allow_custom_seed.checked || API.get().mnemonic_validate(input_seed.field.text))
             }
         }
 
