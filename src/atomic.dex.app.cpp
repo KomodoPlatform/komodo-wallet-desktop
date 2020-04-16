@@ -1099,7 +1099,7 @@ namespace atomic_dex
         // Validate
         return bc::wallet::validate_mnemonic(mnemonic);
 #else
-        return bip39_mnemonic_validate(nullptr, entropy.toStdString().c_str());
+        return bip39_mnemonic_validate(nullptr, entropy.toStdString().c_str()) == 0;
 #endif
     }
 } // namespace atomic_dex
