@@ -1084,10 +1084,19 @@ namespace atomic_dex
     application::mnemonic_validate(QString entropy)
     {
 #ifdef __APPLE__
-        bc::data_chunk entropy_bc;
-        bc::decode_base16(entropy_bc, entropy.toStdString());
-        const auto mnemonic = bc::wallet::create_mnemonic(entropy_bc, bc::wallet::language::en);
-        assert(mnemonic.size() > 0);
+        std::vector<std::string> mnemonic;
+
+        // Split
+        std::string s = entropy.toStdString();
+        const std::string delimiter = " ";
+        size_t pos = 0;
+        while ((pos = s.find(delimiter)) != std::string::npos) {
+            mnemonic.emplace_back(s.substr(0, pos));
+            s.erase(0, pos + delimiter.length());
+        }
+        mnemonic.emplace_back(s);
+
+        // Validate
         return bc::wallet::validate_mnemonic(mnemonic);
 #else
         return bip39_mnemonic_validate(nullptr, entropy.toStdString().c_str());
