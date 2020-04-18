@@ -24,6 +24,14 @@ QtObject {
     readonly property int idx_exchange_orders: 1
     readonly property int idx_exchange_history: 2
 
+    readonly property var reg_pass_input: /[A-Za-z0-9@#$%{}[\]()\/\\'"`~,;:.<>+\-_=!^&*|?]+/
+    readonly property var reg_pass_valid: /^(?=.{16,})(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[@#$%{}[\]()\/\\'"`~,;:.<>+\-_=!^&*|?]).*$/
+    readonly property var reg_pass_uppercase: /(?=.*[A-Z])/
+    readonly property var reg_pass_lowercase: /(?=.*[a-z])/
+    readonly property var reg_pass_numeric: /(?=.*[0-9])/
+    readonly property var reg_pass_special: /(?=.*[@#$%{}[\]()\/\\'"`~,;:.<>+\-_=!^&*|?])/
+    readonly property var reg_pass_count: /(?=.{16,})/
+
     function diffPrefix(received) {
         return received === "" ? "" : received === true ? "+ " :  "- "
     }
