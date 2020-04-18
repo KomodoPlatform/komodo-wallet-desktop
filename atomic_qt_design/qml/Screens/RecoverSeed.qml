@@ -41,7 +41,9 @@ SetupPage {
             recover_seed.reset()
             input_wallet_name.reset()
             input_seed.reset()
+            input_seed_hidden.reset()
             input_password.reset()
+            input_seed.visible = false
         }
 
         function trySubmit() {
@@ -63,10 +65,42 @@ SetupPage {
             field.onAccepted: trySubmit()
         }
 
-        TextAreaWithTitle {
-            id: input_seed
+        TextFieldWithTitle {
+            id: input_seed_hidden
+            visible: !input_seed.visible
             title: API.get().empty_string + (qsTr("Seed"))
             field.placeholderText: API.get().empty_string + (qsTr("Enter the seed"))
+            field.onTextChanged: {
+                input_seed.field.text = field.text
+            }
+            hidable: true
+            hiding: true
+            hide_button.use_default_behaviour: false
+            hide_button_area.onClicked: {
+                input_seed.visible = true
+                // input_seed.field.focus = true // This puts the cursor to left, not good
+            }
+
+            field.onAccepted: trySubmit()
+        }
+
+        TextAreaWithTitle {
+            id: input_seed
+            visible: false
+            title: API.get().empty_string + (qsTr("Seed"))
+            field.placeholderText: API.get().empty_string + (qsTr("Enter the seed"))
+            field.onTextChanged: {
+                input_seed_hidden.field.text = field.text
+            }
+
+            hidable: true
+            hiding: false
+            hide_button.use_default_behaviour: false
+            hide_button_area.onClicked: {
+                visible = false
+                // input_seed_hidden.field.focus = true // This puts the cursor to left, not good
+            }
+            onReturn: trySubmit
         }
 
         CheckBox {
