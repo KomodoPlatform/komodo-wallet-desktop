@@ -132,23 +132,8 @@ DefaultModal {
              feesAreFilled()
     }
 
-    function canSetMax() {
-        return parseFloat(API.get().current_coin_info.balance) > 0 && feesAreFilled()
-    }
-
     function setMax() {
-        if(!canSetMax()) return
-
-        const balance = API.get().current_coin_info.balance
-        const balance_change = prepareSendCoin(API.get().current_coin_info.address,
-                                     balance,
-                                     custom_fees_switch.checked,
-                                     input_custom_fees.field.text,
-                                     isERC20(),
-                                     input_custom_fees_gas.field.text,
-                                     input_custom_fees_gas_price.field.text, false).balance_change
-
-        input_amount.field.text = (parseFloat(balance) + parseFloat(balance_change)).toFixed(8)
+        input_amount.field.text = API.get().current_coin_info.balance
     }
 
     // Inside modal
@@ -185,7 +170,6 @@ DefaultModal {
                 DefaultButton {
                     text: API.get().empty_string + (qsTr("MAX"))
                     onClicked: setMax()
-                    enabled: canSetMax()
                 }
             }
 
