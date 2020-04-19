@@ -46,7 +46,9 @@ DefaultModal {
     }
 
     function enableCoins() {
-        API.get().enable_coins(Object.keys(selected_to_enable))
+        const coins_to_enable = Object.keys(selected_to_enable)
+        console.log("QML enable_coins:", JSON.stringify(coins_to_enable))
+        API.get().enable_coins(coins_to_enable)
         reset()
         root.close()
     }
@@ -59,7 +61,7 @@ DefaultModal {
         }
 
         // Search input
-        TextField {
+        DefaultTextField {
             id: input_coin_filter
 
             Layout.fillWidth: true

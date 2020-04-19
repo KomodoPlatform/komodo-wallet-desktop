@@ -7,8 +7,14 @@ import "../Constants"
 ColumnLayout {
     property alias title: title_text.text
     property alias field: input_field
+    property alias hide_button: hide_button
+    property alias hide_button_area: hide_button.mouse_area
     property bool copyable: false
+    property bool hidable: false
     property var onReturn // function
+
+    property bool hiding: true
+
 
 
     // Local
@@ -22,39 +28,16 @@ ColumnLayout {
         }
     }
 
-    TextArea {
+    DefaultTextArea {
         id: input_field
         Layout.fillWidth: true
-        selectByMouse: true
-        wrapMode: TextEdit.Wrap
 
-        KeyNavigation.priority: KeyNavigation.BeforeItem
-        KeyNavigation.backtab: nextItemInFocusChain(false)
-        KeyNavigation.tab: nextItemInFocusChain(true)
-        Keys.onPressed: {
-            if(onReturn !== undefined && event.key === Qt.Key_Return) {
-                onReturn()
-                event.accepted = true
-            }
+        HideFieldButton {
+            id: hide_button
         }
 
-        // Copy button
-        Image {
-            source: General.image_path + "dashboard-copy.svg"
-            visible: copyable
-            scale: 0.8
-            anchors.right: parent.right
-            y: -height
-            antialiasing: true
+        CopyFieldButton {
 
-            MouseArea {
-                anchors { horizontalCenter: parent.horizontalCenter; verticalCenter: parent.verticalCenter }
-                height: input_field.height; width: input_field.height
-                onClicked: () => {
-                    input_field.selectAll()
-                    input_field.copy()
-                }
-            }
         }
     }
 }

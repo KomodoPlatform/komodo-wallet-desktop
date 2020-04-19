@@ -117,12 +117,13 @@ Item {
         updateTradeInfo()
     }
 
-    function updateTradeInfo() {
+    function updateTradeInfo(force=false) {
         const base = getTicker(true)
         const rel = getTicker(false)
         const amount = form_base.getVolume()
-        if(base !== undefined && rel !== undefined && amount !== undefined &&
-           base !== ''        && rel !== ''        && amount !== '' && amount !== '0') {
+        if(force ||
+            (base !== undefined && rel !== undefined && amount !== undefined &&
+             base !== ''        && rel !== ''        && amount !== '' && amount !== '0')) {
             getTradeInfo(base, rel, amount)
         }
     }
@@ -229,8 +230,15 @@ Item {
     }
 
     function trade(base, rel) {
-        form_base.capVolume()
-        action_result = API.get().place_sell_order(base, rel, getCurrentPrice(), form_base.field.text) ? "success" : "error"
+        updateTradeInfo(true) // Force update trade info
+        form_base.capVolume() // To cap the value for one last time
+
+        const price = getCurrentPrice()
+        const volume = form_base.field.text
+        console.log("QML place_sell_order: max balance:", form_base.getMaxVolume())
+        console.log("QML place_sell_order: params:", base, " <-> ", rel, "  /  price:", price, "  /  volume:", volume)
+        console.log("QML place_sell_order: trade info:", JSON.stringify(curr_trade_info))
+        action_result = API.get().place_sell_order(base, rel, price, volume) ? "success" : "error"
         if(action_result === "success") {
             onOrderSuccess()
         }
@@ -310,14 +318,16 @@ Item {
 
             text: API.get().empty_string + (qsTr("Trade"))
             enabled: form_base.isValid() && form_rel.isValid()
-            onClicked: trade(getTicker(true), getTicker(false))
+            onClicked: confirm_trade_modal.open()
+        }
+
+        ConfirmTradeModal {
+            id: confirm_trade_modal
         }
 
         // Price
-        DefaultText {
+        PriceLine {
             Layout.alignment: Qt.AlignHCenter
-            text: API.get().empty_string + (!hasValidPrice() ? '' : (preffered_price === empty_price ? qsTr("Price") + ": " + getCalculatedPrice() :
-                                                    qsTr("Selected Price") + ": " + preffered_price) + " " + getTicker(false))
         }
 
         // Result
@@ -333,9 +343,27 @@ Item {
         DefaultText {
             Layout.alignment: Qt.AlignHCenter
 
-            text: API.get().empty_string + ("Not enough ETH for the transaction fee")
+            text: API.get().empty_string + (qsTr("Not enough ETH for the transaction fee"))
             color: Style.colorRed
             visible: form_base.hasEthFees() && !form_base.hasEnoughEthForFees()
+        }
+
+        // Show min amount error
+        DefaultText {
+            Layout.alignment: Qt.AlignHCenter
+
+            text: API.get().empty_string + (qsTr("Sell amount is lower than minimum trade amount") + " : " + form_base.getMinTradeAmount())
+            color: Style.colorRed
+            visible: form_base.fieldsAreFilled() && !form_base.higherThanMinTradeAmount()
+        }
+
+        // Show min amount error
+        DefaultText {
+            Layout.alignment: Qt.AlignHCenter
+
+            text: API.get().empty_string + (qsTr("Receive amount is lower than minimum trade amount") + " : " + form_rel.getMinTradeAmount())
+            color: Style.colorRed
+            visible: form_rel.fieldsAreFilled() && !form_rel.higherThanMinTradeAmount()
         }
     }
 }

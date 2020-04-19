@@ -19,6 +19,7 @@
         <file>atomic_qt_design/assets/images/komodo-icon.png</file>
         <file>atomic_qt_design/assets/images/exchange-exchange.svg</file>
         <file>atomic_qt_design/assets/images/exchange-search.svg</file>
+        <file>atomic_qt_design/assets/images/settings-seed.svg</file>
         <file>atomic_qt_design/assets/images/menu-assets-portfolio.png</file>
         <file>atomic_qt_design/assets/images/menu-settings-white.svg</file>
         <file>atomic_qt_design/assets/images/menu-dapp-white.svg</file>
@@ -38,10 +39,13 @@
         <file>atomic_qt_design/assets/images/coins/kmd.png</file>
         <file>atomic_qt_design/assets/images/coins/chips.png</file>
         <file>atomic_qt_design/assets/images/coins/dex.png</file>
+        <file>atomic_qt_design/assets/images/coins/labs.png</file>
         <file>atomic_qt_design/assets/images/coins/rick.png</file>
         <file>atomic_qt_design/assets/images/coins/morty.png</file>
         <file>atomic_qt_design/assets/images/coins/hush.png</file>
         <file>atomic_qt_design/assets/images/coins/usdc.png</file>
+        <file>atomic_qt_design/assets/images/coins/vrsc.png</file>
+        <file>atomic_qt_design/assets/images/coins/vote2020.png</file>
         <file>atomic_qt_design/assets/images/coins/tusd.png</file>
         <file>atomic_qt_design/assets/images/lang/en.png</file>
         <file>atomic_qt_design/assets/images/lang/fr.png</file>
@@ -59,6 +63,8 @@
         <file>atomic_qt_design/qml/Constants/API.qml</file>
         <file>atomic_qt_design/qml/Constants/Style.qml</file>
         <file>atomic_qt_design/qml/Exchange/Trade/Trade.qml</file>
+        <file>atomic_qt_design/qml/Exchange/Trade/ConfirmTradeModal.qml</file>
+        <file>atomic_qt_design/qml/Exchange/Trade/PriceLine.qml</file>
         <file>atomic_qt_design/qml/Exchange/Trade/OrderForm.qml</file>
         <file>atomic_qt_design/qml/Exchange/Trade/OrderReceiveModal.qml</file>
         <file>atomic_qt_design/qml/Exchange/Trade/OrderbookModal.qml</file>
@@ -73,11 +79,17 @@
         <file>atomic_qt_design/qml/Exchange/OrderContent.qml</file>
         <file>atomic_qt_design/qml/Sidebar/Sidebar.qml</file>
         <file>atomic_qt_design/qml/Sidebar/SidebarLine.qml</file>
+        <file>atomic_qt_design/qml/Components/EulaModal.qml</file>
+        <file>atomic_qt_design/qml/Components/Toast.qml</file>
+        <file>atomic_qt_design/qml/Components/ToastManager.qml</file>
         <file>atomic_qt_design/qml/Components/ColumnHeader.qml</file>
+        <file>atomic_qt_design/qml/Components/RightClickMenu.qml</file>
         <file>atomic_qt_design/qml/Components/PlusButton.qml</file>
         <file>atomic_qt_design/qml/Components/AddressField.qml</file>
         <file>atomic_qt_design/qml/Components/AmountField.qml</file>
         <file>atomic_qt_design/qml/Components/AmountIntField.qml</file>
+        <file>atomic_qt_design/qml/Components/CopyFieldButton.qml</file>
+        <file>atomic_qt_design/qml/Components/HideFieldButton.qml</file>
         <file>atomic_qt_design/qml/Components/PasswordField.qml</file>
         <file>atomic_qt_design/qml/Components/PasswordForm.qml</file>
         <file>atomic_qt_design/qml/Components/WalletNameField.qml</file>
@@ -85,6 +97,8 @@
         <file>atomic_qt_design/qml/Components/PrimaryButton.qml</file>
         <file>atomic_qt_design/qml/Components/DefaultButton.qml</file>
         <file>atomic_qt_design/qml/Components/DefaultText.qml</file>
+        <file>atomic_qt_design/qml/Components/DefaultTextField.qml</file>
+        <file>atomic_qt_design/qml/Components/DefaultTextArea.qml</file>
         <file>atomic_qt_design/qml/Components/DefaultComboBox.qml</file>
         <file>atomic_qt_design/qml/Components/DefaultModal.qml</file>
         <file>atomic_qt_design/qml/Components/PaneWithTitle.qml</file>
@@ -108,6 +122,8 @@
         <file>atomic_qt_design/qml/Wallet/TransactionDetailsModal.qml</file>
         <file>atomic_qt_design/qml/Wallet/AddressList.qml</file>
         <file>atomic_qt_design/qml/Settings/Settings.qml</file>
+        <file>atomic_qt_design/qml/Settings/RecoverSeedModal.qml</file>
+        <file>atomic_qt_design/qml/Settings/DeleteWalletModal.qml</file>
         <file>atomic_qt_design/qml/Settings/Languages.qml</file>
     </qresource>
 </RCC>

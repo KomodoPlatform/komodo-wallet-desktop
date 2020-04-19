@@ -5,9 +5,12 @@ import QtQuick.Controls.Material 2.12
 import "../Constants"
 
 ColumnLayout {
+    id: form
+
     property alias field: input_password.field
     property alias confirm_field: input_confirm_password.field
     property bool confirm: true
+    property bool new_password: true
 
     function isValid() {
         const valid_pw = input_password.isValid()
@@ -26,10 +29,12 @@ ColumnLayout {
 
     PasswordField {
         id: input_password
-        hide_hint: true
+        new_password: form.new_password
+        hide_hint: !confirm
     }
 
     PasswordField {
+        hide_hint: true
         visible: confirm
         id: input_confirm_password
         title: API.get().empty_string + (qsTr("Confirm Password"))

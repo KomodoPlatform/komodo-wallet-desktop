@@ -4,6 +4,10 @@
 #include <QWindow>
 #include <QtQml>
 
+#define QZXING_QML
+
+#include "QZXing.h"
+
 //! PCH Headers
 #include "atomic.dex.pch.hpp"
 
@@ -28,7 +32,8 @@ main(int argc, char* argv[])
     loguru::g_preamble_date   = false;
     loguru::set_thread_name("main thread");
     const fs::path log_path = ag::core::assets_real_path() / "logs/latest_readeable.log";
-    loguru::add_file(log_path.c_str(), loguru::Truncate, loguru::Verbosity_INFO);
+    std::string path = log_path.string();
+    loguru::add_file(path.c_str(), loguru::Truncate, loguru::Verbosity_INFO);
     atomic_dex::application atomic_app;
 
     //! QT
@@ -36,6 +41,8 @@ main(int argc, char* argv[])
     QApplication       app(argc, argv);
     atomic_app.set_qt_app(&app);
     QQmlApplicationEngine engine;
+    QZXing::registerQMLTypes();
+    QZXing::registerQMLImageProvider(engine);
     engine.rootContext()->setContextProperty("atomic_app", &atomic_app);
 
     engine.addImportPath("qrc:/atomic_qt_design/imports");

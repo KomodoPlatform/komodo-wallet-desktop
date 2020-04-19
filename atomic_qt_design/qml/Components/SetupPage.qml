@@ -16,7 +16,7 @@ Item {
         anchors.horizontalCenter: parent.horizontalCenter
         anchors.verticalCenter: parent.verticalCenter
         transformOrigin: Item.Center
-        spacing: 20
+        spacing: 0
 
         Rectangle {
             id: rectangle

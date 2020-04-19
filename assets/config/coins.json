@@ -3,11 +3,6 @@
     "coin": "BTC",
     "name": "Bitcoin",
     "type": "UTXO",
-    "rpcport": 8332,
-    "pubtype": 0,
-    "p2shtype": 5,
-    "wiftype": 128,
-    "mm2": 1,
     "coingecko_id": "bitcoin",
     "coinpaprika_id": "btc-bitcoin",
     "is_erc_20": false,
@@ -25,7 +20,7 @@
     "explorer_url": [
       "https://blockstream.info/"
     ],
-    "active": false,
+    "active": true,
     "currently_enabled": false
   },
   "BCH": {
@@ -49,17 +44,13 @@
       "https://explorer.bitcoin.com/bch/"
     ],
     "is_erc_20": false,
-    "mm2": 1,
-    "name": "Bitcoin Cash",
-    "p2shtype": 5,
-    "pubtype": 0,
-    "rpcport": 5001,
     "type": "UTXO",
-    "wiftype": 128
+    "name": "Bitcoin Cash"
   },
   "DASH": {
     "active": false,
     "coin": "DASH",
+    "name": "Dash",
     "coingecko_id": "bitcoin",
     "coinpaprika_id": "dash-dash",
     "currently_enabled": false,
@@ -78,13 +69,7 @@
       "https://explorer.dash.org/"
     ],
     "is_erc_20": false,
-    "mm2": 1,
-    "name": "Dash",
-    "p2shtype": 5,
-    "pubtype": 0,
-    "rpcport": 10061,
-    "type": "UTXO",
-    "wiftype": 128
+    "type": "UTXO"
   },
   "LTC": {
     "active": false,
@@ -107,13 +92,8 @@
       "https://blockexplorer.one/litecoin/mainnet/"
     ],
     "is_erc_20": false,
-    "mm2": 1,
-    "name": "Litecoin",
-    "p2shtype": 5,
-    "pubtype": 0,
-    "rpcport": 10061,
     "type": "UTXO",
-    "wiftype": 128
+    "name": "Litecoin"
   },
   "ETH": {
     "active": false,
@@ -130,13 +110,8 @@
       "https://etherscan.io/"
     ],
     "is_erc_20": true,
-    "mm2": 1,
-    "name": "Ethereum",
-    "p2shtype": 5,
-    "pubtype": 0,
-    "rpcport": 80,
     "type": "ERC-20",
-    "wiftype": 128
+    "name": "Ethereum"
   },
   "USDC": {
     "active": false,
@@ -153,13 +128,8 @@
       "https://etherscan.io/"
     ],
     "is_erc_20": true,
-    "mm2": 1,
-    "name": "USD Coin",
-    "p2shtype": 5,
-    "pubtype": 0,
-    "rpcport": 80,
     "type": "ERC-20",
-    "wiftype": 128
+    "name": "USD Coin"
   },
   "AWC": {
     "active": false,
@@ -176,13 +146,8 @@
       "https://etherscan.io/"
     ],
     "is_erc_20": true,
-    "mm2": 1,
-    "name": "Atomic Wallet Coin",
-    "p2shtype": 5,
-    "pubtype": 0,
-    "rpcport": 8555,
     "type": "ERC-20",
-    "wiftype": 128
+    "name": "Atomic Wallet Coin"
   },
   "TUSD": {
     "active": false,
@@ -199,13 +164,8 @@
       "https://etherscan.io/"
     ],
     "is_erc_20": true,
-    "mm2": 1,
-    "name": "True USD",
-    "p2shtype": 5,
-    "pubtype": 0,
-    "rpcport": 8555,
     "type": "ERC-20",
-    "wiftype": 128
+    "name": "True USD"
   },
   "KMD": {
     "coin": "KMD",
@@ -213,14 +173,6 @@
     "type": "Smart Chain",
     "is_claimable": true,
     "minimal_claim_amount": "10",
-    "rpcport": 7771,
-    "pubtype": 60,
-    "p2shtype": 85,
-    "wiftype": 188,
-    "txversion": 4,
-    "overwintered": 1,
-    "txfee": 1000,
-    "mm2": 1,
     "coingecko_id": "komodo",
     "coinpaprika_id": "kmd-komodo",
     "is_erc_20": false,
@@ -238,6 +190,56 @@
     "explorer_url": [
       "https://kmdexplorer.io/"
     ],
+    "active": true,
+    "currently_enabled": false
+  },
+  "LABS": {
+    "coin": "LABS",
+    "name": "Labs",
+    "type": "Smart Chain",
+    "rpcport": 40265,
+    "mm2": 1,
+    "coingecko_id": "test-coin",
+    "coinpaprika_id": "test-coin",
+    "is_erc_20": false,
+    "electrum": [
+      {
+        "url": "electrum1.cipig.net:10019"
+      },
+      {
+        "url": "electrum2.cipig.net:10019"
+      },
+      {
+        "url": "electrum3.cipig.net:10019"
+      }
+    ],
+    "explorer_url": [
+      "https://labs.explorer.dexstats.info/"
+    ],
+    "active": false,
+    "currently_enabled": false
+  },
+  "VOTE2020": {
+    "coin": "VOTE2020",
+    "name": "Vote2020",
+    "type": "Smart Chain",
+    "coingecko_id": "test-coin",
+    "coinpaprika_id": "test-coin",
+    "is_erc_20": false,
+    "electrum": [
+      {
+        "url": "electrum1.cipig.net:10002"
+      },
+      {
+        "url": "electrum2.cipig.net:10002"
+      },
+      {
+        "url": "electrum3.cipig.net:10002"
+      }
+    ],
+    "explorer_url": [
+      "https://vote.kmdexplorer.io/"
+    ],
     "active": false,
     "currently_enabled": false
   },
@@ -245,14 +247,6 @@
     "coin": "DEX",
     "name": "Dex",
     "type": "Smart Chain",
-    "rpcport": 7771,
-    "pubtype": 60,
-    "p2shtype": 85,
-    "wiftype": 188,
-    "txversion": 4,
-    "overwintered": 1,
-    "txfee": 1000,
-    "mm2": 1,
     "coingecko_id": "test-coin",
     "coinpaprika_id": "test-coin",
     "is_erc_20": false,
@@ -278,10 +272,6 @@
     "asset": "RICK",
     "type": "Smart Chain",
     "name": "Rick (TESTCOIN)",
-    "rpcport": 25435,
-    "txversion": 4,
-    "overwintered": 1,
-    "mm2": 1,
     "coingecko_id": "test-coin",
     "coinpaprika_id": "test-coin",
     "is_erc_20": false,
@@ -299,7 +289,7 @@
     "explorer_url": [
       "https://rick.kmd.dev/"
     ],
-    "active": true,
+    "active": false,
     "currently_enabled": false
   },
   "MORTY": {
@@ -307,10 +297,6 @@
     "asset": "MORTY",
     "type": "Smart Chain",
     "name": "Morty (TESTCOIN)",
-    "rpcport": 16348,
-    "txversion": 4,
-    "overwintered": 1,
-    "mm2": 1,
     "coingecko_id": "test-coin",
     "coinpaprika_id": "test-coin",
     "is_erc_20": false,
@@ -328,18 +314,13 @@
     "explorer_url": [
       "https://morty.kmd.dev/"
     ],
-    "active": true,
+    "active": false,
     "currently_enabled": false
   },
   "CHIPS": {
     "coin": "CHIPS",
-    "asset": "CHIPS",
-    "type": "Smart Chain",
+    "type": "UTXO",
     "name": "Chips",
-    "rpcport": 57776,
-    "txversion": 4,
-    "overwintered": 1,
-    "mm2": 1,
     "coingecko_id": "test-coin",
     "coinpaprika_id": "chips-chips",
     "is_erc_20": false,
@@ -355,49 +336,39 @@
       }
     ],
     "explorer_url": [
-      "https://explorer.chips.cash"
+      "https://explorer.chips.cash/"
     ],
     "active": false,
     "currently_enabled": false
   },
   "HUSH": {
-  "coin": "HUSH",
-  "asset": "HUSH3",
-  "type": "Smart Chain",
-  "name": "Hush",
-  "rpcport": 18031,
-  "txversion": 4,
-  "overwintered": 1,
-  "mm2": 1,
-  "coingecko_id": "hush",
-  "coinpaprika_id": "hush-hush",
-  "is_erc_20": false,
-  "electrum": [
-    {
-      "url": "electrum1.cipig.net:10064"
-    },
-    {
-      "url": "electrum2.cipig.net:10064"
-    },
-    {
-      "url": "electrum3.cipig.net:10064"
-    }
-  ],
-  "explorer_url": [
-    "https://explorer.myhush.org"
-  ],
-  "active": false,
-  "currently_enabled": false
+    "coin": "HUSH",
+    "type": "Smart Chain",
+    "name": "Hush",
+    "coingecko_id": "hush",
+    "coinpaprika_id": "hush-hush",
+    "is_erc_20": false,
+    "electrum": [
+      {
+        "url": "electrum1.cipig.net:10064"
+      },
+      {
+        "url": "electrum2.cipig.net:10064"
+      },
+      {
+        "url": "electrum3.cipig.net:10064"
+      }
+    ],
+    "explorer_url": [
+      "https://explorer.myhush.org/"
+    ],
+    "active": false,
+    "currently_enabled": false
   },
   "VRSC": {
     "coin": "VRSC",
-    "asset": "VRSC",
     "type": "Smart Chain",
     "name": "Verus Coin",
-    "rpcport": 27486,
-    "txversion": 4,
-    "overwintered": 1,
-    "mm2": 1,
     "coingecko_id": "verus-coin",
     "coinpaprika_id": "vrsc-verus-coin",
     "is_erc_20": false,
@@ -415,7 +386,28 @@
     "explorer_url": [
       "https://explorer.veruscoin.io/"
     ],
-    "active": true,
+    "active": false,
+    "currently_enabled": false
+  },
+  "ILN": {
+    "coin": "ILN",
+    "type": "Smart Chain",
+    "name": "iLien",
+    "coingecko_id": "test-coin",
+    "coinpaprika_id": "test-coin",
+    "is_erc_20": false,
+    "electrum": [
+      {
+        "url": "electrum1.ilien.io:65011"
+      },
+      {
+        "url": "electrum2.ilien.io:65011"
+      }
+    ],
+    "explorer_url": [
+      "https://explorer.ilien.io/"
+    ],
+    "active": false,
     "currently_enabled": false
   }
 }

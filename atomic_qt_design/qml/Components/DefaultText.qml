@@ -8,6 +8,8 @@ Text {
     font.family: "Rubik"
     font.pixelSize: Style.textSize
     color: Style.colorWhite1
+
+    wrapMode: Text.WordWrap
 }
 
 /*##^##

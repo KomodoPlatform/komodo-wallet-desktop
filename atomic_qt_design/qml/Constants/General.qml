@@ -5,7 +5,7 @@ QtObject {
     readonly property int width: 1280
     readonly property int height: 800
     readonly property int minimumWidth: 1280
-    readonly property int minimumHeight: 600
+    readonly property int minimumHeight: 800
     readonly property string assets_path: Qt.resolvedUrl(".") + "../../assets/"
     readonly property string image_path: assets_path + "images/"
     readonly property string coin_icons_path: image_path + "coins/"
@@ -23,6 +23,14 @@ QtObject {
     readonly property int idx_exchange_trade: 0
     readonly property int idx_exchange_orders: 1
     readonly property int idx_exchange_history: 2
+
+    readonly property var reg_pass_input: /[A-Za-z0-9@#$%{}[\]()\/\\'"`~,;:.<>+\-_=!^&*|?]+/
+    readonly property var reg_pass_valid: /^(?=.{16,})(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[@#$%{}[\]()\/\\'"`~,;:.<>+\-_=!^&*|?]).*$/
+    readonly property var reg_pass_uppercase: /(?=.*[A-Z])/
+    readonly property var reg_pass_lowercase: /(?=.*[a-z])/
+    readonly property var reg_pass_numeric: /(?=.*[0-9])/
+    readonly property var reg_pass_special: /(?=.*[@#$%{}[\]()\/\\'"`~,;:.<>+\-_=!^&*|?])/
+    readonly property var reg_pass_count: /(?=.{16,})/
 
     function diffPrefix(received) {
         return received === "" ? "" : received === true ? "+ " :  "- "
@@ -158,5 +166,11 @@ QtObject {
         }
 
         return false
+    }
+
+    function getRandomInt(min, max) {
+        min = Math.ceil(min)
+        max = Math.floor(max)
+        return Math.floor(Math.random() * (max - min + 1)) + min
     }
 }

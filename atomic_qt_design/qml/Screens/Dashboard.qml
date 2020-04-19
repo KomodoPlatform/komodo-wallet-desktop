@@ -49,6 +49,9 @@ Item {
             if(current_page === General.idx_dashboard_portfolio) {
                 portfolio.onOpened()
             }
+            else if(current_page === General.idx_dashboard_settings) {
+                settings.onOpened()
+            }
         }
 
         prev_page = current_page
