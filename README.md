@@ -122,3 +122,5 @@ Qt/QML wrapper library for the ZXing library. 1D/2D barcode image processing lib
 - [libwally](https://github.com/KomodoPlatform/libwally-core) Useful primitives for wallets (Windows/OSX)
 - [libbitcoin-system](https://github.com/KomodoPlatform/libbitcoin-system) Bitcoin Cross-Platform C++ Development Toolkit https://libbitcoin.org/
 - [reproc](https://github.com/KomodoPlatform/reproc) A cross-platform (C99/C++11) process library
+- [loguru](https://github.com/KomodoPlatform/loguru) A lightweight C++ logging library
+- [Restclient-cpp](https://github.com/KomodoPlatform/restclient-cpp) C++ client for making HTTP/REST requests
