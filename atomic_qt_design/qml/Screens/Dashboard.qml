@@ -80,6 +80,16 @@ Item {
             fillMode: Image.PreserveAspectFit
         }
 
+
+        DefaultText {
+            anchors.horizontalCenter: parent.horizontalCenter
+            anchors.top: parent.top
+            anchors.topMargin: parent.width * 0.85
+            text: API.get().empty_string + ("V. AtomicDEX PRO " + API.get().get_version())
+            font.pixelSize: Style.textSizeSmall
+            color: Style.colorWhite6
+        }
+
         Sidebar {
             width: parent.width
             anchors.verticalCenter: parent.verticalCenter
