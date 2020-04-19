@@ -18,7 +18,7 @@ Item {
         width: Style.textSize * 2
         fillMode: Image.PreserveAspectFit
         anchors.left: parent.left
-        anchors.leftMargin: 20
+        anchors.leftMargin: 30
         anchors.verticalCenter: parent.verticalCenter
         visible: false
     }
@@ -32,8 +32,8 @@ Item {
 
     DefaultText {
         id: txt
-        anchors.left: parent.left
-        anchors.leftMargin: img.anchors.leftMargin + Style.textSize * 2.5
+        anchors.right: parent.right
+        anchors.rightMargin: img.anchors.leftMargin
         anchors.verticalCenter: parent.verticalCenter
         font.bold: dashboard.current_page === dashboard_index
         color: font.bold ? Style.colorTheme0 : hovered ? Style.colorWhite1 : Style.colorWhite4

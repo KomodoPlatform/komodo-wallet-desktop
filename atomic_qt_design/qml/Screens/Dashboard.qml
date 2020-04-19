@@ -68,7 +68,7 @@ Item {
     Rectangle {
         id: sidebar
         color: Style.colorTheme8
-        width: 150
+        width: 200
         height: parent.height
 
         Image {
