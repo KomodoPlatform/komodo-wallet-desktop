@@ -183,7 +183,7 @@ RowLayout {
                     DefaultText {
                         Layout.alignment: Qt.AlignRight
                         text: API.get().empty_string + (model.modelData.name.replace(" (TESTCOIN)", ""))
-                        font.pixelSize: Style.textSizeSmall5
+                        font.pixelSize: text.length > 12 ? Style.textSizeSmall1 : Style.textSizeSmall5
                     }
 
                     // Ticker
