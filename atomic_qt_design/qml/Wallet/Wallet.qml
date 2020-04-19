@@ -34,7 +34,7 @@ RowLayout {
     Rectangle {
         id: coins_bar
         Layout.alignment: Qt.AlignLeft
-        width: 160
+        width: 200
         Layout.fillHeight: true
         color: Style.colorTheme7
 
@@ -157,7 +157,7 @@ RowLayout {
                 Image {
                     id: icon
                     anchors.left: parent.left
-                    anchors.leftMargin: 10
+                    anchors.leftMargin: 30
 
                     source: General.image_path + "coins/" + model.modelData.ticker.toLowerCase() + ".png"
                     fillMode: Image.PreserveAspectFit
