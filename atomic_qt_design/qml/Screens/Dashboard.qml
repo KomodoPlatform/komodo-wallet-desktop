@@ -126,7 +126,7 @@ Item {
 
             DefaultText {
                 id: dapps
-                text: API.get().empty_string + (qsTr("DApps"))
+                text: API.get().empty_string + (qsTr("Dapps"))
                 function reset() { }
             }
 

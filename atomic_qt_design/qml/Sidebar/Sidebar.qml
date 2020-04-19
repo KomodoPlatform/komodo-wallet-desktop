@@ -41,7 +41,7 @@ ColumnLayout {
     SidebarLine {
         dashboard_index: General.idx_dashboard_dapps
         id: dapps_line
-        text: API.get().empty_string + (qsTr("DApps"))
+        text: API.get().empty_string + (qsTr("Dapps"))
         image: General.image_path + "menu-dapp-white.svg"
         Layout.fillWidth: true
     }
