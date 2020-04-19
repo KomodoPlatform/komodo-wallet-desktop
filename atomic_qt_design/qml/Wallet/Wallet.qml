@@ -166,21 +166,32 @@ RowLayout {
                 Image {
                     id: icon
                     anchors.left: parent.left
-                    anchors.leftMargin: 20
+                    anchors.leftMargin: 10
 
                     source: General.image_path + "coins/" + model.modelData.ticker.toLowerCase() + ".png"
                     fillMode: Image.PreserveAspectFit
-                    width: Style.textSize2
+                    width: Style.textSize3
                     anchors.verticalCenter: parent.verticalCenter
                 }
 
-                // Name
-                DefaultText {
-                    anchors.left: icon.right
-                    anchors.leftMargin: 5
-
-                    text: API.get().empty_string + (model.modelData.ticker)
+                ColumnLayout {
                     anchors.verticalCenter: parent.verticalCenter
+                    anchors.right: parent.right
+                    anchors.rightMargin: icon.anchors.leftMargin
+
+                    // Name
+                    DefaultText {
+                        Layout.alignment: Qt.AlignRight
+                        text: API.get().empty_string + (model.modelData.name.replace(" (TESTCOIN)", ""))
+                        font.pixelSize: Style.textSizeSmall5
+                    }
+
+                    // Ticker
+                    DefaultText {
+                        Layout.alignment: Qt.AlignRight
+                        text: API.get().empty_string + (model.modelData.ticker)
+                        font.pixelSize: Style.textSize
+                    }
                 }
             }
         }
