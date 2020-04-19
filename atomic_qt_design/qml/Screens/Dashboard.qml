@@ -80,7 +80,6 @@ Item {
             fillMode: Image.PreserveAspectFit
         }
 
-
         DefaultText {
             anchors.horizontalCenter: parent.horizontalCenter
             anchors.top: parent.top
@@ -93,6 +92,12 @@ Item {
         Sidebar {
             width: parent.width
             anchors.verticalCenter: parent.verticalCenter
+        }
+
+        SidebarBottom {
+            width: parent.width
+            anchors.bottom: parent.bottom
+            anchors.bottomMargin: parent.width * 0.25
         }
     }
 
