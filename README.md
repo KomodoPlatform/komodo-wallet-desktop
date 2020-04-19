@@ -121,3 +121,4 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 Qt/QML wrapper library for the ZXing library. 1D/2D barcode image processing library
 - [libwally](https://github.com/KomodoPlatform/libwally-core) Useful primitives for wallets (Windows/OSX)
 - [libbitcoin-system](https://github.com/KomodoPlatform/libbitcoin-system) Bitcoin Cross-Platform C++ Development Toolkit https://libbitcoin.org/
+- [reproc](https://github.com/KomodoPlatform/reproc) A cross-platform (C99/C++11) process library
