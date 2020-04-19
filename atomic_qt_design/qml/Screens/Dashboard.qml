@@ -64,11 +64,34 @@ Item {
         onTriggered: General.enableEthIfNeeded()
     }
 
-    // Left side
+    // Sidebar, left side
+    Rectangle {
+        id: sidebar
+        color: Style.colorTheme8
+        width: 150
+        height: parent.height
+
+        Image {
+            source: General.image_path + "komodo-icon.png"
+            anchors.horizontalCenter: parent.horizontalCenter
+            y: parent.width * 0.25
+            transformOrigin: Item.Center
+            width: 64
+            fillMode: Image.PreserveAspectFit
+        }
+
+        Sidebar {
+            width: parent.width
+            anchors.verticalCenter: parent.verticalCenter
+        }
+    }
+
+    // Right side
     Rectangle {
         color: Style.colorTheme6
         width: parent.width - sidebar.width
         height: parent.height
+        x: sidebar.width
 
         // Modals
         EnableCoinModal {
@@ -111,29 +134,6 @@ Item {
                 id: settings
                 Layout.alignment: Qt.AlignCenter
             }
-        }
-    }
-
-    // Sidebar, right side
-    Rectangle {
-        id: sidebar
-        color: Style.colorTheme8
-        width: 150
-        height: parent.height
-        x: parent.width - width
-
-        Image {
-            source: General.image_path + "komodo-icon.png"
-            anchors.horizontalCenter: parent.horizontalCenter
-            y: parent.width * 0.25
-            transformOrigin: Item.Center
-            width: 64
-            fillMode: Image.PreserveAspectFit
-        }
-
-        Sidebar {
-            width: parent.width
-            anchors.verticalCenter: parent.verticalCenter
         }
     }
 }
