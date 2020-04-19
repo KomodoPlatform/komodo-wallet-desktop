@@ -34,7 +34,7 @@ RowLayout {
     Rectangle {
         id: coins_bar
         Layout.alignment: Qt.AlignLeft
-        width: 150
+        width: 160
         Layout.fillHeight: true
         color: Style.colorTheme7
 
@@ -132,7 +132,7 @@ RowLayout {
                 color: API.get().current_coin_info.ticker === model.modelData.ticker ? Style.colorTheme2 : hovered ? Style.colorTheme4 : "transparent"
                 anchors.horizontalCenter: parent.horizontalCenter
                 width: coins_bar.width
-                height: 50
+                height: 60
 
                 // Click area
                 MouseArea {
