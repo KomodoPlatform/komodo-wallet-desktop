@@ -41,65 +41,56 @@ RowLayout {
         // Balance
         DefaultText {
             anchors.top: parent.top
-            anchors.topMargin: search_button.anchors.topMargin * 0.5 - font.pixelSize * 0.5
+            anchors.topMargin: 30
             anchors.horizontalCenter: parent.horizontalCenter
 
             text: API.get().empty_string + (General.formatFiat("", API.get().balance_fiat_all, API.get().fiat))
         }
 
-        // Search button
-        Image {
-            id: search_button
-
-            source: General.image_path + "exchange-search.svg"
-
-            width: 32; height: width
-
+        RowLayout {
             anchors.top: parent.top
             anchors.topMargin: parent.width * 0.5 - height * 0.5
             anchors.horizontalCenter: parent.horizontalCenter
 
-            visible: false
-        }
-        ColorOverlay {
-            id: search_button_overlay
-            property bool hovered: false
+            spacing: 10
 
-            anchors.fill: search_button
-            source: search_button
-            color: search_button_overlay.hovered || input_coin_filter.visible ? Style.colorWhite1 : Style.colorWhite4
+            // Search button
+            Rectangle {
+                color: "transparent"
+                width: search_button.width
+                height: search_button.height
+                Image {
+                    id: search_button
 
-            MouseArea {
-                anchors.fill: parent
-                hoverEnabled: true
-                onHoveredChanged: search_button_overlay.hovered = containsMouse
-                onClicked: {
-                    input_coin_filter.text = ""
-                    input_coin_filter.visible = !input_coin_filter.visible
-                    if(input_coin_filter.visible)
-                        input_coin_filter.focus = true
+                    source: General.image_path + "exchange-search.svg"
+
+                    width: 16; height: width
+
+                    visible: false
+                }
+                ColorOverlay {
+                    id: search_button_overlay
+                    property bool hovered: false
+
+                    anchors.fill: search_button
+                    source: search_button
+                    color: search_button_overlay.hovered || input_coin_filter.visible ? Style.colorWhite1 : Style.colorWhite4
                 }
             }
-        }
 
-        // Search input
-        DefaultTextField {
-            id: input_coin_filter
+            // Search input
+            DefaultTextField {
+                id: input_coin_filter
 
-            function reset() {
-                visible = false
-                text = ""
+                function reset() {
+                    text = ""
+                }
+
+                placeholderText: API.get().empty_string + (qsTr("Search"))
+                selectByMouse: true
+
+                width: parent.width * 0.3
             }
-
-            anchors.top: search_button.bottom
-            anchors.horizontalCenter: parent.horizontalCenter
-
-            placeholderText: API.get().empty_string + (qsTr("Search"))
-            selectByMouse: true
-
-            visible: false
-
-            width: parent.width * 0.8
         }
 
         // Add button
