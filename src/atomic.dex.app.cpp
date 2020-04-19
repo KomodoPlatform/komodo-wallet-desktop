@@ -596,6 +596,7 @@ namespace atomic_dex
     bool
     application::place_sell_order(const QString& base, const QString& rel, const QString& price, const QString& volume)
     {
+        qDebug() << " base: " << base << " rel: " << rel << " price: " << price << " volume: " << volume;
         t_float_50 amount_f;
         amount_f.assign(volume.toStdString());
 
@@ -888,12 +889,15 @@ namespace atomic_dex
     application::get_trade_infos(const QString& ticker, const QString& receive_ticker, const QString& amount)
     {
         QVariantMap out;
+
         auto        trade_fee_f = get_mm2().get_trade_fee(ticker.toStdString(), amount.toStdString(), false);
         auto        answer      = get_mm2().get_trade_fixed_fee(ticker.toStdString());
+
         if (!answer.amount.empty())
         {
             t_float_50 erc_fees = 0;
             t_float_50 tx_fee_f = t_float_50(answer.amount) * 2;
+
             if (receive_ticker != "")
             {
                 get_mm2().apply_erc_fees(receive_ticker.toStdString(), erc_fees);
@@ -913,6 +917,7 @@ namespace atomic_dex
             out.insert("is_ticker_of_fees_eth", get_mm2().get_coin_info(ticker.toStdString()).is_erc_20);
             out.insert("input_final_value", final_balance_qt);
         }
+        qDebug() << out;
         return out;
     }
 
@@ -1073,5 +1078,28 @@ namespace atomic_dex
     {
         //QImage qrcode = QZXing::encodeData(text_to_encode, QZXing::EncoderFormat_QR_CODE, size);
         return QImage();
+    }
+
+    bool
+    application::mnemonic_validate(QString entropy)
+    {
+#ifdef __APPLE__
+        std::vector<std::string> mnemonic;
+
+        // Split
+        std::string s = entropy.toStdString();
+        const std::string delimiter = " ";
+        size_t pos = 0;
+        while ((pos = s.find(delimiter)) != std::string::npos) {
+            mnemonic.emplace_back(s.substr(0, pos));
+            s.erase(0, pos + delimiter.length());
+        }
+        mnemonic.emplace_back(s);
+
+        // Validate
+        return bc::wallet::validate_mnemonic(mnemonic);
+#else
+        return bip39_mnemonic_validate(nullptr, entropy.toStdString().c_str()) == 0;
+#endif
     }
 } // namespace atomic_dex

@@ -18,6 +18,7 @@ QtObject {
         get_mm2_version: () => { return "5.1.1" },
         get_version: () => { return "0.1.1-alpha" },
 
+        mnemonic_validate: (entropy) => { return true },
         wallet_default_name: "",
 
         balance_fiat_all: "12345678.90",

@@ -11,27 +11,27 @@ ColumnLayout {
     property bool new_password: true
 
     function isValid() {
-        return pw.field.acceptableInput && RegExp(/^(?=.{16,})(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[@#$%{}[\]()\/\\'"`~,;:.<>+\-_=!^&*|?]).*$/).test(pw.field.text)
+        return pw.field.acceptableInput && RegExp(General.reg_pass_valid).test(pw.field.text)
     }
 
     function hasEnoughUppercaseCharacters() {
-        return pw.field.acceptableInput && RegExp(/(?=.*[A-Z])/).test(pw.field.text)
+        return pw.field.acceptableInput && RegExp(General.reg_pass_uppercase).test(pw.field.text)
     }
 
     function hasEnoughLowercaseCharacters() {
-        return pw.field.acceptableInput && RegExp(/(?=.*[a-z])/).test(pw.field.text)
+        return pw.field.acceptableInput && RegExp(General.reg_pass_lowercase).test(pw.field.text)
     }
 
     function hasEnoughNumericCharacters() {
-        return pw.field.acceptableInput && RegExp(/(?=.*[0-9])/).test(pw.field.text)
+        return pw.field.acceptableInput && RegExp(General.reg_pass_numeric).test(pw.field.text)
     }
 
     function hasEnoughSpecialCharacters() {
-        return pw.field.acceptableInput && RegExp(/(?=.*[@#$%{}[\]()\/\\'"`~,;:.<>+\-_=!^&*|?])/).test(pw.field.text)
+        return pw.field.acceptableInput && RegExp(General.reg_pass_special).test(pw.field.text)
     }
 
     function hasEnoughCharacters() {
-        return pw.field.acceptableInput && RegExp(/(?=.{16,})/).test(pw.field.text)
+        return pw.field.acceptableInput && RegExp(General.reg_pass_count).test(pw.field.text)
     }
 
     function hintColor(valid) {
@@ -47,7 +47,7 @@ ColumnLayout {
         hidable: true
         title: API.get().empty_string + (qsTr("Password"))
         field.placeholderText: API.get().empty_string + (new_password ? qsTr("Enter a password for your wallet") : qsTr("Enter the password of your wallet"))
-        field.validator: RegExpValidator { regExp: /[A-Za-z0-9@#$%{}[\]()\/\\'"`~,;:.<>+\-_=!^&*|?]+/ }
+        field.validator: RegExpValidator { regExp: General.reg_pass_input }
     }
 
     ColumnLayout {

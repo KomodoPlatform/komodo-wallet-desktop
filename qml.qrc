@@ -89,6 +89,7 @@
         <file>atomic_qt_design/qml/Components/AmountField.qml</file>
         <file>atomic_qt_design/qml/Components/AmountIntField.qml</file>
         <file>atomic_qt_design/qml/Components/CopyFieldButton.qml</file>
+        <file>atomic_qt_design/qml/Components/HideFieldButton.qml</file>
         <file>atomic_qt_design/qml/Components/PasswordField.qml</file>
         <file>atomic_qt_design/qml/Components/PasswordForm.qml</file>
         <file>atomic_qt_design/qml/Components/WalletNameField.qml</file>

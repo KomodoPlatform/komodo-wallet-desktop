@@ -12,6 +12,20 @@ DefaultModal {
     property bool wrong_password: false
     property string seed: ''
 
+    function tryViewSeed() {
+        if(!submit_button.enabled) return
+
+        const result = API.get().retrieve_seed(API.get().wallet_default_name, input_password.field.text)
+
+        if(result !== 'wrong password') {
+            seed = result
+            wrong_password = false
+        }
+        else {
+            wrong_password = true
+        }
+    }
+
     width: 500
 
     onClosed: {
@@ -45,6 +59,7 @@ DefaultModal {
                 id: input_password
                 Layout.fillWidth: true
                 confirm: false
+                field.onAccepted: tryViewSeed()
             }
 
             DefaultText {
@@ -72,21 +87,12 @@ DefaultModal {
             }
 
             PrimaryButton {
+                id: submit_button
                 visible: seed === ''
                 text: API.get().empty_string + (qsTr("View"))
                 Layout.fillWidth: true
                 enabled: input_password.isValid()
-                onClicked: {
-                    const result = API.get().retrieve_seed(API.get().wallet_default_name, input_password.field.text)
-
-                    if(result !== 'wrong password') {
-                        seed = result
-                        wrong_password = false
-                    }
-                    else {
-                        wrong_password = true
-                    }
-                }
+                onClicked: tryViewSeed
             }
         }
     }

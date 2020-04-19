@@ -233,7 +233,12 @@ Item {
         updateTradeInfo(true) // Force update trade info
         form_base.capVolume() // To cap the value for one last time
 
-        action_result = API.get().place_sell_order(base, rel, getCurrentPrice(), form_base.field.text) ? "success" : "error"
+        const price = getCurrentPrice()
+        const volume = form_base.field.text
+        console.log("QML place_sell_order: max balance:", form_base.getMaxVolume())
+        console.log("QML place_sell_order: params:", base, " <-> ", rel, "  /  price:", price, "  /  volume:", volume)
+        console.log("QML place_sell_order: trade info:", JSON.stringify(curr_trade_info))
+        action_result = API.get().place_sell_order(base, rel, price, volume) ? "success" : "error"
         if(action_result === "success") {
             onOrderSuccess()
         }
@@ -338,9 +343,27 @@ Item {
         DefaultText {
             Layout.alignment: Qt.AlignHCenter
 
-            text: API.get().empty_string + ("Not enough ETH for the transaction fee")
+            text: API.get().empty_string + (qsTr("Not enough ETH for the transaction fee"))
             color: Style.colorRed
             visible: form_base.hasEthFees() && !form_base.hasEnoughEthForFees()
+        }
+
+        // Show min amount error
+        DefaultText {
+            Layout.alignment: Qt.AlignHCenter
+
+            text: API.get().empty_string + (qsTr("Sell amount is lower than minimum trade amount") + " : " + form_base.getMinTradeAmount())
+            color: Style.colorRed
+            visible: form_base.fieldsAreFilled() && !form_base.higherThanMinTradeAmount()
+        }
+
+        // Show min amount error
+        DefaultText {
+            Layout.alignment: Qt.AlignHCenter
+
+            text: API.get().empty_string + (qsTr("Receive amount is lower than minimum trade amount") + " : " + form_rel.getMinTradeAmount())
+            color: Style.colorRed
+            visible: form_rel.fieldsAreFilled() && !form_rel.higherThanMinTradeAmount()
         }
     }
 }

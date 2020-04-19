@@ -7,10 +7,17 @@ import "../Constants"
 ColumnLayout {
     property alias title: title_text.text
     property alias field: input_field
+    property alias hide_button: hide_button
+    property alias hide_button_area: hide_button.mouse_area
     property bool copyable: false
     property bool hidable: false
 
     property bool hiding: true
+
+    // Local
+    function reset() {
+        input_field.text = ''
+    }
 
     DefaultText {
         id: title_text
@@ -25,21 +32,8 @@ ColumnLayout {
         Layout.fillWidth: true
         selectByMouse: true
 
-        // Hide button
-        Image {
-            source: General.image_path + "dashboard-eye" + (hiding ? "" : "-hide") + ".svg"
-            visible: hidable
-            scale: 0.8
-            anchors.right: parent.right
-            anchors.verticalCenter: parent.verticalCenter
-            anchors.verticalCenterOffset: input_field.height * -0.0625
-            antialiasing: true
-
-            MouseArea {
-                anchors { horizontalCenter: parent.horizontalCenter; verticalCenter: parent.verticalCenter }
-                height: input_field.height; width: input_field.height
-                onClicked: hiding = !hiding
-            }
+        HideFieldButton {
+            id: hide_button
         }
 
         CopyFieldButton {
