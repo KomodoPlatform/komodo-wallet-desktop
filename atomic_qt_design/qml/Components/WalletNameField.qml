@@ -8,7 +8,7 @@ TextFieldWithTitle {
     id: input_wallet_name
     title: API.get().empty_string + (qsTr("Wallet Name"))
     field.placeholderText: API.get().empty_string + (qsTr("Enter the name of your wallet here"))
-    field.validator: RegExpValidator { regExp: /\w+/ }
+    field.validator: RegExpValidator { regExp: /[a-zA-Z0-9]+/ }
 
     function reset() {
         field.text = ''
