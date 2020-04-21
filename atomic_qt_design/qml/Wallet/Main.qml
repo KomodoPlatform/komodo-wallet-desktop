@@ -45,7 +45,9 @@ Item {
                 width: parent.width
 
                 RowLayout {
-                    Layout.alignment: Qt.AlignHCenter
+                    Layout.alignment: Qt.AlignLeft
+                    Layout.leftMargin: 15
+                    spacing: 15
                     // Icon
                     Image {
                         source: General.coinIcon(API.get().current_coin_info.ticker)
