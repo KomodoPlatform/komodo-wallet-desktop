@@ -40,6 +40,14 @@ Item {
             RowLayout {
                 id: balance_box_layout
                 anchors.centerIn: parent
+
+                Image {
+                    source: General.coinIcon(API.get().current_coin_info.ticker)
+                    Layout.rightMargin: 10
+                    Layout.preferredHeight: balance_layout.childrenRect.height
+                    Layout.preferredWidth: Layout.preferredHeight
+                }
+
                 ColumnLayout {
                     id: balance_layout
                     DefaultText {
@@ -56,12 +64,6 @@ Item {
                         font.pixelSize: Style.textSize2
                         color: Style.colorWhite4
                     }
-                }
-                Image {
-                    source: General.coinIcon(API.get().current_coin_info.ticker)
-                    Layout.leftMargin: 10
-                    Layout.preferredHeight: balance_layout.childrenRect.height
-                    Layout.preferredWidth: Layout.preferredHeight
                 }
             }
         }
