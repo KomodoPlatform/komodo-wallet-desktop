@@ -117,7 +117,7 @@ Rectangle {
                     if (mouse.button === Qt.RightButton) context_menu.popup()
                     else API.get().current_coin_info.ticker = model.modelData.ticker
 
-                    send_modal.reset()
+                    main.send_modal.reset()
                 }
                 onPressAndHold: {
                     if (mouse.source === Qt.MouseEventNotSynthesized) context_menu.popup()

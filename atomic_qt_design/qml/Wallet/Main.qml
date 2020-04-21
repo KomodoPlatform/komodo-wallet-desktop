@@ -8,6 +8,8 @@ import "../Constants"
 
 // Right side, main
 Item {
+    property alias send_modal: send_modal
+
     function reset() {
         send_modal.reset(true)
         receive_modal.reset()
