@@ -33,29 +33,6 @@ ColumnLayout {
         updatePortfolio()
     }
 
-    function inCurrentPage() {
-        return  dashboard.inCurrentPage() &&
-                dashboard.current_page === General.idx_dashboard_portfolio
-    }
-
-    property var portfolio_coins: ([])
-
-    function updatePortfolio() {
-        portfolio_coins = API.get().get_portfolio_informations()
-
-        update_timer.running = true
-    }
-
-    Timer {
-        id: update_timer
-        running: false
-        repeat: true
-        interval: 5000
-        onTriggered: {
-            if(inCurrentPage()) updatePortfolio()
-        }
-    }
-
     function getColor(data) {
         return data.rates === null || data.rates[API.get().fiat].percent_change_24h === 0 ? Style.colorWhite4 :
                 data.rates[API.get().fiat].percent_change_24h > 0 ? Style.colorGreen : Style.colorRed

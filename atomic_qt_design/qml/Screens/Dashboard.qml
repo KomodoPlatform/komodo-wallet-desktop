@@ -36,6 +36,31 @@ Item {
         return app.current_page === idx_dashboard
     }
 
+    function shouldUpdatePortfolio() {
+        return  inCurrentPage() &&
+                (current_page === General.idx_dashboard_portfolio ||
+                 current_page === General.idx_dashboard_wallet)
+    }
+
+    property var portfolio_coins: ([])
+
+    function updatePortfolio() {
+        portfolio_coins = API.get().get_portfolio_informations()
+
+        update_timer.running = true
+    }
+
+    Timer {
+        id: update_timer
+        running: false
+        repeat: true
+        interval: 5000
+        onTriggered: {
+            if(shouldUpdatePortfolio()) updatePortfolio()
+        }
+    }
+
+
     onCurrent_pageChanged: {
         if(prev_page !== current_page) {
             if(current_page === General.idx_dashboard_exchange) {
@@ -48,6 +73,9 @@ Item {
 
             if(current_page === General.idx_dashboard_portfolio) {
                 portfolio.onOpened()
+            }
+            else if(current_page === General.idx_dashboard_wallet) {
+                wallet.onOpened()
             }
             else if(current_page === General.idx_dashboard_settings) {
                 settings.onOpened()

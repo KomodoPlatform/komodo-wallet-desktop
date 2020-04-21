@@ -26,6 +26,10 @@ RowLayout {
         input_coin_filter.reset()
     }
 
+    function onOpened() {
+        updatePortfolio()
+    }
+
     readonly property double button_margin: 0.05
     spacing: 0
     Layout.fillWidth: true
