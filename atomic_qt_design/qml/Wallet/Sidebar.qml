@@ -20,6 +20,7 @@ Rectangle {
     color: Style.colorTheme7
 
     RowLayout {
+        id: search_row
         anchors.top: parent.top
         anchors.topMargin: 30
         anchors.left: parent.left
