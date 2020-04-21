@@ -41,27 +41,43 @@ Item {
                 id: balance_box_layout
                 anchors.centerIn: parent
 
+                spacing: 40
+
                 Image {
                     source: General.coinIcon(API.get().current_coin_info.ticker)
-                    Layout.rightMargin: 10
+                    Layout.rightMargin: 10 - parent.spacing
                     Layout.preferredHeight: balance_layout.childrenRect.height
                     Layout.preferredWidth: Layout.preferredHeight
                 }
 
                 ColumnLayout {
                     id: balance_layout
+
+                    DefaultText {
+                        text: API.get().empty_string + (API.get().current_coin_info.name)
+                        Layout.alignment: Qt.AlignLeft
+                        font.pixelSize: Style.textSize1
+                    }
+
                     DefaultText {
                         text: API.get().empty_string + (General.formatCrypto("", API.get().current_coin_info.balance, API.get().current_coin_info.ticker))
-                        Layout.alignment: Qt.AlignRight
-                        font.pixelSize: Style.textSize5
+                        Layout.alignment: Qt.AlignLeft
+                        font.pixelSize: Style.textSize1
+                    }
+                }
+
+                ColumnLayout {
+                    DefaultText {
+                        text: API.get().empty_string + (qsTr("Wallet Balance"))
+                        Layout.alignment: Qt.AlignLeft
+                        font.pixelSize: Style.textSize1
+                        color: Style.colorDarkText
                     }
 
                     DefaultText {
                         text: API.get().empty_string + (General.formatFiat("", API.get().current_coin_info.fiat_amount, API.get().fiat))
-                        Layout.topMargin: -15
-                        Layout.rightMargin: 4
-                        Layout.alignment: Qt.AlignRight
-                        font.pixelSize: Style.textSize2
+                        Layout.alignment: Qt.AlignLeft
+                        font.pixelSize: Style.textSize1
                         color: Style.colorWhite4
                     }
                 }

@@ -163,7 +163,7 @@ Rectangle {
                     Layout.alignment: Qt.AlignRight
                     text: API.get().empty_string + (model.modelData.ticker)
                     font.pixelSize: Style.textSize
-                    color: Style.colorWhite6
+                    color: Style.colorDarkText
                 }
             }
         }

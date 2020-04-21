@@ -21,6 +21,7 @@ QtObject {
     readonly property int textSizeSmall4: 14
     readonly property int textSizeSmall5: 15
     readonly property int textSize: 16
+    readonly property int textSize1: 20
     readonly property int textSize2: 24
     readonly property int textSize3: 36
     readonly property int textSize4: 48
@@ -69,6 +70,8 @@ QtObject {
     readonly property string colorTheme7: "#232F40"
     readonly property string colorTheme8: "#1E2938"
 
+    readonly property string colorDarkText: colorWhite6
+
     readonly property int modalTitleMargin: 10
-    readonly property string modalValueColor: Style.colorWhite4
+    readonly property string modalValueColor: colorWhite4
 }
