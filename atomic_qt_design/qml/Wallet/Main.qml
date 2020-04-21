@@ -37,15 +37,12 @@ Item {
             Layout.fillWidth: true
             Layout.leftMargin: 20
             Layout.rightMargin: Layout.leftMargin
-            //Layout.preferredWidth: balance_box_layout.childrenRect.width + 40
             Layout.preferredHeight: balance_box_layout.childrenRect.height + 40
 
             RowLayout {
                 id: balance_box_layout
                 anchors.centerIn: parent
                 width: parent.width
-
-                spacing: 40
 
                 RowLayout {
                     Layout.alignment: Qt.AlignHCenter
@@ -94,6 +91,7 @@ Item {
 
                 VerticalLine {
                     Layout.alignment: Qt.AlignLeft
+                    Layout.rightMargin: 30
                     height: balance_layout.height * 0.8
                     color: Style.colorTheme5
                 }
@@ -137,6 +135,31 @@ Item {
                             if(c === undefined || c.rates === null) return "-"
 
                             return API.get().empty_string + (General.formatPercent(c.rates[API.get().fiat].percent_change_24h))
+                        }
+                        Layout.alignment: Qt.AlignLeft
+                        font.pixelSize: Style.textSize1
+                        color: Style.colorWhite4
+                    }
+                }
+
+                // Portfolio %
+                ColumnLayout {
+                    Layout.alignment: Qt.AlignHCenter
+                    DefaultText {
+                        text: API.get().empty_string + (qsTr("Portfolio %"))
+                        Layout.alignment: Qt.AlignLeft
+                        font.pixelSize: Style.textSize1
+                        color: Style.colorDarkText
+                    }
+
+                    DefaultText {
+                        text: {
+                            const c = General.getCoin(portfolio_coins, API.get().current_coin_info.ticker)
+                            if(c === undefined || c.balance_fiat === null) return "-"
+                            const portfolio_balance = API.get().balance_fiat_all
+                            if(parseFloat(portfolio_balance) <= 0) return "-"
+
+                            return API.get().empty_string + (General.formatPercent((100 * parseFloat(c.balance_fiat)/parseFloat(portfolio_balance)).toFixed(2)))
                         }
                         Layout.alignment: Qt.AlignLeft
                         font.pixelSize: Style.textSize1
