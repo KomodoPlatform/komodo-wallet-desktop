@@ -54,7 +54,7 @@ QtObject {
         return diffPrefix(received) + symbols[fiat] + " " + amount
     }
 
-    function formatPercent(value, show_prefix) {
+    function formatPercent(value, show_prefix=true) {
         let prefix = ''
         if(value > 0) prefix = '+ '
         else if(value < 0) {
