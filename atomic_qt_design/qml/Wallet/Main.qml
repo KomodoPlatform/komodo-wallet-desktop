@@ -140,7 +140,15 @@ Item {
                         }
                         Layout.alignment: Qt.AlignLeft
                         font.pixelSize: Style.textSize1
-                        color: Style.colorWhite4
+                        color: {
+                            const c = General.getCoin(portfolio_coins, API.get().current_coin_info.ticker)
+
+                            const def_color = Style.colorWhite4
+                            if(c === undefined || c.rates === null) return def_color
+
+                            const v = parseFloat(c.rates[API.get().fiat].percent_change_24h)
+                            return v === 0 ? def_color : v > 0 ? Style.colorGreen : Style.colorRed
+                        }
                     }
                 }
 
