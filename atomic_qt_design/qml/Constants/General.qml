@@ -41,6 +41,10 @@ QtObject {
                            (type === undefined || c.type === type))
     }
 
+    function getCoin(list, ticker) {
+        return list.find(c => c.ticker === ticker)
+    }
+
     function formatFiat(received, amount, fiat) {
         const symbols = {
             "USD": "$",
@@ -93,6 +97,10 @@ QtObject {
 
     function fieldExists(v) {
         return v !== undefined && v !== ""
+    }
+
+    function getField(o, field, def) {
+        return o === undefined ? def : o[field]
     }
 
     function filterRecentSwaps(all_orders, finished_option, ticker) {
