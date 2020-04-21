@@ -17,13 +17,9 @@ RowLayout {
     }
 
     function reset() {
-        send_modal.reset(true)
-        receive_modal.reset()
-        claim_rewards_modal.reset()
+        main.reset()
+        sidebar.reset()
         enable_coin_modal.reset()
-
-        transactions.reset()
-        input_coin_filter.reset()
     }
 
     function onOpened() {
@@ -36,12 +32,12 @@ RowLayout {
 
     // Coins bar at left side
     Sidebar {
-
+        id: sidebar
     }
 
     // Right side, main
     Main {
-
+        id: main
     }
 }
 

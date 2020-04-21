@@ -9,6 +9,11 @@ import "../Constants"
 // Coins bar at left side
 Rectangle {
     id: coins_bar
+
+    function reset() {
+        input_coin_filter.reset()
+    }
+
     Layout.alignment: Qt.AlignLeft
     width: 200
     Layout.fillHeight: true
