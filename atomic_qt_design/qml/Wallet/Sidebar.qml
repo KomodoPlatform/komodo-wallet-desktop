@@ -152,7 +152,7 @@ Rectangle {
                 DefaultText {
                     Layout.alignment: Qt.AlignRight
                     text: API.get().empty_string + (model.modelData.name.replace(" (TESTCOIN)", ""))
-                    font.pixelSize: text.length > 12 ? Style.textSizeSmall : Style.textSizeSmall3
+                    font.pixelSize: text.length > 15 ? Style.textSizeVerySmall9 : text.length > 12 ? Style.textSizeSmall : Style.textSizeSmall3
                 }
 
                 // Ticker

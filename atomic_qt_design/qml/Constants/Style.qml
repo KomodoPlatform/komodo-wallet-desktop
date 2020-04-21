@@ -14,6 +14,15 @@ QtObject {
 
     readonly property int materialElevation: 1
 
+    readonly property int textSizeVerySmall1: 1
+    readonly property int textSizeVerySmall2: 2
+    readonly property int textSizeVerySmall3: 3
+    readonly property int textSizeVerySmall4: 4
+    readonly property int textSizeVerySmall5: 5
+    readonly property int textSizeVerySmall6: 6
+    readonly property int textSizeVerySmall7: 7
+    readonly property int textSizeVerySmall8: 8
+    readonly property int textSizeVerySmall9: 9
     readonly property int textSizeSmall: 10
     readonly property int textSizeSmall1: 11
     readonly property int textSizeSmall2: 12
