@@ -377,9 +377,7 @@ ColumnLayout {
                 anchors.right: parent.right
                 anchors.rightMargin: change_24h_header.anchors.rightMargin
 
-                text: API.get().empty_string + (model.modelData.rates === null ? '-' :
-                        ((model.modelData.rates[API.get().fiat].percent_change_24h > 0 ? '+' : '') +
-                         (model.modelData.rates[API.get().fiat].percent_change_24h + '%')))
+                text: API.get().empty_string + (model.modelData.rates === null ? '-' : General.formatPercent(model.modelData.rates[API.get().fiat].percent_change_24h))
                 color: getColor(model.modelData)
                 anchors.verticalCenter: parent.verticalCenter
             }

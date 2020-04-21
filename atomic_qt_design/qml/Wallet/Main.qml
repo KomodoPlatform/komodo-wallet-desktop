@@ -34,39 +34,49 @@ Item {
             Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
             color: Style.colorTheme7
             radius: Style.rectangleCornerRadius
-            Layout.preferredWidth: balance_box_layout.childrenRect.width + 40
+            Layout.fillWidth: true
+            Layout.leftMargin: 20
+            Layout.rightMargin: Layout.leftMargin
+            //Layout.preferredWidth: balance_box_layout.childrenRect.width + 40
             Layout.preferredHeight: balance_box_layout.childrenRect.height + 40
 
             RowLayout {
                 id: balance_box_layout
                 anchors.centerIn: parent
+                width: parent.width
 
                 spacing: 40
 
-                Image {
-                    source: General.coinIcon(API.get().current_coin_info.ticker)
-                    Layout.rightMargin: 10 - parent.spacing
-                    Layout.preferredHeight: balance_layout.childrenRect.height
-                    Layout.preferredWidth: Layout.preferredHeight
-                }
-
-                ColumnLayout {
-                    id: balance_layout
-
-                    DefaultText {
-                        text: API.get().empty_string + (API.get().current_coin_info.name)
-                        Layout.alignment: Qt.AlignLeft
-                        font.pixelSize: Style.textSize1
+                RowLayout {
+                    Layout.alignment: Qt.AlignHCenter
+                    // Icon
+                    Image {
+                        source: General.coinIcon(API.get().current_coin_info.ticker)
+                        Layout.preferredHeight: balance_layout.childrenRect.height
+                        Layout.preferredWidth: Layout.preferredHeight
                     }
 
-                    DefaultText {
-                        text: API.get().empty_string + (General.formatCrypto("", API.get().current_coin_info.balance, API.get().current_coin_info.ticker))
-                        Layout.alignment: Qt.AlignLeft
-                        font.pixelSize: Style.textSize1
+                    // Name and crypto amount
+                    ColumnLayout {
+                        id: balance_layout
+
+                        DefaultText {
+                            text: API.get().empty_string + (API.get().current_coin_info.name)
+                            Layout.alignment: Qt.AlignLeft
+                            font.pixelSize: Style.textSize1
+                        }
+
+                        DefaultText {
+                            text: API.get().empty_string + (General.formatCrypto("", API.get().current_coin_info.balance, API.get().current_coin_info.ticker))
+                            Layout.alignment: Qt.AlignLeft
+                            font.pixelSize: Style.textSize1
+                        }
                     }
                 }
 
+                // Wallet Balance
                 ColumnLayout {
+                    Layout.alignment: Qt.AlignLeft
                     DefaultText {
                         text: API.get().empty_string + (qsTr("Wallet Balance"))
                         Layout.alignment: Qt.AlignLeft
@@ -76,6 +86,58 @@ Item {
 
                     DefaultText {
                         text: API.get().empty_string + (General.formatFiat("", API.get().current_coin_info.fiat_amount, API.get().fiat))
+                        Layout.alignment: Qt.AlignLeft
+                        font.pixelSize: Style.textSize1
+                        color: Style.colorWhite4
+                    }
+                }
+
+                VerticalLine {
+                    Layout.alignment: Qt.AlignLeft
+                    height: balance_layout.height * 0.8
+                    color: Style.colorTheme5
+                }
+
+                // Price
+                ColumnLayout {
+                    Layout.alignment: Qt.AlignHCenter
+                    DefaultText {
+                        text: API.get().empty_string + (qsTr("Price"))
+                        Layout.alignment: Qt.AlignLeft
+                        font.pixelSize: Style.textSize1
+                        color: Style.colorDarkText
+                    }
+
+                    DefaultText {
+                        text: {
+                            const c = General.getCoin(portfolio_coins, API.get().current_coin_info.ticker)
+                            if(c === undefined) return "-"
+
+                            return API.get().empty_string + (General.formatFiat('', c.price, API.get().fiat))
+                        }
+                        Layout.alignment: Qt.AlignLeft
+                        font.pixelSize: Style.textSize1
+                        color: Style.colorWhite4
+                    }
+                }
+
+                // Change 24h
+                ColumnLayout {
+                    Layout.alignment: Qt.AlignHCenter
+                    DefaultText {
+                        text: API.get().empty_string + (qsTr("Change 24h"))
+                        Layout.alignment: Qt.AlignLeft
+                        font.pixelSize: Style.textSize1
+                        color: Style.colorDarkText
+                    }
+
+                    DefaultText {
+                        text: {
+                            const c = General.getCoin(portfolio_coins, API.get().current_coin_info.ticker)
+                            if(c === undefined || c.rates === null) return "-"
+
+                            return API.get().empty_string + (General.formatPercent(c.rates[API.get().fiat].percent_change_24h))
+                        }
                         Layout.alignment: Qt.AlignLeft
                         font.pixelSize: Style.textSize1
                         color: Style.colorWhite4
