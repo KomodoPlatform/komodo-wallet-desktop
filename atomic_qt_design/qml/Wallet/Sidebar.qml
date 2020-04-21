@@ -15,23 +15,17 @@ Rectangle {
     }
 
     Layout.alignment: Qt.AlignLeft
-    width: 200
+    width: 150
     Layout.fillHeight: true
     color: Style.colorTheme7
-
-    // Balance
-    DefaultText {
-        anchors.top: parent.top
-        anchors.topMargin: 30
-        anchors.horizontalCenter: parent.horizontalCenter
-
-        text: API.get().empty_string + (General.formatFiat("", API.get().balance_fiat_all, API.get().fiat))
-    }
 
     RowLayout {
         anchors.top: parent.top
         anchors.topMargin: parent.width * 0.5 - height * 0.5
-        anchors.horizontalCenter: parent.horizontalCenter
+        anchors.left: parent.left
+        anchors.right: parent.right
+        anchors.leftMargin: 15
+        anchors.rightMargin: anchors.leftMargin
 
         spacing: 10
 
@@ -69,8 +63,7 @@ Rectangle {
 
             placeholderText: API.get().empty_string + (qsTr("Search"))
             selectByMouse: true
-
-            width: parent.width * 0.3
+            Layout.fillWidth: true
         }
     }
 
@@ -138,7 +131,7 @@ Rectangle {
             Image {
                 id: icon
                 anchors.left: parent.left
-                anchors.leftMargin: 30
+                anchors.leftMargin: 10
 
                 source: General.image_path + "coins/" + model.modelData.ticker.toLowerCase() + ".png"
                 fillMode: Image.PreserveAspectFit
@@ -155,14 +148,14 @@ Rectangle {
                 DefaultText {
                     Layout.alignment: Qt.AlignRight
                     text: API.get().empty_string + (model.modelData.name.replace(" (TESTCOIN)", ""))
-                    font.pixelSize: text.length > 12 ? Style.textSizeSmall1 : Style.textSizeSmall5
+                    font.pixelSize: text.length > 12 ? Style.textSizeSmall1 : Style.textSizeSmall3
                 }
 
                 // Ticker
                 DefaultText {
                     Layout.alignment: Qt.AlignRight
                     text: API.get().empty_string + (model.modelData.ticker)
-                    font.pixelSize: Style.textSize
+                    font.pixelSize: Style.textSizeSmall4
                     color: Style.colorDarkText
                 }
             }
