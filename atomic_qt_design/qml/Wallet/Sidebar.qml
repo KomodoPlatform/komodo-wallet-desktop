@@ -21,7 +21,7 @@ Rectangle {
 
     RowLayout {
         anchors.top: parent.top
-        anchors.topMargin: parent.width * 0.5 - height * 0.5
+        anchors.topMargin: 30
         anchors.left: parent.left
         anchors.right: parent.right
         anchors.leftMargin: 15
@@ -61,7 +61,6 @@ Rectangle {
                 text = ""
             }
 
-            placeholderText: API.get().empty_string + (qsTr("Search"))
             selectByMouse: true
             Layout.fillWidth: true
         }
