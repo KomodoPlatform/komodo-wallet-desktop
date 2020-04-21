@@ -84,9 +84,11 @@ Rectangle {
     ListView {
         ScrollBar.vertical: ScrollBar {}
         anchors.horizontalCenter: parent.horizontalCenter
-        anchors.verticalCenter: parent.verticalCenter
         implicitWidth: contentItem.childrenRect.width
-        implicitHeight: Math.min(contentItem.childrenRect.height, parent.height - coins_bar.width * 2)
+
+        anchors.verticalCenter: parent.verticalCenter
+        implicitHeight: Math.min(contentItem.childrenRect.height, parent.height - 250)
+
         clip: true
 
         model: General.filterCoins(API.get().enabled_coins, input_coin_filter.text)
@@ -97,7 +99,7 @@ Rectangle {
             color: API.get().current_coin_info.ticker === model.modelData.ticker ? Style.colorTheme2 : hovered ? Style.colorTheme4 : "transparent"
             anchors.horizontalCenter: parent.horizontalCenter
             width: coins_bar.width
-            height: 60
+            height: 50
 
             // Click area
             MouseArea {
@@ -131,11 +133,11 @@ Rectangle {
             Image {
                 id: icon
                 anchors.left: parent.left
-                anchors.leftMargin: 10
+                anchors.leftMargin: 15
 
                 source: General.image_path + "coins/" + model.modelData.ticker.toLowerCase() + ".png"
                 fillMode: Image.PreserveAspectFit
-                width: Style.textSize3
+                width: (Style.textSize2 + Style.textSize3)*0.5
                 anchors.verticalCenter: parent.verticalCenter
             }
 
@@ -144,11 +146,12 @@ Rectangle {
                 anchors.right: parent.right
                 anchors.rightMargin: icon.anchors.leftMargin
 
+                spacing: -3
                 // Name
                 DefaultText {
                     Layout.alignment: Qt.AlignRight
                     text: API.get().empty_string + (model.modelData.name.replace(" (TESTCOIN)", ""))
-                    font.pixelSize: text.length > 12 ? Style.textSizeSmall1 : Style.textSizeSmall3
+                    font.pixelSize: text.length > 12 ? Style.textSizeSmall : Style.textSizeSmall3
                 }
 
                 // Ticker
