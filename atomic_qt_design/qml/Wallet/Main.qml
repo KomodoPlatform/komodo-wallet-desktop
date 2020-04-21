@@ -29,31 +29,40 @@ Item {
 
         spacing: 30
 
-        // Balance texts
-        RowLayout {
+        // Balance box
+        Rectangle {
             Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
-            ColumnLayout {
-                id: balance_layout
-                DefaultText {
-                    text: API.get().empty_string + (General.formatCrypto("", API.get().current_coin_info.balance, API.get().current_coin_info.ticker))
-                    Layout.alignment: Qt.AlignRight
-                    font.pixelSize: Style.textSize5
-                }
+            color: Style.colorTheme7
+            radius: Style.rectangleCornerRadius
+            Layout.preferredWidth: balance_box_layout.childrenRect.width + 40
+            Layout.preferredHeight: balance_box_layout.childrenRect.height + 40
 
-                DefaultText {
-                    text: API.get().empty_string + (General.formatFiat("", API.get().current_coin_info.fiat_amount, API.get().fiat))
-                    Layout.topMargin: -15
-                    Layout.rightMargin: 4
-                    Layout.alignment: Qt.AlignRight
-                    font.pixelSize: Style.textSize2
-                    color: Style.colorWhite4
+            RowLayout {
+                id: balance_box_layout
+                anchors.centerIn: parent
+                ColumnLayout {
+                    id: balance_layout
+                    DefaultText {
+                        text: API.get().empty_string + (General.formatCrypto("", API.get().current_coin_info.balance, API.get().current_coin_info.ticker))
+                        Layout.alignment: Qt.AlignRight
+                        font.pixelSize: Style.textSize5
+                    }
+
+                    DefaultText {
+                        text: API.get().empty_string + (General.formatFiat("", API.get().current_coin_info.fiat_amount, API.get().fiat))
+                        Layout.topMargin: -15
+                        Layout.rightMargin: 4
+                        Layout.alignment: Qt.AlignRight
+                        font.pixelSize: Style.textSize2
+                        color: Style.colorWhite4
+                    }
                 }
-            }
-            Image {
-                source: General.coinIcon(API.get().current_coin_info.ticker)
-                Layout.leftMargin: 10
-                Layout.preferredHeight: balance_layout.childrenRect.height
-                Layout.preferredWidth: Layout.preferredHeight
+                Image {
+                    source: General.coinIcon(API.get().current_coin_info.ticker)
+                    Layout.leftMargin: 10
+                    Layout.preferredHeight: balance_layout.childrenRect.height
+                    Layout.preferredWidth: Layout.preferredHeight
+                }
             }
         }
 

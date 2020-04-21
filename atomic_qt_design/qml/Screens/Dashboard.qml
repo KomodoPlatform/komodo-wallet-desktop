@@ -16,11 +16,15 @@ Item {
 
     Layout.fillWidth: true
 
+    function getMainPage() {
+        return API.design_editor ? General.idx_dashboard_wallet : General.idx_dashboard_portfolio
+    }
+
     property int prev_page: -1
-    property int current_page: API.design_editor ? General.idx_dashboard_exchange : General.idx_dashboard_portfolio
+    property int current_page: getMainPage()
 
     function reset() {
-        current_page = General.idx_dashboard_portfolio
+        current_page = getMainPage()
         prev_page = -1
 
         // Reset all sections
