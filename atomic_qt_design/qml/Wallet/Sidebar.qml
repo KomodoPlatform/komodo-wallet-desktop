@@ -96,7 +96,7 @@ Rectangle {
         delegate: Rectangle {
             property bool hovered: false
 
-            color: API.get().current_coin_info.ticker === model.modelData.ticker ? Style.colorTheme5 : hovered ? Style.colorTheme6 : "transparent"
+            color: API.get().current_coin_info.ticker === model.modelData.ticker ? Style.colorTheme5 : hovered ? Style.colorTheme6 : Style.colorTheme7
             anchors.horizontalCenter: parent.horizontalCenter
             width: coins_bar.width - 10
             height: 50
