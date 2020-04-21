@@ -247,7 +247,7 @@ ColumnLayout {
         Layout.alignment: Qt.AlignTop
         Layout.fillWidth: true
         Layout.fillHeight: true
-        ScrollBar.vertical: ScrollBar {}
+        ScrollBar.vertical: DefaultScrollBar {}
 
         model: General.filterCoins(portfolio_coins, input_coin_filter.text)
                 .sort((a, b) => {

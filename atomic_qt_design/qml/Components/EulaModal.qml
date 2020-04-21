@@ -37,7 +37,7 @@ DefaultModal {
             height: 400
             Layout.fillWidth: true
             Flickable {
-                ScrollBar.vertical: ScrollBar { }
+                ScrollBar.vertical: DefaultScrollBar { }
 
                 anchors.fill: parent
                 anchors.margins: 20

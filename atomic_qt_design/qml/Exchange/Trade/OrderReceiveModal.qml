@@ -42,7 +42,7 @@ DefaultModal {
         // List
         ListView {
             id: list
-            ScrollBar.vertical: ScrollBar {}
+            ScrollBar.vertical: DefaultScrollBar {}
             implicitWidth: contentItem.childrenRect.width
             implicitHeight: contentItem.childrenRect.height
 

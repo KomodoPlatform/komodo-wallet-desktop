@@ -82,7 +82,7 @@ Rectangle {
 
     // Coins list
     ListView {
-        ScrollBar.vertical: ScrollBar {}
+        ScrollBar.vertical: DefaultScrollBar {}
         anchors.horizontalCenter: parent.horizontalCenter
         implicitWidth: contentItem.childrenRect.width
 

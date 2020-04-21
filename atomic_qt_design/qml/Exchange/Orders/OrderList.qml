@@ -47,7 +47,7 @@ Rectangle {
         // List
         ListView {
             id: list
-            ScrollBar.vertical: ScrollBar {}
+            ScrollBar.vertical: DefaultScrollBar {}
             Layout.fillWidth: true
             Layout.fillHeight: true
 

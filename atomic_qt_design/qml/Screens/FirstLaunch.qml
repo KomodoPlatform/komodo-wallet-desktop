@@ -53,7 +53,7 @@ SetupPage {
             }
 
             ListView {
-                ScrollBar.vertical: ScrollBar {}
+                ScrollBar.vertical: DefaultScrollBar {}
                 implicitWidth: contentItem.childrenRect.width
                 implicitHeight: contentItem.childrenRect.height
                 clip: true

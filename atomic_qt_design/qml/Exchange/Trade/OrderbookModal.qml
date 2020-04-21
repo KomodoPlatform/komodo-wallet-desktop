@@ -92,7 +92,7 @@ DefaultModal {
             Layout.alignment: Qt.AlignTop
             Layout.fillWidth: true
             Layout.fillHeight: true
-            ScrollBar.vertical: ScrollBar {}
+            ScrollBar.vertical: DefaultScrollBar {}
 
             model: getCurrentOrderbook().sort((a, b) => parseFloat(b.price) - parseFloat(a.price))
 

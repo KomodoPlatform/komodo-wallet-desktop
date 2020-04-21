@@ -76,7 +76,7 @@ DefaultModal {
             contentWidth: col.width
             contentHeight: col.height
             clip: true
-            ScrollBar.vertical: ScrollBar { }
+            ScrollBar.vertical: DefaultScrollBar { }
 
             Column {
                 id: col
