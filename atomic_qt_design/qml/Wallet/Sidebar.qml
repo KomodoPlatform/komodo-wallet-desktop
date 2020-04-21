@@ -98,8 +98,9 @@ Rectangle {
 
             color: API.get().current_coin_info.ticker === model.modelData.ticker ? Style.colorTheme5 : hovered ? Style.colorTheme6 : "transparent"
             anchors.horizontalCenter: parent.horizontalCenter
-            width: coins_bar.width
+            width: coins_bar.width - 10
             height: 50
+            radius: Style.rectangleCornerRadius
 
             // Click area
             MouseArea {
