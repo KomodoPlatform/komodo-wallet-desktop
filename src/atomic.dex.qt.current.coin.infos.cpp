@@ -24,6 +24,19 @@ namespace atomic_dex
     atomic_dex::current_coin_info::current_coin_info(entt::dispatcher& dispatcher, QObject* pParent) noexcept : QObject(pParent), m_dispatcher(dispatcher) {}
 
     //! Properties
+    void
+    atomic_dex::current_coin_info::set_name(QString name) noexcept
+    {
+        this->selected_coin_fname = std::move(name);
+        emit name_changed();
+    }
+
+    QString
+    atomic_dex::current_coin_info::get_name() const noexcept
+    {
+        return this->selected_coin_fname;
+    }
+
     QString
     atomic_dex::current_coin_info::get_balance() const noexcept
     {
