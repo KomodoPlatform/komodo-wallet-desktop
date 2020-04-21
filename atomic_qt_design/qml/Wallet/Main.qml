@@ -169,7 +169,7 @@ Item {
                             const portfolio_balance = API.get().balance_fiat_all
                             if(parseFloat(portfolio_balance) <= 0) return "-"
 
-                            return API.get().empty_string + (General.formatPercent((100 * parseFloat(c.balance_fiat)/parseFloat(portfolio_balance)).toFixed(2)))
+                            return API.get().empty_string + (General.formatPercent((100 * parseFloat(c.balance_fiat)/parseFloat(portfolio_balance)).toFixed(2), false))
                         }
                         Layout.alignment: Qt.AlignLeft
                         font.pixelSize: Style.textSize1

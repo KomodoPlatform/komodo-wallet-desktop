@@ -54,7 +54,7 @@ QtObject {
         return diffPrefix(received) + symbols[fiat] + " " + amount
     }
 
-    function formatPercent(value) {
+    function formatPercent(value, show_prefix) {
         let prefix = ''
         if(value > 0) prefix = '+ '
         else if(value < 0) {
@@ -62,7 +62,7 @@ QtObject {
             value *= -1
         }
 
-        return prefix + value + ' %'
+        return (show_prefix ? prefix : '') + value + ' %'
     }
 
     function formatCrypto(received, amount, ticker, fiat_amount, fiat) {
