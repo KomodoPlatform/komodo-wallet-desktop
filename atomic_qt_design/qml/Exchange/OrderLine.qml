@@ -11,14 +11,12 @@ Rectangle {
     width: parent.width
     height: 175
 
-    property bool hovered: false
-
-    color: hovered ? Style.colorTheme8 : "transparent"
+    color: mouse_area.containsMouse ? Style.colorTheme8 : "transparent"
 
     MouseArea {
+        id: mouse_area
         anchors.fill: parent
         hoverEnabled: true
-        onHoveredChanged: hovered = containsMouse
         onClicked: {
             order_modal.current_item_uuid = item.uuid
             order_modal.open()

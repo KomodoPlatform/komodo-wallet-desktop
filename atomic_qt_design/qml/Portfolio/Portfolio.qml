@@ -284,17 +284,15 @@ ColumnLayout {
         clip: true
 
         delegate: Rectangle {
-            property bool hovered: false
-
-            color: hovered ? Style.colorTheme5 : index % 2 == 0 ? Style.colorTheme6 : Style.colorTheme7
+            color: mouse_area.containsMouse ? Style.colorTheme5 : index % 2 == 0 ? Style.colorTheme6 : Style.colorTheme7
             width: portfolio.width
             height: 50
 
             // Click area
             MouseArea {
+                id: mouse_area
                 anchors.fill: parent
                 hoverEnabled: true
-                onHoveredChanged: hovered = containsMouse
                 acceptedButtons: Qt.LeftButton | Qt.RightButton
                 onClicked: {
                     if (mouse.button === Qt.RightButton) context_menu.popup()

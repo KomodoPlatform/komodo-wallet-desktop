@@ -99,17 +99,15 @@ DefaultModal {
             clip: true
 
             delegate: Rectangle {
-                property bool hovered: false
-
-                color: hovered ? Style.colorTheme4 : "transparent"
+                color: mouse_area.containsMouse ? Style.colorTheme4 : "transparent"
 
                 width: modal_layout.width
                 height: 50
 
                 MouseArea {
+                    id: mouse_area
                     anchors.fill: parent
                     hoverEnabled: true
-                    onHoveredChanged: hovered = containsMouse
                     onClicked: chooseOrder(model.modelData.price, model.modelData.volume)
                 }
 

@@ -61,18 +61,16 @@ SetupPage {
                 model: wallets
 
                 delegate: Rectangle {
-                    property bool hovered: false
-
-                    color: hovered ? Style.colorTheme7 : "transparent"
+                    color: mouse_area.containsMouse ? Style.colorTheme7 : "transparent"
                     anchors.horizontalCenter: parent.horizontalCenter
                     width: 300
                     height: 30
 
                     // Click area
                     MouseArea {
+                        id: mouse_area
                         anchors.fill: parent
                         hoverEnabled: true
-                        onHoveredChanged: hovered = containsMouse
                         onClicked: {
                             API.get().wallet_default_name = model.modelData
                             onClickedWallet()

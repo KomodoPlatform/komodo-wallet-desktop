@@ -26,14 +26,12 @@ ListView {
 
         visible: model.modelData.timestamp !== 0
 
-        property bool hovered: false
-
-        color: hovered ? Style.colorTheme8 : "transparent"
+        color: mouse_area.containsMouse ? Style.colorTheme8 : "transparent"
 
         MouseArea {
+            id: mouse_area
             anchors.fill: parent
             hoverEnabled: true
-            onHoveredChanged: hovered = containsMouse
             onClicked: tx_details_modal.open()
         }
 

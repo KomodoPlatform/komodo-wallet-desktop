@@ -9,7 +9,6 @@ Rectangle {
     property int sort_type
     property alias text: title.text
 
-    property bool hovered: false
     property bool icon_at_left
 
     color: "transparent"
@@ -20,7 +19,6 @@ Rectangle {
     MouseArea {
         anchors.fill: parent
         hoverEnabled: true
-        onHoveredChanged: hovered = containsMouse
         onClicked: {
             if(current_sort === sort_type) {
                 highest_first = !highest_first

@@ -9,8 +9,6 @@ import "../Constants"
 DefaultText {
     property int dashboard_index
 
-    property bool hovered: false
-
     // Override
     property var onClick: () => {}
 
@@ -18,11 +16,11 @@ DefaultText {
     font.pixelSize: Style.textSize2
     font.family: "Montserrat"
     font.bold: exchange.current_page === dashboard_index
-    color: font.bold ? Style.colorWhite1 : hovered ? Style.colorWhite4 : Style.colorWhite5
+    color: font.bold ? Style.colorWhite1 : mouse_area.containsMouse ? Style.colorWhite4 : Style.colorWhite5
 
     MouseArea {
+        id: mouse_area
         hoverEnabled: true
-        onHoveredChanged: hovered = containsMouse
         width: parent.width
         height: parent.height
         onClicked: function() {

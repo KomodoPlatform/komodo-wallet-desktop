@@ -46,11 +46,10 @@ Rectangle {
             }
             ColorOverlay {
                 id: search_button_overlay
-                property bool hovered: false
 
                 anchors.fill: search_button
                 source: search_button
-                color: search_button_overlay.hovered || input_coin_filter.visible ? Style.colorWhite1 : Style.colorWhite4
+                color: Style.colorWhite1
             }
         }
 
@@ -94,9 +93,7 @@ Rectangle {
         model: General.filterCoins(API.get().enabled_coins, input_coin_filter.text)
 
         delegate: Rectangle {
-            property bool hovered: false
-
-            color: API.get().current_coin_info.ticker === model.modelData.ticker ? Style.colorTheme5 : hovered ? Style.colorTheme6 : Style.colorTheme7
+            color: API.get().current_coin_info.ticker === model.modelData.ticker ? Style.colorTheme5 : mouse_area.containsMouse ? Style.colorTheme6 : Style.colorTheme7
             anchors.horizontalCenter: parent.horizontalCenter
             width: coins_bar.width - 10
             height: 50
@@ -104,9 +101,9 @@ Rectangle {
 
             // Click area
             MouseArea {
+                id: mouse_area
                 anchors.fill: parent
                 hoverEnabled: true
-                onHoveredChanged: hovered = containsMouse
 
                 acceptedButtons: Qt.LeftButton | Qt.RightButton
                 onClicked: {

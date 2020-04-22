@@ -11,9 +11,8 @@ Rectangle {
     id: add_coin_button
 
     width: 50; height: width
-    property bool hovered: false
     color: "transparent"
-    border.color: hovered ? Style.colorTheme0 : Style.colorTheme3
+    border.color: mouse_area.containsMouse ? Style.colorTheme0 : Style.colorTheme3
     border.width: 2
     radius: 100
 
@@ -39,6 +38,5 @@ Rectangle {
         id: mouse_area
         anchors.fill: parent
         hoverEnabled: true
-        onHoveredChanged: add_coin_button.hovered = containsMouse
     }
 }
