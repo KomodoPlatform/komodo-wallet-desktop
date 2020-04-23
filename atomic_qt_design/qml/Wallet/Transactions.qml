@@ -101,6 +101,13 @@ ListView {
             anchors.rightMargin: 20
             color: Style.colorWhite4
         }
+
+        HorizontalLine {
+            visible: index !== API.get().current_coin_info.transactions.length -1
+            width: parent.width
+            color: Style.colorWhite7
+            anchors.bottom: parent.bottom
+        }
     }
 }
 
