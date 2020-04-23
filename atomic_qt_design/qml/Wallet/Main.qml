@@ -9,6 +9,7 @@ import "../Constants"
 // Right side, main
 Item {
     property alias send_modal: send_modal
+    readonly property int layout_margin: 20
 
     function reset() {
         send_modal.reset(true)
@@ -24,10 +25,10 @@ Item {
         width: parent.width
         anchors.horizontalCenter: parent.horizontalCenter
         anchors.top: parent.top
-        anchors.topMargin: 50
+        anchors.topMargin: layout_margin * 2.5
         anchors.bottom: parent.bottom
 
-        spacing: 30
+        spacing: layout_margin
 
         // Balance box
         Rectangle {
@@ -35,8 +36,8 @@ Item {
             color: Style.colorTheme7
             radius: Style.rectangleCornerRadius
             Layout.fillWidth: true
-            Layout.leftMargin: 20
-            Layout.rightMargin: Layout.leftMargin
+            Layout.leftMargin: layout_margin
+            Layout.rightMargin: layout_margin
             Layout.preferredHeight: balance_box_layout.childrenRect.height + 40
 
             RowLayout {
@@ -241,7 +242,9 @@ Item {
 
         // Separator line
         HorizontalLine {
-            width: 720
+            Layout.fillWidth: true
+            Layout.leftMargin: layout_margin
+            Layout.rightMargin: layout_margin
             Layout.alignment: Qt.AlignHCenter
         }
 
@@ -294,6 +297,9 @@ Item {
             id: transactions
             Layout.fillWidth: true
             Layout.fillHeight: true
+            Layout.leftMargin: layout_margin
+            Layout.rightMargin: layout_margin
+            Layout.bottomMargin: layout_margin
             implicitHeight: Math.min(contentItem.childrenRect.height, wallet.height*0.5)
         }
 
