@@ -102,6 +102,7 @@ Item {
         color: Style.colorTheme8
         width: 200
         height: parent.height
+        z: 1
 
         Image {
             source: General.image_path + "komodo-icon.png"

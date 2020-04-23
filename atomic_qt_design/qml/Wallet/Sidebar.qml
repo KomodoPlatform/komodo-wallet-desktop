@@ -7,9 +7,7 @@ import "../Components"
 import "../Constants"
 
 // Coins bar at left side
-Rectangle {
-    id: coins_bar
-
+Item {
     function reset() {
         input_coin_filter.reset()
     }
@@ -17,149 +15,178 @@ Rectangle {
     Layout.alignment: Qt.AlignLeft
     width: 150
     Layout.fillHeight: true
-    color: Style.colorTheme7
 
-    RowLayout {
-        id: search_row
-        anchors.top: parent.top
-        anchors.topMargin: 30
-        anchors.left: parent.left
-        anchors.right: parent.right
-        anchors.leftMargin: 15
-        anchors.rightMargin: anchors.leftMargin
+    Rectangle {
+        id: coins_bar
+        width: parent.width
+        height: parent.height
+        color: Style.colorTheme7
+        radius: Style.rectangleCornerRadius
 
-        spacing: 10
-
-        // Search button
+        // Cover left side corners, they should not be rounded
         Rectangle {
-            color: "transparent"
-            width: search_button.width
-            height: search_button.height
-            Image {
-                id: search_button
+            color: parent.color
+            width: parent.radius
+            anchors.left: parent.left
+            anchors.top: parent.top
+            anchors.bottom: parent.bottom
+        }
 
-                source: General.image_path + "exchange-search.svg"
+        RowLayout {
+            id: search_row
+            anchors.top: parent.top
+            anchors.topMargin: 30
+            anchors.left: parent.left
+            anchors.right: parent.right
+            anchors.leftMargin: 15
+            anchors.rightMargin: anchors.leftMargin
 
-                width: 16; height: width
+            spacing: 10
 
-                visible: false
+            // Search button
+            Rectangle {
+                color: "transparent"
+                width: search_button.width
+                height: search_button.height
+                Image {
+                    id: search_button
+
+                    source: General.image_path + "exchange-search.svg"
+
+                    width: 16; height: width
+
+                    visible: false
+                }
+                ColorOverlay {
+                    id: search_button_overlay
+
+                    anchors.fill: search_button
+                    source: search_button
+                    color: Style.colorWhite1
+                }
             }
-            ColorOverlay {
-                id: search_button_overlay
 
-                anchors.fill: search_button
-                source: search_button
-                color: Style.colorWhite1
+            // Search input
+            DefaultTextField {
+                id: input_coin_filter
+
+                function reset() {
+                    text = ""
+                }
+
+                selectByMouse: true
+                Layout.fillWidth: true
             }
         }
 
-        // Search input
-        DefaultTextField {
-            id: input_coin_filter
+        // Add button
+        PlusButton {
+            id: add_coin_button
 
-            function reset() {
-                text = ""
-            }
+            width: 32
 
-            selectByMouse: true
-            Layout.fillWidth: true
-        }
-    }
+            mouse_area.onClicked: enable_coin_modal.prepareAndOpen()
 
-    // Add button
-    PlusButton {
-        id: add_coin_button
-
-        width: 32
-
-        mouse_area.onClicked: enable_coin_modal.prepareAndOpen()
-
-        anchors.bottom: parent.bottom
-        anchors.bottomMargin: parent.width * 0.5 - height * 0.5
-        anchors.horizontalCenter: parent.horizontalCenter
-    }
-
-    // Coins list
-    ListView {
-        ScrollBar.vertical: DefaultScrollBar {}
-        anchors.horizontalCenter: parent.horizontalCenter
-        implicitWidth: contentItem.childrenRect.width
-
-        anchors.verticalCenter: parent.verticalCenter
-        implicitHeight: Math.min(contentItem.childrenRect.height, parent.height - 250)
-
-        clip: true
-
-        model: General.filterCoins(API.get().enabled_coins, input_coin_filter.text)
-
-        delegate: Rectangle {
-            color: API.get().current_coin_info.ticker === model.modelData.ticker ? Style.colorTheme5 : mouse_area.containsMouse ? Style.colorTheme6 : Style.colorTheme7
+            anchors.bottom: parent.bottom
+            anchors.bottomMargin: parent.width * 0.5 - height * 0.5
             anchors.horizontalCenter: parent.horizontalCenter
-            width: coins_bar.width - 10
-            height: 50
-            radius: Style.rectangleCornerRadius
+        }
 
-            // Click area
-            MouseArea {
-                id: mouse_area
-                anchors.fill: parent
-                hoverEnabled: true
+        // Coins list
+        ListView {
+            ScrollBar.vertical: DefaultScrollBar {}
+            anchors.horizontalCenter: parent.horizontalCenter
+            implicitWidth: contentItem.childrenRect.width
 
-                acceptedButtons: Qt.LeftButton | Qt.RightButton
-                onClicked: {
-                    if (mouse.button === Qt.RightButton) context_menu.popup()
-                    else API.get().current_coin_info.ticker = model.modelData.ticker
+            anchors.verticalCenter: parent.verticalCenter
+            implicitHeight: Math.min(contentItem.childrenRect.height, parent.height - 250)
 
-                    main.send_modal.reset()
-                }
-                onPressAndHold: {
-                    if (mouse.source === Qt.MouseEventNotSynthesized) context_menu.popup()
-                }
-            }
+            clip: true
 
-            // Right click menu
-            Menu {
-                id: context_menu
-                Action {
-                    text: API.get().empty_string + (qsTr("Disable %1", "TICKER").arg(model.modelData.ticker))
-                    onTriggered: API.get().disable_coins([model.modelData.ticker])
-                    enabled: General.canDisable(model.modelData.ticker)
-                }
-            }
+            model: General.filterCoins(API.get().enabled_coins, input_coin_filter.text)
 
-            // Icon
-            Image {
-                id: icon
-                anchors.left: parent.left
-                anchors.leftMargin: 15
+            delegate: Rectangle {
+                color: API.get().current_coin_info.ticker === model.modelData.ticker ? Style.colorTheme5 : mouse_area.containsMouse ? Style.colorTheme6 : Style.colorTheme7
+                anchors.horizontalCenter: parent.horizontalCenter
+                width: coins_bar.width - 10
+                height: 50
+                radius: Style.rectangleCornerRadius
 
-                source: General.image_path + "coins/" + model.modelData.ticker.toLowerCase() + ".png"
-                fillMode: Image.PreserveAspectFit
-                width: (Style.textSize2 + Style.textSize3)*0.5
-                anchors.verticalCenter: parent.verticalCenter
-            }
+                // Click area
+                MouseArea {
+                    id: mouse_area
+                    anchors.fill: parent
+                    hoverEnabled: true
 
-            ColumnLayout {
-                anchors.verticalCenter: parent.verticalCenter
-                anchors.right: parent.right
-                anchors.rightMargin: icon.anchors.leftMargin
+                    acceptedButtons: Qt.LeftButton | Qt.RightButton
+                    onClicked: {
+                        if (mouse.button === Qt.RightButton) context_menu.popup()
+                        else API.get().current_coin_info.ticker = model.modelData.ticker
 
-                spacing: -3
-                // Name
-                DefaultText {
-                    Layout.alignment: Qt.AlignRight
-                    text: API.get().empty_string + (model.modelData.name.replace(" (TESTCOIN)", ""))
-                    font.pixelSize: text.length > 15 ? Style.textSizeVerySmall9 : text.length > 12 ? Style.textSizeSmall : Style.textSizeSmall3
+                        main.send_modal.reset()
+                    }
+                    onPressAndHold: {
+                        if (mouse.source === Qt.MouseEventNotSynthesized) context_menu.popup()
+                    }
                 }
 
-                // Ticker
-                DefaultText {
-                    Layout.alignment: Qt.AlignRight
-                    text: API.get().empty_string + (model.modelData.ticker)
-                    font.pixelSize: Style.textSizeSmall4
-                    color: Style.colorDarkText
+                // Right click menu
+                Menu {
+                    id: context_menu
+                    Action {
+                        text: API.get().empty_string + (qsTr("Disable %1", "TICKER").arg(model.modelData.ticker))
+                        onTriggered: API.get().disable_coins([model.modelData.ticker])
+                        enabled: General.canDisable(model.modelData.ticker)
+                    }
+                }
+
+                // Icon
+                Image {
+                    id: icon
+                    anchors.left: parent.left
+                    anchors.leftMargin: 15
+
+                    source: General.image_path + "coins/" + model.modelData.ticker.toLowerCase() + ".png"
+                    fillMode: Image.PreserveAspectFit
+                    width: (Style.textSize2 + Style.textSize3)*0.5
+                    anchors.verticalCenter: parent.verticalCenter
+                }
+
+                ColumnLayout {
+                    anchors.verticalCenter: parent.verticalCenter
+                    anchors.right: parent.right
+                    anchors.rightMargin: icon.anchors.leftMargin
+
+                    spacing: -3
+                    // Name
+                    DefaultText {
+                        Layout.alignment: Qt.AlignRight
+                        text: API.get().empty_string + (model.modelData.name.replace(" (TESTCOIN)", ""))
+                        font.pixelSize: text.length > 15 ? Style.textSizeVerySmall9 : text.length > 12 ? Style.textSizeSmall : Style.textSizeSmall3
+                    }
+
+                    // Ticker
+                    DefaultText {
+                        Layout.alignment: Qt.AlignRight
+                        text: API.get().empty_string + (model.modelData.ticker)
+                        font.pixelSize: Style.textSizeSmall4
+                        color: Style.colorDarkText
+                    }
                 }
             }
         }
+    }
+
+    DropShadow {
+        anchors.fill: coins_bar
+        source: coins_bar
+        cached: false
+        horizontalOffset: 0
+        verticalOffset: 0
+        radius: 32
+        samples: 32
+        spread: 0
+        color: "#B0000000"
+        smooth: true
     }
 }
