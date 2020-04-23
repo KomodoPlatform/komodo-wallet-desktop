@@ -20,12 +20,12 @@ Item {
 
         color: mouse_area.containsMouse ? Style.colorTheme7 : Style.colorTheme8
         border.color: Style.colorThemeDark
-        border.width: 0
+        border.width: 1
         radius: 100
 
         Rectangle {
             id: vline
-            width: parent.border.width
+            width: parent.border.width*2
             height: parent.width * 0.30
             radius: parent.radius
             color: mouse_area.containsMouse ? Style.colorThemePassiveLight : Style.colorThemePassive
@@ -35,7 +35,7 @@ Item {
 
         Rectangle {
             width: vline.height
-            height: parent.border.width
+            height: vline.width
             radius: parent.radius
             color: vline.color
             anchors.verticalCenter: parent.verticalCenter
