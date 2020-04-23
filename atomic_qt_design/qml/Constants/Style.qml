@@ -48,12 +48,12 @@ QtObject {
     readonly property int paneTitleOffset: 6
     readonly property int iconTextMargin: 5
 
-    readonly property string colorRed: "#DC0333"
-    readonly property string colorRed2: "#891931"
-    readonly property string colorRed3: "#661224"
+    readonly property string colorRed: "#CF3778"
+    readonly property string colorRed2: "#B1346B"
+    readonly property string colorRed3: "#B1346B"
     readonly property string colorYellow: "#FFC305"
     readonly property string colorOrange: "#F7931A"
-    readonly property string colorGreen: "#2FEA8B"
+    readonly property string colorGreen: "#77E5D2"
 
     readonly property string colorWhite1: "#FFFFFF"
     readonly property string colorWhite2: "#F9F9F9"
