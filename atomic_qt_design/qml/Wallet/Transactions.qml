@@ -45,42 +45,61 @@ ListView {
             id: received_icon
             source: General.image_path + "circle-" + (model.modelData.received ? "success" : "failed") + ".png"
             fillMode: Image.PreserveAspectFit
-            width: Style.textSize2
+            width: Style.textSize
             anchors.verticalCenter: parent.verticalCenter
-            anchors.right: parent.horizontalCenter
-            anchors.rightMargin: 350
+            anchors.left: parent.left
+            anchors.leftMargin: 15
         }
 
-        // Amount
-        ColumnLayout {
+        // Description
+        DefaultText {
+            id: description
+            text: API.get().empty_string + (model.modelData.received ? qsTr("Incoming transaction") : qsTr("Outgoing transaction"))
+            font.pixelSize: Style.textSizeSmall3
             anchors.verticalCenter: parent.verticalCenter
-            anchors.right: parent.horizontalCenter
-            anchors.rightMargin: -100
+            anchors.left: received_icon.right
+            anchors.leftMargin: 25
+        }
 
-            // Crypto
-            DefaultText {
-                text: API.get().empty_string + (General.formatCrypto(model.modelData.received, model.modelData.amount, API.get().current_coin_info.ticker))
-                Layout.alignment: Qt.AlignRight
-                font.pixelSize: Style.textSize2
-            }
+        // Crypto
+        DefaultText {
+            id: crypto_amount
+            text: API.get().empty_string + (General.formatCrypto(model.modelData.received, model.modelData.amount, API.get().current_coin_info.ticker))
+            font.pixelSize: description.font.pixelSize
+            anchors.verticalCenter: parent.verticalCenter
+            anchors.left: parent.left
+            anchors.leftMargin: parent.width * 0.25
+            color: model.modelData.received ? Style.colorGreen : Style.colorRed
+        }
 
-            // Fiat
-            DefaultText {
-                text: API.get().empty_string + (General.formatFiat(model.modelData.received, model.modelData.amount_fiat, API.get().fiat))
-                Layout.topMargin: -10
-                Layout.rightMargin: 4
-                Layout.alignment: Qt.AlignRight
-                font.pixelSize: Style.textSize
-                color: Style.colorWhite4
-            }
+        // Fiat
+        DefaultText {
+            text: API.get().empty_string + (General.formatFiat(model.modelData.received, model.modelData.amount_fiat, API.get().fiat))
+            font.pixelSize: description.font.pixelSize
+            anchors.verticalCenter: parent.verticalCenter
+            anchors.left: parent.left
+            anchors.leftMargin: parent.width * 0.45
+            color: crypto_amount.color
+        }
+
+        // Fee
+        DefaultText {
+            text: API.get().empty_string + (General.formatCrypto(false, model.modelData.fees, API.get().current_coin_info.ticker) + " " + qsTr("transaction fee"))
+            font.pixelSize: description.font.pixelSize
+            anchors.verticalCenter: parent.verticalCenter
+            anchors.left: parent.left
+            anchors.leftMargin: parent.width * 0.575
+            color: Style.colorWhite4
         }
 
         // Date
         DefaultText {
-            anchors.right: parent.horizontalCenter
-            anchors.rightMargin: -380
             text: API.get().empty_string + (model.modelData.date)
+            font.pixelSize: description.font.pixelSize
             anchors.verticalCenter: parent.verticalCenter
+            anchors.right: parent.right
+            anchors.rightMargin: 20
+            color: Style.colorWhite4
         }
     }
 }
