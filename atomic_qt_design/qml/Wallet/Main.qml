@@ -317,6 +317,18 @@ Item {
 
         implicitHeight: Math.min(contentItem.childrenRect.height, wallet.height*0.5)
     }
+
+    InnerShadow {
+        anchors.fill: parent
+        source: parent
+        cached: false
+        horizontalOffset: 0
+        verticalOffset: 0
+        radius: 12
+        samples: 32
+        color: "#2A000000"
+        smooth: true
+    }
 }
 
 
