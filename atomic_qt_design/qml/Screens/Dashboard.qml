@@ -205,7 +205,7 @@ Item {
         radius: 32
         samples: 32
         spread: 0
-        color: "#80000000"
+        color: "#90000000"
         smooth: true
     }
 }
