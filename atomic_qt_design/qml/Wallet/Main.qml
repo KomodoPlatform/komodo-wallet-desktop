@@ -9,7 +9,7 @@ import "../Constants"
 // Right side, main
 Item {
     property alias send_modal: send_modal
-    readonly property int layout_margin: 20
+    readonly property int layout_margin: 30
 
     function reset() {
         send_modal.reset(true)
@@ -312,7 +312,7 @@ Item {
             Layout.leftMargin: layout_margin
             Layout.rightMargin: layout_margin
             Layout.bottomMargin: layout_margin
-            implicitHeight: wallet.height*0.4
+            implicitHeight: wallet.height*0.54
         }
 
         implicitHeight: Math.min(contentItem.childrenRect.height, wallet.height*0.5)
