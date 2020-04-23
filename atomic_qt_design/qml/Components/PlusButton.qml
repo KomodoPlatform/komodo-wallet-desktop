@@ -10,26 +10,29 @@ Rectangle {
 
     id: add_coin_button
 
-    width: 50; height: width
-    color: "transparent"
-    border.color: mouse_area.containsMouse ? Style.colorTheme0 : Style.colorTheme3
+    width: 50
+    height: width
+
+    color: mouse_area.containsMouse ? Style.colorTheme7 : "transparent"
+    border.color: Style.colorThemeDark
     border.width: 2
     radius: 100
 
     Rectangle {
+        id: vline
         width: parent.border.width
-        height: parent.width * 0.5
+        height: parent.width * 0.30
         radius: parent.radius
-        color: parent.border.color
+        color: mouse_area.containsMouse ? Style.colorThemePassiveLight : Style.colorThemePassive
         anchors.verticalCenter: parent.verticalCenter
         anchors.horizontalCenter: parent.horizontalCenter
     }
 
     Rectangle {
-        width: parent.width * 0.5
+        width: vline.height
         height: parent.border.width
         radius: parent.radius
-        color: parent.border.color
+        color: vline.color
         anchors.verticalCenter: parent.verticalCenter
         anchors.horizontalCenter: parent.horizontalCenter
     }

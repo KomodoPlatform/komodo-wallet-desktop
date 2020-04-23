@@ -81,6 +81,8 @@ QtObject {
     readonly property string colorThemeLine: "#1D1F23"
     readonly property string colorThemePassive: "#777F8C"
     readonly property string colorThemePassiveLight: "#E4E5E5"
+    readonly property string colorThemeDark: "#26282C"
+    readonly property string colorThemeDarkLight: "#393B3D"
 
     readonly property int modalTitleMargin: 10
     readonly property string modalValueColor: colorWhite4
