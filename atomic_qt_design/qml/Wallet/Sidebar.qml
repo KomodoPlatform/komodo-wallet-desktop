@@ -118,7 +118,7 @@ Item {
             model: General.filterCoins(API.get().enabled_coins, input_coin_filter.text)
 
             delegate: Rectangle {
-                color: API.get().current_coin_info.ticker === model.modelData.ticker ? Style.colorTheme5 : mouse_area.containsMouse ? Style.colorTheme6 : Style.colorTheme7
+                color: API.get().current_coin_info.ticker === model.modelData.ticker ? Style.colorTheme5 : mouse_area.containsMouse ? Style.colorTheme6 : "transparent"
                 anchors.horizontalCenter: parent.horizontalCenter
                 width: coins_bar.width - 10
                 height: 50
