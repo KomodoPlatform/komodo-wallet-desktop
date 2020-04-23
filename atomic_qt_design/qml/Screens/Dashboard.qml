@@ -2,6 +2,7 @@ import QtQuick 2.12
 import QtQuick.Layouts 1.12
 import QtQuick.Controls 2.12
 import QtQuick.Controls.Material 2.12
+import QtGraphicalEffects 1.0
 import "../Components"
 import "../Constants"
 
@@ -104,6 +105,16 @@ Item {
         height: parent.height
         z: 1
 
+        // Round all corners and cover left ones so only right ones are covered
+        radius: Style.rectangleCornerRadius
+        Rectangle {
+            color: parent.color
+            width: parent.radius
+            anchors.left: parent.left
+            anchors.top: parent.top
+            anchors.bottom: parent.bottom
+        }
+
         Image {
             source: General.image_path + "komodo-icon.png"
             anchors.horizontalCenter: parent.horizontalCenter
@@ -183,6 +194,19 @@ Item {
                 Layout.alignment: Qt.AlignCenter
             }
         }
+    }
+
+    DropShadow {
+        anchors.fill: sidebar
+        source: sidebar
+        cached: false
+        horizontalOffset: 0
+        verticalOffset: 0
+        radius: 32
+        samples: 32
+        spread: 0
+        color: "#80000000"
+        smooth: true
     }
 }
 

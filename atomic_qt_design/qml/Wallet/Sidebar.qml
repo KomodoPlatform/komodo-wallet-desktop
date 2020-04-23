@@ -21,13 +21,14 @@ Item {
         width: parent.width
         height: parent.height
         color: Style.colorTheme7
-        radius: Style.rectangleCornerRadius
 
-        // Cover left side corners, they should not be rounded
+        // Round all corners and cover left ones so only right ones are covered
+        radius: Style.rectangleCornerRadius
         Rectangle {
             color: parent.color
-            width: parent.radius
+            width: parent.radius - anchors.leftMargin
             anchors.left: parent.left
+            anchors.leftMargin: -sidebar.width
             anchors.top: parent.top
             anchors.bottom: parent.bottom
         }
@@ -186,7 +187,7 @@ Item {
         radius: 32
         samples: 32
         spread: 0
-        color: "#B0000000"
+        color: "#80000000"
         smooth: true
     }
 }
