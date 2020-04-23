@@ -6,5 +6,5 @@ import "../Constants"
 
 Rectangle {
     width: 1
-    color: Style.colorWhite5
+    color: Style.colorThemeLine
 }

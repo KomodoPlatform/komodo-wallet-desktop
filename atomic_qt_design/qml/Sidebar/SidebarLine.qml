@@ -25,7 +25,7 @@ Item {
     ColorOverlay {
         anchors.fill: img
         source: img
-        color: txt.color
+        color: txt.font.bold ? Style.colorGreen : txt.color
     }
 
     DefaultText {
@@ -34,7 +34,7 @@ Item {
         anchors.rightMargin: img.anchors.leftMargin
         anchors.verticalCenter: parent.verticalCenter
         font.bold: dashboard.current_page === dashboard_index
-        color: font.bold ? Style.colorTheme0 : mouse_area.containsMouse ? Style.colorWhite1 : Style.colorWhite4
+        color: font.bold ? Style.colorWhite1 : mouse_area.containsMouse ? Style.colorThemePassiveLight : Style.colorThemePassive
     }
 
     MouseArea {

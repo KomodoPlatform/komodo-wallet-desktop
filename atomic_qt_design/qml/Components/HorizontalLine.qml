@@ -7,5 +7,5 @@ import "../Constants"
 Rectangle {
     // width:
     height: 1
-    color: Style.colorWhite5
+    color: Style.colorThemeLine
 }

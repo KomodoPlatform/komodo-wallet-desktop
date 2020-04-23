@@ -182,7 +182,7 @@ Item {
                         Layout.alignment: Qt.AlignRight
                         text: API.get().empty_string + (model.modelData.ticker)
                         font.pixelSize: Style.textSizeSmall4
-                        color: Style.colorDarkText
+                        color: Style.colorThemePassive
                     }
                 }
             }

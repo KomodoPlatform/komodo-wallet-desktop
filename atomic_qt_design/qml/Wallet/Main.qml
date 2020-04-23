@@ -82,7 +82,7 @@ Item {
                         text: API.get().empty_string + (qsTr("Wallet Balance"))
                         Layout.alignment: Qt.AlignLeft
                         font.pixelSize: Style.textSize1
-                        color: Style.colorDarkText
+                        color: Style.colorThemePassive
                     }
 
                     DefaultText {
@@ -107,7 +107,7 @@ Item {
                         text: API.get().empty_string + (qsTr("Price"))
                         Layout.alignment: Qt.AlignLeft
                         font.pixelSize: Style.textSize1
-                        color: Style.colorDarkText
+                        color: Style.colorThemePassive
                     }
 
                     DefaultText {
@@ -131,7 +131,7 @@ Item {
                         text: API.get().empty_string + (qsTr("Change 24h"))
                         Layout.alignment: Qt.AlignLeft
                         font.pixelSize: Style.textSize1
-                        color: Style.colorDarkText
+                        color: Style.colorThemePassive
                     }
 
                     DefaultText {
@@ -162,7 +162,7 @@ Item {
                         text: API.get().empty_string + (qsTr("Portfolio %"))
                         Layout.alignment: Qt.AlignLeft
                         font.pixelSize: Style.textSize1
-                        color: Style.colorDarkText
+                        color: Style.colorThemePassive
                     }
 
                     DefaultText {

@@ -97,7 +97,7 @@ Rectangle {
                 anchors.verticalCenter: parent.verticalCenter
                 anchors.left: parent.left
                 anchors.leftMargin: parent.width * 0.575
-                color: Style.colorWhite4
+                color: Style.colorThemePassiveLight
             }
 
             // Date
@@ -107,13 +107,12 @@ Rectangle {
                 anchors.verticalCenter: parent.verticalCenter
                 anchors.right: parent.right
                 anchors.rightMargin: 20
-                color: Style.colorWhite4
+                color: Style.colorThemePassiveLight
             }
 
             HorizontalLine {
                 visible: index !== API.get().current_coin_info.transactions.length -1
                 width: parent.width
-                color: Style.colorWhite7
                 anchors.bottom: parent.bottom
             }
         }
