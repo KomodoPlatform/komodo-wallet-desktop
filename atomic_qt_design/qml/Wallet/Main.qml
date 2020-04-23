@@ -326,7 +326,7 @@ Item {
         verticalOffset: 0
         radius: 12
         samples: 32
-        color: "#2A000000"
+        color: "#40000000"
         smooth: true
     }
 }
