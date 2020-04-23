@@ -147,7 +147,7 @@ Item {
 
     // Right side
     Rectangle {
-        color: Style.colorTheme6
+        color: Style.colorTheme8
         width: parent.width - sidebar.width
         height: parent.height
         x: sidebar.width

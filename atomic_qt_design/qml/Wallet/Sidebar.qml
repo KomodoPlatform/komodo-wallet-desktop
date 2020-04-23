@@ -24,7 +24,7 @@ Item {
 
         width: 150
         height: parent.height
-        color: Style.colorTheme7
+        color: Style.colorTheme8
 
         // Round all corners and cover left ones so only right ones are covered
         radius: Style.rectangleCornerRadius

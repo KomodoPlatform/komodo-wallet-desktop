@@ -12,7 +12,7 @@ QtObject {
     readonly property string successCharacter:  "✓"
     readonly property string failureCharacter:  "✘"
 
-    readonly property int materialElevation: 1
+    readonly property int materialElevation: 5
 
     readonly property int textSizeVerySmall1: 1
     readonly property int textSizeVerySmall2: 2
@@ -74,10 +74,11 @@ QtObject {
     readonly property string colorTheme2: "#36A8AA"
     readonly property string colorTheme3: "#318795"
     readonly property string colorTheme4: "#2B6680"
-    readonly property string colorTheme5: "#3a4c66"
-    readonly property string colorTheme6: "#283547"
-    readonly property string colorTheme7: "#232F40"
-    readonly property string colorTheme8: "#1E2938"
+    readonly property string colorTheme5: "#4a4d57"
+    readonly property string colorTheme6: "#40434c"
+    readonly property string colorTheme7: "#373941"
+    readonly property string colorTheme8: "#2E3036"
+
 
     readonly property string colorDarkText: colorWhite6
 

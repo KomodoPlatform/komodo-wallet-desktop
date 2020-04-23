@@ -5,7 +5,7 @@ import QtQuick.Controls.Material 2.12
 import "../Constants"
 
 Button {
-    Material.background: Style.colorTheme5
+    Material.background: Style.colorTheme8
     Material.foreground: Style.colorWhite
     Material.elevation: Style.materialElevation
 }

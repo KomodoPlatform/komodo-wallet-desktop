@@ -34,7 +34,7 @@ Item {
         // Balance box
         Rectangle {
             Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
-            color: Style.colorTheme7
+            color: Style.colorTheme8
             radius: Style.rectangleCornerRadius
             Layout.fillWidth: true
             Layout.leftMargin: layout_margin
