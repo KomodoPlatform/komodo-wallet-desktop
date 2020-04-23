@@ -11,6 +11,8 @@ Rectangle {
 
     }
 
+    readonly property int row_height: 45
+
     radius: Style.rectangleCornerRadius
 
     color: Style.colorTheme8
@@ -27,7 +29,7 @@ Rectangle {
         delegate: Rectangle {
             id: rectangle
             implicitWidth: parent.width
-            height: 65
+            height: row_height
 
             visible: model.modelData.timestamp !== 0
 

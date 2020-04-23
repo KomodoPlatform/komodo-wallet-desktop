@@ -20,12 +20,13 @@ Item {
 
     Layout.fillHeight: true
     Layout.fillWidth: true
+
     ColumnLayout {
         id: wallet_layout
         width: parent.width
         anchors.horizontalCenter: parent.horizontalCenter
         anchors.top: parent.top
-        anchors.topMargin: layout_margin * 2.5
+        anchors.topMargin: layout_margin
         anchors.bottom: parent.bottom
 
         spacing: layout_margin
@@ -116,6 +117,7 @@ Item {
 
                             return API.get().empty_string + (General.formatFiat('', c.price, API.get().fiat))
                         }
+                        onTextChanged: price_graph.updateChart() // Update chart when coin changes
                         Layout.alignment: Qt.AlignLeft
                         font.pixelSize: Style.textSize1
                         color: Style.colorWhite4
@@ -178,6 +180,16 @@ Item {
                     }
                 }
             }
+        }
+
+        PriceGraph {
+            id: price_graph
+            Layout.fillWidth: true
+            Layout.fillHeight: true
+            Layout.leftMargin: layout_margin
+            Layout.rightMargin: layout_margin
+            Layout.bottomMargin: layout_margin
+            implicitHeight: wallet.height*0.6
         }
 
         // Send, Receive buttons at top
@@ -300,7 +312,7 @@ Item {
             Layout.leftMargin: layout_margin
             Layout.rightMargin: layout_margin
             Layout.bottomMargin: layout_margin
-            implicitHeight: Math.min(contentItem.childrenRect.height, wallet.height*0.5)
+            implicitHeight: wallet.height*0.4
         }
 
         implicitHeight: Math.min(contentItem.childrenRect.height, wallet.height*0.5)
