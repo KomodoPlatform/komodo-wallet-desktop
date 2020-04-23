@@ -49,11 +49,19 @@ Rectangle {
             }
 
             // Icon
-            Image {
+//            Image {
+//                id: received_icon
+//                source: General.image_path + "circle-" + (model.modelData.received ? "success" : "failed") + ".png"
+//                fillMode: Image.PreserveAspectFit
+//                width: Style.textSize
+//                anchors.verticalCenter: parent.verticalCenter
+//                anchors.left: parent.left
+//                anchors.leftMargin: 15
+//            }
+            Circle {
                 id: received_icon
-                source: General.image_path + "circle-" + (model.modelData.received ? "success" : "failed") + ".png"
-                fillMode: Image.PreserveAspectFit
-                width: Style.textSize
+                color: model.modelData.received ? Style.colorGreen : Style.colorRed
+                width: Style.textSizeSmall3
                 anchors.verticalCenter: parent.verticalCenter
                 anchors.left: parent.left
                 anchors.leftMargin: 15
