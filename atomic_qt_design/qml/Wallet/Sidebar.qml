@@ -8,17 +8,21 @@ import "../Constants"
 
 // Coins bar at left side
 Item {
+    id: root
+
     function reset() {
         input_coin_filter.reset()
     }
 
     Layout.alignment: Qt.AlignLeft
-    width: 150
+    width: 165
     Layout.fillHeight: true
 
     Rectangle {
         id: coins_bar
-        width: parent.width
+        anchors.right: parent.right
+
+        width: 150
         height: parent.height
         color: Style.colorTheme7
 
@@ -31,6 +35,13 @@ Item {
             anchors.leftMargin: -sidebar.width
             anchors.top: parent.top
             anchors.bottom: parent.bottom
+        }
+
+        VerticalLine {
+            anchors.left: parent.left
+            anchors.top: parent.top
+            anchors.bottom: parent.bottom
+            color: Style.colorWhite12
         }
 
         RowLayout {
