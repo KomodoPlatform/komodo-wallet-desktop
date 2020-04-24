@@ -219,6 +219,32 @@
     "active": false,
     "currently_enabled": false
   },
+  "MGW": {
+    "coin": "MGW",
+    "name": "MGW",
+    "type": "Smart Chain",
+    "rpcport": 12386,
+    "mm2": 1,
+    "coingecko_id": "test-coin",
+    "coinpaprika_id": "test-coin",
+    "is_erc_20": false,
+    "electrum": [
+      {
+        "url": "electrum1.cipig.net:10015"
+      },
+      {
+        "url": "electrum2.cipig.net:10015"
+      },
+      {
+        "url": "electrum3.cipig.net:10015"
+      }
+    ],
+    "explorer_url": [
+      "https://mgw.explorer.dexstats.info/"
+    ],
+    "active": false,
+    "currently_enabled": false
+  },
   "VOTE2020": {
     "coin": "VOTE2020",
     "name": "Vote2020",
