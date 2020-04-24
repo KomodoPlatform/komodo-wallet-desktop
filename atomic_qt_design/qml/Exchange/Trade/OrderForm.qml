@@ -82,13 +82,24 @@ Rectangle {
         return General.isEthEnabled() && API.get().do_i_have_enough_funds("ETH", curr_trade_info.erc_fees)
     }
 
+    function getMinTradeAmount() {
+        return 0.00777
+    }
+
+    function higherThanMinTradeAmount() {
+        return input_volume.field.text !== '' && parseFloat(input_volume.field.text) >= getMinTradeAmount()
+    }
+
     function isValid() {
         if(!my_side) return fieldsAreFilled()
 
         const ticker = getTicker()
 
-        let valid = fieldsAreFilled() && API.get().do_i_have_enough_funds(ticker, input_volume.field.text)
+        let valid = true
 
+        if(valid) valid = fieldsAreFilled()
+        if(valid) valid = higherThanMinTradeAmount()
+        if(valid) valid = API.get().do_i_have_enough_funds(ticker, input_volume.field.text)
         if(valid && hasEthFees()) valid = hasEnoughEthForFees()
 
         return valid

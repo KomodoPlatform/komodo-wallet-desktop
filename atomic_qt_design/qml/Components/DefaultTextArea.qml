@@ -13,12 +13,19 @@ TextArea {
     KeyNavigation.backtab: nextItemInFocusChain(false)
     KeyNavigation.tab: nextItemInFocusChain(true)
     Keys.onPressed: {
-        if(onReturn !== undefined && event.key === Qt.Key_Return) {
-            onReturn()
+        if(event.key === Qt.Key_Return) {
+            if(onReturn !== undefined) {
+                onReturn()
+            }
+
+            // Ignore \n \r stuff
             event.accepted = true
         }
     }
 
+    onTextChanged: {
+        text = text.replace(/[\r\n]/, '')
+    }
 
     // Right click Context Menu
     selectByMouse: true

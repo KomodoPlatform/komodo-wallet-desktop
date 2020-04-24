@@ -20,28 +20,35 @@ DefaultModal {
         return API.get().current_coin_info.type === "ERC-20"
     }
 
-    function prepareSendCoin(address, amount, fee_enabled, fee_amount, is_erc_20, gas, gas_price) {
+    function prepareSendCoin(address, amount, fee_enabled, fee_amount, is_erc_20, gas, gas_price, set_current=true) {
         let max = parseFloat(API.get().current_coin_info.balance) === parseFloat(amount)
+
+        let result
 
         if(fee_enabled) {
             if(max === false && !is_erc_20)
                 max = parseFloat(amount) + parseFloat(fee_amount) >= parseFloat(API.get().current_coin_info.balance)
 
-            prepare_send_result = API.get().prepare_send_fees(address, amount, is_erc_20, fee_amount, gas_price, gas, max)
+            result = API.get().prepare_send_fees(address, amount, is_erc_20, fee_amount, gas_price, gas, max)
         }
         else {
-            prepare_send_result = API.get().prepare_send(address, amount, max)
+            result = API.get().prepare_send(address, amount, max)
         }
 
-        if(prepare_send_result.has_error) {
-            text_error.text = prepare_send_result.error_message
-        }
-        else {
-            text_error.text = ""
+        if(set_current) {
+            prepare_send_result = result
+            if(prepare_send_result.has_error) {
+                text_error.text = prepare_send_result.error_message
+            }
+            else {
+                text_error.text = ""
 
-            // Change page
-            stack_layout.currentIndex = 1
+                // Change page
+                stack_layout.currentIndex = 1
+            }
         }
+
+        return result
     }
 
     function sendCoin() {
@@ -107,23 +114,31 @@ DefaultModal {
         return true
     }
 
+    function feesAreFilled() {
+        return  (!custom_fees_switch.checked || (
+                       (!isERC20() && input_custom_fees.field.acceptableInput) ||
+                       (isERC20() && input_custom_fees_gas.field.acceptableInput && input_custom_fees_gas_price.field.acceptableInput &&
+                                       parseFloat(input_custom_fees_gas.field.text) > 0 && parseFloat(input_custom_fees_gas_price.field.text) > 0)
+                     )
+                 )
+    }
+
     function fieldAreFilled() {
         return input_address.field.text != "" &&
              input_amount.field.text != "" &&
              input_address.field.acceptableInput &&
              input_amount.field.acceptableInput &&
              parseFloat(input_amount.field.text) > 0 &&
-             (!custom_fees_switch.checked || (
-                    (!isERC20() && input_custom_fees.field.acceptableInput) ||
-                    (isERC20() && input_custom_fees_gas.field.acceptableInput && input_custom_fees_gas_price.field.acceptableInput &&
-                                    parseFloat(input_custom_fees_gas.field.text) > 0 && parseFloat(input_custom_fees_gas_price.field.text) > 0)
-                  )
-              )
+             feesAreFilled()
+    }
+
+    function setMax() {
+        input_amount.field.text = API.get().current_coin_info.balance
     }
 
     // Inside modal
     // width: stack_layout.children[stack_layout.currentIndex].width + horizontalPadding * 2
-    width: 500
+    width: 600
     height: stack_layout.children[stack_layout.currentIndex].height + verticalPadding * 2
     StackLayout {
         width: parent.width
@@ -144,11 +159,18 @@ DefaultModal {
                 field.placeholderText: API.get().empty_string + (qsTr("Enter address of the recipient"))
             }
 
-            // Amount input
-            AmountField {
-                id: input_amount
-                title: API.get().empty_string + (qsTr("Amount to send"))
-                field.placeholderText: API.get().empty_string + (qsTr("Enter the amount to send"))
+            RowLayout {
+                // Amount input
+                AmountField {
+                    id: input_amount
+                    title: API.get().empty_string + (qsTr("Amount to send"))
+                    field.placeholderText: API.get().empty_string + (qsTr("Enter the amount to send"))
+                }
+
+                DefaultButton {
+                    text: API.get().empty_string + (qsTr("MAX"))
+                    onClicked: setMax()
+                }
             }
 
             // Custom fees switch

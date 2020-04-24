@@ -55,7 +55,7 @@ else ()
 endif ()
 
 FetchContent_Declare(jl777-coins
-        URL https://github.com/jl777/coins/archive/master.zip)
+        URL https://github.com/KomodoPlatform/coins/archive/master.zip)
 
 FetchContent_MakeAvailable(mm2 jl777-coins)
 
