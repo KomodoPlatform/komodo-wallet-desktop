@@ -302,6 +302,7 @@ namespace atomic_dex
                 refresh_fiat_balance(mm2, paprika);
                 refresh_address(mm2);
                 const auto& info = get_mm2().get_coin_info(m_coin_info->get_ticker().toStdString());
+                m_coin_info->set_name(QString::fromStdString(info.name));
                 m_coin_info->set_claimable(info.is_claimable);
                 m_coin_info->set_type(QString::fromStdString(info.type));
                 m_coin_info->set_minimal_balance_for_asking_rewards(QString::fromStdString(info.minimal_claim_amount));
