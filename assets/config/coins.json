@@ -395,8 +395,6 @@
     "coin": "SUPERNET",
     "name": "Supernet",
     "type": "Smart Chain",
-    "rpcport": 11341,
-    "mm2": 1,
     "coingecko_id": "test-coin",
     "coinpaprika_id": "test-coin",
     "is_erc_20": false,
