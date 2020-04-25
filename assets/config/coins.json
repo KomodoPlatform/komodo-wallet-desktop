@@ -391,6 +391,32 @@
     "active": false,
     "currently_enabled": false
   },
+  "SUPERNET": {
+    "coin": "SUPERNET",
+    "name": "Supernet",
+    "type": "Smart Chain",
+    "rpcport": 11341,
+    "mm2": 1,
+    "coingecko_id": "test-coin",
+    "coinpaprika_id": "test-coin",
+    "is_erc_20": false,
+    "electrum": [
+      {
+        "url": "electrum1.cipig.net:10005"
+      },
+      {
+        "url": "electrum2.cipig.net:10005"
+      },
+      {
+        "url": "electrum3.cipig.net:10005"
+      }
+    ],
+    "explorer_url": [
+      "https://supernet.explorer.dexstats.info/"
+    ],
+    "active": false,
+    "currently_enabled": false
+  },
   "VRSC": {
     "coin": "VRSC",
     "type": "Smart Chain",
