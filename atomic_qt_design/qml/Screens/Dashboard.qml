@@ -100,24 +100,12 @@ Item {
     // Sidebar, left side
     Rectangle {
         id: sidebar
-        color: Style.colorTheme8
-        width: 200
+        x: -radius
+        width: 200 - x
         height: parent.height
-        z: 1
-
-        // Gradient
-        DefaultGradient {
-        }
-
-        // Round all corners and cover left ones so only right ones are covered
         radius: Style.rectangleCornerRadius
-        Rectangle {
-            color: parent.color
-            width: parent.radius
-            anchors.left: parent.left
-            anchors.top: parent.top
-            anchors.bottom: parent.bottom
-        }
+
+        DefaultGradient { }
 
         Image {
             source: General.image_path + "komodo-icon.png"
