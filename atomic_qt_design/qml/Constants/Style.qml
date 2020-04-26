@@ -87,6 +87,8 @@ QtObject {
 
     readonly property string colorGradient1: colorTheme9
     readonly property string colorGradient2: colorTheme7
+    readonly property string colorGradient3: "#24283D"
+    readonly property string colorGradient4: "#0D0F21"
     readonly property string colorLineGradient1: "#272933"
     readonly property string colorLineGradient2: "#0C0D16"
 

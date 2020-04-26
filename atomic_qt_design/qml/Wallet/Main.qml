@@ -34,12 +34,14 @@ Item {
         // Balance box
         Rectangle {
             Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
-            color: Style.colorTheme8
+
             radius: Style.rectangleCornerRadius
             Layout.fillWidth: true
             Layout.leftMargin: layout_margin
             Layout.rightMargin: layout_margin
             Layout.preferredHeight: balance_box_layout.childrenRect.height + 40
+
+            DefaultGradientAngled { }
 
             RowLayout {
                 id: balance_box_layout
