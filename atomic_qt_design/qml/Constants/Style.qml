@@ -86,6 +86,8 @@ QtObject {
 
     readonly property string colorGradient1: colorTheme8
     readonly property string colorGradient2: colorTheme7
+    readonly property string colorLineGradient1: "#272933"
+    readonly property string colorLineGradient2: "#0C0D16"
 
     readonly property int modalTitleMargin: 10
     readonly property string modalValueColor: colorWhite4
