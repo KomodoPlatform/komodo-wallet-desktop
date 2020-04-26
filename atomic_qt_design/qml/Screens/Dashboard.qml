@@ -105,6 +105,10 @@ Item {
         height: parent.height
         z: 1
 
+        // Gradient
+        DefaultGradient {
+        }
+
         // Round all corners and cover left ones so only right ones are covered
         radius: Style.rectangleCornerRadius
         Rectangle {
