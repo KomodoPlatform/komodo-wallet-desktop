@@ -107,33 +107,39 @@ Item {
 
         DefaultGradient { }
 
-        Image {
-            source: General.image_path + "komodo-icon.png"
-            anchors.horizontalCenter: parent.horizontalCenter
-            y: parent.width * 0.25
-            transformOrigin: Item.Center
-            width: 64
-            fillMode: Image.PreserveAspectFit
-        }
+        Item {
+            anchors.right: parent.right
+            width: parent.width + parent.x
+            height: parent.height
 
-        DefaultText {
-            anchors.horizontalCenter: parent.horizontalCenter
-            anchors.top: parent.top
-            anchors.topMargin: parent.width * 0.85
-            text: API.get().empty_string + ("V. AtomicDEX PRO " + API.get().get_version())
-            font.pixelSize: Style.textSizeSmall
-            color: Style.colorWhite6
-        }
+            Image {
+                source: General.image_path + "komodo-icon.png"
+                anchors.horizontalCenter: parent.horizontalCenter
+                y: parent.width * 0.25
+                transformOrigin: Item.Center
+                width: 64
+                fillMode: Image.PreserveAspectFit
+            }
 
-        Sidebar {
-            width: parent.width
-            anchors.verticalCenter: parent.verticalCenter
-        }
+            DefaultText {
+                anchors.horizontalCenter: parent.horizontalCenter
+                anchors.top: parent.top
+                anchors.topMargin: parent.width * 0.85
+                text: API.get().empty_string + ("V. AtomicDEX PRO " + API.get().get_version())
+                font.pixelSize: Style.textSizeSmall
+                color: Style.colorWhite6
+            }
 
-        SidebarBottom {
-            width: parent.width
-            anchors.bottom: parent.bottom
-            anchors.bottomMargin: parent.width * 0.25
+            Sidebar {
+                width: parent.width
+                anchors.verticalCenter: parent.verticalCenter
+            }
+
+            SidebarBottom {
+                width: parent.width
+                anchors.bottom: parent.bottom
+                anchors.bottomMargin: parent.width * 0.25
+            }
         }
     }
 
