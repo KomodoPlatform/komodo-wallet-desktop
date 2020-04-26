@@ -23,12 +23,9 @@ Item {
         anchors.right: parent.right
         width: sidebar.width + parent.width
 
-        DefaultGradient {}
+        DefaultGradient { }
 
         height: parent.height
-        color: Style.colorTheme8
-
-        // Round all corners and cover left ones so only right ones are covered
         radius: Style.rectangleCornerRadius
 
         // Panel contents
