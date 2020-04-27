@@ -47,6 +47,78 @@
     "type": "UTXO",
     "name": "Bitcoin Cash"
   },
+  "BET": {
+    "coin": "BET",
+    "name": "BET",
+    "type": "Smart Chain",
+    "coingecko_id": "test-coin",
+    "coinpaprika_id": "test-coin",
+    "is_erc_20": false,
+    "electrum": [
+      {
+        "url": "electrum1.cipig.net:10012"
+      },
+      {
+        "url": "electrum2.cipig.net:10012"
+      },
+      {
+        "url": "electrum3.cipig.net:10012"
+      }
+    ],
+    "explorer_url": [
+      "https://bet.explorer.dexstats.info/"
+    ],
+    "active": false,
+    "currently_enabled": false
+  },
+  "BOTS": {
+    "coin": "BOTS",
+    "name": "BOTS",
+    "type": "Smart Chain",
+    "coingecko_id": "test-coin",
+    "coinpaprika_id": "test-coin",
+    "is_erc_20": false,
+    "electrum": [
+      {
+        "url": "electrum1.cipig.net:10007"
+      },
+      {
+        "url": "electrum2.cipig.net:10007"
+      },
+      {
+        "url": "electrum3.cipig.net:10007"
+      }
+    ],
+    "explorer_url": [
+      "https://bots.explorer.dexstats.info/"
+    ],
+    "active": false,
+    "currently_enabled": false
+  },
+  "CRYPTO": {
+    "coin": "CRYPTO",
+    "name": "CRYPTO",
+    "type": "Smart Chain",
+    "coingecko_id": "test-coin",
+    "coinpaprika_id": "test-coin",
+    "is_erc_20": false,
+    "electrum": [
+      {
+        "url": "electrum1.cipig.net:10008"
+      },
+      {
+        "url": "electrum2.cipig.net:10008"
+      },
+      {
+        "url": "electrum3.cipig.net:10008"
+      }
+    ],
+    "explorer_url": [
+      "https://crypto.explorer.dexstats.info/"
+    ],
+    "active": false,
+    "currently_enabled": false
+  },
   "DASH": {
     "active": false,
     "coin": "DASH",
@@ -70,6 +142,30 @@
     ],
     "is_erc_20": false,
     "type": "UTXO"
+  },
+  "JUMBLR": {
+    "coin": "JUMBLR",
+    "name": "JUMBLR",
+    "type": "Smart Chain",
+    "coingecko_id": "test-coin",
+    "coinpaprika_id": "test-coin",
+    "is_erc_20": false,
+    "electrum": [
+      {
+        "url": "electrum1.cipig.net:10004"
+      },
+      {
+        "url": "electrum2.cipig.net:10004"
+      },
+      {
+        "url": "electrum3.cipig.net:10004"
+      }
+    ],
+    "explorer_url": [
+      "https://jumblr.explorer.dexstats.info/"
+    ],
+    "active": false,
+    "currently_enabled": false
   },
   "LTC": {
     "active": false,
@@ -339,6 +435,54 @@
     ],
     "explorer_url": [
       "https://morty.kmd.dev/"
+    ],
+    "active": false,
+    "currently_enabled": false
+  },
+  "PANGEA": {
+    "coin": "PANGEA",
+    "name": "Pangea",
+    "type": "Smart Chain",
+    "coingecko_id": "test-coin",
+    "coinpaprika_id": "test-coin",
+    "is_erc_20": false,
+    "electrum": [
+      {
+        "url": "electrum1.cipig.net:10010"
+      },
+      {
+        "url": "electrum2.cipig.net:10010"
+      },
+      {
+        "url": "electrum3.cipig.net:10010"
+      }
+    ],
+    "explorer_url": [
+      "https://pangea.explorer.dexstats.info/"
+    ],
+    "active": false,
+    "currently_enabled": false
+  },
+  "REVS": {
+    "coin": "REVS",
+    "name": "REVS",
+    "type": "Smart Chain",
+    "coingecko_id": "test-coin",
+    "coinpaprika_id": "test-coin",
+    "is_erc_20": false,
+    "electrum": [
+      {
+        "url": "electrum1.cipig.net:10003"
+      },
+      {
+        "url": "electrum2.cipig.net:10003"
+      },
+      {
+        "url": "electrum3.cipig.net:10003"
+      }
+    ],
+    "explorer_url": [
+      "https://revs.explorer.dexstats.info/"
     ],
     "active": false,
     "currently_enabled": false
