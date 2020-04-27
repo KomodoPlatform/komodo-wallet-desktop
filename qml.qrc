@@ -33,7 +33,11 @@
         <file>atomic_qt_design/assets/images/coins/awc.png</file>
         <file>atomic_qt_design/assets/images/coins/btc.png</file>
         <file>atomic_qt_design/assets/images/coins/bch.png</file>
+        <file>atomic_qt_design/assets/images/coins/bet.png</file>
+        <file>atomic_qt_design/assets/images/coins/bots.png</file>
+        <file>atomic_qt_design/assets/images/coins/crypto.png</file>
         <file>atomic_qt_design/assets/images/coins/dash.png</file>
+        <file>atomic_qt_design/assets/images/coins/jumblr.png</file>
         <file>atomic_qt_design/assets/images/coins/ltc.png</file>
         <file>atomic_qt_design/assets/images/coins/eth.png</file>
         <file>atomic_qt_design/assets/images/coins/kmd.png</file>
@@ -43,6 +47,8 @@
         <file>atomic_qt_design/assets/images/coins/rick.png</file>
         <file>atomic_qt_design/assets/images/coins/mgw.png</file>
         <file>atomic_qt_design/assets/images/coins/morty.png</file>
+        <file>atomic_qt_design/assets/images/coins/pangea.png</file>
+        <file>atomic_qt_design/assets/images/coins/revs.png</file>
         <file>atomic_qt_design/assets/images/coins/hush.png</file>
         <file>atomic_qt_design/assets/images/coins/supernet.png</file>
         <file>atomic_qt_design/assets/images/coins/usdc.png</file>
