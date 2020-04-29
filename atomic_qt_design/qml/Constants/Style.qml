@@ -2,7 +2,8 @@ pragma Singleton
 import QtQuick 2.10
 
 QtObject {
-    readonly property FontLoader mySystemFont: FontLoader { source: "../../assets/fonts/Rubik-Regular.ttf" }
+    readonly property FontLoader mySystemFont: FontLoader { source: "../../assets/fonts/Montserrat-Regular.ttf" }
+    readonly property FontLoader mySystemFontBold: FontLoader { source: "../../assets/fonts/Montserrat-SemiBold.ttf" }
     readonly property font font: Qt.font({
                                              family: mySystemFont.name,
                                              pixelSize: Qt.application.font.pixelSize
