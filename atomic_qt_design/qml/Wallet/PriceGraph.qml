@@ -48,7 +48,7 @@ Rectangle {
 
     radius: Style.rectangleCornerRadius
 
-    color: Style.colorTheme8
+    color: Style.colorTheme7
 
     ChartView {
         id: chart

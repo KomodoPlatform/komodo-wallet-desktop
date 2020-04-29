@@ -13,7 +13,7 @@ LinearGradient {
     start: Qt.point(0, 0)
     end: Qt.point(parent.width, parent.height)
     gradient: Gradient {
-        GradientStop { position: 0.0049; color: Style.colorGradient3 }
+        GradientStop { position: 0.0; color: Style.colorGradient3 }
         GradientStop { position: 1.0; color: Style.colorGradient4 }
     }
 }
