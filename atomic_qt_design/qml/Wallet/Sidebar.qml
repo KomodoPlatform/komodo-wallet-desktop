@@ -193,7 +193,6 @@ Item {
                                 }
                             }
                         }
-                        DefaultInnerShadow { }
                     }
                 }
 
