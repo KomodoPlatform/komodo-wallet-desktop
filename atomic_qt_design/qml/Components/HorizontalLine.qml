@@ -6,7 +6,7 @@ import QtGraphicalEffects 1.0
 import "../Constants"
 
 Rectangle {
-    height: 3
+    height: 2
 
     // Gradient
     LinearGradient {
@@ -15,8 +15,8 @@ Rectangle {
         start: Qt.point(0, 0)
         end: Qt.point(0, parent.height)
         gradient: Gradient {
-            GradientStop { position: 0.3385; color: Style.colorLineGradient1 }
-            GradientStop { position: 0.9984; color: Style.colorLineGradient2 }
+            GradientStop { position: 0.0; color: Style.colorLineGradient3 }
+            GradientStop { position: 1.0; color: Style.colorLineGradient4 }
         }
     }
 }
