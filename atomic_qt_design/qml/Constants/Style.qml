@@ -91,8 +91,10 @@ QtObject {
     readonly property string colorGradient4: "#0D0F21"
     readonly property string colorLineGradient1: "#1F212F"
     readonly property string colorLineGradient2: "#0C0D16"
-    readonly property string colorLineGradient3: "#06080d"//"#131523"
-    readonly property string colorLineGradient4: "#2a2e3c"//"#1A1D2E"
+    readonly property string colorLineGradient3: "#06080d"
+    readonly property string colorLineGradient4: "#2a2e3c"
+    readonly property string colorLineGradient5: "#090910"
+    readonly property string colorLineGradient6: "#24283b"
 
     readonly property int modalTitleMargin: 10
     readonly property string modalValueColor: colorWhite4

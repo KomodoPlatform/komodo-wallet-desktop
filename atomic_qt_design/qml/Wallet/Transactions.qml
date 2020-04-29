@@ -122,6 +122,7 @@ Rectangle {
                 visible: index !== API.get().current_coin_info.transactions.length -1
                 width: parent.width
                 anchors.bottom: parent.bottom
+                light: true
             }
         }
     }

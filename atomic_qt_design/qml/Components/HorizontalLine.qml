@@ -7,6 +7,7 @@ import "../Constants"
 
 Rectangle {
     height: 2
+    property bool light: false
 
     // Gradient
     LinearGradient {
@@ -15,8 +16,8 @@ Rectangle {
         start: Qt.point(0, 0)
         end: Qt.point(0, parent.height)
         gradient: Gradient {
-            GradientStop { position: 0.0; color: Style.colorLineGradient3 }
-            GradientStop { position: 1.0; color: Style.colorLineGradient4 }
+            GradientStop { position: 0.0; color: light ? Style.colorLineGradient5 : Style.colorLineGradient3 }
+            GradientStop { position: 1.0; color: light ? Style.colorLineGradient6 : Style.colorLineGradient4 }
         }
     }
 }
