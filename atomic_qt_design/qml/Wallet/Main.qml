@@ -40,8 +40,7 @@ Item {
             Layout.leftMargin: layout_margin
             Layout.rightMargin: layout_margin
             Layout.preferredHeight: balance_box_layout.childrenRect.height + 40
-
-            DefaultGradientAngled { }
+            color: Style.colorTheme7
 
             RowLayout {
                 id: balance_box_layout
