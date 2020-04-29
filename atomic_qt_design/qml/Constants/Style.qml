@@ -84,18 +84,16 @@ QtObject {
     readonly property string colorThemePassive: "#777F8C"
     readonly property string colorThemePassiveLight: "#CCCDD0"
     readonly property string colorThemeDark: "#26282C"
-    readonly property string colorThemeDarkLight: "#393B3D"
+    readonly property string colorThemeDarkLight: "#78808D"
 
     readonly property string colorGradient1: colorTheme9
     readonly property string colorGradient2: colorTheme5
     readonly property string colorGradient3: "#24283D"
     readonly property string colorGradient4: "#0D0F21"
-    readonly property string colorLineGradient1: "#1F212F"
-    readonly property string colorLineGradient2: "#0C0D16"
-    readonly property string colorLineGradient3: "#06080d"
-    readonly property string colorLineGradient4: "#2a2e3c"
-    readonly property string colorLineGradient5: "#090910"
-    readonly property string colorLineGradient6: "#24283b"
+    readonly property string colorLineGradient1: "#2c2f3c"
+    readonly property string colorLineGradient2: "#06070c"
+    readonly property string colorLineGradient3: "#090910"
+    readonly property string colorLineGradient4: "#24283b"
 
     readonly property int modalTitleMargin: 10
     readonly property string modalValueColor: colorWhite4

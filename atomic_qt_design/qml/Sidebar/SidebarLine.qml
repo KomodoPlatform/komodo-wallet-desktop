@@ -15,7 +15,7 @@ Item {
 
     Image {
         id: img
-        width: Style.textSize * 2
+        width: txt.font.pixelSize * 2
         fillMode: Image.PreserveAspectFit
         anchors.left: parent.left
         anchors.leftMargin: 30
@@ -33,6 +33,7 @@ Item {
         anchors.right: parent.right
         anchors.rightMargin: img.anchors.leftMargin
         anchors.verticalCenter: parent.verticalCenter
+        font.pixelSize: Style.textSizeSmall2
         font.bold: dashboard.current_page === dashboard_index
         color: font.bold ? Style.colorWhite1 : mouse_area.containsMouse ? Style.colorThemePassiveLight : Style.colorThemePassive
     }

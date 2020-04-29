@@ -15,7 +15,7 @@ Item {
     }
 
     Layout.alignment: Qt.AlignLeft
-    width: 165
+    width: 175
     Layout.fillHeight: true
 
     // Background
@@ -32,7 +32,7 @@ Item {
         // Panel contents
         Item {
             id: coins_bar
-            width: 150
+            width: 175
             height: parent.height
             anchors.right: parent.right
 

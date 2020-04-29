@@ -6,7 +6,7 @@ import QtGraphicalEffects 1.0
 import "../Constants"
 
 Rectangle {
-    width: 3
+    width: 2
 
     // Gradient
     LinearGradient {

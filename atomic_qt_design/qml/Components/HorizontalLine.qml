@@ -16,8 +16,8 @@ Rectangle {
         start: Qt.point(0, 0)
         end: Qt.point(0, parent.height)
         gradient: Gradient {
-            GradientStop { position: 0.0; color: light ? Style.colorLineGradient5 : Style.colorLineGradient3 }
-            GradientStop { position: 1.0; color: light ? Style.colorLineGradient6 : Style.colorLineGradient4 }
+            GradientStop { position: 0.0; color: light ? Style.colorLineGradient3 : Style.colorLineGradient2 }
+            GradientStop { position: 1.0; color: light ? Style.colorLineGradient4 : Style.colorLineGradient1 }
         }
     }
 }
