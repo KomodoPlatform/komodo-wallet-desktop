@@ -302,8 +302,10 @@ namespace atomic_dex
                 refresh_fiat_balance(mm2, paprika);
                 refresh_address(mm2);
                 const auto& info = get_mm2().get_coin_info(m_coin_info->get_ticker().toStdString());
+                m_coin_info->set_name(QString::fromStdString(info.name));
                 m_coin_info->set_claimable(info.is_claimable);
                 m_coin_info->set_type(QString::fromStdString(info.type));
+                m_coin_info->set_paprika_id(QString::fromStdString(info.coinpaprika_id));
                 m_coin_info->set_minimal_balance_for_asking_rewards(QString::fromStdString(info.minimal_claim_amount));
                 m_coin_info->set_explorer_url(QString::fromStdString(info.explorer_url[0]));
                 m_refresh_current_ticker_infos = false;
@@ -513,10 +515,11 @@ namespace atomic_dex
     {
         atomic_dex::t_withdraw_request req{
             .to = address.toStdString(), .coin = m_coin_info->get_ticker().toStdString(), .max = max, .amount = amount.toStdString()};
-        req.fees = atomic_dex::t_withdraw_fees{.type      = is_erc_20 ? "EthGas" : "UtxoFixed",
-                                               .amount    = fees_amount.toStdString(),
-                                               .gas_price = gas_price.toStdString(),
-                                               .gas_limit = not gas.isEmpty() ? std::stoi(gas.toStdString()) : 0};
+        req.fees = atomic_dex::t_withdraw_fees{
+            .type      = is_erc_20 ? "EthGas" : "UtxoFixed",
+            .amount    = fees_amount.toStdString(),
+            .gas_price = gas_price.toStdString(),
+            .gas_limit = not gas.isEmpty() ? std::stoi(gas.toStdString()) : 0};
         std::error_code ec;
         auto            answer = mm2::withdraw(std::move(req), ec);
         auto            coin   = get_mm2().get_coin_info(m_coin_info->get_ticker().toStdString());
@@ -734,16 +737,17 @@ namespace atomic_dex
 
         for (auto& swap: swaps.swaps)
         {
-            nlohmann::json j2 = {{"maker_coin", swap.maker_coin},
-                                 {"taker_coin", swap.taker_coin},
-                                 {"is_recoverable", swap.funds_recoverable},
-                                 {"maker_amount", swap.maker_amount},
-                                 {"taker_amount", swap.taker_amount},
-                                 {"error_events", swap.error_events},
-                                 {"success_events", swap.success_events},
-                                 {"type", swap.type},
-                                 {"events", swap.events},
-                                 {"my_info", swap.my_info}};
+            nlohmann::json j2 = {
+                {"maker_coin", swap.maker_coin},
+                {"taker_coin", swap.taker_coin},
+                {"is_recoverable", swap.funds_recoverable},
+                {"maker_amount", swap.maker_amount},
+                {"taker_amount", swap.taker_amount},
+                {"error_events", swap.error_events},
+                {"success_events", swap.success_events},
+                {"type", swap.type},
+                {"events", swap.events},
+                {"my_info", swap.my_info}};
 
             auto out_swap = QJsonDocument::fromJson(QString::fromStdString(j2.dump()).toUtf8());
             out.insert(QString::fromStdString(swap.uuid), out_swap.toVariant());
@@ -890,8 +894,8 @@ namespace atomic_dex
     {
         QVariantMap out;
 
-        auto        trade_fee_f = get_mm2().get_trade_fee(ticker.toStdString(), amount.toStdString(), false);
-        auto        answer      = get_mm2().get_trade_fixed_fee(ticker.toStdString());
+        auto trade_fee_f = get_mm2().get_trade_fee(ticker.toStdString(), amount.toStdString(), false);
+        auto answer      = get_mm2().get_trade_fixed_fee(ticker.toStdString());
 
         if (!answer.amount.empty())
         {
@@ -931,13 +935,14 @@ namespace atomic_dex
         for (auto&& coin: coins)
         {
             std::error_code ec;
-            nlohmann::json  cur_obj{{"ticker", coin.ticker},
-                                   {"name", coin.name},
-                                   {"price", get_paprika().get_rate_conversion(m_current_fiat.toStdString(), coin.ticker, ec, true)},
-                                   {"balance", get_mm2().my_balance(coin.ticker, ec)},
-                                   {"balance_fiat", get_paprika().get_price_in_fiat(m_current_fiat.toStdString(), coin.ticker, ec)},
-                                   {"rates", get_paprika().get_ticker_infos(coin.ticker).answer},
-                                   {"historical", get_paprika().get_ticker_historical(coin.ticker).answer}};
+            nlohmann::json  cur_obj{
+                {"ticker", coin.ticker},
+                {"name", coin.name},
+                {"price", get_paprika().get_rate_conversion(m_current_fiat.toStdString(), coin.ticker, ec, true)},
+                {"balance", get_mm2().my_balance(coin.ticker, ec)},
+                {"balance_fiat", get_paprika().get_price_in_fiat(m_current_fiat.toStdString(), coin.ticker, ec)},
+                {"rates", get_paprika().get_ticker_infos(coin.ticker).answer},
+                {"historical", get_paprika().get_ticker_historical(coin.ticker).answer}};
             j.push_back(cur_obj);
         }
         QJsonDocument q_json = QJsonDocument::fromJson(QString::fromStdString(j.dump()).toUtf8());
@@ -1076,7 +1081,7 @@ namespace atomic_dex
     QImage
     application::get_qr_code(QString text_to_encode, QSize size)
     {
-        //QImage qrcode = QZXing::encodeData(text_to_encode, QZXing::EncoderFormat_QR_CODE, size);
+        // QImage qrcode = QZXing::encodeData(text_to_encode, QZXing::EncoderFormat_QR_CODE, size);
         return QImage();
     }
 
@@ -1087,10 +1092,11 @@ namespace atomic_dex
         std::vector<std::string> mnemonic;
 
         // Split
-        std::string s = entropy.toStdString();
+        std::string       s         = entropy.toStdString();
         const std::string delimiter = " ";
-        size_t pos = 0;
-        while ((pos = s.find(delimiter)) != std::string::npos) {
+        size_t            pos       = 0;
+        while ((pos = s.find(delimiter)) != std::string::npos)
+        {
             mnemonic.emplace_back(s.substr(0, pos));
             s.erase(0, pos + delimiter.length());
         }
@@ -1101,5 +1107,10 @@ namespace atomic_dex
 #else
         return bip39_mnemonic_validate(nullptr, entropy.toStdString().c_str()) == 0;
 #endif
+    }
+    QString
+    application::get_paprika_id_from_ticker(QString ticker) const
+    {
+        return QString::fromStdString(get_mm2().get_coin_info(ticker.toStdString()).coinpaprika_id);
     }
 } // namespace atomic_dex

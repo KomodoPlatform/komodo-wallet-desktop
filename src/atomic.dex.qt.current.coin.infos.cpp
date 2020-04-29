@@ -24,6 +24,19 @@ namespace atomic_dex
     atomic_dex::current_coin_info::current_coin_info(entt::dispatcher& dispatcher, QObject* pParent) noexcept : QObject(pParent), m_dispatcher(dispatcher) {}
 
     //! Properties
+    void
+    atomic_dex::current_coin_info::set_name(QString name) noexcept
+    {
+        this->selected_coin_fname = std::move(name);
+        emit name_changed();
+    }
+
+    QString
+    atomic_dex::current_coin_info::get_name() const noexcept
+    {
+        return this->selected_coin_fname;
+    }
+
     QString
     atomic_dex::current_coin_info::get_balance() const noexcept
     {
@@ -166,5 +179,18 @@ namespace atomic_dex
     {
         this->selected_coin_type = std::move(type);
         emit type_changed();
+    }
+
+    QString
+    atomic_dex::current_coin_info::get_paprika_id() const noexcept
+    {
+       return this->selected_coin_paprika_id;
+    }
+
+    void
+    atomic_dex::current_coin_info::set_paprika_id(QString paprika_id) noexcept
+    {
+        this->selected_coin_paprika_id = std::move(paprika_id);
+        emit coinpaprika_id_changed();
     }
 } // namespace atomic_dex
