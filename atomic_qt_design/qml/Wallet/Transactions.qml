@@ -34,7 +34,7 @@ Rectangle {
             visible: model.modelData.timestamp !== 0
 
             radius: Style.rectangleCornerRadius
-            color: mouse_area.containsMouse ? Style.colorTheme7 : "transparent"
+            color: mouse_area.containsMouse ? Style.colorTheme6 : Style.colorTheme7
 
             MouseArea {
                 id: mouse_area

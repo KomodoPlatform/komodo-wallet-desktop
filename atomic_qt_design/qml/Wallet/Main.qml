@@ -184,14 +184,22 @@ Item {
             }
         }
 
-        PriceGraph {
-            id: price_graph
+        Item {
             Layout.fillWidth: true
             Layout.fillHeight: true
             Layout.leftMargin: layout_margin
             Layout.rightMargin: layout_margin
             Layout.bottomMargin: layout_margin
             implicitHeight: wallet.height*0.6
+
+            PriceGraph {
+                id: price_graph
+
+                anchors.fill: parent
+                anchors.margins: 1
+            }
+
+            DefaultInnerShadow { }
         }
 
         // Send, Receive buttons at top
@@ -307,29 +315,24 @@ Item {
             Layout.alignment: Qt.AlignHCenter
         }
 
-        Transactions {
-            id: transactions
+        Item {
             Layout.fillWidth: true
             Layout.fillHeight: true
             Layout.leftMargin: layout_margin
             Layout.rightMargin: layout_margin
             Layout.bottomMargin: layout_margin
             implicitHeight: wallet.height*0.54
+
+            Transactions {
+                id: transactions
+                anchors.fill: parent
+                anchors.margins: 1
+            }
+
+            DefaultInnerShadow { }
         }
 
         implicitHeight: Math.min(contentItem.childrenRect.height, wallet.height*0.5)
-    }
-
-    InnerShadow {
-        anchors.fill: parent
-        source: parent
-        cached: false
-        horizontalOffset: 0
-        verticalOffset: 0
-        radius: 12
-        samples: 32
-        color: "#40000000"
-        smooth: true
     }
 }
 

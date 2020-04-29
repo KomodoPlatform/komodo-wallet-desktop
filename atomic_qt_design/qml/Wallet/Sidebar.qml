@@ -20,6 +20,7 @@ Item {
 
     // Background
     Rectangle {
+        id: background
         anchors.right: parent.right
         width: sidebar.width + parent.width
 
@@ -186,8 +187,8 @@ Item {
     }
 
     DropShadow {
-        anchors.fill: coins_bar
-        source: coins_bar
+        anchors.fill: background
+        source: background
         cached: false
         horizontalOffset: 0
         verticalOffset: 0
