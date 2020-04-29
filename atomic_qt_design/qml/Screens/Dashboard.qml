@@ -126,8 +126,8 @@ Item {
                 anchors.top: parent.top
                 anchors.topMargin: parent.width * 0.85
                 text: API.get().empty_string + ("V. AtomicDEX PRO " + API.get().get_version())
-                font.pixelSize: Style.textSizeSmall
-                color: Style.colorWhite6
+                font.pixelSize: Style.textSizeVerySmall8
+                color: Style.colorThemeDarkLight
             }
 
             Sidebar {

@@ -93,7 +93,7 @@ Rectangle {
     DefaultText {
         visible: !in_modal && item.uuid !== ''
         text: API.get().empty_string + (item.am_i_maker ? qsTr("Maker Order"): qsTr("Taker Order"))
-        color: Style.colorWhite6
+        color: Style.colorThemeDarkLight
         anchors.verticalCenter: date.verticalCenter
         anchors.horizontalCenter: parent.horizontalCenter
     }

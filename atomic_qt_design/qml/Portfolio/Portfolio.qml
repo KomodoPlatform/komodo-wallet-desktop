@@ -353,7 +353,7 @@ ColumnLayout {
                 anchors.baseline: balance_value.baseline
 
                 text: API.get().empty_string + (model.modelData.ticker)
-                color: Style.colorWhite6
+                color: Style.colorThemeDarkLight
                 font.pixelSize: Style.textSize * 0.9
             }
 
@@ -383,7 +383,7 @@ ColumnLayout {
                 anchors.rightMargin: price_header.anchors.rightMargin
 
                 text: API.get().empty_string + (General.formatFiat('', model.modelData.price, API.get().fiat))
-                color: Style.colorWhite6
+                color: Style.colorThemeDarkLight
                 anchors.verticalCenter: parent.verticalCenter
             }
 

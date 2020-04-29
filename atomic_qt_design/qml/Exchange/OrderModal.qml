@@ -68,7 +68,7 @@ DefaultModal {
         // Maker/Taker
         DefaultText {
             text: API.get().empty_string + (details.am_i_maker ? qsTr("Maker Order"): qsTr("Taker Order"))
-            color: Style.colorWhite6
+            color: Style.colorThemeDarkLight
             Layout.alignment: Qt.AlignRight
         }
 
