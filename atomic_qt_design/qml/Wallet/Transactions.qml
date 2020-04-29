@@ -71,7 +71,7 @@ Rectangle {
             DefaultText {
                 id: description
                 text: API.get().empty_string + (model.modelData.received ? qsTr("Incoming transaction") : qsTr("Outgoing transaction"))
-                font.pixelSize: Style.textSizeSmall3
+                font.pixelSize: Style.textSizeSmall2
                 anchors.verticalCenter: parent.verticalCenter
                 anchors.left: received_icon.right
                 anchors.leftMargin: 25
