@@ -1,0 +1,257 @@
+name: AtomicDEX Pro CI
+
+on: [pull_request]
+
+jobs:
+
+  linux-build:
+    name: Linux Build
+    runs-on: ubuntu-18.04
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Install QT (Linux)
+        uses: jurplel/install-qt-action@v2
+        with:
+          version: '5.14.1'
+          host: 'linux'
+          target: 'desktop'
+          dir: '${{ github.workspace }}'
+          modules: 'qtcharts qtwidgets debug_info'
+
+      - name: Setup Nim (Linux)
+        uses: jiro4989/setup-nim-action@v1.0.2
+        with:
+          nim-version: '1.2.0'
+
+      - name: Install deps (Linux)
+        env:
+          DEBIAN_FRONTEND: noninteractive
+        run: |
+          sudo apt-get update  # prevents repo404 errors on apt-remove below
+          sudo apt-get remove php5.6-fpm php7.0-fpm php7.1-fpm php7.2-fpm php7.3-fpm php7.3-common php7.4-fpm msodbcsql17
+          sudo apt-get update
+          sudo ACCEPT_EULA=Y apt-get upgrade -y
+
+          # base deps
+          sudo apt-get install build-essential \
+                               libgl1-mesa-dev \
+                               ninja-build \
+                               curl \
+                               wget \
+                               software-properties-common \
+                               lsb-release \
+                               libpulse-dev \
+                               libtool \
+                               autoconf \
+                               unzip \
+                               libssl-dev \
+                               git -y
+          # get right cmake version
+          wget https://github.com/Kitware/CMake/releases/download/v3.17.1/cmake-3.17.1.tar.gz -O cmake.tar.gz
+          tar xvzf cmake.tar.gz
+          cd cmake-3.17.1
+          ./bootstrap
+          sudo make install
+
+          # get llvm
+          wget https://apt.llvm.org/llvm.sh
+          chmod +x llvm.sh
+          sudo ./llvm.sh 9
+
+          # get libwally
+          git clone https://github.com/KomodoPlatform/libwally-core.git
+          cd libwally-core
+          ./tools/autogen.sh
+          ./configure --disable-shared
+          sudo make -j2 install
+
+          # set clang version
+          sudo update-alternatives --install /usr/bin/clang++ clang++ /usr/bin/clang++-9 100
+          sudo update-alternatives --install /usr/bin/clang clang /usr/bin/clang-9 100
+
+          # cleanup
+          sudo apt-get clean && \
+          sudo rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+          git clone https://github.com/KomodoPlatform/vcpkg vcpkg-repo
+          cd vcpkg-repo
+          ./bootstrap-vcpkg.sh
+          sudo ./vcpkg integrate install
+          ./vcpkg install doctest
+          ./vcpkg install pthread
+          rm -rf ./downloads
+          rm -rf ./buildtrees
+
+      - name: Build (Linux)
+        run: |
+          export QT_INSTALL_CMAKE_PATH=${{ github.workspace }}/Qt/5.14.1/gcc_64/lib/cmake
+          export QT_ROOT=${{ github.workspace }}/Qt/5.14.1
+          cd ci_tools_atomic_dex
+          export PATH=$HOME/.nimble/bin:$PATH
+          nimble build -y
+          ./ci_tools_atomic_dex build debug
+          rm -rf ./vcpkg-repo/downloads
+          rm -rf ./vcpkg-repo/buildtrees
+          ls build-Debug/bin/AntaraAtomicDexAppDir/usr/bin/atomic_qt
+
+      - name: Pack Installer (Linux)
+        run: |
+          sudo apt-get update
+          sudo apt-get install libxrender-dev \
+                               libxkbcommon-dev \
+                               libxkbcommon-x11-0 \
+                               fontconfig-config -y
+          python3 -m aqt tool linux tools_ifw 3.2.2 qt.tools.ifw.32
+          export QT_IFW_PATH=$PWD/Tools/QtInstallerFramework/3.2/
+          cd ci_tools_atomic_dex
+          ./create_installer_linux.sh Debug
+          ls ./installer/AtomicDEX-Pro-Installer
+
+      - name: Upload artifacts (Linux)
+        uses: actions/upload-artifact@v1
+        with:
+          name: AtomicDEX-Pro-Installer-linux
+          path: ./ci_tools_atomic_dex/installer/AtomicDEX-Pro-Installer
+
+  macos-build:
+    name: MacOS Build
+    runs-on: macos-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Install QT (MacOS)
+        uses: jurplel/install-qt-action@v2
+        with:
+          version: '5.14.2'
+          host: 'mac'
+          target: 'desktop'
+          dir: '${{ github.workspace }}'
+          modules: 'qtcharts qtwidgets debug_info'
+
+      - name: Install deps (MacOS)
+        run: |
+          brew update
+          brew upgrade
+          brew install autoconf \
+                       automake \
+                       libtool \
+                       pkgconfig \
+                       wget \
+                       nim \
+                       cmake \
+                       ninja \
+                       git \
+                       boost \
+                       gcc
+
+          # get libbitcoin
+          git clone --depth 1 --branch version5 --single-branch "https://github.com/libbitcoin/secp256k1"
+          cd secp256k1
+          ./autogen.sh
+          ./configure --disable-shared --disable-tests --enable-module-recovery
+          make
+          sudo make install
+          cd ../
+
+          git clone --depth 1 --branch version3 --single-branch https://github.com/KomodoPlatform/libbitcoin-system.git
+          cd libbitcoin-system
+          ./autogen.sh
+          ./configure --with-boost --disable-shared
+          make
+          sudo make install
+          sudo update_dyld_shared_cache
+
+      - name: Build (MacOS)
+        run: |
+          export QT_INSTALL_CMAKE_PATH=${{ github.workspace }}/Qt/5.14.2/clang_64/lib/cmake
+          export QT_ROOT=${{ github.workspace }}/Qt/5.14.2
+          cd ci_tools_atomic_dex
+          nimble build -y
+          ./ci_tools_atomic_dex bundle debug
+          ls bundle-Debug/atomicDEX-Pro.dmg
+
+      - name: Upload artifacts (MacOS)
+        uses: actions/upload-artifact@v1
+        with:
+          name: dexpro-mac-debug.dmg
+          path: ./ci_tools_atomic_dex/bundle-Debug/atomicDEX-Pro.dmg
+
+  windows-build:
+    name: Win Build
+    runs-on: windows-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Install QT (Win)
+        uses: jurplel/install-qt-action@v2
+        with:
+          version: '5.14.1'
+          host: 'windows'
+          target: 'desktop'
+          dir: 'C:\'
+          modules: 'qtcharts qtwidgets debug_info'
+
+      - name: Build (Win)
+        shell: powershell
+        run: |
+          $Env:QT_INSTALL_CMAKE_PATH = "C:\Qt\5.14.1\msvc2017_64"
+          Set-ExecutionPolicy RemoteSigned -scope CurrentUser
+          Invoke-Expression (New-Object System.Net.WebClient).DownloadString('https://get.scoop.sh')
+
+          scoop install nim --global
+          scoop install llvm --global
+          scoop install ninja --global
+          scoop install cmake --global
+          scoop install git --global
+
+          # clear scoop cache
+          scoop cache rm 7zip
+          scoop cache rm git
+          scoop cache rm cmake
+          scoop cache rm ninja
+          scoop cache rm llvm
+          scoop cache rm nim
+
+          cd ci_tools_atomic_dex
+          $file = 'src\generate.nim'
+          $regex = '(?<=g_vcpkg_cmake_script_path & ")[^"]*'
+          (Get-Content $file) -replace $regex, ' -DVCPKG_TARGET_TRIPLET=x64-windows ' | Set-Content $file
+          nimble.exe build -y
+
+          & cmd /c 'git clone https://github.com/KomodoPlatform/vcpkg vcpkg-repo 2>&1'
+          cd vcpkg-repo
+          .\bootstrap-vcpkg.bat
+          .\vcpkg.exe integrate install
+          .\vcpkg.exe install entt
+          .\vcpkg.exe install folly
+          .\vcpkg.exe install boost-multiprecision
+          .\vcpkg.exe install boost-random
+          .\vcpkg.exe install doctest
+          .\vcpkg.exe install fmt
+          .\vcpkg.exe install curl
+          .\vcpkg.exe install nlohmann-json
+          rd -r ".\buildtrees\" -ErrorAction SilentlyContinue
+          rd -r ".\downloads\" -ErrorAction SilentlyContinue
+          .\vcpkg.exe install range-v3
+          .\vcpkg.exe install libsodium
+          .\vcpkg.exe install date
+          .\vcpkg.exe install pthreads
+          .\vcpkg.exe install zlib
+          .\vcpkg.exe install gtest
+          .\vcpkg.exe install jsoncpp
+          rd -r ".\buildtrees\" -ErrorAction SilentlyContinue
+          rd -r ".\downloads\" -ErrorAction SilentlyContinue
+
+          cd ..
+          cmd /c '.\ci_tools_atomic_dex.exe build debug 2>&1'
+          cmd /c '.\ci_tools_atomic_dex.exe bundle debug 2>&1'
+          ls bundle-Debug/bundle.zip
+
+      - name: Upload artifacts (Windows)
+        uses: actions/upload-artifact@v1
+        with:
+          name: dexpro-win-debug.zip
+          path: ./ci_tools_atomic_dex/bundle-Debug/bundle.zip
