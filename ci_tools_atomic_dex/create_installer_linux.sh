@@ -1,6 +1,6 @@
 #!/bin/bash
 
-build_folder=./build-Release/bin/AntaraAtomicDexAppDir/usr
+build_folder=./build-"$@"/bin/AntaraAtomicDexAppDir/usr
 root_folder=./installer
 icon_file=app_icon.ico
 installer_target=$root_folder/AtomicDEX-Pro-Installer
