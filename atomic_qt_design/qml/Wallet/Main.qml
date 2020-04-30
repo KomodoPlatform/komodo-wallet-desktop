@@ -43,31 +43,35 @@ Item {
 
                 RowLayout {
                     Layout.alignment: Qt.AlignLeft
-                    Layout.topMargin: 20
+                    Layout.topMargin: 12
                     Layout.bottomMargin: Layout.topMargin
                     Layout.leftMargin: 15
                     spacing: 15
                     // Icon
                     Image {
                         source: General.coinIcon(API.get().current_coin_info.ticker)
-                        Layout.preferredHeight: balance_layout.childrenRect.height
+                        Layout.preferredHeight: 60
                         Layout.preferredWidth: Layout.preferredHeight
                     }
 
                     // Name and crypto amount
                     ColumnLayout {
                         id: balance_layout
+                        spacing: -2
 
                         DefaultText {
+                            id: name
                             text: API.get().empty_string + (API.get().current_coin_info.name)
                             Layout.alignment: Qt.AlignLeft
-                            font.pixelSize: Style.textSize1
+                            font.pixelSize: Style.textSizeMid2
                         }
 
                         DefaultText {
+                            id: name_value
                             text: API.get().empty_string + (General.formatCrypto("", API.get().current_coin_info.balance, API.get().current_coin_info.ticker))
                             Layout.alignment: Qt.AlignLeft
-                            font.pixelSize: Style.textSize1
+                            font.pixelSize: name.font.pixelSize
+                            font.weight: Font.Medium
                         }
                     }
                 }
@@ -75,18 +79,19 @@ Item {
                 // Wallet Balance
                 ColumnLayout {
                     Layout.alignment: Qt.AlignLeft
+                    spacing: balance_layout.spacing
                     DefaultText {
                         text: API.get().empty_string + (qsTr("Wallet Balance"))
                         Layout.alignment: Qt.AlignLeft
-                        font.pixelSize: Style.textSize1
+                        font.pixelSize: name.font.pixelSize
                         color: Style.colorThemePassive
                     }
 
                     DefaultText {
                         text: API.get().empty_string + (General.formatFiat("", API.get().current_coin_info.fiat_amount, API.get().fiat))
                         Layout.alignment: Qt.AlignLeft
-                        font.pixelSize: Style.textSize1
-                        color: Style.colorWhite4
+                        font.pixelSize: name.font.pixelSize
+                        font.weight: name_value.font.weight
                     }
                 }
 
@@ -100,10 +105,13 @@ Item {
                 // Price
                 ColumnLayout {
                     Layout.alignment: Qt.AlignHCenter
+                    spacing: balance_layout.spacing
                     DefaultText {
+                        id: price
                         text: API.get().empty_string + (qsTr("Price"))
                         Layout.alignment: Qt.AlignLeft
-                        font.pixelSize: Style.textSize1
+                        font.pixelSize: name.font.pixelSize
+                        font.weight: Font.Light
                         color: Style.colorThemePassive
                     }
 
@@ -116,18 +124,20 @@ Item {
                         }
 
                         Layout.alignment: Qt.AlignLeft
-                        font.pixelSize: Style.textSize1
-                        color: Style.colorWhite4
+                        font.pixelSize: name.font.pixelSize
+                        font.weight: name_value.font.weight
                     }
                 }
 
                 // Change 24h
                 ColumnLayout {
                     Layout.alignment: Qt.AlignHCenter
+                    spacing: balance_layout.spacing
                     DefaultText {
                         text: API.get().empty_string + (qsTr("Change 24h"))
                         Layout.alignment: Qt.AlignLeft
-                        font.pixelSize: Style.textSize1
+                        font.pixelSize: name.font.pixelSize
+                        font.weight: price.font.weight
                         color: Style.colorThemePassive
                     }
 
@@ -139,7 +149,8 @@ Item {
                             return API.get().empty_string + (General.formatPercent(c.rates[API.get().fiat].percent_change_24h))
                         }
                         Layout.alignment: Qt.AlignLeft
-                        font.pixelSize: Style.textSize1
+                        font.pixelSize: name.font.pixelSize
+                        font.weight: name_value.font.weight
                         color: {
                             const c = General.getCoin(portfolio_coins, API.get().current_coin_info.ticker)
 
@@ -155,10 +166,12 @@ Item {
                 // Portfolio %
                 ColumnLayout {
                     Layout.alignment: Qt.AlignHCenter
+                    spacing: balance_layout.spacing
                     DefaultText {
                         text: API.get().empty_string + (qsTr("Portfolio %"))
                         Layout.alignment: Qt.AlignLeft
-                        font.pixelSize: Style.textSize1
+                        font.pixelSize: name.font.pixelSize
+                        font.weight: price.font.weight
                         color: Style.colorThemePassive
                     }
 
@@ -172,8 +185,8 @@ Item {
                             return API.get().empty_string + (General.formatPercent((100 * parseFloat(c.balance_fiat)/parseFloat(portfolio_balance)).toFixed(2), false))
                         }
                         Layout.alignment: Qt.AlignLeft
-                        font.pixelSize: Style.textSize1
-                        color: Style.colorWhite4
+                        font.pixelSize: name.font.pixelSize
+                        font.weight: name_value.font.weight
                     }
                 }
             }
