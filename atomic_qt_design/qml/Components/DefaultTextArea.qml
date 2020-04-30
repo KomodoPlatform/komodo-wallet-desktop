@@ -24,7 +24,9 @@ TextArea {
     }
 
     onTextChanged: {
-        text = text.replace(/[\r\n]/, '')
+        if(text.indexOf('\r') !== -1 || text.indexOf('\n') !== -1) {
+            text = text.replace(/[\r\n]/, '')
+        }
     }
 
     // Right click Context Menu
