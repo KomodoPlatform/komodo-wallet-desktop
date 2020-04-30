@@ -2,8 +2,11 @@ pragma Singleton
 import QtQuick 2.10
 
 QtObject {
+    readonly property FontLoader mySystemFontThin: FontLoader { source: "../../assets/fonts/Montserrat-Thin.ttf" }
+    readonly property FontLoader mySystemFontLight: FontLoader { source: "../../assets/fonts/Montserrat-Light.ttf" }
     readonly property FontLoader mySystemFont: FontLoader { source: "../../assets/fonts/Montserrat-Regular.ttf" }
-    readonly property FontLoader mySystemFontBold: FontLoader { source: "../../assets/fonts/Montserrat-SemiBold.ttf" }
+    readonly property FontLoader mySystemFontMedium: FontLoader { source: "../../assets/fonts/Montserrat-Medium.ttf" }
+    readonly property FontLoader mySystemFontSemiBold: FontLoader { source: "../../assets/fonts/Montserrat-SemiBold.ttf" }
     readonly property font font: Qt.font({
                                              family: mySystemFont.name,
                                              pixelSize: Qt.application.font.pixelSize
@@ -31,6 +34,9 @@ QtObject {
     readonly property int textSizeSmall4: 14
     readonly property int textSizeSmall5: 15
     readonly property int textSize: 16
+    readonly property int textSizeMid: 17
+    readonly property int textSizeMid1: 18
+    readonly property int textSizeMid2: 19
     readonly property int textSize1: 20
     readonly property int textSize2: 24
     readonly property int textSize3: 36
