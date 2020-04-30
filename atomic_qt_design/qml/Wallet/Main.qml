@@ -31,23 +31,20 @@ Item {
         spacing: layout_margin
 
         // Balance box
-        Rectangle {
+        FloatingBackground {
+            id: balance_box
             Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
-
-            radius: Style.rectangleCornerRadius
             Layout.fillWidth: true
             Layout.leftMargin: layout_margin
             Layout.rightMargin: layout_margin
-            Layout.preferredHeight: balance_box_layout.childrenRect.height + 40
-            color: Style.colorTheme7
 
-            RowLayout {
-                id: balance_box_layout
-                anchors.centerIn: parent
-                width: parent.width
+            content: RowLayout {
+                width: balance_box.width
 
                 RowLayout {
                     Layout.alignment: Qt.AlignLeft
+                    Layout.topMargin: 20
+                    Layout.bottomMargin: Layout.topMargin
                     Layout.leftMargin: 15
                     spacing: 15
                     // Icon
