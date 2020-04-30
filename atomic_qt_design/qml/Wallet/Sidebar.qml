@@ -101,103 +101,92 @@ Item {
             }
 
             // Coins list
-            Item {
+            InnerBackground {
                 id: list_bg
                 width: 145
-                implicitHeight: list.height
                 anchors.horizontalCenter: parent.horizontalCenter
                 anchors.verticalCenter: parent.verticalCenter
 
-                Rectangle {
-                    anchors.fill: parent
-                    radius: Style.rectangleCornerRadius
+                content: ListView {
+                    id: list
+                    ScrollBar.vertical: DefaultScrollBar {}
+                    implicitWidth: contentItem.childrenRect.width
+                    implicitHeight: Math.min(contentItem.childrenRect.height, coins_bar.height - 250)
 
-                    color: Style.colorTheme7
+                    clip: true
 
-                    ListView {
-                        id: list
-                        ScrollBar.vertical: DefaultScrollBar {}
-                        implicitWidth: contentItem.childrenRect.width
-                        implicitHeight: Math.min(contentItem.childrenRect.height, coins_bar.height - 250)
+                    model: General.filterCoins(API.get().enabled_coins, input_coin_filter.text)
 
-                        clip: true
+                    delegate: Rectangle {
+                        color: API.get().current_coin_info.ticker === model.modelData.ticker ? Style.colorTheme5 : mouse_area.containsMouse ? Style.colorTheme6 : "transparent"
+                        anchors.horizontalCenter: parent.horizontalCenter
+                        width: list_bg.width
+                        height: 50
+                        radius: Style.rectangleCornerRadius
 
-                        model: General.filterCoins(API.get().enabled_coins, input_coin_filter.text)
+                        // Click area
+                        MouseArea {
+                            id: mouse_area
+                            anchors.fill: parent
+                            hoverEnabled: true
 
-                        delegate: Rectangle {
-                            color: API.get().current_coin_info.ticker === model.modelData.ticker ? Style.colorTheme5 : mouse_area.containsMouse ? Style.colorTheme6 : "transparent"
-                            anchors.horizontalCenter: parent.horizontalCenter
-                            width: list_bg.width
-                            height: 50
-                            radius: Style.rectangleCornerRadius
+                            acceptedButtons: Qt.LeftButton | Qt.RightButton
+                            onClicked: {
+                                if (mouse.button === Qt.RightButton) context_menu.popup()
+                                else API.get().current_coin_info.ticker = model.modelData.ticker
 
-                            // Click area
-                            MouseArea {
-                                id: mouse_area
-                                anchors.fill: parent
-                                hoverEnabled: true
+                                main.send_modal.reset()
+                            }
+                            onPressAndHold: {
+                                if (mouse.source === Qt.MouseEventNotSynthesized) context_menu.popup()
+                            }
+                        }
 
-                                acceptedButtons: Qt.LeftButton | Qt.RightButton
-                                onClicked: {
-                                    if (mouse.button === Qt.RightButton) context_menu.popup()
-                                    else API.get().current_coin_info.ticker = model.modelData.ticker
+                        // Right click menu
+                        Menu {
+                            id: context_menu
+                            Action {
+                                text: API.get().empty_string + (qsTr("Disable %1", "TICKER").arg(model.modelData.ticker))
+                                onTriggered: API.get().disable_coins([model.modelData.ticker])
+                                enabled: General.canDisable(model.modelData.ticker)
+                            }
+                        }
 
-                                    main.send_modal.reset()
-                                }
-                                onPressAndHold: {
-                                    if (mouse.source === Qt.MouseEventNotSynthesized) context_menu.popup()
-                                }
+                        // Icon
+                        Image {
+                            id: icon
+                            anchors.left: parent.left
+                            anchors.leftMargin: 15
+
+                            source: General.image_path + "coins/" + model.modelData.ticker.toLowerCase() + ".png"
+                            fillMode: Image.PreserveAspectFit
+                            width: Style.textSizeSmall4*2
+                            anchors.verticalCenter: parent.verticalCenter
+                        }
+
+                        ColumnLayout {
+                            anchors.verticalCenter: parent.verticalCenter
+                            anchors.right: parent.right
+                            anchors.rightMargin: icon.anchors.leftMargin
+
+                            spacing: -3
+                            // Name
+                            DefaultText {
+                                Layout.alignment: Qt.AlignRight
+                                text: API.get().empty_string + (model.modelData.name.replace(" (TESTCOIN)", ""))
+                                font.pixelSize: text.length > 15 ? Style.textSizeVerySmall8 : text.length > 12 ? Style.textSizeVerySmall9 : Style.textSizeSmall2
                             }
 
-                            // Right click menu
-                            Menu {
-                                id: context_menu
-                                Action {
-                                    text: API.get().empty_string + (qsTr("Disable %1", "TICKER").arg(model.modelData.ticker))
-                                    onTriggered: API.get().disable_coins([model.modelData.ticker])
-                                    enabled: General.canDisable(model.modelData.ticker)
-                                }
-                            }
-
-                            // Icon
-                            Image {
-                                id: icon
-                                anchors.left: parent.left
-                                anchors.leftMargin: 15
-
-                                source: General.image_path + "coins/" + model.modelData.ticker.toLowerCase() + ".png"
-                                fillMode: Image.PreserveAspectFit
-                                width: Style.textSizeSmall4*2
-                                anchors.verticalCenter: parent.verticalCenter
-                            }
-
-                            ColumnLayout {
-                                anchors.verticalCenter: parent.verticalCenter
-                                anchors.right: parent.right
-                                anchors.rightMargin: icon.anchors.leftMargin
-
-                                spacing: -3
-                                // Name
-                                DefaultText {
-                                    Layout.alignment: Qt.AlignRight
-                                    text: API.get().empty_string + (model.modelData.name.replace(" (TESTCOIN)", ""))
-                                    font.pixelSize: text.length > 15 ? Style.textSizeVerySmall8 : text.length > 12 ? Style.textSizeVerySmall9 : Style.textSizeSmall2
-                                }
-
-                                // Ticker
-                                DefaultText {
-                                    Layout.alignment: Qt.AlignRight
-                                    text: API.get().empty_string + (model.modelData.ticker)
-                                    font.pixelSize: Style.textSizeSmall2
-                                    color: Style.colorThemePassive
-                                }
+                            // Ticker
+                            DefaultText {
+                                Layout.alignment: Qt.AlignRight
+                                text: API.get().empty_string + (model.modelData.ticker)
+                                font.pixelSize: Style.textSizeSmall2
+                                color: Style.colorThemePassive
                             }
                         }
                     }
                 }
-
-
-                DefaultInnerShadow { }
             }
         }
     }

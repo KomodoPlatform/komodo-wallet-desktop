@@ -7,10 +7,7 @@ import "../Components"
 import "../Constants"
 
 // List
-Rectangle {
-    function reset() {
-
-    }
+ChartView {
     function updateChart() {
         const coin = General.getCoin(portfolio_coins, API.get().current_coin_info.ticker)
         if(coin === undefined) return
@@ -46,22 +43,20 @@ Rectangle {
         chart.axes[0].max = historical.length - 1
     }
 
-    radius: Style.rectangleCornerRadius
-
-    color: Style.colorTheme7
-
-    ChartView {
-        id: chart
-        width: parent.width
-        height: parent.height
-        antialiasing: true
-
-        legend.visible: false
-
-        backgroundColor: "transparent"
+    property string ticker: API.get().current_coin_info.ticker
+    onTickerChanged: {
+        updateChart()
     }
-}
 
+    id: chart
+    width: parent.width
+    height: parent.height
+    antialiasing: true
+
+    legend.visible: false
+
+    backgroundColor: "transparent"
+}
 
 
 

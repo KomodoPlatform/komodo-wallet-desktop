@@ -61,15 +61,4 @@ Item {
         color: "#20000000"
         smooth: true
     }
-    InnerShadow {
-        anchors.fill: parent
-        source: add_coin_button
-        cached: false
-        horizontalOffset: 0
-        verticalOffset: 0
-        radius: 12
-        samples: 32
-        color: "#40000000"
-        smooth: true
-    }
 }

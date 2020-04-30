@@ -15,7 +15,6 @@ Item {
         send_modal.reset(true)
         receive_modal.reset()
         claim_rewards_modal.reset()
-        transactions.reset()
     }
 
     Layout.fillHeight: true
@@ -118,7 +117,7 @@ Item {
 
                             return API.get().empty_string + (General.formatFiat('', c.price, API.get().fiat))
                         }
-                        onTextChanged: price_graph.updateChart() // Update chart when coin changes
+
                         Layout.alignment: Qt.AlignLeft
                         font.pixelSize: Style.textSize1
                         color: Style.colorWhite4
@@ -183,7 +182,8 @@ Item {
             }
         }
 
-        Item {
+        InnerBackground {
+            id: price_graph_bg
             Layout.fillWidth: true
             Layout.fillHeight: true
             Layout.leftMargin: layout_margin
@@ -191,14 +191,10 @@ Item {
             Layout.bottomMargin: layout_margin
             implicitHeight: wallet.height*0.6
 
-            PriceGraph {
-                id: price_graph
-
-                anchors.fill: parent
-                anchors.margins: 1
+            content: PriceGraph {
+                width: price_graph_bg.width
+                height: price_graph_bg.height
             }
-
-            DefaultInnerShadow { }
         }
 
         // Send, Receive buttons at top
@@ -309,26 +305,25 @@ Item {
 
         // Separator line
         HorizontalLine {
-            visible: loading_tx.visible && transactions.model.length > 0
+            visible: loading_tx.visible && API.get().current_coin_info.transactions.length > 0
             width: 720
             Layout.alignment: Qt.AlignHCenter
         }
 
-        Item {
+        InnerBackground {
+            id: transactions_bg
             Layout.fillWidth: true
             Layout.fillHeight: true
             Layout.leftMargin: layout_margin
             Layout.rightMargin: layout_margin
             Layout.bottomMargin: layout_margin
+
             implicitHeight: wallet.height*0.54
 
-            Transactions {
-                id: transactions
-                anchors.fill: parent
-                anchors.margins: 1
+            content: Transactions {
+                width: transactions_bg.width
+                height: transactions_bg.height
             }
-
-            DefaultInnerShadow { }
         }
 
         implicitHeight: Math.min(contentItem.childrenRect.height, wallet.height*0.5)
