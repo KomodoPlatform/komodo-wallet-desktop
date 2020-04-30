@@ -568,7 +568,7 @@ jobs:
           with:
             tag_name: cd_release_${{ steps.shortify_commit.outputs.sha_short }}_${{ steps.extract_branch.outputs.branch }}
             release_name: CD Release ${{ steps.shortify_commit.outputs.sha_short }} ${{ steps.extract_branch.outputs.branch }}
-            body: ${GITHUB_SHA}
+            body: ${{ steps.shortify_commit.outputs.sha_short }}
             draft: false
             prerelease: true
 
