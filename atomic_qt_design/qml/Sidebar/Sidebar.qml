@@ -2,18 +2,120 @@ import QtQuick 2.12
 import QtQuick.Layouts 1.12
 import QtQuick.Controls 2.12
 import QtQuick.Controls.Material 2.12
+import QtGraphicalEffects 1.0
+
 import "../Constants"
 import "../Components"
 
-DefaultRectangle {
+Item {
     id: sidebar
-    x: -radius
+    x: -top_rect.radius
     width: 200 - x
     height: parent.height
-    radius: Style.rectangleCornerRadius
 
-    DefaultGradient { }
+    // Cursor
+    Item {
+        id: cursor
+        width: 170 - cursor_round_edge.radius
+        anchors.right: parent.right
+        height: Style.sidebarLineHeight + top_rect.radius*2
+        transformOrigin: Item.Left
+        anchors.verticalCenter: cursor_round_edge.verticalCenter
 
+        LinearGradient {
+            anchors.fill: parent
+
+            start: Qt.point(0, 0)
+            end: Qt.point(parent.width, 0)
+
+            gradient: Gradient {
+                GradientStop {
+                    position: 0.0
+                    color: Style.colorSidebarHighlightGradient1
+                }
+                GradientStop {
+                    position: cursor_round_edge.radius / cursor.width
+                    color: Style.colorSidebarHighlightGradient1
+                }
+                GradientStop {
+                    position: 1.0
+                    color: Style.colorSidebarHighlightGradient2
+                }
+            }
+        }
+    }
+
+    // Top Rect
+    DefaultRectangle {
+        id: top_rect
+        anchors.left: parent.left
+        width: parent.width
+        anchors.top: parent.top
+        anchors.bottom: cursor_round_edge.top
+
+        radius: Style.rectangleCornerRadius
+
+        DefaultGradient { }
+    }
+
+    // Bottom Rect
+    DefaultRectangle {
+        id: bottom_rect
+        anchors.left: parent.left
+        width: parent.width
+        anchors.top: cursor_round_edge.bottom
+        anchors.bottom: parent.bottom
+
+        radius: Style.rectangleCornerRadius
+
+        DefaultGradient { }
+    }
+
+
+    // Left Rect
+    DefaultRectangle {
+        id: left_rect
+        anchors.left: top_rect.left
+        anchors.right: cursor.left
+        anchors.top: top_rect.bottom
+        anchors.bottom: bottom_rect.top
+        anchors.topMargin: -10
+        anchors.bottomMargin: anchors.topMargin
+
+        radius: Style.rectangleCornerRadius
+        border.width: 0
+
+        DefaultGradient {
+            end_pos: sidebar.width / parent.width
+        }
+    }
+
+
+    // Cursor left edge
+    Rectangle {
+        id: cursor_round_edge
+        color: Style.colorSidebarHighlightGradient1
+        width: radius*2
+        anchors.rightMargin: -width/2
+        height: Style.sidebarLineHeight
+        anchors.right: cursor.left
+        radius: Style.rectangleCornerRadius
+
+        y: {
+            switch(dashboard.current_page) {
+                case General.idx_dashboard_portfolio:
+                case General.idx_dashboard_wallet:
+                case General.idx_dashboard_exchange:
+                case General.idx_dashboard_news:
+                case General.idx_dashboard_dapps:
+                    return sidebar_center.y + dashboard.current_page * Style.sidebarLineHeight
+                case General.idx_dashboard_settings:
+                    return sidebar_bottom.y
+            }
+        }
+    }
+
+    // Content
     Item {
         anchors.right: parent.right
         width: parent.width + parent.x
@@ -45,17 +147,20 @@ DefaultRectangle {
         }
 
         SidebarCenter {
+            id: sidebar_center
             width: parent.width
             anchors.verticalCenter: parent.verticalCenter
         }
 
         SidebarBottom {
+            id: sidebar_bottom
             width: parent.width
             anchors.bottom: parent.bottom
             anchors.bottomMargin: parent.width * 0.25
         }
     }
 }
+
 
 
 

@@ -54,6 +54,7 @@ QtObject {
     readonly property int itemPadding: 12
     readonly property int paneTitleOffset: 6
     readonly property int iconTextMargin: 5
+    readonly property int sidebarLineHeight: 43
 
     readonly property string colorRed: "#E938A4"
     readonly property string colorRed2: "#B1346B"
@@ -110,6 +111,8 @@ QtObject {
     readonly property string colorGradientLine2: "#0FFFFFFF"
 
     readonly property string colorSidebarIconHighlighted: "#2BBEF2"
+    readonly property string colorSidebarHighlightGradient1: "#FF1B5E7D"
+    readonly property string colorSidebarHighlightGradient2: "#001B5E7D"
 
     property string colorButtonDisabled: Style.colorTheme9
     property string colorButtonHovered: Style.colorTheme6

@@ -8,13 +8,26 @@ import "../Constants"
 
 // Gradient
 LinearGradient {
+    property alias start_pos: g_start.position
+    property alias end_pos: g_end.position
+
     anchors.fill: parent
-    anchors.margins: 1
+    anchors.margins: parent.border.width
     source: parent
-    start: Qt.point(1, 1)
-    end: Qt.point(parent.width-1, 1)
+
+    start: Qt.point(anchors.margins, anchors.margins)
+    end: Qt.point(parent.width - anchors.margins, anchors.margins)
+
     gradient: Gradient {
-        GradientStop { position: 0.0; color: Style.colorGradient1 }
-        GradientStop { position: 1.0; color: Style.colorGradient2 }
+        GradientStop {
+            id: g_start
+            position: 0.0
+            color: Style.colorGradient1
+        }
+        GradientStop {
+            id: g_end
+            position: 1.0
+            color: Style.colorGradient2
+        }
     }
 }

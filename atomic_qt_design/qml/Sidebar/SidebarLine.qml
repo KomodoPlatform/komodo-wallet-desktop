@@ -12,7 +12,7 @@ Item {
     property alias text: txt.text
     property alias separator: separator.visible
 
-    height: 43
+    height: Style.sidebarLineHeight
 
     Image {
         id: img
