@@ -6,6 +6,7 @@ import QtGraphicalEffects 1.0
 import "../Constants"
 
 Item {
+    property alias rect: rect
     property alias inner_space: inner_space
     property alias content: inner_space.sourceComponent
 
@@ -17,6 +18,8 @@ Item {
         anchors.fill: parent
         radius: Style.rectangleCornerRadius
         color: Style.colorTheme7
+        border.color: Style.colorThemeDark
+        border.width: 1
 
         Loader {
             anchors.centerIn: parent

@@ -14,12 +14,13 @@ Item {
         anchors.fill: parent
         radius: Style.rectangleCornerRadius
         color: Style.colorTheme7
+        border.color: Style.colorThemeDark
+        border.width: 1
 
         Loader {
             id: inner_space
         }
     }
-
 
     DefaultInnerShadow { }
 }
