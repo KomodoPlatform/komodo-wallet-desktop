@@ -121,7 +121,14 @@ Item {
                 fillMode: Image.PreserveAspectFit
             }
 
+            Separator {
+                anchors.bottom: version_text.top
+                anchors.bottomMargin: 6
+                anchors.horizontalCenter: parent.horizontalCenter
+            }
+
             DefaultText {
+                id: version_text
                 anchors.horizontalCenter: parent.horizontalCenter
                 anchors.top: parent.top
                 anchors.topMargin: parent.width * 0.85

@@ -106,6 +106,9 @@ QtObject {
     readonly property string colorBorder: "#23273B"
     readonly property string colorBorder2: "#1C1F32"
 
+    readonly property string colorGradientLine1: "#00FFFFFF"
+    readonly property string colorGradientLine2: "#0FFFFFFF"
+
     property string colorButtonDisabled: Style.colorTheme9
     property string colorButtonHovered: Style.colorTheme6
     property string colorButtonEnabled: Style.colorTheme8

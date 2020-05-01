@@ -10,6 +10,7 @@ Item {
     property int dashboard_index
     property alias image: img.source
     property alias text: txt.text
+    property alias separator: separator.visible
 
     height: 48
 
@@ -46,6 +47,11 @@ Item {
         onClicked: function() {
             dashboard.current_page = dashboard_index
         }
+    }
+
+    Separator {
+        id: separator
+        anchors.horizontalCenter: parent.horizontalCenter
     }
 }
 

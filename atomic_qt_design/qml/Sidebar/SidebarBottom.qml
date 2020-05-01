@@ -15,6 +15,7 @@ ColumnLayout {
         text: API.get().empty_string + (qsTr("Settings"))
         image: General.image_path + "menu-settings-white.svg"
         Layout.fillWidth: true
+        separator: false
     }
 }
 

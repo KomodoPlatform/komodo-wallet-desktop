@@ -15,6 +15,7 @@ ColumnLayout {
         text: API.get().empty_string + (qsTr("Dashboard"))
         image: General.image_path + "menu-assets-portfolio.png"
         Layout.fillWidth: true
+        separator: false
     }
 
     SidebarLine {
