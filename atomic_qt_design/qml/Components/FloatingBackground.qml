@@ -9,6 +9,7 @@ Item {
     property alias rect: rect
     property alias inner_space: inner_space
     property alias content: inner_space.sourceComponent
+    property bool verticalShadow: false
 
     width: inner_space.width
     height: inner_space.height
@@ -27,12 +28,12 @@ Item {
         anchors.fill: rect
         source: rect
         cached: false
-        horizontalOffset: -6
-        verticalOffset: -6
-        radius: 15
+        horizontalOffset: verticalShadow ? 0 : -6
+        verticalOffset: verticalShadow ? -10 : -6
+        radius: verticalShadow ? 25 : 15
         samples: 32
         spread: 0
-        color: Style.colorDropShadowLight
+        color: verticalShadow ? Style.colorDropShadowLight2 : Style.colorDropShadowLight
         smooth: true
     }
 
@@ -40,9 +41,9 @@ Item {
         anchors.fill: rect
         source: rect
         cached: false
-        horizontalOffset: 6
-        verticalOffset: 6
-        radius: 20
+        horizontalOffset: verticalShadow ? 0 : 6
+        verticalOffset: verticalShadow ? 10 : 6
+        radius: verticalShadow ? 25 : 20
         samples: 32
         spread: 0
         color: Style.colorDropShadowDark

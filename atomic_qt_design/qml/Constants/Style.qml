@@ -101,8 +101,16 @@ QtObject {
     readonly property string colorLineGradient3: "#090910"
     readonly property string colorLineGradient4: "#24283b"
     readonly property string colorDropShadowLight: "#216975a4"
+    readonly property string colorDropShadowLight2: "#606975a4"
     readonly property string colorDropShadowDark: "#FF050615"
     readonly property string colorBorder: "#23273B"
+
+    property string colorButtonDisabled: Style.colorTheme9
+    property string colorButtonHovered: Style.colorTheme6
+    property string colorButtonEnabled: Style.colorTheme8
+    property string colorButtonTextDisabled: Style.colorWhite8
+    property string colorButtonTextHovered: Style.colorWhite1
+    property string colorButtonTextEnabled: Style.colorWhite1  // Style.colorThemePassive
 
     readonly property int modalTitleMargin: 10
     readonly property string modalValueColor: colorWhite4

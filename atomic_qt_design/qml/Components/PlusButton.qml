@@ -14,4 +14,6 @@ DefaultButton {
     text: "+"
     font.pixelSize: width * 0.65
     font.weight: Font.Light
+
+    verticalShadow: true
 }

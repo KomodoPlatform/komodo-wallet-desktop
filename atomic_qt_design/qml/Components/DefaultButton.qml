@@ -15,12 +15,12 @@ FloatingBackground {
     property alias containsMouse: mouse_area.containsMouse
     property alias text: text_obj.text
     property alias font: text_obj.font
-    property string colorDisabled: Style.colorTheme9
-    property string colorHovered: Style.colorTheme6
-    property string colorEnabled: Style.colorTheme8
-    property string colorTextDisabled: Style.colorWhite8
-    property string colorTextHovered: Style.colorWhite1
-    property string colorTextEnabled: Style.colorWhite1 // Style.colorThemePassive
+    property string colorDisabled: Style.colorButtonDisabled
+    property string colorHovered: Style.colorButtonHovered
+    property string colorEnabled: Style.colorButtonEnabled
+    property string colorTextDisabled: Style.colorButtonTextDisabled
+    property string colorTextHovered: Style.colorButtonTextHovered
+    property string colorTextEnabled: Style.colorButtonTextEnabled
 
     signal clicked()
 
