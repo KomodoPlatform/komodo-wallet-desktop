@@ -79,7 +79,7 @@ Item {
         anchors.top: top_rect.bottom
         anchors.bottom: bottom_rect.top
         anchors.right: cursor.left
-        anchors.topMargin: -top_rect.border.width*2
+        anchors.topMargin: -top_rect.border.width
         anchors.bottomMargin: anchors.topMargin
 
         border.width: 0
