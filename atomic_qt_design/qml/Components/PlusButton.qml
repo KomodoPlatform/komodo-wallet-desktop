@@ -7,31 +7,11 @@ import "../Constants"
 
 // Add button
 DefaultButton {
-    id: button_bg
-
-    width: 50
+    width: 45
     height: width
     rect.radius: 100
 
-    content: Item {
-        width: button_bg.width
-        height: button_bg.height
-
-        Rectangle {
-            id: vline
-            width: button_bg.rect.border.width*2
-            height: button_bg.width * 0.30
-            color: button_bg.containsMouse ? Style.colorThemePassiveLight : Style.colorThemePassive
-            anchors.verticalCenter: parent.verticalCenter
-            anchors.horizontalCenter: parent.horizontalCenter
-        }
-
-        Rectangle {
-            width: vline.height
-            height: vline.width
-            color: vline.color
-            anchors.verticalCenter: parent.verticalCenter
-            anchors.horizontalCenter: parent.horizontalCenter
-        }
-    }
+    text: "+"
+    font.pixelSize: width * 0.65
+    font.weight: Font.Light
 }
