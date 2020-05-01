@@ -14,6 +14,12 @@ import "../Constants"
 FloatingBackground {
     property alias containsMouse: mouse_area.containsMouse
     property alias text: text_obj.text
+    property string colorDisabled: Style.colorTheme9
+    property string colorHovered: Style.colorTheme6
+    property string colorEnabled: Style.colorTheme8
+    property string colorTextDisabled: Style.colorWhite8
+    property string colorTextEnabled: Style.colorWhite1
+
     signal clicked()
 
     id: button_bg
@@ -21,7 +27,7 @@ FloatingBackground {
     implicitWidth: 100
     implicitHeight: 50
 
-    rect.color: !enabled ? Style.colorTheme9 : mouse_area.containsMouse ? Style.colorTheme6 : Style.colorTheme8
+    rect.color: !enabled ? colorDisabled : mouse_area.containsMouse ? colorHovered : colorEnabled
 
     MouseArea {
         id: mouse_area
@@ -36,6 +42,6 @@ FloatingBackground {
         id: text_obj
         anchors.centerIn: parent
         font.capitalization: Font.AllUppercase
-        color: !enabled ? Style.colorWhite8 : Style.colorWhite1
+        color: !parent.enabled ? colorTextDisabled : colorTextEnabled
     }
 }

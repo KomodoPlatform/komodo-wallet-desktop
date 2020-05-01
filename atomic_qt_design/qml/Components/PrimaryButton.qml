@@ -5,7 +5,11 @@ import QtQuick.Controls.Material 2.12
 import "../Constants"
 
 DefaultButton {
-    Material.background: Style.colorTheme4
+    colorDisabled: Style.colorTheme9
+    colorHovered: Style.colorTheme6
+    colorEnabled: Style.colorTheme8
+    colorTextDisabled: Style.colorWhite8
+    colorTextEnabled: Style.colorWhite1
 }
 
 /*##^##
