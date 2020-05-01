@@ -19,7 +19,7 @@ Item {
     Layout.fillHeight: true
 
     // Background
-    Rectangle {
+    DefaultRectangle {
         id: background
         anchors.right: parent.right
         width: sidebar.width + parent.width
@@ -27,7 +27,6 @@ Item {
         DefaultGradient { }
 
         height: parent.height
-        radius: Style.rectangleCornerRadius
 
         // Panel contents
         Item {
@@ -40,6 +39,8 @@ Item {
                 anchors.left: parent.left
                 anchors.top: parent.top
                 anchors.bottom: parent.bottom
+                anchors.bottomMargin: 1
+                anchors.topMargin: anchors.bottomMargin
                 color: Style.colorWhite12
             }
 

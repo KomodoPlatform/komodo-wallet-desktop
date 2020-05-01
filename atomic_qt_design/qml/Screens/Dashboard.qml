@@ -98,7 +98,7 @@ Item {
     }
 
     // Sidebar, left side
-    Rectangle {
+    DefaultRectangle {
         id: sidebar
         x: -radius
         width: 200 - x
