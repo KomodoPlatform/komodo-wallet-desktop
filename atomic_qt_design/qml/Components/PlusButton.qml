@@ -6,23 +6,12 @@ import QtGraphicalEffects 1.0
 import "../Constants"
 
 // Add button
-FloatingBackground {
-    property var onClicked: () => {}
-
+DefaultButton {
     id: button_bg
 
     width: 50
     height: width
-
     rect.radius: 100
-    rect.color: mouse_area.containsMouse ? Style.colorTheme6 : Style.colorTheme8
-
-    MouseArea {
-        id: mouse_area
-        anchors.fill: parent
-        hoverEnabled: true
-        onClicked: parent.onClicked()
-    }
 
     content: Item {
         width: button_bg.width
@@ -32,7 +21,7 @@ FloatingBackground {
             id: vline
             width: button_bg.rect.border.width*2
             height: button_bg.width * 0.30
-            color: mouse_area.containsMouse ? Style.colorThemePassiveLight : Style.colorThemePassive
+            color: button_bg.containsMouse ? Style.colorThemePassiveLight : Style.colorThemePassive
             anchors.verticalCenter: parent.verticalCenter
             anchors.horizontalCenter: parent.horizontalCenter
         }

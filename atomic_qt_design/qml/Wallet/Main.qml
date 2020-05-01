@@ -219,8 +219,6 @@ Item {
             DefaultButton {
                 enabled: API.get().current_coin_info.tx_state !== "InProgress"
                 text: API.get().empty_string + (qsTr("Send"))
-                leftPadding: parent.width * button_margin
-                rightPadding: leftPadding
                 onClicked: send_modal.open()
             }
 
@@ -230,8 +228,6 @@ Item {
 
             DefaultButton {
                 text: API.get().empty_string + (qsTr("Receive"))
-                leftPadding: parent.width * button_margin
-                rightPadding: leftPadding
                 onClicked: receive_modal.open()
             }
 
@@ -241,16 +237,12 @@ Item {
 
             DefaultButton {
                 text: API.get().empty_string + (qsTr("Swap"))
-                leftPadding: parent.width * button_margin
-                rightPadding: leftPadding
                 onClicked: onClickedSwap()
             }
 
             PrimaryButton {
                 id: button_claim_rewards
                 text: API.get().empty_string + (qsTr("Claim Rewards"))
-                leftPadding: parent.width * button_margin
-                rightPadding: leftPadding
 
                 visible: API.get().current_coin_info.is_claimable === true
                 enabled: API.get().current_coin_info.tx_state !== "InProgress" && claim_rewards_modal.canClaim()
