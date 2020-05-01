@@ -13,7 +13,7 @@ ColumnLayout {
     SidebarLine {
         dashboard_index: General.idx_dashboard_portfolio
         text: API.get().empty_string + (qsTr("Dashboard"))
-        image: General.image_path + "menu-assets-portfolio.png"
+        image: General.image_path + "menu-assets-portfolio.svg"
         Layout.fillWidth: true
         separator: false
     }

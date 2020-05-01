@@ -1,19 +1,19 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<svg width="26px" height="24px" viewBox="0 0 26 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-    <!-- Generator: Sketch 53.2 (72643) - https://sketchapp.com -->
-    <title>news-white</title>
-    <desc>Created with Sketch.</desc>
-    <g id="Symbols" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-        <g id="menu/Dapp" transform="translate(-242.000000, -12.000000)" stroke="#FFFFFF">
-            <g id="news" transform="translate(240.000000, 13.000000)">
-                <g id="news-white" transform="translate(3.000000, 0.000000)">
-                    <polygon id="Stroke-1" stroke-linejoin="round" points="3.88235294 9.05882353 15.5294118 9.05882353 15.5294118 3.88235294 3.88235294 3.88235294"></polygon>
-                    <path d="M3.23529412,12.2941176 L16.1764706,12.2941176" id="Stroke-2"></path>
-                    <path d="M3.23529412,15.5294118 L16.1764706,15.5294118" id="Stroke-3"></path>
-                    <path d="M3.23529412,18.7647059 L9.70588235,18.7647059" id="Stroke-4"></path>
-                    <path d="M19.4117647,5.82352941 L22,5.82352941 C23.0721765,5.82352941 23.9411765,6.69252941 23.9411765,7.76470588 L23.9411765,19.7352941 C23.9411765,20.9860588 22.9272353,22 21.6764706,22 C20.4257059,22 19.4117647,20.9860588 19.4117647,19.7352941 L19.4117647,1.94117647 C19.4117647,0.869 18.5427647,0 17.4705882,0 L1.94117647,0 C0.869,0 0,0.869 0,1.94117647 L0,20.0588235 C0,21.131 0.869,22 1.94117647,22 L21.3529412,22" id="Stroke-5"></path>
-                </g>
-            </g>
-        </g>
-    </g>
+<svg width="25" height="22" viewBox="0 0 25 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g filter="url(#filter0_i)">
+<path d="M18.79 8.64V1.5V0.5H0.5V17.79C0.5 19.84 2.17 21.5 4.21 21.5H20.59V21.49C22.59 21.44 24.21 19.8 24.21 17.79V8.64999H18.79V8.64ZM4.22 19.5C3.28 19.5 2.51 18.73 2.51 17.79V2.5H16.8V17.79C16.8 18.08 16.84 18.35 16.9 18.62C16.92 18.7 16.95 18.78 16.98 18.86C17.04 19.04 17.1 19.22 17.18 19.39C17.2 19.43 17.2 19.47 17.22 19.51H4.22V19.5ZM22.22 17.79C22.22 18.74 21.45 19.5 20.51 19.5C20.41 19.5 20.32 19.49 20.22 19.47L19.92 19.37C19.75 19.31 19.6 19.23 19.46 19.13C19.45 19.13 19.45 19.12 19.44 19.12C19.32 19.03 19.23 18.93 19.14 18.81C19.12 18.79 19.1 18.77 19.09 18.74C19.01 18.63 18.95 18.5 18.9 18.37C18.88 18.33 18.87 18.28 18.86 18.24C18.82 18.09 18.79 17.94 18.79 17.79V10.65H22.22V17.79Z" fill="#78808D"/>
+<path d="M11.4602 5.02002H4.22021V7.02002H11.4602V5.02002Z" fill="#78808D"/>
+<path d="M7.84021 8.64001H4.22021V10.64H7.84021V8.64001Z" fill="#78808D"/>
+</g>
+<defs>
+<filter id="filter0_i" x="0.5" y="0.5" width="23.71" height="22" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+<feFlood flood-opacity="0" result="BackgroundImageFix"/>
+<feBlend mode="normal" in="SourceGraphic" in2="BackgroundImageFix" result="shape"/>
+<feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
+<feOffset dy="1"/>
+<feGaussianBlur stdDeviation="1"/>
+<feComposite in2="hardAlpha" operator="arithmetic" k2="-1" k3="1"/>
+<feColorMatrix type="matrix" values="0 0 0 0 0.352941 0 0 0 0 0.396078 0 0 0 0 0.443137 0 0 0 0.25 0"/>
+<feBlend mode="normal" in2="shape" result="effect1_innerShadow"/>
+</filter>
+</defs>
 </svg>
