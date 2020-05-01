@@ -12,7 +12,7 @@ Item {
     property alias text: txt.text
     property alias separator: separator.visible
 
-    height: 45
+    height: 43
 
     Image {
         id: img
