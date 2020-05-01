@@ -102,6 +102,7 @@ QtObject {
     readonly property string colorLineGradient4: "#24283b"
     readonly property string colorDropShadowLight: "#216975a4"
     readonly property string colorDropShadowDark: "#FF050615"
+    readonly property string colorBorder: "#23273B"
 
     readonly property int modalTitleMargin: 10
     readonly property string modalValueColor: colorWhite4
