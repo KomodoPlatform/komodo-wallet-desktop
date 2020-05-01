@@ -104,6 +104,7 @@ QtObject {
     readonly property string colorDropShadowLight2: "#606975a4"
     readonly property string colorDropShadowDark: "#FF050615"
     readonly property string colorBorder: "#23273B"
+    readonly property string colorBorder2: "#1C1F32"
 
     property string colorButtonDisabled: Style.colorTheme9
     property string colorButtonHovered: Style.colorTheme6

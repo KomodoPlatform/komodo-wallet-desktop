@@ -17,6 +17,7 @@ Item {
     DefaultRectangle {
         id: rect
         anchors.fill: parent
+        border.color: Style.colorBorder2
 
         Loader {
             anchors.centerIn: parent
