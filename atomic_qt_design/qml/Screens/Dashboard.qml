@@ -113,11 +113,11 @@ Item {
             height: parent.height
 
             Image {
-                source: General.image_path + "komodo-icon.png"
+                source: General.image_path + "atomicdex-logo.png"
                 anchors.horizontalCenter: parent.horizontalCenter
                 y: parent.width * 0.25
                 transformOrigin: Item.Center
-                width: 64
+                height: 85
                 fillMode: Image.PreserveAspectFit
             }
 
