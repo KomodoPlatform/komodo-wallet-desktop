@@ -7,7 +7,7 @@ import "../Constants"
 
 // Add button
 FloatingBackground {
-    property alias mouse_area: mouse_area
+    property var onClicked: () => {}
 
     id: button_bg
 
@@ -21,6 +21,7 @@ FloatingBackground {
         id: mouse_area
         anchors.fill: parent
         hoverEnabled: true
+        onClicked: parent.onClicked()
     }
 
     content: Item {
