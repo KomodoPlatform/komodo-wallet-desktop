@@ -76,17 +76,17 @@ Item {
     DefaultRectangle {
         id: left_rect
         anchors.left: top_rect.left
-        anchors.right: cursor.left
         anchors.top: top_rect.bottom
         anchors.bottom: bottom_rect.top
-        anchors.topMargin: -10
+        anchors.right: cursor.left
+        anchors.topMargin: -top_rect.border.width*2
         anchors.bottomMargin: anchors.topMargin
 
-        radius: Style.rectangleCornerRadius
         border.width: 0
+        radius: 0
 
         DefaultGradient {
-            end_pos: sidebar.width / parent.width
+            end_pos: top_rect.width*0.95 / parent.width
         }
     }
 
