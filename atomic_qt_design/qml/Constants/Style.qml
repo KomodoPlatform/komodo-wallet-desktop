@@ -54,7 +54,7 @@ QtObject {
     readonly property int itemPadding: 12
     readonly property int paneTitleOffset: 6
     readonly property int iconTextMargin: 5
-    readonly property int sidebarLineHeight: 43
+    readonly property int sidebarLineHeight: 44
 
     readonly property string colorRed: "#E938A4"
     readonly property string colorRed2: "#B1346B"

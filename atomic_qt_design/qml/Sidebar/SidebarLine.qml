@@ -11,6 +11,7 @@ Item {
     property alias image: img.source
     property alias text: txt.text
     property alias separator: separator.visible
+    readonly property bool selected: dashboard.current_page === dashboard_index
 
     height: Style.sidebarLineHeight
 
@@ -35,7 +36,7 @@ Item {
         anchors.rightMargin: img.anchors.leftMargin
         anchors.verticalCenter: parent.verticalCenter
         font.pixelSize: Style.textSizeSmall1
-        font.weight: dashboard.current_page === dashboard_index ? Font.Bold : Font.Medium
+        font.weight: selected ? Font.Bold : Font.Medium
         color: font.bold ? Style.colorWhite1 : mouse_area.containsMouse ? Style.colorThemePassiveLight : Style.colorThemePassive
     }
 

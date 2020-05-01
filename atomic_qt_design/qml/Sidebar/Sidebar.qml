@@ -71,50 +71,6 @@ Item {
         DefaultGradient { }
     }
 
-
-    // Left Rect
-    DefaultRectangle {
-        id: left_rect
-        anchors.left: top_rect.left
-        anchors.top: top_rect.bottom
-        anchors.bottom: bottom_rect.top
-        anchors.right: cursor.left
-        anchors.topMargin: -top_rect.border.width*2
-        anchors.bottomMargin: anchors.topMargin
-
-        border.width: 0
-        radius: 0
-
-        DefaultGradient {
-            end_pos: top_rect.width*0.95 / parent.width
-        }
-    }
-
-
-    // Cursor left edge
-    Rectangle {
-        id: cursor_round_edge
-        color: Style.colorSidebarHighlightGradient1
-        width: radius*2
-        anchors.rightMargin: -width/2
-        height: Style.sidebarLineHeight
-        anchors.right: cursor.left
-        radius: Style.rectangleCornerRadius
-
-        y: {
-            switch(dashboard.current_page) {
-                case General.idx_dashboard_portfolio:
-                case General.idx_dashboard_wallet:
-                case General.idx_dashboard_exchange:
-                case General.idx_dashboard_news:
-                case General.idx_dashboard_dapps:
-                    return sidebar_center.y + dashboard.current_page * Style.sidebarLineHeight
-                case General.idx_dashboard_settings:
-                    return sidebar_bottom.y
-            }
-        }
-    }
-
     // Content
     Item {
         anchors.right: parent.right
@@ -157,6 +113,50 @@ Item {
             width: parent.width
             anchors.bottom: parent.bottom
             anchors.bottomMargin: parent.width * 0.25
+        }
+    }
+
+
+    // Left Rect
+    DefaultRectangle {
+        id: left_rect
+        anchors.left: top_rect.left
+        anchors.top: top_rect.bottom
+        anchors.bottom: bottom_rect.top
+        anchors.right: cursor.left
+        anchors.topMargin: -top_rect.border.width*2
+        anchors.bottomMargin: anchors.topMargin
+
+        border.width: 0
+        radius: 0
+
+        DefaultGradient {
+            end_pos: top_rect.width*0.95 / parent.width
+        }
+    }
+
+
+    // Cursor left edge
+    Rectangle {
+        id: cursor_round_edge
+        color: Style.colorSidebarHighlightGradient1
+        width: radius*2
+        anchors.rightMargin: -width/2
+        height: Style.sidebarLineHeight
+        anchors.right: cursor.left
+        radius: Style.rectangleCornerRadius
+
+        y: {
+            switch(dashboard.current_page) {
+                case General.idx_dashboard_portfolio:
+                case General.idx_dashboard_wallet:
+                case General.idx_dashboard_exchange:
+                case General.idx_dashboard_news:
+                case General.idx_dashboard_dapps:
+                    return sidebar_center.y + dashboard.current_page * Style.sidebarLineHeight
+                case General.idx_dashboard_settings:
+                    return sidebar_bottom.y
+            }
         }
     }
 }
