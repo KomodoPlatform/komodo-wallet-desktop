@@ -94,7 +94,7 @@ Item {
             // Add button
             PlusButton {
                 id: add_coin_button
-                onClickedFunc: enable_coin_modal.prepareAndOpen
+                mouse_area.onClicked: enable_coin_modal.prepareAndOpen()
 
                 anchors.bottom: parent.bottom
                 anchors.bottomMargin: parent.width * 0.5 - height * 0.5

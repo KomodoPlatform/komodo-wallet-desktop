@@ -99,7 +99,7 @@ ColumnLayout {
         // Add button
         PlusButton {
             id: add_coin_button
-            onClickedFunc: enable_coin_modal.prepareAndOpen
+            mouse_area.onClicked: enable_coin_modal.prepareAndOpen()
 
             anchors.right: parent.right
             anchors.rightMargin: parent.height * 0.5 - width * 0.5

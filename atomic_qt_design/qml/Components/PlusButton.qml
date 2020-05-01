@@ -7,17 +7,26 @@ import "../Constants"
 
 // Add button
 FloatingBackground {
+    property alias mouse_area: mouse_area
+
     id: button_bg
-    property var onClickedFunc: () => {}
 
     width: 50
     height: width
 
     rect.radius: 100
+    rect.color: mouse_area.containsMouse ? Style.colorTheme6 : Style.colorTheme8
+
+    MouseArea {
+        id: mouse_area
+        anchors.fill: parent
+        hoverEnabled: true
+    }
 
     content: Item {
         width: button_bg.width
         height: button_bg.height
+
         Rectangle {
             id: vline
             width: button_bg.rect.border.width*2
@@ -33,14 +42,6 @@ FloatingBackground {
             color: vline.color
             anchors.verticalCenter: parent.verticalCenter
             anchors.horizontalCenter: parent.horizontalCenter
-        }
-
-        MouseArea {
-            id: mouse_area
-            anchors.fill: parent
-            hoverEnabled: true
-            onContainsMouseChanged: button_bg.rect.color = containsMouse ? Style.colorTheme6 : Style.colorTheme8
-            onClicked: onClickedFunc()
         }
     }
 }
