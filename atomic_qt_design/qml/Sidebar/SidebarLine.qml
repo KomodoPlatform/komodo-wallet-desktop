@@ -12,21 +12,21 @@ Item {
     property alias text: txt.text
     property alias separator: separator.visible
 
-    height: 48
+    height: 45
 
     Image {
         id: img
-        width: txt.font.pixelSize * 2
+        height: txt.font.pixelSize * 1.4
         fillMode: Image.PreserveAspectFit
         anchors.left: parent.left
-        anchors.leftMargin: 30
+        anchors.leftMargin: 50
         anchors.verticalCenter: parent.verticalCenter
         visible: false
     }
     ColorOverlay {
         anchors.fill: img
         source: img
-        color: txt.font.bold ? Style.colorGreen : txt.color
+        color: txt.font.bold ? Style.colorSidebarIconHighlighted : txt.color
     }
 
     DefaultText {
@@ -34,8 +34,8 @@ Item {
         anchors.right: parent.right
         anchors.rightMargin: img.anchors.leftMargin
         anchors.verticalCenter: parent.verticalCenter
-        font.pixelSize: Style.textSizeSmall2
-        font.bold: dashboard.current_page === dashboard_index
+        font.pixelSize: Style.textSizeSmall1
+        font.weight: dashboard.current_page === dashboard_index ? Font.Bold : Font.Medium
         color: font.bold ? Style.colorWhite1 : mouse_area.containsMouse ? Style.colorThemePassiveLight : Style.colorThemePassive
     }
 
