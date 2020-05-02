@@ -277,9 +277,8 @@ Item {
 
 
         // Transactions or loading
-        Rectangle {
+        Item {
             id: loading_tx
-            color: "transparent"
             visible: API.get().current_coin_info.tx_state === "InProgress"
             Layout.alignment: Qt.AlignHCenter
             Layout.fillWidth: true

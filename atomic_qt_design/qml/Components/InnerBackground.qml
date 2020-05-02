@@ -14,6 +14,7 @@ Item {
         anchors.fill: parent
 
         Loader {
+            anchors.centerIn: parent
             id: inner_space
         }
     }

@@ -23,105 +23,90 @@ Item {
     property string mm2_version: ''
     property var fiats: (["USD", "EUR"])
 
-    ColumnLayout {
+    InnerBackground {
+        id: layout_background
         anchors.centerIn: parent
-        DefaultText {
-            Layout.alignment: Qt.AlignHCenter
-            font.pixelSize: Style.textSize2
-            text: API.get().empty_string + (qsTr("Settings"))
-        }
+        Layout.alignment: Qt.AlignHCenter
 
-        Rectangle {
-            color: Style.colorTheme7
-            radius: Style.rectangleCornerRadius
+        width: 400
+        height: 750
 
-            Layout.alignment: Qt.AlignHCenter
+        content: ColumnLayout {
+            width: layout_background.width - 60
+            height: layout_background.height
 
-            width: 400
-            height: layout.childrenRect.height + layout.anchors.topMargin * 2
+            ComboBoxWithTitle {
+                id: combo_fiat
+                title: API.get().empty_string + (qsTr("Fiat"))
+                Layout.fillWidth: true
 
-            ColumnLayout {
-                anchors.left: parent.left
-                anchors.leftMargin: 15
-                anchors.right: parent.right
-                anchors.rightMargin: 15
-                anchors.top: parent.top
-                anchors.topMargin: anchors.leftMargin
-                id: layout
-
-                ComboBoxWithTitle {
-                    id: combo_fiat
-                    title: API.get().empty_string + (qsTr("Fiat"))
-                    Layout.fillWidth: true
-
-                    field.model: fiats
-                    field.onCurrentIndexChanged: {
-                        API.get().fiat = fiats[field.currentIndex]
-                    }
-                    Component.onCompleted: {
-                        field.currentIndex = fiats.indexOf(API.get().fiat)
-                    }
+                field.model: fiats
+                field.onCurrentIndexChanged: {
+                    API.get().fiat = fiats[field.currentIndex]
                 }
-
-                Languages {
-                    Layout.alignment: Qt.AlignHCenter
+                Component.onCompleted: {
+                    field.currentIndex = fiats.indexOf(API.get().fiat)
                 }
+            }
 
-                HorizontalLine {
-                    Layout.fillWidth: true
-                    Layout.topMargin: 10
-                }
+            Languages {
+                Layout.alignment: Qt.AlignHCenter
+            }
 
-                DefaultButton {
-                    Layout.fillWidth: true
-                    text: API.get().empty_string + (qsTr("Open Logs Folder"))
-                    onClicked: Qt.openUrlExternally("file:///" + API.get().get_log_folder())
-                }
+            HorizontalLine {
+                Layout.fillWidth: true
+                Layout.topMargin: 10
+            }
 
-                DefaultButton {
-                    Layout.fillWidth: true
-                    text: API.get().empty_string + (qsTr("View Seed"))
-                    onClicked: recover_seed_modal.open()
-                }
+            DefaultButton {
+                Layout.fillWidth: true
+                text: API.get().empty_string + (qsTr("Open Logs Folder"))
+                onClicked: Qt.openUrlExternally("file:///" + API.get().get_log_folder())
+            }
 
-                RecoverSeedModal {
-                    id: recover_seed_modal
-                }
+            DefaultButton {
+                Layout.fillWidth: true
+                text: API.get().empty_string + (qsTr("View Seed"))
+                onClicked: recover_seed_modal.open()
+            }
 
-                HorizontalLine {
-                    Layout.fillWidth: true
-                }
+            RecoverSeedModal {
+                id: recover_seed_modal
+            }
 
-                DefaultButton {
-                    Layout.fillWidth: true
-                    text: API.get().empty_string + (qsTr("Disclaimer and ToS"))
-                    onClicked: eula.open()
-                }
+            HorizontalLine {
+                Layout.fillWidth: true
+            }
 
-                EulaModal {
-                    id: eula
-                    close_only: true
-                }
+            DefaultButton {
+                Layout.fillWidth: true
+                text: API.get().empty_string + (qsTr("Disclaimer and ToS"))
+                onClicked: eula.open()
+            }
 
-                HorizontalLine {
-                    Layout.fillWidth: true
-                }
+            EulaModal {
+                id: eula
+                close_only: true
+            }
 
-                DangerButton {
-                    text: API.get().empty_string + (qsTr("Delete Wallet"))
-                    Layout.fillWidth: true
-                    onClicked: delete_wallet_modal.open()
-                }
+            HorizontalLine {
+                Layout.fillWidth: true
+            }
 
-                DeleteWalletModal {
-                    id: delete_wallet_modal
-                }
+            DangerButton {
+                text: API.get().empty_string + (qsTr("Delete Wallet"))
+                Layout.fillWidth: true
+                onClicked: delete_wallet_modal.open()
+            }
 
-                DefaultButton {
-                    Layout.fillWidth: true
-                    text: API.get().empty_string + (qsTr("Log out"))
-                    onClicked: disconnect()
-                }
+            DeleteWalletModal {
+                id: delete_wallet_modal
+            }
+
+            DefaultButton {
+                Layout.fillWidth: true
+                text: API.get().empty_string + (qsTr("Log out"))
+                onClicked: disconnect()
             }
         }
     }
