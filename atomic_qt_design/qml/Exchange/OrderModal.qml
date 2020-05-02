@@ -130,7 +130,7 @@ DefaultModal {
             DangerButton {
                 visible: details.cancellable !== undefined && details.cancellable
                 Layout.fillWidth: true
-                text: API.get().empty_string + (qsTr("Cancel"))
+                text: API.get().empty_string + (qsTr("Cancel Order"))
                 onClicked: onCancelOrder(details.uuid)
             }
 
