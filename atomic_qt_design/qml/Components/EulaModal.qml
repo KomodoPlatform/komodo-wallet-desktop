@@ -30,10 +30,8 @@ DefaultModal {
         }
 
 
-        Rectangle {
+        InnerBackground {
             id: eula_rect
-            color: Style.colorTheme7
-            radius: Style.rectangleCornerRadius
             height: 400
             Layout.fillWidth: true
             Flickable {

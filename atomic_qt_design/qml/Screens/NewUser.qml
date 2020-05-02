@@ -136,12 +136,11 @@ SetupPage {
                 field.onAccepted: completeForm()
             }
 
-            Rectangle {
+            FloatingBackground {
                 Layout.topMargin: 10
                 Layout.bottomMargin: Layout.topMargin
                 Layout.fillWidth: true
                 color: Style.colorRed3
-                radius: 10
                 height: warning_texts.height + 20
 
                 Column {
@@ -228,12 +227,10 @@ SetupPage {
         ColumnLayout {
             visible: form_is_filled
 
-            Rectangle {
+            FloatingBackground {
                 Layout.topMargin: 10
                 Layout.bottomMargin: Layout.topMargin
                 Layout.fillWidth: true
-                color: Style.colorTheme7
-                radius: 10
                 height: 160
 
                 Column {

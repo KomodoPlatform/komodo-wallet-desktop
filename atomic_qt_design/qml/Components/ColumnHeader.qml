@@ -5,13 +5,12 @@ import QtQuick.Controls.Material 2.12
 import QtGraphicalEffects 1.0
 import "../Constants"
 
-Rectangle {
+Item {
     property int sort_type
     property alias text: title.text
 
     property bool icon_at_left
 
-    color: "transparent"
     width: text.length * title.font.pixelSize
     height: title.height
 

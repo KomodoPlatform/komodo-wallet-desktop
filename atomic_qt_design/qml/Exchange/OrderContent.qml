@@ -7,11 +7,9 @@ import "../Components"
 import "../Constants"
 
 // Content
-Rectangle {
+Item {
     property var item
     property bool in_modal: false
-
-    color: "transparent"
 
     // Base Icon
     Image {

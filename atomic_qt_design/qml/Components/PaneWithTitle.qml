@@ -20,9 +20,8 @@ Column {
     Pane {
         id: pane
 
-        background: Rectangle {
+        background: FloatingBackground {
             color: column.color
-            radius: Style.rectangleCornerRadius
         }
 
         Loader {

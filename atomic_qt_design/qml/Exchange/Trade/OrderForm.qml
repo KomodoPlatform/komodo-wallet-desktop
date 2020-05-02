@@ -5,8 +5,7 @@ import QtQuick.Controls.Material 2.12
 import "../../Components"
 import "../../Constants"
 
-// Right side
-Rectangle {
+FloatingBackground {
     id: root
 
     property alias field: input_volume.field
@@ -182,9 +181,6 @@ Rectangle {
             updateTradeInfo()
         }
     }
-
-    color: Style.colorTheme7
-    radius: Style.rectangleCornerRadius
 
     implicitWidth: form_layout.width
     implicitHeight: form_layout.height

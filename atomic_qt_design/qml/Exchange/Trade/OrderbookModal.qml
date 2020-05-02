@@ -36,9 +36,7 @@ DefaultModal {
         }
 
         // List header
-        Rectangle {
-            color: "transparent"
-
+        Item {
             Layout.alignment: Qt.AlignTop
 
             Layout.fillWidth: true

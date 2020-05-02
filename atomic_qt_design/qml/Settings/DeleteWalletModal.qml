@@ -28,12 +28,11 @@ DefaultModal {
             title: API.get().empty_string + (qsTr("Delete Wallet"))
         }
 
-        Rectangle {
+        FloatingBackground {
             Layout.alignment: Qt.AlignHCenter
             Layout.bottomMargin: 10
 
             color: Style.colorRed2
-            radius: 10
 
             width: parent.width - 5
             height: warning_texts.height + 20

@@ -29,8 +29,8 @@ FloatingBackground {
     implicitWidth: Math.max(90, text_obj.width + 20)
     implicitHeight: 40
 
-    rect.color: !enabled ? colorDisabled : mouse_area.containsMouse ? colorHovered : colorEnabled
-    rect.border.width: 0
+    color: !enabled ? colorDisabled : mouse_area.containsMouse ? colorHovered : colorEnabled
+    border.width: 0
 
     MouseArea {
         id: mouse_area

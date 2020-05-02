@@ -5,10 +5,9 @@ import QtQuick.Controls.Material 2.12
 import QtGraphicalEffects 1.0
 import "../Constants"
 
-Rectangle {
+Item {
     height: 1
     width: 150
-    color: "transparent"
 
     // Gradient
     LinearGradient {

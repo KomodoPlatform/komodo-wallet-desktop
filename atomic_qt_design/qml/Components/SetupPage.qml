@@ -18,7 +18,7 @@ Item {
         transformOrigin: Item.Center
         spacing: 5
 
-        Rectangle {
+        FloatingBackground {
             id: rectangle
             color: Style.colorTheme6
             radius: 100

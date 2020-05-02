@@ -139,13 +139,10 @@ Item {
         spacing: 15
 
         // Select coins row
-        Rectangle {
+        FloatingBackground {
             Layout.alignment: Qt.AlignHCenter
             implicitWidth: childrenRect.width
             implicitHeight: childrenRect.height
-
-            color: Style.colorTheme7
-            radius: Style.rectangleCornerRadius
 
             RowLayout {
                 // Base

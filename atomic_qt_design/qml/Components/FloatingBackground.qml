@@ -7,6 +7,9 @@ import "../Constants"
 
 Item {
     property alias rect: rect
+    property alias color: rect.color
+    property alias radius: rect.radius
+    property alias border: rect.border
     property alias inner_space: inner_space
     property alias content: inner_space.sourceComponent
     property bool verticalShadow: false

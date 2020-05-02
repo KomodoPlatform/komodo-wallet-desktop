@@ -6,7 +6,7 @@ import "../../Components"
 import "../../Constants"
 import ".."
 
-Rectangle {
+InnerBackground {
     property string title
     property alias items: list.model
 

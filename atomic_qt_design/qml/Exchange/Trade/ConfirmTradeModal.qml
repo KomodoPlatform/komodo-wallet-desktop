@@ -54,12 +54,11 @@ DefaultModal {
             Layout.fillWidth: true
         }
 
-        Rectangle {
+        FloatingBackground {
             Layout.alignment: Qt.AlignHCenter
             Layout.bottomMargin: 10
 
             color: Style.colorTheme5
-            radius: 10
 
             width: warning_texts.width + 20
             height: warning_texts.height + 20

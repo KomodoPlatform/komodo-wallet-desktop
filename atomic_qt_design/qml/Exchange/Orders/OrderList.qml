@@ -6,14 +6,12 @@ import "../../Components"
 import "../../Constants"
 import ".."
 
-Rectangle {
+InnerBackground {
     property string title
     property alias items: list.model
 
     Layout.fillWidth: true
     Layout.fillHeight: true
-    color: Style.colorTheme7
-    radius: Style.rectangleCornerRadius
 
     ColumnLayout {
         width: parent.width

@@ -4,7 +4,7 @@
 import QtQuick 2.12
 import "../Constants"
 
-Rectangle {
+FloatingBackground {
     function show(text, duration) {
         message.text = text;
 

@@ -68,8 +68,7 @@ ColumnLayout {
     }
 
     // Top part
-    Rectangle {
-        color: "transparent"
+    Item {
         Layout.fillWidth: true
         height: 200
 
@@ -128,9 +127,7 @@ ColumnLayout {
 
 
     // List header
-    Rectangle {
-        color: "transparent"
-
+    Item {
         Layout.alignment: Qt.AlignTop
 
         Layout.fillWidth: true
@@ -214,9 +211,8 @@ ColumnLayout {
     }
 
     // Transactions or loading
-    Rectangle {
+    Item {
         id: loading
-        color: "transparent"
         visible: portfolio_coins.length === 0
         Layout.alignment: Qt.AlignCenter
         Layout.fillWidth: true
