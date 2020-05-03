@@ -23,7 +23,8 @@ Item {
         }
     }
 
-    DefaultInnerShadow { }
+    layer.enabled: true
+    layer.effect: DefaultInnerShadow { }
 }
 
 

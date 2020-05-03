@@ -6,8 +6,6 @@ import QtGraphicalEffects 1.0
 import "../Constants"
 
 InnerShadow {
-    anchors.fill: parent
-    source: parent
     cached: false
     horizontalOffset: 0.7
     verticalOffset: 0.7
