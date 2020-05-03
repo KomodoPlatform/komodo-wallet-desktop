@@ -520,15 +520,15 @@ jobs:
       needs: [linux-release, linux-debug, macos-release, macos-debug, windows-debug, windows-release]
       steps:
 
-        - name: Download linux artifact release
-          uses: actions/download-artifact@v1
-          with:
-            name: AtomicDEX-Pro-Installer-linux-release
-
-        - name: Download linux artifact debug
-          uses: actions/download-artifact@v1
-          with:
-            name: AtomicDEX-Pro-Installer-linux-debug
+#        - name: Download linux artifact release
+#          uses: actions/download-artifact@v1
+#          with:
+#            name: AtomicDEX-Pro-Installer-linux-release
+#
+#        - name: Download linux artifact debug
+#          uses: actions/download-artifact@v1
+#          with:
+#            name: AtomicDEX-Pro-Installer-linux-debug
 
         - name: Download osx artifact release
           uses: actions/download-artifact@v1
@@ -572,27 +572,27 @@ jobs:
             draft: false
             prerelease: true
 
-        - name: Upload Linux Release Asset
-          id: upload-linux-release-asset
-          uses: actions/upload-release-asset@latest
-          env:
-            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          with:
-            upload_url: ${{ steps.create_release.outputs.upload_url }}
-            asset_path: AtomicDEX-Pro-Installer-linux-release/AtomicDEX-Pro-Installer.zip
-            asset_name: AtomicDex-Pro_${{ steps.shortify_commit.outputs.sha_short }}_${{ steps.extract_branch.outputs.branch }}_linux_rel_install.zip
-            asset_content_type: application/zip
-
-        - name: Upload Linux Debug Asset
-          id: upload-linux-debug-asset
-          uses: actions/upload-release-asset@latest
-          env:
-            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          with:
-            upload_url: ${{ steps.create_release.outputs.upload_url }}
-            asset_path: AtomicDEX-Pro-Installer-linux-debug/AtomicDEX-Pro-Installer.zip
-            asset_name: AtomicDex-Pro_${{ steps.shortify_commit.outputs.sha_short }}_${{ steps.extract_branch.outputs.branch }}_linux_dbg_install.zip
-            asset_content_type: application/zip
+#        - name: Upload Linux Release Asset
+#          id: upload-linux-release-asset
+#          uses: actions/upload-release-asset@latest
+#          env:
+#            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+#          with:
+#            upload_url: ${{ steps.create_release.outputs.upload_url }}
+#            asset_path: AtomicDEX-Pro-Installer-linux-release/AtomicDEX-Pro-Installer.zip
+#            asset_name: AtomicDex-Pro_${{ steps.shortify_commit.outputs.sha_short }}_${{ steps.extract_branch.outputs.branch }}_linux_rel_install.zip
+#            asset_content_type: application/zip
+#
+#        - name: Upload Linux Debug Asset
+#          id: upload-linux-debug-asset
+#          uses: actions/upload-release-asset@latest
+#          env:
+#            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+#          with:
+#            upload_url: ${{ steps.create_release.outputs.upload_url }}
+#            asset_path: AtomicDEX-Pro-Installer-linux-debug/AtomicDEX-Pro-Installer.zip
+#            asset_name: AtomicDex-Pro_${{ steps.shortify_commit.outputs.sha_short }}_${{ steps.extract_branch.outputs.branch }}_linux_dbg_install.zip
+#            asset_content_type: application/zip
 
         - name: Upload OSX Release Asset
           id: upload-osx-release-asset
