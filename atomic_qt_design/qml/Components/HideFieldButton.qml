@@ -12,8 +12,8 @@ Image {
     visible: hidable
     scale: 0.8
     anchors.right: parent.right
+    anchors.rightMargin: 5
     anchors.verticalCenter: parent.verticalCenter
-    anchors.verticalCenterOffset: input_field.height * -0.0625
     antialiasing: true
 
 
