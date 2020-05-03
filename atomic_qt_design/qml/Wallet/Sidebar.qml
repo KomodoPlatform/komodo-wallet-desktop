@@ -11,8 +11,13 @@ Item {
     id: root
 
     function reset() {
-        input_coin_filter.reset()
+        input_coin_filter_text = ''
+        resetted()
     }
+
+    signal resetted()
+
+    property string input_coin_filter_text
 
     Layout.alignment: Qt.AlignLeft
     width: 175
@@ -44,50 +49,63 @@ Item {
                 color: Style.colorWhite12
             }
 
-            RowLayout {
-                id: search_row
+            InnerBackground {
+                id: search_row_bg
                 anchors.top: parent.top
                 anchors.topMargin: 30
-                anchors.left: parent.left
-                anchors.right: parent.right
-                anchors.leftMargin: 15
-                anchors.rightMargin: anchors.leftMargin
+                width: list_bg.width
+                anchors.horizontalCenter: list_bg.horizontalCenter
 
-                spacing: 10
+                radius: 100
 
-                // Search button
-                Rectangle {
-                    color: "transparent"
-                    width: search_button.width
-                    height: search_button.height
-                    Image {
-                        id: search_button
+                content: RowLayout {
+                    id: search_row
 
-                        source: General.image_path + "exchange-search.svg"
+                    width: search_row_bg.width
 
-                        width: 16; height: width
+                    // Search button
+                    Item {
+                        Layout.alignment: Qt.AlignLeft
+                        Layout.leftMargin: search_button.width
+                        Layout.rightMargin: -Layout.leftMargin
+                        width: search_button.width
+                        height: search_button.height
+                        Image {
+                            id: search_button
 
-                        visible: false
-                    }
-                    ColorOverlay {
-                        id: search_button_overlay
+                            source: General.image_path + "exchange-search.svg"
 
-                        anchors.fill: search_button
-                        source: search_button
-                        color: Style.colorWhite1
-                    }
-                }
+                            width: input_coin_filter.font.pixelSize; height: width
 
-                // Search input
-                DefaultTextField {
-                    id: input_coin_filter
+                            visible: false
+                        }
+                        ColorOverlay {
+                            id: search_button_overlay
 
-                    function reset() {
-                        text = ""
+                            anchors.fill: search_button
+                            source: search_button
+                            color: Style.colorWhite1
+                        }
                     }
 
-                    selectByMouse: true
-                    Layout.fillWidth: true
+                    // Search input
+                    DefaultTextField {
+                        id: input_coin_filter
+
+                        Connections {
+                            target: root
+
+                            onResetted: input_coin_filter.text = ""
+                        }
+
+                        onTextChanged: input_coin_filter_text = text
+                        font.pixelSize: Style.textSizeSmall3
+
+                        background: null
+
+                        selectByMouse: true
+                        Layout.fillWidth: true
+                    }
                 }
             }
 
@@ -116,7 +134,7 @@ Item {
 
                     clip: true
 
-                    model: General.filterCoins(API.get().enabled_coins, input_coin_filter.text)
+                    model: General.filterCoins(API.get().enabled_coins, input_coin_filter_text)
 
                     delegate: Rectangle {
                         color: API.get().current_coin_info.ticker === model.modelData.ticker ? Style.colorTheme5 : mouse_area.containsMouse ? Style.colorTheme6 : "transparent"
