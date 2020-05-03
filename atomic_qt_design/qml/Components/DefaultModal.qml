@@ -12,7 +12,10 @@ Popup {
     focus: true
     closePolicy: Popup.CloseOnEscape | Popup.CloseOnPressOutside
 
-    Material.background: Style.colorTheme6
+    Overlay.modal: Rectangle {
+        color: "#AA000000"
+    }
+    background: FloatingBackground { }
 }
 
 /*##^##
