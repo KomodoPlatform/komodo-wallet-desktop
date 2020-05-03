@@ -31,9 +31,9 @@ TextArea {
     selectByMouse: true
     persistentSelection: true
 
-    RightClickMenu {
+    background: InnerBackground { }
 
-    }
+    RightClickMenu { }
 }
 
 /*##^##

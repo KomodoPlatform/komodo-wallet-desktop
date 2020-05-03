@@ -11,9 +11,11 @@ TextField {
     selectByMouse: true
     persistentSelection: true
 
-    RightClickMenu {
-
+    background: InnerBackground {
+        radius: 100
     }
+
+    RightClickMenu { }
 }
 
 /*##^##
