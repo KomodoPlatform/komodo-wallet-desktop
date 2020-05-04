@@ -107,6 +107,7 @@ namespace atomic_dex
         Q_INVOKABLE bool mnemonic_validate(QString entropy);
         Q_INVOKABLE QImage  get_qr_code(QString text_to_encode, QSize size);
         Q_INVOKABLE QString get_log_folder() const;
+        Q_INVOKABLE QString get_export_folder() const;
         Q_INVOKABLE QString retrieve_seed(const QString &wallet_name, const QString& password);
         Q_INVOKABLE bool confirm_password(const QString &wallet_name, const QString& password);
         Q_INVOKABLE QStringList get_available_langs() const;
@@ -145,6 +146,7 @@ namespace atomic_dex
         Q_INVOKABLE QObject*     get_coin_info(const QString& ticker);
         Q_INVOKABLE QVariantMap  get_my_orders();
         Q_INVOKABLE QVariantMap  get_recent_swaps();
+        Q_INVOKABLE bool         export_swaps(const QString& csv_filename) noexcept;
         Q_INVOKABLE QString      get_regex_password_policy() const noexcept;
         Q_INVOKABLE bool         delete_wallet(const QString& wallet_name) const;
         Q_INVOKABLE QVariantMap  get_trade_infos(const QString& ticker, const QString& receive_ticker, const QString& amount);
