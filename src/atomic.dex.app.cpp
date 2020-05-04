@@ -1131,7 +1131,8 @@ namespace atomic_dex
             ofs << swap.type << ",";
             ofs << "not supported yet,"; //! This contains many events, what do we want to export here?
             ofs << "not supported yet,"; //! This is a big json object, need to choose which information we need to export ?
-            ofs << (swap.funds_recoverable ? "True" : "False");
+            ofs << (swap.funds_recoverable ? "True," : "False,");
+            ofs << std::endl;
         }
         ofs.close();
         return false;
