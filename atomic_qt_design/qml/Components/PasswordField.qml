@@ -51,7 +51,7 @@ ColumnLayout {
     }
 
     ColumnLayout {
-        spacing: -Style.textSizeSmall3*0.3
+        spacing: -Style.textSizeSmall3*0.1
 
         visible: !hide_hint
         Layout.fillWidth: true

@@ -5,9 +5,9 @@ import QtQuick.Controls 2.12
 import "../Constants"
 
 DefaultButton {
-    colorDisabled: Style.colorTheme9
-    colorHovered: Style.colorTheme6
-    colorEnabled: Style.colorTheme8
+    colorDisabled: Style.colorButtonPrimaryDisabled
+    colorHovered: Style.colorButtonPrimaryHovered
+    colorEnabled: Style.colorButtonPrimaryEnabled
     colorTextDisabled: Style.colorWhite8
     colorTextEnabled: Style.colorWhite1
 }

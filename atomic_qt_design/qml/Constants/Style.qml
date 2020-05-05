@@ -57,11 +57,13 @@ QtObject {
     readonly property int sidebarLineHeight: 44
 
     readonly property string colorRed: "#E938A4"
-    readonly property string colorRed2: "#B1346B"
-    readonly property string colorRed3: "#B1346B"
+    readonly property string colorRed2: "#b61477"
+    readonly property string colorRed3: "#41072a"
     readonly property string colorYellow: "#FFC305"
     readonly property string colorOrange: "#F7931A"
     readonly property string colorGreen: "#41EAD4"
+    readonly property string colorGreen2: "#14bca6"
+    readonly property string colorGreen3: "#07433b"
 
     readonly property string colorWhite1: "#FFFFFF"
     readonly property string colorWhite2: "#F9F9F9"
@@ -121,6 +123,14 @@ QtObject {
     property string colorButtonTextHovered: Style.colorWhite1
     property string colorButtonTextEnabled: Style.colorWhite1  // Style.colorThemePassive
     property string colorPlaceholderText: Style.colorWhite9
+
+    property string colorButtonDangerDisabled: Style.colorRed3
+    property string colorButtonDangerHovered: Style.colorRed
+    property string colorButtonDangerEnabled: Style.colorRed2
+
+    property string colorButtonPrimaryDisabled: Style.colorGreen3
+    property string colorButtonPrimaryHovered: Style.colorGreen
+    property string colorButtonPrimaryEnabled: Style.colorGreen2
 
     readonly property int modalTitleMargin: 10
     readonly property string modalValueColor: colorWhite4
