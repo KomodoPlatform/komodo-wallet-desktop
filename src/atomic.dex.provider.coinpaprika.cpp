@@ -197,7 +197,7 @@ namespace atomic_dex
     {
         t_coins              coins         = m_mm2_instance.get_enabled_coins();
         bm::cpp_dec_float_50 final_price_f = 0;
-        std::string          current_price = "";
+        std::string          current_price = "0.00";
         std::stringstream    ss;
 
         for (auto&& current_coin: coins)
