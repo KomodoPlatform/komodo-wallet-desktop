@@ -8,6 +8,7 @@ TextArea {
     id: text_field
 
     font.family: "Montserrat"
+    placeholderTextColor: Style.colorPlaceholderText
 
     wrapMode: TextEdit.Wrap
 
@@ -43,4 +44,3 @@ Designer {
     D{i:0;autoSize:true;height:480;width:640}
 }
 ##^##*/
-

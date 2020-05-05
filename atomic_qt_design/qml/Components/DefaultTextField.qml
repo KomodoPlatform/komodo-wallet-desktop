@@ -8,6 +8,7 @@ TextField {
     id: text_field
 
     font.family: "Montserrat"
+    placeholderTextColor: Style.colorPlaceholderText
 
     // Right click Context Menu
     selectByMouse: true
