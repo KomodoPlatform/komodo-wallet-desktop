@@ -7,6 +7,8 @@ import "../Constants"
 TextField {
     id: text_field
 
+    font.family: "Montserrat"
+
     // Right click Context Menu
     selectByMouse: true
     persistentSelection: true

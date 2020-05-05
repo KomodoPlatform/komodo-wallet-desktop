@@ -7,6 +7,8 @@ import "../Constants"
 TextArea {
     id: text_field
 
+    font.family: "Montserrat"
+
     wrapMode: TextEdit.Wrap
 
     KeyNavigation.priority: KeyNavigation.BeforeItem
