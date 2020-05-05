@@ -77,7 +77,10 @@ namespace
 
         if (answer.raw_result.find("error") == std::string::npos)
         {
-            rate_providers.insert_or_assign(current_coin.ticker, answer.price);
+            if (not answer.price.empty())
+            {
+                rate_providers.insert_or_assign(current_coin.ticker, answer.price);
+            }
         }
         else
             rate_providers.insert_or_assign(current_coin.ticker, "0.00");
