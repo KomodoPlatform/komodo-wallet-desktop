@@ -77,7 +77,10 @@ namespace
 
         if (answer.raw_result.find("error") == std::string::npos)
         {
-            rate_providers.insert_or_assign(current_coin.ticker, answer.price);
+            if (not answer.price.empty())
+            {
+                rate_providers.insert_or_assign(current_coin.ticker, answer.price);
+            }
         }
         else
             rate_providers.insert_or_assign(current_coin.ticker, "0.00");
@@ -197,7 +200,7 @@ namespace atomic_dex
     {
         t_coins              coins         = m_mm2_instance.get_enabled_coins();
         bm::cpp_dec_float_50 final_price_f = 0;
-        std::string          current_price = "";
+        std::string          current_price = "0.00";
         std::stringstream    ss;
 
         for (auto&& current_coin: coins)
