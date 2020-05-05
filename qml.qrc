@@ -104,6 +104,7 @@
         <file>atomic_qt_design/qml/Components/DefaultGradient.qml</file>
         <file>atomic_qt_design/qml/Components/DefaultInnerShadow.qml</file>
         <file>atomic_qt_design/qml/Components/DefaultButton.qml</file>
+        <file>atomic_qt_design/qml/Components/DefaultBusyIndicator.qml</file>
         <file>atomic_qt_design/qml/Components/DefaultText.qml</file>
         <file>atomic_qt_design/qml/Components/DefaultRectangle.qml</file>
         <file>atomic_qt_design/qml/Components/DefaultScrollBar.qml</file>

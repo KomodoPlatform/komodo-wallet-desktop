@@ -120,6 +120,7 @@ QtObject {
     property string colorButtonTextDisabled: Style.colorWhite8
     property string colorButtonTextHovered: Style.colorWhite1
     property string colorButtonTextEnabled: Style.colorWhite1  // Style.colorThemePassive
+    property string colorPlaceholderText: Style.colorWhite9
 
     readonly property int modalTitleMargin: 10
     readonly property string modalValueColor: colorWhite4

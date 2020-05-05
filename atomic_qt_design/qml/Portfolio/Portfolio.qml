@@ -227,7 +227,7 @@ ColumnLayout {
                 font.pixelSize: Style.textSize2
             }
 
-            BusyIndicator {
+            DefaultBusyIndicator {
                 Layout.alignment: Qt.AlignHCenter
             }
         }

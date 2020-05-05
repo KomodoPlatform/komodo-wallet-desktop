@@ -45,7 +45,7 @@ Rectangle {
             font.pixelSize: Style.textSize3
         }
 
-        BusyIndicator {
+        DefaultBusyIndicator {
             Layout.alignment: Qt.AlignHCenter
         }
 
