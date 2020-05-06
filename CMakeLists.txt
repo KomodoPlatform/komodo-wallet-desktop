@@ -180,14 +180,28 @@ set_target_properties(${PROJECT_NAME}
         RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin/"
         )
 
-magic_game_app_image_generation("${CMAKE_CURRENT_SOURCE_DIR}/data/linux"
-        "org.antara.gaming.atomicdex.desktop"
-        "org.antara.gaming.atomicdex.appdata.xml"
-        "komodo_icon.png"
-        atomic_qt
-        AntaraAtomicDexAppDir
-        ${CMAKE_CURRENT_SOURCE_DIR}/assets
-        )
+if (LINUX)
+    get_target_property(exe_runtime_directory_at ${PROJECT_NAME} RUNTIME_OUTPUT_DIRECTORY)
+    set(output_dir_at "${exe_runtime_directory_at}/AntaraAtomicDexAppDir")
+
+    magic_game_app_image_generation("${CMAKE_CURRENT_SOURCE_DIR}/data/linux"
+            "org.antara.gaming.atomicdex.desktop"
+            "org.antara.gaming.atomicdex.appdata.xml"
+            "komodo_icon.png"
+            atomic_qt
+            AntaraAtomicDexAppDir
+            ${CMAKE_CURRENT_SOURCE_DIR}/assets
+            )
+
+    set(from_dir "${CMAKE_CURRENT_SOURCE_DIR}/data/linux")
+    set(desktop_file "org.antara.gaming.atomicdex.desktop")
+    set(appdata_file "org.antara.gaming.atomicdex.appdata.xml")
+    set(app_icon "komodo_icon.png")
+    message(STATUS "${output_dir_at}")
+    configure_file(${from_dir}/${desktop_file} ${output_dir_at}/usr/share/applications/${desktop_file} COPYONLY)
+    configure_file(${from_dir}/${appdata_file} ${output_dir_at}/usr/share/metainfo/${appdata_file} COPYONLY)
+    configure_file(${from_dir}/${app_icon} ${output_dir_at}/usr/share/icons/hicolor/128x128/apps/${app_icon} COPYONLY)
+endif()
 
 ##! Move assets
 if (WIN32)
