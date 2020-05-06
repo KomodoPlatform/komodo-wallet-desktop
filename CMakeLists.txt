@@ -185,8 +185,8 @@ if (LINUX)
     set(output_dir_at "${exe_runtime_directory_at}/AntaraAtomicDexAppDir")
 
     magic_game_app_image_generation("${CMAKE_CURRENT_SOURCE_DIR}/data/linux"
-            "org.antara.gaming.atomicdex.desktop"
-            "org.antara.gaming.atomicdex.appdata.xml"
+            "atomic_qt.desktop"
+            "atomic_qt.appdata.xml"
             "komodo_icon.png"
             atomic_qt
             AntaraAtomicDexAppDir
@@ -194,8 +194,8 @@ if (LINUX)
             )
 
     set(from_dir "${CMAKE_CURRENT_SOURCE_DIR}/data/linux")
-    set(desktop_file "org.antara.gaming.atomicdex.desktop")
-    set(appdata_file "org.antara.gaming.atomicdex.appdata.xml")
+    set(desktop_file "atomic_qt.desktop")
+    set(appdata_file "atomic_qt.appdata.xml")
     set(app_icon "komodo_icon.png")
     message(STATUS "${output_dir_at}")
     configure_file(${from_dir}/${desktop_file} ${output_dir_at}/usr/share/applications/${desktop_file} COPYONLY)

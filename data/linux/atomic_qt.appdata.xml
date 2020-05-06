@@ -1,13 +1,13 @@
 <component type="desktop-application">
-    <id>org.antara.gaming.atomicdex.desktop</id>
+    <id>atomic_qt.desktop</id>
     <metadata_license>MIT</metadata_license>
     <project_license>MIT</project_license>
-    <name>atomic-dex</name>
-    <summary>atomic-dex gui desktop</summary>
+    <name>atomic_qt</name>
+    <summary>atomic qt  gui desktop</summary>
     <description>
         <p>Written in c++17</p>
     </description>
-    <launchable type="desktop-id">org.antara.gaming.atomicdex.desktop</launchable>
+    <launchable type="desktop-id">atomic_qt.desktop</launchable>
     <url type="homepage">https://github.com/KomodoPlatform/antara-gaming-sdk</url>
     <screenshots>
         <screenshot type="default">
@@ -15,6 +15,6 @@
         </screenshot>
     </screenshots>
     <provides>
-        <id>org.antara.gaming.atomicdex.desktop</id>
+        <id>atomic_qt.desktop</id>
     </provides>
 </component>
