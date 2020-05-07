@@ -82,3 +82,4 @@ ci_tools_atomic_dex/installer/linux/packages/com.komodoplatform.atomicdexpro/dat
 cmake-build-debug
 cmake-build-release
 .idea
+.gitconfig

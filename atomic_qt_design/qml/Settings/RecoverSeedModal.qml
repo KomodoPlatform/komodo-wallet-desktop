@@ -92,7 +92,7 @@ DefaultModal {
                 text: API.get().empty_string + (qsTr("View"))
                 Layout.fillWidth: true
                 enabled: input_password.isValid()
-                onClicked: tryViewSeed
+                onClicked: tryViewSeed()
             }
         }
     }

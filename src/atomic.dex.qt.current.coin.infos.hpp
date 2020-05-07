@@ -34,6 +34,7 @@ namespace atomic_dex
                        minimal_balance_for_asking_rewards_changed)
         Q_PROPERTY(QString ticker READ get_ticker WRITE set_ticker NOTIFY ticker_changed)
         Q_PROPERTY(QString name READ get_name WRITE set_name NOTIFY name_changed)
+        Q_PROPERTY(QString paprika_id READ get_paprika_id WRITE set_paprika_id NOTIFY coinpaprika_id_changed)
         Q_PROPERTY(QString type READ get_type WRITE set_type NOTIFY type_changed)
         Q_PROPERTY(QString balance READ get_balance WRITE set_balance NOTIFY balance_changed)
         Q_PROPERTY(QString address READ get_address WRITE set_address NOTIFY address_changed)
@@ -59,6 +60,8 @@ namespace atomic_dex
         void                       set_ticker(QString ticker) noexcept;
         [[nodiscard]] QString      get_name() const noexcept;
         void                       set_name(QString ticker) noexcept;
+        [[nodiscard]] QString      get_paprika_id() const noexcept;
+        void                       set_paprika_id(QString ticker) noexcept;
         [[nodiscard]] QString      get_address() const noexcept;
         void                       set_address(QString address) noexcept;
         [[nodiscard]] QString      get_balance() const noexcept;
@@ -83,10 +86,12 @@ namespace atomic_dex
         void transactionsChanged();
         void type_changed();
         void name_changed();
+        void coinpaprika_id_changed();
 
       public:
         QString           selected_coin_name;
         QString           selected_coin_fname;
+        QString           selected_coin_paprika_id;
         QString           selected_coin_balance;
         QString           selected_coin_type;
         QString           selected_coin_address;

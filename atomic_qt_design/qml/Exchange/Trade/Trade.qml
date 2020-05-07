@@ -22,18 +22,18 @@ Item {
     }
 
     function fullReset() {
-        reset()
+        reset(true)
         prev_base = ''
         prev_rel = ''
         curr_trade_info = default_curr_trade_info
         orderbook_timer.running = false
     }
 
-    function reset(reset_result=true) {
+    function reset(reset_result=true, is_base) {
         if(reset_result) action_result = ""
         resetPreferredPrice()
-        form_base.reset()
-        form_rel.reset()
+        form_base.reset(is_base)
+        form_rel.reset(is_base)
     }
 
     Timer {
@@ -136,7 +136,7 @@ Item {
 
     function onOpened() {
         updateOrderbook()
-        reset()
+        reset(true)
         updateForms()
     }
 
@@ -214,11 +214,11 @@ Item {
         return base !== '' && rel !== '' && base !== rel
     }
 
-    function setPair() {
+    function setPair(is_base) {
         if(getTicker(true) === getTicker(false)) swapPair()
         else {
             if(validBaseRel()) {
-                reset()
+                reset(true, is_base)
 
                 const new_base = getTicker(true)
                 API.get().set_current_orderbook(new_base)
