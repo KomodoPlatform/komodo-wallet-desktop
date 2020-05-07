@@ -149,9 +149,14 @@ Rectangle {
         input_volume.field.text = getMaxTradableVolume(true)
     }
 
-    function reset() {
+    function reset(is_base) {
         if(my_side) {
-            setMax()
+            // is_base info comes from the ComboBox ticker change in OrderForm.
+            // At other places it's not given.
+            // We don't want to reset base balance at rel ticker change
+            // Therefore it will reset only if this info is set from ComboBox -> setPair
+            // Or if it's from somewhere else like page change, in that case is_base is undefined
+            if(is_base === undefined || is_base) setMax()
         }
         else {
             input_volume.field.text = ''
@@ -220,7 +225,7 @@ Rectangle {
                 model: ticker_list
                 onCurrentTextChanged: {
                     if(!recursive_update) {
-                        setPair()
+                        setPair(my_side)
                         if(my_side) prev_base = getTicker()
                         else prev_rel = getTicker()
                         updateForms(my_side, combo.currentText)
