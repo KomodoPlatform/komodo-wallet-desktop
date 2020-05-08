@@ -139,9 +139,9 @@ Item {
                     delegate: Rectangle {
                         color: list_bg.color
                         anchors.horizontalCenter: parent.horizontalCenter
-                        width: list_bg.width - list_bg.border.width*2
-                        height: 50
-                        radius: Style.rectangleCornerRadius
+                        width: list_bg.width - list_bg.border.width*2 - 2
+                        height: 44
+                        radius: Style.rectangleCornerRadius2
 
                         LinearGradient {
                             visible: API.get().current_coin_info.ticker === model.modelData.ticker || mouse_area.containsMouse
@@ -213,14 +213,14 @@ Item {
                             DefaultText {
                                 Layout.alignment: Qt.AlignRight
                                 text: API.get().empty_string + (model.modelData.name.replace(" (TESTCOIN)", ""))
-                                font.pixelSize: text.length > 15 ? Style.textSizeVerySmall8 : text.length > 12 ? Style.textSizeVerySmall9 : Style.textSizeSmall2
+                                font.pixelSize: text.length > 15 ? Style.textSizeVerySmall8 : text.length > 12 ? Style.textSizeVerySmall9 : Style.textSizeSmall1
                             }
 
                             // Ticker
                             DefaultText {
                                 Layout.alignment: Qt.AlignRight
                                 text: API.get().empty_string + (model.modelData.ticker)
-                                font.pixelSize: Style.textSizeSmall2
+                                font.pixelSize: Style.textSizeSmall1
                                 color: Style.colorThemePassive
                             }
                         }
