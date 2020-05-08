@@ -141,7 +141,7 @@ Item {
                         anchors.horizontalCenter: parent.horizontalCenter
                         width: list_bg.width - list_bg.border.width*2 - 2
                         height: 44
-                        radius: Style.rectangleCornerRadius2
+                        radius: Style.rectangleCornerRadius
 
                         LinearGradient {
                             visible: API.get().current_coin_info.ticker === model.modelData.ticker || mouse_area.containsMouse
