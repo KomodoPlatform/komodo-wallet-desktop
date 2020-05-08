@@ -101,7 +101,7 @@ ListView {
 
         HorizontalLine {
             visible: index !== API.get().current_coin_info.transactions.length -1
-            width: parent.width - 2*parent.radius
+            width: parent.width
 
             anchors.horizontalCenter: parent.horizontalCenter
             anchors.bottom: parent.bottom

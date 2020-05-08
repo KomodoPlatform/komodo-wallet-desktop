@@ -1,6 +1,7 @@
 import QtQuick 2.12
 import QtQuick.Layouts 1.12
 import QtQuick.Controls 2.12
+import QtGraphicalEffects 1.12
 
 import "../Constants"
 
@@ -20,6 +21,16 @@ Item {
         Loader {
             anchors.centerIn: parent
             id: inner_space
+
+            layer.enabled: true
+
+            layer.effect: OpacityMask {
+                maskSource: Rectangle {
+                    width: inner_space.width
+                    height: inner_space.height
+                    radius: rect.radius
+                }
+            }
         }
     }
 
