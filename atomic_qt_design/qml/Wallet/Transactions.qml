@@ -39,20 +39,10 @@ ListView {
             details: model.modelData
         }
 
-        // Icon
-//            Image {
-//                id: received_icon
-//                source: General.image_path + "circle-" + (model.modelData.received ? "success" : "failed") + ".png"
-//                fillMode: Image.PreserveAspectFit
-//                width: Style.textSize
-//                anchors.verticalCenter: parent.verticalCenter
-//                anchors.left: parent.left
-//                anchors.leftMargin: 15
-//            }
-        Circle {
+        Arrow {
             id: received_icon
+            up: !model.modelData.received
             color: model.modelData.received ? Style.colorGreen : Style.colorRed
-            width: Style.textSizeSmall3
             anchors.verticalCenter: parent.verticalCenter
             anchors.left: parent.left
             anchors.leftMargin: 15
