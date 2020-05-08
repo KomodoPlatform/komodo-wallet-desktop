@@ -11,6 +11,6 @@ InnerShadow {
     verticalOffset: 0.7
     radius: 13
     samples: 32
-    color: "#40000000"
+    color: "#A0000000"
     smooth: true
 }
