@@ -122,7 +122,7 @@ QtObject {
 
     property string colorButtonDisabled: Style.colorTheme9
     property string colorButtonHovered: Style.colorTheme6
-    property string colorButtonEnabled: Style.colorTheme8
+    property string colorButtonEnabled: Style.colorTheme7
     property string colorButtonTextDisabled: Style.colorWhite8
     property string colorButtonTextHovered: Style.colorWhite1
     property string colorButtonTextEnabled: Style.colorWhite1  // Style.colorThemePassive

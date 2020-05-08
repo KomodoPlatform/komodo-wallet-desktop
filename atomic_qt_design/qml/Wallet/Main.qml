@@ -28,7 +28,7 @@ Item {
         anchors.topMargin: layout_margin
         anchors.bottom: parent.bottom
 
-        spacing: layout_margin
+        spacing: 20
 
         // Balance box
         FloatingBackground {
@@ -198,7 +198,7 @@ Item {
             Layout.fillHeight: true
             Layout.leftMargin: layout_margin
             Layout.rightMargin: layout_margin
-            Layout.bottomMargin: layout_margin
+            Layout.bottomMargin: -parent.spacing*0.5
             implicitHeight: wallet.height*0.6
 
             content: PriceGraph {
@@ -207,14 +207,15 @@ Item {
             }
         }
 
-        // Send, Receive buttons at top
+        // Send, Receive buttons
         RowLayout {
             width: parent.width * 0.6
 
-            Layout.topMargin: -10
-            Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
+            Layout.bottomMargin: -parent.spacing*0.5
+            Layout.rightMargin: layout_margin
+            Layout.alignment: Qt.AlignRight
 
-            spacing: 50
+            spacing: 15
 
             DefaultButton {
                 enabled: API.get().current_coin_info.tx_state !== "InProgress"
