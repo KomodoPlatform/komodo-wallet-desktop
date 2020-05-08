@@ -23,8 +23,6 @@ ListView {
 
         visible: model.modelData.timestamp !== 0
 
-        radius: Style.rectangleCornerRadius
-
         color: mouse_area.containsMouse ? Style.colorTheme6 : "transparent"
 
         MouseArea {
