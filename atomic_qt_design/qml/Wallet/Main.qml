@@ -221,6 +221,17 @@ Item {
                 enabled: API.get().current_coin_info.tx_state !== "InProgress"
                 text: API.get().empty_string + (qsTr("Send"))
                 onClicked: send_modal.open()
+                text_offset: -arrow_send.anchors.rightMargin
+                text_left_align: true
+
+                Arrow {
+                    id: arrow_send
+                    up: true
+                    color: Style.colorGreen
+                    anchors.verticalCenter: parent.verticalCenter
+                    anchors.right: parent.right
+                    anchors.rightMargin: 8
+                }
             }
 
             SendModal {
@@ -230,6 +241,16 @@ Item {
             DefaultButton {
                 text: API.get().empty_string + (qsTr("Receive"))
                 onClicked: receive_modal.open()
+                text_offset: -arrow_send.anchors.rightMargin
+                text_left_align: true
+
+                Arrow {
+                    up: false
+                    color: Style.colorBlue
+                    anchors.verticalCenter: parent.verticalCenter
+                    anchors.right: parent.right
+                    anchors.rightMargin: arrow_send.anchors.rightMargin
+                }
             }
 
             ReceiveModal {
@@ -239,6 +260,24 @@ Item {
             DefaultButton {
                 text: API.get().empty_string + (qsTr("Swap"))
                 onClicked: onClickedSwap()
+                text_offset: -arrow_send.anchors.rightMargin
+                text_left_align: true
+
+                Arrow {
+                    up: true
+                    color: Style.colorGreen
+                    anchors.verticalCenter: parent.verticalCenter
+                    anchors.right: parent.right
+                    anchors.rightMargin: arrow_send.anchors.rightMargin*2.4
+                }
+
+                Arrow {
+                    up: false
+                    color: Style.colorBlue
+                    anchors.verticalCenter: parent.verticalCenter
+                    anchors.right: parent.right
+                    anchors.rightMargin: arrow_send.anchors.rightMargin
+                }
             }
 
             PrimaryButton {

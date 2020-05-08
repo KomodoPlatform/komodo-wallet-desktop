@@ -14,6 +14,9 @@ import "../Constants"
 FloatingBackground {
     property alias containsMouse: mouse_area.containsMouse
     property alias text: text_obj.text
+    property alias text_obj: text_obj
+    property bool text_left_align: false
+    property double text_offset: 0
     property alias font: text_obj.font
     property string colorDisabled: Style.colorButtonDisabled
     property string colorHovered: Style.colorButtonHovered
@@ -26,7 +29,7 @@ FloatingBackground {
 
     id: button_bg
 
-    implicitWidth: Math.max(90, text_obj.width + 20)
+    implicitWidth: Math.max(90, text_obj.width + 20 + Math.abs(text_offset))
     implicitHeight: 40
 
     color: !enabled ? colorDisabled : mouse_area.containsMouse ? colorHovered : colorEnabled
@@ -43,7 +46,11 @@ FloatingBackground {
 
     DefaultText {
         id: text_obj
-        anchors.centerIn: parent
+        anchors.horizontalCenter: text_left_align ? undefined : parent.horizontalCenter
+        anchors.horizontalCenterOffset: text_left_align ? 0 : text_offset
+        anchors.left: text_left_align ? parent.left : undefined
+        anchors.leftMargin: text_left_align ? -text_offset : 0
+        anchors.verticalCenter: parent.verticalCenter
         font.pixelSize: Style.textSizeSmall3
         font.weight: Font.Medium
         font.capitalization: Font.AllUppercase
