@@ -307,15 +307,6 @@ Item {
             Layout.alignment: Qt.AlignHCenter
         }
 
-        DefaultText {
-            visible: API.get().current_coin_info.tx_state !== "InProgress" && API.get().current_coin_info.transactions.length === 0
-            text: API.get().empty_string + (qsTr("No transactions"))
-            font.pixelSize: Style.textSize
-            color: Style.colorWhite4
-            Layout.alignment: Qt.AlignHCenter
-        }
-
-
         // Transactions or loading
         Item {
             id: loading_tx
@@ -361,9 +352,22 @@ Item {
 
             implicitHeight: wallet.height*0.54
 
-            content: Transactions {
+            content: Item {
                 width: transactions_bg.width
                 height: transactions_bg.height
+
+                DefaultText {
+                    anchors.centerIn: parent
+                    visible: API.get().current_coin_info.tx_state !== "InProgress" && API.get().current_coin_info.transactions.length === 0
+                    text: API.get().empty_string + (qsTr("No transactions"))
+                    font.pixelSize: Style.textSize
+                    color: Style.colorWhite4
+                }
+
+                Transactions {
+                    width: parent.width
+                    height: parent.height
+                }
             }
         }
 
