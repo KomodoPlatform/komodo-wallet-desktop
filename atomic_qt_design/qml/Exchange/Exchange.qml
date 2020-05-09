@@ -111,11 +111,9 @@ Item {
         StackLayout {
             Layout.fillWidth: true
             Layout.fillHeight: true
-            Layout.bottomMargin: 15
+            Layout.bottomMargin: layout_margin
             Layout.leftMargin: Layout.bottomMargin
             Layout.rightMargin: Layout.bottomMargin
-
-            currentIndex: current_page
 
             Trade {
                 id: exchange_trade

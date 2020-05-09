@@ -286,10 +286,13 @@ Item {
 
         visible: form_base.ticker_list.length > 0
 
-        anchors.centerIn: parent
+//        anchors.centerIn: parent
+        anchors.fill: parent
+
 
         RowLayout {
-            spacing: 15
+            Layout.alignment: Qt.AlignTop
+            spacing: layout_margin
 
             // Sell
             OrderForm {
@@ -306,6 +309,7 @@ Item {
             // Receive
             OrderForm {
                 id: form_rel
+                Layout.fillWidth: true
                 enabled: form_base.fieldsAreFilled()
                 field.enabled: enabled && preffered_price === empty_price
             }
@@ -314,6 +318,7 @@ Item {
         // Trade button
         DefaultButton {
             id: action_button
+            Layout.topMargin: layout_margin
             Layout.fillWidth: true
 
             text: API.get().empty_string + (qsTr("Trade"))

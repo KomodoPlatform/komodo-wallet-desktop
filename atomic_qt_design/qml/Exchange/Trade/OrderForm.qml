@@ -187,20 +187,36 @@ FloatingBackground {
         }
     }
 
-    implicitWidth: form_layout.width
     implicitHeight: form_layout.height
-
-    DefaultText {
-        font.pixelSize: Style.textSize2
-        text: API.get().empty_string + (my_side ? qsTr("Sell") : qsTr("Receive"))
-        anchors.horizontalCenter: parent.horizontalCenter
-        anchors.bottom: form_layout.top
-        anchors.bottomMargin: combo.Layout.rightMargin * 0.5
-    }
 
     ColumnLayout {
         id: form_layout
-        width: 300
+
+        width: parent.width
+
+        // Title
+        DefaultText {
+            font.pixelSize: Style.textSizeMid2
+            text: API.get().empty_string + (my_side ? qsTr("Sell") : qsTr("Receive"))
+            color: my_side ? Style.colorRed : Style.colorGreen
+            font.weight: Font.Bold
+            Layout.topMargin: 15
+            Layout.leftMargin: 30
+
+            Arrow {
+                up: my_side
+                color: my_side ? Style.colorRed : Style.colorGreen
+                anchors.verticalCenter: parent.verticalCenter
+                anchors.left: parent.right
+                anchors.leftMargin: 20
+            }
+        }
+
+        HorizontalLine {
+            Layout.fillWidth: true
+        }
+
+        // ComboBox
         RowLayout {
             Image {
                 Layout.leftMargin: combo.Layout.rightMargin
@@ -246,6 +262,8 @@ FloatingBackground {
             }
         }
 
+
+        // Max button and amount field
         RowLayout {
             DefaultButton {
                 Layout.leftMargin: combo.Layout.rightMargin
@@ -271,6 +289,8 @@ FloatingBackground {
             }
         }
 
+
+        // Fees
         RowLayout {
             Layout.leftMargin: combo.Layout.rightMargin
             Layout.bottomMargin: Layout.leftMargin
