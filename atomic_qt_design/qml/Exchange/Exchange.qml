@@ -83,7 +83,7 @@ Item {
                         text: API.get().empty_string + (qsTr("Trade"))
                     }
 
-                    VerticalLine {
+                    VerticalLineBasic {
                         id: vline
                         height: content.height * 0.5
                         color: Style.colorTheme5
@@ -94,7 +94,7 @@ Item {
                         text: API.get().empty_string + (qsTr("Orders"))
                     }
 
-                    VerticalLine {
+                    VerticalLineBasic {
                         height: vline.height
                         color: vline.color
                     }

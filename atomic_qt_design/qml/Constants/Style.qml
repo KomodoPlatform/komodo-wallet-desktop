@@ -120,6 +120,8 @@ QtObject {
     readonly property string colorCoinListHighlightGradient1: "#002C2E40"
     readonly property string colorCoinListHighlightGradient2: "#FF2C2E40"
 
+    readonly property string colorLineBasic: "#303344"
+
     property string colorButtonDisabled: Style.colorTheme9
     property string colorButtonHovered: Style.colorTheme6
     property string colorButtonEnabled: Style.colorTheme7
