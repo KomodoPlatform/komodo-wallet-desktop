@@ -8,15 +8,16 @@ import "../Constants"
 
 DefaultText {
     property int dashboard_index
+    property bool highlight: exchange.current_page === dashboard_index
 
     // Override
     property var onClick: () => {}
 
     id: txt
-    font.pixelSize: Style.textSize2
+    font.pixelSize: Style.textSizeMid2
     font.family: "Montserrat"
-    font.bold: exchange.current_page === dashboard_index
-    color: font.bold ? Style.colorWhite1 : mouse_area.containsMouse ? Style.colorWhite4 : Style.colorWhite5
+    font.weight: highlight ? Font.Medium : Font.Light
+    color: highlight ? Style.colorWhite1 : mouse_area.containsMouse ? Style.colorWhite4 : Style.colorWhite5
 
     MouseArea {
         id: mouse_area

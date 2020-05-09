@@ -10,6 +10,7 @@ import "./History"
 
 Item {
     id: exchange
+    readonly property int layout_margin: 30
     property int current_page: API.design_editor ? General.idx_exchange_trade : General.idx_exchange_trade
 
     function reset() {
@@ -54,34 +55,56 @@ Item {
 
         anchors.fill: parent
 
-        spacing: 20
+        spacing: layout_margin
 
         // Top tabs
-        RowLayout {
-            id: tabs
+        FloatingBackground {
+            id: balance_box
             Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
-            Layout.topMargin: 30
-            spacing: 40
+            Layout.fillWidth: true
+            Layout.topMargin: layout_margin
+            Layout.leftMargin: layout_margin
+            Layout.rightMargin: layout_margin
 
-            ExchangeTab {
-                dashboard_index: General.idx_exchange_trade
-                text: API.get().empty_string + (qsTr("Trade"))
+            content: Item {
+                id: content
+                width: balance_box.width
+                height: 62
+
+                RowLayout {
+                    anchors.left: parent.left
+                    anchors.leftMargin: 20
+                    anchors.verticalCenter: parent.verticalCenter
+
+                    spacing: 30
+
+                    ExchangeTab {
+                        dashboard_index: General.idx_exchange_trade
+                        text: API.get().empty_string + (qsTr("Trade"))
+                    }
+
+                    VerticalLine {
+                        id: vline
+                        height: content.height * 0.5
+                        color: Style.colorTheme5
+                    }
+
+                    ExchangeTab {
+                        dashboard_index: General.idx_exchange_orders
+                        text: API.get().empty_string + (qsTr("Orders"))
+                    }
+
+                    VerticalLine {
+                        height: vline.height
+                        color: vline.color
+                    }
+
+                    ExchangeTab {
+                        dashboard_index: General.idx_exchange_history
+                        text: API.get().empty_string + (qsTr("History"))
+                    }
+                }
             }
-
-            ExchangeTab {
-                dashboard_index: General.idx_exchange_orders
-                text: API.get().empty_string + (qsTr("Orders"))
-            }
-
-            ExchangeTab {
-                dashboard_index: General.idx_exchange_history
-                text: API.get().empty_string + (qsTr("History"))
-            }
-        }
-
-        HorizontalLine {
-            width: tabs.width * 1.25
-            Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
         }
 
         // Bottom content
