@@ -349,15 +349,6 @@ FloatingBackground {
             }
         }
 
-        DefaultButton {
-            Layout.leftMargin: top_line.Layout.leftMargin
-            Layout.rightMargin: top_line.Layout.rightMargin
-            visible: my_side
-            text: API.get().empty_string + (qsTr("MAX"))
-            onClicked: setMax()
-        }
-
-
         // Fees
         InnerBackground {
             visible: my_side
