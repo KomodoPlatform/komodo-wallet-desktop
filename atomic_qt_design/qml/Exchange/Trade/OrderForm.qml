@@ -280,19 +280,72 @@ FloatingBackground {
                 Layout.fillWidth: true
                 field.placeholderText: API.get().empty_string + (my_side ? qsTr("Amount to sell") :
                                                  field.enabled ? qsTr("Amount to receive") : qsTr("Please fill the send amount"))
-                field.onTextChanged: onBaseChanged()
+                field.onTextChanged: {
+                    onBaseChanged()
+                    input_volume_slider.value = parseFloat(field.text)
+                }
+
                 field.font.pixelSize: Style.textSizeSmall1
                 field.font.weight: Font.Bold
 
 
                 DefaultText {
-                    anchors.right: parent.right
-                    anchors.rightMargin: 10
-                    anchors.verticalCenter: field.verticalCenter
+                    Layout.alignment: Qt.AlignRight | Qt.AlignVCenter
+                    Layout.rightMargin: 10
 
                     text: getTicker()
-                    font.pixelSize: input_volume.font.pixelSize
+                    font.pixelSize: input_volume.field.font.pixelSize
                 }
+            }
+        }
+
+
+        Slider {
+            id: input_volume_slider
+            readonly property int precision: 8
+            visible: my_side
+            Layout.fillWidth: true
+            Layout.leftMargin: top_line.Layout.leftMargin
+            Layout.rightMargin: top_line.Layout.rightMargin
+            Layout.bottomMargin: top_line.Layout.rightMargin
+            from: 0
+            stepSize: 1/Math.pow(10, precision)
+            to: parseFloat(getMaxVolume())
+            live: false
+
+            onValueChanged: {
+                input_volume.field.text = value.toFixed(input_volume_slider.precision)
+            }
+
+            DefaultText {
+                visible: parent.pressed
+                anchors.horizontalCenter: parent.handle.horizontalCenter
+                anchors.bottom: parent.handle.top
+
+                text: (parent.position * (parent.to - parent.from)).toFixed(input_volume_slider.precision)
+                font.pixelSize: input_volume.field.font.pixelSize
+            }
+
+            DefaultText {
+                anchors.left: parent.left
+                anchors.top: parent.bottom
+
+                text: API.get().empty_string + (qsTr("Min"))
+                font.pixelSize: input_volume.field.font.pixelSize
+            }
+            DefaultText {
+                anchors.horizontalCenter: parent.horizontalCenter
+                anchors.top: parent.bottom
+
+                text: API.get().empty_string + (qsTr("Half"))
+                font.pixelSize: input_volume.field.font.pixelSize
+            }
+            DefaultText {
+                anchors.right: parent.right
+                anchors.top: parent.bottom
+
+                text: API.get().empty_string + (qsTr("Max"))
+                font.pixelSize: input_volume.field.font.pixelSize
             }
         }
 
