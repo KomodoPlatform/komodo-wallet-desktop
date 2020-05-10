@@ -302,7 +302,7 @@ FloatingBackground {
 
         Slider {
             id: input_volume_slider
-            readonly property int precision: 8
+            readonly property int precision: 3
             visible: my_side
             Layout.fillWidth: true
             Layout.leftMargin: top_line.Layout.leftMargin
@@ -314,7 +314,7 @@ FloatingBackground {
             live: false
 
             onValueChanged: {
-                input_volume.field.text = value.toFixed(input_volume_slider.precision)
+                if(pressed) input_volume.field.text = value.toFixed(input_volume_slider.precision)
             }
 
             DefaultText {
