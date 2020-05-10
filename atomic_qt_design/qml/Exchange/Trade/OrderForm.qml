@@ -191,18 +191,17 @@ FloatingBackground {
 
     ColumnLayout {
         id: form_layout
-        readonly property double layout_margin: 15
 
-        anchors.top: parent.top
-        anchors.topMargin: layout_margin
-        anchors.left: parent.left
-        anchors.right: parent.right
-        anchors.leftMargin: layout_margin*2
-        anchors.rightMargin: anchors.leftMargin
-        spacing: layout_margin
+        width: parent.width
+        spacing: 15
 
         // Top Line
         RowLayout {
+            id: top_line
+            Layout.topMargin: parent.spacing
+            Layout.leftMargin: parent.spacing*2
+            Layout.rightMargin: Layout.leftMargin
+
             // Title
             DefaultText {
                 font.pixelSize: Style.textSizeMid2
@@ -230,7 +229,6 @@ FloatingBackground {
                 enabled: root.enabled
 
                 Layout.fillWidth: true
-                Layout.rightMargin: 15
 
                 model: ticker_list
                 onCurrentTextChanged: {
@@ -267,6 +265,9 @@ FloatingBackground {
 
         // Max button and amount field
         RowLayout {
+            Layout.leftMargin: top_line.Layout.leftMargin
+            Layout.rightMargin: top_line.Layout.rightMargin
+
             DefaultButton {
                 visible: my_side
                 text: API.get().empty_string + (qsTr("MAX"))
@@ -287,6 +288,8 @@ FloatingBackground {
 
         // Fees
         RowLayout {
+            Layout.leftMargin: top_line.Layout.leftMargin
+            Layout.rightMargin: top_line.Layout.rightMargin
             Layout.bottomMargin: layout_margin
 
             ColumnLayout {
