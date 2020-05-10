@@ -115,6 +115,8 @@ Item {
             Layout.leftMargin: Layout.bottomMargin
             Layout.rightMargin: Layout.bottomMargin
 
+            currentIndex: current_page
+
             Trade {
                 id: exchange_trade
 

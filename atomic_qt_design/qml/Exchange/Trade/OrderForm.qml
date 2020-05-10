@@ -191,35 +191,34 @@ FloatingBackground {
 
     ColumnLayout {
         id: form_layout
+        readonly property double layout_margin: 15
 
-        width: parent.width
+        anchors.top: parent.top
+        anchors.topMargin: layout_margin
+        anchors.left: parent.left
+        anchors.right: parent.right
+        anchors.leftMargin: layout_margin*2
+        anchors.rightMargin: anchors.leftMargin
+        spacing: layout_margin
 
-        // Title
-        DefaultText {
-            font.pixelSize: Style.textSizeMid2
-            text: API.get().empty_string + (my_side ? qsTr("Sell") : qsTr("Receive"))
-            color: my_side ? Style.colorRed : Style.colorGreen
-            font.weight: Font.Bold
-            Layout.topMargin: 15
-            Layout.leftMargin: 30
+        // Top Line
+        RowLayout {
+            // Title
+            DefaultText {
+                font.pixelSize: Style.textSizeMid2
+                text: API.get().empty_string + (my_side ? qsTr("Sell") : qsTr("Receive"))
+                color: my_side ? Style.colorRed : Style.colorGreen
+                font.weight: Font.Bold
+            }
 
             Arrow {
                 up: my_side
                 color: my_side ? Style.colorRed : Style.colorGreen
-                anchors.verticalCenter: parent.verticalCenter
-                anchors.left: parent.right
-                anchors.leftMargin: 20
+                Layout.leftMargin: 20
             }
-        }
 
-        HorizontalLine {
-            Layout.fillWidth: true
-        }
-
-        // ComboBox
-        RowLayout {
             Image {
-                Layout.leftMargin: combo.Layout.rightMargin
+                Layout.leftMargin: combo.Layout.rightMargin * 3
                 source: General.coinIcon(getTicker())
                 Layout.preferredWidth: 32
                 Layout.preferredHeight: Layout.preferredWidth
@@ -231,7 +230,6 @@ FloatingBackground {
                 enabled: root.enabled
 
                 Layout.fillWidth: true
-                Layout.topMargin: 10
                 Layout.rightMargin: 15
 
                 model: ticker_list
@@ -263,12 +261,13 @@ FloatingBackground {
         }
 
 
+        HorizontalLine {
+            Layout.fillWidth: true
+        }
+
         // Max button and amount field
         RowLayout {
             DefaultButton {
-                Layout.leftMargin: combo.Layout.rightMargin
-                Layout.topMargin: Layout.rightMargin
-                Layout.bottomMargin: Layout.rightMargin
                 visible: my_side
                 text: API.get().empty_string + (qsTr("MAX"))
                 onClicked: setMax()
@@ -279,10 +278,6 @@ FloatingBackground {
                 field.enabled: root.enabled
 
                 Layout.fillWidth: true
-                Layout.rightMargin: combo.Layout.rightMargin
-                Layout.leftMargin: Layout.rightMargin
-                Layout.topMargin: Layout.rightMargin
-                Layout.bottomMargin: Layout.rightMargin
                 field.placeholderText: API.get().empty_string + (my_side ? qsTr("Amount to sell") :
                                                  field.enabled ? qsTr("Amount to receive") : qsTr("Please fill the send amount"))
                 field.onTextChanged: onBaseChanged()
@@ -292,8 +287,7 @@ FloatingBackground {
 
         // Fees
         RowLayout {
-            Layout.leftMargin: combo.Layout.rightMargin
-            Layout.bottomMargin: Layout.leftMargin
+            Layout.bottomMargin: layout_margin
 
             ColumnLayout {
                 Layout.alignment: Qt.AlignLeft
