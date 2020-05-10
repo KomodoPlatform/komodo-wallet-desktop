@@ -264,26 +264,44 @@ FloatingBackground {
             Layout.fillWidth: true
         }
 
-        // Max button and amount field
-        RowLayout {
+        ColumnLayout {
+            Layout.fillWidth: true
             Layout.leftMargin: top_line.Layout.leftMargin
             Layout.rightMargin: top_line.Layout.rightMargin
 
-            DefaultButton {
-                visible: my_side
-                text: API.get().empty_string + (qsTr("MAX"))
-                onClicked: setMax()
+            DefaultText {
+                text: API.get().empty_string + (qsTr("Amount") + ':')
+                font.pixelSize: Style.textSizeSmall1
             }
 
             AmountField {
                 id: input_volume
                 field.enabled: root.enabled
-
                 Layout.fillWidth: true
                 field.placeholderText: API.get().empty_string + (my_side ? qsTr("Amount to sell") :
                                                  field.enabled ? qsTr("Amount to receive") : qsTr("Please fill the send amount"))
                 field.onTextChanged: onBaseChanged()
+                field.font.pixelSize: Style.textSizeSmall1
+                field.font.weight: Font.Bold
+
+
+                DefaultText {
+                    anchors.right: parent.right
+                    anchors.rightMargin: 10
+                    anchors.verticalCenter: field.verticalCenter
+
+                    text: getTicker()
+                    font.pixelSize: input_volume.font.pixelSize
+                }
             }
+        }
+
+        DefaultButton {
+            Layout.leftMargin: top_line.Layout.leftMargin
+            Layout.rightMargin: top_line.Layout.rightMargin
+            visible: my_side
+            text: API.get().empty_string + (qsTr("MAX"))
+            onClicked: setMax()
         }
 
 
@@ -296,7 +314,7 @@ FloatingBackground {
             Layout.fillWidth: true
             Layout.leftMargin: top_line.Layout.leftMargin
             Layout.rightMargin: top_line.Layout.rightMargin
-            Layout.bottomMargin: layout_margin
+            Layout.bottomMargin: parent.spacing
 
             content: RowLayout {
                 width: bg.width
