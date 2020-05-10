@@ -310,6 +310,7 @@ Item {
             OrderForm {
                 id: form_rel
                 Layout.fillWidth: true
+                Layout.preferredHeight: form_base.height
                 enabled: form_base.fieldsAreFilled()
                 field.enabled: enabled && preffered_price === empty_price
             }

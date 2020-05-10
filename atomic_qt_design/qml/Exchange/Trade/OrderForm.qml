@@ -288,38 +288,49 @@ FloatingBackground {
 
 
         // Fees
-        RowLayout {
+        InnerBackground {
+            visible: my_side
+
+            radius: 100
+            id: bg
+            Layout.fillWidth: true
             Layout.leftMargin: top_line.Layout.leftMargin
             Layout.rightMargin: top_line.Layout.rightMargin
             Layout.bottomMargin: layout_margin
 
-            ColumnLayout {
-                Layout.alignment: Qt.AlignLeft
+            content: RowLayout {
+                width: bg.width
+                height: tx_fee_text.font.pixelSize * 4
 
-                DefaultText {
-                    id: tx_fee_text
-                    text: API.get().empty_string + (canShowFees() ? qsTr('Transaction Fee') + ':' : '')
-                    font.pixelSize: Style.textSizeSmall
+                ColumnLayout {
+                    id: fees
+                    visible: canShowFees()
+
+                    spacing: -2
+                    Layout.leftMargin: 10
+                    Layout.rightMargin: Layout.leftMargin
+                    Layout.alignment: Qt.AlignLeft
+
+                    DefaultText {
+                        id: tx_fee_text
+                        text: API.get().empty_string + (!canShowFees() ? '' : qsTr('Transaction Fee') + ': ' + (curr_trade_info.tx_fee + ' ' + (curr_trade_info.is_ticker_of_fees_eth ? "ETH" : getTicker(true))) +
+                                                                                                         // ETH Fees
+                                                                                                         (hasEthFees() ? " + " + curr_trade_info.erc_fees + ' ETH' : ''))
+                        font.pixelSize: Style.textSizeSmall1
+                    }
+
+                    DefaultText {
+                        text: API.get().empty_string + (!canShowFees() ? '' : qsTr('Trading Fee') + ': ' + curr_trade_info.trade_fee + ' ' + getTicker(true))
+                        font.pixelSize: tx_fee_text.font.pixelSize
+                    }
                 }
 
-                DefaultText {
-                    text: API.get().empty_string + (canShowFees() ? qsTr('Trading Fee') + ':' : '')
-                    font.pixelSize: tx_fee_text.font.pixelSize
-                }
-            }
-
-            ColumnLayout {
-                Layout.alignment: Qt.AlignRight
 
                 DefaultText {
-                    text: API.get().empty_string + (canShowFees() ? (curr_trade_info.tx_fee + ' ' + (curr_trade_info.is_ticker_of_fees_eth ? "ETH" : getTicker(true))) +
-                                                                    // ETH Fees
-                                                                    (hasEthFees() ? " + " + curr_trade_info.erc_fees + ' ETH' : '') : '')
-                    font.pixelSize: tx_fee_text.font.pixelSize
-                }
+                    visible: !fees.visible
 
-                DefaultText {
-                    text: API.get().empty_string + (canShowFees() ? curr_trade_info.trade_fee + ' ' + getTicker(true) : '')
+                    text: API.get().empty_string + (qsTr('Fees will be calculated'))
+                    Layout.alignment: Qt.AlignCenter
                     font.pixelSize: tx_fee_text.font.pixelSize
                 }
             }
