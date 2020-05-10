@@ -214,6 +214,7 @@ FloatingBackground {
                 up: my_side
                 color: my_side ? Style.colorRed : Style.colorGreen
                 Layout.leftMargin: 20
+                Layout.rightMargin: 20
             }
 
             Image {
