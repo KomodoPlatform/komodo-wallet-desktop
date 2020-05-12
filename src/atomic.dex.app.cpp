@@ -1144,4 +1144,15 @@ namespace atomic_dex
         const fs::path export_path = ag::core::assets_real_path() / "exports";
         return QString::fromStdString(export_path.string().c_str());
     }
+    QString
+    application::recover_fund(QString uuid) const
+    {
+        QString result;
+
+        ::mm2::api::recover_funds_of_swap_request request{.swap_uuid = uuid.toStdString()};
+        auto                                      res = ::mm2::api::rpc_recover_funds(std::move(request));
+        result                                        = QString::fromStdString(res.raw_result);
+
+        return result;
+    }
 } // namespace atomic_dex
