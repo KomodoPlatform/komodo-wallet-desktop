@@ -141,10 +141,12 @@ Item {
         // Select coins row
         FloatingBackground {
             Layout.alignment: Qt.AlignHCenter
-            implicitWidth: childrenRect.width
-            implicitHeight: childrenRect.height
+            width: layout.width
+            height: layout.height
 
             RowLayout {
+                id: layout
+
                 // Base
                 Image {
                     Layout.leftMargin: 15

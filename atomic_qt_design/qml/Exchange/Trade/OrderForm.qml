@@ -401,6 +401,7 @@ FloatingBackground {
     }
 
 
+    opacity_mask_enabled: true
     mask: OpacityMask {
         source: rect
         invert: true
