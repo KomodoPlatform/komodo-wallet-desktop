@@ -755,6 +755,12 @@ namespace mm2::api
         return process_rpc<disable_coin_request, disable_coin_answer>(std::forward<disable_coin_request>(request), "disable_coin");
     }
 
+    recover_funds_of_swap_answer
+    rpc_recover_funds(recover_funds_of_swap_request&& request)
+    {
+        return process_rpc<recover_funds_of_swap_request, recover_funds_of_swap_answer>(std::forward<recover_funds_of_swap_request>(request), "recover_funds_of_swap");
+    }
+
     my_orders_answer
     rpc_my_orders() noexcept
     {

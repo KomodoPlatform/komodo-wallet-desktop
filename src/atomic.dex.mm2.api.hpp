@@ -127,6 +127,9 @@ namespace mm2::api
 
     void from_json(const nlohmann::json& j, recover_funds_of_swap_answer& answer);
 
+    recover_funds_of_swap_answer rpc_recover_funds(recover_funds_of_swap_request&& request);
+
+
     struct balance_request
     {
         std::string coin;
