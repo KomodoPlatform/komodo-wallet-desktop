@@ -1,6 +1,7 @@
 import QtQuick 2.12
 import QtQuick.Layouts 1.12
 import QtQuick.Controls 2.12
+import QtGraphicalEffects 1.0
 
 import "../../Components"
 import "../../Constants"
@@ -395,6 +396,24 @@ FloatingBackground {
                     Layout.alignment: Qt.AlignCenter
                     font.pixelSize: tx_fee_text.font.pixelSize
                 }
+            }
+        }
+    }
+
+
+    mask: OpacityMask {
+        source: rect
+        invert: true
+        maskSource: Item {
+            width: rect.width;
+            height: rect.height;
+            Rectangle {
+                anchors.verticalCenter: parent.verticalCenter
+                anchors.left: my_side ? parent.right : undefined
+                anchors.leftMargin: my_side ? -17.5 : 0
+                anchors.right: my_side ? undefined : parent.left
+                anchors.rightMargin: my_side ? 0 : -17.5
+                width: 110; height: width; radius: Infinity
             }
         }
     }

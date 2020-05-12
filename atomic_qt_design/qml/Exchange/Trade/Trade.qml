@@ -292,7 +292,7 @@ Item {
 
         RowLayout {
             Layout.alignment: Qt.AlignTop
-            spacing: -15
+            spacing: 0
 
             // Sell
             OrderForm {
@@ -305,7 +305,7 @@ Item {
                 id: trade_icon_bg
                 z: 1
                 radius: 100
-                width: 80
+                width: 75
                 height: width
 
                 content: Image {
