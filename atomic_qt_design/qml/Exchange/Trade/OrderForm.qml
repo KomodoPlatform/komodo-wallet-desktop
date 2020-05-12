@@ -275,24 +275,29 @@ FloatingBackground {
                 font.pixelSize: Style.textSizeSmall1
             }
 
-            AmountField {
-                id: input_volume
-                field.enabled: root.enabled
+            Item {
                 Layout.fillWidth: true
-                field.placeholderText: API.get().empty_string + (my_side ? qsTr("Amount to sell") :
-                                                 field.enabled ? qsTr("Amount to receive") : qsTr("Please fill the send amount"))
-                field.onTextChanged: {
-                    onBaseChanged()
-                    input_volume_slider.value = parseFloat(field.text)
+                height: input_volume.height
+
+                AmountField {
+                    id: input_volume
+                    width: parent.width
+                    field.enabled: root.enabled
+                    field.placeholderText: API.get().empty_string + (my_side ? qsTr("Amount to sell") :
+                                                     field.enabled ? qsTr("Amount to receive") : qsTr("Please fill the send amount"))
+                    field.onTextChanged: {
+                        onBaseChanged()
+                        input_volume_slider.value = parseFloat(field.text)
+                    }
+
+                    field.font.pixelSize: Style.textSizeSmall1
+                    field.font.weight: Font.Bold
                 }
 
-                field.font.pixelSize: Style.textSizeSmall1
-                field.font.weight: Font.Bold
-
-
                 DefaultText {
-                    Layout.alignment: Qt.AlignRight | Qt.AlignVCenter
-                    Layout.rightMargin: 10
+                    anchors.right: input_volume.right
+                    anchors.rightMargin: 10
+                    anchors.verticalCenter: input_volume.verticalCenter
 
                     text: getTicker()
                     font.pixelSize: input_volume.field.font.pixelSize

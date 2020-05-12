@@ -23,7 +23,7 @@ Item {
     DefaultRectangle {
         id: rect
         anchors.fill: parent
-        border.color: "transparent" //Style.colorBorder2
+        border.color: "transparent"
 
         Loader {
             anchors.centerIn: parent
