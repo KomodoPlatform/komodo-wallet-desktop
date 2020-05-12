@@ -292,7 +292,7 @@ Item {
 
         RowLayout {
             Layout.alignment: Qt.AlignTop
-            spacing: layout_margin
+            spacing: layout_margin * 0.5
 
             // Sell
             OrderForm {
@@ -301,9 +301,18 @@ Item {
                 my_side: true
             }
 
-            Image {
-                source: General.image_path + "exchange-exchange.svg"
-                Layout.alignment: Qt.AlignVCenter
+            FloatingBackground {
+                id: trade_icon_bg
+                radius: 100
+                width: 80
+                height: width
+
+                content: Image {
+                    source: General.image_path + "trade_icon.svg"
+                    Layout.alignment: Qt.AlignVCenter
+                    fillMode: Image.PreserveAspectFit
+                    width: trade_icon_bg.width*0.4
+                }
             }
 
             // Receive
