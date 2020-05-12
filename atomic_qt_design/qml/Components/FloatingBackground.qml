@@ -12,6 +12,7 @@ Item {
     property alias border: rect.border
     property alias inner_space: inner_space
     property alias content: inner_space.sourceComponent
+    property alias mask: mask.sourceComponent
     property bool verticalShadow: false
 
     width: inner_space.width
@@ -26,11 +27,18 @@ Item {
             anchors.centerIn: parent
             id: inner_space
         }
+
+        visible: false
+    }
+
+    Loader {
+        id: mask
+        anchors.fill: rect
     }
 
     DropShadow {
-        anchors.fill: rect
-        source: rect
+        anchors.fill: mask.sourceComponent ? mask : rect
+        source: mask.sourceComponent ? mask : rect
         cached: false
         horizontalOffset: verticalShadow ? 0 : -6
         verticalOffset: verticalShadow ? -10 : -6
@@ -42,8 +50,8 @@ Item {
     }
 
     DropShadow {
-        anchors.fill: rect
-        source: rect
+        anchors.fill: mask.sourceComponent ? mask : rect
+        source: mask.sourceComponent ? mask : rect
         cached: false
         horizontalOffset: verticalShadow ? 0 : 6
         verticalOffset: verticalShadow ? 10 : 6
