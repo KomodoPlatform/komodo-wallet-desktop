@@ -103,6 +103,7 @@ namespace atomic_dex
 
         //! Bind to the QML Worlds
         Q_INVOKABLE QString get_paprika_id_from_ticker(QString ticker) const;
+        Q_INVOKABLE QString recover_fund(QString uuid) const;
         Q_INVOKABLE QString get_mm2_version() const;
         Q_INVOKABLE bool mnemonic_validate(QString entropy);
         Q_INVOKABLE QImage  get_qr_code(QString text_to_encode, QSize size);
