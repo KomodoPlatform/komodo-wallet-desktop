@@ -587,7 +587,7 @@ namespace atomic_dex
             m_swaps_registry.insert_or_assign("result", answer.result.value());
         }
 
-        /*if (not m_swaps_registry.empty())
+        if (not m_swaps_registry.empty())
         {
             auto swaps = get_swaps();
 
@@ -596,7 +596,7 @@ namespace atomic_dex
                     std::cout << event << std::endl;
                 }
             }
-        }*/
+        }
 
     }
 
