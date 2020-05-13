@@ -30,7 +30,7 @@ Popup {
         contentWidth: text_area.width
         contentHeight: text_area.height
 
-        ScrollBar.vertical: ScrollBar { }
+        ScrollBar.vertical: DefaultScrollBar { }
 
         TextAreaWithTitle {
             id: text_area
