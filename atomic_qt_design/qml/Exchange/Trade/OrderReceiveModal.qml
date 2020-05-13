@@ -7,7 +7,7 @@ import "../../Constants"
 
 // Open Enable Coin Modal
 DefaultModal {
-    id: root
+    id: root_modal
 
     function getOrderCount(ticker) {
         if(orderbook_model === undefined) return 0
@@ -44,7 +44,7 @@ DefaultModal {
             id: list
             ScrollBar.vertical: DefaultScrollBar {}
             implicitWidth: contentItem.childrenRect.width
-            implicitHeight: contentItem.childrenRect.height
+            implicitHeight: 600
 
             model: General.filterCoins(getFilteredCoins().sort((a, b) => getOrderCount(b.ticker) - getOrderCount(a.ticker)), input_coin_filter.text)
             clip: true
@@ -61,7 +61,7 @@ DefaultModal {
                     hoverEnabled: true
                     onClicked: {
                         setTicker(model.modelData.ticker)
-                        root.close()
+                        root_modal.close()
                         if(getOrderCount(model.modelData.ticker) === 0) {
 
                         }
@@ -103,7 +103,7 @@ DefaultModal {
             DefaultButton {
                 text: API.get().empty_string + (qsTr("Close"))
                 Layout.fillWidth: true
-                onClicked: root.close()
+                onClicked: root_modal.close()
             }
         }
     }

@@ -143,6 +143,29 @@
     "is_erc_20": false,
     "type": "UTXO"
   },
+  "DGB": {
+    "active": false,
+    "coin": "DGB",
+    "name": "DigiByte",
+    "coinpaprika_id": "dgb-digibyte",
+    "currently_enabled": false,
+    "electrum": [
+      {
+        "url": "electrum1.cipig.net:10059"
+      },
+      {
+        "url": "electrum2.cipig.net:10059"
+      },
+      {
+        "url": "electrum3.cipig.net:10059"
+      }
+    ],
+    "explorer_url": [
+      "https://digiexplorer.info/"
+    ],
+    "is_erc_20": false,
+    "type": "UTXO"
+  },
   "JUMBLR": {
     "coin": "JUMBLR",
     "name": "JUMBLR",
@@ -293,8 +316,6 @@
     "coin": "LABS",
     "name": "Labs",
     "type": "Smart Chain",
-    "rpcport": 40265,
-    "mm2": 1,
     "coingecko_id": "test-coin",
     "coinpaprika_id": "test-coin",
     "is_erc_20": false,
@@ -319,8 +340,6 @@
     "coin": "MGW",
     "name": "MGW",
     "type": "Smart Chain",
-    "rpcport": 12386,
-    "mm2": 1,
     "coingecko_id": "test-coin",
     "coinpaprika_id": "test-coin",
     "is_erc_20": false,

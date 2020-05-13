@@ -166,4 +166,8 @@ chmod +x QtInstallerFramework-linux-x64.run
 
 e.g.: In `.bashrc` add: `export QT_IFW_PATH=~/Qt/QtIFW-3.2.2`
 
-- Run `ci_tools_atomic_dex\create_installer_linux.sh` script
+- Build AtomicDex Pro `./ci_tools_atomic_dex build release`
+
+- Run `ci_tools_atomic_dex\create_installer_linux.sh` script, pass build type as argument to script
+
+e.g.: `.\create_installer_linux.sh Debug` -- or Release

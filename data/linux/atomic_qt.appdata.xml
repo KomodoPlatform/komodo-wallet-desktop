@@ -1,0 +1,20 @@
+<component type="desktop-application">
+    <id>atomic_qt.desktop</id>
+    <metadata_license>MIT</metadata_license>
+    <project_license>MIT</project_license>
+    <name>atomic_qt</name>
+    <summary>atomic qt  gui desktop</summary>
+    <description>
+        <p>Written in c++17</p>
+    </description>
+    <launchable type="desktop-id">atomic_qt.desktop</launchable>
+    <url type="homepage">https://github.com/KomodoPlatform/antara-gaming-sdk</url>
+    <screenshots>
+        <screenshot type="default">
+            <image>https://www.freedesktop.org/software/appstream/docs/images/scr-examples/geany-good.png</image>
+        </screenshot>
+    </screenshots>
+    <provides>
+        <id>atomic_qt.desktop</id>
+    </provides>
+</component>
