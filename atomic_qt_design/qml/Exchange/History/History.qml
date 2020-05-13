@@ -34,6 +34,16 @@ Item {
         return General.filterRecentSwaps(all_recent_swaps, "include")
     }
 
+    property string recover_funds_result: '{}'
+
+    function onRecoverFunds(uuid) {
+        const result = API.get().recover_fund(uuid)
+        console.log(result)
+        recover_funds_result = result
+        recover_funds_modal.open()
+        updateRecentSwaps()
+    }
+
     Timer {
         id: update_timer
         running: inCurrentPage()
@@ -65,6 +75,15 @@ Item {
         onDetailsChanged: {
             if(details.is_default) close()
         }
+    }
+
+    LogModal {
+        id: recover_funds_modal
+
+        title: API.get().empty_string + (qsTr("Recover Funds Result"))
+        field.text: JSON.stringify(JSON.parse(recover_funds_result), null, 4)
+
+        onClosed: recover_funds_result = "{}"
     }
 }
 

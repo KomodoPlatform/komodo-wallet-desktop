@@ -20,12 +20,6 @@ Item {
         updateOrders()
     }
 
-    function onRecoverFunds(uuid) {
-        const result = API.get().recover_fund(uuid)
-        console.log(result)
-        updateOrders()
-    }
-
 
     function inCurrentPage() {
         return  exchange.inCurrentPage() &&
