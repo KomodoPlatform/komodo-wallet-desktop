@@ -82,6 +82,8 @@ Item {
 
         title: API.get().empty_string + (qsTr("Recover Funds Result"))
         field.text: JSON.stringify(JSON.parse(recover_funds_result), null, 4)
+
+        onClosed: recover_funds_result = "{}"
     }
 }
 
