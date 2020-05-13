@@ -21,7 +21,8 @@ Item {
     }
 
     function onRecoverFunds(uuid) {
-        API.get().recover_fund(uuid)
+        const result = API.get().recover_fund(uuid)
+        console.log(result)
         updateOrders()
     }
 
