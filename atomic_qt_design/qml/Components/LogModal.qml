@@ -37,6 +37,7 @@ Popup {
             width: root.width - root.padding*2
             field.readOnly: true
             copyable: true
+            remove_newline: false
         }
     }
 }

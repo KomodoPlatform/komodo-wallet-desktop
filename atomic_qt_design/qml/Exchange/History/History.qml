@@ -34,7 +34,7 @@ Item {
         return General.filterRecentSwaps(all_recent_swaps, "include")
     }
 
-    property string recover_funds_result
+    property string recover_funds_result: '{}'
 
     function onRecoverFunds(uuid) {
         const result = API.get().recover_fund(uuid)
@@ -81,7 +81,7 @@ Item {
         id: recover_funds_modal
 
         title: API.get().empty_string + (qsTr("Recover Funds Result"))
-        field.text: recover_funds_result
+        field.text: JSON.stringify(JSON.parse(recover_funds_result), null, 4)
     }
 }
 
