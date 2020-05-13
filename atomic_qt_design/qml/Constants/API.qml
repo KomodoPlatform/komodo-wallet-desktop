@@ -194,7 +194,12 @@ QtObject {
             console.log("Setting current orderbook: " + base)
         },
 
-       cancel_order: (order_id) => {
+       recover_fund: (order_id) => {
+
+      },
+
+
+        cancel_order: (order_id) => {
 
       },
 

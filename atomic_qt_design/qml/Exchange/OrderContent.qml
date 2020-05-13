@@ -106,4 +106,13 @@ Rectangle {
         text: API.get().empty_string + (qsTr("Cancel"))
         onClicked: onCancelOrder(item.uuid)
     }
+
+    // Recover Funds button
+    PrimaryButton {
+        visible: !in_modal && item.is_recoverable !== undefined && item.is_recoverable
+        anchors.right: parent.right
+        anchors.bottom: date.bottom
+        text: API.get().empty_string + (qsTr("Recover Funds"))
+        onClicked: onRecoverFunds(item.uuid)
+    }
 }

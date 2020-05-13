@@ -20,6 +20,12 @@ Item {
         updateOrders()
     }
 
+    function onRecoverFunds(uuid) {
+        API.get().recover_fund(uuid)
+        updateOrders()
+    }
+
+
     function inCurrentPage() {
         return  exchange.inCurrentPage() &&
                 exchange.current_page === General.idx_exchange_orders
