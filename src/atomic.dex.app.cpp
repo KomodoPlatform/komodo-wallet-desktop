@@ -1099,6 +1099,7 @@ namespace atomic_dex
             nlohmann::json j2 = {
                 {"maker_coin", swap.maker_coin},
                 {"taker_coin", swap.taker_coin},
+                {"total_time_in_seconds", swap.total_time_in_seconds},
                 {"is_recoverable", swap.funds_recoverable},
                 {"maker_amount", swap.maker_amount},
                 {"taker_amount", swap.taker_amount},

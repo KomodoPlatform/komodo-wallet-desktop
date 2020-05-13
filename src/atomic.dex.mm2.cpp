@@ -586,6 +586,18 @@ namespace atomic_dex
         {
             m_swaps_registry.insert_or_assign("result", answer.result.value());
         }
+
+        /*if (not m_swaps_registry.empty())
+        {
+            auto swaps = get_swaps();
+
+            for (auto &&swap : swaps.swaps) {
+                for (auto&& event : swap.events) {
+                    std::cout << event << std::endl;
+                }
+            }
+        }*/
+
     }
 
     void

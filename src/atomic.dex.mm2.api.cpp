@@ -243,7 +243,7 @@ namespace mm2::api
     void
     to_json(nlohmann::json& j, const recover_funds_of_swap_request& cfg)
     {
-        j["params"] = nlohmann::json::object();
+        j["params"]         = nlohmann::json::object();
         j["params"]["uuid"] = cfg.swap_uuid;
     }
 
@@ -580,6 +580,10 @@ namespace mm2::api
         contents.my_info                 = j.at("my_info");
         contents.my_info["other_amount"] = adjust_precision(contents.my_info["other_amount"].get<std::string>());
         contents.my_info["my_amount"]    = adjust_precision(contents.my_info["my_amount"].get<std::string>());
+        using t_event_timestamp_registry = std::unordered_map<std::string, std::uint64_t>;
+        t_event_timestamp_registry event_timestamp_registry;
+        double total_time_in_seconds     = 0.00;
+
         for (auto&& content: j.at("events"))
         {
             using sys_milliseconds           = sys_time<std::chrono::milliseconds>;
@@ -597,9 +601,43 @@ namespace mm2::api
             else
             {
                 nlohmann::json jf_evt = {{"state", evt_type}, {"human_timestamp", human_date}, {"data", j_evt.at("data")}, {"timestamp", timestamp}};
+                if (evt_type == "Started")
+                {
+                    jf_evt["started_at"]                    = jf_evt.at("data").at("started_at");
+                    std::int64_t                        ts  = jf_evt.at("data").at("started_at").get<std::int64_t>() * 1000;
+                    std::int64_t                        ts2 = jf_evt.at("timestamp").get<std::int64_t>();
+                    sys_time<std::chrono::milliseconds> t1{std::chrono::milliseconds{ts}};
+                    sys_time<std::chrono::milliseconds> t2{std::chrono::milliseconds{ts2}};
+                    std::stringstream                   ss;
+                    double                              res;
+                    res = (std::chrono::duration_cast<std::chrono::milliseconds>(t2 - t1).count() / 1000.0);
+                    ss << std::fixed << std::setprecision(3) << res;
+                    jf_evt["time_difference_gui"] = ss.str() + "s";
+                    event_timestamp_registry["Started"] = ts2; // Started finished at this time
+                    total_time_in_seconds += res;
+                }
+                if (evt_type == "Negotiated")
+                {
+                    std::int64_t                        ts  = event_timestamp_registry.at("Started");
+                    jf_evt["started_at"]                    = ts;
+                    std::int64_t                        ts2 = jf_evt.at("timestamp").get<std::int64_t>();
+                    std::stringstream                   ss;
+                    sys_time<std::chrono::milliseconds> t1{std::chrono::milliseconds{ts}};
+                    sys_time<std::chrono::milliseconds> t2{std::chrono::milliseconds{ts2}};
+                    double                              res;
+                    res = (std::chrono::duration_cast<std::chrono::milliseconds>(t2 - t1).count() / 1000.0);
+                    ss << std::fixed << std::setprecision(3) << res;
+                    jf_evt["time_difference_gui"] = ss.str() + "s";
+                    event_timestamp_registry["Negotiated"] = ts2; // Negotiated finished at this time
+                    total_time_in_seconds += res;
+                }
                 contents.events.push_back(jf_evt);
             }
         }
+        std::stringstream                   ss;
+        ss << std::fixed << std::setprecision(3) << total_time_in_seconds;
+        contents.total_time_in_seconds = ss.str() + "s";
+        std::cout << contents.total_time_in_seconds << std::endl;
     }
 
     void
@@ -758,7 +796,8 @@ namespace mm2::api
     recover_funds_of_swap_answer
     rpc_recover_funds(recover_funds_of_swap_request&& request)
     {
-        return process_rpc<recover_funds_of_swap_request, recover_funds_of_swap_answer>(std::forward<recover_funds_of_swap_request>(request), "recover_funds_of_swap");
+        return process_rpc<recover_funds_of_swap_request, recover_funds_of_swap_answer>(
+            std::forward<recover_funds_of_swap_request>(request), "recover_funds_of_swap");
     }
 
     my_orders_answer
@@ -806,7 +845,8 @@ namespace mm2::api
         RestClient::Response resp;
         DVLOG_F(loguru::Verbosity_INFO, "request: {}", json_data.dump());
         resp = RestClient::post(g_endpoint, "application/json", json_data.dump());
-        if (resp.code == 200) {
+        if (resp.code == 200)
+        {
             auto answer = nlohmann::json::parse(resp.body);
             return answer.at("result").get<std::string>();
         }
