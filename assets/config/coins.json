@@ -360,30 +360,6 @@
     "active": false,
     "currently_enabled": false
   },
-  "VOTE2020": {
-    "coin": "VOTE2020",
-    "name": "Vote2020",
-    "type": "Smart Chain",
-    "coingecko_id": "test-coin",
-    "coinpaprika_id": "test-coin",
-    "is_erc_20": false,
-    "electrum": [
-      {
-        "url": "electrum1.cipig.net:10002"
-      },
-      {
-        "url": "electrum2.cipig.net:10002"
-      },
-      {
-        "url": "electrum3.cipig.net:10002"
-      }
-    ],
-    "explorer_url": [
-      "https://vote.kmdexplorer.io/"
-    ],
-    "active": false,
-    "currently_enabled": false
-  },
   "DEX": {
     "coin": "DEX",
     "name": "Dex",
