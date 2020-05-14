@@ -19,8 +19,13 @@
 #    include "atomic.dex.osx.manager.hpp"
 #endif
 
+#if defined(WINDOWS_RELEASE_MAIN)
+INT WINAPI WinMain(HINSTANCE hInst, HINSTANCE, LPSTR strCmdLine, INT)
+#else
+
 int
 main(int argc, char* argv[])
+#endif
 {
     //! Project
 #if defined(_WIN32) || defined(WIN32) || defined(__linux__)
@@ -38,7 +43,8 @@ main(int argc, char* argv[])
 
     //! QT
     QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
-    QApplication       app(argc, argv);
+    int ac = 0;
+    QApplication       app(ac, NULL);
     atomic_app.set_qt_app(&app);
     QQmlApplicationEngine engine;
     QZXing::registerQMLTypes();
