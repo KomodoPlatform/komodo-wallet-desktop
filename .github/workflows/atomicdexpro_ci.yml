@@ -73,7 +73,7 @@ jobs:
           wget https://apt.llvm.org/llvm.sh
           chmod +x llvm.sh
           sudo ./llvm.sh 9
-
+          
           # get libwally
           git clone https://github.com/KomodoPlatform/libwally-core.git
           cd libwally-core
@@ -178,7 +178,8 @@ jobs:
                        ninja \
                        git \
                        boost \
-                       gcc
+                       gcc \
+                       llvm@9
 
           # get libbitcoin
           git clone --depth 1 --branch version5 --single-branch "https://github.com/libbitcoin/secp256k1"
@@ -196,6 +197,9 @@ jobs:
           make
           sudo make install
           sudo update_dyld_shared_cache
+          
+          # get SDKs 
+          git clone https://github.com/phracker/MacOSX-SDKs $HOME/sdk
 
       - name: Build (MacOS)
         run: |
@@ -203,7 +207,7 @@ jobs:
           export QT_ROOT=${{ github.workspace }}/Qt/5.14.2
           cd ci_tools_atomic_dex
           nimble build -y
-          ./ci_tools_atomic_dex bundle debug
+          ./ci_tools_atomic_dex bundle debug --osx_sdk=$HOME/sdk/MacOSX10.13.sdk --compiler=/usr/local/opt/llvm@9/bin/clang++
           ls bundle-Debug/atomicDEX-Pro.dmg
 
       - name: Upload artifacts (MacOS)
