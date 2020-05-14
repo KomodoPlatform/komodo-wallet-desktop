@@ -2,7 +2,7 @@ name: AtomicDEX Pro CI
 
 on:
   pull_request:
-    types: [opened, edited, reopened]
+    types: [opened, synchronize, reopened]
   schedule:
     - cron: '0 0 * * 1'
 
@@ -10,15 +10,23 @@ jobs:
 
   linux-build:
     name: Linux Build
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-16.04
 
     steps:
       - uses: actions/checkout@v2
 
+      - name: Cache Qt (Linux)
+        id: cache-qt-linux
+        uses: actions/cache@v1
+        with:
+          path: '${{ github.workspace }}/Qt/5.14.2'
+          key: ${{ runner.os }}-qt
+
       - name: Install QT (Linux)
+        if: steps.cache-qt-linux.outputs.cache-hit != 'true'
         uses: jurplel/install-qt-action@v2
         with:
-          version: '5.14.1'
+          version: '5.14.2'
           host: 'linux'
           target: 'desktop'
           dir: '${{ github.workspace }}'
@@ -34,7 +42,7 @@ jobs:
           DEBIAN_FRONTEND: noninteractive
         run: |
           sudo apt-get update  # prevents repo404 errors on apt-remove below
-          sudo apt-get remove php5.6-fpm php7.0-fpm php7.1-fpm php7.2-fpm php7.3-fpm php7.3-common php7.4-fpm msodbcsql17
+          sudo apt-get remove php5.6-fpm php7.0-fpm php7.1-fpm php7.2-fpm php7.3-fpm php7.3-common php7.4-fpm msodbcsql17 mysql-server*
           sudo apt-get update
           sudo ACCEPT_EULA=Y apt-get upgrade -y
 
@@ -52,12 +60,14 @@ jobs:
                                unzip \
                                libssl-dev \
                                git -y
+
           # get right cmake version
           wget https://github.com/Kitware/CMake/releases/download/v3.17.1/cmake-3.17.1.tar.gz -O cmake.tar.gz
           tar xvzf cmake.tar.gz
           cd cmake-3.17.1
           ./bootstrap
           sudo make install
+          cd ..
 
           # get llvm
           wget https://apt.llvm.org/llvm.sh
@@ -70,6 +80,7 @@ jobs:
           ./tools/autogen.sh
           ./configure --disable-shared
           sudo make -j2 install
+          cd ..
 
           # set clang version
           sudo update-alternatives --install /usr/bin/clang++ clang++ /usr/bin/clang++-9 100
@@ -78,45 +89,56 @@ jobs:
           # cleanup
           sudo apt-get clean && \
           sudo rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+
+      - name: Cache vcpkg (Linux)
+        id: cache-vcpkg-linux
+        uses: actions/cache@v1
+        with:
+          path: '${{ github.workspace }}/ci_tools_atomic_dex/vcpkg-repo'
+          key: ${{ runner.os }}-vcpkg
+
+      - name: Install folly (Linux)
+        if: steps.cache-vcpkg-linux.outputs.cache-hit != 'true'
+        run: |
+          cd ci_tools_atomic_dex
           git clone https://github.com/KomodoPlatform/vcpkg vcpkg-repo
           cd vcpkg-repo
           ./bootstrap-vcpkg.sh
           sudo ./vcpkg integrate install
           ./vcpkg install doctest
           ./vcpkg install pthread
+          export CC=gcc-8
+          export CXX=g++-8
+          vcpkg install folly
           rm -rf ./downloads
           rm -rf ./buildtrees
 
       - name: Build (Linux)
         run: |
-          export QT_INSTALL_CMAKE_PATH=${{ github.workspace }}/Qt/5.14.1/gcc_64/lib/cmake
-          export QT_ROOT=${{ github.workspace }}/Qt/5.14.1
+          export QT_INSTALL_CMAKE_PATH=${{ github.workspace }}/Qt/5.14.2/gcc_64/lib/cmake
+          export QT_ROOT=${{ github.workspace }}/Qt/5.14.2
           cd ci_tools_atomic_dex
           export PATH=$HOME/.nimble/bin:$PATH
           nimble build -y
           ./ci_tools_atomic_dex build debug
+          ./ci_tools_atomic_dex bundle debug
           rm -rf ./vcpkg-repo/downloads
           rm -rf ./vcpkg-repo/buildtrees
           ls build-Debug/bin/AntaraAtomicDexAppDir/usr/bin/atomic_qt
+          zip --junk-paths linux-build-debug.zip build-Debug/*
+          zip --junk-paths vcpkg-debug.zip vcpkg-repo/*
 
-      - name: Pack Installer (Linux)
-        run: |
-          sudo apt-get update
-          sudo apt-get install libxrender-dev \
-                               libxkbcommon-dev \
-                               libxkbcommon-x11-0 \
-                               fontconfig-config -y
-          python3 -m aqt tool linux tools_ifw 3.2.2 qt.tools.ifw.32
-          export QT_IFW_PATH=$PWD/Tools/QtInstallerFramework/3.2/
-          cd ci_tools_atomic_dex
-          ./create_installer_linux.sh Debug
-          ls ./installer/AtomicDEX-Pro-Installer
-
-      - name: Upload artifacts (Linux)
+      - name: Upload artifacts 1(Linux)
         uses: actions/upload-artifact@v1
         with:
-          name: AtomicDEX-Pro-Installer-linux
-          path: ./ci_tools_atomic_dex/installer/AtomicDEX-Pro-Installer
+          name: AtomicDEX-Pro-bundle-linux
+          path: ./ci_tools_atomic_dex/linux-bundle-debug.zip
+
+      - name: Upload artifacts 2(Linux)
+        uses: actions/upload-artifact@v1
+        with:
+          name: vcpkg-debug
+          path: ./ci_tools_atomic_dex/vcpkg-debug.zip
 
   macos-build:
     name: MacOS Build
@@ -125,7 +147,15 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
+      - name: Cache Qt (Mac)
+        id: cache-qt-mac
+        uses: actions/cache@v1
+        with:
+          path: '${{ github.workspace }}/Qt/5.14.2'
+          key: ${{ runner.os }}-qt
+
       - name: Install QT (MacOS)
+        if: steps.cache-qt-mac.outputs.cache-hit != 'true'
         uses: jurplel/install-qt-action@v2
         with:
           version: '5.14.2'
@@ -189,42 +219,35 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
+      - name: Cache Qt (Win)
+        id: cache-qt-win
+        uses: actions/cache@v1
+        with:
+          path: 'C:\Qt\5.14.2'
+          key: ${{ runner.os }}-qt
+
       - name: Install QT (Win)
+        if: steps.cache-qt-win.outputs.cache-hit != 'true'
         uses: jurplel/install-qt-action@v2
         with:
-          version: '5.14.1'
+          version: '5.14.2'
           host: 'windows'
           target: 'desktop'
           dir: 'C:\'
           modules: 'qtcharts qtwidgets debug_info'
 
-      - name: Build (Win)
+      - name: Cache Vcpkg Deps (Win)
+        id: cache-vcpkg
+        uses: actions/cache@v1
+        with:
+          path: ci_tools_atomic_dex/vcpkg-repo
+          key: ${{ runner.os }}-vcpkg
+
+      - name: Build Vcpkg Deps (Win)
         shell: powershell
+        if: steps.cache-vcpkg.outputs.cache-hit != 'true'
         run: |
-          $Env:QT_INSTALL_CMAKE_PATH = "C:\Qt\5.14.1\msvc2017_64"
-          Set-ExecutionPolicy RemoteSigned -scope CurrentUser
-          Invoke-Expression (New-Object System.Net.WebClient).DownloadString('https://get.scoop.sh')
-
-          scoop install nim --global
-          scoop install llvm --global
-          scoop install ninja --global
-          scoop install cmake --global
-          scoop install git --global
-
-          # clear scoop cache
-          scoop cache rm 7zip
-          scoop cache rm git
-          scoop cache rm cmake
-          scoop cache rm ninja
-          scoop cache rm llvm
-          scoop cache rm nim
-
           cd ci_tools_atomic_dex
-          $file = 'src\generate.nim'
-          $regex = '(?<=g_vcpkg_cmake_script_path & ")[^"]*'
-          (Get-Content $file) -replace $regex, ' -DVCPKG_TARGET_TRIPLET=x64-windows ' | Set-Content $file
-          nimble.exe build -y
-
           & cmd /c 'git clone https://github.com/KomodoPlatform/vcpkg vcpkg-repo 2>&1'
           cd vcpkg-repo
           .\bootstrap-vcpkg.bat
@@ -249,8 +272,40 @@ jobs:
           rd -r ".\buildtrees\" -ErrorAction SilentlyContinue
           rd -r ".\downloads\" -ErrorAction SilentlyContinue
 
-          cd ..
+      - name: Build (Win)
+        shell: powershell
+        run: |
+          Set-ExecutionPolicy RemoteSigned -scope CurrentUser
+          Invoke-Expression (New-Object System.Net.WebClient).DownloadString('https://get.scoop.sh')
+          cd ci_tools_atomic_dex
+
+          scoop install nim --global
+          scoop install llvm --global
+          scoop install ninja --global
+          scoop install cmake --global
+          scoop install git --global
+          scoop install 7zip  --global
+
+          # clear scoop cache
+          scoop cache rm 7zip
+          scoop cache rm git
+          scoop cache rm cmake
+          scoop cache rm ninja
+          scoop cache rm llvm
+          scoop cache rm nim
+
+          $file = 'src\generate.nim'
+          $regex = '(?<=g_vcpkg_cmake_script_path & ")[^"]*'
+          (Get-Content $file) -replace $regex, ' -DVCPKG_TARGET_TRIPLET=x64-windows ' | Set-Content $file
+          nimble build -y
+          $Env:QT_INSTALL_CMAKE_PATH = "C:\Qt\5.14.2\msvc2017_64"
+          $SHAORIG = "A31827929A4D73EB71BD6986C38EB16D4E779DC3880EFA520869D00C3C0E2AB9"
+          $DWFILE = ($PWD | select -exp Path) + '\debuglibs-win-dexpro.zip'
+          (New-Object System.Net.WebClient).DownloadFile('https://sirseven.me/share/debuglibs-win-atomicdexpro.zip', $DWFILE)
+          $SHADW = Get-FileHash -Algorithm SHA256 .\debuglibs-win-dexpro.zip | select -exp Hash
+          if ($SHADW -ne $SHAORIG) {Throw "Wrong hash: $SHADW =! $SHAORIG"}
           cmd /c '.\ci_tools_atomic_dex.exe build debug 2>&1'
+          7z e -o'build-Debug\bin\' .\debuglibs-win-dexpro.zip
           cmd /c '.\ci_tools_atomic_dex.exe bundle debug 2>&1'
           ls bundle-Debug/bundle.zip
 
