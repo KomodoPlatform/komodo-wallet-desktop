@@ -128,13 +128,13 @@ jobs:
           zip --junk-paths linux-build-debug.zip build-Debug/*
           zip --junk-paths vcpkg-debug.zip vcpkg-repo/*
 
-      - name: Upload artifacts 1(Linux)
+      - name: Upload bundle artifact (Linux)
         uses: actions/upload-artifact@v1
         with:
           name: AtomicDEX-Pro-bundle-linux
-          path: ./ci_tools_atomic_dex/linux-bundle-debug.zip
+          path: ./ci_tools_atomic_dex/linux-build-debug.zip
 
-      - name: Upload artifacts 2(Linux)
+      - name: Upload vpckg artifact (Linux)
         uses: actions/upload-artifact@v1
         with:
           name: vcpkg-debug
