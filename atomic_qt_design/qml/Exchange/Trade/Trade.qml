@@ -388,6 +388,7 @@ Item {
         // Transactions
         InnerBackground {
             id: transactions_bg
+            Layout.topMargin: layout_margin
             Layout.fillWidth: true
             Layout.fillHeight: true
 
