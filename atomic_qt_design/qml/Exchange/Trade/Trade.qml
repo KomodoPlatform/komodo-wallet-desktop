@@ -4,6 +4,7 @@ import QtQuick.Controls 2.12
 
 import "../../Components"
 import "../../Constants"
+import "../../Wallet"
 
 Item {
     id: exchange_trade
@@ -221,6 +222,7 @@ Item {
                 reset(true, is_base)
 
                 const new_base = getTicker(true)
+                API.get().current_coin_info.ticker = new_base
                 API.get().set_current_orderbook(new_base)
                 updateOrderbook()
 
@@ -326,23 +328,9 @@ Item {
             }
         }
 
-        // Trade button
-        DefaultButton {
-            id: action_button
-            Layout.topMargin: layout_margin
-            Layout.fillWidth: true
-
-            text: API.get().empty_string + (qsTr("Trade"))
-            enabled: form_base.isValid() && form_rel.isValid()
-            onClicked: confirm_trade_modal.open()
-        }
-
-        ConfirmTradeModal {
-            id: confirm_trade_modal
-        }
-
         // Price
         PriceLine {
+            Layout.topMargin: 10
             Layout.alignment: Qt.AlignHCenter
         }
 
@@ -380,6 +368,48 @@ Item {
             text: API.get().empty_string + (qsTr("Receive amount is lower than minimum trade amount") + " : " + form_rel.getMinTradeAmount())
             color: Style.colorRed
             visible: form_rel.fieldsAreFilled() && !form_rel.higherThanMinTradeAmount()
+        }
+
+        // Trade button
+        DefaultButton {
+            id: action_button
+            Layout.topMargin: layout_margin
+            Layout.fillWidth: true
+
+            text: API.get().empty_string + (qsTr("Trade"))
+            enabled: form_base.isValid() && form_rel.isValid()
+            onClicked: confirm_trade_modal.open()
+        }
+
+        ConfirmTradeModal {
+            id: confirm_trade_modal
+        }
+
+        // Transactions
+        InnerBackground {
+            id: transactions_bg
+            Layout.fillWidth: true
+            Layout.fillHeight: true
+
+            implicitHeight: wallet.height*0.54
+
+            content: Item {
+                width: transactions_bg.width
+                height: transactions_bg.height
+
+                DefaultText {
+                    anchors.centerIn: parent
+                    visible: API.get().current_coin_info.tx_state !== "InProgress" && API.get().current_coin_info.transactions.length === 0
+                    text: API.get().empty_string + (qsTr("No transactions"))
+                    font.pixelSize: Style.textSize
+                    color: Style.colorWhite4
+                }
+
+                Transactions {
+                    width: parent.width
+                    height: parent.height
+                }
+            }
         }
     }
 }
