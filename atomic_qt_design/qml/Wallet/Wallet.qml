@@ -86,6 +86,7 @@ RowLayout {
                     leftPadding: parent.width * button_margin
                     rightPadding: leftPadding
                     onClicked: send_modal.open()
+                    enabled: parseFloat(API.get().current_coin_info.balance) > 0
                 }
 
                 SendModal {
