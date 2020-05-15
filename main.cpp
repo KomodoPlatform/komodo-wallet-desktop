@@ -36,7 +36,12 @@ main(int argc, char* argv[])
     loguru::g_preamble_uptime = false;
     loguru::g_preamble_date   = false;
     loguru::set_thread_name("main thread");
-    const fs::path log_path = ag::core::assets_real_path() / "logs/latest_readeable.log";
+    using namespace std::chrono;
+    using namespace date;
+    auto timestamp = duration_cast<seconds>(system_clock::now().time_since_epoch()).count();
+    date::sys_seconds tp{seconds{timestamp}};
+    std::string       s   = date::format("%Y-%m-%d-%H-%M-%S", tp);
+    const fs::path log_path = ag::core::assets_real_path() / ("logs/" + s + ".log");
     std::string path = log_path.string();
     loguru::add_file(path.c_str(), loguru::Truncate, loguru::Verbosity_INFO);
     atomic_dex::application atomic_app;
