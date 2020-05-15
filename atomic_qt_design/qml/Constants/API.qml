@@ -13,6 +13,7 @@ QtObject {
        },
 
         // Other
+        to_eth_checksum_qt: (addr) => { return "0xA00bF635b2cD52F2b6B4D8cd9B9efd290B97838C" },
         retrieve_seed: (wallet_name, password) => { return "this is a test seed gossip rubber flee just connect manual any salmon limb suffer now turkey essence naive daughter system begin quantum page" },
         get_log_folder: () => { return "D:/Projects/atomicDEX-Pro/atomic_qt_design" },
         get_mm2_version: () => { return "5.1.1" },
