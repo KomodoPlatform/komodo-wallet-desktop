@@ -48,6 +48,8 @@ DefaultModal {
         }
 
         if(set_current) {
+            if(max) input_amount.field.text = result.total_amount
+
             prepare_send_result = result
             if(prepare_send_result.has_error) {
                 text_error.text = prepare_send_result.error_message
