@@ -511,6 +511,7 @@ namespace atomic_dex
         std::error_code ec;
         auto            answer = mm2::withdraw(std::move(req), ec);
         std::cout << answer.raw_result << std::endl;
+        std::cout << answer.error.has_value() << std::endl;
         auto coin = get_mm2().get_coin_info(m_coin_info->get_ticker().toStdString());
         return to_qt_binding(std::move(answer), this, QString::fromStdString(coin.explorer_url[0]));
     }
