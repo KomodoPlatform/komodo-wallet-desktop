@@ -33,7 +33,7 @@ DefaultModal {
     }
 
     function prepareSendCoin(address, amount, fee_enabled, fee_amount, is_erc_20, gas, gas_price, set_current=true) {
-        let max = parseFloat(API.get().current_coin_info.balance) === parseFloat(amount)
+        let max = input_max_amount.checked || parseFloat(API.get().current_coin_info.balance) === parseFloat(amount)
 
         let result
 
@@ -78,6 +78,7 @@ DefaultModal {
         input_custom_fees_gas.field.text = ""
         input_custom_fees_gas_price.field.text = ""
         custom_fees_switch.checked = false
+        input_max_amount.checked = false
         text_error.text = ""
 
         if(close) root.close()
@@ -86,6 +87,7 @@ DefaultModal {
 
     function feeIsHigherThanAmount() {
         if(!custom_fees_switch.checked) return false
+        if(input_max_amount.checked) return false
 
         const amt = parseFloat(input_amount.field.text)
         const fee_amt = parseFloat(input_custom_fees.field.text)
@@ -94,6 +96,8 @@ DefaultModal {
     }
 
     function hasFunds() {
+        if(input_max_amount.checked) return true
+
         if(!General.hasEnoughFunds(true, API.get().current_coin_info.ticker, "", "", input_amount.field.text))
             return false
 
@@ -137,10 +141,8 @@ DefaultModal {
 
     function fieldAreFilled() {
         return input_address.field.text != "" &&
-             input_amount.field.text != "" &&
+             (input_max_amount.checked || (input_amount.field.text != "" && input_amount.field.acceptableInput && parseFloat(input_amount.field.text) > 0)) &&
              input_address.field.acceptableInput &&
-             input_amount.field.acceptableInput &&
-             parseFloat(input_amount.field.text) > 0 &&
              feesAreFilled()
     }
 
@@ -192,13 +194,15 @@ DefaultModal {
                 // Amount input
                 AmountField {
                     id: input_amount
+                    field.visible: !input_max_amount.checked
                     title: API.get().empty_string + (qsTr("Amount to send"))
                     field.placeholderText: API.get().empty_string + (qsTr("Enter the amount to send"))
                 }
 
-                DefaultButton {
+                Switch {
+                    id: input_max_amount
                     text: API.get().empty_string + (qsTr("MAX"))
-                    onClicked: setMax()
+                    onCheckedChanged: input_amount.field.text = ""
                 }
             }
 
