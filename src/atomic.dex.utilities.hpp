@@ -3,6 +3,43 @@
 //! PCH Headers
 #include "atomic.dex.pch.hpp"
 
+#include <QCryptographicHash>
+#include <QString>
+
+inline std::string
+dex_sha256(const std::string& str)
+{
+    QString res = QString(QCryptographicHash::hash((str.c_str()),QCryptographicHash::Keccak_256).toHex());
+    return res.toStdString();
+}
+
+inline void to_eth_checksum(std::string& address)
+{
+    address = address.substr(2);
+    auto hex_str           = dex_sha256(address);
+    auto final_eth_address = std::string("0x");
+
+    for (std::string::size_type i = 0; i < address.size(); i++)
+    {
+        std::string actual(1, hex_str[i]);
+        try
+        {
+            auto        value = std::stoi(actual, nullptr, 16);
+            if (value >= 8)
+            {
+                final_eth_address += toupper(address[i]);
+            } else {
+                final_eth_address += address[i];
+            }
+        }
+        catch (const std::invalid_argument& e)
+        {
+            final_eth_address += address[i];
+        }
+    }
+    address = final_eth_address;
+}
+
 struct timed_waiter
 {
     void

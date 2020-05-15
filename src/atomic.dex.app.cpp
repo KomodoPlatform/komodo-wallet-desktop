@@ -44,6 +44,7 @@
 #include "atomic.dex.provider.coinpaprika.hpp"
 #include "atomic.dex.qt.bindings.hpp"
 #include "atomic.dex.security.hpp"
+#include "atomic.dex.utilities.hpp"
 #include "atomic.dex.version.hpp"
 #include "atomic.threadpool.hpp"
 
@@ -1154,5 +1155,13 @@ namespace atomic_dex
         result                                        = QString::fromStdString(res.raw_result);
 
         return result;
+    }
+
+    QString
+    application::to_eth_checksum_qt(QString eth_lowercase_address) const
+    {
+        auto str = eth_lowercase_address.toStdString();
+        to_eth_checksum(str);
+        return QString::fromStdString(str);
     }
 } // namespace atomic_dex

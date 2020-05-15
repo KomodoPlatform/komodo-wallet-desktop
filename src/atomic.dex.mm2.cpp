@@ -107,9 +107,10 @@ namespace atomic_dex
 
     mm2::~mm2() noexcept
     {
-        const reproc::stop_actions stop_actions = {{reproc::stop::terminate, reproc::milliseconds(2000)},
-                                                   {reproc::stop::kill, reproc::milliseconds(5000)},
-                                                   {reproc::stop::wait, reproc::milliseconds(2000)}};
+        const reproc::stop_actions stop_actions = {
+            {reproc::stop::terminate, reproc::milliseconds(2000)},
+            {reproc::stop::kill, reproc::milliseconds(5000)},
+            {reproc::stop::wait, reproc::milliseconds(2000)}};
 
         m_mm2_running = false;
         const auto ec = m_mm2_instance.stop(stop_actions);
@@ -738,6 +739,7 @@ namespace atomic_dex
             ec = dextop_error::unknown_ticker;
             return "Invalid";
         }
+
         return m_balance_informations.at(ticker).address;
     }
 
