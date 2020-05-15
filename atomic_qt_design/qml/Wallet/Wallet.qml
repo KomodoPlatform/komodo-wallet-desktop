@@ -138,7 +138,8 @@ RowLayout {
             }
 
             DefaultText {
-                visible: API.get().current_coin_info.tx_state !== "InProgress" && API.get().current_coin_info.transactions.length === 0
+                visible: (API.get().current_coin_info.type !== "ERC-20" ||
+                          API.get().current_coin_info.tx_state !== "InProgress") && API.get().current_coin_info.transactions.length === 0
                 text: API.get().empty_string + (qsTr("No transactions"))
                 font.pixelSize: Style.textSize
                 color: Style.colorWhite4
@@ -150,7 +151,7 @@ RowLayout {
             Rectangle {
                 id: loading_tx
                 color: "transparent"
-                visible: API.get().current_coin_info.tx_state === "InProgress"
+                visible: API.get().current_coin_info.type === "ERC-20" && API.get().current_coin_info.tx_state === "InProgress"
                 Layout.alignment: Qt.AlignHCenter
                 Layout.fillWidth: true
                 implicitHeight: 100
