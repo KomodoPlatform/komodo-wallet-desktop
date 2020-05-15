@@ -170,7 +170,7 @@ Item {
             return coins.filter(c => {
                 c.balance = API.get().get_balance(c.ticker)
 
-                return c.balance !== '' && parseFloat(c.balance) > 0
+                return c.balance !== '' && parseFloat(c.balance) >= General.getMinTradeAmount()
             })
         }
         // Filter for Receive
@@ -352,7 +352,7 @@ Item {
         DefaultText {
             Layout.alignment: Qt.AlignHCenter
 
-            text: API.get().empty_string + (qsTr("Sell amount is lower than minimum trade amount") + " : " + form_base.getMinTradeAmount())
+            text: API.get().empty_string + (qsTr("Sell amount is lower than minimum trade amount") + " : " + General.getMinTradeAmount())
             color: Style.colorRed
             visible: form_base.fieldsAreFilled() && !form_base.higherThanMinTradeAmount()
         }
@@ -361,7 +361,7 @@ Item {
         DefaultText {
             Layout.alignment: Qt.AlignHCenter
 
-            text: API.get().empty_string + (qsTr("Receive amount is lower than minimum trade amount") + " : " + form_rel.getMinTradeAmount())
+            text: API.get().empty_string + (qsTr("Receive amount is lower than minimum trade amount") + " : " + General.getMinTradeAmount())
             color: Style.colorRed
             visible: form_rel.fieldsAreFilled() && !form_rel.higherThanMinTradeAmount()
         }
