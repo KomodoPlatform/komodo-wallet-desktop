@@ -504,9 +504,14 @@ namespace atomic_dex
     {
         atomic_dex::t_withdraw_request req{
             .to = address.toStdString(), .coin = m_coin_info->get_ticker().toStdString(), .max = max, .amount = amount.toStdString()};
+        if (req.max)
+        {
+            req.amount = "0";
+        }
         std::error_code ec;
         auto            answer = mm2::withdraw(std::move(req), ec);
-        auto            coin   = get_mm2().get_coin_info(m_coin_info->get_ticker().toStdString());
+        std::cout << answer.raw_result << std::endl;
+        auto coin = get_mm2().get_coin_info(m_coin_info->get_ticker().toStdString());
         return to_qt_binding(std::move(answer), this, QString::fromStdString(coin.explorer_url[0]));
     }
 
@@ -516,6 +521,10 @@ namespace atomic_dex
     {
         atomic_dex::t_withdraw_request req{
             .to = address.toStdString(), .coin = m_coin_info->get_ticker().toStdString(), .max = max, .amount = amount.toStdString()};
+        if (req.max == true)
+        {
+            req.amount = "0";
+        }
         req.fees = atomic_dex::t_withdraw_fees{
             .type      = is_erc_20 ? "EthGas" : "UtxoFixed",
             .amount    = fees_amount.toStdString(),
