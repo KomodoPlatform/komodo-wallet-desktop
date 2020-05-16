@@ -44,6 +44,7 @@
 #include "atomic.dex.provider.coinpaprika.hpp"
 #include "atomic.dex.qt.bindings.hpp"
 #include "atomic.dex.security.hpp"
+#include "atomic.dex.utilities.hpp"
 #include "atomic.dex.version.hpp"
 #include "atomic.threadpool.hpp"
 
@@ -503,9 +504,15 @@ namespace atomic_dex
     {
         atomic_dex::t_withdraw_request req{
             .to = address.toStdString(), .coin = m_coin_info->get_ticker().toStdString(), .max = max, .amount = amount.toStdString()};
+        if (req.max)
+        {
+            req.amount = "0";
+        }
         std::error_code ec;
         auto            answer = mm2::withdraw(std::move(req), ec);
-        auto            coin   = get_mm2().get_coin_info(m_coin_info->get_ticker().toStdString());
+        std::cout << answer.raw_result << std::endl;
+        std::cout << answer.error.has_value() << std::endl;
+        auto coin = get_mm2().get_coin_info(m_coin_info->get_ticker().toStdString());
         return to_qt_binding(std::move(answer), this, QString::fromStdString(coin.explorer_url[0]));
     }
 
@@ -515,6 +522,10 @@ namespace atomic_dex
     {
         atomic_dex::t_withdraw_request req{
             .to = address.toStdString(), .coin = m_coin_info->get_ticker().toStdString(), .max = max, .amount = amount.toStdString()};
+        if (req.max == true)
+        {
+            req.amount = "0";
+        }
         req.fees = atomic_dex::t_withdraw_fees{
             .type      = is_erc_20 ? "EthGas" : "UtxoFixed",
             .amount    = fees_amount.toStdString(),
@@ -1154,5 +1165,13 @@ namespace atomic_dex
         result                                        = QString::fromStdString(res.raw_result);
 
         return result;
+    }
+
+    QString
+    application::to_eth_checksum_qt(QString eth_lowercase_address) const
+    {
+        auto str = eth_lowercase_address.toStdString();
+        to_eth_checksum(str);
+        return QString::fromStdString(str);
     }
 } // namespace atomic_dex

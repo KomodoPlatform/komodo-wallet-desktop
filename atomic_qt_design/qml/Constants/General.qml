@@ -90,6 +90,10 @@ QtObject {
         return coins.map(c => c.ticker + " (" + c.balance + ")")
     }
 
+    function getMinTradeAmount() {
+        return 0.00777
+    }
+
     function hasEnoughFunds(sell, base, rel, price, volume) {
         if(sell) {
             if(volume === "") return true

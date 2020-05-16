@@ -5,6 +5,6 @@ import QtQuick.Controls 2.12
 
 TextFieldWithTitle {
     field.validator: RegExpValidator {
-        regExp: /[a-zA-Z0-9]{25,34}/
+        regExp: /[a-zA-Z0-9]{25,100}/
     }
 }

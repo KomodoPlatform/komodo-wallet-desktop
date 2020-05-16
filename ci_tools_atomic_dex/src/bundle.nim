@@ -98,7 +98,7 @@ proc bundle*(build_type: string, osx_sdk_path: string, compiler_path: string) =
             linux_deploy_tool = os.getCurrentDir().parentDir().joinPath("linux_misc").joinPath("linuxdeployqt-continuous-x86_64.AppImage")
             bundling_cmd = linux_deploy_tool & " " & desktop_path & " -qmldir=" & atomic_qt_qml_dir & " -verbose=2 -bundle-non-qt-libs"
             bundle_path = os.getCurrentDir().parentDir().joinPath("bundle-" & build_type)
-            tar_cmd = "tar -czvf AntaraAtomicDexAppDir.tar.gz " & build_path.joinPath("AntaraAtomicDexAppDir")
+            tar_cmd = "tar -czvf AntaraAtomicDexAppDir.tar.gz -C " & build_path.joinPath("AntaraAtomicDexAppDir").parentDir() & " ."
 
         echo "Bundling cmd: " & bundling_cmd
         discard osproc.execCmd(bundling_cmd)

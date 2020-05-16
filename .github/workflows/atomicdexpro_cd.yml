@@ -3,7 +3,7 @@ name: AtomicDex-Pro CD releases
 on:
   push:
     branches:
-    - dev
+    - temporary_disabled
 
 jobs:
 
