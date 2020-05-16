@@ -215,17 +215,25 @@ namespace atomic_dex
         QString m_human_date;
         QString m_balance_change;
         QString m_fees;
+        QString m_total_amount;
         QString m_explorer_url;
 
         Q_PROPERTY(bool has_error READ get_error CONSTANT MEMBER m_has_error)
         Q_PROPERTY(QString error_message READ get_error_message CONSTANT MEMBER m_error_message)
         Q_PROPERTY(QString tx_hex READ get_tx_hex CONSTANT MEMBER m_tx_hex)
         Q_PROPERTY(QString date READ get_date CONSTANT MEMBER m_human_date)
+        Q_PROPERTY(QString total_amount READ get_total_amount CONSTANT MEMBER m_total_amount)
         Q_PROPERTY(QString balance_change READ get_balance_change CONSTANT MEMBER m_balance_change)
         Q_PROPERTY(QString fees READ get_fees CONSTANT MEMBER m_fees)
         Q_PROPERTY(QString explorer_url READ get_explorer_url CONSTANT MEMBER m_explorer_url)
 
-        [[nodiscard]] QString get_balance_change() const noexcept
+        [[nodiscard]] QString get_total_amount() const noexcept
+        {
+            return m_total_amount;
+        }
+
+        [[nodiscard]] QString
+        get_balance_change() const noexcept
         {
             return m_balance_change;
         }
@@ -494,6 +502,7 @@ namespace atomic_dex
         obj->m_tx_hex         = answer.result.has_value() ? QString::fromStdString(answer.result.value().tx_hex) : "";
         obj->m_human_date     = answer.result.has_value() ? QString::fromStdString(answer.result.value().timestamp_as_date) : "";
         obj->m_balance_change = answer.result.has_value() ? QString::fromStdString(answer.result.value().my_balance_change) : "";
+        obj->m_total_amount   = answer.result.has_value() ? QString::fromStdString(answer.result.value().total_amount) : "";
         if (answer.result.has_value())
         {
             auto& current = answer.result.value();
