@@ -218,7 +218,7 @@ Item {
             spacing: 15
 
             DefaultButton {
-                enabled: API.get().current_coin_info.tx_state !== "InProgress"
+                enabled: parseFloat(API.get().current_coin_info.balance) > 0
                 text: API.get().empty_string + (qsTr("Send"))
                 onClicked: send_modal.open()
                 text_offset: -arrow_send.anchors.rightMargin
@@ -285,7 +285,7 @@ Item {
                 text: API.get().empty_string + (qsTr("Claim Rewards"))
 
                 visible: API.get().current_coin_info.is_claimable === true
-                enabled: API.get().current_coin_info.tx_state !== "InProgress" && claim_rewards_modal.canClaim()
+                enabled: claim_rewards_modal.canClaim()
                 onClicked: {
                     claim_rewards_modal.prepareClaimRewards()
                     claim_rewards_modal.open()
@@ -310,7 +310,7 @@ Item {
         // Transactions or loading
         Item {
             id: loading_tx
-            visible: API.get().current_coin_info.tx_state === "InProgress"
+            visible: API.get().current_coin_info.type === "ERC-20" && API.get().current_coin_info.tx_state === "InProgress"
             Layout.alignment: Qt.AlignHCenter
             Layout.fillWidth: true
             implicitHeight: 100
@@ -358,7 +358,8 @@ Item {
 
                 DefaultText {
                     anchors.centerIn: parent
-                    visible: API.get().current_coin_info.tx_state !== "InProgress" && API.get().current_coin_info.transactions.length === 0
+                    visible: (API.get().current_coin_info.type !== "ERC-20" ||
+                          API.get().current_coin_info.tx_state !== "InProgress") && API.get().current_coin_info.transactions.length === 0
                     text: API.get().empty_string + (qsTr("No transactions"))
                     font.pixelSize: Style.textSize
                     color: Style.colorWhite4
