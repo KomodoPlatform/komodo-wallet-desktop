@@ -75,7 +75,7 @@ Item {
                 DefaultButton {
                     Layout.fillWidth: true
                     text: API.get().empty_string + (qsTr("Open Logs Folder"))
-                    onClicked: Qt.openUrlExternally("file:///" + API.get().get_log_folder())
+                    onClicked: (Qt.platform.os == "windows") ? Qt.openUrlExternally("file:///" + API.get().get_log_folder()) : Qt.openUrlExternally("file://" + API.get().get_log_folder())
                 }
 
                 DefaultButton {
