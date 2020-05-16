@@ -241,6 +241,35 @@ namespace mm2::api
     }
 
     void
+    to_json(nlohmann::json& j, const recover_funds_of_swap_request& cfg)
+    {
+        j["params"] = nlohmann::json::object();
+        j["params"]["uuid"] = cfg.swap_uuid;
+    }
+
+    void
+    from_json(const nlohmann::json& j, recover_funds_of_swap_answer_success& answer)
+    {
+        j.at("result").at("action").get_to(answer.action);
+        j.at("result").at("coin").get_to(answer.coin);
+        j.at("result").at("tx_hash").get_to(answer.tx_hash);
+        j.at("result").at("tx_hex").get_to(answer.tx_hex);
+    }
+
+    void
+    from_json(const nlohmann::json& j, recover_funds_of_swap_answer& answer)
+    {
+        if (j.count("error") == 1)
+        {
+            answer.error = j.at("error").get<std::string>();
+        }
+        else
+        {
+            answer.result = j.at("result").get<recover_funds_of_swap_answer_success>();
+        }
+    }
+
+    void
     to_json(nlohmann::json& j, const withdraw_fees& cfg)
     {
         j["type"] = cfg.type;
@@ -724,6 +753,12 @@ namespace mm2::api
     rpc_disable_coin(disable_coin_request&& request)
     {
         return process_rpc<disable_coin_request, disable_coin_answer>(std::forward<disable_coin_request>(request), "disable_coin");
+    }
+
+    recover_funds_of_swap_answer
+    rpc_recover_funds(recover_funds_of_swap_request&& request)
+    {
+        return process_rpc<recover_funds_of_swap_request, recover_funds_of_swap_answer>(std::forward<recover_funds_of_swap_request>(request), "recover_funds_of_swap");
     }
 
     my_orders_answer

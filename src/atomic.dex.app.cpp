@@ -44,6 +44,7 @@
 #include "atomic.dex.provider.coinpaprika.hpp"
 #include "atomic.dex.qt.bindings.hpp"
 #include "atomic.dex.security.hpp"
+#include "atomic.dex.utilities.hpp"
 #include "atomic.dex.version.hpp"
 #include "atomic.threadpool.hpp"
 
@@ -503,9 +504,15 @@ namespace atomic_dex
     {
         atomic_dex::t_withdraw_request req{
             .to = address.toStdString(), .coin = m_coin_info->get_ticker().toStdString(), .max = max, .amount = amount.toStdString()};
+        if (req.max)
+        {
+            req.amount = "0";
+        }
         std::error_code ec;
         auto            answer = mm2::withdraw(std::move(req), ec);
-        auto            coin   = get_mm2().get_coin_info(m_coin_info->get_ticker().toStdString());
+        std::cout << answer.raw_result << std::endl;
+        std::cout << answer.error.has_value() << std::endl;
+        auto coin = get_mm2().get_coin_info(m_coin_info->get_ticker().toStdString());
         return to_qt_binding(std::move(answer), this, QString::fromStdString(coin.explorer_url[0]));
     }
 
@@ -515,6 +522,10 @@ namespace atomic_dex
     {
         atomic_dex::t_withdraw_request req{
             .to = address.toStdString(), .coin = m_coin_info->get_ticker().toStdString(), .max = max, .amount = amount.toStdString()};
+        if (req.max == true)
+        {
+            req.amount = "0";
+        }
         req.fees = atomic_dex::t_withdraw_fees{
             .type      = is_erc_20 ? "EthGas" : "UtxoFixed",
             .amount    = fees_amount.toStdString(),
@@ -727,32 +738,6 @@ namespace atomic_dex
     {
         LOG_SCOPE_FUNCTION(INFO);
         this->m_refresh_orders_needed = true;
-    }
-
-    QVariantMap
-    application::get_recent_swaps()
-    {
-        QVariantMap out;
-        auto        swaps = get_mm2().get_swaps();
-
-        for (auto& swap: swaps.swaps)
-        {
-            nlohmann::json j2 = {
-                {"maker_coin", swap.maker_coin},
-                {"taker_coin", swap.taker_coin},
-                {"is_recoverable", swap.funds_recoverable},
-                {"maker_amount", swap.maker_amount},
-                {"taker_amount", swap.taker_amount},
-                {"error_events", swap.error_events},
-                {"success_events", swap.success_events},
-                {"type", swap.type},
-                {"events", swap.events},
-                {"my_info", swap.my_info}};
-
-            auto out_swap = QJsonDocument::fromJson(QString::fromStdString(j2.dump()).toUtf8());
-            out.insert(QString::fromStdString(swap.uuid), out_swap.toVariant());
-        }
-        return out;
     }
 
     void
@@ -1112,5 +1097,81 @@ namespace atomic_dex
     application::get_paprika_id_from_ticker(QString ticker) const
     {
         return QString::fromStdString(get_mm2().get_coin_info(ticker.toStdString()).coinpaprika_id);
+    }
+
+    QVariantMap
+    application::get_recent_swaps()
+    {
+        QVariantMap out;
+        auto        swaps = get_mm2().get_swaps();
+
+        for (auto& swap: swaps.swaps)
+        {
+            nlohmann::json j2 = {
+                {"maker_coin", swap.maker_coin},
+                {"taker_coin", swap.taker_coin},
+                {"is_recoverable", swap.funds_recoverable},
+                {"maker_amount", swap.maker_amount},
+                {"taker_amount", swap.taker_amount},
+                {"error_events", swap.error_events},
+                {"success_events", swap.success_events},
+                {"type", swap.type},
+                {"events", swap.events},
+                {"my_info", swap.my_info}};
+
+            auto out_swap = QJsonDocument::fromJson(QString::fromStdString(j2.dump()).toUtf8());
+            out.insert(QString::fromStdString(swap.uuid), out_swap.toVariant());
+        }
+        return out;
+    }
+
+    bool
+    application::export_swaps(const QString& csv_filename) noexcept
+    {
+        auto           swaps    = get_mm2().get_swaps();
+        const fs::path csv_path = ag::core::assets_real_path() / "exports" / (csv_filename.toStdString() + std::string(".csv"));
+
+        std::ofstream ofs(csv_path.string(), std::ios::out | std::ios::trunc);
+        ofs << "Maker Coin, Taker Coin, Maker Amount, Taker Amount, Type, Events, My Info, Is Recoverable" << std::endl;
+        for (auto&& swap: swaps.swaps)
+        {
+            ofs << swap.maker_coin << ",";
+            ofs << swap.taker_coin << ",";
+            ofs << swap.maker_amount << ",";
+            ofs << swap.taker_amount << ",";
+            ofs << swap.type << ",";
+            ofs << "not supported yet,"; //! This contains many events, what do we want to export here?
+            ofs << "not supported yet,"; //! This is a big json object, need to choose which information we need to export ?
+            ofs << (swap.funds_recoverable ? "True," : "False,");
+            ofs << std::endl;
+        }
+        ofs.close();
+        return false;
+    }
+
+    QString
+    application::get_export_folder() const
+    {
+        const fs::path export_path = ag::core::assets_real_path() / "exports";
+        return QString::fromStdString(export_path.string().c_str());
+    }
+    QString
+    application::recover_fund(QString uuid) const
+    {
+        QString result;
+
+        ::mm2::api::recover_funds_of_swap_request request{.swap_uuid = uuid.toStdString()};
+        auto                                      res = ::mm2::api::rpc_recover_funds(std::move(request));
+        result                                        = QString::fromStdString(res.raw_result);
+
+        return result;
+    }
+
+    QString
+    application::to_eth_checksum_qt(QString eth_lowercase_address) const
+    {
+        auto str = eth_lowercase_address.toStdString();
+        to_eth_checksum(str);
+        return QString::fromStdString(str);
     }
 } // namespace atomic_dex

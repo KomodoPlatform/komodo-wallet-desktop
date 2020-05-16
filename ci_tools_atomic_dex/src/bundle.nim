@@ -72,20 +72,42 @@ proc bundle*(build_type: string, osx_sdk_path: string, compiler_path: string) =
             build_path =  os.getCurrentDir().parentDir().joinPath("build-" & build_type).joinPath("bin")
             mm2_path =  os.getCurrentDir().parentDir().joinPath("build-" & build_type).joinPath("bin").joinPath("assets").joinPath("tools").joinPath("mm2")
             dll_path   = os.getCurrentDir().parentDir().joinPath("windows_misc")
+            dll_path_vcpkg = os.getCurrentDir().parentDir().joinPath("vcpkg-repo").joinPath("installed").joinPath("x64-windows").joinPath("bin")
             bundle_path = os.getCurrentDir().parentDir().joinPath("bundle-" & build_type)
             #Copy-Item C:\Code\Trunk -Filter *.csproj.user -Destination C:\Code\F2 -Recurse
             pwsh_cmd = "Get-ChildItem " & dll_path & " | Copy-Item -Destination " & build_path & " -Recurse -filter *.dll"
+            pwsh_cmd_vcpkg = "Get-ChildItem " & dll_path_vcpkg & " | Copy-Item -Destination " & build_path & " -Recurse -filter *.dll"
             pwsh_cmd_mm2 = "Get-ChildItem " & dll_path & " | Copy-Item -Destination " & mm2_path & " -Recurse -filter *.dll"
             copy_dll_cmd = "powershell.exe -nologo -noprofile -command \"& { " & pwsh_cmd & " }\""
             copy_dll_mm2_cmd = "powershell.exe -nologo -noprofile -command \"& { " & pwsh_cmd_mm2 & " }\""
+            copy_dll_vcpkg_cmd = "powershell.exe -nologo -noprofile -command \"& { " & pwsh_cmd_vcpkg & " }\""
             bundle_cmd = "powershell.exe -nologo -noprofile -command \"& { Add-Type -A 'System.IO.Compression.FileSystem'; [IO.Compression.ZipFile]::CreateFromDirectory('bin', 'bin.zip'); }\""
             
         echo copy_dll_cmd
         discard osproc.execCmd(copy_dll_cmd)
-        discard osproc.execCmd(copy_dll_mm2_cmd)
+        discard osproc.execCmd(copy_dll_cmd)
+        discard osproc.execCmd(copy_dll_vcpkg_cmd)
         discard osproc.execCmd(bundle_cmd)
         discard os.existsOrCreateDir(bundle_path)
         os.moveFile("bin.zip", bundle_path.joinPath("bundle.zip"))
+    when defined(linux):
+        let
+            build_path =  os.getCurrentDir().parentDir().joinPath("build-" & build_type).joinPath("bin")
+            desktop_path = build_path.joinPath("AntaraAtomicDexAppDir/usr/share/applications/atomic_qt.desktop")
+            atomic_qt_qml_dir = os.getCurrentDir().parentDir().parentDir().joinPath("atomic_qt_design/qml")
+            linux_deploy_tool = os.getCurrentDir().parentDir().joinPath("linux_misc").joinPath("linuxdeployqt-continuous-x86_64.AppImage")
+            bundling_cmd = linux_deploy_tool & " " & desktop_path & " -qmldir=" & atomic_qt_qml_dir & " -verbose=2 -bundle-non-qt-libs"
+            bundle_path = os.getCurrentDir().parentDir().joinPath("bundle-" & build_type)
+            tar_cmd = "tar -czvf AntaraAtomicDexAppDir.tar.gz -C " & build_path.joinPath("AntaraAtomicDexAppDir").parentDir() & " ."
+
+        echo "Bundling cmd: " & bundling_cmd
+        discard osproc.execCmd(bundling_cmd)
+        
+        echo "Creating bundle folder: " & bundle_path
+        discard os.existsOrCreateDir(bundle_path)
+        os.setCurrentDir(bundle_path)
+
+        echo "Tar cmd: " & tar_cmd
+        discard osproc.execCmd(tar_cmd)
 
 
-    
