@@ -555,7 +555,7 @@ namespace atomic_dex
         }
         if (result.raw_result.find("Not sufficient balance. Couldn't collect enough value from utxos") != std::string::npos)
         {
-            result.error = "Not sufficient balance. Couldn't collect enough value from utxos";
+            result.error = "Not enough funds to cover txfee, please reduce amount.";
         }
         return result;
     }
