@@ -323,6 +323,7 @@ Item {
                 id: form_rel
                 Layout.fillWidth: true
                 Layout.preferredHeight: form_base.height
+                column_layout.height: form_base.height
                 enabled: form_base.fieldsAreFilled()
                 field.enabled: enabled && preffered_price === empty_price
             }
@@ -368,17 +369,6 @@ Item {
             text: API.get().empty_string + (qsTr("Receive amount is lower than minimum trade amount") + " : " + General.getMinTradeAmount())
             color: Style.colorRed
             visible: form_rel.fieldsAreFilled() && !form_rel.higherThanMinTradeAmount()
-        }
-
-        // Trade button
-        DefaultButton {
-            id: action_button
-            Layout.topMargin: layout_margin
-            Layout.fillWidth: true
-
-            text: API.get().empty_string + (qsTr("Trade"))
-            enabled: form_base.isValid() && form_rel.isValid()
-            onClicked: confirm_trade_modal.open()
         }
 
         ConfirmTradeModal {
