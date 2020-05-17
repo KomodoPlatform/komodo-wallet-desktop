@@ -4,20 +4,12 @@ import QtQuick.Controls 2.12
 
 import "../Constants"
 
-Popup {
+DefaultModal {
     property alias title: text_area.title
     property alias field: text_area.field
 
 
     id: root
-    anchors.centerIn: Overlay.overlay
-    modal: true
-    focus: true
-    closePolicy: Popup.CloseOnEscape | Popup.CloseOnPressOutside
-
-    Overlay.modal: Rectangle {
-        color: "#AA000000"
-    }
 
     padding: 50
 
