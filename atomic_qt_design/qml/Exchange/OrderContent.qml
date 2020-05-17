@@ -97,7 +97,7 @@ Item {
     }
 
     // Cancel button
-    Button {
+    DangerButton {
         visible: !in_modal && item.cancellable !== undefined && item.cancellable
         anchors.right: parent.right
         anchors.bottom: date.bottom
@@ -106,7 +106,7 @@ Item {
     }
 
     // Recover Funds button
-    Button {
+    PrimaryButton {
         visible: !in_modal && item.is_recoverable !== undefined && item.is_recoverable
         anchors.right: parent.right
         anchors.bottom: date.bottom
