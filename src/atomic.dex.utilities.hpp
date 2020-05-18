@@ -6,16 +6,55 @@
 #include <QCryptographicHash>
 #include <QString>
 
+inline fs::path
+get_atomic_dex_data_folder()
+{
+    fs::path appdata_path;
+#if defined(_WIN32) || defined(WIN32)
+    appdata_path = fs::path(std::getenv("APPDATA")) / "atomic_qt";
+#else
+    appdata_path = fs::path(std::getenv("HOME")) / ".atomic_qt";
+#endif
+    return appdata_path;
+}
+
+inline fs::path
+get_atomic_dex_logs_folder()
+{
+    return get_atomic_dex_data_folder() / "logs";
+}
+
+inline fs::path
+get_atomic_dex_config_folder()
+{
+    if (not fs::exists(get_atomic_dex_data_folder() / "config"))
+    {
+        fs::create_directories(get_atomic_dex_data_folder() / "config");
+    }
+    return get_atomic_dex_data_folder() / "config";
+}
+
+inline fs::path
+get_atomic_dex_export_folder()
+{
+    if (not fs::exists(get_atomic_dex_data_folder() / "exports"))
+    {
+        fs::create_directories(get_atomic_dex_data_folder() / "exports");
+    }
+    return get_atomic_dex_data_folder() / "exports";
+}
+
 inline std::string
 dex_sha256(const std::string& str)
 {
-    QString res = QString(QCryptographicHash::hash((str.c_str()),QCryptographicHash::Keccak_256).toHex());
+    QString res = QString(QCryptographicHash::hash((str.c_str()), QCryptographicHash::Keccak_256).toHex());
     return res.toStdString();
 }
 
-inline void to_eth_checksum(std::string& address)
+inline void
+to_eth_checksum(std::string& address)
 {
-    address = address.substr(2);
+    address                = address.substr(2);
     auto hex_str           = dex_sha256(address);
     auto final_eth_address = std::string("0x");
 
@@ -24,11 +63,13 @@ inline void to_eth_checksum(std::string& address)
         std::string actual(1, hex_str[i]);
         try
         {
-            auto        value = std::stoi(actual, nullptr, 16);
+            auto value = std::stoi(actual, nullptr, 16);
             if (value >= 8)
             {
                 final_eth_address += toupper(address[i]);
-            } else {
+            }
+            else
+            {
                 final_eth_address += address[i];
             }
         }
