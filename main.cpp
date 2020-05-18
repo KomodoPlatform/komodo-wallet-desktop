@@ -41,7 +41,7 @@ main(int argc, char* argv[])
     auto timestamp = duration_cast<seconds>(system_clock::now().time_since_epoch()).count();
     date::sys_seconds tp{seconds{timestamp}};
     std::string       s   = date::format("%Y-%m-%d-%H-%M-%S", tp);
-    const fs::path log_path = ag::core::assets_real_path() / ("logs/" + s + ".log");
+    const fs::path log_path = get_atomic_dex_logs_folder() / (s + ".log");
     std::string path = log_path.string();
     loguru::add_file(path.c_str(), loguru::Truncate, loguru::Verbosity_INFO);
     atomic_dex::application atomic_app;
