@@ -33,6 +33,7 @@ namespace atomic_dex
         std::string userhome{std::getenv("HOME")};
 #endif
         std::string passphrase;
+        std::string dbdir{(get_atomic_dex_data_folder() / "mm2" / "DB").string()};
         std::string rpc_password{"atomic_dex_mm2_passphrase"};
     };
 
@@ -48,6 +49,7 @@ namespace atomic_dex
         cfg.userhome     = j.at("userhome").get<std::string>();
         cfg.passphrase   = j.at("passphrase").get<std::string>();
         cfg.rpc_password = j.at("rpc_password").get<std::string>();
+        cfg.dbdir        = j.at("dbdir").get<std::string>();
     }
 
     inline void
@@ -59,5 +61,6 @@ namespace atomic_dex
         j["userhome"]     = cfg.userhome;
         j["passphrase"]   = cfg.passphrase;
         j["rpc_password"] = cfg.rpc_password;
+        j["dbdir"]        = cfg.dbdir;
     }
 } // namespace atomic_dex
