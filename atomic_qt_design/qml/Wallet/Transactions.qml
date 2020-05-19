@@ -5,7 +5,6 @@ import QtQuick.Controls 2.12
 import "../Components"
 import "../Constants"
 
-
 ListView {
     id: list
 
@@ -13,15 +12,18 @@ ListView {
 
     ScrollBar.vertical: DefaultScrollBar {}
 
-    model: API.get().current_coin_info.transactions
+    model: {
+        const confirmed = API.get().current_coin_info.transactions.filter(t => t.timestamp !== 0)
+        const unconfirmed = API.get().current_coin_info.transactions.filter(t => t.timestamp === 0)
+        return unconfirmed.concat(confirmed)
+    }
+
     clip: true
     // Row
     delegate: Rectangle {
         id: rectangle
         implicitWidth: parent.width
         height: row_height
-
-        visible: model.modelData.timestamp !== 0
 
         color: mouse_area.containsMouse ? Style.colorTheme6 : "transparent"
 
@@ -89,8 +91,8 @@ ListView {
 
         // Date
         DefaultText {
-            text: API.get().empty_string + (model.modelData.date)
             font.pixelSize: description.font.pixelSize
+            text: API.get().empty_string + (model.modelData.timestamp === 0 ? qsTr("Unconfirmed"):  model.modelData.date)
             anchors.verticalCenter: parent.verticalCenter
             anchors.right: parent.right
             anchors.rightMargin: 20
