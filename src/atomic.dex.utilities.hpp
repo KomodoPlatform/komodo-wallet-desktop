@@ -21,6 +21,10 @@ get_atomic_dex_data_folder()
 inline fs::path
 get_atomic_dex_logs_folder()
 {
+    if (not fs::exists(get_atomic_dex_data_folder() / "logs"))
+    {
+        fs::create_directories(get_atomic_dex_data_folder() / "logs");
+    }
     return get_atomic_dex_data_folder() / "logs";
 }
 
