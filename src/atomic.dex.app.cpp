@@ -152,13 +152,13 @@ namespace atomic_dex
         else
         {
             using namespace std::string_literals;
-            const fs::path seed_path = ag::core::assets_real_path() / ("config/"s + wallet_name.toStdString() + ".seed"s);
+            const fs::path seed_path = get_atomic_dex_config_folder() / (wallet_name.toStdString() + ".seed"s);
             // Encrypt seed
             atomic_dex::encrypt(seed_path, seed.toStdString().data(), key.data());
             // sodium_memzero(&seed, seed.size());
             sodium_memzero(key.data(), key.size());
 
-            std::ofstream ofs((ag::core::assets_real_path() / "config/default.wallet"s).string());
+            std::ofstream ofs((get_atomic_dex_config_folder() / "default.wallet"s).string().c_str());
             ofs << wallet_name.toStdString();
             set_wallet_default_name(wallet_name);
 
@@ -183,7 +183,7 @@ namespace atomic_dex
         else
         {
             using namespace std::string_literals;
-            const fs::path seed_path = ag::core::assets_real_path() / ("config/"s + wallet_name.toStdString() + ".seed"s);
+            const fs::path seed_path = get_atomic_dex_config_folder() / (wallet_name.toStdString() + ".seed"s);
             auto           seed      = atomic_dex::decrypt(seed_path, key.data(), ec);
             if (ec == dextop_error::corrupted_file_or_wrong_password)
             {
@@ -771,7 +771,7 @@ namespace atomic_dex
     application::get_wallets() const
     {
         QStringList out;
-        for (auto&& p: fs::directory_iterator((ag::core::assets_real_path() / "config")))
+        for (auto&& p: fs::directory_iterator((get_atomic_dex_config_folder())))
         {
             if (p.path().extension().string() == ".seed")
             {
@@ -784,7 +784,7 @@ namespace atomic_dex
     bool
     application::is_there_a_default_wallet() const
     {
-        return fs::exists(ag::core::assets_real_path() / "config/default.wallet");
+        return fs::exists(get_atomic_dex_config_folder() / "default.wallet");
     }
 
     QString
@@ -792,7 +792,7 @@ namespace atomic_dex
     {
         if (is_there_a_default_wallet())
         {
-            std::ifstream ifs((ag::core::assets_real_path() / "config/default.wallet").c_str());
+            std::ifstream ifs((get_atomic_dex_config_folder() / "default.wallet").c_str());
             assert(ifs);
             std::string str((std::istreambuf_iterator<char>(ifs)), std::istreambuf_iterator<char>());
             return QString::fromStdString(str);
@@ -815,14 +815,14 @@ namespace atomic_dex
 
         this->m_need_a_full_refresh_of_mm2 = true;
 
-        return fs::remove(ag::core::assets_real_path() / "config/default.wallet");
+        return fs::remove(get_atomic_dex_config_folder() / "default.wallet");
     }
 
     bool
     application::delete_wallet(const QString& wallet_name) const
     {
         using namespace std::string_literals;
-        return fs::remove(ag::core::assets_real_path() / ("config/"s + wallet_name.toStdString() + ".seed"s));
+        return fs::remove(get_atomic_dex_config_folder() / (wallet_name.toStdString() + ".seed"s));
     }
 
     void
@@ -850,17 +850,17 @@ namespace atomic_dex
         using namespace std::string_literals;
         if (wallet_name == "")
         {
-            fs::remove(ag::core::assets_real_path() / "config/default.wallet");
+            fs::remove(get_atomic_dex_config_folder() / "default.wallet");
             return;
         }
-        if (not fs::exists(ag::core::assets_real_path() / "config/default.wallet"s))
+        if (not fs::exists(get_atomic_dex_config_folder() / "default.wallet"s))
         {
-            std::ofstream ofs((ag::core::assets_real_path() / "config/default.wallet"s).string());
+            std::ofstream ofs((get_atomic_dex_config_folder() / "default.wallet"s).string());
             ofs << wallet_name.toStdString();
         }
         else
         {
-            std::ofstream ofs((ag::core::assets_real_path() / "config/default.wallet"s).string(), std::ios_base::out | std::ios_base::trunc);
+            std::ofstream ofs((get_atomic_dex_config_folder() / "default.wallet"s).string(), std::ios_base::out | std::ios_base::trunc);
             ofs << wallet_name.toStdString();
         }
 
@@ -1012,8 +1012,7 @@ namespace atomic_dex
     QString
     application::get_log_folder() const
     {
-        const fs::path log_path = ag::core::assets_real_path() / "logs";
-        return QString::fromStdString(log_path.string().c_str());
+        return QString::fromStdString(get_atomic_dex_logs_folder().string());
     }
 
     QString
@@ -1030,7 +1029,7 @@ namespace atomic_dex
             }
         }
         using namespace std::string_literals;
-        const fs::path seed_path = ag::core::assets_real_path() / ("config/"s + wallet_name.toStdString() + ".seed"s);
+        const fs::path seed_path = get_atomic_dex_config_folder() / (wallet_name.toStdString() + ".seed"s);
         auto           seed      = atomic_dex::decrypt(seed_path, key.data(), ec);
         if (ec == dextop_error::corrupted_file_or_wrong_password)
         {
@@ -1054,7 +1053,7 @@ namespace atomic_dex
             }
         }
         using namespace std::string_literals;
-        const fs::path seed_path = ag::core::assets_real_path() / ("config/"s + wallet_name.toStdString() + ".seed"s);
+        const fs::path seed_path = get_atomic_dex_config_folder() / (wallet_name.toStdString() + ".seed"s);
         auto           seed      = atomic_dex::decrypt(seed_path, key.data(), ec);
         if (ec == dextop_error::corrupted_file_or_wrong_password)
         {
@@ -1129,7 +1128,7 @@ namespace atomic_dex
     application::export_swaps(const QString& csv_filename) noexcept
     {
         auto           swaps    = get_mm2().get_swaps();
-        const fs::path csv_path = ag::core::assets_real_path() / "exports" / (csv_filename.toStdString() + std::string(".csv"));
+        const fs::path csv_path = get_atomic_dex_export_folder() / (csv_filename.toStdString() + std::string(".csv"));
 
         std::ofstream ofs(csv_path.string(), std::ios::out | std::ios::trunc);
         ofs << "Maker Coin, Taker Coin, Maker Amount, Taker Amount, Type, Events, My Info, Is Recoverable" << std::endl;
@@ -1152,8 +1151,7 @@ namespace atomic_dex
     QString
     application::get_export_folder() const
     {
-        const fs::path export_path = ag::core::assets_real_path() / "exports";
-        return QString::fromStdString(export_path.string().c_str());
+        return QString::fromStdString(get_atomic_dex_export_folder().string().c_str());
     }
     QString
     application::recover_fund(QString uuid) const
