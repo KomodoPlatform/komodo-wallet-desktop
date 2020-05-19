@@ -24,8 +24,6 @@ ListView {
         implicitWidth: parent.width
         height: 65
 
-        visible: model.modelData.timestamp !== 0
-
         property bool hovered: false
 
         color: hovered ? Style.colorTheme8 : "transparent"
