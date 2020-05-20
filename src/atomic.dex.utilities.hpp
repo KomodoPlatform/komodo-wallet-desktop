@@ -48,6 +48,13 @@ get_atomic_dex_export_folder()
     return get_atomic_dex_data_folder() / "exports";
 }
 
+inline fs::path
+get_atomic_dex_current_export_recent_swaps_file()
+{
+    const fs::path export_log_path = get_atomic_dex_export_folder() / ("swap-export.json");
+    return export_log_path;
+}
+
 inline std::string
 dex_sha256(const std::string& str)
 {
