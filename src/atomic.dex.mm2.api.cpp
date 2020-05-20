@@ -617,6 +617,7 @@ namespace mm2::api
         if (j.find("result") != j.end())
         {
             answer.result = j.at("result").get<my_recent_swaps_answer_success>();
+            answer.result.value().raw_result = answer.raw_result;
         }
         else if (j.find("error") != j.end())
         {
@@ -653,9 +654,9 @@ namespace mm2::api
         try
         {
             auto json_answer = nlohmann::json::parse(resp.body);
-            from_json(json_answer, answer);
             answer.rpc_result_code = resp.code;
             answer.raw_result      = resp.body;
+            from_json(json_answer, answer);
         }
         catch (const std::exception& error)
         {
