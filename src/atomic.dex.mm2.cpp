@@ -101,6 +101,10 @@ namespace atomic_dex
         if (s_info >= 30s)
         {
             spawn([this]() { fetch_infos_thread(); });
+            spawn([this]() {
+                loguru::set_thread_name("rotate log thread");
+                rotate_log();
+            });
             m_info_clock = std::chrono::high_resolution_clock::now();
         }
     }
@@ -921,5 +925,26 @@ namespace atomic_dex
     mm2::get_trade_fixed_fee(const std::string& ticker) const
     {
         return m_trade_fees_registry.find(ticker) != m_trade_fees_registry.cend() ? m_trade_fees_registry.at(ticker) : t_get_trade_fee_answer{};
+    }
+
+    void
+    mm2::rotate_log() noexcept
+    {
+        LOG_SCOPE_FUNCTION(INFO);
+
+        auto atomic_log_folder_path = get_atomic_dex_logs_folder();
+        auto current_log_file       = get_atomic_dex_current_log_file();
+
+        if (fs::exists(current_log_file))
+        {
+            if (auto f_size = fs::file_size(current_log_file); f_size > 7777777)
+            {
+                if (fs::exists(current_log_file.string() + ".old")) {
+                    fs::remove(current_log_file.string() + ".old");
+                }
+                fs::rename(current_log_file, current_log_file.string() + ".old");
+                LOG_F(INFO, "Log rotation finished, previous file size: {}", f_size);
+            }
+        }
     }
 } // namespace atomic_dex
