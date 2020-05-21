@@ -52,7 +52,7 @@ ListView {
         DefaultText {
             id: description
             text: API.get().empty_string + (model.modelData.received ? qsTr("Incoming transaction") : qsTr("Outgoing transaction"))
-            font.pixelSize: Style.textSizeSmall2
+            font.pixelSize: Style.textSizeSmall
             anchors.verticalCenter: parent.verticalCenter
             anchors.left: received_icon.right
             anchors.leftMargin: 25
@@ -86,7 +86,7 @@ ListView {
             anchors.verticalCenter: parent.verticalCenter
             anchors.left: parent.left
             anchors.leftMargin: parent.width * 0.575
-            color: Style.colorThemePassiveLight
+            font.weight: Font.Thin
         }
 
         // Date
@@ -96,7 +96,7 @@ ListView {
             anchors.verticalCenter: parent.verticalCenter
             anchors.right: parent.right
             anchors.rightMargin: 20
-            color: Style.colorThemePassiveLight
+            font.weight: Font.Thin
         }
 
         HorizontalLine {
