@@ -1199,6 +1199,8 @@ namespace atomic_dex
         t_float_50 base_amount_f(base_amount.toStdString());
         t_float_50 rel_amount_f(rel_amount.toStdString());
         auto final = (rel_amount_f / base_amount_f);
-        return QString::fromStdString(get_formated_float(final));
+        std::stringstream ss;
+        ss << std::move(final);
+        return QString::fromStdString(ss.str());
     }
 } // namespace atomic_dex
