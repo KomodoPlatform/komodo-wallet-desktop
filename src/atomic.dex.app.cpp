@@ -373,6 +373,13 @@ namespace atomic_dex
         if (!ec)
         {
             m_coin_info->set_tx_state(QString::fromStdString(tx_state.state));
+            if (mm2.get_coin_info(m_coin_info->get_ticker().toStdString()).is_erc_20) {
+                m_coin_info->set_blocks_left(tx_state.blocks_left);
+                std::cout << "blocks left: " << m_coin_info->get_blocks_left() << std::endl;
+            } else {
+                m_coin_info->set_txs_left(tx_state.transactions_left);
+                std::cout << "txs left: " << m_coin_info->get_txs_left() << std::endl;
+            }
             m_coin_info->set_tx_current_block(tx_state.current_block);
         }
     }
