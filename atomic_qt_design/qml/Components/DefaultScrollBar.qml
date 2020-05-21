@@ -5,7 +5,22 @@ import QtQuick.Controls 2.12
 import "../Constants"
 
 ScrollBar {
-    width: 7
+    id: control
+    width: 9
+    active: true
+    position: 5
+    policy: ScrollBar.AsNeeded
+
+    topPadding: 5
+
+    contentItem: FloatingBackground {
+        radius: 100
+    }
+    background: InnerBackground {
+        width: control.width + 4
+        x: -width/2 + control.width/2
+        radius: 100
+    }
 }
 
 /*##^##
