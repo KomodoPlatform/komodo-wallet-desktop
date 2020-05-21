@@ -50,6 +50,8 @@ namespace atomic_dex
     struct tx_state
     {
         std::string state;
+        std::size_t transactions_left;
+        std::size_t blocks_left;
         std::size_t current_block;
     };
 
