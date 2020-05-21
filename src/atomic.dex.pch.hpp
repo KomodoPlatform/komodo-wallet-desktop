@@ -172,6 +172,7 @@ adjust_precision(const std::string& current)
 #define ENTT_STANDARD_CPP
 #include <entt/entity/helper.hpp>
 #include <entt/signal/dispatcher.hpp>
+#define LOGURU_WITH_FILEABS 1
 #include <loguru.hpp>
 #include <meta/detection/detection.hpp>
 #if defined(_WIN32) || defined(WIN32)

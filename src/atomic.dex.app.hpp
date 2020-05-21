@@ -64,6 +64,7 @@ namespace atomic_dex
       public:
         //! Constructor
         explicit application(QObject* pParent = nullptr) noexcept;
+        ~application() noexcept;
 
         //! entt::dispatcher events
         void on_enabled_coins_event(const enabled_coins_event&) noexcept;
@@ -137,6 +138,7 @@ namespace atomic_dex
         Q_INVOKABLE bool        create(const QString& password, const QString& seed, const QString& wallet_name);
         Q_INVOKABLE bool        enable_coins(const QStringList& coins);
         Q_INVOKABLE QString     get_balance(const QString& coin);
+        Q_INVOKABLE QString     get_price_amount(QString base_amount, QString rel_amount);
         Q_INVOKABLE bool        place_buy_order(const QString& base, const QString& rel, const QString& price, const QString& volume);
         Q_INVOKABLE bool        place_sell_order(const QString& base, const QString& rel, const QString& price, const QString& volume);
         Q_INVOKABLE void        set_current_orderbook(const QString& base);
@@ -149,6 +151,7 @@ namespace atomic_dex
         Q_INVOKABLE QVariantMap  get_my_orders();
         Q_INVOKABLE QVariantMap  get_recent_swaps();
         Q_INVOKABLE bool         export_swaps(const QString& csv_filename) noexcept;
+        Q_INVOKABLE bool         export_swaps_json() noexcept;
         Q_INVOKABLE QString      get_regex_password_policy() const noexcept;
         Q_INVOKABLE bool         delete_wallet(const QString& wallet_name) const;
         Q_INVOKABLE QVariantMap  get_trade_infos(const QString& ticker, const QString& receive_ticker, const QString& amount);

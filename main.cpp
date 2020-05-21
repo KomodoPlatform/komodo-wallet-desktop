@@ -36,14 +36,8 @@ main(int argc, char* argv[])
     loguru::g_preamble_uptime = false;
     loguru::g_preamble_date   = false;
     loguru::set_thread_name("main thread");
-    using namespace std::chrono;
-    using namespace date;
-    auto timestamp = duration_cast<seconds>(system_clock::now().time_since_epoch()).count();
-    date::sys_seconds tp{seconds{timestamp}};
-    std::string       s   = date::format("%Y-%m-%d-%H-%M-%S", tp);
-    const fs::path log_path = get_atomic_dex_logs_folder() / (s + ".log");
-    std::string path = log_path.string();
-    loguru::add_file(path.c_str(), loguru::Truncate, loguru::Verbosity_INFO);
+    std::string path = get_atomic_dex_current_log_file().string();
+    loguru::add_file(path.c_str(), loguru::FileMode::Truncate, loguru::Verbosity_INFO);
     atomic_dex::application atomic_app;
 
     //! QT

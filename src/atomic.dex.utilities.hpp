@@ -21,7 +21,23 @@ get_atomic_dex_data_folder()
 inline fs::path
 get_atomic_dex_logs_folder()
 {
+    if (not fs::exists(get_atomic_dex_data_folder() / "logs"))
+    {
+        fs::create_directories(get_atomic_dex_data_folder() / "logs");
+    }
     return get_atomic_dex_data_folder() / "logs";
+}
+
+inline fs::path
+get_atomic_dex_current_log_file()
+{
+    using namespace std::chrono;
+    using namespace date;
+    static auto timestamp = duration_cast<seconds>(system_clock::now().time_since_epoch()).count();
+    static date::sys_seconds tp{seconds{timestamp}};
+    static std::string       s   = date::format("%Y-%m-%d-%H-%M-%S", tp);
+    static const fs::path log_path = get_atomic_dex_logs_folder() / (s + ".log");
+    return log_path;
 }
 
 inline fs::path
@@ -42,6 +58,13 @@ get_atomic_dex_export_folder()
         fs::create_directories(get_atomic_dex_data_folder() / "exports");
     }
     return get_atomic_dex_data_folder() / "exports";
+}
+
+inline fs::path
+get_atomic_dex_current_export_recent_swaps_file()
+{
+    const fs::path export_log_path = get_atomic_dex_export_folder() / ("swap-export.json");
+    return export_log_path;
 }
 
 inline std::string

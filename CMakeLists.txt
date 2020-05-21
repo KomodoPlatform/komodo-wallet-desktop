@@ -149,8 +149,10 @@ else ()
             )
 endif ()
 
+add_compile_definitions(LOGURU_WITH_FILEABS=1)
 target_compile_definitions(atomic_qt
-        PRIVATE $<$<OR:$<CONFIG:Debug>,$<CONFIG:RelWithDebInfo>>:QT_QML_DEBUG>)
+        PRIVATE
+        $<$<OR:$<CONFIG:Debug>,$<CONFIG:RelWithDebInfo>>:QT_QML_DEBUG>)
 target_include_directories(atomic_qt PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/src
         $<$<PLATFORM_ID:Darwin>:${CMAKE_CURRENT_SOURCE_DIR}/src/osx>
         ${libqr_code_SOURCE_DIR}/src)

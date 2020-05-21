@@ -1125,6 +1125,24 @@ namespace atomic_dex
     }
 
     bool
+    application::export_swaps_json() noexcept
+    {
+        auto swaps = get_mm2().get_swaps().raw_result;
+
+        if (not swaps.empty())
+        {
+            auto export_file_path = get_atomic_dex_current_export_recent_swaps_file();
+
+            std::ofstream ofs(export_file_path.string(), std::ios::out | std::ios::trunc);
+            auto          j = nlohmann::json::parse(swaps);
+            ofs << std::setw(4) << j;
+            ofs.close();
+            return true;
+        }
+        return false;
+    }
+
+    bool
     application::export_swaps(const QString& csv_filename) noexcept
     {
         auto           swaps    = get_mm2().get_swaps();
@@ -1145,7 +1163,7 @@ namespace atomic_dex
             ofs << std::endl;
         }
         ofs.close();
-        return false;
+        return true;
     }
 
     QString
@@ -1171,5 +1189,16 @@ namespace atomic_dex
         auto str = eth_lowercase_address.toStdString();
         to_eth_checksum(str);
         return QString::fromStdString(str);
+    }
+
+    application::~application() noexcept { export_swaps_json(); }
+
+    QString
+    application::get_price_amount(QString base_amount, QString rel_amount)
+    {
+        t_float_50 base_amount_f(base_amount.toStdString());
+        t_float_50 rel_amount_f(rel_amount.toStdString());
+        auto final = (rel_amount_f / base_amount_f);
+        return QString::fromStdString(get_formated_float(final));
     }
 } // namespace atomic_dex
