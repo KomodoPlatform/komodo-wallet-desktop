@@ -50,6 +50,10 @@ QtObject {
         return diffPrefix(received) + symbols[fiat] + " " + amount
     }
 
+    function formatDouble(v) {
+        return parseFloat(v).toFixed(8)
+    }
+
     function formatCrypto(received, amount, ticker, fiat_amount, fiat) {
         return diffPrefix(received) + amount + " " + ticker + (fiat_amount ? " (" + formatFiat("", fiat_amount, fiat) + ")" : "")
     }
