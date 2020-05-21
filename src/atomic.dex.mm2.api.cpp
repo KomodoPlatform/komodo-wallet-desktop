@@ -348,7 +348,7 @@ namespace mm2::api
         j.at("zcredits").get_to(contents.zcredits);
 
         boost::trim_right_if(contents.price, boost::is_any_of("0"));
-        contents.price     = adjust_precision(contents.price);
+        contents.price     = contents.price;
         contents.maxvolume = adjust_precision(contents.maxvolume);
     }
 
