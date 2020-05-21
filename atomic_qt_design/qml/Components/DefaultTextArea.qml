@@ -7,6 +7,7 @@ import "../Constants"
 TextArea {
     id: text_field
 
+    property bool remove_newline: true
     wrapMode: TextEdit.Wrap
 
     KeyNavigation.priority: KeyNavigation.BeforeItem
@@ -19,13 +20,15 @@ TextArea {
             }
 
             // Ignore \n \r stuff
-            event.accepted = true
+            if(remove_newline) event.accepted = true
         }
     }
 
     onTextChanged: {
-        if(text.indexOf('\r') !== -1 || text.indexOf('\n') !== -1) {
-            text = text.replace(/[\r\n]/, '')
+        if(remove_newline) {
+            if(text.indexOf('\r') !== -1 || text.indexOf('\n') !== -1) {
+                text = text.replace(/[\r\n]/, '')
+            }
         }
     }
 

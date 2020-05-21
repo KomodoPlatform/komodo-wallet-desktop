@@ -20,8 +20,20 @@ DefaultModal {
         return API.get().current_coin_info.type === "ERC-20"
     }
 
+    function ercToMixedCase(addr) {
+        return API.get().to_eth_checksum_qt(addr.toLowerCase())
+    }
+
+    function hasErc20CaseIssue(is_erc_20, addr) {
+        if(!is_erc_20) return false
+        if(addr.length <= 2) return false
+
+        addr = addr.substring(2) // Remove 0x
+        return addr === addr.toLowerCase() || addr === addr.toUpperCase()
+    }
+
     function prepareSendCoin(address, amount, fee_enabled, fee_amount, is_erc_20, gas, gas_price, set_current=true) {
-        let max = parseFloat(API.get().current_coin_info.balance) === parseFloat(amount)
+        let max = input_max_amount.checked || parseFloat(API.get().current_coin_info.balance) === parseFloat(amount)
 
         let result
 
@@ -36,6 +48,8 @@ DefaultModal {
         }
 
         if(set_current) {
+            if(max) input_amount.field.text = result.total_amount
+
             prepare_send_result = result
             if(prepare_send_result.has_error) {
                 text_error.text = prepare_send_result.error_message
@@ -66,6 +80,7 @@ DefaultModal {
         input_custom_fees_gas.field.text = ""
         input_custom_fees_gas_price.field.text = ""
         custom_fees_switch.checked = false
+        input_max_amount.checked = false
         text_error.text = ""
 
         if(close) root.close()
@@ -74,6 +89,7 @@ DefaultModal {
 
     function feeIsHigherThanAmount() {
         if(!custom_fees_switch.checked) return false
+        if(input_max_amount.checked) return false
 
         const amt = parseFloat(input_amount.field.text)
         const fee_amt = parseFloat(input_custom_fees.field.text)
@@ -82,6 +98,8 @@ DefaultModal {
     }
 
     function hasFunds() {
+        if(input_max_amount.checked) return true
+
         if(!General.hasEnoughFunds(true, API.get().current_coin_info.ticker, "", "", input_amount.field.text))
             return false
 
@@ -125,10 +143,8 @@ DefaultModal {
 
     function fieldAreFilled() {
         return input_address.field.text != "" &&
-             input_amount.field.text != "" &&
+             (input_max_amount.checked || (input_amount.field.text != "" && input_amount.field.acceptableInput && parseFloat(input_amount.field.text) > 0)) &&
              input_address.field.acceptableInput &&
-             input_amount.field.acceptableInput &&
-             parseFloat(input_amount.field.text) > 0 &&
              feesAreFilled()
     }
 
@@ -159,17 +175,36 @@ DefaultModal {
                 field.placeholderText: API.get().empty_string + (qsTr("Enter address of the recipient"))
             }
 
+            // ERC-20 Lowercase issue
+            RowLayout {
+                Layout.fillWidth: true
+                visible: isERC20() && input_address.field.text != "" && hasErc20CaseIssue(isERC20(), input_address.field.text)
+                DefaultText {
+                    Layout.alignment: Qt.AlignLeft
+                    color: Style.colorRed
+                    text: API.get().empty_string + (qsTr("The address has to be mixed case."))
+                }
+
+                DefaultButton {
+                    Layout.alignment: Qt.AlignRight
+                    text: API.get().empty_string + (qsTr("Fix"))
+                    onClicked: input_address.field.text = ercToMixedCase(input_address.field.text)
+                }
+            }
+
             RowLayout {
                 // Amount input
                 AmountField {
                     id: input_amount
+                    field.visible: !input_max_amount.checked
                     title: API.get().empty_string + (qsTr("Amount to send"))
                     field.placeholderText: API.get().empty_string + (qsTr("Enter the amount to send"))
                 }
 
-                DefaultButton {
+                Switch {
+                    id: input_max_amount
                     text: API.get().empty_string + (qsTr("MAX"))
-                    onClicked: setMax()
+                    onCheckedChanged: input_amount.field.text = ""
                 }
             }
 
@@ -258,7 +293,7 @@ DefaultModal {
                     text: API.get().empty_string + (qsTr("Prepare"))
                     Layout.fillWidth: true
 
-                    enabled: fieldAreFilled() && hasFunds()
+                    enabled: fieldAreFilled() && hasFunds() && !hasErc20CaseIssue(isERC20(), input_address.field.text)
 
                     onClicked: prepareSendCoin(input_address.field.text, input_amount.field.text, custom_fees_switch.checked, input_custom_fees.field.text,
                                                isERC20(), input_custom_fees_gas.field.text, input_custom_fees_gas_price.field.text)

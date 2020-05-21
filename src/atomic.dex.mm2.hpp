@@ -170,6 +170,9 @@ namespace atomic_dex
         //! Called every ticks, and execute tasks if the timer expire.
         void update() noexcept final;
 
+        //! Check and process for logging rotation.
+        void rotate_log() noexcept;
+
         //! Retrieve public address of the given ticker
         std::string address(const std::string& ticker, t_mm2_ec& ec) const noexcept;
 

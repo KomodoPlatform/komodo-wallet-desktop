@@ -13,6 +13,7 @@ ColumnLayout {
     property bool hidable: false
     property var onReturn // function
 
+    property alias remove_newline: input_field.remove_newline
     property bool hiding: true
 
 

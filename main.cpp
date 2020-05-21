@@ -19,8 +19,13 @@
 #    include "atomic.dex.osx.manager.hpp"
 #endif
 
+#if defined(WINDOWS_RELEASE_MAIN)
+INT WINAPI WinMain(HINSTANCE hInst, HINSTANCE, LPSTR strCmdLine, INT)
+#else
+
 int
 main(int argc, char* argv[])
+#endif
 {
     //! Project
 #if defined(_WIN32) || defined(WIN32) || defined(__linux__)
@@ -31,14 +36,14 @@ main(int argc, char* argv[])
     loguru::g_preamble_uptime = false;
     loguru::g_preamble_date   = false;
     loguru::set_thread_name("main thread");
-    const fs::path log_path = ag::core::assets_real_path() / "logs/latest_readeable.log";
-    std::string path = log_path.string();
-    loguru::add_file(path.c_str(), loguru::Truncate, loguru::Verbosity_INFO);
+    std::string path = get_atomic_dex_current_log_file().string();
+    loguru::add_file(path.c_str(), loguru::FileMode::Truncate, loguru::Verbosity_INFO);
     atomic_dex::application atomic_app;
 
     //! QT
     QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
-    QApplication       app(argc, argv);
+    int ac = 0;
+    QApplication       app(ac, NULL);
     atomic_app.set_qt_app(&app);
     QQmlApplicationEngine engine;
     QZXing::registerQMLTypes();

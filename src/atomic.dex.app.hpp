@@ -64,6 +64,7 @@ namespace atomic_dex
       public:
         //! Constructor
         explicit application(QObject* pParent = nullptr) noexcept;
+        ~application() noexcept;
 
         //! entt::dispatcher events
         void on_enabled_coins_event(const enabled_coins_event&) noexcept;
@@ -103,6 +104,7 @@ namespace atomic_dex
 
         //! Bind to the QML Worlds
         Q_INVOKABLE QString get_paprika_id_from_ticker(QString ticker) const;
+        Q_INVOKABLE QString to_eth_checksum_qt(QString eth_lowercase_address) const;
         Q_INVOKABLE QString recover_fund(QString uuid) const;
         Q_INVOKABLE QString get_mm2_version() const;
         Q_INVOKABLE bool mnemonic_validate(QString entropy);
@@ -148,6 +150,7 @@ namespace atomic_dex
         Q_INVOKABLE QVariantMap  get_my_orders();
         Q_INVOKABLE QVariantMap  get_recent_swaps();
         Q_INVOKABLE bool         export_swaps(const QString& csv_filename) noexcept;
+        Q_INVOKABLE bool         export_swaps_json() noexcept;
         Q_INVOKABLE QString      get_regex_password_policy() const noexcept;
         Q_INVOKABLE bool         delete_wallet(const QString& wallet_name) const;
         Q_INVOKABLE QVariantMap  get_trade_infos(const QString& ticker, const QString& receive_ticker, const QString& amount);

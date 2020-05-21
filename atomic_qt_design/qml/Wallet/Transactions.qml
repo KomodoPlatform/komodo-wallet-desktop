@@ -11,7 +11,11 @@ ListView {
     implicitWidth: contentItem.childrenRect.width
     implicitHeight: contentItem.childrenRect.height
 
-    model: API.get().current_coin_info.transactions
+    model: {
+        const confirmed = API.get().current_coin_info.transactions.filter(t => t.timestamp !== 0)
+        const unconfirmed = API.get().current_coin_info.transactions.filter(t => t.timestamp === 0)
+        return unconfirmed.concat(confirmed)
+    }
     clip: true
 
     function reset() {
@@ -23,8 +27,6 @@ ListView {
         id: rectangle
         implicitWidth: parent.width
         height: 65
-
-        visible: model.modelData.timestamp !== 0
 
         property bool hovered: false
 
@@ -81,7 +83,7 @@ ListView {
         DefaultText {
             anchors.right: parent.horizontalCenter
             anchors.rightMargin: -380
-            text: API.get().empty_string + (model.modelData.date)
+            text: API.get().empty_string + (model.modelData.timestamp === 0 ? qsTr("Unconfirmed"):  model.modelData.date)
             anchors.verticalCenter: parent.verticalCenter
         }
     }

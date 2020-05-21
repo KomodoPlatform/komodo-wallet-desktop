@@ -149,8 +149,10 @@ else ()
             )
 endif ()
 
+add_compile_definitions(LOGURU_WITH_FILEABS=1)
 target_compile_definitions(atomic_qt
-        PRIVATE $<$<OR:$<CONFIG:Debug>,$<CONFIG:RelWithDebInfo>>:QT_QML_DEBUG>)
+        PRIVATE
+        $<$<OR:$<CONFIG:Debug>,$<CONFIG:RelWithDebInfo>>:QT_QML_DEBUG>)
 target_include_directories(atomic_qt PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/src
         $<$<PLATFORM_ID:Darwin>:${CMAKE_CURRENT_SOURCE_DIR}/src/osx>
         ${libqr_code_SOURCE_DIR}/src)
@@ -208,6 +210,11 @@ if (WIN32)
     file(COPY assets DESTINATION ${CMAKE_BINARY_DIR}/bin/)
     configure_file(wally/wally.dll ${CMAKE_BINARY_DIR}/bin/ COPYONLY)
     set_target_properties(Folly::folly PROPERTIES INTERFACE_COMPILE_OPTIONS "")
+    if(CMAKE_BUILD_TYPE MATCHES Release)
+      message(STATUS "disabling console")
+      target_compile_definitions(atomic_qt PRIVATE WINDOWS_RELEASE_MAIN)
+      target_link_options(atomic_qt PUBLIC --for-linker -subsystem:windows)
+    endif()
 endif ()
 
 if (APPLE)

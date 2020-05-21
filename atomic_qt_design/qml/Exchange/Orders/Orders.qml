@@ -20,6 +20,7 @@ Item {
         updateOrders()
     }
 
+
     function inCurrentPage() {
         return  exchange.inCurrentPage() &&
                 exchange.current_page === General.idx_exchange_orders

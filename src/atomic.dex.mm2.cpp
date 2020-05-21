@@ -101,15 +101,20 @@ namespace atomic_dex
         if (s_info >= 30s)
         {
             spawn([this]() { fetch_infos_thread(); });
+            spawn([this]() {
+                loguru::set_thread_name("rotate log thread");
+                rotate_log();
+            });
             m_info_clock = std::chrono::high_resolution_clock::now();
         }
     }
 
     mm2::~mm2() noexcept
     {
-        const reproc::stop_actions stop_actions = {{reproc::stop::terminate, reproc::milliseconds(2000)},
-                                                   {reproc::stop::kill, reproc::milliseconds(5000)},
-                                                   {reproc::stop::wait, reproc::milliseconds(2000)}};
+        const reproc::stop_actions stop_actions = {
+            {reproc::stop::terminate, reproc::milliseconds(2000)},
+            {reproc::stop::kill, reproc::milliseconds(5000)},
+            {reproc::stop::wait, reproc::milliseconds(2000)}};
 
         m_mm2_running = false;
         const auto ec = m_mm2_instance.stop(stop_actions);
@@ -552,6 +557,10 @@ namespace atomic_dex
         {
             ec = dextop_error::rpc_withdraw_error;
         }
+        if (result.raw_result.find("Not sufficient balance. Couldn't collect enough value from utxos") != std::string::npos)
+        {
+            result.error = "Not enough funds to cover txfee, please reduce amount.";
+        }
         return result;
     }
 
@@ -750,6 +759,7 @@ namespace atomic_dex
             ec = dextop_error::unknown_ticker;
             return "Invalid";
         }
+
         return m_balance_informations.at(ticker).address;
     }
 
@@ -927,5 +937,26 @@ namespace atomic_dex
     mm2::get_trade_fixed_fee(const std::string& ticker) const
     {
         return m_trade_fees_registry.find(ticker) != m_trade_fees_registry.cend() ? m_trade_fees_registry.at(ticker) : t_get_trade_fee_answer{};
+    }
+
+    void
+    mm2::rotate_log() noexcept
+    {
+        LOG_SCOPE_FUNCTION(INFO);
+
+        auto atomic_log_folder_path = get_atomic_dex_logs_folder();
+        auto current_log_file       = get_atomic_dex_current_log_file();
+
+        if (fs::exists(current_log_file))
+        {
+            if (auto f_size = fs::file_size(current_log_file); f_size > 7777777)
+            {
+                if (fs::exists(current_log_file.string() + ".old")) {
+                    fs::remove(current_log_file.string() + ".old");
+                }
+                fs::rename(current_log_file, current_log_file.string() + ".old");
+                LOG_F(INFO, "Log rotation finished, previous file size: {}", f_size);
+            }
+        }
     }
 } // namespace atomic_dex

@@ -82,12 +82,8 @@ Rectangle {
         return General.isEthEnabled() && API.get().do_i_have_enough_funds("ETH", curr_trade_info.erc_fees)
     }
 
-    function getMinTradeAmount() {
-        return 0.00777
-    }
-
     function higherThanMinTradeAmount() {
-        return input_volume.field.text !== '' && parseFloat(input_volume.field.text) >= getMinTradeAmount()
+        return input_volume.field.text !== '' && parseFloat(input_volume.field.text) >= General.getMinTradeAmount()
     }
 
     function isValid() {
