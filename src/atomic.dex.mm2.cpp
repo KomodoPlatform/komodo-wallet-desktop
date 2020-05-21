@@ -638,7 +638,25 @@ namespace atomic_dex
         }
         else if (answer.rpc_result_code not_eq -1 and answer.result.has_value())
         {
-            t_tx_state     state{.state = answer.result.value().sync_status.state, .current_block = answer.result.value().current_block};
+            t_tx_state state{
+                .state             = answer.result.value().sync_status.state,
+                .current_block     = answer.result.value().current_block,
+                .transactions_left = 0,
+                .blocks_left       = 0};
+
+            if (answer.result.value().sync_status.additional_info.has_value())
+            {
+                if (answer.result.value().sync_status.additional_info.value().erc_infos.has_value())
+                {
+                    state.blocks_left = answer.result.value().sync_status.additional_info.value().erc_infos.value().blocks_left;
+                }
+                if (answer.result.value().sync_status.additional_info.value().regular_infos.has_value())
+                {
+                    state.transactions_left = answer.result.value().sync_status.additional_info.value().regular_infos.value().transactions_left;
+                }
+            }
+
+            // std::cout << "txs left: " << state.transactions_left << std::endl;
             t_transactions out;
             out.reserve(answer.result.value().transactions.size());
 
@@ -939,7 +957,8 @@ namespace atomic_dex
         {
             if (auto f_size = fs::file_size(current_log_file); f_size > 7777777)
             {
-                if (fs::exists(current_log_file.string() + ".old")) {
+                if (fs::exists(current_log_file.string() + ".old"))
+                {
                     fs::remove(current_log_file.string() + ".old");
                 }
                 fs::rename(current_log_file, current_log_file.string() + ".old");

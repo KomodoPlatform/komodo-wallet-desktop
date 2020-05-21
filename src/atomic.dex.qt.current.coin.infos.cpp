@@ -155,6 +155,32 @@ namespace atomic_dex
         emit tx_current_block_changed();
     }
 
+    unsigned int
+    atomic_dex::current_coin_info::get_txs_left() const noexcept
+    {
+        return this->selected_coin_txs_left;
+    }
+
+    void
+    atomic_dex::current_coin_info::set_txs_left(unsigned int txs) noexcept
+    {
+        this->selected_coin_txs_left = txs;
+        emit txs_left_changed();
+    }
+
+    unsigned int
+    atomic_dex::current_coin_info::get_blocks_left() const noexcept
+    {
+        return this->selected_coin_blocks_left;
+    }
+
+    void
+    atomic_dex::current_coin_info::set_blocks_left(unsigned int blocks) noexcept
+    {
+        this->selected_coin_blocks_left = blocks;
+        emit blocks_left_changed();
+    }
+
     QString
     current_coin_info::get_minimal_balance_for_asking_rewards() const noexcept
     {
