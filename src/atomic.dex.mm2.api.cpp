@@ -623,6 +623,14 @@ namespace mm2::api
                     rate_bundler(jf_evt, evt_type, "MakerPaymentWaitConfirmStarted");
                 }
 
+                if (evt_type == "Finished")
+                {
+                    if (contents.type == "Taker")
+                    {
+                        rate_bundler(jf_evt, evt_type, "MakerPaymentSpent");
+                    }
+                }
+
                 contents.events.push_back(jf_evt);
             }
             else
@@ -664,6 +672,28 @@ namespace mm2::api
                     rate_bundler(jf_evt, evt_type, "TakerFeeValidated");
                 }
 
+                if (evt_type == "TakerPaymentSent")
+                {
+                    rate_bundler(jf_evt, evt_type, "MakerPaymentValidatedAndConfirmed");
+                }
+
+                if (evt_type == "TakerPaymentSpent")
+                {
+                    if (contents.type == "Taker")
+                    {
+                        rate_bundler(jf_evt, evt_type, "TakerPaymentSent");
+                    }
+                    else
+                    {
+                        rate_bundler(jf_evt, evt_type, "TakerPaymentValidatedAndConfirmed");
+                    }
+                }
+
+                if (evt_type == "MakerPaymentSpent")
+                {
+                    rate_bundler(jf_evt, evt_type, "TakerPaymentSpent");
+                }
+
                 contents.events.push_back(jf_evt);
             }
         }
@@ -687,7 +717,7 @@ namespace mm2::api
     {
         if (j.find("result") != j.end())
         {
-            answer.result = j.at("result").get<my_recent_swaps_answer_success>();
+            answer.result                    = j.at("result").get<my_recent_swaps_answer_success>();
             answer.result.value().raw_result = answer.raw_result;
         }
         else if (j.find("error") != j.end())
@@ -724,7 +754,7 @@ namespace mm2::api
 
         try
         {
-            auto json_answer = nlohmann::json::parse(resp.body);
+            auto json_answer       = nlohmann::json::parse(resp.body);
             answer.rpc_result_code = resp.code;
             answer.raw_result      = resp.body;
             from_json(json_answer, answer);
