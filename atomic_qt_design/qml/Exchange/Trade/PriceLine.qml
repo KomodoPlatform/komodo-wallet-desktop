@@ -8,6 +8,7 @@ import "../../Constants"
 // Price
 DefaultText {
     Layout.alignment: Qt.AlignHCenter
-    text: API.get().empty_string + (!hasValidPrice() ? '' : (preffered_price === empty_price ? qsTr("Price") + ": " + getCalculatedPrice() :
-                                            qsTr("Selected Price") + ": " + preffered_price) + " " + getTicker(false))
+    text: API.get().empty_string + (!hasValidPrice() ? '' :
+         (preffered_price === empty_price ? qsTr("Price") : qsTr("Selected Price")) + ": " +
+          General.formatCrypto("", preffered_price === empty_price ? getCalculatedPrice() : preffered_price, getTicker(false)))
 }

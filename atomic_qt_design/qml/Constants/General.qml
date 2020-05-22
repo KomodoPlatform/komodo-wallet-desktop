@@ -50,8 +50,13 @@ QtObject {
         return diffPrefix(received) + symbols[fiat] + " " + amount
     }
 
+    function formatDouble(v) {
+        // Remove more than 8 decimals, then convert to string without trailing zeros
+        return parseFloat(v).toFixed(8).replace(/\.?0+$/,"")
+    }
+
     function formatCrypto(received, amount, ticker, fiat_amount, fiat) {
-        return diffPrefix(received) + amount + " " + ticker + (fiat_amount ? " (" + formatFiat("", fiat_amount, fiat) + ")" : "")
+        return diffPrefix(received) + formatDouble(amount) + " " + ticker + (fiat_amount ? " (" + formatFiat("", fiat_amount, fiat) + ")" : "")
     }
 
     function fullCoinName(name, ticker) {

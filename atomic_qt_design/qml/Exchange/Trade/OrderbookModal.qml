@@ -118,7 +118,7 @@ DefaultModal {
                     anchors.right: parent.right
                     anchors.rightMargin: price_header.anchors.rightMargin
 
-                    text: API.get().empty_string + (model.modelData.price)
+                    text: API.get().empty_string + (General.formatDouble(model.modelData.price))
                     color: Style.colorWhite4
                     anchors.verticalCenter: parent.verticalCenter
                 }
