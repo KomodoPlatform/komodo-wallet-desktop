@@ -51,7 +51,8 @@ QtObject {
     }
 
     function formatDouble(v) {
-        return parseFloat(v).toFixed(8)
+        // Remove more than 8 decimals, then convert to string without trailing zeros
+        return parseFloat(parseFloat(v).toFixed(8)).toString()
     }
 
     function formatCrypto(received, amount, ticker, fiat_amount, fiat) {
