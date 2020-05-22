@@ -1199,4 +1199,16 @@ namespace atomic_dex
     }
 
     application::~application() noexcept { export_swaps_json(); }
+
+    QString
+    application::get_price_amount(QString base_amount, QString rel_amount)
+    {
+        t_float_50 base_amount_f(base_amount.toStdString());
+        t_float_50 rel_amount_f(rel_amount.toStdString());
+        auto final = (rel_amount_f / base_amount_f);
+
+        std::stringstream ss;
+        ss << std::fixed << std::setprecision(50) << std::move(final);
+        return QString::fromStdString(ss.str());
+    }
 } // namespace atomic_dex
