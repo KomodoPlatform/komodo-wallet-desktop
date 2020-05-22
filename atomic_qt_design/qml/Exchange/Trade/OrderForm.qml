@@ -383,14 +383,14 @@ FloatingBackground {
 
                         DefaultText {
                             id: tx_fee_text
-                            text: API.get().empty_string + (!canShowFees() ? '' : qsTr('Transaction Fee') + ': ' + (curr_trade_info.tx_fee + ' ' + (curr_trade_info.is_ticker_of_fees_eth ? "ETH" : getTicker(true))) +
-                                                                                                             // ETH Fees
-                                                                                                             (hasEthFees() ? " + " + curr_trade_info.erc_fees + ' ETH' : ''))
+                            text: API.get().empty_string + (canShowFees() ? (qsTr('Transaction Fee') + ': ' + General.formatCrypto("", curr_trade_info.tx_fee, curr_trade_info.is_ticker_of_fees_eth ? "ETH" : getTicker(true))) +
+                                                                    // ETH Fees
+                                                                    (hasEthFees() ? " + " + General.formatCrypto("", curr_trade_info.erc_fees, 'ETH') : '') : '')
                             font.pixelSize: Style.textSizeSmall1
                         }
 
                         DefaultText {
-                            text: API.get().empty_string + (!canShowFees() ? '' : qsTr('Trading Fee') + ': ' + curr_trade_info.trade_fee + ' ' + getTicker(true))
+                            text: API.get().empty_string + (canShowFees() ? (qsTr('Trading Fee') + ': ' + General.formatCrypto("", curr_trade_info.trade_fee, getTicker(true))) : '')
                             font.pixelSize: tx_fee_text.font.pixelSize
                         }
                     }
