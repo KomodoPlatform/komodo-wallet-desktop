@@ -35,4 +35,4 @@ proc generate_solution*(build_type: string, osx_sdk_path: string, compiler_path:
         if os.existsFile(os.getCurrentDir().joinPath("bin").joinPath("atomic_qt.exe")):
           discard execCmd(get_windows_deploy_cmd())
         else:
-          echo "atomic_qt not builded yet"
+          echo "atomic_qt is not yet built"
