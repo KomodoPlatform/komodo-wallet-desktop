@@ -309,7 +309,7 @@ FloatingBackground {
 
             Slider {
                 id: input_volume_slider
-                readonly property int precision: 3
+                readonly property int precision: General.amountPrecision
                 visible: my_side
                 Layout.fillWidth: true
                 Layout.leftMargin: top_line.Layout.leftMargin
@@ -321,7 +321,7 @@ FloatingBackground {
                 live: false
 
                 onValueChanged: {
-                    if(pressed) input_volume.field.text = value.toFixed(input_volume_slider.precision)
+                    if(pressed) input_volume.field.text = General.formatDouble(value)
                 }
 
                 DefaultText {
