@@ -42,7 +42,7 @@ jobs:
           DEBIAN_FRONTEND: noninteractive
         run: |
           sudo apt-get update  # prevents repo404 errors on apt-remove below
-          sudo apt-get remove php5.6-fpm php7.0-fpm php7.1-fpm php7.2-fpm php7.3-fpm php7.3-common php7.4-fpm msodbcsql17 mysql-server*
+          sudo apt-get remove php* msodbcsql17 mysql*
           sudo apt-get update
           sudo ACCEPT_EULA=Y apt-get upgrade -y
 
@@ -86,32 +86,12 @@ jobs:
           sudo update-alternatives --install /usr/bin/clang++ clang++ /usr/bin/clang++-9 100
           sudo update-alternatives --install /usr/bin/clang clang /usr/bin/clang-9 100
 
-          # cleanup
-          sudo apt-get clean && \
-          sudo rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
-
       - name: Cache vcpkg (Linux)
         id: cache-vcpkg-linux
         uses: actions/cache@v1
         with:
           path: '${{ github.workspace }}/ci_tools_atomic_dex/vcpkg-repo'
           key: ${{ runner.os }}-vcpkg
-
-      - name: Install folly (Linux)
-        if: steps.cache-vcpkg-linux.outputs.cache-hit != 'true'
-        run: |
-          cd ci_tools_atomic_dex
-          git clone https://github.com/KomodoPlatform/vcpkg vcpkg-repo
-          cd vcpkg-repo
-          ./bootstrap-vcpkg.sh
-          sudo ./vcpkg integrate install
-          ./vcpkg install doctest
-          ./vcpkg install pthread
-          export CC=gcc-8
-          export CXX=g++-8
-          vcpkg install folly
-          rm -rf ./downloads
-          rm -rf ./buildtrees
 
       - name: Build (Linux)
         run: |
@@ -120,25 +100,16 @@ jobs:
           cd ci_tools_atomic_dex
           export PATH=$HOME/.nimble/bin:$PATH
           nimble build -y
+          ./ci_tools_atomic_dex build --install_dependencies
           ./ci_tools_atomic_dex build debug
           ./ci_tools_atomic_dex bundle debug
-          rm -rf ./vcpkg-repo/downloads
-          rm -rf ./vcpkg-repo/buildtrees
-          ls build-Debug/bin/AntaraAtomicDexAppDir/usr/bin/atomic_qt
-          zip --junk-paths linux-build-debug.zip build-Debug/*
-          zip --junk-paths vcpkg-debug.zip vcpkg-repo/*
-
+          
       - name: Upload bundle artifact (Linux)
         uses: actions/upload-artifact@v1
         with:
-          name: AtomicDEX-Pro-bundle-linux
-          path: ./ci_tools_atomic_dex/linux-build-debug.zip
+          name: dexpro-ubuntu-debug.tar.gz
+          path: ./ci_tools_atomic_dex/bundle-Debug/AntaraAtomicDexAppDir.tar.gz
 
-      - name: Upload vpckg artifact (Linux)
-        uses: actions/upload-artifact@v1
-        with:
-          name: vcpkg-debug
-          path: ./ci_tools_atomic_dex/vcpkg-debug.zip
 
   macos-build:
     name: MacOS Build
