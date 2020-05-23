@@ -240,47 +240,13 @@ jobs:
           dir: 'C:\'
           modules: 'qtcharts qtwidgets debug_info'
 
-      - name: Cache Vcpkg Deps (Win)
-        id: cache-vcpkg
-        uses: actions/cache@v1
-        with:
-          path: ci_tools_atomic_dex/vcpkg-repo
-          key: ${{ runner.os }}-vcpkg
-
-      - name: Build Vcpkg Deps (Win)
-        shell: powershell
-        if: steps.cache-vcpkg.outputs.cache-hit != 'true'
-        run: |
-          cd ci_tools_atomic_dex
-          & cmd /c 'git clone https://github.com/KomodoPlatform/vcpkg vcpkg-repo 2>&1'
-          cd vcpkg-repo
-          .\bootstrap-vcpkg.bat
-          .\vcpkg.exe integrate install
-          .\vcpkg.exe install entt
-          .\vcpkg.exe install folly
-          .\vcpkg.exe install boost-multiprecision
-          .\vcpkg.exe install boost-random
-          .\vcpkg.exe install doctest
-          .\vcpkg.exe install fmt
-          .\vcpkg.exe install curl
-          .\vcpkg.exe install nlohmann-json
-          rd -r ".\buildtrees\" -ErrorAction SilentlyContinue
-          rd -r ".\downloads\" -ErrorAction SilentlyContinue
-          .\vcpkg.exe install range-v3
-          .\vcpkg.exe install libsodium
-          .\vcpkg.exe install date
-          .\vcpkg.exe install pthreads
-          .\vcpkg.exe install zlib
-          .\vcpkg.exe install gtest
-          .\vcpkg.exe install jsoncpp
-          rd -r ".\buildtrees\" -ErrorAction SilentlyContinue
-          rd -r ".\downloads\" -ErrorAction SilentlyContinue
-
       - name: Build (Win)
         shell: powershell
         run: |
           Set-ExecutionPolicy RemoteSigned -scope CurrentUser
           Invoke-Expression (New-Object System.Net.WebClient).DownloadString('https://get.scoop.sh')
+          $Env:QT_INSTALL_CMAKE_PATH = "C:\Qt\5.14.2\msvc2017_64"
+          
           cd ci_tools_atomic_dex
 
           scoop install nim --global
@@ -302,12 +268,15 @@ jobs:
           $regex = '(?<=g_vcpkg_cmake_script_path & ")[^"]*'
           (Get-Content $file) -replace $regex, ' -DVCPKG_TARGET_TRIPLET=x64-windows ' | Set-Content $file
           nimble build -y
-          $Env:QT_INSTALL_CMAKE_PATH = "C:\Qt\5.14.2\msvc2017_64"
+          
+          # downloading debug dlls because powershell build doesnt put it
           $SHAORIG = "A31827929A4D73EB71BD6986C38EB16D4E779DC3880EFA520869D00C3C0E2AB9"
           $DWFILE = ($PWD | select -exp Path) + '\debuglibs-win-dexpro.zip'
-          (New-Object System.Net.WebClient).DownloadFile('https://sirseven.me/share/debuglibs-win-atomicdexpro.zip', $DWFILE)
+          (New-Object System.Net.WebClient).DownloadFile('https://github.com/KomodoPlatform/depot/releases/download/0.1/debuglibs-win-atomicdexpro.zip', $DWFILE)
           $SHADW = Get-FileHash -Algorithm SHA256 .\debuglibs-win-dexpro.zip | select -exp Hash
           if ($SHADW -ne $SHAORIG) {Throw "Wrong hash: $SHADW =! $SHAORIG"}
+          
+          cmd /c '.\ci_tools_atomic_dex.exe --install_dependencies 2>&1'
           cmd /c '.\ci_tools_atomic_dex.exe build debug 2>&1'
           7z e -o'build-Debug\bin\' .\debuglibs-win-dexpro.zip
           cmd /c '.\ci_tools_atomic_dex.exe bundle debug 2>&1'
