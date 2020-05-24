@@ -128,7 +128,9 @@ Item {
 
                 content: ListView {
                     id: list
-                    ScrollBar.vertical: DefaultScrollBar {}
+                    ScrollBar.vertical: DefaultScrollBar {
+                        policy: list.contentHeight > list.height ? ScrollBar.AlwaysOn : ScrollBar.AlwaysOff
+                    }
                     implicitWidth: contentItem.childrenRect.width
                     implicitHeight: Math.min(contentItem.childrenRect.height, coins_bar.height - 250)
 
