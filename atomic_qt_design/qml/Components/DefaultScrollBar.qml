@@ -6,12 +6,7 @@ import "../Constants"
 
 ScrollBar {
     id: control
-    width: 9
-    active: true
-    position: 5
-    policy: ScrollBar.AsNeeded
-
-    topPadding: 5
+    width: 6
 
     contentItem: FloatingBackground {
         radius: 100
