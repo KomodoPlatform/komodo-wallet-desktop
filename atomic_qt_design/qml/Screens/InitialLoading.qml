@@ -30,7 +30,7 @@ SetupPage {
         DefaultBusyIndicator {
             Layout.alignment: Qt.AlignHCenter
             Layout.leftMargin: -15
-            Layout.rightMargin: Layout.leftMargin
+            Layout.rightMargin: Layout.leftMargin*0.75
             scale: 0.5
         }
 
