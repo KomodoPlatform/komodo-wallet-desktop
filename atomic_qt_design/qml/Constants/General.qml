@@ -66,9 +66,10 @@ QtObject {
     }
 
     readonly property int amountPrecision: 8
-    readonly property int amountSliderPrecision: 3
+    readonly property int sliderDigitLimit: 9
     
     function formatDouble(v, precision) {
+        if(precision === 0) return parseInt(v).toString()
         // Remove more than n decimals, then convert to string without trailing zeros
         return parseFloat(v).toFixed(precision || amountPrecision).replace(/\.?0+$/,"")
     }
