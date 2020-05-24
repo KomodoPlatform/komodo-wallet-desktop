@@ -185,7 +185,7 @@ QtObject {
                case "KMD": return "5.555"
                case "CHIPS": return "0"
                case "RICK": return "3.33"
-               case "MORTY": return "5.555"
+               case "MORTY": return "49538.555"
             }
         },
 

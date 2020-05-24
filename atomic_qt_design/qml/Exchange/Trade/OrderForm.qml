@@ -287,8 +287,16 @@ FloatingBackground {
                         field.placeholderText: API.get().empty_string + (my_side ? qsTr("Amount to sell") :
                                                          field.enabled ? qsTr("Amount to receive") : qsTr("Please fill the send amount"))
                         field.onTextChanged: {
+                            const before_checks = field.text
                             onBaseChanged()
-                            input_volume_slider.value = parseFloat(field.text)
+                            const after_checks = field.text
+
+                            // Update slider only if the value is not from slider, or value got corrected here
+                            if(before_checks !== after_checks || !input_volume_slider.updating_text_field) {
+                                input_volume_slider.updating_from_text_field = true
+                                input_volume_slider.value = parseFloat(field.text)
+                                input_volume_slider.updating_from_text_field = false
+                            }
                         }
 
                         field.font.pixelSize: Style.textSizeSmall1
@@ -309,7 +317,13 @@ FloatingBackground {
 
             Slider {
                 id: input_volume_slider
-                readonly property int precision: General.amountPrecision
+                function getRealValue() {
+                    return input_volume_slider.position * (input_volume_slider.to - input_volume_slider.from)
+                }
+
+                property bool updating_from_text_field: false
+                property bool updating_text_field: false
+                readonly property int precision: General.amountSliderPrecision
                 visible: my_side
                 Layout.fillWidth: true
                 Layout.leftMargin: top_line.Layout.leftMargin
@@ -321,7 +335,13 @@ FloatingBackground {
                 live: false
 
                 onValueChanged: {
-                    if(pressed) input_volume.field.text = General.formatDouble(value)
+                    if(updating_from_text_field) return
+
+                    if(pressed) {
+                        updating_text_field = true
+                        input_volume.field.text = General.formatDouble(value)
+                        updating_text_field = false
+                    }
                 }
 
                 DefaultText {
@@ -329,7 +349,7 @@ FloatingBackground {
                     anchors.horizontalCenter: parent.handle.horizontalCenter
                     anchors.bottom: parent.handle.top
 
-                    text: (parent.position * (parent.to - parent.from)).toFixed(input_volume_slider.precision)
+                    text: General.formatDouble(input_volume_slider.getRealValue(), input_volume_slider.precision)
                     font.pixelSize: input_volume.field.font.pixelSize
                 }
 

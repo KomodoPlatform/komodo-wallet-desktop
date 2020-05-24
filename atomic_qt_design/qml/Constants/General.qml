@@ -66,10 +66,11 @@ QtObject {
     }
 
     readonly property int amountPrecision: 8
+    readonly property int amountSliderPrecision: 3
     
-    function formatDouble(v) {
+    function formatDouble(v, precision) {
         // Remove more than n decimals, then convert to string without trailing zeros
-        return parseFloat(v).toFixed(amountPrecision).replace(/\.?0+$/,"")
+        return parseFloat(v).toFixed(precision || amountPrecision).replace(/\.?0+$/,"")
     }
 
     function formatCrypto(received, amount, ticker, fiat_amount, fiat) {

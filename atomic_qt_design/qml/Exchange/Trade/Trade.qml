@@ -70,7 +70,6 @@ Item {
     function updateRelAmount() {
         if(preffered_price !== empty_value) {
             const price = parseFloat(preffered_price)
-            parseFloat(form_base.getVolume())
             let new_rel = parseFloat(form_base.getVolume()) * parseFloat(preffered_price)
 
             // If new rel volume is higher than the order max volume
