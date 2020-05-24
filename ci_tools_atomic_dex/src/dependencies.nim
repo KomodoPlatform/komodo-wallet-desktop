@@ -2,7 +2,6 @@ import osproc
 import vcpkg
 
 let g_packages = [
-    (name: "jsoncpp", head: false),
     (name: "entt", head: false),
     (name: "folly", head: false),
     (name: "boost-multiprecision", head: false),
