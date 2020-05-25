@@ -470,7 +470,10 @@ namespace atomic_dex
         //auto                             redirect_type = reproc::redirect::parent;
         reproc::options options;
         options.redirect.parent = true;
-        options.working_directory = tools_path.string().c_str();
+        options.working_directory = strdup(tools_path.string().c_str());
+        
+        std::cout << "tools path: " << tools_path.string() << std::endl;
+        std::cout << "wd: " << options.working_directory << std::endl;
         const auto                       ec = m_mm2_instance.start(args, options);
 
         if (ec)
@@ -484,7 +487,9 @@ namespace atomic_dex
 
             const auto wait_ec = m_mm2_instance.wait(2s).second;
 
-            if (wait_ec.value() == static_cast<int>(std::errc::timed_out))
+	    std::cout << wait_ec.value() << std::endl;
+            std::cout << static_cast<int>(std::errc::timed_out) << std::endl;
+            if (wait_ec.value() == static_cast<int>(std::errc::timed_out) || wait_ec.value() == 258)
             {
                 DVLOG_F(loguru::Verbosity_INFO, "mm2 is initialized");
                 dispatcher_.trigger<mm2_initialized>();
