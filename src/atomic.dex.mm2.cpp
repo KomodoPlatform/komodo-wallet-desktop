@@ -117,7 +117,7 @@ namespace atomic_dex
             {reproc::stop::wait, reproc::milliseconds(2000)}};
 
         m_mm2_running = false;
-        const auto ec = m_mm2_instance.stop(stop_actions);
+        const auto ec = m_mm2_instance.stop(stop_actions).second;
 
         if (ec)
         {
@@ -467,8 +467,11 @@ namespace atomic_dex
         // DVLOG_F(loguru::Verbosity_INFO, "command line {}", json_cfg.dump());
 
         const std::array<std::string, 2> args          = {(tools_path / "mm2").string(), json_cfg.dump()};
-        reproc::redirect                 redirect_type = reproc::redirect::inherit;
-        const auto                       ec = m_mm2_instance.start(args, {nullptr, tools_path.string().c_str(), {redirect_type, redirect_type, redirect_type}});
+        //auto                             redirect_type = reproc::redirect::parent;
+        reproc::options options;
+        options.redirect.parent = true;
+        options.working_directory = tools_path.string().c_str();
+        const auto                       ec = m_mm2_instance.start(args, options);
 
         if (ec)
         {
@@ -479,9 +482,9 @@ namespace atomic_dex
             using namespace std::chrono_literals;
             loguru::set_thread_name("mm2 init thread");
 
-            const auto wait_ec = m_mm2_instance.wait(2s);
+            const auto wait_ec = m_mm2_instance.wait(2s).second;
 
-            if (wait_ec == reproc::error::wait_timeout)
+            if (wait_ec.value() == static_cast<int>(std::errc::timed_out))
             {
                 DVLOG_F(loguru::Verbosity_INFO, "mm2 is initialized");
                 dispatcher_.trigger<mm2_initialized>();
