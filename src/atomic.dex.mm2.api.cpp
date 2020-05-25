@@ -380,6 +380,17 @@ namespace mm2::api
     }
 
     void
+    to_json(nlohmann::json& j, const setprice_request& request)
+    {
+        j["base"]   = request.base;
+        j["price"]  = request.price;
+        j["rel"]    = request.rel;
+        j["volume"] = request.volume;
+        j["cancel_previous"] = request.cancel_previous;
+        j["max"] = request.max;
+    }
+
+    void
     to_json(nlohmann::json& j, buy_request& request)
     {
         j["base"]   = request.base;
@@ -813,5 +824,4 @@ namespace mm2::api
         }
         return "error occured during rpc_version";
     }
-
 } // namespace mm2::api
