@@ -112,19 +112,23 @@ namespace atomic_dex
 
     mm2::~mm2() noexcept
     {
-        /*const reproc::stop_actions stop_actions = {
+        m_mm2_running = false;
+
+#if defined(_WIN32) || defined(WIN32)
+        atomic_dex::kill_executable("mm2");
+#else
+        const reproc::stop_actions stop_actions = {
             {reproc::stop::terminate, reproc::milliseconds(2000)},
             {reproc::stop::kill, reproc::milliseconds(5000)},
-            {reproc::stop::wait, reproc::milliseconds(2000)}};*/
+            {reproc::stop::wait, reproc::milliseconds(2000)}};
 
-        atomic_dex::kill_executable("mm2");
-        m_mm2_running = false;
-        /*const auto ec = m_mm2_instance.stop(stop_actions).second;
+        const auto ec = m_mm2_instance.stop(stop_actions).second;
 
         if (ec)
         {
             VLOG_SCOPE_F(loguru::Verbosity_ERROR, "error: %s", ec.message().c_str());
-        }*/
+        }
+#endif
 
         if (m_mm2_init_thread.joinable())
         {
