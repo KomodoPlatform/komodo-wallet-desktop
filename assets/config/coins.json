@@ -214,6 +214,30 @@
     "type": "UTXO",
     "name": "Litecoin"
   },
+  "MCL": {
+    "active": false,
+    "coin": "MCL",
+    "coingecko_id": "test-coin",
+    "coinpaprika_id": "test-coin",
+    "currently_enabled": false,
+    "electrum": [
+      {
+        "url": "electrum1.cipig.net:10023"
+      },
+      {
+        "url": "electrum2.cipig.net:10023"
+      },
+      {
+        "url": "electrum3.cipig.net:10023"
+      }
+    ],
+    "explorer_url": [
+      "http://explorer.marmara.io/"
+    ],
+    "is_erc_20": false,
+    "type": "Smart Chain",
+    "name": "MCL"
+  },
   "ETH": {
     "active": false,
     "coin": "ETH",
