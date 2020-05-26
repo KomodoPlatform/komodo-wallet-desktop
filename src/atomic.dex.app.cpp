@@ -810,8 +810,11 @@ namespace atomic_dex
     bool
     application::disconnect()
     {
+        LOG_SCOPE_FUNCTION(INFO);
+
         system_manager_.mark_system<mm2>();
         system_manager_.mark_system<coinpaprika_provider>();
+
         get_dispatcher().sink<change_ticker_event>().disconnect<&application::on_change_ticker_event>(*this);
         get_dispatcher().sink<enabled_coins_event>().disconnect<&application::on_enabled_coins_event>(*this);
         get_dispatcher().sink<tx_fetch_finished>().disconnect<&application::on_tx_fetch_finished_event>(*this);
