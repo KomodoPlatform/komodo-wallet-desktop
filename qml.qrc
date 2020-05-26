@@ -7,9 +7,15 @@
         <file>atomic_qt_design/assets/languages/atomic_qt_tr.qm</file>
         <file>atomic_qt_design/assets/languages/atomic_qt_fr.qm</file>
         <file>atomic_qt_design/assets/fonts/Rubik-Regular.ttf</file>
+        <file>atomic_qt_design/assets/fonts/Montserrat-SemiBold.ttf</file>
+        <file>atomic_qt_design/assets/fonts/Montserrat-Medium.ttf</file>
+        <file>atomic_qt_design/assets/fonts/Montserrat-Light.ttf</file>
+        <file>atomic_qt_design/assets/fonts/Montserrat-Thin.ttf</file>
         <file>atomic_qt_design/assets/fonts/Montserrat-Regular.ttf</file>
         <file>atomic_qt_design/assets/images/arrow_up.svg</file>
         <file>atomic_qt_design/assets/images/arrow_down.svg</file>
+        <file>atomic_qt_design/assets/images/arrow-up.svg</file>
+        <file>atomic_qt_design/assets/images/arrow-down.svg</file>
         <file>atomic_qt_design/assets/images/setup-logs.svg</file>
         <file>atomic_qt_design/assets/images/setup-welcome-wallet.svg</file>
         <file>atomic_qt_design/assets/images/setup-wallet-restore-2.svg</file>
