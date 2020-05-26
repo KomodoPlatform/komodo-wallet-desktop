@@ -32,6 +32,14 @@ QtObject {
     readonly property var reg_pass_special: /(?=.*[@#$%{}[\]()\/\\'"`~,;:.<>+\-_=!^&*|?])/
     readonly property var reg_pass_count: /(?=.{16,})/
 
+    function timestampToDouble(timestamp) {
+        return (new Date(timestamp)).getTime()
+    }
+
+    function timestampToString(timestamp) {
+        return (new Date(timestamp)).getUTCDate()
+    }
+
     function diffPrefix(received) {
         return received === "" ? "" : received === true ? "+ " :  "- "
     }

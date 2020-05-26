@@ -94,6 +94,7 @@ QtObject {
     readonly property string colorThemePassive: "#777F8C"
     readonly property string colorThemePassiveLight: "#CCCDD0"
     readonly property string colorThemeDark: "#26282C"
+    readonly property string colorThemeDark2: "#3C4150"
     readonly property string colorThemeDarkLight: "#78808D"
 
     readonly property string colorGradient1: colorTheme9

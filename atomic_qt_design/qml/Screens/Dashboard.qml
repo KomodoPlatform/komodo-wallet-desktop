@@ -18,7 +18,7 @@ Item {
     Layout.fillWidth: true
 
     function getMainPage() {
-        return API.design_editor ? General.idx_dashboard_exchange : General.idx_dashboard_portfolio
+        return API.design_editor ? General.idx_dashboard_wallet : General.idx_dashboard_portfolio
     }
 
     property int prev_page: -1
