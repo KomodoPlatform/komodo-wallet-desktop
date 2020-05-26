@@ -94,13 +94,13 @@ namespace atomic_dex
 
         if (s >= 5s)
         {
-            spawn([this]() { process_fees(); });
             spawn([this]() { fetch_current_orderbook_thread(); });
             m_orderbook_clock = std::chrono::high_resolution_clock::now();
         }
 
         if (s_info >= 30s)
         {
+            spawn([this]() { process_fees(); });
             spawn([this]() { fetch_infos_thread(); });
             spawn([this]() {
                 loguru::set_thread_name("rotate log thread");
@@ -318,6 +318,8 @@ namespace atomic_dex
             loguru::set_thread_name("orders thread");
             process_orders();
         });
+
+        spawn([this]() { process_fees(); });
 
         return result.load() == 1;
     }
