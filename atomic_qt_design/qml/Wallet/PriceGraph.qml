@@ -10,10 +10,13 @@ import "../Constants"
 ChartView {
     LineSeries {
         id: series
-        style: Qt.SolidLine
         color: Style.colorTheme1
+
+        style: Qt.SolidLine
         width: 2
+
         pointsVisible: true
+
         axisX: DateTimeAxis {
             titleVisible: false
             lineVisible: false
@@ -23,11 +26,11 @@ ChartView {
             format: "MMM d"
         }
         axisY: ValueAxis {
-            titleVisible: false
-            lineVisible: false
-            labelsFont: Style.font
-            gridLineColor: Style.colorThemeDark2
-            labelsColor: gridLineColor
+            titleVisible: series.axisX.titleVisible
+            lineVisible: series.axisX.lineVisible
+            labelsFont: series.axisX.labelsFont
+            gridLineColor: series.axisX.gridLineColor
+            labelsColor: series.axisX.labelsColor
         }
     }
 
@@ -45,8 +48,9 @@ ChartView {
 
     LineSeries {
         id: series2
-        style: series.style
         color: Style.colorTheme10
+
+        style: series.style
         width: series.width
 
         pointsVisible: true
@@ -91,8 +95,6 @@ ChartView {
 
         let i
         if(historical.length > 0) {
-            console.log(JSON.stringify(historical))
-
             for(i = 0; i < historical.length; ++i) {
                 series.append(General.timestampToDouble(historical[i].timestamp), historical[i].price)
                 series2.append(General.timestampToDouble(historical[i].timestamp), historical[i].volume_24h)
