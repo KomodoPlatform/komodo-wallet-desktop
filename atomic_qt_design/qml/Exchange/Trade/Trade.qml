@@ -221,7 +221,7 @@ Item {
                 reset(true, is_base)
 
                 const new_base = getTicker(true)
-                API.get().set_current_orderbook(new_base)
+                API.get().set_current_orderbook(new_base, "")
                 updateOrderbook()
 
                 exchange.onTradeTickerChanged(new_base)

@@ -423,9 +423,9 @@ namespace atomic_dex
         // std::string current = (*m_current_orderbook.begin()).first;
 
         this->m_orderbook_mutex.try_lock();
-        std::string copy = m_current_orderbook_ticker;
+        std::string copy = m_current_orderbook_ticker_base;
         this->m_orderbook_mutex.unlock();
-        process_orderbook(m_current_orderbook_ticker);
+        process_orderbook(m_current_orderbook_ticker_base);
     }
 
     void
@@ -718,7 +718,11 @@ namespace atomic_dex
 
         {
             std::scoped_lock lock(m_orderbook_mutex);
-            this->m_current_orderbook_ticker = evt.base;
+            this->m_current_orderbook_ticker_base = evt.base;
+            if (not evt.rel.empty())
+            {
+                this->m_current_orderbook_ticker_rel = evt.rel;
+            }
         }
 
         spawn([this]() {
