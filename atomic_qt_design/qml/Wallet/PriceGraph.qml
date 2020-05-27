@@ -29,11 +29,30 @@ ChartView {
         }
     ]
 
+    LineSeries {
+        id: series
+        style: Qt.SolidLine
+        color: Style.colorTheme1
+        width: 2
+        pointsVisible: true
+        axisX: date_axis
+        axisY: value_axis
+    }
+
+    AreaSeries {
+        id: series_area
+        borderWidth: 0
+        color: Style.colorTheme1
+        opacity: 0.05
+
+        axisX: date_axis
+        axisY: value_axis
+        upperSeries: series
+    }
+
     function updateChart() {
         const coin = General.getCoin(portfolio_coins, API.get().current_coin_info.ticker)
         if(coin === undefined) return
-
-        chart.removeAllSeries()
 
         const historical = coin.historical
         if(historical === undefined) return
@@ -41,37 +60,12 @@ ChartView {
         let i
         if(historical.length > 0) {
             console.log(JSON.stringify(historical))
-            // Fill chart
-            chart.titleColor = Style.colorTheme1
-            let series_area = chart.createSeries(ChartView.SeriesTypeArea, "price_area", date_axis, value_axis);
-            let series = chart.createSeries(ChartView.SeriesTypeLine, "price", date_axis, value_axis);
 
-            series.style = Qt.SolidLine
-            series.color = Style.colorTheme1
-            series.width = 2
-            series.pointsVisible = true
-
-            series_area.borderWidth = 0
-            series_area.color = series.color
-            series_area.opacity = 0.05
-
-            let min = 999999999
-            let max = -999999999
             for(i = 0; i < historical.length; ++i) {
-                let price = historical[i].price
                 series.append(General.timestampToDouble(historical[i].timestamp), historical[i].price)
-                min = Math.min(min, price)
-                max = Math.max(max, price)
             }
 
-            series_area.upperSeries = series
-
-            chart.axisY().min = min * 0.99
-            chart.axisY().max = max * 1.01
-
-            chart.axisX().min = historical[0].timestamp
-            chart.axisX().max = historical[historical.length - 1].timestamp
-            chart.axisX().tickCount = historical.length
+            date_axis.tickCount = historical.length
         }
     }
 
