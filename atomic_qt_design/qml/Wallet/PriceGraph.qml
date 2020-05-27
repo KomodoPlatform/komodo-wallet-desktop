@@ -8,46 +8,78 @@ import "../Constants"
 
 // List
 ChartView {
-    axes: [
-        DateTimeAxis {
-            id: date_axis
-            titleVisible: false
-            lineVisible: false
-            labelsFont: Style.font
-            gridLineColor: Style.colorThemeDark2
-            labelsColor: gridLineColor
-            format: "MMM d"
-        },
-
-        ValueAxis {
-            id: value_axis
-            titleVisible: false
-            lineVisible: false
-            labelsFont: Style.font
-            gridLineColor: date_axis.gridLineColor
-            labelsColor: gridLineColor
-        }
-    ]
-
     LineSeries {
         id: series
         style: Qt.SolidLine
         color: Style.colorTheme1
         width: 2
         pointsVisible: true
-        axisX: date_axis
-        axisY: value_axis
+        axisX: DateTimeAxis {
+            titleVisible: false
+            lineVisible: false
+            labelsFont: Style.font
+            gridLineColor: Style.colorThemeDark2
+            labelsColor: gridLineColor
+            format: "MMM d"
+        }
+        axisY: ValueAxis {
+            titleVisible: false
+            lineVisible: false
+            labelsFont: Style.font
+            gridLineColor: Style.colorThemeDark2
+            labelsColor: gridLineColor
+        }
     }
 
     AreaSeries {
         id: series_area
-        borderWidth: 0
         color: Style.colorTheme1
+
+        borderWidth: 0
         opacity: 0.05
 
-        axisX: date_axis
-        axisY: value_axis
+        axisX: series.axisX
+        axisY: series.axisY
         upperSeries: series
+    }
+
+    LineSeries {
+        id: series2
+        style: series.style
+        color: Style.colorTheme10
+        width: series.width
+
+        pointsVisible: true
+
+        axisX: DateTimeAxis {
+            visible: false
+            titleVisible: series.axisX.titleVisible
+            lineVisible: series.axisX.lineVisible
+            labelsFont: series.axisX.labelsFont
+            gridLineColor: series.axisX.gridLineColor
+            labelsColor: series.axisX.labelsColor
+            format: "MMM d"
+        }
+        axisY: ValueAxis {
+            visible: false
+            titleVisible: series.axisY.titleVisible
+            lineVisible: series.axisY.lineVisible
+            labelsFont: series.axisY.labelsFont
+            gridLineColor: series.axisY.gridLineColor
+            labelsColor: series.axisY.labelsColor
+        }
+    }
+
+    AreaSeries {
+        id: series_area2
+        color: Style.colorTheme10
+
+        borderWidth: series_area.borderWidth
+        opacity: series_area.opacity
+
+        axisX: series2.axisX
+        axisY: series2.axisY
+        upperSeries: series2
     }
 
     function updateChart() {
@@ -63,9 +95,11 @@ ChartView {
 
             for(i = 0; i < historical.length; ++i) {
                 series.append(General.timestampToDouble(historical[i].timestamp), historical[i].price)
+                series2.append(General.timestampToDouble(historical[i].timestamp), historical[i].volume_24h)
             }
 
-            date_axis.tickCount = historical.length
+            series.axisX.tickCount = historical.length
+            series2.axisX.tickCount = historical.length
         }
     }
 
