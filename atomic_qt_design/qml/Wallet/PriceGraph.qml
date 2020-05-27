@@ -87,6 +87,9 @@ ChartView {
     }
 
     function updateChart() {
+        series.clear()
+        series2.clear()
+
         const coin = General.getCoin(portfolio_coins, API.get().current_coin_info.ticker)
         if(coin === undefined) return
 
@@ -108,6 +111,12 @@ ChartView {
     property string ticker: API.get().current_coin_info.ticker
     onTickerChanged: {
         updateChart()
+    }
+
+    Connections {
+        target: dashboard
+
+        onPortfolio_coinsChanged: updateChart()
     }
 
     id: chart
