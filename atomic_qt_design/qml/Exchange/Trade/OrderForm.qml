@@ -53,7 +53,7 @@ FloatingBackground {
     }
 
     function canShowFees() {
-        return my_side && !General.isZero(getVolume())
+        return my_side && valid_trade_info && !General.isZero(getVolume()) 
     }
 
     function getVolume() {
@@ -236,6 +236,8 @@ FloatingBackground {
                     model: ticker_list
                     onCurrentTextChanged: {
                         if(!recursive_update) {
+                            resetTradeInfo()
+
                             setPair(my_side)
                             if(my_side) prev_base = getTicker()
                             else prev_rel = getTicker()
@@ -403,14 +405,14 @@ FloatingBackground {
 
                         DefaultText {
                             id: tx_fee_text
-                            text: API.get().empty_string + (canShowFees() ? (qsTr('Transaction Fee') + ': ' + General.formatCrypto("", curr_trade_info.tx_fee, curr_trade_info.is_ticker_of_fees_eth ? "ETH" : getTicker(true))) +
+                            text: API.get().empty_string + ((qsTr('Transaction Fee') + ': ' + General.formatCrypto("", curr_trade_info.tx_fee, curr_trade_info.is_ticker_of_fees_eth ? "ETH" : getTicker(true))) +
                                                                     // ETH Fees
-                                                                    (hasEthFees() ? " + " + General.formatCrypto("", curr_trade_info.erc_fees, 'ETH') : '') : '')
+                                                                    (hasEthFees() ? " + " + General.formatCrypto("", curr_trade_info.erc_fees, 'ETH') : ''))
                             font.pixelSize: Style.textSizeSmall1
                         }
 
                         DefaultText {
-                            text: API.get().empty_string + (canShowFees() ? (qsTr('Trading Fee') + ': ' + General.formatCrypto("", curr_trade_info.trade_fee, getTicker(true))) : '')
+                            text: API.get().empty_string + (qsTr('Trading Fee') + ': ' + General.formatCrypto("", curr_trade_info.trade_fee, getTicker(true)))
                             font.pixelSize: tx_fee_text.font.pixelSize
                         }
                     }
@@ -438,7 +440,7 @@ FloatingBackground {
             width: 170
 
             text: API.get().empty_string + (qsTr("Trade"))
-            enabled: form_base.isValid() && form_rel.isValid()
+            enabled: valid_trade_info && form_base.isValid() && form_rel.isValid()
             onClicked: confirm_trade_modal.open()
         }
     }

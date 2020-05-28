@@ -696,9 +696,9 @@ namespace atomic_dex
     }
 
     void
-    application::set_current_orderbook(const QString& base)
+    application::set_current_orderbook(const QString& base, const QString& rel)
     {
-        this->dispatcher_.trigger<orderbook_refresh>(base.toStdString());
+        this->dispatcher_.trigger<orderbook_refresh>(base.toStdString(), rel.toStdString());
     }
 
     QVariantMap

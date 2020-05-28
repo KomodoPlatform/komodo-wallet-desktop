@@ -26,7 +26,6 @@ Item {
         reset(true)
         prev_base = ''
         prev_rel = ''
-        curr_trade_info = default_curr_trade_info
         orderbook_timer.running = false
     }
 
@@ -35,6 +34,7 @@ Item {
         resetPreferredPrice()
         form_base.reset(is_base)
         form_rel.reset(is_base)
+        resetTradeInfo()
     }
 
     Timer {
@@ -113,12 +113,38 @@ Item {
     }
 
     // Cache Trade Info
-    readonly property var default_curr_trade_info: ({"input_final_value": "0", "is_ticker_of_fees_eth": false, "trade_fee": "0", "tx_fee": "0"})
+    readonly property var default_curr_trade_info: ({ "input_final_value": "0", "is_ticker_of_fees_eth": false, "trade_fee": "0", "tx_fee": "0"})
+    property bool valid_trade_info: false
     property var curr_trade_info: default_curr_trade_info
+
+    function resetTradeInfo() {
+        curr_trade_info = default_curr_trade_info
+        valid_trade_info = false
+    }
+
+    Timer {
+        id: trade_info_timer
+        repeat: true
+        interval: 500
+        onTriggered: {
+            if(inCurrentPage() && !valid_trade_info) {
+                updateTradeInfo()
+            }
+        }
+    }
+
 
     function getTradeInfo(base, rel, amount, set_as_current=true) {
         if(inCurrentPage()) {
-            const info = API.get().get_trade_infos(base, rel, amount)
+            let info = API.get().get_trade_infos(base, rel, amount)
+
+            console.log("Getting Trade info with parameters: ", base, rel, amount, " -  Result: ", JSON.stringify(info))
+
+            if(info.input_final_value === undefined || info.input_final_value === "nan" || info.input_final_value === "NaN") {
+                info = default_curr_trade_info
+                valid_trade_info = false
+            }
+            else valid_trade_info = true
 
             if(set_as_current) {
                 curr_trade_info = info
@@ -128,6 +154,8 @@ Item {
         }
         else return curr_trade_info
     }
+
+
 
     // Orderbook
     property var orderbook_model
@@ -153,6 +181,9 @@ Item {
             (base !== undefined && rel !== undefined && amount !== undefined &&
              base !== ''        && rel !== ''        && amount !== '' && amount !== '0')) {
             getTradeInfo(base, rel, amount)
+
+            // Since new implementation does not update fees instantly, re-cap the volume every time, just in case
+            form_base.capVolume()
         }
     }
 
@@ -246,11 +277,12 @@ Item {
         if(getTicker(true) === getTicker(false)) swapPair()
         else {
             if(validBaseRel()) {
-                reset(true, is_base)
-
                 const new_base = getTicker(true)
+                const rel = getTicker(false)
+                console.log("Setting current orderbook with params: ", new_base, rel)
                 API.get().current_coin_info.ticker = new_base
-                API.get().set_current_orderbook(new_base)
+                API.get().set_current_orderbook(new_base, rel)
+                reset(true, is_base)
                 updateOrderbook()
 
                 exchange.onTradeTickerChanged(new_base)
@@ -259,8 +291,7 @@ Item {
     }
 
     function trade(base, rel) {
-        updateTradeInfo(true) // Force update trade info
-        form_base.capVolume() // To cap the value for one last time
+        updateTradeInfo(true) // Force update trade info and cap the value for one last time
 
         const price = getCurrentPrice()
         const volume = form_base.field.text
@@ -279,7 +310,8 @@ Item {
 
         if(base === '' || rel === '') return 0
 
-        return parseFloat(getTradeInfo(getTicker(true), getTicker(false), amount, set_as_current).input_final_value)
+        const info = getTradeInfo(getTicker(true), getTicker(false), amount, set_as_current)
+        return parseFloat(valid_trade_info ? info.input_final_value : amount)
     }
 
     function getReceiveAmount(price, volume) {
