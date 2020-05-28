@@ -193,7 +193,7 @@ QtObject {
             return {"BTC":[{"price":"0.000056","volume":"0.01096449"},{"price":"0.00007302","volume":"0.18629155"},{"price":"0.00007373","volume":"1.35270103"},{"price":"0.00007446","volume":"0.2301469"}],"CHIPS":[],"DEX":[{"price":"0.04545455","volume":"11"},{"price":"0.0334","volume":"3.34"},{"price":"0.0372","volume":"1.86"},{"price":"0.0187","volume":"5.1"},{"price":"0.04","volume":"1"},{"price":"0.03125","volume":"2"},{"price":"0.05","volume":"1"},{"price":"0.016","volume":"0.96"},{"price":"0.033","volume":"0.99"},{"price":"0.05","volume":"935.52693836"},{"price":"0.04166667","volume":"11"},{"price":"0.05","volume":"0.0170945"},{"price":"0.04761905","volume":"9.02725304"},{"price":"0.025","volume":"1.25"},{"price":"0.04347826","volume":"11"},{"price":"0.04255319","volume":"10"}],"ETH":[{"price":"0.00274427","volume":"0.14914282"},{"price":"0.00271743","volume":"1.86858962"},{"price":"0.00274427","volume":"0.14914282"}],"MORTY":[],"RICK":[]}
         },
 
-        set_current_orderbook: (base) => {
+        set_current_orderbook: (base, rel) => {
             console.log("Setting current orderbook: " + base)
         },
 

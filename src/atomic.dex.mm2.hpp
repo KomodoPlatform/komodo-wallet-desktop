@@ -85,7 +85,8 @@ namespace atomic_dex
         reproc::process m_mm2_instance;
 
         //! Current orderbook
-        std::string m_current_orderbook_ticker{"RICK"};
+        std::string m_current_orderbook_ticker_base{"KMD"};
+        std::string m_current_orderbook_ticker_rel{"BTC"};
         std::mutex  m_orderbook_mutex;
         //! Timers
         t_mm2_time_point m_orderbook_clock;
