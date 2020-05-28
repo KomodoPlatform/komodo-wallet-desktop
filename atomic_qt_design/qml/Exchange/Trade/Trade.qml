@@ -249,12 +249,11 @@ Item {
         if(getTicker(true) === getTicker(false)) swapPair()
         else {
             if(validBaseRel()) {
-                reset(true, is_base)
-
                 const new_base = getTicker(true)
                 const rel = getTicker(false)
                 console.log("Setting current orderbook with params: ", new_base, rel)
                 API.get().set_current_orderbook(new_base, rel)
+                reset(true, is_base)
                 updateOrderbook()
 
                 exchange.onTradeTickerChanged(new_base)
