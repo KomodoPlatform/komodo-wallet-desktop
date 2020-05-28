@@ -293,17 +293,18 @@ Rectangle {
             }
 
             ColumnLayout {
+                visible: canShowFees()
                 Layout.alignment: Qt.AlignRight
 
                 DefaultText {
-                    text: API.get().empty_string + (canShowFees() ? (General.formatCrypto("", curr_trade_info.tx_fee, curr_trade_info.is_ticker_of_fees_eth ? "ETH" : getTicker(true))) +
+                    text: API.get().empty_string + (canShowFees() && valid_trade_info ? (General.formatCrypto("", curr_trade_info.tx_fee, curr_trade_info.is_ticker_of_fees_eth ? "ETH" : getTicker(true))) +
                                                                     // ETH Fees
-                                                                    (hasEthFees() ? " + " + General.formatCrypto("", curr_trade_info.erc_fees, 'ETH') : '') : '')
+                                                                    (hasEthFees() ? " + " + General.formatCrypto("", curr_trade_info.erc_fees, 'ETH') : '') : qsTr("Calculating..."))
                     font.pixelSize: tx_fee_text.font.pixelSize
                 }
 
                 DefaultText {
-                    text: API.get().empty_string + (canShowFees() ? General.formatCrypto("", curr_trade_info.trade_fee, getTicker(true)) : '')
+                    text: API.get().empty_string + (canShowFees() && valid_trade_info ? General.formatCrypto("", curr_trade_info.trade_fee, getTicker(true)) : qsTr("Calculating..."))
                     font.pixelSize: tx_fee_text.font.pixelSize
                 }
             }
