@@ -429,6 +429,18 @@ namespace mm2::api
 
     buy_answer rpc_buy(buy_request&& request);
 
+    struct setprice_request
+    {
+        std::string base;
+        std::string rel;
+        std::string price;
+        std::string volume;
+        bool max{false};
+        bool cancel_previous{false};
+    };
+
+    void to_json(nlohmann::json& j, const setprice_request& request);
+
     struct sell_request
     {
         std::string base;

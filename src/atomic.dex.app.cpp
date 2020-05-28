@@ -152,7 +152,8 @@ namespace atomic_dex
         else
         {
             using namespace std::string_literals;
-            const fs::path seed_path = get_atomic_dex_config_folder() / (wallet_name.toStdString() + ".seed"s);
+            const fs::path seed_path          = get_atomic_dex_config_folder() / (wallet_name.toStdString() + ".seed"s);
+            const fs::path wallet_object_path = get_atomic_dex_export_folder() / (wallet_name.toStdString() + ".wallet.json"s);
             // Encrypt seed
             atomic_dex::encrypt(seed_path, seed.toStdString().data(), key.data());
             // sodium_memzero(&seed, seed.size());
@@ -160,7 +161,15 @@ namespace atomic_dex
 
             std::ofstream ofs((get_atomic_dex_config_folder() / "default.wallet"s).string().c_str());
             ofs << wallet_name.toStdString();
+
             set_wallet_default_name(wallet_name);
+
+            std::ofstream  wallet_object(wallet_object_path.string());
+            nlohmann::json wallet_object_json;
+
+            wallet_object_json["name"] = wallet_name.toStdString();
+            wallet_object << wallet_object_json.dump(4);
+            wallet_object.close();
 
             return true;
         }
@@ -373,10 +382,13 @@ namespace atomic_dex
         if (!ec)
         {
             m_coin_info->set_tx_state(QString::fromStdString(tx_state.state));
-            if (mm2.get_coin_info(m_coin_info->get_ticker().toStdString()).is_erc_20) {
+            if (mm2.get_coin_info(m_coin_info->get_ticker().toStdString()).is_erc_20)
+            {
                 m_coin_info->set_blocks_left(tx_state.blocks_left);
                 std::cout << "blocks left: " << m_coin_info->get_blocks_left() << std::endl;
-            } else {
+            }
+            else
+            {
                 m_coin_info->set_txs_left(tx_state.transactions_left);
                 std::cout << "txs left: " << m_coin_info->get_txs_left() << std::endl;
             }
@@ -1208,7 +1220,7 @@ namespace atomic_dex
     {
         t_float_50 base_amount_f(base_amount.toStdString());
         t_float_50 rel_amount_f(rel_amount.toStdString());
-        auto final = (rel_amount_f / base_amount_f);
+        auto       final = (rel_amount_f / base_amount_f);
 
         std::stringstream ss;
         ss << std::fixed << std::setprecision(50) << std::move(final);
