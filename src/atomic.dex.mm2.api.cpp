@@ -595,18 +595,22 @@ namespace mm2::api
 
             auto rate_bundler = [&event_timestamp_registry,
                                  &total_time_in_seconds](nlohmann::json& jf_evt, const std::string& event_type, const std::string& previous_event) {
-                std::int64_t ts                         = event_timestamp_registry.at(previous_event);
-                jf_evt["started_at"]                    = ts;
-                std::int64_t                        ts2 = jf_evt.at("timestamp").get<std::int64_t>();
-                std::stringstream                   ss;
-                sys_time<std::chrono::milliseconds> t1{std::chrono::milliseconds{ts}};
-                sys_time<std::chrono::milliseconds> t2{std::chrono::milliseconds{ts2}};
-                double                              res;
-                res = (std::chrono::duration_cast<std::chrono::milliseconds>(t2 - t1).count() / 1000.0);
-                ss << std::fixed << std::setprecision(3) << res;
-                jf_evt["time_difference_gui"]        = ss.str() + "s";
-                event_timestamp_registry[event_type] = ts2; // Negotiated finished at this time
-                total_time_in_seconds += res;
+                if (event_timestamp_registry.count(previous_event) != 0)
+                {
+                    std::int64_t ts      = event_timestamp_registry.at(previous_event);
+                    jf_evt["started_at"] = ts;
+
+                    std::int64_t                        ts2 = jf_evt.at("timestamp").get<std::int64_t>();
+                    std::stringstream                   ss;
+                    sys_time<std::chrono::milliseconds> t1{std::chrono::milliseconds{ts}};
+                    sys_time<std::chrono::milliseconds> t2{std::chrono::milliseconds{ts2}};
+                    double                              res;
+                    res = (std::chrono::duration_cast<std::chrono::milliseconds>(t2 - t1).count() / 1000.0);
+                    ss << std::fixed << std::setprecision(3) << res;
+                    jf_evt["time_difference_gui"]        = ss.str() + "s";
+                    event_timestamp_registry[event_type] = ts2; // Negotiated finished at this time
+                    total_time_in_seconds += res;
+                }
             };
 
             if (j_evt.count("data") == 0)
