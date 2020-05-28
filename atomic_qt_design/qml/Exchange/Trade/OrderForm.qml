@@ -221,6 +221,8 @@ Rectangle {
                 model: ticker_list
                 onCurrentTextChanged: {
                     if(!recursive_update) {
+                        resetTradeInfo()
+
                         setPair(my_side)
                         if(my_side) prev_base = getTicker()
                         else prev_rel = getTicker()
