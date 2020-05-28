@@ -632,6 +632,9 @@ namespace mm2::api
 
     my_recent_swaps_answer rpc_my_recent_swaps(my_recent_swaps_request&& request);
 
+    nlohmann::json rpc_batch_electrum(std::vector<electrum_request> requests);
+    nlohmann::json rpc_batch_enable(std::vector<enable_request> requests);
+
     template <typename RpcReturnType>
     static RpcReturnType rpc_process_answer(const RestClient::Response& resp) noexcept;
 

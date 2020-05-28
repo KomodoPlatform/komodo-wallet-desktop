@@ -155,6 +155,9 @@ namespace atomic_dex
         //! Enable coins
         bool enable_default_coins() noexcept;
 
+        //! Batch Enable coins
+        void batch_enable_coins(const std::vector<std::string>& tickers, bool emit_event = false) noexcept;
+
         //! Enable multiple coins
         void enable_multiple_coins(const std::vector<std::string>& tickers) noexcept;
 
