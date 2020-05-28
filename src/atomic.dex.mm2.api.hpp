@@ -616,6 +616,7 @@ namespace mm2::api
         std::string              taker_amount;
         std::string              maker_amount;
         std::string              type;
+        std::string              total_time_in_seconds;
         bool                     funds_recoverable;
     };
 

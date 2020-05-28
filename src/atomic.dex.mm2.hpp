@@ -78,6 +78,7 @@ namespace atomic_dex
         using t_tx_state_registry   = t_concurrent_reg<t_ticker, t_tx_state>;
         using t_orderbook_registry  = t_concurrent_reg<t_ticker, std::vector<t_orderbook_answer>>;
         using t_swaps_registry      = t_concurrent_reg<t_ticker, t_my_recent_swaps_answer>;
+        using t_swaps_avrg_datas    = t_concurrent_reg<t_ticker, std::string>;
         using t_fees_registry       = t_concurrent_reg<t_ticker, t_get_trade_fee_answer>;
 
         //! Process
@@ -104,6 +105,7 @@ namespace atomic_dex
         t_fees_registry       m_trade_fees_registry;
         t_orderbook_registry  m_current_orderbook;
         t_swaps_registry      m_swaps_registry;
+        t_swaps_avrg_datas    m_swaps_avrg_registry;
 
         //! Refresh the current orderbook (internally call process_orderbook)
         void fetch_current_orderbook_thread();
