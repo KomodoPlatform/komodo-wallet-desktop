@@ -243,7 +243,7 @@ namespace mm2::api
     void
     to_json(nlohmann::json& j, const recover_funds_of_swap_request& cfg)
     {
-        j["params"] = nlohmann::json::object();
+        j["params"]         = nlohmann::json::object();
         j["params"]["uuid"] = cfg.swap_uuid;
     }
 
@@ -627,7 +627,7 @@ namespace mm2::api
     {
         if (j.find("result") != j.end())
         {
-            answer.result = j.at("result").get<my_recent_swaps_answer_success>();
+            answer.result                    = j.at("result").get<my_recent_swaps_answer_success>();
             answer.result.value().raw_result = answer.raw_result;
         }
         else if (j.find("error") != j.end())
@@ -664,7 +664,7 @@ namespace mm2::api
 
         try
         {
-            auto json_answer = nlohmann::json::parse(resp.body);
+            auto json_answer       = nlohmann::json::parse(resp.body);
             answer.rpc_result_code = resp.code;
             answer.raw_result      = resp.body;
             from_json(json_answer, answer);
@@ -770,7 +770,8 @@ namespace mm2::api
     recover_funds_of_swap_answer
     rpc_recover_funds(recover_funds_of_swap_request&& request)
     {
-        return process_rpc<recover_funds_of_swap_request, recover_funds_of_swap_answer>(std::forward<recover_funds_of_swap_request>(request), "recover_funds_of_swap");
+        return process_rpc<recover_funds_of_swap_request, recover_funds_of_swap_answer>(
+            std::forward<recover_funds_of_swap_request>(request), "recover_funds_of_swap");
     }
 
     my_orders_answer
@@ -818,10 +819,51 @@ namespace mm2::api
         RestClient::Response resp;
         DVLOG_F(loguru::Verbosity_INFO, "request: {}", json_data.dump());
         resp = RestClient::post(g_endpoint, "application/json", json_data.dump());
-        if (resp.code == 200) {
+        if (resp.code == 200)
+        {
             auto answer = nlohmann::json::parse(resp.body);
             return answer.at("result").get<std::string>();
         }
         return "error occured during rpc_version";
+    }
+
+    nlohmann::json
+    rpc_batch_electrum(std::vector<electrum_request> requests)
+    {
+        LOG_F(INFO, "Processing rpc call: batch electrum");
+
+        nlohmann::json req_json_data = nlohmann::json::array();
+        for (auto&& request: requests)
+        {
+            nlohmann::json       json_data = template_request("electrum");
+            RestClient::Response resp;
+            to_json(json_data, request);
+            req_json_data.push_back(json_data);
+        }
+        DVLOG_F(loguru::Verbosity_INFO, "request: {}", req_json_data.dump());
+        auto resp = RestClient::post(g_endpoint, "application/json", req_json_data.dump());
+        DVLOG_F(loguru::Verbosity_INFO, "resp: {}", resp.body);
+        nlohmann::json answer = nlohmann::json::parse(resp.body);
+        return answer;
+    }
+
+    nlohmann::json
+    rpc_batch_enable(std::vector<enable_request> requests)
+    {
+        LOG_F(INFO, "Processing rpc call: batch enable");
+
+        nlohmann::json req_json_data = nlohmann::json::array();
+        for (auto&& request: requests)
+        {
+            nlohmann::json       json_data = template_request("enable");
+            RestClient::Response resp;
+            to_json(json_data, request);
+            req_json_data.push_back(json_data);
+        }
+        DVLOG_F(loguru::Verbosity_INFO, "request: {}", req_json_data.dump());
+        auto resp = RestClient::post(g_endpoint, "application/json", req_json_data.dump());
+        DVLOG_F(loguru::Verbosity_INFO, "resp: {}", resp.body);
+        nlohmann::json answer = nlohmann::json::parse(resp.body);
+        return answer;
     }
 } // namespace mm2::api
