@@ -37,7 +37,7 @@ DefaultModal {
         // Date
         TextWithTitle {
             title: API.get().empty_string + (qsTr("Date"))
-            text: API.get().empty_string + (details.date)
+            text:API.get().empty_string + (details.timestamp === 0 ? qsTr("Unconfirmed"):  details.date)
         }
 
         // Transaction Hash
