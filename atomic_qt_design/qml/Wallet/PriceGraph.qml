@@ -8,6 +8,48 @@ import "../Constants"
 
 // List
 ChartView {
+    // Other, back
+    LineSeries {
+        id: series2
+        color: Style.colorTheme10
+
+        style: series.style
+        width: series.width
+
+        pointsVisible: true
+
+        axisX: DateTimeAxis {
+            visible: false
+            titleVisible: series.axisX.titleVisible
+            lineVisible: series.axisX.lineVisible
+            labelsFont: series.axisX.labelsFont
+            gridLineColor: series.axisX.gridLineColor
+            labelsColor: series.axisX.labelsColor
+            format: "MMM d"
+        }
+        axisYRight: ValueAxis {
+            visible: true
+            titleVisible: series.axisY.titleVisible
+            lineVisible: series.axisY.lineVisible
+            labelsFont: series.axisY.labelsFont
+            gridLineColor: series.axisY.gridLineColor
+            labelsColor: series.axisY.labelsColor
+        }
+    }
+
+    AreaSeries {
+        id: series_area2
+        color: Style.colorTheme10
+
+        borderWidth: series_area.borderWidth
+        opacity: series_area.opacity
+
+        axisX: series2.axisX
+        axisYRight: series2.axisYRight
+        upperSeries: series2
+    }
+
+    // Price, front
     LineSeries {
         id: series
         color: Style.colorTheme1
@@ -46,46 +88,6 @@ ChartView {
         upperSeries: series
     }
 
-    LineSeries {
-        id: series2
-        color: Style.colorTheme10
-
-        style: series.style
-        width: series.width
-
-        pointsVisible: true
-
-        axisX: DateTimeAxis {
-            visible: false
-            titleVisible: series.axisX.titleVisible
-            lineVisible: series.axisX.lineVisible
-            labelsFont: series.axisX.labelsFont
-            gridLineColor: series.axisX.gridLineColor
-            labelsColor: series.axisX.labelsColor
-            format: "MMM d"
-        }
-        axisY: ValueAxis {
-            visible: false
-            titleVisible: series.axisY.titleVisible
-            lineVisible: series.axisY.lineVisible
-            labelsFont: series.axisY.labelsFont
-            gridLineColor: series.axisY.gridLineColor
-            labelsColor: series.axisY.labelsColor
-        }
-    }
-
-    AreaSeries {
-        id: series_area2
-        color: Style.colorTheme10
-
-        borderWidth: series_area.borderWidth
-        opacity: series_area.opacity
-
-        axisX: series2.axisX
-        axisY: series2.axisY
-        upperSeries: series2
-    }
-
     function updateChart() {
         series.clear()
         series2.clear()
@@ -96,15 +98,41 @@ ChartView {
         const historical = coin.historical
         if(historical === undefined) return
 
-        let i
         if(historical.length > 0) {
-            for(i = 0; i < historical.length; ++i) {
-                series.append(General.timestampToDouble(historical[i].timestamp), historical[i].price)
-                series2.append(General.timestampToDouble(historical[i].timestamp), historical[i].volume_24h)
+            let min_price = Infinity
+            let max_price = -Infinity
+            let min_other = Infinity
+            let max_other = -Infinity
+
+            for(let i = 0; i < historical.length; ++i) {
+                const price = historical[i].price
+                const other = historical[i].volume_24h
+
+                series.append(General.timestampToDouble(historical[i].timestamp), price)
+                series2.append(General.timestampToDouble(historical[i].timestamp), other)
+
+                min_price = Math.min(min_price, price)
+                max_price = Math.max(max_price, price)
+                min_other = Math.min(min_other, other)
+                max_other = Math.max(max_other, other)
             }
 
+            // Date
+            series.axisX.min = historical[0].timestamp
+            series.axisX.max = historical[historical.length-1].timestamp
             series.axisX.tickCount = historical.length
-            series2.axisX.tickCount = historical.length
+
+            series2.axisX.min = series.axisX.min
+            series2.axisX.max = series.axisX.max
+            series2.axisX.tickCount = series.axisX.tickCount
+
+            // Price
+            series.axisY.min = min_price
+            series.axisY.max = max_price
+
+            // Other
+            series2.axisYRight.min = min_other
+            series2.axisYRight.max = max_other
         }
     }
 
@@ -116,7 +144,9 @@ ChartView {
     Connections {
         target: dashboard
 
-        onPortfolio_coinsChanged: updateChart()
+        onPortfolio_coinsChanged: {
+            updateChart()
+        }
     }
 
     id: chart
