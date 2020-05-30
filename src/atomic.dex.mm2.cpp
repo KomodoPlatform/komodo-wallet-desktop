@@ -295,15 +295,16 @@ namespace atomic_dex
         std::atomic<std::size_t> result{1};
         auto                     coins = get_active_coins();
 
-        futures.reserve(coins.size());
+        futures.reserve(1);
 
-        for (auto&& current_coin: coins)
-        {
-            futures.emplace_back(spawn([this, ticker = current_coin.ticker]() {
-                loguru::set_thread_name("enable thread");
-                enable_coin(ticker);
-            }));
-        }
+        std::vector<std::string> tickers;
+        tickers.reserve(coins.size());
+        for (auto&& current_coin: coins) { tickers.push_back(current_coin.ticker); }
+
+        futures.emplace_back(spawn([this, tickers]() {
+            loguru::set_thread_name("enable thread");
+            batch_enable_coins(tickers);
+        }));
 
         for (auto&& fut: futures) { fut.get(); }
 
@@ -346,15 +347,85 @@ namespace atomic_dex
     }
 
     void
+    mm2::batch_enable_coins(const std::vector<std::string>& tickers, bool emit_event) noexcept
+    {
+        std::vector<t_electrum_request> requests;
+        std::vector<t_enable_request>   requests_erc;
+
+        for (const auto& ticker: tickers)
+        {
+            coin_config coin_info = m_coins_informations.at(ticker);
+
+            if (coin_info.currently_enabled)
+            {
+                continue;
+            }
+
+            if (not coin_info.is_erc_20)
+            {
+                t_electrum_request request{.coin_name = coin_info.ticker, .servers = coin_info.electrum_urls.value(), .with_tx_history = true};
+                requests.emplace_back(request);
+            }
+            else
+            {
+                t_enable_request request{.coin_name = coin_info.ticker, .urls = coin_info.eth_urls.value(), .with_tx_history = true};
+                requests_erc.emplace_back(request);
+            }
+        }
+
+        auto functor_process_answer = [this, &emit_event](const nlohmann::json& answer) {
+          if (answer.count("coin") == 1)
+          {
+              auto        ticker          = answer.at("coin").get<std::string>();
+              coin_config coin_info       = m_coins_informations.at(ticker);
+              coin_info.currently_enabled = true;
+              m_coins_informations.assign(coin_info.ticker, coin_info);
+
+              spawn([this, copy_ticker = ticker]() {
+                loguru::set_thread_name("balance thread");
+                process_balance(copy_ticker);
+              });
+
+              spawn([this, copy_ticker = ticker]() {
+                loguru::set_thread_name("tx thread");
+                process_tx(copy_ticker);
+              });
+
+              dispatcher_.trigger<coin_enabled>(ticker);
+              if (emit_event)
+              {
+                  this->dispatcher_.trigger<enabled_coins_event>();
+              }
+          }
+        };
+
+        if (not requests.empty())
+        {
+            auto answers = rpc_batch_electrum(requests);
+            for (auto&& answer: answers) { functor_process_answer(answer); }
+        }
+
+        if (not requests_erc.empty())
+        {
+            auto answers_erc = rpc_batch_enable(requests_erc);
+            for (auto&& answer_erc: answers_erc) { functor_process_answer(answer_erc); }
+        }
+    }
+
+    void
     mm2::enable_multiple_coins(const std::vector<std::string>& tickers) noexcept
     {
-        for (const auto& ticker: tickers)
+        spawn([this, tickers]() {
+            loguru::set_thread_name("enable multiple coins");
+            batch_enable_coins(tickers, true);
+        });
+        /*for (const auto& ticker: tickers)
         {
             spawn([this, ticker]() {
                 loguru::set_thread_name("enable multiple coins");
                 enable_coin(ticker, true);
             });
-        }
+        }*/
 
         update_coin_status(tickers, true);
     }
@@ -611,6 +682,18 @@ namespace atomic_dex
         {
             m_swaps_registry.insert_or_assign("result", answer.result.value());
         }
+
+        if (not m_swaps_registry.empty())
+        {
+            auto swaps = get_swaps();
+
+            for (auto &&swap : swaps.swaps) {
+                for (auto&& event : swap.events) {
+                    std::cout << event << std::endl;
+                }
+            }
+        }
+
     }
 
     void

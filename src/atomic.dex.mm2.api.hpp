@@ -429,6 +429,18 @@ namespace mm2::api
 
     buy_answer rpc_buy(buy_request&& request);
 
+    struct setprice_request
+    {
+        std::string base;
+        std::string rel;
+        std::string price;
+        std::string volume;
+        bool max{false};
+        bool cancel_previous{false};
+    };
+
+    void to_json(nlohmann::json& j, const setprice_request& request);
+
     struct sell_request
     {
         std::string base;
@@ -604,6 +616,7 @@ namespace mm2::api
         std::string              taker_amount;
         std::string              maker_amount;
         std::string              type;
+        std::string              total_time_in_seconds;
         bool                     funds_recoverable;
     };
 
@@ -631,6 +644,9 @@ namespace mm2::api
     void from_json(const nlohmann::json& j, my_recent_swaps_answer& answer);
 
     my_recent_swaps_answer rpc_my_recent_swaps(my_recent_swaps_request&& request);
+
+    nlohmann::json rpc_batch_electrum(std::vector<electrum_request> requests);
+    nlohmann::json rpc_batch_enable(std::vector<enable_request> requests);
 
     template <typename RpcReturnType>
     static RpcReturnType rpc_process_answer(const RestClient::Response& resp) noexcept;

@@ -243,7 +243,7 @@ namespace mm2::api
     void
     to_json(nlohmann::json& j, const recover_funds_of_swap_request& cfg)
     {
-        j["params"] = nlohmann::json::object();
+        j["params"]         = nlohmann::json::object();
         j["params"]["uuid"] = cfg.swap_uuid;
     }
 
@@ -377,6 +377,17 @@ namespace mm2::api
     {
         j.at("result").at("amount").get_to(cfg.amount);
         j.at("result").at("coin").get_to(cfg.coin);
+    }
+
+    void
+    to_json(nlohmann::json& j, const setprice_request& request)
+    {
+        j["base"]   = request.base;
+        j["price"]  = request.price;
+        j["rel"]    = request.rel;
+        j["volume"] = request.volume;
+        j["cancel_previous"] = request.cancel_previous;
+        j["max"] = request.max;
     }
 
     void
@@ -580,6 +591,10 @@ namespace mm2::api
         contents.my_info                 = j.at("my_info");
         contents.my_info["other_amount"] = adjust_precision(contents.my_info["other_amount"].get<std::string>());
         contents.my_info["my_amount"]    = adjust_precision(contents.my_info["my_amount"].get<std::string>());
+        using t_event_timestamp_registry = std::unordered_map<std::string, std::uint64_t>;
+        t_event_timestamp_registry event_timestamp_registry;
+        double                     total_time_in_seconds = 0.00;
+
         for (auto&& content: j.at("events"))
         {
             using sys_milliseconds           = sys_time<std::chrono::milliseconds>;
@@ -589,17 +604,118 @@ namespace mm2::api
             std::string           human_date = date::format("%F    %T", tp);
             auto                  evt_type   = j_evt.at("type").get<std::string>();
 
+            auto rate_bundler = [&event_timestamp_registry,
+                                 &total_time_in_seconds](nlohmann::json& jf_evt, const std::string& event_type, const std::string& previous_event) {
+                if (event_timestamp_registry.count(previous_event) != 0)
+                {
+                    std::int64_t ts      = event_timestamp_registry.at(previous_event);
+                    jf_evt["started_at"] = ts;
+
+                    std::int64_t                        ts2 = jf_evt.at("timestamp").get<std::int64_t>();
+                    std::stringstream                   ss;
+                    sys_time<std::chrono::milliseconds> t1{std::chrono::milliseconds{ts}};
+                    sys_time<std::chrono::milliseconds> t2{std::chrono::milliseconds{ts2}};
+                    double                              res;
+                    res = (std::chrono::duration_cast<std::chrono::milliseconds>(t2 - t1).count() / 1000.0);
+                    ss << std::fixed << std::setprecision(3) << res;
+                    jf_evt["time_difference_gui"]        = ss.str() + "s";
+                    event_timestamp_registry[event_type] = ts2; // Negotiated finished at this time
+                    total_time_in_seconds += res;
+                }
+            };
+
             if (j_evt.count("data") == 0)
             {
                 nlohmann::json jf_evt = {{"state", evt_type}, {"human_timestamp", human_date}, {"timestamp", timestamp}};
+
+                if (evt_type == "MakerPaymentWaitConfirmStarted")
+                {
+                    rate_bundler(jf_evt, evt_type, "MakerPaymentReceived");
+                }
+
+                if (evt_type == "MakerPaymentValidatedAndConfirmed")
+                {
+                    rate_bundler(jf_evt, evt_type, "MakerPaymentWaitConfirmStarted");
+                }
+
+                if (evt_type == "Finished")
+                {
+                    if (contents.type == "Taker")
+                    {
+                        rate_bundler(jf_evt, evt_type, "MakerPaymentSpent");
+                    }
+                }
+
                 contents.events.push_back(jf_evt);
             }
             else
             {
                 nlohmann::json jf_evt = {{"state", evt_type}, {"human_timestamp", human_date}, {"data", j_evt.at("data")}, {"timestamp", timestamp}};
+                if (evt_type == "Started")
+                {
+                    jf_evt["started_at"]                    = jf_evt.at("data").at("started_at");
+                    std::int64_t                        ts  = jf_evt.at("data").at("started_at").get<std::int64_t>() * 1000;
+                    std::int64_t                        ts2 = jf_evt.at("timestamp").get<std::int64_t>();
+                    sys_time<std::chrono::milliseconds> t1{std::chrono::milliseconds{ts}};
+                    sys_time<std::chrono::milliseconds> t2{std::chrono::milliseconds{ts2}};
+                    std::stringstream                   ss;
+                    double                              res;
+                    res = (std::chrono::duration_cast<std::chrono::milliseconds>(t2 - t1).count() / 1000.0);
+                    ss << std::fixed << std::setprecision(3) << res;
+                    jf_evt["time_difference_gui"]       = ss.str() + "s";
+                    event_timestamp_registry["Started"] = ts2; // Started finished at this time
+                    total_time_in_seconds += res;
+                }
+
+                if (evt_type == "Negotiated")
+                {
+                    rate_bundler(jf_evt, evt_type, "Started");
+                }
+
+                if (evt_type == "TakerFeeValidated" || evt_type == "TakerFeeSent")
+                {
+                    rate_bundler(jf_evt, evt_type, "Negotiated");
+                }
+
+                if (evt_type == "MakerPaymentReceived")
+                {
+                    rate_bundler(jf_evt, evt_type, "TakerFeeSent");
+                }
+
+                if (evt_type == "MakerPaymentSent")
+                {
+                    rate_bundler(jf_evt, evt_type, "TakerFeeValidated");
+                }
+
+                if (evt_type == "TakerPaymentSent")
+                {
+                    rate_bundler(jf_evt, evt_type, "MakerPaymentValidatedAndConfirmed");
+                }
+
+                if (evt_type == "TakerPaymentSpent")
+                {
+                    if (contents.type == "Taker")
+                    {
+                        rate_bundler(jf_evt, evt_type, "TakerPaymentSent");
+                    }
+                    else
+                    {
+                        rate_bundler(jf_evt, evt_type, "TakerPaymentValidatedAndConfirmed");
+                    }
+                }
+
+                if (evt_type == "MakerPaymentSpent")
+                {
+                    rate_bundler(jf_evt, evt_type, "TakerPaymentSpent");
+                }
+
                 contents.events.push_back(jf_evt);
             }
         }
+        std::stringstream ss;
+        ss << std::fixed << std::setprecision(3) << total_time_in_seconds;
+        contents.total_time_in_seconds = ss.str() + "s";
+        std::cout << contents.total_time_in_seconds << std::endl;
     }
 
     void
@@ -616,7 +732,7 @@ namespace mm2::api
     {
         if (j.find("result") != j.end())
         {
-            answer.result = j.at("result").get<my_recent_swaps_answer_success>();
+            answer.result                    = j.at("result").get<my_recent_swaps_answer_success>();
             answer.result.value().raw_result = answer.raw_result;
         }
         else if (j.find("error") != j.end())
@@ -653,7 +769,7 @@ namespace mm2::api
 
         try
         {
-            auto json_answer = nlohmann::json::parse(resp.body);
+            auto json_answer       = nlohmann::json::parse(resp.body);
             answer.rpc_result_code = resp.code;
             answer.raw_result      = resp.body;
             from_json(json_answer, answer);
@@ -759,7 +875,8 @@ namespace mm2::api
     recover_funds_of_swap_answer
     rpc_recover_funds(recover_funds_of_swap_request&& request)
     {
-        return process_rpc<recover_funds_of_swap_request, recover_funds_of_swap_answer>(std::forward<recover_funds_of_swap_request>(request), "recover_funds_of_swap");
+        return process_rpc<recover_funds_of_swap_request, recover_funds_of_swap_answer>(
+            std::forward<recover_funds_of_swap_request>(request), "recover_funds_of_swap");
     }
 
     my_orders_answer
@@ -807,11 +924,51 @@ namespace mm2::api
         RestClient::Response resp;
         DVLOG_F(loguru::Verbosity_INFO, "request: {}", json_data.dump());
         resp = RestClient::post(g_endpoint, "application/json", json_data.dump());
-        if (resp.code == 200) {
+        if (resp.code == 200)
+        {
             auto answer = nlohmann::json::parse(resp.body);
             return answer.at("result").get<std::string>();
         }
         return "error occured during rpc_version";
     }
 
+    nlohmann::json
+    rpc_batch_electrum(std::vector<electrum_request> requests)
+    {
+        LOG_F(INFO, "Processing rpc call: batch electrum");
+
+        nlohmann::json req_json_data = nlohmann::json::array();
+        for (auto&& request: requests)
+        {
+            nlohmann::json       json_data = template_request("electrum");
+            RestClient::Response resp;
+            to_json(json_data, request);
+            req_json_data.push_back(json_data);
+        }
+        DVLOG_F(loguru::Verbosity_INFO, "request: {}", req_json_data.dump());
+        auto resp = RestClient::post(g_endpoint, "application/json", req_json_data.dump());
+        DVLOG_F(loguru::Verbosity_INFO, "resp: {}", resp.body);
+        nlohmann::json answer = nlohmann::json::parse(resp.body);
+        return answer;
+    }
+
+    nlohmann::json
+    rpc_batch_enable(std::vector<enable_request> requests)
+    {
+        LOG_F(INFO, "Processing rpc call: batch enable");
+
+        nlohmann::json req_json_data = nlohmann::json::array();
+        for (auto&& request: requests)
+        {
+            nlohmann::json       json_data = template_request("enable");
+            RestClient::Response resp;
+            to_json(json_data, request);
+            req_json_data.push_back(json_data);
+        }
+        DVLOG_F(loguru::Verbosity_INFO, "request: {}", req_json_data.dump());
+        auto resp = RestClient::post(g_endpoint, "application/json", req_json_data.dump());
+        DVLOG_F(loguru::Verbosity_INFO, "resp: {}", resp.body);
+        nlohmann::json answer = nlohmann::json::parse(resp.body);
+        return answer;
+    }
 } // namespace mm2::api
