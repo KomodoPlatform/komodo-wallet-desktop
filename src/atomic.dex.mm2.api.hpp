@@ -649,7 +649,7 @@ namespace mm2::api
     nlohmann::json rpc_batch_enable(std::vector<enable_request> requests);
 
     template <typename RpcReturnType>
-    static RpcReturnType rpc_process_answer(const RestClient::Response& resp) noexcept;
+    static RpcReturnType rpc_process_answer(const RestClient::Response& resp, const std::string& rpc_command) noexcept;
 
     nlohmann::json template_request(std::string method_name) noexcept;
 
