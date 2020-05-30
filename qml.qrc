@@ -38,6 +38,8 @@
         <file>atomic_qt_design/assets/images/trade_icon.svg</file>
         <file>atomic_qt_design/assets/images/circle-success.png</file>
         <file>atomic_qt_design/assets/images/circle-failed.png</file>
+        <file>atomic_qt_design/assets/images/gradient_circle_green.svg</file>
+        <file>atomic_qt_design/assets/images/gradient_circle_blue.svg</file>
         <file>atomic_qt_design/assets/images/coins/awc.png</file>
         <file>atomic_qt_design/assets/images/coins/btc.png</file>
         <file>atomic_qt_design/assets/images/coins/bch.png</file>

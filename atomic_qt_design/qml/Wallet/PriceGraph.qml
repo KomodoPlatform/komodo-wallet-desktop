@@ -127,6 +127,7 @@ ChartView {
             series2.axisX.tickCount = series.axisX.tickCount
 
             const y_margin = 0.05
+
             // Price
             series.axisY.min = min_price * (1 - y_margin)
             series.axisY.max = max_price * (1 + y_margin)
