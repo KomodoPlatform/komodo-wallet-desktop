@@ -948,10 +948,18 @@ namespace mm2::api
             to_json(json_data, request);
             req_json_data.push_back(json_data);
         }
-        DVLOG_F(loguru::Verbosity_INFO, "request: {}", req_json_data.dump());
+        VLOG_F(loguru::Verbosity_INFO, "request: {}", req_json_data.dump());
         auto resp = RestClient::post(g_endpoint, "application/json", req_json_data.dump());
-        DVLOG_F(loguru::Verbosity_INFO, "resp: {}", resp.body);
-        nlohmann::json answer = nlohmann::json::parse(resp.body);
+        VLOG_F(loguru::Verbosity_INFO, "resp: {}", resp.body);
+        nlohmann::json answer;
+        try
+        {
+            answer = nlohmann::json::parse(resp.body);
+        }
+        catch (const nlohmann::detail::parse_error &err) {
+            VLOG_F(loguru::Verbosity_ERROR, "{}", err.what());
+            answer["error"] = resp.body;
+        }
         return answer;
     }
 
@@ -968,10 +976,22 @@ namespace mm2::api
             to_json(json_data, request);
             req_json_data.push_back(json_data);
         }
-        DVLOG_F(loguru::Verbosity_INFO, "request: {}", req_json_data.dump());
+
+        VLOG_F(loguru::Verbosity_INFO, "request: {}", req_json_data.dump());
         auto resp = RestClient::post(g_endpoint, "application/json", req_json_data.dump());
-        DVLOG_F(loguru::Verbosity_INFO, "resp: {}", resp.body);
-        nlohmann::json answer = nlohmann::json::parse(resp.body);
+        VLOG_F(loguru::Verbosity_INFO, "resp: {}", resp.body);
+
+        nlohmann::json answer;
+
+        try
+        {
+            answer = nlohmann::json::parse(resp.body);
+        }
+        catch (const nlohmann::detail::parse_error &err) {
+            VLOG_F(loguru::Verbosity_ERROR, "{}", err.what());
+            answer["error"] = resp.body;
+        }
+
         return answer;
     }
 } // namespace mm2::api
