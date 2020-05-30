@@ -33,7 +33,7 @@ ChartView {
             lineVisible: series.axisY.lineVisible
             labelsFont: series.axisY.labelsFont
             gridLineColor: series.axisY.gridLineColor
-            labelsColor: series.axisY.labelsColor
+            labelsColor: series2.color
         }
     }
 
@@ -72,7 +72,7 @@ ChartView {
             lineVisible: series.axisX.lineVisible
             labelsFont: series.axisX.labelsFont
             gridLineColor: series.axisX.gridLineColor
-            labelsColor: series.axisX.labelsColor
+            labelsColor: series.color
         }
     }
 
