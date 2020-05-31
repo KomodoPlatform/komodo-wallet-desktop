@@ -107,8 +107,9 @@ jobs:
         run: |
           export QT_INSTALL_CMAKE_PATH=${{ github.workspace }}/Qt/5.14.2/gcc_64/lib/cmake
           export QT_ROOT=${{ github.workspace }}/Qt/5.14.2
-          cd ci_tools_atomic_dex
+          export PATH=${{ github.workspace }}/Qt/5.14.2/gcc_64/bin:$PATH
           export PATH=$HOME/.nimble/bin:$PATH
+          cd ci_tools_atomic_dex
           nimble build -y
           ./ci_tools_atomic_dex --install_dependencies
           ./ci_tools_atomic_dex build debug
