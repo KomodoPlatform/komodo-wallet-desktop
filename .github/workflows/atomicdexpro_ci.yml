@@ -60,6 +60,12 @@ jobs:
                                unzip \
                                libssl-dev \
                                git -y
+                               
+          
+          # install fresh gnu compilers
+          sudo add-apt-repository ppa:ubuntu-toolchain-r/test -y
+          sudo apt-get update -y
+          sudo apt-get install g++-9 gcc-9 -y
 
           # get right cmake version
           wget https://github.com/Kitware/CMake/releases/download/v3.17.1/cmake-3.17.1.tar.gz -O cmake.tar.gz
