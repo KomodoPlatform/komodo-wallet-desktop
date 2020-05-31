@@ -87,7 +87,7 @@ jobs:
           sudo update-alternatives --install /usr/bin/clang clang /usr/bin/clang-9 777
           
           # set gnu compilers version
-          sudo update-alternatives --install /usr/bin/gcc++ gcc++ /usr/bin/g++-9 777
+          sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-9 777
           sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-9 777
 
       - name: Cache vcpkg (Linux)
