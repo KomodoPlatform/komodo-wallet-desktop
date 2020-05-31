@@ -117,11 +117,6 @@ jobs:
           sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-9 777
           sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-9 777
           
-          gcc --version
-          g++ --version
-          clang-9 --version
-          clang++-9 --version
-          
           ./ci_tools_atomic_dex --install_dependencies
           ./ci_tools_atomic_dex build debug
           ./ci_tools_atomic_dex bundle debug
