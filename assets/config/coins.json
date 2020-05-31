@@ -622,5 +622,28 @@
     ],
     "active": false,
     "currently_enabled": false
+  },
+  "ZEC": {
+    "active": false,
+    "coin": "ZEC",
+    "name": "Zcash",
+    "coinpaprika_id": "zec-zcash",
+    "currently_enabled": false,
+    "electrum": [
+      {
+        "url": "electrum1.cipig.net:10058"
+      },
+      {
+        "url": "electrum2.cipig.net:10058"
+      },
+      {
+        "url": "electrum3.cipig.net:10058"
+      }
+    ],
+    "explorer_url": [
+      "https://explorer.zcha.in/"
+    ],
+    "is_erc_20": false,
+    "type": "UTXO"
   }
 }
