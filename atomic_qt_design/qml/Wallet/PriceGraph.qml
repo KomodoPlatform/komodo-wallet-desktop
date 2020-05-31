@@ -8,6 +8,20 @@ import "../Constants"
 
 // List
 ChartView {
+    AreaSeries {
+        id: series_area2
+        color: Style.colorTheme10
+
+        onHovered: updateValueText(state, point.y, axisYRight.labelsColor, 0)
+
+        borderWidth: series_area.borderWidth
+        opacity: series_area.opacity
+
+        axisX: series2.axisX
+        axisYRight: series2.axisYRight
+        upperSeries: series2
+    }
+
     // Other, back
     LineSeries {
         id: series2
@@ -17,6 +31,8 @@ ChartView {
         width: series.width
 
         pointsVisible: true
+
+        onHovered: updateValueText(state, point.y, axisYRight.labelsColor, 0)
 
         axisX: DateTimeAxis {
             visible: false
@@ -38,15 +54,16 @@ ChartView {
     }
 
     AreaSeries {
-        id: series_area2
-        color: Style.colorTheme10
+        id: series_area
+        color: Style.colorTheme1
+        onHovered: updateValueText(state, point.y, axisY.labelsColor, 2)
 
-        borderWidth: series_area.borderWidth
-        opacity: series_area.opacity
+        borderWidth: 0
+        opacity: 0.05
 
-        axisX: series2.axisX
-        axisYRight: series2.axisYRight
-        upperSeries: series2
+        axisX: series.axisX
+        axisY: series.axisY
+        upperSeries: series
     }
 
     // Price, front
@@ -58,6 +75,7 @@ ChartView {
         width: 2
 
         pointsVisible: true
+        onHovered: updateValueText(state, point.y, axisY.labelsColor, 2)
 
         axisX: DateTimeAxis {
             titleVisible: false
@@ -76,17 +94,21 @@ ChartView {
         }
     }
 
-    AreaSeries {
-        id: series_area
-        color: Style.colorTheme1
-
-        borderWidth: 0
-        opacity: 0.05
-
-        axisX: series.axisX
-        axisY: series.axisY
-        upperSeries: series
+    function updateValueText(state, value, color, precision) {
+        value_text.visible = state
+        value_text.text = General.formatDouble(value, precision)
+        value_text.color = color
     }
+
+    DefaultText {
+        id: value_text
+        anchors.top: parent.top
+        anchors.left: parent.left
+        anchors.topMargin: 50
+        anchors.leftMargin: anchors.topMargin * 2
+        font.pixelSize: Style.textSizeSmall3
+    }
+
 
     function updateChart() {
         series.clear()
