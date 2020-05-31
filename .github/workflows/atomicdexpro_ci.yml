@@ -61,12 +61,15 @@ jobs:
                                libssl-dev \
                                git -y
                                
-          
-          # install fresh gnu compilers
-          sudo add-apt-repository ppa:ubuntu-toolchain-r/test -y
-          sudo apt-get update -y
-          sudo apt-get install g++-9 gcc-9 -y
 
+          # set clang version
+          sudo update-alternatives --install /usr/bin/clang++ clang++ /usr/bin/clang++-9 777
+          sudo update-alternatives --install /usr/bin/clang clang /usr/bin/clang-9 777
+          
+          # set gnu compilers version
+          sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-9 777
+          sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-9 777
+          
           # get right cmake version
           wget https://github.com/Kitware/CMake/releases/download/v3.17.1/cmake-3.17.1.tar.gz -O cmake.tar.gz
           tar xvzf cmake.tar.gz
@@ -88,14 +91,6 @@ jobs:
           sudo make -j2 install
           cd ..
 
-          # set clang version
-          sudo update-alternatives --install /usr/bin/clang++ clang++ /usr/bin/clang++-9 777
-          sudo update-alternatives --install /usr/bin/clang clang /usr/bin/clang-9 777
-          
-          # set gnu compilers version
-          sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-9 777
-          sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-9 777
-
       - name: Cache vcpkg (Linux)
         id: cache-vcpkg-linux
         uses: actions/cache@v1
@@ -111,6 +106,22 @@ jobs:
           export PATH=$HOME/.nimble/bin:$PATH
           cd ci_tools_atomic_dex
           nimble build -y
+        
+          # duplicating because got suspicion that update-alternatives doesnt save between steps
+         
+          # set clang version
+          sudo update-alternatives --install /usr/bin/clang++ clang++ /usr/bin/clang++-9 777
+          sudo update-alternatives --install /usr/bin/clang clang /usr/bin/clang-9 777
+          
+          # set gnu compilers version
+          sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-9 777
+          sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-9 777
+          
+          gcc --version
+          g++ --version
+          clang-9 --version
+          clang++-9 --version
+          
           ./ci_tools_atomic_dex --install_dependencies
           ./ci_tools_atomic_dex build debug
           ./ci_tools_atomic_dex bundle debug
