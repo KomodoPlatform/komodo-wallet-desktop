@@ -199,7 +199,7 @@ Item {
                             anchors.left: parent.left
                             anchors.leftMargin: 15
 
-                            source: General.image_path + "coins/" + model.modelData.ticker.toLowerCase() + ".png"
+                            source: General.coinIcon(model.modelData.ticker)
                             fillMode: Image.PreserveAspectFit
                             width: Style.textSizeSmall4*2
                             anchors.verticalCenter: parent.verticalCenter

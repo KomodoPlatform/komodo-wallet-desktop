@@ -315,7 +315,7 @@ ColumnLayout {
                 anchors.left: parent.left
                 anchors.leftMargin: coin_header.anchors.leftMargin
 
-                source: General.image_path + "coins/" + model.modelData.ticker.toLowerCase() + ".png"
+                source: General.coinIcon(model.modelData.ticker)
                 fillMode: Image.PreserveAspectFit
                 width: Style.textSize2
                 anchors.verticalCenter: parent.verticalCenter
