@@ -59,7 +59,7 @@ ChartView {
         onHovered: updateValueText(state, point.y, axisY.labelsColor, 2)
 
         borderWidth: 0
-        opacity: 0.05
+        opacity: 0.15
 
         axisX: series.axisX
         axisY: series.axisY
