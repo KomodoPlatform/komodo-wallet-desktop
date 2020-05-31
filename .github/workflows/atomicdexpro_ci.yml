@@ -100,7 +100,7 @@ jobs:
           cd ci_tools_atomic_dex
           export PATH=$HOME/.nimble/bin:$PATH
           nimble build -y
-          ./ci_tools_atomic_dex build --install_dependencies
+          ./ci_tools_atomic_dex --install_dependencies
           ./ci_tools_atomic_dex build debug
           ./ci_tools_atomic_dex bundle debug
           
