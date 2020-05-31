@@ -53,8 +53,7 @@ FloatingBackground {
         anchors.left: text_left_align ? parent.left : undefined
         anchors.leftMargin: text_left_align ? -text_offset : 0
         anchors.verticalCenter: parent.verticalCenter
-        font.pixelSize: Style.textSizeSmall3
-        font.weight: Font.Medium
+        font.pixelSize: Style.textSizeSmall1
         font.capitalization: Font.AllUppercase
         color: !parent.enabled ? colorTextDisabled : mouse_area.containsMouse ? colorTextHovered : colorTextEnabled
     }
