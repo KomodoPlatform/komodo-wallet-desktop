@@ -209,93 +209,141 @@ Item {
 
         // Send, Receive buttons
         RowLayout {
-            width: parent.width * 0.6
-
+            Layout.preferredWidth: parent.width
             Layout.bottomMargin: -parent.spacing*0.5
+            Layout.leftMargin: layout_margin
             Layout.rightMargin: layout_margin
-            Layout.alignment: Qt.AlignRight
 
             spacing: 15
 
-            DefaultButton {
-                enabled: parseFloat(API.get().current_coin_info.balance) > 0
-                text: API.get().empty_string + (qsTr("Send"))
-                onClicked: send_modal.open()
-                text_offset: -arrow_send.anchors.rightMargin
-                text_left_align: true
+            RowLayout {
+                Layout.alignment: Qt.AlignLeft
 
-                Arrow {
-                    id: arrow_send
-                    up: true
-                    color: Style.colorGreen
-                    anchors.verticalCenter: parent.verticalCenter
-                    anchors.right: parent.right
-                    anchors.rightMargin: 8
+                FloatingBackground {
+                    id: left_circle
+
+                    verticalShadow: true
+                    width: 28; height: 28
+
+                    content: Image {
+                        source: General.image_path + "shadowed_circle_green.svg"
+
+                        width: 12; height: width
+                    }
+                }
+
+                DefaultText {
+                    id: left_text
+                    text: API.get().empty_string + (qsTr("%1 Price", "TICKER").arg(API.get().current_coin_info.ticker))
+                    font.pixelSize: Style.textSizeSmall3
                 }
             }
 
-            SendModal {
-                id: send_modal
-            }
+            RowLayout {
+                Layout.alignment: Qt.AlignLeft
+                Layout.fillWidth: true
 
-            DefaultButton {
-                text: API.get().empty_string + (qsTr("Receive"))
-                onClicked: receive_modal.open()
-                text_offset: -arrow_send.anchors.rightMargin
-                text_left_align: true
+                FloatingBackground {
+                    verticalShadow: left_circle.verticalShadow
+                    width: left_circle.width; height: left_circle.height
 
-                Arrow {
-                    up: false
-                    color: Style.colorBlue
-                    anchors.verticalCenter: parent.verticalCenter
-                    anchors.right: parent.right
-                    anchors.rightMargin: arrow_send.anchors.rightMargin
+                    content: Image {
+                        source: General.image_path + "shadowed_circle_blue.svg"
+
+                        width: 12; height: width
+                    }
+                }
+
+                DefaultText {
+                    text: API.get().empty_string + (qsTr("Volume 24h"))
+                    font: left_text.font
                 }
             }
 
-            ReceiveModal {
-                id: receive_modal
-            }
 
-            DefaultButton {
-                text: API.get().empty_string + (qsTr("Swap"))
-                onClicked: onClickedSwap()
-                text_offset: -arrow_send.anchors.rightMargin
-                text_left_align: true
+            RowLayout {
+                Layout.alignment: Qt.AlignRight
 
-                Arrow {
-                    up: true
-                    color: Style.colorGreen
-                    anchors.verticalCenter: parent.verticalCenter
-                    anchors.right: parent.right
-                    anchors.rightMargin: arrow_send.anchors.rightMargin*2.4
+                DefaultButton {
+                    enabled: parseFloat(API.get().current_coin_info.balance) > 0
+                    text: API.get().empty_string + (qsTr("Send"))
+                    onClicked: send_modal.open()
+                    text_offset: -arrow_send.anchors.rightMargin
+                    text_left_align: true
+
+                    Arrow {
+                        id: arrow_send
+                        up: true
+                        color: Style.colorGreen
+                        anchors.verticalCenter: parent.verticalCenter
+                        anchors.right: parent.right
+                        anchors.rightMargin: 8
+                    }
                 }
 
-                Arrow {
-                    up: false
-                    color: Style.colorBlue
-                    anchors.verticalCenter: parent.verticalCenter
-                    anchors.right: parent.right
-                    anchors.rightMargin: arrow_send.anchors.rightMargin
+                SendModal {
+                    id: send_modal
                 }
-            }
 
-            PrimaryButton {
-                id: button_claim_rewards
-                text: API.get().empty_string + (qsTr("Claim Rewards"))
+                DefaultButton {
+                    text: API.get().empty_string + (qsTr("Receive"))
+                    onClicked: receive_modal.open()
+                    text_offset: -arrow_send.anchors.rightMargin
+                    text_left_align: true
 
-                visible: API.get().current_coin_info.is_claimable === true
-                enabled: claim_rewards_modal.canClaim()
-                onClicked: {
-                    claim_rewards_modal.prepareClaimRewards()
-                    claim_rewards_modal.open()
+                    Arrow {
+                        up: false
+                        color: Style.colorBlue
+                        anchors.verticalCenter: parent.verticalCenter
+                        anchors.right: parent.right
+                        anchors.rightMargin: arrow_send.anchors.rightMargin
+                    }
                 }
-            }
 
-            ClaimRewardsModal {
-                id: claim_rewards_modal
+                ReceiveModal {
+                    id: receive_modal
+                }
 
-                postClaim: () => { button_claim_rewards.enabled = claim_rewards_modal.canClaim() }
+                DefaultButton {
+                    text: API.get().empty_string + (qsTr("Swap"))
+                    onClicked: onClickedSwap()
+                    text_offset: -arrow_send.anchors.rightMargin
+                    text_left_align: true
+
+                    Arrow {
+                        up: true
+                        color: Style.colorGreen
+                        anchors.verticalCenter: parent.verticalCenter
+                        anchors.right: parent.right
+                        anchors.rightMargin: arrow_send.anchors.rightMargin*2.4
+                    }
+
+                    Arrow {
+                        up: false
+                        color: Style.colorBlue
+                        anchors.verticalCenter: parent.verticalCenter
+                        anchors.right: parent.right
+                        anchors.rightMargin: arrow_send.anchors.rightMargin
+                    }
+                }
+
+                PrimaryButton {
+                    id: button_claim_rewards
+                    text: API.get().empty_string + (qsTr("Claim Rewards"))
+
+                    visible: API.get().current_coin_info.is_claimable === true
+                    enabled: claim_rewards_modal.canClaim()
+                    onClicked: {
+                        claim_rewards_modal.prepareClaimRewards()
+                        claim_rewards_modal.open()
+                    }
+                }
+
+                ClaimRewardsModal {
+                    id: claim_rewards_modal
+
+                    postClaim: () => { button_claim_rewards.enabled = claim_rewards_modal.canClaim() }
+                }
             }
         }
 
