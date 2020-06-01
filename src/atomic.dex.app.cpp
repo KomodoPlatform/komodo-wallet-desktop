@@ -336,6 +336,14 @@ namespace atomic_dex
 
             std::error_code ec;
             auto            fiat_balance_std = paprika.get_price_in_fiat_all(m_current_fiat.toStdString(), ec);
+
+            if (!ec)
+            {
+                this->set_current_balance_fiat_all(QString::fromStdString(fiat_balance_std));
+            }
+
+            auto second_fiat_balance_std = paprika.get_price_in_fiat_all(m_second_current_fiat.toStdString(), ec);
+
             if (!ec)
             {
                 this->set_current_balance_fiat_all(QString::fromStdString(fiat_balance_std));
@@ -426,11 +434,24 @@ namespace atomic_dex
         return m_current_balance_all;
     }
 
+    QString
+    application::get_second_balance_fiat_all() const noexcept
+    {
+        return m_second_current_balance_all;
+    }
+
     void
     atomic_dex::application::set_current_balance_fiat_all(QString current_fiat_all_balance) noexcept
     {
         this->m_current_balance_all = std::move(current_fiat_all_balance);
         emit on_fiat_balance_all_changed();
+    }
+
+    void
+    application::set_second_current_balance_fiat_all(QString current_fiat_all_balance) noexcept
+    {
+        this->m_second_current_balance_all = std::move(current_fiat_all_balance);
+        emit on_second_fiat_balance_all_changed();
     }
 
     application::application(QObject* pParent) noexcept : QObject(pParent), m_coin_info(new current_coin_info(dispatcher_, this))
@@ -496,11 +517,24 @@ namespace atomic_dex
         return this->m_current_fiat;
     }
 
+    QString
+    application::get_second_current_fiat() const noexcept
+    {
+        return this->m_second_current_fiat;
+    }
+
     void
     application::set_current_fiat(QString current_fiat) noexcept
     {
         this->m_current_fiat = std::move(current_fiat);
         emit on_fiat_changed();
+    }
+
+    void
+    application::set_second_current_fiat(QString current_fiat) noexcept
+    {
+        this->m_second_current_fiat = std::move(current_fiat);
+        emit on_second_fiat_changed();
     }
 
     void
