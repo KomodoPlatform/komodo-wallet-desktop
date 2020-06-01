@@ -176,7 +176,7 @@ target_link_libraries(atomic_qt
         antara::http_client
         Folly::folly
         Folly::folly_deps
-        $<$<PLATFORM_ID:Darwin>:curl>
+        $<$<PLATFORM_ID:Darwin>:/usr/local/lib/libcurl.a>
         )
 #target_enable_asan(atomic_qt)
 

@@ -100,7 +100,7 @@ namespace atomic_dex
 
         if (s_info >= 30s)
         {
-            //spawn([this]() { process_fees(); });
+            // spawn([this]() { process_fees(); });
             spawn([this]() { fetch_infos_thread(); });
             spawn([this]() {
                 loguru::set_thread_name("rotate log thread");
@@ -320,7 +320,7 @@ namespace atomic_dex
             process_orders();
         });
 
-        //spawn([this]() { process_fees(); });
+        // spawn([this]() { process_fees(); });
 
         return result.load() == 1;
     }
@@ -374,41 +374,47 @@ namespace atomic_dex
         }
 
         auto functor_process_answer = [this, &emit_event](const nlohmann::json& answer) {
-          if (answer.count("coin") == 1)
-          {
-              auto        ticker          = answer.at("coin").get<std::string>();
-              coin_config coin_info       = m_coins_informations.at(ticker);
-              coin_info.currently_enabled = true;
-              m_coins_informations.assign(coin_info.ticker, coin_info);
+            if (answer.count("coin") == 1)
+            {
+                auto        ticker          = answer.at("coin").get<std::string>();
+                coin_config coin_info       = m_coins_informations.at(ticker);
+                coin_info.currently_enabled = true;
+                m_coins_informations.assign(coin_info.ticker, coin_info);
 
-              spawn([this, copy_ticker = ticker]() {
-                loguru::set_thread_name("balance thread");
-                process_balance(copy_ticker);
-              });
+                spawn([this, copy_ticker = ticker]() {
+                    loguru::set_thread_name("balance thread");
+                    process_balance(copy_ticker);
+                });
 
-              spawn([this, copy_ticker = ticker]() {
-                loguru::set_thread_name("tx thread");
-                process_tx(copy_ticker);
-              });
+                spawn([this, copy_ticker = ticker]() {
+                    loguru::set_thread_name("tx thread");
+                    process_tx(copy_ticker);
+                });
 
-              dispatcher_.trigger<coin_enabled>(ticker);
-              if (emit_event)
-              {
-                  this->dispatcher_.trigger<enabled_coins_event>();
-              }
-          }
+                dispatcher_.trigger<coin_enabled>(ticker);
+                if (emit_event)
+                {
+                    this->dispatcher_.trigger<enabled_coins_event>();
+                }
+            }
         };
 
         if (not requests.empty())
         {
             auto answers = rpc_batch_electrum(requests);
-            for (auto&& answer: answers) { functor_process_answer(answer); }
+            if (answers.count("error") == 0)
+            {
+                for (auto&& answer: answers) { functor_process_answer(answer); }
+            }
         }
 
         if (not requests_erc.empty())
         {
             auto answers_erc = rpc_batch_enable(requests_erc);
-            for (auto&& answer_erc: answers_erc) { functor_process_answer(answer_erc); }
+            if (answers_erc.count("error") == 0)
+            {
+                for (auto&& answer_erc: answers_erc) { functor_process_answer(answer_erc); }
+            }
         }
     }
 
@@ -683,7 +689,7 @@ namespace atomic_dex
             m_swaps_registry.insert_or_assign("result", answer.result.value());
         }
 
-        if (not m_swaps_registry.empty())
+        /*if (not m_swaps_registry.empty())
         {
             auto swaps = get_swaps();
 
@@ -692,8 +698,7 @@ namespace atomic_dex
                     std::cout << event << std::endl;
                 }
             }
-        }
-
+        }*/
     }
 
     void
@@ -714,21 +719,22 @@ namespace atomic_dex
         {
             futures.reserve(2);
         }
-        else  {
+        else
+        {
             futures.reserve(1);
         }
 
         auto rpc_fees = [this]() {
-          t_get_trade_fee_request req{.coin = this->m_current_orderbook_ticker_base};
-          auto                    answer = ::mm2::api::rpc_get_trade_fee(std::move(req));
-          this->m_trade_fees_registry.insert_or_assign(this->m_current_orderbook_ticker_base, answer);
+            t_get_trade_fee_request req{.coin = this->m_current_orderbook_ticker_base};
+            auto                    answer = ::mm2::api::rpc_get_trade_fee(std::move(req));
+            this->m_trade_fees_registry.insert_or_assign(this->m_current_orderbook_ticker_base, answer);
 
-          if (not m_current_orderbook_ticker_rel.empty())
-          {
-              t_get_trade_fee_request req_rel{.coin = this->m_current_orderbook_ticker_rel};
-              auto                    answer_rel = ::mm2::api::rpc_get_trade_fee(std::move(req));
-              this->m_trade_fees_registry.insert_or_assign(this->m_current_orderbook_ticker_rel, answer_rel);
-          }
+            if (not m_current_orderbook_ticker_rel.empty())
+            {
+                t_get_trade_fee_request req_rel{.coin = this->m_current_orderbook_ticker_rel};
+                auto                    answer_rel = ::mm2::api::rpc_get_trade_fee(std::move(req));
+                this->m_trade_fees_registry.insert_or_assign(this->m_current_orderbook_ticker_rel, answer_rel);
+            }
         };
 
         futures.emplace_back(spawn(rpc_fees));

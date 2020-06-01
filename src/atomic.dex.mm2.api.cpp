@@ -746,9 +746,12 @@ namespace mm2::api
 
     template <typename RpcReturnType>
     RpcReturnType
-    rpc_process_answer(const RestClient::Response& resp) noexcept
+    rpc_process_answer(const RestClient::Response& resp, const std::string& rpc_command) noexcept
     {
-        DVLOG_F(loguru::Verbosity_INFO, "resp: {}", resp.body);
+        if (rpc_command != "my_recent_swaps" && rpc_command != "my_tx_history")
+        {
+            VLOG_F(loguru::Verbosity_INFO, "resp: {}", resp.body);
+        }
 
         RpcReturnType answer;
 
@@ -889,7 +892,7 @@ namespace mm2::api
 
         resp = RestClient::post(g_endpoint, "application/json", json_data.dump());
 
-        return rpc_process_answer<my_orders_answer>(resp);
+        return rpc_process_answer<my_orders_answer>(resp, "my_orders");
     }
 
     template <typename TRequest, typename TAnswer>
@@ -898,7 +901,7 @@ namespace mm2::api
     {
         LOG_F(INFO, "Processing rpc call: {}", rpc_command);
 
-        nlohmann::json       json_data = template_request(std::move(rpc_command));
+        nlohmann::json       json_data = template_request(rpc_command);
         RestClient::Response resp;
 
         to_json(json_data, request);
@@ -907,7 +910,7 @@ namespace mm2::api
 
         resp = RestClient::post(g_endpoint, "application/json", json_data.dump());
 
-        return rpc_process_answer<TAnswer>(resp);
+        return rpc_process_answer<TAnswer>(resp, rpc_command);
     }
 
     nlohmann::json
@@ -945,10 +948,18 @@ namespace mm2::api
             to_json(json_data, request);
             req_json_data.push_back(json_data);
         }
-        DVLOG_F(loguru::Verbosity_INFO, "request: {}", req_json_data.dump());
+        VLOG_F(loguru::Verbosity_INFO, "request: {}", req_json_data.dump());
         auto resp = RestClient::post(g_endpoint, "application/json", req_json_data.dump());
-        DVLOG_F(loguru::Verbosity_INFO, "resp: {}", resp.body);
-        nlohmann::json answer = nlohmann::json::parse(resp.body);
+        VLOG_F(loguru::Verbosity_INFO, "resp: {}", resp.body);
+        nlohmann::json answer;
+        try
+        {
+            answer = nlohmann::json::parse(resp.body);
+        }
+        catch (const nlohmann::detail::parse_error &err) {
+            VLOG_F(loguru::Verbosity_ERROR, "{}", err.what());
+            answer["error"] = resp.body;
+        }
         return answer;
     }
 
@@ -965,10 +976,22 @@ namespace mm2::api
             to_json(json_data, request);
             req_json_data.push_back(json_data);
         }
-        DVLOG_F(loguru::Verbosity_INFO, "request: {}", req_json_data.dump());
+
+        VLOG_F(loguru::Verbosity_INFO, "request: {}", req_json_data.dump());
         auto resp = RestClient::post(g_endpoint, "application/json", req_json_data.dump());
-        DVLOG_F(loguru::Verbosity_INFO, "resp: {}", resp.body);
-        nlohmann::json answer = nlohmann::json::parse(resp.body);
+        VLOG_F(loguru::Verbosity_INFO, "resp: {}", resp.body);
+
+        nlohmann::json answer;
+
+        try
+        {
+            answer = nlohmann::json::parse(resp.body);
+        }
+        catch (const nlohmann::detail::parse_error &err) {
+            VLOG_F(loguru::Verbosity_ERROR, "{}", err.what());
+            answer["error"] = resp.body;
+        }
+
         return answer;
     }
 } // namespace mm2::api
