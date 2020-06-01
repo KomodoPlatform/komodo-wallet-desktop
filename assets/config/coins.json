@@ -623,6 +623,29 @@
     "active": false,
     "currently_enabled": false
   },
+  "RVN": {
+    "coin": "RVN",
+    "name": "Ravencoin",
+    "coinpaprika_id": "rvn-ravencoin",
+    "electrum": [
+      {
+        "url": "electrum1.cipig.net:10051"
+      },
+      {
+        "url": "electrum2.cipig.net:10051"
+      },
+      {
+        "url": "electrum3.cipig.net:10051"
+      }
+    ],
+    "explorer_url": [
+      "https://ravencoin.network/"
+    ],
+    "type": "UTXO",
+    "is_erc_20": false,
+    "active": false,
+    "currently_enabled": false
+  },
   "ZEC": {
     "active": false,
     "coin": "ZEC",
