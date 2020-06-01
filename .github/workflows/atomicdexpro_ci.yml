@@ -15,15 +15,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-      - name: Cache Qt (Linux)
-        id: cache-qt-linux
-        uses: actions/cache@v1
-        with:
-          path: '${{ github.workspace }}/Qt/5.14.2'
-          key: ${{ runner.os }}-qt
-
       - name: Install QT (Linux)
-        if: steps.cache-qt-linux.outputs.cache-hit != 'true'
         uses: jurplel/install-qt-action@v2
         with:
           version: '5.14.2'
@@ -90,13 +82,6 @@ jobs:
           ./configure --disable-shared
           sudo make -j2 install
           cd ..
-
-      - name: Cache vcpkg (Linux)
-        id: cache-vcpkg-linux
-        uses: actions/cache@v1
-        with:
-          path: '${{ github.workspace }}/ci_tools_atomic_dex/vcpkg-repo'
-          key: ${{ runner.os }}-vcpkg
 
       - name: Build (Linux)
         run: |
