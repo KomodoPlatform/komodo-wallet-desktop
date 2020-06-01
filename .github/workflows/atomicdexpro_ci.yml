@@ -15,15 +15,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-      - name: Cache Qt (Linux)
-        id: cache-qt-linux
-        uses: actions/cache@v1
-        with:
-          path: '${{ github.workspace }}/Qt/5.14.2'
-          key: ${{ runner.os }}-qt
-
       - name: Install QT (Linux)
-        if: steps.cache-qt-linux.outputs.cache-hit != 'true'
         uses: jurplel/install-qt-action@v2
         with:
           version: '5.14.2'
@@ -59,8 +51,18 @@ jobs:
                                autoconf \
                                unzip \
                                libssl-dev \
+                               libxkbcommon-x11-0 \
                                git -y
+                               
 
+          # set clang version
+          sudo update-alternatives --install /usr/bin/clang++ clang++ /usr/bin/clang++-9 777
+          sudo update-alternatives --install /usr/bin/clang clang /usr/bin/clang-9 777
+          
+          # set gnu compilers version
+          sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-9 777
+          sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-9 777
+          
           # get right cmake version
           wget https://github.com/Kitware/CMake/releases/download/v3.17.1/cmake-3.17.1.tar.gz -O cmake.tar.gz
           tar xvzf cmake.tar.gz
@@ -82,25 +84,26 @@ jobs:
           sudo make -j2 install
           cd ..
 
-          # set clang version
-          sudo update-alternatives --install /usr/bin/clang++ clang++ /usr/bin/clang++-9 100
-          sudo update-alternatives --install /usr/bin/clang clang /usr/bin/clang-9 100
-
-      - name: Cache vcpkg (Linux)
-        id: cache-vcpkg-linux
-        uses: actions/cache@v1
-        with:
-          path: '${{ github.workspace }}/ci_tools_atomic_dex/vcpkg-repo'
-          key: ${{ runner.os }}-vcpkg
-
       - name: Build (Linux)
         run: |
           export QT_INSTALL_CMAKE_PATH=${{ github.workspace }}/Qt/5.14.2/gcc_64/lib/cmake
           export QT_ROOT=${{ github.workspace }}/Qt/5.14.2
-          cd ci_tools_atomic_dex
+          export PATH=${{ github.workspace }}/Qt/5.14.2/gcc_64/bin:$PATH
           export PATH=$HOME/.nimble/bin:$PATH
+          cd ci_tools_atomic_dex
           nimble build -y
-          ./ci_tools_atomic_dex build --install_dependencies
+        
+          # duplicating because got suspicion that update-alternatives doesnt save between steps
+         
+          # set clang version
+          sudo update-alternatives --install /usr/bin/clang++ clang++ /usr/bin/clang++-9 777
+          sudo update-alternatives --install /usr/bin/clang clang /usr/bin/clang-9 777
+          
+          # set gnu compilers version
+          sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-9 777
+          sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-9 777
+          
+          ./ci_tools_atomic_dex --install_dependencies
           ./ci_tools_atomic_dex build debug
           ./ci_tools_atomic_dex bundle debug
           
