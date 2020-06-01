@@ -51,6 +51,7 @@ jobs:
                                autoconf \
                                unzip \
                                libssl-dev \
+                               libxkbcommon-x11-0 \
                                git -y
                                
 
