@@ -159,7 +159,7 @@ jobs:
           cd curl
           git checkout curl-7_70_0
           ./buildconf
-          ./configure --disable-shared --enable-static --without-libidn2 -without-ssl --disable-ldap --with-darwinssl
+          ./configure --disable-shared --enable-static --without-libidn2 --without-ssl --without-nghttp2 --disable-ldap --with-darwinssl
           make install
           cd ../
           
