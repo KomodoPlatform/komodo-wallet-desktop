@@ -151,7 +151,9 @@ jobs:
                        boost \
                        gcc \
                        llvm@9
-
+          
+          export CC=/usr/local/opt/llvm@9/bin/clang
+          
           # get curl
           git clone https://github.com/curl/curl.git
           cd curl
