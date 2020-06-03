@@ -25,19 +25,26 @@ SetupPage {
 
     image_scale: 0.7
     image_path: General.image_path + "komodo-icon.png"
-    title: API.get().empty_string + (qsTr("Loading, please wait"))
-    content: RowLayout {
-        DefaultBusyIndicator {
-            Layout.alignment: Qt.AlignHCenter
-            Layout.leftMargin: -15
-            Layout.rightMargin: Layout.leftMargin*0.75
-            scale: 0.5
+
+    content: ColumnLayout {
+        DefaultText {
+            text: API.get().empty_string + (qsTr("Loading, please wait"))
+            Layout.bottomMargin: 10
         }
 
-        DefaultText {
-            text: API.get().empty_string + ((API.get().initial_loading_status === "initializing_mm2" ? qsTr("Initializing MM2") :
-                   API.get().initial_loading_status === "enabling_coins" ? qsTr("Enabling coins") :
-                   API.get().initial_loading_status === "complete" ? qsTr("Complete") : "") + "...")
+        RowLayout {
+            DefaultBusyIndicator {
+                Layout.alignment: Qt.AlignHCenter
+                Layout.leftMargin: -15
+                Layout.rightMargin: Layout.leftMargin*0.75
+                scale: 0.5
+            }
+
+            DefaultText {
+                text: API.get().empty_string + ((API.get().initial_loading_status === "initializing_mm2" ? qsTr("Initializing MM2") :
+                       API.get().initial_loading_status === "enabling_coins" ? qsTr("Enabling coins") :
+                       API.get().initial_loading_status === "complete" ? qsTr("Complete") : "") + "...")
+            }
         }
     }
 }

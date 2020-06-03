@@ -89,10 +89,14 @@ SetupPage {
 
     image_scale: 0.7
     image_path: General.image_path + (form_is_filled ? "settings-seed.svg" : "setup-welcome-wallet.svg")
-    title: API.get().empty_string + (qsTr("New User"))
 
     content: ColumnLayout {
         width: 600
+
+        DefaultText {
+            text: API.get().empty_string + (qsTr("New User"))
+            Layout.bottomMargin: 10
+        }
 
         function reset() {
             new_user.reset()

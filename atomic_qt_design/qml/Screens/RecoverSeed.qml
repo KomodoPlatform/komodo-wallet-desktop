@@ -33,9 +33,14 @@ SetupPage {
 
     image_scale: 0.7
     image_path: General.image_path + "setup-wallet-restore-2.svg"
-    title: API.get().empty_string + (qsTr("Recovery"))
+
     content: ColumnLayout {
         width: 400
+
+        DefaultText {
+            text: API.get().empty_string + (qsTr("Recovery"))
+            Layout.bottomMargin: 10
+        }
 
         function reset() {
             recover_seed.reset()

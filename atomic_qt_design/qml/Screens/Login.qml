@@ -33,7 +33,7 @@ SetupPage {
 
     image_scale: 0.7
     image_path: General.image_path + "setup-logs.svg"
-    title: API.get().empty_string + (qsTr("Login") + ": " + API.get().wallet_default_name)
+
     content: ColumnLayout {
         function reset() {
             login.reset()
@@ -48,6 +48,12 @@ SetupPage {
         }
 
         width: 275
+
+        DefaultText {
+            text: API.get().empty_string + (qsTr("Login") + ": " + API.get().wallet_default_name)
+            Layout.bottomMargin: 10
+        }
+
         PasswordForm {
             id: input_password
             confirm: false

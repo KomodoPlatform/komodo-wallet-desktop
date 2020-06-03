@@ -23,6 +23,11 @@ SetupPage {
     image_path: General.image_path + "atomicdex-logo-large.svg"
     image_margin: 30
     content: ColumnLayout {
+        DefaultText {
+            text: API.get().empty_string + (qsTr("Welcome"))
+            Layout.bottomMargin: 10
+        }
+
         RowLayout {
             Layout.fillWidth: true
 
