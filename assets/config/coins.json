@@ -623,6 +623,29 @@
     "active": false,
     "currently_enabled": false
   },
+  "QTUM": {
+    "coin": "QTUM",
+    "name": "Qtum",
+    "coinpaprika_id": "qtum-qtum",
+    "electrum": [
+      {
+        "url": "electrum1.cipig.net:10050"
+      },
+      {
+        "url": "electrum2.cipig.net:10050"
+      },
+      {
+        "url": "electrum3.cipig.net:10050"
+      }
+    ],
+    "explorer_url": [
+      "https://explorer.qtum.org/"
+    ],
+    "type": "UTXO",
+    "is_erc_20": false,
+    "active": false,
+    "currently_enabled": false
+  },
   "RVN": {
     "coin": "RVN",
     "name": "Ravencoin",
