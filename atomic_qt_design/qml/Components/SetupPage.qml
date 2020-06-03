@@ -5,10 +5,12 @@ import QtQuick.Controls 2.12
 import "../Constants"
 
 Item {
+    property alias image: image
     property alias image_path: image.source
     property alias image_scale: image.scale
     property alias title: pane.title
     property alias content: pane.content
+    property double image_margin: 5
 
     ColumnLayout {
         id: window_layout
@@ -16,23 +18,29 @@ Item {
         anchors.horizontalCenter: parent.horizontalCenter
         anchors.verticalCenter: parent.verticalCenter
         transformOrigin: Item.Center
-        spacing: 5
+        spacing: image_margin
 
-        FloatingBackground {
-            id: rectangle
-            color: Style.colorTheme6
-            radius: 100
-            implicitWidth: image.implicitHeight
-            implicitHeight: image.implicitHeight
+        Image {
+            id: image
             Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
-            Image {
-                id: image
-                Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
-                anchors.horizontalCenter: parent.horizontalCenter
-                anchors.verticalCenter: parent.verticalCenter
-                antialiasing: true
-            }
+            antialiasing: true
         }
+
+//        FloatingBackground {
+//            id: rectangle
+//            color: Style.colorTheme6
+//            radius: 100
+//            implicitWidth: image.implicitHeight
+//            implicitHeight: image.implicitHeight
+//            Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
+//            Image {
+//                id: image
+//                Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
+//                anchors.horizontalCenter: parent.horizontalCenter
+//                anchors.verticalCenter: parent.verticalCenter
+//                antialiasing: true
+//            }
+//        }
 
         PaneWithTitle {
             id: pane
