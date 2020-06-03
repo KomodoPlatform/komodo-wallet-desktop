@@ -19,9 +19,9 @@ SetupPage {
 
     property var wallets: ([])
 
-    image_scale: 0.7
-    image_path: General.image_path + "komodo-icon.png"
-    title: API.get().empty_string + (qsTr("Welcome!"))
+    image_scale: 0.72
+    image_path: General.image_path + "atomicdex-logo-large.svg"
+    image_margin: 30
     content: ColumnLayout {
         RowLayout {
             Layout.fillWidth: true
