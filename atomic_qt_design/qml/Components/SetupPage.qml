@@ -8,8 +8,7 @@ Item {
     property alias image: image
     property alias image_path: image.source
     property alias image_scale: image.scale
-    property alias title: pane.title
-    property alias content: pane.content
+    property alias content: inner_space.sourceComponent
     property double image_margin: 5
 
     ColumnLayout {
@@ -42,8 +41,16 @@ Item {
 //            }
 //        }
 
-        PaneWithTitle {
+        Pane {
             id: pane
+
+            background: FloatingBackground {
+                color: Style.colorTheme6
+            }
+
+            Loader {
+                id: inner_space
+            }
         }
     }
 }
