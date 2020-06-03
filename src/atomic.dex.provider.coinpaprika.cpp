@@ -156,6 +156,10 @@ namespace atomic_dex
                     {
                         process_provider(current_coin, m_btc_rate_providers, "btc-bitcoin");
                     }
+                    if (current_coin.ticker != "KMD")
+                    {
+                        process_provider(current_coin, m_kmd_rate_providers, "kmd-komodo");
+                    }
                     process_provider(current_coin, m_eur_rate_providers, "eur-euro");
                 }
 
@@ -304,6 +308,19 @@ namespace atomic_dex
             }
             current_price = m_btc_rate_providers.at(ticker);
         }
+        else if (fiat == "KMD")
+        {
+            if (ticker == "KMD")
+            {
+                return "1.00";
+            }
+            if (m_kmd_rate_providers.find(ticker) == m_kmd_rate_providers.cend())
+            {
+                ec = dextop_error::unknown_ticker_for_rate_conversion;
+                return "0.00";
+            }
+            current_price = m_kmd_rate_providers.at(ticker);
+        }
 
         if (adjusted)
         {
@@ -328,6 +345,10 @@ namespace atomic_dex
             {
                 process_provider(config, m_btc_rate_providers, "btc-bitcoin");
             }
+            if (evt.ticker != "KMD")
+            {
+                process_provider(config, m_kmd_rate_providers, "kmd-komodo");
+            }
             process_ticker_infos(config, m_ticker_infos_registry);
             process_ticker_historical(config, m_ticker_historical_registry);
         }
@@ -344,6 +365,10 @@ namespace atomic_dex
         if (evt.ticker != "BTC")
         {
             m_btc_rate_providers.erase(config.ticker);
+        }
+        if (evt.ticker != "KMD")
+        {
+            m_kmd_rate_providers.erase(config.ticker);
         }
     }
 
