@@ -25,24 +25,10 @@ Item {
             antialiasing: true
         }
 
-//        FloatingBackground {
-//            id: rectangle
-//            color: Style.colorTheme6
-//            radius: 100
-//            implicitWidth: image.implicitHeight
-//            implicitHeight: image.implicitHeight
-//            Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
-//            Image {
-//                id: image
-//                Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
-//                anchors.horizontalCenter: parent.horizontalCenter
-//                anchors.verticalCenter: parent.verticalCenter
-//                antialiasing: true
-//            }
-//        }
-
         Pane {
             id: pane
+
+            Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
 
             background: FloatingBackground {
                 color: Style.colorTheme6
