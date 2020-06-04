@@ -57,7 +57,7 @@ Installing curl:
 
 ```
 git clone https://github.com/phracker/MacOSX-SDKs.git ~/MacOSX-SDKs
-export CC=/usr/local/opt/llvm@9/bin/clang
+export CC=/usr/local/opt/llvm/bin/clang
 export CPPFLAGS="-isysroot $HOME/MacOSX-SDKs/MacOSX10.13.sdk/"
 git clone https://github.com/curl/curl.git
 cd curl
