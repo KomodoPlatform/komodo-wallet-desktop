@@ -89,17 +89,17 @@ DefaultModal {
             visible: text !== ''
         }
 
-        // Taker Payment ID
-        TextWithTitle {
-            title: API.get().empty_string + (qsTr("Taker Payment ID"))
-            text: API.get().empty_string + (getSwapPaymentID(details, true))
-            visible: text !== ''
-        }
-
         // Maker Payment ID
         TextWithTitle {
             title: API.get().empty_string + (qsTr("Maker Payment ID"))
             text: API.get().empty_string + (getSwapPaymentID(details, false))
+            visible: text !== ''
+        }
+
+        // Taker Payment ID
+        TextWithTitle {
+            title: API.get().empty_string + (qsTr("Taker Payment ID"))
+            text: API.get().empty_string + (getSwapPaymentID(details, true))
             visible: text !== ''
         }
 
