@@ -37,7 +37,7 @@ SetupPage {
                 onClicked: onClickedRecoverSeed()
             }
 
-            PrimaryButton {
+            DefaultButton {
                 Layout.fillWidth: true
                 text: API.get().empty_string + (qsTr("New User"))
                 onClicked: onClickedNewUser()
