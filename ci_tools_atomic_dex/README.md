@@ -56,6 +56,7 @@ export QT_ROOT=/Users/SatoshiNakamoto/Qt/5.14.0
 Installing curl:
 
 ```
+brew install autoconf automake libtool
 git clone https://github.com/phracker/MacOSX-SDKs.git ~/MacOSX-SDKs
 export CC=/usr/local/opt/llvm/bin/clang
 export CPPFLAGS="-isysroot $HOME/MacOSX-SDKs/MacOSX10.13.sdk/"
