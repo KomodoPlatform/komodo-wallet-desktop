@@ -43,7 +43,9 @@ DefaultModal {
             Layout.alignment: Qt.AlignHCenter
             Layout.topMargin: 20
             font.pixelSize: Style.textSize3
-            visible: getStatus(details) !== status_swap_not_swap && (details.events !== undefined || details.am_i_maker === false)
+            visible: getStatus(details) !== status_swap_not_swap &&  // Is order
+                     (details.events !== undefined || // Has events, ongoing or
+                    details.am_i_maker === false) // Taker order with no events
             color: visible ? getStatusColor(details) : ''
             text: API.get().empty_string + (visible ? getStatusTextWithPrefix(details) : '')
         }
