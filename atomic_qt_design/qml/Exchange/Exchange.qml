@@ -180,7 +180,9 @@ Item {
 
     function getSwapPaymentID(swap, is_taker) {
         if(swap.events !== undefined) {
-            const search_name = is_taker ? "TakerPaymentSent" : "MakerPaymentSpent"
+            const search_name = swap.am_i_maker ?
+                              (is_taker ? "MakerPaymentSent" : "TakerPaymentSpent") :
+                              (is_taker ? "TakerPaymentSent" : "MakerPaymentSpent")
             for(const e of swap.events) {
                if(e.state === search_name) {
                    return e.data.tx_hash

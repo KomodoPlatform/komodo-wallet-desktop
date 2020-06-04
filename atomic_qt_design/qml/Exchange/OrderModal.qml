@@ -137,7 +137,7 @@ DefaultModal {
             PrimaryButton {
                 text: API.get().empty_string + (qsTr("View at Explorer"))
                 Layout.fillWidth: true
-                visible: getSwapPaymentID(details, false) !== ''|| getSwapPaymentID(details, true) !== ''
+                visible: getSwapPaymentID(details, false) !== '' || getSwapPaymentID(details, true) !== ''
                 onClicked: {
                     const maker_id = getSwapPaymentID(details, false)
                     const taker_id = getSwapPaymentID(details, true)
