@@ -161,7 +161,7 @@ Item {
     }
 
     function getStatus(swap) {
-        if(swap.am_i_maker !== undefined && !swap.am_i_maker) return status_swap_matching
+        if(!swap.is_recent_swap && !swap.am_i_maker) return status_swap_matching
         if(!swap.is_recent_swap) return status_swap_not_swap
 
         const last_state = swap.events[swap.events.length-1].state
@@ -203,7 +203,9 @@ Item {
 
     function getSwapPaymentID(swap, is_taker) {
         if(swap.events !== undefined) {
-            const search_name = is_taker ? "TakerPaymentSent" : "MakerPaymentSpent"
+            const search_name = swap.am_i_maker ?
+                              (is_taker ? "TakerPaymentSpent" : "MakerPaymentSent") :
+                              (is_taker ? "TakerPaymentSent" : "MakerPaymentSpent")
             for(const e of swap.events) {
                if(e.state === search_name) {
                    return e.data.tx_hash

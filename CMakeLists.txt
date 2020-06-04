@@ -45,13 +45,13 @@ endif()
 ##! We fetch our dependence
 if (APPLE)
     FetchContent_Declare(mm2
-            URL https://github.com/KomodoPlatform/atomicDEX-API/releases/download/beta-2.0.1984/mm2-e1dac77d6-Darwin-Release.zip)
+            URL https://github.com/KomodoPlatform/atomicDEX-API/releases/download/beta-2.0.2002/mm2-3a9680fa4-Darwin-Release.zip)
 elseif (UNIX AND NOT APPLE)
     FetchContent_Declare(mm2
-            URL https://github.com/KomodoPlatform/atomicDEX-API/releases/download/beta-2.0.1984/mm2-e1dac77d6-Linux-Release.zip)
+            URL https://github.com/KomodoPlatform/atomicDEX-API/releases/download/beta-2.0.2002/mm2-3a9680fa4-Linux-Release.zip)
 else ()
     FetchContent_Declare(mm2
-            URL https://github.com/KomodoPlatform/atomicDEX-API/releases/download/beta-2.0.1984/mm2-e1dac77d6-Windows_NT-Debug.zip)
+            URL https://github.com/KomodoPlatform/atomicDEX-API/releases/download/beta-2.0.2002/mm2-3a9680fa4-Windows_NT-Release.zip)
 endif ()
 
 FetchContent_Declare(jl777-coins
@@ -68,7 +68,6 @@ else ()
     configure_file(${mm2_SOURCE_DIR}/mm2.exe ${CMAKE_BINARY_DIR}/bin/assets/tools/mm2/mm2.exe COPYONLY)
     configure_file(${mm2_SOURCE_DIR}/msvcp140.dll ${CMAKE_BINARY_DIR}/bin/assets/tools/mm2/msvcp140.dll COPYONLY)
     configure_file(${mm2_SOURCE_DIR}/msvcr100.dll ${CMAKE_BINARY_DIR}/bin/assets/tools/mm2/msvcr100.dll COPYONLY)
-    configure_file(${mm2_SOURCE_DIR}/pthreadVC2.dll ${CMAKE_BINARY_DIR}/bin/assets/tools/mm2/pthreadVC2.dll COPYONLY)
     configure_file(${mm2_SOURCE_DIR}/vcruntime140.dll ${CMAKE_BINARY_DIR}/bin/assets/tools/mm2/vcruntime140.dll COPYONLY)
 endif ()
 
@@ -176,7 +175,7 @@ target_link_libraries(atomic_qt
         antara::http_client
         Folly::folly
         Folly::folly_deps
-        $<$<PLATFORM_ID:Darwin>:curl>
+        $<$<PLATFORM_ID:Darwin>:/usr/local/lib/libcurl.a>
         )
 #target_enable_asan(atomic_qt)
 

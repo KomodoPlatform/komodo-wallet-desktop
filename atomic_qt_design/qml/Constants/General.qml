@@ -141,6 +141,7 @@ QtObject {
         Object.keys(orders).map((key, index) => {
           orders[key].uuid = key
           orders[key].is_recent_swap = true
+          orders[key].am_i_maker = orders[key].type.toLowerCase() === 'maker'
         })
 
         let arr = Object.values(orders).sort((a, b) => b.events[b.events.length-1].timestamp - a.events[a.events.length-1].timestamp)

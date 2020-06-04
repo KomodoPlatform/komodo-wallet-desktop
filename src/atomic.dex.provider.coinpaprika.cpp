@@ -58,6 +58,7 @@ namespace
         }
         const ticker_historical_request request{.ticker_currency_id = current_coin.coinpaprika_id};
         auto                            answer = ticker_historical(request);
+        std::cout << answer.raw_result << std::endl;
         retry(answer, request, [&answer](const ticker_historical_request& request) { answer = ticker_historical(request); });
         if (answer.raw_result.find("error") == std::string::npos)
         {
@@ -68,22 +69,30 @@ namespace
     template <typename Provider>
     void
     process_provider(const atomic_dex::coin_config& current_coin, Provider& rate_providers, const std::string& fiat)
+
     {
-        const auto                    base = current_coin.coinpaprika_id;
-        const price_converter_request request{.base_currency_id = base, .quote_currency_id = fiat};
-        auto                          answer = price_converter(request);
-
-        retry(answer, request, [&answer](const price_converter_request& request) { answer = price_converter(request); });
-
-        if (answer.raw_result.find("error") == std::string::npos)
+        if (current_coin.coinpaprika_id != fiat)
         {
-            if (not answer.price.empty())
+            const auto                    base = current_coin.coinpaprika_id;
+            const price_converter_request request{.base_currency_id = base, .quote_currency_id = fiat};
+            auto                          answer = price_converter(request);
+
+            retry(answer, request, [&answer](const price_converter_request& request) { answer = price_converter(request); });
+
+            if (answer.raw_result.find("error") == std::string::npos)
             {
-                rate_providers.insert_or_assign(current_coin.ticker, answer.price);
+                if (not answer.price.empty())
+                {
+                    rate_providers.insert_or_assign(current_coin.ticker, answer.price);
+                }
             }
+            else
+                rate_providers.insert_or_assign(current_coin.ticker, "0.00");
         }
         else
-            rate_providers.insert_or_assign(current_coin.ticker, "0.00");
+        {
+            rate_providers.insert_or_assign(current_coin.ticker, "1.00");
+        }
     }
 } // namespace
 
@@ -143,6 +152,14 @@ namespace atomic_dex
                     spawn([this, cur_coin = current_coin]() { process_ticker_infos(cur_coin, this->m_ticker_infos_registry); });
                     spawn([this, cur_coin = current_coin]() { process_ticker_historical(cur_coin, this->m_ticker_historical_registry); });
                     process_provider(current_coin, m_usd_rate_providers, "usd-us-dollars");
+                    if (current_coin.ticker != "BTC")
+                    {
+                        process_provider(current_coin, m_btc_rate_providers, "btc-bitcoin");
+                    }
+                    if (current_coin.ticker != "KMD")
+                    {
+                        process_provider(current_coin, m_kmd_rate_providers, "kmd-komodo");
+                    }
                     process_provider(current_coin, m_eur_rate_providers, "eur-euro");
                 }
 
@@ -278,6 +295,32 @@ namespace atomic_dex
             }
             current_price = m_eur_rate_providers.at(ticker);
         }
+        else if (fiat == "BTC")
+        {
+            if (ticker == "BTC")
+            {
+                return "1.00";
+            }
+            if (m_btc_rate_providers.find(ticker) == m_btc_rate_providers.cend())
+            {
+                ec = dextop_error::unknown_ticker_for_rate_conversion;
+                return "0.00";
+            }
+            current_price = m_btc_rate_providers.at(ticker);
+        }
+        else if (fiat == "KMD")
+        {
+            if (ticker == "KMD")
+            {
+                return "1.00";
+            }
+            if (m_kmd_rate_providers.find(ticker) == m_kmd_rate_providers.cend())
+            {
+                ec = dextop_error::unknown_ticker_for_rate_conversion;
+                return "0.00";
+            }
+            current_price = m_kmd_rate_providers.at(ticker);
+        }
 
         if (adjusted)
         {
@@ -298,6 +341,14 @@ namespace atomic_dex
         {
             process_provider(config, m_usd_rate_providers, "usd-us-dollars");
             process_provider(config, m_eur_rate_providers, "eur-euro");
+            if (evt.ticker != "BTC")
+            {
+                process_provider(config, m_btc_rate_providers, "btc-bitcoin");
+            }
+            if (evt.ticker != "KMD")
+            {
+                process_provider(config, m_kmd_rate_providers, "kmd-komodo");
+            }
             process_ticker_infos(config, m_ticker_infos_registry);
             process_ticker_historical(config, m_ticker_historical_registry);
         }
@@ -311,6 +362,14 @@ namespace atomic_dex
 
         m_usd_rate_providers.erase(config.ticker);
         m_eur_rate_providers.erase(config.ticker);
+        if (evt.ticker != "BTC")
+        {
+            m_btc_rate_providers.erase(config.ticker);
+        }
+        if (evt.ticker != "KMD")
+        {
+            m_kmd_rate_providers.erase(config.ticker);
+        }
     }
 
     t_ticker_info_answer
