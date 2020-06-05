@@ -43,7 +43,9 @@ DefaultModal {
             Layout.alignment: Qt.AlignHCenter
             Layout.topMargin: 20
             font.pixelSize: Style.textSize3
-            visible: getStatus(details) !== status_swap_not_swap && (details.events !== undefined || details.am_i_maker === false)
+            visible: getStatus(details) !== status_swap_not_swap &&  // Is order
+                     (details.events !== undefined || // Has events, ongoing or
+                    details.am_i_maker === false) // Taker order with no events
             color: visible ? getStatusColor(details) : ''
             text: API.get().empty_string + (visible ? getStatusTextWithPrefix(details) : '')
         }
@@ -87,17 +89,17 @@ DefaultModal {
             visible: text !== ''
         }
 
-        // Taker Payment ID
-        TextWithTitle {
-            title: API.get().empty_string + (qsTr("Taker Payment ID"))
-            text: API.get().empty_string + (getSwapPaymentID(details, true))
-            visible: text !== ''
-        }
-
         // Maker Payment ID
         TextWithTitle {
             title: API.get().empty_string + (qsTr("Maker Payment ID"))
             text: API.get().empty_string + (getSwapPaymentID(details, false))
+            visible: text !== ''
+        }
+
+        // Taker Payment ID
+        TextWithTitle {
+            title: API.get().empty_string + (qsTr("Taker Payment ID"))
+            text: API.get().empty_string + (getSwapPaymentID(details, true))
             visible: text !== ''
         }
 
@@ -137,7 +139,7 @@ DefaultModal {
             PrimaryButton {
                 text: API.get().empty_string + (qsTr("View at Explorer"))
                 Layout.fillWidth: true
-                visible: getSwapPaymentID(details, false) !== ''|| getSwapPaymentID(details, true) !== ''
+                visible: getSwapPaymentID(details, false) !== '' || getSwapPaymentID(details, true) !== ''
                 onClicked: {
                     const maker_id = getSwapPaymentID(details, false)
                     const taker_id = getSwapPaymentID(details, true)
