@@ -63,6 +63,14 @@ jobs:
           sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-9 777
           sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-9 777
           
+          # get llvm
+          wget https://apt.llvm.org/llvm.sh
+          chmod +x llvm.sh
+          sudo ./llvm.sh 9
+          
+          sudo apt-get update
+          sudo apt-get install libc++abi-9-dev libc++-9-dev -y
+          
           export CXXFLAGS=-stdlib=libc++
           export LDFLAGS=-stdlib=libc++
           export CXX=clang++-9
@@ -75,14 +83,6 @@ jobs:
           ./bootstrap
           sudo make install
           cd ..
-
-          # get llvm
-          wget https://apt.llvm.org/llvm.sh
-          chmod +x llvm.sh
-          sudo ./llvm.sh 9
-          
-          sudo apt-get update
-          sudo apt-get install libc++abi-9-dev libc++-9-dev -y
           
           # get libwally
           git clone https://github.com/KomodoPlatform/libwally-core.git
