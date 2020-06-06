@@ -55,6 +55,7 @@ SetupPage {
             DefaultText {
                 Layout.topMargin: 10
                 text: API.get().empty_string + (qsTr("Wallets"))
+                font.pixelSize: Style.textSizeSmall3
             }
 
             InnerBackground {
@@ -94,6 +95,7 @@ SetupPage {
 
                             text: API.get().empty_string + (model.modelData)
                             anchors.verticalCenter: parent.verticalCenter
+                            font.pixelSize: Style.textSizeSmall2
                         }
 
                         HorizontalLine {
