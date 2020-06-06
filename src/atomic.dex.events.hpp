@@ -43,5 +43,6 @@ namespace atomic_dex
     struct orderbook_refresh
     {
         std::string base;
+        std::string rel;
     };
 } // namespace atomic_dex

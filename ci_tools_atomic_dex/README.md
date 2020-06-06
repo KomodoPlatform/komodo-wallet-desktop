@@ -53,6 +53,21 @@ export QT_INSTALL_CMAKE_PATH=/Users/SatoshiNakamoto/Qt/5.14.0/clang_64/lib/cmake
 export QT_ROOT=/Users/SatoshiNakamoto/Qt/5.14.0
 ```
 
+Installing curl:
+
+```
+brew install autoconf automake libtool
+git clone https://github.com/phracker/MacOSX-SDKs.git ~/MacOSX-SDKs
+export CC=/usr/local/opt/llvm/bin/clang
+export CPPFLAGS="-isysroot $HOME/MacOSX-SDKs/MacOSX10.13.sdk/"
+git clone https://github.com/curl/curl.git
+cd curl
+git checkout curl-7_70_0
+./buildconf
+./configure --disable-shared --enable-static --without-libidn2 -without-ssl --disable-ldap --with-darwinssl
+make install
+```
+
 ### Install Linux dependencies
 
 In your terminal (shell,...) execute:

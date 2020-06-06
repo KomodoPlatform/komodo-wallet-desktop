@@ -5,9 +5,9 @@ import dependencies
 
 proc get_windows_deploy_cmd*() : string =
     let windeploypath = os.getEnv("QT_INSTALL_CMAKE_PATH").joinPath("bin").joinPath("windeployqt.exe")
-    result = windeploypath & " .\\bin\\ --qmldir " & os.getCurrentDir().parentDir().parentDir().joinPath("atomic_qt_design/qml")
+    result = windeploypath & " bin --qmldir " & os.getCurrentDir().parentDir().parentDir().joinPath("atomic_qt_design/qml")
     echo result
-
+    
 proc generate_solution*(build_type: string, osx_sdk_path: string, compiler_path: string) =
     download_packages()
     var full_name = "build-" & build_type 
@@ -32,4 +32,7 @@ proc generate_solution*(build_type: string, osx_sdk_path: string, compiler_path:
     echo "cmd line: " & cmd_line
     discard execCmd(cmd_line)
     when defined(windows):
-        discard execCmd(get_windows_deploy_cmd())
+        if os.existsFile(os.getCurrentDir().joinPath("bin").joinPath("atomic_qt.exe")):
+          discard execCmd(get_windows_deploy_cmd())
+        else:
+          echo "atomic_qt is not yet built"

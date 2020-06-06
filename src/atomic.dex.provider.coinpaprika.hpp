@@ -43,9 +43,11 @@ namespace atomic_dex
         mm2&                         m_mm2_instance;
         t_providers_registry         m_usd_rate_providers{};
         t_providers_registry         m_eur_rate_providers{};
+        t_providers_registry         m_btc_rate_providers{};
+        t_providers_registry         m_kmd_rate_providers{};
         t_ticker_infos_registry      m_ticker_infos_registry{};
         t_ticker_historical_registry m_ticker_historical_registry{};
-        t_supported_fiat_registry    m_supported_fiat_registry{"USD", "EUR"};
+        t_supported_fiat_registry    m_supported_fiat_registry{"USD", "EUR", "BTC", "KMD"};
         std::thread                  m_provider_rates_thread;
         timed_waiter                 m_provider_thread_timer;
 

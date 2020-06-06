@@ -214,6 +214,30 @@
     "type": "UTXO",
     "name": "Litecoin"
   },
+  "MCL": {
+    "active": false,
+    "coin": "MCL",
+    "coingecko_id": "test-coin",
+    "coinpaprika_id": "test-coin",
+    "currently_enabled": false,
+    "electrum": [
+      {
+        "url": "electrum1.cipig.net:10023"
+      },
+      {
+        "url": "electrum2.cipig.net:10023"
+      },
+      {
+        "url": "electrum3.cipig.net:10023"
+      }
+    ],
+    "explorer_url": [
+      "http://explorer.marmara.io/"
+    ],
+    "is_erc_20": false,
+    "type": "Smart Chain",
+    "name": "MCL"
+  },
   "ETH": {
     "active": false,
     "coin": "ETH",
@@ -598,5 +622,74 @@
     ],
     "active": false,
     "currently_enabled": false
+  },
+  "QTUM": {
+    "coin": "QTUM",
+    "name": "Qtum",
+    "coinpaprika_id": "qtum-qtum",
+    "electrum": [
+      {
+        "url": "electrum1.cipig.net:10050"
+      },
+      {
+        "url": "electrum2.cipig.net:10050"
+      },
+      {
+        "url": "electrum3.cipig.net:10050"
+      }
+    ],
+    "explorer_url": [
+      "https://explorer.qtum.org/"
+    ],
+    "type": "UTXO",
+    "is_erc_20": false,
+    "active": false,
+    "currently_enabled": false
+  },
+  "RVN": {
+    "coin": "RVN",
+    "name": "Ravencoin",
+    "coinpaprika_id": "rvn-ravencoin",
+    "electrum": [
+      {
+        "url": "electrum1.cipig.net:10051"
+      },
+      {
+        "url": "electrum2.cipig.net:10051"
+      },
+      {
+        "url": "electrum3.cipig.net:10051"
+      }
+    ],
+    "explorer_url": [
+      "https://ravencoin.network/"
+    ],
+    "type": "UTXO",
+    "is_erc_20": false,
+    "active": false,
+    "currently_enabled": false
+  },
+  "ZEC": {
+    "active": false,
+    "coin": "ZEC",
+    "name": "Zcash",
+    "coinpaprika_id": "zec-zcash",
+    "currently_enabled": false,
+    "electrum": [
+      {
+        "url": "electrum1.cipig.net:10058"
+      },
+      {
+        "url": "electrum2.cipig.net:10058"
+      },
+      {
+        "url": "electrum3.cipig.net:10058"
+      }
+    ],
+    "explorer_url": [
+      "https://explorer.zcha.in/"
+    ],
+    "is_erc_20": false,
+    "type": "UTXO"
   }
 }

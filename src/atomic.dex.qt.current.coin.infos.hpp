@@ -42,6 +42,8 @@ namespace atomic_dex
         Q_PROPERTY(QString explorer_url READ get_explorer_url WRITE set_explorer_url NOTIFY explorer_url_changed);
         Q_PROPERTY(QList<QObject*> transactions READ get_transactions WRITE set_transactions NOTIFY transactionsChanged)
         Q_PROPERTY(QString tx_state READ get_tx_state WRITE set_tx_state NOTIFY tx_state_changed);
+        Q_PROPERTY(unsigned int transactions_left READ get_txs_left WRITE set_txs_left NOTIFY txs_left_changed);
+        Q_PROPERTY(unsigned int blocks_left READ get_blocks_left WRITE set_blocks_left NOTIFY blocks_left_changed);
         Q_PROPERTY(unsigned int tx_current_block READ get_tx_current_block WRITE set_tx_current_block NOTIFY tx_current_block_changed);
 
       public:
@@ -54,6 +56,10 @@ namespace atomic_dex
         void                       set_tx_state(QString state) noexcept;
         [[nodiscard]] unsigned int get_tx_current_block() const noexcept;
         void                       set_tx_current_block(unsigned int block) noexcept;
+        [[nodiscard]] unsigned int get_txs_left() const noexcept;
+        void                       set_txs_left(unsigned int txs) noexcept;
+        [[nodiscard]] unsigned int get_blocks_left() const noexcept;
+        void                       set_blocks_left(unsigned int blocks) noexcept;
         [[nodiscard]] QObjectList  get_transactions() const noexcept;
         void                       set_transactions(QObjectList transactions) noexcept;
         [[nodiscard]] QString      get_ticker() const noexcept;
@@ -86,6 +92,8 @@ namespace atomic_dex
         void transactionsChanged();
         void type_changed();
         void name_changed();
+        void txs_left_changed();
+        void blocks_left_changed();
         void coinpaprika_id_changed();
 
       public:
@@ -99,6 +107,8 @@ namespace atomic_dex
         QString           selected_coin_url;
         QString           selected_coin_state;
         unsigned int      selected_coin_block;
+        unsigned int      selected_coin_txs_left;
+        unsigned int      selected_coin_blocks_left;
         QObjectList       selected_coin_transactions;
         bool              selected_coin_is_claimable;
         QString           selected_coin_minimal_balance_for_asking_rewards{"0"};
