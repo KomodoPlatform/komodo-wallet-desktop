@@ -59,14 +59,18 @@ SetupPage {
             }
 
             InnerBackground {
+                id: bg
                 Layout.fillWidth: true
-                Layout.preferredHeight: 100
+                readonly property int row_height: 40
+                Layout.minimumHeight: row_height
+                Layout.preferredHeight: row_height * Math.min(wallets.length, 3)
 
                 content: ListView {
                     id: list
                     ScrollBar.vertical: DefaultScrollBar { policy: list.contentHeight > list.height ? ScrollBar.AlwaysOn : ScrollBar.AlwaysOff }
                     implicitWidth: contentItem.childrenRect.width
-                    implicitHeight: contentItem.childrenRect.height
+                    implicitHeight: bg.Layout.preferredHeight
+
                     clip: true
 
                     model: wallets
@@ -75,7 +79,13 @@ SetupPage {
                         color: mouse_area.containsMouse ? Style.colorTheme6 : "transparent"
                         anchors.horizontalCenter: parent.horizontalCenter
                         width: 300
-                        height: 30
+                        height: bg.row_height
+                        DefaultGradient {
+                            anchors.fill: parent
+                            visible: mouse_area.containsMouse
+                            start_color: Style.colorWalletsHighlightGradient1
+                            end_color: Style.colorWalletsHighlightGradient2
+                        }
 
                         // Click area
                         MouseArea {
