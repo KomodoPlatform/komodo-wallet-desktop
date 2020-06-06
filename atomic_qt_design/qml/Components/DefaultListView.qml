@@ -7,11 +7,7 @@ import "../Constants"
 ListView {
     id: root
 
-    ScrollBar.vertical: DefaultScrollBar {
-        anchors.right: root.right
-        anchors.rightMargin: Style.scrollbarOffset
-        policy: root.contentHeight > root.height ? ScrollBar.AlwaysOn : ScrollBar.AlwaysOff
-    }
+    ScrollBar.vertical: DefaultScrollBar { }
 
     implicitWidth: contentItem.childrenRect.width
     implicitHeight: contentItem.childrenRect.height

@@ -6,6 +6,11 @@ import "../Constants"
 
 ScrollBar {
     id: control
+
+    anchors.right: root.right
+    anchors.rightMargin: Style.scrollbarOffset
+    policy: root.contentHeight > root.height ? ScrollBar.AlwaysOn : ScrollBar.AlwaysOff
+
     width: 6
     anchors.margins: 50
     contentItem: Item {
