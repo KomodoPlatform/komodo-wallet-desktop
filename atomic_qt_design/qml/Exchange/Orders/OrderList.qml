@@ -43,13 +43,10 @@ InnerBackground {
         }
 
         // List
-        ListView {
+        DefaultListView {
             id: list
-            ScrollBar.vertical: DefaultScrollBar {}
             Layout.fillWidth: true
             Layout.fillHeight: true
-
-            clip: true
 
             // Row
             delegate: OrderLine {

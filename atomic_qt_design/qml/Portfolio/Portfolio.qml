@@ -234,13 +234,12 @@ ColumnLayout {
     }
 
     // List
-    ListView {
+    DefaultListView {
         id: list
         visible: portfolio_coins.length > 0
         Layout.alignment: Qt.AlignTop
         Layout.fillWidth: true
         Layout.fillHeight: true
-        ScrollBar.vertical: DefaultScrollBar {}
 
         model: General.filterCoins(portfolio_coins, input_coin_filter.text)
                 .sort((a, b) => {
@@ -273,8 +272,6 @@ ColumnLayout {
                     return (val_b - val_a) * order
             }
         })
-
-        clip: true
 
         delegate: Rectangle {
             color: mouse_area.containsMouse ? Style.colorTheme5 : index % 2 == 0 ? Style.colorTheme6 : Style.colorTheme7

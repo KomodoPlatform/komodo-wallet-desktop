@@ -40,14 +40,11 @@ DefaultModal {
         }
 
         // List
-        ListView {
+        DefaultListView {
             id: list
-            ScrollBar.vertical: DefaultScrollBar {}
-            implicitWidth: contentItem.childrenRect.width
             implicitHeight: 600
 
             model: General.filterCoins(getFilteredCoins().sort((a, b) => getOrderCount(b.ticker) - getOrderCount(a.ticker)), input_coin_filter.text)
-            clip: true
 
             delegate: Rectangle {
                 color: mouse_area.containsMouse ? Style.colorTheme4 : "transparent"

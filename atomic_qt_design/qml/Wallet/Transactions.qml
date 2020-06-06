@@ -5,12 +5,10 @@ import QtQuick.Controls 2.12
 import "../Components"
 import "../Constants"
 
-ListView {
+DefaultListView {
     id: list
 
     readonly property int row_height: 45
-
-    ScrollBar.vertical: DefaultScrollBar {}
 
     model: {
         const confirmed = API.get().current_coin_info.transactions.filter(t => t.timestamp !== 0)
@@ -18,7 +16,6 @@ ListView {
         return unconfirmed.concat(confirmed)
     }
 
-    clip: true
     // Row
     delegate: Rectangle {
         id: rectangle

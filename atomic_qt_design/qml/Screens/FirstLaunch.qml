@@ -65,13 +65,9 @@ SetupPage {
                 Layout.minimumHeight: row_height
                 Layout.preferredHeight: row_height * Math.min(wallets.length, 3)
 
-                content: ListView {
+                content: DefaultListView {
                     id: list
-                    ScrollBar.vertical: DefaultScrollBar { policy: list.contentHeight > list.height ? ScrollBar.AlwaysOn : ScrollBar.AlwaysOff }
-                    implicitWidth: contentItem.childrenRect.width
                     implicitHeight: bg.Layout.preferredHeight
-
-                    clip: true
 
                     model: wallets
 

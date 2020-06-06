@@ -126,13 +126,9 @@ Item {
                 anchors.horizontalCenter: parent.horizontalCenter
                 anchors.verticalCenter: parent.verticalCenter
 
-                content: ListView {
+                content: DefaultListView {
                     id: list
-                    ScrollBar.vertical: DefaultScrollBar { policy: list.contentHeight > list.height ? ScrollBar.AlwaysOn : ScrollBar.AlwaysOff }
-                    implicitWidth: contentItem.childrenRect.width
                     implicitHeight: Math.min(contentItem.childrenRect.height, coins_bar.height - 250)
-
-                    clip: true
 
                     model: General.filterCoins(API.get().enabled_coins, input_coin_filter_text)
 

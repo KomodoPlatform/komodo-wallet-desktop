@@ -85,16 +85,13 @@ DefaultModal {
         }
 
         // List
-        ListView {
+        DefaultListView {
             id: list
             Layout.alignment: Qt.AlignTop
             Layout.fillWidth: true
             Layout.fillHeight: true
-            ScrollBar.vertical: DefaultScrollBar {}
 
             model: getCurrentOrderbook().sort((a, b) => parseFloat(b.price) - parseFloat(a.price))
-
-            clip: true
 
             delegate: Rectangle {
                 color: mouse_area.containsMouse ? Style.colorTheme4 : "transparent"
