@@ -6,6 +6,7 @@ import "../Constants"
 
 ListView {
     id: list
+
     ScrollBar.vertical: DefaultScrollBar {
         policy: list.contentHeight > list.height ? ScrollBar.AlwaysOn : ScrollBar.AlwaysOff
     }

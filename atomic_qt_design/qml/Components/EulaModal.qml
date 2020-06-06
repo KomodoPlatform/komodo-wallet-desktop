@@ -32,15 +32,14 @@ DefaultModal {
 
         InnerBackground {
             id: eula_rect
+
             height: 400
             Layout.fillWidth: true
-            Flickable {
-                ScrollBar.vertical: DefaultScrollBar { }
 
+            DefaultFlickable {
                 anchors.fill: parent
                 anchors.margins: 20
 
-                clip: true
                 contentWidth: eula_text.width
                 contentHeight: eula_text.height
 

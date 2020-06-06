@@ -16,13 +16,10 @@ DefaultModal {
     width: 900
     height: Math.min(text_area.height + padding*2, 700)
 
-    Flickable {
-        clip: true
+    DefaultFlickable {
         anchors.fill: parent
         contentWidth: text_area.width
         contentHeight: text_area.height
-
-        ScrollBar.vertical: DefaultScrollBar { }
 
         TextAreaWithTitle {
             id: text_area

@@ -69,14 +69,12 @@ DefaultModal {
             selectByMouse: true
         }
 
-        Flickable {
+        DefaultFlickable {
             visible: API.get().enableable_coins.length > 0
             width: 350
             height: 400
             contentWidth: col.width
             contentHeight: col.height
-            clip: true
-            ScrollBar.vertical: DefaultScrollBar { }
 
             Column {
                 id: col
