@@ -28,6 +28,11 @@ Item {
         Pane {
             id: pane
 
+            leftPadding: 30
+            rightPadding: leftPadding
+            topPadding: leftPadding * 0.5
+            bottomPadding: topPadding
+
             Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
 
             background: FloatingBackground {
