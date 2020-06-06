@@ -30,6 +30,7 @@ SetupPage {
 
         HorizontalLine {
             Layout.fillWidth: true
+            Layout.bottomMargin: 10
         }
 
         RowLayout {
