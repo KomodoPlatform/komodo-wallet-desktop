@@ -5,10 +5,12 @@ import QtQuick.Controls 2.12
 import "../Constants"
 
 ListView {
-    id: list
+    id: root
 
     ScrollBar.vertical: DefaultScrollBar {
-        policy: list.contentHeight > list.height ? ScrollBar.AlwaysOn : ScrollBar.AlwaysOff
+        anchors.right: root.right
+        anchors.rightMargin: Style.scrollbarOffset
+        policy: root.contentHeight > root.height ? ScrollBar.AlwaysOn : ScrollBar.AlwaysOff
     }
 
     implicitWidth: contentItem.childrenRect.width

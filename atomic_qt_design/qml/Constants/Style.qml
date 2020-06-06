@@ -50,10 +50,11 @@ QtObject {
     readonly property int textSize11: 132
     readonly property int textSize12: 144
 
-    readonly property int rectangleCornerRadius: 14
+    readonly property int rectangleCornerRadius: 11
     readonly property int itemPadding: 12
     readonly property int iconTextMargin: 5
     readonly property int sidebarLineHeight: 44
+    readonly property int scrollbarOffset: 5
 
     readonly property string colorRed: "#E938A4"
     readonly property string colorRed2: "#b61477"
