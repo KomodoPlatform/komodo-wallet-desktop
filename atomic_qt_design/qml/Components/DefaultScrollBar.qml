@@ -7,14 +7,33 @@ import "../Constants"
 ScrollBar {
     id: control
     width: 6
+    anchors.margins: 50
+    contentItem: Item {
+        FloatingBackground {
+            //x: -3
+            width: parent.width
+            height: parent.height - 14
+            anchors.verticalCenter: parent.verticalCenter
 
-    contentItem: FloatingBackground {
-        radius: 100
+            radius: 100
+
+            color: Style.colorScrollbar
+            border_color_start: Style.colorScrollbarGradient1
+            border_color_end: Style.colorScrollbarGradient2
+        }
     }
-    background: InnerBackground {
-        width: control.width + 4
-        x: -width/2 + control.width/2
-        radius: 100
+
+    background: Item {
+        width: 10
+        x: -width/2 + 6/2// -3
+        InnerBackground {
+            width: parent.width
+            height: parent.height - 10
+            anchors.verticalCenter: parent.verticalCenter
+
+            radius: 100
+            color: Style.colorScrollbarBackground
+        }
     }
 }
 

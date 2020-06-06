@@ -118,6 +118,11 @@ QtObject {
     readonly property string colorWalletsHighlightGradient1: "#FF1B5E7D"
     readonly property string colorWalletsHighlightGradient2: "#001B5E7D"
 
+    readonly property string colorScrollbar: "#202339"
+    readonly property string colorScrollbarBackground: "#10121F"
+    readonly property string colorScrollbarGradient1: "#33395A"
+    readonly property string colorScrollbarGradient2: "#292D48"
+
     readonly property string colorSidebarIconHighlighted: "#2BBEF2"
     readonly property string colorSidebarHighlightGradient1: "#801B5E7D"
     readonly property string colorSidebarHighlightGradient2: "#001B5E7D"

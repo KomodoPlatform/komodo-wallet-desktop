@@ -9,6 +9,10 @@ Item {
     id: root
     property alias rect: rect
     property alias color: rect.color
+    property double border_gradient_start_pos: 0.35
+    property double border_gradient_end_pos: 0.65
+    property color border_color_start: Style.colorRectangleBorderGradient1
+    property color border_color_end: Style.colorRectangleBorderGradient2
     property alias radius: rect.radius
     property alias border: rect.border
     property alias inner_space: inner_space
@@ -51,12 +55,12 @@ Item {
 
         gradient: Gradient {
             GradientStop {
-               position: 0.35
-               color: Style.colorRectangleBorderGradient1
+               position: border_gradient_start_pos
+               color: border_color_start
             }
             GradientStop {
-               position: 0.65
-               color: Style.colorRectangleBorderGradient2
+               position: border_gradient_end_pos
+               color: border_color_end
             }
         }
     }
