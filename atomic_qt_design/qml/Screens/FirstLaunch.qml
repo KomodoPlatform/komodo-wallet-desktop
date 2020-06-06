@@ -23,18 +23,19 @@ SetupPage {
     image_path: General.image_path + "atomicdex-logo-large.svg"
     image_margin: 30
     content: ColumnLayout {
+        spacing: Style.rowSpacing
         DefaultText {
             text: API.get().empty_string + (qsTr("Welcome"))
-            Layout.bottomMargin: 10
         }
 
         HorizontalLine {
             Layout.fillWidth: true
-            Layout.bottomMargin: 10
         }
 
         RowLayout {
             Layout.fillWidth: true
+
+            spacing: Style.buttonSpacing
 
             DefaultButton {
                 Layout.fillWidth: true
@@ -51,12 +52,14 @@ SetupPage {
 
         // Wallets
         ColumnLayout {
+            spacing: Style.rowSpacing
+
             visible: wallets.length > 0
+
             // Name
             DefaultText {
-                Layout.topMargin: 10
                 text: API.get().empty_string + (qsTr("Wallets"))
-                font.pixelSize: Style.textSizeSmall3
+                font.pixelSize: Style.textSizeSmall2
             }
 
             InnerBackground {
@@ -124,7 +127,6 @@ SetupPage {
         HorizontalLine {
             light: true
             Layout.fillWidth: true
-            Layout.bottomMargin: 10
         }
 
         Languages {
