@@ -31,7 +31,7 @@ Item {
             Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
 
             background: FloatingBackground {
-                color: Style.colorTheme6
+                color: Style.colorTheme7
             }
 
             Loader {

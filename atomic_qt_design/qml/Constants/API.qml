@@ -236,7 +236,7 @@ QtObject {
             console.log("refresh_orders_and_swaps!")
         },
 
-        get_wallets: () => { return ["encrypted"] },
+        get_wallets: () => { return ["naezith", "slyris", "ca333"] },
 
         get_trade_infos: (ticker, receive_ticker, amount) => {
             return {"input_final_value":"3332.99997961","is_ticker_of_fees_eth":false,"trade_fee":"0.00000039","tx_fee":"2e-05"}

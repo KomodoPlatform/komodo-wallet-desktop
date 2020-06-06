@@ -28,6 +28,10 @@ SetupPage {
             Layout.bottomMargin: 10
         }
 
+        HorizontalLine {
+            Layout.fillWidth: true
+        }
+
         RowLayout {
             Layout.fillWidth: true
 
@@ -53,50 +57,54 @@ SetupPage {
                 text: API.get().empty_string + (qsTr("Wallets"))
             }
 
-            HorizontalLine {
+            InnerBackground {
                 Layout.fillWidth: true
-            }
+                Layout.preferredHeight: 100
 
-            ListView {
-                ScrollBar.vertical: DefaultScrollBar {}
-                implicitWidth: contentItem.childrenRect.width
-                implicitHeight: contentItem.childrenRect.height
-                clip: true
+                content: ListView {
+                    id: list
+                    ScrollBar.vertical: DefaultScrollBar { policy: list.contentHeight > list.height ? ScrollBar.AlwaysOn : ScrollBar.AlwaysOff }
+                    implicitWidth: contentItem.childrenRect.width
+                    implicitHeight: contentItem.childrenRect.height
+                    clip: true
 
-                model: wallets
+                    model: wallets
 
-                delegate: Rectangle {
-                    color: mouse_area.containsMouse ? Style.colorTheme7 : "transparent"
-                    anchors.horizontalCenter: parent.horizontalCenter
-                    width: 300
-                    height: 30
+                    delegate: Rectangle {
+                        color: mouse_area.containsMouse ? Style.colorTheme6 : "transparent"
+                        anchors.horizontalCenter: parent.horizontalCenter
+                        width: 300
+                        height: 30
 
-                    // Click area
-                    MouseArea {
-                        id: mouse_area
-                        anchors.fill: parent
-                        hoverEnabled: true
-                        onClicked: {
-                            API.get().wallet_default_name = model.modelData
-                            onClickedWallet()
+                        // Click area
+                        MouseArea {
+                            id: mouse_area
+                            anchors.fill: parent
+                            hoverEnabled: true
+                            onClicked: {
+                                API.get().wallet_default_name = model.modelData
+                                onClickedWallet()
+                            }
                         }
-                    }
 
-                    // Name
-                    DefaultText {
-                        anchors.left: parent.left
-                        anchors.leftMargin: 5
+                        // Name
+                        DefaultText {
+                            anchors.left: parent.left
+                            anchors.leftMargin: 40
 
-                        text: API.get().empty_string + (Style.listItemPrefix + model.modelData)
-                        anchors.verticalCenter: parent.verticalCenter
-                    }
+                            text: API.get().empty_string + (model.modelData)
+                            anchors.verticalCenter: parent.verticalCenter
+                        }
 
-                    // Line
-                    HorizontalLine {
-                        visible: index !== wallets.length - 1
-                        width: parent.width
-                        color: Style.colorWhite9
-                        anchors.bottom: parent.bottom
+                        HorizontalLine {
+                            visible: index !== wallets.length -1
+                            width: parent.width - 4
+
+                            anchors.horizontalCenter: parent.horizontalCenter
+                            anchors.bottom: parent.bottom
+                            anchors.bottomMargin: -height/2
+                            light: true
+                        }
                     }
                 }
             }
@@ -105,6 +113,7 @@ SetupPage {
 
 
         HorizontalLine {
+            light: true
             Layout.fillWidth: true
             Layout.bottomMargin: 10
         }
