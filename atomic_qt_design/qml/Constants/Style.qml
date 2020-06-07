@@ -120,7 +120,7 @@ QtObject {
     readonly property string colorGradientLine1:  dark_theme ? "#00FFFFFF" : "#00FFFFFF"
     readonly property string colorGradientLine2:  dark_theme ? "#0FFFFFFF" : "#0FFFFFFF"
 
-    readonly property string colorWalletsHighlightGradient1:  dark_theme ? "#FF1B5E7D" : "#FF1B5E7D"
+    readonly property string colorWalletsHighlightGradient1:  dark_theme ? "#801B5E7D" : "#801B5E7D"
     readonly property string colorWalletsHighlightGradient2:  dark_theme ? "#001B5E7D" : "#001B5E7D"
 
     readonly property string colorScrollbar:  dark_theme ? "#202339" : "#202339"
@@ -129,7 +129,7 @@ QtObject {
     readonly property string colorScrollbarGradient2:  dark_theme ? "#292D48" : "#292D48"
 
     readonly property string colorSidebarIconHighlighted:  dark_theme ? "#2BBEF2" : "#2BBEF2"
-    readonly property string colorSidebarHighlightGradient1:  dark_theme ? "#801B5E7D" : "#801B5E7D"
+    readonly property string colorSidebarHighlightGradient1:  dark_theme ? "#FF1B5E7D" : "#FF1B5E7D"
     readonly property string colorSidebarHighlightGradient2:  dark_theme ? "#001B5E7D" : "#001B5E7D"
 
     readonly property string colorCoinListHighlightGradient1:  dark_theme ? "#002C2E40" : "#002C2E40"
