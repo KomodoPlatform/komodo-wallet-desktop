@@ -187,11 +187,13 @@ Item {
                             }
                         }
 
+                        readonly property double side_margin: 25
+
                         // Icon
                         Image {
                             id: icon
                             anchors.left: parent.left
-                            anchors.leftMargin: 15
+                            anchors.leftMargin: side_margin - scrollbar_margin
 
                             source: General.coinIcon(model.modelData.ticker)
                             fillMode: Image.PreserveAspectFit
@@ -202,22 +204,23 @@ Item {
                         ColumnLayout {
                             anchors.verticalCenter: parent.verticalCenter
                             anchors.right: parent.right
-                            anchors.rightMargin: icon.anchors.leftMargin
+                            anchors.rightMargin: side_margin + scrollbar_margin
 
-                            spacing: -3
-                            // Name
-                            DefaultText {
-                                Layout.alignment: Qt.AlignRight
-                                text: API.get().empty_string + (model.modelData.name.replace(" (TESTCOIN)", ""))
-                                font.pixelSize: text.length > 15 ? Style.textSizeVerySmall8 : text.length > 12 ? Style.textSizeVerySmall9 : Style.textSizeSmall1
-                            }
+//                            spacing: -3
+//                            // Name
+//                            DefaultText {
+//                                Layout.alignment: Qt.AlignRight
+//                                text: API.get().empty_string + (model.modelData.name.replace(" (TESTCOIN)", ""))
+//                                font.pixelSize: text.length > 15 ? Style.textSizeVerySmall8 : text.length > 12 ? Style.textSizeVerySmall9 : Style.textSizeSmall1
+//                            }
 
                             // Ticker
                             DefaultText {
                                 Layout.alignment: Qt.AlignRight
                                 text: API.get().empty_string + (model.modelData.ticker)
-                                font.pixelSize: Style.textSizeSmall1
-                                color: Style.colorThemePassive
+                                font.pixelSize: text.length > 15 ? Style.textSizeVerySmall8 : text.length > 12 ? Style.textSizeVerySmall9 : Style.textSizeSmall1
+//                                font.pixelSize: Style.textSizeSmall1
+//                                color: Style.colorThemePassive
                             }
                         }
                     }
