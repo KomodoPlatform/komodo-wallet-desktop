@@ -1075,6 +1075,7 @@ namespace atomic_dex
         auto atomic_log_folder_path = get_atomic_dex_logs_folder();
         auto current_log_file       = get_atomic_dex_current_log_file();
 
+        
         if (fs::exists(current_log_file))
         {
             if (auto f_size = fs::file_size(current_log_file); f_size > 7777777)
@@ -1083,8 +1084,17 @@ namespace atomic_dex
                 {
                     fs::remove(current_log_file.string() + ".old");
                 }
-                fs::rename(current_log_file, current_log_file.string() + ".old");
-                LOG_F(INFO, "Log rotation finished, previous file size: {}", f_size);
+                boost::system::error_code ec;
+                fs::rename(current_log_file, current_log_file.string() + ".old", ec);
+                if (ec)
+                {
+                    std::cerr << ec.message() << std::endl;
+                    LOG_F(WARNING, "Log rotation failed {}", ec.message());
+                }
+                else
+                {
+                    LOG_F(INFO, "Log rotation finished, previous file size: {}", f_size);
+                }
             }
         }
     }
