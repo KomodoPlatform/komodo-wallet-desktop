@@ -166,6 +166,29 @@
     "is_erc_20": false,
     "type": "UTXO"
   },
+  "DOGE": {
+    "coin": "DOGE",
+    "name": "Dogecoin",
+    "coinpaprika_id": "doge-dogecoin",
+    "electrum": [
+      {
+        "url": "electrum1.cipig.net:10060"
+      },
+      {
+        "url": "electrum2.cipig.net:10060"
+      },
+      {
+        "url": "electrum3.cipig.net:10060"
+      }
+    ],
+    "explorer_url": [
+      "https://dogechain.info/"
+    ],
+    "type": "UTXO",
+    "is_erc_20": false,
+    "active": false,
+    "currently_enabled": false
+  },
   "JUMBLR": {
     "coin": "JUMBLR",
     "name": "JUMBLR",
