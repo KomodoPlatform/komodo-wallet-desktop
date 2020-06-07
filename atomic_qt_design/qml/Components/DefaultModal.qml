@@ -4,7 +4,6 @@ import QtQuick.Controls 2.12
 
 import "../Constants"
 
-// Open Enable Coin Modal
 Popup {
     id: root
     anchors.centerIn: Overlay.overlay

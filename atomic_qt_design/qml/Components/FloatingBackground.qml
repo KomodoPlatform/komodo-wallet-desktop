@@ -20,10 +20,13 @@ Item {
     property alias mask: mask_loader.sourceComponent
     property bool verticalShadow: false
     property bool opacity_mask_enabled: false
+    property bool auto_set_size: true
 
     readonly property var visible_rect: opacity_mask_enabled ? mask_loader : rect
-    width: inner_space.width
-    height: inner_space.height
+
+
+    width: auto_set_size ? inner_space.width : undefined
+    height: auto_set_size ? inner_space.height : undefined
     DefaultRectangle {
         id: rect
         anchors.fill: parent

@@ -222,6 +222,15 @@ Item {
 //                                font.pixelSize: Style.textSizeSmall1
 //                                color: Style.colorThemePassive
                             }
+
+                            ToolTip {
+                                visible: mouse_area.containsMouse
+                                background: FloatingBackground { auto_set_size: false }
+                                contentItem:  DefaultText {
+                                    text: API.get().empty_string + (model.modelData.name.replace(" (TESTCOIN)", ""))
+                                    font.pixelSize: Style.textSizeSmall4
+                                }
+                            }
                         }
                     }
                 }
