@@ -692,6 +692,29 @@
     "active": false,
     "currently_enabled": false
   },
+  "XZC": {
+    "coin": "XZC",
+    "name": "Zcoin",
+    "coinpaprika_id": "xzc-zcoin",
+    "electrum": [
+      {
+        "url": "electrumx01.zcoin.io:50001"
+      },
+      {
+        "url": "electrumx02.zcoin.io:50001"
+      },
+      {
+        "url": "electrumx03.zcoin.io:50001"
+      }
+    ],
+    "explorer_url": [
+      "https://explorer.zcoin.io/"
+    ],
+    "type": "UTXO",
+    "is_erc_20": false,
+    "active": false,
+    "currently_enabled": false
+  },
   "ZEC": {
     "active": false,
     "coin": "ZEC",
