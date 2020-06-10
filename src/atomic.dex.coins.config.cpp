@@ -22,7 +22,7 @@ namespace atomic_dex
     void
     to_json(nlohmann::json& j, const electrum_server& cfg)
     {
-        LOG_SCOPE_FUNCTION(INFO);
+        spdlog::debug("{} l{} f[{}]", __FUNCTION__, __LINE__, fs::path(__FILE__).filename().string());
         j["url"] = cfg.url;
         if (cfg.protocol.has_value())
         {
@@ -37,7 +37,7 @@ namespace atomic_dex
     void
     from_json(const nlohmann::json& j, electrum_server& cfg)
     {
-        LOG_SCOPE_FUNCTION(INFO);
+        spdlog::debug("{} l{} f[{}]", __FUNCTION__, __LINE__, fs::path(__FILE__).filename().string());
         if (j.count("protocol") == 1)
         {
             cfg.protocol = j.at("protocol").get<std::string>();
@@ -52,7 +52,7 @@ namespace atomic_dex
     void
     from_json(const nlohmann::json& j, coin_config& cfg)
     {
-        LOG_SCOPE_FUNCTION(INFO);
+        spdlog::debug("{} l{} f[{}]", __FUNCTION__, __LINE__, fs::path(__FILE__).filename().string());
         j.at("coin").get_to(cfg.ticker);
         j.at("name").get_to(cfg.name);
         j.at("type").get_to(cfg.type);

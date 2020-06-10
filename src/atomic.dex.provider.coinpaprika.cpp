@@ -32,10 +32,9 @@ namespace
     {
         while (answer.rpc_result_code == e_http_code::too_many_requests)
         {
-            DLOG_F(WARNING, "too many request retry");
+            spdlog::warn("too many requests, retrying");
             std::this_thread::sleep_for(1s);
             functor(request);
-            // answer = price_converter(request);
         }
     }
 
@@ -58,7 +57,6 @@ namespace
         }
         const ticker_historical_request request{.ticker_currency_id = current_coin.coinpaprika_id};
         auto                            answer = ticker_historical(request);
-        std::cout << answer.raw_result << std::endl;
         retry(answer, request, [&answer](const ticker_historical_request& request) { answer = ticker_historical(request); });
         if (answer.raw_result.find("error") == std::string::npos)
         {
@@ -102,7 +100,7 @@ namespace atomic_dex
 
     coinpaprika_provider::coinpaprika_provider(entt::registry& registry, mm2& mm2_instance) : system(registry), m_mm2_instance(mm2_instance)
     {
-        LOG_SCOPE_FUNCTION(INFO);
+        spdlog::debug("{} l{} f[{}]", __FUNCTION__, __LINE__, fs::path(__FILE__).filename().string());
         disable();
         dispatcher_.sink<mm2_started>().connect<&coinpaprika_provider::on_mm2_started>(*this);
         dispatcher_.sink<coin_enabled>().connect<&coinpaprika_provider::on_coin_enabled>(*this);
@@ -116,7 +114,7 @@ namespace atomic_dex
 
     coinpaprika_provider::~coinpaprika_provider() noexcept
     {
-        LOG_SCOPE_FUNCTION(INFO);
+        spdlog::debug("{} l{} f[{}]", __FUNCTION__, __LINE__, fs::path(__FILE__).filename().string());
         m_provider_thread_timer.interrupt();
         if (m_provider_rates_thread.joinable())
         {
@@ -130,16 +128,16 @@ namespace atomic_dex
     void
     coinpaprika_provider::on_mm2_started([[maybe_unused]] const mm2_started& evt) noexcept
     {
-        LOG_SCOPE_FUNCTION(INFO);
+        spdlog::debug("{} l{} f[{}]", __FUNCTION__, __LINE__, fs::path(__FILE__).filename().string());
 
         m_provider_rates_thread = std::thread([this]() {
-            loguru::set_thread_name("paprika thread");
-            LOG_SCOPE_F(INFO, "paprika thread started");
+            // loguru::set_thread_name("paprika thread");
+            spdlog::info("paprika thread started");
 
             using namespace std::chrono_literals;
             do
             {
-                DLOG_F(INFO, "refreshing rate conversion from coinpaprika");
+                spdlog::info("refreshing rate conversion from coinpaprika");
 
                 t_coins coins = m_mm2_instance.get_enabled_coins();
 
@@ -163,7 +161,7 @@ namespace atomic_dex
                     process_provider(current_coin, m_eur_rate_providers, "eur-euro");
                 }
 
-            } while (not m_provider_thread_timer.wait_for(30s));
+            } while (not m_provider_thread_timer.wait_for(120s));
         });
     }
 
@@ -194,7 +192,7 @@ namespace atomic_dex
         if (t_ec)
         {
             ec = t_ec;
-            LOG_F(ERROR, "my_balance error: {}", t_ec.message());
+            spdlog::error("my_balance error: {}", t_ec.message());
             return "0.00";
         }
 
@@ -231,7 +229,7 @@ namespace atomic_dex
 
             if (ec)
             {
-                LOG_F(WARNING, "error when converting {} to {}, err: {}", current_coin.ticker, fiat, ec.message());
+                spdlog::warn("error when converting {} to {}, err: {}", current_coin.ticker, fiat, ec.message());
                 ec.clear(); //! Reset
                 continue;
             }
@@ -334,7 +332,8 @@ namespace atomic_dex
     void
     coinpaprika_provider::on_coin_enabled(const coin_enabled& evt) noexcept
     {
-        LOG_SCOPE_FUNCTION(INFO);
+        spdlog::debug("{} l{} f[{}]", __FUNCTION__, __LINE__, fs::path(__FILE__).filename().string());
+
         const auto config = m_mm2_instance.get_coin_info(evt.ticker);
 
         if (config.coinpaprika_id != "test-coin")
@@ -357,7 +356,7 @@ namespace atomic_dex
     void
     coinpaprika_provider::on_coin_disabled(const coin_disabled& evt) noexcept
     {
-        LOG_SCOPE_FUNCTION(INFO);
+        spdlog::debug("{} l{} f[{}]", __FUNCTION__, __LINE__, fs::path(__FILE__).filename().string());
         const auto config = m_mm2_instance.get_coin_info(evt.ticker);
 
         m_usd_rate_providers.erase(config.ticker);

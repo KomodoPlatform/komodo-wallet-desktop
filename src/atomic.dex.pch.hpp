@@ -172,8 +172,12 @@ adjust_precision(const std::string& current)
 #define ENTT_STANDARD_CPP
 #include <entt/entity/helper.hpp>
 #include <entt/signal/dispatcher.hpp>
-#define LOGURU_WITH_FILEABS 1
-#include <loguru.hpp>
+#include <spdlog/spdlog.h>
+#include <spdlog/async.h>
+#include <spdlog/sinks/stdout_color_sinks.h>
+#include <spdlog/sinks/rotating_file_sink.h>
+//#define LOGURU_WITH_FILEABS 1
+//#include <loguru.hpp>
 #include <meta/detection/detection.hpp>
 #if defined(_WIN32) || defined(WIN32)
 #    define and &&

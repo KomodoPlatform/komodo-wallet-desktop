@@ -32,7 +32,7 @@ namespace atomic_dex
         void
         to_json(nlohmann::json& j, const price_converter_request& evt)
         {
-            LOG_SCOPE_FUNCTION(INFO);
+            spdlog::debug("{} l{} f[{}]", __FUNCTION__, __LINE__, fs::path(__FILE__).filename().string());
 
             j["base_currency_id"]  = evt.base_currency_id;
             j["quote_currency_id"] = evt.quote_currency_id;
@@ -42,7 +42,7 @@ namespace atomic_dex
         void
         from_json(const nlohmann::json& j, price_converter_answer& evt)
         {
-            LOG_SCOPE_FUNCTION(INFO);
+            spdlog::debug("{} l{} f[{}]", __FUNCTION__, __LINE__, fs::path(__FILE__).filename().string());
 
             utils::my_json_sax sx;
             nlohmann::json::sax_parse(j.dump(), &sx);
@@ -76,26 +76,26 @@ namespace atomic_dex
         {
             using namespace std::string_literals;
 
-            LOG_SCOPE_FUNCTION(INFO);
+            spdlog::debug("{} l{} f[{}]", __FUNCTION__, __LINE__, fs::path(__FILE__).filename().string());
 
             auto&& [base_id, quote_id] = request;
             const auto url  = g_coinpaprika_endpoint + "price-converter?base_currency_id="s + base_id + "&quote_currency_id="s + quote_id + "&amount=1"s;
             const auto resp = RestClient::get(url);
             price_converter_answer answer;
 
-            DVLOG_F(loguru::Verbosity_INFO, "url: {}", url);
-            DVLOG_F(loguru::Verbosity_INFO, "resp: {}", resp.body);
+            spdlog::info("url: {}", url);
+            spdlog::info("{} l{} resp code: {}", __FUNCTION__, __LINE__, resp.code);
 
             if (resp.code == e_http_code::bad_request)
             {
-                DVLOG_F(loguru::Verbosity_WARNING, "rpc answer code is 400 (Bad Parameters)");
+                spdlog::warn("rpc answer code is 400 (Bad Parameters), body: {}", resp.body);
                 answer.rpc_result_code = resp.code;
                 answer.raw_result      = resp.body;
                 return answer;
             }
             if (resp.code == e_http_code::too_many_requests)
             {
-                DVLOG_F(loguru::Verbosity_WARNING, "rpc answer code is 429 (Too Many requests)");
+                spdlog::warn("rpc answer code is 429 (Too Many requests), body: {}", resp.body);
                 answer.rpc_result_code = resp.code;
                 answer.raw_result      = resp.body;
                 return answer;
@@ -109,7 +109,7 @@ namespace atomic_dex
             }
             catch (const std::exception& error)
             {
-                VLOG_F(loguru::Verbosity_WARNING, "{}", error.what());
+                spdlog::warn("{}", error.what());
                 answer.rpc_result_code = -1;
                 answer.raw_result      = error.what();
             }
@@ -124,7 +124,7 @@ namespace atomic_dex
             using ranges::views::zip;
             using namespace std::string_literals;
 
-            LOG_SCOPE_FUNCTION(INFO);
+            spdlog::debug("{} l{} f[{}]", __FUNCTION__, __LINE__, fs::path(__FILE__).filename().string());
 
             auto&& [ticker_id, quotes] = request;
             auto url                   = g_coinpaprika_endpoint + "tickers/"s + ticker_id + "?quotes=";
@@ -143,19 +143,19 @@ namespace atomic_dex
             const auto         resp = RestClient::get(url);
             ticker_info_answer answer;
 
-            DVLOG_F(loguru::Verbosity_INFO, "url: {}", url);
-            DVLOG_F(loguru::Verbosity_INFO, "resp: {}", resp.body);
+            spdlog::info("url: {}", url);
+            spdlog::info("{} l{} resp code: {}", __FUNCTION__, __LINE__, resp.code);
 
             if (resp.code == e_http_code::bad_request)
             {
-                DVLOG_F(loguru::Verbosity_WARNING, "rpc answer code is 400 (Bad Parameters)");
+                spdlog::warn("rpc answer code is 400 (Bad Parameters), body: {}", resp.body);
                 answer.rpc_result_code = resp.code;
                 answer.raw_result      = resp.body;
                 return answer;
             }
             if (resp.code == e_http_code::too_many_requests)
             {
-                DVLOG_F(loguru::Verbosity_WARNING, "rpc answer code is 429 (Too Many requests)");
+                spdlog::warn("rpc answer code is 429 (Too Many requests), body: {}", resp.body);
                 answer.rpc_result_code = resp.code;
                 answer.raw_result      = resp.body;
                 return answer;
@@ -170,7 +170,7 @@ namespace atomic_dex
             }
             catch (const std::exception& error)
             {
-                VLOG_F(loguru::Verbosity_WARNING, "{}", error.what());
+                spdlog::warn("{}", error.what());
                 answer.rpc_result_code = -1;
                 answer.raw_result      = error.what();
             }
@@ -183,7 +183,7 @@ namespace atomic_dex
         {
             using namespace std::string_literals;
 
-            LOG_SCOPE_FUNCTION(INFO);
+            spdlog::debug("{} l{} f[{}]", __FUNCTION__, __LINE__, fs::path(__FILE__).filename().string());
 
             auto&& [ticker_id, timestamp, interval] = request;
             auto url = g_coinpaprika_endpoint + "tickers/"s + ticker_id + "/historical?start="s + std::to_string(timestamp) + "&interval="s + interval;
@@ -191,19 +191,19 @@ namespace atomic_dex
             const auto               resp = RestClient::get(url);
             ticker_historical_answer answer;
 
-            DVLOG_F(loguru::Verbosity_INFO, "url: {}", url);
-            DVLOG_F(loguru::Verbosity_INFO, "resp: {}", resp.body);
+            spdlog::info("url: {}", url);
+            spdlog::info("{} l{} resp code: {}", __FUNCTION__, __LINE__, resp.code);
 
             if (resp.code == e_http_code::bad_request)
             {
-                DVLOG_F(loguru::Verbosity_WARNING, "rpc answer code is 400 (Bad Parameters)");
+                spdlog::warn("rpc answer code is 400 (Bad Parameters), body: {}", resp.body);
                 answer.rpc_result_code = resp.code;
                 answer.raw_result      = resp.body;
                 return answer;
             }
             if (resp.code == e_http_code::too_many_requests)
             {
-                DVLOG_F(loguru::Verbosity_WARNING, "rpc answer code is 429 (Too Many requests)");
+                spdlog::warn("rpc answer code is 429 (Too Many requests), body: {}", resp.body);
                 answer.rpc_result_code = resp.code;
                 answer.raw_result      = resp.body;
                 return answer;
@@ -218,7 +218,7 @@ namespace atomic_dex
             }
             catch (const std::exception& error)
             {
-                VLOG_F(loguru::Verbosity_WARNING, "{}", error.what());
+                spdlog::warn("{}", error.what());
                 answer.rpc_result_code = -1;
                 answer.raw_result      = error.what();
             }
