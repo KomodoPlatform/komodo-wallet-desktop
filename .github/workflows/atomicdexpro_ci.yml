@@ -242,7 +242,7 @@ jobs:
         run: |
           Set-ExecutionPolicy RemoteSigned -scope CurrentUser
           Invoke-Expression (New-Object System.Net.WebClient).DownloadString('https://get.scoop.sh')
-          $Env:QT_INSTALL_CMAKE_PATH = "C:\Qt\5.15.0\msvc2017_64"
+          $Env:QT_INSTALL_CMAKE_PATH = "C:\Qt\5.15.0\msvc2019_64"
           
           cd ci_tools_atomic_dex
 
