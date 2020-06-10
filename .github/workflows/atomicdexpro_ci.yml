@@ -18,7 +18,7 @@ jobs:
       - name: Install QT (Linux)
         uses: jurplel/install-qt-action@v2
         with:
-          version: '5.14.2'
+          version: '5.15.0'
           host: 'linux'
           target: 'desktop'
           dir: '${{ github.workspace }}'
@@ -94,9 +94,9 @@ jobs:
 
       - name: Build (Linux)
         run: |
-          export QT_INSTALL_CMAKE_PATH=${{ github.workspace }}/Qt/5.14.2/gcc_64/lib/cmake
-          export QT_ROOT=${{ github.workspace }}/Qt/5.14.2
-          export PATH=${{ github.workspace }}/Qt/5.14.2/gcc_64/bin:$PATH
+          export QT_INSTALL_CMAKE_PATH=${{ github.workspace }}/Qt/5.15.0/gcc_64/lib/cmake
+          export QT_ROOT=${{ github.workspace }}/Qt/5.15.0
+          export PATH=${{ github.workspace }}/Qt/5.15.0/gcc_64/bin:$PATH
           export PATH=$HOME/.nimble/bin:$PATH
           export CXXFLAGS=-stdlib=libc++
           export LDFLAGS=-stdlib=libc++
@@ -137,14 +137,14 @@ jobs:
         id: cache-qt-mac
         uses: actions/cache@v1
         with:
-          path: '${{ github.workspace }}/Qt/5.14.2'
+          path: '${{ github.workspace }}/Qt/5.15.0'
           key: ${{ runner.os }}-qt
 
       - name: Install QT (MacOS)
         if: steps.cache-qt-mac.outputs.cache-hit != 'true'
         uses: jurplel/install-qt-action@v2
         with:
-          version: '5.14.2'
+          version: '5.15.0'
           host: 'mac'
           target: 'desktop'
           dir: '${{ github.workspace }}'
@@ -200,8 +200,8 @@ jobs:
 
       - name: Build (MacOS)
         run: |
-          export QT_INSTALL_CMAKE_PATH=${{ github.workspace }}/Qt/5.14.2/clang_64/lib/cmake
-          export QT_ROOT=${{ github.workspace }}/Qt/5.14.2
+          export QT_INSTALL_CMAKE_PATH=${{ github.workspace }}/Qt/5.15.0/clang_64/lib/cmake
+          export QT_ROOT=${{ github.workspace }}/Qt/5.15.0
           cd ci_tools_atomic_dex
           nimble build -y
           ./ci_tools_atomic_dex bundle debug --osx_sdk=$HOME/sdk/MacOSX10.13.sdk --compiler=/usr/local/opt/llvm@9/bin/clang++
@@ -224,14 +224,14 @@ jobs:
         id: cache-qt-win
         uses: actions/cache@v1
         with:
-          path: 'C:\Qt\5.14.2'
+          path: 'C:\Qt\5.15.0'
           key: ${{ runner.os }}-qt
 
       - name: Install QT (Win)
         if: steps.cache-qt-win.outputs.cache-hit != 'true'
         uses: jurplel/install-qt-action@v2
         with:
-          version: '5.14.2'
+          version: '5.15.0'
           host: 'windows'
           target: 'desktop'
           dir: 'C:\'
@@ -242,7 +242,7 @@ jobs:
         run: |
           Set-ExecutionPolicy RemoteSigned -scope CurrentUser
           Invoke-Expression (New-Object System.Net.WebClient).DownloadString('https://get.scoop.sh')
-          $Env:QT_INSTALL_CMAKE_PATH = "C:\Qt\5.14.2\msvc2017_64"
+          $Env:QT_INSTALL_CMAKE_PATH = "C:\Qt\5.15.0\msvc2017_64"
           
           cd ci_tools_atomic_dex
 
