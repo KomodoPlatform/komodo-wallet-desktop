@@ -163,7 +163,8 @@ namespace mm2::api
         using namespace date;
         using namespace std::chrono;
         date::sys_seconds tp{seconds{cfg.timestamp}};
-        std::string       s   = date::format("%e %b %Y, %I:%M", tp);
+        auto tp_zoned = date::make_zoned(current_zone(), tp);
+        std::string       s   = date::format("%e %b %Y, %I:%M", tp_zoned);
         cfg.timestamp_as_date = std::move(s);
     }
 

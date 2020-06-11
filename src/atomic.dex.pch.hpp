@@ -169,6 +169,7 @@ adjust_precision(const std::string& current)
 #endif
 
 #include <date/date.h>
+#include <date/tz.h>
 #define ENTT_STANDARD_CPP
 #include <entt/entity/helper.hpp>
 #include <entt/signal/dispatcher.hpp>
