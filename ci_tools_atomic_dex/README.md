@@ -130,7 +130,7 @@ nimble build
 
 ## Bundle AtomicDEX Pro
 
-### Windowsmsvc2019_64
+### Windows
 
 In your x64 Visual Studio command prompt, from within the `ci_tools_atomic_dex` folder, type:
 
