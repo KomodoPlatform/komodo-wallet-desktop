@@ -22,11 +22,10 @@ Item {
     Switch {
         visible: dashboard_index === General.idx_dashboard_light_ui
         anchors.left: parent.left
-        anchors.leftMargin: img.anchors.leftMargin * 0.5
+        anchors.leftMargin: 26
         anchors.verticalCenter: img.verticalCenter
-        scale: 0.5
-        //onCheckedChanged: toggleDarkUI()
-        checked: Style.dark_theme
+        scale: 0.8
+        checked: !Style.dark_theme
     }
 
     Image {

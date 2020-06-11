@@ -122,7 +122,7 @@ Item {
         height: parent.height
 
         Image {
-            source: General.image_path + "atomicdex-logo.svg"
+            source: General.image_path + Style.sidebar_atomicdex_logo
             anchors.horizontalCenter: parent.horizontalCenter
             y: parent.width * 0.25
             transformOrigin: Item.Center
