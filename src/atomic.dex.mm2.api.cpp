@@ -163,7 +163,8 @@ namespace mm2::api
         using namespace date;
         using namespace std::chrono;
         date::sys_seconds tp{seconds{cfg.timestamp}};
-        std::string       s   = date::format("%e %b %Y, %I:%M", tp);
+        auto tp_zoned = date::make_zoned(current_zone(), tp);
+        std::string       s   = date::format("%e %b %Y, %I:%M", tp_zoned);
         cfg.timestamp_as_date = std::move(s);
     }
 
@@ -369,7 +370,8 @@ namespace mm2::api
         j.at("timestamp").get_to(answer.timestamp);
 
         sys_time<std::chrono::milliseconds> tp{std::chrono::milliseconds{answer.timestamp}};
-        answer.human_timestamp = date::format("%Y-%m-%d %I:%M:%S", tp);
+        auto tp_zoned = date::make_zoned(current_zone(), tp);
+        answer.human_timestamp = date::format("%Y-%m-%d %I:%M:%S", tp_zoned);
     }
 
     void
@@ -527,7 +529,7 @@ namespace mm2::api
           using namespace date;
           const auto        time_key = value.at("created_at").get<std::size_t>();
           sys_time<std::chrono::milliseconds> tp{std::chrono::milliseconds{time_key}};
-
+          auto tp_zoned = date::make_zoned(current_zone(), tp);
           my_order_contents contents{
               .order_id         = key,
               .price            = is_maker ? adjust_precision(value.at("price").get<std::string>()) : "0",
@@ -538,7 +540,7 @@ namespace mm2::api
               .order_type       = is_maker ? "maker" : "taker",
               .base_amount      = is_maker ? value.at("max_base_vol").get<std::string>() : value.at("request").at("base_amount").get<std::string>(),
               .rel_amount       = is_maker ? (t_float_50(contents.price) * t_float_50(contents.base_amount)).convert_to<std::string>() : value.at("request").at("rel_amount").get<std::string>(),
-              .human_timestamp  = date::format("%F    %T", tp)};
+              .human_timestamp  = date::format("%F    %T", tp_zoned)};
           out.try_emplace(time_key, std::move(contents));
         };
         // clang-format on
@@ -601,7 +603,8 @@ namespace mm2::api
             const nlohmann::json& j_evt      = content.at("event");
             auto                  timestamp  = content.at("timestamp").get<std::size_t>();
             auto                  tp         = sys_milliseconds{std::chrono::milliseconds{timestamp}};
-            std::string           human_date = date::format("%F    %T", tp);
+            auto tp_zoned = date::make_zoned(current_zone(), tp);
+            std::string           human_date = date::format("%F    %T", tp_zoned);
             auto                  evt_type   = j_evt.at("type").get<std::string>();
 
             auto rate_bundler = [&event_timestamp_registry,

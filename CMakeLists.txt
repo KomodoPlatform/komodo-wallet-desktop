@@ -159,6 +159,7 @@ else ()
 endif ()
 
 add_compile_definitions(LOGURU_WITH_FILEABS=1)
+find_package(date CONFIG REQUIRED)
 target_compile_definitions(atomic_qt
         PRIVATE
         $<$<OR:$<CONFIG:Debug>,$<CONFIG:RelWithDebInfo>>:QT_QML_DEBUG>)
@@ -180,6 +181,7 @@ target_link_libraries(atomic_qt
         reproc++
         antara::http_client
         Folly::folly
+        date::tz
         Folly::folly_deps
         $<$<PLATFORM_ID:Darwin>:/usr/local/lib/libcurl.a>
         spdlog::spdlog
