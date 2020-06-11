@@ -17,6 +17,14 @@ ColumnLayout {
         Layout.fillWidth: true
         separator: false
     }
+
+    SidebarLine {
+        dashboard_index: General.idx_dashboard_light_ui
+        text: API.get().empty_string + (qsTr("Light UI"))
+        image: ""
+        Layout.fillWidth: true
+        separator: false
+    }
 }
 
 

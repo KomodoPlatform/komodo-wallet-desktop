@@ -13,7 +13,21 @@ Item {
     property alias separator: separator.visible
     readonly property bool selected: dashboard.current_page === dashboard_index
 
+    function toggleDarkUI() {
+        Style.dark_theme = !Style.dark_theme
+    }
+
     height: Style.sidebarLineHeight
+
+    Switch {
+        visible: dashboard_index === General.idx_dashboard_light_ui
+        anchors.left: parent.left
+        anchors.leftMargin: img.anchors.leftMargin * 0.5
+        anchors.verticalCenter: img.verticalCenter
+        scale: 0.5
+        //onCheckedChanged: toggleDarkUI()
+        checked: Style.dark_theme
+    }
 
     Image {
         id: img
@@ -25,6 +39,7 @@ Item {
         visible: false
     }
     ColorOverlay {
+        visible: img.source != ""
         anchors.fill: img
         source: img
         color: txt.font.bold ? Style.colorSidebarIconHighlighted : txt.color
@@ -46,7 +61,10 @@ Item {
         width: parent.width
         height: parent.height
         onClicked: function() {
-            dashboard.current_page = dashboard_index
+            if(dashboard_index === General.idx_dashboard_light_ui) {
+                toggleDarkUI()
+            }
+            else dashboard.current_page = dashboard_index
         }
     }
 
