@@ -12,6 +12,7 @@ let g_packages = [
     (name: "nlohmann-json", head: false),
     (name: "range-v3", head: false),
     (name: "libsodium", head: false),
+    (name: "spdlog", head: false),
     (name: "date", head: false)]
 
 proc download_packages*() =

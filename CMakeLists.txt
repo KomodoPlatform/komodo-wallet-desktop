@@ -97,6 +97,7 @@ configure_icon_osx(data/osx/kmd_logo.icns ICON kmd_logo.icns)
 ##! End antara
 
 find_package(folly CONFIG REQUIRED)
+find_package(spdlog CONFIG REQUIRED)
 find_package(Boost REQUIRED COMPONENTS filesystem random)
 find_package(Qt5 COMPONENTS Core Quick LinguistTools Svg Charts REQUIRED)
 find_package(unofficial-sodium CONFIG REQUIRED)
@@ -181,6 +182,8 @@ target_link_libraries(atomic_qt
         Folly::folly
         Folly::folly_deps
         $<$<PLATFORM_ID:Darwin>:/usr/local/lib/libcurl.a>
+        spdlog::spdlog
+        spdlog::spdlog_header_only
         )
 #target_enable_asan(atomic_qt)
 

@@ -100,12 +100,7 @@ namespace atomic_dex
 
         if (s_info >= 30s)
         {
-            // spawn([this]() { process_fees(); });
             spawn([this]() { fetch_infos_thread(); });
-            spawn([this]() {
-                loguru::set_thread_name("rotate log thread");
-                rotate_log();
-            });
             m_info_clock = std::chrono::high_resolution_clock::now();
         }
     }
@@ -126,7 +121,7 @@ namespace atomic_dex
 
         if (ec)
         {
-            VLOG_SCOPE_F(loguru::Verbosity_ERROR, "error: %s", ec.message().c_str());
+            spdlog::error("error: {}", ec.message());
         }
 #endif
 
@@ -269,12 +264,12 @@ namespace atomic_dex
         m_coins_informations.assign(coin_info.ticker, coin_info);
 
         spawn([this, copy_ticker = ticker]() {
-            loguru::set_thread_name("balance thread");
+            // loguru::set_thread_name("balance thread");
             process_balance(copy_ticker);
         });
 
         spawn([this, copy_ticker = ticker]() {
-            loguru::set_thread_name("tx thread");
+            // loguru::set_thread_name("tx thread");
             process_tx(copy_ticker);
         });
 
@@ -302,7 +297,7 @@ namespace atomic_dex
         for (auto&& current_coin: coins) { tickers.push_back(current_coin.ticker); }
 
         futures.emplace_back(spawn([this, tickers]() {
-            loguru::set_thread_name("enable thread");
+            // loguru::set_thread_name("enable thread");
             batch_enable_coins(tickers);
         }));
 
@@ -311,12 +306,12 @@ namespace atomic_dex
         this->dispatcher_.trigger<enabled_coins_event>();
 
         spawn([this]() {
-            loguru::set_thread_name("swaps thread");
+            // loguru::set_thread_name("swaps thread");
             process_swaps();
         });
 
         spawn([this]() {
-            loguru::set_thread_name("orders thread");
+            // loguru::set_thread_name("orders thread");
             process_orders();
         });
 
@@ -328,17 +323,17 @@ namespace atomic_dex
     void
     mm2::disable_multiple_coins(const std::vector<std::string>& tickers) noexcept
     {
-        LOG_SCOPE_FUNCTION(INFO);
+        spdlog::debug("{} l{} f[{}]", __FUNCTION__, __LINE__, fs::path(__FILE__).filename().string());
 
         for (const auto& ticker: tickers)
         {
             spawn([this, ticker]() {
-                loguru::set_thread_name("disable multiple coins");
+                // loguru::set_thread_name("disable multiple coins");
                 std::error_code ec;
                 disable_coin(ticker, ec);
                 if (ec)
                 {
-                    LOG_F(WARNING, "{}", ec.message());
+                    spdlog::warn("{}", ec.message());
                 }
             });
         }
@@ -382,12 +377,12 @@ namespace atomic_dex
                 m_coins_informations.assign(coin_info.ticker, coin_info);
 
                 spawn([this, copy_ticker = ticker]() {
-                    loguru::set_thread_name("balance thread");
+                    // loguru::set_thread_name("balance thread");
                     process_balance(copy_ticker);
                 });
 
                 spawn([this, copy_ticker = ticker]() {
-                    loguru::set_thread_name("tx thread");
+                    // loguru::set_thread_name("tx thread");
                     process_tx(copy_ticker);
                 });
 
@@ -422,13 +417,13 @@ namespace atomic_dex
     mm2::enable_multiple_coins(const std::vector<std::string>& tickers) noexcept
     {
         spawn([this, tickers]() {
-            loguru::set_thread_name("enable multiple coins");
+            // loguru::set_thread_name("enable multiple coins");
             batch_enable_coins(tickers, true);
         });
         /*for (const auto& ticker: tickers)
         {
             spawn([this, ticker]() {
-                loguru::set_thread_name("enable multiple coins");
+                //loguru::set_thread_name("enable multiple coins");
                 enable_coin(ticker, true);
             });
         }*/
@@ -487,13 +482,13 @@ namespace atomic_dex
     void
     mm2::fetch_current_orderbook_thread()
     {
-        loguru::set_thread_name("orderbook thread");
-        DLOG_F(INFO, "Fetch current orderbook");
+        ////loguru::set_thread_name("orderbook thread");
+        spdlog::info("Fetch current orderbook");
 
         //! If thread is not active ex: we are not on the trading page anymore, we continue sleeping.
         if (not m_orderbook_thread_active)
         {
-            DLOG_F(WARNING, "Nothing todo, sleeping...");
+            spdlog::warn("Nothing todo, sleeping");
             return;
         }
 
@@ -508,8 +503,8 @@ namespace atomic_dex
     void
     mm2::fetch_infos_thread()
     {
-        loguru::set_thread_name("info thread");
-        DVLOG_F(loguru::Verbosity_INFO, "Fetching Infos");
+        // loguru::set_thread_name("info thread");
+        spdlog::info("{}: Fetching Infos l{}", __FUNCTION__, __LINE__);
 
         t_coins                        coins = get_enabled_coins();
         std::vector<std::future<void>> futures;
@@ -517,23 +512,23 @@ namespace atomic_dex
         futures.reserve(coins.size() * 2 + 2);
 
         futures.emplace_back(spawn([this]() {
-            loguru::set_thread_name("swaps thread");
+            // loguru::set_thread_name("swaps thread");
             process_swaps();
         }));
 
         futures.emplace_back(spawn([this]() {
-            loguru::set_thread_name("orders thread");
+            // loguru::set_thread_name("orders thread");
             process_orders();
         }));
 
         for (auto&& current_coin: coins)
         {
             futures.emplace_back(spawn([this, ticker = current_coin.ticker]() {
-                loguru::set_thread_name("balance thread");
+                // loguru::set_thread_name("balance thread");
                 process_balance(ticker);
             }));
             futures.emplace_back(spawn([this, ticker = current_coin.ticker]() {
-                loguru::set_thread_name("tx thread");
+                // loguru::set_thread_name("tx thread");
                 process_tx(ticker);
             }));
         }
@@ -549,34 +544,28 @@ namespace atomic_dex
         const auto tools_path = ag::core::assets_real_path() / "tools/mm2/";
 
         nlohmann::to_json(json_cfg, cfg);
-        // DVLOG_F(loguru::Verbosity_INFO, "command line {}", json_cfg.dump());
 
         const std::array<std::string, 2> args = {(tools_path / "mm2").string(), json_cfg.dump()};
-        // auto                             redirect_type = reproc::redirect::parent;
-        reproc::options options;
+        reproc::options                  options;
         options.redirect.parent   = true;
         options.working_directory = strdup(tools_path.string().c_str());
 
-        std::cout << "tools path: " << tools_path.string() << std::endl;
-        std::cout << "wd: " << options.working_directory << std::endl;
         const auto ec = m_mm2_instance.start(args, options);
 
         if (ec)
         {
-            DVLOG_F(loguru::Verbosity_ERROR, "error: {}", ec.message());
+            spdlog::error("{}", ec.message());
         }
 
         m_mm2_init_thread = std::thread([this]() {
             using namespace std::chrono_literals;
-            loguru::set_thread_name("mm2 init thread");
+            // loguru::set_thread_name("mm2 init thread");
 
             const auto wait_ec = m_mm2_instance.wait(2s).second;
 
-            std::cout << wait_ec.value() << std::endl;
-            std::cout << static_cast<int>(std::errc::timed_out) << std::endl;
             if (wait_ec.value() == static_cast<int>(std::errc::timed_out) || wait_ec.value() == 258)
             {
-                DVLOG_F(loguru::Verbosity_INFO, "mm2 is initialized");
+                spdlog::info("mm2 is initialized");
                 dispatcher_.trigger<mm2_initialized>();
                 enable_default_coins();
                 m_mm2_running = true;
@@ -584,7 +573,7 @@ namespace atomic_dex
             }
             else
             {
-                DVLOG_F(loguru::Verbosity_ERROR, "error: {}", wait_ec.message());
+                spdlog::error("{}", wait_ec.message());
             }
         });
     }
@@ -710,8 +699,8 @@ namespace atomic_dex
     void
     mm2::process_fees()
     {
-        loguru::set_thread_name("fees thread");
-        LOG_SCOPE_FUNCTION(INFO);
+        // loguru::set_thread_name("fees thread");
+        spdlog::debug("{} l{} f[{}]", __FUNCTION__, __LINE__, fs::path(__FILE__).filename().string());
         t_coins                        coins = get_enabled_coins();
         std::vector<std::future<void>> futures;
 
@@ -745,13 +734,13 @@ namespace atomic_dex
     void
     mm2::process_tx(const std::string& ticker)
     {
-        LOG_SCOPE_FUNCTION(INFO);
+        spdlog::debug("{} l{} f[{}]", __FUNCTION__, __LINE__, fs::path(__FILE__).filename().string());
         t_tx_history_request tx_request{.coin = ticker, .limit = g_tx_max_limit};
         auto                 answer = rpc_my_tx_history(std::move(tx_request));
 
         if (answer.error.has_value())
         {
-            VLOG_F(loguru::Verbosity_ERROR, "tx error: {}", answer.error.value());
+            spdlog::error("{}", answer.error.value());
         }
         else if (answer.rpc_result_code not_eq -1 and answer.result.has_value())
         {
@@ -773,7 +762,6 @@ namespace atomic_dex
                 }
             }
 
-            // std::cout << "txs left: " << state.transactions_left << std::endl;
             t_transactions out;
             out.reserve(answer.result.value().transactions.size());
 
@@ -813,7 +801,7 @@ namespace atomic_dex
     void
     mm2::on_refresh_orderbook(const orderbook_refresh& evt)
     {
-        LOG_SCOPE_FUNCTION(INFO);
+        spdlog::debug("{} l{} f[{}]", __FUNCTION__, __LINE__, fs::path(__FILE__).filename().string());
 
         const auto key = evt.base;
 
@@ -827,7 +815,7 @@ namespace atomic_dex
         }
 
         spawn([this]() {
-            loguru::set_thread_name("r_book thread");
+            // loguru::set_thread_name("r_book thread");
             process_fees();
             fetch_current_orderbook_thread();
         });
@@ -836,7 +824,7 @@ namespace atomic_dex
     void
     mm2::on_gui_enter_trading([[maybe_unused]] const gui_enter_trading& evt) noexcept
     {
-        LOG_SCOPE_FUNCTION(INFO);
+        spdlog::debug("{} l{} f[{}]", __FUNCTION__, __LINE__, fs::path(__FILE__).filename().string());
 
         m_orderbook_thread_active = true;
     }
@@ -844,14 +832,14 @@ namespace atomic_dex
     void
     mm2::on_gui_leave_trading([[maybe_unused]] const gui_leave_trading& evt) noexcept
     {
-        LOG_SCOPE_FUNCTION(INFO);
+        spdlog::debug("{} l{} f[{}]", __FUNCTION__, __LINE__, fs::path(__FILE__).filename().string());
         m_orderbook_thread_active = false;
     }
 
     t_buy_answer
     mm2::place_buy_order(t_buy_request&& request, const t_float_50& total, t_mm2_ec& ec) const
     {
-        LOG_SCOPE_FUNCTION(INFO);
+        spdlog::debug("{} l{} f[{}]", __FUNCTION__, __LINE__, fs::path(__FILE__).filename().string());
 
         t_mm2_ec balance_ec;
 
@@ -937,7 +925,7 @@ namespace atomic_dex
     t_sell_answer
     mm2::place_sell_order(t_sell_request&& request, const t_float_50& total, t_mm2_ec& ec) const
     {
-        LOG_SCOPE_FUNCTION(INFO);
+        spdlog::debug("{} l{} f[{}]", __FUNCTION__, __LINE__, fs::path(__FILE__).filename().string());
 
         t_mm2_ec balance_ec;
 
@@ -973,11 +961,11 @@ namespace atomic_dex
     bool
     mm2::is_claiming_ready(const std::string& ticker) const noexcept
     {
-        LOG_SCOPE_FUNCTION(INFO);
+        spdlog::debug("{} l{} f[{}]", __FUNCTION__, __LINE__, fs::path(__FILE__).filename().string());
         using namespace std::chrono_literals;
         auto lock_claim_file_path = fs::temp_directory_path() / (ticker + ".claim.lock");
 
-        DLOG_F(INFO, "checking if {} exist", lock_claim_file_path.string());
+        spdlog::info("Checking if {} exist", lock_claim_file_path.string());
         if (not fs::exists(lock_claim_file_path))
         {
             return true;
@@ -986,7 +974,7 @@ namespace atomic_dex
         std::time_t t = fs::last_write_time(lock_claim_file_path);
         if (std::chrono::system_clock::now() - std::chrono::system_clock::from_time_t(t) > 1h)
         {
-            DLOG_F(INFO, "1 hour expire, removing {}", lock_claim_file_path.string());
+            spdlog::info("1 hour expire, removing {}", lock_claim_file_path.string());
             fs::remove(lock_claim_file_path);
             return true;
         }
@@ -996,7 +984,7 @@ namespace atomic_dex
     t_withdraw_answer
     mm2::claim_rewards(const std::string& ticker, t_mm2_ec& ec) noexcept
     {
-        LOG_SCOPE_FUNCTION(INFO);
+        spdlog::debug("{} l{} f[{}]", __FUNCTION__, __LINE__, fs::path(__FILE__).filename().string());
         const auto& info = get_coin_info(ticker);
         if (not info.is_claimable || not do_i_have_enough_funds(ticker, t_float_50(info.minimal_claim_amount)))
         {
@@ -1011,7 +999,7 @@ namespace atomic_dex
     t_broadcast_answer
     mm2::send_rewards(t_broadcast_request&& req, t_mm2_ec& ec) noexcept
     {
-        LOG_SCOPE_FUNCTION(INFO);
+        spdlog::debug("{} l{} f[{}]", __FUNCTION__, __LINE__, fs::path(__FILE__).filename().string());
         auto ticker   = req.coin;
         auto b_answer = mm2::broadcast(std::move(req), ec);
         if (!ec)
@@ -1019,7 +1007,7 @@ namespace atomic_dex
             auto          lock_claim_file_path = fs::temp_directory_path() / (ticker + ".claim.lock");
             std::ofstream ofs(lock_claim_file_path.string());
             assert(ofs);
-            DLOG_F(INFO, "created file {}", lock_claim_file_path.string());
+            spdlog::info("created file {}", lock_claim_file_path.string());
         }
         return b_answer;
     }
@@ -1033,7 +1021,7 @@ namespace atomic_dex
             std::error_code ec;
             sell_amount_f = t_float_50(my_balance(ticker, ec));
         }
-        LOG_F(INFO, "{} / ({} * {}) ", 1, 777, amount);
+
         return t_float_50(1) / t_float_50(777) * sell_amount_f;
     }
 
@@ -1067,35 +1055,4 @@ namespace atomic_dex
         return m_trade_fees_registry.find(ticker) != m_trade_fees_registry.cend() ? m_trade_fees_registry.at(ticker) : t_get_trade_fee_answer{};
     }
 
-    void
-    mm2::rotate_log() noexcept
-    {
-        LOG_SCOPE_FUNCTION(INFO);
-
-        auto atomic_log_folder_path = get_atomic_dex_logs_folder();
-        auto current_log_file       = get_atomic_dex_current_log_file();
-
-        
-        if (fs::exists(current_log_file))
-        {
-            if (auto f_size = fs::file_size(current_log_file); f_size > 7777777)
-            {
-                if (fs::exists(current_log_file.string() + ".old"))
-                {
-                    fs::remove(current_log_file.string() + ".old");
-                }
-                boost::system::error_code ec;
-                fs::rename(current_log_file, current_log_file.string() + ".old", ec);
-                if (ec)
-                {
-                    std::cerr << ec.message() << std::endl;
-                    LOG_F(WARNING, "Log rotation failed {}", ec.message());
-                }
-                else
-                {
-                    LOG_F(INFO, "Log rotation finished, previous file size: {}", f_size);
-                }
-            }
-        }
-    }
 } // namespace atomic_dex
