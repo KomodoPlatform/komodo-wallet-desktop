@@ -143,7 +143,7 @@ namespace atomic_dex
         auto            key = atomic_dex::derive_password(password.toStdString(), ec);
         if (ec)
         {
-            DLOG_F(WARNING, "{}", ec.message());
+            spdlog::warn("{}", ec.message());
             if (ec == dextop_error::derive_password_failed)
             {
                 return false;
@@ -183,7 +183,7 @@ namespace atomic_dex
         auto            key = atomic_dex::derive_password(password.toStdString(), ec);
         if (ec)
         {
-            DLOG_F(WARNING, "{}", ec.message());
+            spdlog::warn("{}", ec.message());
             if (ec == dextop_error::derive_password_failed)
             {
                 return false;
@@ -196,7 +196,7 @@ namespace atomic_dex
             auto           seed      = atomic_dex::decrypt(seed_path, key.data(), ec);
             if (ec == dextop_error::corrupted_file_or_wrong_password)
             {
-                LOG_F(WARNING, "{}", ec.message());
+                spdlog::warn("{}", ec.message());
                 return false;
             }
             else
@@ -329,7 +329,7 @@ namespace atomic_dex
 
             if (m_refresh_transaction_only)
             {
-                DLOG_F(INFO, "{}", "refreshing transactions");
+                spdlog::info("refreshing transactions");
                 refresh_transactions(mm2);
                 m_refresh_transaction_only = false;
             }
@@ -378,7 +378,7 @@ namespace atomic_dex
     void
     application::refresh_transactions(const mm2& mm2)
     {
-        LOG_SCOPE_FUNCTION(INFO);
+        spdlog::debug("{} l{}", __FUNCTION__, __LINE__);
         std::error_code ec;
         auto            txs = mm2.get_tx_history(m_coin_info->get_ticker().toStdString(), ec);
         if (!ec)
@@ -393,12 +393,10 @@ namespace atomic_dex
             if (mm2.get_coin_info(m_coin_info->get_ticker().toStdString()).is_erc_20)
             {
                 m_coin_info->set_blocks_left(tx_state.blocks_left);
-                std::cout << "blocks left: " << m_coin_info->get_blocks_left() << std::endl;
             }
             else
             {
                 m_coin_info->set_txs_left(tx_state.transactions_left);
-                std::cout << "txs left: " << m_coin_info->get_txs_left() << std::endl;
             }
             m_coin_info->set_tx_current_block(tx_state.current_block);
         }
@@ -507,7 +505,7 @@ namespace atomic_dex
     void
     atomic_dex::application::on_enabled_coins_event(const enabled_coins_event&) noexcept
     {
-        LOG_SCOPE_FUNCTION(INFO);
+        spdlog::debug("{} l{}", __FUNCTION__, __LINE__);
         m_refresh_enabled_coin_event = true;
     }
 
@@ -540,7 +538,7 @@ namespace atomic_dex
     void
     application::on_change_ticker_event(const change_ticker_event&) noexcept
     {
-        LOG_SCOPE_FUNCTION(INFO);
+        spdlog::debug("{} l{}", __FUNCTION__, __LINE__);
         m_refresh_current_ticker_infos = true;
     }
 
@@ -563,8 +561,6 @@ namespace atomic_dex
         }
         std::error_code ec;
         auto            answer = mm2::withdraw(std::move(req), ec);
-        std::cout << answer.raw_result << std::endl;
-        std::cout << answer.error.has_value() << std::endl;
         auto coin = get_mm2().get_coin_info(m_coin_info->get_ticker().toStdString());
         return to_qt_binding(std::move(answer), this, QString::fromStdString(coin.explorer_url[0]));
     }
@@ -638,7 +634,7 @@ namespace atomic_dex
     void
     application::on_tx_fetch_finished_event(const tx_fetch_finished&) noexcept
     {
-        LOG_SCOPE_FUNCTION(INFO);
+        spdlog::debug("{} l{}", __FUNCTION__, __LINE__);
         m_refresh_transaction_only = true;
     }
 
@@ -690,7 +686,7 @@ namespace atomic_dex
     void
     application::on_coin_disabled_event(const coin_disabled&) noexcept
     {
-        LOG_SCOPE_FUNCTION(INFO);
+        spdlog::debug("{} l{}", __FUNCTION__, __LINE__);
         m_refresh_enabled_coin_event = true;
     }
 
@@ -730,14 +726,14 @@ namespace atomic_dex
     void
     application::on_mm2_initialized_event(const mm2_initialized&) noexcept
     {
-        LOG_SCOPE_FUNCTION(INFO);
+        spdlog::debug("{} l{}", __FUNCTION__, __LINE__);
         this->set_status("enabling_coins");
     }
 
     void
     application::on_mm2_started_event(const mm2_started&) noexcept
     {
-        LOG_SCOPE_FUNCTION(INFO);
+        spdlog::debug("{} l{}", __FUNCTION__, __LINE__);
         this->set_status("complete");
     }
 
@@ -755,7 +751,7 @@ namespace atomic_dex
         auto            answer = get_mm2().get_orderbook(ticker.toStdString(), ec);
         if (ec == dextop_error::orderbook_ticker_not_found)
         {
-            LOG_F(WARNING, "{}", ec.message());
+            spdlog::warn("{}", ec.message());
             return out;
         }
         for (auto&& current_orderbook: answer)
@@ -789,7 +785,7 @@ namespace atomic_dex
     void
     application::on_refresh_order_event(const refresh_order_needed&) noexcept
     {
-        LOG_SCOPE_FUNCTION(INFO);
+        spdlog::debug("{} l{}", __FUNCTION__, __LINE__);
         this->m_refresh_orders_needed = true;
     }
 
@@ -856,7 +852,7 @@ namespace atomic_dex
     bool
     application::disconnect()
     {
-        LOG_SCOPE_FUNCTION(INFO);
+        spdlog::debug("{} l{}", __FUNCTION__, __LINE__);
 
         system_manager_.mark_system<mm2>();
         system_manager_.mark_system<coinpaprika_provider>();
@@ -884,7 +880,7 @@ namespace atomic_dex
     void
     application::connect_signals()
     {
-        LOG_SCOPE_FUNCTION(INFO);
+        spdlog::debug("{} l{}", __FUNCTION__, __LINE__);
         get_dispatcher().sink<change_ticker_event>().connect<&application::on_change_ticker_event>(*this);
         get_dispatcher().sink<enabled_coins_event>().connect<&application::on_enabled_coins_event>(*this);
         get_dispatcher().sink<tx_fetch_finished>().connect<&application::on_tx_fetch_finished_event>(*this);
@@ -1078,7 +1074,7 @@ namespace atomic_dex
         auto            key = atomic_dex::derive_password(password.toStdString(), ec);
         if (ec)
         {
-            DLOG_F(WARNING, "{}", ec.message());
+            spdlog::warn("{}", ec.message());
             if (ec == dextop_error::derive_password_failed)
             {
                 return "wrong password";
@@ -1089,7 +1085,7 @@ namespace atomic_dex
         auto           seed      = atomic_dex::decrypt(seed_path, key.data(), ec);
         if (ec == dextop_error::corrupted_file_or_wrong_password)
         {
-            LOG_F(WARNING, "{}", ec.message());
+            spdlog::warn("{}", ec.message());
             return "wrong password";
         }
         return QString::fromStdString(seed);
@@ -1102,7 +1098,7 @@ namespace atomic_dex
         auto            key = atomic_dex::derive_password(password.toStdString(), ec);
         if (ec)
         {
-            DLOG_F(WARNING, "{}", ec.message());
+            spdlog::debug("{}", ec.message());
             if (ec == dextop_error::derive_password_failed)
             {
                 return false;
@@ -1113,7 +1109,7 @@ namespace atomic_dex
         auto           seed      = atomic_dex::decrypt(seed_path, key.data(), ec);
         if (ec == dextop_error::corrupted_file_or_wrong_password)
         {
-            LOG_F(WARNING, "{}", ec.message());
+            spdlog::warn("{}", ec.message());
             return false;
         }
         return true;

@@ -33,11 +33,20 @@ main(int argc, char* argv[])
 #endif
     assert(sodium_init() == 0);
     atomic_dex::kill_executable("mm2");
-    loguru::g_preamble_uptime = false;
-    loguru::g_preamble_date   = false;
-    loguru::set_thread_name("main thread");
+
     std::string path = get_atomic_dex_current_log_file().string();
-    loguru::add_file(path.c_str(), loguru::FileMode::Truncate, loguru::Verbosity_INFO);
+    spdlog::init_thread_pool(10240, 4);
+    auto tp = spdlog::thread_pool();
+    auto stdout_sink = std::make_shared<spdlog::sinks::stdout_color_sink_mt>();
+    auto rotating_sink = std::make_shared<spdlog::sinks::rotating_file_sink_mt>(path.c_str(), 7777777, 3);
+    std::vector<spdlog::sink_ptr> sinks {stdout_sink, rotating_sink};
+    auto logger = std::make_shared<spdlog::async_logger>("log_mt", sinks.begin(), sinks.end(), tp, spdlog::async_overflow_policy::block);
+    spdlog::register_logger(logger);
+    spdlog::set_default_logger(logger);
+    spdlog::set_level(spdlog::level::trace);
+    spdlog::set_pattern("[%H:%M:%S %z] [%L] [thr %t] %v");
+    spdlog::info("Logger successfully initialized");
+
     atomic_dex::application atomic_app;
 
     //! QT

@@ -163,7 +163,8 @@ namespace mm2::api
         using namespace date;
         using namespace std::chrono;
         date::sys_seconds tp{seconds{cfg.timestamp}};
-        std::string       s   = date::format("%e %b %Y, %I:%M", tp);
+        auto tp_zoned = date::make_zoned(current_zone(), tp);
+        std::string       s   = date::format("%e %b %Y, %I:%M", tp_zoned);
         cfg.timestamp_as_date = std::move(s);
     }
 
@@ -250,10 +251,10 @@ namespace mm2::api
     void
     from_json(const nlohmann::json& j, recover_funds_of_swap_answer_success& answer)
     {
-        j.at("result").at("action").get_to(answer.action);
-        j.at("result").at("coin").get_to(answer.coin);
-        j.at("result").at("tx_hash").get_to(answer.tx_hash);
-        j.at("result").at("tx_hex").get_to(answer.tx_hex);
+        j.at("action").get_to(answer.action);
+        j.at("coin").get_to(answer.coin);
+        j.at("tx_hash").get_to(answer.tx_hash);
+        j.at("tx_hex").get_to(answer.tx_hex);
     }
 
     void
@@ -369,7 +370,8 @@ namespace mm2::api
         j.at("timestamp").get_to(answer.timestamp);
 
         sys_time<std::chrono::milliseconds> tp{std::chrono::milliseconds{answer.timestamp}};
-        answer.human_timestamp = date::format("%Y-%m-%d %I:%M:%S", tp);
+        auto tp_zoned = date::make_zoned(current_zone(), tp);
+        answer.human_timestamp = date::format("%Y-%m-%d %I:%M:%S", tp_zoned);
     }
 
     void
@@ -382,12 +384,12 @@ namespace mm2::api
     void
     to_json(nlohmann::json& j, const setprice_request& request)
     {
-        j["base"]   = request.base;
-        j["price"]  = request.price;
-        j["rel"]    = request.rel;
-        j["volume"] = request.volume;
+        j["base"]            = request.base;
+        j["price"]           = request.price;
+        j["rel"]             = request.rel;
+        j["volume"]          = request.volume;
         j["cancel_previous"] = request.cancel_previous;
-        j["max"] = request.max;
+        j["max"]             = request.max;
     }
 
     void
@@ -527,7 +529,7 @@ namespace mm2::api
           using namespace date;
           const auto        time_key = value.at("created_at").get<std::size_t>();
           sys_time<std::chrono::milliseconds> tp{std::chrono::milliseconds{time_key}};
-
+          auto tp_zoned = date::make_zoned(current_zone(), tp);
           my_order_contents contents{
               .order_id         = key,
               .price            = is_maker ? adjust_precision(value.at("price").get<std::string>()) : "0",
@@ -538,7 +540,7 @@ namespace mm2::api
               .order_type       = is_maker ? "maker" : "taker",
               .base_amount      = is_maker ? value.at("max_base_vol").get<std::string>() : value.at("request").at("base_amount").get<std::string>(),
               .rel_amount       = is_maker ? (t_float_50(contents.price) * t_float_50(contents.base_amount)).convert_to<std::string>() : value.at("request").at("rel_amount").get<std::string>(),
-              .human_timestamp  = date::format("%F    %T", tp)};
+              .human_timestamp  = date::format("%F    %T", tp_zoned)};
           out.try_emplace(time_key, std::move(contents));
         };
         // clang-format on
@@ -601,7 +603,8 @@ namespace mm2::api
             const nlohmann::json& j_evt      = content.at("event");
             auto                  timestamp  = content.at("timestamp").get<std::size_t>();
             auto                  tp         = sys_milliseconds{std::chrono::milliseconds{timestamp}};
-            std::string           human_date = date::format("%F    %T", tp);
+            auto tp_zoned = date::make_zoned(current_zone(), tp);
+            std::string           human_date = date::format("%F    %T", tp_zoned);
             auto                  evt_type   = j_evt.at("type").get<std::string>();
 
             auto rate_bundler = [&event_timestamp_registry,
@@ -715,7 +718,6 @@ namespace mm2::api
         std::stringstream ss;
         ss << std::fixed << std::setprecision(3) << total_time_in_seconds;
         contents.total_time_in_seconds = ss.str() + "s";
-        std::cout << contents.total_time_in_seconds << std::endl;
     }
 
     void
@@ -748,16 +750,13 @@ namespace mm2::api
     RpcReturnType
     rpc_process_answer(const RestClient::Response& resp, const std::string& rpc_command) noexcept
     {
-        if (rpc_command != "my_recent_swaps" && rpc_command != "my_tx_history")
-        {
-            VLOG_F(loguru::Verbosity_INFO, "resp: {}", resp.body);
-        }
+        spdlog::info("resp code for rpc_command {} is {}", rpc_command, resp.code);
 
         RpcReturnType answer;
 
         if (resp.code not_eq 200)
         {
-            DVLOG_F(loguru::Verbosity_WARNING, "rpc answer code is not 200");
+            spdlog::warn("rpc answer code is not 200, body : {}", resp.body);
             if constexpr (doom::meta::is_detected_v<have_error_field, RpcReturnType>)
             {
                 if constexpr (std::is_same_v<std::string, decltype(answer.error)>)
@@ -779,7 +778,7 @@ namespace mm2::api
         }
         catch (const std::exception& error)
         {
-            VLOG_F(loguru::Verbosity_ERROR, "{}", error.what());
+            spdlog::error("{}", error.what());
             answer.rpc_result_code = -1;
             answer.raw_result      = error.what();
         }
@@ -888,7 +887,7 @@ namespace mm2::api
         nlohmann::json       json_data = template_request("my_orders");
         RestClient::Response resp;
 
-        DVLOG_F(loguru::Verbosity_INFO, "request: {}", json_data.dump().c_str());
+        spdlog::info("Processing rpc call: rpc my_orders");
 
         resp = RestClient::post(g_endpoint, "application/json", json_data.dump());
 
@@ -899,14 +898,14 @@ namespace mm2::api
     static TAnswer
     process_rpc(TRequest&& request, std::string rpc_command)
     {
-        LOG_F(INFO, "Processing rpc call: {}", rpc_command);
+        spdlog::info("Processing rpc call: {}", rpc_command);
 
         nlohmann::json       json_data = template_request(rpc_command);
         RestClient::Response resp;
 
         to_json(json_data, request);
 
-        DVLOG_F(loguru::Verbosity_INFO, "request: {}", json_data.dump());
+        spdlog::debug("request: {}", json_data.dump());
 
         resp = RestClient::post(g_endpoint, "application/json", json_data.dump());
 
@@ -922,10 +921,13 @@ namespace mm2::api
     std::string
     rpc_version()
     {
-        LOG_F(INFO, "Processing rpc call: version");
+        spdlog::info("Processing rpc call: version");
+
         nlohmann::json       json_data = template_request("version");
         RestClient::Response resp;
-        DVLOG_F(loguru::Verbosity_INFO, "request: {}", json_data.dump());
+
+        spdlog::debug("{} request: {}", __FUNCTION__, json_data.dump());
+
         resp = RestClient::post(g_endpoint, "application/json", json_data.dump());
         if (resp.code == 200)
         {
@@ -938,7 +940,7 @@ namespace mm2::api
     nlohmann::json
     rpc_batch_electrum(std::vector<electrum_request> requests)
     {
-        LOG_F(INFO, "Processing rpc call: batch electrum");
+        spdlog::info("Processing rpc call: batch electrum");
 
         nlohmann::json req_json_data = nlohmann::json::array();
         for (auto&& request: requests)
@@ -948,16 +950,21 @@ namespace mm2::api
             to_json(json_data, request);
             req_json_data.push_back(json_data);
         }
-        VLOG_F(loguru::Verbosity_INFO, "request: {}", req_json_data.dump());
+
+        spdlog::debug("request: {}", req_json_data.dump());
+
         auto resp = RestClient::post(g_endpoint, "application/json", req_json_data.dump());
-        VLOG_F(loguru::Verbosity_INFO, "resp: {}", resp.body);
+
+        spdlog::info("{} resp code: {}", __FUNCTION__, resp.code);
+
         nlohmann::json answer;
         try
         {
             answer = nlohmann::json::parse(resp.body);
         }
-        catch (const nlohmann::detail::parse_error &err) {
-            VLOG_F(loguru::Verbosity_ERROR, "{}", err.what());
+        catch (const nlohmann::detail::parse_error& err)
+        {
+            spdlog::error("{}", err.what());
             answer["error"] = resp.body;
         }
         return answer;
@@ -966,7 +973,7 @@ namespace mm2::api
     nlohmann::json
     rpc_batch_enable(std::vector<enable_request> requests)
     {
-        LOG_F(INFO, "Processing rpc call: batch enable");
+        spdlog::info("Processing rpc call: batch enable");
 
         nlohmann::json req_json_data = nlohmann::json::array();
         for (auto&& request: requests)
@@ -977,9 +984,10 @@ namespace mm2::api
             req_json_data.push_back(json_data);
         }
 
-        VLOG_F(loguru::Verbosity_INFO, "request: {}", req_json_data.dump());
+        spdlog::debug("request: {}", req_json_data.dump());
+
         auto resp = RestClient::post(g_endpoint, "application/json", req_json_data.dump());
-        VLOG_F(loguru::Verbosity_INFO, "resp: {}", resp.body);
+        spdlog::info("{} resp code: {}", __FUNCTION__, resp.code);
 
         nlohmann::json answer;
 
@@ -987,8 +995,9 @@ namespace mm2::api
         {
             answer = nlohmann::json::parse(resp.body);
         }
-        catch (const nlohmann::detail::parse_error &err) {
-            VLOG_F(loguru::Verbosity_ERROR, "{}", err.what());
+        catch (const nlohmann::detail::parse_error& err)
+        {
+            spdlog::error("{}", err.what());
             answer["error"] = resp.body;
         }
 

@@ -42,16 +42,21 @@ if (${CMAKE_SYSTEM_NAME} STREQUAL "Linux")
     set(LINUX TRUE)
 endif()
 
+if (UNIX AND NOT APPLE)
+   set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -stdlib=libc++ -lc++abi")
+   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -stdlib=libc++")
+endif()
+
 ##! We fetch our dependence
 if (APPLE)
     FetchContent_Declare(mm2
-            URL https://github.com/KomodoPlatform/atomicDEX-API/releases/download/beta-2.0.2002/mm2-3a9680fa4-Darwin-Release.zip)
+            URL https://github.com/KomodoPlatform/atomicDEX-API/releases/download/beta-2.0.2035/mm2-cf78017c4-Darwin-Release.zip)
 elseif (UNIX AND NOT APPLE)
     FetchContent_Declare(mm2
-            URL https://github.com/KomodoPlatform/atomicDEX-API/releases/download/beta-2.0.2002/mm2-3a9680fa4-Linux-Release.zip)
+            URL https://github.com/KomodoPlatform/atomicDEX-API/releases/download/beta-2.0.2035/mm2-cf78017c4-Linux-Release.zip)
 else ()
     FetchContent_Declare(mm2
-            URL https://github.com/KomodoPlatform/atomicDEX-API/releases/download/beta-2.0.2002/mm2-3a9680fa4-Windows_NT-Release.zip)
+            URL https://github.com/KomodoPlatform/atomicDEX-API/releases/download/beta-2.0.2035/mm2-cf78017c4-Windows_NT-Release.zip)
 endif ()
 
 FetchContent_Declare(jl777-coins
@@ -92,6 +97,7 @@ configure_icon_osx(data/osx/kmd_logo.icns ICON kmd_logo.icns)
 ##! End antara
 
 find_package(folly CONFIG REQUIRED)
+find_package(spdlog CONFIG REQUIRED)
 find_package(Boost REQUIRED COMPONENTS filesystem random)
 find_package(Qt5 COMPONENTS Core Quick LinguistTools Svg Charts REQUIRED)
 find_package(unofficial-sodium CONFIG REQUIRED)
@@ -153,6 +159,7 @@ else ()
 endif ()
 
 add_compile_definitions(LOGURU_WITH_FILEABS=1)
+find_package(date CONFIG REQUIRED)
 target_compile_definitions(atomic_qt
         PRIVATE
         $<$<OR:$<CONFIG:Debug>,$<CONFIG:RelWithDebInfo>>:QT_QML_DEBUG>)
@@ -174,8 +181,11 @@ target_link_libraries(atomic_qt
         reproc++
         antara::http_client
         Folly::folly
+        date::tz
         Folly::folly_deps
         $<$<PLATFORM_ID:Darwin>:/usr/local/lib/libcurl.a>
+        spdlog::spdlog
+        spdlog::spdlog_header_only
         )
 #target_enable_asan(atomic_qt)
 

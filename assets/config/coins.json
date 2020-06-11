@@ -166,6 +166,29 @@
     "is_erc_20": false,
     "type": "UTXO"
   },
+  "DOGE": {
+    "coin": "DOGE",
+    "name": "Dogecoin",
+    "coinpaprika_id": "doge-dogecoin",
+    "electrum": [
+      {
+        "url": "electrum1.cipig.net:10060"
+      },
+      {
+        "url": "electrum2.cipig.net:10060"
+      },
+      {
+        "url": "electrum3.cipig.net:10060"
+      }
+    ],
+    "explorer_url": [
+      "https://dogechain.info/"
+    ],
+    "type": "UTXO",
+    "is_erc_20": false,
+    "active": false,
+    "currently_enabled": false
+  },
   "JUMBLR": {
     "coin": "JUMBLR",
     "name": "JUMBLR",
@@ -623,6 +646,29 @@
     "active": false,
     "currently_enabled": false
   },
+  "QTUM": {
+    "coin": "QTUM",
+    "name": "Qtum",
+    "coinpaprika_id": "qtum-qtum",
+    "electrum": [
+      {
+        "url": "electrum1.cipig.net:10050"
+      },
+      {
+        "url": "electrum2.cipig.net:10050"
+      },
+      {
+        "url": "electrum3.cipig.net:10050"
+      }
+    ],
+    "explorer_url": [
+      "https://explorer.qtum.org/"
+    ],
+    "type": "UTXO",
+    "is_erc_20": false,
+    "active": false,
+    "currently_enabled": false
+  },
   "RVN": {
     "coin": "RVN",
     "name": "Ravencoin",
@@ -640,6 +686,29 @@
     ],
     "explorer_url": [
       "https://ravencoin.network/"
+    ],
+    "type": "UTXO",
+    "is_erc_20": false,
+    "active": false,
+    "currently_enabled": false
+  },
+  "XZC": {
+    "coin": "XZC",
+    "name": "Zcoin",
+    "coinpaprika_id": "xzc-zcoin",
+    "electrum": [
+      {
+        "url": "electrumx01.zcoin.io:50001"
+      },
+      {
+        "url": "electrumx02.zcoin.io:50001"
+      },
+      {
+        "url": "electrumx03.zcoin.io:50001"
+      }
+    ],
+    "explorer_url": [
+      "https://explorer.zcoin.io/"
     ],
     "type": "UTXO",
     "is_erc_20": false,
