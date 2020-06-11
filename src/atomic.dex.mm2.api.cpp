@@ -251,10 +251,10 @@ namespace mm2::api
     void
     from_json(const nlohmann::json& j, recover_funds_of_swap_answer_success& answer)
     {
-        j.at("result").at("action").get_to(answer.action);
-        j.at("result").at("coin").get_to(answer.coin);
-        j.at("result").at("tx_hash").get_to(answer.tx_hash);
-        j.at("result").at("tx_hex").get_to(answer.tx_hex);
+        j.at("action").get_to(answer.action);
+        j.at("coin").get_to(answer.coin);
+        j.at("tx_hash").get_to(answer.tx_hash);
+        j.at("tx_hex").get_to(answer.tx_hex);
     }
 
     void
