@@ -32,6 +32,13 @@ QtObject {
     readonly property var reg_pass_special: /(?=.*[@#$%{}[\]()\/\\'"`~,;:.<>+\-_=!^&*|?])/
     readonly property var reg_pass_count: /(?=.{16,})/
 
+    function viewTxAtExplorer(ticker, id) {
+        if(id !== '') {
+            const coin_info = API.get().get_coin_info(ticker)
+            Qt.openUrlExternally(coin_info.explorer_url + 'tx/' + id)
+        }
+    }
+
     function diffPrefix(received) {
         return received === "" ? "" : received === true ? "+ " :  "- "
     }
