@@ -37,7 +37,21 @@ Item {
         anchors.verticalCenter: parent.verticalCenter
         visible: false
     }
+    DropShadow {
+        visible: selected
+        anchors.fill: img
+        source: img
+        cached: false
+        horizontalOffset: 0
+        verticalOffset: 3
+        radius: 3
+        samples: 4
+        spread: 0
+        color: "#40000000"
+        smooth: true
+    }
     ColorOverlay {
+        id: img_color
         visible: img.source != ""
         anchors.fill: img
         source: img
@@ -51,7 +65,20 @@ Item {
         anchors.verticalCenter: parent.verticalCenter
         font.pixelSize: Style.textSizeSmall1
         font.weight: selected ? Font.Bold : Font.Medium
-        color: font.bold ? Style.colorWhite1 : mouse_area.containsMouse ? Style.colorThemePassiveLight : Style.colorThemePassive
+        color: selected ? Style.colorWhite1 : mouse_area.containsMouse ? Style.colorThemePassiveLight : Style.colorThemePassive
+    }
+    DropShadow {
+        visible: selected
+        anchors.fill: txt
+        source: txt
+        cached: false
+        horizontalOffset: 0
+        verticalOffset: 3
+        radius: 3
+        samples: 4
+        spread: 0
+        color: "#40000000"
+        smooth: true
     }
 
     MouseArea {
