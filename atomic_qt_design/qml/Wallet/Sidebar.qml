@@ -84,7 +84,7 @@ Item {
 
                             anchors.fill: search_button
                             source: search_button
-                            color: Style.colorWhite1
+                            color: Style.colorText
                         }
                     }
 
@@ -247,7 +247,7 @@ Item {
         radius: 32
         samples: 32
         spread: 0
-        color: "#B0000000"
+        color: Style.colorWalletsSidebarDropShadow
         smooth: true
     }
 }

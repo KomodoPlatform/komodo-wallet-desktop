@@ -7,7 +7,7 @@ import "../Constants"
 Text {
     font.family: "Montserrat"
     font.pixelSize: Style.textSize
-    color: Style.colorWhite1
+    color: Style.colorText
 
     wrapMode: Text.WordWrap
 }

@@ -9,7 +9,7 @@ import "../Constants"
 Rectangle {
     id: rect
     radius: Style.rectangleCornerRadius
-    color: Style.colorTheme7
+    color: Style.colorRectangle
     border.color: Style.colorBorder
     border.width: 1
 }

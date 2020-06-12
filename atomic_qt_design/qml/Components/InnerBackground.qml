@@ -24,6 +24,7 @@ Item {
             id: rect
             anchors.fill: parent
             border.color: "transparent"
+            color: Style.colorInnerBackground
 
             Loader {
                 anchors.centerIn: parent

@@ -60,6 +60,7 @@ QtObject {
 
     property bool dark_theme: false
 
+    readonly property string sidebar_atomicdex_logo: dark_theme ? "atomicdex-logo.svg" : "atomicdex-logo-dark.svg"
     readonly property string colorRed: dark_theme ? "#E938A4" : "#E938A4"
     readonly property string colorRed2:  dark_theme ? "#b61477" : "#b61477"
     readonly property string colorRed3:  dark_theme ? "#41072a" : "#41072a"
@@ -89,68 +90,76 @@ QtObject {
     readonly property string colorTheme2:  dark_theme ? "#36A8AA" : "#36A8AA"
     readonly property string colorTheme3:  dark_theme ? "#318795" : "#318795"
     readonly property string colorTheme4:  dark_theme ? "#2B6680" : "#2B6680"
-    readonly property string colorTheme5:  dark_theme ? "#23273C" : "#23273C"
-    readonly property string colorTheme6:  dark_theme ? "#22263A" : "#22263A"
-    readonly property string colorTheme7:  dark_theme ? "#15182A" : "#15182A"
-    readonly property string colorTheme8:  dark_theme ? "#171A2C" : "#171A2C"
-    readonly property string colorTheme9:  dark_theme ? "#0E1021" : "#0E1021"
+    readonly property string colorTheme5:  dark_theme ? "#23273C" : "#F2F3F7"
+    readonly property string colorTheme6:  dark_theme ? "#22263A" : "#F2F3F7"
+    readonly property string colorTheme7:  dark_theme ? "#15182A" : "#F9F9FB"
+    readonly property string colorTheme8:  dark_theme ? "#171A2C" : "#F2F3F7"
+    readonly property string colorTheme9:  dark_theme ? "#0E1021" : "#F2F3F7"
     readonly property string colorTheme10:  dark_theme ? "#2579E0" : "#2579E0"
     readonly property string colorTheme11:  dark_theme ? "#00A3FF" : "#00A3FF"
     readonly property string colorThemeLine:  dark_theme ? "#1D1F23" : "#1D1F23"
     readonly property string colorThemePassive:  dark_theme ? "#777F8C" : "#777F8C"
     readonly property string colorThemePassiveLight:  dark_theme ? "#CCCDD0" : "#CCCDD0"
     readonly property string colorThemeDark:  dark_theme ? "#26282C" : "#26282C"
-    readonly property string colorThemeDark2:  dark_theme ? "#3C4150" : "#3C4150"
-    readonly property string colorThemeDarkLight:  dark_theme ? "#78808D" : "#78808D"
+    readonly property string colorThemeDark2:  dark_theme ? "#3C4150" : "#E6E8ED"
     readonly property string colorThemeDark3:  dark_theme ? "#78808D" : "#78808D"
+    readonly property string colorThemeDarkLight:  dark_theme ? "#78808D" : "#456078"
+
+    readonly property string colorRectangle:  dark_theme ? colorTheme7 : colorTheme8
+    readonly property string colorInnerBackground:  dark_theme ? colorTheme7 : colorTheme7
 
     readonly property string colorGradient1:  dark_theme ? colorTheme9 : colorTheme9
     readonly property string colorGradient2:  dark_theme ? colorTheme5 : colorTheme5
     readonly property string colorGradient3:  dark_theme ? "#24283D" : "#24283D"
     readonly property string colorGradient4:  dark_theme ? "#0D0F21" : "#0D0F21"
-    readonly property string colorLineGradient1:  dark_theme ? "#2c2f3c" : "#2c2f3c"
-    readonly property string colorLineGradient2:  dark_theme ? "#06070c" : "#06070c"
-    readonly property string colorLineGradient3:  dark_theme ? "#090910" : "#090910"
-    readonly property string colorLineGradient4:  dark_theme ? "#24283b" : "#24283b"
-    readonly property string colorDropShadowLight:  dark_theme ? "#216975a4" : "#216975a4"
-    readonly property string colorDropShadowLight2:  dark_theme ? "#606975a4" : "#606975a4"
-    readonly property string colorDropShadowDark:  dark_theme ? "#FF050615" : "#FF050615"
-    readonly property string colorBorder:  dark_theme ? "#23273B" : "#23273B"
-    readonly property string colorBorder2:  dark_theme ? "#1C1F32" : "#1C1F32"
+    readonly property string colorLineGradient1:  dark_theme ? "#2c2f3c" : "#EEF1F7"
+    readonly property string colorLineGradient2:  dark_theme ? "#06070c" : "#DCE1E8"
+    readonly property string colorLineGradient3:  dark_theme ? "#090910" : "#EEF1F7"
+    readonly property string colorLineGradient4:  dark_theme ? "#24283b" : "#DCE1E8"
+    readonly property string colorDropShadowLight:  dark_theme ? "#216975a4" : "#21FFFFFF"
+    readonly property string colorDropShadowLight2:  dark_theme ? "#606975a4" : "#60FFFFFF"
+    readonly property string colorDropShadowDark:  dark_theme ? "#FF050615" : "#BECDE2"
+    readonly property string colorBorder:  dark_theme ? "#23273B" : "#DAE1EC"
+    readonly property string colorBorder2:  dark_theme ? "#1C1F32" : "#DAE1EC"
 
-    readonly property string colorGradientLine1:  dark_theme ? "#00FFFFFF" : "#00FFFFFF"
-    readonly property string colorGradientLine2:  dark_theme ? "#0FFFFFFF" : "#0FFFFFFF"
+    readonly property string colorInnerShadow:  dark_theme ? "#A0000000" : "#BECDE2"
+
+    readonly property string colorGradientLine1:  dark_theme ? "#00FFFFFF" : "#00CFD4DB"
+    readonly property string colorGradientLine2:  dark_theme ? "#0FFFFFFF" : "#FFCFD4DB"
 
     readonly property string colorWalletsHighlightGradient1:  dark_theme ? "#801B5E7D" : "#801B5E7D"
     readonly property string colorWalletsHighlightGradient2:  dark_theme ? "#001B5E7D" : "#001B5E7D"
+    readonly property string colorWalletsSidebarDropShadow:  dark_theme ? "#B0000000" : "#BECDE2"
 
-    readonly property string colorScrollbar:  dark_theme ? "#202339" : "#202339"
-    readonly property string colorScrollbarBackground:  dark_theme ? "#10121F" : "#10121F"
-    readonly property string colorScrollbarGradient1:  dark_theme ? "#33395A" : "#33395A"
-    readonly property string colorScrollbarGradient2:  dark_theme ? "#292D48" : "#292D48"
+    readonly property string colorScrollbar:  dark_theme ? "#202339" : "#C4CCDA"
+    readonly property string colorScrollbarBackground:  dark_theme ? "#10121F" : "#EFF1F6"
+    readonly property string colorScrollbarGradient1:  dark_theme ? "#33395A" : "#C4CCDA"
+    readonly property string colorScrollbarGradient2:  dark_theme ? "#292D48" : "#C4CCDA"
 
     readonly property string colorSidebarIconHighlighted:  dark_theme ? "#2BBEF2" : "#FFFFFF"
     readonly property string colorSidebarHighlightGradient1:  dark_theme ? "#FF1B5E7D" : "#8b95ed"
     readonly property string colorSidebarHighlightGradient2:  dark_theme ? "#BA1B5E7D" : "#AD7faaf0"
     readonly property string colorSidebarHighlightGradient3:  dark_theme ? "#5F1B5E7D" : "#A06dc9f3"
     readonly property string colorSidebarHighlightGradient4:  dark_theme ? "#001B5E7D" : "#006bcef4"
+    readonly property string colorSidebarDropShadow:  dark_theme ? "#90000000" : "#BECDE2"
 
-    readonly property string colorCoinListHighlightGradient1:  dark_theme ? "#002C2E40" : "#002C2E40"
-    readonly property string colorCoinListHighlightGradient2:  dark_theme ? "#FF2C2E40" : "#FF2C2E40"
+    readonly property string colorCoinListHighlightGradient1:  dark_theme ? "#002C2E40" : "#00E0E6F0"
+    readonly property string colorCoinListHighlightGradient2:  dark_theme ? "#FF2C2E40" : "#FFE0E6F0"
 
-    readonly property string colorRectangleBorderGradient1:  dark_theme ? "#2A2F48" : "#2A2F48"
-    readonly property string colorRectangleBorderGradient2:  dark_theme ? "#0D1021" : "#0D1021"
+    readonly property string colorRectangleBorderGradient1:  dark_theme ? "#2A2F48" : "#00FFFFFF"
+    readonly property string colorRectangleBorderGradient2:  dark_theme ? "#0D1021" : "#00FFFFFF"
 
     readonly property string colorLineBasic:  dark_theme ? "#303344" : "#303344"
 
-    property string colorButtonDisabled: Style.colorTheme9
-    property string colorButtonHovered: Style.colorTheme6
-    property string colorButtonEnabled: Style.colorTheme7
-    property string colorButtonTextDisabled: Style.colorWhite8
-    property string colorButtonTextHovered: Style.colorWhite1
-    property string colorButtonTextEnabled: Style.colorWhite1  // Style.colorThemePassive
-    property string colorPlaceholderText: Style.colorWhite9
+    readonly property string colorText: dark_theme ? Style.colorWhite1 : "#405366"
     readonly property string colorText2: dark_theme ? "#79808C" : "#3C5368"
+    readonly property string colorButtonDisabled: Style.colorTheme9
+    readonly property string colorButtonHovered: Style.colorTheme6
+    readonly property string colorButtonEnabled: Style.colorRectangle
+    readonly property string colorButtonTextDisabled: Style.colorWhite8
+    readonly property string colorButtonTextHovered: Style.colorText
+    readonly property string colorButtonTextEnabled: Style.colorText
+    readonly property string colorPlaceholderText: Style.colorWhite9
 
     property string colorButtonDangerDisabled: Style.colorRed3
     property string colorButtonDangerHovered: Style.colorRed

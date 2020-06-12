@@ -162,7 +162,7 @@ Item {
         radius: 32
         samples: 32
         spread: 0
-        color: "#90000000"
+        color: Style.colorSidebarDropShadow
         smooth: true
     }
 }
