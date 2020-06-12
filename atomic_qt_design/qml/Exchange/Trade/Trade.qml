@@ -66,11 +66,14 @@ Item {
         updateRelAmount()
     }
 
+    function newRelVolume(price) {
+        return parseFloat(form_base.getVolume()) * parseFloat(price)
+    }
+
     function updateRelAmount() {
         if(preffered_price !== empty_value) {
             const price = parseFloat(preffered_price)
-            parseFloat(form_base.getVolume())
-            let new_rel = parseFloat(form_base.getVolume()) * parseFloat(preffered_price)
+            let new_rel = newRelVolume(preffered_price)
 
             // If new rel volume is higher than the order max volume
             const max_volume = parseFloat(preffered_price_max_volume)
@@ -309,8 +312,16 @@ Item {
         return parseFloat(valid_trade_info ? info.input_final_value : amount)
     }
 
-    function getReceiveAmount(price) {
-        return General.formatDouble(parseFloat(form_base.getVolume()) * parseFloat(price))
+    function getReceiveAmount(price, volume) {
+        let new_rel = newRelVolume(price)
+
+        // If new rel volume is higher than the order max volume
+        const max_volume = parseFloat(volume)
+        if(new_rel > max_volume) {
+            new_rel = max_volume
+        }
+
+        return General.formatDouble(new_rel)
     }
 
     // No coins warning
