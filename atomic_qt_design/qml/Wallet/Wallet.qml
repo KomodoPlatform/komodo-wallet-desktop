@@ -50,12 +50,14 @@ RowLayout {
                 ColumnLayout {
                     id: balance_layout
                     DefaultText {
+                        id: balance_text
                         text: API.get().empty_string + (General.formatCrypto("", API.get().current_coin_info.balance, API.get().current_coin_info.ticker))
                         Layout.alignment: Qt.AlignRight
                         font.pixelSize: Style.textSize5
                     }
 
                     DefaultText {
+                        id: balance_fiat_text
                         text: API.get().empty_string + (General.formatFiat("", API.get().current_coin_info.fiat_amount, API.get().fiat))
                         Layout.topMargin: -15
                         Layout.rightMargin: 4
@@ -67,7 +69,7 @@ RowLayout {
                 Image {
                     source: General.coinIcon(API.get().current_coin_info.ticker)
                     Layout.leftMargin: 10
-                    Layout.preferredHeight: balance_layout.childrenRect.height
+                    Layout.preferredHeight: balance_text.font.pixelSize + balance_fiat_text.font.pixelSize
                     Layout.preferredWidth: Layout.preferredHeight
                 }
             }
