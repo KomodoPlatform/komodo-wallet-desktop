@@ -315,6 +315,23 @@
     "type": "ERC-20",
     "name": "Atomic Wallet Coin"
   },
+  "BAT": {
+    "coin": "BAT",
+    "name": "Basic Attention Token",
+    "coinpaprika_id": "bat-basic-attention-token",
+    "eth_nodes": [
+      "http://eth1.cipig.net:8555",
+      "http://eth2.cipig.net:8555",
+      "http://eth3.cipig.net:8555"
+    ],
+    "explorer_url": [
+      "https://etherscan.io/"
+    ],
+    "type": "ERC-20",
+    "is_erc_20": true,
+    "active": false,
+    "currently_enabled": false
+  },
   "TUSD": {
     "active": false,
     "coin": "TUSD",
@@ -643,6 +660,29 @@
     "explorer_url": [
       "https://explorer.ilien.io/"
     ],
+    "active": false,
+    "currently_enabled": false
+  },
+  "NAV": {
+    "coin": "NAV",
+    "name": "NavCoin",
+    "coinpaprika_id": "nav-navcoin",
+    "electrum": [
+      {
+        "url": "electrum1.cipig.net:10056"
+      },
+      {
+        "url": "electrum2.cipig.net:10056"
+      },
+      {
+        "url": "electrum3.cipig.net:10056"
+      }
+    ],
+    "explorer_url": [
+      "https://www.navexplorer.com/"
+    ],
+    "type": "UTXO",
+    "is_erc_20": false,
     "active": false,
     "currently_enabled": false
   },
