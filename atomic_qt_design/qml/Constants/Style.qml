@@ -58,7 +58,7 @@ QtObject {
     readonly property int sidebarLineHeight: 44
     readonly property int scrollbarOffset: 5
 
-    property bool dark_theme: false
+    property bool dark_theme: true
 
     readonly property string sidebar_atomicdex_logo: dark_theme ? "atomicdex-logo.svg" : "atomicdex-logo-dark.svg"
     readonly property string colorRed: dark_theme ? "#E938A4" : "#E938A4"
