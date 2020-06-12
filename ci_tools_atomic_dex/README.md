@@ -11,7 +11,7 @@
 
 ### Install QT
 
-Follow the [QT installation (5.14) instructions](https://www.qt.io/download). 
+Follow the [QT installation (5.15) instructions](https://www.qt.io/download). 
 
 
 ### Install Windows dependencies
@@ -29,9 +29,9 @@ scoop install cmake --global
 scoop install git --global
 ```
 
-- next add a `QT_INSTALL_CMAKE_PATH` environment variable pointing to the msvc_2017x64 location
+- next add a `QT_INSTALL_CMAKE_PATH` environment variable pointing to the msvc_2019x64 location
 
-e.g.: `set QT_INSTALL_CMAKE_PATH "C:\Qt\5.14.1\msvc2017_64"`
+e.g.: `set QT_INSTALL_CMAKE_PATH "C:\Qt\5.15.0\msvc2019_64"`
 
 
 ### Install macOS dependencies
@@ -49,8 +49,8 @@ Add the following environment variables to your `~/.bashrc` or `~/.zshrc` profil
 
 e.g.:
 ```bash
-export QT_INSTALL_CMAKE_PATH=/Users/SatoshiNakamoto/Qt/5.14.0/clang_64/lib/cmake
-export QT_ROOT=/Users/SatoshiNakamoto/Qt/5.14.0
+export QT_INSTALL_CMAKE_PATH=/Users/SatoshiNakamoto/Qt/5.15.0/clang_64/lib/cmake
+export QT_ROOT=/Users/SatoshiNakamoto/Qt/5.15.0
 ```
 
 Installing curl:
@@ -102,8 +102,8 @@ Add the following environment variables to your `~/.bashrc` or `~/.zshrc` profil
 
 e.g.:
 ```bash
-export QT_INSTALL_CMAKE_PATH=~/Qt/5.14.0/gcc/lib/cmake
-export QT_ROOT=~/Qt/5.14.0
+export QT_INSTALL_CMAKE_PATH=~/Qt/5.15.0/gcc/lib/cmake
+export QT_ROOT=~/Qt/5.15.0
 ```
 
 ## Build AtomicDEX Pro 
