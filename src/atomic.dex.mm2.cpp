@@ -18,6 +18,7 @@
 #include "atomic.dex.mm2.hpp"
 #include "atomic.dex.kill.hpp"
 #include "atomic.dex.mm2.config.hpp"
+#include "atomic.dex.version.hpp"
 #include "atomic.threadpool.hpp"
 
 //! Anonymous functions
@@ -26,10 +27,11 @@ namespace
     namespace ag = antara::gaming;
 
     void
-    update_coin_status(const std::vector<std::string> tickers, bool status = true)
+    update_coin_status(const std::string& wallet_name, const std::vector<std::string> tickers, bool status = true)
     {
-        fs::path       cfg_path = ag::core::assets_real_path() / "config";
-        std::ifstream  ifs((cfg_path / "coins.json").c_str());
+        fs::path       cfg_path = get_atomic_dex_config_folder();
+        std::string    filename = std::string(atomic_dex::get_raw_version()) + "-coins." + wallet_name + ".json";
+        std::ifstream  ifs((cfg_path / filename).c_str());
         nlohmann::json config_json_data;
 
         assert(ifs.is_open());
@@ -40,18 +42,21 @@ namespace
         ifs.close();
 
         //! Write contents
-        std::ofstream ofs((cfg_path / "coins.json").c_str(), std::ios::trunc);
+        std::ofstream ofs((cfg_path / filename).c_str(), std::ios::trunc);
         assert(ofs.is_open());
         ofs << config_json_data;
     }
 
     bool
-    retrieve_coins_information(atomic_dex::t_coins_registry& coins_registry)
+    retrieve_coins_information(const std::string& wallet_name, atomic_dex::t_coins_registry& coins_registry)
     {
-        const auto cfg_path = ag::core::assets_real_path() / "config";
-        if (exists(cfg_path / "coins.json"))
+        spdlog::debug("{} l{} f[{}]", __FUNCTION__, __LINE__, fs::path(__FILE__).filename().string());
+        const auto  cfg_path = get_atomic_dex_config_folder();
+        std::string filename = std::string(atomic_dex::get_raw_version()) + "-coins." + wallet_name + ".json";
+        spdlog::info("Retrieving Wallet information of {}", (cfg_path / filename).string());
+        if (exists(cfg_path / filename))
         {
-            std::ifstream ifs((cfg_path / "coins.json").c_str());
+            std::ifstream ifs((cfg_path / filename).c_str());
             assert(ifs.is_open());
             nlohmann::json config_json_data;
             ifs >> config_json_data;
@@ -75,7 +80,6 @@ namespace atomic_dex
         dispatcher_.sink<orderbook_refresh>().connect<&mm2::on_refresh_orderbook>(*this);
 
         m_swaps_registry.insert("result", t_my_recent_swaps_answer{.total = 0});
-        retrieve_coins_information(m_coins_informations);
     }
 
     void
@@ -338,7 +342,7 @@ namespace atomic_dex
             });
         }
 
-        update_coin_status(tickers, false);
+        update_coin_status(this->m_current_wallet_name, tickers, false);
     }
 
     void
@@ -420,15 +424,8 @@ namespace atomic_dex
             // loguru::set_thread_name("enable multiple coins");
             batch_enable_coins(tickers, true);
         });
-        /*for (const auto& ticker: tickers)
-        {
-            spawn([this, ticker]() {
-                //loguru::set_thread_name("enable multiple coins");
-                enable_coin(ticker, true);
-            });
-        }*/
 
-        update_coin_status(tickers, true);
+        update_coin_status(this->m_current_wallet_name, tickers, true);
     }
 
     coin_config
@@ -537,8 +534,11 @@ namespace atomic_dex
     }
 
     void
-    mm2::spawn_mm2_instance(std::string passphrase)
+    mm2::spawn_mm2_instance(std::string wallet_name, std::string passphrase)
     {
+        spdlog::debug("{} l{} f[{}]", __FUNCTION__, __LINE__, fs::path(__FILE__).filename().string());
+        this->m_current_wallet_name = std::move(wallet_name);
+        retrieve_coins_information(this->m_current_wallet_name, m_coins_informations);
         mm2_config cfg{.passphrase = std::move(passphrase)};
         json       json_cfg;
         const auto tools_path = ag::core::assets_real_path() / "tools/mm2/";

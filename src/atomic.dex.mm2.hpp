@@ -57,12 +57,13 @@ namespace atomic_dex
 
     using t_allocator = folly::AlignedSysAllocator<std::uint8_t, folly::FixedAlign<bit_size<std::size_t>()>>;
     template <typename Key, typename Value>
-    using t_concurrent_reg = folly::ConcurrentHashMap<Key, Value, std::hash<Key>, std::equal_to<>, t_allocator>;
-    using t_ticker         = std::string;
-    using t_tx_state       = tx_state;
-    using t_coins_registry = t_concurrent_reg<t_ticker, coin_config>;
-    using t_transactions   = std::vector<tx_infos>;
-    using t_coins          = std::vector<coin_config>;
+    using t_concurrent_reg      = folly::ConcurrentHashMap<Key, Value, std::hash<Key>, std::equal_to<>, t_allocator>;
+    using t_ticker              = std::string;
+    using t_tx_state            = tx_state;
+    using t_coins_registry      = t_concurrent_reg<t_ticker, coin_config>;
+    using t_wallet_cfg_registry = t_concurrent_reg<std::string, t_coins_registry>;
+    using t_transactions        = std::vector<tx_infos>;
+    using t_coins               = std::vector<coin_config>;
 
     //! Constants
     inline constexpr const std::size_t g_tx_max_limit{50_sz};
@@ -96,6 +97,9 @@ namespace atomic_dex
         std::atomic_bool m_mm2_running{false};
         std::atomic_bool m_orderbook_thread_active{false};
         std::thread      m_mm2_init_thread;
+
+        //! Current wallet name
+        std::string m_current_wallet_name;
 
         //! Concurrent Registry.
         t_coins_registry&     m_coins_informations{entity_registry_.set<t_coins_registry>()};
@@ -147,7 +151,7 @@ namespace atomic_dex
         void on_gui_leave_trading(const gui_leave_trading& evt) noexcept;
 
         //! Spawn mm2 instance with given seed
-        void spawn_mm2_instance(std::string passphrase);
+        void spawn_mm2_instance(std::string wallet_name, std::string passphrase);
 
         //! Refresh the current info (internally call process_balance and process_tx)
         void fetch_infos_thread();
