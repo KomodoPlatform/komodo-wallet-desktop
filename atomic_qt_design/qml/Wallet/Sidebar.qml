@@ -95,7 +95,9 @@ Item {
                         Connections {
                             target: root
 
-                            onResetted: input_coin_filter.text = ""
+                            function onResetted() {
+                                input_coin_filter.text = ""
+                            }
                         }
 
                         onTextChanged: input_coin_filter_text = text

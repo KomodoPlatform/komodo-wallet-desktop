@@ -169,7 +169,7 @@ ChartView {
     Connections {
         target: dashboard
 
-        onPortfolio_coinsChanged: {
+        function onPortfolio_coinsChanged() {
             updateChart()
         }
     }
