@@ -257,6 +257,7 @@ Item {
 
             RowLayout {
                 Layout.alignment: Qt.AlignRight
+                spacing: 15
 
                 DefaultButton {
                     enabled: parseFloat(API.get().current_coin_info.balance) > 0
