@@ -27,6 +27,62 @@ namespace
     namespace ag = antara::gaming;
 
     void
+    check_for_reconfiguration(const std::string& wallet_name)
+    {
+        using namespace std::string_literals;
+        spdlog::debug("{} l{} f[{}]", __FUNCTION__, __LINE__, fs::path(__FILE__).filename().string());
+
+        fs::path    cfg_path                   = get_atomic_dex_config_folder();
+        std::string filename                   = std::string(atomic_dex::get_precedent_raw_version()) + "-coins." + wallet_name + ".json";
+        fs::path    precedent_version_cfg_path = cfg_path / filename;
+
+        if (fs::exists(precedent_version_cfg_path))
+        {
+            //! There is a precedent configuration file
+            spdlog::info("There is a precedent configuration file, upgrading the new one with precedent settings");
+
+            //! Old cfg to ifs
+            std::ifstream ifs(precedent_version_cfg_path.string());
+            assert(ifs.is_open());
+            nlohmann::json precedent_config_json_data;
+            ifs >> precedent_config_json_data;
+
+            //! New cfg to ifs
+            fs::path      actual_version_filepath = cfg_path / (std::string(atomic_dex::get_raw_version()) + "-coins."s + wallet_name + ".json"s);
+            std::ifstream actual_version_ifs(actual_version_filepath.string());
+            assert(actual_version_ifs.is_open());
+            nlohmann::json actual_config_data;
+            actual_version_ifs >> actual_config_data;
+
+            //! Iterate through new config
+            for (auto& [key, value]: actual_config_data.items())
+            {
+                //! If the coin in new config is present in the old one, copy the contents
+                if (precedent_config_json_data.contains(key))
+                {
+                    actual_config_data.at(key)["active"] = precedent_config_json_data.at(key).at("active").get<bool>();
+                }
+            }
+
+            ifs.close();
+            actual_version_ifs.close();
+
+            //! Write contents
+            std::ofstream ofs(actual_version_filepath.string());
+            assert(ofs.is_open());
+            ofs << actual_config_data;
+
+            //! Delete old cfg
+            boost::system::error_code ec;
+            fs::remove(precedent_version_cfg_path, ec);
+            if (!ec)
+            {
+                spdlog::error("error: {}", ec.message());
+            }
+        }
+    }
+
+    void
     update_coin_status(const std::string& wallet_name, const std::vector<std::string> tickers, bool status = true)
     {
         fs::path       cfg_path = get_atomic_dex_config_folder();
@@ -51,6 +107,8 @@ namespace
     retrieve_coins_information(const std::string& wallet_name, atomic_dex::t_coins_registry& coins_registry)
     {
         spdlog::debug("{} l{} f[{}]", __FUNCTION__, __LINE__, fs::path(__FILE__).filename().string());
+
+        check_for_reconfiguration(wallet_name);
         const auto  cfg_path = get_atomic_dex_config_folder();
         std::string filename = std::string(atomic_dex::get_raw_version()) + "-coins." + wallet_name + ".json";
         spdlog::info("Retrieving Wallet information of {}", (cfg_path / filename).string());

@@ -31,7 +31,7 @@ namespace atomic_dex
     }
 
     constexpr const char*
-    get_precedent_version()
+    get_precedent_raw_version()
     {
         return "0.1.4";
     }
