@@ -43,6 +43,7 @@
         <file>atomic_qt_design/assets/images/shadowed_circle_green.svg</file>
         <file>atomic_qt_design/assets/images/shadowed_circle_blue.svg</file>
         <file>atomic_qt_design/assets/images/coins/awc.png</file>
+        <file>atomic_qt_design/assets/images/coins/bat.png</file>
         <file>atomic_qt_design/assets/images/coins/btc.png</file>
         <file>atomic_qt_design/assets/images/coins/bch.png</file>
         <file>atomic_qt_design/assets/images/coins/bet.png</file>
@@ -63,6 +64,7 @@
         <file>atomic_qt_design/assets/images/coins/rick.png</file>
         <file>atomic_qt_design/assets/images/coins/mgw.png</file>
         <file>atomic_qt_design/assets/images/coins/morty.png</file>
+        <file>atomic_qt_design/assets/images/coins/nav.png</file>
         <file>atomic_qt_design/assets/images/coins/pangea.png</file>
         <file>atomic_qt_design/assets/images/coins/revs.png</file>
         <file>atomic_qt_design/assets/images/coins/hush.png</file>
