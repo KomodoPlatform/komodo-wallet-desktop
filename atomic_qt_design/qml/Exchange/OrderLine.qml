@@ -8,7 +8,7 @@ import "../Constants"
 
 Rectangle {
     property var item
-    width: parent.width
+    width: list.width
     height: 175
 
     property bool hovered: false

@@ -32,6 +32,10 @@ QtObject {
     readonly property var reg_pass_special: /(?=.*[@#$%{}[\]()\/\\'"`~,;:.<>+\-_=!^&*|?])/
     readonly property var reg_pass_count: /(?=.{16,})/
 
+    function clone(obj) {
+        return JSON.parse(JSON.stringify(obj));
+    }
+
     function viewTxAtExplorer(ticker, id, add_0x=false) {
         if(id !== '') {
             const coin_info = API.get().get_coin_info(ticker)
