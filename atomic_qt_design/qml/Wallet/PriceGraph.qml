@@ -69,10 +69,10 @@ ChartView {
     // Price, front
     LineSeries {
         id: series
-        color: Style.colorTheme1
+        color: Style.colorTheme0
 
         style: Qt.SolidLine
-        width: 2
+        width: 1.5
 
         pointsVisible: true
         onHovered: updateValueText(state, point.y, axisY.labelsColor, 2)
@@ -80,9 +80,10 @@ ChartView {
         axisX: DateTimeAxis {
             titleVisible: false
             lineVisible: false
-            labelsFont: Style.font
+            labelsFont.family: Style.font
+            labelsFont.pixelSize: Style.textSizeVerySmall8
             gridLineColor: Style.colorThemeDark2
-            labelsColor: gridLineColor
+            labelsColor: Style.colorThemeDark3
             format: "MMM d"
         }
         axisY: ValueAxis {

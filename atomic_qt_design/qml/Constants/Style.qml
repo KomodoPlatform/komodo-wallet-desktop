@@ -102,6 +102,7 @@ QtObject {
     readonly property string colorThemeDark:  dark_theme ? "#26282C" : "#26282C"
     readonly property string colorThemeDark2:  dark_theme ? "#3C4150" : "#3C4150"
     readonly property string colorThemeDarkLight:  dark_theme ? "#78808D" : "#78808D"
+    readonly property string colorThemeDark3:  dark_theme ? "#78808D" : "#78808D"
 
     readonly property string colorGradient1:  dark_theme ? colorTheme9 : colorTheme9
     readonly property string colorGradient2:  dark_theme ? colorTheme5 : colorTheme5
