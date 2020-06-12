@@ -32,6 +32,14 @@ QtObject {
     readonly property var reg_pass_special: /(?=.*[@#$%{}[\]()\/\\'"`~,;:.<>+\-_=!^&*|?])/
     readonly property var reg_pass_count: /(?=.{16,})/
 
+    function viewTxAtExplorer(ticker, id, add_0x=false) {
+        if(id !== '') {
+            const coin_info = API.get().get_coin_info(ticker)
+            const id_prefix = add_0x && coin_info.type === 'ERC-20' ? '0x' : ''
+            Qt.openUrlExternally(coin_info.explorer_url + 'tx/' + id_prefix + id)
+        }
+    }
+
     function diffPrefix(received) {
         return received === "" ? "" : received === true ? "+ " :  "- "
     }
