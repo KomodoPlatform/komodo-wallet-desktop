@@ -163,9 +163,9 @@ namespace mm2::api
         using namespace date;
         using namespace std::chrono;
         date::sys_seconds tp{seconds{cfg.timestamp}};
-        auto tp_zoned = date::make_zoned(current_zone(), tp);
-        std::string       s   = date::format("%e %b %Y, %I:%M", tp_zoned);
-        cfg.timestamp_as_date = std::move(s);
+        auto              tp_zoned = date::make_zoned(current_zone(), tp);
+        std::string       s        = date::format("%e %b %Y, %I:%M", tp_zoned);
+        cfg.timestamp_as_date      = std::move(s);
     }
 
     void
@@ -370,8 +370,8 @@ namespace mm2::api
         j.at("timestamp").get_to(answer.timestamp);
 
         sys_time<std::chrono::milliseconds> tp{std::chrono::milliseconds{answer.timestamp}};
-        auto tp_zoned = date::make_zoned(current_zone(), tp);
-        answer.human_timestamp = date::format("%Y-%m-%d %I:%M:%S", tp_zoned);
+        auto                                tp_zoned = date::make_zoned(current_zone(), tp);
+        answer.human_timestamp                       = date::format("%Y-%m-%d %I:%M:%S", tp_zoned);
     }
 
     void
@@ -587,12 +587,15 @@ namespace mm2::api
         j.at("type").get_to(contents.type);
         j.at("recoverable").get_to(contents.funds_recoverable);
 
-        contents.taker_amount            = adjust_precision(contents.taker_amount);
-        contents.maker_amount            = adjust_precision(contents.maker_amount);
-        contents.events                  = nlohmann::json::array();
-        contents.my_info                 = j.at("my_info");
-        contents.my_info["other_amount"] = adjust_precision(contents.my_info["other_amount"].get<std::string>());
-        contents.my_info["my_amount"]    = adjust_precision(contents.my_info["my_amount"].get<std::string>());
+        contents.taker_amount = adjust_precision(contents.taker_amount);
+        contents.maker_amount = adjust_precision(contents.maker_amount);
+        contents.events       = nlohmann::json::array();
+        if (j.contains("my_info"))
+        {
+            contents.my_info                 = j.at("my_info");
+            contents.my_info["other_amount"] = adjust_precision(contents.my_info["other_amount"].get<std::string>());
+            contents.my_info["my_amount"]    = adjust_precision(contents.my_info["my_amount"].get<std::string>());
+        }
         using t_event_timestamp_registry = std::unordered_map<std::string, std::uint64_t>;
         t_event_timestamp_registry event_timestamp_registry;
         double                     total_time_in_seconds = 0.00;
@@ -603,7 +606,7 @@ namespace mm2::api
             const nlohmann::json& j_evt      = content.at("event");
             auto                  timestamp  = content.at("timestamp").get<std::size_t>();
             auto                  tp         = sys_milliseconds{std::chrono::milliseconds{timestamp}};
-            auto tp_zoned = date::make_zoned(current_zone(), tp);
+            auto                  tp_zoned   = date::make_zoned(current_zone(), tp);
             std::string           human_date = date::format("%F    %T", tp_zoned);
             auto                  evt_type   = j_evt.at("type").get<std::string>();
 
