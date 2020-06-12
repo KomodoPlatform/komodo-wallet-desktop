@@ -63,7 +63,7 @@ Item {
                             id: name
                             text: API.get().empty_string + (API.get().current_coin_info.name)
                             Layout.alignment: Qt.AlignLeft
-                            font.pixelSize: Style.textSizeMid2
+                            font.pixelSize: Style.textSizeMid
                         }
 
                         DefaultText {
@@ -71,7 +71,6 @@ Item {
                             text: API.get().empty_string + (General.formatCrypto("", API.get().current_coin_info.balance, API.get().current_coin_info.ticker))
                             Layout.alignment: Qt.AlignLeft
                             font.pixelSize: name.font.pixelSize
-                            font.weight: Font.Medium
                         }
                     }
                 }
@@ -84,14 +83,13 @@ Item {
                         text: API.get().empty_string + (qsTr("Wallet Balance"))
                         Layout.alignment: Qt.AlignLeft
                         font.pixelSize: name.font.pixelSize
-                        color: Style.colorThemePassive
+                        color: price.color
                     }
 
                     DefaultText {
                         text: API.get().empty_string + (General.formatFiat("", API.get().current_coin_info.fiat_amount, API.get().fiat))
                         Layout.alignment: Qt.AlignLeft
                         font.pixelSize: name.font.pixelSize
-                        font.weight: name_value.font.weight
                     }
                 }
 
@@ -99,7 +97,7 @@ Item {
                     Layout.alignment: Qt.AlignLeft
                     Layout.rightMargin: 30
                     height: balance_layout.height * 0.8
-                    color: Style.colorTheme5
+                    color: Style.colorThemeDarkLight
                 }
 
                 // Price
@@ -111,8 +109,7 @@ Item {
                         text: API.get().empty_string + (qsTr("Price"))
                         Layout.alignment: Qt.AlignLeft
                         font.pixelSize: name.font.pixelSize
-                        font.weight: Font.Light
-                        color: Style.colorThemePassive
+                        color: Style.colorText2
                     }
 
                     DefaultText {
@@ -125,7 +122,6 @@ Item {
 
                         Layout.alignment: Qt.AlignLeft
                         font.pixelSize: name.font.pixelSize
-                        font.weight: name_value.font.weight
                     }
                 }
 
@@ -137,8 +133,7 @@ Item {
                         text: API.get().empty_string + (qsTr("Change 24h"))
                         Layout.alignment: Qt.AlignLeft
                         font.pixelSize: name.font.pixelSize
-                        font.weight: price.font.weight
-                        color: Style.colorThemePassive
+                        color: price.color
                     }
 
                     DefaultText {
@@ -150,7 +145,6 @@ Item {
                         }
                         Layout.alignment: Qt.AlignLeft
                         font.pixelSize: name.font.pixelSize
-                        font.weight: name_value.font.weight
                         color: {
                             const c = General.getCoin(portfolio_coins, API.get().current_coin_info.ticker)
 
@@ -171,8 +165,7 @@ Item {
                         text: API.get().empty_string + (qsTr("Portfolio %"))
                         Layout.alignment: Qt.AlignLeft
                         font.pixelSize: name.font.pixelSize
-                        font.weight: price.font.weight
-                        color: Style.colorThemePassive
+                        color: price.color
                     }
 
                     DefaultText {
@@ -186,7 +179,6 @@ Item {
                         }
                         Layout.alignment: Qt.AlignLeft
                         font.pixelSize: name.font.pixelSize
-                        font.weight: name_value.font.weight
                     }
                 }
             }

@@ -147,6 +147,7 @@ QtObject {
     property string colorButtonTextHovered: Style.colorWhite1
     property string colorButtonTextEnabled: Style.colorWhite1  // Style.colorThemePassive
     property string colorPlaceholderText: Style.colorWhite9
+    readonly property string colorText2: dark_theme ? "#79808C" : "#3C5368"
 
     property string colorButtonDangerDisabled: Style.colorRed3
     property string colorButtonDangerHovered: Style.colorRed
