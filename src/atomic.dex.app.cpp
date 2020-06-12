@@ -152,8 +152,19 @@ namespace atomic_dex
         else
         {
             using namespace std::string_literals;
-            const fs::path seed_path          = get_atomic_dex_config_folder() / (wallet_name.toStdString() + ".seed"s);
-            const fs::path wallet_object_path = get_atomic_dex_export_folder() / (wallet_name.toStdString() + ".wallet.json"s);
+            const fs::path    seed_path          = get_atomic_dex_config_folder() / (wallet_name.toStdString() + ".seed"s);
+            const fs::path    wallet_object_path = get_atomic_dex_export_folder() / (wallet_name.toStdString() + ".wallet.json"s);
+            const std::string wallet_cfg_file    = std::string(atomic_dex::get_raw_version()) + "-coins"s + "."s + wallet_name.toStdString() + ".json"s;
+            const fs::path    wallet_cfg_path    = get_atomic_dex_config_folder() / wallet_cfg_file;
+
+
+            if (not fs::exists(wallet_cfg_path))
+            {
+                const auto  cfg_path = ag::core::assets_real_path() / "config";
+                std::string filename = std::string(atomic_dex::get_raw_version()) + "-coins.json";
+                fs::copy(cfg_path / filename, wallet_cfg_path);
+            }
+
             // Encrypt seed
             atomic_dex::encrypt(seed_path, seed.toStdString().data(), key.data());
             // sodium_memzero(&seed, seed.size());
@@ -192,6 +203,18 @@ namespace atomic_dex
         else
         {
             using namespace std::string_literals;
+
+            const std::string wallet_cfg_file = std::string(atomic_dex::get_raw_version()) + "-coins"s + "."s + wallet_name.toStdString() + ".json"s;
+            const fs::path    wallet_cfg_path = get_atomic_dex_config_folder() / wallet_cfg_file;
+
+
+            if (not fs::exists(wallet_cfg_path))
+            {
+                const auto  cfg_path = ag::core::assets_real_path() / "config";
+                std::string filename = std::string(atomic_dex::get_raw_version()) + "-coins.json";
+                fs::copy(cfg_path / filename, wallet_cfg_path);
+            }
+
             const fs::path seed_path = get_atomic_dex_config_folder() / (wallet_name.toStdString() + ".seed"s);
             auto           seed      = atomic_dex::decrypt(seed_path, key.data(), ec);
             if (ec == dextop_error::corrupted_file_or_wrong_password)
@@ -202,7 +225,7 @@ namespace atomic_dex
             else
             {
                 this->set_status("initializing_mm2");
-                get_mm2().spawn_mm2_instance(seed);
+                get_mm2().spawn_mm2_instance(this->m_current_default_wallet.toStdString(), seed);
                 return true;
             }
         }
@@ -561,7 +584,7 @@ namespace atomic_dex
         }
         std::error_code ec;
         auto            answer = mm2::withdraw(std::move(req), ec);
-        auto coin = get_mm2().get_coin_info(m_coin_info->get_ticker().toStdString());
+        auto            coin   = get_mm2().get_coin_info(m_coin_info->get_ticker().toStdString());
         return to_qt_binding(std::move(answer), this, QString::fromStdString(coin.explorer_url[0]));
     }
 
