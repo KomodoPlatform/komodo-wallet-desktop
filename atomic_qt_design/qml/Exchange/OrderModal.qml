@@ -143,8 +143,8 @@ DefaultModal {
                 onClicked: {
                     const maker_id = getSwapPaymentID(details, false)
                     const taker_id = getSwapPaymentID(details, true)
-                    if(maker_id !== '') General.viewTxAtExplorer(details.maker_coin, maker_id)
-                    if(taker_id !== '') General.viewTxAtExplorer(details.taker_coin, taker_id)
+                    if(maker_id !== '') General.viewTxAtExplorer(details.maker_coin, maker_id, true)
+                    if(taker_id !== '') General.viewTxAtExplorer(details.taker_coin, taker_id, true)
                 }
             }
         }
