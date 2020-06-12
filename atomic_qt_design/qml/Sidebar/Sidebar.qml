@@ -38,8 +38,16 @@ Item {
                     color: Style.colorSidebarHighlightGradient1
                 }
                 GradientStop {
-                    position: 1.0
+                    position: 0.375
                     color: Style.colorSidebarHighlightGradient2
+                }
+                GradientStop {
+                    position: 0.7292
+                    color: Style.colorSidebarHighlightGradient3
+                }
+                GradientStop {
+                    position: 1.0
+                    color: Style.colorSidebarHighlightGradient4
                 }
             }
         }
