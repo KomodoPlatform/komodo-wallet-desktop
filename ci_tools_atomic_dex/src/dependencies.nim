@@ -13,7 +13,7 @@ let g_packages = [
     (name: "range-v3", head: false),
     (name: "libsodium", head: false),
     (name: "spdlog", head: false),
-    (name: "date", head: false)]
+    (name: "date[remote-api]", head: false)]
 
 proc download_packages*() =
     echo "Downloading packages ... please wait"
