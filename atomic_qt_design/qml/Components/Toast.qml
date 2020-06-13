@@ -5,8 +5,11 @@ import QtQuick 2.12
 import "../Constants"
 
 Rectangle {
-    function show(text, duration) {
-        message.text = text;
+    function show(text, duration, info, is_error) {
+        details = info
+        isError = is_error
+
+        message.text = text + (details !== undefined && details !== "" ? (" - " + qsTr("Click here to see the details")) : "")
 
         if (duration === -1) time = defaultTime
         else time = Math.max(duration, 2 * fadeTime)
@@ -35,7 +38,7 @@ Rectangle {
     radius: margin / 3
 
     opacity: 0
-    color: Style.colorTheme1
+    color: isError ? Style.colorRed : Style.colorTheme1
 
     DefaultText {
         id: message
@@ -70,6 +73,19 @@ Rectangle {
 
         onRunningChanged: {
             if (!running && selfDestroying) root.destroy()
+        }
+    }
+
+    property string details: ""
+    property bool isError: false
+
+    MouseArea {
+        anchors.fill: parent
+        onClicked: {
+            if(details !== "") {
+                showError(message.text, details)
+                root.visible = false
+            }
         }
     }
 }

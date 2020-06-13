@@ -107,6 +107,7 @@ Rectangle {
         font.pixelSize: Style.textSizeSmall
     }
 
+    function showError(title, content) {
     ToastManager {
         id: toast
     }
