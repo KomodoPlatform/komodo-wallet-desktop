@@ -41,6 +41,10 @@ QtObject {
         return (new Date(timestamp)).getUTCDate()
     }
     
+    function clone(obj) {
+        return JSON.parse(JSON.stringify(obj));
+    }
+
     function viewTxAtExplorer(ticker, id, add_0x=false) {
         if(id !== '') {
             const coin_info = API.get().get_coin_info(ticker)

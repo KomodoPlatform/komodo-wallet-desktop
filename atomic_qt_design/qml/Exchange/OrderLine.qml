@@ -8,7 +8,7 @@ import "../Constants"
 
 Rectangle {
     property var item
-    width: parent.width
+    width: list.width
     height: 175
 
     color: mouse_area.containsMouse ? Style.colorTheme8 : "transparent"
