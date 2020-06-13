@@ -1,6 +1,10 @@
 import osproc
 import vcpkg
 
+var g_date = "date"
+when defined(windows):
+    g_date = "date[remote-api]"
+
 let g_packages = [
     (name: "entt", head: false),
     (name: "folly", head: false),
@@ -13,7 +17,7 @@ let g_packages = [
     (name: "range-v3", head: false),
     (name: "libsodium", head: false),
     (name: "spdlog", head: false),
-    (name: "date[remote-api]", head: false)]
+    (name: g_date, head: false)]
 
 proc download_packages*() =
     echo "Downloading packages ... please wait"
