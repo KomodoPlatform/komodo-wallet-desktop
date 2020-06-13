@@ -136,7 +136,6 @@ Item {
 
                     delegate: Rectangle {
                         color: list_bg.color
-                        anchors.horizontalCenter: parent.horizontalCenter
                         width: list_bg.width - list_bg.border.width*2 - 2
                         height: 44
                         radius: Style.rectangleCornerRadius
