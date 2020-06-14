@@ -111,6 +111,15 @@ namespace atomic_dex
         void launch();
 
         //! Bind to the QML Worlds
+
+
+        //! Login QML API Bindings, this internally call the `atomic_dex::qt_login_manager`
+        Q_INVOKABLE bool        login(const QString& password, const QString& wallet_name);
+        Q_INVOKABLE QStringList get_wallets() const;
+        Q_INVOKABLE bool        is_there_a_default_wallet() const;
+        Q_INVOKABLE QString     get_default_wallet_name() const;
+
+        //! Others
         Q_INVOKABLE QString     get_paprika_id_from_ticker(QString ticker) const;
         Q_INVOKABLE QString     to_eth_checksum_qt(QString eth_lowercase_address) const;
         Q_INVOKABLE QString     recover_fund(QString uuid) const;
@@ -137,10 +146,6 @@ namespace atomic_dex
         Q_INVOKABLE void        cancel_all_orders();
         Q_INVOKABLE void        cancel_all_orders_by_ticker(const QString& ticker);
         Q_INVOKABLE bool        first_run();
-        Q_INVOKABLE bool        login(const QString& password, const QString& wallet_name);
-        Q_INVOKABLE QStringList get_wallets() const;
-        Q_INVOKABLE bool        is_there_a_default_wallet() const;
-        Q_INVOKABLE QString     get_default_wallet_name() const;
         Q_INVOKABLE bool        disconnect();
         Q_INVOKABLE bool        create(const QString& password, const QString& seed, const QString& wallet_name);
         Q_INVOKABLE bool        enable_coins(const QStringList& coins);
