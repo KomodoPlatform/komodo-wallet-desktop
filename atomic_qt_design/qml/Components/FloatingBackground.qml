@@ -24,9 +24,9 @@ Item {
 
     readonly property var visible_rect: opacity_mask_enabled ? mask_loader : rect
 
+    implicitWidth: auto_set_size ? inner_space.width : undefined
+    implicitHeight: auto_set_size ? inner_space.height : undefined
 
-    width: auto_set_size ? inner_space.width : undefined
-    height: auto_set_size ? inner_space.height : undefined
     DefaultRectangle {
         id: rect
         anchors.fill: parent

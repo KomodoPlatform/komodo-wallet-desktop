@@ -23,6 +23,7 @@ SetupPage {
     image_path: General.image_path + "atomicdex-logo-large.svg"
     image_margin: 30
     content: ColumnLayout {
+        width: 400
         spacing: Style.rowSpacing
         DefaultText {
             text: API.get().empty_string + (qsTr("Welcome"))
@@ -34,7 +35,6 @@ SetupPage {
 
         RowLayout {
             Layout.fillWidth: true
-
             spacing: Style.buttonSpacing
 
             DefaultButton {
@@ -77,7 +77,7 @@ SetupPage {
 
                     delegate: Rectangle {
                         color: mouse_area.containsMouse ? Style.colorTheme6 : "transparent"
-                        width: 300
+                        width: bg.width
                         height: bg.row_height
                         DefaultGradient {
                             anchors.fill: parent
@@ -129,7 +129,6 @@ SetupPage {
         }
 
         Languages {
-            Layout.alignment: Qt.AlignHCenter
         }
     }
 }

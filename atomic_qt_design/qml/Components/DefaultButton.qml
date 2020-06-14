@@ -1,13 +1,8 @@
 import QtQuick 2.12
 import QtQuick.Layouts 1.12
 import QtQuick.Controls 2.12
-
-import "../Constants"
-import QtQuick 2.12
-import QtQuick.Layouts 1.12
-import QtQuick.Controls 2.12
-
 import QtGraphicalEffects 1.0
+
 import "../Constants"
 
 // Add button
@@ -29,8 +24,8 @@ FloatingBackground {
 
     id: button_bg
 
-    width: Math.max(90, text_obj.width + 20 + Math.abs(text_offset))
-    height: 40
+    implicitWidth: Math.max(90, text_obj.width + 20 + Math.abs(text_offset))
+    implicitHeight: 40
 
     radius: 100
 
