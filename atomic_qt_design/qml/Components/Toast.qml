@@ -6,10 +6,9 @@ import "../Constants"
 
 Rectangle {
     function show(text, duration, info, is_error) {
+        title = text
         details = info
         isError = is_error
-
-        message.text = text + (details !== undefined && details !== "" ? (" - " + qsTr("Click here to see the details")) : "")
 
         if (duration === -1) time = defaultTime
         else time = Math.max(duration, 2 * fadeTime)
@@ -51,6 +50,7 @@ Rectangle {
             margins: margin / 2
         }
         font.pixelSize: Style.textSizeSmall2
+        text: title + (details !== undefined && details !== "" ? (" - " + qsTr("Click here to see the details")) : "")
     }
 
     SequentialAnimation on opacity {
@@ -76,6 +76,7 @@ Rectangle {
         }
     }
 
+    property string title: ""
     property string details: ""
     property bool isError: false
 
@@ -83,7 +84,7 @@ Rectangle {
         anchors.fill: parent
         onClicked: {
             if(details !== "") {
-                showError(message.text, details)
+                showError(title, details)
                 root.visible = false
             }
         }
