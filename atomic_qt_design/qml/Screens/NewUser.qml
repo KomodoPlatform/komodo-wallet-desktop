@@ -93,10 +93,14 @@ SetupPage {
 
     content: ColumnLayout {
         width: 600
+        spacing: Style.rowSpacing
 
         DefaultText {
             text: API.get().empty_string + (qsTr("New User"))
-            Layout.bottomMargin: 10
+        }
+
+        HorizontalLine {
+            Layout.fillWidth: true
         }
 
         function reset() {
@@ -135,6 +139,7 @@ SetupPage {
         // First page, fill the form
         ColumnLayout {
             visible: !form_is_filled
+            spacing: Style.rowSpacing
 
             WalletNameField {
                 id: input_wallet_name
@@ -198,6 +203,8 @@ SetupPage {
             }
 
             RowLayout {
+                spacing: Style.buttonSpacing
+
                 DefaultButton {
                     Layout.fillWidth: true
                     text: API.get().empty_string + (qsTr("Back"))

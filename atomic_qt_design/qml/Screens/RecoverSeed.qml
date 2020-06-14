@@ -38,10 +38,14 @@ SetupPage {
 
     content: ColumnLayout {
         width: 400
+        spacing: Style.rowSpacing
 
         DefaultText {
             text: API.get().empty_string + (qsTr("Recovery"))
-            Layout.bottomMargin: 10
+        }
+
+        HorizontalLine {
+            Layout.fillWidth: true
         }
 
         function reset() {
@@ -123,6 +127,8 @@ SetupPage {
         }
 
         RowLayout {
+            spacing: Style.buttonSpacing
+
             DefaultButton {
                 Layout.fillWidth: true
                 text: API.get().empty_string + (qsTr("Back"))

@@ -35,6 +35,8 @@ SetupPage {
     image_path: General.image_path + "setup-logs.svg"
 
     content: ColumnLayout {
+        spacing: Style.rowSpacing
+
         function reset() {
             login.reset()
             input_password.reset()
@@ -61,6 +63,8 @@ SetupPage {
         }
 
         RowLayout {
+            spacing: Style.buttonSpacing
+
             DefaultButton {
                 text: API.get().empty_string + (qsTr("Back"))
                 Layout.fillWidth: true
