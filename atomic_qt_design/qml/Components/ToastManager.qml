@@ -4,7 +4,7 @@
 import QtQuick 2.12
 
 ListView {
-    function show(text, duration=-1, info="", is_error=false) {
+    function show(text, duration=-1, info="", is_error=true) {
         model.insert(0, { text, duration, info, is_error })
     }
 
