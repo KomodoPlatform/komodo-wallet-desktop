@@ -88,7 +88,8 @@ SetupPage {
     }
 
     image_scale: 0.7
-    image_path: General.image_path + (form_is_filled ? "settings-seed.svg" : "setup-welcome-wallet.svg")
+    // Removed the image for now, no space
+    //image_path: General.image_path + (form_is_filled ? "settings-seed.svg" : "setup-welcome-wallet.svg")
 
     content: ColumnLayout {
         width: 600

@@ -32,7 +32,9 @@ SetupPage {
     property string text_error
 
     image_scale: 0.7
-    image_path: General.image_path + "setup-wallet-restore-2.svg"
+
+    // Removed the image for now, no space
+    // image_path: General.image_path + "setup-wallet-restore-2.svg"
 
     content: ColumnLayout {
         width: 400
