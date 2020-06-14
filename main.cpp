@@ -14,6 +14,7 @@
 //! Project Headers
 #include "atomic.dex.app.hpp"
 #include "atomic.dex.kill.hpp"
+#include "atomic.threadpool.hpp"
 
 #ifdef __APPLE__
 #    include "atomic.dex.osx.manager.hpp"
@@ -34,26 +35,29 @@ main(int argc, char* argv[])
     std::cout << file_db_gz_path.string() << std::endl;
     if (not fs::exists(file_db_gz_path))
     {
-        fs::path install_db_tz_path = fs::path(std::string(std::getenv("APPDATA"))) / "atomic_qt" / "tzdata";
-        date::set_install(install_db_tz_path.string().c_str());
-        std::cout << date::remote_version() << std::endl;
-        bool res_tz = date::remote_download(date::remote_version());
-        assert(res_tz);
-        if (not fs::exists(install_db_tz_path / "version"))
-        {
-            //! We need to untar
-            boost::system::error_code ec;
-            fs::create_directory(install_db_tz_path, ec);
-            std::string cmd_line = "tar -xf ";
-            cmd_line += file_db_gz_path.string();
-            cmd_line += " -C ";
-            cmd_line += install_db_tz_path.string();
-            std::cout << cmd_line << std::endl;
-            system(cmd_line.c_str());
-            fs::path xml_windows_tdata_path =
-                fs::path(std::string(std::getenv("APPDATA"))) / "atomic_qt" / ("tzdata" + date::remote_version() + "windowsZones.xml");
-            fs::copy(xml_windows_tdata_path, install_db_tz_path / "windowsZones.xml");
-        }
+        atomic_dex::spawn([&file_db_gz_path]() {
+            fs::path install_db_tz_path = fs::path(std::string(std::getenv("APPDATA"))) / "atomic_qt" / "tzdata";
+            date::set_install(install_db_tz_path.string().c_str());
+            std::cout << date::remote_version() << std::endl;
+            bool res_tz = date::remote_download(date::remote_version());
+            assert(res_tz);
+            if (not fs::exists(install_db_tz_path / "version"))
+            {
+                //! We need to untar
+                boost::system::error_code ec;
+                fs::create_directory(install_db_tz_path, ec);
+                std::string cmd_line = "tar -xf ";
+                cmd_line += file_db_gz_path.string();
+                cmd_line += " -C ";
+                cmd_line += install_db_tz_path.string();
+                std::cout << cmd_line << std::endl;
+                system(cmd_line.c_str());
+                fs::path xml_windows_tdata_path =
+                    fs::path(std::string(std::getenv("APPDATA"))) / "atomic_qt" / ("tzdata" + date::remote_version() + "windowsZones.xml");
+                fs::copy(xml_windows_tdata_path, install_db_tz_path / "windowsZones.xml");
+            }
+        });
+        
     }
 #endif
 
