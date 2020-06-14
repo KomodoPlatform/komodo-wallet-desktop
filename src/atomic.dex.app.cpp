@@ -192,12 +192,6 @@ namespace atomic_dex
     }
 
     bool
-    atomic_dex::application::login(const QString& password, const QString& wallet_name)
-    {
-        return m_login_manager.login(password, wallet_name, get_mm2(), this->m_current_default_wallet, [this]() { this->set_status("initializing_mm2"); });
-    }
-
-    bool
     atomic_dex::application::first_run()
     {
         return get_wallets().empty();
@@ -846,8 +840,7 @@ namespace atomic_dex
     bool
     application::delete_wallet(const QString& wallet_name) const
     {
-        using namespace std::string_literals;
-        return fs::remove(get_atomic_dex_config_folder() / (wallet_name.toStdString() + ".seed"s));
+        return qt_login_manager::delete_wallet(wallet_name);
     }
 
     void
@@ -1224,5 +1217,15 @@ namespace atomic_dex
         std::stringstream ss;
         ss << std::fixed << std::setprecision(50) << std::move(final);
         return QString::fromStdString(ss.str());
+    }
+} // namespace atomic_dex
+
+//! Login QML API
+namespace atomic_dex
+{
+    bool
+    application::login(const QString& password, const QString& wallet_name)
+    {
+        return m_login_manager.login(password, wallet_name, get_mm2(), this->m_current_default_wallet, [this]() { this->set_status("initializing_mm2"); });
     }
 } // namespace atomic_dex

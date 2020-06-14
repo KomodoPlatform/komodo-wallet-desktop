@@ -38,6 +38,8 @@ namespace atomic_dex
         static inline bool is_there_a_default_wallet() noexcept;
 
         static inline QString get_default_wallet_name() noexcept;
+
+        static inline bool delete_wallet(const QString& wallet_name) noexcept;
     };
 
     template <typename Functor>
@@ -118,5 +120,12 @@ namespace atomic_dex
             return QString::fromStdString(str);
         }
         return "nonexistent";
+    }
+
+    bool
+    qt_login_manager::delete_wallet(const QString& wallet_name) noexcept
+    {
+        using namespace std::string_literals;
+        return fs::remove(get_atomic_dex_config_folder() / (wallet_name.toStdString() + ".seed"s));
     }
 } // namespace atomic_dex
