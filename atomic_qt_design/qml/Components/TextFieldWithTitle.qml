@@ -11,6 +11,7 @@ ColumnLayout {
     property alias hide_button_area: hide_button.mouse_area
     property bool copyable: false
     property bool hidable: false
+    property bool required: false
 
     property bool hiding: true
 
@@ -19,9 +20,18 @@ ColumnLayout {
         input_field.text = ''
     }
 
-    DefaultText {
-        id: title_text
-        visible: text !== ''
+    RowLayout {
+        DefaultText {
+            id: title_text
+            visible: text !== ''
+        }
+
+        DefaultText {
+            visible: required && input_field.text === ''
+            font.pixelSize: Style.textSizeSmall2
+            text: "Required"
+            color: Style.colorRed
+        }
     }
 
     DefaultTextField {
