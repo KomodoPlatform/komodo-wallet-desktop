@@ -31,6 +31,7 @@ ColumnLayout {
         id: input_password
         new_password: form.new_password
         hide_hint: !confirm
+        match_password: input_confirm_password.field.text
     }
 
     PasswordField {

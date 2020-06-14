@@ -9,6 +9,7 @@ ColumnLayout {
     property alias field: pw.field
     property bool hide_hint: false
     property bool new_password: true
+    property string match_password
 
     function isValid() {
         return pw.field.acceptableInput && RegExp(General.reg_pass_valid).test(pw.field.text)
@@ -32,6 +33,10 @@ ColumnLayout {
 
     function hasEnoughCharacters() {
         return pw.field.acceptableInput && RegExp(General.reg_pass_count).test(pw.field.text)
+    }
+
+    function passwordsDoMatch() {
+        return match_password !== "" && pw.field.acceptableInput && pw.field.text === match_password
     }
 
     function hintColor(valid) {
@@ -80,6 +85,11 @@ ColumnLayout {
             font.pixelSize: Style.textSizeSmall3
             text: API.get().empty_string + (hintPrefix(hasEnoughCharacters()) + qsTr("At least 16 characters"))
             color: hintColor(hasEnoughCharacters())
+        }
+        DefaultText {
+            font.pixelSize: Style.textSizeSmall3
+            text: API.get().empty_string + (hintPrefix(passwordsDoMatch()) + qsTr("Password and Confirm Password have to be same"))
+            color: hintColor(passwordsDoMatch())
         }
     }
 }
