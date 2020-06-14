@@ -1138,12 +1138,6 @@ namespace atomic_dex
         }
         return true;
     }
-    QImage
-    application::get_qr_code(QString text_to_encode, QSize size)
-    {
-        // QImage qrcode = QZXing::encodeData(text_to_encode, QZXing::EncoderFormat_QR_CODE, size);
-        return QImage();
-    }
 
     bool
     application::mnemonic_validate(QString entropy)

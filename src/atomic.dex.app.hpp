@@ -115,7 +115,6 @@ namespace atomic_dex
         Q_INVOKABLE QString     recover_fund(QString uuid) const;
         Q_INVOKABLE QString     get_mm2_version() const;
         Q_INVOKABLE bool        mnemonic_validate(QString entropy);
-        Q_INVOKABLE QImage      get_qr_code(QString text_to_encode, QSize size);
         Q_INVOKABLE QString     get_log_folder() const;
         Q_INVOKABLE QString     get_export_folder() const;
         Q_INVOKABLE QString     retrieve_seed(const QString& wallet_name, const QString& password);
@@ -127,7 +126,7 @@ namespace atomic_dex
             bool max = false);
         Q_INVOKABLE QString     send(const QString& tx_hex);
         Q_INVOKABLE QString     send_rewards(const QString& tx_hex);
-        Q_INVOKABLE void        change_state(int visibility);
+        Q_INVOKABLE static void change_state(int visibility);
         Q_INVOKABLE void        on_gui_enter_dex();
         Q_INVOKABLE void        on_gui_leave_dex();
         Q_INVOKABLE void        refresh_infos();
