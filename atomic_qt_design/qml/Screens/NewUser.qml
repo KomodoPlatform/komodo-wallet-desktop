@@ -140,6 +140,15 @@ SetupPage {
                 field.onAccepted: completeForm()
             }
 
+            TextAreaWithTitle {
+                id: input_generated_seed
+                title: API.get().empty_string + (qsTr("Generated Seed"))
+                field.text: current_mnemonic
+                field.readOnly: true
+                copyable: true
+                onReturn: completeForm
+            }
+
             FloatingBackground {
                 Layout.topMargin: 10
                 Layout.bottomMargin: Layout.topMargin
@@ -171,15 +180,6 @@ SetupPage {
                         color: Style.colorWhite4
                     }
                 }
-            }
-
-            TextAreaWithTitle {
-                id: input_generated_seed
-                title: API.get().empty_string + (qsTr("Generated Seed"))
-                field.text: current_mnemonic
-                field.readOnly: true
-                copyable: true
-                onReturn: completeForm
             }
 
             TextAreaWithTitle {
