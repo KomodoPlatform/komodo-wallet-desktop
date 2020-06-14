@@ -118,10 +118,12 @@ namespace atomic_dex
     atomic_dex::application::enable_coins(const QStringList& coins)
     {
         std::vector<std::string> coins_std;
+
         coins_std.reserve(coins.size());
         for (auto&& coin: coins) { coins_std.push_back(coin.toStdString()); }
         atomic_dex::mm2& mm2 = get_mm2();
         mm2.enable_multiple_coins(coins_std);
+
         return true;
     }
 
@@ -129,10 +131,12 @@ namespace atomic_dex
     application::disable_coins(const QStringList& coins)
     {
         std::vector<std::string> coins_std;
+
         coins_std.reserve(coins.size());
         for (auto&& coin: coins) { coins_std.push_back(coin.toStdString()); }
         get_mm2().disable_multiple_coins(coins_std);
         m_coin_info->set_ticker("");
+
         return false;
     }
 
@@ -190,46 +194,7 @@ namespace atomic_dex
     bool
     atomic_dex::application::login(const QString& password, const QString& wallet_name)
     {
-        std::error_code ec;
-        auto            key = atomic_dex::derive_password(password.toStdString(), ec);
-        if (ec)
-        {
-            spdlog::warn("{}", ec.message());
-            if (ec == dextop_error::derive_password_failed)
-            {
-                return false;
-            }
-        }
-        else
-        {
-            using namespace std::string_literals;
-
-            const std::string wallet_cfg_file = std::string(atomic_dex::get_raw_version()) + "-coins"s + "."s + wallet_name.toStdString() + ".json"s;
-            const fs::path    wallet_cfg_path = get_atomic_dex_config_folder() / wallet_cfg_file;
-
-
-            if (not fs::exists(wallet_cfg_path))
-            {
-                const auto  cfg_path = ag::core::assets_real_path() / "config";
-                std::string filename = std::string(atomic_dex::get_raw_version()) + "-coins.json";
-                fs::copy(cfg_path / filename, wallet_cfg_path);
-            }
-
-            const fs::path seed_path = get_atomic_dex_config_folder() / (wallet_name.toStdString() + ".seed"s);
-            auto           seed      = atomic_dex::decrypt(seed_path, key.data(), ec);
-            if (ec == dextop_error::corrupted_file_or_wrong_password)
-            {
-                spdlog::warn("{}", ec.message());
-                return false;
-            }
-            else
-            {
-                this->set_status("initializing_mm2");
-                get_mm2().spawn_mm2_instance(this->m_current_default_wallet.toStdString(), seed);
-                return true;
-            }
-        }
-        return false;
+        return m_login_manager.login(password, wallet_name, get_mm2(), this->m_current_default_wallet, [this]() { this->set_status("initializing_mm2"); });
     }
 
     bool
@@ -842,34 +807,19 @@ namespace atomic_dex
     QStringList
     application::get_wallets() const
     {
-        QStringList out;
-        for (auto&& p: fs::directory_iterator((get_atomic_dex_config_folder())))
-        {
-            if (p.path().extension().string() == ".seed")
-            {
-                out.push_back(QString::fromStdString(p.path().stem().string()));
-            }
-        }
-        return out;
+        return atomic_dex::qt_login_manager::get_wallets();
     }
 
     bool
     application::is_there_a_default_wallet() const
     {
-        return fs::exists(get_atomic_dex_config_folder() / "default.wallet");
+        return atomic_dex::qt_login_manager::is_there_a_default_wallet();
     }
 
     QString
     application::get_default_wallet_name() const
     {
-        if (is_there_a_default_wallet())
-        {
-            std::ifstream ifs((get_atomic_dex_config_folder() / "default.wallet").c_str());
-            assert(ifs);
-            std::string str((std::istreambuf_iterator<char>(ifs)), std::istreambuf_iterator<char>());
-            return QString::fromStdString(str);
-        }
-        return "nonexistent";
+        return atomic_dex::qt_login_manager::get_default_wallet_name();
     }
 
     bool

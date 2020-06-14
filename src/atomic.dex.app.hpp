@@ -33,6 +33,7 @@
 #include "atomic.dex.provider.coinpaprika.hpp"
 #include "atomic.dex.qt.bindings.hpp"
 #include "atomic.dex.qt.current.coin.infos.hpp"
+#include "atomic.dex.qt.login.manager.hpp"
 
 namespace ag = antara::gaming;
 
@@ -185,6 +186,9 @@ namespace atomic_dex
 
         //! QT Application
         QApplication* m_app;
+
+        //! Login Manager
+        atomic_dex::qt_login_manager m_login_manager;
 
         //! Private members
         std::atomic_bool   m_refresh_enabled_coin_event{false};
