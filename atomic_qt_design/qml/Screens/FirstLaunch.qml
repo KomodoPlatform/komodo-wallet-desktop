@@ -77,7 +77,6 @@ SetupPage {
 
                     delegate: Rectangle {
                         color: mouse_area.containsMouse ? Style.colorTheme6 : "transparent"
-                        anchors.horizontalCenter: parent.horizontalCenter
                         width: 300
                         height: bg.row_height
                         DefaultGradient {
