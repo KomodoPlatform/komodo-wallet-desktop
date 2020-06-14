@@ -113,10 +113,11 @@ namespace atomic_dex
         //! Bind to the QML Worlds
 
         //! Login QML API Bindings, this internally call the `atomic_dex::qt_wallet_manager`
-        Q_INVOKABLE bool        login(const QString& password, const QString& wallet_name);
-        Q_INVOKABLE static QStringList get_wallets() ;
-        Q_INVOKABLE static bool        is_there_a_default_wallet() ;
-        Q_INVOKABLE static QString     get_default_wallet_name() ;
+        Q_INVOKABLE bool               login(const QString& password, const QString& wallet_name);
+        Q_INVOKABLE static QStringList get_wallets();
+        Q_INVOKABLE static bool        is_there_a_default_wallet();
+        Q_INVOKABLE static QString     get_default_wallet_name();
+        Q_INVOKABLE static bool        delete_wallet(const QString& wallet_name);
 
         //! Others
         Q_INVOKABLE QString     get_paprika_id_from_ticker(QString ticker) const;
@@ -164,7 +165,6 @@ namespace atomic_dex
         Q_INVOKABLE bool         export_swaps(const QString& csv_filename) noexcept;
         Q_INVOKABLE bool         export_swaps_json() noexcept;
         Q_INVOKABLE QString      get_regex_password_policy() const noexcept;
-        Q_INVOKABLE static bool         delete_wallet(const QString& wallet_name) ;
         Q_INVOKABLE QVariantMap  get_trade_infos(const QString& ticker, const QString& receive_ticker, const QString& amount);
         Q_INVOKABLE QVariantList get_portfolio_informations();
 
