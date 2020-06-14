@@ -273,6 +273,9 @@ Item {
         if(action_result === "success") {
             onOrderSuccess()
         }
+        else {
+            toast.show(qsTr("Failed to place the order"), General.time_toast_important_error)
+        }
     }
 
     function getSendAmountAfterFees(amount, set_as_current) {

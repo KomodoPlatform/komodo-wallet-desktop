@@ -32,6 +32,8 @@ QtObject {
     readonly property var reg_pass_special: /(?=.*[@#$%{}[\]()\/\\'"`~,;:.<>+\-_=!^&*|?])/
     readonly property var reg_pass_count: /(?=.{16,})/
 
+    readonly property double time_toast_important_error: 10000
+
     function prettifyJSON(j) {
         return JSON.stringify(JSON.parse(j), null, 4)
     }
