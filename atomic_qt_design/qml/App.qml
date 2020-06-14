@@ -97,6 +97,29 @@ Rectangle {
         }
     }
 
+    DefaultText {
+        anchors.right: parent.right
+        anchors.bottom: parent.bottom
+        anchors.bottomMargin: 10
+        anchors.rightMargin: anchors.bottomMargin
+        text: API.get().empty_string + (qsTr("gui version") + ":    " + API.get().get_version())
+        font.pixelSize: Style.textSizeSmall
+    }
+
+
+    // Error Modal
+    LogModal {
+        id: error_log_modal
+    }
+
+    function showError(title, content) {
+        if(content === undefined || content === null) return
+        error_log_modal.title = title
+        error_log_modal.field.text = content
+        error_log_modal.open()
+    }
+
+    // Toast
     ToastManager {
         id: toast
     }

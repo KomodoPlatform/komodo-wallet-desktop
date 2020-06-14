@@ -44,6 +44,10 @@ QtObject {
     function clone(obj) {
         return JSON.parse(JSON.stringify(obj));
     }
+    
+    function prettifyJSON(j) {
+        return JSON.stringify(JSON.parse(j), null, 4)
+    }
 
     function viewTxAtExplorer(ticker, id, add_0x=false) {
         if(id !== '') {

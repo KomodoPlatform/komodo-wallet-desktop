@@ -4,9 +4,11 @@
 import QtQuick 2.12
 import "../Constants"
 
-FloatingBackground {
-    function show(text, duration) {
-        message.text = text;
+Rectangle {
+    function show(text, duration, info, is_error) {
+        title = text
+        details = info
+        isError = is_error
 
         if (duration === -1) time = defaultTime
         else time = Math.max(duration, 2 * fadeTime)
@@ -35,7 +37,7 @@ FloatingBackground {
     radius: margin / 3
 
     opacity: 0
-    color: Style.colorTheme1
+    color: isError ? Style.colorRed : Style.colorTheme1
 
     DefaultText {
         id: message
@@ -48,6 +50,7 @@ FloatingBackground {
             margins: margin / 2
         }
         font.pixelSize: Style.textSizeSmall2
+        text: title + (details !== undefined && details !== "" ? (" - " + qsTr("Click here to see the details")) : "")
     }
 
     SequentialAnimation on opacity {
@@ -70,6 +73,20 @@ FloatingBackground {
 
         onRunningChanged: {
             if (!running && selfDestroying) root.destroy()
+        }
+    }
+
+    property string title: ""
+    property string details: ""
+    property bool isError: false
+
+    MouseArea {
+        anchors.fill: parent
+        onClicked: {
+            if(details !== "") {
+                showError(title, details)
+                root.visible = false
+            }
         }
     }
 }
