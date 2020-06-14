@@ -53,7 +53,10 @@ SetupPage {
 
         DefaultText {
             text: API.get().empty_string + (qsTr("Login") + ": " + API.get().wallet_default_name)
-            Layout.bottomMargin: 10
+        }
+
+        HorizontalLine {
+            Layout.fillWidth: true
         }
 
         PasswordForm {
