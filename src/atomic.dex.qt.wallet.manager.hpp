@@ -26,7 +26,7 @@
 
 namespace atomic_dex
 {
-    class qt_login_manager
+    class qt_wallet_manager
     {
       public:
         template <typename Functor>
@@ -44,7 +44,7 @@ namespace atomic_dex
 
     template <typename Functor>
     bool
-    qt_login_manager::login(
+    qt_wallet_manager::login(
         const QString& password, const QString& wallet_name, mm2& mm2_system, const QString& default_wallet, Functor&& login_if_success_functor)
     {
         std::error_code ec;
@@ -88,7 +88,7 @@ namespace atomic_dex
     }
 
     QStringList
-    qt_login_manager::get_wallets() noexcept
+    qt_wallet_manager::get_wallets() noexcept
     {
         QStringList out;
 
@@ -104,13 +104,13 @@ namespace atomic_dex
     }
 
     bool
-    qt_login_manager::is_there_a_default_wallet() noexcept
+    qt_wallet_manager::is_there_a_default_wallet() noexcept
     {
         return fs::exists(get_atomic_dex_config_folder() / "default.wallet");
     }
 
     QString
-    qt_login_manager::get_default_wallet_name() noexcept
+    qt_wallet_manager::get_default_wallet_name() noexcept
     {
         if (is_there_a_default_wallet())
         {
@@ -123,7 +123,7 @@ namespace atomic_dex
     }
 
     bool
-    qt_login_manager::delete_wallet(const QString& wallet_name) noexcept
+    qt_wallet_manager::delete_wallet(const QString& wallet_name) noexcept
     {
         using namespace std::string_literals;
         return fs::remove(get_atomic_dex_config_folder() / (wallet_name.toStdString() + ".seed"s));

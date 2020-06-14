@@ -1202,30 +1202,30 @@ namespace atomic_dex
     bool
     application::login(const QString& password, const QString& wallet_name)
     {
-        return m_login_manager.login(password, wallet_name, get_mm2(), this->m_current_default_wallet, [this]() { this->set_status("initializing_mm2"); });
+        return m_wallet_manager.login(password, wallet_name, get_mm2(), this->m_current_default_wallet, [this]() { this->set_status("initializing_mm2"); });
     }
 
     bool
     application::delete_wallet(const QString& wallet_name)
     {
-        return qt_login_manager::delete_wallet(wallet_name);
+        return qt_wallet_manager::delete_wallet(wallet_name);
     }
 
     QString
     application::get_default_wallet_name()
     {
-        return atomic_dex::qt_login_manager::get_default_wallet_name();
+        return atomic_dex::qt_wallet_manager::get_default_wallet_name();
     }
 
     QStringList
     application::get_wallets()
     {
-        return atomic_dex::qt_login_manager::get_wallets();
+        return atomic_dex::qt_wallet_manager::get_wallets();
     }
 
     bool
     application::is_there_a_default_wallet()
     {
-        return atomic_dex::qt_login_manager::is_there_a_default_wallet();
+        return atomic_dex::qt_wallet_manager::is_there_a_default_wallet();
     }
 } // namespace atomic_dex

@@ -33,7 +33,7 @@
 #include "atomic.dex.provider.coinpaprika.hpp"
 #include "atomic.dex.qt.bindings.hpp"
 #include "atomic.dex.qt.current.coin.infos.hpp"
-#include "atomic.dex.qt.login.manager.hpp"
+#include "atomic.dex.qt.wallet.manager.hpp"
 
 namespace ag = antara::gaming;
 
@@ -112,7 +112,7 @@ namespace atomic_dex
 
         //! Bind to the QML Worlds
 
-        //! Login QML API Bindings, this internally call the `atomic_dex::qt_login_manager`
+        //! Login QML API Bindings, this internally call the `atomic_dex::qt_wallet_manager`
         Q_INVOKABLE bool        login(const QString& password, const QString& wallet_name);
         Q_INVOKABLE static QStringList get_wallets() ;
         Q_INVOKABLE static bool        is_there_a_default_wallet() ;
@@ -192,7 +192,7 @@ namespace atomic_dex
         QApplication* m_app;
 
         //! Login Manager
-        atomic_dex::qt_login_manager m_login_manager;
+        atomic_dex::qt_wallet_manager m_wallet_manager;
 
         //! Private members
         std::atomic_bool   m_refresh_enabled_coin_event{false};
