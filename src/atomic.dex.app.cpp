@@ -991,24 +991,6 @@ namespace atomic_dex
     }
 
     QString
-    application::get_version() const noexcept
-    {
-        return QString::fromStdString(atomic_dex::get_version());
-    }
-
-    QString
-    application::get_mm2_version() const
-    {
-        return QString::fromStdString(::mm2::api::rpc_version());
-    }
-
-    QString
-    application::get_log_folder() const
-    {
-        return QString::fromStdString(get_atomic_dex_logs_folder().string());
-    }
-
-    QString
     application::retrieve_seed(const QString& wallet_name, const QString& password)
     {
         std::error_code ec;
@@ -1055,11 +1037,6 @@ namespace atomic_dex
 #else
         return bip39_mnemonic_validate(nullptr, entropy.toStdString().c_str()) == 0;
 #endif
-    }
-    QString
-    application::get_paprika_id_from_ticker(QString ticker) const
-    {
-        return QString::fromStdString(get_mm2().get_coin_info(ticker.toStdString()).coinpaprika_id);
     }
 
     QVariantMap
@@ -1142,8 +1119,6 @@ namespace atomic_dex
         return result;
     }
 
-    application::~application() noexcept { export_swaps_json(); }
-
     QString
     application::get_price_amount(const QString& base_amount, const QString& rel_amount)
     {
@@ -1157,9 +1132,39 @@ namespace atomic_dex
     }
 } // namespace atomic_dex
 
+//! Constructor / Destructor
+namespace atomic_dex
+{
+    application::~application() noexcept { export_swaps_json(); }
+} // namespace atomic_dex
+
 //! Misc QML Utilities
 namespace atomic_dex
 {
+    QString
+    application::get_paprika_id_from_ticker(QString ticker) const
+    {
+        return QString::fromStdString(get_mm2().get_coin_info(ticker.toStdString()).coinpaprika_id);
+    }
+
+    QString
+    application::get_version() const noexcept
+    {
+        return QString::fromStdString(atomic_dex::get_version());
+    }
+
+    QString
+    application::get_log_folder() const
+    {
+        return QString::fromStdString(get_atomic_dex_logs_folder().string());
+    }
+
+    QString
+    application::get_mm2_version() const
+    {
+        return QString::fromStdString(::mm2::api::rpc_version());
+    }
+
     QString
     application::get_export_folder() const
     {
@@ -1175,7 +1180,7 @@ namespace atomic_dex
     }
 } // namespace atomic_dex
 
-//! Login QML API
+//! Wallet manager QML API
 namespace atomic_dex
 {
     bool
