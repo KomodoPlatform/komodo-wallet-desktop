@@ -31,16 +31,19 @@ main(int argc, char* argv[])
 {
     //! Project
 #if defined(_WIN32) || defined(WIN32)
-    fs::path file_db_gz_path = fs::path(std::string(std::getenv("APPDATA"))) / "atomic_qt" / ("tzdata" + date::remote_version() + ".tar.gz");
-    std::cout << file_db_gz_path.string() << std::endl;
-    if (not fs::exists(file_db_gz_path))
+	using namespace std::string_literals;
+	auto install_db_tz_path = std::make_unique<fs::path>(ag::core::assets_real_path() / "tools" / "timezone" / "tzdata");
+	std::cout << install_db_tz_path->string() << std::endl;
+	date::set_install(install_db_tz_path->string());
+    //fs::path file_db_gz_path = fs::path(std::string(std::getenv("APPDATA"))) / "atomic_qt" / ("tzdata"s + "2020a"s + ".tar.gz"s);
+    //std::cout << file_db_gz_path.string() << std::endl;
+    /*if (not fs::exists(file_db_gz_path))
     {
-        atomic_dex::spawn([&file_db_gz_path]() {
-            fs::path install_db_tz_path = fs::path(std::string(std::getenv("APPDATA"))) / "atomic_qt" / "tzdata";
-            date::set_install(install_db_tz_path.string().c_str());
-            std::cout << date::remote_version() << std::endl;
-            bool res_tz = date::remote_download(date::remote_version());
-            assert(res_tz);
+			
+            std::cout << "2020a" << std::endl;
+            bool res_tz = date::remote_download("2020a");
+			std::cout << "Pass here" << std::endl;
+            assert(res_tz == true);
             if (not fs::exists(install_db_tz_path / "version"))
             {
                 //! We need to untar
@@ -56,9 +59,11 @@ main(int argc, char* argv[])
                     fs::path(std::string(std::getenv("APPDATA"))) / "atomic_qt" / ("tzdata" + date::remote_version() + "windowsZones.xml");
                 fs::copy(xml_windows_tdata_path, install_db_tz_path / "windowsZones.xml");
             }
-        });
+        //atomic_dex::spawn([&file_db_gz_path]() {
+		//
+        //});
         
-    }
+    }*/
 #endif
 
 #if defined(_WIN32) || defined(WIN32) || defined(__linux__)
