@@ -23,6 +23,8 @@ jobs:
           target: 'desktop'
           dir: '${{ github.workspace }}'
           modules: 'qtcharts qtwidgets debug_info'
+          aqtversion: '==0.8'
+          py7zrversion: '==0.6'
 
       - name: Setup Nim (Linux)
         uses: jiro4989/setup-nim-action@v1.0.2
