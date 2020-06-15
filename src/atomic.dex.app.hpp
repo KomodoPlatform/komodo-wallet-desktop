@@ -135,8 +135,9 @@ namespace atomic_dex
         Q_INVOKABLE QObject* prepare_send_fees(
             const QString& address, const QString& amount, bool is_erc_20, const QString& fees_amount, const QString& gas_price, const QString& gas,
             bool max = false);
-        Q_INVOKABLE QString send(const QString& tx_hex);
-        Q_INVOKABLE QString send_rewards(const QString& tx_hex);
+        Q_INVOKABLE QString      send(const QString& tx_hex);
+        Q_INVOKABLE QString      send_rewards(const QString& tx_hex);
+        Q_INVOKABLE QVariantList get_portfolio_informations();
 
         //! Trading QML API Bindings
         Q_INVOKABLE void on_gui_enter_dex();
@@ -165,14 +166,13 @@ namespace atomic_dex
         Q_INVOKABLE bool        disable_coins(const QStringList& coins);
         Q_INVOKABLE bool        is_claiming_ready(const QString& ticker);
         Q_INVOKABLE QObject* claim_rewards(const QString& ticker);
-        Q_INVOKABLE QObject*     get_coin_info(const QString& ticker);
-        Q_INVOKABLE QVariantMap  get_my_orders();
-        Q_INVOKABLE QVariantMap  get_recent_swaps();
-        Q_INVOKABLE bool         export_swaps(const QString& csv_filename) noexcept;
-        Q_INVOKABLE bool         export_swaps_json() noexcept;
-        Q_INVOKABLE QString      get_regex_password_policy() const noexcept;
-        Q_INVOKABLE QVariantMap  get_trade_infos(const QString& ticker, const QString& receive_ticker, const QString& amount);
-        Q_INVOKABLE QVariantList get_portfolio_informations();
+        Q_INVOKABLE QObject*    get_coin_info(const QString& ticker);
+        Q_INVOKABLE QVariantMap get_my_orders();
+        Q_INVOKABLE QVariantMap get_recent_swaps();
+        Q_INVOKABLE bool        export_swaps(const QString& csv_filename) noexcept;
+        Q_INVOKABLE bool        export_swaps_json() noexcept;
+        Q_INVOKABLE QString     get_regex_password_policy() const noexcept;
+        Q_INVOKABLE QVariantMap get_trade_infos(const QString& ticker, const QString& receive_ticker, const QString& amount);
 
 
       signals:
@@ -197,7 +197,7 @@ namespace atomic_dex
         //! QT Application
         QApplication* m_app;
 
-        //! Login Manager
+        //! Wallet Manager
         atomic_dex::qt_wallet_manager m_wallet_manager;
 
         //! Private members
