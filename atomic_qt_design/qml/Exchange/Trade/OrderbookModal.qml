@@ -138,7 +138,7 @@ DefaultModal {
                     anchors.right: parent.right
                     anchors.rightMargin: receive_header.anchors.rightMargin
 
-                    text: API.get().empty_string + (getReceiveAmount(model.modelData.price) + " " + getTicker())
+                    text: API.get().empty_string + (getReceiveAmount(model.modelData.price, model.modelData.volume) + " " + getTicker())
                     color: Style.colorWhite4
                     anchors.verticalCenter: parent.verticalCenter
                 }

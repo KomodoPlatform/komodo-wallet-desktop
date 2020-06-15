@@ -47,11 +47,13 @@ Item {
 
 
     // Price
-    readonly property string empty_price: "0"
-    property string preffered_price: empty_price
+    readonly property string empty_value: "0"
+    property string preffered_price: empty_value
+    property string preffered_price_max_volume: empty_value
 
     function resetPreferredPrice() {
-        preffered_price = empty_price
+        preffered_price = empty_value
+        preffered_price_max_volume = empty_value
     }
 
     function prepareCreateMyOwnOrder() {
@@ -60,12 +62,37 @@ Item {
 
     function selectOrder(price, volume) {
         preffered_price = price
+        preffered_price_max_volume = volume
         updateRelAmount()
     }
 
+    function newRelVolume(price) {
+        return parseFloat(form_base.getVolume()) * parseFloat(price)
+    }
+
     function updateRelAmount() {
-        if(preffered_price !== empty_price) {
-            form_rel.field.text = (parseFloat(form_base.getVolume()) * parseFloat(preffered_price)).toFixed(8)
+        if(preffered_price !== empty_value) {
+            const price = parseFloat(preffered_price)
+            let new_rel = newRelVolume(preffered_price)
+
+            // If new rel volume is higher than the order max volume
+            const max_volume = parseFloat(preffered_price_max_volume)
+            if(new_rel > max_volume) {
+                new_rel = max_volume
+
+                // Set base
+                const max_base_volume = max_volume / price
+                if(parseFloat(form_base.getVolume()) !== max_base_volume) {
+                    const new_base_text = General.formatDouble(max_base_volume)
+                    if(form_base.field.text !== new_base_text)
+                        form_base.field.text = new_base_text
+                }
+            }
+
+            // Set rel
+            const new_rel_text = General.formatDouble(new_rel)
+            if(form_rel.field.text !== new_rel_text)
+                form_rel.field.text = new_rel_text
         }
     }
 
@@ -77,11 +104,11 @@ Item {
     }
 
     function getCurrentPrice() {
-        return preffered_price === empty_price ? getCalculatedPrice() : preffered_price
+        return preffered_price === empty_value ? getCalculatedPrice() : preffered_price
     }
 
     function hasValidPrice() {
-        return preffered_price !== empty_price || parseFloat(getCalculatedPrice()) !== 0
+        return preffered_price !== empty_value || parseFloat(getCalculatedPrice()) !== 0
     }
 
     // Cache Trade Info
@@ -285,8 +312,16 @@ Item {
         return parseFloat(valid_trade_info ? info.input_final_value : amount)
     }
 
-    function getReceiveAmount(price) {
-        return (parseFloat(form_base.getVolume()) * parseFloat(price)).toFixed(8)
+    function getReceiveAmount(price, volume) {
+        let new_rel = newRelVolume(price)
+
+        // If new rel volume is higher than the order max volume
+        const max_volume = parseFloat(volume)
+        if(new_rel > max_volume) {
+            new_rel = max_volume
+        }
+
+        return General.formatDouble(new_rel)
     }
 
     // No coins warning
@@ -339,7 +374,7 @@ Item {
             OrderForm {
                 id: form_rel
                 enabled: form_base.fieldsAreFilled()
-                field.enabled: enabled && preffered_price === empty_price
+                field.enabled: enabled && preffered_price === empty_value
             }
         }
 
