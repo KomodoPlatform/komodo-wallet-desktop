@@ -1034,29 +1034,6 @@ namespace atomic_dex
         return QString::fromStdString(seed);
     }
 
-    bool
-    application::confirm_password(const QString& wallet_name, const QString& password)
-    {
-        std::error_code ec;
-        auto            key = atomic_dex::derive_password(password.toStdString(), ec);
-        if (ec)
-        {
-            spdlog::debug("{}", ec.message());
-            if (ec == dextop_error::derive_password_failed)
-            {
-                return false;
-            }
-        }
-        using namespace std::string_literals;
-        const fs::path seed_path = get_atomic_dex_config_folder() / (wallet_name.toStdString() + ".seed"s);
-        auto           seed      = atomic_dex::decrypt(seed_path, key.data(), ec);
-        if (ec == dextop_error::corrupted_file_or_wrong_password)
-        {
-            spdlog::warn("{}", ec.message());
-            return false;
-        }
-        return true;
-    }
 
     bool
     application::mnemonic_validate(QString entropy)
@@ -1203,6 +1180,12 @@ namespace atomic_dex
     application::login(const QString& password, const QString& wallet_name)
     {
         return m_wallet_manager.login(password, wallet_name, get_mm2(), this->m_current_default_wallet, [this]() { this->set_status("initializing_mm2"); });
+    }
+
+    bool
+    application::confirm_password(const QString& wallet_name, const QString& password)
+    {
+        return atomic_dex::qt_wallet_manager::confirm_password(wallet_name, password);
     }
 
     bool

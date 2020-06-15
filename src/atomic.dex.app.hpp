@@ -112,39 +112,45 @@ namespace atomic_dex
 
         //! Bind to the QML Worlds
 
-        //! Login QML API Bindings, this internally call the `atomic_dex::qt_wallet_manager`
+        //! Wallet Manager QML API Bindings, this internally call the `atomic_dex::qt_wallet_manager`
         Q_INVOKABLE bool               login(const QString& password, const QString& wallet_name);
         Q_INVOKABLE static QStringList get_wallets();
         Q_INVOKABLE static bool        is_there_a_default_wallet();
         Q_INVOKABLE static QString     get_default_wallet_name();
         Q_INVOKABLE static bool        delete_wallet(const QString& wallet_name);
+        Q_INVOKABLE static bool        confirm_password(const QString& wallet_name, const QString& password);
 
-        //! Others
+        //! Miscs
         Q_INVOKABLE QString     get_paprika_id_from_ticker(QString ticker) const;
         Q_INVOKABLE QString     to_eth_checksum_qt(QString eth_lowercase_address) const;
-        Q_INVOKABLE QString     recover_fund(QString uuid) const;
         Q_INVOKABLE QString     get_mm2_version() const;
-        Q_INVOKABLE bool        mnemonic_validate(QString entropy);
         Q_INVOKABLE QString     get_log_folder() const;
         Q_INVOKABLE QString     get_export_folder() const;
-        Q_INVOKABLE QString     retrieve_seed(const QString& wallet_name, const QString& password);
-        Q_INVOKABLE bool        confirm_password(const QString& wallet_name, const QString& password);
         Q_INVOKABLE QStringList get_available_langs() const;
+        Q_INVOKABLE static void change_state(int visibility);
+
+        //! Portfolio QML API Bindings
+        Q_INVOKABLE QString recover_fund(QString uuid) const;
         Q_INVOKABLE QObject* prepare_send(const QString& address, const QString& amount, bool max = false);
         Q_INVOKABLE QObject* prepare_send_fees(
             const QString& address, const QString& amount, bool is_erc_20, const QString& fees_amount, const QString& gas_price, const QString& gas,
             bool max = false);
-        Q_INVOKABLE QString     send(const QString& tx_hex);
-        Q_INVOKABLE QString     send_rewards(const QString& tx_hex);
-        Q_INVOKABLE static void change_state(int visibility);
-        Q_INVOKABLE void        on_gui_enter_dex();
-        Q_INVOKABLE void        on_gui_leave_dex();
+        Q_INVOKABLE QString send(const QString& tx_hex);
+        Q_INVOKABLE QString send_rewards(const QString& tx_hex);
+
+        //! Trading QML API Bindings
+        Q_INVOKABLE void on_gui_enter_dex();
+        Q_INVOKABLE void on_gui_leave_dex();
+        Q_INVOKABLE void cancel_order(const QString& order_id);
+        Q_INVOKABLE void cancel_all_orders();
+        Q_INVOKABLE void cancel_all_orders_by_ticker(const QString& ticker);
+
+        //! Others
+        Q_INVOKABLE bool        mnemonic_validate(QString entropy);
+        Q_INVOKABLE QString     retrieve_seed(const QString& wallet_name, const QString& password);
         Q_INVOKABLE void        refresh_infos();
         Q_INVOKABLE void        refresh_orders_and_swaps();
         Q_INVOKABLE QString     get_mnemonic();
-        Q_INVOKABLE void        cancel_order(const QString& order_id);
-        Q_INVOKABLE void        cancel_all_orders();
-        Q_INVOKABLE void        cancel_all_orders_by_ticker(const QString& ticker);
         Q_INVOKABLE bool        first_run();
         Q_INVOKABLE bool        disconnect();
         Q_INVOKABLE bool        create(const QString& password, const QString& seed, const QString& wallet_name);

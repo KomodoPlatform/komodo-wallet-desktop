@@ -40,6 +40,8 @@ namespace atomic_dex
         static inline QString get_default_wallet_name() noexcept;
 
         static inline bool delete_wallet(const QString& wallet_name) noexcept;
+
+        static inline bool confirm_password(const QString& wallet_name, const QString& password);
     };
 
     template <typename Functor>
@@ -127,5 +129,29 @@ namespace atomic_dex
     {
         using namespace std::string_literals;
         return fs::remove(get_atomic_dex_config_folder() / (wallet_name.toStdString() + ".seed"s));
+    }
+
+    bool
+    qt_wallet_manager::confirm_password(const QString& wallet_name, const QString& password)
+    {
+        std::error_code ec;
+        auto            key = atomic_dex::derive_password(password.toStdString(), ec);
+        if (ec)
+        {
+            spdlog::debug("{}", ec.message());
+            if (ec == dextop_error::derive_password_failed)
+            {
+                return false;
+            }
+        }
+        using namespace std::string_literals;
+        const fs::path seed_path = get_atomic_dex_config_folder() / (wallet_name.toStdString() + ".seed"s);
+        auto           seed      = atomic_dex::decrypt(seed_path, key.data(), ec);
+        if (ec == dextop_error::corrupted_file_or_wrong_password)
+        {
+            spdlog::warn("{}", ec.message());
+            return false;
+        }
+        return true;
     }
 } // namespace atomic_dex
