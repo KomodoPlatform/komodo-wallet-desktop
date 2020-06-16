@@ -262,7 +262,7 @@ jobs:
           nimble build -y
           
           # downloading debug dlls because powershell build doesnt put it
-          $SHAORIG = "0C53DBA3E4590CEA3EDDB8989F6D70096931E1E60618CE5F1C75277BA218E159"
+          $SHAORIG = "4F755667D3C1831DFA88E3E106992D16D7094901CED767CCDFF76971C68FB1CE"
           $DWFILE = ($PWD | select -exp Path) + '\debuglibs-win-dexpro.zip'
           (New-Object System.Net.WebClient).DownloadFile('https://github.com/KomodoPlatform/depot/releases/download/0.1/debuglibs-win-atomicdexpro.zip', $DWFILE)
           $SHADW = Get-FileHash -Algorithm SHA256 .\debuglibs-win-dexpro.zip | select -exp Hash
