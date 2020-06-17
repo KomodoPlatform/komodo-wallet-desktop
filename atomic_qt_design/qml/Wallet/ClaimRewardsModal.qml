@@ -28,11 +28,13 @@ DefaultModal {
 
         prepare_claim_rewards_result = API.get().claim_rewards(API.get().current_coin_info.ticker)
         console.log(JSON.stringify(prepare_claim_rewards_result))
-        if(prepare_claim_rewards_result.error !== "") {
-            toast.show(qsTr("Failed to prepare to claim rewards"), General.time_toast_important_error, prepare_claim_rewards_result.error)
+        if(prepare_claim_rewards_result.has_error) {
+            toast.show(qsTr("Failed to prepare to claim rewards"), General.time_toast_important_error, prepare_claim_rewards_result.error_message)
+            return false
         }
         else {
             text_error.text = ""
+            return true
         }
     }
 
