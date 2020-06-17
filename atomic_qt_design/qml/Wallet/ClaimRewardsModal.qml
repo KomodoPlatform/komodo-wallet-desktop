@@ -52,7 +52,7 @@ DefaultModal {
 
     // Inside modal
     // width: stack_layout.children[stack_layout.currentIndex].width + horizontalPadding * 2
-    width: 500
+    width: 600
     height: stack_layout.children[stack_layout.currentIndex].height + verticalPadding * 2
     StackLayout {
         width: parent.width
