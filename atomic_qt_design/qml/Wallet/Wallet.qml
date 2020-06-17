@@ -76,8 +76,6 @@ RowLayout {
 
             // Send, Receive buttons at top
             RowLayout {
-                width: parent.width * 0.6
-
                 Layout.topMargin: -10
                 Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
 
@@ -85,8 +83,6 @@ RowLayout {
 
                 DefaultButton {
                     text: API.get().empty_string + (qsTr("Send"))
-                    leftPadding: parent.width * button_margin
-                    rightPadding: leftPadding
                     onClicked: send_modal.open()
                     enabled: parseFloat(API.get().current_coin_info.balance) > 0
                 }
@@ -97,8 +93,6 @@ RowLayout {
 
                 DefaultButton {
                     text: API.get().empty_string + (qsTr("Receive"))
-                    leftPadding: parent.width * button_margin
-                    rightPadding: leftPadding
                     onClicked: receive_modal.open()
                 }
 
@@ -108,16 +102,12 @@ RowLayout {
 
                 DefaultButton {
                     text: API.get().empty_string + (qsTr("Swap"))
-                    leftPadding: parent.width * button_margin
-                    rightPadding: leftPadding
                     onClicked: onClickedSwap()
                 }
 
                 PrimaryButton {
                     id: button_claim_rewards
                     text: API.get().empty_string + (qsTr("Claim Rewards"))
-                    leftPadding: parent.width * button_margin
-                    rightPadding: leftPadding
 
                     visible: API.get().current_coin_info.is_claimable === true
                     enabled: claim_rewards_modal.canClaim()
@@ -300,7 +290,6 @@ RowLayout {
                 property bool hovered: false
 
                 color: API.get().current_coin_info.ticker === model.modelData.ticker ? Style.colorTheme2 : hovered ? Style.colorTheme4 : "transparent"
-                anchors.horizontalCenter: parent.horizontalCenter
                 width: coins_bar.width
                 height: 50
 
