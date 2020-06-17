@@ -38,6 +38,10 @@ QtObject {
     function prettifyJSON(j) {
         return JSON.stringify(JSON.parse(j), null, 4)
     }
+        
+    function clone(obj) {
+        return JSON.parse(JSON.stringify(obj));
+    }
 
     function viewTxAtExplorer(ticker, id, add_0x=false) {
         if(id !== '') {
@@ -65,9 +69,11 @@ QtObject {
         return diffPrefix(received) + symbols[fiat] + " " + amount
     }
 
+    readonly property int amountPrecision: 8
+
     function formatDouble(v) {
-        // Remove more than 8 decimals, then convert to string without trailing zeros
-        return parseFloat(v).toFixed(8).replace(/\.?0+$/,"")
+        // Remove more than n decimals, then convert to string without trailing zeros
+        return parseFloat(v).toFixed(amountPrecision).replace(/\.?0+$/,"")
     }
 
     function formatCrypto(received, amount, ticker, fiat_amount, fiat) {

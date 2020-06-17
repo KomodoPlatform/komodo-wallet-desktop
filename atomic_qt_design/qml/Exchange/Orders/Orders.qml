@@ -59,27 +59,44 @@ Item {
         return API.get().enabled_coins
     }
 
-    function getOrders() {
-        let mixed_orders = { maker_orders: [], taker_orders: [] }
+    function mergeOrders(a, b) {
+        a.taker_orders = a.taker_orders.concat(b.taker_orders)
+        a.maker_orders = a.maker_orders.concat(b.maker_orders)
+        return a
+    }
 
-        if(base !== "" && all_orders[base] !== undefined) {
+    readonly property var empty_orders: ({ maker_orders: [], taker_orders: [] })
+    function getOrders(ticker) {
+        let mixed_orders = General.clone(empty_orders)
+
+        if(ticker !== "" && all_orders[ticker] !== undefined) {
             // Add recent swaps
-            getRecentSwaps(base).map(s => {
+            getRecentSwaps(ticker).map(s => {
                 mixed_orders[s.type === "Taker" ? "taker_orders" : "maker_orders"].push(s)
             })
 
             // Add normal orders
-            mixed_orders.taker_orders = mixed_orders.taker_orders.concat(all_orders[base].taker_orders)
-            mixed_orders.maker_orders = mixed_orders.maker_orders.concat(all_orders[base].maker_orders)
+            mixed_orders = mergeOrders(mixed_orders, all_orders[ticker])
         }
 
         return mixed_orders
     }
 
     function getAllOrders() {
-        let orders = getOrders()
+        let orders = General.clone(empty_orders)
 
-        return orders.taker_orders.concat(orders.maker_orders)
+        if(show_all_coins.checked) {
+            for(const c of baseCoins()) {
+                orders = mergeOrders(orders, getOrders(c.ticker))
+            }
+        }
+        else orders = getOrders(base)
+
+        // Merge two lists
+        let array = orders.taker_orders.concat(orders.maker_orders)
+
+        // Remove duplicates
+        return array.filter((o, index, self) => index === self.findIndex(t => t.uuid === o.uuid))
     }
 
     function changeTicker(ticker) {
@@ -148,7 +165,14 @@ Item {
             color: Style.colorTheme7
             radius: Style.rectangleCornerRadius
 
-            RowLayout {
+            RowLayout {                
+                Switch {
+                    id: show_all_coins
+                    Layout.leftMargin: 15
+                    text: API.get().empty_string + (qsTr("Show All Coins"))
+                    onCheckedChanged: updateOrders()
+                }
+
                 // Base
                 Image {
                     Layout.leftMargin: 15
@@ -159,6 +183,7 @@ Item {
 
                 DefaultComboBox {
                     id: combo_base
+                    enabled: !show_all_coins.checked
                     Layout.preferredWidth: 250
                     Layout.topMargin: 10
                     Layout.bottomMargin: 10
@@ -171,9 +196,12 @@ Item {
                 }
 
                 DangerButton {
-                    text: API.get().empty_string + (qsTr("Cancel All Orders"))
+                    text: API.get().empty_string + (show_all_coins.checked ? qsTr("Cancel All Orders") : qsTr("Cancel All %1 Orders", "TICKER").arg(base))
                     enabled: cancellableOrderExists()
-                    onClicked: API.get().cancel_all_orders_by_ticker(base)
+                    onClicked: {
+                        if(show_all_coins.checked) API.get().cancel_all_orders()
+                        else API.get().cancel_all_orders_by_ticker(base)
+                    }
                     Layout.rightMargin: 15
                 }
             }
@@ -187,7 +215,7 @@ Item {
             spacing: parent.spacing
 
             OrderList {
-                title: API.get().empty_string + (qsTr("All %1 Orders", "TICKER").arg(base))
+                title: API.get().empty_string + (show_all_coins.checked ? qsTr("All Orders") : qsTr("All %1 Orders", "TICKER").arg(base))
                 items: all_orders_merged
             }
         }
