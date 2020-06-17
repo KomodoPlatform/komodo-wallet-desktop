@@ -300,7 +300,6 @@ RowLayout {
                 property bool hovered: false
 
                 color: API.get().current_coin_info.ticker === model.modelData.ticker ? Style.colorTheme2 : hovered ? Style.colorTheme4 : "transparent"
-                anchors.horizontalCenter: parent.horizontalCenter
                 width: coins_bar.width
                 height: 50
 
