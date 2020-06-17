@@ -81,7 +81,7 @@ Item {
         id: recover_funds_modal
 
         title: API.get().empty_string + (qsTr("Recover Funds Result"))
-        field.text: JSON.stringify(JSON.parse(recover_funds_result), null, 4)
+        field.text: General.prettifyJSON(recover_funds_result)
 
         onClosed: recover_funds_result = "{}"
     }

@@ -32,6 +32,13 @@ QtObject {
     readonly property var reg_pass_special: /(?=.*[@#$%{}[\]()\/\\'"`~,;:.<>+\-_=!^&*|?])/
     readonly property var reg_pass_count: /(?=.{16,})/
 
+    readonly property double time_toast_important_error: 10000
+    readonly property double time_toast_basic_info: 3000
+
+    function prettifyJSON(j) {
+        return JSON.stringify(JSON.parse(j), null, 4)
+    }
+        
     function clone(obj) {
         return JSON.parse(JSON.stringify(obj));
     }
