@@ -100,6 +100,10 @@ namespace mm2::api
         cfg.balance = adjust_precision(cfg.balance);
         j.at("coin").get_to(cfg.coin);
         j.at("locked_by_swaps").get_to(cfg.locked_by_swaps);
+        if (cfg.coin == "BCH")
+        {
+            cfg.address = cfg.address.substr(sizeof("bitcoincash"));
+        }
     }
 
     void
