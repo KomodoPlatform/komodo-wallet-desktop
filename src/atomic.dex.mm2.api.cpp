@@ -922,7 +922,7 @@ namespace mm2::api
     nlohmann::json
     template_request(std::string method_name) noexcept
     {
-        return {{"method", std::move(method_name)}, {"userpass", "atomic_dex_mm2_passphrase"}};
+        return {{"method", std::move(method_name)}, {"userpass", get_rpc_password()}};
     }
 
     std::string
@@ -1009,5 +1009,24 @@ namespace mm2::api
         }
 
         return answer;
+    }
+
+    static inline std::string&
+    access_rpc_password() noexcept
+    {
+        static std::string rpc_password;
+        return rpc_password;
+    }
+
+    void
+    set_rpc_password(std::string rpc_password) noexcept
+    {
+        access_rpc_password() = std::move(rpc_password);
+    }
+
+    const std::string&
+    get_rpc_password() noexcept
+    {
+        return access_rpc_password();
     }
 } // namespace mm2::api
