@@ -98,6 +98,7 @@
         <file>atomic_qt_design/qml/Exchange/Trade/OrderForm.qml</file>
         <file>atomic_qt_design/qml/Exchange/Trade/OrderReceiveModal.qml</file>
         <file>atomic_qt_design/qml/Exchange/Trade/OrderbookModal.qml</file>
+        <file>atomic_qt_design/qml/Exchange/Trade/CandleStickChart.qml</file>
         <file>atomic_qt_design/qml/Exchange/Orders/Orders.qml</file>
         <file>atomic_qt_design/qml/Exchange/Orders/OrderList.qml</file>
         <file>atomic_qt_design/qml/Exchange/History/History.qml</file>
@@ -107,7 +108,6 @@
         <file>atomic_qt_design/qml/Exchange/OrderLine.qml</file>
         <file>atomic_qt_design/qml/Exchange/OrderModal.qml</file>
         <file>atomic_qt_design/qml/Exchange/OrderContent.qml</file>
-        <file>atomic_qt_design/qml/Exchange/CandleStickChart.qml</file>
         <file>atomic_qt_design/qml/Sidebar/Sidebar.qml</file>
         <file>atomic_qt_design/qml/Sidebar/SidebarCenter.qml</file>
         <file>atomic_qt_design/qml/Sidebar/SidebarBottom.qml</file>

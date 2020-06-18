@@ -3,8 +3,8 @@ import QtQuick.Layouts 1.12
 import QtQuick.Controls 2.12
 
 import QtCharts 2.3
-import "../Components"
-import "../Constants"
+import "../../Components"
+import "../../Constants"
 
 // List
 ChartView {

@@ -5,7 +5,6 @@ import QtQuick.Controls 2.12
 import "../../Components"
 import "../../Constants"
 import "../../Wallet"
-import ".."
 
 Item {
     id: exchange_trade
