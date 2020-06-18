@@ -71,8 +71,9 @@ ChartView {
     CandlestickSeries {
         id: series
 
-        increasingColor: "green"
-        decreasingColor: "red"
+        increasingColor: Style.colorGreen
+        decreasingColor: Style.colorRed
+        bodyOutlineVisible: false
 
         //onHovered: updateValueText(state, point.y, axisY.labelsColor, 2)
 
@@ -85,12 +86,12 @@ ChartView {
             labelsColor: Style.colorThemeDark3
             format: "MMM d"
         }
-        axisY: ValueAxis {
+        axisYRight: ValueAxis {
             titleVisible: series.axisX.titleVisible
             lineVisible: series.axisX.lineVisible
             labelsFont: series.axisX.labelsFont
             gridLineColor: series.axisX.gridLineColor
-            //labelsColor: series.color
+            labelsColor: series.axisX.labelsColor
         }
     }
 
@@ -124,22 +125,23 @@ ChartView {
             let max_other = -Infinity
 
             for(let i = 0; i < historical.length; ++i) {
-                const price = historical[i].close
-                const other = historical[i].volume
-
                 series.append(historical[i].open, historical[i].high, historical[i].low, historical[i].close, historical[i].timestamp * 1000)
-
-                //console.log(JSON.stringify(cs_set))
                 //series2.append(General.timestampToDate(historical[i].timestamp), other)
+            }
+
+            const first_idx = historical.length * 0.9
+            const last_idx = historical.length - 1
+
+            // Set min and max values
+            for(let j = first_idx; j <= last_idx; ++j) {
+                const price = historical[j].close
+                const other = historical[j].volume
 
                 min_price = Math.min(min_price, price)
                 max_price = Math.max(max_price, price)
                 min_other = Math.min(min_other, other)
                 max_other = Math.max(max_other, other)
             }
-
-            const first_idx = 0//historical.length*0.75
-            const last_idx = historical.length - 1
 
 
             // Date
@@ -151,11 +153,11 @@ ChartView {
             series2.axisX.max = series.axisX.max
             series2.axisX.tickCount = series.axisX.tickCount
 */
-            const y_margin = 0.05
+            const y_margin = 0.02
 
             // Price
-            series.axisY.min = min_price * (1 - y_margin)
-            series.axisY.max = max_price * (1 + y_margin)
+            series.axisYRight.min = min_price * (1 - y_margin)
+            series.axisYRight.max = max_price * (1 + y_margin)
 /*
             // Other
             series2.axisYRight.min = min_other * (1 - y_margin)
@@ -184,6 +186,17 @@ ChartView {
     legend.visible: false
 
     backgroundColor: "transparent"
+
+
+    MouseArea {
+        anchors.fill: parent
+
+        onWheel: {
+            if (wheel.angleDelta.y !== 0) {
+                chart.zoom(1 + (-wheel.angleDelta.y/200) * 0.1)
+            }
+        }
+    }
 }
 
 
