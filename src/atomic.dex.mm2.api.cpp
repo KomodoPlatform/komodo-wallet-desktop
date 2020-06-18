@@ -912,7 +912,9 @@ namespace mm2::api
 
         to_json(json_data, request);
 
-        spdlog::debug("request: {}", json_data.dump());
+        auto json_copy        = json_data;
+        json_copy["userpass"] = "*******";
+        spdlog::debug("request: {}", json_copy.dump());
 
         resp = RestClient::post(g_endpoint, "application/json", json_data.dump());
 
@@ -933,7 +935,9 @@ namespace mm2::api
         nlohmann::json       json_data = template_request("version");
         RestClient::Response resp;
 
-        spdlog::debug("{} request: {}", __FUNCTION__, json_data.dump());
+        auto json_copy        = json_data;
+        json_copy["userpass"] = "*******";
+        spdlog::debug("{} request: {}", __FUNCTION__, json_copy.dump());
 
         resp = RestClient::post(g_endpoint, "application/json", json_data.dump());
         if (resp.code == 200)
@@ -958,7 +962,9 @@ namespace mm2::api
             req_json_data.push_back(json_data);
         }
 
-        spdlog::debug("request: {}", req_json_data.dump());
+        //auto json_copy        = req_json_data;
+        //json_copy["userpass"] = "*******";
+        //spdlog::debug("request: {}", json_copy.dump());
 
         auto resp = RestClient::post(g_endpoint, "application/json", req_json_data.dump());
 
@@ -991,7 +997,9 @@ namespace mm2::api
             req_json_data.push_back(json_data);
         }
 
-        spdlog::debug("request: {}", req_json_data.dump());
+        //auto json_copy        = req_json_data;
+        //json_copy["userpass"] = "*******";
+        //spdlog::debug("request: {}", json_copy.dump());
 
         auto resp = RestClient::post(g_endpoint, "application/json", req_json_data.dump());
         spdlog::info("{} resp code: {}", __FUNCTION__, resp.code);
