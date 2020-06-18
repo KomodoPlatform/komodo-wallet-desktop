@@ -30,7 +30,7 @@ ChartView {
         style: series.style
         width: series.width
 
-        pointsVisible: true
+        pointsVisible: false
 
         onHovered: updateValueText(state, point.y, axisYRight.labelsColor, 0)
 
@@ -74,7 +74,7 @@ ChartView {
         style: Qt.SolidLine
         width: 1.5
 
-        pointsVisible: true
+        pointsVisible: false
         onHovered: updateValueText(state, point.y, axisY.labelsColor, 2)
 
         axisX: DateTimeAxis {
@@ -115,10 +115,7 @@ ChartView {
         series.clear()
         series2.clear()
 
-        const coin = General.getCoin(portfolio_coins, API.get().current_coin_info.ticker)
-        if(coin === undefined) return
-
-        const historical = coin.historical
+        const historical = API.get().get_price_chart
         if(historical === undefined) return
 
         if(historical.length > 0) {
@@ -128,11 +125,11 @@ ChartView {
             let max_other = -Infinity
 
             for(let i = 0; i < historical.length; ++i) {
-                const price = historical[i].price
-                const other = historical[i].volume_24h
+                const price = historical[i].close
+                const other = historical[i].volume
 
-                series.append(General.timestampToDouble(historical[i].timestamp), price)
-                series2.append(General.timestampToDouble(historical[i].timestamp), other)
+                series.append(General.timestampToDate(historical[i].timestamp), price)
+                series2.append(General.timestampToDate(historical[i].timestamp), other)
 
                 min_price = Math.min(min_price, price)
                 max_price = Math.max(max_price, price)
@@ -141,9 +138,9 @@ ChartView {
             }
 
             // Date
-            series.axisX.min = historical[0].timestamp
-            series.axisX.max = historical[historical.length-1].timestamp
-            series.axisX.tickCount = historical.length
+            series.axisX.min = General.timestampToDate(historical[0].timestamp)
+            series.axisX.max = General.timestampToDate(historical[historical.length-1].timestamp)
+            series.axisX.tickCount = 10//historical.length
 
             series2.axisX.min = series.axisX.min
             series2.axisX.max = series.axisX.max

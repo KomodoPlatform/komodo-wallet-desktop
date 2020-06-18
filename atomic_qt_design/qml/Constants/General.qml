@@ -43,6 +43,10 @@ QtObject {
     function timestampToString(timestamp) {
         return (new Date(timestamp)).getUTCDate()
     }
+
+    function timestampToDate(timestamp) {
+        return (new Date(timestamp * 1000))
+    }
     
     function clone(obj) {
         return JSON.parse(JSON.stringify(obj));
