@@ -19,6 +19,7 @@
 #include "atomic.dex.kill.hpp"
 #include "atomic.dex.mm2.config.hpp"
 #include "atomic.dex.version.hpp"
+#include "atomic.dex.security.hpp"
 #include "atomic.threadpool.hpp"
 
 //! Anonymous functions
@@ -597,7 +598,8 @@ namespace atomic_dex
         spdlog::debug("{} l{} f[{}]", __FUNCTION__, __LINE__, fs::path(__FILE__).filename().string());
         this->m_current_wallet_name = std::move(wallet_name);
         retrieve_coins_information(this->m_current_wallet_name, m_coins_informations);
-        mm2_config cfg{.passphrase = std::move(passphrase)};
+        mm2_config cfg{.passphrase = std::move(passphrase), .rpc_password = atomic_dex::gen_random_password()};
+        ::mm2::api::set_rpc_password(cfg.rpc_password);
         json       json_cfg;
         const auto tools_path = ag::core::assets_real_path() / "tools/mm2/";
 

@@ -178,7 +178,7 @@ target_link_libraries(atomic_qt
         qzxing
         antara::world
         Boost::filesystem
-        $<$<PLATFORM_ID:Linux>:Boost::random>
+        Boost::random
         unofficial-sodium::sodium
         unofficial-btc::bitcoin
         reproc++

@@ -655,6 +655,9 @@ namespace mm2::api
 
     template <typename TRequest, typename TAnswer>
     TAnswer static process_rpc(TRequest&& request, std::string rpc_command);
+
+    void set_rpc_password(std::string rpc_password) noexcept;
+    const std::string& get_rpc_password() noexcept;
 } // namespace mm2::api
 
 namespace atomic_dex
