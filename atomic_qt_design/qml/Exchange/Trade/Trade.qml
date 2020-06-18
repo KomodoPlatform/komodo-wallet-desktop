@@ -5,6 +5,7 @@ import QtQuick.Controls 2.12
 import "../../Components"
 import "../../Constants"
 import "../../Wallet"
+import ".."
 
 Item {
     id: exchange_trade
@@ -356,11 +357,25 @@ Item {
     ColumnLayout {
         id: form
 
+        spacing: layout_margin
+
         visible: form_base.ticker_list.length > 0
 
 //        anchors.centerIn: parent
         anchors.fill: parent
 
+
+        InnerBackground {
+            id: graph_bg
+            Layout.fillWidth: true
+            Layout.fillHeight: true
+            implicitHeight: wallet.height*0.6
+
+            content: CandleStickChart {
+                width: graph_bg.width
+                height: graph_bg.height
+            }
+        }
 
         RowLayout {
             Layout.alignment: Qt.AlignTop
@@ -379,12 +394,14 @@ Item {
                 radius: 100
                 width: 75
                 height: width
+                auto_set_size: false
 
                 content: Image {
                     source: General.image_path + "trade_icon.svg"
                     Layout.alignment: Qt.AlignVCenter
                     fillMode: Image.PreserveAspectFit
                     width: trade_icon_bg.width*0.4
+                    height: width
                 }
             }
 
@@ -443,34 +460,6 @@ Item {
 
         ConfirmTradeModal {
             id: confirm_trade_modal
-        }
-
-        // Transactions
-        InnerBackground {
-            id: transactions_bg
-            Layout.topMargin: layout_margin
-            Layout.fillWidth: true
-            Layout.fillHeight: true
-
-            implicitHeight: wallet.height*0.54
-
-            content: Item {
-                width: transactions_bg.width
-                height: transactions_bg.height
-
-                DefaultText {
-                    anchors.centerIn: parent
-                    visible: API.get().current_coin_info.tx_state !== "InProgress" && API.get().current_coin_info.transactions.length === 0
-                    text: API.get().empty_string + (qsTr("No transactions"))
-                    font.pixelSize: Style.textSize
-                    color: Style.colorWhite4
-                }
-
-                Transactions {
-                    width: parent.width
-                    height: parent.height
-                }
-            }
         }
     }
 }
