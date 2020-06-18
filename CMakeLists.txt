@@ -93,7 +93,7 @@ get_resources_basics_assets(${CMAKE_CURRENT_SOURCE_DIR})
 
 ##! Osx bundle icon
 set(ICON)
-configure_icon_osx(data/osx/kmd_logo.icns ICON kmd_logo.icns)
+configure_icon_osx(data/osx/atomic_qt.icns ICON atomic_qt.icns)
 ##! End antara
 
 find_package(folly CONFIG REQUIRED)
