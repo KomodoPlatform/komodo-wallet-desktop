@@ -8,7 +8,8 @@ import "../../Constants"
 
 // List
 ChartView {
-    AreaSeries {
+    id: chart
+    /*AreaSeries {
         id: series_area2
         color: Style.colorTheme10
 
@@ -64,18 +65,16 @@ ChartView {
         axisX: series.axisX
         axisY: series.axisY
         upperSeries: series
-    }
+    }*/
 
     // Price, front
-    LineSeries {
+    CandlestickSeries {
         id: series
-        color: Style.colorTheme0
 
-        style: Qt.SolidLine
-        width: 1.5
+        increasingColor: "green"
+        decreasingColor: "red"
 
-        pointsVisible: false
-        onHovered: updateValueText(state, point.y, axisY.labelsColor, 2)
+        //onHovered: updateValueText(state, point.y, axisY.labelsColor, 2)
 
         axisX: DateTimeAxis {
             titleVisible: false
@@ -91,7 +90,7 @@ ChartView {
             lineVisible: series.axisX.lineVisible
             labelsFont: series.axisX.labelsFont
             gridLineColor: series.axisX.gridLineColor
-            labelsColor: series.color
+            //labelsColor: series.color
         }
     }
 
@@ -113,7 +112,7 @@ ChartView {
 
     function updateChart() {
         series.clear()
-        series2.clear()
+        //series2.clear()
 
         const historical = API.get().get_price_chart
         if(historical === undefined) return
@@ -128,8 +127,10 @@ ChartView {
                 const price = historical[i].close
                 const other = historical[i].volume
 
-                series.append(General.timestampToDate(historical[i].timestamp), price)
-                series2.append(General.timestampToDate(historical[i].timestamp), other)
+                series.append(historical[i].open, historical[i].high, historical[i].low, historical[i].close, historical[i].timestamp * 1000)
+
+                //console.log(JSON.stringify(cs_set))
+                //series2.append(General.timestampToDate(historical[i].timestamp), other)
 
                 min_price = Math.min(min_price, price)
                 max_price = Math.max(max_price, price)
@@ -137,24 +138,29 @@ ChartView {
                 max_other = Math.max(max_other, other)
             }
 
-            // Date
-            series.axisX.min = General.timestampToDate(historical[0].timestamp)
-            series.axisX.max = General.timestampToDate(historical[historical.length-1].timestamp)
-            series.axisX.tickCount = 10//historical.length
+            const first_idx = 0//historical.length*0.75
+            const last_idx = historical.length - 1
 
+
+            // Date
+            series.axisX.min = General.timestampToDate(historical[first_idx].timestamp)
+            series.axisX.max = General.timestampToDate(historical[last_idx].timestamp)
+            series.axisX.tickCount = 10//historical.length
+/*
             series2.axisX.min = series.axisX.min
             series2.axisX.max = series.axisX.max
             series2.axisX.tickCount = series.axisX.tickCount
-
+*/
             const y_margin = 0.05
 
             // Price
             series.axisY.min = min_price * (1 - y_margin)
             series.axisY.max = max_price * (1 + y_margin)
-
+/*
             // Other
             series2.axisYRight.min = min_other * (1 - y_margin)
             series2.axisYRight.max = max_other * (1 + y_margin)
+*/
         }
     }
 
@@ -171,7 +177,6 @@ ChartView {
         }
     }
 
-    id: chart
     width: parent.width
     height: parent.height
     antialiasing: true
