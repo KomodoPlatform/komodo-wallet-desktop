@@ -639,7 +639,7 @@ namespace atomic_dex
     }
 
     QString
-    application::place_sell_order(const QString& base, const QString& rel, const QString& price, const QString& volume)
+    application::place_sell_order(const QString& base, const QString& rel, const QString& price, const QString& volume, bool is_created_order, const QString& price_denom, const QString& price_numer)
     {
         qDebug() << " base: " << base << " rel: " << rel << " price: " << price << " volume: " << volume;
         t_float_50 amount_f;
