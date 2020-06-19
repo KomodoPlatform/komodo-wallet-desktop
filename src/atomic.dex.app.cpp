@@ -557,10 +557,11 @@ namespace atomic_dex
         {
             req.amount = "0";
         }
-        req.fees = atomic_dex::t_withdraw_fees{.type      = is_erc_20 ? "EthGas" : "UtxoFixed",
-                                               .amount    = fees_amount.toStdString(),
-                                               .gas_price = gas_price.toStdString(),
-                                               .gas_limit = not gas.isEmpty() ? std::stoi(gas.toStdString()) : 0};
+        req.fees = atomic_dex::t_withdraw_fees{
+            .type      = is_erc_20 ? "EthGas" : "UtxoFixed",
+            .amount    = fees_amount.toStdString(),
+            .gas_price = gas_price.toStdString(),
+            .gas_limit = not gas.isEmpty() ? std::stoi(gas.toStdString()) : 0};
         std::error_code ec;
         auto            answer = mm2::withdraw(std::move(req), ec);
         auto            coin   = get_mm2().get_coin_info(m_coin_info->get_ticker().toStdString());
@@ -740,7 +741,11 @@ namespace atomic_dex
             nlohmann::json j_out = nlohmann::json::array();
             for (auto&& current_bid: current_orderbook.bids)
             {
-                nlohmann::json current_j_bid = {{"volume", current_bid.maxvolume}, {"price", current_bid.price}};
+                nlohmann::json current_j_bid = {
+                    {"volume", current_bid.maxvolume},
+                    {"price", current_bid.price},
+                    {"price_denom", current_bid.price_fraction_denom},
+                    {"price_numer", current_bid.price_fraction_numer}};
                 j_out.push_back(current_j_bid);
             }
             auto out_orderbook = QJsonDocument::fromJson(QString::fromStdString(j_out.dump()).toUtf8());
@@ -914,13 +919,14 @@ namespace atomic_dex
         for (auto&& coin: coins)
         {
             std::error_code ec;
-            nlohmann::json  cur_obj{{"ticker", coin.ticker},
-                                   {"name", coin.name},
-                                   {"price", get_paprika().get_rate_conversion(m_current_fiat.toStdString(), coin.ticker, ec, true)},
-                                   {"balance", get_mm2().my_balance(coin.ticker, ec)},
-                                   {"balance_fiat", get_paprika().get_price_in_fiat(m_current_fiat.toStdString(), coin.ticker, ec)},
-                                   {"rates", get_paprika().get_ticker_infos(coin.ticker).answer},
-                                   {"historical", get_paprika().get_ticker_historical(coin.ticker).answer}};
+            nlohmann::json  cur_obj{
+                {"ticker", coin.ticker},
+                {"name", coin.name},
+                {"price", get_paprika().get_rate_conversion(m_current_fiat.toStdString(), coin.ticker, ec, true)},
+                {"balance", get_mm2().my_balance(coin.ticker, ec)},
+                {"balance_fiat", get_paprika().get_price_in_fiat(m_current_fiat.toStdString(), coin.ticker, ec)},
+                {"rates", get_paprika().get_ticker_infos(coin.ticker).answer},
+                {"historical", get_paprika().get_ticker_historical(coin.ticker).answer}};
             j.push_back(cur_obj);
         }
         QJsonDocument q_json = QJsonDocument::fromJson(QString::fromStdString(j.dump()).toUtf8());
@@ -1047,17 +1053,18 @@ namespace atomic_dex
 
         for (auto& swap: swaps.swaps)
         {
-            nlohmann::json j2 = {{"maker_coin", swap.maker_coin},
-                                 {"taker_coin", swap.taker_coin},
-                                 {"total_time_in_seconds", swap.total_time_in_seconds},
-                                 {"is_recoverable", swap.funds_recoverable},
-                                 {"maker_amount", swap.maker_amount},
-                                 {"taker_amount", swap.taker_amount},
-                                 {"error_events", swap.error_events},
-                                 {"success_events", swap.success_events},
-                                 {"type", swap.type},
-                                 {"events", swap.events},
-                                 {"my_info", swap.my_info}};
+            nlohmann::json j2 = {
+                {"maker_coin", swap.maker_coin},
+                {"taker_coin", swap.taker_coin},
+                {"total_time_in_seconds", swap.total_time_in_seconds},
+                {"is_recoverable", swap.funds_recoverable},
+                {"maker_amount", swap.maker_amount},
+                {"taker_amount", swap.taker_amount},
+                {"error_events", swap.error_events},
+                {"success_events", swap.success_events},
+                {"type", swap.type},
+                {"events", swap.events},
+                {"my_info", swap.my_info}};
 
             auto out_swap = QJsonDocument::fromJson(QString::fromStdString(j2.dump()).toUtf8());
             out.insert(QString::fromStdString(swap.uuid), out_swap.toVariant());

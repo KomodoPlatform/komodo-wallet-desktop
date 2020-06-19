@@ -354,6 +354,8 @@ namespace mm2::api
         std::string coin;
         std::string address;
         std::string price;
+        std::string price_fraction_numer;
+        std::string price_fraction_denom;
         std::string maxvolume;
         std::string pubkey;
         std::size_t age;
@@ -435,8 +437,8 @@ namespace mm2::api
         std::string rel;
         std::string price;
         std::string volume;
-        bool max{false};
-        bool cancel_previous{false};
+        bool        max{false};
+        bool        cancel_previous{false};
     };
 
     void to_json(nlohmann::json& j, const setprice_request& request);
@@ -656,7 +658,7 @@ namespace mm2::api
     template <typename TRequest, typename TAnswer>
     TAnswer static process_rpc(TRequest&& request, std::string rpc_command);
 
-    void set_rpc_password(std::string rpc_password) noexcept;
+    void               set_rpc_password(std::string rpc_password) noexcept;
     const std::string& get_rpc_password() noexcept;
 } // namespace mm2::api
 
