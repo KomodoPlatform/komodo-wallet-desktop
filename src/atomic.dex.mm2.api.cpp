@@ -759,10 +759,6 @@ namespace mm2::api
     {
         spdlog::info("resp code for rpc_command {} is {}", rpc_command, resp.code);
 
-        if (rpc_command == "my_orders") {
-            spdlog::debug("my_orders: {}", resp.body);
-        }
-
         RpcReturnType answer;
 
         if (resp.code not_eq 200)
