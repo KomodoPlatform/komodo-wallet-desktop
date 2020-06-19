@@ -14,9 +14,9 @@ DefaultModal {
         root.close()
     }
 
-    function chooseOrder(price, volume) {
+    function chooseOrder(order) {
         // Choose this order
-        selectOrder(price, volume)
+        selectOrder(order)
         root.close()
     }
 
@@ -110,7 +110,7 @@ DefaultModal {
                     anchors.fill: parent
                     hoverEnabled: true
                     onHoveredChanged: hovered = containsMouse
-                    onClicked: chooseOrder(model.modelData.price, model.modelData.volume)
+                    onClicked: chooseOrder(model.modelData)
                 }
 
                 // Price

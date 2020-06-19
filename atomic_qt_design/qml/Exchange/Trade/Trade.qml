@@ -47,22 +47,26 @@ Item {
 
 
     // Price
-    readonly property string empty_value: "0"
-    property string preffered_price: empty_value
-    property string preffered_price_max_volume: empty_value
+    readonly property var empty_order: ({ "price": "0","price_denom":"0","price_numer":"0","volume":"0"})
+    property var preffered_order: General.clone(empty_order)
+
+    function orderIsSelected() {
+        return preffered_order.price !== empty_order.price
+    }
 
     function resetPreferredPrice() {
-        preffered_price = empty_value
-        preffered_price_max_volume = empty_value
+        preffered_order = General.clone(empty_order)
     }
 
     function prepareCreateMyOwnOrder() {
         resetPreferredPrice()
     }
 
-    function selectOrder(price, volume) {
-        preffered_price = price
-        preffered_price_max_volume = volume
+    function selectOrder(order) {
+        preffered_order.price = order.price
+        preffered_order.volume = order.volume
+        preffered_order.price_denom = order.price_denom
+        preffered_order.price_numer = order.price_numer
         updateRelAmount()
     }
 
@@ -71,12 +75,12 @@ Item {
     }
 
     function updateRelAmount() {
-        if(preffered_price !== empty_value) {
-            const price = parseFloat(preffered_price)
-            let new_rel = newRelVolume(preffered_price)
+        if(orderIsSelected()) {
+            const price = parseFloat(preffered_order.price)
+            let new_rel = newRelVolume(preffered_order.price)
 
             // If new rel volume is higher than the order max volume
-            const max_volume = parseFloat(preffered_price_max_volume)
+            const max_volume = parseFloat(preffered_order.volume)
             if(new_rel > max_volume) {
                 new_rel = max_volume
 
@@ -104,11 +108,11 @@ Item {
     }
 
     function getCurrentPrice() {
-        return preffered_price === empty_value ? getCalculatedPrice() : preffered_price
+        return !orderIsSelected() ? getCalculatedPrice() : preffered_order.price
     }
 
     function hasValidPrice() {
-        return preffered_price !== empty_value || parseFloat(getCalculatedPrice()) !== 0
+        return orderIsSelected() || parseFloat(getCalculatedPrice()) !== 0
     }
 
     // Cache Trade Info
@@ -377,7 +381,7 @@ Item {
             OrderForm {
                 id: form_rel
                 enabled: form_base.fieldsAreFilled()
-                field.enabled: enabled && preffered_price === empty_value
+                field.enabled: enabled && !orderIsSelected()
             }
         }
 
