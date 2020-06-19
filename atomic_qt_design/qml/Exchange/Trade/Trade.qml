@@ -67,6 +67,7 @@ Item {
         preffered_order.volume = order.volume
         preffered_order.price_denom = order.price_denom
         preffered_order.price_numer = order.price_numer
+        preffered_order = preffered_order
         updateRelAmount()
     }
 
