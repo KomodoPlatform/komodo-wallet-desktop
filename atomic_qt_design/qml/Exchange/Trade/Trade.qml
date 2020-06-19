@@ -295,12 +295,15 @@ Item {
     function trade(base, rel) {
         updateTradeInfo(true) // Force update trade info and cap the value for one last time
 
+        const is_created_order = !orderIsSelected()
+        const price_denom = preffered_order.price_denom
+        const price_numer = preffered_order.price_numer
         const price = getCurrentPrice()
         const volume = form_base.field.text
         console.log("QML place_sell_order: max balance:", form_base.getMaxVolume())
-        console.log("QML place_sell_order: params:", base, " <-> ", rel, "  /  price:", price, "  /  volume:", volume)
+        console.log("QML place_sell_order: params:", base, " <-> ", rel, "  /  price:", price, "  /  volume:", volume, "  /  is_created_order:", is_created_order, "  /  price_denom:", price_denom, "  /  price_numer:", price_numer)
         console.log("QML place_sell_order: trade info:", JSON.stringify(curr_trade_info))
-        action_result = API.get().place_sell_order(base, rel, price, volume)
+        action_result = API.get().place_sell_order(base, rel, price, volume, is_created_order, price_denom, price_numer)
         if(action_result === "") {
             onOrderSuccess()
         }

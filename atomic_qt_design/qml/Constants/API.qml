@@ -157,8 +157,8 @@ QtObject {
            console.log("on_gui_leave_dex")
        },
 
-        place_sell_order: (base, rel, price, volume) => {
-            console.log(`Selling ${volume} ${base} for ${price} ${rel} each`)
+        place_sell_order: (base, rel, price, volume, is_created_order, price_denom, price_numer) => {
+            console.log(`Selling ${volume} ${base} for ${price} ${rel} each ${is_created_order} / ${price_denom} / ${price_numer}`)
 
             return ""
         },
