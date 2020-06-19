@@ -191,10 +191,30 @@ ChartView {
     MouseArea {
         anchors.fill: parent
 
+        // Zoom in/out with wheel
+        readonly property double scroll_speed: 0.1
         onWheel: {
-            if (wheel.angleDelta.y !== 0) {
-                chart.zoom(1 + (-wheel.angleDelta.y/200) * 0.1)
+            if (wheel.angleDelta.y !== 0)
+                chart.zoom(1 + (-wheel.angleDelta.y/360) * scroll_speed)
+        }
+
+        // Drag scroll
+        hoverEnabled: true
+        property double prev_x
+        property double prev_y
+        onPositionChanged: {
+            if(mouse.buttons > 0) {
+                const diff_x = mouse.x - prev_x
+                const diff_y = mouse.y - prev_y
+
+                if(diff_x > 0) chart.scrollLeft(diff_x)
+                else if(diff_x < 0) chart.scrollRight(-diff_x)
+                if(diff_y > 0) chart.scrollUp(diff_y)
+                else if(diff_y < 0) chart.scrollDown(-diff_y)
             }
+
+            prev_x = mouse.x
+            prev_y = mouse.y
         }
     }
 }
