@@ -638,7 +638,7 @@ namespace atomic_dex
         return !answer.error.has_value();
     }
 
-    bool
+    QString
     application::place_sell_order(const QString& base, const QString& rel, const QString& price, const QString& volume)
     {
         qDebug() << " base: " << base << " rel: " << rel << " price: " << price << " volume: " << volume;
@@ -649,7 +649,11 @@ namespace atomic_dex
         std::error_code ec;
         auto            answer = get_mm2().place_sell_order(std::move(req), amount_f, ec);
 
-        return !answer.error.has_value();
+        if (answer.error.has_value()) {
+            return QString::fromStdString(answer.error.value());
+        } else {
+            return "";
+        }
     }
 
     bool
