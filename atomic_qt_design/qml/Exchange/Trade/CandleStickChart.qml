@@ -79,11 +79,12 @@ ChartView {
 
         axisX: DateTimeAxis {
             titleVisible: false
-            lineVisible: false
+            lineVisible: true
             labelsFont.family: Style.font
             labelsFont.pixelSize: Style.textSizeVerySmall8
             gridLineColor: Style.colorThemeDark2
             labelsColor: Style.colorThemeDark3
+            color: gridLineColor
             format: "MMM d"
         }
         axisYRight: ValueAxis {
@@ -92,6 +93,7 @@ ChartView {
             labelsFont: series.axisX.labelsFont
             gridLineColor: series.axisX.gridLineColor
             labelsColor: series.axisX.labelsColor
+            color: series.axisX.color
         }
     }
 
