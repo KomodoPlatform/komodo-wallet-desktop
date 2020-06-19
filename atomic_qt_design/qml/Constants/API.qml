@@ -160,7 +160,7 @@ QtObject {
         place_sell_order: (base, rel, price, volume) => {
             console.log(`Selling ${volume} ${base} for ${price} ${rel} each`)
 
-            return true
+            return ""
         },
 
         place_buy_order: (base, rel, price, volume) => {
