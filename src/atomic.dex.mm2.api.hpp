@@ -449,6 +449,9 @@ namespace mm2::api
         std::string rel;
         std::string price;
         std::string volume;
+        bool        is_created_order;
+        std::string price_denom;
+        std::string price_numer;
     };
 
     void to_json(nlohmann::json& j, const sell_request& request);

@@ -18,8 +18,8 @@
 #include "atomic.dex.mm2.hpp"
 #include "atomic.dex.kill.hpp"
 #include "atomic.dex.mm2.config.hpp"
-#include "atomic.dex.version.hpp"
 #include "atomic.dex.security.hpp"
+#include "atomic.dex.version.hpp"
 #include "atomic.threadpool.hpp"
 
 //! Anonymous functions
@@ -984,7 +984,8 @@ namespace atomic_dex
     }
 
     t_sell_answer
-    mm2::place_sell_order(t_sell_request&& request, const t_float_50& total, t_mm2_ec& ec) const
+    mm2::place_sell_order(
+        t_sell_request&& request, const t_float_50& total, t_mm2_ec& ec) const
     {
         spdlog::debug("{} l{} f[{}]", __FUNCTION__, __LINE__, fs::path(__FILE__).filename().string());
 
