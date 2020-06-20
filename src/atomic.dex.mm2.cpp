@@ -18,8 +18,8 @@
 #include "atomic.dex.mm2.hpp"
 #include "atomic.dex.kill.hpp"
 #include "atomic.dex.mm2.config.hpp"
-#include "atomic.dex.version.hpp"
 #include "atomic.dex.security.hpp"
+#include "atomic.dex.version.hpp"
 #include "atomic.threadpool.hpp"
 
 //! Anonymous functions
@@ -1001,7 +1001,7 @@ namespace atomic_dex
         if (answer.error.has_value())
         {
             ec = dextop_error::rpc_sell_error;
-            return {};
+            return answer;
         }
 
         return answer;
