@@ -307,6 +307,8 @@ Item {
 
         const result = API.get().place_sell_order(base, rel, price, volume, is_created_order, price_denom, price_numer)
 
+        toast.show(qsTr("Place order result"), General.time_toast_important_error, "Result is empty string: " + (result === "") + "  - Order Result:" + result)
+
         if(result === "") {
             action_result = "success"
             onOrderSuccess()
@@ -314,7 +316,7 @@ Item {
         else {
             action_result = "error"
 
-            toast.show(qsTr("Failed to place the order"), General.time_toast_important_error, result)
+            //toast.show(qsTr("Failed to place the order"), General.time_toast_important_error, result)
         }
     }
 
