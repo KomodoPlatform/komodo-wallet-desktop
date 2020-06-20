@@ -304,12 +304,19 @@ Item {
         console.log("QML place_sell_order: max balance:", form_base.getMaxVolume())
         console.log("QML place_sell_order: params:", base, " <-> ", rel, "  /  price:", price, "  /  volume:", volume, "  /  is_created_order:", is_created_order, "  /  price_denom:", price_denom, "  /  price_numer:", price_numer)
         console.log("QML place_sell_order: trade info:", JSON.stringify(curr_trade_info))
-        action_result = API.get().place_sell_order(base, rel, price, volume, is_created_order, price_denom, price_numer)
-        if(action_result === "") {
+
+        const result = API.get().place_sell_order(base, rel, price, volume, is_created_order, price_denom, price_numer)
+
+        toast.show(qsTr("Place order result"), General.time_toast_important_error, "Result is empty string: " + (result === "") + "  - Order Result:" + result)
+
+        if(result === "") {
+            action_result = "success"
             onOrderSuccess()
         }
         else {
-            toast.show(qsTr("Failed to place the order"), General.time_toast_important_error, action_result)
+            action_result = "error"
+
+            //toast.show(qsTr("Failed to place the order"), General.time_toast_important_error, result)
         }
     }
 
