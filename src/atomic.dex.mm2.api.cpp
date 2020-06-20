@@ -807,7 +807,14 @@ namespace mm2::api
                 if constexpr (std::is_same_v<std::optional<std::string>, decltype(answer.error)>)
                 {
                     spdlog::debug("The error field type is string, parsing it from the response body");
-                    answer.error = nlohmann::json::parse(resp.body).at("error").get<std::string>();
+                    if (auto json_data = nlohmann::json::parse(resp.body); json_data.at("error").is_string())
+                    {
+                        answer.error = json_data.at("error").get<std::string>();
+                    }
+                    else
+                    {
+                        answer.error = resp.body;
+                    }
                     spdlog::debug("The error after getting extracted is: {}", answer.error.value());
                 }
             }
