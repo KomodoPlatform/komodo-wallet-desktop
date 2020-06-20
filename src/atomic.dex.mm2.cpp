@@ -1002,7 +1002,7 @@ namespace atomic_dex
         if (answer.error.has_value())
         {
             ec = dextop_error::rpc_sell_error;
-            return {};
+            return answer;
         }
 
         return answer;
