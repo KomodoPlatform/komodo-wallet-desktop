@@ -803,9 +803,12 @@ namespace mm2::api
             spdlog::warn("rpc answer code is not 200, body : {}", resp.body);
             if constexpr (doom::meta::is_detected_v<have_error_field, RpcReturnType>)
             {
+                spdlog::debug("error field detected inside the RpcReturnType");
                 if constexpr (std::is_same_v<std::string, decltype(answer.error)>)
                 {
+                    spdlog::debug("The error field type is string, parsing it from the response body");
                     answer.error = nlohmann::json::parse(resp.body).at("error").get<std::string>();
+                    spdlog::debug("The error after getting extracted is: {}", answer.error.value());
                 }
             }
             answer.rpc_result_code = resp.code;
