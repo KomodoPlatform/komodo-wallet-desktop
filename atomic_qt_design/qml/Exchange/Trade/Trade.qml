@@ -309,7 +309,8 @@ Item {
 
         if(result === "") {
             action_result = "success"
-            toast.show(qsTr("Placed the order"), General.time_toast_important_error, result, false)
+
+            toast.show(qsTr("Placed the order"), General.time_toast_basic_info, result, false)
 
             onOrderSuccess()
         }
