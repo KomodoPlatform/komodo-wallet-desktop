@@ -805,7 +805,7 @@ namespace mm2::api
             {
                 if constexpr (std::is_same_v<std::string, decltype(answer.error)>)
                 {
-                    answer.error = nlohmann::json::parse(resp.body).get<std::string>();
+                    answer.error = nlohmann::json::parse(resp.body).at("error").get<std::string>();
                 }
             }
             answer.rpc_result_code = resp.code;
