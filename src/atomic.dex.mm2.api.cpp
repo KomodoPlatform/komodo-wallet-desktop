@@ -347,6 +347,8 @@ namespace mm2::api
         j.at("coin").get_to(contents.coin);
         j.at("address").get_to(contents.address);
         j.at("price").get_to(contents.price);
+        j.at("price_fraction").at("numer").get_to(contents.price_fraction_numer);
+        j.at("price_fraction").at("denom").get_to(contents.price_fraction_denom);
         j.at("maxvolume").get_to(contents.maxvolume);
         j.at("pubkey").get_to(contents.pubkey);
         j.at("age").get_to(contents.age);
@@ -441,10 +443,41 @@ namespace mm2::api
     void
     to_json(nlohmann::json& j, const sell_request& request)
     {
+        spdlog::debug("price: {}, volume: {}", request.price, request.volume);
+
+
         j["base"]   = request.base;
-        j["price"]  = request.price;
         j["rel"]    = request.rel;
-        j["volume"] = request.volume;
+        j["volume"] = request.volume; // 7.77
+        j["price"]  = request.price;
+
+        if (not request.is_created_order)
+        {
+            //! From orderbook
+            nlohmann::json price_fraction_repr = nlohmann::json::object();
+            price_fraction_repr["numer"]       = request.price_numer;
+            price_fraction_repr["denom"]       = request.price_denom;
+            j["price"]                         = price_fraction_repr;
+        }
+        else
+        {
+            const t_float_50  price_f(request.price);
+            std::stringstream ss;
+            ss << std::fixed << std::setprecision(50) << price_f;
+            auto final_price_rational = boost::algorithm::erase_first_copy(ss.str(), ".");
+            boost::trim_left_if(final_price_rational, boost::is_any_of("0"));
+
+            const t_float_50  volume_f(request.volume);
+            std::stringstream ss_v;
+            ss_v << std::fixed << std::setprecision(50) << volume_f;
+            auto final_volume_rational = boost::algorithm::erase_first_copy(ss_v.str(), ".");
+            boost::trim_left_if(final_volume_rational, boost::is_any_of("0"));
+
+            nlohmann::json price_fraction_repr = nlohmann::json::object();
+            price_fraction_repr["numer"]       = final_price_rational;
+            price_fraction_repr["denom"]       = final_volume_rational;
+            j["price"]                         = price_fraction_repr;
+        }
     }
 
     void
@@ -758,6 +791,10 @@ namespace mm2::api
     rpc_process_answer(const RestClient::Response& resp, const std::string& rpc_command) noexcept
     {
         spdlog::info("resp code for rpc_command {} is {}", rpc_command, resp.code);
+        /*if (rpc_command == "orderbook")
+        {
+            spdlog::debug("resp body: {}", resp.body);
+        }*/
 
         RpcReturnType answer;
 
@@ -766,9 +803,12 @@ namespace mm2::api
             spdlog::warn("rpc answer code is not 200, body : {}", resp.body);
             if constexpr (doom::meta::is_detected_v<have_error_field, RpcReturnType>)
             {
-                if constexpr (std::is_same_v<std::string, decltype(answer.error)>)
+                spdlog::debug("error field detected inside the RpcReturnType");
+                if constexpr (std::is_same_v<std::optional<std::string>, decltype(answer.error)>)
                 {
-                    answer.error = nlohmann::json::parse(resp.body).get<std::string>();
+                    spdlog::debug("The error field type is string, parsing it from the response body");
+                    answer.error = nlohmann::json::parse(resp.body).at("error").get<std::string>();
+                    spdlog::debug("The error after getting extracted is: {}", answer.error.value());
                 }
             }
             answer.rpc_result_code = resp.code;
@@ -962,9 +1002,9 @@ namespace mm2::api
             req_json_data.push_back(json_data);
         }
 
-        //auto json_copy        = req_json_data;
-        //json_copy["userpass"] = "*******";
-        //spdlog::debug("request: {}", json_copy.dump());
+        // auto json_copy        = req_json_data;
+        // json_copy["userpass"] = "*******";
+        // spdlog::debug("request: {}", json_copy.dump());
 
         auto resp = RestClient::post(g_endpoint, "application/json", req_json_data.dump());
 
@@ -997,9 +1037,9 @@ namespace mm2::api
             req_json_data.push_back(json_data);
         }
 
-        //auto json_copy        = req_json_data;
-        //json_copy["userpass"] = "*******";
-        //spdlog::debug("request: {}", json_copy.dump());
+        // auto json_copy        = req_json_data;
+        // json_copy["userpass"] = "*******";
+        // spdlog::debug("request: {}", json_copy.dump());
 
         auto resp = RestClient::post(g_endpoint, "application/json", req_json_data.dump());
         spdlog::info("{} resp code: {}", __FUNCTION__, resp.code);
