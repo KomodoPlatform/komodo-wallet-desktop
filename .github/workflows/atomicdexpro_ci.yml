@@ -123,6 +123,7 @@ jobs:
           vcpkgArguments: '@${{ github.workspace }}/.github/workflows/linux_response_file.txt'
           vcpkgDirectory: '${{ github.workspace }}/ci_tools_atomic_dex/vcpkg-repo'
           doNotUpdateVcpkg: true
+          useShell: '/usr/bin/bash'
           appendedCacheKey: ${{ hashFiles('.github/workflows/linux_response_file.txt') }}
 
       - name: build (Linux)
