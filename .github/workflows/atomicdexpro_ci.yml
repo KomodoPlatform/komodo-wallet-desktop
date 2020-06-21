@@ -113,7 +113,7 @@ jobs:
         env: # Or as an environment variable
           QT_INSTALL_CMAKE_PATH: ${{ github.workspace }}/Qt/5.15.0/gcc_64/lib/cmake
           QT_ROOT: ${{ github.workspace }}/Qt/5.15.0
-          PATH: $HOME/.nimble/bin:${{ github.workspace }}/Qt/5.15.0/gcc_64/bin:$PATH
+          PATH: ${{env.HOME}}/.nimble/bin:${{ github.workspace }}/Qt/5.15.0/gcc_64/bin:${{env.PATH}}
           CXXFLAGS: -stdlib=libc++
           LDFLAGS: -stdlib=libc++
           CXX: clang++-9
@@ -122,8 +122,6 @@ jobs:
         with:
           vcpkgArguments: '@${{ github.workspace }}/.github/workflows/linux_response_file.txt'
           vcpkgDirectory: '${{ github.workspace }}/ci_tools_atomic_dex/vcpkg-repo'
-          doNotUpdateVcpkg: true
-          useShell: '/usr/bin/bash'
           appendedCacheKey: ${{ hashFiles('.github/workflows/linux_response_file.txt') }}
 
       - name: build (Linux)
