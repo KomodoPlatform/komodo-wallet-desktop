@@ -16,6 +16,7 @@ jobs:
       - uses: actions/checkout@v2
         with:
           ref: ${{ github.event.pull_request.head.sha }}
+          submodules: 'true'
 
       - name: Install QT (Linux)
         uses: jurplel/install-qt-action@v2
