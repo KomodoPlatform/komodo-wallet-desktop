@@ -474,8 +474,8 @@ namespace mm2::api
             boost::trim_left_if(final_volume_rational, boost::is_any_of("0"));
 
             nlohmann::json price_fraction_repr = nlohmann::json::object();
-            price_fraction_repr["numer"]       = final_price_rational;
-            price_fraction_repr["denom"]       = final_volume_rational;
+            price_fraction_repr["numer"]       = final_volume_rational;
+            price_fraction_repr["denom"]       = final_price_rational;
             j["price"]                         = price_fraction_repr;
         }
     }
