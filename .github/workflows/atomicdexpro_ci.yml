@@ -14,6 +14,8 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
 
       - name: Install QT (Linux)
         uses: jurplel/install-qt-action@v2
@@ -157,6 +159,8 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
 
       - name: Cache Qt (Mac)
         id: cache-qt-mac
@@ -261,6 +265,8 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
 
       - name: Install QT (Win)
         uses: jurplel/install-qt-action@v2
