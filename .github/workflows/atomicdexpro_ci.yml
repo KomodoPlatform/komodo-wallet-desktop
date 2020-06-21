@@ -221,6 +221,8 @@ jobs:
           REPORT_CI_TOKEN: ${{ secrets.REPORT_CI_TOKEN_SECRET }}
         working-directory: ci_tools_atomic_dex
         run: |
+          export QT_INSTALL_CMAKE_PATH=${{ github.workspace }}/Qt/5.15.0/clang_64/lib/cmake
+          export QT_ROOT=${{ github.workspace }}/Qt/5.15.0
           echo "Running tests"
           ./ci_tools_atomic_dex tests debug
           cd build-Debug/bin/atomic_qt_tests.app/Contents/MacOS
