@@ -22,7 +22,6 @@ TEST_CASE("AtomicDex Pro get_atomic_dex_data_folder()")
     auto result = get_atomic_dex_data_folder();
     MESSAGE("Result is [" << result << "]");
     CHECK_FALSE(result.string().empty());
-    CHECK(fs::exists(result));
 }
 
 TEST_CASE("AtomicDex Pro get_atomic_dex_logs_folder()")
