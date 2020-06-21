@@ -233,6 +233,15 @@ if (LINUX)
             ${CMAKE_CURRENT_SOURCE_DIR}/assets
             )
 
+    magic_game_app_image_generation("${CMAKE_CURRENT_SOURCE_DIR}/data/linux"
+            "atomic_qt.desktop"
+            "atomic_qt.appdata.xml"
+            "komodo_icon.png"
+            atomic_qt_tests
+            AntaraAtomicDexTestsAppDir
+            ${CMAKE_CURRENT_SOURCE_DIR}/assets
+            )
+
     set(from_dir "${CMAKE_CURRENT_SOURCE_DIR}/data/linux")
     set(desktop_file "atomic_qt.desktop")
     set(appdata_file "atomic_qt.appdata.xml")
