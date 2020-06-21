@@ -14,15 +14,29 @@
  *                                                                            *
  ******************************************************************************/
 
-#include <doctest/doctest.h>
 #include "atomic.dex.utilities.hpp"
+#include <doctest/doctest.h>
 
-TEST_CASE("AtomicDex Pro get_atomic_dex_data_folder")
+TEST_CASE("AtomicDex Pro get_atomic_dex_data_folder()")
 {
-    CHECK_FALSE(get_atomic_dex_data_folder().string().empty());
+    auto result = get_atomic_dex_data_folder();
+    MESSAGE("Result is [" << result << "]");
+    CHECK_FALSE(result.string().empty());
+    CHECK(fs::exists(result));
 }
 
 TEST_CASE("AtomicDex Pro get_atomic_dex_logs_folder()")
 {
-    CHECK_FALSE(get_atomic_dex_logs_folder().string().empty());
+    auto result = get_atomic_dex_logs_folder();
+    MESSAGE("Result is [" << result.string() << "]");
+    CHECK_FALSE(result.string().empty());
+    CHECK(fs::exists(result));
+}
+
+TEST_CASE("AtomicDex Pro get_atomic_dex_current_log_file()")
+{
+    auto result = get_atomic_dex_current_log_file();
+    MESSAGE("Result is [" << result.string() << "]");
+    CHECK_FALSE(result.string().empty());
+    CHECK_FALSE(fs::exists(result));
 }
