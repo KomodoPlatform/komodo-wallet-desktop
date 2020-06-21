@@ -99,7 +99,7 @@ namespace atomic_dex
 } // namespace atomic_dex
 
 //! Private Singleton
-static atomic_dex::thread_pool&
+static inline atomic_dex::thread_pool&
 get_threadpool()
 {
     static atomic_dex::thread_pool thread_pool(g_max_threads);

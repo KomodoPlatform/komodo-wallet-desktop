@@ -19,7 +19,7 @@ DefaultListView {
     // Row
     delegate: Rectangle {
         id: rectangle
-        implicitWidth: parent.width
+        implicitWidth: list.width
         height: row_height
 
         color: mouse_area.containsMouse ? Style.colorTheme6 : "transparent"

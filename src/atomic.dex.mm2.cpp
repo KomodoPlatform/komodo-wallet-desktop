@@ -18,6 +18,7 @@
 #include "atomic.dex.mm2.hpp"
 #include "atomic.dex.kill.hpp"
 #include "atomic.dex.mm2.config.hpp"
+#include "atomic.dex.security.hpp"
 #include "atomic.dex.version.hpp"
 #include "atomic.threadpool.hpp"
 
@@ -597,7 +598,8 @@ namespace atomic_dex
         spdlog::debug("{} l{} f[{}]", __FUNCTION__, __LINE__, fs::path(__FILE__).filename().string());
         this->m_current_wallet_name = std::move(wallet_name);
         retrieve_coins_information(this->m_current_wallet_name, m_coins_informations);
-        mm2_config cfg{.passphrase = std::move(passphrase)};
+        mm2_config cfg{.passphrase = std::move(passphrase), .rpc_password = atomic_dex::gen_random_password()};
+        ::mm2::api::set_rpc_password(cfg.rpc_password);
         json       json_cfg;
         const auto tools_path = ag::core::assets_real_path() / "tools/mm2/";
 
@@ -982,7 +984,8 @@ namespace atomic_dex
     }
 
     t_sell_answer
-    mm2::place_sell_order(t_sell_request&& request, const t_float_50& total, t_mm2_ec& ec) const
+    mm2::place_sell_order(
+        t_sell_request&& request, const t_float_50& total, t_mm2_ec& ec) const
     {
         spdlog::debug("{} l{} f[{}]", __FUNCTION__, __LINE__, fs::path(__FILE__).filename().string());
 
@@ -999,7 +1002,7 @@ namespace atomic_dex
         if (answer.error.has_value())
         {
             ec = dextop_error::rpc_sell_error;
-            return {};
+            return answer;
         }
 
         return answer;

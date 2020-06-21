@@ -50,13 +50,13 @@ endif()
 ##! We fetch our dependence
 if (APPLE)
     FetchContent_Declare(mm2
-            URL https://github.com/KomodoPlatform/atomicDEX-API/releases/download/beta-2.0.2035/mm2-cf78017c4-Darwin-Release.zip)
+            URL https://github.com/KomodoPlatform/atomicDEX-API/releases/download/beta-2.0.2066/mm2-72073d391-Darwin-Release.zip)
 elseif (UNIX AND NOT APPLE)
     FetchContent_Declare(mm2
-            URL https://github.com/KomodoPlatform/atomicDEX-API/releases/download/beta-2.0.2035/mm2-cf78017c4-Linux-Release.zip)
+            URL https://github.com/KomodoPlatform/atomicDEX-API/releases/download/beta-2.0.2066/mm2-72073d391-Linux-Release.zip)
 else ()
     FetchContent_Declare(mm2
-            URL https://github.com/KomodoPlatform/atomicDEX-API/releases/download/beta-2.0.2035/mm2-cf78017c4-Windows_NT-Release.zip)
+            URL https://github.com/KomodoPlatform/atomicDEX-API/releases/download/beta-2.0.2066/mm2-72073d391-Windows_NT-Release.zip)
 endif ()
 
 FetchContent_Declare(jl777-coins
@@ -93,7 +93,7 @@ get_resources_basics_assets(${CMAKE_CURRENT_SOURCE_DIR})
 
 ##! Osx bundle icon
 set(ICON)
-configure_icon_osx(data/osx/kmd_logo.icns ICON kmd_logo.icns)
+configure_icon_osx(data/osx/atomic_qt.icns ICON atomic_qt.icns)
 ##! End antara
 
 find_package(folly CONFIG REQUIRED)
@@ -178,7 +178,7 @@ target_link_libraries(atomic_qt
         qzxing
         antara::world
         Boost::filesystem
-        $<$<PLATFORM_ID:Linux>:Boost::random>
+        Boost::random
         unofficial-sodium::sodium
         unofficial-btc::bitcoin
         reproc++

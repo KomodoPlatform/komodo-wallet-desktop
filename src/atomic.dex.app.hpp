@@ -159,7 +159,7 @@ namespace atomic_dex
         Q_INVOKABLE QString     get_balance(const QString& coin);
         Q_INVOKABLE QString     get_price_amount(const QString& base_amount, const QString& rel_amount);
         Q_INVOKABLE bool        place_buy_order(const QString& base, const QString& rel, const QString& price, const QString& volume);
-        Q_INVOKABLE bool        place_sell_order(const QString& base, const QString& rel, const QString& price, const QString& volume);
+        Q_INVOKABLE QString     place_sell_order(const QString& base, const QString& rel, const QString& price, const QString& volume, bool is_created_order, const QString& price_denom, const QString& price_numer);
         Q_INVOKABLE void        set_current_orderbook(const QString& base, const QString& rel);
         Q_INVOKABLE QVariantMap get_orderbook(const QString& ticker);
         Q_INVOKABLE bool        do_i_have_enough_funds(const QString& ticker, const QString& amount) const;

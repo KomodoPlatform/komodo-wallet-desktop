@@ -347,6 +347,8 @@ namespace mm2::api
         j.at("coin").get_to(contents.coin);
         j.at("address").get_to(contents.address);
         j.at("price").get_to(contents.price);
+        j.at("price_fraction").at("numer").get_to(contents.price_fraction_numer);
+        j.at("price_fraction").at("denom").get_to(contents.price_fraction_denom);
         j.at("maxvolume").get_to(contents.maxvolume);
         j.at("pubkey").get_to(contents.pubkey);
         j.at("age").get_to(contents.age);
@@ -441,10 +443,28 @@ namespace mm2::api
     void
     to_json(nlohmann::json& j, const sell_request& request)
     {
+        spdlog::debug("price: {}, volume: {}", request.price, request.volume);
+
+
         j["base"]   = request.base;
-        j["price"]  = request.price;
         j["rel"]    = request.rel;
-        j["volume"] = request.volume;
+        j["volume"] = request.volume; // 7.77
+        j["price"]  = request.price;
+
+        if (not request.is_created_order)
+        {
+            spdlog::info(
+                "The order is picked from the orderbook, setting price_numer and price_denom from it {}, {}", request.price_numer, request.price_denom);
+            //! From orderbook
+            nlohmann::json price_fraction_repr = nlohmann::json::object();
+            price_fraction_repr["numer"]       = request.price_numer;
+            price_fraction_repr["denom"]       = request.price_denom;
+            j["price"]                         = price_fraction_repr;
+        }
+        else
+        {
+            spdlog::info("The order is not picked from orderbook we create it volume = {}, price = {}", request.volume, request.price);
+        }
     }
 
     void
@@ -755,6 +775,10 @@ namespace mm2::api
     rpc_process_answer(const RestClient::Response& resp, const std::string& rpc_command) noexcept
     {
         spdlog::info("resp code for rpc_command {} is {}", rpc_command, resp.code);
+        /*if (rpc_command == "orderbook")
+        {
+            spdlog::debug("resp body: {}", resp.body);
+        }*/
 
         RpcReturnType answer;
 
@@ -763,9 +787,19 @@ namespace mm2::api
             spdlog::warn("rpc answer code is not 200, body : {}", resp.body);
             if constexpr (doom::meta::is_detected_v<have_error_field, RpcReturnType>)
             {
-                if constexpr (std::is_same_v<std::string, decltype(answer.error)>)
+                spdlog::debug("error field detected inside the RpcReturnType");
+                if constexpr (std::is_same_v<std::optional<std::string>, decltype(answer.error)>)
                 {
-                    answer.error = nlohmann::json::parse(resp.body).get<std::string>();
+                    spdlog::debug("The error field type is string, parsing it from the response body");
+                    if (auto json_data = nlohmann::json::parse(resp.body); json_data.at("error").is_string())
+                    {
+                        answer.error = json_data.at("error").get<std::string>();
+                    }
+                    else
+                    {
+                        answer.error = resp.body;
+                    }
+                    spdlog::debug("The error after getting extracted is: {}", answer.error.value());
                 }
             }
             answer.rpc_result_code = resp.code;
@@ -909,7 +943,9 @@ namespace mm2::api
 
         to_json(json_data, request);
 
-        spdlog::debug("request: {}", json_data.dump());
+        auto json_copy        = json_data;
+        json_copy["userpass"] = "*******";
+        spdlog::debug("request: {}", json_copy.dump());
 
         resp = RestClient::post(g_endpoint, "application/json", json_data.dump());
 
@@ -919,7 +955,7 @@ namespace mm2::api
     nlohmann::json
     template_request(std::string method_name) noexcept
     {
-        return {{"method", std::move(method_name)}, {"userpass", "atomic_dex_mm2_passphrase"}};
+        return {{"method", std::move(method_name)}, {"userpass", get_rpc_password()}};
     }
 
     std::string
@@ -930,7 +966,9 @@ namespace mm2::api
         nlohmann::json       json_data = template_request("version");
         RestClient::Response resp;
 
-        spdlog::debug("{} request: {}", __FUNCTION__, json_data.dump());
+        auto json_copy        = json_data;
+        json_copy["userpass"] = "*******";
+        spdlog::debug("{} request: {}", __FUNCTION__, json_copy.dump());
 
         resp = RestClient::post(g_endpoint, "application/json", json_data.dump());
         if (resp.code == 200)
@@ -955,7 +993,9 @@ namespace mm2::api
             req_json_data.push_back(json_data);
         }
 
-        spdlog::debug("request: {}", req_json_data.dump());
+        // auto json_copy        = req_json_data;
+        // json_copy["userpass"] = "*******";
+        // spdlog::debug("request: {}", json_copy.dump());
 
         auto resp = RestClient::post(g_endpoint, "application/json", req_json_data.dump());
 
@@ -988,7 +1028,9 @@ namespace mm2::api
             req_json_data.push_back(json_data);
         }
 
-        spdlog::debug("request: {}", req_json_data.dump());
+        // auto json_copy        = req_json_data;
+        // json_copy["userpass"] = "*******";
+        // spdlog::debug("request: {}", json_copy.dump());
 
         auto resp = RestClient::post(g_endpoint, "application/json", req_json_data.dump());
         spdlog::info("{} resp code: {}", __FUNCTION__, resp.code);
@@ -1006,5 +1048,24 @@ namespace mm2::api
         }
 
         return answer;
+    }
+
+    static inline std::string&
+    access_rpc_password() noexcept
+    {
+        static std::string rpc_password;
+        return rpc_password;
+    }
+
+    void
+    set_rpc_password(std::string rpc_password) noexcept
+    {
+        access_rpc_password() = std::move(rpc_password);
+    }
+
+    const std::string&
+    get_rpc_password() noexcept
+    {
+        return access_rpc_password();
     }
 } // namespace mm2::api

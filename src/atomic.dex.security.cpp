@@ -113,4 +113,20 @@ namespace atomic_dex
     {
         return g_regex_password_policy;
     }
+
+    std::string
+    gen_random_password() noexcept
+    {
+        std::string chars("abcdefghijklmnopqrstuvwxyz"
+                          "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+                          "1234567890"
+                          "!@#$%^&*()"
+                          "`~-_=+[{]{\\|;:'\",<.>/? ");
+
+        boost::random::random_device              rng;
+        boost::random::uniform_int_distribution<> index_dist(0, chars.size() - 1);
+        std::stringstream                         ss;
+        for (int i = 0; i < 12; ++i) { ss << chars[index_dist(rng)]; }
+        return ss.str();
+    }
 } // namespace atomic_dex
