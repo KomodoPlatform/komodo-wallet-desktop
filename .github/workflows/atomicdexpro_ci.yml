@@ -121,6 +121,13 @@ jobs:
           ./ci_tools_atomic_dex build debug
           ./ci_tools_atomic_dex bundle debug
           
+      
+      - name: Running Tests (Linux)
+        env: # Or as an environment variable
+          REPORT_CI_TOKEN: ${{ secrets.REPORT_CI_TOKEN_SECRET }}
+        run:
+          echo "Running tests"
+      
       - name: Upload bundle artifact (Linux)
         uses: actions/upload-artifact@v1
         with:
@@ -208,6 +215,12 @@ jobs:
           nimble build -y
           ./ci_tools_atomic_dex bundle debug --osx_sdk=$HOME/sdk/MacOSX10.13.sdk --compiler=/usr/local/opt/llvm@9/bin/clang++
           ls bundle-Debug/atomicDEX-Pro.dmg
+      
+      - name: Running Tests (MacOS)
+        env: # Or as an environment variable
+          REPORT_CI_TOKEN: ${{ secrets.REPORT_CI_TOKEN_SECRET }}
+        run:
+          echo "Running tests"
 
       - name: Upload artifacts (MacOS)
         uses: actions/upload-artifact@v1
@@ -273,6 +286,13 @@ jobs:
           7z e -o'build-Debug\bin\' .\debuglibs-win-dexpro.zip
           cmd /c '.\ci_tools_atomic_dex.exe bundle debug 2>&1'
           ls bundle-Debug/bundle.zip
+
+      - name: Running Tests (Windows)
+        shell: powershell
+        env: # Or as an environment variable
+          REPORT_CI_TOKEN: ${{ secrets.REPORT_CI_TOKEN_SECRET }}
+        run:
+          echo "Running tests"
 
       - name: Upload artifacts (Windows)
         uses: actions/upload-artifact@v1
