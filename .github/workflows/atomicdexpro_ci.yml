@@ -219,8 +219,14 @@ jobs:
       - name: Running Tests (MacOS)
         env: # Or as an environment variable
           REPORT_CI_TOKEN: ${{ secrets.REPORT_CI_TOKEN_SECRET }}
+        working-directory: ci_tools_atomic_dex
         run:
           echo "Running tests"
+          ./ci_tools_atomic_dex tests debug
+          cd build-Debug/bin/atomic_qt_tests.app/Contents/MacOS
+          cat atomic-dex-tests-result.xml
+          curl https://report.ci/upload.py --output upload.py && python upload.py --sha $GITHUB_SHA -n "[Doctest MacOS]" --include='*.xml' --framework=doctest --merge ".*"
+
 
       - name: Upload artifacts (MacOS)
         uses: actions/upload-artifact@v1
