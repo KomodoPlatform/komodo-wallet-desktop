@@ -459,25 +459,6 @@ namespace mm2::api
             price_fraction_repr["denom"]       = request.price_denom;
             j["price"]                         = price_fraction_repr;
         }
-        else
-        {
-            const t_float_50  price_f(request.price);
-            std::stringstream ss;
-            ss << std::fixed << std::setprecision(50) << price_f;
-            auto final_price_rational = boost::algorithm::erase_first_copy(ss.str(), ".");
-            boost::trim_left_if(final_price_rational, boost::is_any_of("0"));
-
-            const t_float_50  volume_f(request.volume);
-            std::stringstream ss_v;
-            ss_v << std::fixed << std::setprecision(50) << volume_f;
-            auto final_volume_rational = boost::algorithm::erase_first_copy(ss_v.str(), ".");
-            boost::trim_left_if(final_volume_rational, boost::is_any_of("0"));
-
-            nlohmann::json price_fraction_repr = nlohmann::json::object();
-            price_fraction_repr["numer"]       = final_volume_rational;
-            price_fraction_repr["denom"]       = final_price_rational;
-            j["price"]                         = price_fraction_repr;
-        }
     }
 
     void
