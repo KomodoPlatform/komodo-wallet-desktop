@@ -194,7 +194,8 @@ add_executable(atomic_qt MACOSX_BUNDLE ${ICON}
 
 ##! Testing executable
 add_executable(atomic_qt_tests MACOSX_BUNDLE ${ICON}
-        src/atomic.dex.tests.cpp)
+        src/atomic.dex.tests.cpp
+        src/atomic.dex.utilities.tests.cpp)
 
 target_link_libraries(atomic_qt
         PRIVATE
