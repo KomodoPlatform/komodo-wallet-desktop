@@ -226,6 +226,7 @@ jobs:
           cd build-Debug/bin/atomic_qt_tests.app/Contents/MacOS
           cat atomic-dex-tests-result.xml
           curl https://report.ci/upload.py --output upload.py && python upload.py --sha $GITHUB_SHA -n "[Doctest MacOS]" --include='*.xml' --framework=doctest --merge ".*"
+          echo "Uploading tests on OSX finished"
 
 
       - name: Upload artifacts (MacOS)
