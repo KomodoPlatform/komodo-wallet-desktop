@@ -55,29 +55,29 @@ jobs:
                                libssl-dev \
                                libxkbcommon-x11-0 \
                                git -y
-                               
+
 
           # set clang version
           sudo update-alternatives --install /usr/bin/clang++ clang++ /usr/bin/clang++-9 777
           sudo update-alternatives --install /usr/bin/clang clang /usr/bin/clang-9 777
-          
+
           # set gnu compilers version
           sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-9 777
           sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-9 777
-          
+
           # get llvm
           wget https://apt.llvm.org/llvm.sh
           chmod +x llvm.sh
           sudo ./llvm.sh 9
-          
+
           sudo apt-get update
           sudo apt-get install libc++abi-9-dev libc++-9-dev -y
-          
+
           export CXXFLAGS=-stdlib=libc++
           export LDFLAGS=-stdlib=libc++
           export CXX=clang++-9
           export CC=clang-9
-          
+
           # get right cmake version
           wget https://github.com/Kitware/CMake/releases/download/v3.17.1/cmake-3.17.1.tar.gz -O cmake.tar.gz
           tar xvzf cmake.tar.gz
@@ -85,7 +85,7 @@ jobs:
           ./bootstrap
           sudo make install
           cd ..
-          
+
           # get libwally
           git clone https://github.com/KomodoPlatform/libwally-core.git
           cd libwally-core
@@ -106,44 +106,44 @@ jobs:
           export CC=clang-9
           cd ci_tools_atomic_dex
           nimble build -y
-        
+
           # duplicating because got suspicion that update-alternatives doesnt save between steps
-         
+
           # set clang version
           sudo update-alternatives --install /usr/bin/clang++ clang++ /usr/bin/clang++-9 777
           sudo update-alternatives --install /usr/bin/clang clang /usr/bin/clang-9 777
-          
+
           # set gnu compilers version
           sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-9 777
           sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-9 777
-          
+
           ./ci_tools_atomic_dex --install_dependencies
           ./ci_tools_atomic_dex build debug
           ./ci_tools_atomic_dex bundle debug
-          
+
 
       - name: Running Tests (Linux)
-          env: # Or as an environment variable
-            REPORT_CI_TOKEN: ${{ secrets.REPORT_CI_TOKEN_SECRET }}
-          working-directory: ci_tools_atomic_dex
-          run: |
-            export QT_INSTALL_CMAKE_PATH=${{ github.workspace }}/Qt/5.15.0/gcc_64/lib/cmake
-            export QT_ROOT=${{ github.workspace }}/Qt/5.15.0
-            export PATH=${{ github.workspace }}/Qt/5.15.0/gcc_64/bin:$PATH
-            export PATH=$HOME/.nimble/bin:$PATH
-            export CXXFLAGS=-stdlib=libc++
-            export LDFLAGS=-stdlib=libc++
-            export CXX=clang++-9
-            export CC=clang-9
-            echo "Running tests"
-            ./ci_tools_atomic_dex tests debug
-            cd build-Debug/bin/AntaraAtomicDexTestsAppDir/usr/bin
-            cat atomic-dex-tests-result.xml
-            curl https://report.ci/upload.py --output upload.py
-            ls
-            python upload.py --sha $GITHUB_SHA -n "[Doctest Linux]" --include='atomic-dex-tests-result.xml' --framework=doctest --merge ".*"
-            echo "Uploading tests on Linux finished"
-      
+        env: # Or as an environment variable
+          REPORT_CI_TOKEN: ${{ secrets.REPORT_CI_TOKEN_SECRET }}
+        working-directory: ci_tools_atomic_dex
+        run: |
+          export QT_INSTALL_CMAKE_PATH=${{ github.workspace }}/Qt/5.15.0/gcc_64/lib/cmake
+          export QT_ROOT=${{ github.workspace }}/Qt/5.15.0
+          export PATH=${{ github.workspace }}/Qt/5.15.0/gcc_64/bin:$PATH
+          export PATH=$HOME/.nimble/bin:$PATH
+          export CXXFLAGS=-stdlib=libc++
+          export LDFLAGS=-stdlib=libc++
+          export CXX=clang++-9
+          export CC=clang-9
+          echo "Running tests"
+          ./ci_tools_atomic_dex tests debug
+          cd build-Debug/bin/AntaraAtomicDexTestsAppDir/usr/bin
+          cat atomic-dex-tests-result.xml
+          curl https://report.ci/upload.py --output upload.py
+          ls
+          python upload.py --sha $GITHUB_SHA -n "[Doctest Linux]" --include='atomic-dex-tests-result.xml' --framework=doctest --merge ".*"
+          echo "Uploading tests on Linux finished"
+
       - name: Upload bundle artifact (Linux)
         uses: actions/upload-artifact@v1
         with:
@@ -191,9 +191,9 @@ jobs:
                        boost \
                        gcc \
                        llvm@9
-          
+
           export CC=/usr/local/opt/llvm@9/bin/clang
-          
+
           # get curl
           git clone https://github.com/curl/curl.git
           cd curl
@@ -202,7 +202,7 @@ jobs:
           ./configure --disable-shared --enable-static --without-libidn2 --without-ssl --without-nghttp2 --disable-ldap --with-darwinssl
           make install
           cd ../
-          
+
           # get libbitcoin
           git clone --depth 1 --branch version5 --single-branch "https://github.com/libbitcoin/secp256k1"
           cd secp256k1
@@ -219,7 +219,7 @@ jobs:
           make
           sudo make install
           sudo update_dyld_shared_cache
-          
+
           # get SDKs 
           git clone https://github.com/phracker/MacOSX-SDKs $HOME/sdk
 
@@ -231,7 +231,7 @@ jobs:
           nimble build -y
           ./ci_tools_atomic_dex bundle debug --osx_sdk=$HOME/sdk/MacOSX10.13.sdk --compiler=/usr/local/opt/llvm@9/bin/clang++
           ls bundle-Debug/atomicDEX-Pro.dmg
-      
+
       - name: Running Tests (MacOS)
         env: # Or as an environment variable
           REPORT_CI_TOKEN: ${{ secrets.REPORT_CI_TOKEN_SECRET }}
@@ -278,7 +278,7 @@ jobs:
           Set-ExecutionPolicy RemoteSigned -scope CurrentUser
           Invoke-Expression (New-Object System.Net.WebClient).DownloadString('https://get.scoop.sh')
           $Env:QT_INSTALL_CMAKE_PATH = "C:\Qt\5.15.0\msvc2019_64"
-          
+
           cd ci_tools_atomic_dex
 
           scoop install nim --global
@@ -300,14 +300,14 @@ jobs:
           $regex = '(?<=g_vcpkg_cmake_script_path & ")[^"]*'
           (Get-Content $file) -replace $regex, ' -DVCPKG_TARGET_TRIPLET=x64-windows ' | Set-Content $file
           nimble build -y
-          
+
           # downloading debug dlls because powershell build doesnt put it
           $SHAORIG = "4F755667D3C1831DFA88E3E106992D16D7094901CED767CCDFF76971C68FB1CE"
           $DWFILE = ($PWD | select -exp Path) + '\debuglibs-win-dexpro.zip'
           (New-Object System.Net.WebClient).DownloadFile('https://github.com/KomodoPlatform/depot/releases/download/0.1/debuglibs-win-atomicdexpro.zip', $DWFILE)
           $SHADW = Get-FileHash -Algorithm SHA256 .\debuglibs-win-dexpro.zip | select -exp Hash
           if ($SHADW -ne $SHAORIG) {Throw "Wrong hash: $SHADW =! $SHAORIG"}
-          
+
           cmd /c '.\ci_tools_atomic_dex.exe --install_dependencies 2>&1'
           cmd /c '.\ci_tools_atomic_dex.exe build debug 2>&1'
           7z e -o'build-Debug\bin\' .\debuglibs-win-dexpro.zip
