@@ -414,7 +414,7 @@ Item {
                 field.enabled: enabled && preffered_price === empty_value
             }
         }
-
+        /* // Temporarily desabled for chart adjustment
         // Price
         PriceLine {
             Layout.topMargin: 10
@@ -456,6 +456,7 @@ Item {
             color: Style.colorRed
             visible: form_rel.fieldsAreFilled() && !form_rel.higherThanMinTradeAmount()
         }
+        */
 
         ConfirmTradeModal {
             id: confirm_trade_modal

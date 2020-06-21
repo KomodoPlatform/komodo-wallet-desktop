@@ -190,7 +190,21 @@ ChartView {
     backgroundColor: "transparent"
 
 
+    Rectangle {
+        anchors.left: parent.left
+        width: parent.width
+        height: 1
+        color: Style.colorGreen
+        y: mouse_area.mouseY
+        onYChanged: {
+            //const chart_point = chart.mapFromItem(mouse_area.mouseY)
+            console.log(JSON.stringify(chart_point))
+
+        }
+    }
+
     MouseArea {
+        id: mouse_area
         anchors.fill: parent
 
         // Zoom in/out with wheel
