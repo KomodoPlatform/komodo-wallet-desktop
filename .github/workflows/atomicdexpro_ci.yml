@@ -220,7 +220,7 @@ jobs:
         env: # Or as an environment variable
           REPORT_CI_TOKEN: ${{ secrets.REPORT_CI_TOKEN_SECRET }}
         working-directory: ci_tools_atomic_dex
-        run:
+        run: |
           echo "Running tests"
           ./ci_tools_atomic_dex tests debug
           cd build-Debug/bin/atomic_qt_tests.app/Contents/MacOS
