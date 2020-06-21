@@ -453,11 +453,17 @@ namespace mm2::api
 
         if (not request.is_created_order)
         {
+            spdlog::info(
+                "The order is picked from the orderbook, setting price_numer and price_denom from it {}, {}", request.price_numer, request.price_denom);
             //! From orderbook
             nlohmann::json price_fraction_repr = nlohmann::json::object();
             price_fraction_repr["numer"]       = request.price_numer;
             price_fraction_repr["denom"]       = request.price_denom;
             j["price"]                         = price_fraction_repr;
+        }
+        else
+        {
+            spdlog::info("The order is not picked from orderbook we create it volume = {}, price = {}", request.volume, request.price);
         }
     }
 
