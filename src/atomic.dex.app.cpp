@@ -1151,6 +1151,7 @@ namespace atomic_dex
 
         std::stringstream ss;
         ss << std::fixed << std::setprecision(50) << final;
+        spdlog::info("base_amount = {}, rel_amount = {}, final_amount = {}", base_amount.toStdString(), rel_amount.toStdString(), ss.str());
         return QString::fromStdString(ss.str());
     }
 } // namespace atomic_dex
