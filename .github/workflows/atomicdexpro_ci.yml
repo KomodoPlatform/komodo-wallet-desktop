@@ -119,7 +119,7 @@ jobs:
           CC: clang-9
         uses: lukka/run-vcpkg@v3
         with:
-          vcpkgArguments: '${{ github.workspace }}/.github/workflows/linux_response_file.txt'
+          vcpkgArguments: '@${{ github.workspace }}/.github/workflows/linux_response_file.txt'
           vcpkgDirectory: '${{ github.workspace }}/ci_tools_atomic_dex/vcpkg-repo'
           vcpkgGitURL: 'https://github.com/KomodoPlatform/vcpkg'
 
