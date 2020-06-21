@@ -25,5 +25,5 @@ proc run_tests*(build_type: string, osx_sdk_path: string, compiler_path: string)
         echo os.getCurrentDir()
         os.setCurrentDir(os.getCurrentDir().joinPath("bin").joinPath("AntaraAtomicDexTestsAppDir").joinPath("usr").joinPath("bin"))
         echo "Running AtomicDex Pro Unit tests"
-        discard osprox.execCmd("./atomic_qt_tests --reporters=xml --out=atomic-dex-tests-result.xml -s")
+        discard osproc.execCmd("./atomic_qt_tests --reporters=xml --out=atomic-dex-tests-result.xml -s")
         echo "Successfully Generated atomic-dex-tests-result.xml"

@@ -12,24 +12,29 @@
 <context>
     <name>ClaimRewardsModal</name>
     <message>
-        <location filename="../../qml/Wallet/ClaimRewardsModal.qml" line="64"/>
+        <location filename="../../qml/Wallet/ClaimRewardsModal.qml" line="32"/>
+        <source>Failed to prepare to claim rewards</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../qml/Wallet/ClaimRewardsModal.qml" line="65"/>
         <source>Claim your %1 reward?</source>
         <comment>TICKER</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/ClaimRewardsModal.qml" line="69"/>
+        <location filename="../../qml/Wallet/ClaimRewardsModal.qml" line="70"/>
         <source>You will receive %1</source>
         <comment>AMT TICKER</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/ClaimRewardsModal.qml" line="81"/>
+        <location filename="../../qml/Wallet/ClaimRewardsModal.qml" line="82"/>
         <source>Cancel</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/ClaimRewardsModal.qml" line="86"/>
+        <location filename="../../qml/Wallet/ClaimRewardsModal.qml" line="87"/>
         <source>Confirm</source>
         <translation type="unfinished"></translation>
     </message>
@@ -499,43 +504,49 @@
 <context>
     <name>OrderForm</name>
     <message>
-        <location filename="../../qml/Exchange/Trade/OrderForm.qml" line="199"/>
+        <location filename="../../qml/Exchange/Trade/OrderForm.qml" line="195"/>
         <source>Sell</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/OrderForm.qml" line="199"/>
+        <location filename="../../qml/Exchange/Trade/OrderForm.qml" line="195"/>
         <source>Receive</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/OrderForm.qml" line="259"/>
+        <location filename="../../qml/Exchange/Trade/OrderForm.qml" line="257"/>
         <source>MAX</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/OrderForm.qml" line="272"/>
+        <location filename="../../qml/Exchange/Trade/OrderForm.qml" line="270"/>
         <source>Amount to sell</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/OrderForm.qml" line="273"/>
+        <location filename="../../qml/Exchange/Trade/OrderForm.qml" line="271"/>
         <source>Amount to receive</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/OrderForm.qml" line="273"/>
+        <location filename="../../qml/Exchange/Trade/OrderForm.qml" line="271"/>
         <source>Please fill the send amount</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/OrderForm.qml" line="287"/>
+        <location filename="../../qml/Exchange/Trade/OrderForm.qml" line="285"/>
         <source>Transaction Fee</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/OrderForm.qml" line="292"/>
+        <location filename="../../qml/Exchange/Trade/OrderForm.qml" line="290"/>
         <source>Trading Fee</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../qml/Exchange/Trade/OrderForm.qml" line="302"/>
+        <location filename="../../qml/Exchange/Trade/OrderForm.qml" line="307"/>
+        <source>Calculating...</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -560,62 +571,72 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/OrderModal.qml" line="70"/>
+        <location filename="../../qml/Exchange/OrderModal.qml" line="72"/>
         <source>Maker Order</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/OrderModal.qml" line="70"/>
+        <location filename="../../qml/Exchange/OrderModal.qml" line="72"/>
         <source>Taker Order</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/OrderModal.qml" line="77"/>
+        <location filename="../../qml/Exchange/OrderModal.qml" line="79"/>
         <source>Date</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/OrderModal.qml" line="85"/>
+        <location filename="../../qml/Exchange/OrderModal.qml" line="87"/>
         <source>Swap ID</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/OrderModal.qml" line="85"/>
+        <location filename="../../qml/Exchange/OrderModal.qml" line="87"/>
         <source>UUID</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/OrderModal.qml" line="92"/>
-        <source>Taker Payment ID</source>
+        <location filename="../../qml/Exchange/OrderModal.qml" line="94"/>
+        <source>Maker Payment Sent ID</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/OrderModal.qml" line="99"/>
-        <source>Maker Payment ID</source>
+        <location filename="../../qml/Exchange/OrderModal.qml" line="94"/>
+        <source>Maker Payment Spent ID</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/OrderModal.qml" line="106"/>
+        <location filename="../../qml/Exchange/OrderModal.qml" line="101"/>
+        <source>Taker Payment Spent ID</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../qml/Exchange/OrderModal.qml" line="101"/>
+        <source>Taker Payment Sent ID</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../qml/Exchange/OrderModal.qml" line="108"/>
         <source>Error ID</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/OrderModal.qml" line="113"/>
+        <location filename="../../qml/Exchange/OrderModal.qml" line="115"/>
         <source>Error Log</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/OrderModal.qml" line="124"/>
+        <location filename="../../qml/Exchange/OrderModal.qml" line="126"/>
         <source>Close</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/OrderModal.qml" line="133"/>
+        <location filename="../../qml/Exchange/OrderModal.qml" line="135"/>
         <source>Cancel</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/OrderModal.qml" line="138"/>
+        <location filename="../../qml/Exchange/OrderModal.qml" line="140"/>
         <source>View at Explorer</source>
         <translation type="unfinished"></translation>
     </message>
@@ -687,12 +708,28 @@
 <context>
     <name>Orders</name>
     <message>
-        <location filename="../../qml/Exchange/Orders/Orders.qml" line="174"/>
+        <location filename="../../qml/Exchange/Orders/Orders.qml" line="172"/>
+        <source>Show All Coins</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../qml/Exchange/Orders/Orders.qml" line="199"/>
         <source>Cancel All Orders</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Orders/Orders.qml" line="190"/>
+        <location filename="../../qml/Exchange/Orders/Orders.qml" line="199"/>
+        <source>Cancel All %1 Orders</source>
+        <comment>TICKER</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../qml/Exchange/Orders/Orders.qml" line="218"/>
+        <source>All Orders</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../qml/Exchange/Orders/Orders.qml" line="218"/>
         <source>All %1 Orders</source>
         <comment>TICKER</comment>
         <translation type="unfinished"></translation>
@@ -806,7 +843,7 @@
 <context>
     <name>PriceLine</name>
     <message>
-        <location filename="../../qml/Exchange/Trade/PriceLine.qml" line="11"/>
+        <location filename="../../qml/Exchange/Trade/PriceLine.qml" line="12"/>
         <source>Price</source>
         <translation type="unfinished"></translation>
     </message>
@@ -933,135 +970,135 @@
 <context>
     <name>SendModal</name>
     <message>
-        <location filename="../../qml/Wallet/SendModal.qml" line="164"/>
+        <location filename="../../qml/Wallet/SendModal.qml" line="168"/>
         <source>Prepare to Send</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/SendModal.qml" line="170"/>
-        <location filename="../../qml/Wallet/SendModal.qml" line="306"/>
+        <location filename="../../qml/Wallet/SendModal.qml" line="174"/>
+        <location filename="../../qml/Wallet/SendModal.qml" line="312"/>
         <source>Recipient&apos;s address</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/SendModal.qml" line="171"/>
+        <location filename="../../qml/Wallet/SendModal.qml" line="175"/>
         <source>Enter address of the recipient</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/SendModal.qml" line="181"/>
+        <location filename="../../qml/Wallet/SendModal.qml" line="185"/>
         <source>The address has to be mixed case.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/SendModal.qml" line="186"/>
+        <location filename="../../qml/Wallet/SendModal.qml" line="190"/>
         <source>Fix</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/SendModal.qml" line="195"/>
+        <location filename="../../qml/Wallet/SendModal.qml" line="200"/>
         <source>Amount to send</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/SendModal.qml" line="196"/>
+        <location filename="../../qml/Wallet/SendModal.qml" line="201"/>
         <source>Enter the amount to send</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/SendModal.qml" line="200"/>
+        <location filename="../../qml/Wallet/SendModal.qml" line="206"/>
         <source>MAX</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/SendModal.qml" line="208"/>
+        <location filename="../../qml/Wallet/SendModal.qml" line="214"/>
         <source>Enable Custom Fees</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/SendModal.qml" line="219"/>
+        <location filename="../../qml/Wallet/SendModal.qml" line="225"/>
         <source>Only use custom fees if you know what you are doing!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/SendModal.qml" line="227"/>
+        <location filename="../../qml/Wallet/SendModal.qml" line="233"/>
         <source>Custom Fee</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/SendModal.qml" line="228"/>
+        <location filename="../../qml/Wallet/SendModal.qml" line="234"/>
         <source>Enter the custom fee</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/SendModal.qml" line="238"/>
+        <location filename="../../qml/Wallet/SendModal.qml" line="244"/>
         <source>Gas Limit</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/SendModal.qml" line="239"/>
+        <location filename="../../qml/Wallet/SendModal.qml" line="245"/>
         <source>Enter the gas limit</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/SendModal.qml" line="245"/>
+        <location filename="../../qml/Wallet/SendModal.qml" line="251"/>
         <source>Gas Price</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/SendModal.qml" line="246"/>
+        <location filename="../../qml/Wallet/SendModal.qml" line="252"/>
         <source>Enter the gas price</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/SendModal.qml" line="260"/>
+        <location filename="../../qml/Wallet/SendModal.qml" line="266"/>
         <source>Custom Fee can&apos;t be higher than the amount</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/SendModal.qml" line="270"/>
+        <location filename="../../qml/Wallet/SendModal.qml" line="276"/>
         <source>Not enough funds.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/SendModal.qml" line="270"/>
+        <location filename="../../qml/Wallet/SendModal.qml" line="276"/>
         <source>You have %1</source>
         <comment>AMT TICKER</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/SendModal.qml" line="282"/>
+        <location filename="../../qml/Wallet/SendModal.qml" line="288"/>
         <source>Close</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/SendModal.qml" line="287"/>
+        <location filename="../../qml/Wallet/SendModal.qml" line="293"/>
         <source>Prepare</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/SendModal.qml" line="301"/>
-        <location filename="../../qml/Wallet/SendModal.qml" line="336"/>
+        <location filename="../../qml/Wallet/SendModal.qml" line="307"/>
+        <location filename="../../qml/Wallet/SendModal.qml" line="342"/>
         <source>Send</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/SendModal.qml" line="312"/>
+        <location filename="../../qml/Wallet/SendModal.qml" line="318"/>
         <source>Amount</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/SendModal.qml" line="318"/>
+        <location filename="../../qml/Wallet/SendModal.qml" line="324"/>
         <source>Fees</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/SendModal.qml" line="324"/>
+        <location filename="../../qml/Wallet/SendModal.qml" line="330"/>
         <source>Date</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/SendModal.qml" line="331"/>
+        <location filename="../../qml/Wallet/SendModal.qml" line="337"/>
         <source>Back</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1127,27 +1164,27 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Settings/Settings.qml" line="83"/>
+        <location filename="../../qml/Settings/Settings.qml" line="87"/>
         <source>View Seed</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Settings/Settings.qml" line="97"/>
+        <location filename="../../qml/Settings/Settings.qml" line="101"/>
         <source>Disclaimer and ToS</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Settings/Settings.qml" line="111"/>
+        <location filename="../../qml/Settings/Settings.qml" line="115"/>
         <source>Delete Wallet</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Settings/Settings.qml" line="122"/>
+        <location filename="../../qml/Settings/Settings.qml" line="126"/>
         <source>Log out</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Settings/Settings.qml" line="134"/>
+        <location filename="../../qml/Settings/Settings.qml" line="138"/>
         <source>mm2 version</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1194,39 +1231,57 @@
     </message>
 </context>
 <context>
+    <name>Toast</name>
+    <message>
+        <location filename="../../qml/Components/Toast.qml" line="53"/>
+        <source>Click here to see the details</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>Trade</name>
     <message>
-        <location filename="../../qml/Exchange/Trade/Trade.qml" line="273"/>
+        <location filename="../../qml/Exchange/Trade/Trade.qml" line="313"/>
+        <source>Placed the order</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../qml/Exchange/Trade/Trade.qml" line="320"/>
+        <source>Failed to place the order</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../qml/Exchange/Trade/Trade.qml" line="359"/>
         <source>No balance available</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/Trade.qml" line="279"/>
+        <location filename="../../qml/Exchange/Trade/Trade.qml" line="365"/>
         <source>Please enable a coin with balance or deposit funds</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/Trade.qml" line="319"/>
+        <location filename="../../qml/Exchange/Trade/Trade.qml" line="405"/>
         <source>Trade</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/Trade.qml" line="339"/>
+        <location filename="../../qml/Exchange/Trade/Trade.qml" line="425"/>
         <source>Failed to place the order.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/Trade.qml" line="346"/>
+        <location filename="../../qml/Exchange/Trade/Trade.qml" line="432"/>
         <source>Not enough ETH for the transaction fee</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/Trade.qml" line="355"/>
+        <location filename="../../qml/Exchange/Trade/Trade.qml" line="441"/>
         <source>Sell amount is lower than minimum trade amount</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/Trade.qml" line="364"/>
+        <location filename="../../qml/Exchange/Trade/Trade.qml" line="450"/>
         <source>Receive amount is lower than minimum trade amount</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1251,6 +1306,11 @@
     <message>
         <location filename="../../qml/Wallet/TransactionDetailsModal.qml" line="39"/>
         <source>Date</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../qml/Wallet/TransactionDetailsModal.qml" line="40"/>
+        <source>Unconfirmed</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -1290,6 +1350,14 @@
     </message>
 </context>
 <context>
+    <name>Transactions</name>
+    <message>
+        <location filename="../../qml/Wallet/Transactions.qml" line="86"/>
+        <source>Unconfirmed</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>Wallet</name>
     <message>
         <location filename="../../qml/Wallet/Wallet.qml" line="85"/>
@@ -1297,45 +1365,53 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/Wallet.qml" line="96"/>
+        <location filename="../../qml/Wallet/Wallet.qml" line="95"/>
         <source>Receive</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/Wallet.qml" line="107"/>
+        <location filename="../../qml/Wallet/Wallet.qml" line="104"/>
         <source>Swap</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/Wallet.qml" line="115"/>
+        <location filename="../../qml/Wallet/Wallet.qml" line="110"/>
         <source>Claim Rewards</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/Wallet.qml" line="143"/>
+        <location filename="../../qml/Wallet/Wallet.qml" line="135"/>
         <source>No transactions</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/Wallet.qml" line="163"/>
+        <location filename="../../qml/Wallet/Wallet.qml" line="155"/>
         <source>Loading</source>
         <translation type="unfinished"></translation>
     </message>
     <message numerus="yes">
-        <location filename="../../qml/Wallet/Wallet.qml" line="173"/>
-        <source>Syncing %n TX(s)...</source>
+        <location filename="../../qml/Wallet/Wallet.qml" line="167"/>
+        <source>Scanning blocks for TX History... %n block(s) left</source>
+        <translation type="unfinished">
+            <numerusform></numerusform>
+            <numerusform></numerusform>
+        </translation>
+    </message>
+    <message numerus="yes">
+        <location filename="../../qml/Wallet/Wallet.qml" line="168"/>
+        <source>Syncing TX History... %n TX(s) left</source>
         <translation type="unfinished">
             <numerusform></numerusform>
             <numerusform></numerusform>
         </translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/Wallet.qml" line="261"/>
+        <location filename="../../qml/Wallet/Wallet.qml" line="257"/>
         <source>Search</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/Wallet.qml" line="323"/>
+        <location filename="../../qml/Wallet/Wallet.qml" line="318"/>
         <source>Disable %1</source>
         <comment>TICKER</comment>
         <translation type="unfinished"></translation>
