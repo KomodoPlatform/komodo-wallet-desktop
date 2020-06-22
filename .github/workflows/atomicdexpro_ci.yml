@@ -358,6 +358,13 @@ jobs:
           REPORT_CI_TOKEN: ${{ secrets.REPORT_CI_TOKEN_SECRET }}
         run:
           echo "Running tests"
+          $Env:QT_INSTALL_CMAKE_PATH = "C:\Qt\5.15.0\msvc2019_64"
+          cmd /c '.\ci_tools_atomic_dex.exe tests debug 2>&1'
+          cd build-Debug
+          cd bin
+          ls
+          Invoke-WebRequest -Uri https://report.ci/upload.py -OutFile upload.py
+          python upload.py --sha $(git rev-parse HEAD) -n "[Doctest Windows]" --include='atomic-dex-tests-result.xml' --framework=doctest --merge ".*"
 
       - name: Upload artifacts (Windows)
         uses: actions/upload-artifact@v1
