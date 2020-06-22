@@ -247,7 +247,7 @@ jobs:
           CC: /usr/local/opt/llvm@9/bin/clang
         uses: lukka/run-vcpkg@v3
         with:
-          vcpkgArguments: '@${{ github.workspace }}/.github/workflows/linux_response_file.txt'
+          vcpkgArguments: '@${{ github.workspace }}/.github/workflows/osx_response_file.txt'
           vcpkgDirectory: '${{ github.workspace }}/ci_tools_atomic_dex/vcpkg-repo'
           appendedCacheKey: ${{ hashFiles('.github/workflows/osx_response_file.txt') }}
 
@@ -303,12 +303,11 @@ jobs:
           dir: 'C:\'
           modules: 'qtcharts qtwidgets debug_info'
 
-      - name: Build (Win)
+      - name: Install Prerequisites (Win)
         shell: powershell
         run: |
           Set-ExecutionPolicy RemoteSigned -scope CurrentUser
           Invoke-Expression (New-Object System.Net.WebClient).DownloadString('https://get.scoop.sh')
-          $Env:QT_INSTALL_CMAKE_PATH = "C:\Qt\5.15.0\msvc2019_64"
 
           cd ci_tools_atomic_dex
 
@@ -327,6 +326,21 @@ jobs:
           scoop cache rm llvm
           scoop cache rm nim
 
+
+      - name: vcpkg deps (Windows)
+        uses: lukka/run-vcpkg@v3
+        with:
+          vcpkgArguments: '@${{ github.workspace }}/.github/workflows/windows_response_file.txt'
+          vcpkgDirectory: '${{ github.workspace }}/ci_tools_atomic_dex/vcpkg-repo'
+          appendedCacheKey: ${{ hashFiles('.github/workflows/windows_response_file.txt') }}
+
+      - name: Build (Win)
+        shell: powershell
+        run: |
+          $Env:QT_INSTALL_CMAKE_PATH = "C:\Qt\5.15.0\msvc2019_64"
+
+          cd ci_tools_atomic_dex
+
           $file = 'src\generate.nim'
           $regex = '(?<=g_vcpkg_cmake_script_path & ")[^"]*'
           (Get-Content $file) -replace $regex, ' -DVCPKG_TARGET_TRIPLET=x64-windows ' | Set-Content $file
@@ -339,7 +353,7 @@ jobs:
           $SHADW = Get-FileHash -Algorithm SHA256 .\debuglibs-win-dexpro.zip | select -exp Hash
           if ($SHADW -ne $SHAORIG) {Throw "Wrong hash: $SHADW =! $SHAORIG"}
 
-          cmd /c '.\ci_tools_atomic_dex.exe --install_dependencies 2>&1'
+          #cmd /c '.\ci_tools_atomic_dex.exe --install_dependencies 2>&1'
           cmd /c '.\ci_tools_atomic_dex.exe build debug 2>&1'
           7z e -o'build-Debug\bin\' .\debuglibs-win-dexpro.zip
           cmd /c '.\ci_tools_atomic_dex.exe bundle debug 2>&1'
