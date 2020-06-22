@@ -38,6 +38,8 @@ jobs:
         env:
           DEBIAN_FRONTEND: noninteractive
         run: |
+          echo ${{ github.sha }}
+          git rev-parse HEAD
           sudo apt-get update  # prevents repo404 errors on apt-remove below
           sudo apt-get remove php* msodbcsql17 mysql*
           sudo apt-get update
@@ -158,7 +160,7 @@ jobs:
           cat atomic-dex-tests-result.xml
           curl https://report.ci/upload.py --output upload.py
           ls
-          python upload.py --sha $GITHUB_SHA -n "[Doctest Linux]" --include='atomic-dex-tests-result.xml' --framework=doctest --merge ".*"
+          python upload.py --sha ${{ github.sha }} -n "[Doctest Linux]" --include='atomic-dex-tests-result.xml' --framework=doctest --merge ".*"
           echo "Uploading tests on Linux finished"
 
       - name: Upload bundle artifact (Linux)
@@ -273,7 +275,7 @@ jobs:
           cat atomic-dex-tests-result.xml
           curl https://report.ci/upload.py --output upload.py
           ls
-          python upload.py --sha $GITHUB_SHA -n "[Doctest MacOS]" --include='atomic-dex-tests-result.xml' --framework=doctest --merge ".*"
+          python upload.py --sha ${{ github.sha }} -n "[Doctest MacOS]" --include='atomic-dex-tests-result.xml' --framework=doctest --merge ".*"
           echo "Uploading tests on OSX finished"
 
 
@@ -308,8 +310,6 @@ jobs:
         run: |
           Set-ExecutionPolicy RemoteSigned -scope CurrentUser
           Invoke-Expression (New-Object System.Net.WebClient).DownloadString('https://get.scoop.sh')
-
-          cd ci_tools_atomic_dex
 
           scoop install nim --global
           scoop install llvm --global
