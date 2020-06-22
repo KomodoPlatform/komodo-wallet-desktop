@@ -356,7 +356,7 @@ jobs:
         shell: powershell
         env: # Or as an environment variable
           REPORT_CI_TOKEN: ${{ secrets.REPORT_CI_TOKEN_SECRET }}
-        run:
+        run: |
           echo "Running tests"
           $Env:QT_INSTALL_CMAKE_PATH = "C:\Qt\5.15.0\msvc2019_64"
           cmd /c '.\ci_tools_atomic_dex.exe tests debug 2>&1'
