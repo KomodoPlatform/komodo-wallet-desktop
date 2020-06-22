@@ -140,7 +140,6 @@ namespace mm2::api
         std::string address;
         std::string balance;
         std::string coin;
-        std::string locked_by_swaps;
         int         rpc_result_code;
         std::string raw_result;
     };

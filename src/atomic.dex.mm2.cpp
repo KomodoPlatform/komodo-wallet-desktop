@@ -647,13 +647,13 @@ namespace atomic_dex
             return "0";
         }
 
-        t_float_50 final_balance = get_balance_with_locked_funds(ticker);
+        t_float_50 final_balance = get_balance(ticker);
 
         return final_balance.convert_to<std::string>();
     }
 
     t_float_50
-    mm2::get_balance_with_locked_funds(const std::string& ticker) const
+    mm2::get_balance(const std::string& ticker) const
     {
         if (m_balance_informations.find(ticker) == m_balance_informations.end())
         {
@@ -661,10 +661,8 @@ namespace atomic_dex
         }
         const auto       answer = m_balance_informations.at(ticker);
         const t_float_50 balance(answer.balance);
-        const t_float_50 locked_funds(answer.locked_by_swaps);
-        auto             final_balance = balance - locked_funds;
 
-        return final_balance;
+        return balance;
     }
 
     t_transactions
@@ -924,7 +922,7 @@ namespace atomic_dex
     bool
     mm2::do_i_have_enough_funds(const std::string& ticker, const t_float_50& amount) const
     {
-        auto funds = get_balance_with_locked_funds(ticker);
+        auto funds = get_balance(ticker);
         return funds > amount;
     }
 
