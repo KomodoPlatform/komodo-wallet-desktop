@@ -111,9 +111,6 @@ jobs:
 
       - name: vcpkg deps (Linux)
         env: # Or as an environment variable
-          QT_INSTALL_CMAKE_PATH: ${{ github.workspace }}/Qt/5.15.0/gcc_64/lib/cmake
-          QT_ROOT: ${{ github.workspace }}/Qt/5.15.0
-          PATH: ${{env.HOME}}/.nimble/bin:${{ github.workspace }}/Qt/5.15.0/gcc_64/bin:${{env.PATH}}
           CXXFLAGS: -stdlib=libc++
           LDFLAGS: -stdlib=libc++
           CXX: clang++-9
@@ -245,6 +242,18 @@ jobs:
 
           # get SDKs 
           git clone https://github.com/phracker/MacOSX-SDKs $HOME/sdk
+
+      - name: vcpkg deps (MacOS)
+        env: # Or as an environment variable
+          CXXFLAGS: -stdlib=libc++
+          LDFLAGS: -stdlib=libc++
+          CXX: clang++-9
+          CC: clang-9
+        uses: lukka/run-vcpkg@v3
+        with:
+          vcpkgArguments: '@${{ github.workspace }}/.github/workflows/linux_response_file.txt'
+          vcpkgDirectory: '${{ github.workspace }}/ci_tools_atomic_dex/vcpkg-repo'
+          appendedCacheKey: ${{ hashFiles('.github/workflows/osx_response_file.txt') }}
 
       - name: Build (MacOS)
         run: |
