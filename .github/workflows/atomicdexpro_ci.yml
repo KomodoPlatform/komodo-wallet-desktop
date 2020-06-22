@@ -243,8 +243,6 @@ jobs:
 
       - name: vcpkg deps (MacOS)
         env: # Or as an environment variable
-          CXXFLAGS: -stdlib=libc++
-          LDFLAGS: -stdlib=libc++
           CXX: /usr/local/opt/llvm@9/bin/clang++
           CC: /usr/local/opt/llvm@9/bin/clang
         uses: lukka/run-vcpkg@v3
