@@ -304,28 +304,6 @@ jobs:
           dir: 'C:\'
           modules: 'qtcharts qtwidgets debug_info'
 
-      - name: Install Prerequisites (Win)
-        shell: powershell
-        run: |
-          Set-ExecutionPolicy RemoteSigned -scope CurrentUser
-          Invoke-Expression (New-Object System.Net.WebClient).DownloadString('https://get.scoop.sh')
-
-          scoop install nim --global
-          scoop install llvm --global
-          scoop install ninja --global
-          scoop install cmake --global
-          scoop install git --global
-          scoop install 7zip  --global
-
-          # clear scoop cache
-          scoop cache rm 7zip
-          scoop cache rm git
-          scoop cache rm cmake
-          scoop cache rm ninja
-          scoop cache rm llvm
-          scoop cache rm nim
-
-
       - name: vcpkg deps (Windows)
         uses: lukka/run-vcpkg@v3
         with:
@@ -336,6 +314,22 @@ jobs:
       - name: Build (Win)
         shell: powershell
         run: |
+          Set-ExecutionPolicy RemoteSigned -scope CurrentUser
+          Invoke-Expression (New-Object System.Net.WebClient).DownloadString('https://get.scoop.sh')
+          scoop install nim --global
+          scoop install llvm --global
+          scoop install ninja --global
+          scoop install cmake --global
+          scoop install git --global
+          scoop install 7zip  --global
+
+          scoop cache rm 7zip
+          scoop cache rm git
+          scoop cache rm cmake
+          scoop cache rm ninja
+          scoop cache rm llvm
+          scoop cache rm nim
+
           $Env:QT_INSTALL_CMAKE_PATH = "C:\Qt\5.15.0\msvc2019_64"
 
           cd ci_tools_atomic_dex
