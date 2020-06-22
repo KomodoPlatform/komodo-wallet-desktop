@@ -94,7 +94,7 @@ jobs:
           cd libwally-core
           ./tools/autogen.sh
           ./configure --disable-shared
-          sudo make -j2 install
+          sudo make -j3 install
           cd ..
 
       - name: prepare build (Linux)
@@ -197,8 +197,6 @@ jobs:
 
       - name: Install deps (MacOS)
         run: |
-          brew update
-          brew upgrade
           brew install autoconf \
                        automake \
                        libtool \
@@ -208,7 +206,6 @@ jobs:
                        cmake \
                        ninja \
                        git \
-                       boost \
                        gcc \
                        llvm@9
 
@@ -220,7 +217,7 @@ jobs:
           git checkout curl-7_70_0
           ./buildconf
           ./configure --disable-shared --enable-static --without-libidn2 --without-ssl --without-nghttp2 --disable-ldap --with-darwinssl
-          make install
+          make -j3 install
           cd ../
 
           # get libbitcoin
@@ -228,7 +225,7 @@ jobs:
           cd secp256k1
           ./autogen.sh
           ./configure --disable-shared --disable-tests --enable-module-recovery
-          make
+          make -j3
           sudo make install
           cd ../
 
@@ -236,7 +233,7 @@ jobs:
           cd libbitcoin-system
           ./autogen.sh
           ./configure --with-boost --disable-shared
-          make
+          make -j3
           sudo make install
           sudo update_dyld_shared_cache
 
@@ -247,8 +244,8 @@ jobs:
         env: # Or as an environment variable
           CXXFLAGS: -stdlib=libc++
           LDFLAGS: -stdlib=libc++
-          CXX: clang++-9
-          CC: clang-9
+          CXX: /usr/local/opt/llvm@9/bin/clang++
+          CC: /usr/local/opt/llvm@9/bin/clang
         uses: lukka/run-vcpkg@v3
         with:
           vcpkgArguments: '@${{ github.workspace }}/.github/workflows/linux_response_file.txt'
