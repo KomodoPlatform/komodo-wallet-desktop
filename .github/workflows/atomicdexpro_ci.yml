@@ -206,6 +206,7 @@ jobs:
                        cmake \
                        ninja \
                        git \
+                       boost \
                        gcc \
                        llvm@9
 
