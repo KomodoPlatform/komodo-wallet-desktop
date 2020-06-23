@@ -18,14 +18,16 @@
 
 //! PCH Headers
 #include "atomic.dex.pch.hpp"
+#include "atomic.dex.version.hpp"
 
 namespace atomic_dex
 {
     using nlohmann::json;
+    using namespace std::string_literals;
 
     struct mm2_config
     {
-        std::string gui{"MM2GUI"};
+        std::string gui{"AtomicDex Pro "s + atomic_dex::get_version()};
         int64_t     netid{9999};
 #ifdef _WIN32
         std::string userhome{std::getenv("HOMEPATH")};
