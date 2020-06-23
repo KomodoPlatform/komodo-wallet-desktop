@@ -189,6 +189,7 @@ target_include_directories(atomic_qt_shared_deps
 
 ##! Main executable
 add_executable(atomic_qt MACOSX_BUNDLE ${ICON}
+        ${CMAKE_CURRENT_SOURCE_DIR}/data/windows/atomic_qt.rc
         main.cpp
         )
 
