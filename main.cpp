@@ -104,6 +104,7 @@ main([[maybe_unused]] int argc, [[maybe_unused]] char* argv[])
     QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
     int          ac = 0;
     QApplication app(ac, nullptr);
+
     atomic_app.set_qt_app(&app);
 
     //! QT QML
