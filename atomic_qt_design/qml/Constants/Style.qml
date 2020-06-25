@@ -154,6 +154,9 @@ QtObject {
     readonly property string colorChartGrid:  dark_theme ? "#202333" : "#E6E8ED"
     readonly property string colorChartLineText:  dark_theme ? "#405366" : "#FFFFFF"
 
+    readonly property string colorChartMA1:  dark_theme ? "#5BC6FA" : "#5BC6FA"
+    readonly property string colorChartMA2:  dark_theme ? "#F1D17F" : "#F1D17F"
+
     readonly property string colorLineBasic:  dark_theme ? "#303344" : "#303344"
 
     readonly property string colorText: dark_theme ? Style.colorWhite1 : "#405366"

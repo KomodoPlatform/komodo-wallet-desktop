@@ -14,6 +14,38 @@ ChartView {
     margins.bottom: 0
     margins.right: 0
 
+    // Moving Average 1
+    LineSeries {
+        id: series_ma1
+
+        readonly property int num: 20
+
+        color: Style.colorChartMA1
+
+        width: 1
+
+        pointsVisible: false
+
+        axisX: series.axisX
+        axisYRight: series.axisYRight
+    }
+
+    // Moving Average 2
+    LineSeries {
+        id: series_ma2
+
+        readonly property int num: 50
+
+        color: Style.colorChartMA2
+
+        width: series_ma1.width
+
+        pointsVisible: false
+
+        axisX: series.axisX
+        axisYRight: series.axisYRight
+    }
+
     /*AreaSeries {
         id: series_area2
         color: Style.colorTheme10
@@ -179,6 +211,8 @@ ChartView {
             series2.axisYRight.min = min_other * (1 - y_margin)
             series2.axisYRight.max = max_other * (1 + y_margin)
 */
+
+            computeMovingAverage()
         }
     }
 
@@ -241,21 +275,32 @@ ChartView {
         }
     }
 
+    // Cursor values
     DefaultText {
+        id: cursor_values
         anchors.left: parent.left
         anchors.top: parent.top
-        anchors.topMargin: 3
-        anchors.leftMargin: 50
+        anchors.topMargin: 25
+        anchors.leftMargin: 75
         color: series.axisX.labelsColor
         font.pixelSize: Style.textSizeSmall
         property string highlightColor: mouse_area.realData && mouse_area.realData.close >= mouse_area.realData.open ? Style.colorGreen : Style.colorRed
         text: mouse_area.realData ? (
-                `O:<font color="${highlightColor}">${mouse_area.realData.open}</font>    ` +
-                `H:<font color="${highlightColor}">${mouse_area.realData.high}</font>    ` +
-                `L:<font color="${highlightColor}">${mouse_area.realData.low}</font>    ` +
+                `O:<font color="${highlightColor}">${mouse_area.realData.open}</font> &nbsp;&nbsp; ` +
+                `H:<font color="${highlightColor}">${mouse_area.realData.high}</font> &nbsp;&nbsp; ` +
+                `L:<font color="${highlightColor}">${mouse_area.realData.low}</font> &nbsp;&nbsp; ` +
                 `C:<font color="${highlightColor}">${mouse_area.realData.close}</font>`
                                         ) : ``
 
+    }
+
+    // MA texts
+    DefaultText {
+        anchors.left: cursor_values.left
+        anchors.top: cursor_values.bottom
+        anchors.topMargin: 6
+        font.pixelSize: cursor_values.font.pixelSize
+        text: `<font color="${series_ma1.color}">MA ${series_ma1.num}</font> &nbsp;&nbsp; <font color="${series_ma2.color}">MA ${series_ma2.num}</font>`
     }
 
     MouseArea {
@@ -316,6 +361,31 @@ ChartView {
             }
 
             return historical[closest_idx]
+        }
+    }
+
+
+    function addMovingAverage(historical, serie, sums, i) {
+        if(i >= serie.num) serie.append(fixTimestamp(historical[i].timestamp), (sums[i] - sums[i - serie.num]) / serie.num)
+    }
+
+    function computeMovingAverage() {
+        series_ma1.clear()
+        series_ma2.clear()
+
+        const historical = getHistorical()
+        const count = historical.length
+
+        let result = []
+        let sums = []
+        for(let i = 0; i < count; ++i) {
+            // Accumulate
+            if(i === 0) sums.push(historical[i].open)
+            else sums.push(historical[i].open + sums[i - 1])
+
+            // Calculate MA
+            addMovingAverage(historical, series_ma1, sums, i)
+            addMovingAverage(historical, series_ma2, sums, i)
         }
     }
 }
