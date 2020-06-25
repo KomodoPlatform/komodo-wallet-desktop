@@ -9,6 +9,11 @@ import "../../Constants"
 // List
 ChartView {
     id: chart
+    margins.top: 0
+    margins.left: 0
+    margins.bottom: 0
+    margins.right: 0
+
     /*AreaSeries {
         id: series_area2
         color: Style.colorTheme10
@@ -66,6 +71,8 @@ ChartView {
         axisY: series.axisY
         upperSeries: series
     }*/
+
+
 
     // Price, front
     CandlestickSeries {
@@ -237,8 +244,8 @@ ChartView {
     DefaultText {
         anchors.left: parent.left
         anchors.top: parent.top
-        anchors.topMargin: 10
-        anchors.leftMargin: anchors.topMargin
+        anchors.topMargin: 3
+        anchors.leftMargin: 50
         color: series.axisX.labelsColor
         font.pixelSize: Style.textSizeSmall
         property string highlightColor: mouse_area.realData && mouse_area.realData.close >= mouse_area.realData.open ? Style.colorGreen : Style.colorRed

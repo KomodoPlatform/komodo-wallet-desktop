@@ -382,6 +382,7 @@ Item {
 
         InnerBackground {
             id: graph_bg
+
             Layout.fillWidth: true
             Layout.fillHeight: true
             implicitHeight: wallet.height*0.6
