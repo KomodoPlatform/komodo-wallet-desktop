@@ -234,6 +234,23 @@ ChartView {
         }
     }
 
+    DefaultText {
+        anchors.left: parent.left
+        anchors.top: parent.top
+        anchors.topMargin: 10
+        anchors.leftMargin: anchors.topMargin
+        color: series.axisX.labelsColor
+        font.pixelSize: Style.textSizeSmall
+        property string highlightColor: mouse_area.realData && mouse_area.realData.close >= mouse_area.realData.open ? Style.colorGreen : Style.colorRed
+        text: mouse_area.realData ? (
+                `O:<font color="${highlightColor}">${mouse_area.realData.open}</font>    ` +
+                `H:<font color="${highlightColor}">${mouse_area.realData.high}</font>    ` +
+                `L:<font color="${highlightColor}">${mouse_area.realData.low}</font>    ` +
+                `C:<font color="${highlightColor}">${mouse_area.realData.close}</font>`
+                                        ) : ``
+
+    }
+
     MouseArea {
         id: mouse_area
         anchors.fill: parent
