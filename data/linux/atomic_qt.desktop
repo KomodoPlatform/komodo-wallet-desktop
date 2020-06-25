@@ -2,5 +2,5 @@
 Type=Application
 Name=atomic_qt
 Exec=atomic_qt
-Icon=komodo_icon
+Icon=atomic_qt_64
 Categories=Office;
