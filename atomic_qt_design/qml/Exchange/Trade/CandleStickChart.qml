@@ -196,12 +196,26 @@ ChartView {
         height: 1
         color: Style.colorGreen
         y: mouse_area.mouseY
-        onYChanged: {
-            //const chart_point = chart.mapFromItem(mouse_area.mouseY)
-            console.log(JSON.stringify(chart_point))
 
+        Rectangle {
+            color: parent.color
+            anchors.right: parent.right
+            anchors.verticalCenter: parent.verticalCenter
+
+            width: 30
+            height: value_y_text.height
+            DefaultText {
+                id: value_y_text
+                anchors.verticalCenter: parent.verticalCenter
+                anchors.horizontalCenter: parent.horizontalCenter
+                text: General.formatDouble(mouse_area.valueY, 0)
+                font.pixelSize: series.axisYRight.labelsFont.pixelSize
+                color: series.axisYRight.labelsColor
+            }
         }
+
     }
+
 
     MouseArea {
         id: mouse_area
@@ -231,7 +245,15 @@ ChartView {
 
             prev_x = mouse.x
             prev_y = mouse.y
+
+            // Map mouse position to value
+            const cp = chart.mapToValue(Qt.point(mouse.x, mouse.y), series)
+            valueX = cp.x
+            valueY = cp.y
         }
+
+        property double valueX
+        property double valueY
     }
 }
 
