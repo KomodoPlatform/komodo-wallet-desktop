@@ -112,12 +112,19 @@ ChartView {
         font.pixelSize: Style.textSizeSmall3
     }
 
+    function getHistorical() {
+        return API.get().get_price_chart
+    }
+
+    function fixTimestamp(t) {
+        return t * 1000
+    }
 
     function updateChart() {
         series.clear()
         //series2.clear()
 
-        const historical = API.get().get_price_chart
+        const historical = getHistorical()
         if(historical === undefined) return
 
         if(historical.length > 0) {
@@ -127,7 +134,7 @@ ChartView {
             let max_other = -Infinity
 
             for(let i = 0; i < historical.length; ++i) {
-                series.append(historical[i].open, historical[i].high, historical[i].low, historical[i].close, historical[i].timestamp * 1000)
+                series.append(historical[i].open, historical[i].high, historical[i].low, historical[i].close, fixTimestamp(historical[i].timestamp))
                 //series2.append(General.timestampToDate(historical[i].timestamp), other)
             }
 
@@ -260,10 +267,32 @@ ChartView {
             const cp = chart.mapToValue(Qt.point(mouse.x, mouse.y), series)
             valueX = cp.x
             valueY = cp.y
+
+            // Find closest real data
+            realData = findRealData(valueX)
         }
 
         property double valueX
         property double valueY
+        property var realData
+
+        function findRealData(timestamp) {
+            const historical = getHistorical()
+            const count = historical.length
+
+            let closest_idx
+            let closest_dist = Infinity
+
+            for(let i = 1; i < count; ++i) {
+                const dist = Math.abs(timestamp - fixTimestamp(historical[i].timestamp))
+                if(dist < closest_dist) {
+                    closest_dist = dist
+                    closest_idx = i
+                }
+            }
+
+            return historical[closest_idx]
+        }
     }
 }
 
