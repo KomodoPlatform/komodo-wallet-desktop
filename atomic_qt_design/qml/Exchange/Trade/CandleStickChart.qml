@@ -190,12 +190,24 @@ ChartView {
     backgroundColor: "transparent"
 
 
-    Rectangle {
+    Canvas {
+        readonly property color color: Style.colorGreen
         anchors.left: parent.left
         width: parent.width
         height: 1
-        color: Style.colorGreen
         y: mouse_area.mouseY
+        onPaint: {
+            var ctx = getContext("2d");
+
+            ctx.setLineDash([1, 1]);
+            ctx.lineWidth = 1.5;
+            ctx.strokeStyle = color
+
+            ctx.beginPath()
+            ctx.moveTo(0, 0)
+            ctx.lineTo(width, 0)
+            ctx.stroke()
+        }
 
         Rectangle {
             color: parent.color
@@ -213,9 +225,7 @@ ChartView {
                 color: series.axisYRight.labelsColor
             }
         }
-
     }
-
 
     MouseArea {
         id: mouse_area
