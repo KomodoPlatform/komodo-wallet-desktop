@@ -82,9 +82,9 @@ ChartView {
             lineVisible: true
             labelsFont.family: Style.font
             labelsFont.pixelSize: Style.textSizeVerySmall8
-            gridLineColor: Style.colorThemeDark2
-            labelsColor: Style.colorThemeDark3
-            color: gridLineColor
+            gridLineColor: Style.colorChartGrid
+            labelsColor: Style.colorChartText
+            color: Style.colorChartLegendLine
             format: "MMM d"
         }
         axisYRight: ValueAxis {
@@ -229,7 +229,7 @@ ChartView {
                 anchors.horizontalCenter: parent.horizontalCenter
                 text: General.formatDouble(mouse_area.valueY, 0)
                 font.pixelSize: series.axisYRight.labelsFont.pixelSize
-                color: series.axisYRight.labelsColor
+                color: Style.colorChartLineText
             }
         }
     }

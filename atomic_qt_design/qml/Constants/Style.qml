@@ -61,13 +61,13 @@ QtObject {
     property bool dark_theme: true
 
     readonly property string sidebar_atomicdex_logo: dark_theme ? "atomicdex-logo.svg" : "atomicdex-logo-dark.svg"
-    readonly property string colorRed: dark_theme ? "#E938A4" : "#E938A4"
+    readonly property string colorRed: dark_theme ? "#D13990" : "#D13990"
     readonly property string colorRed2:  dark_theme ? "#b61477" : "#b61477"
     readonly property string colorRed3:  dark_theme ? "#41072a" : "#41072a"
     readonly property string colorYellow:  dark_theme ? "#FFC305" : "#FFC305"
     readonly property string colorOrange:  dark_theme ? "#F7931A" : "#F7931A"
     readonly property string colorBlue:  dark_theme ? "#3B78D1" : "#3B78D1"
-    readonly property string colorGreen:  dark_theme ? "#41EAD4" : "#41EAD4"
+    readonly property string colorGreen:  dark_theme ? "#74FBEE" : "#74FBEE"
     readonly property string colorGreen2:  dark_theme ? "#14bca6" : "#14bca6"
     readonly property string colorGreen3:  dark_theme ? "#07433b" : "#07433b"
 
@@ -148,6 +148,11 @@ QtObject {
 
     readonly property string colorRectangleBorderGradient1:  dark_theme ? "#2A2F48" : "#00FFFFFF"
     readonly property string colorRectangleBorderGradient2:  dark_theme ? "#0D1021" : "#00FFFFFF"
+
+    readonly property string colorChartText:  dark_theme ? "#405366" : "#B5B9C1"
+    readonly property string colorChartLegendLine:  dark_theme ? "#3F5265" : "#BDC0C8"
+    readonly property string colorChartGrid:  dark_theme ? "#202333" : "#E6E8ED"
+    readonly property string colorChartLineText:  dark_theme ? "#405366" : "#FFFFFF"
 
     readonly property string colorLineBasic:  dark_theme ? "#303344" : "#303344"
 
