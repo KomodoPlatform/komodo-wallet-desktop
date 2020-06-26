@@ -218,7 +218,7 @@ ChartView {
                 if(series_area.global_max < historical[i].volume) series_area.global_max = historical[i].volume
             }
 
-            const first_idx = historical.length * 0.9
+            const first_idx = Math.floor(historical.length * 0.9)
             const last_idx = historical.length - 1
 
             // Set min and max values
