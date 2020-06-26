@@ -9,10 +9,36 @@ import "../../Constants"
 // List
 ChartView {
     id: chart
+    readonly property double y_margin: 0.02
+
     margins.top: 0
     margins.left: 0
     margins.bottom: 0
     margins.right: 0
+
+
+    AreaSeries {
+        id: series_area
+
+        property double global_max: -Infinity
+
+        color: Style.colorBlue
+
+        borderWidth: 0
+        opacity: 0.3
+
+        axisX: series.axisX
+        axisY: ValueAxis {
+            id: value_axis_area
+            visible: false
+            onRangeChanged: {
+                // This will be always same, small size at bottom
+                value_axis_area.min = 0
+                value_axis_area.max = series_area.global_max * 1/0.5
+            }
+        }
+        upperSeries:  LineSeries { visible: false }
+    }
 
     // Moving Average 1
     LineSeries {
@@ -110,6 +136,8 @@ ChartView {
     CandlestickSeries {
         id: series
 
+        property double global_max: -Infinity
+
         increasingColor: Style.colorGreen
         decreasingColor: Style.colorRed
         bodyOutlineVisible: false
@@ -127,12 +155,20 @@ ChartView {
             format: "MMM d"
         }
         axisYRight: ValueAxis {
+            id: value_axis
             titleVisible: series.axisX.titleVisible
             lineVisible: series.axisX.lineVisible
             labelsFont: series.axisX.labelsFont
             gridLineColor: series.axisX.gridLineColor
             labelsColor: series.axisX.labelsColor
             color: series.axisX.color
+
+            onRangeChanged: {
+                if(min < 0) value_axis.min = 0
+
+                const max_val = value_axis.global_max * (1 + y_margin)
+                if(max > max_val) value_axis.max = max_val
+            }
         }
     }
 
@@ -161,7 +197,10 @@ ChartView {
 
     function updateChart() {
         series.clear()
-        //series2.clear()
+        series_area.upperSeries.clear()
+
+        series.global_max = -Infinity
+        series_area.global_max = -Infinity
 
         const historical = getHistorical()
         if(historical === undefined) return
@@ -174,7 +213,9 @@ ChartView {
 
             for(let i = 0; i < historical.length; ++i) {
                 series.append(historical[i].open, historical[i].high, historical[i].low, historical[i].close, fixTimestamp(historical[i].timestamp))
-                //series2.append(General.timestampToDate(historical[i].timestamp), other)
+                series_area.upperSeries.append(General.timestampToDate(historical[i].timestamp), historical[i].volume)
+
+                if(series_area.global_max < historical[i].volume) series_area.global_max = historical[i].volume
             }
 
             const first_idx = historical.length * 0.9
@@ -201,16 +242,15 @@ ChartView {
             series2.axisX.max = series.axisX.max
             series2.axisX.tickCount = series.axisX.tickCount
 */
-            const y_margin = 0.02
 
             // Price
             series.axisYRight.min = min_price * (1 - y_margin)
             series.axisYRight.max = max_price * (1 + y_margin)
-/*
+
             // Other
-            series2.axisYRight.min = min_other * (1 - y_margin)
-            series2.axisYRight.max = max_other * (1 + y_margin)
-*/
+            series_area.axisY.min = min_other * (1 - y_margin)
+            series_area.axisY.max = max_other * (1 + y_margin)
+
 
             computeMovingAverage()
         }
@@ -289,7 +329,8 @@ ChartView {
                 `O:<font color="${highlightColor}">${mouse_area.realData.open}</font> &nbsp;&nbsp; ` +
                 `H:<font color="${highlightColor}">${mouse_area.realData.high}</font> &nbsp;&nbsp; ` +
                 `L:<font color="${highlightColor}">${mouse_area.realData.low}</font> &nbsp;&nbsp; ` +
-                `C:<font color="${highlightColor}">${mouse_area.realData.close}</font>`
+                `C:<font color="${highlightColor}">${mouse_area.realData.close}</font> &nbsp;&nbsp; ` +
+                `Vol:<font color="${highlightColor}">${mouse_area.realData.volume.toFixed(0)}K</font>`
                                         ) : ``
 
     }
