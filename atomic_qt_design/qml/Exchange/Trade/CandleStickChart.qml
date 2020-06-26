@@ -261,14 +261,6 @@ ChartView {
         updateChart()
     }
 
-    Connections {
-        target: dashboard
-
-        function onPortfolio_coinsChanged() {
-            updateChart()
-        }
-    }
-
     width: parent.width
     height: parent.height
     antialiasing: true
