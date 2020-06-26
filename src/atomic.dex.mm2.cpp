@@ -604,10 +604,16 @@ namespace atomic_dex
         const auto tools_path = ag::core::assets_real_path() / "tools/mm2/";
 
         nlohmann::to_json(json_cfg, cfg);
+        fs::path mm2_cfg_path = (fs::temp_directory_path() / "MM2.json");
 
-        const std::array<std::string, 2> args = {(tools_path / "mm2").string(), json_cfg.dump()};
+        std::ofstream ofs(mm2_cfg_path.string());
+        ofs << json_cfg.dump();
+        ofs.close();
+        const std::array<std::string, 1> args = {(tools_path / "mm2").string()};
         reproc::options                  options;
         options.redirect.parent   = true;
+        options.environment       = std::unordered_map<std::string, std::string>{{"MM_CONF_PATH",
+                                                                                  mm2_cfg_path.string()}};
         options.working_directory = strdup(tools_path.string().c_str());
 
         const auto ec = m_mm2_instance.start(args, options);
@@ -617,12 +623,12 @@ namespace atomic_dex
             spdlog::error("{}", ec.message());
         }
 
-        m_mm2_init_thread = std::thread([this]() {
+        m_mm2_init_thread = std::thread([this, mm2_cfg_path]() {
             using namespace std::chrono_literals;
             // loguru::set_thread_name("mm2 init thread");
 
             const auto wait_ec = m_mm2_instance.wait(2s).second;
-
+            fs::remove(mm2_cfg_path);
             if (wait_ec.value() == static_cast<int>(std::errc::timed_out) || wait_ec.value() == 258)
             {
                 spdlog::info("mm2 is initialized");
@@ -827,15 +833,15 @@ namespace atomic_dex
             {
                 tx_infos current_info{
 
-                    .am_i_sender   = current.my_balance_change[0] == '-',
-                    .confirmations = current.confirmations.has_value() ? current.confirmations.value() : 0,
-                    .from          = current.from,
-                    .to            = current.to,
-                    .date          = current.timestamp_as_date,
-                    .timestamp     = current.timestamp,
-                    .tx_hash       = current.tx_hash,
-                    .fees          = current.fee_details.normal_fees.has_value() ? current.fee_details.normal_fees.value().amount
-                                                                        : current.fee_details.erc_fees.value().total_fee,
+                    .am_i_sender       = current.my_balance_change[0] == '-',
+                    .confirmations     = current.confirmations.has_value() ? current.confirmations.value() : 0,
+                    .from              = current.from,
+                    .to                = current.to,
+                    .date              = current.timestamp_as_date,
+                    .timestamp         = current.timestamp,
+                    .tx_hash           = current.tx_hash,
+                    .fees              = current.fee_details.normal_fees.has_value() ? current.fee_details.normal_fees.value().amount
+                                                                                     : current.fee_details.erc_fees.value().total_fee,
                     .my_balance_change = current.my_balance_change,
                     .total_amount      = current.total_amount,
                     .block_height      = current.block_height,
@@ -982,8 +988,7 @@ namespace atomic_dex
     }
 
     t_sell_answer
-    mm2::place_sell_order(
-        t_sell_request&& request, const t_float_50& total, t_mm2_ec& ec) const
+    mm2::place_sell_order(t_sell_request&& request, const t_float_50& total, t_mm2_ec& ec) const
     {
         spdlog::debug("{} l{} f[{}]", __FUNCTION__, __LINE__, fs::path(__FILE__).filename().string());
 

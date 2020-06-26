@@ -783,34 +783,34 @@ namespace mm2::api
         }*/
 
         RpcReturnType answer;
-
-        if (resp.code not_eq 200)
-        {
-            spdlog::warn("rpc answer code is not 200, body : {}", resp.body);
-            if constexpr (doom::meta::is_detected_v<have_error_field, RpcReturnType>)
-            {
-                spdlog::debug("error field detected inside the RpcReturnType");
-                if constexpr (std::is_same_v<std::optional<std::string>, decltype(answer.error)>)
-                {
-                    spdlog::debug("The error field type is string, parsing it from the response body");
-                    if (auto json_data = nlohmann::json::parse(resp.body); json_data.at("error").is_string())
-                    {
-                        answer.error = json_data.at("error").get<std::string>();
-                    }
-                    else
-                    {
-                        answer.error = resp.body;
-                    }
-                    spdlog::debug("The error after getting extracted is: {}", answer.error.value());
-                }
-            }
-            answer.rpc_result_code = resp.code;
-            answer.raw_result      = resp.body;
-            return answer;
-        }
-
         try
         {
+            if (resp.code not_eq 200)
+            {
+                spdlog::warn("rpc answer code is not 200, body : {}", resp.body);
+                if constexpr (doom::meta::is_detected_v<have_error_field, RpcReturnType>)
+                {
+                    spdlog::debug("error field detected inside the RpcReturnType");
+                    if constexpr (std::is_same_v<std::optional<std::string>, decltype(answer.error)>)
+                    {
+                        spdlog::debug("The error field type is string, parsing it from the response body");
+                        if (auto json_data = nlohmann::json::parse(resp.body); json_data.at("error").is_string())
+                        {
+                            answer.error = json_data.at("error").get<std::string>();
+                        }
+                        else
+                        {
+                            answer.error = resp.body;
+                        }
+                        spdlog::debug("The error after getting extracted is: {}", answer.error.value());
+                    }
+                }
+                answer.rpc_result_code = resp.code;
+                answer.raw_result      = resp.body;
+                return answer;
+            }
+
+
             auto json_answer       = nlohmann::json::parse(resp.body);
             answer.rpc_result_code = resp.code;
             answer.raw_result      = resp.body;
@@ -818,7 +818,7 @@ namespace mm2::api
         }
         catch (const std::exception& error)
         {
-            spdlog::error("{}", error.what());
+            spdlog::error("exception caught {}", error.what());
             answer.rpc_result_code = -1;
             answer.raw_result      = error.what();
         }
