@@ -229,7 +229,7 @@ if (LINUX)
     magic_game_app_image_generation("${CMAKE_CURRENT_SOURCE_DIR}/data/linux"
             "atomic_qt.desktop"
             "atomic_qt.appdata.xml"
-            "komodo_icon.png"
+            "atomic_qt_64.png"
             atomic_qt
             AntaraAtomicDexAppDir
             ${CMAKE_CURRENT_SOURCE_DIR}/assets
@@ -238,7 +238,7 @@ if (LINUX)
     magic_game_app_image_generation("${CMAKE_CURRENT_SOURCE_DIR}/data/linux"
             "atomic_qt.desktop"
             "atomic_qt.appdata.xml"
-            "komodo_icon.png"
+            "atomic_qt_64.png"
             atomic_qt_tests
             AntaraAtomicDexTestsAppDir
             ${CMAKE_CURRENT_SOURCE_DIR}/assets
@@ -247,11 +247,12 @@ if (LINUX)
     set(from_dir "${CMAKE_CURRENT_SOURCE_DIR}/data/linux")
     set(desktop_file "atomic_qt.desktop")
     set(appdata_file "atomic_qt.appdata.xml")
-    set(app_icon "komodo_icon.png")
+    set(app_icon "atomic_qt_64.png")
     message(STATUS "${output_dir_at}")
     configure_file(${from_dir}/${desktop_file} ${output_dir_at}/usr/share/applications/${desktop_file} COPYONLY)
     configure_file(${from_dir}/${appdata_file} ${output_dir_at}/usr/share/metainfo/${appdata_file} COPYONLY)
-    configure_file(${from_dir}/${app_icon} ${output_dir_at}/usr/share/icons/hicolor/128x128/apps/${app_icon} COPYONLY)
+    configure_file(${from_dir}/${app_icon} ${output_dir_at}/usr/share/icons/hicolor/64x64/apps/${app_icon} COPYONLY)
+    configure_file(${from_dir}/${app_icon} ${output_dir_at}/usr/share/icons/default/64x64/apps/${app_icon} COPYONLY)
 endif ()
 
 if (WIN32)
