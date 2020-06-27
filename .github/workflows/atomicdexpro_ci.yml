@@ -61,6 +61,7 @@ jobs:
                                libxcb-icccm4 \
                                libxcb-image0 \
                                libxcb1-dev \
+                               libxcb-keysyms1-dev \
                                git -y
 
 
