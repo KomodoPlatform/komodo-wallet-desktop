@@ -62,6 +62,7 @@ jobs:
                                libxcb-image0 \
                                libxcb1-dev \
                                libxcb-keysyms1-dev \
+                               libxcb-render-util0-dev \
                                git -y
 
 
