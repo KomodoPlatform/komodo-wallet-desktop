@@ -129,6 +129,15 @@ ChartView {
         return t * 1000
     }
 
+
+    function getHistorical() {
+        const idx = combo_time.currentIndex
+        const timescale = General.chart_times[idx]
+        const seconds = General.time_seconds[timescale]
+        const seconds_str = "" + seconds
+        return API.get().get_price_chart[seconds_str]
+    }
+
     function updateChart() {
         series.clear()
         series_area.upperSeries.clear()
@@ -138,7 +147,7 @@ ChartView {
         series.last_value_y = -Infinity
         series_area.global_max = -Infinity
 
-        const historical = API.get().get_price_chart
+        const historical = getHistorical()
         if(historical === undefined) return
 
         if(historical.length > 0) {
@@ -215,6 +224,7 @@ ChartView {
     // Horizontal line
     Canvas {
         readonly property color color: series.last_value_green ? Style.colorGreen : Style.colorRed
+        onColorChanged: requestPaint()
         anchors.left: parent.left
         width: parent.width
         height: 1
@@ -382,7 +392,7 @@ ChartView {
         property double mouseXSnapped
 
         function findRealData(timestamp) {
-            const historical = API.get().get_price_chart
+            const historical = getHistorical()
             const count = historical.length
 
             let closest_idx
@@ -409,7 +419,7 @@ ChartView {
         series_ma1.clear()
         series_ma2.clear()
 
-        const historical = API.get().get_price_chart
+        const historical = getHistorical()
         const count = historical.length
 
         let result = []
@@ -441,6 +451,7 @@ ChartView {
         model: General.chart_times
         onCurrentTextChanged: {
             console.log("New time:", General.chart_times[currentIndex])
+            updateChart()
         }
     }
 
