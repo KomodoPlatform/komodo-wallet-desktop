@@ -27,7 +27,7 @@ namespace
     void
     extract_rpc_json_answer(const nlohmann::json& j, RpcReturnType& answer)
     {
-        if (j.contains("error"))
+        if (j.contains("error") && j.at("error").is_string())
         {
             answer.error = j.at("error").get<std::string>();
         }
