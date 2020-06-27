@@ -249,6 +249,47 @@ ChartView {
         }
     }
 
+    // Cursor Horizontal line
+    Canvas {
+        readonly property color color: Style.colorBlue
+        anchors.left: parent.left
+        width: parent.width
+        height: 1
+
+        y: mouse_area.mouseY
+        x: mouse_area.mouseX
+
+        onPaint: {
+            var ctx = getContext("2d");
+
+            ctx.setLineDash([1, 1]);
+            ctx.lineWidth = 1.5;
+            ctx.strokeStyle = color
+
+            ctx.beginPath()
+            ctx.moveTo(0, 0)
+            ctx.lineTo(width, 0)
+            ctx.stroke()
+        }
+
+        Rectangle {
+            color: parent.color
+            anchors.right: parent.right
+            anchors.verticalCenter: parent.verticalCenter
+
+            width: 30
+            height: cursor_y_text.height
+            DefaultText {
+                id: cursor_y_text
+                anchors.verticalCenter: parent.verticalCenter
+                anchors.horizontalCenter: parent.horizontalCenter
+                text: General.formatDouble(mouse_area.valueY, 0)
+                font.pixelSize: series.axisYRight.labelsFont.pixelSize
+                color: Style.colorChartLineText
+            }
+        }
+    }
+
     // Cursor values
     DefaultText {
         id: cursor_values
