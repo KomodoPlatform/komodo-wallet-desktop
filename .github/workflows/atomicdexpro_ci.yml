@@ -60,6 +60,7 @@ jobs:
                                libxkbcommon-x11-0 \
                                libxcb-icccm4 \
                                libxcb-image0 \
+                               xcb-util \
                                git -y
 
 
