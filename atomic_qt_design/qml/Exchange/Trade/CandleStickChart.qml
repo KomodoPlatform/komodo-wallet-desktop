@@ -209,6 +209,7 @@ ChartView {
     backgroundColor: "transparent"
 
 
+    // Horizontal line
     Canvas {
         readonly property color color: Style.colorGreen
         anchors.left: parent.left
