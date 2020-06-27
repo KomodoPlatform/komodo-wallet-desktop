@@ -78,6 +78,7 @@ ChartView {
 
         property double global_max: -Infinity
         property double last_value: -Infinity
+        property bool last_value_green: true
         property double last_value_y: -Infinity
 
         function updateLastValueY() {
@@ -156,7 +157,9 @@ ChartView {
             const first_idx = Math.floor(historical.length * 0.9)
             const last_idx = historical.length - 1
 
-            series.last_value = historical[last_idx].close
+            const last_elem = historical[last_idx]
+            series.last_value = last_elem.close
+            series.last_value_green = last_elem.close >= last_elem.open
 
             // Set min and max values
             for(let j = first_idx; j <= last_idx; ++j) {
@@ -172,7 +175,7 @@ ChartView {
 
             // Date
             series.axisX.min = General.timestampToDate(historical[first_idx].timestamp)
-            series.axisX.max = General.timestampToDate(historical[last_idx].timestamp)
+            series.axisX.max = General.timestampToDate(last_elem.timestamp)
             series.axisX.tickCount = 10//historical.length
 /*
             series2.axisX.min = series.axisX.min
@@ -211,7 +214,7 @@ ChartView {
 
     // Horizontal line
     Canvas {
-        readonly property color color: Style.colorGreen
+        readonly property color color: series.last_value_green ? Style.colorGreen : Style.colorRed
         anchors.left: parent.left
         width: parent.width
         height: 1
@@ -295,7 +298,7 @@ ChartView {
         width: 1
         height: parent.height
 
-        x: mouse_area.mouseX
+        x: mouse_area.mouseXSnapped
 
         onPaint: {
             var ctx = getContext("2d");
@@ -322,7 +325,7 @@ ChartView {
                 id: cursor_x_text
                 anchors.verticalCenter: parent.verticalCenter
                 anchors.horizontalCenter: parent.horizontalCenter
-                text: General.timestampToDate(mouse_area.valueX).toString()
+                text: mouse_area.realData ? General.timestampToDate(mouse_area.realData.timestamp).toString() : ""
                 font.pixelSize: series.axisYRight.labelsFont.pixelSize
             }
         }
@@ -334,7 +337,7 @@ ChartView {
         anchors.left: parent.left
         anchors.top: parent.top
         anchors.topMargin: 25
-        anchors.leftMargin: 75
+        anchors.leftMargin: 35
         color: series.axisX.labelsColor
         font.pixelSize: Style.textSizeSmall
         property string highlightColor: mouse_area.realData && mouse_area.realData.close >= mouse_area.realData.open ? Style.colorGreen : Style.colorRed
@@ -398,11 +401,14 @@ ChartView {
 
             // Find closest real data
             realData = findRealData(valueX)
+
+            mouseXSnapped = chart.mapToPosition(Qt.point(realData.timestamp*1000, 0), series).x
         }
 
         property double valueX
         property double valueY
         property var realData
+        property double mouseXSnapped
 
         function findRealData(timestamp) {
             const historical = API.get().get_price_chart
