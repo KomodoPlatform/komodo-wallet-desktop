@@ -58,6 +58,7 @@ jobs:
                                unzip \
                                libssl-dev \
                                libxkbcommon-x11-0 \
+                               libxcb-icccm4 \
                                git -y
 
 
