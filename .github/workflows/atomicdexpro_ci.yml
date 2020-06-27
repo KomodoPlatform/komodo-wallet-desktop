@@ -59,6 +59,7 @@ jobs:
                                libssl-dev \
                                libxkbcommon-x11-0 \
                                libxcb-icccm4 \
+                               libxcb-image0 \
                                git -y
 
 
