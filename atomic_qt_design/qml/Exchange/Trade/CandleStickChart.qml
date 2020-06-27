@@ -331,35 +331,6 @@ ChartView {
         }
     }
 
-    // Cursor values
-    DefaultText {
-        id: cursor_values
-        anchors.left: parent.left
-        anchors.top: parent.top
-        anchors.topMargin: 25
-        anchors.leftMargin: 35
-        color: series.axisX.labelsColor
-        font.pixelSize: Style.textSizeSmall
-        property string highlightColor: mouse_area.realData && mouse_area.realData.close >= mouse_area.realData.open ? Style.colorGreen : Style.colorRed
-        text: mouse_area.realData ? (
-                `O:<font color="${highlightColor}">${mouse_area.realData.open}</font> &nbsp;&nbsp; ` +
-                `H:<font color="${highlightColor}">${mouse_area.realData.high}</font> &nbsp;&nbsp; ` +
-                `L:<font color="${highlightColor}">${mouse_area.realData.low}</font> &nbsp;&nbsp; ` +
-                `C:<font color="${highlightColor}">${mouse_area.realData.close}</font> &nbsp;&nbsp; ` +
-                `Vol:<font color="${highlightColor}">${mouse_area.realData.volume.toFixed(0)}K</font>`
-                                        ) : ``
-
-    }
-
-    // MA texts
-    DefaultText {
-        anchors.left: cursor_values.left
-        anchors.top: cursor_values.bottom
-        anchors.topMargin: 6
-        font.pixelSize: cursor_values.font.pixelSize
-        text: `<font color="${series_ma1.color}">MA ${series_ma1.num}</font> &nbsp;&nbsp; <font color="${series_ma2.color}">MA ${series_ma2.num}</font>`
-    }
-
     MouseArea {
         id: mouse_area
         anchors.fill: parent
@@ -453,6 +424,53 @@ ChartView {
             addMovingAverage(historical, series_ma2, sums, i)
         }
     }
+
+
+    // Time selection
+    DefaultComboBox {
+        id: combo_time
+        anchors.left: parent.left
+        anchors.top: parent.top
+        anchors.topMargin: 25
+        anchors.leftMargin: 35
+        width: 75
+        height: 30
+        flat: true
+        font.pixelSize: Style.textSizeSmall3
+
+        model: General.chart_times
+        onCurrentTextChanged: {
+            console.log("New time:", General.chart_times[currentIndex])
+        }
+    }
+
+    // Cursor values
+    DefaultText {
+        id: cursor_values
+        anchors.left: combo_time.right
+        anchors.top: combo_time.top
+        anchors.leftMargin: 10
+        color: series.axisX.labelsColor
+        font.pixelSize: Style.textSizeSmall
+        property string highlightColor: mouse_area.realData && mouse_area.realData.close >= mouse_area.realData.open ? Style.colorGreen : Style.colorRed
+        text: mouse_area.realData ? (
+                `O:<font color="${highlightColor}">${mouse_area.realData.open}</font> &nbsp;&nbsp; ` +
+                `H:<font color="${highlightColor}">${mouse_area.realData.high}</font> &nbsp;&nbsp; ` +
+                `L:<font color="${highlightColor}">${mouse_area.realData.low}</font> &nbsp;&nbsp; ` +
+                `C:<font color="${highlightColor}">${mouse_area.realData.close}</font> &nbsp;&nbsp; ` +
+                `Vol:<font color="${highlightColor}">${mouse_area.realData.volume.toFixed(0)}K</font>`
+                                        ) : ``
+
+    }
+
+    // MA texts
+    DefaultText {
+        anchors.left: cursor_values.left
+        anchors.bottom: combo_time.bottom
+        font.pixelSize: cursor_values.font.pixelSize
+        text: `<font color="${series_ma1.color}">MA ${series_ma1.num}</font> &nbsp;&nbsp; <font color="${series_ma2.color}">MA ${series_ma2.num}</font>`
+    }
+
 }
 
 
