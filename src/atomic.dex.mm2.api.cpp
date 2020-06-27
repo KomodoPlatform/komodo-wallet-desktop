@@ -20,13 +20,60 @@
 //! Project Headers
 #include "atomic.dex.mm2.api.hpp"
 
+//! Utilities
 namespace
 {
-    namespace bm = boost::multiprecision;
+    template <typename RpcSuccessReturnType, typename RpcReturnType>
+    void
+    extract_rpc_json_answer(const nlohmann::json& j, RpcReturnType& answer)
+    {
+        if (j.contains("error"))
+        {
+            answer.error = j.at("error").get<std::string>();
+        }
+        else if (j.contains("result"))
+        {
+            answer.result = j.at("result").get<RpcSuccessReturnType>();
+        }
+    }
 } // namespace
 
+//! Implementation RPC [max_taker_vol]
 namespace mm2::api
 {
+    //! Serialization
+    void
+    to_json(nlohmann::json& j, const max_taker_vol_request& cfg)
+    {
+        j["coin"] = cfg.coin;
+    }
+
+    //! Deserialization
+    void
+    from_json(const nlohmann::json& j, max_taker_vol_answer_success& cfg)
+    {
+        j.at("denom").get_to(cfg.denom);
+        j.at("numer").get_to(cfg.numer);
+    }
+
+    void
+    from_json(const nlohmann::json& j, max_taker_vol_answer& answer)
+    {
+        extract_rpc_json_answer<max_taker_vol_answer_success>(j, answer);
+    }
+
+    //! Rpc Call
+    max_taker_vol_answer
+    rpc_max_taker_vol(max_taker_vol_request&& request)
+    {
+        return process_rpc<max_taker_vol_request, max_taker_vol_answer>(std::forward<max_taker_vol_request>(request), "max_taker_vol");
+    }
+} // namespace mm2::api
+
+//! Implementation RPC [enable]
+namespace mm2::api
+{
+    //! Serialization
     void
     to_json(nlohmann::json& j, const enable_request& cfg)
     {
@@ -37,6 +84,7 @@ namespace mm2::api
         j["tx_history"]            = cfg.with_tx_history;
     }
 
+    //! Deserialization
     void
     from_json(const nlohmann::json& j, enable_answer& cfg)
     {
@@ -44,15 +92,12 @@ namespace mm2::api
         j.at("balance").get_to(cfg.balance);
         j.at("result").get_to(cfg.result);
     }
+} // namespace mm2::api
 
-    void
-    from_json(const nlohmann::json& j, electrum_answer& cfg)
-    {
-        j.at("address").get_to(cfg.address);
-        j.at("balance").get_to(cfg.balance);
-        j.at("result").get_to(cfg.result);
-    }
-
+//! Implementation RPC [electrum]
+namespace mm2::api
+{
+    //! Serialization
     void
     to_json(nlohmann::json& j, const electrum_request& cfg)
     {
@@ -61,12 +106,27 @@ namespace mm2::api
         j["tx_history"] = cfg.with_tx_history;
     }
 
+    //! Deserialization
+    void
+    from_json(const nlohmann::json& j, electrum_answer& cfg)
+    {
+        j.at("address").get_to(cfg.address);
+        j.at("balance").get_to(cfg.balance);
+        j.at("result").get_to(cfg.result);
+    }
+} // namespace mm2::api
+
+//! Implementation RPC [disable_coin]
+namespace mm2::api
+{
+    //! Serialization
     void
     to_json(nlohmann::json& j, const disable_coin_request& req)
     {
         j["coin"] = req.coin;
     }
 
+    //! Deserialization
     void
     from_json(const nlohmann::json& j, disable_coin_answer_success& resp)
     {
@@ -76,16 +136,12 @@ namespace mm2::api
     void
     from_json(const nlohmann::json& j, disable_coin_answer& resp)
     {
-        if (j.count("error") == 1)
-        {
-            resp.error = j.get<std::string>();
-        }
-        else if (j.count("result") == 1)
-        {
-            resp.result = j.at("result").get<disable_coin_answer_success>();
-        }
+        extract_rpc_json_answer<disable_coin_answer_success>(j, resp);
     }
+} // namespace mm2::api
 
+namespace mm2::api
+{
     void
     to_json(nlohmann::json& j, const balance_request& cfg)
     {
@@ -777,10 +833,6 @@ namespace mm2::api
     rpc_process_answer(const RestClient::Response& resp, const std::string& rpc_command) noexcept
     {
         spdlog::info("resp code for rpc_command {} is {}", rpc_command, resp.code);
-        /*if (rpc_command == "orderbook")
-        {
-            spdlog::debug("resp body: {}", resp.body);
-        }*/
 
         RpcReturnType answer;
         try
@@ -995,10 +1047,6 @@ namespace mm2::api
             req_json_data.push_back(json_data);
         }
 
-        // auto json_copy        = req_json_data;
-        // json_copy["userpass"] = "*******";
-        // spdlog::debug("request: {}", json_copy.dump());
-
         auto resp = RestClient::post(g_endpoint, "application/json", req_json_data.dump());
 
         spdlog::info("{} resp code: {}", __FUNCTION__, resp.code);
@@ -1029,10 +1077,6 @@ namespace mm2::api
             to_json(json_data, request);
             req_json_data.push_back(json_data);
         }
-
-        // auto json_copy        = req_json_data;
-        // json_copy["userpass"] = "*******";
-        // spdlog::debug("request: {}", json_copy.dump());
 
         auto resp = RestClient::post(g_endpoint, "application/json", req_json_data.dump());
         spdlog::info("{} resp code: {}", __FUNCTION__, resp.code);
