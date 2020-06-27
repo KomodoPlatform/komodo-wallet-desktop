@@ -63,6 +63,7 @@ jobs:
                                libxcb1-dev \
                                libxcb-keysyms1-dev \
                                libxcb-render-util0-dev \
+                               libxcb-xinerama0 \
                                git -y
 
 
