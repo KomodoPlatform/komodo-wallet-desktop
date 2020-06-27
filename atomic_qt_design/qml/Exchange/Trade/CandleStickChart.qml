@@ -257,7 +257,6 @@ ChartView {
         height: 1
 
         y: mouse_area.mouseY
-        x: mouse_area.mouseX
 
         onPaint: {
             var ctx = getContext("2d");
@@ -285,7 +284,46 @@ ChartView {
                 anchors.horizontalCenter: parent.horizontalCenter
                 text: General.formatDouble(mouse_area.valueY, 0)
                 font.pixelSize: series.axisYRight.labelsFont.pixelSize
-                color: Style.colorChartLineText
+            }
+        }
+    }
+
+    // Cursor Vertical line
+    Canvas {
+        readonly property color color: Style.colorBlue
+        anchors.top: parent.top
+        width: 1
+        height: parent.height
+
+        x: mouse_area.mouseX
+
+        onPaint: {
+            var ctx = getContext("2d");
+
+            ctx.setLineDash([1, 1]);
+            ctx.lineWidth = 1.5;
+            ctx.strokeStyle = color
+
+            ctx.beginPath()
+            ctx.moveTo(0, 0)
+            ctx.lineTo(0, height)
+            ctx.stroke()
+        }
+
+        Rectangle {
+            color: parent.color
+            anchors.bottom: parent.bottom
+            anchors.horizontalCenter: parent.horizontalCenter
+
+            width: cursor_x_text.width
+            height: cursor_x_text.height
+
+            DefaultText {
+                id: cursor_x_text
+                anchors.verticalCenter: parent.verticalCenter
+                anchors.horizontalCenter: parent.horizontalCenter
+                text: General.timestampToDate(mouse_area.valueX).toString()
+                font.pixelSize: series.axisYRight.labelsFont.pixelSize
             }
         }
     }
