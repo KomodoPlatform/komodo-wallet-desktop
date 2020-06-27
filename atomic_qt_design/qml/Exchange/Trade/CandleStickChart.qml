@@ -72,71 +72,13 @@ ChartView {
         axisYRight: series.axisYRight
     }
 
-    /*AreaSeries {
-        id: series_area2
-        color: Style.colorTheme10
-
-        onHovered: updateValueText(state, point.y, axisYRight.labelsColor, 0)
-
-        borderWidth: series_area.borderWidth
-        opacity: series_area.opacity
-
-        axisX: series2.axisX
-        axisYRight: series2.axisYRight
-        upperSeries: series2
-    }
-
-    // Other, back
-    LineSeries {
-        id: series2
-        color: Style.colorTheme10
-
-        style: series.style
-        width: series.width
-
-        pointsVisible: false
-
-        onHovered: updateValueText(state, point.y, axisYRight.labelsColor, 0)
-
-        axisX: DateTimeAxis {
-            visible: false
-            titleVisible: series.axisX.titleVisible
-            lineVisible: series.axisX.lineVisible
-            labelsFont: series.axisX.labelsFont
-            gridLineColor: series.axisX.gridLineColor
-            labelsColor: series.axisX.labelsColor
-            format: "MMM d"
-        }
-        axisYRight: ValueAxis {
-            visible: true
-            titleVisible: series.axisY.titleVisible
-            lineVisible: series.axisY.lineVisible
-            labelsFont: series.axisY.labelsFont
-            gridLineColor: series.axisY.gridLineColor
-            labelsColor: series2.color
-        }
-    }
-
-    AreaSeries {
-        id: series_area
-        color: Style.colorTheme1
-        onHovered: updateValueText(state, point.y, axisY.labelsColor, 2)
-
-        borderWidth: 0
-        opacity: 0.15
-
-        axisX: series.axisX
-        axisY: series.axisY
-        upperSeries: series
-    }*/
-
-
-
     // Price, front
     CandlestickSeries {
         id: series
 
         property double global_max: -Infinity
+        property double last_value: -Infinity
+        property double last_value_y: -Infinity
 
         increasingColor: Style.colorGreen
         decreasingColor: Style.colorRed
@@ -172,21 +114,6 @@ ChartView {
         }
     }
 
-    function updateValueText(state, value, color, precision) {
-        value_text.visible = state
-        value_text.text = General.formatDouble(value, precision)
-        value_text.color = color
-    }
-
-    DefaultText {
-        id: value_text
-        anchors.top: parent.top
-        anchors.left: parent.left
-        anchors.topMargin: 50
-        anchors.leftMargin: anchors.topMargin * 2
-        font.pixelSize: Style.textSizeSmall3
-    }
-
     function getHistorical() {
         return API.get().get_price_chart
     }
@@ -200,9 +127,10 @@ ChartView {
         series_area.upperSeries.clear()
 
         series.global_max = -Infinity
+        series.last_value = -Infinity
         series_area.global_max = -Infinity
 
-        const historical = getHistorical()
+        const historical = API.get().get_price_chart
         if(historical === undefined) return
 
         if(historical.length > 0) {
@@ -220,6 +148,8 @@ ChartView {
 
             const first_idx = Math.floor(historical.length * 0.9)
             const last_idx = historical.length - 1
+
+            series.last_value = historical[last_idx].close
 
             // Set min and max values
             for(let j = first_idx; j <= last_idx; ++j) {
@@ -275,7 +205,9 @@ ChartView {
         anchors.left: parent.left
         width: parent.width
         height: 1
-        y: mouse_area.mouseY
+
+        //y: series.last_value_y
+        //y: mouse_area.mouseY
         onPaint: {
             var ctx = getContext("2d");
 
@@ -300,7 +232,8 @@ ChartView {
                 id: value_y_text
                 anchors.verticalCenter: parent.verticalCenter
                 anchors.horizontalCenter: parent.horizontalCenter
-                text: General.formatDouble(mouse_area.valueY, 0)
+                text: General.formatDouble(series.last_value, 0)
+                //text: General.formatDouble(mouse_area.valueY, 0)
                 font.pixelSize: series.axisYRight.labelsFont.pixelSize
                 color: Style.colorChartLineText
             }
@@ -379,7 +312,7 @@ ChartView {
         property var realData
 
         function findRealData(timestamp) {
-            const historical = getHistorical()
+            const historical = API.get().get_price_chart
             const count = historical.length
 
             let closest_idx
@@ -406,7 +339,7 @@ ChartView {
         series_ma1.clear()
         series_ma2.clear()
 
-        const historical = getHistorical()
+        const historical = API.get().get_price_chart
         const count = historical.length
 
         let result = []
