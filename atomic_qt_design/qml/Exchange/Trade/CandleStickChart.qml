@@ -80,11 +80,21 @@ ChartView {
         property double last_value: -Infinity
         property double last_value_y: -Infinity
 
+        function updateLastValueY() {
+            series.last_value_y = chart.mapToPosition(Qt.point(0, series.last_value), series).y
+        }
+
+        Timer {
+            id: update_last_value_y_timer
+            interval: 200
+            repeat: false
+            running: false
+            onTriggered: series.updateLastValueY()
+        }
+
         increasingColor: Style.colorGreen
         decreasingColor: Style.colorRed
         bodyOutlineVisible: false
-
-        //onHovered: updateValueText(state, point.y, axisY.labelsColor, 2)
 
         axisX: DateTimeAxis {
             titleVisible: false
@@ -114,10 +124,6 @@ ChartView {
         }
     }
 
-    function getHistorical() {
-        return API.get().get_price_chart
-    }
-
     function fixTimestamp(t) {
         return t * 1000
     }
@@ -128,6 +134,7 @@ ChartView {
 
         series.global_max = -Infinity
         series.last_value = -Infinity
+        series.last_value_y = -Infinity
         series_area.global_max = -Infinity
 
         const historical = API.get().get_price_chart
@@ -183,6 +190,8 @@ ChartView {
 
 
             computeMovingAverage()
+
+            update_last_value_y_timer.start()
         }
     }
 
@@ -206,8 +215,8 @@ ChartView {
         width: parent.width
         height: 1
 
-        //y: series.last_value_y
-        //y: mouse_area.mouseY
+        y: series.last_value_y
+
         onPaint: {
             var ctx = getContext("2d");
 
@@ -233,7 +242,6 @@ ChartView {
                 anchors.verticalCenter: parent.verticalCenter
                 anchors.horizontalCenter: parent.horizontalCenter
                 text: General.formatDouble(series.last_value, 0)
-                //text: General.formatDouble(mouse_area.valueY, 0)
                 font.pixelSize: series.axisYRight.labelsFont.pixelSize
                 color: Style.colorChartLineText
             }
@@ -276,14 +284,17 @@ ChartView {
         // Zoom in/out with wheel
         readonly property double scroll_speed: 0.1
         onWheel: {
-            if (wheel.angleDelta.y !== 0)
+            if (wheel.angleDelta.y !== 0) {
                 chart.zoom(1 + (-wheel.angleDelta.y/360) * scroll_speed)
+                series.updateLastValueY()
+            }
         }
 
         // Drag scroll
         hoverEnabled: true
         property double prev_x
         property double prev_y
+
         onPositionChanged: {
             if(mouse.buttons > 0) {
                 const diff_x = mouse.x - prev_x
@@ -293,6 +304,8 @@ ChartView {
                 else if(diff_x < 0) chart.scrollRight(-diff_x)
                 if(diff_y > 0) chart.scrollUp(diff_y)
                 else if(diff_y < 0) chart.scrollDown(-diff_y)
+
+                if(diff_y !== 0) series.updateLastValueY()
             }
 
             prev_x = mouse.x
