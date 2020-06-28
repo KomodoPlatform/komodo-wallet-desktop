@@ -611,11 +611,18 @@ namespace atomic_dex
         ofs.close();
         const std::array<std::string, 1> args = {(tools_path / "mm2").string()};
         reproc::options                  options;
-        options.redirect.parent   = true;
-        options.environment       = std::unordered_map<std::string, std::string>{{"MM_CONF_PATH",
-                                                                                  mm2_cfg_path.string()}};
+        options.redirect.parent = true;
+#if defined(WIN32)
+        std::ostringstream env_mm2;
+        env_mm2 << "MM_CONF_PATH=" << mm2_cfg_path.string();
+        _putenv(env_mm2.str().c_str());
+        spdlog::debug("env: {}", std::getenv("MM_CONF_PATH"));
+#else
+        options.environment = std::unordered_map<std::string, std::string>{{"MM_CONF_PATH", mm2_cfg_path.string()}};
+#endif
         options.working_directory = strdup(tools_path.string().c_str());
 
+        spdlog::debug("command line: {}, from directory: {}", args[0], options.working_directory);
         const auto ec = m_mm2_instance.start(args, options);
 
         if (ec)
@@ -833,15 +840,15 @@ namespace atomic_dex
             {
                 tx_infos current_info{
 
-                    .am_i_sender       = current.my_balance_change[0] == '-',
-                    .confirmations     = current.confirmations.has_value() ? current.confirmations.value() : 0,
-                    .from              = current.from,
-                    .to                = current.to,
-                    .date              = current.timestamp_as_date,
-                    .timestamp         = current.timestamp,
-                    .tx_hash           = current.tx_hash,
-                    .fees              = current.fee_details.normal_fees.has_value() ? current.fee_details.normal_fees.value().amount
-                                                                                     : current.fee_details.erc_fees.value().total_fee,
+                    .am_i_sender   = current.my_balance_change[0] == '-',
+                    .confirmations = current.confirmations.has_value() ? current.confirmations.value() : 0,
+                    .from          = current.from,
+                    .to            = current.to,
+                    .date          = current.timestamp_as_date,
+                    .timestamp     = current.timestamp,
+                    .tx_hash       = current.tx_hash,
+                    .fees          = current.fee_details.normal_fees.has_value() ? current.fee_details.normal_fees.value().amount
+                                                                        : current.fee_details.erc_fees.value().total_fee,
                     .my_balance_change = current.my_balance_change,
                     .total_amount      = current.total_amount,
                     .block_height      = current.block_height,
