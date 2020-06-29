@@ -214,36 +214,44 @@ namespace atomic_dex
     coinpaprika_provider::get_price_in_fiat_all(const std::string& fiat, std::error_code& ec) const noexcept
     {
         t_coins              coins         = m_mm2_instance.get_enabled_coins();
-        bm::cpp_dec_float_50 final_price_f = 0;
-        std::string          current_price = "0.00";
-        std::stringstream    ss;
-
-        for (auto&& current_coin: coins)
+        try
         {
-            if (current_coin.coinpaprika_id == "test-coin")
+            bm::cpp_dec_float_50 final_price_f = 0;
+            std::string          current_price = "0.00";
+            std::stringstream    ss;
+
+            for (auto&& current_coin: coins)
             {
-                continue;
+                if (current_coin.coinpaprika_id == "test-coin")
+                {
+                    continue;
+                }
+
+                current_price = get_price_in_fiat(fiat, current_coin.ticker, ec, true);
+
+                if (ec)
+                {
+                    spdlog::warn("error when converting {} to {}, err: {}", current_coin.ticker, fiat, ec.message());
+                    ec.clear(); //! Reset
+                    continue;
+                }
+
+                if (not current_price.empty())
+                {
+                    const auto current_price_f = bm::cpp_dec_float_50(current_price);
+                    final_price_f += current_price_f;
+                }
             }
 
-            current_price = get_price_in_fiat(fiat, current_coin.ticker, ec, true);
-
-            if (ec)
-            {
-                spdlog::warn("error when converting {} to {}, err: {}", current_coin.ticker, fiat, ec.message());
-                ec.clear(); //! Reset
-                continue;
-            }
-
-            if (not current_price.empty())
-            {
-                const auto current_price_f = bm::cpp_dec_float_50(current_price);
-                final_price_f += current_price_f;
-            }
+            ss.precision(2);
+            ss << std::fixed << final_price_f;
+            return ss.str();
         }
-
-        ss.precision(2);
-        ss << std::fixed << final_price_f;
-        return ss.str();
+        catch (const std::exception& error)
+        {
+            spdlog::error("exception caught: {}", error.what());
+            return "0.00";
+        }
     }
 
     std::string
