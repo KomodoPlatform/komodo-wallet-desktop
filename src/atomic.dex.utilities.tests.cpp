@@ -14,36 +14,28 @@
  *                                                                            *
  ******************************************************************************/
 
-#include <Availability.h>
-#include "atomic.dex.osx.manager.hpp"
+#include "atomic.dex.utilities.hpp"
+#include <doctest/doctest.h>
 
-#ifdef __MAC_10_15
-#import <AppKit/AppKit.h>
-#endif
-
-#ifdef __MAC_10_15
-static NSColor *colorFromRGB(unsigned char r, unsigned char g, unsigned char b)
+TEST_CASE("AtomicDex Pro get_atomic_dex_data_folder()")
 {
-    return [NSColor colorWithCalibratedRed:(r/255.0f) green:(g/255.0f) blue:(b/255.0f) alpha:1.0];
+    auto result = get_atomic_dex_data_folder();
+    MESSAGE("Result is [" << result << "]");
+    CHECK_FALSE(result.string().empty());
 }
-#endif
 
-void atomic_dex::mac_window_setup(long winid, bool fullscreen)
+TEST_CASE("AtomicDex Pro get_atomic_dex_logs_folder()")
 {
-    (void)winid;
-    (void)fullscreen;
-#ifdef __MAC_10_15
-    NSView *nativeView = reinterpret_cast<NSView *>(winid);
-    NSWindow* nativeWindow = [nativeView window];
-    NSWindowStyleMask windowMask = NSWindowStyleMaskFullSizeContentView | NSWindowStyleMaskBorderless | NSWindowStyleMaskTitled | NSWindowStyleMaskClosable | NSWindowStyleMaskMiniaturizable | NSWindowStyleMaskResizable;
-    if (fullscreen) {
-        windowMask |= NSWindowStyleMaskFullScreen;
-    }
-    [nativeWindow setStyleMask: windowMask];
-    [nativeWindow setTitlebarAppearsTransparent:YES];
-    NSColor *myColor = colorFromRGB(30, 41, 56);
-    [myColor set];
-    [nativeWindow setBackgroundColor: myColor];
-    [nativeWindow setTitleVisibility: static_cast<NSWindowTitleVisibility>(1)];
-#endif
+    auto result = get_atomic_dex_logs_folder();
+    MESSAGE("Result is [" << result.string() << "]");
+    CHECK_FALSE(result.string().empty());
+    CHECK(fs::exists(result));
+}
+
+TEST_CASE("AtomicDex Pro get_atomic_dex_current_log_file()")
+{
+    auto result = get_atomic_dex_current_log_file();
+    MESSAGE("Result is [" << result.string() << "]");
+    CHECK_FALSE(result.string().empty());
+    CHECK_FALSE(fs::exists(result));
 }

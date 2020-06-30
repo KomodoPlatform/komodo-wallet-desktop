@@ -7,6 +7,7 @@ import dependencies
 import generate
 import build
 import bundle
+import tests
 import clean
 
 let doc = """
@@ -19,6 +20,7 @@ Usage:
   ci_tools_atomic_dex clean (full|dependencies|build_dir)
   ci_tools_atomic_dex generate (release|debug) [--osx_sdk=<sdk_path>] [--compiler=<compiler_path>]
   ci_tools_atomic_dex bundle (release|debug) [--osx_sdk=<sdk_path>] [--compiler=<compiler_path>]
+  ci_tools_atomic_dex tests (release|debug) [--osx_sdk=<sdk_path>] [--compiler=<compiler_path>]
   ci_tools_atomic_dex --version
   ci_tools_atomic_dex (-h | --help)
 
@@ -49,6 +51,11 @@ proc main() =
       bundle("Release", $args["--osx_sdk"], $args["--compiler"])
     elif args["debug"]:
       bundle("Debug", $args["--osx_sdk"], $args["--compiler"])
+  elif args["tests"]:
+    if args["release"]:
+      run_tests("Release", $args["--osx_sdk"], $args["--compiler"])
+    elif args["debug"]:
+      run_tests("Debug", $args["--osx_sdk"], $args["--compiler"])
   elif args["clean"]:
     if args["full"]:
       clean("full")

@@ -604,12 +604,25 @@ namespace atomic_dex
         const auto tools_path = ag::core::assets_real_path() / "tools/mm2/";
 
         nlohmann::to_json(json_cfg, cfg);
+        fs::path mm2_cfg_path = (fs::temp_directory_path() / "MM2.json");
 
-        const std::array<std::string, 2> args = {(tools_path / "mm2").string(), json_cfg.dump()};
+        std::ofstream ofs(mm2_cfg_path.string());
+        ofs << json_cfg.dump();
+        ofs.close();
+        const std::array<std::string, 1> args = {(tools_path / "mm2").string()};
         reproc::options                  options;
-        options.redirect.parent   = true;
+        options.redirect.parent = true;
+#if defined(WIN32)
+        std::ostringstream env_mm2;
+        env_mm2 << "MM_CONF_PATH=" << mm2_cfg_path.string();
+        _putenv(env_mm2.str().c_str());
+        spdlog::debug("env: {}", std::getenv("MM_CONF_PATH"));
+#else
+        options.environment = std::unordered_map<std::string, std::string>{{"MM_CONF_PATH", mm2_cfg_path.string()}};
+#endif
         options.working_directory = strdup(tools_path.string().c_str());
 
+        spdlog::debug("command line: {}, from directory: {}", args[0], options.working_directory);
         const auto ec = m_mm2_instance.start(args, options);
 
         if (ec)
@@ -617,12 +630,12 @@ namespace atomic_dex
             spdlog::error("{}", ec.message());
         }
 
-        m_mm2_init_thread = std::thread([this]() {
+        m_mm2_init_thread = std::thread([this, mm2_cfg_path]() {
             using namespace std::chrono_literals;
             // loguru::set_thread_name("mm2 init thread");
 
             const auto wait_ec = m_mm2_instance.wait(2s).second;
-
+            fs::remove(mm2_cfg_path);
             if (wait_ec.value() == static_cast<int>(std::errc::timed_out) || wait_ec.value() == 258)
             {
                 spdlog::info("mm2 is initialized");
@@ -647,13 +660,13 @@ namespace atomic_dex
             return "0";
         }
 
-        t_float_50 final_balance = get_balance_with_locked_funds(ticker);
+        t_float_50 final_balance = get_balance(ticker);
 
         return final_balance.convert_to<std::string>();
     }
 
     t_float_50
-    mm2::get_balance_with_locked_funds(const std::string& ticker) const
+    mm2::get_balance(const std::string& ticker) const
     {
         if (m_balance_informations.find(ticker) == m_balance_informations.end())
         {
@@ -661,10 +674,8 @@ namespace atomic_dex
         }
         const auto       answer = m_balance_informations.at(ticker);
         const t_float_50 balance(answer.balance);
-        const t_float_50 locked_funds(answer.locked_by_swaps);
-        auto             final_balance = balance - locked_funds;
 
-        return final_balance;
+        return balance;
     }
 
     t_transactions
@@ -924,7 +935,7 @@ namespace atomic_dex
     bool
     mm2::do_i_have_enough_funds(const std::string& ticker, const t_float_50& amount) const
     {
-        auto funds = get_balance_with_locked_funds(ticker);
+        auto funds = get_balance(ticker);
         return funds > amount;
     }
 
@@ -984,8 +995,7 @@ namespace atomic_dex
     }
 
     t_sell_answer
-    mm2::place_sell_order(
-        t_sell_request&& request, const t_float_50& total, t_mm2_ec& ec) const
+    mm2::place_sell_order(t_sell_request&& request, const t_float_50& total, t_mm2_ec& ec) const
     {
         spdlog::debug("{} l{} f[{}]", __FUNCTION__, __LINE__, fs::path(__FILE__).filename().string());
 

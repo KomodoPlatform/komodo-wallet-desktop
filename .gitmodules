@@ -1,0 +1,3 @@
+[submodule "ci_tools_atomic_dex/vcpkg-repo"]
+	path = ci_tools_atomic_dex/vcpkg-repo
+	url = https://github.com/KomodoPlatform/vcpkg

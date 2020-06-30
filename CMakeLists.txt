@@ -40,23 +40,23 @@ endif ()
 
 if (${CMAKE_SYSTEM_NAME} STREQUAL "Linux")
     set(LINUX TRUE)
-endif()
+endif ()
 
 if (UNIX AND NOT APPLE)
-   set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -stdlib=libc++ -lc++abi")
-   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -stdlib=libc++")
-endif()
+    set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -stdlib=libc++ -lc++abi")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -stdlib=libc++")
+endif ()
 
 ##! We fetch our dependence
 if (APPLE)
     FetchContent_Declare(mm2
-            URL https://github.com/KomodoPlatform/atomicDEX-API/releases/download/beta-2.0.2066/mm2-72073d391-Darwin-Release.zip)
+            URL https://github.com/KomodoPlatform/atomicDEX-API/releases/download/beta-2.0.2103/mm2-281d6ec86-Darwin-Release.zip)
 elseif (UNIX AND NOT APPLE)
     FetchContent_Declare(mm2
-            URL https://github.com/KomodoPlatform/atomicDEX-API/releases/download/beta-2.0.2066/mm2-72073d391-Linux-Release.zip)
+            URL https://github.com/KomodoPlatform/atomicDEX-API/releases/download/beta-2.0.2103/mm2-281d6ec86-Linux-Release.zip)
 else ()
     FetchContent_Declare(mm2
-            URL https://github.com/KomodoPlatform/atomicDEX-API/releases/download/beta-2.0.2066/mm2-72073d391-Windows_NT-Release.zip)
+            URL https://github.com/KomodoPlatform/atomicDEX-API/releases/download/beta-2.0.2103/mm2-281d6ec86-Windows_NT-Release.zip)
 endif ()
 
 FetchContent_Declare(jl777-coins
@@ -96,6 +96,8 @@ set(ICON)
 configure_icon_osx(data/osx/atomic_qt.icns ICON atomic_qt.icns)
 ##! End antara
 
+find_package(date CONFIG REQUIRED)
+find_package(doctest CONFIG REQUIRED)
 find_package(folly CONFIG REQUIRED)
 find_package(spdlog CONFIG REQUIRED)
 find_package(Boost REQUIRED COMPONENTS filesystem random)
@@ -108,7 +110,7 @@ add_library(unofficial-bitcoin INTERFACE)
 if (APPLE)
     target_link_libraries(unofficial-bitcoin INTERFACE ${unofficial-bitcoin-external})
     target_include_directories(unofficial-bitcoin INTERFACE ${unofficial-btc-headers})
-elseif(WIN32)
+elseif (WIN32)
     target_link_directories(unofficial-bitcoin INTERFACE wally)
     target_link_libraries(unofficial-bitcoin INTERFACE wally)
     target_include_directories(unofficial-bitcoin INTERFACE wally)
@@ -118,7 +120,7 @@ else ()
     find_path(unofficial-wally-headers wally_core.h)
     target_link_libraries(unofficial-bitcoin INTERFACE ${unofficial-wally} ${unofficial-secp})
     target_include_directories(unofficial-bitcoin INTERFACE ${unofficial-wally-headers})
-endif()
+endif ()
 add_library(unofficial-btc::bitcoin ALIAS unofficial-bitcoin)
 
 set(TS_FILES
@@ -131,46 +133,35 @@ qt5_add_translation(qmFiles ${TS_FILES})
 message(STATUS "${QM_FILES}")
 message(STATUS "${TS_FILES}")
 
-if (ANDROID)
-    add_library(atomic_qt SHARED
-            main.cpp
-            qml.qrc
-            ${TS_FILES}
-            )
-else ()
-    add_executable(atomic_qt MACOSX_BUNDLE ${ICON}
-            main.cpp
-            src/atomic.dex.kill.cpp
-            src/atomic.dex.app.cpp
-            src/atomic.dex.cfg.cpp
-            src/atomic.dex.mm2.cpp
-            src/atomic.dex.coins.config.cpp
-            src/atomic.dex.mm2.api.cpp
-            src/atomic.dex.mm2.error.code.cpp
-            src/atomic.dex.provider.coinpaprika.api.cpp
-            src/atomic.dex.qt.bindings.cpp
-            src/atomic.dex.provider.coinpaprika.cpp
-            src/atomic.dex.qt.current.coin.infos.cpp
-            src/atomic.dex.security.cpp
-            $<$<PLATFORM_ID:Darwin>:src/osx/atomic.dex.osx.manager.mm>
-            qml.qrc
-            ${qmFiles}
-            )
-endif ()
+##! Atomic QT Shared Deps Between main executable and unit tests
+add_library(atomic_qt_shared_deps INTERFACE)
+target_sources(atomic_qt_shared_deps INTERFACE
+        ${CMAKE_SOURCE_DIR}/src/atomic.dex.kill.cpp
+        ${CMAKE_SOURCE_DIR}/src/atomic.dex.app.cpp
+        ${CMAKE_SOURCE_DIR}/src/atomic.dex.cfg.cpp
+        ${CMAKE_SOURCE_DIR}/src/atomic.dex.mm2.cpp
+        ${CMAKE_SOURCE_DIR}/src/atomic.dex.coins.config.cpp
+        ${CMAKE_SOURCE_DIR}/src/atomic.dex.mm2.api.cpp
+        ${CMAKE_SOURCE_DIR}/src/atomic.dex.mm2.error.code.cpp
+        ${CMAKE_SOURCE_DIR}/src/atomic.dex.provider.coinpaprika.api.cpp
+        ${CMAKE_SOURCE_DIR}/src/atomic.dex.qt.bindings.cpp
+        ${CMAKE_SOURCE_DIR}/src/atomic.dex.provider.coinpaprika.cpp
+        ${CMAKE_SOURCE_DIR}/src/atomic.dex.qt.current.coin.infos.cpp
+        ${CMAKE_SOURCE_DIR}/src/atomic.dex.security.cpp
+        $<$<PLATFORM_ID:Darwin>:${CMAKE_SOURCE_DIR}/src/osx/atomic.dex.osx.manager.mm>
+        ${CMAKE_SOURCE_DIR}/qml.qrc
+        ${qmFiles}
+        )
 
-add_compile_definitions(LOGURU_WITH_FILEABS=1)
-find_package(date CONFIG REQUIRED)
-target_compile_definitions(atomic_qt
-        PRIVATE
+target_compile_definitions(atomic_qt_shared_deps
+        INTERFACE
         $<$<OR:$<CONFIG:Debug>,$<CONFIG:RelWithDebInfo>>:QT_QML_DEBUG>
-		$<$<PLATFORM_ID:Windows>:HAS_REMOTE_API>
-		$<$<PLATFORM_ID:Windows>:AUTO_DOWNLOAD>
-		)
-target_include_directories(atomic_qt PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/src
-        $<$<PLATFORM_ID:Darwin>:${CMAKE_CURRENT_SOURCE_DIR}/src/osx>
-        ${libqr_code_SOURCE_DIR}/src)
-target_link_libraries(atomic_qt
-        PRIVATE
+        $<$<PLATFORM_ID:Windows>:HAS_REMOTE_API>
+        $<$<PLATFORM_ID:Windows>:AUTO_DOWNLOAD>
+        )
+
+target_link_libraries(atomic_qt_shared_deps
+        INTERFACE
         Qt5::Core
         Qt5::Quick
         Qt5::Svg
@@ -186,11 +177,38 @@ target_link_libraries(atomic_qt
         Folly::folly
         date::tz
         Folly::folly_deps
-        $<$<PLATFORM_ID:Darwin>:/usr/local/lib/libcurl.a>
         spdlog::spdlog
         spdlog::spdlog_header_only
         )
-#target_enable_asan(atomic_qt)
+target_include_directories(atomic_qt_shared_deps
+        INTERFACE
+        ${CMAKE_CURRENT_SOURCE_DIR}/src
+        $<$<PLATFORM_ID:Darwin>:${CMAKE_CURRENT_SOURCE_DIR}/src/osx>
+        ${libqr_code_SOURCE_DIR}/src
+        )
+
+##! Main executable
+add_executable(atomic_qt MACOSX_BUNDLE ${ICON}
+        ${CMAKE_CURRENT_SOURCE_DIR}/data/windows/atomic_qt.rc
+        main.cpp
+        )
+
+##! Testing executable
+add_executable(atomic_qt_tests MACOSX_BUNDLE ${ICON}
+        src/atomic.dex.tests.cpp
+        src/atomic.dex.utilities.tests.cpp)
+
+target_link_libraries(atomic_qt
+        PRIVATE
+        atomic_qt_shared_deps
+        $<$<PLATFORM_ID:Darwin>:/usr/local/lib/libcurl.a>
+        )
+
+target_link_libraries(atomic_qt_tests
+        PRIVATE
+        atomic_qt_shared_deps
+        $<$<PLATFORM_ID:Darwin>:/usr/local/lib/libcurl.a>
+        doctest::doctest)
 
 ##! Setting output directory
 set_target_properties(${PROJECT_NAME}
@@ -198,6 +216,12 @@ set_target_properties(${PROJECT_NAME}
         RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin/"
         )
 
+set_target_properties(${PROJECT_NAME}_tests
+        PROPERTIES
+        RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin/"
+        )
+
+##! Move assets
 if (LINUX)
     get_target_property(exe_runtime_directory_at ${PROJECT_NAME} RUNTIME_OUTPUT_DIRECTORY)
     set(output_dir_at "${exe_runtime_directory_at}/AntaraAtomicDexAppDir")
@@ -205,35 +229,45 @@ if (LINUX)
     magic_game_app_image_generation("${CMAKE_CURRENT_SOURCE_DIR}/data/linux"
             "atomic_qt.desktop"
             "atomic_qt.appdata.xml"
-            "komodo_icon.png"
+            "atomic_qt_64.png"
             atomic_qt
             AntaraAtomicDexAppDir
+            ${CMAKE_CURRENT_SOURCE_DIR}/assets
+            )
+
+    magic_game_app_image_generation("${CMAKE_CURRENT_SOURCE_DIR}/data/linux"
+            "atomic_qt.desktop"
+            "atomic_qt.appdata.xml"
+            "atomic_qt_64.png"
+            atomic_qt_tests
+            AntaraAtomicDexTestsAppDir
             ${CMAKE_CURRENT_SOURCE_DIR}/assets
             )
 
     set(from_dir "${CMAKE_CURRENT_SOURCE_DIR}/data/linux")
     set(desktop_file "atomic_qt.desktop")
     set(appdata_file "atomic_qt.appdata.xml")
-    set(app_icon "komodo_icon.png")
+    set(app_icon "atomic_qt_64.png")
     message(STATUS "${output_dir_at}")
     configure_file(${from_dir}/${desktop_file} ${output_dir_at}/usr/share/applications/${desktop_file} COPYONLY)
     configure_file(${from_dir}/${appdata_file} ${output_dir_at}/usr/share/metainfo/${appdata_file} COPYONLY)
-    configure_file(${from_dir}/${app_icon} ${output_dir_at}/usr/share/icons/hicolor/128x128/apps/${app_icon} COPYONLY)
-endif()
+    configure_file(${from_dir}/${app_icon} ${output_dir_at}/usr/share/icons/hicolor/64x64/apps/${app_icon} COPYONLY)
+    configure_file(${from_dir}/${app_icon} ${output_dir_at}/usr/share/icons/default/64x64/apps/${app_icon} COPYONLY)
+endif ()
 
-##! Move assets
 if (WIN32)
     file(COPY assets DESTINATION ${CMAKE_BINARY_DIR}/bin/)
     configure_file(wally/wally.dll ${CMAKE_BINARY_DIR}/bin/ COPYONLY)
     set_target_properties(Folly::folly PROPERTIES INTERFACE_COMPILE_OPTIONS "")
-    if(CMAKE_BUILD_TYPE MATCHES Release)
-      message(STATUS "disabling console")
-      target_compile_definitions(atomic_qt PRIVATE WINDOWS_RELEASE_MAIN)
-      target_link_options(atomic_qt PUBLIC --for-linker -subsystem:windows)
-    endif()
+    if (CMAKE_BUILD_TYPE MATCHES Release)
+        message(STATUS "disabling console")
+        target_compile_definitions(atomic_qt PRIVATE WINDOWS_RELEASE_MAIN)
+        target_link_options(atomic_qt PUBLIC --for-linker -subsystem:windows)
+    endif ()
 endif ()
 
 if (APPLE)
     file(COPY assets DESTINATION ${CMAKE_BINARY_DIR}/bin/${PROJECT_NAME}.app/Contents/Resources)
+    file(COPY assets DESTINATION ${CMAKE_BINARY_DIR}/bin/${PROJECT_NAME}_tests.app/Contents/Resources)
     include(data/osx/atomicdex_install.cmake)
 endif ()

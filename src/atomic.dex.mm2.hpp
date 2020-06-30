@@ -251,7 +251,7 @@ namespace atomic_dex
         t_my_recent_swaps_answer               get_swaps() noexcept;
 
         //! Get balance with locked funds for a given ticker as a boost::multiprecision::cpp_dec_float_50.
-        [[nodiscard]] t_float_50 get_balance_with_locked_funds(const std::string& ticker) const;
+        [[nodiscard]] t_float_50 get_balance(const std::string& ticker) const;
 
         //! Return true if we the balance of the `ticker` > amount, false otherwise.
         [[nodiscard]] bool do_i_have_enough_funds(const std::string& ticker, const t_float_50& amount) const;
