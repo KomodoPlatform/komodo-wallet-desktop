@@ -71,7 +71,7 @@ Rectangle {
     }
 
     function fieldsAreFilled() {
-        return input_volume.field.text !== '' && parseFloat(input_volume.field.text) > 0
+        return input_volume.field.text !== ''
     }
 
     function hasEthFees() {
@@ -87,15 +87,16 @@ Rectangle {
     }
 
     function isValid() {
-        if(!my_side) return fieldsAreFilled()
-
-        const ticker = getTicker()
-
         let valid = true
 
+        // Both sides
         if(valid) valid = fieldsAreFilled()
         if(valid) valid = higherThanMinTradeAmount()
-        if(valid) valid = API.get().do_i_have_enough_funds(ticker, input_volume.field.text)
+
+        if(!my_side) return valid
+
+        // Sell side
+        if(valid) valid = API.get().do_i_have_enough_funds(getTicker(), input_volume.field.text)
         if(valid && hasEthFees()) valid = hasEnoughEthForFees()
 
         return valid
