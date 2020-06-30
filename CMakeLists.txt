@@ -129,7 +129,7 @@ set(TS_FILES
         ${CMAKE_SOURCE_DIR}/atomic_qt_design/assets/languages/atomic_qt_tr.ts)
 set_source_files_properties(${TS_FILES} PROPERTIES OUTPUT_LOCATION "${CMAKE_SOURCE_DIR}/atomic_qt_design/assets/languages/")
 qt5_create_translation(QM_FILES ${CMAKE_SOURCE_DIR}/atomic_qt_design/qml ${TS_FILES})
-qt5_add_translation(qmFiles ${TS_FILES})
+#qt5_add_translation(qmFiles ${TS_FILES})
 message(STATUS "${QM_FILES}")
 message(STATUS "${TS_FILES}")
 
@@ -146,6 +146,7 @@ target_sources(atomic_qt_shared_deps INTERFACE
         ${CMAKE_SOURCE_DIR}/src/atomic.dex.provider.coinpaprika.api.cpp
         ${CMAKE_SOURCE_DIR}/src/atomic.dex.qt.bindings.cpp
         ${CMAKE_SOURCE_DIR}/src/atomic.dex.provider.coinpaprika.cpp
+        ${CMAKE_SOURCE_DIR}/src/atomic.dex.provider.cex.prices.provider.api.cpp
         ${CMAKE_SOURCE_DIR}/src/atomic.dex.qt.current.coin.infos.cpp
         ${CMAKE_SOURCE_DIR}/src/atomic.dex.security.cpp
         $<$<PLATFORM_ID:Darwin>:${CMAKE_SOURCE_DIR}/src/osx/atomic.dex.osx.manager.mm>
@@ -196,7 +197,8 @@ add_executable(atomic_qt MACOSX_BUNDLE ${ICON}
 ##! Testing executable
 add_executable(atomic_qt_tests MACOSX_BUNDLE ${ICON}
         src/atomic.dex.tests.cpp
-        src/atomic.dex.utilities.tests.cpp)
+        src/atomic.dex.utilities.tests.cpp
+        src/atomic.dex.provider.cex.prices.provider.api.tests.cpp)
 
 target_link_libraries(atomic_qt
         PRIVATE
