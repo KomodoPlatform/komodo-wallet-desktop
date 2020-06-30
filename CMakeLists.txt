@@ -199,6 +199,7 @@ add_executable(atomic_qt MACOSX_BUNDLE ${ICON}
 add_executable(atomic_qt_tests MACOSX_BUNDLE ${ICON}
         src/atomic.dex.tests.cpp
         src/atomic.dex.utilities.tests.cpp
+        src/atomic.dex.provider.cex.prices.tests.cpp
         src/atomic.dex.provider.cex.prices.api.tests.cpp)
 
 target_link_libraries(atomic_qt
