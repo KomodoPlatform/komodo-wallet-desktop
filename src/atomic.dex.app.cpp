@@ -42,6 +42,7 @@
 #include "atomic.dex.app.hpp"
 #include "atomic.dex.mm2.hpp"
 #include "atomic.dex.provider.coinpaprika.hpp"
+#include "atomic.dex.provider.cex.prices.hpp"
 #include "atomic.dex.qt.bindings.hpp"
 #include "atomic.dex.security.hpp"
 #include "atomic.dex.utilities.hpp"
@@ -247,6 +248,7 @@ namespace atomic_dex
         {
             auto& mm2_s = system_manager_.create_system<mm2>();
             system_manager_.create_system<coinpaprika_provider>(mm2_s);
+            system_manager_.create_system<cex_prices_provider>(mm2_s);
 
             connect_signals();
             this->m_need_a_full_refresh_of_mm2 = false;
@@ -439,6 +441,7 @@ namespace atomic_dex
         //! MM2 system need to be created before the GUI and give the instance to the gui
         auto& mm2_system = system_manager_.create_system<mm2>();
         system_manager_.create_system<coinpaprika_provider>(mm2_system);
+        system_manager_.create_system<cex_prices_provider>(mm2_system);
 
         connect_signals();
         if (is_there_a_default_wallet())
@@ -825,6 +828,7 @@ namespace atomic_dex
 
         system_manager_.mark_system<mm2>();
         system_manager_.mark_system<coinpaprika_provider>();
+        system_manager_.mark_system<cex_prices_provider>();
 
         get_dispatcher().sink<change_ticker_event>().disconnect<&application::on_change_ticker_event>(*this);
         get_dispatcher().sink<enabled_coins_event>().disconnect<&application::on_enabled_coins_event>(*this);
