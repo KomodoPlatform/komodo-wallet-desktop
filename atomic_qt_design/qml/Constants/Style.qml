@@ -8,7 +8,7 @@ QtObject {
     readonly property FontLoader mySystemFontMedium: FontLoader { source: "../../assets/fonts/Montserrat-Medium.ttf" }
     readonly property FontLoader mySystemFontSemiBold: FontLoader { source: "../../assets/fonts/Montserrat-SemiBold.ttf" }
     readonly property font font: Qt.font({
-                                             family: mySystemFont.name,
+                                             family: "Montserrat",
                                              pixelSize: Qt.application.font.pixelSize
                                          })
 
