@@ -15,3 +15,19 @@
  ******************************************************************************/
 
 #include "atomic.dex.provider.cex.prices.hpp"
+
+namespace atomic_dex
+{
+    cex_prices_provider::cex_prices_provider(entt::registry& registry, mm2& mm2_instance) : system(registry), m_mm2_instance(mm2_instance)
+    {
+        spdlog::debug("{} l{} f[{}]", __FUNCTION__, __LINE__, fs::path(__FILE__).filename().string());
+        disable();
+        //
+    }
+
+    void
+    cex_prices_provider::update() noexcept
+    {
+
+    }
+} // namespace atomic_dex

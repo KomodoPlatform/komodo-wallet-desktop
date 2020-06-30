@@ -892,6 +892,7 @@ namespace atomic_dex
     application::get_trade_infos(const QString& ticker, const QString& receive_ticker, const QString& amount)
     {
         spdlog::debug("{} l{} f[{}]", __FUNCTION__, __LINE__, fs::path(__FILE__).filename().string());
+        spdlog::debug("ticker {}, receive_ticker {}, amount {}", ticker.toStdString(), receive_ticker.toStdString(), amount.toStdString());
         QVariantMap out;
 
         auto trade_fee_f = get_mm2().get_trade_fee(ticker.toStdString(), amount.toStdString(), false);
@@ -908,7 +909,9 @@ namespace atomic_dex
             }
 
             auto tx_fee_value     = QString::fromStdString(get_formated_float(tx_fee_f));
+
             auto final_balance    = get_formated_float(t_float_50(amount.toStdString()) - (trade_fee_f + tx_fee_f));
+            spdlog::debug("amount{} - (trade_fee{} + tx_fee{}) = final_balance{}", amount.toStdString(), trade_fee_f.str(), tx_fee_f.str(), final_balance);
             auto final_balance_qt = QString::fromStdString(final_balance);
 
             out.insert("trade_fee", QString::fromStdString(get_mm2().get_trade_fee_str(ticker.toStdString(), amount.toStdString(), false)));
