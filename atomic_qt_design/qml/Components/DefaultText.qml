@@ -5,7 +5,7 @@ import QtQuick.Controls 2.12
 import "../Constants"
 
 Text {
-    font.family: "Montserrat"
+    font.family: Style.font
     font.pixelSize: Style.textSize
     color: Style.colorText
 
