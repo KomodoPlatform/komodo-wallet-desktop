@@ -137,6 +137,14 @@ Item {
         return { state: '', data: { error: '' } }
     }
 
+    function getLastEvent(swap) {
+        if(swap.is_recent_swap && swap.events.length > 0) {
+            return swap.events[swap.events.length-1]
+        }
+
+        return { state: '', data: { error: '' } }
+    }
+
     function getStatus(swap) {
         if(!swap.is_recent_swap && !swap.am_i_maker) return status_swap_matching
         if(!swap.is_recent_swap) return status_swap_not_swap
