@@ -44,3 +44,13 @@ TEST_CASE("ohlc answer")
     atomic_dex::ohlc_answer answer;
     CHECK_NOTHROW(atomic_dex::from_json(j, answer));
 }
+
+TEST_CASE("rpc ohlc")
+{
+    //
+    atomic_dex::ohlc_request req{.base_asset = "kmd", .quote_asset = "btc"};
+    auto answer = atomic_dex::rpc_ohlc_get_data(std::move(req));
+    CHECK_FALSE(answer.error.has_value());
+    CHECK(answer.result.has_value());
+    CHECK_GT(answer.result.value().result.size(), 0);
+}

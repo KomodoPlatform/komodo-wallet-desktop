@@ -61,4 +61,38 @@ namespace atomic_dex
             from_json(j, answer.result.value());
         }
     }
+
+    ohlc_answer
+    rpc_ohlc_get_data(ohlc_request&& request)
+    {
+        using namespace std::string_literals;
+        ohlc_answer answer;
+
+        spdlog::debug("{} l{} f[{}]", __FUNCTION__, __LINE__, fs::path(__FILE__).filename().string());
+        auto&& [base_id, quote_id] = request;
+        const auto url             = g_cex_endpoint + "/api/v1/ohlc/"s + base_id + "-"s + quote_id;
+        const auto resp            = RestClient::get(url);
+
+        spdlog::info("url: {}", url);
+        spdlog::info("{} l{} resp code: {}", __FUNCTION__, __LINE__, resp.code);
+
+        if (resp.code != 200)
+        {
+            answer.error = "error occured, code : "s + std::to_string(resp.code);
+        }
+        else
+        {
+            try
+            {
+                const auto json_answer = nlohmann::json::parse(resp.body);
+                from_json(json_answer, answer);
+            }
+            catch (const std::exception& error)
+            {
+                spdlog::warn("{}", error.what());
+                answer.error = error.what();
+            }
+        }
+        return answer;
+    }
 } // namespace atomic_dex
