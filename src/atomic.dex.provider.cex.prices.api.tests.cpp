@@ -14,7 +14,7 @@
  *                                                                            *
  ******************************************************************************/
 
-#include "atomic.dex.provider.cex.prices.provider.api.hpp"
+#include "atomic.dex.provider.cex.prices.api.hpp"
 #include <doctest/doctest.h>
 
 TEST_CASE("ohlc answer success")

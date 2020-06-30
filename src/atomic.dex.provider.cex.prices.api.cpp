@@ -14,7 +14,7 @@
  *                                                                            *
  ******************************************************************************/
 
-#include "atomic.dex.provider.cex.prices.provider.api.hpp"
+#include "atomic.dex.provider.cex.prices.api.hpp"
 
 namespace atomic_dex
 {
