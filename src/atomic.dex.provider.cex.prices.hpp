@@ -30,12 +30,22 @@ namespace atomic_dex
         //! Private fields
         mm2& m_mm2_instance;
 
+        //! Threads
+        std::thread  m_provider_ohlc_fetcher_thread;
+        timed_waiter m_provider_thread_timer;
+
       public:
         //! Constructor
         cex_prices_provider(entt::registry& registry, mm2& mm2_instance);
 
+        //! Destructor
+        ~cex_prices_provider() noexcept final;
+
         // Override
         void update() noexcept override;
+
+        //! Event that occur when the mm2 process is launched correctly.
+        void on_mm2_started(const mm2_started& evt) noexcept;
     };
 } // namespace atomic_dex
 

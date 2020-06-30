@@ -22,12 +22,44 @@ namespace atomic_dex
     {
         spdlog::debug("{} l{} f[{}]", __FUNCTION__, __LINE__, fs::path(__FILE__).filename().string());
         disable();
-        //
+        dispatcher_.sink<mm2_started>().connect<&cex_prices_provider::on_mm2_started>(*this);
     }
 
     void
     cex_prices_provider::update() noexcept
     {
-
     }
+
+    void
+    cex_prices_provider::on_mm2_started([[maybe_unused]] const mm2_started& evt) noexcept
+    {
+        spdlog::debug("{} l{} f[{}]", __FUNCTION__, __LINE__, fs::path(__FILE__).filename().string());
+
+        m_provider_ohlc_fetcher_thread = std::thread([this]() {
+            //
+            spdlog::info("cex prices provider thread started");
+
+            using namespace std::chrono_literals;
+            do
+            {
+                spdlog::info("fetching ohlc value");
+            } while (not m_provider_thread_timer.wait_for(1h));
+        });
+    }
+
+    cex_prices_provider::~cex_prices_provider() noexcept
+    {
+        //!
+        spdlog::debug("{} l{} f[{}]", __FUNCTION__, __LINE__, fs::path(__FILE__).filename().string());
+
+        m_provider_thread_timer.interrupt();
+
+        if (m_provider_ohlc_fetcher_thread.joinable())
+        {
+            m_provider_ohlc_fetcher_thread.join();
+        }
+
+        dispatcher_.sink<mm2_started>().disconnect<&cex_prices_provider::on_mm2_started>(*this);
+    }
+
 } // namespace atomic_dex
