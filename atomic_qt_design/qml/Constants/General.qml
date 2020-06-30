@@ -90,6 +90,9 @@ QtObject {
     }
 
     function formatPercent(value, show_prefix=true) {
+        const result = value + ' %'
+        if(!show_prefix) return result
+
         let prefix = ''
         if(value > 0) prefix = '+ '
         else if(value < 0) {
@@ -97,7 +100,7 @@ QtObject {
             value *= -1
         }
 
-        return (show_prefix ? prefix : '') + value + ' %'
+        return prefix + result
     }
 
     readonly property int amountPrecision: 8
