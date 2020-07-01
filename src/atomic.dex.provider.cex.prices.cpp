@@ -17,6 +17,7 @@
 //! Project headers
 #include "atomic.dex.provider.cex.prices.hpp"
 #include "atomic.dex.provider.cex.prices.api.hpp"
+#include "atomic.threadpool.hpp"
 
 namespace atomic_dex
 {
@@ -64,7 +65,7 @@ namespace atomic_dex
             m_current_orderbook_ticker_pair = {evt.base, evt.rel};
             spdlog::debug("new orderbook pair for cex provider [{} / {}]", m_current_orderbook_ticker_pair.first, m_current_orderbook_ticker_pair.second);
             auto [base, rel] = m_current_orderbook_ticker_pair;
-            process_ohlc(base, rel);
+            spawn([base = base, rel = rel, this]() { process_ohlc(base, rel); });
         }
     }
 

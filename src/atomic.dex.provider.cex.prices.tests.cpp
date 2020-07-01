@@ -43,6 +43,8 @@ SCENARIO("atomic dex cex price service functionnality")
             AND_WHEN("i set the current orderbook pair to a valid supported pair (kmd-btc)")
             {
                 registry.ctx<entt::dispatcher>().trigger<atomic_dex::orderbook_refresh>("kmd", "btc");
+                using namespace std::chrono_literals;
+                std::this_thread::sleep_for(2s);
                 AND_THEN("i check if data are available, and if the port is not supported")
                 {
                     CHECK(cex_system.is_ohlc_data_available());
