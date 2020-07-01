@@ -917,8 +917,8 @@ namespace atomic_dex
                 out.insert("not_enough_balance_to_pay_the_fees", false);
             } else {
                 out.insert("not_enough_balance_to_pay_the_fees", true);
-                auto fees_needed = t_float_50(0.00777) - final_balance_f;
-                out.insert("fees_needed", QString::fromStdString(get_formated_float(fees_needed)));
+                auto amount_needed = t_float_50(0.00777) - final_balance_f;
+                out.insert("amount_needed", QString::fromStdString(get_formated_float(amount_needed)));
             }
             auto final_balance_qt = QString::fromStdString(final_balance);
 
