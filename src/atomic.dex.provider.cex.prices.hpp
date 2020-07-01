@@ -33,9 +33,10 @@ namespace atomic_dex
         //! OHLC Related
         std::pair<std::string, std::string> m_current_orderbook_ticker_pair;
         std::mutex                          m_orderbook_tickers_data_mutex;
+        std::array<std::string, 2>          m_supported_pair{"kmd-btc", "btc-usdt"};
 
-        nlohmann::json m_current_ohlc_data;
-        std::mutex     m_ohlc_data_mutex;
+        nlohmann::json     m_current_ohlc_data;
+        mutable std::mutex m_ohlc_data_mutex;
 
         //! Threads
         std::thread  m_provider_ohlc_fetcher_thread;
@@ -51,11 +52,20 @@ namespace atomic_dex
         // Override
         void update() noexcept override;
 
+        //! Process OHLC http rest request
+        bool process_ohlc(const std::string& base, const std::string& rel) noexcept;
+
+        //! Return true if json ohlc data is not empty, otherwise return false
+        bool is_ohlc_data_available() const noexcept;
+
+        bool is_pair_supported(const std::string& base, const std::string& rel) const noexcept;
+
         //! Event that occur when the mm2 process is launched correctly.
         void on_mm2_started(const mm2_started& evt) noexcept;
 
         //! Event that occur when the ticker pair is changed in the front end
-        void on_current_orderbook_ticker_pair_changed(const orderbook_refresh& evt) noexcept;;
+        void on_current_orderbook_ticker_pair_changed(const orderbook_refresh& evt) noexcept;
+        ;
     };
 } // namespace atomic_dex
 
