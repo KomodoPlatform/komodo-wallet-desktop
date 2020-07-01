@@ -53,4 +53,5 @@ TEST_CASE("rpc ohlc")
     CHECK_FALSE(answer.error.has_value());
     CHECK(answer.result.has_value());
     CHECK_GT(answer.result.value().result.size(), 0);
+    CHECK(answer.result.value().raw_result.contains("60"));
 }

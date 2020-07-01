@@ -30,6 +30,13 @@ namespace atomic_dex
         //! Private fields
         mm2& m_mm2_instance;
 
+        //! OHLC Related
+        std::pair<std::string, std::string> m_current_orderbook_ticker_pair;
+        std::mutex                          m_orderbook_tickers_data_mutex;
+
+        nlohmann::json m_current_ohlc_data;
+        std::mutex     m_ohlc_data_mutex;
+
         //! Threads
         std::thread  m_provider_ohlc_fetcher_thread;
         timed_waiter m_provider_thread_timer;
@@ -46,6 +53,9 @@ namespace atomic_dex
 
         //! Event that occur when the mm2 process is launched correctly.
         void on_mm2_started(const mm2_started& evt) noexcept;
+
+        //! Event that occur when the ticker pair is changed in the front end
+        void on_current_orderbook_ticker_pair_changed(const orderbook_refresh& evt) noexcept;;
     };
 } // namespace atomic_dex
 

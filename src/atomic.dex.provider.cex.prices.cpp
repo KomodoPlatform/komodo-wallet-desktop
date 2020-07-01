@@ -23,11 +23,38 @@ namespace atomic_dex
         spdlog::debug("{} l{} f[{}]", __FUNCTION__, __LINE__, fs::path(__FILE__).filename().string());
         disable();
         dispatcher_.sink<mm2_started>().connect<&cex_prices_provider::on_mm2_started>(*this);
+        dispatcher_.sink<orderbook_refresh>().connect<&cex_prices_provider::on_current_orderbook_ticker_pair_changed>(*this);
     }
 
     void
     cex_prices_provider::update() noexcept
     {
+    }
+
+    cex_prices_provider::~cex_prices_provider() noexcept
+    {
+        //!
+        spdlog::debug("{} l{} f[{}]", __FUNCTION__, __LINE__, fs::path(__FILE__).filename().string());
+
+        m_provider_thread_timer.interrupt();
+
+        if (m_provider_ohlc_fetcher_thread.joinable())
+        {
+            m_provider_ohlc_fetcher_thread.join();
+        }
+
+        dispatcher_.sink<mm2_started>().disconnect<&cex_prices_provider::on_mm2_started>(*this);
+    }
+
+    void
+    cex_prices_provider::on_current_orderbook_ticker_pair_changed(const orderbook_refresh& evt) noexcept
+    {
+        spdlog::debug("{} l{} f[{}]", __FUNCTION__, __LINE__, fs::path(__FILE__).filename().string());
+
+        m_orderbook_tickers_data_mutex.lock();
+        m_current_orderbook_ticker_pair = {evt.base, evt.rel};
+        spdlog::debug("new orderbook pair for cex provider [{} / {}]", m_current_orderbook_ticker_pair.first, m_current_orderbook_ticker_pair.second);
+        m_orderbook_tickers_data_mutex.unlock();
     }
 
     void
@@ -45,21 +72,6 @@ namespace atomic_dex
                 spdlog::info("fetching ohlc value");
             } while (not m_provider_thread_timer.wait_for(1h));
         });
-    }
-
-    cex_prices_provider::~cex_prices_provider() noexcept
-    {
-        //!
-        spdlog::debug("{} l{} f[{}]", __FUNCTION__, __LINE__, fs::path(__FILE__).filename().string());
-
-        m_provider_thread_timer.interrupt();
-
-        if (m_provider_ohlc_fetcher_thread.joinable())
-        {
-            m_provider_ohlc_fetcher_thread.join();
-        }
-
-        dispatcher_.sink<mm2_started>().disconnect<&cex_prices_provider::on_mm2_started>(*this);
     }
 
 } // namespace atomic_dex

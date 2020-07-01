@@ -43,6 +43,7 @@ namespace atomic_dex
         using t_format        = std::string;
         using t_ohlc_contents = std::vector<ohlc_contents>;
         std::unordered_map<t_format, t_ohlc_contents> result;
+        nlohmann::json                                raw_result;
     };
 
     struct ohlc_answer

@@ -29,6 +29,8 @@ namespace atomic_dex
     {
         spdlog::debug("{} l{} f[{}]", __FUNCTION__, __LINE__, fs::path(__FILE__).filename().string());
 
+        answer.raw_result = j;
+
         for (const auto& [key, value]: j.items())
         {
             ohlc_answer_success::t_ohlc_contents contents;
