@@ -392,7 +392,7 @@ Item {
             // Receive
             OrderForm {
                 id: form_rel
-                enabled: form_base.fieldsAreFilled()
+                enabled: form_base.isValid()
                 field.enabled: enabled && !orderIsSelected()
             }
         }
@@ -438,7 +438,11 @@ Item {
         DefaultText {
             Layout.alignment: Qt.AlignHCenter
 
-            text: API.get().empty_string + (qsTr("Sell amount is lower than minimum trade amount") + " : " + General.getMinTradeAmount())
+            text: API.get().empty_string + (form_base.getVolume() < 0 ?
+                                                (qsTr("Not enough balance for the fees. Need at least %1 more", "AMT TICKER").arg(General.formatCrypto("", General.getMinTradeAmount() - parseFloat(form_base.getVolume()), form_base.getTicker()))) :
+                                               (qsTr("Sell amount is lower than minimum trade amount") + " : " + General.getMinTradeAmount())
+
+                      )
             color: Style.colorRed
             visible: form_base.fieldsAreFilled() && !form_base.higherThanMinTradeAmount()
         }

@@ -71,7 +71,7 @@ Rectangle {
     }
 
     function fieldsAreFilled() {
-        return input_volume.field.text !== '' && parseFloat(input_volume.field.text) > 0
+        return input_volume.field.text !== ''
     }
 
     function hasEthFees() {
@@ -87,15 +87,16 @@ Rectangle {
     }
 
     function isValid() {
-        if(!my_side) return fieldsAreFilled()
-
-        const ticker = getTicker()
-
         let valid = true
 
+        // Both sides
         if(valid) valid = fieldsAreFilled()
         if(valid) valid = higherThanMinTradeAmount()
-        if(valid) valid = API.get().do_i_have_enough_funds(ticker, input_volume.field.text)
+
+        if(!my_side) return valid
+
+        // Sell side
+        if(valid) valid = API.get().do_i_have_enough_funds(getTicker(), input_volume.field.text)
         if(valid && hasEthFees()) valid = hasEnoughEthForFees()
 
         return valid
@@ -256,11 +257,12 @@ Rectangle {
                 visible: my_side
                 text: API.get().empty_string + (qsTr("MAX"))
                 onClicked: setMax()
+                enabled: !my_side || getVolume() >= 0
             }
 
             AmountField {
                 id: input_volume
-                field.enabled: root.enabled
+                field.enabled: root.enabled && (!my_side || getVolume() >= 0)
 
                 Layout.fillWidth: true
                 Layout.rightMargin: combo.Layout.rightMargin
