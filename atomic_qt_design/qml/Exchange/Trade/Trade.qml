@@ -428,35 +428,22 @@ Item {
             text: API.get().empty_string + (action_result === "" ? "" : action_result === "success" ? "" : qsTr("Failed to place the order."))
         }
 
-        // Show ETH error
+        // Show errors
         DefaultText {
             Layout.alignment: Qt.AlignHCenter
 
-            text: API.get().empty_string + (qsTr("Not enough ETH for the transaction fee"))
-            color: Style.colorRed
-            visible: form_base.hasEthFees() && !form_base.hasEnoughEthForFees()
-        }
-
-        // Show min amount error
-        DefaultText {
-            Layout.alignment: Qt.AlignHCenter
-
-            text: API.get().empty_string + (form_base.getVolume() < 0 ?
+            text: API.get().empty_string + (notEnoughBalanceForFees() ?
                                                 (qsTr("Not enough balance for the fees. Need at least %1 more", "AMT TICKER").arg(General.formatCrypto("", General.getMinTradeAmount() - parseFloat(form_base.getVolume()), form_base.getTicker()))) :
-                                               (qsTr("Sell amount is lower than minimum trade amount") + " : " + General.getMinTradeAmount())
+                                                (form_base.hasEthFees() && !form_base.hasEnoughEthForFees()) ? (qsTr("Not enough ETH for the transaction fee")) :
+                                                (form_base.fieldsAreFilled() && !form_base.higherThanMinTradeAmount()) ? (qsTr("Sell amount is lower than minimum trade amount") + " : " + General.getMinTradeAmount()) :
+                                                (form_rel.fieldsAreFilled() && !form_rel.higherThanMinTradeAmount()) ? (qsTr("Receive amount is lower than minimum trade amount") + " : " + General.getMinTradeAmount()) : ""
 
                       )
             color: Style.colorRed
-            visible: form_base.fieldsAreFilled() && !form_base.higherThanMinTradeAmount()
-        }
-
-        // Show min amount error
-        DefaultText {
-            Layout.alignment: Qt.AlignHCenter
-
-            text: API.get().empty_string + (qsTr("Receive amount is lower than minimum trade amount") + " : " + General.getMinTradeAmount())
-            color: Style.colorRed
-            visible: form_rel.fieldsAreFilled() && !form_rel.higherThanMinTradeAmount()
+            visible: form_base.fieldsAreFilled() && (notEnoughBalanceForFees() ||
+                                                     (form_base.hasEthFees() && !form_base.hasEnoughEthForFees()) ||
+                                                     !form_base.higherThanMinTradeAmount() ||
+                                                     (form_rel.fieldsAreFilled() && !form_rel.higherThanMinTradeAmount()))
         }
     }
 }
