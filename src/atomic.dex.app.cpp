@@ -910,10 +910,13 @@ namespace atomic_dex
 
             auto tx_fee_value     = QString::fromStdString(get_formated_float(tx_fee_f));
             auto final_balance_f  = t_float_50(amount.toStdString()) - (trade_fee_f + tx_fee_f);
-            std::string final_balance = "0";
+            std::string final_balance = amount.toStdString();
             if (final_balance_f > 0)
             {
                 final_balance = get_formated_float(final_balance_f);
+                out.insert("not_enough_balance_to_pay_the_fees", false);
+            } else {
+                out.insert("not_enough_balance_to_pay_the_fees", true);
             }
             auto final_balance_qt = QString::fromStdString(final_balance);
 
