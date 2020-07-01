@@ -117,7 +117,7 @@ Item {
     }
 
     // Cache Trade Info
-    readonly property var default_curr_trade_info: ({ "input_final_value": "0", "is_ticker_of_fees_eth": false, "trade_fee": "0", "tx_fee": "0"})
+    readonly property var default_curr_trade_info: ({ "input_final_value": "0", "is_ticker_of_fees_eth": false, "trade_fee": "0", "tx_fee": "0", "not_enough_balance_to_pay_the_fees": false })
     property bool valid_trade_info: false
     property var curr_trade_info: default_curr_trade_info
 
@@ -135,6 +135,10 @@ Item {
                 updateTradeInfo()
             }
         }
+    }
+
+    function notEnoughBalanceForFees() {
+        return valid_trade_info && curr_trade_info.not_enough_balance_to_pay_the_fees
     }
 
 
