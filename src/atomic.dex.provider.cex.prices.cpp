@@ -108,8 +108,9 @@ namespace atomic_dex
             auto                     answer = atomic_dex::rpc_ohlc_get_data(std::move(req));
             if (answer.result.has_value())
             {
-                std::scoped_lock data_lock(m_ohlc_data_mutex);
+                m_ohlc_data_mutex.try_lock();
                 m_current_ohlc_data = answer.result.value().raw_result;
+                m_ohlc_data_mutex.unlock();
                 return true;
             }
             spdlog::error("http error: {}", answer.error.value_or("dummy"));
