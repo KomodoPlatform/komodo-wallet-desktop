@@ -257,11 +257,12 @@ Rectangle {
                 visible: my_side
                 text: API.get().empty_string + (qsTr("MAX"))
                 onClicked: setMax()
+                enabled: !my_side || getVolume() >= 0
             }
 
             AmountField {
                 id: input_volume
-                field.enabled: root.enabled
+                field.enabled: root.enabled && (!my_side || getVolume() >= 0)
 
                 Layout.fillWidth: true
                 Layout.rightMargin: combo.Layout.rightMargin
