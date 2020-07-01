@@ -392,7 +392,6 @@ Item {
             // Receive
             OrderForm {
                 id: form_rel
-                enabled: form_base.isValid()
                 field.enabled: enabled && !orderIsSelected()
             }
         }
