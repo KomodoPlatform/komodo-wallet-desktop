@@ -130,7 +130,7 @@ get_formated_float(t_float_50 value)
 {
     std::stringstream ss;
     ss.precision(8);
-    ss << std::fixed << std::move(value);
+    ss << std::fixed << value;
     return ss.str();
 }
 
