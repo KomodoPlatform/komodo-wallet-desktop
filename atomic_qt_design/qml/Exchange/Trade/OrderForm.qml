@@ -173,6 +173,10 @@ Rectangle {
         return false
     }
 
+    function shouldBlockInput() {
+        return my_side && notEnoughBalanceForFees()
+    }
+
     function onBaseChanged() {
         if(capVolume()) updateTradeInfo()
 
@@ -257,12 +261,12 @@ Rectangle {
                 visible: my_side
                 text: API.get().empty_string + (qsTr("MAX"))
                 onClicked: setMax()
-                enabled: !my_side || getVolume() >= 0
+                enabled: !shouldBlockInput()
             }
 
             AmountField {
                 id: input_volume
-                field.enabled: root.enabled && (!my_side || getVolume() >= 0)
+                field.enabled: root.enabled && !shouldBlockInput()
 
                 Layout.fillWidth: true
                 Layout.rightMargin: combo.Layout.rightMargin

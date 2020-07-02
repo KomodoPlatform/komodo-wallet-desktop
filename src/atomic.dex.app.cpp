@@ -894,6 +894,7 @@ namespace atomic_dex
         spdlog::debug("{} l{} f[{}]", __FUNCTION__, __LINE__, fs::path(__FILE__).filename().string());
         QVariantMap out;
 
+
         auto trade_fee_f = get_mm2().get_trade_fee(ticker.toStdString(), amount.toStdString(), false);
         auto answer      = get_mm2().get_trade_fixed_fee(ticker.toStdString());
 
@@ -908,7 +909,17 @@ namespace atomic_dex
             }
 
             auto tx_fee_value     = QString::fromStdString(get_formated_float(tx_fee_f));
-            auto final_balance    = get_formated_float(t_float_50(amount.toStdString()) - (trade_fee_f + tx_fee_f));
+            auto final_balance_f  = t_float_50(amount.toStdString()) - (trade_fee_f + tx_fee_f);
+            std::string final_balance = amount.toStdString();
+            if (final_balance_f > 0)
+            {
+                final_balance = get_formated_float(final_balance_f);
+                out.insert("not_enough_balance_to_pay_the_fees", false);
+            } else {
+                out.insert("not_enough_balance_to_pay_the_fees", true);
+                auto amount_needed = t_float_50(0.00777) - final_balance_f;
+                out.insert("amount_needed", QString::fromStdString(get_formated_float(amount_needed)));
+            }
             auto final_balance_qt = QString::fromStdString(final_balance);
 
             out.insert("trade_fee", QString::fromStdString(get_mm2().get_trade_fee_str(ticker.toStdString(), amount.toStdString(), false)));
