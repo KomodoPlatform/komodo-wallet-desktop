@@ -64,7 +64,6 @@ SetupPage {
                     property bool hovered: false
 
                     color: hovered ? Style.colorTheme7 : "transparent"
-                    anchors.horizontalCenter: parent.horizontalCenter
                     width: 300
                     height: 30
 

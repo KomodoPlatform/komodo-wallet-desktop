@@ -32,6 +32,25 @@ QtObject {
     readonly property var reg_pass_special: /(?=.*[@#$%{}[\]()\/\\'"`~,;:.<>+\-_=!^&*|?])/
     readonly property var reg_pass_count: /(?=.{16,})/
 
+    readonly property double time_toast_important_error: 10000
+    readonly property double time_toast_basic_info: 3000
+
+    function prettifyJSON(j) {
+        return JSON.stringify(JSON.parse(j), null, 4)
+    }
+        
+    function clone(obj) {
+        return JSON.parse(JSON.stringify(obj));
+    }
+
+    function viewTxAtExplorer(ticker, id, add_0x=false) {
+        if(id !== '') {
+            const coin_info = API.get().get_coin_info(ticker)
+            const id_prefix = add_0x && coin_info.type === 'ERC-20' ? '0x' : ''
+            Qt.openUrlExternally(coin_info.explorer_url + 'tx/' + id_prefix + id)
+        }
+    }
+
     function diffPrefix(received) {
         return received === "" ? "" : received === true ? "+ " :  "- "
     }
@@ -50,9 +69,25 @@ QtObject {
         return diffPrefix(received) + symbols[fiat] + " " + amount
     }
 
+    function formatPercent(value, show_prefix=true) {
+        const result = value + ' %'
+        if(!show_prefix) return result
+
+        let prefix = ''
+        if(value > 0) prefix = '+ '
+        else if(value < 0) {
+            prefix = '- '
+            value *= -1
+        }
+
+        return prefix + result
+    }
+
+    readonly property int amountPrecision: 8
+
     function formatDouble(v) {
-        // Remove more than 8 decimals, then convert to string without trailing zeros
-        return parseFloat(v).toFixed(8).replace(/\.?0+$/,"")
+        // Remove more than n decimals, then convert to string without trailing zeros
+        return parseFloat(v).toFixed(amountPrecision).replace(/\.?0+$/,"")
     }
 
     function formatCrypto(received, amount, ticker, fiat_amount, fiat) {

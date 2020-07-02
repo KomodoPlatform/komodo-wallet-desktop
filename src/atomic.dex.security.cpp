@@ -24,7 +24,7 @@ namespace atomic_dex
     t_password_key
     derive_password(const std::string& password, std::error_code& ec)
     {
-        LOG_SCOPE_FUNCTION(INFO);
+        spdlog::debug("{} l{} f[{}]", __FUNCTION__, __LINE__, fs::path(__FILE__).filename().string());
         std::array<unsigned char, g_salt_len> salt{};
         std::array<unsigned char, g_key_len>  generated_crypto_key{};
 
@@ -38,7 +38,7 @@ namespace atomic_dex
             ec = dextop_error::derive_password_failed;
             return generated_crypto_key;
         }
-        LOG_F(INFO, "Key generated successfully");
+        spdlog::info("Key generated successfully");
 
         return generated_crypto_key;
     }
@@ -46,7 +46,7 @@ namespace atomic_dex
     void
     encrypt(const fs::path& target_path, const char* mnemonic, const unsigned char* key)
     {
-        LOG_SCOPE_FUNCTION(INFO);
+        spdlog::debug("{} l{} f[{}]", __FUNCTION__, __LINE__, fs::path(__FILE__).filename().string());
 
         std::array<unsigned char, g_chunk_size>     buf_in{};
         std::array<unsigned char, g_buff_len>       buf_out{};
@@ -72,7 +72,7 @@ namespace atomic_dex
     std::string
     decrypt(const fs::path& encrypted_file_path, const unsigned char* key, std::error_code& ec)
     {
-        LOG_SCOPE_FUNCTION(INFO);
+        spdlog::debug("{} l{} f[{}]", __FUNCTION__, __LINE__, fs::path(__FILE__).filename().string());
 
         std::array<unsigned char, g_buff_len>       buf_in{};
         std::array<unsigned char, g_chunk_size>     buf_out{};
@@ -112,5 +112,21 @@ namespace atomic_dex
     get_regex_password_policy()
     {
         return g_regex_password_policy;
+    }
+
+    std::string
+    gen_random_password() noexcept
+    {
+        std::string chars("abcdefghijklmnopqrstuvwxyz"
+                          "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+                          "1234567890"
+                          "!@#$%^&*()"
+                          "`~-_=+[{]{\\|;:'\",<.>/? ");
+
+        boost::random::random_device              rng;
+        boost::random::uniform_int_distribution<> index_dist(0, chars.size() - 1);
+        std::stringstream                         ss;
+        for (int i = 0; i < 12; ++i) { ss << chars[index_dist(rng)]; }
+        return ss.str();
     }
 } // namespace atomic_dex

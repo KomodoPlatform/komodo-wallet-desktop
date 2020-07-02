@@ -58,7 +58,7 @@ ColumnLayout {
         PrimaryButton {
             text: API.get().empty_string + (qsTr("View at Explorer"))
             Layout.fillWidth: true
-            onClicked: Qt.openUrlExternally(result.explorer_url + "tx/" + tx_hash.text)
+            onClicked: General.viewTxAtExplorer(API.get().current_coin_info.ticker, tx_hash.text)
         }
     }
 }

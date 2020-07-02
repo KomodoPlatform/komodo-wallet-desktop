@@ -31,7 +31,6 @@ ui_*.h
 qrc_*.cpp
 Thumbs.db
 *.res
-*.rc
 /.qmake.cache
 /.qmake.stash
 
@@ -79,7 +78,12 @@ ci_tools_atomic_dex/bundle-Release
 ci_tools_atomic_dex/bundle-Debug
 ci_tools_atomic_dex/installer/windows/packages/com.komodoplatform.atomicdexpro/data
 ci_tools_atomic_dex/installer/linux/packages/com.komodoplatform.atomicdexpro/data
-cmake-build-debug
-cmake-build-release
+cmake-build-debug*
+cmake-build-release*
+build
+atomic_legacy_imgui
 .idea
 .gitconfig
+.vscode/launch.json
+.vscode/settings.json
+.vscode/tasks.json

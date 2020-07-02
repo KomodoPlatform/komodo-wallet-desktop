@@ -7,6 +7,7 @@ import "../Constants"
 
 // List
 ListView {
+    id: list
     ScrollBar.vertical: ScrollBar {}
     implicitWidth: contentItem.childrenRect.width
     implicitHeight: contentItem.childrenRect.height
@@ -25,7 +26,7 @@ ListView {
     // Row
     delegate: Rectangle {
         id: rectangle
-        implicitWidth: parent.width
+        implicitWidth: list.width
         height: 65
 
         property bool hovered: false

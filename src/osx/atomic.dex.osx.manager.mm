@@ -30,6 +30,8 @@ static NSColor *colorFromRGB(unsigned char r, unsigned char g, unsigned char b)
 
 void atomic_dex::mac_window_setup(long winid, bool fullscreen)
 {
+    (void)winid;
+    (void)fullscreen;
 #ifdef __MAC_10_15
     NSView *nativeView = reinterpret_cast<NSView *>(winid);
     NSWindow* nativeWindow = [nativeView window];

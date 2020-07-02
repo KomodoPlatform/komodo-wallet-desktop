@@ -1,0 +1,12 @@
+entt
+folly
+boost-multiprecision
+boost-random
+doctest
+fmt
+curl
+nlohmann-json
+range-v3
+libsodium
+spdlog
+date

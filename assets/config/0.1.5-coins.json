@@ -166,6 +166,53 @@
     "is_erc_20": false,
     "type": "UTXO"
   },
+  "DOGE": {
+    "coin": "DOGE",
+    "name": "Dogecoin",
+    "coinpaprika_id": "doge-dogecoin",
+    "electrum": [
+      {
+        "url": "electrum1.cipig.net:10060"
+      },
+      {
+        "url": "electrum2.cipig.net:10060"
+      },
+      {
+        "url": "electrum3.cipig.net:10060"
+      }
+    ],
+    "explorer_url": [
+      "https://dogechain.info/"
+    ],
+    "type": "UTXO",
+    "is_erc_20": false,
+    "active": false,
+    "currently_enabled": false
+  },
+  "ECA": {
+    "coin": "ECA",
+    "name": "Electra",
+    "coinpaprika_id": "eca-electra",
+    "coingecko_id": "electra",
+    "electrum": [
+      {
+        "url": "electrum1.cipig.net:10052"
+      },
+      {
+        "url": "electrum2.cipig.net:10052"
+      },
+      {
+        "url": "electrum3.cipig.net:10052"
+      }
+    ],
+    "explorer_url": [
+      "https://explorer.electraproject.org/"
+    ],
+    "type": "UTXO",
+    "is_erc_20": false,
+    "active": false,
+    "currently_enabled": false
+  },
   "JUMBLR": {
     "coin": "JUMBLR",
     "name": "JUMBLR",
@@ -291,6 +338,23 @@
     "is_erc_20": true,
     "type": "ERC-20",
     "name": "Atomic Wallet Coin"
+  },
+  "BAT": {
+    "coin": "BAT",
+    "name": "Basic Attention Token",
+    "coinpaprika_id": "bat-basic-attention-token",
+    "eth_nodes": [
+      "http://eth1.cipig.net:8555",
+      "http://eth2.cipig.net:8555",
+      "http://eth3.cipig.net:8555"
+    ],
+    "explorer_url": [
+      "https://etherscan.io/"
+    ],
+    "type": "ERC-20",
+    "is_erc_20": true,
+    "active": false,
+    "currently_enabled": false
   },
   "TUSD": {
     "active": false,
@@ -623,6 +687,29 @@
     "active": false,
     "currently_enabled": false
   },
+  "NAV": {
+    "coin": "NAV",
+    "name": "NavCoin",
+    "coinpaprika_id": "nav-navcoin",
+    "electrum": [
+      {
+        "url": "electrum1.cipig.net:10056"
+      },
+      {
+        "url": "electrum2.cipig.net:10056"
+      },
+      {
+        "url": "electrum3.cipig.net:10056"
+      }
+    ],
+    "explorer_url": [
+      "https://www.navexplorer.com/"
+    ],
+    "type": "UTXO",
+    "is_erc_20": false,
+    "active": false,
+    "currently_enabled": false
+  },
   "QTUM": {
     "coin": "QTUM",
     "name": "Qtum",
@@ -663,6 +750,29 @@
     ],
     "explorer_url": [
       "https://ravencoin.network/"
+    ],
+    "type": "UTXO",
+    "is_erc_20": false,
+    "active": false,
+    "currently_enabled": false
+  },
+  "XZC": {
+    "coin": "XZC",
+    "name": "Zcoin",
+    "coinpaprika_id": "xzc-zcoin",
+    "electrum": [
+      {
+        "url": "electrumx01.zcoin.io:50001"
+      },
+      {
+        "url": "electrumx02.zcoin.io:50001"
+      },
+      {
+        "url": "electrumx03.zcoin.io:50001"
+      }
+    ],
+    "explorer_url": [
+      "https://explorer.zcoin.io/"
     ],
     "type": "UTXO",
     "is_erc_20": false,

@@ -19,10 +19,10 @@
 #include <climits>
 #include <cmath>
 #include <csignal>
-#include <ctime>
 #include <cstddef>
 #include <cstdlib>
 #include <cstring>
+#include <ctime>
 
 //! C++ System Headers
 #include <algorithm>
@@ -97,7 +97,7 @@ struct overloaded : Ts...
     using Ts::operator()...;
 };
 template <class... Ts>
-overloaded(Ts...)->overloaded<Ts...>;
+overloaded(Ts...) -> overloaded<Ts...>;
 
 //! Folly Headers
 #include <folly/Memory.h>
@@ -116,6 +116,9 @@ namespace folly
 #include <boost/algorithm/string/join.hpp>
 #include <boost/algorithm/string/split.hpp>
 #include <boost/algorithm/string/trim.hpp>
+#include <boost/algorithm/string/erase.hpp>
+#include <boost/random/random_device.hpp>
+#include <boost/random/uniform_int_distribution.hpp>
 //#include <boost/filesystem.hpp>
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wunused-parameter"
@@ -169,11 +172,16 @@ adjust_precision(const std::string& current)
 #endif
 
 #include <date/date.h>
+#include <date/tz.h>
 #define ENTT_STANDARD_CPP
 #include <entt/entity/helper.hpp>
 #include <entt/signal/dispatcher.hpp>
-#define LOGURU_WITH_FILEABS 1
-#include <loguru.hpp>
+#include <spdlog/async.h>
+#include <spdlog/sinks/rotating_file_sink.h>
+#include <spdlog/sinks/stdout_color_sinks.h>
+#include <spdlog/spdlog.h>
+//#define LOGURU_WITH_FILEABS 1
+//#include <loguru.hpp>
 #include <meta/detection/detection.hpp>
 #if defined(_WIN32) || defined(WIN32)
 #    define and &&

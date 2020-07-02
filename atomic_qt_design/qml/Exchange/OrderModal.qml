@@ -74,12 +74,32 @@ DefaultModal {
             Layout.alignment: Qt.AlignRight
         }
 
+        // Refund state
+        TextFieldWithTitle {
+            Layout.topMargin: -20
+
+            title: API.get().empty_string + (qsTr("Refund State"))
+            field.text: {
+                let str = API.get().empty_string
+                const e = getLastEvent(details)
+
+                if(e.state === "TakerPaymentWaitRefundStarted" ||
+                   e.state === "MakerPaymentWaitRefundStarted") {
+                    str += qsTr("Your swap failed but the auto-refund process for your payment started already. Please wait and keep application opened until you receive your payment back")
+                }
+
+                return str
+            }
+            field.readOnly: true
+
+            visible: field.text !== ''
+        }
+
         // Date
         TextWithTitle {
             title: API.get().empty_string + (qsTr("Date"))
             text: API.get().empty_string + (details.date)
             visible: text !== ''
-            Layout.topMargin: -20
         }
 
         // Swap ID / UUID
@@ -89,16 +109,16 @@ DefaultModal {
             visible: text !== ''
         }
 
-        // Maker Payment ID
+        // Payment ID
         TextWithTitle {
-            title: API.get().empty_string + (qsTr("Maker Payment ID"))
+            title: API.get().empty_string + (details.am_i_maker ? qsTr("Maker Payment Sent ID") : qsTr("Maker Payment Spent ID"))
             text: API.get().empty_string + (getSwapPaymentID(details, false))
             visible: text !== ''
         }
 
-        // Taker Payment ID
+        // Payment ID
         TextWithTitle {
-            title: API.get().empty_string + (qsTr("Taker Payment ID"))
+            title: API.get().empty_string + (details.am_i_maker ? qsTr("Taker Payment Spent ID") : qsTr("Taker Payment Sent ID"))
             text: API.get().empty_string + (getSwapPaymentID(details, true))
             visible: text !== ''
         }
@@ -143,8 +163,8 @@ DefaultModal {
                 onClicked: {
                     const maker_id = getSwapPaymentID(details, false)
                     const taker_id = getSwapPaymentID(details, true)
-                    if(maker_id !== '') Qt.openUrlExternally(API.get().get_coin_info(details.maker_coin).explorer_url + "tx/" + maker_id)
-                    if(taker_id !== '') Qt.openUrlExternally(API.get().get_coin_info(details.taker_coin).explorer_url + "tx/" + taker_id)
+                    if(maker_id !== '') General.viewTxAtExplorer(details.maker_coin, maker_id, true)
+                    if(taker_id !== '') General.viewTxAtExplorer(details.taker_coin, taker_id, true)
                 }
             }
         }

@@ -31,6 +31,7 @@
         <file>atomic_qt_design/assets/images/circle-success.png</file>
         <file>atomic_qt_design/assets/images/circle-failed.png</file>
         <file>atomic_qt_design/assets/images/coins/awc.png</file>
+        <file>atomic_qt_design/assets/images/coins/bat.png</file>
         <file>atomic_qt_design/assets/images/coins/btc.png</file>
         <file>atomic_qt_design/assets/images/coins/bch.png</file>
         <file>atomic_qt_design/assets/images/coins/bet.png</file>
@@ -38,6 +39,8 @@
         <file>atomic_qt_design/assets/images/coins/crypto.png</file>
         <file>atomic_qt_design/assets/images/coins/dash.png</file>
         <file>atomic_qt_design/assets/images/coins/dgb.png</file>
+        <file>atomic_qt_design/assets/images/coins/doge.png</file>
+        <file>atomic_qt_design/assets/images/coins/eca.png</file>
         <file>atomic_qt_design/assets/images/coins/jumblr.png</file>
         <file>atomic_qt_design/assets/images/coins/ltc.png</file>
         <file>atomic_qt_design/assets/images/coins/mcl.png</file>
@@ -50,6 +53,7 @@
         <file>atomic_qt_design/assets/images/coins/rick.png</file>
         <file>atomic_qt_design/assets/images/coins/mgw.png</file>
         <file>atomic_qt_design/assets/images/coins/morty.png</file>
+        <file>atomic_qt_design/assets/images/coins/nav.png</file>
         <file>atomic_qt_design/assets/images/coins/pangea.png</file>
         <file>atomic_qt_design/assets/images/coins/revs.png</file>
         <file>atomic_qt_design/assets/images/coins/hush.png</file>
@@ -60,6 +64,7 @@
         <file>atomic_qt_design/assets/images/coins/vrsc.png</file>
         <file>atomic_qt_design/assets/images/coins/vote2020.png</file>
         <file>atomic_qt_design/assets/images/coins/tusd.png</file>
+        <file>atomic_qt_design/assets/images/coins/xzc.png</file>
         <file>atomic_qt_design/assets/images/coins/zec.png</file>
         <file>atomic_qt_design/assets/images/lang/en.png</file>
         <file>atomic_qt_design/assets/images/lang/fr.png</file>

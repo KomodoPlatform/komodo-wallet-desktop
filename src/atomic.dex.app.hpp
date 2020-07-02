@@ -33,6 +33,7 @@
 #include "atomic.dex.provider.coinpaprika.hpp"
 #include "atomic.dex.qt.bindings.hpp"
 #include "atomic.dex.qt.current.coin.infos.hpp"
+#include "atomic.dex.qt.wallet.manager.hpp"
 
 namespace ag = antara::gaming;
 
@@ -110,59 +111,68 @@ namespace atomic_dex
         void launch();
 
         //! Bind to the QML Worlds
+
+        //! Wallet Manager QML API Bindings, this internally call the `atomic_dex::qt_wallet_manager`
+        Q_INVOKABLE bool               login(const QString& password, const QString& wallet_name);
+        Q_INVOKABLE static QStringList get_wallets();
+        Q_INVOKABLE static bool        is_there_a_default_wallet();
+        Q_INVOKABLE static QString     get_default_wallet_name();
+        Q_INVOKABLE static bool        delete_wallet(const QString& wallet_name);
+        Q_INVOKABLE static bool        confirm_password(const QString& wallet_name, const QString& password);
+
+        //! Miscs
         Q_INVOKABLE QString     get_paprika_id_from_ticker(QString ticker) const;
         Q_INVOKABLE QString     to_eth_checksum_qt(QString eth_lowercase_address) const;
-        Q_INVOKABLE QString     recover_fund(QString uuid) const;
         Q_INVOKABLE QString     get_mm2_version() const;
-        Q_INVOKABLE bool        mnemonic_validate(QString entropy);
-        Q_INVOKABLE QImage      get_qr_code(QString text_to_encode, QSize size);
         Q_INVOKABLE QString     get_log_folder() const;
         Q_INVOKABLE QString     get_export_folder() const;
-        Q_INVOKABLE QString     retrieve_seed(const QString& wallet_name, const QString& password);
-        Q_INVOKABLE bool        confirm_password(const QString& wallet_name, const QString& password);
         Q_INVOKABLE QStringList get_available_langs() const;
+        Q_INVOKABLE static void change_state(int visibility);
+
+        //! Portfolio QML API Bindings
+        Q_INVOKABLE QString recover_fund(QString uuid) const;
         Q_INVOKABLE QObject* prepare_send(const QString& address, const QString& amount, bool max = false);
         Q_INVOKABLE QObject* prepare_send_fees(
             const QString& address, const QString& amount, bool is_erc_20, const QString& fees_amount, const QString& gas_price, const QString& gas,
             bool max = false);
-        Q_INVOKABLE QString     send(const QString& tx_hex);
-        Q_INVOKABLE QString     send_rewards(const QString& tx_hex);
-        Q_INVOKABLE void        change_state(int visibility);
-        Q_INVOKABLE void        on_gui_enter_dex();
-        Q_INVOKABLE void        on_gui_leave_dex();
+        Q_INVOKABLE QString      send(const QString& tx_hex);
+        Q_INVOKABLE QString      send_rewards(const QString& tx_hex);
+        Q_INVOKABLE QVariantList get_portfolio_informations();
+
+        //! Trading QML API Bindings
+        Q_INVOKABLE void on_gui_enter_dex();
+        Q_INVOKABLE void on_gui_leave_dex();
+        Q_INVOKABLE void cancel_order(const QString& order_id);
+        Q_INVOKABLE void cancel_all_orders();
+        Q_INVOKABLE void cancel_all_orders_by_ticker(const QString& ticker);
+
+        //! Others
+        Q_INVOKABLE bool        mnemonic_validate(QString entropy);
+        Q_INVOKABLE QString     retrieve_seed(const QString& wallet_name, const QString& password);
         Q_INVOKABLE void        refresh_infos();
         Q_INVOKABLE void        refresh_orders_and_swaps();
         Q_INVOKABLE QString     get_mnemonic();
-        Q_INVOKABLE void        cancel_order(const QString& order_id);
-        Q_INVOKABLE void        cancel_all_orders();
-        Q_INVOKABLE void        cancel_all_orders_by_ticker(const QString& ticker);
         Q_INVOKABLE bool        first_run();
-        Q_INVOKABLE bool        login(const QString& password, const QString& wallet_name);
-        Q_INVOKABLE QStringList get_wallets() const;
-        Q_INVOKABLE bool        is_there_a_default_wallet() const;
-        Q_INVOKABLE QString     get_default_wallet_name() const;
         Q_INVOKABLE bool        disconnect();
         Q_INVOKABLE bool        create(const QString& password, const QString& seed, const QString& wallet_name);
         Q_INVOKABLE bool        enable_coins(const QStringList& coins);
         Q_INVOKABLE QString     get_balance(const QString& coin);
-        Q_INVOKABLE QString     get_price_amount(QString base_amount, QString rel_amount);
+        Q_INVOKABLE QString     get_price_amount(const QString& base_amount, const QString& rel_amount);
         Q_INVOKABLE bool        place_buy_order(const QString& base, const QString& rel, const QString& price, const QString& volume);
-        Q_INVOKABLE bool        place_sell_order(const QString& base, const QString& rel, const QString& price, const QString& volume);
+        Q_INVOKABLE QString     place_sell_order(const QString& base, const QString& rel, const QString& price, const QString& volume, bool is_created_order, const QString& price_denom, const QString& price_numer);
         Q_INVOKABLE void        set_current_orderbook(const QString& base, const QString& rel);
         Q_INVOKABLE QVariantMap get_orderbook(const QString& ticker);
         Q_INVOKABLE bool        do_i_have_enough_funds(const QString& ticker, const QString& amount) const;
         Q_INVOKABLE bool        disable_coins(const QStringList& coins);
         Q_INVOKABLE bool        is_claiming_ready(const QString& ticker);
         Q_INVOKABLE QObject* claim_rewards(const QString& ticker);
-        Q_INVOKABLE QObject*     get_coin_info(const QString& ticker);
-        Q_INVOKABLE QVariantMap  get_my_orders();
-        Q_INVOKABLE QVariantMap  get_recent_swaps();
-        Q_INVOKABLE bool         export_swaps(const QString& csv_filename) noexcept;
-        Q_INVOKABLE bool         export_swaps_json() noexcept;
-        Q_INVOKABLE QString      get_regex_password_policy() const noexcept;
-        Q_INVOKABLE bool         delete_wallet(const QString& wallet_name) const;
-        Q_INVOKABLE QVariantMap  get_trade_infos(const QString& ticker, const QString& receive_ticker, const QString& amount);
-        Q_INVOKABLE QVariantList get_portfolio_informations();
+        Q_INVOKABLE QObject*    get_coin_info(const QString& ticker);
+        Q_INVOKABLE QVariantMap get_my_orders();
+        Q_INVOKABLE QVariantMap get_recent_swaps();
+        Q_INVOKABLE bool        export_swaps(const QString& csv_filename) noexcept;
+        Q_INVOKABLE bool        export_swaps_json() noexcept;
+        Q_INVOKABLE QString     get_regex_password_policy() const noexcept;
+        Q_INVOKABLE QVariantMap get_trade_infos(const QString& ticker, const QString& receive_ticker, const QString& amount);
 
 
       signals:
@@ -186,6 +196,9 @@ namespace atomic_dex
 
         //! QT Application
         QApplication* m_app;
+
+        //! Wallet Manager
+        atomic_dex::qt_wallet_manager m_wallet_manager;
 
         //! Private members
         std::atomic_bool   m_refresh_enabled_coin_event{false};

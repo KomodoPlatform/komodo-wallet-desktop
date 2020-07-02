@@ -29,16 +29,17 @@ DefaultModal {
         prepare_claim_rewards_result = API.get().claim_rewards(API.get().current_coin_info.ticker)
         console.log(JSON.stringify(prepare_claim_rewards_result))
         if(prepare_claim_rewards_result.has_error) {
-            text_error.text = prepare_claim_rewards_result.error_message
+            toast.show(qsTr("Failed to prepare to claim rewards"), General.time_toast_important_error, prepare_claim_rewards_result.error_message)
+            return false
         }
         else {
             text_error.text = ""
+            return true
         }
     }
 
     function claimRewards() {
         send_result = API.get().send_rewards(prepare_claim_rewards_result.tx_hex)
-        console.log(JSON.stringify(API.get().claim_rewards(API.get().current_coin_info.ticker)))
         stack_layout.currentIndex = 1
         postClaim()
     }
@@ -51,7 +52,7 @@ DefaultModal {
 
     // Inside modal
     // width: stack_layout.children[stack_layout.currentIndex].width + horizontalPadding * 2
-    width: 500
+    width: 600
     height: stack_layout.children[stack_layout.currentIndex].height + verticalPadding * 2
     StackLayout {
         width: parent.width

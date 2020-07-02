@@ -99,7 +99,10 @@ namespace mm2::api
         j.at("balance").get_to(cfg.balance);
         cfg.balance = adjust_precision(cfg.balance);
         j.at("coin").get_to(cfg.coin);
-        j.at("locked_by_swaps").get_to(cfg.locked_by_swaps);
+        if (cfg.coin == "BCH")
+        {
+            cfg.address = cfg.address.substr(sizeof("bitcoincash"));
+        }
     }
 
     void
@@ -163,8 +166,9 @@ namespace mm2::api
         using namespace date;
         using namespace std::chrono;
         date::sys_seconds tp{seconds{cfg.timestamp}};
-        std::string       s   = date::format("%e %b %Y, %I:%M", tp);
-        cfg.timestamp_as_date = std::move(s);
+        auto              tp_zoned = date::make_zoned(current_zone(), tp);
+        std::string       s        = date::format("%e %b %Y, %I:%M", tp_zoned);
+        cfg.timestamp_as_date      = std::move(s);
     }
 
     void
@@ -250,10 +254,10 @@ namespace mm2::api
     void
     from_json(const nlohmann::json& j, recover_funds_of_swap_answer_success& answer)
     {
-        j.at("result").at("action").get_to(answer.action);
-        j.at("result").at("coin").get_to(answer.coin);
-        j.at("result").at("tx_hash").get_to(answer.tx_hash);
-        j.at("result").at("tx_hex").get_to(answer.tx_hex);
+        j.at("action").get_to(answer.action);
+        j.at("coin").get_to(answer.coin);
+        j.at("tx_hash").get_to(answer.tx_hash);
+        j.at("tx_hex").get_to(answer.tx_hex);
     }
 
     void
@@ -342,6 +346,8 @@ namespace mm2::api
         j.at("coin").get_to(contents.coin);
         j.at("address").get_to(contents.address);
         j.at("price").get_to(contents.price);
+        j.at("price_fraction").at("numer").get_to(contents.price_fraction_numer);
+        j.at("price_fraction").at("denom").get_to(contents.price_fraction_denom);
         j.at("maxvolume").get_to(contents.maxvolume);
         j.at("pubkey").get_to(contents.pubkey);
         j.at("age").get_to(contents.age);
@@ -369,7 +375,8 @@ namespace mm2::api
         j.at("timestamp").get_to(answer.timestamp);
 
         sys_time<std::chrono::milliseconds> tp{std::chrono::milliseconds{answer.timestamp}};
-        answer.human_timestamp = date::format("%Y-%m-%d %I:%M:%S", tp);
+        auto                                tp_zoned = date::make_zoned(current_zone(), tp);
+        answer.human_timestamp                       = date::format("%Y-%m-%d %I:%M:%S", tp_zoned);
     }
 
     void
@@ -382,12 +389,12 @@ namespace mm2::api
     void
     to_json(nlohmann::json& j, const setprice_request& request)
     {
-        j["base"]   = request.base;
-        j["price"]  = request.price;
-        j["rel"]    = request.rel;
-        j["volume"] = request.volume;
+        j["base"]            = request.base;
+        j["price"]           = request.price;
+        j["rel"]             = request.rel;
+        j["volume"]          = request.volume;
         j["cancel_previous"] = request.cancel_previous;
-        j["max"] = request.max;
+        j["max"]             = request.max;
     }
 
     void
@@ -435,10 +442,28 @@ namespace mm2::api
     void
     to_json(nlohmann::json& j, const sell_request& request)
     {
+        spdlog::debug("price: {}, volume: {}", request.price, request.volume);
+
+
         j["base"]   = request.base;
-        j["price"]  = request.price;
         j["rel"]    = request.rel;
-        j["volume"] = request.volume;
+        j["volume"] = request.volume; // 7.77
+        j["price"]  = request.price;
+
+        if (not request.is_created_order)
+        {
+            spdlog::info(
+                "The order is picked from the orderbook, setting price_numer and price_denom from it {}, {}", request.price_numer, request.price_denom);
+            //! From orderbook
+            nlohmann::json price_fraction_repr = nlohmann::json::object();
+            price_fraction_repr["numer"]       = request.price_numer;
+            price_fraction_repr["denom"]       = request.price_denom;
+            j["price"]                         = price_fraction_repr;
+        }
+        else
+        {
+            spdlog::info("The order is not picked from orderbook we create it volume = {}, price = {}", request.volume, request.price);
+        }
     }
 
     void
@@ -527,7 +552,7 @@ namespace mm2::api
           using namespace date;
           const auto        time_key = value.at("created_at").get<std::size_t>();
           sys_time<std::chrono::milliseconds> tp{std::chrono::milliseconds{time_key}};
-
+          auto tp_zoned = date::make_zoned(current_zone(), tp);
           my_order_contents contents{
               .order_id         = key,
               .price            = is_maker ? adjust_precision(value.at("price").get<std::string>()) : "0",
@@ -538,7 +563,7 @@ namespace mm2::api
               .order_type       = is_maker ? "maker" : "taker",
               .base_amount      = is_maker ? value.at("max_base_vol").get<std::string>() : value.at("request").at("base_amount").get<std::string>(),
               .rel_amount       = is_maker ? (t_float_50(contents.price) * t_float_50(contents.base_amount)).convert_to<std::string>() : value.at("request").at("rel_amount").get<std::string>(),
-              .human_timestamp  = date::format("%F    %T", tp)};
+              .human_timestamp  = date::format("%F    %T", tp_zoned)};
           out.try_emplace(time_key, std::move(contents));
         };
         // clang-format on
@@ -585,12 +610,15 @@ namespace mm2::api
         j.at("type").get_to(contents.type);
         j.at("recoverable").get_to(contents.funds_recoverable);
 
-        contents.taker_amount            = adjust_precision(contents.taker_amount);
-        contents.maker_amount            = adjust_precision(contents.maker_amount);
-        contents.events                  = nlohmann::json::array();
-        contents.my_info                 = j.at("my_info");
-        contents.my_info["other_amount"] = adjust_precision(contents.my_info["other_amount"].get<std::string>());
-        contents.my_info["my_amount"]    = adjust_precision(contents.my_info["my_amount"].get<std::string>());
+        contents.taker_amount = adjust_precision(contents.taker_amount);
+        contents.maker_amount = adjust_precision(contents.maker_amount);
+        contents.events       = nlohmann::json::array();
+        if (j.contains("my_info"))
+        {
+            contents.my_info                 = j.at("my_info");
+            contents.my_info["other_amount"] = adjust_precision(contents.my_info["other_amount"].get<std::string>());
+            contents.my_info["my_amount"]    = adjust_precision(contents.my_info["my_amount"].get<std::string>());
+        }
         using t_event_timestamp_registry = std::unordered_map<std::string, std::uint64_t>;
         t_event_timestamp_registry event_timestamp_registry;
         double                     total_time_in_seconds = 0.00;
@@ -601,7 +629,8 @@ namespace mm2::api
             const nlohmann::json& j_evt      = content.at("event");
             auto                  timestamp  = content.at("timestamp").get<std::size_t>();
             auto                  tp         = sys_milliseconds{std::chrono::milliseconds{timestamp}};
-            std::string           human_date = date::format("%F    %T", tp);
+            auto                  tp_zoned   = date::make_zoned(current_zone(), tp);
+            std::string           human_date = date::format("%F    %T", tp_zoned);
             auto                  evt_type   = j_evt.at("type").get<std::string>();
 
             auto rate_bundler = [&event_timestamp_registry,
@@ -715,7 +744,6 @@ namespace mm2::api
         std::stringstream ss;
         ss << std::fixed << std::setprecision(3) << total_time_in_seconds;
         contents.total_time_in_seconds = ss.str() + "s";
-        std::cout << contents.total_time_in_seconds << std::endl;
     }
 
     void
@@ -748,30 +776,41 @@ namespace mm2::api
     RpcReturnType
     rpc_process_answer(const RestClient::Response& resp, const std::string& rpc_command) noexcept
     {
-        if (rpc_command != "my_recent_swaps" && rpc_command != "my_tx_history")
+        spdlog::info("resp code for rpc_command {} is {}", rpc_command, resp.code);
+        /*if (rpc_command == "orderbook")
         {
-            VLOG_F(loguru::Verbosity_INFO, "resp: {}", resp.body);
-        }
+            spdlog::debug("resp body: {}", resp.body);
+        }*/
 
         RpcReturnType answer;
-
-        if (resp.code not_eq 200)
-        {
-            DVLOG_F(loguru::Verbosity_WARNING, "rpc answer code is not 200");
-            if constexpr (doom::meta::is_detected_v<have_error_field, RpcReturnType>)
-            {
-                if constexpr (std::is_same_v<std::string, decltype(answer.error)>)
-                {
-                    answer.error = nlohmann::json::parse(resp.body).get<std::string>();
-                }
-            }
-            answer.rpc_result_code = resp.code;
-            answer.raw_result      = resp.body;
-            return answer;
-        }
-
         try
         {
+            if (resp.code not_eq 200)
+            {
+                spdlog::warn("rpc answer code is not 200, body : {}", resp.body);
+                if constexpr (doom::meta::is_detected_v<have_error_field, RpcReturnType>)
+                {
+                    spdlog::debug("error field detected inside the RpcReturnType");
+                    if constexpr (std::is_same_v<std::optional<std::string>, decltype(answer.error)>)
+                    {
+                        spdlog::debug("The error field type is string, parsing it from the response body");
+                        if (auto json_data = nlohmann::json::parse(resp.body); json_data.at("error").is_string())
+                        {
+                            answer.error = json_data.at("error").get<std::string>();
+                        }
+                        else
+                        {
+                            answer.error = resp.body;
+                        }
+                        spdlog::debug("The error after getting extracted is: {}", answer.error.value());
+                    }
+                }
+                answer.rpc_result_code = resp.code;
+                answer.raw_result      = resp.body;
+                return answer;
+            }
+
+
             auto json_answer       = nlohmann::json::parse(resp.body);
             answer.rpc_result_code = resp.code;
             answer.raw_result      = resp.body;
@@ -779,7 +818,7 @@ namespace mm2::api
         }
         catch (const std::exception& error)
         {
-            VLOG_F(loguru::Verbosity_ERROR, "{}", error.what());
+            spdlog::error("exception caught {}", error.what());
             answer.rpc_result_code = -1;
             answer.raw_result      = error.what();
         }
@@ -888,7 +927,7 @@ namespace mm2::api
         nlohmann::json       json_data = template_request("my_orders");
         RestClient::Response resp;
 
-        DVLOG_F(loguru::Verbosity_INFO, "request: {}", json_data.dump().c_str());
+        spdlog::info("Processing rpc call: rpc my_orders");
 
         resp = RestClient::post(g_endpoint, "application/json", json_data.dump());
 
@@ -899,14 +938,16 @@ namespace mm2::api
     static TAnswer
     process_rpc(TRequest&& request, std::string rpc_command)
     {
-        LOG_F(INFO, "Processing rpc call: {}", rpc_command);
+        spdlog::info("Processing rpc call: {}", rpc_command);
 
         nlohmann::json       json_data = template_request(rpc_command);
         RestClient::Response resp;
 
         to_json(json_data, request);
 
-        DVLOG_F(loguru::Verbosity_INFO, "request: {}", json_data.dump());
+        auto json_copy        = json_data;
+        json_copy["userpass"] = "*******";
+        spdlog::debug("request: {}", json_copy.dump());
 
         resp = RestClient::post(g_endpoint, "application/json", json_data.dump());
 
@@ -916,16 +957,21 @@ namespace mm2::api
     nlohmann::json
     template_request(std::string method_name) noexcept
     {
-        return {{"method", std::move(method_name)}, {"userpass", "atomic_dex_mm2_passphrase"}};
+        return {{"method", std::move(method_name)}, {"userpass", get_rpc_password()}};
     }
 
     std::string
     rpc_version()
     {
-        LOG_F(INFO, "Processing rpc call: version");
+        spdlog::info("Processing rpc call: version");
+
         nlohmann::json       json_data = template_request("version");
         RestClient::Response resp;
-        DVLOG_F(loguru::Verbosity_INFO, "request: {}", json_data.dump());
+
+        auto json_copy        = json_data;
+        json_copy["userpass"] = "*******";
+        spdlog::debug("{} request: {}", __FUNCTION__, json_copy.dump());
+
         resp = RestClient::post(g_endpoint, "application/json", json_data.dump());
         if (resp.code == 200)
         {
@@ -938,7 +984,7 @@ namespace mm2::api
     nlohmann::json
     rpc_batch_electrum(std::vector<electrum_request> requests)
     {
-        LOG_F(INFO, "Processing rpc call: batch electrum");
+        spdlog::info("Processing rpc call: batch electrum");
 
         nlohmann::json req_json_data = nlohmann::json::array();
         for (auto&& request: requests)
@@ -948,16 +994,23 @@ namespace mm2::api
             to_json(json_data, request);
             req_json_data.push_back(json_data);
         }
-        VLOG_F(loguru::Verbosity_INFO, "request: {}", req_json_data.dump());
+
+        // auto json_copy        = req_json_data;
+        // json_copy["userpass"] = "*******";
+        // spdlog::debug("request: {}", json_copy.dump());
+
         auto resp = RestClient::post(g_endpoint, "application/json", req_json_data.dump());
-        VLOG_F(loguru::Verbosity_INFO, "resp: {}", resp.body);
+
+        spdlog::info("{} resp code: {}", __FUNCTION__, resp.code);
+
         nlohmann::json answer;
         try
         {
             answer = nlohmann::json::parse(resp.body);
         }
-        catch (const nlohmann::detail::parse_error &err) {
-            VLOG_F(loguru::Verbosity_ERROR, "{}", err.what());
+        catch (const nlohmann::detail::parse_error& err)
+        {
+            spdlog::error("{}", err.what());
             answer["error"] = resp.body;
         }
         return answer;
@@ -966,7 +1019,7 @@ namespace mm2::api
     nlohmann::json
     rpc_batch_enable(std::vector<enable_request> requests)
     {
-        LOG_F(INFO, "Processing rpc call: batch enable");
+        spdlog::info("Processing rpc call: batch enable");
 
         nlohmann::json req_json_data = nlohmann::json::array();
         for (auto&& request: requests)
@@ -977,9 +1030,12 @@ namespace mm2::api
             req_json_data.push_back(json_data);
         }
 
-        VLOG_F(loguru::Verbosity_INFO, "request: {}", req_json_data.dump());
+        // auto json_copy        = req_json_data;
+        // json_copy["userpass"] = "*******";
+        // spdlog::debug("request: {}", json_copy.dump());
+
         auto resp = RestClient::post(g_endpoint, "application/json", req_json_data.dump());
-        VLOG_F(loguru::Verbosity_INFO, "resp: {}", resp.body);
+        spdlog::info("{} resp code: {}", __FUNCTION__, resp.code);
 
         nlohmann::json answer;
 
@@ -987,11 +1043,31 @@ namespace mm2::api
         {
             answer = nlohmann::json::parse(resp.body);
         }
-        catch (const nlohmann::detail::parse_error &err) {
-            VLOG_F(loguru::Verbosity_ERROR, "{}", err.what());
+        catch (const nlohmann::detail::parse_error& err)
+        {
+            spdlog::error("{}", err.what());
             answer["error"] = resp.body;
         }
 
         return answer;
+    }
+
+    static inline std::string&
+    access_rpc_password() noexcept
+    {
+        static std::string rpc_password;
+        return rpc_password;
+    }
+
+    void
+    set_rpc_password(std::string rpc_password) noexcept
+    {
+        access_rpc_password() = std::move(rpc_password);
+    }
+
+    const std::string&
+    get_rpc_password() noexcept
+    {
+        return access_rpc_password();
     }
 } // namespace mm2::api

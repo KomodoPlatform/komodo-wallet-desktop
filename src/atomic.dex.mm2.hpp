@@ -57,12 +57,13 @@ namespace atomic_dex
 
     using t_allocator = folly::AlignedSysAllocator<std::uint8_t, folly::FixedAlign<bit_size<std::size_t>()>>;
     template <typename Key, typename Value>
-    using t_concurrent_reg = folly::ConcurrentHashMap<Key, Value, std::hash<Key>, std::equal_to<>, t_allocator>;
-    using t_ticker         = std::string;
-    using t_tx_state       = tx_state;
-    using t_coins_registry = t_concurrent_reg<t_ticker, coin_config>;
-    using t_transactions   = std::vector<tx_infos>;
-    using t_coins          = std::vector<coin_config>;
+    using t_concurrent_reg      = folly::ConcurrentHashMap<Key, Value, std::hash<Key>, std::equal_to<>, t_allocator>;
+    using t_ticker              = std::string;
+    using t_tx_state            = tx_state;
+    using t_coins_registry      = t_concurrent_reg<t_ticker, coin_config>;
+    using t_wallet_cfg_registry = t_concurrent_reg<std::string, t_coins_registry>;
+    using t_transactions        = std::vector<tx_infos>;
+    using t_coins               = std::vector<coin_config>;
 
     //! Constants
     inline constexpr const std::size_t g_tx_max_limit{50_sz};
@@ -96,6 +97,9 @@ namespace atomic_dex
         std::atomic_bool m_mm2_running{false};
         std::atomic_bool m_orderbook_thread_active{false};
         std::thread      m_mm2_init_thread;
+
+        //! Current wallet name
+        std::string m_current_wallet_name;
 
         //! Concurrent Registry.
         t_coins_registry&     m_coins_informations{entity_registry_.set<t_coins_registry>()};
@@ -147,7 +151,7 @@ namespace atomic_dex
         void on_gui_leave_trading(const gui_leave_trading& evt) noexcept;
 
         //! Spawn mm2 instance with given seed
-        void spawn_mm2_instance(std::string passphrase);
+        void spawn_mm2_instance(std::string wallet_name, std::string passphrase);
 
         //! Refresh the current info (internally call process_balance and process_tx)
         void fetch_infos_thread();
@@ -175,9 +179,6 @@ namespace atomic_dex
 
         //! Called every ticks, and execute tasks if the timer expire.
         void update() noexcept final;
-
-        //! Check and process for logging rotation.
-        void rotate_log() noexcept;
 
         //! Retrieve public address of the given ticker
         std::string address(const std::string& ticker, t_mm2_ec& ec) const noexcept;
@@ -250,7 +251,7 @@ namespace atomic_dex
         t_my_recent_swaps_answer               get_swaps() noexcept;
 
         //! Get balance with locked funds for a given ticker as a boost::multiprecision::cpp_dec_float_50.
-        [[nodiscard]] t_float_50 get_balance_with_locked_funds(const std::string& ticker) const;
+        [[nodiscard]] t_float_50 get_balance(const std::string& ticker) const;
 
         //! Return true if we the balance of the `ticker` > amount, false otherwise.
         [[nodiscard]] bool do_i_have_enough_funds(const std::string& ticker, const t_float_50& amount) const;
