@@ -19,11 +19,21 @@ ColumnLayout {
     }
 
     SidebarLine {
+        dashboard_index: General.idx_dashboard_privacy_mode
+        text: API.get().empty_string + (qsTr("Privacy"))
+        image: ""
+        Layout.fillWidth: true
+        separator: false
+        checked: General.privacy_mode
+    }
+
+    SidebarLine {
         dashboard_index: General.idx_dashboard_light_ui
         text: API.get().empty_string + (qsTr("Light UI"))
         image: ""
         Layout.fillWidth: true
         separator: false
+        checked: !Style.dark_theme
     }
 }
 

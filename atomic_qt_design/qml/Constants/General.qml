@@ -13,6 +13,8 @@ QtObject {
         return ticker === "" ? "" : coin_icons_path + ticker.toLowerCase() + ".png"
     }
 
+    property bool privacy_mode: false
+
     readonly property int idx_dashboard_portfolio: 0
     readonly property int idx_dashboard_wallet: 1
     readonly property int idx_dashboard_exchange: 2
@@ -20,6 +22,7 @@ QtObject {
     readonly property int idx_dashboard_dapps: 4
     readonly property int idx_dashboard_settings: 5
     readonly property int idx_dashboard_light_ui: 6
+    readonly property int idx_dashboard_privacy_mode: 7
 
     readonly property int idx_exchange_trade: 0
     readonly property int idx_exchange_orders: 1

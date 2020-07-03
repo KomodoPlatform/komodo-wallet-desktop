@@ -11,21 +11,27 @@ Item {
     property alias image: img.source
     property alias text: txt.text
     property alias separator: separator.visible
+    property alias checked: switch_input.checked
     readonly property bool selected: dashboard.current_page === dashboard_index
 
     function toggleDarkUI() {
         Style.dark_theme = !Style.dark_theme
     }
 
+    function togglePrivacyMode() {
+        General.privacy_mode = !General.privacy_mode
+    }
+
     height: Style.sidebarLineHeight
 
     Switch {
-        visible: dashboard_index === General.idx_dashboard_light_ui
+        id: switch_input
+        visible: dashboard_index === General.idx_dashboard_light_ui ||
+                 dashboard_index === General.idx_dashboard_privacy_mode
         anchors.left: parent.left
         anchors.leftMargin: 26
         anchors.verticalCenter: img.verticalCenter
         scale: 0.8
-        checked: !Style.dark_theme
     }
 
     Image {
@@ -89,6 +95,9 @@ Item {
         onClicked: function() {
             if(dashboard_index === General.idx_dashboard_light_ui) {
                 toggleDarkUI()
+            }
+            else if(dashboard_index === General.idx_dashboard_privacy_mode) {
+                togglePrivacyMode()
             }
             else dashboard.current_page = dashboard_index
         }
