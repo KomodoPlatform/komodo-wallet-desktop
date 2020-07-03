@@ -19,6 +19,7 @@
 //! QT Headers
 #include <QString>
 #include <QStringList>
+#include <QVariantMap>
 
 //! Project Headers
 #include "atomic.dex.security.hpp"
@@ -36,6 +37,11 @@ namespace atomic_dex
 
         inline bool load_wallet_cfg(const std::string& wallet_name);
 
+        inline QStringList get_categories_list() const noexcept;
+
+        inline QVariantMap get_address_from(const std::string& contact_name) const noexcept;
+
+
         static inline QStringList get_wallets() noexcept;
 
         static inline bool is_there_a_default_wallet() noexcept;
@@ -47,7 +53,8 @@ namespace atomic_dex
         static inline bool confirm_password(const QString& wallet_name, const QString& password);
 
       private:
-        wallet_cfg m_wallet_cfg;
+        inline bool update_wallet_cfg() noexcept;
+        wallet_cfg  m_wallet_cfg;
     };
 
     template <typename Functor>
@@ -176,6 +183,50 @@ namespace atomic_dex
         nlohmann::json j;
         ifs >> j;
         m_wallet_cfg = j;
+        return true;
+    }
+
+    QStringList
+    qt_wallet_manager::get_categories_list() const noexcept
+    {
+        QStringList out;
+
+        out.reserve(m_wallet_cfg.categories_addressbook_registry.size());
+        for (const auto& [key, _]: m_wallet_cfg.categories_addressbook_registry)
+        {
+            (void)_;
+            out.push_back(QString::fromStdString(key));
+        }
+        return out;
+    }
+
+    QVariantMap
+    qt_wallet_manager::get_address_from(const std::string& contact_name) const noexcept
+    {
+        QVariantMap out;
+
+        if (m_wallet_cfg.addressbook_registry.find(contact_name) != m_wallet_cfg.addressbook_registry.cend())
+        {
+            for (auto&& [key, value]: m_wallet_cfg.addressbook_registry.at(contact_name))
+            { out.insert(QString::fromStdString(key), QVariant(QString::fromStdString(value))); }
+        }
+        return out;
+    }
+
+    bool
+    qt_wallet_manager::update_wallet_cfg() noexcept
+    {
+        using namespace std::string_literals;
+        const fs::path wallet_object_path = get_atomic_dex_export_folder() / (m_wallet_cfg.name + ".wallet.json"s);
+        std::ofstream  ofs(wallet_object_path.string(), std::ios::trunc);
+        if (not ofs.is_open())
+        {
+            return false;
+        }
+
+        nlohmann::json j;
+        atomic_dex::to_json(j, m_wallet_cfg);
+        ofs << j.dump(4);
         return true;
     }
 } // namespace atomic_dex
