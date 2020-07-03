@@ -23,6 +23,7 @@
 //! Project Headers
 #include "atomic.dex.security.hpp"
 #include "atomic.dex.version.hpp"
+#include "atomic.dex.wallet.config.hpp"
 
 namespace atomic_dex
 {
@@ -33,6 +34,8 @@ namespace atomic_dex
         bool inline login(
             const QString& password, const QString& wallet_name, mm2& mm2_system, const QString& default_wallet_name, Functor&& login_if_success_functor);
 
+        inline bool load_wallet_cfg(const std::string& wallet_name);
+
         static inline QStringList get_wallets() noexcept;
 
         static inline bool is_there_a_default_wallet() noexcept;
@@ -42,6 +45,9 @@ namespace atomic_dex
         static inline bool delete_wallet(const QString& wallet_name) noexcept;
 
         static inline bool confirm_password(const QString& wallet_name, const QString& password);
+
+      private:
+        wallet_cfg m_wallet_cfg;
     };
 
     template <typename Functor>
@@ -83,6 +89,7 @@ namespace atomic_dex
             }
 
             login_if_success_functor();
+            load_wallet_cfg(default_wallet.toStdString());
             mm2_system.spawn_mm2_instance(default_wallet.toStdString(), seed);
             return true;
         }
@@ -152,6 +159,23 @@ namespace atomic_dex
             spdlog::warn("{}", ec.message());
             return false;
         }
+        return true;
+    }
+
+    bool
+    qt_wallet_manager::load_wallet_cfg(const std::string& wallet_name)
+    {
+        using namespace std::string_literals;
+        const fs::path wallet_object_path = get_atomic_dex_export_folder() / (wallet_name + ".wallet.json"s);
+        std::ifstream  ifs(wallet_object_path.string());
+
+        if (not ifs.is_open())
+        {
+            return false;
+        }
+        nlohmann::json j;
+        ifs >> j;
+        m_wallet_cfg = j;
         return true;
     }
 } // namespace atomic_dex
