@@ -69,6 +69,20 @@ QtObject {
         return diffPrefix(received) + symbols[fiat] + " " + amount
     }
 
+    function formatPercent(value, show_prefix=true) {
+        const result = value + ' %'
+        if(!show_prefix) return result
+
+        let prefix = ''
+        if(value > 0) prefix = '+ '
+        else if(value < 0) {
+            prefix = '- '
+            value *= -1
+        }
+
+        return prefix + result
+    }
+
     readonly property int amountPrecision: 8
 
     function formatDouble(v) {

@@ -233,7 +233,7 @@ QtObject {
         get_wallets: () => { return ["encrypted"] },
 
         get_trade_infos: (ticker, receive_ticker, amount) => {
-            return {"input_final_value":"3332.99997961","is_ticker_of_fees_eth":false,"trade_fee":"0.00000039","tx_fee":"2e-05"}
+            return {"input_final_value":"3332.99997961","is_ticker_of_fees_eth":false,"trade_fee":"0.00000039","tx_fee":"0.0001", "not_enough_balance_to_pay_the_fees": false, "amount_needed":"0.01"}
        }
     })
 
