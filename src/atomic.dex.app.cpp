@@ -41,8 +41,8 @@
 //! Project Headers
 #include "atomic.dex.app.hpp"
 #include "atomic.dex.mm2.hpp"
-#include "atomic.dex.provider.coinpaprika.hpp"
 #include "atomic.dex.provider.cex.prices.hpp"
+#include "atomic.dex.provider.coinpaprika.hpp"
 #include "atomic.dex.qt.bindings.hpp"
 #include "atomic.dex.security.hpp"
 #include "atomic.dex.utilities.hpp"
@@ -912,9 +912,9 @@ namespace atomic_dex
                 get_mm2().apply_erc_fees(receive_ticker.toStdString(), erc_fees);
             }
 
-            auto tx_fee_value     = QString::fromStdString(get_formated_float(tx_fee_f));
+            auto tx_fee_value = QString::fromStdString(get_formated_float(tx_fee_f));
 
-            auto final_balance    = get_formated_float(t_float_50(amount.toStdString()) - (trade_fee_f + tx_fee_f));
+            auto final_balance = get_formated_float(t_float_50(amount.toStdString()) - (trade_fee_f + tx_fee_f));
             spdlog::debug("amount{} - (trade_fee{} + tx_fee{}) = final_balance{}", amount.toStdString(), trade_fee_f.str(), tx_fee_f.str(), final_balance);
             auto final_balance_qt = QString::fromStdString(final_balance);
 
@@ -1208,6 +1208,22 @@ namespace atomic_dex
         auto str = eth_lowercase_address.toStdString();
         to_eth_checksum(str);
         return QString::fromStdString(str);
+    }
+} // namespace atomic_dex
+
+//! OHLC Relative functions
+namespace atomic_dex
+{
+    QVariantList
+    application::get_ohlc_data(const QString& range)
+    {
+        QVariantList out;
+        auto&        provider = this->system_manager_.get_system<cex_prices_provider>();
+        auto         json     = provider.get_ohlc_data(range.toStdString());
+
+        QJsonDocument q_json = QJsonDocument::fromJson(QString::fromStdString(json.dump()).toUtf8());
+        out                  = q_json.array().toVariantList();
+        return out;
     }
 } // namespace atomic_dex
 
