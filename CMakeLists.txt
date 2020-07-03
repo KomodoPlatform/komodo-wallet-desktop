@@ -147,6 +147,7 @@ target_sources(atomic_qt_shared_deps INTERFACE
         ${CMAKE_SOURCE_DIR}/src/atomic.dex.qt.bindings.cpp
         ${CMAKE_SOURCE_DIR}/src/atomic.dex.provider.coinpaprika.cpp
         ${CMAKE_SOURCE_DIR}/src/atomic.dex.qt.current.coin.infos.cpp
+        ${CMAKE_SOURCE_DIR}/src/atomic.dex.wallet.config.cpp
         ${CMAKE_SOURCE_DIR}/src/atomic.dex.security.cpp
         $<$<PLATFORM_ID:Darwin>:${CMAKE_SOURCE_DIR}/src/osx/atomic.dex.osx.manager.mm>
         ${CMAKE_SOURCE_DIR}/qml.qrc
@@ -196,6 +197,7 @@ add_executable(atomic_qt MACOSX_BUNDLE ${ICON}
 ##! Testing executable
 add_executable(atomic_qt_tests MACOSX_BUNDLE ${ICON}
         src/atomic.dex.tests.cpp
+        src/atomic.dex.wallet.config.tests.cpp
         src/atomic.dex.utilities.tests.cpp)
 
 target_link_libraries(atomic_qt
