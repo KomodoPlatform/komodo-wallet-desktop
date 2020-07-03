@@ -63,6 +63,8 @@ namespace atomic_dex
         //! Event that occur when the mm2 process is launched correctly.
         void on_mm2_started(const mm2_started& evt) noexcept;
 
+        nlohmann::json get_ohlc_data(const std::string& range) noexcept;
+
         //! Event that occur when the ticker pair is changed in the front end
         void on_current_orderbook_ticker_pair_changed(const orderbook_refresh& evt) noexcept;
         ;

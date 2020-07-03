@@ -49,6 +49,7 @@ SCENARIO("atomic dex cex price service functionnality")
                 {
                     CHECK(cex_system.is_ohlc_data_available());
                     CHECK(cex_system.is_pair_supported("kmd", "btc"));
+                    CHECK_FALSE(cex_system.get_ohlc_data("60").empty());
                 }
             }
         }

@@ -136,4 +136,17 @@ namespace atomic_dex
         return not m_current_ohlc_data.empty();
     }
 
+    nlohmann::json
+    cex_prices_provider::get_ohlc_data(const std::string& range) noexcept
+    {
+        nlohmann::json res = nlohmann::json::array();
+        m_ohlc_data_mutex.try_lock();
+        if (m_current_ohlc_data.contains(range))
+        {
+            res = m_current_ohlc_data.at(range);
+        }
+        m_ohlc_data_mutex.unlock();
+        return res;
+    }
+
 } // namespace atomic_dex
