@@ -41,6 +41,8 @@ namespace atomic_dex
 
         inline QVariantMap get_address_from(const std::string& contact_name) const noexcept;
 
+        inline bool add_category(const std::string& category_name) noexcept;
+
 
         static inline QStringList get_wallets() noexcept;
 
@@ -228,5 +230,16 @@ namespace atomic_dex
         atomic_dex::to_json(j, m_wallet_cfg);
         ofs << j.dump(4);
         return true;
+    }
+
+    bool
+    qt_wallet_manager::add_category(const std::string& category_name) noexcept
+    {
+        if (m_wallet_cfg.categories_addressbook_registry.find(category_name) == m_wallet_cfg.categories_addressbook_registry.cend())
+        {
+            m_wallet_cfg.categories_addressbook_registry[category_name] = {};
+            return update_wallet_cfg();
+        }
+        return false;
     }
 } // namespace atomic_dex
