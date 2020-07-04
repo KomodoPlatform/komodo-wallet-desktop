@@ -27,14 +27,14 @@ ColumnLayout {
 //        checked: General.privacy_mode
 //    }
 
-    SidebarLine {
-        dashboard_index: General.idx_dashboard_light_ui
-        text_value: API.get().empty_string + (qsTr("Light UI"))
-        image: ""
-        Layout.fillWidth: true
-        separator: false
-        checked: !Style.dark_theme
-    }
+//    SidebarLine {
+//        dashboard_index: General.idx_dashboard_light_ui
+//        text_value: API.get().empty_string + (qsTr("Light UI"))
+//        image: ""
+//        Layout.fillWidth: true
+//        separator: false
+//        checked: !Style.dark_theme
+//    }
 }
 
 
