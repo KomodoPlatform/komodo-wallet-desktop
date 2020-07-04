@@ -17,7 +17,6 @@ ChartView {
     margins.right: 0
 
     Component.onCompleted: {
-        console.log("Connected OHLCDataUpdated to the updateChart function")
         API.get().OHLCDataUpdated.connect(updateChart)
     }
 
@@ -213,6 +212,26 @@ ChartView {
         update_last_value_y_timer.start()
     }
 
+    function findRealData(timestamp) {
+        const historical = getHistorical()
+        const count = historical.length
+
+        if(count === 0) return null
+
+        let closest_idx
+        let closest_dist = Infinity
+
+        for(let i = 1; i < count; ++i) {
+            const dist = Math.abs(timestamp - fixTimestamp(historical[i].timestamp))
+            if(dist < closest_dist) {
+                closest_dist = dist
+                closest_idx = i
+            }
+        }
+
+        return historical[closest_idx]
+    }
+
     width: parent.width
     height: parent.height
     antialiasing: true
@@ -221,16 +240,14 @@ ChartView {
 
     backgroundColor: "transparent"
 
-
     // Horizontal line
     Canvas {
+        id: horizontal_line
         readonly property color color: series.last_value_green ? Style.colorGreen : Style.colorRed
         onColorChanged: requestPaint()
         anchors.left: parent.left
         width: parent.width
         height: 1
-
-        y: series.last_value_y
 
         onPaint: {
             var ctx = getContext("2d");
@@ -265,12 +282,11 @@ ChartView {
 
     // Cursor Horizontal line
     Canvas {
+        id: cursor_horizontal_line
         readonly property color color: Style.colorBlue
         anchors.left: parent.left
         width: parent.width
         height: 1
-
-        y: mouse_area.mouseY
 
         onPaint: {
             var ctx = getContext("2d");
@@ -296,7 +312,6 @@ ChartView {
                 id: cursor_y_text
                 anchors.verticalCenter: parent.verticalCenter
                 anchors.horizontalCenter: parent.horizontalCenter
-                text_value: General.formatDouble(mouse_area.valueY, 0)
                 font.pixelSize: series.axisYRight.labelsFont.pixelSize
             }
         }
@@ -304,12 +319,12 @@ ChartView {
 
     // Cursor Vertical line
     Canvas {
+        id: cursor_vertical_line
+        property double x_position: 0
         readonly property color color: Style.colorBlue
         anchors.top: parent.top
         width: 1
         height: parent.height
-
-        x: mouse_area.mouseXSnapped
 
         onPaint: {
             var ctx = getContext("2d");
@@ -336,7 +351,6 @@ ChartView {
                 id: cursor_x_text
                 anchors.verticalCenter: parent.verticalCenter
                 anchors.horizontalCenter: parent.horizontalCenter
-                text_value: mouse_area.realData ? General.timestampToDate(mouse_area.realData.timestamp).toString() : ""
                 font.pixelSize: series.axisYRight.labelsFont.pixelSize
             }
         }
@@ -346,13 +360,8 @@ ChartView {
         id: mouse_area
         anchors.fill: parent
 
-        // Zoom in/out with wheel
-        readonly property double scroll_speed: 0.1
         onWheel: {
-            if (wheel.angleDelta.y !== 0) {
-                chart.zoom(1 + (-wheel.angleDelta.y/360) * scroll_speed)
-                series.updateLastValueY()
-            }
+            updater.delta_wheel_y += wheel.angleDelta.y
         }
 
         // Drag scroll
@@ -361,6 +370,8 @@ ChartView {
         property double prev_y
 
         onPositionChanged: {
+            const date_start = Date.now()
+            // Update
             if(mouse.buttons > 0) {
                 const diff_x = mouse.x - prev_x
                 const diff_y = mouse.y - prev_y
@@ -373,45 +384,17 @@ ChartView {
                 if(diff_y !== 0) series.updateLastValueY()
             }
 
+            const date_line_updates = Date.now()
             prev_x = mouse.x
             prev_y = mouse.y
 
-            // Map mouse position to value
-            const cp = chart.mapToValue(Qt.point(mouse.x, mouse.y), series)
-            valueX = cp.x
-            valueY = cp.y
-
-            // Find closest real data
-            realData = findRealData(valueX)
-            if(realData !== null) {
-                mouseXSnapped = chart.mapToPosition(Qt.point(realData.timestamp*1000, 0), series).x
-            }
+            const now = Date.now()
+            console.log("Total time for position change: ", now - date_start, " - For line updates: ", now - date_line_updates)
         }
 
         property double valueX
         property double valueY
-        property var realData
         property double mouseXSnapped
-
-        function findRealData(timestamp) {
-            const historical = getHistorical()
-            const count = historical.length
-
-            if(count === 0) return null
-
-            let closest_idx
-            let closest_dist = Infinity
-
-            for(let i = 1; i < count; ++i) {
-                const dist = Math.abs(timestamp - fixTimestamp(historical[i].timestamp))
-                if(dist < closest_dist) {
-                    closest_dist = dist
-                    closest_idx = i
-                }
-            }
-
-            return historical[closest_idx]
-        }
     }
 
 
@@ -469,15 +452,6 @@ ChartView {
         anchors.leftMargin: 10
         color: series.axisX.labelsColor
         font.pixelSize: Style.textSizeSmall
-        property string highlightColor: mouse_area.realData && mouse_area.realData.close >= mouse_area.realData.open ? Style.colorGreen : Style.colorRed
-        text_value: mouse_area.realData ? (
-                `O:<font color="${highlightColor}">${mouse_area.realData.open}</font> &nbsp;&nbsp; ` +
-                `H:<font color="${highlightColor}">${mouse_area.realData.high}</font> &nbsp;&nbsp; ` +
-                `L:<font color="${highlightColor}">${mouse_area.realData.low}</font> &nbsp;&nbsp; ` +
-                `C:<font color="${highlightColor}">${mouse_area.realData.close}</font> &nbsp;&nbsp; ` +
-                `Vol:<font color="${highlightColor}">${mouse_area.realData.volume.toFixed(0)}K</font>`
-                                        ) : ``
-
     }
 
     // MA texts
