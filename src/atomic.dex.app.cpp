@@ -41,6 +41,7 @@
 //! Project Headers
 #include "atomic.dex.app.hpp"
 #include "atomic.dex.mm2.hpp"
+#include "atomic.dex.provider.cex.prices.hpp"
 #include "atomic.dex.provider.coinpaprika.hpp"
 #include "atomic.dex.qt.bindings.hpp"
 #include "atomic.dex.security.hpp"
@@ -247,6 +248,7 @@ namespace atomic_dex
         {
             auto& mm2_s = system_manager_.create_system<mm2>();
             system_manager_.create_system<coinpaprika_provider>(mm2_s);
+            system_manager_.create_system<cex_prices_provider>(mm2_s);
 
             connect_signals();
             this->m_need_a_full_refresh_of_mm2 = false;
@@ -439,6 +441,7 @@ namespace atomic_dex
         //! MM2 system need to be created before the GUI and give the instance to the gui
         auto& mm2_system = system_manager_.create_system<mm2>();
         system_manager_.create_system<coinpaprika_provider>(mm2_system);
+        system_manager_.create_system<cex_prices_provider>(mm2_system);
 
         connect_signals();
         if (is_there_a_default_wallet())
@@ -825,6 +828,7 @@ namespace atomic_dex
 
         system_manager_.mark_system<mm2>();
         system_manager_.mark_system<coinpaprika_provider>();
+        system_manager_.mark_system<cex_prices_provider>();
 
         get_dispatcher().sink<change_ticker_event>().disconnect<&application::on_change_ticker_event>(*this);
         get_dispatcher().sink<enabled_coins_event>().disconnect<&application::on_enabled_coins_event>(*this);
@@ -892,6 +896,7 @@ namespace atomic_dex
     application::get_trade_infos(const QString& ticker, const QString& receive_ticker, const QString& amount)
     {
         spdlog::debug("{} l{} f[{}]", __FUNCTION__, __LINE__, fs::path(__FILE__).filename().string());
+        spdlog::debug("ticker {}, receive_ticker {}, amount {}", ticker.toStdString(), receive_ticker.toStdString(), amount.toStdString());
         QVariantMap out;
 
 
@@ -1218,6 +1223,22 @@ namespace atomic_dex
         auto str = eth_lowercase_address.toStdString();
         to_eth_checksum(str);
         return QString::fromStdString(str);
+    }
+} // namespace atomic_dex
+
+//! OHLC Relative functions
+namespace atomic_dex
+{
+    QVariantList
+    application::get_ohlc_data(const QString& range)
+    {
+        QVariantList out;
+        auto&        provider = this->system_manager_.get_system<cex_prices_provider>();
+        auto         json     = provider.get_ohlc_data(range.toStdString());
+
+        QJsonDocument q_json = QJsonDocument::fromJson(QString::fromStdString(json.dump()).toUtf8());
+        out                  = q_json.array().toVariantList();
+        return out;
     }
 } // namespace atomic_dex
 
