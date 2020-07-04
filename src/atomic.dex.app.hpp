@@ -78,6 +78,7 @@ namespace atomic_dex
         void on_mm2_initialized_event(const mm2_initialized&) noexcept;
         void on_mm2_started_event(const mm2_started&) noexcept;
         void on_refresh_order_event(const refresh_order_needed&) noexcept;
+        void on_refresh_ohlc_event(const refresh_ohlc_needed&) noexcept;
 
         //! Properties Getter
         QString               get_empty_string();
@@ -196,6 +197,7 @@ namespace atomic_dex
         void on_status_changed();
         void on_wallet_default_name_changed();
         void myOrdersUpdated();
+        void OHLCDataUpdated();
 
       private:
         //! CFG
@@ -211,6 +213,7 @@ namespace atomic_dex
         std::atomic_bool   m_refresh_enabled_coin_event{false};
         std::atomic_bool   m_refresh_current_ticker_infos{false};
         std::atomic_bool   m_refresh_orders_needed{false};
+        std::atomic_bool   m_refresh_ohlc_needed{false};
         std::atomic_bool   m_refresh_transaction_only{false};
         bool               m_need_a_full_refresh_of_mm2{false};
         QObjectList        m_enabled_coins;
