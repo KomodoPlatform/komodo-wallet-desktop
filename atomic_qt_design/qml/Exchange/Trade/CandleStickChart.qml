@@ -213,6 +213,7 @@ ChartView {
     }
 
     function findRealData(timestamp) {
+        const start_date = Date.now()
         const historical = getHistorical()
         const count = historical.length
 
@@ -229,7 +230,11 @@ ChartView {
             }
         }
 
+        console.log("Scanning", count, "timestamps took", Date.now() - start_date, "ms")
+
         return historical[closest_idx]
+
+
     }
 
     width: parent.width
@@ -364,10 +369,6 @@ ChartView {
 
         // Drag scroll
         hoverEnabled: true
-
-        property double valueX
-        property double valueY
-        property double mouseXSnapped
     }
 
 
@@ -452,12 +453,13 @@ ChartView {
 
             const mouse_x = mouse_area.mouseX
             const mouse_y = mouse_area.mouseY
+            const diff_x = mouse_x - prev_mouse_x
+            const diff_y = mouse_y - prev_mouse_y
+            prev_mouse_x = mouse_x
+            prev_mouse_y = mouse_y
 
             // Update drag
             if(mouse_area.containsPress) {
-                const diff_x = mouse_x - prev_mouse_x
-                const diff_y = mouse_y - prev_mouse_y
-
                 if(diff_x > 0) chart.scrollLeft(diff_x)
                 else if(diff_x < 0) chart.scrollRight(-diff_x)
                 if(diff_y > 0) chart.scrollUp(diff_y)
@@ -466,45 +468,44 @@ ChartView {
                 if(diff_y !== 0) series.updateLastValueY()
             }
 
-            prev_mouse_x = mouse_x
-            prev_mouse_y = mouse_y
-
             // Update zoom
-            if (delta_wheel_y !== 0) {
+            const zoomed = delta_wheel_y !== 0
+            if (zoomed) {
                 chart.zoom(1 + (-delta_wheel_y/360) * scroll_speed)
                 series.updateLastValueY()
                 delta_wheel_y = 0
             }
 
-            // Positions
-            horizontal_line.y = series.last_value_y
-            cursor_horizontal_line.y = mouse_y
-            cursor_vertical_line.x = mouse_area.mouseXSnapped
+            // Update cursor line
+            if(zoomed || diff_x !== 0 || diff_y !== 0) {
+                // Map mouse position to value
+                const cp = chart.mapToValue(Qt.point(mouse_x, mouse_y), series)
 
-            // Map mouse position to value
-            const cp = chart.mapToValue(Qt.point(mouse_x, mouse_y), series)
-            mouse_area.valueX = cp.x
-            mouse_area.valueY = cp.y
+                // Find closest real data
+                const realData = findRealData(cp.x)
+                if(realData !== null) {
+                    cursor_vertical_line.x = chart.mapToPosition(Qt.point(realData.timestamp*1000, 0), series).x
+                }
 
-            // Find closest real data
-            const realData = findRealData(mouse_area.valueX)
-            if(realData !== null) {
-                mouse_area.mouseXSnapped = chart.mapToPosition(Qt.point(realData.timestamp*1000, 0), series).x
+                // Texts
+                cursor_x_text.text_value = realData ? General.timestampToDate(realData.timestamp).toString() : ""
+                cursor_y_text.text_value = General.formatDouble(cp.y, 0)
+
+                const highlightColor = realData && realData.close >= realData.open ? Style.colorGreen : Style.colorRed
+                cursor_values.text_value = realData ? (
+                        `O:<font color="${highlightColor}">${realData.open}</font> &nbsp;&nbsp; ` +
+                        `H:<font color="${highlightColor}">${realData.high}</font> &nbsp;&nbsp; ` +
+                        `L:<font color="${highlightColor}">${realData.low}</font> &nbsp;&nbsp; ` +
+                        `C:<font color="${highlightColor}">${realData.close}</font> &nbsp;&nbsp; ` +
+                        `Vol:<font color="${highlightColor}">${realData.volume.toFixed(0)}K</font>`
+                                                ) : ``
+
+                // Positions
+                horizontal_line.y = series.last_value_y
+                cursor_horizontal_line.y = mouse_y
             }
 
-            // Texts
-            cursor_x_text.text_value = realData ? General.timestampToDate(realData.timestamp).toString() : ""
-            cursor_y_text.text_value = General.formatDouble(mouse_area.valueY, 0)
-
-            const highlightColor = realData && realData.close >= realData.open ? Style.colorGreen : Style.colorRed
-            cursor_values.text_value = realData ? (
-                    `O:<font color="${highlightColor}">${realData.open}</font> &nbsp;&nbsp; ` +
-                    `H:<font color="${highlightColor}">${realData.high}</font> &nbsp;&nbsp; ` +
-                    `L:<font color="${highlightColor}">${realData.low}</font> &nbsp;&nbsp; ` +
-                    `C:<font color="${highlightColor}">${realData.close}</font> &nbsp;&nbsp; ` +
-                    `Vol:<font color="${highlightColor}">${realData.volume.toFixed(0)}K</font>`
-                                            ) : ``
-
+            // Slow down the interval if computer is not capable
             const diff = Date.now() - date_start
             if(diff > interval) interval = diff
         }
