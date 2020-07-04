@@ -1262,8 +1262,11 @@ namespace atomic_dex
                             return res < timestamp;
                          });
 
-        QJsonDocument q_json = QJsonDocument::fromJson(QString::fromStdString(it->dump()).toUtf8());
-        out = q_json.object().toVariantMap();
+        if (it != json.rend())
+        {
+            QJsonDocument q_json = QJsonDocument::fromJson(QString::fromStdString(it->dump()).toUtf8());
+            out = q_json.object().toVariantMap();
+        }
         return out;
     }
 
