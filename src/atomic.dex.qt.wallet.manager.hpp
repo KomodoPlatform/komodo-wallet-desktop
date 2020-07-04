@@ -43,7 +43,6 @@ namespace atomic_dex
 
         inline bool add_category(const std::string& category_name) noexcept;
 
-
         static inline QStringList get_wallets() noexcept;
 
         static inline bool is_there_a_default_wallet() noexcept;

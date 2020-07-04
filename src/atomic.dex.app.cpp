@@ -1259,4 +1259,22 @@ namespace atomic_dex
     {
         return atomic_dex::qt_wallet_manager::is_there_a_default_wallet();
     }
+
+    QStringList
+    application::get_addressbook_categories_list() const
+    {
+        return m_wallet_manager.get_categories_list();
+    }
+
+    QVariantMap
+    application::get_address_from_addressbook(const QString& contact_name) const
+    {
+        return m_wallet_manager.get_address_from(contact_name.toStdString());
+    }
+
+    bool
+    application::add_category_in_addressbook(const QString& category_name) noexcept
+    {
+        return m_wallet_manager.add_category(category_name.toStdString());
+    }
 } // namespace atomic_dex
