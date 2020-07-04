@@ -462,6 +462,54 @@ ChartView {
         text_value: `<font color="${series_ma1.color}">MA ${series_ma1.num}</font> &nbsp;&nbsp; <font color="${series_ma2.color}">MA ${series_ma2.num}</font>`
     }
 
+
+    // Canvas updater timer
+    Timer {
+        id: updater
+        readonly property double scroll_speed: 0.1
+        property double delta_wheel_y: 0
+
+        running: true
+        repeat: true
+        interval: 60
+        onTriggered: {
+            // Update zoom
+            if (delta_wheel_y !== 0) {
+                chart.zoom(1 + (-delta_wheel_y/360) * scroll_speed)
+                series.updateLastValueY()
+                delta_wheel_y = 0
+            }
+
+            // Positions
+            horizontal_line.y = series.last_value_y
+            cursor_horizontal_line.y = mouse_area.mouseY
+            cursor_vertical_line.x = mouse_area.mouseXSnapped
+
+            // Map mouse position to value
+            const cp = chart.mapToValue(Qt.point(mouse_area.mouseX, mouse_area.mouseY), series)
+            mouse_area.valueX = cp.x
+            mouse_area.valueY = cp.y
+
+            // Find closest real data
+            const realData = findRealData(mouse_area.valueX)
+            if(realData !== null) {
+                mouse_area.mouseXSnapped = chart.mapToPosition(Qt.point(realData.timestamp*1000, 0), series).x
+            }
+
+            // Texts
+            cursor_x_text.text_value = realData ? General.timestampToDate(realData.timestamp).toString() : ""
+            cursor_y_text.text_value = General.formatDouble(mouse_area.valueY, 0)
+
+            const highlightColor = realData && realData.close >= realData.open ? Style.colorGreen : Style.colorRed
+            cursor_values.text_value = realData ? (
+                    `O:<font color="${highlightColor}">${realData.open}</font> &nbsp;&nbsp; ` +
+                    `H:<font color="${highlightColor}">${realData.high}</font> &nbsp;&nbsp; ` +
+                    `L:<font color="${highlightColor}">${realData.low}</font> &nbsp;&nbsp; ` +
+                    `C:<font color="${highlightColor}">${realData.close}</font> &nbsp;&nbsp; ` +
+                    `Vol:<font color="${highlightColor}">${realData.volume.toFixed(0)}K</font>`
+                                            ) : ``
+        }
+    }
 }
 
 
