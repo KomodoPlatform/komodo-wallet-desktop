@@ -172,6 +172,7 @@ namespace atomic_dex
         Q_INVOKABLE bool        is_claiming_ready(const QString& ticker);
         Q_INVOKABLE QObject*     claim_rewards(const QString& ticker);
         Q_INVOKABLE QVariantList get_ohlc_data(const QString& range);
+        Q_INVOKABLE bool         is_supported_ohlc_data_ticker_pair(const QString& base, const QString& rel);
         Q_INVOKABLE QObject*    get_coin_info(const QString& ticker);
         Q_INVOKABLE QVariantMap get_my_orders();
         Q_INVOKABLE QVariantMap get_recent_swaps();
