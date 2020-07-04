@@ -1,7 +1,7 @@
 import QtQuick 2.12
 import QtQuick.Layouts 1.12
 import QtQuick.Controls 2.12
-import QtQuick.Controls.Material 2.12
+
 import "../Components"
 import "../Constants"
 import ".."
@@ -30,25 +30,22 @@ DefaultModal {
         }
 
 
-        Rectangle {
+        InnerBackground {
             id: eula_rect
-            color: Style.colorTheme7
-            radius: Style.rectangleCornerRadius
+
             height: 400
             Layout.fillWidth: true
-            Flickable {
-                ScrollBar.vertical: ScrollBar { }
 
+            DefaultFlickable {
                 anchors.fill: parent
                 anchors.margins: 20
 
-                clip: true
                 contentWidth: eula_text.width
                 contentHeight: eula_text.height
 
                 DefaultText {
                     id: eula_text
-                    text: API.get().empty_string + (getEula())
+                    text_value: API.get().empty_string + (getEula())
 
                     width: eula_rect.width - 40
                 }

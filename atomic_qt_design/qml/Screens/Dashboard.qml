@@ -1,7 +1,8 @@
 import QtQuick 2.12
 import QtQuick.Layouts 1.12
 import QtQuick.Controls 2.12
-import QtQuick.Controls.Material 2.12
+
+import QtGraphicalEffects 1.0
 import "../Components"
 import "../Constants"
 
@@ -16,11 +17,15 @@ Item {
 
     Layout.fillWidth: true
 
+    function getMainPage() {
+        return API.design_editor ? General.idx_dashboard_exchange : General.idx_dashboard_portfolio
+    }
+
     property int prev_page: -1
-    property int current_page: API.design_editor ? General.idx_dashboard_exchange : General.idx_dashboard_portfolio
+    property int current_page: getMainPage()
 
     function reset() {
-        current_page = General.idx_dashboard_portfolio
+        current_page = getMainPage()
         prev_page = -1
 
         // Reset all sections
@@ -36,6 +41,31 @@ Item {
         return app.current_page === idx_dashboard
     }
 
+    function shouldUpdatePortfolio() {
+        return  inCurrentPage() &&
+                (current_page === General.idx_dashboard_portfolio ||
+                 current_page === General.idx_dashboard_wallet)
+    }
+
+    property var portfolio_coins: ([])
+
+    function updatePortfolio() {
+        portfolio_coins = API.get().get_portfolio_informations()
+
+        update_timer.running = true
+    }
+
+    Timer {
+        id: update_timer
+        running: false
+        repeat: true
+        interval: 5000
+        onTriggered: {
+            if(shouldUpdatePortfolio()) updatePortfolio()
+        }
+    }
+
+
     onCurrent_pageChanged: {
         if(prev_page !== current_page) {
             if(current_page === General.idx_dashboard_exchange) {
@@ -48,6 +78,9 @@ Item {
 
             if(current_page === General.idx_dashboard_portfolio) {
                 portfolio.onOpened()
+            }
+            else if(current_page === General.idx_dashboard_wallet) {
+                wallet.onOpened()
             }
             else if(current_page === General.idx_dashboard_settings) {
                 settings.onOpened()
@@ -64,11 +97,17 @@ Item {
         onTriggered: General.enableEthIfNeeded()
     }
 
-    // Left side
+    // Sidebar, left side
+    Sidebar {
+        id: sidebar
+    }
+
+    // Right side
     Rectangle {
-        color: Style.colorTheme6
+        color: Style.colorTheme8
         width: parent.width - sidebar.width
         height: parent.height
+        x: sidebar.width
 
         // Modals
         EnableCoinModal {
@@ -97,13 +136,13 @@ Item {
 
             DefaultText {
                 id: news
-                text: API.get().empty_string + (qsTr("News"))
+                text_value: API.get().empty_string + (qsTr("News"))
                 function reset() { }
             }
 
             DefaultText {
                 id: dapps
-                text: API.get().empty_string + (qsTr("DApps"))
+                text_value: API.get().empty_string + (qsTr("Dapps"))
                 function reset() { }
             }
 
@@ -114,27 +153,17 @@ Item {
         }
     }
 
-    // Sidebar, right side
-    Rectangle {
-        id: sidebar
-        color: Style.colorTheme8
-        width: 150
-        height: parent.height
-        x: parent.width - width
-
-        Image {
-            source: General.image_path + "komodo-icon.png"
-            anchors.horizontalCenter: parent.horizontalCenter
-            y: parent.width * 0.25
-            transformOrigin: Item.Center
-            width: 64
-            fillMode: Image.PreserveAspectFit
-        }
-
-        Sidebar {
-            width: parent.width
-            anchors.verticalCenter: parent.verticalCenter
-        }
+    DropShadow {
+        anchors.fill: sidebar
+        source: sidebar
+        cached: false
+        horizontalOffset: 0
+        verticalOffset: 0
+        radius: 32
+        samples: 32
+        spread: 0
+        color: Style.colorSidebarDropShadow
+        smooth: true
     }
 }
 

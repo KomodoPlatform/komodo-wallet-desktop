@@ -1,7 +1,7 @@
 import QtQuick 2.12
 import QtQuick.Layouts 1.12
 import QtQuick.Controls 2.12
-import QtQuick.Controls.Material 2.12
+
 import "../Components"
 import "../Constants"
 import "../Settings"
@@ -19,12 +19,23 @@ SetupPage {
 
     property var wallets: ([])
 
-    image_scale: 0.7
-    image_path: General.image_path + "komodo-icon.png"
-    title: API.get().empty_string + (qsTr("Welcome!"))
+    image_scale: 0.72
+    image_path: General.image_path + "atomicdex-logo-large.svg"
+    image_margin: 30
     content: ColumnLayout {
+        width: 400
+        spacing: Style.rowSpacing
+        DefaultText {
+            text_value: API.get().empty_string + (qsTr("Welcome"))
+        }
+
+        HorizontalLine {
+            Layout.fillWidth: true
+        }
+
         RowLayout {
             Layout.fillWidth: true
+            spacing: Style.buttonSpacing
 
             DefaultButton {
                 Layout.fillWidth: true
@@ -32,7 +43,7 @@ SetupPage {
                 onClicked: onClickedRecoverSeed()
             }
 
-            PrimaryButton {
+            DefaultButton {
                 Layout.fillWidth: true
                 text: API.get().empty_string + (qsTr("New User"))
                 onClicked: onClickedNewUser()
@@ -41,58 +52,70 @@ SetupPage {
 
         // Wallets
         ColumnLayout {
+            spacing: Style.rowSpacing
+
             visible: wallets.length > 0
+
             // Name
             DefaultText {
-                Layout.topMargin: 10
-                text: API.get().empty_string + (qsTr("Wallets"))
+                text_value: API.get().empty_string + (qsTr("Wallets"))
+                font.pixelSize: Style.textSizeSmall2
             }
 
-            HorizontalLine {
+            InnerBackground {
+                id: bg
                 Layout.fillWidth: true
-            }
+                readonly property int row_height: 40
+                Layout.minimumHeight: row_height
+                Layout.preferredHeight: row_height * Math.min(wallets.length, 3)
 
-            ListView {
-                ScrollBar.vertical: ScrollBar {}
-                implicitWidth: contentItem.childrenRect.width
-                implicitHeight: contentItem.childrenRect.height
-                clip: true
+                content: DefaultListView {
+                    id: list
+                    implicitHeight: bg.Layout.preferredHeight
 
-                model: wallets
+                    model: wallets
 
-                delegate: Rectangle {
-                    property bool hovered: false
-
-                    color: hovered ? Style.colorTheme7 : "transparent"
-                    width: 300
-                    height: 30
-
-                    // Click area
-                    MouseArea {
-                        anchors.fill: parent
-                        hoverEnabled: true
-                        onHoveredChanged: hovered = containsMouse
-                        onClicked: {
-                            API.get().wallet_default_name = model.modelData
-                            onClickedWallet()
+                    delegate: Rectangle {
+                        color: mouse_area.containsMouse ? Style.colorTheme6 : "transparent"
+                        width: bg.width
+                        height: bg.row_height
+                        DefaultGradient {
+                            anchors.fill: parent
+                            visible: mouse_area.containsMouse
+                            start_color: Style.colorWalletsHighlightGradient1
+                            end_color: Style.colorWalletsHighlightGradient2
                         }
-                    }
 
-                    // Name
-                    DefaultText {
-                        anchors.left: parent.left
-                        anchors.leftMargin: 5
+                        // Click area
+                        MouseArea {
+                            id: mouse_area
+                            anchors.fill: parent
+                            hoverEnabled: true
+                            onClicked: {
+                                API.get().wallet_default_name = model.modelData
+                                onClickedWallet()
+                            }
+                        }
 
-                        text: API.get().empty_string + (Style.listItemPrefix + model.modelData)
-                        anchors.verticalCenter: parent.verticalCenter
-                    }
+                        // Name
+                        DefaultText {
+                            anchors.left: parent.left
+                            anchors.leftMargin: 40
 
-                    // Line
-                    HorizontalLine {
-                        visible: index !== wallets.length - 1
-                        width: parent.width
-                        color: Style.colorWhite9
-                        anchors.bottom: parent.bottom
+                            text_value: API.get().empty_string + (model.modelData)
+                            anchors.verticalCenter: parent.verticalCenter
+                            font.pixelSize: Style.textSizeSmall2
+                        }
+
+                        HorizontalLine {
+                            visible: index !== wallets.length -1
+                            width: parent.width - 4
+
+                            anchors.horizontalCenter: parent.horizontalCenter
+                            anchors.bottom: parent.bottom
+                            anchors.bottomMargin: -height/2
+                            light: true
+                        }
                     }
                 }
             }
@@ -101,12 +124,11 @@ SetupPage {
 
 
         HorizontalLine {
+            light: true
             Layout.fillWidth: true
-            Layout.bottomMargin: 10
         }
 
         Languages {
-            Layout.alignment: Qt.AlignHCenter
         }
     }
 }

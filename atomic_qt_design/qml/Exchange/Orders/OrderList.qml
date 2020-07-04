@@ -1,26 +1,24 @@
 import QtQuick 2.12
 import QtQuick.Layouts 1.12
 import QtQuick.Controls 2.12
-import QtQuick.Controls.Material 2.12
+
 import "../../Components"
 import "../../Constants"
 import ".."
 
-Rectangle {
+InnerBackground {
     property string title
     property alias items: list.model
 
     Layout.fillWidth: true
     Layout.fillHeight: true
-    color: Style.colorTheme7
-    radius: Style.rectangleCornerRadius
 
     ColumnLayout {
         width: parent.width
         height: parent.height
 
         DefaultText {
-            text: API.get().empty_string + (title + " (" + items.length + ")")
+            text_value: API.get().empty_string + (title + " (" + items.length + ")")
 
             Layout.alignment: Qt.AlignHCenter | Qt.AlignTop
             Layout.topMargin: 10
@@ -41,17 +39,14 @@ Rectangle {
             Layout.topMargin: 20
             color: Style.colorWhite5
 
-            text: API.get().empty_string + (qsTr("You don't have any orders."))
+            text_value: API.get().empty_string + (qsTr("You don't have any orders."))
         }
 
         // List
-        ListView {
+        DefaultListView {
             id: list
-            ScrollBar.vertical: ScrollBar {}
             Layout.fillWidth: true
             Layout.fillHeight: true
-
-            clip: true
 
             // Row
             delegate: OrderLine {

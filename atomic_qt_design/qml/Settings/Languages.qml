@@ -1,49 +1,53 @@
 import QtQuick 2.12
 import QtQuick.Layouts 1.12
 import QtQuick.Controls 2.12
-import QtQuick.Controls.Material 2.12
+
 import QtGraphicalEffects 1.0
 import "../Components"
 import "../Constants"
 
 ColumnLayout {
     RowLayout {
-        Layout.alignment: Qt.AlignHCenter
+        Layout.alignment: Qt.AlignVCenter
+        spacing: 20
         DefaultText {
             Layout.alignment: Qt.AlignVCenter
-            text: API.get().empty_string + (qsTr("Language"))
+            text_value: API.get().empty_string + (qsTr("Language") + ":")
+            font.pixelSize: Style.textSizeSmall2
         }
-        Image {
-            Layout.alignment: Qt.AlignBottom
-            source: General.image_path + "lang/" + API.get().lang + ".png"
-            fillMode: Image.PreserveAspectFit
-            scale: 0.5
-        }
-    }
 
-    Grid {
-        Layout.alignment: Qt.AlignHCenter
-        Layout.topMargin: 10
-        clip: true
+        Grid {
+            Layout.alignment: Qt.AlignVCenter
 
-        columns: 8
-        spacing: 10
+            clip: true
 
-        layoutDirection: Qt.LeftToRight
+            columns: 8
+            spacing: 10
 
-        Repeater {
-            model: API.get().get_available_langs()
-            delegate: Image {
-                source: General.image_path + "lang/" + model.modelData + ".png"
-                fillMode: Image.PreserveAspectFit
-                width: Style.textSize2
+            layoutDirection: Qt.LeftToRight
 
-                // Click area
-                MouseArea {
-                    anchors.fill: parent
-                    acceptedButtons: Qt.LeftButton | Qt.RightButton
-                    onClicked: {
-                        API.get().lang = model.modelData
+            Repeater {
+                model: API.get().get_available_langs()
+                delegate: Rectangle {
+                    width: image.sourceSize.width - 4 // Current icons have too much space around them
+                    height: image.sourceSize.height - 2
+                    color: API.get().lang === model.modelData ? Style.colorTheme11 : "transparent"
+
+                    Image {
+                        id: image
+                        anchors.centerIn: parent
+                        source: General.image_path + "lang/" + model.modelData + ".png"
+                        fillMode: Image.PreserveAspectFit
+                        width: Style.textSize2
+
+                        // Click area
+                        MouseArea {
+                            anchors.fill: parent
+                            acceptedButtons: Qt.LeftButton | Qt.RightButton
+                            onClicked: {
+                                API.get().lang = model.modelData
+                            }
+                        }
                     }
                 }
             }

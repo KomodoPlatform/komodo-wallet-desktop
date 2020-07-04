@@ -1,7 +1,7 @@
 import QtQuick 2.12
 import QtQuick.Layouts 1.12
 import QtQuick.Controls 2.12
-import QtQuick.Controls.Material 2.12
+
 import "../Components"
 import "../Constants"
 
@@ -32,10 +32,21 @@ SetupPage {
     property string text_error
 
     image_scale: 0.7
-    image_path: General.image_path + "setup-wallet-restore-2.svg"
-    title: API.get().empty_string + (qsTr("Recovery"))
+
+    // Removed the image for now, no space
+    // image_path: General.image_path + "setup-wallet-restore-2.svg"
+
     content: ColumnLayout {
         width: 400
+        spacing: Style.rowSpacing
+
+        DefaultText {
+            text_value: API.get().empty_string + (qsTr("Recovery"))
+        }
+
+        HorizontalLine {
+            Layout.fillWidth: true
+        }
 
         function reset() {
             recover_seed.reset()
@@ -116,6 +127,8 @@ SetupPage {
         }
 
         RowLayout {
+            spacing: Style.buttonSpacing
+
             DefaultButton {
                 Layout.fillWidth: true
                 text: API.get().empty_string + (qsTr("Back"))
@@ -139,7 +152,7 @@ SetupPage {
         }
 
         DefaultText {
-            text: API.get().empty_string + (text_error)
+            text_value: API.get().empty_string + (text_error)
             color: Style.colorRed
             visible: text !== ''
         }

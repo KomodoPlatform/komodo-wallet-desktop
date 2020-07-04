@@ -1,7 +1,7 @@
 import QtQuick 2.12
 import QtQuick.Layouts 1.12
 import QtQuick.Controls 2.12
-import QtQuick.Controls.Material 2.12
+
 import QtGraphicalEffects 1.0
 import QtCharts 2.3
 
@@ -31,29 +31,6 @@ ColumnLayout {
 
     function onOpened() {
         updatePortfolio()
-    }
-
-    function inCurrentPage() {
-        return  dashboard.inCurrentPage() &&
-                dashboard.current_page === General.idx_dashboard_portfolio
-    }
-
-    property var portfolio_coins: ([])
-
-    function updatePortfolio() {
-        portfolio_coins = API.get().get_portfolio_informations()
-
-        update_timer.running = true
-    }
-
-    Timer {
-        id: update_timer
-        running: false
-        repeat: true
-        interval: 5000
-        onTriggered: {
-            if(inCurrentPage()) updatePortfolio()
-        }
     }
 
     function getColor(data) {
@@ -91,8 +68,7 @@ ColumnLayout {
     }
 
     // Top part
-    Rectangle {
-        color: "transparent"
+    Item {
         Layout.fillWidth: true
         height: 200
 
@@ -104,7 +80,7 @@ ColumnLayout {
                 Layout.topMargin: 50
                 Layout.bottomMargin: 0
                 Layout.alignment: Qt.AlignHCenter
-                text: API.get().empty_string + (qsTr("TOTAL"))
+                text_value: API.get().empty_string + (qsTr("TOTAL"))
                 font.pixelSize: Style.textSize
                 color: Style.colorWhite5
             }
@@ -113,7 +89,7 @@ ColumnLayout {
             DefaultText {
                 Layout.alignment: Qt.AlignHCenter
                 Layout.bottomMargin: 30
-                text: API.get().empty_string + (General.formatFiat("", API.get().balance_fiat_all, API.get().fiat))
+                text_value: API.get().empty_string + (General.formatFiat("", API.get().balance_fiat_all, API.get().fiat))
                 font.pixelSize: Style.textSize4
             }
         }
@@ -122,10 +98,7 @@ ColumnLayout {
         // Add button
         PlusButton {
             id: add_coin_button
-
-            width: 50
-
-            mouse_area.onClicked: enable_coin_modal.prepareAndOpen()
+            onClicked: enable_coin_modal.prepareAndOpen()
 
             anchors.right: parent.right
             anchors.rightMargin: parent.height * 0.5 - width * 0.5
@@ -154,9 +127,7 @@ ColumnLayout {
 
 
     // List header
-    Rectangle {
-        color: "transparent"
-
+    Item {
         Layout.alignment: Qt.AlignTop
 
         Layout.fillWidth: true
@@ -240,9 +211,8 @@ ColumnLayout {
     }
 
     // Transactions or loading
-    Rectangle {
+    Item {
         id: loading
-        color: "transparent"
         visible: portfolio_coins.length === 0
         Layout.alignment: Qt.AlignCenter
         Layout.fillWidth: true
@@ -252,25 +222,24 @@ ColumnLayout {
             anchors.horizontalCenter: parent.horizontalCenter
             anchors.verticalCenter: parent.verticalCenter
             DefaultText {
-                text: API.get().empty_string + (qsTr("Loading"))
+                text_value: API.get().empty_string + (qsTr("Loading"))
                 Layout.alignment: Qt.AlignHCenter
                 font.pixelSize: Style.textSize2
             }
 
-            BusyIndicator {
+            DefaultBusyIndicator {
                 Layout.alignment: Qt.AlignHCenter
             }
         }
     }
 
     // List
-    ListView {
+    DefaultListView {
         id: list
         visible: portfolio_coins.length > 0
         Layout.alignment: Qt.AlignTop
         Layout.fillWidth: true
         Layout.fillHeight: true
-        ScrollBar.vertical: ScrollBar {}
 
         model: General.filterCoins(portfolio_coins, input_coin_filter.text)
                 .sort((a, b) => {
@@ -304,20 +273,16 @@ ColumnLayout {
             }
         })
 
-        clip: true
-
         delegate: Rectangle {
-            property bool hovered: false
-
-            color: hovered ? Style.colorTheme5 : index % 2 == 0 ? Style.colorTheme6 : Style.colorTheme7
+            color: mouse_area.containsMouse ? Style.colorTheme5 : index % 2 == 0 ? Style.colorTheme6 : Style.colorTheme7
             width: portfolio.width
             height: 50
 
             // Click area
             MouseArea {
+                id: mouse_area
                 anchors.fill: parent
                 hoverEnabled: true
-                onHoveredChanged: hovered = containsMouse
                 acceptedButtons: Qt.LeftButton | Qt.RightButton
                 onClicked: {
                     if (mouse.button === Qt.RightButton) context_menu.popup()
@@ -347,7 +312,7 @@ ColumnLayout {
                 anchors.left: parent.left
                 anchors.leftMargin: coin_header.anchors.leftMargin
 
-                source: General.image_path + "coins/" + model.modelData.ticker.toLowerCase() + ".png"
+                source: General.coinIcon(model.modelData.ticker)
                 fillMode: Image.PreserveAspectFit
                 width: Style.textSize2
                 anchors.verticalCenter: parent.verticalCenter
@@ -358,7 +323,7 @@ ColumnLayout {
                 anchors.left: icon.right
                 anchors.leftMargin: 10
 
-                text: API.get().empty_string + (model.modelData.name)
+                text_value: API.get().empty_string + (model.modelData.name)
                 anchors.verticalCenter: parent.verticalCenter
             }
 
@@ -368,7 +333,7 @@ ColumnLayout {
                 anchors.left: parent.left
                 anchors.leftMargin: balance_header.anchors.leftMargin
 
-                text: API.get().empty_string + (model.modelData.balance)
+                text_value: API.get().empty_string + (model.modelData.balance)
                 color: Style.colorWhite4
                 anchors.verticalCenter: parent.verticalCenter
             }
@@ -380,8 +345,8 @@ ColumnLayout {
                 anchors.leftMargin: 5
                 anchors.baseline: balance_value.baseline
 
-                text: API.get().empty_string + (model.modelData.ticker)
-                color: Style.colorWhite6
+                text_value: API.get().empty_string + (model.modelData.ticker)
+                color: Style.colorThemeDarkLight
                 font.pixelSize: Style.textSize * 0.9
             }
 
@@ -390,7 +355,7 @@ ColumnLayout {
                 anchors.left: balance_ticker.right
                 anchors.leftMargin: 10
 
-                text: API.get().empty_string + ("(" + General.formatFiat('', model.modelData.balance_fiat, API.get().fiat) + ")")
+                text_value: API.get().empty_string + ("(" + General.formatFiat('', model.modelData.balance_fiat, API.get().fiat) + ")")
                 color: Style.colorWhite5
                 anchors.verticalCenter: parent.verticalCenter
             }
@@ -400,9 +365,7 @@ ColumnLayout {
                 anchors.right: parent.right
                 anchors.rightMargin: change_24h_header.anchors.rightMargin
 
-                text: API.get().empty_string + (model.modelData.rates === null ? '-' :
-                        ((model.modelData.rates[API.get().fiat].percent_change_24h > 0 ? '+' : '') +
-                         (model.modelData.rates[API.get().fiat].percent_change_24h + '%')))
+                text_value: API.get().empty_string + (model.modelData.rates === null ? '-' : General.formatPercent(model.modelData.rates[API.get().fiat].percent_change_24h))
                 color: getColor(model.modelData)
                 anchors.verticalCenter: parent.verticalCenter
             }
@@ -412,8 +375,8 @@ ColumnLayout {
                 anchors.right: parent.right
                 anchors.rightMargin: price_header.anchors.rightMargin
 
-                text: API.get().empty_string + (General.formatFiat('', model.modelData.price, API.get().fiat))
-                color: Style.colorWhite6
+                text_value: API.get().empty_string + (General.formatFiat('', model.modelData.price, API.get().fiat))
+                color: Style.colorThemeDarkLight
                 anchors.verticalCenter: parent.verticalCenter
             }
 

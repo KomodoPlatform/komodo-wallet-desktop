@@ -311,6 +311,12 @@ namespace atomic_dex
                 m_refresh_orders_needed = false;
             }
 
+            if (m_refresh_ohlc_needed)
+            {
+                emit OHLCDataUpdated();
+                m_refresh_ohlc_needed = false;
+            }
+
             if (m_refresh_transaction_only)
             {
                 spdlog::info("refreshing transactions");
@@ -837,6 +843,7 @@ namespace atomic_dex
         get_dispatcher().sink<mm2_initialized>().disconnect<&application::on_mm2_initialized_event>(*this);
         get_dispatcher().sink<mm2_started>().disconnect<&application::on_mm2_started_event>(*this);
         get_dispatcher().sink<refresh_order_needed>().disconnect<&application::on_refresh_order_event>(*this);
+        get_dispatcher().sink<refresh_ohlc_needed>().disconnect<&application::on_refresh_ohlc_event>(*this);
 
         this->m_need_a_full_refresh_of_mm2 = true;
 
@@ -854,6 +861,7 @@ namespace atomic_dex
         get_dispatcher().sink<mm2_initialized>().connect<&application::on_mm2_initialized_event>(*this);
         get_dispatcher().sink<mm2_started>().connect<&application::on_mm2_started_event>(*this);
         get_dispatcher().sink<refresh_order_needed>().connect<&application::on_refresh_order_event>(*this);
+        get_dispatcher().sink<refresh_ohlc_needed>().connect<&application::on_refresh_ohlc_event>(*this);
     }
 
     QString
@@ -1239,6 +1247,41 @@ namespace atomic_dex
         QJsonDocument q_json = QJsonDocument::fromJson(QString::fromStdString(json.dump()).toUtf8());
         out                  = q_json.array().toVariantList();
         return out;
+    }
+
+    QVariantMap
+    application::find_closest_ohlc_data(int range, int timestamp)
+    {
+        QVariantMap   out;
+        auto&        provider = this->system_manager_.get_system<cex_prices_provider>();
+        auto         json     = provider.get_ohlc_data(std::to_string(range));
+
+        auto it = std::lower_bound(rbegin(json), rend(json), timestamp, [](const nlohmann::json& current_json, int timestamp)
+                         {
+                            int res =  current_json.at("timestamp").get<int>();
+                            return timestamp < res;
+                         });
+
+        if (it != json.rend())
+        {
+            QJsonDocument q_json = QJsonDocument::fromJson(QString::fromStdString(it->dump()).toUtf8());
+            out = q_json.object().toVariantMap();
+        }
+        return out;
+    }
+
+    bool
+    application::is_supported_ohlc_data_ticker_pair(const QString& base, const QString& rel)
+    {
+        auto& provider = this->system_manager_.get_system<cex_prices_provider>();
+        return provider.is_pair_supported(base.toStdString(), rel.toStdString());
+    }
+
+    void
+    application::on_refresh_ohlc_event(const refresh_ohlc_needed&) noexcept
+    {
+        spdlog::debug("{} l{}", __FUNCTION__, __LINE__);
+        this->m_refresh_ohlc_needed = true;
     }
 } // namespace atomic_dex
 

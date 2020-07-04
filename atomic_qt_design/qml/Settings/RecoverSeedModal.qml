@@ -1,7 +1,7 @@
 import QtQuick 2.12
 import QtQuick.Layouts 1.12
 import QtQuick.Controls 2.12
-import QtQuick.Controls.Material 2.12
+
 import "../Components"
 import "../Constants"
 
@@ -52,7 +52,7 @@ DefaultModal {
                 Layout.bottomMargin: 10
                 Layout.alignment: Qt.AlignHCenter
 
-                text: API.get().empty_string + (qsTr("Please enter your password to view the seed."))
+                text_value: API.get().empty_string + (qsTr("Please enter your password to view the seed."))
             }
 
             PasswordForm {
@@ -63,7 +63,7 @@ DefaultModal {
             }
 
             DefaultText {
-                text: API.get().empty_string + (qsTr("Wrong Password"))
+                text_value: API.get().empty_string + (qsTr("Wrong Password"))
                 color: Style.colorRed
                 visible: wrong_password
             }

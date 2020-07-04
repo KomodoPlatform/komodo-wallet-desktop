@@ -62,7 +62,7 @@ namespace atomic_dex
 
         {
             std::scoped_lock lock(m_orderbook_tickers_data_mutex);
-            m_current_orderbook_ticker_pair = {evt.base, evt.rel};
+            m_current_orderbook_ticker_pair = {boost::algorithm::to_lower_copy(evt.base), boost::algorithm::to_lower_copy(evt.rel)};
             spdlog::debug("new orderbook pair for cex provider [{} / {}]", m_current_orderbook_ticker_pair.first, m_current_orderbook_ticker_pair.second);
             auto [base, rel] = m_current_orderbook_ticker_pair;
             spawn([base = base, rel = rel, this]() { process_ohlc(base, rel); });
@@ -111,6 +111,7 @@ namespace atomic_dex
                 m_ohlc_data_mutex.try_lock();
                 m_current_ohlc_data = answer.result.value().raw_result;
                 m_ohlc_data_mutex.unlock();
+                this->dispatcher_.trigger<refresh_ohlc_needed>();
                 return true;
             }
             spdlog::error("http error: {}", answer.error.value_or("dummy"));

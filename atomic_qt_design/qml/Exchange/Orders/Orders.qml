@@ -1,7 +1,7 @@
 import QtQuick 2.12
 import QtQuick.Layouts 1.12
 import QtQuick.Controls 2.12
-import QtQuick.Controls.Material 2.12
+
 import "../../Components"
 import "../../Constants"
 import ".."
@@ -157,15 +157,14 @@ Item {
         spacing: 15
 
         // Select coins row
-        Rectangle {
+        FloatingBackground {
             Layout.alignment: Qt.AlignHCenter
-            implicitWidth: childrenRect.width
-            implicitHeight: childrenRect.height
+            width: layout.width
+            height: layout.height
 
-            color: Style.colorTheme7
-            radius: Style.rectangleCornerRadius
-
-            RowLayout {                
+            RowLayout {   
+                id: layout
+                             
                 Switch {
                     id: show_all_coins
                     Layout.leftMargin: 15

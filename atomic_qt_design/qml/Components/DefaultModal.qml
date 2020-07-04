@@ -1,10 +1,9 @@
 import QtQuick 2.12
 import QtQuick.Layouts 1.12
 import QtQuick.Controls 2.12
-import QtQuick.Controls.Material 2.12
+
 import "../Constants"
 
-// Open Enable Coin Modal
 Popup {
     id: root
     anchors.centerIn: Overlay.overlay
@@ -12,7 +11,10 @@ Popup {
     focus: true
     closePolicy: Popup.CloseOnEscape | Popup.CloseOnPressOutside
 
-    Material.background: Style.colorTheme6
+    Overlay.modal: Rectangle {
+        color: "#AA000000"
+    }
+    background: FloatingBackground { }
 }
 
 /*##^##

@@ -1,7 +1,7 @@
 import QtQuick 2.12
 import QtQuick.Layouts 1.12
 import QtQuick.Controls 2.12
-import QtQuick.Controls.Material 2.12
+
 import "../../Components"
 import "../../Constants"
 import ".."
@@ -54,12 +54,11 @@ DefaultModal {
             Layout.fillWidth: true
         }
 
-        Rectangle {
+        FloatingBackground {
             Layout.alignment: Qt.AlignHCenter
             Layout.bottomMargin: 10
 
             color: Style.colorTheme5
-            radius: 10
 
             width: warning_texts.width + 20
             height: warning_texts.height + 20
@@ -71,13 +70,13 @@ DefaultModal {
                 DefaultText {
                     Layout.alignment: Qt.AlignHCenter
 
-                    text: API.get().empty_string + (qsTr("This swap request can not be undone and is a final event!"))
+                    text_value: API.get().empty_string + (qsTr("This swap request can not be undone and is a final event!"))
                 }
 
                 DefaultText {
                     Layout.alignment: Qt.AlignHCenter
 
-                    text: API.get().empty_string + (qsTr("This transaction can take up to 10 mins - DO NOT close this application!"))
+                    text_value: API.get().empty_string + (qsTr("This transaction can take up to 10 mins - DO NOT close this application!"))
                     font.pixelSize: Style.textSizeSmall4
                 }
             }

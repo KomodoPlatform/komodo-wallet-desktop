@@ -7,7 +7,13 @@
         <file>atomic_qt_design/assets/languages/atomic_qt_tr.qm</file>
         <file>atomic_qt_design/assets/languages/atomic_qt_fr.qm</file>
         <file>atomic_qt_design/assets/fonts/Rubik-Regular.ttf</file>
+        <file>atomic_qt_design/assets/fonts/Montserrat-SemiBold.ttf</file>
+        <file>atomic_qt_design/assets/fonts/Montserrat-Medium.ttf</file>
+        <file>atomic_qt_design/assets/fonts/Montserrat-Light.ttf</file>
+        <file>atomic_qt_design/assets/fonts/Montserrat-Thin.ttf</file>
         <file>atomic_qt_design/assets/fonts/Montserrat-Regular.ttf</file>
+        <file>atomic_qt_design/assets/images/arrow_up.svg</file>
+        <file>atomic_qt_design/assets/images/arrow_down.svg</file>
         <file>atomic_qt_design/assets/images/arrow-up.svg</file>
         <file>atomic_qt_design/assets/images/arrow-down.svg</file>
         <file>atomic_qt_design/assets/images/setup-logs.svg</file>
@@ -16,11 +22,14 @@
         <file>atomic_qt_design/assets/images/dashboard-eye.svg</file>
         <file>atomic_qt_design/assets/images/dashboard-eye-hide.svg</file>
         <file>atomic_qt_design/assets/images/dashboard-copy.svg</file>
+        <file>atomic_qt_design/assets/images/atomicdex-logo.svg</file>
+        <file>atomic_qt_design/assets/images/atomicdex-logo-dark.svg</file>
+        <file>atomic_qt_design/assets/images/atomicdex-logo-large.svg</file>
         <file>atomic_qt_design/assets/images/komodo-icon.png</file>
         <file>atomic_qt_design/assets/images/exchange-exchange.svg</file>
         <file>atomic_qt_design/assets/images/exchange-search.svg</file>
         <file>atomic_qt_design/assets/images/settings-seed.svg</file>
-        <file>atomic_qt_design/assets/images/menu-assets-portfolio.png</file>
+        <file>atomic_qt_design/assets/images/menu-assets-portfolio.svg</file>
         <file>atomic_qt_design/assets/images/menu-settings-white.svg</file>
         <file>atomic_qt_design/assets/images/menu-dapp-white.svg</file>
         <file>atomic_qt_design/assets/images/menu-news-white.svg</file>
@@ -28,8 +37,11 @@
         <file>atomic_qt_design/assets/images/menu-assets-white.svg</file>
         <file>atomic_qt_design/assets/images/exchange-trade-complete.svg</file>
         <file>atomic_qt_design/assets/images/dashboard-info.svg</file>
+        <file>atomic_qt_design/assets/images/trade_icon.svg</file>
         <file>atomic_qt_design/assets/images/circle-success.png</file>
         <file>atomic_qt_design/assets/images/circle-failed.png</file>
+        <file>atomic_qt_design/assets/images/shadowed_circle_green.svg</file>
+        <file>atomic_qt_design/assets/images/shadowed_circle_blue.svg</file>
         <file>atomic_qt_design/assets/images/coins/awc.png</file>
         <file>atomic_qt_design/assets/images/coins/bat.png</file>
         <file>atomic_qt_design/assets/images/coins/btc.png</file>
@@ -87,6 +99,7 @@
         <file>atomic_qt_design/qml/Exchange/Trade/OrderForm.qml</file>
         <file>atomic_qt_design/qml/Exchange/Trade/OrderReceiveModal.qml</file>
         <file>atomic_qt_design/qml/Exchange/Trade/OrderbookModal.qml</file>
+        <file>atomic_qt_design/qml/Exchange/Trade/CandleStickChart.qml</file>
         <file>atomic_qt_design/qml/Exchange/Orders/Orders.qml</file>
         <file>atomic_qt_design/qml/Exchange/Orders/OrderList.qml</file>
         <file>atomic_qt_design/qml/Exchange/History/History.qml</file>
@@ -97,9 +110,13 @@
         <file>atomic_qt_design/qml/Exchange/OrderModal.qml</file>
         <file>atomic_qt_design/qml/Exchange/OrderContent.qml</file>
         <file>atomic_qt_design/qml/Sidebar/Sidebar.qml</file>
+        <file>atomic_qt_design/qml/Sidebar/SidebarCenter.qml</file>
+        <file>atomic_qt_design/qml/Sidebar/SidebarBottom.qml</file>
         <file>atomic_qt_design/qml/Sidebar/SidebarLine.qml</file>
+        <file>atomic_qt_design/qml/Components/Arrow.qml</file>
         <file>atomic_qt_design/qml/Components/EulaModal.qml</file>
         <file>atomic_qt_design/qml/Components/Toast.qml</file>
+        <file>atomic_qt_design/qml/Components/Circle.qml</file>
         <file>atomic_qt_design/qml/Components/ToastManager.qml</file>
         <file>atomic_qt_design/qml/Components/ColumnHeader.qml</file>
         <file>atomic_qt_design/qml/Components/RightClickMenu.qml</file>
@@ -114,17 +131,27 @@
         <file>atomic_qt_design/qml/Components/WalletNameField.qml</file>
         <file>atomic_qt_design/qml/Components/DangerButton.qml</file>
         <file>atomic_qt_design/qml/Components/PrimaryButton.qml</file>
+        <file>atomic_qt_design/qml/Components/InnerBackground.qml</file>
+        <file>atomic_qt_design/qml/Components/FloatingBackground.qml</file>
+        <file>atomic_qt_design/qml/Components/DefaultGradient.qml</file>
+        <file>atomic_qt_design/qml/Components/DefaultInnerShadow.qml</file>
         <file>atomic_qt_design/qml/Components/DefaultButton.qml</file>
+        <file>atomic_qt_design/qml/Components/DefaultBusyIndicator.qml</file>
         <file>atomic_qt_design/qml/Components/DefaultText.qml</file>
+        <file>atomic_qt_design/qml/Components/DefaultRectangle.qml</file>
+        <file>atomic_qt_design/qml/Components/DefaultScrollBar.qml</file>
         <file>atomic_qt_design/qml/Components/DefaultTextField.qml</file>
         <file>atomic_qt_design/qml/Components/DefaultTextArea.qml</file>
+        <file>atomic_qt_design/qml/Components/DefaultListView.qml</file>
+        <file>atomic_qt_design/qml/Components/DefaultFlickable.qml</file>
         <file>atomic_qt_design/qml/Components/DefaultComboBox.qml</file>
         <file>atomic_qt_design/qml/Components/LogModal.qml</file>
         <file>atomic_qt_design/qml/Components/DefaultModal.qml</file>
-        <file>atomic_qt_design/qml/Components/PaneWithTitle.qml</file>
         <file>atomic_qt_design/qml/Components/SetupPage.qml</file>
+        <file>atomic_qt_design/qml/Components/Separator.qml</file>
         <file>atomic_qt_design/qml/Components/HorizontalLine.qml</file>
         <file>atomic_qt_design/qml/Components/VerticalLine.qml</file>
+        <file>atomic_qt_design/qml/Components/VerticalLineBasic.qml</file>
         <file>atomic_qt_design/qml/Components/ComboBoxWithTitle.qml</file>
         <file>atomic_qt_design/qml/Components/TextWithTitle.qml</file>
         <file>atomic_qt_design/qml/Components/TextFieldWithTitle.qml</file>
@@ -136,8 +163,11 @@
         <file>atomic_qt_design/qml/Wallet/ReceiveModal.qml</file>
         <file>atomic_qt_design/qml/Wallet/SendModal.qml</file>
         <file>atomic_qt_design/qml/Wallet/SendResult.qml</file>
+        <file>atomic_qt_design/qml/Wallet/PriceGraph.qml</file>
         <file>atomic_qt_design/qml/Wallet/EnableCoinModal.qml</file>
         <file>atomic_qt_design/qml/Wallet/CoinList.qml</file>
+        <file>atomic_qt_design/qml/Wallet/Sidebar.qml</file>
+        <file>atomic_qt_design/qml/Wallet/Main.qml</file>
         <file>atomic_qt_design/qml/Wallet/Transactions.qml</file>
         <file>atomic_qt_design/qml/Wallet/TransactionDetailsModal.qml</file>
         <file>atomic_qt_design/qml/Wallet/AddressList.qml</file>

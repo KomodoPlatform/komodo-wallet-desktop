@@ -1,7 +1,7 @@
 import QtQuick 2.12
 import QtQuick.Layouts 1.12
 import QtQuick.Controls 2.12
-import QtQuick.Controls.Material 2.12
+
 import "../../Components"
 import "../../Constants"
 
@@ -40,27 +40,22 @@ DefaultModal {
         }
 
         // List
-        ListView {
+        DefaultListView {
             id: list
-            ScrollBar.vertical: ScrollBar {}
-            implicitWidth: contentItem.childrenRect.width
             implicitHeight: 600
 
             model: General.filterCoins(getFilteredCoins().sort((a, b) => getOrderCount(b.ticker) - getOrderCount(a.ticker)), input_coin_filter.text)
-            clip: true
 
             delegate: Rectangle {
-                property bool hovered: false
-
-                color: hovered ? Style.colorTheme4 : "transparent"
+                color: mouse_area.containsMouse ? Style.colorTheme4 : "transparent"
 
                 width: modal_layout.width
                 height: 50
 
                 MouseArea {
+                    id: mouse_area
                     anchors.fill: parent
                     hoverEnabled: true
-                    onHoveredChanged: hovered = containsMouse
                     onClicked: {
                         setTicker(model.modelData.ticker)
                         root_modal.close()
@@ -90,7 +85,7 @@ DefaultModal {
                     anchors.left: icon.right
                     anchors.leftMargin: Style.iconTextMargin
 
-                    text: API.get().empty_string + (model.modelData.name + " (" + model.modelData.ticker + ")" + " - " +
+                    text_value: API.get().empty_string + (model.modelData.name + " (" + model.modelData.ticker + ")" + " - " +
                           (getOrderCount(model.modelData.ticker) === 0 ? qsTr("Click to create an order")  :
                                                    qsTr("Click to see %n order(s)", "", getOrderCount(model.modelData.ticker))))
                     anchors.verticalCenter: parent.verticalCenter

@@ -1,18 +1,20 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<svg width="29px" height="22px" viewBox="0 0 29 22" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-    <!-- Generator: Sketch 53.2 (72643) - https://sketchapp.com -->
-    <title>Exchange-white</title>
-    <desc>Created with Sketch.</desc>
-    <g id="Symbols" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-        <g id="menu/Dapp" transform="translate(-108.000000, -13.000000)" fill="#FEFEFE">
-            <g id="Group" transform="translate(92.000000, 13.000000)">
-                <g id="Exchange-white" transform="translate(16.000000, 0.000000)">
-                    <path d="M22.8805364,4.54545454e-06 L22.8805364,2.46005 L17.3909909,2.46005 L4.79953636,15.0515045 L-9.09090909e-06,15.0515045 L-9.09090909e-06,19.5269591 L6.65330909,19.5269591 L19.2444909,6.93555 L22.8805364,6.93555 L22.8805364,9.39559545 L29.0625364,4.69777727 L22.8805364,4.54545454e-06 Z M0.851627273,15.9028682 L5.15217273,15.9028682 L17.7434455,3.31141364 L23.7319,3.31141364 L23.7319,1.71641364 L27.6553545,4.69777727 L23.7319,7.67950455 L23.7319,6.08432273 L18.8920818,6.08432273 L6.30067273,18.6756409 L0.851627273,18.6756409 L0.851627273,15.9028682 Z" id="Fill-1"></path>
-                    <polygon id="Fill-2" points="0 2.46003182 0 6.93557727 4.79954545 6.93557727 8.05454545 10.1906682 8.65659091 9.58862273 5.15218182 6.08435 0.851590909 6.08435 0.851590909 3.31125909 6.30063636 3.31125909 10.6172273 7.62816818 11.2193182 7.02612273 6.65327273 2.46003182"></polygon>
-                    <polygon id="Fill-3" points="15.3872591 12.3982818 18.8920773 15.9028727 23.7316682 15.9028727 23.7316682 14.3076909 27.65535 17.2890545 23.7316682 20.2707818 23.7316682 18.6756 17.7434409 18.6756 13.42685 14.3586909 12.8249409 14.9609636 17.3909864 19.5269636 22.8805318 19.5269636 22.8805318 21.9870545 29.0625318 17.2890545 22.8805318 12.5914636 22.8805318 15.0514636 19.2444864 15.0514636 15.9895318 11.7961909"></polygon>
-                    <path d="M20.701,5.372 L21.5525909,5.372 L21.5525909,4.272 L20.701,4.272 L20.701,5.372 Z M22.1202273,5.372 L22.9715909,5.372 L22.9715909,4.272 L22.1202273,4.272 L22.1202273,5.372 Z" id="Fill-4"></path>
-                </g>
-            </g>
-        </g>
-    </g>
+<svg width="23" height="24" viewBox="0 0 23 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g filter="url(#filter0_i)">
+<path d="M15.5 0.5H13.5V2.5H12.5V18.5H13.5V20.5H15.5V18.5H16.5V2.5H15.5V0.5Z" fill="#78808D"/>
+<path d="M22.5 5.5H21.5V3.5H19.5V5.5H18.5V11.5H19.5V13.5H21.5V11.5H22.5V5.5Z" fill="#78808D"/>
+<path d="M4.5 8.5H3.5V6.5H1.5V8.5H0.5V14.5H1.5V16.5H3.5V14.5H4.5V8.5Z" fill="#78808D"/>
+<path d="M9.5 13.5H7.5V15.5H6.5V21.5H7.5V23.5H9.5V21.5H10.5V15.5H9.5V13.5Z" fill="#78808D"/>
+</g>
+<defs>
+<filter id="filter0_i" x="0.5" y="0.5" width="22" height="24" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+<feFlood flood-opacity="0" result="BackgroundImageFix"/>
+<feBlend mode="normal" in="SourceGraphic" in2="BackgroundImageFix" result="shape"/>
+<feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
+<feOffset dy="1"/>
+<feGaussianBlur stdDeviation="1"/>
+<feComposite in2="hardAlpha" operator="arithmetic" k2="-1" k3="1"/>
+<feColorMatrix type="matrix" values="0 0 0 0 0.352941 0 0 0 0 0.396078 0 0 0 0 0.443137 0 0 0 0.25 0"/>
+<feBlend mode="normal" in2="shape" result="effect1_innerShadow"/>
+</filter>
+</defs>
 </svg>

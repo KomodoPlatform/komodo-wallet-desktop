@@ -1,7 +1,7 @@
 import QtQuick 2.12
 import QtQuick.Layouts 1.12
 import QtQuick.Controls 2.12
-import QtQuick.Controls.Material 2.12
+
 import "../Components"
 import "../Constants"
 
@@ -28,12 +28,11 @@ DefaultModal {
             title: API.get().empty_string + (qsTr("Delete Wallet"))
         }
 
-        Rectangle {
+        FloatingBackground {
             Layout.alignment: Qt.AlignHCenter
             Layout.bottomMargin: 10
 
             color: Style.colorRed2
-            radius: 10
 
             width: parent.width - 5
             height: warning_texts.height + 20
@@ -45,14 +44,14 @@ DefaultModal {
                 DefaultText {
                     Layout.alignment: Qt.AlignHCenter
 
-                    text: API.get().empty_string + (qsTr("Are you sure you want to delete %1 wallet?", "WALLET_NAME").arg(API.get().wallet_default_name))
+                    text_value: API.get().empty_string + (qsTr("Are you sure you want to delete %1 wallet?", "WALLET_NAME").arg(API.get().wallet_default_name))
                     font.pixelSize: Style.textSize2
                 }
 
                 DefaultText {
                     Layout.alignment: Qt.AlignHCenter
 
-                    text: API.get().empty_string + (qsTr("If so, make sure you record your seed phrase in order to restore your wallet in future."))
+                    text_value: API.get().empty_string + (qsTr("If so, make sure you record your seed phrase in order to restore your wallet in future."))
                 }
             }
         }
@@ -65,7 +64,7 @@ DefaultModal {
         }
 
         DefaultText {
-            text: API.get().empty_string + (qsTr("Wrong Password"))
+            text_value: API.get().empty_string + (qsTr("Wrong Password"))
             color: Style.colorRed
             visible: wrong_password
         }

@@ -1,7 +1,7 @@
 import QtQuick 2.12
 import QtQuick.Layouts 1.12
 import QtQuick.Controls 2.12
-import QtQuick.Controls.Material 2.12
+
 import "../Constants"
 
 // Hide button
@@ -12,8 +12,8 @@ Image {
     visible: hidable
     scale: 0.8
     anchors.right: parent.right
+    anchors.rightMargin: 5
     anchors.verticalCenter: parent.verticalCenter
-    anchors.verticalCenterOffset: input_field.height * -0.0625
     antialiasing: true
 
 

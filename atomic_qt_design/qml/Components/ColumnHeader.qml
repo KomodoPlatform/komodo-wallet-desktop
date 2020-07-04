@@ -1,18 +1,16 @@
 import QtQuick 2.12
 import QtQuick.Layouts 1.12
 import QtQuick.Controls 2.12
-import QtQuick.Controls.Material 2.12
+
 import QtGraphicalEffects 1.0
 import "../Constants"
 
-Rectangle {
+Item {
     property int sort_type
-    property alias text: title.text
+    property alias text: title.text_value
 
-    property bool hovered: false
     property bool icon_at_left
 
-    color: "transparent"
     width: text.length * title.font.pixelSize
     height: title.height
 
@@ -20,7 +18,6 @@ Rectangle {
     MouseArea {
         anchors.fill: parent
         hoverEnabled: true
-        onHoveredChanged: hovered = containsMouse
         onClicked: {
             if(current_sort === sort_type) {
                 highest_first = !highest_first

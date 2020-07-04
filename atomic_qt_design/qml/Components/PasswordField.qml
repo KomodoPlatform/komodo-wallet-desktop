@@ -1,7 +1,7 @@
 import QtQuick 2.12
 import QtQuick.Layouts 1.12
 import QtQuick.Controls 2.12
-import QtQuick.Controls.Material 2.12
+
 import "../Constants"
 
 ColumnLayout {
@@ -9,6 +9,7 @@ ColumnLayout {
     property alias field: pw.field
     property bool hide_hint: false
     property bool new_password: true
+    property string match_password
 
     function isValid() {
         return pw.field.acceptableInput && RegExp(General.reg_pass_valid).test(pw.field.text)
@@ -34,6 +35,10 @@ ColumnLayout {
         return pw.field.acceptableInput && RegExp(General.reg_pass_count).test(pw.field.text)
     }
 
+    function passwordsDoMatch() {
+        return match_password !== "" && pw.field.acceptableInput && pw.field.text === match_password
+    }
+
     function hintColor(valid) {
         return valid ? Style.colorGreen : Style.colorRed
     }
@@ -51,35 +56,40 @@ ColumnLayout {
     }
 
     ColumnLayout {
-        spacing: -Style.textSizeSmall3*0.3
+        spacing: -Style.textSizeSmall3*0.1
 
         visible: !hide_hint
         Layout.fillWidth: true
 
         DefaultText {
             font.pixelSize: Style.textSizeSmall3
-            text: API.get().empty_string + (hintPrefix(hasEnoughLowercaseCharacters()) + qsTr("At least 1 lowercase alphabetical character"))
+            text_value: API.get().empty_string + (hintPrefix(hasEnoughLowercaseCharacters()) + qsTr("At least 1 lowercase alphabetical character"))
             color: hintColor(hasEnoughLowercaseCharacters())
         }
         DefaultText {
             font.pixelSize: Style.textSizeSmall3
-            text: API.get().empty_string + (hintPrefix(hasEnoughUppercaseCharacters()) + qsTr("At least 1 uppercase alphabetical character"))
+            text_value: API.get().empty_string + (hintPrefix(hasEnoughUppercaseCharacters()) + qsTr("At least 1 uppercase alphabetical character"))
             color: hintColor(hasEnoughUppercaseCharacters())
         }
         DefaultText {
             font.pixelSize: Style.textSizeSmall3
-            text: API.get().empty_string + (hintPrefix(hasEnoughNumericCharacters()) + qsTr("At least 1 numeric character"))
+            text_value: API.get().empty_string + (hintPrefix(hasEnoughNumericCharacters()) + qsTr("At least 1 numeric character"))
             color: hintColor(hasEnoughNumericCharacters())
         }
         DefaultText {
             font.pixelSize: Style.textSizeSmall3
-            text: API.get().empty_string + (hintPrefix(hasEnoughSpecialCharacters()) + qsTr("At least 1 special character (eg. !@#$%)"))
+            text_value: API.get().empty_string + (hintPrefix(hasEnoughSpecialCharacters()) + qsTr("At least 1 special character (eg. !@#$%)"))
             color: hintColor(hasEnoughSpecialCharacters())
         }
         DefaultText {
             font.pixelSize: Style.textSizeSmall3
-            text: API.get().empty_string + (hintPrefix(hasEnoughCharacters()) + qsTr("At least 16 characters"))
+            text_value: API.get().empty_string + (hintPrefix(hasEnoughCharacters()) + qsTr("At least 16 characters"))
             color: hintColor(hasEnoughCharacters())
+        }
+        DefaultText {
+            font.pixelSize: Style.textSizeSmall3
+            text_value: API.get().empty_string + (hintPrefix(passwordsDoMatch()) + qsTr("Password and Confirm Password have to be same"))
+            color: hintColor(passwordsDoMatch())
         }
     }
 }

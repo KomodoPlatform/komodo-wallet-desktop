@@ -78,6 +78,7 @@ namespace atomic_dex
         void on_mm2_initialized_event(const mm2_initialized&) noexcept;
         void on_mm2_started_event(const mm2_started&) noexcept;
         void on_refresh_order_event(const refresh_order_needed&) noexcept;
+        void on_refresh_ohlc_event(const refresh_ohlc_needed&) noexcept;
 
         //! Properties Getter
         QString               get_empty_string();
@@ -172,6 +173,9 @@ namespace atomic_dex
         Q_INVOKABLE bool        is_claiming_ready(const QString& ticker);
         Q_INVOKABLE QObject*     claim_rewards(const QString& ticker);
         Q_INVOKABLE QVariantList get_ohlc_data(const QString& range);
+        Q_INVOKABLE QVariantMap  find_closest_ohlc_data(int range, int timestamp);
+
+        Q_INVOKABLE bool is_supported_ohlc_data_ticker_pair(const QString& base, const QString& rel);
         Q_INVOKABLE QObject*    get_coin_info(const QString& ticker);
         Q_INVOKABLE QVariantMap get_my_orders();
         Q_INVOKABLE QVariantMap get_recent_swaps();
@@ -195,6 +199,7 @@ namespace atomic_dex
         void on_status_changed();
         void on_wallet_default_name_changed();
         void myOrdersUpdated();
+        void OHLCDataUpdated();
 
       private:
         //! CFG
@@ -210,6 +215,7 @@ namespace atomic_dex
         std::atomic_bool   m_refresh_enabled_coin_event{false};
         std::atomic_bool   m_refresh_current_ticker_infos{false};
         std::atomic_bool   m_refresh_orders_needed{false};
+        std::atomic_bool   m_refresh_ohlc_needed{false};
         std::atomic_bool   m_refresh_transaction_only{false};
         bool               m_need_a_full_refresh_of_mm2{false};
         QObjectList        m_enabled_coins;

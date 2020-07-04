@@ -1,11 +1,12 @@
 import QtQuick 2.12
 import QtQuick.Layouts 1.12
 import QtQuick.Controls 2.12
-import QtQuick.Controls.Material 2.12
+
 import "../Constants"
 
 ColumnLayout {
     id: form
+    spacing: Style.rowSpacing
 
     property alias field: input_password.field
     property alias confirm_field: input_confirm_password.field
@@ -31,6 +32,7 @@ ColumnLayout {
         id: input_password
         new_password: form.new_password
         hide_hint: !confirm
+        match_password: input_confirm_password.field.text
     }
 
     PasswordField {

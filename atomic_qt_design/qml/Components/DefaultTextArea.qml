@@ -1,11 +1,14 @@
 import QtQuick 2.12
 import QtQuick.Layouts 1.12
 import QtQuick.Controls 2.12
-import QtQuick.Controls.Material 2.12
+
 import "../Constants"
 
 TextArea {
     id: text_field
+
+    font.family: Style.font
+    placeholderTextColor: Style.colorPlaceholderText
 
     property bool remove_newline: true
     wrapMode: TextEdit.Wrap
@@ -36,9 +39,9 @@ TextArea {
     selectByMouse: true
     persistentSelection: true
 
-    RightClickMenu {
+    background: InnerBackground { }
 
-    }
+    RightClickMenu { }
 }
 
 /*##^##
@@ -46,4 +49,3 @@ Designer {
     D{i:0;autoSize:true;height:480;width:640}
 }
 ##^##*/
-
