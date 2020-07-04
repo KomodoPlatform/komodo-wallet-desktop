@@ -19,10 +19,12 @@
 //! QT Headers
 #include <QString>
 #include <QStringList>
+#include <QVariantMap>
 
 //! Project Headers
 #include "atomic.dex.security.hpp"
 #include "atomic.dex.version.hpp"
+#include "atomic.dex.wallet.config.hpp"
 
 namespace atomic_dex
 {
@@ -33,6 +35,14 @@ namespace atomic_dex
         bool inline login(
             const QString& password, const QString& wallet_name, mm2& mm2_system, const QString& default_wallet_name, Functor&& login_if_success_functor);
 
+        inline bool load_wallet_cfg(const std::string& wallet_name);
+
+        inline QStringList get_categories_list() const noexcept;
+
+        inline QVariantMap get_address_from(const std::string& contact_name) const noexcept;
+
+        inline bool add_category(const std::string& category_name, bool with_update_file) noexcept;
+
         static inline QStringList get_wallets() noexcept;
 
         static inline bool is_there_a_default_wallet() noexcept;
@@ -42,6 +52,10 @@ namespace atomic_dex
         static inline bool delete_wallet(const QString& wallet_name) noexcept;
 
         static inline bool confirm_password(const QString& wallet_name, const QString& password);
+
+      private:
+        inline bool update_wallet_cfg() noexcept;
+        wallet_cfg  m_wallet_cfg;
     };
 
     template <typename Functor>
@@ -83,6 +97,7 @@ namespace atomic_dex
             }
 
             login_if_success_functor();
+            load_wallet_cfg(default_wallet.toStdString());
             mm2_system.spawn_mm2_instance(default_wallet.toStdString(), seed);
             return true;
         }
@@ -153,5 +168,77 @@ namespace atomic_dex
             return false;
         }
         return true;
+    }
+
+    bool
+    qt_wallet_manager::load_wallet_cfg(const std::string& wallet_name)
+    {
+        using namespace std::string_literals;
+        const fs::path wallet_object_path = get_atomic_dex_export_folder() / (wallet_name + ".wallet.json"s);
+        std::ifstream  ifs(wallet_object_path.string());
+
+        if (not ifs.is_open())
+        {
+            return false;
+        }
+        nlohmann::json j;
+        ifs >> j;
+        m_wallet_cfg = j;
+        return true;
+    }
+
+    QStringList
+    qt_wallet_manager::get_categories_list() const noexcept
+    {
+        QStringList out;
+
+        out.reserve(m_wallet_cfg.categories_addressbook_registry.size());
+        for (const auto& [key, _]: m_wallet_cfg.categories_addressbook_registry)
+        {
+            (void)_;
+            out.push_back(QString::fromStdString(key));
+        }
+        return out;
+    }
+
+    QVariantMap
+    qt_wallet_manager::get_address_from(const std::string& contact_name) const noexcept
+    {
+        QVariantMap out;
+
+        if (m_wallet_cfg.addressbook_registry.find(contact_name) != m_wallet_cfg.addressbook_registry.cend())
+        {
+            for (auto&& [key, value]: m_wallet_cfg.addressbook_registry.at(contact_name))
+            { out.insert(QString::fromStdString(key), QVariant(QString::fromStdString(value))); }
+        }
+        return out;
+    }
+
+    bool
+    qt_wallet_manager::update_wallet_cfg() noexcept
+    {
+        using namespace std::string_literals;
+        const fs::path wallet_object_path = get_atomic_dex_export_folder() / (m_wallet_cfg.name + ".wallet.json"s);
+        std::ofstream  ofs(wallet_object_path.string(), std::ios::trunc);
+        if (not ofs.is_open())
+        {
+            return false;
+        }
+
+        nlohmann::json j;
+        atomic_dex::to_json(j, m_wallet_cfg);
+        ofs << j.dump(4);
+        return true;
+    }
+
+    bool
+    qt_wallet_manager::add_category(const std::string& category_name, bool with_update_file) noexcept
+    {
+        if (m_wallet_cfg.categories_addressbook_registry.find(category_name) == m_wallet_cfg.categories_addressbook_registry.cend())
+        {
+            m_wallet_cfg.categories_addressbook_registry[category_name] = {};
+            return with_update_file ? update_wallet_cfg() : true;
+        }
+        return false;
     }
 } // namespace atomic_dex
