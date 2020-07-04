@@ -1240,6 +1240,13 @@ namespace atomic_dex
         out                  = q_json.array().toVariantList();
         return out;
     }
+
+    bool
+    application::is_supported_ohlc_data_ticker_pair(const QString& base, const QString& rel)
+    {
+        auto& provider = this->system_manager_.get_system<cex_prices_provider>();
+        return provider.is_pair_supported(base.toStdString(), rel.toStdString());
+    }
 } // namespace atomic_dex
 
 //! Wallet manager QML API
