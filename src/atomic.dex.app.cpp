@@ -923,8 +923,10 @@ namespace atomic_dex
             }
 
             auto        tx_fee_value    = QString::fromStdString(get_formated_float(tx_fee_f));
-            auto        final_balance_f = t_float_50(amount.toStdString()) - (trade_fee_f + tx_fee_f);
+
+            t_float_50        final_balance_f = t_float_50(amount.toStdString()) - (trade_fee_f + tx_fee_f);
             std::string final_balance   = amount.toStdString();
+            spdlog::debug("{} - ({} + {})) = {}", amount.toStdString(), trade_fee_f.str(8), tx_fee_f.str(8), final_balance_f.str(8));
             // spdlog::info("final_balance_f: {}", get_formated_float(final_balance_f));
             if (final_balance_f.convert_to<float>() > 0.0)
             {
