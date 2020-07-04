@@ -108,6 +108,15 @@ export QT_ROOT=~/Qt/5.15.0
 
 ## Build AtomicDEX Pro 
 
+Please clone with submodules initialization : `git clone --recurse-submodules --remote-submodules https://github.com/KomodoPlatform/atomicDEX-Pro.git`
+
+Install vcpkg from within the `ci_tools_atomic_dex` folder:
+
+```
+nimble build
+./ci_tools_atomic_dex --install_vcpkg
+```
+
 ### Windows
 
 In your x64 Visual Studio command prompt, from within the `ci_tools_atomic_dex` folder, type:

@@ -907,8 +907,6 @@ namespace atomic_dex
         spdlog::debug("ticker {}, receive_ticker {}, amount {}", ticker.toStdString(), receive_ticker.toStdString(), amount.toStdString());
         QVariantMap out;
 
-
-        spdlog::info("ticker: {}, receive ticker: {}, amount: {}", ticker.toStdString(), receive_ticker.toStdString(), amount.toStdString());
         auto trade_fee_f = get_mm2().get_trade_fee(ticker.toStdString(), amount.toStdString(), false);
         auto answer      = get_mm2().get_trade_fixed_fee(ticker.toStdString());
 
