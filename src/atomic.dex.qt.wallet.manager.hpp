@@ -41,7 +41,7 @@ namespace atomic_dex
 
         inline QVariantMap get_address_from(const std::string& contact_name) const noexcept;
 
-        inline bool add_category(const std::string& category_name) noexcept;
+        inline bool add_category(const std::string& category_name, bool with_update_file) noexcept;
 
         static inline QStringList get_wallets() noexcept;
 
@@ -232,12 +232,12 @@ namespace atomic_dex
     }
 
     bool
-    qt_wallet_manager::add_category(const std::string& category_name) noexcept
+    qt_wallet_manager::add_category(const std::string& category_name, bool with_update_file) noexcept
     {
         if (m_wallet_cfg.categories_addressbook_registry.find(category_name) == m_wallet_cfg.categories_addressbook_registry.cend())
         {
             m_wallet_cfg.categories_addressbook_registry[category_name] = {};
-            return update_wallet_cfg();
+            return with_update_file ? update_wallet_cfg() : true;
         }
         return false;
     }

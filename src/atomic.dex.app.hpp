@@ -121,7 +121,7 @@ namespace atomic_dex
         Q_INVOKABLE static bool        confirm_password(const QString& wallet_name, const QString& password);
         Q_INVOKABLE QStringList        get_addressbook_categories_list() const;
         Q_INVOKABLE QVariantMap        get_address_from_addressbook(const QString& contact_name) const;
-        Q_INVOKABLE bool               add_category_in_addressbook(const QString& category_name) noexcept;
+        Q_INVOKABLE bool               add_category_in_addressbook(const QString& category_name, bool with_update_file) noexcept;
 
         //! Miscs
         Q_INVOKABLE QString     get_paprika_id_from_ticker(QString ticker) const;

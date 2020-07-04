@@ -1273,8 +1273,8 @@ namespace atomic_dex
     }
 
     bool
-    application::add_category_in_addressbook(const QString& category_name) noexcept
+    application::add_category_in_addressbook(const QString& category_name, bool with_update_file) noexcept
     {
-        return m_wallet_manager.add_category(category_name.toStdString());
+        return m_wallet_manager.add_category(category_name.toStdString(), with_update_file);
     }
 } // namespace atomic_dex
