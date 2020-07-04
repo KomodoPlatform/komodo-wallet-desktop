@@ -11,6 +11,10 @@ QtObject {
         myOrdersUpdated: {
            connect: (func) => { console.log("Connecting function") }
        },
+        OHLCDataUpdated: {
+          connect: (func) => { console.log("Connecting function") }
+        },
+
 
         // Other
         to_eth_checksum_qt: (addr) => { return "0xA00bF635b2cD52F2b6B4D8cd9B9efd290B97838C" },
@@ -230,6 +234,8 @@ QtObject {
         refresh_orders_and_swaps: () => {
             console.log("refresh_orders_and_swaps!")
         },
+
+        get_ohlc_data: (range) => [{"close":0.0000654,"high":0.0000655,"low":0.0000654,"open":0.0000655,"quote_volume":0.006986865,"timestamp":1593740820,"volume":106.83},{"close":0.0000653,"high":0.0000653,"low":0.0000653,"open":0.0000653,"quote_volume":0.0068565,"timestamp":1593740880,"volume":105},{"close":0.0000653,"high":0.0000653,"low":0.0000653,"open":0.0000653,"quote_volume":0.007420692,"timestamp":1593741000,"volume":113.64}],
 
         get_wallets: () => { return ["naezith", "slyris", "ca333", "tony"] },
 
