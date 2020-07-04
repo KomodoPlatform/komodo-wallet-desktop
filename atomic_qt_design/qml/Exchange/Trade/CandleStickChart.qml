@@ -16,11 +16,15 @@ ChartView {
     margins.bottom: 0
     margins.right: 0
 
+    Component.onCompleted: {
+        console.log("Connected OHLCDataUpdated to the updateChart function")
+        API.get().OHLCDataUpdated.connect(updateChart)
+    }
 
     AreaSeries {
         id: series_area
 
-        property double global_max: -Infinity
+        property double global_max: 0
 
         color: Style.colorBlue
 
@@ -76,10 +80,10 @@ ChartView {
     CandlestickSeries {
         id: series
 
-        property double global_max: -Infinity
-        property double last_value: -Infinity
+        property double global_max: 0
+        property double last_value: 0
         property bool last_value_green: true
-        property double last_value_y: -Infinity
+        property double last_value_y: 0
 
         function updateLastValueY() {
             series.last_value_y = chart.mapToPosition(Qt.point(0, series.last_value), series).y
@@ -135,81 +139,78 @@ ChartView {
         const timescale = General.chart_times[idx]
         const seconds = General.time_seconds[timescale]
         const seconds_str = "" + seconds
-        return API.get().get_price_chart[seconds_str]
+        const data = API.get().get_ohlc_data(seconds_str)
+        return data
     }
 
     function updateChart() {
         series.clear()
         series_area.upperSeries.clear()
 
-        series.global_max = -Infinity
-        series.last_value = -Infinity
-        series.last_value_y = -Infinity
-        series_area.global_max = -Infinity
+        series.global_max = 0
+        series.last_value = 0
+        series.last_value_y = 0
+        series_area.global_max = 0
 
         const historical = getHistorical()
-        if(historical === undefined) return
+        console.log("UPDATE CHART! ", seconds_str, "data for chart:", JSON.stringify(historical))
+        const count = historical.length
+        if(count === 0) return
 
-        if(historical.length > 0) {
-            let min_price = Infinity
-            let max_price = -Infinity
-            let min_other = Infinity
-            let max_other = -Infinity
+        // Prepare the chart
+        let min_price = Infinity
+        let max_price = 0
+        let min_other = Infinity
+        let max_other = 0
 
-            for(let i = 0; i < historical.length; ++i) {
-                series.append(historical[i].open, historical[i].high, historical[i].low, historical[i].close, fixTimestamp(historical[i].timestamp))
-                series_area.upperSeries.append(General.timestampToDate(historical[i].timestamp), historical[i].volume)
+        for(let i = 0; i < count; ++i) {
+            series.append(historical[i].open, historical[i].high, historical[i].low, historical[i].close, fixTimestamp(historical[i].timestamp))
+            series_area.upperSeries.append(General.timestampToDate(historical[i].timestamp), historical[i].volume)
 
-                if(series_area.global_max < historical[i].volume) series_area.global_max = historical[i].volume
-            }
+            if(series_area.global_max < historical[i].volume) series_area.global_max = historical[i].volume
+        }
 
-            const first_idx = Math.floor(historical.length * 0.9)
-            const last_idx = historical.length - 1
+        const first_idx = Math.floor(count * 0.9)
+        const last_idx = count - 1
 
-            const last_elem = historical[last_idx]
-            series.last_value = last_elem.close
-            series.last_value_green = last_elem.close >= last_elem.open
+        const last_elem = historical[last_idx]
+        series.last_value = last_elem.close
+        series.last_value_green = last_elem.close >= last_elem.open
 
-            // Set min and max values
-            for(let j = first_idx; j <= last_idx; ++j) {
-                const price = historical[j].close
-                const other = historical[j].volume
+        // Set min and max values
+        for(let j = first_idx; j <= last_idx; ++j) {
+            const price = historical[j].close
+            const other = historical[j].volume
 
-                min_price = Math.min(min_price, price)
-                max_price = Math.max(max_price, price)
-                min_other = Math.min(min_other, other)
-                max_other = Math.max(max_other, other)
-            }
+            min_price = Math.min(min_price, price)
+            max_price = Math.max(max_price, price)
+            min_other = Math.min(min_other, other)
+            max_other = Math.max(max_other, other)
+        }
 
 
-            // Date
-            series.axisX.min = General.timestampToDate(historical[first_idx].timestamp)
-            series.axisX.max = General.timestampToDate(last_elem.timestamp)
-            series.axisX.tickCount = 10//historical.length
+        // Date
+        series.axisX.min = General.timestampToDate(historical[first_idx].timestamp)
+        series.axisX.max = General.timestampToDate(last_elem.timestamp)
+        series.axisX.tickCount = 10//count
 /*
-            series2.axisX.min = series.axisX.min
-            series2.axisX.max = series.axisX.max
-            series2.axisX.tickCount = series.axisX.tickCount
+        series2.axisX.min = series.axisX.min
+        series2.axisX.max = series.axisX.max
+        series2.axisX.tickCount = series.axisX.tickCount
 */
 
-            // Price
-            series.axisYRight.min = min_price * (1 - y_margin)
-            series.axisYRight.max = max_price * (1 + y_margin)
+        // Price
+        series.axisYRight.min = min_price * (1 - y_margin)
+        series.axisYRight.max = max_price * (1 + y_margin)
 
-            // Other
-            series_area.axisY.min = min_other * (1 - y_margin)
-            series_area.axisY.max = max_other * (1 + y_margin)
+        // Other
+        series_area.axisY.min = min_other * (1 - y_margin)
+        series_area.axisY.max = max_other * (1 + y_margin)
 
 
-            computeMovingAverage()
+        computeMovingAverage()
 
-            update_last_value_y_timer.start()
-        }
-    }
-
-    property string ticker: API.get().current_coin_info.ticker
-    onTickerChanged: {
-        updateChart()
+        update_last_value_y_timer.start()
     }
 
     width: parent.width
@@ -382,8 +383,9 @@ ChartView {
 
             // Find closest real data
             realData = findRealData(valueX)
-
-            mouseXSnapped = chart.mapToPosition(Qt.point(realData.timestamp*1000, 0), series).x
+            if(realData !== null) {
+                mouseXSnapped = chart.mapToPosition(Qt.point(realData.timestamp*1000, 0), series).x
+            }
         }
 
         property double valueX
@@ -394,6 +396,8 @@ ChartView {
         function findRealData(timestamp) {
             const historical = getHistorical()
             const count = historical.length
+
+            if(count === 0) return null
 
             let closest_idx
             let closest_dist = Infinity
@@ -449,9 +453,11 @@ ChartView {
         font.pixelSize: Style.textSizeSmall3
 
         model: General.chart_times
+
+        property bool initialized: false
         onCurrentTextChanged: {
-            console.log("New time:", General.chart_times[currentIndex])
-            updateChart()
+            if(initialized) updateChart()
+            else initialized = true
         }
     }
 
