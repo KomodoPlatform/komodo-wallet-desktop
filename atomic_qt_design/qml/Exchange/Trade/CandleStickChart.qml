@@ -132,12 +132,14 @@ ChartView {
         return t * 1000
     }
 
-
-    function getHistorical() {
+    function getChartSeconds() {
         const idx = combo_time.currentIndex
         const timescale = General.chart_times[idx]
-        const seconds = General.time_seconds[timescale]
-        const seconds_str = "" + seconds
+        return General.time_seconds[timescale]
+    }
+
+    function getHistorical() {
+        const seconds_str = "" + getChartSeconds()
         const data = API.get().get_ohlc_data(seconds_str)
         return data
     }
@@ -210,31 +212,6 @@ ChartView {
         computeMovingAverage()
 
         update_last_value_y_timer.start()
-    }
-
-    function findRealData(timestamp) {
-        const start_date = Date.now()
-        const historical = getHistorical()
-        const count = historical.length
-
-        if(count === 0) return null
-
-        let closest_idx
-        let closest_dist = Infinity
-
-        for(let i = 1; i < count; ++i) {
-            const dist = Math.abs(timestamp - fixTimestamp(historical[i].timestamp))
-            if(dist < closest_dist) {
-                closest_dist = dist
-                closest_idx = i
-            }
-        }
-
-        console.log("Scanning", count, "timestamps took", Date.now() - start_date, "ms")
-
-        return historical[closest_idx]
-
-
     }
 
     width: parent.width
@@ -482,17 +459,19 @@ ChartView {
                 const cp = chart.mapToValue(Qt.point(mouse_x, mouse_y), series)
 
                 // Find closest real data
-                const realData = findRealData(cp.x)
-                if(realData !== null) {
+                const realData = API.get().find_closest_ohlc_data(getChartSeconds(), cp.x / 1000)
+                const realDataFound = realData.timestamp
+                console.log(JSON.stringify(realData))
+                if(realDataFound) {
                     cursor_vertical_line.x = chart.mapToPosition(Qt.point(realData.timestamp*1000, 0), series).x
                 }
 
                 // Texts
-                cursor_x_text.text_value = realData ? General.timestampToDate(realData.timestamp).toString() : ""
+                cursor_x_text.text_value = realDataFound ? General.timestampToDate(realData.timestamp).toString() : ""
                 cursor_y_text.text_value = General.formatDouble(cp.y, 0)
 
-                const highlightColor = realData && realData.close >= realData.open ? Style.colorGreen : Style.colorRed
-                cursor_values.text_value = realData ? (
+                const highlightColor = realDataFound && realData.close >= realData.open ? Style.colorGreen : Style.colorRed
+                cursor_values.text_value = realDataFound ? (
                         `O:<font color="${highlightColor}">${realData.open}</font> &nbsp;&nbsp; ` +
                         `H:<font color="${highlightColor}">${realData.high}</font> &nbsp;&nbsp; ` +
                         `L:<font color="${highlightColor}">${realData.low}</font> &nbsp;&nbsp; ` +
