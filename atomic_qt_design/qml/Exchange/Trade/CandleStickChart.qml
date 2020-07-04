@@ -17,7 +17,7 @@ ChartView {
     margins.right: 0
 
     Component.onCompleted: {
-        API.get().OHLCDataUpdated.connect(updateChart)
+        API.get().OHLCDataUpdated.connect(initChart)
     }
 
     AreaSeries {
@@ -144,7 +144,7 @@ ChartView {
         return data
     }
 
-    function updateChart() {
+    function initChart() {
         series.clear()
         series_area.upperSeries.clear()
 
@@ -154,7 +154,7 @@ ChartView {
         series_area.global_max = 0
 
         const historical = getHistorical()
-        console.log("Updated the chart!")
+        console.log("Updating the chart...")
         const count = historical.length
         if(count === 0) return
 
@@ -212,6 +212,7 @@ ChartView {
         computeMovingAverage()
 
         update_last_value_y_timer.start()
+        updater.updateChart()
     }
 
     width: parent.width
@@ -390,7 +391,7 @@ ChartView {
 
         property bool initialized: false
         onCurrentTextChanged: {
-            if(initialized) updateChart()
+            if(initialized) initChart()
             else initialized = true
         }
     }
@@ -417,6 +418,13 @@ ChartView {
 
     // Canvas updater
     Timer {
+        id: update_block_timer
+        running: false
+        repeat: false
+        interval: 1
+        onTriggered: updater.can_update = true
+    }
+    Timer {
         id: updater
         property bool can_update: true
 
@@ -426,9 +434,11 @@ ChartView {
         property double prev_mouse_y
 
         interval: 1
-        running: true
+        running: mouse_area.containsMouse
         repeat: true
-        onTriggered: {
+        onTriggered: updateChart()
+
+        function updateChart() {
             if(!can_update) return
             can_update = false
 
@@ -491,15 +501,6 @@ ChartView {
             // Block this function for a while to allow engine to render
             update_block_timer.start()
         }
-    }
-
-    // Canvas updater blocker
-    Timer {
-        id: update_block_timer
-        running: false
-        repeat: false
-        interval: 1
-        onTriggered: updater.can_update = true
     }
 }
 
