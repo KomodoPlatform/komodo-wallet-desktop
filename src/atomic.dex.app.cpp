@@ -1249,6 +1249,24 @@ namespace atomic_dex
         return out;
     }
 
+    QVariantMap
+    application::find_closest_ohlc_data(int range, int timestamp)
+    {
+        QVariantMap   out;
+        auto&        provider = this->system_manager_.get_system<cex_prices_provider>();
+        auto         json     = provider.get_ohlc_data(std::to_string(range));
+
+        auto it = std::lower_bound(rbegin(json), rend(json), timestamp, [](const nlohmann::json& current_json, int timestamp)
+                         {
+                            int res =  current_json.at("timestamp").get<int>();
+                            return res < timestamp;
+                         });
+
+        QJsonDocument q_json = QJsonDocument::fromJson(QString::fromStdString(it->dump()).toUtf8());
+        out = q_json.object().toVariantMap();
+        return out;
+    }
+
     bool
     application::is_supported_ohlc_data_ticker_pair(const QString& base, const QString& rel)
     {
