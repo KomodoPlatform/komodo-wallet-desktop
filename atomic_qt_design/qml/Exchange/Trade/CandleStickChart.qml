@@ -414,7 +414,8 @@ ChartView {
     }
 
 
-    // Canvas updater timer
+
+    // Canvas updater
     Timer {
         id: updater
         readonly property double scroll_speed: 0.1
@@ -424,7 +425,6 @@ ChartView {
 
         running: true
         repeat: true
-        interval: 10
         onTriggered: {
             const date_start = Date.now()
 
@@ -461,7 +461,6 @@ ChartView {
                 // Find closest real data
                 const realData = API.get().find_closest_ohlc_data(getChartSeconds(), cp.x / 1000)
                 const realDataFound = realData.timestamp
-                console.log(JSON.stringify(realData))
                 if(realDataFound) {
                     cursor_vertical_line.x = chart.mapToPosition(Qt.point(realData.timestamp*1000, 0), series).x
                 }
@@ -488,6 +487,14 @@ ChartView {
             const diff = Date.now() - date_start
             if(diff > interval) interval = diff
         }
+    }
+
+    // Canvas updater timer interval resetter
+    Timer {
+        running: true
+        repeat: true
+        interval: 1000
+        onTriggered: updater.interval = 10
     }
 }
 
