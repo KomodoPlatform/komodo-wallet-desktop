@@ -8,7 +8,7 @@ import "../Constants"
 // Add button
 FloatingBackground {
     property alias containsMouse: mouse_area.containsMouse
-    property alias text: text_obj.text
+    property alias text: text_obj.text_value
     property alias text_obj: text_obj
     property bool text_left_align: false
     property double text_offset: 0

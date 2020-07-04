@@ -96,7 +96,7 @@ SetupPage {
         spacing: Style.rowSpacing
 
         DefaultText {
-            text: API.get().empty_string + (qsTr("New User"))
+            text_value: API.get().empty_string + (qsTr("New User"))
         }
 
         HorizontalLine {
@@ -174,14 +174,14 @@ SetupPage {
                         width: parent.width - 40
                         horizontalAlignment: Text.AlignHCenter
                         anchors.horizontalCenter: parent.horizontalCenter
-                        text: API.get().empty_string + (qsTr("Important: Back up your seed phrase before proceeding!"))
+                        text_value: API.get().empty_string + (qsTr("Important: Back up your seed phrase before proceeding!"))
                     }
 
                     DefaultText {
                         width: parent.width - 40
                         horizontalAlignment: Text.AlignHCenter
                         anchors.horizontalCenter: parent.horizontalCenter
-                        text: API.get().empty_string + (qsTr("We recommend storing it offline."))
+                        text_value: API.get().empty_string + (qsTr("We recommend storing it offline."))
                         font.pixelSize: Style.textSizeSmall4
                         color: Style.colorWhite4
                     }
@@ -228,7 +228,7 @@ SetupPage {
             }
 
             DefaultText {
-                text: API.get().empty_string + (text_error)
+                text_value: API.get().empty_string + (text_error)
                 color: Style.colorRed
                 visible: text !== ''
             }
@@ -256,13 +256,13 @@ SetupPage {
                     DefaultText {
                         width: parent.width - 40
                         anchors.horizontalCenter: parent.horizontalCenter
-                        text: API.get().empty_string + (qsTr("Let's double check your seed phrase"))
+                        text_value: API.get().empty_string + (qsTr("Let's double check your seed phrase"))
                     }
 
                     DefaultText {
                         width: parent.width - 40
                         anchors.horizontalCenter: parent.horizontalCenter
-                        text: API.get().empty_string + (qsTr("Your seed phrase is important - that's why we like to make sure it's correct. We'll ask you three different questions about your seed phrase to make sure you'll be able to easily restore your wallet whenever you want."))
+                        text_value: API.get().empty_string + (qsTr("Your seed phrase is important - that's why we like to make sure it's correct. We'll ask you three different questions about your seed phrase to make sure you'll be able to easily restore your wallet whenever you want."))
                         font.pixelSize: Style.textSizeSmall4
                         color: Style.colorWhite4
                     }
@@ -295,7 +295,7 @@ SetupPage {
             }
 
             DefaultText {
-                text: API.get().empty_string + (guess_text_error)
+                text_value: API.get().empty_string + (guess_text_error)
                 color: Style.colorRed
                 visible: text !== ''
             }

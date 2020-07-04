@@ -85,7 +85,7 @@ DefaultModal {
                     anchors.left: icon.right
                     anchors.leftMargin: Style.iconTextMargin
 
-                    text: API.get().empty_string + (model.modelData.name + " (" + model.modelData.ticker + ")" + " - " +
+                    text_value: API.get().empty_string + (model.modelData.name + " (" + model.modelData.ticker + ")" + " - " +
                           (getOrderCount(model.modelData.ticker) === 0 ? qsTr("Click to create an order")  :
                                                    qsTr("Click to see %n order(s)", "", getOrderCount(model.modelData.ticker))))
                     anchors.verticalCenter: parent.verticalCenter

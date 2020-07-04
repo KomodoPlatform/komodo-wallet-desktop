@@ -6,7 +6,7 @@ import "../Constants"
 
 ColumnLayout {
     property alias title: title.text
-    property alias text: text.text
+    property alias text: text.text_value
     property alias value_color: text.color
 
     DefaultText {

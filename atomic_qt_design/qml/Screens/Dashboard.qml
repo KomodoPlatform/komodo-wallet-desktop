@@ -136,13 +136,13 @@ Item {
 
             DefaultText {
                 id: news
-                text: API.get().empty_string + (qsTr("News"))
+                text_value: API.get().empty_string + (qsTr("News"))
                 function reset() { }
             }
 
             DefaultText {
                 id: dapps
-                text: API.get().empty_string + (qsTr("Dapps"))
+                text_value: API.get().empty_string + (qsTr("Dapps"))
                 function reset() { }
             }
 

@@ -12,7 +12,7 @@ ColumnLayout {
 
     SidebarLine {
         dashboard_index: General.idx_dashboard_settings
-        text: API.get().empty_string + (qsTr("Settings"))
+        text_value: API.get().empty_string + (qsTr("Settings"))
         image: General.image_path + "menu-settings-white.svg"
         Layout.fillWidth: true
         separator: false
@@ -20,7 +20,7 @@ ColumnLayout {
 
     SidebarLine {
         dashboard_index: General.idx_dashboard_privacy_mode
-        text: API.get().empty_string + (qsTr("Privacy"))
+        text_value: API.get().empty_string + (qsTr("Privacy"))
         image: ""
         Layout.fillWidth: true
         separator: false
@@ -29,7 +29,7 @@ ColumnLayout {
 
     SidebarLine {
         dashboard_index: General.idx_dashboard_light_ui
-        text: API.get().empty_string + (qsTr("Light UI"))
+        text_value: API.get().empty_string + (qsTr("Light UI"))
         image: ""
         Layout.fillWidth: true
         separator: false

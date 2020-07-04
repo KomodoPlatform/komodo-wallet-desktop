@@ -149,7 +149,7 @@ Item {
             anchors.horizontalCenter: parent.horizontalCenter
             anchors.top: parent.top
             anchors.topMargin: parent.width * 0.85
-            text: API.get().empty_string + ("V. AtomicDEX PRO " + API.get().get_version())
+            text_value: API.get().empty_string + ("V. AtomicDEX PRO " + API.get().get_version())
             font.pixelSize: Style.textSizeVerySmall8
             color: Style.colorThemeDarkLight
         }

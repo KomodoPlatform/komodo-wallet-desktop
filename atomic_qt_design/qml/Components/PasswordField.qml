@@ -63,32 +63,32 @@ ColumnLayout {
 
         DefaultText {
             font.pixelSize: Style.textSizeSmall3
-            text: API.get().empty_string + (hintPrefix(hasEnoughLowercaseCharacters()) + qsTr("At least 1 lowercase alphabetical character"))
+            text_value: API.get().empty_string + (hintPrefix(hasEnoughLowercaseCharacters()) + qsTr("At least 1 lowercase alphabetical character"))
             color: hintColor(hasEnoughLowercaseCharacters())
         }
         DefaultText {
             font.pixelSize: Style.textSizeSmall3
-            text: API.get().empty_string + (hintPrefix(hasEnoughUppercaseCharacters()) + qsTr("At least 1 uppercase alphabetical character"))
+            text_value: API.get().empty_string + (hintPrefix(hasEnoughUppercaseCharacters()) + qsTr("At least 1 uppercase alphabetical character"))
             color: hintColor(hasEnoughUppercaseCharacters())
         }
         DefaultText {
             font.pixelSize: Style.textSizeSmall3
-            text: API.get().empty_string + (hintPrefix(hasEnoughNumericCharacters()) + qsTr("At least 1 numeric character"))
+            text_value: API.get().empty_string + (hintPrefix(hasEnoughNumericCharacters()) + qsTr("At least 1 numeric character"))
             color: hintColor(hasEnoughNumericCharacters())
         }
         DefaultText {
             font.pixelSize: Style.textSizeSmall3
-            text: API.get().empty_string + (hintPrefix(hasEnoughSpecialCharacters()) + qsTr("At least 1 special character (eg. !@#$%)"))
+            text_value: API.get().empty_string + (hintPrefix(hasEnoughSpecialCharacters()) + qsTr("At least 1 special character (eg. !@#$%)"))
             color: hintColor(hasEnoughSpecialCharacters())
         }
         DefaultText {
             font.pixelSize: Style.textSizeSmall3
-            text: API.get().empty_string + (hintPrefix(hasEnoughCharacters()) + qsTr("At least 16 characters"))
+            text_value: API.get().empty_string + (hintPrefix(hasEnoughCharacters()) + qsTr("At least 16 characters"))
             color: hintColor(hasEnoughCharacters())
         }
         DefaultText {
             font.pixelSize: Style.textSizeSmall3
-            text: API.get().empty_string + (hintPrefix(passwordsDoMatch()) + qsTr("Password and Confirm Password have to be same"))
+            text_value: API.get().empty_string + (hintPrefix(passwordsDoMatch()) + qsTr("Password and Confirm Password have to be same"))
             color: hintColor(passwordsDoMatch())
         }
     }

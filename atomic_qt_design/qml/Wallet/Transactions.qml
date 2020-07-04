@@ -48,7 +48,7 @@ DefaultListView {
         // Description
         DefaultText {
             id: description
-            text: API.get().empty_string + (model.modelData.received ? qsTr("Incoming transaction") : qsTr("Outgoing transaction"))
+            text_value: API.get().empty_string + (model.modelData.received ? qsTr("Incoming transaction") : qsTr("Outgoing transaction"))
             font.pixelSize: Style.textSizeSmall1
             anchors.verticalCenter: parent.verticalCenter
             anchors.left: received_icon.right
@@ -58,7 +58,7 @@ DefaultListView {
         // Crypto
         DefaultText {
             id: crypto_amount
-            text: API.get().empty_string + (General.formatCrypto(model.modelData.received, model.modelData.amount, API.get().current_coin_info.ticker))
+            text_value: API.get().empty_string + (General.formatCrypto(model.modelData.received, model.modelData.amount, API.get().current_coin_info.ticker))
             font.pixelSize: description.font.pixelSize
             anchors.verticalCenter: parent.verticalCenter
             anchors.left: parent.left
@@ -68,7 +68,7 @@ DefaultListView {
 
         // Fiat
         DefaultText {
-            text: API.get().empty_string + (General.formatFiat(model.modelData.received, model.modelData.amount_fiat, API.get().fiat))
+            text_value: API.get().empty_string + (General.formatFiat(model.modelData.received, model.modelData.amount_fiat, API.get().fiat))
             font.pixelSize: description.font.pixelSize
             anchors.verticalCenter: parent.verticalCenter
             anchors.left: parent.left
@@ -78,7 +78,7 @@ DefaultListView {
 
         // Fee
         DefaultText {
-            text: API.get().empty_string + (General.formatCrypto(!(parseFloat(model.modelData.fees) > 0), Math.abs(parseFloat(model.modelData.fees)), API.get().current_coin_info.ticker) + " " + qsTr("transaction fee"))
+            text_value: API.get().empty_string + (General.formatCrypto(!(parseFloat(model.modelData.fees) > 0), Math.abs(parseFloat(model.modelData.fees)), API.get().current_coin_info.ticker) + " " + qsTr("transaction fee"))
             font.pixelSize: description.font.pixelSize
             anchors.verticalCenter: parent.verticalCenter
             anchors.left: parent.left
@@ -88,7 +88,7 @@ DefaultListView {
         // Date
         DefaultText {
             font.pixelSize: description.font.pixelSize
-            text: API.get().empty_string + (model.modelData.timestamp === 0 ? qsTr("Unconfirmed"):  model.modelData.date)
+            text_value: API.get().empty_string + (model.modelData.timestamp === 0 ? qsTr("Unconfirmed"):  model.modelData.date)
             anchors.verticalCenter: parent.verticalCenter
             anchors.right: parent.right
             anchors.rightMargin: 20

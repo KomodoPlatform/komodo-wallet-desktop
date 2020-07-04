@@ -207,7 +207,7 @@ FloatingBackground {
                 // Title
                 DefaultText {
                     font.pixelSize: Style.textSizeMid2
-                    text: API.get().empty_string + (my_side ? qsTr("Sell") : qsTr("Receive"))
+                    text_value: API.get().empty_string + (my_side ? qsTr("Sell") : qsTr("Receive"))
                     color: my_side ? Style.colorRed : Style.colorGreen
                     font.weight: Font.Bold
                 }
@@ -274,7 +274,7 @@ FloatingBackground {
                 Layout.rightMargin: top_line.Layout.rightMargin
 
                 DefaultText {
-                    text: API.get().empty_string + (qsTr("Amount") + ':')
+                    text_value: API.get().empty_string + (qsTr("Amount") + ':')
                     font.pixelSize: Style.textSizeSmall1
                 }
 
@@ -310,7 +310,7 @@ FloatingBackground {
                         anchors.rightMargin: 10
                         anchors.verticalCenter: input_volume.verticalCenter
 
-                        text: getTicker()
+                        text_value: getTicker()
                         font.pixelSize: input_volume.field.font.pixelSize
                     }
                 }
@@ -351,7 +351,7 @@ FloatingBackground {
                     anchors.horizontalCenter: parent.handle.horizontalCenter
                     anchors.bottom: parent.handle.top
 
-                    text: General.formatDouble(input_volume_slider.getRealValue(), input_volume_slider.precision)
+                    text_value: General.formatDouble(input_volume_slider.getRealValue(), input_volume_slider.precision)
                     font.pixelSize: input_volume.field.font.pixelSize
                 }
 
@@ -359,21 +359,21 @@ FloatingBackground {
                     anchors.left: parent.left
                     anchors.top: parent.bottom
 
-                    text: API.get().empty_string + (qsTr("Min"))
+                    text_value: API.get().empty_string + (qsTr("Min"))
                     font.pixelSize: input_volume.field.font.pixelSize
                 }
                 DefaultText {
                     anchors.horizontalCenter: parent.horizontalCenter
                     anchors.top: parent.bottom
 
-                    text: API.get().empty_string + (qsTr("Half"))
+                    text_value: API.get().empty_string + (qsTr("Half"))
                     font.pixelSize: input_volume.field.font.pixelSize
                 }
                 DefaultText {
                     anchors.right: parent.right
                     anchors.top: parent.bottom
 
-                    text: API.get().empty_string + (qsTr("Max"))
+                    text_value: API.get().empty_string + (qsTr("Max"))
                     font.pixelSize: input_volume.field.font.pixelSize
                 }
             }
@@ -405,14 +405,14 @@ FloatingBackground {
 
                         DefaultText {
                             id: tx_fee_text
-                            text: API.get().empty_string + ((qsTr('Transaction Fee') + ': ' + General.formatCrypto("", curr_trade_info.tx_fee, curr_trade_info.is_ticker_of_fees_eth ? "ETH" : getTicker(true))) +
+                            text_value: API.get().empty_string + ((qsTr('Transaction Fee') + ': ' + General.formatCrypto("", curr_trade_info.tx_fee, curr_trade_info.is_ticker_of_fees_eth ? "ETH" : getTicker(true))) +
                                                                     // ETH Fees
                                                                     (hasEthFees() ? " + " + General.formatCrypto("", curr_trade_info.erc_fees, 'ETH') : ''))
                             font.pixelSize: Style.textSizeSmall1
                         }
 
                         DefaultText {
-                            text: API.get().empty_string + (qsTr('Trading Fee') + ': ' + General.formatCrypto("", curr_trade_info.trade_fee, getTicker(true)))
+                            text_value: API.get().empty_string + (qsTr('Trading Fee') + ': ' + General.formatCrypto("", curr_trade_info.trade_fee, getTicker(true)))
                             font.pixelSize: tx_fee_text.font.pixelSize
                         }
                     }
@@ -421,7 +421,7 @@ FloatingBackground {
                     DefaultText {
                         visible: !fees.visible
 
-                        text: API.get().empty_string + (qsTr('Fees will be calculated'))
+                        text_value: API.get().empty_string + (qsTr('Fees will be calculated'))
                         Layout.alignment: Qt.AlignCenter
                         font.pixelSize: tx_fee_text.font.pixelSize
                     }

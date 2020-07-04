@@ -40,7 +40,7 @@ Rectangle {
         anchors.horizontalCenter: parent.horizontalCenter
         anchors.verticalCenter: parent.verticalCenter
         DefaultText {
-            text: API.get().empty_string + (qsTr("No connection"))
+            text_value: API.get().empty_string + (qsTr("No connection"))
             Layout.alignment: Qt.AlignHCenter
             font.pixelSize: Style.textSize3
         }
@@ -50,7 +50,7 @@ Rectangle {
         }
 
         DefaultText {
-            text: API.get().empty_string + (qsTr("Please make sure you are connected to the internet"))
+            text_value: API.get().empty_string + (qsTr("Please make sure you are connected to the internet"))
             Layout.alignment: Qt.AlignHCenter
         }
     }

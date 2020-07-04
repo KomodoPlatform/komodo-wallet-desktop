@@ -44,14 +44,14 @@ DefaultModal {
                 DefaultText {
                     Layout.alignment: Qt.AlignHCenter
 
-                    text: API.get().empty_string + (qsTr("Are you sure you want to delete %1 wallet?", "WALLET_NAME").arg(API.get().wallet_default_name))
+                    text_value: API.get().empty_string + (qsTr("Are you sure you want to delete %1 wallet?", "WALLET_NAME").arg(API.get().wallet_default_name))
                     font.pixelSize: Style.textSize2
                 }
 
                 DefaultText {
                     Layout.alignment: Qt.AlignHCenter
 
-                    text: API.get().empty_string + (qsTr("If so, make sure you record your seed phrase in order to restore your wallet in future."))
+                    text_value: API.get().empty_string + (qsTr("If so, make sure you record your seed phrase in order to restore your wallet in future."))
                 }
             }
         }
@@ -64,7 +64,7 @@ DefaultModal {
         }
 
         DefaultText {
-            text: API.get().empty_string + (qsTr("Wrong Password"))
+            text_value: API.get().empty_string + (qsTr("Wrong Password"))
             color: Style.colorRed
             visible: wrong_password
         }

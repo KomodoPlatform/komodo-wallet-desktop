@@ -50,7 +50,7 @@ Rectangle {
             margins: margin / 2
         }
         font.pixelSize: Style.textSizeSmall2
-        text: title + (details !== undefined && details !== "" ? (" - " + qsTr("Click here to see the details")) : "")
+        text_value: title + (details !== undefined && details !== "" ? (" - " + qsTr("Click here to see the details")) : "")
     }
 
     SequentialAnimation on opacity {

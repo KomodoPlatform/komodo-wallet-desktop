@@ -26,7 +26,7 @@ SetupPage {
         width: 400
         spacing: Style.rowSpacing
         DefaultText {
-            text: API.get().empty_string + (qsTr("Welcome"))
+            text_value: API.get().empty_string + (qsTr("Welcome"))
         }
 
         HorizontalLine {
@@ -58,7 +58,7 @@ SetupPage {
 
             // Name
             DefaultText {
-                text: API.get().empty_string + (qsTr("Wallets"))
+                text_value: API.get().empty_string + (qsTr("Wallets"))
                 font.pixelSize: Style.textSizeSmall2
             }
 
@@ -102,7 +102,7 @@ SetupPage {
                             anchors.left: parent.left
                             anchors.leftMargin: 40
 
-                            text: API.get().empty_string + (model.modelData)
+                            text_value: API.get().empty_string + (model.modelData)
                             anchors.verticalCenter: parent.verticalCenter
                             font.pixelSize: Style.textSizeSmall2
                         }

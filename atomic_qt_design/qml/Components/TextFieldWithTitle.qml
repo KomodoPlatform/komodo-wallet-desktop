@@ -29,7 +29,7 @@ ColumnLayout {
         DefaultText {
             visible: required && input_field.text === ''
             font.pixelSize: Style.textSizeSmall2
-            text: "Required"
+            text_value: "Required"
             color: Style.colorRed
         }
     }

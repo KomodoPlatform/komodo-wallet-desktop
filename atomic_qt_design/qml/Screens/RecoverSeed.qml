@@ -41,7 +41,7 @@ SetupPage {
         spacing: Style.rowSpacing
 
         DefaultText {
-            text: API.get().empty_string + (qsTr("Recovery"))
+            text_value: API.get().empty_string + (qsTr("Recovery"))
         }
 
         HorizontalLine {
@@ -152,7 +152,7 @@ SetupPage {
         }
 
         DefaultText {
-            text: API.get().empty_string + (text_error)
+            text_value: API.get().empty_string + (text_error)
             color: Style.colorRed
             visible: text !== ''
         }

@@ -12,7 +12,7 @@ ColumnLayout {
         spacing: 20
         DefaultText {
             Layout.alignment: Qt.AlignVCenter
-            text: API.get().empty_string + (qsTr("Language") + ":")
+            text_value: API.get().empty_string + (qsTr("Language") + ":")
             font.pixelSize: Style.textSizeSmall2
         }
 

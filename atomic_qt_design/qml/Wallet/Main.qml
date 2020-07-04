@@ -61,14 +61,14 @@ Item {
 
                         DefaultText {
                             id: name
-                            text: API.get().empty_string + (API.get().current_coin_info.name)
+                            text_value: API.get().empty_string + (API.get().current_coin_info.name)
                             Layout.alignment: Qt.AlignLeft
                             font.pixelSize: Style.textSizeMid
                         }
 
                         DefaultText {
                             id: name_value
-                            text: API.get().empty_string + (General.formatCrypto("", API.get().current_coin_info.balance, API.get().current_coin_info.ticker))
+                            text_value: API.get().empty_string + (General.formatCrypto("", API.get().current_coin_info.balance, API.get().current_coin_info.ticker))
                             Layout.alignment: Qt.AlignLeft
                             font.pixelSize: name.font.pixelSize
                         }
@@ -80,14 +80,14 @@ Item {
                     Layout.alignment: Qt.AlignLeft
                     spacing: balance_layout.spacing
                     DefaultText {
-                        text: API.get().empty_string + (qsTr("Wallet Balance"))
+                        text_value: API.get().empty_string + (qsTr("Wallet Balance"))
                         Layout.alignment: Qt.AlignLeft
                         font.pixelSize: name.font.pixelSize
                         color: price.color
                     }
 
                     DefaultText {
-                        text: API.get().empty_string + (General.formatFiat("", API.get().current_coin_info.fiat_amount, API.get().fiat))
+                        text_value: API.get().empty_string + (General.formatFiat("", API.get().current_coin_info.fiat_amount, API.get().fiat))
                         Layout.alignment: Qt.AlignLeft
                         font.pixelSize: name.font.pixelSize
                     }
@@ -106,14 +106,14 @@ Item {
                     spacing: balance_layout.spacing
                     DefaultText {
                         id: price
-                        text: API.get().empty_string + (qsTr("Price"))
+                        text_value: API.get().empty_string + (qsTr("Price"))
                         Layout.alignment: Qt.AlignLeft
                         font.pixelSize: name.font.pixelSize
                         color: Style.colorText2
                     }
 
                     DefaultText {
-                        text: {
+                        text_value: {
                             const c = General.getCoin(portfolio_coins, API.get().current_coin_info.ticker)
                             if(c === undefined) return "-"
 
@@ -130,14 +130,14 @@ Item {
                     Layout.alignment: Qt.AlignHCenter
                     spacing: balance_layout.spacing
                     DefaultText {
-                        text: API.get().empty_string + (qsTr("Change 24h"))
+                        text_value: API.get().empty_string + (qsTr("Change 24h"))
                         Layout.alignment: Qt.AlignLeft
                         font.pixelSize: name.font.pixelSize
                         color: price.color
                     }
 
                     DefaultText {
-                        text: {
+                        text_value: {
                             const c = General.getCoin(portfolio_coins, API.get().current_coin_info.ticker)
                             if(c === undefined || c.rates === null) return "-"
 
@@ -162,14 +162,14 @@ Item {
                     Layout.alignment: Qt.AlignHCenter
                     spacing: balance_layout.spacing
                     DefaultText {
-                        text: API.get().empty_string + (qsTr("Portfolio %"))
+                        text_value: API.get().empty_string + (qsTr("Portfolio %"))
                         Layout.alignment: Qt.AlignLeft
                         font.pixelSize: name.font.pixelSize
                         color: price.color
                     }
 
                     DefaultText {
-                        text: {
+                        text_value: {
                             const c = General.getCoin(portfolio_coins, API.get().current_coin_info.ticker)
                             if(c === undefined || c.balance_fiat === null) return "-"
                             const portfolio_balance = API.get().balance_fiat_all
@@ -227,7 +227,7 @@ Item {
 
                 DefaultText {
                     id: left_text
-                    text: API.get().empty_string + (qsTr("%1 Price", "TICKER").arg(API.get().current_coin_info.ticker))
+                    text_value: API.get().empty_string + (qsTr("%1 Price", "TICKER").arg(API.get().current_coin_info.ticker))
                     font.pixelSize: Style.textSizeSmall3
                 }
             }
@@ -249,7 +249,7 @@ Item {
                 }
 
                 DefaultText {
-                    text: API.get().empty_string + (qsTr("Volume 24h"))
+                    text_value: API.get().empty_string + (qsTr("Volume 24h"))
                     font: left_text.font
                 }
             }
@@ -362,7 +362,7 @@ Item {
                 anchors.horizontalCenter: parent.horizontalCenter
                 anchors.verticalCenter: parent.verticalCenter
                 DefaultText {
-                    text: API.get().empty_string + (qsTr("Loading"))
+                    text_value: API.get().empty_string + (qsTr("Loading"))
                     Layout.alignment: Qt.AlignHCenter
                     font.pixelSize: Style.textSize2
                 }
@@ -372,7 +372,7 @@ Item {
                 }
 
                 DefaultText {
-                    text: API.get().empty_string + (
+                    text_value: API.get().empty_string + (
                       API.get().current_coin_info.type === "ERC-20" ?
                       (qsTr("Scanning blocks for TX History... %n block(s) left", "", parseInt(API.get().current_coin_info.blocks_left))) :
                       (qsTr("Syncing TX History... %n TX(s) left", "", parseInt(API.get().current_coin_info.transactions_left)))
@@ -406,7 +406,7 @@ Item {
                 DefaultText {
                     anchors.centerIn: parent
                     visible: API.get().current_coin_info.tx_state !== "InProgress" && API.get().current_coin_info.transactions.length === 0
-                    text: API.get().empty_string + (qsTr("No transactions"))
+                    text_value: API.get().empty_string + (qsTr("No transactions"))
                     font.pixelSize: Style.textSize
                     color: Style.colorWhite4
                 }

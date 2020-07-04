@@ -45,7 +45,7 @@ DefaultModal {
 
                 DefaultText {
                     id: eula_text
-                    text: API.get().empty_string + (getEula())
+                    text_value: API.get().empty_string + (getEula())
 
                     width: eula_rect.width - 40
                 }

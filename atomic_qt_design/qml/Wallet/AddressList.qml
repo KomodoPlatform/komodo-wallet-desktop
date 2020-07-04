@@ -25,7 +25,7 @@ ColumnLayout {
 
         // Row
         delegate: DefaultText {
-            text: API.get().empty_string + (model.modelData)
+            text_value: API.get().empty_string + (model.modelData)
             color: Style.modalValueColor
         }
     }

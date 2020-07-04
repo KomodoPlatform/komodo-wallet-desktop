@@ -67,7 +67,7 @@ DefaultModal {
 
             DefaultText {
                 visible: text_error.text === ""
-                text: API.get().empty_string + (qsTr("You will receive %1", "AMT TICKER").arg(General.formatCrypto("", prepare_claim_rewards_result.balance_change, API.get().current_coin_info.ticker)))
+                text_value: API.get().empty_string + (qsTr("You will receive %1", "AMT TICKER").arg(General.formatCrypto("", prepare_claim_rewards_result.balance_change, API.get().current_coin_info.ticker)))
             }
 
             DefaultText {

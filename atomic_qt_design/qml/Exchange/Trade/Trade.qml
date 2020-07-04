@@ -358,13 +358,13 @@ Item {
 
         DefaultText {
             Layout.alignment: Qt.AlignHCenter
-            text: API.get().empty_string + (qsTr("No balance available"))
+            text_value: API.get().empty_string + (qsTr("No balance available"))
             font.pixelSize: Style.textSize2
         }
 
         DefaultText {
             Layout.alignment: Qt.AlignHCenter
-            text: API.get().empty_string + (qsTr("Please enable a coin with balance or deposit funds"))
+            text_value: API.get().empty_string + (qsTr("Please enable a coin with balance or deposit funds"))
         }
     }
 
@@ -444,14 +444,14 @@ Item {
 
             color: action_result === "success" ? Style.colorGreen : Style.colorRed
 
-            text: API.get().empty_string + (action_result === "" ? "" : action_result === "success" ? "" : qsTr("Failed to place the order."))
+            text_value: API.get().empty_string + (action_result === "" ? "" : action_result === "success" ? "" : qsTr("Failed to place the order."))
         }
 
         // Show ETH error
         DefaultText {
             Layout.alignment: Qt.AlignHCenter
 
-            text: API.get().empty_string + (qsTr("Not enough ETH for the transaction fee"))
+            text_value: API.get().empty_string + (qsTr("Not enough ETH for the transaction fee"))
             color: Style.colorRed
             visible: form_base.hasEthFees() && !form_base.hasEnoughEthForFees()
         }
@@ -460,7 +460,7 @@ Item {
         DefaultText {
             Layout.alignment: Qt.AlignHCenter
 
-            text: API.get().empty_string + (qsTr("Sell amount is lower than minimum trade amount") + " : " + General.getMinTradeAmount())
+            text_value: API.get().empty_string + (qsTr("Sell amount is lower than minimum trade amount") + " : " + General.getMinTradeAmount())
             color: Style.colorRed
             visible: form_base.fieldsAreFilled() && !form_base.higherThanMinTradeAmount()
         }
@@ -469,7 +469,7 @@ Item {
         DefaultText {
             Layout.alignment: Qt.AlignHCenter
 
-            text: API.get().empty_string + (qsTr("Receive amount is lower than minimum trade amount") + " : " + General.getMinTradeAmount())
+            text_value: API.get().empty_string + (qsTr("Receive amount is lower than minimum trade amount") + " : " + General.getMinTradeAmount())
             color: Style.colorRed
             visible: form_rel.fieldsAreFilled() && !form_rel.higherThanMinTradeAmount()
         }

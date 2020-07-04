@@ -28,7 +28,7 @@ SetupPage {
 
     content: ColumnLayout {
         DefaultText {
-            text: API.get().empty_string + (qsTr("Loading, please wait"))
+            text_value: API.get().empty_string + (qsTr("Loading, please wait"))
             Layout.bottomMargin: 10
         }
 
@@ -41,7 +41,7 @@ SetupPage {
             }
 
             DefaultText {
-                text: API.get().empty_string + ((API.get().initial_loading_status === "initializing_mm2" ? qsTr("Initializing MM2") :
+                text_value: API.get().empty_string + ((API.get().initial_loading_status === "initializing_mm2" ? qsTr("Initializing MM2") :
                        API.get().initial_loading_status === "enabling_coins" ? qsTr("Enabling coins") :
                        API.get().initial_loading_status === "complete" ? qsTr("Complete") : "") + "...")
             }

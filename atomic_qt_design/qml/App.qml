@@ -103,7 +103,7 @@ Rectangle {
         anchors.bottom: parent.bottom
         anchors.bottomMargin: 10
         anchors.rightMargin: anchors.bottomMargin
-        text: API.get().empty_string + (qsTr("gui version") + ":    " + API.get().get_version())
+        text_value: API.get().empty_string + (qsTr("gui version") + ":    " + API.get().get_version())
         font.pixelSize: Style.textSizeSmall
     }
 

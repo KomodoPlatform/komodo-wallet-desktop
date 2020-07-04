@@ -9,7 +9,7 @@ import "../Constants"
 Item {
     property int dashboard_index
     property alias image: img.source
-    property alias text: txt.text
+    property alias text_value: txt.text
     property alias separator: separator.visible
     property alias checked: switch_input.checked
     readonly property bool selected: dashboard.current_page === dashboard_index

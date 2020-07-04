@@ -5,10 +5,13 @@ import QtQuick.Controls 2.12
 import "../Constants"
 
 Text {
+    property string text_value
+    property bool privacy: false
+
     font.family: Style.font
     font.pixelSize: Style.textSize
     color: Style.colorText
-
+    text: General.privacy_mode ? "*****" : text_value
     wrapMode: Text.WordWrap
 }
 

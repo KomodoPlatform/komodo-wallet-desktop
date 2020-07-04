@@ -32,7 +32,7 @@ Item {
     // Base Amount
     DefaultText {
         id: base_amount
-        text: API.get().empty_string + ("~ " + General.formatCrypto("", item.my_info.my_amount, item.my_info.my_coin))
+        text_value: API.get().empty_string + ("~ " + General.formatCrypto("", item.my_info.my_amount, item.my_info.my_coin))
         font.pixelSize: in_modal ? Style.textSize2 : Style.textSize
 
         anchors.left: parent.left
@@ -52,7 +52,7 @@ Item {
     // Rel Amount
     DefaultText {
         id: rel_amount
-        text: API.get().empty_string + ("~ " + General.formatCrypto("", item.my_info.other_amount, item.my_info.other_coin))
+        text_value: API.get().empty_string + ("~ " + General.formatCrypto("", item.my_info.other_amount, item.my_info.other_coin))
         font.pixelSize: base_amount.font.pixelSize
         anchors.right: parent.right
         anchors.top: base_amount.top
@@ -62,7 +62,7 @@ Item {
     DefaultText {
         id: uuid
         visible: !in_modal && item.uuid !== ''
-        text: API.get().empty_string + ((item.is_recent_swap ? qsTr("Swap ID") : qsTr("UUID")) + ": " + item.uuid)
+        text_value: API.get().empty_string + ((item.is_recent_swap ? qsTr("Swap ID") : qsTr("UUID")) + ": " + item.uuid)
         color: Style.colorTheme2
         anchors.top: base_amount.bottom
         anchors.topMargin: base_amount.anchors.topMargin
@@ -74,14 +74,14 @@ Item {
         color: visible ? getStatusColor(item) : ''
         anchors.horizontalCenter: parent.horizontalCenter
         anchors.top: base_icon.top
-        text: API.get().empty_string + (visible ? getStatusTextWithPrefix(item) : '')
+        text_value: API.get().empty_string + (visible ? getStatusTextWithPrefix(item) : '')
     }
 
     // Date
     DefaultText {
         id: date
         visible: !in_modal && item.date !== ''
-        text: API.get().empty_string + (item.date)
+        text_value: API.get().empty_string + (item.date)
         color: Style.colorTheme2
         anchors.top: uuid.bottom
         anchors.topMargin: base_amount.anchors.topMargin
@@ -90,7 +90,7 @@ Item {
     // Maker/Taker
     DefaultText {
         visible: !in_modal && item.uuid !== ''
-        text: API.get().empty_string + (item.am_i_maker ? qsTr("Maker Order"): qsTr("Taker Order"))
+        text_value: API.get().empty_string + (item.am_i_maker ? qsTr("Maker Order"): qsTr("Taker Order"))
         color: Style.colorThemeDarkLight
         anchors.verticalCenter: date.verticalCenter
         anchors.horizontalCenter: parent.horizontalCenter

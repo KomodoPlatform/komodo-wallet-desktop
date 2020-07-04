@@ -12,7 +12,7 @@ ColumnLayout {
 
     SidebarLine {
         dashboard_index: General.idx_dashboard_portfolio
-        text: API.get().empty_string + (qsTr("Dashboard"))
+        text_value: API.get().empty_string + (qsTr("Dashboard"))
         image: General.image_path + "menu-assets-portfolio.svg"
         Layout.fillWidth: true
         separator: false
@@ -20,28 +20,28 @@ ColumnLayout {
 
     SidebarLine {
         dashboard_index: General.idx_dashboard_wallet
-        text: API.get().empty_string + (qsTr("Wallet"))
+        text_value: API.get().empty_string + (qsTr("Wallet"))
         image: General.image_path + "menu-assets-white.svg"
         Layout.fillWidth: true
     }
 
     SidebarLine {
         dashboard_index: General.idx_dashboard_exchange
-        text: API.get().empty_string + (qsTr("DEX"))
+        text_value: API.get().empty_string + (qsTr("DEX"))
         image: General.image_path + "menu-exchange-white.svg"
         Layout.fillWidth: true
     }
 
     SidebarLine {
         dashboard_index: General.idx_dashboard_news
-        text: API.get().empty_string + (qsTr("News"))
+        text_value: API.get().empty_string + (qsTr("News"))
         image: General.image_path + "menu-news-white.svg"
         Layout.fillWidth: true
     }
 
     SidebarLine {
         dashboard_index: General.idx_dashboard_dapps
-        text: API.get().empty_string + (qsTr("Dapps"))
+        text_value: API.get().empty_string + (qsTr("Dapps"))
         image: General.image_path + "menu-dapp-white.svg"
         Layout.fillWidth: true
     }

@@ -52,7 +52,7 @@ SetupPage {
         width: 275
 
         DefaultText {
-            text: API.get().empty_string + (qsTr("Login") + ": " + API.get().wallet_default_name)
+            text_value: API.get().empty_string + (qsTr("Login") + ": " + API.get().wallet_default_name)
         }
 
         HorizontalLine {
@@ -88,7 +88,7 @@ SetupPage {
         }
 
         DefaultText {
-            text: API.get().empty_string + (text_error)
+            text_value: API.get().empty_string + (text_error)
             color: Style.colorRed
             visible: text !== ''
         }

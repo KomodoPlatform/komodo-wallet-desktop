@@ -70,13 +70,13 @@ DefaultModal {
                 DefaultText {
                     Layout.alignment: Qt.AlignHCenter
 
-                    text: API.get().empty_string + (qsTr("This swap request can not be undone and is a final event!"))
+                    text_value: API.get().empty_string + (qsTr("This swap request can not be undone and is a final event!"))
                 }
 
                 DefaultText {
                     Layout.alignment: Qt.AlignHCenter
 
-                    text: API.get().empty_string + (qsTr("This transaction can take up to 10 mins - DO NOT close this application!"))
+                    text_value: API.get().empty_string + (qsTr("This transaction can take up to 10 mins - DO NOT close this application!"))
                     font.pixelSize: Style.textSizeSmall4
                 }
             }

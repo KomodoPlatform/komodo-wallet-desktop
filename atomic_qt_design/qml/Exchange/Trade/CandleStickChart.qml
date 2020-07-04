@@ -255,7 +255,7 @@ ChartView {
                 id: value_y_text
                 anchors.verticalCenter: parent.verticalCenter
                 anchors.horizontalCenter: parent.horizontalCenter
-                text: General.formatDouble(series.last_value, 0)
+                text_value: General.formatDouble(series.last_value, 0)
                 font.pixelSize: series.axisYRight.labelsFont.pixelSize
                 color: Style.colorChartLineText
             }
@@ -295,7 +295,7 @@ ChartView {
                 id: cursor_y_text
                 anchors.verticalCenter: parent.verticalCenter
                 anchors.horizontalCenter: parent.horizontalCenter
-                text: General.formatDouble(mouse_area.valueY, 0)
+                text_value: General.formatDouble(mouse_area.valueY, 0)
                 font.pixelSize: series.axisYRight.labelsFont.pixelSize
             }
         }
@@ -335,7 +335,7 @@ ChartView {
                 id: cursor_x_text
                 anchors.verticalCenter: parent.verticalCenter
                 anchors.horizontalCenter: parent.horizontalCenter
-                text: mouse_area.realData ? General.timestampToDate(mouse_area.realData.timestamp).toString() : ""
+                text_value: mouse_area.realData ? General.timestampToDate(mouse_area.realData.timestamp).toString() : ""
                 font.pixelSize: series.axisYRight.labelsFont.pixelSize
             }
         }
@@ -464,7 +464,7 @@ ChartView {
         color: series.axisX.labelsColor
         font.pixelSize: Style.textSizeSmall
         property string highlightColor: mouse_area.realData && mouse_area.realData.close >= mouse_area.realData.open ? Style.colorGreen : Style.colorRed
-        text: mouse_area.realData ? (
+        text_value: mouse_area.realData ? (
                 `O:<font color="${highlightColor}">${mouse_area.realData.open}</font> &nbsp;&nbsp; ` +
                 `H:<font color="${highlightColor}">${mouse_area.realData.high}</font> &nbsp;&nbsp; ` +
                 `L:<font color="${highlightColor}">${mouse_area.realData.low}</font> &nbsp;&nbsp; ` +
@@ -479,7 +479,7 @@ ChartView {
         anchors.left: cursor_values.left
         anchors.bottom: combo_time.bottom
         font.pixelSize: cursor_values.font.pixelSize
-        text: `<font color="${series_ma1.color}">MA ${series_ma1.num}</font> &nbsp;&nbsp; <font color="${series_ma2.color}">MA ${series_ma2.num}</font>`
+        text_value: `<font color="${series_ma1.color}">MA ${series_ma1.num}</font> &nbsp;&nbsp; <font color="${series_ma2.color}">MA ${series_ma2.num}</font>`
     }
 
 }

@@ -7,7 +7,7 @@ import "../Constants"
 
 Item {
     property int sort_type
-    property alias text: title.text
+    property alias text: title.text_value
 
     property bool icon_at_left
 

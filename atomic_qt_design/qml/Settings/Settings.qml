@@ -120,7 +120,7 @@ Item {
         anchors.bottom: parent.bottom
         anchors.bottomMargin: 10
         anchors.rightMargin: anchors.bottomMargin
-        text: API.get().empty_string + (qsTr("mm2 version") + ":    " + mm2_version)
+        text_value: API.get().empty_string + (qsTr("mm2 version") + ":    " + mm2_version)
         font.pixelSize: Style.textSizeSmall
     }
 }

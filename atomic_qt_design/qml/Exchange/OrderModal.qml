@@ -47,7 +47,7 @@ DefaultModal {
                      (details.events !== undefined || // Has events, ongoing or
                     details.am_i_maker === false) // Taker order with no events
             color: visible ? getStatusColor(details) : ''
-            text: API.get().empty_string + (visible ? getStatusTextWithPrefix(details) : '')
+            text_value: API.get().empty_string + (visible ? getStatusTextWithPrefix(details) : '')
         }
 
         OrderContent {
@@ -69,7 +69,7 @@ DefaultModal {
 
         // Maker/Taker
         DefaultText {
-            text: API.get().empty_string + (details.am_i_maker ? qsTr("Maker Order"): qsTr("Taker Order"))
+            text_value: API.get().empty_string + (details.am_i_maker ? qsTr("Maker Order"): qsTr("Taker Order"))
             color: Style.colorThemeDarkLight
             Layout.alignment: Qt.AlignRight
         }
