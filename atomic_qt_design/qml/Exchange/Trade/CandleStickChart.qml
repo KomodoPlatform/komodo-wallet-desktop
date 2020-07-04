@@ -153,7 +153,7 @@ ChartView {
         series_area.global_max = 0
 
         const historical = getHistorical()
-        console.log("UPDATE CHART! ", seconds_str, "data for chart:", JSON.stringify(historical))
+        console.log("Updated the chart!")
         const count = historical.length
         if(count === 0) return
 
