@@ -924,7 +924,8 @@ namespace atomic_dex
 
             auto        tx_fee_value    = QString::fromStdString(get_formated_float(tx_fee_f));
 
-            t_float_50        final_balance_f = t_float_50(amount.toStdString()) - (trade_fee_f + tx_fee_f);
+            const std::string amount_std = t_float_50(amount.toStdString()) < minimal_trade_amount() ? minimal_trade_amount_str() : amount.toStdString();
+            t_float_50        final_balance_f = t_float_50(amount_std) - (trade_fee_f + tx_fee_f);
             std::string final_balance   = amount.toStdString();
             spdlog::debug("{} - ({} + {})) = {}", amount.toStdString(), trade_fee_f.str(8), tx_fee_f.str(8), final_balance_f.str(8));
             // spdlog::info("final_balance_f: {}", get_formated_float(final_balance_f));
@@ -938,7 +939,7 @@ namespace atomic_dex
             {
                 spdlog::info("final_balance_f < 0");
                 out.insert("not_enough_balance_to_pay_the_fees", true);
-                auto amount_needed = t_float_50(0.00777) - final_balance_f;
+                auto amount_needed = minimal_trade_amount() - final_balance_f;
                 out.insert("amount_needed", QString::fromStdString(get_formated_float(amount_needed)));
             }
             auto final_balance_qt = QString::fromStdString(final_balance);
