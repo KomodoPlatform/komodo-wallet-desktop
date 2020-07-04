@@ -72,7 +72,8 @@ main([[maybe_unused]] int argc, [[maybe_unused]] char* argv[])
 #endif
 
 #if defined(_WIN32) || defined(WIN32) || defined(__linux__)
-    assert(wally_init(0) == WALLY_OK);
+    auto wally_res = wally_init(0);
+    assert(wally_res == WALLY_OK);
 #endif
 
     //! Sodium Initialization
@@ -142,7 +143,8 @@ main([[maybe_unused]] int argc, [[maybe_unused]] char* argv[])
 
     auto res = app.exec();
 #if defined(_WIN32) || defined(WIN32) || defined(__linux__)
-    assert(wally_cleanup(0) == WALLY_OK);
+	auto wallet_exit_res = wally_cleanup(0);
+    assert(wallet_exit_res == WALLY_OK);
 #endif
     return res;
 }

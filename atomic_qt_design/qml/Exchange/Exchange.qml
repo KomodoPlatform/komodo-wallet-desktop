@@ -151,10 +151,18 @@ Item {
         if(swap.is_recent_swap) {
             for(let i = swap.events.length - 1; i > 0; --i) {
                 const e = swap.events[i]
-               if(swap.error_events.indexOf(e.state) !== -1) {
+               if(e.data && e.data.error && swap.error_events.indexOf(e.state) !== -1) {
                    return e
                }
             }
+        }
+
+        return { state: '', data: { error: '' } }
+    }
+
+    function getLastEvent(swap) {
+        if(swap.is_recent_swap && swap.events.length > 0) {
+            return swap.events[swap.events.length-1]
         }
 
         return { state: '', data: { error: '' } }

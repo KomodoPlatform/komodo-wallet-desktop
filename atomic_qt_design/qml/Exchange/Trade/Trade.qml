@@ -118,7 +118,7 @@ Item {
     }
 
     // Cache Trade Info
-    readonly property var default_curr_trade_info: ({ "input_final_value": "0", "is_ticker_of_fees_eth": false, "trade_fee": "0", "tx_fee": "0"})
+    readonly property var default_curr_trade_info: ({ "input_final_value": "0", "is_ticker_of_fees_eth": false, "trade_fee": "0", "tx_fee": "0", "not_enough_balance_to_pay_the_fees": false, "amount_needed": "0" })
     property bool valid_trade_info: false
     property var curr_trade_info: default_curr_trade_info
 
@@ -136,6 +136,10 @@ Item {
                 updateTradeInfo()
             }
         }
+    }
+
+    function notEnoughBalanceForFees() {
+        return valid_trade_info && curr_trade_info.not_enough_balance_to_pay_the_fees
     }
 
 
@@ -427,53 +431,32 @@ Item {
                 Layout.fillWidth: true
                 Layout.preferredHeight: form_base.height
                 column_layout.height: form_base.height
-                enabled: form_base.fieldsAreFilled()
                 field.enabled: enabled && !orderIsSelected()
             }
         }
-        /* // Temporarily desabled for chart adjustment
+
         // Price
         PriceLine {
-            Layout.topMargin: 10
             Layout.alignment: Qt.AlignHCenter
         }
 
-        // Result
+        // Show errors
         DefaultText {
             Layout.alignment: Qt.AlignHCenter
-
-            color: action_result === "success" ? Style.colorGreen : Style.colorRed
-
-            text_value: API.get().empty_string + (action_result === "" ? "" : action_result === "success" ? "" : qsTr("Failed to place the order."))
-        }
-
-        // Show ETH error
-        DefaultText {
-            Layout.alignment: Qt.AlignHCenter
-
-            text_value: API.get().empty_string + (qsTr("Not enough ETH for the transaction fee"))
             color: Style.colorRed
-            visible: form_base.hasEthFees() && !form_base.hasEnoughEthForFees()
+
+            text_value: API.get().empty_string + (notEnoughBalanceForFees() ?
+                                                (qsTr("Not enough balance for the fees. Need at least %1 more", "AMT TICKER").arg(General.formatCrypto("", parseFloat(curr_trade_info.amount_needed), form_base.getTicker()))) :
+                                                (form_base.hasEthFees() && !form_base.hasEnoughEthForFees()) ? (qsTr("Not enough ETH for the transaction fee")) :
+                                                (form_base.fieldsAreFilled() && !form_base.higherThanMinTradeAmount()) ? (qsTr("Sell amount is lower than minimum trade amount") + " : " + General.getMinTradeAmount()) :
+                                                (form_rel.fieldsAreFilled() && !form_rel.higherThanMinTradeAmount()) ? (qsTr("Receive amount is lower than minimum trade amount") + " : " + General.getMinTradeAmount()) : ""
+
+                      )
+            visible: form_base.fieldsAreFilled() && (notEnoughBalanceForFees() ||
+                                                     (form_base.hasEthFees() && !form_base.hasEnoughEthForFees()) ||
+                                                     !form_base.higherThanMinTradeAmount() ||
+                                                     (form_rel.fieldsAreFilled() && !form_rel.higherThanMinTradeAmount()))
         }
-
-        // Show min amount error
-        DefaultText {
-            Layout.alignment: Qt.AlignHCenter
-
-            text_value: API.get().empty_string + (qsTr("Sell amount is lower than minimum trade amount") + " : " + General.getMinTradeAmount())
-            color: Style.colorRed
-            visible: form_base.fieldsAreFilled() && !form_base.higherThanMinTradeAmount()
-        }
-
-        // Show min amount error
-        DefaultText {
-            Layout.alignment: Qt.AlignHCenter
-
-            text_value: API.get().empty_string + (qsTr("Receive amount is lower than minimum trade amount") + " : " + General.getMinTradeAmount())
-            color: Style.colorRed
-            visible: form_rel.fieldsAreFilled() && !form_rel.higherThanMinTradeAmount()
-        }
-        */
 
         ConfirmTradeModal {
             id: confirm_trade_modal

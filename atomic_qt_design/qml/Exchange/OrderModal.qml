@@ -74,12 +74,32 @@ DefaultModal {
             Layout.alignment: Qt.AlignRight
         }
 
+        // Refund state
+        TextFieldWithTitle {
+            Layout.topMargin: -20
+
+            title: API.get().empty_string + (qsTr("Refund State"))
+            field.text: {
+                let str = API.get().empty_string
+                const e = getLastEvent(details)
+
+                if(e.state === "TakerPaymentWaitRefundStarted" ||
+                   e.state === "MakerPaymentWaitRefundStarted") {
+                    str += qsTr("Your swap failed but the auto-refund process for your payment started already. Please wait and keep application opened until you receive your payment back")
+                }
+
+                return str
+            }
+            field.readOnly: true
+
+            visible: field.text !== ''
+        }
+
         // Date
         TextWithTitle {
             title: API.get().empty_string + (qsTr("Date"))
             text: API.get().empty_string + (details.date)
             visible: text !== ''
-            Layout.topMargin: -20
         }
 
         // Swap ID / UUID

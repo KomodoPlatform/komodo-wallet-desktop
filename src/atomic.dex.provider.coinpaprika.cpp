@@ -346,18 +346,20 @@ namespace atomic_dex
 
         if (config.coinpaprika_id != "test-coin")
         {
-            process_provider(config, m_usd_rate_providers, "usd-us-dollars");
-            process_provider(config, m_eur_rate_providers, "eur-euro");
-            if (evt.ticker != "BTC")
-            {
-                process_provider(config, m_btc_rate_providers, "btc-bitcoin");
-            }
-            if (evt.ticker != "KMD")
-            {
-                process_provider(config, m_kmd_rate_providers, "kmd-komodo");
-            }
-            process_ticker_infos(config, m_ticker_infos_registry);
-            process_ticker_historical(config, m_ticker_historical_registry);
+            spawn([config, evt, this](){
+              process_provider(config, m_usd_rate_providers, "usd-us-dollars");
+              process_provider(config, m_eur_rate_providers, "eur-euro");
+              if (evt.ticker != "BTC")
+              {
+                  process_provider(config, m_btc_rate_providers, "btc-bitcoin");
+              }
+              if (evt.ticker != "KMD")
+              {
+                  process_provider(config, m_kmd_rate_providers, "kmd-komodo");
+              }
+              process_ticker_infos(config, m_ticker_infos_registry);
+              process_ticker_historical(config, m_ticker_historical_registry);
+            });
         }
     }
 

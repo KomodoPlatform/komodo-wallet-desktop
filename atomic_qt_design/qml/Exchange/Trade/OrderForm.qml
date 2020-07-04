@@ -72,7 +72,7 @@ FloatingBackground {
     }
 
     function fieldsAreFilled() {
-        return input_volume.field.text !== '' && parseFloat(input_volume.field.text) > 0
+        return input_volume.field.text !== ''
     }
 
     function hasEthFees() {
@@ -88,15 +88,16 @@ FloatingBackground {
     }
 
     function isValid() {
-        if(!my_side) return fieldsAreFilled()
-
-        const ticker = getTicker()
-
         let valid = true
 
+        // Both sides
         if(valid) valid = fieldsAreFilled()
         if(valid) valid = higherThanMinTradeAmount()
-        if(valid) valid = API.get().do_i_have_enough_funds(ticker, input_volume.field.text)
+
+        if(!my_side) return valid
+
+        // Sell side
+        if(valid) valid = API.get().do_i_have_enough_funds(getTicker(), input_volume.field.text)
         if(valid && hasEthFees()) valid = hasEnoughEthForFees()
 
         return valid
@@ -171,6 +172,10 @@ FloatingBackground {
         }
 
         return false
+    }
+
+    function shouldBlockInput() {
+        return my_side && notEnoughBalanceForFees()
     }
 
     function onBaseChanged() {
@@ -285,7 +290,7 @@ FloatingBackground {
                     AmountField {
                         id: input_volume
                         width: parent.width
-                        field.enabled: root.enabled
+                        field.enabled: root.enabled && !shouldBlockInput()
                         field.placeholderText: API.get().empty_string + (my_side ? qsTr("Amount to sell") :
                                                          field.enabled ? qsTr("Amount to receive") : qsTr("Please fill the send amount"))
                         field.onTextChanged: {
@@ -323,6 +328,7 @@ FloatingBackground {
                     return input_volume_slider.position * (input_volume_slider.to - input_volume_slider.from)
                 }
 
+                enabled: input_volume.field.enabled
                 property bool updating_from_text_field: false
                 property bool updating_text_field: false
                 readonly property int precision: Math.max(0, Math.min(General.amountPrecision, General.sliderDigitLimit - to.toString().split(".")[0].length))
