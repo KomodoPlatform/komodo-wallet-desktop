@@ -1259,7 +1259,7 @@ namespace atomic_dex
         auto it = std::lower_bound(rbegin(json), rend(json), timestamp, [](const nlohmann::json& current_json, int timestamp)
                          {
                             int res =  current_json.at("timestamp").get<int>();
-                            return res < timestamp;
+                            return timestamp < res;
                          });
 
         if (it != json.rend())
