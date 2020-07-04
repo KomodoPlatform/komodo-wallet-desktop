@@ -311,6 +311,12 @@ namespace atomic_dex
                 m_refresh_orders_needed = false;
             }
 
+            if (m_refresh_ohlc_needed)
+            {
+                emit OHLCDataUpdated();
+                m_refresh_ohlc_needed = false;
+            }
+
             if (m_refresh_transaction_only)
             {
                 spdlog::info("refreshing transactions");
@@ -837,6 +843,7 @@ namespace atomic_dex
         get_dispatcher().sink<mm2_initialized>().disconnect<&application::on_mm2_initialized_event>(*this);
         get_dispatcher().sink<mm2_started>().disconnect<&application::on_mm2_started_event>(*this);
         get_dispatcher().sink<refresh_order_needed>().disconnect<&application::on_refresh_order_event>(*this);
+        get_dispatcher().sink<refresh_ohlc_needed>().disconnect<&application::on_refresh_ohlc_event>(*this);
 
         this->m_need_a_full_refresh_of_mm2 = true;
 
@@ -854,6 +861,7 @@ namespace atomic_dex
         get_dispatcher().sink<mm2_initialized>().connect<&application::on_mm2_initialized_event>(*this);
         get_dispatcher().sink<mm2_started>().connect<&application::on_mm2_started_event>(*this);
         get_dispatcher().sink<refresh_order_needed>().connect<&application::on_refresh_order_event>(*this);
+        get_dispatcher().sink<refresh_ohlc_needed>().connect<&application::on_refresh_ohlc_event>(*this);
     }
 
     QString
@@ -1246,6 +1254,13 @@ namespace atomic_dex
     {
         auto& provider = this->system_manager_.get_system<cex_prices_provider>();
         return provider.is_pair_supported(base.toStdString(), rel.toStdString());
+    }
+
+    void
+    application::on_refresh_ohlc_event(const refresh_ohlc_needed&) noexcept
+    {
+        spdlog::debug("{} l{}", __FUNCTION__, __LINE__);
+        this->m_refresh_ohlc_needed = true;
     }
 } // namespace atomic_dex
 

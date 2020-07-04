@@ -111,6 +111,7 @@ namespace atomic_dex
                 m_ohlc_data_mutex.try_lock();
                 m_current_ohlc_data = answer.result.value().raw_result;
                 m_ohlc_data_mutex.unlock();
+                this->dispatcher_.trigger<refresh_ohlc_needed>();
                 return true;
             }
             spdlog::error("http error: {}", answer.error.value_or("dummy"));
