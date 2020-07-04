@@ -360,37 +360,10 @@ ChartView {
         id: mouse_area
         anchors.fill: parent
 
-        onWheel: {
-            updater.delta_wheel_y += wheel.angleDelta.y
-        }
+        onWheel: updater.delta_wheel_y += wheel.angleDelta.y
 
         // Drag scroll
         hoverEnabled: true
-        property double prev_x
-        property double prev_y
-
-        onPositionChanged: {
-            const date_start = Date.now()
-            // Update
-            if(mouse.buttons > 0) {
-                const diff_x = mouse.x - prev_x
-                const diff_y = mouse.y - prev_y
-
-                if(diff_x > 0) chart.scrollLeft(diff_x)
-                else if(diff_x < 0) chart.scrollRight(-diff_x)
-                if(diff_y > 0) chart.scrollUp(diff_y)
-                else if(diff_y < 0) chart.scrollDown(-diff_y)
-
-                if(diff_y !== 0) series.updateLastValueY()
-            }
-
-            const date_line_updates = Date.now()
-            prev_x = mouse.x
-            prev_y = mouse.y
-
-            const now = Date.now()
-            console.log("Total time for position change: ", now - date_start, " - For line updates: ", now - date_line_updates)
-        }
 
         property double valueX
         property double valueY
@@ -468,11 +441,34 @@ ChartView {
         id: updater
         readonly property double scroll_speed: 0.1
         property double delta_wheel_y: 0
+        property double prev_mouse_x
+        property double prev_mouse_y
 
         running: true
         repeat: true
-        interval: 60
+        interval: 10
         onTriggered: {
+            const date_start = Date.now()
+
+            const mouse_x = mouse_area.mouseX
+            const mouse_y = mouse_area.mouseY
+
+            // Update drag
+            if(mouse_area.containsPress) {
+                const diff_x = mouse_x - prev_mouse_x
+                const diff_y = mouse_y - prev_mouse_y
+
+                if(diff_x > 0) chart.scrollLeft(diff_x)
+                else if(diff_x < 0) chart.scrollRight(-diff_x)
+                if(diff_y > 0) chart.scrollUp(diff_y)
+                else if(diff_y < 0) chart.scrollDown(-diff_y)
+
+                if(diff_y !== 0) series.updateLastValueY()
+            }
+
+            prev_mouse_x = mouse_x
+            prev_mouse_y = mouse_y
+
             // Update zoom
             if (delta_wheel_y !== 0) {
                 chart.zoom(1 + (-delta_wheel_y/360) * scroll_speed)
@@ -482,11 +478,11 @@ ChartView {
 
             // Positions
             horizontal_line.y = series.last_value_y
-            cursor_horizontal_line.y = mouse_area.mouseY
+            cursor_horizontal_line.y = mouse_y
             cursor_vertical_line.x = mouse_area.mouseXSnapped
 
             // Map mouse position to value
-            const cp = chart.mapToValue(Qt.point(mouse_area.mouseX, mouse_area.mouseY), series)
+            const cp = chart.mapToValue(Qt.point(mouse_x, mouse_y), series)
             mouse_area.valueX = cp.x
             mouse_area.valueY = cp.y
 
@@ -508,6 +504,9 @@ ChartView {
                     `C:<font color="${highlightColor}">${realData.close}</font> &nbsp;&nbsp; ` +
                     `Vol:<font color="${highlightColor}">${realData.volume.toFixed(0)}K</font>`
                                             ) : ``
+
+            const diff = Date.now() - date_start
+            if(diff > interval) interval = diff
         }
     }
 }
