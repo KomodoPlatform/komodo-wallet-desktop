@@ -17,6 +17,10 @@ Item {
         claim_rewards_modal.reset()
     }
 
+    function loadingPercentage(remaining) {
+        return General.formatPercent((100 * (1 - parseFloat(remaining)/parseFloat(API.get().current_coin_info.tx_current_block))).toFixed(3), false)
+    }
+
     Layout.fillHeight: true
     Layout.fillWidth: true
 
@@ -374,8 +378,8 @@ Item {
                 DefaultText {
                     text_value: API.get().empty_string + (
                       API.get().current_coin_info.type === "ERC-20" ?
-                      (qsTr("Scanning blocks for TX History... %n block(s) left", "", parseInt(API.get().current_coin_info.blocks_left))) :
-                      (qsTr("Syncing TX History... %n TX(s) left", "", parseInt(API.get().current_coin_info.transactions_left)))
+                      (qsTr("Scanning blocks for TX History...") + " " + loadingPercentage(API.get().current_coin_info.blocks_left)) :
+                      (qsTr("Syncing TX History...") + " " + loadingPercentage(API.get().current_coin_info.transactions_left))
                     )
                     Layout.alignment: Qt.AlignHCenter
                 }
