@@ -147,25 +147,28 @@ namespace atomic_dex
         Q_INVOKABLE void cancel_all_orders_by_ticker(const QString& ticker);
 
         //! Others
-        Q_INVOKABLE bool        mnemonic_validate(QString entropy);
-        Q_INVOKABLE QString     retrieve_seed(const QString& wallet_name, const QString& password);
-        Q_INVOKABLE void        refresh_infos();
-        Q_INVOKABLE void        refresh_orders_and_swaps();
-        Q_INVOKABLE QString     get_mnemonic();
-        Q_INVOKABLE bool        first_run();
-        Q_INVOKABLE bool        disconnect();
-        Q_INVOKABLE bool        create(const QString& password, const QString& seed, const QString& wallet_name);
-        Q_INVOKABLE bool        enable_coins(const QStringList& coins);
-        Q_INVOKABLE QString     get_balance(const QString& coin);
-        Q_INVOKABLE QString     get_price_amount(const QString& base_amount, const QString& rel_amount);
-        Q_INVOKABLE bool        place_buy_order(const QString& base, const QString& rel, const QString& price, const QString& volume);
-        Q_INVOKABLE QString     place_sell_order(const QString& base, const QString& rel, const QString& price, const QString& volume, bool is_created_order, const QString& price_denom, const QString& price_numer);
+        Q_INVOKABLE bool    mnemonic_validate(QString entropy);
+        Q_INVOKABLE QString retrieve_seed(const QString& wallet_name, const QString& password);
+        Q_INVOKABLE void    refresh_infos();
+        Q_INVOKABLE void    refresh_orders_and_swaps();
+        Q_INVOKABLE QString get_mnemonic();
+        Q_INVOKABLE bool    first_run();
+        Q_INVOKABLE bool    disconnect();
+        Q_INVOKABLE bool    create(const QString& password, const QString& seed, const QString& wallet_name);
+        Q_INVOKABLE bool    enable_coins(const QStringList& coins);
+        Q_INVOKABLE QString get_balance(const QString& coin);
+        Q_INVOKABLE QString get_price_amount(const QString& base_amount, const QString& rel_amount);
+        Q_INVOKABLE bool    place_buy_order(const QString& base, const QString& rel, const QString& price, const QString& volume);
+        Q_INVOKABLE QString place_sell_order(
+            const QString& base, const QString& rel, const QString& price, const QString& volume, bool is_created_order, const QString& price_denom,
+            const QString& price_numer);
         Q_INVOKABLE void        set_current_orderbook(const QString& base, const QString& rel);
         Q_INVOKABLE QVariantMap get_orderbook(const QString& ticker);
         Q_INVOKABLE bool        do_i_have_enough_funds(const QString& ticker, const QString& amount) const;
         Q_INVOKABLE bool        disable_coins(const QStringList& coins);
         Q_INVOKABLE bool        is_claiming_ready(const QString& ticker);
-        Q_INVOKABLE QObject* claim_rewards(const QString& ticker);
+        Q_INVOKABLE QObject*     claim_rewards(const QString& ticker);
+        Q_INVOKABLE QVariantList get_ohlc_data(const QString& range);
         Q_INVOKABLE QObject*    get_coin_info(const QString& ticker);
         Q_INVOKABLE QVariantMap get_my_orders();
         Q_INVOKABLE QVariantMap get_recent_swaps();
