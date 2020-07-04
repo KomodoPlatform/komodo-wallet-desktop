@@ -418,16 +418,21 @@ ChartView {
     // Canvas updater
     Timer {
         id: updater
+        property bool can_update: true
+
         readonly property double scroll_speed: 0.1
         property double delta_wheel_y: 0
         property double prev_mouse_x
         property double prev_mouse_y
 
+        interval: 1
         running: true
         repeat: true
         onTriggered: {
-            const date_start = Date.now()
+            if(!can_update) return
+            can_update = false
 
+            // Update
             const mouse_x = mouse_area.mouseX
             const mouse_y = mouse_area.mouseY
             const diff_x = mouse_x - prev_mouse_x
@@ -483,18 +488,18 @@ ChartView {
                 cursor_horizontal_line.y = mouse_y
             }
 
-            // Slow down the interval if computer is not capable
-            const diff = Date.now() - date_start
-            if(diff > interval) interval = diff
+            // Block this function for a while to allow engine to render
+            update_block_timer.start()
         }
     }
 
-    // Canvas updater timer interval resetter
+    // Canvas updater blocker
     Timer {
-        running: true
-        repeat: true
-        interval: 1000
-        onTriggered: updater.interval = 10
+        id: update_block_timer
+        running: false
+        repeat: false
+        interval: 1
+        onTriggered: updater.can_update = true
     }
 }
 
