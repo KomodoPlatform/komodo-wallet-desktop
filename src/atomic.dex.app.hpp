@@ -115,6 +115,7 @@ namespace atomic_dex
 
         //! Wallet Manager QML API Bindings, this internally call the `atomic_dex::qt_wallet_manager`
         Q_INVOKABLE bool               login(const QString& password, const QString& wallet_name);
+        Q_INVOKABLE bool               create(const QString& password, const QString& seed, const QString& wallet_name);
         Q_INVOKABLE static QStringList get_wallets();
         Q_INVOKABLE static bool        is_there_a_default_wallet();
         Q_INVOKABLE static QString     get_default_wallet_name();
@@ -158,7 +159,6 @@ namespace atomic_dex
         Q_INVOKABLE QString get_mnemonic();
         Q_INVOKABLE bool    first_run();
         Q_INVOKABLE bool    disconnect();
-        Q_INVOKABLE bool    create(const QString& password, const QString& seed, const QString& wallet_name);
         Q_INVOKABLE bool    enable_coins(const QStringList& coins);
         Q_INVOKABLE QString get_balance(const QString& coin);
         Q_INVOKABLE QString get_price_amount(const QString& base_amount, const QString& rel_amount);
@@ -227,7 +227,6 @@ namespace atomic_dex
         QString            m_current_status{"None"};
         QString            m_current_balance_all{"0.00"};
         QString            m_second_current_balance_all{"0.00"};
-        QString            m_current_default_wallet{""};
         current_coin_info* m_coin_info;
     };
 } // namespace atomic_dex

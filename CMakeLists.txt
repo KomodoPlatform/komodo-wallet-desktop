@@ -149,6 +149,7 @@ target_sources(atomic_qt_shared_deps INTERFACE
         ${CMAKE_SOURCE_DIR}/src/atomic.dex.provider.cex.prices.api.cpp
         ${CMAKE_SOURCE_DIR}/src/atomic.dex.provider.cex.prices.cpp
         ${CMAKE_SOURCE_DIR}/src/atomic.dex.qt.current.coin.infos.cpp
+        ${CMAKE_SOURCE_DIR}/src/atomic.dex.qt.wallet.manager.cpp
         ${CMAKE_SOURCE_DIR}/src/atomic.dex.wallet.config.cpp
         ${CMAKE_SOURCE_DIR}/src/atomic.dex.security.cpp
         $<$<PLATFORM_ID:Darwin>:${CMAKE_SOURCE_DIR}/src/osx/atomic.dex.osx.manager.mm>

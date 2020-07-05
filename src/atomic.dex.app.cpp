@@ -142,57 +142,6 @@ namespace atomic_dex
     }
 
     bool
-    atomic_dex::application::create(const QString& password, const QString& seed, const QString& wallet_name)
-    {
-        std::error_code ec;
-        auto            key = atomic_dex::derive_password(password.toStdString(), ec);
-        if (ec)
-        {
-            spdlog::warn("{}", ec.message());
-            if (ec == dextop_error::derive_password_failed)
-            {
-                return false;
-            }
-        }
-        else
-        {
-            using namespace std::string_literals;
-            const fs::path    seed_path          = get_atomic_dex_config_folder() / (wallet_name.toStdString() + ".seed"s);
-            const fs::path    wallet_object_path = get_atomic_dex_export_folder() / (wallet_name.toStdString() + ".wallet.json"s);
-            const std::string wallet_cfg_file    = std::string(atomic_dex::get_raw_version()) + "-coins"s + "."s + wallet_name.toStdString() + ".json"s;
-            const fs::path    wallet_cfg_path    = get_atomic_dex_config_folder() / wallet_cfg_file;
-
-
-            if (not fs::exists(wallet_cfg_path))
-            {
-                const auto  cfg_path = ag::core::assets_real_path() / "config";
-                std::string filename = std::string(atomic_dex::get_raw_version()) + "-coins.json";
-                fs::copy(cfg_path / filename, wallet_cfg_path);
-            }
-
-            // Encrypt seed
-            atomic_dex::encrypt(seed_path, seed.toStdString().data(), key.data());
-            // sodium_memzero(&seed, seed.size());
-            sodium_memzero(key.data(), key.size());
-
-            std::ofstream ofs((get_atomic_dex_config_folder() / "default.wallet"s).string().c_str());
-            ofs << wallet_name.toStdString();
-
-            set_wallet_default_name(wallet_name);
-
-            std::ofstream  wallet_object(wallet_object_path.string());
-            nlohmann::json wallet_object_json;
-
-            wallet_object_json["name"] = wallet_name.toStdString();
-            wallet_object << wallet_object_json.dump(4);
-            wallet_object.close();
-
-            return true;
-        }
-        return false;
-    }
-
-    bool
     atomic_dex::application::first_run()
     {
         return get_wallets().empty();
@@ -865,36 +814,6 @@ namespace atomic_dex
     }
 
     QString
-    application::get_wallet_default_name() const noexcept
-    {
-        return m_current_default_wallet;
-    }
-
-    void
-    application::set_wallet_default_name(QString wallet_name) noexcept
-    {
-        using namespace std::string_literals;
-        if (wallet_name == "")
-        {
-            fs::remove(get_atomic_dex_config_folder() / "default.wallet");
-            return;
-        }
-        if (not fs::exists(get_atomic_dex_config_folder() / "default.wallet"s))
-        {
-            std::ofstream ofs((get_atomic_dex_config_folder() / "default.wallet"s).string());
-            ofs << wallet_name.toStdString();
-        }
-        else
-        {
-            std::ofstream ofs((get_atomic_dex_config_folder() / "default.wallet"s).string(), std::ios_base::out | std::ios_base::trunc);
-            ofs << wallet_name.toStdString();
-        }
-
-        this->m_current_default_wallet = std::move(wallet_name);
-        emit on_wallet_default_name_changed();
-    }
-
-    QString
     atomic_dex::application::get_regex_password_policy() const noexcept
     {
         return QString(::atomic_dex::get_regex_password_policy());
@@ -1286,10 +1205,29 @@ namespace atomic_dex
 //! Wallet manager QML API
 namespace atomic_dex
 {
+    QString
+    application::get_wallet_default_name() const noexcept
+    {
+        return m_wallet_manager.get_wallet_default_name();
+    }
+
+    void
+    application::set_wallet_default_name(QString wallet_name) noexcept
+    {
+        m_wallet_manager.set_wallet_default_name(std::move(wallet_name));
+        emit on_wallet_default_name_changed();
+    }
+
+    bool
+    atomic_dex::application::create(const QString& password, const QString& seed, const QString& wallet_name)
+    {
+        return m_wallet_manager.create(password, seed, wallet_name);
+    }
+
     bool
     application::login(const QString& password, const QString& wallet_name)
     {
-        return m_wallet_manager.login(password, wallet_name, get_mm2(), this->m_current_default_wallet, [this]() { this->set_status("initializing_mm2"); });
+        return m_wallet_manager.login(password, wallet_name, get_mm2(), get_default_wallet_name(), [this]() { this->set_status("initializing_mm2"); });
     }
 
     bool
