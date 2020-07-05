@@ -213,6 +213,29 @@
     "active": false,
     "currently_enabled": false
   },
+  "FTC": {
+    "coin": "FTC",
+    "name": "Feathercoin",
+    "coinpaprika_id": "ftc-feathercoin",
+    "electrum": [
+      {
+        "url": "electrum1.cipig.net:10054"
+      },
+      {
+        "url": "electrum2.cipig.net:10054"
+      },
+      {
+        "url": "electrum3.cipig.net:10054"
+      }
+    ],
+    "explorer_url": [
+      "http://explorer.feathercoin.com/"
+    ],
+    "type": "UTXO",
+    "is_erc_20": false,
+    "active": false,
+    "currently_enabled": false
+  },
   "JUMBLR": {
     "coin": "JUMBLR",
     "name": "JUMBLR",
