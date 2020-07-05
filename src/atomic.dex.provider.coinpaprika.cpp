@@ -203,6 +203,10 @@ namespace atomic_dex
 
         if (not skip_precision)
         {
+            if (auto final_price_str = final_price.str(2, std::ios_base::fixed); final_price_str == "0.00" && final_price > 0.00000000)
+            {
+                return final_price.str(2);
+            }
             ss.precision(2);
         }
 
@@ -217,9 +221,9 @@ namespace atomic_dex
         t_coins coins = m_mm2_instance.get_enabled_coins();
         try
         {
-            t_float_50 final_price_f = 0;
-            std::string          current_price = "0.00";
-            std::stringstream    ss;
+            t_float_50        final_price_f = 0;
+            std::string       current_price = "0.00";
+            std::stringstream ss;
 
             for (auto&& current_coin: coins)
             {
@@ -270,12 +274,12 @@ namespace atomic_dex
         }
         const t_float_50 amount_f(amount);
         const t_float_50 current_price_f(current_price);
-        const auto                 final_price = amount_f * current_price_f;
-        std::stringstream          ss;
-        ss.precision(2);
-        ss << std::fixed << final_price;
-        std::string final_price_str = ss.str();
-        return final_price_str;
+        const t_float_50 final_price = amount_f * current_price_f;
+        if (auto final_price_str = final_price.str(2, std::ios_base::fixed); final_price_str == "0.00" && final_price > 0.00000000)
+        {
+            return final_price.str(2);
+        }
+        return final_price.str(2, std::ios_base::fixed);
     }
 
     std::string
@@ -333,7 +337,8 @@ namespace atomic_dex
         {
             t_float_50 current_price_f(current_price);
             //! Trick: If there conversion in a fixed representation is 0.00 then use a default precision to 2 without fixed ios flags
-            if (auto fixed_str = current_price_f.str(2, std::ios_base::fixed); fixed_str == "0.00" && current_price_f > 0.00000000) {
+            if (auto fixed_str = current_price_f.str(2, std::ios_base::fixed); fixed_str == "0.00" && current_price_f > 0.00000000)
+            {
                 return current_price_f.str(2);
             }
             return current_price_f.str(2, std::ios_base::fixed);
