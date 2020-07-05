@@ -28,7 +28,7 @@ namespace atomic_dex
     class cex_prices_provider final : public ag::ecs::pre_update_system<cex_prices_provider>
     {
         //! Private fields
-        mm2& m_mm2_instance;
+        [[maybe_unused]] mm2& m_mm2_instance;
 
         //! OHLC Related
         std::pair<std::string, std::string> m_current_orderbook_ticker_pair;
