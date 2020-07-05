@@ -58,6 +58,7 @@ namespace atomic_dex
             std::scoped_lock data_lock(m_ohlc_data_mutex);
             //! Reset on change, because maybe the new pair is not supported yet
             m_current_ohlc_data = nlohmann::json::array();
+            this->dispatcher_.trigger<refresh_ohlc_needed>();
         }
 
         {
