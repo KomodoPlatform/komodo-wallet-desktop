@@ -907,8 +907,8 @@ namespace atomic_dex
         spdlog::debug("ticker {}, receive_ticker {}, amount {}", ticker.toStdString(), receive_ticker.toStdString(), amount.toStdString());
         QVariantMap out;
 
-        auto trade_fee_f = get_mm2().get_trade_fee(ticker.toStdString(), amount.toStdString(), false);
-        auto answer      = get_mm2().get_trade_fixed_fee(ticker.toStdString());
+        t_float_50 trade_fee_f = get_mm2().get_trade_fee(ticker.toStdString(), amount.toStdString(), false);
+        auto       answer      = get_mm2().get_trade_fixed_fee(ticker.toStdString());
 
         if (!answer.amount.empty())
         {
@@ -920,23 +920,22 @@ namespace atomic_dex
                 get_mm2().apply_erc_fees(receive_ticker.toStdString(), erc_fees);
             }
 
-            auto        tx_fee_value    = QString::fromStdString(get_formated_float(tx_fee_f));
+            auto tx_fee_value = QString::fromStdString(get_formated_float(tx_fee_f));
 
-            t_float_50        final_balance_f = t_float_50(amount.toStdString()) - (trade_fee_f + tx_fee_f);
-            std::string final_balance   = amount.toStdString();
+            const std::string amount_std      = t_float_50(amount.toStdString()) < minimal_trade_amount() ? minimal_trade_amount_str() : amount.toStdString();
+            t_float_50        final_balance_f = t_float_50(amount_std) - (trade_fee_f + tx_fee_f);
+            std::string       final_balance   = amount.toStdString();
             spdlog::debug("{} - ({} + {})) = {}", amount.toStdString(), trade_fee_f.str(8), tx_fee_f.str(8), final_balance_f.str(8));
-            // spdlog::info("final_balance_f: {}", get_formated_float(final_balance_f));
             if (final_balance_f.convert_to<float>() > 0.0)
             {
                 final_balance = get_formated_float(final_balance_f);
                 out.insert("not_enough_balance_to_pay_the_fees", false);
-                // spdlog::info("final_balance is: {}", final_balance);
             }
             else
             {
                 spdlog::info("final_balance_f < 0");
                 out.insert("not_enough_balance_to_pay_the_fees", true);
-                auto amount_needed = t_float_50(0.00777) - final_balance_f;
+                t_float_50 amount_needed = minimal_trade_amount() - final_balance_f;
                 out.insert("amount_needed", QString::fromStdString(get_formated_float(amount_needed)));
             }
             auto final_balance_qt = QString::fromStdString(final_balance);
@@ -1013,7 +1012,7 @@ namespace atomic_dex
         qDebug() << "locale before: " << QLocale().name();
         QLocale::setDefault(get_locale(current_lang));
         qDebug() << "locale after: " << QLocale().name();
-        auto res = this->m_translator.load("atomic_qt_" + current_lang, QLatin1String(":/atomic_qt_design/assets/languages"));
+        [[maybe_unused]] auto res = this->m_translator.load("atomic_qt_" + current_lang, QLatin1String(":/atomic_qt_design/assets/languages"));
         assert(res);
         this->m_app->installTranslator(&m_translator);
         emit on_lang_changed();
@@ -1252,20 +1251,19 @@ namespace atomic_dex
     QVariantMap
     application::find_closest_ohlc_data(int range, int timestamp)
     {
-        QVariantMap   out;
-        auto&        provider = this->system_manager_.get_system<cex_prices_provider>();
-        auto         json     = provider.get_ohlc_data(std::to_string(range));
+        QVariantMap out;
+        auto&       provider = this->system_manager_.get_system<cex_prices_provider>();
+        auto        json     = provider.get_ohlc_data(std::to_string(range));
 
-        auto it = std::lower_bound(rbegin(json), rend(json), timestamp, [](const nlohmann::json& current_json, int timestamp)
-                         {
-                            int res =  current_json.at("timestamp").get<int>();
-                            return timestamp < res;
-                         });
+        auto it = std::lower_bound(rbegin(json), rend(json), timestamp, [](const nlohmann::json& current_json, int timestamp) {
+            int res = current_json.at("timestamp").get<int>();
+            return timestamp < res;
+        });
 
         if (it != json.rend())
         {
             QJsonDocument q_json = QJsonDocument::fromJson(QString::fromStdString(it->dump()).toUtf8());
-            out = q_json.object().toVariantMap();
+            out                  = q_json.object().toVariantMap();
         }
         return out;
     }

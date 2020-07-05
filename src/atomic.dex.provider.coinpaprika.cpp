@@ -196,15 +196,20 @@ namespace atomic_dex
             return "0.00";
         }
 
-        const bm::cpp_dec_float_50 price_f(price);
-        const bm::cpp_dec_float_50 amount_f(amount);
-        const auto                 final_price = price_f * amount_f;
-        std::stringstream          ss;
+        const t_float_50  price_f(price);
+        const t_float_50  amount_f(amount);
+        const t_float_50  final_price = price_f * amount_f;
+        std::stringstream ss;
 
         if (not skip_precision)
         {
+            if (auto final_price_str = final_price.str(2, std::ios_base::fixed); final_price_str == "0.00" && final_price > 0.00000000)
+            {
+                return final_price.str(2);
+            }
             ss.precision(2);
         }
+
         ss << std::fixed << final_price;
 
         return ss.str() == "0" ? "0.00" : ss.str();
@@ -213,12 +218,12 @@ namespace atomic_dex
     std::string
     coinpaprika_provider::get_price_in_fiat_all(const std::string& fiat, std::error_code& ec) const noexcept
     {
-        t_coins              coins         = m_mm2_instance.get_enabled_coins();
+        t_coins coins = m_mm2_instance.get_enabled_coins();
         try
         {
-            bm::cpp_dec_float_50 final_price_f = 0;
-            std::string          current_price = "0.00";
-            std::stringstream    ss;
+            t_float_50        final_price_f = 0;
+            std::string       current_price = "0.00";
+            std::stringstream ss;
 
             for (auto&& current_coin: coins)
             {
@@ -238,7 +243,7 @@ namespace atomic_dex
 
                 if (not current_price.empty())
                 {
-                    const auto current_price_f = bm::cpp_dec_float_50(current_price);
+                    const auto current_price_f = t_float_50(current_price);
                     final_price_f += current_price_f;
                 }
             }
@@ -267,14 +272,14 @@ namespace atomic_dex
         {
             return "0.00";
         }
-        const bm::cpp_dec_float_50 amount_f(amount);
-        const bm::cpp_dec_float_50 current_price_f(current_price);
-        const auto                 final_price = amount_f * current_price_f;
-        std::stringstream          ss;
-        ss.precision(2);
-        ss << std::fixed << final_price;
-        std::string final_price_str = ss.str();
-        return final_price_str;
+        const t_float_50 amount_f(amount);
+        const t_float_50 current_price_f(current_price);
+        const t_float_50 final_price = amount_f * current_price_f;
+        if (auto final_price_str = final_price.str(2, std::ios_base::fixed); final_price_str == "0.00" && final_price > 0.00000000)
+        {
+            return final_price.str(2);
+        }
+        return final_price.str(2, std::ios_base::fixed);
     }
 
     std::string
@@ -330,9 +335,13 @@ namespace atomic_dex
 
         if (adjusted)
         {
-            std::stringstream ss;
-            ss << std::fixed << std::setprecision(2) << t_float_50(current_price);
-            current_price = ss.str();
+            t_float_50 current_price_f(current_price);
+            //! Trick: If there conversion in a fixed representation is 0.00 then use a default precision to 2 without fixed ios flags
+            if (auto fixed_str = current_price_f.str(2, std::ios_base::fixed); fixed_str == "0.00" && current_price_f > 0.00000000)
+            {
+                return current_price_f.str(2);
+            }
+            return current_price_f.str(2, std::ios_base::fixed);
         }
         return current_price;
     }
@@ -346,19 +355,19 @@ namespace atomic_dex
 
         if (config.coinpaprika_id != "test-coin")
         {
-            spawn([config, evt, this](){
-              process_provider(config, m_usd_rate_providers, "usd-us-dollars");
-              process_provider(config, m_eur_rate_providers, "eur-euro");
-              if (evt.ticker != "BTC")
-              {
-                  process_provider(config, m_btc_rate_providers, "btc-bitcoin");
-              }
-              if (evt.ticker != "KMD")
-              {
-                  process_provider(config, m_kmd_rate_providers, "kmd-komodo");
-              }
-              process_ticker_infos(config, m_ticker_infos_registry);
-              process_ticker_historical(config, m_ticker_historical_registry);
+            spawn([config, evt, this]() {
+                process_provider(config, m_usd_rate_providers, "usd-us-dollars");
+                process_provider(config, m_eur_rate_providers, "eur-euro");
+                if (evt.ticker != "BTC")
+                {
+                    process_provider(config, m_btc_rate_providers, "btc-bitcoin");
+                }
+                if (evt.ticker != "KMD")
+                {
+                    process_provider(config, m_kmd_rate_providers, "kmd-komodo");
+                }
+                process_ticker_infos(config, m_ticker_infos_registry);
+                process_ticker_historical(config, m_ticker_historical_registry);
             });
         }
     }

@@ -33,10 +33,10 @@ get_atomic_dex_current_log_file()
 {
     using namespace std::chrono;
     using namespace date;
-    static auto timestamp = duration_cast<seconds>(system_clock::now().time_since_epoch()).count();
+    static auto              timestamp = duration_cast<seconds>(system_clock::now().time_since_epoch()).count();
     static date::sys_seconds tp{seconds{timestamp}};
-    static std::string       s   = date::format("%Y-%m-%d-%H-%M-%S", tp);
-    static const fs::path log_path = get_atomic_dex_logs_folder() / (s + ".log");
+    static std::string       s        = date::format("%Y-%m-%d-%H-%M-%S", tp);
+    static const fs::path    log_path = get_atomic_dex_logs_folder() / (s + ".log");
     return log_path;
 }
 
@@ -48,6 +48,18 @@ get_atomic_dex_config_folder()
         fs::create_directories(get_atomic_dex_data_folder() / "config");
     }
     return get_atomic_dex_data_folder() / "config";
+}
+
+inline const std::string
+minimal_trade_amount_str()
+{
+    return "0.00777";
+}
+
+inline const t_float_50
+minimal_trade_amount()
+{
+    return t_float_50(minimal_trade_amount_str());
 }
 
 inline fs::path
