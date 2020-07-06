@@ -76,7 +76,7 @@ namespace
             //! Delete old cfg
             boost::system::error_code ec;
             fs::remove(precedent_version_cfg_path, ec);
-            if (!ec)
+            if (ec)
             {
                 spdlog::error("error: {}", ec.message());
             }
@@ -634,7 +634,7 @@ namespace atomic_dex
             using namespace std::chrono_literals;
             // loguru::set_thread_name("mm2 init thread");
 
-            const auto wait_ec = m_mm2_instance.wait(2s).second;
+            const auto wait_ec = m_mm2_instance.wait(500ms).second;
             fs::remove(mm2_cfg_path);
             if (wait_ec.value() == static_cast<int>(std::errc::timed_out) || wait_ec.value() == 258)
             {

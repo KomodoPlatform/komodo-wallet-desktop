@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.5)
 
-project(atomic_qt LANGUAGES CXX VERSION 0.1.5)
+project(atomic_qt LANGUAGES CXX VERSION 0.2.0)
 
 
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
@@ -50,13 +50,13 @@ endif ()
 ##! We fetch our dependence
 if (APPLE)
     FetchContent_Declare(mm2
-            URL https://github.com/KomodoPlatform/atomicDEX-API/releases/download/beta-2.0.2103/mm2-281d6ec86-Darwin-Release.zip)
+            URL https://github.com/KomodoPlatform/atomicDEX-API/releases/download/beta-2.0.2105/mm2-08d013c6a-Darwin-Release.zip)
 elseif (UNIX AND NOT APPLE)
     FetchContent_Declare(mm2
-            URL https://github.com/KomodoPlatform/atomicDEX-API/releases/download/beta-2.0.2103/mm2-281d6ec86-Linux-Release.zip)
+            URL https://github.com/KomodoPlatform/atomicDEX-API/releases/download/beta-2.0.2105/mm2-08d013c6a-Linux-Release.zip)
 else ()
     FetchContent_Declare(mm2
-            URL https://github.com/KomodoPlatform/atomicDEX-API/releases/download/beta-2.0.2103/mm2-281d6ec86-Windows_NT-Release.zip)
+            URL https://github.com/KomodoPlatform/atomicDEX-API/releases/download/beta-2.0.2105/mm2-08d013c6a-Windows_NT-Release.zip)
 endif ()
 
 FetchContent_Declare(jl777-coins
