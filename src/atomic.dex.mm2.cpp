@@ -624,7 +624,7 @@ namespace atomic_dex
 
         spdlog::debug("command line: {}, from directory: {}", args[0], options.working_directory);
         const auto ec = m_mm2_instance.start(args, options);
-
+        std::free((void*)options.working_directory);
         if (ec)
         {
             spdlog::error("{}", ec.message());
