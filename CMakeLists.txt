@@ -150,6 +150,7 @@ target_sources(atomic_qt_shared_deps INTERFACE
         ${CMAKE_SOURCE_DIR}/src/atomic.dex.provider.cex.prices.cpp
         ${CMAKE_SOURCE_DIR}/src/atomic.dex.qt.current.coin.infos.cpp
         ${CMAKE_SOURCE_DIR}/src/atomic.dex.qt.wallet.manager.cpp
+        ${CMAKE_SOURCE_DIR}/src/atomic.dex.qt.utilities.cpp
         ${CMAKE_SOURCE_DIR}/src/atomic.dex.wallet.config.cpp
         ${CMAKE_SOURCE_DIR}/src/atomic.dex.security.cpp
         $<$<PLATFORM_ID:Darwin>:${CMAKE_SOURCE_DIR}/src/osx/atomic.dex.osx.manager.mm>
@@ -203,6 +204,7 @@ add_executable(atomic_qt_tests MACOSX_BUNDLE ${ICON}
         src/atomic.dex.wallet.config.tests.cpp
         src/atomic.dex.utilities.tests.cpp
         src/atomic.dex.provider.cex.prices.tests.cpp
+        src/atomic.dex.qt.utilities.tests.cpp
         src/atomic.dex.provider.cex.prices.api.tests.cpp)
 
 target_link_libraries(atomic_qt
