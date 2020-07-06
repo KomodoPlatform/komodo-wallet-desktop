@@ -111,11 +111,14 @@ namespace atomic_dex
             auto                     answer = atomic_dex::rpc_ohlc_get_data(std::move(req));
             if (answer.result.has_value())
             {
-                m_ohlc_data_mutex.try_lock();
-                m_current_ohlc_data = answer.result.value().raw_result;
-                m_ohlc_data_mutex.unlock();
-                this->dispatcher_.trigger<refresh_ohlc_needed>();
-                return true;
+                if (m_ohlc_data_mutex.try_lock())
+                {
+                    m_current_ohlc_data = answer.result.value().raw_result;
+                    m_ohlc_data_mutex.unlock();
+                    this->dispatcher_.trigger<refresh_ohlc_needed>();
+                    return true;
+                }
+                return false;
             }
             spdlog::error("http error: {}", answer.error.value_or("dummy"));
             return false;
@@ -136,10 +139,12 @@ namespace atomic_dex
     cex_prices_provider::is_ohlc_data_available() const noexcept
     {
         spdlog::debug("{} l{} f[{}]", __FUNCTION__, __LINE__, fs::path(__FILE__).filename().string());
-        std::scoped_lock data_lock(m_ohlc_data_mutex);
-        m_ohlc_data_mutex.try_lock();
-        auto res = not m_current_ohlc_data.empty();
-        m_ohlc_data_mutex.unlock();
+        bool res = false;
+        if (m_ohlc_data_mutex.try_lock())
+        {
+            res = not m_current_ohlc_data.empty();
+            m_ohlc_data_mutex.unlock();
+        }
         return res;
     }
 
@@ -147,12 +152,14 @@ namespace atomic_dex
     cex_prices_provider::get_ohlc_data(const std::string& range) noexcept
     {
         nlohmann::json res = nlohmann::json::array();
-        m_ohlc_data_mutex.try_lock();
-        if (m_current_ohlc_data.contains(range))
+        if (m_ohlc_data_mutex.try_lock())
         {
-            res = m_current_ohlc_data.at(range);
+            if (m_current_ohlc_data.contains(range))
+            {
+                res = m_current_ohlc_data.at(range);
+            }
+            m_ohlc_data_mutex.unlock();
         }
-        m_ohlc_data_mutex.unlock();
         return res;
     }
 

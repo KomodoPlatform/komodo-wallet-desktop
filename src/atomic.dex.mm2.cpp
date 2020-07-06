@@ -787,13 +787,19 @@ namespace atomic_dex
         auto rpc_fees = [this]() {
             t_get_trade_fee_request req{.coin = this->m_current_orderbook_ticker_base};
             auto                    answer = ::mm2::api::rpc_get_trade_fee(std::move(req));
-            this->m_trade_fees_registry.insert_or_assign(this->m_current_orderbook_ticker_base, answer);
+            if (answer.rpc_result_code == 200)
+            {
+                this->m_trade_fees_registry.insert_or_assign(this->m_current_orderbook_ticker_base, answer);
+            }
 
             if (not m_current_orderbook_ticker_rel.empty())
             {
                 t_get_trade_fee_request req_rel{.coin = this->m_current_orderbook_ticker_rel};
                 auto                    answer_rel = ::mm2::api::rpc_get_trade_fee(std::move(req_rel));
-                this->m_trade_fees_registry.insert_or_assign(this->m_current_orderbook_ticker_rel, answer_rel);
+                if (answer_rel.rpc_result_code == 200)
+                {
+                    this->m_trade_fees_registry.insert_or_assign(this->m_current_orderbook_ticker_rel, answer_rel);
+                }
             }
         };
 
@@ -886,11 +892,14 @@ namespace atomic_dex
             }
         }
 
-        spawn([this]() {
-            // loguru::set_thread_name("r_book thread");
-            process_fees();
-            fetch_current_orderbook_thread();
-        });
+        if (this->m_mm2_running)
+        {
+            spawn([this]() {
+                // loguru::set_thread_name("r_book thread");
+                process_fees();
+                fetch_current_orderbook_thread();
+            });
+        }
     }
 
     void
