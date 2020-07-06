@@ -285,7 +285,7 @@ namespace atomic_dex
 
             if (!ec)
             {
-                this->set_current_balance_fiat_all(QString::fromStdString(fiat_balance_std));
+                this->set_second_current_balance_fiat_all(QString::fromStdString(second_fiat_balance_std));
             }
 
             if (not m_coin_info->get_ticker().isEmpty() && not m_enabled_coins.empty())
