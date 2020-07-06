@@ -1227,7 +1227,7 @@ namespace atomic_dex
     bool
     application::login(const QString& password, const QString& wallet_name)
     {
-        return m_wallet_manager.login(password, wallet_name, get_mm2(), get_default_wallet_name(), [this]() { this->set_status("initializing_mm2"); });
+        return m_wallet_manager.login(password, wallet_name, get_mm2(), [this]() { this->set_status("initializing_mm2"); });
     }
 
     bool

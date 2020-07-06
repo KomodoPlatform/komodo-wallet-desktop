@@ -55,17 +55,19 @@ namespace atomic_dex
         spdlog::debug("{} l{} f[{}]", __FUNCTION__, __LINE__, fs::path(__FILE__).filename().string());
 
         {
-            std::scoped_lock data_lock(m_ohlc_data_mutex);
+            m_ohlc_data_mutex.try_lock();
             //! Reset on change, because maybe the new pair is not supported yet
             m_current_ohlc_data = nlohmann::json::array();
+            m_ohlc_data_mutex.unlock();
             this->dispatcher_.trigger<refresh_ohlc_needed>();
         }
 
         {
-            std::scoped_lock lock(m_orderbook_tickers_data_mutex);
+            m_orderbook_tickers_data_mutex.try_lock();
             m_current_orderbook_ticker_pair = {boost::algorithm::to_lower_copy(evt.base), boost::algorithm::to_lower_copy(evt.rel)};
-            spdlog::debug("new orderbook pair for cex provider [{} / {}]", m_current_orderbook_ticker_pair.first, m_current_orderbook_ticker_pair.second);
             auto [base, rel] = m_current_orderbook_ticker_pair;
+            m_orderbook_tickers_data_mutex.unlock();
+            spdlog::debug("new orderbook pair for cex provider [{} / {}]", m_current_orderbook_ticker_pair.first, m_current_orderbook_ticker_pair.second);
             spawn([base = base, rel = rel, this]() { process_ohlc(base, rel); });
         }
     }
@@ -135,7 +137,10 @@ namespace atomic_dex
     {
         spdlog::debug("{} l{} f[{}]", __FUNCTION__, __LINE__, fs::path(__FILE__).filename().string());
         std::scoped_lock data_lock(m_ohlc_data_mutex);
-        return not m_current_ohlc_data.empty();
+        m_ohlc_data_mutex.try_lock();
+        auto res = not m_current_ohlc_data.empty();
+        m_ohlc_data_mutex.unlock();
+        return res;
     }
 
     nlohmann::json

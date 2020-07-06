@@ -38,7 +38,7 @@ namespace atomic_dex
 
         template <typename Functor>
         bool
-        login(const QString& password, const QString& wallet_name, mm2& mm2_system, const QString& default_wallet_name, Functor&& login_if_success_functor);
+        login(const QString& password, const QString& wallet_name, mm2& mm2_system, Functor&& login_if_success_functor);
 
         bool create(const QString& password, const QString& seed, const QString& wallet_name);
 
@@ -69,7 +69,7 @@ namespace atomic_dex
     template <typename Functor>
     bool
     qt_wallet_manager::login(
-        const QString& password, const QString& wallet_name, mm2& mm2_system, const QString& default_wallet, Functor&& login_if_success_functor)
+        const QString& password, const QString& wallet_name, mm2& mm2_system, Functor&& login_if_success_functor)
     {
         std::error_code ec;
         auto            key = atomic_dex::derive_password(password.toStdString(), ec);
@@ -105,8 +105,8 @@ namespace atomic_dex
             }
 
             login_if_success_functor();
-            load_wallet_cfg(default_wallet.toStdString());
-            mm2_system.spawn_mm2_instance(default_wallet.toStdString(), seed);
+            load_wallet_cfg(get_default_wallet_name().toStdString());
+            mm2_system.spawn_mm2_instance(get_default_wallet_name().toStdString(), seed);
             return true;
         }
         return false;
