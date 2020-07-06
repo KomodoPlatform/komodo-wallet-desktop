@@ -32,13 +32,13 @@ namespace atomic_dex
 
         //! OHLC Related
         std::pair<std::string, std::string> m_current_orderbook_ticker_pair;
-        std::mutex                          m_orderbook_tickers_data_mutex;
         std::array<std::string, 2>          m_supported_pair{"kmd-btc", "btc-usdt"};
 
         nlohmann::json     m_current_ohlc_data;
         mutable std::mutex m_ohlc_data_mutex;
 
         //! Threads
+        std::queue<std::future<void>> m_pending_tasks;
         std::thread  m_provider_ohlc_fetcher_thread;
         timed_waiter m_provider_thread_timer;
 
@@ -49,6 +49,8 @@ namespace atomic_dex
         //! Destructor
         ~cex_prices_provider() noexcept final;
 
+        //! Queue
+        void consume_pending_tasks();
         // Override
         void update() noexcept override;
 

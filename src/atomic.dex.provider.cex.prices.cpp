@@ -39,6 +39,8 @@ namespace atomic_dex
         //!
         spdlog::debug("{} l{} f[{}]", __FUNCTION__, __LINE__, fs::path(__FILE__).filename().string());
 
+        consume_pending_tasks();
+
         m_provider_thread_timer.interrupt();
 
         if (m_provider_ohlc_fetcher_thread.joinable())
@@ -55,24 +57,19 @@ namespace atomic_dex
         spdlog::debug("{} l{} f[{}]", __FUNCTION__, __LINE__, fs::path(__FILE__).filename().string());
 
         {
-            if (m_ohlc_data_mutex.try_lock())
             {
-                //! Reset on change, because maybe the new pair is not supported yet
+                std::unique_lock<std::mutex> locker(m_ohlc_data_mutex);
                 m_current_ohlc_data = nlohmann::json::array();
-                m_ohlc_data_mutex.unlock();
-                this->dispatcher_.trigger<refresh_ohlc_needed>();
             }
+            this->dispatcher_.trigger<refresh_ohlc_needed>();
         }
 
         {
-            if (m_orderbook_tickers_data_mutex.try_lock())
-            {
-                m_current_orderbook_ticker_pair = {boost::algorithm::to_lower_copy(evt.base), boost::algorithm::to_lower_copy(evt.rel)};
-                auto [base, rel]                = m_current_orderbook_ticker_pair;
-                m_orderbook_tickers_data_mutex.unlock();
-                spdlog::debug("new orderbook pair for cex provider [{} / {}]", base, rel);
-                spawn([base = base, rel = rel, this]() { process_ohlc(base, rel); });
-            }
+            m_current_orderbook_ticker_pair = {boost::algorithm::to_lower_copy(evt.base), boost::algorithm::to_lower_copy(evt.rel)};
+            auto [base, rel]                = m_current_orderbook_ticker_pair;
+            spdlog::debug("new orderbook pair for cex provider [{} / {}]", base, rel);
+            //this->process_ohlc(base, rel);
+            m_pending_tasks.push(spawn([base = base, rel = rel, this]() { process_ohlc(base, rel); }));
         }
     }
 
@@ -89,9 +86,7 @@ namespace atomic_dex
             do
             {
                 spdlog::info("fetching ohlc value");
-                m_orderbook_tickers_data_mutex.lock();
                 auto [base, rel] = m_current_orderbook_ticker_pair;
-                m_orderbook_tickers_data_mutex.unlock();
                 if (not base.empty() && not rel.empty())
                 {
                     process_ohlc(base, rel);
@@ -115,14 +110,12 @@ namespace atomic_dex
             auto                     answer = atomic_dex::rpc_ohlc_get_data(std::move(req));
             if (answer.result.has_value())
             {
-                if (m_ohlc_data_mutex.try_lock())
                 {
+                    std::unique_lock<std::mutex> locker(m_ohlc_data_mutex);
                     m_current_ohlc_data = answer.result.value().raw_result;
-                    m_ohlc_data_mutex.unlock();
-                    this->dispatcher_.trigger<refresh_ohlc_needed>();
-                    return true;
                 }
-                return false;
+                this->dispatcher_.trigger<refresh_ohlc_needed>();
+                return true;
             }
             spdlog::error("http error: {}", answer.error.value_or("dummy"));
             return false;
@@ -144,10 +137,10 @@ namespace atomic_dex
     {
         spdlog::debug("{} l{} f[{}]", __FUNCTION__, __LINE__, fs::path(__FILE__).filename().string());
         bool res = false;
-        if (m_ohlc_data_mutex.try_lock())
         {
-            res = not m_current_ohlc_data.empty();
-            m_ohlc_data_mutex.unlock();
+            std::unique_lock<std::mutex> locker(m_ohlc_data_mutex);
+            res = !m_current_ohlc_data.empty();
+            spdlog::debug("data available: {}", res);
         }
         return res;
     }
@@ -156,15 +149,26 @@ namespace atomic_dex
     cex_prices_provider::get_ohlc_data(const std::string& range) noexcept
     {
         nlohmann::json res = nlohmann::json::array();
-        if (m_ohlc_data_mutex.try_lock())
         {
+            std::unique_lock<std::mutex> locker(m_ohlc_data_mutex);
             if (m_current_ohlc_data.contains(range))
             {
                 res = m_current_ohlc_data.at(range);
             }
-            m_ohlc_data_mutex.unlock();
         }
         return res;
+    }
+
+    void
+    cex_prices_provider::consume_pending_tasks()
+    {
+        while (not m_pending_tasks.empty()) {
+            auto& fut_tasks = m_pending_tasks.front();
+            if (fut_tasks.valid()) {
+                fut_tasks.wait();
+            }
+            m_pending_tasks.pop();
+        }
     }
 
 } // namespace atomic_dex

@@ -228,6 +228,8 @@ set_target_properties(${PROJECT_NAME}_tests
         RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin/"
         )
 
+#target_enable_tsan(atomic_qt_tests)
+
 ##! Move assets
 if (LINUX)
     get_target_property(exe_runtime_directory_at ${PROJECT_NAME} RUNTIME_OUTPUT_DIRECTORY)
