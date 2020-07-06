@@ -55,20 +55,24 @@ namespace atomic_dex
         spdlog::debug("{} l{} f[{}]", __FUNCTION__, __LINE__, fs::path(__FILE__).filename().string());
 
         {
-            m_ohlc_data_mutex.try_lock();
-            //! Reset on change, because maybe the new pair is not supported yet
-            m_current_ohlc_data = nlohmann::json::array();
-            m_ohlc_data_mutex.unlock();
-            this->dispatcher_.trigger<refresh_ohlc_needed>();
+            if (m_ohlc_data_mutex.try_lock())
+            {
+                //! Reset on change, because maybe the new pair is not supported yet
+                m_current_ohlc_data = nlohmann::json::array();
+                m_ohlc_data_mutex.unlock();
+                this->dispatcher_.trigger<refresh_ohlc_needed>();
+            }
         }
 
         {
-            m_orderbook_tickers_data_mutex.try_lock();
-            m_current_orderbook_ticker_pair = {boost::algorithm::to_lower_copy(evt.base), boost::algorithm::to_lower_copy(evt.rel)};
-            auto [base, rel] = m_current_orderbook_ticker_pair;
-            m_orderbook_tickers_data_mutex.unlock();
-            spdlog::debug("new orderbook pair for cex provider [{} / {}]", m_current_orderbook_ticker_pair.first, m_current_orderbook_ticker_pair.second);
-            spawn([base = base, rel = rel, this]() { process_ohlc(base, rel); });
+            if (m_orderbook_tickers_data_mutex.try_lock())
+            {
+                m_current_orderbook_ticker_pair = {boost::algorithm::to_lower_copy(evt.base), boost::algorithm::to_lower_copy(evt.rel)};
+                auto [base, rel]                = m_current_orderbook_ticker_pair;
+                m_orderbook_tickers_data_mutex.unlock();
+                spdlog::debug("new orderbook pair for cex provider [{} / {}]", base, rel);
+                spawn([base = base, rel = rel, this]() { process_ohlc(base, rel); });
+            }
         }
     }
 
