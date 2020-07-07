@@ -49,7 +49,7 @@ namespace atomic_dex
         Q_PROPERTY(QList<QObject*> enableable_coins READ get_enableable_coins NOTIFY enableableCoinsChanged)
         Q_PROPERTY(QObject* current_coin_info READ get_current_coin_info NOTIFY coinInfoChanged)
         Q_PROPERTY(QString fiat READ get_current_fiat WRITE set_current_fiat NOTIFY on_fiat_changed)
-        Q_PROPERTY(QString second_fiat READ get_second_current_fiat WRITE set_second_current_fiat NOTIFY on_second_fiat_changed)
+        //Q_PROPERTY(QString second_fiat READ get_second_current_fiat WRITE set_second_current_fiat NOTIFY on_second_fiat_changed)
         Q_PROPERTY(QString lang READ get_current_lang WRITE set_current_lang NOTIFY on_lang_changed)
         Q_PROPERTY(QString wallet_default_name READ get_wallet_default_name WRITE set_wallet_default_name NOTIFY on_wallet_default_name_changed)
         Q_PROPERTY(QString balance_fiat_all READ get_balance_fiat_all WRITE set_current_balance_fiat_all NOTIFY on_fiat_balance_all_changed)
@@ -221,8 +221,8 @@ namespace atomic_dex
         QObjectList        m_enabled_coins;
         QObjectList        m_enableable_coins;
         QTranslator        m_translator;
-        QString            m_current_fiat{"USD"};
-        QString            m_second_current_fiat{"BTC"};
+        //QString            m_current_fiat{"USD"};
+        //QString            m_second_current_fiat{"BTC"};
         QString            m_current_lang{QString::fromStdString(m_config.current_lang)};
         QString            m_current_status{"None"};
         QString            m_current_balance_all{"0.00"};

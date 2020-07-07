@@ -274,19 +274,19 @@ namespace atomic_dex
             }
 
             std::error_code ec;
-            auto            fiat_balance_std = paprika.get_price_in_fiat_all(m_current_fiat.toStdString(), ec);
+            auto            fiat_balance_std = paprika.get_price_in_fiat_all(m_config.current_fiat, ec);
 
             if (!ec)
             {
                 this->set_current_balance_fiat_all(QString::fromStdString(fiat_balance_std));
             }
 
-            auto second_fiat_balance_std = paprika.get_price_in_fiat_all(m_second_current_fiat.toStdString(), ec);
+            //auto second_fiat_balance_std = paprika.get_price_in_fiat_all(m_second_current_fiat.toStdString(), ec);
 
-            if (!ec)
-            {
-                this->set_second_current_balance_fiat_all(QString::fromStdString(second_fiat_balance_std));
-            }
+            //if (!ec)
+            //{
+            //    this->set_second_current_balance_fiat_all(QString::fromStdString(second_fiat_balance_std));
+            //}
 
             if (not m_coin_info->get_ticker().isEmpty() && not m_enabled_coins.empty())
             {
@@ -303,10 +303,10 @@ namespace atomic_dex
         QString         target_balance = QString::fromStdString(mm2.my_balance(m_coin_info->get_ticker().toStdString(), ec));
         m_coin_info->set_balance(target_balance);
 
-        if (m_current_fiat == "USD" || m_current_fiat == "EUR")
+        if (m_config.current_fiat == "USD" || m_config.current_fiat == "EUR")
         {
             ec          = std::error_code();
-            auto amount = QString::fromStdString(paprika.get_price_in_fiat(m_current_fiat.toStdString(), m_coin_info->get_ticker().toStdString(), ec));
+            auto amount = QString::fromStdString(paprika.get_price_in_fiat(m_config.current_fiat, m_coin_info->get_ticker().toStdString(), ec));
             if (!ec)
             {
                 m_coin_info->set_fiat_amount(amount);
@@ -322,7 +322,7 @@ namespace atomic_dex
         auto            txs = mm2.get_tx_history(m_coin_info->get_ticker().toStdString(), ec);
         if (!ec)
         {
-            m_coin_info->set_transactions(to_qt_binding(std::move(txs), this, get_paprika(), m_current_fiat, m_coin_info->get_ticker().toStdString()));
+            m_coin_info->set_transactions(to_qt_binding(std::move(txs), this, get_paprika(), QString::fromStdString(m_config.current_fiat), m_coin_info->get_ticker().toStdString()));
         }
         auto tx_state = mm2.get_tx_state(m_coin_info->get_ticker().toStdString(), ec);
 
@@ -452,27 +452,18 @@ namespace atomic_dex
     QString
     application::get_current_fiat() const noexcept
     {
-        return this->m_current_fiat;
-    }
-
-    QString
-    application::get_second_current_fiat() const noexcept
-    {
-        return this->m_second_current_fiat;
+        return QString::fromStdString(this->m_config.current_fiat);
     }
 
     void
     application::set_current_fiat(QString current_fiat) noexcept
     {
-        this->m_current_fiat = std::move(current_fiat);
-        emit on_fiat_changed();
-    }
-
-    void
-    application::set_second_current_fiat(QString current_fiat) noexcept
-    {
-        this->m_second_current_fiat = std::move(current_fiat);
-        emit on_second_fiat_changed();
+        if (current_fiat.toStdString() != m_config.current_fiat)
+        {
+            spdlog::info("change lang {} to {}", m_config.current_fiat, current_fiat.toStdString());
+            atomic_dex::change_fiat(m_config, current_fiat.toStdString());
+            emit on_fiat_changed();
+        }
     }
 
     void
@@ -886,9 +877,9 @@ namespace atomic_dex
             nlohmann::json  cur_obj{
                 {"ticker", coin.ticker},
                 {"name", coin.name},
-                {"price", get_paprika().get_rate_conversion(m_current_fiat.toStdString(), coin.ticker, ec, true)},
+                {"price", get_paprika().get_rate_conversion(m_config.current_fiat, coin.ticker, ec, true)},
                 {"balance", get_mm2().my_balance(coin.ticker, ec)},
-                {"balance_fiat", get_paprika().get_price_in_fiat(m_current_fiat.toStdString(), coin.ticker, ec)},
+                {"balance_fiat", get_paprika().get_price_in_fiat(m_config.current_fiat, coin.ticker, ec)},
                 {"rates", get_paprika().get_ticker_infos(coin.ticker).answer},
                 {"historical", get_paprika().get_ticker_historical(coin.ticker).answer}};
             j.push_back(cur_obj);
