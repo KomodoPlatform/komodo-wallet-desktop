@@ -90,7 +90,6 @@ namespace atomic_dex
         QObjectList           get_enabled_coins() const noexcept;
         QObjectList           get_enableable_coins() const noexcept;
         QString               get_current_fiat() const noexcept;
-        QString               get_second_current_fiat() const noexcept;
         QString               get_current_lang() const noexcept;
         QString               get_balance_fiat_all() const noexcept;
         QString               get_second_balance_fiat_all() const noexcept;
@@ -100,7 +99,6 @@ namespace atomic_dex
 
         //! Properties Setter
         void set_current_fiat(QString current_fiat) noexcept;
-        void set_second_current_fiat(QString current_fiat) noexcept;
         void set_current_lang(const QString& current_lang) noexcept;
         void set_wallet_default_name(QString wallet_default_name) noexcept;
         void set_current_balance_fiat_all(QString current_fiat_all_balance) noexcept;
@@ -132,6 +130,7 @@ namespace atomic_dex
         Q_INVOKABLE QString     get_log_folder() const;
         Q_INVOKABLE QString     get_export_folder() const;
         Q_INVOKABLE QStringList get_available_langs() const;
+        Q_INVOKABLE QStringList get_available_fiats() const;
         Q_INVOKABLE static void change_state(int visibility);
 
         //! Portfolio QML API Bindings

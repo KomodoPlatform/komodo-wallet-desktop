@@ -281,9 +281,9 @@ namespace atomic_dex
                 this->set_current_balance_fiat_all(QString::fromStdString(fiat_balance_std));
             }
 
-            //auto second_fiat_balance_std = paprika.get_price_in_fiat_all(m_second_current_fiat.toStdString(), ec);
+            // auto second_fiat_balance_std = paprika.get_price_in_fiat_all(m_second_current_fiat.toStdString(), ec);
 
-            //if (!ec)
+            // if (!ec)
             //{
             //    this->set_second_current_balance_fiat_all(QString::fromStdString(second_fiat_balance_std));
             //}
@@ -303,7 +303,9 @@ namespace atomic_dex
         QString         target_balance = QString::fromStdString(mm2.my_balance(m_coin_info->get_ticker().toStdString(), ec));
         m_coin_info->set_balance(target_balance);
 
-        if (m_config.current_fiat == "USD" || m_config.current_fiat == "EUR")
+        if (std::any_of(begin(m_config.available_fiat), end(m_config.available_fiat), [this](const std::string& cur_fiat) {
+                return cur_fiat == m_config.current_fiat;
+            }))
         {
             ec          = std::error_code();
             auto amount = QString::fromStdString(paprika.get_price_in_fiat(m_config.current_fiat, m_coin_info->get_ticker().toStdString(), ec));
@@ -322,7 +324,8 @@ namespace atomic_dex
         auto            txs = mm2.get_tx_history(m_coin_info->get_ticker().toStdString(), ec);
         if (!ec)
         {
-            m_coin_info->set_transactions(to_qt_binding(std::move(txs), this, get_paprika(), QString::fromStdString(m_config.current_fiat), m_coin_info->get_ticker().toStdString()));
+            m_coin_info->set_transactions(
+                to_qt_binding(std::move(txs), this, get_paprika(), QString::fromStdString(m_config.current_fiat), m_coin_info->get_ticker().toStdString()));
         }
         auto tx_state = mm2.get_tx_state(m_coin_info->get_ticker().toStdString(), ec);
 
@@ -942,6 +945,15 @@ namespace atomic_dex
         QStringList out;
         out.reserve(m_config.available_lang.size());
         for (auto&& cur_lang: m_config.available_lang) { out.push_back(QString::fromStdString(cur_lang)); }
+        return out;
+    }
+
+    QStringList
+    application::get_available_fiats() const
+    {
+        QStringList out;
+        out.reserve(m_config.available_fiat.size());
+        for (auto&& cur_fiat: m_config.available_fiat) { out.push_back(QString::fromStdString(cur_fiat)); }
         return out;
     }
 
