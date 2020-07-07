@@ -23,7 +23,7 @@ namespace atomic_dex
     struct cfg
     {
         std::string              current_lang{"en"};
-        std::string              current_fiat{"USD"};
+        std::string              current_fiat;
         std::vector<std::string> available_lang;
         std::vector<std::string> available_fiat;
     };
