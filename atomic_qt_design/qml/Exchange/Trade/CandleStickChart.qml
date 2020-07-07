@@ -147,6 +147,8 @@ ChartView {
     function initChart() {
         series.clear()
         series_area.upperSeries.clear()
+        series_ma1.clear()
+        series_ma2.clear()
 
         series.global_max = 0
         series.last_value = 0
