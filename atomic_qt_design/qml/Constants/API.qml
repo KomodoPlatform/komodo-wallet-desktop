@@ -28,7 +28,7 @@ QtObject {
 
         balance_fiat_all: "12345678.90",
 
-        fiat: "USD",
+        fiat: "EUR",
         lang: "en",
         get_available_langs: () => ["en", "fr", "tr"],
 
