@@ -49,7 +49,7 @@ namespace atomic_dex
         Q_PROPERTY(QList<QObject*> enableable_coins READ get_enableable_coins NOTIFY enableableCoinsChanged)
         Q_PROPERTY(QObject* current_coin_info READ get_current_coin_info NOTIFY coinInfoChanged)
         Q_PROPERTY(QString fiat READ get_current_fiat WRITE set_current_fiat NOTIFY on_fiat_changed)
-        //Q_PROPERTY(QString second_fiat READ get_second_current_fiat WRITE set_second_current_fiat NOTIFY on_second_fiat_changed)
+        // Q_PROPERTY(QString second_fiat READ get_second_current_fiat WRITE set_second_current_fiat NOTIFY on_second_fiat_changed)
         Q_PROPERTY(QString lang READ get_current_lang WRITE set_current_lang NOTIFY on_lang_changed)
         Q_PROPERTY(QString wallet_default_name READ get_wallet_default_name WRITE set_wallet_default_name NOTIFY on_wallet_default_name_changed)
         Q_PROPERTY(QString balance_fiat_all READ get_balance_fiat_all WRITE set_current_balance_fiat_all NOTIFY on_fiat_balance_all_changed)
@@ -81,7 +81,7 @@ namespace atomic_dex
         void on_refresh_ohlc_event(const refresh_ohlc_needed&) noexcept;
 
         //! Properties Getter
-        QString               get_empty_string();
+        const QString&        get_empty_string() const;
         mm2&                  get_mm2() noexcept;
         const mm2&            get_mm2() const noexcept;
         coinpaprika_provider& get_paprika() noexcept;
@@ -104,7 +104,7 @@ namespace atomic_dex
         void set_current_balance_fiat_all(QString current_fiat_all_balance) noexcept;
         void set_second_current_balance_fiat_all(QString current_fiat_all_balance) noexcept;
         void set_status(QString status) noexcept;
-        void set_qt_app(QApplication* app) noexcept;
+        void set_qt_app(std::shared_ptr<QApplication> app) noexcept;
 
         //! Launch the internal loop for the SDK.
         void launch();
@@ -205,23 +205,23 @@ namespace atomic_dex
         atomic_dex::cfg m_config{load_cfg()};
 
         //! QT Application
-        QApplication* m_app;
+        std::shared_ptr<QApplication> m_app;
 
         //! Wallet Manager
         atomic_dex::qt_wallet_manager m_wallet_manager;
 
         //! Private members
-        std::atomic_bool   m_refresh_enabled_coin_event{false};
-        std::atomic_bool   m_refresh_current_ticker_infos{false};
-        std::atomic_bool   m_refresh_orders_needed{false};
-        std::atomic_bool   m_refresh_ohlc_needed{false};
-        std::atomic_bool   m_refresh_transaction_only{false};
-        bool               m_need_a_full_refresh_of_mm2{false};
-        QObjectList        m_enabled_coins;
-        QObjectList        m_enableable_coins;
-        QTranslator        m_translator;
-        //QString            m_current_fiat{"USD"};
-        //QString            m_second_current_fiat{"BTC"};
+        std::atomic_bool m_refresh_enabled_coin_event{false};
+        std::atomic_bool m_refresh_current_ticker_infos{false};
+        std::atomic_bool m_refresh_orders_needed{false};
+        std::atomic_bool m_refresh_ohlc_needed{false};
+        std::atomic_bool m_refresh_transaction_only{false};
+        bool             m_need_a_full_refresh_of_mm2{false};
+        QObjectList      m_enabled_coins;
+        QObjectList      m_enableable_coins;
+        QTranslator      m_translator;
+        // QString            m_current_fiat{"USD"};
+        // QString            m_second_current_fiat{"BTC"};
         QString            m_current_lang{QString::fromStdString(m_config.current_lang)};
         QString            m_current_status{"None"};
         QString            m_current_balance_all{"0.00"};

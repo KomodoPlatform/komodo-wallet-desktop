@@ -231,6 +231,7 @@ set_target_properties(${PROJECT_NAME}_tests
         )
 
 #target_enable_tsan(atomic_qt_tests)
+#target_enable_asan(atomic_qt)
 
 ##! Move assets
 if (LINUX)

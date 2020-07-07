@@ -933,7 +933,7 @@ namespace atomic_dex
     }
 
     void
-    application::set_qt_app(QApplication* app) noexcept
+    application::set_qt_app(std::shared_ptr<QApplication> app) noexcept
     {
         this->m_app = app;
         set_current_lang(QString::fromStdString(m_config.current_lang));
@@ -957,10 +957,11 @@ namespace atomic_dex
         return out;
     }
 
-    QString
-    application::get_empty_string()
+    const QString&
+    application::get_empty_string() const
     {
-        return "";
+        static const QString empty_string = "";
+        return empty_string;
     }
 
     QString
