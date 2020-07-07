@@ -4,5 +4,12 @@
     "en",
     "fr",
     "tr"
+  ],
+  "current_fiat": "USD",
+  "available_fiat": [
+    "USD",
+    "BTC",
+    "EUR",
+    "KMD"
   ]
 }

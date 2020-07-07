@@ -22,12 +22,14 @@ namespace atomic_dex
 {
     struct cfg
     {
-        std::string current_lang{"en"};
+        std::string              current_lang{"en"};
+        std::string              current_fiat;
         std::vector<std::string> available_lang;
+        std::vector<std::string> available_fiat;
     };
 
     void from_json(const nlohmann::json& j, cfg& config);
-    void change_lang(std::string new_lang);
     void change_lang(cfg& config, const std::string& new_lang);
-    cfg load_cfg();
-}
+    void change_fiat(cfg& config, const std::string& new_fiat);
+    cfg  load_cfg();
+} // namespace atomic_dex

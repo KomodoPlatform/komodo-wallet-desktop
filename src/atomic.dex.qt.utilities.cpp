@@ -14,25 +14,17 @@
  *                                                                            *
  ******************************************************************************/
 
-#pragma once
+//! QT Headers
+#include <QtNetwork>
+
+//! Project headers
+#include "atomic.dex.qt.utilities.hpp"
 
 namespace atomic_dex
 {
-    constexpr const char*
-    get_version()
+    bool
+    am_i_able_to_reach_this_endpoint(const QString& endpoint)
     {
-        return "0.2.0-alpha";
-    }
-
-    constexpr const char*
-    get_raw_version()
-    {
-        return "0.2.0";
-    }
-
-    constexpr const char*
-    get_precedent_raw_version()
-    {
-        return "0.1.5";
+        return RestClient::get(endpoint.toStdString()).code == 200;
     }
 } // namespace atomic_dex

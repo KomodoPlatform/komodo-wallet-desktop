@@ -16,23 +16,12 @@
 
 #pragma once
 
+#include <QString>
+
+//! Project headers
+#include "atomic.dex.pch.hpp"
+
 namespace atomic_dex
 {
-    constexpr const char*
-    get_version()
-    {
-        return "0.2.0-alpha";
-    }
-
-    constexpr const char*
-    get_raw_version()
-    {
-        return "0.2.0";
-    }
-
-    constexpr const char*
-    get_precedent_raw_version()
-    {
-        return "0.1.5";
-    }
-} // namespace atomic_dex
+    bool am_i_able_to_reach_this_endpoint(const QString& endpoint);
+}

@@ -402,4 +402,5 @@ namespace atomic_dex
         return m_ticker_historical_registry.find(ticker) != m_ticker_historical_registry.cend() ? m_ticker_historical_registry.at(ticker)
                                                                                                 : t_ticker_historical_answer{.answer = nlohmann::json::array()};
     }
+    
 } // namespace atomic_dex

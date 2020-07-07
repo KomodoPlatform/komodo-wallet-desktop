@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.5)
 
-project(atomic_qt LANGUAGES CXX VERSION 0.1.5)
+project(atomic_qt LANGUAGES CXX VERSION 0.2.0)
 
 
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
@@ -50,13 +50,13 @@ endif ()
 ##! We fetch our dependence
 if (APPLE)
     FetchContent_Declare(mm2
-            URL https://github.com/KomodoPlatform/atomicDEX-API/releases/download/beta-2.0.2103/mm2-281d6ec86-Darwin-Release.zip)
+            URL https://github.com/KomodoPlatform/atomicDEX-API/releases/download/beta-2.0.2105/mm2-08d013c6a-Darwin-Release.zip)
 elseif (UNIX AND NOT APPLE)
     FetchContent_Declare(mm2
-            URL https://github.com/KomodoPlatform/atomicDEX-API/releases/download/beta-2.0.2103/mm2-281d6ec86-Linux-Release.zip)
+            URL https://github.com/KomodoPlatform/atomicDEX-API/releases/download/beta-2.0.2105/mm2-08d013c6a-Linux-Release.zip)
 else ()
     FetchContent_Declare(mm2
-            URL https://github.com/KomodoPlatform/atomicDEX-API/releases/download/beta-2.0.2103/mm2-281d6ec86-Windows_NT-Release.zip)
+            URL https://github.com/KomodoPlatform/atomicDEX-API/releases/download/beta-2.0.2105/mm2-08d013c6a-Windows_NT-Release.zip)
 endif ()
 
 FetchContent_Declare(jl777-coins
@@ -149,6 +149,8 @@ target_sources(atomic_qt_shared_deps INTERFACE
         ${CMAKE_SOURCE_DIR}/src/atomic.dex.provider.cex.prices.api.cpp
         ${CMAKE_SOURCE_DIR}/src/atomic.dex.provider.cex.prices.cpp
         ${CMAKE_SOURCE_DIR}/src/atomic.dex.qt.current.coin.infos.cpp
+        ${CMAKE_SOURCE_DIR}/src/atomic.dex.qt.wallet.manager.cpp
+        ${CMAKE_SOURCE_DIR}/src/atomic.dex.qt.utilities.cpp
         ${CMAKE_SOURCE_DIR}/src/atomic.dex.wallet.config.cpp
         ${CMAKE_SOURCE_DIR}/src/atomic.dex.security.cpp
         $<$<PLATFORM_ID:Darwin>:${CMAKE_SOURCE_DIR}/src/osx/atomic.dex.osx.manager.mm>
@@ -202,6 +204,7 @@ add_executable(atomic_qt_tests MACOSX_BUNDLE ${ICON}
         src/atomic.dex.wallet.config.tests.cpp
         src/atomic.dex.utilities.tests.cpp
         src/atomic.dex.provider.cex.prices.tests.cpp
+        src/atomic.dex.qt.utilities.tests.cpp
         src/atomic.dex.provider.cex.prices.api.tests.cpp)
 
 target_link_libraries(atomic_qt
@@ -226,6 +229,9 @@ set_target_properties(${PROJECT_NAME}_tests
         PROPERTIES
         RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin/"
         )
+
+#target_enable_tsan(atomic_qt_tests)
+#target_enable_asan(atomic_qt)
 
 ##! Move assets
 if (LINUX)

@@ -41,11 +41,14 @@ Item {
                 Layout.fillWidth: true
 
                 field.model: fiats
+
+                property bool initialized: false
                 field.onCurrentIndexChanged: {
-                    API.get().fiat = fiats[field.currentIndex]
+                    if(initialized) API.get().fiat = fiats[field.currentIndex]
                 }
                 Component.onCompleted: {
                     field.currentIndex = fiats.indexOf(API.get().fiat)
+                    initialized = true
                 }
             }
 

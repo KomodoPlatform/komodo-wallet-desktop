@@ -76,7 +76,7 @@ namespace
             //! Delete old cfg
             boost::system::error_code ec;
             fs::remove(precedent_version_cfg_path, ec);
-            if (!ec)
+            if (ec)
             {
                 spdlog::error("error: {}", ec.message());
             }
@@ -624,7 +624,7 @@ namespace atomic_dex
 
         spdlog::debug("command line: {}, from directory: {}", args[0], options.working_directory);
         const auto ec = m_mm2_instance.start(args, options);
-
+        std::free((void*)options.working_directory);
         if (ec)
         {
             spdlog::error("{}", ec.message());
@@ -634,7 +634,7 @@ namespace atomic_dex
             using namespace std::chrono_literals;
             // loguru::set_thread_name("mm2 init thread");
 
-            const auto wait_ec = m_mm2_instance.wait(2s).second;
+            const auto wait_ec = m_mm2_instance.wait(750ms).second;
             fs::remove(mm2_cfg_path);
             if (wait_ec.value() == static_cast<int>(std::errc::timed_out) || wait_ec.value() == 258)
             {
@@ -787,13 +787,19 @@ namespace atomic_dex
         auto rpc_fees = [this]() {
             t_get_trade_fee_request req{.coin = this->m_current_orderbook_ticker_base};
             auto                    answer = ::mm2::api::rpc_get_trade_fee(std::move(req));
-            this->m_trade_fees_registry.insert_or_assign(this->m_current_orderbook_ticker_base, answer);
+            if (answer.rpc_result_code == 200)
+            {
+                this->m_trade_fees_registry.insert_or_assign(this->m_current_orderbook_ticker_base, answer);
+            }
 
             if (not m_current_orderbook_ticker_rel.empty())
             {
                 t_get_trade_fee_request req_rel{.coin = this->m_current_orderbook_ticker_rel};
                 auto                    answer_rel = ::mm2::api::rpc_get_trade_fee(std::move(req_rel));
-                this->m_trade_fees_registry.insert_or_assign(this->m_current_orderbook_ticker_rel, answer_rel);
+                if (answer_rel.rpc_result_code == 200)
+                {
+                    this->m_trade_fees_registry.insert_or_assign(this->m_current_orderbook_ticker_rel, answer_rel);
+                }
             }
         };
 
@@ -886,11 +892,14 @@ namespace atomic_dex
             }
         }
 
-        spawn([this]() {
-            // loguru::set_thread_name("r_book thread");
-            process_fees();
-            fetch_current_orderbook_thread();
-        });
+        if (this->m_mm2_running)
+        {
+            spawn([this]() {
+                // loguru::set_thread_name("r_book thread");
+                process_fees();
+                fetch_current_orderbook_thread();
+            });
+        }
     }
 
     void

@@ -49,7 +49,7 @@ namespace atomic_dex
         Q_PROPERTY(QList<QObject*> enableable_coins READ get_enableable_coins NOTIFY enableableCoinsChanged)
         Q_PROPERTY(QObject* current_coin_info READ get_current_coin_info NOTIFY coinInfoChanged)
         Q_PROPERTY(QString fiat READ get_current_fiat WRITE set_current_fiat NOTIFY on_fiat_changed)
-        Q_PROPERTY(QString second_fiat READ get_second_current_fiat WRITE set_second_current_fiat NOTIFY on_second_fiat_changed)
+        // Q_PROPERTY(QString second_fiat READ get_second_current_fiat WRITE set_second_current_fiat NOTIFY on_second_fiat_changed)
         Q_PROPERTY(QString lang READ get_current_lang WRITE set_current_lang NOTIFY on_lang_changed)
         Q_PROPERTY(QString wallet_default_name READ get_wallet_default_name WRITE set_wallet_default_name NOTIFY on_wallet_default_name_changed)
         Q_PROPERTY(QString balance_fiat_all READ get_balance_fiat_all WRITE set_current_balance_fiat_all NOTIFY on_fiat_balance_all_changed)
@@ -81,7 +81,7 @@ namespace atomic_dex
         void on_refresh_ohlc_event(const refresh_ohlc_needed&) noexcept;
 
         //! Properties Getter
-        QString               get_empty_string();
+        const QString&        get_empty_string() const;
         mm2&                  get_mm2() noexcept;
         const mm2&            get_mm2() const noexcept;
         coinpaprika_provider& get_paprika() noexcept;
@@ -90,7 +90,6 @@ namespace atomic_dex
         QObjectList           get_enabled_coins() const noexcept;
         QObjectList           get_enableable_coins() const noexcept;
         QString               get_current_fiat() const noexcept;
-        QString               get_second_current_fiat() const noexcept;
         QString               get_current_lang() const noexcept;
         QString               get_balance_fiat_all() const noexcept;
         QString               get_second_balance_fiat_all() const noexcept;
@@ -100,13 +99,12 @@ namespace atomic_dex
 
         //! Properties Setter
         void set_current_fiat(QString current_fiat) noexcept;
-        void set_second_current_fiat(QString current_fiat) noexcept;
         void set_current_lang(const QString& current_lang) noexcept;
         void set_wallet_default_name(QString wallet_default_name) noexcept;
         void set_current_balance_fiat_all(QString current_fiat_all_balance) noexcept;
         void set_second_current_balance_fiat_all(QString current_fiat_all_balance) noexcept;
         void set_status(QString status) noexcept;
-        void set_qt_app(QApplication* app) noexcept;
+        void set_qt_app(std::shared_ptr<QApplication> app) noexcept;
 
         //! Launch the internal loop for the SDK.
         void launch();
@@ -115,6 +113,7 @@ namespace atomic_dex
 
         //! Wallet Manager QML API Bindings, this internally call the `atomic_dex::qt_wallet_manager`
         Q_INVOKABLE bool               login(const QString& password, const QString& wallet_name);
+        Q_INVOKABLE bool               create(const QString& password, const QString& seed, const QString& wallet_name);
         Q_INVOKABLE static QStringList get_wallets();
         Q_INVOKABLE static bool        is_there_a_default_wallet();
         Q_INVOKABLE static QString     get_default_wallet_name();
@@ -131,6 +130,7 @@ namespace atomic_dex
         Q_INVOKABLE QString     get_log_folder() const;
         Q_INVOKABLE QString     get_export_folder() const;
         Q_INVOKABLE QStringList get_available_langs() const;
+        Q_INVOKABLE QStringList get_available_fiats() const;
         Q_INVOKABLE static void change_state(int visibility);
 
         //! Portfolio QML API Bindings
@@ -158,7 +158,6 @@ namespace atomic_dex
         Q_INVOKABLE QString get_mnemonic();
         Q_INVOKABLE bool    first_run();
         Q_INVOKABLE bool    disconnect();
-        Q_INVOKABLE bool    create(const QString& password, const QString& seed, const QString& wallet_name);
         Q_INVOKABLE bool    enable_coins(const QStringList& coins);
         Q_INVOKABLE QString get_balance(const QString& coin);
         Q_INVOKABLE QString get_price_amount(const QString& base_amount, const QString& rel_amount);
@@ -206,28 +205,27 @@ namespace atomic_dex
         atomic_dex::cfg m_config{load_cfg()};
 
         //! QT Application
-        QApplication* m_app;
+        std::shared_ptr<QApplication> m_app;
 
         //! Wallet Manager
         atomic_dex::qt_wallet_manager m_wallet_manager;
 
         //! Private members
-        std::atomic_bool   m_refresh_enabled_coin_event{false};
-        std::atomic_bool   m_refresh_current_ticker_infos{false};
-        std::atomic_bool   m_refresh_orders_needed{false};
-        std::atomic_bool   m_refresh_ohlc_needed{false};
-        std::atomic_bool   m_refresh_transaction_only{false};
-        bool               m_need_a_full_refresh_of_mm2{false};
-        QObjectList        m_enabled_coins;
-        QObjectList        m_enableable_coins;
-        QTranslator        m_translator;
-        QString            m_current_fiat{"USD"};
-        QString            m_second_current_fiat{"BTC"};
+        std::atomic_bool m_refresh_enabled_coin_event{false};
+        std::atomic_bool m_refresh_current_ticker_infos{false};
+        std::atomic_bool m_refresh_orders_needed{false};
+        std::atomic_bool m_refresh_ohlc_needed{false};
+        std::atomic_bool m_refresh_transaction_only{false};
+        bool             m_need_a_full_refresh_of_mm2{false};
+        QObjectList      m_enabled_coins;
+        QObjectList      m_enableable_coins;
+        QTranslator      m_translator;
+        // QString            m_current_fiat{"USD"};
+        // QString            m_second_current_fiat{"BTC"};
         QString            m_current_lang{QString::fromStdString(m_config.current_lang)};
         QString            m_current_status{"None"};
         QString            m_current_balance_all{"0.00"};
         QString            m_second_current_balance_all{"0.00"};
-        QString            m_current_default_wallet{""};
         current_coin_info* m_coin_info;
     };
 } // namespace atomic_dex
