@@ -175,7 +175,7 @@ ColumnLayout {
             id: balance_header
             icon_at_left: true
             anchors.left: parent.left
-            anchors.leftMargin: parent.width * 0.3
+            anchors.leftMargin: parent.width * 0.265
             anchors.verticalCenter: parent.verticalCenter
 
             text: API.get().empty_string + (qsTr("Balance"))
@@ -187,7 +187,7 @@ ColumnLayout {
             id: change_24h_header
             icon_at_left: false
             anchors.right: parent.right
-            anchors.rightMargin: parent.width * 0.31
+            anchors.rightMargin: parent.width * 0.37
             anchors.verticalCenter: parent.verticalCenter
 
             text: API.get().empty_string + (qsTr("Change 24h"))
@@ -199,7 +199,7 @@ ColumnLayout {
             id: trend_7d_header
             icon_at_left: false
             anchors.right: parent.right
-            anchors.rightMargin: parent.width * 0.18
+            anchors.rightMargin: parent.width * 0.24
             anchors.verticalCenter: parent.verticalCenter
 
             text: API.get().empty_string + (qsTr("Trend 7d"))
