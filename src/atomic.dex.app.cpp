@@ -1156,6 +1156,17 @@ namespace atomic_dex
     }
 } // namespace atomic_dex
 
+//! Trading functions
+namespace atomic_dex
+{
+    QString
+    application::get_cex_rates(const QString& base, const QString& rel)
+    {
+        std::error_code ec;
+        return QString::fromStdString(get_paprika().get_cex_rates(base.toStdString(), rel.toStdString(), ec));
+    }
+}
+
 //! OHLC Relative functions
 namespace atomic_dex
 {

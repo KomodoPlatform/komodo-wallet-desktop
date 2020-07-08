@@ -421,4 +421,31 @@ namespace atomic_dex
                                                                                                 : t_ticker_historical_answer{.answer = nlohmann::json::array()};
     }
 
+    std::string
+    coinpaprika_provider::get_cex_rates(const std::string& base, const std::string& rel, std::error_code& ec) const noexcept
+    {
+        std::string base_rate_str = get_rate_conversion("USD", base, ec, false);
+        if (ec)
+        {
+            return "0.00";
+        }
+        std::string rel_rate_str = get_rate_conversion("USD", rel, ec, false);
+        if (ec)
+        {
+            return "0.00";
+        }
+        if (base_rate_str == "0.00" || rel_rate_str == "0.00")
+        {
+            //! One of the rate is not available
+            return "0.00";
+        }
+        t_float_50  base_rate_f(base_rate_str);
+        t_float_50  rel_rate_f(rel_rate_str);
+        t_float_50  result     = base_rate_f / rel_rate_f;
+        std::string result_str = result.str(8, std::ios_base::fixed);
+        boost::trim_right_if(result_str, boost::is_any_of("0"));
+        boost::trim_right_if(result_str, boost::is_any_of("."));
+        return result_str;
+    }
+
 } // namespace atomic_dex
