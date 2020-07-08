@@ -187,7 +187,7 @@ ColumnLayout {
             id: change_24h_header
             icon_at_left: false
             anchors.right: parent.right
-            anchors.rightMargin: parent.width * 0.27
+            anchors.rightMargin: parent.width * 0.31
             anchors.verticalCenter: parent.verticalCenter
 
             text: API.get().empty_string + (qsTr("Change 24h"))
@@ -199,7 +199,7 @@ ColumnLayout {
             id: trend_7d_header
             icon_at_left: false
             anchors.right: parent.right
-            anchors.rightMargin: parent.width * 0.15
+            anchors.rightMargin: parent.width * 0.18
             anchors.verticalCenter: parent.verticalCenter
 
             text: API.get().empty_string + (qsTr("Trend 7d"))
