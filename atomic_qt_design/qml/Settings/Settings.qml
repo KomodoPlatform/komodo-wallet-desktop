@@ -56,7 +56,7 @@ Item {
                 Connections {
                     target: root
 
-                    onApi_fiatChanged: {
+                    function onApi_fiatChanged() {
                         const target_index = fiats.indexOf(api_fiat)
                         if(combo_fiat.field.currentIndex !== target_index)
                             combo_fiat.field.currentIndex = target_index
