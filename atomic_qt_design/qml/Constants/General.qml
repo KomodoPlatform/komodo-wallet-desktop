@@ -86,7 +86,9 @@ QtObject {
     function formatFiat(received, amount, fiat) {
         const symbols = {
             "USD": "$",
-            "EUR": "€"
+            "EUR": "€",
+            "BTC": "₿",
+            "KMD": "KMD",
         }
 
         return diffPrefix(received) + symbols[fiat] + " " + amount

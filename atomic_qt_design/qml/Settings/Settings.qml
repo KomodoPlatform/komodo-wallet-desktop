@@ -7,6 +7,7 @@ import "../Components"
 import "../Constants"
 
 Item {
+    id: root
     function disconnect() {
         API.get().disconnect()
         onDisconnect()
@@ -21,7 +22,8 @@ Item {
     }
 
     property string mm2_version: ''
-    property var fiats: (["USD", "EUR"])
+    property var fiats: API.get().get_available_fiats()
+    property string api_fiat: API.get().fiat
 
     InnerBackground {
         id: layout_background
@@ -49,6 +51,16 @@ Item {
                 Component.onCompleted: {
                     field.currentIndex = fiats.indexOf(API.get().fiat)
                     initialized = true
+                }
+
+                Connections {
+                    target: root
+
+                    onApi_fiatChanged: {
+                        const target_index = fiats.indexOf(api_fiat)
+                        if(combo_fiat.field.currentIndex !== target_index)
+                            combo_fiat.field.currentIndex = target_index
+                    }
                 }
             }
 
