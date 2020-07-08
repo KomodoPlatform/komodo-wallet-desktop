@@ -34,8 +34,12 @@ ColumnLayout {
     }
 
     function getColor(data) {
-        return data.rates === null || data.rates[API.get().fiat].percent_change_24h === 0 ? Style.colorWhite4 :
-                data.rates[API.get().fiat].percent_change_24h > 0 ? Style.colorGreen : Style.colorRed
+        const fiat = API.get().fiat
+
+        if(General.validFiatRates(data, fiat) && data.rates[fiat].percent_change_24h !== 0)
+            return data.rates[fiat].percent_change_24h > 0 ? Style.colorGreen : Style.colorRed
+
+        return Style.colorWhite4
     }
 
     function updateChart(chart, historical) {
@@ -279,8 +283,8 @@ ColumnLayout {
                 case sort_by_balance:     return (parseFloat(b.balance) - parseFloat(a.balance)) * order
                 case sort_by_trend:       return (parseFloat(b.price) - parseFloat(a.price)) * order
                 case sort_by_change:
-                    val_a = a.rates === null ? -9999999 : a.rates[API.get().fiat].percent_change_24h
-                    val_b = b.rates === null ? -9999999 : b.rates[API.get().fiat].percent_change_24h
+                    val_a = General.validFiatRates(a, API.get().fiat) ? a.rates[API.get().fiat].percent_change_24h : -9999999
+                    val_b = General.validFiatRates(b, API.get().fiat) ? b.rates[API.get().fiat].percent_change_24h : -9999999
 
                     return (val_b - val_a) * order
             }
@@ -378,7 +382,7 @@ ColumnLayout {
                 anchors.right: parent.right
                 anchors.rightMargin: change_24h_header.anchors.rightMargin
 
-                text_value: API.get().empty_string + (model.modelData.rates === null ? '-' : General.formatPercent(model.modelData.rates[API.get().fiat].percent_change_24h))
+                text_value: API.get().empty_string + (General.validFiatRates(model.modelData, API.get().fiat) ? General.formatPercent(model.modelData.rates[API.get().fiat].percent_change_24h) : '-')
                 color: getColor(model.modelData)
                 anchors.verticalCenter: parent.verticalCenter
             }

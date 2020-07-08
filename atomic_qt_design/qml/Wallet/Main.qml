@@ -143,9 +143,10 @@ Item {
                     DefaultText {
                         text_value: {
                             const c = General.getCoin(portfolio_coins, API.get().current_coin_info.ticker)
-                            if(c === undefined || c.rates === null) return "-"
+                            const fiat = API.get().fiat
+                            if(!General.validFiatRates(c, fiat)) return "-"
 
-                            return API.get().empty_string + (General.formatPercent(c.rates[API.get().fiat].percent_change_24h))
+                            return API.get().empty_string + (General.formatPercent(c.rates[fiat].percent_change_24h))
                         }
                         Layout.alignment: Qt.AlignLeft
                         font.pixelSize: name.font.pixelSize
@@ -153,9 +154,10 @@ Item {
                             const c = General.getCoin(portfolio_coins, API.get().current_coin_info.ticker)
 
                             const def_color = Style.colorWhite4
-                            if(c === undefined || c.rates === null) return def_color
+                            const fiat = API.get().fiat
+                            if(!General.validFiatRates(c, fiat)) return def_color
 
-                            const v = parseFloat(c.rates[API.get().fiat].percent_change_24h)
+                            const v = parseFloat(c.rates[fiat].percent_change_24h)
                             return v === 0 ? def_color : v > 0 ? Style.colorGreen : Style.colorRed
                         }
                     }
