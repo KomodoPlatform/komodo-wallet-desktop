@@ -141,26 +141,29 @@ namespace atomic_dex
 
                 t_coins coins = m_mm2_instance.get_enabled_coins();
 
+                std::vector<std::future<void>> out_fut;
+
+                out_fut.reserve(coins.size() * 6);
                 for (auto&& current_coin: coins)
                 {
                     if (current_coin.coinpaprika_id == "test-coin")
                     {
                         continue;
                     }
-                    spawn([this, cur_coin = current_coin]() { process_ticker_infos(cur_coin, this->m_ticker_infos_registry); });
-                    spawn([this, cur_coin = current_coin]() { process_ticker_historical(cur_coin, this->m_ticker_historical_registry); });
-                    process_provider(current_coin, m_usd_rate_providers, "usd-us-dollars");
+                    out_fut.push_back(spawn([this, cur_coin = current_coin]() { process_ticker_infos(cur_coin, this->m_ticker_infos_registry); }));
+                    out_fut.push_back(spawn([this, cur_coin = current_coin]() { process_ticker_historical(cur_coin, this->m_ticker_historical_registry); }));
+                    out_fut.push_back(spawn([this, cur_coin = current_coin]() { process_provider(cur_coin, m_usd_rate_providers, "usd-us-dollars"); }));
                     if (current_coin.ticker != "BTC")
                     {
-                        process_provider(current_coin, m_btc_rate_providers, "btc-bitcoin");
+                        out_fut.push_back(spawn([this, cur_coin = current_coin]() { process_provider(cur_coin, m_btc_rate_providers, "btc-bitcoin"); }));
                     }
                     if (current_coin.ticker != "KMD")
                     {
-                        process_provider(current_coin, m_kmd_rate_providers, "kmd-komodo");
+                        out_fut.push_back(spawn([this, cur_coin = current_coin]() { process_provider(cur_coin, m_kmd_rate_providers, "kmd-komodo"); }));
                     }
-                    process_provider(current_coin, m_eur_rate_providers, "eur-euro");
+                    out_fut.push_back(spawn([this, cur_coin = current_coin]() { process_provider(cur_coin, m_eur_rate_providers, "eur-euro"); }));
                 }
-
+                for (auto&& cur_fut: out_fut) { cur_fut.get(); }
             } while (not m_provider_thread_timer.wait_for(120s));
         });
     }
