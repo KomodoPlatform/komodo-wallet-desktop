@@ -71,7 +71,7 @@ namespace atomic_dex
         std::string get_price_in_fiat_from_tx(const std::string& fiat, const std::string& ticker, const tx_infos& tx, std::error_code& ec) const noexcept;
 
         //! Get the cex rates base / rel eg: VRSC / KMD = price of usd VRSC / KMD price USD
-        std::string get_cex_rates(const std::string& base, const std::string& rel, std::error_code& ec) const noexcept;;
+        std::string get_cex_rates(const std::string& base, const std::string& rel, std::error_code& ec) const noexcept;
 
         //! Get the ticker informations.
         t_ticker_info_answer get_ticker_infos(const std::string& ticker) const noexcept;
