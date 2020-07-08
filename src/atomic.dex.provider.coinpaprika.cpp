@@ -41,7 +41,7 @@ namespace
     void
     process_ticker_infos(const atomic_dex::coin_config& current_coin, atomic_dex::coinpaprika_provider::t_ticker_infos_registry& reg)
     {
-        const ticker_infos_request request{.ticker_currency_id = current_coin.coinpaprika_id, .ticker_quotes = {"USD", "EUR"}};
+        const ticker_infos_request request{.ticker_currency_id = current_coin.coinpaprika_id, .ticker_quotes = {"USD", "EUR", "BTC"}};
         auto                       answer = tickers_info(request);
 
         retry(answer, request, [&answer](const ticker_infos_request& request) { answer = tickers_info(request); });
@@ -203,11 +203,12 @@ namespace atomic_dex
 
         if (not skip_precision)
         {
-            if (auto final_price_str = final_price.str(2, std::ios_base::fixed); final_price_str == "0.00" && final_price > 0.00000000)
+            std::size_t default_precision = (fiat == "USD" || fiat == "EUR") ? 2 : 8;
+            if (auto final_price_str = final_price.str(default_precision, std::ios_base::fixed); final_price_str == "0.00" && final_price > 0.00000000)
             {
-                return final_price.str(2);
+                return final_price.str(default_precision);
             }
-            ss.precision(2);
+            ss.precision(default_precision);
         }
 
         ss << std::fixed << final_price;
@@ -248,9 +249,13 @@ namespace atomic_dex
                 }
             }
 
-            ss.precision(2);
+            std::size_t default_precision = (fiat == "USD" || fiat == "EUR") ? 2 : 8;
+            ss.precision(default_precision);
             ss << std::fixed << final_price_f;
-            return ss.str();
+            std::string result = ss.str();
+            boost::trim_right_if(result, boost::is_any_of("0"));
+            boost::trim_right_if(result, boost::is_any_of("."));
+            return result;
         }
         catch (const std::exception& error)
         {
@@ -274,12 +279,13 @@ namespace atomic_dex
         }
         const t_float_50 amount_f(amount);
         const t_float_50 current_price_f(current_price);
-        const t_float_50 final_price = amount_f * current_price_f;
-        if (auto final_price_str = final_price.str(2, std::ios_base::fixed); final_price_str == "0.00" && final_price > 0.00000000)
+        const t_float_50 final_price       = amount_f * current_price_f;
+        std::size_t      default_precision = (fiat == "USD" || fiat == "EUR") ? 2 : 8;
+        if (auto final_price_str = final_price.str(default_precision, std::ios_base::fixed); final_price_str == "0.00" && final_price > 0.00000000)
         {
-            return final_price.str(2);
+            return final_price.str(default_precision);
         }
-        return final_price.str(2, std::ios_base::fixed);
+        return final_price.str(default_precision, std::ios_base::fixed);
     }
 
     std::string
@@ -335,13 +341,22 @@ namespace atomic_dex
 
         if (adjusted)
         {
+            std::size_t default_precision = (fiat == "USD" || fiat == "EUR") ? 2 : 8;
+
             t_float_50 current_price_f(current_price);
-            //! Trick: If there conversion in a fixed representation is 0.00 then use a default precision to 2 without fixed ios flags
-            if (auto fixed_str = current_price_f.str(2, std::ios_base::fixed); fixed_str == "0.00" && current_price_f > 0.00000000)
+            if (fiat == "USD" || fiat == "EUR")
             {
-                return current_price_f.str(2);
+                if (current_price_f < 1.0)
+                {
+                    default_precision = 5;
+                }
             }
-            return current_price_f.str(2, std::ios_base::fixed);
+            //! Trick: If there conversion in a fixed representation is 0.00 then use a default precision to 2 without fixed ios flags
+            if (auto fixed_str = current_price_f.str(default_precision, std::ios_base::fixed); fixed_str == "0.00" && current_price_f > 0.00000000)
+            {
+                return current_price_f.str(default_precision);
+            }
+            return current_price_f.str(default_precision, std::ios::fixed);
         }
         return current_price;
     }
@@ -402,5 +417,5 @@ namespace atomic_dex
         return m_ticker_historical_registry.find(ticker) != m_ticker_historical_registry.cend() ? m_ticker_historical_registry.at(ticker)
                                                                                                 : t_ticker_historical_answer{.answer = nlohmann::json::array()};
     }
-    
+
 } // namespace atomic_dex
