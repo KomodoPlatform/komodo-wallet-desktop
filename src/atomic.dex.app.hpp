@@ -173,6 +173,7 @@ namespace atomic_dex
         Q_INVOKABLE QObject*     claim_rewards(const QString& ticker);
         Q_INVOKABLE QVariantList get_ohlc_data(const QString& range);
         Q_INVOKABLE QVariantMap  find_closest_ohlc_data(int range, int timestamp);
+        Q_INVOKABLE QString      get_cex_rates(const QString& base, const QString& rel);
 
         Q_INVOKABLE bool is_supported_ohlc_data_ticker_pair(const QString& base, const QString& rel);
         Q_INVOKABLE QObject*    get_coin_info(const QString& ticker);
