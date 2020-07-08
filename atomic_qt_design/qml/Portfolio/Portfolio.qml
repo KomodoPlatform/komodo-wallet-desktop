@@ -73,6 +73,7 @@ ColumnLayout {
         height: 200
 
         ColumnLayout {
+            id: top_layout
             anchors.centerIn: parent
 
             // Total Title
@@ -94,6 +95,18 @@ ColumnLayout {
             }
         }
 
+        MouseArea {
+            anchors.fill: top_layout
+
+            onClicked: {
+                const current_fiat = API.get().fiat
+                const available_fiats = API.get().get_available_fiats()
+                const current_index = available_fiats.indexOf(current_fiat)
+                const next_index = (current_index + 1) % available_fiats.length
+                const next_fiat = available_fiats[next_index]
+                API.get().fiat = next_fiat
+            }
+        }
 
         // Add button
         PlusButton {
