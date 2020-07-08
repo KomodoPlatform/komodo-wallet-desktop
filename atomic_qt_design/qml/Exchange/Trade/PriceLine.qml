@@ -12,8 +12,13 @@ RowLayout {
 
     readonly property int fontSize: Style.textSizeSmall2
     readonly property int fontSizeBigger: Style.textSizeSmall4
+    readonly property int line_scale: 10
 
     readonly property bool price_entered: hasValidPrice()
+
+    function limitDigits(value) {
+        return parseFloat(value.toFixed(2))
+    }
 
     spacing: 100
 
@@ -45,14 +50,49 @@ RowLayout {
 
     // Expedient
     ColumnLayout {
+        visible: price_entered
+
         DefaultText {
+            id: expedient_text
             Layout.topMargin: 10
             Layout.bottomMargin: Layout.topMargin
             Layout.alignment: Qt.AlignHCenter
-            text_value: API.get().empty_string + (qsTr("Expedient") + "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" + qsTr("%1 compared to CEX", "EXPEDIENT").arg("<b>" + General.formatPercent(
-                                                                                                                                        parseFloat(expedient.toFixed(2))
-                                                                                                                                    ) + "</b>"))
+            text_value: API.get().empty_string + (qsTr("Expedient") + "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" + qsTr("%1 compared to CEX", "EXPEDIENT").arg("<b>" + General.formatPercent(limitDigits(expedient)) + "</b>"))
             font.pixelSize: fontSize
+        }
+
+        RowLayout {
+            DefaultText {
+                text_value: API.get().empty_string + (General.formatPercent(limitDigits(Math.min(-line_scale, expedient))))
+                font.pixelSize: fontSize
+            }
+
+            Rectangle {
+                id: expedient_line
+                width: 200
+                height: 6
+
+                DefaultGradient {
+                    anchors.fill: parent
+                    anchors.margins: 0
+                    start_color: Style.colorGreen
+                    end_color: Style.colorBlue
+                }
+
+                Rectangle {
+                    id: vertical_line
+                    width: 4
+                    height: expedient_line.height * 2
+                    anchors.verticalCenter: parent.verticalCenter
+                    anchors.horizontalCenter: parent.horizontalCenter
+                    anchors.horizontalCenterOffset: 0.5 * expedient_line.width * Math.min(Math.max(expedient / line_scale, -1), 1)
+                }
+            }
+
+            DefaultText {
+                text_value: API.get().empty_string + (General.formatPercent(limitDigits(Math.max(line_scale, expedient))))
+                font.pixelSize: fontSize
+            }
         }
     }
 
