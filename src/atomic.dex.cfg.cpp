@@ -81,8 +81,10 @@ namespace atomic_dex
     {
         config.current_currency = new_currency;
 
+        //! If it's fiat, i set the first element of the possible currencies to the new currency (the new fiat here) and i also set the current fiat
         if (ranges::any_of(config.available_fiat, [new_currency](const std::string& current_fiat) { return current_fiat == new_currency; }))
         {
+            spdlog::info("{} is fiat, setting it as current fiat and possible currencies", new_currency);
             config.current_fiat           = new_currency;
             config.possible_currencies[0] = new_currency;
         }

@@ -463,7 +463,7 @@ namespace atomic_dex
     {
         if (current_currency.toStdString() != m_config.current_currency)
         {
-            spdlog::info("change lang {} to {}", m_config.current_currency, current_currency.toStdString());
+            spdlog::info("change currency {} to {}", m_config.current_currency, current_currency.toStdString());
             atomic_dex::change_currency(m_config, current_currency.toStdString());
             emit on_fiat_changed();
         }
