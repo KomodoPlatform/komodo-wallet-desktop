@@ -48,7 +48,7 @@ namespace atomic_dex
         Q_PROPERTY(QList<QObject*> enabled_coins READ get_enabled_coins NOTIFY enabledCoinsChanged)
         Q_PROPERTY(QList<QObject*> enableable_coins READ get_enableable_coins NOTIFY enableableCoinsChanged)
         Q_PROPERTY(QObject* current_coin_info READ get_current_coin_info NOTIFY coinInfoChanged)
-        Q_PROPERTY(QString fiat READ get_current_currency WRITE set_current_currency NOTIFY on_fiat_changed)
+        Q_PROPERTY(QString current_currency READ get_current_currency WRITE set_current_currency NOTIFY on_currency_changed)
         // Q_PROPERTY(QString second_fiat READ get_second_current_fiat WRITE set_second_current_fiat NOTIFY on_second_fiat_changed)
         Q_PROPERTY(QString lang READ get_current_lang WRITE set_current_lang NOTIFY on_lang_changed)
         Q_PROPERTY(QString wallet_default_name READ get_wallet_default_name WRITE set_wallet_default_name NOTIFY on_wallet_default_name_changed)
@@ -191,7 +191,7 @@ namespace atomic_dex
         void enabledCoinsChanged();
         void enableableCoinsChanged();
         void coinInfoChanged();
-        void on_fiat_changed();
+        void on_currency_changed();
         void on_second_fiat_changed();
         void on_lang_changed();
         void lang_changed();
