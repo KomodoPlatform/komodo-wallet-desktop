@@ -34,8 +34,12 @@ ColumnLayout {
     }
 
     function getColor(data) {
-        return data.rates === null || data.rates[API.get().fiat].percent_change_24h === 0 ? Style.colorWhite4 :
-                data.rates[API.get().fiat].percent_change_24h > 0 ? Style.colorGreen : Style.colorRed
+        const fiat = API.get().current_currency
+
+        if(General.validFiatRates(data, fiat) && data.rates[fiat].percent_change_24h !== 0)
+            return data.rates[fiat].percent_change_24h > 0 ? Style.colorGreen : Style.colorRed
+
+        return Style.colorWhite4
     }
 
     function updateChart(chart, historical) {
@@ -73,6 +77,7 @@ ColumnLayout {
         height: 200
 
         ColumnLayout {
+            id: top_layout
             anchors.centerIn: parent
 
             // Total Title
@@ -89,11 +94,23 @@ ColumnLayout {
             DefaultText {
                 Layout.alignment: Qt.AlignHCenter
                 Layout.bottomMargin: 30
-                text_value: API.get().empty_string + (General.formatFiat("", API.get().balance_fiat_all, API.get().fiat))
+                text_value: API.get().empty_string + (General.formatFiat("", API.get().balance_fiat_all, API.get().current_currency))
                 font.pixelSize: Style.textSize4
             }
         }
 
+        MouseArea {
+            anchors.fill: top_layout
+
+            onClicked: {
+                const current_fiat = API.get().current_currency
+                const available_fiats = API.get().get_available_currencies()
+                const current_index = available_fiats.indexOf(current_fiat)
+                const next_index = (current_index + 1) % available_fiats.length
+                const next_fiat = available_fiats[next_index]
+                API.get().current_currency = next_fiat
+            }
+        }
 
         // Add button
         PlusButton {
@@ -158,7 +175,7 @@ ColumnLayout {
             id: balance_header
             icon_at_left: true
             anchors.left: parent.left
-            anchors.leftMargin: parent.width * 0.3
+            anchors.leftMargin: parent.width * 0.265
             anchors.verticalCenter: parent.verticalCenter
 
             text: API.get().empty_string + (qsTr("Balance"))
@@ -170,7 +187,7 @@ ColumnLayout {
             id: change_24h_header
             icon_at_left: false
             anchors.right: parent.right
-            anchors.rightMargin: parent.width * 0.27
+            anchors.rightMargin: parent.width * 0.37
             anchors.verticalCenter: parent.verticalCenter
 
             text: API.get().empty_string + (qsTr("Change 24h"))
@@ -182,7 +199,7 @@ ColumnLayout {
             id: trend_7d_header
             icon_at_left: false
             anchors.right: parent.right
-            anchors.rightMargin: parent.width * 0.15
+            anchors.rightMargin: parent.width * 0.24
             anchors.verticalCenter: parent.verticalCenter
 
             text: API.get().empty_string + (qsTr("Trend 7d"))
@@ -266,8 +283,8 @@ ColumnLayout {
                 case sort_by_balance:     return (parseFloat(b.balance) - parseFloat(a.balance)) * order
                 case sort_by_trend:       return (parseFloat(b.price) - parseFloat(a.price)) * order
                 case sort_by_change:
-                    val_a = a.rates === null ? -9999999 : a.rates[API.get().fiat].percent_change_24h
-                    val_b = b.rates === null ? -9999999 : b.rates[API.get().fiat].percent_change_24h
+                    val_a = General.validFiatRates(a, API.get().current_currency) ? a.rates[API.get().current_currency].percent_change_24h : -9999999
+                    val_b = General.validFiatRates(b, API.get().current_currency) ? b.rates[API.get().current_currency].percent_change_24h : -9999999
 
                     return (val_b - val_a) * order
             }
@@ -355,7 +372,7 @@ ColumnLayout {
                 anchors.left: balance_ticker.right
                 anchors.leftMargin: 10
 
-                text_value: API.get().empty_string + ("(" + General.formatFiat('', model.modelData.balance_fiat, API.get().fiat) + ")")
+                text_value: API.get().empty_string + ("(" + General.formatFiat('', model.modelData.balance_fiat, API.get().current_currency) + ")")
                 color: Style.colorWhite5
                 anchors.verticalCenter: parent.verticalCenter
             }
@@ -365,7 +382,7 @@ ColumnLayout {
                 anchors.right: parent.right
                 anchors.rightMargin: change_24h_header.anchors.rightMargin
 
-                text_value: API.get().empty_string + (model.modelData.rates === null ? '-' : General.formatPercent(model.modelData.rates[API.get().fiat].percent_change_24h))
+                text_value: API.get().empty_string + (General.validFiatRates(model.modelData, API.get().current_currency) ? General.formatPercent(model.modelData.rates[API.get().current_currency].percent_change_24h) : '-')
                 color: getColor(model.modelData)
                 anchors.verticalCenter: parent.verticalCenter
             }
@@ -375,7 +392,7 @@ ColumnLayout {
                 anchors.right: parent.right
                 anchors.rightMargin: price_header.anchors.rightMargin
 
-                text_value: API.get().empty_string + (General.formatFiat('', model.modelData.price, API.get().fiat))
+                text_value: API.get().empty_string + (General.formatFiat('', model.modelData.price, API.get().current_currency))
                 color: Style.colorThemeDarkLight
                 anchors.verticalCenter: parent.verticalCenter
             }

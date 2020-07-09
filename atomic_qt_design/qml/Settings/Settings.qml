@@ -7,6 +7,7 @@ import "../Components"
 import "../Constants"
 
 Item {
+    id: root
     function disconnect() {
         API.get().disconnect()
         onDisconnect()
@@ -21,7 +22,7 @@ Item {
     }
 
     property string mm2_version: ''
-    property var fiats: (["USD", "EUR"])
+    property var fiats: API.get().get_available_fiats()
 
     InnerBackground {
         id: layout_background
@@ -44,10 +45,10 @@ Item {
 
                 property bool initialized: false
                 field.onCurrentIndexChanged: {
-                    if(initialized) API.get().fiat = fiats[field.currentIndex]
+                    if(initialized) API.get().current_currency = fiats[field.currentIndex]
                 }
                 Component.onCompleted: {
-                    field.currentIndex = fiats.indexOf(API.get().fiat)
+                    field.currentIndex = fiats.indexOf(API.get().current_currency)
                     initialized = true
                 }
             }

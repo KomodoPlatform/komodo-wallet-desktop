@@ -83,10 +83,16 @@ QtObject {
         return list.find(c => c.ticker === ticker)
     }
 
+    function validFiatRates(data, fiat) {
+        return data && data.rates && data.rates[fiat]
+    }
+
     function formatFiat(received, amount, fiat) {
         const symbols = {
             "USD": "$",
-            "EUR": "€"
+            "EUR": "€",
+            "BTC": "₿",
+            "KMD": "KMD",
         }
 
         return diffPrefix(received) + symbols[fiat] + " " + amount
