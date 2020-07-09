@@ -432,12 +432,27 @@ FloatingBackground {
                             id: tx_fee_text
                             text_value: API.get().empty_string + ((qsTr('Transaction Fee') + ': ' + General.formatCrypto("", curr_trade_info.tx_fee, curr_trade_info.is_ticker_of_fees_eth ? "ETH" : getTicker(true))) +
                                                                     // ETH Fees
-                                                                    (hasEthFees() ? " + " + General.formatCrypto("", curr_trade_info.erc_fees, 'ETH') : ''))
+                                                                    (hasEthFees() ? " + " + General.formatCrypto("", curr_trade_info.erc_fees, 'ETH') : '') +
+
+                                                                  // Fiat part
+                                                                  (" ("+
+                                                                      getFiatText(!hasEthFees() ? curr_trade_info.tx_fee : General.formatDouble((parseFloat(curr_trade_info.tx_fee) + parseFloat(curr_trade_info.erc_fees))),
+                                                                                  curr_trade_info.is_ticker_of_fees_eth ? cex_price_eth_fiat : cex_price_base_fiat)
+                                                                   +")")
+
+
+                                                                  )
                             font.pixelSize: Style.textSizeSmall1
                         }
 
                         DefaultText {
-                            text_value: API.get().empty_string + (qsTr('Trading Fee') + ': ' + General.formatCrypto("", curr_trade_info.trade_fee, getTicker(true)))
+                            text_value: API.get().empty_string + (qsTr('Trading Fee') + ': ' + General.formatCrypto("", curr_trade_info.trade_fee, getTicker(true)) +
+
+                                                                  // Fiat part
+                                                                  (" ("+
+                                                                      getFiatText(curr_trade_info.trade_fee, cex_price_base_fiat)
+                                                                   +")")
+                                                                  )
                             font.pixelSize: tx_fee_text.font.pixelSize
                         }
                     }
