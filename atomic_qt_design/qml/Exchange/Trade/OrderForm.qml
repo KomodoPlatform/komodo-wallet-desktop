@@ -331,7 +331,7 @@ FloatingBackground {
                 enabled: input_volume.field.enabled
                 property bool updating_from_text_field: false
                 property bool updating_text_field: false
-                readonly property int precision: Math.max(0, Math.min(General.amountPrecision, General.sliderDigitLimit - to.toString().split(".")[0].length))
+                readonly property int precision: General.getRecommendedPrecision(to)
                 visible: my_side
                 Layout.fillWidth: true
                 Layout.leftMargin: top_line.Layout.leftMargin
