@@ -27,8 +27,10 @@ namespace
 
         assert(ifs.is_open());
         ifs >> config_json_data;
-        config_json_data["lang"] = config.current_lang;
-        config_json_data["current_fiat"] = config.current_fiat;
+        config_json_data["lang"]                = config.current_lang;
+        config_json_data["current_currency"]    = config.current_currency;
+        config_json_data["current_fiat"]        = config.current_fiat;
+        config_json_data["possible_currencies"] = config.possible_currencies;
 
         ifs.close();
 
@@ -37,7 +39,7 @@ namespace
         assert(ofs.is_open());
         ofs << config_json_data;
     }
-}
+} // namespace
 
 namespace atomic_dex
 {
@@ -46,8 +48,10 @@ namespace atomic_dex
     {
         j.at("lang").get_to(config.current_lang);
         j.at("available_lang").get_to(config.available_lang);
+        j.at("current_currency").get_to(config.current_currency);
         j.at("current_fiat").get_to(config.current_fiat);
         j.at("available_fiat").get_to(config.available_fiat);
+        j.at("possible_currencies").get_to(config.possible_currencies);
     }
 
     void
@@ -73,9 +77,15 @@ namespace atomic_dex
     }
 
     void
-    change_fiat(cfg& config, const std::string& new_fiat)
+    change_currency(cfg& config, const std::string& new_currency)
     {
-        config.current_fiat = new_fiat;
+        config.current_currency = new_currency;
+
+        if (ranges::any_of(config.available_fiat, [new_currency](const std::string& current_fiat) { return current_fiat == new_currency; }))
+        {
+            config.current_fiat           = new_currency;
+            config.possible_currencies[0] = new_currency;
+        }
         upgrade_cfg(config);
     }
 } // namespace atomic_dex

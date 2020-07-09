@@ -48,7 +48,7 @@ namespace atomic_dex
         Q_PROPERTY(QList<QObject*> enabled_coins READ get_enabled_coins NOTIFY enabledCoinsChanged)
         Q_PROPERTY(QList<QObject*> enableable_coins READ get_enableable_coins NOTIFY enableableCoinsChanged)
         Q_PROPERTY(QObject* current_coin_info READ get_current_coin_info NOTIFY coinInfoChanged)
-        Q_PROPERTY(QString fiat READ get_current_fiat WRITE set_current_fiat NOTIFY on_fiat_changed)
+        Q_PROPERTY(QString fiat READ get_current_currency WRITE set_current_currency NOTIFY on_fiat_changed)
         // Q_PROPERTY(QString second_fiat READ get_second_current_fiat WRITE set_second_current_fiat NOTIFY on_second_fiat_changed)
         Q_PROPERTY(QString lang READ get_current_lang WRITE set_current_lang NOTIFY on_lang_changed)
         Q_PROPERTY(QString wallet_default_name READ get_wallet_default_name WRITE set_wallet_default_name NOTIFY on_wallet_default_name_changed)
@@ -89,7 +89,7 @@ namespace atomic_dex
         QObject*              get_current_coin_info() const noexcept;
         QObjectList           get_enabled_coins() const noexcept;
         QObjectList           get_enableable_coins() const noexcept;
-        QString               get_current_fiat() const noexcept;
+        QString               get_current_currency() const noexcept;
         QString               get_current_lang() const noexcept;
         QString               get_balance_fiat_all() const noexcept;
         QString               get_second_balance_fiat_all() const noexcept;
@@ -98,7 +98,7 @@ namespace atomic_dex
         Q_INVOKABLE QString   get_version() const noexcept;
 
         //! Properties Setter
-        void set_current_fiat(QString current_fiat) noexcept;
+        void set_current_currency(QString current_currency) noexcept;
         void set_current_lang(const QString& current_lang) noexcept;
         void set_wallet_default_name(QString wallet_default_name) noexcept;
         void set_current_balance_fiat_all(QString current_fiat_all_balance) noexcept;
@@ -131,6 +131,7 @@ namespace atomic_dex
         Q_INVOKABLE QString     get_export_folder() const;
         Q_INVOKABLE QStringList get_available_langs() const;
         Q_INVOKABLE QStringList get_available_fiats() const;
+        Q_INVOKABLE QStringList get_available_currencies() const;
         Q_INVOKABLE static void change_state(int visibility);
 
         //! Portfolio QML API Bindings
