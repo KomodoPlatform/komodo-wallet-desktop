@@ -8,8 +8,8 @@
   "current_fiat": "USD",
   "available_fiat": [
     "USD",
-    "BTC",
     "EUR",
+    "BTC",
     "KMD"
   ]
 }
