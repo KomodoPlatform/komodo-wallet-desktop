@@ -252,13 +252,13 @@ ChartView {
             anchors.right: parent.right
             anchors.verticalCenter: parent.verticalCenter
 
-            width: 30
+            width: Math.max(value_y_text.width, 30)
             height: value_y_text.height
             DefaultText {
                 id: value_y_text
                 anchors.verticalCenter: parent.verticalCenter
                 anchors.horizontalCenter: parent.horizontalCenter
-                text_value: General.formatDouble(series.last_value, 0)
+                text_value: General.formatDouble(series.last_value, General.recommendedPrecision)
                 font.pixelSize: series.axisYRight.labelsFont.pixelSize
                 color: Style.colorChartLineText
             }
@@ -291,7 +291,7 @@ ChartView {
             anchors.right: parent.right
             anchors.verticalCenter: parent.verticalCenter
 
-            width: 30
+            width: Math.max(cursor_y_text.width, 30)
             height: cursor_y_text.height
             DefaultText {
                 id: cursor_y_text
@@ -485,7 +485,7 @@ ChartView {
 
                 // Texts
                 cursor_x_text.text_value = realDataFound ? General.timestampToDate(realData.timestamp).toString() : ""
-                cursor_y_text.text_value = General.formatDouble(cp.y, 0)
+                cursor_y_text.text_value = General.formatDouble(cp.y, General.recommendedPrecision)
 
                 const highlightColor = realDataFound && realData.close >= realData.open ? Style.colorGreen : Style.colorRed
                 cursor_values.text_value = realDataFound ? (
