@@ -479,6 +479,31 @@ Item {
         ConfirmTradeModal {
             id: confirm_trade_modal
         }
+
+
+
+        DefaultModal {
+            id: cex_rates_modal
+            width: 500
+
+            // Inside modal
+            ColumnLayout {
+                width: parent.width
+
+                ModalHeader {
+                    title: API.get().empty_string + ("ⓘ " + qsTr("CEX Data"))
+                }
+
+                DefaultText {
+                    text_value: API.get().empty_string + (qsTr('Markets data (prices, charts, etc.) marked with the ⓘ icon originates from third party sources. (<a href="https://coinpaprika.com">coinpaprika.com</a>)'))
+                    wrapMode: Text.WordWrap
+                    Layout.preferredWidth: cex_rates_modal.width
+
+                    onLinkActivated: Qt.openUrlExternally(link)
+                    linkColor: color
+                }
+            }
+        }
     }
 }
 

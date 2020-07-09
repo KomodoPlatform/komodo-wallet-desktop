@@ -104,8 +104,10 @@ RowLayout {
     ColumnLayout {
         DefaultText {
             Layout.alignment: Qt.AlignHCenter
-            text_value: API.get().empty_string + (qsTr("CEXchange rate"))
+            text_value: API.get().empty_string + (General.cex_icon + " " + qsTr("CEXchange rate"))
             font.pixelSize: fontSize
+
+            CexInfoTrigger {}
         }
 
         // Price

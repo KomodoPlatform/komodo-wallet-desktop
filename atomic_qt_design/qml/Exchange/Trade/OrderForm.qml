@@ -23,7 +23,7 @@ FloatingBackground {
     }
 
     function getFiatText(v, price) {
-        return General.formatFiat('', General.formatDouble(getFiatValue(v, price)), API.get().fiat)
+        return General.formatFiat('', General.formatDouble(getFiatValue(v, price)), API.get().fiat) + " " +  General.cex_icon
     }
 
     function update(new_ticker) {
@@ -327,6 +327,8 @@ FloatingBackground {
 
                         text_value: getFiatText(input_volume.field.text, my_side ? cex_price_base_fiat : cex_price_rel_fiat)
                         font.pixelSize: input_volume.field.font.pixelSize
+
+                        CexInfoTrigger {}
                     }
 
                     DefaultText {
@@ -443,6 +445,8 @@ FloatingBackground {
 
                                                                   )
                             font.pixelSize: Style.textSizeSmall1
+
+                            CexInfoTrigger {}
                         }
 
                         DefaultText {
@@ -454,6 +458,8 @@ FloatingBackground {
                                                                    +")")
                                                                   )
                             font.pixelSize: tx_fee_text.font.pixelSize
+
+                            CexInfoTrigger {}
                         }
                     }
 

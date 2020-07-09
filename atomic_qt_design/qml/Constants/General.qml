@@ -13,6 +13,8 @@ QtObject {
         return ticker === "" ? "" : coin_icons_path + ticker.toLowerCase() + ".png"
     }
 
+    readonly property string cex_icon: 'ⓘ'
+
     property bool privacy_mode: false
 
     readonly property int idx_dashboard_portfolio: 0
