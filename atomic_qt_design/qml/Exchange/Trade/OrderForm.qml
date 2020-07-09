@@ -16,6 +16,16 @@ FloatingBackground {
 
     property bool recursive_update: false
 
+    function getFiatValue(v, price) {
+        if(v === null || v === undefined || v === "") return 0
+
+        return parseFloat(price) * parseFloat(v)
+    }
+
+    function getFiatText(v, price) {
+        return General.formatFiat('', General.formatDouble(getFiatValue(v, price)), API.get().fiat)
+    }
+
     function update(new_ticker) {
         updateTickerList(new_ticker)
     }
@@ -308,6 +318,15 @@ FloatingBackground {
 
                         field.font.pixelSize: Style.textSizeSmall1
                         field.font.weight: Font.Bold
+                    }
+
+                    DefaultText {
+                        anchors.left: input_volume.left
+                        anchors.top: input_volume.bottom
+                        anchors.topMargin: 5
+
+                        text_value: getFiatText(input_volume.field.text, my_side ? cex_price_base_fiat : cex_price_rel_fiat)
+                        font.pixelSize: input_volume.field.font.pixelSize
                     }
 
                     DefaultText {

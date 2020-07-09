@@ -32,6 +32,12 @@ QtObject {
         lang: "en",
         get_available_langs: () => ["en", "fr", "tr"],
 
+        get_cex_rates: (base, rel) => {
+                                   if(rel === "USD") return "9531.53"
+                                   if(rel === "EUR") return "6234.152"
+                                   return "25"
+                               },
+
         confirm_password: (wallet_name, password)  => { return true },
 
         current_coin_info: {"objectName":"","is_claimable":false,"minimal_balance_for_asking_rewards":"0","ticker":"ETH","name":"Ethereum","paprika_id":"dash-dash","type":"ERC-20","balance":"0.009","address":"0x6A0DFcC3442aB5B2A252cE028aC9516Ecd29b9fB","fiat_amount":"2.04","explorer_url":"https://explorer.dash.org/","transactions":[{"objectName":"","received":true,"blockheight":9722988,"confirmations":645576,"timestamp":1584902263,"amount":"0.009","amount_fiat":"2.04","date":"22 Mar 2020, 09:37","tx_hash":"0x8140a94a5701167c88a015ec6e4dc26ef256335b81310c8a1946f175b06a2248","fees":"0.000168","to":["0x6A0DFcC3442aB5B2A252cE028aC9516Ecd29b9fB"],"from":["0x6c5CB1014e292624afDD0C36eBE3f1A870D12f7e"]}],"tx_state":"InProgress","transactions_left":0,"blocks_left":4414770,"tx_current_block":10368563},
