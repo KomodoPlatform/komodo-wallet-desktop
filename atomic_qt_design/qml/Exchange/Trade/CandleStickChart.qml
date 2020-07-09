@@ -389,6 +389,7 @@ ChartView {
         flat: true
         font.pixelSize: Style.textSizeSmall3
 
+        currentIndex: 5 // 1h
         model: General.chart_times
 
         property bool initialized: false
