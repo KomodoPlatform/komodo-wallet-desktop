@@ -23,7 +23,6 @@ Item {
 
     property string mm2_version: ''
     property var fiats: API.get().get_available_fiats()
-    property string api_fiat: API.get().fiat
 
     InnerBackground {
         id: layout_background
@@ -46,21 +45,11 @@ Item {
 
                 property bool initialized: false
                 field.onCurrentIndexChanged: {
-                    if(initialized) API.get().fiat = fiats[field.currentIndex]
+                    if(initialized) API.get().current_currency = fiats[field.currentIndex]
                 }
                 Component.onCompleted: {
-                    field.currentIndex = fiats.indexOf(API.get().fiat)
+                    field.currentIndex = fiats.indexOf(API.get().current_currency)
                     initialized = true
-                }
-
-                Connections {
-                    target: root
-
-                    function onApi_fiatChanged() {
-                        const target_index = fiats.indexOf(api_fiat)
-                        if(combo_fiat.field.currentIndex !== target_index)
-                            combo_fiat.field.currentIndex = target_index
-                    }
                 }
             }
 

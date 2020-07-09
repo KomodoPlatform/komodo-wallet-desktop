@@ -24,7 +24,7 @@ DefaultModal {
         // Amount
         TextWithTitle {
             title: API.get().empty_string + (qsTr("Amount"))
-            text: API.get().empty_string + (General.formatCrypto(details.received, details.amount, API.get().current_coin_info.ticker, details.amount_fiat, API.get().fiat))
+            text: API.get().empty_string + (General.formatCrypto(details.received, details.amount, API.get().current_coin_info.ticker, details.amount_fiat, API.get().current_currency))
             value_color: details.received ? Style.colorGreen : Style.colorRed
         }
 

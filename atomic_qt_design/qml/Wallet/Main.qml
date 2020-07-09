@@ -91,7 +91,7 @@ Item {
                     }
 
                     DefaultText {
-                        text_value: API.get().empty_string + (General.formatFiat("", API.get().current_coin_info.fiat_amount, API.get().fiat))
+                        text_value: API.get().empty_string + (General.formatFiat("", API.get().current_coin_info.current_currency_amount, API.get().current_currency))
                         Layout.alignment: Qt.AlignLeft
                         font.pixelSize: name.font.pixelSize
                     }
@@ -121,7 +121,7 @@ Item {
                             const c = General.getCoin(portfolio_coins, API.get().current_coin_info.ticker)
                             if(c === undefined) return "-"
 
-                            return API.get().empty_string + (General.formatFiat('', c.price, API.get().fiat))
+                            return API.get().empty_string + (General.formatFiat('', c.price, API.get().current_currency))
                         }
 
                         Layout.alignment: Qt.AlignLeft
@@ -143,7 +143,7 @@ Item {
                     DefaultText {
                         text_value: {
                             const c = General.getCoin(portfolio_coins, API.get().current_coin_info.ticker)
-                            const fiat = API.get().fiat
+                            const fiat = API.get().current_currency
                             if(!General.validFiatRates(c, fiat)) return "-"
 
                             return API.get().empty_string + (General.formatPercent(c.rates[fiat].percent_change_24h))
@@ -154,7 +154,7 @@ Item {
                             const c = General.getCoin(portfolio_coins, API.get().current_coin_info.ticker)
 
                             const def_color = Style.colorWhite4
-                            const fiat = API.get().fiat
+                            const fiat = API.get().current_currency
                             if(!General.validFiatRates(c, fiat)) return def_color
 
                             const v = parseFloat(c.rates[fiat].percent_change_24h)

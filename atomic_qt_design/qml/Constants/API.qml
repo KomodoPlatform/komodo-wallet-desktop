@@ -28,8 +28,9 @@ QtObject {
 
         balance_fiat_all: "12345678.90",
 
-        fiat: "EUR",
+        current_currency: "EUR",
         get_available_fiats: () => ["USD", "EUR"],
+        get_available_currencies: () => ["EUR", "BTC", "KMD"],
 
         lang: "en",
         get_available_langs: () => ["en", "fr", "tr"],
