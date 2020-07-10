@@ -58,7 +58,8 @@ RowLayout {
             Layout.topMargin: 10
             Layout.bottomMargin: Layout.topMargin
             Layout.alignment: Qt.AlignHCenter
-            text_value: API.get().empty_string + ((price_diff > 0 ? qsTr("Expensive") : qsTr("Expedient")) + ":&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" + qsTr("%1 compared to CEX", "PRICE_DIFF%").arg("<b>" + General.formatPercent(limitDigits(price_diff)) + "</b>"))
+            color: price_diff <= 0 ? Style.colorGreen : Style.colorRed
+            text_value: API.get().empty_string + ((price_diff > 0 ? qsTr("Expensive") : qsTr("Expedient")) + ":&nbsp;&nbsp;&nbsp;&nbsp;" + qsTr("%1 compared to CEX", "PRICE_DIFF%").arg("<b>" + General.formatPercent(limitDigits(price_diff)) + "</b>"))
             font.pixelSize: fontSize
         }
 
