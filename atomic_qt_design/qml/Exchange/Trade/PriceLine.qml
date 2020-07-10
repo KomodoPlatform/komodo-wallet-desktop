@@ -58,7 +58,7 @@ RowLayout {
             Layout.topMargin: 10
             Layout.bottomMargin: Layout.topMargin
             Layout.alignment: Qt.AlignHCenter
-            text_value: API.get().empty_string + (qsTr("Expedient") + "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" + qsTr("%1 compared to CEX", "EXPEDIENT").arg("<b>" + General.formatPercent(limitDigits(expedient)) + "</b>"))
+            text_value: API.get().empty_string + ((expedient > 0 ? qsTr("Expensive") : qsTr("Expedient")) + ":&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" + qsTr("%1 compared to CEX", "EXPEDIENT").arg("<b>" + General.formatPercent(limitDigits(expedient)) + "</b>"))
             font.pixelSize: fontSize
         }
 
