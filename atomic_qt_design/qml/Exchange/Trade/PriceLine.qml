@@ -77,7 +77,7 @@ RowLayout {
                     anchors.fill: parent
                     anchors.margins: 0
                     start_color: Style.colorGreen
-                    end_color: Style.colorBlue
+                    end_color: Style.colorRed
                 }
 
                 Rectangle {
