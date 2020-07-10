@@ -194,11 +194,11 @@ QtObject {
             if(orders[key].my_info === null) {
                 const o = orders[key]
                 orders[key].my_info = {
-                                            my_coin: is_maker ? o.maker_coin : o.taker_coin,
-                                            my_amount: is_maker ? o.maker_amount : o.taker_amount,
-                                            other_coin: is_maker ? o.taker_coin : o.maker_coin,
-                                            other_amount: is_maker ? o.taker_amount : o.maker_amount,
-                                        }
+                    my_coin: is_maker ? o.maker_coin : o.taker_coin,
+                    my_amount: is_maker ? o.maker_amount : o.taker_amount,
+                    other_coin: is_maker ? o.taker_coin : o.maker_coin,
+                    other_amount: is_maker ? o.taker_amount : o.maker_amount,
+                }
             }
         })
 
