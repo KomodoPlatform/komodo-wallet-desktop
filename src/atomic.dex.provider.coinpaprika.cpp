@@ -100,11 +100,29 @@ namespace
         const t_float_50 current_price_f(price);
         const t_float_50 final_price       = amount_f * current_price_f;
         std::size_t      default_precision = atomic_dex::is_this_currency_a_fiat(cfg, currency) ? 2 : 8;
+        std::string      result;
+
         if (auto final_price_str = final_price.str(default_precision, std::ios_base::fixed); final_price_str == "0.00" && final_price > 0.00000000)
         {
-            return final_price.str(default_precision);
+            const auto retry = [&result, &final_price, &default_precision]() { result = final_price.str(default_precision, std::ios_base::fixed); };
+
+            result = final_price.str(default_precision);
+            if (result.find("e") != std::string::npos)
+            {
+                //! We have scientific notations lets get ride of that
+                do
+                {
+                    default_precision += 1;
+                    spdlog::debug("retrying with precision {}, result {}", default_precision, result);
+                    retry();
+                } while (t_float_50(result) <= 0);
+            }
         }
-        std::string result = final_price.str(default_precision, std::ios_base::fixed);
+        else
+        {
+            result = final_price.str(default_precision, std::ios_base::fixed);
+        }
+
         boost::trim_right_if(result, boost::is_any_of("0"));
         boost::trim_right_if(result, boost::is_any_of("."));
         return result;

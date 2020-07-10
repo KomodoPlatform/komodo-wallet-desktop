@@ -1027,6 +1027,7 @@ namespace atomic_dex
     {
         QVariantMap out;
         auto        swaps = get_mm2().get_swaps();
+        //nlohmann::json out_j = nlohmann::json::object();
 
         for (auto& swap: swaps.swaps)
         {
@@ -1043,9 +1044,12 @@ namespace atomic_dex
                 {"events", swap.events},
                 {"my_info", swap.my_info}};
 
+
+            //out_j[swap.uuid] = j2;
             auto out_swap = QJsonDocument::fromJson(QString::fromStdString(j2.dump()).toUtf8());
             out.insert(QString::fromStdString(swap.uuid), out_swap.toVariant());
         }
+        //spdlog::debug("{}", out_j.dump(4));
         return out;
     }
 
