@@ -16,14 +16,8 @@ FloatingBackground {
 
     property bool recursive_update: false
 
-    function getFiatValue(v, price) {
-        if(v === null || v === undefined || v === "") return 0
-
-        return parseFloat(price) * parseFloat(v)
-    }
-
-    function getFiatText(v, price) {
-        return General.formatFiat('', General.formatDouble(getFiatValue(v, price)), API.get().current_currency) + " " +  General.cex_icon
+    function getFiatText(v, ticker) {
+        return General.formatFiat('', v === '' ? 0 : API.get().get_fiat_from_amount(ticker, v), API.get().current_currency) + " " +  General.cex_icon
     }
 
     function update(new_ticker) {
@@ -325,7 +319,7 @@ FloatingBackground {
                         anchors.top: input_volume.bottom
                         anchors.topMargin: 5
 
-                        text_value: getFiatText(input_volume.field.text, my_side ? cex_price_base_fiat : cex_price_rel_fiat)
+                        text_value: getFiatText(input_volume.field.text, getTicker())
                         font.pixelSize: input_volume.field.font.pixelSize
 
                         CexInfoTrigger {}
@@ -439,7 +433,7 @@ FloatingBackground {
                                                                   // Fiat part
                                                                   (" ("+
                                                                       getFiatText(!hasEthFees() ? curr_trade_info.tx_fee : General.formatDouble((parseFloat(curr_trade_info.tx_fee) + parseFloat(curr_trade_info.erc_fees))),
-                                                                                  curr_trade_info.is_ticker_of_fees_eth ? cex_price_eth_fiat : cex_price_base_fiat)
+                                                                                  curr_trade_info.is_ticker_of_fees_eth ? 'ETH' : getTicker(true))
                                                                    +")")
 
 
@@ -454,7 +448,7 @@ FloatingBackground {
 
                                                                   // Fiat part
                                                                   (" ("+
-                                                                      getFiatText(curr_trade_info.trade_fee, cex_price_base_fiat)
+                                                                      getFiatText(curr_trade_info.trade_fee, getTicker(true))
                                                                    +")")
                                                                   )
                             font.pixelSize: tx_fee_text.font.pixelSize
