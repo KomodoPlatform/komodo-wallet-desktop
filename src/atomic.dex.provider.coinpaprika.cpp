@@ -282,38 +282,38 @@ namespace atomic_dex
     }
 
     std::string
-    coinpaprika_provider::get_price_in_fiat_from_tx(const std::string& fiat, const std::string& ticker, const tx_infos& tx, std::error_code& ec) const noexcept
+    coinpaprika_provider::get_price_as_currency_from_tx(const std::string& currency, const std::string& ticker, const tx_infos& tx, std::error_code& ec) const noexcept
     {
         if (m_mm2_instance.get_coin_info(ticker).coinpaprika_id == "test-coin")
         {
             return "0.00";
         }
         const auto amount        = tx.am_i_sender ? tx.my_balance_change.substr(1) : tx.my_balance_change;
-        const auto current_price = get_rate_conversion(fiat, ticker, ec);
+        const auto current_price = get_rate_conversion(currency, ticker, ec);
         if (ec)
         {
             return "0.00";
         }
-        return compute_result(amount, current_price, fiat);
+        return compute_result(amount, current_price, currency);
     }
 
     std::string
-    coinpaprika_provider::get_price_in_fiat_from_fees(
-        const std::string& fiat, const std::string& ticker, const std::string& amount, std::error_code& ec) const noexcept
+    coinpaprika_provider::get_price_as_currency_from_fees(
+        const std::string& currency, const std::string& ticker, const std::string& amount, std::error_code& ec) const noexcept
     {
         if (m_mm2_instance.get_coin_info(ticker).coinpaprika_id == "test-coin")
         {
             return "0.00";
         }
 
-        const auto current_price = get_rate_conversion(fiat, ticker, ec);
+        const auto current_price = get_rate_conversion(currency, ticker, ec);
 
         if (ec)
         {
             return "0.00";
         }
 
-        return compute_result(amount, current_price, fiat);
+        return compute_result(amount, current_price, currency);
     }
 
     std::string
