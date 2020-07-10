@@ -92,6 +92,20 @@ namespace
             rate_providers.insert_or_assign(current_coin.ticker, "1.00");
         }
     }
+
+    std::string
+    compute_result(const std::string& amount, const std::string& price, const std::string& fiat)
+    {
+        const t_float_50 amount_f(amount);
+        const t_float_50 current_price_f(price);
+        const t_float_50 final_price       = amount_f * current_price_f;
+        std::size_t      default_precision = (fiat == "USD" || fiat == "EUR") ? 2 : 8;
+        if (auto final_price_str = final_price.str(default_precision, std::ios_base::fixed); final_price_str == "0.00" && final_price > 0.00000000)
+        {
+            return final_price.str(default_precision);
+        }
+        return final_price.str(default_precision, std::ios_base::fixed);
+    }
 } // namespace
 
 namespace atomic_dex
@@ -280,15 +294,26 @@ namespace atomic_dex
         {
             return "0.00";
         }
-        const t_float_50 amount_f(amount);
-        const t_float_50 current_price_f(current_price);
-        const t_float_50 final_price       = amount_f * current_price_f;
-        std::size_t      default_precision = (fiat == "USD" || fiat == "EUR") ? 2 : 8;
-        if (auto final_price_str = final_price.str(default_precision, std::ios_base::fixed); final_price_str == "0.00" && final_price > 0.00000000)
+        return compute_result(amount, current_price, fiat);
+    }
+
+    std::string
+    coinpaprika_provider::get_price_in_fiat_from_fees(
+        const std::string& fiat, const std::string& ticker, const std::string& amount, std::error_code& ec) const noexcept
+    {
+        if (m_mm2_instance.get_coin_info(ticker).coinpaprika_id == "test-coin")
         {
-            return final_price.str(default_precision);
+            return "0.00";
         }
-        return final_price.str(default_precision, std::ios_base::fixed);
+
+        const auto current_price = get_rate_conversion(fiat, ticker, ec);
+
+        if (ec)
+        {
+            return "0.00";
+        }
+
+        return compute_result(amount, current_price, fiat);
     }
 
     std::string
@@ -447,5 +472,4 @@ namespace atomic_dex
         boost::trim_right_if(result_str, boost::is_any_of("."));
         return result_str;
     }
-
 } // namespace atomic_dex
