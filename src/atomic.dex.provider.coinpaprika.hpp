@@ -22,6 +22,7 @@
 //! Project Headers
 #include "atomic.dex.events.hpp"
 #include "atomic.dex.mm2.hpp"
+#include "atomic.dex.cfg.hpp"
 #include "atomic.dex.provider.coinpaprika.api.hpp"
 
 namespace atomic_dex
@@ -41,6 +42,7 @@ namespace atomic_dex
 
         //! Private fields
         mm2&                         m_mm2_instance;
+        atomic_dex::cfg&             m_cfg;
         t_providers_registry         m_usd_rate_providers{};
         t_providers_registry         m_eur_rate_providers{};
         t_providers_registry         m_btc_rate_providers{};
@@ -53,7 +55,7 @@ namespace atomic_dex
 
       public:
         //! Constructor
-        coinpaprika_provider(entt::registry& registry, mm2& mm2_instance);
+        coinpaprika_provider(entt::registry& registry, mm2& mm2_instance, atomic_dex::cfg& config);
 
         //! Destructor
         ~coinpaprika_provider() noexcept final;

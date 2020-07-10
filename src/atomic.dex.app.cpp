@@ -196,7 +196,7 @@ namespace atomic_dex
         if (this->m_need_a_full_refresh_of_mm2)
         {
             auto& mm2_s = system_manager_.create_system<mm2>();
-            system_manager_.create_system<coinpaprika_provider>(mm2_s);
+            system_manager_.create_system<coinpaprika_provider>(mm2_s, m_config);
             system_manager_.create_system<cex_prices_provider>(mm2_s);
 
             connect_signals();
@@ -398,7 +398,7 @@ namespace atomic_dex
     {
         //! MM2 system need to be created before the GUI and give the instance to the gui
         auto& mm2_system = system_manager_.create_system<mm2>();
-        system_manager_.create_system<coinpaprika_provider>(mm2_system);
+        system_manager_.create_system<coinpaprika_provider>(mm2_system, m_config);
         system_manager_.create_system<cex_prices_provider>(mm2_system);
 
         connect_signals();
