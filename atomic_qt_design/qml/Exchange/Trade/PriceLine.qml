@@ -9,7 +9,7 @@ import "../../Constants"
 RowLayout {
     readonly property double price: !orderIsSelected() ? getCalculatedPrice() : preffered_order.price
     readonly property bool invalid_cex_price: parseFloat(cex_price) === 0
-    readonly property double expedient: invalid_cex_price ? 0 : 100 * (1 - parseFloat(price) / parseFloat(cex_price))
+    readonly property double price_diff: invalid_cex_price ? 0 : 100 * (1 - parseFloat(price) / parseFloat(cex_price))
 
     readonly property int fontSize: Style.textSizeSmall2
     readonly property int fontSizeBigger: Style.textSizeSmall4
@@ -49,27 +49,27 @@ RowLayout {
     }
 
 
-    // Expedient
+    // Price Comparison
     ColumnLayout {
         visible: price_entered && !invalid_cex_price
 
         DefaultText {
-            id: expedient_text
+            id: price_diff_text
             Layout.topMargin: 10
             Layout.bottomMargin: Layout.topMargin
             Layout.alignment: Qt.AlignHCenter
-            text_value: API.get().empty_string + ((expedient > 0 ? qsTr("Expensive") : qsTr("Expedient")) + ":&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" + qsTr("%1 compared to CEX", "EXPEDIENT").arg("<b>" + General.formatPercent(limitDigits(expedient)) + "</b>"))
+            text_value: API.get().empty_string + ((price_diff > 0 ? qsTr("Expensive") : qsTr("Expedient")) + ":&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" + qsTr("%1 compared to CEX", "PRICE_DIFF%").arg("<b>" + General.formatPercent(limitDigits(price_diff)) + "</b>"))
             font.pixelSize: fontSize
         }
 
         RowLayout {
             DefaultText {
-                text_value: API.get().empty_string + (General.formatPercent(limitDigits(Math.min(-line_scale, expedient))))
+                text_value: API.get().empty_string + (General.formatPercent(limitDigits(Math.min(-line_scale, price_diff))))
                 font.pixelSize: fontSize
             }
 
             Rectangle {
-                id: expedient_line
+                id: price_diff_line
                 width: 200
                 height: 6
 
@@ -83,15 +83,15 @@ RowLayout {
                 Rectangle {
                     id: vertical_line
                     width: 4
-                    height: expedient_line.height * 2
+                    height: price_diff_line.height * 2
                     anchors.verticalCenter: parent.verticalCenter
                     anchors.horizontalCenter: parent.horizontalCenter
-                    anchors.horizontalCenterOffset: 0.5 * expedient_line.width * Math.min(Math.max(expedient / line_scale, -1), 1)
+                    anchors.horizontalCenterOffset: 0.5 * price_diff_line.width * Math.min(Math.max(price_diff / line_scale, -1), 1)
                 }
             }
 
             DefaultText {
-                text_value: API.get().empty_string + (General.formatPercent(limitDigits(Math.max(line_scale, expedient))))
+                text_value: API.get().empty_string + (General.formatPercent(limitDigits(Math.max(line_scale, price_diff))))
                 font.pixelSize: fontSize
             }
         }
