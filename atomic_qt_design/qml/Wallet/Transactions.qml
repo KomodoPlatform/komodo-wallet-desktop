@@ -68,7 +68,7 @@ DefaultListView {
 
         // Fiat
         DefaultText {
-            text_value: API.get().empty_string + (General.formatFiat(model.modelData.received, model.modelData.amount_fiat, API.get().fiat))
+            text_value: API.get().empty_string + (General.formatFiat(model.modelData.received, model.modelData.amount_fiat, API.get().current_currency))
             font.pixelSize: description.font.pixelSize
             anchors.verticalCenter: parent.verticalCenter
             anchors.left: parent.left

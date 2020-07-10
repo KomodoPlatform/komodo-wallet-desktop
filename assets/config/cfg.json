@@ -5,11 +5,15 @@
     "fr",
     "tr"
   ],
+  "current_currency": "USD",
   "current_fiat": "USD",
   "available_fiat": [
     "USD",
+    "EUR"
+  ],
+  "possible_currencies": [
+    "USD",
     "BTC",
-    "EUR",
     "KMD"
   ]
 }
