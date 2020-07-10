@@ -85,10 +85,16 @@ QtObject {
         return list.find(c => c.ticker === ticker)
     }
 
+    function validFiatRates(data, fiat) {
+        return data && data.rates && data.rates[fiat]
+    }
+
     function formatFiat(received, amount, fiat) {
         const symbols = {
             "USD": "$",
-            "EUR": "€"
+            "EUR": "€",
+            "BTC": "₿",
+            "KMD": "KMD",
         }
 
         return diffPrefix(received) + symbols[fiat] + " " + amount
@@ -107,9 +113,17 @@ QtObject {
 
     readonly property int amountPrecision: 8
     readonly property int sliderDigitLimit: 9
-    
+    readonly property int recommendedPrecision: -1337
+
+    function getRecommendedPrecision(v) {
+        return Math.min(Math.max(sliderDigitLimit - v.toString().split(".")[0].length, 0), amountPrecision)
+    }
+
     function formatDouble(v, precision) {
+        if(precision === recommendedPrecision) precision = getRecommendedPrecision(v)
+
         if(precision === 0) return parseInt(v).toString()
+
         // Remove more than n decimals, then convert to string without trailing zeros
         return parseFloat(v).toFixed(precision || amountPrecision).replace(/\.?0+$/,"")
     }

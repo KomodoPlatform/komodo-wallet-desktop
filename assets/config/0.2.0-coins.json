@@ -26,18 +26,18 @@
   "BCH": {
     "active": false,
     "coin": "BCH",
-    "coingecko_id": "bitcoin",
+    "coingecko_id": "bitcoin-cash",
     "coinpaprika_id": "bch-bitcoin-cash",
     "currently_enabled": false,
     "electrum": [
       {
-        "url": "bch.imaginary.cash:50001"
+        "url": "electrum1.cipig.net:10055"
       },
       {
-        "url": "electrumx-bch.cryptonermal.net:50001"
+        "url": "electrum2.cipig.net:10055"
       },
       {
-        "url": "bch0.kister.net:50001"
+        "url": "electrum3.cipig.net:10055"
       }
     ],
     "explorer_url": [
@@ -95,6 +95,24 @@
     "active": false,
     "currently_enabled": false
   },
+  "BUSD": {
+    "coin": "BUSD",
+    "name": "Binance USD",
+    "coinpaprika_id": "busd-binance-usd",
+    "coingecko_id": "binance-usd",
+    "eth_nodes": [
+      "http://eth1.cipig.net:8555",
+      "http://eth2.cipig.net:8555",
+      "http://eth3.cipig.net:8555"
+    ],
+    "explorer_url": [
+      "https://etherscan.io/"
+    ],
+    "type": "ERC-20",
+    "is_erc_20": true,
+    "active": false,
+    "currently_enabled": false
+  },
   "CRYPTO": {
     "coin": "CRYPTO",
     "name": "CRYPTO",
@@ -116,6 +134,24 @@
     "explorer_url": [
       "https://crypto.explorer.dexstats.info/"
     ],
+    "active": false,
+    "currently_enabled": false
+  },
+  "DAI": {
+    "coin": "DAI",
+    "name": "Dai",
+    "coinpaprika_id": "dai-dai",
+    "coingecko_id": "dai",
+    "eth_nodes": [
+      "http://eth1.cipig.net:8555",
+      "http://eth2.cipig.net:8555",
+      "http://eth3.cipig.net:8555"
+    ],
+    "explorer_url": [
+      "https://etherscan.io/"
+    ],
+    "type": "ERC-20",
+    "is_erc_20": true,
     "active": false,
     "currently_enabled": false
   },
@@ -268,13 +304,13 @@
     "currently_enabled": false,
     "electrum": [
       {
-        "url": "electrum.ltc.xurious.com:50001"
+        "url": "electrum1.cipig.net:10063"
       },
       {
-        "url": "ltc.rentonisk.com:50001"
+        "url": "electrum2.cipig.net:10063"
       },
       {
-        "url": "electrum-ltc.bysh.me:50001"
+        "url": "electrum3.cipig.net:10063"
       }
     ],
     "explorer_url": [
@@ -307,6 +343,24 @@
     "is_erc_20": false,
     "type": "Smart Chain",
     "name": "MCL"
+  },
+  "PAX": {
+    "coin": "PAX",
+    "name": "Paxos Standard",
+    "coinpaprika_id": "pax-paxos-standard-token",
+    "coingecko_id": "paxos-standard",
+    "eth_nodes": [
+      "http://eth1.cipig.net:8555",
+      "http://eth2.cipig.net:8555",
+      "http://eth3.cipig.net:8555"
+    ],
+    "explorer_url": [
+      "https://etherscan.io/"
+    ],
+    "type": "ERC-20",
+    "is_erc_20": true,
+    "active": false,
+    "currently_enabled": false
   },
   "ETH": {
     "active": false,
