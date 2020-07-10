@@ -57,12 +57,6 @@ Item {
         cex_price_base_fiat = API.get().get_cex_rates(base, API.get().current_currency)
         cex_price_rel_fiat = API.get().get_cex_rates(rel, API.get().current_currency)
         cex_price_eth_fiat = API.get().get_cex_rates("ETH", API.get().current_currency)
-
-        console.log("Updates CEX Rates: " + base + "/" + rel + ": " + cex_price +
-                    "   - " + base + "/FIAT:" + cex_price_base_fiat +
-                    "   - " + rel + "/FIAT:" + cex_price_rel_fiat +
-                    "   - " + "ETH" + "/FIAT:" + cex_price_eth_fiat
-                    )
     }
 
     readonly property var empty_order: ({ "price": "0","price_denom":"0","price_numer":"0","volume":"0"})

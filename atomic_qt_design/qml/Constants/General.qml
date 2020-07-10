@@ -185,9 +185,21 @@ QtObject {
         let orders = all_orders
 
         Object.keys(orders).map((key, index) => {
-          orders[key].uuid = key
-          orders[key].is_recent_swap = true
-          orders[key].am_i_maker = orders[key].type.toLowerCase() === 'maker'
+            orders[key].uuid = key
+            orders[key].is_recent_swap = true
+
+            const is_maker = orders[key].type.toLowerCase() === 'maker'
+            orders[key].am_i_maker = is_maker
+
+            if(orders[key].my_info === null) {
+                const o = orders[key]
+                orders[key].my_info = {
+                                            my_coin: is_maker ? o.maker_coin : o.taker_coin,
+                                            my_amount: is_maker ? o.maker_amount : o.taker_amount,
+                                            other_coin: is_maker ? o.taker_coin : o.maker_coin,
+                                            other_amount: is_maker ? o.taker_amount : o.maker_amount,
+                                        }
+            }
         })
 
         let arr = Object.values(orders).sort((a, b) => b.events[b.events.length-1].timestamp - a.events[a.events.length-1].timestamp)
