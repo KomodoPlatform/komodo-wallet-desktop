@@ -8,7 +8,8 @@ import "../../Constants"
 // Price
 RowLayout {
     readonly property double price: !orderIsSelected() ? getCalculatedPrice() : preffered_order.price
-    readonly property double expedient : 100 * (1 - parseFloat(price) / parseFloat(cex_price))
+    readonly property bool invalid_cex_price: parseFloat(cex_price) === 0
+    readonly property double expedient: invalid_cex_price ? 0 : 100 * (1 - parseFloat(price) / parseFloat(cex_price))
 
     readonly property int fontSize: Style.textSizeSmall2
     readonly property int fontSizeBigger: Style.textSizeSmall4
@@ -50,7 +51,7 @@ RowLayout {
 
     // Expedient
     ColumnLayout {
-        visible: price_entered
+        visible: price_entered && !invalid_cex_price
 
         DefaultText {
             id: expedient_text
@@ -102,6 +103,7 @@ RowLayout {
 
     // CEXchange
     ColumnLayout {
+        visible: !invalid_cex_price
         DefaultText {
             Layout.alignment: Qt.AlignHCenter
             text_value: API.get().empty_string + (General.cex_icon + " " + qsTr("CEXchange rate"))
