@@ -32,18 +32,18 @@ RowLayout {
             font.pixelSize: fontSize
         }
 
-        // Price
-        DefaultText {
-            Layout.alignment: Qt.AlignHCenter
-            text_value: API.get().empty_string + ("1 " + getTicker(true) + " = " + General.formatCrypto("", price, getTicker(false)))
-            font.pixelSize: fontSizeBigger
-            font.bold: true
-        }
-
         // Price reversed
         DefaultText {
             Layout.alignment: Qt.AlignHCenter
             text_value: API.get().empty_string + ("1 " + getTicker(false) + " = " + General.formatCrypto("", General.formatDouble(1 / parseFloat(price)), getTicker(true)))
+            font.pixelSize: fontSizeBigger
+            font.bold: true
+        }
+
+        // Price
+        DefaultText {
+            Layout.alignment: Qt.AlignHCenter
+            text_value: API.get().empty_string + ("1 " + getTicker(true) + " = " + General.formatCrypto("", price, getTicker(false)))
             font.pixelSize: fontSize
         }
     }
@@ -113,18 +113,18 @@ RowLayout {
             CexInfoTrigger {}
         }
 
-        // Price
-        DefaultText {
-            Layout.alignment: Qt.AlignHCenter
-            text_value: API.get().empty_string + ("1 " + getTicker(true) + " = " + General.formatCrypto("", cex_price, getTicker(false)))
-            font.pixelSize: fontSizeBigger
-            font.bold: true
-        }
-
         // Price reversed
         DefaultText {
             Layout.alignment: Qt.AlignHCenter
             text_value: API.get().empty_string + ("1 " + getTicker(false) + " = " + General.formatCrypto("", General.formatDouble(1 / parseFloat(cex_price)), getTicker(true)))
+            font.pixelSize: fontSizeBigger
+            font.bold: true
+        }
+
+        // Price
+        DefaultText {
+            Layout.alignment: Qt.AlignHCenter
+            text_value: API.get().empty_string + ("1 " + getTicker(true) + " = " + General.formatCrypto("", cex_price, getTicker(false)))
             font.pixelSize: fontSize
         }
     }
