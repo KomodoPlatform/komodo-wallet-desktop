@@ -23,7 +23,7 @@ FloatingBackground {
     }
 
     function getFiatText(v, price) {
-        return General.formatFiat('', General.formatDouble(getFiatValue(v, price)), API.get().fiat) + " " +  General.cex_icon
+        return General.formatFiat('', General.formatDouble(getFiatValue(v, price)), API.get().current_currency) + " " +  General.cex_icon
     }
 
     function update(new_ticker) {

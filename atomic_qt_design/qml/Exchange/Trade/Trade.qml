@@ -54,9 +54,9 @@ Item {
     property string cex_price_eth_fiat
     function updateCexPrice(base, rel) {
         cex_price = API.get().get_cex_rates(base, rel)
-        cex_price_base_fiat = API.get().get_cex_rates(base, API.get().fiat)
-        cex_price_rel_fiat = API.get().get_cex_rates(rel, API.get().fiat)
-        cex_price_eth_fiat = API.get().get_cex_rates("ETH", API.get().fiat)
+        cex_price_base_fiat = API.get().get_cex_rates(base, API.get().current_currency)
+        cex_price_rel_fiat = API.get().get_cex_rates(rel, API.get().current_currency)
+        cex_price_eth_fiat = API.get().get_cex_rates("ETH", API.get().current_currency)
 
         console.log("Updates CEX Rates: " + base + "/" + rel + ": " + cex_price +
                     "   - " + base + "/FIAT:" + cex_price_base_fiat +
