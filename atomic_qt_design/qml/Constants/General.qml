@@ -115,8 +115,12 @@ QtObject {
     readonly property int sliderDigitLimit: 9
     readonly property int recommendedPrecision: -1337
 
+    function getDigitCount(v) {
+        return v.toString().replace("-", "").split(".")[0].length
+    }
+
     function getRecommendedPrecision(v) {
-        return Math.min(Math.max(sliderDigitLimit - v.toString().split(".")[0].length, 0), amountPrecision)
+        return Math.min(Math.max(sliderDigitLimit - getDigitCount(v), 0), amountPrecision)
     }
 
     function formatDouble(v, precision) {

@@ -13,9 +13,13 @@ RowLayout {
 
     readonly property int fontSize: Style.textSizeSmall2
     readonly property int fontSizeBigger: Style.textSizeSmall4
-    readonly property int line_scale: 10
+    readonly property int line_scale: getComparisonScale(price_diff)
 
     readonly property bool price_entered: hasValidPrice()
+
+    function getComparisonScale(value) {
+        return Math.min(Math.pow(10, General.getDigitCount(value)), 1000000000)
+    }
 
     function limitDigits(value) {
         return parseFloat(value.toFixed(2))
@@ -65,7 +69,7 @@ RowLayout {
 
         RowLayout {
             DefaultText {
-                text_value: API.get().empty_string + (General.formatPercent(limitDigits(Math.min(-line_scale, price_diff))))
+                text_value: API.get().empty_string + (General.formatPercent(line_scale))
                 font.pixelSize: fontSize
             }
 
@@ -92,7 +96,7 @@ RowLayout {
             }
 
             DefaultText {
-                text_value: API.get().empty_string + (General.formatPercent(limitDigits(Math.max(line_scale, price_diff))))
+                text_value: API.get().empty_string + (General.formatPercent(-line_scale))
                 font.pixelSize: fontSize
             }
         }
