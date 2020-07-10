@@ -302,7 +302,7 @@ namespace atomic_dex
     }
 
     std::string
-    coinpaprika_provider::get_price_as_currency_from_fees(
+    coinpaprika_provider::get_price_as_currency_from_amount(
         const std::string& currency, const std::string& ticker, const std::string& amount, std::error_code& ec) const noexcept
     {
         if (m_mm2_instance.get_coin_info(ticker).coinpaprika_id == "test-coin")

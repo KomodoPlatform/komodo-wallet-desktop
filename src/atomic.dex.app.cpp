@@ -1174,6 +1174,13 @@ namespace atomic_dex
         std::error_code ec;
         return QString::fromStdString(get_paprika().get_cex_rates(base.toStdString(), rel.toStdString(), ec));
     }
+
+    QString
+    application::get_fiat_from_amount(const QString& ticker, const QString& amount)
+    {
+        std::error_code ec;
+        return QString::fromStdString(get_paprika().get_price_as_currency_from_amount(m_config.current_fiat, ticker.toStdString(), amount.toStdString(), ec));
+    }
 } // namespace atomic_dex
 
 //! OHLC Relative functions

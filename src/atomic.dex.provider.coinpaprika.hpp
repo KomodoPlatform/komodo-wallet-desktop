@@ -73,7 +73,7 @@ namespace atomic_dex
         std::string get_price_as_currency_from_tx(const std::string& currency, const std::string& ticker, const tx_infos& tx, std::error_code& ec) const noexcept;
 
         //! Get the price in currency from a fees.
-        std::string get_price_as_currency_from_fees(const std::string& currency, const std::string& ticker, const std::string& amount, std::error_code& ec) const noexcept;
+        std::string get_price_as_currency_from_amount(const std::string& currency, const std::string& ticker, const std::string& amount, std::error_code& ec) const noexcept;
 
         //! Get the cex rates base / rel eg: VRSC / KMD = price of usd VRSC / KMD price USD
         std::string get_cex_rates(const std::string& base, const std::string& rel, std::error_code& ec) const noexcept;
