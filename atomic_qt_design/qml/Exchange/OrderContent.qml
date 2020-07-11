@@ -38,6 +38,7 @@ Item {
         anchors.left: parent.left
         anchors.top: base_icon.bottom
         anchors.topMargin: 10
+        privacy: true
     }
 
     // Swap icon
@@ -56,6 +57,7 @@ Item {
         font.pixelSize: base_amount.font.pixelSize
         anchors.right: parent.right
         anchors.top: base_amount.top
+        privacy: true
     }
 
     // UUID
