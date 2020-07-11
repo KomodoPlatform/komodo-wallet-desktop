@@ -17,7 +17,7 @@ FloatingBackground {
     property bool recursive_update: false
 
     function getFiatText(v, ticker) {
-        return General.formatFiat('', v === '' ? 0 : API.get().get_fiat_from_amount(ticker, v), API.get().current_currency) + " " +  General.cex_icon
+        return General.formatFiat('', v === '' ? 0 : API.get().get_fiat_from_amount(ticker, v), API.get().current_fiat) + " " +  General.cex_icon
     }
 
     function update(new_ticker) {

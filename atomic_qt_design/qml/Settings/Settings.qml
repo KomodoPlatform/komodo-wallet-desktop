@@ -45,10 +45,10 @@ Item {
 
                 property bool initialized: false
                 field.onCurrentIndexChanged: {
-                    if(initialized) API.get().current_currency = fiats[field.currentIndex]
+                    if(initialized) API.get().current_fiat = fiats[field.currentIndex]
                 }
                 Component.onCompleted: {
-                    field.currentIndex = fiats.indexOf(API.get().current_currency)
+                    field.currentIndex = fiats.indexOf(API.get().current_fiat)
                     initialized = true
                 }
             }
