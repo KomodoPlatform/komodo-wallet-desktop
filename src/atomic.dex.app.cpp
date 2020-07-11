@@ -469,6 +469,23 @@ namespace atomic_dex
         }
     }
 
+    QString
+    application::get_current_fiat() const noexcept
+    {
+        return QString::fromStdString(this->m_config.current_fiat);
+    }
+
+    void
+    application::set_current_fiat(QString current_fiat) noexcept
+    {
+        if (current_fiat.toStdString() != m_config.current_fiat)
+        {
+            spdlog::info("change fiat {} to {}", m_config.current_fiat, current_fiat.toStdString());
+            atomic_dex::change_fiat(m_config, current_fiat.toStdString());
+            emit on_fiat_changed();
+        }
+    }
+
     void
     application::on_change_ticker_event(const change_ticker_event&) noexcept
     {
@@ -1027,7 +1044,7 @@ namespace atomic_dex
     {
         QVariantMap out;
         auto        swaps = get_mm2().get_swaps();
-        //nlohmann::json out_j = nlohmann::json::object();
+        // nlohmann::json out_j = nlohmann::json::object();
 
         for (auto& swap: swaps.swaps)
         {
@@ -1045,11 +1062,11 @@ namespace atomic_dex
                 {"my_info", swap.my_info}};
 
 
-            //out_j[swap.uuid] = j2;
+            // out_j[swap.uuid] = j2;
             auto out_swap = QJsonDocument::fromJson(QString::fromStdString(j2.dump()).toUtf8());
             out.insert(QString::fromStdString(swap.uuid), out_swap.toVariant());
         }
-        //spdlog::debug("{}", out_j.dump(4));
+        // spdlog::debug("{}", out_j.dump(4));
         return out;
     }
 

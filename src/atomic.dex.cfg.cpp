@@ -96,4 +96,12 @@ namespace atomic_dex
         }
         upgrade_cfg(config);
     }
+
+    void
+    change_fiat(cfg& config, const std::string& new_fiat)
+    {
+        config.current_fiat = new_fiat;
+        config.possible_currencies[0] = new_fiat;
+        upgrade_cfg(config);
+    }
 } // namespace atomic_dex
