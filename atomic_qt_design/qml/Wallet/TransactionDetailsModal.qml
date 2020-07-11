@@ -14,9 +14,13 @@ DefaultModal {
     }
 
     property var details
+    contentWidth: layout.width
 
     // Inside modal
     ColumnLayout {
+        id: layout
+        width: 700
+
         ModalHeader {
             title: API.get().empty_string + (qsTr("Transaction Details"))
         }
@@ -46,6 +50,7 @@ DefaultModal {
         TextWithTitle {
             title: API.get().empty_string + (qsTr("Transaction Hash"))
             text: API.get().empty_string + (details.tx_hash)
+            privacy: true
         }
 
         // Confirmations

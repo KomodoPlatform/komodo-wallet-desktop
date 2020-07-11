@@ -70,6 +70,7 @@ Item {
         color: Style.colorTheme2
         anchors.top: base_amount.bottom
         anchors.topMargin: base_amount.anchors.topMargin
+        privacy: is_placed_order
     }
 
     // Status Text
