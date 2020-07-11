@@ -27,6 +27,7 @@ ColumnLayout {
         delegate: DefaultText {
             text_value: API.get().empty_string + (model.modelData)
             color: Style.modalValueColor
+            privacy: true
         }
     }
 }
