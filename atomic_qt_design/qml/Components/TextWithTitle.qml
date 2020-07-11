@@ -8,6 +8,7 @@ ColumnLayout {
     property alias title: title.text
     property alias text: text.text_value
     property alias value_color: text.color
+    property alias privacy: text.privacy
 
     DefaultText {
         id: title
