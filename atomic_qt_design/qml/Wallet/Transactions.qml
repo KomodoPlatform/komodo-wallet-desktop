@@ -64,6 +64,7 @@ DefaultListView {
             anchors.left: parent.left
             anchors.leftMargin: parent.width * 0.25
             color: model.modelData.received ? Style.colorGreen : Style.colorRed
+            privacy: true
         }
 
         // Fiat
@@ -74,6 +75,7 @@ DefaultListView {
             anchors.left: parent.left
             anchors.leftMargin: parent.width * 0.45
             color: crypto_amount.color
+            privacy: true
         }
 
         // Fee
@@ -83,6 +85,7 @@ DefaultListView {
             anchors.verticalCenter: parent.verticalCenter
             anchors.left: parent.left
             anchors.leftMargin: parent.width * 0.575
+            privacy: true
         }
 
         // Date
@@ -92,6 +95,7 @@ DefaultListView {
             anchors.verticalCenter: parent.verticalCenter
             anchors.right: parent.right
             anchors.rightMargin: 20
+            privacy: true
         }
 
         HorizontalLine {
