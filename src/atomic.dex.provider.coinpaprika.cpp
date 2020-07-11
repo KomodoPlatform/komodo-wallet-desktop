@@ -92,13 +92,49 @@ namespace
             rate_providers.insert_or_assign(current_coin.ticker, "1.00");
         }
     }
+
+    std::string
+    compute_result(const std::string& amount, const std::string& price, const std::string& currency, atomic_dex::cfg& cfg)
+    {
+        const t_float_50 amount_f(amount);
+        const t_float_50 current_price_f(price);
+        const t_float_50 final_price       = amount_f * current_price_f;
+        std::size_t      default_precision = atomic_dex::is_this_currency_a_fiat(cfg, currency) ? 2 : 8;
+        std::string      result;
+
+        if (auto final_price_str = final_price.str(default_precision, std::ios_base::fixed); final_price_str == "0.00" && final_price > 0.00000000)
+        {
+            const auto retry = [&result, &final_price, &default_precision]() { result = final_price.str(default_precision, std::ios_base::fixed); };
+
+            result = final_price.str(default_precision);
+            if (result.find("e") != std::string::npos)
+            {
+                //! We have scientific notations lets get ride of that
+                do
+                {
+                    default_precision += 1;
+                    spdlog::debug("retrying with precision {}, result {}", default_precision, result);
+                    retry();
+                } while (t_float_50(result) <= 0);
+            }
+        }
+        else
+        {
+            result = final_price.str(default_precision, std::ios_base::fixed);
+        }
+
+        boost::trim_right_if(result, boost::is_any_of("0"));
+        boost::trim_right_if(result, boost::is_any_of("."));
+        return result;
+    }
 } // namespace
 
 namespace atomic_dex
 {
     namespace bm = boost::multiprecision;
 
-    coinpaprika_provider::coinpaprika_provider(entt::registry& registry, mm2& mm2_instance) : system(registry), m_mm2_instance(mm2_instance)
+    coinpaprika_provider::coinpaprika_provider(entt::registry& registry, mm2& mm2_instance, atomic_dex::cfg& cfg) :
+        system(registry), m_mm2_instance(mm2_instance), m_cfg(cfg)
     {
         spdlog::debug("{} l{} f[{}]", __FUNCTION__, __LINE__, fs::path(__FILE__).filename().string());
         disable();
@@ -131,7 +167,6 @@ namespace atomic_dex
         spdlog::debug("{} l{} f[{}]", __FUNCTION__, __LINE__, fs::path(__FILE__).filename().string());
 
         m_provider_rates_thread = std::thread([this]() {
-            // loguru::set_thread_name("paprika thread");
             spdlog::info("paprika thread started");
 
             using namespace std::chrono_literals;
@@ -268,27 +303,39 @@ namespace atomic_dex
     }
 
     std::string
-    coinpaprika_provider::get_price_in_fiat_from_tx(const std::string& fiat, const std::string& ticker, const tx_infos& tx, std::error_code& ec) const noexcept
+    coinpaprika_provider::get_price_as_currency_from_tx(
+        const std::string& currency, const std::string& ticker, const tx_infos& tx, std::error_code& ec) const noexcept
     {
         if (m_mm2_instance.get_coin_info(ticker).coinpaprika_id == "test-coin")
         {
             return "0.00";
         }
         const auto amount        = tx.am_i_sender ? tx.my_balance_change.substr(1) : tx.my_balance_change;
-        const auto current_price = get_rate_conversion(fiat, ticker, ec);
+        const auto current_price = get_rate_conversion(currency, ticker, ec);
         if (ec)
         {
             return "0.00";
         }
-        const t_float_50 amount_f(amount);
-        const t_float_50 current_price_f(current_price);
-        const t_float_50 final_price       = amount_f * current_price_f;
-        std::size_t      default_precision = (fiat == "USD" || fiat == "EUR") ? 2 : 8;
-        if (auto final_price_str = final_price.str(default_precision, std::ios_base::fixed); final_price_str == "0.00" && final_price > 0.00000000)
+        return compute_result(amount, current_price, currency, this->m_cfg);
+    }
+
+    std::string
+    coinpaprika_provider::get_price_as_currency_from_amount(
+        const std::string& currency, const std::string& ticker, const std::string& amount, std::error_code& ec) const noexcept
+    {
+        if (m_mm2_instance.get_coin_info(ticker).coinpaprika_id == "test-coin")
         {
-            return final_price.str(default_precision);
+            return "0.00";
         }
-        return final_price.str(default_precision, std::ios_base::fixed);
+
+        const auto current_price = get_rate_conversion(currency, ticker, ec);
+
+        if (ec)
+        {
+            return "0.00";
+        }
+
+        return compute_result(amount, current_price, currency, this->m_cfg);
     }
 
     std::string
@@ -447,5 +494,4 @@ namespace atomic_dex
         boost::trim_right_if(result_str, boost::is_any_of("."));
         return result_str;
     }
-
 } // namespace atomic_dex

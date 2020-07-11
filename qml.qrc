@@ -100,6 +100,7 @@
         <file>atomic_qt_design/qml/Exchange/Trade/Trade.qml</file>
         <file>atomic_qt_design/qml/Exchange/Trade/ConfirmTradeModal.qml</file>
         <file>atomic_qt_design/qml/Exchange/Trade/PriceLine.qml</file>
+        <file>atomic_qt_design/qml/Exchange/Trade/CexInfoTrigger.qml</file>
         <file>atomic_qt_design/qml/Exchange/Trade/OrderForm.qml</file>
         <file>atomic_qt_design/qml/Exchange/Trade/OrderReceiveModal.qml</file>
         <file>atomic_qt_design/qml/Exchange/Trade/OrderbookModal.qml</file>

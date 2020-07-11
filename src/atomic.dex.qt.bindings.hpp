@@ -465,7 +465,7 @@ namespace atomic_dex
         for (auto&& tx: transactions)
         {
             std::error_code ec;
-            auto            fiat_amount = QString::fromStdString(paprika.get_price_in_fiat_from_tx(fiat.toStdString(), ticker, tx, ec));
+            auto            fiat_amount = QString::fromStdString(paprika.get_price_as_currency_from_tx(fiat.toStdString(), ticker, tx, ec));
             out.append(to_qt_binding(std::move(tx), parent, fiat_amount));
         }
         return out;

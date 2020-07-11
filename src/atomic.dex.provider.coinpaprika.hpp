@@ -22,6 +22,7 @@
 //! Project Headers
 #include "atomic.dex.events.hpp"
 #include "atomic.dex.mm2.hpp"
+#include "atomic.dex.cfg.hpp"
 #include "atomic.dex.provider.coinpaprika.api.hpp"
 
 namespace atomic_dex
@@ -41,6 +42,7 @@ namespace atomic_dex
 
         //! Private fields
         mm2&                         m_mm2_instance;
+        atomic_dex::cfg&             m_cfg;
         t_providers_registry         m_usd_rate_providers{};
         t_providers_registry         m_eur_rate_providers{};
         t_providers_registry         m_btc_rate_providers{};
@@ -53,7 +55,7 @@ namespace atomic_dex
 
       public:
         //! Constructor
-        coinpaprika_provider(entt::registry& registry, mm2& mm2_instance);
+        coinpaprika_provider(entt::registry& registry, mm2& mm2_instance, atomic_dex::cfg& config);
 
         //! Destructor
         ~coinpaprika_provider() noexcept final;
@@ -67,8 +69,11 @@ namespace atomic_dex
         //! Get the whole balance in the given fiat.
         std::string get_price_in_fiat_all(const std::string& fiat, std::error_code& ec) const noexcept;
 
-        //! Get the price in fiat from a transaction.
-        std::string get_price_in_fiat_from_tx(const std::string& fiat, const std::string& ticker, const tx_infos& tx, std::error_code& ec) const noexcept;
+        //! Get the price in currency from a transaction.
+        std::string get_price_as_currency_from_tx(const std::string& currency, const std::string& ticker, const tx_infos& tx, std::error_code& ec) const noexcept;
+
+        //! Get the price in currency from a fees.
+        std::string get_price_as_currency_from_amount(const std::string& currency, const std::string& ticker, const std::string& amount, std::error_code& ec) const noexcept;
 
         //! Get the cex rates base / rel eg: VRSC / KMD = price of usd VRSC / KMD price USD
         std::string get_cex_rates(const std::string& base, const std::string& rel, std::error_code& ec) const noexcept;

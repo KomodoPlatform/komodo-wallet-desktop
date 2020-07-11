@@ -48,8 +48,14 @@ Item {
 
 
     // Price
+    property string cex_price
+    function updateCexPrice(base, rel) {
+        cex_price = API.get().get_cex_rates(base, rel)
+    }
+
     readonly property var empty_order: ({ "price": "0","price_denom":"0","price_numer":"0","volume":"0"})
     property var preffered_order: General.clone(empty_order)
+
 
     function orderIsSelected() {
         return preffered_order.price !== empty_order.price
@@ -293,7 +299,7 @@ Item {
                 API.get().set_current_orderbook(new_base, rel)
                 reset(true, is_base)
                 updateOrderbook()
-
+                updateCexPrice(new_base, rel)
                 exchange.onTradeTickerChanged(new_base)
             }
         }
@@ -460,6 +466,31 @@ Item {
 
         ConfirmTradeModal {
             id: confirm_trade_modal
+        }
+
+
+
+        DefaultModal {
+            id: cex_rates_modal
+            width: 500
+
+            // Inside modal
+            ColumnLayout {
+                width: parent.width
+
+                ModalHeader {
+                    title: API.get().empty_string + ("ⓘ " + qsTr("CEX Data"))
+                }
+
+                DefaultText {
+                    text_value: API.get().empty_string + (qsTr('Markets data (prices, charts, etc.) marked with the ⓘ icon originates from third party sources. (<a href="https://coinpaprika.com">coinpaprika.com</a>)'))
+                    wrapMode: Text.WordWrap
+                    Layout.preferredWidth: cex_rates_modal.width
+
+                    onLinkActivated: Qt.openUrlExternally(link)
+                    linkColor: color
+                }
+            }
         }
     }
 }

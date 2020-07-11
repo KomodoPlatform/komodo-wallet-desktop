@@ -149,7 +149,7 @@ Item {
 
     function getSwapError(swap) {
         if(swap.is_recent_swap) {
-            for(let i = swap.events.length - 1; i > 0; --i) {
+            for(let i = swap.events.length - 1; i >= 0; --i) {
                 const e = swap.events[i]
                if(e.data && e.data.error && swap.error_events.indexOf(e.state) !== -1) {
                    return e

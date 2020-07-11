@@ -76,18 +76,32 @@ namespace atomic_dex
         return out;
     }
 
+    bool
+    is_this_currency_a_fiat(cfg& config, const std::string& currency) noexcept
+    {
+        return ranges::any_of(config.available_fiat, [currency](const std::string& current_fiat) { return current_fiat == currency; });
+    }
+
     void
     change_currency(cfg& config, const std::string& new_currency)
     {
         config.current_currency = new_currency;
 
         //! If it's fiat, i set the first element of the possible currencies to the new currency (the new fiat here) and i also set the current fiat
-        if (ranges::any_of(config.available_fiat, [new_currency](const std::string& current_fiat) { return current_fiat == new_currency; }))
+        if (is_this_currency_a_fiat(config, new_currency))
         {
             spdlog::info("{} is fiat, setting it as current fiat and possible currencies", new_currency);
             config.current_fiat           = new_currency;
             config.possible_currencies[0] = new_currency;
         }
+        upgrade_cfg(config);
+    }
+
+    void
+    change_fiat(cfg& config, const std::string& new_fiat)
+    {
+        config.current_fiat = new_fiat;
+        config.possible_currencies[0] = new_fiat;
         upgrade_cfg(config);
     }
 } // namespace atomic_dex

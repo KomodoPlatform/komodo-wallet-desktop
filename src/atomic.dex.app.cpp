@@ -196,7 +196,7 @@ namespace atomic_dex
         if (this->m_need_a_full_refresh_of_mm2)
         {
             auto& mm2_s = system_manager_.create_system<mm2>();
-            system_manager_.create_system<coinpaprika_provider>(mm2_s);
+            system_manager_.create_system<coinpaprika_provider>(mm2_s, m_config);
             system_manager_.create_system<cex_prices_provider>(mm2_s);
 
             connect_signals();
@@ -398,7 +398,7 @@ namespace atomic_dex
     {
         //! MM2 system need to be created before the GUI and give the instance to the gui
         auto& mm2_system = system_manager_.create_system<mm2>();
-        system_manager_.create_system<coinpaprika_provider>(mm2_system);
+        system_manager_.create_system<coinpaprika_provider>(mm2_system, m_config);
         system_manager_.create_system<cex_prices_provider>(mm2_system);
 
         connect_signals();
@@ -466,6 +466,23 @@ namespace atomic_dex
             spdlog::info("change currency {} to {}", m_config.current_currency, current_currency.toStdString());
             atomic_dex::change_currency(m_config, current_currency.toStdString());
             emit on_currency_changed();
+        }
+    }
+
+    QString
+    application::get_current_fiat() const noexcept
+    {
+        return QString::fromStdString(this->m_config.current_fiat);
+    }
+
+    void
+    application::set_current_fiat(QString current_fiat) noexcept
+    {
+        if (current_fiat.toStdString() != m_config.current_fiat)
+        {
+            spdlog::info("change fiat {} to {}", m_config.current_fiat, current_fiat.toStdString());
+            atomic_dex::change_fiat(m_config, current_fiat.toStdString());
+            emit on_fiat_changed();
         }
     }
 
@@ -1027,6 +1044,7 @@ namespace atomic_dex
     {
         QVariantMap out;
         auto        swaps = get_mm2().get_swaps();
+        // nlohmann::json out_j = nlohmann::json::object();
 
         for (auto& swap: swaps.swaps)
         {
@@ -1043,9 +1061,12 @@ namespace atomic_dex
                 {"events", swap.events},
                 {"my_info", swap.my_info}};
 
+
+            // out_j[swap.uuid] = j2;
             auto out_swap = QJsonDocument::fromJson(QString::fromStdString(j2.dump()).toUtf8());
             out.insert(QString::fromStdString(swap.uuid), out_swap.toVariant());
         }
+        // spdlog::debug("{}", out_j.dump(4));
         return out;
     }
 
@@ -1173,6 +1194,13 @@ namespace atomic_dex
     {
         std::error_code ec;
         return QString::fromStdString(get_paprika().get_cex_rates(base.toStdString(), rel.toStdString(), ec));
+    }
+
+    QString
+    application::get_fiat_from_amount(const QString& ticker, const QString& amount)
+    {
+        std::error_code ec;
+        return QString::fromStdString(get_paprika().get_price_as_currency_from_amount(m_config.current_fiat, ticker.toStdString(), amount.toStdString(), ec));
     }
 } // namespace atomic_dex
 

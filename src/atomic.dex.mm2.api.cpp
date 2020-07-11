@@ -669,9 +669,15 @@ namespace mm2::api
         contents.taker_amount            = adjust_precision(contents.taker_amount);
         contents.maker_amount            = adjust_precision(contents.maker_amount);
         contents.events                  = nlohmann::json::array();
-        contents.my_info                 = j.at("my_info");
-        contents.my_info["other_amount"] = adjust_precision(contents.my_info["other_amount"].get<std::string>());
-        contents.my_info["my_amount"]    = adjust_precision(contents.my_info["my_amount"].get<std::string>());
+        if (j.contains("my_info"))
+        {
+            contents.my_info                 = j.at("my_info");
+            if (not contents.my_info.is_null())
+            {
+                contents.my_info["other_amount"] = adjust_precision(contents.my_info["other_amount"].get<std::string>());
+                contents.my_info["my_amount"]    = adjust_precision(contents.my_info["my_amount"].get<std::string>());
+            }
+        }
         using t_event_timestamp_registry = std::unordered_map<std::string, std::uint64_t>;
         t_event_timestamp_registry event_timestamp_registry;
         double                     total_time_in_seconds = 0.00;
@@ -867,7 +873,7 @@ namespace mm2::api
         }
         catch (const std::exception& error)
         {
-            spdlog::error("exception caught {}", error.what());
+            spdlog::error("{} l{} f[{}], exception caught {} for rpc {}", __FUNCTION__, __LINE__, fs::path(__FILE__).filename().string(), error.what(), rpc_command);
             answer.rpc_result_code = -1;
             answer.raw_result      = error.what();
         }
