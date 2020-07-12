@@ -234,20 +234,15 @@ namespace atomic_dex
             return "0.00";
         }
 
+        if (not skip_precision)
+        {
+            return compute_result(amount, price, fiat, this->m_cfg);
+        }
+
         const t_float_50  price_f(price);
         const t_float_50  amount_f(amount);
         const t_float_50  final_price = price_f * amount_f;
         std::stringstream ss;
-
-        if (not skip_precision)
-        {
-            std::size_t default_precision = (fiat == "USD" || fiat == "EUR") ? 2 : 8;
-            if (auto final_price_str = final_price.str(default_precision, std::ios_base::fixed); final_price_str == "0.00" && final_price > 0.00000000)
-            {
-                return final_price.str(default_precision);
-            }
-            ss.precision(default_precision);
-        }
 
         ss << std::fixed << final_price;
 
