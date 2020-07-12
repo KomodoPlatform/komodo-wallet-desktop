@@ -173,6 +173,7 @@
         <file>atomic_qt_design/qml/Wallet/CoinList.qml</file>
         <file>atomic_qt_design/qml/Wallet/Sidebar.qml</file>
         <file>atomic_qt_design/qml/Wallet/Main.qml</file>
+        <file>atomic_qt_design/qml/Wallet/AddressBook.qml</file>
         <file>atomic_qt_design/qml/Wallet/Transactions.qml</file>
         <file>atomic_qt_design/qml/Wallet/TransactionDetailsModal.qml</file>
         <file>atomic_qt_design/qml/Wallet/AddressList.qml</file>
