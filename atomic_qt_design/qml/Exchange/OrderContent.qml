@@ -11,6 +11,8 @@ Item {
     property var item
     property bool in_modal: false
 
+    readonly property bool is_placed_order: item.uuid !== ''
+
     // Base Icon
     Image {
         id: base_icon
@@ -38,6 +40,7 @@ Item {
         anchors.left: parent.left
         anchors.top: base_icon.bottom
         anchors.topMargin: 10
+        privacy: is_placed_order
     }
 
     // Swap icon
@@ -56,16 +59,18 @@ Item {
         font.pixelSize: base_amount.font.pixelSize
         anchors.right: parent.right
         anchors.top: base_amount.top
+        privacy: is_placed_order
     }
 
     // UUID
     DefaultText {
         id: uuid
-        visible: !in_modal && item.uuid !== ''
+        visible: !in_modal && is_placed_order
         text_value: API.get().empty_string + ((item.is_recent_swap ? qsTr("Swap ID") : qsTr("UUID")) + ": " + item.uuid)
         color: Style.colorTheme2
         anchors.top: base_amount.bottom
         anchors.topMargin: base_amount.anchors.topMargin
+        privacy: is_placed_order
     }
 
     // Status Text
@@ -89,7 +94,7 @@ Item {
 
     // Maker/Taker
     DefaultText {
-        visible: !in_modal && item.uuid !== ''
+        visible: !in_modal && is_placed_order
         text_value: API.get().empty_string + (item.am_i_maker ? qsTr("Maker Order"): qsTr("Taker Order"))
         color: Style.colorThemeDarkLight
         anchors.verticalCenter: date.verticalCenter

@@ -96,6 +96,7 @@ ColumnLayout {
                 Layout.bottomMargin: 30
                 text_value: API.get().empty_string + (General.formatFiat("", API.get().balance_fiat_all, API.get().current_currency))
                 font.pixelSize: Style.textSize4
+                privacy: true
             }
         }
 
@@ -350,31 +351,10 @@ ColumnLayout {
                 anchors.left: parent.left
                 anchors.leftMargin: balance_header.anchors.leftMargin
 
-                text_value: API.get().empty_string + (model.modelData.balance)
+                text_value: API.get().empty_string + (General.formatCrypto("", model.modelData.balance, model.modelData.ticker,  model.modelData.balance_fiat, API.get().current_currency))
                 color: Style.colorWhite4
                 anchors.verticalCenter: parent.verticalCenter
-            }
-
-            // Ticker
-            DefaultText {
-                id: balance_ticker
-                anchors.left: balance_value.right
-                anchors.leftMargin: 5
-                anchors.baseline: balance_value.baseline
-
-                text_value: API.get().empty_string + (model.modelData.ticker)
-                color: Style.colorThemeDarkLight
-                font.pixelSize: Style.textSize * 0.9
-            }
-
-            // Value
-            DefaultText {
-                anchors.left: balance_ticker.right
-                anchors.leftMargin: 10
-
-                text_value: API.get().empty_string + ("(" + General.formatFiat('', model.modelData.balance_fiat, API.get().current_currency) + ")")
-                color: Style.colorWhite5
-                anchors.verticalCenter: parent.verticalCenter
+                privacy: true
             }
 
             // Change 24h

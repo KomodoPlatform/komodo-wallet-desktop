@@ -107,6 +107,7 @@ DefaultModal {
             title: API.get().empty_string + (details.is_recent_swap ? qsTr("Swap ID") : qsTr("UUID"))
             text: API.get().empty_string + (details.uuid)
             visible: text !== ''
+            privacy: true
         }
 
         // Payment ID
@@ -114,6 +115,7 @@ DefaultModal {
             title: API.get().empty_string + (details.am_i_maker ? qsTr("Maker Payment Sent ID") : qsTr("Maker Payment Spent ID"))
             text: API.get().empty_string + (getSwapPaymentID(details, false))
             visible: text !== ''
+            privacy: true
         }
 
         // Payment ID
@@ -121,6 +123,7 @@ DefaultModal {
             title: API.get().empty_string + (details.am_i_maker ? qsTr("Taker Payment Spent ID") : qsTr("Taker Payment Sent ID"))
             text: API.get().empty_string + (getSwapPaymentID(details, true))
             visible: text !== ''
+            privacy: true
         }
 
         // Error ID

@@ -75,6 +75,7 @@ Item {
                             text_value: API.get().empty_string + (General.formatCrypto("", API.get().current_coin_info.balance, API.get().current_coin_info.ticker))
                             Layout.alignment: Qt.AlignLeft
                             font.pixelSize: name.font.pixelSize
+                            privacy: true
                         }
                     }
                 }
@@ -94,6 +95,7 @@ Item {
                         text_value: API.get().empty_string + (General.formatFiat("", API.get().current_coin_info.fiat_amount, API.get().current_currency))
                         Layout.alignment: Qt.AlignLeft
                         font.pixelSize: name.font.pixelSize
+                        privacy: true
                     }
                 }
 
@@ -185,6 +187,7 @@ Item {
                         }
                         Layout.alignment: Qt.AlignLeft
                         font.pixelSize: name.font.pixelSize
+                        privacy: true
                     }
                 }
             }

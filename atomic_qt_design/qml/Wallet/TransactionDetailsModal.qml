@@ -14,9 +14,13 @@ DefaultModal {
     }
 
     property var details
+    contentWidth: layout.width
 
     // Inside modal
     ColumnLayout {
+        id: layout
+        width: 700
+
         ModalHeader {
             title: API.get().empty_string + (qsTr("Transaction Details"))
         }
@@ -26,12 +30,14 @@ DefaultModal {
             title: API.get().empty_string + (qsTr("Amount"))
             text: API.get().empty_string + (General.formatCrypto(details.received, details.amount, API.get().current_coin_info.ticker, details.amount_fiat, API.get().current_currency))
             value_color: details.received ? Style.colorGreen : Style.colorRed
+            privacy: true
         }
 
         // Fees
         TextWithTitle {
             title: API.get().empty_string + (qsTr("Fees"))
             text: API.get().empty_string + (General.formatCrypto("", details.fees, API.get().current_coin_info.ticker))
+            privacy: true
         }
 
         // Date
@@ -44,6 +50,7 @@ DefaultModal {
         TextWithTitle {
             title: API.get().empty_string + (qsTr("Transaction Hash"))
             text: API.get().empty_string + (details.tx_hash)
+            privacy: true
         }
 
         // Confirmations
