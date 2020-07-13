@@ -61,7 +61,7 @@ ColumnLayout {
             delegate: Item {
                 readonly property int line_height: 150
                 readonly property int bottom_margin: layout_margin
-                readonly property bool is_last_item: index === address_list.length - 1
+                readonly property bool is_last_item: index === model.length - 1
 
                 width: list.width
                 height: line_height + (is_last_item ? 0 : bottom_margin)
@@ -69,6 +69,15 @@ ColumnLayout {
                 InnerBackground {
                     anchors.fill: parent
                     anchors.bottomMargin: is_last_item ? 0 : bottom_margin
+
+                    DefaultText {
+                        anchors.left: parent.left
+                        anchors.top: parent.top
+                        anchors.leftMargin: layout_margin
+                        anchors.topMargin: layout_margin
+
+                        text_value: model.modelData.name
+                    }
                 }
             }
         }
