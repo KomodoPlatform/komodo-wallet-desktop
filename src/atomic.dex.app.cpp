@@ -1311,40 +1311,4 @@ namespace atomic_dex
     {
         return atomic_dex::qt_wallet_manager::is_there_a_default_wallet();
     }
-
-    QStringList
-    application::get_addressbook_categories_list() const
-    {
-        return m_wallet_manager.get_categories_list();
-    }
-
-    QVariantMap
-    application::get_address_from_addressbook(const QString& contact_name) const
-    {
-        return m_wallet_manager.get_address_from(contact_name.toStdString());
-    }
-
-    bool
-    application::add_category_in_addressbook(const QString& category_name, bool with_update_file) noexcept
-    {
-        return m_wallet_manager.add_category(category_name.toStdString(), with_update_file);
-    }
-
-    bool
-    application::add_contact(const QString& contact_name) noexcept
-    {
-        return m_wallet_manager.add_contact(contact_name.toStdString());
-    }
-
-    bool
-    application::update_contact(const QString& old_contact_name, const QString& new_contact_name) noexcept
-    {
-        return m_wallet_manager.update_contact(old_contact_name.toStdString(), new_contact_name.toStdString());
-    }
-
-    bool
-    application::insert_or_update_address(const QString& contact_name, const QString& coin, const QString& address) noexcept
-    {
-        return m_wallet_manager.insert_or_update_address(contact_name.toStdString(), coin.toStdString(), address.toStdString());
-    }
 } // namespace atomic_dex
