@@ -20,7 +20,7 @@ QtObject {
         address_book: [
             {
                 name: "ca333",
-                adresses: [
+                addresses: [
                      { type: "ERC-20", address: "0xde0b295669a9fd93d5f28d9ec85e40f4cb697bae" },
                      { type: "SmartChains", address: "RB49Rm4jBe5mN9anErvkzf3kcQCzHqyz3e" },
                      { type: "BTC", address: "3FZbgi29cpjq2GjdwV8eyHuJJnkLtktZc5" }
@@ -28,7 +28,7 @@ QtObject {
             },
             {
                 name: "alice",
-                adresses: [
+                addresses: [
                      { type: "ERC-20", address: "0xde0b295669a9fd93d5f28d9ec85e40f4cb697bae" },
                      { type: "SmartChains", address: "RB49Rm4jBe5mN9anErvkzf3kcQCzHqyz3e" },
                      { type: "BTC", address: "3FZbgi29cpjq2GjdwV8eyHuJJnkLtktZc5" }
@@ -36,7 +36,7 @@ QtObject {
             },
             {
                 name: "bob",
-                adresses: [
+                addresses: [
                      { type: "ERC-20", address: "0xde0b295669a9fd93d5f28d9ec85e40f4cb697bae" },
                      { type: "SmartChains", address: "RB49Rm4jBe5mN9anErvkzf3kcQCzHqyz3e" },
                      { type: "BTC", address: "3FZbgi29cpjq2GjdwV8eyHuJJnkLtktZc5" }

@@ -66,17 +66,52 @@ ColumnLayout {
                 width: list.width
                 height: line_height + (is_last_item ? 0 : bottom_margin)
 
-                InnerBackground {
+                FloatingBackground {
                     anchors.fill: parent
                     anchors.bottomMargin: is_last_item ? 0 : bottom_margin
 
-                    DefaultText {
-                        anchors.left: parent.left
-                        anchors.top: parent.top
-                        anchors.leftMargin: layout_margin
-                        anchors.topMargin: layout_margin
+                    content: ColumnLayout {
+                        DefaultText {
+                            Layout.topMargin: layout_margin
+                            Layout.leftMargin: layout_margin
+                            text_value: modelData.name
+                        }
 
-                        text_value: model.modelData.name
+                        HorizontalLine {
+                            Layout.fillWidth: true
+                        }
+
+                        DefaultListView {
+                            id: address_list
+                            Layout.fillWidth: true
+                            model: modelData.addresses
+
+                            delegate: Item {
+
+                                    width: list.width
+
+                                    height: 25
+
+                                    DefaultText {
+                                        anchors.left: parent.left
+                                        anchors.verticalCenter: parent.verticalCenter
+                                        anchors.leftMargin: layout_margin
+
+                                        font.pixelSize: Style.textSizeSmall3
+                                        text_value: modelData.type
+                                    }
+
+                                    DefaultText {
+                                        anchors.left: parent.left
+                                        anchors.verticalCenter: parent.verticalCenter
+                                        anchors.leftMargin: layout_margin * 5
+
+                                        font.pixelSize: Style.textSizeSmall3
+                                        text_value: modelData.address
+                                    }
+                                }
+
+                        }
                     }
                 }
             }
