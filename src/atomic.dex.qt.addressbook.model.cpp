@@ -14,9 +14,24 @@
  *                                                                            *
  ******************************************************************************/
 
-#pragma once
+//! PCH
+#include "atomic.dex.pch.hpp"
+
+//! Project headers
+#include "atomic.dex.qt.addressbook.model.hpp"
 
 namespace atomic_dex
 {
+    addressbook_model::addressbook_model(atomic_dex::qt_wallet_manager& wallet_manager_, QObject* parent) noexcept :
+        QObject(parent), m_wallet_manager(wallet_manager_)
+    {
+        spdlog::debug("{} l{} f[{}]", __FUNCTION__, __LINE__, fs::path(__FILE__).filename().string());
+        spdlog::debug("addressbook model created");
+    }
 
-}
+    addressbook_model::~addressbook_model() noexcept
+    {
+        spdlog::debug("{} l{} f[{}]", __FUNCTION__, __LINE__, fs::path(__FILE__).filename().string());
+        spdlog::debug("addressbook model destroyed");
+    }
+} // namespace atomic_dex

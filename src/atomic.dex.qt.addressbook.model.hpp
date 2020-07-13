@@ -14,8 +14,23 @@
  *                                                                            *
  ******************************************************************************/
 
-#include "atomic.qt.addressbook.model.hpp"
+#pragma once
+
+#include <QObject> //! QObject
+
+//! Project include
+#include "atomic.dex.qt.wallet.manager.hpp"
 
 namespace atomic_dex
 {
-}
+    class addressbook_model final : public QObject
+    {
+      public:
+        Q_OBJECT
+        explicit addressbook_model(atomic_dex::qt_wallet_manager& wallet_manager_, QObject* parent = nullptr) noexcept;
+        ~addressbook_model() noexcept final;
+
+      private:
+        atomic_dex::qt_wallet_manager& m_wallet_manager;
+    };
+} // namespace atomic_dex
