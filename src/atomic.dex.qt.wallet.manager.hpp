@@ -44,18 +44,6 @@ namespace atomic_dex
 
         bool load_wallet_cfg(const std::string& wallet_name);
 
-        QStringList get_categories_list() const noexcept;
-
-        QVariantMap get_address_from(const std::string& contact_name) const noexcept;
-
-        bool add_category(const std::string& category_name, bool with_update_file) noexcept;
-
-        bool add_contact(const std::string& contact_name) noexcept;
-
-        bool update_contact(const std::string& old_contact_name, const std::string& new_contact_name) noexcept;
-
-        bool insert_or_update_address(const std::string& contact_name, const std::string& coin, const std::string& address) noexcept;
-
         static QStringList get_wallets() noexcept;
 
         static bool is_there_a_default_wallet() noexcept;
@@ -67,7 +55,7 @@ namespace atomic_dex
         static bool confirm_password(const QString& wallet_name, const QString& password);
 
       private:
-        bool       update_wallet_cfg() noexcept;
+        //bool       update_wallet_cfg() noexcept;
         wallet_cfg m_wallet_cfg;
         QString    m_current_default_wallet{""};
     };

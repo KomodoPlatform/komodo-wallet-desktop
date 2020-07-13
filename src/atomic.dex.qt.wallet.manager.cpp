@@ -181,34 +181,7 @@ namespace atomic_dex
         return true;
     }
 
-    QStringList
-    qt_wallet_manager::get_categories_list() const noexcept
-    {
-        QStringList out;
-
-        out.reserve(m_wallet_cfg.categories_addressbook_registry.size());
-        for (const auto& [key, _]: m_wallet_cfg.categories_addressbook_registry)
-        {
-            (void)_;
-            out.push_back(QString::fromStdString(key));
-        }
-        return out;
-    }
-
-    QVariantMap
-    qt_wallet_manager::get_address_from(const std::string& contact_name) const noexcept
-    {
-        QVariantMap out;
-
-        if (m_wallet_cfg.addressbook_registry.find(contact_name) != m_wallet_cfg.addressbook_registry.cend())
-        {
-            for (auto&& [key, value]: m_wallet_cfg.addressbook_registry.at(contact_name))
-            { out.insert(QString::fromStdString(key), QVariant(QString::fromStdString(value))); }
-        }
-        return out;
-    }
-
-    bool
+    /*bool
     qt_wallet_manager::update_wallet_cfg() noexcept
     {
         using namespace std::string_literals;
@@ -223,50 +196,5 @@ namespace atomic_dex
         atomic_dex::to_json(j, m_wallet_cfg);
         ofs << j.dump(4);
         return true;
-    }
-
-    bool
-    qt_wallet_manager::add_category(const std::string& category_name, bool with_update_file) noexcept
-    {
-        if (m_wallet_cfg.categories_addressbook_registry.find(category_name) == m_wallet_cfg.categories_addressbook_registry.cend())
-        {
-            m_wallet_cfg.categories_addressbook_registry[category_name] = {};
-            return with_update_file ? update_wallet_cfg() : true;
-        }
-        return false;
-    }
-
-    bool
-    qt_wallet_manager::add_contact(const std::string& contact_name) noexcept
-    {
-        if (m_wallet_cfg.addressbook_registry.find(contact_name) == m_wallet_cfg.addressbook_registry.cend())
-        {
-            m_wallet_cfg.addressbook_registry[contact_name] = {};
-            return update_wallet_cfg();
-        }
-        return false;
-    }
-
-    bool
-    qt_wallet_manager::update_contact(const std::string& old_contact_name, const std::string& new_contact_name) noexcept
-    {
-        if (m_wallet_cfg.addressbook_registry.find(old_contact_name) == m_wallet_cfg.addressbook_registry.cend())
-        {
-            m_wallet_cfg.addressbook_registry[new_contact_name] = m_wallet_cfg.addressbook_registry.at(old_contact_name);
-            m_wallet_cfg.addressbook_registry.erase(m_wallet_cfg.addressbook_registry.find(old_contact_name));
-            return update_wallet_cfg();
-        }
-        return false;
-    }
-
-    bool
-    qt_wallet_manager::insert_or_update_address(const std::string& contact_name, const std::string& coin, const std::string& address) noexcept
-    {
-        if (m_wallet_cfg.addressbook_registry.find(contact_name) == m_wallet_cfg.addressbook_registry.cend())
-        {
-            m_wallet_cfg.addressbook_registry[contact_name][coin] = address;
-            return update_wallet_cfg();
-        }
-        return false;
-    }
+    }*/
 } // namespace atomic_dex

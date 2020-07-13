@@ -14,52 +14,24 @@
  *                                                                            *
  ******************************************************************************/
 
-#include "atomic.dex.wallet.config.hpp"
+//! PCH
+#include "atomic.dex.pch.hpp"
+
+//! Project headers
+#include "atomic.dex.qt.addressbook.model.hpp"
 
 namespace atomic_dex
 {
-    void
-    from_json(const nlohmann::json& j, wallet_cfg& cfg)
+    addressbook_model::addressbook_model(atomic_dex::qt_wallet_manager& wallet_manager_, QObject* parent) noexcept :
+        QObject(parent), m_wallet_manager(wallet_manager_)
     {
-        j.at("name").get_to(cfg.name);
-        if (j.contains("addressbook"))
-        {
-            for (const auto& cur: j.at("addressbook"))
-            {
-                contact current_contact;
-                cur.at("name").get_to(current_contact.name);
-                for (const auto& cur_addr: cur.at("addresses"))
-                {
-                    contact_contents contents;
-                    cur_addr.at("type").get_to(contents.type);
-                    cur_addr.at("address").get_to(contents.address);
-                    current_contact.contents.emplace_back(std::move(contents));
-                }
-                cfg.address_book.emplace_back(std::move(current_contact));
-            }
-        }
+        spdlog::debug("{} l{} f[{}]", __FUNCTION__, __LINE__, fs::path(__FILE__).filename().string());
+        spdlog::debug("addressbook model created");
     }
 
-    void
-    atomic_dex::to_json(nlohmann::json& j, const contact_contents& cfg)
+    addressbook_model::~addressbook_model() noexcept
     {
-        j["type"] = cfg.type;
-        j["address"] = cfg.address;
+        spdlog::debug("{} l{} f[{}]", __FUNCTION__, __LINE__, fs::path(__FILE__).filename().string());
+        spdlog::debug("addressbook model destroyed");
     }
-
-    void
-    atomic_dex::to_json(nlohmann::json& j, const contact& cfg)
-    {
-        j["name"] = cfg.name;
-        j["addresses"] = cfg.contents;
-    }
-
-    void
-    to_json(nlohmann::json& j, const wallet_cfg& cfg)
-    {
-        j["name"] = cfg.name;
-        j["addressbook"] = cfg.address_book;
-    }
-
-
 } // namespace atomic_dex

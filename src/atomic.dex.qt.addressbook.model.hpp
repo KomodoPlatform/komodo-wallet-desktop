@@ -16,32 +16,21 @@
 
 #pragma once
 
-#include "atomic.dex.pch.hpp"
+#include <QObject> //! QObject
+
+//! Project include
+#include "atomic.dex.qt.wallet.manager.hpp"
 
 namespace atomic_dex
 {
-    struct contact_contents
+    class addressbook_model final : public QObject
     {
-        std::string type;
-        std::string address;
+      public:
+        Q_OBJECT
+        explicit addressbook_model(atomic_dex::qt_wallet_manager& wallet_manager_, QObject* parent = nullptr) noexcept;
+        ~addressbook_model() noexcept final;
+
+      private:
+        atomic_dex::qt_wallet_manager& m_wallet_manager;
     };
-
-    void to_json(nlohmann::json& j, const contact_contents& cfg);
-
-    struct contact
-    {
-        std::string                   name;
-        std::vector<contact_contents> contents;
-    };
-
-    void to_json(nlohmann::json& j, const contact& cfg);
-
-    struct wallet_cfg
-    {
-        std::string name;
-        std::vector<contact> address_book;
-    };
-
-    void from_json(const nlohmann::json& j, wallet_cfg& cfg);
-    void to_json(nlohmann::json& j, const wallet_cfg& cfg);
 } // namespace atomic_dex
