@@ -5,24 +5,6 @@ QtObject {
     // Mock API
     property string saved_seed
     property string saved_password
-    property var address_book: ({
-        "ca333": {
-            "ERC-20": "0xde0b295669a9fd93d5f28d9ec85e40f4cb697bae",
-            "SmartChains": "RB49Rm4jBe5mN9anErvkzf3kcQCzHqyz3e",
-            "BTC": "3FZbgi29cpjq2GjdwV8eyHuJJnkLtktZc5"
-        },
-        "alice": {
-            "ERC-20": "0xde0b395669a9fd93d5f28d9ec85e40f4cb697bae",
-            "SmartChains": "RB39Rm4jBe5mN9anErvkzf3kcQCzHqyz3e",
-            "BTC": "3FZbgi30cpjq2GjdwV8eyHuJJnkLtktZc5"
-        },
-        "bob": {
-            "ERC-20": "0xde0b393669a9fd93d5f28d9ec85e40f4cb697bae",
-            "SmartChains": "RB39Rm6jBe5mN9anErvkzf3kcQCzHqyz3e",
-            "BTC": "3FZbgi30cpjq3GjdwV8eyHuJJnkLtktZc5"
-        }
-    })
-
     property var mockAPI: ({
         empty_string: '',
         // Signals
@@ -35,11 +17,35 @@ QtObject {
 
 
         // Other
-        get_address_book: () => {
-           return address_book
-        },
+        address_book: [
+            {
+                name: "ca333",
+                adresses: [
+                     { type: "ERC-20", address: "0xde0b295669a9fd93d5f28d9ec85e40f4cb697bae" },
+                     { type: "SmartChains", address: "RB49Rm4jBe5mN9anErvkzf3kcQCzHqyz3e" },
+                     { type: "BTC", address: "3FZbgi29cpjq2GjdwV8eyHuJJnkLtktZc5" }
+                ]
+            },
+            {
+                name: "alice",
+                adresses: [
+                     { type: "ERC-20", address: "0xde0b295669a9fd93d5f28d9ec85e40f4cb697bae" },
+                     { type: "SmartChains", address: "RB49Rm4jBe5mN9anErvkzf3kcQCzHqyz3e" },
+                     { type: "BTC", address: "3FZbgi29cpjq2GjdwV8eyHuJJnkLtktZc5" }
+                ]
+            },
+            {
+                name: "bob",
+                adresses: [
+                     { type: "ERC-20", address: "0xde0b295669a9fd93d5f28d9ec85e40f4cb697bae" },
+                     { type: "SmartChains", address: "RB49Rm4jBe5mN9anErvkzf3kcQCzHqyz3e" },
+                     { type: "BTC", address: "3FZbgi29cpjq2GjdwV8eyHuJJnkLtktZc5" }
+                ]
+            },
+        ],
        add_contact: (name) => {
          address_book[name] = {}
+
          address_book = address_book
        },
        update_contact: (old_name, new_name) => {
