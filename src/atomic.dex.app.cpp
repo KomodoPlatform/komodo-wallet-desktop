@@ -324,8 +324,7 @@ namespace atomic_dex
         auto            txs = mm2.get_tx_history(m_coin_info->get_ticker().toStdString(), ec);
         if (!ec)
         {
-            m_coin_info->set_transactions(
-                to_qt_binding(std::move(txs), get_paprika(), m_config.current_currency, m_coin_info->get_ticker().toStdString()));
+            m_coin_info->set_transactions(to_qt_binding(std::move(txs), get_paprika(), m_config.current_currency, m_coin_info->get_ticker().toStdString()));
         }
         auto tx_state = mm2.get_tx_state(m_coin_info->get_ticker().toStdString(), ec);
 
@@ -394,7 +393,8 @@ namespace atomic_dex
         emit on_second_fiat_balance_all_changed();
     }
 
-    application::application(QObject* pParent) noexcept : QObject(pParent), m_coin_info(new current_coin_info(dispatcher_, this))
+    application::application(QObject* pParent) noexcept :
+        QObject(pParent), m_coin_info(new current_coin_info(dispatcher_, this)), m_addressbook(new addressbook_model(this->m_wallet_manager, this))
     {
         //! MM2 system need to be created before the GUI and give the instance to the gui
         auto& mm2_system = system_manager_.create_system<mm2>();
@@ -1254,6 +1254,15 @@ namespace atomic_dex
     }
 } // namespace atomic_dex
 
+//! Addressbook
+namespace atomic_dex
+{
+    QObject*
+    application::get_addressbook() const noexcept
+    {
+        return m_addressbook;
+    }
+} // namespace atomic_dex
 //! Wallet manager QML API
 namespace atomic_dex
 {

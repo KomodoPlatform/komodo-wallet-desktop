@@ -25,8 +25,9 @@ namespace atomic_dex
 {
     class addressbook_model final : public QObject
     {
-      public:
         Q_OBJECT
+
+      public:
         explicit addressbook_model(atomic_dex::qt_wallet_manager& wallet_manager_, QObject* parent = nullptr) noexcept;
         ~addressbook_model() noexcept final;
 

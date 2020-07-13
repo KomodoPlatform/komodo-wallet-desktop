@@ -41,25 +41,23 @@ namespace atomic_dex
     }
 
     void
-    atomic_dex::to_json(nlohmann::json& j, const contact_contents& cfg)
+    to_json(nlohmann::json& j, const contact_contents& cfg)
     {
-        j["type"] = cfg.type;
+        j["type"]    = cfg.type;
         j["address"] = cfg.address;
     }
 
     void
-    atomic_dex::to_json(nlohmann::json& j, const contact& cfg)
+    to_json(nlohmann::json& j, const contact& cfg)
     {
-        j["name"] = cfg.name;
+        j["name"]      = cfg.name;
         j["addresses"] = cfg.contents;
     }
 
     void
     to_json(nlohmann::json& j, const wallet_cfg& cfg)
     {
-        j["name"] = cfg.name;
+        j["name"]        = cfg.name;
         j["addressbook"] = cfg.address_book;
     }
-
-
 } // namespace atomic_dex
