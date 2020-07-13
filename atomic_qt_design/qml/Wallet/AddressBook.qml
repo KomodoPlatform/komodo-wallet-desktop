@@ -8,7 +8,35 @@ import "../Constants"
 
 
 ColumnLayout {
-    property var address_list: ([{ name: "Kekkeri " }])
+    property var address_list
+
+    function inCurrentPage() {
+        return  wallet.inCurrentPage() && main_layout.currentIndex === 1
+    }
+
+    Timer {
+        id: update_timer
+        running: true
+        repeat: true
+        interval: 5000
+        onTriggered: {
+            if(inCurrentPage()) updateAddressBook()
+        }
+    }
+
+    function updateAddressBook() {
+        const api_address_book = API.get().get_address_book()
+
+        address_list = Object.keys(api_address_book).map(contact_name => {
+            const api_addresses = api_address_book[contact_name]
+
+            let addresses_array = Object.keys(api_addresses).map(wallet_type => {
+                return { type: wallet_type, address: api_addresses[wallet_type]}
+            })
+
+            return { name: contact_name, addresses: adresses_array }
+        })
+    }
 
     ColumnLayout {
         Layout.margins: layout_margin
