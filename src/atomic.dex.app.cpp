@@ -1329,4 +1329,22 @@ namespace atomic_dex
     {
         return m_wallet_manager.add_category(category_name.toStdString(), with_update_file);
     }
+
+    bool
+    application::add_contact(const QString& contact_name) noexcept
+    {
+        return m_wallet_manager.add_contact(contact_name.toStdString());
+    }
+
+    bool
+    application::update_contact(const QString& old_contact_name, const QString& new_contact_name) noexcept
+    {
+        return m_wallet_manager.update_contact(old_contact_name.toStdString(), new_contact_name.toStdString());
+    }
+
+    bool
+    application::insert_or_update_address(const QString& contact_name, const QString& coin, const QString& address) noexcept
+    {
+        return m_wallet_manager.insert_or_update_address(contact_name.toStdString(), coin.toStdString(), address.toStdString());
+    }
 } // namespace atomic_dex

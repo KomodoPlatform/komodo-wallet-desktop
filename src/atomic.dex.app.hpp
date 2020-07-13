@@ -124,6 +124,9 @@ namespace atomic_dex
         Q_INVOKABLE QStringList        get_addressbook_categories_list() const;
         Q_INVOKABLE QVariantMap        get_address_from_addressbook(const QString& contact_name) const;
         Q_INVOKABLE bool               add_category_in_addressbook(const QString& category_name, bool with_update_file) noexcept;
+        Q_INVOKABLE bool               add_contact(const QString& contact_name) noexcept;
+        Q_INVOKABLE bool               update_contact(const QString& old_contact_name, const QString& new_contact_name) noexcept;
+        Q_INVOKABLE bool               insert_or_update_address(const QString& contact_name, const QString& coin, const QString& address) noexcept;
 
         //! Miscs
         Q_INVOKABLE QString     get_paprika_id_from_ticker(QString ticker) const;
