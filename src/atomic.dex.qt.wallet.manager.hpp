@@ -50,6 +50,12 @@ namespace atomic_dex
 
         bool add_category(const std::string& category_name, bool with_update_file) noexcept;
 
+        bool add_contact(const std::string& contact_name) noexcept;
+
+        bool update_contact(const std::string& old_contact_name, const std::string& new_contact_name) noexcept;
+
+        bool insert_or_update_address(const std::string& contact_name, const std::string& coin, const std::string& address) noexcept;
+
         static QStringList get_wallets() noexcept;
 
         static bool is_there_a_default_wallet() noexcept;

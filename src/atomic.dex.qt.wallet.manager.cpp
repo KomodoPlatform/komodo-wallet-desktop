@@ -235,4 +235,38 @@ namespace atomic_dex
         }
         return false;
     }
+
+    bool
+    qt_wallet_manager::add_contact(const std::string& contact_name) noexcept
+    {
+        if (m_wallet_cfg.addressbook_registry.find(contact_name) == m_wallet_cfg.addressbook_registry.cend())
+        {
+            m_wallet_cfg.addressbook_registry[contact_name] = {};
+            return update_wallet_cfg();
+        }
+        return false;
+    }
+
+    bool
+    qt_wallet_manager::update_contact(const std::string& old_contact_name, const std::string& new_contact_name) noexcept
+    {
+        if (m_wallet_cfg.addressbook_registry.find(old_contact_name) == m_wallet_cfg.addressbook_registry.cend())
+        {
+            m_wallet_cfg.addressbook_registry[new_contact_name] = m_wallet_cfg.addressbook_registry.at(old_contact_name);
+            m_wallet_cfg.addressbook_registry.erase(m_wallet_cfg.addressbook_registry.find(old_contact_name));
+            return update_wallet_cfg();
+        }
+        return false;
+    }
+
+    bool
+    qt_wallet_manager::insert_or_update_address(const std::string& contact_name, const std::string& coin, const std::string& address) noexcept
+    {
+        if (m_wallet_cfg.addressbook_registry.find(contact_name) == m_wallet_cfg.addressbook_registry.cend())
+        {
+            m_wallet_cfg.addressbook_registry[contact_name][coin] = address;
+            return update_wallet_cfg();
+        }
+        return false;
+    }
 } // namespace atomic_dex
