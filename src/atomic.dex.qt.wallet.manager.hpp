@@ -55,7 +55,7 @@ namespace atomic_dex
         static bool confirm_password(const QString& wallet_name, const QString& password);
 
       private:
-        //bool       update_wallet_cfg() noexcept;
+        bool       update_wallet_cfg() noexcept;
         wallet_cfg m_wallet_cfg;
         QString    m_current_default_wallet{""};
     };

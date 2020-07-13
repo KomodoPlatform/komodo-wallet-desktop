@@ -181,7 +181,7 @@ namespace atomic_dex
         return true;
     }
 
-    /*bool
+    bool
     qt_wallet_manager::update_wallet_cfg() noexcept
     {
         using namespace std::string_literals;
@@ -196,5 +196,5 @@ namespace atomic_dex
         atomic_dex::to_json(j, m_wallet_cfg);
         ofs << j.dump(4);
         return true;
-    }*/
+    }
 } // namespace atomic_dex
