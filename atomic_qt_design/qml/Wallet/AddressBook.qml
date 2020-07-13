@@ -82,33 +82,37 @@ ColumnLayout {
                         Layout.fillWidth: true
                     }
 
-                    DefaultListView {
-                        id: address_list
+                    Column {
                         Layout.bottomMargin: layout_margin
                         Layout.fillWidth: true
-                        model: modelData.addresses
 
-                        delegate: Item {
-                            width: contact_bg.width
+                        Repeater {
+                            id: address_list
 
-                            height: 25
+                            model: modelData.addresses
 
-                            DefaultText {
-                                anchors.left: parent.left
-                                anchors.verticalCenter: parent.verticalCenter
-                                anchors.leftMargin: layout_margin
+                            delegate: Item {
+                                width: contact_bg.width
 
-                                font.pixelSize: Style.textSizeSmall3
-                                text_value: modelData.type
-                            }
+                                height: 25
 
-                            DefaultText {
-                                anchors.left: parent.left
-                                anchors.verticalCenter: parent.verticalCenter
-                                anchors.leftMargin: layout_margin * 5
+                                DefaultText {
+                                    anchors.left: parent.left
+                                    anchors.verticalCenter: parent.verticalCenter
+                                    anchors.leftMargin: layout_margin
 
-                                font.pixelSize: Style.textSizeSmall3
-                                text_value: modelData.address
+                                    font.pixelSize: Style.textSizeSmall3
+                                    text_value: modelData.type
+                                }
+
+                                DefaultText {
+                                    anchors.left: parent.left
+                                    anchors.verticalCenter: parent.verticalCenter
+                                    anchors.leftMargin: layout_margin * 5
+
+                                    font.pixelSize: Style.textSizeSmall3
+                                    text_value: modelData.address
+                                }
                             }
                         }
                     }
