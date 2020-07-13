@@ -32,15 +32,19 @@ namespace atomic_dex
 
         //! OHLC Related
         std::pair<std::string, std::string> m_current_orderbook_ticker_pair;
-        std::array<std::string, 2>          m_supported_pair{"kmd-btc", "btc-usdt"};
+        std::array<std::string, 40>         m_supported_pair{"eth-btc",  "eth-usdc", "btc-usdc", "btc-busd", "btc-tusd", "bat-btc",  "bat-eth",  "bat-usdc",
+                                                     "bat-tusd", "bat-busd", "bch-btc",  "bch-eth",  "bch-usdc", "bch-tusd", "bch-busd", "dash-btc",
+                                                     "dash-eth", "dgb-btc",  "doge-btc", "kmd-btc",  "kmd-eth",  "ltc-btc",  "ltc-eth",  "ltc-usdc",
+                                                     "ltc-tusd", "ltc-busd", "nav-btc",  "nav-eth",  "pax-btc",  "pax-eth",  "qtum-btc", "qtum-eth",
+                                                     "rvn-btc",  "xzc-btc",  "xzc-eth",  "zec-btc",  "zec-eth",  "zec-usdc", "zec-tusd", "zec-busd"};
 
         nlohmann::json     m_current_ohlc_data;
         mutable std::mutex m_ohlc_data_mutex;
 
         //! Threads
         std::queue<std::future<void>> m_pending_tasks;
-        std::thread  m_provider_ohlc_fetcher_thread;
-        timed_waiter m_provider_thread_timer;
+        std::thread                   m_provider_ohlc_fetcher_thread;
+        timed_waiter                  m_provider_thread_timer;
 
       public:
         //! Constructor
