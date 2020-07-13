@@ -8,109 +8,108 @@ import "../Constants"
 
 
 ColumnLayout {
-    function inCurrentPage() {
-        return  wallet.inCurrentPage() && main_layout.currentIndex === 1
+    Layout.fillWidth: true
+
+    spacing: 20
+
+    DefaultText {
+        Layout.leftMargin: layout_margin
+        text_value: API.get().empty_string + ("< " + qsTr("Back"))
+        font.bold: true
+
+        MouseArea {
+            anchors.fill: parent
+            onClicked: main_layout.currentIndex = 0
+        }
     }
 
-    ColumnLayout {
-        Layout.margins: layout_margin
+    RowLayout {
+        Layout.leftMargin: layout_margin
         Layout.fillWidth: true
 
-        spacing: 20
-
         DefaultText {
-            text_value: API.get().empty_string + ("< " + qsTr("Back"))
+            text_value: API.get().empty_string + (qsTr("Address Book"))
             font.bold: true
-
-            MouseArea {
-                anchors.fill: parent
-                onClicked: main_layout.currentIndex = 0
-            }
-        }
-
-        RowLayout {
-            Layout.fillWidth: true
-
-            DefaultText {
-                text_value: API.get().empty_string + (qsTr("Address Book"))
-                font.bold: true
-                font.pixelSize: Style.textSize3
-                Layout.fillWidth: true
-            }
-
-            DefaultButton {
-                Layout.alignment: Qt.AlignRight
-                text: API.get().empty_string + (qsTr("New Contact"))
-                onClicked: {
-                    const ab = API.get().address_book
-                    ab.push({ name: "Contact #" + ab.length, addresses: [] })
-                }
-            }
-        }
-
-        HorizontalLine {
+            font.pixelSize: Style.textSize3
             Layout.fillWidth: true
         }
 
-        DefaultListView {
-            id: list
-            Layout.fillWidth: true
-            Layout.fillHeight: true
-            model: API.get().address_book
+        DefaultButton {
+            Layout.rightMargin: layout_margin
+            Layout.alignment: Qt.AlignRight
+            text: API.get().empty_string + (qsTr("New Contact"))
+            onClicked: {
+                const ab = API.get().address_book
+                ab.push({ name: "Contact #" + ab.length, addresses: [] })
+            }
+        }
+    }
 
-            delegate: Item {
-                readonly property int line_height: 150
-                readonly property int bottom_margin: layout_margin
-                readonly property bool is_last_item: index === model.length - 1
+    HorizontalLine {
+        Layout.fillWidth: true
+    }
 
-                width: list.width
-                height: line_height + (is_last_item ? 0 : bottom_margin)
+    DefaultListView {
+        id: list
+        Layout.fillWidth: true
+        Layout.fillHeight: true
+        model: API.get().address_book
 
-                FloatingBackground {
-                    anchors.fill: parent
-                    anchors.bottomMargin: is_last_item ? 0 : bottom_margin
+        delegate: Item {
+            readonly property int line_height: 200
+            readonly property bool is_last_item: index === model.length - 1
 
-                    content: ColumnLayout {
-                        DefaultText {
-                            Layout.topMargin: layout_margin
-                            Layout.leftMargin: layout_margin
-                            text_value: modelData.name
-                        }
+            width: list.width
+            height: contact_bg.height + layout_margin
 
-                        HorizontalLine {
-                            Layout.fillWidth: true
-                        }
+            FloatingBackground {
+                id: contact_bg
 
-                        DefaultListView {
-                            id: address_list
-                            Layout.fillWidth: true
-                            model: modelData.addresses
+                anchors.verticalCenter: parent.verticalCenter
+                anchors.left: parent.left
+                anchors.right: parent.right
+                anchors.leftMargin: layout_margin
+                anchors.rightMargin: anchors.leftMargin
 
-                            delegate: Item {
+                content: ColumnLayout {
+                    DefaultText {
+                        Layout.topMargin: layout_margin
+                        Layout.leftMargin: layout_margin
+                        text_value: modelData.name
+                    }
 
-                                    width: list.width
+                    HorizontalLine {
+                        Layout.fillWidth: true
+                    }
 
-                                    height: 25
+                    DefaultListView {
+                        id: address_list
+                        Layout.bottomMargin: layout_margin
+                        Layout.fillWidth: true
+                        model: modelData.addresses
 
-                                    DefaultText {
-                                        anchors.left: parent.left
-                                        anchors.verticalCenter: parent.verticalCenter
-                                        anchors.leftMargin: layout_margin
+                        delegate: Item {
+                            width: contact_bg.width
 
-                                        font.pixelSize: Style.textSizeSmall3
-                                        text_value: modelData.type
-                                    }
+                            height: 25
 
-                                    DefaultText {
-                                        anchors.left: parent.left
-                                        anchors.verticalCenter: parent.verticalCenter
-                                        anchors.leftMargin: layout_margin * 5
+                            DefaultText {
+                                anchors.left: parent.left
+                                anchors.verticalCenter: parent.verticalCenter
+                                anchors.leftMargin: layout_margin
 
-                                        font.pixelSize: Style.textSizeSmall3
-                                        text_value: modelData.address
-                                    }
-                                }
+                                font.pixelSize: Style.textSizeSmall3
+                                text_value: modelData.type
+                            }
 
+                            DefaultText {
+                                anchors.left: parent.left
+                                anchors.verticalCenter: parent.verticalCenter
+                                anchors.leftMargin: layout_margin * 5
+
+                                font.pixelSize: Style.textSizeSmall3
+                                text_value: modelData.address
+                            }
                         }
                     }
                 }
