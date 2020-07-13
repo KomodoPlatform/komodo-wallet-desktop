@@ -96,19 +96,21 @@ namespace atomic_dex
         this->selected_coin_fiat_amount = std::move(fiat_amount);
         emit fiat_amount_changed();
     }
-    QObjectList
+
+    QVariantList
     current_coin_info::get_transactions() const noexcept
     {
         return this->selected_coin_transactions;
     }
 
     void
-    current_coin_info::set_transactions(QObjectList transactions) noexcept
+    current_coin_info::set_transactions(QVariantList transactions) noexcept
     {
         this->selected_coin_transactions.clear();
         this->selected_coin_transactions = std::move(transactions);
         emit transactionsChanged();
     }
+
     QString
     current_coin_info::get_address() const noexcept
     {
@@ -210,7 +212,7 @@ namespace atomic_dex
     QString
     atomic_dex::current_coin_info::get_paprika_id() const noexcept
     {
-       return this->selected_coin_paprika_id;
+        return this->selected_coin_paprika_id;
     }
 
     void

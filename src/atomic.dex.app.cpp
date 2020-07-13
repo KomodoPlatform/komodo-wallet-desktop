@@ -325,7 +325,7 @@ namespace atomic_dex
         if (!ec)
         {
             m_coin_info->set_transactions(
-                to_qt_binding(std::move(txs), this, get_paprika(), QString::fromStdString(m_config.current_currency), m_coin_info->get_ticker().toStdString()));
+                to_qt_binding(std::move(txs), get_paprika(), m_config.current_currency, m_coin_info->get_ticker().toStdString()));
         }
         auto tx_state = mm2.get_tx_state(m_coin_info->get_ticker().toStdString(), ec);
 

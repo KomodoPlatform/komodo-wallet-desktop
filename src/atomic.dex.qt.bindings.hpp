@@ -17,6 +17,8 @@
 #pragma once
 
 #include <QDebug>
+#include <QJsonArray>
+#include <QJsonDocument>
 #include <QObject>
 
 //! PCH Headers
@@ -275,101 +277,6 @@ namespace atomic_dex
         }
     };
 
-    struct qt_transactions : QObject
-    {
-        Q_OBJECT
-      public:
-        explicit qt_transactions(QObject* parent = nullptr);
-        bool         m_received;
-        QString      m_amount;
-        QString      m_amount_fiat;
-        QString      m_date;
-        int          m_timestamp;
-        QString      m_tx_hash;
-        QString      m_fees;
-        QStringList  m_to;
-        QStringList  m_from;
-        unsigned int m_blockheight;
-        unsigned int m_confirmations;
-
-        Q_PROPERTY(bool received READ get_received CONSTANT MEMBER m_received)
-        Q_PROPERTY(unsigned int blockheight READ get_blockheight CONSTANT MEMBER m_blockheight)
-        Q_PROPERTY(unsigned int confirmations READ get_confirmations CONSTANT MEMBER m_confirmations)
-        Q_PROPERTY(int timestamp READ get_timestamp CONSTANT MEMBER m_timestamp)
-        Q_PROPERTY(QString amount READ get_amount CONSTANT MEMBER m_amount)
-        Q_PROPERTY(QString amount_fiat READ get_amount_fiat CONSTANT MEMBER m_amount_fiat)
-        Q_PROPERTY(QString date READ get_date CONSTANT MEMBER m_date)
-        Q_PROPERTY(QString tx_hash READ get_tx_hash CONSTANT MEMBER m_tx_hash)
-        Q_PROPERTY(QString fees READ get_fees CONSTANT MEMBER m_fees)
-        Q_PROPERTY(QStringList to READ get_to CONSTANT MEMBER m_to)
-        Q_PROPERTY(QStringList from READ get_from CONSTANT MEMBER m_from)
-
-        [[nodiscard]] int get_timestamp() const noexcept
-        {
-            return m_timestamp;
-        }
-
-        [[nodiscard]] unsigned int
-        get_confirmations() const noexcept
-        {
-            return m_confirmations;
-        }
-
-        [[nodiscard]] unsigned int
-        get_blockheight() const noexcept
-        {
-            return m_blockheight;
-        }
-
-        [[nodiscard]] QStringList
-        get_to() const noexcept
-        {
-            return m_to;
-        }
-
-        [[nodiscard]] QStringList
-        get_from() const noexcept
-        {
-            return m_from;
-        }
-
-        [[nodiscard]] QString
-        get_fees() const noexcept
-        {
-            return m_fees;
-        }
-
-        [[nodiscard]] QString
-        get_tx_hash() const noexcept
-        {
-            return m_tx_hash;
-        }
-
-        [[nodiscard]] bool
-        get_received() const noexcept
-        {
-            return m_received;
-        }
-
-        [[nodiscard]] QString
-        get_amount() const noexcept
-        {
-            return m_amount;
-        }
-
-        [[nodiscard]] QString
-        get_amount_fiat() const noexcept
-        {
-            return m_amount_fiat;
-        }
-
-        [[nodiscard]] QString
-        get_date() const noexcept
-        {
-            return m_date;
-        }
-    };
-
     struct qt_coin_config : QObject
     {
         Q_OBJECT
@@ -433,41 +340,41 @@ namespace atomic_dex
         }
     };
 
-    inline QObject*
-    to_qt_binding(tx_infos&& tx, QObject* parent, QString fiat_amount)
+    inline nlohmann::json
+    to_qt_binding(tx_infos&& tx, std::string fiat_amount)
     {
-        auto* obj       = new qt_transactions(parent);
-        obj->m_amount   = QString::fromStdString(tx.my_balance_change);
-        obj->m_received = !tx.am_i_sender;
+        nlohmann::json obj{
+            {"amount", tx.my_balance_change},
+            {"received", !tx.am_i_sender},
+            {"date", tx.date},
+            {"timestamp", tx.timestamp},
+            {"amount_fiat", std::move(fiat_amount)},
+            {"tx_hash", tx.tx_hash},
+            {"fees", tx.fees},
+            {"from", tx.from},
+            {"to", tx.to},
+            {"blockheight", tx.block_height},
+            {"confirmations", tx.confirmations}};
         if (tx.am_i_sender)
         {
-            obj->m_amount = obj->m_amount.remove(0, 1);
+            obj["amount"] = tx.my_balance_change.substr(1);
         }
-        obj->m_date        = QString::fromStdString(tx.date);
-        obj->m_timestamp   = tx.timestamp;
-        obj->m_amount_fiat = std::move(fiat_amount);
-        obj->m_tx_hash     = QString::fromStdString(tx.tx_hash);
-        obj->m_fees        = QString::fromStdString(tx.fees);
-        obj->m_from.reserve(tx.from.size());
-        for (auto&& cur: tx.from) { obj->m_from.append(QString::fromStdString(cur)); }
-        obj->m_to.reserve(tx.to.size());
-        for (auto&& cur: tx.to) { obj->m_to.append(QString::fromStdString(cur)); }
-        obj->m_blockheight   = tx.block_height;
-        obj->m_confirmations = tx.confirmations;
         return obj;
     }
 
-    QObjectList inline to_qt_binding(
-        t_transactions&& transactions, QObject* parent, coinpaprika_provider& paprika, const QString& fiat, const std::string& ticker)
+    QVariantList inline to_qt_binding(t_transactions&& transactions, coinpaprika_provider& paprika, const std::string& fiat, const std::string& ticker)
     {
-        QObjectList out;
+        QVariantList out;
         out.reserve(transactions.size());
+        nlohmann::json j = nlohmann::json::array();
         for (auto&& tx: transactions)
         {
             std::error_code ec;
-            auto            fiat_amount = QString::fromStdString(paprika.get_price_as_currency_from_tx(fiat.toStdString(), ticker, tx, ec));
-            out.append(to_qt_binding(std::move(tx), parent, fiat_amount));
+            auto            fiat_amount = paprika.get_price_as_currency_from_tx(fiat, ticker, tx, ec);
+            j.push_back(to_qt_binding(std::move(tx), fiat_amount));
         }
+        QJsonDocument q_json = QJsonDocument::fromJson(QString::fromStdString(j.dump()).toUtf8());
+        out                  = q_json.array().toVariantList();
         return out;
     }
 
