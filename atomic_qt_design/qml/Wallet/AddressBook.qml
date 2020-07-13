@@ -42,8 +42,8 @@ ColumnLayout {
                 Layout.alignment: Qt.AlignRight
                 text: API.get().empty_string + (qsTr("New Contact"))
                 onClicked: {
-                    address_list.push({ name: "Kekkeri " + address_list.length })
-                    address_list = address_list
+                    const ab = API.get().address_book
+                    ab.push({ name: "Contact #" + ab.length, addresses: [] })
                 }
             }
         }
