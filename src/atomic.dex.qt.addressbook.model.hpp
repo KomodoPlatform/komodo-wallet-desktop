@@ -17,6 +17,7 @@
 #pragma once
 
 #include <QAbstractListModel>
+#include <QVariantList>
 #include <QObject> //! QObject
 
 //! Project include
@@ -29,6 +30,7 @@ namespace atomic_dex
     {
         Q_OBJECT
         Q_PROPERTY(QString name READ get_name WRITE set_name NOTIFY nameChanged)
+        Q_PROPERTY(QList<QVariant> readonly_addresses READ get_addresses NOTIFY addressesChanged)
         Q_ENUMS(ContactRoles)
       public:
         enum ContactRoles
@@ -50,11 +52,13 @@ namespace atomic_dex
         bool                   setData(const QModelIndex& index, const QVariant& value, int role) final;
         bool                   insertRows(int position, int rows, const QModelIndex& parent) final;
         bool                   removeRows(int position, int rows, const QModelIndex& parent) final;
+        QVariantList           get_addresses() const noexcept;
         Q_INVOKABLE void       add_address_content();
         Q_INVOKABLE void       remove_at(int position);
 
       signals:
         void nameChanged();
+        void addressesChanged();
 
       public:
         //! Contact stuff

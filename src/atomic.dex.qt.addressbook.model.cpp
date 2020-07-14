@@ -14,6 +14,8 @@
  *                                                                            *
  ******************************************************************************/
 
+#include <QJsonDocument>
+
 //! PCH
 #include "atomic.dex.pch.hpp"
 
@@ -84,6 +86,7 @@ namespace atomic_dex
             break;
         case AddressRole:
             item.address = value.toString();
+            emit addressesChanged();
             break;
         default:
             return false;
@@ -91,6 +94,22 @@ namespace atomic_dex
 
         emit dataChanged(index, index, {role});
         return true;
+    }
+
+    QVariantList
+    atomic_dex::contact_model::get_addresses() const noexcept
+    {
+        QVariantList out;
+        out.reserve(this->m_addresses.count());
+        for (auto&& cur: this->m_addresses) {
+            nlohmann::json j{
+                {"type", cur.type.toStdString()},
+                {"address", cur.address.toStdString()}
+            };
+            QJsonDocument q_json = QJsonDocument::fromJson(QString::fromStdString(j.dump()).toUtf8());
+            out.push_back(q_json.toVariant());
+        }
+        return out;
     }
 
     bool
