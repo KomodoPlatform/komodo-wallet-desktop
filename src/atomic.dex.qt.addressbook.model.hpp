@@ -50,6 +50,7 @@ namespace atomic_dex
         bool                   setData(const QModelIndex& index, const QVariant& value, int role) final;
         bool                   insertRows(int position, int rows, const QModelIndex& parent) final;
         bool                   removeRows(int position, int rows, const QModelIndex& parent) final;
+        Q_INVOKABLE            void add_address_content();
 
       public:
         //! Contact stuff

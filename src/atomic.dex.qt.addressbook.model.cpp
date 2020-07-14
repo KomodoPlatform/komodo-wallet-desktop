@@ -103,6 +103,12 @@ namespace atomic_dex
         return true;
     }
 
+    void
+    atomic_dex::contact_model::add_address_content()
+    {
+        insertRow(0);
+    }
+
     int
     contact_model::rowCount([[maybe_unused]] const QModelIndex& parent = QModelIndex()) const
     {
