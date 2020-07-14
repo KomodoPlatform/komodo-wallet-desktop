@@ -19,12 +19,13 @@ FloatingBackground {
     property string colorTextDisabled: Style.colorButtonTextDisabled
     property string colorTextHovered: Style.colorButtonTextHovered
     property string colorTextEnabled: Style.colorButtonTextEnabled
+    property int minWidth: 90
 
     signal clicked()
 
     id: button_bg
 
-    implicitWidth: Math.max(90, text_obj.width + 20 + Math.abs(text_offset))
+    implicitWidth: Math.max(minWidth, text_obj.width + 20 + Math.abs(text_offset))
     implicitHeight: 40
 
     radius: 100

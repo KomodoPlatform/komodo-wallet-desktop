@@ -57,6 +57,7 @@ ColumnLayout {
         delegate: Item {
             readonly property int line_height: 200
             readonly property bool is_last_item: index === model.length - 1
+            property bool editing: false
 
             width: list.width
             height: contact_bg.height + layout_margin
@@ -64,46 +65,65 @@ ColumnLayout {
             FloatingBackground {
                 id: contact_bg
 
-                anchors.verticalCenter: parent.verticalCenter
-                anchors.left: parent.left
-                anchors.right: parent.right
-                anchors.leftMargin: layout_margin
-                anchors.rightMargin: anchors.leftMargin
+                width: parent.width - 2*layout_margin
+                height: column_layout.height + layout_margin
+                anchors.centerIn: parent
 
-                content: ColumnLayout {
-                    DefaultText {
-                        Layout.topMargin: layout_margin
-                        Layout.leftMargin: layout_margin
-                        text_value: modelData.name
-                    }
+                ColumnLayout {
+                    id: column_layout
+                    width: parent.width
+                    anchors.centerIn: parent
 
-                    DefaultButton {
-                        Layout.leftMargin: layout_margin
+                    RowLayout {
+                        Layout.preferredWidth: parent.width
+                        Layout.preferredHeight: 50
+                        Layout.alignment: Qt.AlignVCenter
 
-                        font.pixelSize: Style.textSizeSmall3
-                        text: "Edit"
-                        onClicked: {
-                            modelData.name = "Contact #" + index
+                        DefaultText {
+                            Layout.alignment: Qt.AlignVCenter | Qt.AlignLeft
+                            Layout.leftMargin: layout_margin
+                            text_value: modelData.name
                         }
-                    }
 
-                    DefaultButton {
-                        Layout.leftMargin: layout_margin
+                        RowLayout {
+                            Layout.alignment: Qt.AlignVCenter | Qt.AlignRight
+                            Layout.rightMargin: layout_margin
 
-                        font.pixelSize: Style.textSizeSmall3
-                        text: "Delete"
-                        onClicked: {
-                            API.get().addressbook_mdl.remove_at(index)
-                        }
-                    }
+                            DefaultButton {
+                                Layout.leftMargin: layout_margin
 
-                    DefaultButton {
-                        Layout.leftMargin: layout_margin
+                                font.pixelSize: Style.textSizeSmall3
+                                text: editing ? "💾": "✎"
+                                minWidth: height
+                                onClicked: {
+                                    modelData.name = "Contact #" + index
+                                    editing = !editing
+                                }
+                            }
 
-                        font.pixelSize: Style.textSizeSmall3
-                        text: "New Address"
-                        onClicked: {
-                            modelData.add_address_content()
+                            DefaultButton {
+                                Layout.alignment: Qt.AlignVCenter
+                                Layout.leftMargin: layout_margin
+
+                                font.pixelSize: Style.textSizeSmall3
+                                text: "New Address"
+                                onClicked: {
+                                    modelData.add_address_content()
+                                }
+                            }
+
+                            DangerButton {
+                                Layout.alignment: Qt.AlignVCenter
+                                visible: editing
+                                Layout.leftMargin: layout_margin
+
+                                font.pixelSize: Style.textSizeSmall3
+                                text: "🗑"
+                                minWidth: height
+                                onClicked: {
+                                    API.get().addressbook_mdl.remove_at(index)
+                                }
+                            }
                         }
                     }
 
@@ -119,9 +139,8 @@ ColumnLayout {
                             id: address_list
 
                             model: modelData
-                            delegate: Item {
+                            delegate: DefaultRectangle {
                                 width: contact_bg.width
-
                                 height: 25
 
                                 DefaultButton {
