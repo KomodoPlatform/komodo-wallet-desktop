@@ -35,6 +35,19 @@ namespace atomic_dex
         spdlog::debug("contact model destroyed");
     }
 
+    QString
+    atomic_dex::contact_model::get_name() const noexcept
+    {
+        return m_name;
+    }
+
+    void
+    atomic_dex::contact_model::set_name(const QString& name) noexcept
+    {
+        m_name = name;
+        emit nameChanged();
+    }
+
     QVariant
     contact_model::data(const QModelIndex& index, int role = Qt::DisplayRole) const
     {
@@ -63,18 +76,22 @@ namespace atomic_dex
             return false;
         }
 
-        qt_contact_address_contents& item = m_addresses[index.row()];
+        qt_contact_address_contents& item             = m_addresses[index.row()];
+        bool                         data_has_changed = false;
         switch (role)
         {
         case TypeRole:
-            item.type = value.toString();
+            item.type        = value.toString();
+            data_has_changed = true;
             break;
         case AddressRole:
-            item.address = value.toString();
+            item.address     = value.toString();
+            data_has_changed = true;
             break;
         default:
             return false;
         }
+
         emit dataChanged(index, index, {role});
         return true;
     }
@@ -86,6 +103,7 @@ namespace atomic_dex
         beginInsertRows(QModelIndex(), position, position + rows - 1);
 
         for (int row = 0; row < rows; ++row) { this->m_addresses.insert(position, {}); }
+
 
         endInsertRows();
         return true;
@@ -141,15 +159,34 @@ namespace atomic_dex
         spdlog::debug("addressbook model destroyed");
     }
 
+    int
+    atomic_dex::addressbook_model::rowCount([[maybe_unused]] const QModelIndex& parent) const
+    {
+        return m_addressbook.count();
+    }
+
     QVariant
     atomic_dex::addressbook_model::data(const QModelIndex& index, int role) const
     {
-        return QVariant(1);
+        if (!hasIndex(index.row(), index.column(), index.parent()))
+        {
+            return {};
+        }
+
+        switch (static_cast<AddressBookRoles>(role))
+        {
+        case SubModelRole:
+            return QVariant::fromValue(m_addressbook.at(index.row()));
+        default:
+            return {};
+        }
     }
 
-    int
-    atomic_dex::addressbook_model::rowCount(const QModelIndex& parent) const
+    QHash<int, QByteArray>
+    atomic_dex::addressbook_model::roleNames() const
     {
-        return 0;
+        return {
+            {SubModelRole, "addressbook"},
+        };
     }
 } // namespace atomic_dex
