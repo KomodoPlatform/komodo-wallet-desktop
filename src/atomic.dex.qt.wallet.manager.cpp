@@ -233,4 +233,16 @@ namespace atomic_dex
             this->m_wallet_cfg.address_book.emplace_back(contact);
         }
     }
+
+    const wallet_cfg&
+    qt_wallet_manager::get_wallet_cfg() const noexcept
+    {
+        return m_wallet_cfg;
+    }
+
+    const wallet_cfg&
+    qt_wallet_manager::get_wallet_cfg() noexcept
+    {
+        return m_wallet_cfg;
+    }
 } // namespace atomic_dex

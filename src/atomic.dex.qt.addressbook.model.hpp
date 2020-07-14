@@ -51,6 +51,7 @@ namespace atomic_dex
         bool                   insertRows(int position, int rows, const QModelIndex& parent) final;
         bool                   removeRows(int position, int rows, const QModelIndex& parent) final;
         Q_INVOKABLE void       add_address_content();
+        Q_INVOKABLE void       remove_at(int position);
 
       signals:
         void nameChanged();
@@ -79,9 +80,10 @@ namespace atomic_dex
         explicit addressbook_model(atomic_dex::qt_wallet_manager& wallet_manager_, QObject* parent = nullptr) noexcept;
         ~addressbook_model() noexcept final;
         [[nodiscard]] QVariant data(const QModelIndex& index, int role) const final;
-        [[nodiscard]] int      rowCount(const QModelIndex& parent) const final;
+        [[nodiscard]] int      rowCount(const QModelIndex& parent = QModelIndex()) const final;
         bool                   insertRows(int position, int rows, const QModelIndex& parent) final;
-        bool                   removeRows(int position, int rows, const QModelIndex& parent) final;
+        bool                   removeRows(int position, int rows, const QModelIndex& parent = QModelIndex()) final;
+        void                   initializeFromCfg();
         Q_INVOKABLE void       add_contact_entry();
         Q_INVOKABLE void       remove_at(int position);
 
