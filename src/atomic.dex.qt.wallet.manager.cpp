@@ -201,11 +201,13 @@ namespace atomic_dex
     void
     qt_wallet_manager::update_contact(const QString& contact_name, const QVector<qt_contact_address_contents>& contact_addresses)
     {
+        bool        filled           = false;
+        std::string contact_name_str = contact_name.toStdString();
         for (auto&& cur: this->m_wallet_cfg.address_book)
         {
-            if (auto to_compare = contact_name.toStdString(); cur.name == to_compare)
+            if (cur.name == contact_name_str)
             {
-                cur.name = std::move(to_compare);
+                spdlog::debug("contact {} found ! refreshing addresses", contact_name_str);
                 cur.contents.clear();
                 cur.contents.reserve(contact_addresses.count());
                 for (auto&& cur_contact: contact_addresses)
@@ -214,6 +216,21 @@ namespace atomic_dex
                     cur.contents.emplace_back(contact_contents{.type = cur_contact.type.toStdString(), .address = cur_contact.address.toStdString()});
                 }
             }
+            filled = true;
+        }
+
+        //! Entry not found, insert it
+        if (not filled)
+        {
+            spdlog::debug("contact {} not found ! add a new entry to the registry", contact_name_str);
+            atomic_dex::contact contact;
+            contact.name = std::move(contact_name_str);
+            for (auto&& cur_contact: contact_addresses)
+            {
+                //! Cur contact
+                contact.contents.emplace_back(contact_contents{.type = cur_contact.type.toStdString(), .address = cur_contact.address.toStdString()});
+            }
+            this->m_wallet_cfg.address_book.emplace_back(contact);
         }
     }
 } // namespace atomic_dex

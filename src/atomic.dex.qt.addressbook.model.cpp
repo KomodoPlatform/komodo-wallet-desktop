@@ -93,6 +93,10 @@ namespace atomic_dex
         }
 
         emit dataChanged(index, index, {role});
+        if (data_has_changed) {
+            this->m_wallet_manager.update_contact(this->m_name, this->m_addresses);
+            this->m_wallet_manager.update_wallet_cfg();
+        }
         return true;
     }
 
