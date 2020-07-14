@@ -1257,7 +1257,7 @@ namespace atomic_dex
 //! Addressbook
 namespace atomic_dex
 {
-    QObject*
+    addressbook_model*
     application::get_addressbook() const noexcept
     {
         return m_addressbook;

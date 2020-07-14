@@ -16,6 +16,7 @@
 
 #pragma once
 
+#include <QAbstractListModel>
 #include <QApplication>
 #include <QImage>
 #include <QObject>
@@ -49,7 +50,7 @@ namespace atomic_dex
         Q_PROPERTY(QList<QObject*> enabled_coins READ get_enabled_coins NOTIFY enabledCoinsChanged)
         Q_PROPERTY(QList<QObject*> enableable_coins READ get_enableable_coins NOTIFY enableableCoinsChanged)
         Q_PROPERTY(QObject* current_coin_info READ get_current_coin_info NOTIFY coinInfoChanged)
-        Q_PROPERTY(QObject* addressbook READ get_addressbook NOTIFY addressbookChanged)
+        Q_PROPERTY(addressbook_model* addressbook READ get_addressbook NOTIFY addressbookChanged)
         Q_PROPERTY(QString current_currency READ get_current_currency WRITE set_current_currency NOTIFY on_currency_changed)
         Q_PROPERTY(QString current_fiat READ get_current_fiat WRITE set_current_fiat NOTIFY on_fiat_changed)
         Q_PROPERTY(QString lang READ get_current_lang WRITE set_current_lang NOTIFY on_lang_changed)
@@ -89,7 +90,7 @@ namespace atomic_dex
         coinpaprika_provider& get_paprika() noexcept;
         entt::dispatcher&     get_dispatcher() noexcept;
         QObject*              get_current_coin_info() const noexcept;
-        QObject*              get_addressbook() const noexcept;
+        addressbook_model*    get_addressbook() const noexcept;
         QObjectList           get_enabled_coins() const noexcept;
         QObjectList           get_enableable_coins() const noexcept;
         QString               get_current_currency() const noexcept;
