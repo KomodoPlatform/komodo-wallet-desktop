@@ -30,6 +30,15 @@ namespace atomic_dex
         explicit qt_contact_contents_model(QObject* parent = nullptr) noexcept;
         ~qt_contact_contents_model() noexcept final;
 
+      public:
+        Q_PROPERTY(QString name READ get_contact_name WRITE set_contact_name NOTIFY contactNameChanged)
+
+      public:
+        QString get_contact_name() const noexcept;
+        void    set_contact_name(const QString& contact_name) noexcept;
+      signals:
+        void contactNameChanged();
+
       private:
         QString     m_contact_name;
         QObjectList m_addresses;

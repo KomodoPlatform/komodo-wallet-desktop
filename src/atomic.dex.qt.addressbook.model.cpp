@@ -34,6 +34,19 @@ namespace atomic_dex
         spdlog::debug("{} l{} f[{}]", __FUNCTION__, __LINE__, fs::path(__FILE__).filename().string());
         spdlog::debug("qt_contact_contents_model destroyed");
     }
+
+    QString
+    atomic_dex::qt_contact_contents_model::get_contact_name() const noexcept
+    {
+        return m_contact_name;
+    }
+
+    void
+    atomic_dex::qt_contact_contents_model::set_contact_name(const QString& contact_name) noexcept
+    {
+        m_contact_name = contact_name;
+        emit contactNameChanged();
+    }
 } // namespace atomic_dex
 
 //! Addressbook model
