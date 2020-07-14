@@ -86,6 +86,10 @@ namespace atomic_dex
         ~addressbook_model() noexcept final;
         QVariant               data(const QModelIndex& index, int role) const final;
         int                    rowCount(const QModelIndex& parent) const final;
+        bool                   insertRows(int position, int rows, const QModelIndex& parent) final;
+        bool                   removeRows(int position, int rows, const QModelIndex& parent) final;
+        Q_INVOKABLE void       add_contact_entry();
+
         QHash<int, QByteArray> roleNames() const final;
 
       private:

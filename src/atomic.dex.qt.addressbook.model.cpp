@@ -97,7 +97,7 @@ namespace atomic_dex
     }
 
     bool
-    atomic_dex::contact_model::insertRows(int position, int rows, const QModelIndex& parent)
+    atomic_dex::contact_model::insertRows(int position, int rows, [[maybe_unused]] const QModelIndex& parent)
     {
         spdlog::trace("(contact_model::insertRows) inserting {} elements at position {}", rows, position);
         beginInsertRows(QModelIndex(), position, position + rows - 1);
@@ -110,7 +110,7 @@ namespace atomic_dex
     }
 
     bool
-    atomic_dex::contact_model::removeRows(int position, int rows, const QModelIndex& parent)
+    atomic_dex::contact_model::removeRows(int position, int rows, [[maybe_unused]] const QModelIndex& parent)
     {
         spdlog::trace("(contact_model::removeRows) removing {} elements at position {}", rows, position);
         beginRemoveRows(QModelIndex(), position, position + rows - 1);
@@ -180,6 +180,36 @@ namespace atomic_dex
         default:
             return {};
         }
+    }
+
+    bool
+    atomic_dex::addressbook_model::insertRows(int position, int rows, [[maybe_unused]] const QModelIndex& parent)
+    {
+        spdlog::trace("(addressbook_model::insertRows) inserting {} elements at position {}", rows, position);
+        beginInsertRows(QModelIndex(), position, position + rows - 1);
+
+        for (int row = 0; row < rows; ++row) { this->m_addressbook.insert(position, new contact_model(this->m_wallet_manager, this)); }
+
+        endInsertRows();
+        return true;
+    }
+
+    bool
+    atomic_dex::addressbook_model::removeRows(int position, int rows, [[maybe_unused]] const QModelIndex& parent)
+    {
+        spdlog::trace("(contact_model::removeRows) removing {} elements at position {}", rows, position);
+        beginRemoveRows(QModelIndex(), position, position + rows - 1);
+
+        for (int row = 0; row < rows; ++row) { this->m_addressbook.removeAt(position); }
+
+        endRemoveRows();
+        return true;
+    }
+
+    void
+    atomic_dex::addressbook_model::add_contact_entry()
+    {
+        insertRow(0);
     }
 
     QHash<int, QByteArray>
