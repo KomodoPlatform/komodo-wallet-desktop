@@ -72,6 +72,13 @@ QtObject {
         }
     }
 
+    function viewAddressAtExplorer(ticker, address) {
+        if(address !== '') {
+            const coin_info = API.get().get_coin_info(ticker)
+            Qt.openUrlExternally(coin_info.explorer_url + 'address/' + address)
+        }
+    }
+
     function diffPrefix(received) {
         return received === "" ? "" : received === true ? "+ " :  "- "
     }
