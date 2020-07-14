@@ -211,7 +211,7 @@ namespace atomic_dex
     void
     atomic_dex::addressbook_model::initializeFromCfg()
     {
-        /*this->m_addressbook.clear();
+        this->m_addressbook.clear();
         auto functor = [this](atomic_dex::contact cur_contact) {
             int position = 0;
             int rows     = 1;
@@ -219,18 +219,23 @@ namespace atomic_dex
 
             contact_model* contact_ptr = new contact_model(this->m_wallet_manager, this);
             contact_ptr->set_name(QString::fromStdString(cur_contact.name));
+            for (auto&& contact_contents: cur_contact.contents)
+            {
+                contact_ptr->m_addresses.push_back(qt_contact_address_contents{
+                    .type = QString::fromStdString(contact_contents.type), .address = QString::fromStdString(contact_contents.address)});
+            }
             beginInsertRows(QModelIndex(), position, position + rows - 1);
 
             for (int row = 0; row < rows; ++row)
             {
                 //! Insert contact
-                this->m_addressbook.insert(position, contact_ptr);
+                this->m_addressbook.push_back(contact_ptr);
             }
 
             endInsertRows();
         };
         const wallet_cfg& cfg = this->m_wallet_manager.get_wallet_cfg();
-        for (auto&& cur: cfg.address_book) { functor(cur); }*/
+        for (auto&& cur: cfg.address_book) { functor(cur); }
     }
 
     void
