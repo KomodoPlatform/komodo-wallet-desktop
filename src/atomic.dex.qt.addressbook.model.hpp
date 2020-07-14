@@ -89,6 +89,7 @@ namespace atomic_dex
         bool                   insertRows(int position, int rows, const QModelIndex& parent) final;
         bool                   removeRows(int position, int rows, const QModelIndex& parent) final;
         Q_INVOKABLE void       add_contact_entry();
+        Q_INVOKABLE void       remove_at(int position);
 
         QHash<int, QByteArray> roleNames() const final;
 

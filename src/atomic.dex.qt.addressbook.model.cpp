@@ -104,7 +104,6 @@ namespace atomic_dex
 
         for (int row = 0; row < rows; ++row) { this->m_addresses.insert(position, {}); }
 
-
         endInsertRows();
         return true;
     }
@@ -210,6 +209,12 @@ namespace atomic_dex
     atomic_dex::addressbook_model::add_contact_entry()
     {
         insertRow(0);
+    }
+
+    void
+    atomic_dex::addressbook_model::remove_at(int position)
+    {
+        removeRow(position);
     }
 
     QHash<int, QByteArray>
