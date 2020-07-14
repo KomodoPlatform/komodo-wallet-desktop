@@ -23,16 +23,16 @@
 //! Addressbook contents model
 namespace atomic_dex
 {
-    addressbook_contents::addressbook_contents(QObject* parent) noexcept : QObject(parent)
+    qt_contact_contents_model::qt_contact_contents_model(QObject* parent) noexcept : QObject(parent)
     {
         spdlog::debug("{} l{} f[{}]", __FUNCTION__, __LINE__, fs::path(__FILE__).filename().string());
-        spdlog::debug("addressbook contents created");
+        spdlog::debug("qt_contact_contents_model created");
     }
 
-    addressbook_contents::~addressbook_contents() noexcept
+    qt_contact_contents_model::~qt_contact_contents_model() noexcept
     {
         spdlog::debug("{} l{} f[{}]", __FUNCTION__, __LINE__, fs::path(__FILE__).filename().string());
-        spdlog::debug("addressbook contents destroyed");
+        spdlog::debug("qt_contact_contents_model destroyed");
     }
 } // namespace atomic_dex
 
@@ -55,6 +55,6 @@ namespace atomic_dex
     QList<QObject*>
     atomic_dex::addressbook_model::get_contents() const noexcept
     {
-        return m_contents;
+        return m_contact_contents;
     }
 } // namespace atomic_dex
