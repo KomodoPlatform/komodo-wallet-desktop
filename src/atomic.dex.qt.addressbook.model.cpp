@@ -20,6 +20,23 @@
 //! Project headers
 #include "atomic.dex.qt.addressbook.model.hpp"
 
+//! Addressbook contents model
+namespace atomic_dex
+{
+    addressbook_contents::addressbook_contents(QObject* parent) noexcept : QObject(parent)
+    {
+        spdlog::debug("{} l{} f[{}]", __FUNCTION__, __LINE__, fs::path(__FILE__).filename().string());
+        spdlog::debug("addressbook contents created");
+    }
+
+    addressbook_contents::~addressbook_contents() noexcept
+    {
+        spdlog::debug("{} l{} f[{}]", __FUNCTION__, __LINE__, fs::path(__FILE__).filename().string());
+        spdlog::debug("addressbook contents destroyed");
+    }
+} // namespace atomic_dex
+
+//! Addressbook model
 namespace atomic_dex
 {
     addressbook_model::addressbook_model(atomic_dex::qt_wallet_manager& wallet_manager_, QObject* parent) noexcept :
@@ -33,5 +50,11 @@ namespace atomic_dex
     {
         spdlog::debug("{} l{} f[{}]", __FUNCTION__, __LINE__, fs::path(__FILE__).filename().string());
         spdlog::debug("addressbook model destroyed");
+    }
+
+    QList<QObject*>
+    atomic_dex::addressbook_model::get_contents() const noexcept
+    {
+        return m_contents;
     }
 } // namespace atomic_dex

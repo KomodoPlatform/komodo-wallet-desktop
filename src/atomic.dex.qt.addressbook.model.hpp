@@ -23,15 +23,30 @@
 
 namespace atomic_dex
 {
+    class addressbook_contents final : public QObject
+    {
+        Q_OBJECT
+      public:
+        explicit addressbook_contents(QObject* parent = nullptr) noexcept;
+        ~addressbook_contents() noexcept final;
+    };
+
     class addressbook_model final : public QObject
     {
         Q_OBJECT
-
       public:
+        Q_PROPERTY(QList<QObject*> contents READ get_contents NOTIFY contentsChanged)
         explicit addressbook_model(atomic_dex::qt_wallet_manager& wallet_manager_, QObject* parent = nullptr) noexcept;
         ~addressbook_model() noexcept final;
 
+      public:
+        QList<QObject*> get_contents() const noexcept;
+        
+      signals:
+        void contentsChanged();
+
       private:
         atomic_dex::qt_wallet_manager& m_wallet_manager;
+        QObjectList                    m_contents;
     };
 } // namespace atomic_dex
