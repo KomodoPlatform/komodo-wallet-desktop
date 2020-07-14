@@ -82,7 +82,7 @@ ColumnLayout {
                         DefaultText {
                             Layout.alignment: Qt.AlignVCenter | Qt.AlignLeft
                             Layout.leftMargin: layout_margin
-                            text_value: modelData.name
+                            text_value: modelData.name + " (" + modelData.readonly_addresses.length + ")"
                         }
 
                         RowLayout {
