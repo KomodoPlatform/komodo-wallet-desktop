@@ -92,12 +92,25 @@ ColumnLayout {
                             DefaultButton {
                                 Layout.leftMargin: layout_margin
 
+                                visible: !editing
                                 font.pixelSize: Style.textSizeSmall3
-                                text: editing ? "💾": "✎"
+                                text: "✎"
                                 minWidth: height
                                 onClicked: {
                                     modelData.name = "Contact #" + index
-                                    editing = !editing
+                                    editing = true
+                                }
+                            }
+
+                            PrimaryButton {
+                                Layout.leftMargin: layout_margin
+
+                                visible: editing
+                                font.pixelSize: Style.textSizeSmall3
+                                text: "💾"
+                                minWidth: height
+                                onClicked: {
+                                    editing = false
                                 }
                             }
 
@@ -132,28 +145,24 @@ ColumnLayout {
                     }
 
                     Column {
-                        Layout.bottomMargin: layout_margin
                         Layout.fillWidth: true
 
                         Repeater {
                             id: address_list
 
                             model: modelData
-                            delegate: DefaultRectangle {
+                            delegate: Rectangle {
+                                property bool editing_address: false
+
                                 width: contact_bg.width
-                                height: 25
+                                height: 50
 
-                                DefaultButton {
-                                    anchors.left: parent.left
-                                    anchors.verticalCenter: parent.verticalCenter
-                                    anchors.leftMargin: layout_margin * 7
+                                color: mouse_area.containsMouse ? Style.colorTheme6 : "transparent"
 
-                                    font.pixelSize: Style.textSizeSmall3
-                                    text: "SET"
-                                    onClicked: {
-                                        type = "Kek" + index
-                                        address = index + "-lsdkfja;lskdfjasdflaskdv"
-                                    }
+                                MouseArea {
+                                    id: mouse_area
+                                    anchors.fill: parent
+                                    hoverEnabled: true
                                 }
 
                                 DefaultText {
@@ -162,7 +171,7 @@ ColumnLayout {
                                     anchors.leftMargin: layout_margin
 
                                     font.pixelSize: Style.textSizeSmall3
-                                    text_value: "TYPE: " + type
+                                    text_value: "COIN: " + type
                                 }
 
                                 DefaultText {
@@ -172,6 +181,86 @@ ColumnLayout {
 
                                     font.pixelSize: Style.textSizeSmall3
                                     text_value: "ADDRESS: " + address
+                                }
+
+                                RowLayout {
+                                    anchors.right: parent.right
+                                    anchors.rightMargin: layout_margin
+                                    anchors.verticalCenter: parent.verticalCenter
+
+                                    DefaultButton {
+                                        Layout.leftMargin: layout_margin
+
+                                        visible: !editing_address
+                                        font.pixelSize: Style.textSizeSmall3
+                                        text: "✎"
+                                        minWidth: height
+                                        onClicked: {
+                                            type = "BTC"
+                                            address = "3KFCRfjE4DYsqtoB9CsYgAvhD6D3Noi2fq"
+
+                                            editing_address = true
+                                        }
+                                    }
+
+                                    PrimaryButton {
+                                        Layout.leftMargin: layout_margin
+
+                                        visible: editing_address
+                                        font.pixelSize: Style.textSizeSmall3
+                                        text: "💾"
+                                        minWidth: height
+                                        onClicked: {
+                                            editing_address = false
+                                        }
+                                    }
+
+                                    DefaultButton {
+                                        Layout.alignment: Qt.AlignVCenter
+                                        Layout.leftMargin: layout_margin
+
+                                        font.pixelSize: Style.textSizeSmall3
+                                        text: API.get().empty_string + (qsTr("Explorer"))
+                                        enabled: address !== ""
+                                        onClicked: General.viewAddressAtExplorer(type, address)
+                                    }
+
+                                    DefaultButton {
+                                        Layout.alignment: Qt.AlignVCenter
+                                        visible: editing_address
+                                        Layout.leftMargin: layout_margin
+
+                                        font.pixelSize: Style.textSizeSmall3
+                                        text: API.get().empty_string + (qsTr("Send"))
+                                        minWidth: height
+                                        enabled: address !== ""
+                                        onClicked: {
+                                            console.log("Will open send modal for this address")
+                                        }
+                                    }
+
+                                    DangerButton {
+                                        Layout.alignment: Qt.AlignVCenter
+                                        visible: editing_address
+                                        Layout.leftMargin: layout_margin
+
+                                        font.pixelSize: Style.textSizeSmall3
+                                        text: "🗑"
+                                        minWidth: height
+                                        onClicked: {
+                                            modelData.remove_at(index)
+                                        }
+                                    }
+                                }
+
+                                HorizontalLine {
+                                    visible: index !== modelData.length -1
+                                    width: parent.width - 4
+
+                                    anchors.horizontalCenter: parent.horizontalCenter
+                                    anchors.bottom: parent.bottom
+                                    anchors.bottomMargin: -height/2
+                                    light: true
                                 }
                             }
                         }
