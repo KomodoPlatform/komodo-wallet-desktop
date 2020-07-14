@@ -632,22 +632,28 @@ namespace atomic_dex
 
         m_mm2_init_thread = std::thread([this, mm2_cfg_path]() {
             using namespace std::chrono_literals;
-            // loguru::set_thread_name("mm2 init thread");
+            auto               check_mm2_alive = []() { return ::mm2::api::rpc_version() != "error occured during rpc_version"; };
+            static std::size_t nb_try          = 0;
 
-            const auto wait_ec = m_mm2_instance.wait(2s).second;
+            while (not check_mm2_alive())
+            {
+                nb_try += 1;
+                if (nb_try == 30)
+                {
+                    spdlog::error("MM2 not started correctly");
+                    //! TODO: emit mm2_failed_initialization
+                    fs::remove(mm2_cfg_path);
+                    return;
+                }
+                std::this_thread::sleep_for(1s);
+            }
+
             fs::remove(mm2_cfg_path);
-            if (wait_ec.value() == static_cast<int>(std::errc::timed_out) || wait_ec.value() == 258)
-            {
-                spdlog::info("mm2 is initialized");
-                dispatcher_.trigger<mm2_initialized>();
-                enable_default_coins();
-                m_mm2_running = true;
-                dispatcher_.trigger<mm2_started>();
-            }
-            else
-            {
-                spdlog::error("{}", wait_ec.message());
-            }
+            spdlog::info("mm2 is initialized");
+            dispatcher_.trigger<mm2_initialized>();
+            enable_default_coins();
+            m_mm2_running = true;
+            dispatcher_.trigger<mm2_started>();
         });
     }
 
