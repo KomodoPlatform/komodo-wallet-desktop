@@ -121,6 +121,7 @@ namespace atomic_dex
         for (int row = 0; row < rows; ++row) { this->m_addresses.insert(position, qt_contact_address_contents{}); }
 
         endInsertRows();
+        emit addressesChanged();
         return true;
     }
 
@@ -130,9 +131,12 @@ namespace atomic_dex
         spdlog::trace("(contact_model::removeRows) removing {} elements at position {}", rows, position);
         beginRemoveRows(QModelIndex(), position, position + rows - 1);
 
-        for (int row = 0; row < rows; ++row) { this->m_addresses.removeAt(position); }
+        for (int row = 0; row < rows; ++row) {
+            this->m_addresses.removeAt(position);
+        }
 
         endRemoveRows();
+        emit addressesChanged();
         return true;
     }
 
