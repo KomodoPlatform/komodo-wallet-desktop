@@ -9,6 +9,11 @@ import "../Constants"
 RowLayout {
     id: wallet
 
+    function inCurrentPage() {
+        return  dashboard.inCurrentPage() &&
+                dashboard.current_page === General.idx_dashboard_wallet
+    }
+
     // Local
     function onClickedSwap() {
         dashboard.current_page = General.idx_dashboard_exchange
