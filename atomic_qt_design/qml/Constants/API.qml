@@ -17,7 +17,7 @@ QtObject {
 
 
         // Other
-        address_book: [
+        addressbook_mdl: [
             {
                 name: "ca333",
                 addresses: [

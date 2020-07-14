@@ -39,8 +39,7 @@ ColumnLayout {
             Layout.alignment: Qt.AlignRight
             text: API.get().empty_string + (qsTr("New Contact"))
             onClicked: {
-                const ab = API.get().address_book
-                ab.push({ name: "Contact #" + ab.length, addresses: [] })
+                API.get().addressbook_mdl.add_contact_entry()
             }
         }
     }
@@ -53,7 +52,7 @@ ColumnLayout {
         id: list
         Layout.fillWidth: true
         Layout.fillHeight: true
-        model: API.get().address_book
+        model: API.get().addressbook_mdl
 
         delegate: Item {
             readonly property int line_height: 200
@@ -78,6 +77,36 @@ ColumnLayout {
                         text_value: modelData.name
                     }
 
+                    DefaultButton {
+                        Layout.leftMargin: layout_margin
+
+                        font.pixelSize: Style.textSizeSmall3
+                        text: "Edit"
+                        onClicked: {
+                            modelData.name = "Contact #" + index
+                        }
+                    }
+
+                    DefaultButton {
+                        Layout.leftMargin: layout_margin
+
+                        font.pixelSize: Style.textSizeSmall3
+                        text: "Delete"
+                        onClicked: {
+                            API.get().addressbook_mdl.remove_at(index)
+                        }
+                    }
+
+                    DefaultButton {
+                        Layout.leftMargin: layout_margin
+
+                        font.pixelSize: Style.textSizeSmall3
+                        text: "New Address"
+                        onClicked: {
+                            modelData.add_address_content()
+                        }
+                    }
+
                     HorizontalLine {
                         Layout.fillWidth: true
                     }
@@ -89,12 +118,24 @@ ColumnLayout {
                         Repeater {
                             id: address_list
 
-                            model: modelData.addresses
-
+                            model: modelData
                             delegate: Item {
                                 width: contact_bg.width
 
                                 height: 25
+
+                                DefaultButton {
+                                    anchors.left: parent.left
+                                    anchors.verticalCenter: parent.verticalCenter
+                                    anchors.leftMargin: layout_margin * 7
+
+                                    font.pixelSize: Style.textSizeSmall3
+                                    text: "SET"
+                                    onClicked: {
+                                        type = "Kek" + index
+                                        address = index + "-lsdkfja;lskdfjasdflaskdv"
+                                    }
+                                }
 
                                 DefaultText {
                                     anchors.left: parent.left
@@ -102,7 +143,7 @@ ColumnLayout {
                                     anchors.leftMargin: layout_margin
 
                                     font.pixelSize: Style.textSizeSmall3
-                                    text_value: modelData.type
+                                    text_value: "TYPE: " + type
                                 }
 
                                 DefaultText {
@@ -111,7 +152,7 @@ ColumnLayout {
                                     anchors.leftMargin: layout_margin * 5
 
                                     font.pixelSize: Style.textSizeSmall3
-                                    text_value: modelData.address
+                                    text_value: "ADDRESS: " + address
                                 }
                             }
                         }
