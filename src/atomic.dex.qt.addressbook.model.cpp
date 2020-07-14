@@ -25,14 +25,14 @@ namespace atomic_dex
 {
     contact_model::contact_model(qt_wallet_manager& wallet_manager_, QObject* parent) noexcept : QAbstractListModel(parent), m_wallet_manager(wallet_manager_)
     {
-        spdlog::debug("{} l{} f[{}]", __FUNCTION__, __LINE__, fs::path(__FILE__).filename().string());
-        spdlog::debug("contact model created");
+        spdlog::trace("{} l{} f[{}]", __FUNCTION__, __LINE__, fs::path(__FILE__).filename().string());
+        spdlog::trace("contact model created");
     }
 
     contact_model::~contact_model() noexcept
     {
-        spdlog::debug("{} l{} f[{}]", __FUNCTION__, __LINE__, fs::path(__FILE__).filename().string());
-        spdlog::debug("contact model destroyed");
+        spdlog::trace("{} l{} f[{}]", __FUNCTION__, __LINE__, fs::path(__FILE__).filename().string());
+        spdlog::trace("contact model destroyed");
     }
 
     QString
@@ -102,7 +102,7 @@ namespace atomic_dex
         spdlog::trace("(contact_model::insertRows) inserting {} elements at position {}", rows, position);
         beginInsertRows(QModelIndex(), position, position + rows - 1);
 
-        for (int row = 0; row < rows; ++row) { this->m_addresses.insert(position, {}); }
+        for (int row = 0; row < rows; ++row) { this->m_addresses.insert(position, qt_contact_address_contents{}); }
 
         endInsertRows();
         return true;
@@ -148,14 +148,14 @@ namespace atomic_dex
     addressbook_model::addressbook_model(atomic_dex::qt_wallet_manager& wallet_manager_, QObject* parent) noexcept :
         QAbstractListModel(parent), m_wallet_manager(wallet_manager_)
     {
-        spdlog::debug("{} l{} f[{}]", __FUNCTION__, __LINE__, fs::path(__FILE__).filename().string());
-        spdlog::debug("addressbook model created");
+        spdlog::trace("{} l{} f[{}]", __FUNCTION__, __LINE__, fs::path(__FILE__).filename().string());
+        spdlog::trace("addressbook model created");
     }
 
     addressbook_model::~addressbook_model() noexcept
     {
-        spdlog::debug("{} l{} f[{}]", __FUNCTION__, __LINE__, fs::path(__FILE__).filename().string());
-        spdlog::debug("addressbook model destroyed");
+        spdlog::trace("{} l{} f[{}]", __FUNCTION__, __LINE__, fs::path(__FILE__).filename().string());
+        spdlog::trace("addressbook model destroyed");
     }
 
     int
@@ -221,7 +221,7 @@ namespace atomic_dex
     atomic_dex::addressbook_model::roleNames() const
     {
         return {
-            {SubModelRole, "addressbook"},
+            {SubModelRole, "contacts"},
         };
     }
 } // namespace atomic_dex

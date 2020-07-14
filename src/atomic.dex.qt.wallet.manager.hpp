@@ -20,9 +20,11 @@
 #include <QString>
 #include <QStringList>
 #include <QVariantMap>
+#include <QVector>
 
 //! Project Headers
 #include "atomic.dex.mm2.hpp"
+#include "atomic.dex.qt.addressbook.contact.contents.hpp"
 #include "atomic.dex.security.hpp"
 #include "atomic.dex.version.hpp"
 #include "atomic.dex.wallet.config.hpp"
@@ -54,6 +56,8 @@ namespace atomic_dex
         static bool confirm_password(const QString& wallet_name, const QString& password);
 
         bool update_wallet_cfg() noexcept;
+
+        void update_contact(const QString& contact_name, const QVector<qt_contact_address_contents>& contact_addresses);;
 
       private:
         wallet_cfg m_wallet_cfg;

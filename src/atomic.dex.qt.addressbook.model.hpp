@@ -20,16 +20,11 @@
 #include <QObject> //! QObject
 
 //! Project include
+#include "atomic.dex.qt.addressbook.contact.contents.hpp"
 #include "atomic.dex.qt.wallet.manager.hpp"
 
 namespace atomic_dex
 {
-    struct qt_contact_address_contents
-    {
-        QString type;
-        QString address;
-    };
-
     class contact_model final : public QAbstractListModel
     {
         Q_OBJECT
@@ -42,8 +37,7 @@ namespace atomic_dex
             AddressRole
         };
 
-        QString
-        get_name() const noexcept;;
+        QString get_name() const noexcept;
 
         void set_name(const QString& name) noexcept;
 
@@ -63,7 +57,7 @@ namespace atomic_dex
 
       public:
         //! Contact stuff
-        QString                               m_name;
+        QString                              m_name;
         QVector<qt_contact_address_contents> m_addresses;
 
       private:
@@ -84,14 +78,14 @@ namespace atomic_dex
       public:
         explicit addressbook_model(atomic_dex::qt_wallet_manager& wallet_manager_, QObject* parent = nullptr) noexcept;
         ~addressbook_model() noexcept final;
-        QVariant               data(const QModelIndex& index, int role) const final;
-        int                    rowCount(const QModelIndex& parent) const final;
+        [[nodiscard]] QVariant data(const QModelIndex& index, int role) const final;
+        [[nodiscard]] int      rowCount(const QModelIndex& parent) const final;
         bool                   insertRows(int position, int rows, const QModelIndex& parent) final;
         bool                   removeRows(int position, int rows, const QModelIndex& parent) final;
         Q_INVOKABLE void       add_contact_entry();
         Q_INVOKABLE void       remove_at(int position);
 
-        QHash<int, QByteArray> roleNames() const final;
+        [[nodiscard]] QHash<int, QByteArray> roleNames() const final;
 
       private:
         atomic_dex::qt_wallet_manager& m_wallet_manager;

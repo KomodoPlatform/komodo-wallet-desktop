@@ -197,4 +197,23 @@ namespace atomic_dex
         ofs << j.dump(4);
         return true;
     }
+
+    void
+    qt_wallet_manager::update_contact(const QString& contact_name, const QVector<qt_contact_address_contents>& contact_addresses)
+    {
+        for (auto&& cur: this->m_wallet_cfg.address_book)
+        {
+            if (auto to_compare = contact_name.toStdString(); cur.name == to_compare)
+            {
+                cur.name = std::move(to_compare);
+                cur.contents.clear();
+                cur.contents.reserve(contact_addresses.count());
+                for (auto&& cur_contact: contact_addresses)
+                {
+                    //! Create contact
+                    cur.contents.emplace_back(contact_contents{.type = cur_contact.type.toStdString(), .address = cur_contact.address.toStdString()});
+                }
+            }
+        }
+    }
 } // namespace atomic_dex
