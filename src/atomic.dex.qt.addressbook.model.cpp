@@ -76,27 +76,20 @@ namespace atomic_dex
             return false;
         }
 
-        qt_contact_address_contents& item             = m_addresses[index.row()];
-        bool                         data_has_changed = false;
+        qt_contact_address_contents& item = m_addresses[index.row()];
         switch (role)
         {
         case TypeRole:
-            item.type        = value.toString();
-            data_has_changed = true;
+            item.type = value.toString();
             break;
         case AddressRole:
-            item.address     = value.toString();
-            data_has_changed = true;
+            item.address = value.toString();
             break;
         default:
             return false;
         }
 
         emit dataChanged(index, index, {role});
-        if (data_has_changed) {
-            this->m_wallet_manager.update_contact(this->m_name, this->m_addresses);
-            this->m_wallet_manager.update_wallet_cfg();
-        }
         return true;
     }
 
@@ -128,6 +121,12 @@ namespace atomic_dex
     atomic_dex::contact_model::add_address_content()
     {
         insertRow(0);
+    }
+
+    void
+    atomic_dex::contact_model::remove_at(int position)
+    {
+        removeRow(position);
     }
 
     int
@@ -207,6 +206,31 @@ namespace atomic_dex
 
         endRemoveRows();
         return true;
+    }
+
+    void
+    atomic_dex::addressbook_model::initializeFromCfg()
+    {
+        /*this->m_addressbook.clear();
+        auto functor = [this](atomic_dex::contact cur_contact) {
+            int position = 0;
+            int rows     = 1;
+            spdlog::trace("(addressbook_model::initializeFromCfg) inserting {} elements at position {}", rows, position);
+
+            contact_model* contact_ptr = new contact_model(this->m_wallet_manager, this);
+            contact_ptr->set_name(QString::fromStdString(cur_contact.name));
+            beginInsertRows(QModelIndex(), position, position + rows - 1);
+
+            for (int row = 0; row < rows; ++row)
+            {
+                //! Insert contact
+                this->m_addressbook.insert(position, contact_ptr);
+            }
+
+            endInsertRows();
+        };
+        const wallet_cfg& cfg = this->m_wallet_manager.get_wallet_cfg();
+        for (auto&& cur: cfg.address_book) { functor(cur); }*/
     }
 
     void
