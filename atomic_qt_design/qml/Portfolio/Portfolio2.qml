@@ -36,8 +36,9 @@ ColumnLayout {
     function getColor(data) {
         const fiat = API.get().current_currency
 
-        if(General.validFiatRates(data, fiat) && data.rates[fiat].percent_change_24h !== 0)
-            return data.rates[fiat].percent_change_24h > 0 ? Style.colorGreen : Style.colorRed
+        const change_24h = parseFloat(data.change_24h)
+        if(/*General.validFiatRates(data, fiat) && */change_24h !== 0)
+            return change_24h > 0 ? Style.colorGreen : Style.colorRed
 
         return Style.colorWhite4
     }
@@ -259,7 +260,7 @@ ColumnLayout {
         Layout.fillWidth: true
         Layout.fillHeight: true
 
-        model: General.filterCoins(portfolio_coins, input_coin_filter.text)
+        model: API.get().portfolio_mdl /*General.filterCoins(portfolio_coins, input_coin_filter.text)
                 .sort((a, b) => {
             const order = highest_first ? 1 : -1
             let val_a
@@ -269,8 +270,8 @@ ColumnLayout {
                 case sort_by_name:      return (b.name.toUpperCase() > a.name.toUpperCase() ? -1 : 1) * order
                 case sort_by_ticker:    return (b.ticker > a.ticker ? -1 : 1) * order
                 case sort_by_value:
-                    val_a = parseFloat(a.balance_fiat)
-                    val_b = parseFloat(b.balance_fiat)
+                    val_a = parseFloat(a.main_currency_balance)
+                    val_b = parseFloat(b.main_currency_balance)
                     result = val_b - val_a
 
                     if(result === 0) {
@@ -280,16 +281,16 @@ ColumnLayout {
                     }
 
                     return result * order
-                case sort_by_price:       return (parseFloat(b.price) - parseFloat(a.price)) * order
+                case sort_by_price:       return (parseFloat(b.main_currency_price_for_one_unit) - parseFloat(a.main_currency_price_for_one_unit)) * order
                 case sort_by_balance:     return (parseFloat(b.balance) - parseFloat(a.balance)) * order
-                case sort_by_trend:       return (parseFloat(b.price) - parseFloat(a.price)) * order
+                case sort_by_trend:       return (parseFloat(b.main_currency_price_for_one_unit) - parseFloat(a.main_currency_price_for_one_unit)) * order
                 case sort_by_change:
-                    val_a = General.validFiatRates(a, API.get().current_currency) ? a.rates[API.get().current_currency].percent_change_24h : -9999999
-                    val_b = General.validFiatRates(b, API.get().current_currency) ? b.rates[API.get().current_currency].percent_change_24h : -9999999
+                    val_a = General.validFiatRates(a, API.get().current_currency) ? a.change_24h : -9999999
+                    val_b = General.validFiatRates(b, API.get().current_currency) ? b.change_24h : -9999999
 
                     return (val_b - val_a) * order
             }
-        })
+        })*/
 
         delegate: Rectangle {
             color: mouse_area.containsMouse ? Style.colorTheme5 : index % 2 == 0 ? Style.colorTheme6 : Style.colorTheme7
@@ -305,7 +306,7 @@ ColumnLayout {
                 onClicked: {
                     if (mouse.button === Qt.RightButton) context_menu.popup()
                     else {
-                        API.get().current_coin_info.ticker = model.modelData.ticker
+                        API.get().current_coin_info.ticker = ticker
                         dashboard.current_page = General.idx_dashboard_wallet
                     }
                 }
@@ -318,9 +319,9 @@ ColumnLayout {
             Menu {
                 id: context_menu
                 Action {
-                    text: API.get().empty_string + (qsTr("Disable %1", "TICKER").arg(model.modelData.ticker))
-                    onTriggered: API.get().disable_coins([model.modelData.ticker])
-                    enabled: General.canDisable(model.modelData.ticker)
+                    text: API.get().empty_string + (qsTr("Disable %1", "TICKER").arg(ticker))
+                    onTriggered: API.get().disable_coins([ticker])
+                    enabled: General.canDisable(ticker)
                 }
             }
 
@@ -330,7 +331,7 @@ ColumnLayout {
                 anchors.left: parent.left
                 anchors.leftMargin: coin_header.anchors.leftMargin
 
-                source: General.coinIcon(model.modelData.ticker)
+                source: General.coinIcon(ticker)
                 fillMode: Image.PreserveAspectFit
                 width: Style.textSize2
                 anchors.verticalCenter: parent.verticalCenter
@@ -340,8 +341,7 @@ ColumnLayout {
             DefaultText {
                 anchors.left: icon.right
                 anchors.leftMargin: 10
-
-                text_value: API.get().empty_string + (model.modelData.name)
+                text_value: API.get().empty_string + (name)
                 anchors.verticalCenter: parent.verticalCenter
             }
 
@@ -351,7 +351,7 @@ ColumnLayout {
                 anchors.left: parent.left
                 anchors.leftMargin: balance_header.anchors.leftMargin
 
-                text_value: API.get().empty_string + (General.formatCrypto("", model.modelData.balance, model.modelData.ticker,  model.modelData.balance_fiat, API.get().current_currency))
+                text_value: API.get().empty_string + (General.formatCrypto("", balance, ticker,  main_currency_balance, API.get().current_currency))
                 color: Style.colorWhite4
                 anchors.verticalCenter: parent.verticalCenter
                 privacy: true
@@ -362,8 +362,8 @@ ColumnLayout {
                 anchors.right: parent.right
                 anchors.rightMargin: change_24h_header.anchors.rightMargin
 
-                text_value: API.get().empty_string + (General.validFiatRates(model.modelData, API.get().current_currency) ? General.formatPercent(model.modelData.rates[API.get().current_currency].percent_change_24h) : '-')
-                color: getColor(model.modelData)
+                text_value: API.get().empty_string + (/*General.validFiatRates(modelData, API.get().current_currency)*/ true ? General.formatPercent(parseFloat(change_24h)) : '-')
+                color: Style.colorText//getColor(modelData)
                 anchors.verticalCenter: parent.verticalCenter
             }
 
@@ -372,13 +372,13 @@ ColumnLayout {
                 anchors.right: parent.right
                 anchors.rightMargin: price_header.anchors.rightMargin
 
-                text_value: API.get().empty_string + (General.formatFiat('', model.modelData.price, API.get().current_currency))
+                text_value: API.get().empty_string + (General.formatFiat('', main_currency_price_for_one_unit, API.get().current_currency))
                 color: Style.colorThemeDarkLight
                 anchors.verticalCenter: parent.verticalCenter
             }
 
             // 7d Trend
-            ChartView {
+            /*ChartView {
                 id: chart
                 width: 200
                 height: 100
@@ -388,10 +388,11 @@ ColumnLayout {
                 anchors.verticalCenter: parent.verticalCenter
                 legend.visible: false
 
-                Component.onCompleted: updateChart(chart, model.modelData.historical)
+                Component.onCompleted: updateChart(chart, historical)
 
                 backgroundColor: "transparent"
             }
+            */
         }
     }
 }
