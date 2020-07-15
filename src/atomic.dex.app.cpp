@@ -387,7 +387,8 @@ namespace atomic_dex
     }
 
     application::application(QObject* pParent) noexcept :
-        QObject(pParent), m_coin_info(new current_coin_info(dispatcher_, this)), m_addressbook(new addressbook_model(this->m_wallet_manager, this))
+        QObject(pParent), m_coin_info(new current_coin_info(dispatcher_, this)), m_addressbook(new addressbook_model(this->m_wallet_manager, this)),
+        m_portfolio(new portfolio_model(this->system_manager_, this))
     {
         //! MM2 system need to be created before the GUI and give the instance to the gui
         auto& mm2_system = system_manager_.create_system<mm2>();
@@ -1263,6 +1264,16 @@ namespace atomic_dex
     application::get_addressbook() const noexcept
     {
         return m_addressbook;
+    }
+} // namespace atomic_dex
+
+//! Portfolio
+namespace atomic_dex
+{
+    portfolio_model*
+    application::get_portfolio() const noexcept
+    {
+        return m_portfolio;
     }
 } // namespace atomic_dex
 //! Wallet manager QML API

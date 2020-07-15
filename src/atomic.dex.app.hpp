@@ -35,6 +35,7 @@
 #include "atomic.dex.qt.addressbook.model.hpp"
 #include "atomic.dex.qt.bindings.hpp"
 #include "atomic.dex.qt.current.coin.infos.hpp"
+#include "atomic.dex.qt.portfolio.model.hpp"
 #include "atomic.dex.qt.wallet.manager.hpp"
 
 namespace ag = antara::gaming;
@@ -51,6 +52,7 @@ namespace atomic_dex
         Q_PROPERTY(QList<QVariant> enableable_coins READ get_enableable_coins NOTIFY enableableCoinsChanged)
         Q_PROPERTY(QObject* current_coin_info READ get_current_coin_info NOTIFY coinInfoChanged)
         Q_PROPERTY(addressbook_model* addressbook_mdl READ get_addressbook NOTIFY addressbookChanged)
+        Q_PROPERTY(portfolio_model* portfolio_mdl READ get_portfolio NOTIFY portfolioChanged)
         Q_PROPERTY(QString current_currency READ get_current_currency WRITE set_current_currency NOTIFY on_currency_changed)
         Q_PROPERTY(QString current_fiat READ get_current_fiat WRITE set_current_fiat NOTIFY on_fiat_changed)
         Q_PROPERTY(QString lang READ get_current_lang WRITE set_current_lang NOTIFY on_lang_changed)
@@ -91,6 +93,7 @@ namespace atomic_dex
         entt::dispatcher&     get_dispatcher() noexcept;
         QObject*              get_current_coin_info() const noexcept;
         addressbook_model*    get_addressbook() const noexcept;
+        portfolio_model*      get_portfolio() const noexcept;
         QVariantList          get_enabled_coins() const noexcept;
         QVariantList          get_enableable_coins() const noexcept;
         QString               get_current_currency() const noexcept;
@@ -207,6 +210,7 @@ namespace atomic_dex
         void myOrdersUpdated();
         void addressbookChanged();
         void OHLCDataUpdated();
+        void portfolioChanged();
 
       private:
         //! CFG
@@ -236,5 +240,8 @@ namespace atomic_dex
 
         //! Addressbook based on the current wallet
         addressbook_model* m_addressbook;
+
+        //! Portfolio based on the current wallet
+        portfolio_model* m_portfolio;
     };
 } // namespace atomic_dex
