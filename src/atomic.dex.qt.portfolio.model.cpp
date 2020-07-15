@@ -29,7 +29,7 @@ namespace atomic_dex
         {
             beginInsertRows(QModelIndex(), this->m_model_data.count(), this->m_model_data.count() + 1);
             this->m_model_data.push_back(portfolio_data{
-                .ticker = "BTC", .balance = "2", .main_currency_balance = "18400", .change_24h = "2.4", .main_currency_price_for_one_unit = "9200"});
+                .ticker = "BTC", .name = "Bitcoin", .balance = "2", .main_currency_balance = "18400", .change_24h = "2.4", .main_currency_price_for_one_unit = "9200"});
             endInsertRows();
         }
     }
@@ -83,11 +83,8 @@ namespace atomic_dex
     QHash<int, QByteArray>
     portfolio_model::roleNames() const
     {
-        return {
-            {TickerRole, "ticker"},
-            {BalanceRole, "balance"},
-            {MainCurrencyBalanceRole, "main_currency_balance"},
-            {Change24H, "change_24h"},
-            {MainCurrencyPriceForOneUnit, "main_currency_price_for_one_unit"}};
+        return {{TickerRole, "ticker"},    {NameRole, "name"},
+                {BalanceRole, "balance"},  {MainCurrencyBalanceRole, "main_currency_balance"},
+                {Change24H, "change_24h"}, {MainCurrencyPriceForOneUnit, "main_currency_price_for_one_unit"}};
     }
 } // namespace atomic_dex
