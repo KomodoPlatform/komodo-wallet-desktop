@@ -277,69 +277,6 @@ namespace atomic_dex
         }
     };
 
-    struct qt_coin_config : QObject
-    {
-        Q_OBJECT
-      public:
-        explicit qt_coin_config(QObject* parent = nullptr);
-        QString m_ticker;
-        QString m_explorer_url;
-        QString m_name;
-        QString m_type;
-        bool    m_active;
-        bool    m_claimable;
-        QString m_minimal_balance_for_asking_rewards;
-
-        Q_PROPERTY(bool active READ get_active CONSTANT MEMBER m_active)
-        Q_PROPERTY(bool is_claimable READ is_claimable_coin CONSTANT MEMBER m_claimable)
-        Q_PROPERTY(QString minimal_balance_for_asking_rewards READ get_minimal_balance_for_asking_rewards CONSTANT MEMBER m_minimal_balance_for_asking_rewards)
-        Q_PROPERTY(QString ticker READ get_ticker CONSTANT MEMBER m_ticker)
-        Q_PROPERTY(QString name READ get_name CONSTANT MEMBER m_name)
-        Q_PROPERTY(QString type READ get_type CONSTANT MEMBER m_type)
-        Q_PROPERTY(QString explorer_url READ get_explorer_url CONSTANT MEMBER m_explorer_url)
-
-        [[nodiscard]] QString get_type() const noexcept
-        {
-            return m_type;
-        }
-
-        [[nodiscard]] QString
-        get_explorer_url() const noexcept
-        {
-            return m_explorer_url;
-        }
-
-        [[nodiscard]] bool
-        is_claimable_coin() const noexcept
-        {
-            return m_claimable;
-        }
-
-        [[nodiscard]] bool
-        get_active() const noexcept
-        {
-            return m_active;
-        }
-
-        [[nodiscard]] QString
-        get_minimal_balance_for_asking_rewards() const noexcept
-        {
-            return m_minimal_balance_for_asking_rewards;
-        }
-
-        [[nodiscard]] QString
-        get_ticker() const noexcept
-        {
-            return m_ticker;
-        }
-
-        [[nodiscard]] QString
-        get_name() const noexcept
-        {
-            return m_name;
-        }
-    };
-
     inline nlohmann::json
     to_qt_binding(tx_infos&& tx, std::string fiat_amount)
     {
@@ -378,25 +315,28 @@ namespace atomic_dex
         return out;
     }
 
-    inline QObject*
-    to_qt_binding(t_coins::value_type&& coin, QObject* parent)
+    inline nlohmann::json
+    to_qt_binding(t_coins::value_type&& coin)
     {
-        auto* obj                                 = new qt_coin_config(parent);
-        obj->m_ticker                             = QString::fromStdString(coin.ticker);
-        obj->m_name                               = QString::fromStdString(coin.name);
-        obj->m_active                             = coin.active;
-        obj->m_type                               = QString::fromStdString(coin.type);
-        obj->m_claimable                          = coin.is_claimable;
-        obj->m_explorer_url                       = QString::fromStdString(coin.explorer_url[0]);
-        obj->m_minimal_balance_for_asking_rewards = QString::fromStdString(coin.minimal_claim_amount);
-        return obj;
+        nlohmann::json j{
+            {"active", coin.active},
+            {"is_claimable", coin.is_claimable},
+            {"minimal_balance_for_asking_rewards", coin.minimal_claim_amount},
+            {"ticker", coin.ticker},
+            {"name", coin.name},
+            {"type", coin.type},
+            {"explorer_url", coin.explorer_url}};
+        return j;
     }
 
-    QObjectList inline to_qt_binding(t_coins&& coins, QObject* parent)
+    QVariantList inline to_qt_binding(t_coins&& coins)
     {
-        QObjectList out;
+        QVariantList out;
         out.reserve(coins.size());
-        for (auto&& coin: coins) { out.append(to_qt_binding(std::move(coin), parent)); }
+        nlohmann::json j = nlohmann::json::array();
+        for (auto&& coin: coins) { j.push_back(to_qt_binding(std::move(coin))); }
+        QJsonDocument q_json = QJsonDocument::fromJson(QString::fromStdString(j.dump()).toUtf8());
+        out                  = q_json.array().toVariantList();
         return out;
     }
 

@@ -47,8 +47,8 @@ namespace atomic_dex
 
         //! Properties
         Q_PROPERTY(QString empty_string READ get_empty_string NOTIFY lang_changed)
-        Q_PROPERTY(QList<QObject*> enabled_coins READ get_enabled_coins NOTIFY enabledCoinsChanged)
-        Q_PROPERTY(QList<QObject*> enableable_coins READ get_enableable_coins NOTIFY enableableCoinsChanged)
+        Q_PROPERTY(QList<QVariant> enabled_coins READ get_enabled_coins NOTIFY enabledCoinsChanged)
+        Q_PROPERTY(QList<QVariant> enableable_coins READ get_enableable_coins NOTIFY enableableCoinsChanged)
         Q_PROPERTY(QObject* current_coin_info READ get_current_coin_info NOTIFY coinInfoChanged)
         Q_PROPERTY(addressbook_model* addressbook_mdl READ get_addressbook NOTIFY addressbookChanged)
         Q_PROPERTY(QString current_currency READ get_current_currency WRITE set_current_currency NOTIFY on_currency_changed)
@@ -91,8 +91,8 @@ namespace atomic_dex
         entt::dispatcher&     get_dispatcher() noexcept;
         QObject*              get_current_coin_info() const noexcept;
         addressbook_model*    get_addressbook() const noexcept;
-        QObjectList           get_enabled_coins() const noexcept;
-        QObjectList           get_enableable_coins() const noexcept;
+        QVariantList          get_enabled_coins() const noexcept;
+        QVariantList          get_enableable_coins() const noexcept;
         QString               get_current_currency() const noexcept;
         QString               get_current_fiat() const noexcept;
         QString               get_current_lang() const noexcept;
@@ -180,8 +180,8 @@ namespace atomic_dex
         Q_INVOKABLE QString      get_cex_rates(const QString& base, const QString& rel);
         Q_INVOKABLE QString      get_fiat_from_amount(const QString& ticker, const QString& amount);
 
-        Q_INVOKABLE bool is_supported_ohlc_data_ticker_pair(const QString& base, const QString& rel);
-        Q_INVOKABLE QObject*    get_coin_info(const QString& ticker);
+        Q_INVOKABLE bool        is_supported_ohlc_data_ticker_pair(const QString& base, const QString& rel);
+        Q_INVOKABLE QVariant    get_coin_info(const QString& ticker);
         Q_INVOKABLE QVariantMap get_my_orders();
         Q_INVOKABLE QVariantMap get_recent_swaps();
         Q_INVOKABLE bool        export_swaps(const QString& csv_filename) noexcept;
@@ -225,8 +225,8 @@ namespace atomic_dex
         std::atomic_bool   m_refresh_ohlc_needed{false};
         std::atomic_bool   m_refresh_transaction_only{false};
         bool               m_need_a_full_refresh_of_mm2{false};
-        QObjectList        m_enabled_coins;
-        QObjectList        m_enableable_coins;
+        QVariantList       m_enabled_coins;
+        QVariantList       m_enableable_coins;
         QTranslator        m_translator;
         QString            m_current_lang{QString::fromStdString(m_config.current_lang)};
         QString            m_current_status{"None"};

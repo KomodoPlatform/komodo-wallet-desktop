@@ -103,13 +103,13 @@ namespace atomic_dex
 #endif
     }
 
-    QObjectList
+    QVariantList
     atomic_dex::application::get_enabled_coins() const noexcept
     {
         return m_enabled_coins;
     }
 
-    QObjectList
+    QVariantList
     atomic_dex::application::get_enableable_coins() const noexcept
     {
         return m_enableable_coins;
@@ -215,9 +215,9 @@ namespace atomic_dex
 
             if (m_refresh_enabled_coin_event)
             {
-                auto refresh_coin = [this](auto&& coins_container, auto&& coins_list) {
+                auto refresh_coin = [](auto&& coins_container, auto&& coins_list) {
                     coins_list.clear();
-                    coins_list = to_qt_binding(std::move(coins_container), this);
+                    coins_list = to_qt_binding(std::move(coins_container));
                 };
 
                 {
@@ -280,13 +280,6 @@ namespace atomic_dex
             {
                 this->set_current_balance_fiat_all(QString::fromStdString(fiat_balance_std));
             }
-
-            // auto second_fiat_balance_std = paprika.get_price_in_fiat_all(m_second_current_fiat.toStdString(), ec);
-
-            // if (!ec)
-            //{
-            //    this->set_second_current_balance_fiat_all(QString::fromStdString(second_fiat_balance_std));
-            //}
 
             if (not m_coin_info->get_ticker().isEmpty() && not m_enabled_coins.empty())
             {
@@ -781,10 +774,14 @@ namespace atomic_dex
         });
     }
 
-    QObject*
+    QVariant
     application::get_coin_info(const QString& ticker)
     {
-        return to_qt_binding(get_mm2().get_coin_info(ticker.toStdString()), this);
+        QVariant       out;
+        nlohmann::json j      = to_qt_binding(get_mm2().get_coin_info(ticker.toStdString()));
+        QJsonDocument  q_json = QJsonDocument::fromJson(QString::fromStdString(j.dump()).toUtf8());
+        out                   = q_json.toVariant();
+        return out;
     }
 
     bool
