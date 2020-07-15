@@ -341,7 +341,7 @@ ColumnLayout {
             DefaultText {
                 anchors.left: icon.right
                 anchors.leftMargin: 10
-                text_value: API.get().empty_string + (name)
+                text_value: API.get().empty_string + (name + " (" + index + ")")
                 anchors.verticalCenter: parent.verticalCenter
             }
 
