@@ -24,6 +24,14 @@ namespace atomic_dex
     {
         spdlog::trace("{} l{} f[{}]", __FUNCTION__, __LINE__, fs::path(__FILE__).filename().string());
         spdlog::trace("portfolio model created");
+
+        //! TMP
+        {
+            beginInsertRows(QModelIndex(), this->m_model_data.count(), this->m_model_data.count() + 1);
+            this->m_model_data.push_back(portfolio_data{
+                .ticker = "BTC", .balance = "2", .main_currency_balance = "18400 $", .change_24h = "+ 2.4%", .main_currency_price_for_one_unit = "9200 $ "});
+            endInsertRows();
+        }
     }
 
     portfolio_model::~portfolio_model() noexcept
