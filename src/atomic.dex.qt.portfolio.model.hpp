@@ -64,7 +64,7 @@ namespace atomic_dex
 
       private:
         //! Typedef
-        using t_cursor_registry = std::unordered_map<std::string, QModelIndex>;
+        using t_ticker_currently_present = std::unordered_set<std::string>;
         using t_portfolio_datas = QVector<portfolio_data>;
 
       public:
@@ -84,6 +84,6 @@ namespace atomic_dex
 
         //! Data holders
         t_portfolio_datas m_model_data;
-        t_cursor_registry m_ticker_index_registry;
+        t_ticker_currently_present m_ticker_registry;
     };
 } // namespace atomic_dex
