@@ -48,6 +48,7 @@ ColumnLayout {
         Layout.fillWidth: true
     }
 
+    // Contacts list
     DefaultListView {
         id: list
         Layout.fillWidth: true
@@ -62,6 +63,7 @@ ColumnLayout {
             width: list.width
             height: contact_bg.height + layout_margin
 
+            // Contact card
             FloatingBackground {
                 id: contact_bg
 
@@ -79,12 +81,14 @@ ColumnLayout {
                         Layout.preferredHeight: 50
                         Layout.alignment: Qt.AlignVCenter
 
+                        // Contact name
                         DefaultText {
                             Layout.alignment: Qt.AlignVCenter | Qt.AlignLeft
                             Layout.leftMargin: layout_margin
                             text_value: modelData.name + " (" + modelData.readonly_addresses.length + ")"
                         }
 
+                        // Buttons
                         RowLayout {
                             Layout.alignment: Qt.AlignVCenter | Qt.AlignRight
                             Layout.rightMargin: layout_margin
@@ -97,7 +101,6 @@ ColumnLayout {
                                 text: "✎"
                                 minWidth: height
                                 onClicked: {
-                                    modelData.name = "Contact #" + index
                                     editing = true
                                 }
                             }
@@ -144,6 +147,7 @@ ColumnLayout {
                         Layout.fillWidth: true
                     }
 
+                    // Address list
                     Column {
                         Layout.fillWidth: true
 
@@ -196,9 +200,6 @@ ColumnLayout {
                                         text: "✎"
                                         minWidth: height
                                         onClicked: {
-                                            type = "BTC"
-                                            address = "3KFCRfjE4DYsqtoB9CsYgAvhD6D3Noi2fq"
-
                                             editing_address = true
                                         }
                                     }
