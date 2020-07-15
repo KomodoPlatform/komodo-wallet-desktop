@@ -225,7 +225,10 @@ namespace atomic_dex
         spdlog::trace("(contact_model::removeRows) removing {} elements at position {}", rows, position);
         beginRemoveRows(QModelIndex(), position, position + rows - 1);
 
-        for (int row = 0; row < rows; ++row) { this->m_addressbook.removeAt(position); }
+        for (int row = 0; row < rows; ++row) {
+            delete this->m_addressbook.at(position);
+            this->m_addressbook.removeAt(position);
+        }
 
         endRemoveRows();
         return true;
@@ -240,7 +243,7 @@ namespace atomic_dex
             int rows     = 1;
             spdlog::trace("(addressbook_model::initializeFromCfg) inserting {} elements at position {}", rows, position);
 
-            contact_model* contact_ptr = new contact_model(this->m_wallet_manager, this);
+            contact_model* contact_ptr = new contact_model(this->m_wallet_manager, nullptr);
             contact_ptr->set_name(QString::fromStdString(cur_contact.name));
             for (auto&& contact_contents: cur_contact.contents)
             {

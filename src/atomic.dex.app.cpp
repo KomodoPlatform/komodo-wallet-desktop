@@ -1142,7 +1142,11 @@ namespace atomic_dex
 //! Constructor / Destructor
 namespace atomic_dex
 {
-    application::~application() noexcept { export_swaps_json(); }
+    application::~application() noexcept
+    {
+        this->m_addressbook->removeRows(0, this->m_addressbook->rowCount());
+        export_swaps_json();
+    }
 } // namespace atomic_dex
 
 //! Misc QML Utilities
@@ -1289,7 +1293,7 @@ namespace atomic_dex
     bool
     application::login(const QString& password, const QString& wallet_name)
     {
-        bool res =  m_wallet_manager.login(password, wallet_name, get_mm2(), [this]() { this->set_status("initializing_mm2"); });
+        bool res = m_wallet_manager.login(password, wallet_name, get_mm2(), [this]() { this->set_status("initializing_mm2"); });
         this->m_addressbook->initializeFromCfg();
         return res;
     }
