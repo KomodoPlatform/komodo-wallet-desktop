@@ -205,6 +205,23 @@ namespace atomic_dex
     }
 
     t_coins
+    mm2::get_all_coins() const noexcept
+    {
+        t_coins destination;
+
+        destination.reserve(m_coins_informations.size());
+        for (auto&& [key, value]: m_coins_informations)
+        {
+            //!
+            destination.push_back(value);
+        }
+
+        std::sort(begin(destination), end(destination), [](auto&& lhs, auto&& rhs) { return lhs.ticker < rhs.ticker; });
+
+        return destination;
+    }
+
+    t_coins
     mm2::get_enabled_coins() const noexcept
     {
         t_coins destination;
@@ -543,7 +560,6 @@ namespace atomic_dex
     void
     mm2::fetch_infos_thread()
     {
-        // loguru::set_thread_name("info thread");
         spdlog::info("{}: Fetching Infos l{}", __FUNCTION__, __LINE__);
 
         t_coins                        coins = get_enabled_coins();
@@ -551,26 +567,14 @@ namespace atomic_dex
 
         futures.reserve(coins.size() * 2 + 2);
 
-        futures.emplace_back(spawn([this]() {
-            // loguru::set_thread_name("swaps thread");
-            process_swaps();
-        }));
+        futures.emplace_back(spawn([this]() { process_swaps(); }));
 
-        futures.emplace_back(spawn([this]() {
-            // loguru::set_thread_name("orders thread");
-            process_orders();
-        }));
+        futures.emplace_back(spawn([this]() { process_orders(); }));
 
         for (auto&& current_coin: coins)
         {
-            futures.emplace_back(spawn([this, ticker = current_coin.ticker]() {
-                // loguru::set_thread_name("balance thread");
-                process_balance(ticker);
-            }));
-            futures.emplace_back(spawn([this, ticker = current_coin.ticker]() {
-                // loguru::set_thread_name("tx thread");
-                process_tx(ticker);
-            }));
+            futures.emplace_back(spawn([this, ticker = current_coin.ticker]() { process_balance(ticker); }));
+            futures.emplace_back(spawn([this, ticker = current_coin.ticker]() { process_tx(ticker); }));
         }
 
         for (auto&& fut: futures) { fut.get(); }

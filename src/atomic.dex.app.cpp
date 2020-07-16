@@ -133,6 +133,7 @@ namespace atomic_dex
     {
         std::vector<std::string> coins_std;
 
+        this->m_portfolio->disable_coins(coins);
         coins_std.reserve(coins.size());
         for (auto&& coin: coins) { coins_std.push_back(coin.toStdString()); }
         get_mm2().disable_multiple_coins(coins_std);
@@ -807,6 +808,7 @@ namespace atomic_dex
         spdlog::debug("{} l{}", __FUNCTION__, __LINE__);
 
         this->m_addressbook->removeRows(0, this->m_addressbook->rowCount());
+        this->m_portfolio->removeRows(0, this->m_portfolio->rowCount(QModelIndex()), QModelIndex());
         system_manager_.mark_system<mm2>();
         system_manager_.mark_system<coinpaprika_provider>();
         system_manager_.mark_system<cex_prices_provider>();
@@ -1170,6 +1172,12 @@ namespace atomic_dex
 //! Misc QML Utilities
 namespace atomic_dex
 {
+    QVariantList
+    application::get_all_coins() const noexcept
+    {
+        return to_qt_binding(get_mm2().get_all_coins());
+    }
+
     QString
     application::get_paprika_id_from_ticker(QString ticker) const
     {
