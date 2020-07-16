@@ -198,13 +198,34 @@ ColumnLayout {
                                     text_value: "COIN: " + type
                                 }
 
+                                VerticalLine {
+                                    anchors.top: parent.top
+                                    anchors.bottom: parent.bottom
+                                }
+
+                                // Address name
                                 DefaultText {
                                     anchors.left: parent.left
                                     anchors.verticalCenter: parent.verticalCenter
                                     anchors.leftMargin: layout_margin * 5
-
+                                    text: address
+                                    visible: !editing_address
                                     font.pixelSize: Style.textSizeSmall3
-                                    text_value: "ADDRESS: " + address
+
+                                    Component.onCompleted: {
+                                        // Start editing if it's a new/empty one
+                                        if(text.length === 0) editing_address = true
+                                    }
+                                }
+                                DefaultTextField {
+                                    id: address_input
+                                    anchors.left: parent.left
+                                    anchors.verticalCenter: parent.verticalCenter
+                                    anchors.leftMargin: layout_margin * 5
+                                    font.pixelSize: Style.textSizeSmall3
+                                    placeholderText: API.get().empty_string + (qsTr("Enter the address"))
+                                    width: 300
+                                    visible: editing_address
                                 }
 
                                 RowLayout {
@@ -220,6 +241,7 @@ ColumnLayout {
                                         text: "✎"
                                         minWidth: height
                                         onClicked: {
+                                            address_input.text = address
                                             editing_address = true
                                         }
                                     }
@@ -230,8 +252,10 @@ ColumnLayout {
                                         visible: editing_address
                                         font.pixelSize: Style.textSizeSmall3
                                         text: "💾"
+                                        enabled: address_input.length > 0
                                         minWidth: height
                                         onClicked: {
+                                            address = address_input.text
                                             editing_address = false
                                         }
                                     }
@@ -242,19 +266,20 @@ ColumnLayout {
 
                                         font.pixelSize: Style.textSizeSmall3
                                         text: API.get().empty_string + (qsTr("Explorer"))
-                                        enabled: address !== ""
+                                        enabled: address !== "" && type !== ""
+                                        visible: !editing_address
                                         onClicked: General.viewAddressAtExplorer(type, address)
                                     }
 
                                     DefaultButton {
                                         Layout.alignment: Qt.AlignVCenter
-                                        visible: editing_address
                                         Layout.leftMargin: layout_margin
 
                                         font.pixelSize: Style.textSizeSmall3
                                         text: API.get().empty_string + (qsTr("Send"))
                                         minWidth: height
                                         enabled: address !== ""
+                                        visible: !editing_address
                                         onClicked: {
                                             console.log("Will open send modal for this address")
                                         }
