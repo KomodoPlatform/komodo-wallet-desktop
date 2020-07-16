@@ -318,7 +318,7 @@ ColumnLayout {
                                         font.pixelSize: Style.textSizeSmall3
                                         text: API.get().empty_string + (qsTr("Send"))
                                         minWidth: height
-                                        enabled: address !== ""
+                                        enabled: address !== "" && type !== "" && API.get().enabled_coins.map(c => c.ticker).indexOf(type) !== -1
                                         visible: !editing_address
                                         onClicked: {
                                             console.log("Will open send modal for this address")
