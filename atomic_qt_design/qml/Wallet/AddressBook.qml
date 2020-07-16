@@ -85,7 +85,23 @@ ColumnLayout {
                         DefaultText {
                             Layout.alignment: Qt.AlignVCenter | Qt.AlignLeft
                             Layout.leftMargin: layout_margin
-                            text_value: modelData.name + " (" + modelData.readonly_addresses.length + ")"
+                            text: modelData.name
+                            color: Style.colorText
+                            visible: !editing
+
+                            Component.onCompleted: {
+                                // Start editing if it's a new/empty one
+                                if(text.length === 0) editing = true
+                            }
+                        }
+                        DefaultTextField {
+                            id: name_input
+                            Layout.alignment: Qt.AlignVCenter | Qt.AlignLeft
+                            Layout.leftMargin: layout_margin
+                            color: Style.colorText
+                            placeholderText: API.get().empty_string + (qsTr("Enter the contact name"))
+                            width: 150
+                            visible: editing
                         }
 
                         // Buttons
@@ -101,6 +117,7 @@ ColumnLayout {
                                 text: "✎"
                                 minWidth: height
                                 onClicked: {
+                                    name_input.text = modelData.name
                                     editing = true
                                 }
                             }
@@ -112,7 +129,9 @@ ColumnLayout {
                                 font.pixelSize: Style.textSizeSmall3
                                 text: "💾"
                                 minWidth: height
+                                enabled: name_input.length > 0
                                 onClicked: {
+                                    modelData.name = name_input.text
                                     editing = false
                                 }
                             }
@@ -121,6 +140,7 @@ ColumnLayout {
                                 Layout.alignment: Qt.AlignVCenter
                                 Layout.leftMargin: layout_margin
 
+                                visible: !editing
                                 font.pixelSize: Style.textSizeSmall3
                                 text: "New Address"
                                 onClicked: {
