@@ -147,7 +147,8 @@ namespace atomic_dex
         spdlog::trace("(contact_model::removeRows) removing {} elements at position {}", rows, position);
         beginRemoveRows(QModelIndex(), position, position + rows - 1);
 
-        for (int row = 0; row < rows; ++row) {
+        for (int row = 0; row < rows; ++row)
+        {
             auto contact_contents = this->m_addresses.at(position);
             this->m_wallet_manager.remove_address_entry(this->m_name, contact_contents.type);
             this->m_wallet_manager.update_wallet_cfg();
@@ -264,12 +265,12 @@ namespace atomic_dex
     atomic_dex::addressbook_model::initializeFromCfg()
     {
         this->m_addressbook.clear();
-        auto functor = [this](atomic_dex::contact cur_contact) {
+        auto functor = [this](const atomic_dex::contact& cur_contact) {
             int position = 0;
             int rows     = 1;
             spdlog::trace("(addressbook_model::initializeFromCfg) inserting {} elements at position {}", rows, position);
 
-            contact_model* contact_ptr = new contact_model(this->m_wallet_manager, nullptr);
+            auto* contact_ptr = new contact_model(this->m_wallet_manager, nullptr);
             contact_ptr->set_name(QString::fromStdString(cur_contact.name));
             for (auto&& contact_contents: cur_contact.contents)
             {

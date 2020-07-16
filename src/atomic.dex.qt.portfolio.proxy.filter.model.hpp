@@ -30,6 +30,11 @@ namespace atomic_dex
         //! Destructor
         ~portfolio_proxy_model() final;
 
+      public:
+        //! API
+        Q_INVOKABLE void sort_by_name(bool is_ascending);
+        Q_INVOKABLE void sort_by_currency_balance(bool is_ascending);
+
       protected:
         //! Override member functions
         [[nodiscard]] bool lessThan(const QModelIndex& source_left, const QModelIndex& source_right) const final;

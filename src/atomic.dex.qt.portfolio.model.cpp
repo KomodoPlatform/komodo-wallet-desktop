@@ -45,9 +45,8 @@ namespace atomic_dex
         spdlog::trace("portfolio model created");
 
         this->m_model_proxy->setSourceModel(this);
-        this->m_model_proxy->setSortRole(MainCurrencyBalanceRole);
         this->m_model_proxy->setDynamicSortFilter(true);
-        this->m_model_proxy->sort(0);
+        this->m_model_proxy->sort_by_currency_balance(true);
     }
 
     portfolio_model::~portfolio_model() noexcept
