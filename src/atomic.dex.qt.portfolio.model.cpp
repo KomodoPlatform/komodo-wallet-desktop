@@ -27,7 +27,8 @@ namespace
         QString change_24h   = "0";
         if (not ticker_infos.empty() && ticker_infos.contains(config.current_currency))
         {
-            auto change_24h_str = std::to_string(paprika.get_ticker_infos(coin.ticker).answer.at(config.current_currency).at("percent_change_24h").get<double>());
+            auto change_24h_str =
+                std::to_string(paprika.get_ticker_infos(coin.ticker).answer.at(config.current_currency).at("percent_change_24h").get<double>());
             std::replace(begin(change_24h_str), end(change_24h_str), ',', '.');
             change_24h = QString::fromStdString(change_24h_str);
         }
@@ -81,24 +82,24 @@ namespace atomic_dex
     void
     portfolio_model::update_currency_values()
     {
-        const auto&     mm2_system = this->m_system_manager.get_system<mm2>();
-        const auto&     paprika    = this->m_system_manager.get_system<coinpaprika_provider>();
-        auto            coins = mm2_system.get_enabled_coins();
+        const auto& mm2_system = this->m_system_manager.get_system<mm2>();
+        const auto& paprika    = this->m_system_manager.get_system<coinpaprika_provider>();
+        auto        coins      = mm2_system.get_enabled_coins();
         for (auto&& coin: coins)
         {
             std::error_code ec;
-            const auto res = this->match(this->index(0, 0), TickerRole, QString::fromStdString(coin.ticker));
+            const auto      res = this->match(this->index(0, 0), TickerRole, QString::fromStdString(coin.ticker));
             assert(not res.empty());
             const auto idx           = res.at(0);
             const auto balance_value = QString::fromStdString(paprika.get_price_in_fiat(m_config.current_currency, coin.ticker, ec));
-            ec = {};
+            ec                       = {};
             spdlog::trace("new balance_value {} for ticker {} with currency {}", balance_value.toStdString(), coin.ticker, m_config.current_currency);
             if (balance_value != this->data(idx, MainCurrencyBalanceRole).toString())
             {
                 this->setData(idx, balance_value, MainCurrencyBalanceRole);
             }
             const auto currency_price_for_one_unit = QString::fromStdString(paprika.get_rate_conversion(m_config.current_currency, coin.ticker, ec, true));
-            ec = {};
+            ec                                     = {};
             if (currency_price_for_one_unit != this->data(idx, MainCurrencyPriceForOneUnit).toString())
             {
                 this->setData(idx, currency_price_for_one_unit, MainCurrencyPriceForOneUnit);

@@ -28,30 +28,10 @@
 //! Project headers
 #include "atomic.dex.mm2.hpp"
 #include "atomic.dex.provider.coinpaprika.hpp"
+#include "atomic.dex.qt.portfolio.data.hpp"
 
 namespace atomic_dex
 {
-    struct portfolio_data
-    {
-        //! eg: BTC,ETH,KMD (constant)
-        const QString ticker;
-
-        //! eg: Bitcoin
-        const QString name;
-
-        //! eg: 1
-        QString balance;
-
-        //! eg: 18800 $
-        QString main_currency_balance;
-
-        //! eg: +2.4%
-        QString change_24h;
-
-        //! eg: 9400 $
-        QString main_currency_price_for_one_unit;
-    };
-
     class portfolio_proxy_model : public QSortFilterProxyModel
     {
         Q_OBJECT

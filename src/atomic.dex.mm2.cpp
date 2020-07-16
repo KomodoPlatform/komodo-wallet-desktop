@@ -818,8 +818,8 @@ namespace atomic_dex
             t_tx_state state{
                 .state             = answer.result.value().sync_status.state,
                 .current_block     = answer.result.value().current_block,
-                .transactions_left = 0,
-                .blocks_left       = 0};
+                .blocks_left       = 0,
+                .transactions_left = 0};
 
             if (answer.result.value().sync_status.additional_info.has_value())
             {
@@ -840,15 +840,15 @@ namespace atomic_dex
             {
                 tx_infos current_info{
 
-                    .am_i_sender   = current.my_balance_change[0] == '-',
-                    .confirmations = current.confirmations.has_value() ? current.confirmations.value() : 0,
-                    .from          = current.from,
-                    .to            = current.to,
-                    .date          = current.timestamp_as_date,
-                    .timestamp     = current.timestamp,
-                    .tx_hash       = current.tx_hash,
-                    .fees          = current.fee_details.normal_fees.has_value() ? current.fee_details.normal_fees.value().amount
-                                                                        : current.fee_details.erc_fees.value().total_fee,
+                    .am_i_sender       = current.my_balance_change[0] == '-',
+                    .confirmations     = current.confirmations.has_value() ? current.confirmations.value() : 0,
+                    .from              = current.from,
+                    .to                = current.to,
+                    .date              = current.timestamp_as_date,
+                    .timestamp         = current.timestamp,
+                    .tx_hash           = current.tx_hash,
+                    .fees              = current.fee_details.normal_fees.has_value() ? current.fee_details.normal_fees.value().amount
+                                                                                     : current.fee_details.erc_fees.value().total_fee,
                     .my_balance_change = current.my_balance_change,
                     .total_amount      = current.total_amount,
                     .block_height      = current.block_height,
@@ -1066,7 +1066,7 @@ namespace atomic_dex
             ec = not info.is_claimable ? dextop_error::ticker_is_not_claimable : dextop_error::claim_not_enough_funds;
             return {};
         }
-        t_withdraw_request req{.max = true, .coin = ticker, .amount = "0", .to = m_balance_informations.at(ticker).address};
+        t_withdraw_request req{.coin = ticker, .to = m_balance_informations.at(ticker).address, .amount = "0", .max = true};
         auto               answer = ::mm2::api::rpc_withdraw(std::move(req));
         return answer;
     }

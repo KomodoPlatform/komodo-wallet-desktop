@@ -50,9 +50,9 @@ namespace atomic_dex
     struct tx_state
     {
         std::string state;
-        std::size_t transactions_left;
-        std::size_t blocks_left;
         std::size_t current_block;
+        std::size_t blocks_left;
+        std::size_t transactions_left;
     };
 
     using t_allocator = folly::AlignedSysAllocator<std::uint8_t, folly::FixedAlign<bit_size<std::size_t>()>>;
