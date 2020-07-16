@@ -291,6 +291,17 @@ namespace atomic_dex
         }
     }
 
+    void
+    qt_wallet_manager::remove_address_entry(const QString& contact_name, const QString& ticker)
+    {
+        std::string contact_name_str = contact_name.toStdString();
+        auto        it               = std::find_if(begin(m_wallet_cfg.address_book), end(m_wallet_cfg.address_book), [contact_name_str](auto&& cur_contact) {
+            return cur_contact.name == contact_name_str;
+        });
+        it->contents.erase(std::remove_if(
+            begin(it->contents), end(it->contents), [&ticker](auto&& cur_contact_contents) { return cur_contact_contents.type == ticker.toStdString(); }));
+    }
+
     const wallet_cfg&
     qt_wallet_manager::get_wallet_cfg() const noexcept
     {

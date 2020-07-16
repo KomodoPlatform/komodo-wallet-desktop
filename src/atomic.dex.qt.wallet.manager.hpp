@@ -60,6 +60,7 @@ namespace atomic_dex
         void update_contact_ticker(const QString& contact_name, const QString& old_ticker, const QString& new_ticker);
         void update_contact_address(const QString& contact_name, const QString& ticker, const QString& address);
         void update_or_insert_contact_name(const QString& old_contact_name, const QString& contact_name);
+        void remove_address_entry(const QString& contact_name, const QString& ticker);
         void delete_contact(const QString& contact_name);
         const wallet_cfg& get_wallet_cfg() const noexcept;
         const wallet_cfg& get_wallet_cfg() noexcept;
