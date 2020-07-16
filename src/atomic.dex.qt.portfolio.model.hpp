@@ -32,7 +32,6 @@
 
 namespace atomic_dex
 {
-
     class portfolio_model final : public QAbstractListModel
     {
         Q_OBJECT
@@ -59,11 +58,11 @@ namespace atomic_dex
         ~portfolio_model() noexcept final;
 
         //! Overrides
-        QVariant               data(const QModelIndex& index, int role) const final;
-        bool                   setData(const QModelIndex& index, const QVariant& value, int role) final; //< Will be used internally
-        int                    rowCount(const QModelIndex& parent) const final;
-        QHash<int, QByteArray> roleNames() const final;
-        bool                   removeRows(int row, int count, const QModelIndex& parent) final;
+        [[nodiscard]] QVariant               data(const QModelIndex& index, int role) const final;
+        bool                                 setData(const QModelIndex& index, const QVariant& value, int role) final; //< Will be used internally
+        [[nodiscard]] int                    rowCount(const QModelIndex& parent) const final;
+        [[nodiscard]] QHash<int, QByteArray> roleNames() const final;
+        bool                                 removeRows(int row, int count, const QModelIndex& parent) final;
 
         //! Public api
         void initialize_portfolio(std::string ticker);
@@ -71,7 +70,7 @@ namespace atomic_dex
         void disable_coins(const QStringList& coins);
 
         //! Properties
-        portfolio_proxy_model* get_portfolio_proxy_mdl() const noexcept;
+        [[nodiscard]] portfolio_proxy_model* get_portfolio_proxy_mdl() const noexcept;
 
       signals:
         void portfolioProxyChanged();

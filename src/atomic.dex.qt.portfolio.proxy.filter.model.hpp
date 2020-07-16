@@ -24,10 +24,14 @@ namespace atomic_dex
     {
         Q_OBJECT
       public:
+        //! Constructor
         portfolio_proxy_model(QObject* parent);
+
+        //! Destructor
         ~portfolio_proxy_model() final;
 
       protected:
-        bool lessThan(const QModelIndex& source_left, const QModelIndex& source_right) const final;
+        //! Override member functions
+        [[nodiscard]] bool lessThan(const QModelIndex& source_left, const QModelIndex& source_right) const final;
     };
 } // namespace atomic_dex

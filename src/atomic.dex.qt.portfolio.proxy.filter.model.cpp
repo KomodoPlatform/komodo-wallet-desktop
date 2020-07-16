@@ -19,16 +19,21 @@
 
 namespace atomic_dex
 {
+    //! Constructor
     portfolio_proxy_model::portfolio_proxy_model(QObject* parent) : QSortFilterProxyModel(parent)
     {
         spdlog::trace("{} l{} f[{}]", __FUNCTION__, __LINE__, fs::path(__FILE__).filename().string());
         spdlog::trace("portfolio proxy model created");
     }
+
+    //! Destructor
     portfolio_proxy_model::~portfolio_proxy_model()
     {
         spdlog::trace("{} l{} f[{}]", __FUNCTION__, __LINE__, fs::path(__FILE__).filename().string());
         spdlog::trace("portfolio proxy model destroyed");
     }
+
+    //! Override member functions
     bool
     portfolio_proxy_model::lessThan(const QModelIndex& source_left, const QModelIndex& source_right) const
     {
