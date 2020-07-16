@@ -27,8 +27,9 @@ namespace
         QString change_24h   = "0";
         if (not ticker_infos.empty() && ticker_infos.contains(config.current_currency))
         {
-            change_24h = QString::fromStdString(
-                std::to_string(paprika.get_ticker_infos(coin.ticker).answer.at(config.current_currency).at("percent_change_24h").get<double>()));
+            auto change_24h_str = std::to_string(paprika.get_ticker_infos(coin.ticker).answer.at(config.current_currency).at("percent_change_24h").get<double>());
+            std::replace(begin(change_24h_str), end(change_24h_str), ',', '.');
+            change_24h = QString::fromStdString(change_24h_str);
         }
         return change_24h;
     }
@@ -63,13 +64,17 @@ namespace atomic_dex
         beginInsertRows(QModelIndex(), this->m_model_data.count(), this->m_model_data.count());
         std::error_code ec;
         const QString   change_24h = retrieve_change_24h(paprika, coin, m_config);
-        this->m_model_data.push_back(portfolio_data{
+        portfolio_data  data{
             .ticker                           = QString::fromStdString(coin.ticker),
             .name                             = QString::fromStdString(coin.name),
             .balance                          = QString::fromStdString(mm2_system.my_balance(coin.ticker, ec)),
             .main_currency_balance            = QString::fromStdString(paprika.get_price_in_fiat(m_config.current_currency, coin.ticker, ec)),
             .change_24h                       = change_24h,
-            .main_currency_price_for_one_unit = QString::fromStdString(paprika.get_rate_conversion(m_config.current_currency, coin.ticker, ec, true))});
+            .main_currency_price_for_one_unit = QString::fromStdString(paprika.get_rate_conversion(m_config.current_currency, coin.ticker, ec, true))};
+        spdlog::trace(
+            "inserting ticker {} with name {} balance {} main currency balance {}", coin.ticker, coin.name, data.balance.toStdString(),
+            data.main_currency_balance.toStdString());
+        this->m_model_data.push_back(std::move(data));
         endInsertRows();
     }
 
@@ -78,20 +83,22 @@ namespace atomic_dex
     {
         const auto&     mm2_system = this->m_system_manager.get_system<mm2>();
         const auto&     paprika    = this->m_system_manager.get_system<coinpaprika_provider>();
-        std::error_code ec;
         auto            coins = mm2_system.get_enabled_coins();
         for (auto&& coin: coins)
         {
-            //!
+            std::error_code ec;
             const auto res = this->match(this->index(0, 0), TickerRole, QString::fromStdString(coin.ticker));
             assert(not res.empty());
             const auto idx           = res.at(0);
             const auto balance_value = QString::fromStdString(paprika.get_price_in_fiat(m_config.current_currency, coin.ticker, ec));
+            ec = {};
+            spdlog::trace("new balance_value {} for ticker {} with currency {}", balance_value.toStdString(), coin.ticker, m_config.current_currency);
             if (balance_value != this->data(idx, MainCurrencyBalanceRole).toString())
             {
                 this->setData(idx, balance_value, MainCurrencyBalanceRole);
             }
             const auto currency_price_for_one_unit = QString::fromStdString(paprika.get_rate_conversion(m_config.current_currency, coin.ticker, ec, true));
+            ec = {};
             if (currency_price_for_one_unit != this->data(idx, MainCurrencyPriceForOneUnit).toString())
             {
                 this->setData(idx, currency_price_for_one_unit, MainCurrencyPriceForOneUnit);

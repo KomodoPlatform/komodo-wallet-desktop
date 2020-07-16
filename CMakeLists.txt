@@ -167,6 +167,8 @@ target_compile_definitions(atomic_qt_shared_deps
         $<$<PLATFORM_ID:Windows>:AUTO_DOWNLOAD>
         )
 
+#target_compile_options(atomic_qt_shared_deps INTERFACE -fstandalone-debug)
+
 target_link_libraries(atomic_qt_shared_deps
         INTERFACE
         Qt5::Core
