@@ -10,8 +10,6 @@ import "../Constants"
 ColumnLayout {
     id: address_book
 
-    property var ticker_list: API.get().get_all_coins()
-
     Layout.fillWidth: true
 
     spacing: 20
@@ -221,33 +219,22 @@ ColumnLayout {
                                     anchors.verticalCenter: parent.verticalCenter
                                     visible: editing_address
 
-                                    model: ticker_list
+                                    model: General.all_coins
 
                                     onModelChanged: {
                                         // When enabled_coins changes, all comboboxes reset to the first ticker
                                         // So we need to revert it to the old one
-                                        console.log("onModelChanged: previous_ticker:", previous_ticker, " type:", type, " currentText: ", currentText)
-                                        if(previous_ticker !== "") {
-                                            console.log("onModelChanged: ticker found. previous_ticker:", previous_ticker, " type:", type, " currentText: ", currentText)
-                                            const i = ticker_list.indexOf(previous_ticker)
+                                        if(type !== "") {
+                                            const i = General.all_coins.indexOf(type)
                                             if(i !== -1) {
                                                 currentIndex = i
-                                                type = previous_ticker
-                                                console.log("onModelChanged set currentIndex:", previous_ticker, " type:", type, " currentText: ", currentText)
                                             }
                                         }
                                     }
 
                                     property string previous_ticker
                                     onCurrentTextChanged: {
-                                        console.log("onCurrentTextChanged start: previous_ticker:", previous_ticker, " type:", type, " currentText: ", currentText)
-                                        previous_ticker = type
-                                        console.log("onCurrentTextChanged mid: previous_ticker:", previous_ticker, " type:", type, " currentText: ", currentText)
-
-                                        // Normal update, user picks the ticker
                                         type = currentText
-
-                                        console.log("onCurrentTextChanged end: previous_ticker:", previous_ticker, " type:", type, " currentText: ", currentText)
                                     }
                                 }
 

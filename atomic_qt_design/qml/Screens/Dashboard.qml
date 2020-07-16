@@ -25,6 +25,9 @@ Item {
     property int current_page: getMainPage()
 
     function reset() {
+        // Fill all coins list
+        General.all_coins = API.get().get_all_coins().map(c => c.ticker)
+
         current_page = getMainPage()
         prev_page = -1
 
