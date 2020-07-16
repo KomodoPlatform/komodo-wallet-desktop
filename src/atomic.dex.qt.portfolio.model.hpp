@@ -18,6 +18,7 @@
 
 //! QT Headers
 #include <QAbstractListModel>
+#include <QSortFilterProxyModel>
 #include <QString>
 #include <QVector>
 
@@ -51,9 +52,23 @@ namespace atomic_dex
         QString main_currency_price_for_one_unit;
     };
 
+    class portfolio_proxy_model : public QSortFilterProxyModel
+    {
+        Q_OBJECT
+      public:
+        portfolio_proxy_model(QObject* parent);
+        ~portfolio_proxy_model();
+
+      protected:
+        bool lessThan(const QModelIndex& source_left, const QModelIndex& source_right) const override;
+
+      private:
+    };
+
     class portfolio_model final : public QAbstractListModel
     {
         Q_OBJECT
+        Q_PROPERTY(portfolio_proxy_model* portfolio_proxy_mdl READ get_portfolio_proxy_mdl NOTIFY portfolioProxyChanged);
         Q_ENUMS(PortfolioRoles)
       public:
         enum PortfolioRoles
@@ -72,7 +87,7 @@ namespace atomic_dex
 
       public:
         //! Constructor / Destructor
-        explicit portfolio_model(ag::ecs::system_manager& system_manager, QObject* parent = nullptr) noexcept;
+        explicit portfolio_model(ag::ecs::system_manager& system_manager, atomic_dex::cfg& config, QObject* parent = nullptr) noexcept;
         ~portfolio_model() noexcept final;
 
         //! Overrides
@@ -81,11 +96,25 @@ namespace atomic_dex
         int                    rowCount(const QModelIndex& parent) const final;
         QHash<int, QByteArray> roleNames() const final;
 
+        //! Public api
+        void initialize_portfolio(std::string ticker);
+        void update_currency_values();
+
+        //! Properties
+        portfolio_proxy_model* get_portfolio_proxy_mdl() const noexcept;
+
+      signals:
+        void portfolioProxyChanged();
+
       private:
         //! From project
         ag::ecs::system_manager& m_system_manager;
+        atomic_dex::cfg&         m_config;
 
+        //! Properties
+        portfolio_proxy_model* m_model_proxy;
         //! Data holders
         t_portfolio_datas m_model_data;
     };
+
 } // namespace atomic_dex

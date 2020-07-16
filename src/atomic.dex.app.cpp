@@ -388,7 +388,7 @@ namespace atomic_dex
 
     application::application(QObject* pParent) noexcept :
         QObject(pParent), m_coin_info(new current_coin_info(dispatcher_, this)), m_addressbook(new addressbook_model(this->m_wallet_manager, this)),
-        m_portfolio(new portfolio_model(this->system_manager_, this))
+        m_portfolio(new portfolio_model(this->system_manager_, this->m_config, this))
     {
         //! MM2 system need to be created before the GUI and give the instance to the gui
         auto& mm2_system = system_manager_.create_system<mm2>();
@@ -446,6 +446,21 @@ namespace atomic_dex
         m_refresh_enabled_coin_event = true;
     }
 
+    void
+    application::on_enabled_default_coins_event(const enabled_default_coins_event&) noexcept
+    {
+        spdlog::debug("{} l{}", __FUNCTION__, __LINE__);
+        m_refresh_enabled_coin_event = true;
+    }
+
+    void
+    application::on_coin_fully_initialized_event(const coin_fully_initialized& evt) noexcept
+    {
+        //! This event is called when a call is enabled and cex provider finished fetch datas
+        spdlog::debug("{} l{}", __FUNCTION__, __LINE__);
+        this->m_portfolio->initialize_portfolio(evt.ticker);
+    }
+
     QString
     application::get_current_currency() const noexcept
     {
@@ -459,6 +474,7 @@ namespace atomic_dex
         {
             spdlog::info("change currency {} to {}", m_config.current_currency, current_currency.toStdString());
             atomic_dex::change_currency(m_config, current_currency.toStdString());
+            this->m_portfolio->update_currency_values();
             emit on_currency_changed();
         }
     }
@@ -797,6 +813,8 @@ namespace atomic_dex
 
         get_dispatcher().sink<change_ticker_event>().disconnect<&application::on_change_ticker_event>(*this);
         get_dispatcher().sink<enabled_coins_event>().disconnect<&application::on_enabled_coins_event>(*this);
+        get_dispatcher().sink<enabled_default_coins_event>().disconnect<&application::on_enabled_default_coins_event>(*this);
+        get_dispatcher().sink<coin_fully_initialized>().disconnect<&application::on_coin_fully_initialized_event>(*this);
         get_dispatcher().sink<tx_fetch_finished>().disconnect<&application::on_tx_fetch_finished_event>(*this);
         get_dispatcher().sink<coin_disabled>().disconnect<&application::on_coin_disabled_event>(*this);
         get_dispatcher().sink<mm2_initialized>().disconnect<&application::on_mm2_initialized_event>(*this);
@@ -815,6 +833,8 @@ namespace atomic_dex
         spdlog::debug("{} l{}", __FUNCTION__, __LINE__);
         get_dispatcher().sink<change_ticker_event>().connect<&application::on_change_ticker_event>(*this);
         get_dispatcher().sink<enabled_coins_event>().connect<&application::on_enabled_coins_event>(*this);
+        get_dispatcher().sink<enabled_default_coins_event>().connect<&application::on_enabled_default_coins_event>(*this);
+        get_dispatcher().sink<coin_fully_initialized>().connect<&application::on_coin_fully_initialized_event>(*this);
         get_dispatcher().sink<tx_fetch_finished>().connect<&application::on_tx_fetch_finished_event>(*this);
         get_dispatcher().sink<coin_disabled>().connect<&application::on_coin_disabled_event>(*this);
         get_dispatcher().sink<mm2_initialized>().connect<&application::on_mm2_initialized_event>(*this);

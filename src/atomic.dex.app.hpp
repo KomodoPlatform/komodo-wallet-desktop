@@ -77,6 +77,8 @@ namespace atomic_dex
 
         //! entt::dispatcher events
         void on_enabled_coins_event(const enabled_coins_event&) noexcept;
+        void on_enabled_default_coins_event(const enabled_default_coins_event&) noexcept;
+        void on_coin_fully_initialized_event(const coin_fully_initialized&) noexcept;
         void on_change_ticker_event(const change_ticker_event&) noexcept;
         void on_tx_fetch_finished_event(const tx_fetch_finished&) noexcept;
         void on_coin_disabled_event(const coin_disabled&) noexcept;
