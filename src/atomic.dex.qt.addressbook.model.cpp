@@ -247,7 +247,7 @@ namespace atomic_dex
         for (int row = 0; row < rows; ++row)
         {
             contact_model* element = this->m_addressbook.at(position);
-            if (this->m_should_delete_contacts)
+            if (this->m_should_delete_contacts && not element->get_name().isEmpty())
             {
                 this->m_wallet_manager.delete_contact(element->get_name());
                 this->m_wallet_manager.update_wallet_cfg();
