@@ -241,39 +241,54 @@ namespace atomic_dex
     }
 
     void
-    qt_wallet_manager::update_contact(const QString& contact_name, const QVector<qt_contact_address_contents>& contact_addresses)
+    qt_wallet_manager::update_contact_ticker(const QString& contact_name, const QString& old_ticker, const QString& new_ticker)
     {
-        /*bool        filled           = false;
         std::string contact_name_str = contact_name.toStdString();
-        for (auto&& cur: this->m_wallet_cfg.address_book)
+        if (old_ticker.isEmpty() && not new_ticker.isEmpty())
         {
-            if (cur.name == contact_name_str)
-            {
-                spdlog::debug("contact {} found ! refreshing addresses", contact_name_str);
-                cur.contents.clear();
-                cur.contents.reserve(contact_addresses.count());
-                for (auto&& cur_contact: contact_addresses)
-                {
-                    //! Create contact
-                    cur.contents.emplace_back(contact_contents{.type = cur_contact.type.toStdString(), .address = cur_contact.address.toStdString()});
-                }
-            }
-            filled = true;
-        }
+            //! Add new ticker entry
+            auto it = std::find_if(begin(m_wallet_cfg.address_book), end(m_wallet_cfg.address_book), [contact_name_str](auto&& cur_contact) {
+                return cur_contact.name == contact_name_str;
+            });
 
-        //! Entry not found, insert it
-        if (not filled)
-        {
-            spdlog::debug("contact {} not found ! add a new entry to the registry", contact_name_str);
-            atomic_dex::contact contact;
-            contact.name = std::move(contact_name_str);
-            for (auto&& cur_contact: contact_addresses)
+            if (it != m_wallet_cfg.address_book.end())
             {
-                //! Cur contact
-                contact.contents.emplace_back(contact_contents{.type = cur_contact.type.toStdString(), .address = cur_contact.address.toStdString()});
+                spdlog::trace("add for contact {}, ticker {} entry", contact_name_str, new_ticker.toStdString());
+                it->contents.emplace_back(contact_contents{.type = new_ticker.toStdString()});
             }
-            this->m_wallet_cfg.address_book.emplace_back(contact);
-        }*/
+        }
+        else
+        {
+            //! Update ticker entry
+            auto it = std::find_if(begin(m_wallet_cfg.address_book), end(m_wallet_cfg.address_book), [contact_name_str](auto&& cur_contact) {
+                return cur_contact.name == contact_name_str;
+            });
+
+            auto contents_it = std::find_if(begin(it->contents), end(it->contents), [&old_ticker](auto&& cur_contact_contents) {
+                return cur_contact_contents.type == old_ticker.toStdString();
+            });
+
+            if (contents_it != it->contents.end())
+            {
+                contents_it->type = new_ticker.toStdString();
+            }
+        }
+    }
+
+    void
+    qt_wallet_manager::update_contact_address(const QString& contact_name, const QString& ticker, const QString& address)
+    {
+        spdlog::trace("update contact {} with ticker {} with the new address {}", contact_name.toStdString(), ticker.toStdString(), address.toStdString());
+        std::string contact_name_str = contact_name.toStdString();
+        auto        it               = std::find_if(begin(m_wallet_cfg.address_book), end(m_wallet_cfg.address_book), [contact_name_str](auto&& cur_contact) {
+            return cur_contact.name == contact_name_str;
+        });
+        auto        contents_it      = std::find_if(
+            begin(it->contents), end(it->contents), [&ticker](auto&& cur_contact_contents) { return cur_contact_contents.type == ticker.toStdString(); });
+        if (contents_it != it->contents.end())
+        {
+            contents_it->address = address.toStdString();
+        }
     }
 
     const wallet_cfg&

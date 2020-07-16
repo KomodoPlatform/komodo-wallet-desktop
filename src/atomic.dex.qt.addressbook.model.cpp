@@ -88,11 +88,23 @@ namespace atomic_dex
         switch (role)
         {
         case TypeRole:
-            item.type = value.toString();
+            if (value.toString() != item.type)
+            {
+                spdlog::trace("changing contact {} ticker {} to {}", this->m_name.toStdString(), item.type.toStdString(), value.toString().toStdString());
+                this->m_wallet_manager.update_contact_ticker(this->m_name, item.type, value.toString());
+                this->m_wallet_manager.update_wallet_cfg();
+                item.type = value.toString();
+            }
             break;
         case AddressRole:
-            item.address = value.toString();
-            emit addressesChanged();
+            if (value.toString() != item.address)
+            {
+                item.address = value.toString();
+                spdlog::trace("changing contact {} ticker {} to address {}", this->m_name.toStdString(), item.type.toStdString(), item.address.toStdString());
+                this->m_wallet_manager.update_contact_address(this->m_name, item.type, item.address);
+                this->m_wallet_manager.update_wallet_cfg();
+                emit addressesChanged();
+            }
             break;
         default:
             return false;
