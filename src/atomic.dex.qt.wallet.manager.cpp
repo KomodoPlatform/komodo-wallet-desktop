@@ -231,6 +231,16 @@ namespace atomic_dex
     }
 
     void
+    qt_wallet_manager::delete_contact(const QString& contact)
+    {
+        std::string contact_name_str = contact.toStdString();
+        this->m_wallet_cfg.address_book.erase(
+            std::remove_if(begin(m_wallet_cfg.address_book), end(m_wallet_cfg.address_book), [contact_name_str](auto&& cur_contact) {
+                return contact_name_str == cur_contact.name;
+            }));
+    }
+
+    void
     qt_wallet_manager::update_contact(const QString& contact_name, const QVector<qt_contact_address_contents>& contact_addresses)
     {
         /*bool        filled           = false;

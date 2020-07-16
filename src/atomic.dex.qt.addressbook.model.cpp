@@ -46,9 +46,12 @@ namespace atomic_dex
     void
     atomic_dex::contact_model::set_name(const QString& name) noexcept
     {
-        spdlog::trace("name {} changed to {}", m_name.toStdString(), name.toStdString());
-        this->m_wallet_manager.update_or_insert_contact_name(m_name, name);
-        this->m_wallet_manager.update_wallet_cfg();
+        if (name != m_name)
+        {
+            spdlog::trace("name {} changed to {}", m_name.toStdString(), name.toStdString());
+            this->m_wallet_manager.update_or_insert_contact_name(m_name, name);
+            this->m_wallet_manager.update_wallet_cfg();
+        }
         m_name = name;
         emit nameChanged();
     }
@@ -104,12 +107,10 @@ namespace atomic_dex
     {
         QVariantList out;
         out.reserve(this->m_addresses.count());
-        for (auto&& cur: this->m_addresses) {
-            nlohmann::json j{
-                {"type", cur.type.toStdString()},
-                {"address", cur.address.toStdString()}
-            };
-            QJsonDocument q_json = QJsonDocument::fromJson(QString::fromStdString(j.dump()).toUtf8());
+        for (auto&& cur: this->m_addresses)
+        {
+            nlohmann::json j{{"type", cur.type.toStdString()}, {"address", cur.address.toStdString()}};
+            QJsonDocument  q_json = QJsonDocument::fromJson(QString::fromStdString(j.dump()).toUtf8());
             out.push_back(q_json.toVariant());
         }
         return out;
@@ -134,9 +135,7 @@ namespace atomic_dex
         spdlog::trace("(contact_model::removeRows) removing {} elements at position {}", rows, position);
         beginRemoveRows(QModelIndex(), position, position + rows - 1);
 
-        for (int row = 0; row < rows; ++row) {
-            this->m_addresses.removeAt(position);
-        }
+        for (int row = 0; row < rows; ++row) { this->m_addresses.removeAt(position); }
 
         endRemoveRows();
         emit addressesChanged();
@@ -225,11 +224,18 @@ namespace atomic_dex
     bool
     atomic_dex::addressbook_model::removeRows(int position, int rows, [[maybe_unused]] const QModelIndex& parent)
     {
-        spdlog::trace("(contact_model::removeRows) removing {} elements at position {}", rows, position);
+        spdlog::trace("(addressbook_model::removeRows) removing {} elements at position {}", rows, position);
         beginRemoveRows(QModelIndex(), position, position + rows - 1);
 
-        for (int row = 0; row < rows; ++row) {
-            delete this->m_addressbook.at(position);
+        for (int row = 0; row < rows; ++row)
+        {
+            contact_model* element = this->m_addressbook.at(position);
+            if (this->m_should_delete_contacts)
+            {
+                this->m_wallet_manager.delete_contact(element->get_name());
+                this->m_wallet_manager.update_wallet_cfg();
+            }
+            delete element;
             this->m_addressbook.removeAt(position);
         }
 
@@ -276,7 +282,9 @@ namespace atomic_dex
     void
     atomic_dex::addressbook_model::remove_at(int position)
     {
+        this->m_should_delete_contacts = true;
         removeRow(position);
+        this->m_should_delete_contacts = false;
     }
 
     QHash<int, QByteArray>

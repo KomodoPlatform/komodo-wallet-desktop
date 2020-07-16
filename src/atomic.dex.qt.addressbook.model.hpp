@@ -96,5 +96,6 @@ namespace atomic_dex
       private:
         atomic_dex::qt_wallet_manager& m_wallet_manager;
         QVector<contact_model*>        m_addressbook;
+        bool                           m_should_delete_contacts{false};
     };
 } // namespace atomic_dex

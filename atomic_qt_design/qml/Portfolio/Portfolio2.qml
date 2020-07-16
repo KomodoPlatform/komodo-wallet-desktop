@@ -260,7 +260,7 @@ ColumnLayout {
         Layout.fillWidth: true
         Layout.fillHeight: true
 
-        model: API.get().portfolio_mdl /*General.filterCoins(portfolio_coins, input_coin_filter.text)
+        model: API.get().portfolio_mdl.portfolio_proxy_mdl /*General.filterCoins(portfolio_coins, input_coin_filter.text)
                 .sort((a, b) => {
             const order = highest_first ? 1 : -1
             let val_a
