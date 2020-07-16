@@ -1172,6 +1172,12 @@ namespace atomic_dex
 //! Misc QML Utilities
 namespace atomic_dex
 {
+    QVariantList
+    application::get_all_coins() const noexcept
+    {
+        return to_qt_binding(get_mm2().get_all_coins());
+    }
+
     QString
     application::get_paprika_id_from_ticker(QString ticker) const
     {

@@ -205,6 +205,23 @@ namespace atomic_dex
     }
 
     t_coins
+    mm2::get_all_coins() const noexcept
+    {
+        t_coins destination;
+
+        destination.reserve(m_coins_informations.size());
+        for (auto&& [key, value]: m_coins_informations)
+        {
+            //!
+            destination.push_back(value);
+        }
+
+        std::sort(begin(destination), end(destination), [](auto&& lhs, auto&& rhs) { return lhs.ticker < rhs.ticker; });
+
+        return destination;
+    }
+
+    t_coins
     mm2::get_enabled_coins() const noexcept
     {
         t_coins destination;
