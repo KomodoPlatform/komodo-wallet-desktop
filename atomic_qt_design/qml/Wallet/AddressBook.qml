@@ -189,13 +189,16 @@ ColumnLayout {
                                     hoverEnabled: true
                                 }
 
-                                DefaultText {
+                                DefaultComboBox {
+                                    id: combo_base
                                     anchors.left: parent.left
                                     anchors.verticalCenter: parent.verticalCenter
                                     anchors.leftMargin: layout_margin
 
-                                    font.pixelSize: Style.textSizeSmall3
-                                    text_value: "COIN: " + type
+                                    model: API.get().enabled_coins.map(c => c.ticker)
+                                    onCurrentTextChanged: {
+                                        type = API.get().enabled_coins[currentIndex].ticker
+                                    }
                                 }
 
                                 VerticalLine {
@@ -207,7 +210,7 @@ ColumnLayout {
                                 DefaultText {
                                     anchors.left: parent.left
                                     anchors.verticalCenter: parent.verticalCenter
-                                    anchors.leftMargin: layout_margin * 5
+                                    anchors.leftMargin: address_input.anchors.leftMargin
                                     text: address
                                     visible: !editing_address
                                     font.pixelSize: Style.textSizeSmall3
@@ -221,7 +224,7 @@ ColumnLayout {
                                     id: address_input
                                     anchors.left: parent.left
                                     anchors.verticalCenter: parent.verticalCenter
-                                    anchors.leftMargin: layout_margin * 5
+                                    anchors.leftMargin: layout_margin * 7
                                     font.pixelSize: Style.textSizeSmall3
                                     placeholderText: API.get().empty_string + (qsTr("Enter the address"))
                                     width: 300
