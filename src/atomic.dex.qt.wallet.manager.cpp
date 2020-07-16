@@ -199,9 +199,41 @@ namespace atomic_dex
     }
 
     void
+    qt_wallet_manager::update_or_insert_contact_name(const QString& old_contact_name, const QString& contact_name)
+    {
+        std::string old_contact_name_str = old_contact_name.toStdString();
+        std::string contact_name_str     = contact_name.toStdString();
+
+        if (old_contact_name_str.empty() && !contact_name_str.empty())
+        {
+            auto it = std::find_if(begin(m_wallet_cfg.address_book), end(m_wallet_cfg.address_book), [contact_name_str](auto&& cur_contact) {
+                return cur_contact.name == contact_name_str;
+            });
+            if (it != m_wallet_cfg.address_book.end())
+            {
+                //! Find this contact already exist do nothing
+                spdlog::trace("contact {} already exist, skipping", contact_name_str);
+                return;
+            }
+            m_wallet_cfg.address_book.push_back(contact{.name = std::move(contact_name_str)});
+        }
+        else if (not old_contact_name_str.empty() && not contact_name_str.empty())
+        {
+            auto it = std::find_if(begin(m_wallet_cfg.address_book), end(m_wallet_cfg.address_book), [old_contact_name_str](auto&& cur_contact) {
+                return cur_contact.name == old_contact_name_str;
+            });
+            if (it != m_wallet_cfg.address_book.end())
+            {
+                spdlog::trace("old contact {} found, changing the contact name to: {}", old_contact_name_str, contact_name_str);
+                it->name = contact_name_str;
+            }
+        }
+    }
+
+    void
     qt_wallet_manager::update_contact(const QString& contact_name, const QVector<qt_contact_address_contents>& contact_addresses)
     {
-        bool        filled           = false;
+        /*bool        filled           = false;
         std::string contact_name_str = contact_name.toStdString();
         for (auto&& cur: this->m_wallet_cfg.address_book)
         {
@@ -231,7 +263,7 @@ namespace atomic_dex
                 contact.contents.emplace_back(contact_contents{.type = cur_contact.type.toStdString(), .address = cur_contact.address.toStdString()});
             }
             this->m_wallet_cfg.address_book.emplace_back(contact);
-        }
+        }*/
     }
 
     const wallet_cfg&

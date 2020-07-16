@@ -1304,6 +1304,7 @@ namespace atomic_dex
         return m_portfolio;
     }
 } // namespace atomic_dex
+
 //! Wallet manager QML API
 namespace atomic_dex
 {

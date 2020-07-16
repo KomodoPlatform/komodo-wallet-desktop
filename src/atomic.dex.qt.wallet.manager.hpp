@@ -58,6 +58,7 @@ namespace atomic_dex
         bool update_wallet_cfg() noexcept;
 
         void update_contact(const QString& contact_name, const QVector<qt_contact_address_contents>& contact_addresses);
+        void update_or_insert_contact_name(const QString& old_contact_name, const QString& contact_name);
         const wallet_cfg& get_wallet_cfg() const noexcept;
         const wallet_cfg& get_wallet_cfg() noexcept;
       private:

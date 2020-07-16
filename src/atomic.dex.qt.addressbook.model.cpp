@@ -46,6 +46,9 @@ namespace atomic_dex
     void
     atomic_dex::contact_model::set_name(const QString& name) noexcept
     {
+        spdlog::trace("name {} changed to {}", m_name.toStdString(), name.toStdString());
+        this->m_wallet_manager.update_or_insert_contact_name(m_name, name);
+        this->m_wallet_manager.update_wallet_cfg();
         m_name = name;
         emit nameChanged();
     }
