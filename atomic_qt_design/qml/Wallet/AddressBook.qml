@@ -8,6 +8,10 @@ import "../Constants"
 
 
 ColumnLayout {
+    id: address_book
+
+    property var ticker_list: API.get().get_all_coins()
+
     Layout.fillWidth: true
 
     spacing: 20
@@ -189,15 +193,61 @@ ColumnLayout {
                                     hoverEnabled: true
                                 }
 
+                                // Icon
+                                Image {
+                                    id: icon
+                                    anchors.left: parent.left
+                                    anchors.leftMargin: layout_margin
+                                    anchors.verticalCenter: parent.verticalCenter
+
+                                    source: General.coinIcon(type)
+                                    fillMode: Image.PreserveAspectFit
+                                    width: Style.textSize2
+                                }
+
+                                // Name
+                                DefaultText {
+                                    anchors.left: combo_base.anchors.left
+                                    anchors.leftMargin: combo_base.anchors.leftMargin
+                                    anchors.verticalCenter: parent.verticalCenter
+                                    visible: !combo_base.visible
+
+                                    text_value: API.get().empty_string + (type)
+                                }
                                 DefaultComboBox {
                                     id: combo_base
-                                    anchors.left: parent.left
+                                    anchors.left: icon.right
+                                    anchors.leftMargin: 10
                                     anchors.verticalCenter: parent.verticalCenter
-                                    anchors.leftMargin: layout_margin
+                                    visible: editing_address
 
-                                    model: API.get().enabled_coins.map(c => c.ticker)
+                                    model: ticker_list
+
+                                    onModelChanged: {
+                                        // When enabled_coins changes, all comboboxes reset to the first ticker
+                                        // So we need to revert it to the old one
+                                        console.log("onModelChanged: previous_ticker:", previous_ticker, " type:", type, " currentText: ", currentText)
+                                        if(previous_ticker !== "") {
+                                            console.log("onModelChanged: ticker found. previous_ticker:", previous_ticker, " type:", type, " currentText: ", currentText)
+                                            const i = ticker_list.indexOf(previous_ticker)
+                                            if(i !== -1) {
+                                                currentIndex = i
+                                                type = previous_ticker
+                                                console.log("onModelChanged set currentIndex:", previous_ticker, " type:", type, " currentText: ", currentText)
+                                            }
+                                        }
+                                    }
+
+                                    property string previous_ticker
                                     onCurrentTextChanged: {
-                                        type = API.get().enabled_coins[currentIndex].ticker
+                                        console.log("onCurrentTextChanged start: previous_ticker:", previous_ticker, " type:", type, " currentText: ", currentText)
+                                        previous_ticker = type
+                                        console.log("onCurrentTextChanged mid: previous_ticker:", previous_ticker, " type:", type, " currentText: ", currentText)
+
+                                        // Normal update, user picks the ticker
+                                        type = currentText
+
+                                        console.log("onCurrentTextChanged end: previous_ticker:", previous_ticker, " type:", type, " currentText: ", currentText)
                                     }
                                 }
 
@@ -212,7 +262,7 @@ ColumnLayout {
                                     anchors.verticalCenter: parent.verticalCenter
                                     anchors.leftMargin: address_input.anchors.leftMargin
                                     text: address
-                                    visible: !editing_address
+                                    visible: !address_input.visible
                                     font.pixelSize: Style.textSizeSmall3
 
                                     Component.onCompleted: {
