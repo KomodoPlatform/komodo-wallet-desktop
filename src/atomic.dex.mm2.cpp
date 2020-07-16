@@ -359,26 +359,15 @@ namespace atomic_dex
         tickers.reserve(coins.size());
         for (auto&& current_coin: coins) { tickers.push_back(current_coin.ticker); }
 
-        futures.emplace_back(spawn([this, tickers]() {
-            // loguru::set_thread_name("enable thread");
-            batch_enable_coins(tickers);
-        }));
+        futures.emplace_back(spawn([this, tickers]() { batch_enable_coins(tickers); }));
 
         for (auto&& fut: futures) { fut.get(); }
 
-        this->dispatcher_.trigger<enabled_coins_event>();
+        this->dispatcher_.trigger<enabled_default_coins_event>();
 
-        spawn([this]() {
-            // loguru::set_thread_name("swaps thread");
-            process_swaps();
-        });
+        spawn([this]() { process_swaps(); });
 
-        spawn([this]() {
-            // loguru::set_thread_name("orders thread");
-            process_orders();
-        });
-
-        // spawn([this]() { process_fees(); });
+        spawn([this]() { process_orders(); });
 
         return result.load() == 1;
     }
@@ -439,16 +428,11 @@ namespace atomic_dex
                 coin_info.currently_enabled = true;
                 m_coins_informations.assign(coin_info.ticker, coin_info);
 
-                spawn([this, copy_ticker = ticker]() {
-                    // loguru::set_thread_name("balance thread");
-                    process_balance(copy_ticker);
-                });
+                auto fut = spawn([this, copy_ticker = ticker]() { process_balance(copy_ticker); });
 
-                spawn([this, copy_ticker = ticker]() {
-                    // loguru::set_thread_name("tx thread");
-                    process_tx(copy_ticker);
-                });
+                spawn([this, copy_ticker = ticker]() { process_tx(copy_ticker); });
 
+                fut.get();
                 dispatcher_.trigger<coin_enabled>(ticker);
                 if (emit_event)
                 {

@@ -428,6 +428,7 @@ namespace atomic_dex
                 }
                 process_ticker_infos(config, m_ticker_infos_registry);
                 process_ticker_historical(config, m_ticker_historical_registry);
+                this->dispatcher_.trigger<coin_fully_initialized>(evt.ticker);
             });
         }
     }
