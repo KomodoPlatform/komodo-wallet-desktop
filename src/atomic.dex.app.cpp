@@ -808,6 +808,7 @@ namespace atomic_dex
         spdlog::debug("{} l{}", __FUNCTION__, __LINE__);
 
         this->m_addressbook->removeRows(0, this->m_addressbook->rowCount());
+        this->m_portfolio->removeRows(0, this->m_portfolio->rowCount(QModelIndex()), QModelIndex());
         system_manager_.mark_system<mm2>();
         system_manager_.mark_system<coinpaprika_provider>();
         system_manager_.mark_system<cex_prices_provider>();
