@@ -133,6 +133,7 @@ namespace atomic_dex
     {
         std::vector<std::string> coins_std;
 
+        this->m_portfolio->disable_coins(coins);
         coins_std.reserve(coins.size());
         for (auto&& coin: coins) { coins_std.push_back(coin.toStdString()); }
         get_mm2().disable_multiple_coins(coins_std);

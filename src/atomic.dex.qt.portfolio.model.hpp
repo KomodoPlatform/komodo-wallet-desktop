@@ -95,10 +95,12 @@ namespace atomic_dex
         bool                   setData(const QModelIndex& index, const QVariant& value, int role) final; //< Will be used internally
         int                    rowCount(const QModelIndex& parent) const final;
         QHash<int, QByteArray> roleNames() const final;
+        bool                   removeRows(int row, int count, const QModelIndex& parent) final;
 
         //! Public api
         void initialize_portfolio(std::string ticker);
         void update_currency_values();
+        void disable_coins(const QStringList& coins);
 
         //! Properties
         portfolio_proxy_model* get_portfolio_proxy_mdl() const noexcept;

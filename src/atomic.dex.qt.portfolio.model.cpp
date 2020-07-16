@@ -134,6 +134,33 @@ namespace atomic_dex
         return true;
     }
 
+    bool
+    portfolio_model::removeRows(int position, int rows, [[maybe_unused]] const QModelIndex& parent)
+    {
+        spdlog::trace("(portfolio_model::removeRows) removing {} elements at position {}", rows, position);
+        beginRemoveRows(QModelIndex(), position, position + rows - 1);
+
+        for (int row = 0; row < rows; ++row)
+        {
+            //! remove at
+            this->m_model_data.removeAt(position);
+        }
+
+        endRemoveRows();
+        return true;
+    }
+
+    void
+    portfolio_model::disable_coins(const QStringList& coins)
+    {
+        for (auto&& coin: coins)
+        {
+            auto res = this->match(this->index(0, 0), TickerRole, coin);
+            assert(not res.empty());
+            this->removeRow(res.at(0).row());
+        }
+    }
+
     int
     atomic_dex::portfolio_model::rowCount([[maybe_unused]] const QModelIndex& parent) const
     {
@@ -171,8 +198,7 @@ namespace atomic_dex
     bool
     portfolio_proxy_model::lessThan(const QModelIndex& source_left, const QModelIndex& source_right) const
     {
-        int role = this->sortRole();
-        spdlog::trace("source_left index {}, source_right index {}", source_left.row(), source_right.row());
+        int      role       = this->sortRole();
         QVariant left_data  = sourceModel()->data(source_left, role);
         QVariant right_data = sourceModel()->data(source_right, role);
         switch (static_cast<portfolio_model::PortfolioRoles>(role))
