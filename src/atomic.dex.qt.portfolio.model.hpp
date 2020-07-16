@@ -18,7 +18,6 @@
 
 //! QT Headers
 #include <QAbstractListModel>
-#include <QSortFilterProxyModel>
 #include <QString>
 #include <QVector>
 
@@ -29,21 +28,10 @@
 #include "atomic.dex.mm2.hpp"
 #include "atomic.dex.provider.coinpaprika.hpp"
 #include "atomic.dex.qt.portfolio.data.hpp"
+#include "atomic.dex.qt.portfolio.proxy.filter.model.hpp"
 
 namespace atomic_dex
 {
-    class portfolio_proxy_model : public QSortFilterProxyModel
-    {
-        Q_OBJECT
-      public:
-        portfolio_proxy_model(QObject* parent);
-        ~portfolio_proxy_model();
-
-      protected:
-        bool lessThan(const QModelIndex& source_left, const QModelIndex& source_right) const override;
-
-      private:
-    };
 
     class portfolio_model final : public QAbstractListModel
     {

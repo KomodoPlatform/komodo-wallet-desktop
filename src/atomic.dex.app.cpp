@@ -91,7 +91,7 @@ namespace
 namespace atomic_dex
 {
     void
-    atomic_dex::application::change_state(int visibility)
+    atomic_dex::application::change_state([[maybe_unused]] int visibility)
     {
 #ifdef __APPLE__
         qDebug() << visibility;
@@ -516,7 +516,7 @@ namespace atomic_dex
     application::prepare_send(const QString& address, const QString& amount, bool max)
     {
         atomic_dex::t_withdraw_request req{
-            .to = address.toStdString(), .coin = m_coin_info->get_ticker().toStdString(), .max = max, .amount = amount.toStdString()};
+            .coin = m_coin_info->get_ticker().toStdString(), .to = address.toStdString(), .amount = amount.toStdString(), .max = max};
         if (req.max)
         {
             req.amount = "0";
@@ -532,7 +532,7 @@ namespace atomic_dex
         const QString& address, const QString& amount, bool is_erc_20, const QString& fees_amount, const QString& gas_price, const QString& gas, bool max)
     {
         atomic_dex::t_withdraw_request req{
-            .to = address.toStdString(), .coin = m_coin_info->get_ticker().toStdString(), .max = max, .amount = amount.toStdString()};
+            .coin = m_coin_info->get_ticker().toStdString(), .to = address.toStdString(), .amount = amount.toStdString(), .max = max};
         if (req.max == true)
         {
             req.amount = "0";

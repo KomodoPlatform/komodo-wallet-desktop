@@ -35,6 +35,7 @@ namespace
         return change_24h;
     }
 } // namespace
+
 namespace atomic_dex
 {
     portfolio_model::portfolio_model(ag::ecs::system_manager& system_manager, atomic_dex::cfg& config, QObject* parent) noexcept :
@@ -174,15 +175,11 @@ namespace atomic_dex
     portfolio_model::removeRows(int position, int rows, [[maybe_unused]] const QModelIndex& parent)
     {
         spdlog::trace("(portfolio_model::removeRows) removing {} elements at position {}", rows, position);
+
         beginRemoveRows(QModelIndex(), position, position + rows - 1);
-
-        for (int row = 0; row < rows; ++row)
-        {
-            //! remove at
-            this->m_model_data.removeAt(position);
-        }
-
+        for (int row = 0; row < rows; ++row) { this->m_model_data.removeAt(position); }
         endRemoveRows();
+
         return true;
     }
 
@@ -211,46 +208,9 @@ namespace atomic_dex
                 {Change24H, "change_24h"}, {MainCurrencyPriceForOneUnit, "main_currency_price_for_one_unit"}};
     }
 
-    atomic_dex::portfolio_proxy_model*
+    portfolio_proxy_model*
     atomic_dex::portfolio_model::get_portfolio_proxy_mdl() const noexcept
     {
         return m_model_proxy;
-    }
-} // namespace atomic_dex
-
-namespace atomic_dex
-{
-    portfolio_proxy_model::portfolio_proxy_model(QObject* parent) : QSortFilterProxyModel(parent)
-    {
-        spdlog::trace("{} l{} f[{}]", __FUNCTION__, __LINE__, fs::path(__FILE__).filename().string());
-        spdlog::trace("portfolio proxy model created");
-    }
-    portfolio_proxy_model::~portfolio_proxy_model()
-    {
-        spdlog::trace("{} l{} f[{}]", __FUNCTION__, __LINE__, fs::path(__FILE__).filename().string());
-        spdlog::trace("portfolio proxy model destroyed");
-    }
-
-    bool
-    portfolio_proxy_model::lessThan(const QModelIndex& source_left, const QModelIndex& source_right) const
-    {
-        int      role       = this->sortRole();
-        QVariant left_data  = sourceModel()->data(source_left, role);
-        QVariant right_data = sourceModel()->data(source_right, role);
-        switch (static_cast<portfolio_model::PortfolioRoles>(role))
-        {
-        case portfolio_model::TickerRole:
-            return false;
-        case portfolio_model::BalanceRole:
-            return t_float_50(left_data.toString().toStdString()) > t_float_50(right_data.toString().toStdString());
-        case portfolio_model::MainCurrencyBalanceRole:
-            return t_float_50(left_data.toString().toStdString()) > t_float_50(right_data.toString().toStdString());
-        case portfolio_model::Change24H:
-            return false;
-        case portfolio_model::MainCurrencyPriceForOneUnit:
-            return false;
-        case portfolio_model::NameRole:
-            return false;
-        }
     }
 } // namespace atomic_dex
