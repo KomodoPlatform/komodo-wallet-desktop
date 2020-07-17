@@ -56,7 +56,7 @@ namespace atomic_dex
 
         this->m_model_proxy->setSourceModel(this);
         this->m_model_proxy->setDynamicSortFilter(true);
-        this->m_model_proxy->sort_by_currency_balance(true);
+        this->m_model_proxy->sort_by_currency_balance(false);
     }
 
     portfolio_model::~portfolio_model() noexcept
