@@ -169,7 +169,7 @@ DefaultModal {
             }
 
             // Send address
-            AddressField {
+            AddressFieldWithTitle {
                 id: input_address
                 title: API.get().empty_string + (qsTr("Recipient's address"))
                 field.placeholderText: API.get().empty_string + (qsTr("Enter address of the recipient"))

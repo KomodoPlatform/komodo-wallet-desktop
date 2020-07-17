@@ -247,7 +247,7 @@ ColumnLayout {
                                 DefaultText {
                                     anchors.left: parent.left
                                     anchors.verticalCenter: parent.verticalCenter
-                                    anchors.leftMargin: address_input.anchors.leftMargin
+                                    anchors.leftMargin: layout_margin * 5
                                     text: address
                                     visible: !address_input.visible
                                     font.pixelSize: Style.textSizeSmall3
@@ -257,14 +257,14 @@ ColumnLayout {
                                         if(text.length === 0) editing_address = true
                                     }
                                 }
-                                DefaultTextField {
+                                AddressField {
                                     id: address_input
                                     anchors.left: parent.left
                                     anchors.verticalCenter: parent.verticalCenter
                                     anchors.leftMargin: layout_margin * 7
                                     font.pixelSize: Style.textSizeSmall3
                                     placeholderText: API.get().empty_string + (qsTr("Enter the address"))
-                                    width: 300
+                                    width: 400
                                     visible: editing_address
                                 }
 
