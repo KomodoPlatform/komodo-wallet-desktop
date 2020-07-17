@@ -26,7 +26,7 @@ Item {
 
     function reset() {
         // Fill all coins list
-        General.all_coins = API.get().get_all_coins().map(c => c.ticker)
+        General.all_coins = API.get().get_all_coins()
 
         current_page = getMainPage()
         prev_page = -1

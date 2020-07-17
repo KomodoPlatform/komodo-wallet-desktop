@@ -228,13 +228,18 @@ ColumnLayout {
                                     anchors.verticalCenter: parent.verticalCenter
                                     visible: editing_address
 
-                                    model: General.all_coins
+                                    model: General.all_coins.filter(c => {
+                                                if(c.type === "ERC-20" && c.ticker !== "ETH") return false
+                                                if(c.type === "Smart Chain" && c.ticker !== "KMD") return false
+
+                                                return true
+                                            }).map(c => c.ticker)
 
                                     onModelChanged: {
                                         // When enabled_coins changes, all comboboxes reset to the first ticker
                                         // So we need to revert it to the old one
                                         if(type !== "") {
-                                            const i = General.all_coins.indexOf(type)
+                                            const i = model.map(c => c.ticker).indexOf(type)
                                             if(i !== -1) {
                                                 currentIndex = i
                                             }
