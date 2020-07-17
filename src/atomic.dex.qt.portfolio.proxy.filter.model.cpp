@@ -80,7 +80,6 @@ namespace atomic_dex
             {
                 left_data  = sourceModel()->data(source_left, atomic_dex::portfolio_model::BalanceRole);
                 right_data = sourceModel()->data(source_right, atomic_dex::portfolio_model::BalanceRole);
-                return left_data.toFloat() < right_data.toFloat();
             }
             return left_data.toFloat() < right_data.toFloat();
         case atomic_dex::portfolio_model::Change24H:
