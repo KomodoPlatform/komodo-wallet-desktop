@@ -111,11 +111,10 @@ ChartView {
     }
 
 
-    function updateChart() {
+    function updateChart(historical) {
         series.clear()
         series2.clear()
 
-        const historical = API.get().current_coin_info.trend_7d
         if(historical === undefined) return
 
         if(historical.length > 0) {
@@ -158,17 +157,9 @@ ChartView {
         }
     }
 
-    property string ticker: API.get().current_coin_info.ticker
-    onTickerChanged: {
-        updateChart()
-    }
-
-    Connections {
-        target: dashboard
-
-        function onPortfolio_coinsChanged() {
-            updateChart()
-        }
+    property var historical: API.get().current_coin_info.trend_7d
+    onHistoricalChanged: {
+        updateChart(historical)
     }
 
     id: chart
