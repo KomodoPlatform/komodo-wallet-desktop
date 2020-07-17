@@ -102,7 +102,7 @@ Item {
 
             transformOrigin: Item.Center
 
-            Portfolio2 {
+            Portfolio {
                 id: portfolio
             }
 
