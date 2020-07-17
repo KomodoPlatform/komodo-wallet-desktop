@@ -100,7 +100,6 @@
         <file>atomic_qt_design/qml/Exchange/Trade/Trade.qml</file>
         <file>atomic_qt_design/qml/Exchange/Trade/ConfirmTradeModal.qml</file>
         <file>atomic_qt_design/qml/Exchange/Trade/PriceLine.qml</file>
-        <file>atomic_qt_design/qml/Exchange/Trade/CexInfoTrigger.qml</file>
         <file>atomic_qt_design/qml/Exchange/Trade/OrderForm.qml</file>
         <file>atomic_qt_design/qml/Exchange/Trade/OrderReceiveModal.qml</file>
         <file>atomic_qt_design/qml/Exchange/Trade/OrderbookModal.qml</file>
@@ -162,6 +161,7 @@
         <file>atomic_qt_design/qml/Components/TextFieldWithTitle.qml</file>
         <file>atomic_qt_design/qml/Components/TextAreaWithTitle.qml</file>
         <file>atomic_qt_design/qml/Components/ModalHeader.qml</file>
+        <file>atomic_qt_design/qml/Components/CexInfoTrigger.qml</file>
         <file>atomic_qt_design/qml/Portfolio/Portfolio.qml</file>
         <file>atomic_qt_design/qml/Wallet/Wallet.qml</file>
         <file>atomic_qt_design/qml/Wallet/ClaimRewardsModal.qml</file>

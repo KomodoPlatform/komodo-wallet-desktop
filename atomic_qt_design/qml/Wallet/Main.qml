@@ -221,8 +221,10 @@ Item {
 
                     DefaultText {
                         id: left_text
-                        text_value: API.get().empty_string + (qsTr("%1 / %2 Price", "TICKER").arg(API.get().current_coin_info.ticker).arg(API.get().current_fiat))
+                        text_value: API.get().empty_string + (qsTr("%1 / %2 Price", "TICKER").arg(API.get().current_coin_info.ticker).arg(API.get().current_fiat) + " " + General.cex_icon)
                         font.pixelSize: Style.textSizeSmall3
+
+                        CexInfoTrigger {}
                     }
                 }
 
@@ -243,7 +245,7 @@ Item {
                     }
 
                     DefaultText {
-                        text_value: API.get().empty_string + (qsTr("Volume 24h"))
+                        text_value: API.get().empty_string + (qsTr("Volume 24h") + " (" + API.get().current_fiat + ")")
                         font: left_text.font
                     }
                 }
