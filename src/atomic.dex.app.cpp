@@ -946,16 +946,16 @@ namespace atomic_dex
         {
             change_lang(m_config, current_lang.toStdString());
         }
-        auto get_locale = [](const QString current_lang) {
+        auto get_locale = [](const QString& current_lang) {
             if (current_lang == "tr")
             {
                 return QLocale::Language::Turkish;
             }
-            else if (current_lang == "en")
+            if (current_lang == "en")
             {
                 return QLocale::Language::English;
             }
-            else if (current_lang == "fr")
+            if (current_lang == "fr")
             {
                 return QLocale::Language::French;
             }
