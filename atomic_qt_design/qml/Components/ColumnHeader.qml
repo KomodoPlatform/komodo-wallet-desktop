@@ -32,6 +32,7 @@ Item {
                 case sort_by_name: API.get().portfolio_mdl.portfolio_proxy_mdl.sort_by_name(ascending); break
                 case sort_by_value: API.get().portfolio_mdl.portfolio_proxy_mdl.sort_by_currency_balance(ascending); break
                 case sort_by_price: API.get().portfolio_mdl.portfolio_proxy_mdl.sort_by_currency_unit(ascending); break
+                case sort_by_trend:
                 case sort_by_change: API.get().portfolio_mdl.portfolio_proxy_mdl.sort_by_change_last24h(ascending); break
             }
         }

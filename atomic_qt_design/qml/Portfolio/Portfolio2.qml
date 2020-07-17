@@ -16,8 +16,9 @@ ColumnLayout {
 
     readonly property int sort_by_name: 0
     readonly property int sort_by_value: 1
-    readonly property int sort_by_price: 2
     readonly property int sort_by_change: 3
+    readonly property int sort_by_trend: 4
+    readonly property int sort_by_price: 5
 
     property int current_sort: sort_by_value
     property bool ascending: false
@@ -188,7 +189,7 @@ ColumnLayout {
             anchors.verticalCenter: parent.verticalCenter
 
             text: API.get().empty_string + (qsTr("Trend 7d"))
-            sort_type: sort_by_change
+            sort_type: sort_by_trend
         }
 
         // Price
