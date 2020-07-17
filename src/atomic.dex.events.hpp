@@ -32,6 +32,11 @@ namespace atomic_dex
     using refresh_order_needed        = entt::tag<"gui_refresh_order_needed"_hs>;
     using refresh_ohlc_needed         = entt::tag<"gui_refresh_ohlc_needed"_hs>;
 
+    struct ticker_balance_updated
+    {
+        std::string ticker;
+    };
+
     struct coin_enabled
     {
         std::string ticker;

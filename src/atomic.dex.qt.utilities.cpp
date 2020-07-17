@@ -27,4 +27,13 @@ namespace atomic_dex
     {
         return RestClient::get(endpoint.toStdString()).code == 200;
     }
+
+    QJsonArray
+    nlohmann_json_array_to_qt_json_array(const nlohmann::json& j)
+    {
+        QJsonArray  out;
+        QJsonDocument q_json = QJsonDocument::fromJson(QString::fromStdString(j.dump()).toUtf8());
+        out                  = q_json.array();
+        return out;
+    }
 } // namespace atomic_dex

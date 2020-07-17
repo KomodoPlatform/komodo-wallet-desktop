@@ -48,6 +48,13 @@ namespace atomic_dex
         this->sort(0, is_ascending ? Qt::AscendingOrder : Qt::DescendingOrder);
     }
 
+    void
+    portfolio_proxy_model::sort_by_change_last24h(bool is_ascending)
+    {
+        this->setSortRole(atomic_dex::portfolio_model::Change24H);
+        this->sort(0, is_ascending ? Qt::AscendingOrder : Qt::DescendingOrder);
+    }
+
     //! Override member functions
     bool
     portfolio_proxy_model::lessThan(const QModelIndex& source_left, const QModelIndex& source_right) const
@@ -64,12 +71,13 @@ namespace atomic_dex
         case atomic_dex::portfolio_model::MainCurrencyBalanceRole:
             return t_float_50(left_data.toString().toStdString()) > t_float_50(right_data.toString().toStdString());
         case atomic_dex::portfolio_model::Change24H:
-            return false;
+            return left_data.toFloat() > right_data.toFloat();
         case atomic_dex::portfolio_model::MainCurrencyPriceForOneUnit:
             return false;
         case atomic_dex::portfolio_model::NameRole:
             return left_data.toString() < right_data.toString();
+        case portfolio_model::Trend7D:
+            return false;
         }
     }
-
 } // namespace atomic_dex
