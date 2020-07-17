@@ -62,9 +62,12 @@ ColumnLayout {
         model: API.get().addressbook_mdl
 
         delegate: Item {
+            id: contact
             readonly property int line_height: 200
             readonly property bool is_last_item: index === model.length - 1
             property bool editing: false
+
+            readonly property var selected_coins: modelData.readonly_addresses.map(c => c.type)
 
             width: list.width
             height: contact_bg.height + layout_margin
@@ -221,34 +224,59 @@ ColumnLayout {
 
                                     text_value: API.get().empty_string + (type)
                                 }
+
                                 DefaultComboBox {
                                     id: combo_base
+
                                     anchors.left: icon.right
                                     anchors.leftMargin: 10
                                     anchors.verticalCenter: parent.verticalCenter
                                     visible: editing_address
 
-                                    model: General.all_coins.filter(c => {
-                                                if(c.type === "ERC-20" && c.ticker !== "ETH") return false
-                                                if(c.type === "Smart Chain" && c.ticker !== "KMD") return false
+                                    Connections {
+                                        target: contact
 
-                                                return true
-                                            }).map(c => c.ticker)
-
-                                    onModelChanged: {
-                                        // When enabled_coins changes, all comboboxes reset to the first ticker
-                                        // So we need to revert it to the old one
-                                        if(type !== "") {
-                                            const i = model.map(c => c.ticker).indexOf(type)
-                                            if(i !== -1) {
-                                                currentIndex = i
-                                            }
+                                        function onSelected_coinsChanged() {
+                                            combo_base.updateSelectableCoins()
                                         }
                                     }
 
-                                    property string previous_ticker
+                                    function updateSelectableCoins() {
+                                        selectable_coins = General.all_coins.filter(c => {
+                                                                if(c.type === "ERC-20" && c.ticker !== "ETH") return false
+                                                                if(c.type === "Smart Chain" && c.ticker !== "KMD") return false
+
+                                                                return c.ticker === type || contact.selected_coins.indexOf(c.ticker) === -1
+                                                            }).map(c => c.ticker)
+                                    }
+
+                                    property var selectable_coins: ([])
+                                    model: selectable_coins
+
+                                    property int previous_type_index: -1
+                                    property int type_index: -1
                                     onCurrentTextChanged: {
-                                        type = currentText
+                                        // If index is same but the text changed, that means the list changed,
+                                        // We'll change the index instead
+                                        // We also always save the previous index, to recover from double reset later
+                                        if(currentIndex === type_index) {
+                                            // This part fixes the index shift when one element disappears
+                                            previous_type_index = type_index
+                                            currentIndex = type_index = selectable_coins.indexOf(type)
+                                        }
+                                        else if(currentText !== type) {
+                                            // This part simply sets the ticker
+                                            previous_type_index = type_index
+                                            type_index = currentIndex
+                                            type = currentText
+                                        }
+                                    }
+
+                                    onModelChanged: {
+                                        // When list resets, we already correct the index, but somehow it double resets
+                                        // That's why we save the previous one before the second reset and recover to that here
+                                        if(previous_type_index !== -1)
+                                            currentIndex = previous_type_index
                                     }
                                 }
 
