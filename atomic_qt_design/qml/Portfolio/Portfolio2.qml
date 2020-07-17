@@ -49,7 +49,7 @@ ColumnLayout {
             // Fill chart
             let series = chart.createSeries(ChartView.SeriesTypeSpline, "Price", chart.axes[0], chart.axes[1]);
 
-            series.style = Qt.DashDotLine
+            series.style = Qt.SolidLine
             series.color = Style.colorTheme1
 
             let min = 999999999
