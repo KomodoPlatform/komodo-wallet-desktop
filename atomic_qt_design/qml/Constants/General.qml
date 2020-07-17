@@ -254,7 +254,10 @@ QtObject {
     }
 
     function canDisable(ticker) {
-        if(API.get().enabled_coins.length <= 2) return false
+        if(API.get().enabled_coins.length <= 2 ||
+                ticker === "KMD" ||
+                ticker === "BTC") return false
+
         if(ticker === "ETH") return !General.isEthNeeded()
 
         return true
