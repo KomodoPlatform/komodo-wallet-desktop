@@ -10,6 +10,7 @@ import "../Constants"
 ColumnLayout {
     id: address_book
 
+    property bool global_edit_in_progress: false
     Layout.fillWidth: true
 
     spacing: 20
@@ -40,6 +41,7 @@ ColumnLayout {
             Layout.rightMargin: layout_margin
             Layout.alignment: Qt.AlignRight
             text: API.get().empty_string + (qsTr("New Contact"))
+            enabled: !global_edit_in_progress
             onClicked: {
                 API.get().addressbook_mdl.add_contact_entry()
             }
@@ -93,7 +95,9 @@ ColumnLayout {
 
                             Component.onCompleted: {
                                 // Start editing if it's a new/empty one
-                                if(text.length === 0) editing = true
+                                if(text.length === 0) {
+                                    editing = global_edit_in_progress = true
+                                }
                             }
                         }
                         DefaultTextField {
@@ -115,12 +119,13 @@ ColumnLayout {
                                 Layout.leftMargin: layout_margin
 
                                 visible: !editing
+                                enabled: !global_edit_in_progress
                                 font.pixelSize: Style.textSizeSmall3
                                 text: "✎"
                                 minWidth: height
                                 onClicked: {
                                     name_input.text = modelData.name
-                                    editing = true
+                                    editing = global_edit_in_progress = true
                                 }
                             }
 
@@ -128,13 +133,13 @@ ColumnLayout {
                                 Layout.leftMargin: layout_margin
 
                                 visible: editing
+                                enabled: name_input.length > 0
                                 font.pixelSize: Style.textSizeSmall3
                                 text: "💾"
                                 minWidth: height
-                                enabled: name_input.length > 0
                                 onClicked: {
                                     modelData.name = name_input.text
-                                    editing = false
+                                    editing = global_edit_in_progress = false
                                 }
                             }
 
@@ -143,6 +148,7 @@ ColumnLayout {
                                 Layout.leftMargin: layout_margin
 
                                 visible: !editing
+                                enabled: !global_edit_in_progress
                                 font.pixelSize: Style.textSizeSmall3
                                 text: "New Address"
                                 onClicked: {
@@ -159,6 +165,7 @@ ColumnLayout {
                                 text: "🗑"
                                 minWidth: height
                                 onClicked: {
+                                    global_edit_in_progress = false
                                     API.get().addressbook_mdl.remove_at(index)
                                 }
                             }
@@ -254,7 +261,9 @@ ColumnLayout {
 
                                     Component.onCompleted: {
                                         // Start editing if it's a new/empty one
-                                        if(text.length === 0) editing_address = true
+                                        if(text.length === 0) {
+                                            editing_address = global_edit_in_progress = true
+                                        }
                                     }
                                 }
                                 AddressField {
@@ -277,12 +286,13 @@ ColumnLayout {
                                         Layout.leftMargin: layout_margin
 
                                         visible: !editing_address
+                                        enabled: !global_edit_in_progress
                                         font.pixelSize: Style.textSizeSmall3
                                         text: "✎"
                                         minWidth: height
                                         onClicked: {
                                             address_input.text = address
-                                            editing_address = true
+                                            editing_address = global_edit_in_progress = true
                                         }
                                     }
 
@@ -296,7 +306,7 @@ ColumnLayout {
                                         minWidth: height
                                         onClicked: {
                                             address = address_input.text
-                                            editing_address = false
+                                            editing_address = global_edit_in_progress = false
                                         }
                                     }
 
@@ -334,6 +344,7 @@ ColumnLayout {
                                         text: "🗑"
                                         minWidth: height
                                         onClicked: {
+                                            global_edit_in_progress = false
                                             modelData.remove_at(index)
                                         }
                                     }
