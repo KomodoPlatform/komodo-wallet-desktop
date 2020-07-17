@@ -123,13 +123,7 @@ Item {
                         }
 
                         DefaultText {
-                            text_value: {
-                                const c = General.getCoin(portfolio_coins, API.get().current_coin_info.ticker)
-                                if(c === undefined) return "-"
-
-                                return API.get().empty_string + (General.formatFiat('', c.price, API.get().current_currency))
-                            }
-
+                            text_value: API.get().empty_string + (General.formatFiat('', API.get().current_coin_info.main_currency_balance, API.get().current_currency))
                             Layout.alignment: Qt.AlignLeft
                             font.pixelSize: name.font.pixelSize
                         }
