@@ -164,12 +164,11 @@ Item {
 
                         DefaultText {
                             text_value: {
-                                const c = General.getCoin(portfolio_coins, API.get().current_coin_info.ticker)
-                                if(c === undefined || c.balance_fiat === null) return "-"
-                                const portfolio_balance = API.get().balance_fiat_all
-                                if(parseFloat(portfolio_balance) <= 0) return "-"
+                                const fiat_amount = parseFloat(API.get().current_coin_info.fiat_amount)
+                                const portfolio_balance = parseFloat(API.get().balance_fiat_all)
+                                if(fiat_amount <= 0 || portfolio_balance <= 0) return "-"
 
-                                return API.get().empty_string + (General.formatPercent((100 * parseFloat(c.balance_fiat)/parseFloat(portfolio_balance)).toFixed(2), false))
+                                return API.get().empty_string + (General.formatPercent((100 * fiat_amount/portfolio_balance).toFixed(2), false))
                             }
                             Layout.alignment: Qt.AlignLeft
                             font.pixelSize: name.font.pixelSize
