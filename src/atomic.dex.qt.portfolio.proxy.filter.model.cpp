@@ -78,8 +78,8 @@ namespace atomic_dex
         case atomic_dex::portfolio_model::MainCurrencyBalanceRole:
             if (left_data.toString() == right_data.toString())
             {
-                left_data = sourceModel()->data(source_left, atomic_dex::portfolio_model::BalanceRole);
-                right_data =  sourceModel()->data(source_left, atomic_dex::portfolio_model::BalanceRole);
+                left_data  = sourceModel()->data(source_left, atomic_dex::portfolio_model::BalanceRole);
+                right_data = sourceModel()->data(source_left, atomic_dex::portfolio_model::BalanceRole);
                 return t_float_50(left_data.toString().toStdString()) < t_float_50(right_data.toString().toStdString());
             }
             return t_float_50(left_data.toString().toStdString()) < t_float_50(right_data.toString().toStdString());
@@ -92,5 +92,11 @@ namespace atomic_dex
         case portfolio_model::Trend7D:
             return false;
         }
+    }
+
+    int
+    portfolio_proxy_model::length() const
+    {
+        return this->sourceModel()->rowCount(QModelIndex());
     }
 } // namespace atomic_dex

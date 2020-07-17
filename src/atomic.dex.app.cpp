@@ -246,19 +246,21 @@ namespace atomic_dex
                 refresh_transactions(mm2);
                 refresh_fiat_balance(mm2, paprika);
                 refresh_address(mm2);
-                const auto  ticker = m_coin_info->get_ticker().toStdString();
-                const auto& info   = get_mm2().get_coin_info(ticker);
-                m_coin_info->set_name(QString::fromStdString(info.name));
-                m_coin_info->set_claimable(info.is_claimable);
-                m_coin_info->set_type(QString::fromStdString(info.type));
-                m_coin_info->set_paprika_id(QString::fromStdString(info.coinpaprika_id));
-                m_coin_info->set_minimal_balance_for_asking_rewards(QString::fromStdString(info.minimal_claim_amount));
-                m_coin_info->set_explorer_url(QString::fromStdString(info.explorer_url[0]));
-                std::error_code ec;
-                m_coin_info->set_price(QString::fromStdString(paprika.get_rate_conversion(m_config.current_currency, ticker, ec, true)));
-                m_coin_info->set_change24h(retrieve_change_24h(paprika, info, m_config));
-                m_coin_info->set_trend_7d(nlohmann_json_array_to_qt_json_array(paprika.get_ticker_historical(ticker).answer));
-                m_refresh_current_ticker_infos = false;
+                {
+                    const auto  ticker = m_coin_info->get_ticker().toStdString();
+                    const auto& info   = get_mm2().get_coin_info(ticker);
+                    m_coin_info->set_name(QString::fromStdString(info.name));
+                    m_coin_info->set_claimable(info.is_claimable);
+                    m_coin_info->set_type(QString::fromStdString(info.type));
+                    m_coin_info->set_paprika_id(QString::fromStdString(info.coinpaprika_id));
+                    m_coin_info->set_minimal_balance_for_asking_rewards(QString::fromStdString(info.minimal_claim_amount));
+                    m_coin_info->set_explorer_url(QString::fromStdString(info.explorer_url[0]));
+                    std::error_code ec;
+                    m_coin_info->set_price(QString::fromStdString(paprika.get_rate_conversion(m_config.current_currency, ticker, ec, true)));
+                    m_coin_info->set_change24h(retrieve_change_24h(paprika, info, m_config));
+                    m_coin_info->set_trend_7d(nlohmann_json_array_to_qt_json_array(paprika.get_ticker_historical(ticker).answer));
+                    m_refresh_current_ticker_infos = false;
+                }
             }
 
             if (m_refresh_orders_needed)
