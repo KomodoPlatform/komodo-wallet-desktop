@@ -73,6 +73,7 @@ namespace atomic_dex
             data.main_currency_balance.toStdString());
         this->m_model_data.push_back(std::move(data));
         endInsertRows();
+        emit lengthChanged();
     }
 
     void
@@ -189,7 +190,11 @@ namespace atomic_dex
         spdlog::trace("(portfolio_model::removeRows) removing {} elements at position {}", rows, position);
 
         beginRemoveRows(QModelIndex(), position, position + rows - 1);
-        for (int row = 0; row < rows; ++row) { this->m_model_data.removeAt(position); }
+        for (int row = 0; row < rows; ++row)
+        {
+            this->m_model_data.removeAt(position);
+            emit lengthChanged();
+        }
         endRemoveRows();
 
         return true;
@@ -225,5 +230,11 @@ namespace atomic_dex
     atomic_dex::portfolio_model::get_portfolio_proxy_mdl() const noexcept
     {
         return m_model_proxy;
+    }
+
+    int
+    portfolio_model::get_length() const noexcept
+    {
+        return this->rowCount(QModelIndex());
     }
 } // namespace atomic_dex

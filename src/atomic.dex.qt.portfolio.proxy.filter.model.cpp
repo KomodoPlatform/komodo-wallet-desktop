@@ -93,10 +93,4 @@ namespace atomic_dex
             return false;
         }
     }
-
-    int
-    portfolio_proxy_model::length() const
-    {
-        return this->sourceModel()->rowCount(QModelIndex());
-    }
 } // namespace atomic_dex
