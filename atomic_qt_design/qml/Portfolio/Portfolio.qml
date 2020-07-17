@@ -25,13 +25,9 @@ ColumnLayout {
     property int current_sort: sort_by_value
     property bool ascending: false
 
-    function reset() {
-        updatePortfolio()
-    }
+    function reset() { }
 
-    function onOpened() {
-        updatePortfolio()
-    }
+    function onOpened() { }
 
     function getColor(data) {
         const fiat = API.get().current_currency

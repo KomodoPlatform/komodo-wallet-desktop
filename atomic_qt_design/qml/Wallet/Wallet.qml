@@ -27,9 +27,7 @@ RowLayout {
         enable_coin_modal.reset()
     }
 
-    function onOpened() {
-        updatePortfolio()
-    }
+    function onOpened() { }
 
     readonly property double button_margin: 0.05
     spacing: 0
