@@ -76,9 +76,15 @@ namespace atomic_dex
         case atomic_dex::portfolio_model::BalanceRole:
             return t_float_50(left_data.toString().toStdString()) < t_float_50(right_data.toString().toStdString());
         case atomic_dex::portfolio_model::MainCurrencyBalanceRole:
+            /*if (t_float_50(left_data.toString().toStdString()) == t_float_50(right_data.toString().toStdString()))
+            {
+                left_data = sourceModel()->data(source_left, atomic_dex::portfolio_model::BalanceRole);
+                right_data =  sourceModel()->data(source_left, atomic_dex::portfolio_model::BalanceRole);
+                return t_float_50(left_data.toString().toStdString()) < t_float_50(right_data.toString().toStdString());
+            }*/
             return t_float_50(left_data.toString().toStdString()) < t_float_50(right_data.toString().toStdString());
         case atomic_dex::portfolio_model::Change24H:
-            return left_data.toFloat() > right_data.toFloat();
+            return left_data.toFloat() < right_data.toFloat();
         case atomic_dex::portfolio_model::MainCurrencyPriceForOneUnit:
             return t_float_50(left_data.toString().toStdString()) < t_float_50(right_data.toString().toStdString());
         case atomic_dex::portfolio_model::NameRole:
