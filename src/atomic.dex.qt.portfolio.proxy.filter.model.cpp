@@ -67,9 +67,9 @@ namespace atomic_dex
         case atomic_dex::portfolio_model::TickerRole:
             return left_data.toString() > right_data.toString();
         case atomic_dex::portfolio_model::BalanceRole:
-            return t_float_50(left_data.toString().toStdString()) > t_float_50(right_data.toString().toStdString());
+            return t_float_50(left_data.toString().toStdString()) < t_float_50(right_data.toString().toStdString());
         case atomic_dex::portfolio_model::MainCurrencyBalanceRole:
-            return t_float_50(left_data.toString().toStdString()) > t_float_50(right_data.toString().toStdString());
+            return t_float_50(left_data.toString().toStdString()) < t_float_50(right_data.toString().toStdString());
         case atomic_dex::portfolio_model::Change24H:
             return left_data.toFloat() > right_data.toFloat();
         case atomic_dex::portfolio_model::MainCurrencyPriceForOneUnit:
