@@ -16,13 +16,15 @@ ColumnLayout {
     spacing: 20
 
     DefaultText {
+        property bool disabled: global_edit_in_progress
         Layout.leftMargin: layout_margin
         text_value: API.get().empty_string + ("< " + qsTr("Back"))
         font.bold: true
+        color: disabled ? Style.colorTextDisabled : Style.colorText
 
         MouseArea {
             anchors.fill: parent
-            onClicked: main_layout.currentIndex = 0
+            onClicked: { if(!disabled) main_layout.currentIndex = 0 }
         }
     }
 

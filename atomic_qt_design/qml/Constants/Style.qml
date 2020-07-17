@@ -161,6 +161,7 @@ QtObject {
 
     readonly property string colorText: dark_theme ? Style.colorWhite1 : "#405366"
     readonly property string colorText2: dark_theme ? "#79808C" : "#3C5368"
+    readonly property string colorTextDisabled: dark_theme ? Style.colorWhite8 : "#B5B9C1"
     readonly property string colorButtonDisabled: Style.colorTheme9
     readonly property string colorButtonHovered: Style.colorTheme6
     readonly property string colorButtonEnabled: Style.colorRectangle
