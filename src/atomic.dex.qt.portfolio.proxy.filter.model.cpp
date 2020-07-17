@@ -79,7 +79,7 @@ namespace atomic_dex
             if (left_data.toString() == right_data.toString())
             {
                 left_data  = sourceModel()->data(source_left, atomic_dex::portfolio_model::BalanceRole);
-                right_data = sourceModel()->data(source_left, atomic_dex::portfolio_model::BalanceRole);
+                right_data = sourceModel()->data(source_right, atomic_dex::portfolio_model::BalanceRole);
                 return t_float_50(left_data.toString().toStdString()) < t_float_50(right_data.toString().toStdString());
             }
             return t_float_50(left_data.toString().toStdString()) < t_float_50(right_data.toString().toStdString());
