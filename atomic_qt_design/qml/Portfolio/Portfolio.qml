@@ -336,6 +336,7 @@ ColumnLayout {
 
             // 7d Trend
             ChartView {
+                property var historical: trend_7d
                 id: chart
                 width: 200
                 height: 100
@@ -345,7 +346,7 @@ ColumnLayout {
                 anchors.verticalCenter: parent.verticalCenter
                 legend.visible: false
 
-                Component.onCompleted: updateChart(chart, trend_7d)
+                onHistoricalChanged: updateChart(chart, historical)
 
                 backgroundColor: "transparent"
             }
