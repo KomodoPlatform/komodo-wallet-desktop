@@ -17,9 +17,9 @@
 #pragma once
 
 //! QT
-#include <QObject>     //! QObject
+#include <QObject>      //! QObject
+#include <QString>      //! QString
 #include <QVariantList> //! QVariantList
-#include <QString>     //! QString
 
 //! PCH
 #include "atomic.dex.pch.hpp"
@@ -42,6 +42,8 @@ namespace atomic_dex
         Q_PROPERTY(QString explorer_url READ get_explorer_url WRITE set_explorer_url NOTIFY explorer_url_changed);
         Q_PROPERTY(QList<QVariant> transactions READ get_transactions WRITE set_transactions NOTIFY transactionsChanged)
         Q_PROPERTY(QString tx_state READ get_tx_state WRITE set_tx_state NOTIFY tx_state_changed);
+        Q_PROPERTY(QString main_currency_balance READ get_price WRITE set_price NOTIFY price_changed);
+        Q_PROPERTY(QString change_24h READ get_change24h WRITE set_change24h NOTIFY change24h_changed);
         Q_PROPERTY(unsigned int transactions_left READ get_txs_left WRITE set_txs_left NOTIFY txs_left_changed);
         Q_PROPERTY(unsigned int blocks_left READ get_blocks_left WRITE set_blocks_left NOTIFY blocks_left_changed);
         Q_PROPERTY(unsigned int tx_current_block READ get_tx_current_block WRITE set_tx_current_block NOTIFY tx_current_block_changed);
@@ -78,6 +80,10 @@ namespace atomic_dex
         void                       set_fiat_amount(QString fiat_amount) noexcept;
         [[nodiscard]] QString      get_type() const noexcept;
         void                       set_type(QString type) noexcept;
+        [[nodiscard]] QString      get_price() const noexcept;
+        void                       set_price(QString price) noexcept;
+        [[nodiscard]] QString      get_change24h() const noexcept;;
+        void                       set_change24h(QString change24h) noexcept;;
 
       signals:
         void ticker_changed();
@@ -95,6 +101,8 @@ namespace atomic_dex
         void txs_left_changed();
         void blocks_left_changed();
         void coinpaprika_id_changed();
+        void price_changed();
+        void change24h_changed();
 
       public:
         QString           selected_coin_name;
@@ -106,6 +114,8 @@ namespace atomic_dex
         QString           selected_coin_fiat_amount{"0"};
         QString           selected_coin_url;
         QString           selected_coin_state;
+        QString           selected_coin_price;
+        QString           selected_coin_change24h;
         unsigned int      selected_coin_block;
         unsigned int      selected_coin_txs_left;
         unsigned int      selected_coin_blocks_left;

@@ -231,6 +231,9 @@ namespace atomic_dex
         std::atomic_bool   m_refresh_orders_needed{false};
         std::atomic_bool   m_refresh_ohlc_needed{false};
         std::atomic_bool   m_refresh_transaction_only{false};
+        std::atomic_bool   m_refresh_ticker_balance{false};
+        std::mutex         m_ticker_balance_to_refresh_lock;
+        std::string        m_ticker_balance_to_refresh;
         bool               m_need_a_full_refresh_of_mm2{false};
         QVariantList       m_enabled_coins;
         QVariantList       m_enableable_coins;
