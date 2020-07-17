@@ -232,6 +232,7 @@ namespace atomic_dex
     current_coin_info::set_price(QString price) noexcept
     {
         this->selected_coin_price = std::move(price);
+        emit price_changed();
     }
 
     QString
@@ -244,5 +245,19 @@ namespace atomic_dex
     current_coin_info::set_change24h(QString change24h) noexcept
     {
         this->selected_coin_change24h = std::move(change24h);
+        emit change24h_changed();
+    }
+
+    QVariant
+    current_coin_info::get_trend_7d() const noexcept
+    {
+        return this->selected_coin_trend_7d;
+    }
+
+    void
+    current_coin_info::set_trend_7d(QVariant trend_7d) noexcept
+    {
+        this->selected_coin_trend_7d = std::move(trend_7d);
+        emit trend_7d_changed();
     }
 } // namespace atomic_dex

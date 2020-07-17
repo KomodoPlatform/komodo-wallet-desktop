@@ -44,6 +44,7 @@ namespace atomic_dex
         Q_PROPERTY(QString tx_state READ get_tx_state WRITE set_tx_state NOTIFY tx_state_changed);
         Q_PROPERTY(QString main_currency_balance READ get_price WRITE set_price NOTIFY price_changed);
         Q_PROPERTY(QString change_24h READ get_change24h WRITE set_change24h NOTIFY change24h_changed);
+        Q_PROPERTY(QVariant trend_7d READ get_trend_7d WRITE set_trend_7d NOTIFY trend_7d_changed);
         Q_PROPERTY(unsigned int transactions_left READ get_txs_left WRITE set_txs_left NOTIFY txs_left_changed);
         Q_PROPERTY(unsigned int blocks_left READ get_blocks_left WRITE set_blocks_left NOTIFY blocks_left_changed);
         Q_PROPERTY(unsigned int tx_current_block READ get_tx_current_block WRITE set_tx_current_block NOTIFY tx_current_block_changed);
@@ -82,8 +83,10 @@ namespace atomic_dex
         void                       set_type(QString type) noexcept;
         [[nodiscard]] QString      get_price() const noexcept;
         void                       set_price(QString price) noexcept;
-        [[nodiscard]] QString      get_change24h() const noexcept;;
-        void                       set_change24h(QString change24h) noexcept;;
+        [[nodiscard]] QString      get_change24h() const noexcept;
+        void                       set_change24h(QString change24h) noexcept;
+        [[nodiscard]] QVariant     get_trend_7d() const noexcept;
+        void                       set_trend_7d(QVariant trend_7d) noexcept;
 
       signals:
         void ticker_changed();
@@ -103,6 +106,7 @@ namespace atomic_dex
         void coinpaprika_id_changed();
         void price_changed();
         void change24h_changed();
+        void trend_7d_changed();
 
       public:
         QString           selected_coin_name;
@@ -116,6 +120,7 @@ namespace atomic_dex
         QString           selected_coin_state;
         QString           selected_coin_price;
         QString           selected_coin_change24h;
+        QVariant          selected_coin_trend_7d;
         unsigned int      selected_coin_block;
         unsigned int      selected_coin_txs_left;
         unsigned int      selected_coin_blocks_left;

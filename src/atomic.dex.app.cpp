@@ -44,6 +44,7 @@
 #include "atomic.dex.provider.cex.prices.hpp"
 #include "atomic.dex.provider.coinpaprika.hpp"
 #include "atomic.dex.qt.bindings.hpp"
+#include "atomic.dex.qt.utilities.hpp"
 #include "atomic.dex.security.hpp"
 #include "atomic.dex.utilities.hpp"
 #include "atomic.dex.version.hpp"
@@ -245,8 +246,8 @@ namespace atomic_dex
                 refresh_transactions(mm2);
                 refresh_fiat_balance(mm2, paprika);
                 refresh_address(mm2);
-                const auto ticker = m_coin_info->get_ticker().toStdString();
-                const auto& info = get_mm2().get_coin_info(ticker);
+                const auto  ticker = m_coin_info->get_ticker().toStdString();
+                const auto& info   = get_mm2().get_coin_info(ticker);
                 m_coin_info->set_name(QString::fromStdString(info.name));
                 m_coin_info->set_claimable(info.is_claimable);
                 m_coin_info->set_type(QString::fromStdString(info.type));
@@ -265,6 +266,7 @@ namespace atomic_dex
                     change_24h = QString::fromStdString(change_24h_str);
                 }
                 m_coin_info->set_change24h(change_24h);
+                m_coin_info->set_trend_7d(nlohmann_json_array_to_qt_json_array(paprika.get_ticker_historical(ticker).answer));
                 m_refresh_current_ticker_infos = false;
             }
 
@@ -1312,7 +1314,6 @@ namespace atomic_dex
         this->m_refresh_ticker_balance = true;
         std::unique_lock<std::mutex> lock(this->m_ticker_balance_to_refresh_lock);
         this->m_ticker_balance_to_refresh = evt.ticker;
-
     }
 } // namespace atomic_dex
 
