@@ -299,7 +299,7 @@ namespace atomic_dex
             {
                 std::unique_lock<std::mutex> lock(this->m_ticker_balance_to_refresh_lock);
                 this->m_portfolio->update_balance_values(this->m_ticker_balance_to_refresh);
-                this->m_ticker_balance_to_refresh.clear();
+                this->m_refresh_ticker_balance = false;
             }
         }
     }
