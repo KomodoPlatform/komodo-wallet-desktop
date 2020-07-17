@@ -36,4 +36,19 @@ namespace atomic_dex
         out                  = q_json.array();
         return out;
     }
+
+    QString
+    retrieve_change_24h(const atomic_dex::coinpaprika_provider& paprika, const atomic_dex::coin_config& coin, const atomic_dex::cfg& config)
+    {
+        auto    ticker_infos = paprika.get_ticker_infos(coin.ticker).answer;
+        QString change_24h   = "0";
+        if (not ticker_infos.empty() && ticker_infos.contains(config.current_currency))
+        {
+            auto change_24h_str =
+                std::to_string(paprika.get_ticker_infos(coin.ticker).answer.at(config.current_currency).at("percent_change_24h").get<double>());
+            std::replace(begin(change_24h_str), end(change_24h_str), ',', '.');
+            change_24h = QString::fromStdString(change_24h_str);
+        }
+        return change_24h;
+    }
 } // namespace atomic_dex
