@@ -97,17 +97,39 @@ namespace atomic_dex
         const std::string& currency   = m_config.current_currency;
         for (auto&& coin: coins)
         {
-            const std::string&    ticker = coin.ticker;
-            std::error_code       ec;
-            const QModelIndexList res = this->match(this->index(0, 0), TickerRole, QString::fromStdString(ticker));
-            assert(not res.empty());
-            const QModelIndex& idx                         = res.at(0);
-            const QString      main_currency_balance_value = QString::fromStdString(paprika.get_price_in_fiat(currency, ticker, ec));
+            const std::string& ticker = coin.ticker;
+            if (const auto res = this->match(this->index(0, 0), TickerRole, QString::fromStdString(ticker)); not res.isEmpty())
+            {
+                std::error_code    ec;
+                const QModelIndex& idx                         = res.at(0);
+                const QString      main_currency_balance_value = QString::fromStdString(paprika.get_price_in_fiat(currency, ticker, ec));
+                update_value(MainCurrencyBalanceRole, main_currency_balance_value, idx, *this);
+                const QString currency_price_for_one_unit = QString::fromStdString(paprika.get_rate_conversion(currency, ticker, ec, true));
+                update_value(MainCurrencyPriceForOneUnit, currency_price_for_one_unit, idx, *this);
+                QString change24_h = retrieve_change_24h(paprika, coin, m_config);
+                update_value(Change24H, change24_h, idx, *this);
+                const QString balance = QString::fromStdString(mm2_system.my_balance(coin.ticker, ec));
+                update_value(BalanceRole, balance, idx, *this);
+            }
+        }
+    }
+
+    void
+    portfolio_model::update_balance_values(const std::string& ticker) noexcept
+    {
+        if (const auto res = this->match(this->index(0, 0), TickerRole, QString::fromStdString(ticker)); not res.isEmpty())
+        {
+            const auto&        mm2_system = this->m_system_manager.get_system<mm2>();
+            const auto&        paprika    = this->m_system_manager.get_system<coinpaprika_provider>();
+            std::error_code    ec;
+            const std::string& currency = m_config.current_currency;
+            const QModelIndex& idx      = res.at(0);
+            const QString      balance  = QString::fromStdString(mm2_system.my_balance(ticker, ec));
+            update_value(BalanceRole, balance, idx, *this);
+            const QString main_currency_balance_value = QString::fromStdString(paprika.get_price_in_fiat(currency, ticker, ec));
             update_value(MainCurrencyBalanceRole, main_currency_balance_value, idx, *this);
             const QString currency_price_for_one_unit = QString::fromStdString(paprika.get_rate_conversion(currency, ticker, ec, true));
             update_value(MainCurrencyPriceForOneUnit, currency_price_for_one_unit, idx, *this);
-            QString change24_h = retrieve_change_24h(paprika, coin, m_config);
-            update_value(Change24H, change24_h, idx, *this);
         }
     }
 

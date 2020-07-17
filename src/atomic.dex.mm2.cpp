@@ -323,7 +323,7 @@ namespace atomic_dex
         if (not coin_info.is_erc_20)
         {
             t_electrum_request request{.coin_name = coin_info.ticker, .servers = coin_info.electrum_urls.value(), .with_tx_history = true};
-            auto               answer = rpc_electrum(std::move(request));
+            const auto         answer = rpc_electrum(std::move(request));
             if (answer.result not_eq "success")
             {
                 return false;
@@ -332,7 +332,7 @@ namespace atomic_dex
         else
         {
             t_enable_request request{.coin_name = coin_info.ticker, .urls = coin_info.eth_urls.value()};
-            auto             answer = rpc_enable(std::move(request));
+            const auto       answer = rpc_enable(std::move(request));
             if (answer.result not_eq "success")
             {
                 return false;
@@ -343,15 +343,8 @@ namespace atomic_dex
         coin_info.currently_enabled = true;
         m_coins_informations.assign(coin_info.ticker, coin_info);
 
-        spawn([this, copy_ticker = ticker]() {
-            // loguru::set_thread_name("balance thread");
-            process_balance(copy_ticker);
-        });
-
-        spawn([this, copy_ticker = ticker]() {
-            // loguru::set_thread_name("tx thread");
-            process_tx(copy_ticker);
-        });
+        spawn([this, copy_ticker = ticker]() { process_balance(copy_ticker); });
+        spawn([this, copy_ticker = ticker]() { process_tx(copy_ticker); });
 
         dispatcher_.trigger<coin_enabled>(ticker);
         if (emit_event)
@@ -397,7 +390,6 @@ namespace atomic_dex
         for (const auto& ticker: tickers)
         {
             spawn([this, ticker]() {
-                // loguru::set_thread_name("disable multiple coins");
                 std::error_code ec;
                 disable_coin(ticker, ec);
                 if (ec)
@@ -480,10 +472,7 @@ namespace atomic_dex
     void
     mm2::enable_multiple_coins(const std::vector<std::string>& tickers) noexcept
     {
-        spawn([this, tickers]() {
-            // loguru::set_thread_name("enable multiple coins");
-            batch_enable_coins(tickers, true);
-        });
+        spawn([this, tickers]() { batch_enable_coins(tickers, true); });
 
         update_coin_status(this->m_current_wallet_name, tickers, true);
     }
@@ -730,6 +719,7 @@ namespace atomic_dex
         if (answer.raw_result.find("error") == std::string::npos)
         {
             m_balance_informations.insert_or_assign(ticker, answer);
+            this->dispatcher_.trigger<ticker_balance_updated>(ticker);
         }
     }
 

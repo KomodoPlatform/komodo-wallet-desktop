@@ -813,6 +813,7 @@ namespace atomic_dex
         system_manager_.mark_system<coinpaprika_provider>();
         system_manager_.mark_system<cex_prices_provider>();
 
+        get_dispatcher().sink<ticker_balance_updated>().disconnect<&application::on_ticker_balance_updated_event>(*this);
         get_dispatcher().sink<change_ticker_event>().disconnect<&application::on_change_ticker_event>(*this);
         get_dispatcher().sink<enabled_coins_event>().disconnect<&application::on_enabled_coins_event>(*this);
         get_dispatcher().sink<enabled_default_coins_event>().disconnect<&application::on_enabled_default_coins_event>(*this);
@@ -833,6 +834,7 @@ namespace atomic_dex
     application::connect_signals()
     {
         spdlog::debug("{} l{}", __FUNCTION__, __LINE__);
+        get_dispatcher().sink<ticker_balance_updated>().connect<&application::on_ticker_balance_updated_event>(*this);
         get_dispatcher().sink<change_ticker_event>().connect<&application::on_change_ticker_event>(*this);
         get_dispatcher().sink<enabled_coins_event>().connect<&application::on_enabled_coins_event>(*this);
         get_dispatcher().sink<enabled_default_coins_event>().connect<&application::on_enabled_default_coins_event>(*this);
@@ -1282,6 +1284,13 @@ namespace atomic_dex
     {
         spdlog::debug("{} l{}", __FUNCTION__, __LINE__);
         this->m_refresh_ohlc_needed = true;
+    }
+
+    void
+    application::on_ticker_balance_updated_event(const ticker_balance_updated& evt) noexcept
+    {
+        spdlog::trace("{} l{}", __FUNCTION__, __LINE__);
+        this->m_portfolio->update_balance_values(evt.ticker);
     }
 } // namespace atomic_dex
 
