@@ -362,7 +362,7 @@ ColumnLayout {
                 anchors.right: parent.right
                 anchors.rightMargin: change_24h_header.anchors.rightMargin
 
-                text_value: API.get().empty_string + (/*General.validFiatRates(modelData, API.get().current_currency)*/ true ? General.formatPercent(parseFloat(change_24h)) : '-')
+                text_value: API.get().empty_string + (/*General.validFiatRates(modelData, API.get().current_currency)*/ parseFloat(change_24h) !== 0 ? General.formatPercent(parseFloat(change_24h)) : '-')
                 color: Style.colorText//getColor(modelData)
                 anchors.verticalCenter: parent.verticalCenter
             }
@@ -378,6 +378,14 @@ ColumnLayout {
             }
 
             // 7d Trend
+            DefaultText {
+                anchors.right: parent.right
+                anchors.rightMargin: trend_7d_header.anchors.rightMargin
+
+                text_value: API.get().empty_string + ('-')
+                color: Style.colorText
+                anchors.verticalCenter: parent.verticalCenter
+            }
             /*ChartView {
                 id: chart
                 width: 200
