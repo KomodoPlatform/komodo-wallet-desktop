@@ -22,13 +22,9 @@ ColumnLayout {
     property int current_sort: sort_by_value
     property bool ascending: false
 
-    function reset() {
-        updatePortfolio()
-    }
+    function reset() { }
 
-    function onOpened() {
-        updatePortfolio()
-    }
+    function onOpened() { }
 
     function getColor(value) {
         value = parseFloat(value)
@@ -200,7 +196,7 @@ ColumnLayout {
             anchors.verticalCenter: parent.verticalCenter
 
             text: API.get().empty_string + (qsTr("Trend 7d"))
-            sort_type: sort_by_trend
+            sort_type: sort_by_change
         }
 
         // Price

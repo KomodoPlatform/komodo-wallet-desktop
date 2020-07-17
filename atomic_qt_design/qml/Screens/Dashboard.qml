@@ -44,30 +44,7 @@ Item {
         return app.current_page === idx_dashboard
     }
 
-    function shouldUpdatePortfolio() {
-        return  inCurrentPage() &&
-                (current_page === General.idx_dashboard_portfolio ||
-                 current_page === General.idx_dashboard_wallet)
-    }
-
-    property var portfolio_coins: ([])
-
-    function updatePortfolio() {
-        portfolio_coins = API.get().get_portfolio_informations()
-
-        update_timer.running = true
-    }
-
-    Timer {
-        id: update_timer
-        running: false
-        repeat: true
-        interval: 5000
-        onTriggered: {
-            if(shouldUpdatePortfolio()) updatePortfolio()
-        }
-    }
-
+    property var portfolio_coins: API.get().portfolio_mdl.portfolio_proxy_mdl
 
     onCurrent_pageChanged: {
         if(prev_page !== current_page) {
