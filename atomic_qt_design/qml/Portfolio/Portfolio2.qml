@@ -26,14 +26,6 @@ ColumnLayout {
 
     function onOpened() { }
 
-    function getColor(value) {
-        value = parseFloat(value)
-        if(value !== 0)
-            return value > 0 ? Style.colorGreen : Style.colorRed
-
-        return Style.colorWhite4
-    }
-
     function updateChart(chart, historical) {
         chart.removeAllSeries()
 
@@ -324,7 +316,7 @@ ColumnLayout {
                 anchors.rightMargin: change_24h_header.anchors.rightMargin
 
                 text_value: API.get().empty_string + (parseFloat(change_24h) !== 0 ? General.formatPercent(parseFloat(change_24h)) : '-')
-                color: getColor(change_24h)
+                color: Style.getValueColor(change_24h)
                 anchors.verticalCenter: parent.verticalCenter
             }
 

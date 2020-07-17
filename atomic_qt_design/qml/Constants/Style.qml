@@ -179,4 +179,12 @@ QtObject {
 
     readonly property int modalTitleMargin: 10
     readonly property string modalValueColor: colorWhite4
+
+    function getValueColor(v) {
+        v = parseFloat(v)
+        if(v !== 0)
+            return v > 0 ? Style.colorGreen : Style.colorRed
+
+        return Style.colorWhite4
+    }
 }
