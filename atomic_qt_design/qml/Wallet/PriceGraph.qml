@@ -115,10 +115,7 @@ ChartView {
         series.clear()
         series2.clear()
 
-        const coin = General.getCoin(portfolio_coins, API.get().current_coin_info.ticker)
-        if(coin === undefined) return
-
-        const historical = coin.historical
+        const historical = API.get().current_coin_info.trend_7d
         if(historical === undefined) return
 
         if(historical.length > 0) {

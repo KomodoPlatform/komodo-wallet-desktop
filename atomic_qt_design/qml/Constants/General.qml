@@ -90,10 +90,6 @@ QtObject {
                            (type === undefined || c.type === type))
     }
 
-    function getCoin(list, ticker) {
-        return list.find(c => c.ticker === ticker)
-    }
-
     function validFiatRates(data, fiat) {
         return data && data.rates && data.rates[fiat]
     }
