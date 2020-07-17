@@ -16,6 +16,7 @@
 
 //! Project Headers
 #include "atomic.dex.qt.portfolio.model.hpp"
+#include "atomic.dex.qt.utilities.hpp"
 
 //! Utils
 namespace
@@ -80,7 +81,8 @@ namespace atomic_dex
             .balance                          = QString::fromStdString(mm2_system.my_balance(coin.ticker, ec)),
             .main_currency_balance            = QString::fromStdString(paprika.get_price_in_fiat(m_config.current_currency, coin.ticker, ec)),
             .change_24h                       = change_24h,
-            .main_currency_price_for_one_unit = QString::fromStdString(paprika.get_rate_conversion(m_config.current_currency, coin.ticker, ec, true))};
+            .main_currency_price_for_one_unit = QString::fromStdString(paprika.get_rate_conversion(m_config.current_currency, coin.ticker, ec, true)),
+            .trend_7d                         = nlohmann_json_array_to_qt_json_array(paprika.get_ticker_historical(coin.ticker).answer)};
         spdlog::trace(
             "inserting ticker {} with name {} balance {} main currency balance {}", coin.ticker, coin.name, data.balance.toStdString(),
             data.main_currency_balance.toStdString());
@@ -156,6 +158,8 @@ namespace atomic_dex
             return item.main_currency_price_for_one_unit;
         case NameRole:
             return item.name;
+        case Trend7D:
+            return item.trend_7d;
         }
         return {};
     }
@@ -182,6 +186,9 @@ namespace atomic_dex
             break;
         case MainCurrencyPriceForOneUnit:
             item.main_currency_price_for_one_unit = value.toString();
+            break;
+        case Trend7D:
+            item.trend_7d = value.toJsonArray();
             break;
         default:
             return false;
@@ -225,7 +232,8 @@ namespace atomic_dex
     {
         return {{TickerRole, "ticker"},    {NameRole, "name"},
                 {BalanceRole, "balance"},  {MainCurrencyBalanceRole, "main_currency_balance"},
-                {Change24H, "change_24h"}, {MainCurrencyPriceForOneUnit, "main_currency_price_for_one_unit"}};
+                {Change24H, "change_24h"}, {MainCurrencyPriceForOneUnit, "main_currency_price_for_one_unit"},
+                {Trend7D, "trend_7d"}};
     }
 
     portfolio_proxy_model*

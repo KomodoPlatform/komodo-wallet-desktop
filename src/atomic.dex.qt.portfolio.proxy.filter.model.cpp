@@ -69,6 +69,8 @@ namespace atomic_dex
             return false;
         case atomic_dex::portfolio_model::NameRole:
             return left_data.toString() < right_data.toString();
+        case portfolio_model::Trend7D:
+            return false;
         }
     }
 

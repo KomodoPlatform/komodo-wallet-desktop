@@ -45,7 +45,8 @@ namespace atomic_dex
             BalanceRole,
             MainCurrencyBalanceRole,
             Change24H,
-            MainCurrencyPriceForOneUnit
+            MainCurrencyPriceForOneUnit,
+            Trend7D
         };
 
       private:

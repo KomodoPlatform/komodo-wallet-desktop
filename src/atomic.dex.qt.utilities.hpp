@@ -17,6 +17,7 @@
 #pragma once
 
 #include <QString>
+#include <QVariantList>
 
 //! Project headers
 #include "atomic.dex.pch.hpp"
@@ -24,4 +25,5 @@
 namespace atomic_dex
 {
     bool am_i_able_to_reach_this_endpoint(const QString& endpoint);
+    QJsonArray nlohmann_json_array_to_qt_json_array(const nlohmann::json& j);
 }
