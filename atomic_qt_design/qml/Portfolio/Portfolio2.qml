@@ -15,12 +15,9 @@ ColumnLayout {
     Layout.fillHeight: true
 
     readonly property int sort_by_name: 0
-    readonly property int sort_by_ticker: 1
-    readonly property int sort_by_value: 2
-    readonly property int sort_by_balance: 3
-    readonly property int sort_by_price: 4
-    readonly property int sort_by_change: 5
-    readonly property int sort_by_trend: 6
+    readonly property int sort_by_value: 1
+    readonly property int sort_by_price: 2
+    readonly property int sort_by_change: 3
 
     property int current_sort: sort_by_value
     property bool ascending: false
