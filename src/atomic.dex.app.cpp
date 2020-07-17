@@ -256,16 +256,7 @@ namespace atomic_dex
                 m_coin_info->set_explorer_url(QString::fromStdString(info.explorer_url[0]));
                 std::error_code ec;
                 m_coin_info->set_price(QString::fromStdString(paprika.get_rate_conversion(m_config.current_currency, ticker, ec, true)));
-                auto    ticker_infos = paprika.get_ticker_infos(ticker).answer;
-                QString change_24h   = "0";
-                if (not ticker_infos.empty() && ticker_infos.contains(m_config.current_currency))
-                {
-                    auto change_24h_str =
-                        std::to_string(paprika.get_ticker_infos(ticker).answer.at(m_config.current_currency).at("percent_change_24h").get<double>());
-                    std::replace(begin(change_24h_str), end(change_24h_str), ',', '.');
-                    change_24h = QString::fromStdString(change_24h_str);
-                }
-                m_coin_info->set_change24h(change_24h);
+                m_coin_info->set_change24h(retrieve_change_24h(paprika, info, m_config));
                 m_coin_info->set_trend_7d(nlohmann_json_array_to_qt_json_array(paprika.get_ticker_historical(ticker).answer));
                 m_refresh_current_ticker_infos = false;
             }

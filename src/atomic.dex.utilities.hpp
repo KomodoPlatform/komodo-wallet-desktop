@@ -1,10 +1,12 @@
 #pragma once
 
+//! QT Headers
+#include <QCryptographicHash>
+#include <QString>
+
 //! PCH Headers
 #include "atomic.dex.pch.hpp"
 
-#include <QCryptographicHash>
-#include <QString>
 
 inline fs::path
 get_atomic_dex_data_folder()
