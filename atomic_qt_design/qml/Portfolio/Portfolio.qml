@@ -227,7 +227,7 @@ ColumnLayout {
     // Transactions or loading
     Item {
         id: loading
-        visible: portfolio_coins.length === 0
+        visible: API.get().portfolio_mdl.length === 0
         Layout.alignment: Qt.AlignCenter
         Layout.fillWidth: true
         Layout.fillHeight: true
@@ -250,7 +250,7 @@ ColumnLayout {
     // List
     DefaultListView {
         id: list
-        visible: portfolio_coins.length > 0
+        visible: API.get().portfolio_mdl.length > 0
         Layout.alignment: Qt.AlignTop
         Layout.fillWidth: true
         Layout.fillHeight: true

@@ -215,7 +215,7 @@ ColumnLayout {
     // Transactions or loading
     Item {
         id: loading
-        visible: portfolio_coins.length === 0
+        visible: API.get().portfolio_mdl.length === 0
         Layout.alignment: Qt.AlignCenter
         Layout.fillWidth: true
         Layout.fillHeight: true
@@ -238,12 +238,12 @@ ColumnLayout {
     // List
     DefaultListView {
         id: list
-        visible: portfolio_coins.length > 0
+        visible: API.get().portfolio_mdl.length > 0
         Layout.alignment: Qt.AlignTop
         Layout.fillWidth: true
         Layout.fillHeight: true
 
-        model: API.get().portfolio_mdl.portfolio_proxy_mdl
+        model: portfolio_coins
 
         delegate: Rectangle {
             color: mouse_area.containsMouse ? Style.colorTheme5 : index % 2 == 0 ? Style.colorTheme6 : Style.colorTheme7
