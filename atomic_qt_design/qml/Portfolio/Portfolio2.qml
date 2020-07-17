@@ -378,15 +378,7 @@ ColumnLayout {
             }
 
             // 7d Trend
-            DefaultText {
-                anchors.right: parent.right
-                anchors.rightMargin: trend_7d_header.anchors.rightMargin
-
-                text_value: API.get().empty_string + ('-')
-                color: Style.colorText
-                anchors.verticalCenter: parent.verticalCenter
-            }
-            /*ChartView {
+            ChartView {
                 id: chart
                 width: 200
                 height: 100
@@ -396,11 +388,10 @@ ColumnLayout {
                 anchors.verticalCenter: parent.verticalCenter
                 legend.visible: false
 
-                Component.onCompleted: updateChart(chart, historical)
+                Component.onCompleted: updateChart(chart, trend_7d)
 
                 backgroundColor: "transparent"
             }
-            */
         }
     }
 }
