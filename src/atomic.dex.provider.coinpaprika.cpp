@@ -55,7 +55,7 @@ namespace
         {
             return;
         }
-        const ticker_historical_request request{.ticker_currency_id = current_coin.coinpaprika_id, .interval = "1h"};
+        const ticker_historical_request request{.ticker_currency_id = current_coin.coinpaprika_id, .interval = "2h"};
         auto                            answer = ticker_historical(request);
         retry(answer, request, [&answer](const ticker_historical_request& request) { answer = ticker_historical(request); });
         if (answer.raw_result.find("error") == std::string::npos)
