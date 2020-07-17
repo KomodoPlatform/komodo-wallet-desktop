@@ -315,7 +315,10 @@ ColumnLayout {
                 anchors.right: parent.right
                 anchors.rightMargin: change_24h_header.anchors.rightMargin
 
-                text_value: API.get().empty_string + (parseFloat(change_24h) !== 0 ? General.formatPercent(parseFloat(change_24h)) : '-')
+                text_value: {
+                    const v = parseFloat(change_24h)
+                    return API.get().empty_string + (v === 0 ? '-' : General.formatPercent(v))
+                }
                 color: Style.getValueColor(change_24h)
                 anchors.verticalCenter: parent.verticalCenter
             }

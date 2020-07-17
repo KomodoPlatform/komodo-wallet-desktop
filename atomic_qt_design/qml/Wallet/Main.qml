@@ -148,24 +148,12 @@ Item {
 
                         DefaultText {
                             text_value: {
-                                const c = General.getCoin(portfolio_coins, API.get().current_coin_info.ticker)
-                                const fiat = API.get().current_currency
-                                if(!General.validFiatRates(c, fiat)) return "-"
-
-                                return API.get().empty_string + (General.formatPercent(c.rates[fiat].percent_change_24h))
+                                const v = parseFloat(API.get().current_coin_info.change_24h)
+                                return API.get().empty_string + (v === 0 ? '-' : General.formatPercent(v))
                             }
                             Layout.alignment: Qt.AlignLeft
                             font.pixelSize: name.font.pixelSize
-                            color: {
-                                const c = General.getCoin(portfolio_coins, API.get().current_coin_info.ticker)
-
-                                const def_color = Style.colorWhite4
-                                const fiat = API.get().current_currency
-                                if(!General.validFiatRates(c, fiat)) return def_color
-
-                                const v = parseFloat(c.rates[fiat].percent_change_24h)
-                                return v === 0 ? def_color : v > 0 ? Style.colorGreen : Style.colorRed
-                            }
+                            color: Style.getValueColor(API.get().current_coin_info.change_24h)
                         }
                     }
 
