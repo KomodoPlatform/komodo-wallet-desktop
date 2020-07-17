@@ -221,4 +221,28 @@ namespace atomic_dex
         this->selected_coin_paprika_id = std::move(paprika_id);
         emit coinpaprika_id_changed();
     }
+
+    QString
+    current_coin_info::get_price() const noexcept
+    {
+        return this->selected_coin_price;
+    }
+
+    void
+    current_coin_info::set_price(QString price) noexcept
+    {
+        this->selected_coin_price = std::move(price);
+    }
+
+    QString
+    current_coin_info::get_change24h() const noexcept
+    {
+        return this->selected_coin_change24h;
+    }
+
+    void
+    current_coin_info::set_change24h(QString change24h) noexcept
+    {
+        this->selected_coin_change24h = std::move(change24h);
+    }
 } // namespace atomic_dex

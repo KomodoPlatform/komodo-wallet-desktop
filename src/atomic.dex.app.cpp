@@ -245,13 +245,26 @@ namespace atomic_dex
                 refresh_transactions(mm2);
                 refresh_fiat_balance(mm2, paprika);
                 refresh_address(mm2);
-                const auto& info = get_mm2().get_coin_info(m_coin_info->get_ticker().toStdString());
+                const auto ticker = m_coin_info->get_ticker().toStdString();
+                const auto& info = get_mm2().get_coin_info(ticker);
                 m_coin_info->set_name(QString::fromStdString(info.name));
                 m_coin_info->set_claimable(info.is_claimable);
                 m_coin_info->set_type(QString::fromStdString(info.type));
                 m_coin_info->set_paprika_id(QString::fromStdString(info.coinpaprika_id));
                 m_coin_info->set_minimal_balance_for_asking_rewards(QString::fromStdString(info.minimal_claim_amount));
                 m_coin_info->set_explorer_url(QString::fromStdString(info.explorer_url[0]));
+                std::error_code ec;
+                m_coin_info->set_price(QString::fromStdString(paprika.get_rate_conversion(m_config.current_currency, ticker, ec, true)));
+                auto    ticker_infos = paprika.get_ticker_infos(ticker).answer;
+                QString change_24h   = "0";
+                if (not ticker_infos.empty() && ticker_infos.contains(m_config.current_currency))
+                {
+                    auto change_24h_str =
+                        std::to_string(paprika.get_ticker_infos(ticker).answer.at(m_config.current_currency).at("percent_change_24h").get<double>());
+                    std::replace(begin(change_24h_str), end(change_24h_str), ',', '.');
+                    change_24h = QString::fromStdString(change_24h_str);
+                }
+                m_coin_info->set_change24h(change_24h);
                 m_refresh_current_ticker_infos = false;
             }
 
@@ -286,6 +299,12 @@ namespace atomic_dex
             {
                 refresh_fiat_balance(mm2, paprika);
                 refresh_address(mm2);
+            }
+            if (this->m_refresh_ticker_balance)
+            {
+                std::unique_lock<std::mutex> lock(this->m_ticker_balance_to_refresh_lock);
+                this->m_portfolio->update_balance_values(this->m_ticker_balance_to_refresh);
+                this->m_ticker_balance_to_refresh.clear();
             }
         }
     }
@@ -1290,7 +1309,10 @@ namespace atomic_dex
     application::on_ticker_balance_updated_event(const ticker_balance_updated& evt) noexcept
     {
         spdlog::trace("{} l{}", __FUNCTION__, __LINE__);
-        this->m_portfolio->update_balance_values(evt.ticker);
+        this->m_refresh_ticker_balance = true;
+        std::unique_lock<std::mutex> lock(this->m_ticker_balance_to_refresh_lock);
+        this->m_ticker_balance_to_refresh = evt.ticker;
+
     }
 } // namespace atomic_dex
 
