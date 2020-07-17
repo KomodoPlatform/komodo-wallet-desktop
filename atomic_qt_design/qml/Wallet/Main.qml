@@ -221,7 +221,7 @@ Item {
 
                     DefaultText {
                         id: left_text
-                        text_value: API.get().empty_string + (qsTr("%1 Price", "TICKER").arg(API.get().current_coin_info.ticker))
+                        text_value: API.get().empty_string + (qsTr("%1 / %2 Price", "TICKER").arg(API.get().current_coin_info.ticker).arg(API.get().current_fiat))
                         font.pixelSize: Style.textSizeSmall3
                     }
                 }
