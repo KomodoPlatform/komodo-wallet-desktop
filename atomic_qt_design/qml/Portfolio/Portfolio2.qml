@@ -23,7 +23,7 @@ ColumnLayout {
     readonly property int sort_by_trend: 6
 
     property int current_sort: sort_by_value
-    property bool highest_first: true
+    property bool ascending: false
 
     function reset() {
         updatePortfolio()
@@ -258,37 +258,7 @@ ColumnLayout {
         Layout.fillWidth: true
         Layout.fillHeight: true
 
-        model: API.get().portfolio_mdl.portfolio_proxy_mdl /*General.filterCoins(portfolio_coins, input_coin_filter.text)
-                .sort((a, b) => {
-            const order = highest_first ? 1 : -1
-            let val_a
-            let val_b
-            let result
-            switch(current_sort) {
-                case sort_by_name:      return (b.name.toUpperCase() > a.name.toUpperCase() ? -1 : 1) * order
-                case sort_by_ticker:    return (b.ticker > a.ticker ? -1 : 1) * order
-                case sort_by_value:
-                    val_a = parseFloat(a.main_currency_balance)
-                    val_b = parseFloat(b.main_currency_balance)
-                    result = val_b - val_a
-
-                    if(result === 0) {
-                        let val_a = parseFloat(a.balance)
-                        let val_b = parseFloat(b.balance)
-                        result = val_b - val_a
-                    }
-
-                    return result * order
-                case sort_by_price:       return (parseFloat(b.main_currency_price_for_one_unit) - parseFloat(a.main_currency_price_for_one_unit)) * order
-                case sort_by_balance:     return (parseFloat(b.balance) - parseFloat(a.balance)) * order
-                case sort_by_trend:       return (parseFloat(b.main_currency_price_for_one_unit) - parseFloat(a.main_currency_price_for_one_unit)) * order
-                case sort_by_change:
-                    val_a = General.validFiatRates(a, API.get().current_currency) ? a.change_24h : -9999999
-                    val_b = General.validFiatRates(b, API.get().current_currency) ? b.change_24h : -9999999
-
-                    return (val_b - val_a) * order
-            }
-        })*/
+        model: API.get().portfolio_mdl.portfolio_proxy_mdl
 
         delegate: Rectangle {
             color: mouse_area.containsMouse ? Style.colorTheme5 : index % 2 == 0 ? Style.colorTheme6 : Style.colorTheme7

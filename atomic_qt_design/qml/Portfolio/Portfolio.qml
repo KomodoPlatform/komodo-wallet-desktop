@@ -23,7 +23,7 @@ ColumnLayout {
     readonly property int sort_by_trend: 6
 
     property int current_sort: sort_by_value
-    property bool highest_first: true
+    property bool ascending: false
 
     function reset() {
         updatePortfolio()
@@ -261,7 +261,7 @@ ColumnLayout {
 
         model: General.filterCoins(portfolio_coins, input_coin_filter.text)
                 .sort((a, b) => {
-            const order = highest_first ? 1 : -1
+            const order = ascending ? -1 : 1
             let val_a
             let val_b
             let result

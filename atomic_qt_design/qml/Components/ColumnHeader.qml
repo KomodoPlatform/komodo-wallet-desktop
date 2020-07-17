@@ -20,11 +20,11 @@ Item {
         hoverEnabled: true
         onClicked: {
             if(current_sort === sort_type) {
-                highest_first = !highest_first
+                ascending = !ascending
             }
             else {
                 current_sort = sort_type
-                highest_first = true
+                ascending = false
             }
         }
     }
@@ -41,7 +41,7 @@ Item {
     Image {
         id: arrow_icon
 
-        source: General.image_path + "arrow-" + (highest_first ? "down" : "up") + ".svg"
+        source: General.image_path + "arrow-" + (ascending ? "up" : "down") + ".svg"
 
         width: title.font.pixelSize * 0.5
         fillMode: Image.PreserveAspectFit
