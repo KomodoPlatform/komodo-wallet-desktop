@@ -33,12 +33,10 @@ ColumnLayout {
         updatePortfolio()
     }
 
-    function getColor(data) {
-        const fiat = API.get().current_currency
-
-        const change_24h = parseFloat(data.change_24h)
-        if(/*General.validFiatRates(data, fiat) && */change_24h !== 0)
-            return change_24h > 0 ? Style.colorGreen : Style.colorRed
+    function getColor(value) {
+        value = parseFloat(value)
+        if(value !== 0)
+            return value > 0 ? Style.colorGreen : Style.colorRed
 
         return Style.colorWhite4
     }
@@ -362,8 +360,8 @@ ColumnLayout {
                 anchors.right: parent.right
                 anchors.rightMargin: change_24h_header.anchors.rightMargin
 
-                text_value: API.get().empty_string + (/*General.validFiatRates(modelData, API.get().current_currency)*/ parseFloat(change_24h) !== 0 ? General.formatPercent(parseFloat(change_24h)) : '-')
-                color: Style.colorText//getColor(modelData)
+                text_value: API.get().empty_string + (parseFloat(change_24h) !== 0 ? General.formatPercent(parseFloat(change_24h)) : '-')
+                color: getColor(change_24h)
                 anchors.verticalCenter: parent.verticalCenter
             }
 
