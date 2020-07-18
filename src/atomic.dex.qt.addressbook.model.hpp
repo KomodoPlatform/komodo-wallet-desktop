@@ -22,6 +22,7 @@
 
 //! Project include
 #include "atomic.dex.qt.addressbook.contact.contents.hpp"
+#include "atomic.dex.qt.addressbook.proxy.filter.model.hpp"
 #include "atomic.dex.qt.contact.model.hpp"
 #include "atomic.dex.qt.wallet.manager.hpp"
 
@@ -30,6 +31,7 @@ namespace atomic_dex
     class addressbook_model final : public QAbstractListModel
     {
         Q_OBJECT
+        Q_PROPERTY(addressbook_proxy_model* addressbook_proxy_mdl READ get_addressbook_proxy_mdl NOTIFY addressbookProxyChanged);
         Q_ENUMS(AddressBookRoles)
 
       public:
@@ -48,12 +50,17 @@ namespace atomic_dex
         void                   initializeFromCfg();
         Q_INVOKABLE void       add_contact_entry();
         Q_INVOKABLE void       remove_at(int position);
-
         [[nodiscard]] QHash<int, QByteArray> roleNames() const final;
 
+        //! Properties
+        [[nodiscard]] addressbook_proxy_model* get_addressbook_proxy_mdl() const noexcept;
+      signals:
+        void addressbookProxyChanged();
+
       private:
-        atomic_dex::qt_wallet_manager& m_wallet_manager;
-        QVector<contact_model*>        m_addressbook;
-        bool                           m_should_delete_contacts{false};
+        atomic_dex::qt_wallet_manager&       m_wallet_manager;
+        atomic_dex::addressbook_proxy_model* m_addressbook_proxy;
+        QVector<contact_model*>              m_addressbook;
+        bool                                 m_should_delete_contacts{false};
     };
 } // namespace atomic_dex

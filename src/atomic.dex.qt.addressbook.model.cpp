@@ -22,19 +22,18 @@
 //! Project headers
 #include "atomic.dex.qt.addressbook.model.hpp"
 
-//! Contact model
-namespace atomic_dex
-{
-} // namespace atomic_dex
-
 //! Addressbook model
 namespace atomic_dex
 {
     addressbook_model::addressbook_model(atomic_dex::qt_wallet_manager& wallet_manager_, QObject* parent) noexcept :
-        QAbstractListModel(parent), m_wallet_manager(wallet_manager_)
+        QAbstractListModel(parent), m_wallet_manager(wallet_manager_), m_addressbook_proxy(new addressbook_proxy_model(this))
     {
         spdlog::trace("{} l{} f[{}]", __FUNCTION__, __LINE__, fs::path(__FILE__).filename().string());
         spdlog::trace("addressbook model created");
+        this->m_addressbook_proxy->setSourceModel(this);
+        this->m_addressbook_proxy->setSortRole(SubModelRole);
+        this->m_addressbook_proxy->setDynamicSortFilter(true);
+        this->m_addressbook_proxy->sort(0);
     }
 
     addressbook_model::~addressbook_model() noexcept
@@ -116,7 +115,7 @@ namespace atomic_dex
                 contact_ptr->m_addresses.push_back(qt_contact_address_contents{
                     .type = QString::fromStdString(contact_contents.type), .address = QString::fromStdString(contact_contents.address)});
             }
-            beginInsertRows(QModelIndex(), position, position + rows - 1);
+            beginInsertRows(QModelIndex(), this->m_addressbook.count(), this->m_addressbook.count());
 
             for (int row = 0; row < rows; ++row)
             {
@@ -150,5 +149,11 @@ namespace atomic_dex
         return {
             {SubModelRole, "contacts"},
         };
+    }
+
+    addressbook_proxy_model*
+    addressbook_model::get_addressbook_proxy_mdl() const noexcept
+    {
+        return m_addressbook_proxy;
     }
 } // namespace atomic_dex

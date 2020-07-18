@@ -49,6 +49,7 @@ namespace atomic_dex
         }
 
         dispatcher_.sink<mm2_started>().disconnect<&cex_prices_provider::on_mm2_started>(*this);
+        dispatcher_.sink<orderbook_refresh>().disconnect<&cex_prices_provider::on_current_orderbook_ticker_pair_changed>(*this);
     }
 
     void
@@ -58,7 +59,7 @@ namespace atomic_dex
 
         {
             {
-                std::unique_lock<std::mutex> locker(m_ohlc_data_mutex);
+                std::unique_lock<std::mutex> locker(m_ohlc_data_mutex, std::try_to_lock);
                 m_current_ohlc_data = nlohmann::json::array();
             }
             this->dispatcher_.trigger<refresh_ohlc_needed>();

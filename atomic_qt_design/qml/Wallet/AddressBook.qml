@@ -60,7 +60,7 @@ ColumnLayout {
         id: list
         Layout.fillWidth: true
         Layout.fillHeight: true
-        model: API.get().addressbook_mdl
+        model: API.get().addressbook_mdl.addressbook_proxy_mdl
 
         delegate: Item {
             id: contact
