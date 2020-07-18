@@ -921,31 +921,6 @@ namespace atomic_dex
         return out;
     }
 
-    QVariantList
-    application::get_portfolio_informations()
-    {
-        QVariantList   out;
-        nlohmann::json j = nlohmann::json::array();
-
-        auto coins = get_mm2().get_enabled_coins();
-        for (auto&& coin: coins)
-        {
-            std::error_code ec;
-            nlohmann::json  cur_obj{
-                {"ticker", coin.ticker},
-                {"name", coin.name},
-                {"price", get_paprika().get_rate_conversion(m_config.current_currency, coin.ticker, ec, true)},
-                {"balance", get_mm2().my_balance(coin.ticker, ec)},
-                {"balance_fiat", get_paprika().get_price_in_fiat(m_config.current_currency, coin.ticker, ec)},
-                {"rates", get_paprika().get_ticker_infos(coin.ticker).answer},
-                {"historical", get_paprika().get_ticker_historical(coin.ticker).answer}};
-            j.push_back(cur_obj);
-        }
-        QJsonDocument q_json = QJsonDocument::fromJson(QString::fromStdString(j.dump()).toUtf8());
-        out                  = q_json.array().toVariantList();
-        return out;
-    }
-
     QString
     application::get_current_lang() const noexcept
     {
