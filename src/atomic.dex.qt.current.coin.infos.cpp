@@ -114,14 +114,18 @@ namespace atomic_dex
     QString
     current_coin_info::get_address() const noexcept
     {
+        spdlog::trace("[{}]", selected_coin_address.toStdString());
         return selected_coin_address;
     }
 
     void
     current_coin_info::set_address(QString address) noexcept
     {
-        this->selected_coin_address = std::move(address);
-        emit address_changed();
+        if (address != this->selected_coin_address)
+        {
+            this->selected_coin_address = std::move(address);
+            emit address_changed();
+        }
     }
 
     void

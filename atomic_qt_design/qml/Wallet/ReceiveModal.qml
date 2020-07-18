@@ -35,10 +35,10 @@ DefaultModal {
             Layout.alignment: Qt.AlignHCenter
 
             source: "image://QZXing/encode/" + API.get().current_coin_info.address +
-                            "?correctionLevel=M" +
-                            "&format=qrcode"
-            sourceSize.width: 180
-            sourceSize.height: 180
+                            "?correctionLevel=H" +
+                            "&format=qrcode&border=true"
+            sourceSize.width: 240
+            sourceSize.height: 240
         }
 
         // Buttons
