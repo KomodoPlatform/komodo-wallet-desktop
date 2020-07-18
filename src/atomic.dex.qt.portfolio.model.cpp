@@ -42,6 +42,8 @@ namespace atomic_dex
         this->m_model_proxy->setSourceModel(this);
         this->m_model_proxy->setDynamicSortFilter(true);
         this->m_model_proxy->sort_by_currency_balance(false);
+        this->m_model_proxy->setFilterRole(NameRole);
+        this->m_model_proxy->setFilterCaseSensitivity(Qt::CaseInsensitive);
     }
 
     portfolio_model::~portfolio_model() noexcept
