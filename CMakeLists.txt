@@ -154,6 +154,7 @@ target_sources(atomic_qt_shared_deps INTERFACE
         ${CMAKE_SOURCE_DIR}/src/atomic.dex.wallet.config.cpp
         ${CMAKE_SOURCE_DIR}/src/atomic.dex.security.cpp
         ${CMAKE_SOURCE_DIR}/src/atomic.dex.qt.addressbook.model.cpp
+        ${CMAKE_SOURCE_DIR}/src/atomic.dex.qt.contact.model.cpp
         ${CMAKE_SOURCE_DIR}/src/atomic.dex.qt.portfolio.model.cpp
         ${CMAKE_SOURCE_DIR}/src/atomic.dex.qt.portfolio.proxy.filter.model.cpp
         $<$<PLATFORM_ID:Darwin>:${CMAKE_SOURCE_DIR}/src/osx/atomic.dex.osx.manager.mm>

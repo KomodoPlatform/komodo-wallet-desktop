@@ -16,44 +16,56 @@
 
 #pragma once
 
+//! QT
 #include <QAbstractListModel>
-#include <QObject> //! QObject
+#include <QString>
 #include <QVariantList>
 
-//! Project include
-#include "atomic.dex.qt.addressbook.contact.contents.hpp"
-#include "atomic.dex.qt.contact.model.hpp"
+//! Project
 #include "atomic.dex.qt.wallet.manager.hpp"
 
 namespace atomic_dex
 {
-    class addressbook_model final : public QAbstractListModel
+    class contact_model final : public QAbstractListModel
     {
         Q_OBJECT
-        Q_ENUMS(AddressBookRoles)
-
+        Q_PROPERTY(QString name READ get_name WRITE set_name NOTIFY nameChanged)
+        Q_PROPERTY(QList<QVariant> readonly_addresses READ get_addresses NOTIFY addressesChanged)
+        Q_ENUMS(ContactRoles)
       public:
-        enum AddressBookRoles
+        enum ContactRoles
         {
-            SubModelRole = Qt::UserRole + 1,
+            TypeRole = Qt::UserRole + 1,
+            AddressRole
         };
 
+        QString get_name() const noexcept;
+
+        void set_name(const QString& name) noexcept;
+
       public:
-        explicit addressbook_model(atomic_dex::qt_wallet_manager& wallet_manager_, QObject* parent = nullptr) noexcept;
-        ~addressbook_model() noexcept final;
-        [[nodiscard]] QVariant data(const QModelIndex& index, int role) const final;
-        [[nodiscard]] int      rowCount(const QModelIndex& parent = QModelIndex()) const final;
+        explicit contact_model(atomic_dex::qt_wallet_manager& wallet_manager_, QObject* parent = nullptr) noexcept;
+        ~contact_model() noexcept final;
+        QVariant               data(const QModelIndex& index, int role) const final;
+        int                    rowCount(const QModelIndex& parent) const final;
+        QHash<int, QByteArray> roleNames() const final;
+        bool                   setData(const QModelIndex& index, const QVariant& value, int role) final;
         bool                   insertRows(int position, int rows, const QModelIndex& parent) final;
-        bool                   removeRows(int position, int rows, const QModelIndex& parent = QModelIndex()) final;
-        void                   initializeFromCfg();
-        Q_INVOKABLE void       add_contact_entry();
+        bool                   removeRows(int position, int rows, const QModelIndex& parent) final;
+        QVariantList           get_addresses() const noexcept;
+        Q_INVOKABLE void       add_address_content();
         Q_INVOKABLE void       remove_at(int position);
 
-        [[nodiscard]] QHash<int, QByteArray> roleNames() const final;
+      signals:
+        void nameChanged();
+        void addressesChanged();
+
+      public:
+        //! Contact stuff
+        QString                                          m_name;
+        QVector<atomic_dex::qt_contact_address_contents> m_addresses;
 
       private:
         atomic_dex::qt_wallet_manager& m_wallet_manager;
-        QVector<contact_model*>        m_addressbook;
-        bool                           m_should_delete_contacts{false};
     };
 } // namespace atomic_dex
