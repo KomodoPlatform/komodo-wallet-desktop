@@ -156,4 +156,27 @@ namespace atomic_dex
     {
         return m_addressbook_proxy;
     }
+
+    void
+    addressbook_model::cleanup()
+    {
+        auto list = this->persistentIndexList();
+        for (auto&& cur_index: list)
+        {
+            QVariant       value       = this->data(cur_index, SubModelRole);
+            QObject*       obj         = qvariant_cast<QObject*>(value);
+            contact_model* cur_contact = qobject_cast<contact_model*>(obj);
+            for (int cur_idx = 0; cur_idx < cur_contact->rowCount(QModelIndex()); ++cur_idx)
+            {
+                if (cur_contact->data(index(cur_idx), contact_model::ContactRoles::AddressRole).toString().isEmpty())
+                {
+                    cur_contact->remove_at(cur_idx);
+                }
+            }
+            if (cur_contact->get_addresses().isEmpty())
+            {
+                this->remove_at(cur_index.row());
+            }
+        }
+    }
 } // namespace atomic_dex

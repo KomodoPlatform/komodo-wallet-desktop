@@ -50,6 +50,7 @@ namespace atomic_dex
         void                   initializeFromCfg();
         Q_INVOKABLE void       add_contact_entry();
         Q_INVOKABLE void       remove_at(int position);
+        Q_INVOKABLE void       cleanup();
         [[nodiscard]] QHash<int, QByteArray> roleNames() const final;
 
         //! Properties
