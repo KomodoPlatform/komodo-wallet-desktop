@@ -245,6 +245,8 @@ ColumnLayout {
                             delegate: Rectangle {
                                 id: address_line
 
+                                property bool initialized: false
+
                                 function kill() {
                                     if(address_book.initialized) modelData.remove_at(index)
                                 }
@@ -253,6 +255,11 @@ ColumnLayout {
                                     target: address_book
 
                                     function onInCurrentPageChanged() {
+                                        if(address_book.inCurrentPage && !address_line.initialized) {
+                                            address_line.updateSelectableCoins()
+                                            address_line.initialized = true
+                                        }
+
                                         if(!address_book.inCurrentPage) {
                                             if(address === "") address_line.kill()
                                             else if(address_line.editing_address) {
