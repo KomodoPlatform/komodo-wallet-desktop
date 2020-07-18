@@ -258,6 +258,7 @@ ColumnLayout {
                                         if(address_book.inCurrentPage && !address_line.initialized) {
                                             address_line.updateSelectableCoins()
                                             address_line.initialized = true
+                                            combo_base.type_index = combo_base.currentIndex
                                         }
 
                                         if(!address_book.inCurrentPage) {
