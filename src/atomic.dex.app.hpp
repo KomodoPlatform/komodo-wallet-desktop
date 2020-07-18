@@ -71,6 +71,17 @@ namespace atomic_dex
         void tick();
 
       public:
+        enum class action
+        {
+            refresh_enabled_coin = 0,
+            refresh_current_ticker,
+            refresh_order,
+            refresh_ohlc,
+            refresh_transactions,
+            refresh_portfolio_ticker_balance
+        };
+
+      public:
         //! Constructor
         explicit application(QObject* pParent = nullptr) noexcept;
         ~application() noexcept;
@@ -215,6 +226,9 @@ namespace atomic_dex
         void portfolioChanged();
 
       private:
+        void process_refresh_enabled_coin_action();
+        void process_refresh_current_ticker_infos();
+      private:
         //! CFG
         atomic_dex::cfg m_config{load_cfg()};
 
@@ -225,14 +239,9 @@ namespace atomic_dex
         atomic_dex::qt_wallet_manager m_wallet_manager;
 
         //! Private members
-        std::atomic_bool   m_refresh_enabled_coin_event{false};
-        std::atomic_bool   m_refresh_current_ticker_infos{false};
-        std::atomic_bool   m_refresh_orders_needed{false};
-        std::atomic_bool   m_refresh_ohlc_needed{false};
-        std::atomic_bool   m_refresh_transaction_only{false};
-        std::atomic_bool   m_refresh_ticker_balance{false};
-        std::mutex         m_ticker_balance_to_refresh_lock;
-        std::string        m_ticker_balance_to_refresh;
+        boost::lockfree::queue<action>         m_actions_queue{128};
+        boost::synchronized_value<std::string> m_ticker_balance_to_refresh;
+
         bool               m_need_a_full_refresh_of_mm2{false};
         QVariantList       m_enabled_coins;
         QVariantList       m_enableable_coins;
