@@ -13,14 +13,19 @@ ColumnLayout {
     property bool global_edit_in_progress: false
     Layout.fillWidth: true
 
+    property bool initialized: false
     property bool inCurrentPage: wallet.inCurrentPage() && main_layout.currentIndex === 1
 
     onInCurrentPageChanged: {
-        // Remove empty addresses and contacts
-        if(!inCurrentPage) {
-            console.log("Cleaning up the empty items at address book...")
-            API.get().addressbook_mdl.cleanup()
-            global_edit_in_progress = false
+        if(inCurrentPage) {
+            initialized = true
+        }
+        // Clean-up if user leaves this page
+        else {
+            if(initialized) {
+                console.log("Cleaning up the empty items at address book...")
+                global_edit_in_progress = false
+            }
         }
     }
 
@@ -210,6 +215,24 @@ ColumnLayout {
                             model: modelData
                             delegate: Rectangle {
                                 id: address_line
+
+                                function kill() {
+                                    if(address_book.initialized) modelData.remove_at(index)
+                                }
+
+                                Connections {
+                                    target: address_book
+
+                                    function onInCurrentPageChanged() {
+                                        if(!address_book.inCurrentPage) {
+                                            if(address === "") address_line.kill()
+                                            else if(address_line.editing_address) {
+                                                address_line.editing_address = false
+                                            }
+                                        }
+                                    }
+                                }
+
                                 property bool editing_address: false
 
 
@@ -400,7 +423,7 @@ ColumnLayout {
                                         minWidth: height
                                         onClicked: {
                                             global_edit_in_progress = false
-                                            modelData.remove_at(index)
+                                            kill()
                                         }
                                     }
                                 }
