@@ -100,7 +100,7 @@ namespace atomic_dex
         void on_refresh_ohlc_event(const refresh_ohlc_needed&) noexcept;
 
         //! Properties Getter
-        const QString&        get_empty_string() const;
+        static const QString&        get_empty_string() ;
         mm2&                  get_mm2() noexcept;
         const mm2&            get_mm2() const noexcept;
         coinpaprika_provider& get_paprika() noexcept;
@@ -117,11 +117,11 @@ namespace atomic_dex
         QString               get_second_balance_fiat_all() const noexcept;
         QString               get_wallet_default_name() const noexcept;
         QString               get_status() const noexcept;
-        Q_INVOKABLE QString   get_version() const noexcept;
+        Q_INVOKABLE static QString   get_version() noexcept;
 
         //! Properties Setter
-        void set_current_currency(QString current_currency) noexcept;
-        void set_current_fiat(QString current_fiat) noexcept;
+        void set_current_currency(const QString& current_currency) noexcept;
+        void set_current_fiat(const QString& current_fiat) noexcept;
         void set_current_lang(const QString& current_lang) noexcept;
         void set_wallet_default_name(QString wallet_default_name) noexcept;
         void set_current_balance_fiat_all(QString current_fiat_all_balance) noexcept;
@@ -144,18 +144,18 @@ namespace atomic_dex
         Q_INVOKABLE static bool        confirm_password(const QString& wallet_name, const QString& password);
 
         //! Miscs
-        Q_INVOKABLE QString     get_paprika_id_from_ticker(QString ticker) const;
-        Q_INVOKABLE QString     to_eth_checksum_qt(QString eth_lowercase_address) const;
-        Q_INVOKABLE QString     get_mm2_version() const;
-        Q_INVOKABLE QString     get_log_folder() const;
-        Q_INVOKABLE QString     get_export_folder() const;
+        Q_INVOKABLE QString     get_paprika_id_from_ticker(const QString& ticker) const;
+        Q_INVOKABLE static QString     to_eth_checksum_qt(const QString& eth_lowercase_address) ;
+        Q_INVOKABLE static QString     get_mm2_version() ;
+        Q_INVOKABLE static QString     get_log_folder() ;
+        Q_INVOKABLE static QString     get_export_folder() ;
         Q_INVOKABLE QStringList get_available_langs() const;
         Q_INVOKABLE QStringList get_available_fiats() const;
         Q_INVOKABLE QStringList get_available_currencies() const;
         Q_INVOKABLE static void change_state(int visibility);
 
         //! Portfolio QML API Bindings
-        Q_INVOKABLE QString recover_fund(QString uuid) const;
+        Q_INVOKABLE static QString recover_fund(const QString& uuid) ;
         Q_INVOKABLE QObject* prepare_send(const QString& address, const QString& amount, bool max = false);
         Q_INVOKABLE QObject* prepare_send_fees(
             const QString& address, const QString& amount, bool is_erc_20, const QString& fees_amount, const QString& gas_price, const QString& gas,
@@ -171,16 +171,16 @@ namespace atomic_dex
         Q_INVOKABLE void cancel_all_orders_by_ticker(const QString& ticker);
 
         //! Others
-        Q_INVOKABLE bool    mnemonic_validate(QString entropy);
-        Q_INVOKABLE QString retrieve_seed(const QString& wallet_name, const QString& password);
+        Q_INVOKABLE static bool    mnemonic_validate(const QString& entropy);
+        Q_INVOKABLE static QString retrieve_seed(const QString& wallet_name, const QString& password);
         Q_INVOKABLE void    refresh_infos();
         Q_INVOKABLE void    refresh_orders_and_swaps();
-        Q_INVOKABLE QString get_mnemonic();
-        Q_INVOKABLE bool    first_run();
+        Q_INVOKABLE static QString get_mnemonic();
+        Q_INVOKABLE static bool    first_run();
         Q_INVOKABLE bool    disconnect();
         Q_INVOKABLE bool    enable_coins(const QStringList& coins);
         Q_INVOKABLE QString get_balance(const QString& coin);
-        Q_INVOKABLE QString get_price_amount(const QString& base_amount, const QString& rel_amount);
+        Q_INVOKABLE static QString get_price_amount(const QString& base_amount, const QString& rel_amount);
         Q_INVOKABLE bool    place_buy_order(const QString& base, const QString& rel, const QString& price, const QString& volume);
         Q_INVOKABLE QString place_sell_order(
             const QString& base, const QString& rel, const QString& price, const QString& volume, bool is_created_order, const QString& price_denom,
@@ -202,7 +202,7 @@ namespace atomic_dex
         Q_INVOKABLE QVariantMap  get_recent_swaps();
         Q_INVOKABLE bool         export_swaps(const QString& csv_filename) noexcept;
         Q_INVOKABLE bool         export_swaps_json() noexcept;
-        Q_INVOKABLE QString      get_regex_password_policy() const noexcept;
+        Q_INVOKABLE static QString      get_regex_password_policy() noexcept;
         Q_INVOKABLE QVariantMap  get_trade_infos(const QString& ticker, const QString& receive_ticker, const QString& amount);
         Q_INVOKABLE QVariantList get_all_coins() const noexcept;
 

@@ -69,7 +69,6 @@ namespace atomic_dex
             m_current_orderbook_ticker_pair = {boost::algorithm::to_lower_copy(evt.base), boost::algorithm::to_lower_copy(evt.rel)};
             auto [base, rel]                = m_current_orderbook_ticker_pair;
             spdlog::debug("new orderbook pair for cex provider [{} / {}]", base, rel);
-            //this->process_ohlc(base, rel);
             m_pending_tasks.push(spawn([base = base, rel = rel, this]() { process_ohlc(base, rel); }));
         }
     }
@@ -84,8 +83,7 @@ namespace atomic_dex
             spdlog::info("cex prices provider thread started");
 
             using namespace std::chrono_literals;
-            do
-            {
+            do {
                 spdlog::info("fetching ohlc value");
                 auto [base, rel] = m_current_orderbook_ticker_pair;
                 if (not base.empty() && not rel.empty())
@@ -163,9 +161,11 @@ namespace atomic_dex
     void
     cex_prices_provider::consume_pending_tasks()
     {
-        while (not m_pending_tasks.empty()) {
+        while (not m_pending_tasks.empty())
+        {
             auto& fut_tasks = m_pending_tasks.front();
-            if (fut_tasks.valid()) {
+            if (fut_tasks.valid())
+            {
                 fut_tasks.wait();
             }
             m_pending_tasks.pop();
