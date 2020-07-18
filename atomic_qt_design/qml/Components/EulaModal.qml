@@ -53,13 +53,13 @@ DefaultModal {
         }
 
         // Checkboxes
-        CheckBox {
+        DefaultCheckBox {
             id: accept_eula
             visible: !close_only
             text: API.get().empty_string + (qsTr("Accept EULA"))
         }
 
-        CheckBox {
+        DefaultCheckBox {
             id: accept_tac
             visible: !close_only
             text: API.get().empty_string + (qsTr("Accept Terms and Conditions"))

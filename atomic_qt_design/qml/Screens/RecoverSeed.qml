@@ -114,7 +114,7 @@ SetupPage {
             onReturn: trySubmit
         }
 
-        CheckBox {
+        DefaultCheckBox {
             id: allow_custom_seed
             text: API.get().empty_string + (qsTr("Allow custom seed"))
         }
