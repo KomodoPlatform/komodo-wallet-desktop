@@ -13,6 +13,17 @@ ColumnLayout {
     property bool global_edit_in_progress: false
     Layout.fillWidth: true
 
+    property bool inCurrentPage: wallet.inCurrentPage() && main_layout.currentIndex === 1
+
+    onInCurrentPageChanged: {
+        // Remove empty addresses and contacts
+        if(!inCurrentPage) {
+            console.log("Cleaning up the empty items at address book...")
+            API.get().addressbook_mdl.cleanup()
+            global_edit_in_progress = false
+        }
+    }
+
     readonly property var essential_coins: General.all_coins.filter(c => {
                     if(c.type === "ERC-20" && c.ticker !== "ETH") return false
                     if(c.type === "Smart Chain" && c.ticker !== "KMD") return false
