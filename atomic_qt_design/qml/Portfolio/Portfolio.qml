@@ -124,6 +124,10 @@ ColumnLayout {
             placeholderText: API.get().empty_string + (qsTr("Search"))
             selectByMouse: true
 
+            onTextChanged: {
+                API.get().portfolio_mdl.portfolio_proxy_mdl.text_filter(text)
+            }
+
             width: 120
         }
     }
