@@ -13,6 +13,13 @@ ColumnLayout {
     property bool global_edit_in_progress: false
     Layout.fillWidth: true
 
+    readonly property var essential_coins: General.all_coins.filter(c => {
+                    if(c.type === "ERC-20" && c.ticker !== "ETH") return false
+                    if(c.type === "Smart Chain" && c.ticker !== "KMD") return false
+
+                    return true
+                })
+
     spacing: 20
 
     DefaultText {
@@ -154,7 +161,7 @@ ColumnLayout {
                                 Layout.leftMargin: layout_margin
 
                                 visible: !editing
-                                enabled: !global_edit_in_progress
+                                enabled: !global_edit_in_progress && essential_coins.length > contact.selected_coins.length
                                 font.pixelSize: Style.textSizeSmall3
                                 text: "New Address"
                                 onClicked: {
@@ -191,7 +198,26 @@ ColumnLayout {
 
                             model: modelData
                             delegate: Rectangle {
+                                id: address_line
                                 property bool editing_address: false
+
+
+                                property var selectable_coins: ([])
+
+                                Connections {
+                                    target: contact
+
+                                    function onSelected_coinsChanged() {
+                                        address_line.updateSelectableCoins()
+                                    }
+                                }
+
+                                function updateSelectableCoins() {
+                                    selectable_coins = essential_coins.filter(c => {
+                                                            return c.ticker === type || contact.selected_coins.indexOf(c.ticker) === -1
+                                                        }).map(c => c.ticker)
+                                }
+
 
                                 width: contact_bg.width
                                 height: 50
@@ -234,24 +260,6 @@ ColumnLayout {
                                     anchors.verticalCenter: parent.verticalCenter
                                     visible: editing_address
 
-                                    Connections {
-                                        target: contact
-
-                                        function onSelected_coinsChanged() {
-                                            combo_base.updateSelectableCoins()
-                                        }
-                                    }
-
-                                    function updateSelectableCoins() {
-                                        selectable_coins = General.all_coins.filter(c => {
-                                                                if(c.type === "ERC-20" && c.ticker !== "ETH") return false
-                                                                if(c.type === "Smart Chain" && c.ticker !== "KMD") return false
-
-                                                                return c.ticker === type || contact.selected_coins.indexOf(c.ticker) === -1
-                                                            }).map(c => c.ticker)
-                                    }
-
-                                    property var selectable_coins: ([])
                                     model: selectable_coins
 
                                     property int previous_type_index: -1
