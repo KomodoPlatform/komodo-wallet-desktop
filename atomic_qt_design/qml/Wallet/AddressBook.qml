@@ -16,6 +16,7 @@ ColumnLayout {
     spacing: 20
 
     DefaultText {
+        id: back_button
         property bool disabled: global_edit_in_progress
         Layout.leftMargin: layout_margin
         text_value: API.get().empty_string + ("< " + qsTr("Back"))
@@ -24,7 +25,7 @@ ColumnLayout {
 
         MouseArea {
             anchors.fill: parent
-            onClicked: { if(!disabled) main_layout.currentIndex = 0 }
+            onClicked: { if(!back_button.disabled) main_layout.currentIndex = 0 }
         }
     }
 
