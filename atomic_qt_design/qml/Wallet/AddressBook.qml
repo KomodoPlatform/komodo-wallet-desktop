@@ -96,6 +96,35 @@ ColumnLayout {
             width: list.width
             height: contact_bg.height + layout_margin
 
+
+            function kill() {
+                if(address_book.initialized)
+                    API.get().addressbook_mdl.remove_at(index)
+            }
+
+            Connections {
+                target: address_book
+
+                function onInCurrentPageChanged() {
+                    if(!address_book.inCurrentPage) {
+                        const addresses_list = modelData.readonly_addresses
+
+                        // No killing if any of the addresses is filled
+                        for(const a of addresses_list)
+                            if(a.address !== "") {
+                                if(contact.editing)
+                                    contact.editing = false
+
+                                return
+                            }
+
+                        // Kill if all addresses are empty
+                        contact.kill()
+                    }
+                }
+            }
+
+
             // Contact card
             FloatingBackground {
                 id: contact_bg
@@ -195,7 +224,7 @@ ColumnLayout {
                                 minWidth: height
                                 onClicked: {
                                     global_edit_in_progress = false
-                                    API.get().addressbook_mdl.remove_at(index)
+                                    kill()
                                 }
                             }
                         }
@@ -423,7 +452,7 @@ ColumnLayout {
                                         minWidth: height
                                         onClicked: {
                                             global_edit_in_progress = false
-                                            kill()
+                                            address_line.kill()
                                         }
                                     }
                                 }
