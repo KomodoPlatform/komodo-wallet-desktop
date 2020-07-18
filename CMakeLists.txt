@@ -5,9 +5,6 @@ project(atomic_qt LANGUAGES CXX VERSION 0.2.0)
 
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
-set(CMAKE_AUTOUIC ON)
-set(CMAKE_AUTOMOC ON)
-set(CMAKE_AUTORCC ON)
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
@@ -123,6 +120,9 @@ else ()
 endif ()
 add_library(unofficial-btc::bitcoin ALIAS unofficial-bitcoin)
 
+set(CMAKE_AUTOUIC ON)
+set(CMAKE_AUTOMOC ON)
+set(CMAKE_AUTORCC ON)
 set(TS_FILES
         ${CMAKE_SOURCE_DIR}/atomic_qt_design/assets/languages/atomic_qt_en.ts
         ${CMAKE_SOURCE_DIR}/atomic_qt_design/assets/languages/atomic_qt_fr.ts

@@ -160,10 +160,10 @@ namespace atomic_dex
     void
     addressbook_model::cleanup()
     {
-        auto list = this->persistentIndexList();
-        for (auto&& cur_index: list)
+        int nb_rows = this->rowCount(QModelIndex()) - 1;
+        for (int cur_contact_idx = 0; cur_contact_idx < nb_rows; ++cur_contact_idx)
         {
-            QVariant       value       = this->data(cur_index, SubModelRole);
+            QVariant       value       = this->data(index(cur_contact_idx, 0), SubModelRole);
             QObject*       obj         = qvariant_cast<QObject*>(value);
             contact_model* cur_contact = qobject_cast<contact_model*>(obj);
             for (int cur_idx = 0; cur_idx < cur_contact->rowCount(QModelIndex()); ++cur_idx)
@@ -175,7 +175,7 @@ namespace atomic_dex
             }
             if (cur_contact->get_addresses().isEmpty())
             {
-                this->remove_at(cur_index.row());
+                this->remove_at(cur_contact_idx);
             }
         }
     }
