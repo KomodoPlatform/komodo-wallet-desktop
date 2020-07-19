@@ -255,10 +255,12 @@ ColumnLayout {
                                     target: address_book
 
                                     function onInCurrentPageChanged() {
-                                        if(address_book.inCurrentPage && !address_line.initialized) {
+                                        if(address_book.inCurrentPage && !address_line.initialized && address_line.selectable_coins.length === 0) {
                                             address_line.updateSelectableCoins()
                                             address_line.initialized = true
-                                            combo_base.type_index = combo_base.currentIndex
+                                            if(type !== "") {
+                                                combo_base.type_index = combo_base.currentIndex = address_line.selectable_coins.indexOf(original_text)
+                                            }
                                         }
 
                                         if(!address_book.inCurrentPage) {
@@ -339,7 +341,7 @@ ColumnLayout {
                                         // If index is same but the text changed, that means the list changed,
                                         // We'll change the index instead
                                         // We also always save the previous index, to recover from double reset later
-                                        if(currentIndex === type_index) {
+                                        if(currentIndex === type_index || (type !== "" && previous_type_index === -2)) {
                                             // This part fixes the index shift when one element disappears
                                             previous_type_index = type_index
                                             currentIndex = type_index = selectable_coins.indexOf(type)
@@ -355,7 +357,7 @@ ColumnLayout {
                                     onModelChanged: {
                                         // When list resets, we already correct the index, but somehow it double resets
                                         // That's why we save the previous one before the second reset and recover to that here
-                                        if(previous_type_index !== -1)
+                                        if(previous_type_index >= 0)
                                             currentIndex = previous_type_index
                                     }
                                 }
