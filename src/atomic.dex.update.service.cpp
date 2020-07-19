@@ -42,6 +42,12 @@ namespace
         }
         resp["rpc_code"]        = answer.code;
         resp["current_version"] = version;
+        if (answer.code == 200) {
+            bool update_needed = false;
+            std::string current_version_str = version;
+            std::string endpoint_version = resp.at("new_version").get<std::string>();
+            resp["update_needed"] = update_needed;
+        }
         return resp;
     }
 } // namespace
