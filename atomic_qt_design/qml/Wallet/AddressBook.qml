@@ -168,6 +168,12 @@ ColumnLayout {
                             color: Style.colorText
                             placeholderText: API.get().empty_string + (qsTr("Enter the contact name"))
                             width: 150
+                            onTextChanged: {
+                                const max_length = 50
+                                if(text.length > max_length)
+                                    text = text.substring(0, max_length)
+                            }
+
                             visible: editing
                         }
 
