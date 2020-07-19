@@ -26,6 +26,9 @@ ColumnLayout {
                 console.log("Cleaning up the empty items at address book...")
                 global_edit_in_progress = false
             }
+            // Open main wallet page
+            if(main_layout.currentIndex === 1)
+                main_layout.currentIndex = 0
         }
     }
 
