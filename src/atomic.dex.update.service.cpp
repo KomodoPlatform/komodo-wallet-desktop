@@ -17,7 +17,34 @@
 //! Project headers
 #include "atomic.dex.update.service.hpp"
 #include "atomic.dex.events.hpp"
+#include "atomic.dex.version.hpp"
+#include "atomic.threadpool.hpp"
 
+namespace
+{
+    constexpr const char* g_komodolive_endpoint = "http://komodo.live/adexproversion";
+
+    nlohmann::json
+    get_update_status_rpc(const char* version)
+    {
+        using namespace std::string_literals;
+        nlohmann::json resp;
+
+        nlohmann::json req{{"currentVersion", version}};
+        auto           answer = RestClient::post(g_komodolive_endpoint, "application/json", req.dump());
+        if (answer.code != 200)
+        {
+            resp["status"] = "cannot reach the endpoint: "s + g_komodolive_endpoint;
+        }
+        else
+        {
+            resp = nlohmann::json::parse(answer.body);
+        }
+        resp["rpc_code"]        = answer.code;
+        resp["current_version"] = version;
+        return resp;
+    }
+} // namespace
 namespace atomic_dex
 {
     //! Constructor
@@ -49,7 +76,10 @@ namespace atomic_dex
     {
         spdlog::debug("{} l{} f[{}]", __FUNCTION__, __LINE__, fs::path(__FILE__).filename().string());
         spdlog::info("fetching update status");
-        this->dispatcher_.trigger<refresh_update_status>();
+        spawn([this]() {
+            this->m_update_status = get_update_status_rpc(atomic_dex::get_raw_version());
+            this->dispatcher_.trigger<refresh_update_status>();
+        });
     }
 
     const nlohmann::json
