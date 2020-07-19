@@ -54,6 +54,7 @@ namespace atomic_dex
         Q_PROPERTY(QList<QVariant> enableable_coins READ get_enableable_coins NOTIFY enableableCoinsChanged)
         Q_PROPERTY(QObject* current_coin_info READ get_current_coin_info NOTIFY coinInfoChanged)
         Q_PROPERTY(addressbook_model* addressbook_mdl READ get_addressbook NOTIFY addressbookChanged)
+        Q_PROPERTY(QVariant update_status READ get_update_status NOTIFY updateStatusChanged)
         Q_PROPERTY(portfolio_model* portfolio_mdl READ get_portfolio NOTIFY portfolioChanged)
         Q_PROPERTY(QString current_currency READ get_current_currency WRITE set_current_currency NOTIFY on_currency_changed)
         Q_PROPERTY(QString current_fiat READ get_current_fiat WRITE set_current_fiat NOTIFY on_fiat_changed)
@@ -75,12 +76,13 @@ namespace atomic_dex
       public:
         enum class action
         {
-            refresh_enabled_coin = 0,
-            refresh_current_ticker,
-            refresh_order,
-            refresh_ohlc,
-            refresh_transactions,
-            refresh_portfolio_ticker_balance
+            refresh_enabled_coin             = 0,
+            refresh_current_ticker           = 1,
+            refresh_order                    = 2,
+            refresh_ohlc                     = 3,
+            refresh_transactions             = 4,
+            refresh_portfolio_ticker_balance = 5,
+            refresh_update_status            = 6
         };
 
       public:
@@ -100,6 +102,7 @@ namespace atomic_dex
         void on_mm2_started_event(const mm2_started&) noexcept;
         void on_refresh_order_event(const refresh_order_needed&) noexcept;
         void on_refresh_ohlc_event(const refresh_ohlc_needed&) noexcept;
+        void on_refresh_update_status_event(const refresh_update_status&) noexcept;
 
         //! Properties Getter
         static const QString&      get_empty_string();
@@ -119,6 +122,7 @@ namespace atomic_dex
         QString                    get_second_balance_fiat_all() const noexcept;
         QString                    get_wallet_default_name() const noexcept;
         QString                    get_status() const noexcept;
+        QVariant                   get_update_status() const noexcept;
         Q_INVOKABLE static QString get_version() noexcept;
 
         //! Properties Setter
@@ -226,6 +230,7 @@ namespace atomic_dex
         void addressbookChanged();
         void OHLCDataUpdated();
         void portfolioChanged();
+        void updateStatusChanged();
 
       private:
         void process_refresh_enabled_coin_action();
@@ -248,6 +253,7 @@ namespace atomic_dex
         bool               m_need_a_full_refresh_of_mm2{false};
         QVariantList       m_enabled_coins;
         QVariantList       m_enableable_coins;
+        QVariant           m_update_status;
         QTranslator        m_translator;
         QString            m_current_lang{QString::fromStdString(m_config.current_lang)};
         QString            m_current_status{"None"};

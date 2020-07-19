@@ -219,33 +219,6 @@ namespace atomic_dex
                 emit coinInfoChanged();
             }
 
-            if (not this->m_actions_queue.empty())
-            {
-                action last_action;
-                this->m_actions_queue.pop(last_action);
-                switch (last_action)
-                {
-                case action::refresh_enabled_coin:
-                    this->process_refresh_enabled_coin_action();
-                    break;
-                case action::refresh_current_ticker:
-                    this->process_refresh_current_ticker_infos();
-                    break;
-                case action::refresh_order:
-                    emit myOrdersUpdated();
-                    break;
-                case action::refresh_ohlc:
-                    emit OHLCDataUpdated();
-                    break;
-                case action::refresh_transactions:
-                    refresh_transactions(mm2);
-                    break;
-                case action::refresh_portfolio_ticker_balance:
-                    this->m_portfolio->update_balance_values(*this->m_ticker_balance_to_refresh);
-                    break;
-                }
-            }
-
             std::error_code ec;
             auto            fiat_balance_std = paprika.get_price_in_fiat_all(m_config.current_currency, ec);
 
@@ -260,6 +233,54 @@ namespace atomic_dex
                 refresh_address(mm2);
             }
         }
+
+            if (not this->m_actions_queue.empty())
+            {
+                action last_action;
+                this->m_actions_queue.pop(last_action);
+                switch (last_action)
+                {
+                case action::refresh_enabled_coin:
+                    if (mm2.is_mm2_running())
+                    {
+                        this->process_refresh_enabled_coin_action();
+                    }
+                    break;
+                case action::refresh_current_ticker:
+                    if (mm2.is_mm2_running())
+                    {
+                        this->process_refresh_current_ticker_infos();
+                    }
+                    break;
+                case action::refresh_order:
+                    if (mm2.is_mm2_running())
+                    {
+                        emit myOrdersUpdated();
+                    }
+                    break;
+                case action::refresh_ohlc:
+                    if (mm2.is_mm2_running())
+                    {
+                        emit OHLCDataUpdated();
+                    }
+                    break;
+                case action::refresh_transactions:
+                    if (mm2.is_mm2_running())
+                    {
+                        refresh_transactions(mm2);
+                    }
+                    break;
+                case action::refresh_portfolio_ticker_balance:
+                    if (mm2.is_mm2_running())
+                    {
+                    this->m_portfolio->update_balance_values(*this->m_ticker_balance_to_refresh);
+                    }
+                    break;
+                case action::refresh_update_status:
+                    spdlog::trace("refreshing update status in GUI");
+                    break;
+                }
+            }
     }
 
     void
@@ -364,6 +385,7 @@ namespace atomic_dex
         QObject(pParent), m_coin_info(new current_coin_info(dispatcher_, this)), m_addressbook(new addressbook_model(this->m_wallet_manager, this)),
         m_portfolio(new portfolio_model(this->system_manager_, this->m_config, this))
     {
+        get_dispatcher().sink<refresh_update_status>().connect<&application::on_refresh_update_status_event>(*this);
         //! MM2 system need to be created before the GUI and give the instance to the gui
         auto& mm2_system = system_manager_.create_system<mm2>();
         system_manager_.create_system<coinpaprika_provider>(mm2_system, m_config);
@@ -747,6 +769,13 @@ namespace atomic_dex
     }
 
     void
+    application::on_refresh_update_status_event([[maybe_unused]] const refresh_update_status &evt) noexcept
+    {
+        spdlog::debug("{} l{}", __FUNCTION__, __LINE__);
+        this->m_actions_queue.push(action::refresh_update_status);
+    }
+
+    void
     application::refresh_infos()
     {
         auto& mm2 = get_mm2();
@@ -1117,6 +1146,12 @@ namespace atomic_dex
 //! Misc QML Utilities
 namespace atomic_dex
 {
+    QVariant
+    application::get_update_status() const noexcept
+    {
+        return m_update_status;
+    }
+
     QVariantList
     application::get_all_coins() const noexcept
     {

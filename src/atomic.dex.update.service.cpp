@@ -14,14 +14,17 @@
  *                                                                            *
  ******************************************************************************/
 
+//! Project headers
 #include "atomic.dex.update.service.hpp"
+#include "atomic.dex.events.hpp"
 
 namespace atomic_dex
 {
     //! Constructor
     update_system_service::update_system_service(entt::registry& registry) : system(registry)
     {
-        //! Fetching update status at start
+        m_update_clock        = std::chrono::high_resolution_clock::now();
+        this->m_update_status = nlohmann::json::object();
         this->fetch_update_status();
     }
 
@@ -46,5 +49,12 @@ namespace atomic_dex
     {
         spdlog::debug("{} l{} f[{}]", __FUNCTION__, __LINE__, fs::path(__FILE__).filename().string());
         spdlog::info("fetching update status");
+        this->dispatcher_.trigger<refresh_update_status>();
+    }
+
+    const nlohmann::json
+    update_system_service::get_update_status() const noexcept
+    {
+        return *m_update_status;
     }
 } // namespace atomic_dex

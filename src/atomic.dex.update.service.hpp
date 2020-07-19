@@ -41,6 +41,8 @@ namespace atomic_dex
 
         //! Public override
         void update() noexcept final;
+
+        const nlohmann::json get_update_status() const noexcept;
     };
 } // namespace atomic_dex
 
