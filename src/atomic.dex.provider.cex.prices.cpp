@@ -94,7 +94,7 @@ namespace atomic_dex
                 {
                     spdlog::info("Nothing todo, sleeping");
                 }
-            } while (not m_provider_thread_timer.wait_for(1h));
+            } while (not m_provider_thread_timer.wait_for(1min));
         });
     }
 
