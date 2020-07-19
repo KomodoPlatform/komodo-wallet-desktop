@@ -49,7 +49,7 @@ SetupPage {
                 reset()
         }
 
-        width: 275
+        width: 400
 
         DefaultText {
             text_value: API.get().empty_string + (qsTr("Login") + ": " + API.get().wallet_default_name)

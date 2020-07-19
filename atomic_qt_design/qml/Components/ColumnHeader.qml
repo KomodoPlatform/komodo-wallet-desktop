@@ -20,11 +20,20 @@ Item {
         hoverEnabled: true
         onClicked: {
             if(current_sort === sort_type) {
-                highest_first = !highest_first
+                ascending = !ascending
             }
             else {
                 current_sort = sort_type
-                highest_first = true
+                ascending = false
+            }
+
+            // Apply the sort
+            switch(current_sort) {
+                case sort_by_name: API.get().portfolio_mdl.portfolio_proxy_mdl.sort_by_name(ascending); break
+                case sort_by_value: API.get().portfolio_mdl.portfolio_proxy_mdl.sort_by_currency_balance(ascending); break
+                case sort_by_price: API.get().portfolio_mdl.portfolio_proxy_mdl.sort_by_currency_unit(ascending); break
+                case sort_by_trend:
+                case sort_by_change: API.get().portfolio_mdl.portfolio_proxy_mdl.sort_by_change_last24h(ascending); break
             }
         }
     }
@@ -41,7 +50,7 @@ Item {
     Image {
         id: arrow_icon
 
-        source: General.image_path + "arrow-" + (highest_first ? "down" : "up") + ".svg"
+        source: General.image_path + "arrow-" + (ascending ? "up" : "down") + ".svg"
 
         width: title.font.pixelSize * 0.5
         fillMode: Image.PreserveAspectFit

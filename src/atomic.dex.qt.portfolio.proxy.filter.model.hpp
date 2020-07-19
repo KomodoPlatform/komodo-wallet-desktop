@@ -16,18 +16,29 @@
 
 #pragma once
 
-#include <QString>
-#include <QVariantList>
-
-//! Project headers
-#include "atomic.dex.coins.config.hpp"
-#include "atomic.dex.pch.hpp"
-#include "atomic.dex.provider.coinpaprika.hpp"
-#include "atomic.dex.wallet.config.hpp"
+#include <QSortFilterProxyModel>
 
 namespace atomic_dex
 {
-    bool       am_i_able_to_reach_this_endpoint(const QString& endpoint);
-    QJsonArray nlohmann_json_array_to_qt_json_array(const nlohmann::json& j);
-    QString    retrieve_change_24h(const atomic_dex::coinpaprika_provider& paprika, const atomic_dex::coin_config& coin, const atomic_dex::cfg& config);
+    class portfolio_proxy_model final : public QSortFilterProxyModel
+    {
+        Q_OBJECT
+      public:
+        //! Constructor
+        portfolio_proxy_model(QObject* parent);
+
+        //! Destructor
+        ~portfolio_proxy_model() final;
+
+      public:
+        //! API
+        Q_INVOKABLE void sort_by_name(bool is_ascending);
+        Q_INVOKABLE void sort_by_currency_balance(bool is_ascending);
+        Q_INVOKABLE void sort_by_change_last24h(bool is_ascending);
+        Q_INVOKABLE void sort_by_currency_unit(bool is_ascending);
+
+      protected:
+        //! Override member functions
+        [[nodiscard]] bool lessThan(const QModelIndex& source_left, const QModelIndex& source_right) const final;
+    };
 } // namespace atomic_dex

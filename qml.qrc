@@ -100,7 +100,6 @@
         <file>atomic_qt_design/qml/Exchange/Trade/Trade.qml</file>
         <file>atomic_qt_design/qml/Exchange/Trade/ConfirmTradeModal.qml</file>
         <file>atomic_qt_design/qml/Exchange/Trade/PriceLine.qml</file>
-        <file>atomic_qt_design/qml/Exchange/Trade/CexInfoTrigger.qml</file>
         <file>atomic_qt_design/qml/Exchange/Trade/OrderForm.qml</file>
         <file>atomic_qt_design/qml/Exchange/Trade/OrderReceiveModal.qml</file>
         <file>atomic_qt_design/qml/Exchange/Trade/OrderbookModal.qml</file>
@@ -127,6 +126,7 @@
         <file>atomic_qt_design/qml/Components/RightClickMenu.qml</file>
         <file>atomic_qt_design/qml/Components/PlusButton.qml</file>
         <file>atomic_qt_design/qml/Components/AddressField.qml</file>
+        <file>atomic_qt_design/qml/Components/AddressFieldWithTitle.qml</file>
         <file>atomic_qt_design/qml/Components/AmountField.qml</file>
         <file>atomic_qt_design/qml/Components/AmountIntField.qml</file>
         <file>atomic_qt_design/qml/Components/CopyFieldButton.qml</file>
@@ -150,6 +150,7 @@
         <file>atomic_qt_design/qml/Components/DefaultListView.qml</file>
         <file>atomic_qt_design/qml/Components/DefaultFlickable.qml</file>
         <file>atomic_qt_design/qml/Components/DefaultComboBox.qml</file>
+        <file>atomic_qt_design/qml/Components/DefaultCheckBox.qml</file>
         <file>atomic_qt_design/qml/Components/LogModal.qml</file>
         <file>atomic_qt_design/qml/Components/DefaultModal.qml</file>
         <file>atomic_qt_design/qml/Components/SetupPage.qml</file>
@@ -162,6 +163,7 @@
         <file>atomic_qt_design/qml/Components/TextFieldWithTitle.qml</file>
         <file>atomic_qt_design/qml/Components/TextAreaWithTitle.qml</file>
         <file>atomic_qt_design/qml/Components/ModalHeader.qml</file>
+        <file>atomic_qt_design/qml/Components/CexInfoTrigger.qml</file>
         <file>atomic_qt_design/qml/Portfolio/Portfolio.qml</file>
         <file>atomic_qt_design/qml/Wallet/Wallet.qml</file>
         <file>atomic_qt_design/qml/Wallet/ClaimRewardsModal.qml</file>
@@ -173,6 +175,7 @@
         <file>atomic_qt_design/qml/Wallet/CoinList.qml</file>
         <file>atomic_qt_design/qml/Wallet/Sidebar.qml</file>
         <file>atomic_qt_design/qml/Wallet/Main.qml</file>
+        <file>atomic_qt_design/qml/Wallet/AddressBook.qml</file>
         <file>atomic_qt_design/qml/Wallet/Transactions.qml</file>
         <file>atomic_qt_design/qml/Wallet/TransactionDetailsModal.qml</file>
         <file>atomic_qt_design/qml/Wallet/AddressList.qml</file>

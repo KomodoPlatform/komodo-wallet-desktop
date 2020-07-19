@@ -5,9 +5,6 @@ project(atomic_qt LANGUAGES CXX VERSION 0.2.0)
 
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
-set(CMAKE_AUTOUIC ON)
-set(CMAKE_AUTOMOC ON)
-set(CMAKE_AUTORCC ON)
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
@@ -123,6 +120,9 @@ else ()
 endif ()
 add_library(unofficial-btc::bitcoin ALIAS unofficial-bitcoin)
 
+set(CMAKE_AUTOUIC ON)
+set(CMAKE_AUTOMOC ON)
+set(CMAKE_AUTORCC ON)
 set(TS_FILES
         ${CMAKE_SOURCE_DIR}/atomic_qt_design/assets/languages/atomic_qt_en.ts
         ${CMAKE_SOURCE_DIR}/atomic_qt_design/assets/languages/atomic_qt_fr.ts
@@ -153,6 +153,12 @@ target_sources(atomic_qt_shared_deps INTERFACE
         ${CMAKE_SOURCE_DIR}/src/atomic.dex.qt.utilities.cpp
         ${CMAKE_SOURCE_DIR}/src/atomic.dex.wallet.config.cpp
         ${CMAKE_SOURCE_DIR}/src/atomic.dex.security.cpp
+        ${CMAKE_SOURCE_DIR}/src/atomic.dex.update.service.cpp
+        ${CMAKE_SOURCE_DIR}/src/atomic.dex.qt.addressbook.model.cpp
+        ${CMAKE_SOURCE_DIR}/src/atomic.dex.qt.addressbook.proxy.filter.model.cpp
+        ${CMAKE_SOURCE_DIR}/src/atomic.dex.qt.contact.model.cpp
+        ${CMAKE_SOURCE_DIR}/src/atomic.dex.qt.portfolio.model.cpp
+        ${CMAKE_SOURCE_DIR}/src/atomic.dex.qt.portfolio.proxy.filter.model.cpp
         $<$<PLATFORM_ID:Darwin>:${CMAKE_SOURCE_DIR}/src/osx/atomic.dex.osx.manager.mm>
         ${CMAKE_SOURCE_DIR}/qml.qrc
         ${qmFiles}
@@ -164,6 +170,8 @@ target_compile_definitions(atomic_qt_shared_deps
         $<$<PLATFORM_ID:Windows>:HAS_REMOTE_API>
         $<$<PLATFORM_ID:Windows>:AUTO_DOWNLOAD>
         )
+
+#target_compile_options(atomic_qt_shared_deps INTERFACE -fstandalone-debug)
 
 target_link_libraries(atomic_qt_shared_deps
         INTERFACE

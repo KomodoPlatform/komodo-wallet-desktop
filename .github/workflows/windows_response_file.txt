@@ -2,6 +2,7 @@ entt:x64-Windows
 folly:x64-Windows
 boost-multiprecision:x64-Windows
 boost-random:x64-Windows
+boost-lockfree:x64-Windows
 doctest:x64-Windows
 fmt:x64-Windows
 curl:x64-Windows

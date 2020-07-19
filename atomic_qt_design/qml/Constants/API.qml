@@ -17,6 +17,49 @@ QtObject {
 
 
         // Other
+        addressbook_mdl: [
+            {
+                name: "ca333",
+                addresses: [
+                     { type: "ERC-20", address: "0xde0b295669a9fd93d5f28d9ec85e40f4cb697bae" },
+                     { type: "SmartChains", address: "RB49Rm4jBe5mN9anErvkzf3kcQCzHqyz3e" },
+                     { type: "BTC", address: "3FZbgi29cpjq2GjdwV8eyHuJJnkLtktZc5" }
+                ]
+            },
+            {
+                name: "alice",
+                addresses: [
+                     { type: "ERC-20", address: "0xde0b295669a9fd93d5f28d9ec85e40f4cb697bae" },
+                     { type: "SmartChains", address: "RB49Rm4jBe5mN9anErvkzf3kcQCzHqyz3e" },
+                     { type: "BTC", address: "3FZbgi29cpjq2GjdwV8eyHuJJnkLtktZc5" }
+                ]
+            },
+            {
+                name: "bob",
+                addresses: [
+                     { type: "ERC-20", address: "0xde0b295669a9fd93d5f28d9ec85e40f4cb697bae" },
+                     { type: "SmartChains", address: "RB49Rm4jBe5mN9anErvkzf3kcQCzHqyz3e" },
+                     { type: "BTC", address: "3FZbgi29cpjq2GjdwV8eyHuJJnkLtktZc5" }
+                ]
+            },
+        ],
+       add_contact: (name) => {
+         address_book[name] = {}
+
+         address_book = address_book
+       },
+       update_contact: (old_name, new_name) => {
+         address_book[new_name] = General.clone(address_book[old_name])
+         delete address_book[old_name]
+
+         address_book = address_book
+       },
+       insert_or_update_address: (name, ticker, address) => {
+         address_book[name][ticker] = address
+
+         address_book = address_book
+       },
+
         to_eth_checksum_qt: (addr) => { return "0xA00bF635b2cD52F2b6B4D8cd9B9efd290B97838C" },
         retrieve_seed: (wallet_name, password) => { return "this is a test seed gossip rubber flee just connect manual any salmon limb suffer now turkey essence naive daughter system begin quantum page" },
         get_log_folder: () => { return "D:/Projects/atomicDEX-Pro/atomic_qt_design" },

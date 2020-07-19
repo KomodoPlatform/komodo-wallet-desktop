@@ -181,33 +181,6 @@ namespace atomic_dex
         return true;
     }
 
-    QStringList
-    qt_wallet_manager::get_categories_list() const noexcept
-    {
-        QStringList out;
-
-        out.reserve(m_wallet_cfg.categories_addressbook_registry.size());
-        for (const auto& [key, _]: m_wallet_cfg.categories_addressbook_registry)
-        {
-            (void)_;
-            out.push_back(QString::fromStdString(key));
-        }
-        return out;
-    }
-
-    QVariantMap
-    qt_wallet_manager::get_address_from(const std::string& contact_name) const noexcept
-    {
-        QVariantMap out;
-
-        if (m_wallet_cfg.addressbook_registry.find(contact_name) != m_wallet_cfg.addressbook_registry.cend())
-        {
-            for (auto&& [key, value]: m_wallet_cfg.addressbook_registry.at(contact_name))
-            { out.insert(QString::fromStdString(key), QVariant(QString::fromStdString(value))); }
-        }
-        return out;
-    }
-
     bool
     qt_wallet_manager::update_wallet_cfg() noexcept
     {
@@ -225,14 +198,119 @@ namespace atomic_dex
         return true;
     }
 
-    bool
-    qt_wallet_manager::add_category(const std::string& category_name, bool with_update_file) noexcept
+    void
+    qt_wallet_manager::update_or_insert_contact_name(const QString& old_contact_name, const QString& contact_name)
     {
-        if (m_wallet_cfg.categories_addressbook_registry.find(category_name) == m_wallet_cfg.categories_addressbook_registry.cend())
+        std::string old_contact_name_str = old_contact_name.toStdString();
+        std::string contact_name_str     = contact_name.toStdString();
+
+        if (old_contact_name_str.empty() && !contact_name_str.empty())
         {
-            m_wallet_cfg.categories_addressbook_registry[category_name] = {};
-            return with_update_file ? update_wallet_cfg() : true;
+            auto it = std::find_if(begin(m_wallet_cfg.address_book), end(m_wallet_cfg.address_book), [contact_name_str](auto&& cur_contact) {
+                return cur_contact.name == contact_name_str;
+            });
+            if (it != m_wallet_cfg.address_book.end())
+            {
+                //! Find this contact already exist do nothing
+                spdlog::trace("contact {} already exist, skipping", contact_name_str);
+                return;
+            }
+            m_wallet_cfg.address_book.push_back(contact{.name = std::move(contact_name_str)});
         }
-        return false;
+        else if (not old_contact_name_str.empty() && not contact_name_str.empty())
+        {
+            auto it = std::find_if(begin(m_wallet_cfg.address_book), end(m_wallet_cfg.address_book), [old_contact_name_str](auto&& cur_contact) {
+                return cur_contact.name == old_contact_name_str;
+            });
+            if (it != m_wallet_cfg.address_book.end())
+            {
+                spdlog::trace("old contact {} found, changing the contact name to: {}", old_contact_name_str, contact_name_str);
+                it->name = contact_name_str;
+            }
+        }
+    }
+
+    void
+    qt_wallet_manager::delete_contact(const QString& contact)
+    {
+        std::string contact_name_str = contact.toStdString();
+        this->m_wallet_cfg.address_book.erase(
+            std::remove_if(begin(m_wallet_cfg.address_book), end(m_wallet_cfg.address_book), [contact_name_str](auto&& cur_contact) {
+                return contact_name_str == cur_contact.name;
+            }));
+    }
+
+    void
+    qt_wallet_manager::update_contact_ticker(const QString& contact_name, const QString& old_ticker, const QString& new_ticker)
+    {
+        std::string contact_name_str = contact_name.toStdString();
+        if (old_ticker.isEmpty() && not new_ticker.isEmpty())
+        {
+            //! Add new ticker entry
+            auto it = std::find_if(begin(m_wallet_cfg.address_book), end(m_wallet_cfg.address_book), [contact_name_str](auto&& cur_contact) {
+                return cur_contact.name == contact_name_str;
+            });
+
+            if (it != m_wallet_cfg.address_book.end())
+            {
+                spdlog::trace("add for contact {}, ticker {} entry", contact_name_str, new_ticker.toStdString());
+                it->contents.emplace_back(contact_contents{.type = new_ticker.toStdString()});
+            }
+        }
+        else
+        {
+            //! Update ticker entry
+            auto it = std::find_if(begin(m_wallet_cfg.address_book), end(m_wallet_cfg.address_book), [contact_name_str](auto&& cur_contact) {
+                return cur_contact.name == contact_name_str;
+            });
+
+            auto contents_it = std::find_if(begin(it->contents), end(it->contents), [&old_ticker](auto&& cur_contact_contents) {
+                return cur_contact_contents.type == old_ticker.toStdString();
+            });
+
+            if (contents_it != it->contents.end())
+            {
+                contents_it->type = new_ticker.toStdString();
+            }
+        }
+    }
+
+    void
+    qt_wallet_manager::update_contact_address(const QString& contact_name, const QString& ticker, const QString& address)
+    {
+        spdlog::trace("update contact {} with ticker {} with the new address {}", contact_name.toStdString(), ticker.toStdString(), address.toStdString());
+        std::string contact_name_str = contact_name.toStdString();
+        auto        it               = std::find_if(begin(m_wallet_cfg.address_book), end(m_wallet_cfg.address_book), [contact_name_str](auto&& cur_contact) {
+            return cur_contact.name == contact_name_str;
+        });
+        auto        contents_it      = std::find_if(
+            begin(it->contents), end(it->contents), [&ticker](auto&& cur_contact_contents) { return cur_contact_contents.type == ticker.toStdString(); });
+        if (contents_it != it->contents.end())
+        {
+            contents_it->address = address.toStdString();
+        }
+    }
+
+    void
+    qt_wallet_manager::remove_address_entry(const QString& contact_name, const QString& ticker)
+    {
+        std::string contact_name_str = contact_name.toStdString();
+        auto        it               = std::find_if(begin(m_wallet_cfg.address_book), end(m_wallet_cfg.address_book), [contact_name_str](auto&& cur_contact) {
+            return cur_contact.name == contact_name_str;
+        });
+        it->contents.erase(std::remove_if(
+            begin(it->contents), end(it->contents), [&ticker](auto&& cur_contact_contents) { return cur_contact_contents.type == ticker.toStdString(); }));
+    }
+
+    const wallet_cfg&
+    qt_wallet_manager::get_wallet_cfg() const noexcept
+    {
+        return m_wallet_cfg;
+    }
+
+    const wallet_cfg&
+    qt_wallet_manager::get_wallet_cfg() noexcept
+    {
+        return m_wallet_cfg;
     }
 } // namespace atomic_dex

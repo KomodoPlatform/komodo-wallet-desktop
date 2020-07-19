@@ -20,9 +20,11 @@
 #include <QString>
 #include <QStringList>
 #include <QVariantMap>
+#include <QVector>
 
 //! Project Headers
 #include "atomic.dex.mm2.hpp"
+#include "atomic.dex.qt.addressbook.contact.contents.hpp"
 #include "atomic.dex.security.hpp"
 #include "atomic.dex.version.hpp"
 #include "atomic.dex.wallet.config.hpp"
@@ -37,18 +39,11 @@ namespace atomic_dex
         void set_wallet_default_name(QString wallet_name) noexcept;
 
         template <typename Functor>
-        bool
-        login(const QString& password, const QString& wallet_name, mm2& mm2_system, Functor&& login_if_success_functor);
+        bool login(const QString& password, const QString& wallet_name, mm2& mm2_system, Functor&& login_if_success_functor);
 
         bool create(const QString& password, const QString& seed, const QString& wallet_name);
 
         bool load_wallet_cfg(const std::string& wallet_name);
-
-        QStringList get_categories_list() const noexcept;
-
-        QVariantMap get_address_from(const std::string& contact_name) const noexcept;
-
-        bool add_category(const std::string& category_name, bool with_update_file) noexcept;
 
         static QStringList get_wallets() noexcept;
 
@@ -60,16 +55,23 @@ namespace atomic_dex
 
         static bool confirm_password(const QString& wallet_name, const QString& password);
 
+        bool update_wallet_cfg() noexcept;
+
+        void update_contact_ticker(const QString& contact_name, const QString& old_ticker, const QString& new_ticker);
+        void update_contact_address(const QString& contact_name, const QString& ticker, const QString& address);
+        void update_or_insert_contact_name(const QString& old_contact_name, const QString& contact_name);
+        void remove_address_entry(const QString& contact_name, const QString& ticker);
+        void delete_contact(const QString& contact_name);
+        const wallet_cfg& get_wallet_cfg() const noexcept;
+        const wallet_cfg& get_wallet_cfg() noexcept;
       private:
-        bool       update_wallet_cfg() noexcept;
         wallet_cfg m_wallet_cfg;
         QString    m_current_default_wallet{""};
     };
 
     template <typename Functor>
     bool
-    qt_wallet_manager::login(
-        const QString& password, const QString& wallet_name, mm2& mm2_system, Functor&& login_if_success_functor)
+    qt_wallet_manager::login(const QString& password, const QString& wallet_name, mm2& mm2_system, Functor&& login_if_success_functor)
     {
         std::error_code ec;
         auto            key = atomic_dex::derive_password(password.toStdString(), ec);

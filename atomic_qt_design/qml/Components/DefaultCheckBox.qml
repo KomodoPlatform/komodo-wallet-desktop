@@ -4,7 +4,7 @@ import QtQuick.Controls 2.12
 import QtQuick.Controls.Universal 2.12
 import "../Constants"
 
-ComboBox {
+CheckBox {
     font.family: Style.font
 }
 

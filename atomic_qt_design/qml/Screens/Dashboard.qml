@@ -25,6 +25,9 @@ Item {
     property int current_page: getMainPage()
 
     function reset() {
+        // Fill all coins list
+        General.all_coins = API.get().get_all_coins()
+
         current_page = getMainPage()
         prev_page = -1
 
@@ -41,30 +44,7 @@ Item {
         return app.current_page === idx_dashboard
     }
 
-    function shouldUpdatePortfolio() {
-        return  inCurrentPage() &&
-                (current_page === General.idx_dashboard_portfolio ||
-                 current_page === General.idx_dashboard_wallet)
-    }
-
-    property var portfolio_coins: ([])
-
-    function updatePortfolio() {
-        portfolio_coins = API.get().get_portfolio_informations()
-
-        update_timer.running = true
-    }
-
-    Timer {
-        id: update_timer
-        running: false
-        repeat: true
-        interval: 5000
-        onTriggered: {
-            if(shouldUpdatePortfolio()) updatePortfolio()
-        }
-    }
-
+    property var portfolio_coins: API.get().portfolio_mdl.portfolio_proxy_mdl
 
     onCurrent_pageChanged: {
         if(prev_page !== current_page) {
@@ -164,6 +144,30 @@ Item {
         spread: 0
         color: Style.colorSidebarDropShadow
         smooth: true
+    }
+
+    // CEX Rates info
+    DefaultModal {
+        id: cex_rates_modal
+        width: 500
+
+        // Inside modal
+        ColumnLayout {
+            width: parent.width
+
+            ModalHeader {
+                title: API.get().empty_string + (General.cex_icon + " " + qsTr("CEX Data"))
+            }
+
+            DefaultText {
+                text_value: API.get().empty_string + (qsTr('Markets data (prices, charts, etc.) marked with the ⓘ icon originates from third party sources. (<a href="https://coinpaprika.com">coinpaprika.com</a>)'))
+                wrapMode: Text.WordWrap
+                Layout.preferredWidth: cex_rates_modal.width
+
+                onLinkActivated: Qt.openUrlExternally(link)
+                linkColor: color
+            }
+        }
     }
 }
 

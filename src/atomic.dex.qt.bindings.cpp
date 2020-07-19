@@ -18,9 +18,7 @@
 
 namespace atomic_dex
 {
-    qt_coin_config::qt_coin_config(QObject* parent) : QObject(parent) {}
     qt_send_answer::qt_send_answer(QObject* parent) : QObject(parent) {}
-    qt_transactions::qt_transactions(QObject* parent) : QObject(parent) {}
     qt_orderbook::qt_orderbook(QObject* parent) : QObject(parent) {}
     qt_ordercontent::qt_ordercontent(QObject* parent) : QObject(parent) {}
     qt_my_order_contents::qt_my_order_contents(QObject* parent) : QObject(parent) {}

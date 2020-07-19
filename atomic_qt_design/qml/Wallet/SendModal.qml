@@ -9,6 +9,9 @@ import "../Constants"
 DefaultModal {
     id: root
 
+    property alias address_field: input_address.field
+
+
     onClosed: if(stack_layout.currentIndex === 2) reset(true)
 
     // Local
@@ -169,10 +172,24 @@ DefaultModal {
             }
 
             // Send address
-            AddressField {
-                id: input_address
-                title: API.get().empty_string + (qsTr("Recipient's address"))
-                field.placeholderText: API.get().empty_string + (qsTr("Enter address of the recipient"))
+            RowLayout {
+                spacing: Style.buttonSpacing
+
+                AddressFieldWithTitle {
+                    id: input_address
+                    Layout.alignment: Qt.AlignLeft
+                    title: API.get().empty_string + (qsTr("Recipient's address"))
+                    field.placeholderText: API.get().empty_string + (qsTr("Enter address of the recipient"))
+                }
+
+                DefaultButton {
+                    Layout.alignment: Qt.AlignRight | Qt.AlignBottom
+                    text: API.get().empty_string + (qsTr("Address Book"))
+                    onClicked: {
+                        openAddressBook()
+                        root.close()
+                    }
+                }
             }
 
             // ERC-20 Lowercase issue
@@ -193,6 +210,8 @@ DefaultModal {
             }
 
             RowLayout {
+                spacing: Style.buttonSpacing
+
                 // Amount input
                 AmountField {
                     id: input_amount
@@ -203,6 +222,7 @@ DefaultModal {
 
                 Switch {
                     id: input_max_amount
+                    Layout.alignment: Qt.AlignRight | Qt.AlignBottom
                     text: API.get().empty_string + (qsTr("MAX"))
                     onCheckedChanged: input_amount.field.text = ""
                 }

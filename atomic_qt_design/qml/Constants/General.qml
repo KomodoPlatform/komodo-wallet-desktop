@@ -44,6 +44,8 @@ QtObject {
     readonly property var chart_times: (["1m", "3m", "5m", "15m", "30m", "1h", "2h", "4h", "6h", "12h", "1d", "3d", "1w"])
     readonly property var time_seconds: ({ "1m": 60, "3m": 180, "5m": 300, "15m": 900, "30m": 1800, "1h": 3600, "2h": 7200, "4h": 14400, "6h": 21600, "12h": 43200, "1d": 86400, "3d": 259200, "1w": 604800 })
 
+    property var all_coins
+
     function timestampToDouble(timestamp) {
         return (new Date(timestamp)).getTime()
     }
@@ -72,6 +74,13 @@ QtObject {
         }
     }
 
+    function viewAddressAtExplorer(ticker, address) {
+        if(address !== '') {
+            const coin_info = API.get().get_coin_info(ticker)
+            Qt.openUrlExternally(coin_info.explorer_url + 'address/' + address)
+        }
+    }
+
     function diffPrefix(received) {
         return received === "" ? "" : received === true ? "+ " :  "- "
     }
@@ -79,10 +88,6 @@ QtObject {
     function filterCoins(list, text, type) {
         return list.filter(c => (c.ticker.indexOf(text.toUpperCase()) !== -1 || c.name.toUpperCase().indexOf(text.toUpperCase()) !== -1) &&
                            (type === undefined || c.type === type))
-    }
-
-    function getCoin(list, ticker) {
-        return list.find(c => c.ticker === ticker)
     }
 
     function validFiatRates(data, fiat) {
@@ -249,7 +254,10 @@ QtObject {
     }
 
     function canDisable(ticker) {
-        if(API.get().enabled_coins.length <= 2) return false
+        if(API.get().enabled_coins.length <= 2 ||
+                ticker === "KMD" ||
+                ticker === "BTC") return false
+
         if(ticker === "ETH") return !General.isEthNeeded()
 
         return true

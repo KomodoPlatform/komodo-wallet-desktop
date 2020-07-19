@@ -55,7 +55,7 @@ namespace
         {
             return;
         }
-        const ticker_historical_request request{.ticker_currency_id = current_coin.coinpaprika_id};
+        const ticker_historical_request request{.ticker_currency_id = current_coin.coinpaprika_id, .interval = "2h"};
         auto                            answer = ticker_historical(request);
         retry(answer, request, [&answer](const ticker_historical_request& request) { answer = ticker_historical(request); });
         if (answer.raw_result.find("error") == std::string::npos)
@@ -110,10 +110,8 @@ namespace
             if (result.find("e") != std::string::npos)
             {
                 //! We have scientific notations lets get ride of that
-                do
-                {
+                do {
                     default_precision += 1;
-                    spdlog::debug("retrying with precision {}, result {}", default_precision, result);
                     retry();
                 } while (t_float_50(result) <= 0);
             }
@@ -170,8 +168,7 @@ namespace atomic_dex
             spdlog::info("paprika thread started");
 
             using namespace std::chrono_literals;
-            do
-            {
+            do {
                 spdlog::info("refreshing rate conversion from coinpaprika");
 
                 t_coins coins = m_mm2_instance.get_enabled_coins();
@@ -428,7 +425,12 @@ namespace atomic_dex
                 }
                 process_ticker_infos(config, m_ticker_infos_registry);
                 process_ticker_historical(config, m_ticker_historical_registry);
+                this->dispatcher_.trigger<coin_fully_initialized>(evt.ticker);
             });
+        }
+        else
+        {
+            this->dispatcher_.trigger<coin_fully_initialized>(evt.ticker);
         }
     }
 

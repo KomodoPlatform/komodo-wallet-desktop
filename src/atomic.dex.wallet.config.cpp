@@ -24,28 +24,40 @@ namespace atomic_dex
         j.at("name").get_to(cfg.name);
         if (j.contains("addressbook"))
         {
-            for (const auto& [key, value]: j.at("addressbook").items())
+            for (const auto& cur: j.at("addressbook"))
             {
-                wallet_cfg::t_address_registry registry;
-                for (const auto& [cur_address_name, cur_address_value]: value.items()) { registry.emplace(cur_address_name, cur_address_value); }
-                cfg.addressbook_registry[key] = registry;
-            }
-        }
-
-        if (j.contains("categories"))
-        {
-            for (const auto& [category_name, members]: j.at("categories").items())
-            {
-                cfg.categories_addressbook_registry[category_name] = members.get<std::vector<std::string>>();
+                contact current_contact;
+                cur.at("name").get_to(current_contact.name);
+                for (const auto& cur_addr: cur.at("addresses"))
+                {
+                    contact_contents contents;
+                    cur_addr.at("type").get_to(contents.type);
+                    cur_addr.at("address").get_to(contents.address);
+                    current_contact.contents.emplace_back(std::move(contents));
+                }
+                cfg.address_book.emplace_back(std::move(current_contact));
             }
         }
     }
 
     void
+    to_json(nlohmann::json& j, const contact_contents& cfg)
+    {
+        j["type"]    = cfg.type;
+        j["address"] = cfg.address;
+    }
+
+    void
+    to_json(nlohmann::json& j, const contact& cfg)
+    {
+        j["name"]      = cfg.name;
+        j["addresses"] = cfg.contents;
+    }
+
+    void
     to_json(nlohmann::json& j, const wallet_cfg& cfg)
     {
-        j["name"] = cfg.name;
-        j["addressbook"] = cfg.addressbook_registry;
-        j["categories"] = cfg.categories_addressbook_registry;
+        j["name"]        = cfg.name;
+        j["addressbook"] = cfg.address_book;
     }
 } // namespace atomic_dex

@@ -9,6 +9,11 @@ import "../Constants"
 RowLayout {
     id: wallet
 
+    function inCurrentPage() {
+        return  dashboard.inCurrentPage() &&
+                dashboard.current_page === General.idx_dashboard_wallet
+    }
+
     // Local
     function onClickedSwap() {
         dashboard.current_page = General.idx_dashboard_exchange
@@ -22,9 +27,7 @@ RowLayout {
         enable_coin_modal.reset()
     }
 
-    function onOpened() {
-        updatePortfolio()
-    }
+    function onOpened() { }
 
     readonly property double button_margin: 0.05
     spacing: 0

@@ -20,15 +20,26 @@
 
 namespace atomic_dex
 {
+    struct contact_contents
+    {
+        std::string type;
+        std::string address;
+    };
+
+    void to_json(nlohmann::json& j, const contact_contents& cfg);
+
+    struct contact
+    {
+        std::string                   name;
+        std::vector<contact_contents> contents;
+    };
+
+    void to_json(nlohmann::json& j, const contact& cfg);
+
     struct wallet_cfg
     {
         std::string name;
-        using t_address_registry = std::unordered_map<std::string, std::string>;
-        using t_addressbook_name = std::string;
-        using t_category         = std::string;
-        using t_names            = std::vector<std::string>;
-        std::unordered_map<t_addressbook_name, t_address_registry> addressbook_registry;
-        std::unordered_map<t_category, std::vector<std::string>>   categories_addressbook_registry;
+        std::vector<contact> address_book;
     };
 
     void from_json(const nlohmann::json& j, wallet_cfg& cfg);

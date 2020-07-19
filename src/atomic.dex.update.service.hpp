@@ -16,47 +16,34 @@
 
 #pragma once
 
-//! PCH Headers
+//! PCH
 #include "atomic.dex.pch.hpp"
 
 namespace atomic_dex
 {
-    using mm2_started                 = entt::tag<"mm2_started"_hs>;
-    using gui_enter_trading           = entt::tag<"gui_enter_trading"_hs>;
-    using gui_leave_trading           = entt::tag<"gui_leave_trading"_hs>;
-    using mm2_initialized             = entt::tag<"mm2_running_and_enabling"_hs>;
-    using enabled_coins_event         = entt::tag<"gui_enabled_coins"_hs>;
-    using enabled_default_coins_event = entt::tag<"gui_enabled_default_coins"_hs>;
-    using change_ticker_event         = entt::tag<"gui_change_ticker"_hs>;
-    using tx_fetch_finished           = entt::tag<"gui_tx_fetch_finished"_hs>;
-    using refresh_order_needed        = entt::tag<"gui_refresh_order_needed"_hs>;
-    using refresh_ohlc_needed         = entt::tag<"gui_refresh_ohlc_needed"_hs>;
-    using refresh_update_status       = entt::tag<"gui_refresh_update_status"_hs>;
-
-    struct ticker_balance_updated
+    class update_system_service final : public ag::ecs::pre_update_system<update_system_service>
     {
-        std::string ticker;
-    };
+        //! Private typedefs
+        using t_update_time_point = std::chrono::high_resolution_clock::time_point;
+        using t_json_synchronized = boost::synchronized_value<nlohmann::json>;
 
-    struct coin_enabled
-    {
-        std::string ticker;
-    };
+        //! Private members
+        t_json_synchronized m_update_status;
+        t_update_time_point m_update_clock;
 
-    //! Event when paprika fetch all the data of this specific coin
-    struct coin_fully_initialized
-    {
-        std::string ticker;
-    };
+        //! Private API
+        void fetch_update_status() noexcept;
 
-    struct coin_disabled
-    {
-        std::string ticker;
-    };
+      public:
+        //! Constructor
+        explicit update_system_service(entt::registry& registry);
+        ~update_system_service() noexcept final = default;
 
-    struct orderbook_refresh
-    {
-        std::string base;
-        std::string rel;
+        //! Public override
+        void update() noexcept final;
+
+        const nlohmann::json get_update_status() const noexcept;
     };
 } // namespace atomic_dex
+
+REFL_AUTO(type(atomic_dex::update_system_service))

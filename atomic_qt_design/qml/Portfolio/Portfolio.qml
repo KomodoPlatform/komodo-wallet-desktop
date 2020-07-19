@@ -15,32 +15,17 @@ ColumnLayout {
     Layout.fillHeight: true
 
     readonly property int sort_by_name: 0
-    readonly property int sort_by_ticker: 1
-    readonly property int sort_by_value: 2
-    readonly property int sort_by_balance: 3
-    readonly property int sort_by_price: 4
-    readonly property int sort_by_change: 5
-    readonly property int sort_by_trend: 6
+    readonly property int sort_by_value: 1
+    readonly property int sort_by_change: 3
+    readonly property int sort_by_trend: 4
+    readonly property int sort_by_price: 5
 
     property int current_sort: sort_by_value
-    property bool highest_first: true
+    property bool ascending: false
 
-    function reset() {
-        updatePortfolio()
-    }
+    function reset() { }
 
-    function onOpened() {
-        updatePortfolio()
-    }
-
-    function getColor(data) {
-        const fiat = API.get().current_currency
-
-        if(General.validFiatRates(data, fiat) && data.rates[fiat].percent_change_24h !== 0)
-            return data.rates[fiat].percent_change_24h > 0 ? Style.colorGreen : Style.colorRed
-
-        return Style.colorWhite4
-    }
+    function onOpened() { }
 
     function updateChart(chart, historical) {
         chart.removeAllSeries()
@@ -50,7 +35,7 @@ ColumnLayout {
             // Fill chart
             let series = chart.createSeries(ChartView.SeriesTypeSpline, "Price", chart.axes[0], chart.axes[1]);
 
-            series.style = Qt.DashDotLine
+            series.style = Qt.SolidLine
             series.color = Style.colorTheme1
 
             let min = 999999999
@@ -138,6 +123,10 @@ ColumnLayout {
 
             placeholderText: API.get().empty_string + (qsTr("Search"))
             selectByMouse: true
+
+            onTextChanged: {
+                API.get().portfolio_mdl.portfolio_proxy_mdl.setFilterFixedString(text)
+            }
 
             width: 120
         }
@@ -231,7 +220,7 @@ ColumnLayout {
     // Transactions or loading
     Item {
         id: loading
-        visible: portfolio_coins.length === 0
+        visible: API.get().portfolio_mdl.length === 0
         Layout.alignment: Qt.AlignCenter
         Layout.fillWidth: true
         Layout.fillHeight: true
@@ -254,42 +243,12 @@ ColumnLayout {
     // List
     DefaultListView {
         id: list
-        visible: portfolio_coins.length > 0
+        visible: API.get().portfolio_mdl.length > 0
         Layout.alignment: Qt.AlignTop
         Layout.fillWidth: true
         Layout.fillHeight: true
 
-        model: General.filterCoins(portfolio_coins, input_coin_filter.text)
-                .sort((a, b) => {
-            const order = highest_first ? 1 : -1
-            let val_a
-            let val_b
-            let result
-            switch(current_sort) {
-                case sort_by_name:      return (b.name.toUpperCase() > a.name.toUpperCase() ? -1 : 1) * order
-                case sort_by_ticker:    return (b.ticker > a.ticker ? -1 : 1) * order
-                case sort_by_value:
-                    val_a = parseFloat(a.balance_fiat)
-                    val_b = parseFloat(b.balance_fiat)
-                    result = val_b - val_a
-
-                    if(result === 0) {
-                        let val_a = parseFloat(a.balance)
-                        let val_b = parseFloat(b.balance)
-                        result = val_b - val_a
-                    }
-
-                    return result * order
-                case sort_by_price:       return (parseFloat(b.price) - parseFloat(a.price)) * order
-                case sort_by_balance:     return (parseFloat(b.balance) - parseFloat(a.balance)) * order
-                case sort_by_trend:       return (parseFloat(b.price) - parseFloat(a.price)) * order
-                case sort_by_change:
-                    val_a = General.validFiatRates(a, API.get().current_currency) ? a.rates[API.get().current_currency].percent_change_24h : -9999999
-                    val_b = General.validFiatRates(b, API.get().current_currency) ? b.rates[API.get().current_currency].percent_change_24h : -9999999
-
-                    return (val_b - val_a) * order
-            }
-        })
+        model: portfolio_coins
 
         delegate: Rectangle {
             color: mouse_area.containsMouse ? Style.colorTheme5 : index % 2 == 0 ? Style.colorTheme6 : Style.colorTheme7
@@ -305,7 +264,7 @@ ColumnLayout {
                 onClicked: {
                     if (mouse.button === Qt.RightButton) context_menu.popup()
                     else {
-                        API.get().current_coin_info.ticker = model.modelData.ticker
+                        API.get().current_coin_info.ticker = ticker
                         dashboard.current_page = General.idx_dashboard_wallet
                     }
                 }
@@ -318,9 +277,9 @@ ColumnLayout {
             Menu {
                 id: context_menu
                 Action {
-                    text: API.get().empty_string + (qsTr("Disable %1", "TICKER").arg(model.modelData.ticker))
-                    onTriggered: API.get().disable_coins([model.modelData.ticker])
-                    enabled: General.canDisable(model.modelData.ticker)
+                    text: API.get().empty_string + (qsTr("Disable %1", "TICKER").arg(ticker))
+                    onTriggered: API.get().disable_coins([ticker])
+                    enabled: General.canDisable(ticker)
                 }
             }
 
@@ -330,7 +289,7 @@ ColumnLayout {
                 anchors.left: parent.left
                 anchors.leftMargin: coin_header.anchors.leftMargin
 
-                source: General.coinIcon(model.modelData.ticker)
+                source: General.coinIcon(ticker)
                 fillMode: Image.PreserveAspectFit
                 width: Style.textSize2
                 anchors.verticalCenter: parent.verticalCenter
@@ -340,8 +299,7 @@ ColumnLayout {
             DefaultText {
                 anchors.left: icon.right
                 anchors.leftMargin: 10
-
-                text_value: API.get().empty_string + (model.modelData.name)
+                text_value: API.get().empty_string + (name)
                 anchors.verticalCenter: parent.verticalCenter
             }
 
@@ -351,7 +309,7 @@ ColumnLayout {
                 anchors.left: parent.left
                 anchors.leftMargin: balance_header.anchors.leftMargin
 
-                text_value: API.get().empty_string + (General.formatCrypto("", model.modelData.balance, model.modelData.ticker,  model.modelData.balance_fiat, API.get().current_currency))
+                text_value: API.get().empty_string + (General.formatCrypto("", balance, ticker,  main_currency_balance, API.get().current_currency))
                 color: Style.colorWhite4
                 anchors.verticalCenter: parent.verticalCenter
                 privacy: true
@@ -362,8 +320,11 @@ ColumnLayout {
                 anchors.right: parent.right
                 anchors.rightMargin: change_24h_header.anchors.rightMargin
 
-                text_value: API.get().empty_string + (General.validFiatRates(model.modelData, API.get().current_currency) ? General.formatPercent(model.modelData.rates[API.get().current_currency].percent_change_24h) : '-')
-                color: getColor(model.modelData)
+                text_value: {
+                    const v = parseFloat(change_24h)
+                    return API.get().empty_string + (v === 0 ? '-' : General.formatPercent(v))
+                }
+                color: Style.getValueColor(change_24h)
                 anchors.verticalCenter: parent.verticalCenter
             }
 
@@ -372,13 +333,14 @@ ColumnLayout {
                 anchors.right: parent.right
                 anchors.rightMargin: price_header.anchors.rightMargin
 
-                text_value: API.get().empty_string + (General.formatFiat('', model.modelData.price, API.get().current_currency))
+                text_value: API.get().empty_string + (General.formatFiat('', main_currency_price_for_one_unit, API.get().current_currency))
                 color: Style.colorThemeDarkLight
                 anchors.verticalCenter: parent.verticalCenter
             }
 
             // 7d Trend
             ChartView {
+                property var historical: trend_7d
                 id: chart
                 width: 200
                 height: 100
@@ -388,23 +350,10 @@ ColumnLayout {
                 anchors.verticalCenter: parent.verticalCenter
                 legend.visible: false
 
-                Component.onCompleted: updateChart(chart, model.modelData.historical)
+                onHistoricalChanged: updateChart(chart, historical)
 
                 backgroundColor: "transparent"
             }
         }
     }
 }
-
-
-
-
-
-
-
-
-/*##^##
-Designer {
-    D{i:0;autoSize:true;height:600;width:1200}
-}
-##^##*/

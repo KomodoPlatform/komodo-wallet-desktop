@@ -352,8 +352,8 @@ namespace mm2::api
 
     struct send_raw_transaction_request
     {
-        std::string coin;
         std::string tx_hex;
+        std::string coin;
     };
 
     void to_json(nlohmann::json& j, const send_raw_transaction_request& cfg);
@@ -569,10 +569,10 @@ namespace mm2::api
         std::string rel;
         bool        cancellable;
         std::size_t timestamp;
-        std::string human_timestamp;
         std::string order_type;
         std::string base_amount;
         std::string rel_amount;
+        std::string human_timestamp;
     };
 
     struct my_orders_answer

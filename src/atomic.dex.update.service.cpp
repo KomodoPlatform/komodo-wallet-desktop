@@ -14,41 +14,47 @@
  *                                                                            *
  ******************************************************************************/
 
-//! QT Headers
-#include <QtNetwork>
-
 //! Project headers
-#include "atomic.dex.qt.utilities.hpp"
+#include "atomic.dex.update.service.hpp"
+#include "atomic.dex.events.hpp"
 
 namespace atomic_dex
 {
-    bool
-    am_i_able_to_reach_this_endpoint(const QString& endpoint)
+    //! Constructor
+    update_system_service::update_system_service(entt::registry& registry) : system(registry)
     {
-        return RestClient::get(endpoint.toStdString()).code == 200;
+        m_update_clock        = std::chrono::high_resolution_clock::now();
+        this->m_update_status = nlohmann::json::object();
+        this->fetch_update_status();
     }
 
-    QJsonArray
-    nlohmann_json_array_to_qt_json_array(const nlohmann::json& j)
+    //! Public override
+    void
+    update_system_service::update() noexcept
     {
-        QJsonArray  out;
-        QJsonDocument q_json = QJsonDocument::fromJson(QString::fromStdString(j.dump()).toUtf8());
-        out                  = q_json.array();
-        return out;
-    }
+        using namespace std::chrono_literals;
 
-    QString
-    retrieve_change_24h(const atomic_dex::coinpaprika_provider& paprika, const atomic_dex::coin_config& coin, const atomic_dex::cfg& config)
-    {
-        auto    ticker_infos = paprika.get_ticker_infos(coin.ticker).answer;
-        QString change_24h   = "0";
-        if (not ticker_infos.empty() && ticker_infos.contains(config.current_currency))
+        const auto now = std::chrono::high_resolution_clock::now();
+        const auto s   = std::chrono::duration_cast<std::chrono::seconds>(now - m_update_clock);
+        if (s >= 1h)
         {
-            auto change_24h_str =
-                std::to_string(paprika.get_ticker_infos(coin.ticker).answer.at(config.current_currency).at("percent_change_24h").get<double>());
-            std::replace(begin(change_24h_str), end(change_24h_str), ',', '.');
-            change_24h = QString::fromStdString(change_24h_str);
+            this->fetch_update_status();
+            m_update_clock = std::chrono::high_resolution_clock::now();
         }
-        return change_24h;
+    }
+
+    //! Private api
+    void
+    update_system_service::fetch_update_status() noexcept
+    {
+        spdlog::debug("{} l{} f[{}]", __FUNCTION__, __LINE__, fs::path(__FILE__).filename().string());
+        spdlog::info("fetching update status");
+        this->dispatcher_.trigger<refresh_update_status>();
+    }
+
+    const nlohmann::json
+    update_system_service::get_update_status() const noexcept
+    {
+        return *m_update_status;
     }
 } // namespace atomic_dex

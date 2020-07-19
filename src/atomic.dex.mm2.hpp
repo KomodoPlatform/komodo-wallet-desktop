@@ -50,9 +50,9 @@ namespace atomic_dex
     struct tx_state
     {
         std::string state;
-        std::size_t transactions_left;
-        std::size_t blocks_left;
         std::size_t current_block;
+        std::size_t blocks_left;
+        std::size_t transactions_left;
     };
 
     using t_allocator = folly::AlignedSysAllocator<std::uint8_t, folly::FixedAlign<bit_size<std::size_t>()>>;
@@ -227,6 +227,9 @@ namespace atomic_dex
 
         //! Get coins that can be activated
         [[nodiscard]] t_coins get_enableable_coins() const noexcept;
+
+        //! Get all coins
+        [[nodiscard]] t_coins get_all_coins() const noexcept;;
 
         //! Get Specific info about one coin
         [[nodiscard]] coin_config get_coin_info(const std::string& ticker) const;
