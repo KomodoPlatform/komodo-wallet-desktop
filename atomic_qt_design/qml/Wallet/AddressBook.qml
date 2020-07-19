@@ -147,54 +147,65 @@ ColumnLayout {
                         Layout.alignment: Qt.AlignVCenter
 
                         // Contact name
-                        DefaultText {
+                        RowLayout {
                             Layout.alignment: Qt.AlignVCenter | Qt.AlignLeft
                             Layout.leftMargin: layout_margin
-                            text: modelData.name
-                            color: Style.colorText
-                            visible: !editing
 
-                            Component.onCompleted: {
-                                // Start editing if it's a new/empty one
-                                if(text.length === 0) {
-                                    editing = global_edit_in_progress = true
+                            DefaultText {
+                                Layout.leftMargin: name_input.Layout.leftMargin
+
+                                text: modelData.name
+                                color: Style.colorText
+                                visible: !editing
+
+                                Component.onCompleted: {
+                                    // Start editing if it's a new/empty one
+                                    if(text.length === 0) {
+                                        editing = global_edit_in_progress = true
+                                    }
                                 }
                             }
-                        }
-                        DefaultTextField {
-                            id: name_input
-                            Layout.alignment: Qt.AlignVCenter | Qt.AlignLeft
-                            Layout.leftMargin: layout_margin
-                            color: Style.colorText
-                            placeholderText: API.get().empty_string + (qsTr("Enter the contact name"))
-                            width: 150
-                            onTextChanged: {
-                                const max_length = 50
-                                if(text.length > max_length)
-                                    text = text.substring(0, max_length)
+                            DefaultTextField {
+                                id: name_input
+
+                                color: Style.colorText
+                                placeholderText: API.get().empty_string + (qsTr("Enter the contact name"))
+                                width: 150
+                                onTextChanged: {
+                                    const max_length = 50
+                                    if(text.length > max_length)
+                                        text = text.substring(0, max_length)
+                                }
+
+                                visible: editing
                             }
 
-                            visible: editing
+                            DefaultText {
+                                id: edit_contact
+                                Layout.leftMargin: layout_margin * 0.25
+
+                                visible: !editing && enabled
+                                enabled: !global_edit_in_progress
+                                text: "✎"
+                                font.bold: true
+                                color: Style.colorGreen
+
+                                MouseArea {
+                                    anchors.fill: parent
+                                    onClicked: {
+                                        if(edit_contact.enabled) {
+                                            name_input.text = modelData.name
+                                            editing = global_edit_in_progress = true
+                                        }
+                                    }
+                                }
+                            }
                         }
 
                         // Buttons
                         RowLayout {
                             Layout.alignment: Qt.AlignVCenter | Qt.AlignRight
                             Layout.rightMargin: layout_margin
-
-                            DefaultButton {
-                                Layout.leftMargin: layout_margin
-
-                                visible: !editing
-                                enabled: !global_edit_in_progress
-                                font.pixelSize: Style.textSizeSmall3
-                                text: "✎"
-                                minWidth: height
-                                onClicked: {
-                                    name_input.text = modelData.name
-                                    editing = global_edit_in_progress = true
-                                }
-                            }
 
                             PrimaryButton {
                                 Layout.leftMargin: layout_margin
@@ -312,11 +323,36 @@ ColumnLayout {
                                     hoverEnabled: true
                                 }
 
+                                // Edit
+                                DefaultText {
+                                    id: edit_icon
+                                    anchors.left: parent.left
+                                    anchors.leftMargin: layout_margin
+                                    anchors.verticalCenter: parent.verticalCenter
+
+                                    visible: !editing_address && enabled
+                                    enabled: !global_edit_in_progress
+                                    text: "✎"
+                                    font.bold: true
+                                    color: enabled ? Style.colorGreen : Style.colorTextDisabled
+
+                                    MouseArea {
+                                        anchors.fill: parent
+                                        onClicked: {
+                                            if(edit_icon.enabled) {
+                                                address_input.text = address
+                                                editing_address = global_edit_in_progress = true
+                                            }
+                                        }
+                                    }
+                                }
+
                                 // Icon
                                 Image {
                                     id: icon
-                                    anchors.left: parent.left
-                                    anchors.leftMargin: layout_margin
+
+                                    anchors.left: edit_icon.right
+                                    anchors.leftMargin: 10
                                     anchors.verticalCenter: parent.verticalCenter
 
                                     source: General.coinIcon(type)
@@ -383,20 +419,6 @@ ColumnLayout {
                                     anchors.right: parent.right
                                     anchors.rightMargin: layout_margin
                                     anchors.verticalCenter: parent.verticalCenter
-
-                                    DefaultButton {
-                                        Layout.leftMargin: layout_margin
-
-                                        visible: !editing_address
-                                        enabled: !global_edit_in_progress
-                                        font.pixelSize: Style.textSizeSmall3
-                                        text: "✎"
-                                        minWidth: height
-                                        onClicked: {
-                                            address_input.text = address
-                                            editing_address = global_edit_in_progress = true
-                                        }
-                                    }
 
                                     PrimaryButton {
                                         Layout.leftMargin: layout_margin
