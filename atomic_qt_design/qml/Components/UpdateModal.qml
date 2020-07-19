@@ -6,7 +6,8 @@ import "../Constants"
 
 DefaultModal {
     readonly property bool status_good: API.get().update_status.rpc_code === 200
-    readonly property bool suggest_update: API.get().update_status.status === "required" || API.get().update_status.status === "recommended"
+    readonly property bool required_update: API.get().update_status.status === "required"
+    readonly property bool suggest_update: required_update || API.get().update_status.status === "recommended"
 
     onSuggest_updateChanged: {
         if(suggest_update) {
@@ -24,12 +25,26 @@ DefaultModal {
     width: 900
     height: Math.min(text_area.height + padding*2, 700)
 
+    DefaultText {
+        anchors.top: parent.top
+        anchors.topMargin: padding
+        anchors.right: parent.right
+        anchors.rightMargin: padding
+
+        font.pixelSize: Style.textSize2
+
+        text_value: API.get().empty_string + ("(" + (!suggest_update ? qsTr("Available") : required_update ? qsTr("Required") : qsTr("Recommended")) + ")")
+        color: !suggest_update ? Style.colorGreen : required_update ? Style.colorRed : Style.colorOrange
+    }
+
     ColumnLayout {
         anchors.fill: parent
 
         ModalHeader {
+            id: header
             title: API.get().empty_string + (General.download_icon + "   " + qsTr("New Update!") + " " + (API.get().update_status.current_version + "  " + General.right_arrow_icon + "  " + API.get().update_status.new_version))
         }
+
 
         DefaultFlickable {
             Layout.fillWidth: true
@@ -55,7 +70,7 @@ DefaultModal {
             DefaultButton {
                 text: API.get().empty_string + (qsTr("Skip"))
                 onClicked: root.close()
-                visible: API.get().update_status.status !== "required"
+                visible: !required_update
             }
 
             PrimaryButton {
