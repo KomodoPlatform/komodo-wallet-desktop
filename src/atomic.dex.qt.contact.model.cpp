@@ -52,9 +52,9 @@ namespace atomic_dex
             spdlog::trace("name {} changed to {}", m_name.toStdString(), name.toStdString());
             this->m_wallet_manager.update_or_insert_contact_name(m_name, name);
             this->m_wallet_manager.update_wallet_cfg();
+            m_name = name;
+            emit nameChanged();
         }
-        m_name = name;
-        emit nameChanged();
     }
 
     QVariant
