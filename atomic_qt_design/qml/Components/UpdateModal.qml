@@ -13,7 +13,8 @@ DefaultModal {
     onSuggest_updateChanged: {
         if(suggest_update) {
             // Force-open if update is suggested
-            if(!root.opened && status_good) root.open()
+            // Somehow status_good is not true so we have to check === 200 manually
+            if(!root.opened && API.get().update_status.rpc_code === 200) root.open()
         }
     }
 
