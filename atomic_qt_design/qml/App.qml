@@ -114,6 +114,16 @@ Rectangle {
     ToastManager {
         id: toast
     }
+
+    // Update Modal
+    UpdateModal {
+        id: update_modal
+    }
+
+    UpdateNotificationLine {
+        anchors.top: parent.top
+        anchors.right: parent.right
+    }
 }
 
 

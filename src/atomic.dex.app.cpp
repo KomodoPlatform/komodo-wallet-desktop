@@ -234,53 +234,57 @@ namespace atomic_dex
             }
         }
 
-            if (not this->m_actions_queue.empty())
+        if (not this->m_actions_queue.empty())
+        {
+            action last_action;
+            this->m_actions_queue.pop(last_action);
+            switch (last_action)
             {
-                action last_action;
-                this->m_actions_queue.pop(last_action);
-                switch (last_action)
+            case action::refresh_enabled_coin:
+                if (mm2.is_mm2_running())
                 {
-                case action::refresh_enabled_coin:
-                    if (mm2.is_mm2_running())
-                    {
-                        this->process_refresh_enabled_coin_action();
-                    }
-                    break;
-                case action::refresh_current_ticker:
-                    if (mm2.is_mm2_running())
-                    {
-                        this->process_refresh_current_ticker_infos();
-                    }
-                    break;
-                case action::refresh_order:
-                    if (mm2.is_mm2_running())
-                    {
-                        emit myOrdersUpdated();
-                    }
-                    break;
-                case action::refresh_ohlc:
-                    if (mm2.is_mm2_running())
-                    {
-                        emit OHLCDataUpdated();
-                    }
-                    break;
-                case action::refresh_transactions:
-                    if (mm2.is_mm2_running())
-                    {
-                        refresh_transactions(mm2);
-                    }
-                    break;
-                case action::refresh_portfolio_ticker_balance:
-                    if (mm2.is_mm2_running())
-                    {
-                    this->m_portfolio->update_balance_values(*this->m_ticker_balance_to_refresh);
-                    }
-                    break;
-                case action::refresh_update_status:
-                    spdlog::trace("refreshing update status in GUI");
-                    break;
+                    this->process_refresh_enabled_coin_action();
                 }
+                break;
+            case action::refresh_current_ticker:
+                if (mm2.is_mm2_running())
+                {
+                    this->process_refresh_current_ticker_infos();
+                }
+                break;
+            case action::refresh_order:
+                if (mm2.is_mm2_running())
+                {
+                    emit myOrdersUpdated();
+                }
+                break;
+            case action::refresh_ohlc:
+                if (mm2.is_mm2_running())
+                {
+                    emit OHLCDataUpdated();
+                }
+                break;
+            case action::refresh_transactions:
+                if (mm2.is_mm2_running())
+                {
+                    refresh_transactions(mm2);
+                }
+                break;
+            case action::refresh_portfolio_ticker_balance:
+                if (mm2.is_mm2_running())
+                {
+                    this->m_portfolio->update_balance_values(*this->m_ticker_balance_to_refresh);
+                }
+                break;
+            case action::refresh_update_status:
+                spdlog::trace("refreshing update status in GUI");
+                const auto&   update_service_sys = this->system_manager_.get_system<update_system_service>();
+                QJsonDocument doc                = QJsonDocument::fromJson(QString::fromStdString(update_service_sys.get_update_status().dump()).toUtf8());
+                this->m_update_status            = doc.toVariant();
+                emit updateStatusChanged();
+                break;
             }
+        }
     }
 
     void
@@ -382,7 +386,11 @@ namespace atomic_dex
     }
 
     application::application(QObject* pParent) noexcept :
-        QObject(pParent), m_coin_info(new current_coin_info(dispatcher_, this)), m_addressbook(new addressbook_model(this->m_wallet_manager, this)),
+        QObject(pParent),
+        m_update_status(QJsonObject{
+            {"update_needed", false}, {"changelog", ""}, {"current_version", ""}, {"download_url", ""}, {"new_version", ""}, {"rpc_code", 0}, {"status", ""}}),
+        m_coin_info(new current_coin_info(dispatcher_, this)),
+        m_addressbook(new addressbook_model(this->m_wallet_manager, this)),
         m_portfolio(new portfolio_model(this->system_manager_, this->m_config, this))
     {
         get_dispatcher().sink<refresh_update_status>().connect<&application::on_refresh_update_status_event>(*this);
@@ -769,7 +777,7 @@ namespace atomic_dex
     }
 
     void
-    application::on_refresh_update_status_event([[maybe_unused]] const refresh_update_status &evt) noexcept
+    application::on_refresh_update_status_event([[maybe_unused]] const refresh_update_status& evt) noexcept
     {
         spdlog::debug("{} l{}", __FUNCTION__, __LINE__);
         this->m_actions_queue.push(action::refresh_update_status);

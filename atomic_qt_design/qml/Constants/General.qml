@@ -14,6 +14,8 @@ QtObject {
     }
 
     readonly property string cex_icon: 'ⓘ'
+    readonly property string download_icon: '📥'
+    readonly property string right_arrow_icon: "⮕"
 
     property bool privacy_mode: false
 

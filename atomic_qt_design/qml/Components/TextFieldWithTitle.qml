@@ -29,7 +29,7 @@ ColumnLayout {
         DefaultText {
             visible: required && input_field.text === ''
             font.pixelSize: Style.textSizeSmall2
-            text_value: "Required"
+            text_value: API.get().empty_string + (qsTr("Required"))
             color: Style.colorRed
         }
     }
