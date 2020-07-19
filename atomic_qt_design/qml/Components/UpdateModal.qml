@@ -5,7 +5,7 @@ import QtQuick.Controls 2.12
 import "../Constants"
 
 DefaultModal {
-    readonly property bool status_good: API.get().update_status.rpc_code !== 200
+    readonly property bool status_good: API.get().update_status.rpc_code === 200
 
     id: root
 
@@ -22,24 +22,25 @@ DefaultModal {
         }
 
         DefaultFlickable {
+            Layout.fillWidth: true
+            Layout.fillHeight: true
+
             contentWidth: text_area.width
             contentHeight: text_area.height
 
-            TextAreaWithTitle {
+            DefaultTextArea {
                 id: text_area
-                title: API.get().empty_string + (qsTr("Change-log"))
                 width: root.width - root.padding*2
-                field.readOnly: true
-                field.text: status_good ? API.get().update_status.changelog : (qsTr("Problem occured") + ": " + API.get().update_status.status)
-                field.textFormat: Text.MarkdownText
-                copyable: true
+                readOnly: true
+                text: status_good ? API.get().update_status.changelog : (qsTr("Problem occured") + ": " + API.get().update_status.status)
+                textFormat: Text.MarkdownText
                 remove_newline: false
             }
         }
 
-        DefaultButton {
+        PrimaryButton {
+            Layout.topMargin: root.padding * 0.5
             Layout.alignment: Qt.AlignHCenter
-            Layout.bottomMargin: root.padding
             enabled: status_good
             text: API.get().empty_string + (qsTr("Download"))
             onClicked: Qt.openUrlExternally(API.get().update_status.download_url)
