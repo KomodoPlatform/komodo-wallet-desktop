@@ -5,7 +5,7 @@ import QtQuick.Controls 2.12
 import "../Constants"
 
 Rectangle {
-    visible: API.get().update_status.update_needed && update_modal.status_good
+    visible: update_modal.update_needed && update_modal.status_good
 
     color: Style.colorGreen
     height: 30 + radius

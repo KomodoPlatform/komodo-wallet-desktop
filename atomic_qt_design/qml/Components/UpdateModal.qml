@@ -6,8 +6,9 @@ import "../Constants"
 
 DefaultModal {
     readonly property bool status_good: API.get().update_status.rpc_code === 200
-    readonly property bool required_update: API.get().update_status.status === "required"
-    readonly property bool suggest_update: required_update || API.get().update_status.status === "recommended"
+    readonly property bool update_needed: API.get().update_status.update_needed
+    readonly property bool required_update: update_needed && (API.get().update_status.status === "required")
+    readonly property bool suggest_update: update_needed && (required_update || API.get().update_status.status === "recommended")
 
     onSuggest_updateChanged: {
         if(suggest_update) {
