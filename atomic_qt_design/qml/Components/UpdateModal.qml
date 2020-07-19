@@ -14,15 +14,11 @@ DefaultModal {
     width: 900
     height: Math.min(text_area.height + padding*2, 700)
 
-    Component.onCompleted: {
-        console.log("Update Status: " + JSON.stringify(API.get().update_status))
-    }
-
     ColumnLayout {
         anchors.fill: parent
 
         ModalHeader {
-            title: API.get().empty_string + (General.download_icon + " " + qsTr("New Update!") + " " + qsTr("Version:") + " " + API.get().update_status.new_version)
+            title: API.get().empty_string + (General.download_icon + " " + qsTr("New Update!") + " " + (API.get().update_status.current_version + "  ->  " + API.get().update_status.new_version))
         }
 
         DefaultFlickable {
