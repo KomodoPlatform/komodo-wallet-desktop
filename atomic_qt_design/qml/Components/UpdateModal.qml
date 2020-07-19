@@ -6,15 +6,14 @@ import "../Constants"
 
 DefaultModal {
     readonly property bool status_good: API.get().update_status.rpc_code === 200
-    readonly property bool update_needed: API.get().update_status.update_needed
+    readonly property bool update_needed: status_good && API.get().update_status.update_needed
     readonly property bool required_update: update_needed && (API.get().update_status.status === "required")
     readonly property bool suggest_update: update_needed && (required_update || API.get().update_status.status === "recommended")
 
     onSuggest_updateChanged: {
         if(suggest_update) {
             // Force-open if update is suggested
-            // Somehow status_good is not true so we have to check === 200 manually
-            if(!root.opened && API.get().update_status.rpc_code === 200) root.open()
+            if(!root.opened) root.open()
         }
     }
 
