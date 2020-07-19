@@ -186,7 +186,7 @@ DefaultModal {
                     Layout.alignment: Qt.AlignRight | Qt.AlignBottom
                     text: API.get().empty_string + (qsTr("Address Book"))
                     onClicked: {
-                        main_layout.currentIndex = 1
+                        openAddressBook()
                         root.close()
                     }
                 }

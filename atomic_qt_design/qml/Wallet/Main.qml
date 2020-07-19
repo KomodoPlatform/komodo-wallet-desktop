@@ -11,6 +11,14 @@ Item {
     property alias send_modal: send_modal
     readonly property int layout_margin: 30
 
+    function openAddressBook() {
+        main_layout.currentIndex = 1
+    }
+
+    function closeAddressBook() {
+        main_layout.currentIndex = 0
+    }
+
     function reset() {
         send_modal.reset(true)
         receive_modal.reset()
@@ -257,7 +265,7 @@ Item {
 
                     DefaultButton {
                         text: API.get().empty_string + (qsTr("Address Book"))
-                        onClicked: main_layout.currentIndex = 1
+                        onClicked: openAddressBook()
                     }
 
                     DefaultButton {

@@ -28,7 +28,7 @@ ColumnLayout {
             }
             // Open main wallet page
             if(main_layout.currentIndex === 1)
-                main_layout.currentIndex = 0
+                closeAddressBook()
         }
     }
 
@@ -51,7 +51,7 @@ ColumnLayout {
 
         MouseArea {
             anchors.fill: parent
-            onClicked: { if(!back_button.disabled) main_layout.currentIndex = 0 }
+            onClicked: { if(!back_button.disabled) closeAddressBook() }
         }
     }
 
@@ -428,7 +428,7 @@ ColumnLayout {
                                         visible: !editing_address
                                         onClicked: {
                                             API.get().current_coin_info.ticker = type
-                                            main_layout.currentIndex = 0
+                                            closeAddressBook()
                                             send_modal.address_field.text = address
                                             send_modal.open()
                                         }
