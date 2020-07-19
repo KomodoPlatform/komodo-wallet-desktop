@@ -8,8 +8,10 @@ DefaultButton {
     colorDisabled: Style.colorButtonPrimaryDisabled
     colorHovered: Style.colorButtonPrimaryHovered
     colorEnabled: Style.colorButtonPrimaryEnabled
-    colorTextDisabled: Style.colorWhite8
-    colorTextEnabled: Style.colorWhite1
+    colorTextDisabled: Style.colorWhite13
+    colorTextEnabled: Style.colorWhite10
+    colorTextHovered: Style.colorWhite10
+    font.bold: true
 }
 
 /*##^##
