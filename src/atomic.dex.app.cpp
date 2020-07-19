@@ -46,6 +46,7 @@
 #include "atomic.dex.qt.bindings.hpp"
 #include "atomic.dex.qt.utilities.hpp"
 #include "atomic.dex.security.hpp"
+#include "atomic.dex.update.service.hpp"
 #include "atomic.dex.utilities.hpp"
 #include "atomic.dex.version.hpp"
 #include "atomic.threadpool.hpp"
@@ -212,7 +213,7 @@ namespace atomic_dex
         {
             if (m_coin_info->get_ticker().isEmpty() && not m_enabled_coins.empty())
             {
-                //auto coin = mm2.get_enabled_coins().front();
+                // auto coin = mm2.get_enabled_coins().front();
                 //! KMD Is our default coin
                 m_coin_info->set_ticker("KMD");
                 emit coinInfoChanged();
@@ -367,6 +368,7 @@ namespace atomic_dex
         auto& mm2_system = system_manager_.create_system<mm2>();
         system_manager_.create_system<coinpaprika_provider>(mm2_system, m_config);
         system_manager_.create_system<cex_prices_provider>(mm2_system);
+        system_manager_.create_system<update_system_service>();
 
         connect_signals();
         if (is_there_a_default_wallet())
