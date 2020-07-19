@@ -427,7 +427,10 @@ ColumnLayout {
                                         enabled: address !== "" && type !== "" && API.get().enabled_coins.map(c => c.ticker).indexOf(type) !== -1
                                         visible: !editing_address
                                         onClicked: {
-                                            console.log("Will open send modal for this address")
+                                            API.get().current_coin_info.ticker = type
+                                            main_layout.currentIndex = 0
+                                            send_modal.address_field.text = address
+                                            send_modal.open()
                                         }
                                     }
 

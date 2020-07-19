@@ -9,6 +9,9 @@ import "../Constants"
 DefaultModal {
     id: root
 
+    property alias address_field: input_address.field
+
+
     onClosed: if(stack_layout.currentIndex === 2) reset(true)
 
     // Local
