@@ -18,7 +18,7 @@ DefaultModal {
         anchors.fill: parent
 
         ModalHeader {
-            title: API.get().empty_string + (General.download_icon + " " + qsTr("New Update!") + " " + (API.get().update_status.current_version + "  ->  " + API.get().update_status.new_version))
+            title: API.get().empty_string + (General.download_icon + "   " + qsTr("New Update!") + " " + (API.get().update_status.current_version + "  " + General.right_arrow_icon + "  " + API.get().update_status.new_version))
         }
 
         DefaultFlickable {
