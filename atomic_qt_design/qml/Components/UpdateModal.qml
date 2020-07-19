@@ -6,10 +6,20 @@ import "../Constants"
 
 DefaultModal {
     readonly property bool status_good: API.get().update_status.rpc_code === 200
+    readonly property bool suggest_update: API.get().update_status.status === "required" || API.get().update_status.status === "recommended"
+
+    onSuggest_updateChanged: {
+        if(suggest_update) {
+            // Force-open if update is suggested
+            if(!root.opened && status_good) root.open()
+        }
+    }
 
     id: root
 
     padding: 50
+
+    closePolicy: suggest_update ? Popup.NoAutoClose : (Popup.CloseOnEscape | Popup.CloseOnPressOutside)
 
     width: 900
     height: Math.min(text_area.height + padding*2, 700)
@@ -38,12 +48,21 @@ DefaultModal {
             }
         }
 
-        PrimaryButton {
+        RowLayout {
             Layout.topMargin: root.padding * 0.5
             Layout.alignment: Qt.AlignHCenter
-            enabled: status_good
-            text: API.get().empty_string + (qsTr("Download"))
-            onClicked: Qt.openUrlExternally(API.get().update_status.download_url)
+
+            DefaultButton {
+                text: API.get().empty_string + (qsTr("Skip"))
+                onClicked: root.close()
+                visible: API.get().update_status.status !== "required"
+            }
+
+            PrimaryButton {
+                enabled: status_good
+                text: API.get().empty_string + (qsTr("Download"))
+                onClicked: Qt.openUrlExternally(API.get().update_status.download_url)
+            }
         }
     }
 }
