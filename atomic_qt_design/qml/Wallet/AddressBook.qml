@@ -256,10 +256,12 @@ ColumnLayout {
 
                                     function onInCurrentPageChanged() {
                                         if(address_book.inCurrentPage && !address_line.initialized && address_line.selectable_coins.length === 0) {
+                                            const original_text = type
                                             address_line.updateSelectableCoins()
                                             address_line.initialized = true
                                             if(type !== "") {
                                                 combo_base.type_index = combo_base.currentIndex = address_line.selectable_coins.indexOf(original_text)
+                                                combo_base.previous_type_index = -2
                                             }
                                         }
 
