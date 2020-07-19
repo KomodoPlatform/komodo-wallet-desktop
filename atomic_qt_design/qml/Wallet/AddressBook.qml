@@ -256,13 +256,8 @@ ColumnLayout {
 
                                     function onInCurrentPageChanged() {
                                         if(address_book.inCurrentPage && !address_line.initialized && address_line.selectable_coins.length === 0) {
-                                            const original_text = type
                                             address_line.updateSelectableCoins()
                                             address_line.initialized = true
-                                            if(type !== "") {
-                                                combo_base.type_index = combo_base.currentIndex = address_line.selectable_coins.indexOf(original_text)
-                                                combo_base.previous_type_index = -2
-                                            }
                                         }
 
                                         if(!address_book.inCurrentPage) {
@@ -288,9 +283,12 @@ ColumnLayout {
                                 }
 
                                 function updateSelectableCoins() {
-                                    selectable_coins = essential_coins.filter(c => {
-                                                            return c.ticker === type || contact.selected_coins.indexOf(c.ticker) === -1
-                                                        }).map(c => c.ticker)
+                                    const original_text = type
+
+                                    selectable_coins = essential_coins.filter(c => c.ticker === type || contact.selected_coins.indexOf(c.ticker) === -1).map(c => c.ticker)
+
+                                    if(original_text !== "")
+                                        combo_base.currentIndex = address_line.selectable_coins.indexOf(original_text)
                                 }
 
 
@@ -337,31 +335,7 @@ ColumnLayout {
 
                                     model: selectable_coins
 
-                                    property int previous_type_index: -1
-                                    property int type_index: -1
-                                    onCurrentTextChanged: {
-                                        // If index is same but the text changed, that means the list changed,
-                                        // We'll change the index instead
-                                        // We also always save the previous index, to recover from double reset later
-                                        if(currentIndex === type_index || (type !== "" && previous_type_index === -2)) {
-                                            // This part fixes the index shift when one element disappears
-                                            previous_type_index = type_index
-                                            currentIndex = type_index = selectable_coins.indexOf(type)
-                                        }
-                                        else if(currentText !== type) {
-                                            // This part simply sets the ticker
-                                            previous_type_index = type_index
-                                            type_index = currentIndex
-                                            type = currentText
-                                        }
-                                    }
-
-                                    onModelChanged: {
-                                        // When list resets, we already correct the index, but somehow it double resets
-                                        // That's why we save the previous one before the second reset and recover to that here
-                                        if(previous_type_index >= 0)
-                                            currentIndex = previous_type_index
-                                    }
+                                    onCurrentTextChanged: { if(currentText !== type) type = currentText }
                                 }
 
                                 VerticalLine {
