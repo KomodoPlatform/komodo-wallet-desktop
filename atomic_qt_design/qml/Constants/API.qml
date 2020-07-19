@@ -5,6 +5,15 @@ QtObject {
     // Mock API
     property string saved_seed
     property string saved_password
+    property var update_info: ({
+                "update_needed": true,
+                "new_version": "0.1.5",
+                "version_num": "015",
+                "changelog": "blabla",
+                "status": "available",
+                "download_url": "https://github.com/KomodoPlatform/atomicDEX-Pro/releases/tag/0.1.5-alpha"
+              })
+
     property var mockAPI: ({
         empty_string: '',
         // Signals
