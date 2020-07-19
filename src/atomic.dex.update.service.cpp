@@ -15,6 +15,7 @@
  ******************************************************************************/
 
 //! Project headers
+#include "atomic.dex.pch.hpp"
 #include "atomic.dex.update.service.hpp"
 #include "atomic.dex.events.hpp"
 #include "atomic.dex.version.hpp"
@@ -46,6 +47,11 @@ namespace
             bool update_needed = false;
             std::string current_version_str = version;
             std::string endpoint_version = resp.at("new_version").get<std::string>();
+            boost::algorithm::replace_all(current_version_str, ".", "");
+            boost::algorithm::replace_all(endpoint_version, ".", "");
+            boost::algorithm::trim_left_if(current_version_str, boost::is_any_of("0"));
+            boost::algorithm::trim_left_if(endpoint_version, boost::is_any_of("0"));
+            update_needed = std::stoi(current_version_str) < std::stoi(endpoint_version);
             resp["update_needed"] = update_needed;
         }
         return resp;
@@ -84,6 +90,7 @@ namespace atomic_dex
         spdlog::info("fetching update status");
         spawn([this]() {
             this->m_update_status = get_update_status_rpc(atomic_dex::get_raw_version());
+            //spdlog::trace("-> {}", this->m_update_status->dump(4));
             this->dispatcher_.trigger<refresh_update_status>();
         });
     }
