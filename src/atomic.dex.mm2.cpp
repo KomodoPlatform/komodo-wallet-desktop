@@ -703,10 +703,15 @@ namespace atomic_dex
     t_broadcast_answer
     mm2::broadcast(t_broadcast_request&& request, t_mm2_ec& ec) noexcept
     {
+        std::string coin = request.coin;
         auto result = rpc_send_raw_transaction(std::move(request));
         if (result.rpc_result_code == -1)
         {
             ec = dextop_error::rpc_send_raw_transaction_error;
+        } else {
+            if (this->get_coin_info(coin).is_erc_20) {
+                result.tx_hash = "0x" + result.tx_hash;
+            }
         }
         return result;
     }
@@ -928,8 +933,8 @@ namespace atomic_dex
     bool
     mm2::do_i_have_enough_funds(const std::string& ticker, const t_float_50& amount) const
     {
-        auto funds = get_balance(ticker);
-        return funds > amount;
+        t_float_50 funds = get_balance(ticker);
+        return funds >= amount;
     }
 
     std::string
