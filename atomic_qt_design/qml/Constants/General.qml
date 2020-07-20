@@ -255,6 +255,10 @@ QtObject {
         return false
     }
 
+    function txFeeTicker(info) {
+        return info.type === "ERC-20" ? "ETH" : info.ticker
+    }
+
     function canDisable(ticker) {
         if(API.get().enabled_coins.length <= 2 ||
                 ticker === "KMD" ||

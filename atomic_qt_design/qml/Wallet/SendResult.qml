@@ -33,7 +33,7 @@ ColumnLayout {
     // Fees
     TextWithTitle {
         title: API.get().empty_string + (qsTr("Fees"))
-        text: API.get().empty_string + (result.fees)
+        text: API.get().empty_string + (General.formatCrypto("", result.fees, General.txFeeTicker(API.get().current_coin_info)))
     }
 
     // Date

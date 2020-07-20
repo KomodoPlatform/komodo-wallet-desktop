@@ -80,7 +80,8 @@ DefaultListView {
 
         // Fee
         DefaultText {
-            text_value: API.get().empty_string + (General.formatCrypto(!(parseFloat(model.modelData.fees) > 0), Math.abs(parseFloat(model.modelData.fees)), API.get().current_coin_info.ticker) + " " + qsTr("transaction fee"))
+            text_value: API.get().empty_string + (General.formatCrypto(!(parseFloat(model.modelData.fees) > 0), Math.abs(parseFloat(model.modelData.fees)),
+                                                                       General.txFeeTicker(API.get().current_coin_info)) + " " + qsTr("transaction fee"))
             font.pixelSize: description.font.pixelSize
             anchors.verticalCenter: parent.verticalCenter
             anchors.left: parent.left

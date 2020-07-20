@@ -342,7 +342,7 @@ DefaultModal {
             // Fees
             TextWithTitle {
                 title: API.get().empty_string + (qsTr("Fees"))
-                text: API.get().empty_string + (General.formatCrypto("", prepare_send_result.fees, API.get().current_coin_info.ticker))
+                text: API.get().empty_string + (General.formatCrypto("", prepare_send_result.fees, General.txFeeTicker(API.get().current_coin_info)))
             }
 
             // Date
