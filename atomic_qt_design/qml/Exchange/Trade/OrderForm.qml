@@ -57,7 +57,7 @@ FloatingBackground {
     }
 
     function canShowFees() {
-        return my_side && valid_trade_info && !General.isZero(getVolume()) 
+        return my_side && valid_trade_info && !General.isZero(getVolume())
     }
 
     function getVolume() {
@@ -69,10 +69,20 @@ FloatingBackground {
     }
 
     function getAnyAvailableCoin(filter_ticker) {
-        let coins = getFilteredCoins()
+        let coins = getFilteredCoins().map(c => c.ticker)
+
+        // Filter out ticker
         if(filter_ticker !== undefined || filter_ticker !== '')
-            coins = coins.filter(c => c.ticker !== filter_ticker)
-        return coins.length > 0 ? coins[0].ticker : ''
+            coins = coins.filter(c => c !== filter_ticker)
+
+        // Prioritize KMD / BTC pair
+        const prioritized_1 = my_side ? "KMD" : "BTC"
+        if(coins.indexOf(prioritized_1) !== -1) return prioritized_1
+        const prioritized_2 = my_side ? "BTC" : "KMD"
+        if(coins.indexOf(prioritized_2) !== -1) return prioritized_2
+
+        // Pick a random one if prioritized ones do not satisfy
+        return coins.length > 0 ? coins[0] : ''
     }
 
     function fieldsAreFilled() {
@@ -243,6 +253,11 @@ FloatingBackground {
                     Layout.fillWidth: true
 
                     model: ticker_list
+
+                    onModelChanged: {
+                        if(ticker_list.length > 0) setAnyTicker()
+                    }
+
                     onCurrentTextChanged: {
                         if(!recursive_update) {
                             resetTradeInfo()
