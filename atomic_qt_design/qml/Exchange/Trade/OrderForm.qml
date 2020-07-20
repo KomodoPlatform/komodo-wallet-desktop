@@ -76,9 +76,9 @@ FloatingBackground {
             coins = coins.filter(c => c !== filter_ticker)
 
         // Prioritize KMD / BTC pair
-        const prioritized_1 = my_side ? "KMD" : "BTC"
+        const prioritized_1 = "KMD"
         if(coins.indexOf(prioritized_1) !== -1) return prioritized_1
-        const prioritized_2 = my_side ? "BTC" : "KMD"
+        const prioritized_2 = "BTC"
         if(coins.indexOf(prioritized_2) !== -1) return prioritized_2
 
         // Pick a random one if prioritized ones do not satisfy
