@@ -202,7 +202,7 @@ namespace atomic_dex
         [[nodiscard]] static t_withdraw_answer withdraw(t_withdraw_request&& request, t_mm2_ec& ec) noexcept;
 
         //! Broadcast a raw transaction on the blockchain
-        [[nodiscard]] static t_broadcast_answer broadcast(t_broadcast_request&& request, t_mm2_ec& ec) noexcept;
+        [[nodiscard]] t_broadcast_answer broadcast(t_broadcast_request&& request, t_mm2_ec& ec) noexcept;
 
         //! Last 50 transactions maximum
         [[nodiscard]] t_transactions get_tx_history(const std::string& ticker, t_mm2_ec& ec) const;
