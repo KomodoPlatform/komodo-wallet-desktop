@@ -928,8 +928,8 @@ namespace atomic_dex
     bool
     mm2::do_i_have_enough_funds(const std::string& ticker, const t_float_50& amount) const
     {
-        auto funds = get_balance(ticker);
-        return funds > amount;
+        t_float_50 funds = get_balance(ticker);
+        return funds >= amount;
     }
 
     std::string
