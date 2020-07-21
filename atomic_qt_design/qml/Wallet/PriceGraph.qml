@@ -81,7 +81,7 @@ ChartView {
             labelsFont.weight: Font.Bold
             gridLineColor: Style.colorThemeDark2
             labelsColor: Style.colorThemeDark3
-            format: "MMM d"
+            format: "<br>MMM d"
         }
         axisY: ValueAxis {
             titleVisible: series.axisX.titleVisible
