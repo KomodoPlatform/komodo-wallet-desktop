@@ -198,6 +198,60 @@ Item {
                 content: PriceGraph {
                     width: price_graph_bg.width
                     height: price_graph_bg.height
+
+                    RowLayout {
+                        spacing: 60
+                        y: 10
+                        anchors.horizontalCenter: parent.horizontalCenter
+
+                        RowLayout {
+                            Layout.alignment: Qt.AlignLeft
+
+                            FloatingBackground {
+                                id: left_circle
+
+                                verticalShadow: true
+                                width: 28; height: 28
+                                radius: 100
+
+                                content: DefaultImage {
+                                    source: General.image_path + "shadowed_circle_green.svg"
+
+                                    width: 12; height: width
+                                }
+                            }
+
+                            DefaultText {
+                                id: left_text
+                                text_value: API.get().empty_string + (qsTr("%1 / %2 Price", "TICKER").arg(API.get().current_coin_info.ticker).arg(API.get().current_fiat) + " " + General.cex_icon)
+                                font.pixelSize: Style.textSizeSmall3
+
+                                CexInfoTrigger {}
+                            }
+                        }
+
+                        RowLayout {
+                            Layout.alignment: Qt.AlignLeft
+                            Layout.fillWidth: true
+
+                            FloatingBackground {
+                                verticalShadow: left_circle.verticalShadow
+                                width: left_circle.width; height: left_circle.height
+                                radius: 100
+
+                                content: DefaultImage {
+                                    source: General.image_path + "shadowed_circle_blue.svg"
+
+                                    width: 12; height: width
+                                }
+                            }
+
+                            DefaultText {
+                                text_value: API.get().empty_string + (qsTr("Volume 24h") + " (" + API.get().current_fiat + ")")
+                                font: left_text.font
+                            }
+                        }
+                    }
                 }
             }
 
@@ -209,55 +263,6 @@ Item {
                 Layout.rightMargin: layout_margin
 
                 spacing: 15
-
-                RowLayout {
-                    Layout.alignment: Qt.AlignLeft
-
-                    FloatingBackground {
-                        id: left_circle
-
-                        verticalShadow: true
-                        width: 28; height: 28
-                        radius: 100
-
-                        content: DefaultImage {
-                            source: General.image_path + "shadowed_circle_green.svg"
-
-                            width: 12; height: width
-                        }
-                    }
-
-                    DefaultText {
-                        id: left_text
-                        text_value: API.get().empty_string + (qsTr("%1 / %2 Price", "TICKER").arg(API.get().current_coin_info.ticker).arg(API.get().current_fiat) + " " + General.cex_icon)
-                        font.pixelSize: Style.textSizeSmall3
-
-                        CexInfoTrigger {}
-                    }
-                }
-
-                RowLayout {
-                    Layout.alignment: Qt.AlignLeft
-                    Layout.fillWidth: true
-
-                    FloatingBackground {
-                        verticalShadow: left_circle.verticalShadow
-                        width: left_circle.width; height: left_circle.height
-                        radius: 100
-
-                        content: DefaultImage {
-                            source: General.image_path + "shadowed_circle_blue.svg"
-
-                            width: 12; height: width
-                        }
-                    }
-
-                    DefaultText {
-                        text_value: API.get().empty_string + (qsTr("Volume 24h") + " (" + API.get().current_fiat + ")")
-                        font: left_text.font
-                    }
-                }
-
 
                 RowLayout {
                     Layout.alignment: Qt.AlignRight
