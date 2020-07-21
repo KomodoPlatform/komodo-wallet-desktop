@@ -24,12 +24,10 @@ Item {
     Layout.fillHeight: true
 
     // Background
-    DefaultRectangle {
+    SidebarPanel {
         id: background
         anchors.right: parent.right
         width: sidebar.width + parent.width
-
-        DefaultGradient { }
 
         height: parent.height
 

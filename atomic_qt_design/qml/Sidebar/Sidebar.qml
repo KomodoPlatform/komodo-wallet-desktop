@@ -54,7 +54,7 @@ Item {
     }
 
     // Top Rect
-    DefaultRectangle {
+    SidebarPanel {
         id: top_rect
         anchors.left: parent.left
         width: parent.width
@@ -62,12 +62,10 @@ Item {
         anchors.bottom: cursor_round_edge.top
 
         radius: Style.rectangleCornerRadius
-
-        DefaultGradient { }
     }
 
     // Bottom Rect
-    DefaultRectangle {
+    SidebarPanel {
         id: bottom_rect
         anchors.left: parent.left
         width: parent.width
@@ -75,13 +73,11 @@ Item {
         anchors.bottom: parent.bottom
 
         radius: Style.rectangleCornerRadius
-
-        DefaultGradient { }
     }
 
 
     // Left Rect
-    DefaultRectangle {
+    SidebarPanel {
         id: left_rect
         anchors.left: top_rect.left
         anchors.top: top_rect.bottom
@@ -93,9 +89,7 @@ Item {
         border.width: 0
         radius: 0
 
-        DefaultGradient {
-            end_pos: top_rect.width*0.95 / parent.width
-        }
+        end_pos: top_rect.width*0.95 / width
     }
 
 
