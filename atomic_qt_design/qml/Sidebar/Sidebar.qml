@@ -14,7 +14,7 @@ Item {
     height: parent.height
 
     // Cursor
-    Item {
+    Rectangle {
         id: cursor
         width: 170 - cursor_round_edge.radius
         anchors.right: parent.right
@@ -22,33 +22,28 @@ Item {
         transformOrigin: Item.Left
         anchors.verticalCenter: cursor_round_edge.verticalCenter
 
-        LinearGradient {
-            anchors.fill: parent
+        gradient: Gradient {
+            orientation: Qt.Horizontal
 
-            start: Qt.point(0, 0)
-            end: Qt.point(parent.width, 0)
-
-            gradient: Gradient {
-                GradientStop {
-                    position: 0.0
-                    color: Style.colorSidebarHighlightGradient1
-                }
-                GradientStop {
-                    position: cursor_round_edge.radius / cursor.width
-                    color: Style.colorSidebarHighlightGradient1
-                }
-                GradientStop {
-                    position: 0.375
-                    color: Style.colorSidebarHighlightGradient2
-                }
-                GradientStop {
-                    position: 0.7292
-                    color: Style.colorSidebarHighlightGradient3
-                }
-                GradientStop {
-                    position: 1.0
-                    color: Style.colorSidebarHighlightGradient4
-                }
+            GradientStop {
+                position: 0.0
+                color: Style.colorSidebarHighlightGradient1
+            }
+            GradientStop {
+                position: cursor_round_edge.radius / cursor.width
+                color: Style.colorSidebarHighlightGradient1
+            }
+            GradientStop {
+                position: 0.375
+                color: Style.colorSidebarHighlightGradient2
+            }
+            GradientStop {
+                position: 0.7292
+                color: Style.colorSidebarHighlightGradient3
+            }
+            GradientStop {
+                position: 1.0
+                color: Style.colorSidebarHighlightGradient4
             }
         }
     }
