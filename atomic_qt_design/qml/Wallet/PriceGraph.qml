@@ -30,8 +30,6 @@ ChartView {
         style: series.style
         width: series.width
 
-        pointsVisible: true
-
         onHovered: updateValueText(state, point.y, axisYRight.labelsColor, 0)
 
         axisX: DateTimeAxis {
@@ -74,7 +72,6 @@ ChartView {
         style: Qt.SolidLine
         width: 1.5
 
-        pointsVisible: true
         onHovered: updateValueText(state, point.y, axisY.labelsColor, 2)
 
         axisX: DateTimeAxis {
