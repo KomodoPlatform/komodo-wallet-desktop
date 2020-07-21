@@ -235,8 +235,22 @@ Item {
         return cb === undefined ? [] : cb
     }
 
+    function moveToBeginning(coins, ticker) {
+        const idx = coins.map(c => c.ticker).indexOf(ticker)
+        if(idx === -1) return
+
+        const coin = coins[idx]
+        return [coin].concat(coins.filter(c => c.ticker !== ticker))
+    }
+
     function getCoins(my_side) {
-        const coins = API.get().enabled_coins
+        let coins = API.get().enabled_coins
+
+        // Prioritize KMD / BTC pair by moving them to the start
+        coins = moveToBeginning(coins, "BTC")
+        coins = moveToBeginning(coins, "KMD")
+
+        // Return full list
         if(my_side === undefined) return coins
 
         // Filter for Sell

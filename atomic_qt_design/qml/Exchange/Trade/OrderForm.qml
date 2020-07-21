@@ -75,12 +75,6 @@ FloatingBackground {
         if(filter_ticker !== undefined || filter_ticker !== '')
             coins = coins.filter(c => c !== filter_ticker)
 
-        // Prioritize KMD / BTC pair
-        const prioritized_1 = "KMD"
-        if(coins.indexOf(prioritized_1) !== -1) return prioritized_1
-        const prioritized_2 = "BTC"
-        if(coins.indexOf(prioritized_2) !== -1) return prioritized_2
-
         // Pick a random one if prioritized ones do not satisfy
         return coins.length > 0 ? coins[0] : ''
     }
@@ -127,7 +121,7 @@ FloatingBackground {
         if(coin === undefined) {
             // If there are other coins, select first
             if(coins.length > 0) {
-                setAnyTicker()
+                combo.currentIndex = 0
                 return coins[combo.currentIndex].ticker
             }
             // If there isn't any, reset index
@@ -253,10 +247,6 @@ FloatingBackground {
                     Layout.fillWidth: true
 
                     model: ticker_list
-
-                    onModelChanged: {
-                        if(ticker_list.length > 0) setAnyTicker()
-                    }
 
                     onCurrentTextChanged: {
                         if(!recursive_update) {
