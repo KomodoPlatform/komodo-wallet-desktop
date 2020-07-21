@@ -138,7 +138,7 @@
         <file>atomic_qt_design/qml/Components/PrimaryButton.qml</file>
         <file>atomic_qt_design/qml/Components/InnerBackground.qml</file>
         <file>atomic_qt_design/qml/Components/FloatingBackground.qml</file>
-        <file>atomic_qt_design/qml/Components/DefaultGradient.qml</file>
+        <file>atomic_qt_design/qml/Components/DefaultImage.qml</file>
         <file>atomic_qt_design/qml/Components/DefaultInnerShadow.qml</file>
         <file>atomic_qt_design/qml/Components/DefaultButton.qml</file>
         <file>atomic_qt_design/qml/Components/DefaultBusyIndicator.qml</file>
@@ -151,10 +151,12 @@
         <file>atomic_qt_design/qml/Components/DefaultFlickable.qml</file>
         <file>atomic_qt_design/qml/Components/DefaultComboBox.qml</file>
         <file>atomic_qt_design/qml/Components/DefaultCheckBox.qml</file>
+        <file>atomic_qt_design/qml/Components/GradientRectangle.qml</file>
         <file>atomic_qt_design/qml/Components/LogModal.qml</file>
         <file>atomic_qt_design/qml/Components/UpdateModal.qml</file>
         <file>atomic_qt_design/qml/Components/UpdateNotificationLine.qml</file>
         <file>atomic_qt_design/qml/Components/DefaultModal.qml</file>
+        <file>atomic_qt_design/qml/Components/SidebarPanel.qml</file>
         <file>atomic_qt_design/qml/Components/SetupPage.qml</file>
         <file>atomic_qt_design/qml/Components/Separator.qml</file>
         <file>atomic_qt_design/qml/Components/HorizontalLine.qml</file>

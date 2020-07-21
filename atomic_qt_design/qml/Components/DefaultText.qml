@@ -8,7 +8,7 @@ Text {
     property string text_value
     property bool privacy: false
 
-    font.family: Style.font
+    font.family: Style.font_family
     font.pixelSize: Style.textSize
     color: Style.colorText
     text: privacy && General.privacy_mode ? "*****" : text_value

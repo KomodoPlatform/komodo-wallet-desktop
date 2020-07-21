@@ -30,8 +30,6 @@ ChartView {
         style: series.style
         width: series.width
 
-        pointsVisible: true
-
         onHovered: updateValueText(state, point.y, axisYRight.labelsColor, 0)
 
         axisX: DateTimeAxis {
@@ -50,6 +48,7 @@ ChartView {
             labelsFont: series.axisY.labelsFont
             gridLineColor: series.axisY.gridLineColor
             labelsColor: series2.color
+            labelFormat: "%.3f M"
         }
     }
 
@@ -74,17 +73,16 @@ ChartView {
         style: Qt.SolidLine
         width: 1.5
 
-        pointsVisible: true
         onHovered: updateValueText(state, point.y, axisY.labelsColor, 2)
 
         axisX: DateTimeAxis {
             titleVisible: false
             lineVisible: false
-            labelsFont.family: Style.font
-            labelsFont.pixelSize: Style.textSizeVerySmall8
+            labelsFont.family: Style.font_family
+            labelsFont.weight: Font.Bold
             gridLineColor: Style.colorThemeDark2
             labelsColor: Style.colorThemeDark3
-            format: "MMM d"
+            format: "<br>MMM d"
         }
         axisY: ValueAxis {
             titleVisible: series.axisX.titleVisible
@@ -125,7 +123,7 @@ ChartView {
 
             for(let i = 0; i < historical.length; ++i) {
                 const price = historical[i].price
-                const other = historical[i].volume_24h
+                const other = historical[i].volume_24h / 1000000
 
                 series.append(General.timestampToDouble(historical[i].timestamp), price)
                 series2.append(General.timestampToDouble(historical[i].timestamp), other)

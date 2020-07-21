@@ -73,25 +73,19 @@ RowLayout {
                 font.pixelSize: fontSize
             }
 
-            Rectangle {
-                id: price_diff_line
+            GradientRectangle {
                 width: 200
                 height: 6
 
-                DefaultGradient {
-                    anchors.fill: parent
-                    anchors.margins: 0
-                    start_color: Style.colorGreen
-                    end_color: Style.colorRed
-                }
+                start_color: Style.colorGreen
+                end_color: Style.colorRed
 
                 Rectangle {
-                    id: vertical_line
                     width: 4
-                    height: price_diff_line.height * 2
+                    height: parent.height * 2
                     anchors.verticalCenter: parent.verticalCenter
                     anchors.horizontalCenter: parent.horizontalCenter
-                    anchors.horizontalCenterOffset: 0.5 * price_diff_line.width * Math.min(Math.max(price_diff / line_scale, -1), 1)
+                    anchors.horizontalCenterOffset: 0.5 * parent.width * Math.min(Math.max(price_diff / line_scale, -1), 1)
                 }
             }
 

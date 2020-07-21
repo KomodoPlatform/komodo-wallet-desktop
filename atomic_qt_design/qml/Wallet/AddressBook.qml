@@ -348,7 +348,7 @@ ColumnLayout {
                                 }
 
                                 // Icon
-                                Image {
+                                DefaultImage {
                                     id: icon
 
                                     anchors.left: edit_icon.right

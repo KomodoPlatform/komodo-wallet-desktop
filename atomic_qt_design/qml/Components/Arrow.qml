@@ -11,7 +11,7 @@ Item {
     width: img.width
     height: img.height
 
-    Image {
+    DefaultImage {
         id: img
 
         source: General.image_path + "arrow_" + (up ? "up" : "down") + ".svg"

@@ -14,7 +14,7 @@ Item {
     readonly property bool is_placed_order: item.uuid !== ''
 
     // Base Icon
-    Image {
+    DefaultImage {
         id: base_icon
         source: General.coinIcon(item.my_info.my_coin)
         fillMode: Image.PreserveAspectFit
@@ -23,7 +23,7 @@ Item {
     }
 
     // Rel Icon
-    Image {
+    DefaultImage {
         id: rel_icon
         source: General.coinIcon(item.my_info.other_coin)
         fillMode: Image.PreserveAspectFit
@@ -44,7 +44,7 @@ Item {
     }
 
     // Swap icon
-    Image {
+    DefaultImage {
         source: General.image_path + "exchange-exchange.svg"
         width: base_amount.font.pixelSize
         height: width

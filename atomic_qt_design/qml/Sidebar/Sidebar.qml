@@ -14,7 +14,7 @@ Item {
     height: parent.height
 
     // Cursor
-    Item {
+    Rectangle {
         id: cursor
         width: 170 - cursor_round_edge.radius
         anchors.right: parent.right
@@ -22,39 +22,34 @@ Item {
         transformOrigin: Item.Left
         anchors.verticalCenter: cursor_round_edge.verticalCenter
 
-        LinearGradient {
-            anchors.fill: parent
+        gradient: Gradient {
+            orientation: Qt.Horizontal
 
-            start: Qt.point(0, 0)
-            end: Qt.point(parent.width, 0)
-
-            gradient: Gradient {
-                GradientStop {
-                    position: 0.0
-                    color: Style.colorSidebarHighlightGradient1
-                }
-                GradientStop {
-                    position: cursor_round_edge.radius / cursor.width
-                    color: Style.colorSidebarHighlightGradient1
-                }
-                GradientStop {
-                    position: 0.375
-                    color: Style.colorSidebarHighlightGradient2
-                }
-                GradientStop {
-                    position: 0.7292
-                    color: Style.colorSidebarHighlightGradient3
-                }
-                GradientStop {
-                    position: 1.0
-                    color: Style.colorSidebarHighlightGradient4
-                }
+            GradientStop {
+                position: 0.0
+                color: Style.colorSidebarHighlightGradient1
+            }
+            GradientStop {
+                position: cursor_round_edge.radius / cursor.width
+                color: Style.colorSidebarHighlightGradient1
+            }
+            GradientStop {
+                position: 0.375
+                color: Style.colorSidebarHighlightGradient2
+            }
+            GradientStop {
+                position: 0.7292
+                color: Style.colorSidebarHighlightGradient3
+            }
+            GradientStop {
+                position: 1.0
+                color: Style.colorSidebarHighlightGradient4
             }
         }
     }
 
     // Top Rect
-    DefaultRectangle {
+    SidebarPanel {
         id: top_rect
         anchors.left: parent.left
         width: parent.width
@@ -62,12 +57,10 @@ Item {
         anchors.bottom: cursor_round_edge.top
 
         radius: Style.rectangleCornerRadius
-
-        DefaultGradient { }
     }
 
     // Bottom Rect
-    DefaultRectangle {
+    SidebarPanel {
         id: bottom_rect
         anchors.left: parent.left
         width: parent.width
@@ -75,13 +68,11 @@ Item {
         anchors.bottom: parent.bottom
 
         radius: Style.rectangleCornerRadius
-
-        DefaultGradient { }
     }
 
 
     // Left Rect
-    DefaultRectangle {
+    SidebarPanel {
         id: left_rect
         anchors.left: top_rect.left
         anchors.top: top_rect.bottom
@@ -93,9 +84,7 @@ Item {
         border.width: 0
         radius: 0
 
-        DefaultGradient {
-            end_pos: top_rect.width*0.95 / parent.width
-        }
+        end_pos: top_rect.width*0.95 / width
     }
 
 
@@ -129,7 +118,7 @@ Item {
         width: parent.width + parent.x
         height: parent.height
 
-        Image {
+        DefaultImage {
             source: General.image_path + Style.sidebar_atomicdex_logo
             anchors.horizontalCenter: parent.horizontalCenter
             y: parent.width * 0.25

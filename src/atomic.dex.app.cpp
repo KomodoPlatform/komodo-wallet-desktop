@@ -1146,7 +1146,10 @@ namespace atomic_dex
 {
     application::~application() noexcept
     {
-        this->m_addressbook->removeRows(0, this->m_addressbook->rowCount());
+        if (this->m_addressbook->rowCount() > 0)
+        {
+            this->m_addressbook->removeRows(0, this->m_addressbook->rowCount());
+        }
         export_swaps_json();
     }
 } // namespace atomic_dex

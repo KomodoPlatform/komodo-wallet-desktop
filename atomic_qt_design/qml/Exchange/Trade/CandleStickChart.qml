@@ -103,8 +103,8 @@ ChartView {
         axisX: DateTimeAxis {
             titleVisible: false
             lineVisible: true
-            labelsFont.family: Style.font
-            labelsFont.pixelSize: Style.textSizeVerySmall8
+            labelsFont.family: Style.font_family
+            labelsFont.weight: Font.Bold
             gridLineColor: Style.colorChartGrid
             labelsColor: Style.colorChartText
             color: Style.colorChartLegendLine

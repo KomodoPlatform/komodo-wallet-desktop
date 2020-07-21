@@ -24,12 +24,10 @@ Item {
     Layout.fillHeight: true
 
     // Background
-    DefaultRectangle {
+    SidebarPanel {
         id: background
         anchors.right: parent.right
         width: sidebar.width + parent.width
-
-        DefaultGradient { }
 
         height: parent.height
 
@@ -70,7 +68,7 @@ Item {
                         Layout.rightMargin: -Layout.leftMargin
                         width: search_button.width
                         height: search_button.height
-                        Image {
+                        DefaultImage {
                             id: search_button
 
                             source: General.image_path + "exchange-search.svg"
@@ -134,31 +132,13 @@ Item {
 
                     model: General.filterCoins(API.get().enabled_coins, input_coin_filter_text)
 
-                    delegate: Rectangle {
-                        color: list_bg.color
+                    delegate: GradientRectangle {
                         width: list_bg.width - list_bg.border.width*2 - 2
                         height: 44
                         radius: Style.rectangleCornerRadius
 
-                        LinearGradient {
-                            visible: API.get().current_coin_info.ticker === model.modelData.ticker || mouse_area.containsMouse
-                            anchors.fill: parent
-                            source: parent
-
-                            start: Qt.point(0, 0)
-                            end: Qt.point(parent.width, 0)
-
-                            gradient: Gradient {
-                                GradientStop {
-                                    position: 0.0
-                                    color: API.get().current_coin_info.ticker === model.modelData.ticker ? Style.colorCoinListHighlightGradient1 : Style.colorCoinListHighlightGradient1
-                                }
-                                GradientStop {
-                                    position: 1.0
-                                    color: API.get().current_coin_info.ticker === model.modelData.ticker ? Style.colorCoinListHighlightGradient2 : Style.colorWhite8
-                                }
-                            }
-                        }
+                        start_color: API.get().current_coin_info.ticker === model.modelData.ticker ? Style.colorCoinListHighlightGradient1 : mouse_area.containsMouse ? Style.colorCoinListHighlightGradient1 : "transparent"
+                        end_color: API.get().current_coin_info.ticker === model.modelData.ticker ? Style.colorCoinListHighlightGradient2 : mouse_area.containsMouse ? Style.colorWhite8 : "transparent"
 
                         // Click area
                         MouseArea {
@@ -191,7 +171,7 @@ Item {
                         readonly property double side_margin: 25
 
                         // Icon
-                        Image {
+                        DefaultImage {
                             id: icon
                             anchors.left: parent.left
                             anchors.leftMargin: side_margin - scrollbar_margin

@@ -75,16 +75,12 @@ SetupPage {
 
                     model: wallets
 
-                    delegate: Rectangle {
-                        color: mouse_area.containsMouse ? Style.colorTheme6 : "transparent"
+                    delegate: GradientRectangle {
+                        start_color: mouse_area.containsMouse ? Style.colorWalletsHighlightGradient1 : "transparent"
+                        end_color: mouse_area.containsMouse ? Style.colorWalletsHighlightGradient2 : "transparent"
+
                         width: bg.width
                         height: bg.row_height
-                        DefaultGradient {
-                            anchors.fill: parent
-                            visible: mouse_area.containsMouse
-                            start_color: Style.colorWalletsHighlightGradient1
-                            end_color: Style.colorWalletsHighlightGradient2
-                        }
 
                         // Click area
                         MouseArea {

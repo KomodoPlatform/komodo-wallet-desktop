@@ -19,7 +19,7 @@ Item {
         transformOrigin: Item.Center
         spacing: image_margin
 
-        Image {
+        DefaultImage {
             id: image
             Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
             antialiasing: true

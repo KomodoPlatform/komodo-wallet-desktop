@@ -4,8 +4,8 @@ import QtQuick.Controls 2.12
 import QtQuick.Controls.Universal 2.12
 import "../Constants"
 
-CheckBox {
-    font.family: Style.font_family
+Image {
+    mipmap: true
 }
 
 /*##^##

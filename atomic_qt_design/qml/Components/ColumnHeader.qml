@@ -47,7 +47,7 @@ Item {
 
 
     // Arrow icon
-    Image {
+    DefaultImage {
         id: arrow_icon
 
         source: General.image_path + "arrow-" + (ascending ? "up" : "down") + ".svg"

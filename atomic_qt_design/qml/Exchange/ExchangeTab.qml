@@ -15,7 +15,7 @@ DefaultText {
 
     id: txt
     font.pixelSize: Style.textSizeMid2
-    font.family: Style.font
+    font.family: Style.font_family
     font.weight: highlight ? Font.Medium : Font.Light
     color: highlight ? Style.colorWhite1 : mouse_area.containsMouse ? Style.colorWhite4 : Style.colorWhite5
 
