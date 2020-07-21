@@ -80,8 +80,8 @@ ChartView {
         axisX: DateTimeAxis {
             titleVisible: false
             lineVisible: false
-            labelsFont.pixelSize: Style.textSizeVerySmall8
             labelsFont.family: Style.font_family
+            labelsFont.weight: Font.Bold
             gridLineColor: Style.colorThemeDark2
             labelsColor: Style.colorThemeDark3
             format: "MMM d"
