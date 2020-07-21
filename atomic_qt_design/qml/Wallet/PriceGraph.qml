@@ -48,6 +48,7 @@ ChartView {
             labelsFont: series.axisY.labelsFont
             gridLineColor: series.axisY.gridLineColor
             labelsColor: series2.color
+            labelFormat: "%.3f M"
         }
     }
 
@@ -122,7 +123,7 @@ ChartView {
 
             for(let i = 0; i < historical.length; ++i) {
                 const price = historical[i].price
-                const other = historical[i].volume_24h
+                const other = historical[i].volume_24h / 1000000
 
                 series.append(General.timestampToDouble(historical[i].timestamp), price)
                 series2.append(General.timestampToDouble(historical[i].timestamp), other)
