@@ -132,31 +132,13 @@ Item {
 
                     model: General.filterCoins(API.get().enabled_coins, input_coin_filter_text)
 
-                    delegate: Rectangle {
-                        color: list_bg.color
+                    delegate: GradientRectangle {
                         width: list_bg.width - list_bg.border.width*2 - 2
                         height: 44
                         radius: Style.rectangleCornerRadius
 
-                        LinearGradient {
-                            visible: API.get().current_coin_info.ticker === model.modelData.ticker || mouse_area.containsMouse
-                            anchors.fill: parent
-                            source: parent
-
-                            start: Qt.point(0, 0)
-                            end: Qt.point(parent.width, 0)
-
-                            gradient: Gradient {
-                                GradientStop {
-                                    position: 0.0
-                                    color: API.get().current_coin_info.ticker === model.modelData.ticker ? Style.colorCoinListHighlightGradient1 : Style.colorCoinListHighlightGradient1
-                                }
-                                GradientStop {
-                                    position: 1.0
-                                    color: API.get().current_coin_info.ticker === model.modelData.ticker ? Style.colorCoinListHighlightGradient2 : Style.colorWhite8
-                                }
-                            }
-                        }
+                        start_color: API.get().current_coin_info.ticker === model.modelData.ticker ? Style.colorCoinListHighlightGradient1 : mouse_area.containsMouse ? Style.colorCoinListHighlightGradient1 : "transparent"
+                        end_color: API.get().current_coin_info.ticker === model.modelData.ticker ? Style.colorCoinListHighlightGradient2 : mouse_area.containsMouse ? Style.colorWhite8 : "transparent"
 
                         // Click area
                         MouseArea {
