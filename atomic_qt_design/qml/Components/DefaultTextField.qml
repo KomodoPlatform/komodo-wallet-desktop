@@ -7,7 +7,7 @@ import "../Constants"
 TextField {
     id: text_field
 
-    font.family: Style.font
+    font.family: Style.font_family
     placeholderTextColor: Style.colorPlaceholderText
 
     // Right click Context Menu

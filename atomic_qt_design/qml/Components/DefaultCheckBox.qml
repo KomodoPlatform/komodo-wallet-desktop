@@ -5,7 +5,7 @@ import QtQuick.Controls.Universal 2.12
 import "../Constants"
 
 CheckBox {
-    font.family: Style.font
+    font.family: Style.font_family
 }
 
 /*##^##

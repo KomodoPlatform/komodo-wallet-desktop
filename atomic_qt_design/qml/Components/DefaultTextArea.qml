@@ -7,7 +7,7 @@ import "../Constants"
 TextArea {
     id: text_field
 
-    font.family: Style.font
+    font.family: Style.font_family
     placeholderTextColor: Style.colorPlaceholderText
 
     property bool remove_newline: true
