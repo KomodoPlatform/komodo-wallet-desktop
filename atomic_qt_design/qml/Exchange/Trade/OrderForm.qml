@@ -127,7 +127,7 @@ FloatingBackground {
         if(coin === undefined) {
             // If there are other coins, select first
             if(coins.length > 0) {
-                combo.currentIndex = 0
+                setAnyTicker()
                 return coins[combo.currentIndex].ticker
             }
             // If there isn't any, reset index
