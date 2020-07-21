@@ -173,7 +173,7 @@ Item {
                 }
 
                 // Base
-                Image {
+                DefaultImage {
                     Layout.leftMargin: 15
                     source: General.coinIcon(base)
                     Layout.preferredWidth: 32

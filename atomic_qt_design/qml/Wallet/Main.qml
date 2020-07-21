@@ -64,7 +64,7 @@ Item {
                         Layout.leftMargin: 15
                         spacing: 15
                         // Icon
-                        Image {
+                        DefaultImage {
                             source: General.coinIcon(API.get().current_coin_info.ticker)
                             Layout.preferredHeight: 60
                             Layout.preferredWidth: Layout.preferredHeight
@@ -220,7 +220,7 @@ Item {
                         width: 28; height: 28
                         radius: 100
 
-                        content: Image {
+                        content: DefaultImage {
                             source: General.image_path + "shadowed_circle_green.svg"
 
                             width: 12; height: width
@@ -245,7 +245,7 @@ Item {
                         width: left_circle.width; height: left_circle.height
                         radius: 100
 
-                        content: Image {
+                        content: DefaultImage {
                             source: General.image_path + "shadowed_circle_blue.svg"
 
                             width: 12; height: width

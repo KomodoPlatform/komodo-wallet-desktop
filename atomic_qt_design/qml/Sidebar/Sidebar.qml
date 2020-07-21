@@ -129,7 +129,7 @@ Item {
         width: parent.width + parent.x
         height: parent.height
 
-        Image {
+        DefaultImage {
             source: General.image_path + Style.sidebar_atomicdex_logo
             anchors.horizontalCenter: parent.horizontalCenter
             y: parent.width * 0.25

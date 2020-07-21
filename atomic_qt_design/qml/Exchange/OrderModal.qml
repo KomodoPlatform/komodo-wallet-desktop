@@ -25,7 +25,7 @@ DefaultModal {
         }
 
         // Complete image
-        Image {
+        DefaultImage {
             visible: details.is_recent_swap !== undefined && getStatus(details) === status_swap_successful
             Layout.alignment: Qt.AlignHCenter
             source: General.image_path + "exchange-trade-complete.svg"

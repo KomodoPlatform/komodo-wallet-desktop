@@ -34,7 +34,7 @@ Item {
         scale: 0.8
     }
 
-    Image {
+    DefaultImage {
         id: img
         height: txt.font.pixelSize * 1.4
         fillMode: Image.PreserveAspectFit

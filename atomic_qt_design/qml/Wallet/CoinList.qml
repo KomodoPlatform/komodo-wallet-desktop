@@ -31,7 +31,7 @@ Column {
             ButtonGroup.group: childGroup
 
             // Icon
-            Image {
+            DefaultImage {
                 id: icon
                 anchors.left: parent.left
                 anchors.leftMargin: parent.leftPadding + 28

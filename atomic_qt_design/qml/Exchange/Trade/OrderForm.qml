@@ -228,7 +228,7 @@ FloatingBackground {
                     Layout.rightMargin: 20
                 }
 
-                Image {
+                DefaultImage {
                     Layout.leftMargin: combo.Layout.rightMargin * 3
                     source: General.coinIcon(getTicker())
                     Layout.preferredWidth: 32

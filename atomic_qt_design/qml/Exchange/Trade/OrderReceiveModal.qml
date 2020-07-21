@@ -69,7 +69,7 @@ DefaultModal {
                 }
 
                 // Icon
-                Image {
+                DefaultImage {
                     id: icon
                     anchors.left: parent.left
                     anchors.leftMargin: 20

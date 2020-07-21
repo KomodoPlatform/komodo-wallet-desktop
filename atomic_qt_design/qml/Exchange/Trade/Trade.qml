@@ -360,7 +360,7 @@ Item {
         anchors.centerIn: parent
         visible: form_base.ticker_list.length === 0
 
-        Image {
+        DefaultImage {
             Layout.alignment: Qt.AlignHCenter
             source: General.image_path + "setup-wallet-restore-2.svg"
             Layout.bottomMargin: 30
@@ -422,7 +422,7 @@ Item {
                 height: width
                 auto_set_size: false
 
-                content: Image {
+                content: DefaultImage {
                     source: General.image_path + "trade_icon.svg"
                     Layout.alignment: Qt.AlignVCenter
                     fillMode: Image.PreserveAspectFit

@@ -284,7 +284,7 @@ ColumnLayout {
             }
 
             // Icon
-            Image {
+            DefaultImage {
                 id: icon
                 anchors.left: parent.left
                 anchors.leftMargin: coin_header.anchors.leftMargin

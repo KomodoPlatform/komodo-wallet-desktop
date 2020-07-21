@@ -5,7 +5,7 @@ import QtQuick.Controls 2.12
 import "../Constants"
 
 // Hide button
-Image {
+DefaultImage {
     property alias mouse_area: mouse_area
     property bool use_default_behaviour: true
     source: General.image_path + "dashboard-eye" + (hiding ? "" : "-hide") + ".svg"

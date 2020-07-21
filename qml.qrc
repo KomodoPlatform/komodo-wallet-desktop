@@ -139,6 +139,7 @@
         <file>atomic_qt_design/qml/Components/InnerBackground.qml</file>
         <file>atomic_qt_design/qml/Components/FloatingBackground.qml</file>
         <file>atomic_qt_design/qml/Components/DefaultGradient.qml</file>
+        <file>atomic_qt_design/qml/Components/DefaultImage.qml</file>
         <file>atomic_qt_design/qml/Components/DefaultInnerShadow.qml</file>
         <file>atomic_qt_design/qml/Components/DefaultButton.qml</file>
         <file>atomic_qt_design/qml/Components/DefaultBusyIndicator.qml</file>

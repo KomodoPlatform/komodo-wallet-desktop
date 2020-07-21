@@ -70,7 +70,7 @@ Item {
                         Layout.rightMargin: -Layout.leftMargin
                         width: search_button.width
                         height: search_button.height
-                        Image {
+                        DefaultImage {
                             id: search_button
 
                             source: General.image_path + "exchange-search.svg"
@@ -191,7 +191,7 @@ Item {
                         readonly property double side_margin: 25
 
                         // Icon
-                        Image {
+                        DefaultImage {
                             id: icon
                             anchors.left: parent.left
                             anchors.leftMargin: side_margin - scrollbar_margin

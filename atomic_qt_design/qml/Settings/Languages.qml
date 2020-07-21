@@ -33,7 +33,7 @@ ColumnLayout {
                     height: image.sourceSize.height - 2
                     color: API.get().lang === model.modelData ? Style.colorTheme11 : "transparent"
 
-                    Image {
+                    DefaultImage {
                         id: image
                         anchors.centerIn: parent
                         source: General.image_path + "lang/" + model.modelData + ".png"
