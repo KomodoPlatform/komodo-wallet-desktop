@@ -18,6 +18,7 @@
 #include "atomic.dex.pch.hpp"
 
 //! Project
+#include "atomic.dex.qt.orders.model.hpp"
 #include "atomic.dex.qt.orders.proxy.model.hpp"
 
 namespace atomic_dex
@@ -37,6 +38,71 @@ namespace atomic_dex
     bool
     orders_proxy_model::lessThan(const QModelIndex& source_left, const QModelIndex& source_right) const
     {
+        int      role       = this->sortRole();
+        QVariant left_data  = sourceModel()->data(source_left, role);
+        QVariant right_data = sourceModel()->data(source_right, role);
+        switch (static_cast<atomic_dex::orders_model::OrdersRoles>(role))
+        {
+        case orders_model::BaseCoinRole:
+            break;
+        case orders_model::RelCoinRole:
+            break;
+        case orders_model::BaseCoinAmountRole:
+            break;
+        case orders_model::RelCoinAmountRole:
+            break;
+        case orders_model::OrderTypeRole:
+            break;
+        case orders_model::IsMakerRole:
+            break;
+        case orders_model::HumanDateRole:
+            break;
+        case orders_model::UnixTimestampRole:
+            return left_data.toInt() < right_data.toInt();
+        case orders_model::OrderIdRole:
+            break;
+        case orders_model::OrderStatusRole:
+            break;
+        case orders_model::MakerPaymentIdRole:
+            break;
+        case orders_model::TakerPaymentIdRole:
+            break;
+        case orders_model::IsSwapRole:
+            break;
+        case orders_model::CancellableRole:
+            break;
+        }
         return true;
+    }
+
+    bool
+    orders_proxy_model::am_i_in_history() const noexcept
+    {
+        return m_is_history;
+    }
+
+    void
+    orders_proxy_model::set_is_history(bool is_history) noexcept
+    {
+        this->m_is_history = is_history;
+        emit isHistoryChanged();
+    }
+
+    bool
+    orders_proxy_model::filterAcceptsRow(int source_row, const QModelIndex& source_parent) const
+    {
+        QModelIndex idx  = index(source_row, 0);
+        auto        data = this->data(idx, orders_model::OrdersRoles::OrderStatusRole).toString();
+        if (this->m_is_history)
+        {
+            if (data == "matching" || data == "ongoing" || data == "matched")
+                return false;
+        }
+        else
+        {
+            if (data == "successful" || data == "failed")
+                return false;
+        }
+        return QSortFilterProxyModel::filterAcceptsRow(source_row, source_parent);
     }
 } // namespace atomic_dex

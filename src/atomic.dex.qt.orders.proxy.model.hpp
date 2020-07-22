@@ -23,6 +23,8 @@ namespace atomic_dex
     class orders_proxy_model final : public QSortFilterProxyModel
     {
         Q_OBJECT
+        Q_PROPERTY(bool is_history READ am_i_in_history WRITE set_is_history NOTIFY isHistoryChanged);
+
       public:
         //! Constructor
         orders_proxy_model(QObject* parent);
@@ -30,8 +32,19 @@ namespace atomic_dex
         //! Destructor
         ~orders_proxy_model() final;
 
+        [[nodiscard]] bool am_i_in_history() const noexcept;
+
+        void set_is_history(bool is_history) noexcept;
+
+      signals:
+        void isHistoryChanged();
+
       protected:
         //! Override member functions
         [[nodiscard]] bool lessThan(const QModelIndex& source_left, const QModelIndex& source_right) const final;
+        bool               filterAcceptsRow(int source_row, const QModelIndex& source_parent) const override;
+
+      private:
+        bool m_is_history{false};
     };
-}
+} // namespace atomic_dex
