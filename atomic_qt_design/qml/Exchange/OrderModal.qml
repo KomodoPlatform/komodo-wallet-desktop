@@ -114,7 +114,7 @@ DefaultModal {
         // Payment ID
         TextWithTitle {
             title: API.get().empty_string + (details.is_maker ? qsTr("Maker Payment Sent ID") : qsTr("Maker Payment Spent ID"))
-            text: API.get().empty_string + (getSwapPaymentID(details, false))
+            text: API.get().empty_string + (details.maker_payment_id)
             visible: text !== ''
             privacy: true
         }
@@ -122,7 +122,7 @@ DefaultModal {
         // Payment ID
         TextWithTitle {
             title: API.get().empty_string + (details.is_maker ? qsTr("Taker Payment Spent ID") : qsTr("Taker Payment Sent ID"))
-            text: API.get().empty_string + (getSwapPaymentID(details, true))
+            text: API.get().empty_string + (details.taker_payment_id)
             visible: text !== ''
             privacy: true
         }
@@ -163,10 +163,10 @@ DefaultModal {
             PrimaryButton {
                 text: API.get().empty_string + (qsTr("View at Explorer"))
                 Layout.fillWidth: true
-                visible: getSwapPaymentID(details, false) !== '' || getSwapPaymentID(details, true) !== ''
+                visible: details.maker_payment_id !== '' || details.taker_payment_id !== ''
                 onClicked: {
-                    const maker_id = getSwapPaymentID(details, false)
-                    const taker_id = getSwapPaymentID(details, true)
+                    const maker_id = details.maker_payment_id
+                    const taker_id = details.taker_payment_id
                     if(maker_id !== '') General.viewTxAtExplorer(details.maker_coin, maker_id, true)
                     if(taker_id !== '') General.viewTxAtExplorer(details.taker_coin, taker_id, true)
                 }

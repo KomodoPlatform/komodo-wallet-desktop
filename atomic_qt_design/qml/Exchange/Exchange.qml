@@ -208,21 +208,6 @@ Item {
     function getStatusTextWithPrefix(swap) {
         return getStatusStep(swap) + " " + getStatusText(swap)
     }
-
-    function getSwapPaymentID(swap, is_taker) {
-        if(swap.events !== undefined) {
-            const search_name = swap.is_maker ?
-                              (is_taker ? "TakerPaymentSpent" : "MakerPaymentSent") :
-                              (is_taker ? "TakerPaymentSent" : "MakerPaymentSpent")
-            for(const e of swap.events) {
-               if(e.state === search_name) {
-                   return e.data.tx_hash
-               }
-            }
-        }
-
-        return ''
-    }
 }
 
 
