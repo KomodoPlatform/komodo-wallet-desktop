@@ -418,8 +418,8 @@ namespace atomic_dex
         auto& mm2 = get_mm2();
         atomic_dex::spawn([&mm2, order_id, this]() {
             ::mm2::api::rpc_cancel_order({order_id.toStdString()});
-            mm2.fetch_infos_thread();
-            this->get_dispatcher().trigger<refresh_order_needed>();
+            mm2.process_orders();
+            //this->get_dispatcher().trigger<refresh_order_needed>();
         });
     }
 
