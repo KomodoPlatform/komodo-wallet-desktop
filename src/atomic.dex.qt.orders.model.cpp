@@ -100,6 +100,9 @@ namespace atomic_dex
         case CancellableRole:
             item.is_cancellable = value.toBool();
             break;
+        case IsMakerRole:
+            item.is_maker = value.toBool();
+            break;
         }
 
         emit dataChanged(index, index, {role});
@@ -141,6 +144,8 @@ namespace atomic_dex
             return item.taker_payment_sent_id;
         case CancellableRole:
             return item.is_cancellable;
+        case IsMakerRole:
+            return item.is_maker;
         }
         return {};
     }
@@ -172,6 +177,7 @@ namespace atomic_dex
             .base_amount    = QString::fromStdString(contents.base_amount),
             .rel_amount     = QString::fromStdString(contents.rel_amount),
             .order_type     = QString::fromStdString(contents.order_type),
+            .is_maker       = contents.order_type == "maker",
             .human_date     = QString::fromStdString(contents.human_timestamp),
             .unix_timestamp = static_cast<int>(contents.timestamp),
             .order_id       = QString::fromStdString(contents.order_id),
@@ -255,6 +261,7 @@ namespace atomic_dex
             {BaseCoinAmountRole, "base_amount"},
             {RelCoinAmountRole, "rel_amount"},
             {OrderTypeRole, "type"},
+            {IsMakerRole, "is_maker"},
             {HumanDateRole, "date"},
             {UnixTimestampRole, "timestamp"},
             {OrderIdRole, "order_id"},
