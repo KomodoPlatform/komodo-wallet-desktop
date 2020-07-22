@@ -31,12 +31,10 @@ DefaultModal {
             Layout.alignment: Qt.AlignHCenter
 
             item: ({
-                    my_info: {
-                       my_coin: getTicker(true),
-                       other_coin: getTicker(false),
-                       my_amount: form_base.field.text,
-                       other_amount: form_rel.field.text
-                    },
+                    base_coin: getTicker(true),
+                    rel_coin: getTicker(false),
+                    base_amount: form_base.field.text,
+                    rel_amount: form_rel.field.text,
 
                     order_id: '',
                     date: '',
