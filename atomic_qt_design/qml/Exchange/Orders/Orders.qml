@@ -132,7 +132,7 @@ Item {
     Timer {
         id: refresh_timer
         repeat: true
-        interval: refresh_faster.running ? 500 : 5000
+        interval: 1000
         triggeredOnStart: true
         onTriggered: {
             if(inCurrentPage()) {
@@ -143,9 +143,10 @@ Item {
 
     Timer {
         id: refresh_faster
-        interval: 10000
+        interval: 2000
         onTriggered: {
             console.log("Refreshing faster for " + interval + " ms!")
+            refresh_timer.stop()
         }
     }
 
