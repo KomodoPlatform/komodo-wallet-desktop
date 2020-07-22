@@ -103,6 +103,8 @@ namespace atomic_dex
         case IsMakerRole:
             item.is_maker = value.toBool();
             break;
+        case IsSwapRole:
+            item.is_swap = value.toBool();
         }
 
         emit dataChanged(index, index, {role});
@@ -146,6 +148,8 @@ namespace atomic_dex
             return item.is_cancellable;
         case IsMakerRole:
             return item.is_maker;
+        case IsSwapRole:
+            return item.is_swap;
         }
         return {};
     }
@@ -182,6 +186,7 @@ namespace atomic_dex
             .unix_timestamp = static_cast<int>(contents.timestamp),
             .order_id       = QString::fromStdString(contents.order_id),
             .order_status   = "matching",
+            .is_swap        = false,
             .is_cancellable = contents.cancellable};
         this->m_orders_id_registry.emplace(contents.order_id);
         this->m_model_data.push_back(std::move(data));
@@ -275,6 +280,7 @@ namespace atomic_dex
             {OrderStatusRole, "order_status"},
             {MakerPaymentIdRole, "maker_payment_id"},
             {TakerPaymentIdRole, "taker_payment_id"},
+            {IsSwapRole, "is_swap"},
             {CancellableRole, "cancellable"}};
     }
 

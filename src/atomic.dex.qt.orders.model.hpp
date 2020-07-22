@@ -49,6 +49,7 @@ namespace atomic_dex
             OrderStatusRole,
             MakerPaymentIdRole,
             TakerPaymentIdRole,
+            IsSwapRole,
             CancellableRole
         };
 

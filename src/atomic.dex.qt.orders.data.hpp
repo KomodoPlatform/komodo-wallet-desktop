@@ -41,6 +41,9 @@ namespace atomic_dex
         QString taker_payment_sent_id;
 
         //! eg: true / false
+        bool is_swap;
+
+        //! eg: true / false
         bool is_cancellable;
     };
 } // namespace atomic_dex
