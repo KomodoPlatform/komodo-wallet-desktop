@@ -9,29 +9,15 @@ import ".."
 Item {
     id: exchange_history
 
-    property var all_recent_swaps: ({})
-
     function inCurrentPage() {
         return  exchange.inCurrentPage() &&
                 exchange.current_page === General.idx_exchange_history
     }
 
     function reset() {
-        update_timer.restart()
-        update_timer.running = inCurrentPage()
-        all_recent_swaps = {}
     }
 
     function onOpened() {
-        updateRecentSwaps()
-    }
-
-    function updateRecentSwaps() {
-        all_recent_swaps = API.get().get_recent_swaps()
-    }
-
-    function getRecentSwaps() {
-        return General.filterRecentSwaps(all_recent_swaps, "include")
     }
 
     property string recover_funds_result: '{}'
@@ -41,17 +27,6 @@ Item {
         console.log(result)
         recover_funds_result = result
         recover_funds_modal.open()
-        updateRecentSwaps()
-    }
-
-    Timer {
-        id: update_timer
-        running: inCurrentPage()
-        repeat: true
-        interval: 5000
-        onTriggered: {
-            if(inCurrentPage()) updateRecentSwaps()
-        }
     }
 
     ColumnLayout {
@@ -63,9 +38,7 @@ Item {
 
         SwapList {
             title: API.get().empty_string + (qsTr("Recent Swaps"))
-            // TODO: Make sure this part is right
             items: API.get().orders_mdl
-            //items: getRecentSwaps()
         }
     }
 

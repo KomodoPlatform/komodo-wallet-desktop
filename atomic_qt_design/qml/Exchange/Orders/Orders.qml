@@ -10,14 +10,11 @@ Item {
     id: exchange_orders
 
     property string base
-    property var all_orders: ({})
-    property var all_recent_swaps: ({})
     property var all_orders_merged: API.get().orders_mdl
 
     // Local
     function onCancelOrder(order_id) {
         API.get().cancel_order(order_id)
-        updateOrders()
     }
 
 
@@ -26,75 +23,18 @@ Item {
                 exchange.current_page === General.idx_exchange_orders
     }
 
-    onBaseChanged: updateOrders()
+    // TODO: Filter with base
+    //onBaseChanged:
 
     function reset() {
-        all_orders = {}
-        all_recent_swaps = {}
-        update_timer.running = false
     }
 
     function onOpened() {
-        // Force a refresh, myOrdersUpdated will call updateOrders once it's done
-        API.get().refresh_infos()
-    }
-
-    Component.onCompleted: {
-        API.get().myOrdersUpdated.connect(updateOrders)
-    }
-
-    function getRecentSwaps(ticker) {
-        return General.filterRecentSwaps(all_recent_swaps, "exclude", ticker)
-    }
-
-    function updateOrders() {
-        all_orders = API.get().get_my_orders()
-        all_recent_swaps = API.get().get_recent_swaps()
-        update_timer.running = true
+        API.get().refresh_orders_and_swaps()
     }
 
     function baseCoins() {
         return API.get().enabled_coins
-    }
-
-    function mergeOrders(a, b) {
-        a.taker_orders = a.taker_orders.concat(b.taker_orders)
-        a.maker_orders = a.maker_orders.concat(b.maker_orders)
-        return a
-    }
-
-    readonly property var empty_orders: ({ maker_orders: [], taker_orders: [] })
-    function getOrders(ticker) {
-        let mixed_orders = General.clone(empty_orders)
-
-        if(ticker !== "" && all_orders[ticker] !== undefined) {
-            // Add recent swaps
-            getRecentSwaps(ticker).map(s => {
-                mixed_orders[s.is_maker ? "maker_orders" : "taker_orders"].push(s)
-            })
-
-            // Add normal orders
-            mixed_orders = mergeOrders(mixed_orders, all_orders[ticker])
-        }
-
-        return mixed_orders
-    }
-
-    function getAllOrders() {
-        let orders = General.clone(empty_orders)
-
-        if(show_all_coins.checked) {
-            for(const c of baseCoins()) {
-                orders = mergeOrders(orders, getOrders(c.ticker))
-            }
-        }
-        else orders = getOrders(base)
-
-        // Merge two lists
-        let array = orders.taker_orders.concat(orders.maker_orders)
-
-        // Remove duplicates
-        return array.filter((o, index, self) => index === self.findIndex(t => t.order_id === o.order_id))
     }
 
     function changeTicker(ticker) {
@@ -111,16 +51,6 @@ Item {
 //        }
 
 //        return false
-    }
-
-    Timer {
-        id: update_timer
-        running: false
-        repeat: true
-        interval: 5000
-        onTriggered: {
-            if(inCurrentPage()) updateOrders()
-        }
     }
 
     // Orders page quick refresher, used right after a fresh successful trade
@@ -170,7 +100,9 @@ Item {
                     id: show_all_coins
                     Layout.leftMargin: 15
                     text: API.get().empty_string + (qsTr("Show All Coins"))
-                    onCheckedChanged: updateOrders()
+
+                    // TODO: Remove orders filter
+                    //onCheckedChanged:
                 }
 
                 // Base
