@@ -703,13 +703,16 @@ namespace atomic_dex
     t_broadcast_answer
     mm2::broadcast(t_broadcast_request&& request, t_mm2_ec& ec) noexcept
     {
-        std::string coin = request.coin;
-        auto result = rpc_send_raw_transaction(std::move(request));
+        std::string coin   = request.coin;
+        auto        result = rpc_send_raw_transaction(std::move(request));
         if (result.rpc_result_code == -1)
         {
             ec = dextop_error::rpc_send_raw_transaction_error;
-        } else {
-            if (this->get_coin_info(coin).is_erc_20) {
+        }
+        else
+        {
+            if (this->get_coin_info(coin).is_erc_20)
+            {
                 result.tx_hash = "0x" + result.tx_hash;
             }
         }
@@ -951,6 +954,17 @@ namespace atomic_dex
     }
 
     ::mm2::api::my_orders_answer
+    mm2::get_raw_orders(t_mm2_ec& ec) const noexcept
+    {
+        if (m_orders_registry.find("result") == m_orders_registry.cend())
+        {
+            ec = dextop_error::order_not_available_yet;
+            return {};
+        }
+        return m_orders_registry.at("result");
+    }
+
+    ::mm2::api::my_orders_answer
     mm2::get_orders(const std::string& ticker, t_mm2_ec& ec) const noexcept
     {
         if (m_orders_registry.find("result") == m_orders_registry.cend())
@@ -1126,5 +1140,4 @@ namespace atomic_dex
     {
         return m_trade_fees_registry.find(ticker) != m_trade_fees_registry.cend() ? m_trade_fees_registry.at(ticker) : t_get_trade_fee_answer{};
     }
-
 } // namespace atomic_dex

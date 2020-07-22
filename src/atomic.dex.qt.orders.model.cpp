@@ -117,7 +117,8 @@ namespace atomic_dex
     {
         const auto&     mm2_system = this->m_system_manager.get_system<mm2>();
         std::error_code ec;
-        const auto      orders = mm2_system.get_orders(ec);
+        const auto      orders = mm2_system.get_raw_orders(ec);
+
         if (!ec)
         {
             auto functor_process_orders = [this](auto&& orders) {
@@ -135,32 +136,23 @@ namespace atomic_dex
                 }
             };
 
-            for (auto&& order: orders)
-            {
-                functor_process_orders(order.maker_orders);
-                functor_process_orders(order.taker_orders);
-            }
+            functor_process_orders(orders.maker_orders);
+            functor_process_orders(orders.taker_orders);
 
             //! Check for cleaning orders that are not present anymore
-            for (auto&& cur_id: this->m_orders_id_registry)
+            for (auto&& id: this->m_orders_id_registry)
             {
                 //! Check if the current id from the model registry is present in the orders collection
-                auto res = std::none_of(begin(orders), end(orders), [cur_id](const ::mm2::api::my_orders_answer& contents) -> bool {
-                    //! Check in maker_orders
-                    bool found = std::none_of(begin(contents.maker_orders), end(contents.maker_orders), [cur_id](auto&& cur_contents) {
-                        return cur_contents.second.order_id == cur_id;
-                    });
 
-                    //! And compute with taker orders
-                    found &= std::none_of(begin(contents.taker_orders), end(contents.taker_orders), [cur_id](auto&& cur_contents) {
-                        return cur_contents.second.order_id == cur_id;
-                    });
-                    return found;
-                });
+                //! Check in maker_orders
+                bool res = std::none_of(begin(orders.maker_orders), end(orders.maker_orders), [id](auto&& contents) { return contents.second.order_id == id; });
+
+                //! And compute with taker orders
+                res &= std::none_of(begin(orders.taker_orders), end(orders.taker_orders), [id](auto&& contents) { return contents.second.order_id == id; });
                 if (res)
                 {
                     //! If it's the case retrieve the index of the row that match this id
-                    auto res_list = this->match(index(0, 0), OrderIdRole, QString::fromStdString(cur_id));
+                    auto res_list = this->match(index(0, 0), OrderIdRole, QString::fromStdString(id));
                     if (not res_list.empty())
                     {
                         //! And then delete it
