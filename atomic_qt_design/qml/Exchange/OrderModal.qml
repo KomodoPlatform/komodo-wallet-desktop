@@ -10,7 +10,7 @@ DefaultModal {
     id: root
 
     width: 650
-    readonly property var default_details: ({"is_default": true, "price":"","date":"","base":"","rel":"","cancellable":true,"am_i_maker":true,"base_amount":"1","rel_amount":"1","order_id":""})
+    readonly property var default_details: ({"is_default": true, "price":"","date":"","base":"","rel":"","cancellable":true,"is_maker":true,"base_amount":"1","rel_amount":"1","order_id":""})
     property var details
     property string current_item_order_id: ""
 
@@ -45,7 +45,7 @@ DefaultModal {
             font.pixelSize: Style.textSize3
             visible: getStatus(details) !== status_swap_not_swap &&  // Is order
                      (details.events !== undefined || // Has events, ongoing or
-                    details.am_i_maker === false) // Taker order with no events
+                    details.is_maker === false) // Taker order with no events
             color: visible ? getStatusColor(details) : ''
             text_value: API.get().empty_string + (visible ? getStatusTextWithPrefix(details) : '')
         }
@@ -69,7 +69,7 @@ DefaultModal {
 
         // Maker/Taker
         DefaultText {
-            text_value: API.get().empty_string + (details.am_i_maker ? qsTr("Maker Order"): qsTr("Taker Order"))
+            text_value: API.get().empty_string + (details.is_maker ? qsTr("Maker Order"): qsTr("Taker Order"))
             color: Style.colorThemeDarkLight
             Layout.alignment: Qt.AlignRight
         }
@@ -112,7 +112,7 @@ DefaultModal {
 
         // Payment ID
         TextWithTitle {
-            title: API.get().empty_string + (details.am_i_maker ? qsTr("Maker Payment Sent ID") : qsTr("Maker Payment Spent ID"))
+            title: API.get().empty_string + (details.is_maker ? qsTr("Maker Payment Sent ID") : qsTr("Maker Payment Spent ID"))
             text: API.get().empty_string + (getSwapPaymentID(details, false))
             visible: text !== ''
             privacy: true
@@ -120,7 +120,7 @@ DefaultModal {
 
         // Payment ID
         TextWithTitle {
-            title: API.get().empty_string + (details.am_i_maker ? qsTr("Taker Payment Spent ID") : qsTr("Taker Payment Sent ID"))
+            title: API.get().empty_string + (details.is_maker ? qsTr("Taker Payment Spent ID") : qsTr("Taker Payment Sent ID"))
             text: API.get().empty_string + (getSwapPaymentID(details, true))
             visible: text !== ''
             privacy: true

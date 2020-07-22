@@ -77,6 +77,7 @@ Item {
     // TODO: Events is missing
 //    DefaultText {
 //        visible: !in_modal && (item.events !== undefined || item.am_i_maker === false)
+//        visible: !in_modal && (item.events !== undefined || item.is_maker === false)
 //        color: visible ? getStatusColor(item) : ''
 //        anchors.horizontalCenter: parent.horizontalCenter
 //        anchors.top: base_icon.top
@@ -96,7 +97,7 @@ Item {
     // Maker/Taker
     DefaultText {
         visible: !in_modal && is_placed_order
-        text_value: API.get().empty_string + (item.am_i_maker ? qsTr("Maker Order"): qsTr("Taker Order"))
+        text_value: API.get().empty_string + (item.is_maker ? qsTr("Maker Order"): qsTr("Taker Order"))
         color: Style.colorThemeDarkLight
         anchors.verticalCenter: date.verticalCenter
         anchors.horizontalCenter: parent.horizontalCenter

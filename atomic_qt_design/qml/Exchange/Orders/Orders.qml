@@ -70,7 +70,7 @@ Item {
         if(ticker !== "" && all_orders[ticker] !== undefined) {
             // Add recent swaps
             getRecentSwaps(ticker).map(s => {
-                mixed_orders[s.type === "Taker" ? "taker_orders" : "maker_orders"].push(s)
+                mixed_orders[s.is_maker ? "maker_orders" : "taker_orders"].push(s)
             })
 
             // Add normal orders

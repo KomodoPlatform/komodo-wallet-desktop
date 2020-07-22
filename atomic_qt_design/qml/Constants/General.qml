@@ -199,8 +199,7 @@ QtObject {
             orders[key].order_id = key
             orders[key].is_recent_swap = true
 
-            const is_maker = orders[key].type.toLowerCase() === 'maker'
-            orders[key].am_i_maker = is_maker
+            const is_maker = orders[key].is_maker !== undefined ? orders[key].is_maker : orders[key].type.toLowerCase() === 'maker'
 
             if(orders[key].my_info === null) {
                 const o = orders[key]
