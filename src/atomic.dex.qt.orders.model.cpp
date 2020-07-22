@@ -169,6 +169,13 @@ namespace atomic_dex
         emit lengthChanged();
     }
 
+
+    void
+    orders_model::update_existing_order(const ::mm2::api::my_order_contents& contents) noexcept
+    {
+
+    }
+
     void
     orders_model::refresh_or_insert_orders() noexcept
     {
@@ -184,6 +191,7 @@ namespace atomic_dex
                     if (this->m_orders_id_registry.find(value.order_id) != this->m_orders_id_registry.end())
                     {
                         //! Find update needed
+                        this->update_existing_order(value);
                     }
                     else
                     {
@@ -229,7 +237,7 @@ namespace atomic_dex
             {BaseCoinAmountRole, "base_amount"},
             {RelCoinAmountRole, "rel_amount"},
             {OrderTypeRole, "type"},
-            {HumanDateRole, "human_date"},
+            {HumanDateRole, "date"},
             {UnixTimestampRole, "timestamp"},
             {OrderIdRole, "order_id"},
             {OrderStatusRole, "order_status"},
