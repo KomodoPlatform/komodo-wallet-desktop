@@ -161,17 +161,6 @@ Item {
         return { state: '', data: { error: '' } }
     }
 
-    function getStatus(swap) {
-        if(!swap.is_swap && !swap.is_maker) return "matching"
-
-        const last_state = swap.events[swap.events.length-1].state
-
-        if(last_state === "Started") return "matched"
-        if(last_state === "Finished") return getSwapError(swap).state === '' ? "successful" : "failed"
-
-        return "ongoing"
-    }
-
     function getStatusColor(status) {
         return status === "matching" ? Style.colorYellow :
                status === "matched" ? Style.colorOrange :

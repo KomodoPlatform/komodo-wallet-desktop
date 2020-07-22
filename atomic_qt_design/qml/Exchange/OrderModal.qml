@@ -27,7 +27,7 @@ DefaultModal {
         // Complete image
         // TODO: Add events
 //        DefaultImage {
-//            visible: details.is_swap !== undefined && getStatus(details) === "successful"
+//            visible: details.is_swap !== undefined && details.order_status === "successful"
 //            Layout.alignment: Qt.AlignHCenter
 //            source: General.image_path + "exchange-trade-complete.svg"
 //        }
@@ -36,8 +36,8 @@ DefaultModal {
         // TODO: Add events
 //        DefaultBusyIndicator {
 //            visible: details.is_swap !== undefined &&
-//                     getStatus(details) !== "successful" &&
-//                     getStatus(details) !== "failed"
+//                     details.order_status !== "successful" &&
+//                     details.order_status !== "failed"
 //            Layout.alignment: Qt.AlignHCenter
 //        }
 
