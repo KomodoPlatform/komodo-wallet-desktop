@@ -35,6 +35,7 @@
 #include "atomic.dex.qt.addressbook.model.hpp"
 #include "atomic.dex.qt.bindings.hpp"
 #include "atomic.dex.qt.current.coin.infos.hpp"
+#include "atomic.dex.qt.orders.model.hpp"
 #include "atomic.dex.qt.portfolio.model.hpp"
 #include "atomic.dex.qt.wallet.manager.hpp"
 
@@ -54,6 +55,7 @@ namespace atomic_dex
         Q_PROPERTY(QList<QVariant> enableable_coins READ get_enableable_coins NOTIFY enableableCoinsChanged)
         Q_PROPERTY(QObject* current_coin_info READ get_current_coin_info NOTIFY coinInfoChanged)
         Q_PROPERTY(addressbook_model* addressbook_mdl READ get_addressbook NOTIFY addressbookChanged)
+        Q_PROPERTY(orders_model* orders_mdl READ get_orders NOTIFY ordersChanged)
         Q_PROPERTY(QVariant update_status READ get_update_status NOTIFY updateStatusChanged)
         Q_PROPERTY(portfolio_model* portfolio_mdl READ get_portfolio NOTIFY portfolioChanged)
         Q_PROPERTY(QString current_currency READ get_current_currency WRITE set_current_currency NOTIFY on_currency_changed)
@@ -105,14 +107,16 @@ namespace atomic_dex
         void on_refresh_update_status_event(const refresh_update_status&) noexcept;
 
         //! Properties Getter
-        static const QString&      get_empty_string();
-        mm2&                       get_mm2() noexcept;
-        const mm2&                 get_mm2() const noexcept;
-        coinpaprika_provider&      get_paprika() noexcept;
-        entt::dispatcher&          get_dispatcher() noexcept;
-        QObject*                   get_current_coin_info() const noexcept;
-        addressbook_model*         get_addressbook() const noexcept;
-        portfolio_model*           get_portfolio() const noexcept;
+        static const QString& get_empty_string();
+        mm2&                  get_mm2() noexcept;
+        const mm2&            get_mm2() const noexcept;
+        coinpaprika_provider& get_paprika() noexcept;
+        entt::dispatcher&     get_dispatcher() noexcept;
+        QObject*              get_current_coin_info() const noexcept;
+        addressbook_model*    get_addressbook() const noexcept;
+        portfolio_model*      get_portfolio() const noexcept;
+        orders_model*         get_orders() const noexcept;
+        ;
         QVariantList               get_enabled_coins() const noexcept;
         QVariantList               get_enableable_coins() const noexcept;
         QString                    get_current_currency() const noexcept;
@@ -231,6 +235,7 @@ namespace atomic_dex
         void OHLCDataUpdated();
         void portfolioChanged();
         void updateStatusChanged();
+        void ordersChanged();
 
       private:
         void process_refresh_enabled_coin_action();
@@ -261,10 +266,14 @@ namespace atomic_dex
         QString            m_second_current_balance_all{"0.00"};
         current_coin_info* m_coin_info;
 
+
         //! Addressbook based on the current wallet
         addressbook_model* m_addressbook;
 
         //! Portfolio based on the current wallet
         portfolio_model* m_portfolio;
+
+        //! Orders model based on the current wallet
+        orders_model* m_orders;
     };
 } // namespace atomic_dex

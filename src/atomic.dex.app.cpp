@@ -389,9 +389,8 @@ namespace atomic_dex
         QObject(pParent),
         m_update_status(QJsonObject{
             {"update_needed", false}, {"changelog", ""}, {"current_version", ""}, {"download_url", ""}, {"new_version", ""}, {"rpc_code", 0}, {"status", ""}}),
-        m_coin_info(new current_coin_info(dispatcher_, this)),
-        m_addressbook(new addressbook_model(this->m_wallet_manager, this)),
-        m_portfolio(new portfolio_model(this->system_manager_, this->m_config, this))
+        m_coin_info(new current_coin_info(dispatcher_, this)), m_addressbook(new addressbook_model(this->m_wallet_manager, this)),
+        m_portfolio(new portfolio_model(this->system_manager_, this->m_config, this)), m_orders(new orders_model(this->system_manager_, this))
     {
         get_dispatcher().sink<refresh_update_status>().connect<&application::on_refresh_update_status_event>(*this);
         //! MM2 system need to be created before the GUI and give the instance to the gui
@@ -819,8 +818,20 @@ namespace atomic_dex
     {
         spdlog::debug("{} l{}", __FUNCTION__, __LINE__);
 
-        this->m_addressbook->removeRows(0, this->m_addressbook->rowCount());
-        this->m_portfolio->removeRows(0, this->m_portfolio->rowCount(QModelIndex()), QModelIndex());
+        if (auto count = this->m_addressbook->rowCount(); count > 0)
+        {
+            this->m_addressbook->removeRows(0, count);
+        }
+
+        if (auto count = this->m_portfolio->rowCount(QModelIndex()); count > 0)
+        {
+            this->m_portfolio->removeRows(0, count, QModelIndex());
+        }
+
+        if (auto count = this->m_orders->rowCount(QModelIndex()); count > 0)
+        {
+            this->m_orders->removeRows(0, count, QModelIndex());
+        }
         system_manager_.mark_system<mm2>();
         system_manager_.mark_system<coinpaprika_provider>();
         system_manager_.mark_system<cex_prices_provider>();
@@ -1291,6 +1302,16 @@ namespace atomic_dex
     application::get_addressbook() const noexcept
     {
         return m_addressbook;
+    }
+} // namespace atomic_dex
+
+//! Orders
+namespace atomic_dex
+{
+    orders_model*
+    application::get_orders() const noexcept
+    {
+        return m_orders;
     }
 } // namespace atomic_dex
 
