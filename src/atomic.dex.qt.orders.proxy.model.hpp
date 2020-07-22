@@ -16,7 +16,22 @@
 
 #pragma once
 
+#include <QSortFilterProxyModel>
+
 namespace atomic_dex
 {
+    class orders_proxy_model final : public QSortFilterProxyModel
+    {
+        Q_OBJECT
+      public:
+        //! Constructor
+        orders_proxy_model(QObject* parent);
 
+        //! Destructor
+        ~orders_proxy_model() final;
+
+      protected:
+        //! Override member functions
+        [[nodiscard]] bool lessThan(const QModelIndex& source_left, const QModelIndex& source_right) const final;
+    };
 }

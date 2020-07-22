@@ -14,9 +14,29 @@
  *                                                                            *
  ******************************************************************************/
 
+//! PCH
+#include "atomic.dex.pch.hpp"
+
+//! Project
 #include "atomic.dex.qt.orders.proxy.model.hpp"
 
 namespace atomic_dex
 {
+    orders_proxy_model::orders_proxy_model(QObject* parent) : QSortFilterProxyModel(parent)
+    {
+        spdlog::trace("{} l{} f[{}]", __FUNCTION__, __LINE__, fs::path(__FILE__).filename().string());
+        spdlog::trace("orders proxy model created");
+    }
 
-}
+    orders_proxy_model::~orders_proxy_model()
+    {
+        spdlog::trace("{} l{} f[{}]", __FUNCTION__, __LINE__, fs::path(__FILE__).filename().string());
+        spdlog::trace("orders proxy model destroyed");
+    }
+
+    bool
+    orders_proxy_model::lessThan(const QModelIndex& source_left, const QModelIndex& source_right) const
+    {
+        return true;
+    }
+} // namespace atomic_dex

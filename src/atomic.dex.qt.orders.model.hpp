@@ -26,6 +26,7 @@
 //! Project
 #include "atomic.dex.mm2.api.hpp"
 #include "atomic.dex.qt.orders.data.hpp"
+#include "atomic.dex.qt.orders.proxy.model.hpp"
 
 namespace atomic_dex
 {
@@ -78,6 +79,8 @@ namespace atomic_dex
 
         t_orders_id_registry m_orders_id_registry;
         t_orders_datas       m_model_data;
+
+        orders_proxy_model* m_model_proxy;
 
         //! Private api
         void initialize_order(const ::mm2::api::my_order_contents& contents) noexcept;

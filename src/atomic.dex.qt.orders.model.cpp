@@ -34,10 +34,16 @@ namespace
 
 namespace atomic_dex
 {
-    orders_model::orders_model(ag::ecs::system_manager& system_manager, QObject* parent) noexcept : QAbstractListModel(parent), m_system_manager(system_manager)
+    orders_model::orders_model(ag::ecs::system_manager& system_manager, QObject* parent) noexcept :
+        QAbstractListModel(parent), m_system_manager(system_manager), m_model_proxy(new orders_proxy_model(this))
     {
         spdlog::trace("{} l{} f[{}]", __FUNCTION__, __LINE__, fs::path(__FILE__).filename().string());
         spdlog::trace("orders model created");
+
+        this->m_model_proxy->setSourceModel(this);
+        this->m_model_proxy->setDynamicSortFilter(true);
+        this->m_model_proxy->setSortRole(UnixTimestampRole);
+        this->m_model_proxy->sort(0);
     }
 
     orders_model::~orders_model() noexcept
