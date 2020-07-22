@@ -76,7 +76,6 @@ Item {
     // Status Text
     // TODO: Events is missing
 //    DefaultText {
-//        visible: !in_modal && (item.events !== undefined || item.am_i_maker === false)
 //        visible: !in_modal && (item.events !== undefined || item.is_maker === false)
 //        color: visible ? getStatusColor(item) : ''
 //        anchors.horizontalCenter: parent.horizontalCenter
@@ -113,11 +112,12 @@ Item {
     }
 
     // Recover Funds button
-    PrimaryButton {
-        visible: !in_modal && item.is_recoverable !== undefined && item.is_recoverable
-        anchors.right: parent.right
-        anchors.bottom: date.bottom
-        text: API.get().empty_string + (qsTr("Recover Funds"))
-        onClicked: onRecoverFunds(item.order_id)
-    }
+    // TODO: Add is_recoverable
+//    PrimaryButton {
+//        visible: !in_modal && item.is_recoverable !== undefined && item.is_recoverable
+//        anchors.right: parent.right
+//        anchors.bottom: date.bottom
+//        text: API.get().empty_string + (qsTr("Recover Funds"))
+//        onClicked: onRecoverFunds(item.order_id)
+//    }
 }
