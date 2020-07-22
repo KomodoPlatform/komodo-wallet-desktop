@@ -11,7 +11,7 @@ Item {
     property var item
     property bool in_modal: false
 
-    readonly property bool is_placed_order: item.uuid !== ''
+    readonly property bool is_placed_order: item.order_id !== ''
 
     // Base Icon
     DefaultImage {
@@ -62,11 +62,11 @@ Item {
         privacy: is_placed_order
     }
 
-    // UUID
+    // Order ID
     DefaultText {
-        id: uuid
+        id: order_id
         visible: !in_modal && is_placed_order
-        text_value: API.get().empty_string + ((item.is_recent_swap ? qsTr("Swap ID") : qsTr("UUID")) + ": " + item.uuid)
+        text_value: API.get().empty_string + (qsTr("ID") + ": " + item.order_id)
         color: Style.colorTheme2
         anchors.top: base_amount.bottom
         anchors.topMargin: base_amount.anchors.topMargin
@@ -88,7 +88,7 @@ Item {
         visible: !in_modal && item.date !== ''
         text_value: API.get().empty_string + (item.date)
         color: Style.colorTheme2
-        anchors.top: uuid.bottom
+        anchors.top: order_id.bottom
         anchors.topMargin: base_amount.anchors.topMargin
     }
 
@@ -107,7 +107,7 @@ Item {
         anchors.right: parent.right
         anchors.bottom: date.bottom
         text: API.get().empty_string + (qsTr("Cancel"))
-        onClicked: onCancelOrder(item.uuid)
+        onClicked: onCancelOrder(item.order_id)
     }
 
     // Recover Funds button
@@ -116,6 +116,6 @@ Item {
         anchors.right: parent.right
         anchors.bottom: date.bottom
         text: API.get().empty_string + (qsTr("Recover Funds"))
-        onClicked: onRecoverFunds(item.uuid)
+        onClicked: onRecoverFunds(item.order_id)
     }
 }

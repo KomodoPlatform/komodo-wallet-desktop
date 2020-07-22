@@ -36,8 +36,8 @@ Item {
 
     property string recover_funds_result: '{}'
 
-    function onRecoverFunds(uuid) {
-        const result = API.get().recover_fund(uuid)
+    function onRecoverFunds(order_id) {
+        const result = API.get().recover_fund(order_id)
         console.log(result)
         recover_funds_result = result
         recover_funds_modal.open()
@@ -69,8 +69,8 @@ Item {
 
     OrderModal {
         id: order_modal
-        details: General.formatOrder(getRecentSwaps().map(o => o.uuid).indexOf(order_modal.current_item_uuid) !== -1 ?
-                                    getRecentSwaps()[getRecentSwaps().map(o => o.uuid).indexOf(order_modal.current_item_uuid)] : default_details)
+        details: General.formatOrder(getRecentSwaps().map(o => o.order_id).indexOf(order_modal.current_item_order_id) !== -1 ?
+                                    getRecentSwaps()[getRecentSwaps().map(o => o.order_id).indexOf(order_modal.current_item_order_id)] : default_details)
 
         onDetailsChanged: {
             if(details.is_default) close()

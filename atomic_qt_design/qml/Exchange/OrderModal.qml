@@ -10,9 +10,9 @@ DefaultModal {
     id: root
 
     width: 650
-    readonly property var default_details: ({"is_default": true, "price":"","date":"","base":"","rel":"","cancellable":true,"am_i_maker":true,"base_amount":"1","rel_amount":"1","uuid":""})
+    readonly property var default_details: ({"is_default": true, "price":"","date":"","base":"","rel":"","cancellable":true,"am_i_maker":true,"base_amount":"1","rel_amount":"1","order_id":""})
     property var details
-    property string current_item_uuid: ""
+    property string current_item_order_id: ""
 
     // Inside modal
     ColumnLayout {
@@ -102,10 +102,10 @@ DefaultModal {
             visible: text !== ''
         }
 
-        // Swap ID / UUID
+        // ID
         TextWithTitle {
-            title: API.get().empty_string + (details.is_recent_swap ? qsTr("Swap ID") : qsTr("UUID"))
-            text: API.get().empty_string + (details.uuid)
+            title: API.get().empty_string + (qsTr("ID"))
+            text: API.get().empty_string + (details.order_id)
             visible: text !== ''
             privacy: true
         }
@@ -156,7 +156,7 @@ DefaultModal {
                 visible: details.cancellable !== undefined && details.cancellable
                 Layout.fillWidth: true
                 text: API.get().empty_string + (qsTr("Cancel Order"))
-                onClicked: onCancelOrder(details.uuid)
+                onClicked: onCancelOrder(details.order_id)
             }
 
             PrimaryButton {

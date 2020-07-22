@@ -196,7 +196,7 @@ QtObject {
         let orders = all_orders
 
         Object.keys(orders).map((key, index) => {
-            orders[key].uuid = key
+            orders[key].order_id = key
             orders[key].is_recent_swap = true
 
             const is_maker = orders[key].type.toLowerCase() === 'maker'
