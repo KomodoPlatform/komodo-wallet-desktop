@@ -204,12 +204,10 @@ QtObject {
 
             if(orders[key].my_info === null) {
                 const o = orders[key]
-                orders[key].my_info = {
-                    my_coin: is_maker ? o.maker_coin : o.taker_coin,
-                    my_amount: is_maker ? o.maker_amount : o.taker_amount,
-                    other_coin: is_maker ? o.taker_coin : o.maker_coin,
-                    other_amount: is_maker ? o.taker_amount : o.maker_amount,
-                }
+                orders[key].base_coin = is_maker ? o.maker_coin : o.taker_coin
+                orders[key].base_amount = is_maker ? o.maker_amount : o.taker_amount
+                orders[key].rel_coin = is_maker ? o.taker_coin : o.maker_coin
+                orders[key].rel_amount = is_maker ? o.taker_amount : o.maker_amount
             }
         })
 
@@ -228,7 +226,7 @@ QtObject {
 
         // Filter by ticker
         if(ticker)
-            arr = arr.filter(o => o.my_info.my_coin === ticker || o.my_info.other_coin === ticker)
+            arr = arr.filter(o => o.base_coin === ticker || o.rel_coin === ticker)
 
         return arr
     }
@@ -238,12 +236,8 @@ QtObject {
             o.date = o.events[o.events.length-1].human_timestamp
         }
         else {
-            o.my_info = {
-                my_coin: o.base,
-                my_amount: o.base_amount,
-                other_coin: o.rel,
-                other_amount: o.rel_amount
-            }
+            o.base_coin = base
+            o.rel_coin = rel
         }
         return o
     }
