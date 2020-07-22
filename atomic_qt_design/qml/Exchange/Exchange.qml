@@ -140,7 +140,6 @@ Item {
 
 
     // Status Info
-    readonly property int status_swap_not_swap: -1
     readonly property int status_swap_matching: 0
     readonly property int status_swap_matched: 1
     readonly property int status_swap_ongoing: 2
@@ -170,7 +169,6 @@ Item {
 
     function getStatus(swap) {
         if(!swap.is_swap && !swap.is_maker) return status_swap_matching
-        if(!swap.is_swap) return status_swap_not_swap
 
         const last_state = swap.events[swap.events.length-1].state
 

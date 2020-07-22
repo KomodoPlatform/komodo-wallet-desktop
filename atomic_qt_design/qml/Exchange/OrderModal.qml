@@ -47,7 +47,7 @@ DefaultModal {
 //            Layout.alignment: Qt.AlignHCenter
 //            Layout.topMargin: 20
 //            font.pixelSize: Style.textSize3
-//            visible: getStatus(details) !== status_swap_not_swap &&  // Is order
+//            visible: !details.is_swap &&  // Is order
 //                     (details.events !== undefined || // Has events, ongoing or
 //                    details.is_maker === false) // Taker order with no events
 //            color: visible ? getStatusColor(details) : ''
