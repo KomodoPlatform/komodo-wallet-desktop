@@ -16,7 +16,7 @@ Item {
     // Base Icon
     DefaultImage {
         id: base_icon
-        source: General.coinIcon(item.my_info.my_coin)
+        source: General.coinIcon(item.base_coin)
         fillMode: Image.PreserveAspectFit
         width: in_modal ? Style.textSize5 : Style.textSize3
         anchors.horizontalCenter: base_amount.horizontalCenter
@@ -25,7 +25,7 @@ Item {
     // Rel Icon
     DefaultImage {
         id: rel_icon
-        source: General.coinIcon(item.my_info.other_coin)
+        source: General.coinIcon(item.rel_coin)
         fillMode: Image.PreserveAspectFit
         width: base_icon.width
         anchors.horizontalCenter: rel_amount.horizontalCenter
@@ -34,7 +34,7 @@ Item {
     // Base Amount
     DefaultText {
         id: base_amount
-        text_value: API.get().empty_string + ("~ " + General.formatCrypto("", item.my_info.my_amount, item.my_info.my_coin))
+        text_value: API.get().empty_string + ("~ " + General.formatCrypto("", item.base_amount, item.base_coin))
         font.pixelSize: in_modal ? Style.textSize2 : Style.textSize
 
         anchors.left: parent.left
@@ -55,7 +55,7 @@ Item {
     // Rel Amount
     DefaultText {
         id: rel_amount
-        text_value: API.get().empty_string + ("~ " + General.formatCrypto("", item.my_info.other_amount, item.my_info.other_coin))
+        text_value: API.get().empty_string + ("~ " + General.formatCrypto("", item.rel_amount, item.rel_coin))
         font.pixelSize: base_amount.font.pixelSize
         anchors.right: parent.right
         anchors.top: base_amount.top
