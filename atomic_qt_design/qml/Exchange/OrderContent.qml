@@ -74,13 +74,14 @@ Item {
     }
 
     // Status Text
-    DefaultText {
-        visible: !in_modal && (item.events !== undefined || item.am_i_maker === false)
-        color: visible ? getStatusColor(item) : ''
-        anchors.horizontalCenter: parent.horizontalCenter
-        anchors.top: base_icon.top
-        text_value: API.get().empty_string + (visible ? getStatusTextWithPrefix(item) : '')
-    }
+    // TODO: Events is missing
+//    DefaultText {
+//        visible: !in_modal && (item.events !== undefined || item.am_i_maker === false)
+//        color: visible ? getStatusColor(item) : ''
+//        anchors.horizontalCenter: parent.horizontalCenter
+//        anchors.top: base_icon.top
+//        text_value: API.get().empty_string + (visible ? getStatusTextWithPrefix(item) : '')
+//    }
 
     // Date
     DefaultText {
