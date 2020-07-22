@@ -28,10 +28,10 @@ namespace atomic_dex
         int unix_timestamp;
 
         //! eg: b741646a-5738-4012-b5b0-dcd1375affd1
-        QString swap_id;
+        QString order_id;
 
-        //! eg: Successful / On Going / Matched
-        QString swap_status;
+        //! eg: Successful / On Going / Matched / Matching
+        QString order_status;
 
         QString maker_payment_spent_id;
 

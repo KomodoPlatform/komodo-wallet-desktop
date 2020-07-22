@@ -375,9 +375,9 @@ namespace atomic_dex
 
         this->dispatcher_.trigger<enabled_default_coins_event>();
 
-        spawn([this]() { process_swaps(); });
-
         spawn([this]() { process_orders(); });
+
+        spawn([this]() { process_swaps(); });
 
         return result.load() == 1;
     }
@@ -556,9 +556,9 @@ namespace atomic_dex
 
         futures.reserve(coins.size() * 2 + 2);
 
-        futures.emplace_back(spawn([this]() { process_swaps(); }));
-
         futures.emplace_back(spawn([this]() { process_orders(); }));
+
+        futures.emplace_back(spawn([this]() { process_swaps(); }));
 
         for (auto&& current_coin: coins)
         {
@@ -754,6 +754,7 @@ namespace atomic_dex
     mm2::process_orders()
     {
         m_orders_registry.insert_or_assign("result", ::mm2::api::rpc_my_orders());
+        this->dispatcher_.trigger<process_orders_finished>();
     }
 
     void

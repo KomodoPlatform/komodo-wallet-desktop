@@ -32,6 +32,7 @@ namespace atomic_dex
     using refresh_order_needed        = entt::tag<"gui_refresh_order_needed"_hs>;
     using refresh_ohlc_needed         = entt::tag<"gui_refresh_ohlc_needed"_hs>;
     using refresh_update_status       = entt::tag<"gui_refresh_update_status"_hs>;
+    using process_orders_finished     = entt::tag<"gui_process_orders_finished"_hs>;
 
     struct ticker_balance_updated
     {

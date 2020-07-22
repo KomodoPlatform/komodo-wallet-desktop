@@ -25,6 +25,7 @@
 
 //! Project
 #include "atomic.dex.qt.orders.data.hpp"
+#include "atomic.dex.mm2.api.hpp"
 
 namespace atomic_dex
 {
@@ -42,8 +43,8 @@ namespace atomic_dex
             OrderTypeRole,
             HumanDateRole,
             UnixTimestampRole,
-            SwapIdRole,
-            SwapStatusRole,
+            OrderIdRole,
+            OrderStatusRole,
             MakePaymentSpentIdRole,
             TakerPaymentSentIdRole
         };
@@ -55,10 +56,19 @@ namespace atomic_dex
         QVariant data(const QModelIndex& index, int role) const final;
         bool     removeRows(int row, int count, const QModelIndex& parent) final;
 
+        //! Public api
+        void refresh_or_insert_orders() noexcept;
+
       private:
         ag::ecs::system_manager& m_system_manager;
 
-        using t_orders_datas = QVector<order_data>;
-        t_orders_datas m_datas;
+        using t_orders_datas       = QVector<order_data>;
+        using t_orders_id_registry = std::unordered_set<std::string>;
+
+        t_orders_id_registry m_orders_id_registry;
+        t_orders_datas       m_model_data;
+
+        //! Private api
+        void                 initialize_order(const ::mm2::api::my_order_contents& contents) noexcept;
     };
 } // namespace atomic_dex

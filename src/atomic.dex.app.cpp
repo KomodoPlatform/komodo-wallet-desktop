@@ -276,6 +276,12 @@ namespace atomic_dex
                     this->m_portfolio->update_balance_values(*this->m_ticker_balance_to_refresh);
                 }
                 break;
+            case action::post_process_orders_finished:
+                if (mm2.is_mm2_running())
+                {
+                    this->m_orders->refresh_or_insert_orders();
+                }
+                break;
             case action::refresh_update_status:
                 spdlog::trace("refreshing update status in GUI");
                 const auto&   update_service_sys = this->system_manager_.get_system<update_system_service>();
@@ -818,6 +824,14 @@ namespace atomic_dex
     {
         spdlog::debug("{} l{}", __FUNCTION__, __LINE__);
 
+        //! Clear pending events
+        while (not this->m_actions_queue.empty())
+        {
+            [[maybe_unused]] action act;
+            this->m_actions_queue.pop(act);
+        }
+
+        //! Clear models
         if (auto count = this->m_addressbook->rowCount(); count > 0)
         {
             this->m_addressbook->removeRows(0, count);
@@ -832,10 +846,13 @@ namespace atomic_dex
         {
             this->m_orders->removeRows(0, count, QModelIndex());
         }
+
+        //! Mark systems
         system_manager_.mark_system<mm2>();
         system_manager_.mark_system<coinpaprika_provider>();
         system_manager_.mark_system<cex_prices_provider>();
 
+        //! Disconnect signals
         get_dispatcher().sink<ticker_balance_updated>().disconnect<&application::on_ticker_balance_updated_event>(*this);
         get_dispatcher().sink<change_ticker_event>().disconnect<&application::on_change_ticker_event>(*this);
         get_dispatcher().sink<enabled_coins_event>().disconnect<&application::on_enabled_coins_event>(*this);
@@ -847,6 +864,7 @@ namespace atomic_dex
         get_dispatcher().sink<mm2_started>().disconnect<&application::on_mm2_started_event>(*this);
         get_dispatcher().sink<refresh_order_needed>().disconnect<&application::on_refresh_order_event>(*this);
         get_dispatcher().sink<refresh_ohlc_needed>().disconnect<&application::on_refresh_ohlc_event>(*this);
+        get_dispatcher().sink<process_orders_finished>().disconnect<&application::on_process_orders_finished_event>(*this);
 
         this->m_need_a_full_refresh_of_mm2 = true;
 
@@ -868,6 +886,7 @@ namespace atomic_dex
         get_dispatcher().sink<mm2_started>().connect<&application::on_mm2_started_event>(*this);
         get_dispatcher().sink<refresh_order_needed>().connect<&application::on_refresh_order_event>(*this);
         get_dispatcher().sink<refresh_ohlc_needed>().connect<&application::on_refresh_ohlc_event>(*this);
+        get_dispatcher().sink<process_orders_finished>().connect<&application::on_process_orders_finished_event>(*this);
     }
 
     QString
@@ -1308,6 +1327,13 @@ namespace atomic_dex
 //! Orders
 namespace atomic_dex
 {
+    void
+    application::on_process_orders_finished_event([[maybe_unused]] const process_orders_finished& evt) noexcept
+    {
+        spdlog::debug("{} l{}", __FUNCTION__, __LINE__);
+        this->m_actions_queue.push(action::post_process_orders_finished);
+    }
+
     orders_model*
     application::get_orders() const noexcept
     {

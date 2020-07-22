@@ -84,7 +84,8 @@ namespace atomic_dex
             refresh_ohlc                     = 3,
             refresh_transactions             = 4,
             refresh_portfolio_ticker_balance = 5,
-            refresh_update_status            = 6
+            refresh_update_status            = 6,
+            post_process_orders_finished     = 7
         };
 
       public:
@@ -105,6 +106,7 @@ namespace atomic_dex
         void on_refresh_order_event(const refresh_order_needed&) noexcept;
         void on_refresh_ohlc_event(const refresh_ohlc_needed&) noexcept;
         void on_refresh_update_status_event(const refresh_update_status&) noexcept;
+        void on_process_orders_finished_event(const process_orders_finished&) noexcept;
 
         //! Properties Getter
         static const QString& get_empty_string();
