@@ -79,5 +79,6 @@ namespace atomic_dex
 
         //! Private api
         void initialize_order(const ::mm2::api::my_order_contents& contents) noexcept;
+        void update_existing_order(const ::mm2::api::my_order_contents& contents) noexcept;
     };
 } // namespace atomic_dex

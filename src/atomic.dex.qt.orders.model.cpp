@@ -18,6 +18,20 @@
 #include "atomic.dex.qt.orders.model.hpp"
 #include "atomic.dex.mm2.hpp"
 
+//! Utils
+namespace
+{
+    template <typename TValue, typename TModel>
+    void
+    update_value(int role, const TValue& value, const QModelIndex& idx, TModel& model)
+    {
+        if (value != model.data(idx, role).toString())
+        {
+            model.setData(idx, value, role);
+        }
+    }
+} // namespace
+
 namespace atomic_dex
 {
     orders_model::orders_model(ag::ecs::system_manager& system_manager, QObject* parent) noexcept : QAbstractListModel(parent), m_system_manager(system_manager)
@@ -169,6 +183,17 @@ namespace atomic_dex
         emit lengthChanged();
     }
 
+
+    void
+    orders_model::update_existing_order(const ::mm2::api::my_order_contents& contents) noexcept
+    {
+        if (const auto res = this->match(index(0, 0), OrderIdRole, QString::fromStdString(contents.order_id)); not res.isEmpty())
+        {
+            const QModelIndex& idx = res.at(0);
+            update_value(OrdersRoles::CancellableRole, contents.cancellable, idx, *this);
+        }
+    }
+
     void
     orders_model::refresh_or_insert_orders() noexcept
     {
@@ -184,6 +209,7 @@ namespace atomic_dex
                     if (this->m_orders_id_registry.find(value.order_id) != this->m_orders_id_registry.end())
                     {
                         //! Find update needed
+                        this->update_existing_order(value);
                     }
                     else
                     {
@@ -229,7 +255,7 @@ namespace atomic_dex
             {BaseCoinAmountRole, "base_amount"},
             {RelCoinAmountRole, "rel_amount"},
             {OrderTypeRole, "type"},
-            {HumanDateRole, "human_date"},
+            {HumanDateRole, "date"},
             {UnixTimestampRole, "timestamp"},
             {OrderIdRole, "order_id"},
             {OrderStatusRole, "order_status"},
