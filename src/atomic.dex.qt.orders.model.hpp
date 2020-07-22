@@ -55,6 +55,7 @@ namespace atomic_dex
         int      rowCount(const QModelIndex& parent) const final;
         QVariant data(const QModelIndex& index, int role) const final;
         bool     removeRows(int row, int count, const QModelIndex& parent) final;
+        QHash<int, QByteArray> roleNames() const final;
 
         //! Public api
         void refresh_or_insert_orders() noexcept;

@@ -107,6 +107,8 @@ namespace atomic_dex
             .order_id       = QString::fromStdString(contents.order_id),
             .order_status   = "Matching",
         };
+        this->m_orders_id_registry.emplace(contents.order_id);
+        this->m_model_data.push_back(std::move(data));
         endInsertRows();
     }
 
@@ -127,9 +129,8 @@ namespace atomic_dex
                     }
                     else
                     {
-                        this->m_orders_id_registry.emplace(value.order_id);
-                        this->initialize_order(value);
                         //! Not found, insert and initialize.
+                        this->initialize_order(value);
                     }
                 }
             };
@@ -139,6 +140,42 @@ namespace atomic_dex
                 functor_process_orders(order.maker_orders);
                 functor_process_orders(order.taker_orders);
             }
+
+            //! Check for cleaning orders that are not present anymore
+            for (auto&& cur_id: this->m_orders_id_registry)
+            {
+                //! Check if the current id from the model registry is present in the orders collection
+                auto res = std::none_of(begin(orders), end(orders), [cur_id](const ::mm2::api::my_orders_answer& contents) -> bool {
+                    //! Check in maker_orders
+                    bool found = std::none_of(begin(contents.maker_orders), end(contents.maker_orders), [cur_id](auto&& cur_contents) {
+                        return cur_contents.second.order_id == cur_id;
+                    });
+
+                    //! And compute with taker orders
+                    found &= std::none_of(begin(contents.taker_orders), end(contents.taker_orders), [cur_id](auto&& cur_contents) {
+                        return cur_contents.second.order_id == cur_id;
+                    });
+                    return found;
+                });
+                if (res)
+                {
+                    //! If it's the case retrieve the index of the row that match this id
+                    auto res_list = this->match(index(0, 0), OrderIdRole, QString::fromStdString(cur_id));
+                    if (not res_list.empty())
+                    {
+                        //! And then delete it
+                        this->removeRow(res_list.at(0).row());
+                    }
+                }
+            }
         }
+    }
+
+    QHash<int, QByteArray>
+    orders_model::roleNames() const
+    {
+        return {{BaseCoinRole, "base_coin"},       {RelCoinRole, "rel_coin"}, {BaseCoinAmountRole, "base_amount"},
+                {RelCoinAmountRole, "rel_amount"}, {OrderTypeRole, "type"},   {HumanDateRole, "human_date"},
+                {UnixTimestampRole, "timestamp"},  {OrderIdRole, "order_id"}, {OrderStatusRole, "order_status"}};
     }
 } // namespace atomic_dex
