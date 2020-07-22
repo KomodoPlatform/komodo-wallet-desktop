@@ -63,7 +63,9 @@ Item {
 
         SwapList {
             title: API.get().empty_string + (qsTr("Recent Swaps"))
-            items: getRecentSwaps()
+            // TODO: Make sure this part is right
+            items: API.get().orders_mdl
+            //items: getRecentSwaps()
         }
     }
 
