@@ -39,16 +39,17 @@ DefaultModal {
         }
 
         // Status Text
-        DefaultText {
-            Layout.alignment: Qt.AlignHCenter
-            Layout.topMargin: 20
-            font.pixelSize: Style.textSize3
-            visible: getStatus(details) !== status_swap_not_swap &&  // Is order
-                     (details.events !== undefined || // Has events, ongoing or
-                    details.is_maker === false) // Taker order with no events
-            color: visible ? getStatusColor(details) : ''
-            text_value: API.get().empty_string + (visible ? getStatusTextWithPrefix(details) : '')
-        }
+        // TODO: Add events
+//        DefaultText {
+//            Layout.alignment: Qt.AlignHCenter
+//            Layout.topMargin: 20
+//            font.pixelSize: Style.textSize3
+//            visible: getStatus(details) !== status_swap_not_swap &&  // Is order
+//                     (details.events !== undefined || // Has events, ongoing or
+//                    details.is_maker === false) // Taker order with no events
+//            color: visible ? getStatusColor(details) : ''
+//            text_value: API.get().empty_string + (visible ? getStatusTextWithPrefix(details) : '')
+//        }
 
         OrderContent {
             Layout.topMargin: 25
