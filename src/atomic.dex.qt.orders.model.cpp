@@ -38,6 +38,56 @@ namespace atomic_dex
         return this->m_model_data.count();
     }
 
+
+    bool
+    orders_model::setData(const QModelIndex& index, const QVariant& value, int role)
+    {
+        if (!hasIndex(index.row(), index.column(), index.parent()) || !value.isValid())
+        {
+            return false;
+        }
+
+        order_data& item = m_model_data[index.row()];
+        switch (static_cast<OrdersRoles>(role))
+        {
+        case BaseCoinRole:
+            item.base_coin = value.toString();
+            break;
+        case RelCoinRole:
+            item.rel_coin = value.toString();
+            break;
+        case BaseCoinAmountRole:
+            item.base_amount = value.toString();
+            break;
+        case RelCoinAmountRole:
+            item.rel_amount = value.toString();
+            break;
+        case OrderTypeRole:
+            item.order_type = value.toString();
+            break;
+        case HumanDateRole:
+            item.human_date = value.toString();
+            break;
+        case UnixTimestampRole:
+            item.unix_timestamp = value.toInt();
+            break;
+        case OrderIdRole:
+            item.order_id = value.toString();
+            break;
+        case OrderStatusRole:
+            item.order_status = value.toString();
+            break;
+        case MakerPaymentSpentIdRole:
+            item.maker_payment_spent_id = value.toString();
+            break;
+        case TakerPaymentSentIdRole:
+            item.taker_payment_sent_id = value.toString();
+            break;
+        }
+
+        emit dataChanged(index, index, {role});
+    }
+
     QVariant
     orders_model::data(const QModelIndex& index, int role) const
     {
@@ -67,7 +117,7 @@ namespace atomic_dex
             return item.order_id;
         case OrderStatusRole:
             return item.order_status;
-        case MakePaymentSpentIdRole:
+        case MakerPaymentSpentIdRole:
             return item.maker_payment_spent_id;
         case TakerPaymentSentIdRole:
             return item.taker_payment_sent_id;
@@ -166,8 +216,17 @@ namespace atomic_dex
     QHash<int, QByteArray>
     orders_model::roleNames() const
     {
-        return {{BaseCoinRole, "base_coin"},       {RelCoinRole, "rel_coin"}, {BaseCoinAmountRole, "base_amount"},
-                {RelCoinAmountRole, "rel_amount"}, {OrderTypeRole, "type"},   {HumanDateRole, "human_date"},
-                {UnixTimestampRole, "timestamp"},  {OrderIdRole, "order_id"}, {OrderStatusRole, "order_status"}};
+        return {
+            {BaseCoinRole, "base_coin"},
+            {RelCoinRole, "rel_coin"},
+            {BaseCoinAmountRole, "base_amount"},
+            {RelCoinAmountRole, "rel_amount"},
+            {OrderTypeRole, "type"},
+            {HumanDateRole, "human_date"},
+            {UnixTimestampRole, "timestamp"},
+            {OrderIdRole, "order_id"},
+            {OrderStatusRole, "order_status"},
+            {MakerPaymentSpentIdRole, "maker_payment_spent_id"},
+            {TakerPaymentSentIdRole, "taker_payment_sent_id"}};
     }
 } // namespace atomic_dex

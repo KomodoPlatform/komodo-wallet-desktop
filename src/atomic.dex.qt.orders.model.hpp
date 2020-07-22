@@ -24,8 +24,8 @@
 #include "atomic.dex.pch.hpp"
 
 //! Project
-#include "atomic.dex.qt.orders.data.hpp"
 #include "atomic.dex.mm2.api.hpp"
+#include "atomic.dex.qt.orders.data.hpp"
 
 namespace atomic_dex
 {
@@ -45,17 +45,18 @@ namespace atomic_dex
             UnixTimestampRole,
             OrderIdRole,
             OrderStatusRole,
-            MakePaymentSpentIdRole,
+            MakerPaymentSpentIdRole,
             TakerPaymentSentIdRole
         };
 
 
         orders_model(ag::ecs::system_manager& system_manager, QObject* parent = nullptr) noexcept;
         ~orders_model() noexcept final;
-        int      rowCount(const QModelIndex& parent) const final;
-        QVariant data(const QModelIndex& index, int role) const final;
-        bool     removeRows(int row, int count, const QModelIndex& parent) final;
+        int                    rowCount(const QModelIndex& parent) const final;
+        QVariant               data(const QModelIndex& index, int role) const final;
+        bool                   removeRows(int row, int count, const QModelIndex& parent) final;
         QHash<int, QByteArray> roleNames() const final;
+        bool                   setData(const QModelIndex& index, const QVariant& value, int role) final;
 
         //! Public api
         void refresh_or_insert_orders() noexcept;
@@ -70,6 +71,6 @@ namespace atomic_dex
         t_orders_datas       m_model_data;
 
         //! Private api
-        void                 initialize_order(const ::mm2::api::my_order_contents& contents) noexcept;
+        void initialize_order(const ::mm2::api::my_order_contents& contents) noexcept;
     };
 } // namespace atomic_dex
