@@ -197,7 +197,7 @@ QtObject {
 
         Object.keys(orders).map((key, index) => {
             orders[key].order_id = key
-            orders[key].is_recent_swap = true
+            orders[key].is_swap = true
 
             const is_maker = orders[key].is_maker !== undefined ? orders[key].is_maker : orders[key].type.toLowerCase() === 'maker'
 
@@ -231,7 +231,7 @@ QtObject {
     }
 
     function formatOrder(o) {
-        if(o.is_recent_swap) {
+        if(o.is_swap) {
             o.date = o.events[o.events.length-1].human_timestamp
         }
         else {

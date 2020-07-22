@@ -21,22 +21,25 @@ DefaultModal {
         anchors.horizontalCenter: parent.horizontalCenter
 
         ModalHeader {
-            title: API.get().empty_string + (details.is_recent_swap ? qsTr("Swap Details") : qsTr("Order Details"))
+            title: API.get().empty_string + (details.is_swap ? qsTr("Swap Details") : qsTr("Order Details"))
         }
 
         // Complete image
-        DefaultImage {
-            visible: details.is_recent_swap !== undefined && getStatus(details) === status_swap_successful
-            Layout.alignment: Qt.AlignHCenter
-            source: General.image_path + "exchange-trade-complete.svg"
-        }
+        // TODO: Add events
+//        DefaultImage {
+//            visible: details.is_swap !== undefined && getStatus(details) === status_swap_successful
+//            Layout.alignment: Qt.AlignHCenter
+//            source: General.image_path + "exchange-trade-complete.svg"
+//        }
 
-        DefaultBusyIndicator {
-            visible: details.is_recent_swap !== undefined &&
-                     getStatus(details) !== status_swap_successful &&
-                     getStatus(details) !== status_swap_failed
-            Layout.alignment: Qt.AlignHCenter
-        }
+        // Loading symbol
+        // TODO: Add events
+//        DefaultBusyIndicator {
+//            visible: details.is_swap !== undefined &&
+//                     getStatus(details) !== status_swap_successful &&
+//                     getStatus(details) !== status_swap_failed
+//            Layout.alignment: Qt.AlignHCenter
+//        }
 
         // Status Text
         // TODO: Add events
@@ -76,25 +79,26 @@ DefaultModal {
         }
 
         // Refund state
-        TextFieldWithTitle {
-            Layout.topMargin: -20
+        // TODO: Add events
+//        TextFieldWithTitle {
+//            Layout.topMargin: -20
 
-            title: API.get().empty_string + (qsTr("Refund State"))
-            field.text: {
-                let str = API.get().empty_string
-                const e = getLastEvent(details)
+//            title: API.get().empty_string + (qsTr("Refund State"))
+//            field.text: {
+//                let str = API.get().empty_string
+//                const e = getLastEvent(details)
 
-                if(e.state === "TakerPaymentWaitRefundStarted" ||
-                   e.state === "MakerPaymentWaitRefundStarted") {
-                    str += qsTr("Your swap failed but the auto-refund process for your payment started already. Please wait and keep application opened until you receive your payment back")
-                }
+//                if(e.state === "TakerPaymentWaitRefundStarted" ||
+//                   e.state === "MakerPaymentWaitRefundStarted") {
+//                    str += qsTr("Your swap failed but the auto-refund process for your payment started already. Please wait and keep application opened until you receive your payment back")
+//                }
 
-                return str
-            }
-            field.readOnly: true
+//                return str
+//            }
+//            field.readOnly: true
 
-            visible: field.text !== ''
-        }
+//            visible: field.text !== ''
+//        }
 
         // Date
         TextWithTitle {
@@ -128,21 +132,23 @@ DefaultModal {
         }
 
         // Error ID
-        TextWithTitle {
-            title: API.get().empty_string + (qsTr("Error ID"))
-            text: API.get().empty_string + (getSwapError(details).state)
-            visible: text !== ''
-        }
+        // TODO: Add events
+//        TextWithTitle {
+//            title: API.get().empty_string + (qsTr("Error ID"))
+//            text: API.get().empty_string + (getSwapError(details).state)
+//            visible: text !== ''
+//        }
 
         // Error Details
-        TextFieldWithTitle {
-            title: API.get().empty_string + (qsTr("Error Log"))
-            field.text: API.get().empty_string + (getSwapError(details).data.error)
-            field.readOnly: true
-            copyable: true
+        // TODO: Add events
+//        TextFieldWithTitle {
+//            title: API.get().empty_string + (qsTr("Error Log"))
+//            field.text: API.get().empty_string + (getSwapError(details).data.error)
+//            field.readOnly: true
+//            copyable: true
 
-            visible: field.text !== ''
-        }
+//            visible: field.text !== ''
+//        }
 
         // Buttons
         RowLayout {

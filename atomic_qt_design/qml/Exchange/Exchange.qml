@@ -148,7 +148,7 @@ Item {
     readonly property int status_swap_failed: 4
 
     function getSwapError(swap) {
-        if(swap.is_recent_swap) {
+        if(swap.is_swap) {
             for(let i = swap.events.length - 1; i >= 0; --i) {
                 const e = swap.events[i]
                if(e.data && e.data.error && swap.error_events.indexOf(e.state) !== -1) {
@@ -161,7 +161,7 @@ Item {
     }
 
     function getLastEvent(swap) {
-        if(swap.is_recent_swap && swap.events.length > 0) {
+        if(swap.is_swap && swap.events.length > 0) {
             return swap.events[swap.events.length-1]
         }
 
@@ -169,8 +169,8 @@ Item {
     }
 
     function getStatus(swap) {
-        if(!swap.is_recent_swap && !swap.is_maker) return status_swap_matching
-        if(!swap.is_recent_swap) return status_swap_not_swap
+        if(!swap.is_swap && !swap.is_maker) return status_swap_matching
+        if(!swap.is_swap) return status_swap_not_swap
 
         const last_state = swap.events[swap.events.length-1].state
 
