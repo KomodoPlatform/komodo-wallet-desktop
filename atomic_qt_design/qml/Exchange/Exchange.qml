@@ -172,8 +172,7 @@ Item {
         return "ongoing"
     }
 
-    function getStatusColor(swap) {
-        const status = getStatus(swap)
+    function getStatusColor(status) {
         return status === "matching" ? Style.colorYellow :
                status === "matched" ? Style.colorOrange :
                status === "ongoing" ? Style.colorOrange :

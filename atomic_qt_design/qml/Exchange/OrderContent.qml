@@ -77,7 +77,7 @@ Item {
     // TODO: Events is missing
 //    DefaultText {
 //        visible: !in_modal && (item.events !== undefined || item.is_maker === false)
-//        color: visible ? getStatusColor(item) : ''
+//        color: visible ? getStatusColor(item.order_status) : ''
 //        anchors.horizontalCenter: parent.horizontalCenter
 //        anchors.top: base_icon.top
 //        text_value: API.get().empty_string + (visible ? getStatusTextWithPrefix(item) : '')
