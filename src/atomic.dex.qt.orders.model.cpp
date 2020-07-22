@@ -18,6 +18,20 @@
 #include "atomic.dex.qt.orders.model.hpp"
 #include "atomic.dex.mm2.hpp"
 
+//! Utils
+namespace
+{
+    template <typename TValue, typename TModel>
+    void
+    update_value(int role, const TValue& value, const QModelIndex& idx, TModel& model)
+    {
+        if (value != model.data(idx, role).toString())
+        {
+            model.setData(idx, value, role);
+        }
+    }
+} // namespace
+
 namespace atomic_dex
 {
     orders_model::orders_model(ag::ecs::system_manager& system_manager, QObject* parent) noexcept : QAbstractListModel(parent), m_system_manager(system_manager)
@@ -173,7 +187,11 @@ namespace atomic_dex
     void
     orders_model::update_existing_order(const ::mm2::api::my_order_contents& contents) noexcept
     {
-
+        if (const auto res = this->match(index(0, 0), OrderIdRole, QString::fromStdString(contents.order_id)); not res.isEmpty())
+        {
+            const QModelIndex& idx = res.at(0);
+            update_value(OrdersRoles::CancellableRole, contents.cancellable, idx, *this);
+        }
     }
 
     void
