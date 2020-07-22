@@ -25,7 +25,7 @@ namespace
     void
     update_value(int role, const TValue& value, const QModelIndex& idx, TModel& model)
     {
-        if (value != model.data(idx, role).toString())
+        if (value != model.data(idx, role))
         {
             model.setData(idx, value, role);
         }
@@ -197,6 +197,8 @@ namespace atomic_dex
         {
             const QModelIndex& idx = res.at(0);
             update_value(OrdersRoles::CancellableRole, contents.cancellable, idx, *this);
+            update_value(OrdersRoles::IsMakerRole, contents.order_type == "maker", idx, *this);
+            update_value(OrdersRoles::OrderTypeRole, QString::fromStdString(contents.order_type), idx, *this);
         }
     }
 
