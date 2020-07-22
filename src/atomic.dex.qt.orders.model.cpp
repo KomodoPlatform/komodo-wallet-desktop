@@ -86,6 +86,7 @@ namespace atomic_dex
         }
 
         emit dataChanged(index, index, {role});
+        return true;
     }
 
     QVariant
@@ -134,7 +135,7 @@ namespace atomic_dex
         for (int row = 0; row < rows; ++row)
         {
             this->m_model_data.removeAt(position);
-            // emit lengthChanged();
+            emit lengthChanged();
         }
         endRemoveRows();
 
@@ -160,6 +161,7 @@ namespace atomic_dex
         this->m_orders_id_registry.emplace(contents.order_id);
         this->m_model_data.push_back(std::move(data));
         endInsertRows();
+        emit lengthChanged();
     }
 
     void
@@ -228,5 +230,11 @@ namespace atomic_dex
             {OrderStatusRole, "order_status"},
             {MakerPaymentSpentIdRole, "maker_payment_spent_id"},
             {TakerPaymentSentIdRole, "taker_payment_sent_id"}};
+    }
+
+    int
+    orders_model::get_length() const noexcept
+    {
+        return this->rowCount(QModelIndex());
     }
 } // namespace atomic_dex

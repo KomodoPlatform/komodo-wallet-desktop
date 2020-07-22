@@ -32,6 +32,7 @@ namespace atomic_dex
     class orders_model final : public QAbstractListModel
     {
         Q_OBJECT
+        Q_PROPERTY(int length READ get_length NOTIFY lengthChanged);
         Q_ENUMS(OrdersRoles)
       public:
         enum OrdersRoles
@@ -60,6 +61,11 @@ namespace atomic_dex
 
         //! Public api
         void refresh_or_insert_orders() noexcept;
+
+        //! Properties
+        [[nodiscard]] int get_length() const noexcept;
+      signals:
+        void lengthChanged();
 
       private:
         ag::ecs::system_manager& m_system_manager;
