@@ -47,8 +47,8 @@ namespace atomic_dex
             UnixTimestampRole,
             OrderIdRole,
             OrderStatusRole,
-            MakerPaymentSpentIdRole,
-            TakerPaymentSentIdRole,
+            MakerPaymentIdRole,
+            TakerPaymentIdRole,
             CancellableRole
         };
 

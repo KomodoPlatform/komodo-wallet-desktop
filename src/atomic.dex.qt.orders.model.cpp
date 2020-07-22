@@ -25,7 +25,7 @@ namespace
     void
     update_value(int role, const TValue& value, const QModelIndex& idx, TModel& model)
     {
-        if (value != model.data(idx, role).toString())
+        if (value != model.data(idx, role))
         {
             model.setData(idx, value, role);
         }
@@ -91,10 +91,10 @@ namespace atomic_dex
         case OrderStatusRole:
             item.order_status = value.toString();
             break;
-        case MakerPaymentSpentIdRole:
+        case MakerPaymentIdRole:
             item.maker_payment_spent_id = value.toString();
             break;
-        case TakerPaymentSentIdRole:
+        case TakerPaymentIdRole:
             item.taker_payment_sent_id = value.toString();
             break;
         case CancellableRole:
@@ -138,9 +138,9 @@ namespace atomic_dex
             return item.order_id;
         case OrderStatusRole:
             return item.order_status;
-        case MakerPaymentSpentIdRole:
+        case MakerPaymentIdRole:
             return item.maker_payment_spent_id;
-        case TakerPaymentSentIdRole:
+        case TakerPaymentIdRole:
             return item.taker_payment_sent_id;
         case CancellableRole:
             return item.is_cancellable;
@@ -181,7 +181,7 @@ namespace atomic_dex
             .human_date     = QString::fromStdString(contents.human_timestamp),
             .unix_timestamp = static_cast<int>(contents.timestamp),
             .order_id       = QString::fromStdString(contents.order_id),
-            .order_status   = "Matching",
+            .order_status   = "matching",
             .is_cancellable = contents.cancellable};
         this->m_orders_id_registry.emplace(contents.order_id);
         this->m_model_data.push_back(std::move(data));
@@ -197,6 +197,8 @@ namespace atomic_dex
         {
             const QModelIndex& idx = res.at(0);
             update_value(OrdersRoles::CancellableRole, contents.cancellable, idx, *this);
+            update_value(OrdersRoles::IsMakerRole, contents.order_type == "maker", idx, *this);
+            update_value(OrdersRoles::OrderTypeRole, QString::fromStdString(contents.order_type), idx, *this);
         }
     }
 
@@ -229,6 +231,7 @@ namespace atomic_dex
             functor_process_orders(orders.taker_orders);
 
             //! Check for cleaning orders that are not present anymore
+            std::unordered_set<std::string> to_remove;
             for (auto&& id: this->m_orders_id_registry)
             {
                 //! Check if the current id from the model registry is present in the orders collection
@@ -246,9 +249,13 @@ namespace atomic_dex
                     {
                         //! And then delete it
                         this->removeRow(res_list.at(0).row());
+                        to_remove.emplace(id);
                     }
                 }
             }
+            std::unordered_set<std::string> out;
+            std::set_difference(begin(m_orders_id_registry), end(m_orders_id_registry), begin(to_remove), end(to_remove), std::inserter(out, out.begin()));
+            m_orders_id_registry = out;
         }
     }
 
@@ -266,8 +273,8 @@ namespace atomic_dex
             {UnixTimestampRole, "timestamp"},
             {OrderIdRole, "order_id"},
             {OrderStatusRole, "order_status"},
-            {MakerPaymentSpentIdRole, "maker_payment_spent_id"},
-            {TakerPaymentSentIdRole, "taker_payment_sent_id"},
+            {MakerPaymentIdRole, "maker_payment_id"},
+            {TakerPaymentIdRole, "taker_payment_id"},
             {CancellableRole, "cancellable"}};
     }
 
