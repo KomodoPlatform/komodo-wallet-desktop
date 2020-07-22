@@ -83,6 +83,9 @@ namespace atomic_dex
         case TakerPaymentSentIdRole:
             item.taker_payment_sent_id = value.toString();
             break;
+        case CancellableRole:
+            item.is_cancellable = value.toBool();
+            break;
         }
 
         emit dataChanged(index, index, {role});
@@ -122,6 +125,8 @@ namespace atomic_dex
             return item.maker_payment_spent_id;
         case TakerPaymentSentIdRole:
             return item.taker_payment_sent_id;
+        case CancellableRole:
+            return item.is_cancellable;
         }
         return {};
     }
@@ -157,7 +162,7 @@ namespace atomic_dex
             .unix_timestamp = static_cast<int>(contents.timestamp),
             .order_id       = QString::fromStdString(contents.order_id),
             .order_status   = "Matching",
-        };
+            .is_cancellable = contents.cancellable};
         this->m_orders_id_registry.emplace(contents.order_id);
         this->m_model_data.push_back(std::move(data));
         endInsertRows();
@@ -229,7 +234,8 @@ namespace atomic_dex
             {OrderIdRole, "order_id"},
             {OrderStatusRole, "order_status"},
             {MakerPaymentSpentIdRole, "maker_payment_spent_id"},
-            {TakerPaymentSentIdRole, "taker_payment_sent_id"}};
+            {TakerPaymentSentIdRole, "taker_payment_sent_id"},
+            {CancellableRole, "cancellable"}};
     }
 
     int
