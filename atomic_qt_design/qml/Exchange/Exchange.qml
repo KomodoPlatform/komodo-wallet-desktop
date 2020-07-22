@@ -140,12 +140,6 @@ Item {
 
 
     // Status Info
-    readonly property int status_swap_matching: 0
-    readonly property int status_swap_matched: 1
-    readonly property int status_swap_ongoing: 2
-    readonly property int status_swap_successful: 3
-    readonly property int status_swap_failed: 4
-
     function getSwapError(swap) {
         if(swap.is_swap) {
             for(let i = swap.events.length - 1; i >= 0; --i) {
@@ -168,39 +162,39 @@ Item {
     }
 
     function getStatus(swap) {
-        if(!swap.is_swap && !swap.is_maker) return status_swap_matching
+        if(!swap.is_swap && !swap.is_maker) return "matching"
 
         const last_state = swap.events[swap.events.length-1].state
 
-        if(last_state === "Started") return status_swap_matched
-        if(last_state === "Finished") return getSwapError(swap).state === '' ? status_swap_successful : status_swap_failed
+        if(last_state === "Started") return "matched"
+        if(last_state === "Finished") return getSwapError(swap).state === '' ? "successful" : "failed"
 
-        return status_swap_ongoing
+        return "ongoing"
     }
 
     function getStatusColor(swap) {
         const status = getStatus(swap)
-        return status === status_swap_matching ? Style.colorYellow :
-               status === status_swap_matched ? Style.colorOrange :
-               status === status_swap_ongoing ? Style.colorOrange :
-               status === status_swap_successful ? Style.colorGreen : Style.colorRed
+        return status === "matching" ? Style.colorYellow :
+               status === "matched" ? Style.colorOrange :
+               status === "ongoing" ? Style.colorOrange :
+               status === "successful" ? Style.colorGreen : Style.colorRed
     }
 
     function getStatusText(swap) {
         const status = getStatus(swap)
-        return status === status_swap_matching ? qsTr("Order Matching") :
-                status === status_swap_matched ? qsTr("Order Matched") :
-                status === status_swap_ongoing ? qsTr("Swap Ongoing") :
-                status === status_swap_successful ? qsTr("Swap Successful") :
+        return status === "matching" ? qsTr("Order Matching") :
+                status === "matched" ? qsTr("Order Matched") :
+                status === "ongoing" ? qsTr("Swap Ongoing") :
+                status === "successful" ? qsTr("Swap Successful") :
                                                         qsTr("Swap Failed")
     }
 
     function getStatusStep(swap) {
         const status = getStatus(swap)
-        return status === status_swap_matching ? "0/3":
-               status === status_swap_matched ? "1/3":
-               status === status_swap_ongoing ? "2/3":
-               status === status_swap_successful ? Style.successCharacter : Style.failureCharacter
+        return status === "matching" ? "0/3":
+               status === "matched" ? "1/3":
+               status === "ongoing" ? "2/3":
+               status === "successful" ? Style.successCharacter : Style.failureCharacter
     }
 
     function getStatusTextWithPrefix(swap) {
