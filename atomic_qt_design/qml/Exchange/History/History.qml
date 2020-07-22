@@ -71,14 +71,6 @@ Item {
 
     OrderModal {
         id: order_modal
-        // TODO: Show the current_item_order_id in this modal
-        details: default_details
-//        details: General.formatOrder(getRecentSwaps().map(o => o.order_id).indexOf(order_modal.current_item_order_id) !== -1 ?
-//                                    getRecentSwaps()[getRecentSwaps().map(o => o.order_id).indexOf(order_modal.current_item_order_id)] : default_details)
-
-        onDetailsChanged: {
-            if(details.is_default) close()
-        }
     }
 
     LogModal {

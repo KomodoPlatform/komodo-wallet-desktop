@@ -11,8 +11,7 @@ DefaultModal {
 
     width: 650
     readonly property var default_details: ({"is_default": true, "price":"","date":"","base":"","rel":"","cancellable":true,"is_maker":true,"base_amount":"1","rel_amount":"1","order_id":""})
-    property var details
-    property string current_item_order_id: ""
+    property var details: default_details
 
     // Inside modal
     ColumnLayout {

@@ -18,7 +18,7 @@ Rectangle {
         anchors.fill: parent
         hoverEnabled: true
         onClicked: {
-            order_modal.current_item_order_id = item.order_id
+            order_modal.details = item
             order_modal.open()
         }
     }
