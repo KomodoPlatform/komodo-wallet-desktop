@@ -12,7 +12,7 @@ Item {
     property string base
     property var all_orders: ({})
     property var all_recent_swaps: ({})
-    property var all_orders_merged: ([])
+    property var all_orders_merged: API.get().orders_mdl
 
     // Local
     function onCancelOrder(uuid) {
@@ -31,7 +31,6 @@ Item {
     function reset() {
         all_orders = {}
         all_recent_swaps = {}
-        all_orders_merged = []
         update_timer.running = false
     }
 
@@ -51,7 +50,6 @@ Item {
     function updateOrders() {
         all_orders = API.get().get_my_orders()
         all_recent_swaps = API.get().get_recent_swaps()
-        all_orders_merged = getAllOrders()
         update_timer.running = true
     }
 
@@ -104,13 +102,15 @@ Item {
     }
 
     function cancellableOrderExists() {
-        for(const i in all_orders_merged) {
-            const o = all_orders_merged[i]
-            if(o.cancellable !== undefined && o.cancellable)
-                return true
-        }
-
+        // TODO: Implement later, as property
         return false
+//        for(const i in all_orders_merged) {
+//            const o = all_orders_merged[i]
+//            if(o.cancellable !== undefined && o.cancellable)
+//                return true
+//        }
+
+//        return false
     }
 
     Timer {
@@ -221,8 +221,10 @@ Item {
 
         OrderModal {
             id: order_modal
-            details: General.formatOrder(all_orders_merged.map(o => o.uuid).indexOf(order_modal.current_item_uuid) !== -1 ?
-                                        all_orders_merged[all_orders_merged.map(o => o.uuid).indexOf(order_modal.current_item_uuid)] : default_details)
+            // TODO: Show the current_item_uuid in this modal
+            details: default_details
+//            details: General.formatOrder(all_orders_merged.map(o => o.uuid).indexOf(order_modal.current_item_uuid) !== -1 ?
+//                                        all_orders_merged[all_orders_merged.map(o => o.uuid).indexOf(order_modal.current_item_uuid)] : default_details)
 
             onDetailsChanged: {
                 if(details.is_default) close()
