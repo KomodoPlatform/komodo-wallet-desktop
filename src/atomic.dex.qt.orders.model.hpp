@@ -42,6 +42,7 @@ namespace atomic_dex
             BaseCoinAmountRole,
             RelCoinAmountRole,
             OrderTypeRole,
+            IsMakerRole,
             HumanDateRole,
             UnixTimestampRole,
             OrderIdRole,

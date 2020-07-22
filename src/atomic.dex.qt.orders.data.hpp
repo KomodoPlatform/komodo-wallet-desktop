@@ -21,6 +21,9 @@ namespace atomic_dex
         //! eg: Taker order;
         QString order_type;
 
+        //! eg: true / false
+        bool is_maker;
+
         //! eg: 2020-07-2020 17:23:36.625
         QString human_date;
 
