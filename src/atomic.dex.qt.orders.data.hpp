@@ -36,5 +36,8 @@ namespace atomic_dex
         QString maker_payment_spent_id;
 
         QString taker_payment_sent_id;
+
+        //! eg: true / false
+        bool is_cancellable;
     };
 } // namespace atomic_dex
