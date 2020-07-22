@@ -91,10 +91,10 @@ namespace atomic_dex
         case OrderStatusRole:
             item.order_status = value.toString();
             break;
-        case MakerPaymentSpentIdRole:
+        case MakerPaymentIdRole:
             item.maker_payment_spent_id = value.toString();
             break;
-        case TakerPaymentSentIdRole:
+        case TakerPaymentIdRole:
             item.taker_payment_sent_id = value.toString();
             break;
         case CancellableRole:
@@ -138,9 +138,9 @@ namespace atomic_dex
             return item.order_id;
         case OrderStatusRole:
             return item.order_status;
-        case MakerPaymentSpentIdRole:
+        case MakerPaymentIdRole:
             return item.maker_payment_spent_id;
-        case TakerPaymentSentIdRole:
+        case TakerPaymentIdRole:
             return item.taker_payment_sent_id;
         case CancellableRole:
             return item.is_cancellable;
@@ -266,8 +266,8 @@ namespace atomic_dex
             {UnixTimestampRole, "timestamp"},
             {OrderIdRole, "order_id"},
             {OrderStatusRole, "order_status"},
-            {MakerPaymentSpentIdRole, "maker_payment_spent_id"},
-            {TakerPaymentSentIdRole, "taker_payment_sent_id"},
+            {MakerPaymentIdRole, "maker_payment_id"},
+            {TakerPaymentIdRole, "taker_payment_id"},
             {CancellableRole, "cancellable"}};
     }
 
