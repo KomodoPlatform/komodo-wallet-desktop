@@ -51,7 +51,7 @@ InnerBackground {
             // Row
             delegate: OrderLine {
                 // TODO: Proper fields
-                item: model.modelData
+                item: model
                 //item: General.formatOrder(model.modelData)
             }
         }
