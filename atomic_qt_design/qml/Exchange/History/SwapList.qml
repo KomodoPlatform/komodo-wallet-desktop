@@ -14,8 +14,8 @@ InnerBackground {
     property var postCancelOrder: () => {}
 
     // Local
-    function onCancelOrder(uuid) {
-        API.get().cancel_order(uuid)
+    function onCancelOrder(order_id) {
+        API.get().cancel_order(order_id)
         postCancelOrder()
     }
 

@@ -15,8 +15,8 @@ Item {
     property var all_orders_merged: API.get().orders_mdl
 
     // Local
-    function onCancelOrder(uuid) {
-        API.get().cancel_order(uuid)
+    function onCancelOrder(order_id) {
+        API.get().cancel_order(order_id)
         updateOrders()
     }
 
@@ -94,7 +94,7 @@ Item {
         let array = orders.taker_orders.concat(orders.maker_orders)
 
         // Remove duplicates
-        return array.filter((o, index, self) => index === self.findIndex(t => t.uuid === o.uuid))
+        return array.filter((o, index, self) => index === self.findIndex(t => t.order_id === o.order_id))
     }
 
     function changeTicker(ticker) {
@@ -221,10 +221,10 @@ Item {
 
         OrderModal {
             id: order_modal
-            // TODO: Show the current_item_uuid in this modal
+            // TODO: Show the current_item_order_id in this modal
             details: default_details
-//            details: General.formatOrder(all_orders_merged.map(o => o.uuid).indexOf(order_modal.current_item_uuid) !== -1 ?
-//                                        all_orders_merged[all_orders_merged.map(o => o.uuid).indexOf(order_modal.current_item_uuid)] : default_details)
+//            details: General.formatOrder(all_orders_merged.map(o => o.order_id).indexOf(order_modal.current_item_order_id) !== -1 ?
+//                                        all_orders_merged[all_orders_merged.map(o => o.order_id).indexOf(order_modal.current_item_order_id)] : default_details)
 
             onDetailsChanged: {
                 if(details.is_default) close()

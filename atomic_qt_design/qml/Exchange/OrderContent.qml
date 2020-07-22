@@ -11,12 +11,12 @@ Item {
     property var item
     property bool in_modal: false
 
-    readonly property bool is_placed_order: item.uuid !== ''
+    readonly property bool is_placed_order: item.order_id !== ''
 
     // Base Icon
     DefaultImage {
         id: base_icon
-        source: General.coinIcon(item.my_info.my_coin)
+        source: General.coinIcon(item.base_coin)
         fillMode: Image.PreserveAspectFit
         width: in_modal ? Style.textSize5 : Style.textSize3
         anchors.horizontalCenter: base_amount.horizontalCenter
@@ -25,7 +25,7 @@ Item {
     // Rel Icon
     DefaultImage {
         id: rel_icon
-        source: General.coinIcon(item.my_info.other_coin)
+        source: General.coinIcon(item.rel_coin)
         fillMode: Image.PreserveAspectFit
         width: base_icon.width
         anchors.horizontalCenter: rel_amount.horizontalCenter
@@ -34,7 +34,7 @@ Item {
     // Base Amount
     DefaultText {
         id: base_amount
-        text_value: API.get().empty_string + ("~ " + General.formatCrypto("", item.my_info.my_amount, item.my_info.my_coin))
+        text_value: API.get().empty_string + ("~ " + General.formatCrypto("", item.base_amount, item.base_coin))
         font.pixelSize: in_modal ? Style.textSize2 : Style.textSize
 
         anchors.left: parent.left
@@ -55,18 +55,18 @@ Item {
     // Rel Amount
     DefaultText {
         id: rel_amount
-        text_value: API.get().empty_string + ("~ " + General.formatCrypto("", item.my_info.other_amount, item.my_info.other_coin))
+        text_value: API.get().empty_string + ("~ " + General.formatCrypto("", item.rel_amount, item.rel_coin))
         font.pixelSize: base_amount.font.pixelSize
         anchors.right: parent.right
         anchors.top: base_amount.top
         privacy: is_placed_order
     }
 
-    // UUID
+    // Order ID
     DefaultText {
-        id: uuid
+        id: order_id
         visible: !in_modal && is_placed_order
-        text_value: API.get().empty_string + ((item.is_recent_swap ? qsTr("Swap ID") : qsTr("UUID")) + ": " + item.uuid)
+        text_value: API.get().empty_string + (qsTr("ID") + ": " + item.order_id)
         color: Style.colorTheme2
         anchors.top: base_amount.bottom
         anchors.topMargin: base_amount.anchors.topMargin
@@ -88,7 +88,7 @@ Item {
         visible: !in_modal && item.date !== ''
         text_value: API.get().empty_string + (item.date)
         color: Style.colorTheme2
-        anchors.top: uuid.bottom
+        anchors.top: order_id.bottom
         anchors.topMargin: base_amount.anchors.topMargin
     }
 
@@ -107,7 +107,7 @@ Item {
         anchors.right: parent.right
         anchors.bottom: date.bottom
         text: API.get().empty_string + (qsTr("Cancel"))
-        onClicked: onCancelOrder(item.uuid)
+        onClicked: onCancelOrder(item.order_id)
     }
 
     // Recover Funds button
@@ -116,6 +116,6 @@ Item {
         anchors.right: parent.right
         anchors.bottom: date.bottom
         text: API.get().empty_string + (qsTr("Recover Funds"))
-        onClicked: onRecoverFunds(item.uuid)
+        onClicked: onRecoverFunds(item.order_id)
     }
 }

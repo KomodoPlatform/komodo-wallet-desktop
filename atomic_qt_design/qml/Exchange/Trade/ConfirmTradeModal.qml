@@ -38,7 +38,7 @@ DefaultModal {
                        other_amount: form_rel.field.text
                     },
 
-                    uuid: '',
+                    order_id: '',
                     date: '',
                    })
             in_modal: true
