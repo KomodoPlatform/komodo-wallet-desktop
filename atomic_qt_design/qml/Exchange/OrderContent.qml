@@ -80,7 +80,7 @@ Item {
 //        color: visible ? getStatusColor(item.order_status) : ''
 //        anchors.horizontalCenter: parent.horizontalCenter
 //        anchors.top: base_icon.top
-//        text_value: API.get().empty_string + (visible ? getStatusTextWithPrefix(item) : '')
+//        text_value: API.get().empty_string + (visible ? getStatusTextWithPrefix(item.order_status) : '')
 //    }
 
     // Date

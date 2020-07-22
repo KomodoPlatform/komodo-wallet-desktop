@@ -179,8 +179,7 @@ Item {
                status === "successful" ? Style.colorGreen : Style.colorRed
     }
 
-    function getStatusText(swap) {
-        const status = getStatus(swap)
+    function getStatusText(status) {
         return status === "matching" ? qsTr("Order Matching") :
                 status === "matched" ? qsTr("Order Matched") :
                 status === "ongoing" ? qsTr("Swap Ongoing") :
@@ -188,16 +187,15 @@ Item {
                                                         qsTr("Swap Failed")
     }
 
-    function getStatusStep(swap) {
-        const status = getStatus(swap)
+    function getStatusStep(status) {
         return status === "matching" ? "0/3":
                status === "matched" ? "1/3":
                status === "ongoing" ? "2/3":
                status === "successful" ? Style.successCharacter : Style.failureCharacter
     }
 
-    function getStatusTextWithPrefix(swap) {
-        return getStatusStep(swap) + " " + getStatusText(swap)
+    function getStatusTextWithPrefix(status) {
+        return getStatusStep(status) + " " + getStatusText(status)
     }
 }
 

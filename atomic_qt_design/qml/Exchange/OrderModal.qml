@@ -51,7 +51,7 @@ DefaultModal {
 //                     (details.events !== undefined || // Has events, ongoing or
 //                    details.is_maker === false) // Taker order with no events
 //            color: visible ? getStatusColor(details.order_status) : ''
-//            text_value: API.get().empty_string + (visible ? getStatusTextWithPrefix(details) : '')
+//            text_value: API.get().empty_string + (visible ? getStatusTextWithPrefix(details.order_status) : '')
 //        }
 
         OrderContent {
