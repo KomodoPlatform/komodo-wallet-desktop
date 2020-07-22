@@ -33,13 +33,12 @@ DefaultModal {
 //        }
 
         // Loading symbol
-        // TODO: Add events
-//        DefaultBusyIndicator {
-//            visible: details.is_swap !== undefined &&
-//                     details.order_status !== "successful" &&
-//                     details.order_status !== "failed"
-//            Layout.alignment: Qt.AlignHCenter
-//        }
+            DefaultBusyIndicator {
+            visible: details.is_swap !== undefined &&
+                     details.order_status !== "successful" &&
+                     details.order_status !== "failed"
+            Layout.alignment: Qt.AlignHCenter
+        }
 
         // Status Text
         // TODO: Add events
