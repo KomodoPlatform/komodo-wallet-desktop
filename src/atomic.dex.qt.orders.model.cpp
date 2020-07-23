@@ -196,7 +196,7 @@ namespace atomic_dex
         QString status = "ongoing";
         if (last_event == "Finished")
         {
-            status = "finished";
+            status = "successful";
             //! Find error or not
             for (auto&& cur_event: contents.events)
             {
