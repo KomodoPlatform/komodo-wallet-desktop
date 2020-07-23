@@ -8,6 +8,8 @@ import "../Constants"
 
 // List
 ChartView {
+    readonly property bool has_data: series.count > 0
+
     AreaSeries {
         id: series_area2
         color: Style.colorTheme10

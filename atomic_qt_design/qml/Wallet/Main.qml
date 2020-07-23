@@ -195,7 +195,10 @@ Item {
                 Layout.bottomMargin: -parent.spacing*0.5
                 implicitHeight: wallet.height*0.6
 
-                content: PriceGraph {
+                visible: chart.has_data
+
+                PriceGraph {
+                    id: chart
                     width: price_graph_bg.width
                     height: price_graph_bg.height
 
