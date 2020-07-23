@@ -1,4 +1,28 @@
 {
+  "AXE": {
+    "coin": "AXE",
+    "name": "Axe",
+    "coinpaprika_id": "axe-axe",
+    "coingecko_id": "axe",
+    "electrum": [
+      {
+        "url": "electrum1.cipig.net:10057"
+      },
+      {
+        "url": "electrum2.cipig.net:10057"
+      },
+      {
+        "url": "electrum3.cipig.net:10057"
+      }
+    ],
+    "explorer_url": [
+      "https://insight.axerunners.com/"
+    ],
+    "type": "UTXO",
+    "is_erc_20": false,
+    "active": false,
+    "currently_enabled": false
+  },
   "BTC": {
     "coin": "BTC",
     "name": "Bitcoin",
