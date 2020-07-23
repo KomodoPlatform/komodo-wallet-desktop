@@ -177,8 +177,9 @@ DefaultModal {
 
                     const maker_id = details.maker_payment_id
                     const taker_id = details.taker_payment_id
-                    if(maker_id !== '') General.viewTxAtExplorer(details.base_coin, maker_id, true)
-                    if(taker_id !== '') General.viewTxAtExplorer(details.rel_coin, taker_id, true)
+
+                    if(maker_id !== '') General.viewTxAtExplorer(details.is_maker ? details.base_coin : details.rel_coin, maker_id, true)
+                    if(taker_id !== '') General.viewTxAtExplorer(details.is_maker ? details.rel_coin : details.base_coin, taker_id, true)
                 }
             }
         }
