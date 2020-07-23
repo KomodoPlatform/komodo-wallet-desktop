@@ -11,12 +11,14 @@ Item {
     property var details
     property bool in_modal: false
 
-    readonly property bool is_placed_order: !details ? false : details.order_id !== ''
+    readonly property bool is_placed_order: !details ? false :
+                                                       details.order_id !== ''
 
     // Base Icon
     DefaultImage {
         id: base_icon
-        source: General.coinIcon(!details ? "KMD" : details.base_coin)
+        source: General.coinIcon(!details ? "KMD" :
+                                            details.base_coin)
         fillMode: Image.PreserveAspectFit
         width: in_modal ? Style.textSize5 : Style.textSize3
         anchors.horizontalCenter: base_amount.horizontalCenter
@@ -25,7 +27,8 @@ Item {
     // Rel Icon
     DefaultImage {
         id: rel_icon
-        source: General.coinIcon(!details ? "KMD" : details.rel_coin)
+        source: General.coinIcon(!details ? "KMD" :
+                                            details.rel_coin)
         fillMode: Image.PreserveAspectFit
         width: base_icon.width
         anchors.horizontalCenter: rel_amount.horizontalCenter
@@ -34,7 +37,8 @@ Item {
     // Base Amount
     DefaultText {
         id: base_amount
-        text_value: API.get().empty_string + (!details ? "" : "~ " + General.formatCrypto("", details.base_amount, details.base_coin))
+        text_value: API.get().empty_string + (!details ? "" :
+                                                         "~ " + General.formatCrypto("", details.base_amount, details.base_coin))
         font.pixelSize: in_modal ? Style.textSize2 : Style.textSize
 
         anchors.left: parent.left
@@ -55,7 +59,8 @@ Item {
     // Rel Amount
     DefaultText {
         id: rel_amount
-        text_value: API.get().empty_string + (!details ? "" : "~ " + General.formatCrypto("", details.rel_amount, details.rel_coin))
+        text_value: API.get().empty_string + (!details ? "" :
+                                                         "~ " + General.formatCrypto("", details.rel_amount, details.rel_coin))
         font.pixelSize: base_amount.font.pixelSize
         anchors.right: parent.right
         anchors.top: base_amount.top
@@ -66,7 +71,8 @@ Item {
     DefaultText {
         id: order_id
         visible: !in_modal && is_placed_order
-        text_value: API.get().empty_string + (!details ? "" : qsTr("ID") + ": " + details.order_id)
+        text_value: API.get().empty_string + (!details ? "" :
+                                                         qsTr("ID") + ": " + details.order_id)
         color: Style.colorTheme2
         anchors.top: base_amount.bottom
         anchors.topMargin: base_amount.anchors.topMargin
@@ -79,14 +85,16 @@ Item {
         color: !details ? "white" : visible ? getStatusColor(details.order_status) : ''
         anchors.horizontalCenter: parent.horizontalCenter
         anchors.top: base_icon.top
-        text_value: API.get().empty_string + (!details ? "" : visible ? getStatusTextWithPrefix(details.order_status) : '')
+        text_value: API.get().empty_string + (!details ? "" :
+                                                         visible ? getStatusTextWithPrefix(details.order_status) : '')
     }
 
     // Date
     DefaultText {
         id: date
         visible: !details ? false : !in_modal && details.date !== ''
-        text_value: API.get().empty_string + (!details ? "" : details.date)
+        text_value: API.get().empty_string + (!details ? "" :
+                                                         details.date)
         color: Style.colorTheme2
         anchors.top: order_id.bottom
         anchors.topMargin: base_amount.anchors.topMargin
@@ -95,7 +103,8 @@ Item {
     // Maker/Taker
     DefaultText {
         visible: !in_modal && is_placed_order
-        text_value: API.get().empty_string + (!details ? "" : details.is_maker ? qsTr("Maker Order"): qsTr("Taker Order"))
+        text_value: API.get().empty_string + (!details ? "" :
+                                                         details.is_maker ? qsTr("Maker Order"): qsTr("Taker Order"))
         color: Style.colorThemeDarkLight
         anchors.verticalCenter: date.verticalCenter
         anchors.horizontalCenter: parent.horizontalCenter
@@ -103,7 +112,8 @@ Item {
 
     // Cancel button
     DangerButton {
-        visible: !details ? false : !in_modal && details.cancellable
+        visible: !details ? false :
+                            !in_modal && details.cancellable
         anchors.right: parent.right
         anchors.bottom: date.bottom
         text: API.get().empty_string + (qsTr("Cancel"))
@@ -112,7 +122,8 @@ Item {
 
     // Recover Funds button
     PrimaryButton {
-        visible: !details ? false : !in_modal && details.recoverable
+        visible: !details ? false :
+                            !in_modal && details.recoverable
         anchors.right: parent.right
         anchors.bottom: date.bottom
         text: API.get().empty_string + (qsTr("Recover Funds"))
