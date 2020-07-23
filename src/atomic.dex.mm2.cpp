@@ -739,6 +739,7 @@ namespace atomic_dex
         if (answer.result.has_value())
         {
             m_swaps_registry.insert_or_assign("result", answer.result.value());
+            this->dispatcher_.trigger<process_swaps_finished>();
         }
 
         /*if (not m_swaps_registry.empty())

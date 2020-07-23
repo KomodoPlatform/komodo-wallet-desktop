@@ -252,12 +252,6 @@ namespace atomic_dex
                     this->process_refresh_current_ticker_infos();
                 }
                 break;
-            case action::refresh_order:
-                if (mm2.is_mm2_running())
-                {
-                    emit myOrdersUpdated();
-                }
-                break;
             case action::refresh_ohlc:
                 if (mm2.is_mm2_running())
                 {
@@ -416,10 +410,9 @@ namespace atomic_dex
     atomic_dex::application::cancel_order(const QString& order_id)
     {
         auto& mm2 = get_mm2();
-        atomic_dex::spawn([&mm2, order_id, this]() {
+        atomic_dex::spawn([&mm2, order_id]() {
             ::mm2::api::rpc_cancel_order({order_id.toStdString()});
             mm2.process_orders();
-            //this->get_dispatcher().trigger<refresh_order_needed>();
         });
     }
 
@@ -427,11 +420,10 @@ namespace atomic_dex
     atomic_dex::application::cancel_all_orders()
     {
         auto& mm2 = get_mm2();
-        atomic_dex::spawn([&mm2, this]() {
+        atomic_dex::spawn([&mm2]() {
             ::mm2::api::cancel_all_orders_request req;
             ::mm2::api::rpc_cancel_all_orders(std::move(req));
             mm2.process_orders();
-            this->get_dispatcher().trigger<refresh_order_needed>();
         });
     }
 
@@ -439,13 +431,12 @@ namespace atomic_dex
     application::cancel_all_orders_by_ticker(const QString& ticker)
     {
         auto& mm2 = get_mm2();
-        atomic_dex::spawn([&mm2, &ticker, this]() {
+        atomic_dex::spawn([&mm2, &ticker]() {
             ::mm2::api::cancel_data cd;
             cd.ticker = ticker.toStdString();
             ::mm2::api::cancel_all_orders_request req{{"Coin", cd}};
             ::mm2::api::rpc_cancel_all_orders(std::move(req));
             mm2.process_orders();
-            this->get_dispatcher().trigger<refresh_order_needed>();
         });
     }
 
@@ -775,13 +766,6 @@ namespace atomic_dex
     }
 
     void
-    application::on_refresh_order_event([[maybe_unused]] const refresh_order_needed& evt) noexcept
-    {
-        spdlog::debug("{} l{}", __FUNCTION__, __LINE__);
-        this->m_actions_queue.push(action::refresh_order);
-    }
-
-    void
     application::on_refresh_update_status_event([[maybe_unused]] const refresh_update_status& evt) noexcept
     {
         spdlog::debug("{} l{}", __FUNCTION__, __LINE__);
@@ -792,20 +776,16 @@ namespace atomic_dex
     application::refresh_infos()
     {
         auto& mm2 = get_mm2();
-        spawn([&mm2, &dispatcher = dispatcher_]() {
-            mm2.fetch_infos_thread();
-            dispatcher.trigger<refresh_order_needed>();
-        });
+        spawn([&mm2]() { mm2.fetch_infos_thread(); });
     }
 
     void
     application::refresh_orders_and_swaps()
     {
         auto& mm2 = get_mm2();
-        spawn([&mm2, &dispatcher = dispatcher_]() {
+        spawn([&mm2]() {
             mm2.process_swaps();
             mm2.process_orders();
-            dispatcher.trigger<refresh_order_needed>();
         });
     }
 
@@ -862,9 +842,9 @@ namespace atomic_dex
         get_dispatcher().sink<coin_disabled>().disconnect<&application::on_coin_disabled_event>(*this);
         get_dispatcher().sink<mm2_initialized>().disconnect<&application::on_mm2_initialized_event>(*this);
         get_dispatcher().sink<mm2_started>().disconnect<&application::on_mm2_started_event>(*this);
-        get_dispatcher().sink<refresh_order_needed>().disconnect<&application::on_refresh_order_event>(*this);
         get_dispatcher().sink<refresh_ohlc_needed>().disconnect<&application::on_refresh_ohlc_event>(*this);
         get_dispatcher().sink<process_orders_finished>().disconnect<&application::on_process_orders_finished_event>(*this);
+        get_dispatcher().sink<process_swaps_finished>().disconnect<&application::on_process_swaps_finished_event>(*this);
 
         this->m_need_a_full_refresh_of_mm2 = true;
 
@@ -884,9 +864,9 @@ namespace atomic_dex
         get_dispatcher().sink<coin_disabled>().connect<&application::on_coin_disabled_event>(*this);
         get_dispatcher().sink<mm2_initialized>().connect<&application::on_mm2_initialized_event>(*this);
         get_dispatcher().sink<mm2_started>().connect<&application::on_mm2_started_event>(*this);
-        get_dispatcher().sink<refresh_order_needed>().connect<&application::on_refresh_order_event>(*this);
         get_dispatcher().sink<refresh_ohlc_needed>().connect<&application::on_refresh_ohlc_event>(*this);
         get_dispatcher().sink<process_orders_finished>().connect<&application::on_process_orders_finished_event>(*this);
+        get_dispatcher().sink<process_swaps_finished>().connect<&application::on_process_swaps_finished_event>(*this);
     }
 
     QString
@@ -1327,6 +1307,11 @@ namespace atomic_dex
 //! Orders
 namespace atomic_dex
 {
+    void
+    application::on_process_swaps_finished_event([[maybe_unused]] const process_swaps_finished& evt) noexcept
+    {
+    }
+
     void
     application::on_process_orders_finished_event([[maybe_unused]] const process_orders_finished& evt) noexcept
     {

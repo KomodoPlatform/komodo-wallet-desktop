@@ -80,12 +80,11 @@ namespace atomic_dex
         {
             refresh_enabled_coin             = 0,
             refresh_current_ticker           = 1,
-            refresh_order                    = 2,
-            refresh_ohlc                     = 3,
-            refresh_transactions             = 4,
-            refresh_portfolio_ticker_balance = 5,
-            refresh_update_status            = 6,
-            post_process_orders_finished     = 7
+            refresh_ohlc                     = 2,
+            refresh_transactions             = 3,
+            refresh_portfolio_ticker_balance = 4,
+            refresh_update_status            = 5,
+            post_process_orders_finished     = 6
         };
 
       public:
@@ -103,22 +102,21 @@ namespace atomic_dex
         void on_coin_disabled_event(const coin_disabled&) noexcept;
         void on_mm2_initialized_event(const mm2_initialized&) noexcept;
         void on_mm2_started_event(const mm2_started&) noexcept;
-        void on_refresh_order_event(const refresh_order_needed&) noexcept;
         void on_refresh_ohlc_event(const refresh_ohlc_needed&) noexcept;
         void on_refresh_update_status_event(const refresh_update_status&) noexcept;
         void on_process_orders_finished_event(const process_orders_finished&) noexcept;
+        void on_process_swaps_finished_event(const process_swaps_finished&) noexcept;
 
         //! Properties Getter
-        static const QString& get_empty_string();
-        mm2&                  get_mm2() noexcept;
-        const mm2&            get_mm2() const noexcept;
-        coinpaprika_provider& get_paprika() noexcept;
-        entt::dispatcher&     get_dispatcher() noexcept;
-        QObject*              get_current_coin_info() const noexcept;
-        addressbook_model*    get_addressbook() const noexcept;
-        portfolio_model*      get_portfolio() const noexcept;
-        orders_model*         get_orders() const noexcept;
-        ;
+        static const QString&      get_empty_string();
+        mm2&                       get_mm2() noexcept;
+        const mm2&                 get_mm2() const noexcept;
+        coinpaprika_provider&      get_paprika() noexcept;
+        entt::dispatcher&          get_dispatcher() noexcept;
+        QObject*                   get_current_coin_info() const noexcept;
+        addressbook_model*         get_addressbook() const noexcept;
+        portfolio_model*           get_portfolio() const noexcept;
+        orders_model*              get_orders() const noexcept;
         QVariantList               get_enabled_coins() const noexcept;
         QVariantList               get_enableable_coins() const noexcept;
         QString                    get_current_currency() const noexcept;
