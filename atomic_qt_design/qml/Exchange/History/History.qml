@@ -18,6 +18,9 @@ Item {
     }
 
     function onOpened() {
+        console.log("is_history false")
+        API.get().orders_mdl.orders_proxy_mdl.is_history = true
+        API.get().refresh_orders_and_swaps()
     }
 
     property string recover_funds_result: '{}'
@@ -38,7 +41,7 @@ Item {
 
         SwapList {
             title: API.get().empty_string + (qsTr("Recent Swaps"))
-            items: API.get().orders_mdl
+            items: API.get().orders_mdl.orders_proxy_mdl
         }
     }
 

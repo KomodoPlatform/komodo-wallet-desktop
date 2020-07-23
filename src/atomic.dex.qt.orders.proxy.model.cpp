@@ -86,8 +86,10 @@ namespace atomic_dex
     void
     orders_proxy_model::set_is_history(bool is_history) noexcept
     {
-        this->m_is_history = is_history;
-        emit isHistoryChanged();
+        if(is_history != this->m_is_history) {
+            this->m_is_history = is_history;
+            emit isHistoryChanged();
+        }
     }
 
     bool
@@ -97,11 +99,13 @@ namespace atomic_dex
         auto        data = this->data(idx, orders_model::OrdersRoles::OrderStatusRole).toString();
         if (this->m_is_history)
         {
+            std::cout << "filterAcceptsRow: " << m_is_history << " " << data.toStdString() << std::endl;
             if (data == "matching" || data == "ongoing" || data == "matched")
                 return false;
         }
         else
         {
+            std::cout << "filterAcceptsRow: " << m_is_history << " " << data.toStdString() << std::endl;
             if (data == "successful" || data == "failed")
                 return false;
         }

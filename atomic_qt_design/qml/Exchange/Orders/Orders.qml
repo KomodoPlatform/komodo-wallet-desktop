@@ -10,7 +10,7 @@ Item {
     id: exchange_orders
 
     property string base
-    property var all_orders_merged: API.get().orders_mdl
+    property var all_orders_merged: API.get().orders_mdl.orders_proxy_mdl
 
     // Local
     function onCancelOrder(order_id) {
@@ -30,6 +30,8 @@ Item {
     }
 
     function onOpened() {
+        console.log("is_history false")
+        API.get().orders_mdl.orders_proxy_mdl.is_history = false
         API.get().refresh_orders_and_swaps()
     }
 
