@@ -92,6 +92,7 @@ namespace atomic_dex
             this->m_is_history = is_history;
             emit isHistoryChanged();
             this->invalidateFilter();
+            emit qobject_cast<orders_model *>(this->sourceModel())->lengthChanged();
         }
     }
 

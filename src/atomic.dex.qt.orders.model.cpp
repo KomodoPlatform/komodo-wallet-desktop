@@ -393,7 +393,7 @@ namespace atomic_dex
     int
     orders_model::get_length() const noexcept
     {
-        return this->rowCount(QModelIndex());
+        return this->m_model_proxy->rowCount(QModelIndex());
     }
 
     orders_proxy_model*
