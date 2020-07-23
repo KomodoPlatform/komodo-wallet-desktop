@@ -14,6 +14,8 @@
  *                                                                            *
  ******************************************************************************/
 
+#include <QDebug>
+
 //! PCH
 #include "atomic.dex.pch.hpp"
 
@@ -89,23 +91,25 @@ namespace atomic_dex
         if(is_history != this->m_is_history) {
             this->m_is_history = is_history;
             emit isHistoryChanged();
+            this->invalidateFilter();
         }
     }
 
     bool
     orders_proxy_model::filterAcceptsRow(int source_row, const QModelIndex& source_parent) const
     {
-        QModelIndex idx  = index(source_row, 0);
-        auto        data = this->data(idx, orders_model::OrdersRoles::OrderStatusRole).toString();
+        QModelIndex idx  = this->sourceModel()->index(source_row, 0, source_parent);
+        spdlog::trace("asking idx_row: {}, idx: {}, source_parent: {}", source_row, idx.row(), source_parent.row());
+        assert(this->sourceModel()->hasIndex(idx.row(), 0));
+        auto        data = this->sourceModel()->data(idx, orders_model::OrdersRoles::OrderStatusRole).toString();
+        assert(not data.isEmpty());
         if (this->m_is_history)
         {
-            std::cout << "filterAcceptsRow: " << m_is_history << " " << data.toStdString() << std::endl;
             if (data == "matching" || data == "ongoing" || data == "matched")
                 return false;
         }
         else
         {
-            std::cout << "filterAcceptsRow: " << m_is_history << " " << data.toStdString() << std::endl;
             if (data == "successful" || data == "failed")
                 return false;
         }
