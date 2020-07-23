@@ -409,6 +409,8 @@ Item {
         InnerBackground {
             id: graph_bg
 
+            Layout.alignment: Qt.AlignTop
+
             visible: chart.has_data
 
             Layout.fillWidth: true
@@ -423,7 +425,7 @@ Item {
         }
 
         RowLayout {
-            Layout.alignment: Qt.AlignTop
+            Layout.alignment: Qt.AlignVCenter
             spacing: 0
 
             // Sell
@@ -462,12 +464,12 @@ Item {
 
         // Price
         PriceLine {
-            Layout.alignment: Qt.AlignHCenter
+            Layout.alignment: Qt.AlignBottom | Qt.AlignHCenter
         }
 
         // Show errors
         DefaultText {
-            Layout.alignment: Qt.AlignHCenter
+            Layout.alignment: Qt.AlignBottom | Qt.AlignHCenter
             color: Style.colorRed
 
             text_value: API.get().empty_string + (notEnoughBalanceForFees() ?
