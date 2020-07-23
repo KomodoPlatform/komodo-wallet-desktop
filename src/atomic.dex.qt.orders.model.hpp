@@ -96,5 +96,6 @@ namespace atomic_dex
         void    initialize_swap(const ::mm2::api::swap_contents& contents) noexcept;
         void    update_swap(const ::mm2::api::swap_contents& contents) noexcept;
         QString determine_order_status_from_last_event(const ::mm2::api::swap_contents& contents) noexcept;
+        QString determine_payment_id(const ::mm2::api::swap_contents& contents, bool am_i_maker, bool want_taker_id) noexcept;
     };
 } // namespace atomic_dex

@@ -36,9 +36,9 @@ namespace atomic_dex
         //! eg: Successful / On Going / Matched / Matching
         QString order_status;
 
-        QString maker_payment_spent_id;
+        QString maker_payment_id;
 
-        QString taker_payment_sent_id;
+        QString taker_payment_id;
 
         //! eg: true / false
         bool is_swap;

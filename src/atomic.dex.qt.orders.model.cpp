@@ -99,10 +99,10 @@ namespace atomic_dex
             item.order_status = value.toString();
             break;
         case MakerPaymentIdRole:
-            item.maker_payment_spent_id = value.toString();
+            item.maker_payment_id = value.toString();
             break;
         case TakerPaymentIdRole:
-            item.taker_payment_sent_id = value.toString();
+            item.taker_payment_id = value.toString();
             break;
         case CancellableRole:
             item.is_cancellable = value.toBool();
@@ -150,9 +150,9 @@ namespace atomic_dex
         case OrderStatusRole:
             return item.order_status;
         case MakerPaymentIdRole:
-            return item.maker_payment_spent_id;
+            return item.maker_payment_id;
         case TakerPaymentIdRole:
-            return item.taker_payment_sent_id;
+            return item.taker_payment_id;
         case CancellableRole:
             return item.is_cancellable;
         case IsMakerRole:
@@ -179,6 +179,36 @@ namespace atomic_dex
         endRemoveRows();
 
         return true;
+    }
+
+
+    QString
+    orders_model::determine_payment_id(const ::mm2::api::swap_contents& contents, bool am_i_maker, bool want_taker_id) noexcept
+    {
+        QString result = "";
+
+        if (contents.events.empty())
+        {
+            return result;
+        }
+
+        std::string search_name;
+        if (am_i_maker)
+        {
+            search_name = want_taker_id ? "TakerPaymentSpent" : "MakerPaymentSent";
+        }
+        else
+        {
+            search_name = want_taker_id ? "TakerPaymentSent" : "MakerPaymentSpent";
+        }
+        for (auto&& cur_event: contents.events)
+        {
+            if (cur_event.at("state").get<std::string>() == search_name)
+            {
+                result = QString::fromStdString(cur_event.at("data").at("tx_hash").get<std::string>());
+            }
+        }
+        return result;
     }
 
     QString
@@ -222,19 +252,21 @@ namespace atomic_dex
         beginInsertRows(QModelIndex(), this->m_model_data.count(), this->m_model_data.count());
         bool       is_maker = boost::algorithm::to_lower_copy(contents.type) == "maker";
         order_data data{
-            .is_maker       = is_maker,
-            .base_coin      = is_maker ? QString::fromStdString(contents.maker_coin) : QString::fromStdString(contents.taker_coin),
-            .rel_coin       = is_maker ? QString::fromStdString(contents.taker_coin) : QString::fromStdString(contents.maker_coin),
-            .base_amount    = is_maker ? QString::fromStdString(contents.maker_amount) : QString::fromStdString(contents.taker_amount),
-            .rel_amount     = is_maker ? QString::fromStdString(contents.taker_amount) : QString::fromStdString(contents.maker_amount),
-            .order_type     = is_maker ? "maker" : "taker",
-            .human_date     = not contents.events.empty() ? QString::fromStdString(contents.events.back().at("human_timestamp").get<std::string>()) : "",
-            .unix_timestamp = not contents.events.empty() ? contents.events.back().at("timestamp").get<int>() : 0,
-            .order_id       = QString::fromStdString(contents.uuid),
-            .order_status   = determine_order_status_from_last_event(contents),
-            .is_swap        = true,
-            .is_cancellable = false,
-            .is_recoverable = contents.funds_recoverable};
+            .is_maker         = is_maker,
+            .base_coin        = is_maker ? QString::fromStdString(contents.maker_coin) : QString::fromStdString(contents.taker_coin),
+            .rel_coin         = is_maker ? QString::fromStdString(contents.taker_coin) : QString::fromStdString(contents.maker_coin),
+            .base_amount      = is_maker ? QString::fromStdString(contents.maker_amount) : QString::fromStdString(contents.taker_amount),
+            .rel_amount       = is_maker ? QString::fromStdString(contents.taker_amount) : QString::fromStdString(contents.maker_amount),
+            .order_type       = is_maker ? "maker" : "taker",
+            .human_date       = not contents.events.empty() ? QString::fromStdString(contents.events.back().at("human_timestamp").get<std::string>()) : "",
+            .unix_timestamp   = not contents.events.empty() ? contents.events.back().at("timestamp").get<int>() : 0,
+            .order_id         = QString::fromStdString(contents.uuid),
+            .order_status     = determine_order_status_from_last_event(contents),
+            .maker_payment_id = determine_payment_id(contents, is_maker, false),
+            .taker_payment_id = determine_payment_id(contents, is_maker, true),
+            .is_swap          = true,
+            .is_cancellable   = false,
+            .is_recoverable   = contents.funds_recoverable};
         this->m_swaps_id_registry.emplace(contents.uuid);
         this->m_model_data.push_back(std::move(data));
         endInsertRows();
@@ -246,13 +278,16 @@ namespace atomic_dex
     {
         if (const auto res = this->match(index(0, 0), OrderIdRole, QString::fromStdString(contents.uuid)); not res.isEmpty())
         {
-            const QModelIndex& idx = res.at(0);
+            const QModelIndex& idx      = res.at(0);
+            bool               is_maker = boost::algorithm::to_lower_copy(contents.type) == "maker";
             update_value(OrdersRoles::IsRecoverableRole, contents.funds_recoverable, idx, *this);
             update_value(OrdersRoles::OrderStatusRole, determine_order_status_from_last_event(contents), idx, *this);
             update_value(OrdersRoles::UnixTimestampRole, not contents.events.empty() ? contents.events.back().at("timestamp").get<int>() : 0, idx, *this);
             update_value(
                 OrdersRoles::HumanDateRole,
                 not contents.events.empty() ? QString::fromStdString(contents.events.back().at("human_timestamp").get<std::string>()) : "", idx, *this);
+            update_value(OrdersRoles::MakerPaymentIdRole, determine_payment_id(contents, is_maker, false), idx, *this);
+            update_value(OrdersRoles::TakerPaymentIdRole, determine_payment_id(contents, is_maker, true), idx, *this);
         }
     }
 

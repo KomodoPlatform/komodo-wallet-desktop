@@ -88,26 +88,28 @@ namespace atomic_dex
     void
     orders_proxy_model::set_is_history(bool is_history) noexcept
     {
-        if(is_history != this->m_is_history) {
+        if (is_history != this->m_is_history)
+        {
             this->m_is_history = is_history;
             emit isHistoryChanged();
             this->invalidateFilter();
-            emit qobject_cast<orders_model *>(this->sourceModel())->lengthChanged();
+            emit qobject_cast<orders_model*>(this->sourceModel())->lengthChanged();
         }
     }
 
     bool
     orders_proxy_model::filterAcceptsRow(int source_row, const QModelIndex& source_parent) const
     {
-        QModelIndex idx  = this->sourceModel()->index(source_row, 0, source_parent);
-        spdlog::trace("asking idx_row: {}, idx: {}, source_parent: {}", source_row, idx.row(), source_parent.row());
+        QModelIndex idx = this->sourceModel()->index(source_row, 0, source_parent);
         assert(this->sourceModel()->hasIndex(idx.row(), 0));
-        auto        data = this->sourceModel()->data(idx, orders_model::OrdersRoles::OrderStatusRole).toString();
+        auto data = this->sourceModel()->data(idx, orders_model::OrdersRoles::OrderStatusRole).toString();
         assert(not data.isEmpty());
         if (this->m_is_history)
         {
             if (data == "matching" || data == "ongoing" || data == "matched")
+            {
                 return false;
+            }
         }
         else
         {
