@@ -832,6 +832,7 @@ namespace atomic_dex
         {
             this->m_orders->removeRows(0, count, QModelIndex());
         }
+        this->m_orders->clear_registry();
 
         //! Mark systems
         system_manager_.mark_system<mm2>();
