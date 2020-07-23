@@ -341,13 +341,15 @@ namespace atomic_dex
         const auto  result     = mm2_system.get_swaps();
         for (auto&& current_swap: result.swaps)
         {
-            if (this->m_orders_id_registry.find(current_swap.uuid) != this->m_orders_id_registry.end())
+            if (this->m_swaps_id_registry.find(current_swap.uuid) != this->m_swaps_id_registry.end())
             {
+                spdlog::trace("find id {}, updating", current_swap.uuid);
                 //! update
             }
             else
             {
                 //! Insert
+                spdlog::trace("id {}, not found, inserting", current_swap.uuid);
                 this->initialize_swap(current_swap);
             }
         }
