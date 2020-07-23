@@ -235,6 +235,7 @@ namespace atomic_dex
             .is_cancellable = false,
             .is_recoverable = contents.funds_recoverable};
         this->m_swaps_id_registry.emplace(contents.uuid);
+        this->m_model_data.push_back(std::move(data));
         endInsertRows();
         emit lengthChanged();
     }
