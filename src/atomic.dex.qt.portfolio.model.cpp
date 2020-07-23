@@ -237,6 +237,7 @@ namespace atomic_dex
     int
     portfolio_model::get_length() const noexcept
     {
-        return this->rowCount(QModelIndex());
+        spdlog::trace("LENGTH -> {}", this->m_model_proxy->rowCount(QModelIndex()));
+        return this->m_model_proxy->rowCount(QModelIndex());
     }
 } // namespace atomic_dex
