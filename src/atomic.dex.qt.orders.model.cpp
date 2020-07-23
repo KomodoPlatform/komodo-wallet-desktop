@@ -271,7 +271,6 @@ namespace atomic_dex
                         return cur_event.at("state").get<std::string>() == error_str;
                     }))
                 {
-                    //! It's an error
                     status = "failed";
                 }
             }
