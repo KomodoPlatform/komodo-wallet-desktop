@@ -132,23 +132,21 @@ DefaultModal {
         }
 
         // Error ID
-        // TODO: Add events
-//        TextWithTitle {
-//            title: API.get().empty_string + (qsTr("Error ID"))
-//            text: API.get().empty_string + (!details ? "" : getSwapError(details).state)
-//            visible: text !== ''
-//        }
+        TextWithTitle {
+            title: API.get().empty_string + (qsTr("Error ID"))
+            text: API.get().empty_string + (!details ? "" : details.order_error_state)
+            visible: text !== ''
+        }
 
         // Error Details
-        // TODO: Add events
-//        TextFieldWithTitle {
-//            title: API.get().empty_string + (qsTr("Error Log"))
-//            field.text: API.get().empty_string + (!details ? "" : getSwapError(details).data.error)
-//            field.readOnly: true
-//            copyable: true
+        TextFieldWithTitle {
+            title: API.get().empty_string + (qsTr("Error Log"))
+            field.text: API.get().empty_string + (!details ? "" : details.order_error_message)
+            field.readOnly: true
+            copyable: true
 
-//            visible: field.text !== ''
-//        }
+            visible: field.text !== ''
+        }
 
         // Buttons
         RowLayout {
