@@ -331,6 +331,7 @@ namespace atomic_dex
             auto [state, msg] = extract_error(contents);
             update_value(OrdersRoles::OrderErrorStateRole, state, idx, *this);
             update_value(OrdersRoles::OrderErrorMessageRole, msg, idx, *this);
+            emit lengthChanged();
         }
     }
 
@@ -369,6 +370,7 @@ namespace atomic_dex
             update_value(OrdersRoles::CancellableRole, contents.cancellable, idx, *this);
             update_value(OrdersRoles::IsMakerRole, contents.order_type == "maker", idx, *this);
             update_value(OrdersRoles::OrderTypeRole, QString::fromStdString(contents.order_type), idx, *this);
+            emit lengthChanged();
         }
     }
 
