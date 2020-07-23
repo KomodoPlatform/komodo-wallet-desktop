@@ -253,7 +253,13 @@ namespace atomic_dex
             return "matched";
         }
 
+        if (last_event == "TakerPaymentWaitRefundStarted" || last_event == "MakerPaymentWaitRefundStarted")
+        {
+            return "refunding";
+        }
+
         QString status = "ongoing";
+
         if (last_event == "Finished")
         {
             status = "successful";
@@ -323,6 +329,9 @@ namespace atomic_dex
                 not contents.events.empty() ? QString::fromStdString(contents.events.back().at("human_timestamp").get<std::string>()) : "", idx, *this);
             update_value(OrdersRoles::MakerPaymentIdRole, determine_payment_id(contents, is_maker, false), idx, *this);
             update_value(OrdersRoles::TakerPaymentIdRole, determine_payment_id(contents, is_maker, true), idx, *this);
+            auto [state, msg] = extract_error(contents);
+            update_value(OrdersRoles::OrderErrorStateRole, state, idx, *this);
+            update_value(OrdersRoles::OrderErrorMessageRole, msg, idx, *this);
         }
     }
 
