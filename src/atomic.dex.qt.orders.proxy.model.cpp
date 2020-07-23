@@ -91,7 +91,7 @@ namespace atomic_dex
         if(is_history != this->m_is_history) {
             this->m_is_history = is_history;
             emit isHistoryChanged();
-            this->invalidate();
+            this->invalidateFilter();
         }
     }
 
