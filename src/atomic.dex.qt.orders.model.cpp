@@ -183,8 +183,35 @@ namespace atomic_dex
     QString
     orders_model::determine_order_status_from_last_event(const ::mm2::api::swap_contents& contents) noexcept
     {
-        QString last_status = "matched";
-        return last_status;
+        if (contents.events.empty())
+        {
+            return "matching";
+        }
+        auto last_event = contents.events.back().at("state").get<std::string>();
+        if (last_event == "Started")
+        {
+            return "matched";
+        }
+
+        QString status = "ongoing";
+        if (last_event == "Finished")
+        {
+            status = "finished";
+            //! Find error or not
+            for (auto&& cur_event: contents.events)
+            {
+                if (cur_event.contains("data") && cur_event.at("data").contains("error") &&
+                    std::any_of(begin(contents.error_events), end(contents.error_events), [&cur_event](auto&& error_str) {
+                        return cur_event.at("state").get<std::string>() == error_str;
+                    }))
+                {
+                    //! It's an error
+                    status = "failed";
+                }
+            }
+        }
+
+        return status;
     }
 
     void
