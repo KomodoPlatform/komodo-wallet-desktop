@@ -150,28 +150,56 @@ Item {
     }
 
     function getStatusColor(status) {
-        return status === "matching" ? Style.colorYellow :
-               status === "matched" ? Style.colorOrange :
-               status === "ongoing" ? Style.colorOrange :
-               status === "refunding" ? Style.colorOrange :
-               status === "successful" ? Style.colorGreen : Style.colorRed
+        switch(status) {
+            case "matching":
+                return Style.colorYellow
+            case "matched":
+            case "ongoing":
+            case "refunding":
+                return Style.colorOrange
+            case "successful":
+                return Style.colorGreen
+            case "failed":
+            default:
+                return Style.colorRed
+        }
     }
 
     function getStatusText(status) {
-        return status === "matching" ? qsTr("Order Matching") :
-                status === "matched" ? qsTr("Order Matched") :
-                status === "ongoing" ? qsTr("Swap Ongoing") :
-                status === "refunding" ? qsTr("Refunding") :
-                status === "successful" ? qsTr("Swap Successful") :
-                                          qsTr("Swap Failed")
+        switch(status) {
+            case "matching":
+                return qsTr("Order Matching")
+            case "matched":
+                return qsTr("Order Matched")
+            case "ongoing":
+                return qsTr("Swap Ongoing")
+            case "successful":
+                return qsTr("Swap Successful")
+            case "refunding":
+                return qsTr("Refunding")
+            case "failed":
+                return qsTr("Swap Failed")
+            default:
+                return qsTr("Unknown State")
+        }
     }
 
     function getStatusStep(status) {
-        return status === "matching" ? "0/3":
-               status === "matched" ? "1/3":
-               status === "ongoing" ? "2/3":
-               status === "refunding" ? Style.failureCharacter :
-               status === "successful" ? Style.successCharacter : Style.failureCharacter
+        switch(status) {
+            case "matching":
+                return "0/3"
+            case "matched":
+                return "1/3"
+            case "ongoing":
+                return "2/3"
+            case "successful":
+                return Style.successCharacter
+            case "refunding":
+            case "failed":
+                return Style.failureCharacter
+            default:
+                return "?"
+        }
     }
 
     function getStatusTextWithPrefix(status) {
