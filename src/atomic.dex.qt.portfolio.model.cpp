@@ -82,15 +82,15 @@ namespace atomic_dex
     void
     portfolio_model::update_currency_values()
     {
-        const auto&        mm2_system = this->m_system_manager.get_system<mm2>();
-        const auto&        paprika    = this->m_system_manager.get_system<coinpaprika_provider>();
-        t_coins            coins      = mm2_system.get_enabled_coins();
-        const std::string& currency   = m_config.current_currency;
+        const auto&                    mm2_system = this->m_system_manager.get_system<mm2>();
+        const auto&                    paprika    = this->m_system_manager.get_system<coinpaprika_provider>();
+        t_coins                        coins      = mm2_system.get_enabled_coins();
+        const std::string&             currency   = m_config.current_currency;
         std::vector<std::future<void>> pending_tasks;
         for (auto&& coin: coins)
         {
-            pending_tasks.push_back(spawn([coin, &paprika, &mm2_system, currency, this](){
-                    const std::string& ticker = coin.ticker;
+            pending_tasks.push_back(spawn([coin, &paprika, &mm2_system, currency, this]() {
+                const std::string& ticker = coin.ticker;
                 if (const auto res = this->match(this->index(0, 0), TickerRole, QString::fromStdString(ticker)); not res.isEmpty())
                 {
                     std::error_code    ec;
@@ -106,9 +106,7 @@ namespace atomic_dex
                 }
             }));
         }
-        for (auto&& cur_task : pending_tasks) {
-            cur_task.wait();
-        }
+        for (auto&& cur_task: pending_tasks) { cur_task.wait(); }
     }
 
     void
