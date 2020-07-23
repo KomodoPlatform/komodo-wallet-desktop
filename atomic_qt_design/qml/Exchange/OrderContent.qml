@@ -21,7 +21,9 @@ Item {
                                             details.base_coin)
         fillMode: Image.PreserveAspectFit
         width: in_modal ? Style.textSize5 : Style.textSize3
-        anchors.horizontalCenter: base_amount.horizontalCenter
+
+        anchors.left: base_amount.left
+        anchors.leftMargin: 50
     }
 
     // Rel Icon
@@ -31,7 +33,8 @@ Item {
                                             details.rel_coin)
         fillMode: Image.PreserveAspectFit
         width: base_icon.width
-        anchors.horizontalCenter: rel_amount.horizontalCenter
+        anchors.right: rel_amount.right
+        anchors.rightMargin: base_icon.anchors.leftMargin
     }
 
     // Base Amount
