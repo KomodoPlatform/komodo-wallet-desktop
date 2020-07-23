@@ -74,14 +74,13 @@ Item {
     }
 
     // Status Text
-    // TODO: Events is missing
-//    DefaultText {
-//        visible: !details ? false : !in_modal && (details.events !== undefined || details.is_maker === false)
-//        color: !details ? "white" : visible ? getStatusColor(details.order_status) : ''
-//        anchors.horizontalCenter: parent.horizontalCenter
-//        anchors.top: base_icon.top
-//        text_value: API.get().empty_string + (!details ? "" : visible ? getStatusTextWithPrefix(details.order_status) : '')
-//    }
+    DefaultText {
+        visible: !details ? false : !in_modal
+        color: !details ? "white" : visible ? getStatusColor(details.order_status) : ''
+        anchors.horizontalCenter: parent.horizontalCenter
+        anchors.top: base_icon.top
+        text_value: API.get().empty_string + (!details ? "" : visible ? getStatusTextWithPrefix(details.order_status) : '')
+    }
 
     // Date
     DefaultText {
@@ -104,7 +103,7 @@ Item {
 
     // Cancel button
     DangerButton {
-        visible: !details ? false : !in_modal && details.cancellable !== undefined && details.cancellable
+        visible: !details ? false : !in_modal && details.cancellable
         anchors.right: parent.right
         anchors.bottom: date.bottom
         text: API.get().empty_string + (qsTr("Cancel"))
@@ -112,12 +111,11 @@ Item {
     }
 
     // Recover Funds button
-    // TODO: Add is_recoverable
-//    PrimaryButton {
-//        visible: !details ? false : !in_modal && details.is_recoverable !== undefined && details.is_recoverable
-//        anchors.right: parent.right
-//        anchors.bottom: date.bottom
-//        text: API.get().empty_string + (qsTr("Recover Funds"))
-//        onClicked: { if(details) onRecoverFunds(details.order_id) }
-//    }
+    PrimaryButton {
+        visible: !details ? false : !in_modal && details.recoverable
+        anchors.right: parent.right
+        anchors.bottom: date.bottom
+        text: API.get().empty_string + (qsTr("Recover Funds"))
+        onClicked: { if(details) onRecoverFunds(details.order_id) }
+    }
 }

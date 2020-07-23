@@ -25,35 +25,30 @@ DefaultModal {
         }
 
         // Complete image
-        // TODO: Add events
-//        DefaultImage {
-//            visible: !details ? false : details.is_swap !== undefined && details.order_status === "successful"
-//            Layout.alignment: Qt.AlignHCenter
-//            source: General.image_path + "exchange-trade-complete.svg"
-//        }
+        DefaultImage {
+            visible: !details ? false : details.is_swap && details.order_status === "successful"
+            Layout.alignment: Qt.AlignHCenter
+            source: General.image_path + "exchange-trade-complete.svg"
+        }
 
         // Loading symbol
             DefaultBusyIndicator {
             visible: !details ? false :
-                     details.is_swap !== undefined &&
+                     details.is_swap &&
                      details.order_status !== "successful" &&
                      details.order_status !== "failed"
             Layout.alignment: Qt.AlignHCenter
         }
 
         // Status Text
-        // TODO: Add events
-//        DefaultText {
-//            Layout.alignment: Qt.AlignHCenter
-//            Layout.topMargin: 20
-//            font.pixelSize: Style.textSize3
-//            visible: !details ? false :
-//                        !details.is_swap &&  // Is order
-//                     (details.events !== undefined || // Has events, ongoing or
-//                    details.is_maker === false) // Taker order with no events
-//            color: !details ? "white" : visible ? getStatusColor(details.order_status) : ''
-//            text_value: API.get().empty_string + (!details ? "" : visible ? getStatusTextWithPrefix(details.order_status) : '')
-//        }
+        DefaultText {
+            Layout.alignment: Qt.AlignHCenter
+            Layout.topMargin: 20
+            font.pixelSize: Style.textSize3
+            visible: !details ? false : true
+            color: !details ? "white" : visible ? getStatusColor(details.order_status) : ''
+            text_value: API.get().empty_string + (!details ? "" : visible ? getStatusTextWithPrefix(details.order_status) : '')
+        }
 
         OrderContent {
             Layout.topMargin: 25
