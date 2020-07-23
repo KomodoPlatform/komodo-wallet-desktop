@@ -188,10 +188,6 @@ QtObject {
         return v !== undefined && v !== ""
     }
 
-    function getField(o, field, def) {
-        return o === undefined ? def : o[field]
-    }
-
     function isEthNeeded() {
         for(const c of API.get().enabled_coins)
             if(c.type === "ERC-20" && c.ticker !== "ETH") return true
