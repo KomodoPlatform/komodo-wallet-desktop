@@ -77,28 +77,15 @@ DefaultModal {
         }
 
         // Refund state
-        // TODO: Add events
-//        TextFieldWithTitle {
-//            Layout.topMargin: -20
+        TextFieldWithTitle {
+            Layout.topMargin: -20
 
-//            title: API.get().empty_string + (qsTr("Refund State"))
-//            field.text: {
-//                if(!details) return ""
+            title: API.get().empty_string + (qsTr("Refund State"))
+            field.text: !details ? "" : details.order_status === "refunding" ? qsTr("Your swap failed but the auto-refund process for your payment started already. Please wait and keep application opened until you receive your payment back") : ""
+            field.readOnly: true
 
-//                let str = API.get().empty_string
-//                const e = getLastEvent(details)
-
-//                if(e.state === "TakerPaymentWaitRefundStarted" ||
-//                   e.state === "MakerPaymentWaitRefundStarted") {
-//                    str += qsTr("Your swap failed but the auto-refund process for your payment started already. Please wait and keep application opened until you receive your payment back")
-//                }
-
-//                return str
-//            }
-//            field.readOnly: true
-
-//            visible: field.text !== ''
-//        }
+            visible: field.text !== ''
+        }
 
         // Date
         TextWithTitle {

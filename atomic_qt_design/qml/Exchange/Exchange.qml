@@ -177,6 +177,7 @@ Item {
         return status === "matching" ? Style.colorYellow :
                status === "matched" ? Style.colorOrange :
                status === "ongoing" ? Style.colorOrange :
+               status === "refunding" ? Style.colorOrange :
                status === "successful" ? Style.colorGreen : Style.colorRed
     }
 
@@ -184,14 +185,16 @@ Item {
         return status === "matching" ? qsTr("Order Matching") :
                 status === "matched" ? qsTr("Order Matched") :
                 status === "ongoing" ? qsTr("Swap Ongoing") :
+                status === "refunding" ? qsTr("Refunding") :
                 status === "successful" ? qsTr("Swap Successful") :
-                                                        qsTr("Swap Failed")
+                                          qsTr("Swap Failed")
     }
 
     function getStatusStep(status) {
         return status === "matching" ? "0/3":
                status === "matched" ? "1/3":
                status === "ongoing" ? "2/3":
+               status === "refunding" ? Style.failureCharacter :
                status === "successful" ? Style.successCharacter : Style.failureCharacter
     }
 
