@@ -246,6 +246,8 @@ Item {
     function getCoins(my_side) {
         let coins = API.get().enabled_coins
 
+        if(coins.length === 0) return coins
+
         // Prioritize KMD / BTC pair by moving them to the start
         coins = moveToBeginning(coins, "BTC")
         coins = moveToBeginning(coins, "KMD")
