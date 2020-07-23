@@ -32,7 +32,6 @@ Item {
     function reset() {  }
 
     function onOpened() {
-        console.log("is_history false")
         applyFilter()
         API.get().orders_mdl.orders_proxy_mdl.is_history = false
         API.get().refresh_orders_and_swaps()
