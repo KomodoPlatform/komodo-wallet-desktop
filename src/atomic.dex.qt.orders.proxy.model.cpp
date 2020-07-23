@@ -110,7 +110,7 @@ namespace atomic_dex
         assert(not data.isEmpty());
         if (this->m_is_history)
         {
-            if (data == "matching" || data == "ongoing" || data == "matched")
+            if (data == "matching" || data == "ongoing" || data == "matched" || data == "refunding")
             {
                 return false;
             }
@@ -118,7 +118,9 @@ namespace atomic_dex
         else
         {
             if (data == "successful" || data == "failed")
+            {
                 return false;
+            }
         }
         return QSortFilterProxyModel::filterAcceptsRow(source_row, source_parent);
     }

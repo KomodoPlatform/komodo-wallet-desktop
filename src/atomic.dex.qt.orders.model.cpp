@@ -253,7 +253,13 @@ namespace atomic_dex
             return "matched";
         }
 
+        if (last_event == "TakerPaymentWaitRefundStarted" || last_event == "MakerPaymentWaitRefundStarted")
+        {
+            return "refunding";
+        }
+
         QString status = "ongoing";
+
         if (last_event == "Finished")
         {
             status = "successful";
