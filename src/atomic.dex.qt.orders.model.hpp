@@ -68,6 +68,7 @@ namespace atomic_dex
         //! Public api
         void refresh_or_insert_orders() noexcept;
         void refresh_or_insert_swaps() noexcept;
+        void clear_registry() noexcept;
 
         //! Properties
         [[nodiscard]] int                 get_length() const noexcept;
@@ -90,9 +91,9 @@ namespace atomic_dex
         orders_proxy_model* m_model_proxy;
 
         //! Private api
-        void initialize_order(const ::mm2::api::my_order_contents& contents) noexcept;
-        void update_existing_order(const ::mm2::api::my_order_contents& contents) noexcept;
-        void initialize_swap(const ::mm2::api::swap_contents& contents) noexcept;
+        void    initialize_order(const ::mm2::api::my_order_contents& contents) noexcept;
+        void    update_existing_order(const ::mm2::api::my_order_contents& contents) noexcept;
+        void    initialize_swap(const ::mm2::api::swap_contents& contents) noexcept;
         QString determine_order_status_from_last_event(const ::mm2::api::swap_contents& contents) noexcept;
-};
+    };
 } // namespace atomic_dex

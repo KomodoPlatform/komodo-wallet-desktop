@@ -234,7 +234,7 @@ namespace atomic_dex
             .is_swap        = true,
             .is_cancellable = false,
             .is_recoverable = contents.funds_recoverable};
-        this->m_orders_id_registry.emplace(contents.uuid);
+        this->m_swaps_id_registry.emplace(contents.uuid);
         endInsertRows();
         emit lengthChanged();
     }
@@ -384,5 +384,16 @@ namespace atomic_dex
     orders_model::get_orders_proxy_mdl() const noexcept
     {
         return m_model_proxy;
+    }
+
+    void
+    orders_model::clear_registry() noexcept
+    {
+        spdlog::trace("clearing orders");
+        this->beginResetModel();
+        this->m_swaps_id_registry.clear();
+        this->m_orders_id_registry.clear();
+        this->m_model_data.clear();
+        this->endResetModel();
     }
 } // namespace atomic_dex
