@@ -19,6 +19,7 @@ Item {
 
     function onOpened() {
         console.log("is_history true")
+        API.get().orders_mdl.orders_proxy_mdl.setFilterFixedString("")
         API.get().orders_mdl.orders_proxy_mdl.is_history = true
         API.get().refresh_orders_and_swaps()
     }
