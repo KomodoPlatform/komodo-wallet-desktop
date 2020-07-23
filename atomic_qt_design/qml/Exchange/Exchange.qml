@@ -11,10 +11,13 @@ import "./History"
 Item {
     id: exchange
     readonly property int layout_margin: 30
+
+    property int prev_page: -1
     property int current_page: API.design_editor ? General.idx_exchange_trade : General.idx_exchange_trade
 
     function reset() {
         current_page = General.idx_exchange_trade
+        prev_page = -1
         exchange_trade.fullReset()
         exchange_history.reset()
         exchange_orders.reset()
@@ -34,15 +37,24 @@ Item {
     }
 
     function onOpened() {
-        if(current_page === General.idx_exchange_trade) {
-            exchange_trade.onOpened()
+        if(prev_page !== current_page) {
+            if(current_page === General.idx_exchange_trade) {
+                API.get().on_gui_enter_dex()
+                exchange.onOpened()
+            }
+            else if(prev_page === General.idx_exchange_trade) {
+                API.get().on_gui_leave_dex()
+            }
+
+            if(current_page === General.idx_exchange_orders) {
+                exchange_orders.onOpened()
+            }
+            else if(current_page === General.idx_exchange_history) {
+                exchange_history.onOpened()
+            }
         }
-        else if(current_page === General.idx_exchange_orders) {
-            exchange_orders.onOpened()
-        }
-        else if(current_page === General.idx_exchange_history) {
-            exchange_history.onOpened()
-        }
+
+        prev_page = current_page
     }
 
     onCurrent_pageChanged: {
