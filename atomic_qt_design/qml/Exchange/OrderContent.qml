@@ -22,8 +22,8 @@ Item {
         fillMode: Image.PreserveAspectFit
         width: in_modal ? Style.textSize5 : Style.textSize3
 
-        anchors.left: base_amount.left
-        anchors.leftMargin: 50
+        anchors.left: parent.left
+        anchors.leftMargin: parent.width * 0.2
     }
 
     // Rel Icon
@@ -33,7 +33,7 @@ Item {
                                             details.rel_coin)
         fillMode: Image.PreserveAspectFit
         width: base_icon.width
-        anchors.right: rel_amount.right
+        anchors.right: parent.right
         anchors.rightMargin: base_icon.anchors.leftMargin
     }
 
@@ -44,7 +44,7 @@ Item {
                                                          "~ " + General.formatCrypto("", details.base_amount, details.base_coin))
         font.pixelSize: in_modal ? Style.textSize2 : Style.textSize
 
-        anchors.left: parent.left
+        anchors.horizontalCenter: base_icon.horizontalCenter
         anchors.top: base_icon.bottom
         anchors.topMargin: 10
         privacy: is_placed_order
@@ -65,7 +65,8 @@ Item {
         text_value: API.get().empty_string + (!details ? "" :
                                                          "~ " + General.formatCrypto("", details.rel_amount, details.rel_coin))
         font.pixelSize: base_amount.font.pixelSize
-        anchors.right: parent.right
+
+        anchors.horizontalCenter: rel_icon.horizontalCenter
         anchors.top: base_amount.top
         privacy: is_placed_order
     }

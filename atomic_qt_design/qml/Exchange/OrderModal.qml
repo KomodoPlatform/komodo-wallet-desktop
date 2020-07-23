@@ -9,7 +9,7 @@ import "../Constants"
 DefaultModal {
     id: root
 
-    width: 650
+    width: 900
     property var details
 
     onDetailsChanged: {
