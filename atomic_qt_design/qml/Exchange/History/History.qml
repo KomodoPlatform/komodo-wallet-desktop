@@ -18,7 +18,6 @@ Item {
     }
 
     function onOpened() {
-        console.log("is_history true")
         API.get().orders_mdl.orders_proxy_mdl.setFilterFixedString("")
         API.get().orders_mdl.orders_proxy_mdl.is_history = true
         API.get().refresh_orders_and_swaps()
@@ -28,7 +27,7 @@ Item {
 
     function onRecoverFunds(order_id) {
         const result = API.get().recover_fund(order_id)
-        console.log(result)
+        console.log("Refund result: ", result)
         recover_funds_result = result
         recover_funds_modal.open()
     }
