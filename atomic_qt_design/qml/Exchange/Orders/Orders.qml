@@ -10,7 +10,7 @@ Item {
     id: exchange_orders
 
     property string base
-    property var all_orders_merged: API.get().orders_mdl.orders_proxy_mdl
+    property var orders_model: API.get().orders_mdl
 
     // Local
     function onCancelOrder(order_id) {
@@ -46,8 +46,8 @@ Item {
     function cancellableOrderExists() {
         // TODO: Implement later, as property
         return false
-//        for(const i in all_orders_merged) {
-//            const o = all_orders_merged[i]
+//        for(const i in orders_model) {
+//            const o = orders_model[i]
 //            if(o.cancellable !== undefined && o.cancellable)
 //                return true
 //        }
@@ -150,7 +150,7 @@ Item {
 
             OrderList {
                 title: API.get().empty_string + (show_all_coins.checked ? qsTr("All Orders") : qsTr("All %1 Orders", "TICKER").arg(base))
-                items: all_orders_merged
+                items: orders_model
             }
         }
 
