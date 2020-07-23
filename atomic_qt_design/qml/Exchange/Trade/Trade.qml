@@ -409,11 +409,14 @@ Item {
         InnerBackground {
             id: graph_bg
 
+            visible: chart.has_data
+
             Layout.fillWidth: true
             Layout.fillHeight: true
             implicitHeight: wallet.height*0.6
 
-            content: CandleStickChart {
+            CandleStickChart {
+                id: chart
                 width: graph_bg.width
                 height: graph_bg.height
             }
