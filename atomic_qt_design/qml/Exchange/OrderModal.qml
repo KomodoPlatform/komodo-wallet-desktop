@@ -47,7 +47,7 @@ DefaultModal {
             Layout.alignment: Qt.AlignHCenter
             Layout.topMargin: 20
             font.pixelSize: Style.textSize3
-            visible: !details ? false : true
+            visible: !details ? false : !details.is_maker
             color: !details ? "white" : visible ? getStatusColor(details.order_status) : ''
             text_value: API.get().empty_string + (!details ? "" : visible ? getStatusTextWithPrefix(details.order_status) : '')
         }
