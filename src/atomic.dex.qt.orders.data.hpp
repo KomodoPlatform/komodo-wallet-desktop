@@ -48,5 +48,11 @@ namespace atomic_dex
 
         //! eg: true / false
         bool is_recoverable;
+
+        //! Order error state
+        QString order_error_state;
+
+        //! Order error message
+        QString order_error_message;
     };
 } // namespace atomic_dex

@@ -23,7 +23,7 @@
 
 namespace
 {
-    constexpr const char* g_komodolive_endpoint = "http://komodo.live/adexproversion";
+    constexpr const char* g_komodolive_endpoint = "https://komodo.live/adexproversion";
 
     nlohmann::json
     get_update_status_rpc(const char* version)

@@ -30,6 +30,27 @@ namespace
             model.setData(idx, value, role);
         }
     }
+
+    std::pair<QString, QString>
+    extract_error(const ::mm2::api::swap_contents& contents)
+    {
+        for (auto&& cur_event: contents.events)
+        {
+            if (std::any_of(begin(contents.error_events), end(contents.error_events), [&cur_event](auto&& error_str) {
+                    return cur_event.at("state").get<std::string>() == error_str;
+                }))
+            {
+                //! It's an error
+                if (cur_event.contains("data") && cur_event.at("data").contains("error"))
+                {
+                    return {
+                        QString::fromStdString(cur_event.at("state").get<std::string>()),
+                        QString::fromStdString(cur_event.at("data").at("error").get<std::string>())};
+                }
+            }
+        }
+        return {};
+    }
 } // namespace
 
 namespace atomic_dex
@@ -114,6 +135,10 @@ namespace atomic_dex
             item.is_swap = value.toBool();
         case IsRecoverableRole:
             item.is_recoverable = value.toBool();
+        case OrderErrorStateRole:
+            item.order_error_state = value.toString();
+        case OrderErrorMessageRole:
+            item.order_error_message = value.toString();
         }
 
         emit dataChanged(index, index, {role});
@@ -161,6 +186,10 @@ namespace atomic_dex
             return item.is_swap;
         case IsRecoverableRole:
             return item.is_recoverable;
+        case OrderErrorStateRole:
+            return item.order_error_state;
+        case OrderErrorMessageRole:
+            return item.order_error_message;
         }
         return {};
     }
@@ -267,6 +296,12 @@ namespace atomic_dex
             .is_swap          = true,
             .is_cancellable   = false,
             .is_recoverable   = contents.funds_recoverable};
+        if (data.order_status == "failed")
+        {
+            auto error               = extract_error(contents);
+            data.order_error_state   = error.first;
+            data.order_error_message = error.second;
+        }
         this->m_swaps_id_registry.emplace(contents.uuid);
         this->m_model_data.push_back(std::move(data));
         endInsertRows();
@@ -422,7 +457,9 @@ namespace atomic_dex
             {TakerPaymentIdRole, "taker_payment_id"},
             {IsSwapRole, "is_swap"},
             {CancellableRole, "cancellable"},
-            {IsRecoverableRole, "recoverable"}};
+            {IsRecoverableRole, "recoverable"},
+            {OrderErrorStateRole, "order_error_state"},
+            {OrderErrorMessageRole, "order_error_message"}};
     }
 
     int

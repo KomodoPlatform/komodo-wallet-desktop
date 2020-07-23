@@ -75,6 +75,10 @@ namespace atomic_dex
             break;
         case orders_model::IsRecoverableRole:
             break;
+        case orders_model::OrdersRoles::OrderErrorStateRole:
+            break;
+        case orders_model::OrdersRoles::OrderErrorMessageRole:
+            break;
         }
         return true;
     }

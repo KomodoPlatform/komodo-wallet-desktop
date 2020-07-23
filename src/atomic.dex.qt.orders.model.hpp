@@ -53,7 +53,9 @@ namespace atomic_dex
             TakerPaymentIdRole,
             IsSwapRole,
             CancellableRole,
-            IsRecoverableRole
+            IsRecoverableRole,
+            OrderErrorStateRole,
+            OrderErrorMessageRole
         };
 
 
