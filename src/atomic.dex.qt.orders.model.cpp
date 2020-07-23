@@ -44,7 +44,7 @@ namespace atomic_dex
         this->m_model_proxy->setDynamicSortFilter(true);
         this->m_model_proxy->setSortRole(UnixTimestampRole);
         this->m_model_proxy->setFilterRole(BaseCoinRole);
-        this->m_model_proxy->sort(0);
+        this->m_model_proxy->sort(0, Qt::DescendingOrder);
     }
 
     orders_model::~orders_model() noexcept
