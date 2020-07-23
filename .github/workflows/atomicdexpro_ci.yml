@@ -57,6 +57,7 @@ jobs:
                                autoconf \
                                unzip \
                                libssl-dev \
+                               libomp-dev \
                                libxkbcommon-x11-0 \
                                libxcb-icccm4 \
                                libxcb-image0 \
@@ -212,6 +213,7 @@ jobs:
                        wget \
                        nim \
                        cmake \
+                       libomp \
                        ninja \
                        git \
                        boost \
