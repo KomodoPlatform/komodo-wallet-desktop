@@ -757,20 +757,6 @@ namespace atomic_dex
         return out;
     }
 
-    QVariantMap
-    application::get_my_orders()
-    {
-        auto&       mm2 = get_mm2();
-        QVariantMap output;
-        auto        coins = mm2.get_enabled_coins();
-        for (auto&& coin: coins)
-        {
-            std::error_code ec;
-            output.insert(QString::fromStdString(coin.ticker), QVariant::fromValue(to_qt_binding(mm2.get_orders(coin.ticker, ec), this)));
-        }
-        return output;
-    }
-
     void
     application::on_refresh_update_status_event([[maybe_unused]] const refresh_update_status& evt) noexcept
     {
@@ -1060,34 +1046,6 @@ namespace atomic_dex
 #else
         return bip39_mnemonic_validate(nullptr, entropy.toStdString().c_str()) == 0;
 #endif
-    }
-
-    QVariantMap
-    application::get_recent_swaps()
-    {
-        QVariantMap out;
-        auto        swaps = get_mm2().get_swaps();
-
-        for (auto& swap: swaps.swaps)
-        {
-            nlohmann::json j2 = {
-                {"maker_coin", swap.maker_coin},
-                {"taker_coin", swap.taker_coin},
-                {"total_time_in_seconds", swap.total_time_in_seconds},
-                {"is_recoverable", swap.funds_recoverable},
-                {"maker_amount", swap.maker_amount},
-                {"taker_amount", swap.taker_amount},
-                {"error_events", swap.error_events},
-                {"success_events", swap.success_events},
-                {"type", swap.type},
-                {"events", swap.events},
-                {"my_info", swap.my_info}};
-
-            auto out_swap = QJsonDocument::fromJson(QString::fromStdString(j2.dump()).toUtf8());
-            out.insert(QString::fromStdString(swap.uuid), out_swap.toVariant());
-        }
-
-        return out;
     }
 
     bool

@@ -209,8 +209,6 @@ namespace atomic_dex
 
         Q_INVOKABLE bool           is_supported_ohlc_data_ticker_pair(const QString& base, const QString& rel);
         Q_INVOKABLE QVariant       get_coin_info(const QString& ticker);
-        Q_INVOKABLE QVariantMap    get_my_orders();
-        Q_INVOKABLE QVariantMap    get_recent_swaps();
         Q_INVOKABLE bool           export_swaps(const QString& csv_filename) noexcept;
         Q_INVOKABLE bool           export_swaps_json() noexcept;
         Q_INVOKABLE static QString get_regex_password_policy() noexcept;
