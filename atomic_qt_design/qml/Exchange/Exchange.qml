@@ -40,7 +40,7 @@ Item {
         if(prev_page !== current_page) {
             if(current_page === General.idx_exchange_trade) {
                 API.get().on_gui_enter_dex()
-                exchange.onOpened()
+                exchange_trade.onOpened()
             }
             else if(prev_page === General.idx_exchange_trade) {
                 API.get().on_gui_leave_dex()
