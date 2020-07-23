@@ -75,7 +75,7 @@ Item {
 
     // Status Text
     DefaultText {
-        visible: !details ? false : !in_modal && !details.is_maker
+        visible: !details ? false : !in_modal && (details.is_swap || !details.is_maker)
         color: !details ? "white" : visible ? getStatusColor(details.order_status) : ''
         anchors.horizontalCenter: parent.horizontalCenter
         anchors.top: base_icon.top
