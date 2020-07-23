@@ -52,7 +52,8 @@ namespace atomic_dex
             MakerPaymentIdRole,
             TakerPaymentIdRole,
             IsSwapRole,
-            CancellableRole
+            CancellableRole,
+            IsRecoverableRole
         };
 
 
@@ -66,9 +67,10 @@ namespace atomic_dex
 
         //! Public api
         void refresh_or_insert_orders() noexcept;
+        void refresh_or_insert_swaps() noexcept;
 
         //! Properties
-        [[nodiscard]] int get_length() const noexcept;
+        [[nodiscard]] int                 get_length() const noexcept;
         [[nodiscard]] orders_proxy_model* get_orders_proxy_mdl() const noexcept;
       signals:
         void lengthChanged();
@@ -79,8 +81,10 @@ namespace atomic_dex
 
         using t_orders_datas       = QVector<order_data>;
         using t_orders_id_registry = std::unordered_set<std::string>;
+        using t_swaps_id_registry  = std::unordered_set<std::string>;
 
         t_orders_id_registry m_orders_id_registry;
+        t_swaps_id_registry  m_swaps_id_registry;
         t_orders_datas       m_model_data;
 
         orders_proxy_model* m_model_proxy;
@@ -88,5 +92,7 @@ namespace atomic_dex
         //! Private api
         void initialize_order(const ::mm2::api::my_order_contents& contents) noexcept;
         void update_existing_order(const ::mm2::api::my_order_contents& contents) noexcept;
-    };
+        void initialize_swap(const ::mm2::api::swap_contents& contents) noexcept;
+        QString determine_order_status_from_last_event(const ::mm2::api::swap_contents& contents) noexcept;
+};
 } // namespace atomic_dex

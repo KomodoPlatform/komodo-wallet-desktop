@@ -71,6 +71,8 @@ namespace atomic_dex
             break;
         case orders_model::CancellableRole:
             break;
+        case orders_model::IsRecoverableRole:
+            break;
         }
         return true;
     }

@@ -84,7 +84,8 @@ namespace atomic_dex
             refresh_transactions             = 3,
             refresh_portfolio_ticker_balance = 4,
             refresh_update_status            = 5,
-            post_process_orders_finished     = 6
+            post_process_orders_finished     = 6,
+            post_process_swaps_finished      = 7
         };
 
       public:

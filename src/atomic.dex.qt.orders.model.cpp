@@ -111,6 +111,8 @@ namespace atomic_dex
             break;
         case IsSwapRole:
             item.is_swap = value.toBool();
+        case IsRecoverableRole:
+            item.is_recoverable = value.toBool();
         }
 
         emit dataChanged(index, index, {role});
@@ -156,6 +158,8 @@ namespace atomic_dex
             return item.is_maker;
         case IsSwapRole:
             return item.is_swap;
+        case IsRecoverableRole:
+            return item.is_recoverable;
         }
         return {};
     }
@@ -176,24 +180,57 @@ namespace atomic_dex
         return true;
     }
 
+    QString
+    orders_model::determine_order_status_from_last_event(const ::mm2::api::swap_contents& contents) noexcept
+    {
+        QString last_status = "matched";
+        return last_status;
+    }
+
+    void
+    orders_model::initialize_swap(const ::mm2::api::swap_contents& contents) noexcept
+    {
+        spdlog::trace("inserting in model order id {}", contents.uuid);
+        beginInsertRows(QModelIndex(), this->m_model_data.count(), this->m_model_data.count());
+        bool       is_maker = boost::algorithm::to_lower_copy(contents.type) == "maker";
+        order_data data{
+            .is_maker       = is_maker,
+            .base_coin      = is_maker ? QString::fromStdString(contents.maker_coin) : QString::fromStdString(contents.taker_coin),
+            .rel_coin       = is_maker ? QString::fromStdString(contents.taker_coin) : QString::fromStdString(contents.maker_coin),
+            .base_amount    = is_maker ? QString::fromStdString(contents.maker_amount) : QString::fromStdString(contents.taker_amount),
+            .rel_amount     = is_maker ? QString::fromStdString(contents.taker_amount) : QString::fromStdString(contents.maker_amount),
+            .order_type     = is_maker ? "maker" : "taker",
+            .human_date     = not contents.events.empty() ? QString::fromStdString(contents.events.back().at("human_timestamp").get<std::string>()) : "",
+            .unix_timestamp = not contents.events.empty() ? contents.events.back().at("timestamp").get<int>() : 0,
+            .order_id       = QString::fromStdString(contents.uuid),
+            .order_status   = determine_order_status_from_last_event(contents),
+            .is_swap        = true,
+            .is_cancellable = false,
+            .is_recoverable = contents.funds_recoverable};
+        this->m_orders_id_registry.emplace(contents.uuid);
+        endInsertRows();
+        emit lengthChanged();
+    }
+
     void
     orders_model::initialize_order(const ::mm2::api::my_order_contents& contents) noexcept
     {
         spdlog::trace("inserting in model order id {}", contents.order_id);
         beginInsertRows(QModelIndex(), this->m_model_data.count(), this->m_model_data.count());
         order_data data{
+            .is_maker       = contents.order_type == "maker",
             .base_coin      = QString::fromStdString(contents.base),
             .rel_coin       = QString::fromStdString(contents.rel),
             .base_amount    = QString::fromStdString(contents.base_amount),
             .rel_amount     = QString::fromStdString(contents.rel_amount),
             .order_type     = QString::fromStdString(contents.order_type),
-            .is_maker       = contents.order_type == "maker",
             .human_date     = QString::fromStdString(contents.human_timestamp),
             .unix_timestamp = static_cast<int>(contents.timestamp),
             .order_id       = QString::fromStdString(contents.order_id),
             .order_status   = "matching",
             .is_swap        = false,
-            .is_cancellable = contents.cancellable};
+            .is_cancellable = contents.cancellable,
+            .is_recoverable = false};
         this->m_orders_id_registry.emplace(contents.order_id);
         this->m_model_data.push_back(std::move(data));
         endInsertRows();
@@ -270,6 +307,25 @@ namespace atomic_dex
         }
     }
 
+    void
+    orders_model::refresh_or_insert_swaps() noexcept
+    {
+        const auto& mm2_system = this->m_system_manager.get_system<mm2>();
+        const auto  result     = mm2_system.get_swaps();
+        for (auto&& current_swap: result.swaps)
+        {
+            if (this->m_orders_id_registry.find(current_swap.uuid) != this->m_orders_id_registry.end())
+            {
+                //! update
+            }
+            else
+            {
+                //! Insert
+                this->initialize_swap(current_swap);
+            }
+        }
+    }
+
     QHash<int, QByteArray>
     orders_model::roleNames() const
     {
@@ -287,7 +343,8 @@ namespace atomic_dex
             {MakerPaymentIdRole, "maker_payment_id"},
             {TakerPaymentIdRole, "taker_payment_id"},
             {IsSwapRole, "is_swap"},
-            {CancellableRole, "cancellable"}};
+            {CancellableRole, "cancellable"},
+            {IsRecoverableRole, "recoverable"}};
     }
 
     int

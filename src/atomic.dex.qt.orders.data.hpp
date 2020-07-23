@@ -6,6 +6,9 @@ namespace atomic_dex
 {
     struct order_data
     {
+        //! eg: true / false
+        bool is_maker;
+
         //! eg: RICK
         QString base_coin;
 
@@ -20,9 +23,6 @@ namespace atomic_dex
 
         //! eg: Taker order;
         QString order_type;
-
-        //! eg: true / false
-        bool is_maker;
 
         //! eg: 2020-07-2020 17:23:36.625
         QString human_date;
@@ -45,5 +45,8 @@ namespace atomic_dex
 
         //! eg: true / false
         bool is_cancellable;
+
+        //! eg: true / false
+        bool is_recoverable;
     };
 } // namespace atomic_dex

@@ -276,6 +276,12 @@ namespace atomic_dex
                     this->m_orders->refresh_or_insert_orders();
                 }
                 break;
+            case action::post_process_swaps_finished:
+                if (mm2.is_mm2_running())
+                {
+                    this->m_orders->refresh_or_insert_swaps();
+                }
+                break;
             case action::refresh_update_status:
                 spdlog::trace("refreshing update status in GUI");
                 const auto&   update_service_sys = this->system_manager_.get_system<update_system_service>();
@@ -1310,12 +1316,14 @@ namespace atomic_dex
     void
     application::on_process_swaps_finished_event([[maybe_unused]] const process_swaps_finished& evt) noexcept
     {
+        spdlog::trace("{} l{}", __FUNCTION__, __LINE__);
+        this->m_actions_queue.push(action::post_process_swaps_finished);
     }
 
     void
     application::on_process_orders_finished_event([[maybe_unused]] const process_orders_finished& evt) noexcept
     {
-        spdlog::debug("{} l{}", __FUNCTION__, __LINE__);
+        spdlog::trace("{} l{}", __FUNCTION__, __LINE__);
         this->m_actions_queue.push(action::post_process_orders_finished);
     }
 
