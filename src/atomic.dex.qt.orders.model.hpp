@@ -33,6 +33,7 @@ namespace atomic_dex
     class orders_model final : public QAbstractListModel
     {
         Q_OBJECT
+        Q_PROPERTY(orders_proxy_model* orders_proxy_mdl READ get_orders_proxy_mdl NOTIFY ordersProxyChanged);
         Q_PROPERTY(int length READ get_length NOTIFY lengthChanged);
         Q_ENUMS(OrdersRoles)
       public:
@@ -68,8 +69,10 @@ namespace atomic_dex
 
         //! Properties
         [[nodiscard]] int get_length() const noexcept;
+        [[nodiscard]] orders_proxy_model* get_orders_proxy_mdl() const noexcept;
       signals:
         void lengthChanged();
+        void ordersProxyChanged();
 
       private:
         ag::ecs::system_manager& m_system_manager;

@@ -295,4 +295,10 @@ namespace atomic_dex
     {
         return this->rowCount(QModelIndex());
     }
+
+    orders_proxy_model*
+    orders_model::get_orders_proxy_mdl() const noexcept
+    {
+        return m_model_proxy;
+    }
 } // namespace atomic_dex
