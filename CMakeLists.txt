@@ -93,7 +93,6 @@ set(ICON)
 configure_icon_osx(data/osx/atomic_qt.icns ICON atomic_qt.icns)
 ##! End antara
 
-find_package(OpenMP)
 find_package(date CONFIG REQUIRED)
 find_package(doctest CONFIG REQUIRED)
 find_package(folly CONFIG REQUIRED)
@@ -196,10 +195,7 @@ target_link_libraries(atomic_qt_shared_deps
         spdlog::spdlog
         spdlog::spdlog_header_only
         )
-if(OpenMP_CXX_FOUND)
-    message(STATUS "linking openmp")
-    target_link_libraries(atomic_qt_shared_deps INTERFACE OpenMP::OpenMP_CXX)
-endif()
+
 target_include_directories(atomic_qt_shared_deps
         INTERFACE
         ${CMAKE_CURRENT_SOURCE_DIR}/src
