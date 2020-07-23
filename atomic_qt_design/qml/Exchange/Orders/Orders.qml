@@ -46,18 +46,6 @@ Item {
         combo_base.currentIndex = baseCoins().map(c => c.ticker).indexOf(ticker)
     }
 
-    function cancellableOrderExists() {
-        // TODO: Implement later, as property
-        return false
-//        for(const i in orders_model) {
-//            const o = orders_model[i]
-//            if(o.cancellable !== undefined && o.cancellable)
-//                return true
-//        }
-
-//        return false
-    }
-
     // Orders page quick refresher, used right after a fresh successful trade
     function onOrderPlaced() {
         refresh_faster.restart()
@@ -106,6 +94,7 @@ Item {
                     Layout.leftMargin: 15
                     text: API.get().empty_string + (qsTr("Show All Coins"))
 
+                    checked: true
                     onCheckedChanged: applyFilter()
                 }
 
@@ -133,7 +122,7 @@ Item {
 
                 DangerButton {
                     text: API.get().empty_string + (show_all_coins.checked ? qsTr("Cancel All Orders") : qsTr("Cancel All %1 Orders", "TICKER").arg(base))
-                    enabled: cancellableOrderExists()
+                    enabled: orders_model.length > 0
                     onClicked: {
                         if(show_all_coins.checked) API.get().cancel_all_orders()
                         else API.get().cancel_all_orders_by_ticker(base)
