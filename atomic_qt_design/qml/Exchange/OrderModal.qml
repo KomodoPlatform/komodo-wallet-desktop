@@ -10,8 +10,9 @@ DefaultModal {
     id: root
 
     width: 650
-    readonly property var default_details: ({"is_default": true, "price":"","date":"","base":"","rel":"","cancellable":true,"is_maker":true,"base_amount":"1","rel_amount":"1","order_id":""})
-    property var details: default_details
+    property var details
+
+    // TODO: Close details if it's dead
 
     // Inside modal
     ColumnLayout {
@@ -20,20 +21,21 @@ DefaultModal {
         anchors.horizontalCenter: parent.horizontalCenter
 
         ModalHeader {
-            title: API.get().empty_string + (details.is_swap ? qsTr("Swap Details") : qsTr("Order Details"))
+            title: API.get().empty_string + (!details ? "" : details.is_swap ? qsTr("Swap Details") : qsTr("Order Details"))
         }
 
         // Complete image
         // TODO: Add events
 //        DefaultImage {
-//            visible: details.is_swap !== undefined && details.order_status === "successful"
+//            visible: !details ? false : details.is_swap !== undefined && details.order_status === "successful"
 //            Layout.alignment: Qt.AlignHCenter
 //            source: General.image_path + "exchange-trade-complete.svg"
 //        }
 
         // Loading symbol
             DefaultBusyIndicator {
-            visible: details.is_swap !== undefined &&
+            visible: !details ? false :
+                     details.is_swap !== undefined &&
                      details.order_status !== "successful" &&
                      details.order_status !== "failed"
             Layout.alignment: Qt.AlignHCenter
@@ -45,11 +47,12 @@ DefaultModal {
 //            Layout.alignment: Qt.AlignHCenter
 //            Layout.topMargin: 20
 //            font.pixelSize: Style.textSize3
-//            visible: !details.is_swap &&  // Is order
+//            visible: !details ? false :
+//                        !details.is_swap &&  // Is order
 //                     (details.events !== undefined || // Has events, ongoing or
 //                    details.is_maker === false) // Taker order with no events
-//            color: visible ? getStatusColor(details.order_status) : ''
-//            text_value: API.get().empty_string + (visible ? getStatusTextWithPrefix(details.order_status) : '')
+//            color: !details ? "white" : visible ? getStatusColor(details.order_status) : ''
+//            text_value: API.get().empty_string + (!details ? "" : visible ? getStatusTextWithPrefix(details.order_status) : '')
 //        }
 
         OrderContent {
@@ -71,7 +74,7 @@ DefaultModal {
 
         // Maker/Taker
         DefaultText {
-            text_value: API.get().empty_string + (details.is_maker ? qsTr("Maker Order"): qsTr("Taker Order"))
+            text_value: API.get().empty_string + (!details ? "" : details.is_maker ? qsTr("Maker Order"): qsTr("Taker Order"))
             color: Style.colorThemeDarkLight
             Layout.alignment: Qt.AlignRight
         }
@@ -83,6 +86,8 @@ DefaultModal {
 
 //            title: API.get().empty_string + (qsTr("Refund State"))
 //            field.text: {
+//                if(!details) return ""
+
 //                let str = API.get().empty_string
 //                const e = getLastEvent(details)
 
@@ -101,30 +106,30 @@ DefaultModal {
         // Date
         TextWithTitle {
             title: API.get().empty_string + (qsTr("Date"))
-            text: API.get().empty_string + (details.date)
+            text: API.get().empty_string + (!details ? "" : details.date)
             visible: text !== ''
         }
 
         // ID
         TextWithTitle {
             title: API.get().empty_string + (qsTr("ID"))
-            text: API.get().empty_string + (details.order_id)
+            text: API.get().empty_string + (!details ? "" : details.order_id)
             visible: text !== ''
             privacy: true
         }
 
         // Payment ID
         TextWithTitle {
-            title: API.get().empty_string + (details.is_maker ? qsTr("Maker Payment Sent ID") : qsTr("Maker Payment Spent ID"))
-            text: API.get().empty_string + (details.maker_payment_id)
+            title: API.get().empty_string + (!details ? "" : details.is_maker ? qsTr("Maker Payment Sent ID") : qsTr("Maker Payment Spent ID"))
+            text: API.get().empty_string + (!details ? "" : details.maker_payment_id)
             visible: text !== ''
             privacy: true
         }
 
         // Payment ID
         TextWithTitle {
-            title: API.get().empty_string + (details.is_maker ? qsTr("Taker Payment Spent ID") : qsTr("Taker Payment Sent ID"))
-            text: API.get().empty_string + (details.taker_payment_id)
+            title: API.get().empty_string + (!details ? "" : details.is_maker ? qsTr("Taker Payment Spent ID") : qsTr("Taker Payment Sent ID"))
+            text: API.get().empty_string + (!details ? "" : details.taker_payment_id)
             visible: text !== ''
             privacy: true
         }
@@ -133,7 +138,7 @@ DefaultModal {
         // TODO: Add events
 //        TextWithTitle {
 //            title: API.get().empty_string + (qsTr("Error ID"))
-//            text: API.get().empty_string + (getSwapError(details).state)
+//            text: API.get().empty_string + (!details ? "" : getSwapError(details).state)
 //            visible: text !== ''
 //        }
 
@@ -141,7 +146,7 @@ DefaultModal {
         // TODO: Add events
 //        TextFieldWithTitle {
 //            title: API.get().empty_string + (qsTr("Error Log"))
-//            field.text: API.get().empty_string + (getSwapError(details).data.error)
+//            field.text: API.get().empty_string + (!details ? "" : getSwapError(details).data.error)
 //            field.readOnly: true
 //            copyable: true
 
@@ -158,17 +163,19 @@ DefaultModal {
 
             // Cancel button
             DangerButton {
-                visible: details.cancellable !== undefined && details.cancellable
+                visible: !details ? false : details.cancellable !== undefined && details.cancellable
                 Layout.fillWidth: true
                 text: API.get().empty_string + (qsTr("Cancel Order"))
-                onClicked: onCancelOrder(details.order_id)
+                onClicked: { if(details) onCancelOrder(details.order_id) }
             }
 
             PrimaryButton {
                 text: API.get().empty_string + (qsTr("View at Explorer"))
                 Layout.fillWidth: true
-                visible: details.maker_payment_id !== '' || details.taker_payment_id !== ''
+                visible: !details ? false : details.maker_payment_id !== '' || details.taker_payment_id !== ''
                 onClicked: {
+                    if(!details) return
+
                     const maker_id = details.maker_payment_id
                     const taker_id = details.taker_payment_id
                     if(maker_id !== '') General.viewTxAtExplorer(details.maker_coin, maker_id, true)
