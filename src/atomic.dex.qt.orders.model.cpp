@@ -242,6 +242,21 @@ namespace atomic_dex
     }
 
     void
+    orders_model::update_swap(const ::mm2::api::swap_contents& contents) noexcept
+    {
+        if (const auto res = this->match(index(0, 0), OrderIdRole, QString::fromStdString(contents.uuid)); not res.isEmpty())
+        {
+            const QModelIndex& idx = res.at(0);
+            update_value(OrdersRoles::IsRecoverableRole, contents.funds_recoverable, idx, *this);
+            update_value(OrdersRoles::OrderStatusRole, determine_order_status_from_last_event(contents), idx, *this);
+            update_value(OrdersRoles::UnixTimestampRole, not contents.events.empty() ? contents.events.back().at("timestamp").get<int>() : 0, idx, *this);
+            update_value(
+                OrdersRoles::HumanDateRole,
+                not contents.events.empty() ? QString::fromStdString(contents.events.back().at("human_timestamp").get<std::string>()) : "", idx, *this);
+        }
+    }
+
+    void
     orders_model::initialize_order(const ::mm2::api::my_order_contents& contents) noexcept
     {
         spdlog::trace("inserting in model order id {}", contents.order_id);
@@ -345,13 +360,10 @@ namespace atomic_dex
         {
             if (this->m_swaps_id_registry.find(current_swap.uuid) != this->m_swaps_id_registry.end())
             {
-                spdlog::trace("find id {}, updating", current_swap.uuid);
-                //! update
+                this->update_swap(current_swap);
             }
             else
             {
-                //! Insert
-                spdlog::trace("id {}, not found, inserting", current_swap.uuid);
                 this->initialize_swap(current_swap);
             }
         }
