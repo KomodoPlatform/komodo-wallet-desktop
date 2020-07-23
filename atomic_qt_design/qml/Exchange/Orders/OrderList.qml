@@ -50,7 +50,7 @@ InnerBackground {
 
             // Row
             delegate: OrderLine {
-                item: model
+                details: model
             }
         }
     }

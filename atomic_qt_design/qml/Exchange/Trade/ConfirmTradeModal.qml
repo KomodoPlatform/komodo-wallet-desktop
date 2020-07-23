@@ -30,7 +30,7 @@ DefaultModal {
             height: 120
             Layout.alignment: Qt.AlignHCenter
 
-            item: ({
+            details: ({
                     base_coin: getTicker(true),
                     rel_coin: getTicker(false),
                     base_amount: form_base.field.text,

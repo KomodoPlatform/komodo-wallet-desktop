@@ -62,7 +62,7 @@ DefaultModal {
             Layout.rightMargin: Layout.leftMargin
             height: 120
             Layout.alignment: Qt.AlignHCenter
-            item: details
+            details: root.details
             in_modal: true
         }
 
