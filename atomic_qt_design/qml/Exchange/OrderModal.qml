@@ -12,7 +12,9 @@ DefaultModal {
     width: 650
     property var details
 
-    // TODO: Close details if it's dead
+    onDetailsChanged: {
+        if(!details) root.close()
+    }
 
     // Inside modal
     ColumnLayout {
