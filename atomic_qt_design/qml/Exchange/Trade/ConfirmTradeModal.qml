@@ -10,7 +10,7 @@ import ".."
 DefaultModal {
     id: root
 
-    width: 900
+    width: 1100
 
     // Inside modal
     ColumnLayout {
