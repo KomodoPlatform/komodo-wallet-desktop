@@ -23,11 +23,9 @@ Item {
                 exchange.current_page === General.idx_exchange_orders
     }
 
-    // TODO: Filter with base
-    //onBaseChanged:
+    onBaseChanged: orders_model.orders_proxy_mdl.setFilterFixedString(show_all_coins.checked ? "" : base)
 
-    function reset() {
-    }
+    function reset() { }
 
     function onOpened() {
         console.log("is_history false")
@@ -103,8 +101,7 @@ Item {
                     Layout.leftMargin: 15
                     text: API.get().empty_string + (qsTr("Show All Coins"))
 
-                    // TODO: Remove orders filter
-                    //onCheckedChanged:
+                    onCheckedChanged: orders_model.orders_proxy_mdl.setFilterFixedString("")
                 }
 
                 // Base
