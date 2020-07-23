@@ -23,9 +23,13 @@ Item {
                 exchange.current_page === General.idx_exchange_orders
     }
 
-    onBaseChanged: orders_model.orders_proxy_mdl.setFilterFixedString(show_all_coins.checked ? "" : base)
+    function applyFilter() {
+        orders_model.orders_proxy_mdl.setFilterFixedString(show_all_coins.checked ? "" : base)
+    }
 
-    function reset() { }
+    onBaseChanged: applyFilter()
+
+    function reset() {  }
 
     function onOpened() {
         console.log("is_history false")
@@ -101,7 +105,7 @@ Item {
                     Layout.leftMargin: 15
                     text: API.get().empty_string + (qsTr("Show All Coins"))
 
-                    onCheckedChanged: orders_model.orders_proxy_mdl.setFilterFixedString("")
+                    onCheckedChanged: applyFilter()
                 }
 
                 // Base
