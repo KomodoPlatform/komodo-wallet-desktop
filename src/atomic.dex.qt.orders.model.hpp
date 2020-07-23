@@ -94,6 +94,7 @@ namespace atomic_dex
         void    initialize_order(const ::mm2::api::my_order_contents& contents) noexcept;
         void    update_existing_order(const ::mm2::api::my_order_contents& contents) noexcept;
         void    initialize_swap(const ::mm2::api::swap_contents& contents) noexcept;
+        void    update_swap(const ::mm2::api::swap_contents& contents) noexcept;
         QString determine_order_status_from_last_event(const ::mm2::api::swap_contents& contents) noexcept;
     };
 } // namespace atomic_dex
