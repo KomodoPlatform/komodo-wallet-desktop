@@ -311,7 +311,6 @@ Item {
                 const new_base = getTicker(true)
                 const rel = getTicker(false)
                 console.log("Setting current orderbook with params: ", new_base, rel)
-                API.get().current_coin_info.ticker = new_base
                 API.get().set_current_orderbook(new_base, rel)
                 reset(true, is_base)
                 updateOrderbook()
