@@ -111,6 +111,7 @@ namespace atomic_dex
                 if (quoted)
                 {
                     //! It's quoted need to reverse all the value
+                    this->reverse_ohlc_data();
                 }
                 this->dispatcher_.trigger<refresh_ohlc_needed>();
                 return true;
@@ -165,6 +166,20 @@ namespace atomic_dex
                 fut_tasks.wait();
             }
             m_pending_tasks.pop();
+        }
+    }
+
+    void
+    cex_prices_provider::reverse_ohlc_data() noexcept
+    {
+        nlohmann::json& values = *this->m_current_ohlc_data;
+        for (auto&& item: values) {
+            for (auto&& cur_range : item) {
+                cur_range["open"] = 1 / cur_range.at("open").get<double>();
+                cur_range["high"] = 1 / cur_range.at("high").get<double>();
+                cur_range["low"] = 1 / cur_range.at("low").get<double>();
+                cur_range["close"] = 1 / cur_range.at("close").get<double>();
+            }
         }
     }
 

@@ -52,6 +52,9 @@ namespace atomic_dex
         std::thread                   m_provider_ohlc_fetcher_thread;
         timed_waiter                  m_provider_thread_timer;
 
+        //! Private API
+        void reverse_ohlc_data() noexcept;
+
       public:
         //! Constructor
         cex_prices_provider(entt::registry& registry, mm2& mm2_instance);
