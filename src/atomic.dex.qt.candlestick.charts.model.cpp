@@ -90,9 +90,24 @@ namespace atomic_dex
         this->m_model_data = this->m_system_manager.get_system<cex_prices_provider>().get_all_ohlc_data();
         this->endResetModel();
 
-        emit seriesFromChanged();
-        emit seriesToChanged();
-        emit seriesSizeChanged();
+        double max_value = -1e10;
+        double min_value = 1e10;
+        for (auto&& cur: m_model_data.at(m_current_range))
+        {
+            if (double min_to_compare = cur.at("low").get<double>(); min_value > min_to_compare)
+            {
+                min_value = min_to_compare;
+            }
+            if (double max_to_compare = cur.at("high").get<double>(); max_value < max_to_compare)
+            {
+                max_value = max_to_compare;
+            }
+        }
+        this->set_min_value(min_value);
+        this->set_max_value(min_value);
+        emit seriesFromChanged(get_series_from());
+        emit seriesToChanged(get_series_to());
+        emit seriesSizeChanged(get_series_size());
     }
 
     int
@@ -107,7 +122,7 @@ namespace atomic_dex
         beginResetModel();
         this->m_model_data.clear();
         endResetModel();
-        emit seriesSizeChanged();
+        emit seriesSizeChanged(get_series_size());
     }
 
     QString
@@ -128,7 +143,9 @@ namespace atomic_dex
     atomic_dex::candlestick_charts_model::get_series_to() const noexcept
     {
         if (this->m_model_data.empty() || !m_model_data.contains(m_current_range))
+        {
             return QDateTime();
+        }
         QDateTime date_time;
         date_time.setSecsSinceEpoch(m_model_data.at(m_current_range).back().at("timestamp").get<int>());
         return date_time;
@@ -138,9 +155,44 @@ namespace atomic_dex
     atomic_dex::candlestick_charts_model::get_series_from() const noexcept
     {
         if (this->m_model_data.empty() || !m_model_data.contains(m_current_range))
+        {
             return QDateTime();
+        }
         QDateTime date_time;
         date_time.setSecsSinceEpoch(m_model_data.at(m_current_range)[0].at("timestamp").get<int>());
         return date_time;
+    }
+
+    double
+    candlestick_charts_model::get_min_value() const noexcept
+    {
+        return m_min_value;
+    }
+
+    double
+    candlestick_charts_model::get_max_value() const noexcept
+    {
+        return m_max_value;
+    }
+    void
+    candlestick_charts_model::set_max_value(double value)
+    {
+        qWarning("Floating point comparison needs context sanity check");
+        if (qFuzzyCompare(m_max_value, value))
+            return;
+
+        m_max_value = value;
+        emit maxValueChanged(m_max_value);
+    }
+
+    void
+    candlestick_charts_model::set_min_value(double value)
+    {
+        qWarning("Floating point comparison needs context sanity check");
+        if (qFuzzyCompare(m_min_value, value))
+            return;
+
+        m_min_value = value;
+        emit minValueChanged(m_min_value);
     }
 } // namespace atomic_dex
