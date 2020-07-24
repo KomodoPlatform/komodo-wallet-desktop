@@ -1141,4 +1141,10 @@ namespace atomic_dex
     {
         return m_trade_fees_registry.find(ticker) != m_trade_fees_registry.cend() ? m_trade_fees_registry.at(ticker) : t_get_trade_fee_answer{};
     }
+
+    bool
+    mm2::is_orderbook_thread_active() const noexcept
+    {
+        return this->m_orderbook_thread_active.load();
+    }
 } // namespace atomic_dex

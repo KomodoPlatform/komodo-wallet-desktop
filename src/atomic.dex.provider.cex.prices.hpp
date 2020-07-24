@@ -21,30 +21,39 @@
 //! Project header
 #include "atomic.dex.mm2.hpp"
 
+inline constexpr const std::size_t nb_pair_supported = 40_sz;
+
 namespace atomic_dex
 {
     namespace ag = antara::gaming;
 
     class cex_prices_provider final : public ag::ecs::pre_update_system<cex_prices_provider>
     {
+        using t_supported_pairs               = std::array<std::string, nb_pair_supported>;
+        using t_current_orderbook_ticker_pair = std::pair<std::string, std::string>;
+        using t_synchronized_json             = boost::synchronized_value<nlohmann::json>;
+
         //! Private fields
-        [[maybe_unused]] mm2& m_mm2_instance;
+        mm2& m_mm2_instance;
 
         //! OHLC Related
-        std::pair<std::string, std::string> m_current_orderbook_ticker_pair;
-        std::array<std::string, 40>         m_supported_pair{"eth-btc",  "eth-usdc", "btc-usdc", "btc-busd", "btc-tusd", "bat-btc",  "bat-eth",  "bat-usdc",
-                                                     "bat-tusd", "bat-busd", "bch-btc",  "bch-eth",  "bch-usdc", "bch-tusd", "bch-busd", "dash-btc",
-                                                     "dash-eth", "dgb-btc",  "doge-btc", "kmd-btc",  "kmd-eth",  "ltc-btc",  "ltc-eth",  "ltc-usdc",
-                                                     "ltc-tusd", "ltc-busd", "nav-btc",  "nav-eth",  "pax-btc",  "pax-eth",  "qtum-btc", "qtum-eth",
-                                                     "rvn-btc",  "xzc-btc",  "xzc-eth",  "zec-btc",  "zec-eth",  "zec-usdc", "zec-tusd", "zec-busd"};
+        t_current_orderbook_ticker_pair m_current_orderbook_ticker_pair;
+        t_supported_pairs               m_supported_pair{"eth-btc",  "eth-usdc", "btc-usdc", "btc-busd", "btc-tusd", "bat-btc",  "bat-eth",  "bat-usdc",
+                                           "bat-tusd", "bat-busd", "bch-btc",  "bch-eth",  "bch-usdc", "bch-tusd", "bch-busd", "dash-btc",
+                                           "dash-eth", "dgb-btc",  "doge-btc", "kmd-btc",  "kmd-eth",  "ltc-btc",  "ltc-eth",  "ltc-usdc",
+                                           "ltc-tusd", "ltc-busd", "nav-btc",  "nav-eth",  "pax-btc",  "pax-eth",  "qtum-btc", "qtum-eth",
+                                           "rvn-btc",  "xzc-btc",  "xzc-eth",  "zec-btc",  "zec-eth",  "zec-usdc", "zec-tusd", "zec-busd"};
 
-        nlohmann::json     m_current_ohlc_data;
-        mutable std::mutex m_ohlc_data_mutex;
+        //! OHLC Data
+        t_synchronized_json m_current_ohlc_data;
 
         //! Threads
         std::queue<std::future<void>> m_pending_tasks;
         std::thread                   m_provider_ohlc_fetcher_thread;
         timed_waiter                  m_provider_thread_timer;
+
+        //! Private API
+        void reverse_ohlc_data() noexcept;
 
       public:
         //! Constructor
@@ -55,8 +64,9 @@ namespace atomic_dex
 
         //! Queue
         void consume_pending_tasks();
+
         // Override
-        void update() noexcept override;
+        void update() noexcept final;
 
         //! Process OHLC http rest request
         bool process_ohlc(const std::string& base, const std::string& rel) noexcept;
@@ -64,7 +74,8 @@ namespace atomic_dex
         //! Return true if json ohlc data is not empty, otherwise return false
         bool is_ohlc_data_available() const noexcept;
 
-        bool is_pair_supported(const std::string& base, const std::string& rel) const noexcept;
+        //! First boolean if it's supported as regular, second one if it's supported as quoted
+        std::pair<bool, bool> is_pair_supported(const std::string& base, const std::string& rel) const noexcept;
 
         //! Event that occur when the mm2 process is launched correctly.
         void on_mm2_started(const mm2_started& evt) noexcept;
@@ -73,7 +84,6 @@ namespace atomic_dex
 
         //! Event that occur when the ticker pair is changed in the front end
         void on_current_orderbook_ticker_pair_changed(const orderbook_refresh& evt) noexcept;
-        ;
     };
 } // namespace atomic_dex
 

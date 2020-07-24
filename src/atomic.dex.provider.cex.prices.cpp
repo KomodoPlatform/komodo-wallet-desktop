@@ -57,20 +57,12 @@ namespace atomic_dex
     {
         spdlog::debug("{} l{} f[{}]", __FUNCTION__, __LINE__, fs::path(__FILE__).filename().string());
 
-        {
-            {
-                std::unique_lock<std::mutex> locker(m_ohlc_data_mutex, std::try_to_lock);
-                m_current_ohlc_data = nlohmann::json::array();
-            }
-            this->dispatcher_.trigger<refresh_ohlc_needed>();
-        }
-
-        {
-            m_current_orderbook_ticker_pair = {boost::algorithm::to_lower_copy(evt.base), boost::algorithm::to_lower_copy(evt.rel)};
-            auto [base, rel]                = m_current_orderbook_ticker_pair;
-            spdlog::debug("new orderbook pair for cex provider [{} / {}]", base, rel);
-            m_pending_tasks.push(spawn([base = base, rel = rel, this]() { process_ohlc(base, rel); }));
-        }
+        m_current_ohlc_data = nlohmann::json::array();
+        this->dispatcher_.trigger<refresh_ohlc_needed>();
+        m_current_orderbook_ticker_pair = {boost::algorithm::to_lower_copy(evt.base), boost::algorithm::to_lower_copy(evt.rel)};
+        auto [base, rel]                = m_current_orderbook_ticker_pair;
+        spdlog::debug("new orderbook pair for cex provider [{} / {}]", base, rel);
+        m_pending_tasks.push(spawn([base = base, rel = rel, this]() { process_ohlc(base, rel); }));
     }
 
     void
@@ -86,7 +78,7 @@ namespace atomic_dex
             do {
                 spdlog::info("fetching ohlc value");
                 auto [base, rel] = m_current_orderbook_ticker_pair;
-                if (not base.empty() && not rel.empty())
+                if (not base.empty() && not rel.empty() && m_mm2_instance.is_orderbook_thread_active())
                 {
                     process_ohlc(base, rel);
                 }
@@ -102,16 +94,24 @@ namespace atomic_dex
     cex_prices_provider::process_ohlc(const std::string& base, const std::string& rel) noexcept
     {
         spdlog::debug("{} l{} f[{}]", __FUNCTION__, __LINE__, fs::path(__FILE__).filename().string());
-        if (is_pair_supported(base, rel))
+        if (auto [normal, quoted] = is_pair_supported(base, rel); normal || quoted)
         {
             spdlog::info("{} / {} is supported, processing", base, rel);
             atomic_dex::ohlc_request req{base, rel};
-            auto                     answer = atomic_dex::rpc_ohlc_get_data(std::move(req));
+            if (quoted)
+            {
+                //! Quoted
+                req.base_asset  = rel;
+                req.quote_asset = base;
+            }
+            auto answer = atomic_dex::rpc_ohlc_get_data(std::move(req));
             if (answer.result.has_value())
             {
+                m_current_ohlc_data = answer.result.value().raw_result;
+                if (quoted)
                 {
-                    std::unique_lock<std::mutex> locker(m_ohlc_data_mutex);
-                    m_current_ohlc_data = answer.result.value().raw_result;
+                    //! It's quoted need to reverse all the value
+                    this->reverse_ohlc_data();
                 }
                 this->dispatcher_.trigger<refresh_ohlc_needed>();
                 return true;
@@ -124,11 +124,15 @@ namespace atomic_dex
         return false;
     }
 
-    bool
+    std::pair<bool, bool>
     cex_prices_provider::is_pair_supported(const std::string& base, const std::string& rel) const noexcept
     {
-        const std::string final_ticker_pair = boost::algorithm::to_lower_copy(base) + "-" + boost::algorithm::to_lower_copy(rel);
-        return std::any_of(begin(m_supported_pair), end(m_supported_pair), [final_ticker_pair](auto&& cur_str) { return cur_str == final_ticker_pair; });
+        std::pair<bool, bool> result;
+        const std::string     tickers = boost::algorithm::to_lower_copy(base) + "-" + boost::algorithm::to_lower_copy(rel);
+        result.first                  = std::any_of(begin(m_supported_pair), end(m_supported_pair), [tickers](auto&& cur_str) { return cur_str == tickers; });
+        const std::string quoted_tickers = boost::algorithm::to_lower_copy(rel) + "-" + boost::algorithm::to_lower_copy(base);
+        result.second = std::any_of(begin(m_supported_pair), end(m_supported_pair), [quoted_tickers](auto&& cur_str) { return cur_str == quoted_tickers; });
+        return result;
     }
 
     bool
@@ -136,11 +140,7 @@ namespace atomic_dex
     {
         spdlog::debug("{} l{} f[{}]", __FUNCTION__, __LINE__, fs::path(__FILE__).filename().string());
         bool res = false;
-        {
-            std::unique_lock<std::mutex> locker(m_ohlc_data_mutex);
-            res = !m_current_ohlc_data.empty();
-            spdlog::debug("data available: {}", res);
-        }
+        res      = !m_current_ohlc_data->empty();
         return res;
     }
 
@@ -148,12 +148,9 @@ namespace atomic_dex
     cex_prices_provider::get_ohlc_data(const std::string& range) noexcept
     {
         nlohmann::json res = nlohmann::json::array();
+        if (m_current_ohlc_data->contains(range))
         {
-            std::unique_lock<std::mutex> locker(m_ohlc_data_mutex);
-            if (m_current_ohlc_data.contains(range))
-            {
-                res = m_current_ohlc_data.at(range);
-            }
+            res = m_current_ohlc_data->at(range);
         }
         return res;
     }
@@ -169,6 +166,20 @@ namespace atomic_dex
                 fut_tasks.wait();
             }
             m_pending_tasks.pop();
+        }
+    }
+
+    void
+    cex_prices_provider::reverse_ohlc_data() noexcept
+    {
+        nlohmann::json& values = *this->m_current_ohlc_data;
+        for (auto&& item: values) {
+            for (auto&& cur_range : item) {
+                cur_range["open"] = 1 / cur_range.at("open").get<double>();
+                cur_range["high"] = 1 / cur_range.at("high").get<double>();
+                cur_range["low"] = 1 / cur_range.at("low").get<double>();
+                cur_range["close"] = 1 / cur_range.at("close").get<double>();
+            }
         }
     }
 
