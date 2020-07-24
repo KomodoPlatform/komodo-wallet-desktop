@@ -95,17 +95,16 @@ namespace atomic_dex
         double min_value = std::numeric_limits<double>::max();
         for (auto&& cur: m_model_data.at(m_current_range))
         {
-            std::cout << cur.dump() << std::endl;
-            if (double min_to_compare = cur.at("low").get<double>(); min_value > min_to_compare)
+            if (auto min_to_compare = cur.at("low").get<double>(); min_value > min_to_compare)
             {
                 min_value = min_to_compare;
             }
-            if (double max_to_compare = cur.at("high").get<double>(); max_value < max_to_compare)
+            if (auto max_to_compare = cur.at("high").get<double>(); max_value < max_to_compare)
             {
                 max_value = max_to_compare;
             }
         }
-        spdlog::trace("new range value IS: min: {} / max: {}",  min_value, max_value);
+        spdlog::trace("new range value IS: min: {} / max: {}", min_value, max_value);
         this->set_min_value(min_value);
         this->set_max_value(max_value);
         emit seriesFromChanged(get_series_from());
@@ -177,12 +176,15 @@ namespace atomic_dex
     {
         return m_max_value;
     }
+
     void
     candlestick_charts_model::set_max_value(double value)
     {
         qWarning("Floating point comparison needs context sanity check");
         if (qFuzzyCompare(m_max_value, value))
+        {
             return;
+        }
 
         m_max_value = value;
         emit maxValueChanged(m_max_value);
@@ -193,7 +195,9 @@ namespace atomic_dex
     {
         qWarning("Floating point comparison needs context sanity check");
         if (qFuzzyCompare(m_min_value, value))
+        {
             return;
+        }
 
         m_min_value = value;
         emit minValueChanged(m_min_value);
