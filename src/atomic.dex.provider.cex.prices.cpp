@@ -58,7 +58,7 @@ namespace atomic_dex
         spdlog::debug("{} l{} f[{}]", __FUNCTION__, __LINE__, fs::path(__FILE__).filename().string());
 
         m_current_ohlc_data = nlohmann::json::array();
-        this->dispatcher_.trigger<refresh_ohlc_needed>();
+        //this->dispatcher_.trigger<refresh_ohlc_needed>();
         m_current_orderbook_ticker_pair = {boost::algorithm::to_lower_copy(evt.base), boost::algorithm::to_lower_copy(evt.rel)};
         auto [base, rel]                = m_current_orderbook_ticker_pair;
         spdlog::debug("new orderbook pair for cex provider [{} / {}]", base, rel);

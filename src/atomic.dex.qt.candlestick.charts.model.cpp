@@ -90,10 +90,12 @@ namespace atomic_dex
         this->m_model_data = this->m_system_manager.get_system<cex_prices_provider>().get_all_ohlc_data();
         this->endResetModel();
 
-        double max_value = -1e10;
-        double min_value = 1e10;
+        assert(not m_model_data.empty());
+        double max_value = std::numeric_limits<double>::min();
+        double min_value = std::numeric_limits<double>::max();
         for (auto&& cur: m_model_data.at(m_current_range))
         {
+            std::cout << cur.dump() << std::endl;
             if (double min_to_compare = cur.at("low").get<double>(); min_value > min_to_compare)
             {
                 min_value = min_to_compare;
@@ -103,8 +105,9 @@ namespace atomic_dex
                 max_value = max_to_compare;
             }
         }
+        spdlog::trace("new range value IS: min: {} / max: {}",  min_value, max_value);
         this->set_min_value(min_value);
-        this->set_max_value(min_value);
+        this->set_max_value(max_value);
         emit seriesFromChanged(get_series_from());
         emit seriesToChanged(get_series_to());
         emit seriesSizeChanged(get_series_size());
