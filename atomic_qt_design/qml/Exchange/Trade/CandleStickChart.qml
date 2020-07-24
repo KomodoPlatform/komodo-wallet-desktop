@@ -132,8 +132,8 @@ ChartView {
         axisYRight: ValueAxis {
             id: value_axis
 
-            min: 0.0000614//cs_mapper.model.min_value
-            max: 0.0000814// cs_mapper.model.max_value
+            min: cs_mapper.model.min_value
+            max: cs_mapper.model.max_value
 
             titleVisible: series.axisX.titleVisible
             lineVisible: series.axisX.lineVisible
