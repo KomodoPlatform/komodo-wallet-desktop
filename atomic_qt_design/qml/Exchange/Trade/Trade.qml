@@ -212,6 +212,7 @@ Item {
         updateOrderbook()
         reset(true)
         updateForms()
+        setPair(true)
     }
 
     function updateForms(my_side, new_ticker) {
