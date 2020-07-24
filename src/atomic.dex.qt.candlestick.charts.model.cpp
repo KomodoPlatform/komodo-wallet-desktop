@@ -129,7 +129,7 @@ namespace atomic_dex
     {
         if (this->m_model_data.empty() || !m_model_data.contains(m_current_range))
             return 0;
-        return m_model_data.at(m_current_range).back().at("timestamp").get<int>();
+        return m_model_data.at(m_current_range).back().at("timestamp").get<int>() * 1000;
     }
 
     int
@@ -137,6 +137,6 @@ namespace atomic_dex
     {
         if (this->m_model_data.empty() || !m_model_data.contains(m_current_range))
             return 0;
-        return m_model_data.at(m_current_range)[0].at("timestamp").get<int>();
+        return m_model_data.at(m_current_range)[0].at("timestamp").get<int>() * 1000;
     }
 } // namespace atomic_dex
