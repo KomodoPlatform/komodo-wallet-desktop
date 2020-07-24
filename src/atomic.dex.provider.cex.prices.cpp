@@ -180,7 +180,7 @@ namespace atomic_dex
     void
     cex_prices_provider::reverse_ohlc_data() noexcept
     {
-        nlohmann::json& values = *this->m_current_ohlc_data;
+        nlohmann::json values = *this->m_current_ohlc_data;
         for (auto&& item: values)
         {
             for (auto&& cur_range: item)
@@ -191,6 +191,7 @@ namespace atomic_dex
                 cur_range["close"] = 1 / cur_range.at("close").get<double>();
             }
         }
+        m_current_ohlc_data = values;
     }
 
     nlohmann::json

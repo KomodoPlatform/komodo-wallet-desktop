@@ -185,7 +185,7 @@ namespace atomic_dex
             return QDateTime();
         }
         QDateTime date_time;
-        date_time.setSecsSinceEpoch(m_model_data[0].at("timestamp").get<int>());
+        date_time.setSecsSinceEpoch(m_model_data[int(this->m_model_data.size() * 0.9)].at("timestamp").get<int>());
         return date_time;
     }
 
