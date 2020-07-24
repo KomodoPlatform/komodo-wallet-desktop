@@ -51,7 +51,7 @@ SCENARIO("atomic dex cex price service functionnality")
                 AND_THEN("i check if data are available, and if the port is not supported")
                 {
                     CHECK(cex_system.is_ohlc_data_available());
-                    CHECK(cex_system.is_pair_supported("kmd", "btc"));
+                    CHECK(cex_system.is_pair_supported("kmd", "btc").first);
                     CHECK_FALSE(cex_system.get_ohlc_data("60").empty());
                 }
             }
