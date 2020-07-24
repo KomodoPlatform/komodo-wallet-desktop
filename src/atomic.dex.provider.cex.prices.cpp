@@ -94,14 +94,24 @@ namespace atomic_dex
     cex_prices_provider::process_ohlc(const std::string& base, const std::string& rel) noexcept
     {
         spdlog::debug("{} l{} f[{}]", __FUNCTION__, __LINE__, fs::path(__FILE__).filename().string());
-        if (is_pair_supported(base, rel))
+        if (auto [normal, quoted] = is_pair_supported(base, rel); normal || quoted)
         {
             spdlog::info("{} / {} is supported, processing", base, rel);
             atomic_dex::ohlc_request req{base, rel};
-            auto                     answer = atomic_dex::rpc_ohlc_get_data(std::move(req));
+            if (quoted)
+            {
+                //! Quoted
+                req.base_asset  = rel;
+                req.quote_asset = base;
+            }
+            auto answer = atomic_dex::rpc_ohlc_get_data(std::move(req));
             if (answer.result.has_value())
             {
                 m_current_ohlc_data = answer.result.value().raw_result;
+                if (quoted)
+                {
+                    //! It's quoted need to reverse all the value
+                }
                 this->dispatcher_.trigger<refresh_ohlc_needed>();
                 return true;
             }
@@ -113,11 +123,15 @@ namespace atomic_dex
         return false;
     }
 
-    bool
+    std::pair<bool, bool>
     cex_prices_provider::is_pair_supported(const std::string& base, const std::string& rel) const noexcept
     {
-        const std::string final_ticker_pair = boost::algorithm::to_lower_copy(base) + "-" + boost::algorithm::to_lower_copy(rel);
-        return std::any_of(begin(m_supported_pair), end(m_supported_pair), [final_ticker_pair](auto&& cur_str) { return cur_str == final_ticker_pair; });
+        std::pair<bool, bool> result;
+        const std::string     tickers = boost::algorithm::to_lower_copy(base) + "-" + boost::algorithm::to_lower_copy(rel);
+        result.first                  = std::any_of(begin(m_supported_pair), end(m_supported_pair), [tickers](auto&& cur_str) { return cur_str == tickers; });
+        const std::string quoted_tickers = boost::algorithm::to_lower_copy(rel) + "-" + boost::algorithm::to_lower_copy(base);
+        result.second = std::any_of(begin(m_supported_pair), end(m_supported_pair), [quoted_tickers](auto&& cur_str) { return cur_str == quoted_tickers; });
+        return result;
     }
 
     bool

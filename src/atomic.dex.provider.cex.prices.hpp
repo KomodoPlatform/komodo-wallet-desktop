@@ -71,7 +71,8 @@ namespace atomic_dex
         //! Return true if json ohlc data is not empty, otherwise return false
         bool is_ohlc_data_available() const noexcept;
 
-        bool is_pair_supported(const std::string& base, const std::string& rel) const noexcept;
+        //! First boolean if it's supported as regular, second one if it's supported as quoted
+        std::pair<bool, bool> is_pair_supported(const std::string& base, const std::string& rel) const noexcept;
 
         //! Event that occur when the mm2 process is launched correctly.
         void on_mm2_started(const mm2_started& evt) noexcept;

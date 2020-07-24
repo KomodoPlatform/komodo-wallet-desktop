@@ -1240,7 +1240,8 @@ namespace atomic_dex
     application::is_supported_ohlc_data_ticker_pair(const QString& base, const QString& rel)
     {
         auto& provider = this->system_manager_.get_system<cex_prices_provider>();
-        return provider.is_pair_supported(base.toStdString(), rel.toStdString());
+        auto [normal, quoted] =  provider.is_pair_supported(base.toStdString(), rel.toStdString());
+        return normal & quoted;
     }
 
     void
