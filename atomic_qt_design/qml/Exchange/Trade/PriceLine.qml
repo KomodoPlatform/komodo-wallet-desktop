@@ -27,6 +27,14 @@ RowLayout {
 
     spacing: 100
 
+    DefaultText {
+        visible: !price_entered && invalid_cex_price
+        Layout.alignment: Qt.AlignHCenter
+        text_value: API.get().empty_string + (qsTr("Fill the amounts to see the price information"))
+        font.pixelSize: fontSize
+    }
+
+
     ColumnLayout {
         visible: price_entered
 

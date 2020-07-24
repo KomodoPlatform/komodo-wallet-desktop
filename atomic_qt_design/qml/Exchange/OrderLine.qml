@@ -7,7 +7,7 @@ import "../Components"
 import "../Constants"
 
 Rectangle {
-    property var item
+    property var details
     width: list.width
     height: 175
 
@@ -18,7 +18,7 @@ Rectangle {
         anchors.fill: parent
         hoverEnabled: true
         onClicked: {
-            order_modal.current_item_uuid = item.uuid
+            order_modal.details = details
             order_modal.open()
         }
     }
@@ -30,7 +30,7 @@ Rectangle {
         anchors.horizontalCenter: parent.horizontalCenter
         anchors.top: parent.top
         anchors.topMargin: 20
-        item: parent.item
+        details: parent.details
     }
 
     HorizontalLine {

@@ -10,7 +10,7 @@ import ".."
 DefaultModal {
     id: root
 
-    width: 900
+    width: 1100
 
     // Inside modal
     ColumnLayout {
@@ -30,15 +30,13 @@ DefaultModal {
             height: 120
             Layout.alignment: Qt.AlignHCenter
 
-            item: ({
-                    my_info: {
-                       my_coin: getTicker(true),
-                       other_coin: getTicker(false),
-                       my_amount: form_base.field.text,
-                       other_amount: form_rel.field.text
-                    },
+            details: ({
+                    base_coin: getTicker(true),
+                    rel_coin: getTicker(false),
+                    base_amount: form_base.field.text,
+                    rel_amount: form_rel.field.text,
 
-                    uuid: '',
+                    order_id: '',
                     date: '',
                    })
             in_modal: true

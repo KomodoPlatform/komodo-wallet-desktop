@@ -8,7 +8,7 @@ import ".."
 
 InnerBackground {
     property string title
-    property alias items: list.model
+    property var items
 
     Layout.fillWidth: true
     Layout.fillHeight: true
@@ -48,9 +48,11 @@ InnerBackground {
             Layout.fillWidth: true
             Layout.fillHeight: true
 
+            model: items.orders_proxy_mdl
+
             // Row
             delegate: OrderLine {
-                item: General.formatOrder(model.modelData)
+                details: model
             }
         }
     }

@@ -8,14 +8,14 @@ import ".."
 
 InnerBackground {
     property string title
-    property alias items: list.model
+    property var items
 
     // Override
     property var postCancelOrder: () => {}
 
     // Local
-    function onCancelOrder(uuid) {
-        API.get().cancel_order(uuid)
+    function onCancelOrder(order_id) {
+        API.get().cancel_order(order_id)
         postCancelOrder()
     }
 
@@ -59,9 +59,11 @@ InnerBackground {
             Layout.fillWidth: true
             Layout.fillHeight: true
 
+            model: items.orders_proxy_mdl
+
             // Row
             delegate: OrderLine {
-                item: General.formatOrder(model.modelData)
+                details: model
             }
         }
     }

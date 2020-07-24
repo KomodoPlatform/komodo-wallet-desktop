@@ -698,7 +698,6 @@ namespace mm2::api
                 {
                     std::int64_t ts      = event_timestamp_registry.at(previous_event);
                     jf_evt["started_at"] = ts;
-
                     std::int64_t                        ts2 = jf_evt.at("timestamp").get<std::int64_t>();
                     std::stringstream                   ss;
                     sys_time<std::chrono::milliseconds> t1{std::chrono::milliseconds{ts}};

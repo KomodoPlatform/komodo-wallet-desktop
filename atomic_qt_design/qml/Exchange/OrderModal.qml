@@ -9,10 +9,12 @@ import "../Constants"
 DefaultModal {
     id: root
 
-    width: 650
-    readonly property var default_details: ({"is_default": true, "price":"","date":"","base":"","rel":"","cancellable":true,"am_i_maker":true,"base_amount":"1","rel_amount":"1","uuid":""})
+    width: 900
     property var details
-    property string current_item_uuid: ""
+
+    onDetailsChanged: {
+        if(!details) root.close()
+    }
 
     // Inside modal
     ColumnLayout {
@@ -21,20 +23,24 @@ DefaultModal {
         anchors.horizontalCenter: parent.horizontalCenter
 
         ModalHeader {
-            title: API.get().empty_string + (details.is_recent_swap ? qsTr("Swap Details") : qsTr("Order Details"))
+            title: API.get().empty_string + (!details ? "" :
+                                                        details.is_swap ? qsTr("Swap Details") : qsTr("Order Details"))
         }
 
         // Complete image
         DefaultImage {
-            visible: details.is_recent_swap !== undefined && getStatus(details) === status_swap_successful
+            visible: !details ? false :
+                                details.is_swap && details.order_status === "successful"
             Layout.alignment: Qt.AlignHCenter
             source: General.image_path + "exchange-trade-complete.svg"
         }
 
-        DefaultBusyIndicator {
-            visible: details.is_recent_swap !== undefined &&
-                     getStatus(details) !== status_swap_successful &&
-                     getStatus(details) !== status_swap_failed
+        // Loading symbol
+            DefaultBusyIndicator {
+            visible: !details ? false :
+                                 details.is_swap &&
+                                 details.order_status !== "successful" &&
+                                 details.order_status !== "failed"
             Layout.alignment: Qt.AlignHCenter
         }
 
@@ -43,11 +49,12 @@ DefaultModal {
             Layout.alignment: Qt.AlignHCenter
             Layout.topMargin: 20
             font.pixelSize: Style.textSize3
-            visible: getStatus(details) !== status_swap_not_swap &&  // Is order
-                     (details.events !== undefined || // Has events, ongoing or
-                    details.am_i_maker === false) // Taker order with no events
-            color: visible ? getStatusColor(details) : ''
-            text_value: API.get().empty_string + (visible ? getStatusTextWithPrefix(details) : '')
+            visible: !details ? false :
+                                details.is_swap || !details.is_maker
+            color: !details ? "white" :
+                              visible ? getStatusColor(details.order_status) : ''
+            text_value: API.get().empty_string + (!details ? "" :
+                                                             visible ? getStatusTextWithPrefix(details.order_status) : '')
         }
 
         OrderContent {
@@ -57,7 +64,7 @@ DefaultModal {
             Layout.rightMargin: Layout.leftMargin
             height: 120
             Layout.alignment: Qt.AlignHCenter
-            item: details
+            details: root.details
             in_modal: true
         }
 
@@ -69,7 +76,8 @@ DefaultModal {
 
         // Maker/Taker
         DefaultText {
-            text_value: API.get().empty_string + (details.am_i_maker ? qsTr("Maker Order"): qsTr("Taker Order"))
+            text_value: API.get().empty_string + (!details ? "" :
+                                                             details.is_maker ? qsTr("Maker Order"): qsTr("Taker Order"))
             color: Style.colorThemeDarkLight
             Layout.alignment: Qt.AlignRight
         }
@@ -79,17 +87,8 @@ DefaultModal {
             Layout.topMargin: -20
 
             title: API.get().empty_string + (qsTr("Refund State"))
-            field.text: {
-                let str = API.get().empty_string
-                const e = getLastEvent(details)
-
-                if(e.state === "TakerPaymentWaitRefundStarted" ||
-                   e.state === "MakerPaymentWaitRefundStarted") {
-                    str += qsTr("Your swap failed but the auto-refund process for your payment started already. Please wait and keep application opened until you receive your payment back")
-                }
-
-                return str
-            }
+            field.text: !details ? "" :
+                                   details.order_status === "refunding" ? qsTr("Your swap failed but the auto-refund process for your payment started already. Please wait and keep application opened until you receive your payment back") : ""
             field.readOnly: true
 
             visible: field.text !== ''
@@ -98,30 +97,36 @@ DefaultModal {
         // Date
         TextWithTitle {
             title: API.get().empty_string + (qsTr("Date"))
-            text: API.get().empty_string + (details.date)
+            text: API.get().empty_string + (!details ? "" :
+                                                       details.date)
             visible: text !== ''
         }
 
-        // Swap ID / UUID
+        // ID
         TextWithTitle {
-            title: API.get().empty_string + (details.is_recent_swap ? qsTr("Swap ID") : qsTr("UUID"))
-            text: API.get().empty_string + (details.uuid)
-            visible: text !== ''
-            privacy: true
-        }
-
-        // Payment ID
-        TextWithTitle {
-            title: API.get().empty_string + (details.am_i_maker ? qsTr("Maker Payment Sent ID") : qsTr("Maker Payment Spent ID"))
-            text: API.get().empty_string + (getSwapPaymentID(details, false))
+            title: API.get().empty_string + (qsTr("ID"))
+            text: API.get().empty_string + (!details ? "" :
+                                                       details.order_id)
             visible: text !== ''
             privacy: true
         }
 
         // Payment ID
         TextWithTitle {
-            title: API.get().empty_string + (details.am_i_maker ? qsTr("Taker Payment Spent ID") : qsTr("Taker Payment Sent ID"))
-            text: API.get().empty_string + (getSwapPaymentID(details, true))
+            title: API.get().empty_string + (!details ? "" :
+                                                        details.is_maker ? qsTr("Maker Payment Sent ID") : qsTr("Maker Payment Spent ID"))
+            text: API.get().empty_string + (!details ? "" :
+                                                       details.maker_payment_id)
+            visible: text !== ''
+            privacy: true
+        }
+
+        // Payment ID
+        TextWithTitle {
+            title: API.get().empty_string + (!details ? "" :
+                                                        details.is_maker ? qsTr("Taker Payment Spent ID") : qsTr("Taker Payment Sent ID"))
+            text: API.get().empty_string + (!details ? "" :
+                                                       details.taker_payment_id)
             visible: text !== ''
             privacy: true
         }
@@ -129,14 +134,16 @@ DefaultModal {
         // Error ID
         TextWithTitle {
             title: API.get().empty_string + (qsTr("Error ID"))
-            text: API.get().empty_string + (getSwapError(details).state)
+            text: API.get().empty_string + (!details ? "" :
+                                                       details.order_error_state)
             visible: text !== ''
         }
 
         // Error Details
         TextFieldWithTitle {
             title: API.get().empty_string + (qsTr("Error Log"))
-            field.text: API.get().empty_string + (getSwapError(details).data.error)
+            field.text: API.get().empty_string + (!details ? "" :
+                                                             details.order_error_message)
             field.readOnly: true
             copyable: true
 
@@ -153,21 +160,26 @@ DefaultModal {
 
             // Cancel button
             DangerButton {
-                visible: details.cancellable !== undefined && details.cancellable
+                visible: !details ? false :
+                                    details.cancellable
                 Layout.fillWidth: true
                 text: API.get().empty_string + (qsTr("Cancel Order"))
-                onClicked: onCancelOrder(details.uuid)
+                onClicked: { if(details) onCancelOrder(details.order_id) }
             }
 
             PrimaryButton {
                 text: API.get().empty_string + (qsTr("View at Explorer"))
                 Layout.fillWidth: true
-                visible: getSwapPaymentID(details, false) !== '' || getSwapPaymentID(details, true) !== ''
+                visible: !details ? false :
+                                    details.maker_payment_id !== '' || details.taker_payment_id !== ''
                 onClicked: {
-                    const maker_id = getSwapPaymentID(details, false)
-                    const taker_id = getSwapPaymentID(details, true)
-                    if(maker_id !== '') General.viewTxAtExplorer(details.maker_coin, maker_id, true)
-                    if(taker_id !== '') General.viewTxAtExplorer(details.taker_coin, taker_id, true)
+                    if(!details) return
+
+                    const maker_id = details.maker_payment_id
+                    const taker_id = details.taker_payment_id
+
+                    if(maker_id !== '') General.viewTxAtExplorer(details.is_maker ? details.base_coin : details.rel_coin, maker_id, true)
+                    if(taker_id !== '') General.viewTxAtExplorer(details.is_maker ? details.rel_coin : details.base_coin, taker_id, true)
                 }
             }
         }

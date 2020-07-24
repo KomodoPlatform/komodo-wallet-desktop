@@ -154,6 +154,8 @@ target_sources(atomic_qt_shared_deps INTERFACE
         ${CMAKE_SOURCE_DIR}/src/atomic.dex.wallet.config.cpp
         ${CMAKE_SOURCE_DIR}/src/atomic.dex.security.cpp
         ${CMAKE_SOURCE_DIR}/src/atomic.dex.update.service.cpp
+        ${CMAKE_SOURCE_DIR}/src/atomic.dex.qt.orders.model.cpp
+        ${CMAKE_SOURCE_DIR}/src/atomic.dex.qt.orders.proxy.model.cpp
         ${CMAKE_SOURCE_DIR}/src/atomic.dex.qt.addressbook.model.cpp
         ${CMAKE_SOURCE_DIR}/src/atomic.dex.qt.addressbook.proxy.filter.model.cpp
         ${CMAKE_SOURCE_DIR}/src/atomic.dex.qt.contact.model.cpp
@@ -193,6 +195,7 @@ target_link_libraries(atomic_qt_shared_deps
         spdlog::spdlog
         spdlog::spdlog_header_only
         )
+
 target_include_directories(atomic_qt_shared_deps
         INTERFACE
         ${CMAKE_CURRENT_SOURCE_DIR}/src

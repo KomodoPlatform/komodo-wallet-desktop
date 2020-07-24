@@ -246,6 +246,8 @@ Item {
     function getCoins(my_side) {
         let coins = API.get().enabled_coins
 
+        if(coins.length === 0) return coins
+
         // Prioritize KMD / BTC pair by moving them to the start
         coins = moveToBeginning(coins, "BTC")
         coins = moveToBeginning(coins, "KMD")
@@ -407,18 +409,23 @@ Item {
         InnerBackground {
             id: graph_bg
 
+            Layout.alignment: Qt.AlignTop
+
+            visible: chart.has_data
+
             Layout.fillWidth: true
             Layout.fillHeight: true
             implicitHeight: wallet.height*0.6
 
-            content: CandleStickChart {
+            CandleStickChart {
+                id: chart
                 width: graph_bg.width
                 height: graph_bg.height
             }
         }
 
         RowLayout {
-            Layout.alignment: Qt.AlignTop
+            Layout.alignment: Qt.AlignVCenter
             spacing: 0
 
             // Sell
@@ -457,12 +464,12 @@ Item {
 
         // Price
         PriceLine {
-            Layout.alignment: Qt.AlignHCenter
+            Layout.alignment: Qt.AlignBottom | Qt.AlignHCenter
         }
 
         // Show errors
         DefaultText {
-            Layout.alignment: Qt.AlignHCenter
+            Layout.alignment: Qt.AlignBottom | Qt.AlignHCenter
             color: Style.colorRed
 
             text_value: API.get().empty_string + (notEnoughBalanceForFees() ?

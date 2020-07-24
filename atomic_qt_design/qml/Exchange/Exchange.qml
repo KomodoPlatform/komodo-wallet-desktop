@@ -11,10 +11,13 @@ import "./History"
 Item {
     id: exchange
     readonly property int layout_margin: 30
+
+    property int prev_page: -1
     property int current_page: API.design_editor ? General.idx_exchange_trade : General.idx_exchange_trade
 
     function reset() {
         current_page = General.idx_exchange_trade
+        prev_page = -1
         exchange_trade.fullReset()
         exchange_history.reset()
         exchange_orders.reset()
@@ -34,15 +37,24 @@ Item {
     }
 
     function onOpened() {
-        if(current_page === General.idx_exchange_trade) {
-            exchange_trade.onOpened()
+        if(prev_page !== current_page) {
+            if(current_page === General.idx_exchange_trade) {
+                API.get().on_gui_enter_dex()
+                exchange_trade.onOpened()
+            }
+            else if(prev_page === General.idx_exchange_trade) {
+                API.get().on_gui_leave_dex()
+            }
+
+            if(current_page === General.idx_exchange_orders) {
+                exchange_orders.onOpened()
+            }
+            else if(current_page === General.idx_exchange_history) {
+                exchange_history.onOpened()
+            }
         }
-        else if(current_page === General.idx_exchange_orders) {
-            exchange_orders.onOpened()
-        }
-        else if(current_page === General.idx_exchange_history) {
-            exchange_history.onOpened()
-        }
+
+        prev_page = current_page
     }
 
     onCurrent_pageChanged: {
@@ -137,91 +149,61 @@ Item {
         }
     }
 
-
-
-    // Status Info
-    readonly property int status_swap_not_swap: -1
-    readonly property int status_swap_matching: 0
-    readonly property int status_swap_matched: 1
-    readonly property int status_swap_ongoing: 2
-    readonly property int status_swap_successful: 3
-    readonly property int status_swap_failed: 4
-
-    function getSwapError(swap) {
-        if(swap.is_recent_swap) {
-            for(let i = swap.events.length - 1; i >= 0; --i) {
-                const e = swap.events[i]
-               if(e.data && e.data.error && swap.error_events.indexOf(e.state) !== -1) {
-                   return e
-               }
-            }
+    function getStatusColor(status) {
+        switch(status) {
+            case "matching":
+                return Style.colorYellow
+            case "matched":
+            case "ongoing":
+            case "refunding":
+                return Style.colorOrange
+            case "successful":
+                return Style.colorGreen
+            case "failed":
+            default:
+                return Style.colorRed
         }
-
-        return { state: '', data: { error: '' } }
     }
 
-    function getLastEvent(swap) {
-        if(swap.is_recent_swap && swap.events.length > 0) {
-            return swap.events[swap.events.length-1]
+    function getStatusText(status) {
+        switch(status) {
+            case "matching":
+                return qsTr("Order Matching")
+            case "matched":
+                return qsTr("Order Matched")
+            case "ongoing":
+                return qsTr("Swap Ongoing")
+            case "successful":
+                return qsTr("Swap Successful")
+            case "refunding":
+                return qsTr("Refunding")
+            case "failed":
+                return qsTr("Swap Failed")
+            default:
+                return qsTr("Unknown State")
         }
-
-        return { state: '', data: { error: '' } }
     }
 
-    function getStatus(swap) {
-        if(!swap.is_recent_swap && !swap.am_i_maker) return status_swap_matching
-        if(!swap.is_recent_swap) return status_swap_not_swap
-
-        const last_state = swap.events[swap.events.length-1].state
-
-        if(last_state === "Started") return status_swap_matched
-        if(last_state === "Finished") return getSwapError(swap).state === '' ? status_swap_successful : status_swap_failed
-
-        return status_swap_ongoing
-    }
-
-    function getStatusColor(swap) {
-        const status = getStatus(swap)
-        return status === status_swap_matching ? Style.colorYellow :
-               status === status_swap_matched ? Style.colorOrange :
-               status === status_swap_ongoing ? Style.colorOrange :
-               status === status_swap_successful ? Style.colorGreen : Style.colorRed
-    }
-
-    function getStatusText(swap) {
-        const status = getStatus(swap)
-        return status === status_swap_matching ? qsTr("Order Matching") :
-                status === status_swap_matched ? qsTr("Order Matched") :
-                status === status_swap_ongoing ? qsTr("Swap Ongoing") :
-                status === status_swap_successful ? qsTr("Swap Successful") :
-                                                        qsTr("Swap Failed")
-    }
-
-    function getStatusStep(swap) {
-        const status = getStatus(swap)
-        return status === status_swap_matching ? "0/3":
-               status === status_swap_matched ? "1/3":
-               status === status_swap_ongoing ? "2/3":
-               status === status_swap_successful ? Style.successCharacter : Style.failureCharacter
-    }
-
-    function getStatusTextWithPrefix(swap) {
-        return getStatusStep(swap) + " " + getStatusText(swap)
-    }
-
-    function getSwapPaymentID(swap, is_taker) {
-        if(swap.events !== undefined) {
-            const search_name = swap.am_i_maker ?
-                              (is_taker ? "TakerPaymentSpent" : "MakerPaymentSent") :
-                              (is_taker ? "TakerPaymentSent" : "MakerPaymentSpent")
-            for(const e of swap.events) {
-               if(e.state === search_name) {
-                   return e.data.tx_hash
-               }
-            }
+    function getStatusStep(status) {
+        switch(status) {
+            case "matching":
+                return "0/3"
+            case "matched":
+                return "1/3"
+            case "ongoing":
+                return "2/3"
+            case "successful":
+                return Style.successCharacter
+            case "refunding":
+            case "failed":
+                return Style.failureCharacter
+            default:
+                return "?"
         }
+    }
 
-        return ''
+    function getStatusTextWithPrefix(status) {
+        return getStatusStep(status) + " " + getStatusText(status)
     }
 }
 

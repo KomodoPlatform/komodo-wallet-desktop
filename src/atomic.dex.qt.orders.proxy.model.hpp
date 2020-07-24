@@ -14,11 +14,37 @@
  *                                                                            *
  ******************************************************************************/
 
-#include "atomic.dex.qt.bindings.hpp"
+#pragma once
+
+#include <QSortFilterProxyModel>
 
 namespace atomic_dex
 {
-    qt_send_answer::qt_send_answer(QObject* parent) : QObject(parent) {}
-    qt_orderbook::qt_orderbook(QObject* parent) : QObject(parent) {}
-    qt_ordercontent::qt_ordercontent(QObject* parent) : QObject(parent) {}
+    class orders_proxy_model final : public QSortFilterProxyModel
+    {
+        Q_OBJECT
+        Q_PROPERTY(bool is_history READ am_i_in_history WRITE set_is_history NOTIFY isHistoryChanged);
+
+      public:
+        //! Constructor
+        orders_proxy_model(QObject* parent);
+
+        //! Destructor
+        ~orders_proxy_model() final;
+
+        [[nodiscard]] bool am_i_in_history() const noexcept;
+
+        void set_is_history(bool is_history) noexcept;
+
+      signals:
+        void isHistoryChanged();
+
+      protected:
+        //! Override member functions
+        [[nodiscard]] bool lessThan(const QModelIndex& source_left, const QModelIndex& source_right) const final;
+        bool               filterAcceptsRow(int source_row, const QModelIndex& source_parent) const override;
+
+      private:
+        bool m_is_history{false};
+    };
 } // namespace atomic_dex

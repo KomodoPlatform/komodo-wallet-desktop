@@ -35,6 +35,7 @@
 #include "atomic.dex.qt.addressbook.model.hpp"
 #include "atomic.dex.qt.bindings.hpp"
 #include "atomic.dex.qt.current.coin.infos.hpp"
+#include "atomic.dex.qt.orders.model.hpp"
 #include "atomic.dex.qt.portfolio.model.hpp"
 #include "atomic.dex.qt.wallet.manager.hpp"
 
@@ -54,6 +55,7 @@ namespace atomic_dex
         Q_PROPERTY(QList<QVariant> enableable_coins READ get_enableable_coins NOTIFY enableableCoinsChanged)
         Q_PROPERTY(QObject* current_coin_info READ get_current_coin_info NOTIFY coinInfoChanged)
         Q_PROPERTY(addressbook_model* addressbook_mdl READ get_addressbook NOTIFY addressbookChanged)
+        Q_PROPERTY(orders_model* orders_mdl READ get_orders NOTIFY ordersChanged)
         Q_PROPERTY(QVariant update_status READ get_update_status NOTIFY updateStatusChanged)
         Q_PROPERTY(portfolio_model* portfolio_mdl READ get_portfolio NOTIFY portfolioChanged)
         Q_PROPERTY(QString current_currency READ get_current_currency WRITE set_current_currency NOTIFY on_currency_changed)
@@ -78,11 +80,12 @@ namespace atomic_dex
         {
             refresh_enabled_coin             = 0,
             refresh_current_ticker           = 1,
-            refresh_order                    = 2,
-            refresh_ohlc                     = 3,
-            refresh_transactions             = 4,
-            refresh_portfolio_ticker_balance = 5,
-            refresh_update_status            = 6
+            refresh_ohlc                     = 2,
+            refresh_transactions             = 3,
+            refresh_portfolio_ticker_balance = 4,
+            refresh_update_status            = 5,
+            post_process_orders_finished     = 6,
+            post_process_swaps_finished      = 7
         };
 
       public:
@@ -100,9 +103,10 @@ namespace atomic_dex
         void on_coin_disabled_event(const coin_disabled&) noexcept;
         void on_mm2_initialized_event(const mm2_initialized&) noexcept;
         void on_mm2_started_event(const mm2_started&) noexcept;
-        void on_refresh_order_event(const refresh_order_needed&) noexcept;
         void on_refresh_ohlc_event(const refresh_ohlc_needed&) noexcept;
         void on_refresh_update_status_event(const refresh_update_status&) noexcept;
+        void on_process_orders_finished_event(const process_orders_finished&) noexcept;
+        void on_process_swaps_finished_event(const process_swaps_finished&) noexcept;
 
         //! Properties Getter
         static const QString&      get_empty_string();
@@ -113,6 +117,7 @@ namespace atomic_dex
         QObject*                   get_current_coin_info() const noexcept;
         addressbook_model*         get_addressbook() const noexcept;
         portfolio_model*           get_portfolio() const noexcept;
+        orders_model*              get_orders() const noexcept;
         QVariantList               get_enabled_coins() const noexcept;
         QVariantList               get_enableable_coins() const noexcept;
         QString                    get_current_currency() const noexcept;
@@ -204,8 +209,6 @@ namespace atomic_dex
 
         Q_INVOKABLE bool           is_supported_ohlc_data_ticker_pair(const QString& base, const QString& rel);
         Q_INVOKABLE QVariant       get_coin_info(const QString& ticker);
-        Q_INVOKABLE QVariantMap    get_my_orders();
-        Q_INVOKABLE QVariantMap    get_recent_swaps();
         Q_INVOKABLE bool           export_swaps(const QString& csv_filename) noexcept;
         Q_INVOKABLE bool           export_swaps_json() noexcept;
         Q_INVOKABLE static QString get_regex_password_policy() noexcept;
@@ -231,6 +234,7 @@ namespace atomic_dex
         void OHLCDataUpdated();
         void portfolioChanged();
         void updateStatusChanged();
+        void ordersChanged();
 
       private:
         void process_refresh_enabled_coin_action();
@@ -261,10 +265,14 @@ namespace atomic_dex
         QString            m_second_current_balance_all{"0.00"};
         current_coin_info* m_coin_info;
 
+
         //! Addressbook based on the current wallet
         addressbook_model* m_addressbook;
 
         //! Portfolio based on the current wallet
         portfolio_model* m_portfolio;
+
+        //! Orders model based on the current wallet
+        orders_model* m_orders;
     };
 } // namespace atomic_dex

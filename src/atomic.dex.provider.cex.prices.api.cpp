@@ -18,7 +18,7 @@
 
 namespace atomic_dex
 {
-    inline constexpr const char* g_cex_endpoint = "http://komodo.live:3333/";
+    inline constexpr const char* g_cex_endpoint = "https://komodo.live:3333/";
 }
 
 //! Json Serialization / Deserialization functions

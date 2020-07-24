@@ -10,6 +10,7 @@ import "../../Constants"
 ChartView {
     id: chart
     readonly property double y_margin: 0.02
+    readonly property bool has_data: series.count > 0
 
     margins.top: 0
     margins.left: 0
