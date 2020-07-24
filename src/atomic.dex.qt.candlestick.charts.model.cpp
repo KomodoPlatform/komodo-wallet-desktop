@@ -90,6 +90,8 @@ namespace atomic_dex
         this->m_model_data = this->m_system_manager.get_system<cex_prices_provider>().get_all_ohlc_data();
         this->endResetModel();
 
+        emit seriesFromChanged();
+        emit seriesToChanged();
         emit seriesSizeChanged();
     }
 
@@ -118,6 +120,23 @@ namespace atomic_dex
     candlestick_charts_model::set_current_range(const QString& range) noexcept
     {
         this->m_current_range = range.toStdString();
+        update_data();
         emit rangeChanged();
+    }
+
+    int
+    atomic_dex::candlestick_charts_model::get_series_to() const noexcept
+    {
+        if (this->m_model_data.empty() || !m_model_data.contains(m_current_range))
+            return 0;
+        return m_model_data.at(m_current_range).back().at("timestamp").get<int>();
+    }
+
+    int
+    atomic_dex::candlestick_charts_model::get_series_from() const noexcept
+    {
+        if (this->m_model_data.empty() || !m_model_data.contains(m_current_range))
+            return 0;
+        return m_model_data.at(m_current_range)[0].at("timestamp").get<int>();
     }
 } // namespace atomic_dex
