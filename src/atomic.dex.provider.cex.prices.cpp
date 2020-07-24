@@ -57,8 +57,15 @@ namespace atomic_dex
     {
         spdlog::debug("{} l{} f[{}]", __FUNCTION__, __LINE__, fs::path(__FILE__).filename().string());
 
-        m_current_ohlc_data = nlohmann::json::array();
-        //this->dispatcher_.trigger<refresh_ohlc_needed>();
+        if (auto [normal, quoted] = is_pair_supported(evt.base, evt.rel); !normal && !quoted)
+        {
+            m_current_ohlc_data->clear();
+            m_current_orderbook_ticker_pair.first  = "";
+            m_current_orderbook_ticker_pair.second = "";
+            this->dispatcher_.trigger<refresh_ohlc_needed>();
+            return;
+        }
+        m_current_ohlc_data             = nlohmann::json::array();
         m_current_orderbook_ticker_pair = {boost::algorithm::to_lower_copy(evt.base), boost::algorithm::to_lower_copy(evt.rel)};
         auto [base, rel]                = m_current_orderbook_ticker_pair;
         spdlog::debug("new orderbook pair for cex provider [{} / {}]", base, rel);
@@ -75,7 +82,8 @@ namespace atomic_dex
             spdlog::info("cex prices provider thread started");
 
             using namespace std::chrono_literals;
-            do {
+            do
+            {
                 spdlog::info("fetching ohlc value");
                 auto [base, rel] = m_current_orderbook_ticker_pair;
                 if (not base.empty() && not rel.empty() && m_mm2_instance.is_orderbook_thread_active())
@@ -173,11 +181,13 @@ namespace atomic_dex
     cex_prices_provider::reverse_ohlc_data() noexcept
     {
         nlohmann::json& values = *this->m_current_ohlc_data;
-        for (auto&& item: values) {
-            for (auto&& cur_range : item) {
-                cur_range["open"] = 1 / cur_range.at("open").get<double>();
-                cur_range["high"] = 1 / cur_range.at("high").get<double>();
-                cur_range["low"] = 1 / cur_range.at("low").get<double>();
+        for (auto&& item: values)
+        {
+            for (auto&& cur_range: item)
+            {
+                cur_range["open"]  = 1 / cur_range.at("open").get<double>();
+                cur_range["high"]  = 1 / cur_range.at("high").get<double>();
+                cur_range["low"]   = 1 / cur_range.at("low").get<double>();
                 cur_range["close"] = 1 / cur_range.at("close").get<double>();
             }
         }

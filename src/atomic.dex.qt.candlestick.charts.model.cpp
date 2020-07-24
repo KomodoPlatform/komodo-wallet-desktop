@@ -37,11 +37,11 @@ namespace atomic_dex
     int
     candlestick_charts_model::rowCount([[maybe_unused]] const QModelIndex& parent) const
     {
-        if (m_model_data.empty() || !m_model_data.contains(m_current_range))
+        if (m_model_data.empty())
         {
             return 0;
         }
-        return m_model_data.at(m_current_range).size();
+        return m_model_data.size();
     }
 
     int
@@ -68,15 +68,15 @@ namespace atomic_dex
         switch (index.column())
         {
         case 0:
-            return m_model_data.at(m_current_range).at(index.row()).at("timestamp").get<unsigned long long>() * 1000ull;
+            return m_model_data.at(index.row()).at("timestamp").get<unsigned long long>() * 1000ull;
         case 1:
-            return m_model_data.at(m_current_range).at(index.row()).at("open").get<double>();
+            return m_model_data.at(index.row()).at("open").get<double>();
         case 2:
-            return m_model_data.at(m_current_range).at(index.row()).at("high").get<double>();
+            return m_model_data.at(index.row()).at("high").get<double>();
         case 3:
-            return m_model_data.at(m_current_range).at(index.row()).at("low").get<double>();
+            return m_model_data.at(index.row()).at("low").get<double>();
         case 4:
-            return m_model_data.at(m_current_range).at(index.row()).at("close").get<double>();
+            return m_model_data.at(index.row()).at("close").get<double>();
 
         default:
             return QVariant();
@@ -86,14 +86,21 @@ namespace atomic_dex
     void
     candlestick_charts_model::update_data()
     {
+        auto& provider = this->m_system_manager.get_system<cex_prices_provider>();
+        if (not provider.is_ohlc_data_available())
+        {
+            this->clear_data();
+            return;
+        }
+
         this->beginResetModel();
-        this->m_model_data = this->m_system_manager.get_system<cex_prices_provider>().get_all_ohlc_data();
+        this->m_model_data = provider.get_ohlc_data(m_current_range);
         this->endResetModel();
 
         assert(not m_model_data.empty());
         double max_value = std::numeric_limits<double>::min();
         double min_value = std::numeric_limits<double>::max();
-        for (auto&& cur: m_model_data.at(m_current_range))
+        for (auto&& cur: m_model_data)
         {
             if (auto min_to_compare = cur.at("low").get<double>(); min_value > min_to_compare)
             {
@@ -121,9 +128,21 @@ namespace atomic_dex
     void
     candlestick_charts_model::clear_data()
     {
+        //! If it's already empty dont reset the model
+        if (this->m_model_data.empty())
+        {
+            spdlog::trace("already empty, skipping");
+            return;
+        }
+
+        spdlog::trace("clearing the chart candlestick model");
         beginResetModel();
         this->m_model_data.clear();
+        this->set_min_value(0);
+        this->set_max_value(0);
         endResetModel();
+        emit seriesFromChanged(get_series_from());
+        emit seriesToChanged(get_series_to());
         emit seriesSizeChanged(get_series_size());
     }
 
@@ -144,24 +163,24 @@ namespace atomic_dex
     QDateTime
     atomic_dex::candlestick_charts_model::get_series_to() const noexcept
     {
-        if (this->m_model_data.empty() || !m_model_data.contains(m_current_range))
+        if (this->m_model_data.empty())
         {
             return QDateTime();
         }
         QDateTime date_time;
-        date_time.setSecsSinceEpoch(m_model_data.at(m_current_range).back().at("timestamp").get<int>());
+        date_time.setSecsSinceEpoch(m_model_data.back().at("timestamp").get<int>());
         return date_time;
     }
 
     QDateTime
     atomic_dex::candlestick_charts_model::get_series_from() const noexcept
     {
-        if (this->m_model_data.empty() || !m_model_data.contains(m_current_range))
+        if (this->m_model_data.empty())
         {
             return QDateTime();
         }
         QDateTime date_time;
-        date_time.setSecsSinceEpoch(m_model_data.at(m_current_range)[0].at("timestamp").get<int>());
+        date_time.setSecsSinceEpoch(m_model_data[0].at("timestamp").get<int>());
         return date_time;
     }
 
