@@ -38,6 +38,7 @@ Item {
 
     function onOpened() {
         if(prev_page !== current_page) {
+            // Handle DEX enter/exit
             if(current_page === General.idx_exchange_trade) {
                 API.get().on_gui_enter_dex()
                 exchange_trade.onOpened()
@@ -46,6 +47,7 @@ Item {
                 API.get().on_gui_leave_dex()
             }
 
+            // Opening of other pages
             if(current_page === General.idx_exchange_orders) {
                 exchange_orders.onOpened()
             }

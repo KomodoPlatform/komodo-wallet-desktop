@@ -48,10 +48,17 @@ Item {
 
     onCurrent_pageChanged: {
         if(prev_page !== current_page) {
+            // Handle DEX enter/exit
             if(current_page === General.idx_dashboard_exchange) {
+                API.get().on_gui_enter_dex()
                 exchange.onOpened()
             }
-            else if(current_page === General.idx_dashboard_portfolio) {
+            else if(prev_page === General.idx_dashboard_exchange) {
+                API.get().on_gui_leave_dex()
+            }
+
+            // Opening of other pages
+            if(current_page === General.idx_dashboard_portfolio) {
                 portfolio.onOpened()
             }
             else if(current_page === General.idx_dashboard_wallet) {
