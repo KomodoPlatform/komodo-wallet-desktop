@@ -86,7 +86,7 @@ namespace atomic_dex
             do {
                 spdlog::info("fetching ohlc value");
                 auto [base, rel] = m_current_orderbook_ticker_pair;
-                if (not base.empty() && not rel.empty())
+                if (not base.empty() && not rel.empty() && m_mm2_instance.is_orderbook_thread_active())
                 {
                     process_ohlc(base, rel);
                 }
