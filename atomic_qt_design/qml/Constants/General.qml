@@ -148,7 +148,9 @@ QtObject {
     }
 
     function fullNamesOfCoins(coins) {
-        return coins.map(c => fullCoinName(c.name, c.ticker))
+        return coins.map(c => {
+         return { value: c.ticker, text: fullCoinName(c.name, c.ticker) }
+        })
     }
 
     function getTickers(coins) {
