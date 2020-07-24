@@ -10,8 +10,6 @@ Item {
     id: exchange_trade
 
     property string action_result
-    property string prev_base
-    property string prev_rel
 
     // Override
     property var onOrderSuccess: () => {}
@@ -24,8 +22,6 @@ Item {
 
     function fullReset() {
         reset(true)
-        prev_base = ''
-        prev_rel = ''
         orderbook_timer.running = false
     }
 
