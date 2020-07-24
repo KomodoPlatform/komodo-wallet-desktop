@@ -130,7 +130,7 @@ namespace atomic_dex
         if (this->m_model_data.empty() || !m_model_data.contains(m_current_range))
             return QDateTime();
         QDateTime date_time;
-        date_time.setTime_t(m_model_data.at(m_current_range).back().at("timestamp").get<int>() * 1000);
+        date_time.setSecsSinceEpoch(m_model_data.at(m_current_range).back().at("timestamp").get<int>());
         return date_time;
     }
 
@@ -140,7 +140,7 @@ namespace atomic_dex
         if (this->m_model_data.empty() || !m_model_data.contains(m_current_range))
             return QDateTime();
         QDateTime date_time;
-        date_time.setTime_t(m_model_data.at(m_current_range)[0].at("timestamp").get<int>() * 1000);
+        date_time.setSecsSinceEpoch(m_model_data.at(m_current_range)[0].at("timestamp").get<int>());
         return date_time;
     }
 } // namespace atomic_dex
