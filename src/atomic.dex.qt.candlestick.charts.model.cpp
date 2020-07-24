@@ -68,7 +68,7 @@ namespace atomic_dex
         switch (index.column())
         {
         case 0:
-            return m_model_data.at(m_current_range).at(index.row()).at("timestamp").get<int>();
+            return m_model_data.at(m_current_range).at(index.row()).at("timestamp").get<int>() * 1000;
         case 1:
             return m_model_data.at(m_current_range).at(index.row()).at("open").get<double>();
         case 2:
@@ -124,19 +124,23 @@ namespace atomic_dex
         emit rangeChanged();
     }
 
-    int
+    QDateTime
     atomic_dex::candlestick_charts_model::get_series_to() const noexcept
     {
         if (this->m_model_data.empty() || !m_model_data.contains(m_current_range))
-            return 0;
-        return m_model_data.at(m_current_range).back().at("timestamp").get<int>() * 1000;
+            return QDateTime();
+        QDateTime date_time;
+        date_time.setTime_t(m_model_data.at(m_current_range).back().at("timestamp").get<int>() * 1000);
+        return date_time;
     }
 
-    int
+    QDateTime
     atomic_dex::candlestick_charts_model::get_series_from() const noexcept
     {
         if (this->m_model_data.empty() || !m_model_data.contains(m_current_range))
-            return 0;
-        return m_model_data.at(m_current_range)[0].at("timestamp").get<int>() * 1000;
+            return QDateTime();
+        QDateTime date_time;
+        date_time.setTime_t(m_model_data.at(m_current_range)[0].at("timestamp").get<int>() * 1000);
+        return date_time;
     }
 } // namespace atomic_dex
