@@ -68,7 +68,7 @@ namespace atomic_dex
         switch (index.column())
         {
         case 0:
-            return m_model_data.at(m_current_range).at(index.row()).at("timestamp").get<int>() * 1000;
+            return m_model_data.at(m_current_range).at(index.row()).at("timestamp").get<unsigned long long>() * 1000ull;
         case 1:
             return m_model_data.at(m_current_range).at(index.row()).at("open").get<double>();
         case 2:
