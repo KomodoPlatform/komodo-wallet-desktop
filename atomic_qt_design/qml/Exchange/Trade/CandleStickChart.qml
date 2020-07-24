@@ -17,9 +17,9 @@ ChartView {
     margins.bottom: 0
     margins.right: 0
 
-    Component.onCompleted: {
-        API.get().OHLCDataUpdated.connect(initChart)
-    }
+//    Component.onCompleted: {
+//        API.get().OHLCDataUpdated.connect(initChart)
+//    }
 
     AreaSeries {
         id: series_area
@@ -80,6 +80,20 @@ ChartView {
     CandlestickSeries {
         id: series
 
+        HCandlestickModelMapper {
+            id: cs_mapper
+            model: API.get().candlestick_charts_mdl
+
+            timestampColumn: 0
+            openColumn: 1
+            highColumn: 2
+            lowColumn: 3
+            closeColumn: 4
+
+            firstSetRow: 0
+            lastSetRow: model.series_size + 1
+        }
+
         property double global_max: 0
         property double last_value: 0
         property bool last_value_green: true
@@ -102,6 +116,10 @@ ChartView {
         bodyOutlineVisible: false
 
         axisX: DateTimeAxis {
+            min: cs_mapper.model.series_from
+            max: cs_mapper.model.series_to
+
+            tickCount: 10
             titleVisible: false
             lineVisible: true
             labelsFont.family: Style.font_family
@@ -113,6 +131,10 @@ ChartView {
         }
         axisYRight: ValueAxis {
             id: value_axis
+
+            min: 0.0000614//cs_mapper.model.min_value
+            max: 0.0000814// cs_mapper.model.max_value
+
             titleVisible: series.axisX.titleVisible
             lineVisible: series.axisX.lineVisible
             labelsFont: series.axisX.labelsFont
@@ -120,12 +142,12 @@ ChartView {
             labelsColor: series.axisX.labelsColor
             color: series.axisX.color
 
-            onRangeChanged: {
-                if(min < 0) value_axis.min = 0
+//            onRangeChanged: {
+//                if(min < 0) value_axis.min = 0
 
-                const max_val = value_axis.global_max * (1 + y_margin)
-                if(max > max_val) value_axis.max = max_val
-            }
+//                const max_val = value_axis.global_max * (1 + y_margin)
+//                if(max > max_val) value_axis.max = max_val
+//            }
         }
     }
 
@@ -393,11 +415,11 @@ ChartView {
         currentIndex: 5 // 1h
         model: General.chart_times
 
-        property bool initialized: false
-        onCurrentTextChanged: {
-            if(initialized) initChart()
-            else initialized = true
-        }
+//        property bool initialized: false
+//        onCurrentTextChanged: {
+//            if(initialized) initChart()
+//            else initialized = true
+//        }
     }
 
     // Cursor values
