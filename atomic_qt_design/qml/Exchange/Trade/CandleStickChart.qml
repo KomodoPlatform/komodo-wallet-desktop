@@ -91,7 +91,7 @@ ChartView {
             closeColumn: 4
 
             firstSetRow: 0
-            lastSetRow: model.series_size + 1
+            lastSetRow: model.series_size
         }
 
         property double global_max: 0
