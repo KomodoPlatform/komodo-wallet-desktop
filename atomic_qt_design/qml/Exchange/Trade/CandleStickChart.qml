@@ -415,11 +415,11 @@ ChartView {
         currentIndex: 5 // 1h
         model: General.chart_times
 
-//        property bool initialized: false
-//        onCurrentTextChanged: {
-//            if(initialized) initChart()
-//            else initialized = true
-//        }
+        property bool initialized: false
+        onCurrentTextChanged: {
+            if(initialized) cs_mapper.model.current_range = "" + getChartSeconds()
+            else initialized = true
+        }
     }
 
     // Cursor values
