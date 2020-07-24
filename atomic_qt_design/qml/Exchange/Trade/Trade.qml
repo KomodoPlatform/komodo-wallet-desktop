@@ -279,26 +279,6 @@ Item {
         else form_rel.setTicker(ticker)
     }
 
-    function swapPair() {
-        let base = getTicker(true)
-        let rel = getTicker(false)
-
-        // Fill previous ones if they are blank
-        if(prev_base === '') prev_base = form_base.getAnyAvailableCoin(rel)
-        if(prev_rel === '') prev_rel = form_rel.getAnyAvailableCoin(base)
-
-        // Get different value if they are same
-        if(base === rel) {
-            if(base !== prev_base) base = prev_base
-            else if(rel !== prev_rel) rel = prev_rel
-        }
-
-        // Swap
-        const curr_base = base
-        setTicker(true, rel)
-        setTicker(false, curr_base)
-    }
-
     function validBaseRel() {
         const base = getTicker(true)
         const rel = getTicker(false)
@@ -306,18 +286,22 @@ Item {
     }
 
     function setPair(is_base) {
-        if(getTicker(true) === getTicker(false)) swapPair()
-        else {
-            if(validBaseRel()) {
-                const new_base = getTicker(true)
-                const rel = getTicker(false)
-                console.log("Setting current orderbook with params: ", new_base, rel)
-                API.get().set_current_orderbook(new_base, rel)
-                reset(true, is_base)
-                updateOrderbook()
-                updateCexPrice(new_base, rel)
-                exchange.onTradeTickerChanged(new_base)
-            }
+        if(getTicker(true) === getTicker(false)) {
+            // Base got selected, same as rel
+            // Update the list and select any ticker
+            form_rel.updateTickerList()
+            form_rel.setAnyTicker()
+        }
+
+        if(validBaseRel()) {
+            const new_base = getTicker(true)
+            const rel = getTicker(false)
+            console.log("Setting current orderbook with params: ", new_base, rel)
+            API.get().set_current_orderbook(new_base, rel)
+            reset(true, is_base)
+            updateOrderbook()
+            updateCexPrice(new_base, rel)
+            exchange.onTradeTickerChanged(new_base)
         }
     }
 
