@@ -32,7 +32,7 @@ namespace atomic_dex
         Q_PROPERTY(QDateTime series_from READ get_series_from NOTIFY seriesFromChanged)
         Q_PROPERTY(QDateTime series_to READ get_series_to NOTIFY seriesToChanged)
         Q_PROPERTY(double min_value READ get_min_value NOTIFY minValueChanged)
-        Q_PROPERTY(double max_value READ get_min_value NOTIFY maxValueChanged)
+        Q_PROPERTY(double max_value READ get_max_value NOTIFY maxValueChanged)
       public:
         candlestick_charts_model(ag::ecs::system_manager& system_manager, QObject* parent = nullptr);
         ~candlestick_charts_model() noexcept final;
