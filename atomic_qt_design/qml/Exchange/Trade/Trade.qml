@@ -284,8 +284,7 @@ Item {
     function setPair(is_base) {
         if(getTicker(true) === getTicker(false)) {
             // Base got selected, same as rel
-            // Update the list and select any ticker
-            form_rel.updateTickerList()
+            // Change rel ticker
             form_rel.setAnyTicker()
         }
 

@@ -235,8 +235,8 @@ FloatingBackground {
 
                     onCurrentTextChanged: {
                         if(!recursive_update) {
-                            setPair(my_side)
                             updateForms(my_side, combo.currentText)
+                            setPair(my_side)
                         }
                     }
 
