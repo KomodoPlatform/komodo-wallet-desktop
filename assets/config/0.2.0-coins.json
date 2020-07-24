@@ -902,5 +902,29 @@
     ],
     "is_erc_20": false,
     "type": "UTXO"
+  },
+  "ZER": {
+    "coin": "ZER",
+    "name": "Zero",
+    "coinpaprika_id": "zer-zero",
+    "coingecko_id": "zero",
+    "electrum": [
+      {
+        "url": "electrum1.cipig.net:10065"
+      },
+      {
+        "url": "electrum2.cipig.net:10065"
+      },
+      {
+        "url": "electrum3.cipig.net:10065"
+      }
+    ],
+    "explorer_url": [
+      "https://insight.zerocurrency.io/insight/"
+    ],
+    "type": "UTXO",
+    "is_erc_20": false,
+    "active": false,
+    "currently_enabled": false
   }
 }
