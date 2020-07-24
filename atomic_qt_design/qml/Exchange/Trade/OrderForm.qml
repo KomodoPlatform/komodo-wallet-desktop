@@ -34,6 +34,7 @@ FloatingBackground {
         recursive_update = new_ticker !== undefined
 
         ticker_list = my_side ? General.getTickersAndBalances(getFilteredCoins()) : General.getTickers(getFilteredCoins())
+
         update_timer.running = true
     }
 
@@ -112,26 +113,7 @@ FloatingBackground {
     }
 
     function getTicker() {
-        if(combo.currentIndex === -1) return ''
-        const coins = getFilteredCoins()
-
-        const coin = coins[combo.currentIndex]
-
-        // If invalid index
-        if(coin === undefined) {
-            // If there are other coins, select first
-            if(coins.length > 0) {
-                combo.currentIndex = 0
-                return coins[combo.currentIndex].ticker
-            }
-            // If there isn't any, reset index
-            else {
-                combo.currentIndex = -1
-                return ''
-            }
-        }
-
-        return coin.ticker
+        return ticker_list.length > 0 ? ticker_list[combo.currentIndex].value : ""
     }
 
     function setTicker(ticker) {
@@ -247,6 +229,9 @@ FloatingBackground {
                     Layout.fillWidth: true
 
                     model: ticker_list
+
+
+                    textRole: "text"
 
                     onCurrentTextChanged: {
                         if(!recursive_update) {

@@ -152,7 +152,9 @@ QtObject {
     }
 
     function getTickers(coins) {
-        return coins.map(c => c.ticker)
+        return coins.map(c => {
+         return { value: c.ticker, text: c.ticker }
+        })
     }
 
 
@@ -161,7 +163,9 @@ QtObject {
     }
 
     function getTickersAndBalances(coins) {
-        return coins.map(c => c.ticker + " (" + c.balance + ")")
+        return coins.map(c => {
+            return { value: c.ticker, text: c.ticker + " (" + c.balance + ")" }
+        })
     }
 
     function getMinTradeAmount() {
