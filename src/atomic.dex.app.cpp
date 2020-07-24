@@ -396,7 +396,8 @@ namespace atomic_dex
         m_update_status(QJsonObject{
             {"update_needed", false}, {"changelog", ""}, {"current_version", ""}, {"download_url", ""}, {"new_version", ""}, {"rpc_code", 0}, {"status", ""}}),
         m_coin_info(new current_coin_info(dispatcher_, this)), m_addressbook(new addressbook_model(this->m_wallet_manager, this)),
-        m_portfolio(new portfolio_model(this->system_manager_, this->m_config, this)), m_orders(new orders_model(this->system_manager_, this))
+        m_portfolio(new portfolio_model(this->system_manager_, this->m_config, this)), m_orders(new orders_model(this->system_manager_, this)),
+        m_candlestick_chart_ohlc(new candlestick_charts_model(this->system_manager_, this))
     {
         get_dispatcher().sink<refresh_update_status>().connect<&application::on_refresh_update_status_event>(*this);
         //! MM2 system need to be created before the GUI and give the instance to the gui
@@ -1204,6 +1205,12 @@ namespace atomic_dex
 //! OHLC Relative functions
 namespace atomic_dex
 {
+    candlestick_charts_model*
+    application::get_candlestick_charts() const noexcept
+    {
+        return m_candlestick_chart_ohlc;
+    }
+
     QVariantList
     application::get_ohlc_data(const QString& range)
     {

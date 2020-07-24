@@ -33,6 +33,7 @@
 #include "atomic.dex.mm2.hpp"
 #include "atomic.dex.provider.coinpaprika.hpp"
 #include "atomic.dex.qt.addressbook.model.hpp"
+#include "atomic.dex.qt.candlestick.charts.model.hpp"
 #include "atomic.dex.qt.bindings.hpp"
 #include "atomic.dex.qt.current.coin.infos.hpp"
 #include "atomic.dex.qt.orders.model.hpp"
@@ -56,6 +57,7 @@ namespace atomic_dex
         Q_PROPERTY(QObject* current_coin_info READ get_current_coin_info NOTIFY coinInfoChanged)
         Q_PROPERTY(addressbook_model* addressbook_mdl READ get_addressbook NOTIFY addressbookChanged)
         Q_PROPERTY(orders_model* orders_mdl READ get_orders NOTIFY ordersChanged)
+        Q_PROPERTY(candlestick_charts_model* candlestick_charts_mdl READ get_candlestick_charts NOTIFY candlestickChartsChanged)
         Q_PROPERTY(QVariant update_status READ get_update_status NOTIFY updateStatusChanged)
         Q_PROPERTY(portfolio_model* portfolio_mdl READ get_portfolio NOTIFY portfolioChanged)
         Q_PROPERTY(QString current_currency READ get_current_currency WRITE set_current_currency NOTIFY on_currency_changed)
@@ -118,6 +120,7 @@ namespace atomic_dex
         addressbook_model*         get_addressbook() const noexcept;
         portfolio_model*           get_portfolio() const noexcept;
         orders_model*              get_orders() const noexcept;
+        candlestick_charts_model*  get_candlestick_charts() const noexcept;;
         QVariantList               get_enabled_coins() const noexcept;
         QVariantList               get_enableable_coins() const noexcept;
         QString                    get_current_currency() const noexcept;
@@ -235,6 +238,7 @@ namespace atomic_dex
         void portfolioChanged();
         void updateStatusChanged();
         void ordersChanged();
+        void candlestickChartsChanged();
 
       private:
         void process_refresh_enabled_coin_action();
@@ -274,5 +278,8 @@ namespace atomic_dex
 
         //! Orders model based on the current wallet
         orders_model* m_orders;
+
+        //! Candlestick charts
+        candlestick_charts_model* m_candlestick_chart_ohlc;
     };
 } // namespace atomic_dex
