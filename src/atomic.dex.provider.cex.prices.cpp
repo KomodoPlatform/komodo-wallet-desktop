@@ -57,20 +57,12 @@ namespace atomic_dex
     {
         spdlog::debug("{} l{} f[{}]", __FUNCTION__, __LINE__, fs::path(__FILE__).filename().string());
 
-        {
-            {
-                std::unique_lock<std::mutex> locker(m_ohlc_data_mutex, std::try_to_lock);
-                m_current_ohlc_data = nlohmann::json::array();
-            }
-            this->dispatcher_.trigger<refresh_ohlc_needed>();
-        }
-
-        {
-            m_current_orderbook_ticker_pair = {boost::algorithm::to_lower_copy(evt.base), boost::algorithm::to_lower_copy(evt.rel)};
-            auto [base, rel]                = m_current_orderbook_ticker_pair;
-            spdlog::debug("new orderbook pair for cex provider [{} / {}]", base, rel);
-            m_pending_tasks.push(spawn([base = base, rel = rel, this]() { process_ohlc(base, rel); }));
-        }
+        m_current_ohlc_data = nlohmann::json::array();
+        this->dispatcher_.trigger<refresh_ohlc_needed>();
+        m_current_orderbook_ticker_pair = {boost::algorithm::to_lower_copy(evt.base), boost::algorithm::to_lower_copy(evt.rel)};
+        auto [base, rel]                = m_current_orderbook_ticker_pair;
+        spdlog::debug("new orderbook pair for cex provider [{} / {}]", base, rel);
+        m_pending_tasks.push(spawn([base = base, rel = rel, this]() { process_ohlc(base, rel); }));
     }
 
     void
@@ -109,10 +101,7 @@ namespace atomic_dex
             auto                     answer = atomic_dex::rpc_ohlc_get_data(std::move(req));
             if (answer.result.has_value())
             {
-                {
-                    std::unique_lock<std::mutex> locker(m_ohlc_data_mutex);
-                    m_current_ohlc_data = answer.result.value().raw_result;
-                }
+                m_current_ohlc_data = answer.result.value().raw_result;
                 this->dispatcher_.trigger<refresh_ohlc_needed>();
                 return true;
             }
@@ -136,11 +125,7 @@ namespace atomic_dex
     {
         spdlog::debug("{} l{} f[{}]", __FUNCTION__, __LINE__, fs::path(__FILE__).filename().string());
         bool res = false;
-        {
-            std::unique_lock<std::mutex> locker(m_ohlc_data_mutex);
-            res = !m_current_ohlc_data.empty();
-            spdlog::debug("data available: {}", res);
-        }
+        res      = !m_current_ohlc_data->empty();
         return res;
     }
 
@@ -148,12 +133,9 @@ namespace atomic_dex
     cex_prices_provider::get_ohlc_data(const std::string& range) noexcept
     {
         nlohmann::json res = nlohmann::json::array();
+        if (m_current_ohlc_data->contains(range))
         {
-            std::unique_lock<std::mutex> locker(m_ohlc_data_mutex);
-            if (m_current_ohlc_data.contains(range))
-            {
-                res = m_current_ohlc_data.at(range);
-            }
+            res = m_current_ohlc_data->at(range);
         }
         return res;
     }
