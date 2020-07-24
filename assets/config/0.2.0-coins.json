@@ -811,6 +811,30 @@
     "active": false,
     "currently_enabled": false
   },
+  "OOT": {
+    "coin": "OOT",
+    "name": "Utrum",
+    "coinpaprika_id": "oot-utrum",
+    "coingecko_id": "utrum",
+    "electrum": [
+      {
+        "url": "electrum1.cipig.net:10021"
+      },
+      {
+        "url": "electrum2.cipig.net:10021"
+      },
+      {
+        "url": "electrum3.cipig.net:10021"
+      }
+    ],
+    "explorer_url": [
+      "https://explorer.utrum.io/"
+    ],
+    "type": "Smart Chain",
+    "is_erc_20": false,
+    "active": false,
+    "currently_enabled": false
+  },
   "QTUM": {
     "coin": "QTUM",
     "name": "Qtum",
