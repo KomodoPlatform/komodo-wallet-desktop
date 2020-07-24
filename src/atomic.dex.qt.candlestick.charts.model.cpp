@@ -16,6 +16,9 @@
 
 #include "atomic.dex.qt.candlestick.charts.model.hpp"
 
+//! Project Headers
+#include "atomic.dex.provider.cex.prices.hpp"
+
 namespace atomic_dex
 {
     candlestick_charts_model::candlestick_charts_model(ag::ecs::system_manager& system_manager, QObject* parent) :
@@ -34,7 +37,11 @@ namespace atomic_dex
     int
     candlestick_charts_model::rowCount([[maybe_unused]] const QModelIndex& parent) const
     {
-        return 0;
+        if (m_model_data.empty() || !m_model_data.contains(m_current_range))
+        {
+            return 0;
+        }
+        return m_model_data.at(m_current_range).size();
     }
 
     int
@@ -46,6 +53,71 @@ namespace atomic_dex
     QVariant
     candlestick_charts_model::data([[maybe_unused]] const QModelIndex& index, [[maybe_unused]] int role) const
     {
-        return QVariant();
+        Q_UNUSED(role)
+
+        if (!index.isValid())
+        {
+            return QVariant();
+        }
+
+        if (index.row() >= rowCount() || index.row() < 0)
+        {
+            return QVariant();
+        }
+
+        switch (index.column())
+        {
+        case 0:
+            return m_model_data.at(m_current_range).at(index.row()).at("timestamp").get<int>();
+        case 1:
+            return m_model_data.at(m_current_range).at(index.row()).at("open").get<double>();
+        case 2:
+            return m_model_data.at(m_current_range).at(index.row()).at("high").get<double>();
+        case 3:
+            return m_model_data.at(m_current_range).at(index.row()).at("low").get<double>();
+        case 4:
+            return m_model_data.at(m_current_range).at(index.row()).at("close").get<double>();
+
+        default:
+            return QVariant();
+        }
+    }
+
+    void
+    candlestick_charts_model::update_data()
+    {
+        this->beginResetModel();
+        this->m_model_data = this->m_system_manager.get_system<cex_prices_provider>().get_all_ohlc_data();
+        this->endResetModel();
+
+        emit seriesSizeChanged();
+    }
+
+    int
+    candlestick_charts_model::get_series_size() const noexcept
+    {
+        return rowCount();
+    }
+
+    void
+    candlestick_charts_model::clear_data()
+    {
+        beginResetModel();
+        this->m_model_data.clear();
+        endResetModel();
+        emit seriesSizeChanged();
+    }
+
+    QString
+    candlestick_charts_model::get_current_range() const noexcept
+    {
+        return QString::fromStdString(m_current_range);
+    }
+
+    void
+    candlestick_charts_model::set_current_range(const QString& range) noexcept
+    {
+        this->m_current_range = range.toStdString();
+        emit rangeChanged();
     }
 } // namespace atomic_dex

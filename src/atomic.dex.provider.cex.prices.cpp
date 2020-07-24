@@ -183,4 +183,10 @@ namespace atomic_dex
         }
     }
 
+    nlohmann::json
+    cex_prices_provider::get_all_ohlc_data() noexcept
+    {
+        return *m_current_ohlc_data;
+    }
+
 } // namespace atomic_dex

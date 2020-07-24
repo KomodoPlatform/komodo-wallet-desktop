@@ -82,6 +82,8 @@ namespace atomic_dex
 
         nlohmann::json get_ohlc_data(const std::string& range) noexcept;
 
+        nlohmann::json get_all_ohlc_data() noexcept;
+
         //! Event that occur when the ticker pair is changed in the front end
         void on_current_orderbook_ticker_pair_changed(const orderbook_refresh& evt) noexcept;
     };

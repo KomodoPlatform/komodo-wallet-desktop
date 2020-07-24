@@ -255,7 +255,8 @@ namespace atomic_dex
             case action::refresh_ohlc:
                 if (mm2.is_mm2_running())
                 {
-                    emit OHLCDataUpdated();
+                    //emit OHLCDataUpdated();
+                    this->m_candlestick_chart_ohlc->update_data();
                 }
                 break;
             case action::refresh_transactions:

@@ -205,11 +205,13 @@ namespace atomic_dex
         Q_INVOKABLE bool        disable_coins(const QStringList& coins);
         Q_INVOKABLE bool        is_claiming_ready(const QString& ticker);
         Q_INVOKABLE QObject*     claim_rewards(const QString& ticker);
-        Q_INVOKABLE QVariantList get_ohlc_data(const QString& range);
-        Q_INVOKABLE QVariantMap  find_closest_ohlc_data(int range, int timestamp);
+
+
         Q_INVOKABLE QString      get_cex_rates(const QString& base, const QString& rel);
         Q_INVOKABLE QString      get_fiat_from_amount(const QString& ticker, const QString& amount);
 
+        Q_INVOKABLE QVariantList get_ohlc_data(const QString& range);
+        Q_INVOKABLE QVariantMap  find_closest_ohlc_data(int range, int timestamp);
         Q_INVOKABLE bool           is_supported_ohlc_data_ticker_pair(const QString& base, const QString& rel);
         Q_INVOKABLE QVariant       get_coin_info(const QString& ticker);
         Q_INVOKABLE bool           export_swaps(const QString& csv_filename) noexcept;

@@ -21,25 +21,39 @@
 //! PCH
 #include "atomic.dex.pch.hpp"
 
-//! Project Headers
-#include "atomic.dex.mm2.hpp"
-
 namespace atomic_dex
 {
     class candlestick_charts_model final : public QAbstractTableModel
     {
         Q_OBJECT
+        Q_PROPERTY(int series_size READ get_series_size NOTIFY seriesSizeChanged)
+        Q_PROPERTY(QString current_range READ get_current_range WRITE set_current_range NOTIFY rangeChanged)
       public:
         candlestick_charts_model(ag::ecs::system_manager& system_manager, QObject* parent = nullptr);
         ~candlestick_charts_model() noexcept final;
 
-        int      rowCount(const QModelIndex& parent) const override;
-        int      columnCount(const QModelIndex& parent) const override;
-        QVariant data(const QModelIndex& index, int role) const override;
+        [[nodiscard]] int      rowCount(const QModelIndex& parent = QModelIndex()) const final;
+        [[nodiscard]] int      columnCount(const QModelIndex& parent) const final;
+        [[nodiscard]] QVariant data(const QModelIndex& index, int role) const final;
+
+        //! Public API
+        void update_data();
+        void clear_data();
+
+        //! Property
+        [[nodiscard]] int get_series_size() const noexcept;
+        [[nodiscard]] QString get_current_range() const noexcept;
+        void set_current_range(const QString& range) noexcept;
+
+      signals:
+        void seriesSizeChanged();
+        void rangeChanged();
 
       private:
         ag::ecs::system_manager& m_system_manager;
 
         nlohmann::json m_model_data;
+
+        std::string m_current_range{"3600"}; //! 1h
     };
 } // namespace atomic_dex
