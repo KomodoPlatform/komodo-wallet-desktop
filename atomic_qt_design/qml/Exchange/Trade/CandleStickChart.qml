@@ -473,17 +473,15 @@ ChartView {
 
         function scrollHorizontal(pixels) {
             const model = cs_mapper.model
-            const min = date_time_axis.min.getTime()
-            const max = date_time_axis.max.getTime()
-//            const min = model.scroll_from.getTime()
-//            const max = model.scroll_to.getTime()
+            const min = model.series_from.getTime()
+            const max = model.series_to.getTime()
+
             const scale = pixels / chart.plotArea.width
             const amount = (max - min) * scale
 
-//            model.scroll_from = min + amount
-//            model.scroll_to = max + amount
-            date_time_axis.min = new Date(min - amount)
-            date_time_axis.max = new Date(max - amount)
+            console.log(min, max, amount)
+            model.series_from = new Date(min - amount)
+            model.series_to = new Date(max - amount)
         }
 
         function scrollVertical(pixels) {
