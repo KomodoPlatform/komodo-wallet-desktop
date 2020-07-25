@@ -218,7 +218,7 @@ namespace atomic_dex
             return;
         }
 
-        m_max_value = value;
+        m_min_value = value;
         emit minValueChanged(m_min_value);
     }
 } // namespace atomic_dex
