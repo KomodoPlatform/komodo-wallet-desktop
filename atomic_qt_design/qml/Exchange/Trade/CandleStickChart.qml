@@ -17,9 +17,23 @@ ChartView {
     margins.bottom: 0
     margins.right: 0
 
-//    Component.onCompleted: {
-//        API.get().OHLCDataUpdated.connect(initChart)
-//    }
+    Component.onCompleted: {
+        API.get().candlestick_charts_mdl.modelReset.connect(chartUpdated)
+    }
+
+    function chartUpdated() {
+        const mapper = cs_mapper
+        const model = mapper.model
+
+        // Update last value line
+        const last_open = model.data(model.index(999, mapper.openColumn), 0)
+        const last_close = model.data(model.index(999, mapper.closeColumn), 0)
+        series.last_value = last_close
+        series.last_value_green = last_close >= last_open
+
+        // Update other stuff
+        updater.updateChart()
+    }
 
     AreaSeries {
         id: series_area
