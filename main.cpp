@@ -14,7 +14,6 @@
 //! Project Headers
 #include "atomic.dex.app.hpp"
 #include "atomic.dex.kill.hpp"
-#include "atomic.dex.qt.model.factory.hpp"
 #include "atomic.threadpool.hpp"
 
 #ifdef __APPLE__
@@ -91,7 +90,6 @@ main([[maybe_unused]] int argc, [[maybe_unused]] char* argv[])
     QZXing::registerQMLTypes();
     QZXing::registerQMLImageProvider(engine);
     engine.rootContext()->setContextProperty("atomic_app", &atomic_app);
-    engine.rootContext()->setContextProperty("atomic_dex_model_factory", &atomic_app.factory);
 
     engine.addImportPath("qrc:/atomic_qt_design/imports");
     engine.addImportPath("qrc:/atomic_qt_design/Constants");
