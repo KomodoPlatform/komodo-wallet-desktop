@@ -29,8 +29,8 @@ namespace atomic_dex
         Q_OBJECT
         Q_PROPERTY(int series_size READ get_series_size NOTIFY seriesSizeChanged)
         Q_PROPERTY(QString current_range READ get_current_range WRITE set_current_range NOTIFY rangeChanged)
-        Q_PROPERTY(QDateTime series_from READ get_series_from NOTIFY seriesFromChanged)
-        Q_PROPERTY(QDateTime series_to READ get_series_to NOTIFY seriesToChanged)
+        Q_PROPERTY(QDateTime series_from READ get_series_from WRITE set_series_from NOTIFY seriesFromChanged)
+        Q_PROPERTY(QDateTime series_to READ get_series_to WRITE set_series_to NOTIFY seriesToChanged)
         Q_PROPERTY(double min_value READ get_min_value WRITE set_min_value NOTIFY minValueChanged)
         Q_PROPERTY(double max_value READ get_max_value WRITE set_max_value NOTIFY maxValueChanged)
       public:
