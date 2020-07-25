@@ -44,12 +44,12 @@
 #include "atomic.dex.provider.cex.prices.hpp"
 #include "atomic.dex.provider.coinpaprika.hpp"
 #include "atomic.dex.qt.bindings.hpp"
+#include "atomic.dex.qt.model.factory.hpp"
 #include "atomic.dex.qt.utilities.hpp"
 #include "atomic.dex.security.hpp"
 #include "atomic.dex.update.service.hpp"
 #include "atomic.dex.utilities.hpp"
 #include "atomic.dex.version.hpp"
-#include "atomic.dex.qt.model.factory.hpp"
 #include "atomic.threadpool.hpp"
 
 namespace
@@ -257,7 +257,14 @@ namespace atomic_dex
                 if (mm2.is_mm2_running())
                 {
                     // emit OHLCDataUpdated();
-                    this->m_candlestick_chart_ohlc->update_data();
+                    if (this->m_candlestick_need_a_reset)
+                    {
+                        this->m_candlestick_chart_ohlc->init_data();
+                    }
+                    else
+                    {
+                        this->m_candlestick_chart_ohlc->update_data();
+                    }
                 }
                 break;
             case action::refresh_transactions:
@@ -1258,6 +1265,7 @@ namespace atomic_dex
     {
         spdlog::debug("{} l{}", __FUNCTION__, __LINE__);
         this->m_actions_queue.push(action::refresh_ohlc);
+        this->m_candlestick_need_a_reset = evt.is_a_reset;
     }
 
     void

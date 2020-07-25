@@ -285,6 +285,7 @@ namespace atomic_dex
 
         //! Candlestick charts
         candlestick_charts_model* m_candlestick_chart_ohlc;
+        std::atomic_bool          m_candlestick_need_a_reset{false};
 
       public:
         atomic_dex::qt_model_factory factory;

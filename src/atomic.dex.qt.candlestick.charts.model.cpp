@@ -83,19 +83,29 @@ namespace atomic_dex
         }
     }
 
-    void
-    candlestick_charts_model::update_data()
+    bool
+    candlestick_charts_model::common_reset_data()
     {
         auto& provider = this->m_system_manager.get_system<cex_prices_provider>();
         if (not provider.is_ohlc_data_available())
         {
             this->clear_data();
-            return;
+            return false;
         }
 
         this->beginResetModel();
         this->m_model_data = provider.get_ohlc_data(m_current_range);
         this->endResetModel();
+        return true;
+    }
+
+    void
+    candlestick_charts_model::init_data()
+    {
+        if (not common_reset_data())
+        {
+            return;
+        }
 
         assert(not m_model_data.empty());
         double max_value = std::numeric_limits<double>::min();
@@ -116,6 +126,17 @@ namespace atomic_dex
         this->set_max_value(max_value);
         emit seriesFromChanged(get_series_from());
         emit seriesToChanged(get_series_to());
+        emit seriesSizeChanged(get_series_size());
+    }
+
+    void
+    candlestick_charts_model::update_data()
+    {
+        if (not common_reset_data())
+        {
+            return;
+        }
+
         emit seriesSizeChanged(get_series_size());
     }
 
@@ -156,7 +177,7 @@ namespace atomic_dex
     candlestick_charts_model::set_current_range(const QString& range) noexcept
     {
         this->m_current_range = range.toStdString();
-        update_data();
+        init_data();
         emit rangeChanged();
     }
 

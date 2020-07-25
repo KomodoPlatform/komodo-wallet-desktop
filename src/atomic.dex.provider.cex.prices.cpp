@@ -65,11 +65,12 @@ namespace atomic_dex
             this->dispatcher_.trigger<refresh_ohlc_needed>();
             return;
         }
+
         m_current_ohlc_data             = nlohmann::json::array();
         m_current_orderbook_ticker_pair = {boost::algorithm::to_lower_copy(evt.base), boost::algorithm::to_lower_copy(evt.rel)};
         auto [base, rel]                = m_current_orderbook_ticker_pair;
         spdlog::debug("new orderbook pair for cex provider [{} / {}]", base, rel);
-        m_pending_tasks.push(spawn([base = base, rel = rel, this]() { process_ohlc(base, rel); }));
+        m_pending_tasks.push(spawn([base = base, rel = rel, this]() { process_ohlc(base, rel, true); }));
     }
 
     void
@@ -99,7 +100,7 @@ namespace atomic_dex
     }
 
     bool
-    cex_prices_provider::process_ohlc(const std::string& base, const std::string& rel) noexcept
+    cex_prices_provider::process_ohlc(const std::string& base, const std::string& rel, bool is_a_reset) noexcept
     {
         spdlog::debug("{} l{} f[{}]", __FUNCTION__, __LINE__, fs::path(__FILE__).filename().string());
         if (auto [normal, quoted] = is_pair_supported(base, rel); normal || quoted)
@@ -121,7 +122,7 @@ namespace atomic_dex
                     //! It's quoted need to reverse all the value
                     this->reverse_ohlc_data();
                 }
-                this->dispatcher_.trigger<refresh_ohlc_needed>();
+                this->dispatcher_.trigger<refresh_ohlc_needed>(is_a_reset);
                 return true;
             }
             spdlog::error("http error: {}", answer.error.value_or("dummy"));
