@@ -33,9 +33,10 @@
 #include "atomic.dex.mm2.hpp"
 #include "atomic.dex.provider.coinpaprika.hpp"
 #include "atomic.dex.qt.addressbook.model.hpp"
-#include "atomic.dex.qt.candlestick.charts.model.hpp"
 #include "atomic.dex.qt.bindings.hpp"
+#include "atomic.dex.qt.candlestick.charts.model.hpp"
 #include "atomic.dex.qt.current.coin.infos.hpp"
+#include "atomic.dex.qt.model.factory.hpp"
 #include "atomic.dex.qt.orders.model.hpp"
 #include "atomic.dex.qt.portfolio.model.hpp"
 #include "atomic.dex.qt.wallet.manager.hpp"
@@ -111,16 +112,17 @@ namespace atomic_dex
         void on_process_swaps_finished_event(const process_swaps_finished&) noexcept;
 
         //! Properties Getter
-        static const QString&      get_empty_string();
-        mm2&                       get_mm2() noexcept;
-        const mm2&                 get_mm2() const noexcept;
-        coinpaprika_provider&      get_paprika() noexcept;
-        entt::dispatcher&          get_dispatcher() noexcept;
-        QObject*                   get_current_coin_info() const noexcept;
-        addressbook_model*         get_addressbook() const noexcept;
-        portfolio_model*           get_portfolio() const noexcept;
-        orders_model*              get_orders() const noexcept;
-        candlestick_charts_model*  get_candlestick_charts() const noexcept;;
+        static const QString&     get_empty_string();
+        mm2&                      get_mm2() noexcept;
+        const mm2&                get_mm2() const noexcept;
+        coinpaprika_provider&     get_paprika() noexcept;
+        entt::dispatcher&         get_dispatcher() noexcept;
+        QObject*                  get_current_coin_info() const noexcept;
+        addressbook_model*        get_addressbook() const noexcept;
+        portfolio_model*          get_portfolio() const noexcept;
+        orders_model*             get_orders() const noexcept;
+        candlestick_charts_model* get_candlestick_charts() const noexcept;
+        ;
         QVariantList               get_enabled_coins() const noexcept;
         QVariantList               get_enableable_coins() const noexcept;
         QString                    get_current_currency() const noexcept;
@@ -204,14 +206,14 @@ namespace atomic_dex
         Q_INVOKABLE bool        do_i_have_enough_funds(const QString& ticker, const QString& amount) const;
         Q_INVOKABLE bool        disable_coins(const QStringList& coins);
         Q_INVOKABLE bool        is_claiming_ready(const QString& ticker);
-        Q_INVOKABLE QObject*     claim_rewards(const QString& ticker);
+        Q_INVOKABLE QObject* claim_rewards(const QString& ticker);
 
 
-        Q_INVOKABLE QString      get_cex_rates(const QString& base, const QString& rel);
-        Q_INVOKABLE QString      get_fiat_from_amount(const QString& ticker, const QString& amount);
+        Q_INVOKABLE QString get_cex_rates(const QString& base, const QString& rel);
+        Q_INVOKABLE QString get_fiat_from_amount(const QString& ticker, const QString& amount);
 
-        Q_INVOKABLE QVariantList get_ohlc_data(const QString& range);
-        Q_INVOKABLE QVariantMap  find_closest_ohlc_data(int range, int timestamp);
+        Q_INVOKABLE QVariantList   get_ohlc_data(const QString& range);
+        Q_INVOKABLE QVariantMap    find_closest_ohlc_data(int range, int timestamp);
         Q_INVOKABLE bool           is_supported_ohlc_data_ticker_pair(const QString& base, const QString& rel);
         Q_INVOKABLE QVariant       get_coin_info(const QString& ticker);
         Q_INVOKABLE bool           export_swaps(const QString& csv_filename) noexcept;
@@ -283,5 +285,8 @@ namespace atomic_dex
 
         //! Candlestick charts
         candlestick_charts_model* m_candlestick_chart_ohlc;
+
+      public:
+        atomic_dex::qt_model_factory factory;
     };
 } // namespace atomic_dex
