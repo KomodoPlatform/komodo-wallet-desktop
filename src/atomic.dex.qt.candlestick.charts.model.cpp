@@ -130,14 +130,14 @@ namespace atomic_dex
         spdlog::trace("new range value IS: min: {} / max: {}", min_value, max_value);
         this->set_global_min_value(min_value);
         this->set_global_max_value(max_value);
-        this->set_min_value(min_value);
-        this->set_max_value(max_value);
         QDateTime from;
         from.setSecsSinceEpoch(m_model_data[int(this->m_model_data.size() * 0.9)].at("timestamp").get<int>());
         this->set_series_from(from);
         QDateTime to;
         to.setSecsSinceEpoch(m_model_data.back().at("timestamp").get<int>());
         this->set_series_to(to);
+        this->set_min_value(m_visible_min_value);
+        this->set_max_value(m_visible_max_value);
         emit seriesSizeChanged(get_series_size());
     }
 

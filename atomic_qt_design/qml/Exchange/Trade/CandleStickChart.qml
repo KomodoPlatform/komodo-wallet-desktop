@@ -29,8 +29,6 @@ ChartView {
 
     function chartFullyReset() {
         updater.locked_min_max_value = true
-        cs_mapper.model.min_value = updater.visible_min_value
-        cs_mapper.model.max_value = updater.visible_max_value
     }
 
     function chartUpdated() {
