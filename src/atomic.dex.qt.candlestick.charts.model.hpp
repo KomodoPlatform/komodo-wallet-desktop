@@ -42,6 +42,7 @@ namespace atomic_dex
         [[nodiscard]] QVariant data(const QModelIndex& index, int role) const final;
 
         //! Public API
+        void init_data();
         void update_data();
         void clear_data();
 
@@ -55,6 +56,8 @@ namespace atomic_dex
         void                    set_current_range(const QString& range) noexcept;
         void                    set_min_value(double value);
         void                    set_max_value(double value);
+        // void                    set_series_from(qint64 value);
+        // void                    set_series_to(qint64 value);
 
       signals:
         void seriesSizeChanged(int value);
@@ -65,13 +68,17 @@ namespace atomic_dex
         void rangeChanged();
 
       private:
+        bool common_reset_data();
+
         ag::ecs::system_manager& m_system_manager;
 
         nlohmann::json m_model_data;
 
         std::string m_current_range{"3600"}; //! 1h
 
-        double m_min_value;
-        double m_max_value;
+        double    m_min_value;
+        double    m_max_value;
+        QDateTime m_series_from;
+        QDateTime m_series_to;
     };
 } // namespace atomic_dex

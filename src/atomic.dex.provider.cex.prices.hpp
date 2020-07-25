@@ -69,7 +69,7 @@ namespace atomic_dex
         void update() noexcept final;
 
         //! Process OHLC http rest request
-        bool process_ohlc(const std::string& base, const std::string& rel) noexcept;
+        bool process_ohlc(const std::string& base, const std::string& rel, bool is_a_reset = false) noexcept;
 
         //! Return true if json ohlc data is not empty, otherwise return false
         bool is_ohlc_data_available() const noexcept;

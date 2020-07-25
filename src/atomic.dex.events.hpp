@@ -30,10 +30,15 @@ namespace atomic_dex
     using change_ticker_event         = entt::tag<"gui_change_ticker"_hs>;
     using tx_fetch_finished           = entt::tag<"gui_tx_fetch_finished"_hs>;
     //using refresh_order_needed        = entt::tag<"gui_refresh_order_needed"_hs>;
-    using refresh_ohlc_needed         = entt::tag<"gui_refresh_ohlc_needed"_hs>;
+    //using refresh_ohlc_needed         = entt::tag<"gui_refresh_ohlc_needed"_hs>;
     using refresh_update_status       = entt::tag<"gui_refresh_update_status"_hs>;
     using process_orders_finished     = entt::tag<"gui_process_orders_finished"_hs>;
     using process_swaps_finished      = entt::tag<"gui_process_swaps_finished"_hs>;
+
+    struct refresh_ohlc_needed
+    {
+        bool is_a_reset;
+    };
 
     struct ticker_balance_updated
     {
