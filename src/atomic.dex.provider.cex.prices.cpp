@@ -83,8 +83,7 @@ namespace atomic_dex
             spdlog::info("cex prices provider thread started");
 
             using namespace std::chrono_literals;
-            do
-            {
+            do {
                 spdlog::info("fetching ohlc value");
                 auto [base, rel] = m_current_orderbook_ticker_pair;
                 if (not base.empty() && not rel.empty() && m_mm2_instance.is_orderbook_thread_active())
@@ -205,6 +204,39 @@ namespace atomic_dex
     void
     cex_prices_provider::compute_moving_average()
     {
+        std::vector<ma_series_data> ma_20_series;
+        std::vector<ma_series_data> ma_50_series;
+        nlohmann::json              ohlc_data                  = *this->m_current_ohlc_data;
+        auto                        add_moving_average_functor = [](nlohmann::json& current_item, std::size_t idx, std::vector<ma_series_data>& ma_series,
+                                             const std::vector<double>& sums, float num) {
+            if (idx >= num)
+            {
+                ma_series.push_back({current_item.at("timestamp").get<std::size_t>(), (sums.at(idx) - sums.at(idx - num)) / num});
+            }
+        };
 
+        for (auto&& [key, value]: ohlc_data.items())
+        {
+            std::size_t         idx = 0;
+            std::vector<double> sums;
+            ma_20_series.clear();
+            ma_50_series.clear();
+            for (auto&& cur_range: value)
+            {
+                if (idx == 0)
+                {
+                    sums.emplace_back(cur_range.at("open").get<double>());
+                }
+                else
+                {
+                    sums.emplace_back(cur_range.at("open").get<double>() + sums[idx - 1]);
+                }
+                add_moving_average_functor(cur_range, idx, ma_20_series, sums, 20.f);
+                add_moving_average_functor(cur_range, idx, ma_50_series, sums, 50.f);
+                ++idx;
+            }
+            m_ma_20_series_registry[key] = ma_20_series;
+            m_ma_50_series_registry[key] = ma_50_series;
+        }
     }
 } // namespace atomic_dex
