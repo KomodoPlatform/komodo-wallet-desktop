@@ -484,8 +484,12 @@ ChartView {
         repeat: true
         onTriggered: updateChart()
 
-        function capDate(timestamp) {
-            return Math.max(Math.min(timestamp, last_value_timestamp), first_value_timestamp)
+        function capDateStart(timestamp, current_distance) {
+            return Math.max(timestamp, first_value_timestamp - current_distance*0.9)
+        }
+
+        function capDateEnd(timestamp, current_distance) {
+            return Math.min(timestamp, last_value_timestamp + current_distance*0.9)
         }
 
         function capPrice(price) {
@@ -505,11 +509,15 @@ ChartView {
             const min = model.series_from.getTime()
             const max = model.series_to.getTime()
 
+            const diff = max - min
             const scale = pixels / chart.plotArea.width
-            const amount = (max - min) * scale
+            const amount = diff * scale
 
-            const new_min = capDate(min - amount)
-            const new_max = capDate(max - amount)
+            // Cap without zooming, more complex
+            let new_max = capDateEnd(max - amount, diff)
+            const new_min = capDateStart(new_max - diff, diff)
+            new_max = capDateEnd(new_min + diff, diff)
+
             if(new_max - new_min < getMinTimeDifference()) return
             model.series_from = new Date(new_min)
             model.series_to = new Date(new_max)
@@ -531,9 +539,13 @@ ChartView {
 
         function zoomHorizontal(factor) {
             const model = cs_mapper.model
+            const min = model.series_from.getTime()
+            const max = model.series_to.getTime()
 
-            const new_min = capDate(model.series_from.getTime() * (1 - factor))
-            const new_max = capDate(model.series_to.getTime() * (1 + 0.2*factor))
+            const diff = max - min
+
+            const new_min = capDateStart(min * (1 - factor), diff)
+            const new_max = capDateEnd(max * (1 + 0.2*factor), diff)
             if(new_max - new_min < getMinTimeDifference()) return
             model.series_from = new Date(new_min)
             model.series_to = new Date(new_max)
