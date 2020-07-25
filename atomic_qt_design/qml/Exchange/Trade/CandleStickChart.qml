@@ -492,8 +492,8 @@ ChartView {
             return price
         }
 
-        function capPriceMin(price) {
-            return Math.max(price, 0)
+        function getMinTimeDifference() {
+            return 20 * getChartSeconds() * 1000
         }
 
         function scrollHorizontal(pixels) {
@@ -501,11 +501,17 @@ ChartView {
             const min = model.series_from.getTime()
             const max = model.series_to.getTime()
 
+            const min_diff = getMinTimeDifference()
+
+
             const scale = pixels / chart.plotArea.width
             const amount = (max - min) * scale
 
-            model.series_from = new Date(capDateStart(min - amount))
-            model.series_to = new Date(capDateEnd(max - amount))
+            const new_min = capDateStart(min - amount)
+            const new_max = capDateEnd(max - amount)
+            if(new_max - new_min < min_diff) return
+            model.series_from = new Date(new_min)
+            model.series_to = new Date(new_max)
         }
 
         function scrollVertical(pixels) {
@@ -521,8 +527,18 @@ ChartView {
 
         function zoomHorizontal(factor) {
             const model = cs_mapper.model
-            model.series_from = new Date(capDateStart(model.series_from.getTime() * (1 - factor)))
-            model.series_to = new Date(capDateEnd(model.series_to.getTime() * (1 + factor)))
+            const min = model.series_from.getTime()
+            const max = model.series_to.getTime()
+
+            const min_diff = getMinTimeDifference()
+
+            if(max - min <= min_diff) return
+
+            const new_min = capDateStart(min * (1 - factor))
+            const new_max = capDateEnd(max * (1 + factor))
+            if(new_max - new_min < min_diff) return
+            model.series_from = new Date(new_min)
+            model.series_to = new Date(new_max)
         }
 
         function zoomVertical(factor) {
