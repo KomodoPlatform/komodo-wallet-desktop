@@ -111,6 +111,7 @@ namespace atomic_dex
         {
             return;
         }
+        emit chartFullyModelReset();
 
         assert(not m_model_data.empty());
         double max_value = std::numeric_limits<double>::min();
@@ -296,6 +297,7 @@ namespace atomic_dex
     {
         m_series_to = std::move(value);
         emit seriesToChanged(m_series_to);
+        this->update_visible_range();
     }
 
     atomic_dex::ma_average_series_model*
@@ -308,5 +310,77 @@ namespace atomic_dex
     atomic_dex::candlestick_charts_model::get_ma_50_series() const noexcept
     {
         return m_ma_50_series;
+    }
+
+    void
+    candlestick_charts_model::update_visible_range()
+    {
+        auto from_it = std::lower_bound(
+            rbegin(m_model_data), rend(m_model_data), (int)get_series_from().toSecsSinceEpoch(), [](const nlohmann::json& current_json, int timestamp) {
+                int res = current_json.at("timestamp").get<int>();
+                return timestamp < res;
+            });
+
+        auto to_it = std::lower_bound(
+            rbegin(m_model_data), rend(m_model_data), (int)get_series_to().toSecsSinceEpoch(), [](const nlohmann::json& current_json, int timestamp) {
+                int res = current_json.at("timestamp").get<int>();
+                return timestamp < res;
+            });
+
+        if (from_it != m_model_data.rend() && to_it != m_model_data.rend())
+        {
+            auto min_value_j = std::min_element(to_it, from_it, [](nlohmann::json& left, nlohmann::json& right) {
+                auto left_value  = left.at("low").get<double>();
+                auto right_value = right.at("low").get<double>();
+                return left_value < right_value;
+            });
+
+            auto max_value_j = std::max_element(to_it, from_it, [](nlohmann::json& left, nlohmann::json& right) {
+                auto left_value  = left.at("high").get<double>();
+                auto right_value = right.at("high").get<double>();
+                return left_value < right_value;
+            });
+
+            auto min_value = min_value_j->at("low").get<double>();
+            auto max_value = max_value_j->at("high").get<double>();
+            this->set_visible_min_value(min_value);
+            this->set_visible_max_value(max_value);
+        }
+    }
+
+    double
+    candlestick_charts_model::get_visible_max_value() const noexcept
+    {
+        return m_visible_max_value;
+    }
+
+    double
+    candlestick_charts_model::get_visible_min_value() const noexcept
+    {
+        return m_visible_min_value;
+    }
+
+    void
+    candlestick_charts_model::set_visible_max_value(double value)
+    {
+        if (qFuzzyCompare(m_visible_max_value, value))
+        {
+            return;
+        }
+
+        m_visible_max_value = value;
+        emit visibleMaxValueChanged(m_visible_max_value);
+    }
+
+    void
+    candlestick_charts_model::set_visible_min_value(double value)
+    {
+        if (qFuzzyCompare(m_visible_min_value, value))
+        {
+            return;
+        }
+
+        m_visible_min_value = value;
+        emit visibleMinValueChanged(m_visible_min_value);
     }
 } // namespace atomic_dex

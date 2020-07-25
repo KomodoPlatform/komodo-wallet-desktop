@@ -38,6 +38,8 @@ namespace atomic_dex
         Q_PROPERTY(double global_min_value READ get_global_min_value NOTIFY globalMinValueChanged)
         Q_PROPERTY(ma_average_series_model* ma_20_series_mdl READ get_ma_20_series NOTIFY maTwentySeriesChanged)
         Q_PROPERTY(ma_average_series_model* ma_50_series_mdl READ get_ma_50_series NOTIFY maFiftySeriesChanged)
+        Q_PROPERTY(double visible_min_value READ get_visible_min_value WRITE set_visible_min_value NOTIFY visibleMinValueChanged)
+        Q_PROPERTY(double visible_max_value READ get_visible_max_value WRITE set_visible_max_value NOTIFY visibleMaxValueChanged)
 
       public:
         candlestick_charts_model(ag::ecs::system_manager& system_manager, QObject* parent = nullptr);
@@ -60,12 +62,16 @@ namespace atomic_dex
         [[nodiscard]] QDateTime                get_series_to() const noexcept;
         [[nodiscard]] double                   get_min_value() const noexcept;
         [[nodiscard]] double                   get_max_value() const noexcept;
+        [[nodiscard]] double                   get_visible_min_value() const noexcept;
+        [[nodiscard]] double                   get_visible_max_value() const noexcept;
         [[nodiscard]] double                   get_global_min_value() const noexcept;
         [[nodiscard]] double                   get_global_max_value() const noexcept;
         [[nodiscard]] QString                  get_current_range() const noexcept;
         void                                   set_current_range(const QString& range) noexcept;
         void                                   set_min_value(double value);
         void                                   set_max_value(double value);
+        void                                   set_visible_min_value(double value);;
+        void                                   set_visible_max_value(double value);;
         void                                   set_series_from(QDateTime value);
         void                                   set_series_to(QDateTime value);
 
@@ -75,15 +81,19 @@ namespace atomic_dex
         void seriesToChanged(QDateTime date);
         void minValueChanged(double value);
         void maxValueChanged(double value);
+        void visibleMinValueChanged(double value);
+        void visibleMaxValueChanged(double value);
         void globalMinValueChanged(double value);
         void globalMaxValueChanged(double value);
         void rangeChanged();
         void maTwentySeriesChanged();
         void maFiftySeriesChanged();
+        void chartFullyModelReset();
 
       private:
         void set_global_min_value(double value);
         void set_global_max_value(double value);
+        void update_visible_range();
 
         bool common_reset_data();
 
@@ -96,8 +106,10 @@ namespace atomic_dex
 
         std::string m_current_range{"3600"}; //! 1h
 
-        double    m_min_value{0};
+        double    m_visible_min_value{0};
+        double    m_visible_max_value{0};
         double    m_max_value{0};
+        double    m_min_value{0};
         double    m_global_max_value{0};
         double    m_global_min_value{0};
         QDateTime m_series_from;
