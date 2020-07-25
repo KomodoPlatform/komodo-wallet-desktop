@@ -23,6 +23,8 @@ ChartView {
 
     property double first_value_timestamp
     property double last_value_timestamp
+    property double global_min_value
+    property double global_max_value
 
     function chartUpdated() {
         const mapper = cs_mapper
@@ -39,6 +41,8 @@ ChartView {
         // Get timestamp caps
         first_value_timestamp = model.data(model.index(0, mapper.timestampColumn), 0)
         last_value_timestamp = model.data(model.index(last_idx, mapper.timestampColumn), 0)
+        global_min_value = model.global_min_value
+        global_max_value = model.global_max_value
 
         // Update other stuff
         updater.updateChart()
@@ -480,20 +484,12 @@ ChartView {
         repeat: true
         onTriggered: updateChart()
 
-        function capDateStart(timestamp) {
-            return Math.max(timestamp, first_value_timestamp)
+        function capDate(timestamp) {
+            return Math.max(Math.min(timestamp, last_value_timestamp), first_value_timestamp)
         }
 
-        function capDateEnd(timestamp) {
-            return Math.min(timestamp, last_value_timestamp)
-        }
-
-        function capPriceMin(price) {
-            return Math.max(price, 0)
-        }
-
-        function capPriceMax(price) {
-            return price
+        function capPrice(price) {
+            return Math.max(Math.min(price, global_max_value), global_min_value)
         }
 
         function getMinTimeDifference() {
@@ -512,8 +508,8 @@ ChartView {
             const scale = pixels / chart.plotArea.width
             const amount = (max - min) * scale
 
-            const new_min = capDateStart(min - amount)
-            const new_max = capDateEnd(max - amount)
+            const new_min = capDate(min - amount)
+            const new_max = capDate(max - amount)
             if(new_max - new_min < getMinTimeDifference()) return
             model.series_from = new Date(new_min)
             model.series_to = new Date(new_max)
@@ -526,8 +522,8 @@ ChartView {
             const scale = pixels / chart.plotArea.height
             const amount = (max - min) * scale
 
-            const new_min = capPriceMin(model.min_value + amount)
-            const new_max = capPriceMax(model.max_value + amount)
+            const new_min = capPrice(model.min_value + amount)
+            const new_max = capPrice(model.max_value + amount)
             if(new_max - new_min < getMinValueDifference()) return
             model.min_value = new_min
             model.max_value = new_max
@@ -535,11 +531,9 @@ ChartView {
 
         function zoomHorizontal(factor) {
             const model = cs_mapper.model
-            const min = model.series_from.getTime()
-            const max = model.series_to.getTime()
 
-            const new_min = capDateStart(min * (1 - factor))
-            const new_max = capDateEnd(max * (1 + factor))
+            const new_min = capDate(model.series_from.getTime() * (1 - factor))
+            const new_max = capDate(model.series_to.getTime() * (1 + factor))
             if(new_max - new_min < getMinTimeDifference()) return
             model.series_from = new Date(new_min)
             model.series_to = new Date(new_max)
@@ -548,8 +542,8 @@ ChartView {
         function zoomVertical(factor) {
             const model = cs_mapper.model
 
-            const new_min = capPriceMin(model.min_value * (1 - factor))
-            const new_max = capPriceMax(model.max_value * (1 + factor))
+            const new_min = capPrice(model.min_value * (1 - factor))
+            const new_max = capPrice(model.max_value * (1 + factor))
             if(new_max - new_min < getMinValueDifference()) return
             model.min_value = new_min
             model.max_value = new_max
