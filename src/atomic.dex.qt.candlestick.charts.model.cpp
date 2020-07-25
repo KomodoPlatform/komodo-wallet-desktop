@@ -210,7 +210,6 @@ namespace atomic_dex
             return;
         }
 
-        m_max_value = value * (1 + g_margin);
         emit maxValueChanged(m_max_value);
     }
 
@@ -223,7 +222,6 @@ namespace atomic_dex
             return;
         }
 
-        m_min_value = value * (1 - g_margin);
         emit minValueChanged(m_min_value);
     }
 } // namespace atomic_dex

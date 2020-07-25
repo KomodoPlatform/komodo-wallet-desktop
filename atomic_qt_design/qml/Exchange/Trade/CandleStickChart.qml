@@ -57,7 +57,7 @@ ChartView {
                 value_axis_area.max = series_area.global_max * 1/0.5
             }
         }
-        upperSeries:  LineSeries { visible: false }
+        upperSeries: LineSeries { visible: false }
     }
 
     // Moving Average 1
@@ -116,7 +116,6 @@ ChartView {
 
         function updateLastValueY() {
             horizontal_line.y = chart.mapToPosition(Qt.point(0, series.last_value), series).y
-            console.log("updateLastValueY!", series.last_value, horizontal_line.y)
         }
 
         increasingColor: Style.colorGreen
@@ -150,12 +149,12 @@ ChartView {
             labelsColor: series.axisX.labelsColor
             color: series.axisX.color
 
-//            onRangeChanged: {
+            onRangeChanged: {
 //                if(min < 0) value_axis.min = 0
 
 //                const max_val = value_axis.global_max * (1 + y_margin)
 //                if(max > max_val) value_axis.max = max_val
-//            }
+            }
         }
     }
 
@@ -474,8 +473,17 @@ ChartView {
         function scrollHorizontal(pixels) {
 
         }
-        function scrollVertical(pixels) {
 
+        function scrollVertical(pixels) {
+            const area = chart.plotArea
+            const model = cs_mapper.model
+            const min = model.min_value
+            const max = model.max_value
+            const scale = pixels / area.height
+            const amount = Math.abs(max - min) * scale
+
+            model.min_value += amount
+            model.max_value += amount
         }
 
         function updateChart() {
@@ -494,10 +502,11 @@ ChartView {
             if(mouse_area.containsPress) {
                 if(diff_x > 0) chart.scrollLeft(diff_x)
                 else if(diff_x < 0) chart.scrollRight(-diff_x)
-                if(diff_y > 0) chart.scrollUp(diff_y)
-                else if(diff_y < 0) chart.scrollDown(-diff_y)
 
-                if(diff_y !== 0) series.updateLastValueY()
+                if(diff_y !== 0) {
+                    scrollVertical(diff_y)
+                    series.updateLastValueY()
+                }
             }
 
             // Update zoom
