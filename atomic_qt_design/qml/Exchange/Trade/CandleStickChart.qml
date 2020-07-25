@@ -492,8 +492,11 @@ ChartView {
             return Math.min(timestamp, last_value_timestamp + current_distance*0.9)
         }
 
-        function capPrice(price) {
-            return Math.max(Math.min(price, global_max_value), global_min_value)
+        function capPriceMin(price) {
+            return Math.max(price, global_min_value)
+        }
+        function capPriceMax(price) {
+            return Math.min(price, global_max_value)
         }
 
         function getMinTimeDifference() {
@@ -530,8 +533,8 @@ ChartView {
             const scale = pixels / chart.plotArea.height
             const amount = (max - min) * scale
 
-            const new_min = capPrice(model.min_value + amount)
-            const new_max = capPrice(model.max_value + amount)
+            const new_min = capPriceMin(model.min_value + amount)
+            const new_max = capPriceMax(model.max_value + amount)
             if(new_max - new_min < getMinValueDifference()) return
             model.min_value = new_min
             model.max_value = new_max
@@ -554,8 +557,8 @@ ChartView {
         function zoomVertical(factor) {
             const model = cs_mapper.model
 
-            const new_min = capPrice(model.min_value * (1 - factor))
-            const new_max = capPrice(model.max_value * (1 + factor))
+            const new_min = capPriceMin(model.min_value * (1 - factor))
+            const new_max = capPriceMax(model.max_value * (1 + factor))
             if(new_max - new_min < getMinValueDifference()) return
             model.min_value = new_min
             model.max_value = new_max
