@@ -503,9 +503,9 @@ ChartView {
             // Update zoom
             const zoomed = delta_wheel_y !== 0
             if (zoomed) {
-                chart.zoom(1 + (-delta_wheel_y/360) * scroll_speed)
-                series.updateLastValueY()
-                delta_wheel_y = 0
+//                chart.zoom(1 + (-delta_wheel_y/360) * scroll_speed)
+//                series.updateLastValueY()
+//                delta_wheel_y = 0
             }
 
             // Update cursor line
