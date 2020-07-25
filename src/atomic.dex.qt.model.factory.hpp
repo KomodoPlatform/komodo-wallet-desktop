@@ -3,7 +3,8 @@
 #include <QAbstractItemModel>
 #include <QObject>
 
-#include "atomic.dex.app.hpp"
+//! PCH
+#include "atomic.dex.pch.hpp"
 
 namespace atomic_dex
 {
@@ -11,7 +12,7 @@ namespace atomic_dex
     {
         Q_OBJECT
       public:
-        qt_model_factory(const application& app, QObject* parent = nullptr);
+        qt_model_factory(const QObject& app, QObject* parent = nullptr);
         ~qt_model_factory() noexcept final;
 
         template <typename TConcreteModel>
@@ -22,7 +23,7 @@ namespace atomic_dex
         }
 
       private:
-        const application&                                   m_app;
+        const QObject&                                       m_app;
         std::unordered_map<std::string, QAbstractItemModel*> m_model_registry;
     };
 } // namespace atomic_dex

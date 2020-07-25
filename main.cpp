@@ -78,7 +78,6 @@ main([[maybe_unused]] int argc, [[maybe_unused]] char* argv[])
 
     //! App declaration
     atomic_dex::application      atomic_app;
-    atomic_dex::qt_model_factory factory(atomic_app, &atomic_app);
 
     //! QT
     QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
@@ -92,7 +91,7 @@ main([[maybe_unused]] int argc, [[maybe_unused]] char* argv[])
     QZXing::registerQMLTypes();
     QZXing::registerQMLImageProvider(engine);
     engine.rootContext()->setContextProperty("atomic_app", &atomic_app);
-    engine.rootContext()->setContextProperty("atomic_dex_model_factory", &factory);
+    engine.rootContext()->setContextProperty("atomic_dex_model_factory", &atomic_app.factory);
 
     engine.addImportPath("qrc:/atomic_qt_design/imports");
     engine.addImportPath("qrc:/atomic_qt_design/Constants");

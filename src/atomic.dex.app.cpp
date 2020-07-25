@@ -49,6 +49,7 @@
 #include "atomic.dex.update.service.hpp"
 #include "atomic.dex.utilities.hpp"
 #include "atomic.dex.version.hpp"
+#include "atomic.dex.qt.model.factory.hpp"
 #include "atomic.threadpool.hpp"
 
 namespace
@@ -255,7 +256,7 @@ namespace atomic_dex
             case action::refresh_ohlc:
                 if (mm2.is_mm2_running())
                 {
-                    //emit OHLCDataUpdated();
+                    // emit OHLCDataUpdated();
                     this->m_candlestick_chart_ohlc->update_data();
                 }
                 break;
@@ -398,7 +399,7 @@ namespace atomic_dex
             {"update_needed", false}, {"changelog", ""}, {"current_version", ""}, {"download_url", ""}, {"new_version", ""}, {"rpc_code", 0}, {"status", ""}}),
         m_coin_info(new current_coin_info(dispatcher_, this)), m_addressbook(new addressbook_model(this->m_wallet_manager, this)),
         m_portfolio(new portfolio_model(this->system_manager_, this->m_config, this)), m_orders(new orders_model(this->system_manager_, this)),
-        m_candlestick_chart_ohlc(new candlestick_charts_model(this->system_manager_, this))
+        m_candlestick_chart_ohlc(new candlestick_charts_model(this->system_manager_, this)), factory(*this, this)
     {
         get_dispatcher().sink<refresh_update_status>().connect<&application::on_refresh_update_status_event>(*this);
         //! MM2 system need to be created before the GUI and give the instance to the gui

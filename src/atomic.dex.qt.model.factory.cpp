@@ -2,7 +2,7 @@
 
 namespace atomic_dex
 {
-    qt_model_factory::qt_model_factory(const application& app, QObject* parent) : QObject(parent), m_app(app)
+    qt_model_factory::qt_model_factory(const QObject& app, QObject* parent) : QObject(parent), m_app(app)
     {
         spdlog::trace("{} l{} f[{}]", __FUNCTION__, __LINE__, fs::path(__FILE__).filename().string());
         spdlog::trace("model factory created");
