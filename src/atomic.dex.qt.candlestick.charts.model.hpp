@@ -57,7 +57,7 @@ namespace atomic_dex
         void                    set_min_value(double value);
         void                    set_max_value(double value);
         void                    set_series_from(qint64 value);
-        void                    set_series_to(qint64 value);;
+        void                    set_series_to(qint64 value);
 
       signals:
         void seriesSizeChanged(int value);
@@ -76,8 +76,8 @@ namespace atomic_dex
 
         std::string m_current_range{"3600"}; //! 1h
 
-        double    m_min_value;
-        double    m_max_value;
+        double    m_min_value{0};
+        double    m_max_value{0};
         QDateTime m_series_from;
         QDateTime m_series_to;
     };

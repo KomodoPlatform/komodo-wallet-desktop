@@ -36,7 +36,6 @@
 #include "atomic.dex.qt.bindings.hpp"
 #include "atomic.dex.qt.candlestick.charts.model.hpp"
 #include "atomic.dex.qt.current.coin.infos.hpp"
-#include "atomic.dex.qt.model.factory.hpp"
 #include "atomic.dex.qt.orders.model.hpp"
 #include "atomic.dex.qt.portfolio.model.hpp"
 #include "atomic.dex.qt.wallet.manager.hpp"
@@ -286,8 +285,5 @@ namespace atomic_dex
         //! Candlestick charts
         candlestick_charts_model* m_candlestick_chart_ohlc;
         std::atomic_bool          m_candlestick_need_a_reset{false};
-
-      public:
-        atomic_dex::qt_model_factory factory;
     };
 } // namespace atomic_dex
