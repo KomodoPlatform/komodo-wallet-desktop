@@ -19,12 +19,19 @@ ChartView {
 
     Component.onCompleted: {
         API.get().candlestick_charts_mdl.modelReset.connect(chartUpdated)
+        API.get().candlestick_charts_mdl.chartFullyModelReset.connect(chartFullyReset)
     }
 
     property double first_value_timestamp
     property double last_value_timestamp
     property double global_min_value
     property double global_max_value
+
+    function chartFullyReset() {
+        updater.locked_min_max_value = true
+        cs_mapper.model.min_value = updater.visible_min_value
+        cs_mapper.model.max_value = updater.visible_max_value
+    }
 
     function chartUpdated() {
         const mapper = cs_mapper
@@ -484,6 +491,22 @@ ChartView {
         repeat: true
         onTriggered: updateChart()
 
+        property bool locked_min_max_value: true
+        readonly property double visible_min_value: cs_mapper.model.visible_min_value
+        readonly property double visible_max_value: cs_mapper.model.visible_max_value
+
+        onVisible_min_valueChanged: {
+            if(locked_min_max_value) {
+                cs_mapper.model.min_value = visible_min_value
+            }
+        }
+
+        onVisible_max_valueChanged: {
+            if(locked_min_max_value) {
+                cs_mapper.model.max_value = visible_max_value
+            }
+        }
+
         function capDateStart(timestamp, current_distance) {
             return Math.max(timestamp, first_value_timestamp - current_distance*0.9)
         }
@@ -587,7 +610,10 @@ ChartView {
 
                 if(diff_y !== 0) {
                     if(inside_plot_area) scrollVertical(diff_y)
-                    else zoomVertical((diff_y/area.height) * scroll_speed_y)
+                    else {
+                        locked_min_max_value = false
+                        zoomVertical((diff_y/area.height) * scroll_speed_y)
+                    }
 
                     series.updateLastValueY()
                 }
