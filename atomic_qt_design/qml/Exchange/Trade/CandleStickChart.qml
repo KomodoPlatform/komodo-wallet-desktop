@@ -533,7 +533,7 @@ ChartView {
             const model = cs_mapper.model
 
             const new_min = capDate(model.series_from.getTime() * (1 - factor))
-            const new_max = capDate(model.series_to.getTime() * (1 + factor))
+            const new_max = capDate(model.series_to.getTime() * (1 + 0.2*factor))
             if(new_max - new_min < getMinTimeDifference()) return
             model.series_from = new Date(new_min)
             model.series_to = new Date(new_max)
