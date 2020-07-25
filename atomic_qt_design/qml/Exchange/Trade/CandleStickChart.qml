@@ -21,6 +21,9 @@ ChartView {
         API.get().candlestick_charts_mdl.modelReset.connect(chartUpdated)
     }
 
+    property double first_value_timestamp
+    property double last_value_timestamp
+
     function chartUpdated() {
         const mapper = cs_mapper
         const model = mapper.model
@@ -32,6 +35,11 @@ ChartView {
         series.last_value = last_close
         series.last_value_green = last_close >= last_open
         series.updateLastValueY()
+
+        // Get timestamp caps
+        first_value_timestamp = model.data(model.index(0, mapper.timestampColumn), 0)
+        last_value_timestamp = model.data(model.index(last_idx, mapper.timestampColumn), 0)
+        console.log(first_value_timestamp, last_value_timestamp)
 
         // Update other stuff
         updater.updateChart()
@@ -472,6 +480,22 @@ ChartView {
         repeat: true
         onTriggered: updateChart()
 
+        function capDateStart(timestamp) {
+            return Math.max(timestamp, first_value_timestamp)
+        }
+
+        function capDateEnd(timestamp) {
+            return Math.min(timestamp, last_value_timestamp)
+        }
+
+        function capPriceMax(price) {
+            return price
+        }
+
+        function capPriceMin(price) {
+            return Math.max(price, 0)
+        }
+
         function scrollHorizontal(pixels) {
             const model = cs_mapper.model
             const min = model.series_from.getTime()
@@ -480,8 +504,8 @@ ChartView {
             const scale = pixels / chart.plotArea.width
             const amount = (max - min) * scale
 
-            model.series_from = new Date(min - amount)
-            model.series_to = new Date(max - amount)
+            model.series_from = new Date(capDateStart(min - amount))
+            model.series_to = new Date(capDateEnd(max - amount))
         }
 
         function scrollVertical(pixels) {
@@ -491,20 +515,20 @@ ChartView {
             const scale = pixels / chart.plotArea.height
             const amount = (max - min) * scale
 
-            model.min_value += amount
-            model.max_value += amount
-        }
-
-        function zoomVertical(factor) {
-            const model = cs_mapper.model
-            model.min_value = model.min_value * (1 - factor)
-            model.max_value = model.max_value * (1 + factor)
+            model.min_value = capPriceMin(model.min_value + amount)
+            model.max_value = capPriceMax(model.max_value + amount)
         }
 
         function zoomHorizontal(factor) {
             const model = cs_mapper.model
-            model.series_from = new Date(model.series_from.getTime() * (1 - factor))
-            model.series_to = new Date(model.series_to.getTime() * (1 + factor))
+            model.series_from = new Date(capDateStart(model.series_from.getTime() * (1 - factor)))
+            model.series_to = new Date(capDateEnd(model.series_to.getTime() * (1 + factor)))
+        }
+
+        function zoomVertical(factor) {
+            const model = cs_mapper.model
+            model.min_value = capPriceMin(model.min_value * (1 - factor))
+            model.max_value = capPriceMax(model.max_value * (1 + factor))
         }
 
         function updateChart() {
