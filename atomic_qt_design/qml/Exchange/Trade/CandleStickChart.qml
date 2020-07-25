@@ -123,6 +123,7 @@ ChartView {
         bodyOutlineVisible: false
 
         axisX: DateTimeAxis {
+            id: date_time_axis
             min: cs_mapper.model.series_from
             max: cs_mapper.model.series_to
 
@@ -471,16 +472,26 @@ ChartView {
         onTriggered: updateChart()
 
         function scrollHorizontal(pixels) {
+            const model = cs_mapper.model
+            const min = date_time_axis.min.getTime()
+            const max = date_time_axis.max.getTime()
+//            const min = model.scroll_from.getTime()
+//            const max = model.scroll_to.getTime()
+            const scale = pixels / chart.plotArea.width
+            const amount = (max - min) * scale
 
+//            model.scroll_from = min + amount
+//            model.scroll_to = max + amount
+            date_time_axis.min = new Date(min - amount)
+            date_time_axis.max = new Date(max - amount)
         }
 
         function scrollVertical(pixels) {
-            const area = chart.plotArea
             const model = cs_mapper.model
             const min = model.min_value
             const max = model.max_value
-            const scale = pixels / area.height
-            const amount = Math.abs(max - min) * scale
+            const scale = pixels / chart.plotArea.height
+            const amount = (max - min) * scale
 
             model.min_value += amount
             model.max_value += amount
@@ -500,8 +511,9 @@ ChartView {
 
             // Update drag
             if(mouse_area.containsPress) {
-                if(diff_x > 0) chart.scrollLeft(diff_x)
-                else if(diff_x < 0) chart.scrollRight(-diff_x)
+                if(diff_x !== 0) {
+                    scrollHorizontal(diff_x)
+                }
 
                 if(diff_y !== 0) {
                     scrollVertical(diff_y)
