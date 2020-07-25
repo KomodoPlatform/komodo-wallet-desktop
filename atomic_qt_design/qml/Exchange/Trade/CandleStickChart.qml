@@ -496,8 +496,8 @@ ChartView {
 
         function zoomVertical(factor) {
             const model = cs_mapper.model
-            model.min_value = model.min_value * factor
-            model.max_value = model.max_value * factor
+            model.min_value = model.min_value * (1 - factor)
+            model.max_value = model.max_value * (1 + factor)
         }
 
         function zoomHorizontal(factor) {
@@ -518,14 +518,19 @@ ChartView {
             prev_mouse_x = mouse_x
             prev_mouse_y = mouse_y
 
+            const area = chart.plotArea
+            const inside_plot_area = mouse_x < area.x + area.width
+
             // Update drag
             if(mouse_area.containsPress) {
-                if(diff_x !== 0) {
+                if(inside_plot_area && diff_x !== 0) {
                     scrollHorizontal(diff_x)
                 }
 
                 if(diff_y !== 0) {
-                    scrollVertical(diff_y)
+                    if(inside_plot_area) scrollVertical(diff_y)
+                    else zoomVertical((diff_y/area.height) * 0.05)
+
                     series.updateLastValueY()
                 }
             }
@@ -533,10 +538,8 @@ ChartView {
             // Update zoom
             const zoomed = delta_wheel_y !== 0
             if (zoomed) {
-//                chart.zoom(1 + (-delta_wheel_y/360) * scroll_speed)
-//                series.updateLastValueY()
-
-                zoomHorizontal((-delta_wheel_y/360) * scroll_speed)
+                if(inside_plot_area) zoomHorizontal((-delta_wheel_y/360) * scroll_speed)
+                else zoomVertical((-delta_wheel_y/360) * 0.05)
 
                 delta_wheel_y = 0
             }
