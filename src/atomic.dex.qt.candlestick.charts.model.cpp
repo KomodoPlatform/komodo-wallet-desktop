@@ -14,10 +14,12 @@
  *                                                                            *
  ******************************************************************************/
 
-#include "atomic.dex.qt.candlestick.charts.model.hpp"
+
+#include <utility>
 
 //! Project Headers
 #include "atomic.dex.provider.cex.prices.hpp"
+#include "atomic.dex.qt.candlestick.charts.model.hpp"
 
 namespace atomic_dex
 {
@@ -285,14 +287,26 @@ namespace atomic_dex
     void
     candlestick_charts_model::set_series_from(QDateTime value)
     {
-        m_series_from = value;
+        m_series_from = std::move(value);
         emit seriesFromChanged(m_series_from);
     }
 
     void
     candlestick_charts_model::set_series_to(QDateTime value)
     {
-        m_series_to = value;
+        m_series_to = std::move(value);
         emit seriesToChanged(m_series_to);
+    }
+
+    atomic_dex::ma_average_series_model*
+    atomic_dex::candlestick_charts_model::get_ma_20_series() const noexcept
+    {
+        return m_ma_20_series;
+    }
+
+    atomic_dex::ma_average_series_model*
+    atomic_dex::candlestick_charts_model::get_ma_50_series() const noexcept
+    {
+        return m_ma_50_series;
     }
 } // namespace atomic_dex

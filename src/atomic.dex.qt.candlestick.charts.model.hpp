@@ -36,6 +36,8 @@ namespace atomic_dex
         Q_PROPERTY(double max_value READ get_max_value WRITE set_max_value NOTIFY maxValueChanged)
         Q_PROPERTY(double global_max_value READ get_global_max_value NOTIFY globalMaxValueChanged)
         Q_PROPERTY(double global_min_value READ get_global_min_value NOTIFY globalMinValueChanged)
+        Q_PROPERTY(ma_average_series_model* ma_20_series_mdl READ get_ma_20_series NOTIFY maTwentySeriesChanged)
+        Q_PROPERTY(ma_average_series_model* ma_50_series_mdl READ get_ma_50_series NOTIFY maFiftySeriesChanged)
 
       public:
         candlestick_charts_model(ag::ecs::system_manager& system_manager, QObject* parent = nullptr);
@@ -51,19 +53,21 @@ namespace atomic_dex
         void clear_data();
 
         //! Property
-        [[nodiscard]] int       get_series_size() const noexcept;
-        [[nodiscard]] QDateTime get_series_from() const noexcept;
-        [[nodiscard]] QDateTime get_series_to() const noexcept;
-        [[nodiscard]] double    get_min_value() const noexcept;
-        [[nodiscard]] double    get_max_value() const noexcept;
-        [[nodiscard]] double    get_global_min_value() const noexcept;
-        [[nodiscard]] double    get_global_max_value() const noexcept;
-        [[nodiscard]] QString   get_current_range() const noexcept;
-        void                    set_current_range(const QString& range) noexcept;
-        void                    set_min_value(double value);
-        void                    set_max_value(double value);
-        void                    set_series_from(QDateTime value);
-        void                    set_series_to(QDateTime value);
+        [[nodiscard]] ma_average_series_model* get_ma_20_series() const noexcept;
+        [[nodiscard]] ma_average_series_model* get_ma_50_series() const noexcept;
+        [[nodiscard]] int                      get_series_size() const noexcept;
+        [[nodiscard]] QDateTime                get_series_from() const noexcept;
+        [[nodiscard]] QDateTime                get_series_to() const noexcept;
+        [[nodiscard]] double                   get_min_value() const noexcept;
+        [[nodiscard]] double                   get_max_value() const noexcept;
+        [[nodiscard]] double                   get_global_min_value() const noexcept;
+        [[nodiscard]] double                   get_global_max_value() const noexcept;
+        [[nodiscard]] QString                  get_current_range() const noexcept;
+        void                                   set_current_range(const QString& range) noexcept;
+        void                                   set_min_value(double value);
+        void                                   set_max_value(double value);
+        void                                   set_series_from(QDateTime value);
+        void                                   set_series_to(QDateTime value);
 
       signals:
         void seriesSizeChanged(int value);
@@ -74,10 +78,12 @@ namespace atomic_dex
         void globalMinValueChanged(double value);
         void globalMaxValueChanged(double value);
         void rangeChanged();
+        void maTwentySeriesChanged();
+        void maFiftySeriesChanged();
 
       private:
-        void                    set_global_min_value(double value);
-        void                    set_global_max_value(double value);
+        void set_global_min_value(double value);
+        void set_global_max_value(double value);
 
         bool common_reset_data();
 
