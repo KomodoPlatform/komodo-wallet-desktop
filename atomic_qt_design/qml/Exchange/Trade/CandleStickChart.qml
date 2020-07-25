@@ -484,12 +484,19 @@ ChartView {
         repeat: true
         onTriggered: updateChart()
 
-        function capDate(timestamp) {
-            return Math.max(Math.min(timestamp, last_value_timestamp), first_value_timestamp)
+        function capDateStart(timestamp, current_distance) {
+            return Math.max(timestamp, first_value_timestamp - current_distance*0.9)
         }
 
-        function capPrice(price) {
-            return Math.max(Math.min(price, global_max_value), global_min_value)
+        function capDateEnd(timestamp, current_distance) {
+            return Math.min(timestamp, last_value_timestamp + current_distance*0.9)
+        }
+
+        function capPriceMin(price) {
+            return Math.max(price, global_min_value)
+        }
+        function capPriceMax(price) {
+            return Math.min(price, global_max_value)
         }
 
         function getMinTimeDifference() {
@@ -505,11 +512,15 @@ ChartView {
             const min = model.series_from.getTime()
             const max = model.series_to.getTime()
 
+            const diff = max - min
             const scale = pixels / chart.plotArea.width
-            const amount = (max - min) * scale
+            const amount = diff * scale
 
-            const new_min = capDate(min - amount)
-            const new_max = capDate(max - amount)
+            // Cap without zooming, more complex
+            let new_max = capDateEnd(max - amount, diff)
+            const new_min = capDateStart(new_max - diff, diff)
+            new_max = capDateEnd(new_min + diff, diff)
+
             if(new_max - new_min < getMinTimeDifference()) return
             model.series_from = new Date(new_min)
             model.series_to = new Date(new_max)
@@ -522,8 +533,8 @@ ChartView {
             const scale = pixels / chart.plotArea.height
             const amount = (max - min) * scale
 
-            const new_min = capPrice(model.min_value + amount)
-            const new_max = capPrice(model.max_value + amount)
+            const new_min = capPriceMin(model.min_value + amount)
+            const new_max = capPriceMax(model.max_value + amount)
             if(new_max - new_min < getMinValueDifference()) return
             model.min_value = new_min
             model.max_value = new_max
@@ -531,9 +542,13 @@ ChartView {
 
         function zoomHorizontal(factor) {
             const model = cs_mapper.model
+            const min = model.series_from.getTime()
+            const max = model.series_to.getTime()
 
-            const new_min = capDate(model.series_from.getTime() * (1 - factor))
-            const new_max = capDate(model.series_to.getTime() * (1 + 0.2*factor))
+            const diff = max - min
+
+            const new_min = capDateStart(min * (1 - factor), diff)
+            const new_max = capDateEnd(max * (1 + 0.2*factor), diff)
             if(new_max - new_min < getMinTimeDifference()) return
             model.series_from = new Date(new_min)
             model.series_to = new Date(new_max)
@@ -542,8 +557,8 @@ ChartView {
         function zoomVertical(factor) {
             const model = cs_mapper.model
 
-            const new_min = capPrice(model.min_value * (1 - factor))
-            const new_max = capPrice(model.max_value * (1 + factor))
+            const new_min = capPriceMin(model.min_value * (1 - factor))
+            const new_max = capPriceMax(model.max_value * (1 + factor))
             if(new_max - new_min < getMinValueDifference()) return
             model.min_value = new_min
             model.max_value = new_max
