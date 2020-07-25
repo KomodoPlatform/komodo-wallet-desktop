@@ -671,6 +671,30 @@
     "active": false,
     "currently_enabled": false
   },
+  "RFOX": {
+    "coin": "RFOX",
+    "name": "RedFOX Labs",
+    "coinpaprika_id": "rfox-redfox-labs",
+    "coingecko_id": "redfox-labs",
+    "electrum": [
+      {
+        "url": "electrum1.cipig.net:10034"
+      },
+      {
+        "url": "electrum2.cipig.net:10034"
+      },
+      {
+        "url": "electrum3.cipig.net:10034"
+      }
+    ],
+    "explorer_url": [
+      "https://rfox.explorer.dexstats.info/"
+    ],
+    "type": "Smart Chain",
+    "is_erc_20": false,
+    "active": false,
+    "currently_enabled": false
+  },
   "CHIPS": {
     "coin": "CHIPS",
     "type": "UTXO",
