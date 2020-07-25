@@ -14,6 +14,7 @@
 //! Project Headers
 #include "atomic.dex.app.hpp"
 #include "atomic.dex.kill.hpp"
+#include "atomic.dex.qt.model.factory.hpp"
 #include "atomic.threadpool.hpp"
 
 #ifdef __APPLE__
@@ -72,11 +73,12 @@ main([[maybe_unused]] int argc, [[maybe_unused]] char* argv[])
     spdlog::set_pattern("[%H:%M:%S %z] [%L] [thr %t] %v");
     spdlog::info("Logger successfully initialized");
 
-    //spdlog::info("asan report: {}", (fs::temp_directory_path() / "asan.log").string().c_str());
+    // spdlog::info("asan report: {}", (fs::temp_directory_path() / "asan.log").string().c_str());
     //__sanitizer_set_report_path((fs::temp_directory_path() / "asan.log").string().c_str());
 
     //! App declaration
-    atomic_dex::application atomic_app;
+    atomic_dex::application      atomic_app;
+    atomic_dex::qt_model_factory factory(atomic_app, &atomic_app);
 
     //! QT
     QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
@@ -90,6 +92,7 @@ main([[maybe_unused]] int argc, [[maybe_unused]] char* argv[])
     QZXing::registerQMLTypes();
     QZXing::registerQMLImageProvider(engine);
     engine.rootContext()->setContextProperty("atomic_app", &atomic_app);
+    engine.rootContext()->setContextProperty("atomic_dex_model_factory", &factory);
 
     engine.addImportPath("qrc:/atomic_qt_design/imports");
     engine.addImportPath("qrc:/atomic_qt_design/Constants");
