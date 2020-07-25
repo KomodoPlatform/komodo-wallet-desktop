@@ -273,6 +273,30 @@
     "active": false,
     "currently_enabled": false
   },
+  "EMC2": {
+    "coin": "EMC2",
+    "name": "Einsteinium",
+    "coinpaprika_id": "emc2-einsteinium",
+    "coingecko_id": "einsteinium",
+    "electrum": [
+      {
+        "url": "electrum1.cipig.net:10062"
+      },
+      {
+        "url": "electrum2.cipig.net:10062"
+      },
+      {
+        "url": "electrum3.cipig.net:10062"
+      }
+    ],
+    "explorer_url": [
+      "https://chainz.cryptoid.info/emc2/"
+    ],
+    "type": "UTXO",
+    "is_erc_20": false,
+    "active": false,
+    "currently_enabled": false
+  },
   "FTC": {
     "coin": "FTC",
     "name": "Feathercoin",
