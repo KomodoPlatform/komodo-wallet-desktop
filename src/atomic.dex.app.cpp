@@ -828,6 +828,7 @@ namespace atomic_dex
             this->m_orders->removeRows(0, count, QModelIndex());
         }
         this->m_orders->clear_registry();
+        this->m_candlestick_chart_ohlc->clear_data();
 
         //! Mark systems
         system_manager_.mark_system<mm2>();

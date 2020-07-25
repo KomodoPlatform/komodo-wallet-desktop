@@ -21,6 +21,7 @@
 
 //! PCH
 #include "atomic.dex.pch.hpp"
+#include "atomic.dex.qt.ma.series.model.hpp"
 
 namespace atomic_dex
 {
@@ -81,6 +82,9 @@ namespace atomic_dex
         bool common_reset_data();
 
         ag::ecs::system_manager& m_system_manager;
+        ma_average_series_model* m_ma_20_series;
+        ma_average_series_model* m_ma_50_series;
+
 
         nlohmann::json m_model_data;
 

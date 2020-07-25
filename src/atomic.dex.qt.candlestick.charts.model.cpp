@@ -22,7 +22,8 @@
 namespace atomic_dex
 {
     candlestick_charts_model::candlestick_charts_model(ag::ecs::system_manager& system_manager, QObject* parent) :
-        QAbstractTableModel(parent), m_system_manager(system_manager)
+        QAbstractTableModel(parent), m_system_manager(system_manager), m_ma_20_series(new ma_average_series_model(this)),
+        m_ma_50_series(new ma_average_series_model(this))
     {
         spdlog::trace("{} l{} f[{}]", __FUNCTION__, __LINE__, fs::path(__FILE__).filename().string());
         spdlog::trace("candlestick charts model created");
@@ -95,6 +96,8 @@ namespace atomic_dex
 
         this->beginResetModel();
         this->m_model_data = provider.get_ohlc_data(m_current_range);
+        this->m_ma_20_series->set_model_data(provider.get_ma_series_data(moving_average::twenty, m_current_range));
+        this->m_ma_50_series->set_model_data(provider.get_ma_series_data(moving_average::fifty, m_current_range));
         this->endResetModel();
         return true;
     }
