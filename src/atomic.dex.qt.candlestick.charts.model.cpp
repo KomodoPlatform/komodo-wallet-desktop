@@ -124,8 +124,8 @@ namespace atomic_dex
         spdlog::trace("new range value IS: min: {} / max: {}", min_value, max_value);
         this->set_min_value(min_value);
         this->set_max_value(max_value);
-        emit seriesFromChanged(get_series_from());
-        emit seriesToChanged(get_series_to());
+        this->set_series_from(m_model_data[int(this->m_model_data.size() * 0.9)].at("timestamp").get<int>());
+        this->set_series_to(m_model_data.back().at("timestamp").get<int>());
         emit seriesSizeChanged(get_series_size());
     }
 
@@ -188,9 +188,7 @@ namespace atomic_dex
         {
             return QDateTime();
         }
-        QDateTime date_time;
-        date_time.setSecsSinceEpoch(m_model_data.back().at("timestamp").get<int>());
-        return date_time;
+        return m_series_to;
     }
 
     QDateTime
@@ -200,9 +198,7 @@ namespace atomic_dex
         {
             return QDateTime();
         }
-        QDateTime date_time;
-        date_time.setSecsSinceEpoch(m_model_data[int(this->m_model_data.size() * 0.9)].at("timestamp").get<int>());
-        return date_time;
+        return m_series_from;
     }
 
     double
@@ -241,5 +237,19 @@ namespace atomic_dex
 
         m_min_value = value;
         emit minValueChanged(m_min_value);
+    }
+
+    void
+    candlestick_charts_model::set_series_from(qint64 value)
+    {
+        m_series_from.setSecsSinceEpoch(value);
+        emit seriesFromChanged(m_series_from);
+    }
+
+    void
+    candlestick_charts_model::set_series_to(qint64 value)
+    {
+        m_series_to.setSecsSinceEpoch(value);
+        emit seriesToChanged(m_series_to);
     }
 } // namespace atomic_dex

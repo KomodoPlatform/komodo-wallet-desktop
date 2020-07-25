@@ -56,8 +56,8 @@ namespace atomic_dex
         void                    set_current_range(const QString& range) noexcept;
         void                    set_min_value(double value);
         void                    set_max_value(double value);
-        // void                    set_series_from(qint64 value);
-        // void                    set_series_to(qint64 value);
+        void                    set_series_from(qint64 value);
+        void                    set_series_to(qint64 value);;
 
       signals:
         void seriesSizeChanged(int value);
