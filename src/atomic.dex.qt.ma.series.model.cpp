@@ -19,5 +19,52 @@
 
 namespace atomic_dex
 {
+    ma_average_series_model::ma_average_series_model(QObject* parent) : QAbstractTableModel(parent)
+    {
+        spdlog::trace("{} l{} f[{}]", __FUNCTION__, __LINE__, fs::path(__FILE__).filename().string());
+        spdlog::trace("ma average series created");
+    }
 
-}
+    ma_average_series_model::~ma_average_series_model() noexcept
+    {
+        spdlog::trace("{} l{} f[{}]", __FUNCTION__, __LINE__, fs::path(__FILE__).filename().string());
+        spdlog::trace("ma average series destroyed");
+    }
+
+    int
+    ma_average_series_model::rowCount(const QModelIndex& parent) const
+    {
+        return m_model_data.size();
+    }
+
+    int
+    ma_average_series_model::columnCount(const QModelIndex& parent) const
+    {
+        return 2;
+    }
+
+    QVariant
+    ma_average_series_model::data(const QModelIndex& index, int role) const
+    {
+        Q_UNUSED(role)
+
+        if (!index.isValid())
+        {
+            return QVariant();
+        }
+
+        if (index.row() >= rowCount() || index.row() < 0)
+        {
+            return QVariant();
+        }
+
+        switch (index.column())
+        {
+        case 0:
+            return m_model_data.at(index.row()).m_timestamp;
+        case 1:
+            return m_model_data.at(index.row()).m_average;
+        }
+        return QVariant();
+    }
+} // namespace atomic_dex
