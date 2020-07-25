@@ -26,10 +26,12 @@ ChartView {
         const model = mapper.model
 
         // Update last value line
-        const last_open = model.data(model.index(999, mapper.openColumn), 0)
-        const last_close = model.data(model.index(999, mapper.closeColumn), 0)
+        const last_idx = series.count - 1
+        const last_open = model.data(model.index(last_idx, mapper.openColumn), 0)
+        const last_close = model.data(model.index(last_idx, mapper.closeColumn), 0)
         series.last_value = last_close
         series.last_value_green = last_close >= last_open
+        series.updateLastValueY()
 
         // Update other stuff
         updater.updateChart()
@@ -111,18 +113,10 @@ ChartView {
         property double global_max: 0
         property double last_value: 0
         property bool last_value_green: true
-        property double last_value_y: 0
 
         function updateLastValueY() {
-            series.last_value_y = chart.mapToPosition(Qt.point(0, series.last_value), series).y
-        }
-
-        Timer {
-            id: update_last_value_y_timer
-            interval: 200
-            repeat: false
-            running: false
-            onTriggered: series.updateLastValueY()
+            horizontal_line.y = chart.mapToPosition(Qt.point(0, series.last_value), series).y
+            console.log("updateLastValueY!", series.last_value, horizontal_line.y)
         }
 
         increasingColor: Style.colorGreen
@@ -189,7 +183,6 @@ ChartView {
 
         series.global_max = 0
         series.last_value = 0
-        series.last_value_y = 0
         series_area.global_max = 0
 
         const historical = getHistorical()
@@ -250,7 +243,6 @@ ChartView {
 
         computeMovingAverage()
 
-        update_last_value_y_timer.start()
         updater.updateChart()
     }
 
@@ -344,6 +336,7 @@ ChartView {
         id: cursor_vertical_line
         property double x_position: 0
         readonly property color color: Style.colorBlue
+
         anchors.top: parent.top
         width: 1
         height: parent.height
@@ -478,6 +471,13 @@ ChartView {
         repeat: true
         onTriggered: updateChart()
 
+        function scrollHorizontal(pixels) {
+
+        }
+        function scrollVertical(pixels) {
+
+        }
+
         function updateChart() {
             if(!can_update) return
             can_update = false
@@ -534,7 +534,6 @@ ChartView {
                                                 ) : ``
 
                 // Positions
-                horizontal_line.y = series.last_value_y
                 cursor_horizontal_line.y = mouse_y
             }
 
