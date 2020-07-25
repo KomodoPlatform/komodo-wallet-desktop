@@ -39,7 +39,6 @@ ChartView {
         // Get timestamp caps
         first_value_timestamp = model.data(model.index(0, mapper.timestampColumn), 0)
         last_value_timestamp = model.data(model.index(last_idx, mapper.timestampColumn), 0)
-        console.log(first_value_timestamp, last_value_timestamp)
 
         // Update other stuff
         updater.updateChart()
@@ -123,7 +122,8 @@ ChartView {
         property bool last_value_green: true
 
         function updateLastValueY() {
-            horizontal_line.y = chart.mapToPosition(Qt.point(0, series.last_value), series).y
+            const area = plotArea
+            horizontal_line.y = Math.max(Math.min(chart.mapToPosition(Qt.point(0, series.last_value), series).y, area.y + area.height), area.y)
         }
 
         increasingColor: Style.colorGreen
