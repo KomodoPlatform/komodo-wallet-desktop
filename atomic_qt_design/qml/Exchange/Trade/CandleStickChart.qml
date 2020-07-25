@@ -461,7 +461,7 @@ ChartView {
         id: updater
         property bool can_update: true
 
-        readonly property double scroll_speed: 0.1
+        readonly property double scroll_speed: 0.0001
         property double delta_wheel_y: 0
         property double prev_mouse_x
         property double prev_mouse_y
@@ -479,7 +479,6 @@ ChartView {
             const scale = pixels / chart.plotArea.width
             const amount = (max - min) * scale
 
-            console.log(min, max, amount)
             model.series_from = new Date(min - amount)
             model.series_to = new Date(max - amount)
         }
@@ -493,6 +492,18 @@ ChartView {
 
             model.min_value += amount
             model.max_value += amount
+        }
+
+        function zoomVertical(factor) {
+            const model = cs_mapper.model
+            model.min_value = model.min_value * factor
+            model.max_value = model.max_value * factor
+        }
+
+        function zoomHorizontal(factor) {
+            const model = cs_mapper.model
+            model.series_from = new Date(model.series_from.getTime() * (1 - factor))
+            model.series_to = new Date(model.series_to.getTime() * (1 + factor))
         }
 
         function updateChart() {
@@ -524,7 +535,10 @@ ChartView {
             if (zoomed) {
 //                chart.zoom(1 + (-delta_wheel_y/360) * scroll_speed)
 //                series.updateLastValueY()
-//                delta_wheel_y = 0
+
+                zoomHorizontal((-delta_wheel_y/360) * scroll_speed)
+
+                delta_wheel_y = 0
             }
 
             // Update cursor line
