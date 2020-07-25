@@ -157,6 +157,7 @@ target_sources(atomic_qt_shared_deps INTERFACE
         ${CMAKE_SOURCE_DIR}/src/atomic.dex.qt.orders.model.cpp
         ${CMAKE_SOURCE_DIR}/src/atomic.dex.qt.orders.proxy.model.cpp
         ${CMAKE_SOURCE_DIR}/src/atomic.dex.qt.candlestick.charts.model.cpp
+        ${CMAKE_SOURCE_DIR}/src/atomic.dex.qt.ma.series.model.cpp
         ${CMAKE_SOURCE_DIR}/src/atomic.dex.qt.addressbook.model.cpp
         ${CMAKE_SOURCE_DIR}/src/atomic.dex.qt.addressbook.proxy.filter.model.cpp
         ${CMAKE_SOURCE_DIR}/src/atomic.dex.qt.contact.model.cpp

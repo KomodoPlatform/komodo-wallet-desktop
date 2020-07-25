@@ -735,7 +735,7 @@ namespace atomic_dex
     mm2::process_swaps()
     {
         std::size_t               total = this->m_swaps_registry.at("result").total;
-        t_my_recent_swaps_request request{.limit = total != 0 ? total : 50};
+        t_my_recent_swaps_request request{.limit = total > 0 ? total : 50};
         auto                      answer = rpc_my_recent_swaps(std::move(request));
         if (answer.result.has_value())
         {
