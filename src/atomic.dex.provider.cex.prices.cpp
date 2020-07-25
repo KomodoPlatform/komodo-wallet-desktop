@@ -235,8 +235,21 @@ namespace atomic_dex
                 add_moving_average_functor(cur_range, idx, ma_50_series, sums, 50.f);
                 ++idx;
             }
-            m_ma_20_series_registry[key] = ma_20_series;
-            m_ma_50_series_registry[key] = ma_50_series;
+
+            m_ma_20_series_registry->operator[](key) = ma_20_series;
+            m_ma_50_series_registry->operator[](key) = ma_50_series;
+        }
+    }
+
+    std::vector<ma_series_data>
+    cex_prices_provider::get_ma_series_data(moving_average scope, const std::string& range) const noexcept
+    {
+        switch (scope)
+        {
+        case moving_average::twenty:
+            return m_ma_20_series_registry->at(range);
+        case moving_average::fifty:
+            return m_ma_50_series_registry->at(range);
         }
     }
 } // namespace atomic_dex
