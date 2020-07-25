@@ -124,8 +124,8 @@ namespace atomic_dex
         spdlog::trace("new range value IS: min: {} / max: {}", min_value, max_value);
         this->set_min_value(min_value);
         this->set_max_value(max_value);
-        this->set_series_from(m_model_data[int(this->m_model_data.size() * 0.9)].at("timestamp").get<int>());
-        this->set_series_to(m_model_data.back().at("timestamp").get<int>());
+        this->set_series_from(m_model_data[int(this->m_model_data.size() * 0.9)].at("timestamp").get<unsigned long long>() * 1000ull);
+        this->set_series_to(m_model_data.back().at("timestamp").get<unsigned long long>() * 1000ull);
         emit seriesSizeChanged(get_series_size());
     }
 
@@ -216,7 +216,6 @@ namespace atomic_dex
     void
     candlestick_charts_model::set_max_value(double value)
     {
-        qWarning("Floating point comparison needs context sanity check");
         if (qFuzzyCompare(m_max_value, value))
         {
             return;
@@ -229,7 +228,6 @@ namespace atomic_dex
     void
     candlestick_charts_model::set_min_value(double value)
     {
-        qWarning("Floating point comparison needs context sanity check");
         if (qFuzzyCompare(m_min_value, value))
         {
             return;
@@ -242,14 +240,14 @@ namespace atomic_dex
     void
     candlestick_charts_model::set_series_from(qint64 value)
     {
-        m_series_from.setSecsSinceEpoch(value);
+        m_series_from.setMSecsSinceEpoch(value);
         emit seriesFromChanged(m_series_from);
     }
 
     void
     candlestick_charts_model::set_series_to(qint64 value)
     {
-        m_series_to.setSecsSinceEpoch(value);
+        m_series_to.setMSecsSinceEpoch(value);
         emit seriesToChanged(m_series_to);
     }
 } // namespace atomic_dex
