@@ -124,8 +124,12 @@ namespace atomic_dex
         spdlog::trace("new range value IS: min: {} / max: {}", min_value, max_value);
         this->set_min_value(min_value);
         this->set_max_value(max_value);
-        this->set_series_from(m_model_data[int(this->m_model_data.size() * 0.9)].at("timestamp").get<int>());
-        this->set_series_to(m_model_data.back().at("timestamp").get<int>());
+        QDateTime from;
+        from.setSecsSinceEpoch(m_model_data[int(this->m_model_data.size() * 0.9)].at("timestamp").get<int>());
+        this->set_series_from(from);
+        QDateTime to;
+        to.setSecsSinceEpoch(m_model_data.back().at("timestamp").get<int>());
+        this->set_series_to(to);
         emit seriesSizeChanged(get_series_size());
     }
 
@@ -240,16 +244,16 @@ namespace atomic_dex
     }
 
     void
-    candlestick_charts_model::set_series_from(qint64 value)
+    candlestick_charts_model::set_series_from(QDateTime value)
     {
-        m_series_from.setSecsSinceEpoch(value);
+        m_series_from = value;
         emit seriesFromChanged(m_series_from);
     }
 
     void
-    candlestick_charts_model::set_series_to(qint64 value)
+    candlestick_charts_model::set_series_to(QDateTime value)
     {
-        m_series_to.setSecsSinceEpoch(value);
+        m_series_to = value;
         emit seriesToChanged(m_series_to);
     }
 } // namespace atomic_dex
