@@ -461,7 +461,8 @@ ChartView {
         id: updater
         property bool can_update: true
 
-        readonly property double scroll_speed: 0.0001
+        readonly property double scroll_speed_x: 0.0001
+        readonly property double scroll_speed_y: 0.05
         property double delta_wheel_y: 0
         property double prev_mouse_x
         property double prev_mouse_y
@@ -529,7 +530,7 @@ ChartView {
 
                 if(diff_y !== 0) {
                     if(inside_plot_area) scrollVertical(diff_y)
-                    else zoomVertical((diff_y/area.height) * 0.05)
+                    else zoomVertical((diff_y/area.height) * scroll_speed_y)
 
                     series.updateLastValueY()
                 }
@@ -538,8 +539,8 @@ ChartView {
             // Update zoom
             const zoomed = delta_wheel_y !== 0
             if (zoomed) {
-                if(inside_plot_area) zoomHorizontal((-delta_wheel_y/360) * scroll_speed)
-                else zoomVertical((-delta_wheel_y/360) * 0.05)
+                if(inside_plot_area) zoomHorizontal((-delta_wheel_y/360) * scroll_speed_x)
+                else zoomVertical((-delta_wheel_y/360) * scroll_speed_y)
 
                 delta_wheel_y = 0
             }
