@@ -33,6 +33,9 @@ namespace atomic_dex
         Q_PROPERTY(QDateTime series_to READ get_series_to WRITE set_series_to NOTIFY seriesToChanged)
         Q_PROPERTY(double min_value READ get_min_value WRITE set_min_value NOTIFY minValueChanged)
         Q_PROPERTY(double max_value READ get_max_value WRITE set_max_value NOTIFY maxValueChanged)
+        Q_PROPERTY(double global_max_value READ get_global_max_value NOTIFY globalMaxValueChanged)
+        Q_PROPERTY(double global_min_value READ get_global_min_value NOTIFY globalMinValueChanged)
+
       public:
         candlestick_charts_model(ag::ecs::system_manager& system_manager, QObject* parent = nullptr);
         ~candlestick_charts_model() noexcept final;
@@ -52,6 +55,8 @@ namespace atomic_dex
         [[nodiscard]] QDateTime get_series_to() const noexcept;
         [[nodiscard]] double    get_min_value() const noexcept;
         [[nodiscard]] double    get_max_value() const noexcept;
+        [[nodiscard]] double    get_global_min_value() const noexcept;
+        [[nodiscard]] double    get_global_max_value() const noexcept;
         [[nodiscard]] QString   get_current_range() const noexcept;
         void                    set_current_range(const QString& range) noexcept;
         void                    set_min_value(double value);
@@ -65,9 +70,14 @@ namespace atomic_dex
         void seriesToChanged(QDateTime date);
         void minValueChanged(double value);
         void maxValueChanged(double value);
+        void globalMinValueChanged(double value);
+        void globalMaxValueChanged(double value);
         void rangeChanged();
 
       private:
+        void                    set_global_min_value(double value);
+        void                    set_global_max_value(double value);
+
         bool common_reset_data();
 
         ag::ecs::system_manager& m_system_manager;
@@ -78,6 +88,8 @@ namespace atomic_dex
 
         double    m_min_value{0};
         double    m_max_value{0};
+        double    m_global_max_value{0};
+        double    m_global_min_value{0};
         QDateTime m_series_from;
         QDateTime m_series_to;
     };

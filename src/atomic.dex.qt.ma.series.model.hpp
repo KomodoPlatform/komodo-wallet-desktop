@@ -23,7 +23,7 @@
 #include "atomic.dex.pch.hpp"
 
 //! Project Header
-#include "atomic.dex.qt.ma.series.data.hpp"
+#include "atomic.dex.ma.series.data.hpp"
 
 namespace atomic_dex
 {
@@ -38,14 +38,9 @@ namespace atomic_dex
         QVariant data(const QModelIndex& index, int role) const final;
 
         void
-        set_model_data(QVector<ma_series_data> model_data)
-        {
-            this->beginResetModel();
-            m_model_data = std::move(model_data);
-            this->endResetModel();
-        }
+        set_model_data(std::vector<ma_series_data> model_data) noexcept;
 
       private:
-        QVector<ma_series_data> m_model_data;
+        std::vector<ma_series_data> m_model_data;
     };
 } // namespace atomic_dex

@@ -61,10 +61,18 @@ namespace atomic_dex
         switch (index.column())
         {
         case 0:
-            return m_model_data.at(index.row()).m_timestamp;
+            return quint64(m_model_data.at(index.row()).m_timestamp);
         case 1:
             return m_model_data.at(index.row()).m_average;
         }
         return QVariant();
+    }
+
+    void
+    ma_average_series_model::set_model_data(std::vector<ma_series_data> model_data) noexcept
+    {
+        this->beginResetModel();
+        m_model_data = std::move(model_data);
+        this->endResetModel();
     }
 } // namespace atomic_dex

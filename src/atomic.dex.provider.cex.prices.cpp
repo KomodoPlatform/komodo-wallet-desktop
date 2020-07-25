@@ -122,6 +122,7 @@ namespace atomic_dex
                     //! It's quoted need to reverse all the value
                     this->reverse_ohlc_data();
                 }
+                this->compute_moving_average();
                 this->dispatcher_.trigger<refresh_ohlc_needed>(is_a_reset);
                 return true;
             }
@@ -201,4 +202,9 @@ namespace atomic_dex
         return *m_current_ohlc_data;
     }
 
+    void
+    cex_prices_provider::compute_moving_average()
+    {
+
+    }
 } // namespace atomic_dex

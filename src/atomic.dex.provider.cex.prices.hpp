@@ -19,6 +19,7 @@
 #include "atomic.dex.pch.hpp"
 
 //! Project header
+#include "atomic.dex.ma.series.data.hpp"
 #include "atomic.dex.mm2.hpp"
 
 inline constexpr const std::size_t nb_pair_supported = 40_sz;
@@ -29,9 +30,10 @@ namespace atomic_dex
 
     class cex_prices_provider final : public ag::ecs::pre_update_system<cex_prices_provider>
     {
-        using t_supported_pairs               = std::array<std::string, nb_pair_supported>;
-        using t_current_orderbook_ticker_pair = std::pair<std::string, std::string>;
-        using t_synchronized_json             = boost::synchronized_value<nlohmann::json>;
+        using t_supported_pairs                  = std::array<std::string, nb_pair_supported>;
+        using t_current_orderbook_ticker_pair    = std::pair<std::string, std::string>;
+        using t_synchronized_json                = boost::synchronized_value<nlohmann::json>;
+        using t_synchronized_moving_average_data = boost::synchronized_value<std::vector<ma_series_data>>;
 
         //! Private fields
         mm2& m_mm2_instance;
@@ -46,6 +48,8 @@ namespace atomic_dex
 
         //! OHLC Data
         t_synchronized_json m_current_ohlc_data;
+        t_synchronized_moving_average_data m_ma_20_series;
+        t_synchronized_moving_average_data m_ma_50_series;
 
         //! Threads
         std::queue<std::future<void>> m_pending_tasks;
@@ -86,6 +90,7 @@ namespace atomic_dex
 
         //! Event that occur when the ticker pair is changed in the front end
         void on_current_orderbook_ticker_pair_changed(const orderbook_refresh& evt) noexcept;
+        void compute_moving_average();
     };
 } // namespace atomic_dex
 

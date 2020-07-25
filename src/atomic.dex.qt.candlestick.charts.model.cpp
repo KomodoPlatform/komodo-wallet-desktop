@@ -122,6 +122,8 @@ namespace atomic_dex
             }
         }
         spdlog::trace("new range value IS: min: {} / max: {}", min_value, max_value);
+        this->set_global_min_value(min_value);
+        this->set_global_max_value(max_value);
         this->set_min_value(min_value);
         this->set_max_value(max_value);
         QDateTime from;
@@ -215,6 +217,42 @@ namespace atomic_dex
     candlestick_charts_model::get_max_value() const noexcept
     {
         return m_max_value;
+    }
+
+    double
+    candlestick_charts_model::get_global_min_value() const noexcept
+    {
+        return m_global_min_value;
+    }
+
+    double
+    candlestick_charts_model::get_global_max_value() const noexcept
+    {
+        return m_global_max_value;
+    }
+
+    void
+    candlestick_charts_model::set_global_max_value(double value)
+    {
+        if (qFuzzyCompare(m_global_max_value, value))
+        {
+            return;
+        }
+
+        m_global_max_value = value;
+        emit globalMaxValueChanged(m_global_max_value);
+    }
+
+    void
+    candlestick_charts_model::set_global_min_value(double value)
+    {
+        if (qFuzzyCompare(m_global_min_value, value))
+        {
+            return;
+        }
+
+        m_global_min_value = value;
+        emit globalMinValueChanged(m_global_min_value);
     }
 
     void
