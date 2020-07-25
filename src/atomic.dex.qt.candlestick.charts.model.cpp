@@ -316,26 +316,26 @@ namespace atomic_dex
     candlestick_charts_model::update_visible_range()
     {
         auto from_it = std::lower_bound(
-            rbegin(m_model_data), rend(m_model_data), (int)get_series_from().toSecsSinceEpoch(), [](const nlohmann::json& current_json, int timestamp) {
+            begin(m_model_data), end(m_model_data), (int)get_series_from().toSecsSinceEpoch(), [](const nlohmann::json& current_json, int timestamp) {
                 int res = current_json.at("timestamp").get<int>();
-                return timestamp < res;
+                return res < timestamp;
             });
 
         auto to_it = std::lower_bound(
-            rbegin(m_model_data), rend(m_model_data), (int)get_series_to().toSecsSinceEpoch(), [](const nlohmann::json& current_json, int timestamp) {
+            begin(m_model_data), end(m_model_data), (int)get_series_to().toSecsSinceEpoch(), [](const nlohmann::json& current_json, int timestamp) {
                 int res = current_json.at("timestamp").get<int>();
-                return timestamp < res;
+                return res < timestamp;
             });
 
-        if (from_it != m_model_data.rend() && to_it != m_model_data.rend())
+        if (from_it != m_model_data.end() && to_it != m_model_data.end())
         {
-            auto min_value_j = std::min_element(to_it, from_it, [](nlohmann::json& left, nlohmann::json& right) {
+            auto min_value_j = std::min_element(from_it, to_it, [](nlohmann::json& left, nlohmann::json& right) {
                 auto left_value  = left.at("low").get<double>();
                 auto right_value = right.at("low").get<double>();
                 return left_value < right_value;
             });
 
-            auto max_value_j = std::max_element(to_it, from_it, [](nlohmann::json& left, nlohmann::json& right) {
+            auto max_value_j = std::max_element(from_it, to_it, [](nlohmann::json& left, nlohmann::json& right) {
                 auto left_value  = left.at("high").get<double>();
                 auto right_value = right.at("high").get<double>();
                 return left_value < right_value;
