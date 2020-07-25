@@ -31,8 +31,8 @@ namespace atomic_dex
         Q_PROPERTY(QString current_range READ get_current_range WRITE set_current_range NOTIFY rangeChanged)
         Q_PROPERTY(QDateTime series_from READ get_series_from NOTIFY seriesFromChanged)
         Q_PROPERTY(QDateTime series_to READ get_series_to NOTIFY seriesToChanged)
-        Q_PROPERTY(double min_value READ get_min_value NOTIFY minValueChanged)
-        Q_PROPERTY(double max_value READ get_max_value NOTIFY maxValueChanged)
+        Q_PROPERTY(double min_value READ get_min_value WRITE set_min_value NOTIFY minValueChanged)
+        Q_PROPERTY(double max_value READ get_max_value WRITE set_max_value NOTIFY maxValueChanged)
       public:
         candlestick_charts_model(ag::ecs::system_manager& system_manager, QObject* parent = nullptr);
         ~candlestick_charts_model() noexcept final;
@@ -53,6 +53,8 @@ namespace atomic_dex
         [[nodiscard]] double    get_max_value() const noexcept;
         [[nodiscard]] QString   get_current_range() const noexcept;
         void                    set_current_range(const QString& range) noexcept;
+        void                    set_min_value(double value);
+        void                    set_max_value(double value);
 
       signals:
         void seriesSizeChanged(int value);
@@ -63,8 +65,6 @@ namespace atomic_dex
         void rangeChanged();
 
       private:
-        void set_min_value(double value);;
-        void set_max_value(double value);
         ag::ecs::system_manager& m_system_manager;
 
         nlohmann::json m_model_data;
