@@ -481,6 +481,8 @@ ChartView {
         readonly property double scroll_speed_x: 0.0001
         readonly property double scroll_speed_y: 0.05
         property double delta_wheel_y: 0
+        property double click_started_inside_area
+        property double prev_mouse_pressed
         property double prev_mouse_x
         property double prev_mouse_y
 
@@ -548,6 +550,8 @@ ChartView {
         }
 
         function scrollVertical(pixels) {
+            if(locked_min_max_value) return
+
             const model = cs_mapper.model
             const min = model.min_value
             const max = model.max_value
@@ -576,6 +580,8 @@ ChartView {
         }
 
         function zoomVertical(factor) {
+            locked_min_max_value = false
+
             const model = cs_mapper.model
 
             const new_min = capPriceMin(model.min_value * (1 - factor))
@@ -600,16 +606,25 @@ ChartView {
             const area = chart.plotArea
             const inside_plot_area = mouse_x < area.x + area.width
 
+            const curr_mouse_pressed = mouse_area.containsPress
+            const clicked = !prev_mouse_pressed && curr_mouse_pressed
+            prev_mouse_pressed = curr_mouse_pressed
+
+            if(clicked) {
+                click_started_inside_area = inside_plot_area
+            }
+
             // Update drag
-            if(mouse_area.containsPress) {
-                if(inside_plot_area && diff_x !== 0) {
+            if(curr_mouse_pressed) {
+                if(click_started_inside_area && diff_x !== 0) {
                     scrollHorizontal(diff_x)
                 }
 
                 if(diff_y !== 0) {
-                    if(inside_plot_area) scrollVertical(diff_y)
+                    if(click_started_inside_area) {
+                        scrollVertical(diff_y)
+                    }
                     else {
-                        locked_min_max_value = false
                         zoomVertical((diff_y/area.height) * scroll_speed_y)
                     }
 
