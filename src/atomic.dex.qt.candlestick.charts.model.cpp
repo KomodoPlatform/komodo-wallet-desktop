@@ -19,11 +19,6 @@
 //! Project Headers
 #include "atomic.dex.provider.cex.prices.hpp"
 
-namespace
-{
-    constexpr const float g_margin = 0.02f;
-}
-
 namespace atomic_dex
 {
     candlestick_charts_model::candlestick_charts_model(ag::ecs::system_manager& system_manager, QObject* parent) :
@@ -210,6 +205,7 @@ namespace atomic_dex
             return;
         }
 
+        m_max_value = value;
         emit maxValueChanged(m_max_value);
     }
 
@@ -222,6 +218,7 @@ namespace atomic_dex
             return;
         }
 
+        m_max_value = value;
         emit minValueChanged(m_min_value);
     }
 } // namespace atomic_dex
