@@ -29,6 +29,8 @@ ChartView {
 
     function chartFullyReset() {
         updater.locked_min_max_value = true
+        chartUpdated()
+        update_last_value_y_timer.restart()
     }
 
     function chartUpdated() {
@@ -133,6 +135,14 @@ ChartView {
         function updateLastValueY() {
             const area = plotArea
             horizontal_line.y = Math.max(Math.min(chart.mapToPosition(Qt.point(0, series.last_value), series).y, area.y + area.height), area.y)
+        }
+
+        Timer {
+            id: update_last_value_y_timer
+            interval: 50
+            repeat: false
+            running: false
+            onTriggered: series.updateLastValueY()
         }
 
         increasingColor: Style.colorGreen
