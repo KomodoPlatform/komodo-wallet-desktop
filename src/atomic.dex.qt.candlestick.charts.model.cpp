@@ -20,6 +20,7 @@
 //! Project Headers
 #include "atomic.dex.provider.cex.prices.hpp"
 #include "atomic.dex.qt.candlestick.charts.model.hpp"
+#include "atomic.threadpool.hpp"
 
 namespace atomic_dex
 {
@@ -98,9 +99,10 @@ namespace atomic_dex
 
         this->beginResetModel();
         this->m_model_data = provider.get_ohlc_data(m_current_range);
+        this->endResetModel();
         this->m_ma_20_series->set_model_data(provider.get_ma_series_data(moving_average::twenty, m_current_range));
         this->m_ma_50_series->set_model_data(provider.get_ma_series_data(moving_average::fifty, m_current_range));
-        this->endResetModel();
+
         return true;
     }
 
