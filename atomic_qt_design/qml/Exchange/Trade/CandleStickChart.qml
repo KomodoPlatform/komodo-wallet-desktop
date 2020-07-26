@@ -80,8 +80,8 @@ ChartView {
             lastSetRow: model.series_size
         }
 
-        increasingColor: Style.colorGreen
-        decreasingColor: Style.colorRed
+        increasingColor: Style.colorGreen3
+        decreasingColor: Style.colorRed3
         bodyOutlineVisible: false
 
         property double visible_max: cs_mapper.model.visible_max_volume
