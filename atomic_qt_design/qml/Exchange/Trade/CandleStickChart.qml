@@ -30,7 +30,6 @@ ChartView {
     function chartFullyReset() {
         updater.locked_min_max_value = true
         chartUpdated()
-        update_last_value_y_timer.restart()
     }
 
     function chartUpdated() {
@@ -138,7 +137,6 @@ ChartView {
         }
 
         Timer {
-            id: update_last_value_y_timer
             interval: 50
             repeat: false
             running: false
@@ -639,8 +637,6 @@ ChartView {
                     else {
                         zoomVertical((diff_y/area.height) * scroll_speed_y)
                     }
-
-                    series.updateLastValueY()
                 }
             }
 
@@ -654,7 +650,7 @@ ChartView {
             }
 
             // Update cursor line
-            if(zoomed || diff_x !== 0 || diff_y !== 0) {
+            if(curr_mouse_pressed || zoomed || diff_x !== 0 || diff_y !== 0) {
                 // Map mouse position to value
                 const cp = chart.mapToValue(Qt.point(mouse_x, mouse_y), series)
 
@@ -681,6 +677,8 @@ ChartView {
                 // Positions
                 cursor_horizontal_line.y = mouse_y
             }
+
+            series.updateLastValueY()
 
             // Block this function for a while to allow engine to render
             update_block_timer.start()
