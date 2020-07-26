@@ -90,6 +90,11 @@ ChartView {
     LineSeries {
         id: series_ma1
 
+        VXYModelMapper {
+            model: cs_mapper.model.ma_20_series_mdl
+            xColumn: 0
+            yColumn: 1
+        }
         readonly property int num: 20
 
         color: Style.colorChartMA1
