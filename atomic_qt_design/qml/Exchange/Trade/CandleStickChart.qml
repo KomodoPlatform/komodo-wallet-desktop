@@ -177,6 +177,8 @@ ChartView {
             labelsColor: series.axisX.labelsColor
             color: series.axisX.color
 
+            labelFormat: "%llf"
+
             onRangeChanged: {
 //                if(min < 0) value_axis.min = 0
 
