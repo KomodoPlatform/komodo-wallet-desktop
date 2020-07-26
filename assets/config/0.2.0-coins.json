@@ -137,6 +137,30 @@
     "active": false,
     "currently_enabled": false
   },
+  "CCL": {
+    "coin": "CCL",
+    "name": "CoinCollect",
+    "coinpaprika_id": "test-coin",
+    "coingecko_id": "test-coin",
+    "electrum": [
+      {
+        "url": "electrum1.cipig.net:10029"
+      },
+      {
+        "url": "electrum2.cipig.net:10029"
+      },
+      {
+        "url": "electrum3.cipig.net:10029"
+      }
+    ],
+    "explorer_url": [
+      "https://ccl.explorer.dexstats.info/"
+    ],
+    "type": "Smart Chain",
+    "is_erc_20": false,
+    "active": false,
+    "currently_enabled": false
+  },
   "CRYPTO": {
     "coin": "CRYPTO",
     "name": "CRYPTO",
