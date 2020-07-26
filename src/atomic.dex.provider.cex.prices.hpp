@@ -60,7 +60,7 @@ namespace atomic_dex
         timed_waiter                  m_provider_thread_timer;
 
         //! Private API
-        void reverse_ohlc_data() noexcept;
+        void reverse_ohlc_data(nlohmann::json& cur_range) noexcept;
 
       public:
         //! Constructor
@@ -93,7 +93,7 @@ namespace atomic_dex
 
         //! Event that occur when the ticker pair is changed in the front end
         void on_current_orderbook_ticker_pair_changed(const orderbook_refresh& evt) noexcept;
-        void compute_moving_average();
+        void updating_quote_and_average(bool quoted);
     };
 } // namespace atomic_dex
 

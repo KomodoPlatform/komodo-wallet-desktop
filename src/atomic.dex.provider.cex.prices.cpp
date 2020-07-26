@@ -117,12 +117,7 @@ namespace atomic_dex
             if (answer.result.has_value())
             {
                 m_current_ohlc_data = answer.result.value().raw_result;
-                if (quoted)
-                {
-                    //! It's quoted need to reverse all the value
-                    this->reverse_ohlc_data();
-                }
-                this->compute_moving_average();
+                this->updating_quote_and_average(quoted);
                 this->dispatcher_.trigger<refresh_ohlc_needed>(is_a_reset);
                 return true;
             }
@@ -180,23 +175,15 @@ namespace atomic_dex
     }
 
     void
-    cex_prices_provider::reverse_ohlc_data() noexcept
+    cex_prices_provider::reverse_ohlc_data(nlohmann::json& cur_range) noexcept
     {
-        nlohmann::json values = *this->m_current_ohlc_data;
-        for (auto&& item: values)
-        {
-            for (auto&& cur_range: item)
-            {
-                cur_range["open"]         = 1 / cur_range.at("open").get<double>();
-                cur_range["high"]         = 1 / cur_range.at("high").get<double>();
-                cur_range["low"]          = 1 / cur_range.at("low").get<double>();
-                cur_range["close"]        = 1 / cur_range.at("close").get<double>();
-                auto volume               = cur_range.at("volume").get<double>();
-                cur_range["volume"]       = cur_range["quote_volume"];
-                cur_range["quote_volume"] = volume;
-            }
-        }
-        m_current_ohlc_data = values;
+        cur_range["open"]         = 1 / cur_range.at("open").get<double>();
+        cur_range["high"]         = 1 / cur_range.at("high").get<double>();
+        cur_range["low"]          = 1 / cur_range.at("low").get<double>();
+        cur_range["close"]        = 1 / cur_range.at("close").get<double>();
+        auto volume               = cur_range.at("volume").get<double>();
+        cur_range["volume"]       = cur_range["quote_volume"];
+        cur_range["quote_volume"] = volume;
     }
 
     nlohmann::json
@@ -206,7 +193,7 @@ namespace atomic_dex
     }
 
     void
-    cex_prices_provider::compute_moving_average()
+    cex_prices_provider::updating_quote_and_average(bool is_quoted)
     {
         nlohmann::json ohlc_data                  = *this->m_current_ohlc_data;
         auto           add_moving_average_functor = [](nlohmann::json& current_item, std::size_t idx, const std::vector<double>& sums, std::size_t num) {
@@ -234,6 +221,10 @@ namespace atomic_dex
             std::vector<double> sums;
             for (auto&& cur_range: value)
             {
+                if (is_quoted)
+                {
+                    this->reverse_ohlc_data(cur_range);
+                }
                 if (idx == 0)
                 {
                     sums.emplace_back(cur_range.at("open").get<double>());
