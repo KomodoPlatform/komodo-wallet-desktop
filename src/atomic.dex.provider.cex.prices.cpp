@@ -83,7 +83,8 @@ namespace atomic_dex
             spdlog::info("cex prices provider thread started");
 
             using namespace std::chrono_literals;
-            do {
+            do
+            {
                 spdlog::info("fetching ohlc value");
                 auto [base, rel] = m_current_orderbook_ticker_pair;
                 if (not base.empty() && not rel.empty() && m_mm2_instance.is_orderbook_thread_active())
@@ -186,10 +187,13 @@ namespace atomic_dex
         {
             for (auto&& cur_range: item)
             {
-                cur_range["open"]  = 1 / cur_range.at("open").get<double>();
-                cur_range["high"]  = 1 / cur_range.at("high").get<double>();
-                cur_range["low"]   = 1 / cur_range.at("low").get<double>();
-                cur_range["close"] = 1 / cur_range.at("close").get<double>();
+                cur_range["open"]         = 1 / cur_range.at("open").get<double>();
+                cur_range["high"]         = 1 / cur_range.at("high").get<double>();
+                cur_range["low"]          = 1 / cur_range.at("low").get<double>();
+                cur_range["close"]        = 1 / cur_range.at("close").get<double>();
+                auto volume               = cur_range.at("volume").get<double>();
+                cur_range["volume"]       = cur_range["quote_volume"];
+                cur_range["quote_volume"] = volume;
             }
         }
         m_current_ohlc_data = values;
