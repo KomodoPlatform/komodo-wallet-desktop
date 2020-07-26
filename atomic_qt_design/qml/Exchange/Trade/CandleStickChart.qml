@@ -42,7 +42,6 @@ ChartView {
         const last_close = model.data(model.index(last_idx, mapper.closeColumn), 0)
         series.last_value = last_close
         series.last_value_green = last_close >= last_open
-        series.updateLastValueY()
 
         // Get timestamp caps
         first_value_timestamp = model.data(model.index(0, mapper.timestampColumn), 0)
@@ -130,18 +129,6 @@ ChartView {
         property double global_max: 0
         property double last_value: 0
         property bool last_value_green: true
-
-        function updateLastValueY() {
-            const area = plotArea
-            horizontal_line.y = Math.max(Math.min(chart.mapToPosition(Qt.point(0, series.last_value), series).y, area.y + area.height), area.y)
-        }
-
-        Timer {
-            interval: 50
-            repeat: false
-            running: false
-            onTriggered: series.updateLastValueY()
-        }
 
         increasingColor: Style.colorGreen
         decreasingColor: Style.colorRed
@@ -678,7 +665,7 @@ ChartView {
                 cursor_horizontal_line.y = mouse_y
             }
 
-            series.updateLastValueY()
+            horizontal_line.y = Math.max(Math.min(chart.mapToPosition(Qt.point(0, series.last_value), series).y, area.y + area.height), area.y)
 
             // Block this function for a while to allow engine to render
             update_block_timer.start()
