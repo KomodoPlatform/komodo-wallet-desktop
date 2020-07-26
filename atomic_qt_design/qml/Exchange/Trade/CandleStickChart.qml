@@ -323,6 +323,8 @@ Item {
             width: parent.width
             height: 1
 
+            visible: mouse_area.containsMouse
+
             color: Style.colorBlue
 
             Rectangle {
@@ -349,6 +351,7 @@ Item {
             width: 1
             height: parent.height + volume_chart.height + 6
 
+            visible: cursor_horizontal_line.visible
             color: cursor_horizontal_line.color
 
             Rectangle {
