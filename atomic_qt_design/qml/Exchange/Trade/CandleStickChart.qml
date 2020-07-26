@@ -158,9 +158,9 @@ Item {
             id: series_ma1
 
             VXYModelMapper {
-                model: cs_mapper.model.ma_20_series_mdl
+                model: cs_mapper.model
                 xColumn: 0
-                yColumn: 1
+                yColumn: 10
             }
 
             readonly property int num: 20
@@ -180,9 +180,9 @@ Item {
             id: series_ma2
 
             VXYModelMapper {
-                model: cs_mapper.model.ma_50_series_mdl
+                model: cs_mapper.model
                 xColumn: 0
-                yColumn: 1
+                yColumn: 11
             }
 
             readonly property int num: 50

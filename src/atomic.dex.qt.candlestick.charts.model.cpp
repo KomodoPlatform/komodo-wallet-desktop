@@ -96,10 +96,11 @@ namespace atomic_dex
             return m_model_data.at(index.row()).at("close").get<double>() >= m_model_data.at(index.row()).at("open").get<double>()
                        ? m_model_data.at(index.row()).at("volume").get<double>()
                        : 0;
-            //! MA 20
+                       
+        //! MA 20
         case 10:
             return m_model_data.at(index.row()).at("ma_20").get<double>();
-            //! MA 50
+        //! MA 50
         case 11:
             return m_model_data.at(index.row()).at("ma_50").get<double>();
         default:
