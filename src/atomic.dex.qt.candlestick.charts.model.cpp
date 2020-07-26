@@ -175,16 +175,21 @@ namespace atomic_dex
     void
     candlestick_charts_model::update_data()
     {
-        // auto& provider = this->m_system_manager.get_system<cex_prices_provider>();
-        // nlohmann::json ohlc_data = provider.get_ohlc_data(m_current_range);
-        // this->beginInsertRows(QModelIndex(), this->m_model_data.size(), this->m_model_data.size());
-        // m_model_data.push_back(ohlc_data.back());
-        // this->endInsertRows();
+        /*auto&          provider  = this->m_system_manager.get_system<cex_prices_provider>();
+        nlohmann::json ohlc_data = provider.get_ohlc_data(m_current_range);
+        if (ohlc_data.back().at("timestamp").get<unsigned long long>() != m_model_data.back().at("timestamp").get<unsigned long long>())
+        {
+            this->beginInsertRows(QModelIndex(), this->m_model_data.size(), this->m_model_data.size());
+            m_model_data.push_back(ohlc_data.back());
+            this->endInsertRows();
+            emit seriesSizeChanged(get_series_size());
+        }*/
 
         if (not common_reset_data())
         {
             return;
         }
+
         emit seriesSizeChanged(get_series_size());
     }
 
