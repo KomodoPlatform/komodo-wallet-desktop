@@ -369,11 +369,25 @@ namespace atomic_dex
                 return left_value < right_value;
             });
 
+            auto max_volume_j = std::max_element(from_it, to_it, [](nlohmann::json& left, nlohmann::json& right) {
+                auto left_value  = left.at("volume").get<double>();
+                auto right_value = right.at("volume").get<double>();
+                return left_value < right_value;
+            });
+
             auto min_value = min_value_j->at("low").get<double>();
             auto max_value = max_value_j->at("high").get<double>();
+            auto max_volume = max_volume_j->at("volume").get<double>();
             this->set_visible_min_value(min_value);
             this->set_visible_max_value(max_value);
+            this->set_visible_max_volume(max_volume);
         }
+    }
+
+    double
+    candlestick_charts_model::get_visible_max_volume() const noexcept
+    {
+        return m_visible_max_volume;
     }
 
     double
@@ -386,6 +400,18 @@ namespace atomic_dex
     candlestick_charts_model::get_visible_min_value() const noexcept
     {
         return m_visible_min_value;
+    }
+
+    void
+    candlestick_charts_model::set_visible_max_volume(double value)
+    {
+        if (qFuzzyCompare(m_visible_max_volume, value))
+        {
+            return;
+        }
+
+        m_visible_max_volume = value;
+        emit visibleMaxVolumeChanged(m_visible_max_volume);
     }
 
     void

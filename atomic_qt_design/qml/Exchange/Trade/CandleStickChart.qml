@@ -58,7 +58,6 @@ ChartView {
         last_value_timestamp = model.data(model.index(last_idx, mapper.timestampColumn), 0)
         global_min_value = model.global_min_value
         global_max_value = model.global_max_value
-        series_area.global_max = cs_mapper.model.global_max_volume
 
         // Update other stuff
         updater.updateChart(true)
@@ -67,8 +66,8 @@ ChartView {
     AreaSeries {
         id: series_area
 
-        property double global_max: 0
-        onGlobal_maxChanged: value_axis_area.updateAxes()
+        property double visible_max: cs_mapper.model.visible_max_volume
+        onVisible_maxChanged: value_axis_area.updateAxes()
 
         color: Style.colorGreen
 
@@ -82,7 +81,7 @@ ChartView {
             function updateAxes() {
                 // This will be always same, small size at bottom
                 min = 0
-                max = series_area.global_max * 1/0.33333
+                max = series_area.visible_max * 1/0.25
             }
 
             visible: false
