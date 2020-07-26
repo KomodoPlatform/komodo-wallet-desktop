@@ -16,6 +16,7 @@
 
 #pragma once
 
-namespace atomic_dex {
+namespace atomic_dex
+{
     void kill_executable(const char* exec_name);
 }
