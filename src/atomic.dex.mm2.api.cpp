@@ -409,7 +409,7 @@ namespace mm2::api
         j.at("age").get_to(contents.age);
         j.at("zcredits").get_to(contents.zcredits);
 
-        if (contents.price.find(".") != std::string::npos)
+        if (contents.price.find('.') != std::string::npos)
         {
             boost::trim_right_if(contents.price, boost::is_any_of("0"));
             contents.price = contents.price;
