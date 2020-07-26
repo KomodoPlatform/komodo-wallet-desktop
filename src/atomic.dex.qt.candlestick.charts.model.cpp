@@ -315,14 +315,26 @@ namespace atomic_dex
     void
     candlestick_charts_model::update_visible_range()
     {
+        auto from_timestamp = get_series_from().toSecsSinceEpoch();
+        auto first_timestamp = m_model_data[0].at("timestamp").get<int>();
+        if(from_timestamp < first_timestamp) {
+            from_timestamp = first_timestamp;
+        }
+
+        auto to_timestamp = get_series_to().toSecsSinceEpoch();
+        auto last_timestamp = m_model_data[m_model_data.size() - 1].at("timestamp").get<int>();
+        if(to_timestamp > last_timestamp) {
+            to_timestamp = last_timestamp;
+        }
+
         auto from_it = std::lower_bound(
-            begin(m_model_data), end(m_model_data), (int)get_series_from().toSecsSinceEpoch(), [](const nlohmann::json& current_json, int timestamp) {
+            begin(m_model_data), end(m_model_data), from_timestamp, [](const nlohmann::json& current_json, int timestamp) {
                 int res = current_json.at("timestamp").get<int>();
                 return res < timestamp;
             });
 
         auto to_it = std::lower_bound(
-            begin(m_model_data), end(m_model_data), (int)get_series_to().toSecsSinceEpoch(), [](const nlohmann::json& current_json, int timestamp) {
+            begin(m_model_data), end(m_model_data), to_timestamp, [](const nlohmann::json& current_json, int timestamp) {
                 int res = current_json.at("timestamp").get<int>();
                 return res < timestamp;
             });
