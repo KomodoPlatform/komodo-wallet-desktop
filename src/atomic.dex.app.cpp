@@ -754,7 +754,7 @@ namespace atomic_dex
     void
     application::set_current_orderbook(const QString& base, const QString& rel)
     {
-        auto&        provider = this->system_manager_.get_system<cex_prices_provider>();
+        auto& provider        = this->system_manager_.get_system<cex_prices_provider>();
         auto [normal, quoted] = provider.is_pair_supported(base.toStdString(), rel.toStdString());
         this->m_candlestick_chart_ohlc->set_is_pair_supported(normal || quoted);
         this->dispatcher_.trigger<orderbook_refresh>(base.toStdString(), rel.toStdString());
@@ -874,6 +874,7 @@ namespace atomic_dex
         get_dispatcher().sink<refresh_ohlc_needed>().disconnect<&application::on_refresh_ohlc_event>(*this);
         get_dispatcher().sink<process_orders_finished>().disconnect<&application::on_process_orders_finished_event>(*this);
         get_dispatcher().sink<process_swaps_finished>().disconnect<&application::on_process_swaps_finished_event>(*this);
+        get_dispatcher().sink<start_fetching_new_ohlc_data>().disconnect<&application::on_start_fetching_new_ohlc_data_event>(*this);
 
         this->m_need_a_full_refresh_of_mm2 = true;
 
@@ -896,6 +897,7 @@ namespace atomic_dex
         get_dispatcher().sink<refresh_ohlc_needed>().connect<&application::on_refresh_ohlc_event>(*this);
         get_dispatcher().sink<process_orders_finished>().connect<&application::on_process_orders_finished_event>(*this);
         get_dispatcher().sink<process_swaps_finished>().connect<&application::on_process_swaps_finished_event>(*this);
+        get_dispatcher().sink<start_fetching_new_ohlc_data>().connect<&application::on_start_fetching_new_ohlc_data_event>(*this);
     }
 
     QString
@@ -1481,5 +1483,11 @@ namespace atomic_dex
     {
         spdlog::trace("will quit app, prevent all threading event");
         this->m_about_to_exit_app = true;
+    }
+
+    void
+    application::on_start_fetching_new_ohlc_data_event(const start_fetching_new_ohlc_data& evt)
+    {
+        this->m_candlestick_chart_ohlc->set_is_currently_fetching(evt.is_a_reset);
     }
 } // namespace atomic_dex

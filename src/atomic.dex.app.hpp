@@ -109,6 +109,7 @@ namespace atomic_dex
         void on_refresh_update_status_event(const refresh_update_status&) noexcept;
         void on_process_orders_finished_event(const process_orders_finished&) noexcept;
         void on_process_swaps_finished_event(const process_swaps_finished&) noexcept;
+        void on_start_fetching_new_ohlc_data_event(const start_fetching_new_ohlc_data&);
 
         //! Properties Getter
         static const QString&     get_empty_string();

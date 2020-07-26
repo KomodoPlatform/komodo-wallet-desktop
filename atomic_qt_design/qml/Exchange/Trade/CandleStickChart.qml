@@ -132,7 +132,7 @@ Item {
     ChartView {
         id: chart
 
-        visible: pair_supported && series.count > 0 && series.count === cs_mapper.model.series_size
+        visible: pair_supported && series.count > 0 && series.count === cs_mapper.model.series_size && !cs_mapper.model.is_fetching
 
         height: parent.height * 0.9
         width: parent.width

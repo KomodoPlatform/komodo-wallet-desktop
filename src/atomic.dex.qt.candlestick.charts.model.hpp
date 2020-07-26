@@ -39,6 +39,7 @@ namespace atomic_dex
         Q_PROPERTY(double visible_max_value READ get_visible_max_value WRITE set_visible_max_value NOTIFY visibleMaxValueChanged)
         Q_PROPERTY(double visible_max_volume READ get_visible_max_volume WRITE set_visible_max_volume NOTIFY visibleMaxVolumeChanged)
         Q_PROPERTY(bool is_current_pair_supported READ is_pair_supported WRITE set_is_pair_supported NOTIFY pairSupportedChanged)
+        Q_PROPERTY(bool is_fetching READ is_currently_fetching WRITE set_is_currently_fetching NOTIFY fetchingStatusChanged)
 
       public:
         candlestick_charts_model(ag::ecs::system_manager& system_manager, QObject* parent = nullptr);
@@ -56,6 +57,8 @@ namespace atomic_dex
         //! Property
         [[nodiscard]] bool      is_pair_supported() const noexcept;
         void                    set_is_pair_supported(bool is_support);
+        [[nodiscard]] bool      is_currently_fetching() const noexcept;;
+        void                    set_is_currently_fetching(bool is_fetching);;
         [[nodiscard]] int       get_series_size() const noexcept;
         [[nodiscard]] QDateTime get_series_from() const noexcept;
         [[nodiscard]] QDateTime get_series_to() const noexcept;
@@ -88,6 +91,7 @@ namespace atomic_dex
         void globalMinValueChanged(double value);
         void globalMaxValueChanged(double value);
         void pairSupportedChanged(bool supported);
+        void fetchingStatusChanged(bool fetching_status);
         void rangeChanged();
         void maTwentySeriesChanged();
         void maFiftySeriesChanged();
@@ -107,6 +111,7 @@ namespace atomic_dex
         std::string m_current_range{"3600"}; //! 1h
 
         bool      m_current_pair_supported{false};
+        bool      m_currently_fetching{false};
         double    m_visible_min_value{0};
         double    m_visible_max_value{0};
         double    m_visible_max_volume{0};

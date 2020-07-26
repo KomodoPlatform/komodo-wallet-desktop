@@ -38,6 +38,11 @@ namespace atomic_dex
         bool is_a_reset;
     };
 
+    struct start_fetching_new_ohlc_data
+    {
+        bool is_a_reset;
+    };
+
     struct ticker_balance_updated
     {
         std::string ticker;

@@ -123,6 +123,7 @@ namespace atomic_dex
         this->beginResetModel();
         this->m_model_data = provider.get_ohlc_data(m_current_range);
         this->endResetModel();
+        this->set_is_currently_fetching(false);
 
         return true;
     }
@@ -464,6 +465,22 @@ namespace atomic_dex
         {
             m_current_pair_supported = is_support;
             emit pairSupportedChanged(m_current_pair_supported);
+        }
+    }
+
+    bool
+    candlestick_charts_model::is_currently_fetching() const noexcept
+    {
+        return m_currently_fetching;
+    }
+
+    void
+    candlestick_charts_model::set_is_currently_fetching(bool is_fetching)
+    {
+        if (is_fetching != m_currently_fetching)
+        {
+            this->m_currently_fetching = is_fetching;
+            emit fetchingStatusChanged(m_currently_fetching);
         }
     }
 } // namespace atomic_dex

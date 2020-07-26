@@ -106,6 +106,7 @@ namespace atomic_dex
         if (auto [normal, quoted] = is_pair_supported(base, rel); normal || quoted)
         {
             spdlog::info("{} / {} is supported, processing", base, rel);
+            this->dispatcher_.trigger<start_fetching_new_ohlc_data>(is_a_reset);
             atomic_dex::ohlc_request req{base, rel};
             if (quoted)
             {
