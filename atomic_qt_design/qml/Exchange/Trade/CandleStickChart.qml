@@ -280,6 +280,7 @@ Item {
             id: horizontal_line
             readonly property color color: series.last_value_green ? Style.colorGreen : Style.colorRed
             onColorChanged: requestPaint()
+
             anchors.left: parent.left
             width: parent.width
             height: 1
@@ -316,24 +317,13 @@ Item {
         }
 
         // Cursor Horizontal line
-        Canvas {
+        Rectangle {
             id: cursor_horizontal_line
-            readonly property color color: Style.colorBlue
             anchors.left: parent.left
             width: parent.width
             height: 1
 
-            onPaint: {
-                var ctx = getContext("2d");
-
-                ctx.lineWidth = 1.5;
-                ctx.strokeStyle = color
-
-                ctx.beginPath()
-                ctx.moveTo(0, 0)
-                ctx.lineTo(width, 0)
-                ctx.stroke()
-            }
+            color: Style.colorBlue
 
             Rectangle {
                 color: parent.color
@@ -352,26 +342,14 @@ Item {
         }
 
         // Cursor Vertical line
-        Canvas {
+        Rectangle {
             id: cursor_vertical_line
-            property double x_position: 0
-            readonly property color color: Style.colorBlue
 
             anchors.top: parent.top
             width: 1
             height: parent.height + volume_chart.height + 6
 
-            onPaint: {
-                var ctx = getContext("2d");
-
-                ctx.lineWidth = 1.5;
-                ctx.strokeStyle = color
-
-                ctx.beginPath()
-                ctx.moveTo(0, 0)
-                ctx.lineTo(0, height)
-                ctx.stroke()
-            }
+            color: cursor_horizontal_line.color
 
             Rectangle {
                 color: parent.color
