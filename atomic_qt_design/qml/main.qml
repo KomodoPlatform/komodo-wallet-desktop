@@ -12,6 +12,9 @@ Window {
     minimumHeight: General.minimumHeight
     title: API.get().empty_string + (qsTr("AtomicDEX Pro"))
     flags: Qt.Window | Qt.WindowFullscreenButtonHint
+
+    Component.onCompleted: showMaximized()
+
     onVisibilityChanged: API.get().change_state(visibility)
     App {
         anchors.fill: parent
