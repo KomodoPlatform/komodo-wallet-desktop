@@ -121,8 +121,6 @@ namespace atomic_dex
         this->beginResetModel();
         this->m_model_data = provider.get_ohlc_data(m_current_range);
         this->endResetModel();
-        // this->m_ma_20_series->set_model_data(provider.get_ma_series_data(moving_average::twenty, m_current_range));
-        // this->m_ma_50_series->set_model_data(provider.get_ma_series_data(moving_average::fifty, m_current_range));
 
         return true;
     }
@@ -330,18 +328,6 @@ namespace atomic_dex
         emit seriesToChanged(m_series_to);
         this->update_visible_range();
     }
-
-    /*atomic_dex::ma_average_series_model*
-    atomic_dex::candlestick_charts_model::get_ma_20_series() const noexcept
-    {
-        return m_ma_20_series;
-    }
-
-    atomic_dex::ma_average_series_model*
-    atomic_dex::candlestick_charts_model::get_ma_50_series() const noexcept
-    {
-        return m_ma_50_series;
-    }*/
 
     void
     candlestick_charts_model::update_visible_range()
