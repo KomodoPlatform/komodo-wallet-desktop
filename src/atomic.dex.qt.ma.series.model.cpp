@@ -61,7 +61,7 @@ namespace atomic_dex
         switch (index.column())
         {
         case 0:
-            return quint64(m_model_data.at(index.row()).m_timestamp);
+            return quint64(m_model_data.at(index.row()).m_timestamp) * 1000;
         case 1:
             return m_model_data.at(index.row()).m_average;
         }
