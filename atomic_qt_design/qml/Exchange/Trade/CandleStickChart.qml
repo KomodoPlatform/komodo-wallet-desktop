@@ -58,12 +58,6 @@ Item {
     property double global_min_value
     property double global_max_value
 
-
-    DefaultBusyIndicator {
-        visible: !chart.visible
-        anchors.centerIn: parent
-    }
-
     ChartView {
         id: volume_chart
 
@@ -631,6 +625,11 @@ Item {
                 update_block_timer.start()
             }
         }
+    }
+
+    DefaultBusyIndicator {
+        visible: !chart.visible
+        anchors.centerIn: parent
     }
 }
 
