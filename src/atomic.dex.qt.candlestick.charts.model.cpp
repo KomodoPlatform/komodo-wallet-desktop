@@ -118,7 +118,6 @@ namespace atomic_dex
 
         assert(not m_model_data.empty());
         double max_value = std::numeric_limits<double>::min();
-        double max_volume = std::numeric_limits<double>::min();
         double min_value = std::numeric_limits<double>::max();
 
         for (auto&& cur: m_model_data)
@@ -131,14 +130,10 @@ namespace atomic_dex
             {
                 max_value = max_to_compare;
             }
-            if (auto max_volume_to_compare = cur.at("volume").get<double>(); max_volume < max_volume_to_compare) {
-                max_volume = max_volume_to_compare;
-            }
         }
         spdlog::trace("new range value IS: min: {} / max: {}", min_value, max_value);
         this->set_global_min_value(min_value);
         this->set_global_max_value(max_value);
-        this->set_global_max_volume(max_volume);
 
         auto date_start       = m_model_data[int(this->m_model_data.size() * 0.9)].at("timestamp").get<int>();
         auto date_end         = m_model_data.back().at("timestamp").get<int>();
@@ -436,23 +431,5 @@ namespace atomic_dex
 
         m_visible_min_value = value;
         emit visibleMinValueChanged(m_visible_min_value);
-    }
-
-    void
-    candlestick_charts_model::set_global_max_volume(double value)
-    {
-        if (qFuzzyCompare(m_global_max_volume, value))
-        {
-            return;
-        }
-
-        m_global_max_volume = value;
-        emit globalMaxVolumeChanged(m_max_value);
-    }
-
-    double
-    candlestick_charts_model::get_global_max_volume() const noexcept
-    {
-        return m_global_max_volume;
     }
 } // namespace atomic_dex
