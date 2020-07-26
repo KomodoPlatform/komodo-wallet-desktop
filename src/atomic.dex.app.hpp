@@ -242,6 +242,9 @@ namespace atomic_dex
         void updateStatusChanged();
         void ordersChanged();
         void candlestickChartsChanged();
+      public slots:
+        void exit_handler();
+        ;
 
       private:
         void process_refresh_enabled_coin_action();
@@ -285,5 +288,7 @@ namespace atomic_dex
         //! Candlestick charts
         candlestick_charts_model* m_candlestick_chart_ohlc;
         std::atomic_bool          m_candlestick_need_a_reset{false};
+
+        std::atomic_bool m_about_to_exit_app{false};
     };
 } // namespace atomic_dex
