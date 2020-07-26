@@ -96,13 +96,15 @@ namespace atomic_dex
             return m_model_data.at(index.row()).at("close").get<double>() >= m_model_data.at(index.row()).at("open").get<double>()
                        ? m_model_data.at(index.row()).at("volume").get<double>()
                        : 0;
-                       
+
         //! MA 20
         case 10:
-            return m_model_data.at(index.row()).at("ma_20").get<double>();
+            return m_model_data.at(index.row()).contains("ma_20") ? m_model_data.at(index.row()).at("ma_20").get<double>()
+                                                                  : m_model_data.at(index.row()).at("open").get<double>();
         //! MA 50
         case 11:
-            return m_model_data.at(index.row()).at("ma_50").get<double>();
+            return m_model_data.at(index.row()).contains("ma_50") ? m_model_data.at(index.row()).at("ma_50").get<double>()
+                                                                  : m_model_data.at(index.row()).at("open").get<double>();
         default:
             return QVariant();
         }
@@ -173,11 +175,16 @@ namespace atomic_dex
     void
     candlestick_charts_model::update_data()
     {
+        // auto& provider = this->m_system_manager.get_system<cex_prices_provider>();
+        // nlohmann::json ohlc_data = provider.get_ohlc_data(m_current_range);
+        // this->beginInsertRows(QModelIndex(), this->m_model_data.size(), this->m_model_data.size());
+        // m_model_data.push_back(ohlc_data.back());
+        // this->endInsertRows();
+
         if (not common_reset_data())
         {
             return;
         }
-
         emit seriesSizeChanged(get_series_size());
     }
 
@@ -437,5 +444,21 @@ namespace atomic_dex
 
         m_visible_min_value = value;
         emit visibleMinValueChanged(m_visible_min_value);
+    }
+
+    bool
+    candlestick_charts_model::is_pair_supported() const noexcept
+    {
+        return m_current_pair_supported;
+    }
+
+    void
+    candlestick_charts_model::set_is_pair_supported(bool is_support)
+    {
+        if (is_support != m_current_pair_supported)
+        {
+            m_current_pair_supported = is_support;
+            emit pairSupportedChanged(m_current_pair_supported);
+        }
     }
 } // namespace atomic_dex

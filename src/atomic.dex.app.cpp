@@ -754,6 +754,9 @@ namespace atomic_dex
     void
     application::set_current_orderbook(const QString& base, const QString& rel)
     {
+        auto&        provider = this->system_manager_.get_system<cex_prices_provider>();
+        auto [normal, quoted] = provider.is_pair_supported(base.toStdString(), rel.toStdString());
+        this->m_candlestick_chart_ohlc->set_is_pair_supported(normal || quoted);
         this->dispatcher_.trigger<orderbook_refresh>(base.toStdString(), rel.toStdString());
     }
 
