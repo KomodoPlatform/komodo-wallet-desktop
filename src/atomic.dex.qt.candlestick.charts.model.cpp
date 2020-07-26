@@ -51,7 +51,7 @@ namespace atomic_dex
     int
     candlestick_charts_model::columnCount([[maybe_unused]] const QModelIndex& parent) const
     {
-        return 6;
+        return 10;
     }
 
     QVariant
@@ -83,6 +83,19 @@ namespace atomic_dex
             return m_model_data.at(index.row()).at("close").get<double>();
         case 5:
             return m_model_data.at(index.row()).at("volume").get<double>();
+
+        // Volume Candlestick chart
+        case 6:  // Open
+            return m_model_data.at(index.row()).at("close").get<double>() >= m_model_data.at(index.row()).at("open").get<double>() 
+                            ? 0 : m_model_data.at(index.row()).at("volume").get<double>();
+        case 7:  // High
+            return m_model_data.at(index.row()).at("volume").get<double>();
+        case 8:  // Low
+            return 0;
+        case 9:  // Close
+            return m_model_data.at(index.row()).at("close").get<double>() >= m_model_data.at(index.row()).at("open").get<double>() 
+                            ? m_model_data.at(index.row()).at("volume").get<double>() : 0;
+                            
         default:
             return QVariant();
         }

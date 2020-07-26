@@ -63,16 +63,29 @@ ChartView {
         updater.updateChart(true)
     }
 
-    AreaSeries {
+
+    CandlestickSeries {
         id: series_area
+
+        HCandlestickModelMapper {
+            model: cs_mapper.model
+
+            timestampColumn: 0
+            openColumn: 6
+            highColumn: 7
+            lowColumn: 8
+            closeColumn: 9
+
+            firstSetRow: 0
+            lastSetRow: model.series_size
+        }
+
+        increasingColor: Style.colorGreen
+        decreasingColor: Style.colorRed
+        bodyOutlineVisible: false
 
         property double visible_max: cs_mapper.model.visible_max_volume
         onVisible_maxChanged: value_axis_area.updateAxes()
-
-        color: Style.colorGreen
-
-        borderWidth: 0
-        opacity: 0.15
 
         axisX: series.axisX
         axisY: ValueAxis {
@@ -81,22 +94,11 @@ ChartView {
             function updateAxes() {
                 // This will be always same, small size at bottom
                 min = 0
-                max = series_area.visible_max * 1/0.25
+                max = series_area.visible_max * 10
             }
 
             visible: false
-            onRangeChanged: {
-                updateAxes()
-            }
-        }
-        upperSeries: LineSeries {
-            visible: false
-
-            VXYModelMapper {
-                model: cs_mapper.model
-                xColumn: 0
-                yColumn: 5
-            }
+            onRangeChanged: updateAxes()
         }
     }
 
