@@ -58,6 +58,7 @@ ChartView {
         last_value_timestamp = model.data(model.index(last_idx, mapper.timestampColumn), 0)
         global_min_value = model.global_min_value
         global_max_value = model.global_max_value
+        series_area.global_max = cs_mapper.model.global_max_volume
 
         // Update other stuff
         updater.updateChart(true)
@@ -67,23 +68,37 @@ ChartView {
         id: series_area
 
         property double global_max: 0
+        onGlobal_maxChanged: value_axis_area.updateAxes()
 
-        color: Style.colorBlue
+        color: Style.colorGreen
 
         borderWidth: 0
-        opacity: 0.3
+        opacity: 0.15
 
         axisX: series.axisX
         axisY: ValueAxis {
             id: value_axis_area
+
+            function updateAxes() {
+                // This will be always same, small size at bottom
+                min = 0
+                max = series_area.global_max * 1/0.33333
+            }
+
             visible: false
             onRangeChanged: {
-                // This will be always same, small size at bottom
-                value_axis_area.min = 0
-                value_axis_area.max = series_area.global_max * 1/0.5
+                updateAxes()
             }
         }
-        upperSeries: LineSeries { visible: false }
+        upperSeries: LineSeries {
+            visible: false
+
+            VXYModelMapper {
+                model: cs_mapper.model
+                xColumn: 0
+                yColumn: 5
+            }
+        }
     }
 
     // Moving Average 1
