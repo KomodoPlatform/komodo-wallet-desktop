@@ -34,6 +34,7 @@ namespace atomic_dex
         Q_PROPERTY(QDateTime series_to READ get_series_to WRITE set_series_to NOTIFY seriesToChanged)
         Q_PROPERTY(double min_value READ get_min_value WRITE set_min_value NOTIFY minValueChanged)
         Q_PROPERTY(double max_value READ get_max_value WRITE set_max_value NOTIFY maxValueChanged)
+        Q_PROPERTY(double global_max_volume READ get_global_max_volume NOTIFY globalMaxVolumeChanged)
         Q_PROPERTY(double global_max_value READ get_global_max_value NOTIFY globalMaxValueChanged)
         Q_PROPERTY(double global_min_value READ get_global_min_value NOTIFY globalMinValueChanged)
         Q_PROPERTY(ma_average_series_model* ma_20_series_mdl READ get_ma_20_series NOTIFY maTwentySeriesChanged)
@@ -66,14 +67,17 @@ namespace atomic_dex
         [[nodiscard]] double                   get_visible_max_value() const noexcept;
         [[nodiscard]] double                   get_global_min_value() const noexcept;
         [[nodiscard]] double                   get_global_max_value() const noexcept;
+        [[nodiscard]] double                   get_global_max_volume() const noexcept;;
         [[nodiscard]] QString                  get_current_range() const noexcept;
         void                                   set_current_range(const QString& range) noexcept;
         void                                   set_min_value(double value);
         void                                   set_max_value(double value);
-        void                                   set_visible_min_value(double value);;
-        void                                   set_visible_max_value(double value);;
-        void                                   set_series_from(QDateTime value);
-        void                                   set_series_to(QDateTime value);
+        void                                   set_visible_min_value(double value);
+        ;
+        void set_visible_max_value(double value);
+        ;
+        void set_series_from(QDateTime value);
+        void set_series_to(QDateTime value);
 
       signals:
         void seriesSizeChanged(int value);
@@ -85,6 +89,7 @@ namespace atomic_dex
         void visibleMaxValueChanged(double value);
         void globalMinValueChanged(double value);
         void globalMaxValueChanged(double value);
+        void globalMaxVolumeChanged(double value);
         void rangeChanged();
         void maTwentySeriesChanged();
         void maFiftySeriesChanged();
@@ -93,6 +98,7 @@ namespace atomic_dex
       private:
         void set_global_min_value(double value);
         void set_global_max_value(double value);
+        void set_global_max_volume(double value);;
         void update_visible_range();
 
         bool common_reset_data();
@@ -112,6 +118,7 @@ namespace atomic_dex
         double    m_min_value{0};
         double    m_global_max_value{0};
         double    m_global_min_value{0};
+        double    m_global_max_volume{0};
         QDateTime m_series_from;
         QDateTime m_series_to;
     };
