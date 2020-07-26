@@ -60,7 +60,7 @@ namespace atomic_dex
         case orders_model::HumanDateRole:
             break;
         case orders_model::UnixTimestampRole:
-            return left_data.toInt() < right_data.toInt();
+            return left_data.toULongLong() < right_data.toULongLong();
         case orders_model::OrderIdRole:
             break;
         case orders_model::OrderStatusRole:

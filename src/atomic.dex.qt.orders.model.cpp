@@ -111,7 +111,7 @@ namespace atomic_dex
             item.human_date = value.toString();
             break;
         case UnixTimestampRole:
-            item.unix_timestamp = value.toInt();
+            item.unix_timestamp = value.toULongLong();
             break;
         case OrderIdRole:
             item.order_id = value.toString();
@@ -293,7 +293,7 @@ namespace atomic_dex
             .rel_amount       = is_maker ? QString::fromStdString(contents.taker_amount) : QString::fromStdString(contents.maker_amount),
             .order_type       = is_maker ? "maker" : "taker",
             .human_date       = not contents.events.empty() ? QString::fromStdString(contents.events.back().at("human_timestamp").get<std::string>()) : "",
-            .unix_timestamp   = not contents.events.empty() ? contents.events.back().at("timestamp").get<int>() : 0,
+            .unix_timestamp   = not contents.events.empty() ? contents.events.back().at("timestamp").get<unsigned long long>() : 0,
             .order_id         = QString::fromStdString(contents.uuid),
             .order_status     = determine_order_status_from_last_event(contents),
             .maker_payment_id = determine_payment_id(contents, is_maker, false),
@@ -322,7 +322,8 @@ namespace atomic_dex
             bool               is_maker = boost::algorithm::to_lower_copy(contents.type) == "maker";
             update_value(OrdersRoles::IsRecoverableRole, contents.funds_recoverable, idx, *this);
             update_value(OrdersRoles::OrderStatusRole, determine_order_status_from_last_event(contents), idx, *this);
-            update_value(OrdersRoles::UnixTimestampRole, not contents.events.empty() ? contents.events.back().at("timestamp").get<int>() : 0, idx, *this);
+            update_value(
+                OrdersRoles::UnixTimestampRole, not contents.events.empty() ? contents.events.back().at("timestamp").get<unsigned long long>() : 0, idx, *this);
             update_value(
                 OrdersRoles::HumanDateRole,
                 not contents.events.empty() ? QString::fromStdString(contents.events.back().at("human_timestamp").get<std::string>()) : "", idx, *this);
@@ -348,7 +349,7 @@ namespace atomic_dex
             .rel_amount     = QString::fromStdString(contents.rel_amount),
             .order_type     = QString::fromStdString(contents.order_type),
             .human_date     = QString::fromStdString(contents.human_timestamp),
-            .unix_timestamp = static_cast<int>(contents.timestamp),
+            .unix_timestamp = static_cast<unsigned long long>(contents.timestamp),
             .order_id       = QString::fromStdString(contents.order_id),
             .order_status   = "matching",
             .is_swap        = false,

@@ -28,7 +28,7 @@ namespace atomic_dex
         QString human_date;
 
         //! eg: 1595406178
-        int unix_timestamp;
+        unsigned long long unix_timestamp;
 
         //! eg: b741646a-5738-4012-b5b0-dcd1375affd1
         QString order_id;
