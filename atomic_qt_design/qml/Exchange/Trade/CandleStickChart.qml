@@ -10,7 +10,8 @@ import "../../Constants"
 Item {
     id: root
     readonly property double y_margin: 0.02
-    readonly property bool has_data: series.count > 0
+
+    readonly property bool pair_supported: cs_mapper.model.is_current_pair_supported
 
     function getChartSeconds() {
         const idx = combo_time.currentIndex
@@ -37,6 +38,8 @@ Item {
         const last_idx = series.count - 1
         const last_open = model.data(model.index(last_idx, mapper.openColumn), 0)
         const last_close = model.data(model.index(last_idx, mapper.closeColumn), 0)
+        if(last_close === undefined) return
+
         series.last_value = last_close
         series.last_value_green = last_close >= last_open
 
@@ -55,9 +58,16 @@ Item {
     property double global_min_value
     property double global_max_value
 
+
+    DefaultBusyIndicator {
+        visible: !chart.visible
+        anchors.centerIn: parent
+    }
+
     ChartView {
         id: volume_chart
 
+        visible: chart.visible
         anchors.top: chart.bottom
         anchors.bottom: parent.bottom
         anchors.left: chart.left
@@ -128,12 +138,10 @@ Item {
     ChartView {
         id: chart
 
-        anchors.top: parent.top
-        anchors.left: parent.left
-        anchors.right: parent.right
-        height: parent.height * 0.9
+        visible: pair_supported && series.count > 0 && series.count === cs_mapper.model.series_size
 
-        //plotArea: Qt.rect(100, 0, parent.width * 0.7, height * 0.5)
+        height: parent.height * 0.9
+        width: parent.width
 
         margins.top: 0
         margins.left: 0
@@ -318,7 +326,6 @@ Item {
             onPaint: {
                 var ctx = getContext("2d");
 
-                ctx.setLineDash([1, 1]);
                 ctx.lineWidth = 1.5;
                 ctx.strokeStyle = color
 
@@ -357,7 +364,6 @@ Item {
             onPaint: {
                 var ctx = getContext("2d");
 
-                ctx.setLineDash([1, 1]);
                 ctx.lineWidth = 1.5;
                 ctx.strokeStyle = color
 

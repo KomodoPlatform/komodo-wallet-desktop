@@ -381,7 +381,6 @@ Item {
 
         visible: form_base.ticker_list.length > 0
 
-//        anchors.centerIn: parent
         anchors.fill: parent
 
 
@@ -390,7 +389,7 @@ Item {
 
             Layout.alignment: Qt.AlignTop
 
-            visible: chart.has_data
+            visible: chart.pair_supported
 
             Layout.fillWidth: true
             Layout.fillHeight: true
