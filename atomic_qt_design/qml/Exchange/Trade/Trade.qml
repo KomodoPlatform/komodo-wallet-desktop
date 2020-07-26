@@ -10,8 +10,6 @@ Item {
     id: exchange_trade
 
     property string action_result
-    property string prev_base
-    property string prev_rel
 
     // Override
     property var onOrderSuccess: () => {}
@@ -24,8 +22,6 @@ Item {
 
     function fullReset() {
         reset(true)
-        prev_base = ''
-        prev_rel = ''
         orderbook_timer.running = false
     }
 
@@ -212,6 +208,7 @@ Item {
         updateOrderbook()
         reset(true)
         updateForms()
+        setPair(true)
     }
 
     function updateForms(my_side, new_ticker) {
@@ -278,26 +275,6 @@ Item {
         else form_rel.setTicker(ticker)
     }
 
-    function swapPair() {
-        let base = getTicker(true)
-        let rel = getTicker(false)
-
-        // Fill previous ones if they are blank
-        if(prev_base === '') prev_base = form_base.getAnyAvailableCoin(rel)
-        if(prev_rel === '') prev_rel = form_rel.getAnyAvailableCoin(base)
-
-        // Get different value if they are same
-        if(base === rel) {
-            if(base !== prev_base) base = prev_base
-            else if(rel !== prev_rel) rel = prev_rel
-        }
-
-        // Swap
-        const curr_base = base
-        setTicker(true, rel)
-        setTicker(false, curr_base)
-    }
-
     function validBaseRel() {
         const base = getTicker(true)
         const rel = getTicker(false)
@@ -305,19 +282,21 @@ Item {
     }
 
     function setPair(is_base) {
-        if(getTicker(true) === getTicker(false)) swapPair()
-        else {
-            if(validBaseRel()) {
-                const new_base = getTicker(true)
-                const rel = getTicker(false)
-                console.log("Setting current orderbook with params: ", new_base, rel)
-                API.get().current_coin_info.ticker = new_base
-                API.get().set_current_orderbook(new_base, rel)
-                reset(true, is_base)
-                updateOrderbook()
-                updateCexPrice(new_base, rel)
-                exchange.onTradeTickerChanged(new_base)
-            }
+        if(getTicker(true) === getTicker(false)) {
+            // Base got selected, same as rel
+            // Change rel ticker
+            form_rel.setAnyTicker()
+        }
+
+        if(validBaseRel()) {
+            const new_base = getTicker(true)
+            const rel = getTicker(false)
+            console.log("Setting current orderbook with params: ", new_base, rel)
+            API.get().set_current_orderbook(new_base, rel)
+            reset(true, is_base)
+            updateOrderbook()
+            updateCexPrice(new_base, rel)
+            exchange.onTradeTickerChanged(new_base)
         }
     }
 
@@ -402,7 +381,6 @@ Item {
 
         visible: form_base.ticker_list.length > 0
 
-//        anchors.centerIn: parent
         anchors.fill: parent
 
 
@@ -411,7 +389,7 @@ Item {
 
             Layout.alignment: Qt.AlignTop
 
-            visible: chart.has_data
+            visible: chart.pair_supported
 
             Layout.fillWidth: true
             Layout.fillHeight: true

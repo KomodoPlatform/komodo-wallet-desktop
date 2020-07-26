@@ -57,12 +57,20 @@ namespace atomic_dex
     {
         spdlog::debug("{} l{} f[{}]", __FUNCTION__, __LINE__, fs::path(__FILE__).filename().string());
 
-        m_current_ohlc_data = nlohmann::json::array();
-        this->dispatcher_.trigger<refresh_ohlc_needed>();
+        if (auto [normal, quoted] = is_pair_supported(evt.base, evt.rel); !normal && !quoted)
+        {
+            m_current_ohlc_data->clear();
+            m_current_orderbook_ticker_pair.first  = "";
+            m_current_orderbook_ticker_pair.second = "";
+            this->dispatcher_.trigger<refresh_ohlc_needed>();
+            return;
+        }
+
+        m_current_ohlc_data             = nlohmann::json::array();
         m_current_orderbook_ticker_pair = {boost::algorithm::to_lower_copy(evt.base), boost::algorithm::to_lower_copy(evt.rel)};
         auto [base, rel]                = m_current_orderbook_ticker_pair;
         spdlog::debug("new orderbook pair for cex provider [{} / {}]", base, rel);
-        m_pending_tasks.push(spawn([base = base, rel = rel, this]() { process_ohlc(base, rel); }));
+        m_pending_tasks.push(spawn([base = base, rel = rel, this]() { process_ohlc(base, rel, true); }));
     }
 
     void
@@ -75,7 +83,8 @@ namespace atomic_dex
             spdlog::info("cex prices provider thread started");
 
             using namespace std::chrono_literals;
-            do {
+            do
+            {
                 spdlog::info("fetching ohlc value");
                 auto [base, rel] = m_current_orderbook_ticker_pair;
                 if (not base.empty() && not rel.empty() && m_mm2_instance.is_orderbook_thread_active())
@@ -91,12 +100,13 @@ namespace atomic_dex
     }
 
     bool
-    cex_prices_provider::process_ohlc(const std::string& base, const std::string& rel) noexcept
+    cex_prices_provider::process_ohlc(const std::string& base, const std::string& rel, bool is_a_reset) noexcept
     {
         spdlog::debug("{} l{} f[{}]", __FUNCTION__, __LINE__, fs::path(__FILE__).filename().string());
         if (auto [normal, quoted] = is_pair_supported(base, rel); normal || quoted)
         {
             spdlog::info("{} / {} is supported, processing", base, rel);
+            this->dispatcher_.trigger<start_fetching_new_ohlc_data>(is_a_reset);
             atomic_dex::ohlc_request req{base, rel};
             if (quoted)
             {
@@ -108,12 +118,8 @@ namespace atomic_dex
             if (answer.result.has_value())
             {
                 m_current_ohlc_data = answer.result.value().raw_result;
-                if (quoted)
-                {
-                    //! It's quoted need to reverse all the value
-                    this->reverse_ohlc_data();
-                }
-                this->dispatcher_.trigger<refresh_ohlc_needed>();
+                this->updating_quote_and_average(quoted);
+                this->dispatcher_.trigger<refresh_ohlc_needed>(is_a_reset);
                 return true;
             }
             spdlog::error("http error: {}", answer.error.value_or("dummy"));
@@ -170,17 +176,69 @@ namespace atomic_dex
     }
 
     void
-    cex_prices_provider::reverse_ohlc_data() noexcept
+    cex_prices_provider::reverse_ohlc_data(nlohmann::json& cur_range) noexcept
     {
-        nlohmann::json& values = *this->m_current_ohlc_data;
-        for (auto&& item: values) {
-            for (auto&& cur_range : item) {
-                cur_range["open"] = 1 / cur_range.at("open").get<double>();
-                cur_range["high"] = 1 / cur_range.at("high").get<double>();
-                cur_range["low"] = 1 / cur_range.at("low").get<double>();
-                cur_range["close"] = 1 / cur_range.at("close").get<double>();
-            }
-        }
+        cur_range["open"]         = 1 / cur_range.at("open").get<double>();
+        cur_range["high"]         = 1 / cur_range.at("high").get<double>();
+        cur_range["low"]          = 1 / cur_range.at("low").get<double>();
+        cur_range["close"]        = 1 / cur_range.at("close").get<double>();
+        auto volume               = cur_range.at("volume").get<double>();
+        cur_range["volume"]       = cur_range["quote_volume"];
+        cur_range["quote_volume"] = volume;
     }
 
+    nlohmann::json
+    cex_prices_provider::get_all_ohlc_data() noexcept
+    {
+        return *m_current_ohlc_data;
+    }
+
+    void
+    cex_prices_provider::updating_quote_and_average(bool is_quoted)
+    {
+        nlohmann::json ohlc_data                  = *this->m_current_ohlc_data;
+        auto           add_moving_average_functor = [](nlohmann::json& current_item, std::size_t idx, const std::vector<double>& sums, std::size_t num) {
+            int real_num  = num;
+            int first_idx = static_cast<int>(idx) - real_num;
+            if (first_idx < 0)
+            {
+                first_idx = 0;
+                num       = idx;
+            }
+
+            if (num == 0)
+            {
+                current_item["ma_" + std::to_string(real_num)] = current_item.at("open").get<double>();
+            }
+            else
+            {
+                current_item["ma_" + std::to_string(real_num)] = static_cast<double>(sums.at(idx) - sums.at(first_idx)) / num;
+            }
+        };
+
+        for (auto&& [key, value]: ohlc_data.items())
+        {
+            std::size_t         idx = 0;
+            std::vector<double> sums;
+            for (auto&& cur_range: value)
+            {
+                if (is_quoted)
+                {
+                    this->reverse_ohlc_data(cur_range);
+                }
+                if (idx == 0)
+                {
+                    sums.emplace_back(cur_range.at("open").get<double>());
+                }
+                else
+                {
+                    sums.emplace_back(cur_range.at("open").get<double>() + sums[idx - 1]);
+                }
+                add_moving_average_functor(cur_range, idx, sums, 20);
+                add_moving_average_functor(cur_range, idx, sums, 50);
+                ++idx;
+            }
+        }
+        this->m_current_ohlc_data = ohlc_data;
+    }
 } // namespace atomic_dex

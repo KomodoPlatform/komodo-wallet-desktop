@@ -138,7 +138,7 @@ namespace atomic_dex
         dispatcher_.sink<gui_leave_trading>().connect<&mm2::on_gui_leave_trading>(*this);
         dispatcher_.sink<orderbook_refresh>().connect<&mm2::on_refresh_orderbook>(*this);
 
-        m_swaps_registry.insert("result", t_my_recent_swaps_answer{.total = 0});
+        m_swaps_registry.insert("result", t_my_recent_swaps_answer{.limit = 0, .total = 0});
     }
 
     void
@@ -734,7 +734,8 @@ namespace atomic_dex
     void
     mm2::process_swaps()
     {
-        t_my_recent_swaps_request request{.limit = 50};
+        std::size_t               total = this->m_swaps_registry.at("result").total;
+        t_my_recent_swaps_request request{.limit = total > 0 ? total : 50};
         auto                      answer = rpc_my_recent_swaps(std::move(request));
         if (answer.result.has_value())
         {
@@ -840,15 +841,15 @@ namespace atomic_dex
             {
                 tx_infos current_info{
 
-                    .am_i_sender       = current.my_balance_change[0] == '-',
-                    .confirmations     = current.confirmations.has_value() ? current.confirmations.value() : 0,
-                    .from              = current.from,
-                    .to                = current.to,
-                    .date              = current.timestamp_as_date,
-                    .timestamp         = current.timestamp,
-                    .tx_hash           = current.tx_hash,
-                    .fees              = current.fee_details.normal_fees.has_value() ? current.fee_details.normal_fees.value().amount
-                                                                                     : current.fee_details.erc_fees.value().total_fee,
+                    .am_i_sender   = current.my_balance_change[0] == '-',
+                    .confirmations = current.confirmations.has_value() ? current.confirmations.value() : 0,
+                    .from          = current.from,
+                    .to            = current.to,
+                    .date          = current.timestamp_as_date,
+                    .timestamp     = current.timestamp,
+                    .tx_hash       = current.tx_hash,
+                    .fees          = current.fee_details.normal_fees.has_value() ? current.fee_details.normal_fees.value().amount
+                                                                        : current.fee_details.erc_fees.value().total_fee,
                     .my_balance_change = current.my_balance_change,
                     .total_amount      = current.total_amount,
                     .block_height      = current.block_height,

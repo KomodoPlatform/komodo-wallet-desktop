@@ -19,12 +19,19 @@
 #include "atomic.dex.pch.hpp"
 
 //! Project header
+#include "atomic.dex.ma.series.data.hpp"
 #include "atomic.dex.mm2.hpp"
 
 inline constexpr const std::size_t nb_pair_supported = 40_sz;
 
 namespace atomic_dex
 {
+    enum class moving_average
+    {
+        twenty,
+        fifty
+    };
+
     namespace ag = antara::gaming;
 
     class cex_prices_provider final : public ag::ecs::pre_update_system<cex_prices_provider>
@@ -37,7 +44,7 @@ namespace atomic_dex
         mm2& m_mm2_instance;
 
         //! OHLC Related
-        t_current_orderbook_ticker_pair m_current_orderbook_ticker_pair;
+        t_current_orderbook_ticker_pair m_current_orderbook_ticker_pair{"", ""};
         t_supported_pairs               m_supported_pair{"eth-btc",  "eth-usdc", "btc-usdc", "btc-busd", "btc-tusd", "bat-btc",  "bat-eth",  "bat-usdc",
                                            "bat-tusd", "bat-busd", "bch-btc",  "bch-eth",  "bch-usdc", "bch-tusd", "bch-busd", "dash-btc",
                                            "dash-eth", "dgb-btc",  "doge-btc", "kmd-btc",  "kmd-eth",  "ltc-btc",  "ltc-eth",  "ltc-usdc",
@@ -45,7 +52,7 @@ namespace atomic_dex
                                            "rvn-btc",  "xzc-btc",  "xzc-eth",  "zec-btc",  "zec-eth",  "zec-usdc", "zec-tusd", "zec-busd"};
 
         //! OHLC Data
-        t_synchronized_json m_current_ohlc_data;
+        t_synchronized_json        m_current_ohlc_data;
 
         //! Threads
         std::queue<std::future<void>> m_pending_tasks;
@@ -53,7 +60,7 @@ namespace atomic_dex
         timed_waiter                  m_provider_thread_timer;
 
         //! Private API
-        void reverse_ohlc_data() noexcept;
+        void reverse_ohlc_data(nlohmann::json& cur_range) noexcept;
 
       public:
         //! Constructor
@@ -69,7 +76,7 @@ namespace atomic_dex
         void update() noexcept final;
 
         //! Process OHLC http rest request
-        bool process_ohlc(const std::string& base, const std::string& rel) noexcept;
+        bool process_ohlc(const std::string& base, const std::string& rel, bool is_a_reset = false) noexcept;
 
         //! Return true if json ohlc data is not empty, otherwise return false
         bool is_ohlc_data_available() const noexcept;
@@ -82,8 +89,11 @@ namespace atomic_dex
 
         nlohmann::json get_ohlc_data(const std::string& range) noexcept;
 
+        nlohmann::json get_all_ohlc_data() noexcept;
+
         //! Event that occur when the ticker pair is changed in the front end
         void on_current_orderbook_ticker_pair_changed(const orderbook_refresh& evt) noexcept;
+        void updating_quote_and_average(bool quoted);
     };
 } // namespace atomic_dex
 

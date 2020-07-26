@@ -43,7 +43,7 @@ QtObject {
     readonly property double time_toast_important_error: 10000
     readonly property double time_toast_basic_info: 3000
 
-    readonly property var chart_times: (["1m", "3m", "5m", "15m", "30m", "1h", "2h", "4h", "6h", "12h", "1d", "3d", "1w"])
+    readonly property var chart_times: (["1m", "3m", "5m", "15m", "30m", "1h", "2h", "4h", "6h", "12h", "1d", "3d"/*, "1w"*/])
     readonly property var time_seconds: ({ "1m": 60, "3m": 180, "5m": 300, "15m": 900, "30m": 1800, "1h": 3600, "2h": 7200, "4h": 14400, "6h": 21600, "12h": 43200, "1d": 86400, "3d": 259200, "1w": 604800 })
 
     property var all_coins
@@ -148,11 +148,15 @@ QtObject {
     }
 
     function fullNamesOfCoins(coins) {
-        return coins.map(c => fullCoinName(c.name, c.ticker))
+        return coins.map(c => {
+         return { value: c.ticker, text: fullCoinName(c.name, c.ticker) }
+        })
     }
 
     function getTickers(coins) {
-        return coins.map(c => c.ticker)
+        return coins.map(c => {
+         return { value: c.ticker, text: c.ticker }
+        })
     }
 
 
@@ -161,7 +165,9 @@ QtObject {
     }
 
     function getTickersAndBalances(coins) {
-        return coins.map(c => c.ticker + " (" + c.balance + ")")
+        return coins.map(c => {
+            return { value: c.ticker, text: c.ticker + " (" + c.balance + ")" }
+        })
     }
 
     function getMinTradeAmount() {

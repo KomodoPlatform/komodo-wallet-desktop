@@ -37,12 +37,8 @@ Item {
         API.get().refresh_orders_and_swaps()
     }
 
-    function baseCoins() {
-        return API.get().enabled_coins
-    }
-
     function changeTicker(ticker) {
-        combo_base.currentIndex = baseCoins().map(c => c.ticker).indexOf(ticker)
+        combo_base.currentIndex = combo_base.model.map(c => c.value).indexOf(ticker)
     }
 
     // Orders page quick refresher, used right after a fresh successful trade
@@ -113,9 +109,11 @@ Item {
                     Layout.bottomMargin: 10
                     Layout.rightMargin: 15
 
-                    model: General.fullNamesOfCoins(baseCoins())
+                    textRole: "text"
+
+                    model: General.fullNamesOfCoins(API.get().enabled_coins)
                     onCurrentTextChanged: {
-                        base = baseCoins()[currentIndex].ticker
+                        base = model[currentIndex].value
                     }
                 }
 

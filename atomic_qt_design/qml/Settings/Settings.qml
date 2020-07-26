@@ -52,7 +52,7 @@ Item {
                     }
                 }
                 Component.onCompleted: {
-                    field.currentIndex = fiats.indexOf(API.get().current_fiat)
+                    field.currentIndex = field.model.indexOf(API.get().current_fiat)
                     initialized = true
                 }
             }

@@ -28,6 +28,14 @@ inline constexpr size_t g_spdlog_max_file_size     = 7777777;
 inline constexpr size_t g_spdlog_max_file_rotation = 3;
 
 
+void
+signal_handler(int signal)
+{
+    spdlog::trace("sigabort received, cleaning mm2");
+    atomic_dex::kill_executable("mm2");
+    std::exit(signal);
+}
+
 #if defined(WINDOWS_RELEASE_MAIN)
 INT WINAPI
 WinMain(HINSTANCE hInst, HINSTANCE, LPSTR strCmdLine, INT)
@@ -37,6 +45,7 @@ int
 main([[maybe_unused]] int argc, [[maybe_unused]] char* argv[])
 #endif
 {
+    std::signal(SIGABRT, signal_handler);
     //! Project
 #if defined(_WIN32) || defined(WIN32)
     using namespace std::string_literals;
@@ -72,7 +81,7 @@ main([[maybe_unused]] int argc, [[maybe_unused]] char* argv[])
     spdlog::set_pattern("[%H:%M:%S %z] [%L] [thr %t] %v");
     spdlog::info("Logger successfully initialized");
 
-    //spdlog::info("asan report: {}", (fs::temp_directory_path() / "asan.log").string().c_str());
+    // spdlog::info("asan report: {}", (fs::temp_directory_path() / "asan.log").string().c_str());
     //__sanitizer_set_report_path((fs::temp_directory_path() / "asan.log").string().c_str());
 
     //! App declaration
