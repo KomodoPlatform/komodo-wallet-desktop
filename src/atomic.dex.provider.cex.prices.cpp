@@ -208,14 +208,23 @@ namespace atomic_dex
     void
     cex_prices_provider::compute_moving_average()
     {
-        std::vector<ma_series_data> ma_20_series;
-        std::vector<ma_series_data> ma_50_series;
-        nlohmann::json              ohlc_data                  = *this->m_current_ohlc_data;
-        auto                        add_moving_average_functor = [](nlohmann::json& current_item, std::size_t idx, std::vector<ma_series_data>& ma_series,
-                                             const std::vector<double>& sums, float num) {
-            if (idx >= num)
+        nlohmann::json ohlc_data                  = *this->m_current_ohlc_data;
+        auto           add_moving_average_functor = [](nlohmann::json& current_item, std::size_t idx, const std::vector<double>& sums, std::size_t num) {
+            int real_num  = num;
+            int first_idx = static_cast<int>(idx) - real_num;
+            if (first_idx < 0)
             {
-                ma_series.push_back({current_item.at("timestamp").get<std::size_t>(), (sums.at(idx) - sums.at(idx - num)) / num});
+                first_idx = 0;
+                num       = idx;
+            }
+
+            if (num == 0)
+            {
+                current_item["ma_" + std::to_string(real_num)] = current_item.at("open").get<double>();
+            }
+            else
+            {
+                current_item["ma_" + std::to_string(real_num)] = static_cast<double>(sums.at(idx) - sums.at(first_idx)) / num;
             }
         };
 
@@ -223,8 +232,6 @@ namespace atomic_dex
         {
             std::size_t         idx = 0;
             std::vector<double> sums;
-            ma_20_series.clear();
-            ma_50_series.clear();
             for (auto&& cur_range: value)
             {
                 if (idx == 0)
@@ -235,25 +242,11 @@ namespace atomic_dex
                 {
                     sums.emplace_back(cur_range.at("open").get<double>() + sums[idx - 1]);
                 }
-                add_moving_average_functor(cur_range, idx, ma_20_series, sums, 20.f);
-                add_moving_average_functor(cur_range, idx, ma_50_series, sums, 50.f);
+                add_moving_average_functor(cur_range, idx, sums, 20);
+                add_moving_average_functor(cur_range, idx, sums, 50);
                 ++idx;
             }
-
-            m_ma_20_series_registry->operator[](key) = ma_20_series;
-            m_ma_50_series_registry->operator[](key) = ma_50_series;
         }
-    }
-
-    std::vector<ma_series_data>
-    cex_prices_provider::get_ma_series_data(moving_average scope, const std::string& range) const noexcept
-    {
-        switch (scope)
-        {
-        case moving_average::twenty:
-            return m_ma_20_series_registry->at(range);
-        case moving_average::fifty:
-            return m_ma_50_series_registry->at(range);
-        }
+        this->m_current_ohlc_data = ohlc_data;
     }
 } // namespace atomic_dex

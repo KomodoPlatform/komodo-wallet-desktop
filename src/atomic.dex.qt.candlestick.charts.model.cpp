@@ -25,8 +25,7 @@
 namespace atomic_dex
 {
     candlestick_charts_model::candlestick_charts_model(ag::ecs::system_manager& system_manager, QObject* parent) :
-        QAbstractTableModel(parent), m_system_manager(system_manager), m_ma_20_series(new ma_average_series_model(this)),
-        m_ma_50_series(new ma_average_series_model(this))
+        QAbstractTableModel(parent), m_system_manager(system_manager)
     {
         spdlog::trace("{} l{} f[{}]", __FUNCTION__, __LINE__, fs::path(__FILE__).filename().string());
         spdlog::trace("candlestick charts model created");
@@ -51,7 +50,7 @@ namespace atomic_dex
     int
     candlestick_charts_model::columnCount([[maybe_unused]] const QModelIndex& parent) const
     {
-        return 10;
+        return 12;
     }
 
     QVariant
@@ -85,17 +84,24 @@ namespace atomic_dex
             return m_model_data.at(index.row()).at("volume").get<double>();
 
         // Volume Candlestick chart
-        case 6:  // Open
-            return m_model_data.at(index.row()).at("close").get<double>() >= m_model_data.at(index.row()).at("open").get<double>() 
-                            ? 0 : m_model_data.at(index.row()).at("volume").get<double>();
-        case 7:  // High
+        case 6: // Open
+            return m_model_data.at(index.row()).at("close").get<double>() >= m_model_data.at(index.row()).at("open").get<double>()
+                       ? 0
+                       : m_model_data.at(index.row()).at("volume").get<double>();
+        case 7: // High
             return m_model_data.at(index.row()).at("volume").get<double>();
-        case 8:  // Low
+        case 8: // Low
             return 0;
-        case 9:  // Close
-            return m_model_data.at(index.row()).at("close").get<double>() >= m_model_data.at(index.row()).at("open").get<double>() 
-                            ? m_model_data.at(index.row()).at("volume").get<double>() : 0;
-                            
+        case 9: // Close
+            return m_model_data.at(index.row()).at("close").get<double>() >= m_model_data.at(index.row()).at("open").get<double>()
+                       ? m_model_data.at(index.row()).at("volume").get<double>()
+                       : 0;
+            //! MA 20
+        case 10:
+            return m_model_data.at(index.row()).at("ma_20").get<double>();
+            //! MA 50
+        case 11:
+            return m_model_data.at(index.row()).at("ma_50").get<double>();
         default:
             return QVariant();
         }
@@ -114,8 +120,8 @@ namespace atomic_dex
         this->beginResetModel();
         this->m_model_data = provider.get_ohlc_data(m_current_range);
         this->endResetModel();
-        this->m_ma_20_series->set_model_data(provider.get_ma_series_data(moving_average::twenty, m_current_range));
-        this->m_ma_50_series->set_model_data(provider.get_ma_series_data(moving_average::fifty, m_current_range));
+        // this->m_ma_20_series->set_model_data(provider.get_ma_series_data(moving_average::twenty, m_current_range));
+        // this->m_ma_50_series->set_model_data(provider.get_ma_series_data(moving_average::fifty, m_current_range));
 
         return true;
     }
@@ -324,7 +330,7 @@ namespace atomic_dex
         this->update_visible_range();
     }
 
-    atomic_dex::ma_average_series_model*
+    /*atomic_dex::ma_average_series_model*
     atomic_dex::candlestick_charts_model::get_ma_20_series() const noexcept
     {
         return m_ma_20_series;
@@ -334,7 +340,7 @@ namespace atomic_dex
     atomic_dex::candlestick_charts_model::get_ma_50_series() const noexcept
     {
         return m_ma_50_series;
-    }
+    }*/
 
     void
     candlestick_charts_model::update_visible_range()
@@ -383,8 +389,8 @@ namespace atomic_dex
                 return left_value < right_value;
             });
 
-            auto min_value = min_value_j->at("low").get<double>();
-            auto max_value = max_value_j->at("high").get<double>();
+            auto min_value  = min_value_j->at("low").get<double>();
+            auto max_value  = max_value_j->at("high").get<double>();
             auto max_volume = max_volume_j->at("volume").get<double>();
             this->set_visible_min_value(min_value);
             this->set_visible_max_value(max_value);

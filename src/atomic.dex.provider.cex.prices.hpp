@@ -39,7 +39,6 @@ namespace atomic_dex
         using t_supported_pairs               = std::array<std::string, nb_pair_supported>;
         using t_current_orderbook_ticker_pair = std::pair<std::string, std::string>;
         using t_synchronized_json             = boost::synchronized_value<nlohmann::json>;
-        using t_synchronized_average_map      = boost::synchronized_value<std::unordered_map<std::string, std::vector<ma_series_data>>>;
 
         //! Private fields
         mm2& m_mm2_instance;
@@ -54,8 +53,6 @@ namespace atomic_dex
 
         //! OHLC Data
         t_synchronized_json        m_current_ohlc_data;
-        t_synchronized_average_map m_ma_20_series_registry;
-        t_synchronized_average_map m_ma_50_series_registry;
 
         //! Threads
         std::queue<std::future<void>> m_pending_tasks;
@@ -91,8 +88,6 @@ namespace atomic_dex
         void on_mm2_started(const mm2_started& evt) noexcept;
 
         nlohmann::json get_ohlc_data(const std::string& range) noexcept;
-
-        std::vector<ma_series_data> get_ma_series_data(moving_average scope, const std::string& range) const noexcept;
 
         nlohmann::json get_all_ohlc_data() noexcept;
 

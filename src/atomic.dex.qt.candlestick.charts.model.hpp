@@ -21,7 +21,6 @@
 
 //! PCH
 #include "atomic.dex.pch.hpp"
-#include "atomic.dex.qt.ma.series.model.hpp"
 
 namespace atomic_dex
 {
@@ -36,8 +35,6 @@ namespace atomic_dex
         Q_PROPERTY(double max_value READ get_max_value WRITE set_max_value NOTIFY maxValueChanged)
         Q_PROPERTY(double global_max_value READ get_global_max_value NOTIFY globalMaxValueChanged)
         Q_PROPERTY(double global_min_value READ get_global_min_value NOTIFY globalMinValueChanged)
-        Q_PROPERTY(ma_average_series_model* ma_20_series_mdl READ get_ma_20_series NOTIFY maTwentySeriesChanged)
-        Q_PROPERTY(ma_average_series_model* ma_50_series_mdl READ get_ma_50_series NOTIFY maFiftySeriesChanged)
         Q_PROPERTY(double visible_min_value READ get_visible_min_value WRITE set_visible_min_value NOTIFY visibleMinValueChanged)
         Q_PROPERTY(double visible_max_value READ get_visible_max_value WRITE set_visible_max_value NOTIFY visibleMaxValueChanged)
         Q_PROPERTY(double visible_max_volume READ get_visible_max_volume WRITE set_visible_max_volume NOTIFY visibleMaxVolumeChanged)
@@ -56,8 +53,6 @@ namespace atomic_dex
         void clear_data();
 
         //! Property
-        [[nodiscard]] ma_average_series_model* get_ma_20_series() const noexcept;
-        [[nodiscard]] ma_average_series_model* get_ma_50_series() const noexcept;
         [[nodiscard]] int                      get_series_size() const noexcept;
         [[nodiscard]] QDateTime                get_series_from() const noexcept;
         [[nodiscard]] QDateTime                get_series_to() const noexcept;
@@ -102,9 +97,6 @@ namespace atomic_dex
         bool common_reset_data();
 
         ag::ecs::system_manager& m_system_manager;
-        ma_average_series_model* m_ma_20_series;
-        ma_average_series_model* m_ma_50_series;
-
 
         nlohmann::json m_model_data;
 
