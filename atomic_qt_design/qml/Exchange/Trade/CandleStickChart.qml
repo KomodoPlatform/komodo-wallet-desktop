@@ -27,8 +27,18 @@ ChartView {
     property double global_min_value
     property double global_max_value
 
+
+    Timer {
+        id: update_last_value_y_timer
+        interval: 50
+        repeat: false
+        running: false
+        onTriggered: series.updateLastValueY()
+    }
+
     function chartFullyReset() {
         updater.locked_min_max_value = true
+        update_last_value_y_timer.restart()
         chartUpdated()
     }
 
@@ -50,7 +60,7 @@ ChartView {
         global_max_value = model.global_max_value
 
         // Update other stuff
-        updater.updateChart()
+        updater.updateChart(true)
     }
 
     AreaSeries {
@@ -129,6 +139,11 @@ ChartView {
         property double global_max: 0
         property double last_value: 0
         property bool last_value_green: true
+
+        function updateLastValueY() {
+            const area = plotArea
+            horizontal_line.y = Math.max(Math.min(chart.mapToPosition(Qt.point(0, series.last_value), series).y, area.y + area.height), area.y)
+        }
 
         increasingColor: Style.colorGreen
         decreasingColor: Style.colorRed
@@ -588,8 +603,8 @@ ChartView {
             model.max_value = new_max
         }
 
-        function updateChart() {
-            if(!can_update) return
+        function updateChart(force) {
+            if(!can_update && !force) return
             can_update = false
 
             // Update
@@ -665,7 +680,7 @@ ChartView {
                 cursor_horizontal_line.y = mouse_y
             }
 
-            horizontal_line.y = Math.max(Math.min(chart.mapToPosition(Qt.point(0, series.last_value), series).y, area.y + area.height), area.y)
+            series.updateLastValueY()
 
             // Block this function for a while to allow engine to render
             update_block_timer.start()
