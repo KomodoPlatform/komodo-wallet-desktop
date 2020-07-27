@@ -1,7 +1,7 @@
 import QtQuick 2.12
 import QtQuick.Layouts 1.12
 import QtQuick.Controls 2.12
-import QtQuick.Controls.Material 2.12
+
 import "../Components"
 import "../Constants"
 
@@ -33,7 +33,7 @@ ColumnLayout {
     // Fees
     TextWithTitle {
         title: API.get().empty_string + (qsTr("Fees"))
-        text: API.get().empty_string + (result.fees)
+        text: API.get().empty_string + (General.formatCrypto("", result.fees, General.txFeeTicker(API.get().current_coin_info)))
     }
 
     // Date

@@ -1,16 +1,15 @@
 import QtQuick 2.12
 import QtQuick.Layouts 1.12
 import QtQuick.Controls 2.12
-import QtQuick.Controls.Material 2.12
+
 import "../../Components"
 import "../../Constants"
+import "../../Wallet"
 
 Item {
     id: exchange_trade
 
     property string action_result
-    property string prev_base
-    property string prev_rel
 
     // Override
     property var onOrderSuccess: () => {}
@@ -23,8 +22,6 @@ Item {
 
     function fullReset() {
         reset(true)
-        prev_base = ''
-        prev_rel = ''
         orderbook_timer.running = false
     }
 
@@ -47,8 +44,14 @@ Item {
 
 
     // Price
+    property string cex_price
+    function updateCexPrice(base, rel) {
+        cex_price = API.get().get_cex_rates(base, rel)
+    }
+
     readonly property var empty_order: ({ "price": "0","price_denom":"0","price_numer":"0","volume":"0"})
     property var preffered_order: General.clone(empty_order)
+
 
     function orderIsSelected() {
         return preffered_order.price !== empty_order.price
@@ -205,6 +208,7 @@ Item {
         updateOrderbook()
         reset(true)
         updateForms()
+        setPair(true)
     }
 
     function updateForms(my_side, new_ticker) {
@@ -228,8 +232,24 @@ Item {
         return cb === undefined ? [] : cb
     }
 
+    function moveToBeginning(coins, ticker) {
+        const idx = coins.map(c => c.ticker).indexOf(ticker)
+        if(idx === -1) return
+
+        const coin = coins[idx]
+        return [coin].concat(coins.filter(c => c.ticker !== ticker))
+    }
+
     function getCoins(my_side) {
-        const coins = API.get().enabled_coins
+        let coins = API.get().enabled_coins
+
+        if(coins.length === 0) return coins
+
+        // Prioritize KMD / BTC pair by moving them to the start
+        coins = moveToBeginning(coins, "BTC")
+        coins = moveToBeginning(coins, "KMD")
+
+        // Return full list
         if(my_side === undefined) return coins
 
         // Filter for Sell
@@ -255,26 +275,6 @@ Item {
         else form_rel.setTicker(ticker)
     }
 
-    function swapPair() {
-        let base = getTicker(true)
-        let rel = getTicker(false)
-
-        // Fill previous ones if they are blank
-        if(prev_base === '') prev_base = form_base.getAnyAvailableCoin(rel)
-        if(prev_rel === '') prev_rel = form_rel.getAnyAvailableCoin(base)
-
-        // Get different value if they are same
-        if(base === rel) {
-            if(base !== prev_base) base = prev_base
-            else if(rel !== prev_rel) rel = prev_rel
-        }
-
-        // Swap
-        const curr_base = base
-        setTicker(true, rel)
-        setTicker(false, curr_base)
-    }
-
     function validBaseRel() {
         const base = getTicker(true)
         const rel = getTicker(false)
@@ -282,18 +282,21 @@ Item {
     }
 
     function setPair(is_base) {
-        if(getTicker(true) === getTicker(false)) swapPair()
-        else {
-            if(validBaseRel()) {
-                const new_base = getTicker(true)
-                const rel = getTicker(false)
-                console.log("Setting current orderbook with params: ", new_base, rel)
-                API.get().set_current_orderbook(new_base, rel)
-                reset(true, is_base)
-                updateOrderbook()
+        if(getTicker(true) === getTicker(false)) {
+            // Base got selected, same as rel
+            // Change rel ticker
+            form_rel.setAnyTicker()
+        }
 
-                exchange.onTradeTickerChanged(new_base)
-            }
+        if(validBaseRel()) {
+            const new_base = getTicker(true)
+            const rel = getTicker(false)
+            console.log("Setting current orderbook with params: ", new_base, rel)
+            API.get().set_current_orderbook(new_base, rel)
+            reset(true, is_base)
+            updateOrderbook()
+            updateCexPrice(new_base, rel)
+            exchange.onTradeTickerChanged(new_base)
         }
     }
 
@@ -352,7 +355,7 @@ Item {
         anchors.centerIn: parent
         visible: form_base.ticker_list.length === 0
 
-        Image {
+        DefaultImage {
             Layout.alignment: Qt.AlignHCenter
             source: General.image_path + "setup-wallet-restore-2.svg"
             Layout.bottomMargin: 30
@@ -360,13 +363,13 @@ Item {
 
         DefaultText {
             Layout.alignment: Qt.AlignHCenter
-            text: API.get().empty_string + (qsTr("No balance available"))
+            text_value: API.get().empty_string + (qsTr("No balance available"))
             font.pixelSize: Style.textSize2
         }
 
         DefaultText {
             Layout.alignment: Qt.AlignHCenter
-            text: API.get().empty_string + (qsTr("Please enable a coin with balance or deposit funds"))
+            text_value: API.get().empty_string + (qsTr("Please enable a coin with balance or deposit funds"))
         }
     }
 
@@ -374,12 +377,34 @@ Item {
     ColumnLayout {
         id: form
 
+        spacing: layout_margin
+
         visible: form_base.ticker_list.length > 0
 
-        anchors.centerIn: parent
+        anchors.fill: parent
+
+
+        InnerBackground {
+            id: graph_bg
+
+            Layout.alignment: Qt.AlignTop
+
+            visible: chart.pair_supported
+
+            Layout.fillWidth: true
+            Layout.fillHeight: true
+            implicitHeight: wallet.height*0.6
+
+            CandleStickChart {
+                id: chart
+                width: graph_bg.width
+                height: graph_bg.height
+            }
+        }
 
         RowLayout {
-            spacing: 15
+            Layout.alignment: Qt.AlignVCenter
+            spacing: 0
 
             // Sell
             OrderForm {
@@ -388,62 +413,58 @@ Item {
                 my_side: true
             }
 
-            Image {
-                source: General.image_path + "exchange-exchange.svg"
-                Layout.alignment: Qt.AlignVCenter
+            FloatingBackground {
+                id: trade_icon_bg
+                z: 1
+                radius: 100
+                width: 75
+                height: width
+                auto_set_size: false
+
+                content: DefaultImage {
+                    source: General.image_path + "trade_icon.svg"
+                    Layout.alignment: Qt.AlignVCenter
+                    fillMode: Image.PreserveAspectFit
+                    width: trade_icon_bg.width*0.4
+                    height: width
+                }
             }
 
             // Receive
             OrderForm {
                 id: form_rel
+                Layout.fillWidth: true
+                Layout.preferredHeight: form_base.height
+                column_layout.height: form_base.height
                 field.enabled: enabled && !orderIsSelected()
             }
         }
 
-        // Trade button
-        PrimaryButton {
-            id: action_button
-            Layout.fillWidth: true
-
-            text: API.get().empty_string + (qsTr("Trade"))
-            enabled: valid_trade_info && form_base.isValid() && form_rel.isValid()
-            onClicked: confirm_trade_modal.open()
-        }
-
-        ConfirmTradeModal {
-            id: confirm_trade_modal
-        }
-
         // Price
         PriceLine {
-            Layout.alignment: Qt.AlignHCenter
-        }
-
-        // Result
-        DefaultText {
-            Layout.alignment: Qt.AlignHCenter
-
-            color: action_result === "success" ? Style.colorGreen : Style.colorRed
-
-            text: API.get().empty_string + (action_result === "" ? "" : action_result === "success" ? "" : qsTr("Failed to place the order."))
+            Layout.alignment: Qt.AlignBottom | Qt.AlignHCenter
         }
 
         // Show errors
         DefaultText {
-            Layout.alignment: Qt.AlignHCenter
+            Layout.alignment: Qt.AlignBottom | Qt.AlignHCenter
+            color: Style.colorRed
 
-            text: API.get().empty_string + (notEnoughBalanceForFees() ?
+            text_value: API.get().empty_string + (notEnoughBalanceForFees() ?
                                                 (qsTr("Not enough balance for the fees. Need at least %1 more", "AMT TICKER").arg(General.formatCrypto("", parseFloat(curr_trade_info.amount_needed), form_base.getTicker()))) :
                                                 (form_base.hasEthFees() && !form_base.hasEnoughEthForFees()) ? (qsTr("Not enough ETH for the transaction fee")) :
                                                 (form_base.fieldsAreFilled() && !form_base.higherThanMinTradeAmount()) ? (qsTr("Sell amount is lower than minimum trade amount") + " : " + General.getMinTradeAmount()) :
                                                 (form_rel.fieldsAreFilled() && !form_rel.higherThanMinTradeAmount()) ? (qsTr("Receive amount is lower than minimum trade amount") + " : " + General.getMinTradeAmount()) : ""
 
                       )
-            color: Style.colorRed
             visible: form_base.fieldsAreFilled() && (notEnoughBalanceForFees() ||
                                                      (form_base.hasEthFees() && !form_base.hasEnoughEthForFees()) ||
                                                      !form_base.higherThanMinTradeAmount() ||
                                                      (form_rel.fieldsAreFilled() && !form_rel.higherThanMinTradeAmount()))
+        }
+
+        ConfirmTradeModal {
+            id: confirm_trade_modal
         }
     }
 }

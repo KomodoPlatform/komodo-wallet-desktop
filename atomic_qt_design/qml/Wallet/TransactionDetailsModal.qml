@@ -1,7 +1,7 @@
 import QtQuick 2.12
 import QtQuick.Layouts 1.12
 import QtQuick.Controls 2.12
-import QtQuick.Controls.Material 2.12
+
 import "../Components"
 import "../Constants"
 
@@ -14,9 +14,13 @@ DefaultModal {
     }
 
     property var details
+    contentWidth: layout.width
 
     // Inside modal
     ColumnLayout {
+        id: layout
+        width: 700
+
         ModalHeader {
             title: API.get().empty_string + (qsTr("Transaction Details"))
         }
@@ -24,26 +28,29 @@ DefaultModal {
         // Amount
         TextWithTitle {
             title: API.get().empty_string + (qsTr("Amount"))
-            text: API.get().empty_string + (General.formatCrypto(details.received, details.amount, API.get().current_coin_info.ticker, details.amount_fiat, API.get().fiat))
+            text: API.get().empty_string + (General.formatCrypto(details.received, details.amount, API.get().current_coin_info.ticker, details.amount_fiat, API.get().current_currency))
             value_color: details.received ? Style.colorGreen : Style.colorRed
+            privacy: true
         }
 
         // Fees
         TextWithTitle {
             title: API.get().empty_string + (qsTr("Fees"))
-            text: API.get().empty_string + (General.formatCrypto("", details.fees, API.get().current_coin_info.ticker))
+            text: API.get().empty_string + (General.formatCrypto("", details.fees, General.txFeeTicker(API.get().current_coin_info)))
+            privacy: true
         }
 
         // Date
         TextWithTitle {
             title: API.get().empty_string + (qsTr("Date"))
-            text:API.get().empty_string + (details.timestamp === 0 ? qsTr("Unconfirmed"):  details.date)
+            text: API.get().empty_string + (details.timestamp === 0 ? qsTr("Unconfirmed"):  details.date)
         }
 
         // Transaction Hash
         TextWithTitle {
             title: API.get().empty_string + (qsTr("Transaction Hash"))
             text: API.get().empty_string + (details.tx_hash)
+            privacy: true
         }
 
         // Confirmations

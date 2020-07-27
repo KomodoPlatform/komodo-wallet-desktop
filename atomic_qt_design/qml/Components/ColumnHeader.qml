@@ -1,18 +1,16 @@
 import QtQuick 2.12
 import QtQuick.Layouts 1.12
 import QtQuick.Controls 2.12
-import QtQuick.Controls.Material 2.12
+
 import QtGraphicalEffects 1.0
 import "../Constants"
 
-Rectangle {
+Item {
     property int sort_type
-    property alias text: title.text
+    property alias text: title.text_value
 
-    property bool hovered: false
     property bool icon_at_left
 
-    color: "transparent"
     width: text.length * title.font.pixelSize
     height: title.height
 
@@ -20,14 +18,22 @@ Rectangle {
     MouseArea {
         anchors.fill: parent
         hoverEnabled: true
-        onHoveredChanged: hovered = containsMouse
         onClicked: {
             if(current_sort === sort_type) {
-                highest_first = !highest_first
+                ascending = !ascending
             }
             else {
                 current_sort = sort_type
-                highest_first = true
+                ascending = false
+            }
+
+            // Apply the sort
+            switch(current_sort) {
+                case sort_by_name: API.get().portfolio_mdl.portfolio_proxy_mdl.sort_by_name(ascending); break
+                case sort_by_value: API.get().portfolio_mdl.portfolio_proxy_mdl.sort_by_currency_balance(ascending); break
+                case sort_by_price: API.get().portfolio_mdl.portfolio_proxy_mdl.sort_by_currency_unit(ascending); break
+                case sort_by_trend:
+                case sort_by_change: API.get().portfolio_mdl.portfolio_proxy_mdl.sort_by_change_last24h(ascending); break
             }
         }
     }
@@ -41,10 +47,10 @@ Rectangle {
 
 
     // Arrow icon
-    Image {
+    DefaultImage {
         id: arrow_icon
 
-        source: General.image_path + "arrow-" + (highest_first ? "down" : "up") + ".svg"
+        source: General.image_path + "arrow-" + (ascending ? "up" : "down") + ".svg"
 
         width: title.font.pixelSize * 0.5
         fillMode: Image.PreserveAspectFit

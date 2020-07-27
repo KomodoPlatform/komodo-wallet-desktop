@@ -117,8 +117,11 @@ namespace folly
 #include <boost/algorithm/string/split.hpp>
 #include <boost/algorithm/string/trim.hpp>
 #include <boost/algorithm/string/erase.hpp>
+#include <boost/algorithm/string/replace.hpp>
 #include <boost/random/random_device.hpp>
 #include <boost/random/uniform_int_distribution.hpp>
+#include <boost/lockfree/queue.hpp>
+#include <boost/thread/synchronized_value.hpp>
 //#include <boost/filesystem.hpp>
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wunused-parameter"

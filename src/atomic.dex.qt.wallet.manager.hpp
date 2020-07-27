@@ -19,35 +19,59 @@
 //! QT Headers
 #include <QString>
 #include <QStringList>
+#include <QVariantMap>
+#include <QVector>
 
 //! Project Headers
+#include "atomic.dex.mm2.hpp"
+#include "atomic.dex.qt.addressbook.contact.contents.hpp"
 #include "atomic.dex.security.hpp"
 #include "atomic.dex.version.hpp"
+#include "atomic.dex.wallet.config.hpp"
 
 namespace atomic_dex
 {
     class qt_wallet_manager
     {
       public:
+        QString get_wallet_default_name() const noexcept;
+
+        void set_wallet_default_name(QString wallet_name) noexcept;
+
         template <typename Functor>
-        bool inline login(
-            const QString& password, const QString& wallet_name, mm2& mm2_system, const QString& default_wallet_name, Functor&& login_if_success_functor);
+        bool login(const QString& password, const QString& wallet_name, mm2& mm2_system, Functor&& login_if_success_functor);
 
-        static inline QStringList get_wallets() noexcept;
+        bool create(const QString& password, const QString& seed, const QString& wallet_name);
 
-        static inline bool is_there_a_default_wallet() noexcept;
+        bool load_wallet_cfg(const std::string& wallet_name);
 
-        static inline QString get_default_wallet_name() noexcept;
+        static QStringList get_wallets() noexcept;
 
-        static inline bool delete_wallet(const QString& wallet_name) noexcept;
+        static bool is_there_a_default_wallet() noexcept;
 
-        static inline bool confirm_password(const QString& wallet_name, const QString& password);
+        static QString get_default_wallet_name() noexcept;
+
+        static bool delete_wallet(const QString& wallet_name) noexcept;
+
+        static bool confirm_password(const QString& wallet_name, const QString& password);
+
+        bool update_wallet_cfg() noexcept;
+
+        void update_contact_ticker(const QString& contact_name, const QString& old_ticker, const QString& new_ticker);
+        void update_contact_address(const QString& contact_name, const QString& ticker, const QString& address);
+        void update_or_insert_contact_name(const QString& old_contact_name, const QString& contact_name);
+        void remove_address_entry(const QString& contact_name, const QString& ticker);
+        void delete_contact(const QString& contact_name);
+        const wallet_cfg& get_wallet_cfg() const noexcept;
+        const wallet_cfg& get_wallet_cfg() noexcept;
+      private:
+        wallet_cfg m_wallet_cfg;
+        QString    m_current_default_wallet{""};
     };
 
     template <typename Functor>
     bool
-    qt_wallet_manager::login(
-        const QString& password, const QString& wallet_name, mm2& mm2_system, const QString& default_wallet, Functor&& login_if_success_functor)
+    qt_wallet_manager::login(const QString& password, const QString& wallet_name, mm2& mm2_system, Functor&& login_if_success_functor)
     {
         std::error_code ec;
         auto            key = atomic_dex::derive_password(password.toStdString(), ec);
@@ -83,75 +107,10 @@ namespace atomic_dex
             }
 
             login_if_success_functor();
-            mm2_system.spawn_mm2_instance(default_wallet.toStdString(), seed);
+            load_wallet_cfg(get_default_wallet_name().toStdString());
+            mm2_system.spawn_mm2_instance(get_default_wallet_name().toStdString(), seed);
             return true;
         }
         return false;
-    }
-
-    QStringList
-    qt_wallet_manager::get_wallets() noexcept
-    {
-        QStringList out;
-
-        for (auto&& p: fs::directory_iterator((get_atomic_dex_config_folder())))
-        {
-            if (p.path().extension().string() == ".seed")
-            {
-                out.push_back(QString::fromStdString(p.path().stem().string()));
-            }
-        }
-
-        return out;
-    }
-
-    bool
-    qt_wallet_manager::is_there_a_default_wallet() noexcept
-    {
-        return fs::exists(get_atomic_dex_config_folder() / "default.wallet");
-    }
-
-    QString
-    qt_wallet_manager::get_default_wallet_name() noexcept
-    {
-        if (is_there_a_default_wallet())
-        {
-            std::ifstream ifs((get_atomic_dex_config_folder() / "default.wallet").c_str());
-            assert(ifs);
-            std::string str((std::istreambuf_iterator<char>(ifs)), std::istreambuf_iterator<char>());
-            return QString::fromStdString(str);
-        }
-        return "nonexistent";
-    }
-
-    bool
-    qt_wallet_manager::delete_wallet(const QString& wallet_name) noexcept
-    {
-        using namespace std::string_literals;
-        return fs::remove(get_atomic_dex_config_folder() / (wallet_name.toStdString() + ".seed"s));
-    }
-
-    bool
-    qt_wallet_manager::confirm_password(const QString& wallet_name, const QString& password)
-    {
-        std::error_code ec;
-        auto            key = atomic_dex::derive_password(password.toStdString(), ec);
-        if (ec)
-        {
-            spdlog::debug("{}", ec.message());
-            if (ec == dextop_error::derive_password_failed)
-            {
-                return false;
-            }
-        }
-        using namespace std::string_literals;
-        const fs::path seed_path = get_atomic_dex_config_folder() / (wallet_name.toStdString() + ".seed"s);
-        auto           seed      = atomic_dex::decrypt(seed_path, key.data(), ec);
-        if (ec == dextop_error::corrupted_file_or_wrong_password)
-        {
-            spdlog::warn("{}", ec.message());
-            return false;
-        }
-        return true;
     }
 } // namespace atomic_dex

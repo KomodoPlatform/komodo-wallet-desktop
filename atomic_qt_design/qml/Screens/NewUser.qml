@@ -1,7 +1,7 @@
 import QtQuick 2.12
 import QtQuick.Layouts 1.12
 import QtQuick.Controls 2.12
-import QtQuick.Controls.Material 2.12
+
 import "../Components"
 import "../Constants"
 
@@ -88,11 +88,20 @@ SetupPage {
     }
 
     image_scale: 0.7
-    image_path: General.image_path + (form_is_filled ? "settings-seed.svg" : "setup-welcome-wallet.svg")
-    title: API.get().empty_string + (qsTr("New User"))
+    // Removed the image for now, no space
+    //image_path: General.image_path + (form_is_filled ? "settings-seed.svg" : "setup-welcome-wallet.svg")
 
     content: ColumnLayout {
         width: 600
+        spacing: Style.rowSpacing
+
+        DefaultText {
+            text_value: API.get().empty_string + (qsTr("New User"))
+        }
+
+        HorizontalLine {
+            Layout.fillWidth: true
+        }
 
         function reset() {
             new_user.reset()
@@ -130,18 +139,27 @@ SetupPage {
         // First page, fill the form
         ColumnLayout {
             visible: !form_is_filled
+            spacing: Style.rowSpacing
 
             WalletNameField {
                 id: input_wallet_name
                 field.onAccepted: completeForm()
             }
 
-            Rectangle {
+            TextAreaWithTitle {
+                id: input_generated_seed
+                title: API.get().empty_string + (qsTr("Generated Seed"))
+                field.text: current_mnemonic
+                field.readOnly: true
+                copyable: true
+                onReturn: completeForm
+            }
+
+            FloatingBackground {
                 Layout.topMargin: 10
                 Layout.bottomMargin: Layout.topMargin
                 Layout.fillWidth: true
                 color: Style.colorRed3
-                radius: 10
                 height: warning_texts.height + 20
 
                 Column {
@@ -156,27 +174,18 @@ SetupPage {
                         width: parent.width - 40
                         horizontalAlignment: Text.AlignHCenter
                         anchors.horizontalCenter: parent.horizontalCenter
-                        text: API.get().empty_string + (qsTr("Important: Back up your seed phrase before proceeding!"))
+                        text_value: API.get().empty_string + (qsTr("Important: Back up your seed phrase before proceeding!"))
                     }
 
                     DefaultText {
                         width: parent.width - 40
                         horizontalAlignment: Text.AlignHCenter
                         anchors.horizontalCenter: parent.horizontalCenter
-                        text: API.get().empty_string + (qsTr("We recommend storing it offline."))
+                        text_value: API.get().empty_string + (qsTr("We recommend storing it offline."))
                         font.pixelSize: Style.textSizeSmall4
                         color: Style.colorWhite4
                     }
                 }
-            }
-
-            TextAreaWithTitle {
-                id: input_generated_seed
-                title: API.get().empty_string + (qsTr("Generated Seed"))
-                field.text: current_mnemonic
-                field.readOnly: true
-                copyable: true
-                onReturn: completeForm
             }
 
             TextAreaWithTitle {
@@ -194,6 +203,8 @@ SetupPage {
             }
 
             RowLayout {
+                spacing: Style.buttonSpacing
+
                 DefaultButton {
                     Layout.fillWidth: true
                     text: API.get().empty_string + (qsTr("Back"))
@@ -217,7 +228,7 @@ SetupPage {
             }
 
             DefaultText {
-                text: API.get().empty_string + (text_error)
+                text_value: API.get().empty_string + (text_error)
                 color: Style.colorRed
                 visible: text !== ''
             }
@@ -228,12 +239,10 @@ SetupPage {
         ColumnLayout {
             visible: form_is_filled
 
-            Rectangle {
+            FloatingBackground {
                 Layout.topMargin: 10
                 Layout.bottomMargin: Layout.topMargin
                 Layout.fillWidth: true
-                color: Style.colorTheme7
-                radius: 10
                 height: 160
 
                 Column {
@@ -247,13 +256,13 @@ SetupPage {
                     DefaultText {
                         width: parent.width - 40
                         anchors.horizontalCenter: parent.horizontalCenter
-                        text: API.get().empty_string + (qsTr("Let's double check your seed phrase"))
+                        text_value: API.get().empty_string + (qsTr("Let's double check your seed phrase"))
                     }
 
                     DefaultText {
                         width: parent.width - 40
                         anchors.horizontalCenter: parent.horizontalCenter
-                        text: API.get().empty_string + (qsTr("Your seed phrase is important - that's why we like to make sure it's correct. We'll ask you three different questions about your seed phrase to make sure you'll be able to easily restore your wallet whenever you want."))
+                        text_value: API.get().empty_string + (qsTr("Your seed phrase is important - that's why we like to make sure it's correct. We'll ask you three different questions about your seed phrase to make sure you'll be able to easily restore your wallet whenever you want."))
                         font.pixelSize: Style.textSizeSmall4
                         color: Style.colorWhite4
                     }
@@ -286,7 +295,7 @@ SetupPage {
             }
 
             DefaultText {
-                text: API.get().empty_string + (guess_text_error)
+                text_value: API.get().empty_string + (guess_text_error)
                 color: Style.colorRed
                 visible: text !== ''
             }

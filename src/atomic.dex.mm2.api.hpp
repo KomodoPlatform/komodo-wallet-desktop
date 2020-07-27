@@ -27,6 +27,35 @@ namespace mm2::api
     inline constexpr const char* g_endpoint = "http://127.0.0.1:7783";
 
     std::string rpc_version();
+
+    //! max taker vol
+    struct max_taker_vol_request
+    {
+        std::string coin;
+    };
+
+    void to_json(nlohmann::json& j, const max_taker_vol_request& cfg);
+
+    struct max_taker_vol_answer_success
+    {
+        std::string denom;
+        std::string numer;
+    };
+
+    void from_json(const nlohmann::json& j, max_taker_vol_answer_success& cfg);
+
+    struct max_taker_vol_answer
+    {
+        std::optional<max_taker_vol_answer_success> result;
+        std::optional<std::string>                  error;
+        int                                         rpc_result_code;
+        std::string                                 raw_result;
+    };
+
+    void from_json(const nlohmann::json& j, max_taker_vol_answer& answer);
+
+    max_taker_vol_answer rpc_max_taker_vol(max_taker_vol_request&& request);
+
     //! Only for erc 20
     struct enable_request
     {
@@ -323,8 +352,8 @@ namespace mm2::api
 
     struct send_raw_transaction_request
     {
-        std::string coin;
         std::string tx_hex;
+        std::string coin;
     };
 
     void to_json(nlohmann::json& j, const send_raw_transaction_request& cfg);
@@ -540,10 +569,10 @@ namespace mm2::api
         std::string rel;
         bool        cancellable;
         std::size_t timestamp;
-        std::string human_timestamp;
         std::string order_type;
         std::string base_amount;
         std::string rel_amount;
+        std::string human_timestamp;
     };
 
     struct my_orders_answer

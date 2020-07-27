@@ -1,26 +1,24 @@
 import QtQuick 2.12
 import QtQuick.Layouts 1.12
 import QtQuick.Controls 2.12
-import QtQuick.Controls.Material 2.12
+
 import QtGraphicalEffects 1.0
 import "../Components"
 import "../Constants"
 
 Rectangle {
-    property var item
+    property var details
     width: list.width
     height: 175
 
-    property bool hovered: false
-
-    color: hovered ? Style.colorTheme8 : "transparent"
+    color: mouse_area.containsMouse ? Style.colorTheme8 : "transparent"
 
     MouseArea {
+        id: mouse_area
         anchors.fill: parent
         hoverEnabled: true
-        onHoveredChanged: hovered = containsMouse
         onClicked: {
-            order_modal.current_item_uuid = item.uuid
+            order_modal.details = details
             order_modal.open()
         }
     }
@@ -32,7 +30,7 @@ Rectangle {
         anchors.horizontalCenter: parent.horizontalCenter
         anchors.top: parent.top
         anchors.topMargin: 20
-        item: parent.item
+        details: parent.details
     }
 
     HorizontalLine {

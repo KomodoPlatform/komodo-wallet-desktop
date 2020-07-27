@@ -68,6 +68,31 @@ git checkout curl-7_70_0
 make install
 ```
 
+Installling libbitcoin:
+
+```
+git clone --depth 1 --branch version5 --single-branch "https://github.com/libbitcoin/secp256k1"
+cd secp256k1
+./autogen.sh
+./configure --disable-shared --disable-tests --enable-module-recovery
+make -j3
+sudo make install
+cd ../
+```
+
+Installing libbitcoin-system:
+
+```
+git clone --depth 1 --branch version3 --single-branch https://github.com/KomodoPlatform/libbitcoin-system.git
+cd libbitcoin-system
+./autogen.sh
+./configure --with-boost --disable-shared
+make -j3
+sudo make install
+sudo update_dyld_shared_cache
+```
+
+
 ### Install Linux dependencies
 
 In your terminal (shell,...) execute:
@@ -107,6 +132,15 @@ export QT_ROOT=~/Qt/5.15.0
 ```
 
 ## Build AtomicDEX Pro 
+
+Please clone with submodules initialization : `git clone --recurse-submodules --remote-submodules https://github.com/KomodoPlatform/atomicDEX-Pro.git`
+
+Install vcpkg from within the `ci_tools_atomic_dex` folder:
+
+```
+nimble build
+./ci_tools_atomic_dex --install_vcpkg
+```
 
 ### Windows
 

@@ -1,7 +1,7 @@
 import QtQuick 2.12
 import QtQuick.Layouts 1.12
 import QtQuick.Controls 2.12
-import QtQuick.Controls.Material 2.12
+
 import "../../Components"
 import "../../Constants"
 
@@ -36,9 +36,7 @@ DefaultModal {
         }
 
         // List header
-        Rectangle {
-            color: "transparent"
-
+        Item {
             Layout.alignment: Qt.AlignTop
 
             Layout.fillWidth: true
@@ -51,7 +49,7 @@ DefaultModal {
                 anchors.right: parent.right
                 anchors.rightMargin: parent.width * 0.77
 
-                text: API.get().empty_string + (qsTr("Price"))
+                text_value: API.get().empty_string + (qsTr("Price"))
                 color: Style.colorWhite1
                 anchors.verticalCenter: parent.verticalCenter
             }
@@ -62,7 +60,7 @@ DefaultModal {
                 anchors.right: parent.right
                 anchors.rightMargin: parent.width * 0.44
 
-                text: API.get().empty_string + (qsTr("Volume"))
+                text_value: API.get().empty_string + (qsTr("Volume"))
                 color: Style.colorWhite1
                 anchors.verticalCenter: parent.verticalCenter
             }
@@ -73,7 +71,7 @@ DefaultModal {
                 anchors.right: parent.right
                 anchors.rightMargin: parent.width * 0.11
 
-                text: API.get().empty_string + (qsTr("Receive"))
+                text_value: API.get().empty_string + (qsTr("Receive"))
                 color: Style.colorWhite1
                 anchors.verticalCenter: parent.verticalCenter
             }
@@ -87,29 +85,24 @@ DefaultModal {
         }
 
         // List
-        ListView {
+        DefaultListView {
             id: list
             Layout.alignment: Qt.AlignTop
             Layout.fillWidth: true
             Layout.fillHeight: true
-            ScrollBar.vertical: ScrollBar {}
 
             model: getCurrentOrderbook().sort((a, b) => parseFloat(b.price) - parseFloat(a.price))
 
-            clip: true
-
             delegate: Rectangle {
-                property bool hovered: false
-
-                color: hovered ? Style.colorTheme4 : "transparent"
+                color: mouse_area.containsMouse ? Style.colorTheme4 : "transparent"
 
                 width: modal_layout.width
                 height: 50
 
                 MouseArea {
+                    id: mouse_area
                     anchors.fill: parent
                     hoverEnabled: true
-                    onHoveredChanged: hovered = containsMouse
                     onClicked: chooseOrder(model.modelData)
                 }
 
@@ -118,7 +111,7 @@ DefaultModal {
                     anchors.right: parent.right
                     anchors.rightMargin: price_header.anchors.rightMargin
 
-                    text: API.get().empty_string + (General.formatDouble(model.modelData.price))
+                    text_value: API.get().empty_string + (General.formatDouble(model.modelData.price))
                     color: Style.colorWhite4
                     anchors.verticalCenter: parent.verticalCenter
                 }
@@ -128,7 +121,7 @@ DefaultModal {
                     anchors.right: parent.right
                     anchors.rightMargin: volume_header.anchors.rightMargin
 
-                    text: API.get().empty_string + (model.modelData.volume)
+                    text_value: API.get().empty_string + (model.modelData.volume)
                     color: Style.colorWhite4
                     anchors.verticalCenter: parent.verticalCenter
                 }
@@ -138,7 +131,7 @@ DefaultModal {
                     anchors.right: parent.right
                     anchors.rightMargin: receive_header.anchors.rightMargin
 
-                    text: API.get().empty_string + (getReceiveAmount(model.modelData.price, model.modelData.volume) + " " + getTicker())
+                    text_value: API.get().empty_string + (getReceiveAmount(model.modelData.price, model.modelData.volume) + " " + getTicker())
                     color: Style.colorWhite4
                     anchors.verticalCenter: parent.verticalCenter
                 }

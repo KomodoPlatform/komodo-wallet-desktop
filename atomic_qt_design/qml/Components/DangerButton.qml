@@ -1,11 +1,15 @@
 import QtQuick 2.12
 import QtQuick.Layouts 1.12
 import QtQuick.Controls 2.12
-import QtQuick.Controls.Material 2.12
+
 import "../Constants"
 
 DefaultButton {
-    Material.background: Style.colorRed2
+    colorDisabled: Style.colorButtonDangerDisabled
+    colorHovered: Style.colorButtonDangerHovered
+    colorEnabled: Style.colorButtonDangerEnabled
+    colorTextDisabled: Style.colorWhite8
+    colorTextEnabled: Style.colorWhite1
 }
 
 /*##^##

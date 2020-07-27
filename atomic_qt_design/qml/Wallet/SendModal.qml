@@ -1,13 +1,16 @@
 import QtQuick 2.12
 import QtQuick.Layouts 1.12
 import QtQuick.Controls 2.12
-import QtQuick.Controls.Material 2.12
+
 import "../Components"
 import "../Constants"
 
 // Open Enable Coin Modal
 DefaultModal {
     id: root
+
+    property alias address_field: input_address.field
+
 
     onClosed: if(stack_layout.currentIndex === 2) reset(true)
 
@@ -154,7 +157,7 @@ DefaultModal {
 
     // Inside modal
     // width: stack_layout.children[stack_layout.currentIndex].width + horizontalPadding * 2
-    width: 600
+    width: 650
     height: stack_layout.children[stack_layout.currentIndex].height + verticalPadding * 2
     StackLayout {
         width: parent.width
@@ -169,10 +172,24 @@ DefaultModal {
             }
 
             // Send address
-            AddressField {
-                id: input_address
-                title: API.get().empty_string + (qsTr("Recipient's address"))
-                field.placeholderText: API.get().empty_string + (qsTr("Enter address of the recipient"))
+            RowLayout {
+                spacing: Style.buttonSpacing
+
+                AddressFieldWithTitle {
+                    id: input_address
+                    Layout.alignment: Qt.AlignLeft
+                    title: API.get().empty_string + (qsTr("Recipient's address"))
+                    field.placeholderText: API.get().empty_string + (qsTr("Enter address of the recipient"))
+                }
+
+                DefaultButton {
+                    Layout.alignment: Qt.AlignRight | Qt.AlignBottom
+                    text: API.get().empty_string + (qsTr("Address Book"))
+                    onClicked: {
+                        openAddressBook()
+                        root.close()
+                    }
+                }
             }
 
             // ERC-20 Lowercase issue
@@ -182,7 +199,7 @@ DefaultModal {
                 DefaultText {
                     Layout.alignment: Qt.AlignLeft
                     color: Style.colorRed
-                    text: API.get().empty_string + (qsTr("The address has to be mixed case."))
+                    text_value: API.get().empty_string + (qsTr("The address has to be mixed case."))
                 }
 
                 DefaultButton {
@@ -193,6 +210,8 @@ DefaultModal {
             }
 
             RowLayout {
+                spacing: Style.buttonSpacing
+
                 // Amount input
                 AmountField {
                     id: input_amount
@@ -203,6 +222,7 @@ DefaultModal {
 
                 Switch {
                     id: input_max_amount
+                    Layout.alignment: Qt.AlignRight | Qt.AlignBottom
                     text: API.get().empty_string + (qsTr("MAX"))
                     onCheckedChanged: input_amount.field.text = ""
                 }
@@ -222,7 +242,7 @@ DefaultModal {
                 DefaultText {
                     font.pixelSize: Style.textSize
                     color: Style.colorRed
-                    text: API.get().empty_string + (qsTr("Only use custom fees if you know what you are doing!"))
+                    text_value: API.get().empty_string + (qsTr("Only use custom fees if you know what you are doing!"))
                 }
 
                 // Normal coins, Custom fees input
@@ -263,7 +283,7 @@ DefaultModal {
 
                 color: Style.colorRed
 
-                text: API.get().empty_string + (qsTr("Custom Fee can't be higher than the amount"))
+                text_value: API.get().empty_string + (qsTr("Custom Fee can't be higher than the amount"))
             }
 
             // Not enough funds error
@@ -273,7 +293,7 @@ DefaultModal {
 
                 color: Style.colorRed
 
-                text: API.get().empty_string + (qsTr("Not enough funds.") + "\n" + qsTr("You have %1", "AMT TICKER").arg(General.formatCrypto("", API.get().get_balance(API.get().current_coin_info.ticker), API.get().current_coin_info.ticker)))
+                text_value: API.get().empty_string + (qsTr("Not enough funds.") + "\n" + qsTr("You have %1", "AMT TICKER").arg(General.formatCrypto("", API.get().get_balance(API.get().current_coin_info.ticker), API.get().current_coin_info.ticker)))
             }
 
             DefaultText {
@@ -322,7 +342,7 @@ DefaultModal {
             // Fees
             TextWithTitle {
                 title: API.get().empty_string + (qsTr("Fees"))
-                text: API.get().empty_string + (General.formatCrypto("", prepare_send_result.fees, API.get().current_coin_info.ticker))
+                text: API.get().empty_string + (General.formatCrypto("", prepare_send_result.fees, General.txFeeTicker(API.get().current_coin_info)))
             }
 
             // Date

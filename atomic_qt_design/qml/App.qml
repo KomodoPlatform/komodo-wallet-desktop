@@ -1,7 +1,7 @@
 import QtQuick 2.12
 import QtQuick.Layouts 1.12
 import QtQuick.Controls 2.12
-import QtQuick.Controls.Material 2.12
+
 import "Screens"
 import "Constants"
 import "Components"
@@ -98,16 +98,6 @@ Rectangle {
         }
     }
 
-    DefaultText {
-        anchors.right: parent.right
-        anchors.bottom: parent.bottom
-        anchors.bottomMargin: 10
-        anchors.rightMargin: anchors.bottomMargin
-        text: API.get().empty_string + (qsTr("gui version") + ":    " + API.get().get_version())
-        font.pixelSize: Style.textSizeSmall
-    }
-
-
     // Error Modal
     LogModal {
         id: error_log_modal
@@ -123,6 +113,16 @@ Rectangle {
     // Toast
     ToastManager {
         id: toast
+    }
+
+    // Update Modal
+    UpdateModal {
+        id: update_modal
+    }
+
+    UpdateNotificationLine {
+        anchors.top: parent.top
+        anchors.right: parent.right
     }
 }
 

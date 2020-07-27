@@ -18,12 +18,23 @@
 
 #ifdef __APPLE__
 #    include "atomic.dex.osx.manager.hpp"
+//#    include <sanitizer/lsan_interface.h>
+//#    include <sanitizer/common_interface_defs.h>
 #endif
 
 inline constexpr size_t g_qsize_spdlog             = 10240;
 inline constexpr size_t g_spdlog_thread_count      = 4;
 inline constexpr size_t g_spdlog_max_file_size     = 7777777;
 inline constexpr size_t g_spdlog_max_file_rotation = 3;
+
+
+void
+signal_handler(int signal)
+{
+    spdlog::trace("sigabort received, cleaning mm2");
+    atomic_dex::kill_executable("mm2");
+    std::exit(signal);
+}
 
 #if defined(WINDOWS_RELEASE_MAIN)
 INT WINAPI
@@ -34,41 +45,13 @@ int
 main([[maybe_unused]] int argc, [[maybe_unused]] char* argv[])
 #endif
 {
+    std::signal(SIGABRT, signal_handler);
     //! Project
 #if defined(_WIN32) || defined(WIN32)
-	using namespace std::string_literals;
-	auto install_db_tz_path = std::make_unique<fs::path>(ag::core::assets_real_path() / "tools" / "timezone" / "tzdata");
-	std::cout << install_db_tz_path->string() << std::endl;
-	date::set_install(install_db_tz_path->string());
-    //fs::path file_db_gz_path = fs::path(std::string(std::getenv("APPDATA"))) / "atomic_qt" / ("tzdata"s + "2020a"s + ".tar.gz"s);
-    //std::cout << file_db_gz_path.string() << std::endl;
-    /*if (not fs::exists(file_db_gz_path))
-    {
-			
-            std::cout << "2020a" << std::endl;
-            bool res_tz = date::remote_download("2020a");
-			std::cout << "Pass here" << std::endl;
-            assert(res_tz == true);
-            if (not fs::exists(install_db_tz_path / "version"))
-            {
-                //! We need to untar
-                boost::system::error_code ec;
-                fs::create_directory(install_db_tz_path, ec);
-                std::string cmd_line = "tar -xf ";
-                cmd_line += file_db_gz_path.string();
-                cmd_line += " -C ";
-                cmd_line += install_db_tz_path.string();
-                std::cout << cmd_line << std::endl;
-                system(cmd_line.c_str());
-                fs::path xml_windows_tdata_path =
-                    fs::path(std::string(std::getenv("APPDATA"))) / "atomic_qt" / ("tzdata" + date::remote_version() + "windowsZones.xml");
-                fs::copy(xml_windows_tdata_path, install_db_tz_path / "windowsZones.xml");
-            }
-        //atomic_dex::spawn([&file_db_gz_path]() {
-		//
-        //});
-        
-    }*/
+    using namespace std::string_literals;
+    auto install_db_tz_path = std::make_unique<fs::path>(ag::core::assets_real_path() / "tools" / "timezone" / "tzdata");
+    std::cout << install_db_tz_path->string() << std::endl;
+    date::set_install(install_db_tz_path->string());
 #endif
 
 #if defined(_WIN32) || defined(WIN32) || defined(__linux__)
@@ -98,15 +81,18 @@ main([[maybe_unused]] int argc, [[maybe_unused]] char* argv[])
     spdlog::set_pattern("[%H:%M:%S %z] [%L] [thr %t] %v");
     spdlog::info("Logger successfully initialized");
 
+    // spdlog::info("asan report: {}", (fs::temp_directory_path() / "asan.log").string().c_str());
+    //__sanitizer_set_report_path((fs::temp_directory_path() / "asan.log").string().c_str());
+
     //! App declaration
     atomic_dex::application atomic_app;
 
     //! QT
     QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
-    int          ac = 0;
-    QApplication app(ac, nullptr);
+    int                           ac  = 0;
+    std::shared_ptr<QApplication> app = std::make_shared<QApplication>(ac, nullptr);
 
-    atomic_app.set_qt_app(&app);
+    atomic_app.set_qt_app(app);
 
     //! QT QML
     QQmlApplicationEngine engine;
@@ -122,7 +108,7 @@ main([[maybe_unused]] int argc, [[maybe_unused]] char* argv[])
 
     const QUrl url(QStringLiteral("qrc:/atomic_qt_design/qml/main.qml"));
     QObject::connect(
-        &engine, &QQmlApplicationEngine::objectCreated, &app,
+        &engine, &QQmlApplicationEngine::objectCreated, app.get(),
         [url](QObject* obj, const QUrl& objUrl) {
             if ((obj == nullptr) && url == objUrl)
             {
@@ -141,10 +127,15 @@ main([[maybe_unused]] int argc, [[maybe_unused]] char* argv[])
 #endif
     atomic_app.launch();
 
-    auto res = app.exec();
+    auto res = app->exec();
 #if defined(_WIN32) || defined(WIN32) || defined(__linux__)
-	auto wallet_exit_res = wally_cleanup(0);
+    auto wallet_exit_res = wally_cleanup(0);
     assert(wallet_exit_res == WALLY_OK);
 #endif
+
+
+    //__lsan_do_leak_check();
+    //__lsan_disable();
+
     return res;
 }

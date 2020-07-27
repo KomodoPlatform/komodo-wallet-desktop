@@ -50,9 +50,9 @@ namespace atomic_dex
     struct tx_state
     {
         std::string state;
-        std::size_t transactions_left;
-        std::size_t blocks_left;
         std::size_t current_block;
+        std::size_t blocks_left;
+        std::size_t transactions_left;
     };
 
     using t_allocator = folly::AlignedSysAllocator<std::uint8_t, folly::FixedAlign<bit_size<std::size_t>()>>;
@@ -202,7 +202,7 @@ namespace atomic_dex
         [[nodiscard]] static t_withdraw_answer withdraw(t_withdraw_request&& request, t_mm2_ec& ec) noexcept;
 
         //! Broadcast a raw transaction on the blockchain
-        [[nodiscard]] static t_broadcast_answer broadcast(t_broadcast_request&& request, t_mm2_ec& ec) noexcept;
+        [[nodiscard]] t_broadcast_answer broadcast(t_broadcast_request&& request, t_mm2_ec& ec) noexcept;
 
         //! Last 50 transactions maximum
         [[nodiscard]] t_transactions get_tx_history(const std::string& ticker, t_mm2_ec& ec) const;
@@ -228,6 +228,9 @@ namespace atomic_dex
         //! Get coins that can be activated
         [[nodiscard]] t_coins get_enableable_coins() const noexcept;
 
+        //! Get all coins
+        [[nodiscard]] t_coins get_all_coins() const noexcept;;
+
         //! Get Specific info about one coin
         [[nodiscard]] coin_config get_coin_info(const std::string& ticker) const;
 
@@ -244,6 +247,7 @@ namespace atomic_dex
 
         //! Get orders
         [[nodiscard]] ::mm2::api::my_orders_answer              get_orders(const std::string& ticker, t_mm2_ec& ec) const noexcept;
+        [[nodiscard]] ::mm2::api::my_orders_answer              get_raw_orders(t_mm2_ec& ec) const noexcept;
         [[nodiscard]] std::vector<::mm2::api::my_orders_answer> get_orders(t_mm2_ec& ec) const noexcept;
 
         //! Get Swaps
@@ -255,6 +259,8 @@ namespace atomic_dex
 
         //! Return true if we the balance of the `ticker` > amount, false otherwise.
         [[nodiscard]] bool do_i_have_enough_funds(const std::string& ticker, const t_float_50& amount) const;
+
+        [[nodiscard]] bool is_orderbook_thread_active() const noexcept;
     };
 } // namespace atomic_dex
 

@@ -41,7 +41,7 @@ namespace
     void
     process_ticker_infos(const atomic_dex::coin_config& current_coin, atomic_dex::coinpaprika_provider::t_ticker_infos_registry& reg)
     {
-        const ticker_infos_request request{.ticker_currency_id = current_coin.coinpaprika_id, .ticker_quotes = {"USD", "EUR"}};
+        const ticker_infos_request request{.ticker_currency_id = current_coin.coinpaprika_id, .ticker_quotes = {"USD", "EUR", "BTC"}};
         auto                       answer = tickers_info(request);
 
         retry(answer, request, [&answer](const ticker_infos_request& request) { answer = tickers_info(request); });
@@ -55,7 +55,7 @@ namespace
         {
             return;
         }
-        const ticker_historical_request request{.ticker_currency_id = current_coin.coinpaprika_id};
+        const ticker_historical_request request{.ticker_currency_id = current_coin.coinpaprika_id, .interval = "2h"};
         auto                            answer = ticker_historical(request);
         retry(answer, request, [&answer](const ticker_historical_request& request) { answer = ticker_historical(request); });
         if (answer.raw_result.find("error") == std::string::npos)
@@ -92,13 +92,47 @@ namespace
             rate_providers.insert_or_assign(current_coin.ticker, "1.00");
         }
     }
+
+    std::string
+    compute_result(const std::string& amount, const std::string& price, const std::string& currency, atomic_dex::cfg& cfg)
+    {
+        const t_float_50 amount_f(amount);
+        const t_float_50 current_price_f(price);
+        const t_float_50 final_price       = amount_f * current_price_f;
+        std::size_t      default_precision = atomic_dex::is_this_currency_a_fiat(cfg, currency) ? 2 : 8;
+        std::string      result;
+
+        if (auto final_price_str = final_price.str(default_precision, std::ios_base::fixed); final_price_str == "0.00" && final_price > 0.00000000)
+        {
+            const auto retry = [&result, &final_price, &default_precision]() { result = final_price.str(default_precision, std::ios_base::fixed); };
+
+            result = final_price.str(default_precision);
+            if (result.find("e") != std::string::npos)
+            {
+                //! We have scientific notations lets get ride of that
+                do {
+                    default_precision += 1;
+                    retry();
+                } while (t_float_50(result) <= 0);
+            }
+        }
+        else
+        {
+            result = final_price.str(default_precision, std::ios_base::fixed);
+        }
+
+        boost::trim_right_if(result, boost::is_any_of("0"));
+        boost::trim_right_if(result, boost::is_any_of("."));
+        return result;
+    }
 } // namespace
 
 namespace atomic_dex
 {
     namespace bm = boost::multiprecision;
 
-    coinpaprika_provider::coinpaprika_provider(entt::registry& registry, mm2& mm2_instance) : system(registry), m_mm2_instance(mm2_instance)
+    coinpaprika_provider::coinpaprika_provider(entt::registry& registry, mm2& mm2_instance, atomic_dex::cfg& cfg) :
+        system(registry), m_mm2_instance(mm2_instance), m_cfg(cfg)
     {
         spdlog::debug("{} l{} f[{}]", __FUNCTION__, __LINE__, fs::path(__FILE__).filename().string());
         disable();
@@ -131,36 +165,37 @@ namespace atomic_dex
         spdlog::debug("{} l{} f[{}]", __FUNCTION__, __LINE__, fs::path(__FILE__).filename().string());
 
         m_provider_rates_thread = std::thread([this]() {
-            // loguru::set_thread_name("paprika thread");
             spdlog::info("paprika thread started");
 
             using namespace std::chrono_literals;
-            do
-            {
+            do {
                 spdlog::info("refreshing rate conversion from coinpaprika");
 
                 t_coins coins = m_mm2_instance.get_enabled_coins();
 
+                std::vector<std::future<void>> out_fut;
+
+                out_fut.reserve(coins.size() * 6);
                 for (auto&& current_coin: coins)
                 {
                     if (current_coin.coinpaprika_id == "test-coin")
                     {
                         continue;
                     }
-                    spawn([this, cur_coin = current_coin]() { process_ticker_infos(cur_coin, this->m_ticker_infos_registry); });
-                    spawn([this, cur_coin = current_coin]() { process_ticker_historical(cur_coin, this->m_ticker_historical_registry); });
-                    process_provider(current_coin, m_usd_rate_providers, "usd-us-dollars");
+                    out_fut.push_back(spawn([this, cur_coin = current_coin]() { process_ticker_infos(cur_coin, this->m_ticker_infos_registry); }));
+                    out_fut.push_back(spawn([this, cur_coin = current_coin]() { process_ticker_historical(cur_coin, this->m_ticker_historical_registry); }));
+                    out_fut.push_back(spawn([this, cur_coin = current_coin]() { process_provider(cur_coin, m_usd_rate_providers, "usd-us-dollars"); }));
                     if (current_coin.ticker != "BTC")
                     {
-                        process_provider(current_coin, m_btc_rate_providers, "btc-bitcoin");
+                        out_fut.push_back(spawn([this, cur_coin = current_coin]() { process_provider(cur_coin, m_btc_rate_providers, "btc-bitcoin"); }));
                     }
                     if (current_coin.ticker != "KMD")
                     {
-                        process_provider(current_coin, m_kmd_rate_providers, "kmd-komodo");
+                        out_fut.push_back(spawn([this, cur_coin = current_coin]() { process_provider(cur_coin, m_kmd_rate_providers, "kmd-komodo"); }));
                     }
-                    process_provider(current_coin, m_eur_rate_providers, "eur-euro");
+                    out_fut.push_back(spawn([this, cur_coin = current_coin]() { process_provider(cur_coin, m_eur_rate_providers, "eur-euro"); }));
                 }
-
+                for (auto&& cur_fut: out_fut) { cur_fut.get(); }
             } while (not m_provider_thread_timer.wait_for(120s));
         });
     }
@@ -196,15 +231,16 @@ namespace atomic_dex
             return "0.00";
         }
 
-        const bm::cpp_dec_float_50 price_f(price);
-        const bm::cpp_dec_float_50 amount_f(amount);
-        const auto                 final_price = price_f * amount_f;
-        std::stringstream          ss;
-
         if (not skip_precision)
         {
-            ss.precision(2);
+            return compute_result(amount, price, fiat, this->m_cfg);
         }
+
+        const t_float_50  price_f(price);
+        const t_float_50  amount_f(amount);
+        const t_float_50  final_price = price_f * amount_f;
+        std::stringstream ss;
+
         ss << std::fixed << final_price;
 
         return ss.str() == "0" ? "0.00" : ss.str();
@@ -213,12 +249,12 @@ namespace atomic_dex
     std::string
     coinpaprika_provider::get_price_in_fiat_all(const std::string& fiat, std::error_code& ec) const noexcept
     {
-        t_coins              coins         = m_mm2_instance.get_enabled_coins();
+        t_coins coins = m_mm2_instance.get_enabled_coins();
         try
         {
-            bm::cpp_dec_float_50 final_price_f = 0;
-            std::string          current_price = "0.00";
-            std::stringstream    ss;
+            t_float_50        final_price_f = 0;
+            std::string       current_price = "0.00";
+            std::stringstream ss;
 
             for (auto&& current_coin: coins)
             {
@@ -238,14 +274,18 @@ namespace atomic_dex
 
                 if (not current_price.empty())
                 {
-                    const auto current_price_f = bm::cpp_dec_float_50(current_price);
+                    const auto current_price_f = t_float_50(current_price);
                     final_price_f += current_price_f;
                 }
             }
 
-            ss.precision(2);
+            std::size_t default_precision = (fiat == "USD" || fiat == "EUR") ? 2 : 8;
+            ss.precision(default_precision);
             ss << std::fixed << final_price_f;
-            return ss.str();
+            std::string result = ss.str();
+            boost::trim_right_if(result, boost::is_any_of("0"));
+            boost::trim_right_if(result, boost::is_any_of("."));
+            return result;
         }
         catch (const std::exception& error)
         {
@@ -255,26 +295,39 @@ namespace atomic_dex
     }
 
     std::string
-    coinpaprika_provider::get_price_in_fiat_from_tx(const std::string& fiat, const std::string& ticker, const tx_infos& tx, std::error_code& ec) const noexcept
+    coinpaprika_provider::get_price_as_currency_from_tx(
+        const std::string& currency, const std::string& ticker, const tx_infos& tx, std::error_code& ec) const noexcept
     {
         if (m_mm2_instance.get_coin_info(ticker).coinpaprika_id == "test-coin")
         {
             return "0.00";
         }
         const auto amount        = tx.am_i_sender ? tx.my_balance_change.substr(1) : tx.my_balance_change;
-        const auto current_price = get_rate_conversion(fiat, ticker, ec);
+        const auto current_price = get_rate_conversion(currency, ticker, ec);
         if (ec)
         {
             return "0.00";
         }
-        const bm::cpp_dec_float_50 amount_f(amount);
-        const bm::cpp_dec_float_50 current_price_f(current_price);
-        const auto                 final_price = amount_f * current_price_f;
-        std::stringstream          ss;
-        ss.precision(2);
-        ss << std::fixed << final_price;
-        std::string final_price_str = ss.str();
-        return final_price_str;
+        return compute_result(amount, current_price, currency, this->m_cfg);
+    }
+
+    std::string
+    coinpaprika_provider::get_price_as_currency_from_amount(
+        const std::string& currency, const std::string& ticker, const std::string& amount, std::error_code& ec) const noexcept
+    {
+        if (m_mm2_instance.get_coin_info(ticker).coinpaprika_id == "test-coin")
+        {
+            return "0.00";
+        }
+
+        const auto current_price = get_rate_conversion(currency, ticker, ec);
+
+        if (ec)
+        {
+            return "0.00";
+        }
+
+        return compute_result(amount, current_price, currency, this->m_cfg);
     }
 
     std::string
@@ -330,9 +383,22 @@ namespace atomic_dex
 
         if (adjusted)
         {
-            std::stringstream ss;
-            ss << std::fixed << std::setprecision(2) << t_float_50(current_price);
-            current_price = ss.str();
+            std::size_t default_precision = (fiat == "USD" || fiat == "EUR") ? 2 : 8;
+
+            t_float_50 current_price_f(current_price);
+            if (fiat == "USD" || fiat == "EUR")
+            {
+                if (current_price_f < 1.0)
+                {
+                    default_precision = 5;
+                }
+            }
+            //! Trick: If there conversion in a fixed representation is 0.00 then use a default precision to 2 without fixed ios flags
+            if (auto fixed_str = current_price_f.str(default_precision, std::ios_base::fixed); fixed_str == "0.00" && current_price_f > 0.00000000)
+            {
+                return current_price_f.str(default_precision);
+            }
+            return current_price_f.str(default_precision, std::ios::fixed);
         }
         return current_price;
     }
@@ -346,18 +412,25 @@ namespace atomic_dex
 
         if (config.coinpaprika_id != "test-coin")
         {
-            process_provider(config, m_usd_rate_providers, "usd-us-dollars");
-            process_provider(config, m_eur_rate_providers, "eur-euro");
-            if (evt.ticker != "BTC")
-            {
-                process_provider(config, m_btc_rate_providers, "btc-bitcoin");
-            }
-            if (evt.ticker != "KMD")
-            {
-                process_provider(config, m_kmd_rate_providers, "kmd-komodo");
-            }
-            process_ticker_infos(config, m_ticker_infos_registry);
-            process_ticker_historical(config, m_ticker_historical_registry);
+            spawn([config, evt, this]() {
+                process_provider(config, m_usd_rate_providers, "usd-us-dollars");
+                process_provider(config, m_eur_rate_providers, "eur-euro");
+                if (evt.ticker != "BTC")
+                {
+                    process_provider(config, m_btc_rate_providers, "btc-bitcoin");
+                }
+                if (evt.ticker != "KMD")
+                {
+                    process_provider(config, m_kmd_rate_providers, "kmd-komodo");
+                }
+                process_ticker_infos(config, m_ticker_infos_registry);
+                process_ticker_historical(config, m_ticker_historical_registry);
+                this->dispatcher_.trigger<coin_fully_initialized>(evt.ticker);
+            });
+        }
+        else
+        {
+            this->dispatcher_.trigger<coin_fully_initialized>(evt.ticker);
         }
     }
 
@@ -390,5 +463,32 @@ namespace atomic_dex
     {
         return m_ticker_historical_registry.find(ticker) != m_ticker_historical_registry.cend() ? m_ticker_historical_registry.at(ticker)
                                                                                                 : t_ticker_historical_answer{.answer = nlohmann::json::array()};
+    }
+
+    std::string
+    coinpaprika_provider::get_cex_rates(const std::string& base, const std::string& rel, std::error_code& ec) const noexcept
+    {
+        std::string base_rate_str = get_rate_conversion("USD", base, ec, false);
+        if (ec)
+        {
+            return "0.00";
+        }
+        std::string rel_rate_str = get_rate_conversion("USD", rel, ec, false);
+        if (ec)
+        {
+            return "0.00";
+        }
+        if (base_rate_str == "0.00" || rel_rate_str == "0.00")
+        {
+            //! One of the rate is not available
+            return "0.00";
+        }
+        t_float_50  base_rate_f(base_rate_str);
+        t_float_50  rel_rate_f(rel_rate_str);
+        t_float_50  result     = base_rate_f / rel_rate_f;
+        std::string result_str = result.str(8, std::ios_base::fixed);
+        boost::trim_right_if(result_str, boost::is_any_of("0"));
+        boost::trim_right_if(result_str, boost::is_any_of("."));
+        return result_str;
     }
 } // namespace atomic_dex

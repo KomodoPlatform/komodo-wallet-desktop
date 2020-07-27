@@ -13,12 +13,20 @@ QtObject {
         return ticker === "" ? "" : coin_icons_path + ticker.toLowerCase() + ".png"
     }
 
+    readonly property string cex_icon: 'ⓘ'
+    readonly property string download_icon: '📥'
+    readonly property string right_arrow_icon: "⮕"
+
+    property bool privacy_mode: false
+
     readonly property int idx_dashboard_portfolio: 0
     readonly property int idx_dashboard_wallet: 1
     readonly property int idx_dashboard_exchange: 2
     readonly property int idx_dashboard_news: 3
     readonly property int idx_dashboard_dapps: 4
     readonly property int idx_dashboard_settings: 5
+    readonly property int idx_dashboard_light_ui: 6
+    readonly property int idx_dashboard_privacy_mode: 7
 
     readonly property int idx_exchange_trade: 0
     readonly property int idx_exchange_orders: 1
@@ -31,16 +39,33 @@ QtObject {
     readonly property var reg_pass_numeric: /(?=.*[0-9])/
     readonly property var reg_pass_special: /(?=.*[@#$%{}[\]()\/\\'"`~,;:.<>+\-_=!^&*|?])/
     readonly property var reg_pass_count: /(?=.{16,})/
-
+    
     readonly property double time_toast_important_error: 10000
     readonly property double time_toast_basic_info: 3000
 
-    function prettifyJSON(j) {
-        return JSON.stringify(JSON.parse(j), null, 4)
+    readonly property var chart_times: (["1m", "3m", "5m", "15m", "30m", "1h", "2h", "4h", "6h", "12h", "1d", "3d"/*, "1w"*/])
+    readonly property var time_seconds: ({ "1m": 60, "3m": 180, "5m": 300, "15m": 900, "30m": 1800, "1h": 3600, "2h": 7200, "4h": 14400, "6h": 21600, "12h": 43200, "1d": 86400, "3d": 259200, "1w": 604800 })
+
+    property var all_coins
+
+    function timestampToDouble(timestamp) {
+        return (new Date(timestamp)).getTime()
     }
-        
+
+    function timestampToString(timestamp) {
+        return (new Date(timestamp)).getUTCDate()
+    }
+
+    function timestampToDate(timestamp) {
+        return (new Date(timestamp * 1000))
+    }
+    
     function clone(obj) {
         return JSON.parse(JSON.stringify(obj));
+    }
+
+    function prettifyJSON(j) {
+        return JSON.stringify(JSON.parse(j), null, 4)
     }
 
     function viewTxAtExplorer(ticker, id, add_0x=false) {
@@ -48,6 +73,13 @@ QtObject {
             const coin_info = API.get().get_coin_info(ticker)
             const id_prefix = add_0x && coin_info.type === 'ERC-20' ? '0x' : ''
             Qt.openUrlExternally(coin_info.explorer_url + 'tx/' + id_prefix + id)
+        }
+    }
+
+    function viewAddressAtExplorer(ticker, address) {
+        if(address !== '') {
+            const coin_info = API.get().get_coin_info(ticker)
+            Qt.openUrlExternally(coin_info.explorer_url + 'address/' + address)
         }
     }
 
@@ -60,19 +92,22 @@ QtObject {
                            (type === undefined || c.type === type))
     }
 
+    function validFiatRates(data, fiat) {
+        return data && data.rates && data.rates[fiat]
+    }
+
     function formatFiat(received, amount, fiat) {
         const symbols = {
             "USD": "$",
-            "EUR": "€"
+            "EUR": "€",
+            "BTC": "₿",
+            "KMD": "KMD",
         }
 
         return diffPrefix(received) + symbols[fiat] + " " + amount
     }
 
     function formatPercent(value, show_prefix=true) {
-        const result = value + ' %'
-        if(!show_prefix) return result
-
         let prefix = ''
         if(value > 0) prefix = '+ '
         else if(value < 0) {
@@ -80,14 +115,28 @@ QtObject {
             value *= -1
         }
 
-        return prefix + result
+        return (show_prefix ? prefix : '') + value + ' %'
     }
 
     readonly property int amountPrecision: 8
+    readonly property int sliderDigitLimit: 9
+    readonly property int recommendedPrecision: -1337
 
-    function formatDouble(v) {
+    function getDigitCount(v) {
+        return v.toString().replace("-", "").split(".")[0].length
+    }
+
+    function getRecommendedPrecision(v) {
+        return Math.min(Math.max(sliderDigitLimit - getDigitCount(v), 0), amountPrecision)
+    }
+
+    function formatDouble(v, precision) {
+        if(precision === recommendedPrecision) precision = getRecommendedPrecision(v)
+
+        if(precision === 0) return parseInt(v).toString()
+
         // Remove more than n decimals, then convert to string without trailing zeros
-        return parseFloat(v).toFixed(amountPrecision).replace(/\.?0+$/,"")
+        return parseFloat(v).toFixed(precision || amountPrecision).replace(/\.?0+$/,"")
     }
 
     function formatCrypto(received, amount, ticker, fiat_amount, fiat) {
@@ -99,11 +148,15 @@ QtObject {
     }
 
     function fullNamesOfCoins(coins) {
-        return coins.map(c => fullCoinName(c.name, c.ticker))
+        return coins.map(c => {
+         return { value: c.ticker, text: fullCoinName(c.name, c.ticker) }
+        })
     }
 
     function getTickers(coins) {
-        return coins.map(c => c.ticker)
+        return coins.map(c => {
+         return { value: c.ticker, text: c.ticker }
+        })
     }
 
 
@@ -112,7 +165,9 @@ QtObject {
     }
 
     function getTickersAndBalances(coins) {
-        return coins.map(c => c.ticker + " (" + c.balance + ")")
+        return coins.map(c => {
+            return { value: c.ticker, text: c.ticker + " (" + c.balance + ")" }
+        })
     }
 
     function getMinTradeAmount() {
@@ -139,50 +194,6 @@ QtObject {
         return v !== undefined && v !== ""
     }
 
-    function filterRecentSwaps(all_orders, finished_option, ticker) {
-        let orders = all_orders
-
-        Object.keys(orders).map((key, index) => {
-          orders[key].uuid = key
-          orders[key].is_recent_swap = true
-          orders[key].am_i_maker = orders[key].type.toLowerCase() === 'maker'
-        })
-
-        let arr = Object.values(orders).sort((a, b) => b.events[b.events.length-1].timestamp - a.events[a.events.length-1].timestamp)
-
-        // Filter by finished
-        if(finished_option !== undefined && finished_option !== "")
-            arr = arr.filter(o => {
-                for(let e of o.events) {
-                    if(e.state === "Finished")
-                        return finished_option === "include"
-                }
-
-                return finished_option === "exclude"
-            })
-
-        // Filter by ticker
-        if(ticker)
-            arr = arr.filter(o => o.my_info.my_coin === ticker || o.my_info.other_coin === ticker)
-
-        return arr
-    }
-
-    function formatOrder(o) {
-        if(o.is_recent_swap) {
-            o.date = o.events[o.events.length-1].human_timestamp
-        }
-        else {
-            o.my_info = {
-                my_coin: o.base,
-                my_amount: o.base_amount,
-                other_coin: o.rel,
-                other_amount: o.rel_amount
-            }
-        }
-        return o
-    }
-
     function isEthNeeded() {
         for(const c of API.get().enabled_coins)
             if(c.type === "ERC-20" && c.ticker !== "ETH") return true
@@ -190,8 +201,15 @@ QtObject {
         return false
     }
 
+    function txFeeTicker(info) {
+        return info.type === "ERC-20" ? "ETH" : info.ticker
+    }
+
     function canDisable(ticker) {
-        if(API.get().enabled_coins.length <= 2) return false
+        if(API.get().enabled_coins.length <= 2 ||
+                ticker === "KMD" ||
+                ticker === "BTC") return false
+
         if(ticker === "ETH") return !General.isEthNeeded()
 
         return true

@@ -96,30 +96,36 @@ namespace atomic_dex
         this->selected_coin_fiat_amount = std::move(fiat_amount);
         emit fiat_amount_changed();
     }
-    QObjectList
+
+    QVariantList
     current_coin_info::get_transactions() const noexcept
     {
         return this->selected_coin_transactions;
     }
 
     void
-    current_coin_info::set_transactions(QObjectList transactions) noexcept
+    current_coin_info::set_transactions(QVariantList transactions) noexcept
     {
         this->selected_coin_transactions.clear();
         this->selected_coin_transactions = std::move(transactions);
         emit transactionsChanged();
     }
+
     QString
     current_coin_info::get_address() const noexcept
     {
+        spdlog::trace("[{}]", selected_coin_address.toStdString());
         return selected_coin_address;
     }
 
     void
     current_coin_info::set_address(QString address) noexcept
     {
-        this->selected_coin_address = std::move(address);
-        emit address_changed();
+        if (address != this->selected_coin_address)
+        {
+            this->selected_coin_address = std::move(address);
+            emit address_changed();
+        }
     }
 
     void
@@ -210,7 +216,7 @@ namespace atomic_dex
     QString
     atomic_dex::current_coin_info::get_paprika_id() const noexcept
     {
-       return this->selected_coin_paprika_id;
+        return this->selected_coin_paprika_id;
     }
 
     void
@@ -218,5 +224,44 @@ namespace atomic_dex
     {
         this->selected_coin_paprika_id = std::move(paprika_id);
         emit coinpaprika_id_changed();
+    }
+
+    QString
+    current_coin_info::get_price() const noexcept
+    {
+        return this->selected_coin_price;
+    }
+
+    void
+    current_coin_info::set_price(QString price) noexcept
+    {
+        this->selected_coin_price = std::move(price);
+        emit price_changed();
+    }
+
+    QString
+    current_coin_info::get_change24h() const noexcept
+    {
+        return this->selected_coin_change24h;
+    }
+
+    void
+    current_coin_info::set_change24h(QString change24h) noexcept
+    {
+        this->selected_coin_change24h = std::move(change24h);
+        emit change24h_changed();
+    }
+
+    QVariant
+    current_coin_info::get_trend_7d() const noexcept
+    {
+        return this->selected_coin_trend_7d;
+    }
+
+    void
+    current_coin_info::set_trend_7d(QVariant trend_7d) noexcept
+    {
+        this->selected_coin_trend_7d = std::move(trend_7d);
+        emit trend_7d_changed();
     }
 } // namespace atomic_dex

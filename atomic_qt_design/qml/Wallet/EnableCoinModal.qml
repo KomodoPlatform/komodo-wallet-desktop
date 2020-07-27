@@ -1,7 +1,7 @@
 import QtQuick 2.12
 import QtQuick.Layouts 1.12
 import QtQuick.Controls 2.12
-import QtQuick.Controls.Material 2.12
+
 import "../Components"
 import "../Constants"
 
@@ -69,14 +69,12 @@ DefaultModal {
             selectByMouse: true
         }
 
-        Flickable {
+        DefaultFlickable {
             visible: API.get().enableable_coins.length > 0
             width: 350
             height: 400
             contentWidth: col.width
             contentHeight: col.height
-            clip: true
-            ScrollBar.vertical: ScrollBar { }
 
             Column {
                 id: col
@@ -106,7 +104,7 @@ DefaultModal {
         DefaultText {
             visible: API.get().enableable_coins.length === 0
 
-            text: API.get().empty_string + (qsTr("All coins are already enabled!"))
+            text_value: API.get().empty_string + (qsTr("All coins are already enabled!"))
         }
 
         // Buttons

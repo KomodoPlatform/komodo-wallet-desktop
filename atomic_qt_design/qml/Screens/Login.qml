@@ -1,7 +1,7 @@
 import QtQuick 2.12
 import QtQuick.Layouts 1.12
 import QtQuick.Controls 2.12
-import QtQuick.Controls.Material 2.12
+
 import "../Components"
 import "../Constants"
 
@@ -33,8 +33,10 @@ SetupPage {
 
     image_scale: 0.7
     image_path: General.image_path + "setup-logs.svg"
-    title: API.get().empty_string + (qsTr("Login") + ": " + API.get().wallet_default_name)
+
     content: ColumnLayout {
+        spacing: Style.rowSpacing
+
         function reset() {
             login.reset()
             input_password.reset()
@@ -47,7 +49,16 @@ SetupPage {
                 reset()
         }
 
-        width: 275
+        width: 400
+
+        DefaultText {
+            text_value: API.get().empty_string + (qsTr("Login") + ": " + API.get().wallet_default_name)
+        }
+
+        HorizontalLine {
+            Layout.fillWidth: true
+        }
+
         PasswordForm {
             id: input_password
             confirm: false
@@ -55,6 +66,8 @@ SetupPage {
         }
 
         RowLayout {
+            spacing: Style.buttonSpacing
+
             DefaultButton {
                 text: API.get().empty_string + (qsTr("Back"))
                 Layout.fillWidth: true
@@ -75,7 +88,7 @@ SetupPage {
         }
 
         DefaultText {
-            text: API.get().empty_string + (text_error)
+            text_value: API.get().empty_string + (text_error)
             color: Style.colorRed
             visible: text !== ''
         }

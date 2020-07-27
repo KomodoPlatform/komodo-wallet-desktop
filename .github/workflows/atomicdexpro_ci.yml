@@ -143,8 +143,8 @@ jobs:
           nimble build -y
 
           #./ci_tools_atomic_dex --install_dependencies
-          ./ci_tools_atomic_dex build debug
-          ./ci_tools_atomic_dex bundle debug
+          ./ci_tools_atomic_dex build release
+          ./ci_tools_atomic_dex bundle release
 
 
       - name: Running Tests (Linux)
@@ -161,8 +161,8 @@ jobs:
           export CXX=clang++-9
           export CC=clang-9
           echo "Running tests"
-          ./ci_tools_atomic_dex tests debug
-          cd build-Debug/bin/AntaraAtomicDexTestsAppDir/usr/bin
+          ./ci_tools_atomic_dex tests release
+          cd build-Release/bin/AntaraAtomicDexTestsAppDir/usr/bin
           cat atomic-dex-tests-result.xml
           curl https://report.ci/upload.py --output upload.py
           ls
@@ -172,8 +172,8 @@ jobs:
       - name: Upload bundle artifact (Linux)
         uses: actions/upload-artifact@v1
         with:
-          name: dexpro-ubuntu-debug.tar.gz
-          path: ./ci_tools_atomic_dex/bundle-Debug/AntaraAtomicDexAppDir.tar.gz
+          name: dexpro-ubuntu-release.tar.gz
+          path: ./ci_tools_atomic_dex/bundle-Release/AntaraAtomicDexAppDir.tar.gz
 
 
   macos-build:
@@ -265,8 +265,8 @@ jobs:
           export QT_ROOT=${{ github.workspace }}/Qt/5.15.0
           cd ci_tools_atomic_dex
           nimble build -y
-          ./ci_tools_atomic_dex bundle debug --osx_sdk=$HOME/sdk/MacOSX10.13.sdk --compiler=/usr/local/opt/llvm@9/bin/clang++
-          ls bundle-Debug/atomicDEX-Pro.dmg
+          ./ci_tools_atomic_dex bundle release --osx_sdk=$HOME/sdk/MacOSX10.13.sdk --compiler=/usr/local/opt/llvm@9/bin/clang++
+          ls bundle-Release/atomicDEX-Pro.dmg
 
       - name: Running Tests (MacOS)
         env: # Or as an environment variable
@@ -276,8 +276,8 @@ jobs:
           export QT_INSTALL_CMAKE_PATH=${{ github.workspace }}/Qt/5.15.0/clang_64/lib/cmake
           export QT_ROOT=${{ github.workspace }}/Qt/5.15.0
           echo "Running tests"
-          ./ci_tools_atomic_dex tests debug
-          cd build-Debug/bin/atomic_qt_tests.app/Contents/MacOS
+          ./ci_tools_atomic_dex tests release
+          cd build-Release/bin/atomic_qt_tests.app/Contents/MacOS
           cat atomic-dex-tests-result.xml
           curl https://report.ci/upload.py --output upload.py
           ls
@@ -288,8 +288,8 @@ jobs:
       - name: Upload artifacts (MacOS)
         uses: actions/upload-artifact@v1
         with:
-          name: dexpro-mac-debug.dmg
-          path: ./ci_tools_atomic_dex/bundle-Debug/atomicDEX-Pro.dmg
+          name: dexpro-mac-release.dmg
+          path: ./ci_tools_atomic_dex/bundle-Release/atomicDEX-Pro.dmg
 
   windows-build:
     name: Win Build
@@ -347,17 +347,17 @@ jobs:
           nimble build -y
 
           # downloading debug dlls because powershell build doesnt put it
-          $SHAORIG = "8B06E02CE77C48D6EE1993E2D532FE0B12650C77B24609BF4003ADE97826E8FE"
-          $DWFILE = ($PWD | select -exp Path) + '\debuglibs-win-dexpro.zip'
-          (New-Object System.Net.WebClient).DownloadFile('https://github.com/KomodoPlatform/depot/releases/download/0.1/debuglibs-win-atomicdexpro.zip', $DWFILE)
-          $SHADW = Get-FileHash -Algorithm SHA256 .\debuglibs-win-dexpro.zip | select -exp Hash
-          if ($SHADW -ne $SHAORIG) {Throw "Wrong hash: $SHADW =! $SHAORIG"}
+          #$SHAORIG = "8B06E02CE77C48D6EE1993E2D532FE0B12650C77B24609BF4003ADE97826E8FE"
+          #$DWFILE = ($PWD | select -exp Path) + '\debuglibs-win-dexpro.zip'
+          #(New-Object System.Net.WebClient).DownloadFile('https://github.com/KomodoPlatform/depot/releases/download/0.1/debuglibs-win-atomicdexpro.zip', $DWFILE)
+          #$SHADW = Get-FileHash -Algorithm SHA256 .\debuglibs-win-dexpro.zip | select -exp Hash
+          #if ($SHADW -ne $SHAORIG) {Throw "Wrong hash: $SHADW =! $SHAORIG"}
 
           #cmd /c '.\ci_tools_atomic_dex.exe --install_dependencies 2>&1'
-          cmd /c '.\ci_tools_atomic_dex.exe build debug 2>&1'
-          7z e -o'build-Debug\bin\' .\debuglibs-win-dexpro.zip
-          cmd /c '.\ci_tools_atomic_dex.exe bundle debug 2>&1'
-          ls bundle-Debug/bundle.zip
+          cmd /c '.\ci_tools_atomic_dex.exe build release 2>&1'
+          #7z e -o'build-release\bin\' .\debuglibs-win-dexpro.zip
+          cmd /c '.\ci_tools_atomic_dex.exe bundle release 2>&1'
+          ls bundle-Release/bundle.zip
 
       - name: Running Tests (Windows)
         shell: powershell
@@ -367,8 +367,8 @@ jobs:
         run: |
           echo "Running tests"
           $Env:QT_INSTALL_CMAKE_PATH = "C:\Qt\5.15.0\msvc2019_64"
-          cmd /c '.\ci_tools_atomic_dex.exe tests debug 2>&1'
-          cd build-Debug
+          cmd /c '.\ci_tools_atomic_dex.exe tests release 2>&1'
+          cd build-Release
           cd bin
           ls
           Invoke-WebRequest -Uri https://report.ci/upload.py -OutFile upload.py
@@ -377,5 +377,5 @@ jobs:
       - name: Upload artifacts (Windows)
         uses: actions/upload-artifact@v1
         with:
-          name: dexpro-win-debug.zip
-          path: ./ci_tools_atomic_dex/bundle-Debug/bundle.zip
+          name: dexpro-win-release.zip
+          path: ./ci_tools_atomic_dex/bundle-Release/bundle.zip

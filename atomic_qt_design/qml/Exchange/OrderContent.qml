@@ -1,49 +1,57 @@
 import QtQuick 2.12
 import QtQuick.Layouts 1.12
 import QtQuick.Controls 2.12
-import QtQuick.Controls.Material 2.12
+
 import QtGraphicalEffects 1.0
 import "../Components"
 import "../Constants"
 
 // Content
-Rectangle {
-    property var item
+Item {
+    property var details
     property bool in_modal: false
 
-    color: "transparent"
+    readonly property bool is_placed_order: !details ? false :
+                                                       details.order_id !== ''
 
     // Base Icon
-    Image {
+    DefaultImage {
         id: base_icon
-        source: General.coinIcon(item.my_info.my_coin)
+        source: General.coinIcon(!details ? "KMD" :
+                                            details.base_coin)
         fillMode: Image.PreserveAspectFit
         width: in_modal ? Style.textSize5 : Style.textSize3
-        anchors.horizontalCenter: base_amount.horizontalCenter
+
+        anchors.left: parent.left
+        anchors.leftMargin: parent.width * 0.2
     }
 
     // Rel Icon
-    Image {
+    DefaultImage {
         id: rel_icon
-        source: General.coinIcon(item.my_info.other_coin)
+        source: General.coinIcon(!details ? "KMD" :
+                                            details.rel_coin)
         fillMode: Image.PreserveAspectFit
         width: base_icon.width
-        anchors.horizontalCenter: rel_amount.horizontalCenter
+        anchors.right: parent.right
+        anchors.rightMargin: base_icon.anchors.leftMargin
     }
 
     // Base Amount
     DefaultText {
         id: base_amount
-        text: API.get().empty_string + ("~ " + General.formatCrypto("", item.my_info.my_amount, item.my_info.my_coin))
+        text_value: API.get().empty_string + (!details ? "" :
+                                                         "~ " + General.formatCrypto("", details.base_amount, details.base_coin))
         font.pixelSize: in_modal ? Style.textSize2 : Style.textSize
 
-        anchors.left: parent.left
+        anchors.horizontalCenter: base_icon.horizontalCenter
         anchors.top: base_icon.bottom
         anchors.topMargin: 10
+        privacy: is_placed_order
     }
 
     // Swap icon
-    Image {
+    DefaultImage {
         source: General.image_path + "exchange-exchange.svg"
         width: base_amount.font.pixelSize
         height: width
@@ -54,65 +62,75 @@ Rectangle {
     // Rel Amount
     DefaultText {
         id: rel_amount
-        text: API.get().empty_string + ("~ " + General.formatCrypto("", item.my_info.other_amount, item.my_info.other_coin))
+        text_value: API.get().empty_string + (!details ? "" :
+                                                         "~ " + General.formatCrypto("", details.rel_amount, details.rel_coin))
         font.pixelSize: base_amount.font.pixelSize
-        anchors.right: parent.right
+
+        anchors.horizontalCenter: rel_icon.horizontalCenter
         anchors.top: base_amount.top
+        privacy: is_placed_order
     }
 
-    // UUID
+    // Order ID
     DefaultText {
-        id: uuid
-        visible: !in_modal && item.uuid !== ''
-        text: API.get().empty_string + ((item.is_recent_swap ? qsTr("Swap ID") : qsTr("UUID")) + ": " + item.uuid)
+        id: order_id
+        visible: !in_modal && is_placed_order
+        text_value: API.get().empty_string + (!details ? "" :
+                                                         qsTr("ID") + ": " + details.order_id)
         color: Style.colorTheme2
         anchors.top: base_amount.bottom
         anchors.topMargin: base_amount.anchors.topMargin
+        privacy: is_placed_order
     }
 
     // Status Text
     DefaultText {
-        visible: !in_modal && (item.events !== undefined || item.am_i_maker === false)
-        color: visible ? getStatusColor(item) : ''
+        visible: !details ? false : !in_modal && (details.is_swap || !details.is_maker)
+        color: !details ? "white" : visible ? getStatusColor(details.order_status) : ''
         anchors.horizontalCenter: parent.horizontalCenter
         anchors.top: base_icon.top
-        text: API.get().empty_string + (visible ? getStatusTextWithPrefix(item) : '')
+        text_value: API.get().empty_string + (!details ? "" :
+                                                         visible ? getStatusTextWithPrefix(details.order_status) : '')
     }
 
     // Date
     DefaultText {
         id: date
-        visible: !in_modal && item.date !== ''
-        text: API.get().empty_string + (item.date)
+        visible: !details ? false : !in_modal && details.date !== ''
+        text_value: API.get().empty_string + (!details ? "" :
+                                                         details.date)
         color: Style.colorTheme2
-        anchors.top: uuid.bottom
+        anchors.top: order_id.bottom
         anchors.topMargin: base_amount.anchors.topMargin
     }
 
     // Maker/Taker
     DefaultText {
-        visible: !in_modal && item.uuid !== ''
-        text: API.get().empty_string + (item.am_i_maker ? qsTr("Maker Order"): qsTr("Taker Order"))
-        color: Style.colorWhite6
+        visible: !in_modal && is_placed_order
+        text_value: API.get().empty_string + (!details ? "" :
+                                                         details.is_maker ? qsTr("Maker Order"): qsTr("Taker Order"))
+        color: Style.colorThemeDarkLight
         anchors.verticalCenter: date.verticalCenter
         anchors.horizontalCenter: parent.horizontalCenter
     }
 
     // Cancel button
     DangerButton {
-        visible: !in_modal && item.cancellable !== undefined && item.cancellable
+        visible: !details ? false :
+                            !in_modal && details.cancellable
         anchors.right: parent.right
         anchors.bottom: date.bottom
         text: API.get().empty_string + (qsTr("Cancel"))
-        onClicked: onCancelOrder(item.uuid)
+        onClicked: onCancelOrder(details.order_id)
     }
 
     // Recover Funds button
     PrimaryButton {
-        visible: !in_modal && item.is_recoverable !== undefined && item.is_recoverable
+        visible: !details ? false :
+                            !in_modal && details.recoverable
         anchors.right: parent.right
         anchors.bottom: date.bottom
         text: API.get().empty_string + (qsTr("Recover Funds"))
-        onClicked: onRecoverFunds(item.uuid)
+        onClicked: { if(details) onRecoverFunds(details.order_id) }
     }
 }

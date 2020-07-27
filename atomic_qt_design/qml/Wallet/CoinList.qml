@@ -1,7 +1,7 @@
 import QtQuick 2.12
 import QtQuick.Layouts 1.12
 import QtQuick.Controls 2.12
-import QtQuick.Controls.Material 2.12
+
 import "../Components"
 import "../Constants"
 
@@ -16,7 +16,7 @@ Column {
         checkState: parentBox.checkState
     }
 
-    CheckBox {
+    DefaultCheckBox {
         id: parentBox
         visible: utxo_list.model.length > 0
         checkState: childGroup.checkState
@@ -25,13 +25,13 @@ Column {
     Repeater {
         id: utxo_list
 
-        delegate: CheckBox {
+        delegate: DefaultCheckBox {
             text: API.get().empty_string + "         " + (model.modelData.name + " (" + model.modelData.ticker + ")")
             leftPadding: indicator.width
             ButtonGroup.group: childGroup
 
             // Icon
-            Image {
+            DefaultImage {
                 id: icon
                 anchors.left: parent.left
                 anchors.leftMargin: parent.leftPadding + 28

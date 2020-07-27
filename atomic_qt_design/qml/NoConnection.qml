@@ -1,7 +1,7 @@
 import QtQuick 2.12
 import QtQuick.Layouts 1.12
 import QtQuick.Controls 2.12
-import QtQuick.Controls.Material 2.12
+
 import "Screens"
 import "Constants"
 import "Components"
@@ -40,17 +40,17 @@ Rectangle {
         anchors.horizontalCenter: parent.horizontalCenter
         anchors.verticalCenter: parent.verticalCenter
         DefaultText {
-            text: API.get().empty_string + (qsTr("No connection"))
+            text_value: API.get().empty_string + (qsTr("No connection"))
             Layout.alignment: Qt.AlignHCenter
             font.pixelSize: Style.textSize3
         }
 
-        BusyIndicator {
+        DefaultBusyIndicator {
             Layout.alignment: Qt.AlignHCenter
         }
 
         DefaultText {
-            text: API.get().empty_string + (qsTr("Please make sure you are connected to the internet"))
+            text_value: API.get().empty_string + (qsTr("Please make sure you are connected to the internet"))
             Layout.alignment: Qt.AlignHCenter
         }
     }
