@@ -15,6 +15,9 @@ namespace atomic_dex
         //! eg: MORTY
         QString rel_coin;
 
+        //! eg: RICK/MORTY
+        QString ticker_pair;
+
         //! eg: 1
         QString base_amount;
 

@@ -64,7 +64,7 @@ namespace atomic_dex
         this->m_model_proxy->setSourceModel(this);
         this->m_model_proxy->setDynamicSortFilter(true);
         this->m_model_proxy->setSortRole(UnixTimestampRole);
-        this->m_model_proxy->setFilterRole(BaseCoinRole);
+        this->m_model_proxy->setFilterRole(TickerPairRole);
         this->m_model_proxy->sort(0, Qt::DescendingOrder);
     }
 
@@ -97,6 +97,9 @@ namespace atomic_dex
             break;
         case RelCoinRole:
             item.rel_coin = value.toString();
+            break;
+        case TickerPairRole:
+            item.ticker_pair = value.toString();
             break;
         case BaseCoinAmountRole:
             item.base_amount = value.toString();
@@ -160,6 +163,8 @@ namespace atomic_dex
             return item.base_coin;
         case RelCoinRole:
             return item.rel_coin;
+        case TickerPairRole:
+            return item.ticker_pair;
         case BaseCoinAmountRole:
             return item.base_amount;
         case RelCoinAmountRole:
@@ -301,6 +306,7 @@ namespace atomic_dex
             .is_swap          = true,
             .is_cancellable   = false,
             .is_recoverable   = contents.funds_recoverable};
+        data.ticker_pair = data.base_coin + "/" + data.rel_coin;
         if (data.order_status == "failed")
         {
             auto error               = extract_error(contents);
@@ -355,6 +361,7 @@ namespace atomic_dex
             .is_swap        = false,
             .is_cancellable = contents.cancellable,
             .is_recoverable = false};
+        data.ticker_pair = data.base_coin + "/" + data.rel_coin;
         this->m_orders_id_registry.emplace(contents.order_id);
         this->m_model_data.push_back(std::move(data));
         endInsertRows();
@@ -456,6 +463,7 @@ namespace atomic_dex
         return {
             {BaseCoinRole, "base_coin"},
             {RelCoinRole, "rel_coin"},
+            {TickerPairRole, "ticker_pair"},
             {BaseCoinAmountRole, "base_amount"},
             {RelCoinAmountRole, "rel_amount"},
             {OrderTypeRole, "type"},
