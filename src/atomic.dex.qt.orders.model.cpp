@@ -313,7 +313,9 @@ namespace atomic_dex
             data.order_error_state   = error.first;
             data.order_error_message = error.second;
         }
-        this->m_swaps_id_registry.emplace(contents.uuid);
+        if (this->m_swaps_id_registry.find(contents.uuid) == m_swaps_id_registry.end()) {
+            this->m_swaps_id_registry.emplace(contents.uuid);
+        }
         this->m_model_data.push_back(std::move(data));
         endInsertRows();
         emit lengthChanged();
@@ -339,6 +341,10 @@ namespace atomic_dex
             update_value(OrdersRoles::OrderErrorStateRole, state, idx, *this);
             update_value(OrdersRoles::OrderErrorMessageRole, msg, idx, *this);
             emit lengthChanged();
+        } else {
+            bool       is_maker = boost::algorithm::to_lower_copy(contents.type) == "maker";
+            spdlog::error("swap with id {} and ticker: {}, not found in the model, cannot update, forcing an initialization instead", contents.uuid, is_maker ? contents.maker_coin : contents.taker_coin);
+            initialize_swap(contents);
         }
     }
 
