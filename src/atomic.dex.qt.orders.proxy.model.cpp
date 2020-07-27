@@ -49,6 +49,8 @@ namespace atomic_dex
             break;
         case orders_model::RelCoinRole:
             break;
+        case orders_model::TickerPairRole:
+            break;
         case orders_model::BaseCoinAmountRole:
             break;
         case orders_model::RelCoinAmountRole:

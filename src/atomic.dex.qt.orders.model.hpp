@@ -41,6 +41,7 @@ namespace atomic_dex
         {
             BaseCoinRole = Qt::UserRole + 1,
             RelCoinRole,
+            TickerPairRole,
             BaseCoinAmountRole,
             RelCoinAmountRole,
             OrderTypeRole,
