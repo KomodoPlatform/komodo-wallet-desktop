@@ -24,7 +24,8 @@ namespace atomic_dex
 {
     class orderbook_model final : public QAbstractListModel
     {
-      Q_OBJECT
+        Q_OBJECT
+        Q_PROPERTY(int length READ get_length NOTIFY lengthChanged)
       public:
         enum class kind
         {
@@ -46,7 +47,11 @@ namespace atomic_dex
         [[nodiscard]] QVariant               data(const QModelIndex& index, int role) const final;
         [[nodiscard]] QHash<int, QByteArray> roleNames() const final;
 
-        void reset_orderbook(t_orderbook_answer& orderbook) noexcept;
+        void              reset_orderbook(t_orderbook_answer& orderbook) noexcept;
+        [[nodiscard]] int get_length() const noexcept;
+      signals:
+        void lengthChanged();
+
       private:
         kind                m_current_orderbook_kind{kind::asks};
         t_orderbook_answer& m_model_data;
