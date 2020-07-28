@@ -403,7 +403,7 @@ Item {
                     anchors.right: parent.right
                     anchors.top: parent.top
                     anchors.bottom: orderbook.top
-                    anchors.bottomMargin: layout_margin
+                    anchors.bottomMargin: layout_margin * 2
 
                     CandleStickChart {
                         anchors.fill: parent
@@ -447,30 +447,34 @@ Item {
 
                     field.enabled: enabled && !orderIsSelected()
                 }
+
+                // Show errors
+                DefaultText {
+                    anchors.left: parent.left
+                    anchors.right: parent.right
+                    anchors.top: form_rel.bottom
+                    anchors.topMargin: layout_margin * 2
+
+                    color: Style.colorRed
+
+                    text_value: API.get().empty_string + (notEnoughBalanceForFees() ?
+                                                        (qsTr("Not enough balance for the fees. Need at least %1 more", "AMT TICKER").arg(General.formatCrypto("", parseFloat(curr_trade_info.amount_needed), form_base.getTicker()))) :
+                                                        (form_base.hasEthFees() && !form_base.hasEnoughEthForFees()) ? (qsTr("Not enough ETH for the transaction fee")) :
+                                                        (form_base.fieldsAreFilled() && !form_base.higherThanMinTradeAmount()) ? (qsTr("Sell amount is lower than minimum trade amount") + " : " + General.getMinTradeAmount()) :
+                                                        (form_rel.fieldsAreFilled() && !form_rel.higherThanMinTradeAmount()) ? (qsTr("Receive amount is lower than minimum trade amount") + " : " + General.getMinTradeAmount()) : ""
+
+                              )
+                    visible: form_base.fieldsAreFilled() && (notEnoughBalanceForFees() ||
+                                                             (form_base.hasEthFees() && !form_base.hasEnoughEthForFees()) ||
+                                                             !form_base.higherThanMinTradeAmount() ||
+                                                             (form_rel.fieldsAreFilled() && !form_rel.higherThanMinTradeAmount()))
+                }
             }
         }
 
         // Price
         PriceLine {
             Layout.alignment: Qt.AlignBottom | Qt.AlignHCenter
-        }
-
-        // Show errors
-        DefaultText {
-            Layout.alignment: Qt.AlignBottom | Qt.AlignHCenter
-            color: Style.colorRed
-
-            text_value: API.get().empty_string + (notEnoughBalanceForFees() ?
-                                                (qsTr("Not enough balance for the fees. Need at least %1 more", "AMT TICKER").arg(General.formatCrypto("", parseFloat(curr_trade_info.amount_needed), form_base.getTicker()))) :
-                                                (form_base.hasEthFees() && !form_base.hasEnoughEthForFees()) ? (qsTr("Not enough ETH for the transaction fee")) :
-                                                (form_base.fieldsAreFilled() && !form_base.higherThanMinTradeAmount()) ? (qsTr("Sell amount is lower than minimum trade amount") + " : " + General.getMinTradeAmount()) :
-                                                (form_rel.fieldsAreFilled() && !form_rel.higherThanMinTradeAmount()) ? (qsTr("Receive amount is lower than minimum trade amount") + " : " + General.getMinTradeAmount()) : ""
-
-                      )
-            visible: form_base.fieldsAreFilled() && (notEnoughBalanceForFees() ||
-                                                     (form_base.hasEthFees() && !form_base.hasEnoughEthForFees()) ||
-                                                     !form_base.higherThanMinTradeAmount() ||
-                                                     (form_rel.fieldsAreFilled() && !form_rel.higherThanMinTradeAmount()))
         }
 
         ConfirmTradeModal {
