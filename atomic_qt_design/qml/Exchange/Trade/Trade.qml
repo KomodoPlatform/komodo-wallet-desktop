@@ -386,7 +386,6 @@ Item {
         Item {
             Layout.fillWidth: true
             Layout.fillHeight: true
-            Layout.bottomMargin: layout_margin
 
             Item {
                 id: left_section
@@ -474,7 +473,7 @@ Item {
 
         // Price
         PriceLine {
-            Layout.alignment: Qt.AlignBottom | Qt.AlignHCenter
+            Layout.alignment: Qt.AlignHCenter
         }
 
         ConfirmTradeModal {
