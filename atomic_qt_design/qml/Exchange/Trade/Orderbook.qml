@@ -6,7 +6,7 @@ import "../../Components"
 import "../../Constants"
 
 // Open Enable Coin Modal
-FloatingBackground {
+InnerBackground {
     Item {
         anchors.fill: parent
 
