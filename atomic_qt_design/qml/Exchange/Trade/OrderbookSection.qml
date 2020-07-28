@@ -5,16 +5,11 @@ import QtQuick.Controls 2.12
 import "../../Components"
 import "../../Constants"
 
-// Open Enable Coin Modal
 ColumnLayout {
     id: root
 
     property bool is_asks: false
     property alias model: list.model
-    function chooseOrder(order) {
-        // Choose this order
-        selectOrder(order)
-    }
 
     // List header
     Item {
@@ -88,7 +83,7 @@ ColumnLayout {
         Layout.fillHeight: true
 
         delegate: Rectangle {
-            color: mouse_area.containsMouse ? Style.colorTheme4 : "transparent"
+            color: /*mouse_area.containsMouse ? Style.colorTheme4 : */"transparent"
 
             width: root.width
             height: 20
@@ -97,7 +92,7 @@ ColumnLayout {
                 id: mouse_area
                 anchors.fill: parent
                 hoverEnabled: true
-                //onClicked: chooseOrder(model.modelData)
+                //onClicked: selectOrder(model.modelData)
             }
 
             // Price

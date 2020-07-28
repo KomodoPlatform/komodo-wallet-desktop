@@ -6,7 +6,6 @@ import "../../Components"
 import "../../Constants"
 import ".."
 
-// Open Enable Coin Modal
 DefaultModal {
     id: root
 

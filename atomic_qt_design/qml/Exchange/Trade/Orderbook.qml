@@ -5,7 +5,6 @@ import QtQuick.Controls 2.12
 import "../../Components"
 import "../../Constants"
 
-// Open Enable Coin Modal
 InnerBackground {
     Item {
         anchors.fill: parent
