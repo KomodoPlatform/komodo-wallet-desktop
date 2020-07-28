@@ -20,7 +20,7 @@ ColumnLayout {
     Item {
         Layout.fillWidth: true
 
-        height: 50
+        height: 40
 
         // Price
         DefaultText {
@@ -91,7 +91,7 @@ ColumnLayout {
             color: mouse_area.containsMouse ? Style.colorTheme4 : "transparent"
 
             width: root.width
-            height: 50
+            height: 20
 
             MouseArea {
                 id: mouse_area

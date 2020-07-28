@@ -636,7 +636,7 @@ Item {
 
     DefaultText {
         visible: !pair_supported
-        text_value: API.get().empty_string + (qsTr("We don't have chart data for this pair yet"))
+        text_value: API.get().empty_string + (qsTr("There is no chart data for this pair yet"))
         anchors.centerIn: parent
     }
 }
