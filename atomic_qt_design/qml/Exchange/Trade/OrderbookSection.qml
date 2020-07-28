@@ -112,7 +112,7 @@ ColumnLayout {
                 anchors.right: parent.right
                 anchors.rightMargin: price_header.anchors.rightMargin
 
-                font.pixelSize: Style.textSizeSmall2
+                font.pixelSize: Style.textSizeSmall1
 
                 text_value: API.get().empty_string + (General.formatDouble(price))
                 color: title.color
