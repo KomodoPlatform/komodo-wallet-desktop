@@ -26,12 +26,12 @@ ColumnLayout {
             id: title
             anchors.top: parent.top
             anchors.topMargin: 8
-            anchors.left: parent.left
-            anchors.leftMargin: anchors.topMargin
+            anchors.horizontalCenter: quantity_header.horizontalCenter
 
             font.pixelSize: Style.textSizeSmall2
 
-            text_value: API.get().empty_string + ((is_asks ? qsTr("Asks") : qsTr("Bids")) + " (" + model.length + ")")
+            text_value: API.get().empty_string + ((is_asks ? qsTr("Asks") : qsTr("Bids")) +
+                                                  " (" + model.length + ")")
             color: is_asks ? Style.colorRed : Style.colorGreen
             anchors.verticalCenter: parent.verticalCenter
         }
@@ -47,9 +47,10 @@ ColumnLayout {
             text_value: API.get().empty_string + (qsTr("Price"))
             color: Style.colorWhite1
             anchors.verticalCenter: parent.verticalCenter
+            anchors.verticalCenterOffset: parent.height * 0.2
         }
 
-        // Volume
+        // Quantity
         DefaultText {
             id: quantity_header
             anchors.right: parent.right
@@ -57,9 +58,10 @@ ColumnLayout {
 
             font.pixelSize: price_header.font.pixelSize
 
-            text_value: API.get().empty_string + (qsTr("Volume"))
+            text_value: API.get().empty_string + (qsTr("Quantity"))
             color: Style.colorWhite1
             anchors.verticalCenter: parent.verticalCenter
+            anchors.verticalCenterOffset: price_header.anchors.verticalCenterOffset
         }
 
         // Total
@@ -73,6 +75,7 @@ ColumnLayout {
             text_value: API.get().empty_string + (qsTr("Total"))
             color: Style.colorWhite1
             anchors.verticalCenter: parent.verticalCenter
+            anchors.verticalCenterOffset: price_header.anchors.verticalCenterOffset
         }
 
         // Line
