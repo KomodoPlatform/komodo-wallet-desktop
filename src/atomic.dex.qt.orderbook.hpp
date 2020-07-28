@@ -41,7 +41,7 @@ namespace atomic_dex
         [[nodiscard]] orderbook_model* get_asks() const noexcept;
         [[nodiscard]] orderbook_model* get_bids() const noexcept;
 
-      public:
+      signals:
         void asksChanged();
         void bidsChanged();
 
