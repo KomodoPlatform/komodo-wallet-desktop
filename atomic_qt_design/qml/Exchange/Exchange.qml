@@ -85,8 +85,7 @@ Item {
                 height: 62
 
                 RowLayout {
-                    anchors.left: parent.left
-                    anchors.leftMargin: 20
+                    anchors.horizontalCenter: parent.horizontalCenter
                     anchors.verticalCenter: parent.verticalCenter
 
                     spacing: 30

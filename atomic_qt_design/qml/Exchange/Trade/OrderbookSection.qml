@@ -60,8 +60,8 @@ ColumnLayout {
             id: total_header
             anchors.left: is_asks ? parent.left : undefined
             anchors.right: is_asks ? undefined : parent.right
-            anchors.leftMargin: is_asks ? parent.width * 0.7 : undefined
-            anchors.rightMargin: is_asks ? undefined : parent.width * 0.7
+            anchors.leftMargin: is_asks ? parent.width * 0.6 : undefined
+            anchors.rightMargin: is_asks ? undefined : parent.width * 0.6
 
             font.pixelSize: price_header.font.pixelSize
 
