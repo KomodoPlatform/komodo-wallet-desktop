@@ -25,16 +25,13 @@
 //! Project
 #include "atomic.dex.qt.orderbook.model.hpp"
 
-using orderbook_ptr = atomic_dex::orderbook_model*;
-Q_DECLARE_METATYPE(orderbook_ptr)
-
 namespace atomic_dex
 {
     class qt_orderbook_wrapper final : public QObject
     {
         Q_OBJECT
-        Q_PROPERTY(orderbook_ptr asks READ get_asks MEMBER m_asks NOTIFY asksChanged)
-        Q_PROPERTY(orderbook_ptr bids READ get_bids MEMBER m_bids NOTIFY bidsChanged)
+        Q_PROPERTY(orderbook_model* asks READ get_asks MEMBER m_asks NOTIFY asksChanged)
+        Q_PROPERTY(orderbook_model* bids READ get_bids MEMBER m_bids NOTIFY bidsChanged)
       public:
         qt_orderbook_wrapper(ag::ecs::system_manager& system_manager, QObject* parent = nullptr);
         ~qt_orderbook_wrapper() noexcept final;

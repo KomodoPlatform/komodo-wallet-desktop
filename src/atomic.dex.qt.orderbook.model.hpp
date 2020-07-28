@@ -24,6 +24,7 @@ namespace atomic_dex
 {
     class orderbook_model final : public QAbstractListModel
     {
+      Q_OBJECT
       public:
         enum class kind
         {
