@@ -7,6 +7,9 @@ import "../../Constants"
 
 // Open Enable Coin Modal
 ColumnLayout {
+    id: root
+
+    property bool is_asks: false
     property alias model: list.model
     function chooseOrder(order) {
         // Choose this order
@@ -41,7 +44,7 @@ ColumnLayout {
             anchors.verticalCenter: parent.verticalCenter
         }
 
-        // Receive amount
+        // Total
         DefaultText {
             id: total_header
             anchors.right: parent.right
@@ -63,13 +66,14 @@ ColumnLayout {
     // List
     DefaultListView {
         id: list
+
         Layout.fillWidth: true
         Layout.fillHeight: true
 
         delegate: Rectangle {
             color: mouse_area.containsMouse ? Style.colorTheme4 : "transparent"
 
-            width: modal_layout.width
+            width: root.width
             height: 50
 
             MouseArea {
@@ -85,7 +89,7 @@ ColumnLayout {
                 anchors.rightMargin: price_header.anchors.rightMargin
 
                 text_value: API.get().empty_string + (General.formatDouble(price))
-                color: Style.colorWhite4
+                color: is_asks ? Style.colorRed : Style.colorGreen
                 anchors.verticalCenter: parent.verticalCenter
             }
 
@@ -99,19 +103,19 @@ ColumnLayout {
                 anchors.verticalCenter: parent.verticalCenter
             }
 
-            // Receive amount
+            // Total
             DefaultText {
                 anchors.right: parent.right
                 anchors.rightMargin: total_header.anchors.rightMargin
 
-                text_value: API.get().empty_string + (getReceiveAmount(price, quantity) + " " + getTicker())
+                text_value: API.get().empty_string + (total)
                 color: Style.colorWhite4
                 anchors.verticalCenter: parent.verticalCenter
             }
 
             // Line
             HorizontalLine {
-                visible: index !== getCurrentOrderbook().length - 1
+                visible: index !== model.length - 1
                 width: parent.width
                 color: Style.colorWhite9
                 anchors.bottom: parent.bottom

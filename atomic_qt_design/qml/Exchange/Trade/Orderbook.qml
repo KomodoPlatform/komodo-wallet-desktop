@@ -7,24 +7,32 @@ import "../../Constants"
 
 // Open Enable Coin Modal
 FloatingBackground {
-    RowLayout {
+    Item {
         anchors.fill: parent
-        spacing: 0
 
         OrderbookSection {
-            Layout.fillWidth: true
-            Layout.fillHeight: true
-            model: API.get().orderbook.asks
+            anchors.left: parent.left
+            anchors.top: parent.top
+            anchors.bottom: parent.bottom
+            anchors.right: separator.left
+            model: API.get().orderbook.bids
         }
 
         VerticalLine {
-            Layout.fillHeight: true
+            id: separator
+            anchors.horizontalCenter: parent.horizontalCenter
+            anchors.top: parent.top
+            anchors.bottom: parent.bottom
         }
 
         OrderbookSection {
-            Layout.fillWidth: true
-            Layout.fillHeight: true
-            model: API.get().orderbook.bids
+            anchors.right: parent.right
+            anchors.top: parent.top
+            anchors.bottom: parent.bottom
+            anchors.left: separator.right
+
+            is_asks: true
+            model: API.get().orderbook.asks
         }
     }
 }
