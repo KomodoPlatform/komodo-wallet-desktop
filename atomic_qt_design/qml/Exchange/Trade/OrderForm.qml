@@ -466,7 +466,7 @@ FloatingBackground {
             width: 170
 
             text: API.get().empty_string + (qsTr("Trade"))
-            enabled: valid_trade_info && form_base.isValid() && form_rel.isValid()
+            enabled: notEnoughBalanceForFees() && form_base.isValid() && form_rel.isValid()
             onClicked: confirm_trade_modal.open()
         }
     }
