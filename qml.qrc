@@ -108,6 +108,7 @@
         <file>atomic_qt_design/qml/Exchange/Trade/PriceLine.qml</file>
         <file>atomic_qt_design/qml/Exchange/Trade/OrderForm.qml</file>
         <file>atomic_qt_design/qml/Exchange/Trade/OrderReceiveModal.qml</file>
+        <file>atomic_qt_design/qml/Exchange/Trade/OrderbookSection.qml</file>
         <file>atomic_qt_design/qml/Exchange/Trade/OrderbookModal.qml</file>
         <file>atomic_qt_design/qml/Exchange/Trade/Orderbook.qml</file>
         <file>atomic_qt_design/qml/Exchange/Trade/CandleStickChart.qml</file>
