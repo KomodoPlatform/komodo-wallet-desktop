@@ -420,8 +420,6 @@ Item {
                     anchors.left: parent.left
                     anchors.right: parent.right
                     anchors.top: parent.top
-                    anchors.bottom: parent.verticalCenter
-                    anchors.bottomMargin: layout_margin*0.5
 
                     my_side: true
                 }
@@ -431,9 +429,9 @@ Item {
                     id: form_rel
                     anchors.left: parent.left
                     anchors.right: parent.right
-                    anchors.top: parent.verticalCenter
+                    anchors.top: form_base.bottom
                     anchors.bottom: parent.bottom
-                    anchors.topMargin: form_base.anchors.bottomMargin
+                    anchors.topMargin: layout_margin
 
                     field.enabled: enabled && !orderIsSelected()
                 }
