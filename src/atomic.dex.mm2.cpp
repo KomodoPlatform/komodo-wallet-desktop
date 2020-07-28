@@ -488,8 +488,9 @@ namespace atomic_dex
     }
 
     t_orderbook_answer
-    mm2::get_orderbook(const std::string& base, const std::string& rel, t_mm2_ec& ec) const noexcept
+    mm2::get_orderbook(t_mm2_ec& ec) const noexcept
     {
+        auto&& [base, rel] = this->m_synchronized_ticker_pair.get();
         const std::string pair = base + "/" + rel;
         if (m_current_orderbook.empty())
         {

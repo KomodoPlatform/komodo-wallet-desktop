@@ -244,7 +244,7 @@ namespace atomic_dex
         ;
 
         //! Get Current orderbook
-        [[nodiscard]] t_orderbook_answer get_orderbook(const std::string& base, const std::string& rel, t_mm2_ec& ec) const noexcept;
+        [[nodiscard]] t_orderbook_answer get_orderbook(t_mm2_ec& ec) const noexcept;
 
         //! Get orders
         [[nodiscard]] ::mm2::api::my_orders_answer              get_orders(const std::string& ticker, t_mm2_ec& ec) const noexcept;
