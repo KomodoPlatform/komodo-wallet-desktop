@@ -292,6 +292,7 @@ namespace atomic_dex
 
         //! Orderbook Model Wrapper
         qt_orderbook_wrapper* m_orderbook;
+        std::atomic_bool      m_orderbook_need_a_reset{false};
 
         std::atomic_bool m_about_to_exit_app{false};
     };

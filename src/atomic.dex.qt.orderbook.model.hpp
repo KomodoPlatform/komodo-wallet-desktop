@@ -37,24 +37,34 @@ namespace atomic_dex
         {
             PriceRole,
             QuantityRole,
-            TotalRole
+            TotalRole,
+            UUIDRole
         };
 
-        orderbook_model(t_orderbook_answer& orderbook, kind orderbook_kind, QObject* parent = nullptr);
+        orderbook_model(kind orderbook_kind, QObject* parent = nullptr);
         ~orderbook_model() noexcept final;
 
         [[nodiscard]] int                    rowCount(const QModelIndex& parent = QModelIndex()) const final;
         [[nodiscard]] QVariant               data(const QModelIndex& index, int role) const final;
         [[nodiscard]] QHash<int, QByteArray> roleNames() const final;
+        bool                                 setData(const QModelIndex& index, const QVariant& value, int role) final;
+        bool                                 removeRows(int row, int count, const QModelIndex& parent) override;
 
-        void              reset_orderbook(t_orderbook_answer& orderbook) noexcept;
+        void              reset_orderbook(const t_orderbook_answer& orderbook) noexcept;
+        void              refresh_orderbook(const t_orderbook_answer& orderbook) noexcept;
+        void              clear_orderbook() noexcept;;
         [[nodiscard]] int get_length() const noexcept;
       signals:
         void lengthChanged();
 
       private:
-        kind                m_current_orderbook_kind{kind::asks};
-        t_orderbook_answer& m_model_data;
+        void initialize_order(const ::mm2::api::order_contents& order) noexcept;
+        void update_order(const ::mm2::api::order_contents& order) noexcept;
+
+      private:
+        kind                            m_current_orderbook_kind{kind::asks};
+        t_orderbook_answer              m_model_data;
+        std::unordered_set<std::string> m_orders_id_registry;
     };
 
 } // namespace atomic_dex
