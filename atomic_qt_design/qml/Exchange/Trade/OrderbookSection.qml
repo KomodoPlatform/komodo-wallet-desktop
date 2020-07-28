@@ -22,13 +22,27 @@ ColumnLayout {
 
         height: 50
 
+        DefaultText {
+            id: title
+            anchors.top: parent.top
+            anchors.topMargin: 4
+            anchors.right: is_asks ? undefined : parent.right
+            anchors.rightMargin: is_asks ? undefined : anchors.topMargin
+            anchors.left: is_asks ? undefined : parent.left
+            anchors.leftMargin: is_asks ? undefined : anchors.topMargin
+
+            text_value: API.get().empty_string + ((is_asks ? qsTr("Asks") : qsTr("Bids")) + " (" + model.length + ")")
+            color: is_asks ? Style.colorRed : Style.colorGreen
+            anchors.verticalCenter: parent.verticalCenter
+        }
+
         // Price
         DefaultText {
             id: price_header
             anchors.right: parent.right
             anchors.rightMargin: parent.width * 0.77
 
-            text_value: API.get().empty_string + (qsTr("Price") + " (" + model.length + ")")
+            text_value: API.get().empty_string + (qsTr("Price"))
             color: Style.colorWhite1
             anchors.verticalCenter: parent.verticalCenter
         }
@@ -89,7 +103,7 @@ ColumnLayout {
                 anchors.rightMargin: price_header.anchors.rightMargin
 
                 text_value: API.get().empty_string + (General.formatDouble(price))
-                color: is_asks ? Style.colorRed : Style.colorGreen
+                color: title.color
                 anchors.verticalCenter: parent.verticalCenter
             }
 
