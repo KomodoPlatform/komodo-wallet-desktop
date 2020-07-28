@@ -22,60 +22,52 @@ ColumnLayout {
 
         height: 50
 
-        DefaultText {
-            id: title
-            anchors.top: parent.top
-            anchors.topMargin: 8
-            anchors.horizontalCenter: quantity_header.horizontalCenter
-
-            font.pixelSize: Style.textSizeSmall2
-
-            text_value: API.get().empty_string + ((is_asks ? qsTr("Asks") : qsTr("Bids")) +
-                                                  " (" + model.length + ")")
-            color: is_asks ? Style.colorRed : Style.colorGreen
-            anchors.verticalCenter: parent.verticalCenter
-        }
-
         // Price
         DefaultText {
             id: price_header
-            anchors.right: parent.right
-            anchors.rightMargin: parent.width * 0.77
-
             font.pixelSize: Style.textSizeSmall2
 
-            text_value: API.get().empty_string + (qsTr("Price"))
-            color: Style.colorWhite1
+            text_value: API.get().empty_string + (is_asks ? qsTr("Ask Price") + " (" + model.length + ")" :
+                                                            "(" + model.length + ") " + qsTr("Bid Price"))
+
+            color: is_asks ? Style.colorRed : Style.colorGreen
+
+            anchors.left: is_asks ? parent.left : undefined
+            anchors.right: is_asks ? undefined : parent.right
+            anchors.leftMargin: is_asks ? parent.width * 0.02 : undefined
+            anchors.rightMargin: is_asks ? undefined : parent.width * 0.02
+
             anchors.verticalCenter: parent.verticalCenter
-            anchors.verticalCenterOffset: parent.height * 0.2
         }
 
         // Quantity
         DefaultText {
             id: quantity_header
-            anchors.right: parent.right
-            anchors.rightMargin: parent.width * 0.44
+            anchors.left: is_asks ? parent.left : undefined
+            anchors.right: is_asks ? undefined : parent.right
+            anchors.leftMargin: is_asks ? parent.width * 0.3 : undefined
+            anchors.rightMargin: is_asks ? undefined : parent.width * 0.3
 
             font.pixelSize: price_header.font.pixelSize
 
             text_value: API.get().empty_string + (qsTr("Quantity"))
             color: Style.colorWhite1
             anchors.verticalCenter: parent.verticalCenter
-            anchors.verticalCenterOffset: price_header.anchors.verticalCenterOffset
         }
 
         // Total
         DefaultText {
             id: total_header
-            anchors.right: parent.right
-            anchors.rightMargin: parent.width * 0.11
+            anchors.left: is_asks ? parent.left : undefined
+            anchors.right: is_asks ? undefined : parent.right
+            anchors.leftMargin: is_asks ? parent.width * 0.7 : undefined
+            anchors.rightMargin: is_asks ? undefined : parent.width * 0.7
 
             font.pixelSize: price_header.font.pixelSize
 
             text_value: API.get().empty_string + (qsTr("Total"))
             color: Style.colorWhite1
             anchors.verticalCenter: parent.verticalCenter
-            anchors.verticalCenterOffset: price_header.anchors.verticalCenterOffset
         }
 
         // Line
@@ -89,6 +81,8 @@ ColumnLayout {
     // List
     DefaultListView {
         id: list
+
+        scrollbar_visible: false
 
         Layout.fillWidth: true
         Layout.fillHeight: true
@@ -109,20 +103,25 @@ ColumnLayout {
             // Price
             DefaultText {
                 id: price_value
-                anchors.right: parent.right
+
+                anchors.left: is_asks ? parent.left : undefined
+                anchors.right: is_asks ? undefined : parent.right
+                anchors.leftMargin: price_header.anchors.leftMargin
                 anchors.rightMargin: price_header.anchors.rightMargin
 
                 font.pixelSize: Style.textSizeSmall1
 
                 text_value: API.get().empty_string + (General.formatDouble(price))
-                color: title.color
+                color: price_header.color
                 anchors.verticalCenter: parent.verticalCenter
             }
 
             // Quantity
             DefaultText {
                 id: quantity_value
-                anchors.right: parent.right
+                anchors.left: is_asks ? parent.left : undefined
+                anchors.right: is_asks ? undefined : parent.right
+                anchors.leftMargin: quantity_header.anchors.leftMargin
                 anchors.rightMargin: quantity_header.anchors.rightMargin
 
                 font.pixelSize: price_value.font.pixelSize
@@ -135,7 +134,9 @@ ColumnLayout {
             // Total
             DefaultText {
                 id: total_value
-                anchors.right: parent.right
+                anchors.left: is_asks ? parent.left : undefined
+                anchors.right: is_asks ? undefined : parent.right
+                anchors.leftMargin: total_header.anchors.leftMargin
                 anchors.rightMargin: total_header.anchors.rightMargin
 
                 font.pixelSize: price_value.font.pixelSize

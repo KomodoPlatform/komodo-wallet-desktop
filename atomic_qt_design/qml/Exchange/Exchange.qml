@@ -10,7 +10,7 @@ import "./History"
 
 Item {
     id: exchange
-    readonly property int layout_margin: 30
+    readonly property int layout_margin: 15
 
     property int prev_page: -1
     property int current_page: API.design_editor ? General.idx_exchange_trade : General.idx_exchange_trade
@@ -77,7 +77,6 @@ Item {
             Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
             Layout.fillWidth: true
             Layout.topMargin: layout_margin
-            Layout.leftMargin: layout_margin
             Layout.rightMargin: layout_margin
 
             content: Item {
@@ -126,7 +125,6 @@ Item {
             Layout.fillWidth: true
             Layout.fillHeight: true
             Layout.bottomMargin: layout_margin
-            Layout.leftMargin: Layout.bottomMargin
             Layout.rightMargin: Layout.bottomMargin
 
             currentIndex: current_page
