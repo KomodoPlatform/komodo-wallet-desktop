@@ -117,6 +117,7 @@ Item {
     Timer {
         id: trade_info_timer
         repeat: true
+        running: true
         interval: 500
         onTriggered: {
             if(inCurrentPage() && !valid_trade_info) {
