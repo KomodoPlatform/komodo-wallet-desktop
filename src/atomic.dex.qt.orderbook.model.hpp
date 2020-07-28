@@ -50,4 +50,5 @@ namespace atomic_dex
         kind                m_current_orderbook_kind{kind::asks};
         t_orderbook_answer& m_model_data;
     };
+
 } // namespace atomic_dex
