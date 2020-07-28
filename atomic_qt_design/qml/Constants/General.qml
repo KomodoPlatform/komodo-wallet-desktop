@@ -100,7 +100,7 @@ QtObject {
         const symbols = {
             "USD": "$",
             "EUR": "€",
-            "BTC": "₿",
+            "BTC": Qt.platform.os === 'linux' ? "฿" : "₿",
             "KMD": "KMD",
         }
 
