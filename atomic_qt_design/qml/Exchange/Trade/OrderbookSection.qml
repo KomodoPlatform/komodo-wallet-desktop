@@ -42,6 +42,8 @@ ColumnLayout {
             anchors.right: parent.right
             anchors.rightMargin: parent.width * 0.77
 
+            font.pixelSize: Style.textSizeSmall2
+
             text_value: API.get().empty_string + (qsTr("Price"))
             color: Style.colorWhite1
             anchors.verticalCenter: parent.verticalCenter
@@ -53,6 +55,8 @@ ColumnLayout {
             anchors.right: parent.right
             anchors.rightMargin: parent.width * 0.44
 
+            font.pixelSize: price_header.font.pixelSize
+
             text_value: API.get().empty_string + (qsTr("Volume"))
             color: Style.colorWhite1
             anchors.verticalCenter: parent.verticalCenter
@@ -63,6 +67,8 @@ ColumnLayout {
             id: total_header
             anchors.right: parent.right
             anchors.rightMargin: parent.width * 0.11
+
+            font.pixelSize: price_header.font.pixelSize
 
             text_value: API.get().empty_string + (qsTr("Total"))
             color: Style.colorWhite1
@@ -99,8 +105,11 @@ ColumnLayout {
 
             // Price
             DefaultText {
+                id: price_value
                 anchors.right: parent.right
                 anchors.rightMargin: price_header.anchors.rightMargin
+
+                font.pixelSize: Style.textSizeSmall2
 
                 text_value: API.get().empty_string + (General.formatDouble(price))
                 color: title.color
@@ -109,8 +118,11 @@ ColumnLayout {
 
             // Quantity
             DefaultText {
+                id: quantity_value
                 anchors.right: parent.right
                 anchors.rightMargin: quantity_header.anchors.rightMargin
+
+                font.pixelSize: price_value.font.pixelSize
 
                 text_value: API.get().empty_string + (quantity)
                 color: Style.colorWhite4
@@ -119,8 +131,11 @@ ColumnLayout {
 
             // Total
             DefaultText {
+                id: total_value
                 anchors.right: parent.right
                 anchors.rightMargin: total_header.anchors.rightMargin
+
+                font.pixelSize: price_value.font.pixelSize
 
                 text_value: API.get().empty_string + (total)
                 color: Style.colorWhite4
