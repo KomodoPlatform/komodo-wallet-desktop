@@ -28,7 +28,7 @@ ColumnLayout {
             anchors.right: parent.right
             anchors.rightMargin: parent.width * 0.77
 
-            text_value: API.get().empty_string + (qsTr("Price"))
+            text_value: API.get().empty_string + (qsTr("Price") + " (" + model.length + ")")
             color: Style.colorWhite1
             anchors.verticalCenter: parent.verticalCenter
         }
@@ -115,7 +115,7 @@ ColumnLayout {
 
             // Line
             HorizontalLine {
-                visible: index !== model.length - 1
+                visible: index !== root.model.length - 1
                 width: parent.width
                 color: Style.colorWhite9
                 anchors.bottom: parent.bottom
