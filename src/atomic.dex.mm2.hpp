@@ -113,7 +113,7 @@ namespace atomic_dex
         t_swaps_avrg_datas    m_swaps_avrg_registry;
 
         //! Refresh the current orderbook (internally call process_orderbook)
-        void fetch_current_orderbook_thread();
+        void fetch_current_orderbook_thread(bool is_a_reset = false);
 
         //! Refresh the balance registry (internal)
         void process_balance(const std::string& ticker) const;
@@ -125,7 +125,7 @@ namespace atomic_dex
         void process_fees();
 
         //! Refresh the orderbook registry (internal)
-        void process_orderbook();
+        void process_orderbook(bool is_a_reset = false);
 
       public:
         //! Constructor

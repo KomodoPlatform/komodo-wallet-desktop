@@ -157,7 +157,7 @@ namespace atomic_dex
 
         if (s >= 5s)
         {
-            spawn([this]() { fetch_current_orderbook_thread(); });
+            spawn([this]() { fetch_current_orderbook_thread(false); });
             m_orderbook_clock = std::chrono::high_resolution_clock::now();
         }
 
@@ -506,7 +506,7 @@ namespace atomic_dex
     }
 
     void
-    mm2::process_orderbook()
+    mm2::process_orderbook(bool is_a_reset)
     {
         auto&& [base, rel] = m_synchronized_ticker_pair.get();
         t_orderbook_request request{.base = base, .rel = rel};
@@ -514,12 +514,12 @@ namespace atomic_dex
         if (answer.rpc_result_code not_eq -1)
         {
             m_current_orderbook.insert_or_assign(base + "/" + rel, answer);
-            this->dispatcher_.trigger<process_orderbook_finished>();
+            this->dispatcher_.trigger<process_orderbook_finished>(is_a_reset);
         }
     }
 
     void
-    mm2::fetch_current_orderbook_thread()
+    mm2::fetch_current_orderbook_thread(bool is_a_reset)
     {
         spdlog::info("Fetch current orderbook");
 
@@ -530,7 +530,7 @@ namespace atomic_dex
             return;
         }
 
-        process_orderbook();
+        process_orderbook(is_a_reset);
     }
 
     void
@@ -829,15 +829,15 @@ namespace atomic_dex
             {
                 tx_infos current_info{
 
-                    .am_i_sender       = current.my_balance_change[0] == '-',
-                    .confirmations     = current.confirmations.has_value() ? current.confirmations.value() : 0,
-                    .from              = current.from,
-                    .to                = current.to,
-                    .date              = current.timestamp_as_date,
-                    .timestamp         = current.timestamp,
-                    .tx_hash           = current.tx_hash,
-                    .fees              = current.fee_details.normal_fees.has_value() ? current.fee_details.normal_fees.value().amount
-                                                                                     : current.fee_details.erc_fees.value().total_fee,
+                    .am_i_sender   = current.my_balance_change[0] == '-',
+                    .confirmations = current.confirmations.has_value() ? current.confirmations.value() : 0,
+                    .from          = current.from,
+                    .to            = current.to,
+                    .date          = current.timestamp_as_date,
+                    .timestamp     = current.timestamp,
+                    .tx_hash       = current.tx_hash,
+                    .fees          = current.fee_details.normal_fees.has_value() ? current.fee_details.normal_fees.value().amount
+                                                                        : current.fee_details.erc_fees.value().total_fee,
                     .my_balance_change = current.my_balance_change,
                     .total_amount      = current.total_amount,
                     .block_height      = current.block_height,
@@ -864,16 +864,13 @@ namespace atomic_dex
         spdlog::debug("{} l{} f[{}]", __FUNCTION__, __LINE__, fs::path(__FILE__).filename().string());
 
         spdlog::info("refreshing orderbook pair: [{} / {}]", evt.base, evt.rel);
-        const auto key = evt.base;
-
         this->m_synchronized_ticker_pair = std::make_pair(evt.base, evt.rel);
 
         if (this->m_mm2_running)
         {
             spawn([this]() {
-                // loguru::set_thread_name("r_book thread");
                 process_fees();
-                fetch_current_orderbook_thread();
+                fetch_current_orderbook_thread(true);
             });
         }
     }

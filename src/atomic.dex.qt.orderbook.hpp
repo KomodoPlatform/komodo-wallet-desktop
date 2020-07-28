@@ -38,6 +38,8 @@ namespace atomic_dex
 
       public:
         void refresh_orderbook(t_orderbook_answer answer);
+        void reset_orderbook(t_orderbook_answer answer);
+        void clear_orderbook();;
         [[nodiscard]] orderbook_model* get_asks() const noexcept;
         [[nodiscard]] orderbook_model* get_bids() const noexcept;
 
@@ -47,7 +49,6 @@ namespace atomic_dex
 
       private:
         ag::ecs::system_manager& m_system_manager;
-        t_orderbook_answer       m_last_orderbook;
         orderbook_model*         m_asks;
         orderbook_model*         m_bids;
     };

@@ -293,11 +293,18 @@ namespace atomic_dex
             case action::post_process_orderbook_finished:
                 if (mm2.is_mm2_running())
                 {
-                    std::error_code ec;
+                    std::error_code    ec;
                     t_orderbook_answer result = this->get_mm2().get_orderbook(ec);
                     if (!ec)
                     {
-                        this->m_orderbook->refresh_orderbook(result);
+                        if (this->m_orderbook_need_a_reset)
+                        {
+                            this->m_orderbook->reset_orderbook(result);
+                        }
+                        else
+                        {
+                            this->m_orderbook->refresh_orderbook(result);
+                        }
                     }
                 }
             case action::refresh_update_status:
@@ -836,6 +843,7 @@ namespace atomic_dex
         }
         this->m_orders->clear_registry();
         this->m_candlestick_chart_ohlc->clear_data();
+        this->m_orderbook->clear_orderbook();
 
         //! Mark systems
         system_manager_.mark_system<mm2>();
@@ -1465,11 +1473,12 @@ namespace atomic_dex
     }
 
     void
-    application::on_process_orderbook_finished_event(const process_orderbook_finished&) noexcept
+    application::on_process_orderbook_finished_event(const process_orderbook_finished& evt) noexcept
     {
         if (not m_about_to_exit_app)
         {
             this->m_actions_queue.push(action::post_process_orderbook_finished);
+            this->m_orderbook_need_a_reset = evt.is_a_reset;
         }
     }
 } // namespace atomic_dex
