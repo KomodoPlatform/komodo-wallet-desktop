@@ -116,6 +116,7 @@ namespace atomic_dex
         this->beginResetModel();
         m_model_data                                        = orderbook;
         std::vector<::mm2::api::order_contents>& model_data = this->m_current_orderbook_kind == kind::asks ? this->m_model_data.asks : this->m_model_data.bids;
+        spdlog::trace("reset with orderbook of size: {}", model_data.size());
         m_orders_id_registry.clear();
         for (auto&& order: model_data)
         {
@@ -124,9 +125,9 @@ namespace atomic_dex
                 this->m_orders_id_registry.emplace(order.uuid);
             }
         }
-
         this->endResetModel();
         emit lengthChanged();
+        assert(model_data.size() == m_orders_id_registry.size());
     }
 
     int
@@ -140,11 +141,13 @@ namespace atomic_dex
     orderbook_model::initialize_order(const ::mm2::api::order_contents& order) noexcept
     {
         std::vector<::mm2::api::order_contents>& model_data = this->m_current_orderbook_kind == kind::asks ? this->m_model_data.asks : this->m_model_data.bids;
+        assert(model_data.size() == m_orders_id_registry.size());
         beginInsertRows(QModelIndex(), model_data.size(), model_data.size());
         model_data.push_back(order);
         this->m_orders_id_registry.emplace(order.uuid);
         endInsertRows();
         emit lengthChanged();
+        assert(model_data.size() == m_orders_id_registry.size());
     }
 
     void
@@ -163,7 +166,6 @@ namespace atomic_dex
     void
     orderbook_model::refresh_orderbook(const t_orderbook_answer& orderbook) noexcept
     {
-        m_model_data         = orderbook;
         auto refresh_functor = [this](const std::vector<::mm2::api::order_contents>& contents) {
             for (auto&& current_order: contents)
             {
@@ -176,11 +178,11 @@ namespace atomic_dex
                 else
                 {
                     //! Insertion
-                    spdlog::trace("inserting id: {}", current_order.uuid);
+                    spdlog::trace("id {} not present in the registry, inserting", current_order.uuid);
                     this->initialize_order(current_order);
                 }
             }
-            //! Deletion
+
             std::unordered_set<std::string> to_remove;
             for (auto&& id: this->m_orders_id_registry)
             {
@@ -202,10 +204,10 @@ namespace atomic_dex
         switch (this->m_current_orderbook_kind)
         {
         case kind::asks:
-            refresh_functor(this->m_model_data.asks);
+            refresh_functor(orderbook.asks);
             break;
         case kind::bids:
-            refresh_functor(this->m_model_data.bids);
+            refresh_functor(orderbook.bids);
             break;
         }
     }
