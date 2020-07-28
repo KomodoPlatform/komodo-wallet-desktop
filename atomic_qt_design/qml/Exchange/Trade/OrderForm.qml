@@ -440,18 +440,28 @@ FloatingBackground {
         }
 
 
-        // Trade button
-        DefaultButton {
-            visible: !my_side
-
+        RowLayout {
             Layout.alignment: Qt.AlignRight | Qt.AlignBottom
             Layout.rightMargin: top_line.Layout.rightMargin
             Layout.bottomMargin: top_line.Layout.rightMargin
-            width: 170
 
-            text: API.get().empty_string + (qsTr("Trade"))
-            enabled: valid_trade_info && !notEnoughBalanceForFees() && form_base.isValid() && form_rel.isValid()
-            onClicked: confirm_trade_modal.open()
+            DefaultButton {
+                visible: !my_side
+
+                text: API.get().empty_string + (qsTr("Unlock Price"))
+                enabled: orderIsSelected()
+                onClicked: resetPreferredPrice()
+            }
+
+            // Trade button
+            DefaultButton {
+                visible: !my_side
+                width: 170
+
+                text: API.get().empty_string + (qsTr("Trade"))
+                enabled: valid_trade_info && !notEnoughBalanceForFees() && form_base.isValid() && form_rel.isValid()
+                onClicked: confirm_trade_modal.open()
+            }
         }
     }
 }
