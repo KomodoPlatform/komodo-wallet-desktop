@@ -16,11 +16,11 @@
 
 #pragma once
 
-#include <QAbstractTableModel>
+#include <QAbstractListModel>
 
 namespace atomic_dex
 {
-    class orderbook_model final : public QAbstractTableModel
+    class orderbook_model final : public QAbstractListModel
     {
       public:
         enum class kind
@@ -33,7 +33,6 @@ namespace atomic_dex
         ~orderbook_model() noexcept final;
 
         [[nodiscard]] int      rowCount(const QModelIndex& parent) const final;
-        [[nodiscard]] int      columnCount(const QModelIndex& parent) const final;
         [[nodiscard]] QVariant data(const QModelIndex& index, int role) const final;
 
       private:
