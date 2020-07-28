@@ -251,10 +251,6 @@ FloatingBackground {
                     OrderReceiveModal {
                         id: order_receive_modal
                     }
-
-                    OrderbookModal {
-                        id: orderbook_modal
-                    }
                 }
             }
 

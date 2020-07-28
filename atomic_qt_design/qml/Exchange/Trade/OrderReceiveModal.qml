@@ -62,9 +62,6 @@ DefaultModal {
                         if(getOrderCount(model.modelData.ticker) === 0) {
 
                         }
-                        else {
-                            orderbook_modal.open()
-                        }
                     }
                 }
 

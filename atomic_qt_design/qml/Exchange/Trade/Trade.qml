@@ -224,14 +224,6 @@ Item {
         }
     }
 
-    function getCurrentOrderbook() {
-        if(orderbook_model === undefined) return []
-
-        const cb = orderbook_model[getTicker()]
-
-        return cb === undefined ? [] : cb
-    }
-
     function moveToBeginning(coins, ticker) {
         const idx = coins.map(c => c.ticker).indexOf(ticker)
         if(idx === -1) return
@@ -336,18 +328,6 @@ Item {
 
         const info = getTradeInfo(getTicker(true), getTicker(false), amount, set_as_current)
         return parseFloat(valid_trade_info ? info.input_final_value : amount)
-    }
-
-    function getReceiveAmount(price, volume) {
-        let new_rel = newRelVolume(price)
-
-        // If new rel volume is higher than the order max volume
-        const max_volume = parseFloat(volume)
-        if(new_rel > max_volume) {
-            new_rel = max_volume
-        }
-
-        return General.formatDouble(new_rel)
     }
 
     // No coins warning
