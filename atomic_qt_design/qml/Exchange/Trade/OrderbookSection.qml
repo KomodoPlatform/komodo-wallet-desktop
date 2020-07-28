@@ -25,11 +25,11 @@ ColumnLayout {
         DefaultText {
             id: title
             anchors.top: parent.top
-            anchors.topMargin: 4
-            anchors.right: is_asks ? undefined : parent.right
-            anchors.rightMargin: is_asks ? undefined : anchors.topMargin
-            anchors.left: is_asks ? undefined : parent.left
-            anchors.leftMargin: is_asks ? undefined : anchors.topMargin
+            anchors.topMargin: 8
+            anchors.left: parent.left
+            anchors.leftMargin: anchors.topMargin
+
+            font.pixelSize: Style.textSizeSmall2
 
             text_value: API.get().empty_string + ((is_asks ? qsTr("Asks") : qsTr("Bids")) + " (" + model.length + ")")
             color: is_asks ? Style.colorRed : Style.colorGreen
