@@ -22,7 +22,6 @@ Item {
 
     function fullReset() {
         reset(true)
-        orderbook_timer.running = false
     }
 
     function reset(reset_result=true, is_base) {
@@ -32,16 +31,6 @@ Item {
         form_rel.reset(is_base)
         resetTradeInfo()
     }
-
-    Timer {
-        id: orderbook_timer
-        repeat: true
-        interval: 5000
-        onTriggered: {
-            if(inCurrentPage()) updateOrderbook()
-        }
-    }
-
 
     // Price
     property string cex_price
@@ -169,19 +158,9 @@ Item {
 
 
     // Orderbook
-    property var orderbook_model
-
     function fillTickersIfEmpty() {
         form_base.fillIfEmpty()
         form_rel.fillIfEmpty()
-    }
-
-    function updateOrderbook() {
-        fillTickersIfEmpty()
-
-        orderbook_model = API.mockAPI.get_orderbook(getTicker(true))
-        orderbook_timer.running = true
-        updateTradeInfo()
     }
 
     function updateTradeInfo(force=false) {
@@ -205,7 +184,7 @@ Item {
     }
 
     function onOpened() {
-        updateOrderbook()
+        fillTickersIfEmpty()
         reset(true)
         updateForms()
         setPair(true)
@@ -286,7 +265,7 @@ Item {
             console.log("Setting current orderbook with params: ", new_base, rel)
             API.get().set_current_orderbook(new_base, rel)
             reset(true, is_base)
-            updateOrderbook()
+            updateTradeInfo()
             updateCexPrice(new_base, rel)
             exchange.onTradeTickerChanged(new_base)
         }
