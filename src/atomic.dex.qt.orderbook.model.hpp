@@ -41,8 +41,8 @@ namespace atomic_dex
         orderbook_model(kind orderbook_kind, QObject* parent = nullptr);
         ~orderbook_model() noexcept final;
 
-        [[nodiscard]] int      rowCount(const QModelIndex& parent = QModelIndex()) const final;
-        [[nodiscard]] QVariant data(const QModelIndex& index, int role) const final;
+        [[nodiscard]] int                    rowCount(const QModelIndex& parent = QModelIndex()) const final;
+        [[nodiscard]] QVariant               data(const QModelIndex& index, int role) const final;
         [[nodiscard]] QHash<int, QByteArray> roleNames() const final;
 
       private:
