@@ -74,6 +74,13 @@ namespace atomic_dex
         this->beginResetModel();
         m_model_data = orderbook;
         this->endResetModel();
+        emit lengthChanged();
+    }
+
+    int
+    orderbook_model::get_length() const noexcept
+    {
+        return rowCount();
     }
 
 } // namespace atomic_dex
