@@ -39,6 +39,7 @@
 #include "atomic.dex.qt.orders.model.hpp"
 #include "atomic.dex.qt.portfolio.model.hpp"
 #include "atomic.dex.qt.wallet.manager.hpp"
+#include "atomic.dex.qt.orderbook.hpp"
 
 namespace ag = antara::gaming;
 
@@ -57,6 +58,7 @@ namespace atomic_dex
         Q_PROPERTY(QObject* current_coin_info READ get_current_coin_info NOTIFY coinInfoChanged)
         Q_PROPERTY(addressbook_model* addressbook_mdl READ get_addressbook NOTIFY addressbookChanged)
         Q_PROPERTY(orders_model* orders_mdl READ get_orders NOTIFY ordersChanged)
+        Q_PROPERTY(qt_orderbook_wrapper* orderbook READ get_orderbook_wrapper NOTIFY orderbookChanged)
         Q_PROPERTY(candlestick_charts_model* candlestick_charts_mdl READ get_candlestick_charts NOTIFY candlestickChartsChanged)
         Q_PROPERTY(QVariant update_status READ get_update_status NOTIFY updateStatusChanged)
         Q_PROPERTY(portfolio_model* portfolio_mdl READ get_portfolio NOTIFY portfolioChanged)
@@ -122,7 +124,7 @@ namespace atomic_dex
         portfolio_model*          get_portfolio() const noexcept;
         orders_model*             get_orders() const noexcept;
         candlestick_charts_model* get_candlestick_charts() const noexcept;
-        ;
+        qt_orderbook_wrapper*     get_orderbook_wrapper() const noexcept;
         QVariantList               get_enabled_coins() const noexcept;
         QVariantList               get_enableable_coins() const noexcept;
         QString                    get_current_currency() const noexcept;
@@ -211,7 +213,6 @@ namespace atomic_dex
 
         Q_INVOKABLE QString get_cex_rates(const QString& base, const QString& rel);
         Q_INVOKABLE QString get_fiat_from_amount(const QString& ticker, const QString& amount);
-
         Q_INVOKABLE QVariantMap    find_closest_ohlc_data(int range, int timestamp);
         Q_INVOKABLE QVariant       get_coin_info(const QString& ticker);
         Q_INVOKABLE bool           export_swaps(const QString& csv_filename) noexcept;
@@ -241,9 +242,9 @@ namespace atomic_dex
         void updateStatusChanged();
         void ordersChanged();
         void candlestickChartsChanged();
+        void orderbookChanged();
       public slots:
         void exit_handler();
-        ;
 
       private:
         void process_refresh_enabled_coin_action();
@@ -287,6 +288,9 @@ namespace atomic_dex
         //! Candlestick charts
         candlestick_charts_model* m_candlestick_chart_ohlc;
         std::atomic_bool          m_candlestick_need_a_reset{false};
+
+        //! Orderbook Model Wrapper
+        qt_orderbook_wrapper*     m_orderbook;
 
         std::atomic_bool m_about_to_exit_app{false};
     };

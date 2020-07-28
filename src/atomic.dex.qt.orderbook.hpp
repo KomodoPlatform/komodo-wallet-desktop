@@ -16,7 +16,22 @@
 
 #pragma once
 
+//! QT
+#include <QObject>
+
+//! PCH
+#include "atomic.dex.pch.hpp"
+
 namespace atomic_dex
 {
+    class qt_orderbook_wrapper final : public QObject
+    {
+        Q_OBJECT
+      public:
+        qt_orderbook_wrapper(ag::ecs::system_manager& system_manager, QObject* parent = nullptr);
+        ~qt_orderbook_wrapper() noexcept final;
 
-}
+      private:
+        ag::ecs::system_manager& m_system_manager;
+    };
+} // namespace atomic_dex

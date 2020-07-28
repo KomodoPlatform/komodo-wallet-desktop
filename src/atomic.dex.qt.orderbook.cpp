@@ -18,5 +18,15 @@
 
 namespace atomic_dex
 {
+    qt_orderbook_wrapper::qt_orderbook_wrapper(ag::ecs::system_manager& system_manager, QObject* parent) : QObject(parent), m_system_manager(system_manager)
+    {
+        spdlog::trace("{} l{} f[{}]", __FUNCTION__, __LINE__, fs::path(__FILE__).filename().string());
+        spdlog::trace("orderbook wrapper object created");
+    }
 
-}
+    qt_orderbook_wrapper::~qt_orderbook_wrapper() noexcept
+    {
+        spdlog::trace("{} l{} f[{}]", __FUNCTION__, __LINE__, fs::path(__FILE__).filename().string());
+        spdlog::trace("orderbook wrapper object destroyed");
+    }
+} // namespace atomic_dex

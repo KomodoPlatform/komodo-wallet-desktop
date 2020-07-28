@@ -405,7 +405,7 @@ namespace atomic_dex
             {"update_needed", false}, {"changelog", ""}, {"current_version", ""}, {"download_url", ""}, {"new_version", ""}, {"rpc_code", 0}, {"status", ""}}),
         m_coin_info(new current_coin_info(dispatcher_, this)), m_addressbook(new addressbook_model(this->m_wallet_manager, this)),
         m_portfolio(new portfolio_model(this->system_manager_, this->m_config, this)), m_orders(new orders_model(this->system_manager_, this)),
-        m_candlestick_chart_ohlc(new candlestick_charts_model(this->system_manager_, this))
+        m_candlestick_chart_ohlc(new candlestick_charts_model(this->system_manager_, this)), m_orderbook(new qt_orderbook_wrapper(this->system_manager_, this))
     {
         get_dispatcher().sink<refresh_update_status>().connect<&application::on_refresh_update_status_event>(*this);
         //! MM2 system need to be created before the GUI and give the instance to the gui
@@ -1469,5 +1469,15 @@ namespace atomic_dex
     application::on_start_fetching_new_ohlc_data_event(const start_fetching_new_ohlc_data& evt)
     {
         this->m_candlestick_chart_ohlc->set_is_currently_fetching(evt.is_a_reset);
+    }
+} // namespace atomic_dex
+
+//! Orderbook
+namespace atomic_dex
+{
+    qt_orderbook_wrapper*
+    application::get_orderbook_wrapper() const noexcept
+    {
+        return m_orderbook;
     }
 } // namespace atomic_dex
