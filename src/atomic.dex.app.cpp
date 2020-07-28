@@ -290,6 +290,16 @@ namespace atomic_dex
                     this->m_orders->refresh_or_insert_swaps();
                 }
                 break;
+            case action::post_process_orderbook_finished:
+                if (mm2.is_mm2_running())
+                {
+                    std::error_code ec;
+                    t_orderbook_answer result = this->get_mm2().get_orderbook(ec);
+                    if (!ec)
+                    {
+                        this->m_orderbook->refresh_orderbook(result);
+                    }
+                }
             case action::refresh_update_status:
                 spdlog::trace("refreshing update status in GUI");
                 const auto&   update_service_sys = this->system_manager_.get_system<update_system_service>();
@@ -845,6 +855,7 @@ namespace atomic_dex
         get_dispatcher().sink<refresh_ohlc_needed>().disconnect<&application::on_refresh_ohlc_event>(*this);
         get_dispatcher().sink<process_orders_finished>().disconnect<&application::on_process_orders_finished_event>(*this);
         get_dispatcher().sink<process_swaps_finished>().disconnect<&application::on_process_swaps_finished_event>(*this);
+        get_dispatcher().sink<process_orderbook_finished>().disconnect<&application::on_process_orderbook_finished_event>(*this);
         get_dispatcher().sink<start_fetching_new_ohlc_data>().disconnect<&application::on_start_fetching_new_ohlc_data_event>(*this);
 
         this->m_need_a_full_refresh_of_mm2 = true;
@@ -868,6 +879,7 @@ namespace atomic_dex
         get_dispatcher().sink<refresh_ohlc_needed>().connect<&application::on_refresh_ohlc_event>(*this);
         get_dispatcher().sink<process_orders_finished>().connect<&application::on_process_orders_finished_event>(*this);
         get_dispatcher().sink<process_swaps_finished>().connect<&application::on_process_swaps_finished_event>(*this);
+        get_dispatcher().sink<process_orderbook_finished>().connect<&application::on_process_orderbook_finished_event>(*this);
         get_dispatcher().sink<start_fetching_new_ohlc_data>().connect<&application::on_start_fetching_new_ohlc_data_event>(*this);
     }
 
@@ -1450,5 +1462,14 @@ namespace atomic_dex
     application::get_orderbook_wrapper() const noexcept
     {
         return m_orderbook;
+    }
+
+    void
+    application::on_process_orderbook_finished_event(const process_orderbook_finished&) noexcept
+    {
+        if (not m_about_to_exit_app)
+        {
+            this->m_actions_queue.push(action::post_process_orderbook_finished);
+        }
     }
 } // namespace atomic_dex
