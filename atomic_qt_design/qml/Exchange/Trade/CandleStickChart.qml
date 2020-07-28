@@ -630,7 +630,13 @@ Item {
     }
 
     DefaultBusyIndicator {
-        visible: !chart.visible
+        visible: pair_supported && !chart.visible
+        anchors.centerIn: parent
+    }
+
+    DefaultText {
+        visible: !pair_supported
+        text_value: API.get().empty_string + (qsTr("We don't have chart data for this pair yet"))
         anchors.centerIn: parent
     }
 }

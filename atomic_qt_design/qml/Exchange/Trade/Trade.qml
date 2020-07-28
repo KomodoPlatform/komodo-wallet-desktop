@@ -406,10 +406,7 @@ Item {
                     anchors.bottom: orderbook.top
                     anchors.bottomMargin: layout_margin
 
-                    visible: chart.pair_supported
-
                     CandleStickChart {
-                        id: chart
                         anchors.fill: parent
                     }
                 }
