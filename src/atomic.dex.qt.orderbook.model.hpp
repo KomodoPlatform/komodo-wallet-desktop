@@ -16,7 +16,37 @@
 
 #pragma once
 
+#include <QAbstractListModel>
+
+#include "atomic.dex.mm2.api.hpp"
+
 namespace atomic_dex
 {
+    class orderbook_model final : public QAbstractListModel
+    {
+      public:
+        enum class kind
+        {
+            asks,
+            bids
+        };
 
-}
+        enum OrderbookRoles
+        {
+            PriceRole,
+            QuantityRole,
+            TotalRole
+        };
+
+        orderbook_model(kind orderbook_kind, QObject* parent = nullptr);
+        ~orderbook_model() noexcept final;
+
+        [[nodiscard]] int                    rowCount(const QModelIndex& parent = QModelIndex()) const final;
+        [[nodiscard]] QVariant               data(const QModelIndex& index, int role) const final;
+        [[nodiscard]] QHash<int, QByteArray> roleNames() const final;
+
+      private:
+        kind                m_current_orderbook_kind{kind::asks};
+        t_orderbook_answer* m_model_data;
+    };
+} // namespace atomic_dex

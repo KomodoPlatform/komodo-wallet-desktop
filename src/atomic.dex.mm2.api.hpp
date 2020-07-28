@@ -388,6 +388,7 @@ namespace mm2::api
         std::string pubkey;
         std::size_t age;
         std::size_t zcredits;
+        std::string total;
     };
 
     void from_json(const nlohmann::json& j, order_contents& contents);

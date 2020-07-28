@@ -14,9 +14,57 @@
  *                                                                            *
  ******************************************************************************/
 
+//! PCH
+#include "atomic.dex.pch.hpp"
+
+//! Project
 #include "atomic.dex.qt.orderbook.model.hpp"
 
 namespace atomic_dex
 {
+    orderbook_model::orderbook_model(kind orderbook_kind, QObject* parent) : QAbstractListModel(parent), m_current_orderbook_kind(orderbook_kind)
+    {
+        spdlog::trace("{} l{} f[{}]", __FUNCTION__, __LINE__, fs::path(__FILE__).filename().string());
+        spdlog::trace("orderbook model created");
+    }
 
-}
+    orderbook_model::~orderbook_model() noexcept
+    {
+        spdlog::trace("{} l{} f[{}]", __FUNCTION__, __LINE__, fs::path(__FILE__).filename().string());
+        spdlog::trace("orderbook model destroyed");
+    }
+
+    int
+    orderbook_model::rowCount([[maybe_unused]] const QModelIndex& parent) const
+    {
+        return m_current_orderbook_kind == kind::asks ? m_model_data->asks.size() : m_model_data->bids.size();
+    }
+
+    QVariant
+    orderbook_model::data(const QModelIndex& index, int role) const
+    {
+        if (!hasIndex(index.row(), index.column(), index.parent()) || this->rowCount() == 0)
+        {
+            return {};
+        }
+        switch (static_cast<OrderbookRoles>(role))
+        {
+        case PriceRole:
+            return m_current_orderbook_kind == kind::asks ? QString::fromStdString(m_model_data->asks.at(index.row()).price)
+                                                          : QString::fromStdString(m_model_data->bids.at(index.row()).price);
+        case QuantityRole:
+            return m_current_orderbook_kind == kind::asks ? QString::fromStdString(m_model_data->asks.at(index.row()).maxvolume)
+                                                          : QString::fromStdString(m_model_data->bids.at(index.row()).maxvolume);
+        case TotalRole:
+            return m_current_orderbook_kind == kind::asks ? QString::fromStdString(m_model_data->asks.at(index.row()).total)
+                                                          : QString::fromStdString(m_model_data->bids.at(index.row()).total);
+        }
+    }
+
+    QHash<int, QByteArray>
+    orderbook_model::roleNames() const
+    {
+        return {{PriceRole, "price"}, {QuantityRole, "quantity"}, {TotalRole, "total"}};
+    }
+
+} // namespace atomic_dex

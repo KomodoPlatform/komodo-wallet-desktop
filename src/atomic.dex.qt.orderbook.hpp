@@ -22,16 +22,31 @@
 //! PCH
 #include "atomic.dex.pch.hpp"
 
+//! Project
+#include "atomic.dex.qt.orderbook.model.hpp"
+
 namespace atomic_dex
 {
     class qt_orderbook_wrapper final : public QObject
     {
         Q_OBJECT
+        Q_PROPERTY(orderbook_model* asks READ get_asks NOTIFY asksChanged)
+        Q_PROPERTY(orderbook_model* bids READ get_bids NOTIFY bidsChanged)
       public:
         qt_orderbook_wrapper(ag::ecs::system_manager& system_manager, QObject* parent = nullptr);
         ~qt_orderbook_wrapper() noexcept final;
 
+      public:
+        [[nodiscard]] orderbook_model* get_asks() const noexcept;
+        [[nodiscard]] orderbook_model* get_bids() const noexcept;
+
+      public:
+        void asksChanged();
+        void bidsChanged();
+
       private:
         ag::ecs::system_manager& m_system_manager;
+        orderbook_model*         m_asks;
+        orderbook_model*         m_bids;
     };
 } // namespace atomic_dex
