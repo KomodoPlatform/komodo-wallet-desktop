@@ -10,7 +10,6 @@ Item {
     id: exchange_trade
 
     property string action_result
-    readonly property int layout_margin: 20
 
     // Override
     property var onOrderSuccess: () => {}
@@ -406,10 +405,7 @@ Item {
                     anchors.bottom: orderbook.top
                     anchors.bottomMargin: layout_margin
 
-                    visible: chart.pair_supported
-
                     CandleStickChart {
-                        id: chart
                         anchors.fill: parent
                     }
                 }

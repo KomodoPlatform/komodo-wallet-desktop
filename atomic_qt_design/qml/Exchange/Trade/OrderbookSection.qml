@@ -25,21 +25,32 @@ ColumnLayout {
         // Price
         DefaultText {
             id: price_header
-            anchors.right: parent.right
-            anchors.rightMargin: parent.width * 0.77
+            font.pixelSize: Style.textSizeSmall2
 
-            text_value: API.get().empty_string + (qsTr("Price"))
-            color: Style.colorWhite1
+            text_value: API.get().empty_string + (is_asks ? qsTr("Ask Price") + " (" + model.length + ")" :
+                                                            "(" + model.length + ") " + qsTr("Bid Price"))
+
+            color: is_asks ? Style.colorRed : Style.colorGreen
+
+            anchors.left: is_asks ? parent.left : undefined
+            anchors.right: is_asks ? undefined : parent.right
+            anchors.leftMargin: is_asks ? parent.width * 0.02 : undefined
+            anchors.rightMargin: is_asks ? undefined : parent.width * 0.02
+
             anchors.verticalCenter: parent.verticalCenter
         }
 
-        // Volume
+        // Quantity
         DefaultText {
             id: quantity_header
-            anchors.right: parent.right
-            anchors.rightMargin: parent.width * 0.44
+            anchors.left: is_asks ? parent.left : undefined
+            anchors.right: is_asks ? undefined : parent.right
+            anchors.leftMargin: is_asks ? parent.width * 0.3 : undefined
+            anchors.rightMargin: is_asks ? undefined : parent.width * 0.3
 
-            text_value: API.get().empty_string + (qsTr("Volume"))
+            font.pixelSize: price_header.font.pixelSize
+
+            text_value: API.get().empty_string + (qsTr("Quantity"))
             color: Style.colorWhite1
             anchors.verticalCenter: parent.verticalCenter
         }
@@ -47,8 +58,12 @@ ColumnLayout {
         // Total
         DefaultText {
             id: total_header
-            anchors.right: parent.right
-            anchors.rightMargin: parent.width * 0.11
+            anchors.left: is_asks ? parent.left : undefined
+            anchors.right: is_asks ? undefined : parent.right
+            anchors.leftMargin: is_asks ? parent.width * 0.7 : undefined
+            anchors.rightMargin: is_asks ? undefined : parent.width * 0.7
+
+            font.pixelSize: price_header.font.pixelSize
 
             text_value: API.get().empty_string + (qsTr("Total"))
             color: Style.colorWhite1
@@ -66,6 +81,8 @@ ColumnLayout {
     // List
     DefaultListView {
         id: list
+
+        scrollbar_visible: false
 
         Layout.fillWidth: true
         Layout.fillHeight: true
@@ -85,18 +102,29 @@ ColumnLayout {
 
             // Price
             DefaultText {
-                anchors.right: parent.right
+                id: price_value
+
+                anchors.left: is_asks ? parent.left : undefined
+                anchors.right: is_asks ? undefined : parent.right
+                anchors.leftMargin: price_header.anchors.leftMargin
                 anchors.rightMargin: price_header.anchors.rightMargin
 
+                font.pixelSize: Style.textSizeSmall1
+
                 text_value: API.get().empty_string + (General.formatDouble(price))
-                color: is_asks ? Style.colorRed : Style.colorGreen
+                color: price_header.color
                 anchors.verticalCenter: parent.verticalCenter
             }
 
             // Quantity
             DefaultText {
-                anchors.right: parent.right
+                id: quantity_value
+                anchors.left: is_asks ? parent.left : undefined
+                anchors.right: is_asks ? undefined : parent.right
+                anchors.leftMargin: quantity_header.anchors.leftMargin
                 anchors.rightMargin: quantity_header.anchors.rightMargin
+
+                font.pixelSize: price_value.font.pixelSize
 
                 text_value: API.get().empty_string + (quantity)
                 color: Style.colorWhite4
@@ -105,8 +133,13 @@ ColumnLayout {
 
             // Total
             DefaultText {
-                anchors.right: parent.right
+                id: total_value
+                anchors.left: is_asks ? parent.left : undefined
+                anchors.right: is_asks ? undefined : parent.right
+                anchors.leftMargin: total_header.anchors.leftMargin
                 anchors.rightMargin: total_header.anchors.rightMargin
+
+                font.pixelSize: price_value.font.pixelSize
 
                 text_value: API.get().empty_string + (total)
                 color: Style.colorWhite4
@@ -115,7 +148,7 @@ ColumnLayout {
 
             // Line
             HorizontalLine {
-                visible: index !== model.length - 1
+                visible: index !== root.model.length - 1
                 width: parent.width
                 color: Style.colorWhite9
                 anchors.bottom: parent.bottom
