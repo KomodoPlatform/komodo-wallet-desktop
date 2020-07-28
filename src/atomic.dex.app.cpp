@@ -1249,18 +1249,6 @@ namespace atomic_dex
         return m_candlestick_chart_ohlc;
     }
 
-    QVariantList
-    application::get_ohlc_data(const QString& range)
-    {
-        QVariantList out;
-        auto&        provider = this->system_manager_.get_system<cex_prices_provider>();
-        auto         json     = provider.get_ohlc_data(range.toStdString());
-
-        QJsonDocument q_json = QJsonDocument::fromJson(QString::fromStdString(json.dump()).toUtf8());
-        out                  = q_json.array().toVariantList();
-        return out;
-    }
-
     QVariantMap
     application::find_closest_ohlc_data(int range, int timestamp)
     {
@@ -1279,14 +1267,6 @@ namespace atomic_dex
             out                  = q_json.object().toVariantMap();
         }
         return out;
-    }
-
-    bool
-    application::is_supported_ohlc_data_ticker_pair(const QString& base, const QString& rel)
-    {
-        auto& provider        = this->system_manager_.get_system<cex_prices_provider>();
-        auto [normal, quoted] = provider.is_pair_supported(base.toStdString(), rel.toStdString());
-        return normal || quoted;
     }
 
     void
