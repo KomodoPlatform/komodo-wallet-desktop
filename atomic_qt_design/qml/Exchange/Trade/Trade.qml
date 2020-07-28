@@ -421,7 +421,7 @@ Item {
 
             Item {
                 id: forms
-                width: 400
+                width: 375
                 anchors.right: parent.right
                 anchors.top: parent.top
                 anchors.bottom: parent.bottom
@@ -443,7 +443,6 @@ Item {
                     anchors.left: parent.left
                     anchors.right: parent.right
                     anchors.top: form_base.bottom
-                    anchors.bottom: parent.bottom
                     anchors.topMargin: layout_margin
 
                     field.enabled: enabled && !orderIsSelected()
