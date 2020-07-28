@@ -169,15 +169,18 @@ namespace atomic_dex
             {
                 if (this->m_orders_id_registry.find(current_order.uuid) != this->m_orders_id_registry.end())
                 {
+                    //! Update
                     spdlog::trace("updating order id: {}", current_order.uuid);
                     this->update_order(current_order);
                 }
                 else
                 {
+                    //! Insertion
                     spdlog::trace("inserting id: {}", current_order.uuid);
                     this->initialize_order(current_order);
                 }
             }
+            //! Deletion
             std::unordered_set<std::string> to_remove;
             for (auto&& id: this->m_orders_id_registry)
             {
