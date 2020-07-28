@@ -72,23 +72,23 @@ namespace atomic_dex
     {
       private:
         //! Private typedefs
-        using t_mm2_time_point      = std::chrono::high_resolution_clock::time_point;
-        using t_balance_registry    = t_concurrent_reg<t_ticker, t_balance_answer>;
-        using t_my_orders           = t_concurrent_reg<t_ticker, t_my_orders_answer>;
-        using t_tx_history_registry = t_concurrent_reg<t_ticker, t_transactions>;
-        using t_tx_state_registry   = t_concurrent_reg<t_ticker, t_tx_state>;
-        using t_orderbook_registry  = t_concurrent_reg<t_ticker, std::vector<t_orderbook_answer>>;
-        using t_swaps_registry      = t_concurrent_reg<t_ticker, t_my_recent_swaps_answer>;
-        using t_swaps_avrg_datas    = t_concurrent_reg<t_ticker, std::string>;
-        using t_fees_registry       = t_concurrent_reg<t_ticker, t_get_trade_fee_answer>;
+        using t_mm2_time_point           = std::chrono::high_resolution_clock::time_point;
+        using t_balance_registry         = t_concurrent_reg<t_ticker, t_balance_answer>;
+        using t_my_orders                = t_concurrent_reg<t_ticker, t_my_orders_answer>;
+        using t_tx_history_registry      = t_concurrent_reg<t_ticker, t_transactions>;
+        using t_tx_state_registry        = t_concurrent_reg<t_ticker, t_tx_state>;
+        using t_orderbook_registry       = t_concurrent_reg<t_ticker, t_orderbook_answer>;
+        using t_swaps_registry           = t_concurrent_reg<t_ticker, t_my_recent_swaps_answer>;
+        using t_swaps_avrg_datas         = t_concurrent_reg<t_ticker, std::string>;
+        using t_fees_registry            = t_concurrent_reg<t_ticker, t_get_trade_fee_answer>;
+        using t_synchronized_ticker_pair = boost::synchronized_value<std::pair<std::string, std::string>>;
 
         //! Process
         reproc::process m_mm2_instance;
 
         //! Current orderbook
-        std::string m_current_orderbook_ticker_base{"KMD"};
-        std::string m_current_orderbook_ticker_rel{"BTC"};
-        std::mutex  m_orderbook_mutex;
+        t_synchronized_ticker_pair m_synchronized_ticker_pair{std::make_pair("KMD", "BTC")};
+
         //! Timers
         t_mm2_time_point m_orderbook_clock;
         t_mm2_time_point m_info_clock;
@@ -125,7 +125,7 @@ namespace atomic_dex
         void process_fees();
 
         //! Refresh the orderbook registry (internal)
-        void process_orderbook(std::string base);
+        void process_orderbook();
 
       public:
         //! Constructor
@@ -229,7 +229,8 @@ namespace atomic_dex
         [[nodiscard]] t_coins get_enableable_coins() const noexcept;
 
         //! Get all coins
-        [[nodiscard]] t_coins get_all_coins() const noexcept;;
+        [[nodiscard]] t_coins get_all_coins() const noexcept;
+        ;
 
         //! Get Specific info about one coin
         [[nodiscard]] coin_config get_coin_info(const std::string& ticker) const;
@@ -243,7 +244,7 @@ namespace atomic_dex
         ;
 
         //! Get Current orderbook
-        [[nodiscard]] std::vector<t_orderbook_answer> get_orderbook(const std::string& ticker, t_mm2_ec& ec) const noexcept;
+        [[nodiscard]] t_orderbook_answer get_orderbook(const std::string& base, const std::string& rel, t_mm2_ec& ec) const noexcept;
 
         //! Get orders
         [[nodiscard]] ::mm2::api::my_orders_answer              get_orders(const std::string& ticker, t_mm2_ec& ec) const noexcept;

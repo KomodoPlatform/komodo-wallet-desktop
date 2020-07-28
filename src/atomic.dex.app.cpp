@@ -760,35 +760,6 @@ namespace atomic_dex
         this->dispatcher_.trigger<orderbook_refresh>(base.toStdString(), rel.toStdString());
     }
 
-    QVariantMap
-    application::get_orderbook(const QString& ticker)
-    {
-        QVariantMap     out;
-        std::error_code ec;
-        auto            answer = get_mm2().get_orderbook(ticker.toStdString(), ec);
-        if (ec == dextop_error::orderbook_ticker_not_found)
-        {
-            spdlog::warn("{}", ec.message());
-            return out;
-        }
-        for (auto&& current_orderbook: answer)
-        {
-            nlohmann::json j_out = nlohmann::json::array();
-            for (auto&& current_bid: current_orderbook.bids)
-            {
-                nlohmann::json current_j_bid = {
-                    {"volume", current_bid.maxvolume},
-                    {"price", current_bid.price},
-                    {"price_denom", current_bid.price_fraction_denom},
-                    {"price_numer", current_bid.price_fraction_numer}};
-                j_out.push_back(current_j_bid);
-            }
-            auto out_orderbook = QJsonDocument::fromJson(QString::fromStdString(j_out.dump()).toUtf8());
-            out.insert(QString::fromStdString(current_orderbook.rel), out_orderbook.toVariant());
-        }
-        return out;
-    }
-
     void
     application::on_refresh_update_status_event([[maybe_unused]] const refresh_update_status& evt) noexcept
     {
