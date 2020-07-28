@@ -389,20 +389,37 @@ Item {
             Layout.fillHeight: true
             Layout.bottomMargin: layout_margin
 
-            InnerBackground {
-                id: graph_bg
-
+            Item {
+                id: left_section
                 anchors.left: parent.left
                 anchors.right: forms.left
                 anchors.top: parent.top
                 anchors.bottom: parent.bottom
                 anchors.rightMargin: layout_margin
 
-                visible: chart.pair_supported
+                InnerBackground {
+                    id: graph_bg
 
-                CandleStickChart {
-                    id: chart
-                    anchors.fill: parent
+                    anchors.left: parent.left
+                    anchors.right: parent.right
+                    anchors.top: parent.top
+                    anchors.bottom: orderbook.top
+                    anchors.bottomMargin: layout_margin
+
+                    visible: chart.pair_supported
+
+                    CandleStickChart {
+                        id: chart
+                        anchors.fill: parent
+                    }
+                }
+
+                Orderbook {
+                    id: orderbook
+                    height: 250
+                    anchors.left: parent.left
+                    anchors.right: parent.right
+                    anchors.bottom: parent.bottom
                 }
             }
 
@@ -420,8 +437,6 @@ Item {
                     anchors.left: parent.left
                     anchors.right: parent.right
                     anchors.top: parent.top
-                    anchors.bottom: parent.verticalCenter
-                    anchors.bottomMargin: layout_margin*0.5
 
                     my_side: true
                 }
@@ -431,9 +446,9 @@ Item {
                     id: form_rel
                     anchors.left: parent.left
                     anchors.right: parent.right
-                    anchors.top: parent.verticalCenter
+                    anchors.top: form_base.bottom
                     anchors.bottom: parent.bottom
-                    anchors.topMargin: form_base.anchors.bottomMargin
+                    anchors.topMargin: layout_margin
 
                     field.enabled: enabled && !orderIsSelected()
                 }

@@ -77,6 +77,8 @@ Item {
         backgroundColor: chart.backgroundColor
         plotArea: Qt.rect(chart.plotArea.x, 0, chart.plotArea.width, height)
 
+        onHeightChanged: series.updateLastValueY()
+
         CandlestickSeries {
             id: series_area
 
