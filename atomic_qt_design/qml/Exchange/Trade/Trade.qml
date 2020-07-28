@@ -10,6 +10,7 @@ Item {
     id: exchange_trade
 
     property string action_result
+    readonly property int layout_margin: 20
 
     // Override
     property var onOrderSuccess: () => {}
@@ -179,7 +180,7 @@ Item {
     function updateOrderbook() {
         fillTickersIfEmpty()
 
-        orderbook_model = API.get().get_orderbook(getTicker(true))
+        orderbook_model = API.mockAPI.get_orderbook(getTicker(true))
         orderbook_timer.running = true
         updateTradeInfo()
     }
@@ -383,60 +384,59 @@ Item {
 
         anchors.fill: parent
 
-
-        InnerBackground {
-            id: graph_bg
-
-            Layout.alignment: Qt.AlignTop
-
-            visible: chart.pair_supported
-
+        Item {
             Layout.fillWidth: true
             Layout.fillHeight: true
-            implicitHeight: wallet.height*0.6
+            Layout.bottomMargin: layout_margin
 
-            CandleStickChart {
-                id: chart
-                width: graph_bg.width
-                height: graph_bg.height
-            }
-        }
+            InnerBackground {
+                id: graph_bg
 
-        RowLayout {
-            Layout.alignment: Qt.AlignVCenter
-            spacing: 0
+                anchors.left: parent.left
+                anchors.right: forms.left
+                anchors.top: parent.top
+                anchors.bottom: parent.bottom
+                anchors.rightMargin: layout_margin
 
-            // Sell
-            OrderForm {
-                id: form_base
-                Layout.fillWidth: true
-                my_side: true
-            }
+                visible: chart.pair_supported
 
-            FloatingBackground {
-                id: trade_icon_bg
-                z: 1
-                radius: 100
-                width: 75
-                height: width
-                auto_set_size: false
-
-                content: DefaultImage {
-                    source: General.image_path + "trade_icon.svg"
-                    Layout.alignment: Qt.AlignVCenter
-                    fillMode: Image.PreserveAspectFit
-                    width: trade_icon_bg.width*0.4
-                    height: width
+                CandleStickChart {
+                    id: chart
+                    anchors.fill: parent
                 }
             }
 
-            // Receive
-            OrderForm {
-                id: form_rel
-                Layout.fillWidth: true
-                Layout.preferredHeight: form_base.height
-                column_layout.height: form_base.height
-                field.enabled: enabled && !orderIsSelected()
+            Item {
+                id: forms
+                width: 400
+                anchors.right: parent.right
+                anchors.top: parent.top
+                anchors.bottom: parent.bottom
+
+                // Sell
+                OrderForm {
+                    id: form_base
+
+                    anchors.left: parent.left
+                    anchors.right: parent.right
+                    anchors.top: parent.top
+                    anchors.bottom: parent.verticalCenter
+                    anchors.bottomMargin: layout_margin*0.5
+
+                    my_side: true
+                }
+
+                // Receive
+                OrderForm {
+                    id: form_rel
+                    anchors.left: parent.left
+                    anchors.right: parent.right
+                    anchors.top: parent.verticalCenter
+                    anchors.bottom: parent.bottom
+                    anchors.topMargin: form_base.anchors.bottomMargin
+
+                    field.enabled: enabled && !orderIsSelected()
+                }
             }
         }
 

@@ -470,23 +470,4 @@ FloatingBackground {
             onClicked: confirm_trade_modal.open()
         }
     }
-
-
-    opacity_mask_enabled: true
-    mask: OpacityMask {
-        source: rect
-        invert: true
-        maskSource: Item {
-            width: rect.width;
-            height: rect.height;
-            Rectangle {
-                anchors.verticalCenter: parent.verticalCenter
-                anchors.left: my_side ? parent.right : undefined
-                anchors.leftMargin: my_side ? -17.5 : 0
-                anchors.right: my_side ? undefined : parent.left
-                anchors.rightMargin: my_side ? 0 : -17.5
-                width: 110; height: width; radius: Infinity
-            }
-        }
-    }
 }
