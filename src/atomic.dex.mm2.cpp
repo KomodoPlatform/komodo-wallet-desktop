@@ -490,7 +490,7 @@ namespace atomic_dex
     t_orderbook_answer
     mm2::get_orderbook(t_mm2_ec& ec) const noexcept
     {
-        auto&& [base, rel] = this->m_synchronized_ticker_pair.get();
+        auto&& [base, rel]     = this->m_synchronized_ticker_pair.get();
         const std::string pair = base + "/" + rel;
         if (m_current_orderbook.empty())
         {
@@ -514,6 +514,7 @@ namespace atomic_dex
         if (answer.rpc_result_code not_eq -1)
         {
             m_current_orderbook.insert_or_assign(base + "/" + rel, answer);
+            this->dispatcher_.trigger<process_orderbook_finished>();
         }
     }
 
@@ -828,15 +829,15 @@ namespace atomic_dex
             {
                 tx_infos current_info{
 
-                    .am_i_sender   = current.my_balance_change[0] == '-',
-                    .confirmations = current.confirmations.has_value() ? current.confirmations.value() : 0,
-                    .from          = current.from,
-                    .to            = current.to,
-                    .date          = current.timestamp_as_date,
-                    .timestamp     = current.timestamp,
-                    .tx_hash       = current.tx_hash,
-                    .fees          = current.fee_details.normal_fees.has_value() ? current.fee_details.normal_fees.value().amount
-                                                                        : current.fee_details.erc_fees.value().total_fee,
+                    .am_i_sender       = current.my_balance_change[0] == '-',
+                    .confirmations     = current.confirmations.has_value() ? current.confirmations.value() : 0,
+                    .from              = current.from,
+                    .to                = current.to,
+                    .date              = current.timestamp_as_date,
+                    .timestamp         = current.timestamp,
+                    .tx_hash           = current.tx_hash,
+                    .fees              = current.fee_details.normal_fees.has_value() ? current.fee_details.normal_fees.value().amount
+                                                                                     : current.fee_details.erc_fees.value().total_fee,
                     .my_balance_change = current.my_balance_change,
                     .total_amount      = current.total_amount,
                     .block_height      = current.block_height,

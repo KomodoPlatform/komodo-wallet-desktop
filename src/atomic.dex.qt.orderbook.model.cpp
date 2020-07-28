@@ -22,7 +22,8 @@
 
 namespace atomic_dex
 {
-    orderbook_model::orderbook_model(kind orderbook_kind, QObject* parent) : QAbstractListModel(parent), m_current_orderbook_kind(orderbook_kind)
+    orderbook_model::orderbook_model(t_orderbook_answer& orderbook, kind orderbook_kind, QObject* parent) :
+        QAbstractListModel(parent), m_current_orderbook_kind(orderbook_kind), m_model_data(orderbook)
     {
         spdlog::trace("{} l{} f[{}]", __FUNCTION__, __LINE__, fs::path(__FILE__).filename().string());
         spdlog::trace("orderbook model created");
@@ -37,7 +38,7 @@ namespace atomic_dex
     int
     orderbook_model::rowCount([[maybe_unused]] const QModelIndex& parent) const
     {
-        return m_current_orderbook_kind == kind::asks ? m_model_data->asks.size() : m_model_data->bids.size();
+        return m_current_orderbook_kind == kind::asks ? m_model_data.asks.size() : m_model_data.bids.size();
     }
 
     QVariant
@@ -50,14 +51,14 @@ namespace atomic_dex
         switch (static_cast<OrderbookRoles>(role))
         {
         case PriceRole:
-            return m_current_orderbook_kind == kind::asks ? QString::fromStdString(m_model_data->asks.at(index.row()).price)
-                                                          : QString::fromStdString(m_model_data->bids.at(index.row()).price);
+            return m_current_orderbook_kind == kind::asks ? QString::fromStdString(m_model_data.asks.at(index.row()).price)
+                                                          : QString::fromStdString(m_model_data.bids.at(index.row()).price);
         case QuantityRole:
-            return m_current_orderbook_kind == kind::asks ? QString::fromStdString(m_model_data->asks.at(index.row()).maxvolume)
-                                                          : QString::fromStdString(m_model_data->bids.at(index.row()).maxvolume);
+            return m_current_orderbook_kind == kind::asks ? QString::fromStdString(m_model_data.asks.at(index.row()).maxvolume)
+                                                          : QString::fromStdString(m_model_data.bids.at(index.row()).maxvolume);
         case TotalRole:
-            return m_current_orderbook_kind == kind::asks ? QString::fromStdString(m_model_data->asks.at(index.row()).total)
-                                                          : QString::fromStdString(m_model_data->bids.at(index.row()).total);
+            return m_current_orderbook_kind == kind::asks ? QString::fromStdString(m_model_data.asks.at(index.row()).total)
+                                                          : QString::fromStdString(m_model_data.bids.at(index.row()).total);
         }
     }
 
@@ -65,6 +66,14 @@ namespace atomic_dex
     orderbook_model::roleNames() const
     {
         return {{PriceRole, "price"}, {QuantityRole, "quantity"}, {TotalRole, "total"}};
+    }
+
+    void
+    orderbook_model::reset_orderbook(t_orderbook_answer& orderbook) noexcept
+    {
+        this->beginResetModel();
+        m_model_data = orderbook;
+        this->endResetModel();
     }
 
 } // namespace atomic_dex

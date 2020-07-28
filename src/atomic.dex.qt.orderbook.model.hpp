@@ -38,15 +38,16 @@ namespace atomic_dex
             TotalRole
         };
 
-        orderbook_model(kind orderbook_kind, QObject* parent = nullptr);
+        orderbook_model(t_orderbook_answer& orderbook, kind orderbook_kind, QObject* parent = nullptr);
         ~orderbook_model() noexcept final;
 
         [[nodiscard]] int                    rowCount(const QModelIndex& parent = QModelIndex()) const final;
         [[nodiscard]] QVariant               data(const QModelIndex& index, int role) const final;
         [[nodiscard]] QHash<int, QByteArray> roleNames() const final;
 
+        void reset_orderbook(t_orderbook_answer& orderbook) noexcept;
       private:
         kind                m_current_orderbook_kind{kind::asks};
-        t_orderbook_answer* m_model_data;
+        t_orderbook_answer& m_model_data;
     };
 } // namespace atomic_dex

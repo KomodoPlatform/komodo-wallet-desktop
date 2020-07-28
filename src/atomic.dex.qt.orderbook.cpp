@@ -19,8 +19,8 @@
 namespace atomic_dex
 {
     qt_orderbook_wrapper::qt_orderbook_wrapper(ag::ecs::system_manager& system_manager, QObject* parent) :
-        QObject(parent), m_system_manager(system_manager), m_asks(new orderbook_model(orderbook_model::kind::asks, this)),
-        m_bids(new orderbook_model(orderbook_model::kind::bids, this))
+        QObject(parent), m_system_manager(system_manager), m_asks(new orderbook_model(m_last_orderbook, orderbook_model::kind::asks, this)),
+        m_bids(new orderbook_model(m_last_orderbook, orderbook_model::kind::bids, this))
     {
         spdlog::trace("{} l{} f[{}]", __FUNCTION__, __LINE__, fs::path(__FILE__).filename().string());
         spdlog::trace("orderbook wrapper object created");
@@ -42,5 +42,13 @@ namespace atomic_dex
     qt_orderbook_wrapper::get_bids() const noexcept
     {
         return m_bids;
+    }
+
+    void
+    qt_orderbook_wrapper::refresh_orderbook(t_orderbook_answer answer)
+    {
+        this->m_last_orderbook = std::move(answer);
+        this->m_asks->reset_orderbook(m_last_orderbook);
+        this->m_bids->reset_orderbook(m_last_orderbook);
     }
 } // namespace atomic_dex
