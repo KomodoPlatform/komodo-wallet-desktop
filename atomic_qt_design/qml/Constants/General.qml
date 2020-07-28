@@ -16,6 +16,7 @@ QtObject {
     readonly property string cex_icon: 'ⓘ'
     readonly property string download_icon: '📥'
     readonly property string right_arrow_icon: "⮕"
+    readonly property string privacy_text: "*****"
 
     property bool privacy_mode: false
 
@@ -165,8 +166,10 @@ QtObject {
     }
 
     function getTickersAndBalances(coins) {
+        const privacy_on = General.privacy_mode
+        const privacy_text = General.privacy_text
         return coins.map(c => {
-            return { value: c.ticker, text: c.ticker + " (" + c.balance + ")" }
+            return { value: c.ticker, text: c.ticker + " (" + (privacy_on ? privacy_text : c.balance) + ")" }
         })
     }
 
