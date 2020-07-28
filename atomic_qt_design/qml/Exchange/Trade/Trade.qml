@@ -50,10 +50,6 @@ Item {
         preffered_order = General.clone(empty_order)
     }
 
-    function prepareCreateMyOwnOrder() {
-        resetPreferredPrice()
-    }
-
     function selectOrder(order) {
         preffered_order.price = order.price
         preffered_order.volume = order.volume
@@ -413,6 +409,7 @@ Item {
                     anchors.top: form_rel.bottom
                     anchors.topMargin: layout_margin * 2
 
+                    font.pixelSize: Style.textSizeSmall4
                     color: Style.colorRed
 
                     text_value: API.get().empty_string + (notEnoughBalanceForFees() ?

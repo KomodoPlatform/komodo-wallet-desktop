@@ -379,7 +379,7 @@ FloatingBackground {
                 Layout.fillWidth: true
                 Layout.leftMargin: top_line.Layout.leftMargin
                 Layout.rightMargin: top_line.Layout.rightMargin
-                Layout.bottomMargin: top_line.Layout.rightMargin
+                Layout.bottomMargin: layout_margin
 
                 content: RowLayout {
                     width: bg.width
@@ -442,14 +442,14 @@ FloatingBackground {
 
         RowLayout {
             Layout.alignment: Qt.AlignRight | Qt.AlignBottom
+            Layout.topMargin: 5
             Layout.rightMargin: top_line.Layout.rightMargin
-            Layout.bottomMargin: top_line.Layout.rightMargin
+            Layout.bottomMargin: layout_margin
 
             DefaultButton {
-                visible: !my_side
+                visible: orderIsSelected()
 
                 text: API.get().empty_string + (qsTr("Unlock Price"))
-                enabled: orderIsSelected()
                 onClicked: resetPreferredPrice()
             }
 
