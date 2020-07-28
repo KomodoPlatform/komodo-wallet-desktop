@@ -34,8 +34,8 @@ ColumnLayout {
 
             anchors.left: is_asks ? parent.left : undefined
             anchors.right: is_asks ? undefined : parent.right
-            anchors.leftMargin: is_asks ? parent.width * 0.02 : undefined
-            anchors.rightMargin: is_asks ? undefined : parent.width * 0.02
+            anchors.leftMargin: is_asks ? parent.width * 0.03 : undefined
+            anchors.rightMargin: is_asks ? undefined : parent.width * 0.03
 
             anchors.verticalCenter: parent.verticalCenter
         }
@@ -45,8 +45,8 @@ ColumnLayout {
             id: quantity_header
             anchors.left: is_asks ? parent.left : undefined
             anchors.right: is_asks ? undefined : parent.right
-            anchors.leftMargin: is_asks ? parent.width * 0.3 : undefined
-            anchors.rightMargin: is_asks ? undefined : parent.width * 0.3
+            anchors.leftMargin: is_asks ? parent.width * 0.32 : undefined
+            anchors.rightMargin: is_asks ? undefined : parent.width * 0.32
 
             font.pixelSize: price_header.font.pixelSize
 
@@ -60,8 +60,8 @@ ColumnLayout {
             id: total_header
             anchors.left: is_asks ? parent.left : undefined
             anchors.right: is_asks ? undefined : parent.right
-            anchors.leftMargin: is_asks ? parent.width * 0.6 : undefined
-            anchors.rightMargin: is_asks ? undefined : parent.width * 0.6
+            anchors.leftMargin: is_asks ? parent.width * 0.65 : undefined
+            anchors.rightMargin: is_asks ? undefined : parent.width * 0.65
 
             font.pixelSize: price_header.font.pixelSize
 
