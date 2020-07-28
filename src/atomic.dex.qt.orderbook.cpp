@@ -48,10 +48,8 @@ namespace atomic_dex
     qt_orderbook_wrapper::refresh_orderbook(t_orderbook_answer answer)
     {
         spdlog::trace("refresh orderbook");
-        // this->m_asks->refresh_orderbook(answer);
-        // this->m_bids->refresh_orderbook(answer);
-        this->m_asks->reset_orderbook(answer);
-        this->m_bids->reset_orderbook(answer);
+        this->m_asks->refresh_orderbook(answer);
+        this->m_bids->refresh_orderbook(answer);
     }
 
     void
