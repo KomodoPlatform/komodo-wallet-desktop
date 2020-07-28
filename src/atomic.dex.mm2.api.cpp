@@ -222,9 +222,9 @@ namespace mm2::api
         using namespace date;
         using namespace std::chrono;
         date::sys_seconds tp{seconds{cfg.timestamp}};
-        auto tp_zoned = date::make_zoned(current_zone(), tp);
-        std::string       s   = date::format("%e %b %Y, %I:%M", tp_zoned);
-        cfg.timestamp_as_date = std::move(s);
+        auto              tp_zoned = date::make_zoned(current_zone(), tp);
+        std::string       s        = date::format("%e %b %Y, %I:%M", tp_zoned);
+        cfg.timestamp_as_date      = std::move(s);
     }
 
     void
@@ -415,6 +415,8 @@ namespace mm2::api
             contents.price = contents.price;
         }
         contents.maxvolume = adjust_precision(contents.maxvolume);
+        t_float_50 total_f = t_float_50(contents.price) * t_float_50(contents.maxvolume);
+        contents.total     = adjust_precision(total_f.str());
     }
 
     void
@@ -434,8 +436,8 @@ namespace mm2::api
         j.at("timestamp").get_to(answer.timestamp);
 
         sys_time<std::chrono::milliseconds> tp{std::chrono::milliseconds{answer.timestamp}};
-        auto tp_zoned = date::make_zoned(current_zone(), tp);
-        answer.human_timestamp = date::format("%Y-%m-%d %I:%M:%S", tp_zoned);
+        auto                                tp_zoned = date::make_zoned(current_zone(), tp);
+        answer.human_timestamp                       = date::format("%Y-%m-%d %I:%M:%S", tp_zoned);
     }
 
     void
@@ -669,12 +671,12 @@ namespace mm2::api
         j.at("type").get_to(contents.type);
         j.at("recoverable").get_to(contents.funds_recoverable);
 
-        contents.taker_amount            = adjust_precision(contents.taker_amount);
-        contents.maker_amount            = adjust_precision(contents.maker_amount);
-        contents.events                  = nlohmann::json::array();
+        contents.taker_amount = adjust_precision(contents.taker_amount);
+        contents.maker_amount = adjust_precision(contents.maker_amount);
+        contents.events       = nlohmann::json::array();
         if (j.contains("my_info"))
         {
-            contents.my_info                 = j.at("my_info");
+            contents.my_info = j.at("my_info");
             if (not contents.my_info.is_null())
             {
                 contents.my_info["other_amount"] = adjust_precision(contents.my_info["other_amount"].get<std::string>());
@@ -691,7 +693,7 @@ namespace mm2::api
             const nlohmann::json& j_evt      = content.at("event");
             auto                  timestamp  = content.at("timestamp").get<std::size_t>();
             auto                  tp         = sys_milliseconds{std::chrono::milliseconds{timestamp}};
-            auto tp_zoned = date::make_zoned(current_zone(), tp);
+            auto                  tp_zoned   = date::make_zoned(current_zone(), tp);
             std::string           human_date = date::format("%F    %T", tp_zoned);
             auto                  evt_type   = j_evt.at("type").get<std::string>();
 
@@ -699,8 +701,8 @@ namespace mm2::api
                                  &total_time_in_seconds](nlohmann::json& jf_evt, const std::string& event_type, const std::string& previous_event) {
                 if (event_timestamp_registry.count(previous_event) != 0)
                 {
-                    std::int64_t ts      = event_timestamp_registry.at(previous_event);
-                    jf_evt["started_at"] = ts;
+                    std::int64_t ts                         = event_timestamp_registry.at(previous_event);
+                    jf_evt["started_at"]                    = ts;
                     std::int64_t                        ts2 = jf_evt.at("timestamp").get<std::int64_t>();
                     std::stringstream                   ss;
                     sys_time<std::chrono::milliseconds> t1{std::chrono::milliseconds{ts}};
@@ -875,7 +877,8 @@ namespace mm2::api
         }
         catch (const std::exception& error)
         {
-            spdlog::error("{} l{} f[{}], exception caught {} for rpc {}", __FUNCTION__, __LINE__, fs::path(__FILE__).filename().string(), error.what(), rpc_command);
+            spdlog::error(
+                "{} l{} f[{}], exception caught {} for rpc {}", __FUNCTION__, __LINE__, fs::path(__FILE__).filename().string(), error.what(), rpc_command);
             answer.rpc_result_code = -1;
             answer.raw_result      = error.what();
         }
