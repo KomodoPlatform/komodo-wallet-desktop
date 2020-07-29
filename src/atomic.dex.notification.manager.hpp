@@ -35,6 +35,9 @@ namespace atomic_dex
         void connect_signals() noexcept;
         void disconnect_signals() noexcept;
 
+      signals:
+        void updateSwapStatus(QString old_swap_status, QString new_swap_status, QString swap_uuid);
+
       private:
         entt::dispatcher& m_dispatcher;
     };
