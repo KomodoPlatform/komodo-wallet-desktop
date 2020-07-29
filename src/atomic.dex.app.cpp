@@ -878,6 +878,7 @@ namespace atomic_dex
 
         this->m_need_a_full_refresh_of_mm2 = true;
 
+        this->m_wallet_manager.just_set_wallet_name("");
         return fs::remove(get_atomic_dex_config_folder() / "default.wallet");
     }
 
