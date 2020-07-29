@@ -50,11 +50,11 @@ Item {
         preffered_order = General.clone(empty_order)
     }
 
-    function selectOrder(order) {
-        preffered_order.price = order.price
-        preffered_order.volume = order.volume
-        preffered_order.price_denom = order.price_denom
-        preffered_order.price_numer = order.price_numer
+    function selectOrder(price, quantity, price_denom, price_numer) {
+        preffered_order.price = price
+        preffered_order.volume = quantity
+        preffered_order.price_denom = price_denom
+        preffered_order.price_numer = price_numer
         preffered_order = preffered_order
         updateRelAmount()
     }

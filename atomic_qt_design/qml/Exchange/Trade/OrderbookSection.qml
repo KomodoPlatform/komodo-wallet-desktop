@@ -94,7 +94,7 @@ ColumnLayout {
             height: 20
 
             Rectangle {
-                visible: mouse_area.containsMouse
+                visible: mouse_area.containsMouse && !is_mine
                 width: parent.width
                 height: parent.height
                 color: Style.colorWhite1
@@ -118,7 +118,11 @@ ColumnLayout {
                 id: mouse_area
                 anchors.fill: parent
                 hoverEnabled: true
-                //onClicked: selectOrder(model.modelData)
+                onClicked: {
+                    if(is_mine) return
+
+                    if(!is_asks) selectOrder(price, quantity, price_denom, price_numer)
+                }
             }
 
             // Price
