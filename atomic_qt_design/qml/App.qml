@@ -12,8 +12,7 @@ Rectangle {
     color: Style.colorTheme8
 
     function firstPage() {
-        return idx_login
-        //return !API.get().first_run() && API.get().is_there_a_default_wallet() ? idx_login : idx_first_launch
+        return !API.get().first_run() && API.get().is_there_a_default_wallet() ? idx_login : idx_first_launch
     }
 
     function cleanApp() {
