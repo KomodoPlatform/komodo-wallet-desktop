@@ -38,7 +38,7 @@ Item {
         cex_price = API.get().get_cex_rates(base, rel)
     }
 
-    readonly property var empty_order: ({ "price": "0","price_denom":"0","price_numer":"0","volume":"0"})
+    readonly property var empty_order: ({ "is_asks":false,"price":"0","price_denom":"0","price_numer":"0","volume":"0"})
     property var preffered_order: General.clone(empty_order)
 
 
@@ -50,7 +50,8 @@ Item {
         preffered_order = General.clone(empty_order)
     }
 
-    function selectOrder(price, quantity, price_denom, price_numer) {
+    function selectOrder(is_asks, price, quantity, price_denom, price_numer) {
+        preffered_order.is_asks = is_asks
         preffered_order.price = price
         preffered_order.volume = quantity
         preffered_order.price_denom = price_denom
@@ -69,17 +70,19 @@ Item {
             const price = parseFloat(preffered_order.price)
             let new_rel = newRelVolume(preffered_order.price)
 
-            // If new rel volume is higher than the order max volume
-            const max_volume = parseFloat(preffered_order.volume)
-            if(new_rel > max_volume) {
-                new_rel = max_volume
+            if(!preffered_order.is_asks) {
+                // If new rel volume is higher than the order max volume
+                const max_volume = parseFloat(preffered_order.volume)
+                if(new_rel > max_volume) {
+                    new_rel = max_volume
 
-                // Set base
-                const max_base_volume = max_volume / price
-                if(parseFloat(form_base.getVolume()) !== max_base_volume) {
-                    const new_base_text = General.formatDouble(max_base_volume)
-                    if(form_base.field.text !== new_base_text)
-                        form_base.field.text = new_base_text
+                    // Set base
+                    const max_base_volume = max_volume / price
+                    if(parseFloat(form_base.getVolume()) !== max_base_volume) {
+                        const new_base_text = General.formatDouble(max_base_volume)
+                        if(form_base.field.text !== new_base_text)
+                            form_base.field.text = new_base_text
+                    }
                 }
             }
 

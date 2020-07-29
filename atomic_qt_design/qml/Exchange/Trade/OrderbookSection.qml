@@ -121,7 +121,7 @@ ColumnLayout {
                 onClicked: {
                     if(is_mine) return
 
-                    if(!is_asks) selectOrder(price, quantity, price_denom, price_numer)
+                    selectOrder(is_asks, price, quantity, price_denom, price_numer)
                 }
             }
 

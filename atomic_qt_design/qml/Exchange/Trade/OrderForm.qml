@@ -458,7 +458,7 @@ FloatingBackground {
             visible: !my_side
             width: 170
 
-            text: API.get().empty_string + (orderIsSelected() ? qsTr("Match Order") : qsTr("Create Order"))
+            text: API.get().empty_string + (!preffered_order.is_asks && orderIsSelected() ? qsTr("Match Order") : qsTr("Create Order"))
             enabled: valid_trade_info && !notEnoughBalanceForFees() && form_base.isValid() && form_rel.isValid()
             onClicked: confirm_trade_modal.open()
         }
