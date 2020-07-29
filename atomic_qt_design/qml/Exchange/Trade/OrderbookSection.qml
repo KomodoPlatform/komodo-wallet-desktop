@@ -46,7 +46,7 @@ ColumnLayout {
 
             font.pixelSize: price_header.font.pixelSize
 
-            text_value: API.get().empty_string + (qsTr("Quantity"))
+            text_value: API.get().empty_string + (qsTr("Quantity") + "\n(" + getTicker(true) + ")")
             color: Style.colorWhite1
             anchors.verticalCenter: parent.verticalCenter
         }
@@ -61,7 +61,7 @@ ColumnLayout {
 
             font.pixelSize: price_header.font.pixelSize
 
-            text_value: API.get().empty_string + (qsTr("Total"))
+            text_value: API.get().empty_string + (qsTr("Total") + "\n(" + getTicker(false) + ")")
             color: Style.colorWhite1
             anchors.verticalCenter: parent.verticalCenter
         }
