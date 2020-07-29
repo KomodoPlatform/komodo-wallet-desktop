@@ -93,6 +93,16 @@ ColumnLayout {
             width: root.width
             height: 20
 
+            Rectangle {
+                width: parent.width * depth
+                height: parent.height
+                color: price_value.color
+                opacity: 0.2
+
+                anchors.left: is_asks ? parent.left : undefined
+                anchors.right: is_asks ? undefined : parent.right
+            }
+
             MouseArea {
                 id: mouse_area
                 anchors.fill: parent
