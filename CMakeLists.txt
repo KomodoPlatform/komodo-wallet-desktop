@@ -154,6 +154,7 @@ target_sources(atomic_qt_shared_deps INTERFACE
         ${CMAKE_SOURCE_DIR}/src/atomic.dex.wallet.config.cpp
         ${CMAKE_SOURCE_DIR}/src/atomic.dex.security.cpp
         ${CMAKE_SOURCE_DIR}/src/atomic.dex.update.service.cpp
+        ${CMAKE_SOURCE_DIR}/src/atomic.dex.notification.manager.cpp
         ${CMAKE_SOURCE_DIR}/src/atomic.dex.qt.orders.model.cpp
         ${CMAKE_SOURCE_DIR}/src/atomic.dex.qt.orders.proxy.model.cpp
         ${CMAKE_SOURCE_DIR}/src/atomic.dex.qt.candlestick.charts.model.cpp
