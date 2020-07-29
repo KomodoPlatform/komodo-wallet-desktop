@@ -80,12 +80,6 @@ Item {
         repeat: true
         onTriggered: General.enableEthIfNeeded()
     }
-
-    // Sidebar, left side
-    Sidebar {
-        id: sidebar
-    }
-
     // Right side
     Rectangle {
         color: Style.colorTheme8
@@ -137,6 +131,20 @@ Item {
         }
     }
 
+    NotificationsPanel {
+        id: notifications_panel
+        width: 300
+        height: 600
+        anchors.left: sidebar.right
+        anchors.bottom: parent.bottom
+        anchors.bottomMargin: -40
+    }
+
+    // Sidebar, left side
+    Sidebar {
+        id: sidebar
+    }
+
     DropShadow {
         anchors.fill: sidebar
         source: sidebar
@@ -172,16 +180,6 @@ Item {
                 linkColor: color
             }
         }
-    }
-
-    NotificationsPanel {
-        id: notifications_panel
-        width: 300
-        height: 600
-        anchors.left: sidebar.right
-        anchors.bottom: parent.bottom
-        anchors.leftMargin: 20
-        anchors.bottomMargin: anchors.leftMargin
     }
 }
 

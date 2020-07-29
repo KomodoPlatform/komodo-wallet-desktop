@@ -14,7 +14,6 @@ FloatingBackground {
     }
 
     function showApp() {
-        window.show()
         window.raise()
         window.requestActivate()
     }
@@ -81,7 +80,7 @@ FloatingBackground {
 
         DefaultButton {
             text: API.get().empty_string + (qsTr("Close"))
-            Layout.alignment: Qt.AlignRight
+            Layout.alignment: Qt.AlignBottom
             onClicked: root.visible = false
         }
     }
