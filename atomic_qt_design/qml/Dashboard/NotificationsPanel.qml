@@ -13,7 +13,19 @@ FloatingBackground {
         visible = false
     }
 
+    function showApp() {
+        window.show()
+        window.raise()
+        window.requestActivate()
+    }
+
     visible: false
+
+    MouseArea {
+        anchors.fill: parent
+        preventStealing: true
+        hoverEnabled: true
+    }
 
     // Events
     function onSwapStatusUpdated(old_swap_status, new_swap_status, swap_uuid) {
@@ -35,17 +47,13 @@ FloatingBackground {
         visible: true
         iconSource: General.coinIcon("KMD")
         onMessageClicked: {
-            console.log("Message clicked")
             root.visible = true
+            showApp()
         }
 
         tooltip: qsTr("AtomicDEX Pro")
 
-        onActivated: {
-            window.show()
-            window.raise()
-            window.requestActivate()
-        }
+        onActivated: showApp()
     }
 
     ColumnLayout {

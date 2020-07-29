@@ -180,6 +180,8 @@ Item {
         height: 600
         anchors.right: parent.right
         anchors.top: parent.top
+        anchors.rightMargin: 40
+        anchors.topMargin: anchors.rightMargin
     }
 }
 
