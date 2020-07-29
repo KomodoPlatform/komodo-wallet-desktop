@@ -57,6 +57,7 @@ Item {
         preffered_order.price_numer = price_numer
         preffered_order = preffered_order
         updateRelAmount()
+        form_base.field.forceActiveFocus()
     }
 
     function newRelVolume(price) {
@@ -399,8 +400,6 @@ Item {
                     anchors.right: parent.right
                     anchors.top: form_base.bottom
                     anchors.topMargin: layout_margin
-
-                    field.enabled: enabled && !orderIsSelected()
                 }
 
                 // Show errors
