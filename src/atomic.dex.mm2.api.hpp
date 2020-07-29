@@ -408,6 +408,8 @@ namespace mm2::api
         std::size_t                 timestamp;
         std::size_t                 netid;
         std::string                 human_timestamp; //! Moment of the orderbook request human readeable
+        std::string                 asks_total_volume;
+        std::string                 bids_total_volume;
 
         //! Internal
         std::string raw_result;

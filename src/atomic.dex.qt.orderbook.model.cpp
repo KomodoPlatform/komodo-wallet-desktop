@@ -95,6 +95,15 @@ namespace atomic_dex
                                                           : QString::fromStdString(m_model_data.bids.at(index.row()).uuid);
         case IsMineRole:
             return m_current_orderbook_kind == kind::asks ? m_model_data.asks.at(index.row()).is_mine : m_model_data.bids.at(index.row()).is_mine;
+        case PercentDepthRole:
+            {
+                const std::vector<::mm2::api::order_contents>& model_data =
+                    this->m_current_orderbook_kind == kind::asks ? this->m_model_data.asks : this->m_model_data.bids;
+                const std::string& current_max_depth =
+                    this->m_current_orderbook_kind == kind::asks ? this->m_model_data.asks_total_volume : this->m_model_data.bids_total_volume;
+                t_float_50 final = t_float_50(model_data.at(index.row()).total) / t_float_50(current_max_depth);
+                return QString::fromStdString(adjust_precision(final.str()));
+            }
         }
     }
 
@@ -129,6 +138,8 @@ namespace atomic_dex
         case UUIDRole:
             order.uuid = value.toString().toStdString();
             break;
+        default:
+            return false;
         }
         emit dataChanged(index, index, {role});
         return true;
@@ -137,8 +148,15 @@ namespace atomic_dex
     QHash<int, QByteArray>
     orderbook_model::roleNames() const
     {
-        return {{PriceRole, "price"},    {QuantityRole, "quantity"},      {TotalRole, "total"},           {UUIDRole, "uuid"},
-                {IsMineRole, "is_mine"}, {PriceDenomRole, "price_denom"}, {PriceNumerRole, "price_numer"}};
+        return {
+            {PriceRole, "price"},
+            {QuantityRole, "quantity"},
+            {TotalRole, "total"},
+            {UUIDRole, "uuid"},
+            {IsMineRole, "is_mine"},
+            {PriceDenomRole, "price_denom"},
+            {PriceNumerRole, "price_numer"},
+            {PercentDepthRole, "depth"}};
     }
 
     void

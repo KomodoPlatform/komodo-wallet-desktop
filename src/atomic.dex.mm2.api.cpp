@@ -440,6 +440,18 @@ namespace mm2::api
         sys_time<std::chrono::milliseconds> tp{std::chrono::milliseconds{answer.timestamp}};
         auto                                tp_zoned = date::make_zoned(current_zone(), tp);
         answer.human_timestamp                       = date::format("%Y-%m-%d %I:%M:%S", tp_zoned);
+
+        t_float_50 asks_total_f("0");
+        t_float_50 res_asks = std::accumulate(begin(answer.asks), end(answer.asks), asks_total_f, [](const t_float_50& sum, const order_contents& contents) {
+            return sum + t_float_50(contents.total);
+        });
+        answer.asks_total_volume = adjust_precision(res_asks.str());
+
+        t_float_50 bids_total_f("0");
+        t_float_50 res_bids = std::accumulate(begin(answer.bids), end(answer.bids), bids_total_f, [](const t_float_50& sum, const order_contents& contents) {
+            return sum + t_float_50(contents.total);
+        });
+        answer.bids_total_volume = adjust_precision(res_bids.str());
     }
 
     void
