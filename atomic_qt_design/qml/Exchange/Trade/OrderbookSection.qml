@@ -44,6 +44,8 @@ ColumnLayout {
             anchors.leftMargin: is_asks ? parent.width * 0.32 : undefined
             anchors.rightMargin: is_asks ? undefined : parent.width * 0.32
 
+            horizontalAlignment: price_header.horizontalAlignment
+
             font.pixelSize: price_header.font.pixelSize
 
             text_value: API.get().empty_string + (qsTr("Quantity") + "\n(" + getTicker(true) + ")")
@@ -58,6 +60,8 @@ ColumnLayout {
             anchors.right: is_asks ? undefined : parent.right
             anchors.leftMargin: is_asks ? parent.width * 0.65 : undefined
             anchors.rightMargin: is_asks ? undefined : parent.width * 0.65
+
+            horizontalAlignment: price_header.horizontalAlignment
 
             font.pixelSize: price_header.font.pixelSize
 
