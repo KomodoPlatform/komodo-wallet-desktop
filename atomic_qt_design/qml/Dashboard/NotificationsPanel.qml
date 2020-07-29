@@ -50,7 +50,7 @@ FloatingBackground {
         DefaultText {
             text_value: API.get().empty_string + (qsTr("Notifications"))
             Layout.alignment: Qt.AlignLeft | Qt.AlignTop
-            font.pixelSize: Style.textSize3
+            font.pixelSize: Style.textSize2
         }
 
         HorizontalLine {
@@ -67,6 +67,12 @@ FloatingBackground {
                 //displayMessage("You received 31 BTC", "Click here to hear more lies.")
                 onSwapStatusUpdated("Ongoing", "Finished", "123456")
             }
+        }
+
+        DefaultButton {
+            text: API.get().empty_string + (qsTr("Close"))
+            Layout.alignment: Qt.AlignRight
+            onClicked: root.visible = false
         }
     }
 }
