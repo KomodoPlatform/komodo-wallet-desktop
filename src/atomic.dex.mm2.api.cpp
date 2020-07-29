@@ -409,6 +409,7 @@ namespace mm2::api
         j.at("age").get_to(contents.age);
         j.at("zcredits").get_to(contents.zcredits);
         j.at("uuid").get_to(contents.uuid);
+        j.at("is_mine").get_to(contents.is_mine);
 
         if (contents.price.find('.') != std::string::npos)
         {
