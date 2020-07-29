@@ -121,7 +121,7 @@ ColumnLayout {
 
                 font.pixelSize: Style.textSizeSmall1
 
-                text_value: API.get().empty_string + (General.formatDouble(price))
+                text_value: API.get().empty_string + (price)
                 color: price_header.color
                 anchors.verticalCenter: parent.verticalCenter
             }
