@@ -390,6 +390,7 @@ namespace mm2::api
         std::size_t zcredits;
         std::string total;
         std::string uuid;
+        std::string depth_percent;
         bool        is_mine;
     };
 

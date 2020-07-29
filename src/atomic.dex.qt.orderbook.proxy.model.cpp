@@ -58,6 +58,8 @@ namespace atomic_dex
             break;
         case orderbook_model::PriceNumerRole:
             break;
+        case orderbook_model::PercentDepthRole:
+            break;
         }
         return true;
     }

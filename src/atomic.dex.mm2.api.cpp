@@ -452,6 +452,16 @@ namespace mm2::api
             return sum + t_float_50(contents.total);
         });
         answer.bids_total_volume = adjust_precision(res_bids.str());
+        for (auto&& cur_asks : answer.asks)
+        {
+            t_float_50 percent_f = t_float_50(cur_asks.total) / res_asks;
+            cur_asks.depth_percent = adjust_precision(percent_f.str());
+        }
+        for (auto&& cur_bids : answer.bids)
+        {
+            t_float_50 percent_f = t_float_50(cur_bids.total) / res_bids;
+            cur_bids.depth_percent = adjust_precision(percent_f.str());
+        }
     }
 
     void
