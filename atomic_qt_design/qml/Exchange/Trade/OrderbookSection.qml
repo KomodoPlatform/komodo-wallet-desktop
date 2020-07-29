@@ -22,10 +22,11 @@ ColumnLayout {
             id: price_header
             font.pixelSize: Style.textSizeSmall2
 
-            text_value: API.get().empty_string + (is_asks ? qsTr("Ask Price") + " (" + model.length + ")" :
-                                                            "(" + model.length + ") " + qsTr("Bid Price"))
+            text_value: API.get().empty_string + (is_asks ? qsTr("Ask Price") + "\n(" + qsTr("Sell") + " " + getTicker(true) + ")" :
+                                                            qsTr("Bid Price") + "\n(" + qsTr("Buy") + " " + getTicker(true) + ")")
 
             color: is_asks ? Style.colorRed : Style.colorGreen
+            horizontalAlignment: is_asks ? Text.AlignLeft : Text.AlignRight
 
             anchors.left: is_asks ? parent.left : undefined
             anchors.right: is_asks ? undefined : parent.right
