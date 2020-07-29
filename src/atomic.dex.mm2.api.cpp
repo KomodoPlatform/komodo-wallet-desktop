@@ -443,27 +443,26 @@ namespace mm2::api
         
         t_float_50 result_asks_f("0");
         for (auto&& cur_asks : answer.asks) {
-            result_asks_f = result_asks_f + t_float_50(cur_asks.total);
+            result_asks_f = result_asks_f + t_float_50(cur_asks.maxvolume);
         }
         
         answer.asks_total_volume = result_asks_f.str();
-        spdlog::trace("result is: {}", answer.asks_total_volume);
 
         t_float_50 result_bids_f("0");
         for (auto&& cur_bids : answer.bids) {
-            result_bids_f = result_bids_f + t_float_50(cur_bids.total);
+            result_bids_f = result_bids_f + t_float_50(cur_bids.maxvolume);
         }
         
         answer.bids_total_volume = result_bids_f.str();
         for (auto&& cur_asks : answer.asks)
         {
-            t_float_50 percent_f = t_float_50(cur_asks.total) / result_asks_f;
+            t_float_50 percent_f = t_float_50(cur_asks.maxvolume) / result_asks_f;
             cur_asks.depth_percent = adjust_precision(percent_f.str());
         }
 
         for (auto&& cur_bids : answer.bids)
         {
-            t_float_50 percent_f = t_float_50(cur_bids.total) / result_bids_f;
+            t_float_50 percent_f = t_float_50(cur_bids.maxvolume) / result_bids_f;
             cur_bids.depth_percent = adjust_precision(percent_f.str());
         }
     }
