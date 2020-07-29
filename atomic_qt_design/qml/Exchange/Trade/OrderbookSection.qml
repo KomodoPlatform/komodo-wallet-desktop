@@ -11,6 +11,8 @@ ColumnLayout {
     property bool is_asks: false
     property alias model: list.model
 
+    spacing: 0
+
     // List header
     Item {
         Layout.fillWidth: true
