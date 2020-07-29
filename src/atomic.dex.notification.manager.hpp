@@ -16,7 +16,26 @@
 
 #pragma once
 
+//! QT Include
+#include <QObject>
+
+//! PCH Header
+#include "atomic.dex.pch.hpp"
+
 namespace atomic_dex
 {
+    class notification_manager final : public QObject
+    {
+        Q_OBJECT
+      public:
+        notification_manager(entt::dispatcher& dispatcher, QObject* parent = nullptr) noexcept;
+        ~notification_manager() noexcept final;
 
-}
+        //! Public API
+        void connect_signals() noexcept;
+        void disconnect_signals() noexcept;
+
+      private:
+        entt::dispatcher& m_dispatcher;
+    };
+} // namespace atomic_dex

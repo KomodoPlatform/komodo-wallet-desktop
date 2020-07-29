@@ -18,5 +18,25 @@
 
 namespace atomic_dex
 {
+    notification_manager::notification_manager(entt::dispatcher& dispatcher, QObject* parent) noexcept : QObject(parent), m_dispatcher(dispatcher)
+    {
+        spdlog::trace("{} l{} f[{}]", __FUNCTION__, __LINE__, fs::path(__FILE__).filename().string());
+        spdlog::trace("notification manager created");
+    }
 
-}
+    notification_manager::~notification_manager() noexcept
+    {
+        spdlog::trace("{} l{} f[{}]", __FUNCTION__, __LINE__, fs::path(__FILE__).filename().string());
+        spdlog::trace("notification manager destroyed");
+    }
+
+    void
+    atomic_dex::notification_manager::connect_signals() noexcept
+    {
+    }
+
+    void
+    atomic_dex::notification_manager::disconnect_signals() noexcept
+    {
+    }
+} // namespace atomic_dex

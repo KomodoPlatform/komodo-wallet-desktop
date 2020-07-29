@@ -31,6 +31,7 @@
 //! Project Headers
 #include "atomic.dex.cfg.hpp"
 #include "atomic.dex.mm2.hpp"
+#include "atomic.dex.notification.manager.hpp"
 #include "atomic.dex.provider.coinpaprika.hpp"
 #include "atomic.dex.qt.addressbook.model.hpp"
 #include "atomic.dex.qt.bindings.hpp"
@@ -62,6 +63,7 @@ namespace atomic_dex
         Q_PROPERTY(candlestick_charts_model* candlestick_charts_mdl READ get_candlestick_charts NOTIFY candlestickChartsChanged)
         Q_PROPERTY(QVariant update_status READ get_update_status NOTIFY updateStatusChanged)
         Q_PROPERTY(portfolio_model* portfolio_mdl READ get_portfolio NOTIFY portfolioChanged)
+        Q_PROPERTY(notification_manager* notification_mgr READ get_notification_manager)
         Q_PROPERTY(QString current_currency READ get_current_currency WRITE set_current_currency NOTIFY on_currency_changed)
         Q_PROPERTY(QString current_fiat READ get_current_fiat WRITE set_current_fiat NOTIFY on_fiat_changed)
         Q_PROPERTY(QString lang READ get_current_lang WRITE set_current_lang NOTIFY on_lang_changed)
@@ -125,6 +127,7 @@ namespace atomic_dex
         addressbook_model*         get_addressbook() const noexcept;
         portfolio_model*           get_portfolio() const noexcept;
         orders_model*              get_orders() const noexcept;
+        notification_manager*      get_notification_manager() const noexcept;;
         candlestick_charts_model*  get_candlestick_charts() const noexcept;
         qt_orderbook_wrapper*      get_orderbook_wrapper() const noexcept;
         QVariantList               get_enabled_coins() const noexcept;
@@ -293,6 +296,9 @@ namespace atomic_dex
         //! Orderbook Model Wrapper
         qt_orderbook_wrapper* m_orderbook;
         std::atomic_bool      m_orderbook_need_a_reset{false};
+
+        //! Notification
+        notification_manager* m_notification_manager;
 
         std::atomic_bool m_about_to_exit_app{false};
     };
