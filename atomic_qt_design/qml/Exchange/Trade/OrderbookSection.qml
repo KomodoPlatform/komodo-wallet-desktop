@@ -93,17 +93,19 @@ ColumnLayout {
             width: root.width
             height: 20
 
+            // Hover / My Order line
             Rectangle {
-                visible: mouse_area.containsMouse && !is_mine
+                visible: mouse_area.containsMouse || is_mine
                 width: parent.width
                 height: parent.height
-                color: Style.colorWhite1
-                opacity: 0.2
+                color: is_mine ? Style.colorOrange : Style.colorWhite1
+                opacity: 0.1
 
                 anchors.left: is_asks ? parent.left : undefined
                 anchors.right: is_asks ? undefined : parent.right
             }
 
+            // Depth line
             Rectangle {
                 width: parent.width * depth
                 height: parent.height
