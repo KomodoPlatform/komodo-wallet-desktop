@@ -39,6 +39,7 @@ Item {
         news.reset()
         dapps.reset()
         settings.reset()
+        notifications_panel.reset()
     }
 
     function inCurrentPage() {
@@ -174,10 +175,11 @@ Item {
     }
 
     NotificationsPanel {
+        id: notifications_panel
         width: 300
+        height: 600
         anchors.right: parent.right
         anchors.top: parent.top
-        anchors.bottom: parent.bottom
     }
 }
 

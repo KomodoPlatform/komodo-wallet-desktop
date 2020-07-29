@@ -9,6 +9,10 @@ import "../Components"
 FloatingBackground {
     id: root
 
+    function reset() {
+        visible = false
+    }
+
     visible: false
 
     // Events
