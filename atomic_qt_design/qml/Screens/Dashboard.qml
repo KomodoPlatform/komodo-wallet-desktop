@@ -6,6 +6,7 @@ import QtGraphicalEffects 1.0
 import "../Components"
 import "../Constants"
 
+import "../Dashboard"
 import "../Portfolio"
 import "../Wallet"
 import "../Exchange"
@@ -170,6 +171,13 @@ Item {
                 linkColor: color
             }
         }
+    }
+
+    NotificationsPanel {
+        width: 300
+        anchors.right: parent.right
+        anchors.top: parent.top
+        anchors.bottom: parent.bottom
     }
 }
 
