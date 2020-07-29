@@ -87,17 +87,26 @@ ColumnLayout {
         Layout.fillWidth: true
         Layout.fillHeight: true
 
-        delegate: Rectangle {
-            color: /*mouse_area.containsMouse ? Style.colorTheme4 : */"transparent"
-
+        delegate: Item {
             width: root.width
             height: 20
+
+            Rectangle {
+                visible: mouse_area.containsMouse
+                width: parent.width
+                height: parent.height
+                color: Style.colorWhite1
+                opacity: 0.2
+
+                anchors.left: is_asks ? parent.left : undefined
+                anchors.right: is_asks ? undefined : parent.right
+            }
 
             Rectangle {
                 width: parent.width * depth
                 height: parent.height
                 color: price_value.color
-                opacity: 0.2
+                opacity: 0.1
 
                 anchors.left: is_asks ? parent.left : undefined
                 anchors.right: is_asks ? undefined : parent.right
@@ -121,7 +130,7 @@ ColumnLayout {
 
                 font.pixelSize: Style.textSizeSmall1
 
-                text_value: API.get().empty_string + (price)
+                text_value: API.get().empty_string + (General.formatDouble(price))
                 color: price_header.color
                 anchors.verticalCenter: parent.verticalCenter
             }
