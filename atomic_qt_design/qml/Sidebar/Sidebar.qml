@@ -149,6 +149,15 @@ Item {
             anchors.verticalCenter: parent.verticalCenter
         }
 
+        DefaultButton {
+            anchors.horizontalCenter: parent.horizontalCenter
+            anchors.bottom: sidebar_bottom.top
+            anchors.bottomMargin: 25
+            text: "🔔"
+            minWidth: height
+            onClicked: notifications_panel.visible = !notifications_panel.visible
+        }
+
         SidebarBottom {
             id: sidebar_bottom
             width: parent.width
