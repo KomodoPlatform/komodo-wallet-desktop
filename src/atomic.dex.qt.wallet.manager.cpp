@@ -84,7 +84,7 @@ namespace atomic_dex
             std::ofstream ofs((get_atomic_dex_config_folder() / "default.wallet"s).string().c_str());
             ofs << wallet_name.toStdString();
 
-            set_wallet_default_name(wallet_name);
+            //set_wallet_default_name(wallet_name);
 
             std::ofstream  wallet_object(wallet_object_path.string());
             nlohmann::json wallet_object_json;
