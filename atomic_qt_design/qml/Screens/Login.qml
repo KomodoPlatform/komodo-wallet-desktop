@@ -72,7 +72,6 @@ SetupPage {
                 text: API.get().empty_string + (qsTr("Back"))
                 Layout.fillWidth: true
                 onClicked: {
-                    selected_wallet_name = ""
                     reset()
                     onClickedBack()
                 }
