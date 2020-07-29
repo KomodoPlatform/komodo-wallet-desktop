@@ -21,14 +21,16 @@
 //! Utils
 namespace
 {
-    template <typename TValue, typename TModel>
-    void
-    update_value(int role, const TValue& value, const QModelIndex& idx, TModel& model)
+    template <typename TModel>
+    auto
+    update_value(int role, const QVariant& value, const QModelIndex& idx, TModel& model)
     {
-        if (value != model.data(idx, role))
+        if (auto prev_value = model.data(idx, role); value != prev_value)
         {
             model.setData(idx, value, role);
+            return std::make_tuple(prev_value, value, true);
         }
+        return std::make_tuple(value, value, false);
     }
 
     std::pair<QString, QString>
@@ -55,8 +57,8 @@ namespace
 
 namespace atomic_dex
 {
-    orders_model::orders_model(ag::ecs::system_manager& system_manager, QObject* parent) noexcept :
-        QAbstractListModel(parent), m_system_manager(system_manager), m_model_proxy(new orders_proxy_model(this))
+    orders_model::orders_model(ag::ecs::system_manager& system_manager, entt::dispatcher& dispatcher, QObject* parent) noexcept :
+        QAbstractListModel(parent), m_system_manager(system_manager), m_dispatcher(dispatcher), m_model_proxy(new orders_proxy_model(this))
     {
         spdlog::trace("{} l{} f[{}]", __FUNCTION__, __LINE__, fs::path(__FILE__).filename().string());
         spdlog::trace("orders model created");
@@ -313,7 +315,8 @@ namespace atomic_dex
             data.order_error_state   = error.first;
             data.order_error_message = error.second;
         }
-        if (this->m_swaps_id_registry.find(contents.uuid) == m_swaps_id_registry.end()) {
+        if (this->m_swaps_id_registry.find(contents.uuid) == m_swaps_id_registry.end())
+        {
             this->m_swaps_id_registry.emplace(contents.uuid);
         }
         this->m_model_data.push_back(std::move(data));
@@ -329,7 +332,12 @@ namespace atomic_dex
             const QModelIndex& idx      = res.at(0);
             bool               is_maker = boost::algorithm::to_lower_copy(contents.type) == "maker";
             update_value(OrdersRoles::IsRecoverableRole, contents.funds_recoverable, idx, *this);
-            update_value(OrdersRoles::OrderStatusRole, determine_order_status_from_last_event(contents), idx, *this);
+            auto&& [prev_value, new_value, is_change] =
+                update_value(OrdersRoles::OrderStatusRole, determine_order_status_from_last_event(contents), idx, *this);
+            if (is_change)
+            {
+                this->m_dispatcher.trigger<swap_status_notification>(contents.uuid, prev_value.toString().toStdString(), new_value.toString().toStdString());
+            }
             update_value(
                 OrdersRoles::UnixTimestampRole, not contents.events.empty() ? contents.events.back().at("timestamp").get<unsigned long long>() : 0, idx, *this);
             update_value(
@@ -341,9 +349,13 @@ namespace atomic_dex
             update_value(OrdersRoles::OrderErrorStateRole, state, idx, *this);
             update_value(OrdersRoles::OrderErrorMessageRole, msg, idx, *this);
             emit lengthChanged();
-        } else {
-            bool       is_maker = boost::algorithm::to_lower_copy(contents.type) == "maker";
-            spdlog::error("swap with id {} and ticker: {}, not found in the model, cannot update, forcing an initialization instead", contents.uuid, is_maker ? contents.maker_coin : contents.taker_coin);
+        }
+        else
+        {
+            bool is_maker = boost::algorithm::to_lower_copy(contents.type) == "maker";
+            spdlog::error(
+                "swap with id {} and ticker: {}, not found in the model, cannot update, forcing an initialization instead", contents.uuid,
+                is_maker ? contents.maker_coin : contents.taker_coin);
             initialize_swap(contents);
         }
     }

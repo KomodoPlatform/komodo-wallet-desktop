@@ -421,7 +421,8 @@ namespace atomic_dex
         m_update_status(QJsonObject{
             {"update_needed", false}, {"changelog", ""}, {"current_version", ""}, {"download_url", ""}, {"new_version", ""}, {"rpc_code", 0}, {"status", ""}}),
         m_coin_info(new current_coin_info(dispatcher_, this)), m_addressbook(new addressbook_model(this->m_wallet_manager, this)),
-        m_portfolio(new portfolio_model(this->system_manager_, this->m_config, this)), m_orders(new orders_model(this->system_manager_, this)),
+        m_portfolio(new portfolio_model(this->system_manager_, this->m_config, this)),
+        m_orders(new orders_model(this->system_manager_, this->dispatcher_, this)),
         m_candlestick_chart_ohlc(new candlestick_charts_model(this->system_manager_, this)), m_orderbook(new qt_orderbook_wrapper(this->system_manager_, this)),
         m_notification_manager(new notification_manager(this->dispatcher_, this))
     {

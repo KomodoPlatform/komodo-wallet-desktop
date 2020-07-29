@@ -98,7 +98,7 @@ find_package(doctest CONFIG REQUIRED)
 find_package(folly CONFIG REQUIRED)
 find_package(spdlog CONFIG REQUIRED)
 find_package(Boost REQUIRED COMPONENTS filesystem random)
-find_package(Qt5 COMPONENTS Core Quick LinguistTools Svg Charts REQUIRED)
+find_package(Qt5 COMPONENTS Core Quick LinguistTools Svg Charts Widgets REQUIRED)
 find_package(unofficial-sodium CONFIG REQUIRED)
 find_library(unofficial-bitcoin-external bitcoin)
 find_path(unofficial-btc-headers bitcoin/bitcoin.hpp)
@@ -186,6 +186,7 @@ target_link_libraries(atomic_qt_shared_deps
         Qt5::Quick
         Qt5::Svg
         Qt5::Charts
+        Qt5::Widgets
         qzxing
         antara::world
         Boost::filesystem

@@ -31,12 +31,20 @@ namespace atomic_dex
     }
 
     void
-    atomic_dex::notification_manager::connect_signals() noexcept
+    notification_manager::on_swap_status_notification(const atomic_dex::swap_status_notification& evt)
     {
+        emit updateSwapStatus(QString::fromStdString(evt.prev_status), QString::fromStdString(evt.new_status), QString::fromStdString(evt.uuid));
     }
 
     void
-    atomic_dex::notification_manager::disconnect_signals() noexcept
+    notification_manager::connect_signals() noexcept
     {
+        m_dispatcher.sink<swap_status_notification>().connect<&notification_manager::on_swap_status_notification>(*this);
+    }
+
+    void
+    notification_manager::disconnect_signals() noexcept
+    {
+        m_dispatcher.sink<swap_status_notification>().disconnect<&notification_manager::on_swap_status_notification>(*this);
     }
 } // namespace atomic_dex

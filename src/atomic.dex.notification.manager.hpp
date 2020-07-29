@@ -22,6 +22,9 @@
 //! PCH Header
 #include "atomic.dex.pch.hpp"
 
+//! Project Headers
+#include "atomic.dex.events.hpp"
+
 namespace atomic_dex
 {
     class notification_manager final : public QObject
@@ -34,6 +37,9 @@ namespace atomic_dex
         //! Public API
         void connect_signals() noexcept;
         void disconnect_signals() noexcept;
+
+        //! Callbacks
+        void on_swap_status_notification(const swap_status_notification& evt);
 
       signals:
         void updateSwapStatus(QString old_swap_status, QString new_swap_status, QString swap_uuid);
