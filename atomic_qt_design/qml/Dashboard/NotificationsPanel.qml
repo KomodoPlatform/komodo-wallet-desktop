@@ -29,6 +29,7 @@ FloatingBackground {
 
     // Events
     function onSwapStatusUpdated(old_swap_status, new_swap_status, swap_uuid) {
+        // TODO: Add qsTr texts for statuses
         displayMessage(qsTr("Swap status updated"), old_swap_status + " " + General.right_arrow_icon + " " + new_swap_status)
     }
 
@@ -74,10 +75,7 @@ FloatingBackground {
             text: API.get().empty_string + (qsTr("Pop Notification"))
             Layout.alignment: Qt.AlignTop
             onClicked: {
-                console.log("System tray is " + (tray.available ? "available" : "not available"))
-                console.log("Messages are " + (tray.supportsMessages ? "supported" : "not supported"))
-                //displayMessage("You received 31 BTC", "Click here to hear more lies.")
-                onSwapStatusUpdated("Ongoing", "Finished", "123456")
+                onSwapStatusUpdated("ongoing", "finished", "123456")
             }
         }
 
