@@ -44,14 +44,7 @@ namespace atomic_dex
         this->m_model_proxy->setSourceModel(this);
         this->m_model_proxy->setDynamicSortFilter(true);
         this->m_model_proxy->setSortRole(PriceRole);
-        if (this->m_current_orderbook_kind == kind::asks)
-        {
-            this->m_model_proxy->sort(0, Qt::DescendingOrder);
-        }
-        else
-        {
-            this->m_model_proxy->sort(0, Qt::AscendingOrder);
-        }
+        this->m_model_proxy->sort(0, Qt::DescendingOrder);
     }
 
     orderbook_model::~orderbook_model() noexcept
