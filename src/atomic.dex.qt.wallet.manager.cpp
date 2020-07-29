@@ -81,8 +81,8 @@ namespace atomic_dex
             // sodium_memzero(&seed, seed.size());
             sodium_memzero(key.data(), key.size());
 
-            std::ofstream ofs((get_atomic_dex_config_folder() / "default.wallet"s).string().c_str());
-            ofs << wallet_name.toStdString();
+            //std::ofstream ofs((get_atomic_dex_config_folder() / "default.wallet"s).string().c_str());
+            //ofs << wallet_name.toStdString();
 
             //set_wallet_default_name(wallet_name);
 
