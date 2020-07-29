@@ -17,7 +17,7 @@ SetupPage {
     }
 
     function onClickedLogin(password) {
-        if(API.get().login(password, API.get().wallet_default_name)) {
+        if(API.get().login(password, selected_wallet_name)) {
             console.log("Success: Login")
             postLoginSuccess()
             return true
@@ -52,7 +52,7 @@ SetupPage {
         width: 400
 
         DefaultText {
-            text_value: API.get().empty_string + (qsTr("Login") + ": " + API.get().wallet_default_name)
+            text_value: API.get().empty_string + (qsTr("Login") + ": " + selected_wallet_name)
         }
 
         HorizontalLine {
@@ -72,7 +72,7 @@ SetupPage {
                 text: API.get().empty_string + (qsTr("Back"))
                 Layout.fillWidth: true
                 onClicked: {
-                    API.get().wallet_default_name = ""
+                    selected_wallet_name = ""
                     reset()
                     onClickedBack()
                 }
