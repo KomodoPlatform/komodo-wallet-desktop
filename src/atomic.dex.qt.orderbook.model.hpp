@@ -42,7 +42,10 @@ namespace atomic_dex
             PriceRole,
             QuantityRole,
             TotalRole,
-            UUIDRole
+            UUIDRole,
+            IsMineRole,
+            PriceDenomRole,
+            PriceNumerRole
         };
 
         orderbook_model(kind orderbook_kind, QObject* parent = nullptr);

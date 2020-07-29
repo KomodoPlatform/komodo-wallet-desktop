@@ -390,6 +390,7 @@ namespace mm2::api
         std::size_t zcredits;
         std::string total;
         std::string uuid;
+        bool        is_mine;
     };
 
     void from_json(const nlohmann::json& j, order_contents& contents);

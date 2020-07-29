@@ -52,6 +52,12 @@ namespace atomic_dex
             break;
         case orderbook_model::UUIDRole:
             break;
+        case orderbook_model::IsMineRole:
+            break;
+        case orderbook_model::PriceDenomRole:
+            break;
+        case orderbook_model::PriceNumerRole:
+            break;
         }
         return true;
     }

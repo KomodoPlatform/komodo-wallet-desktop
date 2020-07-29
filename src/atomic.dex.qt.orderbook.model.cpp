@@ -44,7 +44,14 @@ namespace atomic_dex
         this->m_model_proxy->setSourceModel(this);
         this->m_model_proxy->setDynamicSortFilter(true);
         this->m_model_proxy->setSortRole(PriceRole);
-        this->m_model_proxy->sort(0, Qt::DescendingOrder);
+        if (this->m_current_orderbook_kind == kind::asks)
+        {
+            this->m_model_proxy->sort(0, Qt::AscendingOrder);
+        }
+        else
+        {
+            this->m_model_proxy->sort(0, Qt::DescendingOrder);
+        }
     }
 
     orderbook_model::~orderbook_model() noexcept
@@ -71,6 +78,12 @@ namespace atomic_dex
         case PriceRole:
             return m_current_orderbook_kind == kind::asks ? QString::fromStdString(m_model_data.asks.at(index.row()).price)
                                                           : QString::fromStdString(m_model_data.bids.at(index.row()).price);
+        case PriceDenomRole:
+            return m_current_orderbook_kind == kind::asks ? QString::fromStdString(m_model_data.asks.at(index.row()).price_fraction_denom)
+                                                          : QString::fromStdString(m_model_data.bids.at(index.row()).price_fraction_denom);
+        case PriceNumerRole:
+            return m_current_orderbook_kind == kind::asks ? QString::fromStdString(m_model_data.asks.at(index.row()).price_fraction_numer)
+                                                          : QString::fromStdString(m_model_data.bids.at(index.row()).price_fraction_numer);
         case QuantityRole:
             return m_current_orderbook_kind == kind::asks ? QString::fromStdString(m_model_data.asks.at(index.row()).maxvolume)
                                                           : QString::fromStdString(m_model_data.bids.at(index.row()).maxvolume);
@@ -80,6 +93,8 @@ namespace atomic_dex
         case UUIDRole:
             return m_current_orderbook_kind == kind::asks ? QString::fromStdString(m_model_data.asks.at(index.row()).uuid)
                                                           : QString::fromStdString(m_model_data.bids.at(index.row()).uuid);
+        case IsMineRole:
+            return m_current_orderbook_kind == kind::asks ? m_model_data.asks.at(index.row()).is_mine : m_model_data.bids.at(index.row()).is_mine;
         }
     }
 
@@ -95,6 +110,15 @@ namespace atomic_dex
         {
         case PriceRole:
             order.price = value.toString().toStdString();
+            break;
+        case PriceDenomRole:
+            order.price_fraction_denom = value.toString().toStdString();
+            break;
+        case PriceNumerRole:
+            order.price_fraction_denom = value.toString().toStdString();
+            break;
+        case IsMineRole:
+            order.is_mine = value.toBool();
             break;
         case QuantityRole:
             order.maxvolume = value.toString().toStdString();
@@ -113,7 +137,8 @@ namespace atomic_dex
     QHash<int, QByteArray>
     orderbook_model::roleNames() const
     {
-        return {{PriceRole, "price"}, {QuantityRole, "quantity"}, {TotalRole, "total"}, {UUIDRole, "uuid"}};
+        return {{PriceRole, "price"},    {QuantityRole, "quantity"},      {TotalRole, "total"},           {UUIDRole, "uuid"},
+                {IsMineRole, "is_mine"}, {PriceDenomRole, "price_denom"}, {PriceNumerRole, "price_numer"}};
     }
 
     void
@@ -122,7 +147,6 @@ namespace atomic_dex
         this->beginResetModel();
         m_model_data                                        = orderbook;
         std::vector<::mm2::api::order_contents>& model_data = this->m_current_orderbook_kind == kind::asks ? this->m_model_data.asks : this->m_model_data.bids;
-        spdlog::trace("reset with orderbook of size: {}", model_data.size());
         m_orders_id_registry.clear();
         for (auto&& order: model_data)
         {
@@ -164,6 +188,9 @@ namespace atomic_dex
             //! ID Found, update !
             const QModelIndex& idx = res.at(0);
             update_value(OrderbookRoles::PriceRole, QString::fromStdString(order.price), idx, *this);
+            update_value(OrderbookRoles::PriceNumerRole, QString::fromStdString(order.price_fraction_numer), idx, *this);
+            update_value(OrderbookRoles::PriceDenomRole, QString::fromStdString(order.price_fraction_denom), idx, *this);
+            update_value(OrderbookRoles::IsMineRole, order.is_mine, idx, *this);
             update_value(OrderbookRoles::QuantityRole, QString::fromStdString(order.maxvolume), idx, *this);
             update_value(OrderbookRoles::TotalRole, QString::fromStdString(order.total), idx, *this);
         }
@@ -178,13 +205,11 @@ namespace atomic_dex
                 if (this->m_orders_id_registry.find(current_order.uuid) != this->m_orders_id_registry.end())
                 {
                     //! Update
-                    spdlog::trace("updating order id: {}", current_order.uuid);
                     this->update_order(current_order);
                 }
                 else
                 {
                     //! Insertion
-                    spdlog::trace("id {} not present in the registry, inserting", current_order.uuid);
                     this->initialize_order(current_order);
                 }
             }
@@ -200,7 +225,6 @@ namespace atomic_dex
                     auto res_list = this->match(index(0, 0), UUIDRole, QString::fromStdString(id));
                     if (not res_list.empty())
                     {
-                        spdlog::trace("removing order from orderbook id: {}", id);
                         this->removeRow(res_list.at(0).row());
                         to_remove.emplace(id);
                     }
