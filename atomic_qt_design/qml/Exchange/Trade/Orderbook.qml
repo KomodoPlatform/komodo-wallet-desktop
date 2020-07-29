@@ -14,7 +14,7 @@ InnerBackground {
             anchors.top: parent.top
             anchors.bottom: parent.bottom
             anchors.right: separator.left
-            model: API.get().orderbook.bids
+            model: API.get().orderbook.bids.proxy_mdl
         }
 
         VerticalLine {
@@ -31,7 +31,7 @@ InnerBackground {
             anchors.left: separator.right
 
             is_asks: true
-            model: API.get().orderbook.asks
+            model: API.get().orderbook.asks.proxy_mdl
         }
     }
 }

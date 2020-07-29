@@ -16,9 +16,12 @@
 
 #pragma once
 
+//! QT
 #include <QAbstractListModel>
 
+//! Project
 #include "atomic.dex.mm2.api.hpp"
+#include "atomic.dex.qt.orderbook.proxy.model.hpp"
 
 namespace atomic_dex
 {
@@ -26,6 +29,7 @@ namespace atomic_dex
     {
         Q_OBJECT
         Q_PROPERTY(int length READ get_length NOTIFY lengthChanged)
+        Q_PROPERTY(orderbook_proxy_model* proxy_mdl READ get_orderbook_proxy NOTIFY proxyMdlChanged)
       public:
         enum class kind
         {
@@ -50,12 +54,14 @@ namespace atomic_dex
         bool                                 setData(const QModelIndex& index, const QVariant& value, int role) final;
         bool                                 removeRows(int row, int count, const QModelIndex& parent) override;
 
-        void              reset_orderbook(const t_orderbook_answer& orderbook) noexcept;
-        void              refresh_orderbook(const t_orderbook_answer& orderbook) noexcept;
-        void              clear_orderbook() noexcept;;
-        [[nodiscard]] int get_length() const noexcept;
+        void                                 reset_orderbook(const t_orderbook_answer& orderbook) noexcept;
+        void                                 refresh_orderbook(const t_orderbook_answer& orderbook) noexcept;
+        void                                 clear_orderbook() noexcept;
+        [[nodiscard]] int                    get_length() const noexcept;
+        [[nodiscard]] orderbook_proxy_model* get_orderbook_proxy() const noexcept;
       signals:
         void lengthChanged();
+        void proxyMdlChanged();
 
       private:
         void initialize_order(const ::mm2::api::order_contents& order) noexcept;
@@ -65,6 +71,7 @@ namespace atomic_dex
         kind                            m_current_orderbook_kind{kind::asks};
         t_orderbook_answer              m_model_data;
         std::unordered_set<std::string> m_orders_id_registry;
+        orderbook_proxy_model*          m_model_proxy;
     };
 
 } // namespace atomic_dex

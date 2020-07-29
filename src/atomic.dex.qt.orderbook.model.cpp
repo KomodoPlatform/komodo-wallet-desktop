@@ -35,10 +35,23 @@ namespace
 
 namespace atomic_dex
 {
-    orderbook_model::orderbook_model(kind orderbook_kind, QObject* parent) : QAbstractListModel(parent), m_current_orderbook_kind(orderbook_kind)
+    orderbook_model::orderbook_model(kind orderbook_kind, QObject* parent) :
+        QAbstractListModel(parent), m_current_orderbook_kind(orderbook_kind), m_model_proxy(new orderbook_proxy_model(this))
     {
         spdlog::trace("{} l{} f[{}]", __FUNCTION__, __LINE__, fs::path(__FILE__).filename().string());
         spdlog::trace("orderbook model created");
+
+        this->m_model_proxy->setSourceModel(this);
+        this->m_model_proxy->setDynamicSortFilter(true);
+        this->m_model_proxy->setSortRole(PriceRole);
+        if (this->m_current_orderbook_kind == kind::asks)
+        {
+            this->m_model_proxy->sort(0, Qt::DescendingOrder);
+        }
+        else
+        {
+            this->m_model_proxy->sort(0, Qt::AscendingOrder);
+        }
     }
 
     orderbook_model::~orderbook_model() noexcept
@@ -183,6 +196,7 @@ namespace atomic_dex
                 }
             }
 
+            // Deletion
             std::unordered_set<std::string> to_remove;
             for (auto&& id: this->m_orders_id_registry)
             {
@@ -235,5 +249,11 @@ namespace atomic_dex
         m_orders_id_registry.clear();
         this->endResetModel();
         emit lengthChanged();
+    }
+
+    orderbook_proxy_model*
+    orderbook_model::get_orderbook_proxy() const noexcept
+    {
+        return m_model_proxy;
     }
 } // namespace atomic_dex
