@@ -36,6 +36,12 @@ FloatingBackground {
         }
 
         tooltip: qsTr("AtomicDEX Pro")
+
+        onActivated: {
+            window.show()
+            window.raise()
+            window.requestActivate()
+        }
     }
 
     ColumnLayout {
