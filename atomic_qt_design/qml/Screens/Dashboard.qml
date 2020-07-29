@@ -178,10 +178,10 @@ Item {
         id: notifications_panel
         width: 300
         height: 600
-        anchors.right: parent.right
-        anchors.top: parent.top
-        anchors.rightMargin: 40
-        anchors.topMargin: anchors.rightMargin
+        anchors.left: sidebar.right
+        anchors.bottom: parent.bottom
+        anchors.leftMargin: 20
+        anchors.bottomMargin: anchors.leftMargin
     }
 }
 
