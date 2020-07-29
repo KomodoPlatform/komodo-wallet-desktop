@@ -9,11 +9,31 @@ import "../Components"
 FloatingBackground {
     id: root
 
+    visible: false
+
+    // Events
+    function onSwapStatusUpdated(old_swap_status, new_swap_status, swap_uuid) {
+        displayMessage(qsTr("Swap status updated"), old_swap_status + " " + General.right_arrow_icon + " " + new_swap_status)
+    }
+
+
+    // System
+    Component.onCompleted: {
+        API.get().notification_mgr.updateSwapStatus.connect(onSwapStatusUpdated)
+    }
+
+    function displayMessage(title, message) {
+        tray.showMessage(title, message)
+    }
+
     SystemTrayIcon {
         id: tray
         visible: true
         iconSource: General.coinIcon("KMD")
-        onMessageClicked: console.log("Message clicked")
+        onMessageClicked: {
+            console.log("Message clicked")
+            root.visible = true
+        }
 
         tooltip: qsTr("AtomicDEX Pro")
     }
@@ -38,7 +58,8 @@ FloatingBackground {
             onClicked: {
                 console.log("System tray is " + (tray.available ? "available" : "not available"))
                 console.log("Messages are " + (tray.supportsMessages ? "supported" : "not supported"))
-                tray.showMessage("You received 31 BTC", "Click here to hear more lies.", 1)
+                //displayMessage("You received 31 BTC", "Click here to hear more lies.")
+                onSwapStatusUpdated("Ongoing", "Finished", "123456")
             }
         }
     }
