@@ -1387,8 +1387,14 @@ namespace atomic_dex
     bool
     application::login(const QString& password, const QString& wallet_name)
     {
-        bool res = m_wallet_manager.login(password, wallet_name, get_mm2(), [this]() { this->set_status("initializing_mm2"); });
-        this->m_addressbook->initializeFromCfg();
+        bool res = m_wallet_manager.login(password, wallet_name, get_mm2(), [this, &wallet_name]() {
+            this->set_wallet_default_name(wallet_name);
+            this->set_status("initializing_mm2");
+        });
+        if (res)
+        {
+            this->m_addressbook->initializeFromCfg();
+        }
         return res;
     }
 

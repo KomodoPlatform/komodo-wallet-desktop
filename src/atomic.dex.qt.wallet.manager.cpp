@@ -313,4 +313,10 @@ namespace atomic_dex
     {
         return m_wallet_cfg;
     }
+
+    void
+    qt_wallet_manager::just_set_wallet_name(QString wallet_name)
+    {
+        this->m_current_default_wallet = wallet_name;
+    }
 } // namespace atomic_dex
