@@ -81,10 +81,10 @@ namespace atomic_dex
             // sodium_memzero(&seed, seed.size());
             sodium_memzero(key.data(), key.size());
 
-            std::ofstream ofs((get_atomic_dex_config_folder() / "default.wallet"s).string().c_str());
-            ofs << wallet_name.toStdString();
+            //std::ofstream ofs((get_atomic_dex_config_folder() / "default.wallet"s).string().c_str());
+            //ofs << wallet_name.toStdString();
 
-            set_wallet_default_name(wallet_name);
+            //set_wallet_default_name(wallet_name);
 
             std::ofstream  wallet_object(wallet_object_path.string());
             nlohmann::json wallet_object_json;
@@ -312,5 +312,11 @@ namespace atomic_dex
     qt_wallet_manager::get_wallet_cfg() noexcept
     {
         return m_wallet_cfg;
+    }
+
+    void
+    qt_wallet_manager::just_set_wallet_name(QString wallet_name)
+    {
+        this->m_current_default_wallet = wallet_name;
     }
 } // namespace atomic_dex
