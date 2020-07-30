@@ -106,6 +106,7 @@ FloatingBackground {
         if(!my_side) return valid
 
         // Sell side
+        if(valid) valid = !notEnoughBalance()
         if(valid) valid = API.get().do_i_have_enough_funds(getTicker(), input_volume.field.text)
         if(valid && hasEthFees()) valid = hasEnoughEthForFees()
 
@@ -164,8 +165,12 @@ FloatingBackground {
         return false
     }
 
+    function notEnoughBalance() {
+        return my_side && parseFloat(getMaxVolume()) < General.getMinTradeAmount()
+    }
+
     function shouldBlockInput() {
-        return my_side && (parseFloat(getMaxVolume()) < General.getMinTradeAmount() || notEnoughBalanceForFees())
+        return my_side && (notEnoughBalance() || notEnoughBalanceForFees())
     }
 
     function onBaseChanged() {

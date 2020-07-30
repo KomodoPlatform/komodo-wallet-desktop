@@ -134,6 +134,10 @@ Item {
         return valid_trade_info && curr_trade_info.not_enough_balance_to_pay_the_fees
     }
 
+    function notEnoughBalance() {
+        return form_base.notEnoughBalance()
+    }
+
 
     function getTradeInfo(base, rel, amount, set_as_current=true) {
         if(inCurrentPage()) {
@@ -417,7 +421,9 @@ Item {
                     font.pixelSize: Style.textSizeSmall4
                     color: Style.colorRed
 
-                    text_value: API.get().empty_string + (notEnoughBalanceForFees() ?
+                    text_value: API.get().empty_string + (
+                                                        notEnoughBalance() ? (qsTr("%1 balance is lower than minimum trade amount").arg(form_base.getTicker()) + " : " + General.getMinTradeAmount()) :
+                                                        notEnoughBalanceForFees() ?
                                                         (qsTr("Not enough balance for the fees. Need at least %1 more", "AMT TICKER").arg(General.formatCrypto("", parseFloat(curr_trade_info.amount_needed), form_base.getTicker()))) :
                                                         (form_base.hasEthFees() && !form_base.hasEnoughEthForFees()) ? (qsTr("Not enough ETH for the transaction fee")) :
                                                         (form_base.fieldsAreFilled() && !form_base.higherThanMinTradeAmount()) ? (qsTr("Sell amount is lower than minimum trade amount") + " : " + General.getMinTradeAmount()) :
