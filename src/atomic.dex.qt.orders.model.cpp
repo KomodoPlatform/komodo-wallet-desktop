@@ -315,6 +315,11 @@ namespace atomic_dex
             data.order_error_state   = error.first;
             data.order_error_message = error.second;
         }
+        if (data.order_status == "matched")
+        {
+            using namespace std::string_literals;
+            this->m_dispatcher.trigger<swap_status_notification>(data.order_id.toStdString(), "matching"s, "matched"s);
+        }
         if (this->m_swaps_id_registry.find(contents.uuid) == m_swaps_id_registry.end())
         {
             this->m_swaps_id_registry.emplace(contents.uuid);
