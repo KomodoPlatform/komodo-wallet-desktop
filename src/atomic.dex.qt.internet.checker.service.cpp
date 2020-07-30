@@ -68,9 +68,9 @@ namespace atomic_dex
         spawn([this]() {
             is_google_reacheable      = am_i_able_to_reach_this_endpoint("https://www.google.com");
             is_paprika_provider_alive = am_i_able_to_reach_this_endpoint("https://api.coinpaprika.com/v1/coins/btc-bitcoin");
-            bool res                  = is_google_reacheable || is_paprika_provider_alive || is_cipig_electrum_alive || is_our_private_endpoint_reacheable;
+            bool res                  = is_google_reacheable || is_paprika_provider_alive;
             this->set_internet_alive(res);
-          spdlog::info("fetching internet status finished");
+            spdlog::info("fetching internet status finished, internet status is: {}", res);
         });
     }
 } // namespace atomic_dex
