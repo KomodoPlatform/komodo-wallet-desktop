@@ -164,8 +164,8 @@ Item {
 
     // Orderbook
     function fillTickersIfEmpty() {
-        form_base.fillIfEmpty()
-        form_rel.fillIfEmpty()
+        selector_base.fillIfEmpty()
+        selector_rel.fillIfEmpty()
     }
 
     function updateTradeInfo(force=false) {
@@ -197,14 +197,14 @@ Item {
 
     function updateForms(my_side, new_ticker) {
         if(my_side === undefined) {
-            form_base.update()
-            form_rel.update()
+            selector_base.update()
+            selector_rel.update()
         }
         else if(my_side) {
-            form_rel.update(new_ticker)
+            selector_rel.update(new_ticker)
         }
         else {
-            form_base.update(new_ticker)
+            selector_base.update(new_ticker)
         }
     }
 
@@ -243,12 +243,12 @@ Item {
     }
 
     function getTicker(is_base) {
-        return is_base ? form_base.getTicker() : form_rel.getTicker()
+        return is_base ? selector_base.getTicker() : selector_rel.getTicker()
     }
 
     function setTicker(is_base, ticker) {
-        if(is_base) form_base.setTicker(ticker)
-        else form_rel.setTicker(ticker)
+        if(is_base) selector_base.setTicker(ticker)
+        else selector_rel.setTicker(ticker)
     }
 
     function validBaseRel() {
@@ -261,7 +261,7 @@ Item {
         if(getTicker(true) === getTicker(false)) {
             // Base got selected, same as rel
             // Change rel ticker
-            form_rel.setAnyTicker()
+            selector_rel.setAnyTicker()
         }
 
         if(validBaseRel()) {
@@ -317,7 +317,7 @@ Item {
     // No coins warning
     ColumnLayout {
         anchors.centerIn: parent
-        visible: form_base.ticker_list.length === 0
+        visible: selector_base.ticker_list.length === 0
 
         DefaultImage {
             Layout.alignment: Qt.AlignHCenter
@@ -343,7 +343,7 @@ Item {
 
         spacing: layout_margin
 
-        visible: form_base.ticker_list.length > 0
+        visible: selector_base.ticker_list.length > 0
 
         anchors.fill: parent
 
@@ -365,11 +365,39 @@ Item {
                     anchors.left: parent.left
                     anchors.right: parent.right
                     anchors.top: parent.top
-                    anchors.bottom: orderbook.top
+                    anchors.bottom: selectors.top
                     anchors.bottomMargin: layout_margin * 2
 
                     CandleStickChart {
                         anchors.fill: parent
+                    }
+                }
+
+                // Ticker Selectors
+                RowLayout {
+                    id: selectors
+                    anchors.horizontalCenter: parent.horizontalCenter
+                    anchors.bottom: orderbook.top
+                    anchors.bottomMargin: 10
+                    spacing: 40
+
+                    TickerSelector {
+                        id: selector_base
+                        my_side: true
+                        Layout.alignment: Qt.AlignLeft | Qt.AlignVCenter
+                    }
+
+                    DefaultImage {
+                        source: General.image_path + "trade_icon.svg"
+                        fillMode: Image.PreserveAspectFit
+                        Layout.preferredWidth: 16
+                        Layout.preferredHeight: Layout.preferredWidth
+                        Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
+                    }
+
+                    TickerSelector {
+                        id: selector_rel
+                        Layout.alignment: Qt.AlignRight | Qt.AlignVCenter
                     }
                 }
 
@@ -422,9 +450,9 @@ Item {
                     color: Style.colorRed
 
                     text_value: API.get().empty_string + (
-                                                        notEnoughBalance() ? (qsTr("%1 balance is lower than minimum trade amount").arg(form_base.getTicker()) + " : " + General.getMinTradeAmount()) :
+                                                        notEnoughBalance() ? (qsTr("%1 balance is lower than minimum trade amount").arg(selector_base.getTicker()) + " : " + General.getMinTradeAmount()) :
                                                         notEnoughBalanceForFees() ?
-                                                        (qsTr("Not enough balance for the fees. Need at least %1 more", "AMT TICKER").arg(General.formatCrypto("", parseFloat(curr_trade_info.amount_needed), form_base.getTicker()))) :
+                                                        (qsTr("Not enough balance for the fees. Need at least %1 more", "AMT TICKER").arg(General.formatCrypto("", parseFloat(curr_trade_info.amount_needed), selector_base.getTicker()))) :
                                                         (form_base.hasEthFees() && !form_base.hasEnoughEthForFees()) ? (qsTr("Not enough ETH for the transaction fee")) :
                                                         (form_base.fieldsAreFilled() && !form_base.higherThanMinTradeAmount()) ? (qsTr("Sell amount is lower than minimum trade amount") + " : " + General.getMinTradeAmount()) :
                                                         (form_rel.fieldsAreFilled() && !form_rel.higherThanMinTradeAmount()) ? (qsTr("Receive amount is lower than minimum trade amount") + " : " + General.getMinTradeAmount()) : ""

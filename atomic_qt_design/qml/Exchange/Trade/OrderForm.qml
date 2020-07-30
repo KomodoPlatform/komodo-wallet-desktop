@@ -14,47 +14,8 @@ FloatingBackground {
     property bool enabled: true
     property alias column_layout: form_layout
 
-    property bool recursive_update: false
-
     function getFiatText(v, ticker) {
         return General.formatFiat('', v === '' ? 0 : API.get().get_fiat_from_amount(ticker, v), API.get().current_fiat) + " " +  General.cex_icon
-    }
-
-    function update(new_ticker) {
-        updateTickerList(new_ticker)
-    }
-
-    function inCurrentPage() {
-        return exchange_trade.inCurrentPage()
-    }
-
-    property var ticker_list: ([])
-
-    function updateTickerList(new_ticker) {
-        recursive_update = new_ticker !== undefined
-
-        ticker_list = my_side ? General.getTickersAndBalances(getFilteredCoins()) : General.getTickers(getFilteredCoins())
-
-        update_timer.running = true
-    }
-
-    Timer {
-        id: update_timer
-        running: inCurrentPage()
-        repeat: true
-        interval: 1000
-        onTriggered: {
-            if(inCurrentPage()) updateTickerList()
-        }
-    }
-
-
-    function setAnyTicker() {
-        setTicker(getAnyAvailableCoin())
-    }
-
-    function fillIfEmpty() {
-        if(getTicker() === '') setAnyTicker()
     }
 
     function canShowFees() {
@@ -63,21 +24,6 @@ FloatingBackground {
 
     function getVolume() {
         return input_volume.field.text === '' ? '0' :  input_volume.field.text
-    }
-
-    function getFilteredCoins() {
-        return getCoins(my_side)
-    }
-
-    function getAnyAvailableCoin(filter_ticker) {
-        let coins = getFilteredCoins().map(c => c.ticker)
-
-        // Filter out ticker
-        if(filter_ticker !== undefined || filter_ticker !== '')
-            coins = coins.filter(c => c !== filter_ticker)
-
-        // Pick a random one if prioritized ones do not satisfy
-        return coins.length > 0 ? coins[0] : ''
     }
 
     function fieldsAreFilled() {
@@ -107,25 +53,14 @@ FloatingBackground {
 
         // Sell side
         if(valid) valid = !notEnoughBalance()
-        if(valid) valid = API.get().do_i_have_enough_funds(getTicker(), input_volume.field.text)
+        if(valid) valid = API.get().do_i_have_enough_funds(getTicker(my_side), input_volume.field.text)
         if(valid && hasEthFees()) valid = hasEnoughEthForFees()
 
         return valid
     }
 
-    function getTicker() {
-        return ticker_list.length > 0 ? ticker_list[combo.currentIndex].value : ""
-    }
-
-    function setTicker(ticker) {
-        combo.currentIndex = getFilteredCoins().map(c => c.ticker).indexOf(ticker)
-
-        // If it doesn't exist, pick an existing one
-        if(combo.currentIndex === -1) setAnyTicker()
-    }
-
     function getMaxVolume() {
-        return API.get().get_balance(getTicker())
+        return API.get().get_balance(getTicker(my_side))
     }
 
     function getMaxTradableVolume(set_as_current) {
@@ -220,30 +155,9 @@ FloatingBackground {
                 }
 
                 DefaultImage {
-                    Layout.leftMargin: combo.Layout.rightMargin * 3
-                    source: General.coinIcon(getTicker())
+                    source: General.coinIcon(getTicker(my_side))
                     Layout.preferredWidth: 32
                     Layout.preferredHeight: Layout.preferredWidth
-                }
-
-                DefaultComboBox {
-                    id: combo
-
-                    enabled: root.enabled
-
-                    Layout.fillWidth: true
-
-                    model: ticker_list
-
-
-                    textRole: "text"
-
-                    onCurrentTextChanged: {
-                        if(!recursive_update) {
-                            updateForms(my_side, combo.currentText)
-                            setPair(my_side)
-                        }
-                    }
                 }
             }
 
@@ -303,7 +217,7 @@ FloatingBackground {
                         anchors.top: input_volume.bottom
                         anchors.topMargin: 5
 
-                        text_value: getFiatText(input_volume.field.text, getTicker())
+                        text_value: getFiatText(input_volume.field.text, getTicker(my_side))
                         font.pixelSize: input_volume.field.font.pixelSize
 
                         CexInfoTrigger {}
@@ -314,7 +228,7 @@ FloatingBackground {
                         anchors.rightMargin: 10
                         anchors.verticalCenter: input_volume.verticalCenter
 
-                        text_value: getTicker()
+                        text_value: getTicker(my_side)
                         font.pixelSize: input_volume.field.font.pixelSize
                     }
                 }
