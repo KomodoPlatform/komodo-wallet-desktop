@@ -916,6 +916,14 @@ namespace atomic_dex
         spdlog::debug("{} l{} f[{}]", __FUNCTION__, __LINE__, fs::path(__FILE__).filename().string());
         QVariantMap out;
 
+        if (t_float_50(amount.toStdString()) < t_float_50("0.00777"))
+        {
+            out.insert("not_enough_balance_to_pay_the_fees", true);
+            out.insert("trade_fee", "0");
+            out.insert("input_final_value", "0");
+            out.insert("tx_fee", "0");
+            return out;
+        }
         t_float_50 trade_fee_f = get_mm2().get_trade_fee(ticker.toStdString(), amount.toStdString(), false);
         auto       answer      = get_mm2().get_trade_fixed_fee(ticker.toStdString());
 
