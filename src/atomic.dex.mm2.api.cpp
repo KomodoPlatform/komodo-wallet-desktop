@@ -440,29 +440,25 @@ namespace mm2::api
         sys_time<std::chrono::milliseconds> tp{std::chrono::milliseconds{answer.timestamp}};
         auto                                tp_zoned = date::make_zoned(current_zone(), tp);
         answer.human_timestamp                       = date::format("%Y-%m-%d %I:%M:%S", tp_zoned);
-        
+
         t_float_50 result_asks_f("0");
-        for (auto&& cur_asks : answer.asks) {
-            result_asks_f = result_asks_f + t_float_50(cur_asks.maxvolume);
-        }
-        
+        for (auto&& cur_asks: answer.asks) { result_asks_f = result_asks_f + t_float_50(cur_asks.maxvolume); }
+
         answer.asks_total_volume = result_asks_f.str();
 
         t_float_50 result_bids_f("0");
-        for (auto&& cur_bids : answer.bids) {
-            result_bids_f = result_bids_f + t_float_50(cur_bids.maxvolume);
-        }
-        
+        for (auto&& cur_bids: answer.bids) { result_bids_f = result_bids_f + t_float_50(cur_bids.maxvolume); }
+
         answer.bids_total_volume = result_bids_f.str();
-        for (auto&& cur_asks : answer.asks)
+        for (auto&& cur_asks: answer.asks)
         {
-            t_float_50 percent_f = t_float_50(cur_asks.maxvolume) / result_asks_f;
+            t_float_50 percent_f   = t_float_50(cur_asks.maxvolume) / result_asks_f;
             cur_asks.depth_percent = adjust_precision(percent_f.str());
         }
 
-        for (auto&& cur_bids : answer.bids)
+        for (auto&& cur_bids: answer.bids)
         {
-            t_float_50 percent_f = t_float_50(cur_bids.maxvolume) / result_bids_f;
+            t_float_50 percent_f   = t_float_50(cur_bids.maxvolume) / result_bids_f;
             cur_bids.depth_percent = adjust_precision(percent_f.str());
         }
     }
@@ -483,15 +479,6 @@ namespace mm2::api
         j["volume"]          = request.volume;
         j["cancel_previous"] = request.cancel_previous;
         j["max"]             = request.max;
-    }
-
-    void
-    to_json(nlohmann::json& j, buy_request& request)
-    {
-        j["base"]   = request.base;
-        j["price"]  = request.price;
-        j["rel"]    = request.rel;
-        j["volume"] = request.volume;
     }
 
     void
@@ -528,10 +515,35 @@ namespace mm2::api
     }
 
     void
-    to_json(nlohmann::json& j, const sell_request& request)
+    to_json(nlohmann::json& j, buy_request& request)
     {
         spdlog::debug("price: {}, volume: {}", request.price, request.volume);
 
+        j["base"]   = request.base;
+        j["price"]  = request.price;
+        j["rel"]    = request.rel;
+        j["volume"] = request.volume;
+
+        if (not request.is_created_order)
+        {
+            spdlog::info(
+                "The order is picked from the orderbook, setting price_numer and price_denom from it {}, {}", request.price_numer, request.price_denom);
+            //! From orderbook
+            nlohmann::json price_fraction_repr = nlohmann::json::object();
+            price_fraction_repr["numer"]       = request.price_numer;
+            price_fraction_repr["denom"]       = request.price_denom;
+            j["price"]                         = price_fraction_repr;
+        }
+        else
+        {
+            spdlog::info("The order is not picked from orderbook we create it volume = {}, price = {}", request.volume, request.price);
+        }
+    }
+
+    void
+    to_json(nlohmann::json& j, const sell_request& request)
+    {
+        spdlog::debug("price: {}, volume: {}", request.price, request.volume);
 
         j["base"]   = request.base;
         j["rel"]    = request.rel;

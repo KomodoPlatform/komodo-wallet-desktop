@@ -653,8 +653,10 @@ namespace atomic_dex
         }
     }
 
-    bool
-    application::place_buy_order(const QString& base, const QString& rel, const QString& price, const QString& volume)
+    QString
+    application::place_buy_order(
+        const QString& base, const QString& rel, const QString& price, const QString& volume, bool is_created_order, const QString& price_denom,
+        const QString& price_numer)
     {
         t_float_50 price_f;
         t_float_50 amount_f;
@@ -664,11 +666,22 @@ namespace atomic_dex
         amount_f.assign(volume.toStdString());
         total_amount = price_f * amount_f;
 
-        t_buy_request   req{.base = base.toStdString(), .rel = rel.toStdString(), .price = price.toStdString(), .volume = volume.toStdString()};
+        t_buy_request req{
+            .base             = base.toStdString(),
+            .rel              = rel.toStdString(),
+            .price            = price.toStdString(),
+            .volume           = volume.toStdString(),
+            .is_created_order = is_created_order,
+            .price_denom      = price_denom.toStdString(),
+            .price_numer      = price_numer.toStdString()};
         std::error_code ec;
         auto            answer = get_mm2().place_buy_order(std::move(req), total_amount, ec);
 
-        return !answer.error.has_value();
+        if (answer.error.has_value())
+        {
+            return QString::fromStdString(answer.error.value());
+        }
+        return "";
     }
 
     QString
