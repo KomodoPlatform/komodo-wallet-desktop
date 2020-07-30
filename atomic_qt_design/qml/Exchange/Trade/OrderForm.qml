@@ -165,7 +165,7 @@ FloatingBackground {
     }
 
     function shouldBlockInput() {
-        return my_side && notEnoughBalanceForFees()
+        return my_side && (parseFloat(getMaxVolume()) < General.getMinTradeAmount() || notEnoughBalanceForFees())
     }
 
     function onBaseChanged() {

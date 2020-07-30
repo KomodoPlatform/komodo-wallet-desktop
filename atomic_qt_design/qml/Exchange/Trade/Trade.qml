@@ -229,7 +229,7 @@ Item {
             return coins.filter(c => {
                 c.balance = API.get().get_balance(c.ticker)
 
-                return c.balance !== '' && parseFloat(c.balance) >= General.getMinTradeAmount()
+                return true
             })
         }
         // Filter for Receive
@@ -403,6 +403,8 @@ Item {
                     anchors.right: parent.right
                     anchors.top: form_base.bottom
                     anchors.topMargin: layout_margin
+
+                    field.enabled: form_base.field.enabled
                 }
 
                 // Show errors
