@@ -291,8 +291,6 @@ QtObject {
 
         find_closest_ohlc_data: () => { return {"close":0.0000654,"high":0.0000655,"low":0.0000654,"open":0.0000655,"quote_volume":0.006986865,"timestamp":1593740820,"volume":106.83} },
 
-        get_ohlc_data: (range) => [{"close":0.0000654,"high":0.0000655,"low":0.0000654,"open":0.0000655,"quote_volume":0.006986865,"timestamp":1593740820,"volume":106.83},{"close":0.0000653,"high":0.0000653,"low":0.0000653,"open":0.0000653,"quote_volume":0.0068565,"timestamp":1593740880,"volume":105},{"close":0.0000653,"high":0.0000653,"low":0.0000653,"open":0.0000653,"quote_volume":0.007420692,"timestamp":1593741000,"volume":113.64}],
-
         get_wallets: () => { return ["naezith", "slyris", "ca333", "tony"] },
 
         get_trade_infos: (ticker, receive_ticker, amount) => {
