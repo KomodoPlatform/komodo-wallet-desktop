@@ -44,6 +44,7 @@ namespace atomic_dex
     internet_service_checker::internet_service_checker(entt::registry& registry, QObject* parent) : QObject(parent), system(registry)
     {
         m_update_clock = std::chrono::high_resolution_clock::now();
+        this->fetch_internet_connection();
     }
 
     void
@@ -63,12 +64,13 @@ namespace atomic_dex
     void
     internet_service_checker::fetch_internet_connection()
     {
-        spdlog::info("fetching internet status");
+        spdlog::info("fetching internet status begin");
         spawn([this]() {
             is_google_reacheable      = am_i_able_to_reach_this_endpoint("https://www.google.com");
             is_paprika_provider_alive = am_i_able_to_reach_this_endpoint("https://api.coinpaprika.com/v1/coins/btc-bitcoin");
             bool res                  = is_google_reacheable || is_paprika_provider_alive || is_cipig_electrum_alive || is_our_private_endpoint_reacheable;
             this->set_internet_alive(res);
+          spdlog::info("fetching internet status finished");
         });
     }
 } // namespace atomic_dex
