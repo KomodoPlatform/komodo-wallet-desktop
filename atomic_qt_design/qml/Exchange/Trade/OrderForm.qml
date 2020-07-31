@@ -108,6 +108,8 @@ FloatingBackground {
     }
 
     function reset(is_base) {
+        input_price.field.text = ''
+
         if(my_side) {
             // is_base info comes from the ComboBox ticker change in OrderForm.
             // At other places it's not given.
