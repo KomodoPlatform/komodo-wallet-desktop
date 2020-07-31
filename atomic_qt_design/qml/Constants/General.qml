@@ -187,7 +187,7 @@ QtObject {
     }
 
     function isZero(v) {
-        return parseFloat(v) === 0
+        return !fieldExists(v) || parseFloat(v) === 0
     }
 
     function fieldExists(v) {

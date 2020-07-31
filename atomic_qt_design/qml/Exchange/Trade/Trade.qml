@@ -60,6 +60,10 @@ Item {
         preffered_order.price_denom = price_denom
         preffered_order.price_numer = price_numer
         preffered_order = preffered_order
+
+        form_base.price_field.text = price
+        form_rel.price_field.text = price
+
         updateRelAmount()
         form_base.field.forceActiveFocus()
     }
@@ -97,10 +101,14 @@ Item {
     }
 
     function getCalculatedPrice() {
-        const base = form_base.getVolume()
-        const rel = form_rel.getVolume()
-
-        return General.isZero(base) || General.isZero(rel) ? "0" : API.get().get_price_amount(base, rel)
+        if(sell_mode) {
+            let sell_price = form_base.price_field.text
+            return General.isZero(sell_price) ? "0" : sell_price
+        }
+        else {
+            let buy_price = form_rel.price_field.text
+            return General.isZero(buy_price) ? "0" : buy_price
+        }
     }
 
     function getCurrentPrice() {
@@ -108,7 +116,7 @@ Item {
     }
 
     function hasValidPrice() {
-        return orderIsSelected() || parseFloat(getCalculatedPrice()) !== 0
+        return orderIsSelected() || !General.isZero(getCalculatedPrice())
     }
 
     // Cache Trade Info

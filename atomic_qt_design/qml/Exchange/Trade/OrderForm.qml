@@ -10,6 +10,7 @@ FloatingBackground {
     id: root
 
     property alias field: input_volume.field
+    property alias price_field: input_price.field
     property bool my_side: false
     property bool enabled: true
     property alias column_layout: form_layout
@@ -174,6 +175,10 @@ FloatingBackground {
 
                 field.left_text: API.get().empty_string + (qsTr("Price"))
                 field.right_text: getTicker(false)
+
+                field.onTextChanged: {
+                    if(field.text !== preffered_order.price) resetPreferredPrice()
+                }
             }
 
             Item {
