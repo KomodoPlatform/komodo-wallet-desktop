@@ -16,6 +16,10 @@ Item {
     // Override
     property var onOrderSuccess: () => {}
 
+    function getCurrentForm() {
+        return sell_mode ? form_base : form_rel
+    }
+
     // Local
     function inCurrentPage() {
         return  exchange.inCurrentPage() &&
@@ -66,40 +70,10 @@ Item {
         form_base.price_field.text = price
         form_rel.price_field.text = price
 
-        updateRelAmount()
+        form_base.updateRelAmount()
+        form_rel.updateRelAmount()
+
         form_base.field.forceActiveFocus()
-    }
-
-    function newRelVolume(price) {
-        return parseFloat(form_base.getVolume()) * parseFloat(price)
-    }
-
-    function updateRelAmount() {
-        if(orderIsSelected()) {
-            const price = parseFloat(preffered_order.price)
-            let new_rel = newRelVolume(preffered_order.price)
-
-            if(!preffered_order.is_asks) {
-                // If new rel volume is higher than the order max volume
-                const max_volume = parseFloat(preffered_order.volume)
-                if(new_rel > max_volume) {
-                    new_rel = max_volume
-
-                    // Set base
-                    const max_base_volume = max_volume / price
-                    if(parseFloat(form_base.getVolume()) !== max_base_volume) {
-                        const new_base_text = General.formatDouble(max_base_volume)
-                        if(form_base.field.text !== new_base_text)
-                            form_base.field.text = new_base_text
-                    }
-                }
-            }
-
-            // Set rel
-            const new_rel_text = General.formatDouble(new_rel)
-            if(form_rel.field.text !== new_rel_text)
-                form_rel.field.text = new_rel_text
-        }
     }
 
     function getCalculatedPrice() {
@@ -154,6 +128,13 @@ Item {
 
     function getTradeInfo(base, rel, amount, set_as_current=true) {
         if(inCurrentPage()) {
+            // Swap the trade info because of buy / sell, amount is already correct
+            if(!sell_mode) {
+                const tmp = base
+                base = rel
+                rel = tmp
+            }
+
             let info = API.get().get_trade_infos(base, rel, amount)
 
             console.log("Getting Trade info with parameters: ", base, rel, amount, " -  Result: ", JSON.stringify(info))
@@ -184,14 +165,14 @@ Item {
     function updateTradeInfo(force=false) {
         const base = getTicker(true)
         const rel = getTicker(false)
-        const amount = form_base.getVolume()
+        const amount = getCurrentForm().getVolume()
         if(force ||
             (base !== undefined && rel !== undefined && amount !== undefined &&
              base !== ''        && rel !== ''        && amount !== '' && amount !== '0')) {
             getTradeInfo(base, rel, amount)
 
             // Since new implementation does not update fees instantly, re-cap the volume every time, just in case
-            form_base.capVolume()
+            getCurrentForm().capVolume()
         }
     }
 

@@ -14,6 +14,39 @@ FloatingBackground {
     property bool my_side: false
     property bool enabled: true
     property alias column_layout: form_layout
+    property string receive_amount: "0"
+
+    function updateRelAmount() {
+        const price = parseFloat(getCurrentPrice())
+        const base_volume = parseFloat(getVolume())
+        let new_rel = base_volume * price
+
+        // If an order is selected
+        if(orderIsSelected()) {
+            const selected_order = preffered_order
+            // If it's a bid order, cap the volume
+            if(!selected_order.is_asks) {
+                // If new rel volume is higher than the order max volume
+                const max_rel_volume = parseFloat(selected_order.volume)
+                if(new_rel > max_rel_volume) {
+                    new_rel = max_rel_volume
+
+                    // Set base depending on the capped rel
+                    const max_base_volume = max_rel_volume / price
+                    if(base_volume !== max_base_volume) {
+                        const new_base_text = General.formatDouble(max_base_volume)
+                        if(input_volume.field.text !== new_base_text)
+                            input_volume.field.text = new_base_text
+                    }
+                }
+            }
+        }
+
+        // Set rel
+        const new_rel_text = General.formatDouble(new_rel)
+        if(receive_amount !== new_rel_text)
+            receive_amount = new_rel_text
+    }
 
     function getFiatText(v, ticker) {
         return General.formatFiat('', v === '' ? 0 : API.get().get_fiat_from_amount(ticker, v), API.get().current_fiat) + " " +  General.cex_icon
@@ -361,19 +394,34 @@ FloatingBackground {
             }
         }
 
-        // Trade button
-        DefaultButton {
-            button_type: my_side ? "primary" : "danger"
-            Layout.alignment: Qt.AlignRight | Qt.AlignBottom
+        RowLayout {
+            Layout.alignment: Qt.AlignBottom
             Layout.topMargin: 5
-            Layout.rightMargin: top_line.Layout.rightMargin
+            Layout.fillWidth: true
+            Layout.leftMargin: top_line.Layout.rightMargin
+            Layout.rightMargin: Layout.leftMargin
             Layout.bottomMargin: layout_margin
 
-            width: 170
+            DefaultText {
+                Layout.alignment: Qt.AlignLeft
+                text_value: API.get().empty_string + (qsTr("Receive") + ": " + General.formatCrypto("", receive_amount, getTicker(!my_side)))
+                font.pixelSize: Style.textSizeSmall3
+            }
 
-            text: API.get().empty_string + (my_side ? qsTr("Sell %1", "TICKER").arg(getTicker(true)) : qsTr("Buy %1", "TICKER").arg(getTicker(true)))
-            enabled: valid_trade_info && !notEnoughBalanceForFees() && form_base.isValid() && form_rel.isValid()
-            onClicked: confirm_trade_modal.open()
+            // Trade button
+            DefaultButton {
+                Layout.alignment: Qt.AlignRight
+                Layout.fillWidth: true
+                Layout.leftMargin: 30
+
+                button_type: my_side ? "danger" : "primary"
+
+                width: 170
+
+                text: API.get().empty_string + (my_side ? qsTr("Sell %1", "TICKER").arg(getTicker(true)) : qsTr("Buy %1", "TICKER").arg(getTicker(true)))
+                enabled: valid_trade_info && !notEnoughBalanceForFees() && isValid()
+                onClicked: confirm_trade_modal.open()
+            }
         }
     }
 }

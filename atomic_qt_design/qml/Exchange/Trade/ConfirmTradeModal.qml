@@ -32,8 +32,8 @@ DefaultModal {
             details: ({
                     base_coin: getTicker(true),
                     rel_coin: getTicker(false),
-                    base_amount: form_base.field.text,
-                    rel_amount: form_rel.field.text,
+                    base_amount: getCurrentForm().field.text,
+                    rel_amount: getCurrentForm().receive_amount,
 
                     order_id: '',
                     date: '',
