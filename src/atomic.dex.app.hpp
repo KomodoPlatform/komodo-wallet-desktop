@@ -36,6 +36,7 @@
 #include "atomic.dex.qt.bindings.hpp"
 #include "atomic.dex.qt.candlestick.charts.model.hpp"
 #include "atomic.dex.qt.current.coin.infos.hpp"
+#include "atomic.dex.qt.internet.checker.service.hpp"
 #include "atomic.dex.qt.orderbook.hpp"
 #include "atomic.dex.qt.orders.model.hpp"
 #include "atomic.dex.qt.portfolio.model.hpp"
@@ -62,6 +63,7 @@ namespace atomic_dex
         Q_PROPERTY(candlestick_charts_model* candlestick_charts_mdl READ get_candlestick_charts NOTIFY candlestickChartsChanged)
         Q_PROPERTY(QVariant update_status READ get_update_status NOTIFY updateStatusChanged)
         Q_PROPERTY(portfolio_model* portfolio_mdl READ get_portfolio NOTIFY portfolioChanged)
+        Q_PROPERTY(internet_service_checker* internet_checker READ get_internet_checker)
         Q_PROPERTY(QString current_currency READ get_current_currency WRITE set_current_currency NOTIFY on_currency_changed)
         Q_PROPERTY(QString current_fiat READ get_current_fiat WRITE set_current_fiat NOTIFY on_fiat_changed)
         Q_PROPERTY(QString lang READ get_current_lang WRITE set_current_lang NOTIFY on_lang_changed)
@@ -126,6 +128,7 @@ namespace atomic_dex
         portfolio_model*           get_portfolio() const noexcept;
         orders_model*              get_orders() const noexcept;
         candlestick_charts_model*  get_candlestick_charts() const noexcept;
+        internet_service_checker*  get_internet_checker() const noexcept;;
         qt_orderbook_wrapper*      get_orderbook_wrapper() const noexcept;
         QVariantList               get_enabled_coins() const noexcept;
         QVariantList               get_enableable_coins() const noexcept;
@@ -295,6 +298,9 @@ namespace atomic_dex
         //! Orderbook Model Wrapper
         qt_orderbook_wrapper* m_orderbook;
         std::atomic_bool      m_orderbook_need_a_reset{false};
+
+        //! Internet service checker
+        internet_service_checker* m_internet_service_checker;
 
         std::atomic_bool m_about_to_exit_app{false};
     };

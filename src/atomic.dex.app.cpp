@@ -44,7 +44,6 @@
 #include "atomic.dex.provider.cex.prices.hpp"
 #include "atomic.dex.provider.coinpaprika.hpp"
 #include "atomic.dex.qt.bindings.hpp"
-#include "atomic.dex.qt.internet.checker.service.hpp"
 #include "atomic.dex.qt.utilities.hpp"
 #include "atomic.dex.security.hpp"
 #include "atomic.dex.update.service.hpp"
@@ -423,7 +422,8 @@ namespace atomic_dex
             {"update_needed", false}, {"changelog", ""}, {"current_version", ""}, {"download_url", ""}, {"new_version", ""}, {"rpc_code", 0}, {"status", ""}}),
         m_coin_info(new current_coin_info(dispatcher_, this)), m_addressbook(new addressbook_model(this->m_wallet_manager, this)),
         m_portfolio(new portfolio_model(this->system_manager_, this->m_config, this)), m_orders(new orders_model(this->system_manager_, this)),
-        m_candlestick_chart_ohlc(new candlestick_charts_model(this->system_manager_, this)), m_orderbook(new qt_orderbook_wrapper(this->system_manager_, this))
+        m_candlestick_chart_ohlc(new candlestick_charts_model(this->system_manager_, this)), m_orderbook(new qt_orderbook_wrapper(this->system_manager_, this)),
+        m_internet_service_checker(std::addressof(system_manager_.create_system<internet_service_checker>(this)))
     {
         get_dispatcher().sink<refresh_update_status>().connect<&application::on_refresh_update_status_event>(*this);
         //! MM2 system need to be created before the GUI and give the instance to the gui
@@ -431,7 +431,6 @@ namespace atomic_dex
         system_manager_.create_system<coinpaprika_provider>(mm2_system, m_config);
         system_manager_.create_system<cex_prices_provider>(mm2_system);
         system_manager_.create_system<update_system_service>();
-        system_manager_.create_system<internet_service_checker>(this);
 
         connect_signals();
         if (is_there_a_default_wallet())
@@ -1495,5 +1494,15 @@ namespace atomic_dex
             this->m_actions_queue.push(action::post_process_orderbook_finished);
             this->m_orderbook_need_a_reset = evt.is_a_reset;
         }
+    }
+} // namespace atomic_dex
+
+//! Internet checker
+namespace atomic_dex
+{
+    internet_service_checker*
+    application::get_internet_checker() const noexcept
+    {
+        return m_internet_service_checker;
     }
 } // namespace atomic_dex
