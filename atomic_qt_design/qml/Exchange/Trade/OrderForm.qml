@@ -137,7 +137,7 @@ FloatingBackground {
                 id: top_line
                 spacing: 20
                 Layout.topMargin: parent.spacing
-                Layout.leftMargin: parent.spacing*2
+                Layout.leftMargin: parent.spacing
                 Layout.rightMargin: Layout.leftMargin
                 Layout.alignment: Qt.AlignHCenter
 
@@ -239,7 +239,7 @@ FloatingBackground {
                 Layout.fillWidth: true
                 Layout.leftMargin: top_line.Layout.leftMargin
                 Layout.rightMargin: top_line.Layout.rightMargin
-                Layout.bottomMargin: top_line.Layout.rightMargin
+                Layout.bottomMargin: top_line.Layout.rightMargin*0.25
                 from: 0
                 stepSize: 1/Math.pow(10, precision)
                 to: parseFloat(getMaxVolume())
@@ -297,7 +297,6 @@ FloatingBackground {
                 Layout.fillWidth: true
                 Layout.leftMargin: top_line.Layout.leftMargin
                 Layout.rightMargin: top_line.Layout.rightMargin
-                Layout.bottomMargin: layout_margin
 
                 content: RowLayout {
                     width: bg.width
