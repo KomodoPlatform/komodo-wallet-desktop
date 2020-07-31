@@ -7,6 +7,8 @@ import "../Constants"
 TextField {
     id: text_field
 
+    property alias right_text: right_text.text_value
+
     font.family: Style.font_family
     placeholderTextColor: Style.colorPlaceholderText
 
@@ -19,6 +21,16 @@ TextField {
     }
 
     RightClickMenu { }
+
+    DefaultText {
+        id: right_text
+        visible: text_value !== ""
+        anchors.right: parent.right
+        anchors.rightMargin: 10
+        anchors.verticalCenter: parent.verticalCenter
+
+        font.pixelSize: text_field.font.pixelSize
+    }
 }
 
 /*##^##

@@ -180,7 +180,7 @@ FloatingBackground {
                     Layout.fillWidth: true
                     height: input_volume.height
 
-                    AmountField {
+                    AmountFieldWithInfo {
                         id: input_volume
                         width: parent.width
                         field.enabled: root.enabled && !shouldBlockInput()
@@ -208,8 +208,7 @@ FloatingBackground {
                             if(field.activeFocus) resetPrice()
                         }
 
-                        field.font.pixelSize: Style.textSizeSmall1
-                        field.font.weight: Font.Bold
+                        field.right_text: getTicker(my_side)
                     }
 
                     DefaultText {
@@ -221,15 +220,6 @@ FloatingBackground {
                         font.pixelSize: input_volume.field.font.pixelSize
 
                         CexInfoTrigger {}
-                    }
-
-                    DefaultText {
-                        anchors.right: input_volume.right
-                        anchors.rightMargin: 10
-                        anchors.verticalCenter: input_volume.verticalCenter
-
-                        text_value: getTicker(my_side)
-                        font.pixelSize: input_volume.field.font.pixelSize
                     }
                 }
             }
