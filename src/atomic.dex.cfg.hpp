@@ -30,10 +30,10 @@ namespace atomic_dex
         std::array<std::string, 3> possible_currencies;
     };
 
-    void from_json(const nlohmann::json& j, cfg& config);
-    void change_lang(cfg& config, const std::string& new_lang);
-    void change_currency(cfg& config, const std::string& new_currency);
-    void change_fiat(cfg& config, const std::string& new_fiat);
+    void               from_json(const nlohmann::json& j, cfg& config);
+    void               change_lang(cfg& config, const std::string& new_lang);
+    void               change_currency(cfg& config, const std::string& new_currency);
+    void               change_fiat(cfg& config, const std::string& new_fiat);
     [[nodiscard]] bool is_this_currency_a_fiat(cfg& config, const std::string& currency) noexcept;
-    cfg  load_cfg();
+    cfg                load_cfg();
 } // namespace atomic_dex

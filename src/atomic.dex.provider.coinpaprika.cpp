@@ -279,7 +279,7 @@ namespace atomic_dex
                 }
             }
 
-            std::size_t default_precision = (fiat == "USD" || fiat == "EUR") ? 2 : 8;
+            std::size_t default_precision = is_this_currency_a_fiat(m_cfg, fiat) ? 2 : 8;
             ss.precision(default_precision);
             ss << std::fixed << final_price_f;
             std::string result = ss.str();
@@ -380,13 +380,23 @@ namespace atomic_dex
             }
             current_price = m_kmd_rate_providers.at(ticker);
         }
+        else
+        {
+            //! Todo pickup from api open rates
+            if (m_usd_rate_providers.find(ticker) == m_usd_rate_providers.cend())
+            {
+                ec = dextop_error::unknown_ticker_for_rate_conversion;
+                return "0.00";
+            }
+            current_price = m_usd_rate_providers.at(ticker);
+        }
 
         if (adjusted)
         {
-            std::size_t default_precision = (fiat == "USD" || fiat == "EUR") ? 2 : 8;
+            std::size_t default_precision = is_this_currency_a_fiat(m_cfg, fiat) ? 2 : 8;
 
             t_float_50 current_price_f(current_price);
-            if (fiat == "USD" || fiat == "EUR")
+            if (is_this_currency_a_fiat(m_cfg, fiat))
             {
                 if (current_price_f < 1.0)
                 {
