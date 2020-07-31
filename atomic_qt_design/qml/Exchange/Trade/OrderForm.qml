@@ -166,64 +166,55 @@ FloatingBackground {
                 Layout.fillWidth: true
             }
 
-            ColumnLayout {
+            Item {
                 Layout.fillWidth: true
                 Layout.leftMargin: top_line.Layout.leftMargin
                 Layout.rightMargin: top_line.Layout.rightMargin
+                height: input_volume.height
+
+                AmountFieldWithInfo {
+                    id: input_volume
+                    width: parent.width
+                    field.enabled: root.enabled && !shouldBlockInput()
+                    field.placeholderText: API.get().empty_string + (my_side ? qsTr("Amount to sell") :
+                                                     field.enabled ? qsTr("Amount to receive") : qsTr("Please fill the send amount"))
+                    field.onTextChanged: {
+                        const before_checks = field.text
+                        onBaseChanged()
+                        const after_checks = field.text
+
+                        // Update slider only if the value is not from slider, or value got corrected here
+                        if(before_checks !== after_checks || !input_volume_slider.updating_text_field) {
+                            input_volume_slider.updating_from_text_field = true
+                            input_volume_slider.value = parseFloat(field.text)
+                            input_volume_slider.updating_from_text_field = false
+                        }
+                    }
+
+                    function resetPrice() {
+                        if(!my_side && orderIsSelected()) resetPreferredPrice()
+                    }
+
+                    field.onPressed: resetPrice()
+                    field.onFocusChanged: {
+                        if(field.activeFocus) resetPrice()
+                    }
+
+                    field.left_text: API.get().empty_string + (qsTr("Volume"))
+                    field.right_text: getTicker(my_side)
+                }
 
                 DefaultText {
-                    text_value: API.get().empty_string + (qsTr("Amount") + ':')
-                    font.pixelSize: Style.textSizeSmall1
-                }
+                    anchors.left: input_volume.left
+                    anchors.top: input_volume.bottom
+                    anchors.topMargin: 5
 
-                Item {
-                    Layout.fillWidth: true
-                    height: input_volume.height
+                    text_value: getFiatText(input_volume.field.text, getTicker(my_side))
+                    font.pixelSize: input_volume.field.font.pixelSize
 
-                    AmountFieldWithInfo {
-                        id: input_volume
-                        width: parent.width
-                        field.enabled: root.enabled && !shouldBlockInput()
-                        field.placeholderText: API.get().empty_string + (my_side ? qsTr("Amount to sell") :
-                                                         field.enabled ? qsTr("Amount to receive") : qsTr("Please fill the send amount"))
-                        field.onTextChanged: {
-                            const before_checks = field.text
-                            onBaseChanged()
-                            const after_checks = field.text
-
-                            // Update slider only if the value is not from slider, or value got corrected here
-                            if(before_checks !== after_checks || !input_volume_slider.updating_text_field) {
-                                input_volume_slider.updating_from_text_field = true
-                                input_volume_slider.value = parseFloat(field.text)
-                                input_volume_slider.updating_from_text_field = false
-                            }
-                        }
-
-                        function resetPrice() {
-                            if(!my_side && orderIsSelected()) resetPreferredPrice()
-                        }
-
-                        field.onPressed: resetPrice()
-                        field.onFocusChanged: {
-                            if(field.activeFocus) resetPrice()
-                        }
-
-                        field.right_text: getTicker(my_side)
-                    }
-
-                    DefaultText {
-                        anchors.left: input_volume.left
-                        anchors.top: input_volume.bottom
-                        anchors.topMargin: 5
-
-                        text_value: getFiatText(input_volume.field.text, getTicker(my_side))
-                        font.pixelSize: input_volume.field.font.pixelSize
-
-                        CexInfoTrigger {}
-                    }
+                    CexInfoTrigger {}
                 }
             }
-
 
             Slider {
                 id: input_volume_slider
