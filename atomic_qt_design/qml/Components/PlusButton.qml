@@ -17,6 +17,6 @@ DefaultButton {
 
     verticalShadow: true
 
-    colorEnabled: Style.colorButtonHovered
-    colorHovered: Style.colorButtonEnabled
+    colorEnabled: Style.colorButtonHovered[button_type]
+    colorHovered: Style.colorButtonEnabled[button_type]
 }
