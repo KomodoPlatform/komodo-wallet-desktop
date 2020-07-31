@@ -159,21 +159,37 @@ QtObject {
     readonly property string colorText: dark_theme ? Style.colorWhite1 : "#405366"
     readonly property string colorText2: dark_theme ? "#79808C" : "#3C5368"
     readonly property string colorTextDisabled: dark_theme ? Style.colorWhite8 : "#B5B9C1"
-    readonly property string colorButtonDisabled: Style.colorTheme9
-    readonly property string colorButtonHovered: Style.colorTheme6
-    readonly property string colorButtonEnabled: Style.colorRectangle
-    readonly property string colorButtonTextDisabled: Style.colorWhite8
-    readonly property string colorButtonTextHovered: Style.colorText
-    readonly property string colorButtonTextEnabled: Style.colorText
+    readonly property var colorButtonDisabled: ({
+          "default": Style.colorTheme9,
+          "primary": Style.colorGreen3,
+          "danger": Style.colorRed3
+        })
+    readonly property var colorButtonHovered: ({
+          "default": Style.colorTheme6,
+          "primary": Style.colorGreen,
+          "danger": Style.colorRed
+        })
+    readonly property var colorButtonEnabled: ({
+          "default": Style.colorRectangle,
+          "primary": Style.colorGreen2,
+          "danger": Style.colorRed2
+        })
+    readonly property var colorButtonTextDisabled: ({
+          "default": Style.colorWhite8,
+          "primary": Style.colorWhite13,
+          "danger": Style.colorWhite8
+        })
+    readonly property var colorButtonTextHovered: ({
+          "default": Style.colorText,
+          "primary": Style.colorWhite10,
+          "danger": Style.colorWhite8
+        })
+    readonly property var colorButtonTextEnabled: ({
+          "default": Style.colorText,
+          "primary": Style.colorWhite10,
+          "danger": Style.colorWhite1
+        })
     readonly property string colorPlaceholderText: Style.colorWhite9
-
-    property string colorButtonDangerDisabled: Style.colorRed3
-    property string colorButtonDangerHovered: Style.colorRed
-    property string colorButtonDangerEnabled: Style.colorRed2
-
-    property string colorButtonPrimaryDisabled: Style.colorGreen3
-    property string colorButtonPrimaryHovered: Style.colorGreen
-    property string colorButtonPrimaryEnabled: Style.colorGreen2
 
     readonly property int modalTitleMargin: 10
     readonly property string modalValueColor: colorWhite4
