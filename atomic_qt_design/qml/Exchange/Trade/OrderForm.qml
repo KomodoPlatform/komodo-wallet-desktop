@@ -141,8 +141,8 @@ FloatingBackground {
 
                 // Title
                 DefaultText {
-                    font.pixelSize: Style.textSizeMid2
-                    text_value: API.get().empty_string + (my_side ? qsTr("Sell") : qsTr("Receive"))
+                    font.pixelSize: Style.textSize
+                    text_value: API.get().empty_string + (my_side ? qsTr("Sell") : qsTr("Buy"))
                     color: my_side ? Style.colorRed : Style.colorGreen
                     font.weight: Font.Bold
                 }
@@ -153,17 +153,23 @@ FloatingBackground {
                     Layout.leftMargin: 20
                     Layout.rightMargin: 20
                 }
-
-                DefaultImage {
-                    source: General.coinIcon(getTicker(my_side))
-                    Layout.preferredWidth: 32
-                    Layout.preferredHeight: Layout.preferredWidth
-                }
             }
 
 
             HorizontalLine {
                 Layout.fillWidth: true
+            }
+
+            AmountFieldWithInfo {
+                id: input_price
+                Layout.leftMargin: top_line.Layout.leftMargin
+                Layout.rightMargin: top_line.Layout.rightMargin
+                Layout.bottomMargin: -6
+                Layout.fillWidth: true
+                field.enabled: root.enabled && !shouldBlockInput()
+
+                field.left_text: API.get().empty_string + (qsTr("Price"))
+                field.right_text: getTicker(false)
             }
 
             Item {
@@ -176,8 +182,10 @@ FloatingBackground {
                     id: input_volume
                     width: parent.width
                     field.enabled: root.enabled && !shouldBlockInput()
-                    field.placeholderText: API.get().empty_string + (my_side ? qsTr("Amount to sell") :
-                                                     field.enabled ? qsTr("Amount to receive") : qsTr("Please fill the send amount"))
+
+                    field.left_text: API.get().empty_string + (qsTr("Volume"))
+                    field.right_text: getTicker(true)
+                    field.placeholderText: API.get().empty_string + (my_side ? qsTr("Amount to sell") : qsTr("Amount to receive"))
                     field.onTextChanged: {
                         const before_checks = field.text
                         onBaseChanged()
@@ -199,9 +207,6 @@ FloatingBackground {
                     field.onFocusChanged: {
                         if(field.activeFocus) resetPrice()
                     }
-
-                    field.left_text: API.get().empty_string + (qsTr("Volume"))
-                    field.right_text: getTicker(my_side)
                 }
 
                 DefaultText {
@@ -355,10 +360,9 @@ FloatingBackground {
             Layout.rightMargin: top_line.Layout.rightMargin
             Layout.bottomMargin: layout_margin
 
-            visible: !my_side
             width: 170
 
-            text: API.get().empty_string + (!preffered_order.is_asks && orderIsSelected() ? qsTr("Match Order") : qsTr("Create Order"))
+            text: API.get().empty_string + (my_side ? qsTr("Sell %1", "TICKER").arg(getTicker(true)) : qsTr("Buy %1", "TICKER").arg(getTicker(true)))
             enabled: valid_trade_info && !notEnoughBalanceForFees() && form_base.isValid() && form_rel.isValid()
             onClicked: confirm_trade_modal.open()
         }
