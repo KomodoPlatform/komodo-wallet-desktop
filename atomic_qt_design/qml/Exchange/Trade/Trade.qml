@@ -11,6 +11,8 @@ Item {
 
     property string action_result
 
+    property bool sell_mode: true
+
     // Override
     property var onOrderSuccess: () => {}
 
@@ -22,6 +24,7 @@ Item {
 
     function fullReset() {
         reset(true)
+        sell_mode = true
     }
 
     function reset(reset_result=true, is_base) {
@@ -420,6 +423,7 @@ Item {
                 // Sell
                 OrderForm {
                     id: form_base
+                    visible: sell_mode
 
                     anchors.left: parent.left
                     anchors.right: parent.right
@@ -431,10 +435,11 @@ Item {
                 // Receive
                 OrderForm {
                     id: form_rel
+                    visible: !form_base.visible
+
                     anchors.left: parent.left
                     anchors.right: parent.right
-                    anchors.top: form_base.bottom
-                    anchors.topMargin: layout_margin
+                    anchors.top: parent.top
 
                     field.enabled: form_base.field.enabled
                 }
@@ -443,7 +448,7 @@ Item {
                 DefaultText {
                     anchors.left: parent.left
                     anchors.right: parent.right
-                    anchors.top: form_rel.bottom
+                    anchors.top: form_base.visible ? form_base.bottom : form_rel.bottom
                     anchors.topMargin: layout_margin * 2
 
                     font.pixelSize: Style.textSizeSmall4

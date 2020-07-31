@@ -135,23 +135,27 @@ FloatingBackground {
             // Top Line
             RowLayout {
                 id: top_line
+                spacing: 20
                 Layout.topMargin: parent.spacing
                 Layout.leftMargin: parent.spacing*2
                 Layout.rightMargin: Layout.leftMargin
+                Layout.alignment: Qt.AlignHCenter
 
-                // Title
-                DefaultText {
+                DefaultButton {
                     font.pixelSize: Style.textSize
-                    text_value: API.get().empty_string + (my_side ? qsTr("Sell") : qsTr("Buy"))
-                    color: my_side ? Style.colorRed : Style.colorGreen
+                    text: API.get().empty_string + (qsTr("Sell"))
+                    color: sell_mode ? Style.colorRed : Style.colorRed3
+                    colorTextEnabled: sell_mode ? Style.colorWhite1 : Style.colorWhite6
                     font.weight: Font.Bold
+                    onClicked: sell_mode = true
                 }
-
-                Arrow {
-                    up: my_side
-                    color: my_side ? Style.colorRed : Style.colorGreen
-                    Layout.leftMargin: 20
-                    Layout.rightMargin: 20
+                DefaultButton {
+                    font.pixelSize: Style.textSize
+                    text: API.get().empty_string + (qsTr("Buy"))
+                    color: sell_mode ? Style.colorGreen3 : Style.colorGreen
+                    colorTextEnabled: sell_mode ? Style.colorWhite8 : Style.colorWhite1
+                    font.weight: Font.Bold
+                    onClicked: sell_mode = false
                 }
             }
 
@@ -355,6 +359,7 @@ FloatingBackground {
 
         // Trade button
         DefaultButton {
+            button_type: my_side ? "primary" : "danger"
             Layout.alignment: Qt.AlignRight | Qt.AlignBottom
             Layout.topMargin: 5
             Layout.rightMargin: top_line.Layout.rightMargin
