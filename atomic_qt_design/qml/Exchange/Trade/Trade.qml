@@ -54,6 +54,8 @@ Item {
     }
 
     function selectOrder(is_asks, price, quantity, price_denom, price_numer) {
+        sell_mode = !is_asks
+
         preffered_order.is_asks = is_asks
         preffered_order.price = price
         preffered_order.volume = quantity
