@@ -20,6 +20,8 @@ Item {
         return sell_mode ? form_base : form_rel
     }
 
+    onSell_modeChanged: reset()
+
     // Local
     function inCurrentPage() {
         return  exchange.inCurrentPage() &&
@@ -67,8 +69,9 @@ Item {
         preffered_order.price_numer = price_numer
         preffered_order = preffered_order
 
-        form_base.price_field.text = price
-        form_rel.price_field.text = price
+        const price_text = General.formatDouble(price)
+        form_base.price_field.text = price_text
+        form_rel.price_field.text = price_text
 
         form_base.updateRelAmount()
         form_rel.updateRelAmount()
