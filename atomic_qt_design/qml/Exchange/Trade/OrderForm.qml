@@ -14,7 +14,7 @@ FloatingBackground {
     property bool my_side: false
     property bool enabled: true
     property alias column_layout: form_layout
-    property string receive_amount: "0"
+    property string total_amount: "0"
 
     function updateRelAmount(set_order_volume) {
         const price = parseFloat(getCurrentPrice())
@@ -24,17 +24,15 @@ FloatingBackground {
         // If an order is selected
         if(orderIsSelected()) {
             const selected_order = preffered_order
-            // If it's a bid order, This is the sell side,
             // Cap the volume with the order volume
-            if(!selected_order.is_asks) {
-                const order_buy_volume = parseFloat(selected_order.volume)
-                if(set_order_volume || parseFloat(getVolume()) > order_buy_volume) {
-                    const new_sell_volume = General.formatDouble(order_buy_volume)
-                    input_volume.field.text = new_sell_volume
+            const order_buy_volume = parseFloat(selected_order.volume)
+            if(set_order_volume || parseFloat(getVolume()) > order_buy_volume) {
+                const new_sell_volume = General.formatDouble(order_buy_volume)
+                input_volume.field.text = new_sell_volume
 
-                    // Calculate new receive amount
-                    new_receive = order_buy_volume * price
-                }
+                // Calculate new receive amount
+                new_receive = order_buy_volume * price
+            }
 
 //                // If new rel volume is higher than the order max volume
 //                const max_rel_volume = parseFloat(selected_order.volume)
@@ -49,13 +47,12 @@ FloatingBackground {
 //                            input_volume.field.text = new_base_text
 //                    }
 //                }
-            }
         }
 
         // Set rel
         const new_receive_text = General.formatDouble(new_receive)
-        if(receive_amount !== new_receive_text)
-            receive_amount = new_receive_text
+        if(total_amount !== new_receive_text)
+            total_amount = new_receive_text
     }
 
     function getFiatText(v, ticker) {
@@ -153,13 +150,11 @@ FloatingBackground {
     function onInputChanged() {
         if(capVolume()) updateTradeInfo()
 
-        if(my_side) {
-            // Rel is dependant on Base if price is set so update that
-            updateRelAmount()
+        // Rel is dependant on Base if price is set so update that
+        updateRelAmount()
 
-            // Update the new fees, input_volume might be changed
-            updateTradeInfo()
-        }
+        // Update the new fees, input_volume might be changed
+        updateTradeInfo()
     }
 
     implicitHeight: form_layout.height
@@ -411,7 +406,7 @@ FloatingBackground {
 
             DefaultText {
                 Layout.alignment: Qt.AlignLeft
-                text_value: API.get().empty_string + (qsTr("Receive") + ": " + General.formatCrypto("", receive_amount, getTicker(!my_side)))
+                text_value: API.get().empty_string + (qsTr("Total") + ": " + General.formatCrypto("", total_amount, getTicker(false)))
                 font.pixelSize: Style.textSizeSmall3
             }
 
