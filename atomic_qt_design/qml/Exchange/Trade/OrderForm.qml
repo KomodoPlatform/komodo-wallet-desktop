@@ -62,10 +62,6 @@ FloatingBackground {
         return General.formatFiat('', v === '' ? 0 : API.get().get_fiat_from_amount(ticker, v), API.get().current_fiat) + " " +  General.cex_icon
     }
 
-    function canShowFees() {
-        return my_side && valid_trade_info && !General.isZero(getVolume())
-    }
-
     function getVolume() {
         return input_volume.field.text === '' ? '0' :  input_volume.field.text
     }
@@ -239,6 +235,7 @@ FloatingBackground {
                 Layout.fillWidth: true
                 Layout.leftMargin: top_line.Layout.leftMargin
                 Layout.rightMargin: top_line.Layout.rightMargin
+                Layout.bottomMargin: input_volume.field.font.pixelSize
                 height: input_volume.height
 
                 AmountFieldWithInfo {
@@ -340,8 +337,6 @@ FloatingBackground {
 
             // Fees
             InnerBackground {
-                visible: my_side
-
                 radius: 100
                 id: bg
                 Layout.fillWidth: true
@@ -354,7 +349,7 @@ FloatingBackground {
 
                     ColumnLayout {
                         id: fees
-                        visible: canShowFees()
+                        visible: valid_trade_info && !General.isZero(getVolume())
 
                         spacing: -2
                         Layout.leftMargin: 10
@@ -363,14 +358,14 @@ FloatingBackground {
 
                         DefaultText {
                             id: tx_fee_text
-                            text_value: API.get().empty_string + ((qsTr('Transaction Fee') + ': ' + General.formatCrypto("", curr_trade_info.tx_fee, curr_trade_info.is_ticker_of_fees_eth ? "ETH" : getTicker(true))) +
+                            text_value: API.get().empty_string + ((qsTr('Transaction Fee') + ': ' + General.formatCrypto("", curr_trade_info.tx_fee, curr_trade_info.is_ticker_of_fees_eth ? "ETH" : getTicker(my_side))) +
                                                                     // ETH Fees
                                                                     (hasEthFees() ? " + " + General.formatCrypto("", curr_trade_info.erc_fees, 'ETH') : '') +
 
                                                                   // Fiat part
                                                                   (" ("+
                                                                       getFiatText(!hasEthFees() ? curr_trade_info.tx_fee : General.formatDouble((parseFloat(curr_trade_info.tx_fee) + parseFloat(curr_trade_info.erc_fees))),
-                                                                                  curr_trade_info.is_ticker_of_fees_eth ? 'ETH' : getTicker(true))
+                                                                                  curr_trade_info.is_ticker_of_fees_eth ? 'ETH' : getTicker(my_side))
                                                                    +")")
 
 
@@ -381,11 +376,11 @@ FloatingBackground {
                         }
 
                         DefaultText {
-                            text_value: API.get().empty_string + (qsTr('Trading Fee') + ': ' + General.formatCrypto("", curr_trade_info.trade_fee, getTicker(true)) +
+                            text_value: API.get().empty_string + (qsTr('Trading Fee') + ': ' + General.formatCrypto("", curr_trade_info.trade_fee, getTicker(my_side)) +
 
                                                                   // Fiat part
                                                                   (" ("+
-                                                                      getFiatText(curr_trade_info.trade_fee, getTicker(true))
+                                                                      getFiatText(curr_trade_info.trade_fee, getTicker(my_side))
                                                                    +")")
                                                                   )
                             font.pixelSize: tx_fee_text.font.pixelSize
