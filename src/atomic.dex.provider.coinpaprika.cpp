@@ -26,6 +26,20 @@ namespace
     using namespace atomic_dex;
     using namespace atomic_dex::coinpaprika::api;
 
+    nlohmann::json
+    fetch_fiat_rates()
+    {
+        nlohmann::json resp;
+        auto           answer = RestClient::get("https://api.openrates.io/latest?base=USD");
+        if (answer.code != 200)
+        {
+            spdlog::warn("unable to fetch last open rates");
+            return resp;
+        }
+        resp = nlohmann::json::parse(answer.body);
+        return resp;
+    }
+
     template <typename TAnswer, typename TRequest, typename TFunctorRequest>
     void
     retry(TAnswer& answer, const TRequest& request, TFunctorRequest&& functor)
@@ -175,7 +189,8 @@ namespace atomic_dex
 
                 std::vector<std::future<void>> out_fut;
 
-                out_fut.reserve(coins.size() * 6);
+                out_fut.reserve(coins.size() * 6 + 1);
+                out_fut.push_back(spawn([this]() { this->m_other_fiats_rates = fetch_fiat_rates(); }));
                 for (auto&& current_coin: coins)
                 {
                     if (current_coin.coinpaprika_id == "test-coin")
@@ -383,12 +398,14 @@ namespace atomic_dex
         else
         {
             //! Todo pickup from api open rates
+
             if (m_usd_rate_providers.find(ticker) == m_usd_rate_providers.cend())
             {
                 ec = dextop_error::unknown_ticker_for_rate_conversion;
                 return "0.00";
             }
-            current_price = m_usd_rate_providers.at(ticker);
+            t_float_50 tmp_current_price = t_float_50(m_usd_rate_providers.at(ticker)) * m_other_fiats_rates->at("rates").at(fiat).get<double>();
+            current_price                = tmp_current_price.str();
         }
 
         if (adjusted)

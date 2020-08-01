@@ -37,12 +37,14 @@ namespace atomic_dex
 
       private:
         //! Typedefs
+        using t_json_synchronized       = boost::synchronized_value<nlohmann::json>;
         using t_providers_registry      = t_concurrent_reg<std::string, std::string>;
         using t_supported_fiat_registry = std::unordered_set<std::string>;
 
         //! Private fields
         mm2&                         m_mm2_instance;
         atomic_dex::cfg&             m_cfg;
+        t_json_synchronized          m_other_fiats_rates;
         t_providers_registry         m_usd_rate_providers{};
         t_providers_registry         m_eur_rate_providers{};
         t_providers_registry         m_btc_rate_providers{};
