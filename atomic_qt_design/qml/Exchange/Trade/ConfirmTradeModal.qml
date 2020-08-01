@@ -30,10 +30,10 @@ DefaultModal {
             Layout.alignment: Qt.AlignHCenter
 
             details: ({
-                    base_coin: getTicker(true),
-                    rel_coin: getTicker(false),
-                    base_amount: getCurrentForm().field.text,
-                    rel_amount: getCurrentForm().total_amount,
+                    base_coin: getTicker(sell_mode),
+                    rel_coin: getTicker(!sell_mode),
+                    base_amount: sell_mode ? getCurrentForm().field.text : getCurrentForm().total_amount,
+                    rel_amount: sell_mode ? getCurrentForm().total_amount : getCurrentForm().field.text,
 
                     order_id: '',
                     date: '',
