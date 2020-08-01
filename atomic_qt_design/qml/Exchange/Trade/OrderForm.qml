@@ -16,36 +16,46 @@ FloatingBackground {
     property alias column_layout: form_layout
     property string receive_amount: "0"
 
-    function updateRelAmount() {
+    function updateRelAmount(set_order_volume) {
         const price = parseFloat(getCurrentPrice())
         const base_volume = parseFloat(getVolume())
-        let new_rel = base_volume * price
+        let new_receive = base_volume * price
 
         // If an order is selected
         if(orderIsSelected()) {
             const selected_order = preffered_order
-            // If it's a bid order, cap the volume
+            // If it's a bid order, This is the sell side,
+            // Cap the volume with the order volume
             if(!selected_order.is_asks) {
-                // If new rel volume is higher than the order max volume
-                const max_rel_volume = parseFloat(selected_order.volume)
-                if(new_rel > max_rel_volume) {
-                    new_rel = max_rel_volume
+                const order_buy_volume = parseFloat(selected_order.volume)
+                if(set_order_volume || parseFloat(getVolume()) > order_buy_volume) {
+                    const new_sell_volume = General.formatDouble(order_buy_volume)
+                    input_volume.field.text = new_sell_volume
 
-                    // Set base depending on the capped rel
-                    const max_base_volume = max_rel_volume / price
-                    if(base_volume !== max_base_volume) {
-                        const new_base_text = General.formatDouble(max_base_volume)
-                        if(input_volume.field.text !== new_base_text)
-                            input_volume.field.text = new_base_text
-                    }
+                    // Calculate new receive amount
+                    new_receive = order_buy_volume * price
                 }
+
+//                // If new rel volume is higher than the order max volume
+//                const max_rel_volume = parseFloat(selected_order.volume)
+//                if(new_receive > max_rel_volume) {
+//                    new_receive = max_rel_volume
+
+//                    // Set base depending on the capped rel
+//                    const max_base_volume = max_rel_volume / price
+//                    if(base_volume !== max_base_volume) {
+//                        const new_base_text = General.formatDouble(max_base_volume)
+//                        if(input_volume.field.text !== new_base_text)
+//                            input_volume.field.text = new_base_text
+//                    }
+//                }
             }
         }
 
         // Set rel
-        const new_rel_text = General.formatDouble(new_rel)
-        if(receive_amount !== new_rel_text)
-            receive_amount = new_rel_text
+        const new_receive_text = General.formatDouble(new_receive)
+        if(receive_amount !== new_receive_text)
+            receive_amount = new_receive_text
     }
 
     function getFiatText(v, ticker) {
@@ -144,7 +154,7 @@ FloatingBackground {
         return my_side && (notEnoughBalance() || notEnoughBalanceForFees())
     }
 
-    function onBaseChanged() {
+    function onInputChanged() {
         if(capVolume()) updateTradeInfo()
 
         if(my_side) {
@@ -213,6 +223,7 @@ FloatingBackground {
 
                 field.onTextChanged: {
                     if(field.text !== preffered_order.price) resetPreferredPrice()
+                    onInputChanged()
                 }
             }
 
@@ -232,7 +243,7 @@ FloatingBackground {
                     field.placeholderText: API.get().empty_string + (my_side ? qsTr("Amount to sell") : qsTr("Amount to receive"))
                     field.onTextChanged: {
                         const before_checks = field.text
-                        onBaseChanged()
+                        onInputChanged()
                         const after_checks = field.text
 
                         // Update slider only if the value is not from slider, or value got corrected here

@@ -73,8 +73,8 @@ Item {
         form_base.price_field.text = price_text
         form_rel.price_field.text = price_text
 
-        form_base.updateRelAmount()
-        form_rel.updateRelAmount()
+        form_base.updateRelAmount(true)
+        form_rel.updateRelAmount(true)
 
         form_base.field.forceActiveFocus()
     }
