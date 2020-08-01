@@ -2,6 +2,8 @@
 #include <QDebug>
 #include <QQmlApplicationEngine>
 #include <QWindow>
+#include <QDesktopWidget>
+#include <QScreen>
 #include <QtQml>
 
 #define QZXING_QML
@@ -93,11 +95,33 @@ main([[maybe_unused]] int argc, [[maybe_unused]] char* argv[])
     atomic_dex::application atomic_app;
 
     //! QT
-    QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
+    //SetThreadDpiAwarenessContext(DPI_AWARENESS_CONTEXT_PER_MONITOR_AWARE_V2);
+    QCoreApplication::setAttribute(Qt::AA_DisableHighDpiScaling);
     //QCoreAppliation::setHighDpiScaleFactorRoundingPolicy(Qt::HighDpiScaleFactorRoundingPolicy::PassThrough);
     int                           ac  = 0;
     std::shared_ptr<QApplication> app = std::make_shared<QApplication>(ac, nullptr);
-
+    
+    #if defined(WIN32)
+        QList<QScreen *> sk = app->screens();
+        std::string factor_list;
+        const double min_window_size = 800.0;
+        for (auto &&cur_screen : sk) {
+            double height = cur_screen->devicePixelRatio() *  cur_screen->availableSize().height();
+            //auto width = cur_screen->devicePixelRatio() *  cur_screen->availableSize().width();
+            
+            double current_scale = cur_screen->devicePixelRatio();
+            spdlog::trace("checking if {} * {} > {} res: {}", current_scale, min_window_size, height, current_scale * min_window_size);
+            if (current_scale * min_window_size > height) {
+                current_scale = height / min_window_size;
+            }
+            factor_list += std::to_string(current_scale) + ",";   
+        }
+        factor_list = factor_list.substr(0, factor_list.size() -1);
+        qputenv("QT_AUTO_SCREEN_SCALE_FACTOR", "0");
+        spdlog::trace("factor_list: {}", factor_list);
+        qputenv("QT_SCREEN_SCALE_FACTORS", QString::fromStdString(factor_list).toUtf8());
+    #endif
+    
     atomic_app.set_qt_app(app);
 
     //! QT QML
