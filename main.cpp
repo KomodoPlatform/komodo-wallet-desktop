@@ -45,6 +45,11 @@ int
 main([[maybe_unused]] int argc, [[maybe_unused]] char* argv[])
 #endif
 {
+#if defined(WIN32)
+        std::ostringstream env_app;
+        env_app << "QT_SCALE_FACTOR_ROUNDING_POLICY=PassThrough";
+        _putenv(env_app.str().c_str());
+#endif
     std::signal(SIGABRT, signal_handler);
     //! Project
 #if defined(_WIN32) || defined(WIN32)
@@ -89,6 +94,7 @@ main([[maybe_unused]] int argc, [[maybe_unused]] char* argv[])
 
     //! QT
     QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
+    //QCoreAppliation::setHighDpiScaleFactorRoundingPolicy(Qt::HighDpiScaleFactorRoundingPolicy::PassThrough);
     int                           ac  = 0;
     std::shared_ptr<QApplication> app = std::make_shared<QApplication>(ac, nullptr);
 
