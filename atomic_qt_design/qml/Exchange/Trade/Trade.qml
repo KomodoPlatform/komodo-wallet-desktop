@@ -235,7 +235,13 @@ Item {
         }
         // Filter for Receive
         else {
-            return coins.filter(c => c.ticker !== getTicker(true))
+            return coins.filter(c => {
+                if(c.ticker === getTicker(true)) return false
+
+                c.balance = API.get().get_balance(c.ticker)
+
+                return true
+            })
         }
     }
 
