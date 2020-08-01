@@ -47,11 +47,9 @@ int
 main([[maybe_unused]] int argc, [[maybe_unused]] char* argv[])
 #endif
 {
-#if defined(WIN32)
-        std::ostringstream env_app;
-        env_app << "QT_SCALE_FACTOR_ROUNDING_POLICY=PassThrough";
-        _putenv(env_app.str().c_str());
-#endif
+    // Determine if we pass through or floor
+    //SetThreadDpiAwarenessContext(DPI_AWARENESS_CONTEXT_PER_MONITOR_AWARE_V2);
+
     std::signal(SIGABRT, signal_handler);
     //! Project
 #if defined(_WIN32) || defined(WIN32)
@@ -88,39 +86,34 @@ main([[maybe_unused]] int argc, [[maybe_unused]] char* argv[])
     spdlog::set_pattern("[%H:%M:%S %z] [%L] [thr %t] %v");
     spdlog::info("Logger successfully initialized");
 
-    // spdlog::info("asan report: {}", (fs::temp_directory_path() / "asan.log").string().c_str());
-    //__sanitizer_set_report_path((fs::temp_directory_path() / "asan.log").string().c_str());
-
+    bool should_floor = false;
+        {
+            int ac = 0;
+            QApplication tmp(ac, nullptr);
+            double min_window_size = 800.0;
+            auto screens = tmp.screens();
+            for (auto&& cur_screen : screens) {
+                spdlog::trace("physical dpi: {}", cur_screen->physicalDotsPerInch());
+                spdlog::trace("logical dpi: {}", cur_screen->logicalDotsPerInch());
+                double scale = cur_screen->logicalDotsPerInch() / 96.0;
+                spdlog::trace("scale: {}", scale);
+                
+                double height = cur_screen->availableSize().height();
+                spdlog::trace("height: {}", height);
+                if (scale * min_window_size > height) {
+                    should_floor = true;
+                    spdlog::trace("should floor");
+                }
+            }
+        }
+    QGuiApplication::setHighDpiScaleFactorRoundingPolicy(should_floor ? Qt::HighDpiScaleFactorRoundingPolicy::Floor : Qt::HighDpiScaleFactorRoundingPolicy::PassThrough);
+    QGuiApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
     //! App declaration
     atomic_dex::application atomic_app;
 
     //! QT
-    //SetThreadDpiAwarenessContext(DPI_AWARENESS_CONTEXT_PER_MONITOR_AWARE_V2);
-    QCoreApplication::setAttribute(Qt::AA_DisableHighDpiScaling);
-    //QCoreAppliation::setHighDpiScaleFactorRoundingPolicy(Qt::HighDpiScaleFactorRoundingPolicy::PassThrough);
     int                           ac  = 0;
     std::shared_ptr<QApplication> app = std::make_shared<QApplication>(ac, nullptr);
-    
-    #if defined(WIN32)
-        QList<QScreen *> sk = app->screens();
-        std::string factor_list;
-        const double min_window_size = 800.0;
-        for (auto &&cur_screen : sk) {
-            double height = cur_screen->devicePixelRatio() *  cur_screen->availableSize().height();
-            //auto width = cur_screen->devicePixelRatio() *  cur_screen->availableSize().width();
-            
-            double current_scale = cur_screen->devicePixelRatio();
-            spdlog::trace("checking if {} * {} > {} res: {}", current_scale, min_window_size, height, current_scale * min_window_size);
-            if (current_scale * min_window_size > height) {
-                current_scale = height / min_window_size;
-            }
-            factor_list += std::to_string(current_scale) + ",";   
-        }
-        factor_list = factor_list.substr(0, factor_list.size() -1);
-        qputenv("QT_AUTO_SCREEN_SCALE_FACTOR", "0");
-        spdlog::trace("factor_list: {}", factor_list);
-        qputenv("QT_SCREEN_SCALE_FACTORS", QString::fromStdString(factor_list).toUtf8());
-    #endif
     
     atomic_app.set_qt_app(app);
 
