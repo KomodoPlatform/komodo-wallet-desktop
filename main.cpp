@@ -107,7 +107,7 @@ main([[maybe_unused]] int argc, [[maybe_unused]] char* argv[])
             }
         }
     QGuiApplication::setHighDpiScaleFactorRoundingPolicy(should_floor ? Qt::HighDpiScaleFactorRoundingPolicy::Floor : Qt::HighDpiScaleFactorRoundingPolicy::PassThrough);
-    QGuiApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
+    QGuiApplication::setAttribute(should_floor ? Qt::AA_DisableHighDpiScaling : Qt::AA_EnableHighDpiScaling);
     //! App declaration
     atomic_dex::application atomic_app;
 
