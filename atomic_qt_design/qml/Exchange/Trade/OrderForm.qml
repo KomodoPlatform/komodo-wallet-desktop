@@ -222,8 +222,16 @@ FloatingBackground {
                 field.right_text: getTicker(false)
 
                 field.onTextChanged: {
-                    if(field.text !== preffered_order.price) resetPreferredPrice()
                     onInputChanged()
+                }
+
+                function resetPrice() {
+                    if(orderIsSelected()) resetPreferredPrice()
+                }
+
+                field.onPressed: resetPrice()
+                field.onFocusChanged: {
+                    if(field.activeFocus) resetPrice()
                 }
             }
 
@@ -252,15 +260,6 @@ FloatingBackground {
                             input_volume_slider.value = parseFloat(field.text)
                             input_volume_slider.updating_from_text_field = false
                         }
-                    }
-
-                    function resetPrice() {
-                        if(!my_side && orderIsSelected()) resetPreferredPrice()
-                    }
-
-                    field.onPressed: resetPrice()
-                    field.onFocusChanged: {
-                        if(field.activeFocus) resetPrice()
                     }
                 }
 
