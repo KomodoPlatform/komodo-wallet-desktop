@@ -397,15 +397,13 @@ namespace atomic_dex
         }
         else
         {
-            //! Todo pickup from api open rates
-
             if (m_usd_rate_providers.find(ticker) == m_usd_rate_providers.cend())
             {
                 ec = dextop_error::unknown_ticker_for_rate_conversion;
                 return "0.00";
             }
             t_float_50 tmp_current_price = t_float_50(m_usd_rate_providers.at(ticker)) * m_other_fiats_rates->at("rates").at(fiat).get<double>();
-            current_price                = tmp_current_price.str();
+            current_price = tmp_current_price.str();
         }
 
         if (adjusted)

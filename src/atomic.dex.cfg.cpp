@@ -52,6 +52,8 @@ namespace atomic_dex
         j.at("current_fiat").get_to(config.current_fiat);
         j.at("available_fiat").get_to(config.available_fiat);
         j.at("possible_currencies").get_to(config.possible_currencies);
+        j.at("current_currency_sign").get_to(config.current_currency_sign);
+        j.at("available_signs").get_to(config.available_currency_signs);
     }
 
     void

@@ -22,12 +22,14 @@ namespace atomic_dex
 {
     struct cfg
     {
-        std::string                current_lang{"en"};
-        std::string                current_currency;
-        std::string                current_fiat;
-        std::vector<std::string>   available_lang;
-        std::vector<std::string>   available_fiat;
-        std::array<std::string, 3> possible_currencies;
+        std::string                                  current_lang{"en"};
+        std::string                                  current_currency;
+        std::string                                  current_fiat;
+        std::string                                  current_currency_sign;
+        std::unordered_map<std::string, std::string> available_currency_signs;
+        std::vector<std::string>                     available_lang;
+        std::vector<std::string>                     available_fiat;
+        std::array<std::string, 3>                   possible_currencies;
     };
 
     void               from_json(const nlohmann::json& j, cfg& config);
