@@ -9,7 +9,8 @@ import "../../Constants"
 RowLayout {
     readonly property double price: !orderIsSelected() ? getCalculatedPrice() : preffered_order.price
     readonly property bool invalid_cex_price: parseFloat(cex_price) === 0
-    readonly property double price_diff: invalid_cex_price ? 0 : 100 * (1 - parseFloat(price) / parseFloat(cex_price))
+    readonly property double price_diff: invalid_cex_price ? 0 : 100 * (1 - parseFloat(price) / parseFloat(cex_price)) *
+                                                                                                            (sell_mode ? 1 : -1)
 
     readonly property int fontSize: Style.textSizeSmall1
     readonly property int fontSizeBigger: Style.textSizeSmall2
