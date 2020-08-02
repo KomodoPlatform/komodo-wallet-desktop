@@ -362,12 +362,27 @@ Item {
                 anchors.bottom: parent.bottom
                 anchors.rightMargin: layout_margin
 
+                InnerBackground {
+                    id: graph_bg
+
+                    anchors.left: parent.left
+                    anchors.right: parent.right
+                    anchors.top: parent.top
+                    anchors.bottom: selectors.top
+                    anchors.bottomMargin: layout_margin * 2
+
+                    CandleStickChart {
+                        anchors.fill: parent
+                    }
+                }
+
 
                 // Ticker Selectors
                 RowLayout {
                     id: selectors
                     anchors.horizontalCenter: parent.horizontalCenter
-                    anchors.top: parent.top
+                    anchors.bottom: orderbook.top
+                    anchors.bottomMargin: layout_margin
                     spacing: 40
 
                     TickerSelector {
@@ -390,24 +405,19 @@ Item {
                     }
                 }
 
-                InnerBackground {
-                    id: graph_bg
-
-                    anchors.left: parent.left
-                    anchors.right: parent.right
-                    anchors.top: selectors.bottom
-                    anchors.topMargin: layout_margin
-                    anchors.bottom: orderbook.top
-                    anchors.bottomMargin: layout_margin * 2
-
-                    CandleStickChart {
-                        anchors.fill: parent
-                    }
-                }
-
                 Orderbook {
                     id: orderbook
                     height: 250
+                    anchors.left: parent.left
+                    anchors.right: parent.right
+                    anchors.bottom: price_line.top
+                    anchors.bottomMargin: layout_margin
+                }
+
+
+                // Price
+                PriceLine {
+                    id: price_line
                     anchors.left: parent.left
                     anchors.right: parent.right
                     anchors.bottom: parent.bottom
@@ -470,11 +480,6 @@ Item {
                                                              (form_rel.fieldsAreFilled() && !form_rel.higherThanMinTradeAmount()))
                 }
             }
-        }
-
-        // Price
-        PriceLine {
-            Layout.alignment: Qt.AlignHCenter
         }
 
         ConfirmTradeModal {
