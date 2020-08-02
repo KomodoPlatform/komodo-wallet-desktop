@@ -69,12 +69,16 @@ Item {
         preffered_order.price_numer = price_numer
         preffered_order = preffered_order
 
+        const volume_text = General.formatDouble(quantity)
         const price_text = General.formatDouble(price)
-        form_base.price_field.text = price_text
-        form_rel.price_field.text = price_text
-
-        form_base.updateRelAmount(true)
-        form_rel.updateRelAmount(true)
+        if(is_asks) {
+            form_rel.field.text = volume_text
+            form_rel.price_field.text = price_text
+        }
+        else {
+            form_base.field.text = volume_text
+            form_base.price_field.text = price_text
+        }
 
         getCurrentForm().field.forceActiveFocus()
     }

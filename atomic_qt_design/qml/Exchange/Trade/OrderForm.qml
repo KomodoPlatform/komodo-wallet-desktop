@@ -16,7 +16,7 @@ FloatingBackground {
     property alias column_layout: form_layout
     property string total_amount: "0"
 
-    function updateRelAmount(set_order_volume) {
+    function updateRelAmount() {
         const price = parseFloat(getCurrentPrice())
         const base_volume = parseFloat(getVolume())
         let new_receive = base_volume * price
@@ -26,27 +26,15 @@ FloatingBackground {
             const selected_order = preffered_order
             // Cap the volume with the order volume
             const order_buy_volume = parseFloat(selected_order.volume)
-            if(set_order_volume || parseFloat(getVolume()) > order_buy_volume) {
-                const new_sell_volume = General.formatDouble(order_buy_volume)
-                input_volume.field.text = new_sell_volume
+            if(my_side) {
+                if(parseFloat(getVolume()) > order_buy_volume) {
+                    const new_sell_volume = General.formatDouble(order_buy_volume)
+                    input_volume.field.text = new_sell_volume
 
-                // Calculate new receive amount
-                new_receive = order_buy_volume * price
+                    // Calculate new receive amount
+                    new_receive = order_buy_volume * price
+                }
             }
-
-//                // If new rel volume is higher than the order max volume
-//                const max_rel_volume = parseFloat(selected_order.volume)
-//                if(new_receive > max_rel_volume) {
-//                    new_receive = max_rel_volume
-
-//                    // Set base depending on the capped rel
-//                    const max_base_volume = max_rel_volume / price
-//                    if(base_volume !== max_base_volume) {
-//                        const new_base_text = General.formatDouble(max_base_volume)
-//                        if(input_volume.field.text !== new_base_text)
-//                            input_volume.field.text = new_base_text
-//                    }
-//                }
         }
 
         // Set rel
@@ -126,7 +114,7 @@ FloatingBackground {
             // Therefore it will reset only if this info is set from ComboBox -> setPair
             // Or if it's from somewhere else like page change, in that case is_base is undefined
             if(is_base === undefined || is_base)
-                input_volume.field.text = getMaxTradableVolume(true)
+                input_volume.field.text = General.formatDouble(getMaxTradableVolume(true))
         }
         else {
             input_volume.field.text = ''
@@ -142,7 +130,7 @@ FloatingBackground {
             const amt = parseFloat(input_volume.field.text)
             const cap_with_fees = getMaxTradableVolume(false)
             if(amt > cap_with_fees) {
-                input_volume.field.text = cap_with_fees.toString()
+                input_volume.field.text = General.formatDouble(cap_with_fees.toString())
                 return true
             }
         }
