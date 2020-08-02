@@ -143,6 +143,11 @@ FloatingBackground {
     }
 
     function notEnoughBalance() {
+        // If sell side or buy side but there is no price, then just check the balance
+        if(my_side || General.isZero(getCurrentPrice()))
+            return parseFloat(getMaxVolume()) < General.getMinTradeAmount()
+
+        // If it's buy, and price exists then multiply and check
         return getNeededAmountToSpend(getMaxVolume()) < General.getMinTradeAmount()
     }
 

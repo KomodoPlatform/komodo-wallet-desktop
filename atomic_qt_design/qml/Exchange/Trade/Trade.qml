@@ -125,13 +125,6 @@ Item {
 
     function getTradeInfo(base, rel, amount, set_as_current=true) {
         if(inCurrentPage()) {
-            // Swap the trade info because of buy / sell, amount is already correct
-            if(!sell_mode) {
-                const tmp = base
-                base = rel
-                rel = tmp
-            }
-
             let info = API.get().get_trade_infos(base, rel, amount)
 
             console.log("Getting Trade info with parameters: ", base, rel, amount, " -  Result: ", JSON.stringify(info))
@@ -160,9 +153,10 @@ Item {
     }
 
     function updateTradeInfo(force=false) {
-        const base = getTicker(true)
-        const rel = getTicker(false)
-        const amount = getCurrentForm().getVolume()
+        const base = getTicker(sell_mode)
+        const rel = getTicker(!sell_mode)
+        const amount = sell_mode ? getCurrentForm().getVolume() :
+                                   General.formatDouble(getCurrentForm().getNeededAmountToSpend(getCurrentForm().getVolume()))
         if(force ||
             (base !== undefined && rel !== undefined && amount !== undefined &&
              base !== ''        && rel !== ''        && amount !== '' && amount !== '0')) {
