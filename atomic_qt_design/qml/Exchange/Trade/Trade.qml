@@ -302,16 +302,6 @@ Item {
         }
     }
 
-    function getSendAmountAfterFees(amount, set_as_current) {
-        const base = getTicker(true)
-        const rel = getTicker(false)
-
-        if(base === '' || rel === '') return 0
-
-        const info = getTradeInfo(getTicker(true), getTicker(false), amount, set_as_current)
-        return parseFloat(valid_trade_info ? info.input_final_value : amount)
-    }
-
     // No coins warning
     ColumnLayout {
         anchors.centerIn: parent

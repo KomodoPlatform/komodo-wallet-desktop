@@ -100,11 +100,20 @@ FloatingBackground {
     function getMaxTradableVolume(set_as_current) {
         // set_as_current should be true if input_volume is updated
         // if it's called for cap check, it should be false because that's not the current input_volume
-        return getSendAmountAfterFees(getMaxVolume(), set_as_current)
-    }
 
-    function setMax() {
-        input_volume.field.text = getMaxTradableVolume(true)
+        const base = getTicker(sell_mode)
+        const rel = getTicker(!sell_mode)
+        const amount = getMaxVolume()
+
+        if(base === '' || rel === '') return 0
+
+        const info = getTradeInfo(base, rel, amount, set_as_current)
+        const my_amt = parseFloat(valid_trade_info ? info.input_final_value : amount)
+        if(my_side) return my_amt
+
+        // If it's buy side, then volume input needs to be calculated with the current price
+        const price = parseFloat(getCurrentPrice())
+        return price === 0 ? 0 : my_amt / price
     }
 
     function reset(is_base) {
@@ -116,7 +125,8 @@ FloatingBackground {
             // We don't want to reset base balance at rel ticker change
             // Therefore it will reset only if this info is set from ComboBox -> setPair
             // Or if it's from somewhere else like page change, in that case is_base is undefined
-            if(is_base === undefined || is_base) setMax()
+            if(is_base === undefined || is_base)
+                input_volume.field.text = getMaxTradableVolume(true)
         }
         else {
             input_volume.field.text = ''
@@ -124,7 +134,11 @@ FloatingBackground {
     }
 
     function capVolume() {
-        if(inCurrentPage() && my_side && input_volume.field.acceptableInput) {
+        if(inCurrentPage() && input_volume.field.acceptableInput) {
+            // If price is 0 at buy side, don't cap it to 0, let the user edit
+            if(!my_side && General.isZero(getCurrentPrice()))
+                return false
+
             const amt = parseFloat(input_volume.field.text)
             const cap_with_fees = getMaxTradableVolume(false)
             if(amt > cap_with_fees) {
@@ -144,8 +158,9 @@ FloatingBackground {
 
     function notEnoughBalance() {
         // If sell side or buy side but there is no price, then just check the balance
-        if(my_side || General.isZero(getCurrentPrice()))
+        if(my_side || General.isZero(getCurrentPrice())) {
             return parseFloat(getMaxVolume()) < General.getMinTradeAmount()
+        }
 
         // If it's buy, and price exists then multiply and check
         return getNeededAmountToSpend(getMaxVolume()) < General.getMinTradeAmount()
@@ -215,7 +230,7 @@ FloatingBackground {
                 Layout.rightMargin: top_line.Layout.rightMargin
                 Layout.bottomMargin: -6
                 Layout.fillWidth: true
-                field.enabled: root.enabled && !shouldBlockInput()
+                enabled: input_volume.field.enabled
 
                 field.left_text: API.get().empty_string + (qsTr("Price"))
                 field.right_text: getTicker(false)
