@@ -1,9 +1,9 @@
 #include <QApplication>
 #include <QDebug>
-#include <QQmlApplicationEngine>
-#include <QWindow>
 #include <QDesktopWidget>
+#include <QQmlApplicationEngine>
 #include <QScreen>
+#include <QWindow>
 #include <QtQml>
 
 #define QZXING_QML
@@ -48,7 +48,7 @@ main([[maybe_unused]] int argc, [[maybe_unused]] char* argv[])
 #endif
 {
     // Determine if we pass through or floor
-    //SetThreadDpiAwarenessContext(DPI_AWARENESS_CONTEXT_PER_MONITOR_AWARE_V2);
+    // SetThreadDpiAwarenessContext(DPI_AWARENESS_CONTEXT_PER_MONITOR_AWARE_V2);
 
     std::signal(SIGABRT, signal_handler);
     //! Project
@@ -87,26 +87,31 @@ main([[maybe_unused]] int argc, [[maybe_unused]] char* argv[])
     spdlog::info("Logger successfully initialized");
 
     bool should_floor = false;
+#if defined(_WIN32) || defined(WIN32) || defined(__linux__)
+    {
+        int          ac = 0;
+        QApplication tmp(ac, nullptr);
+        double       min_window_size = 800.0;
+        auto         screens         = tmp.screens();
+        for (auto&& cur_screen: screens)
         {
-            int ac = 0;
-            QApplication tmp(ac, nullptr);
-            double min_window_size = 800.0;
-            auto screens = tmp.screens();
-            for (auto&& cur_screen : screens) {
-                spdlog::trace("physical dpi: {}", cur_screen->physicalDotsPerInch());
-                spdlog::trace("logical dpi: {}", cur_screen->logicalDotsPerInch());
-                double scale = cur_screen->logicalDotsPerInch() / 96.0;
-                spdlog::trace("scale: {}", scale);
-                
-                double height = cur_screen->availableSize().height();
-                spdlog::trace("height: {}", height);
-                if (scale * min_window_size > height) {
-                    should_floor = true;
-                    spdlog::trace("should floor");
-                }
+            spdlog::trace("physical dpi: {}", cur_screen->physicalDotsPerInch());
+            spdlog::trace("logical dpi: {}", cur_screen->logicalDotsPerInch());
+            double scale = cur_screen->logicalDotsPerInch() / 96.0;
+            spdlog::trace("scale: {}", scale);
+
+            double height = cur_screen->availableSize().height();
+            spdlog::trace("height: {}", height);
+            if (scale * min_window_size > height)
+            {
+                should_floor = true;
+                spdlog::trace("should floor");
             }
         }
-    QGuiApplication::setHighDpiScaleFactorRoundingPolicy(should_floor ? Qt::HighDpiScaleFactorRoundingPolicy::Floor : Qt::HighDpiScaleFactorRoundingPolicy::PassThrough);
+    }
+#endif
+    QGuiApplication::setHighDpiScaleFactorRoundingPolicy(
+        should_floor ? Qt::HighDpiScaleFactorRoundingPolicy::Floor : Qt::HighDpiScaleFactorRoundingPolicy::PassThrough);
     QGuiApplication::setAttribute(should_floor ? Qt::AA_DisableHighDpiScaling : Qt::AA_EnableHighDpiScaling);
     //! App declaration
     atomic_dex::application atomic_app;
@@ -114,7 +119,7 @@ main([[maybe_unused]] int argc, [[maybe_unused]] char* argv[])
     //! QT
     int                           ac  = 0;
     std::shared_ptr<QApplication> app = std::make_shared<QApplication>(ac, nullptr);
-    
+
     atomic_app.set_qt_app(app);
 
     //! QT QML
