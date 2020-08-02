@@ -76,18 +76,12 @@ Item {
         form_base.updateRelAmount(true)
         form_rel.updateRelAmount(true)
 
-        form_base.field.forceActiveFocus()
+        getCurrentForm().field.forceActiveFocus()
     }
 
     function getCalculatedPrice() {
-        if(sell_mode) {
-            let sell_price = form_base.price_field.text
-            return General.isZero(sell_price) ? "0" : sell_price
-        }
-        else {
-            let buy_price = form_rel.price_field.text
-            return General.isZero(buy_price) ? "0" : buy_price
-        }
+        let price = getCurrentForm().price_field.text
+        return General.isZero(price) ? "0" : price
     }
 
     function getCurrentPrice() {
@@ -125,7 +119,7 @@ Item {
     }
 
     function notEnoughBalance() {
-        return form_base.notEnoughBalance()
+        return getCurrentForm().notEnoughBalance()
     }
 
 
@@ -282,16 +276,23 @@ Item {
     function trade(base, rel) {
         updateTradeInfo(true) // Force update trade info and cap the value for one last time
 
+        const current_form = getCurrentForm()
+
         const is_created_order = !orderIsSelected()
         const price_denom = preffered_order.price_denom
         const price_numer = preffered_order.price_numer
         const price = getCurrentPrice()
-        const volume = form_base.field.text
-        console.log("QML place_sell_order: max balance:", form_base.getMaxVolume())
-        console.log("QML place_sell_order: params:", base, " <-> ", rel, "  /  price:", price, "  /  volume:", volume, "  /  is_created_order:", is_created_order, "  /  price_denom:", price_denom, "  /  price_numer:", price_numer)
-        console.log("QML place_sell_order: trade info:", JSON.stringify(curr_trade_info))
+        const volume = current_form.field.text
+        console.log("QML place order: max balance:", current_form.getMaxVolume())
+        console.log("QML place order: params:", base, " <-> ", rel, "  /  price:", price, "  /  volume:", volume, "  /  is_created_order:", is_created_order, "  /  price_denom:", price_denom, "  /  price_numer:", price_numer)
+        console.log("QML place order: trade info:", JSON.stringify(curr_trade_info))
 
-        const result = API.get().place_sell_order(base, rel, price, volume, is_created_order, price_denom, price_numer)
+        let result
+
+        if(sell_mode)
+            result = API.get().place_sell_order(base, rel, price, volume, is_created_order, price_denom, price_numer)
+        else
+            result = API.get().place_buy_order(base, rel, price, volume, is_created_order, price_denom, price_numer)
 
         if(result === "") {
             action_result = "success"

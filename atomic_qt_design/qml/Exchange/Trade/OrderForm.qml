@@ -75,22 +75,19 @@ FloatingBackground {
         return General.isEthEnabled() && API.get().do_i_have_enough_funds("ETH", curr_trade_info.erc_fees)
     }
 
-    function higherThanMinTradeAmount() {
-        return input_volume.field.text !== '' && parseFloat(input_volume.field.text) >= General.getMinTradeAmount()
+    function higherThanMinTradeAmount(is_base) {
+        if(input_volume.field.text === '') return false
+        return parseFloat(is_base ? input_volume.field.text : total_amount) >= General.getMinTradeAmount()
     }
 
     function isValid() {
         let valid = true
 
-        // Both sides
         if(valid) valid = fieldsAreFilled()
         if(valid) valid = higherThanMinTradeAmount()
 
-        if(!my_side) return valid
-
-        // Sell side
         if(valid) valid = !notEnoughBalance()
-        if(valid) valid = API.get().do_i_have_enough_funds(getTicker(my_side), input_volume.field.text)
+        if(valid) valid = API.get().do_i_have_enough_funds(getTicker(my_side), General.formatDouble(getNeededAmountToSpend(input_volume.field.text)))
         if(valid && hasEthFees()) valid = hasEnoughEthForFees()
 
         return valid
@@ -139,12 +136,18 @@ FloatingBackground {
         return false
     }
 
+    function getNeededAmountToSpend(volume) {
+        volume = parseFloat(volume)
+        if(my_side) return volume
+        else        return volume * parseFloat(getCurrentPrice())
+    }
+
     function notEnoughBalance() {
-        return my_side && parseFloat(getMaxVolume()) < General.getMinTradeAmount()
+        return getNeededAmountToSpend(getMaxVolume()) < General.getMinTradeAmount()
     }
 
     function shouldBlockInput() {
-        return my_side && (notEnoughBalance() || notEnoughBalanceForFees())
+        return notEnoughBalance() || notEnoughBalanceForFees()
     }
 
     function onInputChanged() {
