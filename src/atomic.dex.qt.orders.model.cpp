@@ -313,7 +313,8 @@ namespace atomic_dex
             data.order_error_state   = error.first;
             data.order_error_message = error.second;
         }
-        if (this->m_swaps_id_registry.find(contents.uuid) == m_swaps_id_registry.end()) {
+        if (this->m_swaps_id_registry.find(contents.uuid) == m_swaps_id_registry.end())
+        {
             this->m_swaps_id_registry.emplace(contents.uuid);
         }
         this->m_model_data.push_back(std::move(data));
@@ -341,9 +342,13 @@ namespace atomic_dex
             update_value(OrdersRoles::OrderErrorStateRole, state, idx, *this);
             update_value(OrdersRoles::OrderErrorMessageRole, msg, idx, *this);
             emit lengthChanged();
-        } else {
-            bool       is_maker = boost::algorithm::to_lower_copy(contents.type) == "maker";
-            spdlog::error("swap with id {} and ticker: {}, not found in the model, cannot update, forcing an initialization instead", contents.uuid, is_maker ? contents.maker_coin : contents.taker_coin);
+        }
+        else
+        {
+            bool is_maker = boost::algorithm::to_lower_copy(contents.type) == "maker";
+            spdlog::error(
+                "swap with id {} and ticker: {}, not found in the model, cannot update, forcing an initialization instead", contents.uuid,
+                is_maker ? contents.maker_coin : contents.taker_coin);
             initialize_swap(contents);
         }
     }
@@ -355,10 +360,10 @@ namespace atomic_dex
         beginInsertRows(QModelIndex(), this->m_model_data.count(), this->m_model_data.count());
         order_data data{
             .is_maker       = contents.order_type == "maker",
-            .base_coin      = QString::fromStdString(contents.base),
-            .rel_coin       = QString::fromStdString(contents.rel),
-            .base_amount    = QString::fromStdString(contents.base_amount),
-            .rel_amount     = QString::fromStdString(contents.rel_amount),
+            .base_coin      = contents.action == "Sell" ? QString::fromStdString(contents.base) : QString::fromStdString(contents.rel),
+            .rel_coin       = contents.action == "Sell" ? QString::fromStdString(contents.rel) : QString::fromStdString(contents.base),
+            .base_amount    = contents.action == "Sell" ? QString::fromStdString(contents.base_amount) : QString::fromStdString(contents.rel_amount),
+            .rel_amount     = contents.action == "Sell" ? QString::fromStdString(contents.rel_amount) : QString::fromStdString(contents.base_amount),
             .order_type     = QString::fromStdString(contents.order_type),
             .human_date     = QString::fromStdString(contents.human_timestamp),
             .unix_timestamp = static_cast<unsigned long long>(contents.timestamp),

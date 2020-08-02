@@ -582,6 +582,7 @@ namespace mm2::api
         std::string base_amount;
         std::string rel_amount;
         std::string human_timestamp;
+        std::string action;
     };
 
     struct my_orders_answer
