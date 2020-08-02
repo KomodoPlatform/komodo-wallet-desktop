@@ -455,18 +455,16 @@ Item {
                     color: Style.colorRed
 
                     text_value: API.get().empty_string + (
-                                                        notEnoughBalance() ? (qsTr("%1 balance is lower than minimum trade amount").arg(selector_base.getTicker()) + " : " + General.getMinTradeAmount()) :
-                                                        notEnoughBalanceForFees() ?
-                                                        (qsTr("Not enough balance for the fees. Need at least %1 more", "AMT TICKER").arg(General.formatCrypto("", parseFloat(curr_trade_info.amount_needed), selector_base.getTicker()))) :
-                                                        (form_base.hasEthFees() && !form_base.hasEnoughEthForFees()) ? (qsTr("Not enough ETH for the transaction fee")) :
-                                                        (form_base.fieldsAreFilled() && !form_base.higherThanMinTradeAmount()) ? (qsTr("Sell amount is lower than minimum trade amount") + " : " + General.getMinTradeAmount()) :
-                                                        (form_rel.fieldsAreFilled() && !form_rel.higherThanMinTradeAmount()) ? (qsTr("Receive amount is lower than minimum trade amount") + " : " + General.getMinTradeAmount()) : ""
-
+                                    General.isZero(getCurrentPrice()) ? (qsTr("Please fill the price field")) :
+                                    notEnoughBalance() ? (qsTr("%1 balance is lower than minimum trade amount").arg(getTicker(sell_mode)) + " : " + General.getMinTradeAmount()) :
+                                    notEnoughBalanceForFees() ?
+                                        (qsTr("Not enough balance for the fees. Need at least %1 more", "AMT TICKER").arg(General.formatCrypto("", parseFloat(curr_trade_info.amount_needed), getTicker(sell_mode)))) :
+                                    General.isZero(getCurrentForm().getVolume()) ? (qsTr("Please fill the volume field")) :
+                                    (getCurrentForm().hasEthFees() && !getCurrentForm().hasEnoughEthForFees()) ? (qsTr("Not enough ETH for the transaction fee")) :
+                                    (getCurrentForm().fieldsAreFilled() && !getCurrentForm().higherThanMinTradeAmount()) ? ((qsTr("Amount is lower than minimum trade amount")) + " : " + General.getMinTradeAmount()) : ""
                               )
-                    visible: form_base.fieldsAreFilled() && (notEnoughBalanceForFees() ||
-                                                             (form_base.hasEthFees() && !form_base.hasEnoughEthForFees()) ||
-                                                             !form_base.higherThanMinTradeAmount() ||
-                                                             (form_rel.fieldsAreFilled() && !form_rel.higherThanMinTradeAmount()))
+
+                    visible: text_value !== ""
                 }
             }
         }
