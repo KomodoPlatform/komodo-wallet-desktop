@@ -16,33 +16,6 @@ FloatingBackground {
     property alias column_layout: form_layout
     property string total_amount: "0"
 
-    function updateRelAmount() {
-        const price = parseFloat(getCurrentPrice())
-        const base_volume = parseFloat(getVolume())
-        let new_receive = base_volume * price
-
-        // If an order is selected
-        if(orderIsSelected()) {
-            const selected_order = preffered_order
-            // Cap the volume with the order volume
-            const order_buy_volume = parseFloat(selected_order.volume)
-            if(my_side) {
-                if(parseFloat(getVolume()) > order_buy_volume) {
-                    const new_sell_volume = General.formatDouble(order_buy_volume)
-                    input_volume.field.text = new_sell_volume
-
-                    // Calculate new receive amount
-                    new_receive = order_buy_volume * price
-                }
-            }
-        }
-
-        // Set rel
-        const new_receive_text = General.formatDouble(new_receive)
-        if(total_amount !== new_receive_text)
-            total_amount = new_receive_text
-    }
-
     function getFiatText(v, ticker) {
         return General.formatFiat('', v === '' ? 0 : API.get().get_fiat_from_amount(ticker, v), API.get().current_fiat) + " " +  General.cex_icon
     }
@@ -127,10 +100,24 @@ FloatingBackground {
             if(!my_side && General.isZero(getCurrentPrice()))
                 return false
 
-            const amt = parseFloat(input_volume.field.text)
+            const input_volume_value = parseFloat(input_volume.field.text)
+            let amt = input_volume_value
+
+            // Cap with balance
             const cap_with_fees = getMaxTradableVolume(false)
-            if(amt > cap_with_fees) {
-                input_volume.field.text = General.formatDouble(cap_with_fees.toString())
+            if(amt > cap_with_fees)
+                amt = cap_with_fees
+
+            // Cap with order volume
+            if(orderIsSelected()) {
+                const order_buy_volume = parseFloat(preffered_order.volume)
+                if(amt > order_buy_volume)
+                    amt = order_buy_volume
+            }
+
+            // Set the field
+            if(amt !== input_volume_value) {
+                input_volume.field.text = General.formatDouble(amt)
                 return true
             }
         }
@@ -161,8 +148,12 @@ FloatingBackground {
     function onInputChanged() {
         if(capVolume()) updateTradeInfo()
 
-        // Rel is dependant on Base if price is set so update that
-        updateRelAmount()
+        // Recalculate total amount
+        const price = parseFloat(getCurrentPrice())
+        const base_volume = parseFloat(getVolume())
+        const new_receive_text = General.formatDouble(base_volume * price)
+        if(total_amount !== new_receive_text)
+            total_amount = new_receive_text
 
         // Update the new fees, input_volume might be changed
         updateTradeInfo()
