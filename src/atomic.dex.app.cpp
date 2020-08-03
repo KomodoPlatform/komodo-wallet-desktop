@@ -501,6 +501,18 @@ namespace atomic_dex
     }
 
     QString
+    application::get_current_currency_sign() const noexcept
+    {
+        return QString::fromStdString(this->m_config.current_currency_sign);
+    }
+
+    QString
+    application::get_current_fiat_sign() const noexcept
+    {
+        return QString::fromStdString(this->m_config.current_fiat_sign);
+    }
+
+    QString
     application::get_current_currency() const noexcept
     {
         return QString::fromStdString(this->m_config.current_currency);
@@ -515,6 +527,8 @@ namespace atomic_dex
             atomic_dex::change_currency(m_config, current_currency.toStdString());
             this->m_portfolio->update_currency_values();
             emit on_currency_changed();
+            emit on_currency_sign_changed();
+            emit on_fiat_sign_changed();
         }
     }
 
