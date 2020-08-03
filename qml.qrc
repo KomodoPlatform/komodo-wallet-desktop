@@ -107,9 +107,10 @@
         <file>atomic_qt_design/qml/Exchange/Trade/ConfirmTradeModal.qml</file>
         <file>atomic_qt_design/qml/Exchange/Trade/PriceLine.qml</file>
         <file>atomic_qt_design/qml/Exchange/Trade/OrderForm.qml</file>
-        <file>atomic_qt_design/qml/Exchange/Trade/OrderReceiveModal.qml</file>
-        <file>atomic_qt_design/qml/Exchange/Trade/OrderbookModal.qml</file>
+        <file>atomic_qt_design/qml/Exchange/Trade/OrderbookSection.qml</file>
+        <file>atomic_qt_design/qml/Exchange/Trade/Orderbook.qml</file>
         <file>atomic_qt_design/qml/Exchange/Trade/CandleStickChart.qml</file>
+        <file>atomic_qt_design/qml/Exchange/Trade/TickerSelector.qml</file>
         <file>atomic_qt_design/qml/Exchange/Orders/Orders.qml</file>
         <file>atomic_qt_design/qml/Exchange/Orders/OrderList.qml</file>
         <file>atomic_qt_design/qml/Exchange/History/History.qml</file>
@@ -134,6 +135,7 @@
         <file>atomic_qt_design/qml/Components/AddressField.qml</file>
         <file>atomic_qt_design/qml/Components/AddressFieldWithTitle.qml</file>
         <file>atomic_qt_design/qml/Components/AmountField.qml</file>
+        <file>atomic_qt_design/qml/Components/AmountFieldWithInfo.qml</file>
         <file>atomic_qt_design/qml/Components/AmountIntField.qml</file>
         <file>atomic_qt_design/qml/Components/CopyFieldButton.qml</file>
         <file>atomic_qt_design/qml/Components/HideFieldButton.qml</file>

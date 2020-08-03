@@ -157,7 +157,7 @@ namespace atomic_dex
 
         if (s >= 5s)
         {
-            spawn([this]() { fetch_current_orderbook_thread(); });
+            spawn([this]() { fetch_current_orderbook_thread(false); });
             m_orderbook_clock = std::chrono::high_resolution_clock::now();
         }
 
@@ -487,48 +487,40 @@ namespace atomic_dex
         return m_coins_informations.at(ticker);
     }
 
-    std::vector<t_orderbook_answer>
-    mm2::get_orderbook(const std::string& ticker, t_mm2_ec& ec) const noexcept
+    t_orderbook_answer
+    mm2::get_orderbook(t_mm2_ec& ec) const noexcept
     {
+        auto&& [base, rel]     = this->m_synchronized_ticker_pair.get();
+        const std::string pair = base + "/" + rel;
         if (m_current_orderbook.empty())
         {
             ec = dextop_error::orderbook_empty;
             return {};
         }
-        if (m_current_orderbook.find(ticker) == m_current_orderbook.cend())
+        if (m_current_orderbook.find(pair) == m_current_orderbook.cend())
         {
             ec = dextop_error::orderbook_ticker_not_found;
             return {};
         }
-        return m_current_orderbook.at(ticker);
+        return m_current_orderbook.at(pair);
     }
 
     void
-    mm2::process_orderbook(std::string base)
+    mm2::process_orderbook(bool is_a_reset)
     {
-        auto&&                          coins = get_enabled_coins();
-        std::vector<t_orderbook_answer> out;
-        out.reserve(coins.size() - 1);
-
-        for (auto&& current_coin: coins)
+        auto&& [base, rel] = m_synchronized_ticker_pair.get();
+        t_orderbook_request request{.base = base, .rel = rel};
+        auto                answer = rpc_orderbook(std::move(request));
+        if (answer.rpc_result_code not_eq -1)
         {
-            if (current_coin.ticker != base)
-            {
-                t_orderbook_request request{.base = base, .rel = current_coin.ticker};
-                auto                answer = rpc_orderbook(std::move(request));
-                if (answer.rpc_result_code not_eq -1)
-                {
-                    out.emplace_back(answer);
-                }
-            }
+            m_current_orderbook.insert_or_assign(base + "/" + rel, answer);
+            this->dispatcher_.trigger<process_orderbook_finished>(is_a_reset);
         }
-        m_current_orderbook.insert_or_assign(base, out);
     }
 
     void
-    mm2::fetch_current_orderbook_thread()
+    mm2::fetch_current_orderbook_thread(bool is_a_reset)
     {
-        ////loguru::set_thread_name("orderbook thread");
         spdlog::info("Fetch current orderbook");
 
         //! If thread is not active ex: we are not on the trading page anymore, we continue sleeping.
@@ -538,12 +530,7 @@ namespace atomic_dex
             return;
         }
 
-        // std::string current = (*m_current_orderbook.begin()).first;
-
-        this->m_orderbook_mutex.try_lock();
-        std::string copy = m_current_orderbook_ticker_base;
-        this->m_orderbook_mutex.unlock();
-        process_orderbook(m_current_orderbook_ticker_base);
+        process_orderbook(is_a_reset);
     }
 
     void
@@ -770,7 +757,8 @@ namespace atomic_dex
         t_coins                        coins = get_enabled_coins();
         std::vector<std::future<void>> futures;
 
-        if (not m_current_orderbook_ticker_rel.empty())
+        auto&& [orderbook_ticker_base, orderbook_ticker_rel] = m_synchronized_ticker_pair.get();
+        if (not m_synchronized_ticker_pair.get().second.empty())
         {
             futures.reserve(2);
         }
@@ -779,21 +767,21 @@ namespace atomic_dex
             futures.reserve(1);
         }
 
-        auto rpc_fees = [this]() {
-            t_get_trade_fee_request req{.coin = this->m_current_orderbook_ticker_base};
+        auto rpc_fees = [this, orderbook_ticker_base = orderbook_ticker_base, orderbook_ticker_rel = orderbook_ticker_rel]() {
+            t_get_trade_fee_request req{.coin = orderbook_ticker_base};
             auto                    answer = ::mm2::api::rpc_get_trade_fee(std::move(req));
             if (answer.rpc_result_code == 200)
             {
-                this->m_trade_fees_registry.insert_or_assign(this->m_current_orderbook_ticker_base, answer);
+                this->m_trade_fees_registry.insert_or_assign(orderbook_ticker_base, answer);
             }
 
-            if (not m_current_orderbook_ticker_rel.empty())
+            if (not orderbook_ticker_rel.empty())
             {
-                t_get_trade_fee_request req_rel{.coin = this->m_current_orderbook_ticker_rel};
+                t_get_trade_fee_request req_rel{.coin = orderbook_ticker_rel};
                 auto                    answer_rel = ::mm2::api::rpc_get_trade_fee(std::move(req_rel));
                 if (answer_rel.rpc_result_code == 200)
                 {
-                    this->m_trade_fees_registry.insert_or_assign(this->m_current_orderbook_ticker_rel, answer_rel);
+                    this->m_trade_fees_registry.insert_or_assign(orderbook_ticker_rel, answer_rel);
                 }
             }
         };
@@ -876,23 +864,13 @@ namespace atomic_dex
         spdlog::debug("{} l{} f[{}]", __FUNCTION__, __LINE__, fs::path(__FILE__).filename().string());
 
         spdlog::info("refreshing orderbook pair: [{} / {}]", evt.base, evt.rel);
-        const auto key = evt.base;
-
-        {
-            std::scoped_lock lock(m_orderbook_mutex);
-            this->m_current_orderbook_ticker_base = evt.base;
-            if (not evt.rel.empty())
-            {
-                this->m_current_orderbook_ticker_rel = evt.rel;
-            }
-        }
+        this->m_synchronized_ticker_pair = std::make_pair(evt.base, evt.rel);
 
         if (this->m_mm2_running)
         {
             spawn([this]() {
-                // loguru::set_thread_name("r_book thread");
                 process_fees();
-                fetch_current_orderbook_thread();
+                fetch_current_orderbook_thread(true);
             });
         }
     }

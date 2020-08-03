@@ -77,6 +77,8 @@ Item {
         backgroundColor: chart.backgroundColor
         plotArea: Qt.rect(chart.plotArea.x, 0, chart.plotArea.width, height)
 
+        onHeightChanged: series.updateLastValueY()
+
         CandlestickSeries {
             id: series_area
 
@@ -628,7 +630,13 @@ Item {
     }
 
     DefaultBusyIndicator {
-        visible: !chart.visible
+        visible: pair_supported && !chart.visible
+        anchors.centerIn: parent
+    }
+
+    DefaultText {
+        visible: !pair_supported
+        text_value: API.get().empty_string + (qsTr("There is no chart data for this pair yet"))
         anchors.centerIn: parent
     }
 }

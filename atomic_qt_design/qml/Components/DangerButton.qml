@@ -5,11 +5,7 @@ import QtQuick.Controls 2.12
 import "../Constants"
 
 DefaultButton {
-    colorDisabled: Style.colorButtonDangerDisabled
-    colorHovered: Style.colorButtonDangerHovered
-    colorEnabled: Style.colorButtonDangerEnabled
-    colorTextDisabled: Style.colorWhite8
-    colorTextEnabled: Style.colorWhite1
+    button_type: "danger"
 }
 
 /*##^##

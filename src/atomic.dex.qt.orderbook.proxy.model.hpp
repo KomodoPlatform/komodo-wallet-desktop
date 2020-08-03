@@ -14,9 +14,25 @@
  *                                                                            *
  ******************************************************************************/
 
-#include "atomic.dex.qt.bindings.hpp"
+#pragma once
+
+#include <QSortFilterProxyModel>
 
 namespace atomic_dex
 {
-    qt_send_answer::qt_send_answer(QObject* parent) : QObject(parent) {}
+    class orderbook_proxy_model final : public QSortFilterProxyModel
+    {
+      Q_OBJECT
+
+      public:
+        //! Constructor
+        orderbook_proxy_model(QObject* parent);
+
+        //! Destructor
+        ~orderbook_proxy_model() final;
+
+      protected:
+        //! Override member functions
+        [[nodiscard]] bool lessThan(const QModelIndex& source_left, const QModelIndex& source_right) const final;;
+    };
 } // namespace atomic_dex

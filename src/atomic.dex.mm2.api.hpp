@@ -388,6 +388,10 @@ namespace mm2::api
         std::string pubkey;
         std::size_t age;
         std::size_t zcredits;
+        std::string total;
+        std::string uuid;
+        std::string depth_percent;
+        bool        is_mine;
     };
 
     void from_json(const nlohmann::json& j, order_contents& contents);
@@ -405,6 +409,8 @@ namespace mm2::api
         std::size_t                 timestamp;
         std::size_t                 netid;
         std::string                 human_timestamp; //! Moment of the orderbook request human readeable
+        std::string                 asks_total_volume;
+        std::string                 bids_total_volume;
 
         //! Internal
         std::string raw_result;
@@ -436,6 +442,9 @@ namespace mm2::api
         std::string rel;
         std::string price;
         std::string volume;
+        bool        is_created_order;
+        std::string price_denom;
+        std::string price_numer;
     };
 
     void to_json(nlohmann::json& j, const buy_request& request);
@@ -573,6 +582,7 @@ namespace mm2::api
         std::string base_amount;
         std::string rel_amount;
         std::string human_timestamp;
+        std::string action;
     };
 
     struct my_orders_answer
