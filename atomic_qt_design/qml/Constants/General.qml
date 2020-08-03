@@ -119,14 +119,9 @@ QtObject {
     }
 
     function formatFiat(received, amount, fiat) {
-        const symbols = {
-            "USD": "$",
-            "EUR": "€",
-            "BTC": Qt.platform.os === 'linux' ? "฿" : "₿",
-            "KMD": "KMD",
-        }
-
-        return diffPrefix(received) + symbols[fiat] + " " + nFormatter(parseFloat(amount), 2)
+        return diffPrefix(received) +
+                (fiat === API.get().current_fiat ? API.get().current_fiat_sign : API.get().current_currency_sign)
+                + " " + nFormatter(parseFloat(amount), 2)
     }
 
     function formatPercent(value, show_prefix=true) {
