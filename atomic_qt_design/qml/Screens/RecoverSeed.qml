@@ -19,6 +19,7 @@ SetupPage {
     function onClickedConfirm(password, seed, wallet_name) {
         if(API.get().create(password, seed, wallet_name)) {
             console.log("Success: Recover seed")
+            selected_wallet_name = wallet_name
             postConfirmSuccess()
             return true
         }

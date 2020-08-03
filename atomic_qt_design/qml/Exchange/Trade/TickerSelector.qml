@@ -55,7 +55,7 @@ RowLayout {
     function updateTickerList(new_ticker) {
         recursive_update = new_ticker !== undefined
 
-        ticker_list = my_side ? General.getTickersAndBalances(getFilteredCoins()) : General.getTickers(getFilteredCoins())
+        ticker_list = General.getTickersAndBalances(getFilteredCoins())
 
         update_timer.running = true
     }
