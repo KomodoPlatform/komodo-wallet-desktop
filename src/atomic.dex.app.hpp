@@ -63,6 +63,7 @@ namespace atomic_dex
         Q_PROPERTY(QVariant update_status READ get_update_status NOTIFY updateStatusChanged)
         Q_PROPERTY(portfolio_model* portfolio_mdl READ get_portfolio NOTIFY portfolioChanged)
         Q_PROPERTY(QString current_currency READ get_current_currency WRITE set_current_currency NOTIFY on_currency_changed)
+        Q_PROPERTY(QString current_currency_sign READ get_current_currency_sign NOTIFY on_currency_sign_changed)
         Q_PROPERTY(QString current_fiat READ get_current_fiat WRITE set_current_fiat NOTIFY on_fiat_changed)
         Q_PROPERTY(QString lang READ get_current_lang WRITE set_current_lang NOTIFY on_lang_changed)
         Q_PROPERTY(QString wallet_default_name READ get_wallet_default_name WRITE set_wallet_default_name NOTIFY on_wallet_default_name_changed)
@@ -130,6 +131,7 @@ namespace atomic_dex
         QVariantList               get_enabled_coins() const noexcept;
         QVariantList               get_enableable_coins() const noexcept;
         QString                    get_current_currency() const noexcept;
+        QString                    get_current_currency_sign() const noexcept;;
         QString                    get_current_fiat() const noexcept;
         QString                    get_current_lang() const noexcept;
         QString                    get_balance_fiat_all() const noexcept;
@@ -230,6 +232,7 @@ namespace atomic_dex
         void enableableCoinsChanged();
         void coinInfoChanged();
         void on_currency_changed();
+        void on_currency_sign_changed();
         void on_fiat_changed();
         void on_second_fiat_changed();
         void on_lang_changed();
