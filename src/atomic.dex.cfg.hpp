@@ -38,4 +38,5 @@ namespace atomic_dex
     void               change_fiat(cfg& config, const std::string& new_fiat);
     [[nodiscard]] bool is_this_currency_a_fiat(cfg& config, const std::string& currency) noexcept;
     cfg                load_cfg();
+    std::string        retrieve_sign_from_ticker(const cfg& config, const std::string& currency) noexcept;
 } // namespace atomic_dex

@@ -94,6 +94,7 @@ namespace atomic_dex
         {
             spdlog::info("{} is fiat, setting it as current fiat and possible currencies", new_currency);
             config.current_fiat           = new_currency;
+            config.current_currency_sign  = retrieve_sign_from_ticker(config, new_currency);
             config.possible_currencies[0] = new_currency;
         }
         upgrade_cfg(config);
@@ -102,8 +103,20 @@ namespace atomic_dex
     void
     change_fiat(cfg& config, const std::string& new_fiat)
     {
-        config.current_fiat = new_fiat;
+        config.current_fiat           = new_fiat;
         config.possible_currencies[0] = new_fiat;
         upgrade_cfg(config);
+    }
+
+    std::string
+    retrieve_sign_from_ticker(const cfg& config, const std::string& currency) noexcept
+    {
+#if defined(__linux__)
+        if (currency == "BTC")
+        {
+            return config.available_currency_signs.at("BTC_ALT");
+        }
+#endif
+        return config.available_currency_signs.at(currency);
     }
 } // namespace atomic_dex
