@@ -439,14 +439,17 @@ namespace atomic_dex
                     if (not res_list.empty())
                     {
                         //! And then delete it
+						spdlog::trace("removing order with id {} from the UI", id);
                         this->removeRow(res_list.at(0).row());
                         to_remove.emplace(id);
                     }
                 }
             }
-            std::unordered_set<std::string> out;
-            std::set_difference(begin(m_orders_id_registry), end(m_orders_id_registry), begin(to_remove), end(to_remove), std::inserter(out, out.begin()));
-            m_orders_id_registry = out;
+            //std::unordered_set<std::string> out;
+            //std::set_difference(begin(m_orders_id_registry), end(m_orders_id_registry), begin(to_remove), end(to_remove), std::inserter(out, out.begin()));
+			for (auto&& cur_to_remove : to_remove) {
+				m_orders_id_registry.erase(cur_to_remove);
+			}
         }
     }
 
