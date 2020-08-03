@@ -36,8 +36,6 @@
 #    include <QWindowList>
 #endif
 
-/*#define ENABLE_ENCODER_GENERIC
-#include "QZXing.h"*/
 //! Project Headers
 #include "atomic.dex.app.hpp"
 #include "atomic.dex.mm2.hpp"
@@ -395,24 +393,11 @@ namespace atomic_dex
         return m_current_balance_all;
     }
 
-    QString
-    application::get_second_balance_fiat_all() const noexcept
-    {
-        return m_second_current_balance_all;
-    }
-
     void
     atomic_dex::application::set_current_balance_fiat_all(QString current_fiat_all_balance) noexcept
     {
         this->m_current_balance_all = std::move(current_fiat_all_balance);
         emit onFiatBalanceAllChanged();
-    }
-
-    void
-    application::set_second_current_balance_fiat_all(QString current_fiat_all_balance) noexcept
-    {
-        this->m_second_current_balance_all = std::move(current_fiat_all_balance);
-        emit onSecondFiatBalanceAllChanged();
     }
 
     application::application(QObject* pParent) noexcept :

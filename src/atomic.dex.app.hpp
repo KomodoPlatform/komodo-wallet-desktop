@@ -71,8 +71,6 @@ namespace atomic_dex
         Q_PROPERTY(QString lang READ get_current_lang WRITE set_current_lang NOTIFY onLangChanged)
         Q_PROPERTY(QString wallet_default_name READ get_wallet_default_name WRITE set_wallet_default_name NOTIFY onWalletDefaultNameChanged)
         Q_PROPERTY(QString balance_fiat_all READ get_balance_fiat_all WRITE set_current_balance_fiat_all NOTIFY onFiatBalanceAllChanged)
-        Q_PROPERTY(
-            QString second_balance_fiat_all READ get_second_balance_fiat_all WRITE set_second_current_balance_fiat_all NOTIFY onSecondFiatBalanceAllChanged)
         Q_PROPERTY(QString initial_loading_status READ get_status WRITE set_status NOTIFY onStatusChanged)
 
         //! Private function
@@ -99,56 +97,34 @@ namespace atomic_dex
         };
 
         //! Private typedefs
-        using t_actions_queue       = boost::lockfree::queue<action>;
-        using t_synchronized_string = boost::synchronized_value<std::string>;
+        using t_actions_queue          = boost::lockfree::queue<action>;
+        using t_synchronized_string    = boost::synchronized_value<std::string>;
         using t_manager_model_registry = std::unordered_map<std::string, QObject*>;
 
         //! Private members fields
-
-        //! CFG
-        atomic_dex::cfg m_config{load_cfg()};
-
-        //! QT Application
+        atomic_dex::cfg               m_config{load_cfg()};
         std::shared_ptr<QApplication> m_app;
-
-        //! Wallet Manager
         atomic_dex::qt_wallet_manager m_wallet_manager;
-
-        //! Threading
-        t_actions_queue       m_actions_queue{g_max_actions_size};
-        t_synchronized_string m_ticker_balance_to_refresh;
-
-        //! Properties field
-        bool               m_need_a_full_refresh_of_mm2{false};
-        QVariantList       m_enabled_coins;
-        QVariantList       m_enableable_coins;
-        QVariant           m_update_status;
-        QTranslator        m_translator;
-        QString            m_current_lang{QString::fromStdString(m_config.current_lang)};
-        QString            m_current_status{"None"};
-        QString            m_current_balance_all{"0.00"};
-        QString            m_second_current_balance_all{"0.00"};
-        current_coin_info* m_coin_info;
-
-        //! MGR
-        t_manager_model_registry m_manager_models;
-
-        //! Orders model based on the current wallet
-        orders_model* m_orders;
-
-        //! Candlestick charts
-        candlestick_charts_model* m_candlestick_chart_ohlc;
-        std::atomic_bool          m_candlestick_need_a_reset{false};
-
-        //! Orderbook Model Wrapper
-        qt_orderbook_wrapper* m_orderbook;
-        std::atomic_bool      m_orderbook_need_a_reset{false};
-
-        //! Internet service checker
-        internet_service_checker* m_internet_service_checker;
-
-        //! Miscs Threading settings
-        std::atomic_bool m_about_to_exit_app{false};
+        t_actions_queue               m_actions_queue{g_max_actions_size};
+        t_synchronized_string         m_ticker_balance_to_refresh;
+        bool                          m_need_a_full_refresh_of_mm2{false};
+        QVariantList                  m_enabled_coins;
+        QVariantList                  m_enableable_coins;
+        QVariant                      m_update_status;
+        QTranslator                   m_translator;
+        QString                       m_current_lang{QString::fromStdString(m_config.current_lang)};
+        QString                       m_current_status{"None"};
+        QString                       m_current_balance_all{"0.00"};
+        QString                       m_second_current_balance_all{"0.00"};
+        current_coin_info*            m_coin_info;
+        t_manager_model_registry      m_manager_models;
+        orders_model*                 m_orders;
+        candlestick_charts_model*     m_candlestick_chart_ohlc;
+        std::atomic_bool              m_candlestick_need_a_reset{false};
+        qt_orderbook_wrapper*         m_orderbook;
+        std::atomic_bool              m_orderbook_need_a_reset{false};
+        internet_service_checker*     m_internet_service_checker;
+        std::atomic_bool              m_about_to_exit_app{false};
 
       public:
         //! Constructor
@@ -193,7 +169,6 @@ namespace atomic_dex
         QString                    get_current_fiat() const noexcept;
         QString                    get_current_lang() const noexcept;
         QString                    get_balance_fiat_all() const noexcept;
-        QString                    get_second_balance_fiat_all() const noexcept;
         QString                    get_wallet_default_name() const noexcept;
         QString                    get_status() const noexcept;
         QVariant                   get_update_status() const noexcept;
@@ -205,7 +180,6 @@ namespace atomic_dex
         void set_current_lang(const QString& current_lang) noexcept;
         void set_wallet_default_name(QString wallet_default_name) noexcept;
         void set_current_balance_fiat_all(QString current_fiat_all_balance) noexcept;
-        void set_second_current_balance_fiat_all(QString current_fiat_all_balance) noexcept;
         void set_status(QString status) noexcept;
         void set_qt_app(std::shared_ptr<QApplication> app) noexcept;
 
@@ -293,7 +267,6 @@ namespace atomic_dex
         void onCurrencySignChanged();
         void onFiatSignChanged();
         void onFiatChanged();
-        void on_second_fiat_changed();
         void onLangChanged();
         void langChanged();
         void onFiatBalanceAllChanged();
