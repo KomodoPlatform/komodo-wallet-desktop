@@ -402,7 +402,7 @@ namespace atomic_dex
                 return "0.00";
             }
             t_float_50 tmp_current_price = t_float_50(m_usd_rate_providers.at(ticker)) * m_other_fiats_rates->at("rates").at(fiat).get<double>();
-            current_price = tmp_current_price.str();
+            current_price                = tmp_current_price.str();
         }
 
         if (adjusted)
@@ -432,6 +432,10 @@ namespace atomic_dex
     {
         spdlog::debug("{} l{} f[{}]", __FUNCTION__, __LINE__, fs::path(__FILE__).filename().string());
 
+        if (not this->m_other_fiats_rates->contains("rates"))
+        {
+            this->m_other_fiats_rates = fetch_fiat_rates();
+        }
         const auto config = m_mm2_instance.get_coin_info(evt.ticker);
 
         if (config.coinpaprika_id != "test-coin")
