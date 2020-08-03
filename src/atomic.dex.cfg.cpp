@@ -27,12 +27,13 @@ namespace
 
         assert(ifs.is_open());
         ifs >> config_json_data;
-        config_json_data["lang"]                = config.current_lang;
-        config_json_data["current_currency"]    = config.current_currency;
-        config_json_data["current_fiat"]        = config.current_fiat;
-        config_json_data["possible_currencies"] = config.possible_currencies;
+        config_json_data["lang"]                  = config.current_lang;
+        config_json_data["current_currency"]      = config.current_currency;
+        config_json_data["current_fiat"]          = config.current_fiat;
+        config_json_data["possible_currencies"]   = config.possible_currencies;
         config_json_data["current_currency_sign"] = config.current_currency_sign;
-        config_json_data["available_signs"] = config.available_currency_signs;
+        config_json_data["current_fiat_sign"]     = config.current_fiat_sign;
+        config_json_data["available_signs"]       = config.available_currency_signs;
 
         ifs.close();
 
@@ -56,6 +57,7 @@ namespace atomic_dex
         j.at("possible_currencies").get_to(config.possible_currencies);
         j.at("current_currency_sign").get_to(config.current_currency_sign);
         j.at("available_signs").get_to(config.available_currency_signs);
+        j.at("current_fiat_sign").get_to(config.current_fiat_sign);
     }
 
     void
@@ -89,14 +91,15 @@ namespace atomic_dex
     void
     change_currency(cfg& config, const std::string& new_currency)
     {
-        config.current_currency = new_currency;
+        config.current_currency      = new_currency;
+        config.current_currency_sign = retrieve_sign_from_ticker(config, new_currency);
 
         //! If it's fiat, i set the first element of the possible currencies to the new currency (the new fiat here) and i also set the current fiat
         if (is_this_currency_a_fiat(config, new_currency))
         {
             spdlog::info("{} is fiat, setting it as current fiat and possible currencies", new_currency);
             config.current_fiat           = new_currency;
-            config.current_currency_sign  = retrieve_sign_from_ticker(config, new_currency);
+            config.current_fiat_sign      = config.current_currency_sign;
             config.possible_currencies[0] = new_currency;
         }
         upgrade_cfg(config);

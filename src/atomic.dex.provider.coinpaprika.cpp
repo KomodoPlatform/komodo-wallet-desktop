@@ -81,7 +81,6 @@ namespace
     template <typename Provider>
     void
     process_provider(const atomic_dex::coin_config& current_coin, Provider& rate_providers, const std::string& fiat)
-
     {
         if (current_coin.coinpaprika_id != fiat)
         {

@@ -8,6 +8,7 @@
   "current_currency": "USD",
   "current_fiat": "USD",
   "current_currency_sign": "$",
+  "current_fiat_sign": "$",
   "available_signs": {
     "USD": "$",
     "EUR": "€",
