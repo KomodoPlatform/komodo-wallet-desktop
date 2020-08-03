@@ -53,7 +53,7 @@ namespace atomic_dex
         Q_OBJECT
 
         //! Properties
-        Q_PROPERTY(QString empty_string READ get_empty_string NOTIFY lang_changed)
+        Q_PROPERTY(QString empty_string READ get_empty_string NOTIFY langChanged)
         Q_PROPERTY(QList<QVariant> enabled_coins READ get_enabled_coins NOTIFY enabledCoinsChanged)
         Q_PROPERTY(QList<QVariant> enableable_coins READ get_enableable_coins NOTIFY enableableCoinsChanged)
         Q_PROPERTY(QObject* current_coin_info READ get_current_coin_info NOTIFY coinInfoChanged)
@@ -63,23 +63,23 @@ namespace atomic_dex
         Q_PROPERTY(candlestick_charts_model* candlestick_charts_mdl READ get_candlestick_charts NOTIFY candlestickChartsChanged)
         Q_PROPERTY(QVariant update_status READ get_update_status NOTIFY updateStatusChanged)
         Q_PROPERTY(portfolio_model* portfolio_mdl READ get_portfolio NOTIFY portfolioChanged)
-        Q_PROPERTY(internet_service_checker* internet_checker READ get_internet_checker)
-        Q_PROPERTY(QString current_currency READ get_current_currency WRITE set_current_currency NOTIFY on_currency_changed)
-        Q_PROPERTY(QString current_currency_sign READ get_current_currency_sign NOTIFY on_currency_sign_changed)
-        Q_PROPERTY(QString current_fiat_sign READ get_current_fiat_sign NOTIFY on_fiat_sign_changed)
-        Q_PROPERTY(QString current_fiat READ get_current_fiat WRITE set_current_fiat NOTIFY on_fiat_changed)
-        Q_PROPERTY(QString lang READ get_current_lang WRITE set_current_lang NOTIFY on_lang_changed)
-        Q_PROPERTY(QString wallet_default_name READ get_wallet_default_name WRITE set_wallet_default_name NOTIFY on_wallet_default_name_changed)
-        Q_PROPERTY(QString balance_fiat_all READ get_balance_fiat_all WRITE set_current_balance_fiat_all NOTIFY on_fiat_balance_all_changed)
-        Q_PROPERTY(QString second_balance_fiat_all READ get_second_balance_fiat_all WRITE set_second_current_balance_fiat_all NOTIFY
-                       on_second_fiat_balance_all_changed)
-        Q_PROPERTY(QString initial_loading_status READ get_status WRITE set_status NOTIFY on_status_changed)
+        Q_PROPERTY(internet_service_checker* internet_checker READ getInternetChecker NOTIFY internetCheckerChanged)
+        Q_PROPERTY(QString current_currency READ get_current_currency WRITE set_current_currency NOTIFY onCurrencyChanged)
+        Q_PROPERTY(QString current_currency_sign READ get_current_currency_sign NOTIFY onCurrencySignChanged)
+        Q_PROPERTY(QString current_fiat_sign READ get_current_fiat_sign NOTIFY onFiatSignChanged)
+        Q_PROPERTY(QString current_fiat READ get_current_fiat WRITE set_current_fiat NOTIFY onFiatChanged)
+        Q_PROPERTY(QString lang READ get_current_lang WRITE set_current_lang NOTIFY onLangChanged)
+        Q_PROPERTY(QString wallet_default_name READ get_wallet_default_name WRITE set_wallet_default_name NOTIFY onWalletDefaultNameChanged)
+        Q_PROPERTY(QString balance_fiat_all READ get_balance_fiat_all WRITE set_current_balance_fiat_all NOTIFY onFiatBalanceAllChanged)
+        Q_PROPERTY(
+            QString second_balance_fiat_all READ get_second_balance_fiat_all WRITE set_second_current_balance_fiat_all NOTIFY onSecondFiatBalanceAllChanged)
+        Q_PROPERTY(QString initial_loading_status READ get_status WRITE set_status NOTIFY onStatusChanged)
 
       private:
         //! Private function
-        void refresh_transactions(const mm2& mm2);
-        void refresh_fiat_balance(const mm2& mm2, const coinpaprika_provider& paprika);
-        void refresh_address(mm2& mm2);
+        void refresh_transactions(const atomic_dex::mm2& mm2_system);
+        void refresh_fiat_balance(const atomic_dex::mm2& mm2_system, const coinpaprika_provider& coinpaprika_system);
+        void refresh_address(atomic_dex::mm2& mm2_system);
         void connect_signals();
         void tick();
 
@@ -120,23 +120,25 @@ namespace atomic_dex
         void on_start_fetching_new_ohlc_data_event(const start_fetching_new_ohlc_data&);
 
         //! Properties Getter
-        static const QString&      get_empty_string();
-        mm2&                       get_mm2() noexcept;
-        const mm2&                 get_mm2() const noexcept;
-        coinpaprika_provider&      get_paprika() noexcept;
-        entt::dispatcher&          get_dispatcher() noexcept;
-        QObject*                   get_current_coin_info() const noexcept;
-        addressbook_model*         get_addressbook() const noexcept;
-        portfolio_model*           get_portfolio() const noexcept;
-        orders_model*              get_orders() const noexcept;
-        candlestick_charts_model*  get_candlestick_charts() const noexcept;
-        internet_service_checker*  get_internet_checker() const noexcept;;
-        qt_orderbook_wrapper*      get_orderbook_wrapper() const noexcept;
-        QVariantList               get_enabled_coins() const noexcept;
-        QVariantList               get_enableable_coins() const noexcept;
-        QString                    get_current_currency() const noexcept;
-        QString                    get_current_currency_sign() const noexcept;
-        QString                    get_current_fiat_sign() const noexcept;;
+        static const QString&     get_empty_string();
+        mm2&                      get_mm2() noexcept;
+        const mm2&                get_mm2() const noexcept;
+        coinpaprika_provider&     get_paprika() noexcept;
+        entt::dispatcher&         get_dispatcher() noexcept;
+        QObject*                  get_current_coin_info() const noexcept;
+        addressbook_model*        get_addressbook() const noexcept;
+        portfolio_model*          get_portfolio() const noexcept;
+        orders_model*             get_orders() const noexcept;
+        candlestick_charts_model* get_candlestick_charts() const noexcept;
+        internet_service_checker* getInternetChecker() const noexcept;
+        ;
+        qt_orderbook_wrapper* get_orderbook_wrapper() const noexcept;
+        QVariantList          get_enabled_coins() const noexcept;
+        QVariantList          get_enableable_coins() const noexcept;
+        QString               get_current_currency() const noexcept;
+        QString               get_current_currency_sign() const noexcept;
+        QString               get_current_fiat_sign() const noexcept;
+        ;
         QString                    get_current_fiat() const noexcept;
         QString                    get_current_lang() const noexcept;
         QString                    get_balance_fiat_all() const noexcept;
@@ -236,17 +238,17 @@ namespace atomic_dex
         void enabledCoinsChanged();
         void enableableCoinsChanged();
         void coinInfoChanged();
-        void on_currency_changed();
-        void on_currency_sign_changed();
-        void on_fiat_sign_changed();
-        void on_fiat_changed();
+        void onCurrencyChanged();
+        void onCurrencySignChanged();
+        void onFiatSignChanged();
+        void onFiatChanged();
         void on_second_fiat_changed();
-        void on_lang_changed();
-        void lang_changed();
-        void on_fiat_balance_all_changed();
-        void on_second_fiat_balance_all_changed();
-        void on_status_changed();
-        void on_wallet_default_name_changed();
+        void onLangChanged();
+        void langChanged();
+        void onFiatBalanceAllChanged();
+        void onSecondFiatBalanceAllChanged();
+        void onStatusChanged();
+        void onWalletDefaultNameChanged();
         void myOrdersUpdated();
         void addressbookChanged();
         void OHLCDataUpdated();
@@ -255,6 +257,7 @@ namespace atomic_dex
         void ordersChanged();
         void candlestickChartsChanged();
         void orderbookChanged();
+        void internetCheckerChanged();
       public slots:
         void exit_handler();
 

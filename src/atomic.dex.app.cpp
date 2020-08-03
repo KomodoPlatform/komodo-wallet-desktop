@@ -406,14 +406,14 @@ namespace atomic_dex
     atomic_dex::application::set_current_balance_fiat_all(QString current_fiat_all_balance) noexcept
     {
         this->m_current_balance_all = std::move(current_fiat_all_balance);
-        emit on_fiat_balance_all_changed();
+        emit onFiatBalanceAllChanged();
     }
 
     void
     application::set_second_current_balance_fiat_all(QString current_fiat_all_balance) noexcept
     {
         this->m_second_current_balance_all = std::move(current_fiat_all_balance);
-        emit on_second_fiat_balance_all_changed();
+        emit onSecondFiatBalanceAllChanged();
     }
 
     application::application(QObject* pParent) noexcept :
@@ -527,9 +527,9 @@ namespace atomic_dex
             spdlog::info("change currency {} to {}", m_config.current_currency, current_currency.toStdString());
             atomic_dex::change_currency(m_config, current_currency.toStdString());
             this->m_portfolio->update_currency_values();
-            emit on_currency_changed();
-            emit on_currency_sign_changed();
-            emit on_fiat_sign_changed();
+            emit onCurrencyChanged();
+            emit onCurrencySignChanged();
+            emit onFiatSignChanged();
         }
     }
 
@@ -546,7 +546,7 @@ namespace atomic_dex
         {
             spdlog::info("change fiat {} to {}", m_config.current_fiat, current_fiat.toStdString());
             atomic_dex::change_fiat(m_config, current_fiat.toStdString());
-            emit on_fiat_changed();
+            emit onFiatChanged();
         }
     }
 
@@ -779,7 +779,7 @@ namespace atomic_dex
     application::set_status(QString status) noexcept
     {
         this->m_current_status = std::move(status);
-        emit on_status_changed();
+        emit onStatusChanged();
     }
 
     void
@@ -897,7 +897,7 @@ namespace atomic_dex
         this->m_need_a_full_refresh_of_mm2 = true;
 
         this->m_wallet_manager.just_set_wallet_name("");
-        emit on_wallet_default_name_changed();
+        emit onWalletDefaultNameChanged();
         return fs::remove(get_atomic_dex_config_folder() / "default.wallet");
     }
 
@@ -1021,8 +1021,8 @@ namespace atomic_dex
         [[maybe_unused]] auto res = this->m_translator.load("atomic_qt_" + current_lang, QLatin1String(":/atomic_qt_design/assets/languages"));
         assert(res);
         this->m_app->installTranslator(&m_translator);
-        emit on_lang_changed();
-        emit lang_changed();
+        emit onLangChanged();
+        emit langChanged();
     }
 
     void
@@ -1384,7 +1384,7 @@ namespace atomic_dex
     application::set_wallet_default_name(QString wallet_name) noexcept
     {
         m_wallet_manager.set_wallet_default_name(std::move(wallet_name));
-        emit on_wallet_default_name_changed();
+        emit onWalletDefaultNameChanged();
     }
 
     bool
@@ -1531,7 +1531,7 @@ namespace atomic_dex
 namespace atomic_dex
 {
     internet_service_checker*
-    application::get_internet_checker() const noexcept
+    application::getInternetChecker() const noexcept
     {
         return m_internet_service_checker;
     }
