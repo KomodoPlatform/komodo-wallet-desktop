@@ -31,6 +31,8 @@ namespace
         config_json_data["current_currency"]    = config.current_currency;
         config_json_data["current_fiat"]        = config.current_fiat;
         config_json_data["possible_currencies"] = config.possible_currencies;
+        config_json_data["current_currency_sign"] = config.current_currency_sign;
+        config_json_data["available_signs"] = config.available_currency_signs;
 
         ifs.close();
 
