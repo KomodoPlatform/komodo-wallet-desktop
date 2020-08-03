@@ -882,6 +882,8 @@ namespace atomic_dex
 
         this->m_need_a_full_refresh_of_mm2 = true;
 
+        this->m_wallet_manager.just_set_wallet_name("");
+        emit on_wallet_default_name_changed();
         return fs::remove(get_atomic_dex_config_folder() / "default.wallet");
     }
 
@@ -917,6 +919,14 @@ namespace atomic_dex
         spdlog::debug("{} l{} f[{}]", __FUNCTION__, __LINE__, fs::path(__FILE__).filename().string());
         QVariantMap out;
 
+        if (t_float_50(amount.toStdString()) < t_float_50("0.00777"))
+        {
+            out.insert("not_enough_balance_to_pay_the_fees", true);
+            out.insert("trade_fee", "0");
+            out.insert("input_final_value", "0");
+            out.insert("tx_fee", "0");
+            return out;
+        }
         t_float_50 trade_fee_f = get_mm2().get_trade_fee(ticker.toStdString(), amount.toStdString(), false);
         auto       answer      = get_mm2().get_trade_fixed_fee(ticker.toStdString());
 
@@ -1372,8 +1382,14 @@ namespace atomic_dex
     bool
     application::login(const QString& password, const QString& wallet_name)
     {
-        bool res = m_wallet_manager.login(password, wallet_name, get_mm2(), [this]() { this->set_status("initializing_mm2"); });
-        this->m_addressbook->initializeFromCfg();
+        bool res = m_wallet_manager.login(password, wallet_name, get_mm2(), [this, &wallet_name]() {
+            this->set_wallet_default_name(wallet_name);
+            this->set_status("initializing_mm2");
+        });
+        if (res)
+        {
+            this->m_addressbook->initializeFromCfg();
+        }
         return res;
     }
 

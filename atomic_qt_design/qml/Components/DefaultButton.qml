@@ -13,12 +13,13 @@ FloatingBackground {
     property bool text_left_align: false
     property double text_offset: 0
     property alias font: text_obj.font
-    property string colorDisabled: Style.colorButtonDisabled
-    property string colorHovered: Style.colorButtonHovered
-    property string colorEnabled: Style.colorButtonEnabled
-    property string colorTextDisabled: Style.colorButtonTextDisabled
-    property string colorTextHovered: Style.colorButtonTextHovered
-    property string colorTextEnabled: Style.colorButtonTextEnabled
+    property string button_type: "default"
+    property string colorDisabled: Style.colorButtonDisabled[button_type]
+    property string colorHovered: Style.colorButtonHovered[button_type]
+    property string colorEnabled: Style.colorButtonEnabled[button_type]
+    property string colorTextDisabled: Style.colorButtonTextDisabled[button_type]
+    property string colorTextHovered: Style.colorButtonTextHovered[button_type]
+    property string colorTextEnabled: Style.colorButtonTextEnabled[button_type]
     property int minWidth: 90
 
     signal clicked()

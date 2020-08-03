@@ -11,8 +11,16 @@ Item {
 
     property string action_result
 
+    property bool sell_mode: true
+
     // Override
     property var onOrderSuccess: () => {}
+
+    function getCurrentForm() {
+        return sell_mode ? form_base : form_rel
+    }
+
+    onSell_modeChanged: reset()
 
     // Local
     function inCurrentPage() {
@@ -22,6 +30,7 @@ Item {
 
     function fullReset() {
         reset(true)
+        sell_mode = true
     }
 
     function reset(reset_result=true, is_base) {
@@ -51,53 +60,32 @@ Item {
     }
 
     function selectOrder(is_asks, price, quantity, price_denom, price_numer) {
+        sell_mode = !is_asks
+
         preffered_order.is_asks = is_asks
         preffered_order.price = price
         preffered_order.volume = quantity
         preffered_order.price_denom = price_denom
         preffered_order.price_numer = price_numer
         preffered_order = preffered_order
-        updateRelAmount()
-        form_base.field.forceActiveFocus()
-    }
 
-    function newRelVolume(price) {
-        return parseFloat(form_base.getVolume()) * parseFloat(price)
-    }
-
-    function updateRelAmount() {
-        if(orderIsSelected()) {
-            const price = parseFloat(preffered_order.price)
-            let new_rel = newRelVolume(preffered_order.price)
-
-            if(!preffered_order.is_asks) {
-                // If new rel volume is higher than the order max volume
-                const max_volume = parseFloat(preffered_order.volume)
-                if(new_rel > max_volume) {
-                    new_rel = max_volume
-
-                    // Set base
-                    const max_base_volume = max_volume / price
-                    if(parseFloat(form_base.getVolume()) !== max_base_volume) {
-                        const new_base_text = General.formatDouble(max_base_volume)
-                        if(form_base.field.text !== new_base_text)
-                            form_base.field.text = new_base_text
-                    }
-                }
-            }
-
-            // Set rel
-            const new_rel_text = General.formatDouble(new_rel)
-            if(form_rel.field.text !== new_rel_text)
-                form_rel.field.text = new_rel_text
+        const volume_text = General.formatDouble(quantity)
+        const price_text = General.formatDouble(price)
+        if(is_asks) {
+            form_rel.field.text = volume_text
+            form_rel.price_field.text = price_text
         }
+        else {
+            form_base.field.text = volume_text
+            form_base.price_field.text = price_text
+        }
+
+        getCurrentForm().field.forceActiveFocus()
     }
 
     function getCalculatedPrice() {
-        const base = form_base.getVolume()
-        const rel = form_rel.getVolume()
-
-        return General.isZero(base) || General.isZero(rel) ? "0" : API.get().get_price_amount(base, rel)
+        let price = getCurrentForm().price_field.text
+        return General.isZero(price) ? "0" : price
     }
 
     function getCurrentPrice() {
@@ -105,7 +93,7 @@ Item {
     }
 
     function hasValidPrice() {
-        return orderIsSelected() || parseFloat(getCalculatedPrice()) !== 0
+        return orderIsSelected() || !General.isZero(getCalculatedPrice())
     }
 
     // Cache Trade Info
@@ -134,6 +122,10 @@ Item {
         return valid_trade_info && curr_trade_info.not_enough_balance_to_pay_the_fees
     }
 
+    function notEnoughBalance() {
+        return getCurrentForm().notEnoughBalance()
+    }
+
 
     function getTradeInfo(base, rel, amount, set_as_current=true) {
         if(inCurrentPage()) {
@@ -160,21 +152,22 @@ Item {
 
     // Orderbook
     function fillTickersIfEmpty() {
-        form_base.fillIfEmpty()
-        form_rel.fillIfEmpty()
+        selector_base.fillIfEmpty()
+        selector_rel.fillIfEmpty()
     }
 
     function updateTradeInfo(force=false) {
-        const base = getTicker(true)
-        const rel = getTicker(false)
-        const amount = form_base.getVolume()
+        const base = getTicker(sell_mode)
+        const rel = getTicker(!sell_mode)
+        const amount = sell_mode ? getCurrentForm().getVolume() :
+                                   General.formatDouble(getCurrentForm().getNeededAmountToSpend(getCurrentForm().getVolume()))
         if(force ||
             (base !== undefined && rel !== undefined && amount !== undefined &&
              base !== ''        && rel !== ''        && amount !== '' && amount !== '0')) {
             getTradeInfo(base, rel, amount)
 
             // Since new implementation does not update fees instantly, re-cap the volume every time, just in case
-            form_base.capVolume()
+            getCurrentForm().capVolume()
         }
     }
 
@@ -193,14 +186,14 @@ Item {
 
     function updateForms(my_side, new_ticker) {
         if(my_side === undefined) {
-            form_base.update()
-            form_rel.update()
+            selector_base.update()
+            selector_rel.update()
         }
         else if(my_side) {
-            form_rel.update(new_ticker)
+            selector_rel.update(new_ticker)
         }
         else {
-            form_base.update(new_ticker)
+            selector_base.update(new_ticker)
         }
     }
 
@@ -229,22 +222,28 @@ Item {
             return coins.filter(c => {
                 c.balance = API.get().get_balance(c.ticker)
 
-                return c.balance !== '' && parseFloat(c.balance) >= General.getMinTradeAmount()
+                return true
             })
         }
         // Filter for Receive
         else {
-            return coins.filter(c => c.ticker !== getTicker(true))
+            return coins.filter(c => {
+                if(c.ticker === getTicker(true)) return false
+
+                c.balance = API.get().get_balance(c.ticker)
+
+                return true
+            })
         }
     }
 
     function getTicker(is_base) {
-        return is_base ? form_base.getTicker() : form_rel.getTicker()
+        return is_base ? selector_base.getTicker() : selector_rel.getTicker()
     }
 
     function setTicker(is_base, ticker) {
-        if(is_base) form_base.setTicker(ticker)
-        else form_rel.setTicker(ticker)
+        if(is_base) selector_base.setTicker(ticker)
+        else selector_rel.setTicker(ticker)
     }
 
     function validBaseRel() {
@@ -257,7 +256,7 @@ Item {
         if(getTicker(true) === getTicker(false)) {
             // Base got selected, same as rel
             // Change rel ticker
-            form_rel.setAnyTicker()
+            selector_rel.setAnyTicker()
         }
 
         if(validBaseRel()) {
@@ -275,16 +274,23 @@ Item {
     function trade(base, rel) {
         updateTradeInfo(true) // Force update trade info and cap the value for one last time
 
+        const current_form = getCurrentForm()
+
         const is_created_order = !orderIsSelected()
         const price_denom = preffered_order.price_denom
         const price_numer = preffered_order.price_numer
         const price = getCurrentPrice()
-        const volume = form_base.field.text
-        console.log("QML place_sell_order: max balance:", form_base.getMaxVolume())
-        console.log("QML place_sell_order: params:", base, " <-> ", rel, "  /  price:", price, "  /  volume:", volume, "  /  is_created_order:", is_created_order, "  /  price_denom:", price_denom, "  /  price_numer:", price_numer)
-        console.log("QML place_sell_order: trade info:", JSON.stringify(curr_trade_info))
+        const volume = current_form.field.text
+        console.log("QML place order: max balance:", current_form.getMaxVolume())
+        console.log("QML place order: params:", base, " <-> ", rel, "  /  price:", price, "  /  volume:", volume, "  /  is_created_order:", is_created_order, "  /  price_denom:", price_denom, "  /  price_numer:", price_numer)
+        console.log("QML place order: trade info:", JSON.stringify(curr_trade_info))
 
-        const result = API.get().place_sell_order(base, rel, price, volume, is_created_order, price_denom, price_numer)
+        let result
+
+        if(sell_mode)
+            result = API.get().place_sell_order(base, rel, price, volume, is_created_order, price_denom, price_numer)
+        else
+            result = API.get().place_buy_order(base, rel, price, volume, is_created_order, price_denom, price_numer)
 
         if(result === "") {
             action_result = "success"
@@ -300,20 +306,10 @@ Item {
         }
     }
 
-    function getSendAmountAfterFees(amount, set_as_current) {
-        const base = getTicker(true)
-        const rel = getTicker(false)
-
-        if(base === '' || rel === '') return 0
-
-        const info = getTradeInfo(getTicker(true), getTicker(false), amount, set_as_current)
-        return parseFloat(valid_trade_info ? info.input_final_value : amount)
-    }
-
     // No coins warning
     ColumnLayout {
         anchors.centerIn: parent
-        visible: form_base.ticker_list.length === 0
+        visible: selector_base.ticker_list.length === 0
 
         DefaultImage {
             Layout.alignment: Qt.AlignHCenter
@@ -339,7 +335,7 @@ Item {
 
         spacing: layout_margin
 
-        visible: form_base.ticker_list.length > 0
+        visible: selector_base.ticker_list.length > 0
 
         anchors.fill: parent
 
@@ -361,7 +357,7 @@ Item {
                     anchors.left: parent.left
                     anchors.right: parent.right
                     anchors.top: parent.top
-                    anchors.bottom: orderbook.top
+                    anchors.bottom: selectors.top
                     anchors.bottomMargin: layout_margin * 2
 
                     CandleStickChart {
@@ -369,9 +365,48 @@ Item {
                     }
                 }
 
+
+                // Ticker Selectors
+                RowLayout {
+                    id: selectors
+                    anchors.horizontalCenter: parent.horizontalCenter
+                    anchors.bottom: orderbook.top
+                    anchors.bottomMargin: layout_margin
+                    spacing: 40
+
+                    TickerSelector {
+                        id: selector_base
+                        my_side: true
+                        Layout.alignment: Qt.AlignLeft | Qt.AlignVCenter
+                    }
+
+                    DefaultImage {
+                        source: General.image_path + "trade_icon.svg"
+                        fillMode: Image.PreserveAspectFit
+                        Layout.preferredWidth: 16
+                        Layout.preferredHeight: Layout.preferredWidth
+                        Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
+                    }
+
+                    TickerSelector {
+                        id: selector_rel
+                        Layout.alignment: Qt.AlignRight | Qt.AlignVCenter
+                    }
+                }
+
                 Orderbook {
                     id: orderbook
                     height: 250
+                    anchors.left: parent.left
+                    anchors.right: parent.right
+                    anchors.bottom: price_line.top
+                    anchors.bottomMargin: layout_margin
+                }
+
+
+                // Price
+                PriceLine {
+                    id: price_line
                     anchors.left: parent.left
                     anchors.right: parent.right
                     anchors.bottom: parent.bottom
@@ -388,6 +423,7 @@ Item {
                 // Sell
                 OrderForm {
                     id: form_base
+                    visible: sell_mode
 
                     anchors.left: parent.left
                     anchors.right: parent.right
@@ -399,40 +435,38 @@ Item {
                 // Receive
                 OrderForm {
                     id: form_rel
+                    visible: !form_base.visible
+
                     anchors.left: parent.left
                     anchors.right: parent.right
-                    anchors.top: form_base.bottom
-                    anchors.topMargin: layout_margin
+                    anchors.top: parent.top
+
+                    field.enabled: form_base.field.enabled
                 }
 
                 // Show errors
                 DefaultText {
                     anchors.left: parent.left
                     anchors.right: parent.right
-                    anchors.top: form_rel.bottom
+                    anchors.top: form_base.visible ? form_base.bottom : form_rel.bottom
                     anchors.topMargin: layout_margin * 2
 
                     font.pixelSize: Style.textSizeSmall4
                     color: Style.colorRed
 
-                    text_value: API.get().empty_string + (notEnoughBalanceForFees() ?
-                                                        (qsTr("Not enough balance for the fees. Need at least %1 more", "AMT TICKER").arg(General.formatCrypto("", parseFloat(curr_trade_info.amount_needed), form_base.getTicker()))) :
-                                                        (form_base.hasEthFees() && !form_base.hasEnoughEthForFees()) ? (qsTr("Not enough ETH for the transaction fee")) :
-                                                        (form_base.fieldsAreFilled() && !form_base.higherThanMinTradeAmount()) ? (qsTr("Sell amount is lower than minimum trade amount") + " : " + General.getMinTradeAmount()) :
-                                                        (form_rel.fieldsAreFilled() && !form_rel.higherThanMinTradeAmount()) ? (qsTr("Receive amount is lower than minimum trade amount") + " : " + General.getMinTradeAmount()) : ""
-
+                    text_value: API.get().empty_string + (
+                                    General.isZero(getCurrentPrice()) ? (qsTr("Please fill the price field")) :
+                                    notEnoughBalance() ? (qsTr("%1 balance is lower than minimum trade amount").arg(getTicker(sell_mode)) + " : " + General.getMinTradeAmount()) :
+                                    notEnoughBalanceForFees() ?
+                                        (qsTr("Not enough balance for the fees. Need at least %1 more", "AMT TICKER").arg(General.formatCrypto("", parseFloat(curr_trade_info.amount_needed), getTicker(sell_mode)))) :
+                                    General.isZero(getCurrentForm().getVolume()) ? (qsTr("Please fill the volume field")) :
+                                    (getCurrentForm().hasEthFees() && !getCurrentForm().hasEnoughEthForFees()) ? (qsTr("Not enough ETH for the transaction fee")) :
+                                    (getCurrentForm().fieldsAreFilled() && !getCurrentForm().higherThanMinTradeAmount()) ? ((qsTr("Amount is lower than minimum trade amount")) + " : " + General.getMinTradeAmount()) : ""
                               )
-                    visible: form_base.fieldsAreFilled() && (notEnoughBalanceForFees() ||
-                                                             (form_base.hasEthFees() && !form_base.hasEnoughEthForFees()) ||
-                                                             !form_base.higherThanMinTradeAmount() ||
-                                                             (form_rel.fieldsAreFilled() && !form_rel.higherThanMinTradeAmount()))
+
+                    visible: text_value !== ""
                 }
             }
-        }
-
-        // Price
-        PriceLine {
-            Layout.alignment: Qt.AlignHCenter
         }
 
         ConfirmTradeModal {

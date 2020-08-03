@@ -1,6 +1,8 @@
 #include <QApplication>
 #include <QDebug>
+#include <QDesktopWidget>
 #include <QQmlApplicationEngine>
+#include <QScreen>
 #include <QWindow>
 #include <QtQml>
 
@@ -45,6 +47,9 @@ int
 main([[maybe_unused]] int argc, [[maybe_unused]] char* argv[])
 #endif
 {
+    // Determine if we pass through or floor
+    // SetThreadDpiAwarenessContext(DPI_AWARENESS_CONTEXT_PER_MONITOR_AWARE_V2);
+
     std::signal(SIGABRT, signal_handler);
     //! Project
 #if defined(_WIN32) || defined(WIN32)
@@ -81,14 +86,37 @@ main([[maybe_unused]] int argc, [[maybe_unused]] char* argv[])
     spdlog::set_pattern("[%H:%M:%S %z] [%L] [thr %t] %v");
     spdlog::info("Logger successfully initialized");
 
-    // spdlog::info("asan report: {}", (fs::temp_directory_path() / "asan.log").string().c_str());
-    //__sanitizer_set_report_path((fs::temp_directory_path() / "asan.log").string().c_str());
+    bool should_floor = false;
+#if defined(_WIN32) || defined(WIN32) || defined(__linux__)
+    {
+        int          ac = 0;
+        QApplication tmp(ac, nullptr);
+        double       min_window_size = 800.0;
+        auto         screens         = tmp.screens();
+        for (auto&& cur_screen: screens)
+        {
+            spdlog::trace("physical dpi: {}", cur_screen->physicalDotsPerInch());
+            spdlog::trace("logical dpi: {}", cur_screen->logicalDotsPerInch());
+            double scale = cur_screen->logicalDotsPerInch() / 96.0;
+            spdlog::trace("scale: {}", scale);
 
+            double height = cur_screen->availableSize().height();
+            spdlog::trace("height: {}", height);
+            if (scale * min_window_size > height)
+            {
+                should_floor = true;
+                spdlog::trace("should floor");
+            }
+        }
+    }
+#endif
+    QGuiApplication::setHighDpiScaleFactorRoundingPolicy(
+        should_floor ? Qt::HighDpiScaleFactorRoundingPolicy::Floor : Qt::HighDpiScaleFactorRoundingPolicy::PassThrough);
+    QGuiApplication::setAttribute(should_floor ? Qt::AA_DisableHighDpiScaling : Qt::AA_EnableHighDpiScaling);
     //! App declaration
     atomic_dex::application atomic_app;
 
     //! QT
-    QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
     int                           ac  = 0;
     std::shared_ptr<QApplication> app = std::make_shared<QApplication>(ac, nullptr);
 
