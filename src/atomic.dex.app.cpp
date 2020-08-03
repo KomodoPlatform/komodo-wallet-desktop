@@ -136,8 +136,7 @@ namespace atomic_dex
     application::disable_coins(const QStringList& coins)
     {
         std::vector<std::string> coins_std;
-
-        this->m_portfolio->disable_coins(coins);
+        qobject_cast<portfolio_model*>(m_manager_models.at("portfolio"))->disable_coins(coins);
         coins_std.reserve(coins.size());
         for (auto&& coin: coins) { coins_std.push_back(coin.toStdString()); }
         get_mm2().disable_multiple_coins(coins_std);
@@ -275,7 +274,7 @@ namespace atomic_dex
             case action::refresh_portfolio_ticker_balance:
                 if (mm2.is_mm2_running())
                 {
-                    this->m_portfolio->update_balance_values(*this->m_ticker_balance_to_refresh);
+                    qobject_cast<portfolio_model*>(m_manager_models.at("portfolio"))->update_balance_values(*m_ticker_balance_to_refresh);
                 }
                 break;
             case action::post_process_orders_finished:
@@ -420,9 +419,12 @@ namespace atomic_dex
         QObject(pParent),
         m_update_status(QJsonObject{
             {"update_needed", false}, {"changelog", ""}, {"current_version", ""}, {"download_url", ""}, {"new_version", ""}, {"rpc_code", 0}, {"status", ""}}),
-        m_coin_info(new current_coin_info(dispatcher_, this)), m_addressbook(new addressbook_model(this->m_wallet_manager, this)),
-        m_portfolio(new portfolio_model(this->system_manager_, this->m_config, this)), m_orders(new orders_model(this->system_manager_, this)),
-        m_candlestick_chart_ohlc(new candlestick_charts_model(this->system_manager_, this)), m_orderbook(new qt_orderbook_wrapper(this->system_manager_, this)),
+        m_coin_info(new current_coin_info(dispatcher_, this)),
+        m_manager_models{
+            {"addressbook", new addressbook_model(this->m_wallet_manager, this)},
+            {"portfolio", new portfolio_model(this->system_manager_, this->m_config, this)}},
+        m_orders(new orders_model(this->system_manager_, this)), m_candlestick_chart_ohlc(new candlestick_charts_model(this->system_manager_, this)),
+        m_orderbook(new qt_orderbook_wrapper(this->system_manager_, this)),
         m_internet_service_checker(std::addressof(system_manager_.create_system<internet_service_checker>(this)))
     {
         get_dispatcher().sink<refresh_update_status>().connect<&application::on_refresh_update_status_event>(*this);
@@ -498,7 +500,7 @@ namespace atomic_dex
     {
         //! This event is called when a call is enabled and cex provider finished fetch datas
         spdlog::debug("{} l{}", __FUNCTION__, __LINE__);
-        this->m_portfolio->initialize_portfolio(evt.ticker);
+        qobject_cast<portfolio_model*>(m_manager_models.at("portfolio"))->initialize_portfolio(evt.ticker);
     }
 
     QString
@@ -526,7 +528,7 @@ namespace atomic_dex
         {
             spdlog::info("change currency {} to {}", m_config.current_currency, current_currency.toStdString());
             atomic_dex::change_currency(m_config, current_currency.toStdString());
-            this->m_portfolio->update_currency_values();
+            qobject_cast<portfolio_model*>(m_manager_models.at("portfolio"))->update_currency_values();
             emit onCurrencyChanged();
             emit onCurrencySignChanged();
             emit onFiatSignChanged();
@@ -855,14 +857,16 @@ namespace atomic_dex
         }
 
         //! Clear models
-        if (auto count = this->m_addressbook->rowCount(); count > 0)
+        addressbook_model* addressbook = qobject_cast<addressbook_model*>(m_manager_models.at("addressbook"));
+        if (auto count = addressbook->rowCount(); count > 0)
         {
-            this->m_addressbook->removeRows(0, count);
+            addressbook->removeRows(0, count);
         }
 
-        if (auto count = this->m_portfolio->rowCount(QModelIndex()); count > 0)
+        portfolio_model* portfolio = qobject_cast<portfolio_model*>(m_manager_models.at("portfolio"));
+        if (auto count = portfolio->rowCount(QModelIndex()); count > 0)
         {
-            this->m_portfolio->removeRows(0, count, QModelIndex());
+            portfolio->removeRows(0, count, QModelIndex());
         }
 
         if (auto count = this->m_orders->rowCount(QModelIndex()); count > 0)
@@ -1189,9 +1193,9 @@ namespace atomic_dex
 {
     application::~application() noexcept
     {
-        if (this->m_addressbook->rowCount() > 0)
+        if (auto addressbook = qobject_cast<addressbook_model*>(m_manager_models.at("addressbook")); addressbook->rowCount() > 0)
         {
-            this->m_addressbook->removeRows(0, this->m_addressbook->rowCount());
+            addressbook->removeRows(0, addressbook->rowCount());
         }
         export_swaps_json();
     }
@@ -1327,7 +1331,7 @@ namespace atomic_dex
     addressbook_model*
     application::get_addressbook() const noexcept
     {
-        return m_addressbook;
+        return qobject_cast<addressbook_model*>(m_manager_models.at("addressbook"));
     }
 } // namespace atomic_dex
 
@@ -1367,7 +1371,7 @@ namespace atomic_dex
     portfolio_model*
     application::get_portfolio() const noexcept
     {
-        return m_portfolio;
+        return qobject_cast<portfolio_model*>(m_manager_models.at("portfolio"));
     }
 } // namespace atomic_dex
 
@@ -1402,7 +1406,8 @@ namespace atomic_dex
         });
         if (res)
         {
-            this->m_addressbook->initializeFromCfg();
+            addressbook_model* addressbook = qobject_cast<addressbook_model*>(m_manager_models.at("addressbook"));
+            addressbook->initializeFromCfg();
         }
         return res;
     }
