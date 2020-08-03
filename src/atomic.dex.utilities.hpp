@@ -8,6 +8,23 @@
 #include "atomic.dex.pch.hpp"
 
 
+template <typename TimeFormat = std::chrono::milliseconds>
+inline std::string
+to_human_date(std::size_t timestamp, std::string format)
+{
+    using namespace date;
+    const sys_time<TimeFormat> tp{TimeFormat{timestamp}};
+    try
+    {
+        const auto tp_zoned = date::make_zoned(current_zone(), tp);
+        return date::format(std::move(format), tp_zoned);
+    }
+    catch (const std::exception& error)
+    {
+        return date::format(std::move(format), tp);
+    }
+}
+
 inline fs::path
 get_atomic_dex_data_folder()
 {
