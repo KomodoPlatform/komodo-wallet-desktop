@@ -8,33 +8,8 @@ import "Components"
 
 Rectangle {
     id: app
-    visible: !connected
+    visible: !API.get().internet_checker.internet_reacheable
     color: Style.colorTheme8
-
-    // Check Internet Connection
-    property bool connected: true
-    property bool current_connection: true
-
-    Timer {
-        interval: 5000
-        running: true
-        repeat: true
-        triggeredOnStart: true
-        onTriggered: {
-            var doc = new XMLHttpRequest();
-            doc.onreadystatechange = function() {
-                if(doc.readyState === 1) {
-                    if(!current_connection) connected = false
-                    current_connection = false
-                }
-                if(doc.readyState === 3) current_connection = true
-                if(doc.readyState === 4) connected = current_connection
-            }
-
-            doc.open("GET", "http://google.com")
-            doc.send()
-        }
-    }
 
     ColumnLayout {
         anchors.horizontalCenter: parent.horizontalCenter
