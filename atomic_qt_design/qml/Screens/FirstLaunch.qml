@@ -88,7 +88,7 @@ SetupPage {
                             anchors.fill: parent
                             hoverEnabled: true
                             onClicked: {
-                                API.get().wallet_default_name = model.modelData
+                                selected_wallet_name = model.modelData
                                 onClickedWallet()
                             }
                         }

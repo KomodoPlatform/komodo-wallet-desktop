@@ -653,6 +653,11 @@ namespace mm2::api
           const auto        time_key = value.at("created_at").get<std::size_t>();
           sys_time<std::chrono::milliseconds> tp{std::chrono::milliseconds{time_key}};
           auto tp_zoned = date::make_zoned(current_zone(), tp);
+          std::string action = "Buy";
+          if (not is_maker)
+          {
+             value.at("request").at("action").get_to(action);
+          }
           my_order_contents contents{
               .order_id         = key,
               .price            = is_maker ? adjust_precision(value.at("price").get<std::string>()) : "0",
@@ -663,7 +668,8 @@ namespace mm2::api
               .order_type       = is_maker ? "maker" : "taker",
               .base_amount      = is_maker ? value.at("max_base_vol").get<std::string>() : value.at("request").at("base_amount").get<std::string>(),
               .rel_amount       = is_maker ? (t_float_50(contents.price) * t_float_50(contents.base_amount)).convert_to<std::string>() : value.at("request").at("rel_amount").get<std::string>(),
-              .human_timestamp  = date::format("%F    %T", tp_zoned)};
+              .human_timestamp  = date::format("%F    %T", tp_zoned),
+              .action = action};
           out.try_emplace(time_key, std::move(contents));
         };
         // clang-format on

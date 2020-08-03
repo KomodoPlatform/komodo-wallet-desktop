@@ -881,6 +881,8 @@ namespace atomic_dex
 
         this->m_need_a_full_refresh_of_mm2 = true;
 
+        this->m_wallet_manager.just_set_wallet_name("");
+        emit on_wallet_default_name_changed();
         return fs::remove(get_atomic_dex_config_folder() / "default.wallet");
     }
 
@@ -1379,8 +1381,14 @@ namespace atomic_dex
     bool
     application::login(const QString& password, const QString& wallet_name)
     {
-        bool res = m_wallet_manager.login(password, wallet_name, get_mm2(), [this]() { this->set_status("initializing_mm2"); });
-        this->m_addressbook->initializeFromCfg();
+        bool res = m_wallet_manager.login(password, wallet_name, get_mm2(), [this, &wallet_name]() {
+            this->set_wallet_default_name(wallet_name);
+            this->set_status("initializing_mm2");
+        });
+        if (res)
+        {
+            this->m_addressbook->initializeFromCfg();
+        }
         return res;
     }
 

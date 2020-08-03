@@ -10,16 +10,14 @@ FloatingBackground {
     id: root
 
     property alias field: input_volume.field
+    property alias price_field: input_price.field
     property bool my_side: false
     property bool enabled: true
     property alias column_layout: form_layout
+    property string total_amount: "0"
 
     function getFiatText(v, ticker) {
         return General.formatFiat('', v === '' ? 0 : API.get().get_fiat_from_amount(ticker, v), API.get().current_fiat) + " " +  General.cex_icon
-    }
-
-    function canShowFees() {
-        return my_side && valid_trade_info && !General.isZero(getVolume())
     }
 
     function getVolume() {
@@ -38,22 +36,19 @@ FloatingBackground {
         return General.isEthEnabled() && API.get().do_i_have_enough_funds("ETH", curr_trade_info.erc_fees)
     }
 
-    function higherThanMinTradeAmount() {
-        return input_volume.field.text !== '' && parseFloat(input_volume.field.text) >= General.getMinTradeAmount()
+    function higherThanMinTradeAmount(is_base) {
+        if(input_volume.field.text === '') return false
+        return parseFloat(is_base ? input_volume.field.text : total_amount) >= General.getMinTradeAmount()
     }
 
     function isValid() {
         let valid = true
 
-        // Both sides
         if(valid) valid = fieldsAreFilled()
         if(valid) valid = higherThanMinTradeAmount()
 
-        if(!my_side) return valid
-
-        // Sell side
         if(valid) valid = !notEnoughBalance()
-        if(valid) valid = API.get().do_i_have_enough_funds(getTicker(my_side), input_volume.field.text)
+        if(valid) valid = API.get().do_i_have_enough_funds(getTicker(my_side), General.formatDouble(getNeededAmountToSpend(input_volume.field.text)))
         if(valid && hasEthFees()) valid = hasEnoughEthForFees()
 
         return valid
@@ -66,21 +61,33 @@ FloatingBackground {
     function getMaxTradableVolume(set_as_current) {
         // set_as_current should be true if input_volume is updated
         // if it's called for cap check, it should be false because that's not the current input_volume
-        return getSendAmountAfterFees(getMaxVolume(), set_as_current)
-    }
 
-    function setMax() {
-        input_volume.field.text = getMaxTradableVolume(true)
+        const base = getTicker(sell_mode)
+        const rel = getTicker(!sell_mode)
+        const amount = getMaxVolume()
+
+        if(base === '' || rel === '') return 0
+
+        const info = getTradeInfo(base, rel, amount, set_as_current)
+        const my_amt = parseFloat(valid_trade_info ? info.input_final_value : amount)
+        if(my_side) return my_amt
+
+        // If it's buy side, then volume input needs to be calculated with the current price
+        const price = parseFloat(getCurrentPrice())
+        return price === 0 ? 0 : my_amt / price
     }
 
     function reset(is_base) {
+        input_price.field.text = ''
+
         if(my_side) {
             // is_base info comes from the ComboBox ticker change in OrderForm.
             // At other places it's not given.
             // We don't want to reset base balance at rel ticker change
             // Therefore it will reset only if this info is set from ComboBox -> setPair
             // Or if it's from somewhere else like page change, in that case is_base is undefined
-            if(is_base === undefined || is_base) setMax()
+            if(is_base === undefined || is_base)
+                input_volume.field.text = General.formatDouble(getMaxTradableVolume(true))
         }
         else {
             input_volume.field.text = ''
@@ -88,11 +95,29 @@ FloatingBackground {
     }
 
     function capVolume() {
-        if(inCurrentPage() && my_side && input_volume.field.acceptableInput) {
-            const amt = parseFloat(input_volume.field.text)
+        if(inCurrentPage() && input_volume.field.acceptableInput) {
+            // If price is 0 at buy side, don't cap it to 0, let the user edit
+            if(!my_side && General.isZero(getCurrentPrice()))
+                return false
+
+            const input_volume_value = parseFloat(input_volume.field.text)
+            let amt = input_volume_value
+
+            // Cap with balance
             const cap_with_fees = getMaxTradableVolume(false)
-            if(amt > cap_with_fees) {
-                input_volume.field.text = cap_with_fees.toString()
+            if(amt > cap_with_fees)
+                amt = cap_with_fees
+
+            // Cap with order volume
+            if(orderIsSelected()) {
+                const order_buy_volume = parseFloat(preffered_order.volume)
+                if(amt > order_buy_volume)
+                    amt = order_buy_volume
+            }
+
+            // Set the field
+            if(amt !== input_volume_value) {
+                input_volume.field.text = General.formatDouble(amt)
                 return true
             }
         }
@@ -100,24 +125,38 @@ FloatingBackground {
         return false
     }
 
+    function getNeededAmountToSpend(volume) {
+        volume = parseFloat(volume)
+        if(my_side) return volume
+        else        return volume * parseFloat(getCurrentPrice())
+    }
+
     function notEnoughBalance() {
-        return my_side && parseFloat(getMaxVolume()) < General.getMinTradeAmount()
+        // If sell side or buy side but there is no price, then just check the balance
+        if(my_side || General.isZero(getCurrentPrice())) {
+            return parseFloat(getMaxVolume()) < General.getMinTradeAmount()
+        }
+
+        // If it's buy, and price exists then multiply and check
+        return getNeededAmountToSpend(getMaxVolume()) < General.getMinTradeAmount()
     }
 
     function shouldBlockInput() {
-        return my_side && (notEnoughBalance() || notEnoughBalanceForFees())
+        return notEnoughBalance() || notEnoughBalanceForFees()
     }
 
-    function onBaseChanged() {
+    function onInputChanged() {
         if(capVolume()) updateTradeInfo()
 
-        if(my_side) {
-            // Rel is dependant on Base if price is set so update that
-            updateRelAmount()
+        // Recalculate total amount
+        const price = parseFloat(getCurrentPrice())
+        const base_volume = parseFloat(getVolume())
+        const new_receive_text = General.formatDouble(base_volume * price)
+        if(total_amount !== new_receive_text)
+            total_amount = new_receive_text
 
-            // Update the new fees, input_volume might be changed
-            updateTradeInfo()
-        }
+        // Update the new fees, input_volume might be changed
+        updateTradeInfo()
     }
 
     implicitHeight: form_layout.height
@@ -135,29 +174,27 @@ FloatingBackground {
             // Top Line
             RowLayout {
                 id: top_line
+                spacing: 20
                 Layout.topMargin: parent.spacing
-                Layout.leftMargin: parent.spacing*2
+                Layout.leftMargin: parent.spacing
                 Layout.rightMargin: Layout.leftMargin
+                Layout.alignment: Qt.AlignHCenter
 
-                // Title
-                DefaultText {
-                    font.pixelSize: Style.textSizeMid2
-                    text_value: API.get().empty_string + (my_side ? qsTr("Sell") : qsTr("Receive"))
-                    color: my_side ? Style.colorRed : Style.colorGreen
+                DefaultButton {
+                    font.pixelSize: Style.textSize
+                    text: API.get().empty_string + (qsTr("Sell"))
+                    color: sell_mode ? Style.colorRed : Style.colorRed3
+                    colorTextEnabled: sell_mode ? Style.colorWhite1 : Style.colorWhite6
                     font.weight: Font.Bold
+                    onClicked: sell_mode = true
                 }
-
-                Arrow {
-                    up: my_side
-                    color: my_side ? Style.colorRed : Style.colorGreen
-                    Layout.leftMargin: 20
-                    Layout.rightMargin: 20
-                }
-
-                DefaultImage {
-                    source: General.coinIcon(getTicker(my_side))
-                    Layout.preferredWidth: 32
-                    Layout.preferredHeight: Layout.preferredWidth
+                DefaultButton {
+                    font.pixelSize: Style.textSize
+                    text: API.get().empty_string + (qsTr("Buy"))
+                    color: sell_mode ? Style.colorGreen3 : Style.colorGreen
+                    colorTextEnabled: sell_mode ? Style.colorWhite8 : Style.colorWhite1
+                    font.weight: Font.Bold
+                    onClicked: sell_mode = false
                 }
             }
 
@@ -166,21 +203,49 @@ FloatingBackground {
                 Layout.fillWidth: true
             }
 
+            AmountFieldWithInfo {
+                id: input_price
+                Layout.leftMargin: top_line.Layout.leftMargin
+                Layout.rightMargin: top_line.Layout.rightMargin
+                Layout.bottomMargin: -6
+                Layout.fillWidth: true
+                enabled: input_volume.field.enabled
+
+                field.left_text: API.get().empty_string + (qsTr("Price"))
+                field.right_text: getTicker(false)
+
+                field.onTextChanged: {
+                    onInputChanged()
+                }
+
+                function resetPrice() {
+                    if(orderIsSelected()) resetPreferredPrice()
+                }
+
+                field.onPressed: resetPrice()
+                field.onFocusChanged: {
+                    if(field.activeFocus) resetPrice()
+                }
+            }
+
             Item {
                 Layout.fillWidth: true
                 Layout.leftMargin: top_line.Layout.leftMargin
                 Layout.rightMargin: top_line.Layout.rightMargin
+                Layout.bottomMargin: input_volume.field.font.pixelSize
                 height: input_volume.height
 
                 AmountFieldWithInfo {
                     id: input_volume
                     width: parent.width
                     field.enabled: root.enabled && !shouldBlockInput()
-                    field.placeholderText: API.get().empty_string + (my_side ? qsTr("Amount to sell") :
-                                                     field.enabled ? qsTr("Amount to receive") : qsTr("Please fill the send amount"))
+
+                    field.left_text: API.get().empty_string + (qsTr("Volume"))
+                    field.right_text: getTicker(true)
+                    field.placeholderText: API.get().empty_string + (my_side ? qsTr("Amount to sell") : qsTr("Amount to receive"))
                     field.onTextChanged: {
                         const before_checks = field.text
-                        onBaseChanged()
+                        onInputChanged()
                         const after_checks = field.text
 
                         // Update slider only if the value is not from slider, or value got corrected here
@@ -190,18 +255,6 @@ FloatingBackground {
                             input_volume_slider.updating_from_text_field = false
                         }
                     }
-
-                    function resetPrice() {
-                        if(!my_side && orderIsSelected()) resetPreferredPrice()
-                    }
-
-                    field.onPressed: resetPrice()
-                    field.onFocusChanged: {
-                        if(field.activeFocus) resetPrice()
-                    }
-
-                    field.left_text: API.get().empty_string + (qsTr("Volume"))
-                    field.right_text: getTicker(my_side)
                 }
 
                 DefaultText {
@@ -230,7 +283,7 @@ FloatingBackground {
                 Layout.fillWidth: true
                 Layout.leftMargin: top_line.Layout.leftMargin
                 Layout.rightMargin: top_line.Layout.rightMargin
-                Layout.bottomMargin: top_line.Layout.rightMargin
+                Layout.bottomMargin: top_line.Layout.rightMargin*0.25
                 from: 0
                 stepSize: 1/Math.pow(10, precision)
                 to: parseFloat(getMaxVolume())
@@ -281,14 +334,11 @@ FloatingBackground {
 
             // Fees
             InnerBackground {
-                visible: my_side
-
                 radius: 100
                 id: bg
                 Layout.fillWidth: true
                 Layout.leftMargin: top_line.Layout.leftMargin
                 Layout.rightMargin: top_line.Layout.rightMargin
-                Layout.bottomMargin: layout_margin
 
                 content: RowLayout {
                     width: bg.width
@@ -296,7 +346,7 @@ FloatingBackground {
 
                     ColumnLayout {
                         id: fees
-                        visible: canShowFees()
+                        visible: valid_trade_info && !General.isZero(getVolume())
 
                         spacing: -2
                         Layout.leftMargin: 10
@@ -305,14 +355,14 @@ FloatingBackground {
 
                         DefaultText {
                             id: tx_fee_text
-                            text_value: API.get().empty_string + ((qsTr('Transaction Fee') + ': ' + General.formatCrypto("", curr_trade_info.tx_fee, curr_trade_info.is_ticker_of_fees_eth ? "ETH" : getTicker(true))) +
+                            text_value: API.get().empty_string + ((qsTr('Transaction Fee') + ': ' + General.formatCrypto("", curr_trade_info.tx_fee, curr_trade_info.is_ticker_of_fees_eth ? "ETH" : getTicker(my_side))) +
                                                                     // ETH Fees
                                                                     (hasEthFees() ? " + " + General.formatCrypto("", curr_trade_info.erc_fees, 'ETH') : '') +
 
                                                                   // Fiat part
                                                                   (" ("+
                                                                       getFiatText(!hasEthFees() ? curr_trade_info.tx_fee : General.formatDouble((parseFloat(curr_trade_info.tx_fee) + parseFloat(curr_trade_info.erc_fees))),
-                                                                                  curr_trade_info.is_ticker_of_fees_eth ? 'ETH' : getTicker(true))
+                                                                                  curr_trade_info.is_ticker_of_fees_eth ? 'ETH' : getTicker(my_side))
                                                                    +")")
 
 
@@ -323,11 +373,11 @@ FloatingBackground {
                         }
 
                         DefaultText {
-                            text_value: API.get().empty_string + (qsTr('Trading Fee') + ': ' + General.formatCrypto("", curr_trade_info.trade_fee, getTicker(true)) +
+                            text_value: API.get().empty_string + (qsTr('Trading Fee') + ': ' + General.formatCrypto("", curr_trade_info.trade_fee, getTicker(my_side)) +
 
                                                                   // Fiat part
                                                                   (" ("+
-                                                                      getFiatText(curr_trade_info.trade_fee, getTicker(true))
+                                                                      getFiatText(curr_trade_info.trade_fee, getTicker(my_side))
                                                                    +")")
                                                                   )
                             font.pixelSize: tx_fee_text.font.pixelSize
@@ -348,19 +398,34 @@ FloatingBackground {
             }
         }
 
-        // Trade button
-        DefaultButton {
-            Layout.alignment: Qt.AlignRight | Qt.AlignBottom
+        RowLayout {
+            Layout.alignment: Qt.AlignBottom
             Layout.topMargin: 5
-            Layout.rightMargin: top_line.Layout.rightMargin
+            Layout.fillWidth: true
+            Layout.leftMargin: top_line.Layout.rightMargin
+            Layout.rightMargin: Layout.leftMargin
             Layout.bottomMargin: layout_margin
 
-            visible: !my_side
-            width: 170
+            DefaultText {
+                Layout.alignment: Qt.AlignLeft
+                text_value: API.get().empty_string + (qsTr("Total") + ": " + General.formatCrypto("", total_amount, getTicker(false)))
+                font.pixelSize: Style.textSizeSmall3
+            }
 
-            text: API.get().empty_string + (!preffered_order.is_asks && orderIsSelected() ? qsTr("Match Order") : qsTr("Create Order"))
-            enabled: valid_trade_info && !notEnoughBalanceForFees() && form_base.isValid() && form_rel.isValid()
-            onClicked: confirm_trade_modal.open()
+            // Trade button
+            DefaultButton {
+                Layout.alignment: Qt.AlignRight
+                Layout.fillWidth: true
+                Layout.leftMargin: 30
+
+                button_type: my_side ? "danger" : "primary"
+
+                width: 170
+
+                text: API.get().empty_string + (my_side ? qsTr("Sell %1", "TICKER").arg(getTicker(true)) : qsTr("Buy %1", "TICKER").arg(getTicker(true)))
+                enabled: valid_trade_info && !notEnoughBalanceForFees() && isValid()
+                onClicked: confirm_trade_modal.open()
+            }
         }
     }
 }
