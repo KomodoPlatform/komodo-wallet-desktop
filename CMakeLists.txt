@@ -137,6 +137,7 @@ message(STATUS "${TS_FILES}")
 add_library(atomic_qt_shared_deps INTERFACE)
 target_sources(atomic_qt_shared_deps INTERFACE
         ${CMAKE_SOURCE_DIR}/src/atomic.dex.kill.cpp
+        ${CMAKE_SOURCE_DIR}/src/atomic.dex.qt.internet.checker.service.cpp
         ${CMAKE_SOURCE_DIR}/src/atomic.dex.app.cpp
         ${CMAKE_SOURCE_DIR}/src/atomic.dex.cfg.cpp
         ${CMAKE_SOURCE_DIR}/src/atomic.dex.mm2.cpp

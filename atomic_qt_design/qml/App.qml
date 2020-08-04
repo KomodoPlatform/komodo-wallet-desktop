@@ -11,8 +11,10 @@ Rectangle {
 
     color: Style.colorTheme8
 
+    property string selected_wallet_name: ""
+
     function firstPage() {
-        return !API.get().first_run() && API.get().is_there_a_default_wallet() ? idx_login : idx_first_launch
+        return !API.get().first_run() && selected_wallet_name !== "" ? idx_login : idx_first_launch
     }
 
     function cleanApp() {
@@ -21,7 +23,8 @@ Rectangle {
 
     function onDisconnect() { openFirstLaunch() }
 
-    function openFirstLaunch(force) {        
+    function openFirstLaunch(force=false, set_wallet_name=true) {
+        if(set_wallet_name) selected_wallet_name = API.get().wallet_default_name
         cleanApp()
 
         if(API.design_editor) {
@@ -70,13 +73,13 @@ Rectangle {
 
         RecoverSeed {
             onClickedBack: () => { openFirstLaunch() }
-            postConfirmSuccess: () => { openFirstLaunch() }
+            postConfirmSuccess: () => { openFirstLaunch(false, false) }
         }
 
         NewUser {
             id: new_user
             onClickedBack: () => { openFirstLaunch() }
-            postCreateSuccess: () => { openFirstLaunch() }
+            postCreateSuccess: () => { openFirstLaunch(false, false) }
         }
 
         Login {

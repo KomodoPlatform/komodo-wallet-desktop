@@ -35,6 +35,7 @@ namespace atomic_dex
     {
       public:
         QString get_wallet_default_name() const noexcept;
+        void just_set_wallet_name(QString wallet_name);
 
         void set_wallet_default_name(QString wallet_name) noexcept;
 

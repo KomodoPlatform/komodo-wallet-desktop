@@ -315,11 +315,13 @@ namespace atomic_dex
             data.order_error_state   = error.first;
             data.order_error_message = error.second;
         }
+
         if (data.order_status == "matched")
         {
             using namespace std::string_literals;
             this->m_dispatcher.trigger<swap_status_notification>(data.order_id.toStdString(), "matching"s, "matched"s);
         }
+
         if (this->m_swaps_id_registry.find(contents.uuid) == m_swaps_id_registry.end())
         {
             this->m_swaps_id_registry.emplace(contents.uuid);
@@ -372,10 +374,10 @@ namespace atomic_dex
         beginInsertRows(QModelIndex(), this->m_model_data.count(), this->m_model_data.count());
         order_data data{
             .is_maker       = contents.order_type == "maker",
-            .base_coin      = QString::fromStdString(contents.base),
-            .rel_coin       = QString::fromStdString(contents.rel),
-            .base_amount    = QString::fromStdString(contents.base_amount),
-            .rel_amount     = QString::fromStdString(contents.rel_amount),
+            .base_coin      = contents.action == "Sell" ? QString::fromStdString(contents.base) : QString::fromStdString(contents.rel),
+            .rel_coin       = contents.action == "Sell" ? QString::fromStdString(contents.rel) : QString::fromStdString(contents.base),
+            .base_amount    = contents.action == "Sell" ? QString::fromStdString(contents.base_amount) : QString::fromStdString(contents.rel_amount),
+            .rel_amount     = contents.action == "Sell" ? QString::fromStdString(contents.rel_amount) : QString::fromStdString(contents.base_amount),
             .order_type     = QString::fromStdString(contents.order_type),
             .human_date     = QString::fromStdString(contents.human_timestamp),
             .unix_timestamp = static_cast<unsigned long long>(contents.timestamp),
@@ -451,14 +453,17 @@ namespace atomic_dex
                     if (not res_list.empty())
                     {
                         //! And then delete it
+						spdlog::trace("removing order with id {} from the UI", id);
                         this->removeRow(res_list.at(0).row());
                         to_remove.emplace(id);
                     }
                 }
             }
-            std::unordered_set<std::string> out;
-            std::set_difference(begin(m_orders_id_registry), end(m_orders_id_registry), begin(to_remove), end(to_remove), std::inserter(out, out.begin()));
-            m_orders_id_registry = out;
+            //std::unordered_set<std::string> out;
+            //std::set_difference(begin(m_orders_id_registry), end(m_orders_id_registry), begin(to_remove), end(to_remove), std::inserter(out, out.begin()));
+			for (auto&& cur_to_remove : to_remove) {
+				m_orders_id_registry.erase(cur_to_remove);
+			}
         }
     }
 

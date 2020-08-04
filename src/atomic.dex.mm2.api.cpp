@@ -19,6 +19,7 @@
 
 //! Project Headers
 #include "atomic.dex.mm2.api.hpp"
+#include "atomic.dex.utilities.hpp"
 
 //! Utilities
 namespace
@@ -219,12 +220,8 @@ namespace mm2::api
         j.at("tx_hash").get_to(cfg.tx_hash);
         j.at("tx_hex").get_to(cfg.tx_hex);
 
-        using namespace date;
-        using namespace std::chrono;
-        date::sys_seconds tp{seconds{cfg.timestamp}};
-        auto              tp_zoned = date::make_zoned(current_zone(), tp);
-        std::string       s        = date::format("%e %b %Y, %I:%M", tp_zoned);
-        cfg.timestamp_as_date      = std::move(s);
+        std::string s         = to_human_date<std::chrono::seconds>(cfg.timestamp, "%e %b %Y, %I:%M");
+        cfg.timestamp_as_date = std::move(s);
     }
 
     void
@@ -437,32 +434,32 @@ namespace mm2::api
         j.at("netid").get_to(answer.netid);
         j.at("timestamp").get_to(answer.timestamp);
 
-        sys_time<std::chrono::milliseconds> tp{std::chrono::milliseconds{answer.timestamp}};
-        auto                                tp_zoned = date::make_zoned(current_zone(), tp);
-        answer.human_timestamp                       = date::format("%Y-%m-%d %I:%M:%S", tp_zoned);
-        
+        answer.human_timestamp = to_human_date(answer.timestamp, "%Y-%m-%d %I:%M:%S");
+
         t_float_50 result_asks_f("0");
-        for (auto&& cur_asks : answer.asks) {
-            result_asks_f = result_asks_f + t_float_50(cur_asks.maxvolume);
-        }
-        
+        for (auto&& cur_asks: answer.asks) { result_asks_f = result_asks_f + t_float_50(cur_asks.maxvolume); }
+
         answer.asks_total_volume = result_asks_f.str();
 
         t_float_50 result_bids_f("0");
-        for (auto&& cur_bids : answer.bids) {
-            result_bids_f = result_bids_f + t_float_50(cur_bids.maxvolume);
-        }
-        
-        answer.bids_total_volume = result_bids_f.str();
-        for (auto&& cur_asks : answer.asks)
+        for (auto& cur_bids: answer.bids)
         {
-            t_float_50 percent_f = t_float_50(cur_asks.maxvolume) / result_asks_f;
+            cur_bids.total        = cur_bids.maxvolume;
+            t_float_50 new_volume = t_float_50(cur_bids.maxvolume) / t_float_50(cur_bids.price);
+            cur_bids.maxvolume    = adjust_precision(new_volume.str());
+            result_bids_f         = result_bids_f + t_float_50(cur_bids.maxvolume);
+        }
+
+        answer.bids_total_volume = result_bids_f.str();
+        for (auto&& cur_asks: answer.asks)
+        {
+            t_float_50 percent_f   = t_float_50(cur_asks.maxvolume) / result_asks_f;
             cur_asks.depth_percent = adjust_precision(percent_f.str());
         }
 
-        for (auto&& cur_bids : answer.bids)
+        for (auto&& cur_bids: answer.bids)
         {
-            t_float_50 percent_f = t_float_50(cur_bids.maxvolume) / result_bids_f;
+            t_float_50 percent_f   = t_float_50(cur_bids.maxvolume) / result_bids_f;
             cur_bids.depth_percent = adjust_precision(percent_f.str());
         }
     }
@@ -483,15 +480,6 @@ namespace mm2::api
         j["volume"]          = request.volume;
         j["cancel_previous"] = request.cancel_previous;
         j["max"]             = request.max;
-    }
-
-    void
-    to_json(nlohmann::json& j, buy_request& request)
-    {
-        j["base"]   = request.base;
-        j["price"]  = request.price;
-        j["rel"]    = request.rel;
-        j["volume"] = request.volume;
     }
 
     void
@@ -528,10 +516,35 @@ namespace mm2::api
     }
 
     void
-    to_json(nlohmann::json& j, const sell_request& request)
+    to_json(nlohmann::json& j, buy_request& request)
     {
         spdlog::debug("price: {}, volume: {}", request.price, request.volume);
 
+        j["base"]   = request.base;
+        j["price"]  = request.price;
+        j["rel"]    = request.rel;
+        j["volume"] = request.volume;
+
+        if (not request.is_created_order)
+        {
+            spdlog::info(
+                "The order is picked from the orderbook, setting price_numer and price_denom from it {}, {}", request.price_numer, request.price_denom);
+            //! From orderbook
+            nlohmann::json price_fraction_repr = nlohmann::json::object();
+            price_fraction_repr["numer"]       = request.price_numer;
+            price_fraction_repr["denom"]       = request.price_denom;
+            j["price"]                         = price_fraction_repr;
+        }
+        else
+        {
+            spdlog::info("The order is not picked from orderbook we create it volume = {}, price = {}", request.volume, request.price);
+        }
+    }
+
+    void
+    to_json(nlohmann::json& j, const sell_request& request)
+    {
+        spdlog::debug("price: {}, volume: {}", request.price, request.volume);
 
         j["base"]   = request.base;
         j["rel"]    = request.rel;
@@ -639,8 +652,12 @@ namespace mm2::api
         {
           using namespace date;
           const auto        time_key = value.at("created_at").get<std::size_t>();
-          sys_time<std::chrono::milliseconds> tp{std::chrono::milliseconds{time_key}};
-          auto tp_zoned = date::make_zoned(current_zone(), tp);
+
+          std::string action = "Buy";
+          if (not is_maker)
+          {
+             value.at("request").at("action").get_to(action);
+          }
           my_order_contents contents{
               .order_id         = key,
               .price            = is_maker ? adjust_precision(value.at("price").get<std::string>()) : "0",
@@ -651,7 +668,8 @@ namespace mm2::api
               .order_type       = is_maker ? "maker" : "taker",
               .base_amount      = is_maker ? value.at("max_base_vol").get<std::string>() : value.at("request").at("base_amount").get<std::string>(),
               .rel_amount       = is_maker ? (t_float_50(contents.price) * t_float_50(contents.base_amount)).convert_to<std::string>() : value.at("request").at("rel_amount").get<std::string>(),
-              .human_timestamp  = date::format("%F    %T", tp_zoned)};
+              .human_timestamp  = to_human_date(time_key, "%F    %T"),
+              .action = action};
           out.try_emplace(time_key, std::move(contents));
         };
         // clang-format on
@@ -716,12 +734,9 @@ namespace mm2::api
 
         for (auto&& content: j.at("events"))
         {
-            using sys_milliseconds           = sys_time<std::chrono::milliseconds>;
             const nlohmann::json& j_evt      = content.at("event");
             auto                  timestamp  = content.at("timestamp").get<std::size_t>();
-            auto                  tp         = sys_milliseconds{std::chrono::milliseconds{timestamp}};
-            auto                  tp_zoned   = date::make_zoned(current_zone(), tp);
-            std::string           human_date = date::format("%F    %T", tp_zoned);
+            std::string           human_date = to_human_date(timestamp, "%F    %T");
             auto                  evt_type   = j_evt.at("type").get<std::string>();
 
             auto rate_bundler = [&event_timestamp_registry,
