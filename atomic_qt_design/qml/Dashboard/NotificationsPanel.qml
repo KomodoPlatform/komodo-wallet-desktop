@@ -31,10 +31,9 @@ FloatingBackground {
 
     // Events
     function onSwapStatusUpdated(old_swap_status, new_swap_status, swap_uuid) {
-        // TODO: Add qsTr texts for statuses
         const obj = {
             title: qsTr("Swap status updated"),
-            message: old_swap_status + " " + General.right_arrow_icon + " " + new_swap_status
+            message: exchange.getStatusText(old_swap_status) + " " + General.right_arrow_icon + " " + exchange.getStatusText(new_swap_status)
         }
 
         notifications_list = [obj].concat(notifications_list)
@@ -113,6 +112,7 @@ FloatingBackground {
                         DefaultText {
                             text_value: API.get().empty_string + (modelData.title)
                             font.pixelSize: Style.textSizeSmall4
+                            font.bold: true
                         }
 
                         DefaultText {
@@ -141,7 +141,7 @@ FloatingBackground {
             spacing: 10
 
             DefaultButton {
-                text: API.get().empty_string + (qsTr("Pop Notification"))
+                text: API.get().empty_string + (qsTr("Pop Test Notification"))
                 onClicked: {
                     onSwapStatusUpdated("ongoing", "finished", "123456")
                 }
