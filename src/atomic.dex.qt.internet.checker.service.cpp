@@ -37,11 +37,6 @@ namespace atomic_dex
     {
         return is_internet_reacheable.load();
     }
-} // namespace atomic_dex
-
-namespace atomic_dex
-{
-    internet_service_checker::internet_service_checker(entt::registry& registry, QObject* parent) : QObject(parent), system(registry) { retry(); }
 
     double
     atomic_dex::internet_service_checker::get_seconds_left_to_auto_retry() const noexcept
@@ -54,6 +49,15 @@ namespace atomic_dex
     {
         m_timer = time_left;
         emit secondsLeftToAutoRetryChanged();
+    }
+} // namespace atomic_dex
+
+namespace atomic_dex
+{
+    internet_service_checker::internet_service_checker(entt::registry& registry, QObject* parent) : QObject(parent), system(registry)
+    {
+        //! Init
+        retry();
     }
 
     void
