@@ -37,13 +37,35 @@ namespace atomic_dex
     {
         return is_internet_reacheable.load();
     }
+
+    double
+    atomic_dex::internet_service_checker::get_seconds_left_to_auto_retry() const noexcept
+    {
+        return m_timer;
+    }
+
+    void
+    atomic_dex::internet_service_checker::set_seconds_left_to_auto_retry(double time_left) noexcept
+    {
+        m_timer = time_left;
+        emit secondsLeftToAutoRetryChanged();
+    }
 } // namespace atomic_dex
 
 namespace atomic_dex
 {
     internet_service_checker::internet_service_checker(entt::registry& registry, QObject* parent) : QObject(parent), system(registry)
     {
+        //! Init
+        retry();
+    }
+
+    void
+    atomic_dex::internet_service_checker::retry() noexcept
+    {
+        using namespace std::chrono_literals;
         m_update_clock = std::chrono::high_resolution_clock::now();
+        set_seconds_left_to_auto_retry(15.0);
         this->fetch_internet_connection();
     }
 
@@ -54,10 +76,12 @@ namespace atomic_dex
 
         const auto now = std::chrono::high_resolution_clock::now();
         const auto s   = std::chrono::duration_cast<std::chrono::seconds>(now - m_update_clock);
-        if (s >= 30s)
+        set_seconds_left_to_auto_retry(15.0 - s.count());
+        if (s >= 15s)
         {
             this->fetch_internet_connection();
             m_update_clock = std::chrono::high_resolution_clock::now();
+            set_seconds_left_to_auto_retry(15.0);
         }
     }
 
@@ -66,10 +90,10 @@ namespace atomic_dex
     {
         spdlog::info("fetching internet status begin");
         spawn([this]() {
-            is_google_reacheable      = am_i_able_to_reach_this_endpoint("https://www.google.com");
-            is_paprika_provider_alive = am_i_able_to_reach_this_endpoint("https://api.coinpaprika.com/v1/coins/btc-bitcoin");
+            is_google_reacheable               = am_i_able_to_reach_this_endpoint("https://www.google.com");
+            is_paprika_provider_alive          = am_i_able_to_reach_this_endpoint("https://api.coinpaprika.com/v1/coins/btc-bitcoin");
             is_our_private_endpoint_reacheable = am_i_able_to_reach_this_endpoint("https://komodo.live:3333/api/v1/ohlc/tickers_list");
-            bool res                  = is_google_reacheable || is_paprika_provider_alive || is_our_private_endpoint_reacheable;
+            bool res                           = is_google_reacheable || is_paprika_provider_alive || is_our_private_endpoint_reacheable;
             this->set_internet_alive(res);
             spdlog::info("fetching internet status finished, internet status is: {}", res);
         });
