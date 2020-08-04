@@ -131,6 +131,30 @@ Item {
         }
     }
 
+    // Sidebar, left side
+    Sidebar {
+        id: sidebar
+    }
+
+    // Global click
+    MouseArea {
+        anchors.fill: parent
+        propagateComposedEvents: true
+
+        onClicked: mouse.accepted = false
+        onReleased: mouse.accepted = false
+        onPressAndHold: mouse.accepted = false
+        onDoubleClicked: mouse.accepted = false
+        onPositionChanged: mouse.accepted = false
+        onPressed: {
+            // Close notifications panel on outside click
+            if(notifications_panel.visible)
+                notifications_panel.visible = false
+
+            mouse.accepted = false
+        }
+    }
+
     NotificationsPanel {
         id: notifications_panel
         width: 500
@@ -140,9 +164,32 @@ Item {
         anchors.bottomMargin: -40
     }
 
-    // Sidebar, left side
-    Sidebar {
-        id: sidebar
+    DefaultButton {
+        anchors.horizontalCenter: sidebar.horizontalCenter
+        anchors.bottom: sidebar.bottom
+        anchors.bottomMargin: 150
+        text: "🔔"
+        minWidth: height
+        onClicked: notifications_panel.visible = !notifications_panel.visible
+
+        Rectangle {
+            radius: 1337
+            width: count_text.height * 1.5
+            height: width
+            anchors.horizontalCenter: parent.right
+            anchors.verticalCenter: parent.bottom
+            color: Style.colorRed
+            visible: notifications_panel.unread_notification_count > 0
+
+            DefaultText {
+                id: count_text
+                anchors.centerIn: parent
+                text_value: notifications_panel.unread_notification_count
+                font.pixelSize: Style.textSizeSmall1
+                font.bold: true
+                color: Style.colorWhite9
+            }
+        }
     }
 
     DropShadow {
