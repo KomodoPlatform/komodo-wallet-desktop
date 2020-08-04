@@ -9,6 +9,8 @@ import "../Components"
 FloatingBackground {
     id: root
 
+    property var notifications_list: ([])
+
     function reset() {
         visible = false
     }
@@ -30,7 +32,13 @@ FloatingBackground {
     // Events
     function onSwapStatusUpdated(old_swap_status, new_swap_status, swap_uuid) {
         // TODO: Add qsTr texts for statuses
-        displayMessage(qsTr("Swap status updated"), old_swap_status + " " + General.right_arrow_icon + " " + new_swap_status)
+        const obj = {
+            title: qsTr("Swap status updated"),
+            message: old_swap_status + " " + General.right_arrow_icon + " " + new_swap_status
+        }
+
+        notifications_list = [obj].concat(notifications_list)
+        displayMessage(obj.title, obj.message)
     }
 
 
@@ -60,6 +68,9 @@ FloatingBackground {
     ColumnLayout {
         anchors.fill: parent
         anchors.margins: 40
+
+        spacing: 10
+
         DefaultText {
             text_value: API.get().empty_string + (qsTr("Notifications"))
             Layout.alignment: Qt.AlignLeft | Qt.AlignTop
@@ -71,18 +82,75 @@ FloatingBackground {
             Layout.fillWidth: true
         }
 
-        DefaultButton {
-            text: API.get().empty_string + (qsTr("Pop Notification"))
-            Layout.alignment: Qt.AlignTop
-            onClicked: {
-                onSwapStatusUpdated("ongoing", "finished", "123456")
+        InnerBackground {
+            Layout.fillWidth: true
+            Layout.fillHeight: true
+
+            DefaultText {
+                anchors.centerIn: parent
+                visible: !list.visible
+                text_value: API.get().empty_string + (qsTr("There isn't any notification"))
+                font.pixelSize: Style.textSizeSmall2
+            }
+
+            DefaultListView {
+                id: list
+
+                visible: notifications_list.length !== 0
+
+                anchors.fill: parent
+                model: notifications_list
+
+                delegate: Item {
+                    width: list.width
+                    height: 60
+
+                    ColumnLayout {
+                        anchors.verticalCenter: parent.verticalCenter
+                        anchors.left: parent.left
+                        anchors.leftMargin: 10
+
+                        DefaultText {
+                            text_value: API.get().empty_string + (modelData.title)
+                            font.pixelSize: Style.textSizeSmall4
+                        }
+
+                        DefaultText {
+                            text_value: API.get().empty_string + (modelData.message)
+                            font.pixelSize: Style.textSizeSmall1
+                        }
+                    }
+
+                    HorizontalLine {
+                        visible: index !== notifications_list.length - 1
+                        width: parent.width - 4
+
+                        anchors.horizontalCenter: parent.horizontalCenter
+                        anchors.bottom: parent.bottom
+                        anchors.bottomMargin: -height/2
+                        light: true
+                    }
+                }
             }
         }
 
-        DefaultButton {
-            text: API.get().empty_string + (qsTr("Close"))
+
+        RowLayout {
             Layout.alignment: Qt.AlignBottom
-            onClicked: root.visible = false
+            Layout.bottomMargin: parent.spacing
+            spacing: 10
+
+            DefaultButton {
+                text: API.get().empty_string + (qsTr("Pop Notification"))
+                onClicked: {
+                    onSwapStatusUpdated("ongoing", "finished", "123456")
+                }
+            }
+
+            DefaultButton {
+                text: API.get().empty_string + (qsTr("Close"))
+                onClicked: root.visible = false
+            }
         }
     }
 }

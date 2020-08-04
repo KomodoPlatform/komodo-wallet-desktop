@@ -133,8 +133,8 @@ Item {
 
     NotificationsPanel {
         id: notifications_panel
-        width: 300
-        height: 600
+        width: 500
+        height: 500
         anchors.left: sidebar.right
         anchors.bottom: parent.bottom
         anchors.bottomMargin: -40
