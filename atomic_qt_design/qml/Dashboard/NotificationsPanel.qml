@@ -38,7 +38,8 @@ FloatingBackground {
     function onSwapStatusUpdated(old_swap_status, new_swap_status, swap_uuid) {
         const obj = {
             title: qsTr("Swap status updated"),
-            message: exchange.getStatusText(old_swap_status) + " " + General.right_arrow_icon + " " + exchange.getStatusText(new_swap_status)
+            message: exchange.getStatusText(old_swap_status) + " " + General.right_arrow_icon + " " + exchange.getStatusText(new_swap_status),
+            time: Date.now()
         }
 
         if(!root.visible)
@@ -111,6 +112,15 @@ FloatingBackground {
                 delegate: Item {
                     width: list.width
                     height: 60
+
+                    DefaultText {
+                        anchors.top: parent.top
+                        anchors.topMargin: 10
+                        anchors.right: parent.right
+                        anchors.rightMargin: 30
+                        text_value: API.get().empty_string + (General.timestampToString(modelData.time))
+                        font.pixelSize: Style.textSizeSmall
+                    }
 
                     ColumnLayout {
                         anchors.verticalCenter: parent.verticalCenter
