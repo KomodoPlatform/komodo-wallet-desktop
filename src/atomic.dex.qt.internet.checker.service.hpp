@@ -59,6 +59,8 @@ namespace atomic_dex
         [[nodiscard]] bool is_internet_alive() const noexcept;
 
         void set_internet_alive(bool internet_status) noexcept;
+
+        Q_INVOKABLE void retry() noexcept;
     };
 } // namespace atomic_dex
 
