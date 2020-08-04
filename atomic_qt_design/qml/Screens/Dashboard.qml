@@ -168,6 +168,7 @@ Item {
         anchors.horizontalCenter: sidebar.horizontalCenter
         anchors.bottom: sidebar.bottom
         anchors.bottomMargin: 150
+        z: 1
         text: "🔔"
         minWidth: height
         onClicked: notifications_panel.visible = !notifications_panel.visible
