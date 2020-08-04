@@ -278,13 +278,13 @@ namespace atomic_dex
             case action::post_process_orders_finished:
                 if (mm2.is_mm2_running())
                 {
-                    this->m_orders->refresh_or_insert_orders();
+                    qobject_cast<orders_model *>(m_manager_models.at("orders"))->refresh_or_insert_orders();
                 }
                 break;
             case action::post_process_swaps_finished:
                 if (mm2.is_mm2_running())
                 {
-                    this->m_orders->refresh_or_insert_swaps();
+                    qobject_cast<orders_model *>(m_manager_models.at("orders"))->refresh_or_insert_swaps();
                 }
                 break;
             case action::post_process_orderbook_finished:
@@ -407,8 +407,9 @@ namespace atomic_dex
         m_coin_info(new current_coin_info(dispatcher_, this)),
         m_manager_models{
             {"addressbook", new addressbook_model(this->m_wallet_manager, this)},
-            {"portfolio", new portfolio_model(this->system_manager_, this->m_config, this)}},
-        m_orders(new orders_model(this->system_manager_, this)), m_candlestick_chart_ohlc(new candlestick_charts_model(this->system_manager_, this)),
+            {"portfolio", new portfolio_model(this->system_manager_, this->m_config, this)},
+            {"orders", new orders_model(this->system_manager_, this)}},
+        m_candlestick_chart_ohlc(new candlestick_charts_model(this->system_manager_, this)),
         m_orderbook(new qt_orderbook_wrapper(this->system_manager_, this)),
         m_internet_service_checker(std::addressof(system_manager_.create_system<internet_service_checker>(this)))
     {
@@ -854,11 +855,12 @@ namespace atomic_dex
             portfolio->removeRows(0, count, QModelIndex());
         }
 
-        if (auto count = this->m_orders->rowCount(QModelIndex()); count > 0)
+        orders_model* orders = qobject_cast<orders_model *>(m_manager_models.at("orders"));
+        if (auto count = orders->rowCount(QModelIndex()); count > 0)
         {
-            this->m_orders->removeRows(0, count, QModelIndex());
+            orders->removeRows(0, count, QModelIndex());
         }
-        this->m_orders->clear_registry();
+        orders->clear_registry();
         this->m_candlestick_chart_ohlc->clear_data();
         this->m_orderbook->clear_orderbook();
 
@@ -1346,7 +1348,7 @@ namespace atomic_dex
     orders_model*
     application::get_orders() const noexcept
     {
-        return m_orders;
+        return qobject_cast<orders_model *>(m_manager_models.at("orders"));
     }
 } // namespace atomic_dex
 

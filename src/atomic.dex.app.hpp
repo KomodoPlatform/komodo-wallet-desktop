@@ -16,6 +16,7 @@
 
 #pragma once
 
+//! QT Headers
 #include <QAbstractListModel>
 #include <QApplication>
 #include <QImage>
@@ -118,7 +119,7 @@ namespace atomic_dex
         QString                       m_second_current_balance_all{"0.00"};
         current_coin_info*            m_coin_info;
         t_manager_model_registry      m_manager_models;
-        orders_model*                 m_orders;
+        //orders_model*                 m_orders;
         candlestick_charts_model*     m_candlestick_chart_ohlc;
         std::atomic_bool              m_candlestick_need_a_reset{false};
         qt_orderbook_wrapper*         m_orderbook;

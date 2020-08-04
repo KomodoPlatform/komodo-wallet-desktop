@@ -442,7 +442,13 @@ namespace mm2::api
         answer.asks_total_volume = result_asks_f.str();
 
         t_float_50 result_bids_f("0");
-        for (auto&& cur_bids: answer.bids) { result_bids_f = result_bids_f + t_float_50(cur_bids.maxvolume); }
+        for (auto& cur_bids: answer.bids)
+        {
+            cur_bids.total        = cur_bids.maxvolume;
+            t_float_50 new_volume = t_float_50(cur_bids.maxvolume) / t_float_50(cur_bids.price);
+            cur_bids.maxvolume    = adjust_precision(new_volume.str());
+            result_bids_f         = result_bids_f + t_float_50(cur_bids.maxvolume);
+        }
 
         answer.bids_total_volume = result_bids_f.str();
         for (auto&& cur_asks: answer.asks)
