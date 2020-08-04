@@ -130,10 +130,13 @@ DefaultModal {
 
                 DefaultText {
                     Layout.alignment: Qt.AlignHCenter
-                    text_value: API.get().empty_string + (qsTr("Confirmations") + ": " + required_confirmation_count.value)
+                    text_value: API.get().empty_string + (qsTr("Confirmations") + ": " + required_confirmation_count.value
+                                                          + (required_confirmation_count.value === required_confirmation_count.default_confirmation_count ?
+                                                                 " (" + qsTr("Recommended") + ")" : ""))
                 }
 
                 Slider {
+                    readonly property int default_confirmation_count: 3
                     Layout.alignment: Qt.AlignHCenter
                     id: required_confirmation_count
                     stepSize: 1
@@ -141,6 +144,7 @@ DefaultModal {
                     to: 5
                     live: true
                     snapMode: Slider.SnapAlways
+                    value: default_confirmation_count
                 }
             }
 
