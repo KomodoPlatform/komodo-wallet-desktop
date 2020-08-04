@@ -339,7 +339,6 @@ namespace atomic_dex
     application::refresh_transactions(const mm2& mm2)
     {
         const auto ticker = m_coin_info->get_ticker().toStdString();
-        spdlog::debug("{} l{} for coin {}", __FUNCTION__, __LINE__, ticker);
         std::error_code ec;
         auto            txs = mm2.get_tx_history(ticker, ec);
         if (!ec)
@@ -676,8 +675,8 @@ namespace atomic_dex
             .is_created_order = is_created_order,
             .price_denom      = price_denom.toStdString(),
             .price_numer      = price_numer.toStdString(),
-            .base_nota = base_nota.isEmpty() ? std::optional<bool>{std::nullopt} : boost::lexical_cast<bool>(base_nota.toStdString()),
-            .base_confs = base_confs.isEmpty() ? std::optional<std::size_t>{std::nullopt} : base_confs.toUInt()};
+            .base_nota        = base_nota.isEmpty() ? std::optional<bool>{std::nullopt} : boost::lexical_cast<bool>(base_nota.toStdString()),
+            .base_confs       = base_confs.isEmpty() ? std::optional<std::size_t>{std::nullopt} : base_confs.toUInt()};
         std::error_code ec;
         auto            answer = get_mm2().place_buy_order(std::move(req), total_amount, ec);
 
@@ -705,8 +704,8 @@ namespace atomic_dex
             .is_created_order = is_created_order,
             .price_denom      = price_denom.toStdString(),
             .price_numer      = price_numer.toStdString(),
-            .rel_nota = rel_nota.isEmpty() ? std::optional<bool>{std::nullopt} : boost::lexical_cast<bool>(rel_nota.toStdString()),
-            .rel_confs = rel_confs.isEmpty() ? std::optional<std::size_t>{std::nullopt} : rel_confs.toUInt()};
+            .rel_nota         = rel_nota.isEmpty() ? std::optional<bool>{std::nullopt} : boost::lexical_cast<bool>(rel_nota.toStdString()),
+            .rel_confs        = rel_confs.isEmpty() ? std::optional<std::size_t>{std::nullopt} : rel_confs.toUInt()};
         std::error_code ec;
         auto            answer = get_mm2().place_sell_order(std::move(req), amount_f, ec);
 
