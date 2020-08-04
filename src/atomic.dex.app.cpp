@@ -1523,7 +1523,7 @@ namespace atomic_dex
 namespace atomic_dex
 {
     internet_service_checker*
-    application::getInternetChecker() const noexcept
+    application::get_internet_checker() const noexcept
     {
         return m_internet_service_checker;
     }

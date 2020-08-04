@@ -64,7 +64,7 @@ namespace atomic_dex
         Q_PROPERTY(candlestick_charts_model* candlestick_charts_mdl READ get_candlestick_charts NOTIFY candlestickChartsChanged)
         Q_PROPERTY(QVariant update_status READ get_update_status NOTIFY updateStatusChanged)
         Q_PROPERTY(portfolio_model* portfolio_mdl READ get_portfolio NOTIFY portfolioChanged)
-        Q_PROPERTY(internet_service_checker* internet_checker READ getInternetChecker NOTIFY internetCheckerChanged)
+        Q_PROPERTY(internet_service_checker* internet_checker READ get_internet_checker NOTIFY internetCheckerChanged)
         Q_PROPERTY(QString current_currency READ get_current_currency WRITE set_current_currency NOTIFY onCurrencyChanged)
         Q_PROPERTY(QString current_currency_sign READ get_current_currency_sign NOTIFY onCurrencySignChanged)
         Q_PROPERTY(QString current_fiat_sign READ get_current_fiat_sign NOTIFY onFiatSignChanged)
@@ -116,10 +116,8 @@ namespace atomic_dex
         QString                       m_current_lang{QString::fromStdString(m_config.current_lang)};
         QString                       m_current_status{"None"};
         QString                       m_current_balance_all{"0.00"};
-        QString                       m_second_current_balance_all{"0.00"};
         current_coin_info*            m_coin_info;
         t_manager_model_registry      m_manager_models;
-        //orders_model*                 m_orders;
         candlestick_charts_model*     m_candlestick_chart_ohlc;
         std::atomic_bool              m_candlestick_need_a_reset{false};
         qt_orderbook_wrapper*         m_orderbook;
@@ -160,7 +158,7 @@ namespace atomic_dex
         portfolio_model*           get_portfolio() const noexcept;
         orders_model*              get_orders() const noexcept;
         candlestick_charts_model*  get_candlestick_charts() const noexcept;
-        internet_service_checker*  getInternetChecker() const noexcept;
+        internet_service_checker*  get_internet_checker() const noexcept;
         qt_orderbook_wrapper*      get_orderbook_wrapper() const noexcept;
         QVariantList               get_enabled_coins() const noexcept;
         QVariantList               get_enableable_coins() const noexcept;
