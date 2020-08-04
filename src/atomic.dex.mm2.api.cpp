@@ -524,7 +524,14 @@ namespace mm2::api
         j["price"]  = request.price;
         j["rel"]    = request.rel;
         j["volume"] = request.volume;
-
+        if (request.base_nota.has_value())
+        {
+            j["base_nota"] = request.base_nota.value();
+        }
+        if (request.base_confs.has_value())
+        {
+            j["base_confs"] = request.base_confs.value();
+        }
         if (not request.is_created_order)
         {
             spdlog::info(
@@ -550,6 +557,14 @@ namespace mm2::api
         j["rel"]    = request.rel;
         j["volume"] = request.volume; // 7.77
         j["price"]  = request.price;
+        if (request.rel_nota.has_value())
+        {
+            j["rel_nota"] = request.rel_nota.value();
+        }
+        if (request.rel_confs.has_value())
+        {
+            j["rel_confs"] = request.rel_confs.value();
+        }
 
         if (not request.is_created_order)
         {
