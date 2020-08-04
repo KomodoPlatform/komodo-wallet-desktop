@@ -30,11 +30,14 @@ namespace atomic_dex
         Q_OBJECT
 
         Q_PROPERTY(bool internet_reacheable READ is_internet_alive WRITE set_internet_alive NOTIFY internetStatusChanged)
+        Q_PROPERTY(
+            double seconds_left_to_auto_retry READ get_seconds_left_to_auto_retry WRITE set_seconds_left_to_auto_retry NOTIFY secondsLeftToAutoRetryChanged)
         //! Private typedefs
         using t_update_time_point = std::chrono::high_resolution_clock::time_point;
 
         //! Private members
         t_update_time_point m_update_clock;
+        double              m_timer;
         std::atomic_bool    is_internet_reacheable{true};
         std::atomic_bool    is_paprika_provider_alive{true};
         std::atomic_bool    is_cipig_electrum_alive{true};
@@ -46,6 +49,7 @@ namespace atomic_dex
 
       signals:
         void internetStatusChanged();
+        void secondsLeftToAutoRetryChanged();
 
       public:
         //! Constructor
@@ -57,6 +61,8 @@ namespace atomic_dex
 
         //! QT Properties
         [[nodiscard]] bool is_internet_alive() const noexcept;
+        [[nodiscard]] double get_seconds_left_to_auto_retry() const noexcept;
+        void set_seconds_left_to_auto_retry(double time_left) noexcept;
 
         void set_internet_alive(bool internet_status) noexcept;
 

@@ -43,10 +43,25 @@ namespace atomic_dex
 {
     internet_service_checker::internet_service_checker(entt::registry& registry, QObject* parent) : QObject(parent), system(registry) { retry(); }
 
+    double
+    atomic_dex::internet_service_checker::get_seconds_left_to_auto_retry() const noexcept
+    {
+        return m_timer;
+    }
+
+    void
+    atomic_dex::internet_service_checker::set_seconds_left_to_auto_retry(double time_left) noexcept
+    {
+        m_timer = time_left;
+        emit secondsLeftToAutoRetryChanged();
+    }
+
     void
     atomic_dex::internet_service_checker::retry() noexcept
     {
+        using namespace std::chrono_literals;
         m_update_clock = std::chrono::high_resolution_clock::now();
+        set_seconds_left_to_auto_retry(15.0);
         this->fetch_internet_connection();
     }
 
@@ -57,10 +72,13 @@ namespace atomic_dex
 
         const auto now = std::chrono::high_resolution_clock::now();
         const auto s   = std::chrono::duration_cast<std::chrono::seconds>(now - m_update_clock);
-        if (s >= 30s)
+        set_seconds_left_to_auto_retry(15.0 - s.count());
+        spdlog::trace("timer: {}s", m_timer);
+        if (s >= 15s)
         {
             this->fetch_internet_connection();
             m_update_clock = std::chrono::high_resolution_clock::now();
+            set_seconds_left_to_auto_retry(15.0);
         }
     }
 
