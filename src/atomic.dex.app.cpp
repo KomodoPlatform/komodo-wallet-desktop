@@ -36,8 +36,6 @@
 #    include <QWindowList>
 #endif
 
-/*#define ENABLE_ENCODER_GENERIC
-#include "QZXing.h"*/
 //! Project Headers
 #include "atomic.dex.app.hpp"
 #include "atomic.dex.mm2.hpp"
@@ -136,8 +134,7 @@ namespace atomic_dex
     application::disable_coins(const QStringList& coins)
     {
         std::vector<std::string> coins_std;
-
-        this->m_portfolio->disable_coins(coins);
+        qobject_cast<portfolio_model*>(m_manager_models.at("portfolio"))->disable_coins(coins);
         coins_std.reserve(coins.size());
         for (auto&& coin: coins) { coins_std.push_back(coin.toStdString()); }
         get_mm2().disable_multiple_coins(coins_std);
@@ -275,19 +272,19 @@ namespace atomic_dex
             case action::refresh_portfolio_ticker_balance:
                 if (mm2.is_mm2_running())
                 {
-                    this->m_portfolio->update_balance_values(*this->m_ticker_balance_to_refresh);
+                    qobject_cast<portfolio_model*>(m_manager_models.at("portfolio"))->update_balance_values(*m_ticker_balance_to_refresh);
                 }
                 break;
             case action::post_process_orders_finished:
                 if (mm2.is_mm2_running())
                 {
-                    this->m_orders->refresh_or_insert_orders();
+                    qobject_cast<orders_model *>(m_manager_models.at("orders"))->refresh_or_insert_orders();
                 }
                 break;
             case action::post_process_swaps_finished:
                 if (mm2.is_mm2_running())
                 {
-                    this->m_orders->refresh_or_insert_swaps();
+                    qobject_cast<orders_model *>(m_manager_models.at("orders"))->refresh_or_insert_swaps();
                 }
                 break;
             case action::post_process_orderbook_finished:
@@ -396,33 +393,25 @@ namespace atomic_dex
         return m_current_balance_all;
     }
 
-    QString
-    application::get_second_balance_fiat_all() const noexcept
-    {
-        return m_second_current_balance_all;
-    }
-
     void
     atomic_dex::application::set_current_balance_fiat_all(QString current_fiat_all_balance) noexcept
     {
         this->m_current_balance_all = std::move(current_fiat_all_balance);
-        emit on_fiat_balance_all_changed();
-    }
-
-    void
-    application::set_second_current_balance_fiat_all(QString current_fiat_all_balance) noexcept
-    {
-        this->m_second_current_balance_all = std::move(current_fiat_all_balance);
-        emit on_second_fiat_balance_all_changed();
+        emit onFiatBalanceAllChanged();
     }
 
     application::application(QObject* pParent) noexcept :
         QObject(pParent),
         m_update_status(QJsonObject{
             {"update_needed", false}, {"changelog", ""}, {"current_version", ""}, {"download_url", ""}, {"new_version", ""}, {"rpc_code", 0}, {"status", ""}}),
-        m_coin_info(new current_coin_info(dispatcher_, this)), m_addressbook(new addressbook_model(this->m_wallet_manager, this)),
-        m_portfolio(new portfolio_model(this->system_manager_, this->m_config, this)), m_orders(new orders_model(this->system_manager_, this)),
-        m_candlestick_chart_ohlc(new candlestick_charts_model(this->system_manager_, this)), m_orderbook(new qt_orderbook_wrapper(this->system_manager_, this))
+        m_coin_info(new current_coin_info(dispatcher_, this)),
+        m_manager_models{
+            {"addressbook", new addressbook_model(this->m_wallet_manager, this)},
+            {"portfolio", new portfolio_model(this->system_manager_, this->m_config, this)},
+            {"orders", new orders_model(this->system_manager_, this)}},
+        m_candlestick_chart_ohlc(new candlestick_charts_model(this->system_manager_, this)),
+        m_orderbook(new qt_orderbook_wrapper(this->system_manager_, this)),
+        m_internet_service_checker(std::addressof(system_manager_.create_system<internet_service_checker>(this)))
     {
         get_dispatcher().sink<refresh_update_status>().connect<&application::on_refresh_update_status_event>(*this);
         //! MM2 system need to be created before the GUI and give the instance to the gui
@@ -497,7 +486,7 @@ namespace atomic_dex
     {
         //! This event is called when a call is enabled and cex provider finished fetch datas
         spdlog::debug("{} l{}", __FUNCTION__, __LINE__);
-        this->m_portfolio->initialize_portfolio(evt.ticker);
+        qobject_cast<portfolio_model*>(m_manager_models.at("portfolio"))->initialize_portfolio(evt.ticker);
     }
 
     QString
@@ -525,10 +514,10 @@ namespace atomic_dex
         {
             spdlog::info("change currency {} to {}", m_config.current_currency, current_currency.toStdString());
             atomic_dex::change_currency(m_config, current_currency.toStdString());
-            this->m_portfolio->update_currency_values();
-            emit on_currency_changed();
-            emit on_currency_sign_changed();
-            emit on_fiat_sign_changed();
+            qobject_cast<portfolio_model*>(m_manager_models.at("portfolio"))->update_currency_values();
+            emit onCurrencyChanged();
+            emit onCurrencySignChanged();
+            emit onFiatSignChanged();
         }
     }
 
@@ -545,7 +534,7 @@ namespace atomic_dex
         {
             spdlog::info("change fiat {} to {}", m_config.current_fiat, current_fiat.toStdString());
             atomic_dex::change_fiat(m_config, current_fiat.toStdString());
-            emit on_fiat_changed();
+            emit onFiatChanged();
         }
     }
 
@@ -778,7 +767,7 @@ namespace atomic_dex
     application::set_status(QString status) noexcept
     {
         this->m_current_status = std::move(status);
-        emit on_status_changed();
+        emit onStatusChanged();
     }
 
     void
@@ -854,21 +843,24 @@ namespace atomic_dex
         }
 
         //! Clear models
-        if (auto count = this->m_addressbook->rowCount(); count > 0)
+        addressbook_model* addressbook = qobject_cast<addressbook_model*>(m_manager_models.at("addressbook"));
+        if (auto count = addressbook->rowCount(); count > 0)
         {
-            this->m_addressbook->removeRows(0, count);
+            addressbook->removeRows(0, count);
         }
 
-        if (auto count = this->m_portfolio->rowCount(QModelIndex()); count > 0)
+        portfolio_model* portfolio = qobject_cast<portfolio_model*>(m_manager_models.at("portfolio"));
+        if (auto count = portfolio->rowCount(QModelIndex()); count > 0)
         {
-            this->m_portfolio->removeRows(0, count, QModelIndex());
+            portfolio->removeRows(0, count, QModelIndex());
         }
 
-        if (auto count = this->m_orders->rowCount(QModelIndex()); count > 0)
+        orders_model* orders = qobject_cast<orders_model *>(m_manager_models.at("orders"));
+        if (auto count = orders->rowCount(QModelIndex()); count > 0)
         {
-            this->m_orders->removeRows(0, count, QModelIndex());
+            orders->removeRows(0, count, QModelIndex());
         }
-        this->m_orders->clear_registry();
+        orders->clear_registry();
         this->m_candlestick_chart_ohlc->clear_data();
         this->m_orderbook->clear_orderbook();
 
@@ -896,7 +888,7 @@ namespace atomic_dex
         this->m_need_a_full_refresh_of_mm2 = true;
 
         this->m_wallet_manager.just_set_wallet_name("");
-        emit on_wallet_default_name_changed();
+        emit onWalletDefaultNameChanged();
         return fs::remove(get_atomic_dex_config_folder() / "default.wallet");
     }
 
@@ -1020,8 +1012,8 @@ namespace atomic_dex
         [[maybe_unused]] auto res = this->m_translator.load("atomic_qt_" + current_lang, QLatin1String(":/atomic_qt_design/assets/languages"));
         assert(res);
         this->m_app->installTranslator(&m_translator);
-        emit on_lang_changed();
-        emit lang_changed();
+        emit onLangChanged();
+        emit langChanged();
     }
 
     void
@@ -1188,9 +1180,9 @@ namespace atomic_dex
 {
     application::~application() noexcept
     {
-        if (this->m_addressbook->rowCount() > 0)
+        if (auto addressbook = qobject_cast<addressbook_model*>(m_manager_models.at("addressbook")); addressbook->rowCount() > 0)
         {
-            this->m_addressbook->removeRows(0, this->m_addressbook->rowCount());
+            addressbook->removeRows(0, addressbook->rowCount());
         }
         export_swaps_json();
     }
@@ -1326,7 +1318,7 @@ namespace atomic_dex
     addressbook_model*
     application::get_addressbook() const noexcept
     {
-        return m_addressbook;
+        return qobject_cast<addressbook_model*>(m_manager_models.at("addressbook"));
     }
 } // namespace atomic_dex
 
@@ -1356,7 +1348,7 @@ namespace atomic_dex
     orders_model*
     application::get_orders() const noexcept
     {
-        return m_orders;
+        return qobject_cast<orders_model *>(m_manager_models.at("orders"));
     }
 } // namespace atomic_dex
 
@@ -1366,7 +1358,7 @@ namespace atomic_dex
     portfolio_model*
     application::get_portfolio() const noexcept
     {
-        return m_portfolio;
+        return qobject_cast<portfolio_model*>(m_manager_models.at("portfolio"));
     }
 } // namespace atomic_dex
 
@@ -1383,7 +1375,7 @@ namespace atomic_dex
     application::set_wallet_default_name(QString wallet_name) noexcept
     {
         m_wallet_manager.set_wallet_default_name(std::move(wallet_name));
-        emit on_wallet_default_name_changed();
+        emit onWalletDefaultNameChanged();
     }
 
     bool
@@ -1401,7 +1393,8 @@ namespace atomic_dex
         });
         if (res)
         {
-            this->m_addressbook->initializeFromCfg();
+            addressbook_model* addressbook = qobject_cast<addressbook_model*>(m_manager_models.at("addressbook"));
+            addressbook->initializeFromCfg();
         }
         return res;
     }
@@ -1523,5 +1516,15 @@ namespace atomic_dex
             this->m_actions_queue.push(action::post_process_orderbook_finished);
             this->m_orderbook_need_a_reset = evt.is_a_reset;
         }
+    }
+} // namespace atomic_dex
+
+//! Internet checker
+namespace atomic_dex
+{
+    internet_service_checker*
+    application::get_internet_checker() const noexcept
+    {
+        return m_internet_service_checker;
     }
 } // namespace atomic_dex
