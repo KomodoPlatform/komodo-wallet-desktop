@@ -98,7 +98,7 @@ QtObject {
     }
 
     function nFormatter(num, digits) {
-      if(num < 1E5) return num
+      if(num < 1E5) return General.formatDouble(num)
 
       const si = [
         { value: 1, symbol: "" },
