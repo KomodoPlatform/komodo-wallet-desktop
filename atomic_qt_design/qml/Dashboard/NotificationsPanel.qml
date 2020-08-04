@@ -9,6 +9,7 @@ import "../Components"
 FloatingBackground {
     id: root
 
+    property int unread_notification_count: 0
     property var notifications_list: ([])
 
     function reset() {
@@ -23,6 +24,10 @@ FloatingBackground {
 
     visible: false
 
+    onVisibleChanged: {
+        if(visible) unread_notification_count = 0
+    }
+
     MouseArea {
         anchors.fill: parent
         preventStealing: true
@@ -35,6 +40,9 @@ FloatingBackground {
             title: qsTr("Swap status updated"),
             message: exchange.getStatusText(old_swap_status) + " " + General.right_arrow_icon + " " + exchange.getStatusText(new_swap_status)
         }
+
+        if(!root.visible)
+            ++unread_notification_count
 
         notifications_list = [obj].concat(notifications_list)
         displayMessage(obj.title, obj.message)

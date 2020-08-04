@@ -156,6 +156,25 @@ Item {
             text: "🔔"
             minWidth: height
             onClicked: notifications_panel.visible = !notifications_panel.visible
+
+            Rectangle {
+                radius: 1337
+                width: count_text.height * 1.5
+                height: width
+                anchors.horizontalCenter: parent.right
+                anchors.verticalCenter: parent.bottom
+                color: Style.colorRed
+                visible: notifications_panel.unread_notification_count > 0
+
+                DefaultText {
+                    id: count_text
+                    anchors.centerIn: parent
+                    text_value: notifications_panel.unread_notification_count
+                    font.pixelSize: Style.textSizeSmall1
+                    font.bold: true
+                    color: Style.colorWhite9
+                }
+            }
         }
 
         SidebarBottom {
