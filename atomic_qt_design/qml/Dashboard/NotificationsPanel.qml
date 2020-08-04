@@ -14,6 +14,7 @@ FloatingBackground {
     }
 
     function showApp() {
+        window.show()
         window.raise()
         window.requestActivate()
     }
