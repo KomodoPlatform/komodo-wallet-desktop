@@ -73,7 +73,6 @@ namespace atomic_dex
         const auto now = std::chrono::high_resolution_clock::now();
         const auto s   = std::chrono::duration_cast<std::chrono::seconds>(now - m_update_clock);
         set_seconds_left_to_auto_retry(15.0 - s.count());
-        spdlog::trace("timer: {}s", m_timer);
         if (s >= 15s)
         {
             this->fetch_internet_connection();
