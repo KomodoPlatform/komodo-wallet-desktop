@@ -103,7 +103,6 @@ DefaultModal {
                 visible: enable_custom_config.checked
 
                 Layout.alignment: Qt.AlignHCenter
-                Layout.leftMargin: 40
 
                 // dPoW configuration switch
                 Switch {
@@ -116,6 +115,16 @@ DefaultModal {
                     }
 
                     text: API.get().empty_string + (qsTr("Enable Komodo dPoW security"))
+                }
+
+                DefaultText {
+                    Layout.alignment: Qt.AlignHCenter
+                    text_value: API.get().empty_string + (General.cex_icon + " " + qsTr('<a href="https://komodoplatform.com/security-delayed-proof-of-work-dpow/">Read more about dPoW</a>'))
+                    wrapMode: Text.WordWrap
+                    font.pixelSize: Style.textSizeSmall2
+
+                    onLinkActivated: Qt.openUrlExternally(link)
+                    linkColor: color
                 }
 
                 // Normal configuration switch
@@ -133,7 +142,6 @@ DefaultModal {
                 ColumnLayout {
                     Layout.alignment: Qt.AlignHCenter
                     visible: !enable_dpow_confs.checked && enable_normal_confs.checked
-                    Layout.leftMargin: custom_config.Layout.leftMargin
 
                     DefaultText {
                         Layout.alignment: Qt.AlignHCenter
@@ -156,13 +164,27 @@ DefaultModal {
                 }
             }
 
-            // Warning when both are off
-            DefaultText {
+            FloatingBackground {
                 visible: enable_custom_config.visible && enable_custom_config.enabled && enable_custom_config.checked &&
                          !enable_dpow_confs.checked
                 Layout.alignment: Qt.AlignHCenter
-                text_value: API.get().empty_string + (qsTr("Warning, this atomic swap is not dPoW protected"))
-                color: Style.colorRed
+                Layout.bottomMargin: 10
+
+                color: Style.colorRed3
+
+                width: dpow_off_warning.width + 20
+                height: dpow_off_warning.height + 20
+
+                ColumnLayout {
+                    id: dpow_off_warning
+                    anchors.centerIn: parent
+
+                    DefaultText {
+                        Layout.alignment: Qt.AlignHCenter
+
+                        text_value: API.get().empty_string + ("⚠️ " + qsTr("Warning, this atomic swap is not dPoW protected!"))
+                    }
+                }
             }
         }
 
