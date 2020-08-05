@@ -20,8 +20,8 @@ Item {
     }
 
     Component.onCompleted: {
-        API.get().candlestick_charts_mdl.modelReset.connect(chartUpdated)
-        API.get().candlestick_charts_mdl.chartFullyModelReset.connect(chartFullyReset)
+        API.get().trading_pg.candlestick_charts_mdl.modelReset.connect(chartUpdated)
+        API.get().trading_pg.candlestick_charts_mdl.chartFullyModelReset.connect(chartFullyReset)
     }
 
     function chartFullyReset() {
@@ -207,7 +207,7 @@ Item {
 
             HCandlestickModelMapper {
                 id: cs_mapper
-                model: API.get().candlestick_charts_mdl
+                model: API.get().trading_pg.candlestick_charts_mdl
 
                 timestampColumn: 0
                 openColumn: 1

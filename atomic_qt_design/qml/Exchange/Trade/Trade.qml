@@ -261,7 +261,7 @@ Item {
             const new_base = getTicker(true)
             const rel = getTicker(false)
             console.log("Setting current orderbook with params: ", new_base, rel)
-            API.get().set_current_orderbook(new_base, rel)
+            API.get().trading_pg.set_current_orderbook(new_base, rel)
             reset(true, is_base)
             updateTradeInfo()
             updateCexPrice(new_base, rel)
