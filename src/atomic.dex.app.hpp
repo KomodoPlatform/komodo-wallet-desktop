@@ -110,7 +110,6 @@ namespace atomic_dex
         atomic_dex::qt_wallet_manager m_wallet_manager;
         t_actions_queue               m_actions_queue{g_max_actions_size};
         t_synchronized_string         m_ticker_balance_to_refresh;
-        bool                          m_need_a_full_refresh_of_mm2{false};
         QVariantList                  m_enabled_coins;
         QVariantList                  m_enableable_coins;
         QVariant                      m_update_status;
@@ -120,13 +119,11 @@ namespace atomic_dex
         QString                       m_current_balance_all{"0.00"};
         current_coin_info*            m_coin_info;
         t_manager_model_registry      m_manager_models;
-        candlestick_charts_model*     m_candlestick_chart_ohlc;
+        std::atomic_bool              m_need_a_full_refresh_of_mm2{false};
         std::atomic_bool              m_candlestick_need_a_reset{false};
-        qt_orderbook_wrapper*         m_orderbook;
         std::atomic_bool              m_orderbook_need_a_reset{false};
-        internet_service_checker*     m_internet_service_checker;
         std::atomic_bool              m_about_to_exit_app{false};
-        notification_manager*         m_notification_manager;
+        //notification_manager*         m_notification_manager;
 
       public:
         //! Constructor
