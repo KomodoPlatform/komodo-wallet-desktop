@@ -14,7 +14,7 @@ Item {
 
     // Local
     function onCancelOrder(order_id) {
-        API.get().cancel_order(order_id)
+        API.get().trading_pg.cancel_order(order_id)
     }
 
 
@@ -121,8 +121,8 @@ Item {
                     text: API.get().empty_string + (show_all_coins.checked ? qsTr("Cancel All Orders") : qsTr("Cancel All %1 Orders", "TICKER").arg(base))
                     enabled: orders_model.length > 0
                     onClicked: {
-                        if(show_all_coins.checked) API.get().cancel_all_orders()
-                        else API.get().cancel_all_orders_by_ticker(base)
+                        if(show_all_coins.checked) API.get().trading_pg.cancel_all_orders()
+                        else API.get().trading_pg.cancel_all_orders_by_ticker(base)
                     }
                     Layout.rightMargin: 15
                 }

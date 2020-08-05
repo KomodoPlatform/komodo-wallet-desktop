@@ -87,6 +87,11 @@ namespace atomic_dex
 
         //! Public QML API
         Q_INVOKABLE void set_current_orderbook(const QString& base, const QString& rel);
+        Q_INVOKABLE void on_gui_enter_dex();
+        Q_INVOKABLE void on_gui_leave_dex();
+        Q_INVOKABLE void cancel_order(const QString& order_id);
+        Q_INVOKABLE void cancel_all_orders();
+        Q_INVOKABLE void cancel_all_orders_by_ticker(const QString& ticker);
 
         //! Properties
         [[nodiscard]] qt_orderbook_wrapper*     get_orderbook_wrapper() const noexcept;

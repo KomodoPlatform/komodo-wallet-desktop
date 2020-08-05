@@ -204,13 +204,6 @@ namespace atomic_dex
         Q_INVOKABLE QString send(const QString& tx_hex);
         Q_INVOKABLE QString send_rewards(const QString& tx_hex);
 
-        //! Trading QML API Bindings
-        Q_INVOKABLE void on_gui_enter_dex();
-        Q_INVOKABLE void on_gui_leave_dex();
-        Q_INVOKABLE void cancel_order(const QString& order_id);
-        Q_INVOKABLE void cancel_all_orders();
-        Q_INVOKABLE void cancel_all_orders_by_ticker(const QString& ticker);
-
         //! Others
         Q_INVOKABLE static bool    mnemonic_validate(const QString& entropy);
         Q_INVOKABLE static QString retrieve_seed(const QString& wallet_name, const QString& password);
@@ -261,12 +254,9 @@ namespace atomic_dex
         void onWalletDefaultNameChanged();
         void myOrdersUpdated();
         void addressbookChanged();
-        //void OHLCDataUpdated();
         void portfolioChanged();
         void updateStatusChanged();
         void ordersChanged();
-        //void candlestickChartsChanged();
-        //void orderbookChanged();
         void tradingPageChanged();
         void internetCheckerChanged();
       public slots:

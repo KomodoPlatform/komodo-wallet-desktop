@@ -18,6 +18,7 @@
 #include "atomic.dex.qt.trading.page.hpp"
 #include "atomic.dex.mm2.hpp"
 #include "atomic.dex.provider.cex.prices.hpp"
+#include "atomic.threadpool.hpp"
 
 //! Consttructor / Destructor
 namespace atomic_dex
@@ -64,12 +65,58 @@ namespace atomic_dex
 namespace atomic_dex
 {
     void
-    atomic_dex::trading_page::set_current_orderbook(const QString& base, const QString& rel)
+    trading_page::set_current_orderbook(const QString& base, const QString& rel)
     {
         auto& provider        = m_system_manager.get_system<cex_prices_provider>();
         auto [normal, quoted] = provider.is_pair_supported(base.toStdString(), rel.toStdString());
         get_candlestick_charts()->set_is_pair_supported(normal || quoted);
         dispatcher_.trigger<orderbook_refresh>(base.toStdString(), rel.toStdString());
+    }
+
+    void
+    trading_page::on_gui_enter_dex()
+    {
+        dispatcher_.trigger<gui_enter_trading>();
+    }
+
+    void
+    trading_page::on_gui_leave_dex()
+    {
+        dispatcher_.trigger<gui_leave_trading>();
+    }
+
+    void
+    trading_page::cancel_order(const QString& order_id)
+    {
+        auto& mm2_system = m_system_manager.get_system<mm2>();
+        spawn([&mm2_system, order_id]() {
+            ::mm2::api::rpc_cancel_order({order_id.toStdString()});
+            mm2_system.process_orders();
+        });
+    }
+
+    void
+    trading_page::cancel_all_orders()
+    {
+        auto& mm2_system = m_system_manager.get_system<mm2>();
+        atomic_dex::spawn([&mm2_system]() {
+            ::mm2::api::cancel_all_orders_request req;
+            ::mm2::api::rpc_cancel_all_orders(std::move(req));
+            mm2_system.process_orders();
+        });
+    }
+
+    void
+    trading_page::cancel_all_orders_by_ticker(const QString& ticker)
+    {
+        auto& mm2_system = m_system_manager.get_system<mm2>();
+        atomic_dex::spawn([&mm2_system, &ticker]() {
+            ::mm2::api::cancel_data cd;
+            cd.ticker = ticker.toStdString();
+            ::mm2::api::cancel_all_orders_request req{{"Coin", cd}};
+            ::mm2::api::rpc_cancel_all_orders(std::move(req));
+            mm2_system.process_orders();
+        });
     }
 } // namespace atomic_dex
 

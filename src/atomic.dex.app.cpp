@@ -398,7 +398,7 @@ namespace atomic_dex
         }
     }
 
-    void
+    /*void
     atomic_dex::application::cancel_order(const QString& order_id)
     {
         auto& mm2 = get_mm2();
@@ -430,7 +430,7 @@ namespace atomic_dex
             ::mm2::api::rpc_cancel_all_orders(std::move(req));
             mm2.process_orders();
         });
-    }
+    }*/
 
     void
     atomic_dex::application::on_enabled_coins_event([[maybe_unused]] const enabled_coins_event& evt) noexcept
@@ -716,17 +716,17 @@ namespace atomic_dex
         return QString::fromStdString(res);
     }
 
-    void
+    /*void
     application::on_gui_enter_dex()
     {
         this->dispatcher_.trigger<gui_enter_trading>();
-    }
+    }*/
 
-    void
+    /*void
     application::on_gui_leave_dex()
     {
         this->dispatcher_.trigger<gui_leave_trading>();
-    }
+    }*/
 
     QString
     application::get_status() const noexcept

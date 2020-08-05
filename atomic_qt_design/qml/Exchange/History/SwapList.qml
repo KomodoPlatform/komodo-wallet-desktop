@@ -15,7 +15,7 @@ InnerBackground {
 
     // Local
     function onCancelOrder(order_id) {
-        API.get().cancel_order(order_id)
+        API.get().trading_pg.cancel_order(order_id)
         postCancelOrder()
     }
 

@@ -40,11 +40,11 @@ Item {
         if(prev_page !== current_page) {
             // Handle DEX enter/exit
             if(current_page === General.idx_exchange_trade) {
-                API.get().on_gui_enter_dex()
+                API.get().trading_pg.on_gui_enter_dex()
                 exchange_trade.onOpened()
             }
             else if(prev_page === General.idx_exchange_trade) {
-                API.get().on_gui_leave_dex()
+                API.get().trading_pg.on_gui_leave_dex()
             }
 
             // Opening of other pages
