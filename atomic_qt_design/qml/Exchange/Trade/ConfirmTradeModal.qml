@@ -86,14 +86,21 @@ DefaultModal {
         }
 
         ColumnLayout {
+            id: config_section
+
+            readonly property bool is_configurable: API.get().get_coin_info(getTicker(!sell_mode)).type === "Smart Chain"
+
+            visible: is_configurable
+
             Layout.bottomMargin: 10
             Layout.alignment: Qt.AlignHCenter
-
 
             // Enable custom config
             DefaultCheckBox {
                 Layout.alignment: Qt.AlignHCenter
                 id: enable_custom_config
+
+                enabled: parent.visible
                 text: API.get().empty_string + (qsTr("Use custom protection settings"))
             }
 
@@ -203,7 +210,7 @@ DefaultModal {
                     root.close()
 
                     trade(getTicker(true), getTicker(false), {
-                            enable_custom_config: enable_custom_config.visible && enable_custom_config.enabled && enable_custom_config.checked,
+                            enable_custom_config: config_section.is_configurable && enable_custom_config.visible && enable_custom_config.enabled && enable_custom_config.checked,
                             enable_dpow_confs: enable_dpow_confs.visible && enable_dpow_confs.enabled && enable_dpow_confs.checked,
                             enable_normal_confs: enable_normal_confs.visible && enable_normal_confs.enabled && enable_normal_confs.checked,
                             normal_configuration: {
