@@ -273,14 +273,15 @@ Item {
         updateTradeInfo(true) // Force update trade info and cap the value for one last time
 
         let nota = ""
-        if(options.enable_dpow_confs) {
-            nota = options.dpow_configuration.enable_notarization ? "1" : "0"
+        let confs = ""
+        if(options.enable_custom_config) {
+            nota = options.enable_dpow_confs ? "1" : "0"
+
+            if(!options.enable_dpow_confs && options.enable_normal_confs) {
+                confs = options.normal_configuration.required_confirmation_count.toString()
+            }
         }
 
-        let confs = ""
-        if(options.enable_normal_confs) {
-            confs = options.normal_configuration.required_confirmation_count.toString()
-        }
 
         const current_form = getCurrentForm()
 
