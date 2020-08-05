@@ -99,10 +99,20 @@ namespace atomic_dex
             post_process_orderbook_finished  = 8
         };
 
+        enum events_action
+        {
+            need_a_full_refresh_of_mm2 = 0,
+            candlestick_need_a_reset   = 1,
+            orderbook_need_a_reset     = 2,
+            about_to_exit_app          = 3,
+            size                       = 4
+        };
+
         //! Private typedefs
         using t_actions_queue          = boost::lockfree::queue<action>;
         using t_synchronized_string    = boost::synchronized_value<std::string>;
         using t_manager_model_registry = std::unordered_map<std::string, QObject*>;
+        using t_events_actions         = std::array<std::atomic_bool, events_action::size>;
 
         //! Private members fields
         atomic_dex::cfg               m_config{load_cfg()};
@@ -119,11 +129,7 @@ namespace atomic_dex
         QString                       m_current_balance_all{"0.00"};
         current_coin_info*            m_coin_info;
         t_manager_model_registry      m_manager_models;
-        std::atomic_bool              m_need_a_full_refresh_of_mm2{false};
-        std::atomic_bool              m_candlestick_need_a_reset{false};
-        std::atomic_bool              m_orderbook_need_a_reset{false};
-        std::atomic_bool              m_about_to_exit_app{false};
-        //notification_manager*         m_notification_manager;
+        t_events_actions              m_event_actions{{false}};
 
       public:
         //! Constructor
@@ -148,17 +154,16 @@ namespace atomic_dex
         void on_start_fetching_new_ohlc_data_event(const start_fetching_new_ohlc_data&);
 
         //! Properties Getter
-        static const QString& get_empty_string();
-        mm2&                  get_mm2() noexcept;
-        const mm2&            get_mm2() const noexcept;
-        coinpaprika_provider& get_paprika() noexcept;
-        entt::dispatcher&     get_dispatcher() noexcept;
-        QObject*              get_current_coin_info() const noexcept;
-        addressbook_model*    get_addressbook() const noexcept;
-        portfolio_model*      get_portfolio() const noexcept;
-        orders_model*         get_orders() const noexcept;
-        notification_manager* get_notification_manager() const noexcept;
-        ;
+        static const QString&      get_empty_string();
+        mm2&                       get_mm2() noexcept;
+        const mm2&                 get_mm2() const noexcept;
+        coinpaprika_provider&      get_paprika() noexcept;
+        entt::dispatcher&          get_dispatcher() noexcept;
+        QObject*                   get_current_coin_info() const noexcept;
+        addressbook_model*         get_addressbook() const noexcept;
+        portfolio_model*           get_portfolio() const noexcept;
+        orders_model*              get_orders() const noexcept;
+        notification_manager*      get_notification_manager() const noexcept;
         candlestick_charts_model*  get_candlestick_charts() const noexcept;
         internet_service_checker*  get_internet_checker() const noexcept;
         qt_orderbook_wrapper*      get_orderbook_wrapper() const noexcept;

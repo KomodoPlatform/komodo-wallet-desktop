@@ -195,14 +195,14 @@ namespace atomic_dex
     application::tick()
     {
         this->process_one_frame();
-        if (this->m_need_a_full_refresh_of_mm2)
+        if (m_event_actions[events_action::need_a_full_refresh_of_mm2])
         {
             auto& mm2_s = system_manager_.create_system<mm2>();
             system_manager_.create_system<coinpaprika_provider>(mm2_s, m_config);
             system_manager_.create_system<cex_prices_provider>(mm2_s);
 
             connect_signals();
-            this->m_need_a_full_refresh_of_mm2 = false;
+            m_event_actions[events_action::need_a_full_refresh_of_mm2] = false;
         }
         auto& mm2     = get_mm2();
         auto& paprika = get_paprika();
@@ -210,7 +210,6 @@ namespace atomic_dex
         {
             if (m_coin_info->get_ticker().isEmpty() && not m_enabled_coins.empty())
             {
-                // auto coin = mm2.get_enabled_coins().front();
                 //! KMD Is our default coin
                 m_coin_info->set_ticker("KMD");
                 emit coinInfoChanged();
@@ -231,7 +230,7 @@ namespace atomic_dex
             }
         }
 
-        if (not this->m_actions_queue.empty() && not this->m_about_to_exit_app)
+        if (not this->m_actions_queue.empty() && not m_event_actions[events_action::about_to_exit_app])
         {
             action last_action;
             this->m_actions_queue.pop(last_action);
@@ -252,7 +251,7 @@ namespace atomic_dex
             case action::refresh_ohlc:
                 if (mm2.is_mm2_running())
                 {
-                    if (this->m_candlestick_need_a_reset)
+                    if (m_event_actions[events_action::candlestick_need_a_reset])
                     {
                         qobject_cast<candlestick_charts_model*>(m_manager_models.at("candlesticks"))->init_data();
                     }
@@ -293,7 +292,7 @@ namespace atomic_dex
                     t_orderbook_answer result = get_mm2().get_orderbook(ec);
                     if (!ec)
                     {
-                        if (m_orderbook_need_a_reset)
+                        if (m_event_actions[events_action::orderbook_need_a_reset])
                         {
                             qobject_cast<qt_orderbook_wrapper*>(m_manager_models.at("orderbook"))->reset_orderbook(result);
                         }
@@ -465,7 +464,7 @@ namespace atomic_dex
     atomic_dex::application::on_enabled_coins_event([[maybe_unused]] const enabled_coins_event& evt) noexcept
     {
         spdlog::debug("{} l{}", __FUNCTION__, __LINE__);
-        if (not m_about_to_exit_app)
+        if (not m_event_actions[events_action::about_to_exit_app])
         {
             this->m_actions_queue.push(action::refresh_enabled_coin);
         }
@@ -475,7 +474,7 @@ namespace atomic_dex
     application::on_enabled_default_coins_event([[maybe_unused]] const enabled_default_coins_event& evt) noexcept
     {
         spdlog::debug("{} l{}", __FUNCTION__, __LINE__);
-        if (not m_about_to_exit_app)
+        if (not m_event_actions[events_action::about_to_exit_app])
         {
             this->m_actions_queue.push(action::refresh_enabled_coin);
         }
@@ -542,7 +541,7 @@ namespace atomic_dex
     application::on_change_ticker_event([[maybe_unused]] const change_ticker_event& evt) noexcept
     {
         spdlog::debug("{} l{}", __FUNCTION__, __LINE__);
-        if (not m_about_to_exit_app)
+        if (not m_event_actions[events_action::about_to_exit_app])
         {
             this->m_actions_queue.push(action::refresh_current_ticker);
         }
@@ -624,7 +623,7 @@ namespace atomic_dex
         atomic_dex::t_broadcast_request req{.tx_hex = tx_hex.toStdString(), .coin = m_coin_info->get_ticker().toStdString()};
         std::error_code                 ec;
         auto                            answer = get_mm2().broadcast(std::move(req), ec);
-        if (not m_about_to_exit_app)
+        if (not m_event_actions[events_action::about_to_exit_app])
         {
             this->m_actions_queue.push(action::refresh_current_ticker);
         }
@@ -638,7 +637,7 @@ namespace atomic_dex
         atomic_dex::t_broadcast_request req{.tx_hex = tx_hex.toStdString(), .coin = m_coin_info->get_ticker().toStdString()};
         std::error_code                 ec;
         auto                            answer = get_mm2().send_rewards(std::move(req), ec);
-        if (not m_about_to_exit_app)
+        if (not m_event_actions[events_action::about_to_exit_app])
         {
             this->m_actions_queue.push(action::refresh_current_ticker);
         }
@@ -650,7 +649,7 @@ namespace atomic_dex
     application::on_tx_fetch_finished_event([[maybe_unused]] const tx_fetch_finished& evt) noexcept
     {
         spdlog::debug("{} l{}", __FUNCTION__, __LINE__);
-        if (not m_about_to_exit_app)
+        if (not m_event_actions[events_action::about_to_exit_app])
         {
             this->m_actions_queue.push(action::refresh_transactions);
         }
@@ -731,7 +730,7 @@ namespace atomic_dex
     application::on_coin_disabled_event([[maybe_unused]] const coin_disabled& evt) noexcept
     {
         spdlog::debug("{} l{}", __FUNCTION__, __LINE__);
-        if (not m_about_to_exit_app)
+        if (not m_event_actions[events_action::about_to_exit_app])
         {
             this->m_actions_queue.push(action::refresh_enabled_coin);
         }
@@ -797,7 +796,7 @@ namespace atomic_dex
     application::on_refresh_update_status_event([[maybe_unused]] const refresh_update_status& evt) noexcept
     {
         spdlog::debug("{} l{}", __FUNCTION__, __LINE__);
-        if (not m_about_to_exit_app)
+        if (not m_event_actions[events_action::about_to_exit_app])
         {
             this->m_actions_queue.push(action::refresh_update_status);
         }
@@ -886,7 +885,7 @@ namespace atomic_dex
         get_dispatcher().sink<process_orderbook_finished>().disconnect<&application::on_process_orderbook_finished_event>(*this);
         get_dispatcher().sink<start_fetching_new_ohlc_data>().disconnect<&application::on_start_fetching_new_ohlc_data_event>(*this);
 
-        this->m_need_a_full_refresh_of_mm2 = true;
+        m_event_actions[events_action::need_a_full_refresh_of_mm2] = true;
 
         this->m_wallet_manager.just_set_wallet_name("");
         emit onWalletDefaultNameChanged();
@@ -1295,10 +1294,10 @@ namespace atomic_dex
     application::on_refresh_ohlc_event([[maybe_unused]] const refresh_ohlc_needed& evt) noexcept
     {
         spdlog::debug("{} l{}", __FUNCTION__, __LINE__);
-        if (not m_about_to_exit_app)
+        if (not m_event_actions[events_action::about_to_exit_app])
         {
             this->m_actions_queue.push(action::refresh_ohlc);
-            this->m_candlestick_need_a_reset = evt.is_a_reset;
+            m_event_actions[events_action::candlestick_need_a_reset] = evt.is_a_reset;
         }
     }
 
@@ -1306,7 +1305,7 @@ namespace atomic_dex
     application::on_ticker_balance_updated_event(const ticker_balance_updated& evt) noexcept
     {
         spdlog::trace("{} l{}", __FUNCTION__, __LINE__);
-        if (not m_about_to_exit_app)
+        if (not m_event_actions[events_action::about_to_exit_app])
         {
             this->m_actions_queue.push(action::refresh_portfolio_ticker_balance);
         }
@@ -1331,7 +1330,7 @@ namespace atomic_dex
     application::on_process_swaps_finished_event([[maybe_unused]] const process_swaps_finished& evt) noexcept
     {
         spdlog::trace("{} l{}", __FUNCTION__, __LINE__);
-        if (not m_about_to_exit_app)
+        if (not m_event_actions[events_action::about_to_exit_app])
         {
             this->m_actions_queue.push(action::post_process_swaps_finished);
         }
@@ -1341,7 +1340,7 @@ namespace atomic_dex
     application::on_process_orders_finished_event([[maybe_unused]] const process_orders_finished& evt) noexcept
     {
         spdlog::trace("{} l{}", __FUNCTION__, __LINE__);
-        if (not m_about_to_exit_app)
+        if (not m_event_actions[events_action::about_to_exit_app])
         {
             this->m_actions_queue.push(action::post_process_orders_finished);
         }
@@ -1491,7 +1490,7 @@ namespace atomic_dex
     application::exit_handler()
     {
         spdlog::trace("will quit app, prevent all threading event");
-        this->m_about_to_exit_app = true;
+        m_event_actions[events_action::about_to_exit_app] = true;
     }
 
     void
@@ -1513,10 +1512,10 @@ namespace atomic_dex
     void
     application::on_process_orderbook_finished_event(const process_orderbook_finished& evt) noexcept
     {
-        if (not m_about_to_exit_app)
+        if (not m_event_actions[events_action::about_to_exit_app])
         {
             this->m_actions_queue.push(action::post_process_orderbook_finished);
-            this->m_orderbook_need_a_reset = evt.is_a_reset;
+            m_event_actions[events_action::orderbook_need_a_reset] = evt.is_a_reset;
         }
     }
 } // namespace atomic_dex
