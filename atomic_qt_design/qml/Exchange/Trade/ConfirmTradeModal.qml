@@ -93,7 +93,7 @@ DefaultModal {
             Switch {
                 Layout.alignment: Qt.AlignHCenter
                 id: enable_dpow_confs
-                text: API.get().empty_string + (qsTr("Enable dPoW Configurations"))
+                text: API.get().empty_string + (qsTr("Enable Komodo dPoW security"))
 
                 onCheckedChanged: {
                     if(checked) enable_normal_confs.checked = true
@@ -119,7 +119,7 @@ DefaultModal {
                 id: enable_normal_confs
 
                 enabled: !enable_dpow_confs.checked
-                text: API.get().empty_string + (qsTr("Enable Normal Configurations"))
+                text: API.get().empty_string + (qsTr("Change required confirmations"))
             }
 
             // Normal configuration settings
