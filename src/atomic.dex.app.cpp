@@ -398,40 +398,6 @@ namespace atomic_dex
         }
     }
 
-    /*void
-    atomic_dex::application::cancel_order(const QString& order_id)
-    {
-        auto& mm2 = get_mm2();
-        atomic_dex::spawn([&mm2, order_id]() {
-            ::mm2::api::rpc_cancel_order({order_id.toStdString()});
-            mm2.process_orders();
-        });
-    }
-
-    void
-    atomic_dex::application::cancel_all_orders()
-    {
-        auto& mm2 = get_mm2();
-        atomic_dex::spawn([&mm2]() {
-            ::mm2::api::cancel_all_orders_request req;
-            ::mm2::api::rpc_cancel_all_orders(std::move(req));
-            mm2.process_orders();
-        });
-    }
-
-    void
-    application::cancel_all_orders_by_ticker(const QString& ticker)
-    {
-        auto& mm2 = get_mm2();
-        atomic_dex::spawn([&mm2, &ticker]() {
-            ::mm2::api::cancel_data cd;
-            cd.ticker = ticker.toStdString();
-            ::mm2::api::cancel_all_orders_request req{{"Coin", cd}};
-            ::mm2::api::rpc_cancel_all_orders(std::move(req));
-            mm2.process_orders();
-        });
-    }*/
-
     void
     atomic_dex::application::on_enabled_coins_event([[maybe_unused]] const enabled_coins_event& evt) noexcept
     {
@@ -715,18 +681,6 @@ namespace atomic_dex
         auto            res = get_mm2().my_balance(coin.toStdString(), ec);
         return QString::fromStdString(res);
     }
-
-    /*void
-    application::on_gui_enter_dex()
-    {
-        this->dispatcher_.trigger<gui_enter_trading>();
-    }*/
-
-    /*void
-    application::on_gui_leave_dex()
-    {
-        this->dispatcher_.trigger<gui_leave_trading>();
-    }*/
 
     QString
     application::get_status() const noexcept
