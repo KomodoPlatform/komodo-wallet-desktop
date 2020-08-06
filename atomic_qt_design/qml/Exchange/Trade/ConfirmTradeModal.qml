@@ -101,7 +101,7 @@ DefaultModal {
                 id: enable_custom_config
 
                 enabled: parent.visible
-                text: API.get().empty_string + (qsTr("Use custom protection settings"))
+                text: API.get().empty_string + (qsTr("Use custom protection settings for incoming %1 transactions", "TICKER").arg(getTicker(!sell_mode)))
             }
 
             // Configuration settings
@@ -207,8 +207,6 @@ DefaultModal {
                 text: API.get().empty_string + (qsTr("Confirm"))
                 Layout.fillWidth: true
                 onClicked: {
-                    root.close()
-
                     trade(getTicker(true), getTicker(false), {
                             enable_custom_config: config_section.is_configurable && enable_custom_config.visible && enable_custom_config.enabled && enable_custom_config.checked,
                             enable_dpow_confs: enable_dpow_confs.visible && enable_dpow_confs.enabled && enable_dpow_confs.checked,
@@ -217,6 +215,8 @@ DefaultModal {
                                   required_confirmation_count: required_confirmation_count.value
                             },
                           })
+
+                    root.close()
                 }
             }
         }
