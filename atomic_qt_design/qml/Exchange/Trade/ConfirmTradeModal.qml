@@ -98,14 +98,13 @@ DefaultModal {
                 Layout.alignment: Qt.AlignHCenter
                 id: enable_custom_config
 
-                enabled: parent.visible
                 text: API.get().empty_string + (qsTr("Use custom protection settings for incoming %1 transactions", "TICKER").arg(getTicker(!sell_mode)))
             }
 
             // Configuration settings
             ColumnLayout {
                 id: custom_config
-                enabled: enable_custom_config.checked
+                visible: enable_custom_config.checked
 
                 Layout.alignment: Qt.AlignHCenter
 
