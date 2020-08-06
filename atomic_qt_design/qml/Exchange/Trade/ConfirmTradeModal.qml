@@ -85,6 +85,12 @@ DefaultModal {
             }
         }
 
+        HorizontalLine {
+            Layout.topMargin: 10
+            Layout.bottomMargin: 10
+            Layout.fillWidth: true
+        }
+
         ColumnLayout {
             id: config_section
 
@@ -92,6 +98,25 @@ DefaultModal {
 
             Layout.bottomMargin: 10
             Layout.alignment: Qt.AlignHCenter
+
+            ColumnLayout {
+                Layout.alignment: Qt.AlignHCenter
+                visible: !enable_custom_config.checked
+
+                DefaultText {
+                    Layout.alignment: Qt.AlignHCenter
+                    text_value: API.get().empty_string + (qsTr("Security configuration"))
+                    font.bold: true
+                }
+
+                DefaultText {
+                    Layout.alignment: Qt.AlignHCenter
+                    text_value: API.get().empty_string + ("✅ " +
+                                                          (config_section.is_dpow_configurable ? qsTr("dPoW protected") :
+                                                                                  qsTr("%1 confirmations for incoming transactions").arg(3)))
+                }
+            }
+
 
             // Enable custom config
             DefaultCheckBox {
