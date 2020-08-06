@@ -208,9 +208,9 @@ DefaultModal {
                 Layout.fillWidth: true
                 onClicked: {
                     trade(getTicker(true), getTicker(false), {
-                            enable_custom_config: config_section.is_configurable && enable_custom_config.visible && enable_custom_config.enabled && enable_custom_config.checked,
-                            enable_dpow_confs: enable_dpow_confs.visible && enable_dpow_confs.enabled && enable_dpow_confs.checked,
-                            enable_normal_confs: enable_normal_confs.visible && enable_normal_confs.enabled && enable_normal_confs.checked,
+                            enable_custom_config: config_section.is_configurable && enable_custom_config.checked,
+                            enable_dpow_confs: enable_dpow_confs.checked,
+                            enable_normal_confs: enable_normal_confs.checked,
                             normal_configuration: {
                                   required_confirmation_count: required_confirmation_count.value
                             },
