@@ -105,7 +105,7 @@ DefaultModal {
             // Configuration settings
             ColumnLayout {
                 id: custom_config
-                visible: enable_custom_config.checked
+                enabled: enable_custom_config.checked
 
                 Layout.alignment: Qt.AlignHCenter
 
@@ -124,8 +124,7 @@ DefaultModal {
                 }
 
                 DefaultText {
-                    visible: enable_dpow_confs.visible
-
+                    visible: enable_dpow_confs.visible && enable_dpow_confs.enabled
                     Layout.alignment: Qt.AlignHCenter
                     text_value: API.get().empty_string + (General.cex_icon + " " + qsTr('<a href="https://komodoplatform.com/security-delayed-proof-of-work-dpow/">Read more about dPoW</a>'))
                     wrapMode: Text.WordWrap
@@ -140,7 +139,8 @@ DefaultModal {
                     id: enable_normal_confs
                     Layout.alignment: Qt.AlignHCenter
 
-                    enabled: !is_dpow_configurable || !enable_dpow_confs.checked
+                    visible: !config_section.is_dpow_configurable || !enable_dpow_confs.checked
+                    enabled: !config_section.is_dpow_configurable || !enable_dpow_confs.checked
                     checked: true
 
                     text: API.get().empty_string + (qsTr("Change required confirmations"))
@@ -149,11 +149,13 @@ DefaultModal {
                 // Normal configuration settings
                 ColumnLayout {
                     Layout.alignment: Qt.AlignHCenter
-                    visible: enable_normal_confs.enabled && enable_normal_confs.checked
+                    visible: enable_normal_confs.visible && enable_normal_confs.checked
+                    enabled: enable_normal_confs.enabled && enable_normal_confs.checked
 
                     DefaultText {
                         Layout.alignment: Qt.AlignHCenter
                         text_value: API.get().empty_string + (qsTr("Confirmations") + ": " + required_confirmation_count.value)
+                        color: parent.enabled ? Style.colorText : Style.colorTextDisabled
                     }
 
                     Slider {
