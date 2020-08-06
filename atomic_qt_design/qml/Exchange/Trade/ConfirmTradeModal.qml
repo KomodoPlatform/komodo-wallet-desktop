@@ -152,9 +152,7 @@ DefaultModal {
 
                     DefaultText {
                         Layout.alignment: Qt.AlignHCenter
-                        text_value: API.get().empty_string + (qsTr("Confirmations") + ": " + required_confirmation_count.value
-                                                              + (required_confirmation_count.value === required_confirmation_count.default_confirmation_count ?
-                                                                     " (" + qsTr("Recommended") + ")" : ""))
+                        text_value: API.get().empty_string + (qsTr("Confirmations") + ": " + required_confirmation_count.value)
                     }
 
                     Slider {
