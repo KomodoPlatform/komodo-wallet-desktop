@@ -276,9 +276,11 @@ Item {
         let confs = ""
         console.log("Trade config: ", JSON.stringify(options))
         if(options.enable_custom_config) {
-            nota = options.enable_dpow_confs ? "1" : "0"
+            if(options.is_dpow_configurable) {
+                nota = options.enable_dpow_confs ? "1" : "0"
+            }
 
-            if(!options.enable_dpow_confs && options.enable_normal_confs) {
+            if(nota !== "1" && options.enable_normal_confs) {
                 confs = options.normal_configuration.required_confirmation_count.toString()
             }
         }
