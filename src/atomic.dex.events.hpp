@@ -34,13 +34,6 @@ namespace atomic_dex
     using process_swaps_finished      = entt::tag<"gui_process_swaps_finished"_hs>;
     // using process_orderbook_finished  = entt::tag<"gui_process_orderbook_finished"_hs>;
 
-    struct swap_status_notification
-    {
-        std::string uuid;
-        std::string prev_status;
-        std::string new_status;
-    };
-
     struct process_orderbook_finished
     {
         bool is_a_reset;
