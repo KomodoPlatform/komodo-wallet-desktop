@@ -7,7 +7,7 @@ QtObject {
     readonly property FontLoader mySystemFont: FontLoader { source: "../../assets/fonts/Montserrat-Regular.ttf" }
     readonly property FontLoader mySystemFontMedium: FontLoader { source: "../../assets/fonts/Montserrat-Medium.ttf" }
     readonly property FontLoader mySystemFontSemiBold: FontLoader { source: "../../assets/fonts/Montserrat-SemiBold.ttf" }
-    readonly property string font_family: "Montserrat"
+    readonly property string font_family: Qt.application.font.family
 
     readonly property string listItemPrefix:  " ⚬   "
     readonly property string successCharacter:  "✓"
