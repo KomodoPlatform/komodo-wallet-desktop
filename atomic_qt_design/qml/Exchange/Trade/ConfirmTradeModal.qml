@@ -88,9 +88,7 @@ DefaultModal {
         ColumnLayout {
             id: config_section
 
-            readonly property bool is_configurable: API.get().get_coin_info(getTicker(!sell_mode)).type === "Smart Chain"
-
-            visible: is_configurable
+            readonly property bool is_dpow_configurable: API.get().get_coin_info(getTicker(!sell_mode)).type === "Smart Chain"
 
             Layout.bottomMargin: 10
             Layout.alignment: Qt.AlignHCenter
@@ -107,7 +105,7 @@ DefaultModal {
             // Configuration settings
             ColumnLayout {
                 id: custom_config
-                visible: enable_custom_config.checked
+                enabled: enable_custom_config.checked
 
                 Layout.alignment: Qt.AlignHCenter
 
@@ -116,6 +114,7 @@ DefaultModal {
                     id: enable_dpow_confs
                     Layout.alignment: Qt.AlignHCenter
 
+                    visible: config_section.is_dpow_configurable
                     checked: true
                     onCheckedChanged: {
                         if(checked) enable_normal_confs.checked = true
@@ -125,6 +124,7 @@ DefaultModal {
                 }
 
                 DefaultText {
+                    visible: enable_dpow_confs.visible && enable_dpow_confs.enabled
                     Layout.alignment: Qt.AlignHCenter
                     text_value: API.get().empty_string + (General.cex_icon + " " + qsTr('<a href="https://komodoplatform.com/security-delayed-proof-of-work-dpow/">Read more about dPoW</a>'))
                     wrapMode: Text.WordWrap
@@ -139,7 +139,8 @@ DefaultModal {
                     id: enable_normal_confs
                     Layout.alignment: Qt.AlignHCenter
 
-                    enabled: !enable_dpow_confs.checked
+                    visible: !config_section.is_dpow_configurable || !enable_dpow_confs.checked
+                    enabled: !config_section.is_dpow_configurable || !enable_dpow_confs.checked
                     checked: true
 
                     text: API.get().empty_string + (qsTr("Change required confirmations"))
@@ -148,13 +149,13 @@ DefaultModal {
                 // Normal configuration settings
                 ColumnLayout {
                     Layout.alignment: Qt.AlignHCenter
-                    visible: !enable_dpow_confs.checked && enable_normal_confs.checked
+                    visible: enable_normal_confs.visible && enable_normal_confs.checked
+                    enabled: enable_normal_confs.enabled && enable_normal_confs.checked
 
                     DefaultText {
                         Layout.alignment: Qt.AlignHCenter
-                        text_value: API.get().empty_string + (qsTr("Confirmations") + ": " + required_confirmation_count.value
-                                                              + (required_confirmation_count.value === required_confirmation_count.default_confirmation_count ?
-                                                                     " (" + qsTr("Recommended") + ")" : ""))
+                        text_value: API.get().empty_string + (qsTr("Confirmations") + ": " + required_confirmation_count.value)
+                        color: parent.enabled ? Style.colorText : Style.colorTextDisabled
                     }
 
                     Slider {
@@ -173,7 +174,7 @@ DefaultModal {
 
             FloatingBackground {
                 visible: enable_custom_config.visible && enable_custom_config.enabled && enable_custom_config.checked &&
-                         !enable_dpow_confs.checked
+                          (config_section.is_dpow_configurable && !enable_dpow_confs.checked)
                 Layout.alignment: Qt.AlignHCenter
                 Layout.bottomMargin: 10
 
@@ -208,7 +209,8 @@ DefaultModal {
                 Layout.fillWidth: true
                 onClicked: {
                     trade(getTicker(true), getTicker(false), {
-                            enable_custom_config: config_section.is_configurable && enable_custom_config.checked,
+                            enable_custom_config: enable_custom_config.checked,
+                            is_dpow_configurable: config_section.is_dpow_configurable,
                             enable_dpow_confs: enable_dpow_confs.checked,
                             enable_normal_confs: enable_normal_confs.checked,
                             normal_configuration: {
