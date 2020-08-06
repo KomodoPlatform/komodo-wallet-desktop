@@ -274,6 +274,7 @@ Item {
 
         let nota = ""
         let confs = ""
+        console.log("Trade config: ", JSON.stringify(options))
         if(options.enable_custom_config) {
             nota = options.enable_dpow_confs ? "1" : "0"
 
