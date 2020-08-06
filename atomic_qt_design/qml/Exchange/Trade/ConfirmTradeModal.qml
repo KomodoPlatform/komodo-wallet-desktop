@@ -86,7 +86,6 @@ DefaultModal {
         }
 
         HorizontalLine {
-            Layout.topMargin: 10
             Layout.bottomMargin: 10
             Layout.fillWidth: true
         }
@@ -113,7 +112,7 @@ DefaultModal {
                     Layout.alignment: Qt.AlignHCenter
                     text_value: API.get().empty_string + ("✅ " +
                                                           (config_section.is_dpow_configurable ? qsTr("dPoW protected") :
-                                                                                  qsTr("%1 confirmations for incoming transactions").arg(3)))
+                                                                                  qsTr("%1 confirmations for incoming transactions").arg("WIP")))
                 }
             }
 
