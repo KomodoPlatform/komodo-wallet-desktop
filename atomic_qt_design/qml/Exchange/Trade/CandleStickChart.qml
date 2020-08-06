@@ -598,7 +598,7 @@ Item {
                     const cp = chart.mapToValue(Qt.point(mouse_x, mouse_y), series)
 
                     // Find closest real data
-                    const realData = API.get().find_closest_ohlc_data(getChartSeconds(), cp.x / 1000)
+                    const realData = API.get().trading_pg.candlestick_charts_mdl.find_closest_ohlc_data(cp.x / 1000)
                     const realDataFound = realData.timestamp
                     if(realDataFound) {
                         cursor_vertical_line.x = chart.mapToPosition(Qt.point(realData.timestamp*1000, 0), series).x
