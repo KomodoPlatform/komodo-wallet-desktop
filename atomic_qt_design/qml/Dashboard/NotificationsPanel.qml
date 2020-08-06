@@ -35,11 +35,11 @@ FloatingBackground {
     }
 
     // Events
-    function onSwapStatusUpdated(old_swap_status, new_swap_status, swap_uuid) {
+    function onSwapStatusUpdated(old_swap_status, new_swap_status, swap_uuid, base_coin, rel_coin, human_date) {
         const obj = {
-            title: qsTr("Swap status updated"),
+            title: base_coin + "/" + rel_coin + " - " + qsTr("Swap status updated"),
             message: exchange.getStatusText(old_swap_status) + " " + General.right_arrow_icon + " " + exchange.getStatusText(new_swap_status),
-            time: Date.now()
+            time: human_date
         }
 
         if(!root.visible)
@@ -118,7 +118,7 @@ FloatingBackground {
                         anchors.topMargin: 10
                         anchors.right: parent.right
                         anchors.rightMargin: 30
-                        text_value: API.get().empty_string + (General.timestampToString(modelData.time))
+                        text_value: API.get().empty_string + (modelData.time)
                         font.pixelSize: Style.textSizeSmall
                     }
 
@@ -161,7 +161,7 @@ FloatingBackground {
             DefaultButton {
                 text: API.get().empty_string + (qsTr("Pop Test Notification"))
                 onClicked: {
-                    onSwapStatusUpdated("ongoing", "finished", "123456")
+                    onSwapStatusUpdated("ongoing", "finished", "123456", "BTC", "KMD", "13.3.1337")
                 }
             }
 
