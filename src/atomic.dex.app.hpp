@@ -34,6 +34,7 @@
 #include "atomic.dex.mm2.hpp"
 #include "atomic.dex.notification.manager.hpp"
 #include "atomic.dex.provider.coinpaprika.hpp"
+#include "atomic.dex.qt.actions.hpp"
 #include "atomic.dex.qt.addressbook.model.hpp"
 #include "atomic.dex.qt.bindings.hpp"
 #include "atomic.dex.qt.candlestick.charts.model.hpp"
@@ -42,9 +43,8 @@
 #include "atomic.dex.qt.orderbook.hpp"
 #include "atomic.dex.qt.orders.model.hpp"
 #include "atomic.dex.qt.portfolio.model.hpp"
-#include "atomic.dex.qt.wallet.manager.hpp"
-#include "atomic.dex.qt.actions.hpp"
 #include "atomic.dex.qt.trading.page.hpp"
+#include "atomic.dex.qt.wallet.manager.hpp"
 
 namespace ag = antara::gaming;
 
