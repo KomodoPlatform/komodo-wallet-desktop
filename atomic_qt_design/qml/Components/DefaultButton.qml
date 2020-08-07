@@ -34,15 +34,6 @@ FloatingBackground {
     color: !enabled ? colorDisabled : mouse_area.containsMouse ? colorHovered : colorEnabled
     border.width: 0
 
-    MouseArea {
-        id: mouse_area
-        anchors.fill: parent
-        hoverEnabled: true
-        onClicked: {
-            if(parent.enabled) parent.clicked()
-        }
-    }
-
     DefaultText {
         id: text_obj
         anchors.horizontalCenter: text_left_align ? undefined : parent.horizontalCenter
@@ -53,5 +44,14 @@ FloatingBackground {
         font.pixelSize: Style.textSizeSmall1
         font.capitalization: Font.AllUppercase
         color: !parent.enabled ? colorTextDisabled : mouse_area.containsMouse ? colorTextHovered : colorTextEnabled
+    }
+
+    MouseArea {
+        id: mouse_area
+        anchors.fill: parent
+        hoverEnabled: true
+        onClicked: {
+            if(parent.enabled) parent.clicked()
+        }
     }
 }

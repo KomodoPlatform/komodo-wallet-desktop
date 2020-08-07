@@ -176,6 +176,7 @@
         <file>atomic_qt_design/qml/Components/TextAreaWithTitle.qml</file>
         <file>atomic_qt_design/qml/Components/ModalHeader.qml</file>
         <file>atomic_qt_design/qml/Components/CexInfoTrigger.qml</file>
+        <file>atomic_qt_design/qml/Dashboard/NotificationsPanel.qml</file>
         <file>atomic_qt_design/qml/Portfolio/Portfolio.qml</file>
         <file>atomic_qt_design/qml/Wallet/Wallet.qml</file>
         <file>atomic_qt_design/qml/Wallet/ClaimRewardsModal.qml</file>

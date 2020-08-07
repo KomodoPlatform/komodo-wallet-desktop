@@ -6,6 +6,7 @@ import QtGraphicalEffects 1.0
 import "../Components"
 import "../Constants"
 
+import "../Dashboard"
 import "../Portfolio"
 import "../Wallet"
 import "../Exchange"
@@ -38,6 +39,7 @@ Item {
         news.reset()
         dapps.reset()
         settings.reset()
+        notifications_panel.reset()
     }
 
     function inCurrentPage() {
@@ -78,12 +80,6 @@ Item {
         repeat: true
         onTriggered: General.enableEthIfNeeded()
     }
-
-    // Sidebar, left side
-    Sidebar {
-        id: sidebar
-    }
-
     // Right side
     Rectangle {
         color: Style.colorTheme8
@@ -131,6 +127,72 @@ Item {
             Settings {
                 id: settings
                 Layout.alignment: Qt.AlignCenter
+            }
+        }
+    }
+
+    // Sidebar, left side
+    Sidebar {
+        id: sidebar
+    }
+
+    // Global click
+    MouseArea {
+        anchors.fill: parent
+        propagateComposedEvents: true
+
+        onClicked: mouse.accepted = false
+        onReleased: mouse.accepted = false
+        onPressAndHold: mouse.accepted = false
+        onDoubleClicked: mouse.accepted = false
+        onPositionChanged: mouse.accepted = false
+        onPressed: {
+            // Close notifications panel on outside click
+            if(notifications_panel.visible)
+                notifications_panel.visible = false
+
+            mouse.accepted = false
+        }
+    }
+
+    NotificationsPanel {
+        id: notifications_panel
+        width: 500
+        height: 500
+        anchors.right: notifications_button.right
+        anchors.top: notifications_button.bottom
+        anchors.topMargin: 8
+    }
+
+    DefaultButton {
+        id: notifications_button
+        anchors.top: parent.top
+        anchors.right: parent.right
+        anchors.topMargin: 8
+        anchors.rightMargin: 8
+
+        z: 1
+        text: "🔔"
+        font.pixelSize: Style.textSizeSmall3
+        minWidth: height
+        onClicked: notifications_panel.visible = !notifications_panel.visible
+
+        Rectangle {
+            radius: 1337
+            width: count_text.height * 1.5
+            height: width
+            anchors.horizontalCenter: parent.right
+            anchors.verticalCenter: parent.bottom
+            color: Style.colorRed
+            visible: notifications_panel.unread_notification_count > 0
+
+            DefaultText {
+                id: count_text
+                anchors.centerIn: parent
+                text_value: notifications_panel.unread_notification_count
+                font.pixelSize: Style.textSizeSmall1
+                font.bold: true
+                color: Style.colorWhite9
             }
         }
     }

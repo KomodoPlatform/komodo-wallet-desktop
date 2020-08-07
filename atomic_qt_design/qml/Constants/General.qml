@@ -54,7 +54,7 @@ QtObject {
     }
 
     function timestampToString(timestamp) {
-        return (new Date(timestamp)).getUTCDate()
+        return (new Date(timestamp)).toUTCString()
     }
 
     function timestampToDate(timestamp) {

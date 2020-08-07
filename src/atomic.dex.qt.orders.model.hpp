@@ -60,7 +60,7 @@ namespace atomic_dex
         };
 
 
-        orders_model(ag::ecs::system_manager& system_manager, QObject* parent = nullptr) noexcept;
+        orders_model(ag::ecs::system_manager& system_manager, entt::dispatcher& dispatcher, QObject* parent = nullptr) noexcept;
         ~orders_model() noexcept final;
         int                    rowCount(const QModelIndex& parent) const final;
         QVariant               data(const QModelIndex& index, int role) const final;
@@ -82,6 +82,7 @@ namespace atomic_dex
 
       private:
         ag::ecs::system_manager& m_system_manager;
+        entt::dispatcher& m_dispatcher;
 
         using t_orders_datas       = QVector<order_data>;
         using t_orders_id_registry = std::unordered_set<std::string>;
