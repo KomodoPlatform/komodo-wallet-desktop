@@ -73,7 +73,7 @@ namespace atomic_dex
             .trend_7d                         = nlohmann_json_array_to_qt_json_array(paprika.get_ticker_historical(coin.ticker).answer),
             .is_excluded                      = false,
         };
-        data.display = data.ticker + "(" + data.balance + ")";
+        data.display = data.ticker + " (" + data.balance + ")";
         spdlog::trace(
             "inserting ticker {} with name {} balance {} main currency balance {}", coin.ticker, coin.name, data.balance.toStdString(),
             data.main_currency_balance.toStdString());
@@ -106,7 +106,7 @@ namespace atomic_dex
                     update_value(Change24H, change24_h, idx, *this);
                     const QString balance = QString::fromStdString(mm2_system.my_balance(coin.ticker, ec));
                     update_value(BalanceRole, balance, idx, *this);
-                    const QString display = QString::fromStdString(coin.ticker) + "(" + balance + ")";
+                    const QString display = QString::fromStdString(coin.ticker) + " (" + balance + ")";
                     update_value(Display, display, idx, *this);
                 }
             }));
