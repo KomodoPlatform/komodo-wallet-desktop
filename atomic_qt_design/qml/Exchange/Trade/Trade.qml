@@ -189,14 +189,34 @@ Item {
         let base = left_ticker
         let rel = right_ticker
 
+        let is_swap = false
         // Set the new one if it's a change
         if(changed_ticker) {
-            if(is_base) base = changed_ticker
-            else rel = changed_ticker
+            if(is_base) {
+                // Check if it's a swap
+                if(base !== changed_ticker && rel === changed_ticker)
+                    is_swap = true
+
+                base = changed_ticker
+            }
+            else {
+                // Check if it's a swap
+                if(rel !== changed_ticker && base === changed_ticker)
+                    is_swap = true
+
+                rel = changed_ticker
+            }
         }
 
-        console.log("Setting current orderbook with params: ", base, rel)
-        API.get().trading_pg.set_current_orderbook(base, rel)
+        if(is_swap) {
+            console.log("Swapping current pair, it was: ", base, rel)
+            API.get().trading_pg.swap_market_pair()
+        }
+        else {
+            console.log("Setting current orderbook with params: ", base, rel)
+            API.get().trading_pg.set_current_orderbook(base, rel)
+        }
+
         reset(true, is_base)
         updateTradeInfo()
         updateCexPrice(base, rel)
