@@ -343,7 +343,7 @@ Item {
 
                     TickerSelector {
                         id: selector_left
-                        my_side: true
+                        left_side: true
                         ticker_list: API.get().trading_pg.market_pairs_mdl.left_selection_box
                         ticker: API.get().trading_pg.market_pairs_mdl.left_selected_coin
                         Layout.alignment: Qt.AlignLeft | Qt.AlignVCenter
@@ -359,7 +359,7 @@ Item {
 
                     TickerSelector {
                         id: selector_right
-                        my_side: false
+                        left_side: false
                         ticker_list: API.get().trading_pg.market_pairs_mdl.right_selection_box
                         ticker: API.get().trading_pg.market_pairs_mdl.right_selected_coin
                         Layout.alignment: Qt.AlignRight | Qt.AlignVCenter

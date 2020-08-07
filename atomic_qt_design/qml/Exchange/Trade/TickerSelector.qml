@@ -11,15 +11,15 @@ RowLayout {
 
     spacing: 5
     Layout.preferredWidth: 250
-    layoutDirection: my_side ? Qt.LeftToRight : Qt.RightToLeft
+    layoutDirection: left_side ? Qt.LeftToRight : Qt.RightToLeft
 
-    property bool my_side: false
+    property bool left_side: false
     property var ticker_list
     property string ticker
 
     // Private
     function getFilteredCoins() {
-        return getCoins(my_side)
+        return getCoins(left_side)
     }
 
     function getAnyAvailableCoin(filter_ticker) {
@@ -51,7 +51,7 @@ RowLayout {
         textRole: "display"
         valueRole: "ticker"
 
-        onCurrentValueChanged: setPair(my_side, currentValue)
+        onCurrentValueChanged: setPair(left_side, currentValue)
 
         Layout.fillWidth: true
     }
