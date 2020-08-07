@@ -101,10 +101,42 @@ FloatingBackground {
 
         spacing: 10
 
-        DefaultText {
-            text_value: API.get().empty_string + (qsTr("Notifications"))
-            Layout.alignment: Qt.AlignLeft | Qt.AlignTop
-            font.pixelSize: Style.textSize2
+        RowLayout {
+            Layout.fillWidth: true
+            Layout.alignment: Qt.AlignLeft | Qt.AlignBottom
+            DefaultText {
+                text_value: API.get().empty_string + (qsTr("Notifications"))
+                font.pixelSize: Style.textSize2
+                Layout.fillWidth: true
+                Layout.alignment: Qt.AlignLeft | Qt.AlignVCenter
+            }
+
+            Rectangle {
+                radius: 3
+
+                width: mark_all_as_read.width + 10
+                height: mark_all_as_read.height + 10
+
+                Layout.alignment: Qt.AlignRight | Qt.AlignVCenter
+
+                color: Style.colorTheme1
+
+                DefaultText {
+                    id: mark_all_as_read
+                    text_value: API.get().empty_string + (qsTr("Mark all as read") + " ✔️")
+                    font.pixelSize: Style.textSizeSmall3
+                    anchors.centerIn: parent
+                    color: Style.colorWhite10
+                }
+
+                MouseArea {
+                    anchors.fill: parent
+                    onClicked: {
+                        unread_notification_count = 0
+                        notifications_list = []
+                    }
+                }
+            }
         }
 
         HorizontalLine {
