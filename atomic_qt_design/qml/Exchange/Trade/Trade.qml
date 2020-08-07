@@ -222,7 +222,7 @@ Item {
     }
 
     function getTicker(is_base) {
-        return is_base ? selector_base.getTicker() : selector_rel.getTicker()
+        return is_base ? selector_base.ticker : selector_rel.ticker
     }
 
     function setPair(is_base, changed_ticker) {
@@ -341,6 +341,7 @@ Item {
                         id: selector_base
                         my_side: true
                         ticker_list: API.get().trading_pg.market_pairs_mdl.left_selection_box
+                        ticker: API.get().trading_pg.market_pairs_mdl.left_selected_coin
                         Layout.alignment: Qt.AlignLeft | Qt.AlignVCenter
                     }
 
@@ -356,6 +357,7 @@ Item {
                         id: selector_rel
                         my_side: false
                         ticker_list: API.get().trading_pg.market_pairs_mdl.right_selection_box
+                        ticker: API.get().trading_pg.market_pairs_mdl.right_selected_coin
                         Layout.alignment: Qt.AlignRight | Qt.AlignVCenter
                     }
                 }

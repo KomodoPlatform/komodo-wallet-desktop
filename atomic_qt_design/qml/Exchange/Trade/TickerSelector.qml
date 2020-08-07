@@ -15,12 +15,7 @@ RowLayout {
 
     property bool my_side: false
     property var ticker_list
-
-    // Public
-    function getTicker() {
-        return my_side ? API.get().trading_pg.market_pairs_mdl.left_selected_coin :
-                         API.get().trading_pg.market_pairs_mdl.right_selected_coin
-    }
+    property string ticker
 
     // Private
     function getFilteredCoins() {
@@ -39,9 +34,14 @@ RowLayout {
     }
 
     DefaultImage {
-        source: General.coinIcon(getTicker())
+        source: General.coinIcon(ticker)
         Layout.preferredWidth: 32
         Layout.preferredHeight: Layout.preferredWidth
+    }
+
+
+    onTickerChanged: {
+        combo.currentIndex = combo.indexOfValue(ticker)
     }
 
     DefaultComboBox {
@@ -50,6 +50,7 @@ RowLayout {
         model: ticker_list
         textRole: "display"
         valueRole: "ticker"
+
         onCurrentValueChanged: {
             setPair(my_side, currentValue)
         }
