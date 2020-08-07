@@ -24,8 +24,8 @@ ColumnLayout {
             id: price_header
             font.pixelSize: Style.textSizeSmall2
 
-            text_value: API.get().empty_string + (is_asks ? qsTr("Ask Price") + "\n(" + selector_rel.ticker + ")":
-                                                            qsTr("Bid Price") + "\n(" + selector_rel.ticker + ")")
+            text_value: API.get().empty_string + (is_asks ? qsTr("Ask Price") + "\n(" + right_ticker + ")":
+                                                            qsTr("Bid Price") + "\n(" + right_ticker + ")")
 
             color: is_asks ? Style.colorRed : Style.colorGreen
             horizontalAlignment: is_asks ? Text.AlignLeft : Text.AlignRight
@@ -50,7 +50,7 @@ ColumnLayout {
 
             font.pixelSize: price_header.font.pixelSize
 
-            text_value: API.get().empty_string + (qsTr("Quantity") + "\n(" + selector_base.ticker + ")")
+            text_value: API.get().empty_string + (qsTr("Quantity") + "\n(" + left_ticker + ")")
             color: Style.colorWhite1
             anchors.verticalCenter: parent.verticalCenter
         }
@@ -67,7 +67,7 @@ ColumnLayout {
 
             font.pixelSize: price_header.font.pixelSize
 
-            text_value: API.get().empty_string + (qsTr("Total") + "\n(" + selector_rel.ticker + ")")
+            text_value: API.get().empty_string + (qsTr("Total") + "\n(" + right_ticker + ")")
             color: Style.colorWhite1
             anchors.verticalCenter: parent.verticalCenter
         }

@@ -193,7 +193,7 @@ Item {
         return [coin].concat(coins.filter(c => c.ticker !== ticker))
     }
 
-    function getCoins(my_side) {
+    function getCoins(is_sell_form) {
         let coins = API.get().enabled_coins
 
         if(coins.length === 0) return coins
@@ -203,10 +203,10 @@ Item {
         coins = moveToBeginning(coins, "KMD")
 
         // Return full list
-        if(my_side === undefined) return coins
+        if(is_sell_form === undefined) return coins
 
         // Filter for Sell
-        if(my_side) {
+        if(is_sell_form) {
             return coins.filter(c => {
                 c.balance = API.get().get_balance(c.ticker)
 
@@ -401,7 +401,7 @@ Item {
                     anchors.right: parent.right
                     anchors.top: parent.top
 
-                    my_side: true
+                    is_sell_form: true
                 }
 
                 // Receive

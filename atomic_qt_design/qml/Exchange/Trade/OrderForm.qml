@@ -11,7 +11,7 @@ FloatingBackground {
 
     property alias field: input_volume.field
     property alias price_field: input_price.field
-    property bool my_side: false
+    property bool is_sell_form: false
     property bool enabled: true
     property alias column_layout: form_layout
     property string total_amount: "0"
@@ -48,14 +48,14 @@ FloatingBackground {
         if(valid) valid = higherThanMinTradeAmount()
 
         if(valid) valid = !notEnoughBalance()
-        if(valid) valid = API.get().do_i_have_enough_funds(getTicker(my_side), General.formatDouble(getNeededAmountToSpend(input_volume.field.text)))
+        if(valid) valid = API.get().do_i_have_enough_funds(getTicker(is_sell_form), General.formatDouble(getNeededAmountToSpend(input_volume.field.text)))
         if(valid && hasEthFees()) valid = hasEnoughEthForFees()
 
         return valid
     }
 
     function getMaxVolume() {
-        return API.get().get_balance(getTicker(my_side))
+        return API.get().get_balance(getTicker(is_sell_form))
     }
 
     function getMaxTradableVolume(set_as_current) {
@@ -70,7 +70,7 @@ FloatingBackground {
 
         const info = getTradeInfo(base, rel, amount, set_as_current)
         const my_amt = parseFloat(valid_trade_info ? info.input_final_value : amount)
-        if(my_side) return my_amt
+        if(is_sell_form) return my_amt
 
         // If it's buy side, then volume input needs to be calculated with the current price
         const price = parseFloat(getCurrentPrice())
@@ -80,7 +80,7 @@ FloatingBackground {
     function reset(is_base) {
         input_price.field.text = ''
 
-        if(my_side) {
+        if(is_sell_form) {
             // is_base info comes from the ComboBox ticker change in OrderForm.
             // At other places it's not given.
             // We don't want to reset base balance at rel ticker change
@@ -97,7 +97,7 @@ FloatingBackground {
     function capVolume() {
         if(inCurrentPage() && input_volume.field.acceptableInput) {
             // If price is 0 at buy side, don't cap it to 0, let the user edit
-            if(!my_side && General.isZero(getCurrentPrice()))
+            if(!is_sell_form && General.isZero(getCurrentPrice()))
                 return false
 
             const input_volume_value = parseFloat(input_volume.field.text)
@@ -127,13 +127,13 @@ FloatingBackground {
 
     function getNeededAmountToSpend(volume) {
         volume = parseFloat(volume)
-        if(my_side) return volume
+        if(is_sell_form) return volume
         else        return volume * parseFloat(getCurrentPrice())
     }
 
     function notEnoughBalance() {
         // If sell side or buy side but there is no price, then just check the balance
-        if(my_side || General.isZero(getCurrentPrice())) {
+        if(is_sell_form || General.isZero(getCurrentPrice())) {
             return parseFloat(getMaxVolume()) < General.getMinTradeAmount()
         }
 
@@ -242,7 +242,7 @@ FloatingBackground {
 
                     field.left_text: API.get().empty_string + (qsTr("Volume"))
                     field.right_text: left_ticker
-                    field.placeholderText: API.get().empty_string + (my_side ? qsTr("Amount to sell") : qsTr("Amount to receive"))
+                    field.placeholderText: API.get().empty_string + (is_sell_form ? qsTr("Amount to sell") : qsTr("Amount to receive"))
                     field.onTextChanged: {
                         const before_checks = field.text
                         onInputChanged()
@@ -262,7 +262,7 @@ FloatingBackground {
                     anchors.top: input_volume.bottom
                     anchors.topMargin: 5
 
-                    text_value: getFiatText(input_volume.field.text, getTicker(my_side))
+                    text_value: getFiatText(input_volume.field.text, getTicker(is_sell_form))
                     font.pixelSize: input_volume.field.font.pixelSize
 
                     CexInfoTrigger {}
@@ -279,7 +279,7 @@ FloatingBackground {
                 property bool updating_from_text_field: false
                 property bool updating_text_field: false
                 readonly property int precision: General.getRecommendedPrecision(to)
-                visible: my_side
+                visible: is_sell_form
                 Layout.fillWidth: true
                 Layout.leftMargin: top_line.Layout.leftMargin
                 Layout.rightMargin: top_line.Layout.rightMargin
@@ -355,14 +355,14 @@ FloatingBackground {
 
                         DefaultText {
                             id: tx_fee_text
-                            text_value: API.get().empty_string + ((qsTr('Transaction Fee') + ': ' + General.formatCrypto("", curr_trade_info.tx_fee, curr_trade_info.is_ticker_of_fees_eth ? "ETH" : getTicker(my_side))) +
+                            text_value: API.get().empty_string + ((qsTr('Transaction Fee') + ': ' + General.formatCrypto("", curr_trade_info.tx_fee, curr_trade_info.is_ticker_of_fees_eth ? "ETH" : getTicker(is_sell_form))) +
                                                                     // ETH Fees
                                                                     (hasEthFees() ? " + " + General.formatCrypto("", curr_trade_info.erc_fees, 'ETH') : '') +
 
                                                                   // Fiat part
                                                                   (" ("+
                                                                       getFiatText(!hasEthFees() ? curr_trade_info.tx_fee : General.formatDouble((parseFloat(curr_trade_info.tx_fee) + parseFloat(curr_trade_info.erc_fees))),
-                                                                                  curr_trade_info.is_ticker_of_fees_eth ? 'ETH' : getTicker(my_side))
+                                                                                  curr_trade_info.is_ticker_of_fees_eth ? 'ETH' : getTicker(is_sell_form))
                                                                    +")")
 
 
@@ -373,11 +373,11 @@ FloatingBackground {
                         }
 
                         DefaultText {
-                            text_value: API.get().empty_string + (qsTr('Trading Fee') + ': ' + General.formatCrypto("", curr_trade_info.trade_fee, getTicker(my_side)) +
+                            text_value: API.get().empty_string + (qsTr('Trading Fee') + ': ' + General.formatCrypto("", curr_trade_info.trade_fee, getTicker(is_sell_form)) +
 
                                                                   // Fiat part
                                                                   (" ("+
-                                                                      getFiatText(curr_trade_info.trade_fee, getTicker(my_side))
+                                                                      getFiatText(curr_trade_info.trade_fee, getTicker(is_sell_form))
                                                                    +")")
                                                                   )
                             font.pixelSize: tx_fee_text.font.pixelSize
@@ -418,11 +418,11 @@ FloatingBackground {
                 Layout.fillWidth: true
                 Layout.leftMargin: 30
 
-                button_type: my_side ? "danger" : "primary"
+                button_type: is_sell_form ? "danger" : "primary"
 
                 width: 170
 
-                text: API.get().empty_string + (my_side ? qsTr("Sell %1", "TICKER").arg(left_ticker) : qsTr("Buy %1", "TICKER").arg(left_ticker))
+                text: API.get().empty_string + (is_sell_form ? qsTr("Sell %1", "TICKER").arg(left_ticker) : qsTr("Buy %1", "TICKER").arg(left_ticker))
                 enabled: valid_trade_info && !notEnoughBalanceForFees() && isValid()
                 onClicked: confirm_trade_modal.open()
             }

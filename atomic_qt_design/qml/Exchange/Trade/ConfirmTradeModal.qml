@@ -36,8 +36,8 @@ DefaultModal {
             Layout.alignment: Qt.AlignHCenter
 
             details: ({
-                    base_coin: getTicker(sell_mode),
-                    rel_coin: getTicker(!sell_mode),
+                    base_coin: base_ticker,
+                    rel_coin: rel_ticker,
                     base_amount: sell_mode ? getCurrentForm().field.text : getCurrentForm().total_amount,
                     rel_amount: sell_mode ? getCurrentForm().total_amount : getCurrentForm().field.text,
 
@@ -93,7 +93,7 @@ DefaultModal {
         ColumnLayout {
             id: config_section
 
-            readonly property bool is_dpow_configurable: API.get().get_coin_info(getTicker(!sell_mode)).type === "Smart Chain"
+            readonly property bool is_dpow_configurable: API.get().get_coin_info(rel_ticker).type === "Smart Chain"
 
             Layout.bottomMargin: 10
             Layout.alignment: Qt.AlignHCenter
@@ -122,7 +122,7 @@ DefaultModal {
                 Layout.alignment: Qt.AlignHCenter
                 id: enable_custom_config
 
-                text: API.get().empty_string + (qsTr("Use custom protection settings for incoming %1 transactions", "TICKER").arg(getTicker(!sell_mode)))
+                text: API.get().empty_string + (qsTr("Use custom protection settings for incoming %1 transactions", "TICKER").arg(rel_ticker))
             }
 
             // Configuration settings
