@@ -21,13 +21,13 @@ namespace atomic_dex
     market_pairs::market_pairs(portfolio_model* portfolio_mdl, QObject* parent) :
         QObject(parent), m_left_selection_box(new portfolio_proxy_model(portfolio_mdl)), m_right_selection_box(new portfolio_proxy_model(portfolio_mdl))
     {
-        //set_left_selected_coin("KMD");
+        // set_left_selected_coin("KMD");
         m_left_selection_box->setSourceModel(portfolio_mdl);
         m_left_selection_box->setFilterRole(portfolio_model::Excluded);
         m_left_selection_box->setDynamicSortFilter(true);
         m_left_selection_box->sort_by_currency_balance(false);
 
-        //set_right_selected_coin("BTC");
+        // set_right_selected_coin("BTC");
         m_right_selection_box->setSourceModel(portfolio_mdl);
         m_right_selection_box->setFilterRole(portfolio_model::Excluded);
         m_right_selection_box->setDynamicSortFilter(true);
@@ -56,6 +56,16 @@ namespace atomic_dex
     {
         if (left_coin != m_left_selected_coin)
         {
+            //! Set current value back to false
+            if (not m_left_selected_coin.isEmpty())
+            {
+                auto current_res_left =
+                    m_left_selection_box->match(m_left_selection_box->index(0, 0), portfolio_model::PortfolioRoles::TickerRole, m_left_selected_coin);
+                assert(not current_res_left.empty());
+                m_left_selection_box->setData(current_res_left.at(0), portfolio_model::PortfolioRoles::Excluded, false);
+            }
+
+            //! Set new one to true
             m_left_selected_coin = std::move(left_coin);
             auto res_left = m_left_selection_box->match(m_left_selection_box->index(0, 0), portfolio_model::PortfolioRoles::TickerRole, m_left_selected_coin);
             assert(not res_left.empty());
@@ -69,20 +79,33 @@ namespace atomic_dex
     {
         if (right_coin != m_right_selected_coin)
         {
+            //! Set current value back to false
+            if (not m_right_selected_coin.isEmpty())
+            {
+                auto current_res_right =
+                    m_right_selection_box->match(m_right_selection_box->index(0, 0), portfolio_model::PortfolioRoles::TickerRole, m_right_selected_coin);
+                assert(not current_res_right.empty());
+                m_right_selection_box->setData(current_res_right.at(0), portfolio_model::PortfolioRoles::Excluded, false);
+            }
+
+            //! Set new one to true
             m_right_selected_coin = std::move(right_coin);
-            auto res_right = m_right_selection_box->match(m_right_selection_box->index(0, 0), portfolio_model::PortfolioRoles::TickerRole, m_right_selected_coin);
+            auto res_right =
+                m_right_selection_box->match(m_right_selection_box->index(0, 0), portfolio_model::PortfolioRoles::TickerRole, m_right_selected_coin);
             assert(not res_right.empty());
             m_right_selection_box->setData(res_right.at(0), portfolio_model::PortfolioRoles::Excluded, true);
             emit rightSelectedCoinChanged();
         }
     }
 
-    portfolio_proxy_model* market_pairs::get_left_selection_box() const noexcept
+    portfolio_proxy_model*
+    market_pairs::get_left_selection_box() const noexcept
     {
         return m_left_selection_box;
     }
 
-    portfolio_proxy_model* market_pairs::get_right_selection_box() const noexcept
+    portfolio_proxy_model*
+    market_pairs::get_right_selection_box() const noexcept
     {
         return m_right_selection_box;
     }
