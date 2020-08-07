@@ -37,16 +37,38 @@ FloatingBackground {
     // Events
     function onSwapStatusUpdated(old_swap_status, new_swap_status, swap_uuid, base_coin, rel_coin, human_date) {
         const obj = {
+            id: swap_uuid,
             title: base_coin + "/" + rel_coin + " - " + qsTr("Swap status updated"),
             message: exchange.getStatusText(old_swap_status) + " " + General.right_arrow_icon + " " + exchange.getStatusText(new_swap_status),
             time: human_date
         }
 
+        // Update if it already exists
+        let updated_existing_one = false
+        for(let i = 0; i < notifications_list.length; ++i) {
+            if(notifications_list[i].id === obj.id) {
+                notifications_list[i] = General.clone(obj)
+                updated_existing_one = true
+                break
+            }
+        }
+
+        // Add new line
+        if(!updated_existing_one) {
+            notifications_list = [obj].concat(notifications_list)
+        }
+
+        // Update unread notification count
         if(!root.visible)
             ++unread_notification_count
 
-        notifications_list = [obj].concat(notifications_list)
+        // Display OS notification
         displayMessage(obj.title, obj.message)
+
+        // Refresh the list if updated an existing one
+        if(updated_existing_one) {
+            notifications_list = notifications_list
+        }
     }
 
 
@@ -161,7 +183,7 @@ FloatingBackground {
             DefaultButton {
                 text: API.get().empty_string + (qsTr("Pop Test Notification"))
                 onClicked: {
-                    onSwapStatusUpdated("ongoing", "finished", "123456", "BTC", "KMD", "13.3.1337")
+                    onSwapStatusUpdated("ongoing", "finished", "123456", "BTC", "KMD", "13.3.1337" + Date.now().toString())
                 }
             }
 
