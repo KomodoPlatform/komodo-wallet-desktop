@@ -23,11 +23,13 @@
 //! Consttructor / Destructor
 namespace atomic_dex
 {
-    trading_page::trading_page(entt::registry& registry, ag::ecs::system_manager& system_manager, std::atomic_bool& exit_status, QObject* parent) :
-        QObject(parent), system(registry), m_system_manager(system_manager),
+    trading_page::trading_page(
+        entt::registry& registry, ag::ecs::system_manager& system_manager, std::atomic_bool& exit_status, portfolio_model* portfolio, QObject* parent) :
+        QObject(parent),
+        system(registry), m_system_manager(system_manager),
         m_about_to_exit_the_app(exit_status), m_models{
                                                   {new qt_orderbook_wrapper(m_system_manager, this), new candlestick_charts_model(m_system_manager, this),
-                                                   new market_pairs(this)}}
+                                                   new market_pairs(portfolio, this)}}
     {
         //!
     }

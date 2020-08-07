@@ -19,6 +19,10 @@
 //! QT Headers
 #include <QObject>
 
+//! Portfolio
+#include "atomic.dex.qt.portfolio.model.hpp"
+#include "atomic.dex.qt.portfolio.proxy.filter.model.hpp"
+
 namespace atomic_dex
 {
     class market_pairs final : public QObject
@@ -29,23 +33,32 @@ namespace atomic_dex
         //! QT Properties
         Q_PROPERTY(QString left_selected_coin READ get_left_selected_coin WRITE set_left_selected_coin NOTIFY leftSelectedCoinChanged)
         Q_PROPERTY(QString right_selected_coin READ get_right_selected_coin WRITE set_right_selected_coin NOTIFY rightSelectedCoinChanged)
+        Q_PROPERTY(portfolio_proxy_model* left_selection_box READ get_left_selection_box NOTIFY leftSelectionBoxChanged)
+        Q_PROPERTY(portfolio_proxy_model* right_selection_box READ get_right_selection_box NOTIFY rightSelectionBoxChanged)
 
-        QString m_left_selected_coin{"KMD"};
-        QString m_right_selected_coin{"BTC"};
+        QString                m_left_selected_coin{"KMD"};
+        QString                m_right_selected_coin{"BTC"};
+        portfolio_proxy_model* m_left_selection_box;
+        portfolio_proxy_model* m_right_selection_box;
+
 
       public:
         //! Constructor / Destructor
-        market_pairs(QObject* parent = nullptr);
+        market_pairs(portfolio_model* portfolio_mdl, QObject* parent = nullptr);
         ~market_pairs() noexcept final;
 
         //! Properties Getter/Setter
-        [[nodiscard]] QString get_left_selected_coin() const noexcept;
-        [[nodiscard]] QString get_right_selected_coin() const noexcept;
-        void                  set_left_selected_coin(QString left_coin) noexcept;
-        void                  set_right_selected_coin(QString right_coin) noexcept;
+        [[nodiscard]] QString                get_left_selected_coin() const noexcept;
+        [[nodiscard]] QString                get_right_selected_coin() const noexcept;
+        [[nodiscard]] portfolio_proxy_model* get_left_selection_box() const noexcept;
+        [[nodiscard]] portfolio_proxy_model* get_right_selection_box() const noexcept;
+        void                                 set_left_selected_coin(QString left_coin) noexcept;
+        void                                 set_right_selected_coin(QString right_coin) noexcept;
 
       signals:
         void leftSelectedCoinChanged();
         void rightSelectedCoinChanged();
+        void leftSelectionBoxChanged();
+        void rightSelectionBoxChanged();
     };
 } // namespace atomic_dex

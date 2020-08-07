@@ -28,6 +28,7 @@
 #include "atomic.dex.qt.candlestick.charts.model.hpp"
 #include "atomic.dex.qt.market.pairs.hpp"
 #include "atomic.dex.qt.orderbook.hpp"
+#include "atomic.dex.qt.portfolio.model.hpp"
 
 namespace atomic_dex
 {
@@ -77,7 +78,9 @@ namespace atomic_dex
 
       public:
         //! Constructor
-        explicit trading_page(entt::registry& registry, ag::ecs::system_manager& system_manager, std::atomic_bool& exit_status, QObject* parent = nullptr);
+        explicit trading_page(
+            entt::registry& registry, ag::ecs::system_manager& system_manager, std::atomic_bool& exit_status, portfolio_model* portfolio,
+            QObject* parent = nullptr);
         ~trading_page() noexcept final = default;
 
         //! Public override

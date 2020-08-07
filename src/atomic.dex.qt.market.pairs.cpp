@@ -18,7 +18,17 @@
 
 namespace atomic_dex
 {
-    market_pairs::market_pairs(QObject* parent) : QObject(parent) {}
+    market_pairs::market_pairs(portfolio_model* portfolio_mdl, QObject* parent) :
+        QObject(parent), m_left_selection_box(new portfolio_proxy_model(portfolio_mdl)), m_right_selection_box(new portfolio_proxy_model(portfolio_mdl))
+    {
+        m_left_selection_box->setSourceModel(portfolio_mdl);
+        m_left_selection_box->setDynamicSortFilter(true);
+        m_left_selection_box->sort_by_currency_balance(false);
+
+        m_right_selection_box->setSourceModel(portfolio_mdl);
+        m_right_selection_box->setDynamicSortFilter(true);
+        m_right_selection_box->sort_by_currency_balance(false);
+    }
     market_pairs::~market_pairs() noexcept {}
 } // namespace atomic_dex
 
@@ -55,6 +65,16 @@ namespace atomic_dex
             m_right_selected_coin = std::move(right_coin);
             emit rightSelectedCoinChanged();
         }
+    }
+
+    portfolio_proxy_model* market_pairs::get_left_selection_box() const noexcept
+    {
+        return m_left_selection_box;
+    }
+
+    portfolio_proxy_model* market_pairs::get_right_selection_box() const noexcept
+    {
+        return m_right_selection_box;
     }
 } // namespace atomic_dex
 

@@ -200,7 +200,7 @@ namespace atomic_dex
             auto& mm2_s = system_manager_.create_system<mm2>();
             system_manager_.create_system<coinpaprika_provider>(mm2_s, m_config);
             system_manager_.create_system<cex_prices_provider>(mm2_s);
-            system_manager_.create_system<trading_page>(system_manager_, m_event_actions.at(events_action::about_to_exit_app), this);
+            system_manager_.create_system<trading_page>(system_manager_, m_event_actions.at(events_action::about_to_exit_app), get_portfolio(), this);
 
 
             connect_signals();
@@ -309,7 +309,7 @@ namespace atomic_dex
     void
     application::refresh_transactions(const mm2& mm2)
     {
-        const auto ticker = m_coin_info->get_ticker().toStdString();
+        const auto      ticker = m_coin_info->get_ticker().toStdString();
         std::error_code ec;
         auto            txs = mm2.get_tx_history(ticker, ec);
         if (!ec)
@@ -388,7 +388,7 @@ namespace atomic_dex
         system_manager_.create_system<coinpaprika_provider>(mm2_system, m_config);
         system_manager_.create_system<cex_prices_provider>(mm2_system);
         system_manager_.create_system<update_system_service>();
-        system_manager_.create_system<trading_page>(system_manager_, m_event_actions.at(events_action::about_to_exit_app), this);
+        system_manager_.create_system<trading_page>(system_manager_, m_event_actions.at(events_action::about_to_exit_app), get_portfolio(), this);
 
         connect_signals();
         if (is_there_a_default_wallet())
