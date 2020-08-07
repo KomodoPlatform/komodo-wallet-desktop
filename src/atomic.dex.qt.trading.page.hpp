@@ -26,6 +26,7 @@
 #include "atomic.dex.events.hpp"
 #include "atomic.dex.qt.actions.hpp"
 #include "atomic.dex.qt.candlestick.charts.model.hpp"
+#include "atomic.dex.qt.market.pairs.hpp"
 #include "atomic.dex.qt.orderbook.hpp"
 
 namespace atomic_dex
@@ -38,13 +39,15 @@ namespace atomic_dex
         //! Q Properties definitions
         Q_PROPERTY(qt_orderbook_wrapper* orderbook READ get_orderbook_wrapper NOTIFY orderbookChanged)
         Q_PROPERTY(candlestick_charts_model* candlestick_charts_mdl READ get_candlestick_charts NOTIFY candlestickChartsChanged)
+        Q_PROPERTY(market_pairs* market_pairs_mdl READ get_market_pairs_mdl NOTIFY marketPairsChanged)
 
         //! Private enum
         enum models
         {
-            orderbook   = 0,
-            ohlc        = 1,
-            models_size = 2
+            orderbook       = 0,
+            ohlc            = 1,
+            market_selector = 2,
+            models_size     = 3
         };
 
         enum models_actions
@@ -86,22 +89,24 @@ namespace atomic_dex
         void disconnect_signals();
 
         //! Public QML API
-        Q_INVOKABLE void set_current_orderbook(const QString& base, const QString& rel);
-        Q_INVOKABLE void on_gui_enter_dex();
-        Q_INVOKABLE void on_gui_leave_dex();
-        Q_INVOKABLE void cancel_order(const QString& order_id);
-        Q_INVOKABLE void cancel_all_orders();
-        Q_INVOKABLE void cancel_all_orders_by_ticker(const QString& ticker);
-        Q_INVOKABLE QString        place_buy_order(
+        Q_INVOKABLE void    set_current_orderbook(const QString& base, const QString& rel);
+        Q_INVOKABLE void    on_gui_enter_dex();
+        Q_INVOKABLE void    on_gui_leave_dex();
+        Q_INVOKABLE void    cancel_order(const QString& order_id);
+        Q_INVOKABLE void    cancel_all_orders();
+        Q_INVOKABLE void    cancel_all_orders_by_ticker(const QString& ticker);
+        Q_INVOKABLE QString place_buy_order(
             const QString& base, const QString& rel, const QString& price, const QString& volume, bool is_created_order, const QString& price_denom,
             const QString& price_numer, const QString& base_nota = "", const QString& base_confs = "");
         Q_INVOKABLE QString place_sell_order(
             const QString& base, const QString& rel, const QString& price, const QString& volume, bool is_created_order, const QString& price_denom,
             const QString& price_numer, const QString& rel_nota = "", const QString& rel_confs = "");
+        Q_INVOKABLE void swap_market_pair();
 
         //! Properties
         [[nodiscard]] qt_orderbook_wrapper*     get_orderbook_wrapper() const noexcept;
         [[nodiscard]] candlestick_charts_model* get_candlestick_charts() const noexcept;
+        [[nodiscard]] market_pairs*             get_market_pairs_mdl() const noexcept;
 
         //! Events Callbacks
         void on_process_orderbook_finished_event(const process_orderbook_finished& evt) noexcept;
@@ -111,6 +116,7 @@ namespace atomic_dex
       signals:
         void orderbookChanged();
         void candlestickChartsChanged();
+        void marketPairsChanged();
     };
 } // namespace atomic_dex
 

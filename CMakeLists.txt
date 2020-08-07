@@ -163,6 +163,7 @@ target_sources(atomic_qt_shared_deps INTERFACE
         ${CMAKE_SOURCE_DIR}/src/atomic.dex.qt.addressbook.proxy.filter.model.cpp
         ${CMAKE_SOURCE_DIR}/src/atomic.dex.qt.contact.model.cpp
         ${CMAKE_SOURCE_DIR}/src/atomic.dex.qt.trading.page.cpp
+        ${CMAKE_SOURCE_DIR}/src/atomic.dex.qt.market.pairs.cpp
         ${CMAKE_SOURCE_DIR}/src/atomic.dex.qt.orderbook.cpp
         ${CMAKE_SOURCE_DIR}/src/atomic.dex.qt.orderbook.model.cpp
         ${CMAKE_SOURCE_DIR}/src/atomic.dex.qt.orderbook.proxy.model.cpp

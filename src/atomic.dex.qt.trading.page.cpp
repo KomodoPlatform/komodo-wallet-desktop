@@ -25,7 +25,9 @@ namespace atomic_dex
 {
     trading_page::trading_page(entt::registry& registry, ag::ecs::system_manager& system_manager, std::atomic_bool& exit_status, QObject* parent) :
         QObject(parent), system(registry), m_system_manager(system_manager),
-        m_about_to_exit_the_app(exit_status), m_models{{new qt_orderbook_wrapper(m_system_manager, this), new candlestick_charts_model(m_system_manager, this)}}
+        m_about_to_exit_the_app(exit_status), m_models{
+                                                  {new qt_orderbook_wrapper(m_system_manager, this), new candlestick_charts_model(m_system_manager, this),
+                                                   new market_pairs(this)}}
     {
         //!
     }
@@ -70,7 +72,17 @@ namespace atomic_dex
         auto& provider        = m_system_manager.get_system<cex_prices_provider>();
         auto [normal, quoted] = provider.is_pair_supported(base.toStdString(), rel.toStdString());
         get_candlestick_charts()->set_is_pair_supported(normal || quoted);
+        auto* market_selector_mdl = get_market_pairs_mdl();
+        market_selector_mdl->set_left_selected_coin(base);
+        market_selector_mdl->set_right_selected_coin(rel);
         dispatcher_.trigger<orderbook_refresh>(base.toStdString(), rel.toStdString());
+    }
+
+    void
+    trading_page::swap_market_pair()
+    {
+        auto* market_selector_mdl = get_market_pairs_mdl();
+        set_current_orderbook(market_selector_mdl->get_right_selected_coin(), market_selector_mdl->get_left_selected_coin());
     }
 
     void
@@ -253,5 +265,11 @@ namespace atomic_dex
     trading_page::get_candlestick_charts() const noexcept
     {
         return qobject_cast<candlestick_charts_model*>(m_models[models::ohlc]);
+    }
+
+    market_pairs*
+    trading_page::get_market_pairs_mdl() const noexcept
+    {
+        return qobject_cast<market_pairs*>(m_models[models::market_selector]);
     }
 } // namespace atomic_dex
