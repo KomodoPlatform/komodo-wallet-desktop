@@ -17,22 +17,6 @@ RowLayout {
     property var ticker_list
     property string ticker
 
-    // Private
-    function getFilteredCoins() {
-        return getCoins(left_side)
-    }
-
-    function getAnyAvailableCoin(filter_ticker) {
-        let coins = getFilteredCoins().map(c => c.ticker)
-
-        // Filter out ticker
-        if(filter_ticker !== undefined || filter_ticker !== '')
-            coins = coins.filter(c => c !== filter_ticker)
-
-        // Pick a random one if prioritized ones do not satisfy
-        return coins.length > 0 ? coins[0] : ''
-    }
-
     DefaultImage {
         source: General.coinIcon(ticker)
         Layout.preferredWidth: 32

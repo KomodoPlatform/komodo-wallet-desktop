@@ -185,46 +185,6 @@ Item {
         setPair(true)
     }
 
-    function moveToBeginning(coins, ticker) {
-        const idx = coins.map(c => c.ticker).indexOf(ticker)
-        if(idx === -1) return
-
-        const coin = coins[idx]
-        return [coin].concat(coins.filter(c => c.ticker !== ticker))
-    }
-
-    function getCoins(is_sell_form) {
-        let coins = API.get().enabled_coins
-
-        if(coins.length === 0) return coins
-
-        // Prioritize KMD / BTC pair by moving them to the start
-        coins = moveToBeginning(coins, "BTC")
-        coins = moveToBeginning(coins, "KMD")
-
-        // Return full list
-        if(is_sell_form === undefined) return coins
-
-        // Filter for Sell
-        if(is_sell_form) {
-            return coins.filter(c => {
-                c.balance = API.get().get_balance(c.ticker)
-
-                return true
-            })
-        }
-        // Filter for Receive
-        else {
-            return coins.filter(c => {
-                if(c.ticker === left_ticker) return false
-
-                c.balance = API.get().get_balance(c.ticker)
-
-                return true
-            })
-        }
-    }
-
     function getTicker(is_base) {
         return is_base ? left_ticker : right_ticker
     }
