@@ -185,10 +185,6 @@ Item {
         setPair(true)
     }
 
-    function getTicker(is_base) {
-        return is_base ? left_ticker : right_ticker
-    }
-
     function setPair(is_base, changed_ticker) {
         let base = left_ticker
         let rel = right_ticker
