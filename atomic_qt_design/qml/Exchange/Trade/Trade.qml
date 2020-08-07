@@ -175,7 +175,13 @@ Item {
         onOpened()
     }
 
+    property bool initialized_orderbook_pair: false
     function onOpened() {
+        if(!initialized_orderbook_pair) {
+            initialized_orderbook_pair = true
+            API.get().trading_pg.set_current_orderbook("KMD", "BTC")
+        }
+
         fillTickersIfEmpty()
         reset(true)
         updateForms()
