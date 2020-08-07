@@ -118,6 +118,67 @@ namespace atomic_dex
             mm2_system.process_orders();
         });
     }
+
+    QString
+    trading_page::place_buy_order(
+        const QString& base, const QString& rel, const QString& price, const QString& volume, bool is_created_order, const QString& price_denom,
+        const QString& price_numer, const QString& base_nota, const QString& base_confs)
+    {
+        t_float_50 price_f;
+        t_float_50 amount_f;
+        t_float_50 total_amount;
+
+        price_f.assign(price.toStdString());
+        amount_f.assign(volume.toStdString());
+        total_amount = price_f * amount_f;
+
+        t_buy_request req{
+            .base             = base.toStdString(),
+            .rel              = rel.toStdString(),
+            .price            = price.toStdString(),
+            .volume           = volume.toStdString(),
+            .is_created_order = is_created_order,
+            .price_denom      = price_denom.toStdString(),
+            .price_numer      = price_numer.toStdString(),
+            .base_nota        = base_nota.isEmpty() ? std::optional<bool>{std::nullopt} : boost::lexical_cast<bool>(base_nota.toStdString()),
+            .base_confs       = base_confs.isEmpty() ? std::optional<std::size_t>{std::nullopt} : base_confs.toUInt()};
+        std::error_code ec;
+        auto            answer = m_system_manager.get_system<mm2>().place_buy_order(std::move(req), total_amount, ec);
+
+        if (answer.error.has_value())
+        {
+            return QString::fromStdString(answer.error.value());
+        }
+        return "";
+    }
+
+    QString
+    trading_page::place_sell_order(
+        const QString& base, const QString& rel, const QString& price, const QString& volume, bool is_created_order, const QString& price_denom,
+        const QString& price_numer, const QString& rel_nota, const QString& rel_confs)
+    {
+        t_float_50 amount_f;
+        amount_f.assign(volume.toStdString());
+
+        t_sell_request req{
+            .base             = base.toStdString(),
+            .rel              = rel.toStdString(),
+            .price            = price.toStdString(),
+            .volume           = volume.toStdString(),
+            .is_created_order = is_created_order,
+            .price_denom      = price_denom.toStdString(),
+            .price_numer      = price_numer.toStdString(),
+            .rel_nota         = rel_nota.isEmpty() ? std::optional<bool>{std::nullopt} : boost::lexical_cast<bool>(rel_nota.toStdString()),
+            .rel_confs        = rel_confs.isEmpty() ? std::optional<std::size_t>{std::nullopt} : rel_confs.toUInt()};
+        std::error_code ec;
+        auto            answer = m_system_manager.get_system<mm2>().place_sell_order(std::move(req), amount_f, ec);
+
+        if (answer.error.has_value())
+        {
+            return QString::fromStdString(answer.error.value());
+        }
+        return "";
+    }
 } // namespace atomic_dex
 
 //! Public API

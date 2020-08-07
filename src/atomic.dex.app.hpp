@@ -215,12 +215,6 @@ namespace atomic_dex
         Q_INVOKABLE bool           enable_coins(const QStringList& coins);
         Q_INVOKABLE QString        get_balance(const QString& coin);
         Q_INVOKABLE static QString get_price_amount(const QString& base_amount, const QString& rel_amount);
-        Q_INVOKABLE QString        place_buy_order(
-                   const QString& base, const QString& rel, const QString& price, const QString& volume, bool is_created_order, const QString& price_denom,
-                   const QString& price_numer, const QString& base_nota = "", const QString& base_confs = "");
-        Q_INVOKABLE QString place_sell_order(
-            const QString& base, const QString& rel, const QString& price, const QString& volume, bool is_created_order, const QString& price_denom,
-            const QString& price_numer, const QString& rel_nota = "", const QString& rel_confs = "");
         Q_INVOKABLE bool do_i_have_enough_funds(const QString& ticker, const QString& amount) const;
         Q_INVOKABLE bool disable_coins(const QStringList& coins);
         Q_INVOKABLE bool is_claiming_ready(const QString& ticker);

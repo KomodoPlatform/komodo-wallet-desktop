@@ -302,9 +302,9 @@ Item {
         let result
 
         if(sell_mode)
-            result = API.get().place_sell_order(base, rel, price, volume, is_created_order, price_denom, price_numer, nota, confs)
+            result = API.get().trading_pg.place_sell_order(base, rel, price, volume, is_created_order, price_denom, price_numer, nota, confs)
         else
-            result = API.get().place_buy_order(base, rel, price, volume, is_created_order, price_denom, price_numer, nota, confs)
+            result = API.get().trading_pg.place_buy_order(base, rel, price, volume, is_created_order, price_denom, price_numer, nota, confs)
 
         if(result === "") {
             action_result = "success"
