@@ -151,11 +151,6 @@ Item {
 
 
     // Orderbook
-    function fillTickersIfEmpty() {
-        selector_base.fillIfEmpty()
-        selector_rel.fillIfEmpty()
-    }
-
     function updateTradeInfo(force=false) {
         const base = getTicker(sell_mode)
         const rel = getTicker(!sell_mode)
@@ -171,7 +166,7 @@ Item {
 
     // Trade
     function open(ticker) {
-        setTicker(true, ticker)
+        // TODO: setPair(true, ticker)
         onOpened()
     }
 
@@ -182,23 +177,8 @@ Item {
             API.get().trading_pg.set_current_orderbook("KMD", "BTC")
         }
 
-        fillTickersIfEmpty()
         reset(true)
-        updateForms()
         setPair(true)
-    }
-
-    function updateForms(my_side, new_ticker) {
-        if(my_side === undefined) {
-            selector_base.update()
-            selector_rel.update()
-        }
-        else if(my_side) {
-            selector_rel.update(new_ticker)
-        }
-        else {
-            selector_base.update(new_ticker)
-        }
     }
 
     function moveToBeginning(coins, ticker) {
@@ -245,34 +225,22 @@ Item {
         return is_base ? selector_base.getTicker() : selector_rel.getTicker()
     }
 
-    function setTicker(is_base, ticker) {
-        if(is_base) selector_base.setTicker(ticker)
-        else selector_rel.setTicker(ticker)
-    }
+    function setPair(is_base, changed_ticker) {
+        let base = getTicker(true)
+        let rel = getTicker(false)
 
-    function validBaseRel() {
-        const base = getTicker(true)
-        const rel = getTicker(false)
-        return base !== '' && rel !== '' && base !== rel
-    }
-
-    function setPair(is_base) {
-        if(getTicker(true) === getTicker(false)) {
-            // Base got selected, same as rel
-            // Change rel ticker
-            selector_rel.setAnyTicker()
+        // Set the new one if it's a change
+        if(changed_ticker) {
+            if(is_base) base = changed_ticker
+            else rel = changed_ticker
         }
 
-        if(validBaseRel()) {
-            const new_base = getTicker(true)
-            const rel = getTicker(false)
-            console.log("Setting current orderbook with params: ", new_base, rel)
-            API.get().trading_pg.set_current_orderbook(new_base, rel)
-            reset(true, is_base)
-            updateTradeInfo()
-            updateCexPrice(new_base, rel)
-            exchange.onTradeTickerChanged(new_base)
-        }
+        console.log("Setting current orderbook with params: ", base, rel)
+        API.get().trading_pg.set_current_orderbook(base, rel)
+        reset(true, is_base)
+        updateTradeInfo()
+        updateCexPrice(base, rel)
+        exchange.onTradeTickerChanged(base)
     }
 
     function trade(base, rel, options) {
@@ -326,36 +294,11 @@ Item {
         }
     }
 
-    // No coins warning
-    ColumnLayout {
-        anchors.centerIn: parent
-        visible: selector_base.ticker_list.length === 0
-
-        DefaultImage {
-            Layout.alignment: Qt.AlignHCenter
-            source: General.image_path + "setup-wallet-restore-2.svg"
-            Layout.bottomMargin: 30
-        }
-
-        DefaultText {
-            Layout.alignment: Qt.AlignHCenter
-            text_value: API.get().empty_string + (qsTr("No balance available"))
-            font.pixelSize: Style.textSize2
-        }
-
-        DefaultText {
-            Layout.alignment: Qt.AlignHCenter
-            text_value: API.get().empty_string + (qsTr("Please enable a coin with balance or deposit funds"))
-        }
-    }
-
     // Form
     ColumnLayout {
         id: form
 
         spacing: layout_margin
-
-        visible: selector_base.ticker_list.length > 0
 
         anchors.fill: parent
 
@@ -397,6 +340,7 @@ Item {
                     TickerSelector {
                         id: selector_base
                         my_side: true
+                        ticker_list: API.get().trading_pg.market_pairs_mdl.left_selection_box
                         Layout.alignment: Qt.AlignLeft | Qt.AlignVCenter
                     }
 
@@ -410,6 +354,8 @@ Item {
 
                     TickerSelector {
                         id: selector_rel
+                        my_side: false
+                        ticker_list: API.get().trading_pg.market_pairs_mdl.right_selection_box
                         Layout.alignment: Qt.AlignRight | Qt.AlignVCenter
                     }
                 }

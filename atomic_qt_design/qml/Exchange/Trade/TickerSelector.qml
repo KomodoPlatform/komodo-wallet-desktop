@@ -14,52 +14,15 @@ RowLayout {
     layoutDirection: my_side ? Qt.LeftToRight : Qt.RightToLeft
 
     property bool my_side: false
-    property var ticker_list: ([])
-    property bool recursive_update: false
+    property var ticker_list
 
     // Public
-    function setAnyTicker() {
-        setTicker(getAnyAvailableCoin())
-    }
-
-    function fillIfEmpty() {
-        if(getTicker() === '') setAnyTicker()
-    }
-
-    function update(new_ticker) {
-        updateTickerList(new_ticker)
-    }
-
     function getTicker() {
-        return ticker_list.length > 0 ? ticker_list[combo.currentIndex].value : ""
-    }
-
-    function setTicker(ticker) {
-        combo.currentIndex = getFilteredCoins().map(c => c.ticker).indexOf(ticker)
-
-        // If it doesn't exist, pick an existing one
-        if(combo.currentIndex === -1) setAnyTicker()
+        return my_side ? API.get().trading_pg.market_pairs_mdl.left_selected_coin :
+                         API.get().trading_pg.market_pairs_mdl.right_selected_coin
     }
 
     // Private
-    Timer {
-        id: update_timer
-        running: inCurrentPage()
-        repeat: true
-        interval: 1000
-        onTriggered: {
-            if(inCurrentPage()) updateTickerList()
-        }
-    }
-
-    function updateTickerList(new_ticker) {
-        recursive_update = new_ticker !== undefined
-
-        ticker_list = General.getTickersAndBalances(getFilteredCoins())
-
-        update_timer.running = true
-    }
-
     function getFilteredCoins() {
         return getCoins(my_side)
     }
@@ -84,17 +47,12 @@ RowLayout {
     DefaultComboBox {
         id: combo
 
-        Layout.fillWidth: true
-
         model: ticker_list
 
-        textRole: "text"
+        Layout.fillWidth: true
 
         onCurrentTextChanged: {
-            if(!recursive_update) {
-                updateForms(my_side, combo.currentText)
-                setPair(my_side)
-            }
+            setPair(my_side, currentText)
         }
     }
 }
