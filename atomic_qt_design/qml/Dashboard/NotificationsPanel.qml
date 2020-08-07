@@ -170,6 +170,36 @@ FloatingBackground {
                         anchors.bottomMargin: -height/2
                         light: true
                     }
+
+                    Rectangle {
+                        radius: 100
+
+                        width: height
+                        height: remove_button.height * 1.2
+
+                        anchors.bottom: parent.bottom
+                        anchors.bottomMargin: 5
+                        anchors.right: parent.right
+                        anchors.rightMargin: anchors.bottomMargin
+
+                        color: Style.colorTheme1
+
+                        DefaultText {
+                            id: remove_button
+                            text_value: API.get().empty_string + ("✔️")
+                            anchors.centerIn: parent
+                            font.pixelSize: Style.textSizeSmall3
+                            color: Style.colorWhite10
+                        }
+
+                        MouseArea {
+                            anchors.fill: parent
+                            onClicked: {
+                                notifications_list.splice(index, 1)
+                                notifications_list = notifications_list
+                            }
+                        }
+                    }
                 }
             }
         }
@@ -183,7 +213,7 @@ FloatingBackground {
             DefaultButton {
                 text: API.get().empty_string + (qsTr("Pop Test Notification"))
                 onClicked: {
-                    onSwapStatusUpdated("ongoing", "finished", "123456", "BTC", "KMD", "13.3.1337" + Date.now().toString())
+                    onSwapStatusUpdated("ongoing", "finished", Date.now().toString(), "BTC", "KMD", "13.3.1337")
                 }
             }
 
