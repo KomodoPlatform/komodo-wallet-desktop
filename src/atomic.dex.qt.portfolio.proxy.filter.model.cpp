@@ -92,6 +92,8 @@ namespace atomic_dex
             return false;
         case portfolio_model::Excluded:
             return false;
+        case portfolio_model::Display:
+            return false;
         }
     }
 
@@ -100,7 +102,8 @@ namespace atomic_dex
     {
         QModelIndex idx = this->sourceModel()->index(source_row, 0, source_parent);
         assert(this->sourceModel()->hasIndex(idx.row(), 0));
-        bool is_excluded = this->sourceModel()->data(idx, this->filterRole()).toBool();
+        bool is_excluded = this->sourceModel()->data(idx, atomic_dex::portfolio_model::Excluded).toBool();
+        spdlog::trace("is excluded: {}", is_excluded);
         if (is_excluded)
         {
             return false;

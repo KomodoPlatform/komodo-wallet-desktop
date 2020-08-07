@@ -23,13 +23,13 @@ namespace atomic_dex
     {
         // set_left_selected_coin("KMD");
         m_left_selection_box->setSourceModel(portfolio_mdl);
-        m_left_selection_box->setFilterRole(portfolio_model::Excluded);
+        //m_left_selection_box->setFilterRole(portfolio_model::Excluded);
         m_left_selection_box->setDynamicSortFilter(true);
         m_left_selection_box->sort_by_currency_balance(false);
 
         // set_right_selected_coin("BTC");
         m_right_selection_box->setSourceModel(portfolio_mdl);
-        m_right_selection_box->setFilterRole(portfolio_model::Excluded);
+        //m_right_selection_box->setFilterRole(portfolio_model::Excluded);
         m_right_selection_box->setDynamicSortFilter(true);
         m_right_selection_box->sort_by_currency_balance(false);
     }

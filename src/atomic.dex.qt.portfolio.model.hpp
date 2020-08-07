@@ -48,7 +48,8 @@ namespace atomic_dex
             Change24H,
             MainCurrencyPriceForOneUnit,
             Trend7D,
-            Excluded
+            Excluded,
+            Display
         };
 
       private:

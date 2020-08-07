@@ -45,5 +45,7 @@ namespace atomic_dex
         QJsonArray trend_7d;
 
         bool is_excluded{false};
+
+        QString display;
     };
 } // namespace atomic_dex

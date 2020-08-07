@@ -70,7 +70,10 @@ namespace atomic_dex
             .main_currency_balance            = QString::fromStdString(paprika.get_price_in_fiat(m_config.current_currency, coin.ticker, ec)),
             .change_24h                       = change_24h,
             .main_currency_price_for_one_unit = QString::fromStdString(paprika.get_rate_conversion(m_config.current_currency, coin.ticker, ec, true)),
-            .trend_7d                         = nlohmann_json_array_to_qt_json_array(paprika.get_ticker_historical(coin.ticker).answer)};
+            .trend_7d                         = nlohmann_json_array_to_qt_json_array(paprika.get_ticker_historical(coin.ticker).answer),
+            .is_excluded                      = false,
+        };
+        data.display = data.ticker + "(" + data.balance + ")";
         spdlog::trace(
             "inserting ticker {} with name {} balance {} main currency balance {}", coin.ticker, coin.name, data.balance.toStdString(),
             data.main_currency_balance.toStdString());
@@ -103,6 +106,8 @@ namespace atomic_dex
                     update_value(Change24H, change24_h, idx, *this);
                     const QString balance = QString::fromStdString(mm2_system.my_balance(coin.ticker, ec));
                     update_value(BalanceRole, balance, idx, *this);
+                    const QString display = QString::fromStdString(coin.ticker) + "(" + balance + ")";
+                    update_value(Display, display, idx, *this);
                 }
             }));
         }
@@ -155,6 +160,8 @@ namespace atomic_dex
             return item.trend_7d;
         case Excluded:
             return item.is_excluded;
+        case Display:
+            return item.display;
         }
         return {};
     }
@@ -187,6 +194,9 @@ namespace atomic_dex
             break;
         case Excluded:
             item.is_excluded = value.toBool();
+            break;
+        case Display:
+            item.display = value.toString();
             break;
         default:
             return false;
@@ -235,8 +245,8 @@ namespace atomic_dex
         return {{TickerRole, "ticker"},    {NameRole, "name"},
                 {BalanceRole, "balance"},  {MainCurrencyBalanceRole, "main_currency_balance"},
                 {Change24H, "change_24h"}, {MainCurrencyPriceForOneUnit, "main_currency_price_for_one_unit"},
-                {Trend7D, "trend_7d"},
-                {Excluded, "excluded"}};
+                {Trend7D, "trend_7d"},     {Excluded, "excluded"},
+                {Display, "display"}};
     }
 
     portfolio_proxy_model*
