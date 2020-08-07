@@ -165,11 +165,14 @@ Item {
     }
 
     DefaultButton {
-        anchors.horizontalCenter: sidebar.horizontalCenter
-        anchors.bottom: sidebar.bottom
-        anchors.bottomMargin: 150
+        anchors.top: parent.top
+        anchors.right: parent.right
+        anchors.topMargin: 5
+        anchors.rightMargin: 5
+
         z: 1
         text: "🔔"
+        font.pixelSize: Style.textSizeSmall3
         minWidth: height
         onClicked: notifications_panel.visible = !notifications_panel.visible
 
