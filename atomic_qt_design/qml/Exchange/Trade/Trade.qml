@@ -212,7 +212,7 @@ Item {
         // Filter for Receive
         else {
             return coins.filter(c => {
-                if(c.ticker === getTicker(true)) return false
+                if(c.ticker === selector_base.ticker) return false
 
                 c.balance = API.get().get_balance(c.ticker)
 
@@ -226,8 +226,8 @@ Item {
     }
 
     function setPair(is_base, changed_ticker) {
-        let base = getTicker(true)
-        let rel = getTicker(false)
+        let base = selector_base.ticker
+        let rel = selector_rel.ticker
 
         // Set the new one if it's a change
         if(changed_ticker) {

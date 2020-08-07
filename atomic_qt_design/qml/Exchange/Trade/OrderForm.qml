@@ -212,7 +212,7 @@ FloatingBackground {
                 enabled: input_volume.field.enabled
 
                 field.left_text: API.get().empty_string + (qsTr("Price"))
-                field.right_text: getTicker(false)
+                field.right_text: selector_rel.ticker
 
                 field.onTextChanged: {
                     onInputChanged()
@@ -241,7 +241,7 @@ FloatingBackground {
                     field.enabled: root.enabled && !shouldBlockInput()
 
                     field.left_text: API.get().empty_string + (qsTr("Volume"))
-                    field.right_text: getTicker(true)
+                    field.right_text: selector_base.ticker
                     field.placeholderText: API.get().empty_string + (my_side ? qsTr("Amount to sell") : qsTr("Amount to receive"))
                     field.onTextChanged: {
                         const before_checks = field.text
@@ -408,7 +408,7 @@ FloatingBackground {
 
             DefaultText {
                 Layout.alignment: Qt.AlignLeft
-                text_value: API.get().empty_string + (qsTr("Total") + ": " + General.formatCrypto("", total_amount, getTicker(false)))
+                text_value: API.get().empty_string + (qsTr("Total") + ": " + General.formatCrypto("", total_amount, selector_rel.ticker))
                 font.pixelSize: Style.textSizeSmall3
             }
 
@@ -422,7 +422,7 @@ FloatingBackground {
 
                 width: 170
 
-                text: API.get().empty_string + (my_side ? qsTr("Sell %1", "TICKER").arg(getTicker(true)) : qsTr("Buy %1", "TICKER").arg(getTicker(true)))
+                text: API.get().empty_string + (my_side ? qsTr("Sell %1", "TICKER").arg(selector_base.ticker) : qsTr("Buy %1", "TICKER").arg(selector_base.ticker))
                 enabled: valid_trade_info && !notEnoughBalanceForFees() && isValid()
                 onClicked: confirm_trade_modal.open()
             }

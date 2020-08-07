@@ -51,9 +51,7 @@ RowLayout {
         textRole: "display"
         valueRole: "ticker"
 
-        onCurrentValueChanged: {
-            setPair(my_side, currentValue)
-        }
+        onCurrentValueChanged: setPair(my_side, currentValue)
 
         Layout.fillWidth: true
     }
