@@ -171,7 +171,7 @@ FloatingBackground {
                         anchors.top: parent.top
                         anchors.topMargin: 10
                         anchors.right: parent.right
-                        anchors.rightMargin: 30
+                        anchors.rightMargin: 5
                         text_value: API.get().empty_string + (modelData.time)
                         font.pixelSize: Style.textSizeSmall
                     }
