@@ -36,8 +36,8 @@ namespace atomic_dex
         Q_PROPERTY(portfolio_proxy_model* left_selection_box READ get_left_selection_box NOTIFY leftSelectionBoxChanged)
         Q_PROPERTY(portfolio_proxy_model* right_selection_box READ get_right_selection_box NOTIFY rightSelectionBoxChanged)
 
-        QString                m_left_selected_coin{"KMD"};
-        QString                m_right_selected_coin{"BTC"};
+        QString                m_left_selected_coin;
+        QString                m_right_selected_coin;
         portfolio_proxy_model* m_left_selection_box;
         portfolio_proxy_model* m_right_selection_box;
 

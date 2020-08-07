@@ -153,6 +153,8 @@ namespace atomic_dex
             return item.name;
         case Trend7D:
             return item.trend_7d;
+        case Excluded:
+            return item.is_excluded;
         }
         return {};
     }
@@ -182,6 +184,9 @@ namespace atomic_dex
             break;
         case Trend7D:
             item.trend_7d = value.toJsonArray();
+            break;
+        case Excluded:
+            item.is_excluded = value.toBool();
             break;
         default:
             return false;
@@ -230,7 +235,8 @@ namespace atomic_dex
         return {{TickerRole, "ticker"},    {NameRole, "name"},
                 {BalanceRole, "balance"},  {MainCurrencyBalanceRole, "main_currency_balance"},
                 {Change24H, "change_24h"}, {MainCurrencyPriceForOneUnit, "main_currency_price_for_one_unit"},
-                {Trend7D, "trend_7d"}};
+                {Trend7D, "trend_7d"},
+                {Excluded, "excluded"}};
     }
 
     portfolio_proxy_model*

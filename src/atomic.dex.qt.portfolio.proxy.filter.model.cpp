@@ -90,6 +90,21 @@ namespace atomic_dex
             return left_data.toString() < right_data.toString();
         case portfolio_model::Trend7D:
             return false;
+        case portfolio_model::Excluded:
+            return false;
         }
+    }
+
+    bool
+    portfolio_proxy_model::filterAcceptsRow(int source_row, const QModelIndex& source_parent) const
+    {
+        QModelIndex idx = this->sourceModel()->index(source_row, 0, source_parent);
+        assert(this->sourceModel()->hasIndex(idx.row(), 0));
+        bool is_excluded = this->sourceModel()->data(idx, this->filterRole()).toBool();
+        if (is_excluded)
+        {
+            return false;
+        }
+        return QSortFilterProxyModel::filterAcceptsRow(source_row, source_parent);
     }
 } // namespace atomic_dex
