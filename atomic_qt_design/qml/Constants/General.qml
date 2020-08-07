@@ -170,25 +170,6 @@ QtObject {
         })
     }
 
-    function getTickers(coins) {
-        return coins.map(c => {
-         return { value: c.ticker, text: c.ticker }
-        })
-    }
-
-
-    function tickerAndBalance(ticker) {
-        return ticker + " (" + API.get().get_balance(ticker) + ")"
-    }
-
-    function getTickersAndBalances(coins) {
-        const privacy_on = General.privacy_mode
-        const privacy_text = General.privacy_text
-        return coins.map(c => {
-            return { value: c.ticker, text: c.ticker + " (" + (privacy_on ? privacy_text : c.balance) + ")" }
-        })
-    }
-
     function getMinTradeAmount() {
         return 0.00777
     }

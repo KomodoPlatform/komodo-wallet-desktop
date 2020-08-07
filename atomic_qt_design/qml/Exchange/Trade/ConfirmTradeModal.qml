@@ -231,7 +231,7 @@ DefaultModal {
                 text: API.get().empty_string + (qsTr("Confirm"))
                 Layout.fillWidth: true
                 onClicked: {
-                    trade(selector_base.ticker, selector_rel.ticker, {
+                    trade(left_ticker, right_ticker, {
                             enable_custom_config: enable_custom_config.checked,
                             is_dpow_configurable: config_section.is_dpow_configurable,
                             enable_dpow_confs: enable_dpow_confs.checked,

@@ -62,8 +62,8 @@ FloatingBackground {
         // set_as_current should be true if input_volume is updated
         // if it's called for cap check, it should be false because that's not the current input_volume
 
-        const base = getTicker(sell_mode)
-        const rel = getTicker(!sell_mode)
+        const base = base_ticker
+        const rel = rel_ticker
         const amount = getMaxVolume()
 
         if(base === '' || rel === '') return 0
@@ -212,7 +212,7 @@ FloatingBackground {
                 enabled: input_volume.field.enabled
 
                 field.left_text: API.get().empty_string + (qsTr("Price"))
-                field.right_text: selector_rel.ticker
+                field.right_text: right_ticker
 
                 field.onTextChanged: {
                     onInputChanged()
@@ -241,7 +241,7 @@ FloatingBackground {
                     field.enabled: root.enabled && !shouldBlockInput()
 
                     field.left_text: API.get().empty_string + (qsTr("Volume"))
-                    field.right_text: selector_base.ticker
+                    field.right_text: left_ticker
                     field.placeholderText: API.get().empty_string + (my_side ? qsTr("Amount to sell") : qsTr("Amount to receive"))
                     field.onTextChanged: {
                         const before_checks = field.text
@@ -408,7 +408,7 @@ FloatingBackground {
 
             DefaultText {
                 Layout.alignment: Qt.AlignLeft
-                text_value: API.get().empty_string + (qsTr("Total") + ": " + General.formatCrypto("", total_amount, selector_rel.ticker))
+                text_value: API.get().empty_string + (qsTr("Total") + ": " + General.formatCrypto("", total_amount, right_ticker))
                 font.pixelSize: Style.textSizeSmall3
             }
 
@@ -422,7 +422,7 @@ FloatingBackground {
 
                 width: 170
 
-                text: API.get().empty_string + (my_side ? qsTr("Sell %1", "TICKER").arg(selector_base.ticker) : qsTr("Buy %1", "TICKER").arg(selector_base.ticker))
+                text: API.get().empty_string + (my_side ? qsTr("Sell %1", "TICKER").arg(left_ticker) : qsTr("Buy %1", "TICKER").arg(left_ticker))
                 enabled: valid_trade_info && !notEnoughBalanceForFees() && isValid()
                 onClicked: confirm_trade_modal.open()
             }

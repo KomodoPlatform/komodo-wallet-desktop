@@ -47,7 +47,7 @@ RowLayout {
         // Price reversed
         DefaultText {
             Layout.alignment: Qt.AlignHCenter
-            text_value: API.get().empty_string + ("1 " + selector_rel.ticker + " = " + General.formatCrypto("", General.formatDouble(1 / parseFloat(price)), selector_base.ticker))
+            text_value: API.get().empty_string + ("1 " + right_ticker + " = " + General.formatCrypto("", General.formatDouble(1 / parseFloat(price)), left_ticker))
             font.pixelSize: fontSizeBigger
             font.bold: true
         }
@@ -55,7 +55,7 @@ RowLayout {
         // Price
         DefaultText {
             Layout.alignment: Qt.AlignHCenter
-            text_value: API.get().empty_string + ("1 " + selector_base.ticker + " = " + General.formatCrypto("", price, selector_rel.ticker))
+            text_value: API.get().empty_string + ("1 " + left_ticker + " = " + General.formatCrypto("", price, right_ticker))
             font.pixelSize: fontSize
         }
     }
@@ -126,7 +126,7 @@ RowLayout {
         // Price reversed
         DefaultText {
             Layout.alignment: Qt.AlignHCenter
-            text_value: API.get().empty_string + ("1 " + selector_rel.ticker + " = " + General.formatCrypto("", General.formatDouble(1 / parseFloat(cex_price)), selector_base.ticker))
+            text_value: API.get().empty_string + ("1 " + right_ticker + " = " + General.formatCrypto("", General.formatDouble(1 / parseFloat(cex_price)), left_ticker))
             font.pixelSize: fontSizeBigger
             font.bold: true
         }
@@ -134,7 +134,7 @@ RowLayout {
         // Price
         DefaultText {
             Layout.alignment: Qt.AlignHCenter
-            text_value: API.get().empty_string + ("1 " + selector_base.ticker + " = " + General.formatCrypto("", cex_price, selector_rel.ticker))
+            text_value: API.get().empty_string + ("1 " + left_ticker + " = " + General.formatCrypto("", cex_price, right_ticker))
             font.pixelSize: fontSize
         }
     }

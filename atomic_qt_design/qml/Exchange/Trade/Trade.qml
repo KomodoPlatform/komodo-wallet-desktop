@@ -12,6 +12,10 @@ Item {
     property string action_result
 
     property bool sell_mode: true
+    property string left_ticker: selector_left.ticker
+    property string right_ticker: selector_right.ticker
+    property string base_ticker: sell_mode ? left_ticker : right_ticker
+    property string rel_ticker: sell_mode ? right_ticker : left_ticker
 
     // Override
     property var onOrderSuccess: () => {}
@@ -152,8 +156,8 @@ Item {
 
     // Orderbook
     function updateTradeInfo(force=false) {
-        const base = getTicker(sell_mode)
-        const rel = getTicker(!sell_mode)
+        const base = base_ticker
+        const rel = rel_ticker
         const amount = sell_mode ? getCurrentForm().getVolume() :
                                    General.formatDouble(getCurrentForm().getNeededAmountToSpend(getCurrentForm().getVolume()))
         if(force || (General.fieldExists(base) && General.fieldExists(rel) && !General.isZero(amount))) {
@@ -212,7 +216,7 @@ Item {
         // Filter for Receive
         else {
             return coins.filter(c => {
-                if(c.ticker === selector_base.ticker) return false
+                if(c.ticker === left_ticker) return false
 
                 c.balance = API.get().get_balance(c.ticker)
 
@@ -222,12 +226,12 @@ Item {
     }
 
     function getTicker(is_base) {
-        return is_base ? selector_base.ticker : selector_rel.ticker
+        return is_base ? left_ticker : right_ticker
     }
 
     function setPair(is_base, changed_ticker) {
-        let base = selector_base.ticker
-        let rel = selector_rel.ticker
+        let base = left_ticker
+        let rel = right_ticker
 
         // Set the new one if it's a change
         if(changed_ticker) {
@@ -338,7 +342,7 @@ Item {
                     spacing: 40
 
                     TickerSelector {
-                        id: selector_base
+                        id: selector_left
                         my_side: true
                         ticker_list: API.get().trading_pg.market_pairs_mdl.left_selection_box
                         ticker: API.get().trading_pg.market_pairs_mdl.left_selected_coin
@@ -354,7 +358,7 @@ Item {
                     }
 
                     TickerSelector {
-                        id: selector_rel
+                        id: selector_right
                         my_side: false
                         ticker_list: API.get().trading_pg.market_pairs_mdl.right_selection_box
                         ticker: API.get().trading_pg.market_pairs_mdl.right_selected_coin
@@ -424,9 +428,9 @@ Item {
 
                     text_value: API.get().empty_string + (
                                     General.isZero(getCurrentPrice()) ? (qsTr("Please fill the price field")) :
-                                    notEnoughBalance() ? (qsTr("%1 balance is lower than minimum trade amount").arg(getTicker(sell_mode)) + " : " + General.getMinTradeAmount()) :
+                                    notEnoughBalance() ? (qsTr("%1 balance is lower than minimum trade amount").arg(base_ticker) + " : " + General.getMinTradeAmount()) :
                                     notEnoughBalanceForFees() ?
-                                        (qsTr("Not enough balance for the fees. Need at least %1 more", "AMT TICKER").arg(General.formatCrypto("", parseFloat(curr_trade_info.amount_needed), getTicker(sell_mode)))) :
+                                        (qsTr("Not enough balance for the fees. Need at least %1 more", "AMT TICKER").arg(General.formatCrypto("", parseFloat(curr_trade_info.amount_needed), base_ticker))) :
                                     General.isZero(getCurrentForm().getVolume()) ? (qsTr("Please fill the volume field")) :
                                     (getCurrentForm().hasEthFees() && !getCurrentForm().hasEnoughEthForFees()) ? (qsTr("Not enough ETH for the transaction fee")) :
                                     (getCurrentForm().fieldsAreFilled() && !getCurrentForm().higherThanMinTradeAmount()) ? ((qsTr("Amount is lower than minimum trade amount")) + " : " + General.getMinTradeAmount()) : ""
