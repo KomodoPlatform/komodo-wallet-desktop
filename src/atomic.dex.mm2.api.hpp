@@ -438,13 +438,15 @@ namespace mm2::api
 
     struct buy_request
     {
-        std::string base;
-        std::string rel;
-        std::string price;
-        std::string volume;
-        bool        is_created_order;
-        std::string price_denom;
-        std::string price_numer;
+        std::string                base;
+        std::string                rel;
+        std::string                price;
+        std::string                volume;
+        bool                       is_created_order;
+        std::string                price_denom;
+        std::string                price_numer;
+        std::optional<bool>        base_nota{std::nullopt};
+        std::optional<std::size_t> base_confs{std::nullopt};
     };
 
     void to_json(nlohmann::json& j, const buy_request& request);
@@ -482,13 +484,15 @@ namespace mm2::api
 
     struct sell_request
     {
-        std::string base;
-        std::string rel;
-        std::string price;
-        std::string volume;
-        bool        is_created_order;
-        std::string price_denom;
-        std::string price_numer;
+        std::string                base;
+        std::string                rel;
+        std::string                price;
+        std::string                volume;
+        bool                       is_created_order;
+        std::string                price_denom;
+        std::string                price_numer;
+        std::optional<bool>        rel_nota;
+        std::optional<std::size_t> rel_confs;
     };
 
     void to_json(nlohmann::json& j, const sell_request& request);
