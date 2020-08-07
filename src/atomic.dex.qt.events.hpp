@@ -16,35 +16,17 @@
 
 #pragma once
 
-//! QT Include
-#include <QObject>
-
-//! PCH Header
-#include "atomic.dex.pch.hpp"
-
-//! Project Headers
-#include "atomic.dex.qt.events.hpp"
+#include <QString>
 
 namespace atomic_dex
 {
-    class notification_manager final : public QObject
+    struct swap_status_notification
     {
-        Q_OBJECT
-      public:
-        notification_manager(entt::dispatcher& dispatcher, QObject* parent = nullptr) noexcept;
-        ~notification_manager() noexcept final;
-
-        //! Public API
-        void connect_signals() noexcept;
-        void disconnect_signals() noexcept;
-
-        //! Callbacks
-        void on_swap_status_notification(const swap_status_notification& evt);
-
-      signals:
-        void updateSwapStatus(QString old_swap_status, QString new_swap_status, QString swap_uuid, QString base_coin, QString rel_coin, QString human_date);
-
-      private:
-        entt::dispatcher& m_dispatcher;
+        QString uuid;
+        QString prev_status;
+        QString new_status;
+        QString base;
+        QString rel;
+        QString human_date;
     };
-} // namespace atomic_dex
+}

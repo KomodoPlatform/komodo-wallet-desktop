@@ -24,6 +24,7 @@
 #include "atomic.dex.events.hpp"
 #include "atomic.dex.mm2.api.hpp"
 #include "atomic.dex.mm2.error.code.hpp"
+#include "atomic.dex.raw.mm2.coins.cfg.hpp"
 #include "atomic.dex.utilities.hpp"
 
 namespace atomic_dex
@@ -102,15 +103,16 @@ namespace atomic_dex
         std::string m_current_wallet_name;
 
         //! Concurrent Registry.
-        t_coins_registry&     m_coins_informations{entity_registry_.set<t_coins_registry>()};
-        t_balance_registry&   m_balance_informations{entity_registry_.set<t_balance_registry>()};
-        t_tx_history_registry m_tx_informations;
-        t_tx_state_registry   m_tx_state;
-        t_my_orders           m_orders_registry;
-        t_fees_registry       m_trade_fees_registry;
-        t_orderbook_registry  m_current_orderbook;
-        t_swaps_registry      m_swaps_registry;
-        t_swaps_avrg_datas    m_swaps_avrg_registry;
+        t_coins_registry&        m_coins_informations{entity_registry_.set<t_coins_registry>()};
+        t_balance_registry&      m_balance_informations{entity_registry_.set<t_balance_registry>()};
+        t_tx_history_registry    m_tx_informations;
+        t_tx_state_registry      m_tx_state;
+        t_my_orders              m_orders_registry;
+        t_fees_registry          m_trade_fees_registry;
+        t_orderbook_registry     m_current_orderbook;
+        t_swaps_registry         m_swaps_registry;
+        t_swaps_avrg_datas       m_swaps_avrg_registry;
+        t_mm2_raw_coins_registry m_mm2_raw_coins_cfg{parse_raw_mm2_coins_file()};
 
         //! Refresh the current orderbook (internally call process_orderbook)
         void fetch_current_orderbook_thread(bool is_a_reset = false);

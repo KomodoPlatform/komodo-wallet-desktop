@@ -17,6 +17,7 @@
 //! Project
 #include "atomic.dex.qt.orders.model.hpp"
 #include "atomic.dex.mm2.hpp"
+#include "atomic.dex.qt.events.hpp"
 
 //! Utils
 namespace
@@ -319,7 +320,7 @@ namespace atomic_dex
         if (data.order_status == "matched")
         {
             using namespace std::string_literals;
-            this->m_dispatcher.trigger<swap_status_notification>(data.order_id.toStdString(), "matching"s, "matched"s);
+            m_dispatcher.trigger<swap_status_notification>(data.order_id, "matching", "matched", data.base_coin, data.rel_coin, data.human_date);
         }
 
         if (this->m_swaps_id_registry.find(contents.uuid) == m_swaps_id_registry.end())
@@ -341,15 +342,17 @@ namespace atomic_dex
             update_value(OrdersRoles::IsRecoverableRole, contents.funds_recoverable, idx, *this);
             auto&& [prev_value, new_value, is_change] =
                 update_value(OrdersRoles::OrderStatusRole, determine_order_status_from_last_event(contents), idx, *this);
-            if (is_change)
-            {
-                this->m_dispatcher.trigger<swap_status_notification>(contents.uuid, prev_value.toString().toStdString(), new_value.toString().toStdString());
-            }
             update_value(
                 OrdersRoles::UnixTimestampRole, not contents.events.empty() ? contents.events.back().at("timestamp").get<unsigned long long>() : 0, idx, *this);
-            update_value(
+            auto&& [prev_value_d, new_value_d, _] = update_value(
                 OrdersRoles::HumanDateRole,
                 not contents.events.empty() ? QString::fromStdString(contents.events.back().at("human_timestamp").get<std::string>()) : "", idx, *this);
+            if (is_change)
+            {
+                const QString& base_coin = data(idx, OrdersRoles::BaseCoinRole).toString();
+                const QString& rel_coin  = data(idx, OrdersRoles::RelCoinRole).toString();
+                m_dispatcher.trigger<swap_status_notification>(QString::fromStdString(contents.uuid), prev_value.toString(), new_value.toString(), base_coin, rel_coin, new_value_d.toString());
+            }
             update_value(OrdersRoles::MakerPaymentIdRole, determine_payment_id(contents, is_maker, false), idx, *this);
             update_value(OrdersRoles::TakerPaymentIdRole, determine_payment_id(contents, is_maker, true), idx, *this);
             auto [state, msg] = extract_error(contents);
@@ -453,17 +456,15 @@ namespace atomic_dex
                     if (not res_list.empty())
                     {
                         //! And then delete it
-						spdlog::trace("removing order with id {} from the UI", id);
+                        spdlog::trace("removing order with id {} from the UI", id);
                         this->removeRow(res_list.at(0).row());
                         to_remove.emplace(id);
                     }
                 }
             }
-            //std::unordered_set<std::string> out;
-            //std::set_difference(begin(m_orders_id_registry), end(m_orders_id_registry), begin(to_remove), end(to_remove), std::inserter(out, out.begin()));
-			for (auto&& cur_to_remove : to_remove) {
-				m_orders_id_registry.erase(cur_to_remove);
-			}
+            // std::unordered_set<std::string> out;
+            // std::set_difference(begin(m_orders_id_registry), end(m_orders_id_registry), begin(to_remove), end(to_remove), std::inserter(out, out.begin()));
+            for (auto&& cur_to_remove: to_remove) { m_orders_id_registry.erase(cur_to_remove); }
         }
     }
 

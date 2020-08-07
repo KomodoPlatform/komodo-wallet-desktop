@@ -33,7 +33,7 @@ namespace atomic_dex
     void
     notification_manager::on_swap_status_notification(const atomic_dex::swap_status_notification& evt)
     {
-        emit updateSwapStatus(QString::fromStdString(evt.prev_status), QString::fromStdString(evt.new_status), QString::fromStdString(evt.uuid));
+        emit updateSwapStatus(evt.prev_status, evt.new_status, evt.uuid, evt.base, evt.rel, evt.human_date);
     }
 
     void

@@ -269,8 +269,22 @@ Item {
         }
     }
 
-    function trade(base, rel) {
+    function trade(base, rel, options) {
         updateTradeInfo(true) // Force update trade info and cap the value for one last time
+
+        let nota = ""
+        let confs = ""
+        console.log("Trade config: ", JSON.stringify(options))
+        if(options.enable_custom_config) {
+            if(options.is_dpow_configurable) {
+                nota = options.enable_dpow_confs ? "1" : "0"
+            }
+
+            if(nota !== "1" && options.enable_normal_confs) {
+                confs = options.normal_configuration.required_confirmation_count.toString()
+            }
+        }
+
 
         const current_form = getCurrentForm()
 
@@ -279,16 +293,18 @@ Item {
         const price_numer = preffered_order.price_numer
         const price = getCurrentPrice()
         const volume = current_form.field.text
+        console.log("QML place order: nota:", nota, )
         console.log("QML place order: max balance:", current_form.getMaxVolume())
-        console.log("QML place order: params:", base, " <-> ", rel, "  /  price:", price, "  /  volume:", volume, "  /  is_created_order:", is_created_order, "  /  price_denom:", price_denom, "  /  price_numer:", price_numer)
+        console.log("QML place order: params:", base, " <-> ", rel, "  /  price:", price, "  /  volume:", volume, "  /  is_created_order:", is_created_order, "  /  price_denom:", price_denom, "  /  price_numer:", price_numer,
+                    "  /  nota:", nota, "  /  confs:", confs)
         console.log("QML place order: trade info:", JSON.stringify(curr_trade_info))
 
         let result
 
         if(sell_mode)
-            result = API.get().place_sell_order(base, rel, price, volume, is_created_order, price_denom, price_numer)
+            result = API.get().place_sell_order(base, rel, price, volume, is_created_order, price_denom, price_numer, nota, confs)
         else
-            result = API.get().place_buy_order(base, rel, price, volume, is_created_order, price_denom, price_numer)
+            result = API.get().place_buy_order(base, rel, price, volume, is_created_order, price_denom, price_numer, nota, confs)
 
         if(result === "") {
             action_result = "success"

@@ -310,7 +310,6 @@ namespace atomic_dex
     application::refresh_transactions(const mm2& mm2)
     {
         const auto ticker = m_coin_info->get_ticker().toStdString();
-        spdlog::debug("{} l{} for coin {}", __FUNCTION__, __LINE__, ticker);
         std::error_code ec;
         auto            txs = mm2.get_tx_history(ticker, ec);
         if (!ec)
@@ -596,7 +595,7 @@ namespace atomic_dex
     QString
     application::place_buy_order(
         const QString& base, const QString& rel, const QString& price, const QString& volume, bool is_created_order, const QString& price_denom,
-        const QString& price_numer)
+        const QString& price_numer, const QString& base_nota, const QString& base_confs)
     {
         t_float_50 price_f;
         t_float_50 amount_f;
@@ -613,7 +612,9 @@ namespace atomic_dex
             .volume           = volume.toStdString(),
             .is_created_order = is_created_order,
             .price_denom      = price_denom.toStdString(),
-            .price_numer      = price_numer.toStdString()};
+            .price_numer      = price_numer.toStdString(),
+            .base_nota        = base_nota.isEmpty() ? std::optional<bool>{std::nullopt} : boost::lexical_cast<bool>(base_nota.toStdString()),
+            .base_confs       = base_confs.isEmpty() ? std::optional<std::size_t>{std::nullopt} : base_confs.toUInt()};
         std::error_code ec;
         auto            answer = get_mm2().place_buy_order(std::move(req), total_amount, ec);
 
@@ -627,7 +628,7 @@ namespace atomic_dex
     QString
     application::place_sell_order(
         const QString& base, const QString& rel, const QString& price, const QString& volume, bool is_created_order, const QString& price_denom,
-        const QString& price_numer)
+        const QString& price_numer, const QString& rel_nota, const QString& rel_confs)
     {
         qDebug() << " base: " << base << " rel: " << rel << " price: " << price << " volume: " << volume;
         t_float_50 amount_f;
@@ -640,7 +641,9 @@ namespace atomic_dex
             .volume           = volume.toStdString(),
             .is_created_order = is_created_order,
             .price_denom      = price_denom.toStdString(),
-            .price_numer      = price_numer.toStdString()};
+            .price_numer      = price_numer.toStdString(),
+            .rel_nota         = rel_nota.isEmpty() ? std::optional<bool>{std::nullopt} : boost::lexical_cast<bool>(rel_nota.toStdString()),
+            .rel_confs        = rel_confs.isEmpty() ? std::optional<std::size_t>{std::nullopt} : rel_confs.toUInt()};
         std::error_code ec;
         auto            answer = get_mm2().place_sell_order(std::move(req), amount_f, ec);
 

@@ -35,18 +35,40 @@ FloatingBackground {
     }
 
     // Events
-    function onSwapStatusUpdated(old_swap_status, new_swap_status, swap_uuid) {
+    function onSwapStatusUpdated(old_swap_status, new_swap_status, swap_uuid, base_coin, rel_coin, human_date) {
         const obj = {
-            title: qsTr("Swap status updated"),
+            id: swap_uuid,
+            title: base_coin + "/" + rel_coin + " - " + qsTr("Swap status updated"),
             message: exchange.getStatusText(old_swap_status) + " " + General.right_arrow_icon + " " + exchange.getStatusText(new_swap_status),
-            time: Date.now()
+            time: human_date
         }
 
+        // Update if it already exists
+        let updated_existing_one = false
+        for(let i = 0; i < notifications_list.length; ++i) {
+            if(notifications_list[i].id === obj.id) {
+                notifications_list[i] = General.clone(obj)
+                updated_existing_one = true
+                break
+            }
+        }
+
+        // Add new line
+        if(!updated_existing_one) {
+            notifications_list = [obj].concat(notifications_list)
+        }
+
+        // Update unread notification count
         if(!root.visible)
             ++unread_notification_count
 
-        notifications_list = [obj].concat(notifications_list)
+        // Display OS notification
         displayMessage(obj.title, obj.message)
+
+        // Refresh the list if updated an existing one
+        if(updated_existing_one) {
+            notifications_list = notifications_list
+        }
     }
 
 
@@ -79,10 +101,42 @@ FloatingBackground {
 
         spacing: 10
 
-        DefaultText {
-            text_value: API.get().empty_string + (qsTr("Notifications"))
-            Layout.alignment: Qt.AlignLeft | Qt.AlignTop
-            font.pixelSize: Style.textSize2
+        RowLayout {
+            Layout.fillWidth: true
+            Layout.alignment: Qt.AlignLeft | Qt.AlignBottom
+            DefaultText {
+                text_value: API.get().empty_string + (qsTr("Notifications"))
+                font.pixelSize: Style.textSize2
+                Layout.fillWidth: true
+                Layout.alignment: Qt.AlignLeft | Qt.AlignVCenter
+            }
+
+            Rectangle {
+                radius: 3
+
+                width: mark_all_as_read.width + 10
+                height: mark_all_as_read.height + 10
+
+                Layout.alignment: Qt.AlignRight | Qt.AlignVCenter
+
+                color: Style.colorTheme1
+
+                DefaultText {
+                    id: mark_all_as_read
+                    text_value: API.get().empty_string + (qsTr("Mark all as read") + " ✔️")
+                    font.pixelSize: Style.textSizeSmall3
+                    anchors.centerIn: parent
+                    color: Style.colorWhite10
+                }
+
+                MouseArea {
+                    anchors.fill: parent
+                    onClicked: {
+                        unread_notification_count = 0
+                        notifications_list = []
+                    }
+                }
+            }
         }
 
         HorizontalLine {
@@ -117,8 +171,8 @@ FloatingBackground {
                         anchors.top: parent.top
                         anchors.topMargin: 10
                         anchors.right: parent.right
-                        anchors.rightMargin: 30
-                        text_value: API.get().empty_string + (General.timestampToString(modelData.time))
+                        anchors.rightMargin: 5
+                        text_value: API.get().empty_string + (modelData.time)
                         font.pixelSize: Style.textSizeSmall
                     }
 
@@ -148,6 +202,36 @@ FloatingBackground {
                         anchors.bottomMargin: -height/2
                         light: true
                     }
+
+                    Rectangle {
+                        radius: 100
+
+                        width: height
+                        height: remove_button.height * 1.2
+
+                        anchors.bottom: parent.bottom
+                        anchors.bottomMargin: 5
+                        anchors.right: parent.right
+                        anchors.rightMargin: anchors.bottomMargin
+
+                        color: Style.colorTheme1
+
+                        DefaultText {
+                            id: remove_button
+                            text_value: API.get().empty_string + ("✔️")
+                            anchors.centerIn: parent
+                            font.pixelSize: Style.textSizeSmall3
+                            color: Style.colorWhite10
+                        }
+
+                        MouseArea {
+                            anchors.fill: parent
+                            onClicked: {
+                                notifications_list.splice(index, 1)
+                                notifications_list = notifications_list
+                            }
+                        }
+                    }
                 }
             }
         }
@@ -161,7 +245,7 @@ FloatingBackground {
             DefaultButton {
                 text: API.get().empty_string + (qsTr("Pop Test Notification"))
                 onClicked: {
-                    onSwapStatusUpdated("ongoing", "finished", "123456")
+                    onSwapStatusUpdated("ongoing", "finished", Date.now().toString(), "BTC", "KMD", "13.3.1337")
                 }
             }
 
