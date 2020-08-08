@@ -718,8 +718,6 @@ namespace atomic_dex
             orders->removeRows(0, count, QModelIndex());
         }
         orders->clear_registry();
-        qobject_cast<candlestick_charts_model*>(m_manager_models.at("candlesticks"))->clear_data();
-        qobject_cast<qt_orderbook_wrapper*>(m_manager_models.at("orderbook"))->clear_orderbook();
 
         //! Mark systems
         system_manager_.mark_system<mm2>();

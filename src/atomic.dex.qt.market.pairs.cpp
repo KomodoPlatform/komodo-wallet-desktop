@@ -19,21 +19,26 @@
 namespace atomic_dex
 {
     market_pairs::market_pairs(portfolio_model* portfolio_mdl, QObject* parent) :
-        QObject(parent), m_left_selection_box(new portfolio_proxy_model(portfolio_mdl)), m_right_selection_box(new portfolio_proxy_model(portfolio_mdl))
+        QObject(parent), m_left_selection_box(new portfolio_proxy_model(nullptr)), m_right_selection_box(new portfolio_proxy_model(nullptr))
     {
         // set_left_selected_coin("KMD");
         m_left_selection_box->setSourceModel(portfolio_mdl);
-        //m_left_selection_box->setFilterRole(portfolio_model::Excluded);
+        // m_left_selection_box->setFilterRole(portfolio_model::Excluded);
         m_left_selection_box->setDynamicSortFilter(true);
         m_left_selection_box->sort_by_currency_balance(false);
 
         // set_right_selected_coin("BTC");
         m_right_selection_box->setSourceModel(portfolio_mdl);
-        //m_right_selection_box->setFilterRole(portfolio_model::Excluded);
+        // m_right_selection_box->setFilterRole(portfolio_model::Excluded);
         m_right_selection_box->setDynamicSortFilter(true);
         m_right_selection_box->sort_by_currency_balance(false);
     }
-    market_pairs::~market_pairs() noexcept {}
+
+    market_pairs::~market_pairs() noexcept
+    {
+        delete m_left_selection_box;
+        delete m_right_selection_box;
+    }
 } // namespace atomic_dex
 
 //! Properties implementation
