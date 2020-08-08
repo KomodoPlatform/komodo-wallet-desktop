@@ -105,6 +105,7 @@ namespace atomic_dex
             const QString& base, const QString& rel, const QString& price, const QString& volume, bool is_created_order, const QString& price_denom,
             const QString& price_numer, const QString& rel_nota = "", const QString& rel_confs = "");
         Q_INVOKABLE void swap_market_pair();
+        Q_INVOKABLE QVariant get_raw_mm2_coin_cfg(const QString& ticker) const noexcept;
 
         //! Properties
         [[nodiscard]] qt_orderbook_wrapper*     get_orderbook_wrapper() const noexcept;

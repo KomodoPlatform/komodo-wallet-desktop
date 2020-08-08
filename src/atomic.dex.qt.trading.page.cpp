@@ -18,6 +18,7 @@
 #include "atomic.dex.qt.trading.page.hpp"
 #include "atomic.dex.mm2.hpp"
 #include "atomic.dex.provider.cex.prices.hpp"
+#include "atomic.dex.qt.utilities.hpp"
 #include "atomic.threadpool.hpp"
 
 //! Consttructor / Destructor
@@ -68,6 +69,15 @@ namespace atomic_dex
 //! Public QML API
 namespace atomic_dex
 {
+    QVariant
+    trading_page::get_raw_mm2_coin_cfg(const QString& ticker) const noexcept
+    {
+        QVariant out;
+        nlohmann::json j = m_system_manager.get_system<mm2>().get_raw_mm2_ticker_cfg(ticker.toStdString());
+        out = nlohmann_json_object_to_qt_json_object(j);
+        return out;
+    }
+
     void
     trading_page::set_current_orderbook(const QString& base, const QString& rel)
     {

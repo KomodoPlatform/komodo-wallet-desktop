@@ -264,6 +264,8 @@ namespace atomic_dex
         [[nodiscard]] bool do_i_have_enough_funds(const std::string& ticker, const t_float_50& amount) const;
 
         [[nodiscard]] bool is_orderbook_thread_active() const noexcept;
+
+        [[nodiscard]] nlohmann::json get_raw_mm2_ticker_cfg(const std::string& ticker) const noexcept;
     };
 } // namespace atomic_dex
 

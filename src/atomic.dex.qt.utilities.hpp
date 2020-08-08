@@ -16,6 +16,7 @@
 
 #pragma once
 
+#include <QJsonObject>
 #include <QString>
 #include <QVariantList>
 
@@ -27,7 +28,8 @@
 
 namespace atomic_dex
 {
-    bool       am_i_able_to_reach_this_endpoint(const QString& endpoint);
-    QJsonArray nlohmann_json_array_to_qt_json_array(const nlohmann::json& j);
-    QString    retrieve_change_24h(const atomic_dex::coinpaprika_provider& paprika, const atomic_dex::coin_config& coin, const atomic_dex::cfg& config);
+    bool        am_i_able_to_reach_this_endpoint(const QString& endpoint);
+    QJsonArray  nlohmann_json_array_to_qt_json_array(const nlohmann::json& j);
+    QJsonObject nlohmann_json_object_to_qt_json_object(const nlohmann::json& j);
+    QString     retrieve_change_24h(const atomic_dex::coinpaprika_provider& paprika, const atomic_dex::coin_config& coin, const atomic_dex::cfg& config);
 } // namespace atomic_dex
