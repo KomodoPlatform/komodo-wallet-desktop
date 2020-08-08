@@ -185,14 +185,14 @@ Item {
         setPair(true)
     }
 
-    function setPair(is_base, changed_ticker) {
+    function setPair(is_left_side, changed_ticker) {
         let base = left_ticker
         let rel = right_ticker
 
         let is_swap = false
         // Set the new one if it's a change
         if(changed_ticker) {
-            if(is_base) {
+            if(is_left_side) {
                 // Check if it's a swap
                 if(base !== changed_ticker && rel === changed_ticker)
                     is_swap = true
@@ -217,7 +217,7 @@ Item {
             API.get().trading_pg.set_current_orderbook(base, rel)
         }
 
-        reset(true, is_base)
+        reset(true, is_left_side)
         updateTradeInfo()
         updateCexPrice(base, rel)
         exchange.onTradeTickerChanged(base)
@@ -325,12 +325,18 @@ Item {
                         Layout.alignment: Qt.AlignLeft | Qt.AlignVCenter
                     }
 
+                    // Swap button
                     DefaultImage {
                         source: General.image_path + "trade_icon.svg"
                         fillMode: Image.PreserveAspectFit
                         Layout.preferredWidth: 16
                         Layout.preferredHeight: Layout.preferredWidth
                         Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
+
+                        MouseArea {
+                            anchors.fill: parent
+                            onClicked: setPair(true, right_ticker)
+                        }
                     }
 
                     TickerSelector {
