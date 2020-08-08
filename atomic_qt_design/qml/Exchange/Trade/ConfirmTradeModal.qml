@@ -93,8 +93,8 @@ DefaultModal {
         ColumnLayout {
             id: config_section
 
-            readonly property bool is_dpow_configurable: API.get().get_coin_info(rel_ticker).type === "Smart Chain"
-
+            readonly property var default_config: API.get().trading_pg.get_raw_mm2_coin_cfg(rel_ticker)
+            readonly property bool is_dpow_configurable: config_section.default_config.requires_notarization
             Layout.bottomMargin: 10
             Layout.alignment: Qt.AlignHCenter
 
@@ -112,7 +112,7 @@ DefaultModal {
                     Layout.alignment: Qt.AlignHCenter
                     text_value: API.get().empty_string + ("✅ " +
                                                           (config_section.is_dpow_configurable ? qsTr("dPoW protected") :
-                                                                                  qsTr("%1 confirmations for incoming transactions").arg("WIP")))
+                                                                                  qsTr("%1 confirmations for incoming transactions").arg(config_section.default_config.required_confirmations)))
                 }
             }
 
@@ -239,7 +239,7 @@ DefaultModal {
                             normal_configuration: {
                                   required_confirmation_count: required_confirmation_count.value
                             },
-                          })
+                          }, config_section.default_config)
 
                     root.close()
                 }

@@ -223,12 +223,15 @@ Item {
         exchange.onTradeTickerChanged(base)
     }
 
-    function trade(base, rel, options) {
+    function trade(base, rel, options, default_config) {
         updateTradeInfo(true) // Force update trade info and cap the value for one last time
+
+        console.log("Trade config: ", JSON.stringify(options))
+        console.log("Default config: ", JSON.stringify(default_config))
 
         let nota = ""
         let confs = ""
-        console.log("Trade config: ", JSON.stringify(options))
+
         if(options.enable_custom_config) {
             if(options.is_dpow_configurable) {
                 nota = options.enable_dpow_confs ? "1" : "0"
@@ -236,6 +239,15 @@ Item {
 
             if(nota !== "1" && options.enable_normal_confs) {
                 confs = options.normal_configuration.required_confirmation_count.toString()
+            }
+        }
+        else {
+            if(default_config.requires_notarization !== undefined && default_config.requires_notarization !== null) {
+                nota = default_config.requires_notarization ? "1" : "0"
+            }
+
+            if(nota !== "1") {
+                confs = default_config.required_confirmations.toString()
             }
         }
 
@@ -247,7 +259,6 @@ Item {
         const price_numer = preffered_order.price_numer
         const price = getCurrentPrice()
         const volume = current_form.field.text
-        console.log("QML place order: nota:", nota, )
         console.log("QML place order: max balance:", current_form.getMaxVolume())
         console.log("QML place order: params:", base, " <-> ", rel, "  /  price:", price, "  /  volume:", volume, "  /  is_created_order:", is_created_order, "  /  price_denom:", price_denom, "  /  price_numer:", price_numer,
                     "  /  nota:", nota, "  /  confs:", confs)
