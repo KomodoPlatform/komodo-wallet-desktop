@@ -155,6 +155,40 @@ Item {
         }
     }
 
+    Rectangle {
+        radius: 1337
+        width: count_text.height * 1.5
+        height: width
+        z: 1
+
+        Timer {
+            interval: 500
+            running: true
+            repeat: true
+            onTriggered: {
+                console.log(sidebar.app_logo.x, sidebar.app_logo.y, sidebar.app_logo.width)
+            }
+        }
+
+        x: sidebar.app_logo.x + sidebar.app_logo.width - 20
+        y: sidebar.app_logo.y
+        color: notifications_panel.notifications_list.length > 0 ? Style.colorRed : Style.colorWhite7
+
+        DefaultText {
+            id: count_text
+            anchors.centerIn: parent
+            text_value: notifications_panel.notifications_list.length
+            font.pixelSize: Style.textSizeSmall1
+            font.bold: true
+            color: notifications_panel.notifications_list.length > 0 ? Style.colorWhite9 : Style.colorWhite12
+        }
+
+        MouseArea {
+            anchors.fill: parent
+            onClicked: notifications_panel.visible = !notifications_panel.visible
+        }
+    }
+
     NotificationsPanel {
         id: notifications_panel
         width: 600
@@ -162,39 +196,6 @@ Item {
         anchors.left: sidebar.right
         anchors.bottom: parent.bottom
         anchors.bottomMargin: -40
-    }
-
-    DefaultButton {
-        id: notifications_button
-        anchors.bottom: sidebar.bottom
-        anchors.bottomMargin: 150
-        anchors.horizontalCenter: sidebar.horizontalCenter
-        anchors.horizontalCenterOffset: -sidebar.x*0.5
-
-        z: 1
-        text: "🔔"
-        font.pixelSize: Style.textSizeSmall3
-        minWidth: height
-        onClicked: notifications_panel.visible = !notifications_panel.visible
-
-        Rectangle {
-            radius: 1337
-            width: count_text.height * 1.5
-            height: width
-            anchors.horizontalCenter: parent.right
-            anchors.verticalCenter: parent.bottom
-            color: Style.colorRed
-            visible: notifications_panel.notifications_list.length > 0
-
-            DefaultText {
-                id: count_text
-                anchors.centerIn: parent
-                text_value: notifications_panel.notifications_list.length
-                font.pixelSize: Style.textSizeSmall1
-                font.bold: true
-                color: Style.colorWhite9
-            }
-        }
     }
 
     DropShadow {

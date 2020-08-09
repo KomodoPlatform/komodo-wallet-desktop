@@ -9,6 +9,8 @@ import "../Components"
 
 Item {
     id: sidebar
+    readonly property alias app_logo: app_logo
+
     x: -top_rect.radius
     width: 200 - x
     height: parent.height
@@ -119,6 +121,7 @@ Item {
         height: parent.height
 
         DefaultImage {
+            id: app_logo
             source: General.image_path + Style.sidebar_atomicdex_logo
             anchors.horizontalCenter: parent.horizontalCenter
             y: parent.width * 0.25
