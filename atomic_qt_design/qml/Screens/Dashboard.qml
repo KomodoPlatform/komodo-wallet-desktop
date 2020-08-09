@@ -184,12 +184,12 @@ Item {
             anchors.horizontalCenter: parent.right
             anchors.verticalCenter: parent.bottom
             color: Style.colorRed
-            visible: notifications_panel.unread_notification_count > 0
+            visible: notifications_panel.notifications_list.length > 0
 
             DefaultText {
                 id: count_text
                 anchors.centerIn: parent
-                text_value: notifications_panel.unread_notification_count
+                text_value: notifications_panel.notifications_list.length
                 font.pixelSize: Style.textSizeSmall1
                 font.bold: true
                 color: Style.colorWhite9

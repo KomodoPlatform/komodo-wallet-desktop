@@ -9,7 +9,6 @@ import "../Components"
 FloatingBackground {
     id: root
 
-    property int unread_notification_count: 0
     property var notifications_list: ([])
 
     function reset() {
@@ -23,10 +22,6 @@ FloatingBackground {
     }
 
     visible: false
-
-    onVisibleChanged: {
-        if(visible) unread_notification_count = 0
-    }
 
     MouseArea {
         anchors.fill: parent
@@ -57,10 +52,6 @@ FloatingBackground {
         if(!updated_existing_one) {
             notifications_list = [obj].concat(notifications_list)
         }
-
-        // Update unread notification count
-        if(!root.visible)
-            ++unread_notification_count
 
         // Display OS notification
         displayMessage(obj.title, obj.message)
@@ -132,7 +123,6 @@ FloatingBackground {
                 MouseArea {
                     anchors.fill: parent
                     onClicked: {
-                        unread_notification_count = 0
                         notifications_list = []
                     }
                 }
