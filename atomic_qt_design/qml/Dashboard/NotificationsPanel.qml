@@ -84,7 +84,7 @@ FloatingBackground {
     SystemTrayIcon {
         id: tray
         visible: true
-        iconSource: General.coinIcon("KMD")
+        iconSource: General.image_path + "tray-icon.png"
         onMessageClicked: {
             root.visible = true
             showApp()
