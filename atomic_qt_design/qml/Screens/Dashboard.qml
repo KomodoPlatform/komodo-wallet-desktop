@@ -159,17 +159,17 @@ Item {
         id: notifications_panel
         width: 500
         height: 500
-        anchors.right: notifications_button.right
-        anchors.top: notifications_button.bottom
-        anchors.topMargin: 8
+        anchors.left: sidebar.right
+        anchors.bottom: parent.bottom
+        anchors.bottomMargin: -40
     }
 
     DefaultButton {
         id: notifications_button
-        anchors.top: parent.top
-        anchors.right: parent.right
-        anchors.topMargin: 8
-        anchors.rightMargin: 8
+        anchors.bottom: sidebar.bottom
+        anchors.bottomMargin: 150
+        anchors.horizontalCenter: sidebar.horizontalCenter
+        anchors.horizontalCenterOffset: -sidebar.x*0.5
 
         z: 1
         text: "🔔"
