@@ -155,6 +155,7 @@ Item {
         }
     }
 
+    // Unread notifications count
     Rectangle {
         radius: 1337
         width: count_text.height * 1.5
@@ -173,11 +174,16 @@ Item {
             font.bold: true
             color: notifications_panel.notifications_list.length > 0 ? Style.colorWhite9 : Style.colorWhite12
         }
+    }
 
-        MouseArea {
-            anchors.fill: parent
-            onClicked: notifications_panel.visible = !notifications_panel.visible
-        }
+    // Notifications panel button
+    MouseArea {
+        x: sidebar.app_logo.x
+        y: sidebar.app_logo.y
+        width: sidebar.app_logo.width
+        height: sidebar.app_logo.height
+
+        onClicked: notifications_panel.visible = !notifications_panel.visible
     }
 
     NotificationsPanel {
