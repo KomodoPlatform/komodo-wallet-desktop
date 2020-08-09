@@ -114,7 +114,7 @@ FloatingBackground {
 
                 DefaultText {
                     id: mark_all_as_read
-                    text_value: API.get().empty_string + (qsTr("Mark all as read") + " ✔️")
+                    text_value: API.get().empty_string + (qsTr("Clear") + " ✔️")
                     font.pixelSize: Style.textSizeSmall3
                     anchors.centerIn: parent
                     color: Style.colorWhite10

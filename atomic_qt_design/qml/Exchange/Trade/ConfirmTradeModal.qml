@@ -94,7 +94,7 @@ DefaultModal {
             id: config_section
 
             readonly property var default_config: API.get().trading_pg.get_raw_mm2_coin_cfg(rel_ticker)
-            readonly property bool is_dpow_configurable: config_section.default_config.requires_notarization
+            readonly property bool is_dpow_configurable: config_section.default_config.requires_notarization || false
             Layout.bottomMargin: 10
             Layout.alignment: Qt.AlignHCenter
 
