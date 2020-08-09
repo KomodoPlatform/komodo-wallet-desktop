@@ -788,46 +788,6 @@ namespace atomic_dex
         return out;
     }
 
-    /*QString
-    application::get_current_lang() const noexcept
-    {
-        return m_current_lang;
-    }
-
-    void
-    application::set_current_lang(const QString& current_lang) noexcept
-    {
-        this->m_current_lang = current_lang;
-        if (m_config.current_lang != current_lang.toStdString())
-        {
-            change_lang(m_config, current_lang.toStdString());
-        }
-        auto get_locale = [](const QString& current_lang) {
-            if (current_lang == "tr")
-            {
-                return QLocale::Language::Turkish;
-            }
-            if (current_lang == "en")
-            {
-                return QLocale::Language::English;
-            }
-            if (current_lang == "fr")
-            {
-                return QLocale::Language::French;
-            }
-            return QLocale::Language::AnyLanguage;
-        };
-
-        qDebug() << "locale before: " << QLocale().name();
-        QLocale::setDefault(get_locale(current_lang));
-        qDebug() << "locale after: " << QLocale().name();
-        [[maybe_unused]] auto res = this->m_translator.load("atomic_qt_" + current_lang, QLatin1String(":/atomic_qt_design/assets/languages"));
-        assert(res);
-        this->m_app->installTranslator(&m_translator);
-        emit onLangChanged();
-        emit langChanged();
-    }*/
-
     void
     application::set_qt_app(std::shared_ptr<QApplication> app) noexcept
     {
@@ -835,13 +795,6 @@ namespace atomic_dex
         connect(m_app.get(), SIGNAL(aboutToQuit()), this, SLOT(exit_handler()));
         system_manager_.get_system<settings_page>().init_lang();
     }
-
-    /*const QString&
-    application::get_empty_string()
-    {
-        static const QString empty_string = "";
-        return empty_string;
-    }*/
 
     QString
     application::retrieve_seed(const QString& wallet_name, const QString& password)

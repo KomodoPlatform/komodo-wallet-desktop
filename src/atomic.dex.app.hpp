@@ -134,25 +134,20 @@ namespace atomic_dex
 
         //! Properties Getter
         // static const QString&      get_empty_string();
-        mm2&                      get_mm2() noexcept;
-        const mm2&                get_mm2() const noexcept;
-        coinpaprika_provider&     get_paprika() noexcept;
-        entt::dispatcher&         get_dispatcher() noexcept;
-        QObject*                  get_current_coin_info() const noexcept;
-        addressbook_model*        get_addressbook() const noexcept;
-        portfolio_model*          get_portfolio() const noexcept;
-        orders_model*             get_orders() const noexcept;
-        notification_manager*     get_notification_manager() const noexcept;
-        trading_page*             get_trading_page() const noexcept;
-        settings_page*            get_settings_page() const noexcept;;
-        internet_service_checker* get_internet_checker() const noexcept;
-        QVariantList              get_enabled_coins() const noexcept;
-        QVariantList              get_enableable_coins() const noexcept;
-        // QString                    get_current_currency() const noexcept;
-        // QString                    get_current_currency_sign() const noexcept;
-        // QString                    get_current_fiat_sign() const noexcept;
-        // QString                    get_current_fiat() const noexcept;
-        // QString                    get_current_lang() const noexcept;
+        mm2&                       get_mm2() noexcept;
+        const mm2&                 get_mm2() const noexcept;
+        coinpaprika_provider&      get_paprika() noexcept;
+        entt::dispatcher&          get_dispatcher() noexcept;
+        QObject*                   get_current_coin_info() const noexcept;
+        addressbook_model*         get_addressbook() const noexcept;
+        portfolio_model*           get_portfolio() const noexcept;
+        orders_model*              get_orders() const noexcept;
+        notification_manager*      get_notification_manager() const noexcept;
+        trading_page*              get_trading_page() const noexcept;
+        settings_page*             get_settings_page() const noexcept;
+        internet_service_checker*  get_internet_checker() const noexcept;
+        QVariantList               get_enabled_coins() const noexcept;
+        QVariantList               get_enableable_coins() const noexcept;
         QString                    get_balance_fiat_all() const noexcept;
         QString                    get_wallet_default_name() const noexcept;
         QString                    get_status() const noexcept;
@@ -160,9 +155,6 @@ namespace atomic_dex
         Q_INVOKABLE static QString get_version() noexcept;
 
         //! Properties Setter
-        // void set_current_currency(const QString& current_currency) noexcept;
-        // void set_current_fiat(const QString& current_fiat) noexcept;
-        // void set_current_lang(const QString& current_lang) noexcept;
         void set_wallet_default_name(QString wallet_default_name) noexcept;
         void set_current_balance_fiat_all(QString current_fiat_all_balance) noexcept;
         void set_status(QString status) noexcept;
@@ -230,14 +222,7 @@ namespace atomic_dex
         void enabledCoinsChanged();
         void enableableCoinsChanged();
         void coinInfoChanged();
-        // void onCurrencyChanged();
-        // void onCurrencySignChanged();
-        // void onFiatSignChanged();
-        // void onFiatChanged();
-        // void onLangChanged();
-        // void langChanged();
         void onFiatBalanceAllChanged();
-        // void onSecondFiatBalanceAllChanged();
         void onStatusChanged();
         void onWalletDefaultNameChanged();
         void myOrdersUpdated();
