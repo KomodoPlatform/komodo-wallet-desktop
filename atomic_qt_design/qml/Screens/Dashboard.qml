@@ -161,15 +161,6 @@ Item {
         height: width
         z: 1
 
-        Timer {
-            interval: 500
-            running: true
-            repeat: true
-            onTriggered: {
-                console.log(sidebar.app_logo.x, sidebar.app_logo.y, sidebar.app_logo.width)
-            }
-        }
-
         x: sidebar.app_logo.x + sidebar.app_logo.width - 20
         y: sidebar.app_logo.y
         color: notifications_panel.notifications_list.length > 0 ? Style.colorRed : Style.colorWhite7
@@ -194,8 +185,7 @@ Item {
         width: 600
         height: 500
         anchors.left: sidebar.right
-        anchors.bottom: parent.bottom
-        anchors.bottomMargin: -40
+        anchors.top: parent.top
     }
 
     DropShadow {
