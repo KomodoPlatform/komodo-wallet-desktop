@@ -56,7 +56,8 @@ namespace atomic_dex
             CancellableRole,
             IsRecoverableRole,
             OrderErrorStateRole,
-            OrderErrorMessageRole
+            OrderErrorMessageRole,
+            EventsRole
         };
 
 
@@ -82,7 +83,7 @@ namespace atomic_dex
 
       private:
         ag::ecs::system_manager& m_system_manager;
-        entt::dispatcher& m_dispatcher;
+        entt::dispatcher&        m_dispatcher;
 
         using t_orders_datas       = QVector<order_data>;
         using t_orders_id_registry = std::unordered_set<std::string>;

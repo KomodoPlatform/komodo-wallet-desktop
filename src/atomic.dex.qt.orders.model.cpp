@@ -18,6 +18,7 @@
 #include "atomic.dex.qt.orders.model.hpp"
 #include "atomic.dex.mm2.hpp"
 #include "atomic.dex.qt.events.hpp"
+#include "atomic.dex.qt.utilities.hpp"
 
 //! Utils
 namespace
@@ -145,6 +146,8 @@ namespace atomic_dex
             item.order_error_state = value.toString();
         case OrderErrorMessageRole:
             item.order_error_message = value.toString();
+        case EventsRole:
+            item.events = value.toJsonArray();
         }
 
         emit dataChanged(index, index, {role});
@@ -198,6 +201,8 @@ namespace atomic_dex
             return item.order_error_state;
         case OrderErrorMessageRole:
             return item.order_error_message;
+        case EventsRole:
+            return item.events;
         }
         return {};
     }
@@ -308,7 +313,8 @@ namespace atomic_dex
             .taker_payment_id = determine_payment_id(contents, is_maker, true),
             .is_swap          = true,
             .is_cancellable   = false,
-            .is_recoverable   = contents.funds_recoverable};
+            .is_recoverable   = contents.funds_recoverable,
+            .events           = nlohmann_json_array_to_qt_json_array(contents.events)};
         data.ticker_pair = data.base_coin + "/" + data.rel_coin;
         if (data.order_status == "failed")
         {
@@ -351,13 +357,15 @@ namespace atomic_dex
             {
                 const QString& base_coin = data(idx, OrdersRoles::BaseCoinRole).toString();
                 const QString& rel_coin  = data(idx, OrdersRoles::RelCoinRole).toString();
-                m_dispatcher.trigger<swap_status_notification>(QString::fromStdString(contents.uuid), prev_value.toString(), new_value.toString(), base_coin, rel_coin, new_value_d.toString());
+                m_dispatcher.trigger<swap_status_notification>(
+                    QString::fromStdString(contents.uuid), prev_value.toString(), new_value.toString(), base_coin, rel_coin, new_value_d.toString());
             }
             update_value(OrdersRoles::MakerPaymentIdRole, determine_payment_id(contents, is_maker, false), idx, *this);
             update_value(OrdersRoles::TakerPaymentIdRole, determine_payment_id(contents, is_maker, true), idx, *this);
             auto [state, msg] = extract_error(contents);
             update_value(OrdersRoles::OrderErrorStateRole, state, idx, *this);
             update_value(OrdersRoles::OrderErrorMessageRole, msg, idx, *this);
+            update_value(OrdersRoles::EventsRole, nlohmann_json_array_to_qt_json_array(contents.events), idx, *this);
             emit lengthChanged();
         }
         else
@@ -507,7 +515,8 @@ namespace atomic_dex
             {CancellableRole, "cancellable"},
             {IsRecoverableRole, "recoverable"},
             {OrderErrorStateRole, "order_error_state"},
-            {OrderErrorMessageRole, "order_error_message"}};
+            {OrderErrorMessageRole, "order_error_message"},
+            {EventsRole, "events"}};
     }
 
     int
