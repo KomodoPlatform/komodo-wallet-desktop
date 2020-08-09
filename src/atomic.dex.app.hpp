@@ -67,7 +67,6 @@ namespace atomic_dex
         Q_PROPERTY(internet_service_checker* internet_checker READ get_internet_checker NOTIFY internetCheckerChanged)
         Q_PROPERTY(trading_page* trading_pg READ get_trading_page NOTIFY tradingPageChanged)
         Q_PROPERTY(settings_page* settings_pg READ get_settings_page NOTIFY settingsPageChanged)
-        // Q_PROPERTY(QString lang READ get_current_lang WRITE set_current_lang NOTIFY onLangChanged)
         Q_PROPERTY(QString wallet_default_name READ get_wallet_default_name WRITE set_wallet_default_name NOTIFY onWalletDefaultNameChanged)
         Q_PROPERTY(QString balance_fiat_all READ get_balance_fiat_all WRITE set_current_balance_fiat_all NOTIFY onFiatBalanceAllChanged)
         Q_PROPERTY(QString initial_loading_status READ get_status WRITE set_status NOTIFY onStatusChanged)
@@ -97,7 +96,6 @@ namespace atomic_dex
         using t_events_actions         = std::array<std::atomic_bool, events_action::size>;
 
         //! Private members fields
-        // atomic_dex::cfg               m_config{load_cfg()};
         std::shared_ptr<QApplication> m_app;
         atomic_dex::qt_wallet_manager m_wallet_manager;
         t_actions_queue               m_actions_queue{g_max_actions_size};
@@ -105,13 +103,11 @@ namespace atomic_dex
         QVariantList                  m_enabled_coins;
         QVariantList                  m_enableable_coins;
         QVariant                      m_update_status;
-        // QTranslator                   m_translator;
-        // QString                       m_current_lang{QString::fromStdString(m_config.current_lang)};
-        QString                  m_current_status{"None"};
-        QString                  m_current_balance_all{"0.00"};
-        current_coin_info*       m_coin_info;
-        t_manager_model_registry m_manager_models;
-        t_events_actions         m_event_actions{{false}};
+        QString                       m_current_status{"None"};
+        QString                       m_current_balance_all{"0.00"};
+        current_coin_info*            m_coin_info;
+        t_manager_model_registry      m_manager_models;
+        t_events_actions              m_event_actions{{false}};
 
       public:
         //! Constructor
