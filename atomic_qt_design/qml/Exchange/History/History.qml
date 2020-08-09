@@ -40,7 +40,7 @@ Item {
         spacing: 15
 
         SwapList {
-            title: API.get().empty_string + (qsTr("Recent Swaps"))
+            title: API.get().settings_pg.empty_string + (qsTr("Recent Swaps"))
             items: API.get().orders_mdl
         }
     }
@@ -52,7 +52,7 @@ Item {
     LogModal {
         id: recover_funds_modal
 
-        title: API.get().empty_string + (qsTr("Recover Funds Result"))
+        title: API.get().settings_pg.empty_string + (qsTr("Recover Funds Result"))
         field.text: General.prettifyJSON(recover_funds_result)
 
         onClosed: recover_funds_result = "{}"

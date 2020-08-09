@@ -26,7 +26,7 @@ DefaultModal {
         width: parent.width
 
         ModalHeader {
-            title: API.get().empty_string + (qsTr("Disclaimer & Terms of Service"))
+            title: API.get().settings_pg.empty_string + (qsTr("Disclaimer & Terms of Service"))
         }
 
 
@@ -45,7 +45,7 @@ DefaultModal {
 
                 DefaultText {
                     id: eula_text
-                    text_value: API.get().empty_string + (getEula())
+                    text_value: API.get().settings_pg.empty_string + (getEula())
 
                     width: eula_rect.width - 40
                 }
@@ -56,26 +56,26 @@ DefaultModal {
         DefaultCheckBox {
             id: accept_eula
             visible: !close_only
-            text: API.get().empty_string + (qsTr("Accept EULA"))
+            text: API.get().settings_pg.empty_string + (qsTr("Accept EULA"))
         }
 
         DefaultCheckBox {
             id: accept_tac
             visible: !close_only
-            text: API.get().empty_string + (qsTr("Accept Terms and Conditions"))
+            text: API.get().settings_pg.empty_string + (qsTr("Accept Terms and Conditions"))
         }
 
         // Buttons
         RowLayout {
             DefaultButton {
-                text: API.get().empty_string + (close_only ? qsTr("Close") : qsTr("Cancel"))
+                text: API.get().settings_pg.empty_string + (close_only ? qsTr("Close") : qsTr("Cancel"))
                 Layout.fillWidth: true
                 onClicked: root.close()
             }
 
             PrimaryButton {
                 visible: !close_only
-                text: API.get().empty_string + (qsTr("Confirm"))
+                text: API.get().settings_pg.empty_string + (qsTr("Confirm"))
                 Layout.fillWidth: true
                 enabled: accept_eula.checked && accept_tac.checked
                 onClicked: {

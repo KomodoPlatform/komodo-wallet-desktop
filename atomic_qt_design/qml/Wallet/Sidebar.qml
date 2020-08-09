@@ -162,7 +162,7 @@ Item {
                         Menu {
                             id: context_menu
                             Action {
-                                text: API.get().empty_string + (qsTr("Disable %1", "TICKER").arg(model.modelData.ticker))
+                                text: API.get().settings_pg.empty_string + (qsTr("Disable %1", "TICKER").arg(model.modelData.ticker))
                                 onTriggered: API.get().disable_coins([model.modelData.ticker])
                                 enabled: General.canDisable(model.modelData.ticker)
                             }
@@ -191,14 +191,14 @@ Item {
 //                            // Name
 //                            DefaultText {
 //                                Layout.alignment: Qt.AlignRight
-//                                text_value: API.get().empty_string + (model.modelData.name.replace(" (TESTCOIN)", ""))
+//                                text_value: API.get().settings_pg.empty_string + (model.modelData.name.replace(" (TESTCOIN)", ""))
 //                                font.pixelSize: text.length > 15 ? Style.textSizeVerySmall8 : text.length > 12 ? Style.textSizeVerySmall9 : Style.textSizeSmall1
 //                            }
 
                             // Ticker
                             DefaultText {
                                 Layout.alignment: Qt.AlignRight
-                                text_value: API.get().empty_string + (model.modelData.ticker)
+                                text_value: API.get().settings_pg.empty_string + (model.modelData.ticker)
                                 font.pixelSize: text.length > 15 ? Style.textSizeVerySmall8 : text.length > 12 ? Style.textSizeVerySmall9 : Style.textSizeSmall1
 //                                font.pixelSize: Style.textSizeSmall1
 //                                color: Style.colorThemePassive
@@ -208,7 +208,7 @@ Item {
                                 visible: mouse_area.containsMouse
                                 background: FloatingBackground { auto_set_size: false }
                                 contentItem:  DefaultText {
-                                    text_value: API.get().empty_string + (model.modelData.name.replace(" (TESTCOIN)", ""))
+                                    text_value: API.get().settings_pg.empty_string + (model.modelData.name.replace(" (TESTCOIN)", ""))
                                     font.pixelSize: Style.textSizeSmall4
                                 }
                             }

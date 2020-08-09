@@ -62,12 +62,12 @@ DefaultModal {
             Layout.fillWidth: true
 
             ModalHeader {
-                title: API.get().empty_string + (qsTr("Claim your %1 reward?", "TICKER").arg(API.get().current_coin_info.ticker))
+                title: API.get().settings_pg.empty_string + (qsTr("Claim your %1 reward?", "TICKER").arg(API.get().current_coin_info.ticker))
             }
 
             DefaultText {
                 visible: text_error.text === ""
-                text_value: API.get().empty_string + (qsTr("You will receive %1", "AMT TICKER").arg(General.formatCrypto("", prepare_claim_rewards_result.balance_change, API.get().current_coin_info.ticker)))
+                text_value: API.get().settings_pg.empty_string + (qsTr("You will receive %1", "AMT TICKER").arg(General.formatCrypto("", prepare_claim_rewards_result.balance_change, API.get().current_coin_info.ticker)))
             }
 
             DefaultText {
@@ -79,12 +79,12 @@ DefaultModal {
             // Buttons
             RowLayout {
                 DefaultButton {
-                    text: API.get().empty_string + (qsTr("Cancel"))
+                    text: API.get().settings_pg.empty_string + (qsTr("Cancel"))
                     Layout.fillWidth: true
                     onClicked: root.close()
                 }
                 PrimaryButton {
-                    text: API.get().empty_string + (qsTr("Confirm"))
+                    text: API.get().settings_pg.empty_string + (qsTr("Confirm"))
                     Layout.fillWidth: true
                     onClicked: claimRewards()
                 }

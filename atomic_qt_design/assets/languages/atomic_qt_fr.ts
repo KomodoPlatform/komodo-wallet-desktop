@@ -102,42 +102,58 @@
         <translation>Cette transaction peut prendre jusqu&apos;à 10 mins - NE fermez pas l&apos;application !</translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/ConfirmTradeModal.qml" line="96"/>
+        <location filename="../../qml/Exchange/Trade/ConfirmTradeModal.qml" line="107"/>
+        <source>Security configuration</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../qml/Exchange/Trade/ConfirmTradeModal.qml" line="114"/>
+        <source>dPoW protected</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../qml/Exchange/Trade/ConfirmTradeModal.qml" line="115"/>
+        <source>%1 confirmations for incoming transactions</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../qml/Exchange/Trade/ConfirmTradeModal.qml" line="125"/>
+        <source>Use custom protection settings for incoming %1 transactions</source>
+        <comment>TICKER</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../qml/Exchange/Trade/ConfirmTradeModal.qml" line="146"/>
         <source>Enable Komodo dPoW security</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/ConfirmTradeModal.qml" line="112"/>
-        <source>Enable Notarization</source>
+        <location filename="../../qml/Exchange/Trade/ConfirmTradeModal.qml" line="152"/>
+        <source>&lt;a href=&quot;https://komodoplatform.com/security-delayed-proof-of-work-dpow/&quot;&gt;Read more about dPoW&lt;/a&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/ConfirmTradeModal.qml" line="122"/>
+        <location filename="../../qml/Exchange/Trade/ConfirmTradeModal.qml" line="216"/>
+        <source>Warning, this atomic swap is not dPoW protected!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../qml/Exchange/Trade/ConfirmTradeModal.qml" line="169"/>
         <source>Change required confirmations</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/ConfirmTradeModal.qml" line="133"/>
+        <location filename="../../qml/Exchange/Trade/ConfirmTradeModal.qml" line="180"/>
         <source>Confirmations</source>
         <translation type="unfinished">Confirmations</translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/ConfirmTradeModal.qml" line="135"/>
-        <source>Recommended</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../qml/Exchange/Trade/ConfirmTradeModal.qml" line="155"/>
-        <source>Warning, this atomic swap is not dPoW/blockchain confirmation protected</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../qml/Exchange/Trade/ConfirmTradeModal.qml" line="163"/>
+        <location filename="../../qml/Exchange/Trade/ConfirmTradeModal.qml" line="225"/>
         <source>Cancel</source>
         <translation>Annuler</translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/ConfirmTradeModal.qml" line="169"/>
+        <location filename="../../qml/Exchange/Trade/ConfirmTradeModal.qml" line="231"/>
         <source>Confirm</source>
         <translation>Confirmer</translation>
     </message>
@@ -153,22 +169,22 @@
 <context>
     <name>Dashboard</name>
     <message>
-        <location filename="../../qml/Screens/Dashboard.qml" line="121"/>
+        <location filename="../../qml/Screens/Dashboard.qml" line="117"/>
         <source>News</source>
         <translation>Actualités</translation>
     </message>
     <message>
-        <location filename="../../qml/Screens/Dashboard.qml" line="127"/>
+        <location filename="../../qml/Screens/Dashboard.qml" line="123"/>
         <source>Dapps</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Screens/Dashboard.qml" line="161"/>
+        <location filename="../../qml/Screens/Dashboard.qml" line="220"/>
         <source>CEX Data</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Screens/Dashboard.qml" line="165"/>
+        <location filename="../../qml/Screens/Dashboard.qml" line="224"/>
         <source>Markets data (prices, charts, etc.) marked with the ⓘ icon originates from third party sources. (&lt;a href=&quot;https://coinpaprika.com&quot;&gt;coinpaprika.com&lt;/a&gt;)</source>
         <translation type="unfinished"></translation>
     </message>
@@ -667,12 +683,34 @@
 <context>
     <name>NotificationsPanel</name>
     <message>
-        <source>AtomicDEX Pro</source>
-        <translation type="obsolete">AtomicDEX Pro</translation>
+        <location filename="../../qml/Dashboard/NotificationsPanel.qml" line="36"/>
+        <source>Swap status updated</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../../qml/Dashboard/NotificationsPanel.qml" line="85"/>
+        <source>AtomicDEX Pro</source>
+        <translation type="unfinished">AtomicDEX Pro</translation>
+    </message>
+    <message>
+        <location filename="../../qml/Dashboard/NotificationsPanel.qml" line="100"/>
+        <source>Notifications</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../qml/Dashboard/NotificationsPanel.qml" line="118"/>
+        <source>Clear</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../qml/Dashboard/NotificationsPanel.qml" line="145"/>
+        <source>There isn&apos;t any notification</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../qml/Dashboard/NotificationsPanel.qml" line="244"/>
         <source>Close</source>
-        <translation type="obsolete">Fermer</translation>
+        <translation type="unfinished">Fermer</translation>
     </message>
 </context>
 <context>
@@ -1524,31 +1562,36 @@
     </message>
     <message>
         <location filename="../../qml/Settings/Settings.qml" line="71"/>
+        <source>Enable Desktop Notifications</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../qml/Settings/Settings.qml" line="78"/>
         <source>Open Logs Folder</source>
         <translation>Ouvrir le répertoire de logs</translation>
     </message>
     <message>
-        <location filename="../../qml/Settings/Settings.qml" line="81"/>
+        <location filename="../../qml/Settings/Settings.qml" line="88"/>
         <source>View Seed</source>
         <translation>Voir la phrase de récupération</translation>
     </message>
     <message>
-        <location filename="../../qml/Settings/Settings.qml" line="95"/>
+        <location filename="../../qml/Settings/Settings.qml" line="102"/>
         <source>Disclaimer and ToS</source>
         <translation>Clause de non-responsabilité et conditions d&apos;utilisation</translation>
     </message>
     <message>
-        <location filename="../../qml/Settings/Settings.qml" line="109"/>
+        <location filename="../../qml/Settings/Settings.qml" line="116"/>
         <source>Delete Wallet</source>
         <translation>Supprimez le portefeuille</translation>
     </message>
     <message>
-        <location filename="../../qml/Settings/Settings.qml" line="120"/>
+        <location filename="../../qml/Settings/Settings.qml" line="127"/>
         <source>Log out</source>
         <translation>Déconnection</translation>
     </message>
     <message>
-        <location filename="../../qml/Settings/Settings.qml" line="131"/>
+        <location filename="../../qml/Settings/Settings.qml" line="138"/>
         <source>mm2 version</source>
         <translation>Version de mm2</translation>
     </message>
@@ -1654,14 +1697,12 @@
 <context>
     <name>Trade</name>
     <message>
-        <location filename="../../qml/Exchange/Trade/Trade.qml" line="332"/>
         <source>No balance available</source>
-        <translation>Aucun solde disponible</translation>
+        <translation type="vanished">Aucun solde disponible</translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/Trade.qml" line="338"/>
         <source>Please enable a coin with balance or deposit funds</source>
-        <translation>Veuillez activer une pièce avec solde ou déposez des fonds</translation>
+        <translation type="vanished">Veuillez activer une pièce avec solde ou déposez des fonds</translation>
     </message>
     <message>
         <source>Trade</source>
@@ -1672,43 +1713,43 @@
         <translation type="vanished">Impossible de placer l&apos;ordre.</translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/Trade.qml" line="308"/>
+        <location filename="../../qml/Exchange/Trade/Trade.qml" line="277"/>
         <source>Placed the order</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/Trade.qml" line="315"/>
+        <location filename="../../qml/Exchange/Trade/Trade.qml" line="284"/>
         <source>Failed to place the order</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/Trade.qml" line="468"/>
+        <location filename="../../qml/Exchange/Trade/Trade.qml" line="423"/>
         <source>Please fill the price field</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/Trade.qml" line="469"/>
+        <location filename="../../qml/Exchange/Trade/Trade.qml" line="424"/>
         <source>%1 balance is lower than minimum trade amount</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/Trade.qml" line="471"/>
+        <location filename="../../qml/Exchange/Trade/Trade.qml" line="426"/>
         <source>Not enough balance for the fees. Need at least %1 more</source>
         <comment>AMT TICKER</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/Trade.qml" line="472"/>
+        <location filename="../../qml/Exchange/Trade/Trade.qml" line="427"/>
         <source>Please fill the volume field</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/Trade.qml" line="473"/>
+        <location filename="../../qml/Exchange/Trade/Trade.qml" line="428"/>
         <source>Not enough ETH for the transaction fee</source>
         <translation>Pas assez d&apos;ETH pour les frais de transaction</translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/Trade.qml" line="474"/>
+        <location filename="../../qml/Exchange/Trade/Trade.qml" line="429"/>
         <source>Amount is lower than minimum trade amount</source>
         <translation type="unfinished"></translation>
     </message>

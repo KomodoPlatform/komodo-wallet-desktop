@@ -12,7 +12,7 @@ ColumnLayout {
         spacing: 20
         DefaultText {
             Layout.alignment: Qt.AlignVCenter
-            text_value: API.get().empty_string + (qsTr("Language") + ":")
+            text_value: API.get().settings_pg.empty_string + (qsTr("Language") + ":")
             font.pixelSize: Style.textSizeSmall2
         }
 
@@ -27,11 +27,11 @@ ColumnLayout {
             layoutDirection: Qt.LeftToRight
 
             Repeater {
-                model: API.get().get_available_langs()
+                model: API.get().settings_pg.get_available_langs()
                 delegate: Rectangle {
                     width: image.sourceSize.width - 4 // Current icons have too much space around them
                     height: image.sourceSize.height - 2
-                    color: API.get().lang === model.modelData ? Style.colorTheme11 : "transparent"
+                    color: API.get().settings_pg.lang === model.modelData ? Style.colorTheme11 : "transparent"
 
                     DefaultImage {
                         id: image
@@ -45,7 +45,7 @@ ColumnLayout {
                             anchors.fill: parent
                             acceptedButtons: Qt.LeftButton | Qt.RightButton
                             onClicked: {
-                                API.get().lang = model.modelData
+                                API.get().settings_pg.lang = model.modelData
                             }
                         }
                     }

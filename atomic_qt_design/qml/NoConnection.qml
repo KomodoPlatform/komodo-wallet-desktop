@@ -17,19 +17,19 @@ Rectangle {
         anchors.verticalCenter: parent.verticalCenter
 
         DefaultText {
-            text_value: API.get().empty_string + (qsTr("No connection"))
+            text_value: API.get().settings_pg.empty_string + (qsTr("No connection"))
             Layout.alignment: Qt.AlignHCenter
             font.pixelSize: Style.textSize3
         }
 
         DefaultText {
-            text_value: API.get().empty_string + (qsTr("Please make sure you are connected to the internet"))
+            text_value: API.get().settings_pg.empty_string + (qsTr("Please make sure you are connected to the internet"))
             Layout.alignment: Qt.AlignHCenter
         }
 
 
         DefaultText {
-            text_value: API.get().empty_string + (qsTr("Will automatically retry in %1 seconds").arg(General.formatDouble(API.get().internet_checker.seconds_left_to_auto_retry, 0)))
+            text_value: API.get().settings_pg.empty_string + (qsTr("Will automatically retry in %1 seconds").arg(General.formatDouble(API.get().internet_checker.seconds_left_to_auto_retry, 0)))
             Layout.alignment: Qt.AlignHCenter
         }
 
@@ -38,7 +38,7 @@ Rectangle {
         }
 
         DefaultButton {
-            text: API.get().empty_string + (qsTr("Retry"))
+            text: API.get().settings_pg.empty_string + (qsTr("Retry"))
             onClicked: API.get().internet_checker.retry()
             Layout.alignment: Qt.AlignHCenter
         }

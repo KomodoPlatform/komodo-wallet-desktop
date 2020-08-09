@@ -18,13 +18,13 @@ DefaultModal {
         width: parent.width
 
         ModalHeader {
-            title: API.get().empty_string + (qsTr("Receive"))
+            title: API.get().settings_pg.empty_string + (qsTr("Receive"))
         }
 
         // Receive address
         TextAreaWithTitle {
-            title: API.get().empty_string + (qsTr("Share this address to receive coins"))
-            field.text: API.get().empty_string + (API.get().current_coin_info.address)
+            title: API.get().settings_pg.empty_string + (qsTr("Share this address to receive coins"))
+            field.text: API.get().settings_pg.empty_string + (API.get().current_coin_info.address)
             field.readOnly: true
             field.wrapMode: TextEdit.NoWrap
             copyable: true
@@ -43,7 +43,7 @@ DefaultModal {
         // Buttons
         RowLayout {
             DefaultButton {
-                text: API.get().empty_string + (qsTr("Close"))
+                text: API.get().settings_pg.empty_string + (qsTr("Close"))
                 Layout.fillWidth: true
                 onClicked: root.close()
             }

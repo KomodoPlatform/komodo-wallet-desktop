@@ -14,49 +14,49 @@ ColumnLayout {
     function onClose() {}
 
     ModalHeader {
-        title: API.get().empty_string + (qsTr("Transaction Complete!"))
+        title: API.get().settings_pg.empty_string + (qsTr("Transaction Complete!"))
     }
 
     // Address
     TextWithTitle {
         id: address
-        title: API.get().empty_string + (qsTr("Recipient's address"))
+        title: API.get().settings_pg.empty_string + (qsTr("Recipient's address"))
         visible: text !== ""
     }
 
     // Amount
     TextWithTitle {
-        title: API.get().empty_string + (qsTr("Amount"))
-        text: API.get().empty_string + (General.formatCrypto("", custom_amount !== "" ? custom_amount : result.balance_change, API.get().current_coin_info.ticker))
+        title: API.get().settings_pg.empty_string + (qsTr("Amount"))
+        text: API.get().settings_pg.empty_string + (General.formatCrypto("", custom_amount !== "" ? custom_amount : result.balance_change, API.get().current_coin_info.ticker))
     }
 
     // Fees
     TextWithTitle {
-        title: API.get().empty_string + (qsTr("Fees"))
-        text: API.get().empty_string + (General.formatCrypto("", result.fees, General.txFeeTicker(API.get().current_coin_info)))
+        title: API.get().settings_pg.empty_string + (qsTr("Fees"))
+        text: API.get().settings_pg.empty_string + (General.formatCrypto("", result.fees, General.txFeeTicker(API.get().current_coin_info)))
     }
 
     // Date
     TextWithTitle {
-        title: API.get().empty_string + (qsTr("Date"))
-        text: API.get().empty_string + (result.date)
+        title: API.get().settings_pg.empty_string + (qsTr("Date"))
+        text: API.get().settings_pg.empty_string + (result.date)
     }
 
     // Transaction Hash
     TextWithTitle {
         id: tx_hash
-        title: API.get().empty_string + (qsTr("Transaction Hash"))
+        title: API.get().settings_pg.empty_string + (qsTr("Transaction Hash"))
     }
 
     // Buttons
     RowLayout {
         DefaultButton {
-            text: API.get().empty_string + (qsTr("Close"))
+            text: API.get().settings_pg.empty_string + (qsTr("Close"))
             Layout.fillWidth: true
             onClicked: onClose()
         }
         PrimaryButton {
-            text: API.get().empty_string + (qsTr("View at Explorer"))
+            text: API.get().settings_pg.empty_string + (qsTr("View at Explorer"))
             Layout.fillWidth: true
             onClicked: General.viewTxAtExplorer(API.get().current_coin_info.ticker, tx_hash.text)
         }

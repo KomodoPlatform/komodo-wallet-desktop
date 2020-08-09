@@ -25,7 +25,7 @@ SetupPage {
         }
         else {
             console.log("Failed: Recover seed")
-            text_error = API.get().empty_string + (qsTr("Failed to recover the seed"))
+            text_error = API.get().settings_pg.empty_string + (qsTr("Failed to recover the seed"))
             return false
         }
     }
@@ -42,7 +42,7 @@ SetupPage {
         spacing: Style.rowSpacing
 
         DefaultText {
-            text_value: API.get().empty_string + (qsTr("Recovery"))
+            text_value: API.get().settings_pg.empty_string + (qsTr("Recovery"))
         }
 
         HorizontalLine {
@@ -80,8 +80,8 @@ SetupPage {
         TextFieldWithTitle {
             id: input_seed_hidden
             visible: !input_seed.visible
-            title: API.get().empty_string + (qsTr("Seed"))
-            field.placeholderText: API.get().empty_string + (qsTr("Enter the seed"))
+            title: API.get().settings_pg.empty_string + (qsTr("Seed"))
+            field.placeholderText: API.get().settings_pg.empty_string + (qsTr("Enter the seed"))
             field.onTextChanged: {
                 input_seed.field.text = field.text
             }
@@ -99,8 +99,8 @@ SetupPage {
         TextAreaWithTitle {
             id: input_seed
             visible: false
-            title: API.get().empty_string + (qsTr("Seed"))
-            field.placeholderText: API.get().empty_string + (qsTr("Enter the seed"))
+            title: API.get().settings_pg.empty_string + (qsTr("Seed"))
+            field.placeholderText: API.get().settings_pg.empty_string + (qsTr("Enter the seed"))
             field.onTextChanged: {
                 input_seed_hidden.field.text = field.text
             }
@@ -117,7 +117,7 @@ SetupPage {
 
         DefaultCheckBox {
             id: allow_custom_seed
-            text: API.get().empty_string + (qsTr("Allow custom seed"))
+            text: API.get().settings_pg.empty_string + (qsTr("Allow custom seed"))
         }
 
         PasswordForm {
@@ -132,7 +132,7 @@ SetupPage {
 
             DefaultButton {
                 Layout.fillWidth: true
-                text: API.get().empty_string + (qsTr("Back"))
+                text: API.get().settings_pg.empty_string + (qsTr("Back"))
                 onClicked: {
                     reset()
                     onClickedBack()
@@ -142,7 +142,7 @@ SetupPage {
             PrimaryButton {
                 id: submit_button
                 Layout.fillWidth: true
-                text: API.get().empty_string + (qsTr("Confirm"))
+                text: API.get().settings_pg.empty_string + (qsTr("Confirm"))
                 onClicked: trySubmit()
                 enabled:     // Fields are not empty
                              input_wallet_name.field.acceptableInput === true &&
@@ -153,7 +153,7 @@ SetupPage {
         }
 
         DefaultText {
-            text_value: API.get().empty_string + (text_error)
+            text_value: API.get().settings_pg.empty_string + (text_error)
             color: Style.colorRed
             visible: text !== ''
         }

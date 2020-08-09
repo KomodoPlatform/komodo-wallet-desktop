@@ -114,13 +114,13 @@ Item {
 
             DefaultText {
                 id: news
-                text_value: API.get().empty_string + (qsTr("News"))
+                text_value: API.get().settings_pg.empty_string + (qsTr("News"))
                 function reset() { }
             }
 
             DefaultText {
                 id: dapps
-                text_value: API.get().empty_string + (qsTr("Dapps"))
+                text_value: API.get().settings_pg.empty_string + (qsTr("Dapps"))
                 function reset() { }
             }
 
@@ -217,11 +217,11 @@ Item {
             width: parent.width
 
             ModalHeader {
-                title: API.get().empty_string + (General.cex_icon + " " + qsTr("CEX Data"))
+                title: API.get().settings_pg.empty_string + (General.cex_icon + " " + qsTr("CEX Data"))
             }
 
             DefaultText {
-                text_value: API.get().empty_string + (qsTr('Markets data (prices, charts, etc.) marked with the ⓘ icon originates from third party sources. (<a href="https://coinpaprika.com">coinpaprika.com</a>)'))
+                text_value: API.get().settings_pg.empty_string + (qsTr('Markets data (prices, charts, etc.) marked with the ⓘ icon originates from third party sources. (<a href="https://coinpaprika.com">coinpaprika.com</a>)'))
                 wrapMode: Text.WordWrap
                 Layout.preferredWidth: cex_rates_modal.width
 

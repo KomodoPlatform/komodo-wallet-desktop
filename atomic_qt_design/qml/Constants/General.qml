@@ -121,7 +121,7 @@ QtObject {
 
     function formatFiat(received, amount, fiat) {
         return diffPrefix(received) +
-                (fiat === API.get().current_fiat ? API.get().current_fiat_sign : API.get().current_currency_sign)
+                (fiat === API.get().settings_pg.current_fiat ? API.get().settings_pg.current_fiat_sign : API.get().settings_pg.current_currency_sign)
                 + " " + nFormatter(parseFloat(amount), 2)
     }
 

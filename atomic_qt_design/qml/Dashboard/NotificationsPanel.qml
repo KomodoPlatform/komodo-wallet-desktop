@@ -97,7 +97,7 @@ FloatingBackground {
             Layout.fillWidth: true
             Layout.alignment: Qt.AlignLeft | Qt.AlignBottom
             DefaultText {
-                text_value: API.get().empty_string + (qsTr("Notifications"))
+                text_value: API.get().settings_pg.empty_string + (qsTr("Notifications"))
                 font.pixelSize: Style.textSize2
                 Layout.fillWidth: true
                 Layout.alignment: Qt.AlignLeft | Qt.AlignVCenter
@@ -115,7 +115,7 @@ FloatingBackground {
 
                 DefaultText {
                     id: mark_all_as_read
-                    text_value: API.get().empty_string + (qsTr("Clear") + " ✔️")
+                    text_value: API.get().settings_pg.empty_string + (qsTr("Clear") + " ✔️")
                     font.pixelSize: Style.textSizeSmall3
                     anchors.centerIn: parent
                     color: Style.colorWhite10
@@ -142,7 +142,7 @@ FloatingBackground {
             DefaultText {
                 anchors.centerIn: parent
                 visible: !list.visible
-                text_value: API.get().empty_string + (qsTr("There isn't any notification"))
+                text_value: API.get().settings_pg.empty_string + (qsTr("There isn't any notification"))
                 font.pixelSize: Style.textSizeSmall2
             }
 
@@ -163,7 +163,7 @@ FloatingBackground {
                         anchors.topMargin: 10
                         anchors.right: parent.right
                         anchors.rightMargin: 25
-                        text_value: API.get().empty_string + (modelData.time)
+                        text_value: API.get().settings_pg.empty_string + (modelData.time)
                         font.pixelSize: Style.textSizeSmall
                     }
 
@@ -173,13 +173,13 @@ FloatingBackground {
                         anchors.leftMargin: 10
 
                         DefaultText {
-                            text_value: API.get().empty_string + (modelData.title)
+                            text_value: API.get().settings_pg.empty_string + (modelData.title)
                             font.pixelSize: Style.textSizeSmall4
                             font.bold: true
                         }
 
                         DefaultText {
-                            text_value: API.get().empty_string + (modelData.message)
+                            text_value: API.get().settings_pg.empty_string + (modelData.message)
                             font.pixelSize: Style.textSizeSmall1
                         }
                     }
@@ -209,7 +209,7 @@ FloatingBackground {
 
                         DefaultText {
                             id: remove_button
-                            text_value: API.get().empty_string + ("✔️")
+                            text_value: API.get().settings_pg.empty_string + ("✔️")
                             anchors.centerIn: parent
                             font.pixelSize: Style.textSizeSmall3
                             color: Style.colorWhite10
@@ -234,14 +234,14 @@ FloatingBackground {
             spacing: 10
 
 //            DefaultButton {
-//                text: API.get().empty_string + (qsTr("Pop Test Notification"))
+//                text: API.get().settings_pg.empty_string + (qsTr("Pop Test Notification"))
 //                onClicked: {
 //                    onSwapStatusUpdated("ongoing", "finished", Date.now().toString(), "BTC", "KMD", "13.3.1337")
 //                }
 //            }
 
             DefaultButton {
-                text: API.get().empty_string + (qsTr("Close"))
+                text: API.get().settings_pg.empty_string + (qsTr("Close"))
                 onClicked: root.visible = false
             }
         }

@@ -419,7 +419,7 @@ Item {
                     font.pixelSize: Style.textSizeSmall4
                     color: Style.colorRed
 
-                    text_value: API.get().empty_string + (
+                    text_value: API.get().settings_pg.empty_string + (
                                     General.isZero(getCurrentPrice()) ? (qsTr("Please fill the price field")) :
                                     notEnoughBalance() ? (qsTr("%1 balance is lower than minimum trade amount").arg(base_ticker) + " : " + General.getMinTradeAmount()) :
                                     notEnoughBalanceForFees() ?

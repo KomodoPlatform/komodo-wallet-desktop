@@ -42,6 +42,7 @@
 #include "atomic.dex.provider.cex.prices.hpp"
 #include "atomic.dex.provider.coinpaprika.hpp"
 #include "atomic.dex.qt.bindings.hpp"
+#include "atomic.dex.qt.settings.page.hpp"
 #include "atomic.dex.qt.utilities.hpp"
 #include "atomic.dex.security.hpp"
 #include "atomic.dex.update.service.hpp"
@@ -198,7 +199,8 @@ namespace atomic_dex
         if (m_event_actions[events_action::need_a_full_refresh_of_mm2])
         {
             auto& mm2_s = system_manager_.create_system<mm2>();
-            system_manager_.create_system<coinpaprika_provider>(mm2_s, m_config);
+
+            system_manager_.create_system<coinpaprika_provider>(mm2_s, system_manager_.get_system<settings_page>().get_cfg());
             system_manager_.create_system<cex_prices_provider>(mm2_s);
             system_manager_.create_system<trading_page>(system_manager_, m_event_actions.at(events_action::about_to_exit_app), get_portfolio(), this);
 
@@ -218,7 +220,8 @@ namespace atomic_dex
             }
 
             std::error_code ec;
-            auto            fiat_balance_std = paprika.get_price_in_fiat_all(m_config.current_currency, ec);
+            const auto&     config           = system_manager_.get_system<settings_page>().get_cfg();
+            auto            fiat_balance_std = paprika.get_price_in_fiat_all(config.current_currency, ec);
 
             if (!ec)
             {
@@ -293,12 +296,13 @@ namespace atomic_dex
         QString         target_balance = QString::fromStdString(mm2.my_balance(m_coin_info->get_ticker().toStdString(), ec));
         m_coin_info->set_balance(target_balance);
 
-        if (std::any_of(begin(m_config.possible_currencies), end(m_config.possible_currencies), [this](const std::string& cur_fiat) {
-                return cur_fiat == m_config.current_currency;
+        const auto& config = system_manager_.get_system<settings_page>().get_cfg();
+        if (std::any_of(begin(config.possible_currencies), end(config.possible_currencies), [&config](const std::string& cur_fiat) {
+                return cur_fiat == config.current_currency;
             }))
         {
             ec          = std::error_code();
-            auto amount = QString::fromStdString(paprika.get_price_in_fiat(m_config.current_currency, m_coin_info->get_ticker().toStdString(), ec));
+            auto amount = QString::fromStdString(paprika.get_price_in_fiat(config.current_currency, m_coin_info->get_ticker().toStdString(), ec));
             if (!ec)
             {
                 m_coin_info->set_fiat_amount(amount);
@@ -314,7 +318,8 @@ namespace atomic_dex
         auto            txs = mm2.get_tx_history(ticker, ec);
         if (!ec)
         {
-            m_coin_info->set_transactions(to_qt_binding(std::move(txs), get_paprika(), m_config.current_currency, ticker));
+            const auto& config = system_manager_.get_system<settings_page>().get_cfg();
+            m_coin_info->set_transactions(to_qt_binding(std::move(txs), get_paprika(), config.current_currency, ticker));
         }
         auto tx_state = mm2.get_tx_state(ticker, ec);
 
@@ -376,7 +381,7 @@ namespace atomic_dex
             {"update_needed", false}, {"changelog", ""}, {"current_version", ""}, {"download_url", ""}, {"new_version", ""}, {"rpc_code", 0}, {"status", ""}}),
         m_coin_info(new current_coin_info(dispatcher_, this)), m_manager_models{
                                                                    {"addressbook", new addressbook_model(this->m_wallet_manager, this)},
-                                                                   {"portfolio", new portfolio_model(this->system_manager_, this->m_config, this)},
+                                                                   {"portfolio", new portfolio_model(this->system_manager_, this->dispatcher_, this)},
                                                                    {"orders", new orders_model(this->system_manager_, this->dispatcher_, this)},
                                                                    {"internet_service",
                                                                     std::addressof(system_manager_.create_system<internet_service_checker>(this))},
@@ -384,8 +389,10 @@ namespace atomic_dex
     {
         get_dispatcher().sink<refresh_update_status>().connect<&application::on_refresh_update_status_event>(*this);
         //! MM2 system need to be created before the GUI and give the instance to the gui
-        auto& mm2_system = system_manager_.create_system<mm2>();
-        system_manager_.create_system<coinpaprika_provider>(mm2_system, m_config);
+        auto& mm2_system           = system_manager_.create_system<mm2>();
+        auto& settings_page_system = system_manager_.create_system<settings_page>(m_app, this);
+        get_portfolio()->set_cfg(settings_page_system.get_cfg());
+        system_manager_.create_system<coinpaprika_provider>(mm2_system, settings_page_system.get_cfg());
         system_manager_.create_system<cex_prices_provider>(mm2_system);
         system_manager_.create_system<update_system_service>();
         system_manager_.create_system<trading_page>(system_manager_, m_event_actions.at(events_action::about_to_exit_app), get_portfolio(), this);
@@ -423,55 +430,6 @@ namespace atomic_dex
         //! This event is called when a call is enabled and cex provider finished fetch datas
         spdlog::debug("{} l{}", __FUNCTION__, __LINE__);
         qobject_cast<portfolio_model*>(m_manager_models.at("portfolio"))->initialize_portfolio(evt.ticker);
-    }
-
-    QString
-    application::get_current_currency_sign() const noexcept
-    {
-        return QString::fromStdString(this->m_config.current_currency_sign);
-    }
-
-    QString
-    application::get_current_fiat_sign() const noexcept
-    {
-        return QString::fromStdString(this->m_config.current_fiat_sign);
-    }
-
-    QString
-    application::get_current_currency() const noexcept
-    {
-        return QString::fromStdString(this->m_config.current_currency);
-    }
-
-    void
-    application::set_current_currency(const QString& current_currency) noexcept
-    {
-        if (current_currency.toStdString() != m_config.current_currency)
-        {
-            spdlog::info("change currency {} to {}", m_config.current_currency, current_currency.toStdString());
-            atomic_dex::change_currency(m_config, current_currency.toStdString());
-            qobject_cast<portfolio_model*>(m_manager_models.at("portfolio"))->update_currency_values();
-            emit onCurrencyChanged();
-            emit onCurrencySignChanged();
-            emit onFiatSignChanged();
-        }
-    }
-
-    QString
-    application::get_current_fiat() const noexcept
-    {
-        return QString::fromStdString(this->m_config.current_fiat);
-    }
-
-    void
-    application::set_current_fiat(const QString& current_fiat) noexcept
-    {
-        if (current_fiat.toStdString() != m_config.current_fiat)
-        {
-            spdlog::info("change fiat {} to {}", m_config.current_fiat, current_fiat.toStdString());
-            atomic_dex::change_fiat(m_config, current_fiat.toStdString());
-            emit onFiatChanged();
-        }
     }
 
     void
@@ -830,86 +788,12 @@ namespace atomic_dex
         return out;
     }
 
-    QString
-    application::get_current_lang() const noexcept
-    {
-        return m_current_lang;
-    }
-
-    void
-    application::set_current_lang(const QString& current_lang) noexcept
-    {
-        this->m_current_lang = current_lang;
-        if (m_config.current_lang != current_lang.toStdString())
-        {
-            change_lang(m_config, current_lang.toStdString());
-        }
-        auto get_locale = [](const QString& current_lang) {
-            if (current_lang == "tr")
-            {
-                return QLocale::Language::Turkish;
-            }
-            if (current_lang == "en")
-            {
-                return QLocale::Language::English;
-            }
-            if (current_lang == "fr")
-            {
-                return QLocale::Language::French;
-            }
-            return QLocale::Language::AnyLanguage;
-        };
-
-        qDebug() << "locale before: " << QLocale().name();
-        QLocale::setDefault(get_locale(current_lang));
-        qDebug() << "locale after: " << QLocale().name();
-        [[maybe_unused]] auto res = this->m_translator.load("atomic_qt_" + current_lang, QLatin1String(":/atomic_qt_design/assets/languages"));
-        assert(res);
-        this->m_app->installTranslator(&m_translator);
-        emit onLangChanged();
-        emit langChanged();
-    }
-
     void
     application::set_qt_app(std::shared_ptr<QApplication> app) noexcept
     {
         this->m_app = app;
         connect(m_app.get(), SIGNAL(aboutToQuit()), this, SLOT(exit_handler()));
-        set_current_lang(QString::fromStdString(m_config.current_lang));
-    }
-
-    QStringList
-    application::get_available_langs() const
-    {
-        QStringList out;
-        out.reserve(m_config.available_lang.size());
-        for (auto&& cur_lang: m_config.available_lang) { out.push_back(QString::fromStdString(cur_lang)); }
-        return out;
-    }
-
-    QStringList
-    application::get_available_fiats() const
-    {
-        QStringList out;
-        out.reserve(m_config.available_fiat.size());
-        for (auto&& cur_fiat: m_config.available_fiat) { out.push_back(QString::fromStdString(cur_fiat)); }
-        return out;
-    }
-
-    QStringList
-    application::get_available_currencies() const
-    {
-        QStringList out;
-        out.reserve(m_config.possible_currencies.size());
-        for (auto&& cur_currency: m_config.possible_currencies) { out.push_back(QString::fromStdString(cur_currency)); }
-        return out;
-    }
-
-    const QString&
-    application::get_empty_string()
-    {
-        static const QString empty_string = "";
-        return empty_string;
+        system_manager_.get_system<settings_page>().init_lang();
     }
 
     QString
@@ -1110,7 +994,8 @@ namespace atomic_dex
     application::get_fiat_from_amount(const QString& ticker, const QString& amount)
     {
         std::error_code ec;
-        return QString::fromStdString(get_paprika().get_price_as_currency_from_amount(m_config.current_fiat, ticker.toStdString(), amount.toStdString(), ec));
+        const auto&     config = system_manager_.get_system<settings_page>().get_cfg();
+        return QString::fromStdString(get_paprika().get_price_as_currency_from_amount(config.current_fiat, ticker.toStdString(), amount.toStdString(), ec));
     }
 } // namespace atomic_dex
 
@@ -1296,8 +1181,9 @@ namespace atomic_dex
             m_coin_info->set_minimal_balance_for_asking_rewards(QString::fromStdString(info.minimal_claim_amount));
             m_coin_info->set_explorer_url(QString::fromStdString(info.explorer_url[0]));
             std::error_code ec;
-            m_coin_info->set_price(QString::fromStdString(paprika.get_rate_conversion(m_config.current_currency, ticker, ec, true)));
-            m_coin_info->set_change24h(retrieve_change_24h(paprika, info, m_config));
+            const auto&     config = system_manager_.get_system<settings_page>().get_cfg();
+            m_coin_info->set_price(QString::fromStdString(paprika.get_rate_conversion(config.current_currency, ticker, ec, true)));
+            m_coin_info->set_change24h(retrieve_change_24h(paprika, info, config));
             m_coin_info->set_trend_7d(nlohmann_json_array_to_qt_json_array(paprika.get_ticker_historical(ticker).answer));
         }
     }
@@ -1322,6 +1208,18 @@ namespace atomic_dex
         return ptr;
     }
 } // namespace atomic_dex
+
+//! Settings
+namespace atomic_dex
+{
+    settings_page*
+    application::get_settings_page() const noexcept
+    {
+        settings_page* ptr = const_cast<settings_page*>(std::addressof(system_manager_.get_system<settings_page>()));
+        assert(ptr != nullptr);
+        return ptr;
+    }
+}
 
 //! Notification
 namespace atomic_dex

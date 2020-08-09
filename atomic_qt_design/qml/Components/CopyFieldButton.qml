@@ -19,7 +19,7 @@ DefaultImage {
         onClicked: () => {
             input_field.selectAll()
             input_field.copy()
-            toast.show(API.get().empty_string + (qsTr("Copied to Clipboard")), General.time_toast_basic_info, "", false)
+            toast.show(API.get().settings_pg.empty_string + (qsTr("Copied to Clipboard")), General.time_toast_basic_info, "", false)
         }
     }
 }

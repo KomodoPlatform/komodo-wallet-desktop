@@ -25,7 +25,7 @@ ColumnLayout {
 
         // Row
         delegate: DefaultText {
-            text_value: API.get().empty_string + (model.modelData)
+            text_value: API.get().settings_pg.empty_string + (model.modelData)
             color: Style.modalValueColor
             privacy: true
         }

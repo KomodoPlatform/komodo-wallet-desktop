@@ -22,7 +22,7 @@ Item {
     }
 
     property string mm2_version: ''
-    property var fiats: API.get().get_available_fiats()
+    property var fiats: API.get().settings_pg.get_available_fiats()
 
     InnerBackground {
         id: layout_background
@@ -38,7 +38,7 @@ Item {
 
             ComboBoxWithTitle {
                 id: combo_fiat
-                title: API.get().empty_string + (qsTr("Fiat"))
+                title: API.get().settings_pg.empty_string + (qsTr("Fiat"))
                 Layout.fillWidth: true
 
                 field.model: fiats
@@ -47,12 +47,12 @@ Item {
                 field.onCurrentIndexChanged: {
                     if(initialized) {
                         const new_fiat = fiats[field.currentIndex]
-                        API.get().current_fiat = new_fiat
-                        API.get().current_currency = new_fiat
+                        API.get().settings_pg.current_fiat = new_fiat
+                        API.get().settings_pg.current_currency = new_fiat
                     }
                 }
                 Component.onCompleted: {
-                    field.currentIndex = field.model.indexOf(API.get().current_fiat)
+                    field.currentIndex = field.model.indexOf(API.get().settings_pg.current_fiat)
                     initialized = true
                 }
             }
@@ -68,14 +68,14 @@ Item {
 
             Switch {
                 Layout.alignment: Qt.AlignHCenter
-                text: API.get().empty_string + (qsTr("Enable Desktop Notifications"))
+                text: API.get().settings_pg.empty_string + (qsTr("Enable Desktop Notifications"))
                 Component.onCompleted: checked = General.enable_desktop_notifications
                 onCheckedChanged: General.enable_desktop_notifications = checked
             }
 
             DefaultButton {
                 Layout.fillWidth: true
-                text: API.get().empty_string + (qsTr("Open Logs Folder"))
+                text: API.get().settings_pg.empty_string + (qsTr("Open Logs Folder"))
                 onClicked: {
                     API.get().export_swaps_json()
                     const prefix = Qt.platform.os == "windows" ? "file:///" : "file://"
@@ -85,7 +85,7 @@ Item {
 
             DefaultButton {
                 Layout.fillWidth: true
-                text: API.get().empty_string + (qsTr("View Seed"))
+                text: API.get().settings_pg.empty_string + (qsTr("View Seed"))
                 onClicked: recover_seed_modal.open()
             }
 
@@ -99,7 +99,7 @@ Item {
 
             DefaultButton {
                 Layout.fillWidth: true
-                text: API.get().empty_string + (qsTr("Disclaimer and ToS"))
+                text: API.get().settings_pg.empty_string + (qsTr("Disclaimer and ToS"))
                 onClicked: eula.open()
             }
 
@@ -113,7 +113,7 @@ Item {
             }
 
             DangerButton {
-                text: API.get().empty_string + (qsTr("Delete Wallet"))
+                text: API.get().settings_pg.empty_string + (qsTr("Delete Wallet"))
                 Layout.fillWidth: true
                 onClicked: delete_wallet_modal.open()
             }
@@ -124,7 +124,7 @@ Item {
 
             DefaultButton {
                 Layout.fillWidth: true
-                text: API.get().empty_string + (qsTr("Log out"))
+                text: API.get().settings_pg.empty_string + (qsTr("Log out"))
                 onClicked: disconnect()
             }
         }
@@ -135,7 +135,7 @@ Item {
         anchors.bottom: parent.bottom
         anchors.bottomMargin: 10
         anchors.rightMargin: anchors.bottomMargin
-        text_value: API.get().empty_string + (qsTr("mm2 version") + ":  " + mm2_version)
+        text_value: API.get().settings_pg.empty_string + (qsTr("mm2 version") + ":  " + mm2_version)
         font.pixelSize: Style.textSizeSmall
     }
 }
