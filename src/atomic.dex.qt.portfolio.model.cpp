@@ -130,6 +130,8 @@ namespace atomic_dex
             update_value(MainCurrencyBalanceRole, main_currency_balance_value, idx, *this);
             const QString currency_price_for_one_unit = QString::fromStdString(paprika.get_rate_conversion(currency, ticker, ec, true));
             update_value(MainCurrencyPriceForOneUnit, currency_price_for_one_unit, idx, *this);
+            const QString display = QString::fromStdString(ticker) + " (" + balance + ")";
+            update_value(Display, display, idx, *this);
         }
     }
 

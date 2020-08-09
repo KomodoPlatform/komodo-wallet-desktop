@@ -9,7 +9,6 @@ import "../Components"
 FloatingBackground {
     id: root
 
-    property int unread_notification_count: 0
     property var notifications_list: ([])
 
     function reset() {
@@ -23,10 +22,6 @@ FloatingBackground {
     }
 
     visible: false
-
-    onVisibleChanged: {
-        if(visible) unread_notification_count = 0
-    }
 
     MouseArea {
         anchors.fill: parent
@@ -58,10 +53,6 @@ FloatingBackground {
             notifications_list = [obj].concat(notifications_list)
         }
 
-        // Update unread notification count
-        if(!root.visible)
-            ++unread_notification_count
-
         // Display OS notification
         displayMessage(obj.title, obj.message)
 
@@ -78,13 +69,14 @@ FloatingBackground {
     }
 
     function displayMessage(title, message) {
-        tray.showMessage(title, message)
+        if(General.enable_desktop_notifications)
+            tray.showMessage(title, message)
     }
 
     SystemTrayIcon {
         id: tray
         visible: true
-        iconSource: General.coinIcon("KMD")
+        iconSource: General.image_path + "tray-icon.png"
         onMessageClicked: {
             root.visible = true
             showApp()
@@ -123,7 +115,7 @@ FloatingBackground {
 
                 DefaultText {
                     id: mark_all_as_read
-                    text_value: API.get().empty_string + (qsTr("Mark all as read") + " ✔️")
+                    text_value: API.get().empty_string + (qsTr("Clear") + " ✔️")
                     font.pixelSize: Style.textSizeSmall3
                     anchors.centerIn: parent
                     color: Style.colorWhite10
@@ -132,7 +124,6 @@ FloatingBackground {
                 MouseArea {
                     anchors.fill: parent
                     onClicked: {
-                        unread_notification_count = 0
                         notifications_list = []
                     }
                 }
@@ -171,7 +162,7 @@ FloatingBackground {
                         anchors.top: parent.top
                         anchors.topMargin: 10
                         anchors.right: parent.right
-                        anchors.rightMargin: 5
+                        anchors.rightMargin: 25
                         text_value: API.get().empty_string + (modelData.time)
                         font.pixelSize: Style.textSizeSmall
                     }
@@ -212,7 +203,7 @@ FloatingBackground {
                         anchors.bottom: parent.bottom
                         anchors.bottomMargin: 5
                         anchors.right: parent.right
-                        anchors.rightMargin: anchors.bottomMargin
+                        anchors.rightMargin: anchors.bottomMargin + 20
 
                         color: Style.colorTheme1
 
@@ -238,16 +229,16 @@ FloatingBackground {
 
 
         RowLayout {
-            Layout.alignment: Qt.AlignBottom
+            Layout.alignment: Qt.AlignBottom | Qt.AlignRight
             Layout.bottomMargin: parent.spacing
             spacing: 10
 
-            DefaultButton {
-                text: API.get().empty_string + (qsTr("Pop Test Notification"))
-                onClicked: {
-                    onSwapStatusUpdated("ongoing", "finished", Date.now().toString(), "BTC", "KMD", "13.3.1337")
-                }
-            }
+//            DefaultButton {
+//                text: API.get().empty_string + (qsTr("Pop Test Notification"))
+//                onClicked: {
+//                    onSwapStatusUpdated("ongoing", "finished", Date.now().toString(), "BTC", "KMD", "13.3.1337")
+//                }
+//            }
 
             DefaultButton {
                 text: API.get().empty_string + (qsTr("Close"))

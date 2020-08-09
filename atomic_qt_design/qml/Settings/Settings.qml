@@ -66,6 +66,13 @@ Item {
                 Layout.topMargin: 10
             }
 
+            Switch {
+                Layout.alignment: Qt.AlignHCenter
+                text: API.get().empty_string + (qsTr("Enable Desktop Notifications"))
+                Component.onCompleted: checked = General.enable_desktop_notifications
+                onCheckedChanged: General.enable_desktop_notifications = checked
+            }
+
             DefaultButton {
                 Layout.fillWidth: true
                 text: API.get().empty_string + (qsTr("Open Logs Folder"))
@@ -128,7 +135,7 @@ Item {
         anchors.bottom: parent.bottom
         anchors.bottomMargin: 10
         anchors.rightMargin: anchors.bottomMargin
-        text_value: API.get().empty_string + (qsTr("mm2 version") + ":    " + mm2_version)
+        text_value: API.get().empty_string + (qsTr("mm2 version") + ":  " + mm2_version)
         font.pixelSize: Style.textSizeSmall
     }
 }

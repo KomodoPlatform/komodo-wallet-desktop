@@ -155,46 +155,43 @@ Item {
         }
     }
 
-    NotificationsPanel {
-        id: notifications_panel
-        width: 500
-        height: 500
-        anchors.right: notifications_button.right
-        anchors.top: notifications_button.bottom
-        anchors.topMargin: 8
+    // Unread notifications count
+    Rectangle {
+        radius: 1337
+        width: count_text.height * 1.5
+        height: width
+        z: 1
+
+        x: sidebar.app_logo.x + sidebar.app_logo.width - 20
+        y: sidebar.app_logo.y
+        color: notifications_panel.notifications_list.length > 0 ? Style.colorRed : Style.colorWhite7
+
+        DefaultText {
+            id: count_text
+            anchors.centerIn: parent
+            text_value: notifications_panel.notifications_list.length
+            font.pixelSize: Style.textSizeSmall1
+            font.bold: true
+            color: notifications_panel.notifications_list.length > 0 ? Style.colorWhite9 : Style.colorWhite12
+        }
     }
 
-    DefaultButton {
-        id: notifications_button
-        anchors.top: parent.top
-        anchors.right: parent.right
-        anchors.topMargin: 8
-        anchors.rightMargin: 8
+    // Notifications panel button
+    MouseArea {
+        x: sidebar.app_logo.x
+        y: sidebar.app_logo.y
+        width: sidebar.app_logo.width
+        height: sidebar.app_logo.height
 
-        z: 1
-        text: "🔔"
-        font.pixelSize: Style.textSizeSmall3
-        minWidth: height
         onClicked: notifications_panel.visible = !notifications_panel.visible
+    }
 
-        Rectangle {
-            radius: 1337
-            width: count_text.height * 1.5
-            height: width
-            anchors.horizontalCenter: parent.right
-            anchors.verticalCenter: parent.bottom
-            color: Style.colorRed
-            visible: notifications_panel.unread_notification_count > 0
-
-            DefaultText {
-                id: count_text
-                anchors.centerIn: parent
-                text_value: notifications_panel.unread_notification_count
-                font.pixelSize: Style.textSizeSmall1
-                font.bold: true
-                color: Style.colorWhite9
-            }
-        }
+    NotificationsPanel {
+        id: notifications_panel
+        width: 600
+        height: 500
+        anchors.left: sidebar.right
+        anchors.top: parent.top
     }
 
     DropShadow {
