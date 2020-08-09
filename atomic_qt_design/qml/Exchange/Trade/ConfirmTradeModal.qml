@@ -114,6 +114,17 @@ DefaultModal {
                                                           (config_section.is_dpow_configurable ? qsTr("dPoW protected") :
                                                                                   qsTr("%1 confirmations for incoming transactions").arg("WIP")))
                 }
+
+                DefaultText {
+                    visible: config_section.is_dpow_configurable
+                    Layout.alignment: Qt.AlignHCenter
+                    text_value: API.get().empty_string + (General.cex_icon + " " + qsTr('<a href="https://komodoplatform.com/security-delayed-proof-of-work-dpow/">Read more about dPoW</a>'))
+                    wrapMode: Text.WordWrap
+                    font.pixelSize: Style.textSizeSmall2
+
+                    onLinkActivated: Qt.openUrlExternally(link)
+                    linkColor: color
+                }
             }
 
 
