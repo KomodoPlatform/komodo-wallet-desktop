@@ -4,7 +4,7 @@
 
 ## [AtomicDEX](https://atomicdex.io) Desktop GUI application for Linux, MacOS and Windows. 
 
-[![atomicDEX mobile](https://s5.gifyu.com/images/dextop_optimize_bg.gif)](https://atomicdex.io)
+[![atomicDEX mobile](https://i.imgur.com/kxkOQ5v.gif)](https://atomicdex.io)
 
 
 ## Get Started
