@@ -40,7 +40,7 @@ DefaultModal {
         width: parent.width
 
         ModalHeader {
-            title: API.get().empty_string + (qsTr("View Seed"))
+            title: API.get().settings_pg.empty_string + (qsTr("View Seed"))
         }
 
         ColumnLayout {
@@ -51,7 +51,7 @@ DefaultModal {
                 Layout.bottomMargin: 10
                 Layout.alignment: Qt.AlignHCenter
 
-                text_value: API.get().empty_string + (qsTr("Please enter your password to view the seed."))
+                text_value: API.get().settings_pg.empty_string + (qsTr("Please enter your password to view the seed."))
             }
 
             PasswordForm {
@@ -62,7 +62,7 @@ DefaultModal {
             }
 
             DefaultText {
-                text_value: API.get().empty_string + (qsTr("Wrong Password"))
+                text_value: API.get().settings_pg.empty_string + (qsTr("Wrong Password"))
                 color: Style.colorRed
                 visible: wrong_password
             }
@@ -71,7 +71,7 @@ DefaultModal {
         TextAreaWithTitle {
             visible: seed !== ''
 
-            title: API.get().empty_string + (qsTr("Seed"))
+            title: API.get().settings_pg.empty_string + (qsTr("Seed"))
             field.text: seed
             field.readOnly: true
             copyable: true
@@ -80,7 +80,7 @@ DefaultModal {
         // Buttons
         RowLayout {
             DefaultButton {
-                text: API.get().empty_string + (seed === '' ? qsTr("Cancel") : qsTr("Close"))
+                text: API.get().settings_pg.empty_string + (seed === '' ? qsTr("Cancel") : qsTr("Close"))
                 Layout.fillWidth: true
                 onClicked: root.close()
             }
@@ -88,7 +88,7 @@ DefaultModal {
             PrimaryButton {
                 id: submit_button
                 visible: seed === ''
-                text: API.get().empty_string + (qsTr("View"))
+                text: API.get().settings_pg.empty_string + (qsTr("View"))
                 Layout.fillWidth: true
                 enabled: input_password.isValid()
                 onClicked: tryViewSeed()

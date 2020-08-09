@@ -24,7 +24,7 @@ DefaultModal {
         width: parent.width
 
         ModalHeader {
-            title: API.get().empty_string + (qsTr("Confirm Exchange Details"))
+            title: API.get().settings_pg.empty_string + (qsTr("Confirm Exchange Details"))
         }
 
         OrderContent {
@@ -73,13 +73,13 @@ DefaultModal {
                 DefaultText {
                     Layout.alignment: Qt.AlignHCenter
 
-                    text_value: API.get().empty_string + (qsTr("This swap request can not be undone and is a final event!"))
+                    text_value: API.get().settings_pg.empty_string + (qsTr("This swap request can not be undone and is a final event!"))
                 }
 
                 DefaultText {
                     Layout.alignment: Qt.AlignHCenter
 
-                    text_value: API.get().empty_string + (qsTr("This transaction can take up to 10 mins - DO NOT close this application!"))
+                    text_value: API.get().settings_pg.empty_string + (qsTr("This transaction can take up to 10 mins - DO NOT close this application!"))
                     font.pixelSize: Style.textSizeSmall4
                 }
             }
@@ -104,13 +104,13 @@ DefaultModal {
 
                 DefaultText {
                     Layout.alignment: Qt.AlignHCenter
-                    text_value: API.get().empty_string + (qsTr("Security configuration"))
+                    text_value: API.get().settings_pg.empty_string + (qsTr("Security configuration"))
                     font.bold: true
                 }
 
                 DefaultText {
                     Layout.alignment: Qt.AlignHCenter
-                    text_value: API.get().empty_string + ("✅ " +
+                    text_value: API.get().settings_pg.empty_string + ("✅ " +
                                                           (config_section.is_dpow_configurable ? qsTr("dPoW protected") :
                                                                                   qsTr("%1 confirmations for incoming transactions").arg(config_section.default_config.required_confirmations)))
                 }
@@ -122,7 +122,7 @@ DefaultModal {
                 Layout.alignment: Qt.AlignHCenter
                 id: enable_custom_config
 
-                text: API.get().empty_string + (qsTr("Use custom protection settings for incoming %1 transactions", "TICKER").arg(rel_ticker))
+                text: API.get().settings_pg.empty_string + (qsTr("Use custom protection settings for incoming %1 transactions", "TICKER").arg(rel_ticker))
             }
 
             // Configuration settings
@@ -143,13 +143,13 @@ DefaultModal {
                         if(checked) enable_normal_confs.checked = true
                     }
 
-                    text: API.get().empty_string + (qsTr("Enable Komodo dPoW security"))
+                    text: API.get().settings_pg.empty_string + (qsTr("Enable Komodo dPoW security"))
                 }
 
                 DefaultText {
                     visible: enable_dpow_confs.visible && enable_dpow_confs.enabled
                     Layout.alignment: Qt.AlignHCenter
-                    text_value: API.get().empty_string + (General.cex_icon + " " + qsTr('<a href="https://komodoplatform.com/security-delayed-proof-of-work-dpow/">Read more about dPoW</a>'))
+                    text_value: API.get().settings_pg.empty_string + (General.cex_icon + " " + qsTr('<a href="https://komodoplatform.com/security-delayed-proof-of-work-dpow/">Read more about dPoW</a>'))
                     wrapMode: Text.WordWrap
                     font.pixelSize: Style.textSizeSmall2
 
@@ -166,7 +166,7 @@ DefaultModal {
                     enabled: !config_section.is_dpow_configurable || !enable_dpow_confs.checked
                     checked: true
 
-                    text: API.get().empty_string + (qsTr("Change required confirmations"))
+                    text: API.get().settings_pg.empty_string + (qsTr("Change required confirmations"))
                 }
 
                 // Normal configuration settings
@@ -177,7 +177,7 @@ DefaultModal {
 
                     DefaultText {
                         Layout.alignment: Qt.AlignHCenter
-                        text_value: API.get().empty_string + (qsTr("Confirmations") + ": " + required_confirmation_count.value)
+                        text_value: API.get().settings_pg.empty_string + (qsTr("Confirmations") + ": " + required_confirmation_count.value)
                         color: parent.enabled ? Style.colorText : Style.colorTextDisabled
                     }
 
@@ -213,7 +213,7 @@ DefaultModal {
                     DefaultText {
                         Layout.alignment: Qt.AlignHCenter
 
-                        text_value: API.get().empty_string + ("⚠️ " + qsTr("Warning, this atomic swap is not dPoW protected!"))
+                        text_value: API.get().settings_pg.empty_string + ("⚠️ " + qsTr("Warning, this atomic swap is not dPoW protected!"))
                     }
                 }
             }
@@ -222,13 +222,13 @@ DefaultModal {
         // Buttons
         RowLayout {
             DefaultButton {
-                text: API.get().empty_string + (qsTr("Cancel"))
+                text: API.get().settings_pg.empty_string + (qsTr("Cancel"))
                 Layout.fillWidth: true
                 onClicked: root.close()
             }
 
             PrimaryButton {
-                text: API.get().empty_string + (qsTr("Confirm"))
+                text: API.get().settings_pg.empty_string + (qsTr("Confirm"))
                 Layout.fillWidth: true
                 onClicked: {
                     trade(left_ticker, right_ticker, {

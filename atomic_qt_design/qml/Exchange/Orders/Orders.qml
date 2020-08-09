@@ -87,7 +87,7 @@ Item {
                 Switch {
                     id: show_all_coins
                     Layout.leftMargin: 15
-                    text: API.get().empty_string + (qsTr("Show All Coins"))
+                    text: API.get().settings_pg.empty_string + (qsTr("Show All Coins"))
 
                     checked: true
                     onCheckedChanged: applyFilter()
@@ -118,7 +118,7 @@ Item {
                 }
 
                 DangerButton {
-                    text: API.get().empty_string + (show_all_coins.checked ? qsTr("Cancel All Orders") : qsTr("Cancel All %1 Orders", "TICKER").arg(base))
+                    text: API.get().settings_pg.empty_string + (show_all_coins.checked ? qsTr("Cancel All Orders") : qsTr("Cancel All %1 Orders", "TICKER").arg(base))
                     enabled: orders_model.length > 0
                     onClicked: {
                         if(show_all_coins.checked) API.get().trading_pg.cancel_all_orders()
@@ -137,7 +137,7 @@ Item {
             spacing: parent.spacing
 
             OrderList {
-                title: API.get().empty_string + (show_all_coins.checked ? qsTr("All Orders") : qsTr("All %1 Orders", "TICKER").arg(base))
+                title: API.get().settings_pg.empty_string + (show_all_coins.checked ? qsTr("All Orders") : qsTr("All %1 Orders", "TICKER").arg(base))
                 items: orders_model
             }
         }

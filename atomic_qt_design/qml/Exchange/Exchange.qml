@@ -92,7 +92,7 @@ Item {
 
                     ExchangeTab {
                         dashboard_index: General.idx_exchange_trade
-                        text_value: API.get().empty_string + (qsTr("Trade"))
+                        text_value: API.get().settings_pg.empty_string + (qsTr("Trade"))
                     }
 
                     VerticalLineBasic {
@@ -103,7 +103,7 @@ Item {
 
                     ExchangeTab {
                         dashboard_index: General.idx_exchange_orders
-                        text_value: API.get().empty_string + (qsTr("Orders"))
+                        text_value: API.get().settings_pg.empty_string + (qsTr("Orders"))
                     }
 
                     VerticalLineBasic {
@@ -113,7 +113,7 @@ Item {
 
                     ExchangeTab {
                         dashboard_index: General.idx_exchange_history
-                        text_value: API.get().empty_string + (qsTr("History"))
+                        text_value: API.get().settings_pg.empty_string + (qsTr("History"))
                     }
                 }
             }

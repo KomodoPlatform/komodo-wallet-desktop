@@ -17,7 +17,7 @@ FloatingBackground {
     property string total_amount: "0"
 
     function getFiatText(v, ticker) {
-        return General.formatFiat('', v === '' ? 0 : API.get().get_fiat_from_amount(ticker, v), API.get().current_fiat) + " " +  General.cex_icon
+        return General.formatFiat('', v === '' ? 0 : API.get().get_fiat_from_amount(ticker, v), API.get().settings_pg.current_fiat) + " " +  General.cex_icon
     }
 
     function getVolume() {
@@ -182,7 +182,7 @@ FloatingBackground {
 
                 DefaultButton {
                     font.pixelSize: Style.textSize
-                    text: API.get().empty_string + (qsTr("Sell"))
+                    text: API.get().settings_pg.empty_string + (qsTr("Sell"))
                     color: sell_mode ? Style.colorRed : Style.colorRed3
                     colorTextEnabled: sell_mode ? Style.colorWhite1 : Style.colorWhite6
                     font.weight: Font.Bold
@@ -190,7 +190,7 @@ FloatingBackground {
                 }
                 DefaultButton {
                     font.pixelSize: Style.textSize
-                    text: API.get().empty_string + (qsTr("Buy"))
+                    text: API.get().settings_pg.empty_string + (qsTr("Buy"))
                     color: sell_mode ? Style.colorGreen3 : Style.colorGreen
                     colorTextEnabled: sell_mode ? Style.colorWhite8 : Style.colorWhite1
                     font.weight: Font.Bold
@@ -211,7 +211,7 @@ FloatingBackground {
                 Layout.fillWidth: true
                 enabled: input_volume.field.enabled
 
-                field.left_text: API.get().empty_string + (qsTr("Price"))
+                field.left_text: API.get().settings_pg.empty_string + (qsTr("Price"))
                 field.right_text: right_ticker
 
                 field.onTextChanged: {
@@ -240,9 +240,9 @@ FloatingBackground {
                     width: parent.width
                     field.enabled: root.enabled && !shouldBlockInput()
 
-                    field.left_text: API.get().empty_string + (qsTr("Volume"))
+                    field.left_text: API.get().settings_pg.empty_string + (qsTr("Volume"))
                     field.right_text: left_ticker
-                    field.placeholderText: API.get().empty_string + (is_sell_form ? qsTr("Amount to sell") : qsTr("Amount to receive"))
+                    field.placeholderText: API.get().settings_pg.empty_string + (is_sell_form ? qsTr("Amount to sell") : qsTr("Amount to receive"))
                     field.onTextChanged: {
                         const before_checks = field.text
                         onInputChanged()
@@ -312,21 +312,21 @@ FloatingBackground {
                     anchors.left: parent.left
                     anchors.top: parent.bottom
 
-                    text_value: API.get().empty_string + (qsTr("Min"))
+                    text_value: API.get().settings_pg.empty_string + (qsTr("Min"))
                     font.pixelSize: input_volume.field.font.pixelSize
                 }
                 DefaultText {
                     anchors.horizontalCenter: parent.horizontalCenter
                     anchors.top: parent.bottom
 
-                    text_value: API.get().empty_string + (qsTr("Half"))
+                    text_value: API.get().settings_pg.empty_string + (qsTr("Half"))
                     font.pixelSize: input_volume.field.font.pixelSize
                 }
                 DefaultText {
                     anchors.right: parent.right
                     anchors.top: parent.bottom
 
-                    text_value: API.get().empty_string + (qsTr("Max"))
+                    text_value: API.get().settings_pg.empty_string + (qsTr("Max"))
                     font.pixelSize: input_volume.field.font.pixelSize
                 }
             }
@@ -355,7 +355,7 @@ FloatingBackground {
 
                         DefaultText {
                             id: tx_fee_text
-                            text_value: API.get().empty_string + ((qsTr('Transaction Fee') + ': ' + General.formatCrypto("", curr_trade_info.tx_fee, curr_trade_info.is_ticker_of_fees_eth ? "ETH" : base_ticker)) +
+                            text_value: API.get().settings_pg.empty_string + ((qsTr('Transaction Fee') + ': ' + General.formatCrypto("", curr_trade_info.tx_fee, curr_trade_info.is_ticker_of_fees_eth ? "ETH" : base_ticker)) +
                                                                     // ETH Fees
                                                                     (hasEthFees() ? " + " + General.formatCrypto("", curr_trade_info.erc_fees, 'ETH') : '') +
 
@@ -373,7 +373,7 @@ FloatingBackground {
                         }
 
                         DefaultText {
-                            text_value: API.get().empty_string + (qsTr('Trading Fee') + ': ' + General.formatCrypto("", curr_trade_info.trade_fee, base_ticker) +
+                            text_value: API.get().settings_pg.empty_string + (qsTr('Trading Fee') + ': ' + General.formatCrypto("", curr_trade_info.trade_fee, base_ticker) +
 
                                                                   // Fiat part
                                                                   (" ("+
@@ -390,7 +390,7 @@ FloatingBackground {
                     DefaultText {
                         visible: !fees.visible
 
-                        text_value: API.get().empty_string + (qsTr('Fees will be calculated'))
+                        text_value: API.get().settings_pg.empty_string + (qsTr('Fees will be calculated'))
                         Layout.alignment: Qt.AlignCenter
                         font.pixelSize: tx_fee_text.font.pixelSize
                     }
@@ -408,7 +408,7 @@ FloatingBackground {
 
             DefaultText {
                 Layout.alignment: Qt.AlignLeft
-                text_value: API.get().empty_string + (qsTr("Total") + ": " + General.formatCrypto("", total_amount, right_ticker))
+                text_value: API.get().settings_pg.empty_string + (qsTr("Total") + ": " + General.formatCrypto("", total_amount, right_ticker))
                 font.pixelSize: Style.textSizeSmall3
             }
 
@@ -422,7 +422,7 @@ FloatingBackground {
 
                 width: 170
 
-                text: API.get().empty_string + (is_sell_form ? qsTr("Sell %1", "TICKER").arg(left_ticker) : qsTr("Buy %1", "TICKER").arg(left_ticker))
+                text: API.get().settings_pg.empty_string + (is_sell_form ? qsTr("Sell %1", "TICKER").arg(left_ticker) : qsTr("Buy %1", "TICKER").arg(left_ticker))
                 enabled: valid_trade_info && !notEnoughBalanceForFees() && isValid()
                 onClicked: confirm_trade_modal.open()
             }

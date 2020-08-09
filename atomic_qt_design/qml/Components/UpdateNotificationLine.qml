@@ -22,7 +22,7 @@ Rectangle {
         anchors.horizontalCenterOffset: -parent.radius * 0.5
         anchors.verticalCenterOffset: parent.radius * 0.4
 
-        text: API.get().empty_string + (General.download_icon + " " + qsTr("New update available!") + " " + qsTr("Version:") + " " + API.get().update_status.new_version + "  -  " + qsTr("Click here for the details."))
+        text: API.get().settings_pg.empty_string + (General.download_icon + " " + qsTr("New update available!") + " " + qsTr("Version:") + " " + API.get().update_status.new_version + "  -  " + qsTr("Click here for the details."))
         font.pixelSize: Style.textSizeSmall3
         color: Style.colorWhite10
     }

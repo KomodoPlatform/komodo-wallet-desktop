@@ -22,68 +22,68 @@ DefaultModal {
         width: 700
 
         ModalHeader {
-            title: API.get().empty_string + (qsTr("Transaction Details"))
+            title: API.get().settings_pg.empty_string + (qsTr("Transaction Details"))
         }
 
         // Amount
         TextWithTitle {
-            title: API.get().empty_string + (qsTr("Amount"))
-            text: API.get().empty_string + (General.formatCrypto(details.received, details.amount, API.get().current_coin_info.ticker, details.amount_fiat, API.get().current_currency))
+            title: API.get().settings_pg.empty_string + (qsTr("Amount"))
+            text: API.get().settings_pg.empty_string + (General.formatCrypto(details.received, details.amount, API.get().current_coin_info.ticker, details.amount_fiat, API.get().settings_pg.current_currency))
             value_color: details.received ? Style.colorGreen : Style.colorRed
             privacy: true
         }
 
         // Fees
         TextWithTitle {
-            title: API.get().empty_string + (qsTr("Fees"))
-            text: API.get().empty_string + (General.formatCrypto("", details.fees, General.txFeeTicker(API.get().current_coin_info)))
+            title: API.get().settings_pg.empty_string + (qsTr("Fees"))
+            text: API.get().settings_pg.empty_string + (General.formatCrypto("", details.fees, General.txFeeTicker(API.get().current_coin_info)))
             privacy: true
         }
 
         // Date
         TextWithTitle {
-            title: API.get().empty_string + (qsTr("Date"))
-            text: API.get().empty_string + (details.timestamp === 0 ? qsTr("Unconfirmed"):  details.date)
+            title: API.get().settings_pg.empty_string + (qsTr("Date"))
+            text: API.get().settings_pg.empty_string + (details.timestamp === 0 ? qsTr("Unconfirmed"):  details.date)
         }
 
         // Transaction Hash
         TextWithTitle {
-            title: API.get().empty_string + (qsTr("Transaction Hash"))
-            text: API.get().empty_string + (details.tx_hash)
+            title: API.get().settings_pg.empty_string + (qsTr("Transaction Hash"))
+            text: API.get().settings_pg.empty_string + (details.tx_hash)
             privacy: true
         }
 
         // Confirmations
         TextWithTitle {
-            title: API.get().empty_string + (qsTr("Confirmations"))
-            text: API.get().empty_string + (details.confirmations)
+            title: API.get().settings_pg.empty_string + (qsTr("Confirmations"))
+            text: API.get().settings_pg.empty_string + (details.confirmations)
         }
 
         // Block Height
         TextWithTitle {
-            title: API.get().empty_string + (qsTr("Block Height"))
-            text: API.get().empty_string + (details.blockheight)
+            title: API.get().settings_pg.empty_string + (qsTr("Block Height"))
+            text: API.get().settings_pg.empty_string + (details.blockheight)
         }
 
         AddressList {
-            title: API.get().empty_string + (qsTr("From"))
+            title: API.get().settings_pg.empty_string + (qsTr("From"))
             model: details.from
         }
 
         AddressList {
-            title: API.get().empty_string + (qsTr("To"))
+            title: API.get().settings_pg.empty_string + (qsTr("To"))
             model: details.to
         }
 
         // Buttons
         RowLayout {
             DefaultButton {
-                text: API.get().empty_string + (qsTr("Close"))
+                text: API.get().settings_pg.empty_string + (qsTr("Close"))
                 Layout.fillWidth: true
                 onClicked: root.close()
             }
             PrimaryButton {
-                text: API.get().empty_string + (qsTr("View at Explorer"))
+                text: API.get().settings_pg.empty_string + (qsTr("View at Explorer"))
                 Layout.fillWidth: true
                 onClicked: General.viewTxAtExplorer(API.get().current_coin_info.ticker, details.tx_hash)
             }

@@ -26,7 +26,7 @@ SetupPage {
         width: 400
         spacing: Style.rowSpacing
         DefaultText {
-            text_value: API.get().empty_string + (qsTr("Welcome"))
+            text_value: API.get().settings_pg.empty_string + (qsTr("Welcome"))
         }
 
         HorizontalLine {
@@ -39,13 +39,13 @@ SetupPage {
 
             DefaultButton {
                 Layout.fillWidth: true
-                text: API.get().empty_string + (qsTr("Recover Seed"))
+                text: API.get().settings_pg.empty_string + (qsTr("Recover Seed"))
                 onClicked: onClickedRecoverSeed()
             }
 
             DefaultButton {
                 Layout.fillWidth: true
-                text: API.get().empty_string + (qsTr("New User"))
+                text: API.get().settings_pg.empty_string + (qsTr("New User"))
                 onClicked: onClickedNewUser()
             }
         }
@@ -58,7 +58,7 @@ SetupPage {
 
             // Name
             DefaultText {
-                text_value: API.get().empty_string + (qsTr("Wallets"))
+                text_value: API.get().settings_pg.empty_string + (qsTr("Wallets"))
                 font.pixelSize: Style.textSizeSmall2
             }
 
@@ -98,7 +98,7 @@ SetupPage {
                             anchors.left: parent.left
                             anchors.leftMargin: 40
 
-                            text_value: API.get().empty_string + (model.modelData)
+                            text_value: API.get().settings_pg.empty_string + (model.modelData)
                             anchors.verticalCenter: parent.verticalCenter
                             font.pixelSize: Style.textSizeSmall2
                         }

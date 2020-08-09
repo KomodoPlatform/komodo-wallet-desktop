@@ -167,7 +167,7 @@ DefaultModal {
             Layout.fillWidth: true
 
             ModalHeader {
-                title: API.get().empty_string + (qsTr("Prepare to Send"))
+                title: API.get().settings_pg.empty_string + (qsTr("Prepare to Send"))
             }
 
             // Send address
@@ -177,13 +177,13 @@ DefaultModal {
                 AddressFieldWithTitle {
                     id: input_address
                     Layout.alignment: Qt.AlignLeft
-                    title: API.get().empty_string + (qsTr("Recipient's address"))
-                    field.placeholderText: API.get().empty_string + (qsTr("Enter address of the recipient"))
+                    title: API.get().settings_pg.empty_string + (qsTr("Recipient's address"))
+                    field.placeholderText: API.get().settings_pg.empty_string + (qsTr("Enter address of the recipient"))
                 }
 
                 DefaultButton {
                     Layout.alignment: Qt.AlignRight | Qt.AlignBottom
-                    text: API.get().empty_string + (qsTr("Address Book"))
+                    text: API.get().settings_pg.empty_string + (qsTr("Address Book"))
                     onClicked: {
                         openAddressBook()
                         root.close()
@@ -198,12 +198,12 @@ DefaultModal {
                 DefaultText {
                     Layout.alignment: Qt.AlignLeft
                     color: Style.colorRed
-                    text_value: API.get().empty_string + (qsTr("The address has to be mixed case."))
+                    text_value: API.get().settings_pg.empty_string + (qsTr("The address has to be mixed case."))
                 }
 
                 DefaultButton {
                     Layout.alignment: Qt.AlignRight
-                    text: API.get().empty_string + (qsTr("Fix"))
+                    text: API.get().settings_pg.empty_string + (qsTr("Fix"))
                     onClicked: input_address.field.text = ercToMixedCase(input_address.field.text)
                 }
             }
@@ -215,14 +215,14 @@ DefaultModal {
                 AmountField {
                     id: input_amount
                     field.visible: !input_max_amount.checked
-                    title: API.get().empty_string + (qsTr("Amount to send"))
-                    field.placeholderText: API.get().empty_string + (qsTr("Enter the amount to send"))
+                    title: API.get().settings_pg.empty_string + (qsTr("Amount to send"))
+                    field.placeholderText: API.get().settings_pg.empty_string + (qsTr("Enter the amount to send"))
                 }
 
                 Switch {
                     id: input_max_amount
                     Layout.alignment: Qt.AlignRight | Qt.AlignBottom
-                    text: API.get().empty_string + (qsTr("MAX"))
+                    text: API.get().settings_pg.empty_string + (qsTr("MAX"))
                     onCheckedChanged: input_amount.field.text = ""
                 }
             }
@@ -230,7 +230,7 @@ DefaultModal {
             // Custom fees switch
             Switch {
                 id: custom_fees_switch
-                text: API.get().empty_string + (qsTr("Enable Custom Fees"))
+                text: API.get().settings_pg.empty_string + (qsTr("Enable Custom Fees"))
                 onCheckedChanged: input_custom_fees.field.text = ""
             }
 
@@ -241,7 +241,7 @@ DefaultModal {
                 DefaultText {
                     font.pixelSize: Style.textSize
                     color: Style.colorRed
-                    text_value: API.get().empty_string + (qsTr("Only use custom fees if you know what you are doing!"))
+                    text_value: API.get().settings_pg.empty_string + (qsTr("Only use custom fees if you know what you are doing!"))
                 }
 
                 // Normal coins, Custom fees input
@@ -249,8 +249,8 @@ DefaultModal {
                     visible: !isERC20()
 
                     id: input_custom_fees
-                    title: API.get().empty_string + (qsTr("Custom Fee") + " [" + API.get().current_coin_info.ticker + "]")
-                    field.placeholderText: API.get().empty_string + (qsTr("Enter the custom fee"))
+                    title: API.get().settings_pg.empty_string + (qsTr("Custom Fee") + " [" + API.get().current_coin_info.ticker + "]")
+                    field.placeholderText: API.get().settings_pg.empty_string + (qsTr("Enter the custom fee"))
                 }
 
                 // ERC-20 coins
@@ -260,15 +260,15 @@ DefaultModal {
                     // Gas input
                     AmountIntField {
                         id: input_custom_fees_gas
-                        title: API.get().empty_string + (qsTr("Gas Limit") + " [Gwei]")
-                        field.placeholderText: API.get().empty_string + (qsTr("Enter the gas limit"))
+                        title: API.get().settings_pg.empty_string + (qsTr("Gas Limit") + " [Gwei]")
+                        field.placeholderText: API.get().settings_pg.empty_string + (qsTr("Enter the gas limit"))
                     }
 
                     // Gas price input
                     AmountIntField {
                         id: input_custom_fees_gas_price
-                        title: API.get().empty_string + (qsTr("Gas Price") + " [Gwei]")
-                        field.placeholderText: API.get().empty_string + (qsTr("Enter the gas price"))
+                        title: API.get().settings_pg.empty_string + (qsTr("Gas Price") + " [Gwei]")
+                        field.placeholderText: API.get().settings_pg.empty_string + (qsTr("Enter the gas price"))
                     }
                 }
             }
@@ -282,7 +282,7 @@ DefaultModal {
 
                 color: Style.colorRed
 
-                text_value: API.get().empty_string + (qsTr("Custom Fee can't be higher than the amount"))
+                text_value: API.get().settings_pg.empty_string + (qsTr("Custom Fee can't be higher than the amount"))
             }
 
             // Not enough funds error
@@ -292,7 +292,7 @@ DefaultModal {
 
                 color: Style.colorRed
 
-                text_value: API.get().empty_string + (qsTr("Not enough funds.") + "\n" + qsTr("You have %1", "AMT TICKER").arg(General.formatCrypto("", API.get().get_balance(API.get().current_coin_info.ticker), API.get().current_coin_info.ticker)))
+                text_value: API.get().settings_pg.empty_string + (qsTr("Not enough funds.") + "\n" + qsTr("You have %1", "AMT TICKER").arg(General.formatCrypto("", API.get().get_balance(API.get().current_coin_info.ticker), API.get().current_coin_info.ticker)))
             }
 
             DefaultText {
@@ -304,12 +304,12 @@ DefaultModal {
             // Buttons
             RowLayout {
                 DefaultButton {
-                    text: API.get().empty_string + (qsTr("Close"))
+                    text: API.get().settings_pg.empty_string + (qsTr("Close"))
                     Layout.fillWidth: true
                     onClicked: root.close()
                 }
                 PrimaryButton {
-                    text: API.get().empty_string + (qsTr("Prepare"))
+                    text: API.get().settings_pg.empty_string + (qsTr("Prepare"))
                     Layout.fillWidth: true
 
                     enabled: fieldAreFilled() && hasFunds() && !hasErc20CaseIssue(isERC20(), input_address.field.text)
@@ -323,42 +323,42 @@ DefaultModal {
         // Send Page
         ColumnLayout {
             ModalHeader {
-                title: API.get().empty_string + (qsTr("Send"))
+                title: API.get().settings_pg.empty_string + (qsTr("Send"))
             }
 
             // Address
             TextWithTitle {
-                title: API.get().empty_string + (qsTr("Recipient's address"))
-                text: API.get().empty_string + (input_address.field.text)
+                title: API.get().settings_pg.empty_string + (qsTr("Recipient's address"))
+                text: API.get().settings_pg.empty_string + (input_address.field.text)
             }
 
             // Amount
             TextWithTitle {
-                title: API.get().empty_string + (qsTr("Amount"))
-                text: API.get().empty_string + (General.formatCrypto("", input_amount.field.text, API.get().current_coin_info.ticker))
+                title: API.get().settings_pg.empty_string + (qsTr("Amount"))
+                text: API.get().settings_pg.empty_string + (General.formatCrypto("", input_amount.field.text, API.get().current_coin_info.ticker))
             }
 
             // Fees
             TextWithTitle {
-                title: API.get().empty_string + (qsTr("Fees"))
-                text: API.get().empty_string + (General.formatCrypto("", prepare_send_result.fees, General.txFeeTicker(API.get().current_coin_info)))
+                title: API.get().settings_pg.empty_string + (qsTr("Fees"))
+                text: API.get().settings_pg.empty_string + (General.formatCrypto("", prepare_send_result.fees, General.txFeeTicker(API.get().current_coin_info)))
             }
 
             // Date
             TextWithTitle {
-                title: API.get().empty_string + (qsTr("Date"))
-                text: API.get().empty_string + (prepare_send_result.date)
+                title: API.get().settings_pg.empty_string + (qsTr("Date"))
+                text: API.get().settings_pg.empty_string + (prepare_send_result.date)
             }
 
             // Buttons
             RowLayout {
                 DefaultButton {
-                    text: API.get().empty_string + (qsTr("Back"))
+                    text: API.get().settings_pg.empty_string + (qsTr("Back"))
                     Layout.fillWidth: true
                     onClicked: stack_layout.currentIndex = 0
                 }
                 PrimaryButton {
-                    text: API.get().empty_string + (qsTr("Send"))
+                    text: API.get().settings_pg.empty_string + (qsTr("Send"))
                     Layout.fillWidth: true
                     onClicked: sendCoin()
                 }

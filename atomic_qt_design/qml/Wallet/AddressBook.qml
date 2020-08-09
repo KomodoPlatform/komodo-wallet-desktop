@@ -45,7 +45,7 @@ ColumnLayout {
         id: back_button
         property bool disabled: global_edit_in_progress
         Layout.leftMargin: layout_margin
-        text_value: API.get().empty_string + ("< " + qsTr("Back"))
+        text_value: API.get().settings_pg.empty_string + ("< " + qsTr("Back"))
         font.bold: true
         color: disabled ? Style.colorTextDisabled : Style.colorText
 
@@ -60,7 +60,7 @@ ColumnLayout {
         Layout.fillWidth: true
 
         DefaultText {
-            text_value: API.get().empty_string + (qsTr("Address Book"))
+            text_value: API.get().settings_pg.empty_string + (qsTr("Address Book"))
             font.bold: true
             font.pixelSize: Style.textSize3
             Layout.fillWidth: true
@@ -69,7 +69,7 @@ ColumnLayout {
         DefaultButton {
             Layout.rightMargin: layout_margin
             Layout.alignment: Qt.AlignRight
-            text: API.get().empty_string + (qsTr("New Contact"))
+            text: API.get().settings_pg.empty_string + (qsTr("New Contact"))
             enabled: !global_edit_in_progress
             onClicked: {
                 API.get().addressbook_mdl.add_contact_entry()
@@ -169,7 +169,7 @@ ColumnLayout {
                                 id: name_input
 
                                 color: Style.colorText
-                                placeholderText: API.get().empty_string + (qsTr("Enter the contact name"))
+                                placeholderText: API.get().settings_pg.empty_string + (qsTr("Enter the contact name"))
                                 width: 150
                                 onTextChanged: {
                                     const max_length = 50
@@ -367,7 +367,7 @@ ColumnLayout {
                                     anchors.verticalCenter: parent.verticalCenter
                                     visible: !combo_base.visible
 
-                                    text_value: API.get().empty_string + (type)
+                                    text_value: API.get().settings_pg.empty_string + (type)
                                 }
 
                                 DefaultComboBox {
@@ -410,7 +410,7 @@ ColumnLayout {
                                     anchors.verticalCenter: parent.verticalCenter
                                     anchors.leftMargin: layout_margin * 7
                                     font.pixelSize: Style.textSizeSmall3
-                                    placeholderText: API.get().empty_string + (qsTr("Enter the address"))
+                                    placeholderText: API.get().settings_pg.empty_string + (qsTr("Enter the address"))
                                     width: 400
                                     visible: editing_address
                                 }
@@ -439,7 +439,7 @@ ColumnLayout {
                                         Layout.leftMargin: layout_margin
 
                                         font.pixelSize: Style.textSizeSmall3
-                                        text: API.get().empty_string + (qsTr("Explorer"))
+                                        text: API.get().settings_pg.empty_string + (qsTr("Explorer"))
                                         enabled: address !== "" && type !== ""
                                         visible: !editing_address
                                         onClicked: General.viewAddressAtExplorer(type, address)
@@ -450,7 +450,7 @@ ColumnLayout {
                                         Layout.leftMargin: layout_margin
 
                                         font.pixelSize: Style.textSizeSmall3
-                                        text: API.get().empty_string + (qsTr("Send"))
+                                        text: API.get().settings_pg.empty_string + (qsTr("Send"))
                                         minWidth: height
                                         enabled: address !== "" && type !== "" && API.get().enabled_coins.map(c => c.ticker).indexOf(type) !== -1
                                         visible: !editing_address
