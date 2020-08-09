@@ -94,6 +94,7 @@ DefaultModal {
             id: config_section
 
             readonly property var default_config: API.get().trading_pg.get_raw_mm2_coin_cfg(rel_ticker)
+
             readonly property bool is_dpow_configurable: config_section.default_config.requires_notarization || false
             Layout.bottomMargin: 10
             Layout.alignment: Qt.AlignHCenter
@@ -112,7 +113,7 @@ DefaultModal {
                     Layout.alignment: Qt.AlignHCenter
                     text_value: API.get().settings_pg.empty_string + ("✅ " +
                                                           (config_section.is_dpow_configurable ? qsTr("dPoW protected") :
-                                                                                  qsTr("%1 confirmations for incoming %2 transactions").arg(config_section.default_config.required_confirmations).arg(rel_ticker)))
+                                                                                  qsTr("%1 confirmations for incoming %2 transactions").arg(config_section.default_config.required_confirmations || 1).arg(rel_ticker)))
                 }
 
                 DefaultText {

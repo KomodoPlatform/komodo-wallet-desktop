@@ -246,7 +246,7 @@ Item {
                 nota = default_config.requires_notarization ? "1" : "0"
             }
 
-            if(nota !== "1") {
+            if(nota !== "1" && default_config.required_confirmations !== undefined && default_config.required_confirmations !== null) {
                 confs = default_config.required_confirmations.toString()
             }
         }
