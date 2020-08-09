@@ -19,6 +19,7 @@ QtObject {
     readonly property string privacy_text: "*****"
 
     property bool privacy_mode: false
+    property bool enable_desktop_notifications: true
 
     readonly property int idx_dashboard_portfolio: 0
     readonly property int idx_dashboard_wallet: 1

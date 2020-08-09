@@ -69,7 +69,8 @@ FloatingBackground {
     }
 
     function displayMessage(title, message) {
-        tray.showMessage(title, message)
+        if(General.enable_desktop_notifications)
+            tray.showMessage(title, message)
     }
 
     SystemTrayIcon {
