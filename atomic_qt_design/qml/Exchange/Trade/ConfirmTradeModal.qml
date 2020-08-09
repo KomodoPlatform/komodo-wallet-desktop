@@ -112,7 +112,7 @@ DefaultModal {
                     Layout.alignment: Qt.AlignHCenter
                     text_value: API.get().settings_pg.empty_string + ("✅ " +
                                                           (config_section.is_dpow_configurable ? qsTr("dPoW protected") :
-                                                                                  qsTr("%1 confirmations for incoming transactions").arg(config_section.default_config.required_confirmations)))
+                                                                                  qsTr("%1 confirmations for incoming %2 transactions").arg(config_section.default_config.required_confirmations).arg(rel_ticker)))
                 }
 
                 DefaultText {
