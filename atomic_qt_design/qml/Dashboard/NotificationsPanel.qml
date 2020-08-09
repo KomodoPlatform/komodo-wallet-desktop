@@ -171,7 +171,7 @@ FloatingBackground {
                         anchors.top: parent.top
                         anchors.topMargin: 10
                         anchors.right: parent.right
-                        anchors.rightMargin: 5
+                        anchors.rightMargin: 25
                         text_value: API.get().empty_string + (modelData.time)
                         font.pixelSize: Style.textSizeSmall
                     }
@@ -242,12 +242,12 @@ FloatingBackground {
             Layout.bottomMargin: parent.spacing
             spacing: 10
 
-//            DefaultButton {
-//                text: API.get().empty_string + (qsTr("Pop Test Notification"))
-//                onClicked: {
-//                    onSwapStatusUpdated("ongoing", "finished", Date.now().toString(), "BTC", "KMD", "13.3.1337")
-//                }
-//            }
+            DefaultButton {
+                text: API.get().empty_string + (qsTr("Pop Test Notification"))
+                onClicked: {
+                    onSwapStatusUpdated("ongoing", "finished", Date.now().toString(), "BTC", "KMD", "13.3.1337")
+                }
+            }
 
             DefaultButton {
                 text: API.get().empty_string + (qsTr("Close"))

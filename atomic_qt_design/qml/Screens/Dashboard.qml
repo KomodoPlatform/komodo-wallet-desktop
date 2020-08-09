@@ -157,7 +157,7 @@ Item {
 
     NotificationsPanel {
         id: notifications_panel
-        width: 500
+        width: 600
         height: 500
         anchors.left: sidebar.right
         anchors.bottom: parent.bottom
