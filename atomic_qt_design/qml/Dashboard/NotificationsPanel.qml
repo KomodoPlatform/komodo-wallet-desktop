@@ -238,16 +238,16 @@ FloatingBackground {
 
 
         RowLayout {
-            Layout.alignment: Qt.AlignBottom
+            Layout.alignment: Qt.AlignBottom | Qt.AlignRight
             Layout.bottomMargin: parent.spacing
             spacing: 10
 
-            DefaultButton {
-                text: API.get().empty_string + (qsTr("Pop Test Notification"))
-                onClicked: {
-                    onSwapStatusUpdated("ongoing", "finished", Date.now().toString(), "BTC", "KMD", "13.3.1337")
-                }
-            }
+//            DefaultButton {
+//                text: API.get().empty_string + (qsTr("Pop Test Notification"))
+//                onClicked: {
+//                    onSwapStatusUpdated("ongoing", "finished", Date.now().toString(), "BTC", "KMD", "13.3.1337")
+//                }
+//            }
 
             DefaultButton {
                 text: API.get().empty_string + (qsTr("Close"))
