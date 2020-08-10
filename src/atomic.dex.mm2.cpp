@@ -1046,11 +1046,13 @@ namespace atomic_dex
         return false;
     }
 
-    t_withdraw_answer
+    nlohmann::json
     mm2::claim_rewards(const std::string& ticker, t_mm2_ec& ec) noexcept
     {
         spdlog::debug("{} l{} f[{}]", __FUNCTION__, __LINE__, fs::path(__FILE__).filename().string());
-        const auto& info = get_coin_info(ticker);
+
+        nlohmann::json out = nlohmann::json::object();
+        const auto&    info = get_coin_info(ticker);
         if (not info.is_claimable || not do_i_have_enough_funds(ticker, t_float_50(info.minimal_claim_amount)))
         {
             ec = not info.is_claimable ? dextop_error::ticker_is_not_claimable : dextop_error::claim_not_enough_funds;
@@ -1058,7 +1060,12 @@ namespace atomic_dex
         }
         t_withdraw_request req{.coin = ticker, .to = m_balance_informations.at(ticker).address, .amount = "0", .max = true};
         auto               answer = ::mm2::api::rpc_withdraw(std::move(req));
-        return answer;
+        if (answer.rpc_result_code == 200)
+        {
+            out["withdraw_answer"]  = nlohmann::json::parse(answer.raw_result);
+            out["kmd_rewards_info"] = ::mm2::api::rpc_kmd_rewards_info().result;
+        }
+        return out;
     }
 
     t_broadcast_answer

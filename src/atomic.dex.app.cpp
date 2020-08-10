@@ -484,24 +484,15 @@ namespace atomic_dex
         return get_mm2().is_claiming_ready(ticker.toStdString());
     }
 
-    QObject*
+    QVariant
     atomic_dex::application::claim_rewards(const QString& ticker)
     {
         std::error_code ec;
         auto            answer = get_mm2().claim_rewards(ticker.toStdString(), ec);
 
-        if (not answer.error.has_value())
-        {
-            if (ec)
-            {
-                answer.error = ec.message();
-            }
-        }
+        answer["explorer_url"] = get_mm2().get_coin_info(m_coin_info->get_ticker().toStdString()).explorer_url[0];
 
-        const auto coin = get_mm2().get_coin_info(m_coin_info->get_ticker().toStdString());
-        QObject*   obj  = to_qt_binding(std::move(answer), this, QString::fromStdString(coin.explorer_url[0]));
-
-        return obj;
+        return nlohmann_json_object_to_qt_json_object(answer);
     }
 
     QString

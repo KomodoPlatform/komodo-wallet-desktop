@@ -201,7 +201,7 @@ namespace atomic_dex
         Q_INVOKABLE bool           do_i_have_enough_funds(const QString& ticker, const QString& amount) const;
         Q_INVOKABLE bool           disable_coins(const QStringList& coins);
         Q_INVOKABLE bool           is_claiming_ready(const QString& ticker);
-        Q_INVOKABLE QObject* claim_rewards(const QString& ticker);
+        Q_INVOKABLE QVariant       claim_rewards(const QString& ticker);
 
 
         Q_INVOKABLE QString        get_cex_rates(const QString& base, const QString& rel);

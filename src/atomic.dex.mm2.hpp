@@ -216,7 +216,7 @@ namespace atomic_dex
         [[nodiscard]] bool is_claiming_ready(const std::string& ticker) const noexcept;
 
         //! Claim rewards
-        t_withdraw_answer claim_rewards(const std::string& ticker, t_mm2_ec& ec) noexcept;
+        nlohmann::json claim_rewards(const std::string& ticker, t_mm2_ec& ec) noexcept;
 
         //! Send Rewards
         t_broadcast_answer send_rewards(t_broadcast_request&& req, t_mm2_ec& ec) noexcept;
@@ -243,7 +243,6 @@ namespace atomic_dex
         [[nodiscard]] t_get_trade_fee_answer get_trade_fixed_fee(const std::string& ticker) const;
 
         void apply_erc_fees(const std::string& ticker, t_float_50& value);
-        ;
 
         //! Get Current orderbook
         [[nodiscard]] t_orderbook_answer get_orderbook(t_mm2_ec& ec) const noexcept;
