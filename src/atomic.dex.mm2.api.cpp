@@ -1098,6 +1098,41 @@ namespace mm2::api
         return "error occured during rpc_version";
     }
 
+    kmd_rewards_info_answer
+    rpc_kmd_rewards_info()
+    {
+        spdlog::info("Processing rpc call: kmd_rewards_info");
+        kmd_rewards_info_answer out;
+
+        nlohmann::json       json_data = template_request("kmd_rewards_info");
+        RestClient::Response resp;
+
+        auto json_copy        = json_data;
+        json_copy["userpass"] = "*******";
+        spdlog::debug("{} request: {}", __FUNCTION__, json_copy.dump());
+
+        resp                = RestClient::post(g_endpoint, "application/json", json_data.dump());
+        out.rpc_result_code = resp.code;
+        out.result          = nlohmann::json::parse(resp.body);
+        if (resp.code == 200)
+        {
+            for (auto&& obj: out.result.at("result"))
+            {
+                if (obj.contains("accrue_stop_at"))
+                {
+                    std::size_t accrue_timestamp     = obj.at("accrue_stop_at").get<std::size_t>();
+                    obj["accrue_stop_at_human_date"] = to_human_date<std::chrono::seconds>(accrue_timestamp, "%e %b %Y, %I:%M");
+                }
+                if (obj.contains("locktime"))
+                {
+                    std::size_t locktime_timestamp = obj.at("locktime").get<std::size_t>();
+                    obj["locktime_human_date"]     = to_human_date<std::chrono::seconds>(locktime_timestamp, "%e %b %Y, %I:%M");
+                }
+            }
+        }
+        return out;
+    }
+
     nlohmann::json
     rpc_batch_electrum(std::vector<electrum_request> requests)
     {
