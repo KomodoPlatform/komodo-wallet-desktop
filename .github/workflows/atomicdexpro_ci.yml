@@ -216,7 +216,7 @@ jobs:
                        git \
                        boost \
                        gcc \
-                       gsed \
+                       gnu-sed \
                        llvm@9
 
           export CC=/usr/local/opt/llvm@9/bin/clang
