@@ -211,6 +211,9 @@ Item {
         if(is_swap) {
             console.log("Swapping current pair, it was: ", base, rel)
             API.get().trading_pg.swap_market_pair()
+            const tmp = base
+            base = rel
+            rel = tmp
         }
         else {
             console.log("Setting current orderbook with params: ", base, rel)
