@@ -162,15 +162,7 @@ namespace atomic_dex
     QString
     atomic_dex::application::get_mnemonic()
     {
-#ifdef __APPLE__
-        bc::data_chunk my_entropy_256(32); // 32 bytes = 256 bits
-
-        bc::pseudo_random_fill(my_entropy_256);
-
-        // Instantiate mnemonic word_list
-        bc::wallet::word_list words = bc::wallet::create_mnemonic(my_entropy_256);
-        return QString::fromStdString(bc::join(words));
-#elif defined(_WIN32) || defined(WIN32)
+#if defined(_WIN32) || defined(WIN32)
         std::array<unsigned char, WALLY_SECP_RANDOMIZE_LEN> data;
         sysrandom(data.data(), data.size());
         char*  output;
@@ -824,25 +816,7 @@ namespace atomic_dex
     bool
     application::mnemonic_validate(const QString& entropy)
     {
-#ifdef __APPLE__
-        std::vector<std::string> mnemonic;
-
-        // Split
-        std::string       s         = entropy.toStdString();
-        const std::string delimiter = " ";
-        size_t            pos       = 0;
-        while ((pos = s.find(delimiter)) != std::string::npos)
-        {
-            mnemonic.emplace_back(s.substr(0, pos));
-            s.erase(0, pos + delimiter.length());
-        }
-        mnemonic.emplace_back(s);
-
-        // Validate
-        return bc::wallet::validate_mnemonic(mnemonic);
-#else
         return bip39_mnemonic_validate(nullptr, entropy.toStdString().c_str()) == 0;
-#endif
     }
 
     bool
@@ -1219,7 +1193,7 @@ namespace atomic_dex
         assert(ptr != nullptr);
         return ptr;
     }
-}
+} // namespace atomic_dex
 
 //! Notification
 namespace atomic_dex
