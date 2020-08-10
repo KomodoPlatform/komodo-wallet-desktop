@@ -19,7 +19,7 @@ jobs:
           submodules: 'true'
 
       - name: Install QT (Linux)
-        uses: jurplel/install-qt-action@v2
+        uses: KomodoPlatform/install-qt-action@v2
         with:
           version: '5.15.0'
           host: 'linux'
@@ -30,7 +30,7 @@ jobs:
           py7zrversion: '==0.6'
 
       - name: Setup Nim (Linux)
-        uses: jiro4989/setup-nim-action@v1.0.2
+        uses: KomodoPlatform/setup-nim-action@v1.0.2
         with:
           nim-version: '1.2.0'
 
@@ -123,7 +123,7 @@ jobs:
           LDFLAGS: -stdlib=libc++
           CXX: clang++-9
           CC: clang-9
-        uses: lukka/run-vcpkg@v3
+        uses: KomodoPlatform/run-vcpkg@v3
         with:
           vcpkgArguments: '@${{ github.workspace }}/.github/workflows/linux_response_file.txt'
           vcpkgDirectory: '${{ github.workspace }}/ci_tools_atomic_dex/vcpkg-repo'
@@ -195,7 +195,7 @@ jobs:
 
       - name: Install QT (MacOS)
         if: steps.cache-qt-mac.outputs.cache-hit != 'true'
-        uses: jurplel/install-qt-action@v2
+        uses: KomodoPlatform/install-qt-action@v2
         with:
           version: '5.15.0'
           host: 'mac'
@@ -253,7 +253,7 @@ jobs:
         env: # Or as an environment variable
           CXX: /usr/local/opt/llvm@9/bin/clang++
           CC: /usr/local/opt/llvm@9/bin/clang
-        uses: lukka/run-vcpkg@v3
+        uses: KomodoPlatform/run-vcpkg@v3
         with:
           vcpkgArguments: '@${{ github.workspace }}/.github/workflows/osx_response_file.txt'
           vcpkgDirectory: '${{ github.workspace }}/ci_tools_atomic_dex/vcpkg-repo'
@@ -302,7 +302,7 @@ jobs:
           submodules: 'true'
 
       - name: Install QT (Win)
-        uses: jurplel/install-qt-action@v2
+        uses: KomodoPlatform/install-qt-action@v2
         with:
           version: '5.15.0'
           host: 'windows'
@@ -312,7 +312,7 @@ jobs:
           modules: 'qtcharts qtwidgets debug_info'
 
       - name: vcpkg deps (Windows)
-        uses: lukka/run-vcpkg@v3
+        uses: KomodoPlatform/run-vcpkg@v3
         with:
           vcpkgArguments: '@${{ github.workspace }}/.github/workflows/windows_response_file.txt'
           vcpkgDirectory: '${{ github.workspace }}/ci_tools_atomic_dex/vcpkg-repo'
