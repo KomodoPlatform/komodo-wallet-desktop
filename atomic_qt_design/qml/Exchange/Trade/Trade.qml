@@ -196,15 +196,13 @@ Item {
                 // Check if it's a swap
                 if(base !== changed_ticker && rel === changed_ticker)
                     is_swap = true
-
-                base = changed_ticker
+                else base = changed_ticker
             }
             else {
                 // Check if it's a swap
                 if(rel !== changed_ticker && base === changed_ticker)
                     is_swap = true
-
-                rel = changed_ticker
+                else rel = changed_ticker
             }
         }
 
