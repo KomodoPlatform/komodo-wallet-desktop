@@ -238,8 +238,8 @@ Item {
                 nota = options.enable_dpow_confs ? "1" : "0"
             }
 
-            if(nota !== "1" && options.enable_normal_confs) {
-                confs = options.normal_configuration.required_confirmation_count.toString()
+            if(nota !== "1") {
+                confs = options.required_confirmation_count.toString()
             }
         }
         else {
