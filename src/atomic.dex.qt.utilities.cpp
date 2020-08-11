@@ -31,10 +31,19 @@ namespace atomic_dex
     QJsonArray
     nlohmann_json_array_to_qt_json_array(const nlohmann::json& j)
     {
-        QJsonArray  out;
+        QJsonArray    out;
         QJsonDocument q_json = QJsonDocument::fromJson(QString::fromStdString(j.dump()).toUtf8());
         out                  = q_json.array();
         return out;
+    }
+
+    QJsonObject
+    nlohmann_json_object_to_qt_json_object(const json& j)
+    {
+        QJsonObject   obj;
+        QJsonDocument q_json = QJsonDocument::fromJson(QString::fromStdString(j.dump()).toUtf8());
+        obj                  = q_json.object();
+        return obj;
     }
 
     QString

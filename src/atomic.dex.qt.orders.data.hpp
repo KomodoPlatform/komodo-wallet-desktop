@@ -1,6 +1,7 @@
 #pragma once
 
 #include <QString>
+#include <QJsonArray>
 
 namespace atomic_dex
 {
@@ -57,5 +58,8 @@ namespace atomic_dex
 
         //! Order error message
         QString order_error_message;
+
+        //! Events
+        QJsonArray events;
     };
 } // namespace atomic_dex

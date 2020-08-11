@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.5)
 
-project(atomic_qt LANGUAGES CXX VERSION 0.2.0)
+project(atomic_qt LANGUAGES CXX VERSION 0.2.1)
 
 
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
@@ -47,13 +47,13 @@ endif ()
 ##! We fetch our dependence
 if (APPLE)
     FetchContent_Declare(mm2
-            URL https://github.com/KomodoPlatform/atomicDEX-API/releases/download/beta-2.0.2165/mm2-e51a128c6-Darwin-Release.zip)
+            URL https://github.com/KomodoPlatform/atomicDEX-API/releases/download/beta-2.0.2232/mm2-20c8e11d6-Darwin-Release.zip)
 elseif (UNIX AND NOT APPLE)
     FetchContent_Declare(mm2
-            URL https://github.com/KomodoPlatform/atomicDEX-API/releases/download/beta-2.0.2165/mm2-e51a128c6-Linux-Release.zip)
+            URL https://github.com/KomodoPlatform/atomicDEX-API/releases/download/beta-2.0.2232/mm2-20c8e11d6-Linux-Release.zip)
 else ()
     FetchContent_Declare(mm2
-            URL https://github.com/KomodoPlatform/atomicDEX-API/releases/download/beta-2.0.2165/mm2-e51a128c6-Windows_NT-Release.zip)
+            URL https://github.com/KomodoPlatform/atomicDEX-API/releases/download/beta-2.0.2232/mm2-20c8e11d6-Windows_NT-Release.zip)
 endif ()
 
 FetchContent_Declare(jl777-coins
@@ -100,14 +100,14 @@ find_package(spdlog CONFIG REQUIRED)
 find_package(Boost REQUIRED COMPONENTS filesystem random)
 find_package(Qt5 COMPONENTS Core Quick LinguistTools Svg Charts Widgets REQUIRED)
 find_package(unofficial-sodium CONFIG REQUIRED)
-find_library(unofficial-bitcoin-external bitcoin)
-find_path(unofficial-btc-headers bitcoin/bitcoin.hpp)
-message(STATUS "Found libbtc -> ${unofficial-bitcoin-external} ${unofficial-btc-headers}")
+#find_library(unofficial-bitcoin-external bitcoin)
+#find_path(unofficial-btc-headers bitcoin/bitcoin.hpp)
+#message(STATUS "Found libbtc -> ${unofficial-bitcoin-external} ${unofficial-btc-headers}")
 add_library(unofficial-bitcoin INTERFACE)
-if (APPLE)
-    target_link_libraries(unofficial-bitcoin INTERFACE ${unofficial-bitcoin-external})
-    target_include_directories(unofficial-bitcoin INTERFACE ${unofficial-btc-headers})
-elseif (WIN32)
+#if (APPLE)
+#    target_link_libraries(unofficial-bitcoin INTERFACE ${unofficial-bitcoin-external})
+#    target_include_directories(unofficial-bitcoin INTERFACE ${unofficial-btc-headers})
+if (WIN32)
     target_link_directories(unofficial-bitcoin INTERFACE wally)
     target_link_libraries(unofficial-bitcoin INTERFACE wally)
     target_include_directories(unofficial-bitcoin INTERFACE wally)
@@ -117,6 +117,7 @@ else ()
     find_path(unofficial-wally-headers wally_core.h)
     target_link_libraries(unofficial-bitcoin INTERFACE ${unofficial-wally} ${unofficial-secp})
     target_include_directories(unofficial-bitcoin INTERFACE ${unofficial-wally-headers})
+    message(STATUS "Found wally -> ${unofficial-wally} ${unofficial-wally-headers}")
 endif ()
 add_library(unofficial-btc::bitcoin ALIAS unofficial-bitcoin)
 
@@ -162,6 +163,9 @@ target_sources(atomic_qt_shared_deps INTERFACE
         ${CMAKE_SOURCE_DIR}/src/atomic.dex.qt.addressbook.model.cpp
         ${CMAKE_SOURCE_DIR}/src/atomic.dex.qt.addressbook.proxy.filter.model.cpp
         ${CMAKE_SOURCE_DIR}/src/atomic.dex.qt.contact.model.cpp
+        ${CMAKE_SOURCE_DIR}/src/atomic.dex.qt.trading.page.cpp
+        ${CMAKE_SOURCE_DIR}/src/atomic.dex.qt.market.pairs.cpp
+        ${CMAKE_SOURCE_DIR}/src/atomic.dex.qt.settings.page.cpp
         ${CMAKE_SOURCE_DIR}/src/atomic.dex.qt.orderbook.cpp
         ${CMAKE_SOURCE_DIR}/src/atomic.dex.qt.orderbook.model.cpp
         ${CMAKE_SOURCE_DIR}/src/atomic.dex.qt.orderbook.proxy.model.cpp

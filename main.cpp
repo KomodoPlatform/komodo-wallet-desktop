@@ -59,7 +59,7 @@ main([[maybe_unused]] int argc, [[maybe_unused]] char* argv[])
     date::set_install(install_db_tz_path->string());
 #endif
 
-#if defined(_WIN32) || defined(WIN32) || defined(__linux__)
+#if defined(_WIN32) || defined(WIN32) || defined(__linux__) || defined(__APPLE__)
     auto wally_res = wally_init(0);
     assert(wally_res == WALLY_OK);
 #endif
@@ -156,7 +156,7 @@ main([[maybe_unused]] int argc, [[maybe_unused]] char* argv[])
     atomic_app.launch();
 
     auto res = app->exec();
-#if defined(_WIN32) || defined(WIN32) || defined(__linux__)
+#if defined(_WIN32) || defined(WIN32) || defined(__linux__) || defined(__APPLE__)
     auto wallet_exit_res = wally_cleanup(0);
     assert(wallet_exit_res == WALLY_OK);
 #endif

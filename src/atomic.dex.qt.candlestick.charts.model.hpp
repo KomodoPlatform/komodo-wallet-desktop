@@ -54,6 +54,9 @@ namespace atomic_dex
         void update_data();
         void clear_data();
 
+        //! Public QML API
+        Q_INVOKABLE QVariantMap    find_closest_ohlc_data(int timestamp);
+
         //! Property
         [[nodiscard]] bool      is_pair_supported() const noexcept;
         void                    set_is_pair_supported(bool is_support);

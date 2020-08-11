@@ -9,7 +9,6 @@ import "../Components"
 FloatingBackground {
     id: root
 
-    property int unread_notification_count: 0
     property var notifications_list: ([])
 
     function reset() {
@@ -17,16 +16,23 @@ FloatingBackground {
     }
 
     function showApp() {
-        window.show()
+        switch(window.true_visibility) {
+            case 4:
+                window.showMaximized()
+                break
+            case 5:
+                window.showFullScreen()
+                break
+            default:
+                window.show()
+                break
+        }
+
         window.raise()
         window.requestActivate()
     }
 
     visible: false
-
-    onVisibleChanged: {
-        if(visible) unread_notification_count = 0
-    }
 
     MouseArea {
         anchors.fill: parent
@@ -58,10 +64,6 @@ FloatingBackground {
             notifications_list = [obj].concat(notifications_list)
         }
 
-        // Update unread notification count
-        if(!root.visible)
-            ++unread_notification_count
-
         // Display OS notification
         displayMessage(obj.title, obj.message)
 
@@ -78,13 +80,14 @@ FloatingBackground {
     }
 
     function displayMessage(title, message) {
-        tray.showMessage(title, message)
+        if(General.enable_desktop_notifications)
+            tray.showMessage(title, message)
     }
 
     SystemTrayIcon {
         id: tray
         visible: true
-        iconSource: General.coinIcon("KMD")
+        iconSource: General.image_path + "tray-icon.png"
         onMessageClicked: {
             root.visible = true
             showApp()
@@ -105,7 +108,7 @@ FloatingBackground {
             Layout.fillWidth: true
             Layout.alignment: Qt.AlignLeft | Qt.AlignBottom
             DefaultText {
-                text_value: API.get().empty_string + (qsTr("Notifications"))
+                text_value: API.get().settings_pg.empty_string + (qsTr("Notifications"))
                 font.pixelSize: Style.textSize2
                 Layout.fillWidth: true
                 Layout.alignment: Qt.AlignLeft | Qt.AlignVCenter
@@ -123,7 +126,7 @@ FloatingBackground {
 
                 DefaultText {
                     id: mark_all_as_read
-                    text_value: API.get().empty_string + (qsTr("Mark all as read") + " ✔️")
+                    text_value: API.get().settings_pg.empty_string + (qsTr("Clear") + " ✔️")
                     font.pixelSize: Style.textSizeSmall3
                     anchors.centerIn: parent
                     color: Style.colorWhite10
@@ -132,7 +135,6 @@ FloatingBackground {
                 MouseArea {
                     anchors.fill: parent
                     onClicked: {
-                        unread_notification_count = 0
                         notifications_list = []
                     }
                 }
@@ -151,7 +153,7 @@ FloatingBackground {
             DefaultText {
                 anchors.centerIn: parent
                 visible: !list.visible
-                text_value: API.get().empty_string + (qsTr("There isn't any notification"))
+                text_value: API.get().settings_pg.empty_string + (qsTr("There isn't any notification"))
                 font.pixelSize: Style.textSizeSmall2
             }
 
@@ -171,8 +173,8 @@ FloatingBackground {
                         anchors.top: parent.top
                         anchors.topMargin: 10
                         anchors.right: parent.right
-                        anchors.rightMargin: 5
-                        text_value: API.get().empty_string + (modelData.time)
+                        anchors.rightMargin: 25
+                        text_value: API.get().settings_pg.empty_string + (modelData.time)
                         font.pixelSize: Style.textSizeSmall
                     }
 
@@ -182,13 +184,13 @@ FloatingBackground {
                         anchors.leftMargin: 10
 
                         DefaultText {
-                            text_value: API.get().empty_string + (modelData.title)
+                            text_value: API.get().settings_pg.empty_string + (modelData.title)
                             font.pixelSize: Style.textSizeSmall4
                             font.bold: true
                         }
 
                         DefaultText {
-                            text_value: API.get().empty_string + (modelData.message)
+                            text_value: API.get().settings_pg.empty_string + (modelData.message)
                             font.pixelSize: Style.textSizeSmall1
                         }
                     }
@@ -212,13 +214,13 @@ FloatingBackground {
                         anchors.bottom: parent.bottom
                         anchors.bottomMargin: 5
                         anchors.right: parent.right
-                        anchors.rightMargin: anchors.bottomMargin
+                        anchors.rightMargin: anchors.bottomMargin + 20
 
                         color: Style.colorTheme1
 
                         DefaultText {
                             id: remove_button
-                            text_value: API.get().empty_string + ("✔️")
+                            text_value: API.get().settings_pg.empty_string + ("✔️")
                             anchors.centerIn: parent
                             font.pixelSize: Style.textSizeSmall3
                             color: Style.colorWhite10
@@ -238,19 +240,19 @@ FloatingBackground {
 
 
         RowLayout {
-            Layout.alignment: Qt.AlignBottom
+            Layout.alignment: Qt.AlignBottom | Qt.AlignRight
             Layout.bottomMargin: parent.spacing
             spacing: 10
 
-            DefaultButton {
-                text: API.get().empty_string + (qsTr("Pop Test Notification"))
-                onClicked: {
-                    onSwapStatusUpdated("ongoing", "finished", Date.now().toString(), "BTC", "KMD", "13.3.1337")
-                }
-            }
+//            DefaultButton {
+//                text: API.get().settings_pg.empty_string + (qsTr("Pop Test Notification"))
+//                onClicked: {
+//                    onSwapStatusUpdated("ongoing", "finished", Date.now().toString(), "BTC", "KMD", "13.3.1337")
+//                }
+//            }
 
             DefaultButton {
-                text: API.get().empty_string + (qsTr("Close"))
+                text: API.get().settings_pg.empty_string + (qsTr("Close"))
                 onClicked: root.visible = false
             }
         }

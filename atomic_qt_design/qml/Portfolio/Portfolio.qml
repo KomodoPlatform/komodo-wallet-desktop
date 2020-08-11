@@ -70,7 +70,7 @@ ColumnLayout {
                 Layout.topMargin: 50
                 Layout.bottomMargin: 0
                 Layout.alignment: Qt.AlignHCenter
-                text_value: API.get().empty_string + (qsTr("TOTAL"))
+                text_value: API.get().settings_pg.empty_string + (qsTr("TOTAL"))
                 font.pixelSize: Style.textSize
                 color: Style.colorWhite5
             }
@@ -79,7 +79,7 @@ ColumnLayout {
             DefaultText {
                 Layout.alignment: Qt.AlignHCenter
                 Layout.bottomMargin: 30
-                text_value: API.get().empty_string + (General.formatFiat("", API.get().balance_fiat_all, API.get().current_currency))
+                text_value: API.get().settings_pg.empty_string + (General.formatFiat("", API.get().balance_fiat_all, API.get().settings_pg.current_currency))
                 font.pixelSize: Style.textSize4
                 privacy: true
             }
@@ -89,12 +89,12 @@ ColumnLayout {
             anchors.fill: top_layout
 
             onClicked: {
-                const current_fiat = API.get().current_currency
-                const available_fiats = API.get().get_available_currencies()
+                const current_fiat = API.get().settings_pg.current_currency
+                const available_fiats = API.get().settings_pg.get_available_currencies()
                 const current_index = available_fiats.indexOf(current_fiat)
                 const next_index = (current_index + 1) % available_fiats.length
                 const next_fiat = available_fiats[next_index]
-                API.get().current_currency = next_fiat
+                API.get().settings_pg.current_currency = next_fiat
             }
         }
 
@@ -121,7 +121,7 @@ ColumnLayout {
             anchors.bottom: parent.bottom
             anchors.bottomMargin: 10
 
-            placeholderText: API.get().empty_string + (qsTr("Search"))
+            placeholderText: API.get().settings_pg.empty_string + (qsTr("Search"))
             selectByMouse: true
 
             onTextChanged: {
@@ -156,7 +156,7 @@ ColumnLayout {
             anchors.leftMargin: 40
             anchors.verticalCenter: parent.verticalCenter
 
-            text: API.get().empty_string + (qsTr("Coin"))
+            text: API.get().settings_pg.empty_string + (qsTr("Coin"))
             sort_type: sort_by_name
         }
 
@@ -168,7 +168,7 @@ ColumnLayout {
             anchors.leftMargin: parent.width * 0.265
             anchors.verticalCenter: parent.verticalCenter
 
-            text: API.get().empty_string + (qsTr("Balance"))
+            text: API.get().settings_pg.empty_string + (qsTr("Balance"))
             sort_type: sort_by_value
         }
 
@@ -180,7 +180,7 @@ ColumnLayout {
             anchors.rightMargin: parent.width * 0.37
             anchors.verticalCenter: parent.verticalCenter
 
-            text: API.get().empty_string + (qsTr("Change 24h"))
+            text: API.get().settings_pg.empty_string + (qsTr("Change 24h"))
             sort_type: sort_by_change
         }
 
@@ -192,7 +192,7 @@ ColumnLayout {
             anchors.rightMargin: parent.width * 0.24
             anchors.verticalCenter: parent.verticalCenter
 
-            text: API.get().empty_string + (qsTr("Trend 7d"))
+            text: API.get().settings_pg.empty_string + (qsTr("Trend 7d"))
             sort_type: sort_by_trend
         }
 
@@ -204,7 +204,7 @@ ColumnLayout {
             anchors.rightMargin: coin_header.anchors.leftMargin
             anchors.verticalCenter: parent.verticalCenter
 
-            text: API.get().empty_string + (qsTr("Price"))
+            text: API.get().settings_pg.empty_string + (qsTr("Price"))
             sort_type: sort_by_price
         }
 
@@ -229,7 +229,7 @@ ColumnLayout {
             anchors.horizontalCenter: parent.horizontalCenter
             anchors.verticalCenter: parent.verticalCenter
             DefaultText {
-                text_value: API.get().empty_string + (qsTr("Loading"))
+                text_value: API.get().settings_pg.empty_string + (qsTr("Loading"))
                 Layout.alignment: Qt.AlignHCenter
                 font.pixelSize: Style.textSize2
             }
@@ -277,7 +277,7 @@ ColumnLayout {
             Menu {
                 id: context_menu
                 Action {
-                    text: API.get().empty_string + (qsTr("Disable %1", "TICKER").arg(ticker))
+                    text: API.get().settings_pg.empty_string + (qsTr("Disable %1", "TICKER").arg(ticker))
                     onTriggered: API.get().disable_coins([ticker])
                     enabled: General.canDisable(ticker)
                 }
@@ -299,7 +299,7 @@ ColumnLayout {
             DefaultText {
                 anchors.left: icon.right
                 anchors.leftMargin: 10
-                text_value: API.get().empty_string + (name)
+                text_value: API.get().settings_pg.empty_string + (name)
                 anchors.verticalCenter: parent.verticalCenter
             }
 
@@ -309,7 +309,7 @@ ColumnLayout {
                 anchors.left: parent.left
                 anchors.leftMargin: balance_header.anchors.leftMargin
 
-                text_value: API.get().empty_string + (General.formatCrypto("", balance, ticker,  main_currency_balance, API.get().current_currency))
+                text_value: API.get().settings_pg.empty_string + (General.formatCrypto("", balance, ticker,  main_currency_balance, API.get().settings_pg.current_currency))
                 color: Style.colorWhite4
                 anchors.verticalCenter: parent.verticalCenter
                 privacy: true
@@ -322,7 +322,7 @@ ColumnLayout {
 
                 text_value: {
                     const v = parseFloat(change_24h)
-                    return API.get().empty_string + (v === 0 ? '-' : General.formatPercent(v))
+                    return API.get().settings_pg.empty_string + (v === 0 ? '-' : General.formatPercent(v))
                 }
                 color: Style.getValueColor(change_24h)
                 anchors.verticalCenter: parent.verticalCenter
@@ -333,7 +333,7 @@ ColumnLayout {
                 anchors.right: parent.right
                 anchors.rightMargin: price_header.anchors.rightMargin
 
-                text_value: API.get().empty_string + (General.formatFiat('', main_currency_price_for_one_unit, API.get().current_currency))
+                text_value: API.get().settings_pg.empty_string + (General.formatFiat('', main_currency_price_for_one_unit, API.get().settings_pg.current_currency))
                 color: Style.colorThemeDarkLight
                 anchors.verticalCenter: parent.verticalCenter
             }

@@ -34,7 +34,7 @@ DefaultModal {
 
         font.pixelSize: Style.textSize2
 
-        text_value: API.get().empty_string + ("(" + (!suggest_update ? qsTr("Available") : required_update ? qsTr("Required") : qsTr("Recommended")) + ")")
+        text_value: API.get().settings_pg.empty_string + ("(" + (!suggest_update ? qsTr("Available") : required_update ? qsTr("Required") : qsTr("Recommended")) + ")")
         color: !suggest_update ? Style.colorGreen : required_update ? Style.colorRed : Style.colorOrange
     }
 
@@ -43,7 +43,7 @@ DefaultModal {
 
         ModalHeader {
             id: header
-            title: API.get().empty_string + (General.download_icon + "   " + qsTr("New Update!") + " " + (API.get().update_status.current_version + "  " + General.right_arrow_icon + "  " + API.get().update_status.new_version))
+            title: API.get().settings_pg.empty_string + (General.download_icon + "   " + qsTr("New Update!") + " " + (API.get().update_status.current_version + "  " + General.right_arrow_icon + "  " + API.get().update_status.new_version))
         }
 
 
@@ -69,14 +69,14 @@ DefaultModal {
             Layout.alignment: Qt.AlignHCenter
 
             DefaultButton {
-                text: API.get().empty_string + (qsTr("Skip"))
+                text: API.get().settings_pg.empty_string + (qsTr("Skip"))
                 onClicked: root.close()
                 visible: !required_update
             }
 
             PrimaryButton {
                 enabled: status_good
-                text: API.get().empty_string + (qsTr("Download"))
+                text: API.get().settings_pg.empty_string + (qsTr("Download"))
                 onClicked: Qt.openUrlExternally(API.get().update_status.download_url)
             }
         }

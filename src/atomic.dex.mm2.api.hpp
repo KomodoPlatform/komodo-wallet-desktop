@@ -692,6 +692,14 @@ namespace mm2::api
 
     my_recent_swaps_answer rpc_my_recent_swaps(my_recent_swaps_request&& request);
 
+    struct kmd_rewards_info_answer
+    {
+        nlohmann::json result;
+        int rpc_result_code;
+    };
+
+    kmd_rewards_info_answer rpc_kmd_rewards_info();
+
     nlohmann::json rpc_batch_electrum(std::vector<electrum_request> requests);
     nlohmann::json rpc_batch_enable(std::vector<enable_request> requests);
 

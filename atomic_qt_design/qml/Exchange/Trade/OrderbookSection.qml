@@ -24,8 +24,8 @@ ColumnLayout {
             id: price_header
             font.pixelSize: Style.textSizeSmall2
 
-            text_value: API.get().empty_string + (is_asks ? qsTr("Ask Price") + "\n(" + getTicker(false) + ")":
-                                                            qsTr("Bid Price") + "\n(" + getTicker(false) + ")")
+            text_value: API.get().settings_pg.empty_string + (is_asks ? qsTr("Ask Price") + "\n(" + right_ticker + ")":
+                                                            qsTr("Bid Price") + "\n(" + right_ticker + ")")
 
             color: is_asks ? Style.colorRed : Style.colorGreen
             horizontalAlignment: is_asks ? Text.AlignLeft : Text.AlignRight
@@ -50,7 +50,7 @@ ColumnLayout {
 
             font.pixelSize: price_header.font.pixelSize
 
-            text_value: API.get().empty_string + (qsTr("Quantity") + "\n(" + getTicker(true) + ")")
+            text_value: API.get().settings_pg.empty_string + (qsTr("Quantity") + "\n(" + left_ticker + ")")
             color: Style.colorWhite1
             anchors.verticalCenter: parent.verticalCenter
         }
@@ -67,7 +67,7 @@ ColumnLayout {
 
             font.pixelSize: price_header.font.pixelSize
 
-            text_value: API.get().empty_string + (qsTr("Total") + "\n(" + getTicker(false) + ")")
+            text_value: API.get().settings_pg.empty_string + (qsTr("Total") + "\n(" + right_ticker + ")")
             color: Style.colorWhite1
             anchors.verticalCenter: parent.verticalCenter
         }
@@ -138,7 +138,7 @@ ColumnLayout {
 
                 font.pixelSize: Style.textSizeSmall1
 
-                text_value: API.get().empty_string + (General.formatDouble(price))
+                text_value: API.get().settings_pg.empty_string + (General.formatDouble(price))
                 color: price_header.color
                 anchors.verticalCenter: parent.verticalCenter
             }
@@ -153,7 +153,7 @@ ColumnLayout {
 
                 font.pixelSize: price_value.font.pixelSize
 
-                text_value: API.get().empty_string + (quantity)
+                text_value: API.get().settings_pg.empty_string + (quantity)
                 color: Style.colorWhite4
                 anchors.verticalCenter: parent.verticalCenter
             }
@@ -168,7 +168,7 @@ ColumnLayout {
 
                 font.pixelSize: price_value.font.pixelSize
 
-                text_value: API.get().empty_string + (total)
+                text_value: API.get().settings_pg.empty_string + (total)
                 color: Style.colorWhite4
                 anchors.verticalCenter: parent.verticalCenter
             }

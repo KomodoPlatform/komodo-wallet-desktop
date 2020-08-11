@@ -56,7 +56,7 @@ DefaultModal {
     ColumnLayout {
         id: modal_layout
         ModalHeader {
-            title: API.get().empty_string + (qsTr("Enable coins"))
+            title: API.get().settings_pg.empty_string + (qsTr("Enable coins"))
         }
 
         // Search input
@@ -64,7 +64,7 @@ DefaultModal {
             id: input_coin_filter
 
             Layout.fillWidth: true
-            placeholderText: API.get().empty_string + (qsTr("Search"))
+            placeholderText: API.get().settings_pg.empty_string + (qsTr("Search"))
             selectByMouse: true
         }
 
@@ -80,19 +80,19 @@ DefaultModal {
 
                 CoinList {
                     id: coins_utxo
-                    group_title: API.get().empty_string + qsTr("Select all UTXO coins")
+                    group_title: API.get().settings_pg.empty_string + qsTr("Select all UTXO coins")
                     model: General.filterCoins(API.get().enableable_coins, input_coin_filter.text, "UTXO")
                 }
 
                 CoinList {
                     id: coins_smartchains
-                    group_title: API.get().empty_string + qsTr("Select all SmartChains")
+                    group_title: API.get().settings_pg.empty_string + qsTr("Select all SmartChains")
                     model: General.filterCoins(API.get().enableable_coins, input_coin_filter.text, "Smart Chain")
                 }
 
                 CoinList {
                     id: coins_erc
-                    group_title: API.get().empty_string + qsTr("Select all ERC tokens")
+                    group_title: API.get().settings_pg.empty_string + qsTr("Select all ERC tokens")
                     model: General.filterCoins(API.get().enableable_coins, input_coin_filter.text, "ERC-20")
                 }
             }
@@ -103,20 +103,20 @@ DefaultModal {
         DefaultText {
             visible: API.get().enableable_coins.length === 0
 
-            text_value: API.get().empty_string + (qsTr("All coins are already enabled!"))
+            text_value: API.get().settings_pg.empty_string + (qsTr("All coins are already enabled!"))
         }
 
         // Buttons
         RowLayout {
             DefaultButton {
-                text: API.get().empty_string + (qsTr("Close"))
+                text: API.get().settings_pg.empty_string + (qsTr("Close"))
                 Layout.fillWidth: true
                 onClicked: root.close()
             }
             PrimaryButton {
                 visible: API.get().enableable_coins.length > 0
                 enabled: Object.keys(selected_to_enable).length > 0
-                text: API.get().empty_string + (qsTr("Enable"))
+                text: API.get().settings_pg.empty_string + (qsTr("Enable"))
                 Layout.fillWidth: true
                 onClicked: enableCoins()
             }

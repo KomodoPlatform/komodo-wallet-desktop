@@ -43,5 +43,9 @@ namespace atomic_dex
 
         //! Paprika data rates
         QJsonArray trend_7d;
+
+        bool is_excluded{false};
+
+        QString display;
     };
 } // namespace atomic_dex

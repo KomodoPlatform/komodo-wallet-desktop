@@ -63,8 +63,11 @@ namespace atomic_dex
     void
     change_lang(cfg& config, const std::string& new_lang)
     {
-        config.current_lang = new_lang;
-        upgrade_cfg(config);
+        if (config.current_lang != new_lang)
+        {
+            config.current_lang = new_lang;
+            upgrade_cfg(config);
+        }
     }
 
     cfg

@@ -19,6 +19,7 @@ QtObject {
     readonly property string privacy_text: "*****"
 
     property bool privacy_mode: false
+    property bool enable_desktop_notifications: true
 
     readonly property int idx_dashboard_portfolio: 0
     readonly property int idx_dashboard_wallet: 1
@@ -120,7 +121,7 @@ QtObject {
 
     function formatFiat(received, amount, fiat) {
         return diffPrefix(received) +
-                (fiat === API.get().current_fiat ? API.get().current_fiat_sign : API.get().current_currency_sign)
+                (fiat === API.get().settings_pg.current_fiat ? API.get().settings_pg.current_fiat_sign : API.get().settings_pg.current_currency_sign)
                 + " " + nFormatter(parseFloat(amount), 2)
     }
 
@@ -167,25 +168,6 @@ QtObject {
     function fullNamesOfCoins(coins) {
         return coins.map(c => {
          return { value: c.ticker, text: fullCoinName(c.name, c.ticker) }
-        })
-    }
-
-    function getTickers(coins) {
-        return coins.map(c => {
-         return { value: c.ticker, text: c.ticker }
-        })
-    }
-
-
-    function tickerAndBalance(ticker) {
-        return ticker + " (" + API.get().get_balance(ticker) + ")"
-    }
-
-    function getTickersAndBalances(coins) {
-        const privacy_on = General.privacy_mode
-        const privacy_text = General.privacy_text
-        return coins.map(c => {
-            return { value: c.ticker, text: c.ticker + " (" + (privacy_on ? privacy_text : c.balance) + ")" }
         })
     }
 

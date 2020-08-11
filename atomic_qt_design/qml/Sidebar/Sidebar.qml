@@ -9,6 +9,8 @@ import "../Components"
 
 Item {
     id: sidebar
+    readonly property alias app_logo: app_logo
+
     x: -top_rect.radius
     width: 200 - x
     height: parent.height
@@ -119,6 +121,7 @@ Item {
         height: parent.height
 
         DefaultImage {
+            id: app_logo
             source: General.image_path + Style.sidebar_atomicdex_logo
             anchors.horizontalCenter: parent.horizontalCenter
             y: parent.width * 0.25
@@ -138,7 +141,7 @@ Item {
             anchors.horizontalCenter: parent.horizontalCenter
             anchors.top: parent.top
             anchors.topMargin: parent.width * 0.85
-            text_value: API.get().empty_string + ("V. AtomicDEX PRO " + API.get().get_version())
+            text_value: API.get().settings_pg.empty_string + ("V. AtomicDEX PRO " + API.get().get_version())
             font.pixelSize: Style.textSizeVerySmall8
             color: Style.colorThemeDarkLight
         }

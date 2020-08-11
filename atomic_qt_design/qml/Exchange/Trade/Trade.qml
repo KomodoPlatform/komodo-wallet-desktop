@@ -12,6 +12,10 @@ Item {
     property string action_result
 
     property bool sell_mode: true
+    property string left_ticker: selector_left.ticker
+    property string right_ticker: selector_right.ticker
+    property string base_ticker: sell_mode ? left_ticker : right_ticker
+    property string rel_ticker: sell_mode ? right_ticker : left_ticker
 
     // Override
     property var onOrderSuccess: () => {}
@@ -151,14 +155,9 @@ Item {
 
 
     // Orderbook
-    function fillTickersIfEmpty() {
-        selector_base.fillIfEmpty()
-        selector_rel.fillIfEmpty()
-    }
-
     function updateTradeInfo(force=false) {
-        const base = getTicker(sell_mode)
-        const rel = getTicker(!sell_mode)
+        const base = base_ticker
+        const rel = rel_ticker
         const amount = sell_mode ? getCurrentForm().getVolume() :
                                    General.formatDouble(getCurrentForm().getNeededAmountToSpend(getCurrentForm().getVolume()))
         if(force || (General.fieldExists(base) && General.fieldExists(rel) && !General.isZero(amount))) {
@@ -171,117 +170,85 @@ Item {
 
     // Trade
     function open(ticker) {
-        setTicker(true, ticker)
+        // TODO: setPair(true, ticker)
         onOpened()
     }
 
+    property bool initialized_orderbook_pair: false
     function onOpened() {
-        fillTickersIfEmpty()
+        if(!initialized_orderbook_pair) {
+            initialized_orderbook_pair = true
+            API.get().trading_pg.set_current_orderbook("KMD", "BTC")
+        }
+
         reset(true)
-        updateForms()
         setPair(true)
     }
 
-    function updateForms(my_side, new_ticker) {
-        if(my_side === undefined) {
-            selector_base.update()
-            selector_rel.update()
+    function setPair(is_left_side, changed_ticker) {
+        let base = left_ticker
+        let rel = right_ticker
+
+        let is_swap = false
+        // Set the new one if it's a change
+        if(changed_ticker) {
+            if(is_left_side) {
+                // Check if it's a swap
+                if(base !== changed_ticker && rel === changed_ticker)
+                    is_swap = true
+                else base = changed_ticker
+            }
+            else {
+                // Check if it's a swap
+                if(rel !== changed_ticker && base === changed_ticker)
+                    is_swap = true
+                else rel = changed_ticker
+            }
         }
-        else if(my_side) {
-            selector_rel.update(new_ticker)
+
+        if(is_swap) {
+            console.log("Swapping current pair, it was: ", base, rel)
+            API.get().trading_pg.swap_market_pair()
+            const tmp = base
+            base = rel
+            rel = tmp
         }
         else {
-            selector_base.update(new_ticker)
-        }
-    }
-
-    function moveToBeginning(coins, ticker) {
-        const idx = coins.map(c => c.ticker).indexOf(ticker)
-        if(idx === -1) return
-
-        const coin = coins[idx]
-        return [coin].concat(coins.filter(c => c.ticker !== ticker))
-    }
-
-    function getCoins(my_side) {
-        let coins = API.get().enabled_coins
-
-        if(coins.length === 0) return coins
-
-        // Prioritize KMD / BTC pair by moving them to the start
-        coins = moveToBeginning(coins, "BTC")
-        coins = moveToBeginning(coins, "KMD")
-
-        // Return full list
-        if(my_side === undefined) return coins
-
-        // Filter for Sell
-        if(my_side) {
-            return coins.filter(c => {
-                c.balance = API.get().get_balance(c.ticker)
-
-                return true
-            })
-        }
-        // Filter for Receive
-        else {
-            return coins.filter(c => {
-                if(c.ticker === getTicker(true)) return false
-
-                c.balance = API.get().get_balance(c.ticker)
-
-                return true
-            })
-        }
-    }
-
-    function getTicker(is_base) {
-        return is_base ? selector_base.getTicker() : selector_rel.getTicker()
-    }
-
-    function setTicker(is_base, ticker) {
-        if(is_base) selector_base.setTicker(ticker)
-        else selector_rel.setTicker(ticker)
-    }
-
-    function validBaseRel() {
-        const base = getTicker(true)
-        const rel = getTicker(false)
-        return base !== '' && rel !== '' && base !== rel
-    }
-
-    function setPair(is_base) {
-        if(getTicker(true) === getTicker(false)) {
-            // Base got selected, same as rel
-            // Change rel ticker
-            selector_rel.setAnyTicker()
+            console.log("Setting current orderbook with params: ", base, rel)
+            API.get().trading_pg.set_current_orderbook(base, rel)
         }
 
-        if(validBaseRel()) {
-            const new_base = getTicker(true)
-            const rel = getTicker(false)
-            console.log("Setting current orderbook with params: ", new_base, rel)
-            API.get().set_current_orderbook(new_base, rel)
-            reset(true, is_base)
-            updateTradeInfo()
-            updateCexPrice(new_base, rel)
-            exchange.onTradeTickerChanged(new_base)
-        }
+        reset(true, is_left_side)
+        updateTradeInfo()
+        updateCexPrice(base, rel)
+        exchange.onTradeTickerChanged(base)
     }
 
-    function trade(base, rel, options) {
+    function trade(base, rel, options, default_config) {
         updateTradeInfo(true) // Force update trade info and cap the value for one last time
+
+        console.log("Trade config: ", JSON.stringify(options))
+        console.log("Default config: ", JSON.stringify(default_config))
 
         let nota = ""
         let confs = ""
-        console.log("Trade config: ", JSON.stringify(options))
+
         if(options.enable_custom_config) {
             if(options.is_dpow_configurable) {
                 nota = options.enable_dpow_confs ? "1" : "0"
             }
 
-            if(nota !== "1" && options.enable_normal_confs) {
-                confs = options.normal_configuration.required_confirmation_count.toString()
+            if(nota !== "1") {
+                confs = options.required_confirmation_count.toString()
+            }
+        }
+        else {
+            if(default_config.requires_notarization !== undefined && default_config.requires_notarization !== null) {
+                nota = default_config.requires_notarization ? "1" : "0"
+            }
+
+            if(nota !== "1" && default_config.required_confirmations !== undefined && default_config.required_confirmations !== null) {
+                confs = default_config.required_confirmations.toString()
             }
         }
 
@@ -293,7 +260,6 @@ Item {
         const price_numer = preffered_order.price_numer
         const price = getCurrentPrice()
         const volume = current_form.field.text
-        console.log("QML place order: nota:", nota, )
         console.log("QML place order: max balance:", current_form.getMaxVolume())
         console.log("QML place order: params:", base, " <-> ", rel, "  /  price:", price, "  /  volume:", volume, "  /  is_created_order:", is_created_order, "  /  price_denom:", price_denom, "  /  price_numer:", price_numer,
                     "  /  nota:", nota, "  /  confs:", confs)
@@ -302,9 +268,9 @@ Item {
         let result
 
         if(sell_mode)
-            result = API.get().place_sell_order(base, rel, price, volume, is_created_order, price_denom, price_numer, nota, confs)
+            result = API.get().trading_pg.place_sell_order(base, rel, price, volume, is_created_order, price_denom, price_numer, nota, confs)
         else
-            result = API.get().place_buy_order(base, rel, price, volume, is_created_order, price_denom, price_numer, nota, confs)
+            result = API.get().trading_pg.place_buy_order(base, rel, price, volume, is_created_order, price_denom, price_numer, nota, confs)
 
         if(result === "") {
             action_result = "success"
@@ -320,36 +286,11 @@ Item {
         }
     }
 
-    // No coins warning
-    ColumnLayout {
-        anchors.centerIn: parent
-        visible: selector_base.ticker_list.length === 0
-
-        DefaultImage {
-            Layout.alignment: Qt.AlignHCenter
-            source: General.image_path + "setup-wallet-restore-2.svg"
-            Layout.bottomMargin: 30
-        }
-
-        DefaultText {
-            Layout.alignment: Qt.AlignHCenter
-            text_value: API.get().empty_string + (qsTr("No balance available"))
-            font.pixelSize: Style.textSize2
-        }
-
-        DefaultText {
-            Layout.alignment: Qt.AlignHCenter
-            text_value: API.get().empty_string + (qsTr("Please enable a coin with balance or deposit funds"))
-        }
-    }
-
     // Form
     ColumnLayout {
         id: form
 
         spacing: layout_margin
-
-        visible: selector_base.ticker_list.length > 0
 
         anchors.fill: parent
 
@@ -389,21 +330,32 @@ Item {
                     spacing: 40
 
                     TickerSelector {
-                        id: selector_base
-                        my_side: true
+                        id: selector_left
+                        left_side: true
+                        ticker_list: API.get().trading_pg.market_pairs_mdl.left_selection_box
+                        ticker: API.get().trading_pg.market_pairs_mdl.left_selected_coin
                         Layout.alignment: Qt.AlignLeft | Qt.AlignVCenter
                     }
 
+                    // Swap button
                     DefaultImage {
                         source: General.image_path + "trade_icon.svg"
                         fillMode: Image.PreserveAspectFit
                         Layout.preferredWidth: 16
                         Layout.preferredHeight: Layout.preferredWidth
                         Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
+
+                        MouseArea {
+                            anchors.fill: parent
+                            onClicked: setPair(true, right_ticker)
+                        }
                     }
 
                     TickerSelector {
-                        id: selector_rel
+                        id: selector_right
+                        left_side: false
+                        ticker_list: API.get().trading_pg.market_pairs_mdl.right_selection_box
+                        ticker: API.get().trading_pg.market_pairs_mdl.right_selected_coin
                         Layout.alignment: Qt.AlignRight | Qt.AlignVCenter
                     }
                 }
@@ -443,7 +395,7 @@ Item {
                     anchors.right: parent.right
                     anchors.top: parent.top
 
-                    my_side: true
+                    is_sell_form: true
                 }
 
                 // Receive
@@ -468,11 +420,11 @@ Item {
                     font.pixelSize: Style.textSizeSmall4
                     color: Style.colorRed
 
-                    text_value: API.get().empty_string + (
+                    text_value: API.get().settings_pg.empty_string + (
                                     General.isZero(getCurrentPrice()) ? (qsTr("Please fill the price field")) :
-                                    notEnoughBalance() ? (qsTr("%1 balance is lower than minimum trade amount").arg(getTicker(sell_mode)) + " : " + General.getMinTradeAmount()) :
+                                    notEnoughBalance() ? (qsTr("%1 balance is lower than minimum trade amount").arg(base_ticker) + " : " + General.getMinTradeAmount()) :
                                     notEnoughBalanceForFees() ?
-                                        (qsTr("Not enough balance for the fees. Need at least %1 more", "AMT TICKER").arg(General.formatCrypto("", parseFloat(curr_trade_info.amount_needed), getTicker(sell_mode)))) :
+                                        (qsTr("Not enough balance for the fees. Need at least %1 more", "AMT TICKER").arg(General.formatCrypto("", parseFloat(curr_trade_info.amount_needed), base_ticker))) :
                                     General.isZero(getCurrentForm().getVolume()) ? (qsTr("Please fill the volume field")) :
                                     (getCurrentForm().hasEthFees() && !getCurrentForm().hasEnoughEthForFees()) ? (qsTr("Not enough ETH for the transaction fee")) :
                                     (getCurrentForm().fieldsAreFilled() && !getCurrentForm().higherThanMinTradeAmount()) ? ((qsTr("Amount is lower than minimum trade amount")) + " : " + General.getMinTradeAmount()) : ""
