@@ -16,12 +16,12 @@ DefaultModal {
                  {
                      "accrue_start_at": 1596785618,
                      "accrue_stop_at": 1599460418,
-                     "accrue_start_at_human_date": " 7 Aug 2020, 08:33",
-                     "accrue_stop_at_human_date": " 7 Sep 2020, 08:33",
+                     "accrue_start_at_human_date": "7 Aug 2020, 08:33",
+                     "accrue_stop_at_human_date": "7 Sep 2020, 08:33",
                      "accrued_rewards": {
-                         "Accrued": "0.04973265"
+                         "Accrued": "0"
                      },
-                     "amount": "103.62356229",
+                     "amount": "0",
                      "output_index": 0
                  }
              ]
@@ -30,9 +30,10 @@ DefaultModal {
              "fee_details": {
                  "amount": "0.00001"
              },
-             "my_balance_change": "0.04972265",
-             "tx_hash": "45f7a75e9782998f3a0809ea9ec8b68d3bdc438d34b6fc4114a6c8eddc3be6ae",
-             "tx_hex": "0400008085202f8901bc8f81d43c4133f5ffe68d5f07c6dcf785d34b2bb184f91bdb6e990bd8ab0977000000006a473044022014b3f1dbca1e28c5958f94cf5d1aa97b3d49f53d2409baefb2cc882f3883eb3a02200d26f5deafdb6e0475d4b50764e1c77a69872413e75576beeba993a1d63225f3012102d4acb3b1cc944b8b44836c6a4ef87bdee906ce268465bde8106cfee171b7f40dffffffff01eee0f069020000001976a914eed5d3ad264ffc68fc0a6454e1696a30d8f405be88ac1aa3315f000000000000000000000000000000"
+             "date": "7 Aug 2020, 08:33",
+             "my_balance_change": "0",
+             "tx_hash": "",
+             "tx_hex": ""
          }
      })
     property var prepare_claim_rewards_result: default_prepare_claim_rewards_result
@@ -62,10 +63,8 @@ DefaultModal {
             toast.show(qsTr("Failed to get the rewards info"), General.time_toast_important_error, prepare_claim_rewards_result.kmd_rewards_info.error)
             return false
         }
-        else {
-            text_error.text = ""
-            return true
-        }
+
+        return true
     }
 
     function claimRewards() {
@@ -77,7 +76,6 @@ DefaultModal {
     function reset() {
         prepare_claim_rewards_result = default_prepare_claim_rewards_result
         send_result = ""
-        text_error.text = ""
     }
 
     // Inside modal
@@ -97,12 +95,18 @@ DefaultModal {
             }
 
             DefaultText {
-                visible: text_error.text === ""
                 color: positive_claim_amount ? Style.colorText : Style.colorRed
                 text_value: API.get().settings_pg.empty_string +
                             (positive_claim_amount ?
                                  qsTr("You will receive %1", "AMT TICKER").arg(General.formatCrypto("", prepare_claim_rewards_result.withdraw_answer.my_balance_change, API.get().current_coin_info.ticker))
                                : qsTr("Transaction fee is higher than the reward!"))
+            }
+
+            DefaultButton {
+                text: API.get().settings_pg.empty_string + (qsTr("Refresh"))
+                onClicked: {
+                    if(!prepareClaimRewards()) root.close()
+                }
             }
 
             // List header
@@ -375,12 +379,6 @@ DefaultModal {
                         anchors.bottom: parent.bottom
                     }
                 }
-            }
-
-            DefaultText {
-                id: text_error
-                color: Style.colorRed
-                visible: text !== ''
             }
 
             // Buttons
