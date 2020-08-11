@@ -259,7 +259,7 @@ DefaultModal {
 
                         font.pixelSize: Style.textSizeSmall1
 
-                        text_value: API.get().settings_pg.empty_string + ("#" + modelData.output_index)
+                        text_value: API.get().settings_pg.empty_string + ("#" + (index + 1))
                         anchors.verticalCenter: parent.verticalCenter
                     }
 
