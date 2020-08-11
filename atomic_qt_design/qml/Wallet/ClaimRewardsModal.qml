@@ -334,9 +334,9 @@ DefaultModal {
 
                         text_value: {
                             let val = modelData.accrued_rewards.NotAccruedReason
-                            if(val === null || modelData.accrued_rewards.NotAccruedReason === undefined) return "-"
+                            if(val === null || val === undefined) return "-"
 
-                            switch(modelData.accrued_rewards.NotAccruedReason) {
+                            switch(val) {
                             case "LocktimeNotSet":
                                 val = qsTr("Locktime is not set")
                                 break
