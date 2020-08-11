@@ -70,11 +70,14 @@ QtObject {
 
         let hours = Math.floor(delta / 3600) % 24
         delta -= hours * 3600
+        if(hours < 10) hours = '0' + hours
 
         let minutes = Math.floor(delta / 60) % 60
         delta -= minutes * 60
+        if(minutes < 10) minutes = '0' + minutes
 
-        let seconds = Math.floor(delta) % 60  // in theory the modulus is not required
+        let seconds = Math.floor(delta) % 60
+        if(seconds < 10) seconds = '0' + seconds
 
         return days + ':' + hours + ':' + minutes + ':' + seconds
     }

@@ -8,6 +8,8 @@ import "../Constants"
 DefaultModal {
     id: root
 
+    readonly property bool positive_claim_amount: parseFloat(prepare_claim_rewards_result.withdraw_answer.my_balance_change) > 0
+
     readonly property var default_prepare_claim_rewards_result: ({
          "kmd_rewards_info": {
              "result": [
@@ -96,7 +98,11 @@ DefaultModal {
 
             DefaultText {
                 visible: text_error.text === ""
-                text_value: API.get().settings_pg.empty_string + (qsTr("You will receive %1", "AMT TICKER").arg(General.formatCrypto("", prepare_claim_rewards_result.withdraw_answer.my_balance_change, API.get().current_coin_info.ticker)))
+                color: positive_claim_amount ? Style.colorText : Style.colorRed
+                text_value: API.get().settings_pg.empty_string +
+                            (positive_claim_amount ?
+                                 qsTr("You will receive %1", "AMT TICKER").arg(General.formatCrypto("", prepare_claim_rewards_result.withdraw_answer.my_balance_change, API.get().current_coin_info.ticker))
+                               : qsTr("Transaction fee is higher than the reward!"))
             }
 
             // List header
@@ -360,6 +366,7 @@ DefaultModal {
                     text: API.get().settings_pg.empty_string + (qsTr("Confirm"))
                     Layout.fillWidth: true
                     onClicked: claimRewards()
+                    enabled: positive_claim_amount
                 }
             }
         }
