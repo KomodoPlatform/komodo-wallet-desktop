@@ -103,6 +103,7 @@ DefaultModal {
             }
 
             DefaultButton {
+                Layout.topMargin: 15
                 text: API.get().settings_pg.empty_string + (qsTr("Refresh"))
                 onClicked: {
                     if(!prepareClaimRewards()) root.close()
@@ -111,7 +112,7 @@ DefaultModal {
 
             // List header
             Item {
-                Layout.topMargin: 30
+                Layout.topMargin: 15
                 Layout.fillWidth: true
 
                 height: 40
