@@ -401,7 +401,11 @@ DefaultModal {
 
         // Result Page
         SendResult {
-            result: prepare_claim_rewards_result
+            result: ({
+                balance_change: prepare_claim_rewards_result.withdraw_answer.my_balance_change,
+                fees: prepare_claim_rewards_result.withdraw_answer.fee_details.amount,
+                date: prepare_claim_rewards_result.withdraw_answer.date
+            })
             tx_hash: send_result
 
             function onClose() { root.close() }
