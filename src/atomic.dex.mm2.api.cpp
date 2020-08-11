@@ -1118,6 +1118,12 @@ namespace mm2::api
         {
             for (auto&& obj: out.result.at("result"))
             {
+                if (obj.contains("accrue_start_at"))
+                {
+                    std::size_t accrue_timestamp      = obj.at("accrue_start_at").get<std::size_t>();
+                    obj["accrue_start_at_human_date"] = to_human_date<std::chrono::seconds>(accrue_timestamp, "%e %b %Y, %I:%M");
+                }
+
                 if (obj.contains("accrue_stop_at"))
                 {
                     std::size_t accrue_timestamp     = obj.at("accrue_stop_at").get<std::size_t>();
