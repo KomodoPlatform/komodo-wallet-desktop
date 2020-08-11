@@ -9,6 +9,17 @@ DefaultModal {
     id: root
 
     readonly property bool positive_claim_amount: parseFloat(prepare_claim_rewards_result.withdraw_answer.my_balance_change) > 0
+    readonly property bool has_eligible_utxo: {
+        const utxos = prepare_claim_rewards_result.kmd_rewards_info.result
+        if(!utxos) return false
+
+        for(let i = 0; i < utxos.length; ++i)
+            if(!utxos[i].accrued_rewards.NotAccruedReason)
+                return true
+
+        return false
+    }
+    readonly property bool can_confirm: positive_claim_amount && has_eligible_utxo
 
     readonly property var default_prepare_claim_rewards_result: ({
          "kmd_rewards_info": {
@@ -99,11 +110,12 @@ DefaultModal {
                 Layout.fillWidth: true
                 DefaultText {
                     Layout.fillWidth: true
-                    color: positive_claim_amount ? Style.colorText : Style.colorRed
-                    text_value: API.get().settings_pg.empty_string +
-                                (positive_claim_amount ?
-                                     qsTr("You will receive %1", "AMT TICKER").arg(General.formatCrypto("", prepare_claim_rewards_result.withdraw_answer.my_balance_change, API.get().current_coin_info.ticker))
-                                   : ("❌ " + qsTr("Transaction fee is higher than the reward!")))
+                    color: can_confirm ? Style.colorText : Style.colorRed
+                    text_value: API.get().settings_pg.empty_string + (
+                                     !has_eligible_utxo ? ("❌ " + qsTr("No UTXOs eligible for claiming")) :
+                                     !positive_claim_amount ? ("❌ " + qsTr("Transaction fee is higher than the reward!")) :
+
+                                     qsTr("You will receive %1", "AMT TICKER").arg(General.formatCrypto("", prepare_claim_rewards_result.withdraw_answer.my_balance_change, API.get().current_coin_info.ticker)))
                 }
 
                 PrimaryButton {
@@ -406,7 +418,7 @@ DefaultModal {
                     text: API.get().settings_pg.empty_string + (qsTr("Confirm"))
                     Layout.fillWidth: true
                     onClicked: claimRewards()
-                    enabled: positive_claim_amount
+                    enabled: can_confirm
                 }
             }
         }
