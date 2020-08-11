@@ -169,7 +169,7 @@ DefaultModal {
                 DefaultText {
                     id: accruing_start_header
 
-                    text_value: API.get().settings_pg.empty_string + (qsTr("Accruing Start At"))
+                    text_value: API.get().settings_pg.empty_string + (qsTr("Accruing Started At"))
 
                     font.pixelSize: utxo_header.font.pixelSize
                     font.bold: utxo_header.font.bold
@@ -201,7 +201,7 @@ DefaultModal {
                 DefaultText {
                     id: time_left_header
 
-                    text_value: API.get().settings_pg.empty_string + (qsTr("Time Left (d:hh:mm:ss)"))
+                    text_value: API.get().settings_pg.empty_string + (qsTr("Time Left"))
 
                     font.pixelSize: utxo_header.font.pixelSize
                     font.bold: utxo_header.font.bold
