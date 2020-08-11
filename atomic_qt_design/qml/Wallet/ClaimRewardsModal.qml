@@ -82,7 +82,7 @@ DefaultModal {
 
     // Inside modal
     // width: stack_layout.children[stack_layout.currentIndex].width + horizontalPadding * 2
-    width: 1000
+    width: 1200
     height: stack_layout.children[stack_layout.currentIndex].height + verticalPadding * 2
     StackLayout {
         width: parent.width
@@ -155,7 +155,7 @@ DefaultModal {
                     horizontalAlignment: Text.AlignLeft
 
                     anchors.left: parent.left
-                    anchors.leftMargin: parent.width * 0.2
+                    anchors.leftMargin: parent.width * 0.175
 
                     anchors.verticalCenter: parent.verticalCenter
                 }
@@ -171,7 +171,7 @@ DefaultModal {
                     horizontalAlignment: Text.AlignLeft
 
                     anchors.left: parent.left
-                    anchors.leftMargin: parent.width * 0.325
+                    anchors.leftMargin: parent.width * 0.300
 
                     anchors.verticalCenter: parent.verticalCenter
                 }
@@ -187,7 +187,7 @@ DefaultModal {
                     horizontalAlignment: Text.AlignLeft
 
                     anchors.left: parent.left
-                    anchors.leftMargin: parent.width * 0.475
+                    anchors.leftMargin: parent.width * 0.450
 
                     anchors.verticalCenter: parent.verticalCenter
                 }
@@ -203,7 +203,7 @@ DefaultModal {
                     horizontalAlignment: Text.AlignLeft
 
                     anchors.left: parent.left
-                    anchors.leftMargin: parent.width * 0.625
+                    anchors.leftMargin: parent.width * 0.600
 
                     anchors.verticalCenter: parent.verticalCenter
                 }
@@ -219,7 +219,7 @@ DefaultModal {
                     horizontalAlignment: Text.AlignLeft
 
                     anchors.left: parent.left
-                    anchors.leftMargin: parent.width * 0.8
+                    anchors.leftMargin: parent.width * 0.750
 
                     anchors.verticalCenter: parent.verticalCenter
                 }
@@ -333,8 +333,36 @@ DefaultModal {
                         font.pixelSize: utxo_value.font.pixelSize
 
                         text_value: {
-                            return API.get().settings_pg.empty_string + (modelData.accrued_rewards.NotAccruedReason || "-")
+                            let val = modelData.accrued_rewards.NotAccruedReason
+                            if(val === null || modelData.accrued_rewards.NotAccruedReason === undefined) return "-"
+
+                            switch(modelData.accrued_rewards.NotAccruedReason) {
+                            case "LocktimeNotSet":
+                                val = qsTr("Locktime is not set")
+                                break
+                            case "LocktimeLessThanThreshold":
+                                val = qsTr("Locktime is less than the threshold")
+                                break
+                            case "UtxoHeightGreaterThanEndOfEra":
+                                val = qsTr("UTXO height is greater than end of the era")
+                                break
+                            case "UtxoAmountLessThanTen":
+                                val = qsTr("UTXO amount is less than 10")
+                                break
+                            case "OneHourNotPassedYet":
+                                val = qsTr("One hour did not pass yet")
+                                break
+                            case "TransactionInMempool":
+                                val = qsTr("Transaction is in mempool")
+                                break
+                            default:
+                                val = qsTr("Unknown problem")
+                                break
+                            }
+
+                            return API.get().settings_pg.empty_string + (val)
                         }
+
                         anchors.verticalCenter: parent.verticalCenter
                     }
 
