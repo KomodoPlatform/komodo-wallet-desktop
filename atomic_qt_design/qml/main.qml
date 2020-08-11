@@ -15,7 +15,16 @@ Window {
 
     Component.onCompleted: showMaximized()
 
-    onVisibilityChanged: API.get().change_state(visibility)
+    property int true_visibility
+
+    onVisibilityChanged: {
+        // 3 is minimized, ignore that
+        if(visibility !== 3)
+            true_visibility = visibility
+
+        API.get().change_state(visibility)
+    }
+
     App {
         anchors.fill: parent
     }
