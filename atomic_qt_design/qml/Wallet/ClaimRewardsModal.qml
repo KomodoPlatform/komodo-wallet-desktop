@@ -94,19 +94,24 @@ DefaultModal {
                 title: API.get().settings_pg.empty_string + (qsTr("Claim your %1 reward?", "TICKER").arg(API.get().current_coin_info.ticker))
             }
 
-            DefaultText {
-                color: positive_claim_amount ? Style.colorText : Style.colorRed
-                text_value: API.get().settings_pg.empty_string +
-                            (positive_claim_amount ?
-                                 qsTr("You will receive %1", "AMT TICKER").arg(General.formatCrypto("", prepare_claim_rewards_result.withdraw_answer.my_balance_change, API.get().current_coin_info.ticker))
-                               : ("❌ " + qsTr("Transaction fee is higher than the reward!")))
-            }
 
-            DefaultButton {
-                Layout.topMargin: 15
-                text: API.get().settings_pg.empty_string + (qsTr("Refresh"))
-                onClicked: {
-                    if(!prepareClaimRewards()) root.close()
+            RowLayout {
+                Layout.fillWidth: true
+                DefaultText {
+                    Layout.fillWidth: true
+                    color: positive_claim_amount ? Style.colorText : Style.colorRed
+                    text_value: API.get().settings_pg.empty_string +
+                                (positive_claim_amount ?
+                                     qsTr("You will receive %1", "AMT TICKER").arg(General.formatCrypto("", prepare_claim_rewards_result.withdraw_answer.my_balance_change, API.get().current_coin_info.ticker))
+                                   : ("❌ " + qsTr("Transaction fee is higher than the reward!")))
+                }
+
+                PrimaryButton {
+                    Layout.topMargin: 15
+                    text: API.get().settings_pg.empty_string + (qsTr("Refresh"))
+                    onClicked: {
+                        if(!prepareClaimRewards()) root.close()
+                    }
                 }
             }
 
@@ -128,7 +133,7 @@ DefaultModal {
                     horizontalAlignment: Text.AlignLeft
 
                     anchors.left: parent.left
-                    anchors.leftMargin: parent.width * 0.03
+                    anchors.leftMargin: parent.width * 0.000
 
                     anchors.verticalCenter: parent.verticalCenter
                 }
