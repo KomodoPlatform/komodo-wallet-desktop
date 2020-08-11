@@ -80,7 +80,7 @@ DefaultModal {
 
     // Inside modal
     // width: stack_layout.children[stack_layout.currentIndex].width + horizontalPadding * 2
-    width: 650
+    width: 1000
     height: stack_layout.children[stack_layout.currentIndex].height + verticalPadding * 2
     StackLayout {
         width: parent.width
@@ -88,6 +88,7 @@ DefaultModal {
 
         ColumnLayout {
             Layout.fillWidth: true
+            Layout.alignment: Qt.AlignHCenter
 
             ModalHeader {
                 title: API.get().settings_pg.empty_string + (qsTr("Claim your %1 reward?", "TICKER").arg(API.get().current_coin_info.ticker))
@@ -98,13 +99,255 @@ DefaultModal {
                 text_value: API.get().settings_pg.empty_string + (qsTr("You will receive %1", "AMT TICKER").arg(General.formatCrypto("", prepare_claim_rewards_result.withdraw_answer.my_balance_change, API.get().current_coin_info.ticker)))
             }
 
+            // List header
+            Item {
+                Layout.topMargin: 30
+                Layout.fillWidth: true
+
+                height: 40
+
+                // Price
+                DefaultText {
+                    id: utxo_header
+                    font.pixelSize: Style.textSizeSmall2
+
+                    text_value: API.get().settings_pg.empty_string + (qsTr("UTXO"))
+
+                    font.bold: true
+                    horizontalAlignment: Text.AlignLeft
+
+                    anchors.left: parent.left
+                    anchors.leftMargin: parent.width * 0.03
+
+                    anchors.verticalCenter: parent.verticalCenter
+                }
+
+                // Amount
+                DefaultText {
+                    id: amount_header
+
+                    text_value: API.get().settings_pg.empty_string + (qsTr("Amount"))
+
+                    font.pixelSize: utxo_header.font.pixelSize
+                    font.bold: utxo_header.font.bold
+                    horizontalAlignment: utxo_header.horizontalAlignment
+
+                    anchors.left: parent.left
+                    anchors.leftMargin: parent.width * 0.075
+
+                    anchors.verticalCenter: parent.verticalCenter
+                }
+
+                // Reward
+                DefaultText {
+                    id: reward_header
+
+                    text_value: API.get().settings_pg.empty_string + (qsTr("Reward"))
+
+                    font.pixelSize: utxo_header.font.pixelSize
+                    font.bold: utxo_header.font.bold
+                    horizontalAlignment: Text.AlignLeft
+
+                    anchors.left: parent.left
+                    anchors.leftMargin: parent.width * 0.2
+
+                    anchors.verticalCenter: parent.verticalCenter
+                }
+
+                // Accruing start
+                DefaultText {
+                    id: accruing_start_header
+
+                    text_value: API.get().settings_pg.empty_string + (qsTr("Accruing Start At"))
+
+                    font.pixelSize: utxo_header.font.pixelSize
+                    font.bold: utxo_header.font.bold
+                    horizontalAlignment: Text.AlignLeft
+
+                    anchors.left: parent.left
+                    anchors.leftMargin: parent.width * 0.325
+
+                    anchors.verticalCenter: parent.verticalCenter
+                }
+
+                // Accruing Stop
+                DefaultText {
+                    id: accruing_stop_header
+
+                    text_value: API.get().settings_pg.empty_string + (qsTr("Accruing Stop At"))
+
+                    font.pixelSize: utxo_header.font.pixelSize
+                    font.bold: utxo_header.font.bold
+                    horizontalAlignment: Text.AlignLeft
+
+                    anchors.left: parent.left
+                    anchors.leftMargin: parent.width * 0.475
+
+                    anchors.verticalCenter: parent.verticalCenter
+                }
+
+                // Time Left
+                DefaultText {
+                    id: time_left_header
+
+                    text_value: API.get().settings_pg.empty_string + (qsTr("Time Left (d:hh:mm:ss)"))
+
+                    font.pixelSize: utxo_header.font.pixelSize
+                    font.bold: utxo_header.font.bold
+                    horizontalAlignment: Text.AlignLeft
+
+                    anchors.left: parent.left
+                    anchors.leftMargin: parent.width * 0.625
+
+                    anchors.verticalCenter: parent.verticalCenter
+                }
+
+                // Error
+                DefaultText {
+                    id: error_header
+
+                    text_value: API.get().settings_pg.empty_string + (qsTr("Error"))
+
+                    font.pixelSize: utxo_header.font.pixelSize
+                    font.bold: utxo_header.font.bold
+                    horizontalAlignment: Text.AlignLeft
+
+                    anchors.left: parent.left
+                    anchors.leftMargin: parent.width * 0.8
+
+                    anchors.verticalCenter: parent.verticalCenter
+                }
+
+                // Line
+                HorizontalLine {
+                    width: parent.width
+                    color: Style.colorWhite5
+                    anchors.bottom: parent.bottom
+                }
+            }
+
+            DefaultListView {
+                id: list
+                Layout.fillWidth: true
+                Layout.fillHeight: true
+                Layout.maximumHeight: 500
+                clip: true
+
+                model: prepare_claim_rewards_result.kmd_rewards_info.result
+
+                delegate: Item {
+                    width: root.width
+                    height: utxo_value.font.pixelSize * 1.5
+
+                    // UTXO
+                    DefaultText {
+                        id: utxo_value
+
+                        anchors.left: parent.left
+                        anchors.leftMargin: utxo_header.anchors.leftMargin
+
+                        font.pixelSize: Style.textSizeSmall1
+
+                        text_value: API.get().settings_pg.empty_string + ("#" + modelData.output_index)
+                        anchors.verticalCenter: parent.verticalCenter
+                    }
+
+                    // Amount
+                    DefaultText {
+                        id: amount_value
+
+                        anchors.left: parent.left
+                        anchors.leftMargin: amount_header.anchors.leftMargin
+
+                        font.pixelSize: utxo_value.font.pixelSize
+
+                        text_value: API.get().settings_pg.empty_string + (modelData.amount)
+                        anchors.verticalCenter: parent.verticalCenter
+                    }
+
+                    // Reward
+                    DefaultText {
+                        id: reward_value
+
+                        anchors.left: parent.left
+                        anchors.leftMargin: reward_header.anchors.leftMargin
+
+                        font.pixelSize: utxo_value.font.pixelSize
+
+                        text_value: API.get().settings_pg.empty_string + (modelData.accrued_rewards.Accrued || "-")
+                        anchors.verticalCenter: parent.verticalCenter
+                    }
+
+                    // Accruing Start
+                    DefaultText {
+                        id: accruing_start_value
+
+                        anchors.left: parent.left
+                        anchors.leftMargin: accruing_start_header.anchors.leftMargin
+
+                        font.pixelSize: utxo_value.font.pixelSize
+
+                        text_value: API.get().settings_pg.empty_string + (modelData.accrue_start_at_human_date)
+                        anchors.verticalCenter: parent.verticalCenter
+                    }
+
+                    // Accruing Stop
+                    DefaultText {
+                        id: accruing_stop_value
+
+                        anchors.left: parent.left
+                        anchors.leftMargin: accruing_stop_header.anchors.leftMargin
+
+                        font.pixelSize: utxo_value.font.pixelSize
+
+                        text_value: API.get().settings_pg.empty_string + (modelData.accrue_stop_at_human_date)
+                        anchors.verticalCenter: parent.verticalCenter
+                    }
+
+                    // Time Left
+                    DefaultText {
+                        id: time_left_value
+
+                        anchors.left: parent.left
+                        anchors.leftMargin: time_left_header.anchors.leftMargin
+
+                        font.pixelSize: utxo_value.font.pixelSize
+
+                        text_value: API.get().settings_pg.empty_string + (General.secondsToTimeLeft(Date.now()/1000, modelData.accrue_stop_at))
+                        anchors.verticalCenter: parent.verticalCenter
+                    }
+
+                    // Error
+                    DefaultText {
+                        id: error_value
+
+                        anchors.left: parent.left
+                        anchors.leftMargin: error_header.anchors.leftMargin
+
+                        font.pixelSize: utxo_value.font.pixelSize
+
+                        text_value: {
+                            return API.get().settings_pg.empty_string + (modelData.accrued_rewards.NotAccruedReason || "-")
+                        }
+                        anchors.verticalCenter: parent.verticalCenter
+                    }
+
+                    // Line
+                    HorizontalLine {
+                        visible: prepare_claim_rewards_result.kmd_rewards_info.result &&
+                                 index !== prepare_claim_rewards_result.kmd_rewards_info.result.length - 1
+                        width: parent.width
+                        color: Style.colorWhite9
+                        anchors.bottom: parent.bottom
+                    }
+                }
+            }
+
             DefaultText {
                 id: text_error
                 color: Style.colorRed
                 visible: text !== ''
             }
-
-
 
             // Buttons
             RowLayout {
