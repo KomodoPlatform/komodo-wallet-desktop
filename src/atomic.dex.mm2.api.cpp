@@ -1120,19 +1120,20 @@ namespace mm2::api
             {
                 if (obj.contains("accrue_start_at"))
                 {
-                    std::size_t accrue_timestamp      = obj.at("accrue_start_at").get<std::size_t>();
+                    auto accrue_timestamp             = obj.at("accrue_start_at").get<std::size_t>();
                     obj["accrue_start_at_human_date"] = to_human_date<std::chrono::seconds>(accrue_timestamp, "%e %b %Y, %I:%M");
                 }
 
                 if (obj.contains("accrue_stop_at"))
                 {
-                    std::size_t accrue_timestamp     = obj.at("accrue_stop_at").get<std::size_t>();
+                    auto accrue_timestamp            = obj.at("accrue_stop_at").get<std::size_t>();
                     obj["accrue_stop_at_human_date"] = to_human_date<std::chrono::seconds>(accrue_timestamp, "%e %b %Y, %I:%M");
                 }
+
                 if (obj.contains("locktime"))
                 {
-                    std::size_t locktime_timestamp = obj.at("locktime").get<std::size_t>();
-                    obj["locktime_human_date"]     = to_human_date<std::chrono::seconds>(locktime_timestamp, "%e %b %Y, %I:%M");
+                    auto locktime_timestamp    = obj.at("locktime").get<std::size_t>();
+                    obj["locktime_human_date"] = to_human_date<std::chrono::seconds>(locktime_timestamp, "%e %b %Y, %I:%M");
                 }
             }
         }
