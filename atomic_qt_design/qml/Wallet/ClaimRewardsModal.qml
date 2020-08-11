@@ -115,7 +115,6 @@ DefaultModal {
             }
 
             DefaultText {
-                Layout.alignment: Qt.AlignHCenter
                 text_value: API.get().settings_pg.empty_string + (General.cex_icon + ' <a href="https://support.komodoplatform.com/support/solutions/articles/29000024428-komodo-5-active-user-reward-all-you-need-to-know">' + qsTr('Read more about KMD active users rewards') + '</a>')
                 wrapMode: Text.WordWrap
                 font.pixelSize: Style.textSizeSmall2
