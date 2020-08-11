@@ -99,7 +99,7 @@ DefaultModal {
                 text_value: API.get().settings_pg.empty_string +
                             (positive_claim_amount ?
                                  qsTr("You will receive %1", "AMT TICKER").arg(General.formatCrypto("", prepare_claim_rewards_result.withdraw_answer.my_balance_change, API.get().current_coin_info.ticker))
-                               : qsTr("Transaction fee is higher than the reward!"))
+                               : ("❌ " + qsTr("Transaction fee is higher than the reward!")))
             }
 
             DefaultButton {
@@ -365,7 +365,7 @@ DefaultModal {
                                 break
                             }
 
-                            return API.get().settings_pg.empty_string + (val)
+                            return API.get().settings_pg.empty_string + ("❌ " + val)
                         }
 
                         anchors.verticalCenter: parent.verticalCenter
