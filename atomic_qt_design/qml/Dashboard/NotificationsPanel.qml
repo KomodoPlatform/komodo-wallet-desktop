@@ -15,20 +15,13 @@ FloatingBackground {
         visible = false
     }
 
-    Timer {
-        interval: 500
-        repeat: true
-        running: true
-        onTriggered: {
-            console.log("Window Visibility:", window.visibility)
-        }
-    }
-
     function showApp() {
-        console.log("Show application, visibility:", window.true_visibility)
         switch(window.true_visibility) {
             case 4:
                 window.showMaximized()
+                break
+            case 5:
+                window.showFullScreen()
                 break
             default:
                 window.show()
