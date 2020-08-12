@@ -353,8 +353,6 @@ Item {
 
                     ClaimRewardsModal {
                         id: claim_rewards_modal
-
-                        postClaim: () => { button_claim_rewards.enabled = claim_rewards_modal.canClaim() }
                     }
                 }
             }
