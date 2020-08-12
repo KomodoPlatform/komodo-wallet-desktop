@@ -34,6 +34,7 @@ namespace
         config_json_data["current_currency_sign"] = config.current_currency_sign;
         config_json_data["current_fiat_sign"]     = config.current_fiat_sign;
         config_json_data["available_signs"]       = config.available_currency_signs;
+        config_json_data["notification_enabled"]  = config.notification_enabled;
 
         ifs.close();
 
@@ -58,6 +59,17 @@ namespace atomic_dex
         j.at("current_currency_sign").get_to(config.current_currency_sign);
         j.at("available_signs").get_to(config.available_currency_signs);
         j.at("current_fiat_sign").get_to(config.current_fiat_sign);
+        j.at("notification_enabled").get_to(config.notification_enabled);
+    }
+
+    void
+    change_notification_status(cfg& config, bool is_enabled)
+    {
+        if (config.notification_enabled != is_enabled)
+        {
+            config.notification_enabled = is_enabled;
+            upgrade_cfg(config);
+        }
     }
 
     void

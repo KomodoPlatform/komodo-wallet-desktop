@@ -42,6 +42,7 @@ namespace atomic_dex
         Q_PROPERTY(QString current_currency_sign READ get_current_currency_sign NOTIFY onCurrencySignChanged)
         Q_PROPERTY(QString current_fiat_sign READ get_current_fiat_sign NOTIFY onFiatSignChanged)
         Q_PROPERTY(QString current_fiat READ get_current_fiat WRITE set_current_fiat NOTIFY onFiatChanged)
+        Q_PROPERTY(bool notification_enabled READ is_notification_enabled WRITE set_notification_enabled NOTIFY onNotificationEnabledChanged)
 
         //! Private member fields Fields
         std::shared_ptr<QApplication> m_app;
@@ -64,18 +65,20 @@ namespace atomic_dex
         [[nodiscard]] QString get_current_currency_sign() const noexcept;
         [[nodiscard]] QString get_current_fiat_sign() const noexcept;
         [[nodiscard]] QString get_current_fiat() const noexcept;
+        [[nodiscard]] bool    is_notification_enabled() const noexcept;
+        void                  set_notification_enabled(bool is_enabled) noexcept;
         void                  set_current_currency(const QString& current_currency) noexcept;
         void                  set_current_fiat(const QString& current_fiat) noexcept;
 
         //! Public API
         [[nodiscard]] atomic_dex::cfg&       get_cfg() noexcept;
         [[nodiscard]] const atomic_dex::cfg& get_cfg() const noexcept;
-        void init_lang() noexcept;
+        void                                 init_lang() noexcept;
 
         //! Public QML API
-        Q_INVOKABLE QStringList    get_available_langs() const;
-        Q_INVOKABLE QStringList    get_available_fiats() const;
-        Q_INVOKABLE QStringList    get_available_currencies() const;
+        Q_INVOKABLE QStringList get_available_langs() const;
+        Q_INVOKABLE QStringList get_available_fiats() const;
+        Q_INVOKABLE QStringList get_available_currencies() const;
 
       signals:
         void onLangChanged();
@@ -84,6 +87,7 @@ namespace atomic_dex
         void onCurrencySignChanged();
         void onFiatSignChanged();
         void onFiatChanged();
+        void onNotificationEnabledChanged();
     };
 } // namespace atomic_dex
 

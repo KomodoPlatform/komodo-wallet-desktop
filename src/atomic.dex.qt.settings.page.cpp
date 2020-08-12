@@ -19,13 +19,16 @@
 #include <QLocale>
 
 //! Project Headers
-#include "atomic.dex.qt.settings.page.hpp"
 #include "atomic.dex.events.hpp"
+#include "atomic.dex.qt.settings.page.hpp"
 
 //! Constructo destructor
 namespace atomic_dex
 {
-    settings_page::settings_page(entt::registry& registry, std::shared_ptr<QApplication> app, QObject* parent) noexcept : QObject(parent), system(registry), m_app(app) {}
+    settings_page::settings_page(entt::registry& registry, std::shared_ptr<QApplication> app, QObject* parent) noexcept :
+        QObject(parent), system(registry), m_app(app)
+    {
+    }
 } // namespace atomic_dex
 
 //! Override
@@ -40,7 +43,8 @@ namespace atomic_dex
 //! Properties
 namespace atomic_dex
 {
-    QString settings_page::get_empty_string() const noexcept
+    QString
+    settings_page::get_empty_string() const noexcept
     {
         return m_empty_string;
     }
@@ -58,20 +62,20 @@ namespace atomic_dex
         change_lang(m_config, new_lang_std);
 
         auto get_locale = [](const std::string& current_lang) {
-                if (current_lang == "tr")
-                {
-                    return QLocale::Language::Turkish;
-                }
-                if (current_lang == "en")
-                {
-                    return QLocale::Language::English;
-                }
-                if (current_lang == "fr")
-                {
-                    return QLocale::Language::French;
-                }
-                return QLocale::Language::AnyLanguage;
-            };
+            if (current_lang == "tr")
+            {
+                return QLocale::Language::Turkish;
+            }
+            if (current_lang == "en")
+            {
+                return QLocale::Language::English;
+            }
+            if (current_lang == "fr")
+            {
+                return QLocale::Language::French;
+            }
+            return QLocale::Language::AnyLanguage;
+        };
 
         qDebug() << "locale before: " << QLocale().name();
         QLocale::setDefault(get_locale(m_config.current_lang));
@@ -81,6 +85,22 @@ namespace atomic_dex
         this->m_app->installTranslator(&m_translator);
         emit onLangChanged();
         emit langChanged();
+    }
+
+    bool
+    atomic_dex::settings_page::is_notification_enabled() const noexcept
+    {
+        return m_config.notification_enabled;
+    }
+
+    void
+    settings_page::set_notification_enabled(bool is_enabled) noexcept
+    {
+        if (m_config.notification_enabled != is_enabled)
+        {
+            change_notification_status(m_config, is_enabled);
+            emit onNotificationEnabledChanged();
+        }
     }
 
     QString
@@ -136,22 +156,24 @@ namespace atomic_dex
 //! Public API
 namespace atomic_dex
 {
-    atomic_dex::cfg& settings_page::get_cfg() noexcept
+    atomic_dex::cfg&
+    settings_page::get_cfg() noexcept
     {
         return m_config;
     }
 
-    const atomic_dex::cfg& settings_page::get_cfg() const noexcept
+    const atomic_dex::cfg&
+    settings_page::get_cfg() const noexcept
     {
         return m_config;
-
     }
 
-    void settings_page::init_lang() noexcept 
+    void
+    settings_page::init_lang() noexcept
     {
         set_current_lang(QString::fromStdString(m_config.current_lang));
     }
-}
+} // namespace atomic_dex
 
 //! QML API
 namespace atomic_dex
@@ -182,4 +204,4 @@ namespace atomic_dex
         for (auto&& cur_currency: m_config.possible_currencies) { out.push_back(QString::fromStdString(cur_currency)); }
         return out;
     }
-}
+} // namespace atomic_dex
