@@ -222,8 +222,9 @@
       }
     ],
     "explorer_url": [
-      "https://explorer.dash.org/"
+      "https://blockchair.com/dash/"
     ],
+    "explorer_tx_url":"transaction/",
     "is_erc_20": false,
     "type": "UTXO"
   },
@@ -316,6 +317,8 @@
     "explorer_url": [
       "https://chainz.cryptoid.info/emc2/"
     ],
+    "explorer_tx_url":"tx.dws?",
+    "explorer_address_url":"address.dws?",
     "type": "UTXO",
     "is_erc_20": false,
     "active": false,
@@ -762,7 +765,7 @@
       }
     ],
     "explorer_url": [
-      "https://explorer.chips.cash/"
+      "http://chips.komodochainz.info/"
     ],
     "active": false,
     "currently_enabled": false
@@ -855,7 +858,7 @@
       }
     ],
     "explorer_url": [
-      "https://explorer.ilien.io/"
+      "https://iln.explorer.dexstats.info/"
     ],
     "active": false,
     "currently_enabled": false
