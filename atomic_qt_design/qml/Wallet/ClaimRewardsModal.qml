@@ -47,7 +47,7 @@ DefaultModal {
              "tx_hex": ""
          }
      })
-    property var prepare_claim_rewards_result: default_prepare_claim_rewards_result
+    property var prepare_claim_rewards_result: General.clone(default_prepare_claim_rewards_result)
     property string send_result
 
     // Override
@@ -321,7 +321,7 @@ DefaultModal {
 
                         font.pixelSize: utxo_value.font.pixelSize
 
-                        text_value: API.get().settings_pg.empty_string + (modelData.accrue_start_at_human_date)
+                        text_value: API.get().settings_pg.empty_string + (modelData.accrue_start_at_human_date || "-")
                         anchors.verticalCenter: parent.verticalCenter
                     }
 
@@ -334,7 +334,7 @@ DefaultModal {
 
                         font.pixelSize: utxo_value.font.pixelSize
 
-                        text_value: API.get().settings_pg.empty_string + (modelData.accrue_stop_at ? modelData.accrue_stop_at_human_date : "-")
+                        text_value: API.get().settings_pg.empty_string + (modelData.accrue_stop_at_human_date || "-")
                         anchors.verticalCenter: parent.verticalCenter
                     }
 
