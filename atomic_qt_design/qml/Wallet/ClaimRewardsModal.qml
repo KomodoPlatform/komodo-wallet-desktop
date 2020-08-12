@@ -83,7 +83,7 @@ DefaultModal {
     }
 
     function reset() {
-        prepare_claim_rewards_result = default_prepare_claim_rewards_result
+        prepare_claim_rewards_result = General.clone(default_prepare_claim_rewards_result)
         send_result = ""
     }
 
