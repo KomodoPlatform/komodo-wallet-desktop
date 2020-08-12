@@ -55,8 +55,7 @@ DefaultModal {
 
     // Local
     function canClaim() {
-        return API.get().current_coin_info.is_claimable === true &&
-                API.get().do_i_have_enough_funds(API.get().current_coin_info.ticker, API.get().current_coin_info.minimal_balance_for_asking_rewards)
+        return API.get().current_coin_info.is_claimable && parseFloat(API.get().current_coin_info.balance) > 0
     }
 
     function prepareClaimRewards() {

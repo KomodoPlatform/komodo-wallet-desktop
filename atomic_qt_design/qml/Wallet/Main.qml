@@ -343,7 +343,7 @@ Item {
                         id: button_claim_rewards
                         text: API.get().settings_pg.empty_string + (qsTr("Claim Rewards"))
 
-                        visible: API.get().current_coin_info.is_claimable === true
+                        visible: API.get().current_coin_info.is_claimable
                         enabled: claim_rewards_modal.canClaim()
                         onClicked: {
                             if(claim_rewards_modal.prepareClaimRewards())
