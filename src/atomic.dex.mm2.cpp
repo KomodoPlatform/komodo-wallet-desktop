@@ -1023,7 +1023,7 @@ namespace atomic_dex
         return m_tx_state.at(ticker);
     }
 
-    bool
+    /*bool
     mm2::is_claiming_ready(const std::string& ticker) const noexcept
     {
         spdlog::debug("{} l{} f[{}]", __FUNCTION__, __LINE__, fs::path(__FILE__).filename().string());
@@ -1044,7 +1044,7 @@ namespace atomic_dex
             return true;
         }
         return false;
-    }
+    }*/
 
     nlohmann::json
     mm2::claim_rewards(const std::string& ticker, t_mm2_ec& ec) noexcept
@@ -1075,13 +1075,13 @@ namespace atomic_dex
         spdlog::debug("{} l{} f[{}]", __FUNCTION__, __LINE__, fs::path(__FILE__).filename().string());
         auto ticker   = req.coin;
         auto b_answer = mm2::broadcast(std::move(req), ec);
-        if (!ec)
+        /*if (!ec)
         {
             auto          lock_claim_file_path = fs::temp_directory_path() / (ticker + ".claim.lock");
             std::ofstream ofs(lock_claim_file_path.string());
             assert(ofs);
             spdlog::info("created file {}", lock_claim_file_path.string());
-        }
+        }*/
         return b_answer;
     }
 
