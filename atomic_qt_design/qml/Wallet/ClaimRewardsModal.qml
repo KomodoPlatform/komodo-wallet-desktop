@@ -335,7 +335,7 @@ DefaultModal {
 
                         font.pixelSize: utxo_value.font.pixelSize
 
-                        text_value: API.get().settings_pg.empty_string + (modelData.accrue_stop_at_human_date)
+                        text_value: API.get().settings_pg.empty_string + (modelData.accrue_stop_at ? modelData.accrue_stop_at_human_date : "-")
                         anchors.verticalCenter: parent.verticalCenter
                     }
 
@@ -348,7 +348,7 @@ DefaultModal {
 
                         font.pixelSize: utxo_value.font.pixelSize
 
-                        text_value: API.get().settings_pg.empty_string + (General.secondsToTimeLeft(Date.now()/1000, modelData.accrue_stop_at))
+                        text_value: API.get().settings_pg.empty_string + (modelData.accrue_stop_at ? General.secondsToTimeLeft(Date.now()/1000, modelData.accrue_stop_at) : '-')
                         anchors.verticalCenter: parent.verticalCenter
                     }
 
