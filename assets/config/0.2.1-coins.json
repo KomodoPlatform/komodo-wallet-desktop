@@ -953,6 +953,27 @@
     "active": false,
     "currently_enabled": false
   },
+  "THC": {
+    "coin": "THC",
+    "name": "HempCoin",
+    "coinpaprika_id": "thc-hempcoin",
+    "coingecko_id": "hempcoin-thc",
+    "electrum": [
+      {
+        "url": "165.22.52.123:10022"
+      },
+      {
+        "url": "157.230.45.184:10022"
+      }
+    ],
+    "explorer_url": [
+      "https://thc.explorer.dexstats.info/"
+    ],
+    "type": "Smart Chain",
+    "is_erc_20": false,
+    "active": false,
+    "currently_enabled": false
+  },
   "XZC": {
     "coin": "XZC",
     "name": "Zcoin",
