@@ -1053,9 +1053,9 @@ namespace atomic_dex
 
         nlohmann::json out  = nlohmann::json::object();
         const auto&    info = get_coin_info(ticker);
-        if (not info.is_claimable || not do_i_have_enough_funds(ticker, t_float_50(info.minimal_claim_amount)))
+        if (not info.is_claimable)
         {
-            ec = not info.is_claimable ? dextop_error::ticker_is_not_claimable : dextop_error::claim_not_enough_funds;
+            ec = dextop_error::ticker_is_not_claimable;
             return {};
         }
         t_withdraw_request req{.coin = ticker, .to = m_balance_informations.at(ticker).address, .amount = "0", .max = true};
