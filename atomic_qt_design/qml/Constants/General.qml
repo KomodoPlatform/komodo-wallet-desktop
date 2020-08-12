@@ -79,7 +79,7 @@ QtObject {
         let seconds = Math.floor(delta) % 60
         if(seconds < 10) seconds = '0' + seconds
 
-        return days + ':' + hours + ':' + minutes + ':' + seconds
+        return qsTr("%n day(s)", "", days) + '  ' + hours + ':' + minutes + ':' + seconds
     }
     
     function clone(obj) {
