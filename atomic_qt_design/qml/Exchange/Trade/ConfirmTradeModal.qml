@@ -1,4 +1,4 @@
-import QtQuick 2.12
+import QtQuick 2.14
 import QtQuick.Layouts 1.12
 import QtQuick.Controls 2.12
 
@@ -119,7 +119,7 @@ DefaultModal {
                 DefaultText {
                     visible: config_section.is_dpow_configurable
                     Layout.alignment: Qt.AlignHCenter
-                    text_value: API.get().settings_pg.empty_string + (General.cex_icon + " " + qsTr('<a href="https://komodoplatform.com/security-delayed-proof-of-work-dpow/">Read more about dPoW</a>'))
+                    text_value: API.get().settings_pg.empty_string + (General.cex_icon + ' <a href="https://komodoplatform.com/security-delayed-proof-of-work-dpow/">' + qsTr('Read more about dPoW') + '</a>')
                     wrapMode: Text.WordWrap
                     font.pixelSize: Style.textSizeSmall2
 
@@ -157,7 +157,7 @@ DefaultModal {
                 DefaultText {
                     visible: enable_dpow_confs.visible && enable_dpow_confs.enabled
                     Layout.alignment: Qt.AlignHCenter
-                    text_value: API.get().settings_pg.empty_string + (General.cex_icon + " " + qsTr('<a href="https://komodoplatform.com/security-delayed-proof-of-work-dpow/">Read more about dPoW</a>'))
+                    text_value: API.get().settings_pg.empty_string + (General.cex_icon + ' <a href="https://komodoplatform.com/security-delayed-proof-of-work-dpow/">' + qsTr('Read more about dPoW') + '</a>')
                     wrapMode: Text.WordWrap
                     font.pixelSize: Style.textSizeSmall2
 

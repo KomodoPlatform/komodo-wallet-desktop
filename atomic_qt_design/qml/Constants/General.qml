@@ -61,6 +61,26 @@ QtObject {
     function timestampToDate(timestamp) {
         return (new Date(timestamp * 1000))
     }
+
+    function secondsToTimeLeft(date_now, date_future) {
+        let delta = Math.abs(date_future - date_now)
+
+        let days = Math.floor(delta / 86400)
+        delta -= days * 86400
+
+        let hours = Math.floor(delta / 3600) % 24
+        delta -= hours * 3600
+        if(hours < 10) hours = '0' + hours
+
+        let minutes = Math.floor(delta / 60) % 60
+        delta -= minutes * 60
+        if(minutes < 10) minutes = '0' + minutes
+
+        let seconds = Math.floor(delta) % 60
+        if(seconds < 10) seconds = '0' + seconds
+
+        return qsTr("%n day(s)", "", days) + '  ' + hours + ':' + minutes + ':' + seconds
+    }
     
     function clone(obj) {
         return JSON.parse(JSON.stringify(obj));

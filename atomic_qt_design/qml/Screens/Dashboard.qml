@@ -1,4 +1,4 @@
-import QtQuick 2.12
+import QtQuick 2.14
 import QtQuick.Layouts 1.12
 import QtQuick.Controls 2.12
 
@@ -221,7 +221,7 @@ Item {
             }
 
             DefaultText {
-                text_value: API.get().settings_pg.empty_string + (qsTr('Markets data (prices, charts, etc.) marked with the ⓘ icon originates from third party sources. (<a href="https://coinpaprika.com">coinpaprika.com</a>)'))
+                text_value: API.get().settings_pg.empty_string + (qsTr('Markets data (prices, charts, etc.) marked with the ⓘ icon originates from third party sources.') + ' (<a href="https://coinpaprika.com">coinpaprika.com</a>)')
                 wrapMode: Text.WordWrap
                 Layout.preferredWidth: cex_rates_modal.width
 

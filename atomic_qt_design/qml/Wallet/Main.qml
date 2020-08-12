@@ -1,4 +1,4 @@
-import QtQuick 2.12
+import QtQuick 2.14
 import QtQuick.Layouts 1.12
 import QtQuick.Controls 2.12
 
@@ -343,18 +343,16 @@ Item {
                         id: button_claim_rewards
                         text: API.get().settings_pg.empty_string + (qsTr("Claim Rewards"))
 
-                        visible: API.get().current_coin_info.is_claimable === true
+                        visible: API.get().current_coin_info.is_claimable
                         enabled: claim_rewards_modal.canClaim()
                         onClicked: {
-                            claim_rewards_modal.prepareClaimRewards()
-                            claim_rewards_modal.open()
+                            if(claim_rewards_modal.prepareClaimRewards())
+                                claim_rewards_modal.open()
                         }
                     }
 
                     ClaimRewardsModal {
                         id: claim_rewards_modal
-
-                        postClaim: () => { button_claim_rewards.enabled = claim_rewards_modal.canClaim() }
                     }
                 }
             }

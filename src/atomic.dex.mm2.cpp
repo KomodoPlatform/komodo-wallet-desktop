@@ -1023,7 +1023,7 @@ namespace atomic_dex
         return m_tx_state.at(ticker);
     }
 
-    bool
+    /*bool
     mm2::is_claiming_ready(const std::string& ticker) const noexcept
     {
         spdlog::debug("{} l{} f[{}]", __FUNCTION__, __LINE__, fs::path(__FILE__).filename().string());
@@ -1044,26 +1044,27 @@ namespace atomic_dex
             return true;
         }
         return false;
-    }
+    }*/
 
     nlohmann::json
     mm2::claim_rewards(const std::string& ticker, t_mm2_ec& ec) noexcept
     {
         spdlog::debug("{} l{} f[{}]", __FUNCTION__, __LINE__, fs::path(__FILE__).filename().string());
 
-        nlohmann::json out = nlohmann::json::object();
+        nlohmann::json out  = nlohmann::json::object();
         const auto&    info = get_coin_info(ticker);
-        if (not info.is_claimable || not do_i_have_enough_funds(ticker, t_float_50(info.minimal_claim_amount)))
+        if (not info.is_claimable)
         {
-            ec = not info.is_claimable ? dextop_error::ticker_is_not_claimable : dextop_error::claim_not_enough_funds;
+            ec = dextop_error::ticker_is_not_claimable;
             return {};
         }
         t_withdraw_request req{.coin = ticker, .to = m_balance_informations.at(ticker).address, .amount = "0", .max = true};
         auto               answer = ::mm2::api::rpc_withdraw(std::move(req));
         if (answer.rpc_result_code == 200)
         {
-            out["withdraw_answer"]  = nlohmann::json::parse(answer.raw_result);
-            out["kmd_rewards_info"] = ::mm2::api::rpc_kmd_rewards_info().result;
+            out["withdraw_answer"]            = nlohmann::json::parse(answer.raw_result);
+            out.at("withdraw_answer")["date"] = answer.result.value().timestamp_as_date;
+            out["kmd_rewards_info"]           = ::mm2::api::rpc_kmd_rewards_info().result;
         }
         return out;
     }
@@ -1074,13 +1075,13 @@ namespace atomic_dex
         spdlog::debug("{} l{} f[{}]", __FUNCTION__, __LINE__, fs::path(__FILE__).filename().string());
         auto ticker   = req.coin;
         auto b_answer = mm2::broadcast(std::move(req), ec);
-        if (!ec)
+        /*if (!ec)
         {
             auto          lock_claim_file_path = fs::temp_directory_path() / (ticker + ".claim.lock");
             std::ofstream ofs(lock_claim_file_path.string());
             assert(ofs);
             spdlog::info("created file {}", lock_claim_file_path.string());
-        }
+        }*/
         return b_answer;
     }
 

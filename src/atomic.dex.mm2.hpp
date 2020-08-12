@@ -213,7 +213,7 @@ namespace atomic_dex
         [[nodiscard]] t_tx_state get_tx_state(const std::string& ticker, t_mm2_ec& ec) const;
 
         //! Claim Reward is possible on this specific ticker ?
-        [[nodiscard]] bool is_claiming_ready(const std::string& ticker) const noexcept;
+        //[[nodiscard]] bool is_claiming_ready(const std::string& ticker) const noexcept;
 
         //! Claim rewards
         nlohmann::json claim_rewards(const std::string& ticker, t_mm2_ec& ec) noexcept;
