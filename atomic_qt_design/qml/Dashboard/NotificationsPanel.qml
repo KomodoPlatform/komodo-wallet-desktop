@@ -80,7 +80,7 @@ FloatingBackground {
     }
 
     function displayMessage(title, message) {
-        if(General.enable_desktop_notifications)
+        if(API.get().settings_pg.notification_enabled)
             tray.showMessage(title, message)
     }
 
