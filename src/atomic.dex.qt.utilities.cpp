@@ -15,7 +15,6 @@
  ******************************************************************************/
 
 //! QT Headers
-#include <QDebug>
 #include <QtNetwork>
 
 //! Project headers

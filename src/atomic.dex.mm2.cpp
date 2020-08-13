@@ -735,8 +735,9 @@ namespace atomic_dex
             auto swaps = get_swaps();
 
             for (auto &&swap : swaps.swaps) {
-                spdlog::trace("{}", swap.events.dump(4));
-
+                for (auto&& event : swap.events) {
+                    std::cout << event << std::endl;
+                }
             }
         }*/
     }
