@@ -16,22 +16,18 @@ ColumnLayout {
         text_value: API.get().settings_pg.empty_string + (qsTr("Swap Progress"))
     }
 
-    DefaultText {
-        text_value: API.get().settings_pg.empty_string + (qsTr("Events: ") + (!details ? 0 : details.events.length))
-    }
-
     DefaultListView {
         Layout.fillWidth: true
         Layout.fillHeight: true
-        model: details ? details.events : []
+        model: details ? API.get().orders_mdl.get_expected_events_list(details.is_maker) : []
 
         delegate: ColumnLayout {
             width: root.width
             DefaultText {
                 id: name
-                font.pixelSize: price_value.font.pixelSize
+                font.pixelSize: Style.textSizeSmall4
 
-                text_value: API.get().settings_pg.empty_string + (modelData.state)
+                text_value: API.get().settings_pg.empty_string + (modelData)
                 color: Style.colorWhite4
             }
         }

@@ -170,6 +170,7 @@ DefaultModal {
                 }
 
                 SwapProgress {
+                    visible: details
                     Layout.fillWidth: true
                     details: root.details
                 }
