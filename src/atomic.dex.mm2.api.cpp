@@ -668,7 +668,7 @@ namespace mm2::api
           using namespace date;
           const auto        time_key = value.at("created_at").get<std::size_t>();
 
-          std::string action = "Buy";
+          std::string action = "";
           if (not is_maker)
           {
              value.at("request").at("action").get_to(action);

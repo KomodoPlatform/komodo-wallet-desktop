@@ -397,6 +397,11 @@ namespace atomic_dex
             .is_swap        = false,
             .is_cancellable = contents.cancellable,
             .is_recoverable = false};
+        if (contents.action.empty() && contents.order_type == "maker")
+        {
+            data.base_coin = QString::fromStdString(contents.base);
+            data.rel_coin  = QString::fromStdString(contents.rel);
+        }
         data.ticker_pair = data.base_coin + "/" + data.rel_coin;
         this->m_orders_id_registry.emplace(contents.order_id);
         this->m_model_data.push_back(std::move(data));
