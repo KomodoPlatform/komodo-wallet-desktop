@@ -69,8 +69,8 @@ Item {
             Switch {
                 Layout.alignment: Qt.AlignHCenter
                 text: API.get().settings_pg.empty_string + (qsTr("Enable Desktop Notifications"))
-                Component.onCompleted: checked = General.enable_desktop_notifications
-                onCheckedChanged: General.enable_desktop_notifications = checked
+                Component.onCompleted: checked = API.get().settings_pg.notification_enabled
+                onCheckedChanged: API.get().settings_pg.notification_enabled = checked
             }
 
             DefaultButton {
