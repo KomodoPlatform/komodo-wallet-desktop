@@ -37,7 +37,7 @@ DefaultModal {
 
             ColumnLayout {
                 id: inner_layout
-                width: root.width - root.padding*2 - 40 // Scrollbar margin
+                width: root.width - root.padding*2 - 20 // Scrollbar margin
 
                 // Complete image
                 DefaultImage {
@@ -160,6 +160,18 @@ DefaultModal {
                     copyable: true
 
                     visible: field.text !== ''
+                }
+
+                HorizontalLine {
+                    Layout.fillWidth: true
+                    Layout.topMargin: 10
+                    Layout.bottomMargin: Layout.topMargin
+                    color: Style.colorWhite8
+                }
+
+                SwapProgress {
+                    Layout.fillWidth: true
+                    details: root.details
                 }
             }
         }
