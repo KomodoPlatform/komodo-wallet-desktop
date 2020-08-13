@@ -7,6 +7,8 @@ import "../Constants"
 
 // Content
 ColumnLayout {
+    id: root
+
     property var details
 
     // Title
@@ -16,5 +18,22 @@ ColumnLayout {
 
     DefaultText {
         text_value: API.get().settings_pg.empty_string + (qsTr("Events: ") + (!details ? 0 : details.events.length))
+    }
+
+    DefaultListView {
+        Layout.fillWidth: true
+        Layout.fillHeight: true
+        model: details ? details.events : []
+
+        delegate: ColumnLayout {
+            width: root.width
+            DefaultText {
+                id: name
+                font.pixelSize: price_value.font.pixelSize
+
+                text_value: API.get().settings_pg.empty_string + (modelData.state)
+                color: Style.colorWhite4
+            }
+        }
     }
 }
