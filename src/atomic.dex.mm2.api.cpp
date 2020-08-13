@@ -743,11 +743,12 @@ namespace mm2::api
                 contents.my_info["my_amount"]    = adjust_precision(contents.my_info["my_amount"].get<std::string>());
             }
         }
-        using t_event_timestamp_registry = std::unordered_map<std::string, std::uint64_t>;
-        t_event_timestamp_registry event_timestamp_registry;
-        double                     total_time_in_seconds = 0.00;
 
-        for (auto&& content: j.at("events"))
+        //using t_event_timestamp_registry = std::unordered_map<std::string, std::uint64_t>;
+        //t_event_timestamp_registry event_timestamp_registry;
+        //double                     total_time_in_seconds = 0.00;
+
+        /*for (auto&& content: j.at("events"))
         {
             const nlohmann::json& j_evt      = content.at("event");
             auto                  timestamp  = content.at("timestamp").get<std::size_t>();
@@ -863,7 +864,7 @@ namespace mm2::api
         }
         std::stringstream ss;
         ss << std::fixed << std::setprecision(3) << total_time_in_seconds;
-        contents.total_time_in_seconds = ss.str() + "s";
+        contents.total_time_in_seconds = ss.str() + "s";*/
     }
 
     void
