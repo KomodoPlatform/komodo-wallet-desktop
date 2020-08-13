@@ -77,6 +77,9 @@ namespace atomic_dex
         //! Properties
         [[nodiscard]] int                 get_length() const noexcept;
         [[nodiscard]] orders_proxy_model* get_orders_proxy_mdl() const noexcept;
+
+        //! QML_API
+        Q_INVOKABLE QStringList get_expected_events_list(bool is_maker) const noexcept;
       signals:
         void lengthChanged();
         void ordersProxyChanged();
