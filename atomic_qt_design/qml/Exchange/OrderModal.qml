@@ -9,6 +9,8 @@ DefaultModal {
     id: root
 
     width: 900
+    height: window.height - 90
+
     property var details
 
     onDetailsChanged: {
@@ -26,127 +28,140 @@ DefaultModal {
                                                         details.is_swap ? qsTr("Swap Details") : qsTr("Order Details"))
         }
 
-        // Complete image
-        DefaultImage {
-            visible: !details ? false :
-                                details.is_swap && details.order_status === "successful"
-            Layout.alignment: Qt.AlignHCenter
-            source: General.image_path + "exchange-trade-complete.svg"
-        }
-
-        // Loading symbol
-            DefaultBusyIndicator {
-            visible: !details ? false :
-                                 details.is_swap &&
-                                 details.order_status !== "successful" &&
-                                 details.order_status !== "failed"
-            Layout.alignment: Qt.AlignHCenter
-        }
-
-        // Status Text
-        DefaultText {
-            Layout.alignment: Qt.AlignHCenter
-            Layout.topMargin: 20
-            font.pixelSize: Style.textSize3
-            visible: !details ? false :
-                                details.is_swap || !details.is_maker
-            color: !details ? "white" :
-                              visible ? getStatusColor(details.order_status) : ''
-            text_value: API.get().settings_pg.empty_string + (!details ? "" :
-                                                             visible ? getStatusTextWithPrefix(details.order_status) : '')
-        }
-
-        OrderContent {
-            Layout.topMargin: 25
+        DefaultFlickable {
             Layout.fillWidth: true
-            Layout.leftMargin: 20
-            Layout.rightMargin: Layout.leftMargin
-            height: 120
-            Layout.alignment: Qt.AlignHCenter
-            details: root.details
-            in_modal: true
-        }
+            Layout.fillHeight: true
 
-        HorizontalLine {
-            Layout.fillWidth: true
-            Layout.bottomMargin: 20
-            color: Style.colorWhite8
-        }
+            contentWidth: inner_layout.width
+            contentHeight: inner_layout.height
 
-        // Maker/Taker
-        DefaultText {
-            text_value: API.get().settings_pg.empty_string + (!details ? "" :
-                                                             details.is_maker ? qsTr("Maker Order"): qsTr("Taker Order"))
-            color: Style.colorThemeDarkLight
-            Layout.alignment: Qt.AlignRight
-        }
+            ColumnLayout {
+                id: inner_layout
+                width: root.width - root.padding*2 - 40 // Scrollbar margin
 
-        // Refund state
-        TextFieldWithTitle {
-            Layout.topMargin: -20
+                // Complete image
+                DefaultImage {
+                    visible: !details ? false :
+                                        details.is_swap && details.order_status === "successful"
+                    Layout.alignment: Qt.AlignHCenter
+                    source: General.image_path + "exchange-trade-complete.svg"
+                }
 
-            title: API.get().settings_pg.empty_string + (qsTr("Refund State"))
-            field.text: !details ? "" :
-                                   details.order_status === "refunding" ? qsTr("Your swap failed but the auto-refund process for your payment started already. Please wait and keep application opened until you receive your payment back") : ""
-            field.readOnly: true
+                // Loading symbol
+                DefaultBusyIndicator {
+                    visible: !details ? false :
+                                         details.is_swap &&
+                                         details.order_status !== "successful" &&
+                                         details.order_status !== "failed"
+                    Layout.alignment: Qt.AlignHCenter
+                }
 
-            visible: field.text !== ''
-        }
+                // Status Text
+                DefaultText {
+                    Layout.alignment: Qt.AlignHCenter
+                    Layout.topMargin: 20
+                    font.pixelSize: Style.textSize3
+                    visible: !details ? false :
+                                        details.is_swap || !details.is_maker
+                    color: !details ? "white" :
+                                      visible ? getStatusColor(details.order_status) : ''
+                    text_value: API.get().settings_pg.empty_string + (!details ? "" :
+                                                                     visible ? getStatusTextWithPrefix(details.order_status) : '')
+                }
 
-        // Date
-        TextWithTitle {
-            title: API.get().settings_pg.empty_string + (qsTr("Date"))
-            text: API.get().settings_pg.empty_string + (!details ? "" :
-                                                       details.date)
-            visible: text !== ''
-        }
+                OrderContent {
+                    Layout.topMargin: 25
+                    Layout.fillWidth: true
+                    Layout.leftMargin: 20
+                    Layout.rightMargin: Layout.leftMargin
+                    height: 120
+                    Layout.alignment: Qt.AlignHCenter
+                    details: root.details
+                    in_modal: true
+                }
 
-        // ID
-        TextWithTitle {
-            title: API.get().settings_pg.empty_string + (qsTr("ID"))
-            text: API.get().settings_pg.empty_string + (!details ? "" :
-                                                       details.order_id)
-            visible: text !== ''
-            privacy: true
-        }
+                HorizontalLine {
+                    Layout.fillWidth: true
+                    Layout.bottomMargin: 20
+                    color: Style.colorWhite8
+                }
 
-        // Payment ID
-        TextWithTitle {
-            title: API.get().settings_pg.empty_string + (!details ? "" :
-                                                        details.is_maker ? qsTr("Maker Payment Sent ID") : qsTr("Maker Payment Spent ID"))
-            text: API.get().settings_pg.empty_string + (!details ? "" :
-                                                       details.maker_payment_id)
-            visible: text !== ''
-            privacy: true
-        }
+                // Maker/Taker
+                DefaultText {
+                    text_value: API.get().settings_pg.empty_string + (!details ? "" :
+                                                                     details.is_maker ? qsTr("Maker Order"): qsTr("Taker Order"))
+                    color: Style.colorThemeDarkLight
+                    Layout.alignment: Qt.AlignRight
+                }
 
-        // Payment ID
-        TextWithTitle {
-            title: API.get().settings_pg.empty_string + (!details ? "" :
-                                                        details.is_maker ? qsTr("Taker Payment Spent ID") : qsTr("Taker Payment Sent ID"))
-            text: API.get().settings_pg.empty_string + (!details ? "" :
-                                                       details.taker_payment_id)
-            visible: text !== ''
-            privacy: true
-        }
+                // Refund state
+                TextFieldWithTitle {
+                    Layout.topMargin: -20
 
-        // Error ID
-        TextWithTitle {
-            title: API.get().settings_pg.empty_string + (qsTr("Error ID"))
-            text: API.get().settings_pg.empty_string + (!details ? "" :
-                                                       details.order_error_state)
-            visible: text !== ''
-        }
+                    title: API.get().settings_pg.empty_string + (qsTr("Refund State"))
+                    field.text: !details ? "" :
+                                           details.order_status === "refunding" ? qsTr("Your swap failed but the auto-refund process for your payment started already. Please wait and keep application opened until you receive your payment back") : ""
+                    field.readOnly: true
 
-        // Error Details
-        TextFieldWithTitle {
-            title: API.get().settings_pg.empty_string + (qsTr("Error Log"))
-            field.text: API.get().settings_pg.empty_string + (!details ? "" :
-                                                             details.order_error_message)
-            field.readOnly: true
-            copyable: true
+                    visible: field.text !== ''
+                }
 
-            visible: field.text !== ''
+                // Date
+                TextWithTitle {
+                    title: API.get().settings_pg.empty_string + (qsTr("Date"))
+                    text: API.get().settings_pg.empty_string + (!details ? "" :
+                                                               details.date)
+                    visible: text !== ''
+                }
+
+                // ID
+                TextWithTitle {
+                    title: API.get().settings_pg.empty_string + (qsTr("ID"))
+                    text: API.get().settings_pg.empty_string + (!details ? "" :
+                                                               details.order_id)
+                    visible: text !== ''
+                    privacy: true
+                }
+
+                // Payment ID
+                TextWithTitle {
+                    title: API.get().settings_pg.empty_string + (!details ? "" :
+                                                                details.is_maker ? qsTr("Maker Payment Sent ID") : qsTr("Maker Payment Spent ID"))
+                    text: API.get().settings_pg.empty_string + (!details ? "" :
+                                                               details.maker_payment_id)
+                    visible: text !== ''
+                    privacy: true
+                }
+
+                // Payment ID
+                TextWithTitle {
+                    title: API.get().settings_pg.empty_string + (!details ? "" :
+                                                                details.is_maker ? qsTr("Taker Payment Spent ID") : qsTr("Taker Payment Sent ID"))
+                    text: API.get().settings_pg.empty_string + (!details ? "" :
+                                                               details.taker_payment_id)
+                    visible: text !== ''
+                    privacy: true
+                }
+
+                // Error ID
+                TextWithTitle {
+                    title: API.get().settings_pg.empty_string + (qsTr("Error ID"))
+                    text: API.get().settings_pg.empty_string + (!details ? "" :
+                                                               details.order_error_state)
+                    visible: text !== ''
+                }
+
+                // Error Details
+                TextFieldWithTitle {
+                    title: API.get().settings_pg.empty_string + (qsTr("Error Log"))
+                    field.text: API.get().settings_pg.empty_string + (!details ? "" :
+                                                                     details.order_error_message)
+                    field.readOnly: true
+                    copyable: true
+
+                    visible: field.text !== ''
+                }
+            }
         }
 
         // Buttons
