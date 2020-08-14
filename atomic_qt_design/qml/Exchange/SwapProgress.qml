@@ -33,9 +33,10 @@ ColumnLayout {
 
     // Title
     DefaultText {
-        text_value: API.get().settings_pg.empty_string + (qsTr("Swap Progress") + "   |   " +
+        text_value: API.get().settings_pg.empty_string + (qsTr("Progress details") + "     |     " +
                                                            qsTr("%1 seconds", "SECONDS").arg(General.formatDouble(total_time_passed, 1)))
         font.pixelSize: Style.textSize1
+        Layout.bottomMargin: 10
     }
 
     Repeater {
@@ -74,7 +75,7 @@ ColumnLayout {
                 text_value: event || is_current_event ? "●" :  "○"
                 anchors.left: parent.left
                 anchors.leftMargin: 10
-                anchors.verticalCenter: parent.verticalCenter
+                anchors.verticalCenter: col_layout.verticalCenter
                 color: event ? Style.colorGreen : is_current_event ? Style.colorOrange : Style.colorTextDisabled
             }
 
@@ -88,10 +89,11 @@ ColumnLayout {
 
                 DefaultText {
                     id: name
+
                     font.pixelSize: Style.textSizeSmall4
 
                     text_value: API.get().settings_pg.empty_string + (modelData)
-                    color: event || is_current_event ? Style.colorText : Style.colorTextDisabled
+                    color: event ? Style.colorText : is_current_event ? Style.colorText2 : Style.colorTextDisabled
                 }
 
                 Rectangle {
@@ -115,8 +117,6 @@ ColumnLayout {
 
                     text_value: API.get().settings_pg.empty_string + (event ? qsTr("Took %1s", "SECONDS").arg(General.formatDouble(seconds_passed, 1)) : '')
                     color: Style.colorGreen
-
-                    Layout.bottomMargin: 10
                 }
             }
         }
