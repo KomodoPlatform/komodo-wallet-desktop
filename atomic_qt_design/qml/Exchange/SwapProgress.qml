@@ -30,7 +30,7 @@ ColumnLayout {
         Layout.fillHeight: true
         model: details ? API.get().orders_mdl.get_expected_events_list(details.is_maker) : []
 
-        delegate: ColumnLayout {
+        delegate: Item {
             readonly property var event: {
                 if(!details) return undefined
                 const idx = details.events.map(e => e.state).indexOf(modelData)
@@ -48,36 +48,56 @@ ColumnLayout {
             }
 
             width: root.width
+            height: 50
 
             DefaultText {
-                id: name
-                font.pixelSize: Style.textSizeSmall4
+                id: icon
 
-                text_value: API.get().settings_pg.empty_string + (modelData)
-                color: event ? Style.colorText : Style.colorTextDisabled
+                text_value: event ? "●" : "○" // ◍ for unfinished one ●◍○
+                anchors.left: parent.left
+                anchors.leftMargin: 10
+                anchors.verticalCenter: parent.verticalCenter
+                color: event ? Style.colorGreen : Style.colorTextDisabled // Orange for unfinished one
             }
 
-            Rectangle {
-                width: 300
-                height: 2
+            ColumnLayout {
+                id: col_layout
 
-                color: Style.colorWhite8
+                anchors.left: icon.right
+                anchors.leftMargin: icon.anchors.leftMargin
+                anchors.verticalCenter: parent.verticalCenter
+                anchors.right: parent.right
+
+                DefaultText {
+                    id: name
+                    font.pixelSize: Style.textSizeSmall4
+
+                    text_value: API.get().settings_pg.empty_string + (modelData)
+                    color: event ? Style.colorText : Style.colorTextDisabled
+                }
 
                 Rectangle {
-                    width: parent.width * (total_time_passed > 0 ? (seconds_passed / total_time_passed) : 0)
-                    height: parent.height
-                    color: Style.colorGreen
+                    width: 300
+                    height: 2
+
+                    color: Style.colorWhite8
+
+                    Rectangle {
+                        width: parent.width * (total_time_passed > 0 ? (seconds_passed / total_time_passed) : 0)
+                        height: parent.height
+                        color: Style.colorGreen
+                    }
                 }
-            }
 
-            DefaultText {
-                visible: event
-                font.pixelSize: Style.textSizeSmall2
+                DefaultText {
+                    visible: event
+                    font.pixelSize: Style.textSizeSmall2
 
-                text_value: API.get().settings_pg.empty_string + (event ? qsTr("Took %1s", "SECONDS").arg(General.formatDouble(seconds_passed, 1)) : '')
-                color: Style.colorGreen
+                    text_value: API.get().settings_pg.empty_string + (event ? qsTr("Took %1s", "SECONDS").arg(General.formatDouble(seconds_passed, 1)) : '')
+                    color: Style.colorGreen
 
-                Layout.bottomMargin: 10
+                    Layout.bottomMargin: 10
+                }
             }
         }
     }
