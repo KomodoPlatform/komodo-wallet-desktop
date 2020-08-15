@@ -95,6 +95,9 @@ QtObject {
     }
 
     function durationTextShort(total) {
+        if(!General.exists(total))
+            return "-"
+
         const r = getDuration(total)
 
         r.seconds += r.milliseconds/1000
