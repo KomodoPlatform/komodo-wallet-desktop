@@ -158,6 +158,12 @@ namespace atomic_dex
         if (s >= 5s)
         {
             spawn([this]() { fetch_current_orderbook_thread(false); });
+            spawn([this]() {
+                std::vector<std::future<void>> futures;
+                futures.emplace_back(spawn([this]() { process_orders(); }));
+                futures.emplace_back(spawn([this]() { process_swaps(); }));
+                for (auto&& fut: futures) { fut.get(); }
+            });
             m_orderbook_clock = std::chrono::high_resolution_clock::now();
         }
 
@@ -541,11 +547,7 @@ namespace atomic_dex
         t_coins                        coins = get_enabled_coins();
         std::vector<std::future<void>> futures;
 
-        futures.reserve(coins.size() * 2 + 2);
-
-        futures.emplace_back(spawn([this]() { process_orders(); }));
-
-        futures.emplace_back(spawn([this]() { process_swaps(); }));
+        futures.reserve(coins.size() * 2);
 
         for (auto&& current_coin: coins)
         {
