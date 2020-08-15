@@ -9,7 +9,7 @@ import "../Constants"
 ColumnLayout {
     id: root
 
-    property var all_events: details ? API.get().orders_mdl.get_expected_events_list(details.is_maker) : []
+    property var all_events: !details ? [] : details.order_status === "failed" ? details.events.map(e => e.state) : API.get().orders_mdl.get_expected_events_list(details.is_maker)
     property var details
     readonly property double total_time_passed: {
         if(!details) return 0
