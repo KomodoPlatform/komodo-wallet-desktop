@@ -61,26 +61,52 @@ QtObject {
         return (new Date(timestamp * 1000))
     }
 
-    function secondsToTimeLeft(date_now, date_future) {
-        let delta = Math.abs(date_future - date_now)
+    function getDuration(total_seconds) {
+        let delta = Math.abs(total_seconds)
 
         let days = Math.floor(delta / 86400)
         delta -= days * 86400
 
         let hours = Math.floor(delta / 3600) % 24
         delta -= hours * 3600
-        if(hours < 10) hours = '0' + hours
 
         let minutes = Math.floor(delta / 60) % 60
         delta -= minutes * 60
-        if(minutes < 10) minutes = '0' + minutes
 
         let seconds = Math.floor(delta) % 60
-        if(seconds < 10) seconds = '0' + seconds
+        delta -= seconds * 60
 
+        let milliseconds = delta * 1000
+
+        return { days, hours, minutes, seconds, milliseconds }
+    }
+
+    function secondsToTimeLeft(date_now, date_future) {
+        const r = getDuration(date_future - date_now)
+        let days = r.days
+        let hours = r.hours
+        let minutes = r.minutes
+        let seconds = r.seconds
+
+        if(hours < 10) hours = '0' + hours
+        if(minutes < 10) minutes = '0' + minutes
+        if(seconds < 10) seconds = '0' + seconds
         return qsTr("%n day(s)", "", days) + '  ' + hours + ':' + minutes + ':' + seconds
     }
-    
+
+    function durationTextShort(total) {
+        const r = getDuration(total)
+        let text = ""
+        if(r.days > 0) text += qsTr("%nd", "day", r.days) + "  "
+        if(r.hours > 0) text += qsTr("%nh", "hours", r.hours) + "  "
+        if(r.minutes > 0) text += qsTr("%nm", "minutes", r.minutes) + "  "
+        if(r.seconds > 0) text += qsTr("%ns", "seconds", r.seconds) + "  "
+        if(r.milliseconds > 0) text += qsTr("%nms", "milliseconds", r.milliseconds) + "  "
+        if(text === "") text += qsTr("Instant")
+
+        return text
+    }
+
     function clone(obj) {
         return JSON.parse(JSON.stringify(obj));
     }

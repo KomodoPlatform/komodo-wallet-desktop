@@ -62,7 +62,7 @@ ColumnLayout {
     // Title
     DefaultText {
         text_value: API.get().settings_pg.empty_string + (qsTr("Progress details") + "     |     " +
-                                                           qsTr("%1 seconds", "SECONDS").arg(General.formatDouble(total_time_passed, 1)))
+                                                           General.durationTextShort(General.formatDouble(total_time_passed, 1)))
         font.pixelSize: Style.textSize1
         Layout.bottomMargin: 10
     }
@@ -159,7 +159,7 @@ ColumnLayout {
                     visible: bar.visible
                     font.pixelSize: Style.textSizeSmall2
 
-                    text_value: API.get().settings_pg.empty_string + (event ? qsTr("Took %1s", "SECONDS").arg(General.formatDouble(seconds_passed, 1)) : '')
+                    text_value: API.get().settings_pg.empty_string + (event ? General.durationTextShort(seconds_passed) : '')
                     color: Style.colorGreen
                 }
             }
