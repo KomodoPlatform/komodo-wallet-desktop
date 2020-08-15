@@ -144,7 +144,7 @@ ColumnLayout {
 
                     font.pixelSize: Style.textSizeSmall4
 
-                    text_value: API.get().settings_pg.empty_string + (modelData)
+                    text_value: API.get().settings_pg.empty_string + (getEventText(modelData))
                     color: event ? Style.colorText : is_current_event ? Style.colorText2 : Style.colorTextDisabled
                 }
 
