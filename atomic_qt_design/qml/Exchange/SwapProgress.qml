@@ -23,9 +23,6 @@ ColumnLayout {
 
         let events = General.clone(details_events)
 
-        // Start timestamp of Started is in seconds somehow
-        if(events.length > 0) events[0].started_at *= 1000
-
         // Set the missing started_at timestamps
         if(events.length >= 2) {
             for(let i = 1; i < events.length; ++i) {
