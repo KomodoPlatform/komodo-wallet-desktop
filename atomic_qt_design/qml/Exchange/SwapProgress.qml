@@ -24,9 +24,11 @@ ColumnLayout {
         let events = General.clone(details_events)
 
         // Set the missing started_at timestamps
-        if(events.length >= 2) {
-            for(let i = 1; i < events.length; ++i) {
-                if(!events[i].started_at)
+        for(let i = 0; i < events.length; ++i) {
+            if(!events[i].started_at) {
+                if(events[i].data && events[i].data.started_at)
+                    events[i].started_at = events[i].data.started_at
+                else if(i > 0)
                     events[i].started_at = events[i - 1].timestamp
             }
         }
@@ -55,6 +57,7 @@ ColumnLayout {
         let sum = 0
         for(let i = 0; i < events.length; ++i) {
             const e = events[i]
+            console.log(i,"index:", e.started_at, e.timestamp, " = ", e.timestamp - e.started_at)
             sum += e.timestamp - e.started_at
         }
 
