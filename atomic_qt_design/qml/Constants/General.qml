@@ -76,7 +76,7 @@ QtObject {
         let seconds = Math.floor(delta / 1000) % 60
         delta -= seconds * 1000
 
-        let milliseconds = delta
+        let milliseconds = Math.floor(delta)
 
         return { days, hours, minutes, seconds, milliseconds }
     }

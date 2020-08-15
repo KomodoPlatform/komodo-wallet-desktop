@@ -77,7 +77,10 @@ ColumnLayout {
 
     // Title
     DefaultText {
-        text_value: API.get().settings_pg.empty_string + (qsTr("Progress details") + "     |     " + General.durationTextShort(total_time_passed + simulated_time))
+        text_value: API.get().settings_pg.empty_string + (
+                        `<font color="${Style.colorText}">` + qsTr("Progress details") + `</font>` +
+                        `<font color="${Style.colorTextDisabled}"> | </font>` +
+                        `<font color="${Style.colorGreen}">` + General.durationTextShort(total_time_passed + simulated_time) + `</font>`)
         font.pixelSize: Style.textSize1
         Layout.bottomMargin: 10
     }
@@ -167,8 +170,12 @@ ColumnLayout {
                     visible: bar.visible
                     font.pixelSize: Style.textSizeSmall2
 
-                    text_value: API.get().settings_pg.empty_string + (is_active ? General.durationTextShort(time_passed) : '')
-                    color: Style.colorGreen
+                    text_value: API.get().settings_pg.empty_string + (!is_active ? '' :
+                                   `<font color="${Style.colorGreen}">` + qsTr("act", "SHORT FOR ACTUAL TIME") + ": " + `</font>` +
+                                   `<font color="${Style.colorText}">` + General.durationTextShort(time_passed) + `</font>` +
+                                   `<font color="${Style.colorTextDisabled}"> | ` + qsTr("est", "SHORT FOR ESTIMATED") + ": " +
+                                    General.durationTextShort(API.get().orders_mdl.average_events_time_registry[modelData]) + `</font>`
+                      )
                 }
             }
         }
