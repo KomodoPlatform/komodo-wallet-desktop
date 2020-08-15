@@ -563,6 +563,21 @@ namespace atomic_dex
     }
 } // namespace atomic_dex
 
+//! QML Api
+namespace atomic_dex
+{
+    void
+    orders_model::save_event_time(const QString& uuid, const QString& event_name, double time)
+    {
+        m_events_time_registry[uuid][event_name] = time;
+        double average                           = std::accumulate(
+                             begin(m_events_time_registry), end(m_events_time_registry), 0.0,
+                             [event_name](double accumulator, auto&& cur) { return accumulator + cur.second[event_name]; }) /
+                         m_events_time_registry[uuid].size();
+        set_average_events_time_registry(event_name, average);
+    }
+} // namespace atomic_dex
+
 namespace atomic_dex
 {
     QVariant
@@ -578,18 +593,3 @@ namespace atomic_dex
         emit onAverageEventsTimeRegistryChanged();
     }
 }
-
-//! QML Api
-namespace atomic_dex
-{
-    void
-    orders_model::save_event_time(const QString& uuid, const QString& event_name, double time)
-    {
-        m_events_time_registry[uuid][event_name] = time;
-        double average                           = std::accumulate(
-                             begin(m_events_time_registry), end(m_events_time_registry), 0.0,
-                             [event_name](double accumulator, auto&& cur) { return accumulator + cur.second[event_name]; }) /
-                         m_events_time_registry[uuid].size();
-        set_average_events_time_registry(event_name, average);
-    }
-} // namespace atomic_dex
