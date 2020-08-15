@@ -52,7 +52,7 @@
 
 namespace
 {
-    constexpr std::size_t g_timeout_q_timer_ms = 50;
+    constexpr std::size_t g_timeout_q_timer_ms = 100;
 
 #if defined(_WIN32) || defined(WIN32)
     bool
@@ -228,8 +228,9 @@ namespace atomic_dex
         }
 
         system_manager_.get_system<trading_page>().process_action();
-        if (not this->m_actions_queue.empty() && not m_event_actions[events_action::about_to_exit_app])
+        while (not this->m_actions_queue.empty())
         {
+            if (m_event_actions[events_action::about_to_exit_app]) break;
             action last_action;
             this->m_actions_queue.pop(last_action);
             switch (last_action)
