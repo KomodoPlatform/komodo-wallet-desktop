@@ -70,11 +70,27 @@ namespace atomic_dex
 namespace atomic_dex
 {
     QVariant
+    trading_page::get_max_taker_vol(const QString& ticker) const noexcept
+    {
+        ::mm2::api::max_taker_vol_request req{.coin = ticker.toStdString()};
+        auto                              answer = ::mm2::api::rpc_max_taker_vol(std::move(req));
+        if (answer.result.has_value())
+        {
+            QJsonObject out{
+                {"denom", QString::fromStdString(answer.result.value().denom)},
+                {"numer", QString::fromStdString(answer.result.value().numer)},
+            };
+            return out;
+        }
+        return {};
+    }
+
+    QVariant
     trading_page::get_raw_mm2_coin_cfg(const QString& ticker) const noexcept
     {
-        QVariant out;
+        QVariant       out;
         nlohmann::json j = m_system_manager.get_system<mm2>().get_raw_mm2_ticker_cfg(ticker.toStdString());
-        out = nlohmann_json_object_to_qt_json_object(j);
+        out              = nlohmann_json_object_to_qt_json_object(j);
         return out;
     }
 
