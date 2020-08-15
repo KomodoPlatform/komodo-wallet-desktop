@@ -10,36 +10,16 @@ ColumnLayout {
     id: root
 
     property var details
+
     // QML Hack to get the events for .events field, because onDetailsChanged is not being triggered
-    property var details_events: !details ? [] : details.events
+    readonly property var details_events: !details ? [] : details.events
 
-    // MM2 data needs some modifications, see onDetails_eventsChanged
-    property var corrected_events: ([])
-
-    readonly property var all_events: !details ? [] : has_error_event ? corrected_events.map(e => e.state) : details.success_events
-
-    onDetails_eventsChanged: {
-        if(!details_events) return
-
-        let events = General.clone(details_events)
-
-        // Set the missing started_at timestamps
-        for(let i = 0; i < events.length; ++i) {
-            if(!events[i].started_at) {
-                if(events[i].data && events[i].data.started_at)
-                    events[i].started_at = events[i].data.started_at
-                else if(i > 0)
-                    events[i].started_at = events[i - 1].timestamp
-            }
-        }
-
-        corrected_events = events
-    }
+    readonly property var all_events: !details ? [] : has_error_event ? details_events.map(e => e.state) : details.success_events
 
     readonly property bool has_error_event: {
         if(!details) return false
 
-        const events = corrected_events
+        const events = details_events
 
         for(let i = events.length - 1; i >= 0; --i)
             if(details.error_events.indexOf(events[i].state) !== -1)
@@ -48,25 +28,23 @@ ColumnLayout {
         return false
     }
 
+    property double previous_total_time_passed: 0
     readonly property double total_time_passed: {
         if(!details) return 0
 
-        const events = corrected_events
+        const events = details_events
         if(events.length === 0) return 0
 
         let sum = 0
-        for(let i = 0; i < events.length; ++i) {
-            const e = events[i]
-            console.log(i,"index:", e.started_at, e.timestamp, " = ", e.timestamp - e.started_at)
-            sum += e.timestamp - e.started_at
-        }
+        for(let i = 0; i < events.length; ++i)
+            sum += events[i].time_diff
 
         return sum
     }
 
     readonly property int current_event_idx: {
         if(!details) return -1
-        const events = corrected_events
+        const events = details_events
         if(events.length === 0) return -1
         if(all_events.length === 0) return -1
 
@@ -87,7 +65,18 @@ ColumnLayout {
         onTriggered: simulated_time += interval
     }
 
-    onTotal_time_passedChanged: simulated_time = 0
+    property string last_uuid
+    onTotal_time_passedChanged: {
+        // Reset for different order
+        if(details.order_id !== last_uuid) simulated_time = 0
+        else {
+            // Subtract the real time from the simulation, and continue
+            simulated_time = Math.max(0, simulated_time - (total_time_passed - previous_total_time_passed))
+        }
+
+        last_uuid = details.order_id
+        previous_total_time_passed = total_time_passed
+    }
 
     // Title
     DefaultText {
@@ -104,25 +93,17 @@ ColumnLayout {
         delegate: Item {
             readonly property var event: {
                 if(!details) return undefined
-                const idx = corrected_events.map(e => e.state).indexOf(modelData)
+                const idx = details_events.map(e => e.state).indexOf(modelData)
                 if(idx === -1) return undefined
 
-                return corrected_events[idx]
-            }
-
-            readonly property double time_passed: {
-                if(is_current_event) return simulated_time
-
-                if(!event || !event.started_at || !event.timestamp) return 0
-
-                const diff = event.timestamp - event.started_at
-
-                return diff
+                return details_events[idx]
             }
 
             readonly property bool is_current_event: index === current_event_idx
 
             readonly property bool is_active: General.exists(event) || is_current_event
+
+            readonly property double time_passed: event ? event.time_diff : is_current_event ? simulated_time : 0
 
             width: root.width
             height: 50
