@@ -662,7 +662,7 @@ namespace mm2::api
         std::string              taker_amount;
         std::string              maker_amount;
         std::string              type;
-        std::string              total_time_in_seconds;
+        double                   total_time_in_ms;
         bool                     funds_recoverable;
     };
 
@@ -694,7 +694,7 @@ namespace mm2::api
     struct kmd_rewards_info_answer
     {
         nlohmann::json result;
-        int rpc_result_code;
+        int            rpc_result_code;
     };
 
     kmd_rewards_info_answer rpc_kmd_rewards_info();

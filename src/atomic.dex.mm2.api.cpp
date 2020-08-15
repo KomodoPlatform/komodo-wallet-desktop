@@ -721,8 +721,6 @@ namespace mm2::api
         using namespace date;
         using namespace std::chrono;
 
-        nlohmann::json j_cpy = j;
-
         j.at("error_events").get_to(contents.error_events);
         j.at("success_events").get_to(contents.success_events);
         j.at("uuid").get_to(contents.uuid);
@@ -745,52 +743,72 @@ namespace mm2::api
                 contents.my_info["my_amount"]    = adjust_precision(contents.my_info["my_amount"].get<std::string>());
             }
         }
-        // using t_event_timestamp_registry = std::unordered_map<std::string, std::uint64_t>;
-        // t_event_timestamp_registry event_timestamp_registry;
-        // double                     total_time_in_seconds = 0.00;
+        using t_event_timestamp_registry = std::unordered_map<std::string, std::uint64_t>;
+        t_event_timestamp_registry event_timestamp_registry;
+        double                     total_time_in_ms = 0.00;
 
-        for (nlohmann::json& content: j_cpy.at("events"))
+        std::size_t idx    = 0;
+        const auto& events = j.at("events");
+        for (auto&& content: events)
         {
-            nlohmann::json& j_evt      = content.at("event");
-            auto            timestamp  = content.at("timestamp").get<std::size_t>();
-            std::string     human_date = to_human_date(timestamp, "%F    %T");
-            auto            evt_type   = j_evt.at("type").get<std::string>();
+            const nlohmann::json& j_evt      = content.at("event");
+            auto                  timestamp  = content.at("timestamp").get<std::size_t>();
+            std::string           human_date = to_human_date(timestamp, "%F    %T");
+            auto                  evt_type   = j_evt.at("type").get<std::string>();
 
-            /* auto rate_bundler = [&event_timestamp_registry,
-                                  &total_time_in_seconds](nlohmann::json& jf_evt, const std::string& event_type, const std::string& previous_event) {
-                 if (event_timestamp_registry.count(previous_event) != 0)
-                 {
-                     std::int64_t ts                         = event_timestamp_registry.at(previous_event);
-                     jf_evt["started_at"]                    = ts;
-                     std::int64_t                        ts2 = jf_evt.at("timestamp").get<std::int64_t>();
-                     std::stringstream                   ss;
-                     sys_time<std::chrono::milliseconds> t1{std::chrono::milliseconds{ts}};
-                     sys_time<std::chrono::milliseconds> t2{std::chrono::milliseconds{ts2}};
-                     double                              res;
-                     res = (std::chrono::duration_cast<std::chrono::milliseconds>(t2 - t1).count() / 1000.0);
-                     ss << std::fixed << std::setprecision(3) << res;
-                     jf_evt["time_difference_gui"]        = ss.str() + "s";
-                     event_timestamp_registry[event_type] = ts2; // Negotiated finished at this time
-                     total_time_in_seconds += res;
-                 }
-             };*/
-
+            auto rate_bundler = [&event_timestamp_registry,
+                                 &total_time_in_ms](nlohmann::json& jf_evt, const std::string& event_type, const std::string& previous_event) {
+                if (event_timestamp_registry.count(previous_event) != 0)
+                {
+                    std::int64_t ts                         = event_timestamp_registry.at(previous_event);
+                    jf_evt["started_at"]                    = ts;
+                    std::int64_t                        ts2 = jf_evt.at("timestamp").get<std::int64_t>();
+                    sys_time<std::chrono::milliseconds> t1{std::chrono::milliseconds{ts}};
+                    sys_time<std::chrono::milliseconds> t2{std::chrono::milliseconds{ts2}};
+                    double                              res = std::chrono::duration_cast<std::chrono::milliseconds>(t2 - t1).count();
+                    jf_evt["time_diff"]                     = res;
+                    event_timestamp_registry[event_type]    = ts2; // Negotiated finished at this time
+                    total_time_in_ms += res;
+                }
+            };
 
             if (j_evt.count("data") == 0)
             {
                 nlohmann::json jf_evt = {{"state", evt_type}, {"human_timestamp", human_date}, {"timestamp", timestamp}};
+
+                if (idx > 0)
+                {
+                    rate_bundler(jf_evt, evt_type, events[idx - 1].at("event").at("type").get<std::string>());
+                }
+
                 contents.events.push_back(jf_evt);
             }
             else
             {
+                nlohmann::json jf_evt = {{"state", evt_type}, {"human_timestamp", human_date}, {"data", j_evt.at("data")}, {"timestamp", timestamp}};
                 if (evt_type == "Started")
                 {
-                    j_evt["data"]["started_at"] = j_evt.at("data").at("started_at").get<std::size_t>() * 1000;
+                    std::int64_t ts                         = jf_evt.at("data").at("started_at").get<std::int64_t>() * 1000;
+                    jf_evt["started_at"]                    = ts;
+                    std::int64_t                        ts2 = jf_evt.at("timestamp").get<std::int64_t>();
+                    sys_time<std::chrono::milliseconds> t1{std::chrono::milliseconds{ts}};
+                    sys_time<std::chrono::milliseconds> t2{std::chrono::milliseconds{ts2}};
+                    double                              res = std::chrono::duration_cast<std::chrono::milliseconds>(t2 - t1).count();
+                    jf_evt["time_diff"]                     = res;
+                    event_timestamp_registry["Started"]     = ts2; // Started finished at this time
+                    total_time_in_ms += res;
                 }
-                nlohmann::json jf_evt = {{"state", evt_type}, {"human_timestamp", human_date}, {"data", j_evt.at("data")}, {"timestamp", timestamp}};
+
+                if (idx > 0)
+                {
+                    rate_bundler(jf_evt, evt_type, events[idx - 1].at("event").at("type").get<std::string>());
+                }
+
                 contents.events.push_back(jf_evt);
             }
+            idx += 1;
         }
+        contents.total_time_in_ms = total_time_in_ms;
     }
 
     void
