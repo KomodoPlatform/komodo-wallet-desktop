@@ -18,6 +18,8 @@
 
 //! QT
 #include <QAbstractListModel>
+#include <QJsonObject>
+#include <QVariant>
 #include <QVector>
 
 //! PCH
@@ -35,6 +37,7 @@ namespace atomic_dex
         Q_OBJECT
         Q_PROPERTY(orders_proxy_model* orders_proxy_mdl READ get_orders_proxy_mdl NOTIFY ordersProxyChanged);
         Q_PROPERTY(int length READ get_length NOTIFY lengthChanged);
+        Q_PROPERTY(QVariant average_events_time_registry READ get_average_events_time_registry NOTIFY onAverageEventsTimeRegistryChanged)
         Q_ENUMS(OrdersRoles)
       public:
         enum OrdersRoles
@@ -79,22 +82,33 @@ namespace atomic_dex
         //! Properties
         [[nodiscard]] int                 get_length() const noexcept;
         [[nodiscard]] orders_proxy_model* get_orders_proxy_mdl() const noexcept;
+        [[nodiscard]] QVariant            get_average_events_time_registry() const noexcept;
+
+
+        //! QML API
+        Q_INVOKABLE void save_event_time(const QString& uuid, const QString& event_name, double time);
 
       signals:
         void lengthChanged();
         void ordersProxyChanged();
+        void onAverageEventsTimeRegistryChanged();
 
       private:
+        void set_average_events_time_registry(const QString& event_name, double time) noexcept;
+
         ag::ecs::system_manager& m_system_manager;
         entt::dispatcher&        m_dispatcher;
 
-        using t_orders_datas       = QVector<order_data>;
-        using t_orders_id_registry = std::unordered_set<std::string>;
-        using t_swaps_id_registry  = std::unordered_set<std::string>;
+        using t_orders_datas         = QVector<order_data>;
+        using t_orders_id_registry   = std::unordered_set<std::string>;
+        using t_swaps_id_registry    = std::unordered_set<std::string>;
+        using t_time_events_registry = std::unordered_map<QString, std::unordered_map<QString, double>>;
 
-        t_orders_id_registry m_orders_id_registry;
-        t_swaps_id_registry  m_swaps_id_registry;
-        t_orders_datas       m_model_data;
+        t_orders_id_registry   m_orders_id_registry;
+        t_swaps_id_registry    m_swaps_id_registry;
+        t_orders_datas         m_model_data;
+        t_time_events_registry m_events_time_registry;
+        QJsonObject            m_json_time_registry;
 
         orders_proxy_model* m_model_proxy;
 
