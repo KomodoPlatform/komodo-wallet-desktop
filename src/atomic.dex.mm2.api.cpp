@@ -220,7 +220,7 @@ namespace mm2::api
         j.at("tx_hash").get_to(cfg.tx_hash);
         j.at("tx_hex").get_to(cfg.tx_hex);
 
-        std::string s         = to_human_date<std::chrono::seconds>(cfg.timestamp, "%e %b %Y, %I:%M");
+        std::string s         = to_human_date<std::chrono::seconds>(cfg.timestamp, "%e %b %Y, %H:%M");
         cfg.timestamp_as_date = std::move(s);
     }
 
@@ -1121,19 +1121,19 @@ namespace mm2::api
                 if (obj.contains("accrue_start_at"))
                 {
                     auto accrue_timestamp             = obj.at("accrue_start_at").get<std::size_t>();
-                    obj["accrue_start_at_human_date"] = to_human_date<std::chrono::seconds>(accrue_timestamp, "%e %b %Y, %I:%M");
+                    obj["accrue_start_at_human_date"] = to_human_date<std::chrono::seconds>(accrue_timestamp, "%e %b %Y, %H:%M");
                 }
 
                 if (obj.contains("accrue_stop_at"))
                 {
                     auto accrue_timestamp            = obj.at("accrue_stop_at").get<std::size_t>();
-                    obj["accrue_stop_at_human_date"] = to_human_date<std::chrono::seconds>(accrue_timestamp, "%e %b %Y, %I:%M");
+                    obj["accrue_stop_at_human_date"] = to_human_date<std::chrono::seconds>(accrue_timestamp, "%e %b %Y, %H:%M");
                 }
 
                 if (obj.contains("locktime"))
                 {
                     auto locktime_timestamp    = obj.at("locktime").get<std::size_t>();
-                    obj["locktime_human_date"] = to_human_date<std::chrono::seconds>(locktime_timestamp, "%e %b %Y, %I:%M");
+                    obj["locktime_human_date"] = to_human_date<std::chrono::seconds>(locktime_timestamp, "%e %b %Y, %H:%M");
                 }
             }
         }
