@@ -9,26 +9,19 @@ import "../Constants"
 ColumnLayout {
     id: root
 
-    readonly property bool has_error_event: {
-        if(!details) return false
+    property var details
+    // QML Hack to get the events for .events field, because onDetailsChanged is not being triggered
+    property var details_events: !details ? [] : details.events
 
-        const events = corrected_events
-
-        for(let i = events.length - 1; i >= 0; --i)
-            if(details.error_events.indexOf(events[i].state) !== -1)
-                return true
-
-        return false
-    }
+    // MM2 data needs some modifications, see onDetails_eventsChanged
+    property var corrected_events: ([])
 
     readonly property var all_events: !details ? [] : has_error_event ? corrected_events.map(e => e.state) : details.success_events
-    property var details
-    property var corrected_events
 
-    onDetailsChanged: {
-        if(!details) return
+    onDetails_eventsChanged: {
+        if(!details_events) return
 
-        let events = General.clone(details.events)
+        let events = General.clone(details_events)
 
         // Start timestamp of Started is in seconds somehow
         if(events.length > 0) events[0].started_at *= 1000
@@ -42,6 +35,18 @@ ColumnLayout {
         }
 
         corrected_events = events
+    }
+
+    readonly property bool has_error_event: {
+        if(!details) return false
+
+        const events = corrected_events
+
+        for(let i = events.length - 1; i >= 0; --i)
+            if(details.error_events.indexOf(events[i].state) !== -1)
+                return true
+
+        return false
     }
 
     readonly property double total_time_passed: {
