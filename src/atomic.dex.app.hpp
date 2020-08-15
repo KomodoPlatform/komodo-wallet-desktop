@@ -108,6 +108,8 @@ namespace atomic_dex
         current_coin_info*            m_coin_info;
         t_manager_model_registry      m_manager_models;
         t_events_actions              m_event_actions{{false}};
+        std::atomic_bool              m_btc_fully_enabled{false};
+        std::atomic_bool              m_kmd_fully_enabled{false};
 
       public:
         //! Constructor
@@ -200,8 +202,8 @@ namespace atomic_dex
         Q_INVOKABLE static QString get_price_amount(const QString& base_amount, const QString& rel_amount);
         Q_INVOKABLE bool           do_i_have_enough_funds(const QString& ticker, const QString& amount) const;
         Q_INVOKABLE bool           disable_coins(const QStringList& coins);
-        //Q_INVOKABLE bool           is_claiming_ready(const QString& ticker);
-        Q_INVOKABLE QVariant       claim_rewards(const QString& ticker);
+        // Q_INVOKABLE bool           is_claiming_ready(const QString& ticker);
+        Q_INVOKABLE QVariant claim_rewards(const QString& ticker);
 
 
         Q_INVOKABLE QString        get_cex_rates(const QString& base, const QString& rel);
