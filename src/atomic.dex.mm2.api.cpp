@@ -818,6 +818,27 @@ namespace mm2::api
         j.at("limit").get_to(results.limit);
         j.at("skipped").get_to(results.skipped);
         j.at("total").get_to(results.total);
+        results.average_events_time = nlohmann::json::object();
+
+        std::unordered_map<std::string, std::vector<double>> events_time_registry;
+        for (auto&& cur_swap: results.swaps)
+        {
+            for (auto&& cur_event: cur_swap.events)
+            {
+                if (cur_event.contains("time_diff"))
+                {
+                    events_time_registry[cur_event.at("state").get<std::string>()].push_back(cur_event.at("time_diff").get<double>());
+                }
+            }
+        }
+
+        for (auto&& [evt_name, values]: events_time_registry)
+        {
+            double sum = 0;
+            for (auto&& cur_value: values) { sum += cur_value; }
+            double average                        = sum / values.size();
+            results.average_events_time[evt_name] = average;
+        }
     }
 
     void

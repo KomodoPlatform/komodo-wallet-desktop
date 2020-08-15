@@ -488,8 +488,6 @@ namespace atomic_dex
                     }
                 }
             }
-            // std::unordered_set<std::string> out;
-            // std::set_difference(begin(m_orders_id_registry), end(m_orders_id_registry), begin(to_remove), end(to_remove), std::inserter(out, out.begin()));
             for (auto&& cur_to_remove: to_remove) { m_orders_id_registry.erase(cur_to_remove); }
         }
     }
@@ -499,6 +497,7 @@ namespace atomic_dex
     {
         const auto& mm2_system = this->m_system_manager.get_system<mm2>();
         const auto  result     = mm2_system.get_swaps();
+        this->set_average_events_time_registry(nlohmann_json_object_to_qt_json_object(result.average_events_time));
         for (auto&& current_swap: result.swaps)
         {
             if (this->m_swaps_id_registry.find(current_swap.uuid) != this->m_swaps_id_registry.end())
@@ -563,21 +562,6 @@ namespace atomic_dex
     }
 } // namespace atomic_dex
 
-//! QML Api
-namespace atomic_dex
-{
-    void
-    orders_model::save_event_time(const QString& uuid, const QString& event_name, double time)
-    {
-        m_events_time_registry[uuid][event_name] = time;
-        double average                           = std::accumulate(
-                             begin(m_events_time_registry), end(m_events_time_registry), 0.0,
-                             [event_name](double accumulator, auto&& cur) { return accumulator + cur.second[event_name]; }) /
-                         m_events_time_registry[uuid].size();
-        set_average_events_time_registry(event_name, average);
-    }
-} // namespace atomic_dex
-
 namespace atomic_dex
 {
     QVariant
@@ -587,9 +571,9 @@ namespace atomic_dex
     }
 
     void
-    atomic_dex::orders_model::set_average_events_time_registry(const QString& event_name, double time) noexcept
+    atomic_dex::orders_model::set_average_events_time_registry(const QVariant& average_time_registry) noexcept
     {
-        m_json_time_registry[event_name] = time;
+        m_json_time_registry = average_time_registry;
         emit onAverageEventsTimeRegistryChanged();
     }
 }
