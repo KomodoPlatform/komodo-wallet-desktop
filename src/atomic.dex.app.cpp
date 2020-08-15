@@ -421,6 +421,19 @@ namespace atomic_dex
     {
         //! This event is called when a call is enabled and cex provider finished fetch datas
         spdlog::debug("{} l{}", __FUNCTION__, __LINE__);
+        if (evt.ticker == "BTC")
+        {
+            this->m_btc_fully_enabled = true;
+        }
+
+        if (evt.ticker == "KMD")
+        {
+            this->m_kmd_fully_enabled = true;
+        }
+        if (this->m_kmd_fully_enabled && this->m_btc_fully_enabled)
+        {
+            this->set_status("complete");
+        }
         qobject_cast<portfolio_model*>(m_manager_models.at("portfolio"))->initialize_portfolio(evt.ticker);
     }
 
@@ -588,7 +601,7 @@ namespace atomic_dex
     application::on_mm2_started_event([[maybe_unused]] const mm2_started& evt) noexcept
     {
         spdlog::debug("{} l{}", __FUNCTION__, __LINE__);
-        this->set_status("complete");
+        // this->set_status("complete");
     }
 
     void
@@ -685,6 +698,10 @@ namespace atomic_dex
 
         this->m_wallet_manager.just_set_wallet_name("");
         emit onWalletDefaultNameChanged();
+
+        this->m_btc_fully_enabled = false;
+        this->m_kmd_fully_enabled = false;
+        this->set_status("None");
         return fs::remove(get_atomic_dex_config_folder() / "default.wallet");
     }
 
