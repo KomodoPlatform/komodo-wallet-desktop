@@ -29,7 +29,7 @@ FloatingBackground {
     }
 
     function hasEthFees() {
-        return General.fieldExists(curr_trade_info.erc_fees) && parseFloat(curr_trade_info.erc_fees) > 0
+        return General.isFilled(curr_trade_info.erc_fees) && parseFloat(curr_trade_info.erc_fees) > 0
     }
 
     function hasEnoughEthForFees() {
