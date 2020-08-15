@@ -9,7 +9,19 @@ import "../Constants"
 ColumnLayout {
     id: root
 
-    property var all_events: !details ? [] : details.order_status === "failed" ? details.events.map(e => e.state) : details.success_events
+    readonly property bool has_error_event: {
+        if(!details) return false
+
+        const events = details.events
+
+        for(let i = events.length - 1; i >= 0; --i)
+            if(details.error_events.indexOf(events[i].state) !== -1)
+                return true
+
+        return false
+    }
+
+    readonly property var all_events: !details ? [] : has_error_event ? details.events.map(e => e.state) : details.success_events
     property var details
     readonly property double total_time_passed: {
         if(!details) return 0
