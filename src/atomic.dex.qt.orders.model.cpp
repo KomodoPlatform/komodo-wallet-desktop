@@ -559,39 +559,3 @@ namespace atomic_dex
         this->endResetModel();
     }
 } // namespace atomic_dex
-
-//! Public QML API
-namespace atomic_dex
-{
-    QStringList
-    orders_model::get_expected_events_list(bool is_maker) const noexcept
-    {
-        if (is_maker)
-        {
-            return {
-                "Started",
-                "Negotiated",
-                "TakerFeeValidated",
-                "MakerPaymentSent",
-                "TakerPaymentReceived",
-                "TakerPaymentWaitConfirmStarted",
-                "TakerPaymentValidatedAndConfirmed",
-                "TakerPaymentSpent",
-                "Finished"};
-        }
-        else
-        {
-            return {
-                "Started",
-                "Negotiated",
-                "TakerFeeSent",
-                "MakerPaymentReceived",
-                "MakerPaymentWaitConfirmStarted",
-                "MakerPaymentValidatedAndConfirmed",
-                "TakerPaymentSent",
-                "TakerPaymentSpent",
-                "MakerPaymentSpent",
-                "Finished"};
-        }
-    }
-} // namespace atomic_dex
