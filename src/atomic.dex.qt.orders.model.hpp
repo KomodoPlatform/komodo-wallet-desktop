@@ -57,7 +57,9 @@ namespace atomic_dex
             IsRecoverableRole,
             OrderErrorStateRole,
             OrderErrorMessageRole,
-            EventsRole
+            EventsRole,
+            SuccessEventsRole,
+            ErrorEventsRole
         };
 
 

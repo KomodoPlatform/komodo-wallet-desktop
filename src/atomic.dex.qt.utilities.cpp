@@ -60,4 +60,13 @@ namespace atomic_dex
         }
         return change_24h;
     }
+
+    QStringList
+    vector_std_string_to_qt_string_list(const std::vector<std::string>& vec)
+    {
+        QStringList out;
+        out.reserve(vec.size());
+        for (auto&& cur: vec) { out.append(QString::fromStdString(cur)); }
+        return out;
+    }
 } // namespace atomic_dex
