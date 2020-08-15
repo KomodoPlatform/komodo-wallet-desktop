@@ -170,7 +170,7 @@ DefaultModal {
                 }
 
                 SwapProgress {
-                    visible: details !== undefined
+                    visible: details !== undefined && !details.is_maker
                     Layout.fillWidth: true
                     details: root.details
                 }
