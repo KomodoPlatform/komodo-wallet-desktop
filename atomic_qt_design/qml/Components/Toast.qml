@@ -50,7 +50,7 @@ Rectangle {
             margins: margin / 2
         }
         font.pixelSize: Style.textSizeSmall2
-        text_value: title + (General.fieldExists(details) ? (" - " + qsTr("Click here to see the details")) : "")
+        text_value: title + (General.isFilled(details) ? (" - " + qsTr("Click here to see the details")) : "")
     }
 
     SequentialAnimation on opacity {

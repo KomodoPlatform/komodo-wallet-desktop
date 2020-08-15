@@ -160,7 +160,7 @@ Item {
         const rel = rel_ticker
         const amount = sell_mode ? getCurrentForm().getVolume() :
                                    General.formatDouble(getCurrentForm().getNeededAmountToSpend(getCurrentForm().getVolume()))
-        if(force || (General.fieldExists(base) && General.fieldExists(rel) && !General.isZero(amount))) {
+        if(force || (General.isFilled(base) && General.isFilled(rel) && !General.isZero(amount))) {
             getTradeInfo(base, rel, amount)
 
             // Since new implementation does not update fees instantly, re-cap the volume every time, just in case
