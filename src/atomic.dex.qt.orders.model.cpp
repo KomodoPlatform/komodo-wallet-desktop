@@ -148,6 +148,10 @@ namespace atomic_dex
             item.order_error_message = value.toString();
         case EventsRole:
             item.events = value.toJsonArray();
+        case SuccessEventsRole:
+            item.success_events = value.toStringList();
+        case ErrorEventsRole:
+            item.error_events = value.toStringList();
         }
 
         emit dataChanged(index, index, {role});
@@ -203,6 +207,10 @@ namespace atomic_dex
             return item.order_error_message;
         case EventsRole:
             return item.events;
+        case SuccessEventsRole:
+            return item.success_events;
+        case ErrorEventsRole:
+            return item.error_events;
         }
         return {};
     }
@@ -314,7 +322,9 @@ namespace atomic_dex
             .is_swap          = true,
             .is_cancellable   = false,
             .is_recoverable   = contents.funds_recoverable,
-            .events           = nlohmann_json_array_to_qt_json_array(contents.events)};
+            .events           = nlohmann_json_array_to_qt_json_array(contents.events),
+            .error_events     = vector_std_string_to_qt_string_list(contents.error_events),
+            .success_events   = vector_std_string_to_qt_string_list(contents.success_events)};
         data.ticker_pair = data.base_coin + "/" + data.rel_coin;
         if (data.order_status == "failed")
         {
@@ -521,7 +531,9 @@ namespace atomic_dex
             {IsRecoverableRole, "recoverable"},
             {OrderErrorStateRole, "order_error_state"},
             {OrderErrorMessageRole, "order_error_message"},
-            {EventsRole, "events"}};
+            {EventsRole, "events"},
+            {SuccessEventsRole, "success_events"},
+            {ErrorEventsRole, "error_events"}};
     }
 
     int

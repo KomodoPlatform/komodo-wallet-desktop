@@ -61,5 +61,11 @@ namespace atomic_dex
 
         //! Events
         QJsonArray events;
+
+        //! error events
+        QStringList error_events;
+
+        //! success events
+        QStringList success_events;
     };
 } // namespace atomic_dex
