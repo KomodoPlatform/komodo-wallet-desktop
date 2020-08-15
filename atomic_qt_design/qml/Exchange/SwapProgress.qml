@@ -44,7 +44,7 @@ ColumnLayout {
             }
         }
 
-        return sum / 1000
+        return sum
     }
 
     readonly property int current_event_idx: {
@@ -81,7 +81,7 @@ ColumnLayout {
                 return details.events[idx]
             }
 
-            readonly property double seconds_passed: {
+            readonly property double time_passed: {
                 if(!event) return 0
                 if(!event.started_at) return 0
                 if(!event.timestamp) return 0
@@ -89,7 +89,7 @@ ColumnLayout {
                 let start = event.started_at
                 if(index === 0) start *= 1000
 
-                return (event.timestamp - start)/1000
+                return event.timestamp - start
             }
 
             readonly property bool is_current_event: index === current_event_idx
@@ -149,7 +149,7 @@ ColumnLayout {
                     color: Style.colorWhite8
 
                     Rectangle {
-                        width: parent.width * (total_time_passed > 0 ? (seconds_passed / total_time_passed) : 0)
+                        width: parent.width * (total_time_passed > 0 ? (time_passed / total_time_passed) : 0)
                         height: parent.height
                         color: Style.colorGreen
                     }
@@ -159,7 +159,7 @@ ColumnLayout {
                     visible: bar.visible
                     font.pixelSize: Style.textSizeSmall2
 
-                    text_value: API.get().settings_pg.empty_string + (event ? General.durationTextShort(seconds_passed) : '')
+                    text_value: API.get().settings_pg.empty_string + (event ? General.durationTextShort(time_passed) : '')
                     color: Style.colorGreen
                 }
             }

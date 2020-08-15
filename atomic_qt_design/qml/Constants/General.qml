@@ -61,28 +61,28 @@ QtObject {
         return (new Date(timestamp * 1000))
     }
 
-    function getDuration(total_seconds) {
-        let delta = Math.abs(total_seconds)
+    function getDuration(total_ms) {
+        let delta = Math.abs(total_ms)
 
-        let days = Math.floor(delta / 86400)
-        delta -= days * 86400
+        let days = Math.floor(delta / 86400000)
+        delta -= days * 86400000
 
-        let hours = Math.floor(delta / 3600) % 24
-        delta -= hours * 3600
+        let hours = Math.floor(delta / 3600000) % 24
+        delta -= hours * 3600000
 
-        let minutes = Math.floor(delta / 60) % 60
-        delta -= minutes * 60
+        let minutes = Math.floor(delta / 60000) % 60
+        delta -= minutes * 60000
 
-        let seconds = Math.floor(delta) % 60
-        delta -= seconds * 60
+        let seconds = Math.floor(delta / 1000) % 60
+        delta -= seconds * 60000
 
-        let milliseconds = delta * 1000
+        let milliseconds = delta
 
         return { days, hours, minutes, seconds, milliseconds }
     }
 
     function secondsToTimeLeft(date_now, date_future) {
-        const r = getDuration(date_future - date_now)
+        const r = getDuration((date_future - date_now)*1000)
         let days = r.days
         let hours = r.hours
         let minutes = r.minutes
