@@ -98,9 +98,7 @@ ColumnLayout {
             }
 
             readonly property double time_passed: {
-                if(!event) return 0
-                if(!event.started_at) return 0
-                if(!event.timestamp) return 0
+                if(!event || !event.started_at || !event.timestamp) return 0
 
                 return event.timestamp - event.started_at
             }

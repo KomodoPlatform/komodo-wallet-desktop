@@ -17,6 +17,8 @@ DefaultModal {
         if(!details) root.close()
     }
 
+    onClosed: details = undefined
+
     // Inside modal
     ColumnLayout {
         width: parent.width
