@@ -9,7 +9,7 @@ import "../Constants"
 ColumnLayout {
     id: root
 
-    property var all_events: !details ? [] : details.order_status === "failed" ? details.events.map(e => e.state) : API.get().orders_mdl.get_expected_events_list(details.is_maker)
+    property var all_events: !details ? [] : details.order_status === "failed" ? details.events.map(e => e.state) : details.success_events
     property var details
     readonly property double total_time_passed: {
         if(!details) return 0
@@ -76,7 +76,23 @@ ColumnLayout {
                 anchors.left: parent.left
                 anchors.leftMargin: 10
                 anchors.verticalCenter: col_layout.verticalCenter
-                color: event ? Style.colorGreen : is_current_event ? Style.colorOrange : Style.colorTextDisabled
+                color: {
+                    // Already exists, completed event
+                    if(event) {
+                        // Red for the Finished if swap failed
+                        if(event.state === "Finished" && details.order_status === "failed") return Style.colorRed
+
+                        // Red for error event, green for the others
+                        return details.error_events.indexOf(event.state) === -1 ? Style.colorGreen : Style.colorRed
+                    }
+
+                    // In progress one is orange
+                    if(is_current_event)
+                        return Style.colorOrange
+
+                    // Passive color for the rest
+                    return Style.colorTextDisabled
+                }
             }
 
             ColumnLayout {
