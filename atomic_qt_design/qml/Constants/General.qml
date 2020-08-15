@@ -74,7 +74,7 @@ QtObject {
         delta -= minutes * 60000
 
         let seconds = Math.floor(delta / 1000) % 60
-        delta -= seconds * 60000
+        delta -= seconds * 1000
 
         let milliseconds = delta
 
@@ -96,12 +96,14 @@ QtObject {
 
     function durationTextShort(total) {
         const r = getDuration(total)
+
+        r.seconds += r.milliseconds/1000
+
         let text = ""
         if(r.days > 0) text += qsTr("%nd", "day", r.days) + "  "
         if(r.hours > 0) text += qsTr("%nh", "hours", r.hours) + "  "
         if(r.minutes > 0) text += qsTr("%nm", "minutes", r.minutes) + "  "
-        if(r.seconds > 0) text += qsTr("%ns", "seconds", r.seconds) + "  "
-        if(r.milliseconds > 0) text += qsTr("%nms", "milliseconds", r.milliseconds) + "  "
+        if(r.seconds > 0) text += qsTr("%1s", "seconds").arg(General.formatDouble(r.seconds, 3)) + "  "
         if(text === "") text += qsTr("Instant")
 
         return text

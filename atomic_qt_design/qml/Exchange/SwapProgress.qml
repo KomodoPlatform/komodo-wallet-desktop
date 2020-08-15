@@ -12,7 +12,7 @@ ColumnLayout {
     readonly property bool has_error_event: {
         if(!details) return false
 
-        const events = details.events
+        const events = corrected_events
 
         for(let i = events.length - 1; i >= 0; --i)
             if(details.error_events.indexOf(events[i].state) !== -1)
@@ -21,27 +21,39 @@ ColumnLayout {
         return false
     }
 
-    readonly property var all_events: !details ? [] : has_error_event ? details.events.map(e => e.state) : details.success_events
+    readonly property var all_events: !details ? [] : has_error_event ? corrected_events.map(e => e.state) : details.success_events
     property var details
+    property var corrected_events
+
+    onDetailsChanged: {
+        if(!details) return
+
+        let events = General.clone(details.events)
+
+        // Start timestamp of Started is in seconds somehow
+        if(events.length > 0) events[0].started_at *= 1000
+
+        // Set the missing started_at timestamps
+        if(events.length >= 2) {
+            for(let i = 1; i < events.length; ++i) {
+                if(!events[i].started_at)
+                    events[i].started_at = events[i - 1].timestamp
+            }
+        }
+
+        corrected_events = events
+    }
+
     readonly property double total_time_passed: {
         if(!details) return 0
 
-        const events = details.events
+        const events = corrected_events
         if(events.length === 0) return 0
 
         let sum = 0
         for(let i = 0; i < events.length; ++i) {
             const e = events[i]
-            let start = e.started_at
-            let end = e.timestamp
-
-            // Start timestamp of Started is seconds somehow
-            if(e.state === "Started")
-                start *= 1000
-
-            if(start !== undefined && end !== undefined) {
-                sum += end - start
-            }
+            sum += e.timestamp - e.started_at
         }
 
         return sum
@@ -49,7 +61,7 @@ ColumnLayout {
 
     readonly property int current_event_idx: {
         if(!details) return -1
-        const events = details.events
+        const events = corrected_events
         if(events.length === 0) return -1
         if(all_events.length === 0) return -1
 
@@ -61,8 +73,7 @@ ColumnLayout {
 
     // Title
     DefaultText {
-        text_value: API.get().settings_pg.empty_string + (qsTr("Progress details") + "     |     " +
-                                                           General.durationTextShort(General.formatDouble(total_time_passed, 1)))
+        text_value: API.get().settings_pg.empty_string + (qsTr("Progress details") + "     |     " + General.durationTextShort(total_time_passed))
         font.pixelSize: Style.textSize1
         Layout.bottomMargin: 10
     }
@@ -75,10 +86,10 @@ ColumnLayout {
         delegate: Item {
             readonly property var event: {
                 if(!details) return undefined
-                const idx = details.events.map(e => e.state).indexOf(modelData)
+                const idx = corrected_events.map(e => e.state).indexOf(modelData)
                 if(idx === -1) return undefined
 
-                return details.events[idx]
+                return corrected_events[idx]
             }
 
             readonly property double time_passed: {
@@ -86,10 +97,7 @@ ColumnLayout {
                 if(!event.started_at) return 0
                 if(!event.timestamp) return 0
 
-                let start = event.started_at
-                if(index === 0) start *= 1000
-
-                return event.timestamp - start
+                return event.timestamp - event.started_at
             }
 
             readonly property bool is_current_event: index === current_event_idx
