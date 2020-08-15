@@ -11,15 +11,12 @@ ColumnLayout {
 
     property var details
 
-    // QML Hack to get the events for .events field, because onDetailsChanged is not being triggered
-    readonly property var details_events: !details ? [] : details.events
-
-    readonly property var all_events: !details ? [] : has_error_event ? details_events.map(e => e.state) : details.success_events
+    readonly property var all_events: !details ? [] : has_error_event ? details.events.map(e => e.state) : details.success_events
 
     readonly property bool has_error_event: {
         if(!details) return false
 
-        const events = details_events
+        const events = details.events
 
         for(let i = events.length - 1; i >= 0; --i)
             if(details.error_events.indexOf(events[i].state) !== -1)
@@ -32,7 +29,7 @@ ColumnLayout {
     readonly property double total_time_passed: {
         if(!details) return 0
 
-        const events = details_events
+        const events = details.events
         if(events.length === 0) return 0
 
         let sum = 0
@@ -44,7 +41,7 @@ ColumnLayout {
 
     readonly property int current_event_idx: {
         if(!details) return -1
-        const events = details_events
+        const events = details.events
         if(events.length === 0) return -1
         if(all_events.length === 0) return -1
 
@@ -93,10 +90,10 @@ ColumnLayout {
         delegate: Item {
             readonly property var event: {
                 if(!details) return undefined
-                const idx = details_events.map(e => e.state).indexOf(modelData)
+                const idx = details.events.map(e => e.state).indexOf(modelData)
                 if(idx === -1) return undefined
 
-                return details_events[idx]
+                return details.events[idx]
             }
 
             readonly property bool is_current_event: index === current_event_idx
