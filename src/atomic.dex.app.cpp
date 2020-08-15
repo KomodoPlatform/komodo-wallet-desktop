@@ -52,7 +52,7 @@
 
 namespace
 {
-    constexpr std::size_t g_timeout_q_timer_ms = 8;
+    constexpr std::size_t g_timeout_q_timer_ms = 50;
 
 #if defined(_WIN32) || defined(WIN32)
     bool
