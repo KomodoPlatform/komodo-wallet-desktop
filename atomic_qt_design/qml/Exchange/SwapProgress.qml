@@ -13,10 +13,26 @@ ColumnLayout {
     property var details
     readonly property double total_time_passed: {
         if(!details) return 0
+
         const events = details.events
         if(events.length === 0) return 0
 
-        return (events[events.length-1].timestamp - events[0].started_at*1000) / 1000
+        let sum = 0
+        for(let i = 0; i < events.length; ++i) {
+            const e = events[i]
+            let start = e.started_at
+            let end = e.timestamp
+
+            // Start timestamp of Started is seconds somehow
+            if(e.state === "Started")
+                start *= 1000
+
+            if(start !== undefined && end !== undefined) {
+                sum += end - start
+            }
+        }
+
+        return sum / 1000
     }
 
     readonly property int current_event_idx: {
