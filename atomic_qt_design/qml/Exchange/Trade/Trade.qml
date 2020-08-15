@@ -243,11 +243,11 @@ Item {
             }
         }
         else {
-            if(default_config.requires_notarization !== undefined && default_config.requires_notarization !== null) {
+            if(General.exists(default_config.requires_notarization)) {
                 nota = default_config.requires_notarization ? "1" : "0"
             }
 
-            if(nota !== "1" && default_config.required_confirmations !== undefined && default_config.required_confirmations !== null) {
+            if(nota !== "1" && General.exists(default_config.required_confirmations)) {
                 confs = default_config.required_confirmations.toString()
             }
         }

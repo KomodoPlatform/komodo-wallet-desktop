@@ -235,11 +235,16 @@ QtObject {
     }
 
     function isZero(v) {
-        return !fieldExists(v) || parseFloat(v) === 0
+        return !isFilled(v) || parseFloat(v) === 0
     }
 
-    function fieldExists(v) {
-        return v !== undefined && v !== ""
+
+    function exists(v) {
+        return v !== undefined && v !== null
+    }
+
+    function isFilled(v) {
+        return exists(v) && v !== ""
     }
 
     function isEthNeeded() {
