@@ -81,6 +81,12 @@ namespace atomic_dex
             break;
         case orders_model::OrdersRoles::OrderErrorMessageRole:
             break;
+        case orders_model::EventsRole:
+            break;
+        case orders_model::SuccessEventsRole:
+            break;
+        case orders_model::ErrorEventsRole:
+            break;
         }
         return true;
     }
