@@ -100,13 +100,12 @@ QtObject {
 
         const r = getDuration(total)
 
-        r.seconds += r.milliseconds/1000
-
         let text = ""
         if(r.days > 0) text += qsTr("%nd", "day", r.days) + "  "
         if(r.hours > 0) text += qsTr("%nh", "hours", r.hours) + "  "
         if(r.minutes > 0) text += qsTr("%nm", "minutes", r.minutes) + "  "
-        if(r.seconds > 0) text += qsTr("%1s", "seconds").arg(General.formatDouble(r.seconds, 3)) + "  "
+        if(r.seconds > 0) text += qsTr("%ns", "seconds", r.seconds) + "  "
+        if(r.milliseconds > 0) text += qsTr("%nms", "milliseconds", r.milliseconds) + "  "
         if(text === "") text += qsTr("Instant")
 
         return text
