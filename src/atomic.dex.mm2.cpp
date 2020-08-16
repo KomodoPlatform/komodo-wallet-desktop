@@ -515,11 +515,31 @@ namespace atomic_dex
     mm2::process_orderbook(bool is_a_reset)
     {
         auto&& [base, rel] = m_synchronized_ticker_pair.get();
-        t_orderbook_request request{.base = base, .rel = rel};
-        auto                answer = rpc_orderbook(std::move(request));
+        t_orderbook_request               request{.base = base, .rel = rel};
+        ::mm2::api::max_taker_vol_request req_base{.coin = base};
+        ::mm2::api::max_taker_vol_request req_rel{.coin = rel};
+        std::array<std::future<void>, 2>  futures;
+
+        futures[0]  = spawn([&req_base, this]() {
+            auto answer = ::mm2::api::rpc_max_taker_vol(std::move(req_base));
+            if (answer.rpc_result_code not_eq -1)
+            {
+                this->m_synchronized_max_taker_vol->first = answer.result.value();
+            }
+        });
+
+        futures[1]  = spawn([&req_rel, this]() {
+            auto answer = ::mm2::api::rpc_max_taker_vol(std::move(req_rel));
+            if (answer.rpc_result_code not_eq -1)
+            {
+                this->m_synchronized_max_taker_vol->second = answer.result.value();
+            }
+        });
+        auto answer = rpc_orderbook(std::move(request));
         if (answer.rpc_result_code not_eq -1)
         {
             m_current_orderbook.insert_or_assign(base + "/" + rel, answer);
+            for (auto&& fut: futures) { fut.wait(); }
             this->dispatcher_.trigger<process_orderbook_finished>(is_a_reset);
         }
     }
@@ -1148,5 +1168,11 @@ namespace atomic_dex
             return out;
         }
         return nlohmann::json::object();
+    }
+
+    mm2::t_pair_max_vol
+    mm2::get_taker_vol() const noexcept
+    {
+        return m_synchronized_max_taker_vol.value();
     }
 } // namespace atomic_dex

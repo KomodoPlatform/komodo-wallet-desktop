@@ -71,24 +71,29 @@ namespace atomic_dex
 
     class mm2 final : public ag::ecs::pre_update_system<mm2>
     {
+      public:
+        using t_pair_max_vol = std::pair<::mm2::api::max_taker_vol_answer_success, ::mm2::api::max_taker_vol_answer_success>;
+
       private:
         //! Private typedefs
-        using t_mm2_time_point           = std::chrono::high_resolution_clock::time_point;
-        using t_balance_registry         = t_concurrent_reg<t_ticker, t_balance_answer>;
-        using t_my_orders                = t_concurrent_reg<t_ticker, t_my_orders_answer>;
-        using t_tx_history_registry      = t_concurrent_reg<t_ticker, t_transactions>;
-        using t_tx_state_registry        = t_concurrent_reg<t_ticker, t_tx_state>;
-        using t_orderbook_registry       = t_concurrent_reg<t_ticker, t_orderbook_answer>;
-        using t_swaps_registry           = t_concurrent_reg<t_ticker, t_my_recent_swaps_answer>;
-        using t_swaps_avrg_datas         = t_concurrent_reg<t_ticker, std::string>;
-        using t_fees_registry            = t_concurrent_reg<t_ticker, t_get_trade_fee_answer>;
-        using t_synchronized_ticker_pair = boost::synchronized_value<std::pair<std::string, std::string>>;
+        using t_mm2_time_point             = std::chrono::high_resolution_clock::time_point;
+        using t_balance_registry           = t_concurrent_reg<t_ticker, t_balance_answer>;
+        using t_my_orders                  = t_concurrent_reg<t_ticker, t_my_orders_answer>;
+        using t_tx_history_registry        = t_concurrent_reg<t_ticker, t_transactions>;
+        using t_tx_state_registry          = t_concurrent_reg<t_ticker, t_tx_state>;
+        using t_orderbook_registry         = t_concurrent_reg<t_ticker, t_orderbook_answer>;
+        using t_swaps_registry             = t_concurrent_reg<t_ticker, t_my_recent_swaps_answer>;
+        using t_swaps_avrg_datas           = t_concurrent_reg<t_ticker, std::string>;
+        using t_fees_registry              = t_concurrent_reg<t_ticker, t_get_trade_fee_answer>;
+        using t_synchronized_ticker_pair   = boost::synchronized_value<std::pair<std::string, std::string>>;
+        using t_synchronized_max_taker_vol = boost::synchronized_value<t_pair_max_vol>;
 
         //! Process
         reproc::process m_mm2_instance;
 
         //! Current orderbook
-        t_synchronized_ticker_pair m_synchronized_ticker_pair{std::make_pair("KMD", "BTC")};
+        t_synchronized_ticker_pair   m_synchronized_ticker_pair{std::make_pair("KMD", "BTC")};
+        t_synchronized_max_taker_vol m_synchronized_max_taker_vol;
 
         //! Timers
         t_mm2_time_point m_orderbook_clock;
@@ -265,6 +270,8 @@ namespace atomic_dex
         [[nodiscard]] bool is_orderbook_thread_active() const noexcept;
 
         [[nodiscard]] nlohmann::json get_raw_mm2_ticker_cfg(const std::string& ticker) const noexcept;
+
+        [[nodiscard]] t_pair_max_vol get_taker_vol() const noexcept;
     };
 } // namespace atomic_dex
 
