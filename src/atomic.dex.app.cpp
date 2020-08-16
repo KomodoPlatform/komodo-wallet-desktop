@@ -422,6 +422,7 @@ namespace atomic_dex
     {
         //! This event is called when a call is enabled and cex provider finished fetch datas
         spdlog::debug("{} l{}", __FUNCTION__, __LINE__);
+
         if (evt.ticker == "BTC")
         {
             this->m_btc_fully_enabled = true;
@@ -431,11 +432,13 @@ namespace atomic_dex
         {
             this->m_kmd_fully_enabled = true;
         }
+
+        qobject_cast<portfolio_model*>(m_manager_models.at("portfolio"))->initialize_portfolio(evt.ticker);
+
         if (this->m_kmd_fully_enabled && this->m_btc_fully_enabled)
         {
             this->set_status("complete");
         }
-        qobject_cast<portfolio_model*>(m_manager_models.at("portfolio"))->initialize_portfolio(evt.ticker);
     }
 
     void
