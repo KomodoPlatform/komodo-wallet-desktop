@@ -30,11 +30,19 @@ ColumnLayout {
         if(!details) return 0
 
         const events = details.events
-        if(events.length === 0) return 0
 
         let sum = 0
         for(let i = 0; i < events.length; ++i)
             sum += events[i].time_diff
+
+        return sum
+    }
+    readonly property double total_time_passed_estimated: {
+        const events = all_events
+
+        let sum = 0
+        for(let i = 0; i < events.length; ++i)
+            sum += API.get().orders_mdl.average_events_time_registry[events[i]]
 
         return sum
     }
@@ -62,6 +70,13 @@ ColumnLayout {
         onTriggered: simulated_time += interval
     }
 
+    function getTimeText(duration, estimated) {
+        return `<font color="${Style.colorGreen}">` + qsTr("act", "SHORT FOR ACTUAL TIME") + ": " + `</font>` +
+                `<font color="${Style.colorText}">` + General.durationTextShort(duration) + `</font>` +
+                `<font color="${Style.colorTextDisabled}"> | ` + qsTr("est", "SHORT FOR ESTIMATED") + ": " +
+                 General.durationTextShort(estimated) + `</font>`
+    }
+
     property string last_uuid
     onTotal_time_passedChanged: {
         // Reset for different order
@@ -80,7 +95,7 @@ ColumnLayout {
         text_value: API.get().settings_pg.empty_string + (
                         `<font color="${Style.colorText}">` + qsTr("Progress details") + `</font>` +
                         `<font color="${Style.colorTextDisabled}"> | </font>` +
-                        `<font color="${Style.colorGreen}">` + General.durationTextShort(total_time_passed + simulated_time) + `</font>`)
+                        getTimeText(total_time_passed + simulated_time, total_time_passed_estimated))
         font.pixelSize: Style.textSize1
         Layout.bottomMargin: 10
     }
@@ -170,12 +185,7 @@ ColumnLayout {
                     visible: bar.visible
                     font.pixelSize: Style.textSizeSmall2
 
-                    text_value: API.get().settings_pg.empty_string + (!is_active ? '' :
-                                   `<font color="${Style.colorGreen}">` + qsTr("act", "SHORT FOR ACTUAL TIME") + ": " + `</font>` +
-                                   `<font color="${Style.colorText}">` + General.durationTextShort(time_passed) + `</font>` +
-                                   `<font color="${Style.colorTextDisabled}"> | ` + qsTr("est", "SHORT FOR ESTIMATED") + ": " +
-                                    General.durationTextShort(API.get().orders_mdl.average_events_time_registry[modelData]) + `</font>`
-                      )
+                    text_value: API.get().settings_pg.empty_string + (!is_active ? '' : getTimeText(time_passed, API.get().orders_mdl.average_events_time_registry[modelData]))
                 }
             }
         }
