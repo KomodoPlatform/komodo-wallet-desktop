@@ -40,6 +40,7 @@ namespace mm2::api
     {
         std::string denom;
         std::string numer;
+        std::string decimal;
     };
 
     void from_json(const nlohmann::json& j, max_taker_vol_answer_success& cfg);

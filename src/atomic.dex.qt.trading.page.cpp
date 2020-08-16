@@ -79,7 +79,7 @@ namespace atomic_dex
             QJsonObject out{
                 {"denom", QString::fromStdString(answer.result.value().denom)},
                 {"numer", QString::fromStdString(answer.result.value().numer)},
-            };
+                {"decimal", QString::fromStdString(answer.result.value().decimal)}};
             return out;
         }
         return {};

@@ -55,6 +55,9 @@ namespace mm2::api
     {
         j.at("denom").get_to(cfg.denom);
         j.at("numer").get_to(cfg.numer);
+        t_rational rat(boost::multiprecision::cpp_int(cfg.numer), boost::multiprecision::cpp_int(cfg.denom));
+        t_float_50 res = rat.convert_to<t_float_50>();
+        cfg.decimal = res.str(8);
     }
 
     void
