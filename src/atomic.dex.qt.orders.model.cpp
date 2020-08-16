@@ -414,6 +414,8 @@ namespace atomic_dex
         {
             data.base_coin = QString::fromStdString(contents.base);
             data.rel_coin  = QString::fromStdString(contents.rel);
+            data.base_amount = QString::fromStdString(contents.base_amount);
+            data.rel_amount  = QString::fromStdString(contents.rel_amount);
         }
         data.ticker_pair = data.base_coin + "/" + data.rel_coin;
         this->m_orders_id_registry.emplace(contents.order_id);
