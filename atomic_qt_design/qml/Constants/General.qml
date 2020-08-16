@@ -19,7 +19,6 @@ QtObject {
     readonly property string privacy_text: "*****"
 
     property bool privacy_mode: false
-    property bool enable_desktop_notifications: true
 
     readonly property int idx_dashboard_portfolio: 0
     readonly property int idx_dashboard_wallet: 1
@@ -62,26 +61,56 @@ QtObject {
         return (new Date(timestamp * 1000))
     }
 
+    function getDuration(total_ms) {
+        let delta = Math.abs(total_ms)
+
+        let days = Math.floor(delta / 86400000)
+        delta -= days * 86400000
+
+        let hours = Math.floor(delta / 3600000) % 24
+        delta -= hours * 3600000
+
+        let minutes = Math.floor(delta / 60000) % 60
+        delta -= minutes * 60000
+
+        let seconds = Math.floor(delta / 1000) % 60
+        delta -= seconds * 1000
+
+        let milliseconds = Math.floor(delta)
+
+        return { days, hours, minutes, seconds, milliseconds }
+    }
+
     function secondsToTimeLeft(date_now, date_future) {
-        let delta = Math.abs(date_future - date_now)
+        const r = getDuration((date_future - date_now)*1000)
+        let days = r.days
+        let hours = r.hours
+        let minutes = r.minutes
+        let seconds = r.seconds
 
-        let days = Math.floor(delta / 86400)
-        delta -= days * 86400
-
-        let hours = Math.floor(delta / 3600) % 24
-        delta -= hours * 3600
         if(hours < 10) hours = '0' + hours
-
-        let minutes = Math.floor(delta / 60) % 60
-        delta -= minutes * 60
         if(minutes < 10) minutes = '0' + minutes
-
-        let seconds = Math.floor(delta) % 60
         if(seconds < 10) seconds = '0' + seconds
-
         return qsTr("%n day(s)", "", days) + '  ' + hours + ':' + minutes + ':' + seconds
     }
-    
+
+    function durationTextShort(total) {
+        if(!General.exists(total))
+            return "-"
+
+        const r = getDuration(total)
+
+        let text = ""
+        if(r.days > 0) text += qsTr("%nd", "day", r.days) + "  "
+        if(r.hours > 0) text += qsTr("%nh", "hours", r.hours) + "  "
+        if(r.minutes > 0) text += qsTr("%nm", "minutes", r.minutes) + "  "
+        if(r.seconds > 0) text += qsTr("%ns", "seconds", r.seconds) + "  "
+        if(text === "" && r.milliseconds > 0) text += qsTr("%nms", "milliseconds", r.milliseconds) + "  "
+        if(text === "") text += qsTr("Instant")
+
+        return text
+    }
+
     function clone(obj) {
         return JSON.parse(JSON.stringify(obj));
     }
@@ -208,11 +237,16 @@ QtObject {
     }
 
     function isZero(v) {
-        return !fieldExists(v) || parseFloat(v) === 0
+        return !isFilled(v) || parseFloat(v) === 0
     }
 
-    function fieldExists(v) {
-        return v !== undefined && v !== ""
+
+    function exists(v) {
+        return v !== undefined && v !== null
+    }
+
+    function isFilled(v) {
+        return exists(v) && v !== ""
     }
 
     function isEthNeeded() {

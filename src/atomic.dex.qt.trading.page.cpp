@@ -72,9 +72,9 @@ namespace atomic_dex
     QVariant
     trading_page::get_raw_mm2_coin_cfg(const QString& ticker) const noexcept
     {
-        QVariant out;
+        QVariant       out;
         nlohmann::json j = m_system_manager.get_system<mm2>().get_raw_mm2_ticker_cfg(ticker.toStdString());
-        out = nlohmann_json_object_to_qt_json_object(j);
+        out              = nlohmann_json_object_to_qt_json_object(j);
         return out;
     }
 

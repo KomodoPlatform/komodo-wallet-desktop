@@ -148,6 +148,10 @@ namespace atomic_dex
             item.order_error_message = value.toString();
         case EventsRole:
             item.events = value.toJsonArray();
+        case SuccessEventsRole:
+            item.success_events = value.toStringList();
+        case ErrorEventsRole:
+            item.error_events = value.toStringList();
         }
 
         emit dataChanged(index, index, {role});
@@ -203,6 +207,10 @@ namespace atomic_dex
             return item.order_error_message;
         case EventsRole:
             return item.events;
+        case SuccessEventsRole:
+            return item.success_events;
+        case ErrorEventsRole:
+            return item.error_events;
         }
         return {};
     }
@@ -314,7 +322,9 @@ namespace atomic_dex
             .is_swap          = true,
             .is_cancellable   = false,
             .is_recoverable   = contents.funds_recoverable,
-            .events           = nlohmann_json_array_to_qt_json_array(contents.events)};
+            .events           = nlohmann_json_array_to_qt_json_array(contents.events),
+            .error_events     = vector_std_string_to_qt_string_list(contents.error_events),
+            .success_events   = vector_std_string_to_qt_string_list(contents.success_events)};
         data.ticker_pair = data.base_coin + "/" + data.rel_coin;
         if (data.order_status == "failed")
         {
@@ -366,6 +376,9 @@ namespace atomic_dex
             update_value(OrdersRoles::OrderErrorStateRole, state, idx, *this);
             update_value(OrdersRoles::OrderErrorMessageRole, msg, idx, *this);
             update_value(OrdersRoles::EventsRole, nlohmann_json_array_to_qt_json_array(contents.events), idx, *this);
+
+            update_value(OrdersRoles::SuccessEventsRole, vector_std_string_to_qt_string_list(contents.success_events), idx, *this);
+            update_value(OrdersRoles::ErrorEventsRole, vector_std_string_to_qt_string_list(contents.error_events), idx, *this);
             emit lengthChanged();
         }
         else
@@ -397,6 +410,13 @@ namespace atomic_dex
             .is_swap        = false,
             .is_cancellable = contents.cancellable,
             .is_recoverable = false};
+        if (contents.action.empty() && contents.order_type == "maker")
+        {
+            data.base_coin = QString::fromStdString(contents.base);
+            data.rel_coin  = QString::fromStdString(contents.rel);
+            data.base_amount = QString::fromStdString(contents.base_amount);
+            data.rel_amount  = QString::fromStdString(contents.rel_amount);
+        }
         data.ticker_pair = data.base_coin + "/" + data.rel_coin;
         this->m_orders_id_registry.emplace(contents.order_id);
         this->m_model_data.push_back(std::move(data));
@@ -470,8 +490,6 @@ namespace atomic_dex
                     }
                 }
             }
-            // std::unordered_set<std::string> out;
-            // std::set_difference(begin(m_orders_id_registry), end(m_orders_id_registry), begin(to_remove), end(to_remove), std::inserter(out, out.begin()));
             for (auto&& cur_to_remove: to_remove) { m_orders_id_registry.erase(cur_to_remove); }
         }
     }
@@ -481,6 +499,7 @@ namespace atomic_dex
     {
         const auto& mm2_system = this->m_system_manager.get_system<mm2>();
         const auto  result     = mm2_system.get_swaps();
+        this->set_average_events_time_registry(nlohmann_json_object_to_qt_json_object(result.average_events_time));
         for (auto&& current_swap: result.swaps)
         {
             if (this->m_swaps_id_registry.find(current_swap.uuid) != this->m_swaps_id_registry.end())
@@ -516,7 +535,9 @@ namespace atomic_dex
             {IsRecoverableRole, "recoverable"},
             {OrderErrorStateRole, "order_error_state"},
             {OrderErrorMessageRole, "order_error_message"},
-            {EventsRole, "events"}};
+            {EventsRole, "events"},
+            {SuccessEventsRole, "success_events"},
+            {ErrorEventsRole, "error_events"}};
     }
 
     int
@@ -542,3 +563,19 @@ namespace atomic_dex
         this->endResetModel();
     }
 } // namespace atomic_dex
+
+namespace atomic_dex
+{
+    QVariant
+    atomic_dex::orders_model::get_average_events_time_registry() const noexcept
+    {
+        return m_json_time_registry;
+    }
+
+    void
+    atomic_dex::orders_model::set_average_events_time_registry(const QVariant& average_time_registry) noexcept
+    {
+        m_json_time_registry = average_time_registry;
+        emit onAverageEventsTimeRegistryChanged();
+    }
+}

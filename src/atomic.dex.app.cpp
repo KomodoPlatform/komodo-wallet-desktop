@@ -52,7 +52,7 @@
 
 namespace
 {
-    constexpr std::size_t g_timeout_q_timer_ms = 8;
+    constexpr std::size_t g_timeout_q_timer_ms = 16;
 
 #if defined(_WIN32) || defined(WIN32)
     bool
@@ -228,8 +228,9 @@ namespace atomic_dex
         }
 
         system_manager_.get_system<trading_page>().process_action();
-        if (not this->m_actions_queue.empty() && not m_event_actions[events_action::about_to_exit_app])
+        while (not this->m_actions_queue.empty())
         {
+            if (m_event_actions[events_action::about_to_exit_app]) break;
             action last_action;
             this->m_actions_queue.pop(last_action);
             switch (last_action)
@@ -421,7 +422,23 @@ namespace atomic_dex
     {
         //! This event is called when a call is enabled and cex provider finished fetch datas
         spdlog::debug("{} l{}", __FUNCTION__, __LINE__);
+
+        if (evt.ticker == "BTC")
+        {
+            this->m_btc_fully_enabled = true;
+        }
+
+        if (evt.ticker == "KMD")
+        {
+            this->m_kmd_fully_enabled = true;
+        }
+
         qobject_cast<portfolio_model*>(m_manager_models.at("portfolio"))->initialize_portfolio(evt.ticker);
+
+        if (get_mm2().get_enabled_coins().size() == get_mm2().get_active_coins().size())
+        {
+            this->set_status("complete");
+        }
     }
 
     void
@@ -477,12 +494,6 @@ namespace atomic_dex
         auto            coin   = get_mm2().get_coin_info(m_coin_info->get_ticker().toStdString());
         return to_qt_binding(std::move(answer), this, QString::fromStdString(coin.explorer_url[0]));
     }
-
-    /*bool
-    atomic_dex::application::is_claiming_ready(const QString& ticker)
-    {
-        return get_mm2().is_claiming_ready(ticker.toStdString());
-    }*/
 
     QVariant
     atomic_dex::application::claim_rewards(const QString& ticker)
@@ -588,7 +599,7 @@ namespace atomic_dex
     application::on_mm2_started_event([[maybe_unused]] const mm2_started& evt) noexcept
     {
         spdlog::debug("{} l{}", __FUNCTION__, __LINE__);
-        this->set_status("complete");
+        // this->set_status("complete");
     }
 
     void
@@ -685,6 +696,10 @@ namespace atomic_dex
 
         this->m_wallet_manager.just_set_wallet_name("");
         emit onWalletDefaultNameChanged();
+
+        this->m_btc_fully_enabled = false;
+        this->m_kmd_fully_enabled = false;
+        this->set_status("None");
         return fs::remove(get_atomic_dex_config_folder() / "default.wallet");
     }
 

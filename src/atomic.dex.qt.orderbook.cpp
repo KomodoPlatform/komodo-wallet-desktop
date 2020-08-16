@@ -15,6 +15,8 @@
  ******************************************************************************/
 
 #include "atomic.dex.qt.orderbook.hpp"
+#include "atomic.dex.mm2.hpp"
+#include "atomic.dex.qt.utilities.hpp"
 
 namespace atomic_dex
 {
@@ -50,6 +52,7 @@ namespace atomic_dex
         spdlog::trace("refresh orderbook");
         this->m_asks->refresh_orderbook(answer);
         this->m_bids->refresh_orderbook(answer);
+        this->set_both_taker_vol();
     }
 
     void
@@ -58,6 +61,7 @@ namespace atomic_dex
         spdlog::trace("full reset orderbook");
         this->m_asks->reset_orderbook(answer);
         this->m_bids->reset_orderbook(answer);
+        this->set_both_taker_vol();
     }
 
     void
@@ -65,5 +69,29 @@ namespace atomic_dex
     {
         this->m_asks->clear_orderbook();
         this->m_bids->clear_orderbook();
+    }
+
+    QVariant
+    qt_orderbook_wrapper::get_base_max_taker_vol() const noexcept
+    {
+        return m_base_max_taker_vol;
+    }
+
+    QVariant
+    qt_orderbook_wrapper::get_rel_max_taker_vol() const noexcept
+    {
+        return m_rel_max_taker_vol;
+    }
+
+    void
+    atomic_dex::qt_orderbook_wrapper::set_both_taker_vol()
+    {
+        auto&& [base, rel]         = m_system_manager.get_system<mm2>().get_taker_vol();
+        this->m_base_max_taker_vol = QJsonObject{
+            {"denom", QString::fromStdString(base.denom)}, {"numer", QString::fromStdString(base.numer)}, {"decimal", QString::fromStdString(base.decimal)}};
+        emit baseMaxTakerVolChanged();
+        this->m_rel_max_taker_vol = QJsonObject{
+            {"denom", QString::fromStdString(rel.denom)}, {"numer", QString::fromStdString(rel.numer)}, {"decimal", QString::fromStdString(rel.decimal)}};
+        emit relMaxTakerVolChanged();
     }
 } // namespace atomic_dex

@@ -204,6 +204,57 @@ Item {
     function getStatusTextWithPrefix(status) {
         return getStatusStep(status) + " " + getStatusText(status)
     }
+
+    function getEventText(event_name) {
+        switch(event_name) {
+            case "Started":
+                return qsTr("Started")
+            case "Negotiated":
+                return qsTr("Negotiated")
+            case "TakerFeeSent":
+                return qsTr("Taker fee sent")
+            case "MakerPaymentReceived":
+                return qsTr("Maker payment received")
+            case "MakerPaymentWaitConfirmStarted":
+                return qsTr("Maker payment wait confirm started")
+            case "MakerPaymentValidatedAndConfirmed":
+                return qsTr("Maker payment validated and confirmed")
+            case "TakerPaymentSent":
+                return qsTr("Taker payment sent")
+            case "TakerPaymentSpent":
+                return qsTr("Taker payment spent")
+            case "MakerPaymentSpent":
+                return qsTr("Maker payment spent")
+            case "Finished":
+                return qsTr("Finished")
+            case "StartFailed":
+                return qsTr("Start failed")
+            case "NegotiateFailed":
+                return qsTr("Negotiate failed")
+            case "TakerFeeValidateFailed":
+                return qsTr("Taker fee validate failed")
+            case "MakerPaymentTransactionFailed":
+                return qsTr("Maker payment transaction failed")
+            case "MakerPaymentDataSendFailed":
+                return qsTr("Maker payment Data send failed")
+            case "MakerPaymentWaitConfirmFailed":
+                return qsTr("Maker payment wait confirm failed")
+            case "TakerPaymentValidateFailed":
+                return qsTr("Taker payment validate failed")
+            case "TakerPaymentWaitConfirmFailed":
+                return qsTr("Taker payment wait confirm failed")
+            case "TakerPaymentSpendFailed":
+                return qsTr("Taker payment spend failed")
+            case "MakerPaymentWaitRefundStarted":
+                return qsTr("Maker payment wait refund started")
+            case "MakerPaymentRefunded":
+                return qsTr("Maker payment refunded")
+            case "MakerPaymentRefundFailed":
+                return qsTr("Maker payment refund failed")
+            default:
+                return qsTr(event_name)
+        }
+    }
 }
 
 

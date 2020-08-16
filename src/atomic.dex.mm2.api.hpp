@@ -40,6 +40,7 @@ namespace mm2::api
     {
         std::string denom;
         std::string numer;
+        std::string decimal;
     };
 
     void from_json(const nlohmann::json& j, max_taker_vol_answer_success& cfg);
@@ -652,7 +653,6 @@ namespace mm2::api
 
     struct swap_contents
     {
-        // using t_event_registry = std::unordered_map<std::string, std::variant<finished_event, started_event, start_failed_event, negotiate_failed_event>>;
         std::vector<std::string> error_events;
         std::vector<std::string> success_events;
         nlohmann::json           events;
@@ -663,7 +663,7 @@ namespace mm2::api
         std::string              taker_amount;
         std::string              maker_amount;
         std::string              type;
-        std::string              total_time_in_seconds;
+        double                   total_time_in_ms;
         bool                     funds_recoverable;
     };
 
@@ -676,6 +676,7 @@ namespace mm2::api
         std::size_t                skipped;
         std::size_t                total;
         std::string                raw_result;
+        nlohmann::json             average_events_time;
     };
 
     void from_json(const nlohmann::json& j, my_recent_swaps_answer_success& results);
@@ -695,7 +696,7 @@ namespace mm2::api
     struct kmd_rewards_info_answer
     {
         nlohmann::json result;
-        int rpc_result_code;
+        int            rpc_result_code;
     };
 
     kmd_rewards_info_answer rpc_kmd_rewards_info();

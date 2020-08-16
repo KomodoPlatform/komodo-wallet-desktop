@@ -29,7 +29,7 @@ FloatingBackground {
     }
 
     function hasEthFees() {
-        return General.fieldExists(curr_trade_info.erc_fees) && parseFloat(curr_trade_info.erc_fees) > 0
+        return General.isFilled(curr_trade_info.erc_fees) && parseFloat(curr_trade_info.erc_fees) > 0
     }
 
     function hasEnoughEthForFees() {
@@ -55,7 +55,17 @@ FloatingBackground {
     }
 
     function getMaxVolume() {
-        return API.get().get_balance(base_ticker)
+        // base in this orderbook is always the left side, so when it's buy, we want the right side balance (rel in the backend)
+        const value = is_sell_form ? API.get().trading_pg.orderbook.base_max_taker_vol.decimal :
+                                  API.get().trading_pg.orderbook.rel_max_taker_vol.decimal
+
+        if(General.isFilled(value))
+            return value
+
+        if(General.isFilled(base_ticker))
+            return API.get().get_balance(base_ticker)
+
+        return "0"
     }
 
     function getMaxTradableVolume(set_as_current) {
@@ -183,16 +193,16 @@ FloatingBackground {
                 DefaultButton {
                     font.pixelSize: Style.textSize
                     text: API.get().settings_pg.empty_string + (qsTr("Sell"))
-                    color: sell_mode ? Style.colorRed : Style.colorRed3
-                    colorTextEnabled: sell_mode ? Style.colorWhite1 : Style.colorWhite6
+                    color: sell_mode ? Style.colorButtonEnabled.danger : Style.colorButtonDisabled.danger
+                    colorTextEnabled: sell_mode ? Style.colorButtonTextEnabled.danger : Style.colorButtonTextDisabled.danger
                     font.weight: Font.Bold
                     onClicked: sell_mode = true
                 }
                 DefaultButton {
                     font.pixelSize: Style.textSize
                     text: API.get().settings_pg.empty_string + (qsTr("Buy"))
-                    color: sell_mode ? Style.colorGreen3 : Style.colorGreen
-                    colorTextEnabled: sell_mode ? Style.colorWhite8 : Style.colorWhite1
+                    color: sell_mode ? Style.colorButtonDisabled.primary : Style.colorButtonEnabled.primary
+                    colorTextEnabled: sell_mode ? Style.colorButtonTextDisabled.primary : Style.colorButtonTextEnabled.primary
                     font.weight: Font.Bold
                     onClicked: sell_mode = false
                 }

@@ -160,7 +160,7 @@ Item {
         const rel = rel_ticker
         const amount = sell_mode ? getCurrentForm().getVolume() :
                                    General.formatDouble(getCurrentForm().getNeededAmountToSpend(getCurrentForm().getVolume()))
-        if(force || (General.fieldExists(base) && General.fieldExists(rel) && !General.isZero(amount))) {
+        if(force || (General.isFilled(base) && General.isFilled(rel) && !General.isZero(amount))) {
             getTradeInfo(base, rel, amount)
 
             // Since new implementation does not update fees instantly, re-cap the volume every time, just in case
@@ -243,11 +243,11 @@ Item {
             }
         }
         else {
-            if(default_config.requires_notarization !== undefined && default_config.requires_notarization !== null) {
+            if(General.exists(default_config.requires_notarization)) {
                 nota = default_config.requires_notarization ? "1" : "0"
             }
 
-            if(nota !== "1" && default_config.required_confirmations !== undefined && default_config.required_confirmations !== null) {
+            if(nota !== "1" && General.exists(default_config.required_confirmations)) {
                 confs = default_config.required_confirmations.toString()
             }
         }
