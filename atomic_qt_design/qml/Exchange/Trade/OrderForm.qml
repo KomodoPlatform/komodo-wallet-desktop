@@ -193,16 +193,16 @@ FloatingBackground {
                 DefaultButton {
                     font.pixelSize: Style.textSize
                     text: API.get().settings_pg.empty_string + (qsTr("Sell"))
-                    color: sell_mode ? Style.colorRed : Style.colorRed3
-                    colorTextEnabled: sell_mode ? Style.colorWhite1 : Style.colorWhite6
+                    color: sell_mode ? Style.colorButtonEnabled.danger : Style.colorButtonDisabled.danger
+                    colorTextEnabled: sell_mode ? Style.colorButtonTextEnabled.danger : Style.colorButtonTextDisabled.danger
                     font.weight: Font.Bold
                     onClicked: sell_mode = true
                 }
                 DefaultButton {
                     font.pixelSize: Style.textSize
                     text: API.get().settings_pg.empty_string + (qsTr("Buy"))
-                    color: sell_mode ? Style.colorGreen3 : Style.colorGreen
-                    colorTextEnabled: sell_mode ? Style.colorWhite8 : Style.colorWhite1
+                    color: sell_mode ? Style.colorButtonDisabled.primary : Style.colorButtonEnabled.primary
+                    colorTextEnabled: sell_mode ? Style.colorButtonTextDisabled.primary : Style.colorButtonTextEnabled.primary
                     font.weight: Font.Bold
                     onClicked: sell_mode = false
                 }
