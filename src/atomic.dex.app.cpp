@@ -52,7 +52,7 @@
 
 namespace
 {
-    constexpr std::size_t g_timeout_q_timer_ms = 100;
+    constexpr std::size_t g_timeout_q_timer_ms = 30;
 
 #if defined(_WIN32) || defined(WIN32)
     bool
@@ -494,12 +494,6 @@ namespace atomic_dex
         auto            coin   = get_mm2().get_coin_info(m_coin_info->get_ticker().toStdString());
         return to_qt_binding(std::move(answer), this, QString::fromStdString(coin.explorer_url[0]));
     }
-
-    /*bool
-    atomic_dex::application::is_claiming_ready(const QString& ticker)
-    {
-        return get_mm2().is_claiming_ready(ticker.toStdString());
-    }*/
 
     QVariant
     atomic_dex::application::claim_rewards(const QString& ticker)
