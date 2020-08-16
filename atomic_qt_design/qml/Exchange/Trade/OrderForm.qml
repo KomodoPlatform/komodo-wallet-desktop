@@ -55,7 +55,9 @@ FloatingBackground {
     }
 
     function getMaxVolume() {
-        return API.get().get_balance(base_ticker)
+        if(!General.isFilled(base_ticker)) return "0"
+
+        return API.get().trading_pg.get_max_taker_vol(base_ticker).decimal
     }
 
     function getMaxTradableVolume(set_as_current) {
