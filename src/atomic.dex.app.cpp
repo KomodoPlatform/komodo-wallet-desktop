@@ -52,7 +52,7 @@
 
 namespace
 {
-    constexpr std::size_t g_timeout_q_timer_ms = 30;
+    constexpr std::size_t g_timeout_q_timer_ms = 16;
 
 #if defined(_WIN32) || defined(WIN32)
     bool
@@ -435,7 +435,7 @@ namespace atomic_dex
 
         qobject_cast<portfolio_model*>(m_manager_models.at("portfolio"))->initialize_portfolio(evt.ticker);
 
-        if (this->m_kmd_fully_enabled && this->m_btc_fully_enabled)
+        if (get_mm2().get_enabled_coins().size() == get_mm2().get_active_coins().size())
         {
             this->set_status("complete");
         }
