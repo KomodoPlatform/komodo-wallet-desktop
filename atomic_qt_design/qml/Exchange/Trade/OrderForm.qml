@@ -55,9 +55,17 @@ FloatingBackground {
     }
 
     function getMaxVolume() {
-        if(!General.isFilled(base_ticker)) return "0"
+        // base in this orderbook is always the left side, so when it's buy, we want the right side balance (rel in the backend)
+        const value = is_sell_form ? API.get().trading_pg.orderbook.base_max_taker_vol.decimal :
+                                  API.get().trading_pg.orderbook.rel_max_taker_vol.decimal
 
-        return API.get().trading_pg.get_max_taker_vol(base_ticker).decimal
+        if(General.isFilled(value))
+            return value
+
+        if(General.isFilled(base_ticker))
+            return API.get().get_balance(base_ticker)
+
+        return "0"
     }
 
     function getMaxTradableVolume(set_as_current) {
