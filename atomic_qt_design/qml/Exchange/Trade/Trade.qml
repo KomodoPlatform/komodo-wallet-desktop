@@ -420,13 +420,10 @@ Item {
                     color: Style.colorRed
 
                     text_value: API.get().settings_pg.empty_string + (
-                                    // Buy side needs the price
-                                    (!sell_mode && General.isZero(getCurrentPrice())) ? (qsTr("Please fill the price field")) :
-
                                     // Balance check can be done without price too, prioritize that for sell
-                                    notEnoughBalance() ? (qsTr("%1 balance is lower than minimum trade amount").arg(base_ticker) + " : " + General.getMinTradeAmount()) :
+                                    notEnoughBalance() ? (qsTr("Tradable (after fees) %1 balance is lower than minimum trade amount").arg(base_ticker) + " : " + General.getMinTradeAmount()) :
 
-                                    // Price field comes again
+                                    // Fill the price field
                                     General.isZero(getCurrentPrice()) ? (qsTr("Please fill the price field")) :
 
                                     // Fill the volume field
