@@ -35,7 +35,25 @@ RowLayout {
         textRole: "display"
         valueRole: "ticker"
 
-        onCurrentValueChanged: setPair(left_side, currentValue)
+        property bool index_changed: false
+        onCurrentIndexChanged: {
+            // Save index change
+            index_changed = true
+        }
+
+        onCurrentTextChanged: {
+            // Set the original coin if it's not user input/backend, because index doesn't change, we know that it's the change of the list
+            if(!index_changed && currentText.indexOf(ticker) === -1)
+                combo.currentIndex = combo.indexOfValue(ticker)
+
+            displayText = currentText
+        }
+
+        onCurrentValueChanged: {
+            // Reset index change
+            user_changed_index = false
+            setPair(left_side, currentValue)
+        }
 
         Layout.fillWidth: true
     }
