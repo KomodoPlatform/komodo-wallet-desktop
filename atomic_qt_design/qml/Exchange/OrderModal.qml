@@ -9,7 +9,7 @@ DefaultModal {
     id: root
 
     width: 900
-    height: window.height - 90
+    height: Math.min(header.height + inner_layout.height + footer.height + root.padding*2 + outer_layout.spacing*2, window.height - 90)
 
     property var details
 
@@ -21,11 +21,13 @@ DefaultModal {
 
     // Inside modal
     ColumnLayout {
+        id: outer_layout
         width: parent.width
         height: parent.height
         anchors.horizontalCenter: parent.horizontalCenter
 
         ModalHeader {
+            id: header
             title: API.get().settings_pg.empty_string + (!details ? "" :
                                                         details.is_swap ? qsTr("Swap Details") : qsTr("Order Details"))
         }
@@ -183,6 +185,7 @@ DefaultModal {
 
         // Buttons
         RowLayout {
+            id: footer
             DefaultButton {
                 text: API.get().settings_pg.empty_string + (qsTr("Close"))
                 Layout.fillWidth: true
