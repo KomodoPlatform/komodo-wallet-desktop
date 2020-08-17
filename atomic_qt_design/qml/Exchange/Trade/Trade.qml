@@ -22,7 +22,7 @@ Item {
     Timer {
         id: swap_cooldown
         repeat: false
-        interval: 3000
+        interval: 1000
     }
 
     // Override
