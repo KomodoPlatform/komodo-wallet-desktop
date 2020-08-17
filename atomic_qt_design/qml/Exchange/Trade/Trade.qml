@@ -41,8 +41,8 @@ Item {
     function reset(reset_result=true, is_base) {
         if(reset_result) action_result = ""
         resetPreferredPrice()
-        form_base.reset(is_base)
-        form_rel.reset(is_base)
+        form_base.reset()
+        form_rel.reset()
         resetTradeInfo()
     }
 
@@ -407,8 +407,6 @@ Item {
                     anchors.left: parent.left
                     anchors.right: parent.right
                     anchors.top: parent.top
-
-                    field.enabled: form_base.field.enabled
                 }
 
                 // Show errors
@@ -422,12 +420,23 @@ Item {
                     color: Style.colorRed
 
                     text_value: API.get().settings_pg.empty_string + (
+                                    // Balance check can be done without price too, prioritize that for sell
+                                    notEnoughBalance() ? (qsTr("Tradable (after fees) %1 balance is lower than minimum trade amount").arg(base_ticker) + " : " + General.getMinTradeAmount()) :
+
+                                    // Fill the price field
                                     General.isZero(getCurrentPrice()) ? (qsTr("Please fill the price field")) :
-                                    notEnoughBalance() ? (qsTr("%1 balance is lower than minimum trade amount").arg(base_ticker) + " : " + General.getMinTradeAmount()) :
+
+                                    // Fill the volume field
+                                    General.isZero(getCurrentForm().getVolume()) ? (qsTr("Please fill the volume field")) :
+
+                                    // Fields are filled, fee can be checked
                                     notEnoughBalanceForFees() ?
                                         (qsTr("Not enough balance for the fees. Need at least %1 more", "AMT TICKER").arg(General.formatCrypto("", parseFloat(curr_trade_info.amount_needed), base_ticker))) :
-                                    General.isZero(getCurrentForm().getVolume()) ? (qsTr("Please fill the volume field")) :
+
+                                    // Not enough ETH for fees
                                     (getCurrentForm().hasEthFees() && !getCurrentForm().hasEnoughEthForFees()) ? (qsTr("Not enough ETH for the transaction fee")) :
+
+                                    // Trade amount is lower than the minimum
                                     (getCurrentForm().fieldsAreFilled() && !getCurrentForm().higherThanMinTradeAmount()) ? ((qsTr("Amount is lower than minimum trade amount")) + " : " + General.getMinTradeAmount()) : ""
                               )
 

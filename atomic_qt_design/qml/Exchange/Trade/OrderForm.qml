@@ -12,7 +12,6 @@ FloatingBackground {
     property alias field: input_volume.field
     property alias price_field: input_price.field
     property bool is_sell_form: false
-    property bool enabled: true
     property alias column_layout: form_layout
     property string total_amount: "0"
 
@@ -89,19 +88,7 @@ FloatingBackground {
 
     function reset(is_base) {
         input_price.field.text = ''
-
-        if(is_sell_form) {
-            // is_base info comes from the ComboBox ticker change in OrderForm.
-            // At other places it's not given.
-            // We don't want to reset base balance at rel ticker change
-            // Therefore it will reset only if this info is set from ComboBox -> setPair
-            // Or if it's from somewhere else like page change, in that case is_base is undefined
-            if(is_base === undefined || is_base)
-                input_volume.field.text = General.formatDouble(getMaxTradableVolume(true))
-        }
-        else {
-            input_volume.field.text = ''
-        }
+        input_volume.field.text = ''
     }
 
     function capVolume() {
@@ -248,7 +235,7 @@ FloatingBackground {
                 AmountFieldWithInfo {
                     id: input_volume
                     width: parent.width
-                    field.enabled: root.enabled && !shouldBlockInput()
+                    field.enabled: !shouldBlockInput()
 
                     field.left_text: API.get().settings_pg.empty_string + (qsTr("Volume"))
                     field.right_text: left_ticker
