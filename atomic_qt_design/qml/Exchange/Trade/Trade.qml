@@ -11,11 +11,19 @@ Item {
 
     property string action_result
 
+    readonly property bool block_everything: chart.is_fetching && !swap_cooldown.running
+
     property bool sell_mode: true
     property string left_ticker: selector_left.ticker
     property string right_ticker: selector_right.ticker
     property string base_ticker: sell_mode ? left_ticker : right_ticker
     property string rel_ticker: sell_mode ? right_ticker : left_ticker
+
+    Timer {
+        id: swap_cooldown
+        repeat: false
+        interval: 3000
+    }
 
     // Override
     property var onOrderSuccess: () => {}
@@ -187,6 +195,8 @@ Item {
     }
 
     function setPair(is_left_side, changed_ticker) {
+        swap_cooldown.restart()
+
         let base = left_ticker
         let rel = right_ticker
 
@@ -317,6 +327,7 @@ Item {
                     anchors.bottomMargin: layout_margin * 2
 
                     CandleStickChart {
+                        id: chart
                         anchors.fill: parent
                     }
                 }
@@ -348,7 +359,10 @@ Item {
 
                         MouseArea {
                             anchors.fill: parent
-                            onClicked: setPair(true, right_ticker)
+                            onClicked: {
+                                if(!block_everything)
+                                    setPair(true, right_ticker)
+                            }
                         }
                     }
 

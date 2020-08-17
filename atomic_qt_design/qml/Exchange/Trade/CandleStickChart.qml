@@ -12,6 +12,7 @@ Item {
     readonly property double y_margin: 0.02
 
     readonly property bool pair_supported: cs_mapper.model.is_current_pair_supported
+    readonly property bool is_fetching: cs_mapper.model.is_fetching
 
     function getChartSeconds() {
         const idx = combo_time.currentIndex
@@ -134,7 +135,7 @@ Item {
     ChartView {
         id: chart
 
-        visible: pair_supported && series.count > 0 && series.count === cs_mapper.model.series_size && !cs_mapper.model.is_fetching
+        visible: pair_supported && series.count > 0 && series.count === cs_mapper.model.series_size && !is_fetching
 
         height: parent.height * 0.9
         width: parent.width

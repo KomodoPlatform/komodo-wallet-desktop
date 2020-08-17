@@ -31,6 +31,8 @@ RowLayout {
     DefaultComboBox {
         id: combo
 
+        enabled: !block_everything
+
         model: ticker_list
         textRole: "display"
         valueRole: "ticker"
