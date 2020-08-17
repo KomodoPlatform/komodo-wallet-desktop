@@ -44,14 +44,14 @@ RowLayout {
         onCurrentTextChanged: {
             // Set the original coin if it's not user input/backend, because index doesn't change, we know that it's the change of the list
             if(!index_changed && currentText.indexOf(ticker) === -1)
-                combo.currentIndex = combo.indexOfValue(ticker)
+                currentIndex = indexOfValue(ticker)
 
             displayText = currentText
         }
 
         onCurrentValueChanged: {
             // Reset index change
-            user_changed_index = false
+            index_changed = false
             setPair(left_side, currentValue)
         }
 
