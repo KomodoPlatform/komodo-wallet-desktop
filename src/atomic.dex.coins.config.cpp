@@ -71,5 +71,13 @@ namespace atomic_dex
         j.at("coinpaprika_id").get_to(cfg.coinpaprika_id);
         j.at("is_erc_20").get_to(cfg.is_erc_20);
         j.at("explorer_url").get_to(cfg.explorer_url);
+        if (j.contains("explorer_tx_url"))
+        {
+            j.at("explorer_tx_url").get_to(cfg.tx_uri);
+        }
+        if (j.contains("explorer_address_url"))
+        {
+            j.at("explorer_address_url").get_to(cfg.address_url);
+        }
     }
 } // namespace atomic_dex
