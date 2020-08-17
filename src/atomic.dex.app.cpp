@@ -664,13 +664,6 @@ namespace atomic_dex
             addressbook->removeRows(0, count);
         }
 
-        //portfolio_model* portfolio = qobject_cast<portfolio_model*>(m_manager_models.at("portfolio"));
-
-        //if (auto count = portfolio->rowCount(QModelIndex()); count > 0)
-        //{
-        //    portfolio->removeRows(0, count, QModelIndex());
-        //}
-
         orders_model* orders = qobject_cast<orders_model*>(m_manager_models.at("orders"));
         if (auto count = orders->rowCount(QModelIndex()); count > 0)
         {
@@ -683,10 +676,8 @@ namespace atomic_dex
 
         //! Mark systems
         system_manager_.mark_system<mm2>();
-        //system_manager_.mark_system<portfolio_page>();
         system_manager_.mark_system<coinpaprika_provider>();
         system_manager_.mark_system<cex_prices_provider>();
-        //system_manager_.mark_system<trading_page>();
 
         //! Disconnect signals
         system_manager_.get_system<trading_page>().disconnect_signals();
