@@ -35,12 +35,12 @@ namespace
 namespace atomic_dex
 {
     portfolio_model::portfolio_model(ag::ecs::system_manager& system_manager, entt::dispatcher& dispatcher, QObject* parent) noexcept :
-        QAbstractListModel(parent), m_system_manager(system_manager), m_model_proxy(new portfolio_proxy_model(this))
+        QAbstractListModel(parent), m_system_manager(system_manager), m_dispatcher(dispatcher), m_model_proxy(new portfolio_proxy_model(this))
     {
         spdlog::trace("{} l{} f[{}]", __FUNCTION__, __LINE__, fs::path(__FILE__).filename().string());
         spdlog::trace("portfolio model created");
 
-        dispatcher.sink<update_portfolio_values>().connect<&portfolio_model::on_update_portfolio_values_event>(*this);
+        m_dispatcher.sink<update_portfolio_values>().connect<&portfolio_model::on_update_portfolio_values_event>(*this);
         this->m_model_proxy->setSourceModel(this);
         this->m_model_proxy->setDynamicSortFilter(true);
         this->m_model_proxy->sort_by_currency_balance(false);
@@ -50,6 +50,7 @@ namespace atomic_dex
 
     portfolio_model::~portfolio_model() noexcept
     {
+        m_dispatcher.sink<update_portfolio_values>().disconnect<&portfolio_model::on_update_portfolio_values_event>(*this);
         spdlog::trace("{} l{} f[{}]", __FUNCTION__, __LINE__, fs::path(__FILE__).filename().string());
         spdlog::trace("portfolio model destroyed");
     }
@@ -57,6 +58,7 @@ namespace atomic_dex
     void
     atomic_dex::portfolio_model::initialize_portfolio(std::string ticker)
     {
+        spdlog::trace("portfolio init: {}", ticker);
         const auto& mm2_system = this->m_system_manager.get_system<mm2>();
         const auto& paprika    = this->m_system_manager.get_system<coinpaprika_provider>();
         auto        coin       = mm2_system.get_coin_info(ticker);
@@ -80,6 +82,7 @@ namespace atomic_dex
             data.main_currency_balance.toStdString());
         this->m_model_data.push_back(std::move(data));
         endInsertRows();
+        spdlog::trace("size of the portfolio {}", this->get_length());
         emit lengthChanged();
     }
 
@@ -272,6 +275,7 @@ namespace atomic_dex
     void
     portfolio_model::on_update_portfolio_values_event(const update_portfolio_values&) noexcept
     {
+        spdlog::trace("refreshing portfolio values");
         this->update_currency_values();
     }
 } // namespace atomic_dex

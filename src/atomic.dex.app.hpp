@@ -42,12 +42,16 @@
 #include "atomic.dex.qt.internet.checker.service.hpp"
 #include "atomic.dex.qt.orderbook.hpp"
 #include "atomic.dex.qt.orders.model.hpp"
-#include "atomic.dex.qt.portfolio.model.hpp"
+//#include "atomic.dex.qt.portfolio.model.hpp"
+#include "atomic.dex.qt.portfolio.page.hpp"
 #include "atomic.dex.qt.settings.page.hpp"
 #include "atomic.dex.qt.trading.page.hpp"
 #include "atomic.dex.qt.wallet.manager.hpp"
 
 namespace ag = antara::gaming;
+
+using portfolio_page_ptr = atomic_dex::portfolio_page*;
+Q_DECLARE_METATYPE(portfolio_page_ptr)
 
 namespace atomic_dex
 {
@@ -62,7 +66,7 @@ namespace atomic_dex
         Q_PROPERTY(addressbook_model* addressbook_mdl READ get_addressbook NOTIFY addressbookChanged)
         Q_PROPERTY(orders_model* orders_mdl READ get_orders NOTIFY ordersChanged)
         Q_PROPERTY(QVariant update_status READ get_update_status NOTIFY updateStatusChanged)
-        Q_PROPERTY(portfolio_model* portfolio_mdl READ get_portfolio NOTIFY portfolioChanged)
+        Q_PROPERTY(portfolio_page_ptr portfolio_pg READ get_portfolio_page NOTIFY portfolioPageChanged)
         Q_PROPERTY(notification_manager* notification_mgr READ get_notification_manager)
         Q_PROPERTY(internet_service_checker* internet_checker READ get_internet_checker NOTIFY internetCheckerChanged)
         Q_PROPERTY(trading_page* trading_pg READ get_trading_page NOTIFY tradingPageChanged)
@@ -138,7 +142,7 @@ namespace atomic_dex
         entt::dispatcher&          get_dispatcher() noexcept;
         QObject*                   get_current_coin_info() const noexcept;
         addressbook_model*         get_addressbook() const noexcept;
-        portfolio_model*           get_portfolio() const noexcept;
+        portfolio_page*            get_portfolio_page() const noexcept;
         orders_model*              get_orders() const noexcept;
         notification_manager*      get_notification_manager() const noexcept;
         trading_page*              get_trading_page() const noexcept;
@@ -225,7 +229,7 @@ namespace atomic_dex
         void onWalletDefaultNameChanged();
         void myOrdersUpdated();
         void addressbookChanged();
-        void portfolioChanged();
+        void portfolioPageChanged();
         void updateStatusChanged();
         void ordersChanged();
         void tradingPageChanged();

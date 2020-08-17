@@ -90,6 +90,7 @@ namespace atomic_dex
       private:
         //! From project
         ag::ecs::system_manager& m_system_manager;
+        entt::dispatcher&        m_dispatcher;
         atomic_dex::cfg*         m_config;
 
         //! Properties

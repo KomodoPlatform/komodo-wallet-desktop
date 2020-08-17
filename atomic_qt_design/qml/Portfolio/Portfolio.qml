@@ -125,7 +125,7 @@ ColumnLayout {
             selectByMouse: true
 
             onTextChanged: {
-                API.get().portfolio_mdl.portfolio_proxy_mdl.setFilterFixedString(text)
+                API.get().portfolio_pg.portfolio_mdl.portfolio_proxy_mdl.setFilterFixedString(text)
             }
 
             width: 120
