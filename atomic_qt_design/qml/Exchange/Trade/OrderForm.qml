@@ -88,19 +88,7 @@ FloatingBackground {
 
     function reset(is_base) {
         input_price.field.text = ''
-
-        if(is_sell_form) {
-            // is_base info comes from the ComboBox ticker change in OrderForm.
-            // At other places it's not given.
-            // We don't want to reset base balance at rel ticker change
-            // Therefore it will reset only if this info is set from ComboBox -> setPair
-            // Or if it's from somewhere else like page change, in that case is_base is undefined
-            if(is_base === undefined || is_base)
-                input_volume.field.text = General.formatDouble(getMaxTradableVolume(true))
-        }
-        else {
-            input_volume.field.text = ''
-        }
+        input_volume.field.text = ''
     }
 
     function capVolume() {

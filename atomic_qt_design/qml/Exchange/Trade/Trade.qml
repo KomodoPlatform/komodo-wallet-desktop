@@ -41,8 +41,8 @@ Item {
     function reset(reset_result=true, is_base) {
         if(reset_result) action_result = ""
         resetPreferredPrice()
-        form_base.reset(is_base)
-        form_rel.reset(is_base)
+        form_base.reset()
+        form_rel.reset()
         resetTradeInfo()
     }
 
