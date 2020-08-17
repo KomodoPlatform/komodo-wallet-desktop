@@ -214,8 +214,10 @@ namespace atomic_dex
         auto* market_selector_mdl = get_market_pairs_mdl();
         if (market_selector_mdl->get_left_selected_coin() == coin) {
             market_selector_mdl->set_left_selected_coin("BTC");
+            market_selector_mdl->set_right_selected_coin("KMD");
         }
         if (market_selector_mdl->get_right_selected_coin() == coin) {
+            market_selector_mdl->set_left_selected_coin("BTC");
             market_selector_mdl->set_right_selected_coin("KMD");
         }
         set_current_orderbook(market_selector_mdl->get_left_selected_coin(), market_selector_mdl->get_right_selected_coin());
