@@ -443,6 +443,8 @@ namespace atomic_dex
 
         if (get_mm2().get_enabled_coins().size() == get_mm2().get_active_coins().size())
         {
+            m_coin_info->set_ticker("KMD");
+            emit coinInfoChanged();
             this->set_status("complete");
         }
     }
