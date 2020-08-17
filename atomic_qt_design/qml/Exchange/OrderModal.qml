@@ -165,6 +165,7 @@ DefaultModal {
                 }
 
                 HorizontalLine {
+                    visible: swap_progress.visible
                     Layout.fillWidth: true
                     Layout.topMargin: 10
                     Layout.bottomMargin: Layout.topMargin
@@ -172,6 +173,7 @@ DefaultModal {
                 }
 
                 SwapProgress {
+                    id: swap_progress
                     visible: General.exists(details) && details.order_status !== "matching"
                     Layout.fillWidth: true
                     details: root.details
