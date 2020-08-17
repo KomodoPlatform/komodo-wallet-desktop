@@ -407,8 +407,6 @@ Item {
                     anchors.left: parent.left
                     anchors.right: parent.right
                     anchors.top: parent.top
-
-                    field.enabled: form_base.field.enabled
                 }
 
                 // Show errors
