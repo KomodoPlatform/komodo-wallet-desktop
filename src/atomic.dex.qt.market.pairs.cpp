@@ -25,11 +25,11 @@ namespace atomic_dex
         spdlog::trace("market pairs model created");
         m_left_selection_box->setSourceModel(portfolio_mdl);
         m_left_selection_box->setDynamicSortFilter(true);
-        m_left_selection_box->sort_by_currency_balance(false);
+        m_left_selection_box->sort_by_name(true);
 
         m_right_selection_box->setSourceModel(portfolio_mdl);
         m_right_selection_box->setDynamicSortFilter(true);
-        m_right_selection_box->sort_by_currency_balance(false);
+        m_right_selection_box->sort_by_name(true);
     }
 
     market_pairs::~market_pairs() noexcept

@@ -688,7 +688,7 @@
     </message>
     <message>
         <location filename="../../qml/Constants/General.qml" line="109"/>
-        <source>Instant</source>
+        <source>-</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -2003,43 +2003,43 @@
         <translation type="vanished">Impossible de placer l&apos;ordre.</translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/Trade.qml" line="278"/>
+        <location filename="../../qml/Exchange/Trade/Trade.qml" line="279"/>
         <source>Placed the order</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/Trade.qml" line="285"/>
+        <location filename="../../qml/Exchange/Trade/Trade.qml" line="286"/>
         <source>Failed to place the order</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/Trade.qml" line="424"/>
+        <location filename="../../qml/Exchange/Trade/Trade.qml" line="425"/>
         <source>Please fill the price field</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/Trade.qml" line="425"/>
+        <location filename="../../qml/Exchange/Trade/Trade.qml" line="426"/>
         <source>%1 balance is lower than minimum trade amount</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/Trade.qml" line="427"/>
+        <location filename="../../qml/Exchange/Trade/Trade.qml" line="428"/>
         <source>Not enough balance for the fees. Need at least %1 more</source>
         <comment>AMT TICKER</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/Trade.qml" line="428"/>
+        <location filename="../../qml/Exchange/Trade/Trade.qml" line="429"/>
         <source>Please fill the volume field</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/Trade.qml" line="429"/>
+        <location filename="../../qml/Exchange/Trade/Trade.qml" line="430"/>
         <source>Not enough ETH for the transaction fee</source>
         <translation>Pas assez d&apos;ETH pour les frais de transaction</translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/Trade.qml" line="430"/>
+        <location filename="../../qml/Exchange/Trade/Trade.qml" line="431"/>
         <source>Amount is lower than minimum trade amount</source>
         <translation type="unfinished"></translation>
     </message>
