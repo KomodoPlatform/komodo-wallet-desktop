@@ -57,7 +57,7 @@ namespace mm2::api
         j.at("numer").get_to(cfg.numer);
         t_rational rat(boost::multiprecision::cpp_int(cfg.numer), boost::multiprecision::cpp_int(cfg.denom));
         t_float_50 res = rat.convert_to<t_float_50>();
-        cfg.decimal = res.str(8);
+        cfg.decimal    = res.str(8);
     }
 
     void
@@ -1107,6 +1107,26 @@ namespace mm2::api
             }
         }
         return out;
+    }
+
+    nlohmann::json
+    rpc_batch_standalone(nlohmann::json batch_array)
+    {
+        auto resp = RestClient::post(g_endpoint, "application/json", batch_array.dump());
+
+        spdlog::info("{} resp code: {}", __FUNCTION__, resp.code);
+
+        nlohmann::json answer;
+        try
+        {
+            answer = nlohmann::json::parse(resp.body);
+        }
+        catch (const nlohmann::detail::parse_error& err)
+        {
+            spdlog::error("{}", err.what());
+            answer["error"] = resp.body;
+        }
+        return answer;
     }
 
     nlohmann::json
