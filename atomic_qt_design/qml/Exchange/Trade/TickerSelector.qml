@@ -38,22 +38,23 @@ RowLayout {
         valueRole: "ticker"
 
         property bool index_changed: false
-        onCurrentIndexChanged: {
-            // Save index change
-            index_changed = true
-        }
 
-        onCurrentTextChanged: {
-            // Set the original coin if it's not user input/backend, because index doesn't change, we know that it's the change of the list
-            if(!index_changed && currentText.indexOf(ticker) === -1)
-                currentIndex = indexOfValue(ticker)
+        onCurrentIndexChanged: combo.index_changed = true
 
-            displayText = currentText
+        onDisplayTextChanged: {
+            if(currentText.indexOf(ticker) === -1) {
+                const target_index = indexOfValue(ticker)
+                if(currentIndex !== target_index) {
+                    if(!combo.index_changed) {
+                        currentIndex = target_index
+                    }
+                    else combo.index_changed = false
+                }
+            }
         }
 
         onCurrentValueChanged: {
-            // Reset index change
-            index_changed = false
+            combo.index_changed = false
             setPair(left_side, currentValue)
         }
 
