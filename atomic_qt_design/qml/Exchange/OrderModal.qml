@@ -172,7 +172,7 @@ DefaultModal {
                 }
 
                 SwapProgress {
-                    visible: General.exists(details) && !details.is_maker
+                    visible: General.exists(details) && details.order_status !== "matching"
                     Layout.fillWidth: true
                     details: root.details
                 }
