@@ -91,6 +91,7 @@ namespace atomic_dex
         void connect_signals();
         void disconnect_signals();
         void clear_models();
+        void disable_coin(const QString& coin) noexcept;;
 
         //! Public QML API
         Q_INVOKABLE void    set_current_orderbook(const QString& base, const QString& rel);

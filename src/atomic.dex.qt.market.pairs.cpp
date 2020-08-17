@@ -66,8 +66,10 @@ namespace atomic_dex
             {
                 auto current_res_left =
                     m_left_selection_box->match(m_left_selection_box->index(0, 0), portfolio_model::PortfolioRoles::TickerRole, m_left_selected_coin);
-                assert(not current_res_left.empty());
-                m_left_selection_box->setData(current_res_left.at(0), portfolio_model::PortfolioRoles::Excluded, false);
+                if (not current_res_left.empty())
+                {
+                    m_left_selection_box->setData(current_res_left.at(0), portfolio_model::PortfolioRoles::Excluded, false);
+                }
             }
 
             //! Set new one to true
@@ -89,8 +91,10 @@ namespace atomic_dex
             {
                 auto current_res_right =
                     m_right_selection_box->match(m_right_selection_box->index(0, 0), portfolio_model::PortfolioRoles::TickerRole, m_right_selected_coin);
-                assert(not current_res_right.empty());
-                m_right_selection_box->setData(current_res_right.at(0), portfolio_model::PortfolioRoles::Excluded, false);
+                if (not current_res_right.empty())
+                {
+                    m_right_selection_box->setData(current_res_right.at(0), portfolio_model::PortfolioRoles::Excluded, false);
+                }
             }
 
             //! Set new one to true

@@ -209,6 +209,19 @@ namespace atomic_dex
 namespace atomic_dex
 {
     void
+    trading_page::disable_coin(const QString& coin) noexcept
+    {
+        auto* market_selector_mdl = get_market_pairs_mdl();
+        if (market_selector_mdl->get_left_selected_coin() == coin) {
+            market_selector_mdl->set_left_selected_coin("BTC");
+        }
+        if (market_selector_mdl->get_right_selected_coin() == coin) {
+            market_selector_mdl->set_right_selected_coin("KMD");
+        }
+        set_current_orderbook(market_selector_mdl->get_left_selected_coin(), market_selector_mdl->get_right_selected_coin());
+    }
+
+    void
     trading_page::clear_models()
     {
         get_market_pairs_mdl()->reset();
