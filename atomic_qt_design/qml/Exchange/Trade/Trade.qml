@@ -420,12 +420,26 @@ Item {
                     color: Style.colorRed
 
                     text_value: API.get().settings_pg.empty_string + (
-                                    General.isZero(getCurrentPrice()) ? (qsTr("Please fill the price field")) :
+                                    // Buy side needs the price
+                                    (!sell_mode && General.isZero(getCurrentPrice())) ? (qsTr("Please fill the price field")) :
+
+                                    // Balance check can be done without price too, prioritize that for sell
                                     notEnoughBalance() ? (qsTr("%1 balance is lower than minimum trade amount").arg(base_ticker) + " : " + General.getMinTradeAmount()) :
+
+                                    // Price field comes again
+                                    General.isZero(getCurrentPrice()) ? (qsTr("Please fill the price field")) :
+
+                                    // Fill the volume field
+                                    General.isZero(getCurrentForm().getVolume()) ? (qsTr("Please fill the volume field")) :
+
+                                    // Fields are filled, fee can be checked
                                     notEnoughBalanceForFees() ?
                                         (qsTr("Not enough balance for the fees. Need at least %1 more", "AMT TICKER").arg(General.formatCrypto("", parseFloat(curr_trade_info.amount_needed), base_ticker))) :
-                                    General.isZero(getCurrentForm().getVolume()) ? (qsTr("Please fill the volume field")) :
+
+                                    // Not enough ETH for fees
                                     (getCurrentForm().hasEthFees() && !getCurrentForm().hasEnoughEthForFees()) ? (qsTr("Not enough ETH for the transaction fee")) :
+
+                                    // Trade amount is lower than the minimum
                                     (getCurrentForm().fieldsAreFilled() && !getCurrentForm().higherThanMinTradeAmount()) ? ((qsTr("Amount is lower than minimum trade amount")) + " : " + General.getMinTradeAmount()) : ""
                               )
 
