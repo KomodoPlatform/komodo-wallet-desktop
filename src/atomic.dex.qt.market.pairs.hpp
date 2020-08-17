@@ -54,6 +54,7 @@ namespace atomic_dex
         [[nodiscard]] portfolio_proxy_model* get_right_selection_box() const noexcept;
         void                                 set_left_selected_coin(QString left_coin) noexcept;
         void                                 set_right_selected_coin(QString right_coin) noexcept;
+        void                                 reset();
 
       signals:
         void leftSelectedCoinChanged();

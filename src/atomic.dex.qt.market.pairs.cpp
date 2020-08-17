@@ -114,6 +114,13 @@ namespace atomic_dex
     {
         return m_right_selection_box;
     }
+
+    void
+    market_pairs::reset()
+    {
+        //m_left_selection_box->reset();
+        //m_right_selection_box->reset();
+    }
 } // namespace atomic_dex
 
 //! public API

@@ -195,9 +195,9 @@ namespace atomic_dex
 
             system_manager_.create_system<coinpaprika_provider>(mm2_s, system_manager_.get_system<settings_page>().get_cfg());
             system_manager_.create_system<cex_prices_provider>(mm2_s);
-            auto& portfolio_system = system_manager_.create_system<portfolio_page>(system_manager_, dispatcher_, this);
-            portfolio_system.get_portfolio()->set_cfg(system_manager_.get_system<settings_page>().get_cfg());
-            system_manager_.create_system<trading_page>(system_manager_, m_event_actions.at(events_action::about_to_exit_app), portfolio_system.get_portfolio(), this);
+            //auto& portfolio_system = system_manager_.create_system<portfolio_page>(system_manager_, dispatcher_, this);
+            //portfolio_system.get_portfolio()->set_cfg(system_manager_.get_system<settings_page>().get_cfg());
+            //system_manager_.create_system<trading_page>(system_manager_, m_event_actions.at(events_action::about_to_exit_app), system_manager_.get_system<portfolio_page>().get_portfolio(), this);
 
 
             connect_signals();
@@ -678,12 +678,15 @@ namespace atomic_dex
         }
         orders->clear_registry();
 
+        system_manager_.get_system<portfolio_page>().get_portfolio()->reset();
+        system_manager_.get_system<trading_page>().clear_models();
+
         //! Mark systems
         system_manager_.mark_system<mm2>();
-        system_manager_.mark_system<portfolio_page>();
+        //system_manager_.mark_system<portfolio_page>();
         system_manager_.mark_system<coinpaprika_provider>();
         system_manager_.mark_system<cex_prices_provider>();
-        system_manager_.mark_system<trading_page>();
+        //system_manager_.mark_system<trading_page>();
 
         //! Disconnect signals
         system_manager_.get_system<trading_page>().disconnect_signals();

@@ -22,7 +22,7 @@
 namespace atomic_dex
 {
     portfolio_page::portfolio_page(entt::registry& registry, ag::ecs::system_manager& system_manager, entt::dispatcher& dispatcher, QObject* parent) :
-        QObject(parent), system(registry), m_system_manager(system_manager), m_portfolio_mdl(new portfolio_model(system_manager, dispatcher, nullptr))
+        QObject(parent), system(registry), m_system_manager(system_manager), m_portfolio_mdl(new portfolio_model(system_manager, dispatcher, this))
     {
         emit portfolioChanged();
     }
@@ -38,5 +38,5 @@ namespace atomic_dex
     {
     }
 
-    portfolio_page::~portfolio_page() noexcept { delete m_portfolio_mdl; }
+    portfolio_page::~portfolio_page() noexcept { /*delete m_portfolio_mdl;*/ }
 } // namespace atomic_dex

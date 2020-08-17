@@ -209,6 +209,12 @@ namespace atomic_dex
 namespace atomic_dex
 {
     void
+    trading_page::clear_models()
+    {
+        get_market_pairs_mdl()->reset();
+    }
+
+    void
     trading_page::update() noexcept
     {
     }
