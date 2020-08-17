@@ -12,7 +12,6 @@ FloatingBackground {
     property alias field: input_volume.field
     property alias price_field: input_price.field
     property bool is_sell_form: false
-    property bool enabled: true
     property alias column_layout: form_layout
     property string total_amount: "0"
 
@@ -248,7 +247,7 @@ FloatingBackground {
                 AmountFieldWithInfo {
                     id: input_volume
                     width: parent.width
-                    field.enabled: root.enabled && !shouldBlockInput()
+                    field.enabled: !shouldBlockInput()
 
                     field.left_text: API.get().settings_pg.empty_string + (qsTr("Volume"))
                     field.right_text: left_ticker
