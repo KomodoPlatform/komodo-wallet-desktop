@@ -106,7 +106,7 @@ QtObject {
         if(r.minutes > 0) text += qsTr("%nm", "minutes", r.minutes) + "  "
         if(r.seconds > 0) text += qsTr("%ns", "seconds", r.seconds) + "  "
         if(text === "" && r.milliseconds > 0) text += qsTr("%nms", "milliseconds", r.milliseconds) + "  "
-        if(text === "") text += qsTr("Instant")
+        if(text === "") text += qsTr("-")
 
         return text
     }
