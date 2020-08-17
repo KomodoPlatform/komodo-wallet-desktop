@@ -33,6 +33,7 @@ Item {
     }
 
     function fullReset() {
+        initialized_orderbook_pair = false
         reset(true)
         sell_mode = true
     }
