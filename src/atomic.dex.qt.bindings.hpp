@@ -53,7 +53,8 @@ namespace atomic_dex
         Q_PROPERTY(QString fees READ get_fees CONSTANT MEMBER m_fees)
         Q_PROPERTY(QString explorer_url READ get_explorer_url CONSTANT MEMBER m_explorer_url)
 
-        [[nodiscard]] QString get_total_amount() const noexcept
+        [[nodiscard]] QString
+        get_total_amount() const noexcept
         {
             return m_total_amount;
         }
@@ -149,7 +150,9 @@ namespace atomic_dex
             {"ticker", coin.ticker},
             {"name", coin.name},
             {"type", coin.type},
-            {"explorer_url", coin.explorer_url}};
+            {"explorer_url", coin.explorer_url},
+            {"tx_uri", coin.tx_uri},
+            {"address_uri", coin.address_url}};
         return j;
     }
 
