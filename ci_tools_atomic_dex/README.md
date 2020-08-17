@@ -71,7 +71,7 @@ make install
 Installling libbitcoin:
 
 ```
-git clone --depth 1 --branch version5 --single-branch "https://github.com/libbitcoin/secp256k1"
+git clone --depth 1 --branch version5 --single-branch "https://github.com/KomodoPlatform/secp256k1"
 cd secp256k1
 ./autogen.sh
 ./configure --disable-shared --disable-tests --enable-module-recovery
