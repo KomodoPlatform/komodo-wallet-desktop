@@ -90,6 +90,7 @@ namespace atomic_dex
         void process_action();
         void connect_signals();
         void disconnect_signals();
+        void clear_models();
 
         //! Public QML API
         Q_INVOKABLE void    set_current_orderbook(const QString& base, const QString& rel);

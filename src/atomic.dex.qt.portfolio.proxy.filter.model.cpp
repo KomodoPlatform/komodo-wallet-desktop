@@ -110,4 +110,11 @@ namespace atomic_dex
         }
         return QSortFilterProxyModel::filterAcceptsRow(source_row, source_parent);
     }
+
+    void
+    portfolio_proxy_model::reset()
+    {
+        this->beginResetModel();
+        this->endResetModel();
+    }
 } // namespace atomic_dex

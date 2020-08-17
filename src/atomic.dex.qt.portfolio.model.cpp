@@ -15,6 +15,7 @@
  ******************************************************************************/
 
 //! Project Headers
+#include <QQmlEngine>
 #include "atomic.dex.qt.portfolio.model.hpp"
 #include "atomic.dex.qt.utilities.hpp"
 #include "atomic.threadpool.hpp"
@@ -35,7 +36,7 @@ namespace
 namespace atomic_dex
 {
     portfolio_model::portfolio_model(ag::ecs::system_manager& system_manager, entt::dispatcher& dispatcher, QObject* parent) noexcept :
-        QAbstractListModel(parent), m_system_manager(system_manager), m_dispatcher(dispatcher), m_model_proxy(new portfolio_proxy_model(this))
+        QAbstractListModel(parent), m_system_manager(system_manager), m_dispatcher(dispatcher), m_model_proxy(new portfolio_proxy_model(parent))
     {
         spdlog::trace("{} l{} f[{}]", __FUNCTION__, __LINE__, fs::path(__FILE__).filename().string());
         spdlog::trace("portfolio model created");
@@ -46,6 +47,9 @@ namespace atomic_dex
         this->m_model_proxy->sort_by_currency_balance(false);
         this->m_model_proxy->setFilterRole(NameRole);
         this->m_model_proxy->setFilterCaseSensitivity(Qt::CaseInsensitive);
+
+        //QQmlEngine::setObjectOwnership(m_model_proxy, QQmlEngine::JavaScriptOwnership);
+        //emit portfolioProxyChanged();
     }
 
     portfolio_model::~portfolio_model() noexcept
@@ -53,6 +57,7 @@ namespace atomic_dex
         m_dispatcher.sink<update_portfolio_values>().disconnect<&portfolio_model::on_update_portfolio_values_event>(*this);
         spdlog::trace("{} l{} f[{}]", __FUNCTION__, __LINE__, fs::path(__FILE__).filename().string());
         spdlog::trace("portfolio model destroyed");
+        //delete m_model_proxy;
     }
 
     void
@@ -277,5 +282,12 @@ namespace atomic_dex
     {
         spdlog::trace("refreshing portfolio values");
         this->update_currency_values();
+    }
+    void
+    portfolio_model::reset()
+    {
+        this->beginResetModel();
+        this->m_model_data.clear();
+        this->endResetModel();
     }
 } // namespace atomic_dex

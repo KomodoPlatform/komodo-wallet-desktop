@@ -83,6 +83,8 @@ namespace atomic_dex
         [[nodiscard]] portfolio_proxy_model* get_portfolio_proxy_mdl() const noexcept;
         [[nodiscard]] int                    get_length() const noexcept;
 
+        void reset();
+
       signals:
         void portfolioProxyChanged();
         void lengthChanged();
