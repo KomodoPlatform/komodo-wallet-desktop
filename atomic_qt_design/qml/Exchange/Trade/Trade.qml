@@ -11,7 +11,7 @@ Item {
 
     property string action_result
 
-    readonly property bool block_everything: chart.is_fetching && !swap_cooldown.running
+    readonly property bool block_everything: chart.is_fetching || swap_cooldown.running
 
     property bool sell_mode: true
     property string left_ticker: selector_left.ticker
