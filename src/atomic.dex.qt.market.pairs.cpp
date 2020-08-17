@@ -118,8 +118,10 @@ namespace atomic_dex
     void
     market_pairs::reset()
     {
-        //m_left_selection_box->reset();
-        //m_right_selection_box->reset();
+        this->m_left_selected_coin  = "";
+        this->m_right_selected_coin = "";
+        emit rightSelectedCoinChanged();
+        emit leftSelectedCoinChanged();
     }
 } // namespace atomic_dex
 

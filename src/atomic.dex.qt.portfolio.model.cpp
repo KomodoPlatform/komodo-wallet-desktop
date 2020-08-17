@@ -283,6 +283,7 @@ namespace atomic_dex
         spdlog::trace("refreshing portfolio values");
         this->update_currency_values();
     }
+
     void
     portfolio_model::reset()
     {
