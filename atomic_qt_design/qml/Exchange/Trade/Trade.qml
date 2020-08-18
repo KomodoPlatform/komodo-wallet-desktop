@@ -443,15 +443,15 @@ Item {
                                     // Fill the volume field
                                     General.isZero(getCurrentForm().getVolume()) ? (qsTr("Please fill the volume field")) :
 
+                                   // Trade amount is lower than the minimum
+                                   (getCurrentForm().fieldsAreFilled() && !getCurrentForm().higherThanMinTradeAmount()) ? ((qsTr("Volume is lower than minimum trade amount")) + " : " + General.getMinTradeAmount()) :
+
                                     // Fields are filled, fee can be checked
                                     notEnoughBalanceForFees() ?
                                         (qsTr("Not enough balance for the fees. Need at least %1 more", "AMT TICKER").arg(General.formatCrypto("", curr_trade_info.amount_needed, base_ticker))) :
 
                                     // Not enough ETH for fees
-                                    (getCurrentForm().hasEthFees() && !getCurrentForm().hasEnoughEthForFees()) ? (qsTr("Not enough ETH for the transaction fee")) :
-
-                                    // Trade amount is lower than the minimum
-                                    (getCurrentForm().fieldsAreFilled() && !getCurrentForm().higherThanMinTradeAmount()) ? ((qsTr("Amount is lower than minimum trade amount")) + " : " + General.getMinTradeAmount()) : ""
+                                    (getCurrentForm().hasEthFees() && !getCurrentForm().hasEnoughEthForFees()) ? (qsTr("Not enough ETH for the transaction fee")) : ""
                               )
 
                     visible: text_value !== ""
