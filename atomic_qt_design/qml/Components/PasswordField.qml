@@ -11,6 +11,10 @@ ColumnLayout {
     property bool new_password: true
     property string match_password
 
+    function reset() {
+        pw.reset()
+    }
+
     function isValid() {
         return pw.field.acceptableInput && RegExp(General.reg_pass_valid).test(pw.field.text)
     }
