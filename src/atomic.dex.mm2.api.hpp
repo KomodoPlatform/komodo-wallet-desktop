@@ -26,6 +26,8 @@ namespace mm2::api
 {
     inline constexpr const char* g_endpoint = "http://127.0.0.1:7783";
 
+    nlohmann::json rpc_batch_standalone(nlohmann::json batch_array);
+
     std::string rpc_version();
 
     //! max taker vol
@@ -706,6 +708,28 @@ namespace mm2::api
 
     template <typename RpcReturnType>
     static RpcReturnType rpc_process_answer(const RestClient::Response& resp, const std::string& rpc_command) noexcept;
+
+    template <typename RpcReturnType>
+    RpcReturnType
+    static inline rpc_process_answer_batch(nlohmann::json& json_answer, const std::string& rpc_command) noexcept
+    {
+        RpcReturnType answer;
+
+        try
+        {
+            from_json(json_answer, answer);
+            answer.rpc_result_code = 200;
+        }
+        catch (const std::exception& error)
+        {
+            spdlog::error(
+                "{} l{} f[{}], exception caught {} for rpc {}", __FUNCTION__, __LINE__, fs::path(__FILE__).filename().string(), error.what(), rpc_command);
+            answer.rpc_result_code = -1;
+            answer.raw_result      = error.what();
+        }
+
+        return answer;
+    }
 
     nlohmann::json template_request(std::string method_name) noexcept;
 

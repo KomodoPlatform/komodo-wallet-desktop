@@ -129,10 +129,13 @@ namespace atomic_dex
         void process_tx(const std::string& ticker);
 
         //! Refresh the fees registry (internal)
-        void process_fees();
+        //void process_fees();
 
         //! Refresh the orderbook registry (internal)
         void process_orderbook(bool is_a_reset = false);
+
+        //! Batch process fees and fetch current_orderbook thread
+        void batch_process_fees_and_fetch_current_orderbook_thread(bool is_a_reset);
 
       public:
         //! Constructor

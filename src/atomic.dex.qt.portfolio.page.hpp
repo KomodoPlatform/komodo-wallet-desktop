@@ -16,32 +16,43 @@
 
 #pragma once
 
-#include <QSortFilterProxyModel>
+//! QT
+#include <QObject>
+
+//! PCH
+#include "atomic.dex.pch.hpp"
+
+//! Project headers
+#include "atomic.dex.qt.portfolio.model.hpp"
+
 
 namespace atomic_dex
 {
-    class portfolio_proxy_model final : public QSortFilterProxyModel
+    class portfolio_page final : public QObject, public ag::ecs::pre_update_system<portfolio_page>
     {
+        //! Q_Object definition
         Q_OBJECT
+
+        //! Properties
+        Q_PROPERTY(portfolio_model* portfolio_mdl READ get_portfolio NOTIFY portfolioChanged)
+
+        //! Private members fields
+        ag::ecs::system_manager& m_system_manager;
+        portfolio_model*         m_portfolio_mdl;
+
       public:
         //! Constructor
-        portfolio_proxy_model(QObject* parent);
+        explicit portfolio_page(entt::registry& registry, ag::ecs::system_manager& system_manager, entt::dispatcher& dispatcher, QObject* parent = nullptr);
+        ~portfolio_page() noexcept final;
 
-        //! Destructor
-        ~portfolio_proxy_model() final;
+        //! Public override
+        void update() noexcept final;
 
-      public:
-        //! API
-        Q_INVOKABLE void sort_by_name(bool is_ascending);
-        Q_INVOKABLE void sort_by_currency_balance(bool is_ascending);
-        Q_INVOKABLE void sort_by_change_last24h(bool is_ascending);
-        Q_INVOKABLE void sort_by_currency_unit(bool is_ascending);
+        [[nodiscard]] portfolio_model* get_portfolio() const noexcept;
 
-        void reset();
-
-      protected:
-        //! Override member functions
-        [[nodiscard]] bool lessThan(const QModelIndex& source_left, const QModelIndex& source_right) const final;
-        bool               filterAcceptsRow(int source_row, const QModelIndex& source_parent) const override;
+      signals:
+        void portfolioChanged();
     };
 } // namespace atomic_dex
+
+REFL_AUTO(type(atomic_dex::portfolio_page))

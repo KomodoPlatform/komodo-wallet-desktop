@@ -131,6 +131,15 @@ export QT_INSTALL_CMAKE_PATH=~/Qt/5.15.0/gcc/lib/cmake
 export QT_ROOT=~/Qt/5.15.0
 ```
 
+## Set Nim official packages list to our fork packages list
+
+```
+nimble refresh https://raw.githubusercontent.com/KomodoPlatform/nim_kmd_package_list/master/packages.json
+cd ~/.nimble
+mv packages_commandline.json packages_official.json
+cd -
+```
+
 ## Build AtomicDEX Pro 
 
 Please clone with submodules initialization : `git clone --recurse-submodules --remote-submodules https://github.com/KomodoPlatform/atomicDEX-Pro.git`

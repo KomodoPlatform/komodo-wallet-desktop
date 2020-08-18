@@ -11,11 +11,19 @@ Item {
 
     property string action_result
 
+    readonly property bool block_everything: chart.is_fetching || swap_cooldown.running
+
     property bool sell_mode: true
     property string left_ticker: selector_left.ticker
     property string right_ticker: selector_right.ticker
     property string base_ticker: sell_mode ? left_ticker : right_ticker
     property string rel_ticker: sell_mode ? right_ticker : left_ticker
+
+    Timer {
+        id: swap_cooldown
+        repeat: false
+        interval: 1000
+    }
 
     // Override
     property var onOrderSuccess: () => {}
@@ -33,6 +41,7 @@ Item {
     }
 
     function fullReset() {
+        initialized_orderbook_pair = false
         reset(true)
         sell_mode = true
     }
@@ -40,8 +49,8 @@ Item {
     function reset(reset_result=true, is_base) {
         if(reset_result) action_result = ""
         resetPreferredPrice()
-        form_base.reset(is_base)
-        form_rel.reset(is_base)
+        form_base.reset()
+        form_rel.reset()
         resetTradeInfo()
     }
 
@@ -186,6 +195,8 @@ Item {
     }
 
     function setPair(is_left_side, changed_ticker) {
+        swap_cooldown.restart()
+
         let base = left_ticker
         let rel = right_ticker
 
@@ -316,6 +327,7 @@ Item {
                     anchors.bottomMargin: layout_margin * 2
 
                     CandleStickChart {
+                        id: chart
                         anchors.fill: parent
                     }
                 }
@@ -347,7 +359,10 @@ Item {
 
                         MouseArea {
                             anchors.fill: parent
-                            onClicked: setPair(true, right_ticker)
+                            onClicked: {
+                                if(!block_everything)
+                                    setPair(true, right_ticker)
+                            }
                         }
                     }
 
@@ -406,8 +421,6 @@ Item {
                     anchors.left: parent.left
                     anchors.right: parent.right
                     anchors.top: parent.top
-
-                    field.enabled: form_base.field.enabled
                 }
 
                 // Show errors
@@ -421,13 +434,24 @@ Item {
                     color: Style.colorRed
 
                     text_value: API.get().settings_pg.empty_string + (
+                                    // Balance check can be done without price too, prioritize that for sell
+                                    notEnoughBalance() ? (qsTr("Tradable (after fees) %1 balance is lower than minimum trade amount").arg(base_ticker) + " : " + General.getMinTradeAmount()) :
+
+                                    // Fill the price field
                                     General.isZero(getCurrentPrice()) ? (qsTr("Please fill the price field")) :
-                                    notEnoughBalance() ? (qsTr("%1 balance is lower than minimum trade amount").arg(base_ticker) + " : " + General.getMinTradeAmount()) :
-                                    notEnoughBalanceForFees() ?
-                                        (qsTr("Not enough balance for the fees. Need at least %1 more", "AMT TICKER").arg(General.formatCrypto("", parseFloat(curr_trade_info.amount_needed), base_ticker))) :
+
+                                    // Fill the volume field
                                     General.isZero(getCurrentForm().getVolume()) ? (qsTr("Please fill the volume field")) :
-                                    (getCurrentForm().hasEthFees() && !getCurrentForm().hasEnoughEthForFees()) ? (qsTr("Not enough ETH for the transaction fee")) :
-                                    (getCurrentForm().fieldsAreFilled() && !getCurrentForm().higherThanMinTradeAmount()) ? ((qsTr("Amount is lower than minimum trade amount")) + " : " + General.getMinTradeAmount()) : ""
+
+                                   // Trade amount is lower than the minimum
+                                   (getCurrentForm().fieldsAreFilled() && !getCurrentForm().higherThanMinTradeAmount()) ? ((qsTr("Volume is lower than minimum trade amount")) + " : " + General.getMinTradeAmount()) :
+
+                                    // Fields are filled, fee can be checked
+                                    notEnoughBalanceForFees() ?
+                                        (qsTr("Not enough balance for the fees. Need at least %1 more", "AMT TICKER").arg(General.formatCrypto("", curr_trade_info.amount_needed, base_ticker))) :
+
+                                    // Not enough ETH for fees
+                                    (getCurrentForm().hasEthFees() && !getCurrentForm().hasEnoughEthForFees()) ? (qsTr("Not enough ETH for the transaction fee")) : ""
                               )
 
                     visible: text_value !== ""

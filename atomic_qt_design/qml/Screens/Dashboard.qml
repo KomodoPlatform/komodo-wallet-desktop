@@ -46,7 +46,7 @@ Item {
         return app.current_page === idx_dashboard
     }
 
-    property var portfolio_coins: API.get().portfolio_mdl.portfolio_proxy_mdl
+    property var portfolio_coins: API.get().portfolio_pg.portfolio_mdl.portfolio_proxy_mdl
 
     onCurrent_pageChanged: {
         if(prev_page !== current_page) {

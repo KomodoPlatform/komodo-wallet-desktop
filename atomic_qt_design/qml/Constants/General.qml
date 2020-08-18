@@ -106,7 +106,7 @@ QtObject {
         if(r.minutes > 0) text += qsTr("%nm", "minutes", r.minutes) + "  "
         if(r.seconds > 0) text += qsTr("%ns", "seconds", r.seconds) + "  "
         if(text === "" && r.milliseconds > 0) text += qsTr("%nms", "milliseconds", r.milliseconds) + "  "
-        if(text === "") text += qsTr("Instant")
+        if(text === "") text += qsTr("-")
 
         return text
     }
@@ -123,14 +123,14 @@ QtObject {
         if(id !== '') {
             const coin_info = API.get().get_coin_info(ticker)
             const id_prefix = add_0x && coin_info.type === 'ERC-20' ? '0x' : ''
-            Qt.openUrlExternally(coin_info.explorer_url + 'tx/' + id_prefix + id)
+            Qt.openUrlExternally(coin_info.explorer_url + coin_info.tx_uri + id_prefix + id)
         }
     }
 
     function viewAddressAtExplorer(ticker, address) {
         if(address !== '') {
             const coin_info = API.get().get_coin_info(ticker)
-            Qt.openUrlExternally(coin_info.explorer_url + 'address/' + address)
+            Qt.openUrlExternally(coin_info.explorer_url + coin_info.address_uri + address)
         }
     }
 

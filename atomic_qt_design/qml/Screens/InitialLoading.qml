@@ -12,11 +12,14 @@ SetupPage {
     // Override
     property var onLoaded: () => {}
 
+    readonly property string current_status: API.get().initial_loading_status
+    readonly property bool loaded_all_coins: API.get().portfolio_pg.portfolio_mdl.length >= API.get().enabled_coins.length
+
     property Timer check_loading_complete: Timer {
         interval: 64
         repeat: true
         onTriggered: {
-            if(API.get().initial_loading_status === "complete" && API.get().portfolio_mdl.length >= 2) {
+            if(current_status === "complete" && loaded_all_coins) {
                 running = false
                 onLoaded()
             }
@@ -41,9 +44,9 @@ SetupPage {
             }
 
             DefaultText {
-                text_value: API.get().settings_pg.empty_string + ((API.get().initial_loading_status === "initializing_mm2" ? qsTr("Initializing MM2") :
-                       API.get().initial_loading_status === "enabling_coins" ? qsTr("Enabling coins") :
-                       API.get().initial_loading_status === "complete" && API.get().portfolio_mdl.length >= 2 ? qsTr("Complete") : qsTr("Getting ready")) + "...")
+                text_value: API.get().settings_pg.empty_string + ((current_status === "initializing_mm2" ? qsTr("Initializing MM2") :
+                       current_status === "enabling_coins" ? qsTr("Enabling coins") :
+                       current_status === "complete" && loaded_all_coins ? qsTr("Complete") : qsTr("Getting ready")) + "...")
             }
         }
     }

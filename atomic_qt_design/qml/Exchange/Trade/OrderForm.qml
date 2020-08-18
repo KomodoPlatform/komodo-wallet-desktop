@@ -12,7 +12,6 @@ FloatingBackground {
     property alias field: input_volume.field
     property alias price_field: input_price.field
     property bool is_sell_form: false
-    property bool enabled: true
     property alias column_layout: form_layout
     property string total_amount: "0"
 
@@ -25,7 +24,7 @@ FloatingBackground {
     }
 
     function fieldsAreFilled() {
-        return input_volume.field.text !== ''
+        return input_volume.field.text !== '' && input_price.field.text !== ''
     }
 
     function hasEthFees() {
@@ -36,9 +35,9 @@ FloatingBackground {
         return General.isEthEnabled() && API.get().do_i_have_enough_funds("ETH", curr_trade_info.erc_fees)
     }
 
-    function higherThanMinTradeAmount(is_base) {
+    function higherThanMinTradeAmount() {
         if(input_volume.field.text === '') return false
-        return parseFloat(is_base ? input_volume.field.text : total_amount) >= General.getMinTradeAmount()
+        return parseFloat(is_sell_form ? input_volume.field.text : total_amount) >= General.getMinTradeAmount()
     }
 
     function isValid() {
@@ -89,19 +88,7 @@ FloatingBackground {
 
     function reset(is_base) {
         input_price.field.text = ''
-
-        if(is_sell_form) {
-            // is_base info comes from the ComboBox ticker change in OrderForm.
-            // At other places it's not given.
-            // We don't want to reset base balance at rel ticker change
-            // Therefore it will reset only if this info is set from ComboBox -> setPair
-            // Or if it's from somewhere else like page change, in that case is_base is undefined
-            if(is_base === undefined || is_base)
-                input_volume.field.text = General.formatDouble(getMaxTradableVolume(true))
-        }
-        else {
-            input_volume.field.text = ''
-        }
+        input_volume.field.text = ''
     }
 
     function capVolume() {
@@ -149,10 +136,6 @@ FloatingBackground {
 
         // If it's buy, and price exists then multiply and check
         return getNeededAmountToSpend(getMaxVolume()) < General.getMinTradeAmount()
-    }
-
-    function shouldBlockInput() {
-        return notEnoughBalance() || notEnoughBalanceForFees()
     }
 
     function onInputChanged() {
@@ -248,7 +231,6 @@ FloatingBackground {
                 AmountFieldWithInfo {
                     id: input_volume
                     width: parent.width
-                    field.enabled: root.enabled && !shouldBlockInput()
 
                     field.left_text: API.get().settings_pg.empty_string + (qsTr("Volume"))
                     field.right_text: left_ticker

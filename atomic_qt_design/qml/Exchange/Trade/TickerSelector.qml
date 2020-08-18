@@ -31,11 +31,32 @@ RowLayout {
     DefaultComboBox {
         id: combo
 
+        enabled: !block_everything
+
         model: ticker_list
         textRole: "display"
         valueRole: "ticker"
 
-        onCurrentValueChanged: setPair(left_side, currentValue)
+        property bool index_changed: false
+
+        onCurrentIndexChanged: combo.index_changed = true
+
+        onDisplayTextChanged: {
+            if(currentText.indexOf(ticker) === -1) {
+                const target_index = indexOfValue(ticker)
+                if(currentIndex !== target_index) {
+                    if(!combo.index_changed) {
+                        currentIndex = target_index
+                    }
+                    else combo.index_changed = false
+                }
+            }
+        }
+
+        onCurrentValueChanged: {
+            combo.index_changed = false
+            setPair(left_side, currentValue)
+        }
 
         Layout.fillWidth: true
     }

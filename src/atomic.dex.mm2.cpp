@@ -512,35 +512,118 @@ namespace atomic_dex
     }
 
     void
+    mm2::batch_process_fees_and_fetch_current_orderbook_thread(bool is_a_reset)
+    {
+        spdlog::info("batch orderbook/fees");
+        if (not m_orderbook_thread_active)
+        {
+            spdlog::warn("Nothing todo, sleeping");
+            return;
+        }
+
+        //! Prepare fees
+        auto&& [orderbook_ticker_base, orderbook_ticker_rel] = m_synchronized_ticker_pair.get();
+        if (orderbook_ticker_rel.empty()) return;
+        nlohmann::json          batch                        = nlohmann::json::array();
+        t_get_trade_fee_request req_base{.coin = orderbook_ticker_base};
+        nlohmann::json          current_request = ::mm2::api::template_request("get_trade_fee");
+        ::mm2::api::to_json(current_request, req_base);
+        batch.push_back(current_request);
+        current_request = ::mm2::api::template_request("get_trade_fee");;
+        t_get_trade_fee_request req_rel{.coin = orderbook_ticker_rel};
+        ::mm2::api::to_json(current_request, req_rel);
+        batch.push_back(current_request);
+        current_request = ::mm2::api::template_request("orderbook");
+        t_orderbook_request req_orderbook{.base = orderbook_ticker_base, .rel = orderbook_ticker_rel};
+        ::mm2::api::to_json(current_request, req_orderbook);
+        batch.push_back(current_request);
+        current_request = ::mm2::api::template_request("max_taker_vol");
+        ::mm2::api::max_taker_vol_request req_base_max_taker_vol{.coin = orderbook_ticker_base};
+        ::mm2::api::to_json(current_request, req_base_max_taker_vol);
+        batch.push_back(current_request);
+        current_request = ::mm2::api::template_request("max_taker_vol");
+        ::mm2::api::max_taker_vol_request req_rel_max_taker_vol{.coin = orderbook_ticker_rel};
+        ::mm2::api::to_json(current_request, req_rel_max_taker_vol);
+        batch.push_back(current_request);
+        auto answer = ::mm2::api::rpc_batch_standalone(batch);
+
+        if (answer.is_array())
+        {
+            auto trade_fee_base_answer = ::mm2::api::rpc_process_answer_batch<t_get_trade_fee_answer>(answer[0], "get_trade_fee");
+            if (trade_fee_base_answer.rpc_result_code == 200)
+            {
+                this->m_trade_fees_registry.insert_or_assign(orderbook_ticker_base, trade_fee_base_answer);
+            }
+
+            auto trade_fee_rel_answer = ::mm2::api::rpc_process_answer_batch<t_get_trade_fee_answer>(answer[1], "get_trade_fee");
+            if (trade_fee_rel_answer.rpc_result_code == 200)
+            {
+                this->m_trade_fees_registry.insert_or_assign(orderbook_ticker_rel, trade_fee_rel_answer);
+            }
+
+            auto orderbook_answer = ::mm2::api::rpc_process_answer_batch<t_orderbook_answer>(answer[2], "orderbook");
+
+            if (orderbook_answer.rpc_result_code == 200)
+            {
+                m_current_orderbook.insert_or_assign(orderbook_ticker_base + "/" + orderbook_ticker_rel, orderbook_answer);
+                this->dispatcher_.trigger<process_orderbook_finished>(is_a_reset);
+            }
+
+            auto base_max_taker_vol_answer = ::mm2::api::rpc_process_answer_batch<::mm2::api::max_taker_vol_answer>(answer[3], "max_taker_vol");
+            if (base_max_taker_vol_answer.rpc_result_code == 200)
+            {
+                this->m_synchronized_max_taker_vol->first = base_max_taker_vol_answer.result.value();
+            }
+
+            auto rel_max_taker_vol_answer = ::mm2::api::rpc_process_answer_batch<::mm2::api::max_taker_vol_answer>(answer[4], "max_taker_vol");
+            if (rel_max_taker_vol_answer.rpc_result_code == 200)
+            {
+                this->m_synchronized_max_taker_vol->second = rel_max_taker_vol_answer.result.value();
+            }
+        }
+    }
+
+    void
     mm2::process_orderbook(bool is_a_reset)
     {
         auto&& [base, rel] = m_synchronized_ticker_pair.get();
-        t_orderbook_request               request{.base = base, .rel = rel};
-        ::mm2::api::max_taker_vol_request req_base{.coin = base};
-        ::mm2::api::max_taker_vol_request req_rel{.coin = rel};
-        std::array<std::future<void>, 2>  futures;
+        if (rel.empty()) return;
+        nlohmann::json          batch                        = nlohmann::json::array();
 
-        futures[0]  = spawn([&req_base, this]() {
-            auto answer = ::mm2::api::rpc_max_taker_vol(std::move(req_base));
-            if (answer.rpc_result_code not_eq -1)
-            {
-                this->m_synchronized_max_taker_vol->first = answer.result.value();
-            }
-        });
-
-        futures[1]  = spawn([&req_rel, this]() {
-            auto answer = ::mm2::api::rpc_max_taker_vol(std::move(req_rel));
-            if (answer.rpc_result_code not_eq -1)
-            {
-                this->m_synchronized_max_taker_vol->second = answer.result.value();
-            }
-        });
-        auto answer = rpc_orderbook(std::move(request));
-        if (answer.rpc_result_code not_eq -1)
+        nlohmann::json current_request = ::mm2::api::template_request("orderbook");
+        t_orderbook_request req_orderbook{.base = base, .rel = rel};
+        ::mm2::api::to_json(current_request, req_orderbook);
+        batch.push_back(current_request);
+        current_request = ::mm2::api::template_request("max_taker_vol");
+        ::mm2::api::max_taker_vol_request req_base_max_taker_vol{.coin = base};
+        ::mm2::api::to_json(current_request, req_base_max_taker_vol);
+        batch.push_back(current_request);
+        current_request = ::mm2::api::template_request("max_taker_vol");
+        ::mm2::api::max_taker_vol_request req_rel_max_taker_vol{.coin = rel};
+        ::mm2::api::to_json(current_request, req_rel_max_taker_vol);
+        batch.push_back(current_request);
+        auto answer = ::mm2::api::rpc_batch_standalone(batch);
+        if (answer.is_array())
         {
-            m_current_orderbook.insert_or_assign(base + "/" + rel, answer);
-            for (auto&& fut: futures) { fut.wait(); }
-            this->dispatcher_.trigger<process_orderbook_finished>(is_a_reset);
+            auto orderbook_answer = ::mm2::api::rpc_process_answer_batch<t_orderbook_answer>(answer[0], "orderbook");
+
+            if (orderbook_answer.rpc_result_code == 200)
+            {
+                m_current_orderbook.insert_or_assign(base + "/" + rel, orderbook_answer);
+                this->dispatcher_.trigger<process_orderbook_finished>(is_a_reset);
+            }
+
+            auto base_max_taker_vol_answer = ::mm2::api::rpc_process_answer_batch<::mm2::api::max_taker_vol_answer>(answer[1], "max_taker_vol");
+            if (base_max_taker_vol_answer.rpc_result_code == 200)
+            {
+                this->m_synchronized_max_taker_vol->first = base_max_taker_vol_answer.result.value();
+            }
+
+            auto rel_max_taker_vol_answer = ::mm2::api::rpc_process_answer_batch<::mm2::api::max_taker_vol_answer>(answer[2], "max_taker_vol");
+            if (rel_max_taker_vol_answer.rpc_result_code == 200)
+            {
+                this->m_synchronized_max_taker_vol->second = rel_max_taker_vol_answer.result.value();
+            }
         }
     }
 
@@ -772,48 +855,6 @@ namespace atomic_dex
     }
 
     void
-    mm2::process_fees()
-    {
-        // loguru::set_thread_name("fees thread");
-        spdlog::debug("{} l{} f[{}]", __FUNCTION__, __LINE__, fs::path(__FILE__).filename().string());
-        t_coins                        coins = get_enabled_coins();
-        std::vector<std::future<void>> futures;
-
-        auto&& [orderbook_ticker_base, orderbook_ticker_rel] = m_synchronized_ticker_pair.get();
-        if (not m_synchronized_ticker_pair.get().second.empty())
-        {
-            futures.reserve(2);
-        }
-        else
-        {
-            futures.reserve(1);
-        }
-
-        auto rpc_fees = [this, orderbook_ticker_base = orderbook_ticker_base, orderbook_ticker_rel = orderbook_ticker_rel]() {
-            t_get_trade_fee_request req{.coin = orderbook_ticker_base};
-            auto                    answer = ::mm2::api::rpc_get_trade_fee(std::move(req));
-            if (answer.rpc_result_code == 200)
-            {
-                this->m_trade_fees_registry.insert_or_assign(orderbook_ticker_base, answer);
-            }
-
-            if (not orderbook_ticker_rel.empty())
-            {
-                t_get_trade_fee_request req_rel{.coin = orderbook_ticker_rel};
-                auto                    answer_rel = ::mm2::api::rpc_get_trade_fee(std::move(req_rel));
-                if (answer_rel.rpc_result_code == 200)
-                {
-                    this->m_trade_fees_registry.insert_or_assign(orderbook_ticker_rel, answer_rel);
-                }
-            }
-        };
-
-        futures.emplace_back(spawn(rpc_fees));
-
-        for (auto&& fut: futures) { fut.get(); }
-    }
-
-    void
     mm2::process_tx(const std::string& ticker)
     {
         spdlog::debug("{} l{} f[{}]", __FUNCTION__, __LINE__, fs::path(__FILE__).filename().string());
@@ -891,8 +932,9 @@ namespace atomic_dex
         if (this->m_mm2_running)
         {
             spawn([this]() {
-                process_fees();
-                fetch_current_orderbook_thread(true);
+                batch_process_fees_and_fetch_current_orderbook_thread(true);
+                // process_fees();
+                // fetch_current_orderbook_thread(true);
             });
         }
     }

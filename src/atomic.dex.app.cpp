@@ -135,7 +135,9 @@ namespace atomic_dex
     application::disable_coins(const QStringList& coins)
     {
         std::vector<std::string> coins_std;
-        qobject_cast<portfolio_model*>(m_manager_models.at("portfolio"))->disable_coins(coins);
+        
+        system_manager_.get_system<portfolio_page>().get_portfolio()->disable_coins(coins);
+        system_manager_.get_system<trading_page>().disable_coin(coins[0]);
         coins_std.reserve(coins.size());
         for (auto&& coin: coins) { coins_std.push_back(coin.toStdString()); }
         get_mm2().disable_multiple_coins(coins_std);
@@ -194,7 +196,9 @@ namespace atomic_dex
 
             system_manager_.create_system<coinpaprika_provider>(mm2_s, system_manager_.get_system<settings_page>().get_cfg());
             system_manager_.create_system<cex_prices_provider>(mm2_s);
-            system_manager_.create_system<trading_page>(system_manager_, m_event_actions.at(events_action::about_to_exit_app), get_portfolio(), this);
+            //auto& portfolio_system = system_manager_.create_system<portfolio_page>(system_manager_, dispatcher_, this);
+            //portfolio_system.get_portfolio()->set_cfg(system_manager_.get_system<settings_page>().get_cfg());
+            //system_manager_.create_system<trading_page>(system_manager_, m_event_actions.at(events_action::about_to_exit_app), system_manager_.get_system<portfolio_page>().get_portfolio(), this);
 
 
             connect_signals();
@@ -256,7 +260,7 @@ namespace atomic_dex
             case action::refresh_portfolio_ticker_balance:
                 if (mm2.is_mm2_running())
                 {
-                    qobject_cast<portfolio_model*>(m_manager_models.at("portfolio"))->update_balance_values(*m_ticker_balance_to_refresh);
+                    system_manager_.get_system<portfolio_page>().get_portfolio()->update_balance_values(*m_ticker_balance_to_refresh);
                 }
                 break;
             case action::post_process_orders_finished:
@@ -374,7 +378,7 @@ namespace atomic_dex
             {"update_needed", false}, {"changelog", ""}, {"current_version", ""}, {"download_url", ""}, {"new_version", ""}, {"rpc_code", 0}, {"status", ""}}),
         m_coin_info(new current_coin_info(dispatcher_, this)), m_manager_models{
                                                                    {"addressbook", new addressbook_model(this->m_wallet_manager, this)},
-                                                                   {"portfolio", new portfolio_model(this->system_manager_, this->dispatcher_, this)},
+                                                                   //{"portfolio", new portfolio_model(this->system_manager_, this->dispatcher_, this)},
                                                                    {"orders", new orders_model(this->system_manager_, this->dispatcher_, this)},
                                                                    {"internet_service",
                                                                     std::addressof(system_manager_.create_system<internet_service_checker>(this))},
@@ -384,11 +388,14 @@ namespace atomic_dex
         //! MM2 system need to be created before the GUI and give the instance to the gui
         auto& mm2_system           = system_manager_.create_system<mm2>();
         auto& settings_page_system = system_manager_.create_system<settings_page>(m_app, this);
-        get_portfolio()->set_cfg(settings_page_system.get_cfg());
+        auto& portfolio_system = system_manager_.create_system<portfolio_page>(system_manager_, dispatcher_, this);
+        portfolio_system.get_portfolio()->set_cfg(settings_page_system.get_cfg());
+        //get_portfolio()->set_cfg(settings_page_system.get_cfg());
+
         system_manager_.create_system<coinpaprika_provider>(mm2_system, settings_page_system.get_cfg());
         system_manager_.create_system<cex_prices_provider>(mm2_system);
         system_manager_.create_system<update_system_service>();
-        system_manager_.create_system<trading_page>(system_manager_, m_event_actions.at(events_action::about_to_exit_app), get_portfolio(), this);
+        system_manager_.create_system<trading_page>(system_manager_, m_event_actions.at(events_action::about_to_exit_app), portfolio_system.get_portfolio(), this);
 
         connect_signals();
         if (is_there_a_default_wallet())
@@ -433,10 +440,12 @@ namespace atomic_dex
             this->m_kmd_fully_enabled = true;
         }
 
-        qobject_cast<portfolio_model*>(m_manager_models.at("portfolio"))->initialize_portfolio(evt.ticker);
+        system_manager_.get_system<portfolio_page>().get_portfolio()->initialize_portfolio(evt.ticker);
 
         if (get_mm2().get_enabled_coins().size() == get_mm2().get_active_coins().size())
         {
+            m_coin_info->set_ticker("KMD");
+            emit coinInfoChanged();
             this->set_status("complete");
         }
     }
@@ -658,12 +667,6 @@ namespace atomic_dex
             addressbook->removeRows(0, count);
         }
 
-        portfolio_model* portfolio = qobject_cast<portfolio_model*>(m_manager_models.at("portfolio"));
-        if (auto count = portfolio->rowCount(QModelIndex()); count > 0)
-        {
-            portfolio->removeRows(0, count, QModelIndex());
-        }
-
         orders_model* orders = qobject_cast<orders_model*>(m_manager_models.at("orders"));
         if (auto count = orders->rowCount(QModelIndex()); count > 0)
         {
@@ -671,11 +674,13 @@ namespace atomic_dex
         }
         orders->clear_registry();
 
+        system_manager_.get_system<portfolio_page>().get_portfolio()->reset();
+        system_manager_.get_system<trading_page>().clear_models();
+
         //! Mark systems
         system_manager_.mark_system<mm2>();
         system_manager_.mark_system<coinpaprika_provider>();
         system_manager_.mark_system<cex_prices_provider>();
-        system_manager_.mark_system<trading_page>();
 
         //! Disconnect signals
         system_manager_.get_system<trading_page>().disconnect_signals();
@@ -1037,10 +1042,12 @@ namespace atomic_dex
 //! Portfolio
 namespace atomic_dex
 {
-    portfolio_model*
-    application::get_portfolio() const noexcept
+    portfolio_page*
+    application::get_portfolio_page() const noexcept
     {
-        return qobject_cast<portfolio_model*>(m_manager_models.at("portfolio"));
+        portfolio_page* ptr = const_cast<portfolio_page*>(std::addressof(system_manager_.get_system<portfolio_page>()));
+        assert(ptr != nullptr);
+        return ptr;
     }
 } // namespace atomic_dex
 

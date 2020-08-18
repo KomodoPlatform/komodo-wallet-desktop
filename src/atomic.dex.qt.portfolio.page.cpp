@@ -14,34 +14,29 @@
  *                                                                            *
  ******************************************************************************/
 
-#pragma once
+#include <QQmlEngine>
 
-#include <QSortFilterProxyModel>
+//!
+#include "atomic.dex.qt.portfolio.page.hpp"
 
 namespace atomic_dex
 {
-    class portfolio_proxy_model final : public QSortFilterProxyModel
+    portfolio_page::portfolio_page(entt::registry& registry, ag::ecs::system_manager& system_manager, entt::dispatcher& dispatcher, QObject* parent) :
+        QObject(parent), system(registry), m_system_manager(system_manager), m_portfolio_mdl(new portfolio_model(system_manager, dispatcher, this))
     {
-        Q_OBJECT
-      public:
-        //! Constructor
-        portfolio_proxy_model(QObject* parent);
+        emit portfolioChanged();
+    }
 
-        //! Destructor
-        ~portfolio_proxy_model() final;
+    portfolio_model*
+    portfolio_page::get_portfolio() const noexcept
+    {
+        return m_portfolio_mdl;
+    }
 
-      public:
-        //! API
-        Q_INVOKABLE void sort_by_name(bool is_ascending);
-        Q_INVOKABLE void sort_by_currency_balance(bool is_ascending);
-        Q_INVOKABLE void sort_by_change_last24h(bool is_ascending);
-        Q_INVOKABLE void sort_by_currency_unit(bool is_ascending);
+    void
+    portfolio_page::update() noexcept
+    {
+    }
 
-        void reset();
-
-      protected:
-        //! Override member functions
-        [[nodiscard]] bool lessThan(const QModelIndex& source_left, const QModelIndex& source_right) const final;
-        bool               filterAcceptsRow(int source_row, const QModelIndex& source_parent) const override;
-    };
+    portfolio_page::~portfolio_page() noexcept { /*delete m_portfolio_mdl;*/ }
 } // namespace atomic_dex
