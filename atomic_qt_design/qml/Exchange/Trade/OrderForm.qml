@@ -129,13 +129,7 @@ FloatingBackground {
     }
 
     function notEnoughBalance() {
-        // If sell side or buy side but there is no price, then just check the balance
-        if(is_sell_form || General.isZero(getCurrentPrice())) {
-            return parseFloat(getMaxVolume()) < General.getMinTradeAmount()
-        }
-
-        // If it's buy, and price exists then multiply and check
-        return getNeededAmountToSpend(getMaxVolume()) < General.getMinTradeAmount()
+        return parseFloat(getMaxVolume()) < General.getMinTradeAmount()
     }
 
     function onInputChanged() {
@@ -254,7 +248,7 @@ FloatingBackground {
                     anchors.top: input_volume.bottom
                     anchors.topMargin: 5
 
-                    text_value: getFiatText(input_volume.field.text, base_ticker)
+                    text_value: getFiatText(input_volume.field.text, left_ticker)
                     font.pixelSize: input_volume.field.font.pixelSize
 
                     CexInfoTrigger {}
