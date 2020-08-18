@@ -138,10 +138,6 @@ FloatingBackground {
         return getNeededAmountToSpend(getMaxVolume()) < General.getMinTradeAmount()
     }
 
-    function shouldBlockInput() {
-        return notEnoughBalance()
-    }
-
     function onInputChanged() {
         if(capVolume()) updateTradeInfo()
 
@@ -235,7 +231,6 @@ FloatingBackground {
                 AmountFieldWithInfo {
                     id: input_volume
                     width: parent.width
-                    field.enabled: !shouldBlockInput()
 
                     field.left_text: API.get().settings_pg.empty_string + (qsTr("Volume"))
                     field.right_text: left_ticker
