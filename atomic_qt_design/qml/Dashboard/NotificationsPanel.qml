@@ -13,6 +13,7 @@ FloatingBackground {
 
     function reset() {
         visible = false
+        notifications_list = []
     }
 
     function showApp() {
