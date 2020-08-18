@@ -24,7 +24,7 @@ FloatingBackground {
     }
 
     function fieldsAreFilled() {
-        return input_volume.field.text !== ''
+        return input_volume.field.text !== '' && input_price.field.text !== ''
     }
 
     function hasEthFees() {
