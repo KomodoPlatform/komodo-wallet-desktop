@@ -35,9 +35,9 @@ FloatingBackground {
         return General.isEthEnabled() && API.get().do_i_have_enough_funds("ETH", curr_trade_info.erc_fees)
     }
 
-    function higherThanMinTradeAmount(is_base) {
+    function higherThanMinTradeAmount() {
         if(input_volume.field.text === '') return false
-        return parseFloat(is_base ? input_volume.field.text : total_amount) >= General.getMinTradeAmount()
+        return parseFloat(is_sell_form ? input_volume.field.text : total_amount) >= General.getMinTradeAmount()
     }
 
     function isValid() {
