@@ -139,7 +139,7 @@ FloatingBackground {
     }
 
     function shouldBlockInput() {
-        return notEnoughBalance() || notEnoughBalanceForFees()
+        return notEnoughBalance()
     }
 
     function onInputChanged() {
