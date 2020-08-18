@@ -122,7 +122,7 @@ Item {
 
         DefaultImage {
             id: app_logo
-            source: General.image_path + Style.sidebar_atomicdex_logo
+            source: General.image_path + Style.sidebar_atomicdefi_logo
             anchors.horizontalCenter: parent.horizontalCenter
             y: parent.width * 0.25
             transformOrigin: Item.Center
@@ -141,7 +141,7 @@ Item {
             anchors.horizontalCenter: parent.horizontalCenter
             anchors.top: parent.top
             anchors.topMargin: parent.width * 0.85
-            text_value: API.get().settings_pg.empty_string + ("V. AtomicDEX PRO " + API.get().get_version())
+            text_value: API.get().settings_pg.empty_string + ("V. AtomicDeFi Pro " + API.get().get_version())
             font.pixelSize: Style.textSizeVerySmall8
             color: Style.colorThemeDarkLight
         }

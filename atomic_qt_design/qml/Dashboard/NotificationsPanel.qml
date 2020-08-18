@@ -13,6 +13,7 @@ FloatingBackground {
 
     function reset() {
         visible = false
+        notifications_list = []
     }
 
     function showApp() {
@@ -93,7 +94,7 @@ FloatingBackground {
             showApp()
         }
 
-        tooltip: qsTr("AtomicDEX Pro")
+        tooltip: qsTr("AtomicDeFi Pro")
 
         onActivated: showApp()
     }

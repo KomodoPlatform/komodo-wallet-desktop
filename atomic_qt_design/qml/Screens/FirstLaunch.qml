@@ -20,7 +20,7 @@ SetupPage {
     property var wallets: ([])
 
     image_scale: 0.72
-    image_path: General.image_path + "atomicdex-logo-large.svg"
+    image_path: General.image_path + "atomicdefi-logo-large.svg"
     image_margin: 30
     content: ColumnLayout {
         width: 400

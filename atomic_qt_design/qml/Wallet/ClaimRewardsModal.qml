@@ -192,7 +192,7 @@ DefaultModal {
                 DefaultText {
                     id: accruing_start_header
 
-                    text_value: API.get().settings_pg.empty_string + (qsTr("Accruing Started At"))
+                    text_value: API.get().settings_pg.empty_string + (qsTr("Accruing Start"))
 
                     font.pixelSize: utxo_header.font.pixelSize
                     font.bold: utxo_header.font.bold
@@ -208,7 +208,7 @@ DefaultModal {
                 DefaultText {
                     id: accruing_stop_header
 
-                    text_value: API.get().settings_pg.empty_string + (qsTr("Accruing Stop At"))
+                    text_value: API.get().settings_pg.empty_string + (qsTr("Accruing Stop"))
 
                     font.pixelSize: utxo_header.font.pixelSize
                     font.bold: utxo_header.font.bold

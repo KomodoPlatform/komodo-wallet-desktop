@@ -24,8 +24,8 @@ ColumnLayout {
     }
 
     function reset() {
-        input_password.field.text = ""
-        input_confirm_password.field.text = ""
+        input_password.reset()
+        input_confirm_password.reset()
     }
 
     PasswordField {

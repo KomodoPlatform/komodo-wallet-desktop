@@ -253,6 +253,7 @@ set_target_properties(${PROJECT_NAME}_tests
         RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin/"
         )
 
+
 #target_enable_tsan(atomic_qt_tests)
 #target_enable_asan(atomic_qt)
 

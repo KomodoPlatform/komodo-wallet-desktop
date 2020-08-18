@@ -18,6 +18,7 @@ ColumnLayout {
     // Local
     function reset() {
         input_field.text = ''
+        hiding = true
     }
 
     RowLayout {
