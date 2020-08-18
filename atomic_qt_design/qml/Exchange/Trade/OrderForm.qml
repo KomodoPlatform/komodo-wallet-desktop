@@ -254,7 +254,7 @@ FloatingBackground {
                     anchors.top: input_volume.bottom
                     anchors.topMargin: 5
 
-                    text_value: getFiatText(input_volume.field.text, base_ticker)
+                    text_value: getFiatText(input_volume.field.text, left_ticker)
                     font.pixelSize: input_volume.field.font.pixelSize
 
                     CexInfoTrigger {}
