@@ -10,7 +10,7 @@ Window {
     height: General.height
     minimumWidth: General.minimumWidth
     minimumHeight: General.minimumHeight
-    title: API.get().settings_pg.empty_string + (qsTr("AtomicDEX Pro"))
+    title: API.get().settings_pg.empty_string + (qsTr("AtomicDeFi Pro"))
     flags: Qt.Window | Qt.WindowFullscreenButtonHint
 
     Component.onCompleted: showMaximized()
