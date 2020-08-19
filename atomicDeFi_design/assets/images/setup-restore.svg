@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="27px" height="33px" viewBox="0 0 27 33" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 53.2 (72643) - https://sketchapp.com -->
+    <title>restore</title>
+    <desc>Created with Sketch.</desc>
+    <g id="Setup" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="00-Loading-2-buttons" transform="translate(-171.000000, -473.000000)" stroke="#FEFEFE">
+            <g id="restore" transform="translate(165.000000, 471.000000)">
+                <path d="M33.191,28.791 L14.158,37.674 C13.229,38.108 12.114,37.703 11.68,36.774 L5,22.46 L27.411,12 L34.091,26.314 C34.525,27.243 34.12,28.357 33.191,28.791 Z" id="Stroke-27" stroke-width="1.2" transform="translate(19.632633, 24.924133) rotate(25.000000) translate(-19.632633, -24.924133) "></path>
+                <path d="M27.5746322,6.02797561 C27.1019691,5.48933277 26.5702643,5.01599607 25.9942642,4.61332975 C23.4754054,2.8524626 20.1094746,2.44304585 17.1296535,3.83367379 C12.6876535,5.90767379 10.7606535,11.2076738 12.8336535,15.6496738 L14.1874352,18.5460056" id="Stroke-29" stroke-width="1.2" stroke-linecap="round" transform="translate(19.787316, 10.773003) rotate(25.000000) translate(-19.787316, -10.773003) "></path>
+                <path d="M20.5605581,23.0777415 C20.1235581,22.1427415 19.0125581,21.7397415 18.0785581,22.1757415 C17.1435581,22.6117415 16.7395581,23.7237415 17.1755581,24.6577415 C17.4285581,25.2007415 17.9125581,25.5567415 18.4535581,25.6807415 L19.5195581,29.6787415 L22.9045581,28.0987415 L20.5245581,24.7137415 C20.7765581,24.2187415 20.8135581,23.6197415 20.5605581,23.0777415 Z" id="Stroke-31" transform="translate(19.952279, 25.839371) rotate(26.000000) translate(-19.952279, -25.839371) "></path>
+            </g>
+        </g>
+    </g>
+</svg>

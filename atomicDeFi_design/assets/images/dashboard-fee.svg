@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="21px" height="21px" viewBox="0 0 21 21" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 53.2 (72643) - https://sketchapp.com -->
+    <title>fee</title>
+    <desc>Created with Sketch.</desc>
+    <g id="Dashboards" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Success-Transaction-history---Details" transform="translate(-31.000000, -298.000000)">
+            <g id="fee" transform="translate(30.000000, 297.000000)">
+                <path d="M20.2788462,11.6394231 C20.2788462,16.410853 16.410853,20.2788462 11.6394231,20.2788462 C6.86799313,20.2788462 3,16.410853 3,11.6394231 C3,6.86799313 6.86799313,3 11.6394231,3 C16.410853,3 20.2788462,6.86799313 20.2788462,11.6394231" id="Fill-13" stroke="#FFFFFF"></path>
+                <path d="M9,13.0778094 L9,13.8375356 C9,14.6762733 9.74859344,15.3569879 10.6709675,15.3569879 L12.341935,15.3569879 C13.2643091,15.3569879 14.0129025,14.6762733 14.0129025,13.8375356 L14.0129025,12.6531225 C14.0129025,11.999758 13.552551,11.4185674 12.8707962,11.2119219 L10.1421063,10.3853398 C9.46035155,10.1786943 9,9.59750379 9,8.94413928 L9,8.51945235 C9,7.68071465 9.74859344,7 10.6709675,7 L12.341935,7 C13.2643091,7 14.0129025,7.68071465 14.0129025,8.51945235 L14.0129025,9.27917852" id="Fill-15" stroke="#FFFFFF"></path>
+                <path d="M11.3344085,7.00645125 L11.3344085,5" id="Fill-17" stroke="#FFFFFF"></path>
+                <path d="M11.3344085,16 L11.3344085,18.0064512" id="Fill-19" stroke="#FFFFFF"></path>
+                <rect id="Rectangle" stroke="#283547" fill="#FFFFFF" transform="translate(11.500000, 11.500000) rotate(-315.000000) translate(-11.500000, -11.500000) " x="10.5" y="-1.5" width="2" height="26"></rect>
+            </g>
+        </g>
+    </g>
+</svg>

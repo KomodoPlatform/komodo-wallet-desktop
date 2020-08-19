@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="30px" height="21px" viewBox="0 0 30 21" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 53.2 (72643) - https://sketchapp.com -->
+    <title>eye-hide</title>
+    <desc>Created with Sketch.</desc>
+    <g id="Dashboards" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Assets-privacy" transform="translate(-330.000000, -56.000000)" stroke="#FFFFFF">
+            <g id="eye-hide" transform="translate(331.000000, 56.000000)">
+                <path d="M13.9090909,1 C6.22718182,1 0,8.60745455 0,10 C0,11.3925455 6.22718182,19 13.9090909,19 C21.591,19 27.8181818,11.3925455 27.8181818,10 C27.8181818,8.60745455 21.591,1 13.9090909,1 Z" id="Stroke-1" stroke-linejoin="round"></path>
+                <path d="M18.8181818,10 C18.8181818,12.7106364 16.6197273,14.9090909 13.9090909,14.9090909 C11.1984545,14.9090909 9,12.7106364 9,10 C9,7.28936364 11.1984545,5.09090909 13.9090909,5.09090909 C16.6197273,5.09090909 18.8181818,7.28936364 18.8181818,10 Z" id="Stroke-3"></path>
+                <path d="M25.8181818,0.5 L1.5,20.5" id="Line-3" stroke-linecap="square"></path>
+            </g>
+        </g>
+    </g>
+</svg>

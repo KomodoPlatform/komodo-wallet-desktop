@@ -1,0 +1,111 @@
+MetaInfo {
+    Type {
+        name: "QtQuick.Studio.Components.ArcItem"
+        icon: "images/item-arc-16px.png"
+
+        ItemLibraryEntry {
+            name: "Arc"
+            category: "Studio Components"
+            libraryIcon: "images/item-arc-24px.png"
+            version: "1.0"
+            requiredImport: "QtQuick.Studio.Components"
+            Property { name: "fillColor"; type: "QColor"; value: "transparent"; }
+        }
+    }
+    Type {
+        name: "QtQuick.Studio.Components.PieItem"
+        icon: "images/item-pie-16px.png"
+
+        ItemLibraryEntry {
+            name: "Pie"
+            category: "Studio Components"
+            libraryIcon: "images/item-pie-24px.png"
+            version: "1.0"
+            requiredImport: "QtQuick.Studio.Components"
+
+        }
+    }
+    Type {
+        name: "QtQuick.Studio.Components.TriangleItem"
+        icon: "images/item-triangle-16px.png"
+
+        ItemLibraryEntry {
+            name: "Triangle"
+            category: "Studio Components"
+            libraryIcon: "images/item-triangle-24px.png"
+            version: "1.0"
+            requiredImport: "QtQuick.Studio.Components"
+
+        }
+    }
+    Type {
+        name: "QtQuick.Studio.Components.SvgPathItem"
+        icon: "images/item-svg-16px.png"
+
+        ItemLibraryEntry {
+            name: "Svg Path"
+            category: "Studio Components"
+            libraryIcon: "images/item-svg-24px.png"
+            version: "1.0"
+            requiredImport: "QtQuick.Studio.Components"
+
+        }
+    }
+    Type {
+        name: "QtQuick.Studio.Components.FlipableItem"
+        icon: "images/item-flippable-16px.png"
+
+        ItemLibraryEntry {
+            name: "Flipable"
+            category: "Studio Components"
+            libraryIcon: "images/item-flippable-24px.png"
+            version: "1.0"
+            requiredImport: "QtQuick.Studio.Components"
+
+        }
+    }
+
+    Type {
+        name: "QtQuick.Studio.Components.RectangleItem"
+        icon: "images/custom-rectangle-16px.png"
+
+        ItemLibraryEntry {
+            name: "Rectangle"
+            category: "Studio Components"
+            libraryIcon: "images/custom-rectangle-24px.png"
+            version: "1.0"
+            requiredImport: "QtQuick.Studio.Components"
+
+        }
+    }
+
+
+    Type {
+        name: "QtQuick.Studio.Components.BorderItem"
+        icon: "images/custom-border-16px.png"
+
+        ItemLibraryEntry {
+            name: "Border"
+            category: "Studio Components"
+            libraryIcon: "images/custom-border-24px.png"
+            version: "1.0"
+            requiredImport: "QtQuick.Studio.Components"
+
+        }
+    }
+
+    Type {
+        name: "QtQuick.Studio.Components.IsoItem"
+        icon: "images/iso-icons-16px.png"
+
+        ItemLibraryEntry {
+            name: "Iso Icon"
+            category: "Studio Components"
+            libraryIcon: "images/iso-icons-24px.png"
+            version: "1.0"
+            requiredImport: "QtQuick.Studio.Components"
+
+        }
+    }
+
+}

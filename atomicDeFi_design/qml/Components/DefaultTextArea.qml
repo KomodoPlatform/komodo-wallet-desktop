@@ -1,0 +1,51 @@
+import QtQuick 2.14
+import QtQuick.Layouts 1.12
+import QtQuick.Controls 2.12
+
+import "../Constants"
+
+TextArea {
+    id: text_field
+
+    font.family: Style.font_family
+    placeholderTextColor: Style.colorPlaceholderText
+
+    property bool remove_newline: true
+    wrapMode: TextEdit.Wrap
+
+    KeyNavigation.priority: KeyNavigation.BeforeItem
+    KeyNavigation.backtab: nextItemInFocusChain(false)
+    KeyNavigation.tab: nextItemInFocusChain(true)
+    Keys.onPressed: {
+        if(event.key === Qt.Key_Return) {
+            if(onReturn !== undefined) {
+                onReturn()
+            }
+
+            // Ignore \n \r stuff
+            if(remove_newline) event.accepted = true
+        }
+    }
+
+    onTextChanged: {
+        if(remove_newline) {
+            if(text.indexOf('\r') !== -1 || text.indexOf('\n') !== -1) {
+                text = text.replace(/[\r\n]/, '')
+            }
+        }
+    }
+
+    // Right click Context Menu
+    selectByMouse: true
+    persistentSelection: true
+
+    background: InnerBackground { }
+
+    RightClickMenu { }
+}
+
+/*##^##
+Designer {
+    D{i:0;autoSize:true;height:480;width:640}
+}
+##^##*/
