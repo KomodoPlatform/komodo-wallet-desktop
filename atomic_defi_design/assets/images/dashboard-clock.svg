@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="21px" height="21px" viewBox="0 0 21 21" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 53.2 (72643) - https://sketchapp.com -->
+    <title>clock</title>
+    <desc>Created with Sketch.</desc>
+    <g id="Dashboards" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Send-Review" transform="translate(-35.000000, -622.000000)">
+            <g id="clock" transform="translate(36.000000, 623.000000)">
+                <path d="M18.78625,9.39375 C18.78625,14.5819347 14.5812178,18.7875 9.39369095,18.7875 C4.20616407,18.7875 7.99360578e-15,14.5819347 7.99360578e-15,9.39375 C7.99360578e-15,4.20556535 4.20616407,-1.27009514e-13 9.39369095,-1.27009514e-13 C14.5812178,-1.27009514e-13 18.78625,4.20556535 18.78625,9.39375 Z" id="Stroke-13" stroke="#FFFFFF"></path>
+                <polyline id="Fill-15" points="10 3.75 10 9.35138286 13.7149167 13.0656386"></polyline>
+                <polyline id="Stroke-17" stroke="#FFFFFF" points="10 3.75 10 9.35138286 13.7149167 13.0656386"></polyline>
+            </g>
+        </g>
+    </g>
+</svg>

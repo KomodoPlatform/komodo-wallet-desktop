@@ -1,0 +1,9 @@
+ArcItem 1.0 ArcItem.qml
+PieItem 1.0 PieItem.qml
+TriangleItem 1.0 TriangleItem.qml
+SvgPathItem 1.0 SvgPathItem.qml
+FlipableItem 1.0 FlipableItem.qml
+RectangleItem 1.0 RectangleItem.qml
+BorderItem 1.0 BorderItem.qml
+IsoItem 1.0 IsoItem.qml
+

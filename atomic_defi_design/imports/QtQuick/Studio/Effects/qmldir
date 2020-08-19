@@ -1,0 +1,15 @@
+FastBlurItem 1.0 FastBlurItem.qml
+GlowItem 1.0 GlowItem.qml
+ZoomBlurItem 1.0 ZoomBlurItem.qml
+RadialBlurItem 1.0 RadialBlurItem.qml
+SaturationItem 1.0 SaturationItem.qml
+DirectionalBlurItem 1.0 DirectionalBlurItem.qml
+ColorOverlayItem 1.0 ColorOverlayItem.qml
+DropShadowItem 1.0 DropShadowItem.qml
+ColorizeItem 1.0 ColorizeItem.qml
+BrightnessContrastItem 1.0 BrightnessContrastItem.qml
+HueSaturationItem 1.0 HueSaturationItem.qml
+MaskedBlurItem 1.0 MaskedBlurItem.qml
+BlendItem 1.0 BlendItem.qml
+MaskItem 1.0 MaskItem.qml
+RotationItem 1.0 RotationItem.qml

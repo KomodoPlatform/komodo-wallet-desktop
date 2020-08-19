@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="27px" height="23px" viewBox="0 0 27 23" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 53.2 (72643) - https://sketchapp.com -->
+    <title>email</title>
+    <desc>Created with Sketch.</desc>
+    <g id="Dashboards" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Receive" transform="translate(-83.000000, -593.000000)" stroke="#41EAD4">
+            <g id="email" transform="translate(84.000000, 594.000000)">
+                <path d="M22.0588235,20.5882353 L2.94117647,20.5882353 C1.31691176,20.5882353 0,19.2713235 0,17.6470588 L0,2.94117647 C0,1.31691176 1.31691176,0 2.94117647,0 L22.0588235,0 C23.6830882,0 25,1.31691176 25,2.94117647 L25,17.6470588 C25,19.2713235 23.6830882,20.5882353 22.0588235,20.5882353 Z" id="Stroke-1"></path>
+                <polyline id="Stroke-3" points="0 2.94117647 12.5 10.2941176 25 2.94117647"></polyline>
+            </g>
+        </g>
+    </g>
+</svg>
