@@ -77,16 +77,18 @@ ColumnLayout {
                  General.durationTextShort(estimated) + `</font>`
     }
 
-    property string last_uuid
+    property string last_uuid: ""
     onTotal_time_passedChanged: {
         // Reset for different order
-        if(details.order_id !== last_uuid) simulated_time = 0
+        if(details.order_id !== last_uuid) {
+            simulated_time = 0
+            if(details) last_uuid = details.order_id
+        }
         else {
             // Subtract the real time from the simulation, and continue
             simulated_time = Math.max(0, simulated_time - (total_time_passed - previous_total_time_passed))
         }
 
-        last_uuid = details.order_id
         previous_total_time_passed = total_time_passed
     }
 
