@@ -42,7 +42,7 @@ proc bundle*(build_type: string, osx_sdk_path: string, compiler_path: string) =
         if not os.existsDir(qt_macdeploy_path.parentDir):
             qt_macdeploy_path = os.getEnv("QT_ROOT").joinPath("bin").joinPath("macdeployqt")
         let
-            dmg_name = "atomicDEX-Pro"
+            dmg_name = "atomicDefi"
             app_name = "atomicDeFi"
             atomicDeFi_app_dir = os.getCurrentDir().joinPath("bin")
             atomicDeFi_app_path = atomicDeFi_app_dir.joinPath(app_name & ".app")
