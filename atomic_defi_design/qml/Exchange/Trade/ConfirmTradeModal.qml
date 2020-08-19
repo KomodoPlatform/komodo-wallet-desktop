@@ -79,7 +79,7 @@ DefaultModal {
                 DefaultText {
                     Layout.alignment: Qt.AlignHCenter
 
-                    text_value: API.get().settings_pg.empty_string + (qsTr("This transaction can take up to 10 mins - DO NOT close this application!"))
+                    text_value: API.get().settings_pg.empty_string + (qsTr("This transaction can take up to 60 mins - DO NOT close this application!"))
                     font.pixelSize: Style.textSizeSmall4
                 }
             }
