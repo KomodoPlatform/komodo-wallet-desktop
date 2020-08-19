@@ -274,7 +274,7 @@ jobs:
           cd ci_tools_atomic_dex
           nimble build -y
           ./ci_tools_atomic_dex bundle release --osx_sdk=$HOME/sdk/MacOSX10.13.sdk --compiler=/usr/local/opt/llvm@9/bin/clang++
-          ls bundle-Release/atomicDEX-Pro.dmg
+          ls bundle-Release/atomicDefi.dmg
 
       - name: Running Tests (MacOS)
         env: # Or as an environment variable
@@ -297,7 +297,7 @@ jobs:
         uses: actions/upload-artifact@v1
         with:
           name: dexpro-mac-release.dmg
-          path: ./ci_tools_atomic_dex/bundle-Release/atomicDEX-Pro.dmg
+          path: ./ci_tools_atomic_dex/bundle-Release/atomicDefi.dmg
 
   windows-build:
     name: Win Build
