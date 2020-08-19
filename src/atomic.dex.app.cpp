@@ -134,14 +134,16 @@ namespace atomic_dex
     bool
     application::disable_coins(const QStringList& coins)
     {
-        std::vector<std::string> coins_std;
-        
-        system_manager_.get_system<portfolio_page>().get_portfolio()->disable_coins(coins);
-        system_manager_.get_system<trading_page>().disable_coin(coins[0]);
-        coins_std.reserve(coins.size());
-        for (auto&& coin: coins) { coins_std.push_back(coin.toStdString()); }
-        get_mm2().disable_multiple_coins(coins_std);
-        m_coin_info->set_ticker("");
+        if (not get_orders()->swap_is_in_progress(coins[0]))
+        {
+            std::vector<std::string> coins_std;
+            system_manager_.get_system<portfolio_page>().get_portfolio()->disable_coins(coins);
+            system_manager_.get_system<trading_page>().disable_coin(coins[0]);
+            coins_std.reserve(coins.size());
+            for (auto&& coin: coins) { coins_std.push_back(coin.toStdString()); }
+            get_mm2().disable_multiple_coins(coins_std);
+            m_coin_info->set_ticker("");
+        }
 
         return false;
     }

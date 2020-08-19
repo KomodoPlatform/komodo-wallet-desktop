@@ -412,8 +412,8 @@ namespace atomic_dex
             .is_recoverable = false};
         if (contents.action.empty() && contents.order_type == "maker")
         {
-            data.base_coin = QString::fromStdString(contents.base);
-            data.rel_coin  = QString::fromStdString(contents.rel);
+            data.base_coin   = QString::fromStdString(contents.base);
+            data.rel_coin    = QString::fromStdString(contents.rel);
             data.base_amount = QString::fromStdString(contents.base_amount);
             data.rel_amount  = QString::fromStdString(contents.rel_amount);
         }
@@ -578,4 +578,20 @@ namespace atomic_dex
         m_json_time_registry = average_time_registry;
         emit onAverageEventsTimeRegistryChanged();
     }
-}
+
+    bool
+    atomic_dex::orders_model::swap_is_in_progress(const QString& coin) const noexcept
+    {
+        for (auto&& cur_hist_swap: m_model_data)
+        {
+            if ((cur_hist_swap.base_coin == coin || cur_hist_swap.rel_coin == coin) &&
+                (cur_hist_swap.order_status == "matched" ||
+                 cur_hist_swap.order_status == "ongoing" ||
+                 cur_hist_swap.order_status == "matching"))
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+} // namespace atomic_dex

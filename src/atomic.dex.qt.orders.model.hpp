@@ -78,6 +78,7 @@ namespace atomic_dex
         void refresh_or_insert_orders() noexcept;
         void refresh_or_insert_swaps() noexcept;
         void clear_registry() noexcept;
+        bool swap_is_in_progress(const QString& coin) const noexcept;
 
         //! Properties
         [[nodiscard]] int                 get_length() const noexcept;
