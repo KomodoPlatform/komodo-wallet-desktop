@@ -53,6 +53,13 @@ FloatingBackground {
         return valid
     }
 
+    function getMaxBalance() {
+        if(General.isFilled(base_ticker))
+            return API.get().get_balance(base_ticker)
+
+        return "0"
+    }
+
     function getMaxVolume() {
         // base in this orderbook is always the left side, so when it's buy, we want the right side balance (rel in the backend)
         const value = is_sell_form ? API.get().trading_pg.orderbook.base_max_taker_vol.decimal :
@@ -61,10 +68,7 @@ FloatingBackground {
         if(General.isFilled(value))
             return value
 
-        if(General.isFilled(base_ticker))
-            return API.get().get_balance(base_ticker)
-
-        return "0"
+        return getMaxBalance()
     }
 
     function getMaxTradableVolume(set_as_current) {
@@ -376,7 +380,9 @@ FloatingBackground {
                     DefaultText {
                         visible: !fees.visible
 
-                        text_value: API.get().settings_pg.empty_string + (qsTr('Fees will be calculated'))
+                        text_value: API.get().settings_pg.empty_string + (!visible ? "" :
+                                                    notEnoughBalance() ? (qsTr('Minimum fee') + ":     " + General.formatCrypto("", General.formatDouble(parseFloat(getMaxBalance()) - parseFloat(getMaxVolume())), base_ticker))
+                                                                       : qsTr('Fees will be calculated'))
                         Layout.alignment: Qt.AlignCenter
                         font.pixelSize: tx_fee_text.font.pixelSize
                     }

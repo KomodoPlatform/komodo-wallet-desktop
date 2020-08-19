@@ -1139,13 +1139,6 @@ namespace atomic_dex
         spdlog::debug("{} l{} f[{}]", __FUNCTION__, __LINE__, fs::path(__FILE__).filename().string());
         auto ticker   = req.coin;
         auto b_answer = mm2::broadcast(std::move(req), ec);
-        /*if (!ec)
-        {
-            auto          lock_claim_file_path = fs::temp_directory_path() / (ticker + ".claim.lock");
-            std::ofstream ofs(lock_claim_file_path.string());
-            assert(ofs);
-            spdlog::info("created file {}", lock_claim_file_path.string());
-        }*/
         return b_answer;
     }
 

@@ -134,14 +134,16 @@ namespace atomic_dex
     bool
     application::disable_coins(const QStringList& coins)
     {
-        std::vector<std::string> coins_std;
-        
-        system_manager_.get_system<portfolio_page>().get_portfolio()->disable_coins(coins);
-        system_manager_.get_system<trading_page>().disable_coin(coins[0]);
-        coins_std.reserve(coins.size());
-        for (auto&& coin: coins) { coins_std.push_back(coin.toStdString()); }
-        get_mm2().disable_multiple_coins(coins_std);
-        m_coin_info->set_ticker("");
+        if (not get_orders()->swap_is_in_progress(coins[0]))
+        {
+            std::vector<std::string> coins_std;
+            system_manager_.get_system<portfolio_page>().get_portfolio()->disable_coins(coins);
+            system_manager_.get_system<trading_page>().disable_coin(coins[0]);
+            coins_std.reserve(coins.size());
+            for (auto&& coin: coins) { coins_std.push_back(coin.toStdString()); }
+            get_mm2().disable_multiple_coins(coins_std);
+            m_coin_info->set_ticker("");
+        }
 
         return false;
     }
@@ -208,12 +210,12 @@ namespace atomic_dex
         auto& paprika = get_paprika();
         if (mm2.is_mm2_running())
         {
-            if (m_coin_info->get_ticker().isEmpty() && not m_enabled_coins.empty())
+            /*if (m_coin_info->get_ticker().isEmpty() && not m_enabled_coins.empty())
             {
                 //! KMD Is our default coin
                 m_coin_info->set_ticker("KMD");
                 emit coinInfoChanged();
-            }
+            }*/
 
             std::error_code ec;
             const auto&     config           = system_manager_.get_system<settings_page>().get_cfg();
@@ -442,10 +444,14 @@ namespace atomic_dex
 
         system_manager_.get_system<portfolio_page>().get_portfolio()->initialize_portfolio(evt.ticker);
 
-        if (get_mm2().get_enabled_coins().size() == get_mm2().get_active_coins().size())
+        if (m_kmd_fully_enabled && m_btc_fully_enabled)
         {
-            m_coin_info->set_ticker("KMD");
-            emit coinInfoChanged();
+            if (m_coin_info->get_ticker().isEmpty())
+            {
+                m_coin_info->set_ticker("KMD");
+                emit coinInfoChanged();
+                process_refresh_current_ticker_infos();
+            }
             this->set_status("complete");
         }
     }
@@ -1169,7 +1175,9 @@ namespace atomic_dex
             m_coin_info->set_explorer_url(QString::fromStdString(info.explorer_url[0]));
             std::error_code ec;
             const auto&     config = system_manager_.get_system<settings_page>().get_cfg();
-            m_coin_info->set_price(QString::fromStdString(paprika.get_rate_conversion(config.current_currency, ticker, ec, true)));
+            auto price = QString::fromStdString(paprika.get_rate_conversion(config.current_currency, ticker, ec, true));
+            spdlog::trace("price to be set: {}", price.toStdString());
+            m_coin_info->set_price(price);
             m_coin_info->set_change24h(retrieve_change_24h(paprika, info, config));
             m_coin_info->set_trend_7d(nlohmann_json_array_to_qt_json_array(paprika.get_ticker_historical(ticker).answer));
         }

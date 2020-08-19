@@ -260,7 +260,13 @@ QtObject {
         return info.type === "ERC-20" ? "ETH" : info.ticker
     }
 
+
+    property Timer prevent_coin_disabling: Timer { interval: 5000 }
+
     function canDisable(ticker) {
+        if(prevent_coin_disabling.running)
+            return false
+
         if(API.get().enabled_coins.length <= 2 ||
                 ticker === "KMD" ||
                 ticker === "BTC") return false
