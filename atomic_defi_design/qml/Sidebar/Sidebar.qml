@@ -127,7 +127,6 @@ Item {
             y: parent.width * 0.25
             transformOrigin: Item.Center
             height: 85
-            fillMode: Image.PreserveAspectFit
         }
 
         Separator {
@@ -141,7 +140,7 @@ Item {
             anchors.horizontalCenter: parent.horizontalCenter
             anchors.top: parent.top
             anchors.topMargin: parent.width * 0.85
-            text_value: API.get().settings_pg.empty_string + ("V. AtomicDeFi Pro " + API.get().get_version())
+            text_value: API.get().settings_pg.empty_string + ("V. atomicDeFi Pro " + API.get().get_version())
             font.pixelSize: Style.textSizeVerySmall8
             color: Style.colorThemeDarkLight
         }

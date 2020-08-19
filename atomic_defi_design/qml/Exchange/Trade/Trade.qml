@@ -352,7 +352,6 @@ Item {
                     // Swap button
                     DefaultImage {
                         source: General.image_path + "trade_icon.svg"
-                        fillMode: Image.PreserveAspectFit
                         Layout.preferredWidth: 16
                         Layout.preferredHeight: Layout.preferredWidth
                         Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter

@@ -356,7 +356,6 @@ ColumnLayout {
                                     anchors.verticalCenter: parent.verticalCenter
 
                                     source: General.coinIcon(type)
-                                    fillMode: Image.PreserveAspectFit
                                     width: Style.textSize2
                                 }
 

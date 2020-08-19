@@ -6,6 +6,7 @@ import "../Constants"
 
 Image {
     mipmap: true
+    fillMode: Image.PreserveAspectFit
 }
 
 /*##^##

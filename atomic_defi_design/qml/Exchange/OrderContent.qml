@@ -19,7 +19,6 @@ Item {
         id: base_icon
         source: General.coinIcon(!details ? "KMD" :
                                             details.base_coin)
-        fillMode: Image.PreserveAspectFit
         width: in_modal ? Style.textSize5 : Style.textSize3
 
         anchors.left: parent.left
@@ -31,7 +30,6 @@ Item {
         id: rel_icon
         source: General.coinIcon(!details ? "KMD" :
                                             details.rel_coin)
-        fillMode: Image.PreserveAspectFit
         width: base_icon.width
         anchors.right: parent.right
         anchors.rightMargin: base_icon.anchors.leftMargin

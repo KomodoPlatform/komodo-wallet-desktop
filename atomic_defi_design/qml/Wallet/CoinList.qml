@@ -36,7 +36,6 @@ Column {
                 anchors.left: parent.left
                 anchors.leftMargin: parent.leftPadding + 28
                 source: General.coinIcon(model.modelData.ticker)
-                fillMode: Image.PreserveAspectFit
                 width: Style.textSize2
                 anchors.verticalCenter: parent.verticalCenter
             }
