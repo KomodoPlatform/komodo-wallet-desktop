@@ -125,11 +125,11 @@ set(CMAKE_AUTOUIC ON)
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
 set(TS_FILES
-        ${CMAKE_SOURCE_DIR}/atomicDeFi_design/assets/languages/atomicDeFi_en.ts
-        ${CMAKE_SOURCE_DIR}/atomicDeFi_design/assets/languages/atomicDeFi_fr.ts
-        ${CMAKE_SOURCE_DIR}/atomicDeFi_design/assets/languages/atomicDeFi_tr.ts)
-set_source_files_properties(${TS_FILES} PROPERTIES OUTPUT_LOCATION "${CMAKE_SOURCE_DIR}/atomicDeFi_design/assets/languages/")
-qt5_create_translation(QM_FILES ${CMAKE_SOURCE_DIR}/atomicDeFi_design/qml ${TS_FILES})
+        ${CMAKE_SOURCE_DIR}/atomic_defi_design/assets/languages/atomic_defi_en.ts
+        ${CMAKE_SOURCE_DIR}/atomic_defi_design/assets/languages/atomic_defi_fr.ts
+        ${CMAKE_SOURCE_DIR}/atomic_defi_design/assets/languages/atomic_defi_tr.ts)
+set_source_files_properties(${TS_FILES} PROPERTIES OUTPUT_LOCATION "${CMAKE_SOURCE_DIR}/atomic_defi_design/assets/languages/")
+qt5_create_translation(QM_FILES ${CMAKE_SOURCE_DIR}/atomic_defi_design/qml ${TS_FILES})
 #qt5_add_translation(qmFiles ${TS_FILES})
 message(STATUS "${QM_FILES}")
 message(STATUS "${TS_FILES}")

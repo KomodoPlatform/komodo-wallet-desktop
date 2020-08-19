@@ -128,13 +128,13 @@ main([[maybe_unused]] int argc, [[maybe_unused]] char* argv[])
     QZXing::registerQMLImageProvider(engine);
     engine.rootContext()->setContextProperty("atomic_app", &atomic_app);
 
-    engine.addImportPath("qrc:/atomic_qt_design/imports");
-    engine.addImportPath("qrc:/atomic_qt_design/Constants");
-    qmlRegisterSingletonType(QUrl("qrc:/atomic_qt_design/qml/Constants/General.qml"), "App", 1, 0, "General");
-    qmlRegisterSingletonType(QUrl("qrc:/atomic_qt_design/qml/Constants/Style.qml"), "App", 1, 0, "Style");
-    qmlRegisterSingletonType(QUrl("qrc:/atomic_qt_design/qml/Constants/API.qml"), "App", 1, 0, "API");
+    engine.addImportPath("qrc:/atomic_defi_design/imports");
+    engine.addImportPath("qrc:/atomic_defi_design/Constants");
+    qmlRegisterSingletonType(QUrl("qrc:/atomic_defi_design/qml/Constants/General.qml"), "App", 1, 0, "General");
+    qmlRegisterSingletonType(QUrl("qrc:/atomic_defi_design/qml/Constants/Style.qml"), "App", 1, 0, "Style");
+    qmlRegisterSingletonType(QUrl("qrc:/atomic_defi_design/qml/Constants/API.qml"), "App", 1, 0, "API");
 
-    const QUrl url(QStringLiteral("qrc:/atomic_qt_design/qml/main.qml"));
+    const QUrl url(QStringLiteral("qrc:/atomic_defi_design/qml/main.qml"));
     QObject::connect(
         &engine, &QQmlApplicationEngine::objectCreated, app.get(),
         [url](QObject* obj, const QUrl& objUrl) {
