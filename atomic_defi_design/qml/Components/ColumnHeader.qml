@@ -53,7 +53,6 @@ Item {
         source: General.image_path + "arrow-" + (ascending ? "up" : "down") + ".svg"
 
         width: title.font.pixelSize * 0.5
-        fillMode: Image.PreserveAspectFit
 
         anchors.left: icon_at_left ? title.right : undefined
         anchors.leftMargin: icon_at_left ? 10 : undefined

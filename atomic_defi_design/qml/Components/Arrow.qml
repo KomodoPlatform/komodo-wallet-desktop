@@ -17,7 +17,6 @@ Item {
         source: General.image_path + "arrow_" + (up ? "up" : "down") + ".svg"
 
         width: 10;
-        fillMode: Image.PreserveAspectFit
 
         visible: false
     }

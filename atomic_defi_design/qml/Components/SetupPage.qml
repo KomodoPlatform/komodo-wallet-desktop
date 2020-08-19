@@ -21,6 +21,9 @@ Item {
 
         DefaultImage {
             id: image
+            Layout.maximumWidth: 300
+            Layout.maximumHeight: Layout.maximumWidth * paintedHeight/paintedWidth
+
             Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
             antialiasing: true
         }

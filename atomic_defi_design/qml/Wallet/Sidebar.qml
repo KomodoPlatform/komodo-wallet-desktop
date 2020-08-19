@@ -177,7 +177,6 @@ Item {
                             anchors.leftMargin: side_margin - scrollbar_margin
 
                             source: General.coinIcon(model.modelData.ticker)
-                            fillMode: Image.PreserveAspectFit
                             width: Style.textSizeSmall4*2
                             anchors.verticalCenter: parent.verticalCenter
                         }

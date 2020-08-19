@@ -266,7 +266,6 @@ ColumnLayout {
                 anchors.leftMargin: coin_header.anchors.leftMargin
 
                 source: General.coinIcon(ticker)
-                fillMode: Image.PreserveAspectFit
                 width: Style.textSize2
                 anchors.verticalCenter: parent.verticalCenter
             }

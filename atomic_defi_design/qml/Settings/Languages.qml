@@ -37,7 +37,6 @@ ColumnLayout {
                         id: image
                         anchors.centerIn: parent
                         source: General.image_path + "lang/" + model.modelData + ".png"
-                        fillMode: Image.PreserveAspectFit
                         width: Style.textSize2
 
                         // Click area

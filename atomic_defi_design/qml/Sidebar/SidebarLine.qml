@@ -37,7 +37,6 @@ Item {
     DefaultImage {
         id: img
         height: txt.font.pixelSize * 1.4
-        fillMode: Image.PreserveAspectFit
         anchors.left: parent.left
         anchors.leftMargin: 50
         anchors.verticalCenter: parent.verticalCenter
