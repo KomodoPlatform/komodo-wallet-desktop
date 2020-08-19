@@ -49,7 +49,7 @@
 <context>
     <name>CandleStickChart</name>
     <message>
-        <location filename="../../qml/Exchange/Trade/CandleStickChart.qml" line="639"/>
+        <location filename="../../qml/Exchange/Trade/CandleStickChart.qml" line="640"/>
         <source>There is no chart data for this pair yet</source>
         <translation type="unfinished"></translation>
     </message>
@@ -114,13 +114,13 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/ClaimRewardsModal.qml" line="211"/>
-        <source>Accruing Stop At</source>
+        <location filename="../../qml/Wallet/ClaimRewardsModal.qml" line="195"/>
+        <source>Accruing Start</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/ClaimRewardsModal.qml" line="195"/>
-        <source>Accruing Started At</source>
+        <location filename="../../qml/Wallet/ClaimRewardsModal.qml" line="211"/>
+        <source>Accruing Stop</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -406,16 +406,16 @@
         <location filename="../../qml/Components/EulaModal.qml" line="90"/>
         <source>&lt;h2&gt;This End-User License Agreement (&apos;EULA&apos;) is a legal agreement between you and Komodo Platform.&lt;/h2&gt;
 
-&lt;p&gt;This EULA agreement governs your acquisition and use of our AtomicDEX Pro software (&apos;Software&apos;, &apos;Mobile Application&apos;, &apos;Application&apos; or &apos;App&apos;) directly from Komodo Platform or indirectly through a Komodo Platform authorized entity, reseller or distributor (a &apos;Distributor&apos;).&lt;/p&gt;
-&lt;p&gt;Please read this EULA agreement carefully before completing the installation process and using the AtomicDEX Pro software. It provides a license to use the AtomicDEX Pro software and contains warranty information and liability disclaimers.&lt;/p&gt;
-&lt;p&gt;If you register for the beta program of the AtomicDEX Pro software, this EULA agreement will also govern that trial. By clicking &apos;accept&apos; or installing and/or using the AtomicDEX Pro software, you are confirming your acceptance of the Software and agreeing to become bound by the terms of this EULA agreement.&lt;/p&gt;
+&lt;p&gt;This EULA agreement governs your acquisition and use of our AtomicDeFi Pro software (&apos;Software&apos;, &apos;Mobile Application&apos;, &apos;Application&apos; or &apos;App&apos;) directly from Komodo Platform or indirectly through a Komodo Platform authorized entity, reseller or distributor (a &apos;Distributor&apos;).&lt;/p&gt;
+&lt;p&gt;Please read this EULA agreement carefully before completing the installation process and using the AtomicDeFi Pro software. It provides a license to use the AtomicDeFi Pro software and contains warranty information and liability disclaimers.&lt;/p&gt;
+&lt;p&gt;If you register for the beta program of the AtomicDeFi Pro software, this EULA agreement will also govern that trial. By clicking &apos;accept&apos; or installing and/or using the AtomicDeFi Pro software, you are confirming your acceptance of the Software and agreeing to become bound by the terms of this EULA agreement.&lt;/p&gt;
 &lt;p&gt;If you are entering into this EULA agreement on behalf of a company or other legal entity, you represent that you have the authority to bind such entity and its affiliates to these terms and conditions. If you do not have such authority or if you do not agree with the terms and conditions of this EULA agreement, do not install or use the Software, and you must not accept this EULA agreement.&lt;/p&gt;
 &lt;p&gt;This EULA agreement shall apply only to the Software supplied by Komodo Platform herewith regardless of whether other software is referred to or described herein. The terms also apply to any Komodo Platform updates, supplements, Internet-based services, and support services for the Software, unless other terms accompany those items on delivery. If so, those terms apply.&lt;/p&gt;
 
 &lt;h3&gt;License Grant&lt;/h3&gt;
-&lt;p&gt;Komodo Platform hereby grants you a personal, non-transferable, non-exclusive licence to use the AtomicDEX Pro software on your devices in accordance with the terms of this EULA agreement.&lt;/p&gt;
+&lt;p&gt;Komodo Platform hereby grants you a personal, non-transferable, non-exclusive licence to use the AtomicDeFi Pro software on your devices in accordance with the terms of this EULA agreement.&lt;/p&gt;
 
-&lt;p&gt;You are permitted to load the AtomicDEX Pro software (for example a PC, laptop, mobile or tablet) under your control. You are responsible for ensuring your device meets the minimum security and resource requirements of the AtomicDEX Pro software.&lt;/p&gt;
+&lt;p&gt;You are permitted to load the AtomicDeFi Pro software (for example a PC, laptop, mobile or tablet) under your control. You are responsible for ensuring your device meets the minimum security and resource requirements of the AtomicDeFi Pro software.&lt;/p&gt;
 
 &lt;p&gt;&lt;b&gt;You are not permitted to:&lt;/b&gt;&lt;/p&gt;
 &lt;ul&gt;
@@ -459,147 +459,147 @@
         <translation>Historique</translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Exchange.qml" line="170"/>
+        <location filename="../../qml/Exchange/Exchange.qml" line="171"/>
         <source>Order Matching</source>
         <translation>Recherche d&apos;un ordre</translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Exchange.qml" line="172"/>
+        <location filename="../../qml/Exchange/Exchange.qml" line="173"/>
         <source>Order Matched</source>
         <translation>Ordre trouvé</translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Exchange.qml" line="174"/>
+        <location filename="../../qml/Exchange/Exchange.qml" line="175"/>
         <source>Swap Ongoing</source>
         <translation>Échange en cours</translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Exchange.qml" line="176"/>
+        <location filename="../../qml/Exchange/Exchange.qml" line="177"/>
         <source>Swap Successful</source>
         <translation>Échange terminé</translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Exchange.qml" line="178"/>
+        <location filename="../../qml/Exchange/Exchange.qml" line="179"/>
         <source>Refunding</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Exchange.qml" line="180"/>
+        <location filename="../../qml/Exchange/Exchange.qml" line="181"/>
         <source>Swap Failed</source>
         <translation>Erreur lors de l&apos;échange</translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Exchange.qml" line="182"/>
+        <location filename="../../qml/Exchange/Exchange.qml" line="183"/>
         <source>Unknown State</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Exchange.qml" line="211"/>
+        <location filename="../../qml/Exchange/Exchange.qml" line="212"/>
         <source>Started</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Exchange.qml" line="213"/>
+        <location filename="../../qml/Exchange/Exchange.qml" line="214"/>
         <source>Negotiated</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Exchange.qml" line="215"/>
+        <location filename="../../qml/Exchange/Exchange.qml" line="216"/>
         <source>Taker fee sent</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Exchange.qml" line="217"/>
+        <location filename="../../qml/Exchange/Exchange.qml" line="218"/>
         <source>Maker payment received</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Exchange.qml" line="219"/>
+        <location filename="../../qml/Exchange/Exchange.qml" line="220"/>
         <source>Maker payment wait confirm started</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Exchange.qml" line="221"/>
+        <location filename="../../qml/Exchange/Exchange.qml" line="222"/>
         <source>Maker payment validated and confirmed</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Exchange.qml" line="223"/>
+        <location filename="../../qml/Exchange/Exchange.qml" line="224"/>
         <source>Taker payment sent</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Exchange.qml" line="225"/>
+        <location filename="../../qml/Exchange/Exchange.qml" line="226"/>
         <source>Taker payment spent</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Exchange.qml" line="227"/>
+        <location filename="../../qml/Exchange/Exchange.qml" line="228"/>
         <source>Maker payment spent</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Exchange.qml" line="229"/>
+        <location filename="../../qml/Exchange/Exchange.qml" line="230"/>
         <source>Finished</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Exchange.qml" line="231"/>
+        <location filename="../../qml/Exchange/Exchange.qml" line="232"/>
         <source>Start failed</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Exchange.qml" line="233"/>
+        <location filename="../../qml/Exchange/Exchange.qml" line="234"/>
         <source>Negotiate failed</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Exchange.qml" line="235"/>
+        <location filename="../../qml/Exchange/Exchange.qml" line="236"/>
         <source>Taker fee validate failed</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Exchange.qml" line="237"/>
+        <location filename="../../qml/Exchange/Exchange.qml" line="238"/>
         <source>Maker payment transaction failed</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Exchange.qml" line="239"/>
+        <location filename="../../qml/Exchange/Exchange.qml" line="240"/>
         <source>Maker payment Data send failed</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Exchange.qml" line="241"/>
+        <location filename="../../qml/Exchange/Exchange.qml" line="242"/>
         <source>Maker payment wait confirm failed</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Exchange.qml" line="243"/>
+        <location filename="../../qml/Exchange/Exchange.qml" line="244"/>
         <source>Taker payment validate failed</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Exchange.qml" line="245"/>
+        <location filename="../../qml/Exchange/Exchange.qml" line="246"/>
         <source>Taker payment wait confirm failed</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Exchange.qml" line="247"/>
+        <location filename="../../qml/Exchange/Exchange.qml" line="248"/>
         <source>Taker payment spend failed</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Exchange.qml" line="249"/>
+        <location filename="../../qml/Exchange/Exchange.qml" line="250"/>
         <source>Maker payment wait refund started</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Exchange.qml" line="251"/>
+        <location filename="../../qml/Exchange/Exchange.qml" line="252"/>
         <source>Maker payment refunded</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Exchange.qml" line="253"/>
+        <location filename="../../qml/Exchange/Exchange.qml" line="254"/>
         <source>Maker payment refund failed</source>
         <translation type="unfinished"></translation>
     </message>
@@ -708,27 +708,26 @@
 <context>
     <name>InitialLoading</name>
     <message>
-        <location filename="../../qml/Screens/InitialLoading.qml" line="31"/>
+        <location filename="../../qml/Screens/InitialLoading.qml" line="28"/>
         <source>Loading, please wait</source>
         <translation>Chargement en cours, veuillez patienter</translation>
     </message>
     <message>
-        <location filename="../../qml/Screens/InitialLoading.qml" line="44"/>
+        <location filename="../../qml/Screens/InitialLoading.qml" line="41"/>
         <source>Initializing MM2</source>
         <translation>Initialisation de MM2</translation>
     </message>
     <message>
-        <location filename="../../qml/Screens/InitialLoading.qml" line="45"/>
+        <location filename="../../qml/Screens/InitialLoading.qml" line="42"/>
         <source>Enabling coins</source>
         <translation>Activation des pièces</translation>
     </message>
     <message>
-        <location filename="../../qml/Screens/InitialLoading.qml" line="46"/>
         <source>Complete</source>
-        <translation>Terminer</translation>
+        <translation type="vanished">Terminer</translation>
     </message>
     <message>
-        <location filename="../../qml/Screens/InitialLoading.qml" line="46"/>
+        <location filename="../../qml/Screens/InitialLoading.qml" line="42"/>
         <source>Getting ready</source>
         <translation type="unfinished"></translation>
     </message>
@@ -954,32 +953,36 @@
 <context>
     <name>NotificationsPanel</name>
     <message>
-        <location filename="../../qml/Dashboard/NotificationsPanel.qml" line="47"/>
+        <location filename="../../qml/Dashboard/NotificationsPanel.qml" line="48"/>
         <source>Swap status updated</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Dashboard/NotificationsPanel.qml" line="96"/>
         <source>AtomicDEX Pro</source>
-        <translation type="unfinished">AtomicDEX Pro</translation>
+        <translation type="obsolete">AtomicDEX Pro</translation>
     </message>
     <message>
-        <location filename="../../qml/Dashboard/NotificationsPanel.qml" line="111"/>
+        <location filename="../../qml/Dashboard/NotificationsPanel.qml" line="97"/>
+        <source>AtomicDeFi Pro</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../qml/Dashboard/NotificationsPanel.qml" line="112"/>
         <source>Notifications</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Dashboard/NotificationsPanel.qml" line="129"/>
+        <location filename="../../qml/Dashboard/NotificationsPanel.qml" line="130"/>
         <source>Clear</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Dashboard/NotificationsPanel.qml" line="156"/>
+        <location filename="../../qml/Dashboard/NotificationsPanel.qml" line="157"/>
         <source>There isn&apos;t any notification</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Dashboard/NotificationsPanel.qml" line="255"/>
+        <location filename="../../qml/Dashboard/NotificationsPanel.qml" line="256"/>
         <source>Close</source>
         <translation type="unfinished">Fermer</translation>
     </message>
@@ -1023,7 +1026,7 @@
 <context>
     <name>OrderForm</name>
     <message>
-        <location filename="../../qml/Exchange/Trade/OrderForm.qml" line="195"/>
+        <location filename="../../qml/Exchange/Trade/OrderForm.qml" line="176"/>
         <source>Sell</source>
         <translation>Vendre</translation>
     </message>
@@ -1040,12 +1043,12 @@
         <translation type="obsolete">Montant</translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/OrderForm.qml" line="255"/>
+        <location filename="../../qml/Exchange/Trade/OrderForm.qml" line="235"/>
         <source>Amount to sell</source>
         <translation>Montant à vendre</translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/OrderForm.qml" line="255"/>
+        <location filename="../../qml/Exchange/Trade/OrderForm.qml" line="235"/>
         <source>Amount to receive</source>
         <translation>Montant à recevoir</translation>
     </message>
@@ -1054,63 +1057,68 @@
         <translation type="vanished">Veuillez remplir le montant de la vente</translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/OrderForm.qml" line="203"/>
+        <location filename="../../qml/Exchange/Trade/OrderForm.qml" line="184"/>
         <source>Buy</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/OrderForm.qml" line="224"/>
+        <location filename="../../qml/Exchange/Trade/OrderForm.qml" line="205"/>
         <source>Price</source>
         <translation type="unfinished">Prix</translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/OrderForm.qml" line="253"/>
+        <location filename="../../qml/Exchange/Trade/OrderForm.qml" line="233"/>
         <source>Volume</source>
         <translation type="unfinished">Volume</translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/OrderForm.qml" line="325"/>
+        <location filename="../../qml/Exchange/Trade/OrderForm.qml" line="305"/>
         <source>Min</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/OrderForm.qml" line="332"/>
+        <location filename="../../qml/Exchange/Trade/OrderForm.qml" line="312"/>
         <source>Half</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/OrderForm.qml" line="339"/>
+        <location filename="../../qml/Exchange/Trade/OrderForm.qml" line="319"/>
         <source>Max</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/OrderForm.qml" line="368"/>
+        <location filename="../../qml/Exchange/Trade/OrderForm.qml" line="348"/>
         <source>Transaction Fee</source>
         <translation>Frais de transactions</translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/OrderForm.qml" line="386"/>
+        <location filename="../../qml/Exchange/Trade/OrderForm.qml" line="366"/>
         <source>Trading Fee</source>
         <translation>Frais d&apos;échanges</translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/OrderForm.qml" line="403"/>
+        <location filename="../../qml/Exchange/Trade/OrderForm.qml" line="384"/>
+        <source>Minimum fee</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../qml/Exchange/Trade/OrderForm.qml" line="385"/>
         <source>Fees will be calculated</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/OrderForm.qml" line="421"/>
+        <location filename="../../qml/Exchange/Trade/OrderForm.qml" line="403"/>
         <source>Total</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/OrderForm.qml" line="435"/>
+        <location filename="../../qml/Exchange/Trade/OrderForm.qml" line="417"/>
         <source>Sell %1</source>
         <comment>TICKER</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/OrderForm.qml" line="435"/>
+        <location filename="../../qml/Exchange/Trade/OrderForm.qml" line="417"/>
         <source>Buy %1</source>
         <comment>TICKER</comment>
         <translation type="unfinished"></translation>
@@ -1154,42 +1162,42 @@
 <context>
     <name>OrderModal</name>
     <message>
-        <location filename="../../qml/Exchange/OrderModal.qml" line="30"/>
+        <location filename="../../qml/Exchange/OrderModal.qml" line="32"/>
         <source>Swap Details</source>
         <translation>Détails de l&apos;échange</translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/OrderModal.qml" line="30"/>
+        <location filename="../../qml/Exchange/OrderModal.qml" line="32"/>
         <source>Order Details</source>
         <translation>Détails de l&apos;ordre</translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/OrderModal.qml" line="94"/>
+        <location filename="../../qml/Exchange/OrderModal.qml" line="96"/>
         <source>Maker Order</source>
         <translation>Ordre de vente</translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/OrderModal.qml" line="94"/>
+        <location filename="../../qml/Exchange/OrderModal.qml" line="96"/>
         <source>Taker Order</source>
         <translation>Ordre d&apos;achat</translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/OrderModal.qml" line="103"/>
+        <location filename="../../qml/Exchange/OrderModal.qml" line="105"/>
         <source>Refund State</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/OrderModal.qml" line="105"/>
+        <location filename="../../qml/Exchange/OrderModal.qml" line="107"/>
         <source>Your swap failed but the auto-refund process for your payment started already. Please wait and keep application opened until you receive your payment back</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/OrderModal.qml" line="113"/>
+        <location filename="../../qml/Exchange/OrderModal.qml" line="115"/>
         <source>Date</source>
         <translation>Date</translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/OrderModal.qml" line="121"/>
+        <location filename="../../qml/Exchange/OrderModal.qml" line="123"/>
         <source>ID</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1202,27 +1210,27 @@
         <translation type="vanished">UUID</translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/OrderModal.qml" line="131"/>
+        <location filename="../../qml/Exchange/OrderModal.qml" line="133"/>
         <source>Maker Payment Sent ID</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/OrderModal.qml" line="131"/>
+        <location filename="../../qml/Exchange/OrderModal.qml" line="133"/>
         <source>Maker Payment Spent ID</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/OrderModal.qml" line="141"/>
+        <location filename="../../qml/Exchange/OrderModal.qml" line="143"/>
         <source>Taker Payment Spent ID</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/OrderModal.qml" line="141"/>
+        <location filename="../../qml/Exchange/OrderModal.qml" line="143"/>
         <source>Taker Payment Sent ID</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/OrderModal.qml" line="195"/>
+        <location filename="../../qml/Exchange/OrderModal.qml" line="200"/>
         <source>Cancel Order</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1235,17 +1243,17 @@
         <translation type="vanished">ID du paiement du vendeur</translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/OrderModal.qml" line="150"/>
+        <location filename="../../qml/Exchange/OrderModal.qml" line="152"/>
         <source>Error ID</source>
         <translation>ID de l&apos;erreur</translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/OrderModal.qml" line="158"/>
+        <location filename="../../qml/Exchange/OrderModal.qml" line="160"/>
         <source>Error Log</source>
         <translation>Journal des erreurs</translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/OrderModal.qml" line="185"/>
+        <location filename="../../qml/Exchange/OrderModal.qml" line="190"/>
         <source>Close</source>
         <translation>Fermer</translation>
     </message>
@@ -1254,7 +1262,7 @@
         <translation type="vanished">Annuler</translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/OrderModal.qml" line="200"/>
+        <location filename="../../qml/Exchange/OrderModal.qml" line="205"/>
         <source>View at Explorer</source>
         <translation>Voir dans l&apos;explorateur</translation>
     </message>
@@ -1368,47 +1376,47 @@
 <context>
     <name>PasswordField</name>
     <message>
-        <location filename="../../qml/Components/PasswordField.qml" line="53"/>
+        <location filename="../../qml/Components/PasswordField.qml" line="57"/>
         <source>Password</source>
         <translation>Mot de passe</translation>
     </message>
     <message>
-        <location filename="../../qml/Components/PasswordField.qml" line="54"/>
+        <location filename="../../qml/Components/PasswordField.qml" line="58"/>
         <source>Enter a password for your wallet</source>
         <translation>Entrez un mot de passe pour votre portefeuille</translation>
     </message>
     <message>
-        <location filename="../../qml/Components/PasswordField.qml" line="54"/>
+        <location filename="../../qml/Components/PasswordField.qml" line="58"/>
         <source>Enter the password of your wallet</source>
         <translation>Entrez un mot de passe pour votre portefeuille</translation>
     </message>
     <message>
-        <location filename="../../qml/Components/PasswordField.qml" line="66"/>
+        <location filename="../../qml/Components/PasswordField.qml" line="70"/>
         <source>At least 1 lowercase alphabetical character</source>
         <translation>Au moins 1 caractère alphabétique en minuscule</translation>
     </message>
     <message>
-        <location filename="../../qml/Components/PasswordField.qml" line="71"/>
+        <location filename="../../qml/Components/PasswordField.qml" line="75"/>
         <source>At least 1 uppercase alphabetical character</source>
         <translation>Au moins 1 caractère alphabétique en majuscule</translation>
     </message>
     <message>
-        <location filename="../../qml/Components/PasswordField.qml" line="76"/>
+        <location filename="../../qml/Components/PasswordField.qml" line="80"/>
         <source>At least 1 numeric character</source>
         <translation>Au moins 1 caractère numérique</translation>
     </message>
     <message>
-        <location filename="../../qml/Components/PasswordField.qml" line="81"/>
+        <location filename="../../qml/Components/PasswordField.qml" line="85"/>
         <source>At least 1 special character (eg. !@#$%)</source>
         <translation>Au moins 1 caractère spécial (ex:  ! @ # $%)</translation>
     </message>
     <message>
-        <location filename="../../qml/Components/PasswordField.qml" line="86"/>
+        <location filename="../../qml/Components/PasswordField.qml" line="90"/>
         <source>At least 16 characters</source>
         <translation>Au moins 16 caractères</translation>
     </message>
     <message>
-        <location filename="../../qml/Components/PasswordField.qml" line="91"/>
+        <location filename="../../qml/Components/PasswordField.qml" line="95"/>
         <source>Password and Confirm Password have to be same</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1963,7 +1971,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/SwapProgress.qml" line="96"/>
+        <location filename="../../qml/Exchange/SwapProgress.qml" line="98"/>
         <source>Progress details</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1971,7 +1979,7 @@
 <context>
     <name>TextFieldWithTitle</name>
     <message>
-        <location filename="../../qml/Components/TextFieldWithTitle.qml" line="32"/>
+        <location filename="../../qml/Components/TextFieldWithTitle.qml" line="33"/>
         <source>Required</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2003,45 +2011,45 @@
         <translation type="vanished">Impossible de placer l&apos;ordre.</translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/Trade.qml" line="279"/>
+        <location filename="../../qml/Exchange/Trade/Trade.qml" line="289"/>
         <source>Placed the order</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/Trade.qml" line="286"/>
+        <location filename="../../qml/Exchange/Trade/Trade.qml" line="296"/>
         <source>Failed to place the order</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/Trade.qml" line="425"/>
+        <location filename="../../qml/Exchange/Trade/Trade.qml" line="438"/>
+        <source>Tradable (after fees) %1 balance is lower than minimum trade amount</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../qml/Exchange/Trade/Trade.qml" line="441"/>
         <source>Please fill the price field</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/Trade.qml" line="426"/>
-        <source>%1 balance is lower than minimum trade amount</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../qml/Exchange/Trade/Trade.qml" line="428"/>
+        <location filename="../../qml/Exchange/Trade/Trade.qml" line="451"/>
         <source>Not enough balance for the fees. Need at least %1 more</source>
         <comment>AMT TICKER</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/Trade.qml" line="429"/>
+        <location filename="../../qml/Exchange/Trade/Trade.qml" line="444"/>
         <source>Please fill the volume field</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/Trade.qml" line="430"/>
-        <source>Not enough ETH for the transaction fee</source>
-        <translation>Pas assez d&apos;ETH pour les frais de transaction</translation>
+        <location filename="../../qml/Exchange/Trade/Trade.qml" line="447"/>
+        <source>Volume is lower than minimum trade amount</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/Trade.qml" line="431"/>
-        <source>Amount is lower than minimum trade amount</source>
-        <translation type="unfinished"></translation>
+        <location filename="../../qml/Exchange/Trade/Trade.qml" line="454"/>
+        <source>Not enough ETH for the transaction fee</source>
+        <translation>Pas assez d&apos;ETH pour les frais de transaction</translation>
     </message>
     <message>
         <source>Sell amount is lower than minimum trade amount</source>
@@ -2253,9 +2261,13 @@
 <context>
     <name>main</name>
     <message>
-        <location filename="../../qml/main.qml" line="13"/>
         <source>AtomicDEX Pro</source>
-        <translation>AtomicDEX Pro</translation>
+        <translation type="vanished">AtomicDEX Pro</translation>
+    </message>
+    <message>
+        <location filename="../../qml/main.qml" line="13"/>
+        <source>AtomicDeFi Pro</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 </TS>
