@@ -80,7 +80,7 @@ namespace atomic_dex
         qDebug() << "locale before: " << QLocale().name();
         QLocale::setDefault(get_locale(m_config.current_lang));
         qDebug() << "locale after: " << QLocale().name();
-        [[maybe_unused]] auto res = this->m_translator.load("atomic_qt_" + new_lang, QLatin1String(":/atomic_qt_design/assets/languages"));
+        [[maybe_unused]] auto res = this->m_translator.load("atomicDeFi_" + new_lang, QLatin1String(":/atomic_qt_design/assets/languages"));
         assert(res);
         this->m_app->installTranslator(&m_translator);
         emit onLangChanged();
