@@ -200,7 +200,7 @@ Item {
                     text: API.get().settings_pg.empty_string + (qsTr("Send"))
                     onClicked: send_modal.open()
                     Layout.fillWidth: true
-                    font.pixelSize: Style.textSizeMid
+                    font.pixelSize: Style.textSize
 
                     Arrow {
                         id: arrow_send
