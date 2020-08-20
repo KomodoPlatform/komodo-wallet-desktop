@@ -285,7 +285,7 @@ jobs:
           export QT_ROOT=${{ github.workspace }}/Qt/5.15.0
           echo "Running tests"
           ./ci_tools_atomic_dex tests release
-          cd build-Release/bin/atomic_defi_tests.app/Contents/MacOS
+          cd build-Release/bin/atomicDeFi_tests.app/Contents/MacOS
           cat atomic-dex-tests-result.xml
           curl https://report.ci/upload.py --output upload.py
           ls

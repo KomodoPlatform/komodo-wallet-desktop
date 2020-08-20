@@ -142,7 +142,7 @@ namespace atomic_dex
         emit chartFullyModelReset();
 
         if (m_model_data.empty()) {
-            this->set_is_currently_fetching(false);
+            //this->set_is_currently_fetching(false);
             return;
         }
         double max_value = std::numeric_limits<double>::min();
