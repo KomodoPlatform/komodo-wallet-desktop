@@ -18,7 +18,7 @@ Item {
     // Cursor
     Rectangle {
         id: cursor
-        width: 170 - cursor_round_edge.radius
+        width: 185 - cursor_round_edge.radius
         anchors.right: parent.right
         height: Style.sidebarLineHeight + top_rect.radius*2
         transformOrigin: Item.Left
