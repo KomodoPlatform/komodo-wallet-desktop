@@ -116,8 +116,10 @@ namespace atomic_dex
         t_fees_registry          m_trade_fees_registry;
         t_orderbook_registry     m_current_orderbook;
         t_swaps_registry         m_swaps_registry;
-        t_swaps_avrg_datas       m_swaps_avrg_registry;
         t_mm2_raw_coins_registry m_mm2_raw_coins_cfg{parse_raw_mm2_coins_file()};
+
+        //! Balance factor
+        double m_balance_factor{1.0};
 
         //! Refresh the current orderbook (internally call process_orderbook)
         void fetch_current_orderbook_thread(bool is_a_reset = false);
@@ -129,7 +131,7 @@ namespace atomic_dex
         void process_tx(const std::string& ticker);
 
         //! Refresh the fees registry (internal)
-        //void process_fees();
+        // void process_fees();
 
         //! Refresh the orderbook registry (internal)
         void process_orderbook(bool is_a_reset = false);
@@ -161,7 +163,7 @@ namespace atomic_dex
         void on_gui_leave_trading(const gui_leave_trading& evt) noexcept;
 
         //! Spawn mm2 instance with given seed
-        void spawn_mm2_instance(std::string wallet_name, std::string passphrase);
+        void spawn_mm2_instance(std::string wallet_name, std::string passphrase, bool with_pin_cfg = false);
 
         //! Refresh the current info (internally call process_balance and process_tx)
         void fetch_infos_thread();

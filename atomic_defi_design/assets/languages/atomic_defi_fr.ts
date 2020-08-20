@@ -24,17 +24,17 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/AddressBook.qml" line="413"/>
+        <location filename="../../qml/Wallet/AddressBook.qml" line="412"/>
         <source>Enter the address</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/AddressBook.qml" line="442"/>
+        <location filename="../../qml/Wallet/AddressBook.qml" line="441"/>
         <source>Explorer</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/AddressBook.qml" line="453"/>
+        <location filename="../../qml/Wallet/AddressBook.qml" line="452"/>
         <source>Send</source>
         <translation type="unfinished">Envoyez</translation>
     </message>
@@ -192,9 +192,8 @@
         <translation>La requête de ce swap ne peut pas être annulé, c&apos;est irréversible !</translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/ConfirmTradeModal.qml" line="82"/>
         <source>This transaction can take up to 10 mins - DO NOT close this application!</source>
-        <translation>Cette transaction peut prendre jusqu&apos;à 10 mins - NE fermez pas l&apos;application !</translation>
+        <translation type="vanished">Cette transaction peut prendre jusqu&apos;à 10 mins - NE fermez pas l&apos;application !</translation>
     </message>
     <message>
         <location filename="../../qml/Exchange/Trade/ConfirmTradeModal.qml" line="108"/>
@@ -227,6 +226,11 @@
         <location filename="../../qml/Exchange/Trade/ConfirmTradeModal.qml" line="116"/>
         <source>%1 confirmations for incoming %2 transactions</source>
         <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../qml/Exchange/Trade/ConfirmTradeModal.qml" line="82"/>
+        <source>This transaction can take up to 60 mins - DO NOT close this application!</source>
+        <translation type="unfinished">Cette transaction peut prendre jusqu&apos;à 10 mins - NE fermez pas l&apos;application ! {60 ?}</translation>
     </message>
     <message>
         <location filename="../../qml/Exchange/Trade/ConfirmTradeModal.qml" line="182"/>
@@ -406,16 +410,16 @@
         <location filename="../../qml/Components/EulaModal.qml" line="90"/>
         <source>&lt;h2&gt;This End-User License Agreement (&apos;EULA&apos;) is a legal agreement between you and Komodo Platform.&lt;/h2&gt;
 
-&lt;p&gt;This EULA agreement governs your acquisition and use of our AtomicDeFi Pro software (&apos;Software&apos;, &apos;Mobile Application&apos;, &apos;Application&apos; or &apos;App&apos;) directly from Komodo Platform or indirectly through a Komodo Platform authorized entity, reseller or distributor (a &apos;Distributor&apos;).&lt;/p&gt;
-&lt;p&gt;Please read this EULA agreement carefully before completing the installation process and using the AtomicDeFi Pro software. It provides a license to use the AtomicDeFi Pro software and contains warranty information and liability disclaimers.&lt;/p&gt;
-&lt;p&gt;If you register for the beta program of the AtomicDeFi Pro software, this EULA agreement will also govern that trial. By clicking &apos;accept&apos; or installing and/or using the AtomicDeFi Pro software, you are confirming your acceptance of the Software and agreeing to become bound by the terms of this EULA agreement.&lt;/p&gt;
+&lt;p&gt;This EULA agreement governs your acquisition and use of our atomicDeFi Pro software (&apos;Software&apos;, &apos;Mobile Application&apos;, &apos;Application&apos; or &apos;App&apos;) directly from Komodo Platform or indirectly through a Komodo Platform authorized entity, reseller or distributor (a &apos;Distributor&apos;).&lt;/p&gt;
+&lt;p&gt;Please read this EULA agreement carefully before completing the installation process and using the atomicDeFi Pro software. It provides a license to use the atomicDeFi Pro software and contains warranty information and liability disclaimers.&lt;/p&gt;
+&lt;p&gt;If you register for the beta program of the atomicDeFi Pro software, this EULA agreement will also govern that trial. By clicking &apos;accept&apos; or installing and/or using the atomicDeFi Pro software, you are confirming your acceptance of the Software and agreeing to become bound by the terms of this EULA agreement.&lt;/p&gt;
 &lt;p&gt;If you are entering into this EULA agreement on behalf of a company or other legal entity, you represent that you have the authority to bind such entity and its affiliates to these terms and conditions. If you do not have such authority or if you do not agree with the terms and conditions of this EULA agreement, do not install or use the Software, and you must not accept this EULA agreement.&lt;/p&gt;
 &lt;p&gt;This EULA agreement shall apply only to the Software supplied by Komodo Platform herewith regardless of whether other software is referred to or described herein. The terms also apply to any Komodo Platform updates, supplements, Internet-based services, and support services for the Software, unless other terms accompany those items on delivery. If so, those terms apply.&lt;/p&gt;
 
 &lt;h3&gt;License Grant&lt;/h3&gt;
-&lt;p&gt;Komodo Platform hereby grants you a personal, non-transferable, non-exclusive licence to use the AtomicDeFi Pro software on your devices in accordance with the terms of this EULA agreement.&lt;/p&gt;
+&lt;p&gt;Komodo Platform hereby grants you a personal, non-transferable, non-exclusive licence to use the atomicDeFi Pro software on your devices in accordance with the terms of this EULA agreement.&lt;/p&gt;
 
-&lt;p&gt;You are permitted to load the AtomicDeFi Pro software (for example a PC, laptop, mobile or tablet) under your control. You are responsible for ensuring your device meets the minimum security and resource requirements of the AtomicDeFi Pro software.&lt;/p&gt;
+&lt;p&gt;You are permitted to load the atomicDeFi Pro software (for example a PC, laptop, mobile or tablet) under your control. You are responsible for ensuring your device meets the minimum security and resource requirements of the atomicDeFi Pro software.&lt;/p&gt;
 
 &lt;p&gt;&lt;b&gt;You are not permitted to:&lt;/b&gt;&lt;/p&gt;
 &lt;ul&gt;
@@ -611,22 +615,22 @@
         <translation type="vanished">Bienvenue !</translation>
     </message>
     <message>
-        <location filename="../../qml/Screens/FirstLaunch.qml" line="29"/>
+        <location filename="../../qml/Screens/FirstLaunch.qml" line="28"/>
         <source>Welcome</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Screens/FirstLaunch.qml" line="42"/>
+        <location filename="../../qml/Screens/FirstLaunch.qml" line="41"/>
         <source>Recover Seed</source>
         <translation>Récuperer son Seed</translation>
     </message>
     <message>
-        <location filename="../../qml/Screens/FirstLaunch.qml" line="48"/>
+        <location filename="../../qml/Screens/FirstLaunch.qml" line="47"/>
         <source>New User</source>
         <translation>Nouvel Utilisateur</translation>
     </message>
     <message>
-        <location filename="../../qml/Screens/FirstLaunch.qml" line="61"/>
+        <location filename="../../qml/Screens/FirstLaunch.qml" line="60"/>
         <source>Wallets</source>
         <translation>Portefeuilles</translation>
     </message>
@@ -963,7 +967,7 @@
     </message>
     <message>
         <location filename="../../qml/Dashboard/NotificationsPanel.qml" line="97"/>
-        <source>AtomicDeFi Pro</source>
+        <source>atomicDeFi Pro</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -998,27 +1002,27 @@
         <translation type="vanished">UUID</translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/OrderContent.qml" line="79"/>
+        <location filename="../../qml/Exchange/OrderContent.qml" line="77"/>
         <source>ID</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/OrderContent.qml" line="111"/>
+        <location filename="../../qml/Exchange/OrderContent.qml" line="109"/>
         <source>Maker Order</source>
         <translation>Ordre de vente</translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/OrderContent.qml" line="111"/>
+        <location filename="../../qml/Exchange/OrderContent.qml" line="109"/>
         <source>Taker Order</source>
         <translation>Ordre d&apos;achat</translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/OrderContent.qml" line="123"/>
+        <location filename="../../qml/Exchange/OrderContent.qml" line="121"/>
         <source>Cancel</source>
         <translation>Annuler</translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/OrderContent.qml" line="133"/>
+        <location filename="../../qml/Exchange/OrderContent.qml" line="131"/>
         <source>Recover Funds</source>
         <translation>Récupérer des fonds</translation>
     </message>
@@ -2021,33 +2025,33 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/Trade.qml" line="438"/>
+        <location filename="../../qml/Exchange/Trade/Trade.qml" line="437"/>
         <source>Tradable (after fees) %1 balance is lower than minimum trade amount</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/Trade.qml" line="441"/>
+        <location filename="../../qml/Exchange/Trade/Trade.qml" line="440"/>
         <source>Please fill the price field</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/Trade.qml" line="451"/>
+        <location filename="../../qml/Exchange/Trade/Trade.qml" line="450"/>
         <source>Not enough balance for the fees. Need at least %1 more</source>
         <comment>AMT TICKER</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/Trade.qml" line="444"/>
+        <location filename="../../qml/Exchange/Trade/Trade.qml" line="443"/>
         <source>Please fill the volume field</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/Trade.qml" line="447"/>
+        <location filename="../../qml/Exchange/Trade/Trade.qml" line="446"/>
         <source>Volume is lower than minimum trade amount</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/Trade.qml" line="454"/>
+        <location filename="../../qml/Exchange/Trade/Trade.qml" line="453"/>
         <source>Not enough ETH for the transaction fee</source>
         <translation>Pas assez d&apos;ETH pour les frais de transaction</translation>
     </message>
@@ -2266,7 +2270,7 @@
     </message>
     <message>
         <location filename="../../qml/main.qml" line="13"/>
-        <source>AtomicDeFi Pro</source>
+        <source>atomicDeFi Pro</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

@@ -657,8 +657,9 @@ namespace atomic_dex
     }
 
     void
-    mm2::spawn_mm2_instance(std::string wallet_name, std::string passphrase)
+    mm2::spawn_mm2_instance(std::string wallet_name, std::string passphrase, bool with_pin_cfg)
     {
+        this->m_balance_factor = determine_balance_factor(with_pin_cfg);
         spdlog::debug("{} l{} f[{}]", __FUNCTION__, __LINE__, fs::path(__FILE__).filename().string());
         this->m_current_wallet_name = std::move(wallet_name);
         retrieve_coins_information(this->m_current_wallet_name, m_coins_informations);
@@ -746,7 +747,7 @@ namespace atomic_dex
         const auto answer = m_balance_informations.at(ticker);
         t_float_50 balance(answer.balance);
 
-        return balance;
+        return balance * t_float_50(m_balance_factor);
     }
 
     t_transactions
