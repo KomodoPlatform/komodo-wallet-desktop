@@ -140,8 +140,8 @@ Item {
             anchors.horizontalCenter: parent.horizontalCenter
             anchors.top: parent.top
             anchors.topMargin: parent.width * 0.85
-            text_value: API.get().settings_pg.empty_string + ("V. atomicDeFi Pro " + API.get().get_version())
-            font.pixelSize: Style.textSizeVerySmall8
+            text_value: API.get().settings_pg.empty_string + ("Pro v" + API.get().get_version())
+            font.pixelSize: Style.textSizeSmall1
             color: Style.colorThemeDarkLight
         }
 
