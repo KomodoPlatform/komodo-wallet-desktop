@@ -164,8 +164,6 @@ ChartView {
     }
 
     id: chart
-    width: parent.width
-    height: parent.height
     antialiasing: true
 
     legend.visible: false

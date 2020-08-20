@@ -291,8 +291,7 @@ Item {
 
                 PriceGraph {
                     id: chart
-                    width: price_graph_bg.width
-                    height: price_graph_bg.height
+                    anchors.fill: parent
 
                     RowLayout {
                         spacing: 60
