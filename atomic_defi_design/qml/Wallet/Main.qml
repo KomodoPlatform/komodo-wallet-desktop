@@ -73,7 +73,7 @@ Item {
                         // Name and crypto amount
                         ColumnLayout {
                             id: balance_layout
-                            spacing: -2
+                            spacing: 3
 
                             DefaultText {
                                 id: name
