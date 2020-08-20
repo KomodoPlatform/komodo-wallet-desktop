@@ -272,11 +272,6 @@ Item {
                     spacing: 15
 
                     DefaultButton {
-                        text: API.get().settings_pg.empty_string + (qsTr("Address Book"))
-                        onClicked: openAddressBook()
-                    }
-
-                    DefaultButton {
                         enabled: parseFloat(API.get().current_coin_info.balance) > 0
                         text: API.get().settings_pg.empty_string + (qsTr("Send"))
                         onClicked: send_modal.open()
