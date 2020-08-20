@@ -142,7 +142,10 @@ namespace atomic_dex
             coins_std.reserve(coins.size());
             for (auto&& coin: coins) { coins_std.push_back(coin.toStdString()); }
             get_mm2().disable_multiple_coins(coins_std);
-            m_coin_info->set_ticker("");
+            if (m_coin_info->get_ticker() == coins[0] && m_kmd_fully_enabled)
+            {
+                m_coin_info->set_ticker("KMD");
+            }
         }
 
         return false;
@@ -210,12 +213,6 @@ namespace atomic_dex
         auto& paprika = get_paprika();
         if (mm2.is_mm2_running())
         {
-            /*if (m_coin_info->get_ticker().isEmpty() && not m_enabled_coins.empty())
-            {
-                //! KMD Is our default coin
-                m_coin_info->set_ticker("KMD");
-                emit coinInfoChanged();
-            }*/
 
             std::error_code ec;
             const auto&     config           = system_manager_.get_system<settings_page>().get_cfg();
