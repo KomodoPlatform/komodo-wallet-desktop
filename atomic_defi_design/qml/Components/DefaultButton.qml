@@ -27,7 +27,7 @@ FloatingBackground {
     id: button_bg
 
     implicitWidth: Math.max(minWidth, text_obj.width + 20 + Math.abs(text_offset))
-    implicitHeight: 40
+    implicitHeight: text_obj.height*2.5
 
     radius: 100
 
