@@ -49,7 +49,7 @@ DefaultListView {
         DefaultText {
             id: description
             text_value: API.get().settings_pg.empty_string + (model.modelData.received ? qsTr("Received") : qsTr("Sent"))
-            font.pixelSize: Style.textSizeSmall1
+            font.pixelSize: Style.textSizeSmall3
             anchors.verticalCenter: parent.verticalCenter
             anchors.left: received_icon.right
             anchors.leftMargin: 25
