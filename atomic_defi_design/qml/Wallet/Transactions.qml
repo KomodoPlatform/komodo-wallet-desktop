@@ -62,7 +62,7 @@ DefaultListView {
             font.pixelSize: description.font.pixelSize
             anchors.verticalCenter: parent.verticalCenter
             anchors.left: parent.left
-            anchors.leftMargin: parent.width * 0.25
+            anchors.leftMargin: parent.width * 0.2
             color: model.modelData.received ? Style.colorGreen : Style.colorRed
             privacy: true
         }
@@ -73,8 +73,19 @@ DefaultListView {
             font.pixelSize: description.font.pixelSize
             anchors.verticalCenter: parent.verticalCenter
             anchors.left: parent.left
-            anchors.leftMargin: parent.width * 0.55
+            anchors.leftMargin: parent.width * 0.4
             color: crypto_amount.color
+            privacy: true
+        }
+
+        // Fee
+        DefaultText {
+            text_value: API.get().settings_pg.empty_string + (General.formatCrypto(!(parseFloat(model.modelData.fees) > 0), Math.abs(parseFloat(model.modelData.fees)),
+                                                                       General.txFeeTicker(API.get().current_coin_info)) + " " + qsTr("fees"))
+            font.pixelSize: description.font.pixelSize
+            anchors.verticalCenter: parent.verticalCenter
+            anchors.left: parent.left
+            anchors.leftMargin: parent.width * 0.575
             privacy: true
         }
 
