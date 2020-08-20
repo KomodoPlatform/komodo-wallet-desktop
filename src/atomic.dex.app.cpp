@@ -213,15 +213,6 @@ namespace atomic_dex
         auto& paprika = get_paprika();
         if (mm2.is_mm2_running())
         {
-            if (m_coin_info->get_ticker().isEmpty() && not m_enabled_coins.empty())
-            {
-                //! KMD Is our default coin
-                //if (m_kmd_fully_enabled)
-                //{
-                //    m_coin_info->set_ticker("KMD");
-                //    emit coinInfoChanged();
-                //}
-            }
 
             std::error_code ec;
             const auto&     config           = system_manager_.get_system<settings_page>().get_cfg();
