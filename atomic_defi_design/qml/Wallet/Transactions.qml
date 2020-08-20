@@ -48,7 +48,7 @@ DefaultListView {
         // Description
         DefaultText {
             id: description
-            text_value: API.get().settings_pg.empty_string + (model.modelData.received ? qsTr("Incoming transaction") : qsTr("Outgoing transaction"))
+            text_value: API.get().settings_pg.empty_string + (model.modelData.received ? qsTr("Received") : qsTr("Sent"))
             font.pixelSize: Style.textSizeSmall1
             anchors.verticalCenter: parent.verticalCenter
             anchors.left: received_icon.right
