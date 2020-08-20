@@ -363,27 +363,21 @@ namespace atomic_dex
     bool
     mm2::enable_default_coins() noexcept
     {
-        using t_futures = std::vector<std::future<void>>;
-
-        t_futures                futures;
         std::atomic<std::size_t> result{1};
         auto                     coins = get_active_coins();
-
-        futures.reserve(1);
 
         std::vector<std::string> tickers;
         tickers.reserve(coins.size());
         for (auto&& current_coin: coins) { tickers.push_back(current_coin.ticker); }
 
-        futures.emplace_back(spawn([this, tickers]() { batch_enable_coins(tickers); }));
-
-        for (auto&& fut: futures) { fut.get(); }
+        batch_enable_coins(tickers);
 
         this->dispatcher_.trigger<enabled_default_coins_event>();
 
-        spawn([this]() { process_orders(); });
-
-        spawn([this]() { process_swaps(); });
+        spawn([this]() {
+            process_orders();
+            process_swaps();
+        });
 
         return result.load() == 1;
     }
@@ -443,11 +437,9 @@ namespace atomic_dex
                 coin_info.currently_enabled = true;
                 m_coins_informations.assign(coin_info.ticker, coin_info);
 
-                auto fut = spawn([this, copy_ticker = ticker]() { process_balance(copy_ticker); });
+                process_balance(ticker);
+                process_tx(ticker);
 
-                spawn([this, copy_ticker = ticker]() { process_tx(copy_ticker); });
-
-                fut.get();
                 dispatcher_.trigger<coin_enabled>(ticker);
                 if (emit_event)
                 {
@@ -523,13 +515,15 @@ namespace atomic_dex
 
         //! Prepare fees
         auto&& [orderbook_ticker_base, orderbook_ticker_rel] = m_synchronized_ticker_pair.get();
-        if (orderbook_ticker_rel.empty()) return;
-        nlohmann::json          batch                        = nlohmann::json::array();
+        if (orderbook_ticker_rel.empty())
+            return;
+        nlohmann::json          batch = nlohmann::json::array();
         t_get_trade_fee_request req_base{.coin = orderbook_ticker_base};
         nlohmann::json          current_request = ::mm2::api::template_request("get_trade_fee");
         ::mm2::api::to_json(current_request, req_base);
         batch.push_back(current_request);
-        current_request = ::mm2::api::template_request("get_trade_fee");;
+        current_request = ::mm2::api::template_request("get_trade_fee");
+        ;
         t_get_trade_fee_request req_rel{.coin = orderbook_ticker_rel};
         ::mm2::api::to_json(current_request, req_rel);
         batch.push_back(current_request);
@@ -587,10 +581,11 @@ namespace atomic_dex
     mm2::process_orderbook(bool is_a_reset)
     {
         auto&& [base, rel] = m_synchronized_ticker_pair.get();
-        if (rel.empty()) return;
-        nlohmann::json          batch                        = nlohmann::json::array();
+        if (rel.empty())
+            return;
+        nlohmann::json batch = nlohmann::json::array();
 
-        nlohmann::json current_request = ::mm2::api::template_request("orderbook");
+        nlohmann::json      current_request = ::mm2::api::template_request("orderbook");
         t_orderbook_request req_orderbook{.base = base, .rel = rel};
         ::mm2::api::to_json(current_request, req_orderbook);
         batch.push_back(current_request);
@@ -747,8 +742,9 @@ namespace atomic_dex
         {
             return 0;
         }
-        const auto       answer = m_balance_informations.at(ticker);
-        const t_float_50 balance(answer.balance);
+
+        const auto answer = m_balance_informations.at(ticker);
+        t_float_50 balance(answer.balance);
 
         return balance;
     }
@@ -834,17 +830,6 @@ namespace atomic_dex
             m_swaps_registry.insert_or_assign("result", answer.result.value());
             this->dispatcher_.trigger<process_swaps_finished>();
         }
-
-        /*if (not m_swaps_registry.empty())
-        {
-            auto swaps = get_swaps();
-
-            for (auto &&swap : swaps.swaps) {
-                for (auto&& event : swap.events) {
-                    std::cout << event << std::endl;
-                }
-            }
-        }*/
     }
 
     void
@@ -1086,29 +1071,6 @@ namespace atomic_dex
 
         return m_tx_state.at(ticker);
     }
-
-    /*bool
-    mm2::is_claiming_ready(const std::string& ticker) const noexcept
-    {
-        spdlog::debug("{} l{} f[{}]", __FUNCTION__, __LINE__, fs::path(__FILE__).filename().string());
-        using namespace std::chrono_literals;
-        auto lock_claim_file_path = fs::temp_directory_path() / (ticker + ".claim.lock");
-
-        spdlog::info("Checking if {} exist", lock_claim_file_path.string());
-        if (not fs::exists(lock_claim_file_path))
-        {
-            return true;
-        }
-
-        std::time_t t = fs::last_write_time(lock_claim_file_path);
-        if (std::chrono::system_clock::now() - std::chrono::system_clock::from_time_t(t) > 1h)
-        {
-            spdlog::info("1 hour expire, removing {}", lock_claim_file_path.string());
-            fs::remove(lock_claim_file_path);
-            return true;
-        }
-        return false;
-    }*/
 
     nlohmann::json
     mm2::claim_rewards(const std::string& ticker, t_mm2_ec& ec) noexcept
