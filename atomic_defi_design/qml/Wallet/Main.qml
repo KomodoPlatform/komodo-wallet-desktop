@@ -357,14 +357,6 @@ Item {
                 }
             }
 
-            // Separator line
-            HorizontalLine {
-                Layout.fillWidth: true
-                Layout.leftMargin: layout_margin
-                Layout.rightMargin: layout_margin
-                Layout.alignment: Qt.AlignHCenter
-            }
-
             // Transactions or loading
             Item {
                 id: loading_tx
