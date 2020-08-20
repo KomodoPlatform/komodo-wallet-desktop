@@ -193,8 +193,9 @@ QtObject {
         return v.toString().replace("-", "").split(".")[0].length
     }
 
-    function getRecommendedPrecision(v) {
-        return Math.min(Math.max(sliderDigitLimit - getDigitCount(v), 0), amountPrecision)
+    function getRecommendedPrecision(v, limit) {
+        const lim = limit || sliderDigitLimit
+        return Math.min(Math.max(lim - getDigitCount(v), 0), amountPrecision)
     }
 
     function formatDouble(v, precision) {

@@ -50,7 +50,7 @@ ChartView {
             labelsFont: series.axisY.labelsFont
             gridLineColor: series.axisY.gridLineColor
             labelsColor: series2.color
-            labelFormat: "%.3f M"
+            labelFormat:  "%." + General.getRecommendedPrecision(has_data ? parseFloat(historical[historical.length-1].volume_24h / 1000000) : 2, 3) + "f M"
         }
     }
 
@@ -92,6 +92,7 @@ ChartView {
             labelsFont: series.axisX.labelsFont
             gridLineColor: series.axisX.gridLineColor
             labelsColor: series.color
+            labelFormat:  "%." + General.getRecommendedPrecision(has_data ? parseInt(historical[historical.length-1].price) : 2, 6) + "f"
         }
     }
 
