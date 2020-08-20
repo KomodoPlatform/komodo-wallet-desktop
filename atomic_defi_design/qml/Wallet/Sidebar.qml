@@ -168,7 +168,7 @@ Item {
                             }
                         }
 
-                        readonly property double side_margin: 25
+                        readonly property double side_margin: 16
 
                         // Icon
                         DefaultImage {
@@ -186,21 +186,11 @@ Item {
                             anchors.right: parent.right
                             anchors.rightMargin: side_margin + scrollbar_margin
 
-//                            spacing: -3
-//                            // Name
-//                            DefaultText {
-//                                Layout.alignment: Qt.AlignRight
-//                                text_value: API.get().settings_pg.empty_string + (model.modelData.name.replace(" (TESTCOIN)", ""))
-//                                font.pixelSize: text.length > 15 ? Style.textSizeVerySmall8 : text.length > 12 ? Style.textSizeVerySmall9 : Style.textSizeSmall1
-//                            }
-
                             // Ticker
                             DefaultText {
                                 Layout.alignment: Qt.AlignRight
                                 text_value: API.get().settings_pg.empty_string + (model.modelData.ticker)
-                                font.pixelSize: text.length > 15 ? Style.textSizeVerySmall8 : text.length > 12 ? Style.textSizeVerySmall9 : Style.textSizeSmall1
-//                                font.pixelSize: Style.textSizeSmall1
-//                                color: Style.colorThemePassive
+                                font.pixelSize: text.length > 6 ? Style.textSizeSmall2 : Style.textSizeSmall4
                             }
 
                             ToolTip {
