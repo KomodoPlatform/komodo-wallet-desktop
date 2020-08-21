@@ -89,6 +89,7 @@ SetupPage {
                 Layout.fillWidth: true
                 onClicked: {
                     reset()
+                    protection_mode = false
                     onClickedBack()
                 }
             }
