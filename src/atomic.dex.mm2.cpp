@@ -567,12 +567,16 @@ namespace atomic_dex
             if (base_max_taker_vol_answer.rpc_result_code == 200)
             {
                 this->m_synchronized_max_taker_vol->first = base_max_taker_vol_answer.result.value();
+                t_float_50 base_res = t_float_50(this->m_synchronized_max_taker_vol->first.decimal) * m_balance_factor;
+                this->m_synchronized_max_taker_vol->first.decimal = base_res.str(8);
             }
 
             auto rel_max_taker_vol_answer = ::mm2::api::rpc_process_answer_batch<::mm2::api::max_taker_vol_answer>(answer[4], "max_taker_vol");
             if (rel_max_taker_vol_answer.rpc_result_code == 200)
             {
                 this->m_synchronized_max_taker_vol->second = rel_max_taker_vol_answer.result.value();
+                t_float_50 rel_res = t_float_50(this->m_synchronized_max_taker_vol->second.decimal) * m_balance_factor;
+                this->m_synchronized_max_taker_vol->second.decimal = rel_res.str(8);
             }
         }
     }
@@ -612,12 +616,16 @@ namespace atomic_dex
             if (base_max_taker_vol_answer.rpc_result_code == 200)
             {
                 this->m_synchronized_max_taker_vol->first = base_max_taker_vol_answer.result.value();
+                t_float_50 base_res = t_float_50(this->m_synchronized_max_taker_vol->first.decimal) * m_balance_factor;
+                this->m_synchronized_max_taker_vol->first.decimal = base_res.str(8);
             }
 
             auto rel_max_taker_vol_answer = ::mm2::api::rpc_process_answer_batch<::mm2::api::max_taker_vol_answer>(answer[2], "max_taker_vol");
             if (rel_max_taker_vol_answer.rpc_result_code == 200)
             {
                 this->m_synchronized_max_taker_vol->second = rel_max_taker_vol_answer.result.value();
+                t_float_50 rel_res = t_float_50(this->m_synchronized_max_taker_vol->second.decimal) * m_balance_factor;
+                this->m_synchronized_max_taker_vol->second.decimal = rel_res.str(8);
             }
         }
     }
