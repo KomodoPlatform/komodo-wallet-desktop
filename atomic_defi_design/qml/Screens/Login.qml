@@ -21,8 +21,8 @@ SetupPage {
                 // For OSX CTRL is Meta
                 ((event.modifiers & Qt.ControlModifier) || (event.modifiers & Qt.MetaModifier))
         ) {
-                protection_mode = true
-                event.accepted = true
+            protection_mode = true
+            event.accepted = true
         }
     }
 
@@ -89,6 +89,7 @@ SetupPage {
                 Layout.fillWidth: true
                 onClicked: {
                     reset()
+                    protection_mode = false
                     onClickedBack()
                 }
             }
