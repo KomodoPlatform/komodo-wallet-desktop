@@ -227,9 +227,10 @@ FloatingBackground {
                 }
 
                 DefaultText {
+                    id: price_usd_value
                     anchors.right: input_price.right
                     anchors.top: input_price.bottom
-                    anchors.topMargin: 5
+                    anchors.topMargin: 7
 
                     text_value: getFiatText(input_price.field.text, right_ticker)
                     font.pixelSize: input_price.field.font.pixelSize
@@ -269,7 +270,7 @@ FloatingBackground {
                 DefaultText {
                     anchors.right: input_volume.right
                     anchors.top: input_volume.bottom
-                    anchors.topMargin: 5
+                    anchors.topMargin: price_usd_value.anchors.topMargin
 
                     text_value: getFiatText(input_volume.field.text, left_ticker)
                     font.pixelSize: input_volume.field.font.pixelSize
@@ -443,6 +444,7 @@ FloatingBackground {
                 width: 170
 
                 text: API.get().settings_pg.empty_string + (qsTr("Start Swap"))
+                font.bold: true
                 enabled: valid_trade_info && !notEnoughBalanceForFees() && isValid()
                 onClicked: confirm_trade_modal.open()
             }
