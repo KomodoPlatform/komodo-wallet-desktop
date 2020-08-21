@@ -660,6 +660,7 @@ namespace atomic_dex
     mm2::spawn_mm2_instance(std::string wallet_name, std::string passphrase, bool with_pin_cfg)
     {
         this->m_balance_factor = determine_balance_factor(with_pin_cfg);
+        spdlog::trace("balance factor is: {}", m_balance_factor);
         spdlog::debug("{} l{} f[{}]", __FUNCTION__, __LINE__, fs::path(__FILE__).filename().string());
         this->m_current_wallet_name = std::move(wallet_name);
         retrieve_coins_information(this->m_current_wallet_name, m_coins_informations);
@@ -747,7 +748,7 @@ namespace atomic_dex
         const auto answer = m_balance_informations.at(ticker);
         t_float_50 balance(answer.balance);
 
-        return balance * t_float_50(m_balance_factor);
+        return balance;
     }
 
     t_transactions
@@ -815,6 +816,8 @@ namespace atomic_dex
         auto              answer = rpc_balance(std::move(balance_request));
         if (answer.raw_result.find("error") == std::string::npos)
         {
+            t_float_50 result = t_float_50(answer.balance) * m_balance_factor;
+            answer.balance = result.str();
             m_balance_informations.insert_or_assign(ticker, answer);
             this->dispatcher_.trigger<ticker_balance_updated>(ticker);
         }
