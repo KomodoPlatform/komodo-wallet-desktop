@@ -248,7 +248,7 @@ FloatingBackground {
                 }
 
                 DefaultText {
-                    anchors.left: input_volume.left
+                    anchors.right: input_volume.right
                     anchors.top: input_volume.bottom
                     anchors.topMargin: 5
 
