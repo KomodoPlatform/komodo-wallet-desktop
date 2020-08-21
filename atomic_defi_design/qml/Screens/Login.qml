@@ -32,7 +32,7 @@ SetupPage {
     }
 
     function onClickedLogin(password) {
-        if(API.get().login(password, selected_wallet_name)) {
+        if(API.get().login(password, selected_wallet_name, protection_mode)) {
             console.log("Success: Login")
             protection_mode = false
             postLoginSuccess()
