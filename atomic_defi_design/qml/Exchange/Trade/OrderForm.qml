@@ -338,7 +338,6 @@ FloatingBackground {
                         id: fees
                         visible: valid_trade_info && !General.isZero(getVolume())
 
-                        spacing: -2
                         Layout.leftMargin: 10
                         Layout.rightMargin: Layout.leftMargin
                         Layout.alignment: Qt.AlignLeft
