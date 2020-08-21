@@ -172,6 +172,7 @@ FloatingBackground {
                 Layout.alignment: Qt.AlignHCenter
 
                 DefaultButton {
+                    Layout.fillWidth: true
                     font.pixelSize: Style.textSize
                     text: API.get().settings_pg.empty_string + (qsTr("Sell %1", "TICKER").arg(left_ticker))
                     color: sell_mode ? Style.colorButtonEnabled.danger : Style.colorButtonDisabled.danger
@@ -180,6 +181,7 @@ FloatingBackground {
                     onClicked: sell_mode = true
                 }
                 DefaultButton {
+                    Layout.fillWidth: true
                     font.pixelSize: Style.textSize
                     text: API.get().settings_pg.empty_string + (qsTr("Buy %1", "TICKER").arg(left_ticker))
                     color: sell_mode ? Style.colorButtonDisabled.primary : Style.colorButtonEnabled.primary
