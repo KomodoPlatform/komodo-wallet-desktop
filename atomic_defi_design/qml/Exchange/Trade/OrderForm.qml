@@ -422,7 +422,6 @@ FloatingBackground {
 
                 DefaultText {
                     text_value: API.get().settings_pg.empty_string + (qsTr("Total") + ": " + General.formatCrypto("", total_amount, right_ticker))
-                    font.pixelSize: Style.textSizeSmall3
                 }
 
                 DefaultText {
@@ -443,7 +442,7 @@ FloatingBackground {
 
                 width: 170
 
-                text: API.get().settings_pg.empty_string + (qsTr("Start Swap"))
+                text: API.get().settings_pg.empty_string + (qsTr("Swap"))
                 font.bold: true
                 enabled: valid_trade_info && !notEnoughBalanceForFees() && isValid()
                 onClicked: confirm_trade_modal.open()
