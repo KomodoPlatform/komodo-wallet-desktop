@@ -1077,12 +1077,12 @@ namespace atomic_dex
     }
 
     bool
-    application::login(const QString& password, const QString& wallet_name)
+    application::login(const QString& password, const QString& wallet_name, bool with_pin_cfg)
     {
         bool res = m_wallet_manager.login(password, wallet_name, get_mm2(), [this, &wallet_name]() {
             this->set_wallet_default_name(wallet_name);
             this->set_status("initializing_mm2");
-        });
+        }, with_pin_cfg);
         if (res)
         {
             addressbook_model* addressbook = qobject_cast<addressbook_model*>(m_manager_models.at("addressbook"));
