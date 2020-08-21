@@ -63,6 +63,10 @@ Rectangle {
         anchors.fill: parent
 
         currentIndex: current_page
+        onCurrentIndexChanged: {
+            if(current_page === idx_login)
+                login.forceActiveFocus()
+        }
 
         FirstLaunch {
             id: first_launch
@@ -83,6 +87,7 @@ Rectangle {
         }
 
         Login {
+            id: login
             onClickedBack: () => { openFirstLaunch(true) }
             postLoginSuccess: () => {
                 current_page = idx_initial_loading
