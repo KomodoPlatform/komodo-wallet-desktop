@@ -295,8 +295,8 @@ FloatingBackground {
                 Layout.rightMargin: top_line.Layout.rightMargin
                 Layout.bottomMargin: top_line.Layout.rightMargin*0.5
                 from: 0
+                to: Math.max(0, parseFloat(getMaxVolume()))
                 stepSize: 1/Math.pow(10, precision)
-                to: parseFloat(getMaxVolume())
                 live: false
 
                 onValueChanged: {
