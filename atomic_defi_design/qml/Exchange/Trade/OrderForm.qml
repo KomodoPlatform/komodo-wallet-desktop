@@ -409,44 +409,44 @@ FloatingBackground {
             }
         }
 
-        RowLayout {
-            Layout.alignment: Qt.AlignBottom
+        // Total amount
+        ColumnLayout {
             Layout.topMargin: 5
             Layout.fillWidth: true
             Layout.leftMargin: top_line.Layout.rightMargin
             Layout.rightMargin: Layout.leftMargin
             Layout.bottomMargin: layout_margin
 
-            ColumnLayout {
-                Layout.alignment: Qt.AlignLeft
-
-                DefaultText {
-                    text_value: API.get().settings_pg.empty_string + (qsTr("Total") + ": " + General.formatCrypto("", total_amount, right_ticker))
-                }
-
-                DefaultText {
-                    text_value: getFiatText(total_amount, right_ticker)
-                    font.pixelSize: input_price.field.font.pixelSize
-
-                    CexInfoTrigger {}
-                }
-            }
-
-            // Trade button
-            DefaultButton {
-                Layout.alignment: Qt.AlignRight
-                Layout.fillWidth: true
-                Layout.leftMargin: 30
-
-                button_type: is_sell_form ? "danger" : "primary"
-
-                width: 170
-
-                text: API.get().settings_pg.empty_string + (qsTr("Swap"))
+            DefaultText {
                 font.bold: true
-                enabled: valid_trade_info && !notEnoughBalanceForFees() && isValid()
-                onClicked: confirm_trade_modal.open()
+                font.pixelSize: Style.textSizeSmall3
+                text_value: API.get().settings_pg.empty_string + (qsTr("Total") + ": " + General.formatCrypto("", total_amount, right_ticker))
             }
+
+            DefaultText {
+                text_value: getFiatText(total_amount, right_ticker)
+                font.pixelSize: input_price.field.font.pixelSize
+
+                CexInfoTrigger {}
+            }
+        }
+
+        // Trade button
+        DefaultButton {
+            Layout.alignment: Qt.AlignRight
+            Layout.fillWidth: true
+            Layout.leftMargin: top_line.Layout.rightMargin
+            Layout.rightMargin: Layout.leftMargin
+            Layout.bottomMargin: layout_margin
+
+            button_type: is_sell_form ? "danger" : "primary"
+
+            width: 170
+
+            text: API.get().settings_pg.empty_string + (qsTr("Start Swap"))
+            font.bold: true
+            enabled: valid_trade_info && !notEnoughBalanceForFees() && isValid()
+            onClicked: confirm_trade_modal.open()
         }
 
         ColumnLayout {
