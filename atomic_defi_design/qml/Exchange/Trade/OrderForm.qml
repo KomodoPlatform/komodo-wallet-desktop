@@ -414,10 +414,20 @@ FloatingBackground {
             Layout.rightMargin: Layout.leftMargin
             Layout.bottomMargin: layout_margin
 
-            DefaultText {
+            ColumnLayout {
                 Layout.alignment: Qt.AlignLeft
-                text_value: API.get().settings_pg.empty_string + (qsTr("Total") + ": " + General.formatCrypto("", total_amount, right_ticker))
-                font.pixelSize: Style.textSizeSmall3
+
+                DefaultText {
+                    text_value: API.get().settings_pg.empty_string + (qsTr("Total") + ": " + General.formatCrypto("", total_amount, right_ticker))
+                    font.pixelSize: Style.textSizeSmall3
+                }
+
+                DefaultText {
+                    text_value: getFiatText(total_amount, right_ticker)
+                    font.pixelSize: input_price.field.font.pixelSize
+
+                    CexInfoTrigger {}
+                }
             }
 
             // Trade button
