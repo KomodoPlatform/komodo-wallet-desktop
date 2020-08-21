@@ -194,28 +194,45 @@ FloatingBackground {
                 Layout.fillWidth: true
             }
 
-            AmountFieldWithInfo {
-                id: input_price
+
+            Item {
+                Layout.fillWidth: true
                 Layout.leftMargin: top_line.Layout.leftMargin
                 Layout.rightMargin: top_line.Layout.rightMargin
-                Layout.bottomMargin: -6
-                Layout.fillWidth: true
-                enabled: input_volume.field.enabled
+                Layout.bottomMargin: input_volume.field.font.pixelSize
+                height: input_volume.height
 
-                field.left_text: API.get().settings_pg.empty_string + (qsTr("Price"))
-                field.right_text: right_ticker
+                AmountFieldWithInfo {
+                    id: input_price
+                    width: parent.width
+                    enabled: input_volume.field.enabled
 
-                field.onTextChanged: {
-                    onInputChanged()
+                    field.left_text: API.get().settings_pg.empty_string + (qsTr("Price"))
+                    field.right_text: right_ticker
+
+                    field.onTextChanged: {
+                        onInputChanged()
+                    }
+
+                    function resetPrice() {
+                        if(orderIsSelected()) resetPreferredPrice()
+                    }
+
+                    field.onPressed: resetPrice()
+                    field.onFocusChanged: {
+                        if(field.activeFocus) resetPrice()
+                    }
                 }
 
-                function resetPrice() {
-                    if(orderIsSelected()) resetPreferredPrice()
-                }
+                DefaultText {
+                    anchors.right: input_price.right
+                    anchors.top: input_price.bottom
+                    anchors.topMargin: 5
 
-                field.onPressed: resetPrice()
-                field.onFocusChanged: {
-                    if(field.activeFocus) resetPrice()
+                    text_value: getFiatText(input_price.field.text, right_ticker)
+                    font.pixelSize: input_price.field.font.pixelSize
+
+                    CexInfoTrigger {}
                 }
             }
 
