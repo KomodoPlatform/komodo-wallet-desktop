@@ -273,7 +273,7 @@ FloatingBackground {
                 Layout.fillWidth: true
                 Layout.leftMargin: top_line.Layout.leftMargin
                 Layout.rightMargin: top_line.Layout.rightMargin
-                Layout.bottomMargin: top_line.Layout.rightMargin*0.25
+                Layout.bottomMargin: top_line.Layout.rightMargin*0.5
                 from: 0
                 stepSize: 1/Math.pow(10, precision)
                 to: parseFloat(getMaxVolume())
