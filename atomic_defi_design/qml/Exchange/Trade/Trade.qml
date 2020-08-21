@@ -385,11 +385,18 @@ Item {
 
 
                 // Price
-                PriceLine {
+                InnerBackground {
                     id: price_line
                     anchors.left: parent.left
                     anchors.right: parent.right
                     anchors.bottom: parent.bottom
+                    height: price_line_obj.height + 30
+                    PriceLine {
+                        id: price_line_obj
+                        anchors.verticalCenter: parent.verticalCenter
+                        anchors.left: parent.left
+                        anchors.right: parent.right
+                    }
                 }
             }
 
