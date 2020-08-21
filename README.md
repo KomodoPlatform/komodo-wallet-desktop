@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/KomodoPlatform/komodo.svg?branch=master)](https://travis-ci.org/KomodoPlatform/komodo)
+[![Build Status](https://travis-ci.org/KomodoPlatform/komodo.svg?branch=master)](https://travis-ci.org/KomodoPlatform/atomicdex-pro)
 [![Version](https://img.shields.io/github/v/release/komodoplatform/atomicdex-pro?include_prereleases)](https://github.com/KomodoPlatform/atomicdex-pro/releases)
 [![Issues](https://img.shields.io/github/issues-raw/komodoplatform/atomicdex-pro)](https://github.com/KomodoPlatform/atomicdex-pro/issues)
 [![PRs](https://img.shields.io/github/issues-pr-closed/komodoplatform/atomicdex-pro)](https://github.com/KomodoPlatform/atomicdex-pro/pulls)
@@ -9,7 +9,7 @@
 [![gitstars](https://img.shields.io/github/stars/komodoplatform/atomicdex-pro?style=social)](https://github.com/KomodoPlatform/atomicdex-pro/stargazers)
 [![twitter](https://img.shields.io/twitter/follow/atomicdex?style=social)](https://twitter.com/atomicdex)
 [![discord](https://img.shields.io/discord/412898016371015680)](https://discord.gg/tvp96Gf)
-[![discord](https://img.shields.io/github/downloads/komodoplatform/atomicdex-pro/total)](https://github.com/KomodoPlatform/komodo/release)
+[![discord](https://img.shields.io/github/downloads/komodoplatform/atomicdex-pro/total)](https://github.com/KomodoPlatform/atomicdex-pro/release)
 
 #
 
