@@ -12,8 +12,8 @@ RowLayout {
     readonly property double price_diff: invalid_cex_price ? 0 : 100 * (1 - parseFloat(price) / parseFloat(cex_price)) *
                                                                                                             (sell_mode ? 1 : -1)
 
-    readonly property int fontSize: Style.textSizeSmall2
-    readonly property int fontSizeBigger: Style.textSizeSmall3
+    readonly property int fontSize: Style.textSizeSmall1
+    readonly property int fontSizeBigger: Style.textSizeSmall2
     readonly property int line_scale: getComparisonScale(price_diff)
 
     readonly property bool price_entered: hasValidPrice()
