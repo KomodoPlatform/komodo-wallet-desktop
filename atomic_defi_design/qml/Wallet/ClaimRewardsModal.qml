@@ -143,7 +143,7 @@ DefaultModal {
                 // Price
                 DefaultText {
                     id: utxo_header
-                    font.pixelSize: Style.textSizeSmall2
+                    font.pixelSize: Style.textSizeSmall4
 
                     text_value: API.get().settings_pg.empty_string + (qsTr("UTXO"))
 
@@ -280,7 +280,7 @@ DefaultModal {
                         anchors.left: parent.left
                         anchors.leftMargin: utxo_header.anchors.leftMargin
 
-                        font.pixelSize: Style.textSizeSmall1
+                        font.pixelSize: utxo_header.font.pixelSize
 
                         text_value: API.get().settings_pg.empty_string + ("#" + (index + 1))
                         anchors.verticalCenter: parent.verticalCenter
