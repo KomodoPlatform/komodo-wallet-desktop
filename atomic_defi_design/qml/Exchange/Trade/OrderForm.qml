@@ -173,7 +173,7 @@ FloatingBackground {
 
                 DefaultButton {
                     font.pixelSize: Style.textSize
-                    text: API.get().settings_pg.empty_string + (qsTr("Sell"))
+                    text: API.get().settings_pg.empty_string + (qsTr("Sell %1", "TICKER").arg(left_ticker))
                     color: sell_mode ? Style.colorButtonEnabled.danger : Style.colorButtonDisabled.danger
                     colorTextEnabled: sell_mode ? Style.colorButtonTextEnabled.danger : Style.colorButtonTextDisabled.danger
                     font.weight: Font.Bold
@@ -181,7 +181,7 @@ FloatingBackground {
                 }
                 DefaultButton {
                     font.pixelSize: Style.textSize
-                    text: API.get().settings_pg.empty_string + (qsTr("Buy"))
+                    text: API.get().settings_pg.empty_string + (qsTr("Buy %1", "TICKER").arg(left_ticker))
                     color: sell_mode ? Style.colorButtonDisabled.primary : Style.colorButtonEnabled.primary
                     colorTextEnabled: sell_mode ? Style.colorButtonTextDisabled.primary : Style.colorButtonTextEnabled.primary
                     font.weight: Font.Bold
@@ -414,7 +414,7 @@ FloatingBackground {
 
                 width: 170
 
-                text: API.get().settings_pg.empty_string + (is_sell_form ? qsTr("Sell %1", "TICKER").arg(left_ticker) : qsTr("Buy %1", "TICKER").arg(left_ticker))
+                text: API.get().settings_pg.empty_string + (qsTr("Start Swap"))
                 enabled: valid_trade_info && !notEnoughBalanceForFees() && isValid()
                 onClicked: confirm_trade_modal.open()
             }
