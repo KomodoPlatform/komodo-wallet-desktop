@@ -175,8 +175,8 @@ FloatingBackground {
                     Layout.fillWidth: true
                     font.pixelSize: Style.textSize
                     text: API.get().settings_pg.empty_string + (qsTr("Sell %1", "TICKER").arg(left_ticker))
-                    color: sell_mode ? Style.colorButtonEnabled.danger : Style.colorButtonDisabled.danger
-                    colorTextEnabled: sell_mode ? Style.colorButtonTextEnabled.danger : Style.colorButtonTextDisabled.danger
+                    color: sell_mode ? Style.colorButtonEnabled.default : Style.colorButtonDisabled.default
+                    colorTextEnabled: sell_mode ? Style.colorButtonEnabled.danger : Style.colorButtonDisabled.danger
                     font.weight: Font.Bold
                     onClicked: sell_mode = true
                 }
@@ -184,8 +184,8 @@ FloatingBackground {
                     Layout.fillWidth: true
                     font.pixelSize: Style.textSize
                     text: API.get().settings_pg.empty_string + (qsTr("Buy %1", "TICKER").arg(left_ticker))
-                    color: sell_mode ? Style.colorButtonDisabled.primary : Style.colorButtonEnabled.primary
-                    colorTextEnabled: sell_mode ? Style.colorButtonTextDisabled.primary : Style.colorButtonTextEnabled.primary
+                    color: sell_mode ? Style.colorButtonDisabled.default : Style.colorButtonEnabled.default
+                    colorTextEnabled: sell_mode ? Style.colorButtonDisabled.primary : Style.colorButtonEnabled.primary
                     font.weight: Font.Bold
                     onClicked: sell_mode = false
                 }
