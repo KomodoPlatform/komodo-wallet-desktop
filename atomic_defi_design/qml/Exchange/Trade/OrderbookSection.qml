@@ -22,7 +22,7 @@ ColumnLayout {
         // Price
         DefaultText {
             id: price_header
-            font.pixelSize: Style.textSizeSmall2
+            font.pixelSize: Style.textSizeSmall3
 
             text_value: API.get().settings_pg.empty_string + (is_asks ? qsTr("Ask Price") + "\n(" + right_ticker + ")":
                                                             qsTr("Bid Price") + "\n(" + right_ticker + ")")
@@ -136,7 +136,7 @@ ColumnLayout {
                 anchors.leftMargin: price_header.anchors.leftMargin
                 anchors.rightMargin: price_header.anchors.rightMargin
 
-                font.pixelSize: Style.textSizeSmall1
+                font.pixelSize: Style.textSizeSmall2
 
                 text_value: API.get().settings_pg.empty_string + (General.formatDouble(price))
                 color: price_header.color
