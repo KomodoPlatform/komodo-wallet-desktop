@@ -193,8 +193,9 @@ QtObject {
         return v.toString().replace("-", "").split(".")[0].length
     }
 
-    function getRecommendedPrecision(v) {
-        return Math.min(Math.max(sliderDigitLimit - getDigitCount(v), 0), amountPrecision)
+    function getRecommendedPrecision(v, limit) {
+        const lim = limit || sliderDigitLimit
+        return Math.min(Math.max(lim - getDigitCount(v), 0), amountPrecision)
     }
 
     function formatDouble(v, precision) {
@@ -207,7 +208,7 @@ QtObject {
     }
 
     function formatCrypto(received, amount, ticker, fiat_amount, fiat) {
-        return diffPrefix(received) + formatDouble(amount) + " " + ticker + (fiat_amount ? " (" + formatFiat("", fiat_amount, fiat) + ")" : "")
+        return diffPrefix(received) + ticker + " " + formatDouble(amount) + (fiat_amount ? " (" + formatFiat("", fiat_amount, fiat) + ")" : "")
     }
 
     function fullCoinName(name, ticker) {

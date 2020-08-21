@@ -29,16 +29,16 @@ Item {
         visible: dashboard_index === General.idx_dashboard_light_ui ||
                  dashboard_index === General.idx_dashboard_privacy_mode
         anchors.left: parent.left
-        anchors.leftMargin: 26
+        anchors.leftMargin: 7
         anchors.verticalCenter: img.verticalCenter
-        scale: 0.8
+        scale: 0.75
     }
 
     DefaultImage {
         id: img
         height: txt.font.pixelSize * 1.4
         anchors.left: parent.left
-        anchors.leftMargin: 50
+        anchors.leftMargin: 30
         anchors.verticalCenter: parent.verticalCenter
         visible: false
     }
@@ -65,10 +65,10 @@ Item {
 
     DefaultText {
         id: txt
-        anchors.right: parent.right
-        anchors.rightMargin: img.anchors.leftMargin
+        anchors.left: parent.left
+        anchors.leftMargin: 70
         anchors.verticalCenter: parent.verticalCenter
-        font.pixelSize: Style.textSizeSmall1
+        font.pixelSize: Style.textSizeSmall4
         font.weight: selected ? Font.Bold : Font.Medium
         color: selected ? Style.colorWhite1 : mouse_area.containsMouse ? Style.colorThemePassiveLight : Style.colorThemePassive
     }
