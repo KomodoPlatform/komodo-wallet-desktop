@@ -113,6 +113,7 @@ Item {
             }
 
             DefaultButton {
+                // visible: !API.get().in_camouflage_mode
                 text: API.get().settings_pg.empty_string + (qsTr("Set Camouflage Password"))
                 Layout.fillWidth: true
                 onClicked: camouflage_password_modal.open()
