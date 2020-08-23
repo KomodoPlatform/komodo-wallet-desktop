@@ -113,13 +113,13 @@ Item {
             }
 
             DefaultButton {
-                text: API.get().settings_pg.empty_string + (qsTr("Set Emergency Password"))
+                text: API.get().settings_pg.empty_string + (qsTr("Set Camouflage Password"))
                 Layout.fillWidth: true
-                onClicked: emergency_password_modal.open()
+                onClicked: camouflage_password_modal.open()
             }
 
-            EmergencyPasswordModal {
-                id: emergency_password_modal
+            CamouflagePasswordModal {
+                id: camouflage_password_modal
             }
 
             DangerButton {

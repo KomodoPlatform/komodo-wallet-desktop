@@ -21,7 +21,7 @@ DefaultModal {
         width: parent.width
 
         ModalHeader {
-            title: API.get().settings_pg.empty_string + (qsTr("Set Emergency Password"))
+            title: API.get().settings_pg.empty_string + (qsTr("Set Camouflage Password"))
         }
 
         FloatingBackground {
@@ -43,7 +43,7 @@ DefaultModal {
                     horizontalAlignment: Text.AlignHCenter
                     anchors.horizontalCenter: parent.horizontalCenter
 
-                    text_value: API.get().settings_pg.empty_string + (qsTr("Emergency password is a second secret wallet password"))
+                    text_value: API.get().settings_pg.empty_string + (qsTr("Camouflage password is a second secret wallet password"))
                     font.pixelSize: Style.textSize2
                 }
 
@@ -76,8 +76,8 @@ DefaultModal {
                 Layout.fillWidth: true
                 enabled: input_password.isValid()
                 onClicked: {
-                    console.log("Setting emergency password...")
-//                    if(API.get().set_emergency_password(input_password.field.text)) {
+                    console.log("Setting camouflage password...")
+//                    if(API.get().set_camouflage_password(input_password.field.text)) {
 //                        root.close()
 //                    }
                 }
