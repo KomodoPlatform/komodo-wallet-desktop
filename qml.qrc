@@ -197,7 +197,7 @@
         <file>atomic_defi_design/qml/Settings/Settings.qml</file>
         <file>atomic_defi_design/qml/Settings/RecoverSeedModal.qml</file>
         <file>atomic_defi_design/qml/Settings/DeleteWalletModal.qml</file>
-        <file>atomic_defi_design/qml/Settings/ProtectionPasswordModal.qml</file>
+        <file>atomic_defi_design/qml/Settings/EmergencyPasswordModal.qml</file>
         <file>atomic_defi_design/qml/Settings/Languages.qml</file>
     </qresource>
 </RCC>

@@ -21,7 +21,7 @@ DefaultModal {
         width: parent.width
 
         ModalHeader {
-            title: API.get().settings_pg.empty_string + (qsTr("Set Protection Password"))
+            title: API.get().settings_pg.empty_string + (qsTr("Set Emergency Password"))
         }
 
         FloatingBackground {
@@ -43,7 +43,7 @@ DefaultModal {
                     horizontalAlignment: Text.AlignHCenter
                     anchors.horizontalCenter: parent.horizontalCenter
 
-                    text_value: API.get().settings_pg.empty_string + (qsTr("Protection Password is a second password which hides your true balance."))
+                    text_value: API.get().settings_pg.empty_string + (qsTr("Emergency password is a second secret wallet password"))
                     font.pixelSize: Style.textSize2
                 }
 
@@ -52,7 +52,7 @@ DefaultModal {
                     horizontalAlignment: Text.AlignHCenter
                     anchors.horizontalCenter: parent.horizontalCenter
 
-                    text_value: API.get().settings_pg.empty_string + (qsTr("If someone is threating you, you can login with this password and your balance will be displayed really low."))
+                    text_value: API.get().settings_pg.empty_string + (qsTr("Balance lower than actual will be displayed on login with it"))
                 }
             }
         }
