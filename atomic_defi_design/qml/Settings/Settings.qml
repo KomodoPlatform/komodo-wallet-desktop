@@ -112,6 +112,16 @@ Item {
                 Layout.fillWidth: true
             }
 
+            DefaultButton {
+                text: API.get().settings_pg.empty_string + (qsTr("Set Protection Password"))
+                Layout.fillWidth: true
+                onClicked: protection_password_modal.open()
+            }
+
+            ProtectionPasswordModal {
+                id: protection_password_modal
+            }
+
             DangerButton {
                 text: API.get().settings_pg.empty_string + (qsTr("Delete Wallet"))
                 Layout.fillWidth: true
