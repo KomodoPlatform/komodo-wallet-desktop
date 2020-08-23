@@ -76,8 +76,8 @@ DefaultModal {
                 Layout.fillWidth: true
                 enabled: input_password.isValid()
                 onClicked: {
-                    console.log("Setting protection password...")
-//                    if(API.get().set_protection_password(input_password.field.text)) {
+                    console.log("Setting emergency password...")
+//                    if(API.get().set_emergency_password(input_password.field.text)) {
 //                        root.close()
 //                    }
                 }
