@@ -264,7 +264,7 @@ Item {
                     Layout.fillWidth: true
                     font.pixelSize: send_button.font.pixelSize
 
-                    visible: API.get().current_coin_info.is_claimable
+                    visible: API.get().current_coin_info.is_claimable && !API.get().is_pin_cfg_enabled()
                     enabled: claim_rewards_modal.canClaim()
                     onClicked: {
                         if(claim_rewards_modal.prepareClaimRewards())

@@ -76,9 +76,8 @@ DefaultModal {
                 Layout.fillWidth: true
                 enabled: input_password.isValid()
                 onClicked: {
-                    if(API.get().set_emergency_password(input_password.field.text))
-                        root.close()
-                }
+                    API.get().set_emergency_password(input_password.field.text)
+                    root.close()
             }
         }
     }
