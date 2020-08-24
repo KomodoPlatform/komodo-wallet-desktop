@@ -111,6 +111,10 @@ QtObject {
         return text
     }
 
+    function absString(str) {
+        return str.replace("-", "")
+    }
+
     function clone(obj) {
         return JSON.parse(JSON.stringify(obj));
     }

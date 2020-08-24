@@ -78,6 +78,7 @@ DefaultModal {
                 onClicked: {
                     API.get().set_emergency_password(input_password.field.text)
                     root.close()
+                }
             }
         }
     }
