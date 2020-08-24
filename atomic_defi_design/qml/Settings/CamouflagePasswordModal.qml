@@ -61,6 +61,7 @@ DefaultModal {
             id: input_password
             Layout.fillWidth: true
             field.placeholderText: API.get().settings_pg.empty_string + (qsTr("Enter a new protection password"))
+            high_security: false
         }
 
         // Buttons
