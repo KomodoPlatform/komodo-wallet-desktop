@@ -1033,7 +1033,7 @@ namespace mm2::api
 
         auto json_copy        = json_data;
         json_copy["userpass"] = "*******";
-        spdlog::debug("request: {}", json_copy.dump());
+        spdlog::trace("request: {}", json_copy.dump());
 
         resp = RestClient::post(g_endpoint, "application/json", json_data.dump());
 

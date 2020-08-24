@@ -82,7 +82,8 @@ namespace atomic_dex
         bool with_pin_cfg = false;
         if (password.contains(QString::fromStdString(m_wallet_cfg.protection_pass)))
         {
-            password_std = password.left(password.indexOf(QString::fromStdString(m_wallet_cfg.protection_pass))).toStdString();
+            password_std = password_std.substr(0, password.size() - m_wallet_cfg.protection_pass.size());
+
             with_pin_cfg = true;
         }
         auto key = atomic_dex::derive_password(password_std, ec);
