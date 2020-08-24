@@ -76,10 +76,8 @@ DefaultModal {
                 Layout.fillWidth: true
                 enabled: input_password.isValid()
                 onClicked: {
-                    console.log("Setting camouflage password...")
-//                    if(API.get().set_camouflage_password(input_password.field.text)) {
-//                        root.close()
-//                    }
+                    if(API.get().set_emergency_password(input_password.field.text))
+                        root.close()
                 }
             }
         }
