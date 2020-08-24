@@ -75,6 +75,7 @@ namespace atomic_dex
     bool
     qt_wallet_manager::login(const QString& password, const QString& wallet_name, mm2& mm2_system, Functor&& login_if_success_functor, bool with_pin_cfg)
     {
+        load_wallet_cfg(wallet_name.toStdString());
         std::error_code ec;
         auto            key = atomic_dex::derive_password(password.toStdString(), ec);
         if (ec)
@@ -109,7 +110,6 @@ namespace atomic_dex
             }
 
             login_if_success_functor();
-            load_wallet_cfg(get_default_wallet_name().toStdString());
             mm2_system.spawn_mm2_instance(get_default_wallet_name().toStdString(), seed, with_pin_cfg);
             return true;
         }
