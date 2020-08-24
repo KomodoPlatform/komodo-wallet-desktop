@@ -1069,6 +1069,12 @@ namespace atomic_dex
 //! Wallet manager QML API
 namespace atomic_dex
 {
+    bool
+    application::is_pin_cfg_enabled() const noexcept
+    {
+        return get_mm2().is_pin_cfg_enabled();
+    }
+
     void
     application::set_emergency_password(const QString& emergency_password)
     {
