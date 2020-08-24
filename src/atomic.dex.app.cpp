@@ -486,10 +486,11 @@ namespace atomic_dex
 
         std::error_code ec;
 
+        //! If we are in fake pin enabled, we don't want mm2 to choose the max for us
         if (get_mm2().is_pin_cfg_enabled())
         {
             req.amount = get_mm2().my_balance(m_coin_info->get_ticker().toStdString(), ec);
-            req.max = false;
+            req.max    = false;
         }
 
         auto answer = mm2::withdraw(std::move(req), ec);
@@ -1068,6 +1069,12 @@ namespace atomic_dex
 //! Wallet manager QML API
 namespace atomic_dex
 {
+    void
+    application::set_emergency_password(const QString& emergency_password)
+    {
+        m_wallet_manager.set_emergency_password(emergency_password);
+    }
+
     QString
     application::get_wallet_default_name() const noexcept
     {
