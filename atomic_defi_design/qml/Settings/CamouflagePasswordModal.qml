@@ -21,7 +21,7 @@ DefaultModal {
         width: parent.width
 
         ModalHeader {
-            title: API.get().settings_pg.empty_string + (qsTr("Set Camouflage Password"))
+            title: API.get().settings_pg.empty_string + (qsTr("Setup Camouflage Password"))
         }
 
         FloatingBackground {
@@ -43,7 +43,7 @@ DefaultModal {
                     horizontalAlignment: Text.AlignHCenter
                     anchors.horizontalCenter: parent.horizontalCenter
 
-                    text_value: API.get().settings_pg.empty_string + (qsTr("Camouflage password is a second secret wallet password"))
+                    text_value: API.get().settings_pg.empty_string + (qsTr("Camouflage password is a secret wallet password which can be used in emergency situations."))
                     font.pixelSize: Style.textSize2
                 }
 
@@ -52,7 +52,15 @@ DefaultModal {
                     horizontalAlignment: Text.AlignHCenter
                     anchors.horizontalCenter: parent.horizontalCenter
 
-                    text_value: API.get().settings_pg.empty_string + (qsTr("Balance lower than actual will be displayed on login with it"))
+                    text_value: API.get().settings_pg.empty_string + (qsTr("On login with it balance lower than actual will be displayed."))
+                }
+
+                DefaultText {
+                    width: parent.width - 40
+                    horizontalAlignment: Text.AlignHCenter
+                    anchors.horizontalCenter: parent.horizontalCenter
+
+                    text_value: API.get().settings_pg.empty_string + (qsTr("It forming as <your encryption password> + <appendix>."))
                 }
             }
         }
@@ -60,7 +68,7 @@ DefaultModal {
         PasswordForm {
             id: input_password
             Layout.fillWidth: true
-            field.placeholderText: API.get().settings_pg.empty_string + (qsTr("Enter a new protection password"))
+            field.placeholderText: API.get().settings_pg.empty_string + (qsTr("Enter a suffix"))
             high_security: false
         }
 
