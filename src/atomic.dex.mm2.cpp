@@ -1184,4 +1184,10 @@ namespace atomic_dex
     {
         return m_synchronized_max_taker_vol.value();
     }
+
+    bool
+    mm2::is_pin_cfg_enabled() const noexcept
+    {
+        return m_balance_factor != 1.0;
+    }
 } // namespace atomic_dex

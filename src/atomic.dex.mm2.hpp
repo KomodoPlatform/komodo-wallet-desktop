@@ -277,6 +277,8 @@ namespace atomic_dex
         [[nodiscard]] nlohmann::json get_raw_mm2_ticker_cfg(const std::string& ticker) const noexcept;
 
         [[nodiscard]] t_pair_max_vol get_taker_vol() const noexcept;
+
+        [[nodiscard]] bool is_pin_cfg_enabled() const noexcept;
     };
 } // namespace atomic_dex
 
