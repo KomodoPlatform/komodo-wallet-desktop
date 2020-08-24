@@ -7,24 +7,10 @@ import "../Constants"
 
 SetupPage {
     id: login
+
     // Override
     property var onClickedBack: () => {}
     property var postLoginSuccess: () => {}
-
-    // Enable protection mode
-    property bool protection_mode: false
-    Keys.onPressed: {
-        if(app.current_page !== idx_login) return
-
-        if(event.key === Qt.Key_P &&
-                (event.modifiers & Qt.ShiftModifier) &&
-                // For OSX CTRL is Meta
-                ((event.modifiers & Qt.ControlModifier) || (event.modifiers & Qt.MetaModifier))
-        ) {
-            protection_mode = true
-            event.accepted = true
-        }
-    }
 
     // Local
     function reset() {
@@ -32,9 +18,8 @@ SetupPage {
     }
 
     function onClickedLogin(password) {
-        if(API.get().login(password, selected_wallet_name, protection_mode)) {
+        if(API.get().login(password, selected_wallet_name)) {
             console.log("Success: Login")
-            protection_mode = false
             postLoginSuccess()
             return true
         }
@@ -89,7 +74,6 @@ SetupPage {
                 Layout.fillWidth: true
                 onClicked: {
                     reset()
-                    protection_mode = false
                     onClickedBack()
                 }
             }
