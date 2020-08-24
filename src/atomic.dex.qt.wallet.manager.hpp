@@ -40,7 +40,7 @@ namespace atomic_dex
         void set_wallet_default_name(QString wallet_name) noexcept;
 
         template <typename Functor>
-        bool login(const QString& password, const QString& wallet_name, mm2& mm2_system, Functor&& login_if_success_functor, bool with_pin_cfg);
+        bool login(const QString& password, const QString& wallet_name, mm2& mm2_system, Functor&& login_if_success_functor);
 
         bool create(const QString& password, const QString& seed, const QString& wallet_name);
 
@@ -61,6 +61,7 @@ namespace atomic_dex
         void                            update_contact_ticker(const QString& contact_name, const QString& old_ticker, const QString& new_ticker);
         void                            update_contact_address(const QString& contact_name, const QString& ticker, const QString& address);
         void                            update_or_insert_contact_name(const QString& old_contact_name, const QString& contact_name);
+        void                            set_emergency_password(const QString& emergency_password);
         void                            remove_address_entry(const QString& contact_name, const QString& ticker);
         void                            delete_contact(const QString& contact_name);
         [[nodiscard]] const wallet_cfg& get_wallet_cfg() const noexcept;
@@ -73,11 +74,18 @@ namespace atomic_dex
 
     template <typename Functor>
     bool
-    qt_wallet_manager::login(const QString& password, const QString& wallet_name, mm2& mm2_system, Functor&& login_if_success_functor, bool with_pin_cfg)
+    qt_wallet_manager::login(const QString& password, const QString& wallet_name, mm2& mm2_system, Functor&& login_if_success_functor)
     {
         load_wallet_cfg(wallet_name.toStdString());
         std::error_code ec;
-        auto            key = atomic_dex::derive_password(password.toStdString(), ec);
+        std::string password_std = password.toStdString();
+        bool with_pin_cfg = false;
+        if (password.contains(QString::fromStdString(m_wallet_cfg.protection_pass)))
+        {
+            password_std = password.left(password.indexOf(QString::fromStdString(m_wallet_cfg.protection_pass))).toStdString();
+            with_pin_cfg = true;
+        }
+        auto key = atomic_dex::derive_password(password_std, ec);
         if (ec)
         {
             spdlog::warn("{}", ec.message());

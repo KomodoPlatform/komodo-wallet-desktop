@@ -168,7 +168,7 @@ namespace atomic_dex
         //! Bind to the QML Worlds
 
         //! Wallet Manager QML API Bindings, this internally call the `atomic_dex::qt_wallet_manager`
-        Q_INVOKABLE bool               login(const QString& password, const QString& wallet_name, bool with_pin_cfg);
+        Q_INVOKABLE bool               login(const QString& password, const QString& wallet_name);
         Q_INVOKABLE bool               create(const QString& password, const QString& seed, const QString& wallet_name);
         Q_INVOKABLE static QStringList get_wallets();
         Q_INVOKABLE static bool        is_there_a_default_wallet();
