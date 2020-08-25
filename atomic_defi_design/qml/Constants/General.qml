@@ -34,11 +34,13 @@ QtObject {
     readonly property int idx_exchange_history: 2
 
     readonly property var reg_pass_input: /[A-Za-z0-9@#$%{}[\]()\/\\'"`~,;:.<>+\-_=!^&*|?]+/
+    readonly property var reg_pass_valid_low_security: /^(?=.{1,}).*$/
     readonly property var reg_pass_valid: /^(?=.{16,})(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[@#$%{}[\]()\/\\'"`~,;:.<>+\-_=!^&*|?]).*$/
     readonly property var reg_pass_uppercase: /(?=.*[A-Z])/
     readonly property var reg_pass_lowercase: /(?=.*[a-z])/
     readonly property var reg_pass_numeric: /(?=.*[0-9])/
     readonly property var reg_pass_special: /(?=.*[@#$%{}[\]()\/\\'"`~,;:.<>+\-_=!^&*|?])/
+    readonly property var reg_pass_count_low_security: /(?=.{1,})/
     readonly property var reg_pass_count: /(?=.{16,})/
     
     readonly property double time_toast_important_error: 10000
@@ -109,6 +111,10 @@ QtObject {
         if(text === "") text += qsTr("-")
 
         return text
+    }
+
+    function absString(str) {
+        return str.replace("-", "")
     }
 
     function clone(obj) {

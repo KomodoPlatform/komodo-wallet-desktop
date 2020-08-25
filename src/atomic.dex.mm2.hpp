@@ -128,7 +128,7 @@ namespace atomic_dex
         void process_balance(const std::string& ticker) const;
 
         //! Refresh the transaction registry (internal)
-        void process_tx(const std::string& ticker);
+        void process_tx(const std::string& ticker, bool is_a_refresh);
 
         //! Refresh the fees registry (internal)
         // void process_fees();
@@ -166,7 +166,7 @@ namespace atomic_dex
         void spawn_mm2_instance(std::string wallet_name, std::string passphrase, bool with_pin_cfg = false);
 
         //! Refresh the current info (internally call process_balance and process_tx)
-        void fetch_infos_thread();
+        void fetch_infos_thread(bool is_a_fresh = true);
 
         //! Refresh the swaps history
         void process_swaps();
@@ -277,6 +277,8 @@ namespace atomic_dex
         [[nodiscard]] nlohmann::json get_raw_mm2_ticker_cfg(const std::string& ticker) const noexcept;
 
         [[nodiscard]] t_pair_max_vol get_taker_vol() const noexcept;
+
+        [[nodiscard]] bool is_pin_cfg_enabled() const noexcept;
     };
 } // namespace atomic_dex
 

@@ -10,13 +10,14 @@ ColumnLayout {
     property bool hide_hint: false
     property bool new_password: true
     property string match_password
+    property bool high_security: true
 
     function reset() {
         pw.reset()
     }
 
     function isValid() {
-        return pw.field.acceptableInput && RegExp(General.reg_pass_valid).test(pw.field.text)
+        return pw.field.acceptableInput && RegExp(high_security ? General.reg_pass_valid : General.reg_pass_valid_low_security).test(pw.field.text)
     }
 
     function hasEnoughUppercaseCharacters() {
@@ -36,7 +37,7 @@ ColumnLayout {
     }
 
     function hasEnoughCharacters() {
-        return pw.field.acceptableInput && RegExp(General.reg_pass_count).test(pw.field.text)
+        return pw.field.acceptableInput && RegExp(high_security ? General.reg_pass_count : General.reg_pass_count_low_security).test(pw.field.text)
     }
 
     function passwordsDoMatch() {
@@ -66,28 +67,32 @@ ColumnLayout {
         Layout.fillWidth: true
 
         DefaultText {
+            visible: high_security
             font.pixelSize: Style.textSizeSmall3
             text_value: API.get().settings_pg.empty_string + (hintPrefix(hasEnoughLowercaseCharacters()) + qsTr("At least 1 lowercase alphabetical character"))
             color: hintColor(hasEnoughLowercaseCharacters())
         }
         DefaultText {
+            visible: high_security
             font.pixelSize: Style.textSizeSmall3
             text_value: API.get().settings_pg.empty_string + (hintPrefix(hasEnoughUppercaseCharacters()) + qsTr("At least 1 uppercase alphabetical character"))
             color: hintColor(hasEnoughUppercaseCharacters())
         }
         DefaultText {
+            visible: high_security
             font.pixelSize: Style.textSizeSmall3
             text_value: API.get().settings_pg.empty_string + (hintPrefix(hasEnoughNumericCharacters()) + qsTr("At least 1 numeric character"))
             color: hintColor(hasEnoughNumericCharacters())
         }
         DefaultText {
+            visible: high_security
             font.pixelSize: Style.textSizeSmall3
             text_value: API.get().settings_pg.empty_string + (hintPrefix(hasEnoughSpecialCharacters()) + qsTr("At least 1 special character (eg. !@#$%)"))
             color: hintColor(hasEnoughSpecialCharacters())
         }
         DefaultText {
             font.pixelSize: Style.textSizeSmall3
-            text_value: API.get().settings_pg.empty_string + (hintPrefix(hasEnoughCharacters()) + qsTr("At least 16 characters"))
+            text_value: API.get().settings_pg.empty_string + (hintPrefix(hasEnoughCharacters()) + qsTr("At least %n character(s)", "", high_security ? 16 : 1))
             color: hintColor(hasEnoughCharacters())
         }
         DefaultText {

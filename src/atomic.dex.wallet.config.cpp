@@ -22,6 +22,10 @@ namespace atomic_dex
     from_json(const nlohmann::json& j, wallet_cfg& cfg)
     {
         j.at("name").get_to(cfg.name);
+        if (j.contains("protection_pass"))
+        {
+            j.at("protection_pass").get_to(cfg.protection_pass);
+        }
         if (j.contains("addressbook"))
         {
             for (const auto& cur: j.at("addressbook"))
@@ -57,7 +61,8 @@ namespace atomic_dex
     void
     to_json(nlohmann::json& j, const wallet_cfg& cfg)
     {
-        j["name"]        = cfg.name;
-        j["addressbook"] = cfg.address_book;
+        j["name"]            = cfg.name;
+        j["protection_pass"] = cfg.protection_pass;
+        j["addressbook"]     = cfg.address_book;
     }
 } // namespace atomic_dex
