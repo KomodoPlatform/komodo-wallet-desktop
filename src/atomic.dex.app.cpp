@@ -459,6 +459,10 @@ namespace atomic_dex
     application::on_change_ticker_event([[maybe_unused]] const change_ticker_event& evt) noexcept
     {
         spdlog::debug("{} l{}", __FUNCTION__, __LINE__);
+        if (get_mm2().get_coin_info(evt.ticker).is_erc_20)
+        {
+            spawn([this]() { get_mm2().fetch_infos_thread(false); });
+        }
         if (not m_event_actions[events_action::about_to_exit_app])
         {
             this->m_actions_queue.push(action::refresh_current_ticker);

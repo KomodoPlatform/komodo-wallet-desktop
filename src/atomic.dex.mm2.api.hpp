@@ -706,12 +706,61 @@ namespace mm2::api
     nlohmann::json rpc_batch_electrum(std::vector<electrum_request> requests);
     nlohmann::json rpc_batch_enable(std::vector<enable_request> requests);
 
-    template <typename RpcReturnType>
-    static RpcReturnType rpc_process_answer(const RestClient::Response& resp, const std::string& rpc_command) noexcept;
+    template <typename T>
+    using have_error_field = decltype(std::declval<T&>().error.has_value());
 
     template <typename RpcReturnType>
-    RpcReturnType
-    static inline rpc_process_answer_batch(nlohmann::json& json_answer, const std::string& rpc_command) noexcept
+    RpcReturnType static inline rpc_process_answer(const RestClient::Response& resp, const std::string& rpc_command) noexcept
+    {
+        spdlog::info("resp code for rpc_command {} is {}", rpc_command, resp.code);
+
+        RpcReturnType answer;
+        try
+        {
+            if (resp.code not_eq 200)
+            {
+                spdlog::warn("rpc answer code is not 200, body : {}", resp.body);
+                if constexpr (doom::meta::is_detected_v<have_error_field, RpcReturnType>)
+                {
+                    spdlog::debug("error field detected inside the RpcReturnType");
+                    if constexpr (std::is_same_v<std::optional<std::string>, decltype(answer.error)>)
+                    {
+                        spdlog::debug("The error field type is string, parsing it from the response body");
+                        if (auto json_data = nlohmann::json::parse(resp.body); json_data.at("error").is_string())
+                        {
+                            answer.error = json_data.at("error").get<std::string>();
+                        }
+                        else
+                        {
+                            answer.error = resp.body;
+                        }
+                        spdlog::debug("The error after getting extracted is: {}", answer.error.value());
+                    }
+                }
+                answer.rpc_result_code = resp.code;
+                answer.raw_result      = resp.body;
+                return answer;
+            }
+
+
+            auto json_answer       = nlohmann::json::parse(resp.body);
+            answer.rpc_result_code = resp.code;
+            answer.raw_result      = resp.body;
+            from_json(json_answer, answer);
+        }
+        catch (const std::exception& error)
+        {
+            spdlog::error(
+                "{} l{} f[{}], exception caught {} for rpc {}", __FUNCTION__, __LINE__, fs::path(__FILE__).filename().string(), error.what(), rpc_command);
+            answer.rpc_result_code = -1;
+            answer.raw_result      = error.what();
+        }
+
+        return answer;
+    }
+
+    template <typename RpcReturnType>
+    RpcReturnType static inline rpc_process_answer_batch(nlohmann::json& json_answer, const std::string& rpc_command) noexcept
     {
         RpcReturnType answer;
 
@@ -729,6 +778,21 @@ namespace mm2::api
         }
 
         return answer;
+    }
+
+    template <typename TAnswer>
+    TAnswer
+    process_rpc_get(std::string rpc_command, const std::string& url)
+    {
+        spdlog::info("Processing rpc call: {}, url: {}", rpc_command, url);
+
+        RestClient::Response resp;
+
+        resp = RestClient::get(url);
+
+
+
+        return rpc_process_answer<TAnswer>(resp, rpc_command);
     }
 
     nlohmann::json template_request(std::string method_name) noexcept;
