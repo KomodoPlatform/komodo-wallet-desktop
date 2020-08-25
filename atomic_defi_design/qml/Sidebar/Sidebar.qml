@@ -109,7 +109,8 @@ Item {
                 case General.idx_dashboard_dapps:
                     return sidebar_center.y + dashboard.current_page * Style.sidebarLineHeight
                 case General.idx_dashboard_settings:
-                    return sidebar_bottom.y
+                case General.idx_dashboard_support:
+                    return sidebar_bottom.y + (dashboard.current_page - General.idx_dashboard_settings) * Style.sidebarLineHeight
             }
         }
     }

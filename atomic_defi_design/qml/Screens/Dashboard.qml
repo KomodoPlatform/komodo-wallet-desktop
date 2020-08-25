@@ -11,6 +11,7 @@ import "../Portfolio"
 import "../Wallet"
 import "../Exchange"
 import "../Settings"
+import "../Support"
 import "../Sidebar"
 
 Item {
@@ -68,6 +69,9 @@ Item {
             }
             else if(current_page === General.idx_dashboard_settings) {
                 settings.onOpened()
+            }
+            else if(current_page === General.idx_dashboard_support) {
+                support.onOpened()
             }
         }
 
@@ -136,6 +140,11 @@ Item {
 
             Settings {
                 id: settings
+                Layout.alignment: Qt.AlignCenter
+            }
+
+            Support {
+                id: support
                 Layout.alignment: Qt.AlignCenter
             }
         }

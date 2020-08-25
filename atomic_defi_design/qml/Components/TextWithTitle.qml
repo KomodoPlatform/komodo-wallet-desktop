@@ -12,10 +12,12 @@ ColumnLayout {
 
     DefaultText {
         id: title
+        Layout.fillWidth: true
     }
 
     DefaultText {
         id: text
+        Layout.fillWidth: true
         color: Style.modalValueColor
     }
 }
