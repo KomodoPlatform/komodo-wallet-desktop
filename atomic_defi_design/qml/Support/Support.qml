@@ -31,68 +31,77 @@ Item {
             width: parent.width
             spacing: 40
 
-            RowLayout {
+            Item {
                 Layout.topMargin: parent.spacing
-                Layout.alignment: Qt.AlignHCenter
+                Layout.fillWidth: true
+                height: 40
 
-                DefaultImage {
-                    id: discord_icon
-                    Layout.alignment: Qt.AlignHCenter
-                    source: General.image_path + "icon-discord.png"
-                    Layout.preferredWidth: 64
-                    Layout.preferredHeight: Layout.preferredWidth
-
-                    MouseArea {
-                        anchors.fill: parent
-                        onClicked: Qt.openUrlExternally("https://komodoplatform.com/discord")
-                    }
+                DefaultText {
+                    anchors.centerIn: parent
+                    text_value: API.get().settings_pg.empty_string + (qsTr("Frequently Asked Questions"))
+                    font.pixelSize: Style.textSize2
                 }
 
-                DefaultImage {
-                    Layout.alignment: Qt.AlignHCenter
-                    source: General.image_path + "icon-twitter.png"
-                    Layout.preferredWidth: discord_icon.Layout.preferredWidth
-                    Layout.preferredHeight: Layout.preferredWidth
+                RowLayout {
+                    anchors.left: parent.left
+                    anchors.verticalCenter: parent.verticalCenter
+                    spacing: 10
 
-                    MouseArea {
-                        anchors.fill: parent
-                        onClicked: Qt.openUrlExternally("https://twitter.com/atomicdex")
+                    DefaultImage {
+                        id: discord_icon
+                        Layout.alignment: Qt.AlignHCenter
+                        source: General.image_path + "icon-discord.png"
+                        Layout.preferredWidth: 60
+                        Layout.preferredHeight: Layout.preferredWidth
+
+                        MouseArea {
+                            anchors.fill: parent
+                            onClicked: Qt.openUrlExternally("https://komodoplatform.com/discord")
+                        }
                     }
-                }
 
-                DefaultImage {
-                    Layout.alignment: Qt.AlignHCenter
-                    source: General.image_path + "icon-support.png"
-                    Layout.preferredWidth: discord_icon.Layout.preferredWidth
-                    Layout.preferredHeight: Layout.preferredWidth
+                    DefaultImage {
+                        Layout.alignment: Qt.AlignHCenter
+                        source: General.image_path + "icon-twitter.png"
+                        Layout.preferredWidth: discord_icon.Layout.preferredWidth
+                        Layout.preferredHeight: Layout.preferredWidth
 
-                    MouseArea {
-                        anchors.fill: parent
-                        onClicked: Qt.openUrlExternally("https://support.komodoplatform.com/support/home")
+                        MouseArea {
+                            anchors.fill: parent
+                            onClicked: Qt.openUrlExternally("https://twitter.com/atomicdex")
+                        }
                     }
-                }
 
-                DefaultImage {
-                    Layout.alignment: Qt.AlignHCenter
-                    source: General.image_path + "icon-email.png"
-                    Layout.preferredWidth: discord_icon.Layout.preferredWidth
-                    Layout.preferredHeight: Layout.preferredWidth
+                    DefaultImage {
+                        Layout.alignment: Qt.AlignHCenter
+                        source: General.image_path + "icon-support.png"
+                        Layout.preferredWidth: discord_icon.Layout.preferredWidth
+                        Layout.preferredHeight: Layout.preferredWidth
 
-                    MouseArea {
-                        anchors.fill: parent
-                        onClicked: Qt.openUrlExternally("mailto:support@komodoplatform.com")
+                        MouseArea {
+                            anchors.fill: parent
+                            onClicked: Qt.openUrlExternally("https://support.komodoplatform.com/support/home")
+                        }
+                    }
+
+                    DefaultImage {
+                        Layout.alignment: Qt.AlignHCenter
+                        source: General.image_path + "icon-email.png"
+                        Layout.preferredWidth: discord_icon.Layout.preferredWidth
+                        Layout.preferredHeight: Layout.preferredWidth
+
+                        MouseArea {
+                            anchors.fill: parent
+                            onClicked: Qt.openUrlExternally("mailto:support@komodoplatform.com")
+                        }
                     }
                 }
             }
 
             HorizontalLine {
                 Layout.fillWidth: true
-            }
-
-            DefaultText {
-                Layout.alignment: Qt.AlignHCenter
-                text_value: API.get().settings_pg.empty_string + (qsTr("Frequently Asked Questions"))
-                font.pixelSize: Style.textSize2
+                Layout.topMargin: -20
+                Layout.bottomMargin: Layout.topMargin
             }
 
             TextWithTitle {
