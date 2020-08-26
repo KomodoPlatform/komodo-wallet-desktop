@@ -47,12 +47,14 @@ Item {
             }
 
             TextWithTitle {
+                expandable: true
                 Layout.fillWidth: true
                 title: API.get().settings_pg.empty_string + (qsTr("What is Komodo?"))
                 text: API.get().settings_pg.empty_string + (qsTr("Komodo is an open, composable multi-chain platform. With blockchain development roots going back to 2014, Komodo is consistently recognized as a pioneer of multi-chain architecture in the blockchain space."))
             }
 
             TextWithTitle {
+                expandable: true
                 Layout.fillWidth: true
                 title: API.get().settings_pg.empty_string + (qsTr("What is the mission of Komodo?"))
                 text: API.get().settings_pg.empty_string + (qsTr("Komodo is committed to accelerating global blockchain adoption through a composable, multi-chain architecture, an open-source model, and an open, business-friendly ecosystem that allows developers, start-ups, and enterprises alike to prosper with blockchain technology."))
