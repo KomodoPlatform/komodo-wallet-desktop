@@ -31,9 +31,58 @@ Item {
             width: parent.width
             spacing: 40
 
-            DefaultText {
+            RowLayout {
+                Layout.topMargin: parent.spacing
                 Layout.alignment: Qt.AlignHCenter
-                text_value: API.get().settings_pg.empty_string + (qsTr("Link icons will be here"))
+
+                DefaultImage {
+                    id: discord_icon
+                    Layout.alignment: Qt.AlignHCenter
+                    source: General.image_path + "icon-discord.png"
+                    Layout.preferredWidth: 64
+                    Layout.preferredHeight: Layout.preferredWidth
+
+                    MouseArea {
+                        anchors.fill: parent
+                        onClicked: Qt.openUrlExternally("https://komodoplatform.com/discord")
+                    }
+                }
+
+                DefaultImage {
+                    Layout.alignment: Qt.AlignHCenter
+                    source: General.image_path + "icon-twitter.png"
+                    Layout.preferredWidth: discord_icon.Layout.preferredWidth
+                    Layout.preferredHeight: Layout.preferredWidth
+
+                    MouseArea {
+                        anchors.fill: parent
+                        onClicked: Qt.openUrlExternally("https://twitter.com/atomicdex")
+                    }
+                }
+
+                DefaultImage {
+                    Layout.alignment: Qt.AlignHCenter
+                    source: General.image_path + "icon-support.png"
+                    Layout.preferredWidth: discord_icon.Layout.preferredWidth
+                    Layout.preferredHeight: Layout.preferredWidth
+
+                    MouseArea {
+                        anchors.fill: parent
+                        onClicked: Qt.openUrlExternally("https://support.komodoplatform.com/support/home")
+                    }
+                }
+
+                DefaultImage {
+                    Layout.alignment: Qt.AlignHCenter
+                    source: General.image_path + "icon-email.png"
+                    Layout.preferredWidth: discord_icon.Layout.preferredWidth
+                    Layout.preferredHeight: Layout.preferredWidth
+
+                    MouseArea {
+                        anchors.fill: parent
+                        onClicked: Qt.openUrlExternally("mailto:support@komodoplatform.com")
+                    }
+                }
             }
 
             HorizontalLine {

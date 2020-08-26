@@ -13,10 +13,11 @@ ColumnLayout {
     property bool expanded: false
 
     RowLayout {
+        id: row_layout
         Layout.fillWidth: true
 
         Arrow {
-            id: received_icon
+            id: arrow_icon
             visible: expandable
             up: expanded
             color: expanded ? Style.colorRed : Style.colorGreen
@@ -30,9 +31,8 @@ ColumnLayout {
             MouseArea {
                 enabled: expandable
                 anchors.fill: parent
-                onClicked: {
-                    expanded = !expanded
-                }
+                anchors.leftMargin: -arrow_icon.width - row_layout.spacing
+                onClicked: expanded = !expanded
             }
         }
     }
