@@ -50,7 +50,7 @@ DefaultModal {
         }
 
         if(set_current) {
-            if(max) input_amount.field.text = API.get().is_pin_cfg_enabled() ? General.absString(result.balance_change) : result.total_amount
+            if(max) input_amount.field.text = result.total_amount
 
             prepare_send_result = result
             prepare_send_result.max = max
@@ -69,7 +69,7 @@ DefaultModal {
     }
 
     function sendCoin() {
-        send_result = API.get().send(prepare_send_result.tx_hex, prepare_send_result.max, prepare_send_result.total_amount)
+        send_result = API.get().send(prepare_send_result.tx_hex, prepare_send_result.max, input_amount.field.text)
         stack_layout.currentIndex = 2
     }
 
