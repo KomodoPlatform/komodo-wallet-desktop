@@ -820,6 +820,14 @@ namespace atomic_dex
     void
     mm2::process_balance(const std::string& ticker) const
     {
+        if (is_pin_cfg_enabled())
+        {
+            if (m_balance_informations.find(ticker) != m_balance_informations.end())
+            {
+                return;
+            }
+        }
+
         t_balance_request balance_request{.coin = ticker};
         auto              answer = rpc_balance(std::move(balance_request));
         if (answer.raw_result.find("error") == std::string::npos)

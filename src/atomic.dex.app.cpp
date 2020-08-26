@@ -491,7 +491,7 @@ namespace atomic_dex
         std::error_code ec;
 
         //! If we are in fake pin enabled, we don't want mm2 to choose the max for us
-        if (get_mm2().is_pin_cfg_enabled())
+        if (get_mm2().is_pin_cfg_enabled() && req.max)
         {
             spdlog::trace("pin cfg enabled, using another balance");
             req.amount = get_formated_float(get_mm2().get_balance(m_coin_info->get_ticker().toStdString()));
