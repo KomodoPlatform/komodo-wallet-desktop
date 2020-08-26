@@ -536,11 +536,19 @@ namespace atomic_dex
     }
 
     QString
-    application::send(const QString& tx_hex)
+    application::send(const QString& tx_hex, bool is_max, const QString& amount)
     {
         atomic_dex::t_broadcast_request req{.tx_hex = tx_hex.toStdString(), .coin = m_coin_info->get_ticker().toStdString()};
         std::error_code                 ec;
         auto                            answer = get_mm2().broadcast(std::move(req), ec);
+        if (get_mm2().is_pin_cfg_enabled() && is_max)
+        {
+            get_mm2().reset_fake_balance_to_zero(m_coin_info->get_ticker().toStdString());
+        }
+        else if (get_mm2().is_pin_cfg_enabled() && not is_max)
+        {
+            get_mm2().decrease_fake_balance(m_coin_info->get_ticker().toStdString(), amount.toStdString());
+        }
         if (not m_event_actions[events_action::about_to_exit_app])
         {
             this->m_actions_queue.push(action::refresh_current_ticker);
