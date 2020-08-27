@@ -46,7 +46,6 @@ DefaultModal {
             title: API.get().settings_pg.empty_string + (General.download_icon + "   " + qsTr("New Update!") + " " + (API.get().update_status.current_version + "  " + General.right_arrow_icon + "  " + API.get().update_status.new_version))
         }
 
-
         DefaultFlickable {
             Layout.fillWidth: true
             Layout.fillHeight: true

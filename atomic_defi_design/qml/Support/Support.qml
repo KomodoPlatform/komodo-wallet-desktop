@@ -13,6 +13,10 @@ Item {
 
     }
 
+    function onOpened() {
+
+    }
+
     DefaultFlickable {
         id: layout_background
 
@@ -86,6 +90,46 @@ Item {
                         MouseArea {
                             anchors.fill: parent
                             onClicked: Qt.openUrlExternally("mailto:support@komodoplatform.com")
+                        }
+                    }
+                }
+
+                ColumnLayout {
+                    anchors.centerIn: parent
+
+                    RowLayout {
+                        Layout.alignment: Qt.AlignHCenter
+
+                        Circle {
+                            Layout.alignment: Qt.AlignVCenter
+                            color: update_modal.update_needed ? Style.colorOrange : Style.colorGreen
+                        }
+
+                        DefaultText {
+                            Layout.alignment: Qt.AlignVCenter
+                            text_value: API.get().settings_pg.empty_string + (update_modal.update_needed ? qsTr("Update available") : qsTr("Up to date"))
+
+                            MouseArea {
+                                anchors.fill: parent
+                                onClicked: update_modal.open()
+                            }
+                        }
+                    }
+
+                    DefaultText {
+                        Layout.alignment: Qt.AlignHCenter
+                        text_value: API.get().settings_pg.empty_string + (General.version_string)
+                        font.pixelSize: Style.textSizeSmall3
+                    }
+
+                    DefaultText {
+                        Layout.alignment: Qt.AlignHCenter
+                        text_value: API.get().settings_pg.empty_string + (General.cex_icon + ' ' + qsTr('Changelog'))
+                        font.pixelSize: Style.textSizeSmall2
+
+                        MouseArea {
+                            anchors.fill: parent
+                            onClicked: update_modal.open()
                         }
                     }
                 }

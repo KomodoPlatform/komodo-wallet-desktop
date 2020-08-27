@@ -18,6 +18,8 @@ QtObject {
     readonly property string right_arrow_icon: "⮕"
     readonly property string privacy_text: "*****"
 
+    readonly property string version_string: "Pro v" + API.get().get_version()
+
     property bool privacy_mode: false
 
     readonly property int idx_dashboard_portfolio: 0
