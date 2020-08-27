@@ -43,7 +43,7 @@ namespace atomic_dex
         void update() noexcept final;
 
         //! Public API
-        const nlohmann::json get_update_status() const noexcept;
+        nlohmann::json get_update_status() const noexcept;
     };
 } // namespace atomic_dex
 

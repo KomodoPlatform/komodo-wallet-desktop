@@ -964,12 +964,14 @@ namespace mm2::api
     my_orders_answer
     rpc_my_orders() noexcept
     {
-        nlohmann::json       json_data = template_request("my_orders");
-        RestClient::Response resp;
+        nlohmann::json json_data = template_request("my_orders");
+        // RestClient::Response resp;
 
         spdlog::info("Processing rpc call: rpc my_orders");
 
-        resp = RestClient::post(g_endpoint, "application/json", json_data.dump());
+
+        auto resp = get_client().Post("/", json_data.dump().c_str(), "application/json");
+        // resp = RestClient::post(g_endpoint, "application/json", json_data.dump());
 
         return rpc_process_answer<my_orders_answer>(resp, "my_orders");
     }
@@ -980,8 +982,8 @@ namespace mm2::api
     {
         spdlog::info("Processing rpc call: {}", rpc_command);
 
-        nlohmann::json       json_data = template_request(rpc_command);
-        RestClient::Response resp;
+        nlohmann::json json_data = template_request(rpc_command);
+        // RestClient::Response resp;
 
         to_json(json_data, request);
 
@@ -989,7 +991,8 @@ namespace mm2::api
         json_copy["userpass"] = "*******";
         spdlog::trace("request: {}", json_copy.dump());
 
-        resp = RestClient::post(g_endpoint, "application/json", json_data.dump());
+        auto resp = get_client().Post("/", json_data.dump().c_str(), "application/json");
+        // resp = RestClient::post(g_endpoint, "application/json", json_data.dump());
 
         return rpc_process_answer<TAnswer>(resp, rpc_command);
     }
@@ -1012,6 +1015,7 @@ namespace mm2::api
         json_copy["userpass"] = "*******";
         spdlog::debug("{} request: {}", __FUNCTION__, json_copy.dump());
 
+        // auto resp = get_client().Post("/", json_data.dump().c_str(), "application/json");
         resp = RestClient::post(g_endpoint, "application/json", json_data.dump());
         if (resp.code == 200)
         {
@@ -1027,37 +1031,28 @@ namespace mm2::api
         spdlog::info("Processing rpc call: kmd_rewards_info");
         kmd_rewards_info_answer out;
 
-        nlohmann::json       json_data = template_request("kmd_rewards_info");
-        RestClient::Response resp;
+        nlohmann::json json_data = template_request("kmd_rewards_info");
 
         auto json_copy        = json_data;
         json_copy["userpass"] = "*******";
         spdlog::debug("{} request: {}", __FUNCTION__, json_copy.dump());
 
-        resp                = RestClient::post(g_endpoint, "application/json", json_data.dump());
-        out.rpc_result_code = resp.code;
-        out.result          = nlohmann::json::parse(resp.body);
-        if (resp.code == 200)
+        auto resp                                        = get_client().Post("/", json_data.dump().c_str(), "application/json");
+        out.rpc_result_code                              = resp->status;
+        out.result                                       = nlohmann::json::parse(resp->body);
+        auto transform_timestamp_into_human_date_functor = [](nlohmann::json& obj, const std::string& field) {
+            if (obj.contains(field))
+            {
+                auto obj_timestamp         = obj.at(field).get<std::size_t>();
+                obj[field + "_human_date"] = to_human_date<std::chrono::seconds>(obj_timestamp, "%e %b %Y, %H:%M");
+            }
+        };
+
+        if (resp->status == 200)
         {
             for (auto&& obj: out.result.at("result"))
             {
-                if (obj.contains("accrue_start_at"))
-                {
-                    auto accrue_timestamp             = obj.at("accrue_start_at").get<std::size_t>();
-                    obj["accrue_start_at_human_date"] = to_human_date<std::chrono::seconds>(accrue_timestamp, "%e %b %Y, %H:%M");
-                }
-
-                if (obj.contains("accrue_stop_at"))
-                {
-                    auto accrue_timestamp            = obj.at("accrue_stop_at").get<std::size_t>();
-                    obj["accrue_stop_at_human_date"] = to_human_date<std::chrono::seconds>(accrue_timestamp, "%e %b %Y, %H:%M");
-                }
-
-                if (obj.contains("locktime"))
-                {
-                    auto locktime_timestamp    = obj.at("locktime").get<std::size_t>();
-                    obj["locktime_human_date"] = to_human_date<std::chrono::seconds>(locktime_timestamp, "%e %b %Y, %H:%M");
-                }
+                for (const auto& field: {"accrue_start_at", "accrue_stop_at", "locktime"}) { transform_timestamp_into_human_date_functor(obj, field); }
             }
         }
         return out;
@@ -1066,19 +1061,20 @@ namespace mm2::api
     nlohmann::json
     rpc_batch_standalone(nlohmann::json batch_array)
     {
-        auto resp = RestClient::post(g_endpoint, "application/json", batch_array.dump());
+        auto resp = get_client().Post("/", batch_array.dump().c_str(), "application/json");
+        // auto resp = RestClient::post(g_endpoint, "application/json", batch_array.dump());
 
-        spdlog::info("{} resp code: {}", __FUNCTION__, resp.code);
+        spdlog::info("{} resp code: {}", __FUNCTION__, resp->status);
 
         nlohmann::json answer;
         try
         {
-            answer = nlohmann::json::parse(resp.body);
+            answer = nlohmann::json::parse(resp->body);
         }
         catch (const nlohmann::detail::parse_error& err)
         {
             spdlog::error("{}", err.what());
-            answer["error"] = resp.body;
+            answer["error"] = resp->body;
         }
         return answer;
     }
@@ -1091,25 +1087,27 @@ namespace mm2::api
         nlohmann::json req_json_data = nlohmann::json::array();
         for (auto&& request: requests)
         {
-            nlohmann::json       json_data = template_request("electrum");
-            RestClient::Response resp;
+            nlohmann::json json_data = template_request("electrum");
+            // RestClient::Response resp;
             to_json(json_data, request);
             req_json_data.push_back(json_data);
         }
 
-        auto resp = RestClient::post(g_endpoint, "application/json", req_json_data.dump());
 
-        spdlog::info("{} resp code: {}", __FUNCTION__, resp.code);
+        auto resp = get_client().Post("/", req_json_data.dump().c_str(), "application/json");
+        // auto resp = RestClient::post(g_endpoint, "application/json", req_json_data.dump());
+
+        spdlog::info("{} resp code: {}", __FUNCTION__, resp->status);
 
         nlohmann::json answer;
         try
         {
-            answer = nlohmann::json::parse(resp.body);
+            answer = nlohmann::json::parse(resp->body);
         }
         catch (const nlohmann::detail::parse_error& err)
         {
             spdlog::error("{}", err.what());
-            answer["error"] = resp.body;
+            answer["error"] = resp->body;
         }
         return answer;
     }
@@ -1122,25 +1120,26 @@ namespace mm2::api
         nlohmann::json req_json_data = nlohmann::json::array();
         for (auto&& request: requests)
         {
-            nlohmann::json       json_data = template_request("enable");
-            RestClient::Response resp;
+            nlohmann::json json_data = template_request("enable");
+            // RestClient::Response resp;
             to_json(json_data, request);
             req_json_data.push_back(json_data);
         }
 
-        auto resp = RestClient::post(g_endpoint, "application/json", req_json_data.dump());
-        spdlog::info("{} resp code: {}", __FUNCTION__, resp.code);
+        auto resp = get_client().Post("/", req_json_data.dump().c_str(), "application/json");
+        // auto resp = RestClient::post(g_endpoint, "application/json", req_json_data.dump());
+        spdlog::info("{} resp code: {}", __FUNCTION__, resp->status);
 
         nlohmann::json answer;
 
         try
         {
-            answer = nlohmann::json::parse(resp.body);
+            answer = nlohmann::json::parse(resp->body);
         }
         catch (const nlohmann::detail::parse_error& err)
         {
             spdlog::error("{}", err.what());
-            answer["error"] = resp.body;
+            answer["error"] = resp->body;
         }
 
         return answer;

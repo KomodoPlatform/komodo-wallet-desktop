@@ -95,7 +95,7 @@ namespace atomic_dex
         });
     }
 
-    const nlohmann::json
+    nlohmann::json
     update_system_service::get_update_status() const noexcept
     {
         return *m_update_status;

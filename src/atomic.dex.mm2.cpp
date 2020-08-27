@@ -705,6 +705,7 @@ namespace atomic_dex
         }
 
         m_mm2_init_thread = std::thread([this, mm2_cfg_path]() {
+            //std::this_thread::
             using namespace std::chrono_literals;
             auto               check_mm2_alive = []() { return ::mm2::api::rpc_version() != "error occured during rpc_version"; };
             static std::size_t nb_try          = 0;
@@ -878,9 +879,9 @@ namespace atomic_dex
             }
             std::error_code ec;
             using namespace std::string_literals;
-            std::string url = (ticker == "ETH") ? "https://komodo.live:3334/api/v1/eth_tx_history/"s + address(ticker, ec)
-                                                : "https://komodo.live:3334/api/v1/erc_tx_history/"s + ticker + "/" + address(ticker, ec);
-            answer          = ::mm2::api::process_rpc_get<::mm2::api::tx_history_answer>("tx_history", url);
+            std::string url = (ticker == "ETH") ? "/api/v1/eth_tx_history/"s + address(ticker, ec)
+                                                : "/api/v1/erc_tx_history/"s + ticker + "/" + address(ticker, ec);
+            answer          = ::mm2::api::process_rpc_get<::mm2::api::tx_history_answer>("tx_history", "https://komodo.live:3334", url);
         }
 
 

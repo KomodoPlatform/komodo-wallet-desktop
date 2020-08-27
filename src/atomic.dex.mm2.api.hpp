@@ -16,6 +16,9 @@
 
 #pragma once
 
+//! Others
+#include <httplib.h>
+
 //! PCH Headers
 #include "atomic.dex.pch.hpp"
 
@@ -24,7 +27,15 @@
 
 namespace mm2::api
 {
-    inline constexpr const char* g_endpoint = "http://127.0.0.1:7783";
+    inline constexpr const char* g_endpoint = "http://localhost:7783";
+    static inline httplib::Client&
+    get_client() noexcept
+    {
+        static httplib::Client cli(g_endpoint);
+        assert(cli.is_valid());
+        // cli.Get()
+        return cli;
+    }
 
     nlohmann::json rpc_batch_standalone(nlohmann::json batch_array);
 
@@ -710,42 +721,42 @@ namespace mm2::api
     using have_error_field = decltype(std::declval<T&>().error.has_value());
 
     template <typename RpcReturnType>
-    RpcReturnType static inline rpc_process_answer(const RestClient::Response& resp, const std::string& rpc_command) noexcept
+    RpcReturnType static inline rpc_process_answer(const httplib::Result& resp, const std::string& rpc_command) noexcept
     {
-        spdlog::info("resp code for rpc_command {} is {}", rpc_command, resp.code);
+        spdlog::info("resp code for rpc_command {} is {}", rpc_command, resp->status);
 
         RpcReturnType answer;
         try
         {
-            if (resp.code not_eq 200)
+            if (resp->status not_eq 200)
             {
-                spdlog::warn("rpc answer code is not 200, body : {}", resp.body);
+                spdlog::warn("rpc answer code is not 200, body : {}", resp->body);
                 if constexpr (doom::meta::is_detected_v<have_error_field, RpcReturnType>)
                 {
                     spdlog::debug("error field detected inside the RpcReturnType");
                     if constexpr (std::is_same_v<std::optional<std::string>, decltype(answer.error)>)
                     {
                         spdlog::debug("The error field type is string, parsing it from the response body");
-                        if (auto json_data = nlohmann::json::parse(resp.body); json_data.at("error").is_string())
+                        if (auto json_data = nlohmann::json::parse(resp->body); json_data.at("error").is_string())
                         {
                             answer.error = json_data.at("error").get<std::string>();
                         }
                         else
                         {
-                            answer.error = resp.body;
+                            answer.error = resp->body;
                         }
                         spdlog::debug("The error after getting extracted is: {}", answer.error.value());
                     }
                 }
-                answer.rpc_result_code = resp.code;
-                answer.raw_result      = resp.body;
+                answer.rpc_result_code = resp->status;
+                answer.raw_result      = resp->body;
                 return answer;
             }
 
 
-            auto json_answer       = nlohmann::json::parse(resp.body);
-            answer.rpc_result_code = resp.code;
-            answer.raw_result      = resp.body;
+            auto json_answer       = nlohmann::json::parse(resp->body);
+            answer.rpc_result_code = resp->status;
+            answer.raw_result      = resp->body;
             from_json(json_answer, answer);
         }
         catch (const std::exception& error)
@@ -782,15 +793,13 @@ namespace mm2::api
 
     template <typename TAnswer>
     TAnswer
-    process_rpc_get(std::string rpc_command, const std::string& url)
+    process_rpc_get(std::string rpc_command, const std::string& endpoint, const std::string& url)
     {
-        spdlog::info("Processing rpc call: {}, url: {}", rpc_command, url);
+        spdlog::info("Processing rpc call: {}, url: {}, endpoint: {}", rpc_command, url, endpoint);
 
-        RestClient::Response resp;
-
-        resp = RestClient::get(url);
-
-
+        httplib::Client cli(endpoint.c_str());
+        assert(cli.is_valid());
+        auto resp = cli.Get(url.c_str());
 
         return rpc_process_answer<TAnswer>(resp, rpc_command);
     }
