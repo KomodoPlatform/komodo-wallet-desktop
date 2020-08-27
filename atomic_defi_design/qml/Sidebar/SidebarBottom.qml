@@ -21,7 +21,7 @@ ColumnLayout {
     SidebarLine {
         dashboard_index: General.idx_dashboard_support
         text_value: API.get().settings_pg.empty_string + (qsTr("Support"))
-        image: General.image_path + "menu-settings-white.svg"
+        image: General.image_path + "menu-support-white.png"
         Layout.fillWidth: true
         separator: false
     }
