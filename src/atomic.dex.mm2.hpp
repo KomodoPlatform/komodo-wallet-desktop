@@ -278,7 +278,10 @@ namespace atomic_dex
 
         [[nodiscard]] t_pair_max_vol get_taker_vol() const noexcept;
 
+        //! Pin cfg api
         [[nodiscard]] bool is_pin_cfg_enabled() const noexcept;
+        void reset_fake_balance_to_zero(const std::string& ticker) noexcept;
+        void decrease_fake_balance(const std::string& ticker, const std::string& amount) noexcept;
     };
 } // namespace atomic_dex
 

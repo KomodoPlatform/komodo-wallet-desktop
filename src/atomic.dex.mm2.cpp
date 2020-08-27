@@ -820,6 +820,14 @@ namespace atomic_dex
     void
     mm2::process_balance(const std::string& ticker) const
     {
+        if (is_pin_cfg_enabled())
+        {
+            if (m_balance_informations.find(ticker) != m_balance_informations.end())
+            {
+                return;
+            }
+        }
+
         t_balance_request balance_request{.coin = ticker};
         auto              answer = rpc_balance(std::move(balance_request));
         if (answer.raw_result.find("error") == std::string::npos)
@@ -915,7 +923,7 @@ namespace atomic_dex
 
             for (auto&& current: answer.result.value().transactions)
             {
-                spdlog::trace("my_balance change: {} ticker: {}", current.my_balance_change, ticker);
+                //spdlog::trace("my_balance change: {} ticker: {}", current.my_balance_change, ticker);
 
                 tx_infos current_info{
 
@@ -1216,5 +1224,34 @@ namespace atomic_dex
     mm2::is_pin_cfg_enabled() const noexcept
     {
         return m_balance_factor != 1.0;
+    }
+
+    void
+    mm2::reset_fake_balance_to_zero(const std::string& ticker) noexcept
+    {
+        auto answer    = m_balance_informations.at(ticker);
+        answer.balance = "0";
+        m_balance_informations.assign(ticker, answer);
+        this->dispatcher_.trigger<ticker_balance_updated>(ticker);
+    }
+
+    void
+    mm2::decrease_fake_balance(const std::string& ticker, const std::string& amount) noexcept
+    {
+        auto       answer = m_balance_informations.at(ticker);
+        t_float_50 balance(answer.balance);
+        t_float_50 amount_f(amount);
+        t_float_50 result = balance - amount_f;
+        spdlog::trace("decreasing {} - {} = {}", balance.str(8, std::ios_base::fixed), amount_f.str(8, std::ios_base::fixed), result.str(8, std::ios_base::fixed));
+        if (result < 0)
+        {
+            reset_fake_balance_to_zero(ticker);
+        }
+        else
+        {
+            answer.balance = result.str(8, std::ios_base::fixed);
+            m_balance_informations.assign(ticker, answer);
+            this->dispatcher_.trigger<ticker_balance_updated>(ticker);
+        }
     }
 } // namespace atomic_dex
