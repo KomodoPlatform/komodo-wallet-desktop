@@ -1069,7 +1069,7 @@
       }
     ],
     "explorer_url": [
-      "https://blockstream.info/"
+      "https://blockstream.info/testnet/"
     ],
     "is_erc_20": false,
     "name": "Bitcoin (testnet BTC)",
