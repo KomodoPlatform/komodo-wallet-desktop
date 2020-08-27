@@ -224,7 +224,7 @@
     "explorer_url": [
       "https://blockchair.com/dash/"
     ],
-    "explorer_tx_url":"transaction/",
+    "explorer_tx_url": "transaction/",
     "is_erc_20": false,
     "type": "UTXO"
   },
@@ -317,8 +317,8 @@
     "explorer_url": [
       "https://chainz.cryptoid.info/emc2/"
     ],
-    "explorer_tx_url":"tx.dws?",
-    "explorer_address_url":"address.dws?",
+    "explorer_tx_url": "tx.dws?",
+    "explorer_address_url": "address.dws?",
     "type": "UTXO",
     "is_erc_20": false,
     "active": false,
@@ -1046,5 +1046,24 @@
     "is_erc_20": false,
     "active": false,
     "currently_enabled": false
+  },
+  "tBTC": {
+    "active": false,
+    "coin": "tBTC",
+    "coingecko_id": "test-coin",
+    "coinpaprika_id": "test-coin",
+    "currently_enabled": false,
+    "electrum": [
+      {
+        "url": "testnet.aranguren.org:51001",
+        "protocol": "TCP"
+      }
+    ],
+    "explorer_url": [
+      "https://blockstream.info/"
+    ],
+    "is_erc_20": false,
+    "name": "Bitcoin (testnet BTC)",
+    "type": "UTXO"
   }
 }
