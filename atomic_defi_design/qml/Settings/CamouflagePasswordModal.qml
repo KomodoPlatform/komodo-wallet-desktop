@@ -43,7 +43,7 @@ DefaultModal {
                     horizontalAlignment: Text.AlignHCenter
                     anchors.horizontalCenter: parent.horizontalCenter
 
-                    text_value: API.get().settings_pg.empty_string + (qsTr("Camouflage password is a secret wallet password which can be used in emergency situations."))
+                    text_value: API.get().settings_pg.empty_string + (qsTr("Camouflage Password is a secret password for emergency situations."))
                     font.pixelSize: Style.textSize2
                 }
 
@@ -52,7 +52,7 @@ DefaultModal {
                     horizontalAlignment: Text.AlignHCenter
                     anchors.horizontalCenter: parent.horizontalCenter
 
-                    text_value: API.get().settings_pg.empty_string + (qsTr("On login with it balance lower than actual will be displayed."))
+                    text_value: API.get().settings_pg.empty_string + (qsTr("Using it to login will display your balance lower than it actually is."))
                 }
 
                 DefaultText {
@@ -60,7 +60,7 @@ DefaultModal {
                     horizontalAlignment: Text.AlignHCenter
                     anchors.horizontalCenter: parent.horizontalCenter
 
-                    text_value: API.get().settings_pg.empty_string + (qsTr("It forming as <your encryption password> + <appendix>."))
+                    text_value: API.get().settings_pg.empty_string + (qsTr("Here you enter the suffix and at login you need to enter {real_password}{suffix}"))
                 }
             }
         }
