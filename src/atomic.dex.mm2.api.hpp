@@ -27,13 +27,23 @@
 
 namespace mm2::api
 {
-    inline constexpr const char* g_endpoint = "http://localhost:7783";
+    inline constexpr const char* g_endpoint                 = "http://localhost:7783";
+    inline constexpr const char* g_etherscan_proxy_endpoint = "https://komodo.live:3334";
+
     static inline httplib::Client&
     get_client() noexcept
     {
         static httplib::Client cli(g_endpoint);
         assert(cli.is_valid());
         // cli.Get()
+        return cli;
+    }
+
+    static inline httplib::Client&
+    get_client_etherscan_proxy() noexcept
+    {
+        static httplib::Client cli(g_etherscan_proxy_endpoint);
+        assert(cli.is_valid());
         return cli;
     }
 
@@ -793,13 +803,11 @@ namespace mm2::api
 
     template <typename TAnswer>
     TAnswer
-    process_rpc_get(std::string rpc_command, const std::string& endpoint, const std::string& url)
+    process_rpc_get(std::string rpc_command, const std::string& url)
     {
-        spdlog::info("Processing rpc call: {}, url: {}, endpoint: {}", rpc_command, url, endpoint);
+        spdlog::info("Processing rpc call: {}, url: {}, endpoint: {}", rpc_command, url, g_etherscan_proxy_endpoint);
 
-        httplib::Client cli(endpoint.c_str());
-        assert(cli.is_valid());
-        auto resp = cli.Get(url.c_str());
+        auto resp = get_client_etherscan_proxy().Get(url.c_str());
 
         return rpc_process_answer<TAnswer>(resp, rpc_command);
     }

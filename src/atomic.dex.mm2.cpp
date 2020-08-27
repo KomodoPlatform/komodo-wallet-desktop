@@ -881,7 +881,7 @@ namespace atomic_dex
             using namespace std::string_literals;
             std::string url = (ticker == "ETH") ? "/api/v1/eth_tx_history/"s + address(ticker, ec)
                                                 : "/api/v1/erc_tx_history/"s + ticker + "/" + address(ticker, ec);
-            answer          = ::mm2::api::process_rpc_get<::mm2::api::tx_history_answer>("tx_history", "https://komodo.live:3334", url);
+            answer          = ::mm2::api::process_rpc_get<::mm2::api::tx_history_answer>("tx_history", url);
         }
 
 
