@@ -14,11 +14,13 @@
  *                                                                            *
  ******************************************************************************/
 
+//! QT Headers
+#include <QQmlEngine>
+
 //! Project Headers
 #include "atomic.dex.qt.portfolio.model.hpp"
 #include "atomic.dex.qt.utilities.hpp"
 #include "atomic.dex.threadpool.hpp"
-#include <QQmlEngine>
 
 //! Utils
 namespace
@@ -48,8 +50,8 @@ namespace atomic_dex
         this->m_model_proxy->setFilterRole(NameRole);
         this->m_model_proxy->setFilterCaseSensitivity(Qt::CaseInsensitive);
 
-        //QQmlEngine::setObjectOwnership(m_model_proxy, QQmlEngine::JavaScriptOwnership);
-        //emit portfolioProxyChanged();
+        // QQmlEngine::setObjectOwnership(m_model_proxy, QQmlEngine::JavaScriptOwnership);
+        // emit portfolioProxyChanged();
     }
 
     portfolio_model::~portfolio_model() noexcept
@@ -57,7 +59,7 @@ namespace atomic_dex
         m_dispatcher.sink<update_portfolio_values>().disconnect<&portfolio_model::on_update_portfolio_values_event>(*this);
         spdlog::trace("{} l{} f[{}]", __FUNCTION__, __LINE__, fs::path(__FILE__).filename().string());
         spdlog::trace("portfolio model destroyed");
-        //delete m_model_proxy;
+        // delete m_model_proxy;
     }
 
     void
