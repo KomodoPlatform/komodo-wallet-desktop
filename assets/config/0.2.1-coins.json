@@ -977,6 +977,24 @@
     "active": false,
     "currently_enabled": false
   },
+  "VRA": {
+    "coin": "VRA",
+    "name": "Verasity",
+    "coingecko_id": "verasity",
+    "coinpaprika_id": "vra-verasity",
+    "eth_nodes": [
+      "http://eth1.cipig.net:8555",
+      "http://eth2.cipig.net:8555",
+      "http://eth3.cipig.net:8555"
+    ],
+    "explorer_url": [
+      "https://etherscan.io/"
+    ],
+    "is_erc_20": true,
+    "type": "ERC-20",
+    "active": false,
+    "currently_enabled": false
+  },
   "XZC": {
     "coin": "XZC",
     "name": "Zcoin",
