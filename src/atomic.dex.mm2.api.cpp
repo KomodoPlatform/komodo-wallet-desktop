@@ -37,6 +37,38 @@ namespace
             answer.result = j.at("result").get<RpcSuccessReturnType>();
         }
     }
+
+    template <typename TRequestCollections>
+    nlohmann::json
+    batch_enabling(const std::string& method, TRequestCollections requests)
+    {
+        spdlog::info("Processing rpc call: batch {}", method);
+
+        nlohmann::json req_json_data = nlohmann::json::array();
+        for (auto&& request: requests)
+        {
+            nlohmann::json json_data = ::mm2::api::template_request(method);
+            to_json(json_data, request);
+            req_json_data.push_back(json_data);
+        }
+
+
+        auto resp = ::mm2::api::get_client().Post("/", req_json_data.dump().c_str(), "application/json");
+
+        spdlog::info("{} resp code: {}", __FUNCTION__, resp->status);
+
+        nlohmann::json answer;
+        try
+        {
+            answer = nlohmann::json::parse(resp->body);
+        }
+        catch (const nlohmann::detail::parse_error& err)
+        {
+            spdlog::error("{}", err.what());
+            answer["error"] = resp->body;
+        }
+        return answer;
+    }
 } // namespace
 
 //! Implementation RPC [max_taker_vol]
@@ -1075,63 +1107,13 @@ namespace mm2::api
     nlohmann::json
     rpc_batch_electrum(std::vector<electrum_request> requests)
     {
-        spdlog::info("Processing rpc call: batch electrum");
-
-        nlohmann::json req_json_data = nlohmann::json::array();
-        for (auto&& request: requests)
-        {
-            nlohmann::json json_data = template_request("electrum");
-            to_json(json_data, request);
-            req_json_data.push_back(json_data);
-        }
-
-
-        auto resp = get_client().Post("/", req_json_data.dump().c_str(), "application/json");
-
-        spdlog::info("{} resp code: {}", __FUNCTION__, resp->status);
-
-        nlohmann::json answer;
-        try
-        {
-            answer = nlohmann::json::parse(resp->body);
-        }
-        catch (const nlohmann::detail::parse_error& err)
-        {
-            spdlog::error("{}", err.what());
-            answer["error"] = resp->body;
-        }
-        return answer;
+        return batch_enabling("electrum", requests);
     }
 
     nlohmann::json
     rpc_batch_enable(std::vector<enable_request> requests)
     {
-        spdlog::info("Processing rpc call: batch enable");
-
-        nlohmann::json req_json_data = nlohmann::json::array();
-        for (auto&& request: requests)
-        {
-            nlohmann::json json_data = template_request("enable");
-            to_json(json_data, request);
-            req_json_data.push_back(json_data);
-        }
-
-        auto resp = get_client().Post("/", req_json_data.dump().c_str(), "application/json");
-        spdlog::info("{} resp code: {}", __FUNCTION__, resp->status);
-
-        nlohmann::json answer;
-
-        try
-        {
-            answer = nlohmann::json::parse(resp->body);
-        }
-        catch (const nlohmann::detail::parse_error& err)
-        {
-            spdlog::error("{}", err.what());
-            answer["error"] = resp->body;
-        }
-
-        return answer;
+        return batch_enabling("enable", requests);
     }
 
     static inline std::string&
