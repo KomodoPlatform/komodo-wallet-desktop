@@ -361,35 +361,8 @@ namespace atomic_dex
     void
     mm2::batch_balance_and_tx(bool is_a_reset)
     {
-        auto                     enabled_coins = get_enabled_coins();
-        nlohmann::json           batch_array   = nlohmann::json::array();
-        std::vector<std::string> tickers_idx;
-        std::vector<std::string> erc_to_fetch;
-        for (auto&& coin: enabled_coins)
-        {
-            if (not coin.is_erc_20)
-            {
-                t_tx_history_request request{.coin = coin.ticker, .limit = 1000};
-                nlohmann::json       j = ::mm2::api::template_request("my_tx_history");
-                ::mm2::api::to_json(j, request);
-                batch_array.push_back(j);
-                tickers_idx.push_back(coin.ticker);
-            }
-            else
-            {
-                erc_to_fetch.push_back(coin.ticker);
-            }
-            if (is_pin_cfg_enabled() && m_balance_informations.find(coin.ticker) != m_balance_informations.end())
-            {
-                continue;
-            }
-            t_balance_request balance_request{.coin = coin.ticker};
-            nlohmann::json    j = ::mm2::api::template_request("my_balance");
-            ::mm2::api::to_json(j, balance_request);
-            batch_array.push_back(j);
-            tickers_idx.push_back(coin.ticker);
-        }
-        auto answers = ::mm2::api::rpc_batch_standalone(batch_array);
+        auto&& [batch_array, tickers_idx, erc_to_fetch] = prepare_batch_balance_and_tx();
+        auto answers                                    = ::mm2::api::rpc_batch_standalone(batch_array);
 
         auto process_balance_answer_functor = [this](nlohmann::json answer_json) {
             t_balance_answer answer;
@@ -467,6 +440,40 @@ namespace atomic_dex
             ++idx;
         }
         for (auto&& coin: erc_to_fetch) { process_tx(coin, is_a_reset); }
+    }
+
+    std::tuple<nlohmann::json, std::vector<std::string>, std::vector<std::string>>
+    mm2::prepare_batch_balance_and_tx() const
+    {
+        const auto&              enabled_coins = get_enabled_coins();
+        nlohmann::json           batch_array   = nlohmann::json::array();
+        std::vector<std::string> tickers_idx;
+        std::vector<std::string> erc_to_fetch;
+        for (auto&& coin: enabled_coins)
+        {
+            if (not coin.is_erc_20)
+            {
+                t_tx_history_request request{.coin = coin.ticker, .limit = 1000};
+                nlohmann::json       j = ::mm2::api::template_request("my_tx_history");
+                ::mm2::api::to_json(j, request);
+                batch_array.push_back(j);
+                tickers_idx.push_back(coin.ticker);
+            }
+            else
+            {
+                erc_to_fetch.push_back(coin.ticker);
+            }
+            if (is_pin_cfg_enabled() && m_balance_informations.find(coin.ticker) != m_balance_informations.end())
+            {
+                continue;
+            }
+            t_balance_request balance_request{.coin = coin.ticker};
+            nlohmann::json    j = ::mm2::api::template_request("my_balance");
+            ::mm2::api::to_json(j, balance_request);
+            batch_array.push_back(j);
+            tickers_idx.push_back(coin.ticker);
+        }
+        return std::make_tuple(batch_array, tickers_idx, erc_to_fetch);
     }
 
     void
