@@ -120,6 +120,11 @@ Item {
                         Layout.alignment: Qt.AlignHCenter
                         text_value: API.get().settings_pg.empty_string + (General.version_string)
                         font.pixelSize: Style.textSizeSmall3
+
+                        MouseArea {
+                            anchors.fill: parent
+                            onClicked: update_modal.open()
+                        }
                     }
 
                     DefaultText {
