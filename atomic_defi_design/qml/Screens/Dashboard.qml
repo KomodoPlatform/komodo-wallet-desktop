@@ -11,6 +11,7 @@ import "../Portfolio"
 import "../Wallet"
 import "../Exchange"
 import "../Settings"
+import "../Support"
 import "../Sidebar"
 
 Item {
@@ -20,6 +21,12 @@ Item {
 
     function getMainPage() {
         return API.design_editor ? General.idx_dashboard_wallet : General.idx_dashboard_portfolio
+    }
+
+    function openLogsFolder() {
+        API.get().export_swaps_json()
+        const prefix = Qt.platform.os == "windows" ? "file:///" : "file://"
+        Qt.openUrlExternally(prefix + API.get().get_log_folder())
     }
 
     property int prev_page: -1
@@ -68,6 +75,9 @@ Item {
             }
             else if(current_page === General.idx_dashboard_settings) {
                 settings.onOpened()
+            }
+            else if(current_page === General.idx_dashboard_support) {
+                support.onOpened()
             }
         }
 
@@ -136,6 +146,11 @@ Item {
 
             Settings {
                 id: settings
+                Layout.alignment: Qt.AlignCenter
+            }
+
+            Support {
+                id: support
                 Layout.alignment: Qt.AlignCenter
             }
         }

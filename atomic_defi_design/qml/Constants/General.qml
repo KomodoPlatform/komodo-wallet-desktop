@@ -18,6 +18,8 @@ QtObject {
     readonly property string right_arrow_icon: "⮕"
     readonly property string privacy_text: "*****"
 
+    readonly property string version_string: "Pro v" + API.get().get_version()
+
     property bool privacy_mode: false
 
     readonly property int idx_dashboard_portfolio: 0
@@ -26,8 +28,9 @@ QtObject {
     readonly property int idx_dashboard_news: 3
     readonly property int idx_dashboard_dapps: 4
     readonly property int idx_dashboard_settings: 5
-    readonly property int idx_dashboard_light_ui: 6
-    readonly property int idx_dashboard_privacy_mode: 7
+    readonly property int idx_dashboard_support: 6
+    readonly property int idx_dashboard_light_ui: 7
+    readonly property int idx_dashboard_privacy_mode: 8
 
     readonly property int idx_exchange_trade: 0
     readonly property int idx_exchange_orders: 1

@@ -12,6 +12,10 @@
         <file>atomic_defi_design/assets/fonts/Montserrat-Light.ttf</file>
         <file>atomic_defi_design/assets/fonts/Montserrat-Thin.ttf</file>
         <file>atomic_defi_design/assets/fonts/Montserrat-Regular.ttf</file>
+        <file>atomic_defi_design/assets/images/icon-discord.png</file>
+        <file>atomic_defi_design/assets/images/icon-twitter.png</file>
+        <file>atomic_defi_design/assets/images/icon-email.png</file>
+        <file>atomic_defi_design/assets/images/icon-support.png</file>
         <file>atomic_defi_design/assets/images/tray-icon.png</file>
         <file>atomic_defi_design/assets/images/arrow_up.svg</file>
         <file>atomic_defi_design/assets/images/arrow_down.svg</file>
@@ -35,6 +39,7 @@
         <file>atomic_defi_design/assets/images/menu-news-white.svg</file>
         <file>atomic_defi_design/assets/images/menu-exchange-white.svg</file>
         <file>atomic_defi_design/assets/images/menu-assets-white.svg</file>
+        <file>atomic_defi_design/assets/images/menu-support-white.png</file>
         <file>atomic_defi_design/assets/images/exchange-trade-complete.svg</file>
         <file>atomic_defi_design/assets/images/dashboard-info.svg</file>
         <file>atomic_defi_design/assets/images/trade_icon.svg</file>
@@ -200,5 +205,6 @@
         <file>atomic_defi_design/qml/Settings/DeleteWalletModal.qml</file>
         <file>atomic_defi_design/qml/Settings/CamouflagePasswordModal.qml</file>
         <file>atomic_defi_design/qml/Settings/Languages.qml</file>
+        <file>atomic_defi_design/qml/Support/Support.qml</file>
     </qresource>
 </RCC>

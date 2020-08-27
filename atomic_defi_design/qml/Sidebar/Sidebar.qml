@@ -109,7 +109,8 @@ Item {
                 case General.idx_dashboard_dapps:
                     return sidebar_center.y + dashboard.current_page * Style.sidebarLineHeight
                 case General.idx_dashboard_settings:
-                    return sidebar_bottom.y
+                case General.idx_dashboard_support:
+                    return sidebar_bottom.y + (dashboard.current_page - General.idx_dashboard_settings) * Style.sidebarLineHeight
             }
         }
     }
@@ -140,7 +141,7 @@ Item {
             anchors.horizontalCenter: parent.horizontalCenter
             anchors.top: parent.top
             anchors.topMargin: parent.width * 0.85
-            text_value: API.get().settings_pg.empty_string + ("Pro v" + API.get().get_version())
+            text_value: API.get().settings_pg.empty_string + (General.version_string)
             font.pixelSize: Style.textSizeSmall1
             color: Style.colorThemeDarkLight
         }
