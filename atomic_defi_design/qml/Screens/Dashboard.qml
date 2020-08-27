@@ -23,6 +23,12 @@ Item {
         return API.design_editor ? General.idx_dashboard_wallet : General.idx_dashboard_portfolio
     }
 
+    function openLogsFolder() {
+        API.get().export_swaps_json()
+        const prefix = Qt.platform.os == "windows" ? "file:///" : "file://"
+        Qt.openUrlExternally(prefix + API.get().get_log_folder())
+    }
+
     property int prev_page: -1
     property int current_page: getMainPage()
 
