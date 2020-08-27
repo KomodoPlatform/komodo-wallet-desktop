@@ -1057,6 +1057,15 @@
       {
         "url": "testnet.aranguren.org:51001",
         "protocol": "TCP"
+      },
+      {
+        "url": "electrum1.cipig.net:10068"
+      },
+      {
+        "url": "electrum2.cipig.net:10068"
+      },
+      {
+        "url": "electrum3.cipig.net:10068"
       }
     ],
     "explorer_url": [
