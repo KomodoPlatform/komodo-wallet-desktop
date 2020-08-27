@@ -130,14 +130,12 @@ namespace atomic_dex
         //! Refresh the transaction registry (internal)
         void process_tx(const std::string& ticker, bool is_a_refresh);
 
-        //! Refresh the fees registry (internal)
-        // void process_fees();
-
         //! Refresh the orderbook registry (internal)
         void process_orderbook(bool is_a_reset = false);
 
         //! Batch process fees and fetch current_orderbook thread
         void batch_process_fees_and_fetch_current_orderbook_thread(bool is_a_reset);
+        void batch_balance_and_tx(bool is_a_reset);
 
       public:
         //! Constructor
@@ -180,9 +178,6 @@ namespace atomic_dex
         //! Enable multiple coins
         void enable_multiple_coins(const std::vector<std::string>& tickers) noexcept;
 
-        //! Enable single coin
-        bool enable_coin(const std::string& ticker, bool emit_event = false);
-
         //! Disable a single coin
         bool disable_coin(const std::string& ticker, std::error_code& ec) noexcept;
 
@@ -221,9 +216,6 @@ namespace atomic_dex
 
         //! Last 50 transactions maximum
         [[nodiscard]] t_tx_state get_tx_state(const std::string& ticker, t_mm2_ec& ec) const;
-
-        //! Claim Reward is possible on this specific ticker ?
-        //[[nodiscard]] bool is_claiming_ready(const std::string& ticker) const noexcept;
 
         //! Claim rewards
         nlohmann::json claim_rewards(const std::string& ticker, t_mm2_ec& ec) noexcept;
@@ -280,8 +272,8 @@ namespace atomic_dex
 
         //! Pin cfg api
         [[nodiscard]] bool is_pin_cfg_enabled() const noexcept;
-        void reset_fake_balance_to_zero(const std::string& ticker) noexcept;
-        void decrease_fake_balance(const std::string& ticker, const std::string& amount) noexcept;
+        void               reset_fake_balance_to_zero(const std::string& ticker) noexcept;
+        void               decrease_fake_balance(const std::string& ticker, const std::string& amount) noexcept;
     };
 } // namespace atomic_dex
 

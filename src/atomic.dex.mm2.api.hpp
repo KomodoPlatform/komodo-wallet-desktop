@@ -27,6 +27,45 @@
 
 namespace mm2::api
 {
+    static inline void dump_last_http_error(const httplib::Result& resp)
+    {
+        switch (resp.error())
+        {
+        case httplib::Success:
+            spdlog::info("last error is: success");
+            break;
+        case httplib::Unknown:
+            spdlog::error("last error is: unknown");
+            break;
+        case httplib::Connection:
+            spdlog::error("last error is: connection");
+            break;
+        case httplib::BindIPAddress:
+            spdlog::error("last error is: bindipaddress");
+            break;
+        case httplib::Read:
+            spdlog::error("last error is: read");
+            break;
+        case httplib::Write:
+            spdlog::error("last error is: write");
+            break;
+        case httplib::ExceedRedirectCount:
+            spdlog::error("last error is: exceed redirect count");
+            break;
+        case httplib::Canceled:
+            spdlog::error("last error is: cancelled");
+            break;
+        case httplib::SSLConnection:
+            spdlog::error("last error is: ssl connection");
+            break;
+        case httplib::SSLLoadingCerts:
+            spdlog::error("last error is: ssl loading certs");
+            break;
+        case httplib::SSLServerVerification:
+            spdlog::error("last error is: ssl serververification");
+            break;
+        }
+    }
     inline constexpr const char* g_endpoint                 = "http://localhost:7783";
     inline constexpr const char* g_etherscan_proxy_endpoint = "https://komodo.live:3334";
 
@@ -733,6 +772,14 @@ namespace mm2::api
     template <typename RpcReturnType>
     RpcReturnType static inline rpc_process_answer(const httplib::Result& resp, const std::string& rpc_command) noexcept
     {
+        if (resp == nullptr)
+        {
+            dump_last_http_error(resp);
+            RpcReturnType answer;
+            answer.rpc_result_code = 500;
+            answer.raw_result = "{\"error\": \"internal\"}";
+            return answer;
+        }
         spdlog::info("resp code for rpc_command {} is {}", rpc_command, resp->status);
 
         RpcReturnType answer;
