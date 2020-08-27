@@ -112,16 +112,26 @@ Item {
                 id: exchange
             }
 
-            DefaultText {
+            Item {
                 id: news
-                text_value: API.get().settings_pg.empty_string + (qsTr("News"))
                 function reset() { }
+                Layout.fillWidth: true
+                Layout.fillHeight: true
+                DefaultText {
+                    anchors.centerIn: parent
+                    text_value: API.get().settings_pg.empty_string + (qsTr("Content for this section will be added later. Stay tuned!"))
+                }
             }
 
-            DefaultText {
+            Item {
                 id: dapps
-                text_value: API.get().settings_pg.empty_string + (qsTr("Dapps"))
                 function reset() { }
+                Layout.fillWidth: true
+                Layout.fillHeight: true
+                DefaultText {
+                    anchors.centerIn: parent
+                    text_value: API.get().settings_pg.empty_string + (qsTr("Content for this section will be added later. Stay tuned!"))
+                }
             }
 
             Settings {

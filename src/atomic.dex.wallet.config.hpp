@@ -38,7 +38,8 @@ namespace atomic_dex
 
     struct wallet_cfg
     {
-        std::string name;
+        std::string          name;
+        std::string          protection_pass{"default_protection_pass"};
         std::vector<contact> address_book;
     };
 

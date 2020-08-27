@@ -385,11 +385,18 @@ Item {
 
 
                 // Price
-                PriceLine {
+                InnerBackground {
                     id: price_line
                     anchors.left: parent.left
                     anchors.right: parent.right
                     anchors.bottom: parent.bottom
+                    height: price_line_obj.height + 30
+                    PriceLine {
+                        id: price_line_obj
+                        anchors.verticalCenter: parent.verticalCenter
+                        anchors.left: parent.left
+                        anchors.right: parent.right
+                    }
                 }
             }
 
@@ -420,40 +427,6 @@ Item {
                     anchors.left: parent.left
                     anchors.right: parent.right
                     anchors.top: parent.top
-                }
-
-                // Show errors
-                DefaultText {
-                    anchors.left: parent.left
-                    anchors.right: parent.right
-                    anchors.top: form_base.visible ? form_base.bottom : form_rel.bottom
-                    anchors.topMargin: layout_margin * 2
-
-                    font.pixelSize: Style.textSizeSmall4
-                    color: Style.colorRed
-
-                    text_value: API.get().settings_pg.empty_string + (
-                                    // Balance check can be done without price too, prioritize that for sell
-                                    notEnoughBalance() ? (qsTr("Tradable (after fees) %1 balance is lower than minimum trade amount").arg(base_ticker) + " : " + General.getMinTradeAmount()) :
-
-                                    // Fill the price field
-                                    General.isZero(getCurrentPrice()) ? (qsTr("Please fill the price field")) :
-
-                                    // Fill the volume field
-                                    General.isZero(getCurrentForm().getVolume()) ? (qsTr("Please fill the volume field")) :
-
-                                   // Trade amount is lower than the minimum
-                                   (getCurrentForm().fieldsAreFilled() && !getCurrentForm().higherThanMinTradeAmount()) ? ((qsTr("Volume is lower than minimum trade amount")) + " : " + General.getMinTradeAmount()) :
-
-                                    // Fields are filled, fee can be checked
-                                    notEnoughBalanceForFees() ?
-                                        (qsTr("Not enough balance for the fees. Need at least %1 more", "AMT TICKER").arg(General.formatCrypto("", curr_trade_info.amount_needed, base_ticker))) :
-
-                                    // Not enough ETH for fees
-                                    (getCurrentForm().hasEthFees() && !getCurrentForm().hasEnoughEthForFees()) ? (qsTr("Not enough ETH for the transaction fee")) : ""
-                              )
-
-                    visible: text_value !== ""
                 }
             }
         }

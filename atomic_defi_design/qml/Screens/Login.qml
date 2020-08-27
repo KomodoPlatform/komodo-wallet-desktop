@@ -7,6 +7,7 @@ import "../Constants"
 
 SetupPage {
     id: login
+
     // Override
     property var onClickedBack: () => {}
     property var postLoginSuccess: () => {}

@@ -48,8 +48,8 @@ DefaultListView {
         // Description
         DefaultText {
             id: description
-            text_value: API.get().settings_pg.empty_string + (model.modelData.received ? qsTr("Incoming transaction") : qsTr("Outgoing transaction"))
-            font.pixelSize: Style.textSizeSmall1
+            text_value: API.get().settings_pg.empty_string + (model.modelData.received ? qsTr("Received") : qsTr("Sent"))
+            font.pixelSize: Style.textSizeSmall3
             anchors.verticalCenter: parent.verticalCenter
             anchors.left: received_icon.right
             anchors.leftMargin: 25
@@ -62,7 +62,7 @@ DefaultListView {
             font.pixelSize: description.font.pixelSize
             anchors.verticalCenter: parent.verticalCenter
             anchors.left: parent.left
-            anchors.leftMargin: parent.width * 0.25
+            anchors.leftMargin: parent.width * 0.2
             color: model.modelData.received ? Style.colorGreen : Style.colorRed
             privacy: true
         }
@@ -73,7 +73,7 @@ DefaultListView {
             font.pixelSize: description.font.pixelSize
             anchors.verticalCenter: parent.verticalCenter
             anchors.left: parent.left
-            anchors.leftMargin: parent.width * 0.45
+            anchors.leftMargin: parent.width * 0.4
             color: crypto_amount.color
             privacy: true
         }
@@ -81,7 +81,7 @@ DefaultListView {
         // Fee
         DefaultText {
             text_value: API.get().settings_pg.empty_string + (General.formatCrypto(!(parseFloat(model.modelData.fees) > 0), Math.abs(parseFloat(model.modelData.fees)),
-                                                                       General.txFeeTicker(API.get().current_coin_info)) + " " + qsTr("transaction fee"))
+                                                                       General.txFeeTicker(API.get().current_coin_info)) + " " + qsTr("fees"))
             font.pixelSize: description.font.pixelSize
             anchors.verticalCenter: parent.verticalCenter
             anchors.left: parent.left

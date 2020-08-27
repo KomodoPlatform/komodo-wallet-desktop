@@ -14,7 +14,7 @@ DefaultModal {
     onClosed: if(stack_layout.currentIndex === 2) reset(true)
 
     // Local
-    readonly property var default_prepare_send_result: ({ has_error: false, error_message: "", tx_hex: "", date: "", fees: "", explorer_url: "" })
+    readonly property var default_prepare_send_result: ({ has_error: false, error_message: "", tx_hex: "", date: "", fees: "", explorer_url: "", max: false })
     property var prepare_send_result: default_prepare_send_result
     property string send_result
 
@@ -50,9 +50,10 @@ DefaultModal {
         }
 
         if(set_current) {
-            if(max) input_amount.field.text = result.total_amount
+            if(max) input_amount.field.text = API.get().is_pin_cfg_enabled() ? General.absString(result.balance_change) : result.total_amount
 
             prepare_send_result = result
+            prepare_send_result.max = max
             if(prepare_send_result.has_error) {
                 text_error.text = prepare_send_result.error_message
             }
@@ -68,7 +69,7 @@ DefaultModal {
     }
 
     function sendCoin() {
-        send_result = API.get().send(prepare_send_result.tx_hex)
+        send_result = API.get().send(prepare_send_result.tx_hex, prepare_send_result.max, input_amount.field.text)
         stack_layout.currentIndex = 2
     }
 

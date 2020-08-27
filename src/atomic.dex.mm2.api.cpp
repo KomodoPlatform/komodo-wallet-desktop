@@ -277,12 +277,21 @@ namespace mm2::api
     void
     from_json(const nlohmann::json& j, tx_history_answer_success& answer)
     {
-        if (not j.at("from_id").is_null())
-            j.at("from_id").get_to(answer.from_id);
-        j.at("current_block").get_to(answer.current_block);
+        if (j.contains("from_id"))
+        {
+            if (not j.at("from_id").is_null())
+                j.at("from_id").get_to(answer.from_id);
+        }
+        if (j.contains("current_block"))
+        {
+            j.at("current_block").get_to(answer.current_block);
+        }
         j.at("limit").get_to(answer.limit);
         j.at("skipped").get_to(answer.skipped);
-        j.at("sync_status").get_to(answer.sync_status);
+        if (j.contains("sync_status"))
+        {
+            j.at("sync_status").get_to(answer.sync_status);
+        }
         j.at("total").get_to(answer.total);
         j.at("transactions").get_to(answer.transactions);
     }
@@ -858,61 +867,6 @@ namespace mm2::api
         }
     }
 
-    template <typename T>
-    using have_error_field = decltype(std::declval<T&>().error.has_value());
-
-    template <typename RpcReturnType>
-    RpcReturnType
-    rpc_process_answer(const RestClient::Response& resp, const std::string& rpc_command) noexcept
-    {
-        spdlog::info("resp code for rpc_command {} is {}", rpc_command, resp.code);
-
-        RpcReturnType answer;
-        try
-        {
-            if (resp.code not_eq 200)
-            {
-                spdlog::warn("rpc answer code is not 200, body : {}", resp.body);
-                if constexpr (doom::meta::is_detected_v<have_error_field, RpcReturnType>)
-                {
-                    spdlog::debug("error field detected inside the RpcReturnType");
-                    if constexpr (std::is_same_v<std::optional<std::string>, decltype(answer.error)>)
-                    {
-                        spdlog::debug("The error field type is string, parsing it from the response body");
-                        if (auto json_data = nlohmann::json::parse(resp.body); json_data.at("error").is_string())
-                        {
-                            answer.error = json_data.at("error").get<std::string>();
-                        }
-                        else
-                        {
-                            answer.error = resp.body;
-                        }
-                        spdlog::debug("The error after getting extracted is: {}", answer.error.value());
-                    }
-                }
-                answer.rpc_result_code = resp.code;
-                answer.raw_result      = resp.body;
-                return answer;
-            }
-
-
-            auto json_answer       = nlohmann::json::parse(resp.body);
-            answer.rpc_result_code = resp.code;
-            answer.raw_result      = resp.body;
-            from_json(json_answer, answer);
-        }
-        catch (const std::exception& error)
-        {
-            spdlog::error(
-                "{} l{} f[{}], exception caught {} for rpc {}", __FUNCTION__, __LINE__, fs::path(__FILE__).filename().string(), error.what(), rpc_command);
-            answer.rpc_result_code = -1;
-            answer.raw_result      = error.what();
-        }
-
-        return answer;
-    }
-
-
     my_recent_swaps_answer
     rpc_my_recent_swaps(my_recent_swaps_request&& request)
     {
@@ -1033,7 +987,7 @@ namespace mm2::api
 
         auto json_copy        = json_data;
         json_copy["userpass"] = "*******";
-        spdlog::debug("request: {}", json_copy.dump());
+        spdlog::trace("request: {}", json_copy.dump());
 
         resp = RestClient::post(g_endpoint, "application/json", json_data.dump());
 

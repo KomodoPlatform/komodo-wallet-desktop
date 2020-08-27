@@ -61,6 +61,7 @@ namespace atomic_dex
         void                            update_contact_ticker(const QString& contact_name, const QString& old_ticker, const QString& new_ticker);
         void                            update_contact_address(const QString& contact_name, const QString& ticker, const QString& address);
         void                            update_or_insert_contact_name(const QString& old_contact_name, const QString& contact_name);
+        void                            set_emergency_password(const QString& emergency_password);
         void                            remove_address_entry(const QString& contact_name, const QString& ticker);
         void                            delete_contact(const QString& contact_name);
         [[nodiscard]] const wallet_cfg& get_wallet_cfg() const noexcept;
@@ -75,8 +76,17 @@ namespace atomic_dex
     bool
     qt_wallet_manager::login(const QString& password, const QString& wallet_name, mm2& mm2_system, Functor&& login_if_success_functor)
     {
+        load_wallet_cfg(wallet_name.toStdString());
         std::error_code ec;
-        auto            key = atomic_dex::derive_password(password.toStdString(), ec);
+        std::string password_std = password.toStdString();
+        bool with_pin_cfg = false;
+        if (password.contains(QString::fromStdString(m_wallet_cfg.protection_pass)))
+        {
+            password_std = password_std.substr(0, password.size() - m_wallet_cfg.protection_pass.size());
+
+            with_pin_cfg = true;
+        }
+        auto key = atomic_dex::derive_password(password_std, ec);
         if (ec)
         {
             spdlog::warn("{}", ec.message());
@@ -109,8 +119,7 @@ namespace atomic_dex
             }
 
             login_if_success_functor();
-            load_wallet_cfg(get_default_wallet_name().toStdString());
-            mm2_system.spawn_mm2_instance(get_default_wallet_name().toStdString(), seed);
+            mm2_system.spawn_mm2_instance(get_default_wallet_name().toStdString(), seed, with_pin_cfg);
             return true;
         }
         return false;

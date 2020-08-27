@@ -172,18 +172,20 @@ FloatingBackground {
                 Layout.alignment: Qt.AlignHCenter
 
                 DefaultButton {
+                    Layout.fillWidth: true
                     font.pixelSize: Style.textSize
-                    text: API.get().settings_pg.empty_string + (qsTr("Sell"))
-                    color: sell_mode ? Style.colorButtonEnabled.danger : Style.colorButtonDisabled.danger
-                    colorTextEnabled: sell_mode ? Style.colorButtonTextEnabled.danger : Style.colorButtonTextDisabled.danger
+                    text: API.get().settings_pg.empty_string + (qsTr("Sell %1", "TICKER").arg(left_ticker))
+                    color: sell_mode ? Style.colorButtonEnabled.default : Style.colorButtonDisabled.default
+                    colorTextEnabled: sell_mode ? Style.colorButtonEnabled.danger : Style.colorButtonDisabled.danger
                     font.weight: Font.Bold
                     onClicked: sell_mode = true
                 }
                 DefaultButton {
+                    Layout.fillWidth: true
                     font.pixelSize: Style.textSize
-                    text: API.get().settings_pg.empty_string + (qsTr("Buy"))
-                    color: sell_mode ? Style.colorButtonDisabled.primary : Style.colorButtonEnabled.primary
-                    colorTextEnabled: sell_mode ? Style.colorButtonTextDisabled.primary : Style.colorButtonTextEnabled.primary
+                    text: API.get().settings_pg.empty_string + (qsTr("Buy %1", "TICKER").arg(left_ticker))
+                    color: sell_mode ? Style.colorButtonDisabled.default : Style.colorButtonEnabled.default
+                    colorTextEnabled: sell_mode ? Style.colorButtonDisabled.primary : Style.colorButtonEnabled.primary
                     font.weight: Font.Bold
                     onClicked: sell_mode = false
                 }
@@ -194,28 +196,46 @@ FloatingBackground {
                 Layout.fillWidth: true
             }
 
-            AmountFieldWithInfo {
-                id: input_price
+
+            Item {
+                Layout.fillWidth: true
                 Layout.leftMargin: top_line.Layout.leftMargin
                 Layout.rightMargin: top_line.Layout.rightMargin
-                Layout.bottomMargin: -6
-                Layout.fillWidth: true
-                enabled: input_volume.field.enabled
+                Layout.bottomMargin: input_volume.field.font.pixelSize
+                height: input_volume.height
 
-                field.left_text: API.get().settings_pg.empty_string + (qsTr("Price"))
-                field.right_text: right_ticker
+                AmountFieldWithInfo {
+                    id: input_price
+                    width: parent.width
+                    enabled: input_volume.field.enabled
 
-                field.onTextChanged: {
-                    onInputChanged()
+                    field.left_text: API.get().settings_pg.empty_string + (qsTr("Price"))
+                    field.right_text: right_ticker
+
+                    field.onTextChanged: {
+                        onInputChanged()
+                    }
+
+                    function resetPrice() {
+                        if(orderIsSelected()) resetPreferredPrice()
+                    }
+
+                    field.onPressed: resetPrice()
+                    field.onFocusChanged: {
+                        if(field.activeFocus) resetPrice()
+                    }
                 }
 
-                function resetPrice() {
-                    if(orderIsSelected()) resetPreferredPrice()
-                }
+                DefaultText {
+                    id: price_usd_value
+                    anchors.right: input_price.right
+                    anchors.top: input_price.bottom
+                    anchors.topMargin: 7
 
-                field.onPressed: resetPrice()
-                field.onFocusChanged: {
-                    if(field.activeFocus) resetPrice()
+                    text_value: getFiatText(input_price.field.text, right_ticker)
+                    font.pixelSize: input_price.field.font.pixelSize
+
+                    CexInfoTrigger {}
                 }
             }
 
@@ -248,9 +268,9 @@ FloatingBackground {
                 }
 
                 DefaultText {
-                    anchors.left: input_volume.left
+                    anchors.right: input_volume.right
                     anchors.top: input_volume.bottom
-                    anchors.topMargin: 5
+                    anchors.topMargin: price_usd_value.anchors.topMargin
 
                     text_value: getFiatText(input_volume.field.text, left_ticker)
                     font.pixelSize: input_volume.field.font.pixelSize
@@ -273,10 +293,10 @@ FloatingBackground {
                 Layout.fillWidth: true
                 Layout.leftMargin: top_line.Layout.leftMargin
                 Layout.rightMargin: top_line.Layout.rightMargin
-                Layout.bottomMargin: top_line.Layout.rightMargin*0.25
+                Layout.bottomMargin: top_line.Layout.rightMargin*0.5
                 from: 0
+                to: Math.max(0, parseFloat(getMaxVolume()))
                 stepSize: 1/Math.pow(10, precision)
-                to: parseFloat(getMaxVolume())
                 live: false
 
                 onValueChanged: {
@@ -338,7 +358,6 @@ FloatingBackground {
                         id: fees
                         visible: valid_trade_info && !General.isZero(getVolume())
 
-                        spacing: -2
                         Layout.leftMargin: 10
                         Layout.rightMargin: Layout.leftMargin
                         Layout.alignment: Qt.AlignLeft
@@ -390,8 +409,8 @@ FloatingBackground {
             }
         }
 
-        RowLayout {
-            Layout.alignment: Qt.AlignBottom
+        // Total amount
+        ColumnLayout {
             Layout.topMargin: 5
             Layout.fillWidth: true
             Layout.leftMargin: top_line.Layout.rightMargin
@@ -399,24 +418,80 @@ FloatingBackground {
             Layout.bottomMargin: layout_margin
 
             DefaultText {
-                Layout.alignment: Qt.AlignLeft
-                text_value: API.get().settings_pg.empty_string + (qsTr("Total") + ": " + General.formatCrypto("", total_amount, right_ticker))
+                font.bold: true
                 font.pixelSize: Style.textSizeSmall3
+                text_value: API.get().settings_pg.empty_string + (qsTr("Total") + ": " + General.formatCrypto("", total_amount, right_ticker))
             }
 
-            // Trade button
-            DefaultButton {
-                Layout.alignment: Qt.AlignRight
+            DefaultText {
+                text_value: getFiatText(total_amount, right_ticker)
+                font.pixelSize: input_price.field.font.pixelSize
+
+                CexInfoTrigger {}
+            }
+        }
+
+        // Trade button
+        DefaultButton {
+            Layout.alignment: Qt.AlignRight
+            Layout.fillWidth: true
+            Layout.leftMargin: top_line.Layout.rightMargin
+            Layout.rightMargin: Layout.leftMargin
+            Layout.bottomMargin: layout_margin
+
+            button_type: is_sell_form ? "danger" : "primary"
+
+            width: 170
+
+            text: API.get().settings_pg.empty_string + (qsTr("Start Swap"))
+            font.bold: true
+            enabled: valid_trade_info && !notEnoughBalanceForFees() && isValid()
+            onClicked: confirm_trade_modal.open()
+        }
+
+        ColumnLayout {
+            spacing: parent.spacing
+            visible: errors.text_value !== ""
+
+            Layout.alignment: Qt.AlignBottom
+            Layout.fillWidth: true
+            Layout.bottomMargin: layout_margin
+
+            HorizontalLine {
                 Layout.fillWidth: true
-                Layout.leftMargin: 30
+                Layout.bottomMargin: layout_margin
+            }
 
-                button_type: is_sell_form ? "danger" : "primary"
+            // Show errors
+            DefaultText {
+                id: errors
+                Layout.leftMargin: top_line.Layout.rightMargin
+                Layout.rightMargin: Layout.leftMargin
+                Layout.fillWidth: true
 
-                width: 170
+                font.pixelSize: Style.textSizeSmall4
+                color: Style.colorRed
 
-                text: API.get().settings_pg.empty_string + (is_sell_form ? qsTr("Sell %1", "TICKER").arg(left_ticker) : qsTr("Buy %1", "TICKER").arg(left_ticker))
-                enabled: valid_trade_info && !notEnoughBalanceForFees() && isValid()
-                onClicked: confirm_trade_modal.open()
+                text_value: API.get().settings_pg.empty_string + (
+                                // Balance check can be done without price too, prioritize that for sell
+                                notEnoughBalance() ? (qsTr("Tradable (after fees) %1 balance is lower than minimum trade amount").arg(base_ticker) + " : " + General.getMinTradeAmount()) :
+
+                                // Fill the price field
+                                General.isZero(getCurrentPrice()) ? (qsTr("Please fill the price field")) :
+
+                                // Fill the volume field
+                                General.isZero(getCurrentForm().getVolume()) ? (qsTr("Please fill the volume field")) :
+
+                               // Trade amount is lower than the minimum
+                               (getCurrentForm().fieldsAreFilled() && !getCurrentForm().higherThanMinTradeAmount()) ? ((qsTr("Volume is lower than minimum trade amount")) + " : " + General.getMinTradeAmount()) :
+
+                                // Fields are filled, fee can be checked
+                                notEnoughBalanceForFees() ?
+                                    (qsTr("Not enough balance for the fees. Need at least %1 more", "AMT TICKER").arg(General.formatCrypto("", curr_trade_info.amount_needed, base_ticker))) :
+
+                                // Not enough ETH for fees
+                                (getCurrentForm().hasEthFees() && !getCurrentForm().hasEnoughEthForFees()) ? (qsTr("Not enough ETH for the transaction fee")) : ""
+                          )
             }
         }
     }

@@ -112,6 +112,17 @@ Item {
                 Layout.fillWidth: true
             }
 
+            DefaultButton {
+                visible: !API.get().is_pin_cfg_enabled()
+                text: API.get().settings_pg.empty_string + (qsTr("Setup Camouflage Password"))
+                Layout.fillWidth: true
+                onClicked: camouflage_password_modal.open()
+            }
+
+            CamouflagePasswordModal {
+                id: camouflage_password_modal
+            }
+
             DangerButton {
                 text: API.get().settings_pg.empty_string + (qsTr("Delete Wallet"))
                 Layout.fillWidth: true

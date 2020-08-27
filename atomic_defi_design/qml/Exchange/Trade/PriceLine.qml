@@ -29,8 +29,8 @@ RowLayout {
     DefaultText {
         visible: !price_entered && invalid_cex_price
         Layout.alignment: Qt.AlignHCenter
-        text_value: API.get().settings_pg.empty_string + (qsTr("Fill the amounts to see the price information"))
-        font.pixelSize: fontSize
+        text_value: API.get().settings_pg.empty_string + (qsTr("Set swap price for evaluation"))
+        font.pixelSize: fontSizeBigger
     }
 
 

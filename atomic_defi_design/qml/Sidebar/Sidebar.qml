@@ -18,7 +18,7 @@ Item {
     // Cursor
     Rectangle {
         id: cursor
-        width: 170 - cursor_round_edge.radius
+        width: 185 - cursor_round_edge.radius
         anchors.right: parent.right
         height: Style.sidebarLineHeight + top_rect.radius*2
         transformOrigin: Item.Left
@@ -140,8 +140,8 @@ Item {
             anchors.horizontalCenter: parent.horizontalCenter
             anchors.top: parent.top
             anchors.topMargin: parent.width * 0.85
-            text_value: API.get().settings_pg.empty_string + ("V. atomicDeFi Pro " + API.get().get_version())
-            font.pixelSize: Style.textSizeVerySmall8
+            text_value: API.get().settings_pg.empty_string + ("Pro v" + API.get().get_version())
+            font.pixelSize: Style.textSizeSmall1
             color: Style.colorThemeDarkLight
         }
 

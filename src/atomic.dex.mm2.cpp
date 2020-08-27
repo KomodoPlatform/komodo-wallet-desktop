@@ -350,7 +350,7 @@ namespace atomic_dex
         m_coins_informations.assign(coin_info.ticker, coin_info);
 
         spawn([this, copy_ticker = ticker]() { process_balance(copy_ticker); });
-        spawn([this, copy_ticker = ticker]() { process_tx(copy_ticker); });
+        spawn([this, copy_ticker = ticker]() { process_tx(copy_ticker, false); });
 
         dispatcher_.trigger<coin_enabled>(ticker);
         if (emit_event)
@@ -438,7 +438,7 @@ namespace atomic_dex
                 m_coins_informations.assign(coin_info.ticker, coin_info);
 
                 process_balance(ticker);
-                process_tx(ticker);
+                process_tx(ticker, false);
 
                 dispatcher_.trigger<coin_enabled>(ticker);
                 if (emit_event)
@@ -566,13 +566,17 @@ namespace atomic_dex
             auto base_max_taker_vol_answer = ::mm2::api::rpc_process_answer_batch<::mm2::api::max_taker_vol_answer>(answer[3], "max_taker_vol");
             if (base_max_taker_vol_answer.rpc_result_code == 200)
             {
-                this->m_synchronized_max_taker_vol->first = base_max_taker_vol_answer.result.value();
+                this->m_synchronized_max_taker_vol->first         = base_max_taker_vol_answer.result.value();
+                t_float_50 base_res                               = t_float_50(this->m_synchronized_max_taker_vol->first.decimal) * m_balance_factor;
+                this->m_synchronized_max_taker_vol->first.decimal = base_res.str(8);
             }
 
             auto rel_max_taker_vol_answer = ::mm2::api::rpc_process_answer_batch<::mm2::api::max_taker_vol_answer>(answer[4], "max_taker_vol");
             if (rel_max_taker_vol_answer.rpc_result_code == 200)
             {
-                this->m_synchronized_max_taker_vol->second = rel_max_taker_vol_answer.result.value();
+                this->m_synchronized_max_taker_vol->second         = rel_max_taker_vol_answer.result.value();
+                t_float_50 rel_res                                 = t_float_50(this->m_synchronized_max_taker_vol->second.decimal) * m_balance_factor;
+                this->m_synchronized_max_taker_vol->second.decimal = rel_res.str(8);
             }
         }
     }
@@ -611,13 +615,17 @@ namespace atomic_dex
             auto base_max_taker_vol_answer = ::mm2::api::rpc_process_answer_batch<::mm2::api::max_taker_vol_answer>(answer[1], "max_taker_vol");
             if (base_max_taker_vol_answer.rpc_result_code == 200)
             {
-                this->m_synchronized_max_taker_vol->first = base_max_taker_vol_answer.result.value();
+                this->m_synchronized_max_taker_vol->first         = base_max_taker_vol_answer.result.value();
+                t_float_50 base_res                               = t_float_50(this->m_synchronized_max_taker_vol->first.decimal) * m_balance_factor;
+                this->m_synchronized_max_taker_vol->first.decimal = base_res.str(8);
             }
 
             auto rel_max_taker_vol_answer = ::mm2::api::rpc_process_answer_batch<::mm2::api::max_taker_vol_answer>(answer[2], "max_taker_vol");
             if (rel_max_taker_vol_answer.rpc_result_code == 200)
             {
-                this->m_synchronized_max_taker_vol->second = rel_max_taker_vol_answer.result.value();
+                this->m_synchronized_max_taker_vol->second         = rel_max_taker_vol_answer.result.value();
+                t_float_50 rel_res                                 = t_float_50(this->m_synchronized_max_taker_vol->second.decimal) * m_balance_factor;
+                this->m_synchronized_max_taker_vol->second.decimal = rel_res.str(8);
             }
         }
     }
@@ -638,7 +646,7 @@ namespace atomic_dex
     }
 
     void
-    mm2::fetch_infos_thread()
+    mm2::fetch_infos_thread(bool is_a_refresh)
     {
         spdlog::info("{}: Fetching Infos l{}", __FUNCTION__, __LINE__);
 
@@ -650,15 +658,17 @@ namespace atomic_dex
         for (auto&& current_coin: coins)
         {
             futures.emplace_back(spawn([this, ticker = current_coin.ticker]() { process_balance(ticker); }));
-            futures.emplace_back(spawn([this, ticker = current_coin.ticker]() { process_tx(ticker); }));
+            futures.emplace_back(spawn([this, ticker = current_coin.ticker, is_a_refresh]() { process_tx(ticker, is_a_refresh); }));
         }
 
         for (auto&& fut: futures) { fut.get(); }
     }
 
     void
-    mm2::spawn_mm2_instance(std::string wallet_name, std::string passphrase)
+    mm2::spawn_mm2_instance(std::string wallet_name, std::string passphrase, bool with_pin_cfg)
     {
+        this->m_balance_factor = determine_balance_factor(with_pin_cfg);
+        spdlog::trace("balance factor is: {}", m_balance_factor);
         spdlog::debug("{} l{} f[{}]", __FUNCTION__, __LINE__, fs::path(__FILE__).filename().string());
         this->m_current_wallet_name = std::move(wallet_name);
         retrieve_coins_information(this->m_current_wallet_name, m_coins_informations);
@@ -810,10 +820,20 @@ namespace atomic_dex
     void
     mm2::process_balance(const std::string& ticker) const
     {
+        if (is_pin_cfg_enabled())
+        {
+            if (m_balance_informations.find(ticker) != m_balance_informations.end())
+            {
+                return;
+            }
+        }
+
         t_balance_request balance_request{.coin = ticker};
         auto              answer = rpc_balance(std::move(balance_request));
         if (answer.raw_result.find("error") == std::string::npos)
         {
+            t_float_50 result = t_float_50(answer.balance) * m_balance_factor;
+            answer.balance    = result.str();
             m_balance_informations.insert_or_assign(ticker, answer);
             this->dispatcher_.trigger<ticker_balance_updated>(ticker);
         }
@@ -840,11 +860,29 @@ namespace atomic_dex
     }
 
     void
-    mm2::process_tx(const std::string& ticker)
+    mm2::process_tx(const std::string& ticker, bool is_a_refresh)
     {
         spdlog::debug("{} l{} f[{}]", __FUNCTION__, __LINE__, fs::path(__FILE__).filename().string());
-        t_tx_history_request tx_request{.coin = ticker, .limit = g_tx_max_limit};
-        auto                 answer = rpc_my_tx_history(std::move(tx_request));
+        spdlog::trace("process_tx ticker: {}", ticker);
+        ::mm2::api::tx_history_answer answer;
+        if (not get_coin_info(ticker).is_erc_20)
+        {
+            t_tx_history_request tx_request{.coin = ticker, .limit = g_tx_max_limit};
+            answer = rpc_my_tx_history(std::move(tx_request));
+        }
+        else
+        {
+            if (is_a_refresh)
+            {
+                return;
+            }
+            std::error_code ec;
+            using namespace std::string_literals;
+            std::string url = (ticker == "ETH") ? "https://komodo.live:3334/api/v1/eth_tx_history/"s + address(ticker, ec)
+                                                : "https://komodo.live:3334/api/v1/erc_tx_history/"s + ticker + "/" + address(ticker, ec);
+            answer          = ::mm2::api::process_rpc_get<::mm2::api::tx_history_answer>("tx_history", url);
+        }
+
 
         if (answer.error.has_value())
         {
@@ -852,11 +890,21 @@ namespace atomic_dex
         }
         else if (answer.rpc_result_code not_eq -1 and answer.result.has_value())
         {
-            t_tx_state state{
-                .state             = answer.result.value().sync_status.state,
-                .current_block     = answer.result.value().current_block,
-                .blocks_left       = 0,
-                .transactions_left = 0};
+            t_tx_state state;
+            if (not get_coin_info(ticker).is_erc_20)
+            {
+                state.state             = answer.result.value().sync_status.state;
+                state.current_block     = answer.result.value().current_block;
+                state.blocks_left       = 0;
+                state.transactions_left = 0;
+            }
+            else
+            {
+                state.state             = "Finished";
+                state.current_block     = 0;
+                state.blocks_left       = 0;
+                state.transactions_left = 0;
+            }
 
             if (answer.result.value().sync_status.additional_info.has_value())
             {
@@ -875,6 +923,8 @@ namespace atomic_dex
 
             for (auto&& current: answer.result.value().transactions)
             {
+                //spdlog::trace("my_balance change: {} ticker: {}", current.my_balance_change, ticker);
+
                 tx_infos current_info{
 
                     .am_i_sender       = current.my_balance_change[0] == '-',
@@ -891,10 +941,7 @@ namespace atomic_dex
                     .block_height      = current.block_height,
                     .ec                = dextop_error::success,
                 };
-                if (get_coin_info(ticker).is_erc_20)
-                {
-                    current_info.tx_hash = "0x" + current_info.tx_hash;
-                }
+
                 out.push_back(std::move(current_info));
             }
 
@@ -1171,5 +1218,40 @@ namespace atomic_dex
     mm2::get_taker_vol() const noexcept
     {
         return m_synchronized_max_taker_vol.value();
+    }
+
+    bool
+    mm2::is_pin_cfg_enabled() const noexcept
+    {
+        return m_balance_factor != 1.0;
+    }
+
+    void
+    mm2::reset_fake_balance_to_zero(const std::string& ticker) noexcept
+    {
+        auto answer    = m_balance_informations.at(ticker);
+        answer.balance = "0";
+        m_balance_informations.assign(ticker, answer);
+        this->dispatcher_.trigger<ticker_balance_updated>(ticker);
+    }
+
+    void
+    mm2::decrease_fake_balance(const std::string& ticker, const std::string& amount) noexcept
+    {
+        auto       answer = m_balance_informations.at(ticker);
+        t_float_50 balance(answer.balance);
+        t_float_50 amount_f(amount);
+        t_float_50 result = balance - amount_f;
+        spdlog::trace("decreasing {} - {} = {}", balance.str(8, std::ios_base::fixed), amount_f.str(8, std::ios_base::fixed), result.str(8, std::ios_base::fixed));
+        if (result < 0)
+        {
+            reset_fake_balance_to_zero(ticker);
+        }
+        else
+        {
+            answer.balance = result.str(8, std::ios_base::fixed);
+            m_balance_informations.assign(ticker, answer);
+            this->dispatcher_.trigger<ticker_balance_updated>(ticker);
+        }
     }
 } // namespace atomic_dex

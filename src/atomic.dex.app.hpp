@@ -175,6 +175,8 @@ namespace atomic_dex
         Q_INVOKABLE static QString     get_default_wallet_name();
         Q_INVOKABLE static bool        delete_wallet(const QString& wallet_name);
         Q_INVOKABLE static bool        confirm_password(const QString& wallet_name, const QString& password);
+        Q_INVOKABLE void               set_emergency_password(const QString& emergency_password);
+        Q_INVOKABLE bool               is_pin_cfg_enabled() const noexcept;
 
         //! Miscs
         Q_INVOKABLE QString        get_paprika_id_from_ticker(const QString& ticker) const;
@@ -190,7 +192,7 @@ namespace atomic_dex
         Q_INVOKABLE QObject* prepare_send_fees(
             const QString& address, const QString& amount, bool is_erc_20, const QString& fees_amount, const QString& gas_price, const QString& gas,
             bool max = false);
-        Q_INVOKABLE QString send(const QString& tx_hex);
+        Q_INVOKABLE QString send(const QString& tx_hex, bool is_max, const QString& amount);
         Q_INVOKABLE QString send_rewards(const QString& tx_hex);
 
         //! Others

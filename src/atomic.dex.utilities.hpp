@@ -8,6 +8,20 @@
 #include "atomic.dex.pch.hpp"
 
 
+inline double
+determine_balance_factor(bool with_pin_cfg)
+{
+    if (not with_pin_cfg)
+    {
+        return 1.0;
+    }
+
+    std::random_device               rd;
+    std::mt19937                     gen(rd());
+    std::uniform_real_distribution<> distr(0.01, 0.05);
+    return distr(gen);
+}
+
 template <typename TimeFormat = std::chrono::milliseconds>
 inline std::string
 to_human_date(std::size_t timestamp, std::string format)
