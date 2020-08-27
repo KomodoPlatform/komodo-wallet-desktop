@@ -17,7 +17,7 @@
 //! Project headers
 #include "atomic.dex.provider.cex.prices.hpp"
 #include "atomic.dex.provider.cex.prices.api.hpp"
-#include "atomic.threadpool.hpp"
+#include "atomic.dex.threadpool.hpp"
 
 namespace atomic_dex
 {

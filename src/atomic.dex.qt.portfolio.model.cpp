@@ -15,10 +15,10 @@
  ******************************************************************************/
 
 //! Project Headers
-#include <QQmlEngine>
 #include "atomic.dex.qt.portfolio.model.hpp"
 #include "atomic.dex.qt.utilities.hpp"
-#include "atomic.threadpool.hpp"
+#include "atomic.dex.threadpool.hpp"
+#include <QQmlEngine>
 
 //! Utils
 namespace

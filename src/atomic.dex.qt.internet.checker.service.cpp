@@ -17,7 +17,7 @@
 //! Our project
 #include "atomic.dex.qt.internet.checker.service.hpp"
 #include "atomic.dex.qt.utilities.hpp"
-#include "atomic.threadpool.hpp"
+#include "atomic.dex.threadpool.hpp"
 
 //! QT Properties
 namespace atomic_dex

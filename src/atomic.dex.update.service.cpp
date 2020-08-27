@@ -15,11 +15,11 @@
  ******************************************************************************/
 
 //! Project headers
-#include "atomic.dex.pch.hpp"
 #include "atomic.dex.update.service.hpp"
 #include "atomic.dex.events.hpp"
+#include "atomic.dex.pch.hpp"
+#include "atomic.dex.threadpool.hpp"
 #include "atomic.dex.version.hpp"
-#include "atomic.threadpool.hpp"
 
 namespace
 {

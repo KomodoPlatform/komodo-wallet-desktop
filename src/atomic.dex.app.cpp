@@ -45,10 +45,10 @@
 #include "atomic.dex.qt.settings.page.hpp"
 #include "atomic.dex.qt.utilities.hpp"
 #include "atomic.dex.security.hpp"
+#include "atomic.dex.threadpool.hpp"
 #include "atomic.dex.update.service.hpp"
 #include "atomic.dex.utilities.hpp"
 #include "atomic.dex.version.hpp"
-#include "atomic.threadpool.hpp"
 
 namespace
 {

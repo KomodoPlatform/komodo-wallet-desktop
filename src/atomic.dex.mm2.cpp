@@ -19,8 +19,8 @@
 #include "atomic.dex.kill.hpp"
 #include "atomic.dex.mm2.config.hpp"
 #include "atomic.dex.security.hpp"
+#include "atomic.dex.threadpool.hpp"
 #include "atomic.dex.version.hpp"
-#include "atomic.threadpool.hpp"
 
 //! Anonymous functions
 namespace

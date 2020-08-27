@@ -24,7 +24,7 @@
 //! Project Headers
 #include "atomic.dex.provider.cex.prices.hpp"
 #include "atomic.dex.qt.candlestick.charts.model.hpp"
-#include "atomic.threadpool.hpp"
+#include "atomic.dex.threadpool.hpp"
 
 namespace atomic_dex
 {
