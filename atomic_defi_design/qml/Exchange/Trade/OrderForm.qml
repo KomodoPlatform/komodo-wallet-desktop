@@ -95,26 +95,38 @@ FloatingBackground {
         input_volume.field.text = ''
     }
 
+    function getVolumeCap() {
+        // Cap with balance
+        let cap = getMaxTradableVolume(false)
+
+        // Cap with order volume
+        if(orderIsSelected()) {
+            const order_buy_volume = parseFloat(preffered_order.volume)
+            if(cap > order_buy_volume)
+                cap = order_buy_volume
+        }
+
+        return cap
+    }
+
+    function buyWithNoPrice() {
+        return !is_sell_form && General.isZero(getCurrentPrice())
+    }
+
     function capVolume() {
         if(inCurrentPage() && input_volume.field.acceptableInput) {
             // If price is 0 at buy side, don't cap it to 0, let the user edit
-            if(!is_sell_form && General.isZero(getCurrentPrice()))
+            if(buyWithNoPrice())
                 return false
 
             const input_volume_value = parseFloat(input_volume.field.text)
             let amt = input_volume_value
 
-            // Cap with balance
-            const cap_with_fees = getMaxTradableVolume(false)
-            if(amt > cap_with_fees)
-                amt = cap_with_fees
+            // Cap the value
+            const cap_val = getVolumeCap()
+            if(amt > cap_val)
+                amt = cap_val
 
-            // Cap with order volume
-            if(orderIsSelected()) {
-                const order_buy_volume = parseFloat(preffered_order.volume)
-                if(amt > order_buy_volume)
-                    amt = order_buy_volume
-            }
 
             // Set the field
             if(amt !== input_volume_value) {
@@ -285,17 +297,16 @@ FloatingBackground {
                     return input_volume_slider.position * (input_volume_slider.to - input_volume_slider.from)
                 }
 
-                enabled: input_volume.field.enabled
+                enabled: input_volume.field.enabled && !buyWithNoPrice() && to > 0
                 property bool updating_from_text_field: false
                 property bool updating_text_field: false
                 readonly property int precision: General.getRecommendedPrecision(to)
-                visible: is_sell_form
                 Layout.fillWidth: true
                 Layout.leftMargin: top_line.Layout.leftMargin
                 Layout.rightMargin: top_line.Layout.rightMargin
                 Layout.bottomMargin: top_line.Layout.rightMargin*0.5
                 from: 0
-                to: Math.max(0, parseFloat(getMaxVolume()))
+                to: Math.max(0, parseFloat(getVolumeCap()))
                 stepSize: 1/Math.pow(10, precision)
                 live: false
 
