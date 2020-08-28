@@ -194,6 +194,8 @@ namespace atomic_dex
         }
 #endif
 
+        ::mm2::api::reset_client();
+
         if (m_mm2_init_thread.joinable())
         {
             m_mm2_init_thread.join();
@@ -794,6 +796,7 @@ namespace atomic_dex
                 std::this_thread::sleep_for(1s);
             }
 
+            ::mm2::api::create_mm2_httpclient();
             fs::remove(mm2_cfg_path);
             spdlog::info("mm2 is initialized");
             dispatcher_.trigger<mm2_initialized>();

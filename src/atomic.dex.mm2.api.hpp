@@ -16,6 +16,10 @@
 
 #pragma once
 
+//! CPPRESTSDK
+#define _TURN_OFF_PLATFORM_STRING
+#include <cpprest/http_client.h>
+
 //! PCH Headers
 #include "atomic.dex.pch.hpp"
 
@@ -24,28 +28,25 @@
 
 namespace mm2::api
 {
-    inline constexpr const char* g_endpoint                 = "http://127.0.0.1:7783";
-    inline constexpr const char* g_etherscan_proxy_endpoint = "https://komodo.live:3334";
+    inline constexpr const char*                           g_endpoint                 = "http://127.0.0.1:7783";
+    inline constexpr const char*                           g_etherscan_proxy_endpoint = "https://komodo.live:3334";
+    inline std::unique_ptr<web::http::client::http_client> g_mm2_http_client{nullptr};
+    inline std::unique_ptr<web::http::client::http_client> g_etherscan_proxy_http_client{std::make_unique<web::http::client::http_client>(g_etherscan_proxy_endpoint)};
 
-    static inline std::unique_ptr<RestClient::Connection>&
-    get_client() noexcept
+    static inline void
+    create_mm2_httpclient()
     {
-        static bool is_initialized = false;
-        static auto cli = std::make_unique<RestClient::Connection>(g_endpoint);
-        if (not is_initialized)
-        {
-            RestClient::HeaderFields headers;
-            cli->AppendHeader("Content-Type", "application/json");
-            cli->SetTimeout(5);
-        }
-        return cli;
+        web::http::client::http_client_config cfg;
+        using namespace std::chrono_literals;
+        cfg.set_timeout(3s);
+        g_mm2_http_client = std::make_unique<web::http::client::http_client>(g_endpoint, cfg);
     }
 
-    static inline std::unique_ptr<RestClient::Connection>&
-    get_client_etherscan_proxy() noexcept
+    static inline void
+    reset_client()
     {
-        static auto cli = std::make_unique<RestClient::Connection>(g_etherscan_proxy_endpoint);
-        return cli;
+        //g_mm2_http_client->
+        //g_mm2_http_client = nullptr;
     }
 
     nlohmann::json rpc_batch_standalone(nlohmann::json batch_array);
@@ -732,48 +733,51 @@ namespace mm2::api
     using have_error_field = decltype(std::declval<T&>().error.has_value());
 
     template <typename RpcReturnType>
-    RpcReturnType static inline rpc_process_answer(const RestClient::Response& resp, const std::string& rpc_command) noexcept
+    RpcReturnType static inline rpc_process_answer(const web::http::http_response& resp, const std::string& rpc_command) noexcept
     {
-        spdlog::info("resp code for rpc_command {} is {}", rpc_command, resp.code);
-
+        std::string body = resp.extract_string(true).get();
+        spdlog::info("resp code for rpc_command {} is {}", rpc_command, resp.status_code());
         RpcReturnType answer;
+
         try
         {
-            if (resp.code not_eq 200)
+            if (resp.status_code() not_eq 200)
             {
-                spdlog::warn("rpc answer code is not 200, body : {}", resp.body);
+                spdlog::warn("rpc answer code is not 200, body : {}", body);
                 if constexpr (doom::meta::is_detected_v<have_error_field, RpcReturnType>)
                 {
                     spdlog::debug("error field detected inside the RpcReturnType");
                     if constexpr (std::is_same_v<std::optional<std::string>, decltype(answer.error)>)
                     {
                         spdlog::debug("The error field type is string, parsing it from the response body");
-                        if (auto json_data = nlohmann::json::parse(resp.body); json_data.at("error").is_string())
+                        if (auto json_data = nlohmann::json::parse(body); json_data.at("error").is_string())
                         {
                             answer.error = json_data.at("error").get<std::string>();
                         }
                         else
                         {
-                            answer.error = resp.body;
+                            answer.error = body;
                         }
                         spdlog::debug("The error after getting extracted is: {}", answer.error.value());
                     }
                 }
-                answer.rpc_result_code = resp.code;
-                answer.raw_result      = resp.body;
+                answer.rpc_result_code = resp.status_code();
+                answer.raw_result      = body;
                 return answer;
             }
 
 
-            auto json_answer       = nlohmann::json::parse(resp.body);
-            answer.rpc_result_code = resp.code;
-            answer.raw_result      = resp.body;
+            assert(not body.empty());
+            auto json_answer       = nlohmann::json::parse(body);
+            answer.rpc_result_code = resp.status_code();
+            answer.raw_result      = body;
             from_json(json_answer, answer);
         }
         catch (const std::exception& error)
         {
             spdlog::error(
-                "{} l{} f[{}], exception caught {} for rpc {}, body: {}", __FUNCTION__, __LINE__, fs::path(__FILE__).filename().string(), error.what(), rpc_command, resp.body);
+                "{} l{} f[{}], exception caught {} for rpc {}, body: {}", __FUNCTION__, __LINE__, fs::path(__FILE__).filename().string(), error.what(),
+                rpc_command, body);
             answer.rpc_result_code = -1;
             answer.raw_result      = error.what();
         }
@@ -808,7 +812,11 @@ namespace mm2::api
     {
         spdlog::info("Processing rpc call: {}, url: {}, endpoint: {}", rpc_command, url, g_etherscan_proxy_endpoint);
 
-        auto resp = get_client_etherscan_proxy()->get(url);
+        web::http::http_request request;
+        request.set_method(web::http::methods::GET);
+        request.set_request_uri(url);
+        auto resp = g_etherscan_proxy_http_client->request(request).get();
+        //auto resp = RestClient::get(g_etherscan_proxy_endpoint + url);
 
         return rpc_process_answer<TAnswer>(resp, rpc_command);
     }

@@ -98,6 +98,7 @@ find_package(date CONFIG REQUIRED)
 find_package(doctest CONFIG REQUIRED)
 find_package(folly CONFIG REQUIRED)
 find_package(spdlog CONFIG REQUIRED)
+find_package(cpprestsdk CONFIG REQUIRED)
 find_package(Boost REQUIRED COMPONENTS filesystem random)
 find_package(Qt5 COMPONENTS Core Quick LinguistTools Svg Charts Widgets REQUIRED)
 find_package(unofficial-sodium CONFIG REQUIRED)
@@ -201,6 +202,7 @@ target_link_libraries(atomicDeFi_shared_deps
         Folly::folly_deps
         spdlog::spdlog
         spdlog::spdlog_header_only
+        cpprestsdk::cpprest
         )
 
 target_include_directories(atomicDeFi_shared_deps

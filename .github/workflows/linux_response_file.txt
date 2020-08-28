@@ -11,3 +11,4 @@ range-v3
 libsodium
 spdlog
 date
+cpprestsdk
