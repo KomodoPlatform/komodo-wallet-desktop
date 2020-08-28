@@ -1033,7 +1033,7 @@ namespace mm2::api
         if (g_mm2_http_client != nullptr)
         {
             web::http::http_request request(web::http::methods::POST);
-            request.headers().set_content_type("application/json");
+            request.headers().set_content_type(FROM_STD_STR("application/json"));
             request.set_body(json_data.dump());
             auto resp = g_mm2_http_client->request(request).get();
             return rpc_process_answer<TAnswer>(resp, rpc_command);
