@@ -16,9 +16,6 @@
 
 #pragma once
 
-//! Others
-#include <httplib.h>
-
 //! PCH Headers
 #include "atomic.dex.pch.hpp"
 
@@ -27,62 +24,27 @@
 
 namespace mm2::api
 {
-    static inline void dump_last_http_error(const httplib::Result& resp)
-    {
-        switch (resp.error())
-        {
-        case httplib::Success:
-            spdlog::info("last error is: success");
-            break;
-        case httplib::Unknown:
-            spdlog::error("last error is: unknown");
-            break;
-        case httplib::Connection:
-            spdlog::error("last error is: connection");
-            break;
-        case httplib::BindIPAddress:
-            spdlog::error("last error is: bindipaddress");
-            break;
-        case httplib::Read:
-            spdlog::error("last error is: read");
-            break;
-        case httplib::Write:
-            spdlog::error("last error is: write");
-            break;
-        case httplib::ExceedRedirectCount:
-            spdlog::error("last error is: exceed redirect count");
-            break;
-        case httplib::Canceled:
-            spdlog::error("last error is: cancelled");
-            break;
-        case httplib::SSLConnection:
-            spdlog::error("last error is: ssl connection");
-            break;
-        case httplib::SSLLoadingCerts:
-            spdlog::error("last error is: ssl loading certs");
-            break;
-        case httplib::SSLServerVerification:
-            spdlog::error("last error is: ssl serververification");
-            break;
-        }
-    }
     inline constexpr const char* g_endpoint                 = "http://localhost:7783";
     inline constexpr const char* g_etherscan_proxy_endpoint = "https://komodo.live:3334";
 
-    static inline httplib::Client&
+    static inline std::unique_ptr<RestClient::Connection>&
     get_client() noexcept
     {
-        static httplib::Client cli(g_endpoint);
-        assert(cli.is_valid());
-        // cli.Get()
+        static bool is_initialized = false;
+        static auto cli = std::make_unique<RestClient::Connection>(g_endpoint);
+        if (not is_initialized)
+        {
+            RestClient::HeaderFields headers;
+            headers["Contents-Type"] = "application/json";
+            cli->SetHeaders(headers);
+        }
         return cli;
     }
 
-    static inline httplib::Client&
+    static inline std::unique_ptr<RestClient::Connection>&
     get_client_etherscan_proxy() noexcept
     {
-        static httplib::Client cli(g_etherscan_proxy_endpoint);
-        assert(cli.is_valid());
+        static auto cli = std::make_unique<RestClient::Connection>(g_etherscan_proxy_endpoint);
         return cli;
     }
 
@@ -770,50 +732,42 @@ namespace mm2::api
     using have_error_field = decltype(std::declval<T&>().error.has_value());
 
     template <typename RpcReturnType>
-    RpcReturnType static inline rpc_process_answer(const httplib::Result& resp, const std::string& rpc_command) noexcept
+    RpcReturnType static inline rpc_process_answer(const RestClient::Response& resp, const std::string& rpc_command) noexcept
     {
-        if (resp == nullptr)
-        {
-            dump_last_http_error(resp);
-            RpcReturnType answer;
-            answer.rpc_result_code = 500;
-            answer.raw_result = "{\"error\": \"internal\"}";
-            return answer;
-        }
-        spdlog::info("resp code for rpc_command {} is {}", rpc_command, resp->status);
+        spdlog::info("resp code for rpc_command {} is {}", rpc_command, resp.code);
 
         RpcReturnType answer;
         try
         {
-            if (resp->status not_eq 200)
+            if (resp.code not_eq 200)
             {
-                spdlog::warn("rpc answer code is not 200, body : {}", resp->body);
+                spdlog::warn("rpc answer code is not 200, body : {}", resp.body);
                 if constexpr (doom::meta::is_detected_v<have_error_field, RpcReturnType>)
                 {
                     spdlog::debug("error field detected inside the RpcReturnType");
                     if constexpr (std::is_same_v<std::optional<std::string>, decltype(answer.error)>)
                     {
                         spdlog::debug("The error field type is string, parsing it from the response body");
-                        if (auto json_data = nlohmann::json::parse(resp->body); json_data.at("error").is_string())
+                        if (auto json_data = nlohmann::json::parse(resp.body); json_data.at("error").is_string())
                         {
                             answer.error = json_data.at("error").get<std::string>();
                         }
                         else
                         {
-                            answer.error = resp->body;
+                            answer.error = resp.body;
                         }
                         spdlog::debug("The error after getting extracted is: {}", answer.error.value());
                     }
                 }
-                answer.rpc_result_code = resp->status;
-                answer.raw_result      = resp->body;
+                answer.rpc_result_code = resp.code;
+                answer.raw_result      = resp.body;
                 return answer;
             }
 
 
-            auto json_answer       = nlohmann::json::parse(resp->body);
-            answer.rpc_result_code = resp->status;
-            answer.raw_result      = resp->body;
+            auto json_answer       = nlohmann::json::parse(resp.body);
+            answer.rpc_result_code = resp.code;
+            answer.raw_result      = resp.body;
             from_json(json_answer, answer);
         }
         catch (const std::exception& error)
@@ -854,7 +808,7 @@ namespace mm2::api
     {
         spdlog::info("Processing rpc call: {}, url: {}, endpoint: {}", rpc_command, url, g_etherscan_proxy_endpoint);
 
-        auto resp = get_client_etherscan_proxy().Get(url.c_str());
+        auto resp = get_client_etherscan_proxy()->get(url);
 
         return rpc_process_answer<TAnswer>(resp, rpc_command);
     }

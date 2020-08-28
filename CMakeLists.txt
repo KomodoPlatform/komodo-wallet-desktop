@@ -59,9 +59,7 @@ endif ()
 FetchContent_Declare(jl777-coins
         URL https://github.com/KomodoPlatform/coins/archive/master.zip)
 
-FetchContent_Declare(cpp-httplib URL https://github.com/KomodoPlatform/cpp-httplib/archive/master.zip)
-
-FetchContent_MakeAvailable(mm2 jl777-coins cpp-httplib)
+FetchContent_MakeAvailable(mm2 jl777-coins)
 
 ##! Configure our needs.
 if (UNIX)
@@ -121,9 +119,6 @@ add_library(unofficial-btc::bitcoin ALIAS unofficial-bitcoin)
 set(CMAKE_AUTOUIC ON)
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
-message(STATUS "excluding from moc ${cpp-httplib_SOURCE_DIR}/httplib.h")
-set_property(SOURCE ${cpp-httplib_SOURCE_DIR}/httplib.h PROPERTY SKIP_AUTOMOC ON)
-set_property(SOURCE ${cpp-httplib_SOURCE_DIR}/httplib.h PROPERTY SKIP_AUTOGEN ON)
 set(TS_FILES
         ${CMAKE_SOURCE_DIR}/atomic_defi_design/assets/languages/atomic_defi_en.ts
         ${CMAKE_SOURCE_DIR}/atomic_defi_design/assets/languages/atomic_defi_fr.ts
@@ -201,7 +196,6 @@ target_link_libraries(atomicDeFi_shared_deps
         unofficial-btc::bitcoin
         reproc++
         antara::http_client
-        httplib::httplib
         Folly::folly
         date::tz
         Folly::folly_deps

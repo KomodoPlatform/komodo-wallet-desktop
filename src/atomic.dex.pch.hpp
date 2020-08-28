@@ -187,6 +187,7 @@ adjust_precision(const std::string& current)
 #include <nlohmann/json.hpp>
 #include <reproc++/reproc.hpp>
 #include <restclient-cpp/restclient.h>
+#include <restclient-cpp/connection.h>
 #include <sodium.h>
 
 //! SDK Headers

@@ -52,20 +52,19 @@ namespace
             req_json_data.push_back(json_data);
         }
 
+        auto resp = ::mm2::api::get_client()->post("/", req_json_data.dump());
 
-        auto resp = ::mm2::api::get_client().Post("/", req_json_data.dump().c_str(), "application/json");
-
-        spdlog::info("{} resp code: {}", __FUNCTION__, resp->status);
+        spdlog::info("{} resp code: {}", __FUNCTION__, resp.code);
 
         nlohmann::json answer;
         try
         {
-            answer = nlohmann::json::parse(resp->body);
+            answer = nlohmann::json::parse(resp.body);
         }
         catch (const nlohmann::detail::parse_error& err)
         {
             spdlog::error("{}", err.what());
-            answer["error"] = resp->body;
+            answer["error"] = resp.body;
         }
         return answer;
     }
@@ -1000,7 +999,7 @@ namespace mm2::api
 
         spdlog::info("Processing rpc call: rpc my_orders");
 
-        auto resp = get_client().Post("/", json_data.dump().c_str(), "application/json");
+        auto resp = get_client()->post("/", json_data.dump());
 
         return rpc_process_answer<my_orders_answer>(resp, "my_orders");
     }
@@ -1019,7 +1018,7 @@ namespace mm2::api
         json_copy["userpass"] = "*******";
         spdlog::trace("request: {}", json_copy.dump());
 
-        auto resp = get_client().Post("/", json_data.dump().c_str(), "application/json");
+        auto resp = get_client()->post("/", json_data.dump());
 
         return rpc_process_answer<TAnswer>(resp, rpc_command);
     }
@@ -1063,9 +1062,9 @@ namespace mm2::api
         json_copy["userpass"] = "*******";
         spdlog::debug("{} request: {}", __FUNCTION__, json_copy.dump());
 
-        auto resp                                        = get_client().Post("/", json_data.dump().c_str(), "application/json");
-        out.rpc_result_code                              = resp->status;
-        out.result                                       = nlohmann::json::parse(resp->body);
+        auto resp                                        = get_client()->post("/", json_data.dump());
+        out.rpc_result_code                              = resp.code;
+        out.result                                       = nlohmann::json::parse(resp.body);
         auto transform_timestamp_into_human_date_functor = [](nlohmann::json& obj, const std::string& field) {
             if (obj.contains(field))
             {
@@ -1074,7 +1073,7 @@ namespace mm2::api
             }
         };
 
-        if (resp->status == 200)
+        if (resp.code == 200)
         {
             for (auto&& obj: out.result.at("result"))
             {
@@ -1087,19 +1086,19 @@ namespace mm2::api
     nlohmann::json
     rpc_batch_standalone(nlohmann::json batch_array)
     {
-        auto resp = get_client().Post("/", batch_array.dump().c_str(), "application/json");
+        auto resp = get_client()->post("/", batch_array.dump());
 
-        spdlog::info("{} resp code: {}", __FUNCTION__, resp->status);
+        spdlog::info("{} resp code: {}", __FUNCTION__, resp.code);
 
         nlohmann::json answer;
         try
         {
-            answer = nlohmann::json::parse(resp->body);
+            answer = nlohmann::json::parse(resp.body);
         }
         catch (const nlohmann::detail::parse_error& err)
         {
             spdlog::error("{}", err.what());
-            answer["error"] = resp->body;
+            answer["error"] = resp.body;
         }
         return answer;
     }
