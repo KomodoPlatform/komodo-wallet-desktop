@@ -129,6 +129,7 @@ namespace atomic_dex
 
         //! Refresh the orderbook registry (internal)
         void process_orderbook(bool is_a_reset = false);
+        nlohmann::json prepare_batch_orderbook();
 
         //! Batch process fees and fetch current_orderbook thread
         void batch_process_fees_and_fetch_current_orderbook_thread(bool is_a_reset);
@@ -139,6 +140,9 @@ namespace atomic_dex
         void                                                                           process_balance_answer(const nlohmann::json& answer);
         void process_tx_answer(const nlohmann::json& answer_json, const std::string& ticker);
         void process_tx_etherscan(const std::string& ticker, bool is_a_refresh);
+
+        //!
+        void process_batch_enable_answer(const nlohmann::json& answer);
 
       public:
         //! Constructor
