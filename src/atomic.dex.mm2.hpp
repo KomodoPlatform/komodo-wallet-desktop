@@ -133,6 +133,7 @@ namespace atomic_dex
 
         //! Batch process fees and fetch current_orderbook thread
         void batch_process_fees_and_fetch_current_orderbook_thread(bool is_a_reset);
+        nlohmann::json prepare_process_fees_and_current_orderbook();
 
         //! Batch balance / tx
         std::tuple<nlohmann::json, std::vector<std::string>, std::vector<std::string>> prepare_batch_balance_and_tx() const;

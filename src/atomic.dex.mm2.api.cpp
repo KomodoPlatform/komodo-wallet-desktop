@@ -1027,9 +1027,6 @@ namespace mm2::api
         json_copy["userpass"] = "*******";
         spdlog::trace("request: {}", json_copy.dump());
 
-        // auto resp = get_client()->post("", json_data.dump());
-        // auto resp = RestClient::post(g_endpoint, "application/json", json_data.dump());
-
         if (g_mm2_http_client != nullptr)
         {
             web::http::http_request request(web::http::methods::POST);
@@ -1040,7 +1037,6 @@ namespace mm2::api
         }
 
         return TAnswer{};
-        // return rpc_process_answer<TAnswer>(resp, rpc_command);
     }
 
     nlohmann::json
@@ -1112,11 +1108,15 @@ namespace mm2::api
     pplx::task<web::http::http_response>
     async_rpc_batch_standalone(nlohmann::json batch_array)
     {
-        web::http::http_request request;
-        request.set_method(web::http::methods::POST);
-        request.set_body(batch_array.dump());
-        auto resp = g_mm2_http_client->request(request);
-        return resp;
+        if (g_mm2_http_client != nullptr)
+        {
+            web::http::http_request request;
+            request.set_method(web::http::methods::POST);
+            request.set_body(batch_array.dump());
+            auto resp = g_mm2_http_client->request(request);
+            return resp;
+        }
+        return {};
     }
 
     nlohmann::json
