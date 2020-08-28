@@ -461,7 +461,7 @@ namespace atomic_dex
         spdlog::debug("{} l{}", __FUNCTION__, __LINE__);
         if (get_mm2().get_coin_info(evt.ticker).is_erc_20)
         {
-            spawn([this]() { get_mm2().fetch_infos_thread(false); });
+            get_mm2().fetch_infos_thread(false);
         }
         if (not m_event_actions[events_action::about_to_exit_app])
         {
@@ -653,17 +653,14 @@ namespace atomic_dex
     application::refresh_infos()
     {
         auto& mm2 = get_mm2();
-        spawn([&mm2]() { mm2.fetch_infos_thread(); });
+        mm2.fetch_infos_thread();
     }
 
     void
     application::refresh_orders_and_swaps()
     {
         auto& mm2 = get_mm2();
-        spawn([&mm2]() {
-            mm2.process_swaps();
-            mm2.process_orders();
-        });
+        mm2.batch_fetch_orders_and_swap();
     }
 
     QVariant
