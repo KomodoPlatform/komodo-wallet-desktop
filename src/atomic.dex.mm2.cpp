@@ -158,12 +158,7 @@ namespace atomic_dex
         if (s >= 5s)
         {
             fetch_current_orderbook_thread(false);
-            spawn([this]() {
-                std::vector<std::future<void>> futures;
-                futures.emplace_back(spawn([this]() { process_orders(); }));
-                futures.emplace_back(spawn([this]() { process_swaps(); }));
-                for (auto&& fut: futures) { fut.get(); }
-            });
+            batch_fetch_orders_and_swap();
             m_orderbook_clock = std::chrono::high_resolution_clock::now();
         }
 
@@ -843,6 +838,31 @@ namespace atomic_dex
             m_balance_informations.insert_or_assign(ticker, answer);
             this->dispatcher_.trigger<ticker_balance_updated>(ticker);
         }
+    }
+
+    void
+    mm2::batch_fetch_orders_and_swap()
+    {
+        nlohmann::json batch             = nlohmann::json::array();
+        nlohmann::json my_orders_request = ::mm2::api::template_request("my_orders");
+        batch.push_back(my_orders_request);
+        nlohmann::json            my_swaps = ::mm2::api::template_request("my_recent_swaps");
+        std::size_t               total    = this->m_swaps_registry.at("result").total;
+        t_my_recent_swaps_request request{.limit = total > 0 ? total : 50};
+        to_json(my_swaps, request);
+        batch.push_back(my_swaps);
+        ::mm2::api::async_rpc_batch_standalone(batch).then([this](web::http::http_response resp) {
+            auto answers          = ::mm2::api::basic_batch_answer(resp);
+            auto my_orders_answer = ::mm2::api::rpc_process_answer_batch<t_my_orders_answer>(answers[0], "my_orders");
+            m_orders_registry.insert_or_assign("result", my_orders_answer);
+            this->dispatcher_.trigger<process_orders_finished>();
+            auto swap_answer = ::mm2::api::rpc_process_answer_batch<::mm2::api::my_recent_swaps_answer>(answers[1], "my_orders");
+            if (swap_answer.result.has_value())
+            {
+                m_swaps_registry.insert_or_assign("result", swap_answer.result.value());
+                this->dispatcher_.trigger<process_swaps_finished>();
+            }
+        });
     }
 
     void
