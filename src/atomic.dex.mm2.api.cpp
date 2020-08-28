@@ -1090,7 +1090,7 @@ namespace mm2::api
         request.set_body(json_data.dump());
         auto resp                                        = g_mm2_http_client->request(request).get();
         out.rpc_result_code                              = resp.status_code();
-        out.result                                       = nlohmann::json::parse(resp.extract_string(true).get());
+        out.result                                       = nlohmann::json::parse(TO_STD_STR(resp.extract_string(true).get()));
         auto transform_timestamp_into_human_date_functor = [](nlohmann::json& obj, const std::string& field) {
             if (obj.contains(field))
             {
@@ -1125,7 +1125,7 @@ namespace mm2::api
         spdlog::info("{} resp code: {}", __FUNCTION__, resp.status_code());
 
         nlohmann::json answer;
-        std::string    body = resp.extract_string(true).get();
+        std::string    body = TO_STD_STR(resp.extract_string(true).get());
         try
         {
             answer = nlohmann::json::parse(body);
@@ -1152,7 +1152,7 @@ namespace mm2::api
         spdlog::info("{} resp code: {}", __FUNCTION__, resp.status_code());
 
         nlohmann::json answer;
-        std::string    body = resp.extract_string(true).get();
+        std::string    body = TO_STD_STR(resp.extract_string(true).get());
         try
         {
             answer = nlohmann::json::parse(body);

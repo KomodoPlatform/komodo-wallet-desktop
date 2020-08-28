@@ -19,6 +19,14 @@
 //! CPPRESTSDK
 #define _TURN_OFF_PLATFORM_STRING
 #include <cpprest/http_client.h>
+#ifdef _WIN32
+#    define TO_STD_STR(ws_str) utility::conversions::to_utf8string(ws_str)
+#    define FROM_STD_STR(utf8str) utility::conversions::to_string_t(utf8str)
+#else
+#    define TO_STD_STR(ws_str) ws_str
+#    define FROM_STD_STR(utf8str) utf8str
+#endif
+
 
 //! PCH Headers
 #include "atomic.dex.pch.hpp"
@@ -32,7 +40,7 @@ namespace mm2::api
     inline constexpr const char*                           g_etherscan_proxy_endpoint = "https://komodo.live:3334";
     inline std::unique_ptr<web::http::client::http_client> g_mm2_http_client{nullptr};
     inline std::unique_ptr<web::http::client::http_client> g_etherscan_proxy_http_client{
-        std::make_unique<web::http::client::http_client>(g_etherscan_proxy_endpoint)};
+        std::make_unique<web::http::client::http_client>(FROM_STD_STR(g_etherscan_proxy_endpoint))};
 
     static inline void
     create_mm2_httpclient()
@@ -40,7 +48,7 @@ namespace mm2::api
         web::http::client::http_client_config cfg;
         using namespace std::chrono_literals;
         cfg.set_timeout(3s);
-        g_mm2_http_client = std::make_unique<web::http::client::http_client>(g_endpoint, cfg);
+        g_mm2_http_client = std::make_unique<web::http::client::http_client>(FROM_STD_STR(g_endpoint), cfg);
     }
 
     static inline void
@@ -738,7 +746,7 @@ namespace mm2::api
     template <typename RpcReturnType>
     RpcReturnType static inline rpc_process_answer(const web::http::http_response& resp, const std::string& rpc_command) noexcept
     {
-        std::string body = resp.extract_string(true).get();
+        std::string body = TO_STD_STR(resp.extract_string(true).get());
         spdlog::info("resp code for rpc_command {} is {}", rpc_command, resp.status_code());
         RpcReturnType answer;
 
@@ -816,7 +824,7 @@ namespace mm2::api
 
         web::http::http_request request;
         request.set_method(web::http::methods::GET);
-        request.set_request_uri(url);
+        request.set_request_uri(FROM_STD_STR(url));
         return g_etherscan_proxy_http_client->request(request);
     }
 
