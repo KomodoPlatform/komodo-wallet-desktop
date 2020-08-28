@@ -127,9 +127,6 @@ namespace atomic_dex
         //! Refresh the balance registry (internal)
         void process_balance(const std::string& ticker) const;
 
-        //! Refresh the transaction registry (internal)
-        void process_tx(const std::string& ticker, bool is_a_refresh);
-
         //! Refresh the orderbook registry (internal)
         void process_orderbook(bool is_a_reset = false);
 
@@ -138,7 +135,10 @@ namespace atomic_dex
 
         //! Batch balance / tx
         std::tuple<nlohmann::json, std::vector<std::string>, std::vector<std::string>> prepare_batch_balance_and_tx() const;
-        void                                                                           batch_balance_and_tx(bool is_a_reset);
+        auto                                                                           batch_balance_and_tx(bool is_a_reset);
+        void                                                                           process_balance_answer(const nlohmann::json& answer);
+        void process_tx_answer(const nlohmann::json& answer_json, const std::string& ticker);
+        void process_tx_etherscan(const std::string& ticker, bool is_a_refresh);
 
       public:
         //! Constructor

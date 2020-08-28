@@ -1109,24 +1109,58 @@ namespace mm2::api
         return out;
     }
 
+    pplx::task<web::http::http_response>
+    async_rpc_batch_standalone(nlohmann::json batch_array)
+    {
+        web::http::http_request request;
+        request.set_method(web::http::methods::POST);
+        request.set_body(batch_array.dump());
+        auto resp = g_mm2_http_client->request(request);
+        return resp;
+    }
+
+    nlohmann::json
+    basic_batch_answer(const web::http::http_response& resp)
+    {
+        spdlog::info("{} resp code: {}", __FUNCTION__, resp.status_code());
+
+        nlohmann::json answer;
+        std::string    body = resp.extract_string(true).get();
+        try
+        {
+            answer = nlohmann::json::parse(body);
+        }
+        catch (const nlohmann::detail::parse_error& err)
+        {
+            spdlog::error("{}, body: {}", err.what(), body);
+            answer["error"] = body;
+        }
+        return answer;
+    }
+
     nlohmann::json
     rpc_batch_standalone(nlohmann::json batch_array)
     {
         // auto resp = get_client()->post("", batch_array.dump());
-        auto resp = RestClient::post(g_endpoint, "application/json", batch_array.dump());
+        web::http::http_request request;
+        request.set_method(web::http::methods::POST);
+        request.set_body(batch_array.dump());
+        auto resp = g_mm2_http_client->request(request).get();
+        // auto resp = RestClient::post(g_endpoint, "application/json", batch_array.dump());
 
 
-        spdlog::info("{} resp code: {}", __FUNCTION__, resp.code);
+        spdlog::info("{} resp code: {}", __FUNCTION__, resp.status_code());
 
         nlohmann::json answer;
+        std::string    body = resp.extract_string(true).get();
         try
         {
-            answer = nlohmann::json::parse(resp.body);
+            answer = nlohmann::json::parse(body);
         }
         catch (const nlohmann::detail::parse_error& err)
         {
-            spdlog::error("{}, body: {}", err.what(), resp.body);
-            answer["error"] = resp.body;
+            spdlog::error("{}, body: {}", err.what(), body);
+            answer["error"] = body;
         }
         return answer;
     }

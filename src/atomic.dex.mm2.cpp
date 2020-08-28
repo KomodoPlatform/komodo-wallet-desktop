@@ -169,7 +169,8 @@ namespace atomic_dex
 
         if (s_info >= 30s)
         {
-            spawn([this]() { fetch_infos_thread(); });
+            /*spawn([this]() { fetch_infos_thread(); });*/
+            fetch_infos_thread();
             m_info_clock = std::chrono::high_resolution_clock::now();
         }
     }
@@ -360,88 +361,31 @@ namespace atomic_dex
         update_coin_status(this->m_current_wallet_name, tickers, false);
     }
 
-    void
+    auto
     mm2::batch_balance_and_tx(bool is_a_reset)
     {
         auto&& [batch_array, tickers_idx, erc_to_fetch] = prepare_batch_balance_and_tx();
-        auto answers                                    = ::mm2::api::rpc_batch_standalone(batch_array);
-
-        auto process_balance_answer_functor = [this](nlohmann::json answer_json) {
-            t_balance_answer answer;
-            ::mm2::api::from_json(answer_json, answer);
-            t_float_50 result = t_float_50(answer.balance) * m_balance_factor;
-            answer.balance    = result.str();
-            m_balance_informations.insert_or_assign(answer.coin, answer);
-            this->dispatcher_.trigger<ticker_balance_updated>(answer.coin);
-        };
-
-        auto process_tx_answer_functor = [this](nlohmann::json answer_json, const std::string& ticker) {
-            ::mm2::api::tx_history_answer answer;
-            ::mm2::api::from_json(answer_json, answer);
-            t_tx_state state;
-            state.state             = answer.result.value().sync_status.state;
-            state.current_block     = answer.result.value().current_block;
-            state.blocks_left       = 0;
-            state.transactions_left = 0;
-
-            if (answer.result.value().sync_status.additional_info.has_value())
-            {
-                if (answer.result.value().sync_status.additional_info.value().erc_infos.has_value())
+        return ::mm2::api::async_rpc_batch_standalone(batch_array)
+            .then([this, tickers_idx = tickers_idx, erc_to_fetch = erc_to_fetch, is_a_reset](web::http::http_response resp) {
+                auto answers = ::mm2::api::basic_batch_answer(resp);
+                if (not answers.contains("error"))
                 {
-                    state.blocks_left = answer.result.value().sync_status.additional_info.value().erc_infos.value().blocks_left;
+                    std::size_t idx = 0;
+                    for (auto&& answer: answers)
+                    {
+                        if (answer.contains("balance"))
+                        {
+                            this->process_balance_answer(answer);
+                        }
+                        else if (answer.contains("result"))
+                        {
+                            this->process_tx_answer(answer, tickers_idx[idx]);
+                        }
+                        ++idx;
+                    }
+                    for (auto&& coin: erc_to_fetch) { process_tx_etherscan(coin, is_a_reset); }
                 }
-                if (answer.result.value().sync_status.additional_info.value().regular_infos.has_value())
-                {
-                    state.transactions_left = answer.result.value().sync_status.additional_info.value().regular_infos.value().transactions_left;
-                }
-            }
-
-            t_transactions out;
-            out.reserve(answer.result.value().transactions.size());
-
-            for (auto&& current: answer.result.value().transactions)
-            {
-                tx_infos current_info{
-
-                    .am_i_sender       = current.my_balance_change[0] == '-',
-                    .confirmations     = current.confirmations.has_value() ? current.confirmations.value() : 0,
-                    .from              = current.from,
-                    .to                = current.to,
-                    .date              = current.timestamp_as_date,
-                    .timestamp         = current.timestamp,
-                    .tx_hash           = current.tx_hash,
-                    .fees              = current.fee_details.normal_fees.has_value() ? current.fee_details.normal_fees.value().amount
-                                                                                     : current.fee_details.erc_fees.value().total_fee,
-                    .my_balance_change = current.my_balance_change,
-                    .total_amount      = current.total_amount,
-                    .block_height      = current.block_height,
-                    .ec                = dextop_error::success,
-                };
-
-                out.push_back(std::move(current_info));
-            }
-
-            std::sort(begin(out), end(out), [](auto&& a, auto&& b) { return a.timestamp > b.timestamp; });
-
-            m_tx_informations.insert_or_assign(ticker, std::move(out));
-            m_tx_state.insert_or_assign(ticker, std::move(state));
-            this->dispatcher_.trigger<tx_fetch_finished>();
-        };
-
-        std::size_t idx = 0;
-        for (auto&& answer: answers)
-        {
-            if (answer.contains("balance"))
-            {
-                process_balance_answer_functor(answer);
-            }
-            else if (answer.contains("result"))
-            {
-                process_tx_answer_functor(answer, tickers_idx[idx]);
-            }
-            ++idx;
-        }
-        for (auto&& coin: erc_to_fetch) { process_tx(coin, is_a_reset); }
+            });
     }
 
     std::tuple<nlohmann::json, std::vector<std::string>, std::vector<std::string>>
@@ -721,20 +665,6 @@ namespace atomic_dex
         spdlog::info("{}: Fetching Infos l{}", __FUNCTION__, __LINE__);
 
         batch_balance_and_tx(is_a_refresh);
-        /*t_coins                        coins = get_enabled_coins();
-        std::vector<std::future<void>> futures;
-
-        futures.reserve(coins.size() * 2);
-
-        for (auto&& current_coin: coins)
-        {
-            futures.emplace_back(spawn([this, ticker = current_coin.ticker, is_a_refresh]() {
-                process_balance(ticker);
-                process_tx(ticker, is_a_refresh);
-            }));
-        }
-
-        for (auto&& fut: futures) { fut.get(); }*/
     }
 
     void
@@ -935,96 +865,85 @@ namespace atomic_dex
     }
 
     void
-    mm2::process_tx(const std::string& ticker, bool is_a_refresh)
+    mm2::process_tx_etherscan(const std::string& ticker, bool is_a_refresh)
     {
         spdlog::debug("{} l{} f[{}]", __FUNCTION__, __LINE__, fs::path(__FILE__).filename().string());
         spdlog::trace("process_tx ticker: {}", ticker);
-        ::mm2::api::tx_history_answer answer;
-        if (not get_coin_info(ticker).is_erc_20)
+        if (is_a_refresh)
         {
-            t_tx_history_request tx_request{.coin = ticker, .limit = g_tx_max_limit};
-            answer = rpc_my_tx_history(std::move(tx_request));
+            return;
         }
-        else
+        std::error_code ec;
+        using namespace std::string_literals;
+        std::string url =
+            (ticker == "ETH") ? "/api/v1/eth_tx_history/"s + address(ticker, ec) : "/api/v1/erc_tx_history/"s + ticker + "/" + address(ticker, ec);
+        try
         {
-            if (is_a_refresh)
-            {
-                return;
-            }
-            std::error_code ec;
-            using namespace std::string_literals;
-            std::string url =
-                (ticker == "ETH") ? "/api/v1/eth_tx_history/"s + address(ticker, ec) : "/api/v1/erc_tx_history/"s + ticker + "/" + address(ticker, ec);
-            answer = ::mm2::api::process_rpc_get<::mm2::api::tx_history_answer>("tx_history", url);
-        }
+            ::mm2::api::async_process_rpc_get("tx_history", url).then([this, ticker](web::http::http_response resp) {
+                auto answer = ::mm2::api::rpc_process_answer<::mm2::api::tx_history_answer>(resp, "tx_history");
 
-
-        if (answer.error.has_value())
-        {
-            spdlog::error("{}", answer.error.value());
-        }
-        else if (answer.rpc_result_code not_eq -1 and answer.result.has_value())
-        {
-            t_tx_state state;
-            if (not get_coin_info(ticker).is_erc_20)
-            {
-                state.state             = answer.result.value().sync_status.state;
-                state.current_block     = answer.result.value().current_block;
-                state.blocks_left       = 0;
-                state.transactions_left = 0;
-            }
-            else
-            {
-                state.state             = "Finished";
-                state.current_block     = 0;
-                state.blocks_left       = 0;
-                state.transactions_left = 0;
-            }
-
-            if (answer.result.value().sync_status.additional_info.has_value())
-            {
-                if (answer.result.value().sync_status.additional_info.value().erc_infos.has_value())
+                if (answer.error.has_value())
                 {
-                    state.blocks_left = answer.result.value().sync_status.additional_info.value().erc_infos.value().blocks_left;
+                    spdlog::error("{}", answer.error.value());
                 }
-                if (answer.result.value().sync_status.additional_info.value().regular_infos.has_value())
+                else if (answer.rpc_result_code not_eq -1 and answer.result.has_value())
                 {
-                    state.transactions_left = answer.result.value().sync_status.additional_info.value().regular_infos.value().transactions_left;
+                    t_tx_state state;
+                    state.state             = "Finished";
+                    state.current_block     = 0;
+                    state.blocks_left       = 0;
+                    state.transactions_left = 0;
+
+                    if (answer.result.value().sync_status.additional_info.has_value())
+                    {
+                        if (answer.result.value().sync_status.additional_info.value().erc_infos.has_value())
+                        {
+                            state.blocks_left = answer.result.value().sync_status.additional_info.value().erc_infos.value().blocks_left;
+                        }
+                        if (answer.result.value().sync_status.additional_info.value().regular_infos.has_value())
+                        {
+                            state.transactions_left = answer.result.value().sync_status.additional_info.value().regular_infos.value().transactions_left;
+                        }
+                    }
+
+                    t_transactions out;
+                    out.reserve(answer.result.value().transactions.size());
+
+                    for (auto&& current: answer.result.value().transactions)
+                    {
+                        // spdlog::trace("my_balance change: {} ticker: {}", current.my_balance_change, ticker);
+
+                        tx_infos current_info{
+
+                            .am_i_sender       = current.my_balance_change[0] == '-',
+                            .confirmations     = current.confirmations.has_value() ? current.confirmations.value() : 0,
+                            .from              = current.from,
+                            .to                = current.to,
+                            .date              = current.timestamp_as_date,
+                            .timestamp         = current.timestamp,
+                            .tx_hash           = current.tx_hash,
+                            .fees              = current.fee_details.normal_fees.has_value() ? current.fee_details.normal_fees.value().amount
+                                                                                             : current.fee_details.erc_fees.value().total_fee,
+                            .my_balance_change = current.my_balance_change,
+                            .total_amount      = current.total_amount,
+                            .block_height      = current.block_height,
+                            .ec                = dextop_error::success,
+                        };
+
+                        out.push_back(std::move(current_info));
+                    }
+
+                    std::sort(begin(out), end(out), [](auto&& a, auto&& b) { return a.timestamp > b.timestamp; });
+
+                    m_tx_informations.insert_or_assign(ticker, std::move(out));
+                    m_tx_state.insert_or_assign(ticker, std::move(state));
+                    this->dispatcher_.trigger<tx_fetch_finished>();
                 }
-            }
-
-            t_transactions out;
-            out.reserve(answer.result.value().transactions.size());
-
-            for (auto&& current: answer.result.value().transactions)
-            {
-                // spdlog::trace("my_balance change: {} ticker: {}", current.my_balance_change, ticker);
-
-                tx_infos current_info{
-
-                    .am_i_sender       = current.my_balance_change[0] == '-',
-                    .confirmations     = current.confirmations.has_value() ? current.confirmations.value() : 0,
-                    .from              = current.from,
-                    .to                = current.to,
-                    .date              = current.timestamp_as_date,
-                    .timestamp         = current.timestamp,
-                    .tx_hash           = current.tx_hash,
-                    .fees              = current.fee_details.normal_fees.has_value() ? current.fee_details.normal_fees.value().amount
-                                                                                     : current.fee_details.erc_fees.value().total_fee,
-                    .my_balance_change = current.my_balance_change,
-                    .total_amount      = current.total_amount,
-                    .block_height      = current.block_height,
-                    .ec                = dextop_error::success,
-                };
-
-                out.push_back(std::move(current_info));
-            }
-
-            std::sort(begin(out), end(out), [](auto&& a, auto&& b) { return a.timestamp > b.timestamp; });
-
-            m_tx_informations.insert_or_assign(ticker, std::move(out));
-            m_tx_state.insert_or_assign(ticker, std::move(state));
-            this->dispatcher_.trigger<tx_fetch_finished>();
+            });
+        }
+        catch (const std::exception& error)
+        {
+            spdlog::error("ppl task error: {}", error.what());
         }
     }
 
@@ -1325,5 +1244,71 @@ namespace atomic_dex
             m_balance_informations.assign(ticker, answer);
             this->dispatcher_.trigger<ticker_balance_updated>(ticker);
         }
+    }
+
+    void
+    mm2::process_tx_answer(const nlohmann::json& answer_json, const std::string& ticker)
+    {
+        ::mm2::api::tx_history_answer answer;
+        ::mm2::api::from_json(answer_json, answer);
+        t_tx_state state;
+        state.state             = answer.result.value().sync_status.state;
+        state.current_block     = answer.result.value().current_block;
+        state.blocks_left       = 0;
+        state.transactions_left = 0;
+
+        if (answer.result.value().sync_status.additional_info.has_value())
+        {
+            if (answer.result.value().sync_status.additional_info.value().erc_infos.has_value())
+            {
+                state.blocks_left = answer.result.value().sync_status.additional_info.value().erc_infos.value().blocks_left;
+            }
+            if (answer.result.value().sync_status.additional_info.value().regular_infos.has_value())
+            {
+                state.transactions_left = answer.result.value().sync_status.additional_info.value().regular_infos.value().transactions_left;
+            }
+        }
+
+        t_transactions out;
+        out.reserve(answer.result.value().transactions.size());
+
+        for (auto&& current: answer.result.value().transactions)
+        {
+            tx_infos current_info{
+
+                .am_i_sender       = current.my_balance_change[0] == '-',
+                .confirmations     = current.confirmations.has_value() ? current.confirmations.value() : 0,
+                .from              = current.from,
+                .to                = current.to,
+                .date              = current.timestamp_as_date,
+                .timestamp         = current.timestamp,
+                .tx_hash           = current.tx_hash,
+                .fees              = current.fee_details.normal_fees.has_value() ? current.fee_details.normal_fees.value().amount
+                                                                                 : current.fee_details.erc_fees.value().total_fee,
+                .my_balance_change = current.my_balance_change,
+                .total_amount      = current.total_amount,
+                .block_height      = current.block_height,
+                .ec                = dextop_error::success,
+            };
+
+            out.push_back(std::move(current_info));
+        }
+
+        std::sort(begin(out), end(out), [](auto&& a, auto&& b) { return a.timestamp > b.timestamp; });
+
+        m_tx_informations.insert_or_assign(ticker, std::move(out));
+        m_tx_state.insert_or_assign(ticker, std::move(state));
+        this->dispatcher_.trigger<tx_fetch_finished>();
+    }
+
+    void
+    mm2::process_balance_answer(const nlohmann::json& answer)
+    {
+        t_balance_answer answer_r;
+        ::mm2::api::from_json(answer, answer_r);
+        t_float_50 result = t_float_50(answer_r.balance) * m_balance_factor;
+        answer_r.balance  = result.str();
+        m_balance_informations.insert_or_assign(answer_r.coin, answer);
+        this->dispatcher_.trigger<ticker_balance_updated>(answer_r.coin);
     }
 } // namespace atomic_dex

@@ -31,7 +31,8 @@ namespace mm2::api
     inline constexpr const char*                           g_endpoint                 = "http://127.0.0.1:7783";
     inline constexpr const char*                           g_etherscan_proxy_endpoint = "https://komodo.live:3334";
     inline std::unique_ptr<web::http::client::http_client> g_mm2_http_client{nullptr};
-    inline std::unique_ptr<web::http::client::http_client> g_etherscan_proxy_http_client{std::make_unique<web::http::client::http_client>(g_etherscan_proxy_endpoint)};
+    inline std::unique_ptr<web::http::client::http_client> g_etherscan_proxy_http_client{
+        std::make_unique<web::http::client::http_client>(g_etherscan_proxy_endpoint)};
 
     static inline void
     create_mm2_httpclient()
@@ -45,11 +46,13 @@ namespace mm2::api
     static inline void
     reset_client()
     {
-        //g_mm2_http_client->
-        //g_mm2_http_client = nullptr;
+        // g_mm2_http_client->
+        // g_mm2_http_client = nullptr;
     }
 
-    nlohmann::json rpc_batch_standalone(nlohmann::json batch_array);
+    nlohmann::json                       rpc_batch_standalone(nlohmann::json batch_array);
+    pplx::task<web::http::http_response> async_rpc_batch_standalone(nlohmann::json batch_array);
+    nlohmann::json                       basic_batch_answer(const web::http::http_response& resp);
 
     std::string rpc_version();
 
@@ -806,6 +809,17 @@ namespace mm2::api
         return answer;
     }
 
+    static inline pplx::task<web::http::http_response>
+    async_process_rpc_get(std::string rpc_command, const std::string& url)
+    {
+        spdlog::info("Processing rpc call: {}, url: {}, endpoint: {}", rpc_command, url, g_etherscan_proxy_endpoint);
+
+        web::http::http_request request;
+        request.set_method(web::http::methods::GET);
+        request.set_request_uri(url);
+        return g_etherscan_proxy_http_client->request(request);
+    }
+
     template <typename TAnswer>
     TAnswer
     process_rpc_get(std::string rpc_command, const std::string& url)
@@ -816,7 +830,7 @@ namespace mm2::api
         request.set_method(web::http::methods::GET);
         request.set_request_uri(url);
         auto resp = g_etherscan_proxy_http_client->request(request).get();
-        //auto resp = RestClient::get(g_etherscan_proxy_endpoint + url);
+        // auto resp = RestClient::get(g_etherscan_proxy_endpoint + url);
 
         return rpc_process_answer<TAnswer>(resp, rpc_command);
     }
