@@ -23,7 +23,7 @@
 #endif
 
 inline constexpr size_t g_qsize_spdlog             = 10240;
-inline constexpr size_t g_spdlog_thread_count      = 4;
+inline constexpr size_t g_spdlog_thread_count      = 2;
 inline constexpr size_t g_spdlog_max_file_size     = 7777777;
 inline constexpr size_t g_spdlog_max_file_rotation = 3;
 
@@ -139,6 +139,16 @@ init_timezone_db()
 #endif
 }
 
+static void init_restclient()
+{
+    RestClient::init();
+}
+
+static void disable_restclient()
+{
+    RestClient::disable();
+}
+
 #if defined(WINDOWS_RELEASE_MAIN)
 INT WINAPI
 WinMain(HINSTANCE hInst, HINSTANCE, LPSTR strCmdLine, INT)
@@ -150,6 +160,7 @@ main([[maybe_unused]] int argc, [[maybe_unused]] char* argv[])
 {
     init_logging();
     connect_signals_handler();
+    init_restclient();
     init_timezone_db();
     init_wally();
     init_sodium();
@@ -199,6 +210,7 @@ main([[maybe_unused]] int argc, [[maybe_unused]] char* argv[])
 
     auto res = app->exec();
 
+    disable_restclient();
     clean_wally();
 
     return res;

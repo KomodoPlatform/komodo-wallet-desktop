@@ -24,7 +24,7 @@
 
 namespace mm2::api
 {
-    inline constexpr const char* g_endpoint                 = "http://localhost:7783";
+    inline constexpr const char* g_endpoint                 = "http://127.0.0.1:7783";
     inline constexpr const char* g_etherscan_proxy_endpoint = "https://komodo.live:3334";
 
     static inline std::unique_ptr<RestClient::Connection>&
@@ -35,8 +35,8 @@ namespace mm2::api
         if (not is_initialized)
         {
             RestClient::HeaderFields headers;
-            headers["Contents-Type"] = "application/json";
-            cli->SetHeaders(headers);
+            cli->AppendHeader("Content-Type", "application/json");
+            cli->SetTimeout(5);
         }
         return cli;
     }
@@ -773,7 +773,7 @@ namespace mm2::api
         catch (const std::exception& error)
         {
             spdlog::error(
-                "{} l{} f[{}], exception caught {} for rpc {}", __FUNCTION__, __LINE__, fs::path(__FILE__).filename().string(), error.what(), rpc_command);
+                "{} l{} f[{}], exception caught {} for rpc {}, body: {}", __FUNCTION__, __LINE__, fs::path(__FILE__).filename().string(), error.what(), rpc_command, resp.body);
             answer.rpc_result_code = -1;
             answer.raw_result      = error.what();
         }
