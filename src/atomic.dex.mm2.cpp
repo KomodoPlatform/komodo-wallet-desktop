@@ -327,10 +327,7 @@ namespace atomic_dex
 
         this->dispatcher_.trigger<enabled_default_coins_event>();
 
-        spawn([this]() {
-            process_orders();
-            process_swaps();
-        });
+        batch_fetch_orders_and_swap();
 
         return result.load() == 1;
     }
@@ -339,7 +336,6 @@ namespace atomic_dex
     mm2::disable_multiple_coins(const std::vector<std::string>& tickers) noexcept
     {
         spdlog::debug("{} l{} f[{}]", __FUNCTION__, __LINE__, fs::path(__FILE__).filename().string());
-
         for (const auto& ticker: tickers)
         {
             spawn([this, ticker]() {
