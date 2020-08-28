@@ -19,7 +19,7 @@ jobs:
           submodules: 'true'
 
       - name: Install QT (Linux)
-        uses: jurplel/install-qt-action@v2
+        uses: KomodoPlatform/install-qt-action@v2
         with:
           version: '5.15.0'
           host: 'linux'
@@ -30,7 +30,7 @@ jobs:
           py7zrversion: '==0.6'
 
       - name: Setup Nim (Linux)
-        uses: jiro4989/setup-nim-action@v1.0.2
+        uses: KomodoPlatform/setup-nim-action@v1.0.2
         with:
           nim-version: '1.2.0'
 
@@ -123,7 +123,7 @@ jobs:
           LDFLAGS: -stdlib=libc++
           CXX: clang++-9
           CC: clang-9
-        uses: lukka/run-vcpkg@v3
+        uses: KomodoPlatform/run-vcpkg@v3
         with:
           vcpkgArguments: '@${{ github.workspace }}/.github/workflows/linux_response_file.txt'
           vcpkgDirectory: '${{ github.workspace }}/ci_tools_atomic_dex/vcpkg-repo'
@@ -195,7 +195,7 @@ jobs:
 
       - name: Install QT (MacOS)
         if: steps.cache-qt-mac.outputs.cache-hit != 'true'
-        uses: jurplel/install-qt-action@v2
+        uses: KomodoPlatform/install-qt-action@v2
         with:
           version: '5.15.0'
           host: 'mac'
@@ -216,6 +216,7 @@ jobs:
                        git \
                        boost \
                        gcc \
+                       gnu-sed \
                        llvm@9
 
           export CC=/usr/local/opt/llvm@9/bin/clang
@@ -230,21 +231,28 @@ jobs:
           cd ../
 
           # get libbitcoin
-          git clone --depth 1 --branch version5 --single-branch "https://github.com/libbitcoin/secp256k1"
-          cd secp256k1
-          ./autogen.sh
-          ./configure --disable-shared --disable-tests --enable-module-recovery
-          make -j3
-          sudo make install
-          cd ../
+          #git clone --depth 1 --branch version5 --single-branch "https://github.com/libbitcoin/secp256k1"
+          #cd secp256k1
+          #./autogen.sh
+          #./configure --disable-shared --disable-tests --enable-module-recovery
+          #make -j3
+          #sudo make install
+          #cd ../
 
-          git clone --depth 1 --branch version3 --single-branch https://github.com/KomodoPlatform/libbitcoin-system.git
-          cd libbitcoin-system
-          ./autogen.sh
-          ./configure --with-boost --disable-shared
-          make -j3
-          sudo make install
-          sudo update_dyld_shared_cache
+          #git clone --depth 1 --branch version3 --single-branch https://github.com/KomodoPlatform/libbitcoin-system.git
+          #cd libbitcoin-system
+          #./autogen.sh
+          #./configure --with-boost --disable-shared
+          #make -j3
+          #sudo make install
+          #sudo update_dyld_shared_cache
+
+          git clone https://github.com/KomodoPlatform/libwally-core.git
+          cd libwally-core
+          ./tools/autogen.sh
+          ./configure --disable-shared
+          sudo make -j3 install
+          cd ..
 
           # get SDKs 
           git clone https://github.com/phracker/MacOSX-SDKs $HOME/sdk
@@ -253,7 +261,7 @@ jobs:
         env: # Or as an environment variable
           CXX: /usr/local/opt/llvm@9/bin/clang++
           CC: /usr/local/opt/llvm@9/bin/clang
-        uses: lukka/run-vcpkg@v3
+        uses: KomodoPlatform/run-vcpkg@v3
         with:
           vcpkgArguments: '@${{ github.workspace }}/.github/workflows/osx_response_file.txt'
           vcpkgDirectory: '${{ github.workspace }}/ci_tools_atomic_dex/vcpkg-repo'
@@ -266,7 +274,7 @@ jobs:
           cd ci_tools_atomic_dex
           nimble build -y
           ./ci_tools_atomic_dex bundle release --osx_sdk=$HOME/sdk/MacOSX10.13.sdk --compiler=/usr/local/opt/llvm@9/bin/clang++
-          ls bundle-Release/atomicDEX-Pro.dmg
+          ls bundle-Release/atomicDefi.dmg
 
       - name: Running Tests (MacOS)
         env: # Or as an environment variable
@@ -277,7 +285,7 @@ jobs:
           export QT_ROOT=${{ github.workspace }}/Qt/5.15.0
           echo "Running tests"
           ./ci_tools_atomic_dex tests release
-          cd build-Release/bin/atomic_qt_tests.app/Contents/MacOS
+          cd build-Release/bin/atomicDeFi_tests.app/Contents/MacOS
           cat atomic-dex-tests-result.xml
           curl https://report.ci/upload.py --output upload.py
           ls
@@ -289,7 +297,7 @@ jobs:
         uses: actions/upload-artifact@v1
         with:
           name: dexpro-mac-release.dmg
-          path: ./ci_tools_atomic_dex/bundle-Release/atomicDEX-Pro.dmg
+          path: ./ci_tools_atomic_dex/bundle-Release/atomicDefi.dmg
 
   windows-build:
     name: Win Build
@@ -302,7 +310,7 @@ jobs:
           submodules: 'true'
 
       - name: Install QT (Win)
-        uses: jurplel/install-qt-action@v2
+        uses: KomodoPlatform/install-qt-action@v2
         with:
           version: '5.15.0'
           host: 'windows'
@@ -312,7 +320,7 @@ jobs:
           modules: 'qtcharts qtwidgets debug_info'
 
       - name: vcpkg deps (Windows)
-        uses: lukka/run-vcpkg@v3
+        uses: KomodoPlatform/run-vcpkg@v3
         with:
           vcpkgArguments: '@${{ github.workspace }}/.github/workflows/windows_response_file.txt'
           vcpkgDirectory: '${{ github.workspace }}/ci_tools_atomic_dex/vcpkg-repo'

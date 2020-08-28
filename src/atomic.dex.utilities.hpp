@@ -8,6 +8,37 @@
 #include "atomic.dex.pch.hpp"
 
 
+inline double
+determine_balance_factor(bool with_pin_cfg)
+{
+    if (not with_pin_cfg)
+    {
+        return 1.0;
+    }
+
+    std::random_device               rd;
+    std::mt19937                     gen(rd());
+    std::uniform_real_distribution<> distr(0.01, 0.05);
+    return distr(gen);
+}
+
+template <typename TimeFormat = std::chrono::milliseconds>
+inline std::string
+to_human_date(std::size_t timestamp, std::string format)
+{
+    using namespace date;
+    const sys_time<TimeFormat> tp{TimeFormat{timestamp}};
+    try
+    {
+        const auto tp_zoned = date::make_zoned(current_zone(), tp);
+        return date::format(std::move(format), tp_zoned);
+    }
+    catch (const std::exception& error)
+    {
+        return date::format(std::move(format), tp);
+    }
+}
+
 inline fs::path
 get_atomic_dex_data_folder()
 {

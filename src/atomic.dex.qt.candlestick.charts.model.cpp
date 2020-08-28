@@ -14,8 +14,12 @@
  *                                                                            *
  ******************************************************************************/
 
+//! QT
+#include <QJsonDocument>
+#include <QJsonObject>
 
-#include <utility>
+//! PCH
+#include "atomic.dex.pch.hpp"
 
 //! Project Headers
 #include "atomic.dex.provider.cex.prices.hpp"
@@ -137,7 +141,10 @@ namespace atomic_dex
         }
         emit chartFullyModelReset();
 
-        assert(not m_model_data.empty());
+        if (m_model_data.empty()) {
+            //this->set_is_currently_fetching(false);
+            return;
+        }
         double max_value = std::numeric_limits<double>::min();
         double min_value = std::numeric_limits<double>::max();
 
@@ -176,16 +183,6 @@ namespace atomic_dex
     void
     candlestick_charts_model::update_data()
     {
-        /*auto&          provider  = this->m_system_manager.get_system<cex_prices_provider>();
-        nlohmann::json ohlc_data = provider.get_ohlc_data(m_current_range);
-        if (ohlc_data.back().at("timestamp").get<unsigned long long>() != m_model_data.back().at("timestamp").get<unsigned long long>())
-        {
-            this->beginInsertRows(QModelIndex(), this->m_model_data.size(), this->m_model_data.size());
-            m_model_data.push_back(ohlc_data.back());
-            this->endInsertRows();
-            emit seriesSizeChanged(get_series_size());
-        }*/
-
         if (not common_reset_data())
         {
             return;
@@ -482,5 +479,23 @@ namespace atomic_dex
             this->m_currently_fetching = is_fetching;
             emit fetchingStatusChanged(m_currently_fetching);
         }
+    }
+
+    QVariantMap
+    candlestick_charts_model::find_closest_ohlc_data(int timestamp)
+    {
+        QVariantMap out;
+
+        auto it = std::lower_bound(rbegin(m_model_data), rend(m_model_data), timestamp, [](const nlohmann::json& current_json, int timestamp) {
+          int res = current_json.at("timestamp").get<int>();
+          return timestamp < res;
+        });
+
+        if (it != m_model_data.rend())
+        {
+            QJsonDocument q_json = QJsonDocument::fromJson(QString::fromStdString(it->dump()).toUtf8());
+            out                  = q_json.object().toVariantMap();
+        }
+        return out;
     }
 } // namespace atomic_dex

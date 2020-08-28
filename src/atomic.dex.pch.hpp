@@ -126,7 +126,9 @@ namespace folly
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wunused-parameter"
 #include <boost/multiprecision/cpp_dec_float.hpp>
+#include <boost/multiprecision/cpp_int.hpp>
 using t_float_50 = boost::multiprecision::cpp_dec_float_50;
+using t_rational = boost::multiprecision::cpp_rational;
 
 inline std::string
 get_formated_float(t_float_50 value)
@@ -158,16 +160,7 @@ adjust_precision(const std::string& current)
 #include <range/v3/view/iota.hpp> ///< ranges::view::ints
 #include <range/v3/view/zip.hpp>  ///< ranges::view::zip
 
-#ifdef __APPLE__
-//! Other dependencies Headers
-#    pragma clang diagnostic push
-#    pragma clang diagnostic ignored "-Wunused-function"
-#    pragma clang diagnostic ignored "-Wunused-parameter"
-#    pragma clang diagnostic ignored "-Wignored-qualifiers"
-#    include <bitcoin/bitcoin/utility/pseudo_random.hpp>
-#    include <bitcoin/bitcoin/wallet/mnemonic.hpp>
-#    pragma clang diagnostic pop
-#elif defined(_WIN32) || defined(WIN32)
+#if defined(_WIN32) || defined(WIN32)
 #    include <wally.hpp>
 #else
 #    include <boost/random/random_device.hpp>

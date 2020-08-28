@@ -18,6 +18,8 @@
 
 //! QT
 #include <QAbstractListModel>
+#include <QJsonObject>
+#include <QVariant>
 #include <QVector>
 
 //! PCH
@@ -35,6 +37,7 @@ namespace atomic_dex
         Q_OBJECT
         Q_PROPERTY(orders_proxy_model* orders_proxy_mdl READ get_orders_proxy_mdl NOTIFY ordersProxyChanged);
         Q_PROPERTY(int length READ get_length NOTIFY lengthChanged);
+        Q_PROPERTY(QVariant average_events_time_registry READ get_average_events_time_registry NOTIFY onAverageEventsTimeRegistryChanged)
         Q_ENUMS(OrdersRoles)
       public:
         enum OrdersRoles
@@ -56,11 +59,14 @@ namespace atomic_dex
             CancellableRole,
             IsRecoverableRole,
             OrderErrorStateRole,
-            OrderErrorMessageRole
+            OrderErrorMessageRole,
+            EventsRole,
+            SuccessEventsRole,
+            ErrorEventsRole
         };
 
 
-        orders_model(ag::ecs::system_manager& system_manager, QObject* parent = nullptr) noexcept;
+        orders_model(ag::ecs::system_manager& system_manager, entt::dispatcher& dispatcher, QObject* parent = nullptr) noexcept;
         ~orders_model() noexcept final;
         int                    rowCount(const QModelIndex& parent) const final;
         QVariant               data(const QModelIndex& index, int role) const final;
@@ -72,24 +78,31 @@ namespace atomic_dex
         void refresh_or_insert_orders() noexcept;
         void refresh_or_insert_swaps() noexcept;
         void clear_registry() noexcept;
+        bool swap_is_in_progress(const QString& coin) const noexcept;
 
         //! Properties
         [[nodiscard]] int                 get_length() const noexcept;
         [[nodiscard]] orders_proxy_model* get_orders_proxy_mdl() const noexcept;
+        [[nodiscard]] QVariant            get_average_events_time_registry() const noexcept;
+
       signals:
         void lengthChanged();
         void ordersProxyChanged();
+        void onAverageEventsTimeRegistryChanged();
 
       private:
+        void                     set_average_events_time_registry(const QVariant& average_time_registry) noexcept;
         ag::ecs::system_manager& m_system_manager;
+        entt::dispatcher&        m_dispatcher;
 
-        using t_orders_datas       = QVector<order_data>;
-        using t_orders_id_registry = std::unordered_set<std::string>;
-        using t_swaps_id_registry  = std::unordered_set<std::string>;
+        using t_orders_datas         = QVector<order_data>;
+        using t_orders_id_registry   = std::unordered_set<std::string>;
+        using t_swaps_id_registry    = std::unordered_set<std::string>;
 
-        t_orders_id_registry m_orders_id_registry;
-        t_swaps_id_registry  m_swaps_id_registry;
-        t_orders_datas       m_model_data;
+        t_orders_id_registry   m_orders_id_registry;
+        t_swaps_id_registry    m_swaps_id_registry;
+        t_orders_datas         m_model_data;
+        QVariant               m_json_time_registry;
 
         orders_proxy_model* m_model_proxy;
 

@@ -71,7 +71,7 @@ make install
 Installling libbitcoin:
 
 ```
-git clone --depth 1 --branch version5 --single-branch "https://github.com/libbitcoin/secp256k1"
+git clone --depth 1 --branch version5 --single-branch "https://github.com/KomodoPlatform/secp256k1"
 cd secp256k1
 ./autogen.sh
 ./configure --disable-shared --disable-tests --enable-module-recovery
@@ -129,6 +129,15 @@ e.g.:
 ```bash
 export QT_INSTALL_CMAKE_PATH=~/Qt/5.15.0/gcc/lib/cmake
 export QT_ROOT=~/Qt/5.15.0
+```
+
+## Set Nim official packages list to our fork packages list
+
+```
+nimble refresh https://raw.githubusercontent.com/KomodoPlatform/nim_kmd_package_list/master/packages.json
+cd ~/.nimble
+mv packages_commandline.json packages_official.json
+cd -
 ```
 
 ## Build AtomicDEX Pro 

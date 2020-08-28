@@ -22,18 +22,24 @@ namespace atomic_dex
 {
     struct cfg
     {
-        std::string                current_lang{"en"};
-        std::string                current_currency;
-        std::string                current_fiat;
-        std::vector<std::string>   available_lang;
-        std::vector<std::string>   available_fiat;
-        std::array<std::string, 3> possible_currencies;
+        std::string                                  current_lang{"en"};
+        std::string                                  current_currency;
+        std::string                                  current_fiat;
+        std::string                                  current_currency_sign;
+        std::string                                  current_fiat_sign;
+        std::unordered_map<std::string, std::string> available_currency_signs;
+        std::vector<std::string>                     available_lang;
+        std::vector<std::string>                     available_fiat;
+        std::array<std::string, 3>                   possible_currencies;
+        bool                                         notification_enabled;
     };
 
-    void from_json(const nlohmann::json& j, cfg& config);
-    void change_lang(cfg& config, const std::string& new_lang);
-    void change_currency(cfg& config, const std::string& new_currency);
-    void change_fiat(cfg& config, const std::string& new_fiat);
+    void               from_json(const nlohmann::json& j, cfg& config);
+    void               change_lang(cfg& config, const std::string& new_lang);
+    void               change_currency(cfg& config, const std::string& new_currency);
+    void               change_fiat(cfg& config, const std::string& new_fiat);
+    void               change_notification_status(cfg& config, bool is_enabled);
     [[nodiscard]] bool is_this_currency_a_fiat(cfg& config, const std::string& currency) noexcept;
-    cfg  load_cfg();
+    cfg                load_cfg();
+    std::string        retrieve_sign_from_ticker(const cfg& config, const std::string& currency) noexcept;
 } // namespace atomic_dex

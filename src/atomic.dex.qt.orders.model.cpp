@@ -17,18 +17,22 @@
 //! Project
 #include "atomic.dex.qt.orders.model.hpp"
 #include "atomic.dex.mm2.hpp"
+#include "atomic.dex.qt.events.hpp"
+#include "atomic.dex.qt.utilities.hpp"
 
 //! Utils
 namespace
 {
-    template <typename TValue, typename TModel>
-    void
-    update_value(int role, const TValue& value, const QModelIndex& idx, TModel& model)
+    template <typename TModel>
+    auto
+    update_value(int role, const QVariant& value, const QModelIndex& idx, TModel& model)
     {
-        if (value != model.data(idx, role))
+        if (auto prev_value = model.data(idx, role); value != prev_value)
         {
             model.setData(idx, value, role);
+            return std::make_tuple(prev_value, value, true);
         }
+        return std::make_tuple(value, value, false);
     }
 
     std::pair<QString, QString>
@@ -55,8 +59,8 @@ namespace
 
 namespace atomic_dex
 {
-    orders_model::orders_model(ag::ecs::system_manager& system_manager, QObject* parent) noexcept :
-        QAbstractListModel(parent), m_system_manager(system_manager), m_model_proxy(new orders_proxy_model(this))
+    orders_model::orders_model(ag::ecs::system_manager& system_manager, entt::dispatcher& dispatcher, QObject* parent) noexcept :
+        QAbstractListModel(parent), m_system_manager(system_manager), m_dispatcher(dispatcher), m_model_proxy(new orders_proxy_model(this))
     {
         spdlog::trace("{} l{} f[{}]", __FUNCTION__, __LINE__, fs::path(__FILE__).filename().string());
         spdlog::trace("orders model created");
@@ -142,6 +146,12 @@ namespace atomic_dex
             item.order_error_state = value.toString();
         case OrderErrorMessageRole:
             item.order_error_message = value.toString();
+        case EventsRole:
+            item.events = value.toJsonArray();
+        case SuccessEventsRole:
+            item.success_events = value.toStringList();
+        case ErrorEventsRole:
+            item.error_events = value.toStringList();
         }
 
         emit dataChanged(index, index, {role});
@@ -195,6 +205,12 @@ namespace atomic_dex
             return item.order_error_state;
         case OrderErrorMessageRole:
             return item.order_error_message;
+        case EventsRole:
+            return item.events;
+        case SuccessEventsRole:
+            return item.success_events;
+        case ErrorEventsRole:
+            return item.error_events;
         }
         return {};
     }
@@ -305,7 +321,10 @@ namespace atomic_dex
             .taker_payment_id = determine_payment_id(contents, is_maker, true),
             .is_swap          = true,
             .is_cancellable   = false,
-            .is_recoverable   = contents.funds_recoverable};
+            .is_recoverable   = contents.funds_recoverable,
+            .events           = nlohmann_json_array_to_qt_json_array(contents.events),
+            .error_events     = vector_std_string_to_qt_string_list(contents.error_events),
+            .success_events   = vector_std_string_to_qt_string_list(contents.success_events)};
         data.ticker_pair = data.base_coin + "/" + data.rel_coin;
         if (data.order_status == "failed")
         {
@@ -313,7 +332,15 @@ namespace atomic_dex
             data.order_error_state   = error.first;
             data.order_error_message = error.second;
         }
-        if (this->m_swaps_id_registry.find(contents.uuid) == m_swaps_id_registry.end()) {
+
+        if (data.order_status == "matched")
+        {
+            using namespace std::string_literals;
+            m_dispatcher.trigger<swap_status_notification>(data.order_id, "matching", "matched", data.base_coin, data.rel_coin, data.human_date);
+        }
+
+        if (this->m_swaps_id_registry.find(contents.uuid) == m_swaps_id_registry.end())
+        {
             this->m_swaps_id_registry.emplace(contents.uuid);
         }
         this->m_model_data.push_back(std::move(data));
@@ -329,21 +356,37 @@ namespace atomic_dex
             const QModelIndex& idx      = res.at(0);
             bool               is_maker = boost::algorithm::to_lower_copy(contents.type) == "maker";
             update_value(OrdersRoles::IsRecoverableRole, contents.funds_recoverable, idx, *this);
-            update_value(OrdersRoles::OrderStatusRole, determine_order_status_from_last_event(contents), idx, *this);
+            auto&& [prev_value, new_value, is_change] =
+                update_value(OrdersRoles::OrderStatusRole, determine_order_status_from_last_event(contents), idx, *this);
             update_value(
                 OrdersRoles::UnixTimestampRole, not contents.events.empty() ? contents.events.back().at("timestamp").get<unsigned long long>() : 0, idx, *this);
-            update_value(
+            auto&& [prev_value_d, new_value_d, _] = update_value(
                 OrdersRoles::HumanDateRole,
                 not contents.events.empty() ? QString::fromStdString(contents.events.back().at("human_timestamp").get<std::string>()) : "", idx, *this);
+            if (is_change)
+            {
+                const QString& base_coin = data(idx, OrdersRoles::BaseCoinRole).toString();
+                const QString& rel_coin  = data(idx, OrdersRoles::RelCoinRole).toString();
+                m_dispatcher.trigger<swap_status_notification>(
+                    QString::fromStdString(contents.uuid), prev_value.toString(), new_value.toString(), base_coin, rel_coin, new_value_d.toString());
+            }
             update_value(OrdersRoles::MakerPaymentIdRole, determine_payment_id(contents, is_maker, false), idx, *this);
             update_value(OrdersRoles::TakerPaymentIdRole, determine_payment_id(contents, is_maker, true), idx, *this);
             auto [state, msg] = extract_error(contents);
             update_value(OrdersRoles::OrderErrorStateRole, state, idx, *this);
             update_value(OrdersRoles::OrderErrorMessageRole, msg, idx, *this);
+            update_value(OrdersRoles::EventsRole, nlohmann_json_array_to_qt_json_array(contents.events), idx, *this);
+
+            update_value(OrdersRoles::SuccessEventsRole, vector_std_string_to_qt_string_list(contents.success_events), idx, *this);
+            update_value(OrdersRoles::ErrorEventsRole, vector_std_string_to_qt_string_list(contents.error_events), idx, *this);
             emit lengthChanged();
-        } else {
-            bool       is_maker = boost::algorithm::to_lower_copy(contents.type) == "maker";
-            spdlog::error("swap with id {} and ticker: {}, not found in the model, cannot update, forcing an initialization instead", contents.uuid, is_maker ? contents.maker_coin : contents.taker_coin);
+        }
+        else
+        {
+            bool is_maker = boost::algorithm::to_lower_copy(contents.type) == "maker";
+            spdlog::error(
+                "swap with id {} and ticker: {}, not found in the model, cannot update, forcing an initialization instead", contents.uuid,
+                is_maker ? contents.maker_coin : contents.taker_coin);
             initialize_swap(contents);
         }
     }
@@ -355,10 +398,10 @@ namespace atomic_dex
         beginInsertRows(QModelIndex(), this->m_model_data.count(), this->m_model_data.count());
         order_data data{
             .is_maker       = contents.order_type == "maker",
-            .base_coin      = QString::fromStdString(contents.base),
-            .rel_coin       = QString::fromStdString(contents.rel),
-            .base_amount    = QString::fromStdString(contents.base_amount),
-            .rel_amount     = QString::fromStdString(contents.rel_amount),
+            .base_coin      = contents.action == "Sell" ? QString::fromStdString(contents.base) : QString::fromStdString(contents.rel),
+            .rel_coin       = contents.action == "Sell" ? QString::fromStdString(contents.rel) : QString::fromStdString(contents.base),
+            .base_amount    = contents.action == "Sell" ? QString::fromStdString(contents.base_amount) : QString::fromStdString(contents.rel_amount),
+            .rel_amount     = contents.action == "Sell" ? QString::fromStdString(contents.rel_amount) : QString::fromStdString(contents.base_amount),
             .order_type     = QString::fromStdString(contents.order_type),
             .human_date     = QString::fromStdString(contents.human_timestamp),
             .unix_timestamp = static_cast<unsigned long long>(contents.timestamp),
@@ -367,6 +410,13 @@ namespace atomic_dex
             .is_swap        = false,
             .is_cancellable = contents.cancellable,
             .is_recoverable = false};
+        if (contents.action.empty() && contents.order_type == "maker")
+        {
+            data.base_coin   = QString::fromStdString(contents.base);
+            data.rel_coin    = QString::fromStdString(contents.rel);
+            data.base_amount = QString::fromStdString(contents.base_amount);
+            data.rel_amount  = QString::fromStdString(contents.rel_amount);
+        }
         data.ticker_pair = data.base_coin + "/" + data.rel_coin;
         this->m_orders_id_registry.emplace(contents.order_id);
         this->m_model_data.push_back(std::move(data));
@@ -434,14 +484,13 @@ namespace atomic_dex
                     if (not res_list.empty())
                     {
                         //! And then delete it
+                        spdlog::trace("removing order with id {} from the UI", id);
                         this->removeRow(res_list.at(0).row());
                         to_remove.emplace(id);
                     }
                 }
             }
-            std::unordered_set<std::string> out;
-            std::set_difference(begin(m_orders_id_registry), end(m_orders_id_registry), begin(to_remove), end(to_remove), std::inserter(out, out.begin()));
-            m_orders_id_registry = out;
+            for (auto&& cur_to_remove: to_remove) { m_orders_id_registry.erase(cur_to_remove); }
         }
     }
 
@@ -450,6 +499,7 @@ namespace atomic_dex
     {
         const auto& mm2_system = this->m_system_manager.get_system<mm2>();
         const auto  result     = mm2_system.get_swaps();
+        this->set_average_events_time_registry(nlohmann_json_object_to_qt_json_object(result.average_events_time));
         for (auto&& current_swap: result.swaps)
         {
             if (this->m_swaps_id_registry.find(current_swap.uuid) != this->m_swaps_id_registry.end())
@@ -484,7 +534,10 @@ namespace atomic_dex
             {CancellableRole, "cancellable"},
             {IsRecoverableRole, "recoverable"},
             {OrderErrorStateRole, "order_error_state"},
-            {OrderErrorMessageRole, "order_error_message"}};
+            {OrderErrorMessageRole, "order_error_message"},
+            {EventsRole, "events"},
+            {SuccessEventsRole, "success_events"},
+            {ErrorEventsRole, "error_events"}};
     }
 
     int
@@ -508,5 +561,37 @@ namespace atomic_dex
         this->m_orders_id_registry.clear();
         this->m_model_data.clear();
         this->endResetModel();
+    }
+} // namespace atomic_dex
+
+namespace atomic_dex
+{
+    QVariant
+    atomic_dex::orders_model::get_average_events_time_registry() const noexcept
+    {
+        return m_json_time_registry;
+    }
+
+    void
+    atomic_dex::orders_model::set_average_events_time_registry(const QVariant& average_time_registry) noexcept
+    {
+        m_json_time_registry = average_time_registry;
+        emit onAverageEventsTimeRegistryChanged();
+    }
+
+    bool
+    atomic_dex::orders_model::swap_is_in_progress(const QString& coin) const noexcept
+    {
+        for (auto&& cur_hist_swap: m_model_data)
+        {
+            if ((cur_hist_swap.base_coin == coin || cur_hist_swap.rel_coin == coin) &&
+                (cur_hist_swap.order_status == "matched" ||
+                 cur_hist_swap.order_status == "ongoing" ||
+                 cur_hist_swap.order_status == "matching"))
+            {
+                return true;
+            }
+        }
+        return false;
     }
 } // namespace atomic_dex

@@ -26,6 +26,20 @@ namespace
     using namespace atomic_dex;
     using namespace atomic_dex::coinpaprika::api;
 
+    nlohmann::json
+    fetch_fiat_rates()
+    {
+        nlohmann::json resp;
+        auto           answer = RestClient::get("https://api.openrates.io/latest?base=USD");
+        if (answer.code != 200)
+        {
+            spdlog::warn("unable to fetch last open rates");
+            return resp;
+        }
+        resp = nlohmann::json::parse(answer.body);
+        return resp;
+    }
+
     template <typename TAnswer, typename TRequest, typename TFunctorRequest>
     void
     retry(TAnswer& answer, const TRequest& request, TFunctorRequest&& functor)
@@ -67,7 +81,6 @@ namespace
     template <typename Provider>
     void
     process_provider(const atomic_dex::coin_config& current_coin, Provider& rate_providers, const std::string& fiat)
-
     {
         if (current_coin.coinpaprika_id != fiat)
         {
@@ -175,7 +188,8 @@ namespace atomic_dex
 
                 std::vector<std::future<void>> out_fut;
 
-                out_fut.reserve(coins.size() * 6);
+                out_fut.reserve(coins.size() * 6 + 1);
+                out_fut.push_back(spawn([this]() { this->m_other_fiats_rates = fetch_fiat_rates(); }));
                 for (auto&& current_coin: coins)
                 {
                     if (current_coin.coinpaprika_id == "test-coin")
@@ -279,7 +293,7 @@ namespace atomic_dex
                 }
             }
 
-            std::size_t default_precision = (fiat == "USD" || fiat == "EUR") ? 2 : 8;
+            std::size_t default_precision = is_this_currency_a_fiat(m_cfg, fiat) ? 2 : 8;
             ss.precision(default_precision);
             ss << std::fixed << final_price_f;
             std::string result = ss.str();
@@ -380,13 +394,23 @@ namespace atomic_dex
             }
             current_price = m_kmd_rate_providers.at(ticker);
         }
+        else
+        {
+            if (m_usd_rate_providers.find(ticker) == m_usd_rate_providers.cend())
+            {
+                ec = dextop_error::unknown_ticker_for_rate_conversion;
+                return "0.00";
+            }
+            t_float_50 tmp_current_price = t_float_50(m_usd_rate_providers.at(ticker)) * m_other_fiats_rates->at("rates").at(fiat).get<double>();
+            current_price                = tmp_current_price.str();
+        }
 
         if (adjusted)
         {
-            std::size_t default_precision = (fiat == "USD" || fiat == "EUR") ? 2 : 8;
+            std::size_t default_precision = is_this_currency_a_fiat(m_cfg, fiat) ? 2 : 8;
 
             t_float_50 current_price_f(current_price);
-            if (fiat == "USD" || fiat == "EUR")
+            if (is_this_currency_a_fiat(m_cfg, fiat))
             {
                 if (current_price_f < 1.0)
                 {
@@ -408,6 +432,10 @@ namespace atomic_dex
     {
         spdlog::debug("{} l{} f[{}]", __FUNCTION__, __LINE__, fs::path(__FILE__).filename().string());
 
+        if (not this->m_other_fiats_rates->contains("rates"))
+        {
+            this->m_other_fiats_rates = fetch_fiat_rates();
+        }
         const auto config = m_mm2_instance.get_coin_info(evt.ticker);
 
         if (config.coinpaprika_id != "test-coin")

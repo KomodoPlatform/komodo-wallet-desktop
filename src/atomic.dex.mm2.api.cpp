@@ -19,6 +19,7 @@
 
 //! Project Headers
 #include "atomic.dex.mm2.api.hpp"
+#include "atomic.dex.utilities.hpp"
 
 //! Utilities
 namespace
@@ -54,6 +55,9 @@ namespace mm2::api
     {
         j.at("denom").get_to(cfg.denom);
         j.at("numer").get_to(cfg.numer);
+        t_rational rat(boost::multiprecision::cpp_int(cfg.numer), boost::multiprecision::cpp_int(cfg.denom));
+        t_float_50 res = rat.convert_to<t_float_50>();
+        cfg.decimal    = res.str(8);
     }
 
     void
@@ -219,11 +223,7 @@ namespace mm2::api
         j.at("tx_hash").get_to(cfg.tx_hash);
         j.at("tx_hex").get_to(cfg.tx_hex);
 
-        using namespace date;
-        using namespace std::chrono;
-        date::sys_seconds tp{seconds{cfg.timestamp}};
-        auto tp_zoned = date::make_zoned(current_zone(), tp);
-        std::string       s   = date::format("%e %b %Y, %I:%M", tp_zoned);
+        std::string s         = to_human_date<std::chrono::seconds>(cfg.timestamp, "%e %b %Y, %H:%M");
         cfg.timestamp_as_date = std::move(s);
     }
 
@@ -277,12 +277,21 @@ namespace mm2::api
     void
     from_json(const nlohmann::json& j, tx_history_answer_success& answer)
     {
-        if (not j.at("from_id").is_null())
-            j.at("from_id").get_to(answer.from_id);
-        j.at("current_block").get_to(answer.current_block);
+        if (j.contains("from_id"))
+        {
+            if (not j.at("from_id").is_null())
+                j.at("from_id").get_to(answer.from_id);
+        }
+        if (j.contains("current_block"))
+        {
+            j.at("current_block").get_to(answer.current_block);
+        }
         j.at("limit").get_to(answer.limit);
         j.at("skipped").get_to(answer.skipped);
-        j.at("sync_status").get_to(answer.sync_status);
+        if (j.contains("sync_status"))
+        {
+            j.at("sync_status").get_to(answer.sync_status);
+        }
         j.at("total").get_to(answer.total);
         j.at("transactions").get_to(answer.transactions);
     }
@@ -408,6 +417,8 @@ namespace mm2::api
         j.at("pubkey").get_to(contents.pubkey);
         j.at("age").get_to(contents.age);
         j.at("zcredits").get_to(contents.zcredits);
+        j.at("uuid").get_to(contents.uuid);
+        j.at("is_mine").get_to(contents.is_mine);
 
         if (contents.price.find('.') != std::string::npos)
         {
@@ -415,6 +426,8 @@ namespace mm2::api
             contents.price = contents.price;
         }
         contents.maxvolume = adjust_precision(contents.maxvolume);
+        t_float_50 total_f = t_float_50(contents.price) * t_float_50(contents.maxvolume);
+        contents.total     = adjust_precision(total_f.str());
     }
 
     void
@@ -433,9 +446,34 @@ namespace mm2::api
         j.at("netid").get_to(answer.netid);
         j.at("timestamp").get_to(answer.timestamp);
 
-        sys_time<std::chrono::milliseconds> tp{std::chrono::milliseconds{answer.timestamp}};
-        auto tp_zoned = date::make_zoned(current_zone(), tp);
-        answer.human_timestamp = date::format("%Y-%m-%d %I:%M:%S", tp_zoned);
+        answer.human_timestamp = to_human_date(answer.timestamp, "%Y-%m-%d %I:%M:%S");
+
+        t_float_50 result_asks_f("0");
+        for (auto&& cur_asks: answer.asks) { result_asks_f = result_asks_f + t_float_50(cur_asks.maxvolume); }
+
+        answer.asks_total_volume = result_asks_f.str();
+
+        t_float_50 result_bids_f("0");
+        for (auto& cur_bids: answer.bids)
+        {
+            cur_bids.total        = cur_bids.maxvolume;
+            t_float_50 new_volume = t_float_50(cur_bids.maxvolume) / t_float_50(cur_bids.price);
+            cur_bids.maxvolume    = adjust_precision(new_volume.str());
+            result_bids_f         = result_bids_f + t_float_50(cur_bids.maxvolume);
+        }
+
+        answer.bids_total_volume = result_bids_f.str();
+        for (auto&& cur_asks: answer.asks)
+        {
+            t_float_50 percent_f   = t_float_50(cur_asks.maxvolume) / result_asks_f;
+            cur_asks.depth_percent = adjust_precision(percent_f.str());
+        }
+
+        for (auto&& cur_bids: answer.bids)
+        {
+            t_float_50 percent_f   = t_float_50(cur_bids.maxvolume) / result_bids_f;
+            cur_bids.depth_percent = adjust_precision(percent_f.str());
+        }
     }
 
     void
@@ -454,15 +492,6 @@ namespace mm2::api
         j["volume"]          = request.volume;
         j["cancel_previous"] = request.cancel_previous;
         j["max"]             = request.max;
-    }
-
-    void
-    to_json(nlohmann::json& j, buy_request& request)
-    {
-        j["base"]   = request.base;
-        j["price"]  = request.price;
-        j["rel"]    = request.rel;
-        j["volume"] = request.volume;
     }
 
     void
@@ -499,15 +528,55 @@ namespace mm2::api
     }
 
     void
-    to_json(nlohmann::json& j, const sell_request& request)
+    to_json(nlohmann::json& j, buy_request& request)
     {
         spdlog::debug("price: {}, volume: {}", request.price, request.volume);
 
+        j["base"]   = request.base;
+        j["price"]  = request.price;
+        j["rel"]    = request.rel;
+        j["volume"] = request.volume;
+        if (request.base_nota.has_value())
+        {
+            j["base_nota"] = request.base_nota.value();
+        }
+        if (request.base_confs.has_value())
+        {
+            j["base_confs"] = request.base_confs.value();
+        }
+        if (not request.is_created_order)
+        {
+            spdlog::info(
+                "The order is picked from the orderbook, setting price_numer and price_denom from it {}, {}", request.price_numer, request.price_denom);
+            //! From orderbook
+            nlohmann::json price_fraction_repr = nlohmann::json::object();
+            price_fraction_repr["numer"]       = request.price_numer;
+            price_fraction_repr["denom"]       = request.price_denom;
+            j["price"]                         = price_fraction_repr;
+        }
+        else
+        {
+            spdlog::info("The order is not picked from orderbook we create it volume = {}, price = {}", request.volume, request.price);
+        }
+    }
+
+    void
+    to_json(nlohmann::json& j, const sell_request& request)
+    {
+        spdlog::debug("price: {}, volume: {}", request.price, request.volume);
 
         j["base"]   = request.base;
         j["rel"]    = request.rel;
         j["volume"] = request.volume; // 7.77
         j["price"]  = request.price;
+        if (request.rel_nota.has_value())
+        {
+            j["rel_nota"] = request.rel_nota.value();
+        }
+        if (request.rel_confs.has_value())
+        {
+            j["rel_confs"] = request.rel_confs.value();
+        }
 
         if (not request.is_created_order)
         {
@@ -610,8 +679,12 @@ namespace mm2::api
         {
           using namespace date;
           const auto        time_key = value.at("created_at").get<std::size_t>();
-          sys_time<std::chrono::milliseconds> tp{std::chrono::milliseconds{time_key}};
-          auto tp_zoned = date::make_zoned(current_zone(), tp);
+
+          std::string action = "";
+          if (not is_maker)
+          {
+             value.at("request").at("action").get_to(action);
+          }
           my_order_contents contents{
               .order_id         = key,
               .price            = is_maker ? adjust_precision(value.at("price").get<std::string>()) : "0",
@@ -622,7 +695,8 @@ namespace mm2::api
               .order_type       = is_maker ? "maker" : "taker",
               .base_amount      = is_maker ? value.at("max_base_vol").get<std::string>() : value.at("request").at("base_amount").get<std::string>(),
               .rel_amount       = is_maker ? (t_float_50(contents.price) * t_float_50(contents.base_amount)).convert_to<std::string>() : value.at("request").at("rel_amount").get<std::string>(),
-              .human_timestamp  = date::format("%F    %T", tp_zoned)};
+              .human_timestamp  = to_human_date(time_key, "%F    %T"),
+              .action = action};
           out.try_emplace(time_key, std::move(contents));
         };
         // clang-format on
@@ -669,12 +743,12 @@ namespace mm2::api
         j.at("type").get_to(contents.type);
         j.at("recoverable").get_to(contents.funds_recoverable);
 
-        contents.taker_amount            = adjust_precision(contents.taker_amount);
-        contents.maker_amount            = adjust_precision(contents.maker_amount);
-        contents.events                  = nlohmann::json::array();
+        contents.taker_amount = adjust_precision(contents.taker_amount);
+        contents.maker_amount = adjust_precision(contents.maker_amount);
+        contents.events       = nlohmann::json::array();
         if (j.contains("my_info"))
         {
-            contents.my_info                 = j.at("my_info");
+            contents.my_info = j.at("my_info");
             if (not contents.my_info.is_null())
             {
                 contents.my_info["other_amount"] = adjust_precision(contents.my_info["other_amount"].get<std::string>());
@@ -683,34 +757,30 @@ namespace mm2::api
         }
         using t_event_timestamp_registry = std::unordered_map<std::string, std::uint64_t>;
         t_event_timestamp_registry event_timestamp_registry;
-        double                     total_time_in_seconds = 0.00;
+        double                     total_time_in_ms = 0.00;
 
-        for (auto&& content: j.at("events"))
+        std::size_t idx    = 0;
+        const auto& events = j.at("events");
+        for (auto&& content: events)
         {
-            using sys_milliseconds           = sys_time<std::chrono::milliseconds>;
             const nlohmann::json& j_evt      = content.at("event");
             auto                  timestamp  = content.at("timestamp").get<std::size_t>();
-            auto                  tp         = sys_milliseconds{std::chrono::milliseconds{timestamp}};
-            auto tp_zoned = date::make_zoned(current_zone(), tp);
-            std::string           human_date = date::format("%F    %T", tp_zoned);
+            std::string           human_date = to_human_date(timestamp, "%F    %T");
             auto                  evt_type   = j_evt.at("type").get<std::string>();
 
             auto rate_bundler = [&event_timestamp_registry,
-                                 &total_time_in_seconds](nlohmann::json& jf_evt, const std::string& event_type, const std::string& previous_event) {
+                                 &total_time_in_ms](nlohmann::json& jf_evt, const std::string& event_type, const std::string& previous_event) {
                 if (event_timestamp_registry.count(previous_event) != 0)
                 {
-                    std::int64_t ts      = event_timestamp_registry.at(previous_event);
-                    jf_evt["started_at"] = ts;
+                    std::int64_t ts                         = event_timestamp_registry.at(previous_event);
+                    jf_evt["started_at"]                    = ts;
                     std::int64_t                        ts2 = jf_evt.at("timestamp").get<std::int64_t>();
-                    std::stringstream                   ss;
                     sys_time<std::chrono::milliseconds> t1{std::chrono::milliseconds{ts}};
                     sys_time<std::chrono::milliseconds> t2{std::chrono::milliseconds{ts2}};
-                    double                              res;
-                    res = (std::chrono::duration_cast<std::chrono::milliseconds>(t2 - t1).count() / 1000.0);
-                    ss << std::fixed << std::setprecision(3) << res;
-                    jf_evt["time_difference_gui"]        = ss.str() + "s";
-                    event_timestamp_registry[event_type] = ts2; // Negotiated finished at this time
-                    total_time_in_seconds += res;
+                    double                              res = std::chrono::duration_cast<std::chrono::milliseconds>(t2 - t1).count();
+                    jf_evt["time_diff"]                     = res;
+                    event_timestamp_registry[event_type]    = ts2; // Negotiated finished at this time
+                    total_time_in_ms += res;
                 }
             };
 
@@ -718,22 +788,9 @@ namespace mm2::api
             {
                 nlohmann::json jf_evt = {{"state", evt_type}, {"human_timestamp", human_date}, {"timestamp", timestamp}};
 
-                if (evt_type == "MakerPaymentWaitConfirmStarted")
+                if (idx > 0)
                 {
-                    rate_bundler(jf_evt, evt_type, "MakerPaymentReceived");
-                }
-
-                if (evt_type == "MakerPaymentValidatedAndConfirmed")
-                {
-                    rate_bundler(jf_evt, evt_type, "MakerPaymentWaitConfirmStarted");
-                }
-
-                if (evt_type == "Finished")
-                {
-                    if (contents.type == "Taker")
-                    {
-                        rate_bundler(jf_evt, evt_type, "MakerPaymentSpent");
-                    }
+                    rate_bundler(jf_evt, evt_type, events[idx - 1].at("event").at("type").get<std::string>());
                 }
 
                 contents.events.push_back(jf_evt);
@@ -743,68 +800,27 @@ namespace mm2::api
                 nlohmann::json jf_evt = {{"state", evt_type}, {"human_timestamp", human_date}, {"data", j_evt.at("data")}, {"timestamp", timestamp}};
                 if (evt_type == "Started")
                 {
-                    jf_evt["started_at"]                    = jf_evt.at("data").at("started_at");
-                    std::int64_t                        ts  = jf_evt.at("data").at("started_at").get<std::int64_t>() * 1000;
+                    std::int64_t ts                         = jf_evt.at("data").at("started_at").get<std::int64_t>() * 1000;
+                    jf_evt["started_at"]                    = ts;
                     std::int64_t                        ts2 = jf_evt.at("timestamp").get<std::int64_t>();
                     sys_time<std::chrono::milliseconds> t1{std::chrono::milliseconds{ts}};
                     sys_time<std::chrono::milliseconds> t2{std::chrono::milliseconds{ts2}};
-                    std::stringstream                   ss;
-                    double                              res;
-                    res = (std::chrono::duration_cast<std::chrono::milliseconds>(t2 - t1).count() / 1000.0);
-                    ss << std::fixed << std::setprecision(3) << res;
-                    jf_evt["time_difference_gui"]       = ss.str() + "s";
-                    event_timestamp_registry["Started"] = ts2; // Started finished at this time
-                    total_time_in_seconds += res;
+                    double                              res = std::chrono::duration_cast<std::chrono::milliseconds>(t2 - t1).count();
+                    jf_evt["time_diff"]                     = res;
+                    event_timestamp_registry["Started"]     = ts2; // Started finished at this time
+                    total_time_in_ms += res;
                 }
 
-                if (evt_type == "Negotiated")
+                if (idx > 0)
                 {
-                    rate_bundler(jf_evt, evt_type, "Started");
-                }
-
-                if (evt_type == "TakerFeeValidated" || evt_type == "TakerFeeSent")
-                {
-                    rate_bundler(jf_evt, evt_type, "Negotiated");
-                }
-
-                if (evt_type == "MakerPaymentReceived")
-                {
-                    rate_bundler(jf_evt, evt_type, "TakerFeeSent");
-                }
-
-                if (evt_type == "MakerPaymentSent")
-                {
-                    rate_bundler(jf_evt, evt_type, "TakerFeeValidated");
-                }
-
-                if (evt_type == "TakerPaymentSent")
-                {
-                    rate_bundler(jf_evt, evt_type, "MakerPaymentValidatedAndConfirmed");
-                }
-
-                if (evt_type == "TakerPaymentSpent")
-                {
-                    if (contents.type == "Taker")
-                    {
-                        rate_bundler(jf_evt, evt_type, "TakerPaymentSent");
-                    }
-                    else
-                    {
-                        rate_bundler(jf_evt, evt_type, "TakerPaymentValidatedAndConfirmed");
-                    }
-                }
-
-                if (evt_type == "MakerPaymentSpent")
-                {
-                    rate_bundler(jf_evt, evt_type, "TakerPaymentSpent");
+                    rate_bundler(jf_evt, evt_type, events[idx - 1].at("event").at("type").get<std::string>());
                 }
 
                 contents.events.push_back(jf_evt);
             }
+            idx += 1;
         }
-        std::stringstream ss;
-        ss << std::fixed << std::setprecision(3) << total_time_in_seconds;
-        contents.total_time_in_seconds = ss.str() + "s";
+        contents.total_time_in_ms = total_time_in_ms;
     }
 
     void
@@ -814,6 +830,27 @@ namespace mm2::api
         j.at("limit").get_to(results.limit);
         j.at("skipped").get_to(results.skipped);
         j.at("total").get_to(results.total);
+        results.average_events_time = nlohmann::json::object();
+
+        std::unordered_map<std::string, std::vector<double>> events_time_registry;
+        for (auto&& cur_swap: results.swaps)
+        {
+            for (auto&& cur_event: cur_swap.events)
+            {
+                if (cur_event.contains("time_diff"))
+                {
+                    events_time_registry[cur_event.at("state").get<std::string>()].push_back(cur_event.at("time_diff").get<double>());
+                }
+            }
+        }
+
+        for (auto&& [evt_name, values]: events_time_registry)
+        {
+            double sum = 0;
+            for (auto&& cur_value: values) { sum += cur_value; }
+            double average                        = sum / values.size();
+            results.average_events_time[evt_name] = average;
+        }
     }
 
     void
@@ -829,60 +866,6 @@ namespace mm2::api
             answer.error = j.at("error").get<std::string>();
         }
     }
-
-    template <typename T>
-    using have_error_field = decltype(std::declval<T&>().error.has_value());
-
-    template <typename RpcReturnType>
-    RpcReturnType
-    rpc_process_answer(const RestClient::Response& resp, const std::string& rpc_command) noexcept
-    {
-        spdlog::info("resp code for rpc_command {} is {}", rpc_command, resp.code);
-
-        RpcReturnType answer;
-        try
-        {
-            if (resp.code not_eq 200)
-            {
-                spdlog::warn("rpc answer code is not 200, body : {}", resp.body);
-                if constexpr (doom::meta::is_detected_v<have_error_field, RpcReturnType>)
-                {
-                    spdlog::debug("error field detected inside the RpcReturnType");
-                    if constexpr (std::is_same_v<std::optional<std::string>, decltype(answer.error)>)
-                    {
-                        spdlog::debug("The error field type is string, parsing it from the response body");
-                        if (auto json_data = nlohmann::json::parse(resp.body); json_data.at("error").is_string())
-                        {
-                            answer.error = json_data.at("error").get<std::string>();
-                        }
-                        else
-                        {
-                            answer.error = resp.body;
-                        }
-                        spdlog::debug("The error after getting extracted is: {}", answer.error.value());
-                    }
-                }
-                answer.rpc_result_code = resp.code;
-                answer.raw_result      = resp.body;
-                return answer;
-            }
-
-
-            auto json_answer       = nlohmann::json::parse(resp.body);
-            answer.rpc_result_code = resp.code;
-            answer.raw_result      = resp.body;
-            from_json(json_answer, answer);
-        }
-        catch (const std::exception& error)
-        {
-            spdlog::error("{} l{} f[{}], exception caught {} for rpc {}", __FUNCTION__, __LINE__, fs::path(__FILE__).filename().string(), error.what(), rpc_command);
-            answer.rpc_result_code = -1;
-            answer.raw_result      = error.what();
-        }
-
-        return answer;
-    }
-
 
     my_recent_swaps_answer
     rpc_my_recent_swaps(my_recent_swaps_request&& request)
@@ -1004,7 +987,7 @@ namespace mm2::api
 
         auto json_copy        = json_data;
         json_copy["userpass"] = "*******";
-        spdlog::debug("request: {}", json_copy.dump());
+        spdlog::trace("request: {}", json_copy.dump());
 
         resp = RestClient::post(g_endpoint, "application/json", json_data.dump());
 
@@ -1036,6 +1019,68 @@ namespace mm2::api
             return answer.at("result").get<std::string>();
         }
         return "error occured during rpc_version";
+    }
+
+    kmd_rewards_info_answer
+    rpc_kmd_rewards_info()
+    {
+        spdlog::info("Processing rpc call: kmd_rewards_info");
+        kmd_rewards_info_answer out;
+
+        nlohmann::json       json_data = template_request("kmd_rewards_info");
+        RestClient::Response resp;
+
+        auto json_copy        = json_data;
+        json_copy["userpass"] = "*******";
+        spdlog::debug("{} request: {}", __FUNCTION__, json_copy.dump());
+
+        resp                = RestClient::post(g_endpoint, "application/json", json_data.dump());
+        out.rpc_result_code = resp.code;
+        out.result          = nlohmann::json::parse(resp.body);
+        if (resp.code == 200)
+        {
+            for (auto&& obj: out.result.at("result"))
+            {
+                if (obj.contains("accrue_start_at"))
+                {
+                    auto accrue_timestamp             = obj.at("accrue_start_at").get<std::size_t>();
+                    obj["accrue_start_at_human_date"] = to_human_date<std::chrono::seconds>(accrue_timestamp, "%e %b %Y, %H:%M");
+                }
+
+                if (obj.contains("accrue_stop_at"))
+                {
+                    auto accrue_timestamp            = obj.at("accrue_stop_at").get<std::size_t>();
+                    obj["accrue_stop_at_human_date"] = to_human_date<std::chrono::seconds>(accrue_timestamp, "%e %b %Y, %H:%M");
+                }
+
+                if (obj.contains("locktime"))
+                {
+                    auto locktime_timestamp    = obj.at("locktime").get<std::size_t>();
+                    obj["locktime_human_date"] = to_human_date<std::chrono::seconds>(locktime_timestamp, "%e %b %Y, %H:%M");
+                }
+            }
+        }
+        return out;
+    }
+
+    nlohmann::json
+    rpc_batch_standalone(nlohmann::json batch_array)
+    {
+        auto resp = RestClient::post(g_endpoint, "application/json", batch_array.dump());
+
+        spdlog::info("{} resp code: {}", __FUNCTION__, resp.code);
+
+        nlohmann::json answer;
+        try
+        {
+            answer = nlohmann::json::parse(resp.body);
+        }
+        catch (const nlohmann::detail::parse_error& err)
+        {
+            spdlog::error("{}", err.what());
+            answer["error"] = resp.body;
+        }
+        return answer;
     }
 
     nlohmann::json

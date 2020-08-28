@@ -26,6 +26,8 @@ namespace mm2::api
 {
     inline constexpr const char* g_endpoint = "http://127.0.0.1:7783";
 
+    nlohmann::json rpc_batch_standalone(nlohmann::json batch_array);
+
     std::string rpc_version();
 
     //! max taker vol
@@ -40,6 +42,7 @@ namespace mm2::api
     {
         std::string denom;
         std::string numer;
+        std::string decimal;
     };
 
     void from_json(const nlohmann::json& j, max_taker_vol_answer_success& cfg);
@@ -388,6 +391,10 @@ namespace mm2::api
         std::string pubkey;
         std::size_t age;
         std::size_t zcredits;
+        std::string total;
+        std::string uuid;
+        std::string depth_percent;
+        bool        is_mine;
     };
 
     void from_json(const nlohmann::json& j, order_contents& contents);
@@ -405,6 +412,8 @@ namespace mm2::api
         std::size_t                 timestamp;
         std::size_t                 netid;
         std::string                 human_timestamp; //! Moment of the orderbook request human readeable
+        std::string                 asks_total_volume;
+        std::string                 bids_total_volume;
 
         //! Internal
         std::string raw_result;
@@ -432,10 +441,15 @@ namespace mm2::api
 
     struct buy_request
     {
-        std::string base;
-        std::string rel;
-        std::string price;
-        std::string volume;
+        std::string                base;
+        std::string                rel;
+        std::string                price;
+        std::string                volume;
+        bool                       is_created_order;
+        std::string                price_denom;
+        std::string                price_numer;
+        std::optional<bool>        base_nota{std::nullopt};
+        std::optional<std::size_t> base_confs{std::nullopt};
     };
 
     void to_json(nlohmann::json& j, const buy_request& request);
@@ -473,13 +487,15 @@ namespace mm2::api
 
     struct sell_request
     {
-        std::string base;
-        std::string rel;
-        std::string price;
-        std::string volume;
-        bool        is_created_order;
-        std::string price_denom;
-        std::string price_numer;
+        std::string                base;
+        std::string                rel;
+        std::string                price;
+        std::string                volume;
+        bool                       is_created_order;
+        std::string                price_denom;
+        std::string                price_numer;
+        std::optional<bool>        rel_nota;
+        std::optional<std::size_t> rel_confs;
     };
 
     void to_json(nlohmann::json& j, const sell_request& request);
@@ -573,6 +589,7 @@ namespace mm2::api
         std::string base_amount;
         std::string rel_amount;
         std::string human_timestamp;
+        std::string action;
     };
 
     struct my_orders_answer
@@ -638,7 +655,6 @@ namespace mm2::api
 
     struct swap_contents
     {
-        // using t_event_registry = std::unordered_map<std::string, std::variant<finished_event, started_event, start_failed_event, negotiate_failed_event>>;
         std::vector<std::string> error_events;
         std::vector<std::string> success_events;
         nlohmann::json           events;
@@ -649,7 +665,7 @@ namespace mm2::api
         std::string              taker_amount;
         std::string              maker_amount;
         std::string              type;
-        std::string              total_time_in_seconds;
+        double                   total_time_in_ms;
         bool                     funds_recoverable;
     };
 
@@ -662,6 +678,7 @@ namespace mm2::api
         std::size_t                skipped;
         std::size_t                total;
         std::string                raw_result;
+        nlohmann::json             average_events_time;
     };
 
     void from_json(const nlohmann::json& j, my_recent_swaps_answer_success& results);
@@ -678,11 +695,105 @@ namespace mm2::api
 
     my_recent_swaps_answer rpc_my_recent_swaps(my_recent_swaps_request&& request);
 
+    struct kmd_rewards_info_answer
+    {
+        nlohmann::json result;
+        int            rpc_result_code;
+    };
+
+    kmd_rewards_info_answer rpc_kmd_rewards_info();
+
     nlohmann::json rpc_batch_electrum(std::vector<electrum_request> requests);
     nlohmann::json rpc_batch_enable(std::vector<enable_request> requests);
 
+    template <typename T>
+    using have_error_field = decltype(std::declval<T&>().error.has_value());
+
     template <typename RpcReturnType>
-    static RpcReturnType rpc_process_answer(const RestClient::Response& resp, const std::string& rpc_command) noexcept;
+    RpcReturnType static inline rpc_process_answer(const RestClient::Response& resp, const std::string& rpc_command) noexcept
+    {
+        spdlog::info("resp code for rpc_command {} is {}", rpc_command, resp.code);
+
+        RpcReturnType answer;
+        try
+        {
+            if (resp.code not_eq 200)
+            {
+                spdlog::warn("rpc answer code is not 200, body : {}", resp.body);
+                if constexpr (doom::meta::is_detected_v<have_error_field, RpcReturnType>)
+                {
+                    spdlog::debug("error field detected inside the RpcReturnType");
+                    if constexpr (std::is_same_v<std::optional<std::string>, decltype(answer.error)>)
+                    {
+                        spdlog::debug("The error field type is string, parsing it from the response body");
+                        if (auto json_data = nlohmann::json::parse(resp.body); json_data.at("error").is_string())
+                        {
+                            answer.error = json_data.at("error").get<std::string>();
+                        }
+                        else
+                        {
+                            answer.error = resp.body;
+                        }
+                        spdlog::debug("The error after getting extracted is: {}", answer.error.value());
+                    }
+                }
+                answer.rpc_result_code = resp.code;
+                answer.raw_result      = resp.body;
+                return answer;
+            }
+
+
+            auto json_answer       = nlohmann::json::parse(resp.body);
+            answer.rpc_result_code = resp.code;
+            answer.raw_result      = resp.body;
+            from_json(json_answer, answer);
+        }
+        catch (const std::exception& error)
+        {
+            spdlog::error(
+                "{} l{} f[{}], exception caught {} for rpc {}", __FUNCTION__, __LINE__, fs::path(__FILE__).filename().string(), error.what(), rpc_command);
+            answer.rpc_result_code = -1;
+            answer.raw_result      = error.what();
+        }
+
+        return answer;
+    }
+
+    template <typename RpcReturnType>
+    RpcReturnType static inline rpc_process_answer_batch(nlohmann::json& json_answer, const std::string& rpc_command) noexcept
+    {
+        RpcReturnType answer;
+
+        try
+        {
+            from_json(json_answer, answer);
+            answer.rpc_result_code = 200;
+        }
+        catch (const std::exception& error)
+        {
+            spdlog::error(
+                "{} l{} f[{}], exception caught {} for rpc {}", __FUNCTION__, __LINE__, fs::path(__FILE__).filename().string(), error.what(), rpc_command);
+            answer.rpc_result_code = -1;
+            answer.raw_result      = error.what();
+        }
+
+        return answer;
+    }
+
+    template <typename TAnswer>
+    TAnswer
+    process_rpc_get(std::string rpc_command, const std::string& url)
+    {
+        spdlog::info("Processing rpc call: {}, url: {}", rpc_command, url);
+
+        RestClient::Response resp;
+
+        resp = RestClient::get(url);
+
+
+
+        return rpc_process_answer<TAnswer>(resp, rpc_command);
+    }
 
     nlohmann::json template_request(std::string method_name) noexcept;
 

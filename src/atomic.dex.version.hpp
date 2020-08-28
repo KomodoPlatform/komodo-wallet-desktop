@@ -21,18 +21,18 @@ namespace atomic_dex
     constexpr const char*
     get_version()
     {
-        return "0.2.0-alpha";
+        return "0.2.1-alpha";
     }
 
     constexpr const char*
     get_raw_version()
     {
-        return "0.2.0";
+        return "0.2.1";
     }
 
     constexpr const char*
     get_precedent_raw_version()
     {
-        return "0.1.5";
+        return "0.2.0";
     }
 } // namespace atomic_dex

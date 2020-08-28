@@ -31,10 +31,19 @@ namespace atomic_dex
     QJsonArray
     nlohmann_json_array_to_qt_json_array(const nlohmann::json& j)
     {
-        QJsonArray  out;
+        QJsonArray    out;
         QJsonDocument q_json = QJsonDocument::fromJson(QString::fromStdString(j.dump()).toUtf8());
         out                  = q_json.array();
         return out;
+    }
+
+    QJsonObject
+    nlohmann_json_object_to_qt_json_object(const json& j)
+    {
+        QJsonObject   obj;
+        QJsonDocument q_json = QJsonDocument::fromJson(QString::fromStdString(j.dump()).toUtf8());
+        obj                  = q_json.object();
+        return obj;
     }
 
     QString
@@ -50,5 +59,14 @@ namespace atomic_dex
             change_24h = QString::fromStdString(change_24h_str);
         }
         return change_24h;
+    }
+
+    QStringList
+    vector_std_string_to_qt_string_list(const std::vector<std::string>& vec)
+    {
+        QStringList out;
+        out.reserve(vec.size());
+        for (auto&& cur: vec) { out.append(QString::fromStdString(cur)); }
+        return out;
     }
 } // namespace atomic_dex

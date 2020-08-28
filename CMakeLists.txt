@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.5)
 
-project(atomic_qt LANGUAGES CXX VERSION 0.2.0)
+project(atomicDeFi LANGUAGES CXX VERSION 0.2.1)
 
 
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
@@ -47,13 +47,13 @@ endif ()
 ##! We fetch our dependence
 if (APPLE)
     FetchContent_Declare(mm2
-            URL https://github.com/KomodoPlatform/atomicDEX-API/releases/download/beta-2.0.2165/mm2-e51a128c6-Darwin-Release.zip)
+            URL https://github.com/KomodoPlatform/atomicDEX-API/releases/download/beta-2.0.2232/mm2-20c8e11d6-Darwin-Release.zip)
 elseif (UNIX AND NOT APPLE)
     FetchContent_Declare(mm2
-            URL https://github.com/KomodoPlatform/atomicDEX-API/releases/download/beta-2.0.2165/mm2-e51a128c6-Linux-Release.zip)
+            URL https://github.com/KomodoPlatform/atomicDEX-API/releases/download/beta-2.0.2232/mm2-20c8e11d6-Linux-Release.zip)
 else ()
     FetchContent_Declare(mm2
-            URL https://github.com/KomodoPlatform/atomicDEX-API/releases/download/beta-2.0.2165/mm2-e51a128c6-Windows_NT-Release.zip)
+            URL https://github.com/KomodoPlatform/atomicDEX-API/releases/download/beta-2.0.2232/mm2-20c8e11d6-Windows_NT-Release.zip)
 endif ()
 
 FetchContent_Declare(jl777-coins
@@ -90,7 +90,7 @@ get_resources_basics_assets(${CMAKE_CURRENT_SOURCE_DIR})
 
 ##! Osx bundle icon
 set(ICON)
-configure_icon_osx(data/osx/atomic_qt.icns ICON atomic_qt.icns)
+configure_icon_osx(data/osx/atomicDeFi.icns ICON atomicDeFi.icns)
 ##! End antara
 
 find_package(date CONFIG REQUIRED)
@@ -98,16 +98,16 @@ find_package(doctest CONFIG REQUIRED)
 find_package(folly CONFIG REQUIRED)
 find_package(spdlog CONFIG REQUIRED)
 find_package(Boost REQUIRED COMPONENTS filesystem random)
-find_package(Qt5 COMPONENTS Core Quick LinguistTools Svg Charts REQUIRED)
+find_package(Qt5 COMPONENTS Core Quick LinguistTools Svg Charts Widgets REQUIRED)
 find_package(unofficial-sodium CONFIG REQUIRED)
-find_library(unofficial-bitcoin-external bitcoin)
-find_path(unofficial-btc-headers bitcoin/bitcoin.hpp)
-message(STATUS "Found libbtc -> ${unofficial-bitcoin-external} ${unofficial-btc-headers}")
+#find_library(unofficial-bitcoin-external bitcoin)
+#find_path(unofficial-btc-headers bitcoin/bitcoin.hpp)
+#message(STATUS "Found libbtc -> ${unofficial-bitcoin-external} ${unofficial-btc-headers}")
 add_library(unofficial-bitcoin INTERFACE)
-if (APPLE)
-    target_link_libraries(unofficial-bitcoin INTERFACE ${unofficial-bitcoin-external})
-    target_include_directories(unofficial-bitcoin INTERFACE ${unofficial-btc-headers})
-elseif (WIN32)
+#if (APPLE)
+#    target_link_libraries(unofficial-bitcoin INTERFACE ${unofficial-bitcoin-external})
+#    target_include_directories(unofficial-bitcoin INTERFACE ${unofficial-btc-headers})
+if (WIN32)
     target_link_directories(unofficial-bitcoin INTERFACE wally)
     target_link_libraries(unofficial-bitcoin INTERFACE wally)
     target_include_directories(unofficial-bitcoin INTERFACE wally)
@@ -117,6 +117,7 @@ else ()
     find_path(unofficial-wally-headers wally_core.h)
     target_link_libraries(unofficial-bitcoin INTERFACE ${unofficial-wally} ${unofficial-secp})
     target_include_directories(unofficial-bitcoin INTERFACE ${unofficial-wally-headers})
+    message(STATUS "Found wally -> ${unofficial-wally} ${unofficial-wally-headers}")
 endif ()
 add_library(unofficial-btc::bitcoin ALIAS unofficial-bitcoin)
 
@@ -124,19 +125,20 @@ set(CMAKE_AUTOUIC ON)
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
 set(TS_FILES
-        ${CMAKE_SOURCE_DIR}/atomic_qt_design/assets/languages/atomic_qt_en.ts
-        ${CMAKE_SOURCE_DIR}/atomic_qt_design/assets/languages/atomic_qt_fr.ts
-        ${CMAKE_SOURCE_DIR}/atomic_qt_design/assets/languages/atomic_qt_tr.ts)
-set_source_files_properties(${TS_FILES} PROPERTIES OUTPUT_LOCATION "${CMAKE_SOURCE_DIR}/atomic_qt_design/assets/languages/")
-qt5_create_translation(QM_FILES ${CMAKE_SOURCE_DIR}/atomic_qt_design/qml ${TS_FILES})
+        ${CMAKE_SOURCE_DIR}/atomic_defi_design/assets/languages/atomic_defi_en.ts
+        ${CMAKE_SOURCE_DIR}/atomic_defi_design/assets/languages/atomic_defi_fr.ts
+        ${CMAKE_SOURCE_DIR}/atomic_defi_design/assets/languages/atomic_defi_tr.ts)
+set_source_files_properties(${TS_FILES} PROPERTIES OUTPUT_LOCATION "${CMAKE_SOURCE_DIR}/atomic_defi_design/assets/languages/")
+qt5_create_translation(QM_FILES ${CMAKE_SOURCE_DIR}/atomic_defi_design/qml ${TS_FILES})
 #qt5_add_translation(qmFiles ${TS_FILES})
 message(STATUS "${QM_FILES}")
 message(STATUS "${TS_FILES}")
 
 ##! Atomic QT Shared Deps Between main executable and unit tests
-add_library(atomic_qt_shared_deps INTERFACE)
-target_sources(atomic_qt_shared_deps INTERFACE
+add_library(atomicDeFi_shared_deps INTERFACE)
+target_sources(atomicDeFi_shared_deps INTERFACE
         ${CMAKE_SOURCE_DIR}/src/atomic.dex.kill.cpp
+        ${CMAKE_SOURCE_DIR}/src/atomic.dex.qt.internet.checker.service.cpp
         ${CMAKE_SOURCE_DIR}/src/atomic.dex.app.cpp
         ${CMAKE_SOURCE_DIR}/src/atomic.dex.cfg.cpp
         ${CMAKE_SOURCE_DIR}/src/atomic.dex.mm2.cpp
@@ -154,34 +156,43 @@ target_sources(atomic_qt_shared_deps INTERFACE
         ${CMAKE_SOURCE_DIR}/src/atomic.dex.wallet.config.cpp
         ${CMAKE_SOURCE_DIR}/src/atomic.dex.security.cpp
         ${CMAKE_SOURCE_DIR}/src/atomic.dex.update.service.cpp
+        ${CMAKE_SOURCE_DIR}/src/atomic.dex.notification.manager.cpp
         ${CMAKE_SOURCE_DIR}/src/atomic.dex.qt.orders.model.cpp
         ${CMAKE_SOURCE_DIR}/src/atomic.dex.qt.orders.proxy.model.cpp
         ${CMAKE_SOURCE_DIR}/src/atomic.dex.qt.candlestick.charts.model.cpp
         ${CMAKE_SOURCE_DIR}/src/atomic.dex.qt.addressbook.model.cpp
         ${CMAKE_SOURCE_DIR}/src/atomic.dex.qt.addressbook.proxy.filter.model.cpp
         ${CMAKE_SOURCE_DIR}/src/atomic.dex.qt.contact.model.cpp
+        ${CMAKE_SOURCE_DIR}/src/atomic.dex.qt.trading.page.cpp
+        ${CMAKE_SOURCE_DIR}/src/atomic.dex.qt.market.pairs.cpp
+        ${CMAKE_SOURCE_DIR}/src/atomic.dex.qt.settings.page.cpp
+        ${CMAKE_SOURCE_DIR}/src/atomic.dex.qt.orderbook.cpp
+        ${CMAKE_SOURCE_DIR}/src/atomic.dex.qt.orderbook.model.cpp
+        ${CMAKE_SOURCE_DIR}/src/atomic.dex.qt.orderbook.proxy.model.cpp
         ${CMAKE_SOURCE_DIR}/src/atomic.dex.qt.portfolio.model.cpp
+        ${CMAKE_SOURCE_DIR}/src/atomic.dex.qt.portfolio.page.cpp
         ${CMAKE_SOURCE_DIR}/src/atomic.dex.qt.portfolio.proxy.filter.model.cpp
         $<$<PLATFORM_ID:Darwin>:${CMAKE_SOURCE_DIR}/src/osx/atomic.dex.osx.manager.mm>
         ${CMAKE_SOURCE_DIR}/qml.qrc
         ${qmFiles}
         )
 
-target_compile_definitions(atomic_qt_shared_deps
+target_compile_definitions(atomicDeFi_shared_deps
         INTERFACE
         $<$<OR:$<CONFIG:Debug>,$<CONFIG:RelWithDebInfo>>:QT_QML_DEBUG>
         $<$<PLATFORM_ID:Windows>:HAS_REMOTE_API>
         $<$<PLATFORM_ID:Windows>:AUTO_DOWNLOAD>
         )
 
-#target_compile_options(atomic_qt_shared_deps INTERFACE -fstandalone-debug)
+#target_compile_options(atomicDeFi_shared_deps INTERFACE -fstandalone-debug)
 
-target_link_libraries(atomic_qt_shared_deps
+target_link_libraries(atomicDeFi_shared_deps
         INTERFACE
         Qt5::Core
         Qt5::Quick
         Qt5::Svg
         Qt5::Charts
+        Qt5::Widgets
         qzxing
         antara::world
         Boost::filesystem
@@ -197,7 +208,7 @@ target_link_libraries(atomic_qt_shared_deps
         spdlog::spdlog_header_only
         )
 
-target_include_directories(atomic_qt_shared_deps
+target_include_directories(atomicDeFi_shared_deps
         INTERFACE
         ${CMAKE_CURRENT_SOURCE_DIR}/src
         $<$<PLATFORM_ID:Darwin>:${CMAKE_CURRENT_SOURCE_DIR}/src/osx>
@@ -205,13 +216,13 @@ target_include_directories(atomic_qt_shared_deps
         )
 
 ##! Main executable
-add_executable(atomic_qt MACOSX_BUNDLE ${ICON}
-        ${CMAKE_CURRENT_SOURCE_DIR}/data/windows/atomic_qt.rc
+add_executable(atomicDeFi MACOSX_BUNDLE ${ICON}
+        ${CMAKE_CURRENT_SOURCE_DIR}/data/windows/atomicDeFi.rc
         main.cpp
         )
 
 ##! Testing executable
-add_executable(atomic_qt_tests MACOSX_BUNDLE ${ICON}
+add_executable(atomicDeFi_tests MACOSX_BUNDLE ${ICON}
         src/atomic.dex.tests.cpp
         src/atomic.dex.wallet.config.tests.cpp
         src/atomic.dex.utilities.tests.cpp
@@ -219,15 +230,15 @@ add_executable(atomic_qt_tests MACOSX_BUNDLE ${ICON}
         src/atomic.dex.qt.utilities.tests.cpp
         src/atomic.dex.provider.cex.prices.api.tests.cpp)
 
-target_link_libraries(atomic_qt
+target_link_libraries(atomicDeFi
         PRIVATE
-        atomic_qt_shared_deps
+        atomicDeFi_shared_deps
         $<$<PLATFORM_ID:Darwin>:/usr/local/lib/libcurl.a>
         )
 
-target_link_libraries(atomic_qt_tests
+target_link_libraries(atomicDeFi_tests
         PRIVATE
-        atomic_qt_shared_deps
+        atomicDeFi_shared_deps
         $<$<PLATFORM_ID:Darwin>:/usr/local/lib/libcurl.a>
         doctest::doctest)
 
@@ -242,8 +253,9 @@ set_target_properties(${PROJECT_NAME}_tests
         RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin/"
         )
 
-#target_enable_tsan(atomic_qt_tests)
-#target_enable_asan(atomic_qt)
+
+#target_enable_tsan(atomicDeFi_tests)
+#target_enable_asan(atomicDeFi)
 
 ##! Move assets
 if (LINUX)
@@ -251,27 +263,27 @@ if (LINUX)
     set(output_dir_at "${exe_runtime_directory_at}/AntaraAtomicDexAppDir")
 
     magic_game_app_image_generation("${CMAKE_CURRENT_SOURCE_DIR}/data/linux"
-            "atomic_qt.desktop"
-            "atomic_qt.appdata.xml"
-            "atomic_qt_64.png"
-            atomic_qt
+            "atomicDeFi.desktop"
+            "atomicDeFi.appdata.xml"
+            "atomicDeFi_64.png"
+            atomicDeFi
             AntaraAtomicDexAppDir
             ${CMAKE_CURRENT_SOURCE_DIR}/assets
             )
 
     magic_game_app_image_generation("${CMAKE_CURRENT_SOURCE_DIR}/data/linux"
-            "atomic_qt.desktop"
-            "atomic_qt.appdata.xml"
-            "atomic_qt_64.png"
-            atomic_qt_tests
+            "atomicDeFi.desktop"
+            "atomicDeFi.appdata.xml"
+            "atomicDeFi_64.png"
+            atomicDeFi_tests
             AntaraAtomicDexTestsAppDir
             ${CMAKE_CURRENT_SOURCE_DIR}/assets
             )
 
     set(from_dir "${CMAKE_CURRENT_SOURCE_DIR}/data/linux")
-    set(desktop_file "atomic_qt.desktop")
-    set(appdata_file "atomic_qt.appdata.xml")
-    set(app_icon "atomic_qt_64.png")
+    set(desktop_file "atomicDeFi.desktop")
+    set(appdata_file "atomicDeFi.appdata.xml")
+    set(app_icon "atomicDeFi_64.png")
     message(STATUS "${output_dir_at}")
     configure_file(${from_dir}/${desktop_file} ${output_dir_at}/usr/share/applications/${desktop_file} COPYONLY)
     configure_file(${from_dir}/${appdata_file} ${output_dir_at}/usr/share/metainfo/${appdata_file} COPYONLY)
@@ -285,8 +297,8 @@ if (WIN32)
     set_target_properties(Folly::folly PROPERTIES INTERFACE_COMPILE_OPTIONS "")
     if (CMAKE_BUILD_TYPE MATCHES Release)
         message(STATUS "disabling console")
-        target_compile_definitions(atomic_qt PRIVATE WINDOWS_RELEASE_MAIN)
-        target_link_options(atomic_qt PUBLIC --for-linker -subsystem:windows)
+        target_compile_definitions(atomicDeFi PRIVATE WINDOWS_RELEASE_MAIN)
+        target_link_options(atomicDeFi PUBLIC --for-linker -subsystem:windows)
     endif ()
 endif ()
 
