@@ -65,6 +65,7 @@ namespace atomic_dex
         void set_seconds_left_to_auto_retry(double time_left) noexcept;
 
         void set_internet_alive(bool internet_status) noexcept;
+        void query_internet(t_web_client_ptr& client, const std::string uri, std::atomic_bool internet_service_checker::*p) noexcept;
 
         Q_INVOKABLE void retry() noexcept;
     };

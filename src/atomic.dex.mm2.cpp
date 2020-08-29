@@ -622,7 +622,6 @@ namespace atomic_dex
                     spdlog::trace("ppl task error: {}", e.what());
                 }
             });
-        ;
     }
 
     void

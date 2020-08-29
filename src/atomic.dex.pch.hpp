@@ -197,6 +197,7 @@ adjust_precision(const std::string& current)
 #    define TO_STD_STR(ws_str) ws_str
 #    define FROM_STD_STR(utf8str) utf8str
 #endif
+using t_web_client_ptr = std::unique_ptr<web::http::client::http_client>;
 
 //! SDK Headers
 #include <antara/gaming/core/open.url.browser.hpp>
