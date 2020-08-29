@@ -490,7 +490,6 @@ namespace atomic_dex
                         spdlog::trace("ppl task error: {}", e.what());
                     }
                 });
-            ;
         }
     }
 
@@ -558,7 +557,7 @@ namespace atomic_dex
         spdlog::info("batch orderbook/fees");
         if (not m_orderbook_thread_active)
         {
-            spdlog::warn("Nothing todo, sleeping");
+            spdlog::warn("Nothing to achieve, sleeping");
             return;
         }
 

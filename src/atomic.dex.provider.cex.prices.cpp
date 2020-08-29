@@ -76,7 +76,7 @@ namespace atomic_dex
     cex_prices_provider::on_mm2_started([[maybe_unused]] const mm2_started& evt) noexcept
     {
         spdlog::debug("{} l{} f[{}]", __FUNCTION__, __LINE__, fs::path(__FILE__).filename().string());
-        m_mm2_started = true;
+        m_mm2_started  = true;
         m_update_clock = std::chrono::high_resolution_clock::now();
         update_ohlc();
     }
@@ -97,16 +97,28 @@ namespace atomic_dex
                 req.quote_asset = base;
             }
 
-            atomic_dex::async_rpc_ohlc_get_data(std::move(req)).then([this, quoted = quoted, is_a_reset](web::http::http_response resp) {
-                auto answer = atomic_dex::ohlc_answer_from_async_resp(resp);
-                if (answer.result.has_value())
-                {
-                    m_current_ohlc_data = answer.result.value().raw_result;
-                    this->updating_quote_and_average(quoted);
-                    this->dispatcher_.trigger<refresh_ohlc_needed>(is_a_reset);
-                }
-                spdlog::error("http error: {}", answer.error.value_or("dummy"));
-            });
+            atomic_dex::async_rpc_ohlc_get_data(std::move(req))
+                .then([this, quoted = quoted, is_a_reset](web::http::http_response resp) {
+                    auto answer = atomic_dex::ohlc_answer_from_async_resp(resp);
+                    if (answer.result.has_value())
+                    {
+                        m_current_ohlc_data = answer.result.value().raw_result;
+                        this->updating_quote_and_average(quoted);
+                        this->dispatcher_.trigger<refresh_ohlc_needed>(is_a_reset);
+                    }
+                    spdlog::error("http error: {}", answer.error.value_or("dummy"));
+                })
+                .then([](pplx::task<void> previous_task) {
+                    try
+                    {
+                        previous_task.wait(); // or get(), same difference
+                    }
+                    catch (const std::exception& e)
+                    {
+                        spdlog::trace("ppl task error: {}", e.what());
+                    }
+                });
+            ;
 
             return false;
         }
@@ -224,7 +236,7 @@ namespace atomic_dex
         }
         else
         {
-            spdlog::info("Nothing todo, sleeping");
+            spdlog::info("Nothing to achieve, sleeping");
         }
     }
 } // namespace atomic_dex
