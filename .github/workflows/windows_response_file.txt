@@ -1,3 +1,4 @@
+folly:x64-Windows
 entt:x64-Windows
 boost-multiprecision:x64-Windows
 boost-random:x64-Windows
@@ -11,4 +12,3 @@ libsodium:x64-Windows
 spdlog:x64-Windows
 date[remote-api]:x64-Windows
 cpprestsdk:x64-Windows
-folly:x64-Windows

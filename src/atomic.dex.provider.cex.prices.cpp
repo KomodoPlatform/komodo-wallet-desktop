@@ -17,14 +17,12 @@
 //! Project headers
 #include "atomic.dex.provider.cex.prices.hpp"
 #include "atomic.dex.provider.cex.prices.api.hpp"
-#include "atomic.dex.threadpool.hpp"
 
 namespace atomic_dex
 {
     cex_prices_provider::cex_prices_provider(entt::registry& registry, mm2& mm2_instance) : system(registry), m_mm2_instance(mm2_instance)
     {
         spdlog::debug("{} l{} f[{}]", __FUNCTION__, __LINE__, fs::path(__FILE__).filename().string());
-        disable();
         dispatcher_.sink<mm2_started>().connect<&cex_prices_provider::on_mm2_started>(*this);
         dispatcher_.sink<orderbook_refresh>().connect<&cex_prices_provider::on_current_orderbook_ticker_pair_changed>(*this);
     }
@@ -32,22 +30,23 @@ namespace atomic_dex
     void
     cex_prices_provider::update() noexcept
     {
+        using namespace std::chrono_literals;
+
+        const auto now = std::chrono::high_resolution_clock::now();
+        const auto s   = std::chrono::duration_cast<std::chrono::seconds>(now - m_update_clock);
+        if (s >= 1min)
+        {
+            m_update_clock = std::chrono::high_resolution_clock::now();
+            if (m_mm2_started)
+            {
+                update_ohlc();
+            }
+        }
     }
 
     cex_prices_provider::~cex_prices_provider() noexcept
     {
-        //!
         spdlog::debug("{} l{} f[{}]", __FUNCTION__, __LINE__, fs::path(__FILE__).filename().string());
-
-        consume_pending_tasks();
-
-        m_provider_thread_timer.interrupt();
-
-        if (m_provider_ohlc_fetcher_thread.joinable())
-        {
-            m_provider_ohlc_fetcher_thread.join();
-        }
-
         dispatcher_.sink<mm2_started>().disconnect<&cex_prices_provider::on_mm2_started>(*this);
         dispatcher_.sink<orderbook_refresh>().disconnect<&cex_prices_provider::on_current_orderbook_ticker_pair_changed>(*this);
     }
@@ -70,33 +69,16 @@ namespace atomic_dex
         m_current_orderbook_ticker_pair = {boost::algorithm::to_lower_copy(evt.base), boost::algorithm::to_lower_copy(evt.rel)};
         auto [base, rel]                = m_current_orderbook_ticker_pair;
         spdlog::debug("new orderbook pair for cex provider [{} / {}]", base, rel);
-        m_pending_tasks.push(spawn([base = base, rel = rel, this]() { process_ohlc(base, rel, true); }));
+        process_ohlc(base, rel, true);
     }
 
     void
     cex_prices_provider::on_mm2_started([[maybe_unused]] const mm2_started& evt) noexcept
     {
         spdlog::debug("{} l{} f[{}]", __FUNCTION__, __LINE__, fs::path(__FILE__).filename().string());
-
-        m_provider_ohlc_fetcher_thread = std::thread([this]() {
-            //
-            spdlog::info("cex prices provider thread started");
-
-            using namespace std::chrono_literals;
-            do
-            {
-                spdlog::info("fetching ohlc value");
-                auto [base, rel] = m_current_orderbook_ticker_pair;
-                if (not base.empty() && not rel.empty() && m_mm2_instance.is_orderbook_thread_active())
-                {
-                    process_ohlc(base, rel);
-                }
-                else
-                {
-                    spdlog::info("Nothing todo, sleeping");
-                }
-            } while (not m_provider_thread_timer.wait_for(1min));
-        });
+        m_mm2_started = true;
+        std::chrono::high_resolution_clock::now();
+        update_ohlc();
     }
 
     bool
@@ -114,15 +96,18 @@ namespace atomic_dex
                 req.base_asset  = rel;
                 req.quote_asset = base;
             }
-            auto answer = atomic_dex::rpc_ohlc_get_data(std::move(req));
-            if (answer.result.has_value())
-            {
-                m_current_ohlc_data = answer.result.value().raw_result;
-                this->updating_quote_and_average(quoted);
-                this->dispatcher_.trigger<refresh_ohlc_needed>(is_a_reset);
-                return true;
-            }
-            spdlog::error("http error: {}", answer.error.value_or("dummy"));
+
+            atomic_dex::async_rpc_ohlc_get_data(std::move(req)).then([this, quoted = quoted, is_a_reset](web::http::http_response resp) {
+                auto answer = atomic_dex::ohlc_answer_from_async_resp(resp);
+                if (answer.result.has_value())
+                {
+                    m_current_ohlc_data = answer.result.value().raw_result;
+                    this->updating_quote_and_average(quoted);
+                    this->dispatcher_.trigger<refresh_ohlc_needed>(is_a_reset);
+                }
+                spdlog::error("http error: {}", answer.error.value_or("dummy"));
+            });
+
             return false;
         }
 
@@ -159,20 +144,6 @@ namespace atomic_dex
             res = m_current_ohlc_data->at(range);
         }
         return res;
-    }
-
-    void
-    cex_prices_provider::consume_pending_tasks()
-    {
-        while (not m_pending_tasks.empty())
-        {
-            auto& fut_tasks = m_pending_tasks.front();
-            if (fut_tasks.valid())
-            {
-                fut_tasks.wait();
-            }
-            m_pending_tasks.pop();
-        }
     }
 
     void
@@ -240,5 +211,20 @@ namespace atomic_dex
             }
         }
         this->m_current_ohlc_data = ohlc_data;
+    }
+
+    void
+    cex_prices_provider::update_ohlc() noexcept
+    {
+        spdlog::info("fetching ohlc value");
+        auto [base, rel] = m_current_orderbook_ticker_pair;
+        if (not base.empty() && not rel.empty() && m_mm2_instance.is_orderbook_thread_active())
+        {
+            process_ohlc(base, rel);
+        }
+        else
+        {
+            spdlog::info("Nothing todo, sleeping");
+        }
     }
 } // namespace atomic_dex

@@ -18,8 +18,10 @@
 
 namespace atomic_dex
 {
-    inline constexpr const char* g_cex_endpoint = "https://komodo.live:3333/";
-}
+    inline constexpr const char*                           g_cex_endpoint = "https://komodo.live:3333/";
+    inline std::unique_ptr<web::http::client::http_client> g_cex_ohlc_proxy_http_client{
+        std::make_unique<web::http::client::http_client>(FROM_STD_STR(g_cex_endpoint))};
+} // namespace atomic_dex
 
 //! Json Serialization / Deserialization functions
 namespace atomic_dex
@@ -65,28 +67,20 @@ namespace atomic_dex
     }
 
     ohlc_answer
-    rpc_ohlc_get_data(ohlc_request&& request)
+    ohlc_answer_from_async_resp(web::http::http_response resp)
     {
         using namespace std::string_literals;
+        spdlog::info("{} l{} resp code: {}", __FUNCTION__, __LINE__, resp.status_code());
         ohlc_answer answer;
-
-        spdlog::debug("{} l{} f[{}]", __FUNCTION__, __LINE__, fs::path(__FILE__).filename().string());
-        auto&& [base_id, quote_id] = request;
-        const auto url             = g_cex_endpoint + "/api/v1/ohlc/"s + base_id + "-"s + quote_id;
-        const auto resp            = RestClient::get(url);
-
-        spdlog::info("url: {}", url);
-        spdlog::info("{} l{} resp code: {}", __FUNCTION__, __LINE__, resp.code);
-
-        if (resp.code != 200)
+        if (resp.status_code() != 200)
         {
-            answer.error = "error occured, code : "s + std::to_string(resp.code);
+            answer.error = "error occured, code : "s + std::to_string(resp.status_code());
         }
         else
         {
             try
             {
-                const auto json_answer = nlohmann::json::parse(resp.body);
+                const auto json_answer = nlohmann::json::parse(TO_STD_STR(resp.extract_string(true).get()));
                 from_json(json_answer, answer);
             }
             catch (const std::exception& error)
@@ -96,5 +90,20 @@ namespace atomic_dex
             }
         }
         return answer;
+    }
+
+    pplx::task<web::http::http_response>
+    async_rpc_ohlc_get_data(ohlc_request&& request)
+    {
+        using namespace std::string_literals;
+        spdlog::debug("{} l{} f[{}]", __FUNCTION__, __LINE__, fs::path(__FILE__).filename().string());
+        auto&& [base_id, quote_id] = request;
+        const auto url             = g_cex_endpoint + "/api/v1/ohlc/"s + base_id + "-"s + quote_id;
+        spdlog::info("url: {}", url);
+        web::http::http_request req;
+        req.set_method(web::http::methods::GET);
+        req.set_request_uri(FROM_STD_STR(url));
+        auto resp = g_cex_ohlc_proxy_http_client->request(req);
+        return resp;
     }
 } // namespace atomic_dex

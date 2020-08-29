@@ -55,6 +55,7 @@ namespace atomic_dex
     void from_json(const nlohmann::json& j, ohlc_answer_success& answer);
     void from_json(const nlohmann::json& j, ohlc_answer& answer);
 
-    ohlc_answer rpc_ohlc_get_data(ohlc_request&& request);
+    ohlc_answer                          ohlc_answer_from_async_resp(web::http::http_response resp);
+    pplx::task<web::http::http_response> async_rpc_ohlc_get_data(ohlc_request&& request);
 
 } // namespace atomic_dex
