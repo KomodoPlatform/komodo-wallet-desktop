@@ -375,7 +375,18 @@ namespace atomic_dex
                     }
                     for (auto&& coin: erc_to_fetch) { process_tx_etherscan(coin, is_a_reset); }
                 }
+            })
+            .then([](pplx::task<void> previous_task) {
+                try
+                {
+                    previous_task.wait(); // or get(), same difference
+                }
+                catch (const std::exception& e)
+                {
+                    spdlog::trace("ppl task error: {}", e.what());
+                }
             });
+        ;
     }
 
     std::tuple<nlohmann::json, std::vector<std::string>, std::vector<std::string>>
@@ -456,22 +467,34 @@ namespace atomic_dex
 
         if (not batch_array.empty())
         {
-            ::mm2::api::async_rpc_batch_standalone(batch_array).then([this, tickers, emit_event](web::http::http_response resp) {
-                auto answers = ::mm2::api::basic_batch_answer(resp);
-                if (answers.count("error") == 0)
-                {
-                    for (auto&& answer: answers) { this->process_batch_enable_answer(answer); }
-                    batch_balance_and_tx(false);
-                    for (auto&& ticker: tickers)
+            ::mm2::api::async_rpc_batch_standalone(batch_array)
+                .then([this, tickers, emit_event](web::http::http_response resp) {
+                    auto answers = ::mm2::api::basic_batch_answer(resp);
+                    if (answers.count("error") == 0)
                     {
-                        dispatcher_.trigger<coin_enabled>(ticker);
-                        if (emit_event)
+                        for (auto&& answer: answers) { this->process_batch_enable_answer(answer); }
+                        batch_balance_and_tx(false);
+                        for (auto&& ticker: tickers)
                         {
-                            this->dispatcher_.trigger<enabled_coins_event>();
+                            dispatcher_.trigger<coin_enabled>(ticker);
+                            if (emit_event)
+                            {
+                                this->dispatcher_.trigger<enabled_coins_event>();
+                            }
                         }
                     }
-                }
-            });
+                })
+                .then([](pplx::task<void> previous_task) {
+                    try
+                    {
+                        previous_task.wait(); // or get(), same difference
+                    }
+                    catch (const std::exception& e)
+                    {
+                        spdlog::trace("ppl task error: {}", e.what());
+                    }
+                });
+            ;
         }
     }
 
@@ -552,48 +575,60 @@ namespace atomic_dex
         }
         auto&& [orderbook_ticker_base, orderbook_ticker_rel] = m_synchronized_ticker_pair.get();
 
-        ::mm2::api::async_rpc_batch_standalone(batch).then(
-            [this, orderbook_ticker_base = orderbook_ticker_base, orderbook_ticker_rel = orderbook_ticker_rel, is_a_reset](web::http::http_response resp) {
-                auto answer = ::mm2::api::basic_batch_answer(resp);
-                if (answer.is_array())
+        ::mm2::api::async_rpc_batch_standalone(batch)
+            .then(
+                [this, orderbook_ticker_base = orderbook_ticker_base, orderbook_ticker_rel = orderbook_ticker_rel, is_a_reset](web::http::http_response resp) {
+                    auto answer = ::mm2::api::basic_batch_answer(resp);
+                    if (answer.is_array())
+                    {
+                        auto trade_fee_base_answer = ::mm2::api::rpc_process_answer_batch<t_get_trade_fee_answer>(answer[0], "get_trade_fee");
+                        if (trade_fee_base_answer.rpc_result_code == 200)
+                        {
+                            this->m_trade_fees_registry.insert_or_assign(orderbook_ticker_base, trade_fee_base_answer);
+                        }
+
+                        auto trade_fee_rel_answer = ::mm2::api::rpc_process_answer_batch<t_get_trade_fee_answer>(answer[1], "get_trade_fee");
+                        if (trade_fee_rel_answer.rpc_result_code == 200)
+                        {
+                            this->m_trade_fees_registry.insert_or_assign(orderbook_ticker_rel, trade_fee_rel_answer);
+                        }
+
+                        auto orderbook_answer = ::mm2::api::rpc_process_answer_batch<t_orderbook_answer>(answer[2], "orderbook");
+
+                        if (orderbook_answer.rpc_result_code == 200)
+                        {
+                            m_current_orderbook.insert_or_assign(orderbook_ticker_base + "/" + orderbook_ticker_rel, orderbook_answer);
+                            this->dispatcher_.trigger<process_orderbook_finished>(is_a_reset);
+                        }
+
+                        auto base_max_taker_vol_answer = ::mm2::api::rpc_process_answer_batch<::mm2::api::max_taker_vol_answer>(answer[3], "max_taker_vol");
+                        if (base_max_taker_vol_answer.rpc_result_code == 200)
+                        {
+                            this->m_synchronized_max_taker_vol->first = base_max_taker_vol_answer.result.value();
+                            t_float_50 base_res                       = t_float_50(this->m_synchronized_max_taker_vol->first.decimal) * m_balance_factor;
+                            this->m_synchronized_max_taker_vol->first.decimal = base_res.str(8);
+                        }
+
+                        auto rel_max_taker_vol_answer = ::mm2::api::rpc_process_answer_batch<::mm2::api::max_taker_vol_answer>(answer[4], "max_taker_vol");
+                        if (rel_max_taker_vol_answer.rpc_result_code == 200)
+                        {
+                            this->m_synchronized_max_taker_vol->second = rel_max_taker_vol_answer.result.value();
+                            t_float_50 rel_res                         = t_float_50(this->m_synchronized_max_taker_vol->second.decimal) * m_balance_factor;
+                            this->m_synchronized_max_taker_vol->second.decimal = rel_res.str(8);
+                        }
+                    }
+                })
+            .then([](pplx::task<void> previous_task) {
+                try
                 {
-                    auto trade_fee_base_answer = ::mm2::api::rpc_process_answer_batch<t_get_trade_fee_answer>(answer[0], "get_trade_fee");
-                    if (trade_fee_base_answer.rpc_result_code == 200)
-                    {
-                        this->m_trade_fees_registry.insert_or_assign(orderbook_ticker_base, trade_fee_base_answer);
-                    }
-
-                    auto trade_fee_rel_answer = ::mm2::api::rpc_process_answer_batch<t_get_trade_fee_answer>(answer[1], "get_trade_fee");
-                    if (trade_fee_rel_answer.rpc_result_code == 200)
-                    {
-                        this->m_trade_fees_registry.insert_or_assign(orderbook_ticker_rel, trade_fee_rel_answer);
-                    }
-
-                    auto orderbook_answer = ::mm2::api::rpc_process_answer_batch<t_orderbook_answer>(answer[2], "orderbook");
-
-                    if (orderbook_answer.rpc_result_code == 200)
-                    {
-                        m_current_orderbook.insert_or_assign(orderbook_ticker_base + "/" + orderbook_ticker_rel, orderbook_answer);
-                        this->dispatcher_.trigger<process_orderbook_finished>(is_a_reset);
-                    }
-
-                    auto base_max_taker_vol_answer = ::mm2::api::rpc_process_answer_batch<::mm2::api::max_taker_vol_answer>(answer[3], "max_taker_vol");
-                    if (base_max_taker_vol_answer.rpc_result_code == 200)
-                    {
-                        this->m_synchronized_max_taker_vol->first         = base_max_taker_vol_answer.result.value();
-                        t_float_50 base_res                               = t_float_50(this->m_synchronized_max_taker_vol->first.decimal) * m_balance_factor;
-                        this->m_synchronized_max_taker_vol->first.decimal = base_res.str(8);
-                    }
-
-                    auto rel_max_taker_vol_answer = ::mm2::api::rpc_process_answer_batch<::mm2::api::max_taker_vol_answer>(answer[4], "max_taker_vol");
-                    if (rel_max_taker_vol_answer.rpc_result_code == 200)
-                    {
-                        this->m_synchronized_max_taker_vol->second         = rel_max_taker_vol_answer.result.value();
-                        t_float_50 rel_res                                 = t_float_50(this->m_synchronized_max_taker_vol->second.decimal) * m_balance_factor;
-                        this->m_synchronized_max_taker_vol->second.decimal = rel_res.str(8);
-                    }
+                    previous_task.wait(); // or get(), same difference
+                }
+                catch (const std::exception& e)
+                {
+                    spdlog::trace("ppl task error: {}", e.what());
                 }
             });
+        ;
     }
 
     void
@@ -604,35 +639,46 @@ namespace atomic_dex
             return;
         auto&& [base, rel] = m_synchronized_ticker_pair.get();
 
-        ::mm2::api::async_rpc_batch_standalone(batch).then([this, is_a_reset, base = base, rel = rel](web::http::http_response resp) {
-            auto answer = ::mm2::api::basic_batch_answer(resp);
-            if (answer.is_array())
-            {
-                auto orderbook_answer = ::mm2::api::rpc_process_answer_batch<t_orderbook_answer>(answer[0], "orderbook");
-
-                if (orderbook_answer.rpc_result_code == 200)
+        ::mm2::api::async_rpc_batch_standalone(batch)
+            .then([this, is_a_reset, base = base, rel = rel](web::http::http_response resp) {
+                auto answer = ::mm2::api::basic_batch_answer(resp);
+                if (answer.is_array())
                 {
-                    m_current_orderbook.insert_or_assign(base + "/" + rel, orderbook_answer);
-                    this->dispatcher_.trigger<process_orderbook_finished>(is_a_reset);
-                }
+                    auto orderbook_answer = ::mm2::api::rpc_process_answer_batch<t_orderbook_answer>(answer[0], "orderbook");
 
-                auto base_max_taker_vol_answer = ::mm2::api::rpc_process_answer_batch<::mm2::api::max_taker_vol_answer>(answer[1], "max_taker_vol");
-                if (base_max_taker_vol_answer.rpc_result_code == 200)
-                {
-                    this->m_synchronized_max_taker_vol->first         = base_max_taker_vol_answer.result.value();
-                    t_float_50 base_res                               = t_float_50(this->m_synchronized_max_taker_vol->first.decimal) * m_balance_factor;
-                    this->m_synchronized_max_taker_vol->first.decimal = base_res.str(8);
-                }
+                    if (orderbook_answer.rpc_result_code == 200)
+                    {
+                        m_current_orderbook.insert_or_assign(base + "/" + rel, orderbook_answer);
+                        this->dispatcher_.trigger<process_orderbook_finished>(is_a_reset);
+                    }
 
-                auto rel_max_taker_vol_answer = ::mm2::api::rpc_process_answer_batch<::mm2::api::max_taker_vol_answer>(answer[2], "max_taker_vol");
-                if (rel_max_taker_vol_answer.rpc_result_code == 200)
-                {
-                    this->m_synchronized_max_taker_vol->second         = rel_max_taker_vol_answer.result.value();
-                    t_float_50 rel_res                                 = t_float_50(this->m_synchronized_max_taker_vol->second.decimal) * m_balance_factor;
-                    this->m_synchronized_max_taker_vol->second.decimal = rel_res.str(8);
+                    auto base_max_taker_vol_answer = ::mm2::api::rpc_process_answer_batch<::mm2::api::max_taker_vol_answer>(answer[1], "max_taker_vol");
+                    if (base_max_taker_vol_answer.rpc_result_code == 200)
+                    {
+                        this->m_synchronized_max_taker_vol->first         = base_max_taker_vol_answer.result.value();
+                        t_float_50 base_res                               = t_float_50(this->m_synchronized_max_taker_vol->first.decimal) * m_balance_factor;
+                        this->m_synchronized_max_taker_vol->first.decimal = base_res.str(8);
+                    }
+
+                    auto rel_max_taker_vol_answer = ::mm2::api::rpc_process_answer_batch<::mm2::api::max_taker_vol_answer>(answer[2], "max_taker_vol");
+                    if (rel_max_taker_vol_answer.rpc_result_code == 200)
+                    {
+                        this->m_synchronized_max_taker_vol->second         = rel_max_taker_vol_answer.result.value();
+                        t_float_50 rel_res                                 = t_float_50(this->m_synchronized_max_taker_vol->second.decimal) * m_balance_factor;
+                        this->m_synchronized_max_taker_vol->second.decimal = rel_res.str(8);
+                    }
                 }
-            }
-        });
+            })
+            .then([](pplx::task<void> previous_task) {
+                try
+                {
+                    previous_task.wait(); // or get(), same difference
+                }
+                catch (const std::exception& e)
+                {
+                    spdlog::trace("ppl task error: {}", e.what());
+                }
+            });
         // auto answer = ::mm2::api::rpc_batch_standalone(batch);
     }
 
@@ -847,18 +893,30 @@ namespace atomic_dex
         t_my_recent_swaps_request request{.limit = total > 0 ? total : 50};
         to_json(my_swaps, request);
         batch.push_back(my_swaps);
-        ::mm2::api::async_rpc_batch_standalone(batch).then([this](web::http::http_response resp) {
-            auto answers          = ::mm2::api::basic_batch_answer(resp);
-            auto my_orders_answer = ::mm2::api::rpc_process_answer_batch<t_my_orders_answer>(answers[0], "my_orders");
-            m_orders_registry.insert_or_assign("result", my_orders_answer);
-            this->dispatcher_.trigger<process_orders_finished>();
-            auto swap_answer = ::mm2::api::rpc_process_answer_batch<::mm2::api::my_recent_swaps_answer>(answers[1], "my_orders");
-            if (swap_answer.result.has_value())
-            {
-                m_swaps_registry.insert_or_assign("result", swap_answer.result.value());
-                this->dispatcher_.trigger<process_swaps_finished>();
-            }
-        });
+        ::mm2::api::async_rpc_batch_standalone(batch)
+            .then([this](web::http::http_response resp) {
+                auto answers          = ::mm2::api::basic_batch_answer(resp);
+                auto my_orders_answer = ::mm2::api::rpc_process_answer_batch<t_my_orders_answer>(answers[0], "my_orders");
+                m_orders_registry.insert_or_assign("result", my_orders_answer);
+                this->dispatcher_.trigger<process_orders_finished>();
+                auto swap_answer = ::mm2::api::rpc_process_answer_batch<::mm2::api::my_recent_swaps_answer>(answers[1], "my_orders");
+                if (swap_answer.result.has_value())
+                {
+                    m_swaps_registry.insert_or_assign("result", swap_answer.result.value());
+                    this->dispatcher_.trigger<process_swaps_finished>();
+                }
+            })
+            .then([](pplx::task<void> previous_task) {
+                try
+                {
+                    previous_task.wait(); // or get(), same difference
+                }
+                catch (const std::exception& e)
+                {
+                    spdlog::trace("ppl task error: {}", e.what());
+                }
+            });
+        ;
     }
 
     void
@@ -894,9 +952,8 @@ namespace atomic_dex
         using namespace std::string_literals;
         std::string url =
             (ticker == "ETH") ? "/api/v1/eth_tx_history/"s + address(ticker, ec) : "/api/v1/erc_tx_history/"s + ticker + "/" + address(ticker, ec);
-        try
-        {
-            ::mm2::api::async_process_rpc_get("tx_history", url).then([this, ticker](web::http::http_response resp) {
+        ::mm2::api::async_process_rpc_get("tx_history", url)
+            .then([this, ticker](web::http::http_response resp) {
                 auto answer = ::mm2::api::rpc_process_answer<::mm2::api::tx_history_answer>(resp, "tx_history");
 
                 if (answer.error.has_value())
@@ -956,12 +1013,17 @@ namespace atomic_dex
                     m_tx_state.insert_or_assign(ticker, std::move(state));
                     this->dispatcher_.trigger<tx_fetch_finished>();
                 }
+            })
+            .then([](pplx::task<void> previous_task) {
+                try
+                {
+                    previous_task.wait(); // or get(), same difference
+                }
+                catch (const std::exception& e)
+                {
+                    spdlog::trace("ppl task error: {}", e.what());
+                }
             });
-        }
-        catch (const std::exception& error)
-        {
-            spdlog::error("ppl task error: {}", error.what());
-        }
     }
 
     void
