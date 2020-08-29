@@ -77,7 +77,7 @@ namespace atomic_dex
     {
         spdlog::debug("{} l{} f[{}]", __FUNCTION__, __LINE__, fs::path(__FILE__).filename().string());
         m_mm2_started = true;
-        std::chrono::high_resolution_clock::now();
+        m_update_clock = std::chrono::high_resolution_clock::now();
         update_ohlc();
     }
 
