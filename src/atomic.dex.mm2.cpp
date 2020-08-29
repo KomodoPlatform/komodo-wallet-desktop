@@ -325,8 +325,6 @@ namespace atomic_dex
 
         batch_enable_coins(tickers);
 
-        this->dispatcher_.trigger<enabled_default_coins_event>();
-
         batch_fetch_orders_and_swap();
 
         return result.load() == 1;
@@ -474,13 +472,11 @@ namespace atomic_dex
                     {
                         for (auto&& answer: answers) { this->process_batch_enable_answer(answer); }
                         batch_balance_and_tx(false);
-                        for (auto&& ticker: tickers)
+                        for (auto&& ticker: tickers) { dispatcher_.trigger<coin_enabled>(ticker); }
+                        //! At this point, task is finished, let's refresh.
+                        if (not emit_event)
                         {
-                            dispatcher_.trigger<coin_enabled>(ticker);
-                            if (emit_event)
-                            {
-                                this->dispatcher_.trigger<enabled_coins_event>();
-                            }
+                            this->dispatcher_.trigger<enabled_default_coins_event>();
                         }
                     }
                 })
@@ -501,8 +497,7 @@ namespace atomic_dex
     void
     mm2::enable_multiple_coins(const std::vector<std::string>& tickers) noexcept
     {
-        batch_enable_coins(tickers, true);
-
+        batch_enable_coins(tickers);
         update_coin_status(this->m_current_wallet_name, tickers, true);
     }
 
