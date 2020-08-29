@@ -24,34 +24,45 @@
 namespace
 {
     constexpr const char* g_komodolive_endpoint = "https://komodo.live/adexproversion";
+    t_web_client_ptr      g_komodolive_client{std::make_unique<web::http::client::http_client>(FROM_STD_STR(g_komodolive_endpoint))};
+
+    pplx::task<web::http::http_response>
+    async_check_retrieve()
+    {
+        nlohmann::json          json_data{{"currentVersion", atomic_dex::get_raw_version()}};
+        web::http::http_request req;
+        req.set_method(web::http::methods::POST);
+        req.headers().set_content_type(FROM_STD_STR("application/json"));
+        req.set_body(json_data.dump());
+        return g_komodolive_client->request(req);
+    }
 
     nlohmann::json
-    get_update_status_rpc(const char* version)
+    get_update_status_rpc(web::http::http_response resp_http)
     {
         using namespace std::string_literals;
         nlohmann::json resp;
-
-        nlohmann::json req{{"currentVersion", version}};
-        auto           answer = RestClient::post(g_komodolive_endpoint, "application/json", req.dump());
-        if (answer.code != 200)
+        if (resp_http.status_code() != 200)
         {
             resp["status"] = "cannot reach the endpoint: "s + g_komodolive_endpoint;
         }
         else
         {
-            resp = nlohmann::json::parse(answer.body);
+            resp = nlohmann::json::parse(TO_STD_STR(resp_http.extract_string(true).get()));
         }
-        resp["rpc_code"]        = answer.code;
-        resp["current_version"] = version;
-        if (answer.code == 200) {
-            bool update_needed = false;
-            std::string current_version_str = version;
+        resp["rpc_code"]        = resp_http.status_code();
+        resp["current_version"] = atomic_dex::get_raw_version();
+        if (resp_http.status_code() == 200)
+        {
+            bool        update_needed       = false;
+            std::string current_version_str = atomic_dex::get_raw_version();
+            ;
             std::string endpoint_version = resp.at("new_version").get<std::string>();
             boost::algorithm::replace_all(current_version_str, ".", "");
             boost::algorithm::replace_all(endpoint_version, ".", "");
             boost::algorithm::trim_left_if(current_version_str, boost::is_any_of("0"));
             boost::algorithm::trim_left_if(endpoint_version, boost::is_any_of("0"));
-            update_needed = std::stoi(current_version_str) < std::stoi(endpoint_version);
+            update_needed         = std::stoi(current_version_str) < std::stoi(endpoint_version);
             resp["update_needed"] = update_needed;
         }
         return resp;
@@ -88,11 +99,22 @@ namespace atomic_dex
     {
         spdlog::debug("{} l{} f[{}]", __FUNCTION__, __LINE__, fs::path(__FILE__).filename().string());
         spdlog::info("fetching update status");
-        spawn([this]() {
-            this->m_update_status = get_update_status_rpc(atomic_dex::get_raw_version());
-            //spdlog::trace("-> {}", this->m_update_status->dump(4));
-            this->dispatcher_.trigger<refresh_update_status>();
-        });
+        async_check_retrieve()
+            .then([this](web::http::http_response resp) {
+                this->m_update_status = get_update_status_rpc(resp);
+                //spdlog::trace("-> {}", this->m_update_status->dump(4));
+                this->dispatcher_.trigger<refresh_update_status>();
+            })
+            .then([](pplx::task<void> previous_task) {
+                try
+                {
+                    previous_task.wait(); // or get(), same difference
+                }
+                catch (const std::exception& e)
+                {
+                    spdlog::trace("ppl task error: {}", e.what());
+                }
+            });
     }
 
     nlohmann::json
