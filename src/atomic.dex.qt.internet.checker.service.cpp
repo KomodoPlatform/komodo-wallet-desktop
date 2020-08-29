@@ -32,7 +32,7 @@ namespace
         req.set_method(web::http::methods::GET);
         if (not uri.empty())
         {
-            req.set_request_uri(uri);
+            req.set_request_uri(FROM_STD_STR(uri));
         }
         return client->request(req);
     }
