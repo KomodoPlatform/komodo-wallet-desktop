@@ -68,21 +68,23 @@ jobs:
                                git -y
 
 
+          # get llvm
+          wget https://apt.llvm.org/llvm.sh
+          chmod +x llvm.sh
+          sudo ./llvm.sh 10
+
           # set clang version
-          sudo update-alternatives --install /usr/bin/clang++ clang++ /usr/bin/clang++-9 777
-          sudo update-alternatives --install /usr/bin/clang clang /usr/bin/clang-9 777
+          sudo update-alternatives --install /usr/bin/clang++ clang++ /usr/bin/clang++-10 777
+          sudo update-alternatives --install /usr/bin/clang clang /usr/bin/clang-10 777
 
           # set gnu compilers version
           sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-9 777
           sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-9 777
 
-          # get llvm
-          wget https://apt.llvm.org/llvm.sh
-          chmod +x llvm.sh
-          sudo ./llvm.sh 9
+
 
           sudo apt-get update
-          sudo apt-get install libc++abi-9-dev libc++-9-dev -y
+          sudo apt-get install libc++abi-10-dev libc++-10-dev -y
 
           export CXXFLAGS=-stdlib=libc++
           export LDFLAGS=-stdlib=libc++
@@ -110,8 +112,8 @@ jobs:
          # duplicating because got suspicion that update-alternatives doesnt save between steps
 
           # set clang version
-          sudo update-alternatives --install /usr/bin/clang++ clang++ /usr/bin/clang++-9 777
-          sudo update-alternatives --install /usr/bin/clang clang /usr/bin/clang-9 777
+          sudo update-alternatives --install /usr/bin/clang++ clang++ /usr/bin/clang++-10 777
+          sudo update-alternatives --install /usr/bin/clang clang /usr/bin/clang-10 777
 
           # set gnu compilers version
           sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-9 777
@@ -121,8 +123,8 @@ jobs:
         env: # Or as an environment variable
           CXXFLAGS: -stdlib=libc++
           LDFLAGS: -stdlib=libc++
-          CXX: clang++-9
-          CC: clang-9
+          CXX: clang++-10
+          CC: clang-10
         uses: KomodoPlatform/run-vcpkg@v3
         with:
           vcpkgArguments: '@${{ github.workspace }}/.github/workflows/linux_response_file.txt'
@@ -137,8 +139,8 @@ jobs:
           export PATH=$HOME/.nimble/bin:$PATH
           export CXXFLAGS=-stdlib=libc++
           export LDFLAGS=-stdlib=libc++
-          export CXX=clang++-9
-          export CC=clang-9
+          export CXX=clang++-10
+          export CC=clang-10
           cd ci_tools_atomic_dex
           nimble build -y
 
@@ -158,8 +160,8 @@ jobs:
           export PATH=$HOME/.nimble/bin:$PATH
           export CXXFLAGS=-stdlib=libc++
           export LDFLAGS=-stdlib=libc++
-          export CXX=clang++-9
-          export CC=clang-9
+          export CXX=clang++-10
+          export CC=clang-10
           echo "Running tests"
           ./ci_tools_atomic_dex tests release
           cd build-Release/bin/AntaraAtomicDexTestsAppDir/usr/bin
