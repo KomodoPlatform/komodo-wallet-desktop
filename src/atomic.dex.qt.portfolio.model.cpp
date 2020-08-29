@@ -14,6 +14,8 @@
  *                                                                            *
  ******************************************************************************/
 
+#include <taskflow/taskflow.hpp>
+
 //! QT Headers
 #include <QQmlEngine>
 
@@ -93,11 +95,12 @@ namespace atomic_dex
     void
     portfolio_model::update_currency_values()
     {
-        const auto&                    mm2_system = this->m_system_manager.get_system<mm2>();
-        const auto&                    paprika    = this->m_system_manager.get_system<coinpaprika_provider>();
-        t_coins                        coins      = mm2_system.get_enabled_coins();
-        const std::string&             currency   = m_config->current_currency;
-        std::vector<std::future<void>> pending_tasks;
+        const auto&        mm2_system = this->m_system_manager.get_system<mm2>();
+        const auto&        paprika    = this->m_system_manager.get_system<coinpaprika_provider>();
+        t_coins            coins      = mm2_system.get_enabled_coins();
+        const std::string& currency   = m_config->current_currency;
+        tf::Executor       executor;
+        tf::Taskflow       taskflow;
         for (auto&& coin: coins)
         {
             auto update_functor = [coin, &paprika, &mm2_system, currency, this]() {
@@ -118,10 +121,9 @@ namespace atomic_dex
                     update_value(Display, display, idx, *this);
                 }
             };
-            // update_functor();
-            pending_tasks.push_back(spawn(update_functor));
+            taskflow.emplace(update_functor);
         }
-        for (auto&& cur_task: pending_tasks) { cur_task.wait(); }
+        executor.run(taskflow).wait();
     }
 
     void

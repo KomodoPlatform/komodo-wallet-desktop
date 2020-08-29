@@ -12,3 +12,4 @@ libsodium:x64-Windows
 spdlog:x64-Windows
 date[remote-api]:x64-Windows
 cpprestsdk:x64-Windows
+cpp-taskflow:x64-Windows

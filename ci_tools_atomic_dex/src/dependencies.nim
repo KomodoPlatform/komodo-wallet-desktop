@@ -19,6 +19,7 @@ let g_packages = [
     (name: "libsodium", head: false),
     (name: "spdlog", head: false),
     (name: "cpprestsdk", head: false),
+    (name: "cpp-taskflow", head: false),
     (name: g_date, head: false)]
 
 proc download_packages*() =

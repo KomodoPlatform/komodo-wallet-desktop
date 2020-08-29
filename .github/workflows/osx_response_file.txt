@@ -12,3 +12,4 @@ libsodium
 spdlog
 date
 cpprestsdk
+cpp-taskflow
