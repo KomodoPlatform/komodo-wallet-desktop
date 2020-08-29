@@ -350,11 +350,11 @@ namespace atomic_dex
     }
 
     auto
-    mm2::batch_balance_and_tx(bool is_a_reset)
+    mm2::batch_balance_and_tx(bool is_a_reset, const std::vector<std::string>& tickers, bool is_during_enabling)
     {
         auto&& [batch_array, tickers_idx, erc_to_fetch] = prepare_batch_balance_and_tx();
         return ::mm2::api::async_rpc_batch_standalone(batch_array)
-            .then([this, tickers_idx = tickers_idx, erc_to_fetch = erc_to_fetch, is_a_reset](web::http::http_response resp) {
+            .then([this, tickers_idx = tickers_idx, erc_to_fetch = erc_to_fetch, is_a_reset, tickers, is_during_enabling](web::http::http_response resp) {
                 auto answers = ::mm2::api::basic_batch_answer(resp);
                 if (not answers.contains("error"))
                 {
@@ -372,6 +372,15 @@ namespace atomic_dex
                         ++idx;
                     }
                     for (auto&& coin: erc_to_fetch) { process_tx_etherscan(coin, is_a_reset); }
+                    if (not tickers.empty())
+                    {
+                        for (auto&& ticker: tickers) { dispatcher_.trigger<coin_enabled>(ticker); }
+                    }
+
+                    if (is_during_enabling)
+                    {
+                        this->dispatcher_.trigger<enabled_default_coins_event>();
+                    }
                 }
             })
             .then([](pplx::task<void> previous_task) {
@@ -384,7 +393,6 @@ namespace atomic_dex
                     spdlog::trace("ppl task error: {}", e.what());
                 }
             });
-        ;
     }
 
     std::tuple<nlohmann::json, std::vector<std::string>, std::vector<std::string>>
@@ -471,13 +479,8 @@ namespace atomic_dex
                     if (answers.count("error") == 0)
                     {
                         for (auto&& answer: answers) { this->process_batch_enable_answer(answer); }
-                        batch_balance_and_tx(false);
-                        for (auto&& ticker: tickers) { dispatcher_.trigger<coin_enabled>(ticker); }
+                        batch_balance_and_tx(false, tickers, true);
                         //! At this point, task is finished, let's refresh.
-                        if (not emit_event)
-                        {
-                            this->dispatcher_.trigger<enabled_default_coins_event>();
-                        }
                     }
                 })
                 .then([](pplx::task<void> previous_task) {
@@ -1411,5 +1414,12 @@ namespace atomic_dex
         ::mm2::api::to_json(current_request, req_rel_max_taker_vol);
         batch.push_back(current_request);
         return batch;
+    }
+
+    void
+    mm2::add_orders_answer(t_my_orders_answer answer)
+    {
+        m_orders_registry.insert_or_assign("result", answer);
+        this->dispatcher_.trigger<process_orders_finished>();
     }
 } // namespace atomic_dex

@@ -76,6 +76,9 @@ namespace atomic_dex
         t_models_actions         m_models_actions;
         t_actions_queue          m_actions_queue{g_max_actions_size};
 
+        //! Privae function
+        void common_cancel_all_orders(bool by_coin = false, const QString& ticker = "");
+
       public:
         //! Constructor
         explicit trading_page(

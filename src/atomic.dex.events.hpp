@@ -27,12 +27,13 @@ namespace atomic_dex
     using mm2_initialized             = entt::tag<"mm2_running_and_enabling"_hs>;
     using enabled_coins_event         = entt::tag<"gui_enabled_coins"_hs>;
     using enabled_default_coins_event = entt::tag<"gui_enabled_default_coins"_hs>;
-    //using change_ticker_event         = entt::tag<"gui_change_ticker"_hs>;
-    using tx_fetch_finished           = entt::tag<"gui_tx_fetch_finished"_hs>;
-    using refresh_update_status       = entt::tag<"gui_refresh_update_status"_hs>;
-    using process_orders_finished     = entt::tag<"gui_process_orders_finished"_hs>;
-    using process_swaps_finished      = entt::tag<"gui_process_swaps_finished"_hs>;
-    using update_portfolio_values     = entt::tag<"update_portfolio_values"_hs>;
+    // using change_ticker_event         = entt::tag<"gui_change_ticker"_hs>;
+    using tx_fetch_finished             = entt::tag<"gui_tx_fetch_finished"_hs>;
+    using refresh_update_status         = entt::tag<"gui_refresh_update_status"_hs>;
+    using process_orders_finished       = entt::tag<"gui_process_orders_finished"_hs>;
+    using process_swaps_finished        = entt::tag<"gui_process_swaps_finished"_hs>;
+    using update_portfolio_values       = entt::tag<"update_portfolio_values"_hs>;
+    using refresh_all_portfolio_balance = entt::tag<"refresh_all_portfolio_balance"_hs>;
     // using process_orderbook_finished  = entt::tag<"gui_process_orderbook_finished"_hs>;
 
     struct change_ticker_event

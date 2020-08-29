@@ -112,35 +112,85 @@ namespace atomic_dex
     void
     trading_page::cancel_order(const QString& order_id)
     {
-        auto& mm2_system = m_system_manager.get_system<mm2>();
-        spawn([&mm2_system, order_id]() {
-            ::mm2::api::rpc_cancel_order({order_id.toStdString()});
-            mm2_system.process_orders();
-        });
+        nlohmann::json                        batch = nlohmann::json::array();
+        ::mm2::api::cancel_all_orders_request req;
+        nlohmann::json                        cancel_request = ::mm2::api::template_request("cancel_order");
+        ::mm2::api::cancel_order_request      cancel_req{order_id.toStdString()};
+        to_json(cancel_request, cancel_req);
+        batch.push_back(cancel_request);
+        nlohmann::json my_orders_request = ::mm2::api::template_request("my_orders");
+        batch.push_back(my_orders_request);
+        ::mm2::api::async_rpc_batch_standalone(batch)
+            .then([this](web::http::http_response resp) {
+                auto& mm2_system       = m_system_manager.get_system<mm2>();
+                auto  answers          = ::mm2::api::basic_batch_answer(resp);
+                auto  my_orders_answer = ::mm2::api::rpc_process_answer_batch<t_my_orders_answer>(answers[1], "my_orders");
+                mm2_system.add_orders_answer(my_orders_answer);
+            })
+            .then([](pplx::task<void> previous_task) {
+                try
+                {
+                    previous_task.wait(); // or get(), same difference
+                }
+                catch (const std::exception& e)
+                {
+                    spdlog::trace("ppl task error: {}", e.what());
+                }
+            });
+    }
+
+    void
+    trading_page::common_cancel_all_orders(bool by_coin, const QString& ticker)
+    {
+        nlohmann::json batch          = nlohmann::json::array();
+        nlohmann::json cancel_request = ::mm2::api::template_request("cancel_all_orders");
+        if (by_coin && not ticker.isEmpty())
+        {
+            ::mm2::api::cancel_data cd;
+            cd.ticker = ticker.toStdString();
+            ::mm2::api::cancel_all_orders_request req{{"Coin", cd}};
+            ::mm2::api::to_json(cancel_request, req);
+        }
+        else
+        {
+            ::mm2::api::cancel_data cd;
+            cd.ticker = ticker.toStdString();
+            ::mm2::api::cancel_all_orders_request req_all;
+            ::mm2::api::to_json(cancel_request, req_all);
+        }
+
+        batch.push_back(cancel_request);
+        nlohmann::json my_orders_request = ::mm2::api::template_request("my_orders");
+        batch.push_back(my_orders_request);
+        ::mm2::api::async_rpc_batch_standalone(batch)
+            .then([this](web::http::http_response resp) {
+                auto& mm2_system       = m_system_manager.get_system<mm2>();
+                auto  answers          = ::mm2::api::basic_batch_answer(resp);
+                auto  my_orders_answer = ::mm2::api::rpc_process_answer_batch<t_my_orders_answer>(answers[1], "my_orders");
+                mm2_system.add_orders_answer(my_orders_answer);
+            })
+            .then([](pplx::task<void> previous_task) {
+                try
+                {
+                    previous_task.wait(); // or get(), same difference
+                }
+                catch (const std::exception& e)
+                {
+                    spdlog::trace("ppl task error: {}", e.what());
+                }
+            });
     }
 
     void
     trading_page::cancel_all_orders()
     {
-        auto& mm2_system = m_system_manager.get_system<mm2>();
-        atomic_dex::spawn([&mm2_system]() {
-            ::mm2::api::cancel_all_orders_request req;
-            ::mm2::api::rpc_cancel_all_orders(std::move(req));
-            mm2_system.process_orders();
-        });
+        common_cancel_all_orders();
     }
 
     void
     trading_page::cancel_all_orders_by_ticker(const QString& ticker)
     {
-        auto& mm2_system = m_system_manager.get_system<mm2>();
-        atomic_dex::spawn([&mm2_system, &ticker]() {
-            ::mm2::api::cancel_data cd;
-            cd.ticker = ticker.toStdString();
-            ::mm2::api::cancel_all_orders_request req{{"Coin", cd}};
-            ::mm2::api::rpc_cancel_all_orders(std::move(req));
-            mm2_system.process_orders();
-        });
+        common_cancel_all_orders(true, ticker);
     }
 
     QString

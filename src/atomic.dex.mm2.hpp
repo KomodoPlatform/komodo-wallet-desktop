@@ -137,7 +137,7 @@ namespace atomic_dex
 
         //! Batch balance / tx
         std::tuple<nlohmann::json, std::vector<std::string>, std::vector<std::string>> prepare_batch_balance_and_tx() const;
-        auto                                                                           batch_balance_and_tx(bool is_a_reset);
+        auto                                                                           batch_balance_and_tx(bool is_a_reset, const std::vector<std::string>& tickers = {}, bool is_during_enabling = false);
         void                                                                           process_balance_answer(const nlohmann::json& answer);
         void process_tx_answer(const nlohmann::json& answer_json, const std::string& ticker);
         void process_tx_etherscan(const std::string& ticker, bool is_a_refresh);
@@ -283,6 +283,7 @@ namespace atomic_dex
         void               reset_fake_balance_to_zero(const std::string& ticker) noexcept;
         void               decrease_fake_balance(const std::string& ticker, const std::string& amount) noexcept;
         void               batch_fetch_orders_and_swap();
+        void               add_orders_answer(t_my_orders_answer answer);
     };
 } // namespace atomic_dex
 
