@@ -100,7 +100,7 @@ namespace atomic_dex
         std::vector<std::future<void>> pending_tasks;
         for (auto&& coin: coins)
         {
-            pending_tasks.push_back(spawn([coin, &paprika, &mm2_system, currency, this]() {
+            auto update_functor = [coin, &paprika, &mm2_system, currency, this]() {
                 const std::string& ticker = coin.ticker;
                 if (const auto res = this->match(this->index(0, 0), TickerRole, QString::fromStdString(ticker)); not res.isEmpty())
                 {
@@ -117,7 +117,9 @@ namespace atomic_dex
                     const QString display = QString::fromStdString(coin.ticker) + " (" + balance + ")";
                     update_value(Display, display, idx, *this);
                 }
-            }));
+            };
+            // update_functor();
+            pending_tasks.push_back(spawn(update_functor));
         }
         for (auto&& cur_task: pending_tasks) { cur_task.wait(); }
     }
