@@ -26,7 +26,7 @@ TEST_CASE("atomic dex cex prices provider constructor")
     atomic_dex::cex_prices_provider provider(registry, mm2);
 }
 
-SCENARIO("atomic dex cex price service functionnality")
+/*SCENARIO("atomic dex cex price service functionnality")
 {
     spdlog::set_level(spdlog::level::trace);
     spdlog::set_pattern("[%H:%M:%S %z] [%L] [thr %t] %v");
@@ -57,4 +57,4 @@ SCENARIO("atomic dex cex price service functionnality")
             }
         }
     }
-}
+}*/
