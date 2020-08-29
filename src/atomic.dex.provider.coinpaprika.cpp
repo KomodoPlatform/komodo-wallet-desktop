@@ -25,19 +25,29 @@ namespace
     using namespace std::chrono_literals;
     using namespace atomic_dex;
     using namespace atomic_dex::coinpaprika::api;
+    t_web_client_ptr g_openrates_client = std::make_unique<web::http::client::http_client>(FROM_STD_STR("https://api.openrates.io"));
+
+    pplx::task<web::http::http_response>
+    async_fetch_fiat_rates()
+    {
+        web::http::http_request req;
+        req.set_method(web::http::methods::GET);
+        req.set_request_uri(FROM_STD_STR("/latest?base=USD"));
+        return g_openrates_client->request(req);
+    }
 
     nlohmann::json
-    fetch_fiat_rates()
+    process_fetch_fiat_answer(web::http::http_response resp)
     {
-        nlohmann::json resp;
-        auto           answer = RestClient::get("https://api.openrates.io/latest?base=USD");
-        if (answer.code != 200)
+        nlohmann::json answer;
+        if (resp.status_code() == 200)
         {
-            spdlog::warn("unable to fetch last open rates");
-            return resp;
+            answer = nlohmann::json::parse(TO_STD_STR(resp.extract_string(true).get()));
+            return answer;
         }
-        resp = nlohmann::json::parse(answer.body);
-        return resp;
+
+        spdlog::warn("unable to fetch last open rates");
+        return answer;
     }
 
     template <typename TAnswer, typename TRequest, typename TFunctorRequest>
@@ -152,6 +162,7 @@ namespace atomic_dex
         dispatcher_.sink<mm2_started>().connect<&coinpaprika_provider::on_mm2_started>(*this);
         dispatcher_.sink<coin_enabled>().connect<&coinpaprika_provider::on_coin_enabled>(*this);
         dispatcher_.sink<coin_disabled>().connect<&coinpaprika_provider::on_coin_disabled>(*this);
+        async_fetch_fiat_rates().then([this](web::http::http_response resp) { this->m_other_fiats_rates = process_fetch_fiat_answer(resp); });
     }
 
     void
@@ -188,8 +199,8 @@ namespace atomic_dex
 
                 std::vector<std::future<void>> out_fut;
 
-                out_fut.reserve(coins.size() * 6 + 1);
-                out_fut.push_back(spawn([this]() { this->m_other_fiats_rates = fetch_fiat_rates(); }));
+                out_fut.reserve(coins.size() * 6);
+                async_fetch_fiat_rates().then([this](web::http::http_response resp) { this->m_other_fiats_rates = process_fetch_fiat_answer(resp); });
                 for (auto&& current_coin: coins)
                 {
                     if (current_coin.coinpaprika_id == "test-coin")
@@ -432,10 +443,10 @@ namespace atomic_dex
     {
         spdlog::debug("{} l{} f[{}]", __FUNCTION__, __LINE__, fs::path(__FILE__).filename().string());
 
-        if (not this->m_other_fiats_rates->contains("rates"))
+        /*if (not this->m_other_fiats_rates->contains("rates"))
         {
             this->m_other_fiats_rates = fetch_fiat_rates();
-        }
+        }*/
         const auto config = m_mm2_instance.get_coin_info(evt.ticker);
 
         if (config.coinpaprika_id != "test-coin")

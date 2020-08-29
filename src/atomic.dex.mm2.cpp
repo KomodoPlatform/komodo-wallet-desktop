@@ -474,7 +474,7 @@ namespace atomic_dex
         if (not batch_array.empty())
         {
             ::mm2::api::async_rpc_batch_standalone(batch_array)
-                .then([this, tickers, emit_event](web::http::http_response resp) {
+                .then([this, tickers](web::http::http_response resp) {
                     auto answers = ::mm2::api::basic_batch_answer(resp);
                     if (answers.count("error") == 0)
                     {
@@ -1386,6 +1386,7 @@ namespace atomic_dex
         m_balance_informations.insert_or_assign(answer_r.coin, answer);
         this->dispatcher_.trigger<ticker_balance_updated>(answer_r.coin);
     }
+
     nlohmann::json
     mm2::prepare_process_fees_and_current_orderbook()
     {
