@@ -88,8 +88,8 @@ jobs:
 
           export CXXFLAGS=-stdlib=libc++
           export LDFLAGS=-stdlib=libc++
-          export CXX=clang++-9
-          export CC=clang-9
+          export CXX=clang++-10
+          export CC=clang-10
 
           # get right cmake version
           wget https://github.com/Kitware/CMake/releases/download/v3.17.3/cmake-3.17.3-Linux-x86_64.tar.gz
