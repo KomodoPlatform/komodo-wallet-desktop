@@ -14,6 +14,7 @@
  *                                                                            *
  ******************************************************************************/
 
+#include "atomic.dex.pch.hpp"
 #include "atomic.dex.utilities.hpp"
 #include <doctest/doctest.h>
 

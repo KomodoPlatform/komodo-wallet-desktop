@@ -14,6 +14,7 @@
  *                                                                            *
  ******************************************************************************/
 
+#include "atomic.dex.pch.hpp"
 #include "atomic.dex.events.hpp"
 #include "atomic.dex.provider.cex.prices.hpp"
 #include <doctest/doctest.h>
