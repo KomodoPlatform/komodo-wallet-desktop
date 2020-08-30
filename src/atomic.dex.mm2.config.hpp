@@ -16,8 +16,6 @@
 
 #pragma once
 
-//! PCH Headers
-#include "atomic.dex.pch.hpp"
 #include "atomic.dex.version.hpp"
 
 namespace atomic_dex

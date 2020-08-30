@@ -19,9 +19,6 @@
 #include <QAbstractTableModel>
 #include <QDateTime>
 
-//! PCH
-#include "atomic.dex.pch.hpp"
-
 namespace atomic_dex
 {
     class candlestick_charts_model final : public QAbstractTableModel

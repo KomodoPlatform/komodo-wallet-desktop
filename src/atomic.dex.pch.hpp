@@ -113,14 +113,14 @@ namespace folly
 
 //! Boost Headers
 #include <boost/algorithm/string/case_conv.hpp>
+#include <boost/algorithm/string/erase.hpp>
 #include <boost/algorithm/string/join.hpp>
+#include <boost/algorithm/string/replace.hpp>
 #include <boost/algorithm/string/split.hpp>
 #include <boost/algorithm/string/trim.hpp>
-#include <boost/algorithm/string/erase.hpp>
-#include <boost/algorithm/string/replace.hpp>
+#include <boost/lockfree/queue.hpp>
 #include <boost/random/random_device.hpp>
 #include <boost/random/uniform_int_distribution.hpp>
-#include <boost/lockfree/queue.hpp>
 #include <boost/thread/synchronized_value.hpp>
 //#include <boost/filesystem.hpp>
 #pragma clang diagnostic push
@@ -158,7 +158,7 @@ adjust_precision(const std::string& current)
 
 //! Ranges
 #include <range/v3/view/iota.hpp> ///< ranges::view::ints
-#include <range/v3/view/zip.hpp>  ///< ranges::view::zip
+#include <range/v3/view/zip.hpp> ///< ranges::view::zip
 
 #if defined(_WIN32) || defined(WIN32)
 #    include <wally.hpp>
@@ -172,11 +172,11 @@ adjust_precision(const std::string& current)
 #define ENTT_STANDARD_CPP
 #include <entt/entity/helper.hpp>
 #include <entt/signal/dispatcher.hpp>
+#include <meta/detection/detection.hpp>
 #include <spdlog/async.h>
 #include <spdlog/sinks/rotating_file_sink.h>
 #include <spdlog/sinks/stdout_color_sinks.h>
 #include <spdlog/spdlog.h>
-#include <meta/detection/detection.hpp>
 #if defined(_WIN32) || defined(WIN32)
 #    define and &&
 #    define or ||
@@ -184,8 +184,8 @@ adjust_precision(const std::string& current)
 #endif
 #include <nlohmann/json.hpp>
 #include <reproc++/reproc.hpp>
-#include <restclient-cpp/restclient.h>
 #include <restclient-cpp/connection.h>
+#include <restclient-cpp/restclient.h>
 #include <sodium.h>
 //! CPPRESTSDK
 #define _TURN_OFF_PLATFORM_STRING
@@ -197,7 +197,33 @@ adjust_precision(const std::string& current)
 #    define TO_STD_STR(ws_str) ws_str
 #    define FROM_STD_STR(utf8str) utf8str
 #endif
-using t_web_client_ptr = std::unique_ptr<web::http::client::http_client>;
+using t_http_client_ptr = std::unique_ptr<web::http::client::http_client>;
+using t_http_client     = web::http::client::http_client;
+using t_http_request    = web::http::http_request;
+
+inline t_http_request
+create_json_post_request(nlohmann::json&& json_data)
+{
+    t_http_request req;
+    req.set_method(web::http::methods::POST);
+    req.headers().set_content_type(FROM_STD_STR("application/json"));
+    req.set_body(json_data.dump());
+    return req;
+}
+
+inline void
+handle_exception_pplx_task(pplx::task<void> previous_task)
+{
+    try
+    {
+        previous_task.wait();
+    }
+    catch (const std::exception& e)
+    {
+        spdlog::trace("ppl task error: {}", e.what());
+    }
+}
+
 
 //! SDK Headers
 #include <antara/gaming/core/open.url.browser.hpp>

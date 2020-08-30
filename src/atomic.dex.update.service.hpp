@@ -16,9 +16,6 @@
 
 #pragma once
 
-//! PCH
-#include "atomic.dex.pch.hpp"
-
 namespace atomic_dex
 {
     class update_system_service final : public ag::ecs::pre_update_system<update_system_service>
@@ -43,7 +40,7 @@ namespace atomic_dex
         void update() noexcept final;
 
         //! Public API
-        nlohmann::json get_update_status() const noexcept;
+        [[nodiscard]] nlohmann::json get_update_status() const noexcept;
     };
 } // namespace atomic_dex
 

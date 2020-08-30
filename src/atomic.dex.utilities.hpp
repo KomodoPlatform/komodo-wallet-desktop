@@ -5,7 +5,7 @@
 #include <QString>
 
 //! PCH Headers
-#include "atomic.dex.pch.hpp"
+//#include "atomic.dex.pch.hpp"
 
 
 inline double

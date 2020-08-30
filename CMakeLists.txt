@@ -8,6 +8,13 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
+#find_program(IWYU_PATH NAMES include-what-you-use iwyu)
+#if(NOT IWYU_PATH)
+#    message(FATAL_ERROR "Could not find the program include-what-you-use")
+#endif()
+#set(CMAKE_CXX_INCLUDE_WHAT_YOU_USE ${IWYU_PATH})
+#set(CMAKE_C_INCLUDE_WHAT_YOU_USE ${IWYU_PATH})
+#include_directories("/usr/lib/llvm-10/include/c++/v1/")
 
 
 if (WIN32)
@@ -253,6 +260,7 @@ set_target_properties(${PROJECT_NAME}_tests
         )
 
 
+target_precompile_headers(${PROJECT_NAME} PRIVATE src/atomic.dex.pch.hpp)
 #target_enable_tsan(atomicDeFi_tests)
 #target_enable_asan(atomicDeFi)
 

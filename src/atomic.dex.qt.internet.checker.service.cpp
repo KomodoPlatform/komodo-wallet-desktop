@@ -20,12 +20,12 @@
 
 namespace
 {
-    t_web_client_ptr g_google_proxy_http_client{std::make_unique<web::http::client::http_client>(FROM_STD_STR("https://www.google.com"))};
-    t_web_client_ptr g_paprika_proxy_http_client{std::make_unique<web::http::client::http_client>(FROM_STD_STR("https://api.coinpaprika.com"))};
-    t_web_client_ptr g_ohlc_proxy_http_client{std::make_unique<web::http::client::http_client>(FROM_STD_STR("https://komodo.live:3333"))};
+    t_http_client_ptr g_google_proxy_http_client{std::make_unique<web::http::client::http_client>(FROM_STD_STR("https://www.google.com"))};
+    t_http_client_ptr g_paprika_proxy_http_client{std::make_unique<web::http::client::http_client>(FROM_STD_STR("https://api.coinpaprika.com"))};
+    t_http_client_ptr g_ohlc_proxy_http_client{std::make_unique<web::http::client::http_client>(FROM_STD_STR("https://komodo.live:3333"))};
 
     pplx::task<web::http::http_response>
-    async_check_retrieve(t_web_client_ptr& client, const std::string& uri)
+    async_check_retrieve(t_http_client_ptr& client, const std::string& uri)
     {
         web::http::http_request req;
         req.set_method(web::http::methods::GET);
@@ -108,7 +108,7 @@ namespace atomic_dex
     }
 
     void
-    internet_service_checker::query_internet(t_web_client_ptr& client, const std::string uri, std::atomic_bool internet_service_checker::*p) noexcept
+    internet_service_checker::query_internet(t_http_client_ptr& client, const std::string uri, std::atomic_bool internet_service_checker::*p) noexcept
     {
         async_check_retrieve(client, uri)
             .then([this, p](web::http::http_response resp) {

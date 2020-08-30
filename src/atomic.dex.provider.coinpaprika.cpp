@@ -25,7 +25,7 @@ namespace
     using namespace atomic_dex;
     using namespace atomic_dex::coinpaprika::api;
     constexpr std::uint16_t g_pending_init_tasks_limit = 6;
-    t_web_client_ptr        g_openrates_client         = std::make_unique<web::http::client::http_client>(FROM_STD_STR("https://api.openrates.io"));
+    t_http_client_ptr       g_openrates_client         = std::make_unique<web::http::client::http_client>(FROM_STD_STR("https://api.openrates.io"));
 
     pplx::task<web::http::http_response>
     async_fetch_fiat_rates()

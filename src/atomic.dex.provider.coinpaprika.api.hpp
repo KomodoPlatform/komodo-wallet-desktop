@@ -16,9 +16,6 @@
 
 #pragma once
 
-//! PCH
-#include "atomic.dex.pch.hpp"
-
 //! Project Headers
 #include "atomic.dex.http.code.hpp"
 

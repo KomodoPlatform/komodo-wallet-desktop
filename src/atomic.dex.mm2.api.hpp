@@ -16,9 +16,6 @@
 
 #pragma once
 
-//! PCH Headers
-#include "atomic.dex.pch.hpp"
-
 //! Project Headers
 #include "atomic.dex.coins.config.hpp"
 

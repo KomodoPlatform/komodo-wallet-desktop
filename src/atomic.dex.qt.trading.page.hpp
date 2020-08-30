@@ -19,9 +19,6 @@
 //! QT
 #include <QObject>
 
-//! PCH
-#include "atomic.dex.pch.hpp"
-
 //! Project Headers
 #include "atomic.dex.events.hpp"
 #include "atomic.dex.qt.actions.hpp"

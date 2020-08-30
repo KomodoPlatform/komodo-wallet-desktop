@@ -14,26 +14,24 @@
  *                                                                            *
  ******************************************************************************/
 
-//! Project headers
-#include "atomic.dex.update.service.hpp"
-#include "atomic.dex.events.hpp"
+//! PCH
 #include "atomic.dex.pch.hpp"
+
+//! Project headers
+#include "atomic.dex.events.hpp"
+#include "atomic.dex.update.service.hpp"
 #include "atomic.dex.version.hpp"
 
 namespace
 {
     constexpr const char* g_komodolive_endpoint = "https://komodo.live/adexproversion";
-    t_web_client_ptr      g_komodolive_client{std::make_unique<web::http::client::http_client>(FROM_STD_STR(g_komodolive_endpoint))};
+    t_http_client_ptr     g_komodolive_client{std::make_unique<t_http_client>(FROM_STD_STR(g_komodolive_endpoint))};
 
     pplx::task<web::http::http_response>
-    async_check_retrieve()
+    async_check_retrieve() noexcept
     {
-        nlohmann::json          json_data{{"currentVersion", atomic_dex::get_raw_version()}};
-        web::http::http_request req;
-        req.set_method(web::http::methods::POST);
-        req.headers().set_content_type(FROM_STD_STR("application/json"));
-        req.set_body(json_data.dump());
-        return g_komodolive_client->request(req);
+        nlohmann::json json_data{{"currentVersion", atomic_dex::get_raw_version()}};
+        return g_komodolive_client->request(create_json_post_request(std::move(json_data)));
     }
 
     nlohmann::json
@@ -55,8 +53,7 @@ namespace
         {
             bool        update_needed       = false;
             std::string current_version_str = atomic_dex::get_raw_version();
-            ;
-            std::string endpoint_version = resp.at("new_version").get<std::string>();
+            std::string endpoint_version    = resp.at("new_version").get<std::string>();
             boost::algorithm::replace_all(current_version_str, ".", "");
             boost::algorithm::replace_all(endpoint_version, ".", "");
             boost::algorithm::trim_left_if(current_version_str, boost::is_any_of("0"));
@@ -72,9 +69,9 @@ namespace atomic_dex
     //! Constructor
     update_system_service::update_system_service(entt::registry& registry) : system(registry)
     {
-        m_update_clock        = std::chrono::high_resolution_clock::now();
-        this->m_update_status = nlohmann::json::object();
-        this->fetch_update_status();
+        m_update_clock  = std::chrono::high_resolution_clock::now();
+        m_update_status = nlohmann::json::object();
+        fetch_update_status();
     }
 
     //! Public override
@@ -87,7 +84,7 @@ namespace atomic_dex
         const auto s   = std::chrono::duration_cast<std::chrono::seconds>(now - m_update_clock);
         if (s >= 1h)
         {
-            this->fetch_update_status();
+            fetch_update_status();
             m_update_clock = std::chrono::high_resolution_clock::now();
         }
     }
@@ -101,19 +98,9 @@ namespace atomic_dex
         async_check_retrieve()
             .then([this](web::http::http_response resp) {
                 this->m_update_status = get_update_status_rpc(resp);
-                //spdlog::trace("-> {}", this->m_update_status->dump(4));
                 this->dispatcher_.trigger<refresh_update_status>();
             })
-            .then([](pplx::task<void> previous_task) {
-                try
-                {
-                    previous_task.wait(); // or get(), same difference
-                }
-                catch (const std::exception& e)
-                {
-                    spdlog::trace("ppl task error: {}", e.what());
-                }
-            });
+            .then(&handle_exception_pplx_task);
     }
 
     nlohmann::json

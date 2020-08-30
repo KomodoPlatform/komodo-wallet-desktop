@@ -18,9 +18,6 @@
 
 #include <QObject>
 
-//! PCH Headers
-#include "atomic.dex.pch.hpp"
-
 namespace atomic_dex
 {
     struct electrum_server

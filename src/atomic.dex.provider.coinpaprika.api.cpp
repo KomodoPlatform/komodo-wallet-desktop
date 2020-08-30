@@ -22,7 +22,7 @@ namespace
 {
     //! Constants
     constexpr const char* g_coinpaprika_endpoint = "https://api.coinpaprika.com/v1/";
-    t_web_client_ptr      g_coinpaprika_client   = std::make_unique<web::http::client::http_client>(FROM_STD_STR(g_coinpaprika_endpoint));
+    t_http_client_ptr     g_coinpaprika_client   = std::make_unique<web::http::client::http_client>(FROM_STD_STR(g_coinpaprika_endpoint));
 } // namespace
 
 namespace atomic_dex

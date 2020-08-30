@@ -16,8 +16,6 @@
 
 #pragma once
 
-#include "atomic.dex.pch.hpp"
-
 //! Project header
 #include "atomic.dex.ma.series.data.hpp"
 #include "atomic.dex.mm2.hpp"

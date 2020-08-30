@@ -21,9 +21,6 @@
 #include <QString>      //! QString
 #include <QVariantList> //! QVariantList
 
-//! PCH
-#include "atomic.dex.pch.hpp"
-
 namespace atomic_dex
 {
     struct current_coin_info : QObject

@@ -16,9 +16,6 @@
 
 #pragma once
 
-//! PCH Headers
-#include "atomic.dex.pch.hpp"
-
 namespace atomic_dex
 {
     using mm2_started                 = entt::tag<"mm2_started"_hs>;

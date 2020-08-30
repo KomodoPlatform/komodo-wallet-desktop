@@ -20,9 +20,6 @@
 #include <QJsonObject>
 #include <QObject>
 
-//! PCH
-#include "atomic.dex.pch.hpp"
-
 //! Project
 #include "atomic.dex.qt.orderbook.model.hpp"
 

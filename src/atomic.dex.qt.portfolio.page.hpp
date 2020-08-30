@@ -19,9 +19,6 @@
 //! QT
 #include <QObject>
 
-//! PCH
-#include "atomic.dex.pch.hpp"
-
 //! Project headers
 #include "atomic.dex.qt.portfolio.model.hpp"
 

@@ -21,9 +21,6 @@
 #include <QString>
 #include <QVector>
 
-//! PCH Header
-#include "atomic.dex.pch.hpp"
-
 //! Project headers
 #include "atomic.dex.mm2.hpp"
 #include "atomic.dex.provider.coinpaprika.hpp"

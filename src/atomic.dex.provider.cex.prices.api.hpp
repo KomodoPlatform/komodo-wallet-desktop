@@ -16,8 +16,6 @@
 
 #pragma once
 
-#include "atomic.dex.pch.hpp"
-
 namespace atomic_dex
 {
     struct ohlc_request

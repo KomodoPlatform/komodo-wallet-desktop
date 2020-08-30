@@ -26,9 +26,6 @@
 #include <QTranslator>
 #include <QVariantMap>
 
-//! PCH Headers
-#include "atomic.dex.pch.hpp"
-
 //! Project Headers
 #include "atomic.dex.cfg.hpp"
 #include "atomic.dex.mm2.hpp"
@@ -42,7 +39,6 @@
 #include "atomic.dex.qt.internet.checker.service.hpp"
 #include "atomic.dex.qt.orderbook.hpp"
 #include "atomic.dex.qt.orders.model.hpp"
-//#include "atomic.dex.qt.portfolio.model.hpp"
 #include "atomic.dex.qt.portfolio.page.hpp"
 #include "atomic.dex.qt.settings.page.hpp"
 #include "atomic.dex.qt.trading.page.hpp"
