@@ -18,9 +18,9 @@
 #include "atomic.dex.pch.hpp"
 
 //! Project Headers
-#include "atomic.dex.mm2.hpp"
 #include "atomic.dex.kill.hpp"
 #include "atomic.dex.mm2.config.hpp"
+#include "atomic.dex.mm2.hpp"
 #include "atomic.dex.security.hpp"
 #include "atomic.dex.version.hpp"
 
@@ -350,11 +350,16 @@ namespace atomic_dex
     }
 
     auto
-    mm2::batch_balance_and_tx(bool is_a_reset, const std::vector<std::string>& tickers, bool is_during_enabling)
+    mm2::batch_balance_and_tx(bool is_a_reset, std::vector<std::string> tickers, bool is_during_enabling)
     {
+        spdlog::trace("tickers size: {}", tickers.size());
         auto&& [batch_array, tickers_idx, erc_to_fetch] = prepare_batch_balance_and_tx();
         return ::mm2::api::async_rpc_batch_standalone(batch_array)
             .then([this, tickers_idx = tickers_idx, erc_to_fetch = erc_to_fetch, is_a_reset, tickers, is_during_enabling](web::http::http_response resp) {
+                if (is_during_enabling)
+                {
+                    spdlog::trace("Fetching balance and tx, ticker size: {}", tickers.size());
+                }
                 auto answers = ::mm2::api::basic_batch_answer(resp);
                 if (not answers.contains("error"))
                 {
@@ -372,30 +377,25 @@ namespace atomic_dex
                         ++idx;
                     }
                     for (auto&& coin: erc_to_fetch) { process_tx_etherscan(coin, is_a_reset); }
-                    if (not tickers.empty())
-                    {
-                        for (auto&& ticker: tickers) {
-                            spdlog::trace("Coinpaprika part start for ticker: {}", ticker);
-                            dispatcher_.trigger<coin_enabled>(ticker);
-                        }
-                    }
-
                     if (is_during_enabling)
                     {
-                        this->dispatcher_.trigger<enabled_default_coins_event>();
+                        if (not tickers.empty())
+                        {
+                            spdlog::trace("size: {}", tickers.size());
+                            for (auto&& ticker: tickers)
+                            {
+                                spdlog::trace("Coinpaprika part start for ticker: {}", ticker);
+                                dispatcher_.trigger<coin_enabled>(ticker);
+                            }
+                            if (is_during_enabling)
+                            {
+                                this->dispatcher_.trigger<enabled_default_coins_event>();
+                            }
+                        }
                     }
                 }
             })
-            .then([](pplx::task<void> previous_task) {
-                try
-                {
-                    previous_task.wait(); // or get(), same difference
-                }
-                catch (const std::exception& e)
-                {
-                    spdlog::trace("ppl task error: {}", e.what());
-                }
-            });
+            .then(&handle_exception_pplx_task);
     }
 
     std::tuple<nlohmann::json, std::vector<std::string>, std::vector<std::string>>
@@ -476,9 +476,13 @@ namespace atomic_dex
 
         if (not batch_array.empty())
         {
+            spdlog::trace("starting async enabling coin");
             ::mm2::api::async_rpc_batch_standalone(batch_array)
                 .then([this, tickers](web::http::http_response resp) {
+                    spdlog::trace("Enabling coin finished");
                     auto answers = ::mm2::api::basic_batch_answer(resp);
+                    spdlog::trace("Enabling coin parsed");
+
                     if (answers.count("error") == 0)
                     {
                         for (auto&& answer: answers) { this->process_batch_enable_answer(answer); }
@@ -486,16 +490,7 @@ namespace atomic_dex
                         //! At this point, task is finished, let's refresh.
                     }
                 })
-                .then([](pplx::task<void> previous_task) {
-                    try
-                    {
-                        previous_task.wait(); // or get(), same difference
-                    }
-                    catch (const std::exception& e)
-                    {
-                        spdlog::trace("ppl task error: {}", e.what());
-                    }
-                });
+                .then(&handle_exception_pplx_task);
         }
     }
 
@@ -618,16 +613,7 @@ namespace atomic_dex
                         }
                     }
                 })
-            .then([](pplx::task<void> previous_task) {
-                try
-                {
-                    previous_task.wait(); // or get(), same difference
-                }
-                catch (const std::exception& e)
-                {
-                    spdlog::trace("ppl task error: {}", e.what());
-                }
-            });
+            .then(&handle_exception_pplx_task);
     }
 
     void
@@ -668,16 +654,7 @@ namespace atomic_dex
                     }
                 }
             })
-            .then([](pplx::task<void> previous_task) {
-                try
-                {
-                    previous_task.wait(); // or get(), same difference
-                }
-                catch (const std::exception& e)
-                {
-                    spdlog::trace("ppl task error: {}", e.what());
-                }
-            });
+            .then(&handle_exception_pplx_task);
         // auto answer = ::mm2::api::rpc_batch_standalone(batch);
     }
 
@@ -905,17 +882,7 @@ namespace atomic_dex
                     this->dispatcher_.trigger<process_swaps_finished>();
                 }
             })
-            .then([](pplx::task<void> previous_task) {
-                try
-                {
-                    previous_task.wait(); // or get(), same difference
-                }
-                catch (const std::exception& e)
-                {
-                    spdlog::trace("ppl task error: {}", e.what());
-                }
-            });
-        ;
+            .then(&handle_exception_pplx_task);
     }
 
     void
@@ -1013,16 +980,7 @@ namespace atomic_dex
                     this->dispatcher_.trigger<tx_fetch_finished>();
                 }
             })
-            .then([](pplx::task<void> previous_task) {
-                try
-                {
-                    previous_task.wait(); // or get(), same difference
-                }
-                catch (const std::exception& e)
-                {
-                    spdlog::trace("ppl task error: {}", e.what());
-                }
-            });
+            .then(&handle_exception_pplx_task);
     }
 
     void

@@ -220,7 +220,7 @@ handle_exception_pplx_task(pplx::task<void> previous_task)
     }
     catch (const std::exception& e)
     {
-        spdlog::trace("ppl task error: {}", e.what());
+        spdlog::error("pplx task error: {}", e.what());
     }
 }
 

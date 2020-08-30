@@ -16,6 +16,7 @@
 
 #pragma once
 
+#include "atomic.dex.utilities.hpp"
 #include "atomic.dex.version.hpp"
 
 namespace atomic_dex
