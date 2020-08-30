@@ -18,9 +18,18 @@
 #include "atomic.dex.pch.hpp"
 
 //! Project Headers
-#include "atomic.dex.security.hpp"
 #include "atomic.dex.mm2.error.code.hpp"
+#include "atomic.dex.security.hpp"
 
+namespace
+{
+    constexpr std::size_t g_salt_len              = crypto_pwhash_SALTBYTES;
+    constexpr std::size_t g_chunk_size            = 4096;
+    constexpr std::size_t g_buff_len              = (g_chunk_size + crypto_secretstream_xchacha20poly1305_ABYTES);
+    constexpr std::size_t g_header_size           = crypto_secretstream_xchacha20poly1305_HEADERBYTES;
+    constexpr const char* g_regex_password_policy = R"(^(?=.{16,})(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[@#$%{}[\]()\/\\'"`~,;:.<>+\-_=!^&*|?]).*$)";
+    using t_salt_array                            = std::array<unsigned char, g_salt_len>;
+} // namespace
 
 namespace atomic_dex
 {
@@ -28,11 +37,10 @@ namespace atomic_dex
     derive_password(const std::string& password, std::error_code& ec)
     {
         spdlog::debug("{} l{} f[{}]", __FUNCTION__, __LINE__, fs::path(__FILE__).filename().string());
-        std::array<unsigned char, g_salt_len> salt{};
-        std::array<unsigned char, g_key_len>  generated_crypto_key{};
+        t_salt_array   salt{};
+        t_password_key generated_crypto_key{};
 
         sodium_memzero(salt.data(), salt.size());
-        // randombytes_buf(salt.data(), salt.size());
 
         if (crypto_pwhash(
                 generated_crypto_key.data(), generated_crypto_key.size(), password.c_str(), password.size(), salt.data(), crypto_pwhash_OPSLIMIT_INTERACTIVE,
@@ -63,8 +71,7 @@ namespace atomic_dex
         mnemonic_ss << mnemonic;
         crypto_secretstream_xchacha20poly1305_init_push(&st, header.data(), key);
         fp_t.write(reinterpret_cast<const char*>(header.data()), header.size());
-        do
-        {
+        do {
             mnemonic_ss.read(reinterpret_cast<char*>(buf_in.data()), buf_in.size());
             tag = mnemonic_ss.eof() ? crypto_secretstream_xchacha20poly1305_TAG_FINAL : 0;
             crypto_secretstream_xchacha20poly1305_push(&st, buf_out.data(), &out_len, buf_in.data(), mnemonic_ss.gcount(), nullptr, 0, tag);
@@ -92,8 +99,7 @@ namespace atomic_dex
             ec = dextop_error::wrong_password;
             return "";
         }
-        do
-        {
+        do {
             fp_s.read(reinterpret_cast<char*>(buf_in.data()), buf_in.size());
             if (crypto_secretstream_xchacha20poly1305_pull(&st, buf_out.data(), &out_len, &tag, buf_in.data(), fp_s.gcount(), nullptr, 0) != 0)
             {
