@@ -68,7 +68,8 @@ namespace atomic_dex
         const auto& paprika    = this->m_system_manager.get_system<coinpaprika_provider>();
         auto        coin       = mm2_system.get_coin_info(ticker);
 
-        beginInsertRows(QModelIndex(), this->m_model_data.count(), this->m_model_data.count());
+        auto count = this->m_model_data->count();
+        beginInsertRows(QModelIndex(), count, count);
         std::error_code ec;
         const QString   change_24h = retrieve_change_24h(paprika, coin, *m_config);
         portfolio_data  data{
@@ -85,7 +86,7 @@ namespace atomic_dex
         spdlog::trace(
             "inserting ticker {} with name {} balance {} main currency balance {}", coin.ticker, coin.name, data.balance.toStdString(),
             data.main_currency_balance.toStdString());
-        this->m_model_data.push_back(std::move(data));
+        this->m_model_data->push_back(std::move(data));
         endInsertRows();
         spdlog::trace("size of the portfolio {}", this->get_length());
         emit lengthChanged();
@@ -154,7 +155,7 @@ namespace atomic_dex
             return {};
         }
 
-        const portfolio_data& item = m_model_data.at(index.row());
+        const portfolio_data& item = m_model_data->at(index.row());
         switch (static_cast<PortfolioRoles>(role))
         {
         case TickerRole:
@@ -187,7 +188,7 @@ namespace atomic_dex
             return false;
         }
 
-        portfolio_data& item = m_model_data[index.row()];
+        portfolio_data& item = m_model_data->operator[](index.row());
         switch (static_cast<PortfolioRoles>(role))
         {
         case BalanceRole:
@@ -227,7 +228,7 @@ namespace atomic_dex
         beginRemoveRows(QModelIndex(), position, position + rows - 1);
         for (int row = 0; row < rows; ++row)
         {
-            this->m_model_data.removeAt(position);
+            this->m_model_data->removeAt(position);
             emit lengthChanged();
         }
         endRemoveRows();
@@ -249,7 +250,7 @@ namespace atomic_dex
     int
     atomic_dex::portfolio_model::rowCount([[maybe_unused]] const QModelIndex& parent) const
     {
-        return this->m_model_data.count();
+        return this->m_model_data->count();
     }
 
     QHash<int, QByteArray>
@@ -290,7 +291,7 @@ namespace atomic_dex
     portfolio_model::reset()
     {
         this->beginResetModel();
-        this->m_model_data.clear();
+        this->m_model_data->clear();
         this->endResetModel();
     }
 } // namespace atomic_dex
