@@ -25,7 +25,8 @@ namespace
     using namespace std::chrono_literals;
     using namespace atomic_dex;
     using namespace atomic_dex::coinpaprika::api;
-    t_web_client_ptr g_openrates_client = std::make_unique<web::http::client::http_client>(FROM_STD_STR("https://api.openrates.io"));
+    constexpr std::uint16_t g_pending_init_tasks_limit = 6;
+    t_web_client_ptr        g_openrates_client         = std::make_unique<web::http::client::http_client>(FROM_STD_STR("https://api.openrates.io"));
 
     pplx::task<web::http::http_response>
     async_fetch_fiat_rates()
@@ -63,52 +64,155 @@ namespace
     }
 
     void
-    process_ticker_infos(const atomic_dex::coin_config& current_coin, atomic_dex::coinpaprika_provider::t_ticker_infos_registry& reg)
+    process_async_ticker_infos(
+        const ticker_infos_request& request, const atomic_dex::coin_config& current_coin, atomic_dex::coinpaprika_provider::t_ticker_infos_registry& reg,
+        std::shared_ptr<std::atomic_uint16_t> idx, entt::dispatcher* dispatcher)
     {
-        const ticker_infos_request request{.ticker_currency_id = current_coin.coinpaprika_id, .ticker_quotes = {"USD", "EUR", "BTC"}};
-        auto                       answer = tickers_info(request);
-
-        retry(answer, request, [&answer](const ticker_infos_request& request) { answer = tickers_info(request); });
-        reg.insert_or_assign(current_coin.ticker, answer);
+        async_ticker_info(request).then([request, current_coin, &reg, idx, dispatcher](web::http::http_response resp) {
+            auto answer = process_generic_resp<ticker_info_answer>(resp);
+            if (answer.rpc_result_code == e_http_code::too_many_requests)
+            {
+                std::this_thread::sleep_for(1s);
+                process_async_ticker_infos(request, current_coin, reg, std::move(idx), dispatcher);
+            }
+            else
+            {
+                reg.insert_or_assign(current_coin.ticker, answer);
+                if (idx != nullptr && dispatcher != nullptr)
+                {
+                    auto cur = idx->fetch_add(1) + 1;
+                    if (cur == g_pending_init_tasks_limit)
+                    {
+                        dispatcher->trigger<atomic_dex::coin_fully_initialized>(current_coin.ticker);
+                    }
+                }
+            }
+        });
     }
 
     void
-    process_ticker_historical(const atomic_dex::coin_config& current_coin, atomic_dex::coinpaprika_provider::t_ticker_historical_registry& reg)
+    process_ticker_infos(
+        const atomic_dex::coin_config& current_coin, atomic_dex::coinpaprika_provider::t_ticker_infos_registry& reg,
+        std::shared_ptr<std::atomic_uint16_t> idx = nullptr, entt::dispatcher* dispatcher = nullptr)
+    {
+        const ticker_infos_request request{.ticker_currency_id = current_coin.coinpaprika_id, .ticker_quotes = {"USD", "EUR", "BTC"}};
+        // auto                       answer = tickers_info(request);
+
+        process_async_ticker_infos(request, current_coin, reg, std::move(idx), dispatcher);
+        // retry(answer, request, [&answer](const ticker_infos_request& request) { answer = tickers_info(request); });
+        // reg.insert_or_assign(current_coin.ticker, answer);
+    }
+
+    void
+    process_async_ticker_historical(
+        const ticker_historical_request& request, const atomic_dex::coin_config& current_coin,
+        atomic_dex::coinpaprika_provider::t_ticker_historical_registry& reg, std::shared_ptr<std::atomic_uint16_t> idx, entt::dispatcher* dispatcher)
+    {
+        async_ticker_historical(request).then([request, current_coin, &reg, idx, dispatcher](web::http::http_response resp) {
+            auto answer = process_generic_resp<ticker_historical_answer>(resp);
+            if (answer.rpc_result_code == e_http_code::too_many_requests)
+            {
+                std::this_thread::sleep_for(1s);
+                process_async_ticker_historical(request, current_coin, reg, std::move(idx), dispatcher);
+            }
+            else
+            {
+                if (answer.raw_result.find("error") == std::string::npos)
+                {
+                    reg.insert_or_assign(current_coin.ticker, answer);
+                }
+
+                if (idx != nullptr && dispatcher != nullptr)
+                {
+                    auto cur = idx->fetch_add(1) + 1;
+                    if (cur == g_pending_init_tasks_limit)
+                    {
+                        dispatcher->trigger<atomic_dex::coin_fully_initialized>(current_coin.ticker);
+                    }
+                }
+            }
+        });
+    }
+
+    void
+    process_ticker_historical(
+        const atomic_dex::coin_config& current_coin, atomic_dex::coinpaprika_provider::t_ticker_historical_registry& reg,
+        std::shared_ptr<std::atomic_uint16_t> idx = nullptr, entt::dispatcher* dispatcher = nullptr)
     {
         if (current_coin.coinpaprika_id == "test-coin")
         {
+            if (idx != nullptr && dispatcher != nullptr)
+            {
+                auto cur = idx->fetch_add(1) + 1;
+                if (cur == g_pending_init_tasks_limit)
+                {
+                    dispatcher->trigger<atomic_dex::coin_fully_initialized>(current_coin.ticker);
+                }
+            }
             return;
         }
         const ticker_historical_request request{.ticker_currency_id = current_coin.coinpaprika_id, .interval = "2h"};
-        auto                            answer = ticker_historical(request);
-        retry(answer, request, [&answer](const ticker_historical_request& request) { answer = ticker_historical(request); });
-        if (answer.raw_result.find("error") == std::string::npos)
-        {
-            reg.insert_or_assign(current_coin.ticker, answer);
-        }
+        process_async_ticker_historical(request, current_coin, reg, idx, dispatcher);
     }
 
     template <typename Provider>
     void
-    process_provider(const atomic_dex::coin_config& current_coin, Provider& rate_providers, const std::string& fiat)
+    process_async_price_converter(
+        const price_converter_request& request, atomic_dex::coin_config current_coin, Provider& rate_providers, std::shared_ptr<std::atomic_uint16_t> idx,
+        entt::dispatcher* dispatcher)
+    {
+        async_price_converter(request)
+            .then([request, &rate_providers, current_coin, idx, dispatcher](web::http::http_response resp) {
+                auto answer = process_generic_resp<price_converter_answer>(resp);
+                if (answer.rpc_result_code == e_http_code::too_many_requests)
+                {
+                    std::this_thread::sleep_for(1s);
+                    process_async_price_converter(request, current_coin, rate_providers, idx, dispatcher);
+                }
+                else
+                {
+                    if (answer.raw_result.find("error") == std::string::npos)
+                    {
+                        if (not answer.price.empty())
+                        {
+                            rate_providers.insert_or_assign(current_coin.ticker, answer.price);
+                        }
+                    }
+                    else
+                        rate_providers.insert_or_assign(current_coin.ticker, "0.00");
+                    if (idx != nullptr && dispatcher != nullptr)
+                    {
+                        auto cur = idx->fetch_add(1) + 1;
+                        if (cur == g_pending_init_tasks_limit)
+                        {
+                            dispatcher->trigger<atomic_dex::coin_fully_initialized>(current_coin.ticker);
+                        }
+                    }
+                }
+            })
+            .then([](pplx::task<void> previous_task) {
+                try
+                {
+                    previous_task.wait(); // or get(), same difference
+                }
+                catch (const std::exception& e)
+                {
+                    spdlog::trace("ppl task error: {}", e.what());
+                }
+            });
+    }
+
+    template <typename Provider>
+    void
+    process_provider(
+        const atomic_dex::coin_config& current_coin, Provider& rate_providers, const std::string& fiat, std::shared_ptr<std::atomic_uint16_t> idx = nullptr,
+        entt::dispatcher* dispatcher = nullptr)
     {
         if (current_coin.coinpaprika_id != fiat)
         {
             const auto                    base = current_coin.coinpaprika_id;
             const price_converter_request request{.base_currency_id = base, .quote_currency_id = fiat};
-            auto                          answer = price_converter(request);
-
-            retry(answer, request, [&answer](const price_converter_request& request) { answer = price_converter(request); });
-
-            if (answer.raw_result.find("error") == std::string::npos)
-            {
-                if (not answer.price.empty())
-                {
-                    rate_providers.insert_or_assign(current_coin.ticker, answer.price);
-                }
-            }
-            else
-                rate_providers.insert_or_assign(current_coin.ticker, "0.00");
+            process_async_price_converter(request, current_coin, rate_providers, std::move(idx), dispatcher);
         }
         else
         {
@@ -199,7 +303,6 @@ namespace atomic_dex
 
                 std::vector<std::future<void>> out_fut;
 
-                out_fut.reserve(coins.size() * 6);
                 async_fetch_fiat_rates().then([this](web::http::http_response resp) { this->m_other_fiats_rates = process_fetch_fiat_answer(resp); });
                 for (auto&& current_coin: coins)
                 {
@@ -207,20 +310,19 @@ namespace atomic_dex
                     {
                         continue;
                     }
-                    out_fut.push_back(spawn([this, cur_coin = current_coin]() { process_ticker_infos(cur_coin, this->m_ticker_infos_registry); }));
-                    out_fut.push_back(spawn([this, cur_coin = current_coin]() { process_ticker_historical(cur_coin, this->m_ticker_historical_registry); }));
-                    out_fut.push_back(spawn([this, cur_coin = current_coin]() { process_provider(cur_coin, m_usd_rate_providers, "usd-us-dollars"); }));
+                    process_ticker_infos(current_coin, this->m_ticker_infos_registry);
+                    process_ticker_historical(current_coin, this->m_ticker_historical_registry);
+                    process_provider(current_coin, m_usd_rate_providers, "usd-us-dollars");
+                    process_provider(current_coin, m_eur_rate_providers, "eur-euro");
                     if (current_coin.ticker != "BTC")
                     {
-                        out_fut.push_back(spawn([this, cur_coin = current_coin]() { process_provider(cur_coin, m_btc_rate_providers, "btc-bitcoin"); }));
+                        process_provider(current_coin, m_btc_rate_providers, "btc-bitcoin");
                     }
                     if (current_coin.ticker != "KMD")
                     {
-                        out_fut.push_back(spawn([this, cur_coin = current_coin]() { process_provider(cur_coin, m_kmd_rate_providers, "kmd-komodo"); }));
+                        process_provider(current_coin, m_kmd_rate_providers, "kmd-komodo");
                     }
-                    out_fut.push_back(spawn([this, cur_coin = current_coin]() { process_provider(cur_coin, m_eur_rate_providers, "eur-euro"); }));
                 }
-                for (auto&& cur_fut: out_fut) { cur_fut.get(); }
             } while (not m_provider_thread_timer.wait_for(120s));
         });
     }
@@ -443,29 +545,37 @@ namespace atomic_dex
     {
         spdlog::debug("{} l{} f[{}]", __FUNCTION__, __LINE__, fs::path(__FILE__).filename().string());
 
-        /*if (not this->m_other_fiats_rates->contains("rates"))
-        {
-            this->m_other_fiats_rates = fetch_fiat_rates();
-        }*/
         const auto config = m_mm2_instance.get_coin_info(evt.ticker);
-
+        auto       idx{std::make_shared<std::atomic_uint16_t>(0)};
         if (config.coinpaprika_id != "test-coin")
         {
-            spawn([config, evt, this]() {
-                process_provider(config, m_usd_rate_providers, "usd-us-dollars");
-                process_provider(config, m_eur_rate_providers, "eur-euro");
-                if (evt.ticker != "BTC")
+            process_provider(config, m_usd_rate_providers, "usd-us-dollars", idx, &this->dispatcher_);
+            process_provider(config, m_eur_rate_providers, "eur-euro", idx, &this->dispatcher_);
+            if (evt.ticker != "BTC")
+            {
+                process_provider(config, m_btc_rate_providers, "btc-bitcoin", idx, &this->dispatcher_);
+            }
+            else
+            {
+                if (idx->fetch_add(1) + 1 == g_pending_init_tasks_limit)
                 {
-                    process_provider(config, m_btc_rate_providers, "btc-bitcoin");
+                    this->dispatcher_.trigger<coin_fully_initialized>(evt.ticker);
                 }
-                if (evt.ticker != "KMD")
+            }
+            if (evt.ticker != "KMD")
+            {
+                process_provider(config, m_kmd_rate_providers, "kmd-komodo", idx, &this->dispatcher_);
+            }
+            else
+            {
+                if (idx->fetch_add(1) + 1 == g_pending_init_tasks_limit)
                 {
-                    process_provider(config, m_kmd_rate_providers, "kmd-komodo");
+                    this->dispatcher_.trigger<coin_fully_initialized>(evt.ticker);
                 }
-                process_ticker_infos(config, m_ticker_infos_registry);
-                process_ticker_historical(config, m_ticker_historical_registry);
-                this->dispatcher_.trigger<coin_fully_initialized>(evt.ticker);
-            });
+            }
+
+            process_ticker_infos(config, m_ticker_infos_registry, idx, &this->dispatcher_);
+            process_ticker_historical(config, m_ticker_historical_registry, idx, &this->dispatcher_);
         }
         else
         {
