@@ -16,7 +16,6 @@
 //! Project Headers
 #include "atomic.dex.app.hpp"
 #include "atomic.dex.kill.hpp"
-#include "atomic.dex.threadpool.hpp"
 
 #ifdef __APPLE__
 #    include "atomic.dex.osx.manager.hpp"

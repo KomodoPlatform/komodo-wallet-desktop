@@ -17,7 +17,6 @@
 //! Project Headers
 #include "atomic.dex.provider.coinpaprika.hpp"
 #include "atomic.dex.http.code.hpp"
-#include "atomic.dex.threadpool.hpp"
 
 namespace
 {
@@ -49,18 +48,6 @@ namespace
 
         spdlog::warn("unable to fetch last open rates");
         return answer;
-    }
-
-    template <typename TAnswer, typename TRequest, typename TFunctorRequest>
-    void
-    retry(TAnswer& answer, const TRequest& request, TFunctorRequest&& functor)
-    {
-        while (answer.rpc_result_code == e_http_code::too_many_requests)
-        {
-            spdlog::warn("too many requests, retrying");
-            std::this_thread::sleep_for(1s);
-            functor(request);
-        }
     }
 
     void
@@ -96,11 +83,7 @@ namespace
         std::shared_ptr<std::atomic_uint16_t> idx = nullptr, entt::dispatcher* dispatcher = nullptr)
     {
         const ticker_infos_request request{.ticker_currency_id = current_coin.coinpaprika_id, .ticker_quotes = {"USD", "EUR", "BTC"}};
-        // auto                       answer = tickers_info(request);
-
         process_async_ticker_infos(request, current_coin, reg, std::move(idx), dispatcher);
-        // retry(answer, request, [&answer](const ticker_infos_request& request) { answer = tickers_info(request); });
-        // reg.insert_or_assign(current_coin.ticker, answer);
     }
 
     void

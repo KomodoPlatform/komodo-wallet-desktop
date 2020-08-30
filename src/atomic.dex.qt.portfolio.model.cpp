@@ -22,7 +22,6 @@
 //! Project Headers
 #include "atomic.dex.qt.portfolio.model.hpp"
 #include "atomic.dex.qt.utilities.hpp"
-#include "atomic.dex.threadpool.hpp"
 
 //! Utils
 namespace

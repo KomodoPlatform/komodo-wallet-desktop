@@ -19,7 +19,6 @@
 #include "atomic.dex.mm2.hpp"
 #include "atomic.dex.provider.cex.prices.hpp"
 #include "atomic.dex.qt.utilities.hpp"
-#include "atomic.dex.threadpool.hpp"
 
 //! Consttructor / Destructor
 namespace atomic_dex

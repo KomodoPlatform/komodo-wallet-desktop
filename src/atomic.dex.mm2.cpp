@@ -19,7 +19,6 @@
 #include "atomic.dex.kill.hpp"
 #include "atomic.dex.mm2.config.hpp"
 #include "atomic.dex.security.hpp"
-#include "atomic.dex.threadpool.hpp"
 #include "atomic.dex.version.hpp"
 
 //! Anonymous functions
@@ -336,14 +335,12 @@ namespace atomic_dex
         spdlog::debug("{} l{} f[{}]", __FUNCTION__, __LINE__, fs::path(__FILE__).filename().string());
         for (const auto& ticker: tickers)
         {
-            spawn([this, ticker]() {
-                std::error_code ec;
-                disable_coin(ticker, ec);
-                if (ec)
-                {
-                    spdlog::warn("{}", ec.message());
-                }
-            });
+            std::error_code ec;
+            disable_coin(ticker, ec);
+            if (ec)
+            {
+                spdlog::warn("{}", ec.message());
+            }
         }
 
         update_coin_status(this->m_current_wallet_name, tickers, false);
