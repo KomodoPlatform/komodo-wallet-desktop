@@ -14,6 +14,9 @@
  *                                                                            *
  ******************************************************************************/
 
+#include "atomic.dex.pch.hpp"
+
+//! Project Headers
 #include "atomic.dex.provider.cex.prices.api.hpp"
 
 namespace atomic_dex

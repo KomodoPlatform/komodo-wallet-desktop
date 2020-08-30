@@ -260,7 +260,9 @@ set_target_properties(${PROJECT_NAME}_tests
         )
 
 
-target_precompile_headers(${PROJECT_NAME} PRIVATE src/atomic.dex.pch.hpp)
+if (NOT APPLE)
+    target_precompile_headers(${PROJECT_NAME} PRIVATE src/atomic.dex.pch.hpp)
+endif ()
 #target_enable_tsan(atomicDeFi_tests)
 #target_enable_asan(atomicDeFi)
 

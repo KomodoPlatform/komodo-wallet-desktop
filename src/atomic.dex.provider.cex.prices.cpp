@@ -14,6 +14,9 @@
  *                                                                            *
  ******************************************************************************/
 
+//! PCH
+#include "atomic.dex.pch.hpp"
+
 //! Project headers
 #include "atomic.dex.provider.cex.prices.hpp"
 #include "atomic.dex.provider.cex.prices.api.hpp"

@@ -14,6 +14,9 @@
  *                                                                            *
  ******************************************************************************/
 
+//! PCH
+#include "atomic.dex.pch.hpp"
+
 //! Project Headers
 #include "atomic.dex.provider.coinpaprika.hpp"
 #include "atomic.dex.http.code.hpp"

@@ -14,6 +14,9 @@
  *                                                                            *
  ******************************************************************************/
 
+//! PCH
+#include "atomic.dex.pch.hpp"
+
 //! Project Headers
 #include "atomic.dex.qt.trading.page.hpp"
 #include "atomic.dex.mm2.hpp"

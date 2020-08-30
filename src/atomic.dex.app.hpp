@@ -26,6 +26,8 @@
 #include <QTranslator>
 #include <QVariantMap>
 
+#include "atomic.dex.pch.hpp"
+
 //! Project Headers
 #include "atomic.dex.cfg.hpp"
 #include "atomic.dex.mm2.hpp"

@@ -14,6 +14,10 @@
  *                                                                            *
  ******************************************************************************/
 
+//! PCH
+#include "atomic.dex.pch.hpp"
+
+//! Project Headers
 #include "atomic.dex.qt.portfolio.proxy.filter.model.hpp"
 #include "atomic.dex.qt.portfolio.model.hpp"
 

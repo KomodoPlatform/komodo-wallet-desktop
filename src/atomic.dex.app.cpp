@@ -14,6 +14,9 @@
  *                                                                            *
  ******************************************************************************/
 
+//! PCH
+#include "atomic.dex.pch.hpp"
+
 #include <QDebug>
 #include <QJsonArray>
 #include <QJsonDocument>

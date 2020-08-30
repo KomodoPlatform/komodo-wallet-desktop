@@ -14,9 +14,10 @@
  *                                                                            *
  ******************************************************************************/
 
-#include <QQmlEngine>
+//! PCH
+#include "atomic.dex.pch.hpp"
 
-//!
+//! Project Headers
 #include "atomic.dex.qt.portfolio.page.hpp"
 
 namespace atomic_dex

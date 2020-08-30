@@ -16,8 +16,8 @@
 
 #include <taskflow/taskflow.hpp>
 
-//! QT Headers
-#include <QQmlEngine>
+//! PCH
+#include "atomic.dex.pch.hpp"
 
 //! Project Headers
 #include "atomic.dex.qt.portfolio.model.hpp"
