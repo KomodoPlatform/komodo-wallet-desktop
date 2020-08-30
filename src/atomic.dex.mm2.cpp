@@ -350,16 +350,13 @@ namespace atomic_dex
     }
 
     auto
-    mm2::batch_balance_and_tx(bool is_a_reset, std::vector<std::string> tickers, bool is_during_enabling)
+    mm2::batch_balance_and_tx(bool is_a_reset, std::string ticker, bool is_during_enabling)
     {
-        spdlog::trace("tickers size: {}", tickers.size());
+        //spdlog::trace("tickers size: {}", tickers.size());
         auto&& [batch_array, tickers_idx, erc_to_fetch] = prepare_batch_balance_and_tx();
         return ::mm2::api::async_rpc_batch_standalone(batch_array)
-            .then([this, tickers_idx = tickers_idx, erc_to_fetch = erc_to_fetch, is_a_reset, tickers, is_during_enabling](web::http::http_response resp) {
-                if (is_during_enabling)
-                {
-                    spdlog::trace("Fetching balance and tx, ticker size: {}", tickers.size());
-                }
+            .then([this, tickers_idx = tickers_idx, erc_to_fetch = erc_to_fetch, is_a_reset, ticker, is_during_enabling](web::http::http_response resp) {
+                //spdlog::trace("Fetching balance and tx, ticker size: {}", tickers.size());
                 auto answers = ::mm2::api::basic_batch_answer(resp);
                 if (not answers.contains("error"))
                 {
@@ -379,18 +376,11 @@ namespace atomic_dex
                     for (auto&& coin: erc_to_fetch) { process_tx_etherscan(coin, is_a_reset); }
                     if (is_during_enabling)
                     {
-                        if (not tickers.empty())
+                        if (not ticker.empty())
                         {
-                            spdlog::trace("size: {}", tickers.size());
-                            for (auto&& ticker: tickers)
-                            {
-                                spdlog::trace("Coinpaprika part start for ticker: {}", ticker);
-                                dispatcher_.trigger<coin_enabled>(ticker);
-                            }
-                            if (is_during_enabling)
-                            {
-                                this->dispatcher_.trigger<enabled_default_coins_event>();
-                            }
+                           spdlog::trace("Coinpaprika part start for ticker: {}", ticker);
+                           dispatcher_.trigger<coin_enabled>(ticker);
+                           this->dispatcher_.trigger<enabled_default_coins_event>();
                         }
                     }
                 }
@@ -441,6 +431,7 @@ namespace atomic_dex
             coin_config coin_info       = m_coins_informations.at(ticker);
             coin_info.currently_enabled = true;
             m_coins_informations.assign(coin_info.ticker, coin_info);
+            batch_balance_and_tx(false, coin_info.ticker, true);
         }
     }
 
@@ -486,7 +477,6 @@ namespace atomic_dex
                     if (answers.count("error") == 0)
                     {
                         for (auto&& answer: answers) { this->process_batch_enable_answer(answer); }
-                        batch_balance_and_tx(false, tickers, true);
                         //! At this point, task is finished, let's refresh.
                     }
                 })
