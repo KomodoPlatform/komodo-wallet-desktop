@@ -374,7 +374,10 @@ namespace atomic_dex
                     for (auto&& coin: erc_to_fetch) { process_tx_etherscan(coin, is_a_reset); }
                     if (not tickers.empty())
                     {
-                        for (auto&& ticker: tickers) { dispatcher_.trigger<coin_enabled>(ticker); }
+                        for (auto&& ticker: tickers) {
+                            spdlog::trace("Coinpaprika part start for ticker: {}", ticker);
+                            dispatcher_.trigger<coin_enabled>(ticker);
+                        }
                     }
 
                     if (is_during_enabling)
