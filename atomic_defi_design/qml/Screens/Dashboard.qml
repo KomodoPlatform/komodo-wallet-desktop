@@ -48,6 +48,10 @@ Item {
 
     property var portfolio_coins: API.get().portfolio_pg.portfolio_mdl.portfolio_proxy_mdl
 
+    function resetCoinFilter() {
+        portfolio_coins.setFilterFixedString("")
+    }
+
     onCurrent_pageChanged: {
         if(prev_page !== current_page) {
             // Handle DEX enter/exit

@@ -27,7 +27,10 @@ RowLayout {
         enable_coin_modal.reset()
     }
 
-    function onOpened() { }
+    function onOpened() {
+        // Reset the coin name filter
+        sidebar.reset()
+    }
 
     readonly property double button_margin: 0.05
     spacing: 0

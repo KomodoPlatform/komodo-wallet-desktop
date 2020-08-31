@@ -23,9 +23,14 @@ ColumnLayout {
     property int current_sort: sort_by_value
     property bool ascending: false
 
-    function reset() { }
+    function reset() {
+        input_coin_filter.reset()
+    }
 
-    function onOpened() { }
+    function onOpened() {
+        // Reset the coin name filter
+        input_coin_filter.reset()
+    }
 
     function updateChart(chart, historical) {
         chart.removeAllSeries()
@@ -113,8 +118,8 @@ ColumnLayout {
             id: input_coin_filter
 
             function reset() {
-                visible = false
-                text = ""
+                if(text === "") resetCoinFilter()
+                else text = ""
             }
 
             anchors.horizontalCenter: add_coin_button.horizontalCenter
@@ -125,7 +130,7 @@ ColumnLayout {
             selectByMouse: true
 
             onTextChanged: {
-                API.get().portfolio_pg.portfolio_mdl.portfolio_proxy_mdl.setFilterFixedString(text)
+                portfolio_coins.setFilterFixedString(text)
             }
 
             width: 120
