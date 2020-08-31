@@ -74,6 +74,7 @@ namespace
                     if (idx != nullptr && dispatcher != nullptr)
                     {
                         auto cur = idx->fetch_add(1) + 1;
+                        spdlog::trace("cur: {}, target size: {}, remaining before adding in the model: {}", cur, target_size, target_size - cur);
                         if (cur == target_size)
                         {
                             dispatcher->trigger<atomic_dex::coin_fully_initialized>(tickers);
@@ -120,6 +121,7 @@ namespace
                     if (idx != nullptr && dispatcher != nullptr)
                     {
                         auto cur = idx->fetch_add(1) + 1;
+                        spdlog::trace("cur: {}, target size: {}, remaining before adding in the model: {}", cur, target_size, target_size - cur);
                         if (cur == target_size)
                         {
                             dispatcher->trigger<atomic_dex::coin_fully_initialized>(tickers);
@@ -141,6 +143,7 @@ namespace
             if (idx != nullptr && dispatcher != nullptr)
             {
                 auto cur = idx->fetch_add(1) + 1;
+                spdlog::trace("cur: {}, target size: {}, remaining before adding in the model: {}", cur, target_size, target_size - cur);
                 if (cur == target_size)
                 {
                     dispatcher->trigger<atomic_dex::coin_fully_initialized>(tickers);
@@ -182,6 +185,7 @@ namespace
                     if (idx != nullptr && dispatcher != nullptr)
                     {
                         auto cur = idx->fetch_add(1) + 1;
+                        spdlog::trace("cur: {}, target size: {}, remaining before adding in the model: {}", cur, target_size, target_size - cur);
                         if (cur == target_size)
                         {
                             dispatcher->trigger<atomic_dex::coin_fully_initialized>(tickers);
@@ -549,7 +553,9 @@ namespace atomic_dex
                 }
                 else
                 {
-                    if (idx->fetch_add(1) + 1 == target_size)
+                    std::uint16_t cur = idx->fetch_add(1) + 1;
+                    spdlog::trace("cur: {}, target size: {}, remaining before adding in the model: {}", cur, target_size, target_size - cur);
+                    if (cur == target_size)
                     {
                         this->dispatcher_.trigger<coin_fully_initialized>(evt.tickers);
                     }
@@ -560,7 +566,9 @@ namespace atomic_dex
                 }
                 else
                 {
-                    if (idx->fetch_add(1) + 1 == target_size)
+                    std::uint16_t cur = idx->fetch_add(1) + 1;
+                    spdlog::trace("cur: {}, target size: {}, remaining before adding in the model: {}", cur, target_size, target_size - cur);
+                    if (cur == target_size)
                     {
                         this->dispatcher_.trigger<coin_fully_initialized>(evt.tickers);
                     }
@@ -571,7 +579,9 @@ namespace atomic_dex
             }
             else
             {
-                if (idx->fetch_add(6) + 6 == target_size)
+                std::uint16_t cur = idx->fetch_add(6) + 6;
+                spdlog::trace("cur: {}, target size: {}, remaining before adding in the model: {}", cur, target_size, target_size - cur);
+                if (cur == target_size)
                 {
                     this->dispatcher_.trigger<coin_fully_initialized>(evt.tickers);
                 }
