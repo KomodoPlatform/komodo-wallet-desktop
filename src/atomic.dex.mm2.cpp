@@ -1374,9 +1374,17 @@ namespace atomic_dex
     {
         t_balance_answer answer_r;
         ::mm2::api::from_json(answer, answer_r);
+        if (is_pin_cfg_enabled())
+        {
+            if (m_balance_informations.find(answer_r.coin) != m_balance_informations.end())
+            {
+                return;
+            }
+        }
+
         t_float_50 result = t_float_50(answer_r.balance) * m_balance_factor;
         answer_r.balance  = result.str();
-        m_balance_informations.insert_or_assign(answer_r.coin, answer);
+        m_balance_informations.insert_or_assign(answer_r.coin, answer_r);
         this->dispatcher_.trigger<ticker_balance_updated>(answer_r.coin);
     }
 
