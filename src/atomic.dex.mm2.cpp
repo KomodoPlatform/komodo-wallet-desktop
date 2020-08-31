@@ -376,15 +376,16 @@ namespace atomic_dex
                     for (auto&& coin: erc_to_fetch) { process_tx_etherscan(coin, is_a_reset); }
                     if (is_during_enabling)
                     {
-                        for (auto&& ticker: tickers)
+                        dispatcher_.trigger<coin_enabled>(tickers);
+                        /*for (auto&& ticker: tickers)
                         {
                             if (not ticker.empty())
                             {
                                 spdlog::trace("Coinpaprika part start for ticker: {}", ticker);
                                 dispatcher_.trigger<coin_enabled>(ticker);
-                                this->dispatcher_.trigger<enabled_default_coins_event>();
                             }
-                        }
+                        }*/
+                        this->dispatcher_.trigger<enabled_default_coins_event>();
                     }
                 }
             })
@@ -688,7 +689,7 @@ namespace atomic_dex
         //! If thread is not active ex: we are not on the trading page anymore, we continue sleeping.
         if (not m_orderbook_thread_active)
         {
-            spdlog::warn("Nothing todo, sleeping");
+            spdlog::warn("Nothing to achieve, sleeping");
             return;
         }
 

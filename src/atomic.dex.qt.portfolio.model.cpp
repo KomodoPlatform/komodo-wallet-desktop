@@ -61,31 +61,37 @@ namespace atomic_dex
     }
 
     void
-    atomic_dex::portfolio_model::initialize_portfolio(std::string ticker)
+    atomic_dex::portfolio_model::initialize_portfolio(const std::vector<std::string>& tickers)
     {
-        spdlog::trace("portfolio init: {}", ticker);
-        const auto& mm2_system = this->m_system_manager.get_system<mm2>();
-        const auto& paprika    = this->m_system_manager.get_system<coinpaprika_provider>();
-        auto        coin       = mm2_system.get_coin_info(ticker);
+        QVector<portfolio_data> datas;
+        for (auto&& ticker : tickers)
+        {
+            spdlog::trace("portfolio init: {}", ticker);
+            const auto& mm2_system = this->m_system_manager.get_system<mm2>();
+            const auto& paprika    = this->m_system_manager.get_system<coinpaprika_provider>();
+            auto        coin       = mm2_system.get_coin_info(ticker);
 
-        beginInsertRows(QModelIndex(), this->m_model_data.count(), this->m_model_data.count());
-        std::error_code ec;
-        const QString   change_24h = retrieve_change_24h(paprika, coin, *m_config);
-        portfolio_data  data{
-            .ticker                           = QString::fromStdString(coin.ticker),
-            .name                             = QString::fromStdString(coin.name),
-            .balance                          = QString::fromStdString(mm2_system.my_balance(coin.ticker, ec)),
-            .main_currency_balance            = QString::fromStdString(paprika.get_price_in_fiat(m_config->current_currency, coin.ticker, ec)),
-            .change_24h                       = change_24h,
-            .main_currency_price_for_one_unit = QString::fromStdString(paprika.get_rate_conversion(m_config->current_currency, coin.ticker, ec, true)),
-            .trend_7d                         = nlohmann_json_array_to_qt_json_array(paprika.get_ticker_historical(coin.ticker).answer),
-            .is_excluded                      = false,
-        };
-        data.display = data.ticker + " (" + data.balance + ")";
-        spdlog::trace(
-            "inserting ticker {} with name {} balance {} main currency balance {}", coin.ticker, coin.name, data.balance.toStdString(),
-            data.main_currency_balance.toStdString());
-        this->m_model_data.push_back(std::move(data));
+
+            std::error_code ec;
+            const QString   change_24h = retrieve_change_24h(paprika, coin, *m_config);
+            portfolio_data  data{
+                .ticker                           = QString::fromStdString(coin.ticker),
+                .name                             = QString::fromStdString(coin.name),
+                .balance                          = QString::fromStdString(mm2_system.my_balance(coin.ticker, ec)),
+                .main_currency_balance            = QString::fromStdString(paprika.get_price_in_fiat(m_config->current_currency, coin.ticker, ec)),
+                .change_24h                       = change_24h,
+                .main_currency_price_for_one_unit = QString::fromStdString(paprika.get_rate_conversion(m_config->current_currency, coin.ticker, ec, true)),
+                .trend_7d                         = nlohmann_json_array_to_qt_json_array(paprika.get_ticker_historical(coin.ticker).answer),
+                .is_excluded                      = false,
+            };
+            data.display = data.ticker + " (" + data.balance + ")";
+            spdlog::trace(
+                "inserting ticker {} with name {} balance {} main currency balance {}", coin.ticker, coin.name, data.balance.toStdString(),
+                data.main_currency_balance.toStdString());
+            datas.push_back(std::move(data));
+        }
+        beginInsertRows(QModelIndex(), this->m_model_data.count(), this->m_model_data.count() + tickers.size() - 1);
+        this->m_model_data.append(datas);
         endInsertRows();
         spdlog::trace("size of the portfolio {}", this->get_length());
         emit lengthChanged();

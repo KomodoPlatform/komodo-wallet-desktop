@@ -60,13 +60,13 @@ namespace atomic_dex
 
     struct coin_enabled
     {
-        std::string ticker;
+        std::vector<std::string> tickers;
     };
 
     //! Event when paprika fetch all the data of this specific coin
     struct coin_fully_initialized
     {
-        std::string ticker;
+        std::vector<std::string> tickers;
     };
 
     struct coin_disabled

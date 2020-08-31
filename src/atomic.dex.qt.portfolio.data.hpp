@@ -24,10 +24,10 @@ namespace atomic_dex
     struct portfolio_data
     {
         //! eg: BTC,ETH,KMD (constant)
-        const QString ticker;
+        QString ticker;
 
         //! eg: Bitcoin
-        const QString name;
+        QString name;
 
         //! eg: 1
         QString balance;
