@@ -90,16 +90,16 @@ DefaultModal {
         return qsTr(
 "<h2>This End-User License Agreement ('EULA') is a legal agreement between you and Komodo Platform.</h2>
 
-<p>This EULA agreement governs your acquisition and use of our atomicDeFi Pro software ('Software', 'Mobile Application', 'Application' or 'App') directly from Komodo Platform or indirectly through a Komodo Platform authorized entity, reseller or distributor (a 'Distributor').</p>
-<p>Please read this EULA agreement carefully before completing the installation process and using the atomicDeFi Pro software. It provides a license to use the atomicDeFi Pro software and contains warranty information and liability disclaimers.</p>
-<p>If you register for the beta program of the atomicDeFi Pro software, this EULA agreement will also govern that trial. By clicking 'accept' or installing and/or using the atomicDeFi Pro software, you are confirming your acceptance of the Software and agreeing to become bound by the terms of this EULA agreement.</p>
+<p>This EULA agreement governs your acquisition and use of our atomicDEX Pro software ('Software', 'Mobile Application', 'Application' or 'App') directly from Komodo Platform or indirectly through a Komodo Platform authorized entity, reseller or distributor (a 'Distributor').</p>
+<p>Please read this EULA agreement carefully before completing the installation process and using the atomicDEX Pro software. It provides a license to use the atomicDEX Pro software and contains warranty information and liability disclaimers.</p>
+<p>If you register for the beta program of the atomicDEX Pro software, this EULA agreement will also govern that trial. By clicking 'accept' or installing and/or using the atomicDEX Pro software, you are confirming your acceptance of the Software and agreeing to become bound by the terms of this EULA agreement.</p>
 <p>If you are entering into this EULA agreement on behalf of a company or other legal entity, you represent that you have the authority to bind such entity and its affiliates to these terms and conditions. If you do not have such authority or if you do not agree with the terms and conditions of this EULA agreement, do not install or use the Software, and you must not accept this EULA agreement.</p>
 <p>This EULA agreement shall apply only to the Software supplied by Komodo Platform herewith regardless of whether other software is referred to or described herein. The terms also apply to any Komodo Platform updates, supplements, Internet-based services, and support services for the Software, unless other terms accompany those items on delivery. If so, those terms apply.</p>
 
 <h3>License Grant</h3>
-<p>Komodo Platform hereby grants you a personal, non-transferable, non-exclusive licence to use the atomicDeFi Pro software on your devices in accordance with the terms of this EULA agreement.</p>
+<p>Komodo Platform hereby grants you a personal, non-transferable, non-exclusive licence to use the atomicDEX Pro software on your devices in accordance with the terms of this EULA agreement.</p>
 
-<p>You are permitted to load the atomicDeFi Pro software (for example a PC, laptop, mobile or tablet) under your control. You are responsible for ensuring your device meets the minimum security and resource requirements of the atomicDeFi Pro software.</p>
+<p>You are permitted to load the atomicDEX Pro software (for example a PC, laptop, mobile or tablet) under your control. You are responsible for ensuring your device meets the minimum security and resource requirements of the atomicDEX Pro software.</p>
 
 <p><b>You are not permitted to:</b></p>
 <ul>
