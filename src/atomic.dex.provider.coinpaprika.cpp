@@ -58,26 +58,30 @@ namespace
         const ticker_infos_request& request, const atomic_dex::coin_config& current_coin, atomic_dex::coinpaprika_provider::t_ticker_infos_registry& reg,
         std::shared_ptr<std::atomic_uint16_t> idx, entt::dispatcher* dispatcher, std::uint16_t target_size, std::vector<std::string> tickers)
     {
-        async_ticker_info(request).then([request, current_coin, &reg, idx, dispatcher, target_size, tickers](web::http::http_response resp) {
-            auto answer = process_generic_resp<ticker_info_answer>(resp);
-            if (answer.rpc_result_code == e_http_code::too_many_requests)
-            {
-                std::this_thread::sleep_for(1s);
-                process_async_ticker_infos(request, current_coin, reg, std::move(idx), dispatcher, target_size, tickers);
-            }
-            else
-            {
-                reg.insert_or_assign(current_coin.ticker, answer);
-                if (idx != nullptr && dispatcher != nullptr)
+        spdlog::trace("async ticker info started");
+        async_ticker_info(request)
+            .then([request, current_coin, &reg, idx, dispatcher, target_size, tickers](web::http::http_response resp) {
+                auto answer = process_generic_resp<ticker_info_answer>(resp);
+                spdlog::trace("async ticker info finished");
+                if (answer.rpc_result_code == e_http_code::too_many_requests)
                 {
-                    auto cur = idx->fetch_add(1) + 1;
-                    if (cur == target_size)
+                    std::this_thread::sleep_for(1s);
+                    process_async_ticker_infos(request, current_coin, reg, std::move(idx), dispatcher, target_size, tickers);
+                }
+                else
+                {
+                    reg.insert_or_assign(current_coin.ticker, answer);
+                    if (idx != nullptr && dispatcher != nullptr)
                     {
-                        dispatcher->trigger<atomic_dex::coin_fully_initialized>(tickers);
+                        auto cur = idx->fetch_add(1) + 1;
+                        if (cur == target_size)
+                        {
+                            dispatcher->trigger<atomic_dex::coin_fully_initialized>(tickers);
+                        }
                     }
                 }
-            }
-        });
+            })
+            .then(&handle_exception_pplx_task);
     }
 
     void
@@ -96,30 +100,34 @@ namespace
         atomic_dex::coinpaprika_provider::t_ticker_historical_registry& reg, std::shared_ptr<std::atomic_uint16_t> idx, entt::dispatcher* dispatcher,
         std::uint16_t target_size, std::vector<std::string> tickers)
     {
-        async_ticker_historical(request).then([request, current_coin, &reg, idx, dispatcher, target_size, tickers](web::http::http_response resp) {
-            auto answer = process_generic_resp<ticker_historical_answer>(resp);
-            if (answer.rpc_result_code == e_http_code::too_many_requests)
-            {
-                std::this_thread::sleep_for(1s);
-                process_async_ticker_historical(request, current_coin, reg, std::move(idx), dispatcher, target_size, tickers);
-            }
-            else
-            {
-                if (answer.raw_result.find("error") == std::string::npos)
+        spdlog::trace("async ticker historical started");
+        async_ticker_historical(request)
+            .then([request, current_coin, &reg, idx, dispatcher, target_size, tickers](web::http::http_response resp) {
+                auto answer = process_generic_resp<ticker_historical_answer>(resp);
+                spdlog::trace("async ticker historical finished");
+                if (answer.rpc_result_code == e_http_code::too_many_requests)
                 {
-                    reg.insert_or_assign(current_coin.ticker, answer);
+                    std::this_thread::sleep_for(1s);
+                    process_async_ticker_historical(request, current_coin, reg, std::move(idx), dispatcher, target_size, tickers);
                 }
-
-                if (idx != nullptr && dispatcher != nullptr)
+                else
                 {
-                    auto cur = idx->fetch_add(1) + 1;
-                    if (cur == target_size)
+                    if (answer.raw_result.find("error") == std::string::npos)
                     {
-                        dispatcher->trigger<atomic_dex::coin_fully_initialized>(tickers);
+                        reg.insert_or_assign(current_coin.ticker, answer);
+                    }
+
+                    if (idx != nullptr && dispatcher != nullptr)
+                    {
+                        auto cur = idx->fetch_add(1) + 1;
+                        if (cur == target_size)
+                        {
+                            dispatcher->trigger<atomic_dex::coin_fully_initialized>(tickers);
+                        }
                     }
                 }
-            }
-        });
+            })
+            .then(&handle_exception_pplx_task);
     }
 
     void
@@ -150,8 +158,10 @@ namespace
         const price_converter_request& request, atomic_dex::coin_config current_coin, Provider& rate_providers, std::shared_ptr<std::atomic_uint16_t> idx,
         entt::dispatcher* dispatcher, std::uint16_t target_size, std::vector<std::string> tickers)
     {
+        spdlog::trace("async price converter started");
         async_price_converter(request)
             .then([request, &rate_providers, current_coin, idx, dispatcher, target_size, tickers](web::http::http_response resp) {
+                spdlog::trace("async price converter finished");
                 auto answer = process_generic_resp<price_converter_answer>(resp);
                 if (answer.rpc_result_code == e_http_code::too_many_requests)
                 {
