@@ -1034,9 +1034,10 @@ namespace atomic_dex
         spdlog::trace("{} l{}", __FUNCTION__, __LINE__);
         if (not m_event_actions[events_action::about_to_exit_app])
         {
-            this->m_actions_queue.push(action::refresh_portfolio_ticker_balance);
+            get_portfolio_page()->get_portfolio()->update_balance_values(evt.ticker);
+            //this->m_actions_queue.push(action::refresh_portfolio_ticker_balance);
         }
-        *this->m_ticker_balance_to_refresh = evt.ticker;
+        //*this->m_ticker_balance_to_refresh = evt.ticker;
     }
 } // namespace atomic_dex
 
