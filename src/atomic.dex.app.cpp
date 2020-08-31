@@ -287,12 +287,6 @@ namespace atomic_dex
                     refresh_transactions(mm2);
                 }
                 break;
-            case action::refresh_portfolio_ticker_balance:
-                if (mm2.is_mm2_running())
-                {
-                    system_manager_.get_system<portfolio_page>().get_portfolio()->update_balance_values(*m_ticker_balance_to_refresh);
-                }
-                break;
             case action::post_process_orders_finished:
                 if (mm2.is_mm2_running())
                 {
@@ -408,7 +402,6 @@ namespace atomic_dex
             {"update_needed", false}, {"changelog", ""}, {"current_version", ""}, {"download_url", ""}, {"new_version", ""}, {"rpc_code", 0}, {"status", ""}}),
         m_coin_info(new current_coin_info(dispatcher_, this)), m_manager_models{
                                                                    {"addressbook", new addressbook_model(this->m_wallet_manager, this)},
-                                                                   //{"portfolio", new portfolio_model(this->system_manager_, this->dispatcher_, this)},
                                                                    {"orders", new orders_model(this->system_manager_, this->dispatcher_, this)},
                                                                    {"internet_service",
                                                                     std::addressof(system_manager_.create_system<internet_service_checker>(this))},
@@ -420,7 +413,6 @@ namespace atomic_dex
         auto& settings_page_system = system_manager_.create_system<settings_page>(m_app, this);
         auto& portfolio_system     = system_manager_.create_system<portfolio_page>(system_manager_, dispatcher_, this);
         portfolio_system.get_portfolio()->set_cfg(settings_page_system.get_cfg());
-        // get_portfolio()->set_cfg(settings_page_system.get_cfg());
 
         system_manager_.create_system<coinpaprika_provider>(mm2_system, settings_page_system.get_cfg());
         system_manager_.create_system<cex_prices_provider>(mm2_system);
@@ -1035,9 +1027,7 @@ namespace atomic_dex
         if (not m_event_actions[events_action::about_to_exit_app])
         {
             get_portfolio_page()->get_portfolio()->update_balance_values(evt.ticker);
-            //this->m_actions_queue.push(action::refresh_portfolio_ticker_balance);
         }
-        //*this->m_ticker_balance_to_refresh = evt.ticker;
     }
 } // namespace atomic_dex
 

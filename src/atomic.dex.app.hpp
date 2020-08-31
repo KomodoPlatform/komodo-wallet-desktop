@@ -94,7 +94,6 @@ namespace atomic_dex
         //! Private typedefs
         using t_actions_queue                       = boost::lockfree::queue<action>;
         using t_portfolio_coins_to_initialize_queue = boost::lockfree::queue<const char*>;
-        using t_synchronized_string                 = boost::synchronized_value<std::string>;
         using t_manager_model_registry              = std::unordered_map<std::string, QObject*>;
         using t_events_actions                      = std::array<std::atomic_bool, events_action::size>;
 
@@ -103,7 +102,6 @@ namespace atomic_dex
         atomic_dex::qt_wallet_manager         m_wallet_manager;
         t_actions_queue                       m_actions_queue{g_max_actions_size};
         t_portfolio_coins_to_initialize_queue m_portfolio_queue{g_max_actions_size};
-        t_synchronized_string                 m_ticker_balance_to_refresh;
         QVariantList                          m_enabled_coins;
         QVariantList                          m_enableable_coins;
         QVariant                              m_update_status;
