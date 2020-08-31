@@ -274,9 +274,7 @@ QtObject {
         if(prevent_coin_disabling.running)
             return false
 
-        if(API.get().enabled_coins.length <= 2 ||
-                ticker === "KMD" ||
-                ticker === "BTC") return false
+        if(ticker === "KMD" || ticker === "BTC") return false
 
         if(ticker === "ETH") return !General.isEthNeeded()
 
