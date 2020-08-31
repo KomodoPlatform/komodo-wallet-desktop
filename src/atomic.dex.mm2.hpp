@@ -87,6 +87,7 @@ namespace atomic_dex
 
         //! Client
         std::shared_ptr<t_http_client> m_mm2_client{nullptr};
+        pplx::cancellation_token_source m_token_source;
         //! Process
         reproc::process m_mm2_instance;
 

@@ -173,6 +173,7 @@ namespace atomic_dex
 
     mm2::~mm2() noexcept
     {
+        m_token_source.cancel();
         m_mm2_running = false;
 
 #if defined(_WIN32) || defined(WIN32)
@@ -354,7 +355,7 @@ namespace atomic_dex
     {
         // spdlog::trace("tickers size: {}", tickers.size());
         auto&& [batch_array, tickers_idx, erc_to_fetch] = prepare_batch_balance_and_tx();
-        return ::mm2::api::async_rpc_batch_standalone(batch_array, m_mm2_client)
+        return ::mm2::api::async_rpc_batch_standalone(batch_array, m_mm2_client, m_token_source.get_token())
             .then([this, tickers_idx = tickers_idx, erc_to_fetch = erc_to_fetch, is_a_reset, tickers, is_during_enabling](web::http::http_response resp) {
                 // spdlog::trace("Fetching balance and tx, ticker size: {}", tickers.size());
                 auto answers = ::mm2::api::basic_batch_answer(resp);
@@ -488,7 +489,7 @@ namespace atomic_dex
         }
 
         auto functor = [this](nlohmann::json batch_array, std::vector<std::string> tickers) {
-            ::mm2::api::async_rpc_batch_standalone(batch_array, this->m_mm2_client)
+            ::mm2::api::async_rpc_batch_standalone(batch_array, this->m_mm2_client, m_token_source.get_token())
                 .then([this, tickers](web::http::http_response resp) {
                     spdlog::trace("Enabling coin finished");
                     auto answers = ::mm2::api::basic_batch_answer(resp);
@@ -593,7 +594,7 @@ namespace atomic_dex
         }
         auto&& [orderbook_ticker_base, orderbook_ticker_rel] = m_synchronized_ticker_pair.get();
 
-        ::mm2::api::async_rpc_batch_standalone(batch, m_mm2_client)
+        ::mm2::api::async_rpc_batch_standalone(batch, m_mm2_client, m_token_source.get_token())
             .then(
                 [this, orderbook_ticker_base = orderbook_ticker_base, orderbook_ticker_rel = orderbook_ticker_rel, is_a_reset](web::http::http_response resp) {
                     auto answer = ::mm2::api::basic_batch_answer(resp);
@@ -647,7 +648,7 @@ namespace atomic_dex
             return;
         auto&& [base, rel] = m_synchronized_ticker_pair.get();
 
-        ::mm2::api::async_rpc_batch_standalone(batch, m_mm2_client)
+        ::mm2::api::async_rpc_batch_standalone(batch, m_mm2_client, m_token_source.get_token())
             .then([this, is_a_reset, base = base, rel = rel](web::http::http_response resp) {
                 auto answer = ::mm2::api::basic_batch_answer(resp);
                 if (answer.is_array())
@@ -896,7 +897,7 @@ namespace atomic_dex
         t_my_recent_swaps_request request{.limit = total > 0 ? total : 50};
         to_json(my_swaps, request);
         batch.push_back(my_swaps);
-        ::mm2::api::async_rpc_batch_standalone(batch, m_mm2_client)
+        ::mm2::api::async_rpc_batch_standalone(batch, m_mm2_client, m_token_source.get_token())
             .then([this](web::http::http_response resp) {
                 auto answers          = ::mm2::api::basic_batch_answer(resp);
                 auto my_orders_answer = ::mm2::api::rpc_process_answer_batch<t_my_orders_answer>(answers[0], "my_orders");

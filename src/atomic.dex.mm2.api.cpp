@@ -1104,14 +1104,14 @@ namespace mm2::api
     }
 
     pplx::task<web::http::http_response>
-    async_rpc_batch_standalone(nlohmann::json batch_array, std::shared_ptr<t_http_client> mm2_http_client)
+    async_rpc_batch_standalone(nlohmann::json batch_array, std::shared_ptr<t_http_client> mm2_http_client, pplx::cancellation_token token)
     {
         if (mm2_http_client != nullptr)
         {
             web::http::http_request request;
             request.set_method(web::http::methods::POST);
             request.set_body(batch_array.dump());
-            auto resp = mm2_http_client->request(request);
+            auto resp = mm2_http_client->request(request, token);
             return resp;
         }
         return {};

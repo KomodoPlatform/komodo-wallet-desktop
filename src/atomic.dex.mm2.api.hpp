@@ -34,7 +34,7 @@ namespace mm2::api
     }
 
     nlohmann::json                       rpc_batch_standalone(nlohmann::json batch_array, std::shared_ptr<t_http_client> mm2_client);
-    pplx::task<web::http::http_response> async_rpc_batch_standalone(nlohmann::json batch_array, std::shared_ptr<t_http_client> mm2_client);
+    pplx::task<web::http::http_response> async_rpc_batch_standalone(nlohmann::json batch_array, std::shared_ptr<t_http_client> mm2_client, pplx::cancellation_token token);
     nlohmann::json                       basic_batch_answer(const web::http::http_response& resp);
 
     std::string rpc_version();
