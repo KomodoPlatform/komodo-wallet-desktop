@@ -276,7 +276,7 @@ jobs:
           cd ci_tools_atomic_dex
           nimble build -y
           ./ci_tools_atomic_dex bundle release --osx_sdk=$HOME/sdk/MacOSX10.13.sdk --compiler=/usr/local/opt/llvm@9/bin/clang++
-          ls bundle-Release/atomicDefi.dmg
+          ls bundle-Release/atomicDexPro.dmg
 
       - name: Running Tests (MacOS)
         env: # Or as an environment variable
