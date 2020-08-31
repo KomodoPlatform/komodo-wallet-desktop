@@ -69,7 +69,6 @@ namespace atomic_dex
         {
             if (m_ticker_registry.find(ticker) != m_ticker_registry.end())
                 continue;
-            spdlog::trace("portfolio init: {}", ticker);
             const auto& mm2_system = this->m_system_manager.get_system<mm2>();
             const auto& paprika    = this->m_system_manager.get_system<coinpaprika_provider>();
             auto        coin       = mm2_system.get_coin_info(ticker);

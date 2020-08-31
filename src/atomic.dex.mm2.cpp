@@ -378,14 +378,6 @@ namespace atomic_dex
                     if (is_during_enabling)
                     {
                         dispatcher_.trigger<coin_enabled>(tickers);
-                        /*for (auto&& ticker: tickers)
-                        {
-                            if (not ticker.empty())
-                            {
-                                spdlog::trace("Coinpaprika part start for ticker: {}", ticker);
-                                dispatcher_.trigger<coin_enabled>(ticker);
-                            }
-                        }*/
                         this->dispatcher_.trigger<enabled_default_coins_event>();
                     }
                 }
@@ -427,7 +419,7 @@ namespace atomic_dex
         return std::make_tuple(batch_array, tickers_idx, erc_to_fetch);
     }
 
-    void
+    bool
     mm2::process_batch_enable_answer(const json& answer)
     {
         if (answer.count("coin") == 1)
@@ -436,7 +428,9 @@ namespace atomic_dex
             coin_config coin_info       = m_coins_informations.at(ticker);
             coin_info.currently_enabled = true;
             m_coins_informations.assign(coin_info.ticker, coin_info);
+            return true;
         }
+        return false;
     }
 
     void
@@ -490,14 +484,24 @@ namespace atomic_dex
 
         auto functor = [this](nlohmann::json batch_array, std::vector<std::string> tickers) {
             ::mm2::api::async_rpc_batch_standalone(batch_array, this->m_mm2_client, m_token_source.get_token())
-                .then([this, tickers](web::http::http_response resp) {
+                .then([this, tickers](web::http::http_response resp) mutable {
                     spdlog::trace("Enabling coin finished");
                     auto answers = ::mm2::api::basic_batch_answer(resp);
                     spdlog::trace("Enabling coin parsed");
 
                     if (answers.count("error") == 0)
                     {
-                        for (auto&& answer: answers) { this->process_batch_enable_answer(answer); }
+                        std::size_t idx = 0;
+                        for (auto&& answer: answers)
+                        {
+                            bool res = this->process_batch_enable_answer(answer);
+                            if (not res)
+                            {
+                                spdlog::trace("bad answer for: {}, removing it from enabling", tickers[idx]);
+                                tickers.erase(tickers.begin() + idx);
+                            }
+                            ++idx;
+                        }
                         batch_balance_and_tx(false, tickers, true);
                         //! At this point, task is finished, let's refresh.
                     }
