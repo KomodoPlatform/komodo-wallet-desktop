@@ -451,9 +451,11 @@ namespace atomic_dex
     application::on_coin_fully_initialized_event(const coin_fully_initialized& evt) noexcept
     {
         //! This event is called when a call is enabled and cex provider finished fetch datas
-        spdlog::debug("{} l{}", __FUNCTION__, __LINE__);
-        for (auto&& ticker: evt.tickers) { m_portfolio_queue.push(strdup(ticker.c_str())); }
-        // m_portfolio_queue.push(strdup(evt.ticker.c_str()));
+        if (not m_event_actions[events_action::about_to_exit_app])
+        {
+            spdlog::debug("{} l{}", __FUNCTION__, __LINE__);
+            for (auto&& ticker: evt.tickers) { m_portfolio_queue.push(strdup(ticker.c_str())); }
+        }
     }
 
     void
