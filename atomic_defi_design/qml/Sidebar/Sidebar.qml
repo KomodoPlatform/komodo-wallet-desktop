@@ -122,7 +122,7 @@ Item {
 
         DefaultImage {
             id: app_logo
-            source: General.image_path + Style.sidebar_atomicdefi_logo
+            source: General.image_path + Style.sidebar_atomicdex_logo
             anchors.horizontalCenter: parent.horizontalCenter
             y: parent.width * 0.25
             transformOrigin: Item.Center

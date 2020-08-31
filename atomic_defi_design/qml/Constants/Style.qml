@@ -57,7 +57,7 @@ QtObject {
 
     property bool dark_theme: true
 
-    readonly property string sidebar_atomicdefi_logo: dark_theme ? "atomicdefi-logo.svg" : "atomicdefi-logo-dark.svg"
+    readonly property string sidebar_atomicdex_logo: dark_theme ? "atomicdex-logo.svg" : "atomicdex-logo-dark.svg"
     readonly property string colorRed: dark_theme ? "#D13990" : "#D13990"
     readonly property string colorRed2:  dark_theme ? "#b61477" : "#b61477"
     readonly property string colorRed3:  dark_theme ? "#41072a" : "#41072a"

@@ -94,7 +94,7 @@ FloatingBackground {
             showApp()
         }
 
-        tooltip: qsTr("atomicDeFi Pro")
+        tooltip: qsTr("atomicDEX Pro")
 
         onActivated: showApp()
     }
