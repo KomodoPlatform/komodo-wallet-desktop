@@ -23,18 +23,8 @@ namespace mm2::api
 {
     inline constexpr const char*                           g_endpoint                 = "http://127.0.0.1:7783";
     inline constexpr const char*                           g_etherscan_proxy_endpoint = "https://komodo.live:3334";
-    inline std::unique_ptr<web::http::client::http_client> g_mm2_http_client{nullptr};
     inline std::unique_ptr<web::http::client::http_client> g_etherscan_proxy_http_client{
         std::make_unique<web::http::client::http_client>(FROM_STD_STR(g_etherscan_proxy_endpoint))};
-
-    static inline void
-    create_mm2_httpclient()
-    {
-        web::http::client::http_client_config cfg;
-        using namespace std::chrono_literals;
-        cfg.set_timeout(30s);
-        g_mm2_http_client = std::make_unique<web::http::client::http_client>(FROM_STD_STR(g_endpoint), cfg);
-    }
 
     static inline void
     reset_client()
@@ -43,8 +33,8 @@ namespace mm2::api
         // g_mm2_http_client = nullptr;
     }
 
-    nlohmann::json                       rpc_batch_standalone(nlohmann::json batch_array);
-    pplx::task<web::http::http_response> async_rpc_batch_standalone(nlohmann::json batch_array);
+    nlohmann::json                       rpc_batch_standalone(nlohmann::json batch_array, std::shared_ptr<t_http_client> mm2_client);
+    pplx::task<web::http::http_response> async_rpc_batch_standalone(nlohmann::json batch_array, std::shared_ptr<t_http_client> mm2_client);
     nlohmann::json                       basic_batch_answer(const web::http::http_response& resp);
 
     std::string rpc_version();
@@ -149,7 +139,7 @@ namespace mm2::api
 
     void from_json(const nlohmann::json& j, disable_coin_answer& resp);
 
-    disable_coin_answer rpc_disable_coin(disable_coin_request&& request);
+    disable_coin_answer rpc_disable_coin(disable_coin_request&& request, std::shared_ptr<t_http_client> mm2_client);
 
     struct recover_funds_of_swap_request
     {
@@ -178,7 +168,7 @@ namespace mm2::api
 
     void from_json(const nlohmann::json& j, recover_funds_of_swap_answer& answer);
 
-    recover_funds_of_swap_answer rpc_recover_funds(recover_funds_of_swap_request&& request);
+    recover_funds_of_swap_answer rpc_recover_funds(recover_funds_of_swap_request&& request, std::shared_ptr<t_http_client> mm2_client);
 
 
     struct balance_request
@@ -199,7 +189,7 @@ namespace mm2::api
 
     void from_json(const nlohmann::json& j, balance_answer& cfg);
 
-    balance_answer rpc_balance(balance_request&& request);
+    balance_answer rpc_balance(balance_request&& request, std::shared_ptr<t_http_client> mm2_client);
 
     struct trade_fee_request
     {
@@ -218,7 +208,7 @@ namespace mm2::api
 
     void from_json(const nlohmann::json& j, trade_fee_answer& cfg);
 
-    trade_fee_answer rpc_get_trade_fee(trade_fee_request&& req);
+    trade_fee_answer rpc_get_trade_fee(trade_fee_request&& req, std::shared_ptr<t_http_client> mm2_client);
 
     struct fee_regular_coin
     {
@@ -337,7 +327,7 @@ namespace mm2::api
 
     void from_json(const nlohmann::json& j, tx_history_answer& answer);
 
-    tx_history_answer rpc_my_tx_history(tx_history_request&& request);
+    tx_history_answer rpc_my_tx_history(tx_history_request&& request, std::shared_ptr<t_http_client> mm2_client);
 
     struct withdraw_fees
     {
@@ -370,7 +360,7 @@ namespace mm2::api
 
     void from_json(const nlohmann::json& j, withdraw_answer& answer);
 
-    withdraw_answer rpc_withdraw(withdraw_request&& request);
+    withdraw_answer rpc_withdraw(withdraw_request&& request, std::shared_ptr<t_http_client> mm2_client);
 
     struct send_raw_transaction_request
     {
@@ -389,7 +379,7 @@ namespace mm2::api
 
     void from_json(const nlohmann::json& j, send_raw_transaction_answer& answer);
 
-    send_raw_transaction_answer rpc_send_raw_transaction(send_raw_transaction_request&& request);
+    send_raw_transaction_answer rpc_send_raw_transaction(send_raw_transaction_request&& request, std::shared_ptr<t_http_client> mm2_client);
 
     struct orderbook_request
     {
@@ -441,7 +431,7 @@ namespace mm2::api
 
     void from_json(const nlohmann::json& j, orderbook_answer& answer);
 
-    orderbook_answer rpc_orderbook(orderbook_request&& request);
+    orderbook_answer rpc_orderbook(orderbook_request&& request, std::shared_ptr<t_http_client> mm2_client);
 
     struct trading_order_contents
     {
@@ -490,7 +480,7 @@ namespace mm2::api
 
     void from_json(const nlohmann::json& j, buy_answer& answer);
 
-    buy_answer rpc_buy(buy_request&& request);
+    buy_answer rpc_buy(buy_request&& request, std::shared_ptr<t_http_client> mm2_client);
 
     struct setprice_request
     {
@@ -536,7 +526,7 @@ namespace mm2::api
 
     void from_json(const nlohmann::json& j, sell_answer& answer);
 
-    sell_answer rpc_sell(sell_request&& request);
+    sell_answer rpc_sell(sell_request&& request, std::shared_ptr<t_http_client> mm2_client);
 
     struct cancel_order_request
     {
@@ -555,7 +545,7 @@ namespace mm2::api
 
     void from_json(const nlohmann::json& j, cancel_order_answer& answer);
 
-    cancel_order_answer rpc_cancel_order(cancel_order_request&& request);
+    cancel_order_answer rpc_cancel_order(cancel_order_request&& request, std::shared_ptr<t_http_client> mm2_client);
 
     struct cancel_data
     {
@@ -593,7 +583,7 @@ namespace mm2::api
 
     void from_json(const nlohmann::json& j, cancel_all_orders_answer& answer);
 
-    cancel_all_orders_answer rpc_cancel_all_orders(cancel_all_orders_request&& request);
+    cancel_all_orders_answer rpc_cancel_all_orders(cancel_all_orders_request&& request, std::shared_ptr<t_http_client> mm2_client);
 
     struct my_order_contents
     {
@@ -621,7 +611,7 @@ namespace mm2::api
 
     void from_json(const nlohmann::json& j, my_orders_answer& answer);
 
-    my_orders_answer rpc_my_orders() noexcept;
+    my_orders_answer rpc_my_orders(std::shared_ptr<t_http_client> mm2_client) noexcept;
 
     struct my_recent_swaps_request
     {
@@ -712,7 +702,7 @@ namespace mm2::api
 
     void from_json(const nlohmann::json& j, my_recent_swaps_answer& answer);
 
-    my_recent_swaps_answer rpc_my_recent_swaps(my_recent_swaps_request&& request);
+    my_recent_swaps_answer rpc_my_recent_swaps(my_recent_swaps_request&& request, std::shared_ptr<t_http_client> mm2_client);
 
     struct kmd_rewards_info_answer
     {
@@ -720,10 +710,10 @@ namespace mm2::api
         int            rpc_result_code;
     };
 
-    kmd_rewards_info_answer rpc_kmd_rewards_info();
+    kmd_rewards_info_answer rpc_kmd_rewards_info(std::shared_ptr<t_http_client> mm2_client);
 
-    nlohmann::json rpc_batch_electrum(std::vector<electrum_request> requests);
-    nlohmann::json rpc_batch_enable(std::vector<enable_request> requests);
+    nlohmann::json rpc_batch_electrum(std::vector<electrum_request> requests, std::shared_ptr<t_http_client> mm2_client);
+    nlohmann::json rpc_batch_enable(std::vector<enable_request> requests, std::shared_ptr<t_http_client> mm2_client);
 
     template <typename T>
     using have_error_field = decltype(std::declval<T&>().error.has_value());
@@ -831,7 +821,7 @@ namespace mm2::api
     nlohmann::json template_request(std::string method_name) noexcept;
 
     template <typename TRequest, typename TAnswer>
-    TAnswer static process_rpc(TRequest&& request, std::string rpc_command);
+    TAnswer static process_rpc(TRequest&& request, std::string rpc_command, std::shared_ptr<t_http_client> http_mm2_client);
 
     void               set_rpc_password(std::string rpc_password) noexcept;
     const std::string& get_rpc_password() noexcept;

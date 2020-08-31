@@ -185,7 +185,7 @@ namespace atomic_dex
         Q_INVOKABLE static void    change_state(int visibility);
 
         //! Portfolio QML API Bindings
-        Q_INVOKABLE static QString recover_fund(const QString& uuid);
+        Q_INVOKABLE QString recover_fund(const QString& uuid);
         Q_INVOKABLE QObject* prepare_send(const QString& address, const QString& amount, bool max = false);
         Q_INVOKABLE QObject* prepare_send_fees(
             const QString& address, const QString& amount, bool is_erc_20, const QString& fees_amount, const QString& gas_price, const QString& gas,

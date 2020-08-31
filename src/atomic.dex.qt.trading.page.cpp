@@ -122,7 +122,8 @@ namespace atomic_dex
         batch.push_back(cancel_request);
         nlohmann::json my_orders_request = ::mm2::api::template_request("my_orders");
         batch.push_back(my_orders_request);
-        ::mm2::api::async_rpc_batch_standalone(batch)
+        auto&     mm2_system = m_system_manager.get_system<mm2>();
+        ::mm2::api::async_rpc_batch_standalone(batch, mm2_system.get_mm2_client())
             .then([this](web::http::http_response resp) {
                 auto& mm2_system       = m_system_manager.get_system<mm2>();
                 auto  answers          = ::mm2::api::basic_batch_answer(resp);
@@ -155,7 +156,8 @@ namespace atomic_dex
         batch.push_back(cancel_request);
         nlohmann::json my_orders_request = ::mm2::api::template_request("my_orders");
         batch.push_back(my_orders_request);
-        ::mm2::api::async_rpc_batch_standalone(batch)
+        auto&     mm2_system = m_system_manager.get_system<mm2>();
+        ::mm2::api::async_rpc_batch_standalone(batch, mm2_system.get_mm2_client())
             .then([this](web::http::http_response resp) {
                 auto& mm2_system       = m_system_manager.get_system<mm2>();
                 auto  answers          = ::mm2::api::basic_batch_answer(resp);

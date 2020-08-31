@@ -100,9 +100,9 @@ namespace mm2::api
 
     //! Rpc Call
     max_taker_vol_answer
-    rpc_max_taker_vol(max_taker_vol_request&& request)
+    rpc_max_taker_vol(max_taker_vol_request&& request, std::shared_ptr<t_http_client> mm2_client)
     {
-        return process_rpc<max_taker_vol_request, max_taker_vol_answer>(std::forward<max_taker_vol_request>(request), "max_taker_vol");
+        return process_rpc<max_taker_vol_request, max_taker_vol_answer>(std::forward<max_taker_vol_request>(request), "max_taker_vol", mm2_client);
     }
 } // namespace mm2::api
 
@@ -900,113 +900,113 @@ namespace mm2::api
     }
 
     my_recent_swaps_answer
-    rpc_my_recent_swaps(my_recent_swaps_request&& request)
+    rpc_my_recent_swaps(my_recent_swaps_request&& request, std::shared_ptr<t_http_client> mm2_client)
     {
-        return process_rpc<my_recent_swaps_request, my_recent_swaps_answer>(std::forward<my_recent_swaps_request>(request), "my_recent_swaps");
+        return process_rpc<my_recent_swaps_request, my_recent_swaps_answer>(std::forward<my_recent_swaps_request>(request), "my_recent_swaps", mm2_client);
     }
 
     enable_answer
-    rpc_enable(enable_request&& request)
+    rpc_enable(enable_request&& request, std::shared_ptr<t_http_client> mm2_client)
     {
-        return process_rpc<enable_request, enable_answer>(std::forward<enable_request>(request), "enable");
+        return process_rpc<enable_request, enable_answer>(std::forward<enable_request>(request), "enable", mm2_client);
     }
 
     electrum_answer
-    rpc_electrum(electrum_request&& request)
+    rpc_electrum(electrum_request&& request, std::shared_ptr<t_http_client> mm2_client)
     {
-        return process_rpc<electrum_request, electrum_answer>(std::forward<electrum_request>(request), "electrum");
+        return process_rpc<electrum_request, electrum_answer>(std::forward<electrum_request>(request), "electrum", mm2_client);
     }
 
     balance_answer
-    rpc_balance(balance_request&& request)
+    rpc_balance(balance_request&& request, std::shared_ptr<t_http_client> mm2_client)
     {
-        return process_rpc<balance_request, balance_answer>(std::forward<balance_request>(request), "my_balance");
+        return process_rpc<balance_request, balance_answer>(std::forward<balance_request>(request), "my_balance", mm2_client);
     }
 
     tx_history_answer
-    rpc_my_tx_history(tx_history_request&& request)
+    rpc_my_tx_history(tx_history_request&& request, std::shared_ptr<t_http_client> mm2_client)
     {
-        return process_rpc<tx_history_request, tx_history_answer>(std::forward<tx_history_request>(request), "my_tx_history");
+        return process_rpc<tx_history_request, tx_history_answer>(std::forward<tx_history_request>(request), "my_tx_history", mm2_client);
     }
 
     withdraw_answer
-    rpc_withdraw(withdraw_request&& request)
+    rpc_withdraw(withdraw_request&& request, std::shared_ptr<t_http_client> mm2_client)
     {
-        return process_rpc<withdraw_request, withdraw_answer>(std::forward<withdraw_request>(request), "withdraw");
+        return process_rpc<withdraw_request, withdraw_answer>(std::forward<withdraw_request>(request), "withdraw", mm2_client);
     }
 
     send_raw_transaction_answer
-    rpc_send_raw_transaction(send_raw_transaction_request&& request)
+    rpc_send_raw_transaction(send_raw_transaction_request&& request, std::shared_ptr<t_http_client> mm2_client)
     {
         using atomic_dex::t_broadcast_answer;
         using atomic_dex::t_broadcast_request;
 
-        return process_rpc<t_broadcast_request, t_broadcast_answer>(std::forward<t_broadcast_request>(request), "send_raw_transaction");
+        return process_rpc<t_broadcast_request, t_broadcast_answer>(std::forward<t_broadcast_request>(request), "send_raw_transaction", mm2_client);
     }
 
     trade_fee_answer
-    rpc_get_trade_fee(trade_fee_request&& req)
+    rpc_get_trade_fee(trade_fee_request&& req, std::shared_ptr<t_http_client> mm2_client)
     {
-        return process_rpc<trade_fee_request, trade_fee_answer>(std::forward<trade_fee_request>(req), "get_trade_fee");
+        return process_rpc<trade_fee_request, trade_fee_answer>(std::forward<trade_fee_request>(req), "get_trade_fee", mm2_client);
     }
 
     orderbook_answer
-    rpc_orderbook(orderbook_request&& request)
+    rpc_orderbook(orderbook_request&& request, std::shared_ptr<t_http_client> mm2_client)
     {
-        return process_rpc<orderbook_request, orderbook_answer>(std::forward<orderbook_request>(request), "orderbook");
+        return process_rpc<orderbook_request, orderbook_answer>(std::forward<orderbook_request>(request), "orderbook", mm2_client);
     }
 
     buy_answer
-    rpc_buy(buy_request&& request)
+    rpc_buy(buy_request&& request, std::shared_ptr<t_http_client> mm2_client)
     {
-        return process_rpc<buy_request, buy_answer>(std::forward<buy_request>(request), "buy");
+        return process_rpc<buy_request, buy_answer>(std::forward<buy_request>(request), "buy", mm2_client);
     }
 
     sell_answer
-    rpc_sell(sell_request&& request)
+    rpc_sell(sell_request&& request, std::shared_ptr<t_http_client> mm2_client)
     {
-        return process_rpc<sell_request, sell_answer>(std::forward<sell_request>(request), "sell");
+        return process_rpc<sell_request, sell_answer>(std::forward<sell_request>(request), "sell", mm2_client);
     }
 
     cancel_order_answer
-    rpc_cancel_order(cancel_order_request&& request)
+    rpc_cancel_order(cancel_order_request&& request, std::shared_ptr<t_http_client> mm2_client)
     {
-        return process_rpc<cancel_order_request, cancel_order_answer>(std::forward<cancel_order_request>(request), "cancel_order");
+        return process_rpc<cancel_order_request, cancel_order_answer>(std::forward<cancel_order_request>(request), "cancel_order", mm2_client);
     }
 
     cancel_all_orders_answer
-    rpc_cancel_all_orders(cancel_all_orders_request&& request)
+    rpc_cancel_all_orders(cancel_all_orders_request&& request,std::shared_ptr<t_http_client> mm2_client)
     {
-        return process_rpc<cancel_all_orders_request, cancel_all_orders_answer>(std::forward<cancel_all_orders_request>(request), "cancel_all_orders");
+        return process_rpc<cancel_all_orders_request, cancel_all_orders_answer>(std::forward<cancel_all_orders_request>(request), "cancel_all_orders", mm2_client);
     }
 
     disable_coin_answer
-    rpc_disable_coin(disable_coin_request&& request)
+    rpc_disable_coin(disable_coin_request&& request, std::shared_ptr<t_http_client> mm2_client)
     {
-        return process_rpc<disable_coin_request, disable_coin_answer>(std::forward<disable_coin_request>(request), "disable_coin");
+        return process_rpc<disable_coin_request, disable_coin_answer>(std::forward<disable_coin_request>(request), "disable_coin", mm2_client);
     }
 
     recover_funds_of_swap_answer
-    rpc_recover_funds(recover_funds_of_swap_request&& request)
+    rpc_recover_funds(recover_funds_of_swap_request&& request, std::shared_ptr<t_http_client> mm2_client)
     {
         return process_rpc<recover_funds_of_swap_request, recover_funds_of_swap_answer>(
-            std::forward<recover_funds_of_swap_request>(request), "recover_funds_of_swap");
+            std::forward<recover_funds_of_swap_request>(request), "recover_funds_of_swap", mm2_client);
     }
 
     my_orders_answer
-    rpc_my_orders() noexcept
+    rpc_my_orders(std::shared_ptr<t_http_client> mm2_http_client) noexcept
     {
         nlohmann::json json_data = template_request("my_orders");
 
         spdlog::info("Processing rpc call: rpc my_orders");
 
 
-        if (g_mm2_http_client != nullptr)
+        if (mm2_http_client != nullptr)
         {
             web::http::http_request request(web::http::methods::POST);
             request.headers().set_content_type(FROM_STD_STR("application/json"));
             request.set_body(json_data.dump());
-            auto resp = g_mm2_http_client->request(request).get();
+            auto resp = mm2_http_client->request(request).get();
             return rpc_process_answer<my_orders_answer>(resp, "my_orders");
         }
 
@@ -1015,7 +1015,7 @@ namespace mm2::api
 
     template <typename TRequest, typename TAnswer>
     static TAnswer
-    process_rpc(TRequest&& request, std::string rpc_command)
+    process_rpc(TRequest&& request, std::string rpc_command, std::shared_ptr<t_http_client> mm2_http_client)
     {
         spdlog::info("Processing rpc call: {}", rpc_command);
 
@@ -1027,12 +1027,12 @@ namespace mm2::api
         json_copy["userpass"] = "*******";
         spdlog::trace("request: {}", json_copy.dump());
 
-        if (g_mm2_http_client != nullptr)
+        if (mm2_http_client != nullptr)
         {
             web::http::http_request request(web::http::methods::POST);
             request.headers().set_content_type(FROM_STD_STR("application/json"));
             request.set_body(json_data.dump());
-            auto resp = g_mm2_http_client->request(request).get();
+            auto resp = mm2_http_client->request(request).get();
             return rpc_process_answer<TAnswer>(resp, rpc_command);
         }
 
@@ -1068,7 +1068,7 @@ namespace mm2::api
     }
 
     kmd_rewards_info_answer
-    rpc_kmd_rewards_info()
+    rpc_kmd_rewards_info(std::shared_ptr<t_http_client> mm2_http_client)
     {
         spdlog::info("Processing rpc call: kmd_rewards_info");
         kmd_rewards_info_answer out;
@@ -1079,12 +1079,10 @@ namespace mm2::api
         json_copy["userpass"] = "*******";
         spdlog::debug("{} request: {}", __FUNCTION__, json_copy.dump());
 
-        // auto resp = RestClient::post(g_endpoint, "application/json", json_data.dump());
-        // auto resp                                        = get_client()->post("", json_data.dump());
         web::http::http_request request;
         request.set_method(web::http::methods::POST);
         request.set_body(json_data.dump());
-        auto resp                                        = g_mm2_http_client->request(request).get();
+        auto resp                                        = mm2_http_client->request(request).get();
         out.rpc_result_code                              = resp.status_code();
         out.result                                       = nlohmann::json::parse(TO_STD_STR(resp.extract_string(true).get()));
         auto transform_timestamp_into_human_date_functor = [](nlohmann::json& obj, const std::string& field) {
@@ -1106,14 +1104,14 @@ namespace mm2::api
     }
 
     pplx::task<web::http::http_response>
-    async_rpc_batch_standalone(nlohmann::json batch_array)
+    async_rpc_batch_standalone(nlohmann::json batch_array, std::shared_ptr<t_http_client> mm2_http_client)
     {
-        if (g_mm2_http_client != nullptr)
+        if (mm2_http_client != nullptr)
         {
             web::http::http_request request;
             request.set_method(web::http::methods::POST);
             request.set_body(batch_array.dump());
-            auto resp = g_mm2_http_client->request(request);
+            auto resp = mm2_http_client->request(request);
             return resp;
         }
         return {};
@@ -1139,30 +1137,32 @@ namespace mm2::api
     }
 
     nlohmann::json
-    rpc_batch_standalone(nlohmann::json batch_array)
+    rpc_batch_standalone(nlohmann::json batch_array, std::shared_ptr<t_http_client> mm2_http_client)
     {
-        // auto resp = get_client()->post("", batch_array.dump());
-        web::http::http_request request;
-        request.set_method(web::http::methods::POST);
-        request.set_body(batch_array.dump());
-        auto resp = g_mm2_http_client->request(request).get();
-        // auto resp = RestClient::post(g_endpoint, "application/json", batch_array.dump());
-
-
-        spdlog::info("{} resp code: {}", __FUNCTION__, resp.status_code());
-
-        nlohmann::json answer;
-        std::string    body = TO_STD_STR(resp.extract_string(true).get());
-        try
+        if (mm2_http_client != nullptr)
         {
-            answer = nlohmann::json::parse(body);
+            web::http::http_request request;
+            request.set_method(web::http::methods::POST);
+            request.set_body(batch_array.dump());
+            auto resp = mm2_http_client->request(request).get();
+
+
+            spdlog::info("{} resp code: {}", __FUNCTION__, resp.status_code());
+
+            nlohmann::json answer;
+            std::string    body = TO_STD_STR(resp.extract_string(true).get());
+            try
+            {
+                answer = nlohmann::json::parse(body);
+            }
+            catch (const nlohmann::detail::parse_error& err)
+            {
+                spdlog::error("{}, body: {}", err.what(), body);
+                answer["error"] = body;
+            }
+            return answer;
         }
-        catch (const nlohmann::detail::parse_error& err)
-        {
-            spdlog::error("{}, body: {}", err.what(), body);
-            answer["error"] = body;
-        }
-        return answer;
+        return nlohmann::json::array();
     }
 
     nlohmann::json

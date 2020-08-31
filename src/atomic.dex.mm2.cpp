@@ -286,7 +286,7 @@ namespace atomic_dex
         }
 
         t_disable_coin_request request{.coin = ticker};
-        auto                   answer = rpc_disable_coin(std::move(request));
+        auto                   answer = rpc_disable_coin(std::move(request), m_mm2_client);
 
         if (answer.error.has_value())
         {
@@ -354,7 +354,7 @@ namespace atomic_dex
     {
         // spdlog::trace("tickers size: {}", tickers.size());
         auto&& [batch_array, tickers_idx, erc_to_fetch] = prepare_batch_balance_and_tx();
-        return ::mm2::api::async_rpc_batch_standalone(batch_array)
+        return ::mm2::api::async_rpc_batch_standalone(batch_array, m_mm2_client)
             .then([this, tickers_idx = tickers_idx, erc_to_fetch = erc_to_fetch, is_a_reset, tickers, is_during_enabling](web::http::http_response resp) {
                 // spdlog::trace("Fetching balance and tx, ticker size: {}", tickers.size());
                 auto answers = ::mm2::api::basic_batch_answer(resp);
@@ -488,7 +488,7 @@ namespace atomic_dex
         }
 
         auto functor = [this](nlohmann::json batch_array, std::vector<std::string> tickers) {
-            ::mm2::api::async_rpc_batch_standalone(batch_array)
+            ::mm2::api::async_rpc_batch_standalone(batch_array, this->m_mm2_client)
                 .then([this, tickers](web::http::http_response resp) {
                     spdlog::trace("Enabling coin finished");
                     auto answers = ::mm2::api::basic_batch_answer(resp);
@@ -593,7 +593,7 @@ namespace atomic_dex
         }
         auto&& [orderbook_ticker_base, orderbook_ticker_rel] = m_synchronized_ticker_pair.get();
 
-        ::mm2::api::async_rpc_batch_standalone(batch)
+        ::mm2::api::async_rpc_batch_standalone(batch, m_mm2_client)
             .then(
                 [this, orderbook_ticker_base = orderbook_ticker_base, orderbook_ticker_rel = orderbook_ticker_rel, is_a_reset](web::http::http_response resp) {
                     auto answer = ::mm2::api::basic_batch_answer(resp);
@@ -647,7 +647,7 @@ namespace atomic_dex
             return;
         auto&& [base, rel] = m_synchronized_ticker_pair.get();
 
-        ::mm2::api::async_rpc_batch_standalone(batch)
+        ::mm2::api::async_rpc_batch_standalone(batch, m_mm2_client)
             .then([this, is_a_reset, base = base, rel = rel](web::http::http_response resp) {
                 auto answer = ::mm2::api::basic_batch_answer(resp);
                 if (answer.is_array())
@@ -763,7 +763,11 @@ namespace atomic_dex
                 std::this_thread::sleep_for(1s);
             }
 
-            ::mm2::api::create_mm2_httpclient();
+            //::mm2::api::create_mm2_httpclient();
+            web::http::client::http_client_config cfg;
+            using namespace std::chrono_literals;
+            cfg.set_timeout(30s);
+            m_mm2_client = std::make_shared<web::http::client::http_client>(FROM_STD_STR(::mm2::api::g_endpoint), cfg);
             fs::remove(mm2_cfg_path);
             spdlog::info("mm2 is initialized");
             dispatcher_.trigger<mm2_initialized>();
@@ -828,7 +832,7 @@ namespace atomic_dex
     t_withdraw_answer
     mm2::withdraw(t_withdraw_request&& request, t_mm2_ec& ec) noexcept
     {
-        auto result = rpc_withdraw(std::move(request));
+        auto result = rpc_withdraw(std::move(request), m_mm2_client);
         if (result.error.has_value())
         {
             ec = dextop_error::rpc_withdraw_error;
@@ -844,7 +848,7 @@ namespace atomic_dex
     mm2::broadcast(t_broadcast_request&& request, t_mm2_ec& ec) noexcept
     {
         std::string coin   = request.coin;
-        auto        result = rpc_send_raw_transaction(std::move(request));
+        auto        result = rpc_send_raw_transaction(std::move(request), m_mm2_client);
         if (result.rpc_result_code == -1)
         {
             ec = dextop_error::rpc_send_raw_transaction_error;
@@ -871,7 +875,7 @@ namespace atomic_dex
         }
 
         t_balance_request balance_request{.coin = ticker};
-        auto              answer = rpc_balance(std::move(balance_request));
+        auto              answer = rpc_balance(std::move(balance_request), m_mm2_client);
         if (answer.raw_result.find("error") == std::string::npos)
         {
             t_float_50 result = t_float_50(answer.balance) * m_balance_factor;
@@ -892,7 +896,7 @@ namespace atomic_dex
         t_my_recent_swaps_request request{.limit = total > 0 ? total : 50};
         to_json(my_swaps, request);
         batch.push_back(my_swaps);
-        ::mm2::api::async_rpc_batch_standalone(batch)
+        ::mm2::api::async_rpc_batch_standalone(batch, m_mm2_client)
             .then([this](web::http::http_response resp) {
                 auto answers          = ::mm2::api::basic_batch_answer(resp);
                 auto my_orders_answer = ::mm2::api::rpc_process_answer_batch<t_my_orders_answer>(answers[0], "my_orders");
@@ -913,7 +917,7 @@ namespace atomic_dex
     {
         std::size_t               total = this->m_swaps_registry.at("result").total;
         t_my_recent_swaps_request request{.limit = total > 0 ? total : 50};
-        auto                      answer = rpc_my_recent_swaps(std::move(request));
+        auto                      answer = rpc_my_recent_swaps(std::move(request), m_mm2_client);
         if (answer.result.has_value())
         {
             m_swaps_registry.insert_or_assign("result", answer.result.value());
@@ -924,7 +928,7 @@ namespace atomic_dex
     void
     mm2::process_orders()
     {
-        m_orders_registry.insert_or_assign("result", ::mm2::api::rpc_my_orders());
+        m_orders_registry.insert_or_assign("result", ::mm2::api::rpc_my_orders(m_mm2_client));
         this->dispatcher_.trigger<process_orders_finished>();
     }
 
@@ -1048,7 +1052,7 @@ namespace atomic_dex
             return {};
         }
 
-        auto answer = ::mm2::api::rpc_buy(std::move(request));
+        auto answer = ::mm2::api::rpc_buy(std::move(request), m_mm2_client);
 
         if (answer.error.has_value())
         {
@@ -1145,7 +1149,7 @@ namespace atomic_dex
             return {.error = ec.message()};
         }
 
-        auto answer = ::mm2::api::rpc_sell(std::move(request));
+        auto answer = ::mm2::api::rpc_sell(std::move(request), m_mm2_client);
 
         if (answer.error.has_value())
         {
@@ -1181,12 +1185,12 @@ namespace atomic_dex
             return {};
         }
         t_withdraw_request req{.coin = ticker, .to = m_balance_informations.at(ticker).address, .amount = "0", .max = true};
-        auto               answer = ::mm2::api::rpc_withdraw(std::move(req));
+        auto               answer = ::mm2::api::rpc_withdraw(std::move(req), m_mm2_client);
         if (answer.rpc_result_code == 200)
         {
             out["withdraw_answer"]            = nlohmann::json::parse(answer.raw_result);
             out.at("withdraw_answer")["date"] = answer.result.value().timestamp_as_date;
-            out["kmd_rewards_info"]           = ::mm2::api::rpc_kmd_rewards_info().result;
+            out["kmd_rewards_info"]           = ::mm2::api::rpc_kmd_rewards_info(m_mm2_client).result;
         }
         return out;
     }
@@ -1406,5 +1410,11 @@ namespace atomic_dex
     {
         m_orders_registry.insert_or_assign("result", answer);
         this->dispatcher_.trigger<process_orders_finished>();
+    }
+
+    std::shared_ptr<t_http_client>
+    mm2::get_mm2_client() noexcept
+    {
+        return m_mm2_client;
     }
 } // namespace atomic_dex

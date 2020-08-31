@@ -85,6 +85,8 @@ namespace atomic_dex
         using t_synchronized_ticker_pair   = boost::synchronized_value<std::pair<std::string, std::string>>;
         using t_synchronized_max_taker_vol = boost::synchronized_value<t_pair_max_vol>;
 
+        //! Client
+        std::shared_ptr<t_http_client> m_mm2_client{nullptr};
         //! Process
         reproc::process m_mm2_instance;
 
@@ -211,7 +213,7 @@ namespace atomic_dex
         t_sell_answer place_sell_order(t_sell_request&& request, const t_float_50& total, t_mm2_ec& ec) const;
 
         //! Withdraw Money to another address
-        [[nodiscard]] static t_withdraw_answer withdraw(t_withdraw_request&& request, t_mm2_ec& ec) noexcept;
+        [[nodiscard]] t_withdraw_answer withdraw(t_withdraw_request&& request, t_mm2_ec& ec) noexcept;
 
         //! Broadcast a raw transaction on the blockchain
         [[nodiscard]] t_broadcast_answer broadcast(t_broadcast_request&& request, t_mm2_ec& ec) noexcept;
@@ -281,6 +283,8 @@ namespace atomic_dex
         void               decrease_fake_balance(const std::string& ticker, const std::string& amount) noexcept;
         void               batch_fetch_orders_and_swap();
         void               add_orders_answer(t_my_orders_answer answer);
+
+        std::shared_ptr<t_http_client> get_mm2_client() noexcept;;
     };
 } // namespace atomic_dex
 
