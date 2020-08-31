@@ -32,7 +32,7 @@ namespace mm2::api
     {
         web::http::client::http_client_config cfg;
         using namespace std::chrono_literals;
-        cfg.set_timeout(3s);
+        cfg.set_timeout(30s);
         g_mm2_http_client = std::make_unique<web::http::client::http_client>(FROM_STD_STR(g_endpoint), cfg);
     }
 

@@ -325,7 +325,7 @@ namespace atomic_dex
         tickers.reserve(coins.size());
         for (auto&& current_coin: coins) { tickers.push_back(current_coin.ticker); }
 
-        batch_enable_coins(tickers);
+        batch_enable_coins(tickers, true);
 
         batch_fetch_orders_and_swap();
 
@@ -350,13 +350,13 @@ namespace atomic_dex
     }
 
     auto
-    mm2::batch_balance_and_tx(bool is_a_reset, std::string ticker, bool is_during_enabling)
+    mm2::batch_balance_and_tx(bool is_a_reset, std::vector<std::string> tickers, bool is_during_enabling)
     {
-        //spdlog::trace("tickers size: {}", tickers.size());
+        // spdlog::trace("tickers size: {}", tickers.size());
         auto&& [batch_array, tickers_idx, erc_to_fetch] = prepare_batch_balance_and_tx();
         return ::mm2::api::async_rpc_batch_standalone(batch_array)
-            .then([this, tickers_idx = tickers_idx, erc_to_fetch = erc_to_fetch, is_a_reset, ticker, is_during_enabling](web::http::http_response resp) {
-                //spdlog::trace("Fetching balance and tx, ticker size: {}", tickers.size());
+            .then([this, tickers_idx = tickers_idx, erc_to_fetch = erc_to_fetch, is_a_reset, tickers, is_during_enabling](web::http::http_response resp) {
+                // spdlog::trace("Fetching balance and tx, ticker size: {}", tickers.size());
                 auto answers = ::mm2::api::basic_batch_answer(resp);
                 if (not answers.contains("error"))
                 {
@@ -376,11 +376,14 @@ namespace atomic_dex
                     for (auto&& coin: erc_to_fetch) { process_tx_etherscan(coin, is_a_reset); }
                     if (is_during_enabling)
                     {
-                        if (not ticker.empty())
+                        for (auto&& ticker: tickers)
                         {
-                           spdlog::trace("Coinpaprika part start for ticker: {}", ticker);
-                           dispatcher_.trigger<coin_enabled>(ticker);
-                           this->dispatcher_.trigger<enabled_default_coins_event>();
+                            if (not ticker.empty())
+                            {
+                                spdlog::trace("Coinpaprika part start for ticker: {}", ticker);
+                                dispatcher_.trigger<coin_enabled>(ticker);
+                                this->dispatcher_.trigger<enabled_default_coins_event>();
+                            }
                         }
                     }
                 }
@@ -431,17 +434,35 @@ namespace atomic_dex
             coin_config coin_info       = m_coins_informations.at(ticker);
             coin_info.currently_enabled = true;
             m_coins_informations.assign(coin_info.ticker, coin_info);
-            batch_balance_and_tx(false, coin_info.ticker, true);
         }
     }
 
     void
-    mm2::batch_enable_coins(const std::vector<std::string>& tickers, bool emit_event) noexcept
+    mm2::batch_enable_coins(const std::vector<std::string>& tickers, bool first_time) noexcept
     {
+        nlohmann::json btc_kmd_batch = nlohmann::json::array();
+        if (first_time)
+        {
+            coin_config        coin_info = m_coins_informations.at("BTC");
+            t_electrum_request request{.coin_name = coin_info.ticker, .servers = coin_info.electrum_urls.value(), .with_tx_history = true};
+            nlohmann::json     j = ::mm2::api::template_request("electrum");
+            ::mm2::api::to_json(j, request);
+            btc_kmd_batch.push_back(j);
+            coin_info = m_coins_informations.at("KMD");
+            t_electrum_request request_kmd{.coin_name = coin_info.ticker, .servers = coin_info.electrum_urls.value(), .with_tx_history = true};
+            j = ::mm2::api::template_request("electrum");
+            ::mm2::api::to_json(j, request_kmd);
+            btc_kmd_batch.push_back(j);
+        }
+
         nlohmann::json batch_array = nlohmann::json::array();
 
+        std::vector<std::string> copy_tickers;
         for (const auto& ticker: tickers)
         {
+            if (ticker == "BTC" || ticker == "KMD")
+                continue;
+            copy_tickers.push_back(ticker);
             coin_config coin_info = m_coins_informations.at(ticker);
 
             if (coin_info.currently_enabled)
@@ -465,9 +486,7 @@ namespace atomic_dex
             }
         }
 
-        if (not batch_array.empty())
-        {
-            spdlog::trace("starting async enabling coin");
+        auto functor = [this](nlohmann::json batch_array, std::vector<std::string> tickers) {
             ::mm2::api::async_rpc_batch_standalone(batch_array)
                 .then([this, tickers](web::http::http_response resp) {
                     spdlog::trace("Enabling coin finished");
@@ -477,10 +496,23 @@ namespace atomic_dex
                     if (answers.count("error") == 0)
                     {
                         for (auto&& answer: answers) { this->process_batch_enable_answer(answer); }
+                        batch_balance_and_tx(false, tickers, true);
                         //! At this point, task is finished, let's refresh.
                     }
                 })
                 .then(&handle_exception_pplx_task);
+        };
+
+        spdlog::trace("starting async enabling coin");
+
+        if (not btc_kmd_batch.empty() && first_time)
+        {
+            functor(btc_kmd_batch, {"BTC", "KMD"});
+        }
+
+        if (not batch_array.empty())
+        {
+            functor(batch_array, copy_tickers);
         }
     }
 

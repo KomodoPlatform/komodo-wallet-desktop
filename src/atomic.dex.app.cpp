@@ -230,6 +230,36 @@ namespace atomic_dex
                 refresh_fiat_balance(mm2, paprika);
                 refresh_address(mm2);
             }
+
+            if (not m_portfolio_queue.empty())
+            {
+                const char* ticker_cstr = nullptr;
+                m_portfolio_queue.pop(ticker_cstr);
+                std::string ticker(ticker_cstr);
+                if (ticker == "BTC")
+                {
+                    this->m_btc_fully_enabled = true;
+                }
+
+                if (ticker == "KMD")
+                {
+                    this->m_kmd_fully_enabled = true;
+                }
+
+                system_manager_.get_system<portfolio_page>().get_portfolio()->initialize_portfolio(ticker);
+
+                if (m_kmd_fully_enabled && m_btc_fully_enabled)
+                {
+                    if (m_coin_info->get_ticker().isEmpty())
+                    {
+                        m_coin_info->set_ticker("KMD");
+                        emit coinInfoChanged();
+                        process_refresh_current_ticker_infos();
+                    }
+                    this->set_status("complete");
+                }
+                std::free((void*)ticker_cstr);
+            }
         }
 
         system_manager_.get_system<trading_page>().process_action();
@@ -431,30 +461,8 @@ namespace atomic_dex
     application::on_coin_fully_initialized_event(const coin_fully_initialized& evt) noexcept
     {
         //! This event is called when a call is enabled and cex provider finished fetch datas
-        spdlog::debug("{} l{}", __FUNCTION__, __LINE__);
-
-        if (evt.ticker == "BTC")
-        {
-            this->m_btc_fully_enabled = true;
-        }
-
-        if (evt.ticker == "KMD")
-        {
-            this->m_kmd_fully_enabled = true;
-        }
-
-        system_manager_.get_system<portfolio_page>().get_portfolio()->initialize_portfolio(evt.ticker);
-
-        if (m_kmd_fully_enabled && m_btc_fully_enabled)
-        {
-            if (m_coin_info->get_ticker().isEmpty())
-            {
-                m_coin_info->set_ticker("KMD");
-                emit coinInfoChanged();
-                process_refresh_current_ticker_infos();
-            }
-            this->set_status("complete");
-        }
+        spdlog::debug("{} l{}, push: {}", __FUNCTION__, __LINE__, evt.ticker);
+        m_portfolio_queue.push(strdup(evt.ticker.c_str()));
     }
 
     void

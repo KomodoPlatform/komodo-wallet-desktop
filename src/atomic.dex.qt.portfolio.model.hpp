@@ -52,7 +52,7 @@ namespace atomic_dex
 
       private:
         //! Typedef
-        using t_portfolio_datas = boost::synchronized_value<QVector<portfolio_data>>;
+        using t_portfolio_datas = QVector<portfolio_data>;
 
       public:
         //! Constructor / Destructor
