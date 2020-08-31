@@ -60,7 +60,7 @@ QtObject {
     readonly property string sidebar_atomicdex_logo: dark_theme ? "atomicdex-logo.svg" : "atomicdex-logo-dark.svg"
     readonly property string colorRed: dark_theme ? "#D13990" : "#D13990"
     readonly property string colorRed2:  dark_theme ? "#b61477" : "#b61477"
-    readonly property string colorRed3:  dark_theme ? "#41072a" : "#41072a"
+    readonly property string colorRed3:  dark_theme ? "#6d0c47" : "#6d0c47"
     readonly property string colorYellow:  dark_theme ? "#FFC305" : "#FFC305"
     readonly property string colorOrange:  dark_theme ? "#F7931A" : "#F7931A"
     readonly property string colorBlue:  dark_theme ? "#3B78D1" : "#3B78D1"
@@ -177,17 +177,17 @@ QtObject {
     readonly property var colorButtonTextDisabled: ({
           "default": Style.colorWhite8,
           "primary": Style.colorWhite13,
-          "danger": Style.colorWhite8
+          "danger": Style.colorWhite13
         })
     readonly property var colorButtonTextHovered: ({
           "default": Style.colorText,
-          "primary": Style.colorWhite10,
-          "danger": Style.colorWhite8
+          "primary": Style.colorWhite11,
+          "danger": Style.colorWhite11
         })
     readonly property var colorButtonTextEnabled: ({
           "default": Style.colorText,
-          "primary": Style.colorWhite10,
-          "danger": Style.colorWhite1
+          "primary": Style.colorWhite11,
+          "danger": Style.colorWhite11
         })
     readonly property string colorPlaceholderText: Style.colorWhite9
 
