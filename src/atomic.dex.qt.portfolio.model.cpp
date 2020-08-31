@@ -64,8 +64,11 @@ namespace atomic_dex
     atomic_dex::portfolio_model::initialize_portfolio(const std::vector<std::string>& tickers)
     {
         QVector<portfolio_data> datas;
-        for (auto&& ticker : tickers)
+
+        for (auto&& ticker: tickers)
         {
+            if (m_ticker_registry.find(ticker) != m_ticker_registry.end())
+                continue;
             spdlog::trace("portfolio init: {}", ticker);
             const auto& mm2_system = this->m_system_manager.get_system<mm2>();
             const auto& paprika    = this->m_system_manager.get_system<coinpaprika_provider>();
@@ -89,12 +92,16 @@ namespace atomic_dex
                 "inserting ticker {} with name {} balance {} main currency balance {}", coin.ticker, coin.name, data.balance.toStdString(),
                 data.main_currency_balance.toStdString());
             datas.push_back(std::move(data));
+            m_ticker_registry.emplace(ticker);
         }
-        beginInsertRows(QModelIndex(), this->m_model_data.count(), this->m_model_data.count() + tickers.size() - 1);
-        this->m_model_data.append(datas);
-        endInsertRows();
-        spdlog::trace("size of the portfolio {}", this->get_length());
-        emit lengthChanged();
+        if (not datas.isEmpty())
+        {
+            beginInsertRows(QModelIndex(), this->m_model_data.count(), this->m_model_data.count() + tickers.size() - 1);
+            this->m_model_data.append(datas);
+            endInsertRows();
+            spdlog::trace("size of the portfolio {}", this->get_length());
+            emit lengthChanged();
+        }
     }
 
     void
@@ -233,6 +240,7 @@ namespace atomic_dex
         beginRemoveRows(QModelIndex(), position, position + rows - 1);
         for (int row = 0; row < rows; ++row)
         {
+            this->m_ticker_registry.erase(this->m_model_data.at(position).ticker.toStdString());
             this->m_model_data.removeAt(position);
             emit lengthChanged();
         }
@@ -295,6 +303,7 @@ namespace atomic_dex
     void
     portfolio_model::reset()
     {
+        this->m_ticker_registry.clear();
         this->beginResetModel();
         this->m_model_data.clear();
         this->endResetModel();

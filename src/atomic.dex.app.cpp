@@ -232,17 +232,20 @@ namespace atomic_dex
                 const char* ticker_cstr = nullptr;
                 m_portfolio_queue.pop(ticker_cstr);
                 std::string ticker(ticker_cstr);
-                if (ticker == "KMD") {
+                if (ticker == "KMD")
+                {
                     this->m_kmd_fully_enabled = true;
                 }
-                if (ticker == "BTC") {
+                if (ticker == "BTC")
+                {
                     this->m_btc_fully_enabled = true;
                 }
                 to_init.push_back(ticker);
                 std::free((void*)ticker_cstr);
             }
 
-            if (not to_init.empty()) {
+            if (not to_init.empty())
+            {
                 system_manager_.get_system<portfolio_page>().get_portfolio()->initialize_portfolio(to_init);
                 if (m_kmd_fully_enabled && m_btc_fully_enabled)
                 {
@@ -255,7 +258,6 @@ namespace atomic_dex
                     this->set_status("complete");
                 }
             }
-
         }
 
         system_manager_.get_system<trading_page>().process_action();
@@ -690,6 +692,13 @@ namespace atomic_dex
         {
             [[maybe_unused]] action act;
             this->m_actions_queue.pop(act);
+        }
+
+        while (not this->m_portfolio_queue.empty())
+        {
+            const char* ticker;
+            m_portfolio_queue.pop(ticker);
+            free((void*)ticker);
         }
 
         //! Clear models

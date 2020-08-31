@@ -22,11 +22,11 @@
 #include <QVector>
 
 //! Project headers
+#include "atomic.dex.events.hpp"
 #include "atomic.dex.mm2.hpp"
 #include "atomic.dex.provider.coinpaprika.hpp"
 #include "atomic.dex.qt.portfolio.data.hpp"
 #include "atomic.dex.qt.portfolio.proxy.filter.model.hpp"
-#include "atomic.dex.events.hpp"
 
 namespace atomic_dex
 {
@@ -53,6 +53,7 @@ namespace atomic_dex
       private:
         //! Typedef
         using t_portfolio_datas = QVector<portfolio_data>;
+        using t_ticker_registry = std::unordered_set<std::string>;
 
       public:
         //! Constructor / Destructor
@@ -96,6 +97,7 @@ namespace atomic_dex
         portfolio_proxy_model* m_model_proxy;
         //! Data holders
         t_portfolio_datas m_model_data;
+        t_ticker_registry m_ticker_registry;
     };
 
 } // namespace atomic_dex
