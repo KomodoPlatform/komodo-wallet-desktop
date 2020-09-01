@@ -41,6 +41,7 @@
 
 //! Project Headers
 #include "atomic.dex.app.hpp"
+#include "atomic.dex.global.price.service.hpp"
 #include "atomic.dex.mm2.hpp"
 #include "atomic.dex.provider.cex.prices.hpp"
 #include "atomic.dex.provider.coinpaprika.hpp"
@@ -207,13 +208,13 @@ namespace atomic_dex
             connect_signals();
             m_event_actions[events_action::need_a_full_refresh_of_mm2] = false;
         }
-        auto& mm2     = get_mm2();
-        auto& paprika = get_paprika();
+        auto& mm2           = get_mm2();
+        auto& price_service = system_manager_.get_system<global_price_service>();
         if (mm2.is_mm2_running())
         {
             std::error_code ec;
             const auto&     config           = system_manager_.get_system<settings_page>().get_cfg();
-            auto            fiat_balance_std = paprika.get_price_in_fiat_all(config.current_currency, ec);
+            auto            fiat_balance_std = price_service.get_price_in_fiat_all(config.current_currency, ec);
 
             if (!ec)
             {
@@ -222,7 +223,7 @@ namespace atomic_dex
 
             if (not m_coin_info->get_ticker().isEmpty() && not m_enabled_coins.empty())
             {
-                refresh_fiat_balance(mm2, paprika);
+                refresh_fiat_balance(mm2, price_service);
                 refresh_address(mm2);
             }
 
@@ -311,7 +312,7 @@ namespace atomic_dex
     }
 
     void
-    application::refresh_fiat_balance(const mm2& mm2, const coinpaprika_provider& paprika)
+    application::refresh_fiat_balance(const mm2& mm2, const global_price_service& price_service)
     {
         std::error_code ec;
         QString         target_balance = QString::fromStdString(mm2.my_balance(m_coin_info->get_ticker().toStdString(), ec));
@@ -323,7 +324,7 @@ namespace atomic_dex
             }))
         {
             ec          = std::error_code();
-            auto amount = QString::fromStdString(paprika.get_price_in_fiat(config.current_currency, m_coin_info->get_ticker().toStdString(), ec));
+            auto amount = QString::fromStdString(price_service.get_price_in_fiat(config.current_currency, m_coin_info->get_ticker().toStdString(), ec));
             if (!ec)
             {
                 m_coin_info->set_fiat_amount(amount);
@@ -339,8 +340,9 @@ namespace atomic_dex
         auto            txs = mm2.get_tx_history(ticker, ec);
         if (!ec)
         {
-            const auto& config = system_manager_.get_system<settings_page>().get_cfg();
-            m_coin_info->set_transactions(to_qt_binding(std::move(txs), get_paprika(), config.current_currency, ticker));
+            const auto& config        = system_manager_.get_system<settings_page>().get_cfg();
+            auto&       price_service = system_manager_.get_system<global_price_service>();
+            m_coin_info->set_transactions(to_qt_binding(std::move(txs), price_service, config.current_currency, ticker));
         }
         auto tx_state = mm2.get_tx_state(ticker, ec);
 
@@ -365,11 +367,11 @@ namespace atomic_dex
         return this->system_manager_.get_system<mm2>();
     }
 
-    coinpaprika_provider&
-    application::get_paprika() noexcept
-    {
-        return this->system_manager_.get_system<coinpaprika_provider>();
-    }
+    /*    coinpaprika_provider&
+        application::get_paprika() noexcept
+        {
+            return this->system_manager_.get_system<coinpaprika_provider>();
+        }*/
 
     entt::dispatcher&
     application::get_dispatcher() noexcept
@@ -414,6 +416,7 @@ namespace atomic_dex
         auto& portfolio_system     = system_manager_.create_system<portfolio_page>(system_manager_, dispatcher_, this);
         portfolio_system.get_portfolio()->set_cfg(settings_page_system.get_cfg());
 
+        system_manager_.create_system<global_price_service>(system_manager_, settings_page_system.get_cfg());
         system_manager_.create_system<coinpaprika_provider>(mm2_system, settings_page_system.get_cfg());
         system_manager_.create_system<cex_prices_provider>(mm2_system);
         system_manager_.create_system<update_system_service>();
@@ -961,11 +964,11 @@ namespace atomic_dex
         return to_qt_binding(get_mm2().get_all_coins());
     }
 
-    QString
+    /*QString
     application::get_paprika_id_from_ticker(const QString& ticker) const
     {
         return QString::fromStdString(get_mm2().get_coin_info(ticker.toStdString()).coinpaprika_id);
-    }
+    }*/
 
     QString
     application::get_version() noexcept
@@ -1007,15 +1010,17 @@ namespace atomic_dex
     application::get_cex_rates(const QString& base, const QString& rel)
     {
         std::error_code ec;
-        return QString::fromStdString(get_paprika().get_cex_rates(base.toStdString(), rel.toStdString(), ec));
+        const auto&     price_service = system_manager_.get_system<global_price_service>();
+        return QString::fromStdString(price_service.get_cex_rates(base.toStdString(), rel.toStdString(), ec));
     }
 
     QString
     application::get_fiat_from_amount(const QString& ticker, const QString& amount)
     {
         std::error_code ec;
-        const auto&     config = system_manager_.get_system<settings_page>().get_cfg();
-        return QString::fromStdString(get_paprika().get_price_as_currency_from_amount(config.current_fiat, ticker.toStdString(), amount.toStdString(), ec));
+        const auto&     config        = system_manager_.get_system<settings_page>().get_cfg();
+        const auto&     price_service = system_manager_.get_system<global_price_service>();
+        return QString::fromStdString(price_service.get_price_as_currency_from_amount(config.current_fiat, ticker.toStdString(), amount.toStdString(), ec));
     }
 } // namespace atomic_dex
 
@@ -1198,11 +1203,12 @@ namespace atomic_dex
     void
     application::process_refresh_current_ticker_infos()
     {
-        auto& mm2     = get_mm2();
-        auto& paprika = get_paprika();
+        auto& mm2           = get_mm2();
+        auto& paprika       = system_manager_.get_system<coinpaprika_provider>();
+        auto& price_service = system_manager_.get_system<global_price_service>();
 
         refresh_transactions(mm2);
-        refresh_fiat_balance(mm2, paprika);
+        refresh_fiat_balance(mm2, price_service);
         refresh_address(mm2);
         {
             const auto  ticker = m_coin_info->get_ticker().toStdString();
@@ -1215,7 +1221,7 @@ namespace atomic_dex
             m_coin_info->set_explorer_url(QString::fromStdString(info.explorer_url[0]));
             std::error_code ec;
             const auto&     config = system_manager_.get_system<settings_page>().get_cfg();
-            auto            price  = QString::fromStdString(paprika.get_rate_conversion(config.current_currency, ticker, ec, true));
+            auto            price  = QString::fromStdString(price_service.get_rate_conversion(config.current_currency, ticker, ec, true));
             spdlog::trace("price to be set: {}", price.toStdString());
             m_coin_info->set_price(price);
             m_coin_info->set_change24h(retrieve_change_24h(paprika, info, config));

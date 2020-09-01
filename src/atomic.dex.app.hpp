@@ -32,7 +32,7 @@
 #include "atomic.dex.cfg.hpp"
 #include "atomic.dex.mm2.hpp"
 #include "atomic.dex.notification.manager.hpp"
-#include "atomic.dex.provider.coinpaprika.hpp"
+#include "atomic.dex.global.price.service.hpp"
 #include "atomic.dex.qt.actions.hpp"
 #include "atomic.dex.qt.addressbook.model.hpp"
 #include "atomic.dex.qt.bindings.hpp"
@@ -75,7 +75,7 @@ namespace atomic_dex
 
         //! Private function
         void refresh_transactions(const atomic_dex::mm2& mm2_system);
-        void refresh_fiat_balance(const atomic_dex::mm2& mm2_system, const coinpaprika_provider& coinpaprika_system);
+        void refresh_fiat_balance(const atomic_dex::mm2& mm2_system, const global_price_service& price_service);
         void refresh_address(atomic_dex::mm2& mm2_system);
         void connect_signals();
         void tick();
@@ -136,7 +136,7 @@ namespace atomic_dex
         // static const QString&      get_empty_string();
         mm2&                       get_mm2() noexcept;
         const mm2&                 get_mm2() const noexcept;
-        coinpaprika_provider&      get_paprika() noexcept;
+        //coinpaprika_provider&      get_paprika() noexcept;
         entt::dispatcher&          get_dispatcher() noexcept;
         QObject*                   get_current_coin_info() const noexcept;
         addressbook_model*         get_addressbook() const noexcept;
@@ -177,7 +177,7 @@ namespace atomic_dex
         Q_INVOKABLE bool               is_pin_cfg_enabled() const noexcept;
 
         //! Miscs
-        Q_INVOKABLE QString        get_paprika_id_from_ticker(const QString& ticker) const;
+        //Q_INVOKABLE QString        get_paprika_id_from_ticker(const QString& ticker) const;
         Q_INVOKABLE static QString to_eth_checksum_qt(const QString& eth_lowercase_address);
         Q_INVOKABLE static QString get_mm2_version();
         Q_INVOKABLE static QString get_log_folder();
