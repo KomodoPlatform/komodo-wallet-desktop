@@ -568,7 +568,7 @@ namespace atomic_dex
             }
             else
             {
-                std::uint16_t cur = idx->fetch_add(6) + 6;
+                std::uint16_t cur = idx->fetch_add(g_pending_init_tasks_limit) + g_pending_init_tasks_limit;
                 spdlog::trace("cur: {}, target size: {}, remaining before adding in the model: {}", cur, target_size, target_size - cur);
                 if (cur == target_size)
                 {
