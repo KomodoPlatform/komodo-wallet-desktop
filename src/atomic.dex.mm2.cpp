@@ -403,7 +403,7 @@ namespace atomic_dex
         {
             if (not coin.is_erc_20)
             {
-                t_tx_history_request request{.coin = coin.ticker, .limit = 1000};
+                t_tx_history_request request{.coin = coin.ticker, .limit = 50};
                 nlohmann::json       j = ::mm2::api::template_request("my_tx_history");
                 ::mm2::api::to_json(j, request);
                 batch_array.push_back(j);
