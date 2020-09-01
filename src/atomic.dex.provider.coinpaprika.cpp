@@ -27,7 +27,7 @@ namespace
     using namespace std::chrono_literals;
     using namespace atomic_dex;
     using namespace atomic_dex::coinpaprika::api;
-    constexpr std::uint16_t g_pending_init_tasks_limit = 6;
+    constexpr std::uint16_t g_pending_init_tasks_limit = 5;
     t_http_client_ptr       g_openrates_client         = std::make_unique<web::http::client::http_client>(FROM_STD_STR("https://api.openrates.io"));
 
     pplx::task<web::http::http_response>
@@ -307,7 +307,6 @@ namespace atomic_dex
                     process_ticker_infos(current_coin, this->m_ticker_infos_registry);
                     process_ticker_historical(current_coin, this->m_ticker_historical_registry);
                     process_provider(current_coin, m_usd_rate_providers, "usd-us-dollars");
-                    process_provider(current_coin, m_eur_rate_providers, "eur-euro");
                     if (current_coin.ticker != "BTC")
                     {
                         process_provider(current_coin, m_btc_rate_providers, "btc-bitcoin");
@@ -466,15 +465,6 @@ namespace atomic_dex
             }
             current_price = m_usd_rate_providers.at(ticker);
         }
-        else if (fiat == "EUR")
-        {
-            if (m_eur_rate_providers.find(ticker) == m_eur_rate_providers.cend())
-            {
-                ec = dextop_error::unknown_ticker_for_rate_conversion;
-                return "0.00";
-            }
-            current_price = m_eur_rate_providers.at(ticker);
-        }
         else if (fiat == "BTC")
         {
             if (ticker == "BTC")
@@ -546,7 +536,6 @@ namespace atomic_dex
             if (config.coinpaprika_id != "test-coin")
             {
                 process_provider(config, m_usd_rate_providers, "usd-us-dollars", idx, &this->dispatcher_, target_size, evt.tickers);
-                process_provider(config, m_eur_rate_providers, "eur-euro", idx, &this->dispatcher_, target_size, evt.tickers);
                 if (ticker != "BTC")
                 {
                     process_provider(config, m_btc_rate_providers, "btc-bitcoin", idx, &this->dispatcher_, target_size, evt.tickers);
@@ -596,7 +585,6 @@ namespace atomic_dex
         const auto config = m_mm2_instance.get_coin_info(evt.ticker);
 
         m_usd_rate_providers.erase(config.ticker);
-        m_eur_rate_providers.erase(config.ticker);
         if (evt.ticker != "BTC")
         {
             m_btc_rate_providers.erase(config.ticker);
