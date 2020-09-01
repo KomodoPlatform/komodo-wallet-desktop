@@ -22,7 +22,6 @@
 
 //! Project headers
 #include "atomic.dex.coins.config.hpp"
-#include "atomic.dex.pch.hpp"
 #include "atomic.dex.provider.coinpaprika.hpp"
 #include "atomic.dex.wallet.config.hpp"
 

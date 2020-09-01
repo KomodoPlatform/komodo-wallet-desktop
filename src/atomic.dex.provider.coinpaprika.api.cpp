@@ -14,15 +14,18 @@
  *                                                                            *
  ******************************************************************************/
 
+//! PCH
+#include "atomic.dex.pch.hpp"
+
 //! Project Headers
 #include "atomic.dex.provider.coinpaprika.api.hpp"
-#include "atomic.dex.http.code.hpp"
 #include "atomic.dex.utilities.hpp"
 
 namespace
 {
     //! Constants
     constexpr const char* g_coinpaprika_endpoint = "https://api.coinpaprika.com/v1/";
+    t_http_client_ptr     g_coinpaprika_client   = std::make_unique<web::http::client::http_client>(FROM_STD_STR(g_coinpaprika_endpoint));
 } // namespace
 
 namespace atomic_dex
@@ -71,64 +74,29 @@ namespace atomic_dex
             evt.answer = j;
         }
 
-        price_converter_answer
-        price_converter(const price_converter_request& request)
+        pplx::task<web::http::http_response>
+        async_price_converter(const price_converter_request& request)
         {
             using namespace std::string_literals;
-
-            spdlog::debug("{} l{} f[{}]", __FUNCTION__, __LINE__, fs::path(__FILE__).filename().string());
-
+            web::http::http_request req;
+            req.set_method(web::http::methods::GET);
             auto&& [base_id, quote_id] = request;
-            const auto url  = g_coinpaprika_endpoint + "price-converter?base_currency_id="s + base_id + "&quote_currency_id="s + quote_id + "&amount=1"s;
-            const auto resp = RestClient::get(url);
-            price_converter_answer answer;
-
+            const auto url             = "/price-converter?base_currency_id="s + base_id + "&quote_currency_id="s + quote_id + "&amount=1"s;
             spdlog::info("url: {}", url);
-            spdlog::info("{} l{} resp code: {}", __FUNCTION__, __LINE__, resp.code);
-
-            if (resp.code == e_http_code::bad_request)
-            {
-                spdlog::warn("rpc answer code is 400 (Bad Parameters), body: {}", resp.body);
-                answer.rpc_result_code = resp.code;
-                answer.raw_result      = resp.body;
-                return answer;
-            }
-            if (resp.code == e_http_code::too_many_requests)
-            {
-                spdlog::warn("rpc answer code is 429 (Too Many requests), body: {}", resp.body);
-                answer.rpc_result_code = resp.code;
-                answer.raw_result      = resp.body;
-                return answer;
-            }
-            try
-            {
-                const auto json_answer = nlohmann::json::parse(resp.body);
-                from_json(json_answer, answer);
-                answer.rpc_result_code = resp.code;
-                answer.raw_result      = resp.body;
-            }
-            catch (const std::exception& error)
-            {
-                spdlog::warn("{}", error.what());
-                answer.rpc_result_code = -1;
-                answer.raw_result      = error.what();
-            }
-
-            return answer;
+            req.set_request_uri(FROM_STD_STR(url));
+            return g_coinpaprika_client->request(req);
         }
 
-        ticker_info_answer
-        tickers_info(const ticker_infos_request& request)
+        pplx::task<web::http::http_response>
+        async_ticker_info(const ticker_infos_request& request)
         {
             using ranges::views::ints;
             using ranges::views::zip;
             using namespace std::string_literals;
-
-            spdlog::debug("{} l{} f[{}]", __FUNCTION__, __LINE__, fs::path(__FILE__).filename().string());
-
+            web::http::http_request req;
+            req.set_method(web::http::methods::GET);
             auto&& [ticker_id, quotes] = request;
-            auto url                   = g_coinpaprika_endpoint + "tickers/"s + ticker_id + "?quotes=";
-
+            auto url                   = "tickers/"s + ticker_id + "?quotes="s;
             for (auto&& [cur_quote, idx]: zip(quotes, ints(0u, ranges::unreachable)))
             {
                 url.append(cur_quote);
@@ -139,91 +107,22 @@ namespace atomic_dex
                     url.append(",");
                 }
             }
-
-            const auto         resp = RestClient::get(url);
-            ticker_info_answer answer;
-
             spdlog::info("url: {}", url);
-            spdlog::info("{} l{} resp code: {}", __FUNCTION__, __LINE__, resp.code);
-
-            if (resp.code == e_http_code::bad_request)
-            {
-                spdlog::warn("rpc answer code is 400 (Bad Parameters), body: {}", resp.body);
-                answer.rpc_result_code = resp.code;
-                answer.raw_result      = resp.body;
-                return answer;
-            }
-            if (resp.code == e_http_code::too_many_requests)
-            {
-                spdlog::warn("rpc answer code is 429 (Too Many requests), body: {}", resp.body);
-                answer.rpc_result_code = resp.code;
-                answer.raw_result      = resp.body;
-                return answer;
-            }
-
-            try
-            {
-                const auto json_answer = nlohmann::json::parse(resp.body);
-                from_json(json_answer, answer);
-                answer.rpc_result_code = resp.code;
-                answer.raw_result      = resp.body;
-            }
-            catch (const std::exception& error)
-            {
-                spdlog::warn("{}", error.what());
-                answer.rpc_result_code = -1;
-                answer.raw_result      = error.what();
-            }
-
-            return answer;
+            req.set_request_uri(FROM_STD_STR(url));
+            return g_coinpaprika_client->request(req);
         }
 
-        ticker_historical_answer
-        ticker_historical(const ticker_historical_request& request)
+        pplx::task<web::http::http_response>
+        async_ticker_historical(const ticker_historical_request& request)
         {
             using namespace std::string_literals;
-
-            spdlog::debug("{} l{} f[{}]", __FUNCTION__, __LINE__, fs::path(__FILE__).filename().string());
-
+            web::http::http_request req;
+            req.set_method(web::http::methods::GET);
             auto&& [ticker_id, timestamp, interval] = request;
-            auto url = g_coinpaprika_endpoint + "tickers/"s + ticker_id + "/historical?start="s + std::to_string(timestamp) + "&interval="s + interval;
-
-            const auto               resp = RestClient::get(url);
-            ticker_historical_answer answer;
-
+            const auto url = "/tickers/"s + ticker_id + "/historical?start="s + std::to_string(timestamp) + "&interval="s + interval;
             spdlog::info("url: {}", url);
-            spdlog::info("{} l{} resp code: {}", __FUNCTION__, __LINE__, resp.code);
-
-            if (resp.code == e_http_code::bad_request)
-            {
-                spdlog::warn("rpc answer code is 400 (Bad Parameters), body: {}", resp.body);
-                answer.rpc_result_code = resp.code;
-                answer.raw_result      = resp.body;
-                return answer;
-            }
-            if (resp.code == e_http_code::too_many_requests)
-            {
-                spdlog::warn("rpc answer code is 429 (Too Many requests), body: {}", resp.body);
-                answer.rpc_result_code = resp.code;
-                answer.raw_result      = resp.body;
-                return answer;
-            }
-
-            try
-            {
-                const auto json_answer = nlohmann::json::parse(resp.body);
-                from_json(json_answer, answer);
-                answer.rpc_result_code = resp.code;
-                answer.raw_result      = resp.body;
-            }
-            catch (const std::exception& error)
-            {
-                spdlog::warn("{}", error.what());
-                answer.rpc_result_code = -1;
-                answer.raw_result      = error.what();
-            }
-
-            return answer;
+            req.set_request_uri(FROM_STD_STR(url));
+            return g_coinpaprika_client->request(req);
         }
     } // namespace coinpaprika::api
 } // namespace atomic_dex

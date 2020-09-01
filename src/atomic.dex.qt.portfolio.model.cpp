@@ -14,11 +14,14 @@
  *                                                                            *
  ******************************************************************************/
 
+#include <taskflow/taskflow.hpp>
+
+//! PCH
+#include "atomic.dex.pch.hpp"
+
 //! Project Headers
-#include <QQmlEngine>
 #include "atomic.dex.qt.portfolio.model.hpp"
 #include "atomic.dex.qt.utilities.hpp"
-#include "atomic.threadpool.hpp"
 
 //! Utils
 namespace
@@ -47,9 +50,6 @@ namespace atomic_dex
         this->m_model_proxy->sort_by_currency_balance(false);
         this->m_model_proxy->setFilterRole(NameRole);
         this->m_model_proxy->setFilterCaseSensitivity(Qt::CaseInsensitive);
-
-        //QQmlEngine::setObjectOwnership(m_model_proxy, QQmlEngine::JavaScriptOwnership);
-        //emit portfolioProxyChanged();
     }
 
     portfolio_model::~portfolio_model() noexcept
@@ -57,51 +57,65 @@ namespace atomic_dex
         m_dispatcher.sink<update_portfolio_values>().disconnect<&portfolio_model::on_update_portfolio_values_event>(*this);
         spdlog::trace("{} l{} f[{}]", __FUNCTION__, __LINE__, fs::path(__FILE__).filename().string());
         spdlog::trace("portfolio model destroyed");
-        //delete m_model_proxy;
+        // delete m_model_proxy;
     }
 
     void
-    atomic_dex::portfolio_model::initialize_portfolio(std::string ticker)
+    atomic_dex::portfolio_model::initialize_portfolio(const std::vector<std::string>& tickers)
     {
-        spdlog::trace("portfolio init: {}", ticker);
-        const auto& mm2_system = this->m_system_manager.get_system<mm2>();
-        const auto& paprika    = this->m_system_manager.get_system<coinpaprika_provider>();
-        auto        coin       = mm2_system.get_coin_info(ticker);
+        QVector<portfolio_data> datas;
 
-        beginInsertRows(QModelIndex(), this->m_model_data.count(), this->m_model_data.count());
-        std::error_code ec;
-        const QString   change_24h = retrieve_change_24h(paprika, coin, *m_config);
-        portfolio_data  data{
-            .ticker                           = QString::fromStdString(coin.ticker),
-            .name                             = QString::fromStdString(coin.name),
-            .balance                          = QString::fromStdString(mm2_system.my_balance(coin.ticker, ec)),
-            .main_currency_balance            = QString::fromStdString(paprika.get_price_in_fiat(m_config->current_currency, coin.ticker, ec)),
-            .change_24h                       = change_24h,
-            .main_currency_price_for_one_unit = QString::fromStdString(paprika.get_rate_conversion(m_config->current_currency, coin.ticker, ec, true)),
-            .trend_7d                         = nlohmann_json_array_to_qt_json_array(paprika.get_ticker_historical(coin.ticker).answer),
-            .is_excluded                      = false,
-        };
-        data.display = data.ticker + " (" + data.balance + ")";
-        spdlog::trace(
-            "inserting ticker {} with name {} balance {} main currency balance {}", coin.ticker, coin.name, data.balance.toStdString(),
-            data.main_currency_balance.toStdString());
-        this->m_model_data.push_back(std::move(data));
-        endInsertRows();
-        spdlog::trace("size of the portfolio {}", this->get_length());
-        emit lengthChanged();
+        for (auto&& ticker: tickers)
+        {
+            if (m_ticker_registry.find(ticker) != m_ticker_registry.end())
+                continue;
+            const auto& mm2_system = this->m_system_manager.get_system<mm2>();
+            const auto& paprika    = this->m_system_manager.get_system<coinpaprika_provider>();
+            auto        coin       = mm2_system.get_coin_info(ticker);
+
+
+            std::error_code ec;
+            const QString   change_24h = retrieve_change_24h(paprika, coin, *m_config);
+            portfolio_data  data{
+                .ticker                           = QString::fromStdString(coin.ticker),
+                .name                             = QString::fromStdString(coin.name),
+                .balance                          = QString::fromStdString(mm2_system.my_balance(coin.ticker, ec)),
+                .main_currency_balance            = QString::fromStdString(paprika.get_price_in_fiat(m_config->current_currency, coin.ticker, ec)),
+                .change_24h                       = change_24h,
+                .main_currency_price_for_one_unit = QString::fromStdString(paprika.get_rate_conversion(m_config->current_currency, coin.ticker, ec, true)),
+                .trend_7d                         = nlohmann_json_array_to_qt_json_array(paprika.get_ticker_historical(coin.ticker).answer),
+                .is_excluded                      = false,
+            };
+            data.display = data.ticker + " (" + data.balance + ")";
+            spdlog::trace(
+                "inserting ticker {} with name {} balance {} main currency balance {}", coin.ticker, coin.name, data.balance.toStdString(),
+                data.main_currency_balance.toStdString());
+            datas.push_back(std::move(data));
+            m_ticker_registry.emplace(ticker);
+        }
+        if (not datas.isEmpty())
+        {
+            beginInsertRows(QModelIndex(), this->m_model_data.count(), this->m_model_data.count() + tickers.size() - 1);
+            this->m_model_data.append(datas);
+            endInsertRows();
+            spdlog::trace("size of the portfolio {}", this->get_length());
+            emit lengthChanged();
+        }
     }
 
     void
     portfolio_model::update_currency_values()
     {
-        const auto&                    mm2_system = this->m_system_manager.get_system<mm2>();
-        const auto&                    paprika    = this->m_system_manager.get_system<coinpaprika_provider>();
-        t_coins                        coins      = mm2_system.get_enabled_coins();
-        const std::string&             currency   = m_config->current_currency;
-        std::vector<std::future<void>> pending_tasks;
+        const auto&        mm2_system = this->m_system_manager.get_system<mm2>();
+        const auto&        paprika    = this->m_system_manager.get_system<coinpaprika_provider>();
+        t_coins            coins      = mm2_system.get_enabled_coins();
+        const std::string& currency   = m_config->current_currency;
+        tf::Executor       executor;
+        tf::Taskflow       taskflow;
         for (auto&& coin: coins)
         {
-            pending_tasks.push_back(spawn([coin, &paprika, &mm2_system, currency, this]() {
+            spdlog::trace("trying updating currency values of: {}", coin.ticker);
+            auto update_functor = [coin, &paprika, &mm2_system, currency, this]() {
                 const std::string& ticker = coin.ticker;
                 if (const auto res = this->match(this->index(0, 0), TickerRole, QString::fromStdString(ticker)); not res.isEmpty())
                 {
@@ -117,18 +131,27 @@ namespace atomic_dex
                     update_value(BalanceRole, balance, idx, *this);
                     const QString display = QString::fromStdString(coin.ticker) + " (" + balance + ")";
                     update_value(Display, display, idx, *this);
+                    spdlog::trace("updated currency values of: {}", ticker);
                 }
-            }));
+            };
+            taskflow.emplace(update_functor);
         }
-        for (auto&& cur_task: pending_tasks) { cur_task.wait(); }
+        executor.run(taskflow).wait();
     }
 
     void
     portfolio_model::update_balance_values(const std::string& ticker) noexcept
     {
+        if (m_ticker_registry.find(ticker) == m_ticker_registry.end())
+        {
+            spdlog::debug("ticker: {} not inserted yet in the model, skipping", ticker);
+            return;
+        }
+        spdlog::trace("trying updating balance values of: {}", ticker);
         if (const auto res = this->match(this->index(0, 0), TickerRole, QString::fromStdString(ticker)); not res.isEmpty())
         {
             const auto&        mm2_system = this->m_system_manager.get_system<mm2>();
+            auto               coin       = mm2_system.get_coin_info(ticker);
             const auto&        paprika    = this->m_system_manager.get_system<coinpaprika_provider>();
             std::error_code    ec;
             const std::string& currency = m_config->current_currency;
@@ -141,6 +164,9 @@ namespace atomic_dex
             update_value(MainCurrencyPriceForOneUnit, currency_price_for_one_unit, idx, *this);
             const QString display = QString::fromStdString(ticker) + " (" + balance + ")";
             update_value(Display, display, idx, *this);
+            QString change24_h = retrieve_change_24h(paprika, coin, *m_config);
+            update_value(Change24H, change24_h, idx, *this);
+            spdlog::trace("updated balance values of: {}", ticker);
         }
     }
 
@@ -225,6 +251,7 @@ namespace atomic_dex
         beginRemoveRows(QModelIndex(), position, position + rows - 1);
         for (int row = 0; row < rows; ++row)
         {
+            this->m_ticker_registry.erase(this->m_model_data.at(position).ticker.toStdString());
             this->m_model_data.removeAt(position);
             emit lengthChanged();
         }
@@ -287,6 +314,7 @@ namespace atomic_dex
     void
     portfolio_model::reset()
     {
+        this->m_ticker_registry.clear();
         this->beginResetModel();
         this->m_model_data.clear();
         this->endResetModel();

@@ -14,6 +14,10 @@
  *                                                                            *
  ******************************************************************************/
 
+//! PCH
+#include "atomic.dex.pch.hpp"
+
+//! Project Headers
 #include "atomic.dex.qt.market.pairs.hpp"
 
 namespace atomic_dex

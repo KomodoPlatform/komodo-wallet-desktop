@@ -22,9 +22,6 @@
 #include <QVariant>
 #include <QVector>
 
-//! PCH
-#include "atomic.dex.pch.hpp"
-
 //! Project
 #include "atomic.dex.mm2.api.hpp"
 #include "atomic.dex.qt.orders.data.hpp"

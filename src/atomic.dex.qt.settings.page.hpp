@@ -22,9 +22,6 @@
 #include <QString>
 #include <QTranslator>
 
-//! PCH
-#include "atomic.dex.pch.hpp"
-
 //! Project headers
 #include "atomic.dex.cfg.hpp"
 

@@ -37,6 +37,38 @@ namespace
             answer.result = j.at("result").get<RpcSuccessReturnType>();
         }
     }
+
+    template <typename TRequestCollections>
+    nlohmann::json
+    batch_enabling(const std::string& method, TRequestCollections requests)
+    {
+        spdlog::info("Processing rpc call: batch {}", method);
+
+        nlohmann::json req_json_data = nlohmann::json::array();
+        for (auto&& request: requests)
+        {
+            nlohmann::json json_data = ::mm2::api::template_request(method);
+            to_json(json_data, request);
+            req_json_data.push_back(json_data);
+        }
+
+        // auto resp = mm2::api::get_client()->post("", req_json_data.dump());
+        auto resp = RestClient::post(mm2::api::g_endpoint, "application/json", req_json_data.dump());
+
+        spdlog::info("{} resp code: {}", __FUNCTION__, resp.code);
+
+        nlohmann::json answer;
+        try
+        {
+            answer = nlohmann::json::parse(resp.body);
+        }
+        catch (const nlohmann::detail::parse_error& err)
+        {
+            spdlog::error("{}", err.what());
+            answer["error"] = resp.body;
+        }
+        return answer;
+    }
 } // namespace
 
 //! Implementation RPC [max_taker_vol]
@@ -68,9 +100,9 @@ namespace mm2::api
 
     //! Rpc Call
     max_taker_vol_answer
-    rpc_max_taker_vol(max_taker_vol_request&& request)
+    rpc_max_taker_vol(max_taker_vol_request&& request, std::shared_ptr<t_http_client> mm2_client)
     {
-        return process_rpc<max_taker_vol_request, max_taker_vol_answer>(std::forward<max_taker_vol_request>(request), "max_taker_vol");
+        return process_rpc<max_taker_vol_request, max_taker_vol_answer>(std::forward<max_taker_vol_request>(request), "max_taker_vol", mm2_client);
     }
 } // namespace mm2::api
 
@@ -868,120 +900,126 @@ namespace mm2::api
     }
 
     my_recent_swaps_answer
-    rpc_my_recent_swaps(my_recent_swaps_request&& request)
+    rpc_my_recent_swaps(my_recent_swaps_request&& request, std::shared_ptr<t_http_client> mm2_client)
     {
-        return process_rpc<my_recent_swaps_request, my_recent_swaps_answer>(std::forward<my_recent_swaps_request>(request), "my_recent_swaps");
+        return process_rpc<my_recent_swaps_request, my_recent_swaps_answer>(std::forward<my_recent_swaps_request>(request), "my_recent_swaps", mm2_client);
     }
 
     enable_answer
-    rpc_enable(enable_request&& request)
+    rpc_enable(enable_request&& request, std::shared_ptr<t_http_client> mm2_client)
     {
-        return process_rpc<enable_request, enable_answer>(std::forward<enable_request>(request), "enable");
+        return process_rpc<enable_request, enable_answer>(std::forward<enable_request>(request), "enable", mm2_client);
     }
 
     electrum_answer
-    rpc_electrum(electrum_request&& request)
+    rpc_electrum(electrum_request&& request, std::shared_ptr<t_http_client> mm2_client)
     {
-        return process_rpc<electrum_request, electrum_answer>(std::forward<electrum_request>(request), "electrum");
+        return process_rpc<electrum_request, electrum_answer>(std::forward<electrum_request>(request), "electrum", mm2_client);
     }
 
     balance_answer
-    rpc_balance(balance_request&& request)
+    rpc_balance(balance_request&& request, std::shared_ptr<t_http_client> mm2_client)
     {
-        return process_rpc<balance_request, balance_answer>(std::forward<balance_request>(request), "my_balance");
+        return process_rpc<balance_request, balance_answer>(std::forward<balance_request>(request), "my_balance", mm2_client);
     }
 
     tx_history_answer
-    rpc_my_tx_history(tx_history_request&& request)
+    rpc_my_tx_history(tx_history_request&& request, std::shared_ptr<t_http_client> mm2_client)
     {
-        return process_rpc<tx_history_request, tx_history_answer>(std::forward<tx_history_request>(request), "my_tx_history");
+        return process_rpc<tx_history_request, tx_history_answer>(std::forward<tx_history_request>(request), "my_tx_history", mm2_client);
     }
 
     withdraw_answer
-    rpc_withdraw(withdraw_request&& request)
+    rpc_withdraw(withdraw_request&& request, std::shared_ptr<t_http_client> mm2_client)
     {
-        return process_rpc<withdraw_request, withdraw_answer>(std::forward<withdraw_request>(request), "withdraw");
+        return process_rpc<withdraw_request, withdraw_answer>(std::forward<withdraw_request>(request), "withdraw", mm2_client);
     }
 
     send_raw_transaction_answer
-    rpc_send_raw_transaction(send_raw_transaction_request&& request)
+    rpc_send_raw_transaction(send_raw_transaction_request&& request, std::shared_ptr<t_http_client> mm2_client)
     {
         using atomic_dex::t_broadcast_answer;
         using atomic_dex::t_broadcast_request;
 
-        return process_rpc<t_broadcast_request, t_broadcast_answer>(std::forward<t_broadcast_request>(request), "send_raw_transaction");
+        return process_rpc<t_broadcast_request, t_broadcast_answer>(std::forward<t_broadcast_request>(request), "send_raw_transaction", mm2_client);
     }
 
     trade_fee_answer
-    rpc_get_trade_fee(trade_fee_request&& req)
+    rpc_get_trade_fee(trade_fee_request&& req, std::shared_ptr<t_http_client> mm2_client)
     {
-        return process_rpc<trade_fee_request, trade_fee_answer>(std::forward<trade_fee_request>(req), "get_trade_fee");
+        return process_rpc<trade_fee_request, trade_fee_answer>(std::forward<trade_fee_request>(req), "get_trade_fee", mm2_client);
     }
 
     orderbook_answer
-    rpc_orderbook(orderbook_request&& request)
+    rpc_orderbook(orderbook_request&& request, std::shared_ptr<t_http_client> mm2_client)
     {
-        return process_rpc<orderbook_request, orderbook_answer>(std::forward<orderbook_request>(request), "orderbook");
+        return process_rpc<orderbook_request, orderbook_answer>(std::forward<orderbook_request>(request), "orderbook", mm2_client);
     }
 
     buy_answer
-    rpc_buy(buy_request&& request)
+    rpc_buy(buy_request&& request, std::shared_ptr<t_http_client> mm2_client)
     {
-        return process_rpc<buy_request, buy_answer>(std::forward<buy_request>(request), "buy");
+        return process_rpc<buy_request, buy_answer>(std::forward<buy_request>(request), "buy", mm2_client);
     }
 
     sell_answer
-    rpc_sell(sell_request&& request)
+    rpc_sell(sell_request&& request, std::shared_ptr<t_http_client> mm2_client)
     {
-        return process_rpc<sell_request, sell_answer>(std::forward<sell_request>(request), "sell");
+        return process_rpc<sell_request, sell_answer>(std::forward<sell_request>(request), "sell", mm2_client);
     }
 
     cancel_order_answer
-    rpc_cancel_order(cancel_order_request&& request)
+    rpc_cancel_order(cancel_order_request&& request, std::shared_ptr<t_http_client> mm2_client)
     {
-        return process_rpc<cancel_order_request, cancel_order_answer>(std::forward<cancel_order_request>(request), "cancel_order");
+        return process_rpc<cancel_order_request, cancel_order_answer>(std::forward<cancel_order_request>(request), "cancel_order", mm2_client);
     }
 
     cancel_all_orders_answer
-    rpc_cancel_all_orders(cancel_all_orders_request&& request)
+    rpc_cancel_all_orders(cancel_all_orders_request&& request,std::shared_ptr<t_http_client> mm2_client)
     {
-        return process_rpc<cancel_all_orders_request, cancel_all_orders_answer>(std::forward<cancel_all_orders_request>(request), "cancel_all_orders");
+        return process_rpc<cancel_all_orders_request, cancel_all_orders_answer>(std::forward<cancel_all_orders_request>(request), "cancel_all_orders", mm2_client);
     }
 
     disable_coin_answer
-    rpc_disable_coin(disable_coin_request&& request)
+    rpc_disable_coin(disable_coin_request&& request, std::shared_ptr<t_http_client> mm2_client)
     {
-        return process_rpc<disable_coin_request, disable_coin_answer>(std::forward<disable_coin_request>(request), "disable_coin");
+        return process_rpc<disable_coin_request, disable_coin_answer>(std::forward<disable_coin_request>(request), "disable_coin", mm2_client);
     }
 
     recover_funds_of_swap_answer
-    rpc_recover_funds(recover_funds_of_swap_request&& request)
+    rpc_recover_funds(recover_funds_of_swap_request&& request, std::shared_ptr<t_http_client> mm2_client)
     {
         return process_rpc<recover_funds_of_swap_request, recover_funds_of_swap_answer>(
-            std::forward<recover_funds_of_swap_request>(request), "recover_funds_of_swap");
+            std::forward<recover_funds_of_swap_request>(request), "recover_funds_of_swap", mm2_client);
     }
 
     my_orders_answer
-    rpc_my_orders() noexcept
+    rpc_my_orders(std::shared_ptr<t_http_client> mm2_http_client) noexcept
     {
-        nlohmann::json       json_data = template_request("my_orders");
-        RestClient::Response resp;
+        nlohmann::json json_data = template_request("my_orders");
 
         spdlog::info("Processing rpc call: rpc my_orders");
 
-        resp = RestClient::post(g_endpoint, "application/json", json_data.dump());
 
-        return rpc_process_answer<my_orders_answer>(resp, "my_orders");
+        if (mm2_http_client != nullptr)
+        {
+            web::http::http_request request(web::http::methods::POST);
+            request.headers().set_content_type(FROM_STD_STR("application/json"));
+            request.set_body(json_data.dump());
+            auto resp = mm2_http_client->request(request).get();
+            return rpc_process_answer<my_orders_answer>(resp, "my_orders");
+        }
+
+        return {};
     }
 
     template <typename TRequest, typename TAnswer>
     static TAnswer
-    process_rpc(TRequest&& request, std::string rpc_command)
+    process_rpc(TRequest&& request, std::string rpc_command, std::shared_ptr<t_http_client> mm2_http_client)
     {
         spdlog::info("Processing rpc call: {}", rpc_command);
 
-        nlohmann::json       json_data = template_request(rpc_command);
-        RestClient::Response resp;
+        nlohmann::json json_data = template_request(rpc_command);
 
         to_json(json_data, request);
 
@@ -989,9 +1027,16 @@ namespace mm2::api
         json_copy["userpass"] = "*******";
         spdlog::trace("request: {}", json_copy.dump());
 
-        resp = RestClient::post(g_endpoint, "application/json", json_data.dump());
+        if (mm2_http_client != nullptr)
+        {
+            web::http::http_request request(web::http::methods::POST);
+            request.headers().set_content_type(FROM_STD_STR("application/json"));
+            request.set_body(json_data.dump());
+            auto resp = mm2_http_client->request(request).get();
+            return rpc_process_answer<TAnswer>(resp, rpc_command);
+        }
 
-        return rpc_process_answer<TAnswer>(resp, rpc_command);
+        return TAnswer{};
     }
 
     nlohmann::json
@@ -1012,6 +1057,7 @@ namespace mm2::api
         json_copy["userpass"] = "*******";
         spdlog::debug("{} request: {}", __FUNCTION__, json_copy.dump());
 
+        // resp = get_client()->post("", json_data.dump());
         resp = RestClient::post(g_endpoint, "application/json", json_data.dump());
         if (resp.code == 200)
         {
@@ -1022,128 +1068,113 @@ namespace mm2::api
     }
 
     kmd_rewards_info_answer
-    rpc_kmd_rewards_info()
+    rpc_kmd_rewards_info(std::shared_ptr<t_http_client> mm2_http_client)
     {
         spdlog::info("Processing rpc call: kmd_rewards_info");
         kmd_rewards_info_answer out;
 
-        nlohmann::json       json_data = template_request("kmd_rewards_info");
-        RestClient::Response resp;
+        nlohmann::json json_data = template_request("kmd_rewards_info");
 
         auto json_copy        = json_data;
         json_copy["userpass"] = "*******";
         spdlog::debug("{} request: {}", __FUNCTION__, json_copy.dump());
 
-        resp                = RestClient::post(g_endpoint, "application/json", json_data.dump());
-        out.rpc_result_code = resp.code;
-        out.result          = nlohmann::json::parse(resp.body);
-        if (resp.code == 200)
+        web::http::http_request request;
+        request.set_method(web::http::methods::POST);
+        request.set_body(json_data.dump());
+        auto resp                                        = mm2_http_client->request(request).get();
+        out.rpc_result_code                              = resp.status_code();
+        out.result                                       = nlohmann::json::parse(TO_STD_STR(resp.extract_string(true).get()));
+        auto transform_timestamp_into_human_date_functor = [](nlohmann::json& obj, const std::string& field) {
+            if (obj.contains(field))
+            {
+                auto obj_timestamp         = obj.at(field).get<std::size_t>();
+                obj[field + "_human_date"] = to_human_date<std::chrono::seconds>(obj_timestamp, "%e %b %Y, %H:%M");
+            }
+        };
+
+        if (resp.status_code() == 200)
         {
             for (auto&& obj: out.result.at("result"))
             {
-                if (obj.contains("accrue_start_at"))
-                {
-                    auto accrue_timestamp             = obj.at("accrue_start_at").get<std::size_t>();
-                    obj["accrue_start_at_human_date"] = to_human_date<std::chrono::seconds>(accrue_timestamp, "%e %b %Y, %H:%M");
-                }
-
-                if (obj.contains("accrue_stop_at"))
-                {
-                    auto accrue_timestamp            = obj.at("accrue_stop_at").get<std::size_t>();
-                    obj["accrue_stop_at_human_date"] = to_human_date<std::chrono::seconds>(accrue_timestamp, "%e %b %Y, %H:%M");
-                }
-
-                if (obj.contains("locktime"))
-                {
-                    auto locktime_timestamp    = obj.at("locktime").get<std::size_t>();
-                    obj["locktime_human_date"] = to_human_date<std::chrono::seconds>(locktime_timestamp, "%e %b %Y, %H:%M");
-                }
+                for (const auto& field: {"accrue_start_at", "accrue_stop_at", "locktime"}) { transform_timestamp_into_human_date_functor(obj, field); }
             }
         }
         return out;
     }
 
-    nlohmann::json
-    rpc_batch_standalone(nlohmann::json batch_array)
+    pplx::task<web::http::http_response>
+    async_rpc_batch_standalone(nlohmann::json batch_array, std::shared_ptr<t_http_client> mm2_http_client, pplx::cancellation_token token)
     {
-        auto resp = RestClient::post(g_endpoint, "application/json", batch_array.dump());
+        if (mm2_http_client != nullptr)
+        {
+            web::http::http_request request;
+            request.set_method(web::http::methods::POST);
+            request.set_body(batch_array.dump());
+            auto resp = mm2_http_client->request(request, token);
+            return resp;
+        }
+        return {};
+    }
 
-        spdlog::info("{} resp code: {}", __FUNCTION__, resp.code);
+    nlohmann::json
+    basic_batch_answer(const web::http::http_response& resp)
+    {
+        spdlog::info("{} resp code: {}", __FUNCTION__, resp.status_code());
 
         nlohmann::json answer;
+        std::string    body = TO_STD_STR(resp.extract_string(true).get());
         try
         {
-            answer = nlohmann::json::parse(resp.body);
+            answer = nlohmann::json::parse(body);
         }
         catch (const nlohmann::detail::parse_error& err)
         {
-            spdlog::error("{}", err.what());
-            answer["error"] = resp.body;
+            spdlog::error("{}, body: {}", err.what(), body);
+            answer["error"] = body;
         }
         return answer;
+    }
+
+    nlohmann::json
+    rpc_batch_standalone(nlohmann::json batch_array, std::shared_ptr<t_http_client> mm2_http_client)
+    {
+        if (mm2_http_client != nullptr)
+        {
+            web::http::http_request request;
+            request.set_method(web::http::methods::POST);
+            request.set_body(batch_array.dump());
+            auto resp = mm2_http_client->request(request).get();
+
+
+            spdlog::info("{} resp code: {}", __FUNCTION__, resp.status_code());
+
+            nlohmann::json answer;
+            std::string    body = TO_STD_STR(resp.extract_string(true).get());
+            try
+            {
+                answer = nlohmann::json::parse(body);
+            }
+            catch (const nlohmann::detail::parse_error& err)
+            {
+                spdlog::error("{}, body: {}", err.what(), body);
+                answer["error"] = body;
+            }
+            return answer;
+        }
+        return nlohmann::json::array();
     }
 
     nlohmann::json
     rpc_batch_electrum(std::vector<electrum_request> requests)
     {
-        spdlog::info("Processing rpc call: batch electrum");
-
-        nlohmann::json req_json_data = nlohmann::json::array();
-        for (auto&& request: requests)
-        {
-            nlohmann::json       json_data = template_request("electrum");
-            RestClient::Response resp;
-            to_json(json_data, request);
-            req_json_data.push_back(json_data);
-        }
-
-        auto resp = RestClient::post(g_endpoint, "application/json", req_json_data.dump());
-
-        spdlog::info("{} resp code: {}", __FUNCTION__, resp.code);
-
-        nlohmann::json answer;
-        try
-        {
-            answer = nlohmann::json::parse(resp.body);
-        }
-        catch (const nlohmann::detail::parse_error& err)
-        {
-            spdlog::error("{}", err.what());
-            answer["error"] = resp.body;
-        }
-        return answer;
+        return batch_enabling("electrum", requests);
     }
 
     nlohmann::json
     rpc_batch_enable(std::vector<enable_request> requests)
     {
-        spdlog::info("Processing rpc call: batch enable");
-
-        nlohmann::json req_json_data = nlohmann::json::array();
-        for (auto&& request: requests)
-        {
-            nlohmann::json       json_data = template_request("enable");
-            RestClient::Response resp;
-            to_json(json_data, request);
-            req_json_data.push_back(json_data);
-        }
-
-        auto resp = RestClient::post(g_endpoint, "application/json", req_json_data.dump());
-        spdlog::info("{} resp code: {}", __FUNCTION__, resp.code);
-
-        nlohmann::json answer;
-
-        try
-        {
-            answer = nlohmann::json::parse(resp.body);
-        }
-        catch (const nlohmann::detail::parse_error& err)
-        {
-            spdlog::error("{}", err.what());
-            answer["error"] = resp.body;
-        }
-
-        return answer;
+        return batch_enabling("enable", requests);
     }
 
     static inline std::string&

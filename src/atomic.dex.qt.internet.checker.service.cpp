@@ -14,10 +14,31 @@
  *                                                                            *
  ******************************************************************************/
 
+//! PCH
+#include "atomic.dex.pch.hpp"
+
 //! Our project
 #include "atomic.dex.qt.internet.checker.service.hpp"
 #include "atomic.dex.qt.utilities.hpp"
-#include "atomic.threadpool.hpp"
+
+namespace
+{
+    t_http_client_ptr g_google_proxy_http_client{std::make_unique<web::http::client::http_client>(FROM_STD_STR("https://www.google.com"))};
+    t_http_client_ptr g_paprika_proxy_http_client{std::make_unique<web::http::client::http_client>(FROM_STD_STR("https://api.coinpaprika.com"))};
+    t_http_client_ptr g_ohlc_proxy_http_client{std::make_unique<web::http::client::http_client>(FROM_STD_STR("https://komodo.live:3333"))};
+
+    pplx::task<web::http::http_response>
+    async_check_retrieve(t_http_client_ptr& client, const std::string& uri)
+    {
+        web::http::http_request req;
+        req.set_method(web::http::methods::GET);
+        if (not uri.empty())
+        {
+            req.set_request_uri(FROM_STD_STR(uri));
+        }
+        return client->request(req);
+    }
+} // namespace
 
 //! QT Properties
 namespace atomic_dex
@@ -25,6 +46,10 @@ namespace atomic_dex
     void
     atomic_dex::internet_service_checker::set_internet_alive(bool internet_status) noexcept
     {
+        if (internet_status == true)
+        {
+            spdlog::info("fetching internet status finished, internet status is: {}", true);
+        }
         if (internet_status != is_internet_reacheable)
         {
             is_internet_reacheable = internet_status;
@@ -86,16 +111,37 @@ namespace atomic_dex
     }
 
     void
+    internet_service_checker::query_internet(t_http_client_ptr& client, const std::string uri, std::atomic_bool internet_service_checker::*p) noexcept
+    {
+        async_check_retrieve(client, uri)
+            .then([this, p](web::http::http_response resp) {
+                bool res = resp.status_code() == 200;
+                this->*p = res;
+                if (res)
+                {
+                    this->set_internet_alive(true);
+                }
+            })
+            .then([](pplx::task<void> previous_task) {
+                try
+                {
+                    previous_task.wait(); // or get(), same difference
+                }
+                catch (const std::exception& e)
+                {
+                    spdlog::trace("ppl task error: {}", e.what());
+                }
+            });
+    }
+
+
+    void
     internet_service_checker::fetch_internet_connection()
     {
         spdlog::info("fetching internet status begin");
-        spawn([this]() {
-            is_google_reacheable               = am_i_able_to_reach_this_endpoint("https://www.google.com");
-            is_paprika_provider_alive          = am_i_able_to_reach_this_endpoint("https://api.coinpaprika.com/v1/coins/btc-bitcoin");
-            is_our_private_endpoint_reacheable = am_i_able_to_reach_this_endpoint("https://komodo.live:3333/api/v1/ohlc/tickers_list");
-            bool res                           = is_google_reacheable || is_paprika_provider_alive || is_our_private_endpoint_reacheable;
-            this->set_internet_alive(res);
-            spdlog::info("fetching internet status finished, internet status is: {}", res);
-        });
+
+        query_internet(g_google_proxy_http_client, "", &internet_service_checker::is_google_reacheable);
+        query_internet(g_paprika_proxy_http_client, "/v1/coins/btc-bitcoin", &internet_service_checker::is_google_reacheable);
+        query_internet(g_ohlc_proxy_http_client, "/api/v1/ohlc/tickers_list", &internet_service_checker::is_our_private_endpoint_reacheable);
     }
 } // namespace atomic_dex

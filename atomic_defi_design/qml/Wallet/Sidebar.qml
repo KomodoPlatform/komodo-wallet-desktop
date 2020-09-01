@@ -11,13 +11,10 @@ Item {
     id: root
 
     function reset() {
-        input_coin_filter_text = ''
         resetted()
     }
 
     signal resetted()
-
-    property string input_coin_filter_text
 
     Layout.alignment: Qt.AlignLeft
     width: 175
@@ -94,11 +91,12 @@ Item {
                             target: root
 
                             function onResetted() {
-                                input_coin_filter.text = ""
+                                if(input_coin_filter.text === "") resetCoinFilter()
+                                else input_coin_filter.text = ""
                             }
                         }
 
-                        onTextChanged: input_coin_filter_text = text
+                        onTextChanged: portfolio_coins.setFilterFixedString(text)
                         font.pixelSize: Style.textSizeSmall3
 
                         background: null
@@ -130,15 +128,15 @@ Item {
                     id: list
                     implicitHeight: Math.min(contentItem.childrenRect.height, coins_bar.height - 250)
 
-                    model: General.filterCoins(API.get().enabled_coins, input_coin_filter_text)
+                    model: portfolio_coins
 
                     delegate: GradientRectangle {
                         width: list_bg.width - list_bg.border.width*2 - 2
                         height: 44
                         radius: Style.rectangleCornerRadius
 
-                        start_color: API.get().current_coin_info.ticker === model.modelData.ticker ? Style.colorCoinListHighlightGradient1 : mouse_area.containsMouse ? Style.colorCoinListHighlightGradient1 : "transparent"
-                        end_color: API.get().current_coin_info.ticker === model.modelData.ticker ? Style.colorCoinListHighlightGradient2 : mouse_area.containsMouse ? Style.colorWhite8 : "transparent"
+                        start_color: API.get().current_coin_info.ticker === ticker ? Style.colorCoinListHighlightGradient1 : mouse_area.containsMouse ? Style.colorCoinListHighlightGradient1 : "transparent"
+                        end_color: API.get().current_coin_info.ticker === ticker ? Style.colorCoinListHighlightGradient2 : mouse_area.containsMouse ? Style.colorWhite8 : "transparent"
 
                         // Click area
                         MouseArea {
@@ -149,7 +147,7 @@ Item {
                             acceptedButtons: Qt.LeftButton | Qt.RightButton
                             onClicked: {
                                 if (mouse.button === Qt.RightButton) context_menu.popup()
-                                else API.get().current_coin_info.ticker = model.modelData.ticker
+                                else API.get().current_coin_info.ticker = ticker
 
                                 main.send_modal.reset()
                             }
@@ -162,9 +160,9 @@ Item {
                         Menu {
                             id: context_menu
                             Action {
-                                text: API.get().settings_pg.empty_string + (qsTr("Disable %1", "TICKER").arg(model.modelData.ticker))
-                                onTriggered: API.get().disable_coins([model.modelData.ticker])
-                                enabled: General.canDisable(model.modelData.ticker)
+                                text: API.get().settings_pg.empty_string + (qsTr("Disable %1", "TICKER").arg(ticker))
+                                onTriggered: API.get().disable_coins([ticker])
+                                enabled: General.canDisable(ticker)
                             }
                         }
 
@@ -176,7 +174,7 @@ Item {
                             anchors.left: parent.left
                             anchors.leftMargin: side_margin - scrollbar_margin
 
-                            source: General.coinIcon(model.modelData.ticker)
+                            source: General.coinIcon(ticker)
                             width: Style.textSizeSmall4*2
                             anchors.verticalCenter: parent.verticalCenter
                         }
@@ -189,7 +187,7 @@ Item {
                             // Ticker
                             DefaultText {
                                 Layout.alignment: Qt.AlignRight
-                                text_value: API.get().settings_pg.empty_string + (model.modelData.ticker)
+                                text_value: API.get().settings_pg.empty_string + (ticker)
                                 font.pixelSize: text.length > 6 ? Style.textSizeSmall2 : Style.textSizeSmall4
                             }
 
@@ -197,7 +195,7 @@ Item {
                                 visible: mouse_area.containsMouse
                                 background: FloatingBackground { auto_set_size: false }
                                 contentItem:  DefaultText {
-                                    text_value: API.get().settings_pg.empty_string + (model.modelData.name.replace(" (TESTCOIN)", ""))
+                                    text_value: API.get().settings_pg.empty_string + (name.replace(" (TESTCOIN)", ""))
                                     font.pixelSize: Style.textSizeSmall4
                                 }
                             }

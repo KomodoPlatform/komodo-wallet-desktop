@@ -16,8 +16,6 @@
 
 #pragma once
 
-#include "atomic.dex.pch.hpp"
-
 //! Project header
 #include "atomic.dex.ma.series.data.hpp"
 #include "atomic.dex.mm2.hpp"
@@ -52,12 +50,12 @@ namespace atomic_dex
                                            "rvn-btc",  "xzc-btc",  "xzc-eth",  "zec-btc",  "zec-eth",  "zec-usdc", "zec-tusd", "zec-busd"};
 
         //! OHLC Data
-        t_synchronized_json        m_current_ohlc_data;
+        t_synchronized_json m_current_ohlc_data;
 
-        //! Threads
-        std::queue<std::future<void>> m_pending_tasks;
-        std::thread                   m_provider_ohlc_fetcher_thread;
-        timed_waiter                  m_provider_thread_timer;
+        //! Timer
+        std::atomic_bool m_mm2_started{false};
+        using t_update_time_point = std::chrono::high_resolution_clock::time_point;
+        t_update_time_point m_update_clock;
 
         //! Private API
         void reverse_ohlc_data(nlohmann::json& cur_range) noexcept;
@@ -69,11 +67,11 @@ namespace atomic_dex
         //! Destructor
         ~cex_prices_provider() noexcept final;
 
-        //! Queue
-        void consume_pending_tasks();
-
         // Override
         void update() noexcept final;
+
+        //! ohlc update
+        void update_ohlc() noexcept;
 
         //! Process OHLC http rest request
         bool process_ohlc(const std::string& base, const std::string& rel, bool is_a_reset = false) noexcept;

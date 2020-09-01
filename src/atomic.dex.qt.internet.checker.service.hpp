@@ -19,9 +19,6 @@
 //! QT
 #include <QObject>
 
-//! PCH
-#include <atomic.dex.pch.hpp>
-
 namespace atomic_dex
 {
     class internet_service_checker final : public QObject, public ag::ecs::pre_update_system<internet_service_checker>
@@ -65,6 +62,7 @@ namespace atomic_dex
         void set_seconds_left_to_auto_retry(double time_left) noexcept;
 
         void set_internet_alive(bool internet_status) noexcept;
+        void query_internet(t_http_client_ptr& client, const std::string uri, std::atomic_bool internet_service_checker::*p) noexcept;
 
         Q_INVOKABLE void retry() noexcept;
     };

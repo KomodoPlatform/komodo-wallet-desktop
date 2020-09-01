@@ -14,6 +14,10 @@
  *                                                                            *
  ******************************************************************************/
 
+//! PCH
+#include "atomic.dex.pch.hpp"
+
+//! Project Header
 #include "atomic.dex.cfg.hpp"
 
 namespace

@@ -21,15 +21,12 @@
 #include <QString>
 #include <QVector>
 
-//! PCH Header
-#include "atomic.dex.pch.hpp"
-
 //! Project headers
+#include "atomic.dex.events.hpp"
 #include "atomic.dex.mm2.hpp"
 #include "atomic.dex.provider.coinpaprika.hpp"
 #include "atomic.dex.qt.portfolio.data.hpp"
 #include "atomic.dex.qt.portfolio.proxy.filter.model.hpp"
-#include "atomic.dex.events.hpp"
 
 namespace atomic_dex
 {
@@ -56,6 +53,7 @@ namespace atomic_dex
       private:
         //! Typedef
         using t_portfolio_datas = QVector<portfolio_data>;
+        using t_ticker_registry = std::unordered_set<std::string>;
 
       public:
         //! Constructor / Destructor
@@ -73,7 +71,7 @@ namespace atomic_dex
         bool                                 removeRows(int row, int count, const QModelIndex& parent) final;
 
         //! Public api
-        void initialize_portfolio(std::string ticker);
+        void initialize_portfolio(const std::vector<std::string>& tickers);
         void update_currency_values();
         void update_balance_values(const std::string& ticker) noexcept;
         void disable_coins(const QStringList& coins);
@@ -99,6 +97,7 @@ namespace atomic_dex
         portfolio_proxy_model* m_model_proxy;
         //! Data holders
         t_portfolio_datas m_model_data;
+        t_ticker_registry m_ticker_registry;
     };
 
 } // namespace atomic_dex

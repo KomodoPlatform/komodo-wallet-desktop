@@ -14,6 +14,10 @@
  *                                                                            *
  ******************************************************************************/
 
+//! PCH
+#include "atomic.dex.pch.hpp"
+
+//! Project Headers
 #include "atomic.dex.qt.portfolio.proxy.filter.model.hpp"
 #include "atomic.dex.qt.portfolio.model.hpp"
 
@@ -103,7 +107,6 @@ namespace atomic_dex
         QModelIndex idx = this->sourceModel()->index(source_row, 0, source_parent);
         assert(this->sourceModel()->hasIndex(idx.row(), 0));
         bool is_excluded = this->sourceModel()->data(idx, atomic_dex::portfolio_model::Excluded).toBool();
-        spdlog::trace("is excluded: {}", is_excluded);
         if (is_excluded)
         {
             return false;

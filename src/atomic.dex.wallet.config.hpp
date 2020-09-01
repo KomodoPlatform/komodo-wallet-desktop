@@ -16,31 +16,29 @@
 
 #pragma once
 
-#include "atomic.dex.pch.hpp"
-
 namespace atomic_dex
 {
     struct contact_contents
     {
-        std::string type;
-        std::string address;
+        std::string type{};
+        std::string address{};
     };
 
     void to_json(nlohmann::json& j, const contact_contents& cfg);
 
     struct contact
     {
-        std::string                   name;
-        std::vector<contact_contents> contents;
+        std::string                   name{};
+        std::vector<contact_contents> contents{};
     };
 
     void to_json(nlohmann::json& j, const contact& cfg);
 
     struct wallet_cfg
     {
-        std::string          name;
+        std::string          name{};
         std::string          protection_pass{"default_protection_pass"};
-        std::vector<contact> address_book;
+        std::vector<contact> address_book{};
     };
 
     void from_json(const nlohmann::json& j, wallet_cfg& cfg);

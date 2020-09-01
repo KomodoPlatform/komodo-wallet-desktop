@@ -26,7 +26,6 @@
 #include <QTranslator>
 #include <QVariantMap>
 
-//! PCH Headers
 #include "atomic.dex.pch.hpp"
 
 //! Project Headers
@@ -42,7 +41,6 @@
 #include "atomic.dex.qt.internet.checker.service.hpp"
 #include "atomic.dex.qt.orderbook.hpp"
 #include "atomic.dex.qt.orders.model.hpp"
-//#include "atomic.dex.qt.portfolio.model.hpp"
 #include "atomic.dex.qt.portfolio.page.hpp"
 #include "atomic.dex.qt.settings.page.hpp"
 #include "atomic.dex.qt.trading.page.hpp"
@@ -94,26 +92,26 @@ namespace atomic_dex
         };
 
         //! Private typedefs
-        using t_actions_queue          = boost::lockfree::queue<action>;
-        using t_synchronized_string    = boost::synchronized_value<std::string>;
-        using t_manager_model_registry = std::unordered_map<std::string, QObject*>;
-        using t_events_actions         = std::array<std::atomic_bool, events_action::size>;
+        using t_actions_queue                       = boost::lockfree::queue<action>;
+        using t_portfolio_coins_to_initialize_queue = boost::lockfree::queue<const char*>;
+        using t_manager_model_registry              = std::unordered_map<std::string, QObject*>;
+        using t_events_actions                      = std::array<std::atomic_bool, events_action::size>;
 
         //! Private members fields
-        std::shared_ptr<QApplication> m_app;
-        atomic_dex::qt_wallet_manager m_wallet_manager;
-        t_actions_queue               m_actions_queue{g_max_actions_size};
-        t_synchronized_string         m_ticker_balance_to_refresh;
-        QVariantList                  m_enabled_coins;
-        QVariantList                  m_enableable_coins;
-        QVariant                      m_update_status;
-        QString                       m_current_status{"None"};
-        QString                       m_current_balance_all{"0.00"};
-        current_coin_info*            m_coin_info;
-        t_manager_model_registry      m_manager_models;
-        t_events_actions              m_event_actions{{false}};
-        std::atomic_bool              m_btc_fully_enabled{false};
-        std::atomic_bool              m_kmd_fully_enabled{false};
+        std::shared_ptr<QApplication>         m_app;
+        atomic_dex::qt_wallet_manager         m_wallet_manager;
+        t_actions_queue                       m_actions_queue{g_max_actions_size};
+        t_portfolio_coins_to_initialize_queue m_portfolio_queue{g_max_actions_size};
+        QVariantList                          m_enabled_coins;
+        QVariantList                          m_enableable_coins;
+        QVariant                              m_update_status;
+        QString                               m_current_status{"None"};
+        QString                               m_current_balance_all{"0.00"};
+        current_coin_info*                    m_coin_info;
+        t_manager_model_registry              m_manager_models;
+        t_events_actions                      m_event_actions{{false}};
+        std::atomic_bool                      m_btc_fully_enabled{false};
+        std::atomic_bool                      m_kmd_fully_enabled{false};
 
       public:
         //! Constructor
@@ -187,7 +185,7 @@ namespace atomic_dex
         Q_INVOKABLE static void    change_state(int visibility);
 
         //! Portfolio QML API Bindings
-        Q_INVOKABLE static QString recover_fund(const QString& uuid);
+        Q_INVOKABLE QString recover_fund(const QString& uuid);
         Q_INVOKABLE QObject* prepare_send(const QString& address, const QString& amount, bool max = false);
         Q_INVOKABLE QObject* prepare_send_fees(
             const QString& address, const QString& amount, bool is_erc_20, const QString& fees_amount, const QString& gas_price, const QString& gas,

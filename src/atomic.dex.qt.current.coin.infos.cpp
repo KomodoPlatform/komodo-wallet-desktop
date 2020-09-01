@@ -14,6 +14,9 @@
  *                                                                            *
  ******************************************************************************/
 
+//!
+#include "atomic.dex.pch.hpp"
+
 //! Project Headers
 #include "atomic.dex.qt.current.coin.infos.hpp"
 #include "atomic.dex.events.hpp"

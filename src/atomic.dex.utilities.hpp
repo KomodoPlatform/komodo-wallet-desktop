@@ -4,9 +4,14 @@
 #include <QCryptographicHash>
 #include <QString>
 
-//! PCH Headers
-#include "atomic.dex.pch.hpp"
-
+static inline void
+create_if_doesnt_exist(const fs::path& path)
+{
+    if (not fs::exists(path))
+    {
+        fs::create_directories(path);
+    }
+}
 
 inline double
 determine_balance_factor(bool with_pin_cfg)
@@ -27,7 +32,9 @@ inline std::string
 to_human_date(std::size_t timestamp, std::string format)
 {
     using namespace date;
+
     const sys_time<TimeFormat> tp{TimeFormat{timestamp}};
+
     try
     {
         const auto tp_zoned = date::make_zoned(current_zone(), tp);
@@ -52,13 +59,11 @@ get_atomic_dex_data_folder()
 }
 
 inline fs::path
-get_atomic_dex_logs_folder()
+get_atomic_dex_logs_folder() noexcept
 {
-    if (not fs::exists(get_atomic_dex_data_folder() / "logs"))
-    {
-        fs::create_directories(get_atomic_dex_data_folder() / "logs");
-    }
-    return get_atomic_dex_data_folder() / "logs";
+    const auto fs_logs_path = get_atomic_dex_data_folder() / "logs";
+    create_if_doesnt_exist(fs_logs_path);
+    return fs_logs_path;
 }
 
 inline fs::path
@@ -76,11 +81,9 @@ get_atomic_dex_current_log_file()
 inline fs::path
 get_atomic_dex_config_folder()
 {
-    if (not fs::exists(get_atomic_dex_data_folder() / "config"))
-    {
-        fs::create_directories(get_atomic_dex_data_folder() / "config");
-    }
-    return get_atomic_dex_data_folder() / "config";
+    const auto fs_cfg_path = get_atomic_dex_data_folder() / "config";
+    create_if_doesnt_exist(fs_cfg_path);
+    return fs_cfg_path;
 }
 
 inline const std::string
@@ -98,18 +101,15 @@ minimal_trade_amount()
 inline fs::path
 get_atomic_dex_export_folder()
 {
-    if (not fs::exists(get_atomic_dex_data_folder() / "exports"))
-    {
-        fs::create_directories(get_atomic_dex_data_folder() / "exports");
-    }
-    return get_atomic_dex_data_folder() / "exports";
+    const auto fs_export_folder = get_atomic_dex_data_folder() / "exports";
+    create_if_doesnt_exist(fs_export_folder);
+    return fs_export_folder;
 }
 
 inline fs::path
 get_atomic_dex_current_export_recent_swaps_file()
 {
-    const fs::path export_log_path = get_atomic_dex_export_folder() / ("swap-export.json");
-    return export_log_path;
+    return get_atomic_dex_export_folder() / ("swap-export.json");
 }
 
 inline std::string

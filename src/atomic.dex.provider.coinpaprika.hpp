@@ -16,9 +16,6 @@
 
 #pragma once
 
-//! PCH Headers
-#include "atomic.dex.pch.hpp"
-
 //! Project Headers
 #include "atomic.dex.cfg.hpp"
 #include "atomic.dex.events.hpp"
@@ -46,7 +43,6 @@ namespace atomic_dex
         atomic_dex::cfg&             m_cfg;
         t_json_synchronized          m_other_fiats_rates;
         t_providers_registry         m_usd_rate_providers{};
-        t_providers_registry         m_eur_rate_providers{};
         t_providers_registry         m_btc_rate_providers{};
         t_providers_registry         m_kmd_rate_providers{};
         t_ticker_infos_registry      m_ticker_infos_registry{};

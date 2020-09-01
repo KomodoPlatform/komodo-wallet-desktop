@@ -16,7 +16,8 @@
 
 #pragma once
 
-#include "atomic.dex.pch.hpp"
+//! Project Headers
+#include "atomic.dex.http.code.hpp"
 
 namespace atomic_dex
 {
@@ -25,7 +26,8 @@ namespace atomic_dex
         struct ticker_historical_request
         {
             std::string ticker_currency_id;
-            std::size_t timestamp{static_cast<size_t>(std::chrono::duration_cast<std::chrono::seconds>((std::chrono::system_clock::now() - std::chrono::hours(168)).time_since_epoch()).count())};
+            std::size_t timestamp{static_cast<size_t>(
+                std::chrono::duration_cast<std::chrono::seconds>((std::chrono::system_clock::now() - std::chrono::hours(168)).time_since_epoch()).count())};
             std::string interval{"1d"};
         };
 
@@ -77,12 +79,48 @@ namespace atomic_dex
 
         void from_json(const nlohmann::json& j, ticker_historical_answer& evt);
 
-        ticker_historical_answer ticker_historical(const ticker_historical_request& request);
-        ticker_info_answer tickers_info(const ticker_infos_request& request);
-        price_converter_answer price_converter(const price_converter_request& request);
+        pplx::task<web::http::http_response> async_price_converter(const price_converter_request& request);
+        pplx::task<web::http::http_response> async_ticker_info(const ticker_infos_request& request);
+        pplx::task<web::http::http_response> async_ticker_historical(const ticker_historical_request& request);
+
+        template <typename TAnswer>
+        TAnswer static inline process_generic_resp(web::http::http_response resp)
+        {
+            TAnswer answer;
+            spdlog::info("{} l{} resp code: {}", __FUNCTION__, __LINE__, resp.status_code());
+            std::string body = TO_STD_STR(resp.extract_string(true).get());
+            if (resp.status_code() == e_http_code::bad_request)
+            {
+                spdlog::warn("rpc answer code is 400 (Bad Parameters), body: {}", body);
+                answer.rpc_result_code = resp.status_code();
+                answer.raw_result      = body;
+                return answer;
+            }
+            if (resp.status_code() == e_http_code::too_many_requests)
+            {
+                spdlog::warn("rpc answer code is 429 (Too Many requests), body: {}", body);
+                answer.rpc_result_code = resp.status_code();
+                answer.raw_result      = body;
+                return answer;
+            }
+            try
+            {
+                const auto json_answer = nlohmann::json::parse(body);
+                from_json(json_answer, answer);
+                answer.rpc_result_code = resp.status_code();
+                answer.raw_result      = body;
+            }
+            catch (const std::exception& error)
+            {
+                spdlog::warn("{}", error.what());
+                answer.rpc_result_code = -1;
+                answer.raw_result      = error.what();
+            }
+            return answer;
+        }
     } // namespace coinpaprika::api
 
 
-    using t_ticker_info_answer = coinpaprika::api::ticker_info_answer;
+    using t_ticker_info_answer       = coinpaprika::api::ticker_info_answer;
     using t_ticker_historical_answer = coinpaprika::api::ticker_historical_answer;
 } // namespace atomic_dex

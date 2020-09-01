@@ -17,6 +17,9 @@
 //! QT Headers
 #include <QtNetwork>
 
+//! PCH
+#include "atomic.dex.pch.hpp"
+
 //! Project headers
 #include "atomic.dex.qt.utilities.hpp"
 

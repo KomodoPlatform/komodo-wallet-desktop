@@ -16,15 +16,13 @@
 
 #pragma once
 
+//! QT Headers
 #include <QDebug>
 #include <QJsonArray>
 #include <QJsonDocument>
 #include <QObject>
 
-//! PCH Headers
-#include "atomic.dex.pch.hpp"
-
-//!
+//! Project Headers
 #include "atomic.dex.mm2.hpp"
 #include "atomic.dex.provider.coinpaprika.hpp"
 

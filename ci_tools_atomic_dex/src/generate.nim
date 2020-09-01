@@ -32,7 +32,7 @@ proc generate_solution*(build_type: string, osx_sdk_path: string, compiler_path:
     echo "cmd line: " & cmd_line
     discard execCmd(cmd_line)
     when defined(windows):
-        if os.existsFile(os.getCurrentDir().joinPath("bin").joinPath("atomicDeFi.exe")):
+        if os.existsFile(os.getCurrentDir().joinPath("bin").joinPath("atomicDexPro.exe")):
           discard execCmd(get_windows_deploy_cmd())
         else:
-          echo "atomicDeFi is not yet built"
+          echo "atomicDexPro is not yet built"

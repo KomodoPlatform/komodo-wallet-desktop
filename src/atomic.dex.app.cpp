@@ -14,6 +14,9 @@
  *                                                                            *
  ******************************************************************************/
 
+//! PCH
+#include "atomic.dex.pch.hpp"
+
 #include <QDebug>
 #include <QJsonArray>
 #include <QJsonDocument>
@@ -48,7 +51,6 @@
 #include "atomic.dex.update.service.hpp"
 #include "atomic.dex.utilities.hpp"
 #include "atomic.dex.version.hpp"
-#include "atomic.threadpool.hpp"
 
 namespace
 {
@@ -201,11 +203,6 @@ namespace atomic_dex
 
             system_manager_.create_system<coinpaprika_provider>(mm2_s, system_manager_.get_system<settings_page>().get_cfg());
             system_manager_.create_system<cex_prices_provider>(mm2_s);
-            // auto& portfolio_system = system_manager_.create_system<portfolio_page>(system_manager_, dispatcher_, this);
-            // portfolio_system.get_portfolio()->set_cfg(system_manager_.get_system<settings_page>().get_cfg());
-            // system_manager_.create_system<trading_page>(system_manager_, m_event_actions.at(events_action::about_to_exit_app),
-            // system_manager_.get_system<portfolio_page>().get_portfolio(), this);
-
 
             connect_signals();
             m_event_actions[events_action::need_a_full_refresh_of_mm2] = false;
@@ -227,6 +224,39 @@ namespace atomic_dex
             {
                 refresh_fiat_balance(mm2, paprika);
                 refresh_address(mm2);
+            }
+
+            std::vector<std::string> to_init;
+            while (not m_portfolio_queue.empty())
+            {
+                const char* ticker_cstr = nullptr;
+                m_portfolio_queue.pop(ticker_cstr);
+                std::string ticker(ticker_cstr);
+                if (ticker == "KMD")
+                {
+                    this->m_kmd_fully_enabled = true;
+                }
+                if (ticker == "BTC")
+                {
+                    this->m_btc_fully_enabled = true;
+                }
+                to_init.push_back(ticker);
+                std::free((void*)ticker_cstr);
+            }
+
+            if (not to_init.empty())
+            {
+                system_manager_.get_system<portfolio_page>().get_portfolio()->initialize_portfolio(to_init);
+                if (m_kmd_fully_enabled && m_btc_fully_enabled)
+                {
+                    if (m_coin_info->get_ticker().isEmpty())
+                    {
+                        m_coin_info->set_ticker("KMD");
+                        emit coinInfoChanged();
+                        process_refresh_current_ticker_infos();
+                    }
+                    this->set_status("complete");
+                }
             }
         }
 
@@ -255,12 +285,6 @@ namespace atomic_dex
                 if (mm2.is_mm2_running())
                 {
                     refresh_transactions(mm2);
-                }
-                break;
-            case action::refresh_portfolio_ticker_balance:
-                if (mm2.is_mm2_running())
-                {
-                    system_manager_.get_system<portfolio_page>().get_portfolio()->update_balance_values(*m_ticker_balance_to_refresh);
                 }
                 break;
             case action::post_process_orders_finished:
@@ -378,7 +402,6 @@ namespace atomic_dex
             {"update_needed", false}, {"changelog", ""}, {"current_version", ""}, {"download_url", ""}, {"new_version", ""}, {"rpc_code", 0}, {"status", ""}}),
         m_coin_info(new current_coin_info(dispatcher_, this)), m_manager_models{
                                                                    {"addressbook", new addressbook_model(this->m_wallet_manager, this)},
-                                                                   //{"portfolio", new portfolio_model(this->system_manager_, this->dispatcher_, this)},
                                                                    {"orders", new orders_model(this->system_manager_, this->dispatcher_, this)},
                                                                    {"internet_service",
                                                                     std::addressof(system_manager_.create_system<internet_service_checker>(this))},
@@ -390,7 +413,6 @@ namespace atomic_dex
         auto& settings_page_system = system_manager_.create_system<settings_page>(m_app, this);
         auto& portfolio_system     = system_manager_.create_system<portfolio_page>(system_manager_, dispatcher_, this);
         portfolio_system.get_portfolio()->set_cfg(settings_page_system.get_cfg());
-        // get_portfolio()->set_cfg(settings_page_system.get_cfg());
 
         system_manager_.create_system<coinpaprika_provider>(mm2_system, settings_page_system.get_cfg());
         system_manager_.create_system<cex_prices_provider>(mm2_system);
@@ -429,29 +451,10 @@ namespace atomic_dex
     application::on_coin_fully_initialized_event(const coin_fully_initialized& evt) noexcept
     {
         //! This event is called when a call is enabled and cex provider finished fetch datas
-        spdlog::debug("{} l{}", __FUNCTION__, __LINE__);
-
-        if (evt.ticker == "BTC")
+        if (not m_event_actions[events_action::about_to_exit_app])
         {
-            this->m_btc_fully_enabled = true;
-        }
-
-        if (evt.ticker == "KMD")
-        {
-            this->m_kmd_fully_enabled = true;
-        }
-
-        system_manager_.get_system<portfolio_page>().get_portfolio()->initialize_portfolio(evt.ticker);
-
-        if (m_kmd_fully_enabled && m_btc_fully_enabled)
-        {
-            if (m_coin_info->get_ticker().isEmpty())
-            {
-                m_coin_info->set_ticker("KMD");
-                emit coinInfoChanged();
-                process_refresh_current_ticker_infos();
-            }
-            this->set_status("complete");
+            spdlog::debug("{} l{}", __FUNCTION__, __LINE__);
+            for (auto&& ticker: evt.tickers) { m_portfolio_queue.push(strdup(ticker.c_str())); }
         }
     }
 
@@ -461,7 +464,7 @@ namespace atomic_dex
         spdlog::debug("{} l{}", __FUNCTION__, __LINE__);
         if (get_mm2().get_coin_info(evt.ticker).is_erc_20)
         {
-            spawn([this]() { get_mm2().fetch_infos_thread(false); });
+            get_mm2().fetch_infos_thread(false);
         }
         if (not m_event_actions[events_action::about_to_exit_app])
         {
@@ -498,7 +501,7 @@ namespace atomic_dex
             req.max    = false;
         }
 
-        auto answer = mm2::withdraw(std::move(req), ec);
+        auto answer = get_mm2().withdraw(std::move(req), ec);
         auto coin   = get_mm2().get_coin_info(m_coin_info->get_ticker().toStdString());
         return to_qt_binding(std::move(answer), this, QString::fromStdString(coin.explorer_url[0]));
     }
@@ -519,7 +522,7 @@ namespace atomic_dex
             .gas_price = gas_price.toStdString(),
             .gas_limit = not gas.isEmpty() ? std::stoi(gas.toStdString()) : 0};
         std::error_code ec;
-        auto            answer = mm2::withdraw(std::move(req), ec);
+        auto            answer = get_mm2().withdraw(std::move(req), ec);
         auto            coin   = get_mm2().get_coin_info(m_coin_info->get_ticker().toStdString());
         return to_qt_binding(std::move(answer), this, QString::fromStdString(coin.explorer_url[0]));
     }
@@ -653,17 +656,14 @@ namespace atomic_dex
     application::refresh_infos()
     {
         auto& mm2 = get_mm2();
-        spawn([&mm2]() { mm2.fetch_infos_thread(); });
+        mm2.fetch_infos_thread();
     }
 
     void
     application::refresh_orders_and_swaps()
     {
         auto& mm2 = get_mm2();
-        spawn([&mm2]() {
-            mm2.process_swaps();
-            mm2.process_orders();
-        });
+        mm2.batch_fetch_orders_and_swap();
     }
 
     QVariant
@@ -686,6 +686,13 @@ namespace atomic_dex
         {
             [[maybe_unused]] action act;
             this->m_actions_queue.pop(act);
+        }
+
+        while (not this->m_portfolio_queue.empty())
+        {
+            const char* ticker;
+            m_portfolio_queue.pop(ticker);
+            free((void*)ticker);
         }
 
         //! Clear models
@@ -906,7 +913,7 @@ namespace atomic_dex
         QString result;
 
         ::mm2::api::recover_funds_of_swap_request request{.swap_uuid = uuid.toStdString()};
-        auto                                      res = ::mm2::api::rpc_recover_funds(std::move(request));
+        auto                                      res = ::mm2::api::rpc_recover_funds(std::move(request), get_mm2().get_mm2_client());
         result                                        = QString::fromStdString(res.raw_result);
 
         return result;
@@ -1021,9 +1028,8 @@ namespace atomic_dex
         spdlog::trace("{} l{}", __FUNCTION__, __LINE__);
         if (not m_event_actions[events_action::about_to_exit_app])
         {
-            this->m_actions_queue.push(action::refresh_portfolio_ticker_balance);
+            get_portfolio_page()->get_portfolio()->update_balance_values(evt.ticker);
         }
-        *this->m_ticker_balance_to_refresh = evt.ticker;
     }
 } // namespace atomic_dex
 

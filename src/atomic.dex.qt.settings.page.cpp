@@ -18,6 +18,9 @@
 #include <QDebug>
 #include <QLocale>
 
+//! PCH
+#include "atomic.dex.pch.hpp"
+
 //! Project Headers
 #include "atomic.dex.events.hpp"
 #include "atomic.dex.qt.settings.page.hpp"

@@ -14,8 +14,12 @@
  *                                                                            *
  ******************************************************************************/
 
-#include "atomic.dex.qt.orderbook.hpp"
+//! PCH
+#include "atomic.dex.pch.hpp"
+
+//! Project headers
 #include "atomic.dex.mm2.hpp"
+#include "atomic.dex.qt.orderbook.hpp"
 #include "atomic.dex.qt.utilities.hpp"
 
 namespace atomic_dex
