@@ -358,28 +358,35 @@ namespace atomic_dex
         return ::mm2::api::async_rpc_batch_standalone(batch_array, m_mm2_client, m_token_source.get_token())
             .then([this, tickers_idx = tickers_idx, erc_to_fetch = erc_to_fetch, is_a_reset, tickers, is_during_enabling](web::http::http_response resp) {
                 // spdlog::trace("Fetching balance and tx, ticker size: {}", tickers.size());
-                auto answers = ::mm2::api::basic_batch_answer(resp);
-                if (not answers.contains("error"))
+                try
                 {
-                    std::size_t idx = 0;
-                    for (auto&& answer: answers)
+                    auto answers = ::mm2::api::basic_batch_answer(resp);
+                    if (not answers.contains("error"))
                     {
-                        if (answer.contains("balance"))
+                        std::size_t idx = 0;
+                        for (auto&& answer: answers)
                         {
-                            this->process_balance_answer(answer);
+                            if (answer.contains("balance"))
+                            {
+                                this->process_balance_answer(answer);
+                            }
+                            else if (answer.contains("result"))
+                            {
+                                this->process_tx_answer(answer, tickers_idx[idx]);
+                            }
+                            ++idx;
                         }
-                        else if (answer.contains("result"))
+                        for (auto&& coin: erc_to_fetch) { process_tx_etherscan(coin, is_a_reset); }
+                        if (is_during_enabling)
                         {
-                            this->process_tx_answer(answer, tickers_idx[idx]);
+                            dispatcher_.trigger<coin_enabled>(tickers);
+                            this->dispatcher_.trigger<enabled_default_coins_event>();
                         }
-                        ++idx;
                     }
-                    for (auto&& coin: erc_to_fetch) { process_tx_etherscan(coin, is_a_reset); }
-                    if (is_during_enabling)
-                    {
-                        dispatcher_.trigger<coin_enabled>(tickers);
-                        this->dispatcher_.trigger<enabled_default_coins_event>();
-                    }
+                }
+                catch (const std::exception& error)
+                {
+                    spdlog::error("exception in batch_balance_and_tx: {}", error.what());
                 }
             })
             .then(&handle_exception_pplx_task);
@@ -485,25 +492,33 @@ namespace atomic_dex
         auto functor = [this](nlohmann::json batch_array, std::vector<std::string> tickers) {
             ::mm2::api::async_rpc_batch_standalone(batch_array, this->m_mm2_client, m_token_source.get_token())
                 .then([this, tickers](web::http::http_response resp) mutable {
-                    spdlog::trace("Enabling coin finished");
-                    auto answers = ::mm2::api::basic_batch_answer(resp);
-                    spdlog::trace("Enabling coin parsed");
-
-                    if (answers.count("error") == 0)
+                    try
                     {
-                        std::size_t idx = 0;
-                        for (auto&& answer: answers)
+                        spdlog::trace("Enabling coin finished");
+                        auto answers = ::mm2::api::basic_batch_answer(resp);
+                        spdlog::trace("Enabling coin parsed");
+
+                        if (answers.count("error") == 0)
                         {
-                            bool res = this->process_batch_enable_answer(answer);
-                            if (not res)
+                            std::size_t idx = 0;
+                            for (auto&& answer: answers)
                             {
-                                spdlog::trace("bad answer for: {}, removing it from enabling", tickers[idx]);
-                                tickers.erase(tickers.begin() + idx);
+                                bool res = this->process_batch_enable_answer(answer);
+                                if (not res)
+                                {
+                                    spdlog::trace("bad answer for: {}, removing it from enabling", tickers[idx]);
+                                    tickers.erase(tickers.begin() + idx);
+                                }
+                                ++idx;
                             }
-                            ++idx;
+                            batch_balance_and_tx(false, tickers, true);
+                            //! At this point, task is finished, let's refresh.
                         }
-                        batch_balance_and_tx(false, tickers, true);
-                        //! At this point, task is finished, let's refresh.
+                    }
+                    catch (const std::exception& error)
+                    {
+                        spdlog::error("exception caught in batch_enable_coins: {}", error.what());
+                        //! Emit event here
                     }
                 })
                 .then(&handle_exception_pplx_task);
