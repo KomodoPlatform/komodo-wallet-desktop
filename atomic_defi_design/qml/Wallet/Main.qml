@@ -265,10 +265,10 @@ Item {
                     font.pixelSize: send_button.font.pixelSize
 
                     visible: current_ticker_infos.is_claimable && !API.get().is_pin_cfg_enabled()
-                    enabled: claim_rewards_modal.canClaim()
+                    enabled: parseFloat(current_ticker_infos.balance) > 0
                     onClicked: {
-                        if(claim_rewards_modal.prepareClaimRewards())
-                            claim_rewards_modal.open()
+                        claim_rewards_modal.prepareClaimRewards()
+                        claim_rewards_modal.open()
                     }
                 }
 

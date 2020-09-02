@@ -54,26 +54,37 @@ DefaultModal {
     property var postClaim: () => {}
 
     // Local
-    function canClaim() {
-        return current_ticker_infos.is_claimable && parseFloat(current_ticker_infos.balance) > 0
-    }
+    readonly property bool can_claim: current_ticker_infos.is_claimable && parseFloat(current_ticker_infos.balance) > 0 && API.get().wallet_pg.is_claiming_rpc_ready
+    readonly property var claim_rpc_result: API.get().wallet_pg.claiming_rpc_data
+    onClaim_rpc_resultChanged: {
+        prepare_claim_rewards_result = General.clone(claim_rpc_result)
+        if(!prepare_claim_rewards_result.withdraw_answer) {
+            reset()
+            return
+        }
 
-    function prepareClaimRewards() {
-        stack_layout.currentIndex = 0
-        reset()
+        console.log("Claim rewards result changed:", JSON.stringify(prepare_claim_rewards_result))
 
-        prepare_claim_rewards_result = API.get().claim_rewards(API.get().wallet_pg.ticker)
-        console.log(JSON.stringify(prepare_claim_rewards_result))
+        let error = false
         if(prepare_claim_rewards_result.withdraw_answer.error) {
             toast.show(qsTr("Failed to prepare to claim rewards"), General.time_toast_important_error, prepare_claim_rewards_result.withdraw_answer.error)
-            return false
+            error = true
         }
         else if(prepare_claim_rewards_result.kmd_rewards_info.error) {
             toast.show(qsTr("Failed to get the rewards info"), General.time_toast_important_error, prepare_claim_rewards_result.kmd_rewards_info.error)
-            return false
+            error = true
         }
 
-        return true
+        if(error) root.close()
+    }
+
+    function prepareClaimRewards() {
+        if(!can_claim) return
+
+        stack_layout.currentIndex = 0
+        reset()
+
+        API.get().wallet_pg.claim_rewards()
     }
 
     function claimRewards() {
@@ -103,8 +114,14 @@ DefaultModal {
                 title: API.get().settings_pg.empty_string + (qsTr("Claim your %1 reward?", "TICKER").arg(API.get().wallet_pg.ticker))
             }
 
+            DefaultBusyIndicator {
+                visible: !can_claim
+                Layout.alignment: Qt.AlignCenter
+            }
 
             RowLayout {
+                visible: can_claim
+
                 Layout.fillWidth: true
                 DefaultText {
                     Layout.fillWidth: true
@@ -118,9 +135,9 @@ DefaultModal {
 
                 PrimaryButton {
                     text: API.get().settings_pg.empty_string + (qsTr("Refresh"))
-                    onClicked: {
-                        if(!prepareClaimRewards()) root.close()
-                    }
+                    onClicked: prepareClaimRewards()
+
+                    enabled: can_claim
                 }
             }
 
@@ -132,6 +149,8 @@ DefaultModal {
 
             // List header
             Item {
+                visible: can_claim
+
                 Layout.topMargin: 25
                 Layout.fillWidth: true
 
@@ -258,6 +277,8 @@ DefaultModal {
             }
 
             DefaultListView {
+                visible: can_claim
+
                 id: list
                 Layout.fillWidth: true
                 Layout.fillHeight: true
