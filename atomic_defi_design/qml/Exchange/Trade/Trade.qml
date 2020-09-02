@@ -19,6 +19,11 @@ Item {
     property string base_ticker: sell_mode ? left_ticker : right_ticker
     property string rel_ticker: sell_mode ? right_ticker : left_ticker
 
+    function tickerSupportedByBand(lt, rt) {
+        const pairs = API.get().portfolio_pg.oracle_price_supported_pairs.join(",")
+        return pairs.indexOf(lt) !== -1 && pairs.indexOf(rt) !== -1
+    }
+
     Timer {
         id: swap_cooldown
         repeat: false
@@ -340,6 +345,16 @@ Item {
                     anchors.bottom: orderbook.top
                     anchors.bottomMargin: layout_margin
                     spacing: 40
+
+                    DefaultImage {
+                        visible: tickerSupportedByBand(selector_left.ticker, selector_right.ticker)
+                        source: General.coinIcon('BAND')
+                        Layout.preferredWidth: 16
+                        Layout.preferredHeight: Layout.preferredWidth
+                        Layout.alignment: Qt.AlignLeft | Qt.AlignVCenter
+
+                        CexInfoTrigger {}
+                    }
 
                     TickerSelector {
                         id: selector_left
