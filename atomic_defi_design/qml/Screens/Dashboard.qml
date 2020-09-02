@@ -255,9 +255,6 @@ Item {
                                                                     .arg(API.get().portfolio_pg.oracle_last_price_reference))
                 wrapMode: Text.WordWrap
                 Layout.preferredWidth: cex_rates_modal.width
-
-                onLinkActivated: Qt.openUrlExternally(link)
-                linkColor: color
             }
         }
     }
