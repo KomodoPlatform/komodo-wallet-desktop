@@ -54,7 +54,7 @@ DefaultModal {
     property var postClaim: () => {}
 
     // Local
-    readonly property bool can_claim: current_ticker_infos.is_claimable && parseFloat(current_ticker_infos.balance) > 0 && API.get().wallet_pg.is_claiming_rpc_ready
+    readonly property bool can_claim: current_ticker_infos.is_claimable && API.get().wallet_pg.is_claiming_rpc_ready
     readonly property var claim_rpc_result: API.get().wallet_pg.claiming_rpc_data
     onClaim_rpc_resultChanged: {
         prepare_claim_rewards_result = General.clone(claim_rpc_result)
