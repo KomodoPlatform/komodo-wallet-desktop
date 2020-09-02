@@ -93,17 +93,17 @@ namespace atomic_dex
     }
 
     bool
-    wallet_page::is_rpc_claiming_ready() const noexcept
+    wallet_page::is_rpc_claiming_busy() const noexcept
     {
-        return m_is_claiming_rpc_ready.load();
+        return m_is_claiming_busy.load();
     }
 
     void
-    wallet_page::set_rpc_claiming_ready(bool status) noexcept
+    wallet_page::set_claiming_is_busy(bool status) noexcept
     {
-        if (m_is_claiming_rpc_ready != status)
+        if (m_is_claiming_busy != status)
         {
-            m_is_claiming_rpc_ready = status;
+            m_is_claiming_busy = status;
             emit rpcClaimingStatusChanged();
         }
     }
@@ -111,7 +111,8 @@ namespace atomic_dex
     void
     wallet_page::claim_rewards()
     {
-        this->set_rpc_claiming_ready(false);
+        //this->set_rpc_claiming_data(QJsonObject{});
+        this->set_claiming_is_busy(true);
         nlohmann::json     batch      = nlohmann::json::array();
         auto&              mm2_system = m_system_manager.get_system<mm2>();
         std::error_code    ec;
@@ -121,7 +122,7 @@ namespace atomic_dex
         batch.push_back(json_data);
         json_data = ::mm2::api::template_request("kmd_rewards_info");
         batch.push_back(json_data);
-
+        spdlog::trace("claiming request: {}", batch.dump(4));
         ::mm2::api::async_rpc_batch_standalone(batch, mm2_system.get_mm2_client(), mm2_system.get_cancellation_token())
             .then([this](web::http::http_response resp) {
                 std::string body = TO_STD_STR(resp.extract_string(true).get());
@@ -132,7 +133,7 @@ namespace atomic_dex
                     auto           answers              = nlohmann::json::parse(body);
                     auto           withdraw_answer      = ::mm2::api::rpc_process_answer_batch<t_withdraw_answer>(answers[0], "withdraw");
                     nlohmann::json j_out                = nlohmann::json::object();
-                    j_out["withdraw_answer"]            = nlohmann::json::parse(withdraw_answer.raw_result);
+                    j_out["withdraw_answer"]            = answers[0];
                     j_out.at("withdraw_answer")["date"] = withdraw_answer.result.value().timestamp_as_date;
                     auto kmd_rewards_answer             = ::mm2::api::process_kmd_rewards_answer(answers[1]);
                     j_out["kmd_rewards_info"]           = kmd_rewards_answer.result;
@@ -143,7 +144,7 @@ namespace atomic_dex
                     auto error_json = QJsonObject({{"error_code", resp.status_code()}});
                     this->set_rpc_claiming_data(error_json);
                 }
-                this->set_rpc_claiming_ready(true);
+                this->set_claiming_is_busy(false);
             })
             .then(&handle_exception_pplx_task);
     }
