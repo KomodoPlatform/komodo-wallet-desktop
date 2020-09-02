@@ -214,14 +214,7 @@ namespace atomic_dex
         auto& price_service = system_manager_.get_system<global_price_service>();
         if (mm2.is_mm2_running())
         {
-            std::error_code ec;
-            const auto&     config           = system_manager_.get_system<settings_page>().get_cfg();
-            auto            fiat_balance_std = price_service.get_price_in_fiat_all(config.current_currency, ec);
-
-            if (!ec)
-            {
-                this->set_current_balance_fiat_all(QString::fromStdString(fiat_balance_std));
-            }
+            /**/
 
             /*if (not m_coin_info->get_ticker().isEmpty() && not m_enabled_coins.empty())
             {
@@ -252,14 +245,15 @@ namespace atomic_dex
                 system_manager_.get_system<portfolio_page>().get_portfolio()->initialize_portfolio(to_init);
                 if (m_kmd_fully_enabled && m_btc_fully_enabled)
                 {
-                    /*if (m_coin_info->get_ticker().isEmpty())
-                    {
-                        m_coin_info->set_ticker("KMD");
-                        emit coinInfoChanged();
-                        process_refresh_current_ticker_infos();
-                    }*/
                     get_wallet_page()->refresh_ticker_infos();
                     this->set_status("complete");
+                }
+                std::error_code ec;
+                const auto&     config           = system_manager_.get_system<settings_page>().get_cfg();
+                auto            fiat_balance_std = price_service.get_price_in_fiat_all(config.current_currency, ec);
+                if (!ec)
+                {
+                    this->set_current_balance_fiat_all(QString::fromStdString(fiat_balance_std));
                 }
             }
         }
@@ -726,6 +720,7 @@ namespace atomic_dex
         system_manager_.get_system<trading_page>().disconnect_signals();
         qobject_cast<notification_manager*>(m_manager_models.at("notifications"))->disconnect_signals();
         get_dispatcher().sink<ticker_balance_updated>().disconnect<&application::on_ticker_balance_updated_event>(*this);
+        get_dispatcher().sink<fiat_rate_updated>().disconnect<&application::on_fiat_rate_updated>(*this);
         get_dispatcher().sink<change_ticker_event>().disconnect<&application::on_change_ticker_event>(*this);
         get_dispatcher().sink<enabled_coins_event>().disconnect<&application::on_enabled_coins_event>(*this);
         get_dispatcher().sink<enabled_default_coins_event>().disconnect<&application::on_enabled_default_coins_event>(*this);
@@ -755,6 +750,7 @@ namespace atomic_dex
         qobject_cast<notification_manager*>(m_manager_models.at("notifications"))->connect_signals();
         system_manager_.get_system<trading_page>().connect_signals();
         get_dispatcher().sink<ticker_balance_updated>().connect<&application::on_ticker_balance_updated_event>(*this);
+        get_dispatcher().sink<fiat_rate_updated>().connect<&application::on_fiat_rate_updated>(*this);
         get_dispatcher().sink<change_ticker_event>().connect<&application::on_change_ticker_event>(*this);
         get_dispatcher().sink<enabled_coins_event>().connect<&application::on_enabled_coins_event>(*this);
         get_dispatcher().sink<enabled_default_coins_event>().connect<&application::on_enabled_default_coins_event>(*this);
@@ -1029,6 +1025,20 @@ namespace atomic_dex
 //! Ticker balance change
 namespace atomic_dex
 {
+    void
+    application::on_fiat_rate_updated(const fiat_rate_updated&) noexcept
+    {
+        spdlog::trace("{} l{}", __FUNCTION__, __LINE__);
+        std::error_code ec;
+        const auto&     config           = system_manager_.get_system<settings_page>().get_cfg();
+        const auto&     price_service    = system_manager_.get_system<global_price_service>();
+        auto            fiat_balance_std = price_service.get_price_in_fiat_all(config.current_currency, ec);
+        if (!ec)
+        {
+            this->set_current_balance_fiat_all(QString::fromStdString(fiat_balance_std));
+        }
+    }
+
     void
     application::on_ticker_balance_updated_event(const ticker_balance_updated& evt) noexcept
     {

@@ -59,6 +59,11 @@ namespace atomic_dex
         std::string ticker;
     };
 
+    struct fiat_rate_updated
+    {
+        std::string ticker;
+    };
+
     struct coin_enabled
     {
         std::vector<std::string> tickers;

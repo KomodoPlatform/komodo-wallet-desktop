@@ -122,6 +122,7 @@ namespace atomic_dex
 
         //! entt::dispatcher events
         void on_ticker_balance_updated_event(const ticker_balance_updated&) noexcept;
+        void on_fiat_rate_updated(const fiat_rate_updated&) noexcept;
         void on_enabled_coins_event(const enabled_coins_event&) noexcept;
         void on_enabled_default_coins_event(const enabled_default_coins_event&) noexcept;
         void on_coin_fully_initialized_event(const coin_fully_initialized&) noexcept;

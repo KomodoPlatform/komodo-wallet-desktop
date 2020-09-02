@@ -154,6 +154,7 @@ namespace
                         if (not answer.price.empty())
                         {
                             rate_providers.insert_or_assign(current_coin.ticker, answer.price);
+                            dispatcher->trigger<fiat_rate_updated>(current_coin.ticker);
                         }
                     }
                     else
@@ -245,7 +246,7 @@ namespace atomic_dex
                     }
                     process_ticker_infos(current_coin, this->m_ticker_infos_registry);
                     process_ticker_historical(current_coin, this->m_ticker_historical_registry);
-                    process_provider(current_coin, m_usd_rate_providers, "usd-us-dollars");
+                    process_provider(current_coin, m_usd_rate_providers, "usd-us-dollars", nullptr, &dispatcher_);
                 }
             } while (not m_provider_thread_timer.wait_for(120s));
         });

@@ -59,6 +59,7 @@ namespace atomic_dex
     QVariant
     wallet_page::get_ticker_infos() const noexcept
     {
+        spdlog::trace("get_ticker_infos");
         QJsonObject     obj{{"balance", "0"},        {"name", "Komodo"},
                         {"type", "SmartChain"},  {"is_claimable", true},
                         {"address", "foo"},      {"minimal_balance_asking_rewards", "10.00"},
