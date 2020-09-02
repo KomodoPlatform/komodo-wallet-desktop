@@ -1,6 +1,7 @@
 #include "atomic.dex.pch.hpp"
 
 //! Project Headers
+#include "atomic.dex.band.oracle.price.service.hpp"
 #include "atomic.dex.global.price.service.hpp"
 #include "atomic.dex.provider.coinpaprika.hpp"
 
@@ -131,8 +132,14 @@ namespace atomic_dex
     std::string
     global_price_service::get_rate_conversion(const std::string& fiat, const std::string& ticker, std::error_code& ec, bool adjusted) const noexcept
     {
-        auto&       paprika       = m_system_manager.get_system<coinpaprika_provider>();
-        std::string current_price = paprika.get_rate_conversion("USD", ticker, ec);
+        auto&       paprika         = m_system_manager.get_system<coinpaprika_provider>();
+        auto&       band_service    = m_system_manager.get_system<band_oracle_price_service>();
+        std::string current_price   = band_service.retrieve_if_this_ticker_supported(ticker);
+        bool        is_oracle_ready = band_service.is_oracle_ready();
+        if (current_price.empty())
+        {
+            current_price = paprika.get_rate_conversion("USD", ticker, ec);
+        }
 
         if (fiat != "KMD" && fiat != "BTC" && fiat != "USD")
         {
@@ -140,9 +147,14 @@ namespace atomic_dex
             current_price                = tmp_current_price.str();
         }
 
-        if (fiat == "KMD" || fiat == "BTC")
+        if (fiat == "KMD" || (fiat == "BTC" && not is_oracle_ready))
         {
             t_float_50 tmp_current_price = t_float_50(current_price) * t_float_50(m_coin_rate_providers.at(fiat));
+            current_price                = tmp_current_price.str();
+        }
+        else if (fiat == "BTC" && is_oracle_ready)
+        {
+            t_float_50 tmp_current_price = t_float_50(current_price) * band_service.retrieve_rates(fiat);
             current_price                = tmp_current_price.str();
         }
 

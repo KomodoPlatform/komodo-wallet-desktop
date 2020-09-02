@@ -41,6 +41,7 @@
 
 //! Project Headers
 #include "atomic.dex.app.hpp"
+#include "atomic.dex.band.oracle.price.service.hpp"
 #include "atomic.dex.global.price.service.hpp"
 #include "atomic.dex.mm2.hpp"
 #include "atomic.dex.provider.cex.prices.hpp"
@@ -417,6 +418,7 @@ namespace atomic_dex
         portfolio_system.get_portfolio()->set_cfg(settings_page_system.get_cfg());
 
         system_manager_.create_system<global_price_service>(system_manager_, settings_page_system.get_cfg());
+        system_manager_.create_system<band_oracle_price_service>();
         system_manager_.create_system<coinpaprika_provider>(mm2_system, settings_page_system.get_cfg());
         system_manager_.create_system<cex_prices_provider>(mm2_system);
         system_manager_.create_system<update_system_service>();

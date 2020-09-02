@@ -32,6 +32,8 @@ namespace atomic_dex
 
         //! Properties
         Q_PROPERTY(portfolio_model* portfolio_mdl READ get_portfolio NOTIFY portfolioChanged)
+        Q_PROPERTY(QString oracle_last_price_reference READ get_oracle_last_price_reference NOTIFY oraclePriceUpdated)
+        Q_PROPERTY(QStringList oracle_price_supported_pairs READ get_oracle_price_supported_pairs NOTIFY oraclePriceUpdated)
 
         //! Private members fields
         ag::ecs::system_manager& m_system_manager;
@@ -46,9 +48,15 @@ namespace atomic_dex
         void update() noexcept final;
 
         [[nodiscard]] portfolio_model* get_portfolio() const noexcept;
+        [[nodiscard]] QString          get_oracle_last_price_reference() const noexcept;
+        [[nodiscard]] QStringList      get_oracle_price_supported_pairs() const noexcept;
+
+        //! Events
+        void on_band_oracle_refreshed([[maybe_unused]] const band_oracle_refreshed& evt);
 
       signals:
         void portfolioChanged();
+        void oraclePriceUpdated();
     };
 } // namespace atomic_dex
 
