@@ -258,6 +258,7 @@ namespace atomic_dex
                         emit coinInfoChanged();
                         process_refresh_current_ticker_infos();
                     }*/
+                    get_wallet_page()->refresh_ticker_infos();
                     this->set_status("complete");
                 }
             }
