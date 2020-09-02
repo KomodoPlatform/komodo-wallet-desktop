@@ -33,9 +33,10 @@ namespace mm2::api
         // g_mm2_http_client = nullptr;
     }
 
-    nlohmann::json                       rpc_batch_standalone(nlohmann::json batch_array, std::shared_ptr<t_http_client> mm2_client);
-    pplx::task<web::http::http_response> async_rpc_batch_standalone(nlohmann::json batch_array, std::shared_ptr<t_http_client> mm2_client, pplx::cancellation_token token);
-    nlohmann::json                       basic_batch_answer(const web::http::http_response& resp);
+    nlohmann::json rpc_batch_standalone(nlohmann::json batch_array, std::shared_ptr<t_http_client> mm2_client);
+    pplx::task<web::http::http_response>
+                   async_rpc_batch_standalone(nlohmann::json batch_array, std::shared_ptr<t_http_client> mm2_client, pplx::cancellation_token token);
+    nlohmann::json basic_batch_answer(const web::http::http_response& resp);
 
     std::string rpc_version();
 
@@ -710,7 +711,8 @@ namespace mm2::api
         int            rpc_result_code;
     };
 
-    kmd_rewards_info_answer rpc_kmd_rewards_info(std::shared_ptr<t_http_client> mm2_client);
+    //kmd_rewards_info_answer rpc_kmd_rewards_info(std::shared_ptr<t_http_client> mm2_client);
+    kmd_rewards_info_answer process_kmd_rewards_answer(nlohmann::json result);
 
     nlohmann::json rpc_batch_electrum(std::vector<electrum_request> requests, std::shared_ptr<t_http_client> mm2_client);
     nlohmann::json rpc_batch_enable(std::vector<enable_request> requests, std::shared_ptr<t_http_client> mm2_client);

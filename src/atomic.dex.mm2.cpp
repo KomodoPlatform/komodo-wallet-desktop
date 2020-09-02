@@ -1192,7 +1192,7 @@ namespace atomic_dex
         return m_tx_state.at("result");
     }
 
-    nlohmann::json
+    /*nlohmann::json
     mm2::claim_rewards(const std::string& ticker, t_mm2_ec& ec) noexcept
     {
         spdlog::debug("{} l{} f[{}]", __FUNCTION__, __LINE__, fs::path(__FILE__).filename().string());
@@ -1213,7 +1213,7 @@ namespace atomic_dex
             out["kmd_rewards_info"]           = ::mm2::api::rpc_kmd_rewards_info(m_mm2_client).result;
         }
         return out;
-    }
+    }*/
 
     t_broadcast_answer
     mm2::send_rewards(t_broadcast_request&& req, t_mm2_ec& ec) noexcept
@@ -1462,5 +1462,11 @@ namespace atomic_dex
             return true;
         }
         return false;
+    }
+
+    pplx::cancellation_token
+    mm2::get_cancellation_token() const noexcept
+    {
+        return m_token_source.get_token();
     }
 } // namespace atomic_dex

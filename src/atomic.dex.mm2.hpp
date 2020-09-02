@@ -229,7 +229,7 @@ namespace atomic_dex
         [[nodiscard]] t_tx_state get_tx_state(t_mm2_ec& ec) const;
 
         //! Claim rewards
-        nlohmann::json claim_rewards(const std::string& ticker, t_mm2_ec& ec) noexcept;
+        //nlohmann::json claim_rewards(const std::string& ticker, t_mm2_ec& ec) noexcept;
 
         //! Send Rewards
         t_broadcast_answer send_rewards(t_broadcast_request&& req, t_mm2_ec& ec) noexcept;
@@ -289,6 +289,7 @@ namespace atomic_dex
         void               add_orders_answer(t_my_orders_answer answer);
 
         std::shared_ptr<t_http_client> get_mm2_client() noexcept;
+        pplx::cancellation_token       get_cancellation_token() const noexcept;
         std::string                    get_current_ticker() const noexcept;
         bool                           set_current_ticker(const std::string& ticker) noexcept;
     };

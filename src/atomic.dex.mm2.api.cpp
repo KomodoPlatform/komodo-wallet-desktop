@@ -975,9 +975,10 @@ namespace mm2::api
     }
 
     cancel_all_orders_answer
-    rpc_cancel_all_orders(cancel_all_orders_request&& request,std::shared_ptr<t_http_client> mm2_client)
+    rpc_cancel_all_orders(cancel_all_orders_request&& request, std::shared_ptr<t_http_client> mm2_client)
     {
-        return process_rpc<cancel_all_orders_request, cancel_all_orders_answer>(std::forward<cancel_all_orders_request>(request), "cancel_all_orders", mm2_client);
+        return process_rpc<cancel_all_orders_request, cancel_all_orders_answer>(
+            std::forward<cancel_all_orders_request>(request), "cancel_all_orders", mm2_client);
     }
 
     disable_coin_answer
@@ -1068,6 +1069,26 @@ namespace mm2::api
     }
 
     kmd_rewards_info_answer
+    process_kmd_rewards_answer(nlohmann::json result)
+    {
+        kmd_rewards_info_answer out;
+        out.result                                       = result;
+        auto transform_timestamp_into_human_date_functor = [](nlohmann::json& obj, const std::string& field) {
+            if (obj.contains(field))
+            {
+                auto obj_timestamp         = obj.at(field).get<std::size_t>();
+                obj[field + "_human_date"] = to_human_date<std::chrono::seconds>(obj_timestamp, "%e %b %Y, %H:%M");
+            }
+        };
+
+        for (auto&& obj: out.result.at("result"))
+        {
+            for (const auto& field: {"accrue_start_at", "accrue_stop_at", "locktime"}) { transform_timestamp_into_human_date_functor(obj, field); }
+        }
+        return out;
+    }
+
+    /*kmd_rewards_info_answer
     rpc_kmd_rewards_info(std::shared_ptr<t_http_client> mm2_http_client)
     {
         spdlog::info("Processing rpc call: kmd_rewards_info");
@@ -1101,7 +1122,7 @@ namespace mm2::api
             }
         }
         return out;
-    }
+    }*/
 
     pplx::task<web::http::http_response>
     async_rpc_batch_standalone(nlohmann::json batch_array, std::shared_ptr<t_http_client> mm2_http_client, pplx::cancellation_token token)

@@ -481,7 +481,7 @@ namespace atomic_dex
         this->m_coin_info->set_address(address);
     }*/
 
-    QObject*
+    /*QObject*
     application::prepare_send(const QString& address, const QString& amount, bool max)
     {
         atomic_dex::t_withdraw_request req{.coin = "KMD", .to = address.toStdString(), .amount = amount.toStdString(), .max = max};
@@ -524,9 +524,9 @@ namespace atomic_dex
         auto            answer = get_mm2().withdraw(std::move(req), ec);
         auto            coin   = get_mm2().get_coin_info("KMD");
         return to_qt_binding(std::move(answer), this, QString::fromStdString(coin.explorer_url[0]));
-    }
+    }*/
 
-    QVariant
+/*    QVariant
     atomic_dex::application::claim_rewards(const QString& ticker)
     {
         std::error_code ec;
@@ -571,7 +571,7 @@ namespace atomic_dex
         }
         refresh_infos();
         return QString::fromStdString(answer.tx_hash);
-    }
+    }*/
 
     void
     application::on_tx_fetch_finished_event([[maybe_unused]] const tx_fetch_finished& evt) noexcept
