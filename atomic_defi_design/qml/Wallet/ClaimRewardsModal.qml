@@ -55,7 +55,7 @@ DefaultModal {
 
     // Local
     function canClaim() {
-        return API.get().wallet_pg.is_claimable && parseFloat(API.get().wallet_pg.balance) > 0
+        return API.get().wallet_pg.ticker_infos.is_claimable && parseFloat(API.get().wallet_pg.ticker_infos.balance) > 0
     }
 
     function prepareClaimRewards() {
