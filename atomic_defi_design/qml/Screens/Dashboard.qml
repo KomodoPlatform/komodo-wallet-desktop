@@ -239,26 +239,18 @@ Item {
     // CEX Rates info
     DefaultModal {
         id: cex_rates_modal
-        width: 500
+        width: 900
 
         // Inside modal
         ColumnLayout {
-            width: parent.width
+            width: parent.width - parent.padding
 
             ModalHeader {
                 title: API.get().settings_pg.empty_string + (General.cex_icon + " " + qsTr("CEX Data"))
             }
 
             DefaultText {
-                text_value: API.get().settings_pg.empty_string + (qsTr('Market data (prices, charts, etc.) marked with the ⓘ icon originates from third-party sources. Data is sourced via <a href="https://bandprotocol.com/">"Band Decentralized Oracle.</a>* and/or <a href="https://coinpaprika.com">coinpaprika.com</a>' +
-
-                                                                       '<br>' +
-
-                                                                       '*<i>Supported Pairs: %1</i>' +
-
-                                                                      '<br>' +
-
-                                                                      '*<i>Band Oracle last reference: %2</i>')
+                text_value: API.get().settings_pg.empty_string + (qsTr('Market data (prices, charts, etc.) marked with the ⓘ icon originates from third-party sources.<br><br>Data is sourced via <a href="https://bandprotocol.com/">Band Decentralized Oracle.</a>* and <a href="https://coinpaprika.com">coinpaprika.com</a><br><br>*<i>Oracle Supported Pairs:<br>%1</i><br><br>*Last reference (Band Oracle):<br><a href="%2">%2</a>')
                                                                     .arg(API.get().portfolio_pg.oracle_price_supported_pairs.join(', '))
                                                                     .arg(API.get().portfolio_pg.oracle_last_price_reference))
                 wrapMode: Text.WordWrap
