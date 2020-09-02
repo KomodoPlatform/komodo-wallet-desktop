@@ -101,11 +101,11 @@ namespace atomic_dex
     void
     wallet_page::set_claiming_is_busy(bool status) noexcept
     {
-        if (m_is_claiming_busy != status)
-        {
+        //if (m_is_claiming_busy != status)
+        //{
             m_is_claiming_busy = status;
             emit rpcClaimingStatusChanged();
-        }
+        //}
     }
 
     void
@@ -125,6 +125,8 @@ namespace atomic_dex
         spdlog::trace("claiming request: {}", batch.dump(4));
         ::mm2::api::async_rpc_batch_standalone(batch, mm2_system.get_mm2_client(), mm2_system.get_cancellation_token())
             .then([this](web::http::http_response resp) {
+                using namespace std::chrono_literals;
+                std::this_thread::sleep_for(1s);
                 std::string body = TO_STD_STR(resp.extract_string(true).get());
                 spdlog::info("body answer of claiming rewards: {}", body);
                 if (resp.status_code() == 200)
