@@ -124,9 +124,12 @@ namespace atomic_dex
 
         ::mm2::api::async_rpc_batch_standalone(batch, mm2_system.get_mm2_client(), mm2_system.get_cancellation_token())
             .then([this](web::http::http_response resp) {
+                std::string body = TO_STD_STR(resp.extract_string(true).get());
+                spdlog::info("body answer of claiming rewards: {}", body);
                 if (resp.status_code() == 200)
                 {
-                    auto           answers              = nlohmann::json::parse(TO_STD_STR(resp.extract_string(true).get()));
+
+                    auto           answers              = nlohmann::json::parse(body);
                     auto           withdraw_answer      = ::mm2::api::rpc_process_answer_batch<t_withdraw_answer>(answers[0], "withdraw");
                     nlohmann::json j_out                = nlohmann::json::object();
                     j_out["withdraw_answer"]            = nlohmann::json::parse(withdraw_answer.raw_result);
