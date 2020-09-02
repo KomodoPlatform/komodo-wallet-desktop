@@ -11,8 +11,8 @@ DefaultListView {
     readonly property int row_height: 45
 
     model: {
-        const confirmed = API.get().current_coin_info.transactions.filter(t => t.timestamp !== 0)
-        const unconfirmed = API.get().current_coin_info.transactions.filter(t => t.timestamp === 0)
+        const confirmed = API.get().wallet_pg.transactions.filter(t => t.timestamp !== 0)
+        const unconfirmed = API.get().wallet_pg.transactions.filter(t => t.timestamp === 0)
         return unconfirmed.concat(confirmed)
     }
 
@@ -58,7 +58,7 @@ DefaultListView {
         // Crypto
         DefaultText {
             id: crypto_amount
-            text_value: API.get().settings_pg.empty_string + (General.formatCrypto(model.modelData.received, model.modelData.amount, API.get().current_coin_info.ticker))
+            text_value: API.get().settings_pg.empty_string + (General.formatCrypto(model.modelData.received, model.modelData.amount, API.get().wallet_pg.ticker))
             font.pixelSize: description.font.pixelSize
             anchors.verticalCenter: parent.verticalCenter
             anchors.left: parent.left
@@ -81,7 +81,7 @@ DefaultListView {
         // Fee
         DefaultText {
             text_value: API.get().settings_pg.empty_string + (General.formatCrypto(!(parseFloat(model.modelData.fees) > 0), Math.abs(parseFloat(model.modelData.fees)),
-                                                                       General.txFeeTicker(API.get().current_coin_info)) + " " + qsTr("fees"))
+                                                                       General.txFeeTicker(API.get().wallet_pg)) + " " + qsTr("fees"))
             font.pixelSize: description.font.pixelSize
             anchors.verticalCenter: parent.verticalCenter
             anchors.left: parent.left
@@ -100,7 +100,7 @@ DefaultListView {
         }
 
         HorizontalLine {
-            visible: index !== API.get().current_coin_info.transactions.length -1
+            visible: index !== API.get().wallet_pg.transactions.length -1
             width: parent.width - 4
 
             anchors.horizontalCenter: parent.horizontalCenter

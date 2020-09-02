@@ -26,7 +26,7 @@ Item {
     }
 
     function loadingPercentage(remaining) {
-        return General.formatPercent((100 * (1 - parseFloat(remaining)/parseFloat(API.get().current_coin_info.tx_current_block))).toFixed(3), false)
+        return General.formatPercent((100 * (1 - parseFloat(remaining)/parseFloat(API.get().wallet_pg.tx_current_block))).toFixed(3), false)
     }
 
     Layout.fillHeight: true
@@ -65,7 +65,7 @@ Item {
                         spacing: 15
                         // Icon
                         DefaultImage {
-                            source: General.coinIcon(API.get().current_coin_info.ticker)
+                            source: General.coinIcon(API.get().wallet_pg.ticker)
                             Layout.preferredHeight: 60
                             Layout.preferredWidth: Layout.preferredHeight
                         }
@@ -77,14 +77,14 @@ Item {
 
                             DefaultText {
                                 id: name
-                                text_value: API.get().settings_pg.empty_string + (API.get().current_coin_info.name)
+                                text_value: API.get().settings_pg.empty_string + (API.get().wallet_pg.name)
                                 Layout.alignment: Qt.AlignLeft
                                 font.pixelSize: Style.textSizeMid
                             }
 
                             DefaultText {
                                 id: name_value
-                                text_value: API.get().settings_pg.empty_string + (General.formatCrypto("", API.get().current_coin_info.balance, API.get().current_coin_info.ticker))
+                                text_value: API.get().settings_pg.empty_string + (General.formatCrypto("", API.get().wallet_pg.balance, API.get().wallet_pg.ticker))
                                 Layout.alignment: Qt.AlignLeft
                                 font.pixelSize: name.font.pixelSize
                                 privacy: true
@@ -104,7 +104,7 @@ Item {
                         }
 
                         DefaultText {
-                            text_value: API.get().settings_pg.empty_string + (General.formatFiat("", API.get().current_coin_info.fiat_amount, API.get().settings_pg.current_currency))
+                            text_value: API.get().settings_pg.empty_string + (General.formatFiat("", API.get().wallet_pg.fiat_amount, API.get().settings_pg.current_currency))
                             Layout.alignment: Qt.AlignLeft
                             font.pixelSize: name.font.pixelSize
                             privacy: true
@@ -131,7 +131,7 @@ Item {
                         }
 
                         DefaultText {
-                            text_value: API.get().settings_pg.empty_string + (General.formatFiat('', API.get().current_coin_info.main_currency_balance, API.get().settings_pg.current_currency))
+                            text_value: API.get().settings_pg.empty_string + (General.formatFiat('', API.get().wallet_pg.ticker_price_in_current_currency, API.get().settings_pg.current_currency))
                             Layout.alignment: Qt.AlignLeft
                             font.pixelSize: name.font.pixelSize
                         }
@@ -150,12 +150,12 @@ Item {
 
                         DefaultText {
                             text_value: {
-                                const v = parseFloat(API.get().current_coin_info.change_24h)
+                                const v = parseFloat(API.get().wallet_pg.change_24h)
                                 return API.get().settings_pg.empty_string + (v === 0 ? '-' : General.formatPercent(v))
                             }
                             Layout.alignment: Qt.AlignLeft
                             font.pixelSize: name.font.pixelSize
-                            color: Style.getValueColor(API.get().current_coin_info.change_24h)
+                            color: Style.getValueColor(API.get().wallet_pg.change_24h)
                         }
                     }
 
@@ -172,7 +172,7 @@ Item {
 
                         DefaultText {
                             text_value: {
-                                const fiat_amount = parseFloat(API.get().current_coin_info.fiat_amount)
+                                const fiat_amount = parseFloat(API.get().wallet_pg.fiat_amount)
                                 const portfolio_balance = parseFloat(API.get().balance_fiat_all)
                                 if(fiat_amount <= 0 || portfolio_balance <= 0) return "-"
 
@@ -196,7 +196,7 @@ Item {
 
                 DefaultButton {
                     id: send_button
-                    enabled: parseFloat(API.get().current_coin_info.balance) > 0
+                    enabled: parseFloat(API.get().wallet_pg.balance) > 0
                     text: API.get().settings_pg.empty_string + (qsTr("Send"))
                     onClicked: send_modal.open()
                     Layout.fillWidth: true
@@ -264,7 +264,7 @@ Item {
                     Layout.fillWidth: true
                     font.pixelSize: send_button.font.pixelSize
 
-                    visible: API.get().current_coin_info.is_claimable && !API.get().is_pin_cfg_enabled()
+                    visible: API.get().wallet_pg.is_claimable && !API.get().is_pin_cfg_enabled()
                     enabled: claim_rewards_modal.canClaim()
                     onClicked: {
                         if(claim_rewards_modal.prepareClaimRewards())
@@ -317,7 +317,7 @@ Item {
 
                             DefaultText {
                                 id: left_text
-                                text_value: API.get().settings_pg.empty_string + (qsTr("%1 / %2 Price", "TICKER").arg(API.get().current_coin_info.ticker).arg(API.get().settings_pg.current_fiat) + " " + General.cex_icon)
+                                text_value: API.get().settings_pg.empty_string + (qsTr("%1 / %2 Price", "TICKER").arg(API.get().wallet_pg.ticker).arg(API.get().settings_pg.current_fiat) + " " + General.cex_icon)
                                 font.pixelSize: Style.textSizeSmall3
 
                                 CexInfoTrigger {}
@@ -352,7 +352,7 @@ Item {
             // Transactions or loading
             Item {
                 id: loading_tx
-                visible: API.get().current_coin_info.tx_state === "InProgress"
+                visible: API.get().wallet_pg.tx_state === "InProgress"
                 Layout.alignment: Qt.AlignHCenter
                 Layout.fillWidth: true
                 implicitHeight: 100
@@ -372,9 +372,9 @@ Item {
 
                     DefaultText {
                         text_value: API.get().settings_pg.empty_string + (
-                          API.get().current_coin_info.type === "ERC-20" ?
-                          (qsTr("Scanning blocks for TX History...") + " " + loadingPercentage(API.get().current_coin_info.blocks_left)) :
-                          (qsTr("Syncing TX History...") + " " + loadingPercentage(API.get().current_coin_info.transactions_left))
+                          API.get().wallet_pg.type === "ERC-20" ?
+                          (qsTr("Scanning blocks for TX History...") + " " + loadingPercentage(API.get().wallet_pg.blocks_left)) :
+                          (qsTr("Syncing TX History...") + " " + loadingPercentage(API.get().wallet_pg.transactions_left))
                         )
                         Layout.alignment: Qt.AlignHCenter
                     }
@@ -383,7 +383,7 @@ Item {
 
             // Separator line
             HorizontalLine {
-                visible: loading_tx.visible && API.get().current_coin_info.transactions.length > 0
+                visible: loading_tx.visible && API.get().wallet_pg.transactions.length > 0
                 width: 720
                 Layout.alignment: Qt.AlignHCenter
             }
@@ -404,7 +404,7 @@ Item {
 
                     DefaultText {
                         anchors.centerIn: parent
-                        visible: API.get().current_coin_info.tx_state !== "InProgress" && API.get().current_coin_info.transactions.length === 0
+                        visible: API.get().wallet_pg.tx_state !== "InProgress" && API.get().wallet_pg.transactions.length === 0
                         text_value: API.get().settings_pg.empty_string + (qsTr("No transactions"))
                         font.pixelSize: Style.textSize
                         color: Style.colorWhite4

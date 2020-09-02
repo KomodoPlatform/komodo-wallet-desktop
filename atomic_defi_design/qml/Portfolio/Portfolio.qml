@@ -245,7 +245,7 @@ ColumnLayout {
                 onClicked: {
                     if (mouse.button === Qt.RightButton) context_menu.popup()
                     else {
-                        API.get().current_coin_info.ticker = ticker
+                        API.get().wallet_pg.ticker = ticker
                         dashboard.current_page = General.idx_dashboard_wallet
                     }
                 }

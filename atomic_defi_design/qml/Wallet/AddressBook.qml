@@ -454,7 +454,7 @@ ColumnLayout {
                                         enabled: address !== "" && type !== "" && API.get().enabled_coins.map(c => c.ticker).indexOf(type) !== -1
                                         visible: !editing_address
                                         onClicked: {
-                                            API.get().current_coin_info.ticker = type
+                                            API.get().wallet_pg.ticker = type
                                             closeAddressBook()
                                             send_modal.address_field.text = address
                                             send_modal.open()

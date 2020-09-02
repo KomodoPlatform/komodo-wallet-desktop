@@ -158,7 +158,7 @@ ChartView {
         }
     }
 
-    property var historical: API.get().current_coin_info.trend_7d
+    property var historical: API.get().wallet_pg.trend_7d
     onHistoricalChanged: {
         updateChart(historical)
     }

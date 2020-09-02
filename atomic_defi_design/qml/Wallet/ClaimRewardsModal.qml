@@ -55,14 +55,14 @@ DefaultModal {
 
     // Local
     function canClaim() {
-        return API.get().current_coin_info.is_claimable && parseFloat(API.get().current_coin_info.balance) > 0
+        return API.get().wallet_pg.is_claimable && parseFloat(API.get().wallet_pg.balance) > 0
     }
 
     function prepareClaimRewards() {
         stack_layout.currentIndex = 0
         reset()
 
-        prepare_claim_rewards_result = API.get().claim_rewards(API.get().current_coin_info.ticker)
+        prepare_claim_rewards_result = API.get().claim_rewards(API.get().wallet_pg.ticker)
         console.log(JSON.stringify(prepare_claim_rewards_result))
         if(prepare_claim_rewards_result.withdraw_answer.error) {
             toast.show(qsTr("Failed to prepare to claim rewards"), General.time_toast_important_error, prepare_claim_rewards_result.withdraw_answer.error)
@@ -100,7 +100,7 @@ DefaultModal {
             Layout.alignment: Qt.AlignHCenter
 
             ModalHeader {
-                title: API.get().settings_pg.empty_string + (qsTr("Claim your %1 reward?", "TICKER").arg(API.get().current_coin_info.ticker))
+                title: API.get().settings_pg.empty_string + (qsTr("Claim your %1 reward?", "TICKER").arg(API.get().wallet_pg.ticker))
             }
 
 
@@ -113,7 +113,7 @@ DefaultModal {
                                      !has_eligible_utxo ? ("❌ " + qsTr("No UTXOs eligible for claiming")) :
                                      !positive_claim_amount ? ("❌ " + qsTr("Transaction fee is higher than the reward!")) :
 
-                                     qsTr("You will receive %1", "AMT TICKER").arg(General.formatCrypto("", prepare_claim_rewards_result.withdraw_answer.my_balance_change, API.get().current_coin_info.ticker)))
+                                     qsTr("You will receive %1", "AMT TICKER").arg(General.formatCrypto("", prepare_claim_rewards_result.withdraw_answer.my_balance_change, API.get().wallet_pg.ticker)))
                 }
 
                 PrimaryButton {
