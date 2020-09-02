@@ -29,6 +29,8 @@ Item {
         Qt.openUrlExternally(prefix + API.get().get_log_folder())
     }
 
+    readonly property var current_ticker_infos: API.get().wallet_pg.ticker_infos
+
     property int prev_page: -1
     property int current_page: getMainPage()
 

@@ -19,7 +19,7 @@ DefaultModal {
     property string send_result
 
     function isERC20() {
-        return API.get().wallet_pg.ticker_infos.type === "ERC-20"
+        return current_ticker_infos.type === "ERC-20"
     }
 
     function ercToMixedCase(addr) {
@@ -35,13 +35,13 @@ DefaultModal {
     }
 
     function prepareSendCoin(address, amount, fee_enabled, fee_amount, is_erc_20, gas, gas_price, set_current=true) {
-        let max = input_max_amount.checked || parseFloat(API.get().wallet_pg.ticker_infos.balance) === parseFloat(amount)
+        let max = input_max_amount.checked || parseFloat(current_ticker_infos.balance) === parseFloat(amount)
 
         let result
 
         if(fee_enabled) {
             if(max === false && !is_erc_20)
-                max = parseFloat(amount) + parseFloat(fee_amount) >= parseFloat(API.get().wallet_pg.ticker_infos.balance)
+                max = parseFloat(amount) + parseFloat(fee_amount) >= parseFloat(current_ticker_infos.balance)
 
             result = API.get().prepare_send_fees(address, amount, is_erc_20, fee_amount, gas_price, gas, max)
         }
@@ -152,7 +152,7 @@ DefaultModal {
     }
 
     function setMax() {
-        input_amount.field.text = API.get().wallet_pg.ticker_infos.balance
+        input_amount.field.text = current_ticker_infos.balance
     }
 
     // Inside modal
