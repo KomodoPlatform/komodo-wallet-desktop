@@ -323,9 +323,9 @@ ColumnLayout {
             DefaultImage {
                 visible: API.get().portfolio_pg.oracle_price_supported_pairs.join(",").indexOf(ticker) !== -1
                 source: General.coinIcon('BAND')
-                width: 16
+                width: 12
                 height: width
-                anchors.verticalCenter: price_value.verticalCenter
+                anchors.top: price_value.top
                 anchors.left: price_value.right
                 anchors.leftMargin: 5
 
