@@ -49,6 +49,7 @@
 #include "atomic.dex.qt.bindings.hpp"
 #include "atomic.dex.qt.settings.page.hpp"
 #include "atomic.dex.qt.utilities.hpp"
+#include "atomic.dex.qt.wallet.page.hpp"
 #include "atomic.dex.security.hpp"
 #include "atomic.dex.update.service.hpp"
 #include "atomic.dex.utilities.hpp"
@@ -146,10 +147,10 @@ namespace atomic_dex
             coins_std.reserve(coins.size());
             for (auto&& coin: coins) { coins_std.push_back(coin.toStdString()); }
             get_mm2().disable_multiple_coins(coins_std);
-            if (m_coin_info->get_ticker() == coins[0] && m_kmd_fully_enabled)
+            /*if (m_coin_info->get_ticker() == coins[0] && m_kmd_fully_enabled)
             {
                 m_coin_info->set_ticker("KMD");
-            }
+            }*/
         }
 
         return false;
@@ -222,11 +223,11 @@ namespace atomic_dex
                 this->set_current_balance_fiat_all(QString::fromStdString(fiat_balance_std));
             }
 
-            if (not m_coin_info->get_ticker().isEmpty() && not m_enabled_coins.empty())
+            /*if (not m_coin_info->get_ticker().isEmpty() && not m_enabled_coins.empty())
             {
                 refresh_fiat_balance(mm2, price_service);
                 refresh_address(mm2);
-            }
+            }*/
 
             std::vector<std::string> to_init;
             while (not m_portfolio_queue.empty())
@@ -251,12 +252,12 @@ namespace atomic_dex
                 system_manager_.get_system<portfolio_page>().get_portfolio()->initialize_portfolio(to_init);
                 if (m_kmd_fully_enabled && m_btc_fully_enabled)
                 {
-                    if (m_coin_info->get_ticker().isEmpty())
+                    /*if (m_coin_info->get_ticker().isEmpty())
                     {
                         m_coin_info->set_ticker("KMD");
                         emit coinInfoChanged();
                         process_refresh_current_ticker_infos();
-                    }
+                    }*/
                     this->set_status("complete");
                 }
             }
@@ -280,13 +281,13 @@ namespace atomic_dex
             case action::refresh_current_ticker:
                 if (mm2.is_mm2_running())
                 {
-                    this->process_refresh_current_ticker_infos();
+                    // this->process_refresh_current_ticker_infos();
                 }
                 break;
             case action::refresh_transactions:
                 if (mm2.is_mm2_running())
                 {
-                    refresh_transactions(mm2);
+                    // refresh_transactions(mm2);
                 }
                 break;
             case action::post_process_orders_finished:
@@ -312,7 +313,7 @@ namespace atomic_dex
         }
     }
 
-    void
+    /*void
     application::refresh_fiat_balance(const mm2& mm2, const global_price_service& price_service)
     {
         std::error_code ec;
@@ -331,9 +332,9 @@ namespace atomic_dex
                 m_coin_info->set_fiat_amount(amount);
             }
         }
-    }
+    }*/
 
-    void
+    /*void
     application::refresh_transactions(const mm2& mm2)
     {
         const auto      ticker = m_coin_info->get_ticker().toStdString();
@@ -360,7 +361,7 @@ namespace atomic_dex
             }
             m_coin_info->set_tx_current_block(tx_state.current_block);
         }
-    }
+    }*/
 
     mm2&
     application::get_mm2() noexcept
@@ -380,11 +381,11 @@ namespace atomic_dex
         return this->dispatcher_;
     }
 
-    QObject*
+    /*QObject*
     atomic_dex::application::get_current_coin_info() const noexcept
     {
         return m_coin_info;
-    }
+    }*/
 
     QString
     atomic_dex::application::get_balance_fiat_all() const noexcept
@@ -403,12 +404,11 @@ namespace atomic_dex
         QObject(pParent),
         m_update_status(QJsonObject{
             {"update_needed", false}, {"changelog", ""}, {"current_version", ""}, {"download_url", ""}, {"new_version", ""}, {"rpc_code", 0}, {"status", ""}}),
-        m_coin_info(new current_coin_info(dispatcher_, this)), m_manager_models{
-                                                                   {"addressbook", new addressbook_model(this->m_wallet_manager, this)},
-                                                                   {"orders", new orders_model(this->system_manager_, this->dispatcher_, this)},
-                                                                   {"internet_service",
-                                                                    std::addressof(system_manager_.create_system<internet_service_checker>(this))},
-                                                                   {"notifications", new notification_manager(this->dispatcher_, this)}}
+        m_manager_models{
+            {"addressbook", new addressbook_model(this->m_wallet_manager, this)},
+            {"orders", new orders_model(this->system_manager_, this->dispatcher_, this)},
+            {"internet_service", std::addressof(system_manager_.create_system<internet_service_checker>(this))},
+            {"notifications", new notification_manager(this->dispatcher_, this)}}
     {
         get_dispatcher().sink<refresh_update_status>().connect<&application::on_refresh_update_status_event>(*this);
         //! MM2 system need to be created before the GUI and give the instance to the gui
@@ -417,6 +417,7 @@ namespace atomic_dex
         auto& portfolio_system     = system_manager_.create_system<portfolio_page>(system_manager_, dispatcher_, this);
         portfolio_system.get_portfolio()->set_cfg(settings_page_system.get_cfg());
 
+        system_manager_.create_system<wallet_page>(system_manager_, this);
         system_manager_.create_system<global_price_service>(system_manager_, settings_page_system.get_cfg());
         system_manager_.create_system<band_oracle_price_service>();
         system_manager_.create_system<coinpaprika_provider>(mm2_system, settings_page_system.get_cfg());
@@ -477,19 +478,18 @@ namespace atomic_dex
         }
     }
 
-    void
+    /*void
     application::refresh_address(mm2& mm2)
     {
         std::error_code ec;
         auto            address = QString::fromStdString(mm2.address(m_coin_info->get_ticker().toStdString(), ec));
         this->m_coin_info->set_address(address);
-    }
+    }*/
 
     QObject*
     application::prepare_send(const QString& address, const QString& amount, bool max)
     {
-        atomic_dex::t_withdraw_request req{
-            .coin = m_coin_info->get_ticker().toStdString(), .to = address.toStdString(), .amount = amount.toStdString(), .max = max};
+        atomic_dex::t_withdraw_request req{.coin = "KMD", .to = address.toStdString(), .amount = amount.toStdString(), .max = max};
 
         if (req.max)
         {
@@ -502,12 +502,12 @@ namespace atomic_dex
         if (get_mm2().is_pin_cfg_enabled() && req.max)
         {
             spdlog::trace("pin cfg enabled, using another balance");
-            req.amount = get_formated_float(get_mm2().get_balance(m_coin_info->get_ticker().toStdString()));
+            req.amount = get_formated_float(get_mm2().get_balance("KMD"));
             req.max    = false;
         }
 
         auto answer = get_mm2().withdraw(std::move(req), ec);
-        auto coin   = get_mm2().get_coin_info(m_coin_info->get_ticker().toStdString());
+        auto coin   = get_mm2().get_coin_info("KMD");
         return to_qt_binding(std::move(answer), this, QString::fromStdString(coin.explorer_url[0]));
     }
 
@@ -515,8 +515,7 @@ namespace atomic_dex
     application::prepare_send_fees(
         const QString& address, const QString& amount, bool is_erc_20, const QString& fees_amount, const QString& gas_price, const QString& gas, bool max)
     {
-        atomic_dex::t_withdraw_request req{
-            .coin = m_coin_info->get_ticker().toStdString(), .to = address.toStdString(), .amount = amount.toStdString(), .max = max};
+        atomic_dex::t_withdraw_request req{.coin = "KMD", .to = address.toStdString(), .amount = amount.toStdString(), .max = max};
         if (req.max)
         {
             req.amount = "0";
@@ -528,7 +527,7 @@ namespace atomic_dex
             .gas_limit = not gas.isEmpty() ? std::stoi(gas.toStdString()) : 0};
         std::error_code ec;
         auto            answer = get_mm2().withdraw(std::move(req), ec);
-        auto            coin   = get_mm2().get_coin_info(m_coin_info->get_ticker().toStdString());
+        auto            coin   = get_mm2().get_coin_info("KMD");
         return to_qt_binding(std::move(answer), this, QString::fromStdString(coin.explorer_url[0]));
     }
 
@@ -538,7 +537,7 @@ namespace atomic_dex
         std::error_code ec;
         auto            answer = get_mm2().claim_rewards(ticker.toStdString(), ec);
 
-        answer["explorer_url"] = get_mm2().get_coin_info(m_coin_info->get_ticker().toStdString()).explorer_url[0];
+        answer["explorer_url"] = get_mm2().get_coin_info("KMD").explorer_url[0];
 
         return nlohmann_json_object_to_qt_json_object(answer);
     }
@@ -546,16 +545,16 @@ namespace atomic_dex
     QString
     application::send(const QString& tx_hex, bool is_max, const QString& amount)
     {
-        atomic_dex::t_broadcast_request req{.tx_hex = tx_hex.toStdString(), .coin = m_coin_info->get_ticker().toStdString()};
+        atomic_dex::t_broadcast_request req{.tx_hex = tx_hex.toStdString(), .coin = "KMD"};
         std::error_code                 ec;
         auto                            answer = get_mm2().broadcast(std::move(req), ec);
         if (get_mm2().is_pin_cfg_enabled() && is_max)
         {
-            get_mm2().reset_fake_balance_to_zero(m_coin_info->get_ticker().toStdString());
+            get_mm2().reset_fake_balance_to_zero("KMD");
         }
         else if (get_mm2().is_pin_cfg_enabled() && not is_max)
         {
-            get_mm2().decrease_fake_balance(m_coin_info->get_ticker().toStdString(), amount.toStdString());
+            get_mm2().decrease_fake_balance("KMD", amount.toStdString());
         }
         if (not m_event_actions[events_action::about_to_exit_app])
         {
@@ -568,7 +567,7 @@ namespace atomic_dex
     QString
     application::send_rewards(const QString& tx_hex)
     {
-        atomic_dex::t_broadcast_request req{.tx_hex = tx_hex.toStdString(), .coin = m_coin_info->get_ticker().toStdString()};
+        atomic_dex::t_broadcast_request req{.tx_hex = tx_hex.toStdString(), .coin = "KMD"};
         std::error_code                 ec;
         auto                            answer = get_mm2().send_rewards(std::move(req), ec);
         if (not m_event_actions[events_action::about_to_exit_app])
@@ -1194,15 +1193,9 @@ namespace atomic_dex
             refresh_coin(coins, m_enableable_coins);
             emit enableableCoinsChanged();
         }
-        {
-            if (not m_coin_info->get_ticker().isEmpty())
-            {
-                refresh_transactions(mm2);
-            }
-        }
     }
 
-    void
+    /*void
     application::process_refresh_current_ticker_infos()
     {
         auto& mm2           = get_mm2();
@@ -1229,7 +1222,7 @@ namespace atomic_dex
             m_coin_info->set_change24h(retrieve_change_24h(paprika, info, config));
             m_coin_info->set_trend_7d(nlohmann_json_array_to_qt_json_array(paprika.get_ticker_historical(ticker).answer));
         }
-    }
+    }*/
 
     void
     application::exit_handler()
@@ -1247,6 +1240,18 @@ namespace atomic_dex
     application::get_trading_page() const noexcept
     {
         trading_page* ptr = const_cast<trading_page*>(std::addressof(system_manager_.get_system<trading_page>()));
+        assert(ptr != nullptr);
+        return ptr;
+    }
+} // namespace atomic_dex
+
+//! wallet
+namespace atomic_dex
+{
+    wallet_page*
+    application::get_wallet_page() const noexcept
+    {
+        wallet_page* ptr = const_cast<wallet_page*>(std::addressof(system_manager_.get_system<wallet_page>()));
         assert(ptr != nullptr);
         return ptr;
     }

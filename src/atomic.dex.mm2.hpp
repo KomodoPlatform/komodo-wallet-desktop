@@ -80,16 +80,19 @@ namespace atomic_dex
         using t_tx_state_registry          = t_concurrent_reg<t_ticker, t_tx_state>;
         using t_orderbook_registry         = t_concurrent_reg<t_ticker, t_orderbook_answer>;
         using t_swaps_registry             = t_concurrent_reg<t_ticker, t_my_recent_swaps_answer>;
-        using t_swaps_avrg_datas           = t_concurrent_reg<t_ticker, std::string>;
         using t_fees_registry              = t_concurrent_reg<t_ticker, t_get_trade_fee_answer>;
         using t_synchronized_ticker_pair   = boost::synchronized_value<std::pair<std::string, std::string>>;
         using t_synchronized_max_taker_vol = boost::synchronized_value<t_pair_max_vol>;
+        using t_synchronized_ticker        = boost::synchronized_value<std::string>;
 
         //! Client
-        std::shared_ptr<t_http_client> m_mm2_client{nullptr};
+        std::shared_ptr<t_http_client>  m_mm2_client{nullptr};
         pplx::cancellation_token_source m_token_source;
         //! Process
         reproc::process m_mm2_instance;
+
+        //! Current ticker
+        t_synchronized_ticker m_current_ticker{"KMD"};
 
         //! Current orderbook
         t_synchronized_ticker_pair   m_synchronized_ticker_pair{std::make_pair("KMD", "BTC")};
@@ -128,18 +131,18 @@ namespace atomic_dex
         void process_balance(const std::string& ticker) const;
 
         //! Refresh the orderbook registry (internal)
-        void process_orderbook(bool is_a_reset = false);
+        void           process_orderbook(bool is_a_reset = false);
         nlohmann::json prepare_batch_orderbook();
 
         //! Batch process fees and fetch current_orderbook thread
-        void batch_process_fees_and_fetch_current_orderbook_thread(bool is_a_reset);
+        void           batch_process_fees_and_fetch_current_orderbook_thread(bool is_a_reset);
         nlohmann::json prepare_process_fees_and_current_orderbook();
 
         //! Batch balance / tx
         std::tuple<nlohmann::json, std::vector<std::string>, std::vector<std::string>> prepare_batch_balance_and_tx() const;
-        auto                                                                           batch_balance_and_tx(bool is_a_reset, std::vector<std::string> tickers = {}, bool is_during_enabling = false);
-        void                                                                           process_balance_answer(const nlohmann::json& answer);
-        void process_tx_answer(const nlohmann::json& answer_json, const std::string& ticker);
+        auto batch_balance_and_tx(bool is_a_reset, std::vector<std::string> tickers = {}, bool is_during_enabling = false);
+        void process_balance_answer(const nlohmann::json& answer);
+        void process_tx_answer(const nlohmann::json& answer_json);
         void process_tx_etherscan(const std::string& ticker, bool is_a_refresh);
 
         //!
@@ -220,10 +223,10 @@ namespace atomic_dex
         [[nodiscard]] t_broadcast_answer broadcast(t_broadcast_request&& request, t_mm2_ec& ec) noexcept;
 
         //! Last 50 transactions maximum
-        [[nodiscard]] t_transactions get_tx_history(const std::string& ticker, t_mm2_ec& ec) const;
+        [[nodiscard]] t_transactions get_tx_history(t_mm2_ec& ec) const;
 
         //! Last 50 transactions maximum
-        [[nodiscard]] t_tx_state get_tx_state(const std::string& ticker, t_mm2_ec& ec) const;
+        [[nodiscard]] t_tx_state get_tx_state(t_mm2_ec& ec) const;
 
         //! Claim rewards
         nlohmann::json claim_rewards(const std::string& ticker, t_mm2_ec& ec) noexcept;
@@ -285,7 +288,9 @@ namespace atomic_dex
         void               batch_fetch_orders_and_swap();
         void               add_orders_answer(t_my_orders_answer answer);
 
-        std::shared_ptr<t_http_client> get_mm2_client() noexcept;;
+        std::shared_ptr<t_http_client> get_mm2_client() noexcept;
+        std::string                    get_current_ticker() const noexcept;
+        bool                           set_current_ticker(const std::string& ticker) noexcept;
     };
 } // namespace atomic_dex
 

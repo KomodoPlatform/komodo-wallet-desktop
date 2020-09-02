@@ -372,7 +372,7 @@ namespace atomic_dex
                             }
                             else if (answer.contains("result"))
                             {
-                                this->process_tx_answer(answer, tickers_idx[idx]);
+                                this->process_tx_answer(answer);
                             }
                             ++idx;
                         }
@@ -401,7 +401,7 @@ namespace atomic_dex
         std::vector<std::string> erc_to_fetch;
         for (auto&& coin: enabled_coins)
         {
-            if (not coin.is_erc_20)
+            if (not coin.is_erc_20 && coin.ticker == get_current_ticker())
             {
                 t_tx_history_request request{.coin = coin.ticker, .limit = 50};
                 nlohmann::json       j = ::mm2::api::template_request("my_tx_history");
@@ -409,7 +409,7 @@ namespace atomic_dex
                 batch_array.push_back(j);
                 tickers_idx.push_back(coin.ticker);
             }
-            else
+            else if (coin.is_erc_20 && coin.ticker == get_current_ticker())
             {
                 erc_to_fetch.push_back(coin.ticker);
             }
@@ -826,15 +826,15 @@ namespace atomic_dex
     }
 
     t_transactions
-    mm2::get_tx_history(const std::string& ticker, t_mm2_ec& ec) const
+    mm2::get_tx_history(t_mm2_ec& ec) const
     {
-        if (m_tx_informations.find(ticker) == m_tx_informations.cend())
+        if (m_tx_informations.find("result") == m_tx_informations.cend())
         {
             ec = dextop_error::tx_history_of_a_non_enabled_coin;
             return {};
         }
 
-        return m_tx_informations.at(ticker);
+        return m_tx_informations.at("result");
     }
 
     std::string
@@ -1181,15 +1181,15 @@ namespace atomic_dex
     }
 
     t_tx_state
-    mm2::get_tx_state(const std::string& ticker, t_mm2_ec& ec) const
+    mm2::get_tx_state(t_mm2_ec& ec) const
     {
-        if (m_tx_state.find(ticker) == m_tx_state.cend())
+        if (m_tx_state.find("result") == m_tx_state.cend())
         {
             ec = dextop_error::tx_history_of_a_non_enabled_coin;
             return {};
         }
 
-        return m_tx_state.at(ticker);
+        return m_tx_state.at("result");
     }
 
     nlohmann::json
@@ -1330,7 +1330,7 @@ namespace atomic_dex
     }
 
     void
-    mm2::process_tx_answer(const nlohmann::json& answer_json, const std::string& ticker)
+    mm2::process_tx_answer(const nlohmann::json& answer_json)
     {
         ::mm2::api::tx_history_answer answer;
         ::mm2::api::from_json(answer_json, answer);
@@ -1379,8 +1379,8 @@ namespace atomic_dex
 
         std::sort(begin(out), end(out), [](auto&& a, auto&& b) { return a.timestamp > b.timestamp; });
 
-        m_tx_informations.insert_or_assign(ticker, std::move(out));
-        m_tx_state.insert_or_assign(ticker, std::move(state));
+        m_tx_informations.insert_or_assign("result", std::move(out));
+        m_tx_state.insert_or_assign("result", std::move(state));
         this->dispatcher_.trigger<tx_fetch_finished>();
     }
 
@@ -1444,5 +1444,23 @@ namespace atomic_dex
     mm2::get_mm2_client() noexcept
     {
         return m_mm2_client;
+    }
+
+    std::string
+    mm2::get_current_ticker() const noexcept
+    {
+        return m_current_ticker.value();
+    }
+
+    bool
+    mm2::set_current_ticker(const std::string& ticker) noexcept
+    {
+        if (ticker != m_current_ticker.value())
+        {
+            m_current_ticker = ticker;
+            //! Need to refresh tx
+            return true;
+        }
+        return false;
     }
 } // namespace atomic_dex
