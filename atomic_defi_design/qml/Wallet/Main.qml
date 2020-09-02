@@ -131,7 +131,7 @@ Item {
                         }
 
                         DefaultText {
-                            text_value: API.get().settings_pg.empty_string + (General.formatFiat('', API.get().wallet_pg.ticker_infos.ticker_price_in_current_currency, API.get().settings_pg.current_currency))
+                            text_value: API.get().settings_pg.empty_string + (General.formatFiat('', API.get().wallet_pg.ticker_infos.current_currency_ticker_price, API.get().settings_pg.current_currency))
                             Layout.alignment: Qt.AlignLeft
                             font.pixelSize: name.font.pixelSize
                         }
