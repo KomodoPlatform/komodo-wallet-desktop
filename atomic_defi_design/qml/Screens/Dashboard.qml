@@ -250,7 +250,17 @@ Item {
             }
 
             DefaultText {
-                text_value: API.get().settings_pg.empty_string + (qsTr('Markets data (prices, charts, etc.) marked with the ⓘ icon originates from third party sources.') + ' (<a href="https://coinpaprika.com">coinpaprika.com</a>)')
+                text_value: API.get().settings_pg.empty_string + (qsTr('Market data (prices, charts, etc.) marked with the ⓘ icon originates from third-party sources. Data is sourced via <a href="https://bandprotocol.com/">"Band Decentralized Oracle.</a>* and/or <a href="https://coinpaprika.com">coinpaprika.com</a>' +
+
+                                                                       '<br>' +
+
+                                                                       '*<i>Supported Pairs: %1</i>' +
+
+                                                                      '<br>' +
+
+                                                                      '*<i>Band Oracle last reference: %2</i>')
+                                                                    .arg(API.get().portfolio_pg.oracle_price_supported_pairs.join(', '))
+                                                                    .arg(API.get().portfolio_pg.oracle_last_price_reference))
                 wrapMode: Text.WordWrap
                 Layout.preferredWidth: cex_rates_modal.width
 
