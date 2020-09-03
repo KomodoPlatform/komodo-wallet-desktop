@@ -183,6 +183,7 @@ namespace atomic_dex
     void
     wallet_page::send(const QString& address, const QString& amount, bool max, bool with_fees, QVariant fees_data)
     {
+        //! Preparation
         this->set_send_busy(true);
         nlohmann::json     batch      = nlohmann::json::array();
         auto&              mm2_system = m_system_manager.get_system<mm2>();
@@ -190,7 +191,10 @@ namespace atomic_dex
         t_withdraw_request withdraw_req{.coin = ticker, .to = address.toStdString(), .amount = amount.toStdString(), .max = max};
         if (with_fees)
         {
+            qDebug() << fees_data;
+            assert(not fees_data.toJsonObject().isEmpty());
             auto json_fees    = nlohmann::json::parse(QString(QJsonDocument(fees_data.toJsonObject()).toJson()).toStdString());
+            spdlog::trace("json receive -> {}", json_fees.dump(4));
             bool is_erc_20    = mm2_system.get_coin_info(ticker).is_erc_20;
             withdraw_req.fees = t_withdraw_fees{
                 .type      = is_erc_20 ? "EthGas" : "UtxoFixed",
@@ -201,6 +205,8 @@ namespace atomic_dex
         nlohmann::json json_data = ::mm2::api::template_request("withdraw");
         ::mm2::api::to_json(json_data, withdraw_req);
         batch.push_back(json_data);
+
+        //! Answer
         auto answer_functor = [this](web::http::http_response resp) {
             std::string body = TO_STD_STR(resp.extract_string(true).get());
             if (resp.status_code() == 200)
@@ -224,6 +230,8 @@ namespace atomic_dex
             }
             this->set_send_busy(false);
         };
+
+        //! Process
         ::mm2::api::async_rpc_batch_standalone(batch, mm2_system.get_mm2_client(), mm2_system.get_cancellation_token())
             .then(answer_functor)
             .then(&handle_exception_pplx_task);
