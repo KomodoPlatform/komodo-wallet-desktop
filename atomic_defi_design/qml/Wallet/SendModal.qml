@@ -72,7 +72,14 @@ DefaultModal {
         if(with_fees && max === false && !is_erc_20)
             max = parseFloat(amount) + parseFloat(fees_amount) >= parseFloat(current_ticker_infos.balance)
 
-        API.get().wallet_pg.send(address, amount, max, with_fees, { fees_amount, gas_price, gas_limit })
+        const fees_info = {
+            fees_amount,
+            gas_price,
+            gas_limit: gas_limit === "" ? 0 : parseInt(gas_limit)
+        }
+
+        console.log("Passing fees info: ", JSON.stringify(fees_info))
+        API.get().wallet_pg.send(address, amount, max, with_fees, fees_info)
     }
 
     function sendCoin() {
