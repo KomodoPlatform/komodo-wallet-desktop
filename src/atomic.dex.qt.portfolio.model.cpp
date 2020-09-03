@@ -144,34 +144,37 @@ namespace atomic_dex
     }
 
     void
-    portfolio_model::update_balance_values(const std::string& ticker) noexcept
+    portfolio_model::update_balance_values(const std::vector<std::string>& tickers) noexcept
     {
-        if (m_ticker_registry.find(ticker) == m_ticker_registry.end())
+        for (auto&& ticker: tickers)
         {
-            spdlog::debug("ticker: {} not inserted yet in the model, skipping", ticker);
-            return;
-        }
-        spdlog::trace("trying updating balance values of: {}", ticker);
-        if (const auto res = this->match(this->index(0, 0), TickerRole, QString::fromStdString(ticker)); not res.isEmpty())
-        {
-            const auto&        mm2_system    = this->m_system_manager.get_system<mm2>();
-            auto               coin          = mm2_system.get_coin_info(ticker);
-            const auto&        price_service = this->m_system_manager.get_system<global_price_service>();
-            const auto&        paprika       = this->m_system_manager.get_system<coinpaprika_provider>();
-            std::error_code    ec;
-            const std::string& currency = m_config->current_currency;
-            const QModelIndex& idx      = res.at(0);
-            const QString      balance  = QString::fromStdString(mm2_system.my_balance(ticker, ec));
-            update_value(BalanceRole, balance, idx, *this);
-            const QString main_currency_balance_value = QString::fromStdString(price_service.get_price_in_fiat(currency, ticker, ec));
-            update_value(MainCurrencyBalanceRole, main_currency_balance_value, idx, *this);
-            const QString currency_price_for_one_unit = QString::fromStdString(price_service.get_rate_conversion(currency, ticker, ec, true));
-            update_value(MainCurrencyPriceForOneUnit, currency_price_for_one_unit, idx, *this);
-            const QString display = QString::fromStdString(ticker) + " (" + balance + ")";
-            update_value(Display, display, idx, *this);
-            QString change24_h = retrieve_change_24h(paprika, coin, *m_config);
-            update_value(Change24H, change24_h, idx, *this);
-            spdlog::trace("updated balance values of: {}", ticker);
+            if (m_ticker_registry.find(ticker) == m_ticker_registry.end())
+            {
+                spdlog::debug("ticker: {} not inserted yet in the model, skipping", ticker);
+                return;
+            }
+            spdlog::trace("trying updating balance values of: {}", ticker);
+            if (const auto res = this->match(this->index(0, 0), TickerRole, QString::fromStdString(ticker)); not res.isEmpty())
+            {
+                const auto&        mm2_system    = this->m_system_manager.get_system<mm2>();
+                auto               coin          = mm2_system.get_coin_info(ticker);
+                const auto&        price_service = this->m_system_manager.get_system<global_price_service>();
+                const auto&        paprika       = this->m_system_manager.get_system<coinpaprika_provider>();
+                std::error_code    ec;
+                const std::string& currency = m_config->current_currency;
+                const QModelIndex& idx      = res.at(0);
+                const QString      balance  = QString::fromStdString(mm2_system.my_balance(ticker, ec));
+                update_value(BalanceRole, balance, idx, *this);
+                const QString main_currency_balance_value = QString::fromStdString(price_service.get_price_in_fiat(currency, ticker, ec));
+                update_value(MainCurrencyBalanceRole, main_currency_balance_value, idx, *this);
+                const QString currency_price_for_one_unit = QString::fromStdString(price_service.get_rate_conversion(currency, ticker, ec, true));
+                update_value(MainCurrencyPriceForOneUnit, currency_price_for_one_unit, idx, *this);
+                const QString display = QString::fromStdString(ticker) + " (" + balance + ")";
+                update_value(Display, display, idx, *this);
+                QString change24_h = retrieve_change_24h(paprika, coin, *m_config);
+                update_value(Change24H, change24_h, idx, *this);
+                spdlog::trace("updated balance values of: {}", ticker);
+            }
         }
     }
 

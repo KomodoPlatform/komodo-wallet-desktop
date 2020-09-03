@@ -153,6 +153,7 @@ namespace atomic_dex
     void
     wallet_page::broadcast(const QString& tx_hex) noexcept
     {
+        //! Preparation
         this->set_rpc_broadcast_data("");
         this->set_broadcast_busy(true);
         auto&               mm2_system = m_system_manager.get_system<mm2>();
@@ -162,20 +163,24 @@ namespace atomic_dex
         nlohmann::json      json_data = ::mm2::api::template_request("send_raw_transaction");
         ::mm2::api::to_json(json_data, broadcast_request);
         batch.push_back(json_data);
+
+        //! Answer
+        auto answer_functor = [this](web::http::http_response resp) {
+            std::string body = TO_STD_STR(resp.extract_string(true).get());
+            if (resp.status_code() == 200)
+            {
+                auto answers = nlohmann::json::parse(body);
+                this->set_rpc_broadcast_data(QString::fromStdString(answers[0].at("tx_hash").get<std::string>()));
+            }
+            else
+            {
+                this->set_rpc_broadcast_data(QString::fromStdString(body));
+            }
+            this->set_broadcast_busy(false);
+        };
+
         ::mm2::api::async_rpc_batch_standalone(batch, mm2_system.get_mm2_client(), mm2_system.get_cancellation_token())
-            .then([this](web::http::http_response resp) {
-                std::string body = TO_STD_STR(resp.extract_string(true).get());
-                if (resp.status_code() == 200)
-                {
-                    auto answers = nlohmann::json::parse(body);
-                    this->set_rpc_broadcast_data(QString::fromStdString(answers[0].at("tx_hash").get<std::string>()));
-                }
-                else
-                {
-                    this->set_rpc_broadcast_data(QString::fromStdString(body));
-                }
-                this->set_broadcast_busy(false);
-            })
+            .then(answer_functor)
             .then(&handle_exception_pplx_task);
     }
 

@@ -73,7 +73,7 @@ namespace atomic_dex
         //! Public api
         void initialize_portfolio(const std::vector<std::string>& tickers);
         void update_currency_values();
-        void update_balance_values(const std::string& ticker) noexcept;
+        void update_balance_values(const std::vector<std::string>& tickers) noexcept;
         void disable_coins(const QStringList& coins);
         void set_cfg(atomic_dex::cfg& cfg) noexcept;
 

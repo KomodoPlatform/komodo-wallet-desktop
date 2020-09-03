@@ -374,6 +374,8 @@ namespace atomic_dex
                             }
                             ++idx;
                         }
+
+                        this->dispatcher_.trigger<ticker_balance_updated>(tickers_idx);
                         for (auto&& coin: erc_to_fetch) { process_tx_etherscan(coin, is_a_reset); }
                         if (is_during_enabling)
                         {
@@ -397,20 +399,20 @@ namespace atomic_dex
         nlohmann::json           batch_array   = nlohmann::json::array();
         std::vector<std::string> tickers_idx;
         std::vector<std::string> erc_to_fetch;
+        const auto&              ticker = get_current_ticker();
+        if (not get_coin_info(ticker).is_erc_20)
+        {
+            t_tx_history_request request{.coin = ticker, .limit = 50};
+            nlohmann::json       j = ::mm2::api::template_request("my_tx_history");
+            ::mm2::api::to_json(j, request);
+            batch_array.push_back(j);
+        }
+        else
+        {
+            erc_to_fetch.push_back(ticker);
+        }
         for (auto&& coin: enabled_coins)
         {
-            if (not coin.is_erc_20 && coin.ticker == get_current_ticker())
-            {
-                t_tx_history_request request{.coin = coin.ticker, .limit = 50};
-                nlohmann::json       j = ::mm2::api::template_request("my_tx_history");
-                ::mm2::api::to_json(j, request);
-                batch_array.push_back(j);
-                tickers_idx.push_back(coin.ticker);
-            }
-            else if (coin.is_erc_20 && coin.ticker == get_current_ticker())
-            {
-                erc_to_fetch.push_back(coin.ticker);
-            }
             if (is_pin_cfg_enabled() && m_balance_informations.find(coin.ticker) != m_balance_informations.end())
             {
                 continue;
@@ -880,7 +882,7 @@ namespace atomic_dex
         return result;
     }
 
-    void
+    /*void
     mm2::process_balance(const std::string& ticker) const
     {
         if (is_pin_cfg_enabled())
@@ -900,7 +902,7 @@ namespace atomic_dex
             m_balance_informations.insert_or_assign(ticker, answer);
             this->dispatcher_.trigger<ticker_balance_updated>(ticker);
         }
-    }
+    }*/
 
     void
     mm2::batch_fetch_orders_and_swap()
@@ -1016,7 +1018,7 @@ namespace atomic_dex
                         out.push_back(std::move(current_info));
                     }
 
-                    //std::sort(begin(out), end(out), [](auto&& a, auto&& b) { return a.timestamp > b.timestamp; });
+                    // std::sort(begin(out), end(out), [](auto&& a, auto&& b) { return a.timestamp > b.timestamp; });
 
                     m_tx_informations.insert_or_assign("result", std::move(out));
                     m_tx_state.insert_or_assign("result", std::move(state));
@@ -1188,29 +1190,6 @@ namespace atomic_dex
         return m_tx_state.at("result");
     }
 
-    /*nlohmann::json
-    mm2::claim_rewards(const std::string& ticker, t_mm2_ec& ec) noexcept
-    {
-        spdlog::debug("{} l{} f[{}]", __FUNCTION__, __LINE__, fs::path(__FILE__).filename().string());
-
-        nlohmann::json out  = nlohmann::json::object();
-        const auto&    info = get_coin_info(ticker);
-        if (not info.is_claimable)
-        {
-            ec = dextop_error::ticker_is_not_claimable;
-            return {};
-        }
-        t_withdraw_request req{.coin = ticker, .to = m_balance_informations.at(ticker).address, .amount = "0", .max = true};
-        auto               answer = ::mm2::api::rpc_withdraw(std::move(req), m_mm2_client);
-        if (answer.rpc_result_code == 200)
-        {
-            out["withdraw_answer"]            = nlohmann::json::parse(answer.raw_result);
-            out.at("withdraw_answer")["date"] = answer.result.value().timestamp_as_date;
-            out["kmd_rewards_info"]           = ::mm2::api::rpc_kmd_rewards_info(m_mm2_client).result;
-        }
-        return out;
-    }*/
-
     t_broadcast_answer
     mm2::send_rewards(t_broadcast_request&& req, t_mm2_ec& ec) noexcept
     {
@@ -1286,7 +1265,7 @@ namespace atomic_dex
     mm2::t_pair_max_vol
     mm2::get_taker_vol() const noexcept
     {
-        return m_synchronized_max_taker_vol.value();
+        return m_synchronized_max_taker_vol.get();
     }
 
     bool
@@ -1301,7 +1280,7 @@ namespace atomic_dex
         auto answer    = m_balance_informations.at(ticker);
         answer.balance = "0";
         m_balance_informations.assign(ticker, answer);
-        this->dispatcher_.trigger<ticker_balance_updated>(ticker);
+        this->dispatcher_.trigger<ticker_balance_updated>(std::vector<std::string>{ticker});
     }
 
     void
@@ -1321,7 +1300,7 @@ namespace atomic_dex
         {
             answer.balance = result.str(8, std::ios_base::fixed);
             m_balance_informations.assign(ticker, answer);
-            this->dispatcher_.trigger<ticker_balance_updated>(ticker);
+            this->dispatcher_.trigger<ticker_balance_updated>(std::vector<std::string>{ticker});
         }
     }
 
@@ -1373,7 +1352,7 @@ namespace atomic_dex
             out.push_back(std::move(current_info));
         }
 
-        //std::sort(begin(out), end(out), [](auto&& a, auto&& b) { return a.timestamp > b.timestamp; });
+        // std::sort(begin(out), end(out), [](auto&& a, auto&& b) { return a.timestamp > b.timestamp; });
 
         m_tx_informations.insert_or_assign("result", std::move(out));
         m_tx_state.insert_or_assign("result", std::move(state));
@@ -1396,7 +1375,6 @@ namespace atomic_dex
         t_float_50 result = t_float_50(answer_r.balance) * m_balance_factor;
         answer_r.balance  = result.str();
         m_balance_informations.insert_or_assign(answer_r.coin, answer_r);
-        this->dispatcher_.trigger<ticker_balance_updated>(answer_r.coin);
     }
 
     nlohmann::json
@@ -1445,13 +1423,13 @@ namespace atomic_dex
     std::string
     mm2::get_current_ticker() const noexcept
     {
-        return m_current_ticker.value();
+        return m_current_ticker.get();
     }
 
     bool
     mm2::set_current_ticker(const std::string& ticker) noexcept
     {
-        if (ticker != m_current_ticker.value())
+        if (ticker != get_current_ticker())
         {
             m_current_ticker = ticker;
             //! Need to refresh tx

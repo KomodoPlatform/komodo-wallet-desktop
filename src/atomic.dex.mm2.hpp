@@ -128,7 +128,7 @@ namespace atomic_dex
         void fetch_current_orderbook_thread(bool is_a_reset = false);
 
         //! Refresh the balance registry (internal)
-        void process_balance(const std::string& ticker) const;
+        //void process_balance(const std::string& ticker) const;
 
         //! Refresh the orderbook registry (internal)
         void           process_orderbook(bool is_a_reset = false);

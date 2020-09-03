@@ -1045,7 +1045,7 @@ namespace atomic_dex
         spdlog::trace("{} l{}", __FUNCTION__, __LINE__);
         if (not m_event_actions[events_action::about_to_exit_app])
         {
-            get_portfolio_page()->get_portfolio()->update_balance_values(evt.ticker);
+            get_portfolio_page()->get_portfolio()->update_balance_values(evt.tickers);
         }
     }
 } // namespace atomic_dex

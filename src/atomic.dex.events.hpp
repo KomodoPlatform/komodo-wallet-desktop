@@ -56,7 +56,7 @@ namespace atomic_dex
 
     struct ticker_balance_updated
     {
-        std::string ticker;
+        std::vector<std::string> tickers;
     };
 
     struct fiat_rate_updated
