@@ -19,8 +19,6 @@ DefaultModal {
 
         return false
     }
-    readonly property bool can_confirm: positive_claim_amount && has_eligible_utxo && !is_broadcast_busy
-    readonly property bool is_broadcast_busy: API.get().wallet_pg.is_broadcast_busy
 
     readonly property var default_prepare_claim_rewards_result: ({
          "kmd_rewards_info": {
@@ -54,8 +52,14 @@ DefaultModal {
     property var postClaim: () => {}
 
     // Local
+    readonly property bool can_confirm: positive_claim_amount && has_eligible_utxo && !is_broadcast_busy
+
     readonly property bool can_claim: current_ticker_infos.is_claimable && !API.get().wallet_pg.is_claiming_busy
     readonly property var claim_rpc_result: API.get().wallet_pg.claiming_rpc_data
+
+    readonly property bool is_broadcast_busy: API.get().wallet_pg.is_broadcast_busy
+    readonly property string broadcast_result: API.get().wallet_pg.broadcast_rpc_data
+
     onClaim_rpc_resultChanged: {
         prepare_claim_rewards_result = General.clone(claim_rpc_result)
         if(!prepare_claim_rewards_result.withdraw_answer) {
@@ -78,9 +82,8 @@ DefaultModal {
         if(error) root.close()
     }
 
-    readonly property string send_result: API.get().wallet_pg.broadcast_rpc_data
-    onSend_resultChanged: {
-        if(send_result !== "") {
+    onBroadcast_resultChanged: {
+        if(broadcast_result !== "") {
             stack_layout.currentIndex = 1
             postClaim()
         }
@@ -451,7 +454,7 @@ DefaultModal {
                 fees: prepare_claim_rewards_result.withdraw_answer.fee_details.amount,
                 date: prepare_claim_rewards_result.withdraw_answer.date
             })
-            tx_hash: send_result
+            tx_hash: broadcast_result
 
             function onClose() { root.close() }
         }
