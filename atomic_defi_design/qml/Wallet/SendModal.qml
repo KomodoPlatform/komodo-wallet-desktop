@@ -323,7 +323,7 @@ DefaultModal {
 
                 color: Style.colorRed
 
-                text_value: API.get().settinyargs_pg.empty_string + (qsTr("Not enough funds.") + "\n" + qsTr("You have %1", "AMT TICKER").arg(General.formatCrypto("", API.get().get_balance(API.get().wallet_pg.ticker), API.get().wallet_pg.ticker)))
+                text_value: API.get().settings_pg.empty_string + (qsTr("Not enough funds.") + "\n" + qsTr("You have %1", "AMT TICKER").arg(General.formatCrypto("", API.get().get_balance(API.get().wallet_pg.ticker), API.get().wallet_pg.ticker)))
             }
 
             DefaultText {
