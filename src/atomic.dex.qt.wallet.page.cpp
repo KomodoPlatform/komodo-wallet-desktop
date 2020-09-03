@@ -1,6 +1,7 @@
 #include <QJsonArray>
 #include <QJsonDocument>
 #include <QJsonObject>
+#include <QDebug>
 
 //! PCH
 #include "atomic.dex.pch.hpp"
@@ -192,6 +193,7 @@ namespace atomic_dex
         if (with_fees)
         {
             qDebug() << fees_data;
+            qDebug() << fees_data.toJsonValue();
             assert(not fees_data.toJsonObject().isEmpty());
             auto json_fees    = nlohmann::json::parse(QString(QJsonDocument(fees_data.toJsonObject()).toJson()).toStdString());
             spdlog::trace("json receive -> {}", json_fees.dump(4));
