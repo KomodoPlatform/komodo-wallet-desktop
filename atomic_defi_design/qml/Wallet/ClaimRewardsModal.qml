@@ -69,17 +69,10 @@ DefaultModal {
 
         console.log("Claim rewards result changed:", JSON.stringify(prepare_claim_rewards_result))
 
-        let error = false
-        if(prepare_claim_rewards_result.withdraw_answer.error) {
-            toast.show(qsTr("Failed to prepare to claim rewards"), General.time_toast_important_error, prepare_claim_rewards_result.withdraw_answer.error)
-            error = true
+        if(prepare_claim_rewards_result.error_code) {
+            toast.show(qsTr("Failed to prepare to claim rewards"), General.time_toast_important_error, prepare_claim_rewards_result.error_message)
+            root.close()
         }
-        else if(prepare_claim_rewards_result.kmd_rewards_info.error) {
-            toast.show(qsTr("Failed to get the rewards info"), General.time_toast_important_error, prepare_claim_rewards_result.kmd_rewards_info.error)
-            error = true
-        }
-
-        if(error) root.close()
     }
 
     onBroadcast_resultChanged: {
