@@ -225,7 +225,7 @@ namespace atomic_dex
     }
 
     void
-    wallet_page::broadcast(const QString& tx_hex) noexcept
+    wallet_page::broadcast(const QString& tx_hex, bool is_claiming, bool is_max, const QString& amount) noexcept
     {
         //! Preparation
         this->set_rpc_broadcast_data("");
@@ -239,12 +239,23 @@ namespace atomic_dex
         batch.push_back(json_data);
 
         //! Answer
-        auto answer_functor = [this](web::http::http_response resp) {
+        auto answer_functor = [this, is_claiming, is_max, amount](web::http::http_response resp) {
             std::string body = TO_STD_STR(resp.extract_string(true).get());
             if (resp.status_code() == 200)
             {
-                auto answers = nlohmann::json::parse(body);
+                auto&       mm2_system = m_system_manager.get_system<mm2>();
+                const auto& ticker     = mm2_system.get_current_ticker();
+                auto        answers    = nlohmann::json::parse(body);
                 this->set_rpc_broadcast_data(QString::fromStdString(answers[0].at("tx_hash").get<std::string>()));
+                if (mm2_system.is_pin_cfg_enabled() && (not is_claiming && is_max))
+                {
+                    mm2_system.reset_fake_balance_to_zero(ticker);
+                }
+                else if (mm2_system.is_pin_cfg_enabled() && (not is_claiming && not is_max))
+                {
+                    mm2_system.decrease_fake_balance(ticker, amount.toStdString());
+                }
+                mm2_system.fetch_infos_thread();
             }
             else
             {

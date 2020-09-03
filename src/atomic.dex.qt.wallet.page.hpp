@@ -42,7 +42,7 @@ namespace atomic_dex
         //! Public API
         void             refresh_ticker_infos() noexcept;
         Q_INVOKABLE void claim_rewards();
-        Q_INVOKABLE void broadcast(const QString& tx_hex) noexcept;
+        Q_INVOKABLE void broadcast(const QString& tx_hex, bool is_claiming, bool is_max, const QString& amount) noexcept;
         Q_INVOKABLE void send(const QString& address, const QString& amount, bool max, bool with_fees, QVariant fees_data);
 
         //! Properties
