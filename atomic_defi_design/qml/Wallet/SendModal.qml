@@ -63,16 +63,16 @@ DefaultModal {
             stack_layout.currentIndex = 2
     }
 
-    function prepareSendCoin(address, amount, with_fees, fee_amount, is_erc_20, gas_limit, gas_price) {
+    function prepareSendCoin(address, amount, with_fees, fees_amount, is_erc_20, gas_limit, gas_price) {
         let max = input_max_amount.checked || parseFloat(current_ticker_infos.balance) === parseFloat(amount)
 
         // Save for later check
         async_param_max = max
 
         if(with_fees && max === false && !is_erc_20)
-            max = parseFloat(amount) + parseFloat(fee_amount) >= parseFloat(current_ticker_infos.balance)
+            max = parseFloat(amount) + parseFloat(fees_amount) >= parseFloat(current_ticker_infos.balance)
 
-        API.get().wallet_pg.send(address, amount, max, with_fees, { fee_amount, gas_price, gas_limit })
+        API.get().wallet_pg.send(address, amount, max, with_fees, { fees_amount, gas_price, gas_limit })
     }
 
     function sendCoin() {
