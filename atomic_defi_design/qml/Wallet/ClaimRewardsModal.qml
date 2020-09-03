@@ -92,7 +92,7 @@ DefaultModal {
     }
 
     function claimRewards() {
-        API.get().wallet_pg.broadcast(prepare_claim_rewards_result.withdraw_answer.tx_hex)
+        API.get().wallet_pg.broadcast(prepare_claim_rewards_result.withdraw_answer.tx_hex, true, false, "0")
     }
 
     function reset() {
