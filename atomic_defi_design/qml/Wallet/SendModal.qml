@@ -14,9 +14,59 @@ DefaultModal {
     onClosed: if(stack_layout.currentIndex === 2) reset(true)
 
     // Local
-    readonly property var default_prepare_send_result: ({ has_error: false, error_message: "", tx_hex: "", date: "", fees: "", explorer_url: "", max: false })
-    property var prepare_send_result: default_prepare_send_result
-    property string send_result
+    readonly property var default_send_result: ({ has_error: false, error_message: "", tx_hex: "", date: "", fees: "", explorer_url: "", max: false })
+    property var send_result: default_send_result
+
+
+    readonly property bool is_send_busy: API.get().wallet_pg.is_send_busy
+    readonly property var send_rpc_result: API.get().wallet_pg.send_rpc_data
+
+    readonly property bool is_broadcast_busy: API.get().wallet_pg.is_broadcast_busy
+    readonly property string broadcast_result: API.get().wallet_pg.broadcast_rpc_data
+    property bool async_param_max: false
+
+    onSend_rpc_resultChanged: {
+        send_result = General.clone(send_rpc_result)
+        const max = async_param_max
+        send_result.max = max
+
+        // Local var, faster
+        const result = send_result
+
+        if(result.error_code) {
+            text_error.text = result.error_message
+        }
+        else {
+            if(!result.withdraw_answer) {
+                reset()
+                return
+            }
+
+            text_error.text = ""
+
+            if(max) input_amount.field.text = API.get().is_pin_cfg_enabled() ? General.absString(result.balance_change) : result.total_amount
+
+            // Change page
+            stack_layout.currentIndex = 1
+        }
+    }
+
+    function prepareSendCoin(address, amount, with_fees, fee_amount, is_erc_20, gas_limit, gas_price) {
+        let max = input_max_amount.checked || parseFloat(current_ticker_infos.balance) === parseFloat(amount)
+
+        // Save for later check
+        async_param_max = max
+
+        if(with_fees && max === false && !is_erc_20)
+            max = parseFloat(amount) + parseFloat(fee_amount) >= parseFloat(current_ticker_infos.balance)
+
+        API.get().wallet_pg.send(address, amount, max, with_fees, { fee_amount, gas_price, gas_limit })
+    }
+
+    function sendCoin() {
+        API.get().send(send_result.tx_hex, send_result.max, input_amount.field.text)
+        stack_layout.currentIndex = 2
+    }
 
     function isERC20() {
         return current_ticker_infos.type === "ERC-20"
@@ -34,48 +84,8 @@ DefaultModal {
         return addr === addr.toLowerCase() || addr === addr.toUpperCase()
     }
 
-    function prepareSendCoin(address, amount, fee_enabled, fee_amount, is_erc_20, gas, gas_price, set_current=true) {
-        let max = input_max_amount.checked || parseFloat(current_ticker_infos.balance) === parseFloat(amount)
-
-        let result
-
-        if(fee_enabled) {
-            if(max === false && !is_erc_20)
-                max = parseFloat(amount) + parseFloat(fee_amount) >= parseFloat(current_ticker_infos.balance)
-
-            result = API.get().prepare_send_fees(address, amount, is_erc_20, fee_amount, gas_price, gas, max)
-        }
-        else {
-            result = API.get().prepare_send(address, amount, max)
-        }
-
-        if(set_current) {
-            if(max) input_amount.field.text = API.get().is_pin_cfg_enabled() ? General.absString(result.balance_change) : result.total_amount
-
-            prepare_send_result = result
-            prepare_send_result.max = max
-            if(prepare_send_result.has_error) {
-                text_error.text = prepare_send_result.error_message
-            }
-            else {
-                text_error.text = ""
-
-                // Change page
-                stack_layout.currentIndex = 1
-            }
-        }
-
-        return result
-    }
-
-    function sendCoin() {
-        send_result = API.get().send(prepare_send_result.tx_hex, prepare_send_result.max, input_amount.field.text)
-        stack_layout.currentIndex = 2
-    }
-
     function reset(close = false) {
-        prepare_send_result = default_prepare_send_result
-        send_result = ""
+        send_result = default_send_result
 
         input_address.field.text = ""
         input_amount.field.text = ""
@@ -342,13 +352,13 @@ DefaultModal {
             // Fees
             TextWithTitle {
                 title: API.get().settings_pg.empty_string + (qsTr("Fees"))
-                text: API.get().settings_pg.empty_string + (General.formatCrypto("", prepare_send_result.fees, General.txFeeTicker(API.get().wallet_pg)))
+                text: API.get().settings_pg.empty_string + (General.formatCrypto("", send_result.fees, General.txFeeTicker(API.get().wallet_pg)))
             }
 
             // Date
             TextWithTitle {
                 title: API.get().settings_pg.empty_string + (qsTr("Date"))
-                text: API.get().settings_pg.empty_string + (prepare_send_result.date)
+                text: API.get().settings_pg.empty_string + (send_result.date)
             }
 
             // Buttons
@@ -368,9 +378,9 @@ DefaultModal {
 
         // Result Page
         SendResult {
-            result: prepare_send_result
+            result: send_result
             address: input_address.field.text
-            tx_hash: send_result
+            tx_hash: broadcast_result
             custom_amount: input_amount.field.text
 
             function onClose() { reset(true) }
