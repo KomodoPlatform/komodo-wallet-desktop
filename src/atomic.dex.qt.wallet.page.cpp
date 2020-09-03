@@ -45,15 +45,37 @@ namespace atomic_dex
             refresh_ticker_infos();
         }
     }
-} // namespace atomic_dex
 
-//! Public api
-namespace atomic_dex
-{
-    void
-    wallet_page::refresh_ticker_infos() noexcept
+    bool
+    wallet_page::is_rpc_claiming_busy() const noexcept
     {
-        emit tickerInfosChanged();
+        return m_is_claiming_busy.load();
+    }
+
+    void
+    wallet_page::set_claiming_is_busy(bool status) noexcept
+    {
+        if (m_is_claiming_busy != status)
+        {
+            m_is_claiming_busy = status;
+            emit rpcClaimingStatusChanged();
+        }
+    }
+
+    bool
+    wallet_page::is_broadcast_busy() const noexcept
+    {
+        return m_is_broadcast_busy.load();
+    }
+
+    void
+    wallet_page::set_broadcast_busy(bool status) noexcept
+    {
+        if (m_is_broadcast_busy != status)
+        {
+            m_is_broadcast_busy = status;
+            emit broadCastStatusChanged();
+        }
     }
 
     QVariant
@@ -92,26 +114,74 @@ namespace atomic_dex
         return obj;
     }
 
-    bool
-    wallet_page::is_rpc_claiming_busy() const noexcept
+    QVariant
+    wallet_page::get_rpc_claiming_data() const noexcept
     {
-        return m_is_claiming_busy.load();
+        return m_claiming_rpc_result.get();
     }
 
     void
-    wallet_page::set_claiming_is_busy(bool status) noexcept
+    wallet_page::set_rpc_claiming_data(QVariant rpc_data) noexcept
     {
-        //if (m_is_claiming_busy != status)
-        //{
-            m_is_claiming_busy = status;
-            emit rpcClaimingStatusChanged();
-        //}
+        m_claiming_rpc_result = rpc_data.toJsonObject();
+        emit claimingRpcDataChanged();
+    }
+
+    QString
+    wallet_page::get_rpc_broadcast_data() const noexcept
+    {
+        return m_broadcast_rpc_result.get();
+    }
+
+    void
+    wallet_page::set_rpc_broadcast_data(QString rpc_data) noexcept
+    {
+        m_broadcast_rpc_result = rpc_data;
+        emit broadcastDataChanged();
+    }
+} // namespace atomic_dex
+
+//! Public api
+namespace atomic_dex
+{
+    void
+    wallet_page::refresh_ticker_infos() noexcept
+    {
+        emit tickerInfosChanged();
+    }
+
+    void
+    wallet_page::broadcast(const QString& tx_hex) noexcept
+    {
+        this->set_rpc_broadcast_data("");
+        this->set_broadcast_busy(true);
+        auto&               mm2_system = m_system_manager.get_system<mm2>();
+        const auto&         ticker     = mm2_system.get_current_ticker();
+        nlohmann::json      batch      = nlohmann::json::array();
+        t_broadcast_request broadcast_request{.tx_hex = tx_hex.toStdString(), .coin = ticker};
+        nlohmann::json      json_data = ::mm2::api::template_request("send_raw_transaction");
+        ::mm2::api::to_json(json_data, broadcast_request);
+        batch.push_back(json_data);
+        ::mm2::api::async_rpc_batch_standalone(batch, mm2_system.get_mm2_client(), mm2_system.get_cancellation_token())
+            .then([this](web::http::http_response resp) {
+                std::string body = TO_STD_STR(resp.extract_string(true).get());
+                if (resp.status_code() == 200)
+                {
+                    auto answers = nlohmann::json::parse(body);
+                    this->set_rpc_broadcast_data(QString::fromStdString(answers[0].at("tx_hash").get<std::string>()));
+                }
+                else
+                {
+                    this->set_rpc_broadcast_data(QString::fromStdString(body));
+                }
+                this->set_broadcast_busy(false);
+            })
+            .then(&handle_exception_pplx_task);
     }
 
     void
     wallet_page::claim_rewards()
     {
-        //this->set_rpc_claiming_data(QJsonObject{});
         this->set_claiming_is_busy(true);
         nlohmann::json     batch      = nlohmann::json::array();
         auto&              mm2_system = m_system_manager.get_system<mm2>();
@@ -122,16 +192,11 @@ namespace atomic_dex
         batch.push_back(json_data);
         json_data = ::mm2::api::template_request("kmd_rewards_info");
         batch.push_back(json_data);
-        spdlog::trace("claiming request: {}", batch.dump(4));
         ::mm2::api::async_rpc_batch_standalone(batch, mm2_system.get_mm2_client(), mm2_system.get_cancellation_token())
             .then([this](web::http::http_response resp) {
-                using namespace std::chrono_literals;
-                std::this_thread::sleep_for(1s);
                 std::string body = TO_STD_STR(resp.extract_string(true).get());
-                spdlog::info("body answer of claiming rewards: {}", body);
                 if (resp.status_code() == 200)
                 {
-
                     auto           answers              = nlohmann::json::parse(body);
                     auto           withdraw_answer      = ::mm2::api::rpc_process_answer_batch<t_withdraw_answer>(answers[0], "withdraw");
                     nlohmann::json j_out                = nlohmann::json::object();
@@ -149,18 +214,5 @@ namespace atomic_dex
                 this->set_claiming_is_busy(false);
             })
             .then(&handle_exception_pplx_task);
-    }
-
-    QVariant
-    wallet_page::get_rpc_claiming_data() const noexcept
-    {
-        return m_claiming_rpc_result.get();
-    }
-
-    void
-    wallet_page::set_rpc_claiming_data(QVariant rpc_data) noexcept
-    {
-        m_claiming_rpc_result = rpc_data.toJsonObject();
-        emit claimingRpcDataChanged();
     }
 } // namespace atomic_dex

@@ -353,11 +353,9 @@ namespace atomic_dex
     auto
     mm2::batch_balance_and_tx(bool is_a_reset, std::vector<std::string> tickers, bool is_during_enabling)
     {
-        // spdlog::trace("tickers size: {}", tickers.size());
         auto&& [batch_array, tickers_idx, erc_to_fetch] = prepare_batch_balance_and_tx();
         return ::mm2::api::async_rpc_batch_standalone(batch_array, m_mm2_client, m_token_source.get_token())
             .then([this, tickers_idx = tickers_idx, erc_to_fetch = erc_to_fetch, is_a_reset, tickers, is_during_enabling](web::http::http_response resp) {
-                // spdlog::trace("Fetching balance and tx, ticker size: {}", tickers.size());
                 try
                 {
                     auto answers = ::mm2::api::basic_batch_answer(resp);
@@ -698,7 +696,6 @@ namespace atomic_dex
                 }
             })
             .then(&handle_exception_pplx_task);
-        // auto answer = ::mm2::api::rpc_batch_standalone(batch);
     }
 
     void
@@ -1001,7 +998,6 @@ namespace atomic_dex
                         // spdlog::trace("my_balance change: {} ticker: {}", current.my_balance_change, ticker);
 
                         tx_infos current_info{
-
                             .am_i_sender       = current.my_balance_change[0] == '-',
                             .confirmations     = current.confirmations.has_value() ? current.confirmations.value() : 0,
                             .from              = current.from,
@@ -1020,10 +1016,10 @@ namespace atomic_dex
                         out.push_back(std::move(current_info));
                     }
 
-                    std::sort(begin(out), end(out), [](auto&& a, auto&& b) { return a.timestamp > b.timestamp; });
+                    //std::sort(begin(out), end(out), [](auto&& a, auto&& b) { return a.timestamp > b.timestamp; });
 
-                    m_tx_informations.insert_or_assign(ticker, std::move(out));
-                    m_tx_state.insert_or_assign(ticker, std::move(state));
+                    m_tx_informations.insert_or_assign("result", std::move(out));
+                    m_tx_state.insert_or_assign("result", std::move(state));
                     this->dispatcher_.trigger<tx_fetch_finished>();
                 }
             })
@@ -1377,7 +1373,7 @@ namespace atomic_dex
             out.push_back(std::move(current_info));
         }
 
-        std::sort(begin(out), end(out), [](auto&& a, auto&& b) { return a.timestamp > b.timestamp; });
+        //std::sort(begin(out), end(out), [](auto&& a, auto&& b) { return a.timestamp > b.timestamp; });
 
         m_tx_informations.insert_or_assign("result", std::move(out));
         m_tx_state.insert_or_assign("result", std::move(state));
