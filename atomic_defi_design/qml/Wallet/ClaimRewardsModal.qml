@@ -19,7 +19,8 @@ DefaultModal {
 
         return false
     }
-    readonly property bool can_confirm: positive_claim_amount && has_eligible_utxo
+    readonly property bool can_confirm: positive_claim_amount && has_eligible_utxo && !is_broadcast_busy
+    readonly property bool is_broadcast_busy: API.get().wallet_pg.is_broadcast_busy
 
     readonly property var default_prepare_claim_rewards_result: ({
          "kmd_rewards_info": {
@@ -48,7 +49,6 @@ DefaultModal {
          }
      })
     property var prepare_claim_rewards_result: General.clone(default_prepare_claim_rewards_result)
-    property string send_result
 
     // Override
     property var postClaim: () => {}
@@ -78,6 +78,14 @@ DefaultModal {
         if(error) root.close()
     }
 
+    readonly property string send_result: API.get().wallet_pg.broadcast_rpc_data
+    onSend_resultChanged: {
+        if(send_result !== "") {
+            stack_layout.currentIndex = 1
+            postClaim()
+        }
+    }
+
     function prepareClaimRewards() {
         if(!can_claim) return
 
@@ -88,14 +96,11 @@ DefaultModal {
     }
 
     function claimRewards() {
-        send_result = API.get().send_rewards(prepare_claim_rewards_result.withdraw_answer.tx_hex)
-        stack_layout.currentIndex = 1
-        postClaim()
+        API.get().wallet_pg.broadcast(prepare_claim_rewards_result.withdraw_answer.tx_hex)
     }
 
     function reset() {
         prepare_claim_rewards_result = General.clone(default_prepare_claim_rewards_result)
-        send_result = ""
     }
 
     // Inside modal
@@ -115,7 +120,7 @@ DefaultModal {
             }
 
             DefaultBusyIndicator {
-                visible: !can_claim
+                visible: !can_claim || is_broadcast_busy
                 Layout.alignment: Qt.AlignCenter
             }
 
