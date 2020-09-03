@@ -14,7 +14,11 @@ DefaultModal {
     onClosed: if(stack_layout.currentIndex === 2) reset(true)
 
     // Local
-    readonly property var default_send_result: ({ has_error: false, error_message: "", tx_hex: "", date: "", fees: "", explorer_url: "", max: false })
+    readonly property var default_send_result: ({ has_error: false, error_message: "",
+                                                    withdraw_answer: {
+                                                        tx_hex: "", date: "", "fee_details": { total_fee: "" }
+                                                    },
+                                                    explorer_url: "", max: false })
     property var send_result: default_send_result
 
 
@@ -27,11 +31,11 @@ DefaultModal {
 
     onSend_rpc_resultChanged: {
         send_result = General.clone(send_rpc_result)
-        const max = async_param_max
-        send_result.max = max
 
         // Local var, faster
         const result = send_result
+
+        console.log("Send RPC Result Changed: ", JSON.stringify(send_result))
 
         if(result.error_code) {
             text_error.text = result.error_message
@@ -42,9 +46,12 @@ DefaultModal {
                 return
             }
 
+            const max = async_param_max
+            send_result.withdraw_answer.max = max
+
             text_error.text = ""
 
-            if(max) input_amount.field.text = API.get().is_pin_cfg_enabled() ? General.absString(result.balance_change) : result.total_amount
+            if(max) input_amount.field.text = API.get().is_pin_cfg_enabled() ? General.absString(result.withdraw_answer.my_balance_change) : result.withdraw_answer.total_amount
 
             // Change page
             stack_layout.currentIndex = 1
@@ -69,7 +76,7 @@ DefaultModal {
     }
 
     function sendCoin() {
-        API.get().wallet_pg.broadcast(send_result.tx_hex, false, send_result.max, input_amount.field.text)
+        API.get().wallet_pg.broadcast(send_result.withdraw_answer.tx_hex, false, send_result.withdraw_answer.max, input_amount.field.text)
     }
 
     function isERC20() {
@@ -194,6 +201,7 @@ DefaultModal {
                     Layout.alignment: Qt.AlignLeft
                     title: API.get().settings_pg.empty_string + (qsTr("Recipient's address"))
                     field.placeholderText: API.get().settings_pg.empty_string + (qsTr("Enter address of the recipient"))
+                    field.enabled: !root.is_send_busy
                 }
 
                 DefaultButton {
@@ -203,6 +211,7 @@ DefaultModal {
                         openAddressBook()
                         root.close()
                     }
+                    enabled: !root.is_send_busy
                 }
             }
 
@@ -220,6 +229,7 @@ DefaultModal {
                     Layout.alignment: Qt.AlignRight
                     text: API.get().settings_pg.empty_string + (qsTr("Fix"))
                     onClicked: input_address.field.text = ercToMixedCase(input_address.field.text)
+                    enabled: !root.is_send_busy
                 }
             }
 
@@ -232,6 +242,7 @@ DefaultModal {
                     field.visible: !input_max_amount.checked
                     title: API.get().settings_pg.empty_string + (qsTr("Amount to send"))
                     field.placeholderText: API.get().settings_pg.empty_string + (qsTr("Enter the amount to send"))
+                    field.enabled: !root.is_send_busy
                 }
 
                 Switch {
@@ -239,6 +250,7 @@ DefaultModal {
                     Layout.alignment: Qt.AlignRight | Qt.AlignBottom
                     text: API.get().settings_pg.empty_string + (qsTr("MAX"))
                     onCheckedChanged: input_amount.field.text = ""
+                    enabled: !root.is_send_busy
                 }
             }
 
@@ -247,6 +259,7 @@ DefaultModal {
                 id: custom_fees_switch
                 text: API.get().settings_pg.empty_string + (qsTr("Enable Custom Fees"))
                 onCheckedChanged: input_custom_fees.field.text = ""
+                enabled: !root.is_send_busy
             }
 
             // Custom Fees section
@@ -266,6 +279,7 @@ DefaultModal {
                     id: input_custom_fees
                     title: API.get().settings_pg.empty_string + (qsTr("Custom Fee") + " [" + API.get().wallet_pg.ticker + "]")
                     field.placeholderText: API.get().settings_pg.empty_string + (qsTr("Enter the custom fee"))
+                    field.enabled: !root.is_send_busy
                 }
 
                 // ERC-20 coins
@@ -277,6 +291,7 @@ DefaultModal {
                         id: input_custom_fees_gas
                         title: API.get().settings_pg.empty_string + (qsTr("Gas Limit") + " [Gwei]")
                         field.placeholderText: API.get().settings_pg.empty_string + (qsTr("Enter the gas limit"))
+                        field.enabled: !root.is_send_busy
                     }
 
                     // Gas price input
@@ -284,6 +299,7 @@ DefaultModal {
                         id: input_custom_fees_gas_price
                         title: API.get().settings_pg.empty_string + (qsTr("Gas Price") + " [Gwei]")
                         field.placeholderText: API.get().settings_pg.empty_string + (qsTr("Enter the gas price"))
+                        field.enabled: !root.is_send_busy
                     }
                 }
             }
@@ -307,7 +323,7 @@ DefaultModal {
 
                 color: Style.colorRed
 
-                text_value: API.get().settings_pg.empty_string + (qsTr("Not enough funds.") + "\n" + qsTr("You have %1", "AMT TICKER").arg(General.formatCrypto("", API.get().get_balance(API.get().wallet_pg.ticker), API.get().wallet_pg.ticker)))
+                text_value: API.get().settinyargs_pg.empty_string + (qsTr("Not enough funds.") + "\n" + qsTr("You have %1", "AMT TICKER").arg(General.formatCrypto("", API.get().get_balance(API.get().wallet_pg.ticker), API.get().wallet_pg.ticker)))
             }
 
             DefaultText {
@@ -360,13 +376,13 @@ DefaultModal {
             // Fees
             TextWithTitle {
                 title: API.get().settings_pg.empty_string + (qsTr("Fees"))
-                text: API.get().settings_pg.empty_string + (General.formatCrypto("", send_result.fees, General.txFeeTicker(API.get().wallet_pg)))
+                text: API.get().settings_pg.empty_string + (General.formatCrypto("", send_result.withdraw_answer.fee_details.amount, General.txFeeTicker(API.get().wallet_pg)))
             }
 
             // Date
             TextWithTitle {
                 title: API.get().settings_pg.empty_string + (qsTr("Date"))
-                text: API.get().settings_pg.empty_string + (send_result.date)
+                text: API.get().settings_pg.empty_string + (send_result.withdraw_answer.date)
             }
 
             DefaultBusyIndicator {
@@ -392,7 +408,11 @@ DefaultModal {
 
         // Result Page
         SendResult {
-            result: send_result
+            result: ({
+                balance_change: send_result.withdraw_answer.my_balance_change,
+                fees: send_result.withdraw_answer.fee_details.amount,
+                date: send_result.withdraw_answer.date
+            })
             address: input_address.field.text
             tx_hash: broadcast_result
             custom_amount: input_amount.field.text
