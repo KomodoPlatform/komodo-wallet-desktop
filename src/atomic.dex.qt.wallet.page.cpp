@@ -210,9 +210,10 @@ namespace atomic_dex
                 nlohmann::json j_out                = nlohmann::json::object();
                 j_out["withdraw_answer"]            = answers[0];
                 j_out.at("withdraw_answer")["date"] = withdraw_answer.result.value().timestamp_as_date;
-                if (j_out.at("fee_details").contains("total_fee") && !j_out.at("fee_details").contains("amount"))
+                if (j_out.at("withdraw_answer").at("fee_details").contains("total_fee") &&
+                    !j_out.at("withdraw_answer").at("fee_details").contains("amount"))
                 {
-                    j_out["fee_details"]["amount"] = j_out["fee_details"]["total_fee"];
+                    j_out["withdraw_answer"]["fee_details"]["amount"] = j_out["withdraw_answer"]["fee_details"]["total_fee"];
                 }
                 this->set_rpc_send_data(nlohmann_json_object_to_qt_json_object(j_out));
             }
