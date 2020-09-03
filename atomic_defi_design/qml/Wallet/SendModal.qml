@@ -51,6 +51,11 @@ DefaultModal {
         }
     }
 
+    onBroadcast_resultChanged: {
+        if(broadcast_result !== "")
+            stack_layout.currentIndex = 2
+    }
+
     function prepareSendCoin(address, amount, with_fees, fee_amount, is_erc_20, gas_limit, gas_price) {
         let max = input_max_amount.checked || parseFloat(current_ticker_infos.balance) === parseFloat(amount)
 
@@ -64,8 +69,7 @@ DefaultModal {
     }
 
     function sendCoin() {
-        API.get().send(send_result.tx_hex, send_result.max, input_amount.field.text)
-        stack_layout.currentIndex = 2
+        API.get().wallet_pg.broadcast(send_result.tx_hex, false, send_result.max, input_amount.field.text)
     }
 
     function isERC20() {
@@ -312,6 +316,10 @@ DefaultModal {
                 visible: text !== ''
             }
 
+            DefaultBusyIndicator {
+                visible: root.is_send_busy
+            }
+
             // Buttons
             RowLayout {
                 DefaultButton {
@@ -323,7 +331,7 @@ DefaultModal {
                     text: API.get().settings_pg.empty_string + (qsTr("Prepare"))
                     Layout.fillWidth: true
 
-                    enabled: fieldAreFilled() && hasFunds() && !hasErc20CaseIssue(isERC20(), input_address.field.text)
+                    enabled: fieldAreFilled() && hasFunds() && !hasErc20CaseIssue(isERC20(), input_address.field.text) && !root.is_send_busy
 
                     onClicked: prepareSendCoin(input_address.field.text, input_amount.field.text, custom_fees_switch.checked, input_custom_fees.field.text,
                                                isERC20(), input_custom_fees_gas.field.text, input_custom_fees_gas_price.field.text)
@@ -361,17 +369,23 @@ DefaultModal {
                 text: API.get().settings_pg.empty_string + (send_result.date)
             }
 
+            DefaultBusyIndicator {
+                visible: root.is_broadcast_busy
+            }
+
             // Buttons
             RowLayout {
                 DefaultButton {
                     text: API.get().settings_pg.empty_string + (qsTr("Back"))
                     Layout.fillWidth: true
                     onClicked: stack_layout.currentIndex = 0
+                    enabled: !root.is_broadcast_busy
                 }
                 PrimaryButton {
                     text: API.get().settings_pg.empty_string + (qsTr("Send"))
                     Layout.fillWidth: true
                     onClicked: sendCoin()
+                    enabled: !root.is_broadcast_busy
                 }
             }
         }
