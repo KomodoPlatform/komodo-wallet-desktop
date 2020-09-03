@@ -287,7 +287,7 @@ namespace atomic_dex
                 }
                 else
                 {
-                    auto error_json = QJsonObject({{"error_code", resp.status_code()}});
+                    auto error_json = QJsonObject({{"error_code", resp.status_code()}, {"error_message", QString::fromStdString(body)}});
                     this->set_rpc_claiming_data(error_json);
                 }
                 this->set_claiming_is_busy(false);
