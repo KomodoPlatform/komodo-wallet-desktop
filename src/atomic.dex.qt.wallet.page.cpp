@@ -214,7 +214,7 @@ namespace atomic_dex
             }
             else
             {
-                auto error_json = QJsonObject({{"error_code", resp.status_code()}});
+                auto error_json = QJsonObject({{"error_code", resp.status_code()}, {"error_message", QString::fromStdString(body)}});
                 this->set_rpc_send_data(error_json);
             }
             this->set_send_busy(false);
