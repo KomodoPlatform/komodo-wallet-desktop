@@ -85,7 +85,7 @@ DefaultModal {
             PrimaryButton {
                 text: API.get().settings_pg.empty_string + (qsTr("View at Explorer"))
                 Layout.fillWidth: true
-                onClicked: General.viewTxAtExplorer(API.get().wallet_pg.ticker, details.tx_hash)
+                onClicked: General.viewTxAtExplorer(API.get().wallet_pg.ticker, details.tx_hash, false)
             }
         }
     }

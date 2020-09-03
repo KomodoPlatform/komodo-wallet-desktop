@@ -128,7 +128,7 @@ QtObject {
         return JSON.stringify(JSON.parse(j), null, 4)
     }
 
-    function viewTxAtExplorer(ticker, id, add_0x=false) {
+    function viewTxAtExplorer(ticker, id, add_0x=true) {
         if(id !== '') {
             const coin_info = API.get().get_coin_info(ticker)
             const id_prefix = add_0x && coin_info.type === 'ERC-20' ? '0x' : ''
