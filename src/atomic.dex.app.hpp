@@ -190,12 +190,6 @@ namespace atomic_dex
 
         //! Portfolio QML API Bindings
         Q_INVOKABLE QString recover_fund(const QString& uuid);
-        /*Q_INVOKABLE QObject* prepare_send(const QString& address, const QString& amount, bool max = false);*/
-        /*Q_INVOKABLE QObject* prepare_send_fees(
-            const QString& address, const QString& amount, bool is_erc_20, const QString& fees_amount, const QString& gas_price, const QString& gas,
-            bool max = false);*/
-        //Q_INVOKABLE QString send(const QString& tx_hex, bool is_max, const QString& amount);
-        //Q_INVOKABLE QString send_rewards(const QString& tx_hex);
 
         //! Others
         Q_INVOKABLE static bool    mnemonic_validate(const QString& entropy);
@@ -210,8 +204,6 @@ namespace atomic_dex
         Q_INVOKABLE static QString get_price_amount(const QString& base_amount, const QString& rel_amount);
         Q_INVOKABLE bool           do_i_have_enough_funds(const QString& ticker, const QString& amount) const;
         Q_INVOKABLE bool           disable_coins(const QStringList& coins);
-        // Q_INVOKABLE bool           is_claiming_ready(const QString& ticker);
-        //Q_INVOKABLE QVariant claim_rewards(const QString& ticker);
 
 
         Q_INVOKABLE QString        get_cex_rates(const QString& base, const QString& rel);

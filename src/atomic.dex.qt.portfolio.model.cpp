@@ -23,6 +23,7 @@
 #include "atomic.dex.global.price.service.hpp"
 #include "atomic.dex.qt.portfolio.model.hpp"
 #include "atomic.dex.qt.utilities.hpp"
+#include "atomic.dex.qt.wallet.page.hpp"
 
 //! Utils
 namespace
@@ -174,6 +175,10 @@ namespace atomic_dex
                 QString change24_h = retrieve_change_24h(paprika, coin, *m_config);
                 update_value(Change24H, change24_h, idx, *this);
                 spdlog::trace("updated balance values of: {}", ticker);
+                if (ticker == mm2_system.get_current_ticker())
+                {
+                    m_system_manager.get_system<wallet_page>().refresh_ticker_infos();
+                }
             }
         }
     }

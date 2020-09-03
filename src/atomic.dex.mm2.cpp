@@ -882,28 +882,6 @@ namespace atomic_dex
         return result;
     }
 
-    /*void
-    mm2::process_balance(const std::string& ticker) const
-    {
-        if (is_pin_cfg_enabled())
-        {
-            if (m_balance_informations.find(ticker) != m_balance_informations.end())
-            {
-                return;
-            }
-        }
-
-        t_balance_request balance_request{.coin = ticker};
-        auto              answer = rpc_balance(std::move(balance_request), m_mm2_client);
-        if (answer.raw_result.find("error") == std::string::npos)
-        {
-            t_float_50 result = t_float_50(answer.balance) * m_balance_factor;
-            answer.balance    = result.str();
-            m_balance_informations.insert_or_assign(ticker, answer);
-            this->dispatcher_.trigger<ticker_balance_updated>(ticker);
-        }
-    }*/
-
     void
     mm2::batch_fetch_orders_and_swap()
     {
@@ -1188,15 +1166,6 @@ namespace atomic_dex
         }
 
         return m_tx_state.at("result");
-    }
-
-    t_broadcast_answer
-    mm2::send_rewards(t_broadcast_request&& req, t_mm2_ec& ec) noexcept
-    {
-        spdlog::debug("{} l{} f[{}]", __FUNCTION__, __LINE__, fs::path(__FILE__).filename().string());
-        auto ticker   = req.coin;
-        auto b_answer = mm2::broadcast(std::move(req), ec);
-        return b_answer;
     }
 
     t_float_50

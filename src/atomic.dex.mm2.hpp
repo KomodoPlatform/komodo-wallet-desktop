@@ -128,7 +128,7 @@ namespace atomic_dex
         void fetch_current_orderbook_thread(bool is_a_reset = false);
 
         //! Refresh the balance registry (internal)
-        //void process_balance(const std::string& ticker) const;
+        // void process_balance(const std::string& ticker) const;
 
         //! Refresh the orderbook registry (internal)
         void           process_orderbook(bool is_a_reset = false);
@@ -228,12 +228,6 @@ namespace atomic_dex
         //! Last 50 transactions maximum
         [[nodiscard]] t_tx_state get_tx_state(t_mm2_ec& ec) const;
 
-        //! Claim rewards
-        //nlohmann::json claim_rewards(const std::string& ticker, t_mm2_ec& ec) noexcept;
-
-        //! Send Rewards
-        t_broadcast_answer send_rewards(t_broadcast_request&& req, t_mm2_ec& ec) noexcept;
-
         //! Get coins that are currently enabled
         [[nodiscard]] t_coins get_enabled_coins() const noexcept;
 
@@ -245,7 +239,6 @@ namespace atomic_dex
 
         //! Get all coins
         [[nodiscard]] t_coins get_all_coins() const noexcept;
-        ;
 
         //! Get Specific info about one coin
         [[nodiscard]] coin_config get_coin_info(const std::string& ticker) const;
@@ -288,10 +281,13 @@ namespace atomic_dex
         void               batch_fetch_orders_and_swap();
         void               add_orders_answer(t_my_orders_answer answer);
 
-        std::shared_ptr<t_http_client> get_mm2_client() noexcept;
-        pplx::cancellation_token       get_cancellation_token() const noexcept;
-        std::string                    get_current_ticker() const noexcept;
-        bool                           set_current_ticker(const std::string& ticker) noexcept;
+        //! Async API
+        std::shared_ptr<t_http_client>         get_mm2_client() noexcept;
+        [[nodiscard]] pplx::cancellation_token get_cancellation_token() const noexcept;
+
+        //! Wallet api
+        [[nodiscard]] std::string get_current_ticker() const noexcept;
+        bool                      set_current_ticker(const std::string& ticker) noexcept;
     };
 } // namespace atomic_dex
 

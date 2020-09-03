@@ -1,7 +1,7 @@
+#include <QDebug>
 #include <QJsonArray>
 #include <QJsonDocument>
 #include <QJsonObject>
-#include <QDebug>
 
 //! PCH
 #include "atomic.dex.pch.hpp"
@@ -182,7 +182,7 @@ namespace atomic_dex
     }
 
     void
-    wallet_page::send(const QString& address, const QString& amount, bool max, bool with_fees, QVariant fees_data)
+    wallet_page::send(const QString& address, const QString& amount, bool max, bool with_fees, QVariantMap fees_data)
     {
         //! Preparation
         this->set_send_busy(true);
@@ -193,10 +193,7 @@ namespace atomic_dex
         if (with_fees)
         {
             qDebug() << fees_data;
-            qDebug() << fees_data.toJsonValue();
-            assert(not fees_data.toJsonObject().isEmpty());
-            auto json_fees    = nlohmann::json::parse(QString(QJsonDocument(fees_data.toJsonObject()).toJson()).toStdString());
-            spdlog::trace("json receive -> {}", json_fees.dump(4));
+            auto json_fees    = nlohmann::json::parse(QString(QJsonDocument(QVariant(fees_data).toJsonObject()).toJson()).toStdString());
             bool is_erc_20    = mm2_system.get_coin_info(ticker).is_erc_20;
             withdraw_req.fees = t_withdraw_fees{
                 .type      = is_erc_20 ? "EthGas" : "UtxoFixed",
@@ -218,8 +215,7 @@ namespace atomic_dex
                 nlohmann::json j_out                = nlohmann::json::object();
                 j_out["withdraw_answer"]            = answers[0];
                 j_out.at("withdraw_answer")["date"] = withdraw_answer.result.value().timestamp_as_date;
-                if (j_out.at("withdraw_answer").at("fee_details").contains("total_fee") &&
-                    !j_out.at("withdraw_answer").at("fee_details").contains("amount"))
+                if (j_out.at("withdraw_answer").at("fee_details").contains("total_fee") && !j_out.at("withdraw_answer").at("fee_details").contains("amount"))
                 {
                     j_out["withdraw_answer"]["fee_details"]["amount"] = j_out["withdraw_answer"]["fee_details"]["total_fee"];
                 }
