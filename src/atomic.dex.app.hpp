@@ -37,7 +37,6 @@
 #include "atomic.dex.qt.addressbook.model.hpp"
 #include "atomic.dex.qt.bindings.hpp"
 #include "atomic.dex.qt.candlestick.charts.model.hpp"
-#include "atomic.dex.qt.current.coin.infos.hpp"
 #include "atomic.dex.qt.internet.checker.service.hpp"
 #include "atomic.dex.qt.orderbook.hpp"
 #include "atomic.dex.qt.orders.model.hpp"
@@ -61,7 +60,6 @@ namespace atomic_dex
         //! Properties
         Q_PROPERTY(QList<QVariant> enabled_coins READ get_enabled_coins NOTIFY enabledCoinsChanged)
         Q_PROPERTY(QList<QVariant> enableable_coins READ get_enableable_coins NOTIFY enableableCoinsChanged)
-        // Q_PROPERTY(QObject* current_coin_info READ get_current_coin_info NOTIFY coinInfoChanged)
         Q_PROPERTY(addressbook_model* addressbook_mdl READ get_addressbook NOTIFY addressbookChanged)
         Q_PROPERTY(orders_model* orders_mdl READ get_orders NOTIFY ordersChanged)
         Q_PROPERTY(QVariant update_status READ get_update_status NOTIFY updateStatusChanged)
@@ -76,7 +74,6 @@ namespace atomic_dex
 
         //! Private function
         // void refresh_transactions(const atomic_dex::mm2& mm2_system);
-        void refresh_fiat_balance(const atomic_dex::mm2& mm2_system, const global_price_service& price_service);
         void refresh_address(atomic_dex::mm2& mm2_system);
         void connect_signals();
         void tick();
@@ -125,8 +122,6 @@ namespace atomic_dex
         void on_enabled_coins_event(const enabled_coins_event&) noexcept;
         void on_enabled_default_coins_event(const enabled_default_coins_event&) noexcept;
         void on_coin_fully_initialized_event(const coin_fully_initialized&) noexcept;
-        void on_change_ticker_event(const change_ticker_event&) noexcept;
-        void on_tx_fetch_finished_event(const tx_fetch_finished&) noexcept;
         void on_coin_disabled_event(const coin_disabled&) noexcept;
         void on_mm2_initialized_event(const mm2_initialized&) noexcept;
         void on_mm2_started_event(const mm2_started&) noexcept;

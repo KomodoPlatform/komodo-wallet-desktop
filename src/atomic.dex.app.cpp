@@ -210,18 +210,9 @@ namespace atomic_dex
             connect_signals();
             m_event_actions[events_action::need_a_full_refresh_of_mm2] = false;
         }
-        auto& mm2           = get_mm2();
-        auto& price_service = system_manager_.get_system<global_price_service>();
+        auto& mm2 = get_mm2();
         if (mm2.is_mm2_running())
         {
-            /**/
-
-            /*if (not m_coin_info->get_ticker().isEmpty() && not m_enabled_coins.empty())
-            {
-                refresh_fiat_balance(mm2, price_service);
-                refresh_address(mm2);
-            }*/
-
             std::vector<std::string> to_init;
             while (not m_portfolio_queue.empty())
             {
@@ -265,18 +256,6 @@ namespace atomic_dex
                 if (mm2.is_mm2_running())
                 {
                     this->process_refresh_enabled_coin_action();
-                }
-                break;
-            case action::refresh_current_ticker:
-                if (mm2.is_mm2_running())
-                {
-                    // this->process_refresh_current_ticker_infos();
-                }
-                break;
-            case action::refresh_transactions:
-                if (mm2.is_mm2_running())
-                {
-                    // refresh_transactions(mm2);
                 }
                 break;
             case action::post_process_orders_finished:
@@ -404,30 +383,6 @@ namespace atomic_dex
         {
             spdlog::debug("{} l{}", __FUNCTION__, __LINE__);
             for (auto&& ticker: evt.tickers) { m_portfolio_queue.push(strdup(ticker.c_str())); }
-        }
-    }
-
-    void
-    application::on_change_ticker_event([[maybe_unused]] const change_ticker_event& evt) noexcept
-    {
-        spdlog::debug("{} l{}", __FUNCTION__, __LINE__);
-        if (get_mm2().get_coin_info(evt.ticker).is_erc_20)
-        {
-            get_mm2().fetch_infos_thread(false);
-        }
-        if (not m_event_actions[events_action::about_to_exit_app])
-        {
-            this->m_actions_queue.push(action::refresh_current_ticker);
-        }
-    }
-
-    void
-    application::on_tx_fetch_finished_event([[maybe_unused]] const tx_fetch_finished& evt) noexcept
-    {
-        spdlog::debug("{} l{}", __FUNCTION__, __LINE__);
-        if (not m_event_actions[events_action::about_to_exit_app])
-        {
-            this->m_actions_queue.push(action::refresh_transactions);
         }
     }
 
@@ -569,11 +524,9 @@ namespace atomic_dex
         qobject_cast<notification_manager*>(m_manager_models.at("notifications"))->disconnect_signals();
         get_dispatcher().sink<ticker_balance_updated>().disconnect<&application::on_ticker_balance_updated_event>(*this);
         get_dispatcher().sink<fiat_rate_updated>().disconnect<&application::on_fiat_rate_updated>(*this);
-        get_dispatcher().sink<change_ticker_event>().disconnect<&application::on_change_ticker_event>(*this);
         get_dispatcher().sink<enabled_coins_event>().disconnect<&application::on_enabled_coins_event>(*this);
         get_dispatcher().sink<enabled_default_coins_event>().disconnect<&application::on_enabled_default_coins_event>(*this);
         get_dispatcher().sink<coin_fully_initialized>().disconnect<&application::on_coin_fully_initialized_event>(*this);
-        get_dispatcher().sink<tx_fetch_finished>().disconnect<&application::on_tx_fetch_finished_event>(*this);
         get_dispatcher().sink<coin_disabled>().disconnect<&application::on_coin_disabled_event>(*this);
         get_dispatcher().sink<mm2_initialized>().disconnect<&application::on_mm2_initialized_event>(*this);
         get_dispatcher().sink<mm2_started>().disconnect<&application::on_mm2_started_event>(*this);
@@ -599,11 +552,9 @@ namespace atomic_dex
         system_manager_.get_system<trading_page>().connect_signals();
         get_dispatcher().sink<ticker_balance_updated>().connect<&application::on_ticker_balance_updated_event>(*this);
         get_dispatcher().sink<fiat_rate_updated>().connect<&application::on_fiat_rate_updated>(*this);
-        get_dispatcher().sink<change_ticker_event>().connect<&application::on_change_ticker_event>(*this);
         get_dispatcher().sink<enabled_coins_event>().connect<&application::on_enabled_coins_event>(*this);
         get_dispatcher().sink<enabled_default_coins_event>().connect<&application::on_enabled_default_coins_event>(*this);
         get_dispatcher().sink<coin_fully_initialized>().connect<&application::on_coin_fully_initialized_event>(*this);
-        get_dispatcher().sink<tx_fetch_finished>().connect<&application::on_tx_fetch_finished_event>(*this);
         get_dispatcher().sink<coin_disabled>().connect<&application::on_coin_disabled_event>(*this);
         get_dispatcher().sink<mm2_initialized>().connect<&application::on_mm2_initialized_event>(*this);
         get_dispatcher().sink<mm2_started>().connect<&application::on_mm2_started_event>(*this);
@@ -882,6 +833,7 @@ namespace atomic_dex
         if (not m_event_actions[events_action::about_to_exit_app])
         {
             get_portfolio_page()->get_portfolio()->update_balance_values(evt.tickers);
+            this->dispatcher_.trigger<update_portfolio_values>();
         }
     }
 } // namespace atomic_dex

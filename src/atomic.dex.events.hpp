@@ -34,11 +34,6 @@ namespace atomic_dex
     using refresh_all_portfolio_balance = entt::tag<"refresh_all_portfolio_balance"_hs>;
     using band_oracle_refreshed         = entt::tag<"band_oracle_refreshed"_hs>;
 
-    struct change_ticker_event
-    {
-        std::string ticker;
-    };
-
     struct process_orderbook_finished
     {
         bool is_a_reset;

@@ -154,7 +154,6 @@ target_sources(atomicDexPro_shared_deps INTERFACE
         ${CMAKE_SOURCE_DIR}/src/atomic.dex.provider.coinpaprika.cpp
         ${CMAKE_SOURCE_DIR}/src/atomic.dex.provider.cex.prices.api.cpp
         ${CMAKE_SOURCE_DIR}/src/atomic.dex.provider.cex.prices.cpp
-        ${CMAKE_SOURCE_DIR}/src/atomic.dex.qt.current.coin.infos.cpp
         ${CMAKE_SOURCE_DIR}/src/atomic.dex.qt.wallet.manager.cpp
         ${CMAKE_SOURCE_DIR}/src/atomic.dex.qt.utilities.cpp
         ${CMAKE_SOURCE_DIR}/src/atomic.dex.wallet.config.cpp

@@ -44,6 +44,7 @@ namespace atomic_dex
         if (mm2_system.set_current_ticker(ticker.toStdString()))
         {
             emit currentTickerChanged();
+            mm2_system.fetch_infos_thread();
             refresh_ticker_infos();
         }
     }
