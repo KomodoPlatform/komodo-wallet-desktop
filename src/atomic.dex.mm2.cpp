@@ -1378,7 +1378,6 @@ namespace atomic_dex
         if (ticker != get_current_ticker())
         {
             m_current_ticker = ticker;
-            //! Need to refresh tx
             return true;
         }
         return false;
