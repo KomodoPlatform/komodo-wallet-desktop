@@ -17,7 +17,7 @@
 namespace atomic_dex
 {
     wallet_page::wallet_page(entt::registry& registry, ag::ecs::system_manager& system_manager, QObject* parent) :
-        QObject(parent), system(registry), m_system_manager(system_manager)
+        QObject(parent), system(registry), m_system_manager(system_manager), m_transactions_mdl(new transactions_model(this))
     {
     }
 
@@ -316,5 +316,11 @@ namespace atomic_dex
                 this->set_claiming_is_busy(false);
             })
             .then(&handle_exception_pplx_task);
+    }
+
+    transactions_model*
+    wallet_page::get_transactions_mdl() const noexcept
+    {
+        return m_transactions_mdl;
     }
 } // namespace atomic_dex

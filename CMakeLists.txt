@@ -177,6 +177,7 @@ target_sources(atomicDexPro_shared_deps INTERFACE
         ${CMAKE_SOURCE_DIR}/src/atomic.dex.qt.portfolio.proxy.filter.model.cpp
         ${CMAKE_SOURCE_DIR}/src/atomic.dex.global.price.service.cpp
         ${CMAKE_SOURCE_DIR}/src/atomic.dex.band.oracle.price.service.cpp
+        ${CMAKE_SOURCE_DIR}/src/atomic.dex.qt.wallet.transactions.model.cpp
         ${CMAKE_SOURCE_DIR}/src/atomic.dex.qt.wallet.page.cpp
         $<$<PLATFORM_ID:Darwin>:${CMAKE_SOURCE_DIR}/src/osx/atomic.dex.osx.manager.mm>
         ${CMAKE_SOURCE_DIR}/qml.qrc

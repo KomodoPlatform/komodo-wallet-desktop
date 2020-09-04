@@ -5,6 +5,8 @@
 #include <QObject>
 #include <QVariant>
 
+#include "atomic.dex.qt.wallet.transactions.model.hpp"
+
 namespace atomic_dex
 {
     class wallet_page final : public QObject, public ag::ecs::pre_update_system<wallet_page>
@@ -12,6 +14,8 @@ namespace atomic_dex
         //! Q_Object definition
         Q_OBJECT
 
+        //! MDL Properties
+        Q_PROPERTY(transactions_model* transactions_mdl READ get_transactions_mdl NOTIFY transactionsMdlChanged)
         //! Properties
         Q_PROPERTY(QString ticker READ get_current_ticker WRITE set_current_ticker NOTIFY currentTickerChanged)
         Q_PROPERTY(QVariant ticker_infos READ get_ticker_infos NOTIFY tickerInfosChanged)
@@ -27,6 +31,7 @@ namespace atomic_dex
 
         //! Private fields
         ag::ecs::system_manager& m_system_manager;
+        transactions_model*      m_transactions_mdl;
         std::atomic_bool         m_is_claiming_busy{false};
         std::atomic_bool         m_is_broadcast_busy{false};
         std::atomic_bool         m_is_send_busy{false};
@@ -44,6 +49,9 @@ namespace atomic_dex
         Q_INVOKABLE void claim_rewards();
         Q_INVOKABLE void broadcast(const QString& tx_hex, bool is_claiming, bool is_max, const QString& amount) noexcept;
         Q_INVOKABLE void send(const QString& address, const QString& amount, bool max, bool with_fees, QVariantMap fees_data);
+
+        //! MDL
+        transactions_model*   get_transactions_mdl() const noexcept;
 
         //! Properties
         [[nodiscard]] QString  get_current_ticker() const noexcept;
@@ -71,6 +79,7 @@ namespace atomic_dex
         void broadcastDataChanged();
         void sendStatusChanged();
         void sendDataChanged();
+        void transactionsMdlChanged();
     };
 } // namespace atomic_dex
 
