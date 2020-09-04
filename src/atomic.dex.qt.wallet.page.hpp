@@ -70,6 +70,9 @@ namespace atomic_dex
         [[nodiscard]] QVariant get_rpc_send_data() const noexcept;
         void                   set_rpc_send_data(QVariant rpc_data) noexcept;
 
+        //! Callbacks
+        void on_tx_fetch_finished(const tx_fetch_finished&);
+
       signals:
         void currentTickerChanged();
         void tickerInfosChanged();

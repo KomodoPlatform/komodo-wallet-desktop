@@ -19,6 +19,7 @@ namespace atomic_dex
     wallet_page::wallet_page(entt::registry& registry, ag::ecs::system_manager& system_manager, QObject* parent) :
         QObject(parent), system(registry), m_system_manager(system_manager), m_transactions_mdl(new transactions_model(system_manager, this))
     {
+        this->dispatcher_.sink<tx_fetch_finished>().connect<&wallet_page::on_tx_fetch_finished>(*this);
     }
 
     void
@@ -43,6 +44,7 @@ namespace atomic_dex
         auto& mm2_system = m_system_manager.get_system<mm2>();
         if (mm2_system.set_current_ticker(ticker.toStdString()))
         {
+            m_transactions_mdl->reset();
             emit currentTickerChanged();
             mm2_system.fetch_infos_thread();
             refresh_ticker_infos();
@@ -322,5 +324,21 @@ namespace atomic_dex
     wallet_page::get_transactions_mdl() const noexcept
     {
         return m_transactions_mdl;
+    }
+
+    void
+    wallet_page::on_tx_fetch_finished(const tx_fetch_finished&)
+    {
+        std::error_code ec;
+        t_transactions transactions = m_system_manager.get_system<mm2>().get_tx_history(ec);
+        if (m_transactions_mdl->rowCount() == 0)
+        {
+            //! insert all transactions
+            m_transactions_mdl->init_transactions(transactions);
+        }
+        else
+        {
+            //! Update tx (only unconfirmed)
+        }
     }
 } // namespace atomic_dex

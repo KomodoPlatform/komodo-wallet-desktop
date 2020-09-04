@@ -99,5 +99,30 @@ namespace atomic_dex
         return {};
     }
 
+    void
+    atomic_dex::transactions_model::reset()
+    {
+        this->m_tx_registry.clear();
+        this->beginResetModel();
+        this->m_model_data.clear();
+        this->endResetModel();
+        emit lengthChanged();
+    }
+
+    void
+    transactions_model::init_transactions(const t_transactions& transactions)
+    {
+        for (auto&& tx: transactions) { m_tx_registry.emplace(tx.tx_hash); }
+        beginInsertRows(QModelIndex(), this->m_model_data.size(), this->m_model_data.size() + transactions.size() - 1);
+        m_model_data = transactions;
+        endInsertRows();
+        emit lengthChanged();
+    }
+
+    int
+    transactions_model::get_length() const noexcept
+    {
+        return rowCount();
+    }
 
 } // namespace atomic_dex
