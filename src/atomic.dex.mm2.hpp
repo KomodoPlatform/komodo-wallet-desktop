@@ -43,6 +43,7 @@ namespace atomic_dex
         std::string              total_amount;
         std::size_t              block_height;
         t_mm2_ec                 ec{dextop_error::success};
+        bool                     unconfirmed{false};
     };
 
     struct tx_state

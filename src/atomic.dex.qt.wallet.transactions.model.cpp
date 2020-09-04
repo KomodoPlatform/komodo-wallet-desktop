@@ -35,7 +35,8 @@ namespace atomic_dex
             {FromRole, "from"},
             {ToRole, "to"},
             {BlockheightRole, "blockheight"},
-            {ConfirmationsRole, "confirmations"}};
+            {ConfirmationsRole, "confirmations"},
+            {UnconfirmedRole, "unconfirmed"}};
     }
 
     int
@@ -92,6 +93,8 @@ namespace atomic_dex
             return static_cast<quint64>(item.block_height);
         case ConfirmationsRole:
             return static_cast<quint64>(item.confirmations);
+        case UnconfirmedRole:
+            return item.unconfirmed;
         }
         return {};
     }

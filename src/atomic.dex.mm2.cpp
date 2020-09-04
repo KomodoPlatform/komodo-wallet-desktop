@@ -1284,6 +1284,14 @@ namespace atomic_dex
                 .ec                = dextop_error::success,
             };
 
+            if (current_info.timestamp == 0)
+            {
+                using namespace std::chrono;
+                current_info.timestamp   = duration_cast<seconds>(system_clock::now().time_since_epoch()).count();
+                current_info.date        = to_human_date<std::chrono::seconds>(current_info.timestamp, "%e %b %Y, %H:%M");
+                current_info.unconfirmed = true;
+            }
+
             out.push_back(std::move(current_info));
         }
 
