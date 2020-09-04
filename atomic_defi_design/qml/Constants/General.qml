@@ -267,7 +267,7 @@ QtObject {
     }
 
     function txFeeTicker(info) {
-        return info.type === "ERC-20" ? "ETH" : info.ticker
+        return info.ticker_infos.type === "ERC-20" ? "ETH" : info.ticker
     }
 
 

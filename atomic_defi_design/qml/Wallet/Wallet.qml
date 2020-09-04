@@ -18,7 +18,7 @@ RowLayout {
     function onClickedSwap() {
         dashboard.current_page = General.idx_dashboard_exchange
         exchange.current_page = General.idx_exchange_trade
-        exchange.openTradeView(API.get().wallet_pg.ticker)
+        exchange.openTradeView(api_wallet_page.ticker)
     }
 
     function reset() {

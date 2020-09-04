@@ -65,7 +65,7 @@ Item {
                         spacing: 15
                         // Icon
                         DefaultImage {
-                            source: General.coinIcon(API.get().wallet_pg.ticker)
+                            source: General.coinIcon(api_wallet_page.ticker)
                             Layout.preferredHeight: 60
                             Layout.preferredWidth: Layout.preferredHeight
                         }
@@ -84,7 +84,7 @@ Item {
 
                             DefaultText {
                                 id: name_value
-                                text_value: API.get().settings_pg.empty_string + (General.formatCrypto("", current_ticker_infos.balance, API.get().wallet_pg.ticker))
+                                text_value: API.get().settings_pg.empty_string + (General.formatCrypto("", current_ticker_infos.balance, api_wallet_page.ticker))
                                 Layout.alignment: Qt.AlignLeft
                                 font.pixelSize: name.font.pixelSize
                                 privacy: true
@@ -317,7 +317,7 @@ Item {
 
                             DefaultText {
                                 id: left_text
-                                text_value: API.get().settings_pg.empty_string + (qsTr("%1 / %2 Price", "TICKER").arg(API.get().wallet_pg.ticker).arg(API.get().settings_pg.current_fiat) + " " + General.cex_icon)
+                                text_value: API.get().settings_pg.empty_string + (qsTr("%1 / %2 Price", "TICKER").arg(api_wallet_page.ticker).arg(API.get().settings_pg.current_fiat) + " " + General.cex_icon)
                                 font.pixelSize: Style.textSizeSmall3
 
                                 CexInfoTrigger {}
@@ -374,7 +374,7 @@ Item {
                         text_value: API.get().settings_pg.empty_string + (
                           current_ticker_infos.type === "ERC-20" ?
                           (qsTr("Scanning blocks for TX History...") + " " + loadingPercentage(current_ticker_infos.blocks_left)) :
-                          (qsTr("Syncing TX History...") + " " + loadingPercentage(API.get().wallet_pg.transactions_left))
+                          (qsTr("Syncing TX History...") + " " + loadingPercentage(api_wallet_page.transactions_left))
                         )
                         Layout.alignment: Qt.AlignHCenter
                     }
@@ -383,7 +383,7 @@ Item {
 
             // Separator line
             HorizontalLine {
-                visible: loading_tx.visible && API.get().wallet_pg.transactions.length > 0
+                visible: loading_tx.visible && api_wallet_page.transactions.length > 0
                 width: 720
                 Layout.alignment: Qt.AlignHCenter
             }
@@ -404,7 +404,7 @@ Item {
 
                     DefaultText {
                         anchors.centerIn: parent
-                        visible: current_ticker_infos.tx_state !== "InProgress" && API.get().wallet_pg.transactions.length === 0
+                        visible: current_ticker_infos.tx_state !== "InProgress" && api_wallet_page.transactions.length === 0
                         text_value: API.get().settings_pg.empty_string + (qsTr("No transactions"))
                         font.pixelSize: Style.textSize
                         color: Style.colorWhite4

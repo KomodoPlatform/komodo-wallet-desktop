@@ -28,7 +28,7 @@ DefaultModal {
         // Amount
         TextWithTitle {
             title: API.get().settings_pg.empty_string + (qsTr("Amount"))
-            text: API.get().settings_pg.empty_string + (General.formatCrypto(details.received, details.amount, API.get().wallet_pg.ticker, details.amount_fiat, API.get().settings_pg.current_currency))
+            text: API.get().settings_pg.empty_string + (General.formatCrypto(details.received, details.amount, api_wallet_page.ticker, details.amount_fiat, API.get().settings_pg.current_currency))
             value_color: details.received ? Style.colorGreen : Style.colorRed
             privacy: true
         }
@@ -36,7 +36,7 @@ DefaultModal {
         // Fees
         TextWithTitle {
             title: API.get().settings_pg.empty_string + (qsTr("Fees"))
-            text: API.get().settings_pg.empty_string + (General.formatCrypto("", details.fees, General.txFeeTicker(API.get().wallet_pg)))
+            text: API.get().settings_pg.empty_string + (General.formatCrypto("", details.fees, General.txFeeTicker(api_wallet_page)))
             privacy: true
         }
 
@@ -85,7 +85,7 @@ DefaultModal {
             PrimaryButton {
                 text: API.get().settings_pg.empty_string + (qsTr("View at Explorer"))
                 Layout.fillWidth: true
-                onClicked: General.viewTxAtExplorer(API.get().wallet_pg.ticker, details.tx_hash, false)
+                onClicked: General.viewTxAtExplorer(api_wallet_page.ticker, details.tx_hash, false)
             }
         }
     }
