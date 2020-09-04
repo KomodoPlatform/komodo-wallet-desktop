@@ -23,6 +23,17 @@ ColumnLayout {
     property int current_sort: sort_by_value
     property bool ascending: false
 
+    function applyCurrentSort() {
+        // Apply the sort
+        switch(current_sort) {
+            case sort_by_name: portfolio_coins.sort_by_name(ascending); break
+            case sort_by_value: portfolio_coins.sort_by_currency_balance(ascending); break
+            case sort_by_price: portfolio_coins.sort_by_currency_unit(ascending); break
+            case sort_by_trend:
+            case sort_by_change: portfolio_coins.sort_by_change_last24h(ascending); break
+        }
+    }
+
     function reset() {
         input_coin_filter.reset()
     }
@@ -120,6 +131,8 @@ ColumnLayout {
             function reset() {
                 if(text === "") resetCoinFilter()
                 else text = ""
+
+                applyCurrentSort()
             }
 
             anchors.horizontalCenter: add_coin_button.horizontalCenter

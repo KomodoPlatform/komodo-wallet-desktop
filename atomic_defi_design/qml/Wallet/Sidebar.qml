@@ -93,6 +93,8 @@ Item {
                             function onResetted() {
                                 if(input_coin_filter.text === "") resetCoinFilter()
                                 else input_coin_filter.text = ""
+
+                                portfolio_coins.sort_by_name(true)
                             }
                         }
 
