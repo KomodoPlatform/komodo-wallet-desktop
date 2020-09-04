@@ -72,8 +72,12 @@ namespace atomic_dex
     void
     portfolio_page::set_current_balance_fiat_all(QString current_fiat_all_balance) noexcept
     {
-        this->m_current_balance_all = std::move(current_fiat_all_balance);
-        emit onFiatBalanceAllChanged();
+        spdlog::trace("refresh current balance all");
+        if (this->m_current_balance_all != current_fiat_all_balance)
+        {
+            this->m_current_balance_all = std::move(current_fiat_all_balance);
+            emit onFiatBalanceAllChanged();
+        }
     }
 
     QString

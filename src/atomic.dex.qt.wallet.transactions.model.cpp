@@ -116,6 +116,7 @@ namespace atomic_dex
         beginInsertRows(QModelIndex(), this->m_model_data.size(), this->m_model_data.size() + transactions.size() - 1);
         m_model_data = transactions;
         endInsertRows();
+        spdlog::trace("transactions model size: {}", m_model_data.size());
         emit lengthChanged();
     }
 

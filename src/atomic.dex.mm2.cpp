@@ -351,9 +351,9 @@ namespace atomic_dex
     }
 
     auto
-    mm2::batch_balance_and_tx(bool is_a_reset, std::vector<std::string> tickers, bool is_during_enabling)
+    mm2::batch_balance_and_tx(bool is_a_reset, std::vector<std::string> tickers, bool is_during_enabling, bool only_tx)
     {
-        auto&& [batch_array, tickers_idx, erc_to_fetch] = prepare_batch_balance_and_tx();
+        auto&& [batch_array, tickers_idx, erc_to_fetch] = prepare_batch_balance_and_tx(only_tx);
         return ::mm2::api::async_rpc_batch_standalone(batch_array, m_mm2_client, m_token_source.get_token())
             .then([this, tickers_idx = tickers_idx, erc_to_fetch = erc_to_fetch, is_a_reset, tickers, is_during_enabling](web::http::http_response resp) {
                 try
@@ -393,7 +393,7 @@ namespace atomic_dex
     }
 
     std::tuple<nlohmann::json, std::vector<std::string>, std::vector<std::string>>
-    mm2::prepare_batch_balance_and_tx() const
+    mm2::prepare_batch_balance_and_tx(bool only_tx) const
     {
         const auto&              enabled_coins = get_enabled_coins();
         nlohmann::json           batch_array   = nlohmann::json::array();
@@ -411,17 +411,20 @@ namespace atomic_dex
         {
             erc_to_fetch.push_back(ticker);
         }
-        for (auto&& coin: enabled_coins)
+        if (not only_tx)
         {
-            if (is_pin_cfg_enabled() && m_balance_informations.find(coin.ticker) != m_balance_informations.end())
+            for (auto&& coin: enabled_coins)
             {
-                continue;
+                if (is_pin_cfg_enabled() && m_balance_informations.find(coin.ticker) != m_balance_informations.end())
+                {
+                    continue;
+                }
+                t_balance_request balance_request{.coin = coin.ticker};
+                nlohmann::json    j = ::mm2::api::template_request("my_balance");
+                ::mm2::api::to_json(j, balance_request);
+                batch_array.push_back(j);
+                tickers_idx.push_back(coin.ticker);
             }
-            t_balance_request balance_request{.coin = coin.ticker};
-            nlohmann::json    j = ::mm2::api::template_request("my_balance");
-            ::mm2::api::to_json(j, balance_request);
-            batch_array.push_back(j);
-            tickers_idx.push_back(coin.ticker);
         }
         return std::make_tuple(batch_array, tickers_idx, erc_to_fetch);
     }
@@ -716,11 +719,11 @@ namespace atomic_dex
     }
 
     void
-    mm2::fetch_infos_thread(bool is_a_refresh)
+    mm2::fetch_infos_thread(bool is_a_refresh, bool only_tx)
     {
         spdlog::info("{}: Fetching Infos l{}", __FUNCTION__, __LINE__);
 
-        batch_balance_and_tx(is_a_refresh);
+        batch_balance_and_tx(is_a_refresh, {}, false, only_tx);
     }
 
     void

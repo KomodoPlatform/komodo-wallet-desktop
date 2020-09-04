@@ -140,8 +140,8 @@ namespace atomic_dex
         nlohmann::json prepare_process_fees_and_current_orderbook();
 
         //! Batch balance / tx
-        std::tuple<nlohmann::json, std::vector<std::string>, std::vector<std::string>> prepare_batch_balance_and_tx() const;
-        auto batch_balance_and_tx(bool is_a_reset, std::vector<std::string> tickers = {}, bool is_during_enabling = false);
+        std::tuple<nlohmann::json, std::vector<std::string>, std::vector<std::string>> prepare_batch_balance_and_tx(bool only_tx = false) const;
+        auto batch_balance_and_tx(bool is_a_reset, std::vector<std::string> tickers = {}, bool is_during_enabling = false, bool only_tx = false);
         void process_balance_answer(const nlohmann::json& answer);
         void process_tx_answer(const nlohmann::json& answer_json);
         void process_tx_etherscan(const std::string& ticker, bool is_a_refresh);
@@ -176,7 +176,7 @@ namespace atomic_dex
         void spawn_mm2_instance(std::string wallet_name, std::string passphrase, bool with_pin_cfg = false);
 
         //! Refresh the current info (internally call process_balance and process_tx)
-        void fetch_infos_thread(bool is_a_fresh = true);
+        void fetch_infos_thread(bool is_a_fresh = true, bool only_tx = false);
 
         //! Refresh the swaps history
         void process_swaps();

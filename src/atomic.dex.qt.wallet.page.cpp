@@ -46,7 +46,7 @@ namespace atomic_dex
         {
             m_transactions_mdl->reset();
             emit currentTickerChanged();
-            mm2_system.fetch_infos_thread();
+            mm2_system.fetch_infos_thread(true, true);
             refresh_ticker_infos();
         }
     }
@@ -181,6 +181,7 @@ namespace atomic_dex
     void
     wallet_page::refresh_ticker_infos() noexcept
     {
+        spdlog::trace("refresh ticker infos");
         emit tickerInfosChanged();
     }
 
@@ -330,7 +331,7 @@ namespace atomic_dex
     wallet_page::on_tx_fetch_finished(const tx_fetch_finished&)
     {
         std::error_code ec;
-        t_transactions transactions = m_system_manager.get_system<mm2>().get_tx_history(ec);
+        t_transactions  transactions = m_system_manager.get_system<mm2>().get_tx_history(ec);
         if (m_transactions_mdl->rowCount() == 0)
         {
             //! insert all transactions
