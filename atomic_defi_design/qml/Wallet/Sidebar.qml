@@ -135,8 +135,8 @@ Item {
                         height: 44
                         radius: Style.rectangleCornerRadius
 
-                        start_color: API.get().wallet_pg.ticker === ticker ? Style.colorCoinListHighlightGradient1 : mouse_area.containsMouse ? Style.colorCoinListHighlightGradient1 : "transparent"
-                        end_color: API.get().wallet_pg.ticker === ticker ? Style.colorCoinListHighlightGradient2 : mouse_area.containsMouse ? Style.colorWhite8 : "transparent"
+                        start_color: api_wallet_page.ticker === ticker ? Style.colorCoinListHighlightGradient1 : mouse_area.containsMouse ? Style.colorCoinListHighlightGradient1 : "transparent"
+                        end_color: api_wallet_page.ticker === ticker ? Style.colorCoinListHighlightGradient2 : mouse_area.containsMouse ? Style.colorWhite8 : "transparent"
 
                         // Click area
                         MouseArea {
@@ -147,7 +147,7 @@ Item {
                             acceptedButtons: Qt.LeftButton | Qt.RightButton
                             onClicked: {
                                 if (mouse.button === Qt.RightButton) context_menu.popup()
-                                else API.get().wallet_pg.ticker = ticker
+                                else api_wallet_page.ticker = ticker
 
                                 main.send_modal.reset()
                             }

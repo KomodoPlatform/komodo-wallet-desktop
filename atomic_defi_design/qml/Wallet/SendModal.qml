@@ -383,7 +383,7 @@ DefaultModal {
             // Fees
             TextWithTitle {
                 title: API.get().settings_pg.empty_string + (qsTr("Fees"))
-                text: API.get().settings_pg.empty_string + (General.formatCrypto("", send_result.withdraw_answer.fee_details.amount, General.txFeeTicker(current_ticker_infos)))
+                text: API.get().settings_pg.empty_string + (General.formatCrypto("", send_result.withdraw_answer.fee_details.amount, General.txFeeTicker(API.get().wallet_pg)))
             }
 
             // Date

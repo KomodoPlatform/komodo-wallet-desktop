@@ -54,11 +54,11 @@ DefaultModal {
     // Local
     readonly property bool can_confirm: positive_claim_amount && has_eligible_utxo && !is_broadcast_busy
 
-    readonly property bool can_claim: current_ticker_infos.is_claimable && !API.get().wallet_pg.is_claiming_busy
-    readonly property var claim_rpc_result: API.get().wallet_pg.claiming_rpc_data
+    readonly property bool can_claim: current_ticker_infos.is_claimable && !api_wallet_page.is_claiming_busy
+    readonly property var claim_rpc_result: api_wallet_page.claiming_rpc_data
 
-    readonly property bool is_broadcast_busy: API.get().wallet_pg.is_broadcast_busy
-    readonly property string broadcast_result: API.get().wallet_pg.broadcast_rpc_data
+    readonly property bool is_broadcast_busy: api_wallet_page.is_broadcast_busy
+    readonly property string broadcast_result: api_wallet_page.broadcast_rpc_data
 
     onClaim_rpc_resultChanged: {
         prepare_claim_rewards_result = General.clone(claim_rpc_result)
@@ -88,11 +88,11 @@ DefaultModal {
         stack_layout.currentIndex = 0
         reset()
 
-        API.get().wallet_pg.claim_rewards()
+        api_wallet_page.claim_rewards()
     }
 
     function claimRewards() {
-        API.get().wallet_pg.broadcast(prepare_claim_rewards_result.withdraw_answer.tx_hex, true, false, "0")
+        api_wallet_page.broadcast(prepare_claim_rewards_result.withdraw_answer.tx_hex, true, false, "0")
     }
 
     function reset() {
@@ -112,7 +112,7 @@ DefaultModal {
             Layout.alignment: Qt.AlignHCenter
 
             ModalHeader {
-                title: API.get().settings_pg.empty_string + (qsTr("Claim your %1 reward?", "TICKER").arg(API.get().wallet_pg.ticker))
+                title: API.get().settings_pg.empty_string + (qsTr("Claim your %1 reward?", "TICKER").arg(api_wallet_page.ticker))
             }
 
             DefaultBusyIndicator {
@@ -131,7 +131,7 @@ DefaultModal {
                                      !has_eligible_utxo ? ("❌ " + qsTr("No UTXOs eligible for claiming")) :
                                      !positive_claim_amount ? ("❌ " + qsTr("Transaction fee is higher than the reward!")) :
 
-                                     qsTr("You will receive %1", "AMT TICKER").arg(General.formatCrypto("", prepare_claim_rewards_result.withdraw_answer.my_balance_change, API.get().wallet_pg.ticker)))
+                                     qsTr("You will receive %1", "AMT TICKER").arg(General.formatCrypto("", prepare_claim_rewards_result.withdraw_answer.my_balance_change, api_wallet_page.ticker)))
                 }
 
                 PrimaryButton {
