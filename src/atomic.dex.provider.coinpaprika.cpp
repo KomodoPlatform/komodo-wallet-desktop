@@ -50,7 +50,7 @@ namespace
                     if (idx != nullptr && dispatcher != nullptr)
                     {
                         auto cur = idx->fetch_add(1) + 1;
-                        spdlog::trace("cur: {}, target size: {}, remaining before adding in the model: {}", cur, target_size, target_size - cur);
+                        //spdlog::trace("cur: {}, target size: {}, remaining before adding in the model: {}", cur, target_size, target_size - cur);
                         if (cur == target_size)
                         {
                             dispatcher->trigger<atomic_dex::coin_fully_initialized>(tickers);
@@ -97,7 +97,7 @@ namespace
                     if (idx != nullptr && dispatcher != nullptr)
                     {
                         auto cur = idx->fetch_add(1) + 1;
-                        spdlog::trace("cur: {}, target size: {}, remaining before adding in the model: {}", cur, target_size, target_size - cur);
+                        //spdlog::trace("cur: {}, target size: {}, remaining before adding in the model: {}", cur, target_size, target_size - cur);
                         if (cur == target_size)
                         {
                             dispatcher->trigger<atomic_dex::coin_fully_initialized>(tickers);
@@ -119,7 +119,7 @@ namespace
             if (idx != nullptr && dispatcher != nullptr)
             {
                 auto cur = idx->fetch_add(1) + 1;
-                spdlog::trace("cur: {}, target size: {}, remaining before adding in the model: {}", cur, target_size, target_size - cur);
+                //spdlog::trace("cur: {}, target size: {}, remaining before adding in the model: {}", cur, target_size, target_size - cur);
                 if (cur == target_size)
                 {
                     dispatcher->trigger<atomic_dex::coin_fully_initialized>(tickers);
@@ -154,7 +154,7 @@ namespace
                         if (not answer.price.empty())
                         {
                             rate_providers.insert_or_assign(current_coin.ticker, answer.price);
-                            dispatcher->trigger<fiat_rate_updated>(current_coin.ticker);
+                            // dispatcher->trigger<fiat_rate_updated>(current_coin.ticker);
                         }
                     }
                     else
@@ -162,10 +162,21 @@ namespace
                     if (idx != nullptr && dispatcher != nullptr)
                     {
                         auto cur = idx->fetch_add(1) + 1;
-                        spdlog::trace("cur: {}, target size: {}, remaining before adding in the model: {}", cur, target_size, target_size - cur);
-                        if (cur == target_size)
+                        if (not tickers.empty()) ///< Initialization
                         {
-                            dispatcher->trigger<atomic_dex::coin_fully_initialized>(tickers);
+                            //spdlog::trace("cur: {}, target size: {}, remaining before adding in the model: {}", cur, target_size, target_size - cur);
+                            if (cur == target_size)
+                            {
+                                dispatcher->trigger<atomic_dex::coin_fully_initialized>(tickers);
+                            }
+                        }
+                        else ///< update
+                        {
+                            //spdlog::trace("cur: {}, target size: {}, remaining before updating rates: {}", cur, target_size, target_size - cur);
+                            if (cur == target_size)
+                            {
+                                dispatcher->trigger<fiat_rate_updated>("");
+                            }
                         }
                     }
                 }
@@ -238,15 +249,22 @@ namespace atomic_dex
 
                 t_coins coins = m_mm2_instance.get_enabled_coins();
 
+                auto idx{std::make_shared<std::atomic_uint16_t>(0)};
+                auto target_size = coins.size();
                 for (auto&& current_coin: coins)
                 {
                     if (current_coin.coinpaprika_id == "test-coin")
                     {
+                        std::uint16_t cur = idx->fetch_add(1) + 1;
+                        if (cur == target_size)
+                        {
+                            this->dispatcher_.trigger<fiat_rate_updated>("");
+                        }
                         continue;
                     }
                     process_ticker_infos(current_coin, this->m_ticker_infos_registry);
                     process_ticker_historical(current_coin, this->m_ticker_historical_registry);
-                    process_provider(current_coin, m_usd_rate_providers, "usd-us-dollars", nullptr, &dispatcher_);
+                    process_provider(current_coin, m_usd_rate_providers, "usd-us-dollars", idx, &dispatcher_, target_size, {});
                 }
             } while (not m_provider_thread_timer.wait_for(120s));
         });
@@ -289,7 +307,7 @@ namespace atomic_dex
             else
             {
                 std::uint16_t cur = idx->fetch_add(g_pending_init_tasks_limit) + g_pending_init_tasks_limit;
-                spdlog::trace("cur: {}, target size: {}, remaining before adding in the model: {}", cur, target_size, target_size - cur);
+                //spdlog::trace("cur: {}, target size: {}, remaining before adding in the model: {}", cur, target_size, target_size - cur);
                 if (cur == target_size)
                 {
                     this->dispatcher_.trigger<coin_fully_initialized>(evt.tickers);

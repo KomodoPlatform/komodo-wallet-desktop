@@ -30,10 +30,14 @@ namespace atomic_dex
     using refresh_update_status         = entt::tag<"gui_refresh_update_status"_hs>;
     using process_orders_finished       = entt::tag<"gui_process_orders_finished"_hs>;
     using process_swaps_finished        = entt::tag<"gui_process_swaps_finished"_hs>;
-    using update_portfolio_values       = entt::tag<"update_portfolio_values"_hs>;
+    //using update_portfolio_values       = entt::tag<"update_portfolio_values"_hs>;
     using refresh_all_portfolio_balance = entt::tag<"refresh_all_portfolio_balance"_hs>;
     using band_oracle_refreshed         = entt::tag<"band_oracle_refreshed"_hs>;
 
+    struct update_portfolio_values
+    {
+        bool with_update_model{true};
+    };
     struct process_orderbook_finished
     {
         bool is_a_reset;

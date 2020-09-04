@@ -83,10 +83,13 @@ namespace atomic_dex
     }
 
     void
-    portfolio_page::on_update_portfolio_values_event(const update_portfolio_values&) noexcept
+    portfolio_page::on_update_portfolio_values_event(const update_portfolio_values& evt) noexcept
     {
         spdlog::trace("refreshing portfolio values");
-        m_portfolio_mdl->update_currency_values();
+        if (evt.with_update_model)
+        {
+            m_portfolio_mdl->update_currency_values();
+        }
         std::error_code ec;
         const auto&     config           = m_system_manager.get_system<settings_page>().get_cfg();
         const auto&     price_service    = m_system_manager.get_system<global_price_service>();

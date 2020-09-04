@@ -116,7 +116,12 @@ namespace atomic_dex
         tf::Taskflow       taskflow;
         for (auto&& coin: coins)
         {
-            spdlog::trace("trying updating currency values of: {}", coin.ticker);
+            //spdlog::trace("trying updating currency values of: {}", coin.ticker);
+            if (m_ticker_registry.find(coin.ticker) == m_ticker_registry.end())
+            {
+                spdlog::debug("ticker: {} not inserted yet in the model, skipping", coin.ticker);
+                continue;
+            }
             auto update_functor = [coin, &paprika, &mm2_system, &price_service, currency, this]() {
                 const std::string& ticker = coin.ticker;
                 if (const auto res = this->match(this->index(0, 0), TickerRole, QString::fromStdString(ticker)); not res.isEmpty())
@@ -133,7 +138,7 @@ namespace atomic_dex
                     update_value(BalanceRole, balance, idx, *this);
                     const QString display = QString::fromStdString(coin.ticker) + " (" + balance + ")";
                     update_value(Display, display, idx, *this);
-                    spdlog::trace("updated currency values of: {}", ticker);
+                    //spdlog::trace("updated currency values of: {}", ticker);
                 }
             };
             taskflow.emplace(update_functor);
@@ -149,9 +154,9 @@ namespace atomic_dex
             if (m_ticker_registry.find(ticker) == m_ticker_registry.end())
             {
                 spdlog::debug("ticker: {} not inserted yet in the model, skipping", ticker);
-                return;
+                continue;
             }
-            spdlog::trace("trying updating balance values of: {}", ticker);
+            //spdlog::trace("trying updating balance values of: {}", ticker);
             if (const auto res = this->match(this->index(0, 0), TickerRole, QString::fromStdString(ticker)); not res.isEmpty())
             {
                 const auto&        mm2_system    = this->m_system_manager.get_system<mm2>();
@@ -171,7 +176,7 @@ namespace atomic_dex
                 update_value(Display, display, idx, *this);
                 QString change24_h = retrieve_change_24h(paprika, coin, *m_config);
                 update_value(Change24H, change24_h, idx, *this);
-                spdlog::trace("updated balance values of: {}", ticker);
+                //spdlog::trace("updated balance values of: {}", ticker);
                 if (ticker == mm2_system.get_current_ticker())
                 {
                     m_system_manager.get_system<wallet_page>().refresh_ticker_infos();

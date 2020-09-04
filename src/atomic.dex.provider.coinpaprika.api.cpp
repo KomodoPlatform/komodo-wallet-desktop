@@ -96,7 +96,7 @@ namespace atomic_dex
             web::http::http_request req;
             req.set_method(web::http::methods::GET);
             auto&& [ticker_id, quotes] = request;
-            auto url                   = "tickers/"s + ticker_id + "?quotes="s;
+            auto url                   = "/tickers/"s + ticker_id + "?quotes="s;
             for (auto&& [cur_quote, idx]: zip(quotes, ints(0u, ranges::unreachable)))
             {
                 url.append(cur_quote);
