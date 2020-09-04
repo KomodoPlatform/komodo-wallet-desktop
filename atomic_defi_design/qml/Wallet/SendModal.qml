@@ -22,11 +22,11 @@ DefaultModal {
     property var send_result: default_send_result
 
 
-    readonly property bool is_send_busy: API.get().wallet_pg.is_send_busy
-    readonly property var send_rpc_result: API.get().wallet_pg.send_rpc_data
+    readonly property bool is_send_busy: api_wallet_page.is_send_busy
+    readonly property var send_rpc_result: api_wallet_page.send_rpc_data
 
-    readonly property bool is_broadcast_busy: API.get().wallet_pg.is_broadcast_busy
-    readonly property string broadcast_result: API.get().wallet_pg.broadcast_rpc_data
+    readonly property bool is_broadcast_busy: api_wallet_page.is_broadcast_busy
+    readonly property string broadcast_result: api_wallet_page.broadcast_rpc_data
     property bool async_param_max: false
 
     onSend_rpc_resultChanged: {
@@ -79,11 +79,11 @@ DefaultModal {
         }
 
         console.log("Passing fees info: ", JSON.stringify(fees_info))
-        API.get().wallet_pg.send(address, amount, max, with_fees, fees_info)
+        api_wallet_page.send(address, amount, max, with_fees, fees_info)
     }
 
     function sendCoin() {
-        API.get().wallet_pg.broadcast(send_result.withdraw_answer.tx_hex, false, send_result.withdraw_answer.max, input_amount.field.text)
+        api_wallet_page.broadcast(send_result.withdraw_answer.tx_hex, false, send_result.withdraw_answer.max, input_amount.field.text)
     }
 
     function isERC20() {
@@ -131,7 +131,7 @@ DefaultModal {
     function hasFunds() {
         if(input_max_amount.checked) return true
 
-        if(!General.hasEnoughFunds(true, API.get().wallet_pg.ticker, "", "", input_amount.field.text))
+        if(!General.hasEnoughFunds(true, api_wallet_page.ticker, "", "", input_amount.field.text))
             return false
 
         if(custom_fees_switch.checked) {
@@ -141,7 +141,7 @@ DefaultModal {
                 const gas_price = parseFloat(input_custom_fees_gas_price.field.text)
                 const fee_eth = (gas_limit * gas_price)/ether
 
-                if(API.get().wallet_pg.ticker === "ETH") {
+                if(api_wallet_page.ticker === "ETH") {
                     const amount = parseFloat(input_amount.field.text)
                     const total_needed_eth = amount + fee_eth
                     if(!General.hasEnoughFunds(true, "ETH", "", "", total_needed_eth.toString()))
@@ -155,7 +155,7 @@ DefaultModal {
             else {
                 if(feeIsHigherThanAmount()) return false
 
-                if(!General.hasEnoughFunds(true, API.get().wallet_pg.ticker, "", "", input_custom_fees.field.text))
+                if(!General.hasEnoughFunds(true, api_wallet_page.ticker, "", "", input_custom_fees.field.text))
                     return false
             }
         }
@@ -284,7 +284,7 @@ DefaultModal {
                     visible: !isERC20()
 
                     id: input_custom_fees
-                    title: API.get().settings_pg.empty_string + (qsTr("Custom Fee") + " [" + API.get().wallet_pg.ticker + "]")
+                    title: API.get().settings_pg.empty_string + (qsTr("Custom Fee") + " [" + api_wallet_page.ticker + "]")
                     field.placeholderText: API.get().settings_pg.empty_string + (qsTr("Enter the custom fee"))
                     field.enabled: !root.is_send_busy
                 }
@@ -330,7 +330,7 @@ DefaultModal {
 
                 color: Style.colorRed
 
-                text_value: API.get().settings_pg.empty_string + (qsTr("Not enough funds.") + "\n" + qsTr("You have %1", "AMT TICKER").arg(General.formatCrypto("", API.get().get_balance(API.get().wallet_pg.ticker), API.get().wallet_pg.ticker)))
+                text_value: API.get().settings_pg.empty_string + (qsTr("Not enough funds.") + "\n" + qsTr("You have %1", "AMT TICKER").arg(General.formatCrypto("", API.get().get_balance(api_wallet_page.ticker), api_wallet_page.ticker)))
             }
 
             DefaultText {
@@ -377,13 +377,13 @@ DefaultModal {
             // Amount
             TextWithTitle {
                 title: API.get().settings_pg.empty_string + (qsTr("Amount"))
-                text: API.get().settings_pg.empty_string + (General.formatCrypto("", input_amount.field.text, API.get().wallet_pg.ticker))
+                text: API.get().settings_pg.empty_string + (General.formatCrypto("", input_amount.field.text, api_wallet_page.ticker))
             }
 
             // Fees
             TextWithTitle {
                 title: API.get().settings_pg.empty_string + (qsTr("Fees"))
-                text: API.get().settings_pg.empty_string + (General.formatCrypto("", send_result.withdraw_answer.fee_details.amount, General.txFeeTicker(API.get().wallet_pg)))
+                text: API.get().settings_pg.empty_string + (General.formatCrypto("", send_result.withdraw_answer.fee_details.amount, General.txFeeTicker(api_wallet_page)))
             }
 
             // Date

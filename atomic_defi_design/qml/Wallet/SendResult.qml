@@ -27,13 +27,13 @@ ColumnLayout {
     // Amount
     TextWithTitle {
         title: API.get().settings_pg.empty_string + (qsTr("Amount"))
-        text: API.get().settings_pg.empty_string + (General.formatCrypto("", custom_amount !== "" ? custom_amount : result.balance_change, API.get().wallet_pg.ticker))
+        text: API.get().settings_pg.empty_string + (General.formatCrypto("", custom_amount !== "" ? custom_amount : result.balance_change, api_wallet_page.ticker))
     }
 
     // Fees
     TextWithTitle {
         title: API.get().settings_pg.empty_string + (qsTr("Fees"))
-        text: API.get().settings_pg.empty_string + (General.formatCrypto("", result.fees, General.txFeeTicker(API.get().wallet_pg)))
+        text: API.get().settings_pg.empty_string + (General.formatCrypto("", result.fees, General.txFeeTicker(api_wallet_page)))
     }
 
     // Date
@@ -58,7 +58,7 @@ ColumnLayout {
         PrimaryButton {
             text: API.get().settings_pg.empty_string + (qsTr("View at Explorer"))
             Layout.fillWidth: true
-            onClicked: General.viewTxAtExplorer(API.get().wallet_pg.ticker, tx_hash.text)
+            onClicked: General.viewTxAtExplorer(api_wallet_page.ticker, tx_hash.text)
         }
     }
 }
