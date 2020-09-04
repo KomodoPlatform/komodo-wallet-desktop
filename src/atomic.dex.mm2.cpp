@@ -1319,7 +1319,7 @@ namespace atomic_dex
         }
 
         t_float_50 result = t_float_50(answer_r.balance) * m_balance_factor;
-        answer_r.balance  = result.str();
+        answer_r.balance  = result.str(8, std::ios_base::fixed);
         m_balance_informations.insert_or_assign(answer_r.coin, answer_r);
     }
 
