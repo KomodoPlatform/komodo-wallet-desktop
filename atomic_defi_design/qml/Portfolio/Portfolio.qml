@@ -132,7 +132,7 @@ ColumnLayout {
                 if(text === "") resetCoinFilter()
                 else text = ""
 
-                applyCurrentSort()
+                //applyCurrentSort()
             }
 
             anchors.horizontalCenter: add_coin_button.horizontalCenter
