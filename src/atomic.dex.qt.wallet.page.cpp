@@ -17,7 +17,7 @@
 namespace atomic_dex
 {
     wallet_page::wallet_page(entt::registry& registry, ag::ecs::system_manager& system_manager, QObject* parent) :
-        QObject(parent), system(registry), m_system_manager(system_manager), m_transactions_mdl(new transactions_model(this))
+        QObject(parent), system(registry), m_system_manager(system_manager), m_transactions_mdl(new transactions_model(system_manager, this))
     {
     }
 

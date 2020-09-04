@@ -11,6 +11,7 @@ namespace atomic_dex
     {
         Q_OBJECT
 
+        ag::ecs::system_manager& m_system_manager;
         t_transactions m_model_data;
 
       public:
@@ -29,7 +30,7 @@ namespace atomic_dex
             ConfirmationsRole
         };
 
-        transactions_model(QObject* parent = nullptr) noexcept;
+        transactions_model(ag::ecs::system_manager& system_manager, QObject* parent = nullptr) noexcept;
         ~transactions_model() noexcept final;
 
         //! Override
