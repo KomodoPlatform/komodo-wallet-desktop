@@ -248,13 +248,7 @@ namespace atomic_dex
                     get_wallet_page()->refresh_ticker_infos();
                     this->set_status("complete");
                 }
-                std::error_code ec;
-                const auto&     config           = system_manager_.get_system<settings_page>().get_cfg();
-                auto            fiat_balance_std = price_service.get_price_in_fiat_all(config.current_currency, ec);
-                if (!ec)
-                {
-                    get_portfolio_page()->set_current_balance_fiat_all(QString::fromStdString(fiat_balance_std));
-                }
+                this->dispatcher_.trigger<update_portfolio_values>();
             }
         }
 
@@ -878,13 +872,7 @@ namespace atomic_dex
     {
         spdlog::trace("{} l{}", __FUNCTION__, __LINE__);
         std::error_code ec;
-        const auto&     config           = system_manager_.get_system<settings_page>().get_cfg();
-        const auto&     price_service    = system_manager_.get_system<global_price_service>();
-        auto            fiat_balance_std = price_service.get_price_in_fiat_all(config.current_currency, ec);
-        if (!ec)
-        {
-            get_portfolio_page()->set_current_balance_fiat_all(QString::fromStdString(fiat_balance_std));
-        }
+        this->dispatcher_.trigger<update_portfolio_values>();
     }
 
     void
