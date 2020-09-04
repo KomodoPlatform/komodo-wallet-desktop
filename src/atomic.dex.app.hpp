@@ -72,7 +72,6 @@ namespace atomic_dex
         Q_PROPERTY(wallet_page* wallet_pg READ get_wallet_page NOTIFY walletPageChanged)
         Q_PROPERTY(settings_page* settings_pg READ get_settings_page NOTIFY settingsPageChanged)
         Q_PROPERTY(QString wallet_default_name READ get_wallet_default_name WRITE set_wallet_default_name NOTIFY onWalletDefaultNameChanged)
-        Q_PROPERTY(QString balance_fiat_all READ get_balance_fiat_all WRITE set_current_balance_fiat_all NOTIFY onFiatBalanceAllChanged)
         Q_PROPERTY(QString initial_loading_status READ get_status WRITE set_status NOTIFY onStatusChanged)
 
         //! Private function
@@ -136,12 +135,9 @@ namespace atomic_dex
         void on_process_swaps_finished_event(const process_swaps_finished&) noexcept;
 
         //! Properties Getter
-        // static const QString&      get_empty_string();
         mm2&       get_mm2() noexcept;
         const mm2& get_mm2() const noexcept;
-        // coinpaprika_provider&      get_paprika() noexcept;
         entt::dispatcher& get_dispatcher() noexcept;
-        // QObject*                   get_current_coin_info() const noexcept;
         addressbook_model*         get_addressbook() const noexcept;
         portfolio_page*            get_portfolio_page() const noexcept;
         wallet_page*               get_wallet_page() const noexcept;
@@ -152,7 +148,6 @@ namespace atomic_dex
         internet_service_checker*  get_internet_checker() const noexcept;
         QVariantList               get_enabled_coins() const noexcept;
         QVariantList               get_enableable_coins() const noexcept;
-        QString                    get_balance_fiat_all() const noexcept;
         QString                    get_wallet_default_name() const noexcept;
         QString                    get_status() const noexcept;
         QVariant                   get_update_status() const noexcept;
@@ -160,7 +155,6 @@ namespace atomic_dex
 
         //! Properties Setter
         void set_wallet_default_name(QString wallet_default_name) noexcept;
-        void set_current_balance_fiat_all(QString current_fiat_all_balance) noexcept;
         void set_status(QString status) noexcept;
         void set_qt_app(std::shared_ptr<QApplication> app) noexcept;
 
@@ -220,7 +214,6 @@ namespace atomic_dex
         void enabledCoinsChanged();
         void enableableCoinsChanged();
         void coinInfoChanged();
-        void onFiatBalanceAllChanged();
         void onStatusChanged();
         void onWalletDefaultNameChanged();
         void myOrdersUpdated();

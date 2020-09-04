@@ -84,7 +84,7 @@ ColumnLayout {
             DefaultText {
                 Layout.alignment: Qt.AlignHCenter
                 Layout.bottomMargin: 30
-                text_value: API.get().settings_pg.empty_string + (General.formatFiat("", API.get().balance_fiat_all, API.get().settings_pg.current_currency))
+                text_value: API.get().settings_pg.empty_string + (General.formatFiat("", API.get().portfolio_pg.balance_fiat_all, API.get().settings_pg.current_currency))
                 font.pixelSize: Style.textSize4
                 privacy: true
             }

@@ -848,40 +848,6 @@ namespace atomic_dex
         return m_balance_informations.at(ticker).balance;
     }
 
-    t_withdraw_answer
-    mm2::withdraw(t_withdraw_request&& request, t_mm2_ec& ec) noexcept
-    {
-        auto result = rpc_withdraw(std::move(request), m_mm2_client);
-        if (result.error.has_value())
-        {
-            ec = dextop_error::rpc_withdraw_error;
-        }
-        if (result.raw_result.find("Not sufficient balance. Couldn't collect enough value from utxos") != std::string::npos)
-        {
-            result.error = "Not enough funds to cover txfee, please reduce amount.";
-        }
-        return result;
-    }
-
-    t_broadcast_answer
-    mm2::broadcast(t_broadcast_request&& request, t_mm2_ec& ec) noexcept
-    {
-        std::string coin   = request.coin;
-        auto        result = rpc_send_raw_transaction(std::move(request), m_mm2_client);
-        if (result.rpc_result_code == -1)
-        {
-            ec = dextop_error::rpc_send_raw_transaction_error;
-        }
-        else
-        {
-            if (this->get_coin_info(coin).is_erc_20)
-            {
-                result.tx_hash = "0x" + result.tx_hash;
-            }
-        }
-        return result;
-    }
-
     void
     mm2::batch_fetch_orders_and_swap()
     {

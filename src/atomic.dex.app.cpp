@@ -147,10 +147,10 @@ namespace atomic_dex
             coins_std.reserve(coins.size());
             for (auto&& coin: coins) { coins_std.push_back(coin.toStdString()); }
             get_mm2().disable_multiple_coins(coins_std);
-            /*if (m_coin_info->get_ticker() == coins[0] && m_kmd_fully_enabled)
+            if (QString::fromStdString(get_mm2().get_current_ticker()) == coins[0] && m_kmd_fully_enabled)
             {
-                m_coin_info->set_ticker("KMD");
-            }*/
+                system_manager_.get_system<wallet_page>().set_current_ticker("KMD");
+            }
         }
 
         return false;
@@ -253,7 +253,7 @@ namespace atomic_dex
                 auto            fiat_balance_std = price_service.get_price_in_fiat_all(config.current_currency, ec);
                 if (!ec)
                 {
-                    this->set_current_balance_fiat_all(QString::fromStdString(fiat_balance_std));
+                    get_portfolio_page()->set_current_balance_fiat_all(QString::fromStdString(fiat_balance_std));
                 }
             }
         }
@@ -309,27 +309,6 @@ namespace atomic_dex
     }
 
     /*void
-    application::refresh_fiat_balance(const mm2& mm2, const global_price_service& price_service)
-    {
-        std::error_code ec;
-        QString         target_balance = QString::fromStdString(mm2.my_balance(m_coin_info->get_ticker().toStdString(), ec));
-        m_coin_info->set_balance(target_balance);
-
-        const auto& config = system_manager_.get_system<settings_page>().get_cfg();
-        if (std::any_of(begin(config.possible_currencies), end(config.possible_currencies), [&config](const std::string& cur_fiat) {
-                return cur_fiat == config.current_currency;
-            }))
-        {
-            ec          = std::error_code();
-            auto amount = QString::fromStdString(price_service.get_price_in_fiat(config.current_currency, m_coin_info->get_ticker().toStdString(), ec));
-            if (!ec)
-            {
-                m_coin_info->set_fiat_amount(amount);
-            }
-        }
-    }*/
-
-    /*void
     application::refresh_transactions(const mm2& mm2)
     {
         const auto      ticker = m_coin_info->get_ticker().toStdString();
@@ -364,35 +343,10 @@ namespace atomic_dex
         return this->system_manager_.get_system<mm2>();
     }
 
-    /*    coinpaprika_provider&
-        application::get_paprika() noexcept
-        {
-            return this->system_manager_.get_system<coinpaprika_provider>();
-        }*/
-
     entt::dispatcher&
     application::get_dispatcher() noexcept
     {
         return this->dispatcher_;
-    }
-
-    /*QObject*
-    atomic_dex::application::get_current_coin_info() const noexcept
-    {
-        return m_coin_info;
-    }*/
-
-    QString
-    atomic_dex::application::get_balance_fiat_all() const noexcept
-    {
-        return m_current_balance_all;
-    }
-
-    void
-    atomic_dex::application::set_current_balance_fiat_all(QString current_fiat_all_balance) noexcept
-    {
-        this->m_current_balance_all = std::move(current_fiat_all_balance);
-        emit onFiatBalanceAllChanged();
     }
 
     application::application(QObject* pParent) noexcept :
@@ -409,7 +363,7 @@ namespace atomic_dex
         //! MM2 system need to be created before the GUI and give the instance to the gui
         auto& mm2_system           = system_manager_.create_system<mm2>();
         auto& settings_page_system = system_manager_.create_system<settings_page>(m_app, this);
-        auto& portfolio_system     = system_manager_.create_system<portfolio_page>(system_manager_, dispatcher_, this);
+        auto& portfolio_system     = system_manager_.create_system<portfolio_page>(system_manager_, this);
         portfolio_system.get_portfolio()->set_cfg(settings_page_system.get_cfg());
 
         system_manager_.create_system<wallet_page>(system_manager_, this);
@@ -862,12 +816,6 @@ namespace atomic_dex
         return to_qt_binding(get_mm2().get_all_coins());
     }
 
-    /*QString
-    application::get_paprika_id_from_ticker(const QString& ticker) const
-    {
-        return QString::fromStdString(get_mm2().get_coin_info(ticker.toStdString()).coinpaprika_id);
-    }*/
-
     QString
     application::get_version() noexcept
     {
@@ -935,7 +883,7 @@ namespace atomic_dex
         auto            fiat_balance_std = price_service.get_price_in_fiat_all(config.current_currency, ec);
         if (!ec)
         {
-            this->set_current_balance_fiat_all(QString::fromStdString(fiat_balance_std));
+            get_portfolio_page()->set_current_balance_fiat_all(QString::fromStdString(fiat_balance_std));
         }
     }
 
@@ -1105,35 +1053,6 @@ namespace atomic_dex
             emit enableableCoinsChanged();
         }
     }
-
-    /*void
-    application::process_refresh_current_ticker_infos()
-    {
-        auto& mm2           = get_mm2();
-        auto& paprika       = system_manager_.get_system<coinpaprika_provider>();
-        auto& price_service = system_manager_.get_system<global_price_service>();
-
-        refresh_transactions(mm2);
-        refresh_fiat_balance(mm2, price_service);
-        refresh_address(mm2);
-        {
-            const auto  ticker = m_coin_info->get_ticker().toStdString();
-            const auto& info   = get_mm2().get_coin_info(ticker);
-            m_coin_info->set_name(QString::fromStdString(info.name));
-            m_coin_info->set_claimable(info.is_claimable);
-            m_coin_info->set_type(QString::fromStdString(info.type));
-            m_coin_info->set_paprika_id(QString::fromStdString(info.coinpaprika_id));
-            m_coin_info->set_minimal_balance_for_asking_rewards(QString::fromStdString(info.minimal_claim_amount));
-            m_coin_info->set_explorer_url(QString::fromStdString(info.explorer_url[0]));
-            std::error_code ec;
-            const auto&     config = system_manager_.get_system<settings_page>().get_cfg();
-            auto            price  = QString::fromStdString(price_service.get_rate_conversion(config.current_currency, ticker, ec, true));
-            spdlog::trace("price to be set: {}", price.toStdString());
-            m_coin_info->set_price(price);
-            m_coin_info->set_change24h(retrieve_change_24h(paprika, info, config));
-            m_coin_info->set_trend_7d(nlohmann_json_array_to_qt_json_array(paprika.get_ticker_historical(ticker).answer));
-        }
-    }*/
 
     void
     application::exit_handler()

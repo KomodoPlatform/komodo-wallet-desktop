@@ -173,7 +173,7 @@ Item {
                         DefaultText {
                             text_value: {
                                 const fiat_amount = parseFloat(current_ticker_infos.fiat_amount)
-                                const portfolio_balance = parseFloat(API.get().balance_fiat_all)
+                                const portfolio_balance = parseFloat(API.get().portfolio_pg.balance_fiat_all)
                                 if(fiat_amount <= 0 || portfolio_balance <= 0) return "-"
 
                                 return API.get().settings_pg.empty_string + (General.formatPercent((100 * fiat_amount/portfolio_balance).toFixed(2), false))

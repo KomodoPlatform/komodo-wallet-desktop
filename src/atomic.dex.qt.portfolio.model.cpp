@@ -40,13 +40,12 @@ namespace
 
 namespace atomic_dex
 {
-    portfolio_model::portfolio_model(ag::ecs::system_manager& system_manager, entt::dispatcher& dispatcher, QObject* parent) noexcept :
-        QAbstractListModel(parent), m_system_manager(system_manager), m_dispatcher(dispatcher), m_model_proxy(new portfolio_proxy_model(parent))
+    portfolio_model::portfolio_model(ag::ecs::system_manager& system_manager, QObject* parent) noexcept :
+        QAbstractListModel(parent), m_system_manager(system_manager), m_model_proxy(new portfolio_proxy_model(parent))
     {
         spdlog::trace("{} l{} f[{}]", __FUNCTION__, __LINE__, fs::path(__FILE__).filename().string());
         spdlog::trace("portfolio model created");
 
-        m_dispatcher.sink<update_portfolio_values>().connect<&portfolio_model::on_update_portfolio_values_event>(*this);
         this->m_model_proxy->setSourceModel(this);
         this->m_model_proxy->setDynamicSortFilter(true);
         this->m_model_proxy->sort_by_currency_balance(false);
@@ -56,10 +55,8 @@ namespace atomic_dex
 
     portfolio_model::~portfolio_model() noexcept
     {
-        m_dispatcher.sink<update_portfolio_values>().disconnect<&portfolio_model::on_update_portfolio_values_event>(*this);
         spdlog::trace("{} l{} f[{}]", __FUNCTION__, __LINE__, fs::path(__FILE__).filename().string());
         spdlog::trace("portfolio model destroyed");
-        // delete m_model_proxy;
     }
 
     void
@@ -316,12 +313,6 @@ namespace atomic_dex
     portfolio_model::set_cfg(cfg& cfg) noexcept
     {
         m_config = &cfg;
-    }
-    void
-    portfolio_model::on_update_portfolio_values_event(const update_portfolio_values&) noexcept
-    {
-        spdlog::trace("refreshing portfolio values");
-        this->update_currency_values();
     }
 
     void

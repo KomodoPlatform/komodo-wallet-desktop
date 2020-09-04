@@ -216,12 +216,6 @@ namespace atomic_dex
         //! Place a buy order, Doesn't work if i don't have enough funds.
         t_sell_answer place_sell_order(t_sell_request&& request, const t_float_50& total, t_mm2_ec& ec) const;
 
-        //! Withdraw Money to another address
-        [[nodiscard]] t_withdraw_answer withdraw(t_withdraw_request&& request, t_mm2_ec& ec) noexcept;
-
-        //! Broadcast a raw transaction on the blockchain
-        [[nodiscard]] t_broadcast_answer broadcast(t_broadcast_request&& request, t_mm2_ec& ec) noexcept;
-
         //! Last 50 transactions maximum
         [[nodiscard]] t_transactions get_tx_history(t_mm2_ec& ec) const;
 
