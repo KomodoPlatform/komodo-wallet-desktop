@@ -358,7 +358,9 @@ namespace atomic_dex
         }
         else
         {
-            //! Update tx (only unconfirmed)
+            //! Update tx (only unconfirmed) or insert (new tx)
+            spdlog::trace("updating / insert tx");
+            m_transactions_mdl->update_or_insert_transactions(transactions);
         }
         this->set_tx_fetching_busy(false);
     }
