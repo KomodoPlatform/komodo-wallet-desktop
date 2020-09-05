@@ -45,7 +45,7 @@ QtObject {
     readonly property var reg_pass_special: /(?=.*[@#$%{}[\]()\/\\'"`~,;:.<>+\-_=!^&*|?])/
     readonly property var reg_pass_count_low_security: /(?=.{1,})/
     readonly property var reg_pass_count: /(?=.{16,})/
-    
+
     readonly property double time_toast_important_error: 10000
     readonly property double time_toast_basic_info: 3000
 
@@ -265,11 +265,6 @@ QtObject {
 
         return false
     }
-
-    function txFeeTicker(info) {
-        return info.ticker_infos.type === "ERC-20" ? "ETH" : info.ticker
-    }
-
 
     property Timer prevent_coin_disabling: Timer { interval: 5000 }
 

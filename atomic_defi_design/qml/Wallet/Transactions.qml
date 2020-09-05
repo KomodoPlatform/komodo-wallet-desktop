@@ -77,7 +77,7 @@ DefaultListView {
         // Fee
         DefaultText {
             text_value: API.get().settings_pg.empty_string + (General.formatCrypto(!(parseFloat(fees) > 0), Math.abs(parseFloat(fees)),
-                                                                       General.txFeeTicker(api_wallet_page)) + " " + qsTr("fees"))
+                                                                       current_ticker_infos.fee_ticker) + " " + qsTr("fees"))
             font.pixelSize: description.font.pixelSize
             anchors.verticalCenter: parent.verticalCenter
             anchors.left: parent.left

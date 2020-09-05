@@ -42,7 +42,7 @@ DefaultModal {
         TextWithTitle {
             title: API.get().settings_pg.empty_string + (qsTr("Fees"))
             text: API.get().settings_pg.empty_string + (!details ? "" :
-                                                        General.formatCrypto("", details.fees, General.txFeeTicker(api_wallet_page)))
+                                                        General.formatCrypto("", details.fees, current_ticker_infos.fee_ticker))
             privacy: true
         }
 
