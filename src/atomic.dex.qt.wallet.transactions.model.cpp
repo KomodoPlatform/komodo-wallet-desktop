@@ -118,7 +118,6 @@ namespace atomic_dex
     {
         for (auto&& tx: transactions)
         {
-            spdlog::trace("insering tx [{}] to the model, timestamp: {}", tx.tx_hash, tx.timestamp);
             m_tx_registry.emplace(tx.tx_hash);
         }
         beginInsertRows(QModelIndex(), this->m_model_data.size(), this->m_model_data.size() + transactions.size() - 1);

@@ -34,7 +34,6 @@ namespace atomic_dex
         case transactions_model::DateRole:
             break;
         case transactions_model::TimestampRole:
-            spdlog::trace("comparing: {} with {}", left_data.toUInt(), right_data.toUInt());
             return left_data.toUInt() > right_data.toUInt();
         case transactions_model::AmountFiatRole:
             break;
