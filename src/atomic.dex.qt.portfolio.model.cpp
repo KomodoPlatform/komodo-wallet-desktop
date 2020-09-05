@@ -39,15 +39,6 @@ namespace
         }
         return std::make_tuple(value, value, false);
     }
-
-    /*void
-    update_value(atomic_dex::portfolio_model::PortfolioRoles role, const QString& value, const QModelIndex& idx, atomic_dex::portfolio_model& model)
-    {
-        if (value != model.data(idx, role).toString())
-        {
-            model.setData(idx, value, role);
-        }
-    }*/
 } // namespace
 
 namespace atomic_dex

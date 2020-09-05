@@ -45,11 +45,13 @@ namespace atomic_dex
         void reset();
         void init_transactions(const t_transactions& transactions);
         void update_or_insert_transactions(const t_transactions& transactions);
+        void update_transaction(const tx_infos& tx);
 
         //! Override
         [[nodiscard]] QHash<int, QByteArray> roleNames() const final;
         [[nodiscard]] QVariant               data(const QModelIndex& index, int role) const final;
         [[nodiscard]] int                    rowCount(const QModelIndex& parent = QModelIndex()) const final;
+        bool                                 setData(const QModelIndex& index, const QVariant& value, int role) override;
 
         //! Props
         [[nodiscard]] int                       get_length() const noexcept;

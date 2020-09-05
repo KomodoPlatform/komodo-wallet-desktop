@@ -6,6 +6,21 @@
 #include "atomic.dex.qt.settings.page.hpp"
 #include "atomic.dex.qt.wallet.transactions.model.hpp"
 
+namespace
+{
+    template <typename TModel>
+    auto
+    update_value(int role, const QVariant& value, const QModelIndex& idx, TModel& model)
+    {
+        if (auto prev_value = model.data(idx, role); value != prev_value)
+        {
+            model.setData(idx, value, role);
+            return std::make_tuple(prev_value, value, true);
+        }
+        return std::make_tuple(value, value, false);
+    }
+} // namespace
+
 namespace atomic_dex
 {
     transactions_model::transactions_model(ag::ecs::system_manager& system_manager, QObject* parent) noexcept :
@@ -47,6 +62,51 @@ namespace atomic_dex
     transactions_model::rowCount([[maybe_unused]] const QModelIndex& parent) const
     {
         return m_model_data.size();
+    }
+
+    bool
+    atomic_dex::transactions_model::setData(const QModelIndex& index, const QVariant& value, int role)
+    {
+        if (!hasIndex(index.row(), index.column(), index.parent()) || !value.isValid())
+        {
+            return false;
+        }
+
+        tx_infos& item = m_model_data[index.row()];
+        switch (static_cast<TransactionsRoles>(role))
+        {
+        case AmountRole:
+            break;
+        case AmISenderRole:
+            break;
+        case DateRole:
+            item.date = value.toString().toStdString();
+            break;
+        case TimestampRole:
+            item.timestamp = value.toULongLong();
+            break;
+        case AmountFiatRole:
+            break;
+        case TxHashRole:
+            break;
+        case FeesRole:
+            break;
+        case FromRole:
+            break;
+        case ToRole:
+            break;
+        case BlockheightRole:
+            item.block_height = value.toUInt();
+            break;
+        case ConfirmationsRole:
+            item.confirmations = value.toUInt();
+            break;
+        case UnconfirmedRole:
+            item.unconfirmed = value.toBool();
+            break;
+        }
+        emit dataChanged(index, index, {role});
+        return true;
     }
 
     QVariant
@@ -116,15 +176,26 @@ namespace atomic_dex
     void
     transactions_model::init_transactions(const t_transactions& transactions)
     {
-        for (auto&& tx: transactions)
-        {
-            m_tx_registry.emplace(tx.tx_hash);
-        }
+        for (auto&& tx: transactions) { m_tx_registry.emplace(tx.tx_hash); }
         beginInsertRows(QModelIndex(), this->m_model_data.size(), this->m_model_data.size() + transactions.size() - 1);
         m_model_data.insert(end(m_model_data), begin(transactions), end(transactions));
         endInsertRows();
         spdlog::trace("transactions model size: {}", m_model_data.size());
         emit lengthChanged();
+    }
+
+    void
+    atomic_dex::transactions_model::update_transaction(const tx_infos& tx)
+    {
+        if (const auto res = this->match(this->index(0, 0), TxHashRole, QString::fromStdString(tx.tx_hash)); not res.isEmpty())
+        {
+            const QModelIndex& idx       = res.at(0);
+            quint64            timestamp = tx.timestamp;
+            update_value(TimestampRole, timestamp, idx, *this);
+            update_value(DateRole, QString::fromStdString(tx.date), idx, *this);
+            update_value(ConfirmationsRole, static_cast<quint64>(tx.confirmations), idx, *this);
+            update_value(UnconfirmedRole, tx.unconfirmed, idx, *this);
+        }
     }
 
     void
@@ -141,6 +212,7 @@ namespace atomic_dex
             else
             {
                 //! Need to update
+                update_transaction(tx);
             }
         }
         if (not to_init.empty())
