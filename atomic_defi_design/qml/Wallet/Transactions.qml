@@ -10,10 +10,6 @@ DefaultListView {
 
     readonly property int row_height: 45
 
-    onHitBottom: () => {
-        console.log("User asks for new transactions...")
-    }
-
     TransactionDetailsModal {
         id: tx_details_modal
     }
