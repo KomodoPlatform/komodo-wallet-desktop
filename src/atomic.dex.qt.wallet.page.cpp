@@ -212,7 +212,7 @@ namespace atomic_dex
         nlohmann::json     batch      = nlohmann::json::array();
         auto&              mm2_system = m_system_manager.get_system<mm2>();
         const auto&        ticker     = mm2_system.get_current_ticker();
-        t_withdraw_request withdraw_req{.coin = ticker, .to = address.toStdString(), .amount = amount.toStdString(), .max = max};
+        t_withdraw_request withdraw_req{.coin = ticker, .to = address.toStdString(), .amount = max ? "0" : amount.toStdString(), .max = max};
         if (with_fees)
         {
             qDebug() << fees_data;
@@ -231,6 +231,7 @@ namespace atomic_dex
         //! Answer
         auto answer_functor = [this](web::http::http_response resp) {
             std::string body = TO_STD_STR(resp.extract_string(true).get());
+            spdlog::trace("resp: {}", body);
             if (resp.status_code() == 200)
             {
                 auto           answers              = nlohmann::json::parse(body);
