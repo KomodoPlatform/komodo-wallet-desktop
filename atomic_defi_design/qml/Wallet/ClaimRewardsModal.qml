@@ -76,7 +76,7 @@ DefaultModal {
     }
 
     onBroadcast_resultChanged: {
-        if(broadcast_result !== "") {
+        if(root.visible && broadcast_result !== "") {
             stack_layout.currentIndex = 1
             postClaim()
         }
