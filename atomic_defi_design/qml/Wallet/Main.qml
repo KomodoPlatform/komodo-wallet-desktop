@@ -396,7 +396,7 @@ Item {
                 Layout.fillHeight: true
                 Layout.leftMargin: layout_margin
                 Layout.rightMargin: layout_margin
-                Layout.bottomMargin: layout_margin
+                Layout.bottomMargin: !fetching_text_row.visible ? layout_margin : undefined
 
                 implicitHeight: wallet.height*0.54
 
@@ -417,6 +417,30 @@ Item {
                         height: parent.height
                         model: transactions_mdl.proxy_mdl
                     }
+                }
+            }
+
+            RowLayout {
+                id: fetching_text_row
+                visible: api_wallet_page.tx_fetching_busy
+                Layout.preferredHeight: fetching_text.font.pixelSize * 1.5
+
+                Layout.topMargin: -layout_margin*0.5
+                Layout.bottomMargin: layout_margin*0.5
+
+                Layout.alignment: Qt.AlignHCenter
+                spacing: 10
+                DefaultBusyIndicator {
+                    Layout.alignment: Qt.AlignVCenter
+                    Layout.preferredWidth: Style.textSizeSmall3
+                    Layout.preferredHeight: Layout.preferredWidth
+                }
+
+                DefaultText {
+                    id: fetching_text
+                    Layout.alignment: Qt.AlignVCenter
+                    text_value: API.get().settings_pg.empty_string + (qsTr("Fetching transactions") + "...")
+                    font.pixelSize: Style.textSizeSmall3
                 }
             }
 
