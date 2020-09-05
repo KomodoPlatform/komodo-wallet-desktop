@@ -9,10 +9,13 @@
 namespace atomic_dex
 {
     transactions_model::transactions_model(ag::ecs::system_manager& system_manager, QObject* parent) noexcept :
-        QAbstractListModel(parent), m_system_manager(system_manager)
+        QAbstractListModel(parent), m_system_manager(system_manager), m_model_proxy(new transactions_proxy_model(this))
     {
         spdlog::trace("{} l{} f[{}]", __FUNCTION__, __LINE__, fs::path(__FILE__).filename().string());
         spdlog::trace("transactions model created");
+        this->m_model_proxy->setSourceModel(this);
+        this->m_model_proxy->setDynamicSortFilter(true);
+        this->m_model_proxy->setSortRole(TimestampRole);
     }
 
     transactions_model::~transactions_model() noexcept
@@ -124,6 +127,12 @@ namespace atomic_dex
     transactions_model::get_length() const noexcept
     {
         return rowCount();
+    }
+
+    transactions_proxy_model*
+    transactions_model::get_transactions_proxy() const noexcept
+    {
+        return m_model_proxy;
     }
 
 } // namespace atomic_dex

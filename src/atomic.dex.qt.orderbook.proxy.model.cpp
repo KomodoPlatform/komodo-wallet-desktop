@@ -45,7 +45,6 @@ namespace atomic_dex
         {
         case orderbook_model::PriceRole:
             return t_float_50(left_data.toString().toStdString()) < t_float_50(right_data.toString().toStdString());
-            break;
         case orderbook_model::QuantityRole:
             break;
         case orderbook_model::TotalRole:

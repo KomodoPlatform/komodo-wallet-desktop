@@ -443,6 +443,7 @@ namespace mm2::api
         j.at("coin").get_to(contents.coin);
         j.at("address").get_to(contents.address);
         j.at("price").get_to(contents.price);
+        //contents.price = t_float_50(contents.price).str(8, std::ios_base::fixed);
         j.at("price_fraction").at("numer").get_to(contents.price_fraction_numer);
         j.at("price_fraction").at("denom").get_to(contents.price_fraction_denom);
         j.at("maxvolume").get_to(contents.maxvolume);

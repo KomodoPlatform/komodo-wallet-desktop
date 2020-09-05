@@ -4,6 +4,7 @@
 #include <QObject>
 
 #include "atomic.dex.mm2.hpp"
+#include "atomic.dex.qt.wallet.transactions.proxy.filter.model.hpp"
 
 namespace atomic_dex
 {
@@ -11,12 +12,15 @@ namespace atomic_dex
     {
         Q_OBJECT
         Q_PROPERTY(int length READ get_length NOTIFY lengthChanged);
+        Q_PROPERTY(transactions_proxy_model* proxy_mdl READ get_transactions_proxy NOTIFY transactionsProxyMdlChanged)
 
         using t_tx_registry = std::unordered_set<std::string>;
 
-        ag::ecs::system_manager& m_system_manager;
-        t_transactions           m_model_data;
-        t_tx_registry            m_tx_registry;
+        ag::ecs::system_manager&  m_system_manager;
+        transactions_proxy_model* m_model_proxy;
+        t_transactions            m_model_data;
+        t_tx_registry             m_tx_registry;
+
 
       public:
         enum TransactionsRoles
@@ -43,13 +47,15 @@ namespace atomic_dex
 
         //! Override
         [[nodiscard]] QHash<int, QByteArray> roleNames() const final;
-        QVariant                             data(const QModelIndex& index, int role) const final;
-        int                                  rowCount(const QModelIndex& parent = QModelIndex()) const final;
+        [[nodiscard]] QVariant               data(const QModelIndex& index, int role) const final;
+        [[nodiscard]] int                    rowCount(const QModelIndex& parent = QModelIndex()) const final;
 
         //! Props
-        [[nodiscard]] int get_length() const noexcept;;
+        [[nodiscard]] int                       get_length() const noexcept;
+        [[nodiscard]] transactions_proxy_model* get_transactions_proxy() const noexcept;
 
       signals:
         void lengthChanged();
+        void transactionsProxyMdlChanged();
     };
 } // namespace atomic_dex
