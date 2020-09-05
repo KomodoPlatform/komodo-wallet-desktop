@@ -108,7 +108,8 @@ namespace atomic_dex
                         {"address", "foo"},      {"minimal_balance_asking_rewards", "10.00"},
                         {"explorer_url", "foo"}, {"current_currency_ticker_price", "0.00"},
                         {"change_24h", "0"},     {"tx_state", "InProgress"},
-                        {"fiat_amount", "0.00"}, {"trend_7d", QJsonArray()}};
+                        {"fiat_amount", "0.00"}, {"trend_7d", QJsonArray()},
+                        {"fee_ticker", "KMD"}};
         std::error_code ec;
         auto&           mm2_system = m_system_manager.get_system<mm2>();
         if (mm2_system.is_mm2_running())
@@ -131,6 +132,7 @@ namespace atomic_dex
             obj["tx_state"]                           = QString::fromStdString(mm2_system.get_tx_state(ec).state);
             obj["fiat_amount"]                        = QString::fromStdString(price_service.get_price_in_fiat(config.current_currency, ticker, ec));
             obj["trend_7d"]                           = nlohmann_json_array_to_qt_json_array(paprika.get_ticker_historical(ticker).answer);
+            obj["fee_ticker"]                         = coin_info.is_erc_20 ? "ETH" : QString::fromStdString(ticker);
         }
         return obj;
     }
