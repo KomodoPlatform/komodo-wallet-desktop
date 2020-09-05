@@ -18,6 +18,7 @@ namespace atomic_dex
         spdlog::trace("{} l{} f[{}]", __FUNCTION__, __LINE__, fs::path(__FILE__).filename().string());
         spdlog::trace("transactions proxy model destroyed");
     }
+
     bool
     transactions_proxy_model::lessThan(const QModelIndex& source_left, const QModelIndex& source_right) const
     {
@@ -33,7 +34,8 @@ namespace atomic_dex
         case transactions_model::DateRole:
             break;
         case transactions_model::TimestampRole:
-            return left_data.toUInt() < right_data.toUInt();
+            spdlog::trace("comparing: {} with {}", left_data.toUInt(), right_data.toUInt());
+            return left_data.toUInt() > right_data.toUInt();
         case transactions_model::AmountFiatRole:
             break;
         case transactions_model::TxHashRole:

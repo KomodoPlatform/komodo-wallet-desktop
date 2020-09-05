@@ -44,6 +44,7 @@ namespace atomic_dex
 
         void reset();
         void init_transactions(const t_transactions& transactions);
+        void update_or_insert_transactions(const t_transactions& transactions);
 
         //! Override
         [[nodiscard]] QHash<int, QByteArray> roleNames() const final;

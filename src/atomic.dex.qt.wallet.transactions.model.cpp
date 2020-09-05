@@ -16,6 +16,7 @@ namespace atomic_dex
         this->m_model_proxy->setSourceModel(this);
         this->m_model_proxy->setDynamicSortFilter(true);
         this->m_model_proxy->setSortRole(TimestampRole);
+        this->m_model_proxy->sort(0);
     }
 
     transactions_model::~transactions_model() noexcept
@@ -115,12 +116,38 @@ namespace atomic_dex
     void
     transactions_model::init_transactions(const t_transactions& transactions)
     {
-        for (auto&& tx: transactions) { m_tx_registry.emplace(tx.tx_hash); }
+        for (auto&& tx: transactions)
+        {
+            spdlog::trace("insering tx [{}] to the model, timestamp: {}", tx.tx_hash, tx.timestamp);
+            m_tx_registry.emplace(tx.tx_hash);
+        }
         beginInsertRows(QModelIndex(), this->m_model_data.size(), this->m_model_data.size() + transactions.size() - 1);
-        m_model_data = transactions;
+        m_model_data.insert(end(m_model_data), begin(transactions), end(transactions));
         endInsertRows();
         spdlog::trace("transactions model size: {}", m_model_data.size());
         emit lengthChanged();
+    }
+
+    void
+    atomic_dex::transactions_model::update_or_insert_transactions(const t_transactions& transactions)
+    {
+        t_transactions to_init;
+        for (auto&& tx: transactions)
+        {
+            if (m_tx_registry.find(tx.tx_hash) == m_tx_registry.end())
+            {
+                spdlog::trace("need to init: {}", tx.tx_hash);
+                to_init.push_back(tx);
+            }
+            else
+            {
+                //! Need to update
+            }
+        }
+        if (not to_init.empty())
+        {
+            this->init_transactions(to_init);
+        }
     }
 
     int
