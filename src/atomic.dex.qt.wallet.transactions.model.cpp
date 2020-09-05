@@ -168,7 +168,7 @@ namespace atomic_dex
     atomic_dex::transactions_model::reset()
     {
         this->m_file_count = 0;
-        this->m_tx_registry.clear();
+        //this->m_tx_registry.clear();
         this->beginResetModel();
         this->m_model_data.clear();
         this->endResetModel();
@@ -178,9 +178,9 @@ namespace atomic_dex
     void
     transactions_model::init_transactions(const t_transactions& transactions)
     {
-        for (auto&& tx: transactions) { m_tx_registry.emplace(tx.tx_hash); }
         if (m_model_data.size() == 0)
         {
+            spdlog::trace("first time initialization");
             //! First time insertion
             beginResetModel();
             m_model_data = transactions;
@@ -190,12 +190,13 @@ namespace atomic_dex
         else
         {
             //! Other time insertion
+            spdlog::trace("other time insertion, from {} to {}", m_file_count, m_file_count + transactions.size());
+            beginInsertRows(QModelIndex(), m_file_count, m_file_count + transactions.size() - 1);
             m_file_count += transactions.size();
-            beginInsertRows(QModelIndex(), this->m_model_data.size(), this->m_model_data.size() + transactions.size() - 1);
             m_model_data.insert(end(m_model_data), begin(transactions), end(transactions));
             endInsertRows();
-            spdlog::trace("transactions model size: {}", m_model_data.size());
         }
+        spdlog::trace("transactions model size: {}", rowCount());
         emit lengthChanged();
     }
 
@@ -217,19 +218,13 @@ namespace atomic_dex
     atomic_dex::transactions_model::update_or_insert_transactions(const t_transactions& transactions)
     {
         t_transactions to_init;
-        for (auto&& tx: transactions)
+        auto           difference = transactions.size() - this->m_model_data.size();
+        if (difference > 0)
         {
-            if (m_tx_registry.find(tx.tx_hash) == m_tx_registry.end())
-            {
-                spdlog::trace("need to init: {}", tx.tx_hash);
-                to_init.push_back(tx);
-            }
-            else
-            {
-                //! Need to update
-                update_transaction(tx);
-            }
+            //! There is new transactions
+            to_init = t_transactions(transactions.begin(), transactions.begin() + difference);
         }
+        std::for_each(begin(transactions) + difference, end(transactions), [this](const tx_infos& tx) { this->update_transaction(tx); });
         if (not to_init.empty())
         {
             this->init_transactions(to_init);
@@ -257,11 +252,15 @@ namespace atomic_dex
         int items_to_fetch = qMin(50, remainder);
         if (items_to_fetch <= 0)
             return;
+        spdlog::trace("fetching {} transactions, total tx: {}", items_to_fetch, m_model_data.size());
         beginInsertRows(QModelIndex(), m_file_count, m_file_count + items_to_fetch - 1);
 
         m_file_count += items_to_fetch;
 
         endInsertRows();
+        /*std::for_each(m_model_data.begin() + (m_file_count - items_to_fetch), m_model_data.begin() + m_file_count, [this](const tx_infos& tx) {
+            this->m_tx_registry.emplace(tx.tx_hash);
+        });*/
         emit lengthChanged();
     }
 
