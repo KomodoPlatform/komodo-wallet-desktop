@@ -375,8 +375,8 @@ namespace atomic_dex
                             ++idx;
                         }
 
-                        this->dispatcher_.trigger<ticker_balance_updated>(tickers_idx);
                         for (auto&& coin: erc_to_fetch) { process_tx_etherscan(coin, is_a_reset); }
+                        this->dispatcher_.trigger<ticker_balance_updated>(tickers_idx);
                         if (is_during_enabling)
                         {
                             dispatcher_.trigger<coin_enabled>(tickers);
@@ -830,13 +830,27 @@ namespace atomic_dex
     t_transactions
     mm2::get_tx_history(t_mm2_ec& ec) const
     {
-        if (m_tx_informations.find("result") == m_tx_informations.cend())
+        const auto& ticker = get_current_ticker();
+        spdlog::trace("asking history of ticker: {}", ticker);
+        if (not get_coin_info(ticker).is_erc_20)
         {
-            ec = dextop_error::tx_history_of_a_non_enabled_coin;
-            return {};
+            if (m_tx_informations.find("result") == m_tx_informations.cend())
+            {
+                ec = dextop_error::tx_history_of_a_non_enabled_coin;
+                return {};
+            }
+            return m_tx_informations.at("result");
         }
-
-        return m_tx_informations.at("result");
+        else
+        {
+            spdlog::trace("picking history ticker: {}", ticker);
+            if (m_tx_informations.find(ticker) == m_tx_informations.cend())
+            {
+                ec = dextop_error::tx_history_of_a_non_enabled_coin;
+                return {};
+            }
+            return m_tx_informations.at(ticker);
+        }
     }
 
     std::string
@@ -903,10 +917,6 @@ namespace atomic_dex
     {
         spdlog::debug("{} l{} f[{}]", __FUNCTION__, __LINE__, fs::path(__FILE__).filename().string());
         spdlog::trace("process_tx ticker: {}", ticker);
-        if (is_a_refresh)
-        {
-            return;
-        }
         std::error_code ec;
         using namespace std::string_literals;
         std::string url =
@@ -915,9 +925,10 @@ namespace atomic_dex
             .then([this, ticker](web::http::http_response resp) {
                 auto answer = ::mm2::api::rpc_process_answer<::mm2::api::tx_history_answer>(resp, "tx_history");
 
-                if (answer.error.has_value())
+                if (answer.rpc_result_code != 200)
                 {
-                    spdlog::error("{}", answer.error.value());
+                    spdlog::error("{}", answer.raw_result);
+                    this->dispatcher_.trigger<tx_fetch_finished>();
                 }
                 else if (answer.rpc_result_code not_eq -1 and answer.result.has_value())
                 {
@@ -967,8 +978,8 @@ namespace atomic_dex
 
                     // std::sort(begin(out), end(out), [](auto&& a, auto&& b) { return a.timestamp > b.timestamp; });
 
-                    m_tx_informations.insert_or_assign("result", std::move(out));
-                    m_tx_state.insert_or_assign("result", std::move(state));
+                    m_tx_informations.insert_or_assign(ticker, std::move(out));
+                    m_tx_state.insert_or_assign(ticker, std::move(state));
                     this->dispatcher_.trigger<tx_fetch_finished>();
                 }
             })
@@ -1128,13 +1139,27 @@ namespace atomic_dex
     t_tx_state
     mm2::get_tx_state(t_mm2_ec& ec) const
     {
-        if (m_tx_state.find("result") == m_tx_state.cend())
+        const auto& ticker = get_current_ticker();
+        if (not get_coin_info(ticker).is_erc_20)
         {
-            ec = dextop_error::tx_history_of_a_non_enabled_coin;
-            return {};
-        }
+            if (m_tx_state.find("result") == m_tx_state.cend())
+            {
+                ec = dextop_error::tx_history_of_a_non_enabled_coin;
+                return {};
+            }
 
-        return m_tx_state.at("result");
+            return m_tx_state.at("result");
+        }
+        else
+        {
+            if (m_tx_state.find(ticker) == m_tx_state.cend())
+            {
+                ec = dextop_error::tx_history_of_a_non_enabled_coin;
+                return {};
+            }
+
+            return m_tx_state.at(ticker);
+        }
     }
 
     t_float_50
