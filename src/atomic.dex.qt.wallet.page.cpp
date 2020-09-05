@@ -44,6 +44,7 @@ namespace atomic_dex
         auto& mm2_system = m_system_manager.get_system<mm2>();
         if (mm2_system.set_current_ticker(ticker.toStdString()))
         {
+            this->set_tx_fetching_busy(true);
             m_transactions_mdl->reset();
             emit currentTickerChanged();
             mm2_system.fetch_infos_thread(true, true);
@@ -96,6 +97,22 @@ namespace atomic_dex
         {
             m_is_broadcast_busy = status;
             emit broadCastStatusChanged();
+        }
+    }
+
+    bool
+    atomic_dex::wallet_page::is_tx_fetching_busy() const noexcept
+    {
+        return m_tx_fetching_busy;
+    }
+
+    void
+    atomic_dex::wallet_page::set_tx_fetching_busy(bool status) noexcept
+    {
+        if (m_tx_fetching_busy != status)
+        {
+            m_tx_fetching_busy = status;
+            emit txFetchingStatusChanged();
         }
     }
 
@@ -343,5 +360,6 @@ namespace atomic_dex
         {
             //! Update tx (only unconfirmed)
         }
+        this->set_tx_fetching_busy(false);
     }
 } // namespace atomic_dex

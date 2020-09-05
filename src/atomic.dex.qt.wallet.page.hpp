@@ -25,6 +25,8 @@ namespace atomic_dex
         Q_PROPERTY(QString broadcast_rpc_data READ get_rpc_broadcast_data WRITE set_rpc_broadcast_data NOTIFY broadcastDataChanged)
         Q_PROPERTY(bool is_send_busy READ is_send_busy WRITE set_send_busy NOTIFY sendStatusChanged)
         Q_PROPERTY(QVariant send_rpc_data READ get_rpc_send_data WRITE set_rpc_send_data NOTIFY sendDataChanged)
+        Q_PROPERTY(bool tx_fetching_busy READ is_tx_fetching_busy WRITE set_tx_fetching_busy NOTIFY txFetchingStatusChanged)
+
 
         using t_qt_synchronized_json   = boost::synchronized_value<QJsonObject>;
         using t_qt_synchronized_string = boost::synchronized_value<QString>;
@@ -35,6 +37,7 @@ namespace atomic_dex
         std::atomic_bool         m_is_claiming_busy{false};
         std::atomic_bool         m_is_broadcast_busy{false};
         std::atomic_bool         m_is_send_busy{false};
+        std::atomic_bool         m_tx_fetching_busy{false};
         t_qt_synchronized_json   m_claiming_rpc_result;
         t_qt_synchronized_json   m_send_rpc_result;
         t_qt_synchronized_string m_broadcast_rpc_result;
@@ -51,7 +54,7 @@ namespace atomic_dex
         Q_INVOKABLE void send(const QString& address, const QString& amount, bool max, bool with_fees, QVariantMap fees_data);
 
         //! MDL
-        transactions_model*   get_transactions_mdl() const noexcept;
+        transactions_model* get_transactions_mdl() const noexcept;
 
         //! Properties
         [[nodiscard]] QString  get_current_ticker() const noexcept;
@@ -60,7 +63,7 @@ namespace atomic_dex
         [[nodiscard]] bool     is_broadcast_busy() const noexcept;
         void                   set_broadcast_busy(bool status) noexcept;
         [[nodiscard]] bool     is_send_busy() const noexcept;
-        void                   set_send_busy(bool status) noexcept;;
+        void                   set_send_busy(bool status) noexcept;
         [[nodiscard]] bool     is_rpc_claiming_busy() const noexcept;
         void                   set_claiming_is_busy(bool status) noexcept;
         [[nodiscard]] QVariant get_rpc_claiming_data() const noexcept;
@@ -69,6 +72,8 @@ namespace atomic_dex
         void                   set_rpc_broadcast_data(QString rpc_data) noexcept;
         [[nodiscard]] QVariant get_rpc_send_data() const noexcept;
         void                   set_rpc_send_data(QVariant rpc_data) noexcept;
+        [[nodiscard]] bool     is_tx_fetching_busy() const noexcept;
+        void                   set_tx_fetching_busy(bool status) noexcept;
 
         //! Callbacks
         void on_tx_fetch_finished(const tx_fetch_finished&);
@@ -83,6 +88,7 @@ namespace atomic_dex
         void sendStatusChanged();
         void sendDataChanged();
         void transactionsMdlChanged();
+        void txFetchingStatusChanged();
     };
 } // namespace atomic_dex
 
