@@ -10,10 +10,8 @@ DefaultListView {
 
     readonly property int row_height: 45
 
-    model: {
-        const confirmed = api_wallet_page.transactions.filter(t => t.timestamp !== 0)
-        const unconfirmed = api_wallet_page.transactions.filter(t => t.timestamp === 0)
-        return unconfirmed.concat(confirmed)
+    TransactionDetailsModal {
+        id: tx_details_modal
     }
 
     // Row
@@ -28,18 +26,16 @@ DefaultListView {
             id: mouse_area
             anchors.fill: parent
             hoverEnabled: true
-            onClicked: tx_details_modal.open()
-        }
-
-        TransactionDetailsModal {
-            id: tx_details_modal
-            details: model.modelData
+            onClicked: {
+                tx_details_modal.details = model
+                tx_details_modal.open()
+            }
         }
 
         Arrow {
             id: received_icon
-            up: !model.modelData.received
-            color: model.modelData.received ? Style.colorGreen : Style.colorRed
+            up: am_i_sender
+            color: !am_i_sender ? Style.colorGreen : Style.colorRed
             anchors.verticalCenter: parent.verticalCenter
             anchors.left: parent.left
             anchors.leftMargin: 15
@@ -48,7 +44,7 @@ DefaultListView {
         // Description
         DefaultText {
             id: description
-            text_value: API.get().settings_pg.empty_string + (model.modelData.received ? qsTr("Received") : qsTr("Sent"))
+            text_value: API.get().settings_pg.empty_string + (am_i_sender ? qsTr("Sent") : qsTr("Received"))
             font.pixelSize: Style.textSizeSmall3
             anchors.verticalCenter: parent.verticalCenter
             anchors.left: received_icon.right
@@ -58,18 +54,18 @@ DefaultListView {
         // Crypto
         DefaultText {
             id: crypto_amount
-            text_value: API.get().settings_pg.empty_string + (General.formatCrypto(model.modelData.received, model.modelData.amount, api_wallet_page.ticker))
+            text_value: API.get().settings_pg.empty_string + (General.formatCrypto(!am_i_sender, amount, api_wallet_page.ticker))
             font.pixelSize: description.font.pixelSize
             anchors.verticalCenter: parent.verticalCenter
             anchors.left: parent.left
             anchors.leftMargin: parent.width * 0.2
-            color: model.modelData.received ? Style.colorGreen : Style.colorRed
+            color: am_i_sender ? Style.colorRed : Style.colorGreen
             privacy: true
         }
 
         // Fiat
         DefaultText {
-            text_value: API.get().settings_pg.empty_string + (General.formatFiat(model.modelData.received, model.modelData.amount_fiat, API.get().settings_pg.current_currency))
+            text_value: API.get().settings_pg.empty_string + (General.formatFiat(!am_i_sender, amount_fiat, API.get().settings_pg.current_currency))
             font.pixelSize: description.font.pixelSize
             anchors.verticalCenter: parent.verticalCenter
             anchors.left: parent.left
@@ -80,7 +76,7 @@ DefaultListView {
 
         // Fee
         DefaultText {
-            text_value: API.get().settings_pg.empty_string + (General.formatCrypto(!(parseFloat(model.modelData.fees) > 0), Math.abs(parseFloat(model.modelData.fees)),
+            text_value: API.get().settings_pg.empty_string + (General.formatCrypto(!(parseFloat(fees) > 0), Math.abs(parseFloat(fees)),
                                                                        General.txFeeTicker(api_wallet_page)) + " " + qsTr("fees"))
             font.pixelSize: description.font.pixelSize
             anchors.verticalCenter: parent.verticalCenter
@@ -92,7 +88,7 @@ DefaultListView {
         // Date
         DefaultText {
             font.pixelSize: description.font.pixelSize
-            text_value: API.get().settings_pg.empty_string + (model.modelData.timestamp === 0 ? qsTr("Unconfirmed"):  model.modelData.date)
+            text_value: API.get().settings_pg.empty_string + (unconfirmed ? qsTr("Unconfirmed"):  date)
             anchors.verticalCenter: parent.verticalCenter
             anchors.right: parent.right
             anchors.rightMargin: 20
@@ -100,7 +96,7 @@ DefaultListView {
         }
 
         HorizontalLine {
-            visible: index !== api_wallet_page.transactions.length -1
+            visible: index !== transactions_mdl.length -1
             width: parent.width - 4
 
             anchors.horizontalCenter: parent.horizontalCenter

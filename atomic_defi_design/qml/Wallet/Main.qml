@@ -29,6 +29,8 @@ Item {
         return General.formatPercent((100 * (1 - parseFloat(remaining)/parseFloat(current_ticker_infos.tx_current_block))).toFixed(3), false)
     }
 
+    readonly property var transactions_mdl: api_wallet_page.transactions_mdl
+
     Layout.fillHeight: true
     Layout.fillWidth: true
 
@@ -383,7 +385,7 @@ Item {
 
             // Separator line
             HorizontalLine {
-                visible: loading_tx.visible && api_wallet_page.transactions.length > 0
+                visible: loading_tx.visible && transactions_mdl.length > 0
                 width: 720
                 Layout.alignment: Qt.AlignHCenter
             }
@@ -404,7 +406,7 @@ Item {
 
                     DefaultText {
                         anchors.centerIn: parent
-                        visible: current_ticker_infos.tx_state !== "InProgress" && api_wallet_page.transactions.length === 0
+                        visible: current_ticker_infos.tx_state !== "InProgress" && transactions_mdl.length === 0
                         text_value: API.get().settings_pg.empty_string + (qsTr("No transactions"))
                         font.pixelSize: Style.textSize
                         color: Style.colorWhite4
@@ -413,6 +415,7 @@ Item {
                     Transactions {
                         width: parent.width
                         height: parent.height
+                        model: transactions_mdl.proxy_mdl
                     }
                 }
             }
