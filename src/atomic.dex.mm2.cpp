@@ -402,7 +402,7 @@ namespace atomic_dex
         const auto&              ticker = get_current_ticker();
         if (not get_coin_info(ticker).is_erc_20)
         {
-            t_tx_history_request request{.coin = ticker, .limit = 50};
+            t_tx_history_request request{.coin = ticker, .limit = 5000};
             nlohmann::json       j = ::mm2::api::template_request("my_tx_history");
             ::mm2::api::to_json(j, request);
             batch_array.push_back(j);

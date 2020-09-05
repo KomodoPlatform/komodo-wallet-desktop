@@ -61,7 +61,8 @@ namespace atomic_dex
     int
     transactions_model::rowCount([[maybe_unused]] const QModelIndex& parent) const
     {
-        return m_model_data.size();
+        // return m_model_data.size();
+        return static_cast<int>(m_file_count);
     }
 
     bool
@@ -166,6 +167,7 @@ namespace atomic_dex
     void
     atomic_dex::transactions_model::reset()
     {
+        this->m_file_count = 0;
         this->m_tx_registry.clear();
         this->beginResetModel();
         this->m_model_data.clear();
@@ -177,10 +179,23 @@ namespace atomic_dex
     transactions_model::init_transactions(const t_transactions& transactions)
     {
         for (auto&& tx: transactions) { m_tx_registry.emplace(tx.tx_hash); }
-        beginInsertRows(QModelIndex(), this->m_model_data.size(), this->m_model_data.size() + transactions.size() - 1);
-        m_model_data.insert(end(m_model_data), begin(transactions), end(transactions));
-        endInsertRows();
-        spdlog::trace("transactions model size: {}", m_model_data.size());
+        if (m_model_data.size() == 0)
+        {
+            //! First time insertion
+            beginResetModel();
+            m_model_data = transactions;
+            m_file_count = 0;
+            endResetModel();
+        }
+        else
+        {
+            //! Other time insertion
+            m_file_count += transactions.size();
+            beginInsertRows(QModelIndex(), this->m_model_data.size(), this->m_model_data.size() + transactions.size() - 1);
+            m_model_data.insert(end(m_model_data), begin(transactions), end(transactions));
+            endInsertRows();
+            spdlog::trace("transactions model size: {}", m_model_data.size());
+        }
         emit lengthChanged();
     }
 
@@ -231,6 +246,29 @@ namespace atomic_dex
     transactions_model::get_transactions_proxy() const noexcept
     {
         return m_model_proxy;
+    }
+
+    void
+    atomic_dex::transactions_model::fetchMore(const QModelIndex& parent)
+    {
+        if (parent.isValid())
+            return;
+        int remainder      = m_model_data.size() - m_file_count;
+        int items_to_fetch = qMin(50, remainder);
+        if (items_to_fetch <= 0)
+            return;
+        beginInsertRows(QModelIndex(), m_file_count, m_file_count + items_to_fetch - 1);
+
+        m_file_count += items_to_fetch;
+
+        endInsertRows();
+        emit lengthChanged();
+    }
+
+    bool
+    atomic_dex::transactions_model::canFetchMore(const QModelIndex& parent) const
+    {
+        return (m_file_count < m_model_data.size());
     }
 
 } // namespace atomic_dex

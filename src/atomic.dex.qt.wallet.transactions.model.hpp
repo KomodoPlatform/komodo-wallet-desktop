@@ -20,7 +20,7 @@ namespace atomic_dex
         transactions_proxy_model* m_model_proxy;
         t_transactions            m_model_data;
         t_tx_registry             m_tx_registry;
-
+        std::size_t               m_file_count{0};
 
       public:
         enum TransactionsRoles
@@ -51,7 +51,9 @@ namespace atomic_dex
         [[nodiscard]] QHash<int, QByteArray> roleNames() const final;
         [[nodiscard]] QVariant               data(const QModelIndex& index, int role) const final;
         [[nodiscard]] int                    rowCount(const QModelIndex& parent = QModelIndex()) const final;
-        bool                                 setData(const QModelIndex& index, const QVariant& value, int role) override;
+        bool                                 setData(const QModelIndex& index, const QVariant& value, int role) final;
+        void                                 fetchMore(const QModelIndex& parent) final;
+        bool                                 canFetchMore(const QModelIndex& parent) const final;
 
         //! Props
         [[nodiscard]] int                       get_length() const noexcept;
