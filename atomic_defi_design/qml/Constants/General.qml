@@ -207,13 +207,15 @@ QtObject {
         return Math.min(Math.max(lim - getDigitCount(v), 0), amountPrecision)
     }
 
-    function formatDouble(v, precision) {
+    function formatDouble(v, precision, trail_zeros) {
         if(precision === recommendedPrecision) precision = getRecommendedPrecision(v)
 
         if(precision === 0) return parseInt(v).toString()
 
         // Remove more than n decimals, then convert to string without trailing zeros
-        return parseFloat(v).toFixed(precision || amountPrecision).replace(/\.?0+$/,"")
+        const full_double = parseFloat(v).toFixed(precision || amountPrecision)
+
+        return trail_zeros ? full_double : full_double.replace(/\.?0+$/,"")
     }
 
     function formatCrypto(received, amount, ticker, fiat_amount, fiat) {

@@ -28,12 +28,10 @@ ColumnLayout {
                                                             qsTr("Bid Price") + "\n(" + right_ticker + ")")
 
             color: is_asks ? Style.colorRed : Style.colorGreen
-            horizontalAlignment: is_asks ? Text.AlignLeft : Text.AlignRight
+            horizontalAlignment: Text.AlignRight
 
-            anchors.left: is_asks ? parent.left : undefined
-            anchors.right: is_asks ? undefined : parent.right
-            anchors.leftMargin: is_asks ? parent.width * 0.03 : undefined
-            anchors.rightMargin: is_asks ? undefined : parent.width * 0.03
+            anchors.right: parent.right
+            anchors.rightMargin: parent.width * 0.68
 
             anchors.verticalCenter: parent.verticalCenter
         }
@@ -41,10 +39,8 @@ ColumnLayout {
         // Quantity
         DefaultText {
             id: quantity_header
-            anchors.left: is_asks ? parent.left : undefined
-            anchors.right: is_asks ? undefined : parent.right
-            anchors.leftMargin: is_asks ? parent.width * 0.32 : undefined
-            anchors.rightMargin: is_asks ? undefined : parent.width * 0.32
+            anchors.right: parent.right
+            anchors.rightMargin: parent.width * 0.35
 
             horizontalAlignment: price_header.horizontalAlignment
 
@@ -58,10 +54,8 @@ ColumnLayout {
         // Total
         DefaultText {
             id: total_header
-            anchors.left: is_asks ? parent.left : undefined
-            anchors.right: is_asks ? undefined : parent.right
-            anchors.leftMargin: is_asks ? parent.width * 0.65 : undefined
-            anchors.rightMargin: is_asks ? undefined : parent.width * 0.65
+            anchors.right: parent.right
+            anchors.rightMargin: parent.width * 0.02
 
             horizontalAlignment: price_header.horizontalAlignment
 
@@ -131,15 +125,13 @@ ColumnLayout {
             DefaultText {
                 id: price_value
 
-                anchors.left: is_asks ? parent.left : undefined
-                anchors.right: is_asks ? undefined : parent.right
-                anchors.leftMargin: price_header.anchors.leftMargin
+                anchors.right: parent.right
                 anchors.rightMargin: price_header.anchors.rightMargin
 
-                font.pixelSize: Style.textSizeSmall2
-                font.family: "Consolas"
+                font.pixelSize: Style.textSizeSmall1
+                font.family: "Arial"
 
-                text_value: API.get().settings_pg.empty_string + (General.formatDouble(price, General.amountPrecision))
+                text_value: API.get().settings_pg.empty_string + (General.formatDouble(price, General.amountPrecision, true))
                 color: price_header.color
                 anchors.verticalCenter: parent.verticalCenter
             }
@@ -147,15 +139,13 @@ ColumnLayout {
             // Quantity
             DefaultText {
                 id: quantity_value
-                anchors.left: is_asks ? parent.left : undefined
-                anchors.right: is_asks ? undefined : parent.right
-                anchors.leftMargin: quantity_header.anchors.leftMargin
+                anchors.right: parent.right
                 anchors.rightMargin: quantity_header.anchors.rightMargin
 
                 font.pixelSize: price_value.font.pixelSize
                 font.family: price_value.font.family
 
-                text_value: API.get().settings_pg.empty_string + (General.formatDouble(quantity, General.amountPrecision))
+                text_value: API.get().settings_pg.empty_string + (General.formatDouble(quantity, General.amountPrecision, true))
                 color: Style.colorWhite4
                 anchors.verticalCenter: parent.verticalCenter
             }
@@ -163,15 +153,13 @@ ColumnLayout {
             // Total
             DefaultText {
                 id: total_value
-                anchors.left: is_asks ? parent.left : undefined
-                anchors.right: is_asks ? undefined : parent.right
-                anchors.leftMargin: total_header.anchors.leftMargin
+                anchors.right: parent.right
                 anchors.rightMargin: total_header.anchors.rightMargin
 
                 font.pixelSize: price_value.font.pixelSize
                 font.family: price_value.font.family
 
-                text_value: API.get().settings_pg.empty_string + (General.formatDouble(total, General.amountPrecision))
+                text_value: API.get().settings_pg.empty_string + (General.formatDouble(total, General.amountPrecision, true))
                 color: Style.colorWhite4
                 anchors.verticalCenter: parent.verticalCenter
             }
