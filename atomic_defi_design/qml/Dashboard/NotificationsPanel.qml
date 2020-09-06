@@ -41,8 +41,31 @@ FloatingBackground {
         hoverEnabled: true
     }
 
-    function newNotification(id, title, message, time) {
-        const obj = { id, title, message, time }
+    function performLastNotificationAction() {
+        if(notifications_list.length === 0) return
+
+        const notification = notifications_list[0]
+
+        switch(notification.click_action) {
+        case "open_notifications":
+            root.visible = true
+            break
+        case "open_wallet_page":
+            api_wallet_page.ticker = notification.params.ticker
+            dashboard.current_page = General.idx_dashboard_wallet
+            break
+        case "open_swaps_page":
+            dashboard.current_page = General.idx_dashboard_exchange
+            exchange.current_page = exchange.isSwapDone(notification.params.new_swap_status) ? General.idx_exchange_history : General.idx_exchange_orders
+            break
+        default:
+            console.log("Unknown notification click action", notification.click_action)
+            break
+        }
+    }
+
+    function newNotification(params, id, title, message, time, click_action = "open_notifications") {
+        const obj = { params, id, title, message, time, click_action }
 
         // Update if it already exists
         let updated_existing_one = false
@@ -69,18 +92,22 @@ FloatingBackground {
 
     // Events
     function onUpdateSwapStatus(old_swap_status, new_swap_status, swap_uuid, base_coin, rel_coin, human_date) {
-        newNotification(swap_uuid,
+        newNotification({ old_swap_status, new_swap_status, swap_uuid, base_coin, rel_coin, human_date },
+                        swap_uuid,
                         base_coin + "/" + rel_coin + " - " + qsTr("Swap status updated"),
                         exchange.getStatusText(old_swap_status) + " " + General.right_arrow_icon + " " + exchange.getStatusText(new_swap_status),
-                        human_date)
+                        human_date,
+                        "open_swaps_page")
     }
 
     function onBalanceUpdateStatus(am_i_sender, amount, ticker, human_date, timestamp) {
         const change = General.formatCrypto("", amount, ticker)
-        newNotification(timestamp,
+        newNotification({ am_i_sender, amount, ticker, human_date, timestamp },
+                        timestamp,
                         am_i_sender ? qsTr("You sent %1").arg(change) : qsTr("You received %1").arg(change),
                         qsTr("Your wallet balance changed"),
-                        human_date)
+                        human_date,
+                        "open_wallet_page")
     }
 
 
@@ -100,7 +127,7 @@ FloatingBackground {
         visible: true
         iconSource: General.image_path + "tray-icon.png"
         onMessageClicked: {
-            root.visible = true
+            performLastNotificationAction()
             showApp()
         }
 

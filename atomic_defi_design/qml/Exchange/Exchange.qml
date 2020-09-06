@@ -184,6 +184,20 @@ Item {
         }
     }
 
+    function isSwapDone(status) {
+        switch(status) {
+            case "matching":
+            case "matched":
+            case "ongoing":
+                return false
+            case "successful":
+            case "refunding":
+            case "failed":
+            default:
+                return true
+        }
+    }
+
     function getStatusStep(status) {
         switch(status) {
             case "matching":
