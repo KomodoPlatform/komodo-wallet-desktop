@@ -137,6 +137,7 @@ ColumnLayout {
                 anchors.rightMargin: price_header.anchors.rightMargin
 
                 font.pixelSize: Style.textSizeSmall2
+                font.family: "Consolas"
 
                 text_value: API.get().settings_pg.empty_string + (General.formatDouble(price))
                 color: price_header.color
@@ -152,6 +153,7 @@ ColumnLayout {
                 anchors.rightMargin: quantity_header.anchors.rightMargin
 
                 font.pixelSize: price_value.font.pixelSize
+                font.family: price_value.font.family
 
                 text_value: API.get().settings_pg.empty_string + (quantity)
                 color: Style.colorWhite4
@@ -167,6 +169,7 @@ ColumnLayout {
                 anchors.rightMargin: total_header.anchors.rightMargin
 
                 font.pixelSize: price_value.font.pixelSize
+                font.family: price_value.font.family
 
                 text_value: API.get().settings_pg.empty_string + (total)
                 color: Style.colorWhite4
