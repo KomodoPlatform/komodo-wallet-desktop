@@ -139,7 +139,7 @@ ColumnLayout {
                 font.pixelSize: Style.textSizeSmall2
                 font.family: "Consolas"
 
-                text_value: API.get().settings_pg.empty_string + (General.formatDouble(price))
+                text_value: API.get().settings_pg.empty_string + (General.formatDouble(price, General.amountPrecision))
                 color: price_header.color
                 anchors.verticalCenter: parent.verticalCenter
             }
@@ -155,7 +155,7 @@ ColumnLayout {
                 font.pixelSize: price_value.font.pixelSize
                 font.family: price_value.font.family
 
-                text_value: API.get().settings_pg.empty_string + (quantity)
+                text_value: API.get().settings_pg.empty_string + (General.formatDouble(quantity, General.amountPrecision))
                 color: Style.colorWhite4
                 anchors.verticalCenter: parent.verticalCenter
             }
@@ -171,7 +171,7 @@ ColumnLayout {
                 font.pixelSize: price_value.font.pixelSize
                 font.family: price_value.font.family
 
-                text_value: API.get().settings_pg.empty_string + (total)
+                text_value: API.get().settings_pg.empty_string + (General.formatDouble(total, General.amountPrecision))
                 color: Style.colorWhite4
                 anchors.verticalCenter: parent.verticalCenter
             }
