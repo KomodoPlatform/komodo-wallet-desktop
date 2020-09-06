@@ -57,6 +57,6 @@ namespace atomic_dex
     void
     notification_manager::on_balance_update_notification(const balance_update_notification& evt)
     {
-        emit balanceUpdateStatus(evt.am_i_sender, evt.ticker, evt.ticker, evt.human_date, evt.timestamp);
+        emit balanceUpdateStatus(evt.am_i_sender, evt.amount, evt.ticker, evt.human_date, evt.timestamp);
     }
 } // namespace atomic_dex
