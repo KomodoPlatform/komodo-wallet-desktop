@@ -162,14 +162,14 @@ Item {
                 expandable: true
                 Layout.fillWidth: true
                 title: API.get().settings_pg.empty_string + (qsTr("Do you store my private keys?"))
-                text: API.get().settings_pg.empty_string + (qsTr("No! AtomicDeFi is non-custodial. We never store any sensitive data, including your private keys, seed phrases, or PIN. All of these are only stored on the user’s device and never leave it. You are in full control of your assets."))
+                text: API.get().settings_pg.empty_string + (qsTr("No! atomicDEX is non-custodial. We never store any sensitive data, including your private keys, seed phrases, or PIN. All of these are only stored on the user’s device and never leave it. You are in full control of your assets."))
             }
 
             TextWithTitle {
                 expandable: true
                 Layout.fillWidth: true
-                title: API.get().settings_pg.empty_string + (qsTr("How is trading on AtomicDeFi different from trading on other DEXs?"))
-                text: API.get().settings_pg.empty_string + (qsTr("Other DEXs generally only allow you to trade assets that are based on a single blockchain network, use proxy tokens, and only allow placing a single order with the same funds.\n\nAtomicDeFi enables you to natively trade across two different blockchain networks without proxy tokens. You can also place multiple orders with the same funds, for example selling 0.1 BTC for KMD, QTUM, or VRSC -- the first that fills automatically cancels all other orders."))
+                title: API.get().settings_pg.empty_string + (qsTr("How is trading on atomicDEX different from trading on other DEXs?"))
+                text: API.get().settings_pg.empty_string + (qsTr("Other DEXs generally only allow you to trade assets that are based on a single blockchain network, use proxy tokens, and only allow placing a single order with the same funds.\n\natomicDEX enables you to natively trade across two different blockchain networks without proxy tokens. You can also place multiple orders with the same funds, for example selling 0.1 BTC for KMD, QTUM, or VRSC -- the first that fills automatically cancels all other orders."))
             }
 
             TextWithTitle {
@@ -189,48 +189,48 @@ Item {
             TextWithTitle {
                 expandable: true
                 Layout.fillWidth: true
-                title: API.get().settings_pg.empty_string + (qsTr("How are the fees on AtomicDeFi calculated?"))
-                text: API.get().settings_pg.empty_string + (qsTr("There are two fee categories to consider when trading on AtomicDeFi.
+                title: API.get().settings_pg.empty_string + (qsTr("How are the fees on atomicDEX calculated?"))
+                text: API.get().settings_pg.empty_string + (qsTr("There are two fee categories to consider when trading on atomicDEX.
 
-1. AtomicDeFi charges a 0.15% trading fee for taker orders, and maker orders have zero fees.
+1. atomicDEX charges a 0.15% trading fee for taker orders, and maker orders have zero fees.
 2. Both makers and takers will need to pay normal transaction fees when making atomic swaps.
 
-Network fees can vary greatly depending on your selected trading pair. This is why AtomicDeFi supports advanced fee management. We give you the option to choose between quicker swaps or lower fees!"))
+Network fees can vary greatly depending on your selected trading pair. This is why atomicDEX supports advanced fee management. We give you the option to choose between quicker swaps or lower fees!"))
             }
 
             TextWithTitle {
                 expandable: true
                 Layout.fillWidth: true
                 title: API.get().settings_pg.empty_string + (qsTr("Do you provide user support?"))
-                text: API.get().settings_pg.empty_string + (qsTr("Yes! Unlike most open source blockchain projects, AtomicDeFi offers 24/7 support. Join our Discord, we are happy to help!"))
+                text: API.get().settings_pg.empty_string + (qsTr("Yes! Unlike most open source blockchain projects, atomicDEX offers 24/7 support. Join our Discord, we are happy to help!"))
             }
 
             TextWithTitle {
                 expandable: true
                 Layout.fillWidth: true
                 title: API.get().settings_pg.empty_string + (qsTr("Do you have country restrictions?"))
-                text: API.get().settings_pg.empty_string + (qsTr("No! AtomicDeFi is fully decentralized. It is not possible to limit user access by any third party."))
+                text: API.get().settings_pg.empty_string + (qsTr("No! atomicDEX is fully decentralized. It is not possible to limit user access by any third party."))
             }
 
             TextWithTitle {
                 expandable: true
                 Layout.fillWidth: true
-                title: API.get().settings_pg.empty_string + (qsTr("Who is behind AtomicDeFi?"))
-                text: API.get().settings_pg.empty_string + (qsTr("AtomicDeFi is developed by the Komodo team. Komodo is one of the most established blockchain projects working on innovative solutions like atomic swaps, Delayed Proof-of-Work, and an interoperable multi-chain architecture."))
+                title: API.get().settings_pg.empty_string + (qsTr("Who is behind atomicDEX?"))
+                text: API.get().settings_pg.empty_string + (qsTr("atomicDEX is developed by the Komodo team. Komodo is one of the most established blockchain projects working on innovative solutions like atomic swaps, Delayed Proof-of-Work, and an interoperable multi-chain architecture."))
             }
 
             TextWithTitle {
                 expandable: true
                 Layout.fillWidth: true
-                title: API.get().settings_pg.empty_string + (qsTr("Is it possible to develop my own white-label exchange on AtomicDeFi?"))
-                text: API.get().settings_pg.empty_string + (qsTr("Absolutely! You can read our developer documentation for more details or contact us with your partnership inquiries. Have a specific technical question? The AtomicDeFi developer community is always ready to help!"))
+                title: API.get().settings_pg.empty_string + (qsTr("Is it possible to develop my own white-label exchange on atomicDEX?"))
+                text: API.get().settings_pg.empty_string + (qsTr("Absolutely! You can read our developer documentation for more details or contact us with your partnership inquiries. Have a specific technical question? The atomicDEX developer community is always ready to help!"))
             }
 
             TextWithTitle {
                 expandable: true
                 Layout.fillWidth: true
-                title: API.get().settings_pg.empty_string + (qsTr("Which devices can I use AtomicDeFi on?"))
-                text: API.get().settings_pg.empty_string + (qsTr("AtomicDeFi is available for mobile on both Android and iPhone, and for desktop on Windows, Linux and Mac operating systems."))
+                title: API.get().settings_pg.empty_string + (qsTr("Which devices can I use atomicDEX on?"))
+                text: API.get().settings_pg.empty_string + (qsTr("atomicDEX is available for mobile on both Android and iPhone, and for desktop on Windows, Linux and Mac operating systems."))
             }
         }
     }

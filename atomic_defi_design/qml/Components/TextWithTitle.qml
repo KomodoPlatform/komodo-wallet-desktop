@@ -37,7 +37,7 @@ ColumnLayout {
         }
     }
 
-    DefaultText {
+    DefaultTextEdit {
         visible: !expandable || expanded
         id: text
         Layout.fillWidth: true
