@@ -404,10 +404,6 @@ Item {
                     width: transactions_bg.width
                     height: transactions_bg.height
 
-                    readonly property string tx_state: current_ticker_infos.tx_state
-
-                    onTx_stateChanged: console.log("TX State Changed for ", api_wallet_page.ticker, ":", tx_state)
-
                     DefaultText {
                         anchors.centerIn: parent
                         visible: current_ticker_infos.tx_state !== "InProgress" && transactions_mdl.length === 0

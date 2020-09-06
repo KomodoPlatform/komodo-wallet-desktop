@@ -41,14 +41,8 @@ FloatingBackground {
         hoverEnabled: true
     }
 
-    // Events
-    function onSwapStatusUpdated(old_swap_status, new_swap_status, swap_uuid, base_coin, rel_coin, human_date) {
-        const obj = {
-            id: swap_uuid,
-            title: base_coin + "/" + rel_coin + " - " + qsTr("Swap status updated"),
-            message: exchange.getStatusText(old_swap_status) + " " + General.right_arrow_icon + " " + exchange.getStatusText(new_swap_status),
-            time: human_date
-        }
+    function newNotification(id, title, message, time) {
+        const obj = { id, title, message, time }
 
         // Update if it already exists
         let updated_existing_one = false
@@ -69,15 +63,31 @@ FloatingBackground {
         displayMessage(obj.title, obj.message)
 
         // Refresh the list if updated an existing one
-        if(updated_existing_one) {
+        if(updated_existing_one)
             notifications_list = notifications_list
-        }
+    }
+
+    // Events
+    function onUpdateSwapStatus(old_swap_status, new_swap_status, swap_uuid, base_coin, rel_coin, human_date) {
+        newNotification(swap_uuid,
+                        base_coin + "/" + rel_coin + " - " + qsTr("Swap status updated"),
+                        exchange.getStatusText(old_swap_status) + " " + General.right_arrow_icon + " " + exchange.getStatusText(new_swap_status),
+                        human_date)
+    }
+
+    function onBalanceUpdateStatus(am_i_sender, amount, ticker, human_date, timestamp) {
+        const change = General.formatCrypto("", amount, ticker)
+        newNotification(timestamp,
+                        am_i_sender ? qsTr("You sent %1").arg(change) : qsTr("You received %1").arg(change),
+                        qsTr("Your wallet balance changed"),
+                        human_date)
     }
 
 
     // System
     Component.onCompleted: {
-        API.get().notification_mgr.updateSwapStatus.connect(onSwapStatusUpdated)
+        API.get().notification_mgr.updateSwapStatus.connect(onUpdateSwapStatus)
+        API.get().notification_mgr.balanceUpdateStatus.connect(onBalanceUpdateStatus)
     }
 
     function displayMessage(title, message) {
