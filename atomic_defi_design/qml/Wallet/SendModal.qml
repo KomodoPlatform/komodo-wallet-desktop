@@ -9,6 +9,7 @@ DefaultModal {
     id: root
 
     property alias address_field: input_address.field
+    property alias amount_field: input_amount.field
 
 
     onClosed: if(stack_layout.currentIndex === 2) reset(true)
@@ -34,8 +35,6 @@ DefaultModal {
 
         // Local var, faster
         const result = send_result
-
-        console.log("Send RPC Result Changed: ", JSON.stringify(send_result))
 
         if(result.error_code) {
             text_error.text = result.error_message

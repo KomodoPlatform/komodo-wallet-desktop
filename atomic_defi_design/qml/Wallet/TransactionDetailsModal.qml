@@ -77,12 +77,14 @@ DefaultModal {
 
         AddressList {
             title: API.get().settings_pg.empty_string + (qsTr("From"))
-            model: !details ? [] : details.from
+            model: !details ? [] :
+                              details.from
         }
 
         AddressList {
             title: API.get().settings_pg.empty_string + (qsTr("To"))
-            model: !details ? [] : details.to
+            model: !details ? [] :
+                              details.to
         }
 
         // Buttons
@@ -92,6 +94,23 @@ DefaultModal {
                 Layout.fillWidth: true
                 onClicked: root.close()
             }
+
+            DangerButton {
+                visible: !details ? false :
+                                    !details.am_i_sender
+
+                text: API.get().settings_pg.empty_string + (qsTr("Refund"))
+                Layout.fillWidth: true
+                onClicked: {
+                    const address = details.from[0]
+                    const amount = details.amount
+                    root.close()
+                    send_modal.address_field.text = address
+                    send_modal.amount_field.text = amount
+                    send_modal.open()
+                }
+            }
+
             PrimaryButton {
                 text: API.get().settings_pg.empty_string + (qsTr("View at Explorer"))
                 Layout.fillWidth: true
