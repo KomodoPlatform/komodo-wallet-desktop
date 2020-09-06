@@ -41,7 +41,7 @@ namespace atomic_dex
 
       signals:
         void updateSwapStatus(QString old_swap_status, QString new_swap_status, QString swap_uuid, QString base_coin, QString rel_coin, QString human_date);
-        void balanceUpdateStatus(bool am_i_sender, QString amount, QString ticker);
+        void balanceUpdateStatus(bool am_i_sender, QString amount, QString ticker, QString human_date, qint64 timestamp);
 
       private:
         entt::dispatcher& m_dispatcher;

@@ -153,7 +153,10 @@ namespace atomic_dex
                         }
                         t_float_50 amount_f = am_i_sender ? prev_balance_f - new_balance_f : new_balance_f - prev_balance_f;
                         QString    amount   = QString::fromStdString(amount_f.str(8, std::ios_base::fixed));
-                        this->m_dispatcher.trigger<balance_update_notification>(am_i_sender, amount, QString::fromStdString(ticker));
+                        using namespace std::chrono;
+                        qint64  timestamp  = duration_cast<seconds>(system_clock::now().time_since_epoch()).count();
+                        QString human_date = QString::fromStdString(to_human_date<std::chrono::seconds>(timestamp, "%e %b %Y, %H:%M"));
+                        this->m_dispatcher.trigger<balance_update_notification>(am_i_sender, amount, QString::fromStdString(ticker), human_date, timestamp);
                     }
                     // spdlog::trace("updated currency values of: {}", ticker);
                 }
@@ -204,7 +207,10 @@ namespace atomic_dex
                     }
                     t_float_50 amount_f = am_i_sender ? prev_balance_f - new_balance_f : new_balance_f - prev_balance_f;
                     QString    amount   = QString::fromStdString(amount_f.str(8, std::ios_base::fixed));
-                    this->m_dispatcher.trigger<balance_update_notification>(am_i_sender, amount, QString::fromStdString(ticker));
+                    using namespace std::chrono;
+                    qint64  timestamp  = duration_cast<seconds>(system_clock::now().time_since_epoch()).count();
+                    QString human_date = QString::fromStdString(to_human_date<std::chrono::seconds>(timestamp, "%e %b %Y, %H:%M"));
+                    this->m_dispatcher.trigger<balance_update_notification>(am_i_sender, amount, QString::fromStdString(ticker), human_date, timestamp);
                 }
                 if (ticker == mm2_system.get_current_ticker() && (is_change_b || is_change_mc || is_change_mcpfo))
                 {

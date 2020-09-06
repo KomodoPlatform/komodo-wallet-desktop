@@ -35,5 +35,7 @@ namespace atomic_dex
         bool    am_i_sender; // Received / Successfully Send
         QString amount;      // 4
         QString ticker;      // RICK
+        QString human_date;
+        qint64  timestamp;
     };
 } // namespace atomic_dex
