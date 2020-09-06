@@ -37,9 +37,11 @@ namespace atomic_dex
 
         //! Callbacks
         void on_swap_status_notification(const swap_status_notification& evt);
+        void on_balance_update_notification(const balance_update_notification& evt);
 
       signals:
         void updateSwapStatus(QString old_swap_status, QString new_swap_status, QString swap_uuid, QString base_coin, QString rel_coin, QString human_date);
+        void balanceUpdateStatus(bool am_i_sender, QString amount, QString ticker);
 
       private:
         entt::dispatcher& m_dispatcher;

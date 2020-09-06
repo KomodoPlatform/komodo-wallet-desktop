@@ -57,7 +57,7 @@ namespace atomic_dex
 
       public:
         //! Constructor / Destructor
-        explicit portfolio_model(ag::ecs::system_manager& system_manager, QObject* parent = nullptr) noexcept;
+        explicit portfolio_model(ag::ecs::system_manager& system_manager, entt::dispatcher& dispatcher, QObject* parent = nullptr) noexcept;
         ~portfolio_model() noexcept final;
 
         //! Overrides
@@ -87,6 +87,7 @@ namespace atomic_dex
       private:
         //! From project
         ag::ecs::system_manager& m_system_manager;
+        entt::dispatcher&        m_dispatcher;
         atomic_dex::cfg*         m_config;
 
         //! Properties

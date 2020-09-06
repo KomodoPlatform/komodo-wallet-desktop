@@ -44,11 +44,19 @@ namespace atomic_dex
     notification_manager::connect_signals() noexcept
     {
         m_dispatcher.sink<swap_status_notification>().connect<&notification_manager::on_swap_status_notification>(*this);
+        m_dispatcher.sink<balance_update_notification>().connect<&notification_manager::on_balance_update_notification>(*this);
     }
 
     void
     notification_manager::disconnect_signals() noexcept
     {
         m_dispatcher.sink<swap_status_notification>().disconnect<&notification_manager::on_swap_status_notification>(*this);
+        m_dispatcher.sink<balance_update_notification>().disconnect<&notification_manager::on_balance_update_notification>(*this);
+    }
+
+    void
+    notification_manager::on_balance_update_notification(const balance_update_notification& evt)
+    {
+        emit balanceUpdateStatus(evt.am_i_sender, evt.ticker, evt.ticker);
     }
 } // namespace atomic_dex
