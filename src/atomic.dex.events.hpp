@@ -32,6 +32,7 @@ namespace atomic_dex
     using process_swaps_finished        = entt::tag<"gui_process_swaps_finished"_hs>;
     using update_portfolio_values       = entt::tag<"update_portfolio_values"_hs>;
     using refresh_all_portfolio_balance = entt::tag<"refresh_all_portfolio_balance"_hs>;
+    using band_oracle_refreshed         = entt::tag<"band_oracle_refreshed"_hs>;
 
     struct change_ticker_event
     {

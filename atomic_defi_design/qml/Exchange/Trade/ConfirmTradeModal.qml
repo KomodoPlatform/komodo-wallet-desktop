@@ -122,9 +122,6 @@ DefaultModal {
                     text_value: API.get().settings_pg.empty_string + (General.cex_icon + ' <a href="https://komodoplatform.com/security-delayed-proof-of-work-dpow/">' + qsTr('Read more about dPoW') + '</a>')
                     wrapMode: Text.WordWrap
                     font.pixelSize: Style.textSizeSmall2
-
-                    onLinkActivated: Qt.openUrlExternally(link)
-                    linkColor: color
                 }
             }
 
@@ -160,9 +157,6 @@ DefaultModal {
                     text_value: API.get().settings_pg.empty_string + (General.cex_icon + ' <a href="https://komodoplatform.com/security-delayed-proof-of-work-dpow/">' + qsTr('Read more about dPoW') + '</a>')
                     wrapMode: Text.WordWrap
                     font.pixelSize: Style.textSizeSmall2
-
-                    onLinkActivated: Qt.openUrlExternally(link)
-                    linkColor: color
                 }
 
                 // Normal configuration settings

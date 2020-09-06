@@ -24,7 +24,7 @@
 //! Project headers
 #include "atomic.dex.events.hpp"
 #include "atomic.dex.mm2.hpp"
-#include "atomic.dex.provider.coinpaprika.hpp"
+#include "atomic.dex.cfg.hpp"
 #include "atomic.dex.qt.portfolio.data.hpp"
 #include "atomic.dex.qt.portfolio.proxy.filter.model.hpp"
 

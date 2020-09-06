@@ -310,12 +310,26 @@ ColumnLayout {
 
             // Price
             DefaultText {
+                id: price_value
                 anchors.right: parent.right
                 anchors.rightMargin: price_header.anchors.rightMargin
 
                 text_value: API.get().settings_pg.empty_string + (General.formatFiat('', main_currency_price_for_one_unit, API.get().settings_pg.current_currency))
                 color: Style.colorThemeDarkLight
                 anchors.verticalCenter: parent.verticalCenter
+
+            }
+
+            DefaultImage {
+                visible: API.get().portfolio_pg.oracle_price_supported_pairs.join(",").indexOf(ticker) !== -1
+                source: General.coinIcon('BAND')
+                width: 12
+                height: width
+                anchors.top: price_value.top
+                anchors.left: price_value.right
+                anchors.leftMargin: 5
+
+                CexInfoTrigger {}
             }
 
             // 7d Trend
