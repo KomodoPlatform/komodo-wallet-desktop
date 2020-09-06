@@ -404,10 +404,14 @@ Item {
                     width: transactions_bg.width
                     height: transactions_bg.height
 
+                    readonly property string tx_state: current_ticker_infos.tx_state
+
+                    onTx_stateChanged: console.log("TX State Changed for ", api_wallet_page.ticker, ":", tx_state)
+
                     DefaultText {
                         anchors.centerIn: parent
                         visible: current_ticker_infos.tx_state !== "InProgress" && transactions_mdl.length === 0
-                        text_value: API.get().settings_pg.empty_string + (qsTr("No transactions"))
+                        text_value: API.get().settings_pg.empty_string + (api_wallet_page.tx_fetching_busy ? (qsTr("Refreshing") + "...") : qsTr("No transactions"))
                         font.pixelSize: Style.textSize
                         color: Style.colorWhite4
                     }
