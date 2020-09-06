@@ -953,10 +953,8 @@ namespace atomic_dex
                     t_transactions out;
                     out.reserve(answer.result.value().transactions.size());
 
-                    for (auto&& current: answer.result.value().transactions)
-                    {
-                        // spdlog::trace("my_balance change: {} ticker: {}", current.my_balance_change, ticker);
-
+                    const auto& transactions = answer.result.value().transactions;
+                    std::for_each(rbegin(transactions), rend(transactions), [&out](auto&& current) {
                         tx_infos current_info{
                             .am_i_sender       = current.my_balance_change[0] == '-',
                             .confirmations     = current.confirmations.has_value() ? current.confirmations.value() : 0,
@@ -974,7 +972,7 @@ namespace atomic_dex
                         };
 
                         out.push_back(std::move(current_info));
-                    }
+                    });
 
                     // std::sort(begin(out), end(out), [](auto&& a, auto&& b) { return a.timestamp > b.timestamp; });
 
@@ -1310,7 +1308,7 @@ namespace atomic_dex
                 .total_amount      = current.total_amount,
                 .block_height      = current.block_height,
 
-                .ec                = dextop_error::success,
+                .ec = dextop_error::success,
             };
 
             if (current_info.timestamp == 0)
