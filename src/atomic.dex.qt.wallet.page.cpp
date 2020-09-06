@@ -120,13 +120,14 @@ namespace atomic_dex
     wallet_page::get_ticker_infos() const noexcept
     {
         spdlog::trace("get_ticker_infos");
-        QJsonObject     obj{{"balance", "0"},        {"name", "Komodo"},
-                        {"type", "SmartChain"},  {"is_claimable", true},
-                        {"address", "foo"},      {"minimal_balance_asking_rewards", "10.00"},
-                        {"explorer_url", "foo"}, {"current_currency_ticker_price", "0.00"},
-                        {"change_24h", "0"},     {"tx_state", "InProgress"},
-                        {"fiat_amount", "0.00"}, {"trend_7d", QJsonArray()},
-                        {"fee_ticker", "KMD"}};
+        QJsonObject     obj{{"balance", "0"},         {"name", "Komodo"},
+                        {"type", "SmartChain"},   {"is_claimable", true},
+                        {"address", "foo"},       {"minimal_balance_asking_rewards", "10.00"},
+                        {"explorer_url", "foo"},  {"current_currency_ticker_price", "0.00"},
+                        {"change_24h", "0"},      {"tx_state", "InProgress"},
+                        {"fiat_amount", "0.00"},  {"trend_7d", QJsonArray()},
+                        {"fee_ticker", "KMD"},    {"blocks_left", 1},
+                        {"transactions_left", 0}, {"current_block", 1}};
         std::error_code ec;
         auto&           mm2_system = m_system_manager.get_system<mm2>();
         if (mm2_system.is_mm2_running())
@@ -146,10 +147,14 @@ namespace atomic_dex
             obj["explorer_url"]                       = QString::fromStdString(coin_info.explorer_url[0]);
             obj["current_currency_ticker_price"]      = QString::fromStdString(price_service.get_rate_conversion(config.current_currency, ticker, ec, true));
             obj["change_24h"]                         = retrieve_change_24h(paprika, coin_info, config);
-            obj["tx_state"]                           = QString::fromStdString(mm2_system.get_tx_state(ec).state);
+            const auto& tx_state                      = mm2_system.get_tx_state(ec);
+            obj["tx_state"]                           = QString::fromStdString(tx_state.state);
             obj["fiat_amount"]                        = QString::fromStdString(price_service.get_price_in_fiat(config.current_currency, ticker, ec));
             obj["trend_7d"]                           = nlohmann_json_array_to_qt_json_array(paprika.get_ticker_historical(ticker).answer);
             obj["fee_ticker"]                         = coin_info.is_erc_20 ? "ETH" : QString::fromStdString(ticker);
+            obj["blocks_left"]                        = static_cast<qint64>(tx_state.blocks_left);
+            obj["transactions_left"]                  = static_cast<qint64>(tx_state.transactions_left);
+            obj["current_block"]                      = static_cast<qint64>(tx_state.current_block);
         }
         return obj;
     }
