@@ -26,7 +26,7 @@ Item {
     }
 
     function loadingPercentage(remaining) {
-        return General.formatPercent((100 * (1 - parseFloat(remaining)/parseFloat(current_ticker_infos.tx_current_block))).toFixed(3), false)
+        return General.formatPercent((100 * (1 - parseFloat(remaining)/parseFloat(current_ticker_infos.current_block))).toFixed(3), false)
     }
 
     readonly property var transactions_mdl: api_wallet_page.transactions_mdl
@@ -376,7 +376,7 @@ Item {
                         text_value: API.get().settings_pg.empty_string + (
                           current_ticker_infos.type === "ERC-20" ?
                           (qsTr("Scanning blocks for TX History...") + " " + loadingPercentage(current_ticker_infos.blocks_left)) :
-                          (qsTr("Syncing TX History...") + " " + loadingPercentage(api_wallet_page.transactions_left))
+                          (qsTr("Syncing TX History...") + " " + loadingPercentage(current_ticker_infos.transactions_left))
                         )
                         Layout.alignment: Qt.AlignHCenter
                     }
