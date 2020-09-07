@@ -22,6 +22,7 @@
 #include "atomic.dex.global.price.service.hpp"
 #include "atomic.dex.qt.portfolio.page.hpp"
 #include "atomic.dex.qt.settings.page.hpp"
+#include "atomic.dex.qt.wallet.page.hpp"
 
 namespace atomic_dex
 {
@@ -93,6 +94,7 @@ namespace atomic_dex
         if (evt.with_update_model)
         {
             m_portfolio_mdl->update_currency_values();
+            m_system_manager.get_system<wallet_page>().refresh_ticker_infos();
         }
         std::error_code ec;
         const auto&     config           = m_system_manager.get_system<settings_page>().get_cfg();
