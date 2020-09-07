@@ -218,7 +218,7 @@ namespace atomic_dex
     {
         if (m_model_data.size() > transactions.size())
         {
-            spdlog::trace("old model data already bigger than the new one, bypassing");
+            spdlog::warn("old model data already bigger than the new one, bypassing");
             return;
         }
         t_transactions to_init;
