@@ -219,6 +219,7 @@ namespace atomic_dex
         t_transactions to_init;
         auto           difference = transactions.size() - this->m_model_data.size();
         spdlog::trace("difference between old transactions call and new transactions is: {}", difference);
+        spdlog::trace("new transactions size is: {}, old one is: {}", transactions.size(), m_model_data.size());
         if (difference > 0)
         {
             //! There is new transactions
