@@ -179,7 +179,7 @@ namespace atomic_dex
     {
         if (m_model_data.size() == 0)
         {
-            spdlog::trace("first time initialization");
+            spdlog::trace("first time initialization, inserting {} transactions", transactions.size());
             //! First time insertion
             beginResetModel();
             m_model_data = transactions;
