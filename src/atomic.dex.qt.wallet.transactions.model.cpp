@@ -218,14 +218,17 @@ namespace atomic_dex
     {
         t_transactions to_init;
         auto           difference = transactions.size() - this->m_model_data.size();
+        spdlog::trace("difference between old transactions call and new transactions is: {}", difference);
         if (difference > 0)
         {
             //! There is new transactions
             to_init = t_transactions(transactions.begin(), transactions.begin() + difference);
         }
+        spdlog::trace("updating transactions");
         std::for_each(begin(transactions) + difference, end(transactions), [this](const tx_infos& tx) { this->update_transaction(tx); });
         if (not to_init.empty())
         {
+            spdlog::trace("to init transactions started: {}", to_init.size());
             this->init_transactions(to_init);
         }
     }
