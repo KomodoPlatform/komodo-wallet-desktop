@@ -216,6 +216,11 @@ namespace atomic_dex
     void
     atomic_dex::transactions_model::update_or_insert_transactions(const t_transactions& transactions)
     {
+        if (m_model_data.size() > transactions.size())
+        {
+            spdlog::trace("old model data already bigger than the new one, bypassing");
+            return;
+        }
         t_transactions to_init;
         auto           difference = transactions.size() - this->m_model_data.size();
         spdlog::trace("difference between old transactions call and new transactions is: {}", difference);
