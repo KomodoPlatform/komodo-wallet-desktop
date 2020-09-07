@@ -48,7 +48,6 @@
 #include "atomic.dex.provider.coinpaprika.hpp"
 #include "atomic.dex.qt.bindings.hpp"
 #include "atomic.dex.qt.settings.page.hpp"
-#include "atomic.dex.qt.utilities.hpp"
 #include "atomic.dex.qt.wallet.page.hpp"
 #include "atomic.dex.security.hpp"
 #include "atomic.dex.update.service.hpp"
@@ -286,35 +285,6 @@ namespace atomic_dex
         }
     }
 
-    /*void
-    application::refresh_transactions(const mm2& mm2)
-    {
-        const auto      ticker = m_coin_info->get_ticker().toStdString();
-        std::error_code ec;
-        auto            txs = mm2.get_tx_history(ticker, ec);
-        if (!ec)
-        {
-            const auto& config        = system_manager_.get_system<settings_page>().get_cfg();
-            auto&       price_service = system_manager_.get_system<global_price_service>();
-            m_coin_info->set_transactions(to_qt_binding(std::move(txs), price_service, config.current_currency, ticker));
-        }
-        auto tx_state = mm2.get_tx_state(ticker, ec);
-
-        if (!ec)
-        {
-            m_coin_info->set_tx_state(QString::fromStdString(tx_state.state));
-            if (mm2.get_coin_info(ticker).is_erc_20)
-            {
-                m_coin_info->set_blocks_left(tx_state.blocks_left);
-            }
-            else
-            {
-                m_coin_info->set_txs_left(tx_state.transactions_left);
-            }
-            m_coin_info->set_tx_current_block(tx_state.current_block);
-        }
-    }*/
-
     mm2&
     application::get_mm2() noexcept
     {
@@ -443,13 +413,6 @@ namespace atomic_dex
     }
 
     void
-    application::on_mm2_started_event([[maybe_unused]] const mm2_started& evt) noexcept
-    {
-        spdlog::debug("{} l{}", __FUNCTION__, __LINE__);
-        // this->set_status("complete");
-    }
-
-    void
     application::on_refresh_update_status_event([[maybe_unused]] const refresh_update_status& evt) noexcept
     {
         spdlog::debug("{} l{}", __FUNCTION__, __LINE__);
@@ -534,7 +497,6 @@ namespace atomic_dex
         get_dispatcher().sink<coin_fully_initialized>().disconnect<&application::on_coin_fully_initialized_event>(*this);
         get_dispatcher().sink<coin_disabled>().disconnect<&application::on_coin_disabled_event>(*this);
         get_dispatcher().sink<mm2_initialized>().disconnect<&application::on_mm2_initialized_event>(*this);
-        get_dispatcher().sink<mm2_started>().disconnect<&application::on_mm2_started_event>(*this);
         get_dispatcher().sink<process_orders_finished>().disconnect<&application::on_process_orders_finished_event>(*this);
         get_dispatcher().sink<process_swaps_finished>().disconnect<&application::on_process_swaps_finished_event>(*this);
 
@@ -562,7 +524,6 @@ namespace atomic_dex
         get_dispatcher().sink<coin_fully_initialized>().connect<&application::on_coin_fully_initialized_event>(*this);
         get_dispatcher().sink<coin_disabled>().connect<&application::on_coin_disabled_event>(*this);
         get_dispatcher().sink<mm2_initialized>().connect<&application::on_mm2_initialized_event>(*this);
-        get_dispatcher().sink<mm2_started>().connect<&application::on_mm2_started_event>(*this);
         get_dispatcher().sink<process_orders_finished>().connect<&application::on_process_orders_finished_event>(*this);
         get_dispatcher().sink<process_swaps_finished>().connect<&application::on_process_swaps_finished_event>(*this);
     }
@@ -827,7 +788,6 @@ namespace atomic_dex
     application::on_fiat_rate_updated(const fiat_rate_updated&) noexcept
     {
         spdlog::trace("{} l{}", __FUNCTION__, __LINE__);
-        std::error_code ec;
         this->dispatcher_.trigger<update_portfolio_values>();
     }
 

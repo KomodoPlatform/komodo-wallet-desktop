@@ -168,7 +168,6 @@ namespace atomic_dex
     atomic_dex::transactions_model::reset()
     {
         this->m_file_count = 0;
-        //this->m_tx_registry.clear();
         this->beginResetModel();
         this->m_model_data.clear();
         this->endResetModel();
@@ -247,20 +246,19 @@ namespace atomic_dex
     atomic_dex::transactions_model::fetchMore(const QModelIndex& parent)
     {
         if (parent.isValid())
+        {
             return;
+        }
         int remainder      = m_model_data.size() - m_file_count;
         int items_to_fetch = qMin(50, remainder);
         if (items_to_fetch <= 0)
+        {
             return;
+        }
         spdlog::trace("fetching {} transactions, total tx: {}", items_to_fetch, m_model_data.size());
         beginInsertRows(QModelIndex(), m_file_count, m_file_count + items_to_fetch - 1);
-
         m_file_count += items_to_fetch;
-
         endInsertRows();
-        /*std::for_each(m_model_data.begin() + (m_file_count - items_to_fetch), m_model_data.begin() + m_file_count, [this](const tx_infos& tx) {
-            this->m_tx_registry.emplace(tx.tx_hash);
-        });*/
         emit lengthChanged();
     }
 

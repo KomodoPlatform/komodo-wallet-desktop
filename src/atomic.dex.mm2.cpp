@@ -1322,8 +1322,6 @@ namespace atomic_dex
             out.push_back(std::move(current_info));
         }
 
-        // std::sort(begin(out), end(out), [](auto&& a, auto&& b) { return a.timestamp > b.timestamp; });
-
         m_tx_informations.insert_or_assign("result", std::move(out));
         m_tx_state.insert_or_assign("result", std::move(state));
         this->dispatcher_.trigger<tx_fetch_finished>();

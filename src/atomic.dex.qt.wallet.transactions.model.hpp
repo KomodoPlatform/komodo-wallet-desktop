@@ -14,12 +14,9 @@ namespace atomic_dex
         Q_PROPERTY(int length READ get_length NOTIFY lengthChanged);
         Q_PROPERTY(transactions_proxy_model* proxy_mdl READ get_transactions_proxy NOTIFY transactionsProxyMdlChanged)
 
-        using t_tx_registry = std::unordered_set<std::string>;
-
         ag::ecs::system_manager&  m_system_manager;
         transactions_proxy_model* m_model_proxy;
         t_transactions            m_model_data;
-        t_tx_registry             m_tx_registry;
         std::size_t               m_file_count{0};
 
       public:

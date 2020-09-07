@@ -73,12 +73,9 @@ namespace atomic_dex
         Q_PROPERTY(QString initial_loading_status READ get_status WRITE set_status NOTIFY onStatusChanged)
 
         //! Private function
-        // void refresh_transactions(const atomic_dex::mm2& mm2_system);
-        void refresh_address(atomic_dex::mm2& mm2_system);
         void connect_signals();
         void tick();
         void process_refresh_enabled_coin_action();
-        // void process_refresh_current_ticker_infos();
 
         enum events_action
         {
@@ -124,7 +121,6 @@ namespace atomic_dex
         void on_coin_fully_initialized_event(const coin_fully_initialized&) noexcept;
         void on_coin_disabled_event(const coin_disabled&) noexcept;
         void on_mm2_initialized_event(const mm2_initialized&) noexcept;
-        void on_mm2_started_event(const mm2_started&) noexcept;
         void on_refresh_update_status_event(const refresh_update_status&) noexcept;
         void on_process_orders_finished_event(const process_orders_finished&) noexcept;
         void on_process_swaps_finished_event(const process_swaps_finished&) noexcept;
@@ -193,7 +189,6 @@ namespace atomic_dex
         Q_INVOKABLE static QString get_price_amount(const QString& base_amount, const QString& rel_amount);
         Q_INVOKABLE bool           do_i_have_enough_funds(const QString& ticker, const QString& amount) const;
         Q_INVOKABLE bool           disable_coins(const QStringList& coins);
-
 
         Q_INVOKABLE QString        get_cex_rates(const QString& base, const QString& rel);
         Q_INVOKABLE QString        get_fiat_from_amount(const QString& ticker, const QString& amount);
