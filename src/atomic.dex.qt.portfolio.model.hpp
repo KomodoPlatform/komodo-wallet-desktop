@@ -60,9 +60,6 @@ namespace atomic_dex
         explicit portfolio_model(ag::ecs::system_manager& system_manager, entt::dispatcher& dispatcher, QObject* parent = nullptr) noexcept;
         ~portfolio_model() noexcept final;
 
-        //! Public callback
-        void on_update_portfolio_values_event(const update_portfolio_values&) noexcept;
-
         //! Overrides
         [[nodiscard]] QVariant               data(const QModelIndex& index, int role) const final;
         bool                                 setData(const QModelIndex& index, const QVariant& value, int role) final; //< Will be used internally
@@ -73,7 +70,7 @@ namespace atomic_dex
         //! Public api
         void initialize_portfolio(const std::vector<std::string>& tickers);
         void update_currency_values();
-        void update_balance_values(const std::string& ticker) noexcept;
+        void update_balance_values(const std::vector<std::string>& tickers) noexcept;
         void disable_coins(const QStringList& coins);
         void set_cfg(atomic_dex::cfg& cfg) noexcept;
 

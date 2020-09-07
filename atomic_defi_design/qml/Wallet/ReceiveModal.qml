@@ -24,7 +24,7 @@ DefaultModal {
         // Receive address
         TextAreaWithTitle {
             title: API.get().settings_pg.empty_string + (qsTr("Share this address to receive coins"))
-            field.text: API.get().settings_pg.empty_string + (API.get().current_coin_info.address)
+            field.text: API.get().settings_pg.empty_string + (current_ticker_infos.address)
             field.readOnly: true
             field.wrapMode: TextEdit.NoWrap
             copyable: true
@@ -33,7 +33,7 @@ DefaultModal {
         Image{
             Layout.alignment: Qt.AlignHCenter
 
-            source: "image://QZXing/encode/" + API.get().current_coin_info.address +
+            source: "image://QZXing/encode/" + current_ticker_infos.address +
                             "?correctionLevel=H" +
                             "&format=qrcode&border=true"
             sourceSize.width: 240

@@ -43,6 +43,7 @@ namespace atomic_dex
         std::string              total_amount;
         std::size_t              block_height;
         t_mm2_ec                 ec{dextop_error::success};
+        bool                     unconfirmed{false};
     };
 
     struct tx_state
@@ -80,16 +81,19 @@ namespace atomic_dex
         using t_tx_state_registry          = t_concurrent_reg<t_ticker, t_tx_state>;
         using t_orderbook_registry         = t_concurrent_reg<t_ticker, t_orderbook_answer>;
         using t_swaps_registry             = t_concurrent_reg<t_ticker, t_my_recent_swaps_answer>;
-        using t_swaps_avrg_datas           = t_concurrent_reg<t_ticker, std::string>;
         using t_fees_registry              = t_concurrent_reg<t_ticker, t_get_trade_fee_answer>;
         using t_synchronized_ticker_pair   = boost::synchronized_value<std::pair<std::string, std::string>>;
         using t_synchronized_max_taker_vol = boost::synchronized_value<t_pair_max_vol>;
+        using t_synchronized_ticker        = boost::synchronized_value<std::string>;
 
         //! Client
-        std::shared_ptr<t_http_client> m_mm2_client{nullptr};
+        std::shared_ptr<t_http_client>  m_mm2_client{nullptr};
         pplx::cancellation_token_source m_token_source;
         //! Process
         reproc::process m_mm2_instance;
+
+        //! Current ticker
+        t_synchronized_ticker m_current_ticker{"KMD"};
 
         //! Current orderbook
         t_synchronized_ticker_pair   m_synchronized_ticker_pair{std::make_pair("KMD", "BTC")};
@@ -125,21 +129,21 @@ namespace atomic_dex
         void fetch_current_orderbook_thread(bool is_a_reset = false);
 
         //! Refresh the balance registry (internal)
-        void process_balance(const std::string& ticker) const;
+        // void process_balance(const std::string& ticker) const;
 
         //! Refresh the orderbook registry (internal)
-        void process_orderbook(bool is_a_reset = false);
+        void           process_orderbook(bool is_a_reset = false);
         nlohmann::json prepare_batch_orderbook();
 
         //! Batch process fees and fetch current_orderbook thread
-        void batch_process_fees_and_fetch_current_orderbook_thread(bool is_a_reset);
+        void           batch_process_fees_and_fetch_current_orderbook_thread(bool is_a_reset);
         nlohmann::json prepare_process_fees_and_current_orderbook();
 
         //! Batch balance / tx
-        std::tuple<nlohmann::json, std::vector<std::string>, std::vector<std::string>> prepare_batch_balance_and_tx() const;
-        auto                                                                           batch_balance_and_tx(bool is_a_reset, std::vector<std::string> tickers = {}, bool is_during_enabling = false);
-        void                                                                           process_balance_answer(const nlohmann::json& answer);
-        void process_tx_answer(const nlohmann::json& answer_json, const std::string& ticker);
+        std::tuple<nlohmann::json, std::vector<std::string>, std::vector<std::string>> prepare_batch_balance_and_tx(bool only_tx = false) const;
+        auto batch_balance_and_tx(bool is_a_reset, std::vector<std::string> tickers = {}, bool is_during_enabling = false, bool only_tx = false);
+        void process_balance_answer(const nlohmann::json& answer);
+        void process_tx_answer(const nlohmann::json& answer_json);
         void process_tx_etherscan(const std::string& ticker, bool is_a_refresh);
 
         //!
@@ -172,7 +176,7 @@ namespace atomic_dex
         void spawn_mm2_instance(std::string wallet_name, std::string passphrase, bool with_pin_cfg = false);
 
         //! Refresh the current info (internally call process_balance and process_tx)
-        void fetch_infos_thread(bool is_a_fresh = true);
+        void fetch_infos_thread(bool is_a_fresh = true, bool only_tx = false);
 
         //! Refresh the swaps history
         void process_swaps();
@@ -213,23 +217,11 @@ namespace atomic_dex
         //! Place a buy order, Doesn't work if i don't have enough funds.
         t_sell_answer place_sell_order(t_sell_request&& request, const t_float_50& total, t_mm2_ec& ec) const;
 
-        //! Withdraw Money to another address
-        [[nodiscard]] t_withdraw_answer withdraw(t_withdraw_request&& request, t_mm2_ec& ec) noexcept;
-
-        //! Broadcast a raw transaction on the blockchain
-        [[nodiscard]] t_broadcast_answer broadcast(t_broadcast_request&& request, t_mm2_ec& ec) noexcept;
+        //! Last 50 transactions maximum
+        [[nodiscard]] t_transactions get_tx_history(t_mm2_ec& ec) const;
 
         //! Last 50 transactions maximum
-        [[nodiscard]] t_transactions get_tx_history(const std::string& ticker, t_mm2_ec& ec) const;
-
-        //! Last 50 transactions maximum
-        [[nodiscard]] t_tx_state get_tx_state(const std::string& ticker, t_mm2_ec& ec) const;
-
-        //! Claim rewards
-        nlohmann::json claim_rewards(const std::string& ticker, t_mm2_ec& ec) noexcept;
-
-        //! Send Rewards
-        t_broadcast_answer send_rewards(t_broadcast_request&& req, t_mm2_ec& ec) noexcept;
+        [[nodiscard]] t_tx_state get_tx_state(t_mm2_ec& ec) const;
 
         //! Get coins that are currently enabled
         [[nodiscard]] t_coins get_enabled_coins() const noexcept;
@@ -242,7 +234,6 @@ namespace atomic_dex
 
         //! Get all coins
         [[nodiscard]] t_coins get_all_coins() const noexcept;
-        ;
 
         //! Get Specific info about one coin
         [[nodiscard]] coin_config get_coin_info(const std::string& ticker) const;
@@ -285,7 +276,13 @@ namespace atomic_dex
         void               batch_fetch_orders_and_swap();
         void               add_orders_answer(t_my_orders_answer answer);
 
-        std::shared_ptr<t_http_client> get_mm2_client() noexcept;;
+        //! Async API
+        std::shared_ptr<t_http_client>         get_mm2_client() noexcept;
+        [[nodiscard]] pplx::cancellation_token get_cancellation_token() const noexcept;
+
+        //! Wallet api
+        [[nodiscard]] std::string get_current_ticker() const noexcept;
+        bool                      set_current_ticker(const std::string& ticker) noexcept;
     };
 } // namespace atomic_dex
 

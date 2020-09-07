@@ -91,7 +91,7 @@ namespace atomic_dex
         case atomic_dex::portfolio_model::MainCurrencyPriceForOneUnit:
             return t_float_50(left_data.toString().toStdString()) < t_float_50(right_data.toString().toStdString());
         case atomic_dex::portfolio_model::NameRole:
-            return left_data.toString() < right_data.toString();
+            return left_data.toString().toLower() < right_data.toString().toLower();
         case portfolio_model::Trend7D:
             return false;
         case portfolio_model::Excluded:

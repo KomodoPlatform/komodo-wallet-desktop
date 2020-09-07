@@ -158,7 +158,7 @@ ChartView {
         }
     }
 
-    property var historical: API.get().current_coin_info.trend_7d
+    property var historical: current_ticker_infos.trend_7d
     onHistoricalChanged: {
         updateChart(historical)
     }

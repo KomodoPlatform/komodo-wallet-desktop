@@ -24,7 +24,7 @@ ColumnLayout {
         clip: true
 
         // Row
-        delegate: DefaultText {
+        delegate: DefaultTextEdit {
             text_value: API.get().settings_pg.empty_string + (model.modelData)
             color: Style.modalValueColor
             privacy: true

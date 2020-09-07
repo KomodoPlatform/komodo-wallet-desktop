@@ -19,7 +19,6 @@ DefaultModal {
 
         return false
     }
-    readonly property bool can_confirm: positive_claim_amount && has_eligible_utxo
 
     readonly property var default_prepare_claim_rewards_result: ({
          "kmd_rewards_info": {
@@ -48,43 +47,56 @@ DefaultModal {
          }
      })
     property var prepare_claim_rewards_result: General.clone(default_prepare_claim_rewards_result)
-    property string send_result
 
     // Override
     property var postClaim: () => {}
 
     // Local
-    function canClaim() {
-        return API.get().current_coin_info.is_claimable && parseFloat(API.get().current_coin_info.balance) > 0
+    readonly property bool can_confirm: positive_claim_amount && has_eligible_utxo && !is_broadcast_busy
+
+    readonly property bool can_claim: current_ticker_infos.is_claimable && !api_wallet_page.is_claiming_busy
+    readonly property var claim_rpc_result: api_wallet_page.claiming_rpc_data
+
+    readonly property bool is_broadcast_busy: api_wallet_page.is_broadcast_busy
+    readonly property string broadcast_result: api_wallet_page.broadcast_rpc_data
+
+    onClaim_rpc_resultChanged: {
+        prepare_claim_rewards_result = General.clone(claim_rpc_result)
+        if(!prepare_claim_rewards_result.withdraw_answer) {
+            reset()
+            return
+        }
+
+        console.log("Claim rewards result changed:", JSON.stringify(prepare_claim_rewards_result))
+
+        if(prepare_claim_rewards_result.error_code) {
+            toast.show(qsTr("Failed to prepare to claim rewards"), General.time_toast_important_error, prepare_claim_rewards_result.error_message)
+            root.close()
+        }
+    }
+
+    onBroadcast_resultChanged: {
+        if(root.visible && broadcast_result !== "") {
+            stack_layout.currentIndex = 1
+            postClaim()
+        }
     }
 
     function prepareClaimRewards() {
+        if(!can_claim) return
+
         stack_layout.currentIndex = 0
         reset()
 
-        prepare_claim_rewards_result = API.get().claim_rewards(API.get().current_coin_info.ticker)
-        console.log(JSON.stringify(prepare_claim_rewards_result))
-        if(prepare_claim_rewards_result.withdraw_answer.error) {
-            toast.show(qsTr("Failed to prepare to claim rewards"), General.time_toast_important_error, prepare_claim_rewards_result.withdraw_answer.error)
-            return false
-        }
-        else if(prepare_claim_rewards_result.kmd_rewards_info.error) {
-            toast.show(qsTr("Failed to get the rewards info"), General.time_toast_important_error, prepare_claim_rewards_result.kmd_rewards_info.error)
-            return false
-        }
-
-        return true
+        api_wallet_page.claim_rewards()
     }
 
     function claimRewards() {
-        send_result = API.get().send_rewards(prepare_claim_rewards_result.withdraw_answer.tx_hex)
-        stack_layout.currentIndex = 1
-        postClaim()
+        api_wallet_page.broadcast(prepare_claim_rewards_result.withdraw_answer.tx_hex, true, false, "0")
     }
 
     function reset() {
         prepare_claim_rewards_result = General.clone(default_prepare_claim_rewards_result)
-        send_result = ""
     }
 
     // Inside modal
@@ -100,11 +112,17 @@ DefaultModal {
             Layout.alignment: Qt.AlignHCenter
 
             ModalHeader {
-                title: API.get().settings_pg.empty_string + (qsTr("Claim your %1 reward?", "TICKER").arg(API.get().current_coin_info.ticker))
+                title: API.get().settings_pg.empty_string + (qsTr("Claim your %1 reward?", "TICKER").arg(api_wallet_page.ticker))
             }
 
+            DefaultBusyIndicator {
+                visible: !can_claim || is_broadcast_busy
+                Layout.alignment: Qt.AlignCenter
+            }
 
             RowLayout {
+                visible: can_claim
+
                 Layout.fillWidth: true
                 DefaultText {
                     Layout.fillWidth: true
@@ -113,14 +131,14 @@ DefaultModal {
                                      !has_eligible_utxo ? ("❌ " + qsTr("No UTXOs eligible for claiming")) :
                                      !positive_claim_amount ? ("❌ " + qsTr("Transaction fee is higher than the reward!")) :
 
-                                     qsTr("You will receive %1", "AMT TICKER").arg(General.formatCrypto("", prepare_claim_rewards_result.withdraw_answer.my_balance_change, API.get().current_coin_info.ticker)))
+                                     qsTr("You will receive %1", "AMT TICKER").arg(General.formatCrypto("", prepare_claim_rewards_result.withdraw_answer.my_balance_change, api_wallet_page.ticker)))
                 }
 
                 PrimaryButton {
                     text: API.get().settings_pg.empty_string + (qsTr("Refresh"))
-                    onClicked: {
-                        if(!prepareClaimRewards()) root.close()
-                    }
+                    onClicked: prepareClaimRewards()
+
+                    enabled: can_claim
                 }
             }
 
@@ -132,6 +150,8 @@ DefaultModal {
 
             // List header
             Item {
+                visible: can_claim
+
                 Layout.topMargin: 25
                 Layout.fillWidth: true
 
@@ -258,6 +278,8 @@ DefaultModal {
             }
 
             DefaultListView {
+                visible: can_claim
+
                 id: list
                 Layout.fillWidth: true
                 Layout.fillHeight: true
@@ -425,7 +447,7 @@ DefaultModal {
                 fees: prepare_claim_rewards_result.withdraw_answer.fee_details.amount,
                 date: prepare_claim_rewards_result.withdraw_answer.date
             })
-            tx_hash: send_result
+            tx_hash: broadcast_result
 
             function onClose() { root.close() }
         }

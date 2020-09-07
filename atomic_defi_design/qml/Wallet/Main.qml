@@ -26,8 +26,10 @@ Item {
     }
 
     function loadingPercentage(remaining) {
-        return General.formatPercent((100 * (1 - parseFloat(remaining)/parseFloat(API.get().current_coin_info.tx_current_block))).toFixed(3), false)
+        return General.formatPercent((100 * (1 - parseFloat(remaining)/parseFloat(current_ticker_infos.current_block))).toFixed(3), false)
     }
+
+    readonly property var transactions_mdl: api_wallet_page.transactions_mdl
 
     Layout.fillHeight: true
     Layout.fillWidth: true
@@ -65,7 +67,7 @@ Item {
                         spacing: 15
                         // Icon
                         DefaultImage {
-                            source: General.coinIcon(API.get().current_coin_info.ticker)
+                            source: General.coinIcon(api_wallet_page.ticker)
                             Layout.preferredHeight: 60
                             Layout.preferredWidth: Layout.preferredHeight
                         }
@@ -77,14 +79,14 @@ Item {
 
                             DefaultText {
                                 id: name
-                                text_value: API.get().settings_pg.empty_string + (API.get().current_coin_info.name)
+                                text_value: API.get().settings_pg.empty_string + (current_ticker_infos.name)
                                 Layout.alignment: Qt.AlignLeft
                                 font.pixelSize: Style.textSizeMid
                             }
 
                             DefaultText {
                                 id: name_value
-                                text_value: API.get().settings_pg.empty_string + (General.formatCrypto("", API.get().current_coin_info.balance, API.get().current_coin_info.ticker))
+                                text_value: API.get().settings_pg.empty_string + (General.formatCrypto("", current_ticker_infos.balance, api_wallet_page.ticker))
                                 Layout.alignment: Qt.AlignLeft
                                 font.pixelSize: name.font.pixelSize
                                 privacy: true
@@ -104,7 +106,7 @@ Item {
                         }
 
                         DefaultText {
-                            text_value: API.get().settings_pg.empty_string + (General.formatFiat("", API.get().current_coin_info.fiat_amount, API.get().settings_pg.current_currency))
+                            text_value: API.get().settings_pg.empty_string + (General.formatFiat("", current_ticker_infos.fiat_amount, API.get().settings_pg.current_currency))
                             Layout.alignment: Qt.AlignLeft
                             font.pixelSize: name.font.pixelSize
                             privacy: true
@@ -131,7 +133,7 @@ Item {
                         }
 
                         DefaultText {
-                            text_value: API.get().settings_pg.empty_string + (General.formatFiat('', API.get().current_coin_info.main_currency_balance, API.get().settings_pg.current_currency))
+                            text_value: API.get().settings_pg.empty_string + (General.formatFiat('', current_ticker_infos.current_currency_ticker_price, API.get().settings_pg.current_currency))
                             Layout.alignment: Qt.AlignLeft
                             font.pixelSize: name.font.pixelSize
                         }
@@ -150,12 +152,12 @@ Item {
 
                         DefaultText {
                             text_value: {
-                                const v = parseFloat(API.get().current_coin_info.change_24h)
+                                const v = parseFloat(current_ticker_infos.change_24h)
                                 return API.get().settings_pg.empty_string + (v === 0 ? '-' : General.formatPercent(v))
                             }
                             Layout.alignment: Qt.AlignLeft
                             font.pixelSize: name.font.pixelSize
-                            color: Style.getValueColor(API.get().current_coin_info.change_24h)
+                            color: Style.getValueColor(current_ticker_infos.change_24h)
                         }
                     }
 
@@ -172,8 +174,8 @@ Item {
 
                         DefaultText {
                             text_value: {
-                                const fiat_amount = parseFloat(API.get().current_coin_info.fiat_amount)
-                                const portfolio_balance = parseFloat(API.get().balance_fiat_all)
+                                const fiat_amount = parseFloat(current_ticker_infos.fiat_amount)
+                                const portfolio_balance = parseFloat(API.get().portfolio_pg.balance_fiat_all)
                                 if(fiat_amount <= 0 || portfolio_balance <= 0) return "-"
 
                                 return API.get().settings_pg.empty_string + (General.formatPercent((100 * fiat_amount/portfolio_balance).toFixed(2), false))
@@ -196,7 +198,7 @@ Item {
 
                 DefaultButton {
                     id: send_button
-                    enabled: parseFloat(API.get().current_coin_info.balance) > 0
+                    enabled: parseFloat(current_ticker_infos.balance) > 0
                     text: API.get().settings_pg.empty_string + (qsTr("Send"))
                     onClicked: send_modal.open()
                     Layout.fillWidth: true
@@ -264,11 +266,11 @@ Item {
                     Layout.fillWidth: true
                     font.pixelSize: send_button.font.pixelSize
 
-                    visible: API.get().current_coin_info.is_claimable && !API.get().is_pin_cfg_enabled()
-                    enabled: claim_rewards_modal.canClaim()
+                    visible: current_ticker_infos.is_claimable && !API.get().is_pin_cfg_enabled()
+                    enabled: parseFloat(current_ticker_infos.balance) > 0
                     onClicked: {
-                        if(claim_rewards_modal.prepareClaimRewards())
-                            claim_rewards_modal.open()
+                        claim_rewards_modal.prepareClaimRewards()
+                        claim_rewards_modal.open()
                     }
                 }
 
@@ -317,7 +319,7 @@ Item {
 
                             DefaultText {
                                 id: left_text
-                                text_value: API.get().settings_pg.empty_string + (qsTr("%1 / %2 Price", "TICKER").arg(API.get().current_coin_info.ticker).arg(API.get().settings_pg.current_fiat) + " " + General.cex_icon)
+                                text_value: API.get().settings_pg.empty_string + (qsTr("%1 / %2 Price", "TICKER").arg(api_wallet_page.ticker).arg(API.get().settings_pg.current_fiat) + " " + General.cex_icon)
                                 font.pixelSize: Style.textSizeSmall3
 
                                 CexInfoTrigger {}
@@ -352,7 +354,7 @@ Item {
             // Transactions or loading
             Item {
                 id: loading_tx
-                visible: API.get().current_coin_info.tx_state === "InProgress"
+                visible: current_ticker_infos.tx_state === "InProgress"
                 Layout.alignment: Qt.AlignHCenter
                 Layout.fillWidth: true
                 implicitHeight: 100
@@ -372,9 +374,9 @@ Item {
 
                     DefaultText {
                         text_value: API.get().settings_pg.empty_string + (
-                          API.get().current_coin_info.type === "ERC-20" ?
-                          (qsTr("Scanning blocks for TX History...") + " " + loadingPercentage(API.get().current_coin_info.blocks_left)) :
-                          (qsTr("Syncing TX History...") + " " + loadingPercentage(API.get().current_coin_info.transactions_left))
+                          current_ticker_infos.type === "ERC-20" ?
+                          (qsTr("Scanning blocks for TX History...") + " " + loadingPercentage(current_ticker_infos.blocks_left)) :
+                          (qsTr("Syncing TX History...") + " " + loadingPercentage(current_ticker_infos.transactions_left))
                         )
                         Layout.alignment: Qt.AlignHCenter
                     }
@@ -383,7 +385,7 @@ Item {
 
             // Separator line
             HorizontalLine {
-                visible: loading_tx.visible && API.get().current_coin_info.transactions.length > 0
+                visible: loading_tx.visible && transactions_mdl.length > 0
                 width: 720
                 Layout.alignment: Qt.AlignHCenter
             }
@@ -394,7 +396,7 @@ Item {
                 Layout.fillHeight: true
                 Layout.leftMargin: layout_margin
                 Layout.rightMargin: layout_margin
-                Layout.bottomMargin: layout_margin
+                Layout.bottomMargin: !fetching_text_row.visible ? layout_margin : undefined
 
                 implicitHeight: wallet.height*0.54
 
@@ -404,8 +406,8 @@ Item {
 
                     DefaultText {
                         anchors.centerIn: parent
-                        visible: API.get().current_coin_info.tx_state !== "InProgress" && API.get().current_coin_info.transactions.length === 0
-                        text_value: API.get().settings_pg.empty_string + (qsTr("No transactions"))
+                        visible: current_ticker_infos.tx_state !== "InProgress" && transactions_mdl.length === 0
+                        text_value: API.get().settings_pg.empty_string + (api_wallet_page.tx_fetching_busy ? (qsTr("Refreshing") + "...") : qsTr("No transactions"))
                         font.pixelSize: Style.textSize
                         color: Style.colorWhite4
                     }
@@ -413,7 +415,32 @@ Item {
                     Transactions {
                         width: parent.width
                         height: parent.height
+                        model: transactions_mdl.proxy_mdl
                     }
+                }
+            }
+
+            RowLayout {
+                id: fetching_text_row
+                visible: api_wallet_page.tx_fetching_busy
+                Layout.preferredHeight: fetching_text.font.pixelSize * 1.5
+
+                Layout.topMargin: -layout_margin*0.5
+                Layout.bottomMargin: layout_margin*0.5
+
+                Layout.alignment: Qt.AlignHCenter
+                spacing: 10
+                DefaultBusyIndicator {
+                    Layout.alignment: Qt.AlignVCenter
+                    Layout.preferredWidth: Style.textSizeSmall3
+                    Layout.preferredHeight: Layout.preferredWidth
+                }
+
+                DefaultText {
+                    id: fetching_text
+                    Layout.alignment: Qt.AlignVCenter
+                    text_value: API.get().settings_pg.empty_string + (qsTr("Fetching transactions") + "...")
+                    font.pixelSize: Style.textSizeSmall3
                 }
             }
 

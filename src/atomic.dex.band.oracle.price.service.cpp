@@ -51,7 +51,18 @@ namespace atomic_dex
                     band_oracle_price_result result;
                     from_json(j, result);
                     this->m_oracle_price_result.insert_or_assign("result", result);
-                    this->m_oracle_ready = true;
+                    using namespace std::chrono_literals;
+                    auto       last_oracle_timestamp     = result.timestamp;
+                    const auto now                       = std::chrono::system_clock::now();
+                    const auto last_oracle_timestamp_std = std::chrono::system_clock::from_time_t(last_oracle_timestamp);
+                    const auto s                         = std::chrono::duration_cast<std::chrono::seconds>(now - last_oracle_timestamp_std);
+                    this->m_oracle_ready                 = s > 20min ? false : true;
+                    if (s > 20min)
+                    {
+                        spdlog::warn(
+                            "last oracle too much outdated: {}, fallback to coinpaprika",
+                            to_human_date<std::chrono::seconds>(last_oracle_timestamp, "%e %b %Y, %H:%M"));
+                    }
                     this->dispatcher_.trigger<band_oracle_refreshed>();
                 }
             })
@@ -113,6 +124,14 @@ namespace atomic_dex
             auto& result = m_oracle_price_result.at("result");
             for (auto&& cur: result.prices) { out.emplace_back(cur.first + "/USD"); }
         }
+        else
+        {
+            if (m_oracle_price_result.find("result") != m_oracle_price_result.end())
+            {
+                auto& result = m_oracle_price_result.at("result");
+                for (auto&& cur: result.prices) { out.emplace_back(cur.first + "/USD"); }
+            }
+        }
         return out;
     }
 
@@ -124,6 +143,14 @@ namespace atomic_dex
         {
             auto& result = m_oracle_price_result.at("result");
             out          = result.reference;
+        }
+        else
+        {
+            if (m_oracle_price_result.find("result") != m_oracle_price_result.end())
+            {
+                auto& result = m_oracle_price_result.at("result");
+                out          = result.reference;
+            }
         }
         return out;
     }

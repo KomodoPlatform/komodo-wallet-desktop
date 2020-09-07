@@ -179,7 +179,7 @@ Item {
 
     // Trade
     function open(ticker) {
-        // TODO: setPair(true, ticker)
+        setPair(true, ticker)
         onOpened()
     }
 

@@ -88,124 +88,124 @@
 <context>
     <name>ClaimRewardsModal</name>
     <message>
-        <location filename="../../qml/Wallet/ClaimRewardsModal.qml" line="68"/>
+        <location filename="../../qml/Wallet/ClaimRewardsModal.qml" line="70"/>
         <source>Failed to prepare to claim rewards</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/ClaimRewardsModal.qml" line="72"/>
+        <location filename="../../qml/Wallet/ClaimRewardsModal.qml" line="74"/>
         <source>Failed to get the rewards info</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/ClaimRewardsModal.qml" line="103"/>
+        <location filename="../../qml/Wallet/ClaimRewardsModal.qml" line="114"/>
         <source>Claim your %1 reward?</source>
         <comment>TICKER</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/ClaimRewardsModal.qml" line="113"/>
+        <location filename="../../qml/Wallet/ClaimRewardsModal.qml" line="130"/>
         <source>No UTXOs eligible for claiming</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/ClaimRewardsModal.qml" line="114"/>
+        <location filename="../../qml/Wallet/ClaimRewardsModal.qml" line="131"/>
         <source>Transaction fee is higher than the reward!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/ClaimRewardsModal.qml" line="116"/>
+        <location filename="../../qml/Wallet/ClaimRewardsModal.qml" line="133"/>
         <source>You will receive %1</source>
         <comment>AMT TICKER</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/ClaimRewardsModal.qml" line="120"/>
+        <location filename="../../qml/Wallet/ClaimRewardsModal.qml" line="137"/>
         <source>Refresh</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/ClaimRewardsModal.qml" line="128"/>
+        <location filename="../../qml/Wallet/ClaimRewardsModal.qml" line="145"/>
         <source>Read more about KMD active users rewards</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/ClaimRewardsModal.qml" line="148"/>
+        <location filename="../../qml/Wallet/ClaimRewardsModal.qml" line="164"/>
         <source>UTXO</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/ClaimRewardsModal.qml" line="163"/>
+        <location filename="../../qml/Wallet/ClaimRewardsModal.qml" line="179"/>
         <source>Amount</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/ClaimRewardsModal.qml" line="179"/>
+        <location filename="../../qml/Wallet/ClaimRewardsModal.qml" line="195"/>
         <source>Reward</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/ClaimRewardsModal.qml" line="195"/>
+        <location filename="../../qml/Wallet/ClaimRewardsModal.qml" line="211"/>
         <source>Accruing Start</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/ClaimRewardsModal.qml" line="211"/>
+        <location filename="../../qml/Wallet/ClaimRewardsModal.qml" line="227"/>
         <source>Accruing Stop</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/ClaimRewardsModal.qml" line="227"/>
+        <location filename="../../qml/Wallet/ClaimRewardsModal.qml" line="243"/>
         <source>Time Left</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/ClaimRewardsModal.qml" line="243"/>
+        <location filename="../../qml/Wallet/ClaimRewardsModal.qml" line="259"/>
         <source>Error</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/ClaimRewardsModal.qml" line="369"/>
+        <location filename="../../qml/Wallet/ClaimRewardsModal.qml" line="387"/>
         <source>Locktime is not set</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/ClaimRewardsModal.qml" line="372"/>
+        <location filename="../../qml/Wallet/ClaimRewardsModal.qml" line="390"/>
         <source>Locktime is less than the threshold</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/ClaimRewardsModal.qml" line="375"/>
+        <location filename="../../qml/Wallet/ClaimRewardsModal.qml" line="393"/>
         <source>UTXO height is greater than end of the era</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/ClaimRewardsModal.qml" line="378"/>
+        <location filename="../../qml/Wallet/ClaimRewardsModal.qml" line="396"/>
         <source>UTXO amount is less than 10</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/ClaimRewardsModal.qml" line="381"/>
+        <location filename="../../qml/Wallet/ClaimRewardsModal.qml" line="399"/>
         <source>One hour did not pass yet</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/ClaimRewardsModal.qml" line="384"/>
+        <location filename="../../qml/Wallet/ClaimRewardsModal.qml" line="402"/>
         <source>Transaction is in mempool</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/ClaimRewardsModal.qml" line="387"/>
+        <location filename="../../qml/Wallet/ClaimRewardsModal.qml" line="405"/>
         <source>Unknown problem</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/ClaimRewardsModal.qml" line="411"/>
+        <location filename="../../qml/Wallet/ClaimRewardsModal.qml" line="429"/>
         <source>Cancel</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/ClaimRewardsModal.qml" line="416"/>
+        <location filename="../../qml/Wallet/ClaimRewardsModal.qml" line="434"/>
         <source>Confirm</source>
         <translation type="unfinished"></translation>
     </message>
@@ -244,38 +244,38 @@
     </message>
     <message>
         <location filename="../../qml/Exchange/Trade/ConfirmTradeModal.qml" line="122"/>
-        <location filename="../../qml/Exchange/Trade/ConfirmTradeModal.qml" line="160"/>
+        <location filename="../../qml/Exchange/Trade/ConfirmTradeModal.qml" line="157"/>
         <source>Read more about dPoW</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/ConfirmTradeModal.qml" line="137"/>
+        <location filename="../../qml/Exchange/Trade/ConfirmTradeModal.qml" line="134"/>
         <source>Use custom protection settings for incoming %1 transactions</source>
         <comment>TICKER</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/ConfirmTradeModal.qml" line="154"/>
+        <location filename="../../qml/Exchange/Trade/ConfirmTradeModal.qml" line="151"/>
         <source>Enable Komodo dPoW security</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/ConfirmTradeModal.qml" line="182"/>
+        <location filename="../../qml/Exchange/Trade/ConfirmTradeModal.qml" line="176"/>
         <source>Required Confirmations</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/ConfirmTradeModal.qml" line="218"/>
+        <location filename="../../qml/Exchange/Trade/ConfirmTradeModal.qml" line="212"/>
         <source>Warning, this atomic swap is not dPoW protected!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/ConfirmTradeModal.qml" line="227"/>
+        <location filename="../../qml/Exchange/Trade/ConfirmTradeModal.qml" line="221"/>
         <source>Cancel</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/ConfirmTradeModal.qml" line="233"/>
+        <location filename="../../qml/Exchange/Trade/ConfirmTradeModal.qml" line="227"/>
         <source>Confirm</source>
         <translation type="unfinished"></translation>
     </message>
@@ -291,19 +291,19 @@
 <context>
     <name>Dashboard</name>
     <message>
-        <location filename="../../qml/Screens/Dashboard.qml" line="136"/>
-        <location filename="../../qml/Screens/Dashboard.qml" line="147"/>
+        <location filename="../../qml/Screens/Dashboard.qml" line="138"/>
+        <location filename="../../qml/Screens/Dashboard.qml" line="149"/>
         <source>Content for this section will be added later. Stay tuned!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Screens/Dashboard.qml" line="249"/>
-        <source>CEX Data</source>
+        <location filename="../../qml/Screens/Dashboard.qml" line="251"/>
+        <source>Market Data</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Screens/Dashboard.qml" line="253"/>
-        <source>Markets data (prices, charts, etc.) marked with the ⓘ icon originates from third party sources.</source>
+        <location filename="../../qml/Screens/Dashboard.qml" line="255"/>
+        <source>Market data (prices, charts, etc.) marked with the ⓘ icon originates from third-party sources.&lt;br&gt;&lt;br&gt;Data is sourced via &lt;a href=&quot;https://bandprotocol.com/&quot;&gt;Band Decentralized Oracle&lt;/a&gt; and &lt;a href=&quot;https://coinpaprika.com&quot;&gt;Coinpaprika&lt;/a&gt;.&lt;br&gt;&lt;br&gt;&lt;b&gt;Oracle Supported Pairs:&lt;/b&gt;&lt;br&gt;%1&lt;br&gt;&lt;br&gt;&lt;b&gt;Last reference (Band Oracle):&lt;/b&gt;&lt;br&gt;&lt;a href=&quot;%2&quot;&gt;%2&lt;/a&gt;</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

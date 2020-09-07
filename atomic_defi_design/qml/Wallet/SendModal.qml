@@ -9,17 +9,84 @@ DefaultModal {
     id: root
 
     property alias address_field: input_address.field
+    property alias amount_field: input_amount.field
 
 
     onClosed: if(stack_layout.currentIndex === 2) reset(true)
 
     // Local
-    readonly property var default_prepare_send_result: ({ has_error: false, error_message: "", tx_hex: "", date: "", fees: "", explorer_url: "", max: false })
-    property var prepare_send_result: default_prepare_send_result
-    property string send_result
+    readonly property var default_send_result: ({ has_error: false, error_message: "",
+                                                    withdraw_answer: {
+                                                        tx_hex: "", date: "", "fee_details": { total_fee: "" }
+                                                    },
+                                                    explorer_url: "", max: false })
+    property var send_result: default_send_result
+
+
+    readonly property bool is_send_busy: api_wallet_page.is_send_busy
+    readonly property var send_rpc_result: api_wallet_page.send_rpc_data
+
+    readonly property bool is_broadcast_busy: api_wallet_page.is_broadcast_busy
+    readonly property string broadcast_result: api_wallet_page.broadcast_rpc_data
+    property bool async_param_max: false
+
+    onSend_rpc_resultChanged: {
+        send_result = General.clone(send_rpc_result)
+
+        // Local var, faster
+        const result = send_result
+
+        if(result.error_code) {
+            text_error.text = result.error_message
+        }
+        else {
+            if(!result.withdraw_answer) {
+                reset()
+                return
+            }
+
+            const max = async_param_max
+            send_result.withdraw_answer.max = max
+
+            text_error.text = ""
+
+            if(max) input_amount.field.text = API.get().is_pin_cfg_enabled() ? General.absString(result.withdraw_answer.my_balance_change) : result.withdraw_answer.total_amount
+
+            // Change page
+            stack_layout.currentIndex = 1
+        }
+    }
+
+    onBroadcast_resultChanged: {
+        if(root.visible && broadcast_result !== "")
+            stack_layout.currentIndex = 2
+    }
+
+    function prepareSendCoin(address, amount, with_fees, fees_amount, is_erc_20, gas_limit, gas_price) {
+        let max = input_max_amount.checked || parseFloat(current_ticker_infos.balance) === parseFloat(amount)
+
+        // Save for later check
+        async_param_max = max
+
+        if(with_fees && max === false && !is_erc_20)
+            max = parseFloat(amount) + parseFloat(fees_amount) >= parseFloat(current_ticker_infos.balance)
+
+        const fees_info = {
+            fees_amount,
+            gas_price,
+            gas_limit: gas_limit === "" ? 0 : parseInt(gas_limit)
+        }
+
+        console.log("Passing fees info: ", JSON.stringify(fees_info))
+        api_wallet_page.send(address, amount, max, with_fees, fees_info)
+    }
+
+    function sendCoin() {
+        api_wallet_page.broadcast(send_result.withdraw_answer.tx_hex, false, send_result.withdraw_answer.max, input_amount.field.text)
+    }
 
     function isERC20() {
-        return API.get().current_coin_info.type === "ERC-20"
+        return current_ticker_infos.type === "ERC-20"
     }
 
     function ercToMixedCase(addr) {
@@ -34,48 +101,8 @@ DefaultModal {
         return addr === addr.toLowerCase() || addr === addr.toUpperCase()
     }
 
-    function prepareSendCoin(address, amount, fee_enabled, fee_amount, is_erc_20, gas, gas_price, set_current=true) {
-        let max = input_max_amount.checked || parseFloat(API.get().current_coin_info.balance) === parseFloat(amount)
-
-        let result
-
-        if(fee_enabled) {
-            if(max === false && !is_erc_20)
-                max = parseFloat(amount) + parseFloat(fee_amount) >= parseFloat(API.get().current_coin_info.balance)
-
-            result = API.get().prepare_send_fees(address, amount, is_erc_20, fee_amount, gas_price, gas, max)
-        }
-        else {
-            result = API.get().prepare_send(address, amount, max)
-        }
-
-        if(set_current) {
-            if(max) input_amount.field.text = API.get().is_pin_cfg_enabled() ? General.absString(result.balance_change) : result.total_amount
-
-            prepare_send_result = result
-            prepare_send_result.max = max
-            if(prepare_send_result.has_error) {
-                text_error.text = prepare_send_result.error_message
-            }
-            else {
-                text_error.text = ""
-
-                // Change page
-                stack_layout.currentIndex = 1
-            }
-        }
-
-        return result
-    }
-
-    function sendCoin() {
-        send_result = API.get().send(prepare_send_result.tx_hex, prepare_send_result.max, input_amount.field.text)
-        stack_layout.currentIndex = 2
-    }
-
     function reset(close = false) {
-        prepare_send_result = default_prepare_send_result
-        send_result = ""
+        send_result = default_send_result
 
         input_address.field.text = ""
         input_amount.field.text = ""
@@ -103,7 +130,7 @@ DefaultModal {
     function hasFunds() {
         if(input_max_amount.checked) return true
 
-        if(!General.hasEnoughFunds(true, API.get().current_coin_info.ticker, "", "", input_amount.field.text))
+        if(!General.hasEnoughFunds(true, api_wallet_page.ticker, "", "", input_amount.field.text))
             return false
 
         if(custom_fees_switch.checked) {
@@ -113,7 +140,7 @@ DefaultModal {
                 const gas_price = parseFloat(input_custom_fees_gas_price.field.text)
                 const fee_eth = (gas_limit * gas_price)/ether
 
-                if(API.get().current_coin_info.ticker === "ETH") {
+                if(api_wallet_page.ticker === "ETH") {
                     const amount = parseFloat(input_amount.field.text)
                     const total_needed_eth = amount + fee_eth
                     if(!General.hasEnoughFunds(true, "ETH", "", "", total_needed_eth.toString()))
@@ -127,7 +154,7 @@ DefaultModal {
             else {
                 if(feeIsHigherThanAmount()) return false
 
-                if(!General.hasEnoughFunds(true, API.get().current_coin_info.ticker, "", "", input_custom_fees.field.text))
+                if(!General.hasEnoughFunds(true, api_wallet_page.ticker, "", "", input_custom_fees.field.text))
                     return false
             }
         }
@@ -152,7 +179,7 @@ DefaultModal {
     }
 
     function setMax() {
-        input_amount.field.text = API.get().current_coin_info.balance
+        input_amount.field.text = current_ticker_infos.balance
     }
 
     // Inside modal
@@ -180,6 +207,7 @@ DefaultModal {
                     Layout.alignment: Qt.AlignLeft
                     title: API.get().settings_pg.empty_string + (qsTr("Recipient's address"))
                     field.placeholderText: API.get().settings_pg.empty_string + (qsTr("Enter address of the recipient"))
+                    field.enabled: !root.is_send_busy
                 }
 
                 DefaultButton {
@@ -189,6 +217,7 @@ DefaultModal {
                         openAddressBook()
                         root.close()
                     }
+                    enabled: !root.is_send_busy
                 }
             }
 
@@ -206,6 +235,7 @@ DefaultModal {
                     Layout.alignment: Qt.AlignRight
                     text: API.get().settings_pg.empty_string + (qsTr("Fix"))
                     onClicked: input_address.field.text = ercToMixedCase(input_address.field.text)
+                    enabled: !root.is_send_busy
                 }
             }
 
@@ -218,6 +248,7 @@ DefaultModal {
                     field.visible: !input_max_amount.checked
                     title: API.get().settings_pg.empty_string + (qsTr("Amount to send"))
                     field.placeholderText: API.get().settings_pg.empty_string + (qsTr("Enter the amount to send"))
+                    field.enabled: !root.is_send_busy
                 }
 
                 Switch {
@@ -225,6 +256,7 @@ DefaultModal {
                     Layout.alignment: Qt.AlignRight | Qt.AlignBottom
                     text: API.get().settings_pg.empty_string + (qsTr("MAX"))
                     onCheckedChanged: input_amount.field.text = ""
+                    enabled: !root.is_send_busy
                 }
             }
 
@@ -233,6 +265,7 @@ DefaultModal {
                 id: custom_fees_switch
                 text: API.get().settings_pg.empty_string + (qsTr("Enable Custom Fees"))
                 onCheckedChanged: input_custom_fees.field.text = ""
+                enabled: !root.is_send_busy
             }
 
             // Custom Fees section
@@ -250,8 +283,9 @@ DefaultModal {
                     visible: !isERC20()
 
                     id: input_custom_fees
-                    title: API.get().settings_pg.empty_string + (qsTr("Custom Fee") + " [" + API.get().current_coin_info.ticker + "]")
+                    title: API.get().settings_pg.empty_string + (qsTr("Custom Fee") + " [" + api_wallet_page.ticker + "]")
                     field.placeholderText: API.get().settings_pg.empty_string + (qsTr("Enter the custom fee"))
+                    field.enabled: !root.is_send_busy
                 }
 
                 // ERC-20 coins
@@ -263,6 +297,7 @@ DefaultModal {
                         id: input_custom_fees_gas
                         title: API.get().settings_pg.empty_string + (qsTr("Gas Limit") + " [Gwei]")
                         field.placeholderText: API.get().settings_pg.empty_string + (qsTr("Enter the gas limit"))
+                        field.enabled: !root.is_send_busy
                     }
 
                     // Gas price input
@@ -270,6 +305,7 @@ DefaultModal {
                         id: input_custom_fees_gas_price
                         title: API.get().settings_pg.empty_string + (qsTr("Gas Price") + " [Gwei]")
                         field.placeholderText: API.get().settings_pg.empty_string + (qsTr("Enter the gas price"))
+                        field.enabled: !root.is_send_busy
                     }
                 }
             }
@@ -293,13 +329,17 @@ DefaultModal {
 
                 color: Style.colorRed
 
-                text_value: API.get().settings_pg.empty_string + (qsTr("Not enough funds.") + "\n" + qsTr("You have %1", "AMT TICKER").arg(General.formatCrypto("", API.get().get_balance(API.get().current_coin_info.ticker), API.get().current_coin_info.ticker)))
+                text_value: API.get().settings_pg.empty_string + (qsTr("Not enough funds.") + "\n" + qsTr("You have %1", "AMT TICKER").arg(General.formatCrypto("", API.get().get_balance(api_wallet_page.ticker), api_wallet_page.ticker)))
             }
 
             DefaultText {
                 id: text_error
                 color: Style.colorRed
                 visible: text !== ''
+            }
+
+            DefaultBusyIndicator {
+                visible: root.is_send_busy
             }
 
             // Buttons
@@ -313,7 +353,7 @@ DefaultModal {
                     text: API.get().settings_pg.empty_string + (qsTr("Prepare"))
                     Layout.fillWidth: true
 
-                    enabled: fieldAreFilled() && hasFunds() && !hasErc20CaseIssue(isERC20(), input_address.field.text)
+                    enabled: fieldAreFilled() && hasFunds() && !hasErc20CaseIssue(isERC20(), input_address.field.text) && !root.is_send_busy
 
                     onClicked: prepareSendCoin(input_address.field.text, input_amount.field.text, custom_fees_switch.checked, input_custom_fees.field.text,
                                                isERC20(), input_custom_fees_gas.field.text, input_custom_fees_gas_price.field.text)
@@ -336,19 +376,23 @@ DefaultModal {
             // Amount
             TextWithTitle {
                 title: API.get().settings_pg.empty_string + (qsTr("Amount"))
-                text: API.get().settings_pg.empty_string + (General.formatCrypto("", input_amount.field.text, API.get().current_coin_info.ticker))
+                text: API.get().settings_pg.empty_string + (General.formatCrypto("", input_amount.field.text, api_wallet_page.ticker))
             }
 
             // Fees
             TextWithTitle {
                 title: API.get().settings_pg.empty_string + (qsTr("Fees"))
-                text: API.get().settings_pg.empty_string + (General.formatCrypto("", prepare_send_result.fees, General.txFeeTicker(API.get().current_coin_info)))
+                text: API.get().settings_pg.empty_string + (General.formatCrypto("", send_result.withdraw_answer.fee_details.amount, current_ticker_infos.fee_ticker))
             }
 
             // Date
             TextWithTitle {
                 title: API.get().settings_pg.empty_string + (qsTr("Date"))
-                text: API.get().settings_pg.empty_string + (prepare_send_result.date)
+                text: API.get().settings_pg.empty_string + (send_result.withdraw_answer.date)
+            }
+
+            DefaultBusyIndicator {
+                visible: root.is_broadcast_busy
             }
 
             // Buttons
@@ -357,20 +401,26 @@ DefaultModal {
                     text: API.get().settings_pg.empty_string + (qsTr("Back"))
                     Layout.fillWidth: true
                     onClicked: stack_layout.currentIndex = 0
+                    enabled: !root.is_broadcast_busy
                 }
                 PrimaryButton {
                     text: API.get().settings_pg.empty_string + (qsTr("Send"))
                     Layout.fillWidth: true
                     onClicked: sendCoin()
+                    enabled: !root.is_broadcast_busy
                 }
             }
         }
 
         // Result Page
         SendResult {
-            result: prepare_send_result
+            result: ({
+                balance_change: send_result.withdraw_answer.my_balance_change,
+                fees: send_result.withdraw_answer.fee_details.amount,
+                date: send_result.withdraw_answer.date
+            })
             address: input_address.field.text
-            tx_hash: send_result
+            tx_hash: broadcast_result
             custom_amount: input_amount.field.text
 
             function onClose() { reset(true) }

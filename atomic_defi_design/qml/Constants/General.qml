@@ -45,7 +45,7 @@ QtObject {
     readonly property var reg_pass_special: /(?=.*[@#$%{}[\]()\/\\'"`~,;:.<>+\-_=!^&*|?])/
     readonly property var reg_pass_count_low_security: /(?=.{1,})/
     readonly property var reg_pass_count: /(?=.{16,})/
-    
+
     readonly property double time_toast_important_error: 10000
     readonly property double time_toast_basic_info: 3000
 
@@ -128,7 +128,7 @@ QtObject {
         return JSON.stringify(JSON.parse(j), null, 4)
     }
 
-    function viewTxAtExplorer(ticker, id, add_0x=false) {
+    function viewTxAtExplorer(ticker, id, add_0x=true) {
         if(id !== '') {
             const coin_info = API.get().get_coin_info(ticker)
             const id_prefix = add_0x && coin_info.type === 'ERC-20' ? '0x' : ''
@@ -207,13 +207,15 @@ QtObject {
         return Math.min(Math.max(lim - getDigitCount(v), 0), amountPrecision)
     }
 
-    function formatDouble(v, precision) {
+    function formatDouble(v, precision, trail_zeros) {
         if(precision === recommendedPrecision) precision = getRecommendedPrecision(v)
 
         if(precision === 0) return parseInt(v).toString()
 
         // Remove more than n decimals, then convert to string without trailing zeros
-        return parseFloat(v).toFixed(precision || amountPrecision).replace(/\.?0+$/,"")
+        const full_double = parseFloat(v).toFixed(precision || amountPrecision)
+
+        return trail_zeros ? full_double : full_double.replace(/\.?0+$/,"")
     }
 
     function formatCrypto(received, amount, ticker, fiat_amount, fiat) {
@@ -265,11 +267,6 @@ QtObject {
 
         return false
     }
-
-    function txFeeTicker(info) {
-        return info.type === "ERC-20" ? "ETH" : info.ticker
-    }
-
 
     property Timer prevent_coin_disabling: Timer { interval: 5000 }
 

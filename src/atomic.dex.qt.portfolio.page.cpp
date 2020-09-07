@@ -19,14 +19,18 @@
 
 //! Project Headers
 #include "atomic.dex.band.oracle.price.service.hpp"
+#include "atomic.dex.global.price.service.hpp"
 #include "atomic.dex.qt.portfolio.page.hpp"
+#include "atomic.dex.qt.settings.page.hpp"
+#include "atomic.dex.qt.wallet.page.hpp"
 
 namespace atomic_dex
 {
-    portfolio_page::portfolio_page(entt::registry& registry, ag::ecs::system_manager& system_manager, entt::dispatcher& dispatcher, QObject* parent) :
-        QObject(parent), system(registry), m_system_manager(system_manager), m_portfolio_mdl(new portfolio_model(system_manager, dispatcher, this))
+    portfolio_page::portfolio_page(entt::registry& registry, ag::ecs::system_manager& system_manager, QObject* parent) :
+        QObject(parent), system(registry), m_system_manager(system_manager), m_portfolio_mdl(new portfolio_model(system_manager, dispatcher_, this))
     {
         emit portfolioChanged();
+        this->dispatcher_.sink<update_portfolio_values>().connect<&portfolio_page::on_update_portfolio_values_event>(*this);
         this->dispatcher_.sink<band_oracle_refreshed>().connect<&portfolio_page::on_band_oracle_refreshed>(*this);
     }
 
@@ -64,5 +68,41 @@ namespace atomic_dex
     {
         spdlog::debug("{} l{} f[{}]", __FUNCTION__, __LINE__, fs::path(__FILE__).filename().string());
         emit oraclePriceUpdated();
+    }
+
+    void
+    portfolio_page::set_current_balance_fiat_all(QString current_fiat_all_balance) noexcept
+    {
+        spdlog::trace("refresh current balance all");
+        if (this->m_current_balance_all != current_fiat_all_balance)
+        {
+            this->m_current_balance_all = std::move(current_fiat_all_balance);
+            emit onFiatBalanceAllChanged();
+        }
+    }
+
+    QString
+    portfolio_page::get_balance_fiat_all() const noexcept
+    {
+        return m_current_balance_all;
+    }
+
+    void
+    portfolio_page::on_update_portfolio_values_event(const update_portfolio_values& evt) noexcept
+    {
+        spdlog::trace("refreshing portfolio values");
+        if (evt.with_update_model)
+        {
+            m_portfolio_mdl->update_currency_values();
+            m_system_manager.get_system<wallet_page>().refresh_ticker_infos();
+        }
+        std::error_code ec;
+        const auto&     config           = m_system_manager.get_system<settings_page>().get_cfg();
+        const auto&     price_service    = m_system_manager.get_system<global_price_service>();
+        auto            fiat_balance_std = price_service.get_price_in_fiat_all(config.current_currency, ec);
+        if (!ec)
+        {
+            set_current_balance_fiat_all(QString::fromStdString(fiat_balance_std));
+        }
     }
 } // namespace atomic_dex

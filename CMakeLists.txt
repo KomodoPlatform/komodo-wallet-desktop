@@ -154,7 +154,6 @@ target_sources(atomicDexPro_shared_deps INTERFACE
         ${CMAKE_SOURCE_DIR}/src/atomic.dex.provider.coinpaprika.cpp
         ${CMAKE_SOURCE_DIR}/src/atomic.dex.provider.cex.prices.api.cpp
         ${CMAKE_SOURCE_DIR}/src/atomic.dex.provider.cex.prices.cpp
-        ${CMAKE_SOURCE_DIR}/src/atomic.dex.qt.current.coin.infos.cpp
         ${CMAKE_SOURCE_DIR}/src/atomic.dex.qt.wallet.manager.cpp
         ${CMAKE_SOURCE_DIR}/src/atomic.dex.qt.utilities.cpp
         ${CMAKE_SOURCE_DIR}/src/atomic.dex.wallet.config.cpp
@@ -178,6 +177,9 @@ target_sources(atomicDexPro_shared_deps INTERFACE
         ${CMAKE_SOURCE_DIR}/src/atomic.dex.qt.portfolio.proxy.filter.model.cpp
         ${CMAKE_SOURCE_DIR}/src/atomic.dex.global.price.service.cpp
         ${CMAKE_SOURCE_DIR}/src/atomic.dex.band.oracle.price.service.cpp
+        ${CMAKE_SOURCE_DIR}/src/atomic.dex.qt.wallet.transactions.model.cpp
+        ${CMAKE_SOURCE_DIR}/src/atomic.dex.qt.wallet.transactions.proxy.filter.model.cpp
+        ${CMAKE_SOURCE_DIR}/src/atomic.dex.qt.wallet.page.cpp
         $<$<PLATFORM_ID:Darwin>:${CMAKE_SOURCE_DIR}/src/osx/atomic.dex.osx.manager.mm>
         ${CMAKE_SOURCE_DIR}/qml.qrc
         ${qmFiles}
