@@ -336,7 +336,8 @@ Item {
                 // Ticker Selectors
                 RowLayout {
                     id: selectors
-                    anchors.horizontalCenter: parent.horizontalCenter
+                    anchors.left: parent.left
+                    anchors.right: parent.right
                     anchors.bottom: orderbook.top
                     anchors.bottomMargin: layout_margin
                     spacing: 40
@@ -347,6 +348,7 @@ Item {
                         ticker_list: API.get().trading_pg.market_pairs_mdl.left_selection_box
                         ticker: API.get().trading_pg.market_pairs_mdl.left_selected_coin
                         Layout.alignment: Qt.AlignLeft | Qt.AlignVCenter
+                        Layout.fillWidth: true
                     }
 
                     // Swap button
@@ -371,6 +373,7 @@ Item {
                         ticker_list: API.get().trading_pg.market_pairs_mdl.right_selection_box
                         ticker: API.get().trading_pg.market_pairs_mdl.right_selected_coin
                         Layout.alignment: Qt.AlignRight | Qt.AlignVCenter
+                        Layout.fillWidth: true
                     }
                 }
 

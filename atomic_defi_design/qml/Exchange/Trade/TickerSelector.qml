@@ -10,7 +10,6 @@ RowLayout {
     id: root
 
     spacing: 5
-    Layout.preferredWidth: 250
     layoutDirection: left_side ? Qt.LeftToRight : Qt.RightToLeft
 
     property bool left_side: false
