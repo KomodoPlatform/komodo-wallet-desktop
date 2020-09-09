@@ -43,7 +43,7 @@ ColumnLayout {
         input_coin_filter.reset()
     }
 
-    function updateChart(chart, historical) {
+    function updateChart(chart, historical, color) {
         chart.removeAllSeries()
 
         let i
@@ -52,7 +52,7 @@ ColumnLayout {
             let series = chart.createSeries(ChartView.SeriesTypeSpline, "Price", chart.axes[0], chart.axes[1]);
 
             series.style = Qt.SolidLine
-            series.color = Style.colorTheme1
+            series.color = color
 
             let min = 999999999
             let max = -999999999
@@ -310,6 +310,7 @@ ColumnLayout {
 
             // Change 24h
             DefaultText {
+                id: change_24h_value
                 anchors.right: parent.right
                 anchors.rightMargin: change_24h_header.anchors.rightMargin
 
@@ -357,8 +358,7 @@ ColumnLayout {
                 anchors.verticalCenter: parent.verticalCenter
                 legend.visible: false
 
-                onHistoricalChanged: updateChart(chart, historical)
-
+                onHistoricalChanged: updateChart(chart, historical, change_24h_value.color)
                 backgroundColor: "transparent"
             }
 
