@@ -36,7 +36,7 @@ RowLayout {
             }
 
             DefaultText {
-                text_value: API.get().settings_pg.empty_string + (General.formatCrypto("", details.balance, details.ticker,  details.main_currency_balance, API.get().settings_pg.current_currency))
+                text_value: API.get().settings_pg.empty_string + (details.balance + "  (" + General.formatFiat("", details.main_currency_balance, API.get().settings_pg.current_currency) + ")")
                 color: Style.colorText2
                 font.pixelSize: Style.textSizeSmall2
             }
