@@ -16,6 +16,7 @@
 //! Project Headers
 #include "atomic.dex.app.hpp"
 #include "atomic.dex.kill.hpp"
+#include "atomic.dex.qt.portfolio.model.hpp"
 
 #ifdef __APPLE__
 #    include "atomic.dex.osx.manager.hpp"
@@ -185,6 +186,7 @@ main([[maybe_unused]] int argc, [[maybe_unused]] char* argv[])
     qmlRegisterSingletonType(QUrl("qrc:/atomic_defi_design/qml/Constants/General.qml"), "App", 1, 0, "General");
     qmlRegisterSingletonType(QUrl("qrc:/atomic_defi_design/qml/Constants/Style.qml"), "App", 1, 0, "Style");
     qmlRegisterSingletonType(QUrl("qrc:/atomic_defi_design/qml/Constants/API.qml"), "App", 1, 0, "API");
+    qRegisterMetaType<t_portfolio_roles>("PortfolioRoles");
 
     const QUrl url(QStringLiteral("qrc:/atomic_defi_design/qml/main.qml"));
     QObject::connect(

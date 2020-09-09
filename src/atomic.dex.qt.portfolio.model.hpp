@@ -98,3 +98,5 @@ namespace atomic_dex
     };
 
 } // namespace atomic_dex
+
+using t_portfolio_roles = atomic_dex::portfolio_model::PortfolioRoles;
