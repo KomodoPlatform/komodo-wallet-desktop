@@ -56,7 +56,7 @@ ComboBox {
 
         background: Rectangle {
             color: Style.colorTheme9
-            border.color: Style.colorTheme5
+            border.color: control.mainBorderColor
             radius: 16
         }
     }
