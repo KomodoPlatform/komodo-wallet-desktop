@@ -16,11 +16,11 @@ ComboBox {
     hoverEnabled: true
 
     // Main, selected text
-    contentItem: Text {
+    contentItem: DefaultText {
         leftPadding: 12
         rightPadding: control.indicator.width + control.spacing
 
-        text: control.displayText
+        text_value: API.get().settings_pg.empty_string + (control.displayText)
         font: control.font
         color: !control.enabled ? Style.colorTextDisabled : control.pressed ? Style.colorText2 : Style.colorText
         verticalAlignment: Text.AlignVCenter
@@ -61,12 +61,33 @@ ComboBox {
     // Each dropdown item
     delegate: ItemDelegate {
         width: control.width
-        contentItem: Text {
-            text: control.dropdownLineText(model)
-            color: Style.colorText
-            font: control.font
-            elide: Text.ElideRight
-            verticalAlignment: Text.AlignVCenter
+        contentItem: RowLayout {
+            DefaultImage {
+                Layout.alignment: Qt.AlignVCenter
+                source: General.coinIcon(ticker)
+                Layout.preferredWidth: 32
+                Layout.preferredHeight: Layout.preferredWidth
+                Layout.rightMargin: 6
+            }
+
+            ColumnLayout {
+                Layout.alignment: Qt.AlignVCenter
+                DefaultText {
+                    text_value: API.get().settings_pg.empty_string + (`<font color="${Style.colorTheme2}"><b>${model.ticker}</b></font>&nbsp;&nbsp;&nbsp;<font color="${Style.colorText}">${model.name}</font>`)
+                    color: Style.colorText
+                    elide: Text.ElideRight
+                    verticalAlignment: Text.AlignVCenter
+                    font.pixelSize: Style.textSizeSmall3
+                }
+
+                DefaultText {
+                    text_value: API.get().settings_pg.empty_string + (General.formatCrypto("", model.balance, model.ticker,  model.main_currency_balance, API.get().settings_pg.current_currency))
+                    color: Style.colorText2
+                    elide: Text.ElideRight
+                    verticalAlignment: Text.AlignVCenter
+                    font.pixelSize: Style.textSizeSmall2
+                }
+            }
         }
         highlighted: control.highlightedIndex === index
     }
