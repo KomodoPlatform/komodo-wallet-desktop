@@ -60,6 +60,8 @@ ComboBox {
 
     // Each dropdown item
     delegate: ItemDelegate {
+        Universal.accent: Style.colorTheme5
+
         width: control.width
         contentItem: RowLayout {
             DefaultImage {
