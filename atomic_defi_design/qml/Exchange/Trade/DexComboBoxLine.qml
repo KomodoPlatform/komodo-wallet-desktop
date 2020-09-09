@@ -8,8 +8,11 @@ import "../../Components"
 import "../../Constants"
 
 RowLayout {
+    id: root
+
     property int padding: 0
     property var details
+    readonly property color color: Style.getCoinColor(details.ticker)
 
     DefaultImage {
         id: icon
@@ -27,7 +30,7 @@ RowLayout {
             anchors.verticalCenter: parent.verticalCenter
 
             DefaultText {
-                text_value: API.get().settings_pg.empty_string + (`<font color="${Style.getCoinColor(details.ticker)}"><b>${details.ticker}</b></font>&nbsp;&nbsp;&nbsp;<font color="${Style.colorText}">${details.name}</font>`)
+                text_value: API.get().settings_pg.empty_string + (`<font color="${root.color}"><b>${details.ticker}</b></font>&nbsp;&nbsp;&nbsp;<font color="${Style.colorText}">${details.name}</font>`)
                 color: Style.colorText
                 font.pixelSize: Style.textSizeSmall3
             }

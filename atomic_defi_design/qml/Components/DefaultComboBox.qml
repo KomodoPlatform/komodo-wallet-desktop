@@ -13,7 +13,7 @@ ComboBox {
     property color mainBorderColor: control.pressed ? Style.colorTheme8 : Style.colorTheme5
 
     property string mainLineText: control.displayText
-    property var dropdownLineText: (m) => { return m.modelData }
+    property var dropdownLineText: m => { return m.modelData }
 
     readonly property bool disabled: !enabled
 
@@ -28,7 +28,6 @@ ComboBox {
         font: control.font
         color: !control.enabled ? Style.colorTextDisabled : control.pressed ? Style.colorText2 : Style.colorText
         verticalAlignment: Text.AlignVCenter
-        elide: Text.ElideRight
     }
 
     // Main background
