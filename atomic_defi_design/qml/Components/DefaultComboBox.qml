@@ -9,6 +9,8 @@ ComboBox {
 
     font.family: Style.font_family
 
+    readonly property bool disabled: !enabled
+
     // Main, selected text
     contentItem: Text {
         leftPadding: 12
@@ -16,7 +18,7 @@ ComboBox {
 
         text: control.displayText
         font: control.font
-        color: control.pressed ? "#17a81a" : "#21be2b"
+        color: !control.enabled ? Style.colorTextDisabled : control.pressed ? Style.colorText2 : Style.colorText
         verticalAlignment: Text.AlignVCenter
         elide: Text.ElideRight
     }
@@ -25,9 +27,10 @@ ComboBox {
     background: Rectangle {
         implicitWidth: 120
         implicitHeight: 40
-        border.color: control.pressed ? "#17a81a" : "#21be2b"
+        color: control.enabled ? Style.colorTheme9 : Style.colorTheme5
+        border.color: control.pressed ? Style.colorTheme8 : Style.colorTheme5
         border.width: control.visualFocus ? 2 : 1
-        radius: 2
+        radius: 16
     }
 
     // Dropdown itself
@@ -45,8 +48,9 @@ ComboBox {
         }
 
         background: Rectangle {
-            border.color: "#21be2b"
-            radius: 2
+            color: Style.colorTheme9
+            border.color: Style.colorTheme5
+            radius: 16
         }
     }
 
@@ -54,18 +58,8 @@ ComboBox {
     delegate: ItemDelegate {
         width: control.width
         contentItem: Text {
-            Timer {
-                interval: 1000
-                repeat: true
-                running: true
-                onTriggered: {
-                    console.log("ComboBox model.ticker: ", model.ticker)
-                    console.log("ComboBox change_24h: ", change_24h)
-                }
-            }
-
-            text: ticker + " - " + name + " - " + change_24h
-            color: "red"
+            text: model.ticker + " (" + model.balance + ")"
+            color: Style.colorText
             font: control.font
             elide: Text.ElideRight
             verticalAlignment: Text.AlignVCenter
@@ -84,7 +78,9 @@ ComboBox {
 
         Connections {
             target: control
+
             function onPressedChanged() { canvas.requestPaint() }
+            function onDisabledChanged() { canvas.requestPaint() }
         }
 
         onPaint: {
@@ -93,7 +89,7 @@ ComboBox {
             context.lineTo(width, 0)
             context.lineTo(width / 2, height)
             context.closePath()
-            context.fillStyle = control.pressed ? "#17a81a" : "#21be2b"
+            context.fillStyle = control.disabled ? Style.colorTextDisabled : control.pressed ? Style.colorText2 : Style.colorText
             context.fill()
         }
     }
