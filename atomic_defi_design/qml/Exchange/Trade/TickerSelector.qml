@@ -27,14 +27,12 @@ RowLayout {
         combo.currentIndex = combo.indexOfValue(ticker)
     }
 
-    DefaultComboBox {
+    DexComboBox {
         id: combo
 
         enabled: !block_everything
 
         model: ticker_list
-
-        dropdownLineText: (m) => { return m.ticker + " (" + m.balance + ")" }
 
         textRole: "display"
         valueRole: "ticker"
