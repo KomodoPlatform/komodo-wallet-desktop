@@ -249,6 +249,15 @@ ColumnLayout {
             width: portfolio.width
             height: 50
 
+            Rectangle {
+                id: main_color
+                color: Style.getCoinColor(ticker)
+                width: 10
+                anchors.top: parent.top
+                anchors.bottom: parent.bottom
+                anchors.left: parent.left
+            }
+
             // Click area
             MouseArea {
                 id: mouse_area
