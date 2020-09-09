@@ -10,9 +10,11 @@ import "../../Constants"
 DefaultComboBox {
     id: control
 
+    mainBorderColor: Style.getCoinColor(ticker)
+
     // Each dropdown item
     delegate: ItemDelegate {
-        Universal.accent: Style.colorTheme5
+        Universal.accent: control.lineHoverColor
         width: control.width
         highlighted: control.highlightedIndex === index
 
@@ -26,11 +28,11 @@ DefaultComboBox {
 
                 ColumnLayout {
                     anchors.left: parent.right
-                    anchors.leftMargin: 6
+                    anchors.leftMargin: 12
                     anchors.verticalCenter: parent.verticalCenter
 
                     DefaultText {
-                        text_value: API.get().settings_pg.empty_string + (`<font color="${Style.colorTheme2}"><b>${model.ticker}</b></font>&nbsp;&nbsp;&nbsp;<font color="${Style.colorText}">${model.name}</font>`)
+                        text_value: API.get().settings_pg.empty_string + (`<font color="${Style.getCoinColor(model.ticker)}"><b>${model.ticker}</b></font>&nbsp;&nbsp;&nbsp;<font color="${Style.colorText}">${model.name}</font>`)
                         color: Style.colorText
                         font.pixelSize: Style.textSizeSmall3
                     }

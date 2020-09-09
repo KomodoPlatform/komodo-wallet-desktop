@@ -201,4 +201,17 @@ QtObject {
 
         return Style.colorWhite4
     }
+
+    function getCoinColor(ticker) {
+        const c = colorCoin[ticker]
+        return c || Style.colorTheme2
+    }
+
+    readonly property var colorCoin: ({
+                                          "BTC": "#F7931A",
+                                          "ETH": "#627EEA",
+                                          "KMD": "#2B6680",
+                                          "MORTY": "#684B31",
+                                          "RICK": "#A5CBDD"
+                                      })
 }

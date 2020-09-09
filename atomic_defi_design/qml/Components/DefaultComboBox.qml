@@ -9,6 +9,9 @@ ComboBox {
 
     font.family: Style.font_family
 
+    property color lineHoverColor: Style.colorTheme5
+    property color mainBorderColor: control.pressed ? Style.colorTheme8 : Style.colorTheme5
+
     property var dropdownLineText: (m) => { return m.modelData }
 
     readonly property bool disabled: !enabled
@@ -32,7 +35,7 @@ ComboBox {
         implicitWidth: 120
         implicitHeight: 40
         color: !control.enabled ? Style.colorTheme5 : control.hovered ? Style.colorTheme7 : Style.colorTheme9
-        border.color: control.pressed ? Style.colorTheme8 : Style.colorTheme5
+        border.color: control.mainBorderColor
         border.width: control.visualFocus ? 2 : 1
         radius: 16
     }
@@ -60,7 +63,7 @@ ComboBox {
 
     // Each dropdown item
     delegate: ItemDelegate {
-        Universal.accent: Style.colorTheme5
+        Universal.accent: control.lineHoverColor
         width: control.width
         highlighted: control.highlightedIndex === index
 
