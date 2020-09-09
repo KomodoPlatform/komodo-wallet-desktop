@@ -296,6 +296,27 @@ ColumnLayout {
                 anchors.verticalCenter: parent.verticalCenter
             }
 
+            Rectangle {
+                anchors.right: balance_value.left
+                anchors.rightMargin: 10
+                anchors.verticalCenter: balance_value.verticalCenter
+
+                visible: API.get().get_coin_info(ticker).type === "ERC-20"
+                radius: 20
+
+                height: erc_tag.font.pixelSize * 1.5
+                width: erc_tag.width + 8
+
+                color: Style.colorBlue
+                DefaultText {
+                    id: erc_tag
+                    anchors.verticalCenter: parent.verticalCenter
+                    anchors.horizontalCenter: parent.horizontalCenter
+                    text: API.get().settings_pg.empty_string + ("ERC-20")
+                    font.pixelSize: Style.textSizeSmall1
+                }
+            }
+
             // Balance
             DefaultText {
                 id: balance_value
