@@ -340,7 +340,7 @@ Item {
                     anchors.right: parent.right
                     anchors.bottom: orderbook.top
                     anchors.bottomMargin: layout_margin
-                    spacing: 40
+                    spacing: 20
 
                     TickerSelector {
                         id: selector_left
