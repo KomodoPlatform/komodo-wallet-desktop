@@ -117,6 +117,7 @@
         <file>atomic_defi_design/qml/Exchange/Trade/PriceLine.qml</file>
         <file>atomic_defi_design/qml/Exchange/Trade/OrderForm.qml</file>
         <file>atomic_defi_design/qml/Exchange/Trade/DexComboBox.qml</file>
+        <file>atomic_defi_design/qml/Exchange/Trade/DexComboBoxLine.qml</file>
         <file>atomic_defi_design/qml/Exchange/Trade/OrderbookSection.qml</file>
         <file>atomic_defi_design/qml/Exchange/Trade/Orderbook.qml</file>
         <file>atomic_defi_design/qml/Exchange/Trade/CandleStickChart.qml</file>

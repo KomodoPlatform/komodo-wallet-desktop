@@ -16,16 +16,7 @@ RowLayout {
     property var ticker_list
     property string ticker
 
-    DefaultImage {
-        source: General.coinIcon(ticker)
-        Layout.preferredWidth: 32
-        Layout.preferredHeight: Layout.preferredWidth
-    }
-
-
-    onTickerChanged: {
-        combo.currentIndex = combo.indexOfValue(ticker)
-    }
+    onTickerChanged: combo.currentIndex = combo.indexOfValue(ticker)
 
     DexComboBox {
         id: combo
