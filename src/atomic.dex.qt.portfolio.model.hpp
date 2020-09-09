@@ -35,7 +35,6 @@ namespace atomic_dex
         Q_OBJECT
         Q_PROPERTY(portfolio_proxy_model* portfolio_proxy_mdl READ get_portfolio_proxy_mdl NOTIFY portfolioProxyChanged);
         Q_PROPERTY(int length READ get_length NOTIFY lengthChanged);
-        Q_ENUMS(PortfolioRoles)
       public:
         enum PortfolioRoles
         {
@@ -49,6 +48,7 @@ namespace atomic_dex
             Excluded,
             Display
         };
+        Q_ENUM(PortfolioRoles)
 
       private:
         //! Typedef
