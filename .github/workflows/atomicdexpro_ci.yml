@@ -3,6 +3,9 @@ name: AtomicDEX Pro CI
 on:
   pull_request:
     types: [opened, synchronize, reopened]
+  push:
+    branches:
+      - master
   schedule:
     - cron: '0 0 * * 1'
 
