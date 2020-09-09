@@ -12,6 +12,7 @@ ComboBox {
     property color lineHoverColor: Style.colorTheme5
     property color mainBorderColor: control.pressed ? Style.colorTheme8 : Style.colorTheme5
 
+    property string mainLineText: control.displayText
     property var dropdownLineText: (m) => { return m.modelData }
 
     readonly property bool disabled: !enabled
@@ -23,7 +24,7 @@ ComboBox {
         leftPadding: 12
         rightPadding: control.indicator.width + control.spacing
 
-        text_value: API.get().settings_pg.empty_string + (control.displayText)
+        text_value: API.get().settings_pg.empty_string + (control.mainLineText)
         font: control.font
         color: !control.enabled ? Style.colorTextDisabled : control.pressed ? Style.colorText2 : Style.colorText
         verticalAlignment: Text.AlignVCenter
