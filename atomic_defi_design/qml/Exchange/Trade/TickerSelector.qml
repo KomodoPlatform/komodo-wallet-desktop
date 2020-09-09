@@ -34,6 +34,9 @@ RowLayout {
         enabled: !block_everything
 
         model: ticker_list
+
+        dropdownLineText: (m) => { return m.ticker + " (" + m.balance + ")" }
+
         textRole: "display"
         valueRole: "ticker"
 

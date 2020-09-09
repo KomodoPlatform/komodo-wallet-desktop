@@ -9,6 +9,8 @@ ComboBox {
 
     font.family: Style.font_family
 
+    property var dropdownLineText: (m) => { return m.modelData }
+
     readonly property bool disabled: !enabled
 
     hoverEnabled: true
@@ -60,7 +62,7 @@ ComboBox {
     delegate: ItemDelegate {
         width: control.width
         contentItem: Text {
-            text: model.ticker + " (" + model.balance + ")"
+            text: control.dropdownLineText(model)
             color: Style.colorText
             font: control.font
             elide: Text.ElideRight
