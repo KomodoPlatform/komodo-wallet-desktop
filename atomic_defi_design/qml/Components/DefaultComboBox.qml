@@ -11,6 +11,8 @@ ComboBox {
 
     readonly property bool disabled: !enabled
 
+    hoverEnabled: true
+
     // Main, selected text
     contentItem: Text {
         leftPadding: 12
@@ -27,7 +29,7 @@ ComboBox {
     background: Rectangle {
         implicitWidth: 120
         implicitHeight: 40
-        color: control.enabled ? Style.colorTheme9 : Style.colorTheme5
+        color: !control.enabled ? Style.colorTheme5 : control.hovered ? Style.colorTheme7 : Style.colorTheme9
         border.color: control.pressed ? Style.colorTheme8 : Style.colorTheme5
         border.width: control.visualFocus ? 2 : 1
         radius: 16
@@ -81,6 +83,7 @@ ComboBox {
 
             function onPressedChanged() { canvas.requestPaint() }
             function onDisabledChanged() { canvas.requestPaint() }
+            function onHoveredChanged() { canvas.requestPaint() }
         }
 
         onPaint: {
@@ -89,7 +92,7 @@ ComboBox {
             context.lineTo(width, 0)
             context.lineTo(width / 2, height)
             context.closePath()
-            context.fillStyle = control.disabled ? Style.colorTextDisabled : control.pressed ? Style.colorText2 : Style.colorText
+            context.fillStyle = control.contentItem.color
             context.fill()
         }
     }
