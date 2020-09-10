@@ -8,8 +8,10 @@ import "../Constants"
 DefaultModal {
     id: root
 
+    padding: 10
+
     width: 900
-    height: Math.min(header.height + inner_layout.height + footer.height + root.padding*2 + outer_layout.spacing*2, window.height - 90)
+    height: Math.min(header.height + flickable.contentHeight + footer.height + root.padding*2 + outer_layout.spacing*2, window.height - 90)
 
     property alias title: header.title
 
@@ -22,6 +24,8 @@ DefaultModal {
         width: parent.width
         height: parent.height
         anchors.horizontalCenter: parent.horizontalCenter
+
+        spacing: 10
 
         ModalHeader {
             id: header
@@ -47,6 +51,7 @@ DefaultModal {
         // Buttons
         RowLayout {
             id: footer
+            spacing: 20
         }
     }
 }
