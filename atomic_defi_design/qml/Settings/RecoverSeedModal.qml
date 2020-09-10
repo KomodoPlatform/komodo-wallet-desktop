@@ -5,7 +5,7 @@ import QtQuick.Controls 2.12
 import "../Components"
 import "../Constants"
 
-DefaultModal {
+BasicModal {
     id: root
 
     property bool wrong_password: false
@@ -33,66 +33,57 @@ DefaultModal {
         input_password.reset()
     }
 
-    // Inside modal
+    title: API.get().settings_pg.empty_string + (qsTr("View Seed"))
+
     ColumnLayout {
-        id: modal_layout
+        visible: seed === ''
 
-        width: parent.width
+        DefaultText {
+            Layout.topMargin: 10
+            Layout.bottomMargin: 10
+            Layout.alignment: Qt.AlignHCenter
 
-        ModalHeader {
-            title: API.get().settings_pg.empty_string + (qsTr("View Seed"))
+            text_value: API.get().settings_pg.empty_string + (qsTr("Please enter your password to view the seed."))
         }
 
-        ColumnLayout {
-            visible: seed === ''
-
-            DefaultText {
-                Layout.topMargin: 10
-                Layout.bottomMargin: 10
-                Layout.alignment: Qt.AlignHCenter
-
-                text_value: API.get().settings_pg.empty_string + (qsTr("Please enter your password to view the seed."))
-            }
-
-            PasswordForm {
-                id: input_password
-                Layout.fillWidth: true
-                confirm: false
-                field.onAccepted: tryViewSeed()
-            }
-
-            DefaultText {
-                text_value: API.get().settings_pg.empty_string + (qsTr("Wrong Password"))
-                color: Style.colorRed
-                visible: wrong_password
-            }
+        PasswordForm {
+            id: input_password
+            Layout.fillWidth: true
+            confirm: false
+            field.onAccepted: tryViewSeed()
         }
 
-        TextAreaWithTitle {
-            visible: seed !== ''
-
-            title: API.get().settings_pg.empty_string + (qsTr("Seed"))
-            field.text: seed
-            field.readOnly: true
-            copyable: true
-        }
-
-        // Buttons
-        RowLayout {
-            DefaultButton {
-                text: API.get().settings_pg.empty_string + (seed === '' ? qsTr("Cancel") : qsTr("Close"))
-                Layout.fillWidth: true
-                onClicked: root.close()
-            }
-
-            PrimaryButton {
-                id: submit_button
-                visible: seed === ''
-                text: API.get().settings_pg.empty_string + (qsTr("View"))
-                Layout.fillWidth: true
-                enabled: input_password.isValid()
-                onClicked: tryViewSeed()
-            }
+        DefaultText {
+            text_value: API.get().settings_pg.empty_string + (qsTr("Wrong Password"))
+            color: Style.colorRed
+            visible: wrong_password
         }
     }
+
+    TextAreaWithTitle {
+        visible: seed !== ''
+
+        title: API.get().settings_pg.empty_string + (qsTr("Seed"))
+        field.text: seed
+        field.readOnly: true
+        copyable: true
+    }
+
+    // Buttons
+    footer: [
+        DefaultButton {
+            text: API.get().settings_pg.empty_string + (seed === '' ? qsTr("Cancel") : qsTr("Close"))
+            Layout.fillWidth: true
+            onClicked: root.close()
+        },
+
+        PrimaryButton {
+            id: submit_button
+            visible: seed === ''
+            text: API.get().settings_pg.empty_string + (qsTr("View"))
+            Layout.fillWidth: true
+            enabled: input_password.isValid()
+            onClicked: tryViewSeed()
+        }
+    ]
 }
