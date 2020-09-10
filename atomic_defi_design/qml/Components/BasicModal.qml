@@ -34,6 +34,8 @@ DefaultModal {
         DefaultFlickable {
             id: flickable
 
+            clip: false
+
             flickableDirection: Flickable.VerticalFlick
 
             Layout.fillWidth: true
