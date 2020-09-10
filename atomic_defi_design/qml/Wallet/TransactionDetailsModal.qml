@@ -19,7 +19,7 @@ DefaultModal {
     contentHeight: Math.min(layout.height, General.minimumHeight - 100)
 
     onClosed: {
-        if(!notes.field.readOnly) notes.save_button.clicked()
+        if(notes.field.enabled) notes.save_button.clicked()
         details = undefined
     }
 

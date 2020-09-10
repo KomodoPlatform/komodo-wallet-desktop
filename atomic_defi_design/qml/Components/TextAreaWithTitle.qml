@@ -34,13 +34,13 @@ ColumnLayout {
 
         DefaultButton {
             id: save_button
-            button_type: input_field.readOnly ? "primary" : "danger"
+            button_type: input_field.enabled ? "danger" : "primary"
             Layout.alignment: Qt.AlignVCenter
-            text: API.get().settings_pg.empty_string + (input_field.readOnly ? qsTr("Edit") : qsTr("Save"))
+            text: API.get().settings_pg.empty_string + (input_field.enabled ? qsTr("Save") : qsTr("Edit"))
             visible: saveable
             onClicked: {
-                input_field.readOnly = !input_field.readOnly
-                if(input_field.readOnly) saved()
+                if(input_field.enabled) saved()
+                input_field.enabled = !input_field.enabled
             }
             font.pixelSize: Style.textSizeSmall
             minWidth: 0
@@ -50,7 +50,7 @@ ColumnLayout {
 
     DefaultTextArea {
         id: input_field
-        readOnly: saveable
+        enabled: saveable
         Layout.fillWidth: true
 
         HideFieldButton {
