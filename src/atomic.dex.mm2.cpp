@@ -21,6 +21,7 @@
 #include "atomic.dex.kill.hpp"
 #include "atomic.dex.mm2.config.hpp"
 #include "atomic.dex.mm2.hpp"
+#include "atomic.dex.qt.wallet.manager.hpp"
 #include "atomic.dex.security.hpp"
 #include "atomic.dex.version.hpp"
 
@@ -131,7 +132,7 @@ namespace
 
 namespace atomic_dex
 {
-    mm2::mm2(entt::registry& registry) : system(registry)
+    mm2::mm2(entt::registry& registry, ag::ecs::system_manager& system_manager) : system(registry), m_system_manager(system_manager)
     {
         m_orderbook_clock = std::chrono::high_resolution_clock::now();
         m_info_clock      = std::chrono::high_resolution_clock::now();
@@ -1318,6 +1319,9 @@ namespace atomic_dex
                 current_info.date        = to_human_date<std::chrono::seconds>(current_info.timestamp, "%e %b %Y, %H:%M");
                 current_info.unconfirmed = true;
             }
+
+            auto& wallet_manager          = this->m_system_manager.get_system<qt_wallet_manager>();
+            current_info.transaction_note = wallet_manager.retrieve_transactions_notes(current_info.tx_hash);
 
             out.push_back(std::move(current_info));
         }

@@ -87,6 +87,7 @@ namespace atomic_dex
         using t_synchronized_max_taker_vol = boost::synchronized_value<t_pair_max_vol>;
         using t_synchronized_ticker        = boost::synchronized_value<std::string>;
 
+        ag::ecs::system_manager& m_system_manager;
         //! Client
         std::shared_ptr<t_http_client>  m_mm2_client{nullptr};
         pplx::cancellation_token_source m_token_source;
@@ -152,7 +153,7 @@ namespace atomic_dex
 
       public:
         //! Constructor
-        explicit mm2(entt::registry& registry);
+        explicit mm2(entt::registry& registry, ag::ecs::system_manager& system_manager);
 
         //! Delete useless operator
         mm2(const mm2& other)  = delete;

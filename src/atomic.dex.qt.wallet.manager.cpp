@@ -347,10 +347,11 @@ namespace atomic_dex
     std::string
     qt_wallet_manager::retrieve_transactions_notes(const std::string& tx_hash) const
     {
-        std::string note = "";
-        if (m_wallet_cfg.transactions_details->find(tx_hash) != m_wallet_cfg.transactions_details->end())
+        std::string note     = "";
+        auto        registry = m_wallet_cfg.transactions_details.get();
+        if (registry.find(tx_hash) != registry.end())
         {
-            note = m_wallet_cfg.transactions_details->at(tx_hash).note;
+            note = registry.at(tx_hash).note;
         }
         return note;
     }
