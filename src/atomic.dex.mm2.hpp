@@ -44,6 +44,7 @@ namespace atomic_dex
         std::size_t              block_height;
         t_mm2_ec                 ec{dextop_error::success};
         bool                     unconfirmed{false};
+        std::string              transaction_note{""};
     };
 
     struct tx_state

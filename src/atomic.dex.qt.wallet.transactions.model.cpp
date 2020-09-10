@@ -55,7 +55,8 @@ namespace atomic_dex
             {ToRole, "to"},
             {BlockheightRole, "blockheight"},
             {ConfirmationsRole, "confirmations"},
-            {UnconfirmedRole, "unconfirmed"}};
+            {UnconfirmedRole, "unconfirmed"},
+            {TransactionNoteRole, "transaction_note"}};
     }
 
     int
@@ -104,6 +105,9 @@ namespace atomic_dex
             break;
         case UnconfirmedRole:
             item.unconfirmed = value.toBool();
+            break;
+        case TransactionNoteRole:
+            item.transaction_note = value.toString().toStdString();
             break;
         }
         emit dataChanged(index, index, {role});
@@ -160,6 +164,8 @@ namespace atomic_dex
             return static_cast<quint64>(item.confirmations);
         case UnconfirmedRole:
             return item.unconfirmed;
+        case TransactionNoteRole:
+            return QString::fromStdString(item.transaction_note);
         }
         return {};
     }
