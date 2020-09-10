@@ -11,7 +11,7 @@ DefaultModal {
     width: 900
     height: Math.min(header.height + inner_layout.height + footer.height + root.padding*2 + outer_layout.spacing*2, window.height - 90)
 
-    readonly property alias title: header.title
+    property alias title: header.title
 
     default property alias content: inner_layout.data
     property alias footer: footer.data
@@ -29,6 +29,9 @@ DefaultModal {
 
         DefaultFlickable {
             id: flickable
+
+            flickableDirection: Flickable.VerticalFlick
+
             Layout.fillWidth: true
             Layout.fillHeight: true
 
