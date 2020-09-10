@@ -34,19 +34,20 @@ DefaultModal {
         DefaultFlickable {
             id: flickable
 
-            clip: false
-
             flickableDirection: Flickable.VerticalFlick
 
             Layout.fillWidth: true
             Layout.fillHeight: true
 
-            contentWidth: inner_layout.width
-            contentHeight: inner_layout.height
+            readonly property int padding: 25
+            contentWidth: inner_layout.width + flickable.padding
+            contentHeight: inner_layout.height + flickable.padding
 
             ColumnLayout {
                 id: inner_layout
-                width: root.width - root.padding*2 - 20 // Scrollbar margin
+                anchors.centerIn: parent
+                width: root.width - root.padding*2 - flickable.padding
+                            - (flickable.scrollbar_visible ? 20 : 0) // Scrollbar margin
             }
         }
 
