@@ -7,6 +7,7 @@ import "../Constants"
 ColumnLayout {
     property alias title: title_text.text
     property alias field: input_field
+    property alias save_button: save_button
     property alias hide_button: hide_button
     property alias hide_button_area: hide_button.mouse_area
     property bool copyable: false
@@ -16,7 +17,9 @@ ColumnLayout {
     property alias remove_newline: input_field.remove_newline
     property bool hiding: true
 
+    property bool saveable: false
 
+    signal saved()
 
     // Local
     function reset() {
@@ -26,11 +29,28 @@ ColumnLayout {
     RowLayout {
         DefaultText {
             id: title_text
+            Layout.alignment: Qt.AlignVCenter
+        }
+
+        DefaultButton {
+            id: save_button
+            button_type: input_field.readOnly ? "primary" : "danger"
+            Layout.alignment: Qt.AlignVCenter
+            text: API.get().settings_pg.empty_string + (input_field.readOnly ? qsTr("Edit") : qsTr("Save"))
+            visible: saveable
+            onClicked: {
+                input_field.readOnly = !input_field.readOnly
+                if(input_field.readOnly) saved()
+            }
+            font.pixelSize: Style.textSizeSmall
+            minWidth: 0
+            implicitHeight: text_obj.height * 1.25
         }
     }
 
     DefaultTextArea {
         id: input_field
+        readOnly: saveable
         Layout.fillWidth: true
 
         HideFieldButton {

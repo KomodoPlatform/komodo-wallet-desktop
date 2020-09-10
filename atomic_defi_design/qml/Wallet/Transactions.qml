@@ -88,7 +88,7 @@ DefaultListView {
         // Date
         DefaultText {
             font.pixelSize: description.font.pixelSize
-            text_value: API.get().settings_pg.empty_string + (unconfirmed ? qsTr("Unconfirmed"):  date)
+            text_value: API.get().settings_pg.empty_string + (unconfirmed ? qsTr("Unconfirmed") :  date)
             anchors.verticalCenter: parent.verticalCenter
             anchors.right: parent.right
             anchors.rightMargin: 20
