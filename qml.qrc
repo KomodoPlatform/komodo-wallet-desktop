@@ -177,6 +177,7 @@
         <file>atomic_defi_design/qml/Components/UpdateModal.qml</file>
         <file>atomic_defi_design/qml/Components/UpdateNotificationLine.qml</file>
         <file>atomic_defi_design/qml/Components/DefaultModal.qml</file>
+        <file>atomic_defi_design/qml/Components/BasicModal.qml</file>
         <file>atomic_defi_design/qml/Components/SidebarPanel.qml</file>
         <file>atomic_defi_design/qml/Components/SetupPage.qml</file>
         <file>atomic_defi_design/qml/Components/Separator.qml</file>
