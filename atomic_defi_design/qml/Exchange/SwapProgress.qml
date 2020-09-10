@@ -79,6 +79,8 @@ ColumnLayout {
 
     property string last_uuid: ""
     onTotal_time_passedChanged: {
+        if(!details) return
+
         // Reset for different order
         if(details.order_id !== last_uuid) {
             simulated_time = 0
