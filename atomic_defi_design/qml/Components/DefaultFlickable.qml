@@ -8,6 +8,8 @@ Flickable {
     id: root
 
     property bool scrollbar_visible: contentHeight > height
+
+    boundsBehavior: Flickable.StopAtBounds
     ScrollBar.vertical: DefaultScrollBar { }
 
     clip: true
