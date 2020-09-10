@@ -4,11 +4,17 @@ import QtQuick.Controls 2.12
 
 import "../Constants"
 
-DefaultModal {
+BasicModal {
+    id: root
+
     readonly property bool status_good: API.get().update_status.rpc_code === 200
     readonly property bool update_needed: status_good && API.get().update_status.update_needed
     readonly property bool required_update: update_needed && (API.get().update_status.status === "required")
     readonly property bool suggest_update: update_needed && (required_update || API.get().update_status.status === "recommended")
+
+    readonly property string update_title: API.get().settings_pg.empty_string + (!update_needed ? qsTr("Changelog") : (qsTr("New Update!") + " " + (API.get().update_status.current_version + "  " + General.right_arrow_icon + "  " + API.get().update_status.new_version)))
+    readonly property string update_state: API.get().settings_pg.empty_string + (!update_needed ? qsTr("Up to date") : !suggest_update ? qsTr("Available") : required_update ? qsTr("Required") : qsTr("Recommended"))
+    readonly property string update_color: !update_needed || !suggest_update ? Style.colorGreen : required_update ? Style.colorRed : Style.colorOrange
 
     onSuggest_updateChanged: {
         if(suggest_update) {
@@ -17,68 +23,33 @@ DefaultModal {
         }
     }
 
-    id: root
-
-    padding: 50
-
     closePolicy: suggest_update ? Popup.NoAutoClose : (Popup.CloseOnEscape | Popup.CloseOnPressOutside)
 
-    width: 900
-    height: Math.min(text_area.height + padding*2, 700)
+    title: `${General.download_icon} &nbscp;&nbscp; ${root.update_title} <font color="${root.update_color}">(${root.update_state})</font>`
 
-    DefaultText {
-        anchors.top: parent.top
-        anchors.topMargin: padding
-        anchors.right: parent.right
-        anchors.rightMargin: padding
-
-        font.pixelSize: Style.textSize2
-
-        text_value: API.get().settings_pg.empty_string + ("(" + (!update_needed ? qsTr("Up to date") : !suggest_update ? qsTr("Available") : required_update ? qsTr("Required") : qsTr("Recommended")) + ")")
-        color: !update_needed || !suggest_update ? Style.colorGreen : required_update ? Style.colorRed : Style.colorOrange
+    DefaultTextArea {
+        id: text_area
+        Layout.fillWidth: true
+        readOnly: true
+        text: status_good ? API.get().update_status.changelog : (qsTr("Problem occured") + ": " + API.get().update_status.status)
+        textFormat: Text.MarkdownText
+        remove_newline: false
     }
 
-    ColumnLayout {
-        anchors.fill: parent
-
-        ModalHeader {
-            id: header
-            title: API.get().settings_pg.empty_string + (General.download_icon + "   " + (!update_needed ? qsTr("Changelog") : (qsTr("New Update!") + " " + (API.get().update_status.current_version + "  " + General.right_arrow_icon + "  " + API.get().update_status.new_version))))
-        }
-
-        DefaultFlickable {
+    footer: [
+        DefaultButton {
             Layout.fillWidth: true
-            Layout.fillHeight: true
+            text: API.get().settings_pg.empty_string + (update_needed ? qsTr("Skip") : qsTr("Close"))
+            onClicked: root.close()
+            visible: !required_update
+        },
 
-            contentWidth: text_area.width
-            contentHeight: text_area.height
-
-            DefaultTextArea {
-                id: text_area
-                width: root.width - root.padding*2
-                readOnly: true
-                text: status_good ? API.get().update_status.changelog : (qsTr("Problem occured") + ": " + API.get().update_status.status)
-                textFormat: Text.MarkdownText
-                remove_newline: false
-            }
+        PrimaryButton {
+            Layout.fillWidth: true
+            visible: update_needed
+            enabled: status_good
+            text: API.get().settings_pg.empty_string + (qsTr("Download"))
+            onClicked: Qt.openUrlExternally(API.get().update_status.download_url)
         }
-
-        RowLayout {
-            Layout.topMargin: root.padding * 0.5
-            Layout.alignment: Qt.AlignHCenter
-
-            DefaultButton {
-                text: API.get().settings_pg.empty_string + (update_needed ? qsTr("Skip") : qsTr("Close"))
-                onClicked: root.close()
-                visible: !required_update
-            }
-
-            PrimaryButton {
-                visible: update_needed
-                enabled: status_good
-                text: API.get().settings_pg.empty_string + (qsTr("Download"))
-                onClicked: Qt.openUrlExternally(API.get().update_status.download_url)
-            }
-        }
-    }
+    ]
 }
