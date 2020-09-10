@@ -50,7 +50,7 @@ ColumnLayout {
 
     DefaultTextArea {
         id: input_field
-        enabled: saveable
+        enabled: !saveable
         Layout.fillWidth: true
 
         HideFieldButton {
