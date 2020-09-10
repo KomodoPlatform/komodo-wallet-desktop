@@ -94,19 +94,16 @@ namespace atomic_dex
 
         //! Private members fields
         std::shared_ptr<QApplication>         m_app;
-        atomic_dex::qt_wallet_manager         m_wallet_manager;
         t_actions_queue                       m_actions_queue{g_max_actions_size};
         t_portfolio_coins_to_initialize_queue m_portfolio_queue{g_max_actions_size};
         QVariantList                          m_enabled_coins;
         QVariantList                          m_enableable_coins;
         QVariant                              m_update_status;
         QString                               m_current_status{"None"};
-        QString                               m_current_balance_all{"0.00"};
-        // current_coin_info*                    m_coin_info;
-        t_manager_model_registry m_manager_models;
-        t_events_actions         m_event_actions{{false}};
-        std::atomic_bool         m_btc_fully_enabled{false};
-        std::atomic_bool         m_kmd_fully_enabled{false};
+        t_manager_model_registry              m_manager_models;
+        t_events_actions                      m_event_actions{{false}};
+        std::atomic_bool                      m_btc_fully_enabled{false};
+        std::atomic_bool                      m_kmd_fully_enabled{false};
 
       public:
         //! Constructor
@@ -126,9 +123,9 @@ namespace atomic_dex
         void on_process_swaps_finished_event(const process_swaps_finished&) noexcept;
 
         //! Properties Getter
-        mm2&       get_mm2() noexcept;
-        const mm2& get_mm2() const noexcept;
-        entt::dispatcher& get_dispatcher() noexcept;
+        mm2&                       get_mm2() noexcept;
+        const mm2&                 get_mm2() const noexcept;
+        entt::dispatcher&          get_dispatcher() noexcept;
         addressbook_model*         get_addressbook() const noexcept;
         portfolio_page*            get_portfolio_page() const noexcept;
         wallet_page*               get_wallet_page() const noexcept;

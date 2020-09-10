@@ -330,4 +330,11 @@ namespace atomic_dex
         this->m_wallet_cfg.protection_pass = emergency_password.toStdString();
         update_wallet_cfg();
     }
+
+    void
+    qt_wallet_manager::update() noexcept
+    {
+    }
+
+    qt_wallet_manager::qt_wallet_manager(entt::registry& registry) : system(registry) {}
 } // namespace atomic_dex
