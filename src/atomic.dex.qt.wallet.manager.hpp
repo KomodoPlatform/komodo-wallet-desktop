@@ -60,6 +60,7 @@ namespace atomic_dex
 
         bool update_wallet_cfg() noexcept;
 
+        std::string                     retrieve_transactions_notes(const std::string& tx_hash) const;
         void                            update_transactions_notes(const std::string& tx_hash, const std::string& notes);
         void                            update_contact_ticker(const QString& contact_name, const QString& old_ticker, const QString& new_ticker);
         void                            update_contact_address(const QString& contact_name, const QString& ticker, const QString& address);

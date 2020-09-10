@@ -45,10 +45,11 @@ namespace atomic_dex
 
     struct wallet_cfg
     {
-        std::string                                            name{};
-        std::string                                            protection_pass{"default_protection_pass"};
-        std::vector<contact>                                   address_book{};
-        std::unordered_map<std::string, transactions_contents> transactions_details;
+        using t_synchronized_transactions_details = boost::synchronized_value<std::unordered_map<std::string, transactions_contents>>;
+        std::string                         name{};
+        std::string                         protection_pass{"default_protection_pass"};
+        std::vector<contact>                address_book{};
+        t_synchronized_transactions_details transactions_details;
     };
 
     void from_json(const nlohmann::json& j, wallet_cfg& cfg);

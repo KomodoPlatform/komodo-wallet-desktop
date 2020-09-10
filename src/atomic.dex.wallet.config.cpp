@@ -48,7 +48,7 @@ namespace atomic_dex
         }
         if (j.contains("transactions_details"))
         {
-            cfg.transactions_details = j.at("transactions_details").get<decltype(cfg.transactions_details)>();
+            cfg.transactions_details = j.at("transactions_details").get<decltype(cfg.transactions_details)::value_type>();
         }
     }
 
@@ -72,7 +72,7 @@ namespace atomic_dex
         j["name"]                 = cfg.name;
         j["protection_pass"]      = cfg.protection_pass;
         j["addressbook"]          = cfg.address_book;
-        j["transactions_details"] = cfg.transactions_details;
+        j["transactions_details"] = cfg.transactions_details.get();
     }
 
     void

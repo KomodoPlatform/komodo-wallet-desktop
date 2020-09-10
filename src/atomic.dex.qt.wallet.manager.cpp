@@ -188,7 +188,7 @@ namespace atomic_dex
     void
     qt_wallet_manager::update_transactions_notes(const std::string& tx_hash, const std::string& notes)
     {
-        m_wallet_cfg.transactions_details[tx_hash].note = notes;
+        m_wallet_cfg.transactions_details->operator[](tx_hash).note = notes;
     }
 
     bool
@@ -343,4 +343,15 @@ namespace atomic_dex
     }
 
     qt_wallet_manager::qt_wallet_manager(entt::registry& registry) : system(registry) {}
+
+    std::string
+    qt_wallet_manager::retrieve_transactions_notes(const std::string& tx_hash) const
+    {
+        std::string note = "";
+        if (m_wallet_cfg.transactions_details->find(tx_hash) != m_wallet_cfg.transactions_details->end())
+        {
+            note = m_wallet_cfg.transactions_details->at(tx_hash).note;
+        }
+        return note;
+    }
 } // namespace atomic_dex
