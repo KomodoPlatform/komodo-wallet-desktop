@@ -52,7 +52,7 @@ Item {
     LogModal {
         id: recover_funds_modal
 
-        title: API.get().settings_pg.empty_string + (qsTr("Recover Funds Result"))
+        header: API.get().settings_pg.empty_string + (qsTr("Recover Funds Result"))
         field.text: General.prettifyJSON(recover_funds_result)
 
         onClosed: recover_funds_result = "{}"
