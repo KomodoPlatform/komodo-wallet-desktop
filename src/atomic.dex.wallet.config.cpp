@@ -46,6 +46,10 @@ namespace atomic_dex
                 cfg.address_book.emplace_back(std::move(current_contact));
             }
         }
+        if (j.contains("transactions_details"))
+        {
+            cfg.transactions_details = j.at("transactions_details").get<decltype(cfg.transactions_details)>();
+        }
     }
 
     void
@@ -65,8 +69,23 @@ namespace atomic_dex
     void
     to_json(nlohmann::json& j, const wallet_cfg& cfg)
     {
-        j["name"]            = cfg.name;
-        j["protection_pass"] = cfg.protection_pass;
-        j["addressbook"]     = cfg.address_book;
+        j["name"]                 = cfg.name;
+        j["protection_pass"]      = cfg.protection_pass;
+        j["addressbook"]          = cfg.address_book;
+        j["transactions_details"] = cfg.transactions_details;
+    }
+
+    void
+    to_json(nlohmann::json& j, const transactions_contents& cfg)
+    {
+        j["note"]     = cfg.note;
+        j["category"] = cfg.category;
+    }
+
+    void
+    from_json(const nlohmann::json& j, transactions_contents& cfg)
+    {
+        j.at("note").get_to(cfg.note);
+        j.at("category").get_to(cfg.category);
     }
 } // namespace atomic_dex

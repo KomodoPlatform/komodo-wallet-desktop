@@ -185,6 +185,12 @@ namespace atomic_dex
         return true;
     }
 
+    void
+    qt_wallet_manager::update_transactions_notes(const std::string& tx_hash, const std::string& notes)
+    {
+        m_wallet_cfg.transactions_details[tx_hash].note = notes;
+    }
+
     bool
     qt_wallet_manager::update_wallet_cfg() noexcept
     {

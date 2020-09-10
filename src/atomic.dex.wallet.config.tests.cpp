@@ -92,6 +92,7 @@ TEST_CASE("validate json deserialization from cpp data structure to json")
              {
    "name":"roman",
    "protection_pass": "default_protection_pass",
+   "transactions_details": {},
    "addressbook":[
       {
          "name":"ca333",
