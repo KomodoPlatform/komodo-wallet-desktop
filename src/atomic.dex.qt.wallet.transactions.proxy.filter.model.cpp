@@ -51,6 +51,8 @@ namespace atomic_dex
             break;
         case transactions_model::UnconfirmedRole:
             break;
+        case transactions_model::TransactionNoteRole:
+            break;
         }
         return true;
     }
