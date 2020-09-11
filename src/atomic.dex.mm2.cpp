@@ -510,7 +510,9 @@ namespace atomic_dex
                                 bool res = this->process_batch_enable_answer(answer);
                                 if (not res && idx < tickers.size())
                                 {
-                                    spdlog::trace("bad answer for: [{}] -> removing it from enabling, idx: {}, tickers size: {}", tickers[idx], idx, tickers.size());
+                                    spdlog::trace(
+                                        "bad answer for: [{}] -> removing it from enabling, idx: {}, tickers size: {}, answers size: {}", tickers[idx], idx,
+                                        tickers.size(), answers.size());
                                     tickers.erase(tickers.begin() + idx);
                                 }
                                 idx += 1;

@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.5)
 
-project(atomicDexPro LANGUAGES CXX VERSION 0.2.1)
+project(atomicDexPro LANGUAGES CXX VERSION 0.3.0)
 
 
 set(CMAKE_INCLUDE_CURRENT_DIR ON)

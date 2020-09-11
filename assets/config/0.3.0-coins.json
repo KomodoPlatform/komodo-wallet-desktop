@@ -19,7 +19,6 @@
       "https://insight.axerunners.com/"
     ],
     "type": "UTXO",
-    "is_erc_20": false,
     "active": false,
     "currently_enabled": false
   },
@@ -29,7 +28,6 @@
     "type": "UTXO",
     "coingecko_id": "bitcoin",
     "coinpaprika_id": "btc-bitcoin",
-    "is_erc_20": false,
     "electrum": [
       {
         "url": "electrum3.cipig.net:10000"
@@ -67,7 +65,6 @@
     "explorer_url": [
       "https://explorer.bitcoin.com/bch/"
     ],
-    "is_erc_20": false,
     "type": "UTXO",
     "name": "Bitcoin Cash"
   },
@@ -77,7 +74,6 @@
     "type": "Smart Chain",
     "coingecko_id": "test-coin",
     "coinpaprika_id": "test-coin",
-    "is_erc_20": false,
     "electrum": [
       {
         "url": "electrum1.cipig.net:10012"
@@ -101,7 +97,6 @@
     "type": "Smart Chain",
     "coingecko_id": "test-coin",
     "coinpaprika_id": "test-coin",
-    "is_erc_20": false,
     "electrum": [
       {
         "url": "electrum1.cipig.net:10007"
@@ -133,7 +128,6 @@
       "https://etherscan.io/"
     ],
     "type": "ERC-20",
-    "is_erc_20": true,
     "active": false,
     "currently_enabled": false
   },
@@ -157,7 +151,6 @@
       "https://ccl.explorer.dexstats.info/"
     ],
     "type": "Smart Chain",
-    "is_erc_20": false,
     "active": false,
     "currently_enabled": false
   },
@@ -167,7 +160,6 @@
     "type": "Smart Chain",
     "coingecko_id": "test-coin",
     "coinpaprika_id": "test-coin",
-    "is_erc_20": false,
     "electrum": [
       {
         "url": "electrum1.cipig.net:10008"
@@ -199,7 +191,6 @@
       "https://etherscan.io/"
     ],
     "type": "ERC-20",
-    "is_erc_20": true,
     "active": false,
     "currently_enabled": false
   },
@@ -225,7 +216,6 @@
       "https://blockchair.com/dash/"
     ],
     "explorer_tx_url": "transaction/",
-    "is_erc_20": false,
     "type": "UTXO"
   },
   "DGB": {
@@ -248,7 +238,6 @@
     "explorer_url": [
       "https://digiexplorer.info/"
     ],
-    "is_erc_20": false,
     "type": "UTXO"
   },
   "DOGE": {
@@ -270,7 +259,6 @@
       "https://dogechain.info/"
     ],
     "type": "UTXO",
-    "is_erc_20": false,
     "active": false,
     "currently_enabled": false
   },
@@ -294,7 +282,6 @@
       "https://explorer.electraproject.org/"
     ],
     "type": "UTXO",
-    "is_erc_20": false,
     "active": false,
     "currently_enabled": false
   },
@@ -320,7 +307,6 @@
     "explorer_tx_url": "tx.dws?",
     "explorer_address_url": "address.dws?",
     "type": "UTXO",
-    "is_erc_20": false,
     "active": false,
     "currently_enabled": false
   },
@@ -343,7 +329,6 @@
       "http://explorer.feathercoin.com/"
     ],
     "type": "UTXO",
-    "is_erc_20": false,
     "active": false,
     "currently_enabled": false
   },
@@ -353,7 +338,6 @@
     "type": "Smart Chain",
     "coingecko_id": "test-coin",
     "coinpaprika_id": "test-coin",
-    "is_erc_20": false,
     "electrum": [
       {
         "url": "electrum1.cipig.net:10004"
@@ -391,7 +375,6 @@
     "explorer_url": [
       "https://blockexplorer.one/litecoin/mainnet/"
     ],
-    "is_erc_20": false,
     "type": "UTXO",
     "name": "Litecoin"
   },
@@ -415,7 +398,6 @@
     "explorer_url": [
       "http://explorer.marmara.io/"
     ],
-    "is_erc_20": false,
     "type": "Smart Chain",
     "name": "MCL"
   },
@@ -433,7 +415,6 @@
       "https://etherscan.io/"
     ],
     "type": "ERC-20",
-    "is_erc_20": true,
     "active": false,
     "currently_enabled": false
   },
@@ -451,7 +432,6 @@
     "explorer_url": [
       "https://etherscan.io/"
     ],
-    "is_erc_20": true,
     "type": "ERC-20",
     "name": "Ethereum"
   },
@@ -469,7 +449,6 @@
     "explorer_url": [
       "https://etherscan.io/"
     ],
-    "is_erc_20": true,
     "type": "ERC-20",
     "name": "USD Coin"
   },
@@ -487,7 +466,6 @@
     "explorer_url": [
       "https://etherscan.io/"
     ],
-    "is_erc_20": true,
     "type": "ERC-20",
     "name": "Atomic Wallet Coin"
   },
@@ -504,7 +482,6 @@
       "https://etherscan.io/"
     ],
     "type": "ERC-20",
-    "is_erc_20": true,
     "active": false,
     "currently_enabled": false
   },
@@ -522,7 +499,6 @@
     "explorer_url": [
       "https://etherscan.io/"
     ],
-    "is_erc_20": true,
     "type": "ERC-20",
     "name": "True USD"
   },
@@ -534,7 +510,6 @@
     "minimal_claim_amount": "10",
     "coingecko_id": "komodo",
     "coinpaprika_id": "kmd-komodo",
-    "is_erc_20": false,
     "electrum": [
       {
         "url": "electrum3.cipig.net:10001"
@@ -558,7 +533,6 @@
     "type": "Smart Chain",
     "coingecko_id": "test-coin",
     "coinpaprika_id": "test-coin",
-    "is_erc_20": false,
     "electrum": [
       {
         "url": "electrum1.cipig.net:10019"
@@ -582,7 +556,6 @@
     "type": "Smart Chain",
     "coingecko_id": "test-coin",
     "coinpaprika_id": "test-coin",
-    "is_erc_20": false,
     "electrum": [
       {
         "url": "electrum1.cipig.net:10015"
@@ -606,7 +579,6 @@
     "type": "Smart Chain",
     "coingecko_id": "test-coin",
     "coinpaprika_id": "test-coin",
-    "is_erc_20": false,
     "electrum": [
       {
         "url": "electrum1.cipig.net:10006"
@@ -631,7 +603,6 @@
     "name": "Rick (TESTCOIN)",
     "coingecko_id": "test-coin",
     "coinpaprika_id": "test-coin",
-    "is_erc_20": false,
     "electrum": [
       {
         "url": "electrum3.cipig.net:10017"
@@ -656,7 +627,6 @@
     "name": "Morty (TESTCOIN)",
     "coingecko_id": "test-coin",
     "coinpaprika_id": "test-coin",
-    "is_erc_20": false,
     "electrum": [
       {
         "url": "electrum3.cipig.net:10018"
@@ -680,7 +650,6 @@
     "type": "Smart Chain",
     "coingecko_id": "test-coin",
     "coinpaprika_id": "test-coin",
-    "is_erc_20": false,
     "electrum": [
       {
         "url": "electrum1.cipig.net:10010"
@@ -704,7 +673,6 @@
     "type": "Smart Chain",
     "coingecko_id": "test-coin",
     "coinpaprika_id": "test-coin",
-    "is_erc_20": false,
     "electrum": [
       {
         "url": "electrum1.cipig.net:10003"
@@ -742,7 +710,6 @@
       "https://rfox.explorer.dexstats.info/"
     ],
     "type": "Smart Chain",
-    "is_erc_20": false,
     "active": false,
     "currently_enabled": false
   },
@@ -752,7 +719,6 @@
     "name": "Chips",
     "coingecko_id": "test-coin",
     "coinpaprika_id": "chips-chips",
-    "is_erc_20": false,
     "electrum": [
       {
         "url": "electrum3.cipig.net:10053"
@@ -776,7 +742,6 @@
     "name": "Hush",
     "coingecko_id": "hush",
     "coinpaprika_id": "hush-hush",
-    "is_erc_20": false,
     "electrum": [
       {
         "url": "electrum1.cipig.net:10064"
@@ -800,7 +765,6 @@
     "type": "Smart Chain",
     "coingecko_id": "test-coin",
     "coinpaprika_id": "test-coin",
-    "is_erc_20": false,
     "electrum": [
       {
         "url": "electrum1.cipig.net:10005"
@@ -824,7 +788,6 @@
     "name": "Verus Coin",
     "coingecko_id": "verus-coin",
     "coinpaprika_id": "vrsc-verus-coin",
-    "is_erc_20": false,
     "electrum": [
       {
         "url": "el0.veruscoin.io:17485"
@@ -848,7 +811,6 @@
     "name": "iLien",
     "coingecko_id": "test-coin",
     "coinpaprika_id": "test-coin",
-    "is_erc_20": false,
     "electrum": [
       {
         "url": "electrum1.ilien.io:65011"
@@ -882,7 +844,6 @@
       "https://www.navexplorer.com/"
     ],
     "type": "UTXO",
-    "is_erc_20": false,
     "active": false,
     "currently_enabled": false
   },
@@ -906,7 +867,6 @@
       "https://explorer.utrum.io/"
     ],
     "type": "Smart Chain",
-    "is_erc_20": false,
     "active": false,
     "currently_enabled": false
   },
@@ -929,7 +889,6 @@
       "https://explorer.qtum.org/"
     ],
     "type": "UTXO",
-    "is_erc_20": false,
     "active": false,
     "currently_enabled": false
   },
@@ -952,7 +911,6 @@
       "https://ravencoin.network/"
     ],
     "type": "UTXO",
-    "is_erc_20": false,
     "active": false,
     "currently_enabled": false
   },
@@ -973,7 +931,6 @@
       "https://thc.explorer.dexstats.info/"
     ],
     "type": "Smart Chain",
-    "is_erc_20": false,
     "active": false,
     "currently_enabled": false
   },
@@ -990,7 +947,6 @@
     "explorer_url": [
       "https://etherscan.io/"
     ],
-    "is_erc_20": true,
     "type": "ERC-20",
     "active": false,
     "currently_enabled": false
@@ -1014,7 +970,6 @@
       "https://explorer.zcoin.io/"
     ],
     "type": "UTXO",
-    "is_erc_20": false,
     "active": false,
     "currently_enabled": false
   },
@@ -1038,7 +993,6 @@
     "explorer_url": [
       "https://explorer.zcha.in/"
     ],
-    "is_erc_20": false,
     "type": "UTXO"
   },
   "ZER": {
@@ -1061,7 +1015,6 @@
       "https://insight.zerocurrency.io/insight/"
     ],
     "type": "UTXO",
-    "is_erc_20": false,
     "active": false,
     "currently_enabled": false
   },
@@ -1089,7 +1042,6 @@
     "explorer_url": [
       "https://blockstream.info/testnet/"
     ],
-    "is_erc_20": false,
     "name": "Bitcoin (testnet BTC)",
     "type": "UTXO"
   }

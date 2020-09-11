@@ -332,9 +332,9 @@ namespace mm2::api
 
     struct withdraw_fees
     {
-        std::string                type;      ///< UtxoFixed, UtxoPerKbyte, EthGas
-        std::optional<std::string> amount;    ///< for utxo only
-        std::optional<std::string> gas_price; ///< price EthGas
+        std::string                type;      ///< UtxoFixed, UtxoPerKbyte, EthGas, Qrc20Gas
+        std::optional<std::string> amount;    ///< Utxo only
+        std::optional<std::string> gas_price; ///< price EthGas or Qrc20Gas
         std::optional<int>         gas_limit; ///< sets the gas limit for transaction
     };
 
@@ -711,7 +711,7 @@ namespace mm2::api
         int            rpc_result_code;
     };
 
-    //kmd_rewards_info_answer rpc_kmd_rewards_info(std::shared_ptr<t_http_client> mm2_client);
+    // kmd_rewards_info_answer rpc_kmd_rewards_info(std::shared_ptr<t_http_client> mm2_client);
     kmd_rewards_info_answer process_kmd_rewards_answer(nlohmann::json result);
 
     nlohmann::json rpc_batch_electrum(std::vector<electrum_request> requests, std::shared_ptr<t_http_client> mm2_client);
