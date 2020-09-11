@@ -282,6 +282,10 @@ QtObject {
         return true
     }
 
+    function isTokenType(type) {
+        return type === "ERC-20" || type === "QRC-20"
+    }
+
     function isCoinEnabled(ticker) {
         for(const c of API.get().enabled_coins)
             if(c.ticker === ticker) return true

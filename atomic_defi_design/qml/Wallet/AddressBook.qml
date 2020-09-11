@@ -34,8 +34,8 @@ ColumnLayout {
 
     readonly property var essential_coins: General.all_coins.filter(c => {
                     if(c.type === "ERC-20" && c.ticker !== "ETH") return false
-                    if(c.type === "QRC-20" && c.ticker !== "QTUM") return false
-                    if(c.type === "Smart Chain" && c.ticker !== "KMD") return false
+                    else if(c.type === "QRC-20" && c.ticker !== "QTUM") return false
+                    else if(c.type === "Smart Chain" && c.ticker !== "KMD") return false
 
                     return true
                 })

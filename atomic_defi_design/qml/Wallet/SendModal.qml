@@ -85,8 +85,8 @@ DefaultModal {
         api_wallet_page.broadcast(send_result.withdraw_answer.tx_hex, false, send_result.withdraw_answer.max, input_amount.field.text)
     }
 
-    function isERC20() {
-        return current_ticker_infos.type === "ERC-20"
+    function isSpecialToken() {
+        return General.isTokenType(current_ticker_infos.type)
     }
 
     function ercToMixedCase(addr) {
@@ -134,7 +134,7 @@ DefaultModal {
             return false
 
         if(custom_fees_switch.checked) {
-            if(isERC20()) {
+            if(isSpecialToken()) {
                 const ether = 1000000000
                 const gas_limit = parseFloat(input_custom_fees_gas.field.text)
                 const gas_price = parseFloat(input_custom_fees_gas_price.field.text)
@@ -164,8 +164,8 @@ DefaultModal {
 
     function feesAreFilled() {
         return  (!custom_fees_switch.checked || (
-                       (!isERC20() && input_custom_fees.field.acceptableInput) ||
-                       (isERC20() && input_custom_fees_gas.field.acceptableInput && input_custom_fees_gas_price.field.acceptableInput &&
+                       (!isSpecialToken() && input_custom_fees.field.acceptableInput) ||
+                       (isSpecialToken() && input_custom_fees_gas.field.acceptableInput && input_custom_fees_gas_price.field.acceptableInput &&
                                        parseFloat(input_custom_fees_gas.field.text) > 0 && parseFloat(input_custom_fees_gas_price.field.text) > 0)
                      )
                  )
@@ -224,7 +224,7 @@ DefaultModal {
             // ERC-20 Lowercase issue
             RowLayout {
                 Layout.fillWidth: true
-                visible: isERC20() && input_address.field.text != "" && hasErc20CaseIssue(isERC20(), input_address.field.text)
+                visible: isSpecialToken() && input_address.field.text != "" && hasErc20CaseIssue(isSpecialToken(), input_address.field.text)
                 DefaultText {
                     Layout.alignment: Qt.AlignLeft
                     color: Style.colorRed
@@ -280,7 +280,7 @@ DefaultModal {
 
                 // Normal coins, Custom fees input
                 AmountField {
-                    visible: !isERC20()
+                    visible: !isSpecialToken()
 
                     id: input_custom_fees
                     title: API.get().settings_pg.empty_string + (qsTr("Custom Fee") + " [" + api_wallet_page.ticker + "]")
@@ -290,7 +290,7 @@ DefaultModal {
 
                 // ERC-20 coins
                 ColumnLayout {
-                    visible: isERC20()
+                    visible: isSpecialToken()
 
                     // Gas input
                     AmountIntField {
@@ -353,10 +353,10 @@ DefaultModal {
                     text: API.get().settings_pg.empty_string + (qsTr("Prepare"))
                     Layout.fillWidth: true
 
-                    enabled: fieldAreFilled() && hasFunds() && !hasErc20CaseIssue(isERC20(), input_address.field.text) && !root.is_send_busy
+                    enabled: fieldAreFilled() && hasFunds() && !hasErc20CaseIssue(isSpecialToken(), input_address.field.text) && !root.is_send_busy
 
                     onClicked: prepareSendCoin(input_address.field.text, input_amount.field.text, custom_fees_switch.checked, input_custom_fees.field.text,
-                                               isERC20(), input_custom_fees_gas.field.text, input_custom_fees_gas_price.field.text)
+                                               isSpecialToken(), input_custom_fees_gas.field.text, input_custom_fees_gas_price.field.text)
                 }
             }
         }

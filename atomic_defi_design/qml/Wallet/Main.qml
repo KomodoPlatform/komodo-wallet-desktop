@@ -374,7 +374,7 @@ Item {
 
                     DefaultText {
                         text_value: API.get().settings_pg.empty_string + (
-                          current_ticker_infos.type === "ERC-20" ?
+                          General.isTokenType(current_ticker_infos.type) ?
                           (qsTr("Scanning blocks for TX History...") + " " + loadingPercentage(current_ticker_infos.blocks_left)) :
                           (qsTr("Syncing TX History...") + " " + loadingPercentage(current_ticker_infos.transactions_left))
                         )
