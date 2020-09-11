@@ -386,12 +386,12 @@ ColumnLayout {
                 height: type_tag.font.pixelSize * 1.5
                 width: type_tag.width + 8
 
-                color: Style.getCoinColor(type === "ERC-20" ? "ETH" : "QTUM")
+                color: Style.getCoinColor(API.get().get_coin_info(ticker).type === "ERC-20" ? "ETH" : "QTUM")
                 DefaultText {
                     id: type_tag
                     anchors.verticalCenter: parent.verticalCenter
                     anchors.horizontalCenter: parent.horizontalCenter
-                    text: API.get().settings_pg.empty_string + (type === "ERC-20" ? "ERC-20" : "QRC-20")
+                    text: API.get().settings_pg.empty_string + (API.get().get_coin_info(ticker).type === "ERC-20" ? "ERC-20" : "QRC-20")
                     font.pixelSize: Style.textSizeSmall1
                 }
             }
