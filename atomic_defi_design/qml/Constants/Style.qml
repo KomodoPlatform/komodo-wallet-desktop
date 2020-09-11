@@ -253,6 +253,7 @@ QtObject {
                                           "USDC": "#317BCB",
                                           "PAX": "#EDE70A",
                                           "TUSD": "#2E3181",
-                                          "AWC": "#31A5F6"
+                                          "AWC": "#31A5F6",
+                                          "VRA": "#D70A41"
                                       })
 }

@@ -261,9 +261,9 @@ QtObject {
         return exists(v) && v !== ""
     }
 
-    function isEthNeeded() {
+    function isParentCoinNeeded(ticker, type) {
         for(const c of API.get().enabled_coins)
-            if(c.type === "ERC-20" && c.ticker !== "ETH") return true
+            if(c.type === type && c.ticker !== ticker) return true
 
         return false
     }
@@ -276,21 +276,21 @@ QtObject {
 
         if(ticker === "KMD" || ticker === "BTC") return false
 
-        if(ticker === "ETH") return !General.isEthNeeded()
+        if(ticker === "ETH") return !General.isParentCoinNeeded("ETH", "ERC-20")
 
         return true
     }
 
-    function isEthEnabled() {
+    function isCoinEnabled(ticker) {
         for(const c of API.get().enabled_coins)
-            if(c.ticker === "ETH") return true
+            if(c.ticker === ticker) return true
 
         return false
     }
 
-    function enableEthIfNeeded() {
-        if(!isEthEnabled() && isEthNeeded()) {
-            API.get().enable_coins(["ETH"])
+    function enableParentCoinIfNeeded(ticker, type) {
+        if(!isCoinEnabled(ticker) && isParentCoinNeeded(ticker, type)) {
+            API.get().enable_coins([ticker])
             return true
         }
 
