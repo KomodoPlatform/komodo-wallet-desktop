@@ -20,13 +20,21 @@ ComboBox {
     hoverEnabled: true
 
     // Main, selected text
-    contentItem: DefaultText {
-        leftPadding: 12
-        rightPadding: control.indicator.width + control.spacing
+    contentItem: RowLayout {
+        property alias color: text.color
 
-        text_value: API.get().settings_pg.empty_string + (control.mainLineText)
-        color: !control.enabled ? Style.colorTextDisabled : control.pressed ? Style.colorText2 : Style.colorText
+        DefaultText {
+            id: text
+            leftPadding: 12
+            rightPadding: control.indicator.width + control.spacing
+
+            Layout.alignment: Qt.AlignVCenter | Qt.AlignLeft
+
+            text_value: API.get().settings_pg.empty_string + (control.mainLineText)
+            color: !control.enabled ? Style.colorTextDisabled : control.pressed ? Style.colorText2 : Style.colorText
+        }
     }
+
 
     // Main background
     background: Rectangle {
