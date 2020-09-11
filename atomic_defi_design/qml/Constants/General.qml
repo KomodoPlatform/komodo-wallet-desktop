@@ -277,6 +277,7 @@ QtObject {
         if(ticker === "KMD" || ticker === "BTC") return false
 
         if(ticker === "ETH") return !General.isParentCoinNeeded("ETH", "ERC-20")
+        if(ticker === "QTUM") return !General.isParentCoinNeeded("QTUM", "QRC-20")
 
         return true
     }
