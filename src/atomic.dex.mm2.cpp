@@ -508,12 +508,12 @@ namespace atomic_dex
                             for (auto&& answer: answers)
                             {
                                 bool res = this->process_batch_enable_answer(answer);
-                                if (not res)
+                                if (not res && idx < tickers.size())
                                 {
-                                    spdlog::trace("bad answer for: {}, removing it from enabling", tickers[idx]);
+                                    spdlog::trace("bad answer for: [{}] -> removing it from enabling, idx: {}, tickers size: {}", tickers[idx], idx, tickers.size());
                                     tickers.erase(tickers.begin() + idx);
                                 }
-                                ++idx;
+                                idx += 1;
                             }
                             batch_balance_and_tx(false, tickers, true);
                             //! At this point, task is finished, let's refresh.
