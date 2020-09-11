@@ -386,7 +386,7 @@ ColumnLayout {
                 height: type_tag.font.pixelSize * 1.5
                 width: type_tag.width + 8
 
-                color: Style.colorBlue
+                color: Style.getCoinColor(type === "ERC-20" ? "ETH" : "QTUM")
                 DefaultText {
                     id: type_tag
                     anchors.verticalCenter: parent.verticalCenter
