@@ -27,11 +27,11 @@ FloatingBackground {
         return input_volume.field.text !== '' && input_price.field.text !== ''
     }
 
-    function hasEthFees() {
+    function hasParentCoinFees() {
         return General.isFilled(curr_trade_info.erc_fees) && parseFloat(curr_trade_info.erc_fees) > 0
     }
 
-    function hasEnoughEthForFees() {
+    function hasEnoughParentCoinForFees() {
         return General.isCoinEnabled("ETH") && API.get().do_i_have_enough_funds("ETH", curr_trade_info.erc_fees)
     }
 
@@ -48,7 +48,7 @@ FloatingBackground {
 
         if(valid) valid = !notEnoughBalance()
         if(valid) valid = API.get().do_i_have_enough_funds(base_ticker, General.formatDouble(getNeededAmountToSpend(input_volume.field.text)))
-        if(valid && hasEthFees()) valid = hasEnoughEthForFees()
+        if(valid && hasParentCoinFees()) valid = hasEnoughParentCoinForFees()
 
         return valid
     }
@@ -377,11 +377,11 @@ FloatingBackground {
                             id: tx_fee_text
                             text_value: API.get().settings_pg.empty_string + ((qsTr('Transaction Fee') + ': ' + General.formatCrypto("", curr_trade_info.tx_fee, curr_trade_info.is_ticker_of_fees_eth ? "ETH" : base_ticker)) +
                                                                     // ETH Fees
-                                                                    (hasEthFees() ? " + " + General.formatCrypto("", curr_trade_info.erc_fees, 'ETH') : '') +
+                                                                    (hasParentCoinFees() ? " + " + General.formatCrypto("", curr_trade_info.erc_fees, 'ETH') : '') +
 
                                                                   // Fiat part
                                                                   (" ("+
-                                                                      getFiatText(!hasEthFees() ? curr_trade_info.tx_fee : General.formatDouble((parseFloat(curr_trade_info.tx_fee) + parseFloat(curr_trade_info.erc_fees))),
+                                                                      getFiatText(!hasParentCoinFees() ? curr_trade_info.tx_fee : General.formatDouble((parseFloat(curr_trade_info.tx_fee) + parseFloat(curr_trade_info.erc_fees))),
                                                                                   curr_trade_info.is_ticker_of_fees_eth ? 'ETH' : base_ticker)
                                                                    +")")
 
@@ -501,7 +501,7 @@ FloatingBackground {
                                     (qsTr("Not enough balance for the fees. Need at least %1 more", "AMT TICKER").arg(General.formatCrypto("", curr_trade_info.amount_needed, base_ticker))) :
 
                                 // Not enough ETH for fees
-                                (getCurrentForm().hasEthFees() && !getCurrentForm().hasEnoughEthForFees()) ? (qsTr("Not enough ETH for the transaction fee")) : ""
+                                (getCurrentForm().hasParentCoinFees() && !getCurrentForm().hasEnoughParentCoinForFees()) ? (qsTr("Not enough ETH for the transaction fee")) : ""
                           )
             }
         }
