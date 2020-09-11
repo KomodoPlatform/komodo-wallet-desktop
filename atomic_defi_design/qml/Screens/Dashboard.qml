@@ -95,8 +95,12 @@ Item {
         running: inCurrentPage()
         interval: 1000
         repeat: true
-        onTriggered: General.enableEthIfNeeded()
+        onTriggered: {
+            General.enableParentCoinIfNeeded("ETH", "ERC-20")
+            General.enableParentCoinIfNeeded("QTUM", "QRC-20")
+        }
     }
+
     // Right side
     Rectangle {
         color: Style.colorTheme8

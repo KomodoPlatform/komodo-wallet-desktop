@@ -32,7 +32,7 @@ FloatingBackground {
     }
 
     function hasEnoughEthForFees() {
-        return General.isEthEnabled() && API.get().do_i_have_enough_funds("ETH", curr_trade_info.erc_fees)
+        return General.isCoinEnabled("ETH") && API.get().do_i_have_enough_funds("ETH", curr_trade_info.erc_fees)
     }
 
     function higherThanMinTradeAmount() {
