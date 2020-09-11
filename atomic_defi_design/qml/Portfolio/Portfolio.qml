@@ -378,8 +378,8 @@ ColumnLayout {
 
                 visible: {
                     const type = API.get().get_coin_info(ticker).type
-                    return (ticker !== "ETH"  && type === "ERC-20") ||
-                           (ticker !== "QTUM" && type === "QRC-20")
+                    return (type === "ERC-20" && ticker !== "ETH") ||
+                           (type === "QRC-20" && ticker !== "QTUM")
                 }
                 radius: 20
 
