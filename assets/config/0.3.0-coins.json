@@ -888,7 +888,7 @@
     "explorer_url": [
       "https://explorer.qtum.org/"
     ],
-    "type": "UTXO",
+    "type": "QRC-20",
     "active": false,
     "currently_enabled": false
   },
