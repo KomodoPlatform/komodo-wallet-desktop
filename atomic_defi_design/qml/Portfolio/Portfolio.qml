@@ -376,18 +376,22 @@ ColumnLayout {
                 anchors.leftMargin: -10
                 anchors.verticalCenter: parent.verticalCenter
 
-                visible: ticker !== "ETH" && API.get().get_coin_info(ticker).type === "ERC-20"
+                visible: {
+                    const type = API.get().get_coin_info(ticker).type
+                    return (ticker !== "ETH"  && type === "ERC-20") ||
+                           (ticker !== "QTUM" && type === "QRC-20")
+                }
                 radius: 20
 
-                height: erc_tag.font.pixelSize * 1.5
-                width: erc_tag.width + 8
+                height: type_tag.font.pixelSize * 1.5
+                width: type_tag.width + 8
 
                 color: Style.colorBlue
                 DefaultText {
-                    id: erc_tag
+                    id: type_tag
                     anchors.verticalCenter: parent.verticalCenter
                     anchors.horizontalCenter: parent.horizontalCenter
-                    text: API.get().settings_pg.empty_string + ("ERC-20")
+                    text: API.get().settings_pg.empty_string + (type === "ERC-20" ? "ERC-20" : "QRC-20")
                     font.pixelSize: Style.textSizeSmall1
                 }
             }
