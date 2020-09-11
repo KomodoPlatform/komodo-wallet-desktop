@@ -8,15 +8,14 @@ ScrollBar {
     id: control
 
     anchors.right: root.right
-    anchors.rightMargin: Style.scrollbarOffset
+    anchors.rightMargin: 3
     policy: scrollbar_visible ? ScrollBar.AlwaysOn : ScrollBar.AlwaysOff
 
     width: 6
-    anchors.margins: 50
     contentItem: Item {
         FloatingBackground {
             width: parent.width
-            height: parent.height - 14
+            height: parent.height - 7 - 4
             anchors.verticalCenter: parent.verticalCenter
 
             radius: 100
@@ -32,7 +31,7 @@ ScrollBar {
         x: -width/2 + 6/2
         InnerBackground {
             width: parent.width
-            height: parent.height - 10
+            height: parent.height - 7
             anchors.verticalCenter: parent.verticalCenter
 
             radius: 100

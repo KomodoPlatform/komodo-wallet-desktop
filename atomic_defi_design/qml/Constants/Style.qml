@@ -53,7 +53,6 @@ QtObject {
     readonly property int rowSpacing: 12
     readonly property int iconTextMargin: 5
     readonly property int sidebarLineHeight: 44
-    readonly property int scrollbarOffset: 5
 
     property bool dark_theme: true
 
