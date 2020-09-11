@@ -23,6 +23,8 @@ BasicModal {
         coins_smartchains.parent_box.checkState = Qt.Unchecked
         coins_erc.parent_box.checkState = Qt.Checked
         coins_erc.parent_box.checkState = Qt.Unchecked
+        coins_qrc.parent_box.checkState = Qt.Checked
+        coins_qrc.parent_box.checkState = Qt.Unchecked
     }
 
     function reset() {
@@ -94,6 +96,12 @@ BasicModal {
                 id: coins_erc
                 group_title: API.get().settings_pg.empty_string + qsTr("Select all ERC tokens")
                 model: General.filterCoins(API.get().enableable_coins, input_coin_filter.text, "ERC-20")
+            }
+
+            CoinList {
+                id: coins_qrc
+                group_title: API.get().settings_pg.empty_string + qsTr("Select all QRC tokens")
+                model: General.filterCoins(API.get().enableable_coins, input_coin_filter.text, "QRC-20")
             }
         }
     }
