@@ -62,13 +62,13 @@ DefaultModal {
             stack_layout.currentIndex = 2
     }
 
-    function prepareSendCoin(address, amount, with_fees, fees_amount, is_erc_20, gas_limit, gas_price) {
+    function prepareSendCoin(address, amount, with_fees, fees_amount, is_special_token, gas_limit, gas_price) {
         let max = input_max_amount.checked || parseFloat(current_ticker_infos.balance) === parseFloat(amount)
 
         // Save for later check
         async_param_max = max
 
-        if(with_fees && max === false && !is_erc_20)
+        if(with_fees && max === false && !is_special_token)
             max = parseFloat(amount) + parseFloat(fees_amount) >= parseFloat(current_ticker_infos.balance)
 
         const fees_info = {
@@ -89,12 +89,12 @@ DefaultModal {
         return General.isTokenType(current_ticker_infos.type)
     }
 
-    function ercToMixedCase(addr) {
-        return API.get().to_eth_checksum_qt(addr.toLowerCase())
+    function isERC20() {
+        return current_ticker_infos.type === "ERC-20"
     }
 
-    function hasErc20CaseIssue(is_erc_20, addr) {
-        if(!is_erc_20) return false
+    function hasErc20CaseIssue(addr) {
+        if(!isERC20()) return false
         if(addr.length <= 2) return false
 
         addr = addr.substring(2) // Remove 0x
@@ -135,19 +135,21 @@ DefaultModal {
 
         if(custom_fees_switch.checked) {
             if(isSpecialToken()) {
-                const ether = 1000000000
                 const gas_limit = parseFloat(input_custom_fees_gas.field.text)
                 const gas_price = parseFloat(input_custom_fees_gas_price.field.text)
-                const fee_eth = (gas_limit * gas_price)/ether
 
-                if(api_wallet_page.ticker === "ETH") {
+                const unit = current_ticker_infos.type === "ERC-20" ? 1000000000 : 100000000
+                const fee_parent_token = (gas_limit * gas_price)/unit
+
+                const parent_ticker = current_ticker_infos.type === "ERC-20" ? "ETH" : "QTUM"
+                if(api_wallet_page.ticker === parent_ticker) {
                     const amount = parseFloat(input_amount.field.text)
-                    const total_needed_eth = amount + fee_eth
-                    if(!General.hasEnoughFunds(true, "ETH", "", "", total_needed_eth.toString()))
+                    const total_needed = amount + fee_parent_token
+                    if(!General.hasEnoughFunds(true, parent_ticker, "", "", total_needed.toString()))
                         return false
                 }
                 else {
-                    if(!General.hasEnoughFunds(true, "ETH", "", "", fee_eth.toString()))
+                    if(!General.hasEnoughFunds(true, parent_ticker, "", "", fee_parent_token.toString()))
                         return false
                 }
             }
@@ -224,7 +226,7 @@ DefaultModal {
             // ERC-20 Lowercase issue
             RowLayout {
                 Layout.fillWidth: true
-                visible: isSpecialToken() && input_address.field.text != "" && hasErc20CaseIssue(isSpecialToken(), input_address.field.text)
+                visible: isERC20() && input_address.field.text != "" && hasErc20CaseIssue(input_address.field.text)
                 DefaultText {
                     Layout.alignment: Qt.AlignLeft
                     color: Style.colorRed
@@ -234,7 +236,7 @@ DefaultModal {
                 DefaultButton {
                     Layout.alignment: Qt.AlignRight
                     text: API.get().settings_pg.empty_string + (qsTr("Fix"))
-                    onClicked: input_address.field.text = ercToMixedCase(input_address.field.text)
+                    onClicked: input_address.field.text = API.get().to_eth_checksum_qt(input_address.field.text.toLowerCase())
                     enabled: !root.is_send_busy
                 }
             }
@@ -288,14 +290,14 @@ DefaultModal {
                     field.enabled: !root.is_send_busy
                 }
 
-                // ERC-20 coins
+                // Token coins
                 ColumnLayout {
                     visible: isSpecialToken()
 
                     // Gas input
                     AmountIntField {
                         id: input_custom_fees_gas
-                        title: API.get().settings_pg.empty_string + (qsTr("Gas Limit") + " [Gwei]")
+                        title: API.get().settings_pg.empty_string + (qsTr("Gas Limit") + " [" + General.tokenUnitName(current_ticker_infos.type) + "]")
                         field.placeholderText: API.get().settings_pg.empty_string + (qsTr("Enter the gas limit"))
                         field.enabled: !root.is_send_busy
                     }
@@ -303,7 +305,7 @@ DefaultModal {
                     // Gas price input
                     AmountIntField {
                         id: input_custom_fees_gas_price
-                        title: API.get().settings_pg.empty_string + (qsTr("Gas Price") + " [Gwei]")
+                        title: API.get().settings_pg.empty_string + (qsTr("Gas Price") + " [" + General.tokenUnitName(current_ticker_infos.type) + "]")
                         field.placeholderText: API.get().settings_pg.empty_string + (qsTr("Enter the gas price"))
                         field.enabled: !root.is_send_busy
                     }
@@ -353,7 +355,7 @@ DefaultModal {
                     text: API.get().settings_pg.empty_string + (qsTr("Prepare"))
                     Layout.fillWidth: true
 
-                    enabled: fieldAreFilled() && hasFunds() && !hasErc20CaseIssue(isSpecialToken(), input_address.field.text) && !root.is_send_busy
+                    enabled: fieldAreFilled() && hasFunds() && !hasErc20CaseIssue(input_address.field.text) && !root.is_send_busy
 
                     onClicked: prepareSendCoin(input_address.field.text, input_amount.field.text, custom_fees_switch.checked, input_custom_fees.field.text,
                                                isSpecialToken(), input_custom_fees_gas.field.text, input_custom_fees_gas_price.field.text)

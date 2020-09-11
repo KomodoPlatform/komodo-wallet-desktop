@@ -282,6 +282,10 @@ QtObject {
         return true
     }
 
+    function tokenUnitName(type) {
+        return type === "ERC-20" ? "Gwei" : "Satoshi"
+    }
+
     function isTokenType(type) {
         return type === "ERC-20" || type === "QRC-20"
     }
