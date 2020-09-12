@@ -135,7 +135,6 @@ Item {
                     General.prevent_coin_disabling.restart()
                     exchange_trade.reset(false)
                     exchange.current_page = General.idx_exchange_orders
-                    exchange_orders.onOrderPlaced()
                 }
             }
 

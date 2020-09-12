@@ -41,9 +41,6 @@ Item {
         combo_base.currentIndex = combo_base.model.map(c => c.value).indexOf(ticker)
     }
 
-    function onOrderPlaced() {
-    }
-
     ColumnLayout {
         anchors.horizontalCenter: parent.horizontalCenter
 
