@@ -222,12 +222,20 @@ namespace atomic_dex
         {
             qDebug() << fees_data;
             auto json_fees    = nlohmann::json::parse(QString(QJsonDocument(QVariant(fees_data).toJsonObject()).toJson()).toStdString());
-            bool is_erc_20    = mm2_system.get_coin_info(ticker).is_erc_20;
+            auto coin_info    = mm2_system.get_coin_info(ticker);
             withdraw_req.fees = t_withdraw_fees{
-                .type      = is_erc_20 ? "EthGas" : "UtxoFixed",
+                .type      = "UtxoFixed",
                 .amount    = json_fees.at("fees_amount").get<std::string>(),
                 .gas_price = json_fees.at("gas_price").get<std::string>(),
                 .gas_limit = json_fees.at("gas_limit").get<int>()};
+            if (coin_info.is_erc_20)
+            {
+                withdraw_req.fees->type = "EthGas";
+            }
+            else if (coin_info.is_qrc_20)
+            {
+                withdraw_req.fees->type = "Qrc20Gas";
+            }
         }
         nlohmann::json json_data = ::mm2::api::template_request("withdraw");
         ::mm2::api::to_json(json_data, withdraw_req);

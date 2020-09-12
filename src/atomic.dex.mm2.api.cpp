@@ -213,6 +213,16 @@ namespace mm2::api
     }
 
     void
+    from_json(const nlohmann::json& j, fee_qrc_coin& cfg)
+    {
+        j.at("coin").get_to(cfg.coin);
+        j.at("gas_limit").get_to(cfg.gas_limit);
+        j.at("gas_price").get_to(cfg.gas_price);
+        j.at("miner_fee").get_to(cfg.miner_fee);
+        j.at("total_gas_fee").get_to(cfg.total_gas_fee);
+    }
+
+    void
     from_json(const nlohmann::json& j, fees_data& cfg)
     {
         if (j.count("amount") == 1)
@@ -220,10 +230,15 @@ namespace mm2::api
             cfg.normal_fees = fee_regular_coin{};
             from_json(j, cfg.normal_fees.value());
         }
-        else if (j.count("gas") == 1)
+        else if (j.at("coin").get<std::string>() == "ETH")
         {
             cfg.erc_fees = fee_erc_coin{};
             from_json(j, cfg.erc_fees.value());
+        }
+        else if (j.at("coin").get<std::string>() == "QTUM")
+        {
+            cfg.qrc_fees = fee_qrc_coin{};
+            from_json(j, cfg.qrc_fees.value());
         }
     }
 
@@ -379,6 +394,11 @@ namespace mm2::api
             j["gas"]       = cfg.gas_limit.value_or(55000);
             j["gas_price"] = cfg.gas_price.value();
         }
+        else if (cfg.type == "Qrc20Gas")
+        {
+            j["gas"]       = cfg.gas_limit.value_or(40);
+            j["gas_price"] = std::stoi(cfg.gas_price.value());
+        }
         else
         {
             j["amount"] = cfg.amount.value();
@@ -443,7 +463,7 @@ namespace mm2::api
         j.at("coin").get_to(contents.coin);
         j.at("address").get_to(contents.address);
         j.at("price").get_to(contents.price);
-        //contents.price = t_float_50(contents.price).str(8, std::ios_base::fixed);
+        // contents.price = t_float_50(contents.price).str(8, std::ios_base::fixed);
         j.at("price_fraction").at("numer").get_to(contents.price_fraction_numer);
         j.at("price_fraction").at("denom").get_to(contents.price_fraction_denom);
         j.at("maxvolume").get_to(contents.maxvolume);

@@ -228,10 +228,22 @@ namespace mm2::api
 
     void from_json(const nlohmann::json& j, fee_erc_coin& cfg);
 
+    struct fee_qrc_coin
+    {
+        std::string coin;
+        std::string miner_fee;
+        std::size_t gas_limit;
+        std::size_t gas_price;
+        std::string total_gas_fee;
+    };
+
+    void from_json(const nlohmann::json& j, fee_qrc_coin& cfg);
+
     struct fees_data
     {
         std::optional<fee_regular_coin> normal_fees; ///< btc, kmd based coins
         std::optional<fee_erc_coin>     erc_fees;    ///< eth based coins
+        std::optional<fee_qrc_coin>     qrc_fees; // Qtum based coin
     };
 
     void from_json(const nlohmann::json& j, fees_data& cfg);
