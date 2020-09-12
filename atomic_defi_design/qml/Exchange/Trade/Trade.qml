@@ -276,25 +276,47 @@ Item {
                     "  /  nota:", nota, "  /  confs:", confs)
         console.log("QML place order: trade info:", JSON.stringify(curr_trade_info))
 
-        let result
-
         if(sell_mode)
-            result = API.get().trading_pg.place_sell_order(base, rel, price, volume, is_created_order, price_denom, price_numer, nota, confs)
+            API.get().trading_pg.place_sell_order(base, rel, price, volume, is_created_order, price_denom, price_numer, nota, confs)
         else
-            result = API.get().trading_pg.place_buy_order(base, rel, price, volume, is_created_order, price_denom, price_numer, nota, confs)
+            API.get().trading_pg.place_buy_order(base, rel, price, volume, is_created_order, price_denom, price_numer, nota, confs)
+    }
 
-        if(result === "") {
-            action_result = "success"
-
-            toast.show(qsTr("Placed the order"), General.time_toast_basic_info, result, false)
-
-            onOrderSuccess()
-        }
-        else {
+    function onOrderComplete(result) {
+        if(result.error_code) {
             action_result = "error"
 
-            toast.show(qsTr("Failed to place the order"), General.time_toast_important_error, result)
+            toast.show(qsTr("Failed to place the order"), General.time_toast_important_error, result.error_message)
+
+            root.close()
         }
+        else if(result.uuid) { // Make sure there is information
+            action_result = "success"
+
+            toast.show(qsTr("Placed the order"), General.time_toast_basic_info, General.prettifyJSON(result), false)
+
+            onOrderSuccess()
+
+            root.close()
+        }
+    }
+
+    readonly property bool is_buy_rpc_busy: API.get().trading_pg.is_buy_rpc_busy
+    readonly property var buy_answer_rpc_data: API.get().trading_pg.buy_answer_rpc_data
+
+    readonly property bool is_sell_rpc_busy: API.get().trading_pg.is_sell_rpc_busy
+    readonly property var sell_answer_rpc_data: API.get().trading_pg.sell_answer_rpc_data
+
+    readonly property bool is_any_trade_rpc_busy: is_buy_rpc_busy || is_sell_rpc_busy
+
+    onBuy_answer_rpc_dataChanged: {
+        if(buy_answer_rpc_data)
+            onOrderComplete(General.clone(buy_answer_rpc_data))
+    }
+
+    onSell_answer_rpc_dataChanged: {
+        if(sell_answer_rpc_data)
+            onOrderComplete(General.clone(sell_answer_rpc_data))
     }
 
     // Form

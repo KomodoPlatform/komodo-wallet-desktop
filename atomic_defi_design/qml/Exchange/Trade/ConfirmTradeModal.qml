@@ -204,6 +204,10 @@ BasicModal {
                 }
             }
         }
+        DefaultBusyIndicator {
+            visible: is_any_trade_rpc_busy
+            Layout.alignment: Qt.AlignCenter
+        }
     }
 
     // Buttons
@@ -217,6 +221,7 @@ BasicModal {
         PrimaryButton {
             text: API.get().settings_pg.empty_string + (qsTr("Confirm"))
             Layout.fillWidth: true
+            enabled: !is_any_trade_rpc_busy
             onClicked: {
                 trade(left_ticker, right_ticker, {
                         enable_custom_config: enable_custom_config.checked,
@@ -224,8 +229,6 @@ BasicModal {
                         enable_dpow_confs: enable_dpow_confs.checked,
                         required_confirmation_count: required_confirmation_count.value,
                       }, config_section.default_config)
-
-                root.close()
             }
         }
     ]
