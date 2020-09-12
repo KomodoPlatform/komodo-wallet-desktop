@@ -286,21 +286,25 @@ Item {
     readonly property var buy_sell_last_rpc_data: API.get().trading_pg.buy_sell_last_rpc_data
 
     onBuy_sell_last_rpc_dataChanged: {
-        const result = General.clone(buy_sell_last_rpc_data)
+        const response = General.clone(buy_sell_last_rpc_data)
 
-        if(result.error_code) {
+        console.log("Buy sell last rpc data changed:", JSON.stringify(response))
+
+        if(response.error_code) {
             confirm_trade_modal.close()
 
             action_result = "error"
 
             toast.show(qsTr("Failed to place the order"), General.time_toast_important_error, result.error_message)
+
+            return
         }
-        else if(result.uuid) { // Make sure there is information
+        else if(response.result && response.result.uuid) { // Make sure there is information
             confirm_trade_modal.close()
 
             action_result = "success"
 
-            toast.show(qsTr("Placed the order"), General.time_toast_basic_info, General.prettifyJSON(result), false)
+            toast.show(qsTr("Placed the order"), General.time_toast_basic_info, General.prettifyJSON(response.result), false)
 
             onOrderSuccess()
         }
