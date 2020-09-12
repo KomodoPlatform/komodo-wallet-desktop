@@ -957,7 +957,7 @@ namespace atomic_dex
                     out.reserve(answer.result.value().transactions.size());
 
                     const auto& transactions = answer.result.value().transactions;
-                    std::for_each(rbegin(transactions), rend(transactions), [&out](auto&& current) {
+                    std::for_each(rbegin(transactions), rend(transactions), [&out, this](auto&& current) {
                         tx_infos current_info{
                             .am_i_sender       = current.my_balance_change[0] == '-',
                             .confirmations     = current.confirmations.has_value() ? current.confirmations.value() : 0,
@@ -974,6 +974,8 @@ namespace atomic_dex
                             .ec                = dextop_error::success,
                         };
 
+                        auto& wallet_manager          = this->m_system_manager.get_system<qt_wallet_manager>();
+                        current_info.transaction_note = wallet_manager.retrieve_transactions_notes(current_info.tx_hash);
                         out.push_back(std::move(current_info));
                     });
 
