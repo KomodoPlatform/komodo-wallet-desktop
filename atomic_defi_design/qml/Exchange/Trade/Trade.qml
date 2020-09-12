@@ -295,7 +295,7 @@ Item {
 
             action_result = "error"
 
-            toast.show(qsTr("Failed to place the order"), General.time_toast_important_error, result.error_message)
+            toast.show(qsTr("Failed to place the order"), General.time_toast_important_error, response.error_message)
 
             return
         }

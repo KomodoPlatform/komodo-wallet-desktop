@@ -125,7 +125,8 @@ QtObject {
     }
 
     function prettifyJSON(j) {
-        return JSON.stringify(JSON.parse(j), null, 4)
+        const j_obj = typeof j === "string" ? JSON.parse(j) : j
+        return JSON.stringify(j_obj, null, 4)
     }
 
     function viewTxAtExplorer(ticker, id, add_0x=true) {
