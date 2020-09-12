@@ -13,7 +13,8 @@ ComboBox {
     property color mainBorderColor: control.pressed ? Style.colorTheme8 : Style.colorTheme5
 
     property string mainLineText: control.displayText
-    property var dropdownLineText: m => m.modelData
+    property var dropdownLineText: m => textRole === "" ? m.modelData : m.modelData[textRole]
+
 
     readonly property bool disabled: !enabled
 

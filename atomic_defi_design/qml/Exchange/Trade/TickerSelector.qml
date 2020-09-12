@@ -25,7 +25,6 @@ RowLayout {
 
         model: ticker_list
 
-        textRole: "display"
         valueRole: "ticker"
 
         property bool index_changed: false
