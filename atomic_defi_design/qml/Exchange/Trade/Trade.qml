@@ -282,9 +282,6 @@ Item {
             API.get().trading_pg.place_buy_order(base, rel, price, volume, is_created_order, price_denom, price_numer, nota, confs)
     }
 
-    function onOrderComplete(result) {
-    }
-
     readonly property bool buy_sell_rpc_busy: API.get().trading_pg.buy_sell_rpc_busy
     readonly property var buy_sell_last_rpc_data: API.get().trading_pg.buy_sell_last_rpc_data
 

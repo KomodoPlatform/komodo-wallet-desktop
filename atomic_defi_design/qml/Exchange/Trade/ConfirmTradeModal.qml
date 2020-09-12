@@ -205,7 +205,7 @@ BasicModal {
             }
         }
         DefaultBusyIndicator {
-            visible: is_any_trade_rpc_busy
+            visible: buy_sell_rpc_busy
             Layout.alignment: Qt.AlignCenter
         }
     }
@@ -221,7 +221,7 @@ BasicModal {
         PrimaryButton {
             text: API.get().settings_pg.empty_string + (qsTr("Confirm"))
             Layout.fillWidth: true
-            enabled: !is_any_trade_rpc_busy
+            enabled: !buy_sell_rpc_busy
             onClicked: {
                 trade(left_ticker, right_ticker, {
                         enable_custom_config: enable_custom_config.checked,
