@@ -184,6 +184,7 @@ namespace atomic_dex
         const QString& base, const QString& rel, const QString& price, const QString& volume, bool is_created_order, const QString& price_denom,
         const QString& price_numer, const QString& base_nota, const QString& base_confs)
     {
+        this->set_buy_sell_rpc_busy(true);
         this->set_buy_sell_last_rpc_data(QJsonObject{{}});
         t_float_50 price_f;
         t_float_50 amount_f;
@@ -240,6 +241,7 @@ namespace atomic_dex
         const QString& base, const QString& rel, const QString& price, const QString& volume, bool is_created_order, const QString& price_denom,
         const QString& price_numer, const QString& rel_nota, const QString& rel_confs)
     {
+        this->set_buy_sell_rpc_busy(true);
         this->set_buy_sell_last_rpc_data(QJsonObject{{}});
         t_float_50 amount_f;
         amount_f.assign(volume.toStdString());
