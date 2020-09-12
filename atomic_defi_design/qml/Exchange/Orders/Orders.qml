@@ -41,31 +41,7 @@ Item {
         combo_base.currentIndex = combo_base.model.map(c => c.value).indexOf(ticker)
     }
 
-    // Orders page quick refresher, used right after a fresh successful trade
     function onOrderPlaced() {
-        refresh_faster.restart()
-        refresh_timer.restart()
-    }
-
-    Timer {
-        id: refresh_timer
-        repeat: true
-        interval: 1000
-        triggeredOnStart: true
-        onTriggered: {
-            if(inCurrentPage()) {
-                API.get().refresh_orders_and_swaps()
-            }
-        }
-    }
-
-    Timer {
-        id: refresh_faster
-        interval: 2000
-        onTriggered: {
-            console.log("Refreshing faster for " + interval + " ms!")
-            refresh_timer.stop()
-        }
     }
 
     ColumnLayout {
