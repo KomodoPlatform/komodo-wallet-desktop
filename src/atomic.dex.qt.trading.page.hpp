@@ -38,6 +38,8 @@ namespace atomic_dex
         Q_PROPERTY(qt_orderbook_wrapper* orderbook READ get_orderbook_wrapper NOTIFY orderbookChanged)
         Q_PROPERTY(candlestick_charts_model* candlestick_charts_mdl READ get_candlestick_charts NOTIFY candlestickChartsChanged)
         Q_PROPERTY(market_pairs* market_pairs_mdl READ get_market_pairs_mdl NOTIFY marketPairsChanged)
+        Q_PROPERTY(QVariant buy_sell_last_rpc_data READ get_buy_sell_last_rpc_data WRITE set_buy_sell_last_rpc_data NOTIFY buySellLastRpcDataChanged)
+        Q_PROPERTY(bool buy_sell_rpc_busy READ is_buy_sell_rpc_busy WRITE set_buy_sell_rpc_busy NOTIFY buySellRpcStatusChanged)
 
         //! Private enum
         enum models
@@ -62,9 +64,10 @@ namespace atomic_dex
         };
 
         //! Private typedefs
-        using t_models         = std::array<QObject*, models_size>;
-        using t_models_actions = std::array<std::atomic_bool, models_actions_size>;
-        using t_actions_queue  = boost::lockfree::queue<trading_actions>;
+        using t_models               = std::array<QObject*, models_size>;
+        using t_models_actions       = std::array<std::atomic_bool, models_actions_size>;
+        using t_actions_queue        = boost::lockfree::queue<trading_actions>;
+        using t_qt_synchronized_json = boost::synchronized_value<QJsonObject>;
 
         //! Private members fields
         ag::ecs::system_manager& m_system_manager;
@@ -72,6 +75,8 @@ namespace atomic_dex
         t_models                 m_models;
         t_models_actions         m_models_actions;
         t_actions_queue          m_actions_queue{g_max_actions_size};
+        std::atomic_bool         m_rpc_buy_sell_busy{false};
+        t_qt_synchronized_json   m_rpc_buy_sell_result;
 
         //! Privae function
         void common_cancel_all_orders(bool by_coin = false, const QString& ticker = "");
@@ -91,7 +96,7 @@ namespace atomic_dex
         void connect_signals();
         void disconnect_signals();
         void clear_models();
-        void disable_coin(const QString& coin) noexcept;;
+        void disable_coin(const QString& coin) noexcept;
 
         //! Public QML API
         Q_INVOKABLE void    set_current_orderbook(const QString& base, const QString& rel);
@@ -100,19 +105,23 @@ namespace atomic_dex
         Q_INVOKABLE void    cancel_order(const QString& order_id);
         Q_INVOKABLE void    cancel_all_orders();
         Q_INVOKABLE void    cancel_all_orders_by_ticker(const QString& ticker);
-        Q_INVOKABLE QString place_buy_order(
+        Q_INVOKABLE void place_buy_order(
             const QString& base, const QString& rel, const QString& price, const QString& volume, bool is_created_order, const QString& price_denom,
             const QString& price_numer, const QString& base_nota = "", const QString& base_confs = "");
-        Q_INVOKABLE QString place_sell_order(
+        Q_INVOKABLE void place_sell_order(
             const QString& base, const QString& rel, const QString& price, const QString& volume, bool is_created_order, const QString& price_denom,
             const QString& price_numer, const QString& rel_nota = "", const QString& rel_confs = "");
-        Q_INVOKABLE void swap_market_pair();
+        Q_INVOKABLE void     swap_market_pair();
         Q_INVOKABLE QVariant get_raw_mm2_coin_cfg(const QString& ticker) const noexcept;
 
         //! Properties
         [[nodiscard]] qt_orderbook_wrapper*     get_orderbook_wrapper() const noexcept;
         [[nodiscard]] candlestick_charts_model* get_candlestick_charts() const noexcept;
         [[nodiscard]] market_pairs*             get_market_pairs_mdl() const noexcept;
+        [[nodiscard]] bool                      is_buy_sell_rpc_busy() const noexcept;
+        void                                    set_buy_sell_rpc_busy(bool status) noexcept;
+        [[nodiscard]] QVariant                  get_buy_sell_last_rpc_data() const noexcept;
+        void                                    set_buy_sell_last_rpc_data(QVariant rpc_data) noexcept;
 
         //! Events Callbacks
         void on_process_orderbook_finished_event(const process_orderbook_finished& evt) noexcept;
@@ -123,6 +132,8 @@ namespace atomic_dex
         void orderbookChanged();
         void candlestickChartsChanged();
         void marketPairsChanged();
+        void buySellLastRpcDataChanged();
+        void buySellRpcStatusChanged();
     };
 } // namespace atomic_dex
 

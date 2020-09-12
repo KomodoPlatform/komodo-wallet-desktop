@@ -29,8 +29,6 @@ namespace mm2::api
     static inline void
     reset_client()
     {
-        // g_mm2_http_client->
-        // g_mm2_http_client = nullptr;
     }
 
     nlohmann::json rpc_batch_standalone(nlohmann::json batch_array, std::shared_ptr<t_http_client> mm2_client);
@@ -243,7 +241,7 @@ namespace mm2::api
     {
         std::optional<fee_regular_coin> normal_fees; ///< btc, kmd based coins
         std::optional<fee_erc_coin>     erc_fees;    ///< eth based coins
-        std::optional<fee_qrc_coin>     qrc_fees; // Qtum based coin
+        std::optional<fee_qrc_coin>     qrc_fees;    // Qtum based coin
     };
 
     void from_json(const nlohmann::json& j, fees_data& cfg);

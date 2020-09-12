@@ -581,7 +581,7 @@ namespace mm2::api
     }
 
     void
-    to_json(nlohmann::json& j, buy_request& request)
+    to_json(nlohmann::json& j, const buy_request& request)
     {
         spdlog::debug("price: {}, volume: {}", request.price, request.volume);
 
