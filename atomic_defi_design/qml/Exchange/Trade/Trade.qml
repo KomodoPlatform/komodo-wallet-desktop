@@ -288,8 +288,6 @@ Item {
     onBuy_sell_last_rpc_dataChanged: {
         const response = General.clone(buy_sell_last_rpc_data)
 
-        console.log("Buy sell last rpc data changed:", JSON.stringify(response))
-
         if(response.error_code) {
             confirm_trade_modal.close()
 
