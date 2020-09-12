@@ -283,40 +283,30 @@ Item {
     }
 
     function onOrderComplete(result) {
+    }
+
+    readonly property bool buy_sell_rpc_busy: API.get().trading_pg.buy_sell_rpc_busy
+    readonly property var buy_sell_last_rpc_data: API.get().trading_pg.buy_sell_last_rpc_data
+
+    onBuy_sell_last_rpc_dataChanged: {
+        const result = General.clone(buy_sell_last_rpc_data)
+
         if(result.error_code) {
+            confirm_trade_modal.close()
+
             action_result = "error"
 
             toast.show(qsTr("Failed to place the order"), General.time_toast_important_error, result.error_message)
-
-            root.close()
         }
         else if(result.uuid) { // Make sure there is information
+            confirm_trade_modal.close()
+
             action_result = "success"
 
             toast.show(qsTr("Placed the order"), General.time_toast_basic_info, General.prettifyJSON(result), false)
 
             onOrderSuccess()
-
-            root.close()
         }
-    }
-
-    readonly property bool is_buy_rpc_busy: API.get().trading_pg.is_buy_rpc_busy
-    readonly property var buy_answer_rpc_data: API.get().trading_pg.buy_answer_rpc_data
-
-    readonly property bool is_sell_rpc_busy: API.get().trading_pg.is_sell_rpc_busy
-    readonly property var sell_answer_rpc_data: API.get().trading_pg.sell_answer_rpc_data
-
-    readonly property bool is_any_trade_rpc_busy: is_buy_rpc_busy || is_sell_rpc_busy
-
-    onBuy_answer_rpc_dataChanged: {
-        if(buy_answer_rpc_data)
-            onOrderComplete(General.clone(buy_answer_rpc_data))
-    }
-
-    onSell_answer_rpc_dataChanged: {
-        if(sell_answer_rpc_data)
-            onOrderComplete(General.clone(sell_answer_rpc_data))
     }
 
     // Form
