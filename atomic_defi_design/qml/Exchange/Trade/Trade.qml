@@ -363,14 +363,36 @@ Item {
                     }
 
                     // Swap button
-                    DefaultImage {
-                        source: General.image_path + "trade_icon.svg"
-                        Layout.preferredWidth: 16
-                        Layout.preferredHeight: Layout.preferredWidth
+                    Item {
                         Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
+                        Layout.preferredWidth: right_arrow.width
+                        Layout.preferredHeight: selector_left.height * 0.9
+
+                        DefaultText {
+                            id: right_arrow
+                            anchors.right: parent.right
+                            anchors.top: parent.top
+                            anchors.topMargin: -font.pixelSize/4
+                            text_value: "→"
+                            font.family: "Impact"
+                            font.pixelSize: 30
+                            font.bold: true
+                            color: Qt.lighter(Style.getCoinColor(selector_left.ticker), swap_button.containsMouse ? 1.5 : 1.0)
+                        }
+                        DefaultText {
+                            anchors.left: parent.left
+                            anchors.bottom: parent.bottom
+                            text_value: "←"
+                            font.family: right_arrow.font.family
+                            font.pixelSize: right_arrow.font.pixelSize
+                            font.bold: right_arrow.font.bold
+                            color: Qt.lighter(Style.getCoinColor(selector_right.ticker), swap_button.containsMouse ? 1.5 : 1.0)
+                        }
 
                         MouseArea {
+                            id: swap_button
                             anchors.fill: parent
+                            hoverEnabled: true
                             onClicked: {
                                 if(!block_everything)
                                     setPair(true, right_ticker)
