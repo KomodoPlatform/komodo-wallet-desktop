@@ -171,7 +171,7 @@ BasicModal {
                                 details.cancellable
             Layout.fillWidth: true
             text: API.get().settings_pg.empty_string + (qsTr("Cancel Order"))
-            onClicked: { if(details) onCancelOrder(details.order_id) }
+            onClicked: { if(details) cancelOrder(details.order_id) }
         },
 
         PrimaryButton {

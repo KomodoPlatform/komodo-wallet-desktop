@@ -119,7 +119,7 @@ Item {
         anchors.right: parent.right
         anchors.bottom: date.bottom
         text: API.get().settings_pg.empty_string + (qsTr("Cancel"))
-        onClicked: onCancelOrder(details.order_id)
+        onClicked: cancelOrder(details.order_id)
     }
 
     // Recover Funds button

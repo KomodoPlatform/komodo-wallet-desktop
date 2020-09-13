@@ -15,6 +15,10 @@ Item {
     property int prev_page: -1
     property int current_page: API.design_editor ? General.idx_exchange_trade : General.idx_exchange_trade
 
+    function cancelOrder(order_id) {
+        API.get().trading_pg.cancel_order(order_id)
+    }
+
     function reset() {
         current_page = General.idx_exchange_trade
         prev_page = -1

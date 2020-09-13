@@ -10,15 +10,6 @@ InnerBackground {
     property string title
     property var items
 
-    // Override
-    property var postCancelOrder: () => {}
-
-    // Local
-    function onCancelOrder(order_id) {
-        API.get().trading_pg.cancel_order(order_id)
-        postCancelOrder()
-    }
-
     Layout.fillWidth: true
     Layout.fillHeight: true
     color: Style.colorTheme7
