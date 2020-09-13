@@ -164,6 +164,33 @@ ColumnLayout {
                 anchors.verticalCenter: parent.verticalCenter
             }
 
+            DefaultText {
+                id: cancel_button_text
+                property bool requested_cancel: false
+                visible: is_mine && !requested_cancel
+
+                font.pixelSize: Style.textSizeSmall4
+                text_value: "x"
+                anchors.verticalCenter: parent.verticalCenter
+                anchors.verticalCenterOffset: -font.pixelSize * 0.25
+                anchors.left: parent.left
+                anchors.leftMargin: 6
+
+                color: cancel_button.containsMouse ? Style.colorText : Style.colorText2
+
+                MouseArea {
+                    id: cancel_button
+                    anchors.fill: parent
+                    hoverEnabled: true
+                    onClicked: {
+                        if(!is_mine) return
+
+                        cancel_button_text.requested_cancel = true
+                        cancelOrder(uuid)
+                    }
+                }
+            }
+
             // Line
             HorizontalLine {
                 visible: index !== root.model.length - 1
