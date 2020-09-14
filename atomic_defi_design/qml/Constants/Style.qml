@@ -55,6 +55,7 @@ QtObject {
     readonly property int iconTextMargin: 5
     readonly property int sidebarLineHeight: 44
     readonly property double hoverLightMultiplier: 1.5
+    readonly property double hoverOpacity: 0.6
 
     property bool dark_theme: true
 

@@ -16,11 +16,14 @@ DefaultImage {
     anchors.verticalCenter: parent.verticalCenter
     antialiasing: true
 
+    opacity: mouse_area.containsMouse ? Style.hoverOpacity : 1
 
     MouseArea {
         id: mouse_area
         anchors { horizontalCenter: parent.horizontalCenter; verticalCenter: parent.verticalCenter }
         height: input_field.height; width: input_field.height
+
+        hoverEnabled: true
         onClicked: if(use_default_behaviour) hiding = !hiding
     }
 }
