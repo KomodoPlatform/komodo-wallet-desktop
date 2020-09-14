@@ -1018,30 +1018,6 @@ namespace atomic_dex
         m_orderbook_thread_active = false;
     }
 
-    /*t_buy_answer
-    mm2::place_buy_order(t_buy_request&& request, const t_float_50& total, t_mm2_ec& ec) const
-    {
-        spdlog::debug("{} l{} f[{}]", __FUNCTION__, __LINE__, fs::path(__FILE__).filename().string());
-
-        t_mm2_ec balance_ec;
-
-        if (not do_i_have_enough_funds(request.rel, total))
-        {
-            ec = dextop_error::balance_not_enough_found;
-            return {};
-        }
-
-        auto answer = ::mm2::api::rpc_buy(std::move(request), m_mm2_client);
-
-        if (answer.error.has_value())
-        {
-            ec = dextop_error::rpc_buy_error;
-            return {};
-        }
-
-        return answer;
-    }*/
-
     bool
     mm2::do_i_have_enough_funds(const std::string& ticker, const t_float_50& amount) const
     {
@@ -1114,30 +1090,6 @@ namespace atomic_dex
     {
         return m_swaps_registry.at("result");
     }
-
-    /*t_sell_answer
-    mm2::place_sell_order(t_sell_request&& request, const t_float_50& total, t_mm2_ec& ec) const
-    {
-        spdlog::debug("{} l{} f[{}]", __FUNCTION__, __LINE__, fs::path(__FILE__).filename().string());
-
-        t_mm2_ec balance_ec;
-
-        if (not do_i_have_enough_funds(request.base, total))
-        {
-            ec = dextop_error::balance_not_enough_found;
-            return {.error = ec.message()};
-        }
-
-        auto answer = ::mm2::api::rpc_sell(std::move(request), m_mm2_client);
-
-        if (answer.error.has_value())
-        {
-            ec = dextop_error::rpc_sell_error;
-            return answer;
-        }
-
-        return answer;
-    }*/
 
     t_tx_state
     mm2::get_tx_state(t_mm2_ec& ec) const

@@ -129,6 +129,8 @@ namespace atomic_dex
                 auto  answers          = ::mm2::api::basic_batch_answer(resp);
                 auto  my_orders_answer = ::mm2::api::rpc_process_answer_batch<t_my_orders_answer>(answers[1], "my_orders");
                 mm2_system.add_orders_answer(my_orders_answer);
+                spdlog::trace("refreshing orderbook after cancelling order: {}", answers.dump(4));
+                mm2_system.process_orderbook(false);
             })
             .then(&handle_exception_pplx_task);
     }
