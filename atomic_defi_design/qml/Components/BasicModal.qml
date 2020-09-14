@@ -11,10 +11,9 @@ DefaultModal {
     padding: 10
 
     width: 900
-    height: outer_layout.height + root.padding*2 //Math.min(header.height + modal_content.height + root.padding*2 + outer_layout.spacing, window.height - 90)
+    height: outer_layout.height + root.padding*2
 
-    property alias title: header.title
-
+    property alias title: modal_content.title
     default property alias content: modal_content.content
     property alias footer: modal_content.footer
 
@@ -23,10 +22,6 @@ DefaultModal {
         id: outer_layout
         width: parent.width
         anchors.horizontalCenter: parent.horizontalCenter
-
-        ModalHeader {
-            id: header
-        }
 
         ModalContent {
             id: modal_content

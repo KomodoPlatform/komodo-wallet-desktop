@@ -12,8 +12,13 @@ ColumnLayout {
 
     Layout.fillWidth: true
 
+    property alias title: header.title
     default property alias content: inner_layout.data
     property alias footer: footer.data
+
+    ModalHeader {
+        id: header
+    }
 
     DefaultFlickable {
         id: flickable
