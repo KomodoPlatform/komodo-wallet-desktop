@@ -247,13 +247,14 @@ namespace atomic_dex
         }
         nlohmann::json json_data = ::mm2::api::template_request("withdraw");
         ::mm2::api::to_json(json_data, withdraw_req);
+        spdlog::trace("final json: {}", json_data.dump(4));
         batch.push_back(json_data);
 
         //! Answer
         auto answer_functor = [this](web::http::http_response resp) {
             std::string body = TO_STD_STR(resp.extract_string(true).get());
             spdlog::trace("resp: {}", body);
-            if (resp.status_code() == 200)
+            if (resp.status_code() == 200 && body.find("error") == std::string::npos)
             {
                 auto           answers              = nlohmann::json::parse(body);
                 auto           withdraw_answer      = ::mm2::api::rpc_process_answer_batch<t_withdraw_answer>(answers[0], "withdraw");
