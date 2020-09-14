@@ -396,7 +396,7 @@ namespace mm2::api
         }
         else if (cfg.type == "Qrc20Gas")
         {
-            j["gas"]       = cfg.gas_limit.value_or(40);
+            j["gas_limit"] = cfg.gas_limit.value_or(40);
             j["gas_price"] = std::stoi(cfg.gas_price.value());
         }
         else
