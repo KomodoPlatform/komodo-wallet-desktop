@@ -44,6 +44,7 @@ namespace atomic_dex
     void
     trading_page::on_process_orderbook_finished_event(const atomic_dex::process_orderbook_finished& evt) noexcept
     {
+        spdlog::debug("{} l{} f[{}]", __FUNCTION__, __LINE__, fs::path(__FILE__).filename().string());
         if (not m_about_to_exit_the_app)
         {
             m_actions_queue.push(trading_actions::post_process_orderbook_finished);
