@@ -5,14 +5,14 @@ import QtQuick.Controls 2.12
 import "../Components"
 import "../Constants"
 
-DefaultModal {
+BasicModal {
     id: root
 
     property alias address_field: input_address.field
     property alias amount_field: input_amount.field
 
 
-    onClosed: if(stack_layout.currentIndex === 2) reset(true)
+    onClosed: if(root.currentIndex === 2) reset(true)
 
     // Local
     readonly property var default_send_result: ({ has_error: false, error_message: "",
@@ -53,13 +53,13 @@ DefaultModal {
             if(max) input_amount.field.text = API.get().is_pin_cfg_enabled() ? General.absString(result.withdraw_answer.my_balance_change) : result.withdraw_answer.total_amount
 
             // Change page
-            stack_layout.currentIndex = 1
+            root.currentIndex = 1
         }
     }
 
     onBroadcast_resultChanged: {
         if(root.visible && broadcast_result !== "")
-            stack_layout.currentIndex = 2
+            root.currentIndex = 2
     }
 
     function prepareSendCoin(address, amount, with_fees, fees_amount, is_special_token, gas_limit, gas_price) {
@@ -114,7 +114,7 @@ DefaultModal {
         text_error.text = ""
 
         if(close) root.close()
-        stack_layout.currentIndex = 0
+        root.currentIndex = 0
     }
 
     function feeIsHigherThanAmount() {
@@ -185,249 +185,242 @@ DefaultModal {
     }
 
     // Inside modal
-    // width: stack_layout.children[stack_layout.currentIndex].width + horizontalPadding * 2
+    // width: stack_layout.children[root.currentIndex].width + horizontalPadding * 2
     width: 650
-    height: stack_layout.children[stack_layout.currentIndex].height + verticalPadding * 2
-    StackLayout {
-        width: parent.width
-        id: stack_layout
 
-        // Prepare Page
-        ColumnLayout {
-            Layout.fillWidth: true
+    // Prepare Page
+    ModalContent {
+        Layout.fillWidth: true
 
-            ModalHeader {
-                title: API.get().settings_pg.empty_string + (qsTr("Prepare to Send"))
+        title: API.get().settings_pg.empty_string + (qsTr("Prepare to Send"))
+
+        // Send address
+        RowLayout {
+            spacing: Style.buttonSpacing
+
+            AddressFieldWithTitle {
+                id: input_address
+                Layout.alignment: Qt.AlignLeft
+                title: API.get().settings_pg.empty_string + (qsTr("Recipient's address"))
+                field.placeholderText: API.get().settings_pg.empty_string + (qsTr("Enter address of the recipient"))
+                field.enabled: !root.is_send_busy
             }
 
-            // Send address
-            RowLayout {
-                spacing: Style.buttonSpacing
-
-                AddressFieldWithTitle {
-                    id: input_address
-                    Layout.alignment: Qt.AlignLeft
-                    title: API.get().settings_pg.empty_string + (qsTr("Recipient's address"))
-                    field.placeholderText: API.get().settings_pg.empty_string + (qsTr("Enter address of the recipient"))
-                    field.enabled: !root.is_send_busy
+            DefaultButton {
+                Layout.alignment: Qt.AlignRight | Qt.AlignBottom
+                text: API.get().settings_pg.empty_string + (qsTr("Address Book"))
+                onClicked: {
+                    openAddressBook()
+                    root.close()
                 }
-
-                DefaultButton {
-                    Layout.alignment: Qt.AlignRight | Qt.AlignBottom
-                    text: API.get().settings_pg.empty_string + (qsTr("Address Book"))
-                    onClicked: {
-                        openAddressBook()
-                        root.close()
-                    }
-                    enabled: !root.is_send_busy
-                }
-            }
-
-            // ERC-20 Lowercase issue
-            RowLayout {
-                Layout.fillWidth: true
-                visible: isERC20() && input_address.field.text != "" && hasErc20CaseIssue(input_address.field.text)
-                DefaultText {
-                    Layout.alignment: Qt.AlignLeft
-                    color: Style.colorRed
-                    text_value: API.get().settings_pg.empty_string + (qsTr("The address has to be mixed case."))
-                }
-
-                DefaultButton {
-                    Layout.alignment: Qt.AlignRight
-                    text: API.get().settings_pg.empty_string + (qsTr("Fix"))
-                    onClicked: input_address.field.text = API.get().to_eth_checksum_qt(input_address.field.text.toLowerCase())
-                    enabled: !root.is_send_busy
-                }
-            }
-
-            RowLayout {
-                spacing: Style.buttonSpacing
-
-                // Amount input
-                AmountField {
-                    id: input_amount
-
-                    field.visible: !input_max_amount.checked
-                    title: API.get().settings_pg.empty_string + (qsTr("Amount to send"))
-                    field.placeholderText: API.get().settings_pg.empty_string + (qsTr("Enter the amount to send"))
-                    field.enabled: !root.is_send_busy
-                }
-
-                Switch {
-                    id: input_max_amount
-                    Layout.alignment: Qt.AlignRight | Qt.AlignBottom
-                    text: API.get().settings_pg.empty_string + (qsTr("MAX"))
-                    onCheckedChanged: input_amount.field.text = ""
-                    enabled: !root.is_send_busy
-                }
-            }
-
-            // Custom fees switch
-            Switch {
-                id: custom_fees_switch
-                text: API.get().settings_pg.empty_string + (qsTr("Enable Custom Fees"))
-                onCheckedChanged: input_custom_fees.field.text = ""
                 enabled: !root.is_send_busy
             }
+        }
 
-            // Custom Fees section
+        // ERC-20 Lowercase issue
+        RowLayout {
+            Layout.fillWidth: true
+            visible: isERC20() && input_address.field.text != "" && hasErc20CaseIssue(input_address.field.text)
+            DefaultText {
+                Layout.alignment: Qt.AlignLeft
+                color: Style.colorRed
+                text_value: API.get().settings_pg.empty_string + (qsTr("The address has to be mixed case."))
+            }
+
+            DefaultButton {
+                Layout.alignment: Qt.AlignRight
+                text: API.get().settings_pg.empty_string + (qsTr("Fix"))
+                onClicked: input_address.field.text = API.get().to_eth_checksum_qt(input_address.field.text.toLowerCase())
+                enabled: !root.is_send_busy
+            }
+        }
+
+        RowLayout {
+            spacing: Style.buttonSpacing
+
+            // Amount input
+            AmountField {
+                id: input_amount
+
+                field.visible: !input_max_amount.checked
+                title: API.get().settings_pg.empty_string + (qsTr("Amount to send"))
+                field.placeholderText: API.get().settings_pg.empty_string + (qsTr("Enter the amount to send"))
+                field.enabled: !root.is_send_busy
+            }
+
+            Switch {
+                id: input_max_amount
+                Layout.alignment: Qt.AlignRight | Qt.AlignBottom
+                text: API.get().settings_pg.empty_string + (qsTr("MAX"))
+                onCheckedChanged: input_amount.field.text = ""
+                enabled: !root.is_send_busy
+            }
+        }
+
+        // Custom fees switch
+        Switch {
+            id: custom_fees_switch
+            text: API.get().settings_pg.empty_string + (qsTr("Enable Custom Fees"))
+            onCheckedChanged: input_custom_fees.field.text = ""
+            enabled: !root.is_send_busy
+        }
+
+        // Custom Fees section
+        ColumnLayout {
+            visible: custom_fees_switch.checked
+
+            DefaultText {
+                font.pixelSize: Style.textSize
+                color: Style.colorRed
+                text_value: API.get().settings_pg.empty_string + (qsTr("Only use custom fees if you know what you are doing!"))
+            }
+
+            // Normal coins, Custom fees input
+            AmountField {
+                visible: !isSpecialToken()
+
+                id: input_custom_fees
+                title: API.get().settings_pg.empty_string + (qsTr("Custom Fee") + " [" + api_wallet_page.ticker + "]")
+                field.placeholderText: API.get().settings_pg.empty_string + (qsTr("Enter the custom fee"))
+                field.enabled: !root.is_send_busy
+            }
+
+            // Token coins
             ColumnLayout {
-                visible: custom_fees_switch.checked
+                visible: isSpecialToken()
 
-                DefaultText {
-                    font.pixelSize: Style.textSize
-                    color: Style.colorRed
-                    text_value: API.get().settings_pg.empty_string + (qsTr("Only use custom fees if you know what you are doing!"))
-                }
-
-                // Normal coins, Custom fees input
-                AmountField {
-                    visible: !isSpecialToken()
-
-                    id: input_custom_fees
-                    title: API.get().settings_pg.empty_string + (qsTr("Custom Fee") + " [" + api_wallet_page.ticker + "]")
-                    field.placeholderText: API.get().settings_pg.empty_string + (qsTr("Enter the custom fee"))
+                // Gas input
+                AmountIntField {
+                    id: input_custom_fees_gas
+                    title: API.get().settings_pg.empty_string + (qsTr("Gas Limit") + " [" + General.tokenUnitName(current_ticker_infos.type) + "]")
+                    field.placeholderText: API.get().settings_pg.empty_string + (qsTr("Enter the gas limit"))
                     field.enabled: !root.is_send_busy
                 }
 
-                // Token coins
-                ColumnLayout {
-                    visible: isSpecialToken()
-
-                    // Gas input
-                    AmountIntField {
-                        id: input_custom_fees_gas
-                        title: API.get().settings_pg.empty_string + (qsTr("Gas Limit") + " [" + General.tokenUnitName(current_ticker_infos.type) + "]")
-                        field.placeholderText: API.get().settings_pg.empty_string + (qsTr("Enter the gas limit"))
-                        field.enabled: !root.is_send_busy
-                    }
-
-                    // Gas price input
-                    AmountIntField {
-                        id: input_custom_fees_gas_price
-                        title: API.get().settings_pg.empty_string + (qsTr("Gas Price") + " [" + General.tokenUnitName(current_ticker_infos.type) + "]")
-                        field.placeholderText: API.get().settings_pg.empty_string + (qsTr("Enter the gas price"))
-                        field.enabled: !root.is_send_busy
-                    }
-                }
-            }
-
-
-            // Fee is higher than amount error
-            DefaultText {
-                id: fee_error
-                wrapMode: Text.Wrap
-                visible: feeIsHigherThanAmount()
-
-                color: Style.colorRed
-
-                text_value: API.get().settings_pg.empty_string + (qsTr("Custom Fee can't be higher than the amount"))
-            }
-
-            // Not enough funds error
-            DefaultText {
-                wrapMode: Text.Wrap
-                visible: !fee_error.visible && fieldAreFilled() && !hasFunds()
-
-                color: Style.colorRed
-
-                text_value: API.get().settings_pg.empty_string + (qsTr("Not enough funds.") + "\n" + qsTr("You have %1", "AMT TICKER").arg(General.formatCrypto("", API.get().get_balance(api_wallet_page.ticker), api_wallet_page.ticker)))
-            }
-
-            DefaultText {
-                id: text_error
-                color: Style.colorRed
-                visible: text !== ''
-            }
-
-            DefaultBusyIndicator {
-                visible: root.is_send_busy
-            }
-
-            // Buttons
-            RowLayout {
-                DefaultButton {
-                    text: API.get().settings_pg.empty_string + (qsTr("Close"))
-                    Layout.fillWidth: true
-                    onClicked: root.close()
-                }
-                PrimaryButton {
-                    text: API.get().settings_pg.empty_string + (qsTr("Prepare"))
-                    Layout.fillWidth: true
-
-                    enabled: fieldAreFilled() && hasFunds() && !hasErc20CaseIssue(input_address.field.text) && !root.is_send_busy
-
-                    onClicked: prepareSendCoin(input_address.field.text, input_amount.field.text, custom_fees_switch.checked, input_custom_fees.field.text,
-                                               isSpecialToken(), input_custom_fees_gas.field.text, input_custom_fees_gas_price.field.text)
+                // Gas price input
+                AmountIntField {
+                    id: input_custom_fees_gas_price
+                    title: API.get().settings_pg.empty_string + (qsTr("Gas Price") + " [" + General.tokenUnitName(current_ticker_infos.type) + "]")
+                    field.placeholderText: API.get().settings_pg.empty_string + (qsTr("Enter the gas price"))
+                    field.enabled: !root.is_send_busy
                 }
             }
         }
 
-        // Send Page
-        ColumnLayout {
-            ModalHeader {
-                title: API.get().settings_pg.empty_string + (qsTr("Send"))
-            }
 
-            // Address
-            TextWithTitle {
-                title: API.get().settings_pg.empty_string + (qsTr("Recipient's address"))
-                text: API.get().settings_pg.empty_string + (input_address.field.text)
-            }
+        // Fee is higher than amount error
+        DefaultText {
+            id: fee_error
+            wrapMode: Text.Wrap
+            visible: feeIsHigherThanAmount()
 
-            // Amount
-            TextWithTitle {
-                title: API.get().settings_pg.empty_string + (qsTr("Amount"))
-                text: API.get().settings_pg.empty_string + (General.formatCrypto("", input_amount.field.text, api_wallet_page.ticker))
-            }
+            color: Style.colorRed
 
-            // Fees
-            TextWithTitle {
-                title: API.get().settings_pg.empty_string + (qsTr("Fees"))
-                text: API.get().settings_pg.empty_string + (General.formatCrypto("", send_result.withdraw_answer.fee_details.amount, current_ticker_infos.fee_ticker))
-            }
-
-            // Date
-            TextWithTitle {
-                title: API.get().settings_pg.empty_string + (qsTr("Date"))
-                text: API.get().settings_pg.empty_string + (send_result.withdraw_answer.date)
-            }
-
-            DefaultBusyIndicator {
-                visible: root.is_broadcast_busy
-            }
-
-            // Buttons
-            RowLayout {
-                DefaultButton {
-                    text: API.get().settings_pg.empty_string + (qsTr("Back"))
-                    Layout.fillWidth: true
-                    onClicked: stack_layout.currentIndex = 0
-                    enabled: !root.is_broadcast_busy
-                }
-                PrimaryButton {
-                    text: API.get().settings_pg.empty_string + (qsTr("Send"))
-                    Layout.fillWidth: true
-                    onClicked: sendCoin()
-                    enabled: !root.is_broadcast_busy
-                }
-            }
+            text_value: API.get().settings_pg.empty_string + (qsTr("Custom Fee can't be higher than the amount"))
         }
 
-        // Result Page
-        SendResult {
-            result: ({
-                balance_change: send_result.withdraw_answer.my_balance_change,
-                fees: send_result.withdraw_answer.fee_details.amount,
-                date: send_result.withdraw_answer.date
-            })
-            address: input_address.field.text
-            tx_hash: broadcast_result
-            custom_amount: input_amount.field.text
+        // Not enough funds error
+        DefaultText {
+            wrapMode: Text.Wrap
+            visible: !fee_error.visible && fieldAreFilled() && !hasFunds()
 
-            function onClose() { reset(true) }
+            color: Style.colorRed
+
+            text_value: API.get().settings_pg.empty_string + (qsTr("Not enough funds.") + "\n" + qsTr("You have %1", "AMT TICKER").arg(General.formatCrypto("", API.get().get_balance(api_wallet_page.ticker), api_wallet_page.ticker)))
         }
+
+        DefaultText {
+            id: text_error
+            color: Style.colorRed
+            visible: text !== ''
+        }
+
+        DefaultBusyIndicator {
+            visible: root.is_send_busy
+        }
+
+        // Buttons
+        footer: [
+            DefaultButton {
+                text: API.get().settings_pg.empty_string + (qsTr("Close"))
+                Layout.fillWidth: true
+                onClicked: root.close()
+            },
+
+            PrimaryButton {
+                text: API.get().settings_pg.empty_string + (qsTr("Prepare"))
+                Layout.fillWidth: true
+
+                enabled: fieldAreFilled() && hasFunds() && !hasErc20CaseIssue(input_address.field.text) && !root.is_send_busy
+
+                onClicked: prepareSendCoin(input_address.field.text, input_amount.field.text, custom_fees_switch.checked, input_custom_fees.field.text,
+                                           isSpecialToken(), input_custom_fees_gas.field.text, input_custom_fees_gas_price.field.text)
+            }
+        ]
+    }
+
+    // Send Page
+    ModalContent {
+        title: API.get().settings_pg.empty_string + (qsTr("Send"))
+
+        // Address
+        TextWithTitle {
+            title: API.get().settings_pg.empty_string + (qsTr("Recipient's address"))
+            text: API.get().settings_pg.empty_string + (input_address.field.text)
+        }
+
+        // Amount
+        TextWithTitle {
+            title: API.get().settings_pg.empty_string + (qsTr("Amount"))
+            text: API.get().settings_pg.empty_string + (General.formatCrypto("", input_amount.field.text, api_wallet_page.ticker))
+        }
+
+        // Fees
+        TextWithTitle {
+            title: API.get().settings_pg.empty_string + (qsTr("Fees"))
+            text: API.get().settings_pg.empty_string + (General.formatCrypto("", send_result.withdraw_answer.fee_details.amount, current_ticker_infos.fee_ticker))
+        }
+
+        // Date
+        TextWithTitle {
+            title: API.get().settings_pg.empty_string + (qsTr("Date"))
+            text: API.get().settings_pg.empty_string + (send_result.withdraw_answer.date)
+        }
+
+        DefaultBusyIndicator {
+            visible: root.is_broadcast_busy
+        }
+
+        // Buttons
+        footer: [
+            DefaultButton {
+                text: API.get().settings_pg.empty_string + (qsTr("Back"))
+                Layout.fillWidth: true
+                onClicked: root.currentIndex = 0
+                enabled: !root.is_broadcast_busy
+            },
+
+            PrimaryButton {
+                text: API.get().settings_pg.empty_string + (qsTr("Send"))
+                Layout.fillWidth: true
+                onClicked: sendCoin()
+                enabled: !root.is_broadcast_busy
+            }
+        ]
+    }
+
+    // Result Page
+    SendResult {
+        result: ({
+            balance_change: send_result.withdraw_answer.my_balance_change,
+            fees: send_result.withdraw_answer.fee_details.amount,
+            date: send_result.withdraw_answer.date
+        })
+        address: input_address.field.text
+        tx_hash: broadcast_result
+        custom_amount: input_amount.field.text
+
+        function onClose() { reset(true) }
     }
 }
 
