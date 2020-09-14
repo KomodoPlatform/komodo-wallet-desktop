@@ -203,7 +203,7 @@ namespace atomic_dex
         {
             auto& mm2_s = system_manager_.create_system<mm2>(system_manager_);
 
-            system_manager_.create_system<coinpaprika_provider>(mm2_s, system_manager_.get_system<settings_page>().get_cfg());
+            system_manager_.create_system<coinpaprika_provider>(mm2_s);
             system_manager_.create_system<cex_prices_provider>(mm2_s);
 
             connect_signals();
@@ -317,7 +317,7 @@ namespace atomic_dex
         system_manager_.create_system<wallet_page>(system_manager_, this);
         system_manager_.create_system<global_price_service>(system_manager_, settings_page_system.get_cfg());
         system_manager_.create_system<band_oracle_price_service>();
-        system_manager_.create_system<coinpaprika_provider>(mm2_system, settings_page_system.get_cfg());
+        system_manager_.create_system<coinpaprika_provider>(mm2_system);
         system_manager_.create_system<cex_prices_provider>(mm2_system);
         system_manager_.create_system<update_system_service>();
         system_manager_.create_system<trading_page>(

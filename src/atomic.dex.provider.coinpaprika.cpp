@@ -207,8 +207,8 @@ namespace atomic_dex
 {
     namespace bm = boost::multiprecision;
 
-    coinpaprika_provider::coinpaprika_provider(entt::registry& registry, mm2& mm2_instance, atomic_dex::cfg& cfg) :
-        system(registry), m_mm2_instance(mm2_instance), m_cfg(cfg)
+    coinpaprika_provider::coinpaprika_provider(entt::registry& registry, mm2& mm2_instance) :
+        system(registry), m_mm2_instance(mm2_instance)
     {
         spdlog::debug("{} l{} f[{}]", __FUNCTION__, __LINE__, fs::path(__FILE__).filename().string());
         disable();

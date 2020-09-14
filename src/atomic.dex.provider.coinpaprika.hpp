@@ -34,13 +34,11 @@ namespace atomic_dex
 
       private:
         //! Typedefs
-        //using t_json_synchronized       = boost::synchronized_value<nlohmann::json>;
-        using t_providers_registry      = t_concurrent_reg<std::string, std::string>;
+        using t_providers_registry = t_concurrent_reg<std::string, std::string>;
 
         //! Private fields
         mm2&                         m_mm2_instance;
-        atomic_dex::cfg&             m_cfg;
-        //t_json_synchronized          m_other_fiats_rates;
+        //atomic_dex::cfg&             m_cfg;
         t_providers_registry         m_usd_rate_providers{};
         t_ticker_infos_registry      m_ticker_infos_registry{};
         t_ticker_historical_registry m_ticker_historical_registry{};
@@ -49,7 +47,7 @@ namespace atomic_dex
 
       public:
         //! Constructor
-        coinpaprika_provider(entt::registry& registry, mm2& mm2_instance, atomic_dex::cfg& config);
+        coinpaprika_provider(entt::registry& registry, mm2& mm2_instance);
 
         //! Destructor
         ~coinpaprika_provider() noexcept final;
