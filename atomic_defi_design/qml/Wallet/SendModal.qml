@@ -37,7 +37,9 @@ BasicModal {
         const result = send_result
 
         if(result.error_code) {
-            text_error.text = result.error_message
+            root.close()
+            console.log("Send Error:", result.error_code, " Message:", result.error_message)
+            toast.show(qsTr("Failed to send"), General.time_toast_important_error, result.error_message)
         }
         else {
             if(!result.withdraw_answer) {
@@ -47,8 +49,6 @@ BasicModal {
 
             const max = async_param_max
             send_result.withdraw_answer.max = max
-
-            text_error.text = ""
 
             if(max) input_amount.field.text = API.get().is_pin_cfg_enabled() ? General.absString(result.withdraw_answer.my_balance_change) : result.withdraw_answer.total_amount
 
@@ -111,7 +111,6 @@ BasicModal {
         input_custom_fees_gas_price.field.text = ""
         custom_fees_switch.checked = false
         input_max_amount.checked = false
-        text_error.text = ""
 
         if(close) root.close()
         root.currentIndex = 0
@@ -327,12 +326,6 @@ BasicModal {
             color: Style.colorRed
 
             text_value: API.get().settings_pg.empty_string + (qsTr("Not enough funds.") + "\n" + qsTr("You have %1", "AMT TICKER").arg(General.formatCrypto("", API.get().get_balance(api_wallet_page.ticker), api_wallet_page.ticker)))
-        }
-
-        DefaultText {
-            id: text_error
-            color: Style.colorRed
-            visible: text !== ''
         }
 
         DefaultBusyIndicator {
