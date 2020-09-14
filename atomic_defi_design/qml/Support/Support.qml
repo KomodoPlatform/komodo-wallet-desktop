@@ -81,17 +81,17 @@ Item {
                         }
                     }
 
-                    DefaultImage {
-                        Layout.alignment: Qt.AlignHCenter
-                        source: General.image_path + "icon-email.png"
-                        Layout.preferredWidth: discord_icon.Layout.preferredWidth
-                        Layout.preferredHeight: Layout.preferredWidth
+//                    DefaultImage {
+//                        Layout.alignment: Qt.AlignHCenter
+//                        source: General.image_path + "icon-email.png"
+//                        Layout.preferredWidth: discord_icon.Layout.preferredWidth
+//                        Layout.preferredHeight: Layout.preferredWidth
 
-                        MouseArea {
-                            anchors.fill: parent
-                            onClicked: Qt.openUrlExternally("mailto:support@komodoplatform.com")
-                        }
-                    }
+//                        MouseArea {
+//                            anchors.fill: parent
+//                            onClicked: Qt.openUrlExternally("mailto:support@komodoplatform.com")
+//                        }
+//                    }
                 }
 
                 ColumnLayout {
