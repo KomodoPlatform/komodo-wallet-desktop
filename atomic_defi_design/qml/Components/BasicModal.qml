@@ -11,15 +11,15 @@ DefaultModal {
     padding: 10
 
     width: 900
-    height: outer_layout.height + root.padding*2
+    height: stack_layout.children[stack_layout.currentIndex].height + verticalPadding * 2
 
     property alias title: modal_content.title
     default property alias content: modal_content.content
     property alias footer: modal_content.footer
 
     // Inside modal
-    ColumnLayout {
-        id: outer_layout
+    StackLayout {
+        id: stack_layout
         width: parent.width
         anchors.horizontalCenter: parent.horizontalCenter
 
