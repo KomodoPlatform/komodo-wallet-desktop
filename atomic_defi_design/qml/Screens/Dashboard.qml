@@ -244,26 +244,8 @@ Item {
     }
 
     // CEX Rates info
-    DefaultModal {
+    CexInfoModal {
         id: cex_rates_modal
-        width: 900
-
-        // Inside modal
-        ColumnLayout {
-            width: parent.width - parent.padding
-
-            ModalHeader {
-                title: API.get().settings_pg.empty_string + (General.cex_icon + " " + qsTr("Market Data"))
-            }
-
-            DefaultText {
-                text_value: API.get().settings_pg.empty_string + (qsTr('Market data (prices, charts, etc.) marked with the ⓘ icon originates from third-party sources.<br><br>Data is sourced via <a href="https://bandprotocol.com/">Band Decentralized Oracle</a> and <a href="https://coinpaprika.com">Coinpaprika</a>.<br><br><b>Oracle Supported Pairs:</b><br>%1<br><br><b>Last reference (Band Oracle):</b><br><a href="%2">%2</a>')
-                                                                    .arg(API.get().portfolio_pg.oracle_price_supported_pairs.join(', '))
-                                                                    .arg(API.get().portfolio_pg.oracle_last_price_reference))
-                wrapMode: Text.WordWrap
-                Layout.preferredWidth: cex_rates_modal.width
-            }
-        }
     }
 }
 

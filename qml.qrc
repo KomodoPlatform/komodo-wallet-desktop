@@ -191,6 +191,7 @@
         <file>atomic_defi_design/qml/Components/ModalHeader.qml</file>
         <file>atomic_defi_design/qml/Components/ModalContent.qml</file>
         <file>atomic_defi_design/qml/Components/CexInfoTrigger.qml</file>
+        <file>atomic_defi_design/qml/Components/CexInfoModal.qml</file>
         <file>atomic_defi_design/qml/Dashboard/NotificationsPanel.qml</file>
         <file>atomic_defi_design/qml/Portfolio/Portfolio.qml</file>
         <file>atomic_defi_design/qml/Wallet/Wallet.qml</file>
