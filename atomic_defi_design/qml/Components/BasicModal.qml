@@ -13,18 +13,12 @@ DefaultModal {
     width: 900
     height: stack_layout.children[stack_layout.currentIndex].height + verticalPadding * 2
 
-    property alias title: modal_content.title
-    default property alias content: modal_content.content
-    property alias footer: modal_content.footer
+    default property alias pages: stack_layout.data
 
     // Inside modal
     StackLayout {
         id: stack_layout
         width: parent.width
         anchors.horizontalCenter: parent.horizontalCenter
-
-        ModalContent {
-            id: modal_content
-        }
     }
 }

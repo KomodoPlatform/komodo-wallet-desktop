@@ -17,62 +17,64 @@ BasicModal {
     property var onConfirm: () => {}
     property bool close_only: false
 
-    title: API.get().settings_pg.empty_string + (qsTr("Disclaimer & Terms of Service"))
+    ModalContent {
+        title: API.get().settings_pg.empty_string + (qsTr("Disclaimer & Terms of Service"))
 
-    InnerBackground {
-        id: eula_rect
+        InnerBackground {
+            id: eula_rect
 
-        height: 400
-        Layout.fillWidth: true
+            height: 400
+            Layout.fillWidth: true
 
-        DefaultFlickable {
-            anchors.fill: parent
-            anchors.margins: 20
+            DefaultFlickable {
+                anchors.fill: parent
+                anchors.margins: 20
 
-            contentWidth: eula_text.width
-            contentHeight: eula_text.height
+                contentWidth: eula_text.width
+                contentHeight: eula_text.height
 
-            DefaultText {
-                id: eula_text
-                text_value: API.get().settings_pg.empty_string + (getEula())
+                DefaultText {
+                    id: eula_text
+                    text_value: API.get().settings_pg.empty_string + (getEula())
 
-                width: eula_rect.width - 40
+                    width: eula_rect.width - 40
+                }
             }
         }
-    }
 
-    // Checkboxes
-    DefaultCheckBox {
-        id: accept_eula
-        visible: !close_only
-        text: API.get().settings_pg.empty_string + (qsTr("Accept EULA"))
-    }
-
-    DefaultCheckBox {
-        id: accept_tac
-        visible: !close_only
-        text: API.get().settings_pg.empty_string + (qsTr("Accept Terms and Conditions"))
-    }
-
-    // Buttons
-    footer: [
-        DefaultButton {
-            text: API.get().settings_pg.empty_string + (close_only ? qsTr("Close") : qsTr("Cancel"))
-            Layout.fillWidth: true
-            onClicked: root.close()
-        },
-
-        PrimaryButton {
+        // Checkboxes
+        DefaultCheckBox {
+            id: accept_eula
             visible: !close_only
-            text: API.get().settings_pg.empty_string + (qsTr("Confirm"))
-            Layout.fillWidth: true
-            enabled: accept_eula.checked && accept_tac.checked
-            onClicked: {
-                onConfirm()
-                root.close()
-            }
+            text: API.get().settings_pg.empty_string + (qsTr("Accept EULA"))
         }
-    ]
+
+        DefaultCheckBox {
+            id: accept_tac
+            visible: !close_only
+            text: API.get().settings_pg.empty_string + (qsTr("Accept Terms and Conditions"))
+        }
+
+        // Buttons
+        footer: [
+            DefaultButton {
+                text: API.get().settings_pg.empty_string + (close_only ? qsTr("Close") : qsTr("Cancel"))
+                Layout.fillWidth: true
+                onClicked: root.close()
+            },
+
+            PrimaryButton {
+                visible: !close_only
+                text: API.get().settings_pg.empty_string + (qsTr("Confirm"))
+                Layout.fillWidth: true
+                enabled: accept_eula.checked && accept_tac.checked
+                onClicked: {
+                    onConfirm()
+                    root.close()
+                }
+            }
+        ]
+    }
 
     function getEula() {
         return qsTr(

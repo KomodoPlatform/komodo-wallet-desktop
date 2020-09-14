@@ -25,31 +25,33 @@ BasicModal {
 
     closePolicy: suggest_update ? Popup.NoAutoClose : (Popup.CloseOnEscape | Popup.CloseOnPressOutside)
 
-    title: `${General.download_icon} &nbscp;&nbscp; ${root.update_title} <font color="${root.update_color}">(${root.update_state})</font>`
+    ModalContent {
+        title: `${General.download_icon} &nbscp;&nbscp; ${root.update_title} <font color="${root.update_color}">(${root.update_state})</font>`
 
-    DefaultTextArea {
-        id: text_area
-        Layout.fillWidth: true
-        readOnly: true
-        text: status_good ? API.get().update_status.changelog : (qsTr("Problem occured") + ": " + API.get().update_status.status)
-        textFormat: Text.MarkdownText
-        remove_newline: false
-    }
-
-    footer: [
-        DefaultButton {
+        DefaultTextArea {
+            id: text_area
             Layout.fillWidth: true
-            text: API.get().settings_pg.empty_string + (update_needed ? qsTr("Skip") : qsTr("Close"))
-            onClicked: root.close()
-            visible: !required_update
-        },
-
-        PrimaryButton {
-            Layout.fillWidth: true
-            visible: update_needed
-            enabled: status_good
-            text: API.get().settings_pg.empty_string + (qsTr("Download"))
-            onClicked: Qt.openUrlExternally(API.get().update_status.download_url)
+            readOnly: true
+            text: status_good ? API.get().update_status.changelog : (qsTr("Problem occured") + ": " + API.get().update_status.status)
+            textFormat: Text.MarkdownText
+            remove_newline: false
         }
-    ]
+
+        footer: [
+            DefaultButton {
+                Layout.fillWidth: true
+                text: API.get().settings_pg.empty_string + (update_needed ? qsTr("Skip") : qsTr("Close"))
+                onClicked: root.close()
+                visible: !required_update
+            },
+
+            PrimaryButton {
+                Layout.fillWidth: true
+                visible: update_needed
+                enabled: status_good
+                text: API.get().settings_pg.empty_string + (qsTr("Download"))
+                onClicked: Qt.openUrlExternally(API.get().update_status.download_url)
+            }
+        ]
+    }
 }
