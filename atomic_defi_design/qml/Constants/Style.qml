@@ -51,8 +51,10 @@ QtObject {
     readonly property int itemPadding: 12
     readonly property int buttonSpacing: 12
     readonly property int rowSpacing: 12
+    readonly property int rowSpacingSmall: 6
     readonly property int iconTextMargin: 5
     readonly property int sidebarLineHeight: 44
+    readonly property double hoverLightMultiplier: 1.5
 
     property bool dark_theme: true
 
@@ -190,7 +192,6 @@ QtObject {
         })
     readonly property string colorPlaceholderText: Style.colorWhite9
 
-    readonly property int modalTitleMargin: 10
     readonly property string modalValueColor: colorWhite4
 
     function getValueColor(v) {

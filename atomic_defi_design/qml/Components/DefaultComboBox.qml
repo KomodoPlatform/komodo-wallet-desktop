@@ -29,6 +29,7 @@ ComboBox {
             leftPadding: 12
             rightPadding: control.indicator.width + control.spacing
 
+            Layout.fillWidth: true
             Layout.alignment: Qt.AlignVCenter | Qt.AlignLeft
 
             text_value: API.get().settings_pg.empty_string + (control.mainLineText)

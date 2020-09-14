@@ -377,7 +377,7 @@ Item {
                             font.family: "Impact"
                             font.pixelSize: 30
                             font.bold: true
-                            color: Qt.lighter(Style.getCoinColor(selector_left.ticker), swap_button.containsMouse ? 1.5 : 1.0)
+                            color: Qt.lighter(Style.getCoinColor(selector_left.ticker), swap_button.containsMouse ? Style.hoverLightMultiplier : 1.0)
                         }
                         DefaultText {
                             anchors.left: parent.left
@@ -386,7 +386,7 @@ Item {
                             font.family: right_arrow.font.family
                             font.pixelSize: right_arrow.font.pixelSize
                             font.bold: right_arrow.font.bold
-                            color: Qt.lighter(Style.getCoinColor(selector_right.ticker), swap_button.containsMouse ? 1.5 : 1.0)
+                            color: Qt.lighter(Style.getCoinColor(selector_right.ticker), swap_button.containsMouse ? Style.hoverLightMultiplier : 1.0)
                         }
 
                         MouseArea {

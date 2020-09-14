@@ -5,7 +5,7 @@ import QtQuick.Controls 2.12
 import "../Components"
 import "../Constants"
 
-DefaultModal {
+BasicModal {
     id: root
 
     readonly property bool positive_claim_amount: parseFloat(prepare_claim_rewards_result.withdraw_answer.my_balance_change) > 0
@@ -77,7 +77,7 @@ DefaultModal {
 
     onBroadcast_resultChanged: {
         if(root.visible && broadcast_result !== "") {
-            stack_layout.currentIndex = 1
+            root.currentIndex = 1
             postClaim()
         }
     }
@@ -85,7 +85,7 @@ DefaultModal {
     function prepareClaimRewards() {
         if(!can_claim) return
 
-        stack_layout.currentIndex = 0
+        root.currentIndex = 0
         reset()
 
         api_wallet_page.claim_rewards()
@@ -100,357 +100,346 @@ DefaultModal {
     }
 
     // Inside modal
-    // width: stack_layout.children[stack_layout.currentIndex].width + horizontalPadding * 2
     width: 1200
-    height: stack_layout.children[stack_layout.currentIndex].height + verticalPadding * 2
-    StackLayout {
-        width: parent.width
-        id: stack_layout
+    ModalContent {
+        title: API.get().settings_pg.empty_string + (qsTr("Claim your %1 reward?", "TICKER").arg(api_wallet_page.ticker))
 
-        ColumnLayout {
+        DefaultBusyIndicator {
+            visible: !can_claim || is_broadcast_busy
+            Layout.alignment: Qt.AlignCenter
+        }
+
+        RowLayout {
+            visible: can_claim
+
             Layout.fillWidth: true
-            Layout.alignment: Qt.AlignHCenter
-
-            ModalHeader {
-                title: API.get().settings_pg.empty_string + (qsTr("Claim your %1 reward?", "TICKER").arg(api_wallet_page.ticker))
-            }
-
-            DefaultBusyIndicator {
-                visible: !can_claim || is_broadcast_busy
-                Layout.alignment: Qt.AlignCenter
-            }
-
-            RowLayout {
-                visible: can_claim
-
-                Layout.fillWidth: true
-                DefaultText {
-                    Layout.fillWidth: true
-                    color: can_confirm ? Style.colorText : Style.colorRed
-                    text_value: API.get().settings_pg.empty_string + (
-                                     !has_eligible_utxo ? ("❌ " + qsTr("No UTXOs eligible for claiming")) :
-                                     !positive_claim_amount ? ("❌ " + qsTr("Transaction fee is higher than the reward!")) :
-
-                                     qsTr("You will receive %1", "AMT TICKER").arg(General.formatCrypto("", prepare_claim_rewards_result.withdraw_answer.my_balance_change, api_wallet_page.ticker)))
-                }
-
-                PrimaryButton {
-                    text: API.get().settings_pg.empty_string + (qsTr("Refresh"))
-                    onClicked: prepareClaimRewards()
-
-                    enabled: can_claim
-                }
-            }
-
             DefaultText {
-                text_value: API.get().settings_pg.empty_string + (General.cex_icon + ' <a href="https://support.komodoplatform.com/support/solutions/articles/29000024428-komodo-5-active-user-reward-all-you-need-to-know">' + qsTr('Read more about KMD active users rewards') + '</a>')
-                wrapMode: Text.WordWrap
-                font.pixelSize: Style.textSizeSmall2
+                Layout.fillWidth: true
+                color: can_confirm ? Style.colorText : Style.colorRed
+                text_value: API.get().settings_pg.empty_string + (
+                                 !has_eligible_utxo ? ("❌ " + qsTr("No UTXOs eligible for claiming")) :
+                                 !positive_claim_amount ? ("❌ " + qsTr("Transaction fee is higher than the reward!")) :
+
+                                 qsTr("You will receive %1", "AMT TICKER").arg(General.formatCrypto("", prepare_claim_rewards_result.withdraw_answer.my_balance_change, api_wallet_page.ticker)))
             }
 
-            // List header
-            Item {
-                visible: can_claim
+            PrimaryButton {
+                text: API.get().settings_pg.empty_string + (qsTr("Refresh"))
+                onClicked: prepareClaimRewards()
 
-                Layout.topMargin: 25
-                Layout.fillWidth: true
+                enabled: can_claim
+            }
+        }
 
-                height: 40
+        DefaultText {
+            text_value: API.get().settings_pg.empty_string + (General.cex_icon + ' <a href="https://support.komodoplatform.com/support/solutions/articles/29000024428-komodo-5-active-user-reward-all-you-need-to-know">' + qsTr('Read more about KMD active users rewards') + '</a>')
+            wrapMode: Text.WordWrap
+            font.pixelSize: Style.textSizeSmall2
+        }
 
-                // Price
+        // List header
+        Item {
+            visible: can_claim
+
+            Layout.topMargin: 25
+            Layout.fillWidth: true
+
+            height: 40
+
+            // Price
+            DefaultText {
+                id: utxo_header
+                font.pixelSize: Style.textSizeSmall4
+
+                text_value: API.get().settings_pg.empty_string + (qsTr("UTXO"))
+
+                font.bold: true
+                horizontalAlignment: Text.AlignLeft
+
+                anchors.left: parent.left
+                anchors.leftMargin: parent.width * 0.000
+
+                anchors.verticalCenter: parent.verticalCenter
+            }
+
+            // Amount
+            DefaultText {
+                id: amount_header
+
+                text_value: API.get().settings_pg.empty_string + (qsTr("Amount"))
+
+                font.pixelSize: utxo_header.font.pixelSize
+                font.bold: utxo_header.font.bold
+                horizontalAlignment: utxo_header.horizontalAlignment
+
+                anchors.left: parent.left
+                anchors.leftMargin: parent.width * 0.075
+
+                anchors.verticalCenter: parent.verticalCenter
+            }
+
+            // Reward
+            DefaultText {
+                id: reward_header
+
+                text_value: API.get().settings_pg.empty_string + (qsTr("Reward"))
+
+                font.pixelSize: utxo_header.font.pixelSize
+                font.bold: utxo_header.font.bold
+                horizontalAlignment: Text.AlignLeft
+
+                anchors.left: parent.left
+                anchors.leftMargin: parent.width * 0.175
+
+                anchors.verticalCenter: parent.verticalCenter
+            }
+
+            // Accruing start
+            DefaultText {
+                id: accruing_start_header
+
+                text_value: API.get().settings_pg.empty_string + (qsTr("Accruing Start"))
+
+                font.pixelSize: utxo_header.font.pixelSize
+                font.bold: utxo_header.font.bold
+                horizontalAlignment: Text.AlignLeft
+
+                anchors.left: parent.left
+                anchors.leftMargin: parent.width * 0.300
+
+                anchors.verticalCenter: parent.verticalCenter
+            }
+
+            // Accruing Stop
+            DefaultText {
+                id: accruing_stop_header
+
+                text_value: API.get().settings_pg.empty_string + (qsTr("Accruing Stop"))
+
+                font.pixelSize: utxo_header.font.pixelSize
+                font.bold: utxo_header.font.bold
+                horizontalAlignment: Text.AlignLeft
+
+                anchors.left: parent.left
+                anchors.leftMargin: parent.width * 0.450
+
+                anchors.verticalCenter: parent.verticalCenter
+            }
+
+            // Time Left
+            DefaultText {
+                id: time_left_header
+
+                text_value: API.get().settings_pg.empty_string + (qsTr("Time Left"))
+
+                font.pixelSize: utxo_header.font.pixelSize
+                font.bold: utxo_header.font.bold
+                horizontalAlignment: Text.AlignLeft
+
+                anchors.left: parent.left
+                anchors.leftMargin: parent.width * 0.600
+
+                anchors.verticalCenter: parent.verticalCenter
+            }
+
+            // Error
+            DefaultText {
+                id: error_header
+
+                text_value: API.get().settings_pg.empty_string + (qsTr("Error"))
+
+                font.pixelSize: utxo_header.font.pixelSize
+                font.bold: utxo_header.font.bold
+                horizontalAlignment: Text.AlignLeft
+
+                anchors.left: parent.left
+                anchors.leftMargin: parent.width * 0.750
+
+                anchors.verticalCenter: parent.verticalCenter
+            }
+
+            // Line
+            HorizontalLine {
+                width: parent.width
+                color: Style.colorWhite5
+                anchors.bottom: parent.bottom
+            }
+        }
+
+        DefaultListView {
+            visible: can_claim
+
+            id: list
+            Layout.fillWidth: true
+            Layout.fillHeight: true
+            Layout.maximumHeight: 500
+            clip: true
+
+            model: prepare_claim_rewards_result.kmd_rewards_info.result
+
+            delegate: Item {
+                width: root.width
+                height: utxo_value.font.pixelSize * 1.5
+
+                // UTXO
                 DefaultText {
-                    id: utxo_header
-                    font.pixelSize: Style.textSizeSmall4
-
-                    text_value: API.get().settings_pg.empty_string + (qsTr("UTXO"))
-
-                    font.bold: true
-                    horizontalAlignment: Text.AlignLeft
+                    id: utxo_value
 
                     anchors.left: parent.left
-                    anchors.leftMargin: parent.width * 0.000
+                    anchors.leftMargin: utxo_header.anchors.leftMargin
 
+                    font.pixelSize: utxo_header.font.pixelSize
+
+                    text_value: API.get().settings_pg.empty_string + ("#" + (index + 1))
                     anchors.verticalCenter: parent.verticalCenter
                 }
 
                 // Amount
                 DefaultText {
-                    id: amount_header
-
-                    text_value: API.get().settings_pg.empty_string + (qsTr("Amount"))
-
-                    font.pixelSize: utxo_header.font.pixelSize
-                    font.bold: utxo_header.font.bold
-                    horizontalAlignment: utxo_header.horizontalAlignment
+                    id: amount_value
 
                     anchors.left: parent.left
-                    anchors.leftMargin: parent.width * 0.075
+                    anchors.leftMargin: amount_header.anchors.leftMargin
 
+                    font.pixelSize: utxo_value.font.pixelSize
+
+                    text_value: API.get().settings_pg.empty_string + (modelData.amount)
                     anchors.verticalCenter: parent.verticalCenter
                 }
 
                 // Reward
                 DefaultText {
-                    id: reward_header
-
-                    text_value: API.get().settings_pg.empty_string + (qsTr("Reward"))
-
-                    font.pixelSize: utxo_header.font.pixelSize
-                    font.bold: utxo_header.font.bold
-                    horizontalAlignment: Text.AlignLeft
+                    id: reward_value
 
                     anchors.left: parent.left
-                    anchors.leftMargin: parent.width * 0.175
+                    anchors.leftMargin: reward_header.anchors.leftMargin
 
+                    font.pixelSize: utxo_value.font.pixelSize
+
+                    text_value: API.get().settings_pg.empty_string + (modelData.accrued_rewards.Accrued || "-")
                     anchors.verticalCenter: parent.verticalCenter
                 }
 
-                // Accruing start
+                // Accruing Start
                 DefaultText {
-                    id: accruing_start_header
-
-                    text_value: API.get().settings_pg.empty_string + (qsTr("Accruing Start"))
-
-                    font.pixelSize: utxo_header.font.pixelSize
-                    font.bold: utxo_header.font.bold
-                    horizontalAlignment: Text.AlignLeft
+                    id: accruing_start_value
 
                     anchors.left: parent.left
-                    anchors.leftMargin: parent.width * 0.300
+                    anchors.leftMargin: accruing_start_header.anchors.leftMargin
 
+                    font.pixelSize: utxo_value.font.pixelSize
+
+                    text_value: API.get().settings_pg.empty_string + (modelData.accrue_start_at_human_date || "-")
                     anchors.verticalCenter: parent.verticalCenter
                 }
 
                 // Accruing Stop
                 DefaultText {
-                    id: accruing_stop_header
-
-                    text_value: API.get().settings_pg.empty_string + (qsTr("Accruing Stop"))
-
-                    font.pixelSize: utxo_header.font.pixelSize
-                    font.bold: utxo_header.font.bold
-                    horizontalAlignment: Text.AlignLeft
+                    id: accruing_stop_value
 
                     anchors.left: parent.left
-                    anchors.leftMargin: parent.width * 0.450
+                    anchors.leftMargin: accruing_stop_header.anchors.leftMargin
 
+                    font.pixelSize: utxo_value.font.pixelSize
+
+                    text_value: API.get().settings_pg.empty_string + (modelData.accrue_stop_at_human_date || "-")
                     anchors.verticalCenter: parent.verticalCenter
                 }
 
                 // Time Left
                 DefaultText {
-                    id: time_left_header
-
-                    text_value: API.get().settings_pg.empty_string + (qsTr("Time Left"))
-
-                    font.pixelSize: utxo_header.font.pixelSize
-                    font.bold: utxo_header.font.bold
-                    horizontalAlignment: Text.AlignLeft
+                    id: time_left_value
 
                     anchors.left: parent.left
-                    anchors.leftMargin: parent.width * 0.600
+                    anchors.leftMargin: time_left_header.anchors.leftMargin
 
+                    font.pixelSize: utxo_value.font.pixelSize
+
+                    text_value: API.get().settings_pg.empty_string + (modelData.accrue_stop_at ? General.secondsToTimeLeft(Date.now()/1000, modelData.accrue_stop_at) : '-')
                     anchors.verticalCenter: parent.verticalCenter
                 }
 
                 // Error
                 DefaultText {
-                    id: error_header
-
-                    text_value: API.get().settings_pg.empty_string + (qsTr("Error"))
-
-                    font.pixelSize: utxo_header.font.pixelSize
-                    font.bold: utxo_header.font.bold
-                    horizontalAlignment: Text.AlignLeft
+                    id: error_value
 
                     anchors.left: parent.left
-                    anchors.leftMargin: parent.width * 0.750
+                    anchors.leftMargin: error_header.anchors.leftMargin
+
+                    font.pixelSize: utxo_value.font.pixelSize
+
+                    text_value: {
+                        let val = modelData.accrued_rewards.NotAccruedReason
+                        if(val === null || val === undefined) return "-"
+
+                        switch(val) {
+                        case "LocktimeNotSet":
+                            val = qsTr("Locktime is not set")
+                            break
+                        case "LocktimeLessThanThreshold":
+                            val = qsTr("Locktime is less than the threshold")
+                            break
+                        case "UtxoHeightGreaterThanEndOfEra":
+                            val = qsTr("UTXO height is greater than end of the era")
+                            break
+                        case "UtxoAmountLessThanTen":
+                            val = qsTr("UTXO amount is less than 10")
+                            break
+                        case "OneHourNotPassedYet":
+                            val = qsTr("One hour did not pass yet")
+                            break
+                        case "TransactionInMempool":
+                            val = qsTr("Transaction is in mempool")
+                            break
+                        default:
+                            val = qsTr("Unknown problem")
+                            break
+                        }
+
+                        return API.get().settings_pg.empty_string + ("❌ " + val)
+                    }
 
                     anchors.verticalCenter: parent.verticalCenter
                 }
 
                 // Line
                 HorizontalLine {
+                    visible: prepare_claim_rewards_result.kmd_rewards_info.result &&
+                             index !== prepare_claim_rewards_result.kmd_rewards_info.result.length - 1
                     width: parent.width
-                    color: Style.colorWhite5
+                    color: Style.colorWhite9
                     anchors.bottom: parent.bottom
                 }
             }
+        }
 
-            DefaultListView {
-                visible: can_claim
-
-                id: list
+        // Buttons
+        footer: [
+            DefaultButton {
+                text: API.get().settings_pg.empty_string + (qsTr("Cancel"))
                 Layout.fillWidth: true
-                Layout.fillHeight: true
-                Layout.maximumHeight: 500
-                clip: true
+                onClicked: root.close()
+            },
 
-                model: prepare_claim_rewards_result.kmd_rewards_info.result
-
-                delegate: Item {
-                    width: root.width
-                    height: utxo_value.font.pixelSize * 1.5
-
-                    // UTXO
-                    DefaultText {
-                        id: utxo_value
-
-                        anchors.left: parent.left
-                        anchors.leftMargin: utxo_header.anchors.leftMargin
-
-                        font.pixelSize: utxo_header.font.pixelSize
-
-                        text_value: API.get().settings_pg.empty_string + ("#" + (index + 1))
-                        anchors.verticalCenter: parent.verticalCenter
-                    }
-
-                    // Amount
-                    DefaultText {
-                        id: amount_value
-
-                        anchors.left: parent.left
-                        anchors.leftMargin: amount_header.anchors.leftMargin
-
-                        font.pixelSize: utxo_value.font.pixelSize
-
-                        text_value: API.get().settings_pg.empty_string + (modelData.amount)
-                        anchors.verticalCenter: parent.verticalCenter
-                    }
-
-                    // Reward
-                    DefaultText {
-                        id: reward_value
-
-                        anchors.left: parent.left
-                        anchors.leftMargin: reward_header.anchors.leftMargin
-
-                        font.pixelSize: utxo_value.font.pixelSize
-
-                        text_value: API.get().settings_pg.empty_string + (modelData.accrued_rewards.Accrued || "-")
-                        anchors.verticalCenter: parent.verticalCenter
-                    }
-
-                    // Accruing Start
-                    DefaultText {
-                        id: accruing_start_value
-
-                        anchors.left: parent.left
-                        anchors.leftMargin: accruing_start_header.anchors.leftMargin
-
-                        font.pixelSize: utxo_value.font.pixelSize
-
-                        text_value: API.get().settings_pg.empty_string + (modelData.accrue_start_at_human_date || "-")
-                        anchors.verticalCenter: parent.verticalCenter
-                    }
-
-                    // Accruing Stop
-                    DefaultText {
-                        id: accruing_stop_value
-
-                        anchors.left: parent.left
-                        anchors.leftMargin: accruing_stop_header.anchors.leftMargin
-
-                        font.pixelSize: utxo_value.font.pixelSize
-
-                        text_value: API.get().settings_pg.empty_string + (modelData.accrue_stop_at_human_date || "-")
-                        anchors.verticalCenter: parent.verticalCenter
-                    }
-
-                    // Time Left
-                    DefaultText {
-                        id: time_left_value
-
-                        anchors.left: parent.left
-                        anchors.leftMargin: time_left_header.anchors.leftMargin
-
-                        font.pixelSize: utxo_value.font.pixelSize
-
-                        text_value: API.get().settings_pg.empty_string + (modelData.accrue_stop_at ? General.secondsToTimeLeft(Date.now()/1000, modelData.accrue_stop_at) : '-')
-                        anchors.verticalCenter: parent.verticalCenter
-                    }
-
-                    // Error
-                    DefaultText {
-                        id: error_value
-
-                        anchors.left: parent.left
-                        anchors.leftMargin: error_header.anchors.leftMargin
-
-                        font.pixelSize: utxo_value.font.pixelSize
-
-                        text_value: {
-                            let val = modelData.accrued_rewards.NotAccruedReason
-                            if(val === null || val === undefined) return "-"
-
-                            switch(val) {
-                            case "LocktimeNotSet":
-                                val = qsTr("Locktime is not set")
-                                break
-                            case "LocktimeLessThanThreshold":
-                                val = qsTr("Locktime is less than the threshold")
-                                break
-                            case "UtxoHeightGreaterThanEndOfEra":
-                                val = qsTr("UTXO height is greater than end of the era")
-                                break
-                            case "UtxoAmountLessThanTen":
-                                val = qsTr("UTXO amount is less than 10")
-                                break
-                            case "OneHourNotPassedYet":
-                                val = qsTr("One hour did not pass yet")
-                                break
-                            case "TransactionInMempool":
-                                val = qsTr("Transaction is in mempool")
-                                break
-                            default:
-                                val = qsTr("Unknown problem")
-                                break
-                            }
-
-                            return API.get().settings_pg.empty_string + ("❌ " + val)
-                        }
-
-                        anchors.verticalCenter: parent.verticalCenter
-                    }
-
-                    // Line
-                    HorizontalLine {
-                        visible: prepare_claim_rewards_result.kmd_rewards_info.result &&
-                                 index !== prepare_claim_rewards_result.kmd_rewards_info.result.length - 1
-                        width: parent.width
-                        color: Style.colorWhite9
-                        anchors.bottom: parent.bottom
-                    }
-                }
+            PrimaryButton {
+                text: API.get().settings_pg.empty_string + (qsTr("Confirm"))
+                Layout.fillWidth: true
+                onClicked: claimRewards()
+                enabled: can_confirm
             }
+        ]
+    }
 
-            // Buttons
-            RowLayout {
-                DefaultButton {
-                    text: API.get().settings_pg.empty_string + (qsTr("Cancel"))
-                    Layout.fillWidth: true
-                    onClicked: root.close()
-                }
-                PrimaryButton {
-                    text: API.get().settings_pg.empty_string + (qsTr("Confirm"))
-                    Layout.fillWidth: true
-                    onClicked: claimRewards()
-                    enabled: can_confirm
-                }
-            }
-        }
+    // Result Page
+    SendResult {
+        result: ({
+            balance_change: prepare_claim_rewards_result.withdraw_answer.my_balance_change,
+            fees: prepare_claim_rewards_result.withdraw_answer.fee_details.amount,
+            date: prepare_claim_rewards_result.withdraw_answer.date
+        })
+        tx_hash: broadcast_result
 
-        // Result Page
-        SendResult {
-            result: ({
-                balance_change: prepare_claim_rewards_result.withdraw_answer.my_balance_change,
-                fees: prepare_claim_rewards_result.withdraw_answer.fee_details.amount,
-                date: prepare_claim_rewards_result.withdraw_answer.date
-            })
-            tx_hash: broadcast_result
-
-            function onClose() { root.close() }
-        }
+        function onClose() { root.close() }
     }
 }
 

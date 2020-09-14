@@ -5,7 +5,7 @@ import QtQuick.Controls 2.12
 import "../Components"
 import "../Constants"
 
-ColumnLayout {
+ModalContent {
     property var result: ({ balance_change:"", fees: "", date: "", explorer_url: "" })
     property alias address: address.text
     property string custom_amount
@@ -13,9 +13,7 @@ ColumnLayout {
 
     function onClose() {}
 
-    ModalHeader {
-        title: API.get().settings_pg.empty_string + (qsTr("Transaction Complete!"))
-    }
+    title: API.get().settings_pg.empty_string + (qsTr("Transaction Complete!"))
 
     // Address
     TextWithTitle {
@@ -49,18 +47,19 @@ ColumnLayout {
     }
 
     // Buttons
-    RowLayout {
+    footer: [
         DefaultButton {
             text: API.get().settings_pg.empty_string + (qsTr("Close"))
             Layout.fillWidth: true
             onClicked: onClose()
-        }
+        },
+
         PrimaryButton {
             text: API.get().settings_pg.empty_string + (qsTr("View at Explorer"))
             Layout.fillWidth: true
             onClicked: General.viewTxAtExplorer(api_wallet_page.ticker, tx_hash.text)
         }
-    }
+    ]
 }
 
 /*##^##
