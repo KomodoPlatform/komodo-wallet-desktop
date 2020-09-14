@@ -13,6 +13,7 @@ DefaultModal {
     width: 900
     height: stack_layout.children[stack_layout.currentIndex].height + verticalPadding * 2
 
+    property alias currentIndex: stack_layout.currentIndex
     default property alias pages: stack_layout.data
 
     // Inside modal
