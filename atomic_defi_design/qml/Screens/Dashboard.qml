@@ -200,7 +200,7 @@ Item {
 
         x: sidebar.app_logo.x + sidebar.app_logo.width - 20
         y: sidebar.app_logo.y
-        color: notifications_panel.notifications_list.length > 0 ? Style.colorRed : Style.colorWhite7
+        color: Qt.lighter(notifications_panel.notifications_list.length > 0 ? Style.colorRed : Style.colorWhite7, notifications_panel_button.containsMouse ? Style.hoverLightMultiplier : 1)
 
         DefaultText {
             id: count_text
@@ -214,10 +214,13 @@ Item {
 
     // Notifications panel button
     MouseArea {
+        id: notifications_panel_button
         x: sidebar.app_logo.x
         y: sidebar.app_logo.y
         width: sidebar.app_logo.width
         height: sidebar.app_logo.height
+
+        hoverEnabled: true
 
         onClicked: notifications_panel.visible = !notifications_panel.visible
     }
