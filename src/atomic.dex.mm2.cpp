@@ -1252,21 +1252,33 @@ namespace atomic_dex
         {
             tx_infos current_info{
 
-                .am_i_sender       = current.my_balance_change[0] == '-',
-                .confirmations     = current.confirmations.has_value() ? current.confirmations.value() : 0,
-                .from              = current.from,
-                .to                = current.to,
-                .date              = current.timestamp_as_date,
-                .timestamp         = current.timestamp,
-                .tx_hash           = current.tx_hash,
-                .fees              = current.fee_details.normal_fees.has_value() ? current.fee_details.normal_fees.value().amount
-                                                                                 : current.fee_details.erc_fees.value().total_fee,
+                .am_i_sender   = current.my_balance_change[0] == '-',
+                .confirmations = current.confirmations.has_value() ? current.confirmations.value() : 0,
+                .from          = current.from,
+                .to            = current.to,
+                .date          = current.timestamp_as_date,
+                .timestamp     = current.timestamp,
+                .tx_hash       = current.tx_hash,
+                /*.fees              = current.fee_details.normal_fees.has_value() ? current.fee_details.normal_fees.value().amount
+                                                                                 : current.fee_details.erc_fees.value().total_fee*/
                 .my_balance_change = current.my_balance_change,
                 .total_amount      = current.total_amount,
                 .block_height      = current.block_height,
 
                 .ec = dextop_error::success,
             };
+            if (current.fee_details.normal_fees.has_value())
+            {
+                current_info.fees = current.fee_details.normal_fees.value().amount;
+            }
+            else if (current.fee_details.erc_fees.has_value())
+            {
+                current_info.fees = current.fee_details.erc_fees.value().total_fee;
+            }
+            else if (current.fee_details.qrc_fees.has_value())
+            {
+                current_info.fees = current.fee_details.qrc_fees->total_gas_fee;
+            }
 
             if (current_info.timestamp == 0)
             {

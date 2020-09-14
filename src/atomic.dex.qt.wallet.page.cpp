@@ -151,10 +151,18 @@ namespace atomic_dex
             obj["tx_state"]                           = QString::fromStdString(tx_state.state);
             obj["fiat_amount"]                        = QString::fromStdString(price_service.get_price_in_fiat(config.current_currency, ticker, ec));
             obj["trend_7d"]                           = nlohmann_json_array_to_qt_json_array(paprika.get_ticker_historical(ticker).answer);
-            obj["fee_ticker"]                         = coin_info.is_erc_20 ? "ETH" : QString::fromStdString(ticker);
-            obj["blocks_left"]                        = static_cast<qint64>(tx_state.blocks_left);
-            obj["transactions_left"]                  = static_cast<qint64>(tx_state.transactions_left);
-            obj["current_block"]                      = static_cast<qint64>(tx_state.current_block);
+            obj["fee_ticker"]                         = QString::fromStdString(ticker);
+            if (coin_info.is_qrc_20)
+            {
+                obj["fee_ticker"] = "QTUM";
+            }
+            else if (coin_info.is_erc_20)
+            {
+                obj["fee_ticker"] = "ETH";
+            }
+            obj["blocks_left"]       = static_cast<qint64>(tx_state.blocks_left);
+            obj["transactions_left"] = static_cast<qint64>(tx_state.transactions_left);
+            obj["current_block"]     = static_cast<qint64>(tx_state.current_block);
         }
         return obj;
     }
@@ -255,6 +263,11 @@ namespace atomic_dex
                 if (j_out.at("withdraw_answer").at("fee_details").contains("total_fee") && !j_out.at("withdraw_answer").at("fee_details").contains("amount"))
                 {
                     j_out["withdraw_answer"]["fee_details"]["amount"] = j_out["withdraw_answer"]["fee_details"]["total_fee"];
+                }
+                if (j_out.at("withdraw_answer").at("fee_details").contains("total_gas_fee") &&
+                    !j_out.at("withdraw_answer").at("fee_details").contains("amount"))
+                {
+                    j_out["withdraw_answer"]["fee_details"]["amount"] = j_out["withdraw_answer"]["fee_details"]["total_gas_fee"];
                 }
                 this->set_rpc_send_data(nlohmann_json_object_to_qt_json_object(j_out));
             }
