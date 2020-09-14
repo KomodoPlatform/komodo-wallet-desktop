@@ -1044,5 +1044,22 @@
     ],
     "name": "Bitcoin (testnet BTC)",
     "type": "UTXO"
+  },
+  "QRC20": {
+    "active": false,
+    "coin": "QRC20",
+    "coingecko_id": "test-coin",
+    "coinpaprika_id": "test-coin",
+    "currently_enabled": false,
+    "electrum": [
+      {
+        "url": "95.217.83.126:10001"
+      }
+    ],
+    "explorer_url": [
+      "https://testnet.qtum.info/"
+    ],
+    "name": "QRC20 (testnet)",
+    "type": "QRC-20"
   }
 }
