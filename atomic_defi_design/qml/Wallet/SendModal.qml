@@ -247,6 +247,7 @@ DefaultModal {
                 // Amount input
                 AmountField {
                     id: input_amount
+
                     field.visible: !input_max_amount.checked
                     title: API.get().settings_pg.empty_string + (qsTr("Amount to send"))
                     field.placeholderText: API.get().settings_pg.empty_string + (qsTr("Enter the amount to send"))

@@ -25,8 +25,6 @@ DefaultModal {
         height: parent.height
         anchors.horizontalCenter: parent.horizontalCenter
 
-        spacing: 10
-
         ModalHeader {
             id: header
         }
@@ -46,6 +44,7 @@ DefaultModal {
             ColumnLayout {
                 id: inner_layout
                 anchors.centerIn: parent
+                spacing: Style.rowSpacing
                 width: root.width - root.padding*2 - flickable.padding
                             - (flickable.scrollbar_visible ? 20 : 0) // Scrollbar margin
             }
@@ -54,7 +53,8 @@ DefaultModal {
         // Buttons
         RowLayout {
             id: footer
-            spacing: 20
+            anchors.topMargin: Style.rowSpacing
+            spacing: Style.buttonSpacing
         }
     }
 }

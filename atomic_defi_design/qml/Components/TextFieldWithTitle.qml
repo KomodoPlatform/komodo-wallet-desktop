@@ -21,6 +21,8 @@ ColumnLayout {
         hiding = true
     }
 
+    spacing: Style.rowSpacingSmall
+
     RowLayout {
         DefaultText {
             id: title_text
