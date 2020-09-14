@@ -45,11 +45,12 @@ Item {
         // Select coins row
         FloatingBackground {
             Layout.alignment: Qt.AlignHCenter
-            width: layout.width
+            Layout.fillWidth: true
             height: layout.height
 
             RowLayout {   
                 id: layout
+                anchors.centerIn: parent
                              
                 Switch {
                     id: show_all_coins
@@ -71,7 +72,7 @@ Item {
                 DefaultComboBox {
                     id: combo_base
                     enabled: !show_all_coins.checked
-                    Layout.preferredWidth: 250
+                    Layout.preferredWidth: 325
                     Layout.topMargin: 10
                     Layout.bottomMargin: 10
                     Layout.rightMargin: 15
