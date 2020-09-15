@@ -33,13 +33,15 @@ Item {
         height: 750
 
         content: ColumnLayout {
-            width: layout_background.width - 60
+            width: layout_background.width
             height: layout_background.height
 
             ComboBoxWithTitle {
                 id: combo_fiat
                 title: API.get().settings_pg.empty_string + (qsTr("Fiat"))
                 Layout.fillWidth: true
+                Layout.leftMargin: 30
+                Layout.rightMargin: Layout.leftMargin
 
                 field.model: fiats
 
@@ -59,15 +61,21 @@ Item {
 
             Languages {
                 Layout.alignment: Qt.AlignHCenter
+                Layout.leftMargin: combo_fiat.Layout.leftMargin
+                Layout.rightMargin: Layout.leftMargin
             }
 
             HorizontalLine {
                 Layout.fillWidth: true
+                Layout.leftMargin: combo_fiat.Layout.leftMargin
+                Layout.rightMargin: Layout.leftMargin
                 Layout.topMargin: 10
             }
 
             Switch {
                 Layout.alignment: Qt.AlignHCenter
+                Layout.leftMargin: combo_fiat.Layout.leftMargin
+                Layout.rightMargin: Layout.leftMargin
                 text: API.get().settings_pg.empty_string + (qsTr("Enable Desktop Notifications"))
                 Component.onCompleted: checked = API.get().settings_pg.notification_enabled
                 onCheckedChanged: API.get().settings_pg.notification_enabled = checked
@@ -75,12 +83,16 @@ Item {
 
             DefaultButton {
                 Layout.fillWidth: true
+                Layout.leftMargin: combo_fiat.Layout.leftMargin
+                Layout.rightMargin: Layout.leftMargin
                 text: API.get().settings_pg.empty_string + (qsTr("Open Logs Folder"))
                 onClicked: openLogsFolder()
             }
 
             DefaultButton {
                 Layout.fillWidth: true
+                Layout.leftMargin: combo_fiat.Layout.leftMargin
+                Layout.rightMargin: Layout.leftMargin
                 text: API.get().settings_pg.empty_string + (qsTr("View Seed"))
                 onClicked: recover_seed_modal.open()
             }
@@ -91,10 +103,14 @@ Item {
 
             HorizontalLine {
                 Layout.fillWidth: true
+                Layout.leftMargin: combo_fiat.Layout.leftMargin
+                Layout.rightMargin: Layout.leftMargin
             }
 
             DefaultButton {
                 Layout.fillWidth: true
+                Layout.leftMargin: combo_fiat.Layout.leftMargin
+                Layout.rightMargin: Layout.leftMargin
                 text: API.get().settings_pg.empty_string + (qsTr("Disclaimer and ToS"))
                 onClicked: eula.open()
             }
@@ -106,12 +122,16 @@ Item {
 
             HorizontalLine {
                 Layout.fillWidth: true
+                Layout.leftMargin: combo_fiat.Layout.leftMargin
+                Layout.rightMargin: Layout.leftMargin
             }
 
             DefaultButton {
                 visible: !API.get().is_pin_cfg_enabled()
                 text: API.get().settings_pg.empty_string + (qsTr("Setup Camouflage Password"))
                 Layout.fillWidth: true
+                Layout.leftMargin: combo_fiat.Layout.leftMargin
+                Layout.rightMargin: Layout.leftMargin
                 onClicked: camouflage_password_modal.open()
             }
 
@@ -122,6 +142,8 @@ Item {
             DangerButton {
                 text: API.get().settings_pg.empty_string + (qsTr("Delete Wallet"))
                 Layout.fillWidth: true
+                Layout.leftMargin: combo_fiat.Layout.leftMargin
+                Layout.rightMargin: Layout.leftMargin
                 onClicked: delete_wallet_modal.open()
             }
 
@@ -131,6 +153,8 @@ Item {
 
             DefaultButton {
                 Layout.fillWidth: true
+                Layout.leftMargin: combo_fiat.Layout.leftMargin
+                Layout.rightMargin: Layout.leftMargin
                 text: API.get().settings_pg.empty_string + (qsTr("Log out"))
                 onClicked: disconnect()
             }
