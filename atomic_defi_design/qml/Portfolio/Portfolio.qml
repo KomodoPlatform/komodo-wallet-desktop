@@ -88,7 +88,7 @@ ColumnLayout {
                 Layout.alignment: Qt.AlignHCenter
                 text_value: API.get().settings_pg.empty_string + (qsTr("TOTAL"))
                 font.pixelSize: Style.textSize
-                color: Style.colorWhite5
+                color: Qt.lighter(Style.colorWhite5, currency_change_button.containsMouse ? Style.hoverLightMultiplier : 1.0)
             }
 
             // Total Balance
@@ -97,13 +97,17 @@ ColumnLayout {
                 Layout.bottomMargin: 30
                 text_value: API.get().settings_pg.empty_string + (General.formatFiat("", API.get().portfolio_pg.balance_fiat_all, API.get().settings_pg.current_currency))
                 font.pixelSize: Style.textSize4
+                color: Qt.lighter(Style.colorWhite4, currency_change_button.containsMouse ? Style.hoverLightMultiplier : 1.0)
                 privacy: true
             }
         }
 
         MouseArea {
+            id: currency_change_button
+
             anchors.fill: top_layout
 
+            hoverEnabled: true
             onClicked: {
                 const current_fiat = API.get().settings_pg.current_currency
                 const available_fiats = API.get().settings_pg.get_available_currencies()
