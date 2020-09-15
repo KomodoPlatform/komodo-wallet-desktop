@@ -265,10 +265,9 @@ namespace atomic_dex
                 {
                     j_out["withdraw_answer"]["fee_details"]["amount"] = j_out["withdraw_answer"]["fee_details"]["total_fee"];
                 }
-                if (j_out.at("withdraw_answer").at("fee_details").contains("total_gas_fee") &&
-                    !j_out.at("withdraw_answer").at("fee_details").contains("amount"))
+                if (j_out.at("withdraw_answer").at("fee_details").contains("miner_fee") && !j_out.at("withdraw_answer").at("fee_details").contains("amount"))
                 {
-                    j_out["withdraw_answer"]["fee_details"]["amount"] = j_out["withdraw_answer"]["fee_details"]["total_gas_fee"];
+                    j_out["withdraw_answer"]["fee_details"]["amount"] = j_out["withdraw_answer"]["fee_details"]["miner_fee"];
                 }
                 this->set_rpc_send_data(nlohmann_json_object_to_qt_json_object(j_out));
             }

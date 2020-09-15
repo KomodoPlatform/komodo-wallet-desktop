@@ -1277,7 +1277,7 @@ namespace atomic_dex
             }
             else if (current.fee_details.qrc_fees.has_value())
             {
-                current_info.fees = current.fee_details.qrc_fees->total_gas_fee;
+                current_info.fees = current.fee_details.qrc_fees->miner_fee;
             }
 
             if (current_info.timestamp == 0)
