@@ -160,7 +160,7 @@ FloatingBackground {
 
                 Layout.alignment: Qt.AlignRight | Qt.AlignVCenter
 
-                color: Style.colorTheme1
+                color: Qt.lighter(Style.colorTheme1, mark_all_as_read_mouse_area.containsMouse ? Style.hoverLightMultiplier : 1.0)
 
                 DefaultText {
                     id: mark_all_as_read
@@ -171,7 +171,9 @@ FloatingBackground {
                 }
 
                 MouseArea {
+                    id: mark_all_as_read_mouse_area
                     anchors.fill: parent
+                    hoverEnabled: true
                     onClicked: {
                         notifications_list = []
                     }
@@ -254,7 +256,7 @@ FloatingBackground {
                         anchors.right: parent.right
                         anchors.rightMargin: anchors.bottomMargin + 20
 
-                        color: Style.colorTheme1
+                        color: Qt.lighter(Style.colorTheme1, remove_button_area.containsMouse ? Style.hoverLightMultiplier : 1.0)
 
                         DefaultText {
                             id: remove_button
@@ -265,7 +267,9 @@ FloatingBackground {
                         }
 
                         MouseArea {
+                            id: remove_button_area
                             anchors.fill: parent
+                            hoverEnabled: true
                             onClicked: {
                                 notifications_list.splice(index, 1)
                                 notifications_list = notifications_list
