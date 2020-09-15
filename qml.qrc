@@ -216,5 +216,6 @@
         <file>atomic_defi_design/qml/Settings/Languages.qml</file>
         <file>atomic_defi_design/qml/Support/Support.qml</file>
         <file>atomic_defi_design/qml/Support/FAQLine.qml</file>
+        <file>atomic_defi_design/qml/Support/LinkIcon.qml</file>
     </qresource>
 </RCC>

@@ -44,53 +44,24 @@ Item {
                     anchors.left: parent.left
                     anchors.verticalCenter: parent.verticalCenter
 
-                    DefaultImage {
-                        id: discord_icon
-                        Layout.alignment: Qt.AlignHCenter
+                    LinkIcon {
+                        link: "https://komodoplatform.com/discord"
                         source: General.image_path + "icon-discord.png"
-                        Layout.preferredWidth: 60
-                        Layout.preferredHeight: Layout.preferredWidth
-
-                        MouseArea {
-                            anchors.fill: parent
-                            onClicked: Qt.openUrlExternally("https://komodoplatform.com/discord")
-                        }
                     }
 
-                    DefaultImage {
-                        Layout.alignment: Qt.AlignHCenter
+                    LinkIcon {
+                        link: "https://twitter.com/atomicDEX"
                         source: General.image_path + "icon-twitter.png"
-                        Layout.preferredWidth: discord_icon.Layout.preferredWidth
-                        Layout.preferredHeight: Layout.preferredWidth
-
-                        MouseArea {
-                            anchors.fill: parent
-                            onClicked: Qt.openUrlExternally("https://twitter.com/atomicDEX")
-                        }
                     }
 
-                    DefaultImage {
-                        Layout.alignment: Qt.AlignHCenter
+                    LinkIcon {
+                        link: "https://support.komodoplatform.com/support/home"
                         source: General.image_path + "icon-support.png"
-                        Layout.preferredWidth: discord_icon.Layout.preferredWidth
-                        Layout.preferredHeight: Layout.preferredWidth
-
-                        MouseArea {
-                            anchors.fill: parent
-                            onClicked: Qt.openUrlExternally("https://support.komodoplatform.com/support/home")
-                        }
                     }
 
-//                    DefaultImage {
-//                        Layout.alignment: Qt.AlignHCenter
+//                    LinkIcon {
+//                        link: "mailto:support@komodoplatform.com"
 //                        source: General.image_path + "icon-email.png"
-//                        Layout.preferredWidth: discord_icon.Layout.preferredWidth
-//                        Layout.preferredHeight: Layout.preferredWidth
-
-//                        MouseArea {
-//                            anchors.fill: parent
-//                            onClicked: Qt.openUrlExternally("mailto:support@komodoplatform.com")
-//                        }
 //                    }
                 }
 
@@ -114,7 +85,6 @@ Item {
                                 Layout.alignment: Qt.AlignVCenter
 
                                 color: Qt.lighter(update_modal.update_needed ? Style.colorOrange : Style.colorGreen, changelog_button.containsMouse ? Style.hoverLightMultiplier : 1.0)
-
                             }
 
                             DefaultText {
