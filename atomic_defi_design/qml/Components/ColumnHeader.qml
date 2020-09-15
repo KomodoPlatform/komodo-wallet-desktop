@@ -16,6 +16,7 @@ Item {
 
     // Click area
     MouseArea {
+        id: click_area
         anchors.fill: parent
         hoverEnabled: true
         onClicked: {
@@ -33,9 +34,10 @@ Item {
 
     DefaultText {
         id: title
-        color: Style.colorWhite1
         anchors.left: icon_at_left ? parent.left : undefined
         anchors.right: icon_at_left ? undefined : parent.right
+
+        color: Qt.lighter(Style.colorWhite4, click_area.containsMouse ? Style.hoverLightMultiplier : 1.0)
     }
 
 
