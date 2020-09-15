@@ -31,7 +31,7 @@ ColumnLayout {
                 delegate: Rectangle {
                     width: image.sourceSize.width - 4 // Current icons have too much space around them
                     height: image.sourceSize.height - 2
-                    color: API.get().settings_pg.lang === model.modelData ? Style.colorTheme11 : "transparent"
+                    color: API.get().settings_pg.lang === model.modelData ? Style.colorTheme11 : mouse_area.containsMouse ? Style.colorTheme4 : "transparent"
 
                     DefaultImage {
                         id: image
@@ -41,8 +41,10 @@ ColumnLayout {
 
                         // Click area
                         MouseArea {
+                            id: mouse_area
                             anchors.fill: parent
                             acceptedButtons: Qt.LeftButton | Qt.RightButton
+                            hoverEnabled: true
                             onClicked: {
                                 API.get().settings_pg.lang = model.modelData
                             }
