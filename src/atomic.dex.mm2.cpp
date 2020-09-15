@@ -18,7 +18,6 @@
 #include "atomic.dex.pch.hpp"
 
 //! Project Headers
-#include "atomic.dex.kill.hpp"
 #include "atomic.dex.mm2.config.hpp"
 #include "atomic.dex.mm2.hpp"
 #include "atomic.dex.qt.wallet.manager.hpp"
@@ -788,7 +787,6 @@ namespace atomic_dex
                 std::this_thread::sleep_for(1s);
             }
 
-            //::mm2::api::create_mm2_httpclient();
             web::http::client::http_client_config cfg;
             using namespace std::chrono_literals;
             cfg.set_timeout(30s);
@@ -1252,15 +1250,13 @@ namespace atomic_dex
         {
             tx_infos current_info{
 
-                .am_i_sender   = current.my_balance_change[0] == '-',
-                .confirmations = current.confirmations.has_value() ? current.confirmations.value() : 0,
-                .from          = current.from,
-                .to            = current.to,
-                .date          = current.timestamp_as_date,
-                .timestamp     = current.timestamp,
-                .tx_hash       = current.tx_hash,
-                /*.fees              = current.fee_details.normal_fees.has_value() ? current.fee_details.normal_fees.value().amount
-                                                                                 : current.fee_details.erc_fees.value().total_fee*/
+                .am_i_sender       = current.my_balance_change[0] == '-',
+                .confirmations     = current.confirmations.has_value() ? current.confirmations.value() : 0,
+                .from              = current.from,
+                .to                = current.to,
+                .date              = current.timestamp_as_date,
+                .timestamp         = current.timestamp,
+                .tx_hash           = current.tx_hash,
                 .my_balance_change = current.my_balance_change,
                 .total_amount      = current.total_amount,
                 .block_height      = current.block_height,
