@@ -20,7 +20,7 @@ ColumnLayout {
             id: arrow_icon
             visible: expandable
             up: expanded
-            color: expanded ? Style.colorRed : Style.colorGreen
+            color: mouse_area.containsMouse ? Style.colorOrange : expanded ? Style.colorRed : Style.colorGreen
             Layout.alignment: Qt.AlignVCenter
         }
 
@@ -28,10 +28,14 @@ ColumnLayout {
             id: title
             Layout.fillWidth: true
 
+            color: Qt.lighter(Style.colorWhite4, mouse_area.containsMouse ? Style.hoverLightMultiplier : 1.0)
+
             MouseArea {
+                id: mouse_area
                 enabled: expandable
                 anchors.fill: parent
                 anchors.leftMargin: -arrow_icon.width - row_layout.spacing
+                hoverEnabled: true
                 onClicked: expanded = !expanded
             }
         }
