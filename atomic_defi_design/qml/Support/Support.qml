@@ -94,47 +94,50 @@ Item {
 //                    }
                 }
 
-                ColumnLayout {
+
+                MouseArea {
+                    id: changelog_button
+
                     anchors.centerIn: parent
+                    width: column_layout.width
+                    height: column_layout.height
+                    hoverEnabled: true
 
-                    RowLayout {
-                        Layout.alignment: Qt.AlignHCenter
+                    onClicked: update_modal.open()
 
-                        Circle {
-                            Layout.alignment: Qt.AlignVCenter
-                            color: update_modal.update_needed ? Style.colorOrange : Style.colorGreen
+                    ColumnLayout {
+                        id: column_layout
+                        RowLayout {
+                            Layout.alignment: Qt.AlignHCenter
+
+                            Circle {
+                                Layout.alignment: Qt.AlignVCenter
+
+                                color: Qt.lighter(update_modal.update_needed ? Style.colorOrange : Style.colorGreen, changelog_button.containsMouse ? Style.hoverLightMultiplier : 1.0)
+
+                            }
+
+                            DefaultText {
+                                Layout.alignment: Qt.AlignVCenter
+                                text_value: API.get().settings_pg.empty_string + (update_modal.update_needed ? qsTr("Update available") : qsTr("Up to date"))
+                                color: changelog_text.color
+                            }
                         }
 
                         DefaultText {
-                            Layout.alignment: Qt.AlignVCenter
-                            text_value: API.get().settings_pg.empty_string + (update_modal.update_needed ? qsTr("Update available") : qsTr("Up to date"))
-
-                            MouseArea {
-                                anchors.fill: parent
-                                onClicked: update_modal.open()
-                            }
+                            Layout.alignment: Qt.AlignHCenter
+                            text_value: API.get().settings_pg.empty_string + (General.version_string)
+                            font.pixelSize: Style.textSizeSmall3
+                            color: changelog_text.color
                         }
-                    }
 
-                    DefaultText {
-                        Layout.alignment: Qt.AlignHCenter
-                        text_value: API.get().settings_pg.empty_string + (General.version_string)
-                        font.pixelSize: Style.textSizeSmall3
+                        DefaultText {
+                            id: changelog_text
+                            Layout.alignment: Qt.AlignHCenter
+                            text_value: API.get().settings_pg.empty_string + (General.cex_icon + ' ' + qsTr('Changelog'))
+                            font.pixelSize: Style.textSizeSmall2
 
-                        MouseArea {
-                            anchors.fill: parent
-                            onClicked: update_modal.open()
-                        }
-                    }
-
-                    DefaultText {
-                        Layout.alignment: Qt.AlignHCenter
-                        text_value: API.get().settings_pg.empty_string + (General.cex_icon + ' ' + qsTr('Changelog'))
-                        font.pixelSize: Style.textSizeSmall2
-
-                        MouseArea {
-                            anchors.fill: parent
-                            onClicked: update_modal.open()
+                            color: Qt.lighter(Style.colorWhite4, changelog_button.containsMouse ? Style.hoverLightMultiplier : 1.0)
                         }
                     }
                 }
