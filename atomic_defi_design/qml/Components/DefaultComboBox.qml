@@ -1,6 +1,8 @@
 import QtQuick 2.14
 import QtQuick.Layouts 1.12
+import QtQuick.Window 2.12
 import QtQuick.Controls 2.12
+import QtQuick.Controls.impl 2.12
 import QtQuick.Controls.Universal 2.12
 import "../Constants"
 
@@ -52,10 +54,12 @@ ComboBox {
     popup: Popup {
         y: control.height
         width: control.width
-        implicitHeight: contentItem.implicitHeight
+        height: Math.min(contentItem.implicitHeight, control.Window.height * - 80)
+
         padding: 1
 
         contentItem: DefaultListView {
+            implicitHeight: contentHeight
             model: control.popup.visible ? control.delegateModel : null
             currentIndex: control.highlightedIndex
         }
