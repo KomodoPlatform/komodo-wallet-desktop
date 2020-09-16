@@ -133,7 +133,24 @@ FloatingBackground {
 
         tooltip: qsTr("atomicDEX Pro")
 
-        onActivated: showApp()
+//        onActivated: showApp()
+
+        menu: Menu {
+            MenuItem {
+                text: API.get().settings_pg.empty_string + (qsTr("Show"))
+                onTriggered: showApp()
+            }
+
+            MenuItem {
+                text: API.get().settings_pg.empty_string + (qsTr("Restart"))
+                onTriggered: API.get().restart()
+            }
+
+            MenuItem {
+                text: API.get().settings_pg.empty_string + (qsTr("Quit"))
+                onTriggered: Qt.quit()
+            }
+        }
     }
 
     ColumnLayout {
