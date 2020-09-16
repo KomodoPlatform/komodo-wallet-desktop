@@ -47,7 +47,7 @@ ComboBox {
         color: !control.enabled ? Style.colorTheme5 : control.hovered ? Style.colorTheme7 : Style.colorTheme9
         border.color: control.mainBorderColor
         border.width: control.visualFocus ? 2 : 1
-        radius: 16
+        radius: Style.rectangleCornerRadius
     }
 
     // Dropdown itself
@@ -70,7 +70,7 @@ ComboBox {
         background: Rectangle {
             color: Style.colorTheme9
             border.color: control.mainBorderColor
-            radius: 16
+            radius: Style.rectangleCornerRadius
         }
     }
 
