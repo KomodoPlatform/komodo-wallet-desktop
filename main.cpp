@@ -139,12 +139,14 @@ init_timezone_db()
 #endif
 }
 
-static void init_restclient()
+static void
+init_restclient()
 {
     RestClient::init();
 }
 
-static void disable_restclient()
+static void
+disable_restclient()
 {
     RestClient::disable();
 }
@@ -158,6 +160,10 @@ int
 main([[maybe_unused]] int argc, [[maybe_unused]] char* argv[])
 #endif
 {
+#if defined(WINDOWS_RELEASE_MAIN)
+    int    argc = __argc;
+    char** argv = __argv;
+#endif
     init_logging();
     connect_signals_handler();
     init_restclient();
@@ -171,8 +177,8 @@ main([[maybe_unused]] int argc, [[maybe_unused]] char* argv[])
     atomic_dex::application atomic_app;
 
     //! QT
-    int                           ac  = 0;
-    std::shared_ptr<QApplication> app = std::make_shared<QApplication>(ac, nullptr);
+    // int                           ac  = 0;
+    std::shared_ptr<QApplication> app = std::make_shared<QApplication>(argc, argv);
 
     atomic_app.set_qt_app(app);
 

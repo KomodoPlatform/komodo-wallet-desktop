@@ -1042,6 +1042,7 @@ namespace atomic_dex
     application::restart()
     {
         qApp->quit();
-        QProcess::startDetached(qApp->arguments()[0], qApp->arguments());
+
+        QProcess::startDetached(qApp->arguments()[0], qApp->arguments(), qApp->applicationDirPath());
     }
 } // namespace atomic_dex
