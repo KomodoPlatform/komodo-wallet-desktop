@@ -185,6 +185,9 @@ namespace atomic_dex
         //! Enable multiple coins
         void enable_multiple_coins(const std::vector<std::string>& tickers) noexcept;
 
+        //! Add a new coin in the coin_info cfg add_new_coin(normal_cfg, mm2_cfg)
+        void add_new_coin(const nlohmann::json& coin_cfg_json, const nlohmann::json& raw_coin_cfg_json) noexcept;
+
         //! Disable a single coin
         bool disable_coin(const std::string& ticker, std::error_code& ec) noexcept;
 
