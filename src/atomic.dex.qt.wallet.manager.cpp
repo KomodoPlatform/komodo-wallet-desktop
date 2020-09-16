@@ -14,6 +14,8 @@
  *                                                                            *
  ******************************************************************************/
 
+#include <QDebug>
+
 //! PCH
 #include "atomic.dex.pch.hpp"
 
@@ -115,6 +117,7 @@ namespace atomic_dex
             }
         }
 
+        qDebug() << out;
         return out;
     }
 

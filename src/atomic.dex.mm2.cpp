@@ -18,6 +18,7 @@
 #include "atomic.dex.pch.hpp"
 
 //! Project Headers
+#include "atomic.dex.kill.hpp"
 #include "atomic.dex.mm2.config.hpp"
 #include "atomic.dex.mm2.hpp"
 #include "atomic.dex.qt.wallet.manager.hpp"
