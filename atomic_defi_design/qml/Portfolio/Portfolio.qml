@@ -377,7 +377,7 @@ ColumnLayout {
 
             Rectangle {
                 anchors.left: chart.right
-                anchors.leftMargin: -10
+                anchors.leftMargin: -25
                 anchors.verticalCenter: parent.verticalCenter
 
                 visible: {
