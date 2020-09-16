@@ -56,7 +56,7 @@ ComboBox {
         width: control.width
         height: Math.min(contentItem.implicitHeight, control.Window.height - bottomMargin - mapToItem(control.Window.contentItem, x, y).y)
 
-        bottomMargin: 10
+        bottomMargin: 20
 
         padding: 1
 
