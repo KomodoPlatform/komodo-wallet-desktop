@@ -387,7 +387,6 @@ Item {
             anchors.leftMargin: 35
             width: 75
             height: 30
-            flat: true
             font.pixelSize: Style.textSizeSmall3
 
             currentIndex: 5 // 1h

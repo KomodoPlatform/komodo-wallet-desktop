@@ -13,8 +13,8 @@ ListView {
     boundsBehavior: Flickable.StopAtBounds
     ScrollBar.vertical: DefaultScrollBar { }
 
-    implicitWidth: contentItem.childrenRect.width
-    implicitHeight: contentItem.childrenRect.height
+    implicitWidth: contentWidth
+    implicitHeight: contentHeight
 
     clip: true
 }

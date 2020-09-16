@@ -50,7 +50,7 @@ ComboBox {
 
     // Dropdown itself
     popup: Popup {
-        y: control.height - 1
+        y: control.height
         width: control.width
         implicitHeight: contentItem.implicitHeight
         padding: 1
