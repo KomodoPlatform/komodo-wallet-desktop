@@ -1378,4 +1378,31 @@ namespace atomic_dex
     {
         return m_token_source.get_token();
     }
+
+    void
+    mm2::add_new_coin(const nlohmann::json& coin_cfg_json, const nlohmann::json& raw_coin_cfg_json) noexcept
+    {
+        //! Normal cfg part
+        {
+            fs::path       cfg_path = get_atomic_dex_config_folder();
+            std::string    filename = std::string(atomic_dex::get_raw_version()) + "-coins." + m_current_wallet_name + ".json";
+            std::ifstream  ifs((cfg_path / filename).c_str());
+            nlohmann::json config_json_data;
+            assert(ifs.is_open());
+
+            //! Read Contents
+            ifs >> config_json_data;
+
+            //! Modify contents
+            config_json_data.push_back(coin_cfg_json);
+
+            //! Close
+            ifs.close();
+
+            //! Write contents
+            std::ofstream ofs((cfg_path / filename).c_str(), std::ios::trunc);
+            assert(ofs.is_open());
+            ofs << config_json_data;
+        }
+    }
 } // namespace atomic_dex

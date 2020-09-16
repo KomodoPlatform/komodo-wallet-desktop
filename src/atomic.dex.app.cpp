@@ -21,6 +21,7 @@
 #include <QJsonArray>
 #include <QJsonDocument>
 #include <QJsonObject>
+#include <QProcess>
 #include <QTimer>
 
 #if defined(_WIN32) || defined(WIN32)
@@ -902,7 +903,7 @@ namespace atomic_dex
     application::login(const QString& password, const QString& wallet_name)
     {
         auto& wallet_manager = this->system_manager_.get_system<qt_wallet_manager>();
-        bool res = wallet_manager.login(password, wallet_name, get_mm2(), [this, &wallet_name]() {
+        bool  res            = wallet_manager.login(password, wallet_name, get_mm2(), [this, &wallet_name]() {
             this->set_wallet_default_name(wallet_name);
             this->set_status("initializing_mm2");
         });
@@ -1031,5 +1032,16 @@ namespace atomic_dex
     application::get_internet_checker() const noexcept
     {
         return qobject_cast<internet_service_checker*>(m_manager_models.at("internet_service"));
+    }
+} // namespace atomic_dex
+
+//! App restart
+namespace atomic_dex
+{
+    void
+    application::restart()
+    {
+        qApp->quit();
+        QProcess::startDetached(qApp->arguments()[0], qApp->arguments());
     }
 } // namespace atomic_dex
