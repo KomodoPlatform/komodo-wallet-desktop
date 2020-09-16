@@ -54,9 +54,8 @@ ComboBox {
     popup: Popup {
         y: control.height - 1
         width: control.width
-        height: Math.min(contentItem.implicitHeight, control.Window.height - topMargin - bottomMargin)
+        height: Math.min(contentItem.implicitHeight, control.Window.height - bottomMargin - mapToItem(control.Window.contentItem, x, y).y)
 
-        topMargin: 10
         bottomMargin: 10
 
         padding: 1
