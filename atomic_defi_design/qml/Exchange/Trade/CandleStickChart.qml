@@ -462,11 +462,11 @@ Item {
             }
 
             function capDateStart(timestamp, current_distance) {
-                return Math.max(timestamp, first_value_timestamp - current_distance*0.9)
+                return Math.max(timestamp, first_value_timestamp - getMinTimeDifference() * 4)
             }
 
             function capDateEnd(timestamp, current_distance) {
-                return Math.min(timestamp, last_value_timestamp + current_distance*0.9)
+                return Math.min(timestamp, last_value_timestamp + getMinTimeDifference() * 4)
             }
 
             function capPriceMin(price) {

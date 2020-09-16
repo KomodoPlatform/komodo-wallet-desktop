@@ -45,6 +45,7 @@ Item {
                     anchors.verticalCenter: parent.verticalCenter
 
                     LinkIcon {
+                        id: discord_icon
                         link: "https://komodoplatform.com/discord"
                         source: General.image_path + "icon-discord.png"
                     }
