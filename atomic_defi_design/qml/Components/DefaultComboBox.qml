@@ -59,7 +59,7 @@ ComboBox {
         padding: 1
 
         contentItem: DefaultListView {
-            implicitHeight: contentHeight
+            implicitHeight: contentHeight + 5 // Scrollbar appears if this extra space is not added
             model: control.popup.visible ? control.delegateModel : null
             currentIndex: control.highlightedIndex
         }
