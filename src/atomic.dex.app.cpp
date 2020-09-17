@@ -311,7 +311,7 @@ namespace atomic_dex
         get_dispatcher().sink<refresh_update_status>().connect<&application::on_refresh_update_status_event>(*this);
         //! MM2 system need to be created before the GUI and give the instance to the gui
         auto& mm2_system           = system_manager_.create_system<mm2>(system_manager_);
-        auto& settings_page_system = system_manager_.create_system<settings_page>(m_app, this);
+        auto& settings_page_system = system_manager_.create_system<settings_page>(system_manager_, m_app, this);
         auto& portfolio_system     = system_manager_.create_system<portfolio_page>(system_manager_, this);
         portfolio_system.get_portfolio()->set_cfg(settings_page_system.get_cfg());
 

@@ -1406,4 +1406,16 @@ namespace atomic_dex
             ofs << config_json_data;
         }
     }
+
+    bool
+    mm2::is_this_ticker_present_in_raw_cfg(const std::string& ticker) const noexcept
+    {
+        return m_mm2_raw_coins_cfg.find(ticker) != m_mm2_raw_coins_cfg.end();
+    }
+
+    bool
+    mm2::is_this_ticker_present_in_normal_cfg(const std::string& ticker) const noexcept
+    {
+        return m_coins_informations.find(ticker) != m_coins_informations.end();
+    }
 } // namespace atomic_dex

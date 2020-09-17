@@ -42,13 +42,15 @@ namespace atomic_dex
         Q_PROPERTY(bool notification_enabled READ is_notification_enabled WRITE set_notification_enabled NOTIFY onNotificationEnabledChanged)
 
         //! Private member fields Fields
+        ag::ecs::system_manager&      m_system_manager;
         std::shared_ptr<QApplication> m_app;
         atomic_dex::cfg               m_config{load_cfg()};
         QTranslator                   m_translator;
         QString                       m_empty_string{""};
 
       public:
-        explicit settings_page(entt::registry& registry, std::shared_ptr<QApplication> app, QObject* parent = nullptr) noexcept;
+        explicit settings_page(
+            entt::registry& registry, ag::ecs::system_manager& system_manager, std::shared_ptr<QApplication> app, QObject* parent = nullptr) noexcept;
         ~settings_page() noexcept final = default;
 
         //! Public override
@@ -73,9 +75,11 @@ namespace atomic_dex
         void                                 init_lang() noexcept;
 
         //! Public QML API
-        Q_INVOKABLE QStringList get_available_langs() const;
-        Q_INVOKABLE QStringList get_available_fiats() const;
-        Q_INVOKABLE QStringList get_available_currencies() const;
+        Q_INVOKABLE [[nodiscard]] QStringList get_available_langs() const;
+        Q_INVOKABLE [[nodiscard]] QStringList get_available_fiats() const;
+        Q_INVOKABLE [[nodiscard]] QStringList get_available_currencies() const;
+        Q_INVOKABLE [[nodiscard]] bool        is_this_ticker_present_in_raw_cfg(const QString& ticker) const noexcept;
+        Q_INVOKABLE [[nodiscard]] bool        is_this_ticker_present_in_normal_cfg(const QString& ticker) const noexcept;
 
       signals:
         void onLangChanged();

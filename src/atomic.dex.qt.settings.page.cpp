@@ -23,13 +23,16 @@
 
 //! Project Headers
 #include "atomic.dex.events.hpp"
+#include "atomic.dex.mm2.hpp"
 #include "atomic.dex.qt.settings.page.hpp"
 
 //! Constructo destructor
 namespace atomic_dex
 {
-    settings_page::settings_page(entt::registry& registry, std::shared_ptr<QApplication> app, QObject* parent) noexcept :
-        QObject(parent), system(registry), m_app(app)
+    settings_page::settings_page(entt::registry& registry, ag::ecs::system_manager& system_manager, std::shared_ptr<QApplication> app, QObject* parent) noexcept
+        :
+        QObject(parent),
+        system(registry), m_system_manager(system_manager), m_app(app)
     {
     }
 } // namespace atomic_dex
@@ -206,5 +209,17 @@ namespace atomic_dex
         out.reserve(m_config.possible_currencies.size());
         for (auto&& cur_currency: m_config.possible_currencies) { out.push_back(QString::fromStdString(cur_currency)); }
         return out;
+    }
+
+    bool
+    settings_page::is_this_ticker_present_in_raw_cfg(const QString& ticker) const noexcept
+    {
+        return m_system_manager.get_system<mm2>().is_this_ticker_present_in_raw_cfg(ticker.toStdString());
+    }
+
+    bool
+    settings_page::is_this_ticker_present_in_normal_cfg(const QString& ticker) const noexcept
+    {
+        return m_system_manager.get_system<mm2>().is_this_ticker_present_in_normal_cfg(ticker.toStdString());
     }
 } // namespace atomic_dex
