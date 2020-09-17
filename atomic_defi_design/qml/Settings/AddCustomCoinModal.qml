@@ -15,6 +15,7 @@ BasicModal {
         // reset all
     }
 
+    // Type page
     ModalContent {
         title: API.get().settings_pg.empty_string + (qsTr("Choose the coin type"))
 
@@ -22,7 +23,7 @@ BasicModal {
             id: input_type
             Layout.fillWidth: true
             title: API.get().settings_pg.empty_string + (qsTr("Type"))
-            model: ["ERC-20", "QRC-20", "UTXO", "Smart Chain"]
+            model: ["ERC-20"]//, "QRC-20", "UTXO", "Smart Chain"]
             currentIndex: 0
         }
 
@@ -42,6 +43,7 @@ BasicModal {
         ]
     }
 
+    // Ticker page
     ModalContent {
         title: API.get().settings_pg.empty_string + (qsTr("Choose the coin ticker"))
 
@@ -49,6 +51,7 @@ BasicModal {
             id: input_ticker
             Layout.fillWidth: true
             title:  API.get().settings_pg.empty_string + (qsTr("Ticker"))
+            field.placeholderText: API.get().settings_pg.empty_string + (qsTr("Enter the ticker"))
         }
 
         // Buttons
@@ -68,6 +71,7 @@ BasicModal {
         ]
     }
 
+    // Logo page
     ModalContent {
         title: API.get().settings_pg.empty_string + (qsTr("Choose the coin logo"))
 
@@ -112,11 +116,61 @@ BasicModal {
             },
 
             PrimaryButton {
-                text: API.get().settings_pg.empty_string + (qsTr("Close"))
+                text: API.get().settings_pg.empty_string + (qsTr("Next"))
                 Layout.fillWidth: true
                 enabled: input_logo.path !== ""
                 onClicked: root.nextPage()
             }
         ]
     }
+
+    ModalContent {
+        title: API.get().settings_pg.empty_string + (qsTr("Configuration"))
+
+        TextFieldWithTitle {
+            id: input_name
+            Layout.fillWidth: true
+            title:  API.get().settings_pg.empty_string + (qsTr("Name"))
+            field.placeholderText: API.get().settings_pg.empty_string + (qsTr("Enter the name"))
+        }
+
+        AddressFieldWithTitle {
+            id: input_contract_address
+            Layout.fillWidth: true
+            title:  API.get().settings_pg.empty_string + (qsTr("Contract Address"))
+            field.placeholderText: API.get().settings_pg.empty_string + (qsTr("Enter the contract address"))
+        }
+
+        TextFieldWithTitle {
+            id: input_coinpaprika_id
+            Layout.fillWidth: true
+            title:  API.get().settings_pg.empty_string + (qsTr("Coinpaprika ID"))
+            field.placeholderText: API.get().settings_pg.empty_string + (qsTr("Enter the Coinpaprika ID"))
+            field.text: "test-coin"
+        }
+
+        DefaultCheckBox {
+            id: input_active
+            text: API.get().settings_pg.empty_string + (qsTr("Active"))
+        }
+
+        // Buttons
+        footer: [
+            DefaultButton {
+                text: API.get().settings_pg.empty_string + (qsTr("Previous"))
+                Layout.fillWidth: true
+                onClicked: root.previousPage()
+            },
+
+            PrimaryButton {
+                text: API.get().settings_pg.empty_string + (qsTr("Submit"))
+                Layout.fillWidth: true
+                enabled: input_name.field.text !== "" &&
+                         input_contract_address.field.text !== "" &&
+                         input_coinpaprika_id.field.text !== ""
+                onClicked: root.nextPage()
+            }
+        ]
+    }
+
 }
