@@ -90,6 +90,13 @@ BasicModal {
             field.text: !details ? "" :
                         details.transaction_note
 
+
+            field.onTextChanged: {
+                const max_length = 500
+                if(text.length > max_length)
+                    text = text.substring(0, max_length)
+            }
+
             onSaved: details.transaction_note = field.text
             saveable: true
         }
