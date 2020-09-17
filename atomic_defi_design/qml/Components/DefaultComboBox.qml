@@ -86,31 +86,12 @@ ComboBox {
     }
 
     // Dropdown arrow icon at right side
-    indicator: Canvas {
-        id: canvas
-        x: control.width - width - control.rightPadding
+    indicator: ColorImage {
+        x: control.mirrored ? control.padding : control.width - width - control.padding
         y: control.topPadding + (control.availableHeight - height) / 2
-        width: 12
-        height: 8
-        contextType: "2d"
-
-        Connections {
-            target: control
-
-            function onPressedChanged() { canvas.requestPaint() }
-            function onDisabledChanged() { canvas.requestPaint() }
-            function onHoveredChanged() { canvas.requestPaint() }
-        }
-
-        onPaint: {
-            context.reset()
-            context.moveTo(0, 0)
-            context.lineTo(width, 0)
-            context.lineTo(width / 2, height)
-            context.closePath()
-            context.fillStyle = control.contentItem.color
-            context.fill()
-        }
+        color: control.contentItem.color
+        defaultColor: control.contentItem.color
+        source: "qrc:/qt-project.org/imports/QtQuick/Controls.2/images/double-arrow.png"
     }
 }
 
