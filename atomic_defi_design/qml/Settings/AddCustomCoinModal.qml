@@ -13,6 +13,8 @@ BasicModal {
 
     onClosed: {
         // reset all
+        currentIndex = 0
+        reset()
     }
 
     property var config_fields: ({})
@@ -34,6 +36,16 @@ BasicModal {
         addToConfig(input_coinpaprika_id,   "coinpaprika_id",   input_coinpaprika_id.field.text)
 
         root.config_fields = fields
+    }
+
+    function reset() {
+        //input_type.currentIndex = 0 // Keep same type, user might wanna add multiple of same type
+        input_ticker.field.text = ""
+        input_logo.path = ""
+        input_name.field.text = ""
+        input_contract_address.field.text = ""
+        input_active.checked = false
+        input_coinpaprika_id.field.text = "test-coin"
     }
 
     readonly property bool is_erc20: input_type.currentText === "ERC-20"
@@ -63,7 +75,10 @@ BasicModal {
             PrimaryButton {
                 text: API.get().settings_pg.empty_string + (qsTr("Next"))
                 Layout.fillWidth: true
-                onClicked: root.nextPage()
+                onClicked: {
+                    root.reset()
+                    root.nextPage()
+                }
             }
         ]
     }
@@ -120,7 +135,10 @@ BasicModal {
 
         FileDialog {
             id: input_logo
-            readonly property string path: input_logo.fileUrl.toString()
+
+            property string path
+            onFileUrlChanged: path = input_logo.fileUrl.toString()
+
             readonly property bool enabled: true // Config preparation function searches for this
 
             title: API.get().settings_pg.empty_string + (qsTr("Please choose the coin logo"))
@@ -188,7 +206,6 @@ BasicModal {
             Layout.fillWidth: true
             title: API.get().settings_pg.empty_string + (qsTr("Coinpaprika ID"))
             field.placeholderText: API.get().settings_pg.empty_string + (qsTr("Enter the Coinpaprika ID"))
-            field.text: "test-coin"
         }
 
         DefaultCheckBox {
