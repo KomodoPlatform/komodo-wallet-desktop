@@ -24,6 +24,7 @@
 //! Project Headers
 #include "atomic.dex.events.hpp"
 #include "atomic.dex.mm2.hpp"
+#include "atomic.dex.qt.bindings.hpp"
 #include "atomic.dex.qt.settings.page.hpp"
 
 //! Constructo destructor
@@ -221,5 +222,12 @@ namespace atomic_dex
     settings_page::is_this_ticker_present_in_normal_cfg(const QString& ticker) const noexcept
     {
         return m_system_manager.get_system<mm2>().is_this_ticker_present_in_normal_cfg(ticker.toStdString());
+    }
+
+    QVariantList
+    settings_page::get_custom_coins() const noexcept
+    {
+        auto coins = m_system_manager.get_system<mm2>().get_custom_coins();
+        return to_qt_binding(std::move(coins));
     }
 } // namespace atomic_dex

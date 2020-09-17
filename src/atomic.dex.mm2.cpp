@@ -1384,6 +1384,7 @@ namespace atomic_dex
     mm2::add_new_coin(const nlohmann::json& coin_cfg_json, const nlohmann::json& raw_coin_cfg_json) noexcept
     {
         //! Normal cfg part
+        if (not coin_cfg_json.empty() && is_this_ticker_present_in_normal_cfg(coin_cfg_json.at("coin").get<std::string>()))
         {
             fs::path       cfg_path = get_atomic_dex_config_folder();
             std::string    filename = std::string(atomic_dex::get_raw_version()) + "-coins." + m_current_wallet_name + ".json";
@@ -1405,6 +1406,10 @@ namespace atomic_dex
             assert(ofs.is_open());
             ofs << config_json_data;
         }
+        if (not raw_coin_cfg_json.empty() && is_this_ticker_present_in_raw_cfg(raw_coin_cfg_json.at("coin").get<std::string>()))
+        {
+            //! TODO
+        }
     }
 
     bool
@@ -1417,5 +1422,20 @@ namespace atomic_dex
     mm2::is_this_ticker_present_in_normal_cfg(const std::string& ticker) const noexcept
     {
         return m_coins_informations.find(ticker) != m_coins_informations.end();
+    }
+
+    t_coins
+    mm2::get_custom_coins() const noexcept
+    {
+        t_coins out;
+
+        for (auto&& [key, value]: m_coins_informations)
+        {
+            if (value.is_custom_coin)
+            {
+                out.push_back(value);
+            }
+        }
+        return out;
     }
 } // namespace atomic_dex

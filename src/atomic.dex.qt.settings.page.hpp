@@ -75,11 +75,12 @@ namespace atomic_dex
         void                                 init_lang() noexcept;
 
         //! Public QML API
-        Q_INVOKABLE [[nodiscard]] QStringList get_available_langs() const;
-        Q_INVOKABLE [[nodiscard]] QStringList get_available_fiats() const;
-        Q_INVOKABLE [[nodiscard]] QStringList get_available_currencies() const;
-        Q_INVOKABLE [[nodiscard]] bool        is_this_ticker_present_in_raw_cfg(const QString& ticker) const noexcept;
-        Q_INVOKABLE [[nodiscard]] bool        is_this_ticker_present_in_normal_cfg(const QString& ticker) const noexcept;
+        Q_INVOKABLE [[nodiscard]] QStringList  get_available_langs() const;
+        Q_INVOKABLE [[nodiscard]] QStringList  get_available_fiats() const;
+        Q_INVOKABLE [[nodiscard]] QStringList  get_available_currencies() const;
+        Q_INVOKABLE [[nodiscard]] bool         is_this_ticker_present_in_raw_cfg(const QString& ticker) const noexcept;
+        Q_INVOKABLE [[nodiscard]] bool         is_this_ticker_present_in_normal_cfg(const QString& ticker) const noexcept;
+        Q_INVOKABLE [[nodiscard]] QVariantList get_custom_coins() const noexcept;
 
       signals:
         void onLangChanged();
