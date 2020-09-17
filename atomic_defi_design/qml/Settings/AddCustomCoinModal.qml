@@ -37,6 +37,8 @@ BasicModal {
     }
 
     readonly property bool is_erc20: input_type.currentText === "ERC-20"
+    readonly property bool is_qrc20: input_type.currentText === "QRC-20"
+    readonly property bool has_contract_address: is_erc20 || is_qrc20
 
     // Type page
     ModalContent {
@@ -68,13 +70,24 @@ BasicModal {
 
     // Ticker page
     ModalContent {
-        title: API.get().settings_pg.empty_string + (qsTr("Choose the coin ticker"))
+        title: API.get().settings_pg.empty_string + (has_contract_address ? qsTr("Enter the contract address") : qsTr("Choose the coin ticker"))
 
         TextFieldWithTitle {
             id: input_ticker
+            enabled: !has_contract_address
+            visible: enabled
             Layout.fillWidth: true
             title: API.get().settings_pg.empty_string + (qsTr("Ticker"))
             field.placeholderText: API.get().settings_pg.empty_string + (qsTr("Enter the ticker"))
+        }
+
+        AddressFieldWithTitle {
+            id: input_contract_address
+            enabled: has_contract_address
+            visible: enabled
+            Layout.fillWidth: true
+            title: API.get().settings_pg.empty_string + (qsTr("Contract Address"))
+            field.placeholderText: API.get().settings_pg.empty_string + (qsTr("Enter the contract address"))
         }
 
         // Buttons
@@ -88,7 +101,8 @@ BasicModal {
             PrimaryButton {
                 text: API.get().settings_pg.empty_string + (qsTr("Next"))
                 Layout.fillWidth: true
-                enabled: input_ticker.field.text !== ""
+                enabled: (!input_ticker.enabled || input_ticker.field.text !== "") &&
+                         (!input_contract_address.enabled || input_contract_address.field.text !== "")
                 onClicked: root.nextPage()
             }
         ]
@@ -152,26 +166,25 @@ BasicModal {
     ModalContent {
         title: API.get().settings_pg.empty_string + (qsTr("Configuration"))
 
+        DefaultText {
+            visible: has_contract_address
+            Layout.fillWidth: true
+            text_value: API.get().settings_pg.empty_string + (qsTr("All configuration fields will be fetched using the contract address you provided."))
+        }
+
         TextFieldWithTitle {
             id: input_name
+            enabled: !has_contract_address
             visible: enabled
-            enabled: !is_erc20
             Layout.fillWidth: true
             title: API.get().settings_pg.empty_string + (qsTr("Name"))
             field.placeholderText: API.get().settings_pg.empty_string + (qsTr("Enter the name"))
         }
 
-        AddressFieldWithTitle {
-            id: input_contract_address
-            Layout.fillWidth: true
-            title: API.get().settings_pg.empty_string + (qsTr("Contract Address"))
-            field.placeholderText: API.get().settings_pg.empty_string + (qsTr("Enter the contract address"))
-        }
-
         TextFieldWithTitle {
             id: input_coinpaprika_id
+            enabled: !has_contract_address
             visible: enabled
-            enabled: !is_erc20
             Layout.fillWidth: true
             title: API.get().settings_pg.empty_string + (qsTr("Coinpaprika ID"))
             field.placeholderText: API.get().settings_pg.empty_string + (qsTr("Enter the Coinpaprika ID"))
@@ -180,8 +193,8 @@ BasicModal {
 
         DefaultCheckBox {
             id: input_active
+            enabled: !has_contract_address
             visible: enabled
-            enabled: !is_erc20
             text: API.get().settings_pg.empty_string + (qsTr("Active"))
         }
 
@@ -197,7 +210,6 @@ BasicModal {
                 text: API.get().settings_pg.empty_string + (qsTr("Preview"))
                 Layout.fillWidth: true
                 enabled: (!input_name.enabled || input_name.field.text !== "") &&
-                         (!input_contract_address.enabled || input_contract_address.field.text !== "") &&
                          (!input_coinpaprika_id.enabled || input_coinpaprika_id.field.text !== "")
                 onClicked: {
                     prepareConfigs()
