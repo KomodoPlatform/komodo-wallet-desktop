@@ -148,12 +148,16 @@ Item {
 
                             acceptedButtons: Qt.LeftButton | Qt.RightButton
                             onClicked: {
+                                if(!can_change_ticker) return
+
                                 if (mouse.button === Qt.RightButton) context_menu.popup()
                                 else api_wallet_page.ticker = ticker
 
                                 main.send_modal.reset()
                             }
                             onPressAndHold: {
+                                if(!can_change_ticker) return
+
                                 if (mouse.source === Qt.MouseEventNotSynthesized) context_menu.popup()
                             }
                         }
