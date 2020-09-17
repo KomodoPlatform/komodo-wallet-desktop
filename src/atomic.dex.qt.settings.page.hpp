@@ -81,6 +81,7 @@ namespace atomic_dex
         Q_INVOKABLE [[nodiscard]] bool         is_this_ticker_present_in_raw_cfg(const QString& ticker) const noexcept;
         Q_INVOKABLE [[nodiscard]] bool         is_this_ticker_present_in_normal_cfg(const QString& ticker) const noexcept;
         Q_INVOKABLE [[nodiscard]] QVariantList get_custom_coins() const noexcept;
+        Q_INVOKABLE [[nodiscard]] QString      get_custom_coins_icons_path() const noexcept;
 
       signals:
         void onLangChanged();

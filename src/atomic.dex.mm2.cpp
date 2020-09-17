@@ -757,7 +757,8 @@ namespace atomic_dex
         _putenv(env_mm2.str().c_str());
         spdlog::debug("env: {}", std::getenv("MM_CONF_PATH"));
 #else
-        options.environment = std::unordered_map<std::string, std::string>{{"MM_CONF_PATH", mm2_cfg_path.string()}};
+        options.environment =
+            std::unordered_map<std::string, std::string>{{"MM_CONF_PATH", mm2_cfg_path.string()}, {"MM_LOG", get_mm2_atomic_dex_current_log_file().string()}};
 #endif
         options.working_directory = strdup(tools_path.string().c_str());
 

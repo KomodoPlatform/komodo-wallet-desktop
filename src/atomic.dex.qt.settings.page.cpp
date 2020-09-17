@@ -26,6 +26,7 @@
 #include "atomic.dex.mm2.hpp"
 #include "atomic.dex.qt.bindings.hpp"
 #include "atomic.dex.qt.settings.page.hpp"
+#include "atomic.dex.utilities.hpp"
 
 //! Constructo destructor
 namespace atomic_dex
@@ -229,5 +230,11 @@ namespace atomic_dex
     {
         auto coins = m_system_manager.get_system<mm2>().get_custom_coins();
         return to_qt_binding(std::move(coins));
+    }
+
+    QString
+    settings_page::get_custom_coins_icons_path() const noexcept
+    {
+        return QString::fromStdString(get_runtime_coins_path().string());
     }
 } // namespace atomic_dex
