@@ -17,16 +17,23 @@ BasicModal {
 
     property var config_fields: ({})
 
+
     function prepareConfigs() {
-        config_fields = {
-             type: input_type.currentText,
-             ticker: input_ticker.field.text.toUpperCase(),
-             image_path: input_logo.path,
-             name: input_name.field.text,
-             contract_address: input_contract_address.field.text,
-             active: input_active.checked,
-             coinpaprika_id : input_coinpaprika_id.field.text
+        var fields = {}
+
+        const addToConfig = (input_component, key, value) => {
+            if(input_component.enabled) fields[key] = value
         }
+
+        addToConfig(input_type,             "type",             input_type.currentText)
+        addToConfig(input_ticker,           "ticker",           input_ticker.field.text.toUpperCase())
+        addToConfig(input_logo,             "image_path",       input_logo.path)
+        addToConfig(input_name,             "name",             input_name.field.text)
+        addToConfig(input_contract_address, "contract_address", input_contract_address.field.text)
+        addToConfig(input_active,           "active",           input_active.checked)
+        addToConfig(input_coinpaprika_id,   "coinpaprika_id",   input_coinpaprika_id.field.text)
+
+        root.config_fields = fields
     }
 
     readonly property bool is_erc20: input_type.currentText === "ERC-20"
@@ -100,9 +107,10 @@ BasicModal {
         FileDialog {
             id: input_logo
             readonly property string path: input_logo.fileUrl.toString()
+            readonly property bool enabled: true // Config preparation function searches for this
 
             title: API.get().settings_pg.empty_string + (qsTr("Please choose the coin logo"))
-            folder: shortcuts.home
+            folder: shortcuts.pictures
             selectMultiple: false
             onAccepted: {
                 console.log("Image chosen: " + input_logo.path)
@@ -146,7 +154,8 @@ BasicModal {
 
         TextFieldWithTitle {
             id: input_name
-            visible: !is_erc20
+            visible: enabled
+            enabled: !is_erc20
             Layout.fillWidth: true
             title: API.get().settings_pg.empty_string + (qsTr("Name"))
             field.placeholderText: API.get().settings_pg.empty_string + (qsTr("Enter the name"))
@@ -161,7 +170,8 @@ BasicModal {
 
         TextFieldWithTitle {
             id: input_coinpaprika_id
-            visible: !is_erc20
+            visible: enabled
+            enabled: !is_erc20
             Layout.fillWidth: true
             title: API.get().settings_pg.empty_string + (qsTr("Coinpaprika ID"))
             field.placeholderText: API.get().settings_pg.empty_string + (qsTr("Enter the Coinpaprika ID"))
@@ -170,7 +180,8 @@ BasicModal {
 
         DefaultCheckBox {
             id: input_active
-            visible: !is_erc20
+            visible: enabled
+            enabled: !is_erc20
             text: API.get().settings_pg.empty_string + (qsTr("Active"))
         }
 
@@ -185,9 +196,9 @@ BasicModal {
             PrimaryButton {
                 text: API.get().settings_pg.empty_string + (qsTr("Preview"))
                 Layout.fillWidth: true
-                enabled: (!input_name.visible || input_name.field.text !== "") &&
-                         (!input_contract_address.visible || input_contract_address.field.text !== "") &&
-                         (!input_coinpaprika_id.visible || input_coinpaprika_id.field.text !== "")
+                enabled: (!input_name.enabled || input_name.field.text !== "") &&
+                         (!input_contract_address.enabled || input_contract_address.field.text !== "") &&
+                         (!input_coinpaprika_id.enabled || input_coinpaprika_id.field.text !== "")
                 onClicked: {
                     prepareConfigs()
                     root.nextPage()
