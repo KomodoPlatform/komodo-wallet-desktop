@@ -43,18 +43,18 @@ Item {
                 Layout.leftMargin: 30
                 Layout.rightMargin: Layout.leftMargin
 
-                field.model: fiats
+                model: fiats
 
                 property bool initialized: false
-                field.onCurrentIndexChanged: {
+                onCurrentIndexChanged: {
                     if(initialized) {
-                        const new_fiat = fiats[field.currentIndex]
+                        const new_fiat = fiats[currentIndex]
                         API.get().settings_pg.current_fiat = new_fiat
                         API.get().settings_pg.current_currency = new_fiat
                     }
                 }
                 Component.onCompleted: {
-                    field.currentIndex = field.model.indexOf(API.get().settings_pg.current_fiat)
+                    currentIndex = model.indexOf(API.get().settings_pg.current_fiat)
                     initialized = true
                 }
             }
