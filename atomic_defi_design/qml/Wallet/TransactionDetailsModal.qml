@@ -91,10 +91,11 @@ BasicModal {
                         details.transaction_note
 
 
+            property string prev_text: ""
             field.onTextChanged: {
-                const max_length = 500
-                if(text.length > max_length)
-                    text = text.substring(0, max_length)
+                if(field.text.length > 500)
+                    field.text = prev_text
+                else prev_text = field.text
             }
 
             onSaved: details.transaction_note = field.text
