@@ -101,6 +101,18 @@ Item {
                 id: recover_seed_modal
             }
 
+            DefaultButton {
+                Layout.fillWidth: true
+                Layout.leftMargin: combo_fiat.Layout.leftMargin
+                Layout.rightMargin: Layout.leftMargin
+                text: API.get().settings_pg.empty_string + (qsTr("Add a Custom Coin"))
+                onClicked: add_custom_coin_modal.open()
+            }
+
+            AddCustomCoinModal {
+                id: add_custom_coin_modal
+            }
+
             HorizontalLine {
                 Layout.fillWidth: true
                 Layout.leftMargin: combo_fiat.Layout.leftMargin

@@ -213,6 +213,7 @@
         <file>atomic_defi_design/qml/Settings/RecoverSeedModal.qml</file>
         <file>atomic_defi_design/qml/Settings/DeleteWalletModal.qml</file>
         <file>atomic_defi_design/qml/Settings/CamouflagePasswordModal.qml</file>
+        <file>atomic_defi_design/qml/Settings/AddCustomCoinModal.qml</file>
         <file>atomic_defi_design/qml/Settings/Languages.qml</file>
         <file>atomic_defi_design/qml/Support/Support.qml</file>
         <file>atomic_defi_design/qml/Support/FAQLine.qml</file>
