@@ -9,6 +9,7 @@ ColumnLayout {
     property alias field: input_field
     property alias model: input_field.model
     property alias currentIndex: input_field.currentIndex
+    property alias currentText: input_field.currentText
 
     DefaultText {
         id: title_text
