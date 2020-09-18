@@ -177,7 +177,7 @@ BasicModal {
                 console.log("Image choice canceled")
             }
 
-            nameFilters: ["Image files (*.jpg *.png)"]
+            nameFilters: ["Image files (*.png)"]//["Image files (*.jpg *.png)"]
         }
 
         DefaultImage {
