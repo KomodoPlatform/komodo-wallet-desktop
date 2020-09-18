@@ -138,8 +138,7 @@ QtObject {
     readonly property string colorGradientLine1:  dark_theme ? "#00FFFFFF" : "#00CFD4DB"
     readonly property string colorGradientLine2:  dark_theme ? "#0FFFFFFF" : "#FFCFD4DB"
 
-    readonly property string colorWalletsHighlightGradient1:  dark_theme ? "#801B5E7D" : "#801B5E7D"
-    readonly property string colorWalletsHighlightGradient2:  dark_theme ? "#001B5E7D" : "#001B5E7D"
+    readonly property string colorWalletsHighlightGradient:  dark_theme ? "#1B5E7D" : "#1B5E7D"
     readonly property string colorWalletsSidebarDropShadow:  dark_theme ? "#B0000000" : "#BECDE2"
 
     readonly property string colorScrollbar:  dark_theme ? "#202339" : "#C4CCDA"
