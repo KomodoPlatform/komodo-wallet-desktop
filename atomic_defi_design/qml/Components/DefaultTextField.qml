@@ -12,6 +12,8 @@ TextField {
 
     font.family: Style.font_family
     placeholderTextColor: Style.colorPlaceholderText
+    Behavior on color { ColorAnimation { duration: Style.animationDuration } }
+    Behavior on placeholderTextColor { ColorAnimation { duration: Style.animationDuration } }
 
     // Right click Context Menu
     selectByMouse: true

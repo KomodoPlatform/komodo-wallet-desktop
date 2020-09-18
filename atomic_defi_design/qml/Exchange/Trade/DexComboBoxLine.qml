@@ -12,7 +12,8 @@ RowLayout {
 
     property int padding: 0
     property var details
-    readonly property color color: Style.getCoinColor(details.ticker)
+    property color color: Style.getCoinColor(details.ticker)
+    Behavior on color { ColorAnimation { duration: Style.animationDuration } }
 
     DefaultImage {
         id: icon

@@ -275,7 +275,8 @@ Item {
         // Horizontal line
         Canvas {
             id: horizontal_line
-            readonly property color color: series.last_value_green ? Style.colorGreen : Style.colorRed
+            property color color: series.last_value_green ? Style.colorGreen : Style.colorRed
+            Behavior on color { ColorAnimation { duration: Style.animationDuration } }
             onColorChanged: requestPaint()
 
             anchors.left: parent.left

@@ -13,6 +13,8 @@ ComboBox {
 
     property color lineHoverColor: Style.colorTheme5
     property color mainBorderColor: control.pressed ? Style.colorTheme8 : Style.colorTheme5
+    Behavior on lineHoverColor { ColorAnimation { duration: Style.animationDuration } }
+    Behavior on mainBorderColor { ColorAnimation { duration: Style.animationDuration } }
 
     property string mainLineText: control.displayText
     property var dropdownLineText: m => textRole === "" ? m.modelData : m.modelData[textRole]

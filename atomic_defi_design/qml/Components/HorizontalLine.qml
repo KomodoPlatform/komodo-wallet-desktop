@@ -5,7 +5,7 @@ import QtQuick.Controls 2.12
 import QtGraphicalEffects 1.0
 import "../Constants"
 
-Rectangle {
+AnimatedRectangle {
     height: 2
     property bool light: false
 
