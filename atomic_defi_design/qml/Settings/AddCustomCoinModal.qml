@@ -336,10 +336,12 @@ BasicModal {
             },
 
             PrimaryButton {
-                text: API.get().settings_pg.empty_string + (qsTr("Submit"))
+                text: API.get().settings_pg.empty_string + (qsTr("Submit & Restart"))
                 Layout.fillWidth: true
                 onClicked: {
-                    root.nextPage()
+                    API.get().settings_pg.submit()
+                    API.get().restart()
+                    //root.nextPage()
                 }
             }
         ]
