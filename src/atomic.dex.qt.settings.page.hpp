@@ -93,6 +93,7 @@ namespace atomic_dex
         Q_INVOKABLE [[nodiscard]] QVariantList get_custom_coins() const noexcept;
         Q_INVOKABLE [[nodiscard]] QString      get_custom_coins_icons_path() const noexcept;
         Q_INVOKABLE void process_erc_20_token_add(const QString& contract_address, const QString& coinpaprika_id, const QString& icon_filepath);
+        Q_INVOKABLE void submit();
 
       signals:
         void onLangChanged();
