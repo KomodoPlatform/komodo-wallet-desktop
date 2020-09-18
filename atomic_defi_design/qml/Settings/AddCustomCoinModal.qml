@@ -227,8 +227,6 @@ BasicModal {
 
         TextFieldWithTitle {
             id: input_coinpaprika_id
-            enabled: !has_contract_address
-            visible: enabled
             Layout.fillWidth: true
             title: API.app.settings_pg.empty_string + (qsTr("Coinpaprika ID"))
             field.placeholderText: API.app.settings_pg.empty_string + (qsTr("Enter the Coinpaprika ID"))
