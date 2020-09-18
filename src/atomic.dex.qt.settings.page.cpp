@@ -26,6 +26,7 @@
 #include "atomic.dex.mm2.hpp"
 #include "atomic.dex.qt.bindings.hpp"
 #include "atomic.dex.qt.settings.page.hpp"
+#include "atomic.dex.qt.utilities.hpp"
 #include "atomic.dex.utilities.hpp"
 
 //! Constructo destructor
@@ -241,6 +242,7 @@ namespace atomic_dex
     void
     settings_page::process_erc_20_token_add(const QString& contract_address, const QString& coinpaprika_id, const QString& icon_filepath)
     {
+        this->set_fetching_erc_data_busy(true);
         using namespace std::string_literals;
         std::string url            = "/api/v1/erc_infos/"s + contract_address.toStdString();
         auto        answer_functor = [this, contract_address, coinpaprika_id, icon_filepath](web::http::http_response resp) {
@@ -290,7 +292,39 @@ namespace atomic_dex
                 out["error_code"]    = resp.status_code();
             }
             spdlog::trace("result json of fetch erc infos from contract address is: {}", out.dump(4));
+            this->set_custom_erc_token_data(nlohmann_json_object_to_qt_json_object(out));
+            this->set_fetching_erc_data_busy(false);
         };
         ::mm2::api::async_process_rpc_get("erc_infos", url).then(answer_functor).then(&handle_exception_pplx_task);
+    }
+
+    bool
+    settings_page::is_fetching_erc_data_busy() const noexcept
+    {
+        return m_fetching_erc_data_busy.load();
+    }
+
+    void
+    settings_page::set_fetching_erc_data_busy(bool status) noexcept
+    {
+        if (m_fetching_erc_data_busy != status)
+        {
+            m_fetching_erc_data_busy = status;
+            emit ercDataStatusChanged();
+        }
+    }
+
+    QVariant
+    settings_page::get_custom_erc_token_data() const noexcept
+    {
+        return nlohmann_json_object_to_qt_json_object(m_custom_erc_token_data.get());
+    }
+
+    void
+    settings_page::set_custom_erc_token_data(QVariant rpc_data) noexcept
+    {
+        nlohmann::json out      = nlohmann::json::parse(QString(rpc_data.toJsonDocument().toJson()).toStdString());
+        m_custom_erc_token_data = out;
+        emit customErcTokenDataChanged();
     }
 } // namespace atomic_dex
