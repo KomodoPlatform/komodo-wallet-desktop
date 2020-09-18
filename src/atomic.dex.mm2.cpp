@@ -1385,7 +1385,8 @@ namespace atomic_dex
     mm2::add_new_coin(const nlohmann::json& coin_cfg_json, const nlohmann::json& raw_coin_cfg_json) noexcept
     {
         //! Normal cfg part
-        if (not coin_cfg_json.empty() && not is_this_ticker_present_in_normal_cfg(coin_cfg_json.at("coin").get<std::string>()))
+        spdlog::trace("[{}], [{}]", coin_cfg_json.dump(4), raw_coin_cfg_json.dump(4));
+        if (not coin_cfg_json.empty() && not is_this_ticker_present_in_normal_cfg(coin_cfg_json.begin().key()))
         {
             spdlog::trace("Adding entry : {} to adex current wallet coins file", coin_cfg_json.dump(4));
             fs::path       cfg_path = get_atomic_dex_config_folder();
@@ -1398,7 +1399,9 @@ namespace atomic_dex
             ifs >> config_json_data;
 
             //! Modify contents
-            config_json_data.push_back(coin_cfg_json);
+            //config_json_data
+            config_json_data[coin_cfg_json.begin().key()] = coin_cfg_json.at(coin_cfg_json.begin().key());
+            //config_json_data.push_back(coin_cfg_json);
 
             //! Close
             ifs.close();
