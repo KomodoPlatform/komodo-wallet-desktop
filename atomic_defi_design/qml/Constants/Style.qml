@@ -13,6 +13,9 @@ QtObject {
     readonly property string successCharacter:  "✓"
     readonly property string failureCharacter:  "✘"
 
+
+    readonly property int animationDuration: 125
+
     readonly property int materialElevation: 5
 
     readonly property int textSizeVerySmall1: 1
@@ -58,6 +61,15 @@ QtObject {
     readonly property double hoverOpacity: 0.6
 
     property bool dark_theme: true
+
+
+    function applyOpacity(hex, opacity="00") {
+        return "#" + opacity + hex.substr(hex.length - 6)
+    }
+
+    function colorOnlyIf(condition, color) {
+        return applyOpacity(color, condition ? "FF" : "00")
+    }
 
     readonly property string sidebar_atomicdex_logo: dark_theme ? "atomicdex-logo.svg" : "atomicdex-logo-dark.svg"
     readonly property string colorRed: dark_theme ? "#D13990" : "#D13990"

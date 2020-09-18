@@ -114,7 +114,7 @@ Item {
             }
         }
 
-        Behavior on y { SmoothedAnimation { duration: 175; velocity: -1 } }
+        Behavior on y { SmoothedAnimation { duration: Style.animationDuration; velocity: -1 } }
     }
 
     // Content
