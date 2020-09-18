@@ -257,7 +257,7 @@ namespace atomic_dex
                 std::string     ticker    = body_json.at("symbol").get<std::string>();
                 const fs::path& suffix    = fs::path(icon_filepath.toStdString()).extension();
                 fs::copy_file(
-                    icon_filepath.toStdString(), fs::path(get_custom_coins_icons_path().toStdString()) / (ticker + suffix.string()),
+                    icon_filepath.toStdString(), fs::path(get_custom_coins_icons_path().toStdString()) / (boost::algorithm::to_lower_copy(ticker) + suffix.string()),
                     fs::copy_option::overwrite_if_exists);
                 if (not is_this_ticker_present_in_raw_cfg(QString::fromStdString(ticker)))
                 {
