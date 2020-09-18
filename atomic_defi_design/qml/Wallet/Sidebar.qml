@@ -135,8 +135,8 @@ Item {
                         height: 44
                         radius: Style.rectangleCornerRadius
 
-                        start_color: api_wallet_page.ticker === ticker ? Style.colorCoinListHighlightGradient1 : mouse_area.containsMouse ? Style.colorCoinListHighlightGradient1 : "transparent"
-                        end_color: api_wallet_page.ticker === ticker ? Style.colorCoinListHighlightGradient2 : mouse_area.containsMouse ? Style.colorWhite8 : "transparent"
+                        start_color: Style.applyOpacity(Style.colorCoinListHighlightGradient)
+                        end_color: api_wallet_page.ticker === ticker ? Style.colorCoinListHighlightGradient : mouse_area.containsMouse ? Style.colorWhite8 : start_color
 
                         // Click area
                         MouseArea {
