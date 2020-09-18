@@ -168,6 +168,7 @@
         <file>atomic_defi_design/qml/Components/DefaultScrollBar.qml</file>
         <file>atomic_defi_design/qml/Components/DefaultText.qml</file>
         <file>atomic_defi_design/qml/Components/DefaultTextEdit.qml</file>
+        <file>atomic_defi_design/qml/Components/DefaultColorOverlay.qml</file>
         <file>atomic_defi_design/qml/Components/DefaultTextField.qml</file>
         <file>atomic_defi_design/qml/Components/DefaultTextArea.qml</file>
         <file>atomic_defi_design/qml/Components/DefaultListView.qml</file>
