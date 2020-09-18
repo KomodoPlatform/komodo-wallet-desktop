@@ -263,7 +263,7 @@ ColumnLayout {
                             id: address_list
 
                             model: modelData
-                            delegate: Rectangle {
+                            delegate: AnimatedRectangle {
                                 id: address_line
 
                                 property bool initialized: false
@@ -318,7 +318,6 @@ ColumnLayout {
 
 
                                 color: Style.colorOnlyIf(mouse_area.containsMouse, Style.colorTheme6)
-                                Behavior on color { ColorAnimation { duration: Style.animationDuration } }
 
                                 MouseArea {
                                     id: mouse_area

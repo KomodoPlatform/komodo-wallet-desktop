@@ -4,7 +4,7 @@ import QtQuick.Controls 2.12
 import QtGraphicalEffects 1.0
 import "../Constants"
 
-Rectangle {
+AnimatedRectangle {
     id: circle
 
     width: 10

@@ -137,6 +137,7 @@
         <file>atomic_defi_design/qml/Sidebar/SidebarCenter.qml</file>
         <file>atomic_defi_design/qml/Sidebar/SidebarBottom.qml</file>
         <file>atomic_defi_design/qml/Sidebar/SidebarLine.qml</file>
+        <file>atomic_defi_design/qml/Components/AnimatedRectangle.qml</file>
         <file>atomic_defi_design/qml/Components/Arrow.qml</file>
         <file>atomic_defi_design/qml/Components/EulaModal.qml</file>
         <file>atomic_defi_design/qml/Components/Toast.qml</file>

@@ -14,7 +14,6 @@ Circle {
     Layout.preferredHeight: Layout.preferredWidth
 
     color: Style.colorOnlyIf(mouse_area.containsMouse, Style.colorTheme4)
-    Behavior on color { ColorAnimation { duration: Style.animationDuration } }
 
     radius: 100
 

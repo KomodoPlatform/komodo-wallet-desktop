@@ -6,13 +6,12 @@ import QtGraphicalEffects 1.0
 import "../Components"
 import "../Constants"
 
-Rectangle {
+AnimatedRectangle {
     property var details
     width: list.width
     height: 175
 
     color: Style.colorOnlyIf(mouse_area.containsMouse, Style.colorTheme8)
-    Behavior on color { ColorAnimation { duration: Style.animationDuration } }
 
     MouseArea {
         id: mouse_area
