@@ -75,8 +75,8 @@ SetupPage {
                     model: wallets
 
                     delegate: GradientRectangle {
-                        start_color: mouse_area.containsMouse ? Style.colorWalletsHighlightGradient1 : "transparent"
-                        end_color: mouse_area.containsMouse ? Style.colorWalletsHighlightGradient2 : "transparent"
+                        start_color: Style.applyOpacity(Style.colorWalletsHighlightGradient, mouse_area.containsMouse ? "80" : "00")
+                        end_color:  Style.applyOpacity(Style.colorWalletsHighlightGradient)
 
                         width: bg.width
                         height: bg.row_height
