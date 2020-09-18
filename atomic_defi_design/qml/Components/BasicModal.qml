@@ -47,7 +47,7 @@ DefaultModal {
                     property color color: root.currentIndex >= (root.count-1 - index) ? Style.colorGreen : Style.colorTheme5
                     width: (index === root.count-1 ? 0 : circle.width*2) + circle.width*0.5
                     height: circle.height * 1.5
-                    AnimatedRectangle {
+                    InnerBackground {
                         id: rectangle
                         height: circle.height/4
                         anchors.left: parent.left
@@ -57,9 +57,10 @@ DefaultModal {
                         color: bundle.color
                     }
 
-                    Circle {
+                    FloatingBackground {
                         id: circle
                         width: 24
+                        height: width
                         anchors.right: parent.right
                         anchors.verticalCenter: parent.verticalCenter
                         color: bundle.color
