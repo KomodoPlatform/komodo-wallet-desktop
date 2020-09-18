@@ -9,7 +9,6 @@ import "../Constants"
 DefaultButton {
     width: 45
     height: width
-    radius: 100
 
     text: "+"
     font.pixelSize: width * 0.65

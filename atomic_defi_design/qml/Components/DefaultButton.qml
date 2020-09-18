@@ -29,10 +29,7 @@ FloatingBackground {
     implicitWidth: Math.max(minWidth, text_obj.width + 20 + Math.abs(text_offset))
     implicitHeight: text_obj.height * 2.5
 
-    radius: 100
-
     color: !enabled ? colorDisabled : mouse_area.containsMouse ? colorHovered : colorEnabled
-    border.width: 0
 
     DefaultText {
         id: text_obj

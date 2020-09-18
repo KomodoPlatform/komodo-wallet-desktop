@@ -14,6 +14,7 @@ Circle {
     Layout.preferredHeight: Layout.preferredWidth
 
     color: mouse_area.containsMouse ? Style.colorTheme4 : "transparent"
+    radius: 100
 
     DefaultImage {
         id: icon

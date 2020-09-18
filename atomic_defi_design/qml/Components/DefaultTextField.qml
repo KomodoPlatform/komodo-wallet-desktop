@@ -17,9 +17,7 @@ TextField {
     selectByMouse: true
     persistentSelection: true
 
-    background: InnerBackground {
-        radius: 100
-    }
+    background: InnerBackground { }
 
     leftPadding: Math.max(0, left_text.width + 20)
     rightPadding: Math.max(0, right_text.width + 20)

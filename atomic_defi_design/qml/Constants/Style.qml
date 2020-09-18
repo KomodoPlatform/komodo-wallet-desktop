@@ -47,7 +47,7 @@ QtObject {
     readonly property int textSize11: 132
     readonly property int textSize12: 144
 
-    readonly property int rectangleCornerRadius: 11
+    readonly property int rectangleCornerRadius: 7
     readonly property int itemPadding: 12
     readonly property int buttonSpacing: 12
     readonly property int rowSpacing: 12

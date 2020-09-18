@@ -308,7 +308,6 @@ Item {
 
                                 verticalShadow: true
                                 width: 28; height: 28
-                                radius: 100
 
                                 content: DefaultImage {
                                     source: General.image_path + "shadowed_circle_green.svg"
@@ -333,7 +332,6 @@ Item {
                             FloatingBackground {
                                 verticalShadow: left_circle.verticalShadow
                                 width: left_circle.width; height: left_circle.height
-                                radius: 100
 
                                 content: DefaultImage {
                                     source: General.image_path + "shadowed_circle_blue.svg"
