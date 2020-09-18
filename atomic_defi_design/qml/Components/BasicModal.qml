@@ -60,7 +60,7 @@ DefaultModal {
                         width: 24
                         anchors.right: parent.right
                         anchors.verticalCenter: parent.verticalCenter
-                        color: root.currentIndex >= (root.count-1 - index) ? Style.colorGreen : Style.colorTextDisabled
+                        color: root.currentIndex >= (root.count-1 - index) ? Style.colorGreen : Style.colorTheme5
                     }
                 }
             }
