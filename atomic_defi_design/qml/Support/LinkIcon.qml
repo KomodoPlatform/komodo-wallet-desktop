@@ -13,7 +13,9 @@ Circle {
     Layout.preferredWidth: 60
     Layout.preferredHeight: Layout.preferredWidth
 
-    color: mouse_area.containsMouse ? Style.colorTheme4 : "transparent"
+    color: Style.colorOnlyIf(mouse_area.containsMouse, Style.colorTheme4)
+    Behavior on color { ColorAnimation { duration: Style.animationDuration } }
+
     radius: 100
 
     DefaultImage {
