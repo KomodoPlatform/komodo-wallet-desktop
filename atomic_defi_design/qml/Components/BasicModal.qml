@@ -33,17 +33,37 @@ DefaultModal {
         width: parent.width
         anchors.horizontalCenter: parent.horizontalCenter
 
-        DefaultText {
+        Row {
             id: page_indicator
             visible: root.count > 1
-            text_value: API.get().settings_pg.empty_string + (qsTr("Page") + " " + (root.currentIndex + 1) + " / " + root.count)
             anchors.horizontalCenter: parent.horizontalCenter
-        }
 
-        HorizontalLine {
-            id: horizontal_line
-            visible: page_indicator.visible
-            width: parent.width
+            layoutDirection: Qt.RightToLeft
+
+            Repeater {
+                model: root.count
+                delegate: Item {
+                    width: (index === root.count-1 ? 0 : circle.width*2) + circle.width*0.5
+                    height: circle.height * 1.5
+                    Rectangle {
+                        id: rectangle
+                        height: circle.height/4
+                        anchors.left: parent.left
+                        anchors.verticalCenter: parent.verticalCenter
+                        anchors.leftMargin: -circle.width*0.5
+                        anchors.right: circle.horizontalCenter
+                        color: circle.color
+                    }
+
+                    Circle {
+                        id: circle
+                        width: 24
+                        anchors.right: parent.right
+                        anchors.verticalCenter: parent.verticalCenter
+                        color: root.currentIndex >= (root.count-1 - index) ? Style.colorGreen : Style.colorTheme5
+                    }
+                }
+            }
         }
 
         // Inside modal

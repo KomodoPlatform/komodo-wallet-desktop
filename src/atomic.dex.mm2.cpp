@@ -1385,8 +1385,9 @@ namespace atomic_dex
     mm2::add_new_coin(const nlohmann::json& coin_cfg_json, const nlohmann::json& raw_coin_cfg_json) noexcept
     {
         //! Normal cfg part
-        if (not coin_cfg_json.empty() && is_this_ticker_present_in_normal_cfg(coin_cfg_json.at("coin").get<std::string>()))
+        if (not coin_cfg_json.empty() && not is_this_ticker_present_in_normal_cfg(coin_cfg_json.at("coin").get<std::string>()))
         {
+            spdlog::trace("Adding entry : {} to adex current wallet coins file", coin_cfg_json.dump(4));
             fs::path       cfg_path = get_atomic_dex_config_folder();
             std::string    filename = std::string(atomic_dex::get_raw_version()) + "-coins." + m_current_wallet_name + ".json";
             std::ifstream  ifs((cfg_path / filename).c_str());
@@ -1407,9 +1408,27 @@ namespace atomic_dex
             assert(ofs.is_open());
             ofs << config_json_data;
         }
-        if (not raw_coin_cfg_json.empty() && is_this_ticker_present_in_raw_cfg(raw_coin_cfg_json.at("coin").get<std::string>()))
+        if (not raw_coin_cfg_json.empty() && not is_this_ticker_present_in_raw_cfg(raw_coin_cfg_json.at("coin").get<std::string>()))
         {
-            //! TODO
+            fs::path mm2_cfg_path = ag::core::assets_real_path() / "tools/mm2/coins";
+            spdlog::trace("Adding entry : {} to mm2 coins file {}", raw_coin_cfg_json.dump(4), mm2_cfg_path.string());
+            std::ifstream  ifs(mm2_cfg_path.c_str());
+            nlohmann::json config_json_data;
+            assert(ifs.is_open());
+
+            //! Read Contents
+            ifs >> config_json_data;
+
+            //! Modify contents
+            config_json_data.push_back(coin_cfg_json);
+
+            //! Close
+            ifs.close();
+
+            //! Write contents
+            std::ofstream ofs(mm2_cfg_path.c_str(), std::ios::trunc);
+            assert(ofs.is_open());
+            ofs << config_json_data;
         }
     }
 

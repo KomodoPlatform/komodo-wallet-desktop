@@ -11,5 +11,5 @@ Rectangle {
     height: width
 
     color: Style.colorWhite1
-    radius: 100
+    radius: Style.rectangleCornerRadius
 }

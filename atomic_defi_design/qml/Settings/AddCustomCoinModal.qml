@@ -18,7 +18,33 @@ BasicModal {
     }
 
     property var config_fields: ({})
+    readonly property bool fetching_erc_data_busy: API.get().settings_pg.fetching_erc_data_busy
+    readonly property var custom_erc_token_data: API.get().settings_pg.custom_erc_token_data
 
+    function fetchAssetData() {
+        const fields = General.clone(config_fields)
+        if(fields.type === "ERC-20") {
+            console.log("Fetching asset data:", JSON.stringify(fields))
+            API.get().settings_pg.process_erc_20_token_add(fields.contract_address, fields.coinpaprika_id, fields.image_path)
+        }
+    }
+
+    onCustom_erc_token_dataChanged: {
+        const adex_cfg = custom_erc_token_data.adex_cfg
+        if(!adex_cfg) return
+
+        const ticker = Object.keys(adex_cfg)[0]
+        const token_data = adex_cfg[Object.keys(adex_cfg)[0]]
+
+        var fields = General.clone(config_fields)
+
+        fields.ticker = token_data.coin
+        fields.name = token_data.name
+
+        config_fields = General.clone(fields)
+
+        root.nextPage()
+    }
 
     function prepareConfigs() {
         var fields = {}
@@ -35,7 +61,7 @@ BasicModal {
         addToConfig(input_active,           "active",           input_active.checked)
         addToConfig(input_coinpaprika_id,   "coinpaprika_id",   input_coinpaprika_id.field.text)
 
-        root.config_fields = fields
+        root.config_fields = General.clone(fields)
     }
 
     function reset() {
@@ -54,7 +80,7 @@ BasicModal {
 
     // Type page
     ModalContent {
-        title: API.get().settings_pg.empty_string + (qsTr("Choose the coin type"))
+        title: API.get().settings_pg.empty_string + (qsTr("Choose the asset type"))
 
         ComboBoxWithTitle {
             id: input_type
@@ -85,7 +111,7 @@ BasicModal {
 
     // Ticker page
     ModalContent {
-        title: API.get().settings_pg.empty_string + (has_contract_address ? qsTr("Enter the contract address") : qsTr("Choose the coin ticker"))
+        title: API.get().settings_pg.empty_string + (has_contract_address ? qsTr("Enter the contract address") : qsTr("Choose the asset ticker"))
 
         TextFieldWithTitle {
             id: input_ticker
@@ -125,7 +151,7 @@ BasicModal {
 
     // Logo page
     ModalContent {
-        title: API.get().settings_pg.empty_string + (qsTr("Choose the coin logo"))
+        title: API.get().settings_pg.empty_string + (qsTr("Choose the asset logo"))
 
         DefaultButton {
             Layout.fillWidth: true
@@ -141,7 +167,7 @@ BasicModal {
 
             readonly property bool enabled: true // Config preparation function searches for this
 
-            title: API.get().settings_pg.empty_string + (qsTr("Please choose the coin logo"))
+            title: API.get().settings_pg.empty_string + (qsTr("Please choose the asset logo"))
             folder: shortcuts.pictures
             selectMultiple: false
             onAccepted: {
@@ -151,7 +177,7 @@ BasicModal {
                 console.log("Image choice canceled")
             }
 
-            nameFilters: ["Image files (*.jpg *.png)"]
+            nameFilters: ["Image files (*.png)"]//["Image files (*.jpg *.png)"]
         }
 
         DefaultImage {
@@ -215,6 +241,11 @@ BasicModal {
             text: API.get().settings_pg.empty_string + (qsTr("Active"))
         }
 
+        DefaultBusyIndicator {
+            visible: root.fetching_erc_data_busy
+            Layout.alignment: Qt.AlignCenter
+        }
+
         // Buttons
         footer: [
             DefaultButton {
@@ -226,11 +257,13 @@ BasicModal {
             PrimaryButton {
                 text: API.get().settings_pg.empty_string + (qsTr("Preview"))
                 Layout.fillWidth: true
-                enabled: (!input_name.enabled || input_name.field.text !== "") &&
+                enabled: ! root.fetching_erc_data_busy &&
+                         (!input_name.enabled || input_name.field.text !== "") &&
                          (!input_coinpaprika_id.enabled || input_coinpaprika_id.field.text !== "")
                 onClicked: {
-                    prepareConfigs()
-                    root.nextPage()
+                    root.prepareConfigs()
+                    root.fetchAssetData()
+                    // Fetch result will open the next page
                 }
             }
         ]
@@ -240,12 +273,31 @@ BasicModal {
     ModalContent {
         title: API.get().settings_pg.empty_string + (qsTr("Preview"))
 
+        DefaultText {
+            visible: has_contract_address
+            Layout.fillWidth: true
+            text_value: API.get().settings_pg.empty_string + (qsTr("WARNING: Application will restart immidiately to apply the changes!"))
+            color: Style.colorRed
+            horizontalAlignment: Text.AlignHCenter
+        }
+
+        HorizontalLine {
+            Layout.fillWidth: true
+        }
+
         DefaultImage {
             Layout.alignment: Qt.AlignHCenter
 
             Layout.preferredWidth: 64
             Layout.preferredHeight: Layout.preferredWidth
             source: input_logo.path
+        }
+
+        DefaultText {
+            Layout.alignment: Qt.AlignHCenter
+            visible: has_contract_address
+            text_value: API.get().settings_pg.empty_string + (config_fields.name + " (" + config_fields.ticker + ")")
+            font.pixelSize: Style.textSize2
         }
 
         HorizontalLine {
@@ -261,6 +313,20 @@ BasicModal {
             field.text: General.prettifyJSON(config_fields)
         }
 
+        HorizontalLine {
+            Layout.fillWidth: true
+        }
+
+        TextAreaWithTitle {
+            Layout.fillWidth: true
+            title: API.get().settings_pg.empty_string + (qsTr("Fetched Data"))
+            field.readOnly: true
+            remove_newline: false
+            copyable: true
+            field.text: General.prettifyJSON(custom_erc_token_data)
+        }
+
+
         // Buttons
         footer: [
             DefaultButton {
@@ -270,9 +336,13 @@ BasicModal {
             },
 
             PrimaryButton {
-                text: API.get().settings_pg.empty_string + (qsTr("Submit"))
+                text: API.get().settings_pg.empty_string + (qsTr("Submit & Restart"))
                 Layout.fillWidth: true
-                onClicked: root.nextPage()
+                onClicked: {
+                    API.get().settings_pg.submit()
+                    API.get().restart()
+                    //root.nextPage()
+                }
             }
         ]
     }
