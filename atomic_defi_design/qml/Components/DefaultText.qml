@@ -8,6 +8,8 @@ Text {
     property string text_value
     property bool privacy: false
 
+    Behavior on color { ColorAnimation { duration: Style.animationDuration } }
+
     font.family: Style.font_family
     font.pixelSize: Style.textSize
     color: Style.colorText
