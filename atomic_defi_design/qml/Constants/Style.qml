@@ -67,6 +67,10 @@ QtObject {
         return "#" + opacity + hex.substr(hex.length - 6)
     }
 
+    function colorOnlyIf(condition, color) {
+        return applyOpacity(color, condition ? "FF" : "00")
+    }
+
     readonly property string sidebar_atomicdex_logo: dark_theme ? "atomicdex-logo.svg" : "atomicdex-logo-dark.svg"
     readonly property string colorRed: dark_theme ? "#D13990" : "#D13990"
     readonly property string colorRed2:  dark_theme ? "#b61477" : "#b61477"
