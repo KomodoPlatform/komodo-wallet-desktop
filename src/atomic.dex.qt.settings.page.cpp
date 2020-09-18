@@ -257,7 +257,8 @@ namespace atomic_dex
                 std::string     ticker    = body_json.at("symbol").get<std::string>();
                 const fs::path& suffix    = fs::path(icon_filepath.toStdString()).extension();
                 fs::copy_file(
-                    icon_filepath.toStdString(), fs::path(get_custom_coins_icons_path().toStdString()) / (boost::algorithm::to_lower_copy(ticker) + suffix.string()),
+                    icon_filepath.toStdString(),
+                    fs::path(get_custom_coins_icons_path().toStdString()) / (boost::algorithm::to_lower_copy(ticker) + suffix.string()),
                     fs::copy_option::overwrite_if_exists);
                 if (not is_this_ticker_present_in_raw_cfg(QString::fromStdString(ticker)))
                 {
@@ -323,9 +324,16 @@ namespace atomic_dex
     void
     settings_page::set_custom_erc_token_data(QVariant rpc_data) noexcept
     {
-
         nlohmann::json out      = nlohmann::json::parse(QString(QJsonDocument(rpc_data.toJsonObject()).toJson()).toStdString());
         m_custom_erc_token_data = out;
         emit customErcTokenDataChanged();
+    }
+
+    void
+    settings_page::submit()
+    {
+        nlohmann::json out = m_custom_erc_token_data.get();
+        this->m_system_manager.get_system<mm2>().add_new_coin(out.at("adex_cfg"), out.at("mm2_cfg"));
+        this->set_custom_erc_token_data(QJsonObject{{}});
     }
 } // namespace atomic_dex
