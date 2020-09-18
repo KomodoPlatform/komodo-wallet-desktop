@@ -43,6 +43,8 @@ DefaultModal {
             Repeater {
                 model: root.count
                 delegate: Item {
+                    id: bundle
+                    property color color: root.currentIndex >= (root.count-1 - index) ? Style.colorGreen : Style.colorTheme5
                     width: (index === root.count-1 ? 0 : circle.width*2) + circle.width*0.5
                     height: circle.height * 1.5
                     AnimatedRectangle {
@@ -52,7 +54,7 @@ DefaultModal {
                         anchors.verticalCenter: parent.verticalCenter
                         anchors.leftMargin: -circle.width*0.5
                         anchors.right: circle.horizontalCenter
-                        color: circle.color
+                        color: bundle.color
                     }
 
                     Circle {
@@ -60,7 +62,7 @@ DefaultModal {
                         width: 24
                         anchors.right: parent.right
                         anchors.verticalCenter: parent.verticalCenter
-                        color: root.currentIndex >= (root.count-1 - index) ? Style.colorGreen : Style.colorTheme5
+                        color: bundle.color
                     }
                 }
             }
