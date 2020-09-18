@@ -38,6 +38,14 @@ BasicModal {
         root.config_fields = fields
     }
 
+    function submitConfig() {
+        const fields = General.clone(config_fields)
+        if(fields.type === "ERC-20") {
+            console.log("adding new coin:", JSON.stringify(fields))
+            API.get().settings_pg.process_erc_20_token_add(fields.contract_address, fields.coinpaprika_id, fields.image_path)
+        }
+    }
+
     function reset() {
         //input_type.currentIndex = 0 // Keep same type, user might wanna add multiple of same type
         input_ticker.field.text = ""
@@ -272,7 +280,10 @@ BasicModal {
             PrimaryButton {
                 text: API.get().settings_pg.empty_string + (qsTr("Submit"))
                 Layout.fillWidth: true
-                onClicked: root.nextPage()
+                onClicked: {
+                    root.submitConfig()
+                    root.nextPage()
+                }
             }
         ]
     }
