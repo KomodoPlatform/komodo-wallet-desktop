@@ -10,8 +10,12 @@ QtObject {
     readonly property string assets_path: Qt.resolvedUrl(".") + "../../assets/"
     readonly property string image_path: assets_path + "images/"
     readonly property string coin_icons_path: image_path + "coins/"
+    readonly property string custom_coin_icons_path: API.get().settings_pg.get_custom_coins_icons_path()
     function coinIcon(ticker) {
-        return ticker === "" ? "" : coin_icons_path + ticker.toLowerCase() + ".png"
+        if(ticker === "") return ""
+
+        const coin_info = API.get().get_coin_info(ticker)
+        return (coin_info.is_custom_coin ? custom_coin_icons_path : coin_icons_path) + ticker.toLowerCase() + ".png"
     }
 
     readonly property string cex_icon: 'ⓘ'
