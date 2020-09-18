@@ -365,6 +365,7 @@ namespace atomic_dex
                         std::size_t idx = 0;
                         for (auto&& answer: answers)
                         {
+                            spdlog::trace("{} -> answer {}", tickers_idx[idx], answer.dump(4));
                             if (answer.contains("balance"))
                             {
                                 this->process_balance_answer(answer);
@@ -433,6 +434,7 @@ namespace atomic_dex
     bool
     mm2::process_batch_enable_answer(const json& answer)
     {
+        spdlog::trace("ANSWER JSON -> {}", answer.dump(4));
         if (answer.count("coin") == 1)
         {
             auto        ticker          = answer.at("coin").get<std::string>();
@@ -1302,6 +1304,7 @@ namespace atomic_dex
     {
         t_balance_answer answer_r;
         ::mm2::api::from_json(answer, answer_r);
+        spdlog::trace("{} address = {}", answer_r.coin, answer_r.address);
         if (is_pin_cfg_enabled())
         {
             if (m_balance_informations.find(answer_r.coin) != m_balance_informations.end())
