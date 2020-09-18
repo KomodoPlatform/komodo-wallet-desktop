@@ -18,7 +18,20 @@ BasicModal {
     }
 
     property var config_fields: ({})
+    readonly property bool fetching_erc_data_busy: API.get().settings_pg.fetching_erc_data_busy
+    readonly property var custom_erc_token_data: API.get().settings_pg.custom_erc_token_data
 
+    function fetchCoinData() {
+        const fields = General.clone(config_fields)
+        if(fields.type === "ERC-20") {
+            console.log("Fetching coin data:", JSON.stringify(fields))
+            API.get().settings_pg.process_erc_20_token_add(fields.contract_address, fields.coinpaprika_id, fields.image_path)
+        }
+    }
+
+    onCustom_erc_token_dataChanged: {
+        root.nextPage()
+    }
 
     function prepareConfigs() {
         var fields = {}
@@ -36,14 +49,6 @@ BasicModal {
         addToConfig(input_coinpaprika_id,   "coinpaprika_id",   input_coinpaprika_id.field.text)
 
         root.config_fields = fields
-    }
-
-    function submitConfig() {
-        const fields = General.clone(config_fields)
-        if(fields.type === "ERC-20") {
-            console.log("adding new coin:", JSON.stringify(fields))
-            API.get().settings_pg.process_erc_20_token_add(fields.contract_address, fields.coinpaprika_id, fields.image_path)
-        }
     }
 
     function reset() {
@@ -223,6 +228,11 @@ BasicModal {
             text: API.get().settings_pg.empty_string + (qsTr("Active"))
         }
 
+        DefaultBusyIndicator {
+            visible: root.fetching_erc_data_busy
+            Layout.alignment: Qt.AlignCenter
+        }
+
         // Buttons
         footer: [
             DefaultButton {
@@ -234,11 +244,13 @@ BasicModal {
             PrimaryButton {
                 text: API.get().settings_pg.empty_string + (qsTr("Preview"))
                 Layout.fillWidth: true
-                enabled: (!input_name.enabled || input_name.field.text !== "") &&
+                enabled: ! root.fetching_erc_data_busy &&
+                         (!input_name.enabled || input_name.field.text !== "") &&
                          (!input_coinpaprika_id.enabled || input_coinpaprika_id.field.text !== "")
                 onClicked: {
-                    prepareConfigs()
-                    root.nextPage()
+                    root.prepareConfigs()
+                    root.fetchCoinData()
+                    // Fetch result will open the next page
                 }
             }
         ]
@@ -269,6 +281,20 @@ BasicModal {
             field.text: General.prettifyJSON(config_fields)
         }
 
+        HorizontalLine {
+            Layout.fillWidth: true
+        }
+
+        TextAreaWithTitle {
+            Layout.fillWidth: true
+            title: API.get().settings_pg.empty_string + (qsTr("Fetched Data"))
+            field.readOnly: true
+            remove_newline: false
+            copyable: true
+            field.text: General.prettifyJSON(custom_erc_token_data)
+        }
+
+
         // Buttons
         footer: [
             DefaultButton {
@@ -281,7 +307,6 @@ BasicModal {
                 text: API.get().settings_pg.empty_string + (qsTr("Submit"))
                 Layout.fillWidth: true
                 onClicked: {
-                    root.submitConfig()
                     root.nextPage()
                 }
             }
