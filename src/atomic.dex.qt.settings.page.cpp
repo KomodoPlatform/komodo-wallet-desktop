@@ -323,7 +323,8 @@ namespace atomic_dex
     void
     settings_page::set_custom_erc_token_data(QVariant rpc_data) noexcept
     {
-        nlohmann::json out      = nlohmann::json::parse(QString(rpc_data.toJsonDocument().toJson()).toStdString());
+
+        nlohmann::json out      = nlohmann::json::parse(QString(QJsonDocument(rpc_data.toJsonObject()).toJson()).toStdString());
         m_custom_erc_token_data = out;
         emit customErcTokenDataChanged();
     }
