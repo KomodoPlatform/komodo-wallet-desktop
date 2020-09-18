@@ -355,7 +355,6 @@ FloatingBackground {
 
             // Fees
             InnerBackground {
-                radius: 100
                 id: bg
                 Layout.fillWidth: true
                 Layout.leftMargin: top_line.Layout.leftMargin

@@ -263,7 +263,7 @@ FloatingBackground {
                     }
 
                     Rectangle {
-                        radius: 100
+                        radius: Style.rectangleCornerRadius
 
                         width: height
                         height: remove_button.height * 1.2

@@ -51,8 +51,6 @@ Item {
                 width: list_bg.width
                 anchors.horizontalCenter: list_bg.horizontalCenter
 
-                radius: 100
-
                 content: RowLayout {
                     id: search_row
 

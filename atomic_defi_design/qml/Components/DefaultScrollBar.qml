@@ -18,8 +18,6 @@ ScrollBar {
             height: parent.height - 7 - 4
             anchors.verticalCenter: parent.verticalCenter
 
-            radius: 100
-
             color: Style.colorScrollbar
             border_color_start: Style.colorScrollbarGradient1
             border_color_end: Style.colorScrollbarGradient2
@@ -34,7 +32,6 @@ ScrollBar {
             height: parent.height - 7
             anchors.verticalCenter: parent.verticalCenter
 
-            radius: 100
             color: Style.colorScrollbarBackground
         }
     }
