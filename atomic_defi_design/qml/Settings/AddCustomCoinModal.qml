@@ -21,10 +21,10 @@ BasicModal {
     readonly property bool fetching_erc_data_busy: API.get().settings_pg.fetching_erc_data_busy
     readonly property var custom_erc_token_data: API.get().settings_pg.custom_erc_token_data
 
-    function fetchCoinData() {
+    function fetchAssetData() {
         const fields = General.clone(config_fields)
         if(fields.type === "ERC-20") {
-            console.log("Fetching coin data:", JSON.stringify(fields))
+            console.log("Fetching asset data:", JSON.stringify(fields))
             API.get().settings_pg.process_erc_20_token_add(fields.contract_address, fields.coinpaprika_id, fields.image_path)
         }
     }
@@ -67,7 +67,7 @@ BasicModal {
 
     // Type page
     ModalContent {
-        title: API.get().settings_pg.empty_string + (qsTr("Choose the coin type"))
+        title: API.get().settings_pg.empty_string + (qsTr("Choose the asset type"))
 
         ComboBoxWithTitle {
             id: input_type
@@ -98,7 +98,7 @@ BasicModal {
 
     // Ticker page
     ModalContent {
-        title: API.get().settings_pg.empty_string + (has_contract_address ? qsTr("Enter the contract address") : qsTr("Choose the coin ticker"))
+        title: API.get().settings_pg.empty_string + (has_contract_address ? qsTr("Enter the contract address") : qsTr("Choose the asset ticker"))
 
         TextFieldWithTitle {
             id: input_ticker
@@ -138,7 +138,7 @@ BasicModal {
 
     // Logo page
     ModalContent {
-        title: API.get().settings_pg.empty_string + (qsTr("Choose the coin logo"))
+        title: API.get().settings_pg.empty_string + (qsTr("Choose the asset logo"))
 
         DefaultButton {
             Layout.fillWidth: true
@@ -154,7 +154,7 @@ BasicModal {
 
             readonly property bool enabled: true // Config preparation function searches for this
 
-            title: API.get().settings_pg.empty_string + (qsTr("Please choose the coin logo"))
+            title: API.get().settings_pg.empty_string + (qsTr("Please choose the asset logo"))
             folder: shortcuts.pictures
             selectMultiple: false
             onAccepted: {
@@ -249,7 +249,7 @@ BasicModal {
                          (!input_coinpaprika_id.enabled || input_coinpaprika_id.field.text !== "")
                 onClicked: {
                     root.prepareConfigs()
-                    root.fetchCoinData()
+                    root.fetchAssetData()
                     // Fetch result will open the next page
                 }
             }
