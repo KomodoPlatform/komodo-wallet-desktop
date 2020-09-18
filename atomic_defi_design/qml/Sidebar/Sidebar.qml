@@ -113,6 +113,8 @@ Item {
                     return sidebar_bottom.y + (dashboard.current_page - General.idx_dashboard_settings) * Style.sidebarLineHeight
             }
         }
+
+        Behavior on y { SmoothedAnimation { duration: 175; velocity: -1 } }
     }
 
     // Content
