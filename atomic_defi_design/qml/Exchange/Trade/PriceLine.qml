@@ -90,7 +90,7 @@ RowLayout {
                 start_color: Style.colorGreen
                 end_color: Style.colorRed
 
-                Rectangle {
+                AnimatedRectangle {
                     width: 4
                     height: parent.height * 2
                     anchors.verticalCenter: parent.verticalCenter

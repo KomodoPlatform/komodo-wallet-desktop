@@ -295,7 +295,7 @@ Item {
                 ctx.stroke()
             }
 
-            Rectangle {
+            AnimatedRectangle {
                 color: parent.color
                 anchors.right: parent.right
                 anchors.verticalCenter: parent.verticalCenter
@@ -314,7 +314,7 @@ Item {
         }
 
         // Cursor Horizontal line
-        Rectangle {
+        AnimatedRectangle {
             id: cursor_horizontal_line
             anchors.left: parent.left
             width: parent.width
@@ -324,7 +324,7 @@ Item {
 
             color: Style.colorBlue
 
-            Rectangle {
+            AnimatedRectangle {
                 color: parent.color
                 anchors.right: parent.right
                 anchors.verticalCenter: parent.verticalCenter
@@ -341,7 +341,7 @@ Item {
         }
 
         // Cursor Vertical line
-        Rectangle {
+        AnimatedRectangle {
             id: cursor_vertical_line
 
             anchors.top: parent.top
@@ -351,7 +351,7 @@ Item {
             visible: cursor_horizontal_line.visible
             color: cursor_horizontal_line.color
 
-            Rectangle {
+            AnimatedRectangle {
                 color: parent.color
                 anchors.top: parent.bottom
                 anchors.horizontalCenter: parent.horizontalCenter

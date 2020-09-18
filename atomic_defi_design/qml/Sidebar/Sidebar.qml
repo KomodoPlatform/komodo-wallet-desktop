@@ -16,7 +16,7 @@ Item {
     height: parent.height
 
     // Cursor
-    Rectangle {
+    AnimatedRectangle {
         id: cursor
         width: 185 - cursor_round_edge.radius
         anchors.right: parent.right
@@ -91,7 +91,7 @@ Item {
 
 
     // Cursor left edge
-    Rectangle {
+    AnimatedRectangle {
         id: cursor_round_edge
         color: Style.colorSidebarHighlightGradient1
         width: radius*2

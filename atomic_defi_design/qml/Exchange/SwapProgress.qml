@@ -170,7 +170,7 @@ ColumnLayout {
                     color: event ? Style.colorText : is_current_event ? Style.colorText2 : Style.colorTextDisabled
                 }
 
-                Rectangle {
+                AnimatedRectangle {
                     id: bar
                     visible: is_active
                     width: 300
@@ -178,7 +178,7 @@ ColumnLayout {
 
                     color: Style.colorWhite8
 
-                    Rectangle {
+                    AnimatedRectangle {
                         width: parent.width * (total_time_passed > 0 ? (time_passed / (total_time_passed + simulated_time)) : 0)
                         height: parent.height
                         color: Style.colorGreen

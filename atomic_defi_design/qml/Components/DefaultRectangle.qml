@@ -6,7 +6,7 @@ import QtGraphicalEffects 1.0
 
 import "../Constants"
 
-Rectangle {
+AnimatedRectangle {
     id: rect
     radius: Style.rectangleCornerRadius
     color: Style.colorRectangle

@@ -41,7 +41,7 @@ ComboBox {
 
 
     // Main background
-    background: Rectangle {
+    background: AnimatedRectangle {
         implicitWidth: 120
         implicitHeight: 40
         color: !control.enabled ? Style.colorTheme5 : control.hovered ? Style.colorTheme7 : Style.colorTheme9
@@ -66,7 +66,7 @@ ComboBox {
             currentIndex: control.highlightedIndex
         }
 
-        background: Rectangle {
+        background: AnimatedRectangle {
             color: Style.colorTheme9
             border.color: control.mainBorderColor
             radius: Style.rectangleCornerRadius

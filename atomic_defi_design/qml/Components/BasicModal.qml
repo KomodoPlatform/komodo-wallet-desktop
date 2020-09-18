@@ -45,7 +45,7 @@ DefaultModal {
                 delegate: Item {
                     width: (index === root.count-1 ? 0 : circle.width*2) + circle.width*0.5
                     height: circle.height * 1.5
-                    Rectangle {
+                    AnimatedRectangle {
                         id: rectangle
                         height: circle.height/4
                         anchors.left: parent.left
