@@ -248,12 +248,12 @@ ColumnLayout {
 
         model: portfolio_coins
 
-        delegate: Rectangle {
+        delegate: AnimatedRectangle {
             color: Qt.lighter(mouse_area.containsMouse ? Style.colorTheme5 : index % 2 == 0 ? Style.colorTheme6 : Style.colorTheme7, mouse_area.containsMouse ? Style.hoverLightMultiplier : 1.0)
             width: portfolio.width
             height: 50
 
-            Rectangle {
+            AnimatedRectangle {
                 id: main_color
                 color: Style.getCoinColor(ticker)
                 width: 10
@@ -379,7 +379,7 @@ ColumnLayout {
                 backgroundColor: "transparent"
             }
 
-            Rectangle {
+            AnimatedRectangle {
                 anchors.left: chart.right
                 anchors.leftMargin: -25
                 anchors.verticalCenter: parent.verticalCenter

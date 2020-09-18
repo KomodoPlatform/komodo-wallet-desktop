@@ -169,7 +169,7 @@ FloatingBackground {
                 Layout.alignment: Qt.AlignLeft | Qt.AlignVCenter
             }
 
-            Rectangle {
+            AnimatedRectangle {
                 radius: 3
 
                 width: mark_all_as_read.width + 10
@@ -262,7 +262,7 @@ FloatingBackground {
                         light: true
                     }
 
-                    Rectangle {
+                    AnimatedRectangle {
                         radius: Style.rectangleCornerRadius
 
                         width: height

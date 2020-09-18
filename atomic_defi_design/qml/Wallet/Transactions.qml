@@ -15,13 +15,12 @@ DefaultListView {
     }
 
     // Row
-    delegate: Rectangle {
+    delegate: AnimatedRectangle {
         id: rectangle
         implicitWidth: list.width
         height: row_height
 
         color: Style.colorOnlyIf(mouse_area.containsMouse, Style.colorTheme6)
-        Behavior on color { ColorAnimation { duration: Style.animationDuration } }
 
         MouseArea {
             id: mouse_area

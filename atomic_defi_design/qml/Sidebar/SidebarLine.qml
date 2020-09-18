@@ -55,7 +55,7 @@ Item {
         color: "#40000000"
         smooth: true
     }
-    ColorOverlay {
+    DefaultColorOverlay {
         id: img_color
         visible: img.source != ""
         anchors.fill: img

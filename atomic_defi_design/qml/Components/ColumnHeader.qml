@@ -4,6 +4,7 @@ import QtQuick.Controls 2.12
 
 import QtGraphicalEffects 1.0
 import "../Constants"
+import "../Components"
 
 Item {
     property int sort_type
@@ -58,7 +59,7 @@ Item {
         visible: false
     }
 
-    ColorOverlay {
+    DefaultColorOverlay {
         visible: current_sort === sort_type
         anchors.fill: arrow_icon
         source: arrow_icon

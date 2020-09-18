@@ -88,7 +88,7 @@ ColumnLayout {
             height: 20
 
             // Hover / My Order line
-            Rectangle {
+            AnimatedRectangle {
                 visible: mouse_area.containsMouse || is_mine
                 width: parent.width
                 height: parent.height
@@ -100,7 +100,7 @@ ColumnLayout {
             }
 
             // Depth line
-            Rectangle {
+            AnimatedRectangle {
                 width: parent.width * depth
                 height: parent.height
                 color: price_value.color

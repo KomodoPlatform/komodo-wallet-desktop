@@ -103,7 +103,7 @@ Item {
     }
 
     // Right side
-    Rectangle {
+    AnimatedRectangle {
         color: Style.colorTheme8
         width: parent.width - sidebar.width
         height: parent.height
@@ -193,7 +193,7 @@ Item {
     }
 
     // Unread notifications count
-    Rectangle {
+    AnimatedRectangle {
         radius: 1337
         width: count_text.height * 1.5
         height: width
