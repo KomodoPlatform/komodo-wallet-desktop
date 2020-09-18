@@ -330,7 +330,7 @@ ColumnLayout {
                                 DefaultText {
                                     id: edit_icon
                                     anchors.left: parent.left
-                                    anchors.leftMargin: layout_margin
+                                    anchors.leftMargin: layout_margin * 0.5
                                     anchors.verticalCenter: parent.verticalCenter
 
                                     visible: !editing_address && enabled
@@ -378,6 +378,7 @@ ColumnLayout {
                                     anchors.left: icon.right
                                     anchors.leftMargin: 10
                                     anchors.verticalCenter: parent.verticalCenter
+                                    width: 125
                                     visible: editing_address
 
                                     model: selectable_coins
@@ -392,9 +393,9 @@ ColumnLayout {
 
                                 // Address name
                                 DefaultText {
-                                    anchors.left: parent.left
+                                    anchors.left: combo_base.right
                                     anchors.verticalCenter: parent.verticalCenter
-                                    anchors.leftMargin: layout_margin * 5
+                                    anchors.leftMargin: layout_margin
                                     text: address
                                     visible: !address_input.visible
                                     font.pixelSize: Style.textSizeSmall3
@@ -408,9 +409,9 @@ ColumnLayout {
                                 }
                                 AddressField {
                                     id: address_input
-                                    anchors.left: parent.left
+                                    anchors.left: combo_base.right
                                     anchors.verticalCenter: parent.verticalCenter
-                                    anchors.leftMargin: layout_margin * 7
+                                    anchors.leftMargin: layout_margin
                                     font.pixelSize: Style.textSizeSmall3
                                     placeholderText: API.app.settings_pg.empty_string + (qsTr("Enter the address"))
                                     width: 400
@@ -419,7 +420,7 @@ ColumnLayout {
 
                                 RowLayout {
                                     anchors.right: parent.right
-                                    anchors.rightMargin: layout_margin
+                                    anchors.rightMargin: layout_margin * 0.5
                                     anchors.verticalCenter: parent.verticalCenter
 
                                     PrimaryButton {
