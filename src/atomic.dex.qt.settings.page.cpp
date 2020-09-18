@@ -237,4 +237,60 @@ namespace atomic_dex
     {
         return QString::fromStdString(get_runtime_coins_path().string());
     }
+
+    void
+    settings_page::process_erc_20_token_add(const QString& contract_address, const QString& coinpaprika_id, const QString& icon_filepath)
+    {
+        using namespace std::string_literals;
+        std::string url            = "/api/v1/erc_infos/"s + contract_address.toStdString();
+        auto        answer_functor = [this, contract_address, coinpaprika_id, icon_filepath](web::http::http_response resp) {
+            //! Extract answer
+            std::string    body = TO_STD_STR(resp.extract_string(true).get());
+            nlohmann::json out  = nlohmann::json::object();
+            out["mm2_cfg"]      = nlohmann::json::object();
+            out["adex_cfg"]     = nlohmann::json::object();
+            if (resp.status_code() == 200)
+            {
+                nlohmann::json  body_json = nlohmann::json::parse(body).at("result")[0];
+                std::string     ticker    = body_json.at("symbol").get<std::string>();
+                const fs::path& suffix    = fs::path(icon_filepath.toStdString()).extension();
+                fs::copy_file(
+                    icon_filepath.toStdString(), fs::path(get_custom_coins_icons_path().toStdString()) / (ticker + suffix.string()),
+                    fs::copy_option::overwrite_if_exists);
+                if (not is_this_ticker_present_in_raw_cfg(QString::fromStdString(ticker)))
+                {
+                    out["mm2_cfg"]["protocol"]                                      = nlohmann::json::object();
+                    out["mm2_cfg"]["protocol"]["type"]                              = "ERC-20";
+                    out["mm2_cfg"]["protocol"]["protocol_data"]                     = nlohmann::json::object();
+                    out["mm2_cfg"]["protocol"]["protocol_data"]["platform"]         = "ETH";
+                    out["mm2_cfg"]["protocol"]["protocol_data"]["contract_address"] = contract_address.toStdString();
+                    out["mm2_cfg"]["rpc_port"]                                      = 80;
+                    out["mm2_cfg"]["coin"]                                          = ticker;
+                    out["mm2_cfg"]["name"]                                          = body_json.at("tokenName").get<std::string>();
+                }
+                if (not is_this_ticker_present_in_normal_cfg(QString::fromStdString(ticker)))
+                {
+                    //!
+                    out["adex_cfg"][ticker]                   = nlohmann::json::object();
+                    out["adex_cfg"][ticker]["coin"]           = ticker;
+                    out["adex_cfg"][ticker]["name"]           = body_json.at("tokenName").get<std::string>();
+                    out["adex_cfg"][ticker]["coinpaprika_id"] = coinpaprika_id.toStdString();
+                    out["adex_cfg"][ticker]["eth_nodes"] =
+                        nlohmann::json::array({"http://eth1.cipig.net:8555", "http://eth2.cipig.net:8555", "http://eth3.cipig.net:8555"});
+                    out["adex_cfg"][ticker]["explorer_url"]      = nlohmann::json::array({"https://etherscan.io/"});
+                    out["adex_cfg"][ticker]["type"]              = "ERC-20";
+                    out["adex_cfg"][ticker]["active"]            = false;
+                    out["adex_cfg"][ticker]["currently_enabled"] = false;
+                    out["adex_cfg"][ticker]["is_custom_coin"]    = true;
+                }
+            }
+            else
+            {
+                out["error_message"] = body;
+                out["error_code"]    = resp.status_code();
+            }
+            spdlog::trace("result json of fetch erc infos from contract address is: {}", out.dump(4));
+        };
+        ::mm2::api::async_process_rpc_get("erc_infos", url).then(answer_functor).then(&handle_exception_pplx_task);
+    }
 } // namespace atomic_dex
