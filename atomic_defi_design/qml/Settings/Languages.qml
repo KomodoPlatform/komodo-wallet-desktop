@@ -31,7 +31,9 @@ ColumnLayout {
                 delegate: Rectangle {
                     width: image.sourceSize.width - 4 // Current icons have too much space around them
                     height: image.sourceSize.height - 2
-                    color: API.app.settings_pg.lang === model.modelData ? Style.colorTheme11 : mouse_area.containsMouse ? Style.colorTheme4 : "transparent"
+
+                    color: API.app.settings_pg.lang === model.modelData ? Style.colorTheme11 : mouse_area.containsMouse ? Style.colorTheme4 : Style.applyOpacity(Style.colorTheme4)
+                    Behavior on color { ColorAnimation { duration: Style.animationDuration } }
 
                     DefaultImage {
                         id: image
