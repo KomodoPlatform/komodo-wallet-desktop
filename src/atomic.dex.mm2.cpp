@@ -365,7 +365,8 @@ namespace atomic_dex
                         std::size_t idx = 0;
                         for (auto&& answer: answers)
                         {
-                            spdlog::trace("{} -> answer {}", tickers_idx[idx], answer.dump(4));
+                            //spdlog::trace("answer {}",  answer.dump(4));
+
                             if (answer.contains("balance"))
                             {
                                 this->process_balance_answer(answer);
@@ -1426,7 +1427,7 @@ namespace atomic_dex
             ifs >> config_json_data;
 
             //! Modify contents
-            config_json_data.push_back(coin_cfg_json);
+            config_json_data.push_back(raw_coin_cfg_json);
 
             //! Close
             ifs.close();

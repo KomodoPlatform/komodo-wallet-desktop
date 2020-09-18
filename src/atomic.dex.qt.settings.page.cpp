@@ -262,13 +262,20 @@ namespace atomic_dex
                     fs::copy_option::overwrite_if_exists);
                 if (not is_this_ticker_present_in_raw_cfg(QString::fromStdString(ticker)))
                 {
-                    out["mm2_cfg"]["protocol"]                                      = nlohmann::json::object();
-                    out["mm2_cfg"]["protocol"]["type"]                              = "ERC-20";
-                    out["mm2_cfg"]["protocol"]["protocol_data"]                     = nlohmann::json::object();
-                    out["mm2_cfg"]["protocol"]["protocol_data"]["platform"]         = "ETH";
-                    out["mm2_cfg"]["protocol"]["protocol_data"]["contract_address"] = contract_address.toStdString();
+                    out["mm2_cfg"]["protocol"]                              = nlohmann::json::object();
+                    out["mm2_cfg"]["protocol"]["type"]                      = "ERC20";
+                    out["mm2_cfg"]["protocol"]["protocol_data"]             = nlohmann::json::object();
+                    out["mm2_cfg"]["protocol"]["protocol_data"]["platform"] = "ETH";
+                    std::string out_address                                 = contract_address.toStdString();
+                    boost::algorithm::to_lower(out_address);
+                    to_eth_checksum(out_address);
+                    out["mm2_cfg"]["protocol"]["protocol_data"]["contract_address"] = out_address;
                     out["mm2_cfg"]["rpc_port"]                                      = 80;
                     out["mm2_cfg"]["coin"]                                          = ticker;
+                    out["mm2_cfg"]["mm2"]                                           = 1;
+                    out["mm2_cfg"]["decimals"]                                      = std::stoi(body_json.at("divisor").get<std::string>());
+                    out["mm2_cfg"]["avg_blocktime"]                                 = 0.25;
+                    out["mm2_cfg"]["required_confirmations"]                        = 3;
                     out["mm2_cfg"]["name"]                                          = body_json.at("tokenName").get<std::string>();
                 }
                 if (not is_this_ticker_present_in_normal_cfg(QString::fromStdString(ticker)))
