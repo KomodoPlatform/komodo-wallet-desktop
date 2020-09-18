@@ -332,6 +332,7 @@ namespace atomic_dex
     void
     settings_page::submit()
     {
+        spdlog::trace("submit whole cfg");
         nlohmann::json out = m_custom_erc_token_data.get();
         this->m_system_manager.get_system<mm2>().add_new_coin(out.at("adex_cfg"), out.at("mm2_cfg"));
         this->set_custom_erc_token_data(QJsonObject{{}});

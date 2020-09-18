@@ -1412,6 +1412,23 @@ namespace atomic_dex
         {
             fs::path mm2_cfg_path = ag::core::assets_real_path() / "tools/mm2/coins";
             spdlog::trace("Adding entry : {} to mm2 coins file {}", raw_coin_cfg_json.dump(4), mm2_cfg_path.string());
+            std::ifstream  ifs(mm2_cfg_path.c_str());
+            nlohmann::json config_json_data;
+            assert(ifs.is_open());
+
+            //! Read Contents
+            ifs >> config_json_data;
+
+            //! Modify contents
+            config_json_data.push_back(coin_cfg_json);
+
+            //! Close
+            ifs.close();
+
+            //! Write contents
+            std::ofstream ofs(mm2_cfg_path.c_str(), std::ios::trunc);
+            assert(ofs.is_open());
+            ofs << config_json_data;
         }
     }
 
