@@ -21,8 +21,8 @@ Item {
     }
 
     Component.onCompleted: {
-        API.get().trading_pg.candlestick_charts_mdl.modelReset.connect(chartUpdated)
-        API.get().trading_pg.candlestick_charts_mdl.chartFullyModelReset.connect(chartFullyReset)
+        API.app.trading_pg.candlestick_charts_mdl.modelReset.connect(chartUpdated)
+        API.app.trading_pg.candlestick_charts_mdl.chartFullyModelReset.connect(chartFullyReset)
     }
 
     function chartFullyReset() {
@@ -208,7 +208,7 @@ Item {
 
             HCandlestickModelMapper {
                 id: cs_mapper
-                model: API.get().trading_pg.candlestick_charts_mdl
+                model: API.app.trading_pg.candlestick_charts_mdl
 
                 timestampColumn: 0
                 openColumn: 1
@@ -598,7 +598,7 @@ Item {
                     const cp = chart.mapToValue(Qt.point(mouse_x, mouse_y), series)
 
                     // Find closest real data
-                    const realData = API.get().trading_pg.candlestick_charts_mdl.find_closest_ohlc_data(cp.x / 1000)
+                    const realData = API.app.trading_pg.candlestick_charts_mdl.find_closest_ohlc_data(cp.x / 1000)
                     const realDataFound = realData.timestamp
                     if(realDataFound) {
                         cursor_vertical_line.x = chart.mapToPosition(Qt.point(realData.timestamp*1000, 0), series).x
@@ -636,7 +636,7 @@ Item {
 
     DefaultText {
         visible: !pair_supported
-        text_value: API.get().settings_pg.empty_string + (qsTr("There is no chart data for this pair yet"))
+        text_value: API.app.settings_pg.empty_string + (qsTr("There is no chart data for this pair yet"))
         anchors.centerIn: parent
     }
 }

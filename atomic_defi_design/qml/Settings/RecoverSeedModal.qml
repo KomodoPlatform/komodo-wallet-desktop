@@ -14,7 +14,7 @@ BasicModal {
     function tryViewSeed() {
         if(!submit_button.enabled) return
 
-        const result = API.get().retrieve_seed(API.get().wallet_default_name, input_password.field.text)
+        const result = API.app.retrieve_seed(API.app.wallet_default_name, input_password.field.text)
 
         if(result !== 'wrong password') {
             seed = result
@@ -34,7 +34,7 @@ BasicModal {
     }
 
     ModalContent {
-        title: API.get().settings_pg.empty_string + (qsTr("View Seed"))
+        title: API.app.settings_pg.empty_string + (qsTr("View Seed"))
 
         ColumnLayout {
             visible: seed === ''
@@ -44,7 +44,7 @@ BasicModal {
                 Layout.bottomMargin: 10
                 Layout.alignment: Qt.AlignHCenter
 
-                text_value: API.get().settings_pg.empty_string + (qsTr("Please enter your password to view the seed."))
+                text_value: API.app.settings_pg.empty_string + (qsTr("Please enter your password to view the seed."))
             }
 
             PasswordForm {
@@ -55,7 +55,7 @@ BasicModal {
             }
 
             DefaultText {
-                text_value: API.get().settings_pg.empty_string + (qsTr("Wrong Password"))
+                text_value: API.app.settings_pg.empty_string + (qsTr("Wrong Password"))
                 color: Style.colorRed
                 visible: wrong_password
             }
@@ -64,7 +64,7 @@ BasicModal {
         TextAreaWithTitle {
             visible: seed !== ''
 
-            title: API.get().settings_pg.empty_string + (qsTr("Seed"))
+            title: API.app.settings_pg.empty_string + (qsTr("Seed"))
             field.text: seed
             field.readOnly: true
             copyable: true
@@ -73,7 +73,7 @@ BasicModal {
         // Buttons
         footer: [
             DefaultButton {
-                text: API.get().settings_pg.empty_string + (seed === '' ? qsTr("Cancel") : qsTr("Close"))
+                text: API.app.settings_pg.empty_string + (seed === '' ? qsTr("Cancel") : qsTr("Close"))
                 Layout.fillWidth: true
                 onClicked: root.close()
             },
@@ -81,7 +81,7 @@ BasicModal {
             PrimaryButton {
                 id: submit_button
                 visible: seed === ''
-                text: API.get().settings_pg.empty_string + (qsTr("View"))
+                text: API.app.settings_pg.empty_string + (qsTr("View"))
                 Layout.fillWidth: true
                 enabled: input_password.isValid()
                 onClicked: tryViewSeed()

@@ -16,7 +16,7 @@ FloatingBackground {
     property string total_amount: "0"
 
     function getFiatText(v, ticker) {
-        return General.formatFiat('', v === '' ? 0 : API.get().get_fiat_from_amount(ticker, v), API.get().settings_pg.current_fiat) + " " +  General.cex_icon
+        return General.formatFiat('', v === '' ? 0 : API.app.get_fiat_from_amount(ticker, v), API.app.settings_pg.current_fiat) + " " +  General.cex_icon
     }
 
     function getVolume() {
@@ -32,7 +32,7 @@ FloatingBackground {
     }
 
     function hasEnoughParentCoinForFees() {
-        return General.isCoinEnabled("ETH") && API.get().do_i_have_enough_funds("ETH", curr_trade_info.erc_fees)
+        return General.isCoinEnabled("ETH") && API.app.do_i_have_enough_funds("ETH", curr_trade_info.erc_fees)
     }
 
     function higherThanMinTradeAmount() {
@@ -47,7 +47,7 @@ FloatingBackground {
         if(valid) valid = higherThanMinTradeAmount()
 
         if(valid) valid = !notEnoughBalance()
-        if(valid) valid = API.get().do_i_have_enough_funds(base_ticker, General.formatDouble(getNeededAmountToSpend(input_volume.field.text)))
+        if(valid) valid = API.app.do_i_have_enough_funds(base_ticker, General.formatDouble(getNeededAmountToSpend(input_volume.field.text)))
         if(valid && hasParentCoinFees()) valid = hasEnoughParentCoinForFees()
 
         return valid
@@ -55,15 +55,15 @@ FloatingBackground {
 
     function getMaxBalance() {
         if(General.isFilled(base_ticker))
-            return API.get().get_balance(base_ticker)
+            return API.app.get_balance(base_ticker)
 
         return "0"
     }
 
     function getMaxVolume() {
         // base in this orderbook is always the left side, so when it's buy, we want the right side balance (rel in the backend)
-        const value = is_sell_form ? API.get().trading_pg.orderbook.base_max_taker_vol.decimal :
-                                  API.get().trading_pg.orderbook.rel_max_taker_vol.decimal
+        const value = is_sell_form ? API.app.trading_pg.orderbook.base_max_taker_vol.decimal :
+                                  API.app.trading_pg.orderbook.rel_max_taker_vol.decimal
 
         if(General.isFilled(value))
             return value
@@ -186,7 +186,7 @@ FloatingBackground {
                 DefaultButton {
                     Layout.fillWidth: true
                     font.pixelSize: Style.textSize
-                    text: API.get().settings_pg.empty_string + (qsTr("Sell %1", "TICKER").arg(left_ticker))
+                    text: API.app.settings_pg.empty_string + (qsTr("Sell %1", "TICKER").arg(left_ticker))
                     color: sell_mode ? Style.colorButtonEnabled.default : Style.colorButtonDisabled.default
                     colorTextEnabled: sell_mode ? Style.colorButtonEnabled.danger : Style.colorButtonDisabled.danger
                     font.weight: Font.Bold
@@ -195,7 +195,7 @@ FloatingBackground {
                 DefaultButton {
                     Layout.fillWidth: true
                     font.pixelSize: Style.textSize
-                    text: API.get().settings_pg.empty_string + (qsTr("Buy %1", "TICKER").arg(left_ticker))
+                    text: API.app.settings_pg.empty_string + (qsTr("Buy %1", "TICKER").arg(left_ticker))
                     color: sell_mode ? Style.colorButtonDisabled.default : Style.colorButtonEnabled.default
                     colorTextEnabled: sell_mode ? Style.colorButtonDisabled.primary : Style.colorButtonEnabled.primary
                     font.weight: Font.Bold
@@ -221,7 +221,7 @@ FloatingBackground {
                     width: parent.width
                     enabled: input_volume.field.enabled
 
-                    field.left_text: API.get().settings_pg.empty_string + (qsTr("Price"))
+                    field.left_text: API.app.settings_pg.empty_string + (qsTr("Price"))
                     field.right_text: right_ticker
 
                     field.onTextChanged: {
@@ -262,9 +262,9 @@ FloatingBackground {
                     id: input_volume
                     width: parent.width
 
-                    field.left_text: API.get().settings_pg.empty_string + (qsTr("Volume"))
+                    field.left_text: API.app.settings_pg.empty_string + (qsTr("Volume"))
                     field.right_text: left_ticker
-                    field.placeholderText: API.get().settings_pg.empty_string + (is_sell_form ? qsTr("Amount to sell") : qsTr("Amount to receive"))
+                    field.placeholderText: API.app.settings_pg.empty_string + (is_sell_form ? qsTr("Amount to sell") : qsTr("Amount to receive"))
                     field.onTextChanged: {
                         const before_checks = field.text
                         onInputChanged()
@@ -333,21 +333,21 @@ FloatingBackground {
                     anchors.left: parent.left
                     anchors.top: parent.bottom
 
-                    text_value: API.get().settings_pg.empty_string + (qsTr("Min"))
+                    text_value: API.app.settings_pg.empty_string + (qsTr("Min"))
                     font.pixelSize: input_volume.field.font.pixelSize
                 }
                 DefaultText {
                     anchors.horizontalCenter: parent.horizontalCenter
                     anchors.top: parent.bottom
 
-                    text_value: API.get().settings_pg.empty_string + (qsTr("Half"))
+                    text_value: API.app.settings_pg.empty_string + (qsTr("Half"))
                     font.pixelSize: input_volume.field.font.pixelSize
                 }
                 DefaultText {
                     anchors.right: parent.right
                     anchors.top: parent.bottom
 
-                    text_value: API.get().settings_pg.empty_string + (qsTr("Max"))
+                    text_value: API.app.settings_pg.empty_string + (qsTr("Max"))
                     font.pixelSize: input_volume.field.font.pixelSize
                 }
             }
@@ -374,7 +374,7 @@ FloatingBackground {
 
                         DefaultText {
                             id: tx_fee_text
-                            text_value: API.get().settings_pg.empty_string + ((qsTr('Transaction Fee') + ': ' + General.formatCrypto("", curr_trade_info.tx_fee, curr_trade_info.is_ticker_of_fees_eth ? "ETH" : base_ticker)) +
+                            text_value: API.app.settings_pg.empty_string + ((qsTr('Transaction Fee') + ': ' + General.formatCrypto("", curr_trade_info.tx_fee, curr_trade_info.is_ticker_of_fees_eth ? "ETH" : base_ticker)) +
                                                                     // ETH Fees
                                                                     (hasParentCoinFees() ? " + " + General.formatCrypto("", curr_trade_info.erc_fees, 'ETH') : '') +
 
@@ -392,7 +392,7 @@ FloatingBackground {
                         }
 
                         DefaultText {
-                            text_value: API.get().settings_pg.empty_string + (qsTr('Trading Fee') + ': ' + General.formatCrypto("", curr_trade_info.trade_fee, base_ticker) +
+                            text_value: API.app.settings_pg.empty_string + (qsTr('Trading Fee') + ': ' + General.formatCrypto("", curr_trade_info.trade_fee, base_ticker) +
 
                                                                   // Fiat part
                                                                   (" ("+
@@ -409,7 +409,7 @@ FloatingBackground {
                     DefaultText {
                         visible: !fees.visible
 
-                        text_value: API.get().settings_pg.empty_string + (!visible ? "" :
+                        text_value: API.app.settings_pg.empty_string + (!visible ? "" :
                                                     notEnoughBalance() ? (qsTr('Minimum fee') + ":     " + General.formatCrypto("", General.formatDouble(parseFloat(getMaxBalance()) - parseFloat(getMaxVolume())), base_ticker))
                                                                        : qsTr('Fees will be calculated'))
                         Layout.alignment: Qt.AlignCenter
@@ -430,7 +430,7 @@ FloatingBackground {
             DefaultText {
                 font.bold: true
                 font.pixelSize: Style.textSizeSmall3
-                text_value: API.get().settings_pg.empty_string + (qsTr("Total") + ": " + General.formatCrypto("", total_amount, right_ticker))
+                text_value: API.app.settings_pg.empty_string + (qsTr("Total") + ": " + General.formatCrypto("", total_amount, right_ticker))
             }
 
             DefaultText {
@@ -453,7 +453,7 @@ FloatingBackground {
 
             width: 170
 
-            text: API.get().settings_pg.empty_string + (qsTr("Start Swap"))
+            text: API.app.settings_pg.empty_string + (qsTr("Start Swap"))
             font.bold: true
             enabled: valid_trade_info && !notEnoughBalanceForFees() && isValid()
             onClicked: confirm_trade_modal.open()
@@ -482,7 +482,7 @@ FloatingBackground {
                 font.pixelSize: Style.textSizeSmall4
                 color: Style.colorRed
 
-                text_value: API.get().settings_pg.empty_string + (
+                text_value: API.app.settings_pg.empty_string + (
                                 // Balance check can be done without price too, prioritize that for sell
                                 notEnoughBalance() ? (qsTr("Tradable (after fees) %1 balance is lower than minimum trade amount").arg(base_ticker) + " : " + General.getMinTradeAmount()) :
 

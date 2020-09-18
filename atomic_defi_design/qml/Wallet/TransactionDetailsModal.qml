@@ -21,13 +21,13 @@ BasicModal {
     }
 
     ModalContent {
-        title: API.get().settings_pg.empty_string + (qsTr("Transaction Details"))
+        title: API.app.settings_pg.empty_string + (qsTr("Transaction Details"))
 
         // Amount
         TextWithTitle {
-            title: API.get().settings_pg.empty_string + (qsTr("Amount"))
-            text: API.get().settings_pg.empty_string + (!details ? "" :
-                                                        General.formatCrypto(!details.am_i_sender, details.amount, api_wallet_page.ticker, details.amount_fiat, API.get().settings_pg.current_currency))
+            title: API.app.settings_pg.empty_string + (qsTr("Amount"))
+            text: API.app.settings_pg.empty_string + (!details ? "" :
+                                                        General.formatCrypto(!details.am_i_sender, details.amount, api_wallet_page.ticker, details.amount_fiat, API.app.settings_pg.current_currency))
             value_color: !details ? "white" :
                          details.am_i_sender ? Style.colorRed : Style.colorGreen
             privacy: true
@@ -35,49 +35,49 @@ BasicModal {
 
         // Fees
         TextWithTitle {
-            title: API.get().settings_pg.empty_string + (qsTr("Fees"))
-            text: API.get().settings_pg.empty_string + (!details ? "" :
+            title: API.app.settings_pg.empty_string + (qsTr("Fees"))
+            text: API.app.settings_pg.empty_string + (!details ? "" :
                                                         General.formatCrypto("", details.fees, current_ticker_infos.fee_ticker))
             privacy: true
         }
 
         // Date
         TextWithTitle {
-            title: API.get().settings_pg.empty_string + (qsTr("Date"))
-            text: API.get().settings_pg.empty_string + (!details ? "" :
+            title: API.app.settings_pg.empty_string + (qsTr("Date"))
+            text: API.app.settings_pg.empty_string + (!details ? "" :
                                                         details.timestamp === 0 ? qsTr("Unconfirmed"):  details.date)
         }
 
         // Transaction Hash
         TextWithTitle {
-            title: API.get().settings_pg.empty_string + (qsTr("Transaction Hash"))
-            text: API.get().settings_pg.empty_string + (!details ? "" :
+            title: API.app.settings_pg.empty_string + (qsTr("Transaction Hash"))
+            text: API.app.settings_pg.empty_string + (!details ? "" :
                                                         details.tx_hash)
             privacy: true
         }
 
         // Confirmations
         TextWithTitle {
-            title: API.get().settings_pg.empty_string + (qsTr("Confirmations"))
-            text: API.get().settings_pg.empty_string + (!details ? "" :
+            title: API.app.settings_pg.empty_string + (qsTr("Confirmations"))
+            text: API.app.settings_pg.empty_string + (!details ? "" :
                                                         details.confirmations)
         }
 
         // Block Height
         TextWithTitle {
-            title: API.get().settings_pg.empty_string + (qsTr("Block Height"))
-            text: API.get().settings_pg.empty_string + (!details ? "" :
+            title: API.app.settings_pg.empty_string + (qsTr("Block Height"))
+            text: API.app.settings_pg.empty_string + (!details ? "" :
                                                         details.blockheight)
         }
 
         AddressList {
-            title: API.get().settings_pg.empty_string + (qsTr("From"))
+            title: API.app.settings_pg.empty_string + (qsTr("From"))
             model: !details ? [] :
                    details.from
         }
 
         AddressList {
-            title: API.get().settings_pg.empty_string + (qsTr("To"))
+            title: API.app.settings_pg.empty_string + (qsTr("To"))
             model: !details ? [] :
                    details.to
         }
@@ -85,7 +85,7 @@ BasicModal {
         // Notes
         TextAreaWithTitle {
             id: notes
-            title: API.get().settings_pg.empty_string + (qsTr("Notes"))
+            title: API.app.settings_pg.empty_string + (qsTr("Notes"))
             remove_newline: false
             field.text: !details ? "" :
                         details.transaction_note
@@ -105,7 +105,7 @@ BasicModal {
         // Buttons
         footer: [
             DefaultButton {
-                text: API.get().settings_pg.empty_string + (qsTr("Close"))
+                text: API.app.settings_pg.empty_string + (qsTr("Close"))
                 Layout.fillWidth: true
                 onClicked: root.close()
             },
@@ -114,7 +114,7 @@ BasicModal {
                 visible: !details ? false :
                          !details.am_i_sender
 
-                text: API.get().settings_pg.empty_string + (qsTr("Refund"))
+                text: API.app.settings_pg.empty_string + (qsTr("Refund"))
                 Layout.fillWidth: true
                 onClicked: {
                     const address = details.from[0]
@@ -127,7 +127,7 @@ BasicModal {
             },
 
             PrimaryButton {
-                text: API.get().settings_pg.empty_string + (qsTr("View at Explorer"))
+                text: API.app.settings_pg.empty_string + (qsTr("View at Explorer"))
                 Layout.fillWidth: true
                 onClicked: General.viewTxAtExplorer(api_wallet_page.ticker, details.tx_hash, false)
             }

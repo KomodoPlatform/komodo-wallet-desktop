@@ -24,17 +24,17 @@ MouseArea {
         id: contextMenu
 
         MenuItem {
-            text: API.get().settings_pg.empty_string + (qsTr("Cut"))
+            text: API.app.settings_pg.empty_string + (qsTr("Cut"))
             enabled: !text_field.readOnly && text_field.selectedText.length > 0 && text_field.echoMode !== TextInput.Password
             onTriggered: text_field.cut()
         }
         MenuItem {
-            text: API.get().settings_pg.empty_string + (qsTr("Copy"))
+            text: API.app.settings_pg.empty_string + (qsTr("Copy"))
             enabled: text_field.selectedText.length > 0 && text_field.echoMode !== TextInput.Password
             onTriggered: text_field.copy()
         }
         MenuItem {
-            text: API.get().settings_pg.empty_string + (qsTr("Paste"))
+            text: API.app.settings_pg.empty_string + (qsTr("Paste"))
             enabled: !text_field.readOnly
             onTriggered: text_field.paste()
         }

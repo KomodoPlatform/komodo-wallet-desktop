@@ -15,7 +15,7 @@ BasicModal {
     }
 
     ModalContent {
-        title: API.get().settings_pg.empty_string + (qsTr("Setup Camouflage Password"))
+        title: API.app.settings_pg.empty_string + (qsTr("Setup Camouflage Password"))
 
         FloatingBackground {
             id: warning_bg
@@ -36,7 +36,7 @@ BasicModal {
                     horizontalAlignment: Text.AlignHCenter
                     anchors.horizontalCenter: parent.horizontalCenter
 
-                    text_value: API.get().settings_pg.empty_string + (qsTr("Camouflage Password is a secret password for emergency situations."))
+                    text_value: API.app.settings_pg.empty_string + (qsTr("Camouflage Password is a secret password for emergency situations."))
                     font.pixelSize: Style.textSize2
                 }
 
@@ -45,7 +45,7 @@ BasicModal {
                     horizontalAlignment: Text.AlignHCenter
                     anchors.horizontalCenter: parent.horizontalCenter
 
-                    text_value: API.get().settings_pg.empty_string + (qsTr("Using it to login will display your balance lower than it actually is."))
+                    text_value: API.app.settings_pg.empty_string + (qsTr("Using it to login will display your balance lower than it actually is."))
                 }
 
                 DefaultText {
@@ -53,7 +53,7 @@ BasicModal {
                     horizontalAlignment: Text.AlignHCenter
                     anchors.horizontalCenter: parent.horizontalCenter
 
-                    text_value: API.get().settings_pg.empty_string + (qsTr("Here you enter the suffix and at login you need to enter {real_password}{suffix}"))
+                    text_value: API.app.settings_pg.empty_string + (qsTr("Here you enter the suffix and at login you need to enter {real_password}{suffix}"))
                 }
             }
         }
@@ -61,24 +61,24 @@ BasicModal {
         PasswordForm {
             id: input_password
             Layout.fillWidth: true
-            field.placeholderText: API.get().settings_pg.empty_string + (qsTr("Enter a suffix"))
+            field.placeholderText: API.app.settings_pg.empty_string + (qsTr("Enter a suffix"))
             high_security: false
         }
 
         // Buttons
         footer: [
             DefaultButton {
-                text: API.get().settings_pg.empty_string + (qsTr("Cancel"))
+                text: API.app.settings_pg.empty_string + (qsTr("Cancel"))
                 Layout.fillWidth: true
                 onClicked: root.close()
             },
 
             PrimaryButton {
-                text: API.get().settings_pg.empty_string + (qsTr("Save"))
+                text: API.app.settings_pg.empty_string + (qsTr("Save"))
                 Layout.fillWidth: true
                 enabled: input_password.isValid()
                 onClicked: {
-                    API.get().set_emergency_password(input_password.field.text)
+                    API.app.set_emergency_password(input_password.field.text)
                     root.close()
                 }
             }

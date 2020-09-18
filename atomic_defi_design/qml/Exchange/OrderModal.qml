@@ -17,7 +17,7 @@ BasicModal {
     onClosed: details = undefined
 
     ModalContent {
-        title: API.get().settings_pg.empty_string + (!details ? "" :
+        title: API.app.settings_pg.empty_string + (!details ? "" :
                                                     details.is_swap ? qsTr("Swap Details") : qsTr("Order Details"))
 
         // Complete image
@@ -46,7 +46,7 @@ BasicModal {
                                 details.is_swap || !details.is_maker
             color: !details ? "white" :
                               visible ? getStatusColor(details.order_status) : ''
-            text_value: API.get().settings_pg.empty_string + (!details ? "" :
+            text_value: API.app.settings_pg.empty_string + (!details ? "" :
                                                              visible ? getStatusTextWithPrefix(details.order_status) : '')
         }
 
@@ -69,7 +69,7 @@ BasicModal {
 
         // Maker/Taker
         DefaultText {
-            text_value: API.get().settings_pg.empty_string + (!details ? "" :
+            text_value: API.app.settings_pg.empty_string + (!details ? "" :
                                                              details.is_maker ? qsTr("Maker Order"): qsTr("Taker Order"))
             color: Style.colorThemeDarkLight
             Layout.alignment: Qt.AlignRight
@@ -79,7 +79,7 @@ BasicModal {
         TextFieldWithTitle {
             Layout.topMargin: -20
 
-            title: API.get().settings_pg.empty_string + (qsTr("Refund State"))
+            title: API.app.settings_pg.empty_string + (qsTr("Refund State"))
             field.text: !details ? "" :
                                    details.order_status === "refunding" ? qsTr("Your swap failed but the auto-refund process for your payment started already. Please wait and keep application opened until you receive your payment back") : ""
             field.readOnly: true
@@ -89,16 +89,16 @@ BasicModal {
 
         // Date
         TextWithTitle {
-            title: API.get().settings_pg.empty_string + (qsTr("Date"))
-            text: API.get().settings_pg.empty_string + (!details ? "" :
+            title: API.app.settings_pg.empty_string + (qsTr("Date"))
+            text: API.app.settings_pg.empty_string + (!details ? "" :
                                                        details.date)
             visible: text !== ''
         }
 
         // ID
         TextWithTitle {
-            title: API.get().settings_pg.empty_string + (qsTr("ID"))
-            text: API.get().settings_pg.empty_string + (!details ? "" :
+            title: API.app.settings_pg.empty_string + (qsTr("ID"))
+            text: API.app.settings_pg.empty_string + (!details ? "" :
                                                        details.order_id)
             visible: text !== ''
             privacy: true
@@ -106,9 +106,9 @@ BasicModal {
 
         // Payment ID
         TextWithTitle {
-            title: API.get().settings_pg.empty_string + (!details ? "" :
+            title: API.app.settings_pg.empty_string + (!details ? "" :
                                                         details.is_maker ? qsTr("Maker Payment Sent ID") : qsTr("Maker Payment Spent ID"))
-            text: API.get().settings_pg.empty_string + (!details ? "" :
+            text: API.app.settings_pg.empty_string + (!details ? "" :
                                                        details.maker_payment_id)
             visible: text !== ''
             privacy: true
@@ -116,9 +116,9 @@ BasicModal {
 
         // Payment ID
         TextWithTitle {
-            title: API.get().settings_pg.empty_string + (!details ? "" :
+            title: API.app.settings_pg.empty_string + (!details ? "" :
                                                         details.is_maker ? qsTr("Taker Payment Spent ID") : qsTr("Taker Payment Sent ID"))
-            text: API.get().settings_pg.empty_string + (!details ? "" :
+            text: API.app.settings_pg.empty_string + (!details ? "" :
                                                        details.taker_payment_id)
             visible: text !== ''
             privacy: true
@@ -126,16 +126,16 @@ BasicModal {
 
         // Error ID
         TextWithTitle {
-            title: API.get().settings_pg.empty_string + (qsTr("Error ID"))
-            text: API.get().settings_pg.empty_string + (!details ? "" :
+            title: API.app.settings_pg.empty_string + (qsTr("Error ID"))
+            text: API.app.settings_pg.empty_string + (!details ? "" :
                                                        details.order_error_state)
             visible: text !== ''
         }
 
         // Error Details
         TextFieldWithTitle {
-            title: API.get().settings_pg.empty_string + (qsTr("Error Log"))
-            field.text: API.get().settings_pg.empty_string + (!details ? "" :
+            title: API.app.settings_pg.empty_string + (qsTr("Error Log"))
+            field.text: API.app.settings_pg.empty_string + (!details ? "" :
                                                              details.order_error_message)
             field.readOnly: true
             copyable: true
@@ -161,7 +161,7 @@ BasicModal {
         // Buttons
         footer: [
             DefaultButton {
-                text: API.get().settings_pg.empty_string + (qsTr("Close"))
+                text: API.app.settings_pg.empty_string + (qsTr("Close"))
                 Layout.fillWidth: true
                 onClicked: root.close()
             },
@@ -171,12 +171,12 @@ BasicModal {
                 visible: !details ? false :
                                     details.cancellable
                 Layout.fillWidth: true
-                text: API.get().settings_pg.empty_string + (qsTr("Cancel Order"))
+                text: API.app.settings_pg.empty_string + (qsTr("Cancel Order"))
                 onClicked: { if(details) cancelOrder(details.order_id) }
             },
 
             PrimaryButton {
-                text: API.get().settings_pg.empty_string + (qsTr("View at Explorer"))
+                text: API.app.settings_pg.empty_string + (qsTr("View at Explorer"))
                 Layout.fillWidth: true
                 visible: !details ? false :
                                     details.maker_payment_id !== '' || details.taker_payment_id !== ''

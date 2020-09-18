@@ -9,7 +9,7 @@ import "../Constants"
 Item {
     id: root
     function disconnect() {
-        API.get().disconnect()
+        API.app.disconnect()
         onDisconnect()
     }
 
@@ -18,11 +18,11 @@ Item {
     }
 
     function onOpened() {
-        if(mm2_version === '') mm2_version = API.get().get_mm2_version()
+        if(mm2_version === '') mm2_version = API.app.get_mm2_version()
     }
 
     property string mm2_version: ''
-    property var fiats: API.get().settings_pg.get_available_fiats()
+    property var fiats: API.app.settings_pg.get_available_fiats()
 
     InnerBackground {
         id: layout_background
@@ -38,7 +38,7 @@ Item {
 
             ComboBoxWithTitle {
                 id: combo_fiat
-                title: API.get().settings_pg.empty_string + (qsTr("Fiat"))
+                title: API.app.settings_pg.empty_string + (qsTr("Fiat"))
                 Layout.fillWidth: true
                 Layout.leftMargin: 30
                 Layout.rightMargin: Layout.leftMargin
@@ -49,12 +49,12 @@ Item {
                 onCurrentIndexChanged: {
                     if(initialized) {
                         const new_fiat = fiats[currentIndex]
-                        API.get().settings_pg.current_fiat = new_fiat
-                        API.get().settings_pg.current_currency = new_fiat
+                        API.app.settings_pg.current_fiat = new_fiat
+                        API.app.settings_pg.current_currency = new_fiat
                     }
                 }
                 Component.onCompleted: {
-                    currentIndex = model.indexOf(API.get().settings_pg.current_fiat)
+                    currentIndex = model.indexOf(API.app.settings_pg.current_fiat)
                     initialized = true
                 }
             }
@@ -76,16 +76,16 @@ Item {
                 Layout.alignment: Qt.AlignHCenter
                 Layout.leftMargin: combo_fiat.Layout.leftMargin
                 Layout.rightMargin: Layout.leftMargin
-                text: API.get().settings_pg.empty_string + (qsTr("Enable Desktop Notifications"))
-                Component.onCompleted: checked = API.get().settings_pg.notification_enabled
-                onCheckedChanged: API.get().settings_pg.notification_enabled = checked
+                text: API.app.settings_pg.empty_string + (qsTr("Enable Desktop Notifications"))
+                Component.onCompleted: checked = API.app.settings_pg.notification_enabled
+                onCheckedChanged: API.app.settings_pg.notification_enabled = checked
             }
 
             DefaultButton {
                 Layout.fillWidth: true
                 Layout.leftMargin: combo_fiat.Layout.leftMargin
                 Layout.rightMargin: Layout.leftMargin
-                text: API.get().settings_pg.empty_string + (qsTr("Open Logs Folder"))
+                text: API.app.settings_pg.empty_string + (qsTr("Open Logs Folder"))
                 onClicked: openLogsFolder()
             }
 
@@ -93,7 +93,7 @@ Item {
                 Layout.fillWidth: true
                 Layout.leftMargin: combo_fiat.Layout.leftMargin
                 Layout.rightMargin: Layout.leftMargin
-                text: API.get().settings_pg.empty_string + (qsTr("View Seed"))
+                text: API.app.settings_pg.empty_string + (qsTr("View Seed"))
                 onClicked: recover_seed_modal.open()
             }
 
@@ -105,7 +105,7 @@ Item {
                 Layout.fillWidth: true
                 Layout.leftMargin: combo_fiat.Layout.leftMargin
                 Layout.rightMargin: Layout.leftMargin
-                text: API.get().settings_pg.empty_string + (qsTr("Add a Custom Coin"))
+                text: API.app.settings_pg.empty_string + (qsTr("Add a Custom Coin"))
                 onClicked: add_custom_coin_modal.open()
             }
 
@@ -123,7 +123,7 @@ Item {
                 Layout.fillWidth: true
                 Layout.leftMargin: combo_fiat.Layout.leftMargin
                 Layout.rightMargin: Layout.leftMargin
-                text: API.get().settings_pg.empty_string + (qsTr("Disclaimer and ToS"))
+                text: API.app.settings_pg.empty_string + (qsTr("Disclaimer and ToS"))
                 onClicked: eula.open()
             }
 
@@ -139,8 +139,8 @@ Item {
             }
 
             DefaultButton {
-                visible: !API.get().is_pin_cfg_enabled()
-                text: API.get().settings_pg.empty_string + (qsTr("Setup Camouflage Password"))
+                visible: !API.app.is_pin_cfg_enabled()
+                text: API.app.settings_pg.empty_string + (qsTr("Setup Camouflage Password"))
                 Layout.fillWidth: true
                 Layout.leftMargin: combo_fiat.Layout.leftMargin
                 Layout.rightMargin: Layout.leftMargin
@@ -152,7 +152,7 @@ Item {
             }
 
             DangerButton {
-                text: API.get().settings_pg.empty_string + (qsTr("Delete Wallet"))
+                text: API.app.settings_pg.empty_string + (qsTr("Delete Wallet"))
                 Layout.fillWidth: true
                 Layout.leftMargin: combo_fiat.Layout.leftMargin
                 Layout.rightMargin: Layout.leftMargin
@@ -167,7 +167,7 @@ Item {
                 Layout.fillWidth: true
                 Layout.leftMargin: combo_fiat.Layout.leftMargin
                 Layout.rightMargin: Layout.leftMargin
-                text: API.get().settings_pg.empty_string + (qsTr("Log out"))
+                text: API.app.settings_pg.empty_string + (qsTr("Log out"))
                 onClicked: disconnect()
             }
         }
@@ -178,7 +178,7 @@ Item {
         anchors.bottom: parent.bottom
         anchors.bottomMargin: 10
         anchors.rightMargin: anchors.bottomMargin
-        text_value: API.get().settings_pg.empty_string + (qsTr("mm2 version") + ":  " + mm2_version)
+        text_value: API.app.settings_pg.empty_string + (qsTr("mm2 version") + ":  " + mm2_version)
         font.pixelSize: Style.textSizeSmall
     }
 }

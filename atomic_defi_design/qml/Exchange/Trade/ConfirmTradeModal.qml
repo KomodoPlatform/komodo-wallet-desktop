@@ -18,7 +18,7 @@ BasicModal {
     }
 
     ModalContent {
-        title: API.get().settings_pg.empty_string + (qsTr("Confirm Exchange Details"))
+        title: API.app.settings_pg.empty_string + (qsTr("Confirm Exchange Details"))
 
         OrderContent {
             Layout.topMargin: 25
@@ -66,13 +66,13 @@ BasicModal {
                 DefaultText {
                     Layout.alignment: Qt.AlignHCenter
 
-                    text_value: API.get().settings_pg.empty_string + (qsTr("This swap request can not be undone and is a final event!"))
+                    text_value: API.app.settings_pg.empty_string + (qsTr("This swap request can not be undone and is a final event!"))
                 }
 
                 DefaultText {
                     Layout.alignment: Qt.AlignHCenter
 
-                    text_value: API.get().settings_pg.empty_string + (qsTr("This transaction can take up to 60 mins - DO NOT close this application!"))
+                    text_value: API.app.settings_pg.empty_string + (qsTr("This transaction can take up to 60 mins - DO NOT close this application!"))
                     font.pixelSize: Style.textSizeSmall4
                 }
             }
@@ -86,7 +86,7 @@ BasicModal {
         ColumnLayout {
             id: config_section
 
-            readonly property var default_config: API.get().trading_pg.get_raw_mm2_coin_cfg(rel_ticker)
+            readonly property var default_config: API.app.trading_pg.get_raw_mm2_coin_cfg(rel_ticker)
 
             readonly property bool is_dpow_configurable: config_section.default_config.requires_notarization || false
             Layout.bottomMargin: 10
@@ -98,13 +98,13 @@ BasicModal {
 
                 DefaultText {
                     Layout.alignment: Qt.AlignHCenter
-                    text_value: API.get().settings_pg.empty_string + (qsTr("Security configuration"))
+                    text_value: API.app.settings_pg.empty_string + (qsTr("Security configuration"))
                     font.bold: true
                 }
 
                 DefaultText {
                     Layout.alignment: Qt.AlignHCenter
-                    text_value: API.get().settings_pg.empty_string + ("✅ " +
+                    text_value: API.app.settings_pg.empty_string + ("✅ " +
                                                           (config_section.is_dpow_configurable ? qsTr("dPoW protected") :
                                                                                   qsTr("%1 confirmations for incoming %2 transactions").arg(config_section.default_config.required_confirmations || 1).arg(rel_ticker)))
                 }
@@ -112,7 +112,7 @@ BasicModal {
                 DefaultText {
                     visible: config_section.is_dpow_configurable
                     Layout.alignment: Qt.AlignHCenter
-                    text_value: API.get().settings_pg.empty_string + (General.cex_icon + ' <a href="https://komodoplatform.com/security-delayed-proof-of-work-dpow/">' + qsTr('Read more about dPoW') + '</a>')
+                    text_value: API.app.settings_pg.empty_string + (General.cex_icon + ' <a href="https://komodoplatform.com/security-delayed-proof-of-work-dpow/">' + qsTr('Read more about dPoW') + '</a>')
                     wrapMode: Text.WordWrap
                     font.pixelSize: Style.textSizeSmall2
                 }
@@ -123,7 +123,7 @@ BasicModal {
                 Layout.alignment: Qt.AlignHCenter
                 id: enable_custom_config
 
-                text: API.get().settings_pg.empty_string + (qsTr("Use custom protection settings for incoming %1 transactions", "TICKER").arg(rel_ticker))
+                text: API.app.settings_pg.empty_string + (qsTr("Use custom protection settings for incoming %1 transactions", "TICKER").arg(rel_ticker))
             }
 
             // Configuration settings
@@ -140,13 +140,13 @@ BasicModal {
 
                     visible: config_section.is_dpow_configurable
                     checked: true
-                    text: API.get().settings_pg.empty_string + (qsTr("Enable Komodo dPoW security"))
+                    text: API.app.settings_pg.empty_string + (qsTr("Enable Komodo dPoW security"))
                 }
 
                 DefaultText {
                     visible: enable_dpow_confs.visible && enable_dpow_confs.enabled
                     Layout.alignment: Qt.AlignHCenter
-                    text_value: API.get().settings_pg.empty_string + (General.cex_icon + ' <a href="https://komodoplatform.com/security-delayed-proof-of-work-dpow/">' + qsTr('Read more about dPoW') + '</a>')
+                    text_value: API.app.settings_pg.empty_string + (General.cex_icon + ' <a href="https://komodoplatform.com/security-delayed-proof-of-work-dpow/">' + qsTr('Read more about dPoW') + '</a>')
                     wrapMode: Text.WordWrap
                     font.pixelSize: Style.textSizeSmall2
                 }
@@ -165,7 +165,7 @@ BasicModal {
 
                     DefaultText {
                         Layout.alignment: Qt.AlignHCenter
-                        text_value: API.get().settings_pg.empty_string + (qsTr("Required Confirmations") + ": " + required_confirmation_count.value)
+                        text_value: API.app.settings_pg.empty_string + (qsTr("Required Confirmations") + ": " + required_confirmation_count.value)
                         color: parent.enabled ? Style.colorText : Style.colorTextDisabled
                     }
 
@@ -201,7 +201,7 @@ BasicModal {
                     DefaultText {
                         Layout.alignment: Qt.AlignHCenter
 
-                        text_value: API.get().settings_pg.empty_string + ("⚠️ " + qsTr("Warning, this atomic swap is not dPoW protected!"))
+                        text_value: API.app.settings_pg.empty_string + ("⚠️ " + qsTr("Warning, this atomic swap is not dPoW protected!"))
                     }
                 }
             }
@@ -214,13 +214,13 @@ BasicModal {
         // Buttons
         footer: [
             DefaultButton {
-                text: API.get().settings_pg.empty_string + (qsTr("Cancel"))
+                text: API.app.settings_pg.empty_string + (qsTr("Cancel"))
                 Layout.fillWidth: true
                 onClicked: root.close()
             },
 
             PrimaryButton {
-                text: API.get().settings_pg.empty_string + (qsTr("Confirm"))
+                text: API.app.settings_pg.empty_string + (qsTr("Confirm"))
                 Layout.fillWidth: true
                 enabled: !buy_sell_rpc_busy
                 onClicked: {

@@ -18,14 +18,14 @@ BasicModal {
     }
 
     property var config_fields: ({})
-    readonly property bool fetching_erc_data_busy: API.get().settings_pg.fetching_erc_data_busy
-    readonly property var custom_erc_token_data: API.get().settings_pg.custom_erc_token_data
+    readonly property bool fetching_erc_data_busy: API.app.settings_pg.fetching_erc_data_busy
+    readonly property var custom_erc_token_data: API.app.settings_pg.custom_erc_token_data
 
     function fetchAssetData() {
         const fields = General.clone(config_fields)
         if(fields.type === "ERC-20") {
             console.log("Fetching asset data:", JSON.stringify(fields))
-            API.get().settings_pg.process_erc_20_token_add(fields.contract_address, fields.coinpaprika_id, fields.image_path)
+            API.app.settings_pg.process_erc_20_token_add(fields.contract_address, fields.coinpaprika_id, fields.image_path)
         }
     }
 
@@ -80,12 +80,12 @@ BasicModal {
 
     // Type page
     ModalContent {
-        title: API.get().settings_pg.empty_string + (qsTr("Choose the asset type"))
+        title: API.app.settings_pg.empty_string + (qsTr("Choose the asset type"))
 
         ComboBoxWithTitle {
             id: input_type
             Layout.fillWidth: true
-            title: API.get().settings_pg.empty_string + (qsTr("Type"))
+            title: API.app.settings_pg.empty_string + (qsTr("Type"))
             model: ["ERC-20"]//, "QRC-20", "UTXO", "Smart Chain"]
             currentIndex: 0
         }
@@ -93,13 +93,13 @@ BasicModal {
         // Buttons
         footer: [
             DefaultButton {
-                text: API.get().settings_pg.empty_string + (qsTr("Cancel"))
+                text: API.app.settings_pg.empty_string + (qsTr("Cancel"))
                 Layout.fillWidth: true
                 onClicked: root.previousPage()
             },
 
             PrimaryButton {
-                text: API.get().settings_pg.empty_string + (qsTr("Next"))
+                text: API.app.settings_pg.empty_string + (qsTr("Next"))
                 Layout.fillWidth: true
                 onClicked: {
                     root.reset()
@@ -111,15 +111,15 @@ BasicModal {
 
     // Ticker page
     ModalContent {
-        title: API.get().settings_pg.empty_string + (has_contract_address ? qsTr("Enter the contract address") : qsTr("Choose the asset ticker"))
+        title: API.app.settings_pg.empty_string + (has_contract_address ? qsTr("Enter the contract address") : qsTr("Choose the asset ticker"))
 
         TextFieldWithTitle {
             id: input_ticker
             enabled: !has_contract_address
             visible: enabled
             Layout.fillWidth: true
-            title: API.get().settings_pg.empty_string + (qsTr("Ticker"))
-            field.placeholderText: API.get().settings_pg.empty_string + (qsTr("Enter the ticker"))
+            title: API.app.settings_pg.empty_string + (qsTr("Ticker"))
+            field.placeholderText: API.app.settings_pg.empty_string + (qsTr("Enter the ticker"))
         }
 
         AddressFieldWithTitle {
@@ -127,20 +127,20 @@ BasicModal {
             enabled: has_contract_address
             visible: enabled
             Layout.fillWidth: true
-            title: API.get().settings_pg.empty_string + (qsTr("Contract Address"))
-            field.placeholderText: API.get().settings_pg.empty_string + (qsTr("Enter the contract address"))
+            title: API.app.settings_pg.empty_string + (qsTr("Contract Address"))
+            field.placeholderText: API.app.settings_pg.empty_string + (qsTr("Enter the contract address"))
         }
 
         // Buttons
         footer: [
             DefaultButton {
-                text: API.get().settings_pg.empty_string + (qsTr("Previous"))
+                text: API.app.settings_pg.empty_string + (qsTr("Previous"))
                 Layout.fillWidth: true
                 onClicked: root.previousPage()
             },
 
             PrimaryButton {
-                text: API.get().settings_pg.empty_string + (qsTr("Next"))
+                text: API.app.settings_pg.empty_string + (qsTr("Next"))
                 Layout.fillWidth: true
                 enabled: (!input_ticker.enabled || input_ticker.field.text !== "") &&
                          (!input_contract_address.enabled || input_contract_address.field.text !== "")
@@ -151,11 +151,11 @@ BasicModal {
 
     // Logo page
     ModalContent {
-        title: API.get().settings_pg.empty_string + (qsTr("Choose the asset logo"))
+        title: API.app.settings_pg.empty_string + (qsTr("Choose the asset logo"))
 
         DefaultButton {
             Layout.fillWidth: true
-            text: API.get().settings_pg.empty_string + (qsTr("Browse") + "...")
+            text: API.app.settings_pg.empty_string + (qsTr("Browse") + "...")
             onClicked: input_logo.open()
         }
 
@@ -167,7 +167,7 @@ BasicModal {
 
             readonly property bool enabled: true // Config preparation function searches for this
 
-            title: API.get().settings_pg.empty_string + (qsTr("Please choose the asset logo"))
+            title: API.app.settings_pg.empty_string + (qsTr("Please choose the asset logo"))
             folder: shortcuts.pictures
             selectMultiple: false
             onAccepted: {
@@ -192,13 +192,13 @@ BasicModal {
         // Buttons
         footer: [
             DefaultButton {
-                text: API.get().settings_pg.empty_string + (qsTr("Previous"))
+                text: API.app.settings_pg.empty_string + (qsTr("Previous"))
                 Layout.fillWidth: true
                 onClicked: root.previousPage()
             },
 
             PrimaryButton {
-                text: API.get().settings_pg.empty_string + (qsTr("Next"))
+                text: API.app.settings_pg.empty_string + (qsTr("Next"))
                 Layout.fillWidth: true
                 enabled: input_logo.path !== ""
                 onClicked: root.nextPage()
@@ -208,12 +208,12 @@ BasicModal {
 
     // Configuration
     ModalContent {
-        title: API.get().settings_pg.empty_string + (qsTr("Configuration"))
+        title: API.app.settings_pg.empty_string + (qsTr("Configuration"))
 
         DefaultText {
             visible: has_contract_address
             Layout.fillWidth: true
-            text_value: API.get().settings_pg.empty_string + (qsTr("All configuration fields will be fetched using the contract address you provided."))
+            text_value: API.app.settings_pg.empty_string + (qsTr("All configuration fields will be fetched using the contract address you provided."))
         }
 
         TextFieldWithTitle {
@@ -221,8 +221,8 @@ BasicModal {
             enabled: !has_contract_address
             visible: enabled
             Layout.fillWidth: true
-            title: API.get().settings_pg.empty_string + (qsTr("Name"))
-            field.placeholderText: API.get().settings_pg.empty_string + (qsTr("Enter the name"))
+            title: API.app.settings_pg.empty_string + (qsTr("Name"))
+            field.placeholderText: API.app.settings_pg.empty_string + (qsTr("Enter the name"))
         }
 
         TextFieldWithTitle {
@@ -230,15 +230,15 @@ BasicModal {
             enabled: !has_contract_address
             visible: enabled
             Layout.fillWidth: true
-            title: API.get().settings_pg.empty_string + (qsTr("Coinpaprika ID"))
-            field.placeholderText: API.get().settings_pg.empty_string + (qsTr("Enter the Coinpaprika ID"))
+            title: API.app.settings_pg.empty_string + (qsTr("Coinpaprika ID"))
+            field.placeholderText: API.app.settings_pg.empty_string + (qsTr("Enter the Coinpaprika ID"))
         }
 
         DefaultCheckBox {
             id: input_active
             enabled: !has_contract_address
             visible: enabled
-            text: API.get().settings_pg.empty_string + (qsTr("Active"))
+            text: API.app.settings_pg.empty_string + (qsTr("Active"))
         }
 
         DefaultBusyIndicator {
@@ -249,13 +249,13 @@ BasicModal {
         // Buttons
         footer: [
             DefaultButton {
-                text: API.get().settings_pg.empty_string + (qsTr("Previous"))
+                text: API.app.settings_pg.empty_string + (qsTr("Previous"))
                 Layout.fillWidth: true
                 onClicked: root.previousPage()
             },
 
             PrimaryButton {
-                text: API.get().settings_pg.empty_string + (qsTr("Preview"))
+                text: API.app.settings_pg.empty_string + (qsTr("Preview"))
                 Layout.fillWidth: true
                 enabled: ! root.fetching_erc_data_busy &&
                          (!input_name.enabled || input_name.field.text !== "") &&
@@ -271,12 +271,12 @@ BasicModal {
 
     // Preview
     ModalContent {
-        title: API.get().settings_pg.empty_string + (qsTr("Preview"))
+        title: API.app.settings_pg.empty_string + (qsTr("Preview"))
 
         DefaultText {
             visible: has_contract_address
             Layout.fillWidth: true
-            text_value: API.get().settings_pg.empty_string + (qsTr("WARNING: Application will restart immidiately to apply the changes!"))
+            text_value: API.app.settings_pg.empty_string + (qsTr("WARNING: Application will restart immidiately to apply the changes!"))
             color: Style.colorRed
             horizontalAlignment: Text.AlignHCenter
         }
@@ -296,7 +296,7 @@ BasicModal {
         DefaultText {
             Layout.alignment: Qt.AlignHCenter
             visible: has_contract_address
-            text_value: API.get().settings_pg.empty_string + (config_fields.name + " (" + config_fields.ticker + ")")
+            text_value: API.app.settings_pg.empty_string + (config_fields.name + " (" + config_fields.ticker + ")")
             font.pixelSize: Style.textSize2
         }
 
@@ -306,7 +306,7 @@ BasicModal {
 
         TextAreaWithTitle {
             Layout.fillWidth: true
-            title: API.get().settings_pg.empty_string + (qsTr("Config Fields"))
+            title: API.app.settings_pg.empty_string + (qsTr("Config Fields"))
             field.readOnly: true
             remove_newline: false
             copyable: true
@@ -319,7 +319,7 @@ BasicModal {
 
         TextAreaWithTitle {
             Layout.fillWidth: true
-            title: API.get().settings_pg.empty_string + (qsTr("Fetched Data"))
+            title: API.app.settings_pg.empty_string + (qsTr("Fetched Data"))
             field.readOnly: true
             remove_newline: false
             copyable: true
@@ -330,17 +330,17 @@ BasicModal {
         // Buttons
         footer: [
             DefaultButton {
-                text: API.get().settings_pg.empty_string + (qsTr("Previous"))
+                text: API.app.settings_pg.empty_string + (qsTr("Previous"))
                 Layout.fillWidth: true
                 onClicked: root.previousPage()
             },
 
             PrimaryButton {
-                text: API.get().settings_pg.empty_string + (qsTr("Submit & Restart"))
+                text: API.app.settings_pg.empty_string + (qsTr("Submit & Restart"))
                 Layout.fillWidth: true
                 onClicked: {
-                    API.get().settings_pg.submit()
-                    API.get().restart()
+                    API.app.settings_pg.submit()
+                    API.app.restart()
                     //root.nextPage()
                 }
             }

@@ -20,16 +20,16 @@ Item {
     Layout.fillWidth: true
 
     function getMainPage() {
-        return API.design_editor ? General.idx_dashboard_wallet : General.idx_dashboard_portfolio
+        return General.idx_dashboard_portfolio
     }
 
     function openLogsFolder() {
-        API.get().export_swaps_json()
+        API.app.export_swaps_json()
         const prefix = Qt.platform.os == "windows" ? "file:///" : "file://"
-        Qt.openUrlExternally(prefix + API.get().get_log_folder())
+        Qt.openUrlExternally(prefix + API.app.get_log_folder())
     }
 
-    readonly property var api_wallet_page: API.get().wallet_pg
+    readonly property var api_wallet_page: API.app.wallet_pg
     readonly property var current_ticker_infos: api_wallet_page.ticker_infos
     readonly property bool can_change_ticker: !api_wallet_page.tx_fetching_busy
 
@@ -38,7 +38,7 @@ Item {
 
     function reset() {
         // Fill all coins list
-        General.all_coins = API.get().get_all_coins()
+        General.all_coins = API.app.get_all_coins()
 
         current_page = getMainPage()
         prev_page = -1
@@ -57,7 +57,7 @@ Item {
         return app.current_page === idx_dashboard
     }
 
-    property var portfolio_coins: API.get().portfolio_pg.portfolio_mdl.portfolio_proxy_mdl
+    property var portfolio_coins: API.app.portfolio_pg.portfolio_mdl.portfolio_proxy_mdl
 
     function resetCoinFilter() {
         portfolio_coins.setFilterFixedString("")
@@ -67,11 +67,11 @@ Item {
         if(prev_page !== current_page) {
             // Handle DEX enter/exit
             if(current_page === General.idx_dashboard_exchange) {
-                API.get().trading_pg.on_gui_enter_dex()
+                API.app.trading_pg.on_gui_enter_dex()
                 exchange.onOpened()
             }
             else if(prev_page === General.idx_dashboard_exchange) {
-                API.get().trading_pg.on_gui_leave_dex()
+                API.app.trading_pg.on_gui_leave_dex()
             }
 
             // Opening of other pages
@@ -141,7 +141,7 @@ Item {
                 Layout.fillHeight: true
                 DefaultText {
                     anchors.centerIn: parent
-                    text_value: API.get().settings_pg.empty_string + (qsTr("Content for this section will be added later. Stay tuned!"))
+                    text_value: API.app.settings_pg.empty_string + (qsTr("Content for this section will be added later. Stay tuned!"))
                 }
             }
 
@@ -152,7 +152,7 @@ Item {
                 Layout.fillHeight: true
                 DefaultText {
                     anchors.centerIn: parent
-                    text_value: API.get().settings_pg.empty_string + (qsTr("Content for this section will be added later. Stay tuned!"))
+                    text_value: API.app.settings_pg.empty_string + (qsTr("Content for this section will be added later. Stay tuned!"))
                 }
             }
 

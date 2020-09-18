@@ -51,26 +51,26 @@ BasicModal {
     function enableCoins() {
         const coins_to_enable = Object.keys(selected_to_enable)
         console.log("QML enable_coins:", JSON.stringify(coins_to_enable))
-        API.get().enable_coins(coins_to_enable)
+        API.app.enable_coins(coins_to_enable)
         reset()
         root.close()
     }
 
     ModalContent {
-        title: API.get().settings_pg.empty_string + (qsTr("Enable coins"))
+        title: API.app.settings_pg.empty_string + (qsTr("Enable coins"))
 
         // Search input
         DefaultTextField {
             id: input_coin_filter
 
             Layout.fillWidth: true
-            placeholderText: API.get().settings_pg.empty_string + (qsTr("Search"))
+            placeholderText: API.app.settings_pg.empty_string + (qsTr("Search"))
             selectByMouse: true
         }
 
         DefaultFlickable {
             id: flickable
-            visible: API.get().enableable_coins.length > 0
+            visible: API.app.enableable_coins.length > 0
 
             height: 450
             Layout.fillWidth: true
@@ -83,26 +83,26 @@ BasicModal {
 
                 CoinList {
                     id: coins_utxo
-                    group_title: API.get().settings_pg.empty_string + qsTr("Select all UTXO coins")
-                    model: General.filterCoins(API.get().enableable_coins, input_coin_filter.text, "UTXO")
+                    group_title: API.app.settings_pg.empty_string + qsTr("Select all UTXO coins")
+                    model: General.filterCoins(API.app.enableable_coins, input_coin_filter.text, "UTXO")
                 }
 
                 CoinList {
                     id: coins_smartchains
-                    group_title: API.get().settings_pg.empty_string + qsTr("Select all SmartChains")
-                    model: General.filterCoins(API.get().enableable_coins, input_coin_filter.text, "Smart Chain")
+                    group_title: API.app.settings_pg.empty_string + qsTr("Select all SmartChains")
+                    model: General.filterCoins(API.app.enableable_coins, input_coin_filter.text, "Smart Chain")
                 }
 
                 CoinList {
                     id: coins_erc
-                    group_title: API.get().settings_pg.empty_string + qsTr("Select all ERC tokens")
-                    model: General.filterCoins(API.get().enableable_coins, input_coin_filter.text, "ERC-20")
+                    group_title: API.app.settings_pg.empty_string + qsTr("Select all ERC tokens")
+                    model: General.filterCoins(API.app.enableable_coins, input_coin_filter.text, "ERC-20")
                 }
 
                 CoinList {
                     id: coins_qrc
-                    group_title: API.get().settings_pg.empty_string + qsTr("Select all QRC tokens")
-                    model: General.filterCoins(API.get().enableable_coins, input_coin_filter.text, "QRC-20")
+                    group_title: API.app.settings_pg.empty_string + qsTr("Select all QRC tokens")
+                    model: General.filterCoins(API.app.enableable_coins, input_coin_filter.text, "QRC-20")
                 }
             }
         }
@@ -110,23 +110,23 @@ BasicModal {
 
         // Info text
         DefaultText {
-            visible: API.get().enableable_coins.length === 0
+            visible: API.app.enableable_coins.length === 0
 
-            text_value: API.get().settings_pg.empty_string + (qsTr("All coins are already enabled!"))
+            text_value: API.app.settings_pg.empty_string + (qsTr("All coins are already enabled!"))
         }
 
         // Buttons
         footer: [
             DefaultButton {
-                text: API.get().settings_pg.empty_string + (qsTr("Close"))
+                text: API.app.settings_pg.empty_string + (qsTr("Close"))
                 Layout.fillWidth: true
                 onClicked: root.close()
             },
 
             PrimaryButton {
-                visible: API.get().enableable_coins.length > 0
+                visible: API.app.enableable_coins.length > 0
                 enabled: Object.keys(selected_to_enable).length > 0
-                text: API.get().settings_pg.empty_string + (qsTr("Enable"))
+                text: API.app.settings_pg.empty_string + (qsTr("Enable"))
                 Layout.fillWidth: true
                 onClicked: enableCoins()
             }

@@ -36,7 +36,7 @@ ColumnLayout {
             id: save_button
             button_type: input_field.enabled ? "danger" : "primary"
             Layout.alignment: Qt.AlignVCenter
-            text: API.get().settings_pg.empty_string + (input_field.enabled ? qsTr("Save") : qsTr("Edit"))
+            text: API.app.settings_pg.empty_string + (input_field.enabled ? qsTr("Save") : qsTr("Edit"))
             visible: saveable
             onClicked: {
                 if(input_field.enabled) saved()

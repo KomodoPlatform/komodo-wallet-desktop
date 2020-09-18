@@ -164,8 +164,8 @@ Item {
                         Menu {
                             id: context_menu
                             Action {
-                                text: API.get().settings_pg.empty_string + (qsTr("Disable %1", "TICKER").arg(ticker))
-                                onTriggered: API.get().disable_coins([ticker])
+                                text: API.app.settings_pg.empty_string + (qsTr("Disable %1", "TICKER").arg(ticker))
+                                onTriggered: API.app.disable_coins([ticker])
                                 enabled: General.canDisable(ticker)
                             }
                         }
@@ -191,7 +191,7 @@ Item {
                             // Ticker
                             DefaultText {
                                 Layout.alignment: Qt.AlignRight
-                                text_value: API.get().settings_pg.empty_string + (ticker)
+                                text_value: API.app.settings_pg.empty_string + (ticker)
                                 font.pixelSize: text.length > 6 ? Style.textSizeSmall2 : Style.textSizeSmall4
                             }
 
@@ -199,7 +199,7 @@ Item {
                                 visible: mouse_area.containsMouse
                                 background: FloatingBackground { auto_set_size: false }
                                 contentItem:  DefaultText {
-                                    text_value: API.get().settings_pg.empty_string + (name.replace(" (TESTCOIN)", ""))
+                                    text_value: API.app.settings_pg.empty_string + (name.replace(" (TESTCOIN)", ""))
                                     font.pixelSize: Style.textSizeSmall4
                                 }
                             }

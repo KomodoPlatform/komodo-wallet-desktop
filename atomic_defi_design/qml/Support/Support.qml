@@ -90,14 +90,14 @@ Item {
 
                             DefaultText {
                                 Layout.alignment: Qt.AlignVCenter
-                                text_value: API.get().settings_pg.empty_string + (update_modal.update_needed ? qsTr("Update available") : qsTr("Up to date"))
+                                text_value: API.app.settings_pg.empty_string + (update_modal.update_needed ? qsTr("Update available") : qsTr("Up to date"))
                                 color: changelog_text.color
                             }
                         }
 
                         DefaultText {
                             Layout.alignment: Qt.AlignHCenter
-                            text_value: API.get().settings_pg.empty_string + (General.version_string)
+                            text_value: API.app.settings_pg.empty_string + (General.version_string)
                             font.pixelSize: Style.textSizeSmall3
                             color: changelog_text.color
                         }
@@ -105,7 +105,7 @@ Item {
                         DefaultText {
                             id: changelog_text
                             Layout.alignment: Qt.AlignHCenter
-                            text_value: API.get().settings_pg.empty_string + (General.cex_icon + ' ' + qsTr('Changelog'))
+                            text_value: API.app.settings_pg.empty_string + (General.cex_icon + ' ' + qsTr('Changelog'))
                             font.pixelSize: Style.textSizeSmall2
 
                             color: Qt.lighter(Style.colorWhite4, changelog_button.containsMouse ? Style.hoverLightMultiplier : 1.0)
@@ -117,7 +117,7 @@ Item {
                     anchors.right: parent.right
                     anchors.rightMargin: 20
                     anchors.verticalCenter: parent.verticalCenter
-                    text: API.get().settings_pg.empty_string + (qsTr("Open Logs Folder"))
+                    text: API.app.settings_pg.empty_string + (qsTr("Open Logs Folder"))
                     onClicked: openLogsFolder()
                 }
             }
@@ -128,7 +128,7 @@ Item {
 
             DefaultText {
                 Layout.alignment: Qt.AlignHCenter
-                text_value: API.get().settings_pg.empty_string + (qsTr("Frequently Asked Questions"))
+                text_value: API.app.settings_pg.empty_string + (qsTr("Frequently Asked Questions"))
                 font.pixelSize: Style.textSize2
             }
 
@@ -144,30 +144,30 @@ Item {
 
             // FAQ Lines
             FAQLine {
-                title: API.get().settings_pg.empty_string + (qsTr("Do you store my private keys?"))
-                text: API.get().settings_pg.empty_string + (qsTr("No! atomicDEX is non-custodial. We never store any sensitive data, including your private keys, seed phrases, or PIN. All of these are only stored on the user’s device and never leave it. You are in full control of your assets."))
+                title: API.app.settings_pg.empty_string + (qsTr("Do you store my private keys?"))
+                text: API.app.settings_pg.empty_string + (qsTr("No! atomicDEX is non-custodial. We never store any sensitive data, including your private keys, seed phrases, or PIN. All of these are only stored on the user’s device and never leave it. You are in full control of your assets."))
             }
 
             FAQLine {
-                title: API.get().settings_pg.empty_string + (qsTr("How is trading on atomicDEX different from trading on other DEXs?"))
-                text: API.get().settings_pg.empty_string + (qsTr("Other DEXs generally only allow you to trade assets that are based on a single blockchain network, use proxy tokens, and only allow placing a single order with the same funds.
+                title: API.app.settings_pg.empty_string + (qsTr("How is trading on atomicDEX different from trading on other DEXs?"))
+                text: API.app.settings_pg.empty_string + (qsTr("Other DEXs generally only allow you to trade assets that are based on a single blockchain network, use proxy tokens, and only allow placing a single order with the same funds.
 
 atomicDEX enables you to natively trade across two different blockchain networks without proxy tokens. You can also place multiple orders with the same funds, for example selling 0.1 BTC for KMD, QTUM, or VRSC -- the first that fills automatically cancels all other orders."))
             }
 
             FAQLine {
-                title: API.get().settings_pg.empty_string + (qsTr("How long does each atomic swap take?"))
-                text: API.get().settings_pg.empty_string + (qsTr("Several factors determine the processing time for each swap, the block time of the traded assets (Bitcoin is typically the slowest), network congestion, and your selected network fee (e.g. amount of gas you pay for ETH or ERC-20 swaps)."))
+                title: API.app.settings_pg.empty_string + (qsTr("How long does each atomic swap take?"))
+                text: API.app.settings_pg.empty_string + (qsTr("Several factors determine the processing time for each swap, the block time of the traded assets (Bitcoin is typically the slowest), network congestion, and your selected network fee (e.g. amount of gas you pay for ETH or ERC-20 swaps)."))
             }
 
             FAQLine {
-                title: API.get().settings_pg.empty_string + (qsTr("Do I need to be online for the duration of the swap?"))
-                text: API.get().settings_pg.empty_string + (qsTr("Yes. You must remain connected to the internet and have your app running to successfully complete each atomic swap (very short cuts in connectivity are usually fine). Otherwise, your trade will automatically be canceled."))
+                title: API.app.settings_pg.empty_string + (qsTr("Do I need to be online for the duration of the swap?"))
+                text: API.app.settings_pg.empty_string + (qsTr("Yes. You must remain connected to the internet and have your app running to successfully complete each atomic swap (very short cuts in connectivity are usually fine). Otherwise, your trade will automatically be canceled."))
             }
 
             FAQLine {
-                title: API.get().settings_pg.empty_string + (qsTr("How are the fees on atomicDEX calculated?"))
-                text: API.get().settings_pg.empty_string + (qsTr("There are two fee categories to consider when trading on atomicDEX.
+                title: API.app.settings_pg.empty_string + (qsTr("How are the fees on atomicDEX calculated?"))
+                text: API.app.settings_pg.empty_string + (qsTr("There are two fee categories to consider when trading on atomicDEX.
 
 1. atomicDEX charges a 0.15% trading fee for taker orders, and maker orders have zero fees.
 2. Both makers and takers will need to pay normal transaction fees when making atomic swaps.
@@ -176,28 +176,28 @@ Network fees can vary greatly depending on your selected trading pair. This is w
             }
 
             FAQLine {
-                title: API.get().settings_pg.empty_string + (qsTr("Do you provide user support?"))
-                text: API.get().settings_pg.empty_string + (qsTr("Yes! Unlike most open source blockchain projects, atomicDEX offers 24/7 support. Join our Discord, we are happy to help!"))
+                title: API.app.settings_pg.empty_string + (qsTr("Do you provide user support?"))
+                text: API.app.settings_pg.empty_string + (qsTr("Yes! Unlike most open source blockchain projects, atomicDEX offers 24/7 support. Join our Discord, we are happy to help!"))
             }
 
             FAQLine {
-                title: API.get().settings_pg.empty_string + (qsTr("Do you have country restrictions?"))
-                text: API.get().settings_pg.empty_string + (qsTr("No! atomicDEX is fully decentralized. It is not possible to limit user access by any third party."))
+                title: API.app.settings_pg.empty_string + (qsTr("Do you have country restrictions?"))
+                text: API.app.settings_pg.empty_string + (qsTr("No! atomicDEX is fully decentralized. It is not possible to limit user access by any third party."))
             }
 
             FAQLine {
-                title: API.get().settings_pg.empty_string + (qsTr("Who is behind atomicDEX?"))
-                text: API.get().settings_pg.empty_string + (qsTr("atomicDEX is developed by the Komodo team. Komodo is one of the most established blockchain projects working on innovative solutions like atomic swaps, Delayed Proof-of-Work, and an interoperable multi-chain architecture."))
+                title: API.app.settings_pg.empty_string + (qsTr("Who is behind atomicDEX?"))
+                text: API.app.settings_pg.empty_string + (qsTr("atomicDEX is developed by the Komodo team. Komodo is one of the most established blockchain projects working on innovative solutions like atomic swaps, Delayed Proof-of-Work, and an interoperable multi-chain architecture."))
             }
 
             FAQLine {
-                title: API.get().settings_pg.empty_string + (qsTr("Is it possible to develop my own white-label exchange on atomicDEX?"))
-                text: API.get().settings_pg.empty_string + (qsTr("Absolutely! You can read our developer documentation for more details or contact us with your partnership inquiries. Have a specific technical question? The atomicDEX developer community is always ready to help!"))
+                title: API.app.settings_pg.empty_string + (qsTr("Is it possible to develop my own white-label exchange on atomicDEX?"))
+                text: API.app.settings_pg.empty_string + (qsTr("Absolutely! You can read our developer documentation for more details or contact us with your partnership inquiries. Have a specific technical question? The atomicDEX developer community is always ready to help!"))
             }
 
             FAQLine {
-                title: API.get().settings_pg.empty_string + (qsTr("Which devices can I use atomicDEX on?"))
-                text: API.get().settings_pg.empty_string + (qsTr("atomicDEX is available for mobile on both Android and iPhone, and for desktop on Windows, Linux and Mac operating systems."))
+                title: API.app.settings_pg.empty_string + (qsTr("Which devices can I use atomicDEX on?"))
+                text: API.app.settings_pg.empty_string + (qsTr("atomicDEX is available for mobile on both Android and iPhone, and for desktop on Windows, Linux and Mac operating systems."))
             }
         }
     }

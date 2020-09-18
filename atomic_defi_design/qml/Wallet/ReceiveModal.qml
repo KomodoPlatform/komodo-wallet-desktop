@@ -15,12 +15,12 @@ BasicModal {
     width: 400
 
     ModalContent {
-        title: API.get().settings_pg.empty_string + (qsTr("Receive"))
+        title: API.app.settings_pg.empty_string + (qsTr("Receive"))
 
         // Receive address
         TextAreaWithTitle {
-            title: API.get().settings_pg.empty_string + (qsTr("Share this address to receive coins"))
-            field.text: API.get().settings_pg.empty_string + (current_ticker_infos.address)
+            title: API.app.settings_pg.empty_string + (qsTr("Share this address to receive coins"))
+            field.text: API.app.settings_pg.empty_string + (current_ticker_infos.address)
             field.readOnly: true
             field.wrapMode: TextEdit.NoWrap
             copyable: true
@@ -39,7 +39,7 @@ BasicModal {
         // Buttons
         footer: [
             DefaultButton {
-                text: API.get().settings_pg.empty_string + (qsTr("Close"))
+                text: API.app.settings_pg.empty_string + (qsTr("Close"))
                 Layout.fillWidth: true
                 onClicked: root.close()
             }

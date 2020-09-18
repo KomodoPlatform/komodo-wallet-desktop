@@ -11,7 +11,7 @@ BasicModal {
     property alias field: text_area.field
 
     ModalContent {
-        title: API.get().settings_pg.empty_string + (qsTr("Log"))
+        title: API.app.settings_pg.empty_string + (qsTr("Log"))
 
         TextAreaWithTitle {
             id: text_area
@@ -24,7 +24,7 @@ BasicModal {
         // Buttons
         footer: [
             DefaultButton {
-                text: API.get().settings_pg.empty_string + (qsTr("Close"))
+                text: API.app.settings_pg.empty_string + (qsTr("Close"))
                 Layout.fillWidth: true
                 onClicked: root.close()
             }

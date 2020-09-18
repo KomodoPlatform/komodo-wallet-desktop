@@ -10,7 +10,7 @@ Item {
     id: exchange_orders
 
     property string base
-    property var orders_model: API.get().orders_mdl
+    property var orders_model: API.app.orders_mdl
 
     function inCurrentPage() {
         return  exchange.inCurrentPage() &&
@@ -27,8 +27,8 @@ Item {
 
     function onOpened() {
         applyFilter()
-        API.get().orders_mdl.orders_proxy_mdl.is_history = false
-        API.get().refresh_orders_and_swaps()
+        API.app.orders_mdl.orders_proxy_mdl.is_history = false
+        API.app.refresh_orders_and_swaps()
     }
 
     function changeTicker(ticker) {
@@ -55,7 +55,7 @@ Item {
                 Switch {
                     id: show_all_coins
                     Layout.leftMargin: 15
-                    text: API.get().settings_pg.empty_string + (qsTr("Show All Coins"))
+                    text: API.app.settings_pg.empty_string + (qsTr("Show All Coins"))
 
                     checked: true
                     onCheckedChanged: applyFilter()
@@ -79,18 +79,18 @@ Item {
 
                     textRole: "text"
 
-                    model: General.fullNamesOfCoins(API.get().enabled_coins)
+                    model: General.fullNamesOfCoins(API.app.enabled_coins)
                     onCurrentTextChanged: {
                         base = model[currentIndex].value
                     }
                 }
 
                 DangerButton {
-                    text: API.get().settings_pg.empty_string + (show_all_coins.checked ? qsTr("Cancel All Orders") : qsTr("Cancel All %1 Orders", "TICKER").arg(base))
+                    text: API.app.settings_pg.empty_string + (show_all_coins.checked ? qsTr("Cancel All Orders") : qsTr("Cancel All %1 Orders", "TICKER").arg(base))
                     enabled: orders_model.length > 0
                     onClicked: {
-                        if(show_all_coins.checked) API.get().trading_pg.cancel_all_orders()
-                        else API.get().trading_pg.cancel_all_orders_by_ticker(base)
+                        if(show_all_coins.checked) API.app.trading_pg.cancel_all_orders()
+                        else API.app.trading_pg.cancel_all_orders_by_ticker(base)
                     }
                     Layout.rightMargin: 15
                 }
@@ -105,7 +105,7 @@ Item {
             spacing: parent.spacing
 
             OrderList {
-                title: API.get().settings_pg.empty_string + (show_all_coins.checked ? qsTr("All Orders") : qsTr("All %1 Orders", "TICKER").arg(base))
+                title: API.app.settings_pg.empty_string + (show_all_coins.checked ? qsTr("All Orders") : qsTr("All %1 Orders", "TICKER").arg(base))
                 items: orders_model
             }
         }
