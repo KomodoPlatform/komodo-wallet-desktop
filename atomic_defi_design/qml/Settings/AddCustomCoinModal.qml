@@ -30,6 +30,19 @@ BasicModal {
     }
 
     onCustom_erc_token_dataChanged: {
+        const adex_cfg = custom_erc_token_data.adex_cfg
+        if(!adex_cfg) return
+
+        const ticker = Object.keys(adex_cfg)[0]
+        const token_data = adex_cfg[Object.keys(adex_cfg)[0]]
+
+        var fields = General.clone(config_fields)
+
+        fields.ticker = token_data.coin
+        fields.name = token_data.name
+
+        config_fields = General.clone(fields)
+
         root.nextPage()
     }
 
@@ -48,7 +61,7 @@ BasicModal {
         addToConfig(input_active,           "active",           input_active.checked)
         addToConfig(input_coinpaprika_id,   "coinpaprika_id",   input_coinpaprika_id.field.text)
 
-        root.config_fields = fields
+        root.config_fields = General.clone(fields)
     }
 
     function reset() {
@@ -260,12 +273,31 @@ BasicModal {
     ModalContent {
         title: API.get().settings_pg.empty_string + (qsTr("Preview"))
 
+        DefaultText {
+            visible: has_contract_address
+            Layout.fillWidth: true
+            text_value: API.get().settings_pg.empty_string + (qsTr("WARNING: Application will restart immidiately to apply the changes!"))
+            color: Style.colorRed
+            horizontalAlignment: Text.AlignHCenter
+        }
+
+        HorizontalLine {
+            Layout.fillWidth: true
+        }
+
         DefaultImage {
             Layout.alignment: Qt.AlignHCenter
 
             Layout.preferredWidth: 64
             Layout.preferredHeight: Layout.preferredWidth
             source: input_logo.path
+        }
+
+        DefaultText {
+            Layout.alignment: Qt.AlignHCenter
+            visible: has_contract_address
+            text_value: API.get().settings_pg.empty_string + (config_fields.name + " (" + config_fields.ticker + ")")
+            font.pixelSize: Style.textSize2
         }
 
         HorizontalLine {
