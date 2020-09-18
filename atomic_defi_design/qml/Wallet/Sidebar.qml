@@ -72,7 +72,7 @@ Item {
 
                             visible: false
                         }
-                        ColorOverlay {
+                        DefaultColorOverlay {
                             id: search_button_overlay
 
                             anchors.fill: search_button
