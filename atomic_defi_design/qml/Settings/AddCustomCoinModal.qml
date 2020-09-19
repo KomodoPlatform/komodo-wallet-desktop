@@ -370,7 +370,7 @@ BasicModal {
                 Layout.fillWidth: true
                 onClicked: {
                     API.app.settings_pg.submit()
-                    root.nextPage()
+                    root.close()
                     restart_modal.open()
                 }
             }
