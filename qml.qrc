@@ -12,6 +12,7 @@
         <file>atomic_defi_design/assets/fonts/Montserrat-Light.ttf</file>
         <file>atomic_defi_design/assets/fonts/Montserrat-Thin.ttf</file>
         <file>atomic_defi_design/assets/fonts/Montserrat-Regular.ttf</file>
+        <file>atomic_defi_design/assets/images/guide_contract_address.gif</file>
         <file>atomic_defi_design/assets/images/icon-discord.png</file>
         <file>atomic_defi_design/assets/images/icon-twitter.png</file>
         <file>atomic_defi_design/assets/images/icon-email.png</file>
@@ -167,6 +168,7 @@
         <file>atomic_defi_design/qml/Components/InnerBackground.qml</file>
         <file>atomic_defi_design/qml/Components/FloatingBackground.qml</file>
         <file>atomic_defi_design/qml/Components/DefaultImage.qml</file>
+        <file>atomic_defi_design/qml/Components/DefaultAnimatedImage.qml</file>
         <file>atomic_defi_design/qml/Components/DefaultInnerShadow.qml</file>
         <file>atomic_defi_design/qml/Components/DefaultButton.qml</file>
         <file>atomic_defi_design/qml/Components/DefaultBusyIndicator.qml</file>

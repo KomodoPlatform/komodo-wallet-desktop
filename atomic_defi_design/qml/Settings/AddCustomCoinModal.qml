@@ -131,6 +131,18 @@ BasicModal {
             field.placeholderText: API.app.settings_pg.empty_string + (qsTr("Enter the contract address"))
         }
 
+        DefaultText {
+            Layout.fillWidth: true
+            text_value: API.app.settings_pg.empty_string + (General.cex_icon + ' <a href="https://etherscan.io/tokens">' + qsTr('Get the contract address from Etherscan') + '</a>')
+        }
+
+        DefaultAnimatedImage {
+            visible: input_contract_address.visible
+            Layout.alignment: Qt.AlignHCenter
+            playing: root.visible && visible
+            source: General.image_path + "guide_contract_address.gif"
+        }
+
         // Buttons
         footer: [
             DefaultButton {
