@@ -196,13 +196,14 @@ BasicModal {
             nameFilters: ["Image files (*.png)"]//["Image files (*.jpg *.png)"]
         }
 
-        DefaultImage {
-            Layout.alignment: Qt.AlignHCenter
 
-            //visible: input_logo.path !== ""
-            Layout.preferredWidth: 300
-            Layout.preferredHeight: Layout.preferredWidth
-            source: input_logo.path
+        InnerBackground {
+            Layout.alignment: Qt.AlignHCenter
+            content: DefaultImage {
+                width: 300
+                height: width
+                source: input_logo.path
+            }
         }
 
         // Buttons
