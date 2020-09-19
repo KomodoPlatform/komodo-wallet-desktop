@@ -344,4 +344,10 @@ namespace atomic_dex
         this->m_system_manager.get_system<mm2>().add_new_coin(out.at("adex_cfg"), out.at("mm2_cfg"));
         this->set_custom_erc_token_data(QJsonObject{{}});
     }
+
+    void
+    settings_page::remove_custom_coin(const QString& ticker) noexcept
+    {
+        this->m_system_manager.get_system<mm2>().remove_custom_coin(ticker.toStdString());
+    }
 } // namespace atomic_dex

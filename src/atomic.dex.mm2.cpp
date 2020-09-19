@@ -365,7 +365,7 @@ namespace atomic_dex
                         std::size_t idx = 0;
                         for (auto&& answer: answers)
                         {
-                            //spdlog::trace("answer {}",  answer.dump(4));
+                            // spdlog::trace("answer {}",  answer.dump(4));
 
                             if (answer.contains("balance"))
                             {
@@ -1403,9 +1403,9 @@ namespace atomic_dex
             ifs >> config_json_data;
 
             //! Modify contents
-            //config_json_data
+            // config_json_data
             config_json_data[coin_cfg_json.begin().key()] = coin_cfg_json.at(coin_cfg_json.begin().key());
-            //config_json_data.push_back(coin_cfg_json);
+            // config_json_data.push_back(coin_cfg_json);
 
             //! Close
             ifs.close();
@@ -1464,5 +1464,60 @@ namespace atomic_dex
             }
         }
         return out;
+    }
+
+    void
+    mm2::remove_custom_coin(const std::string& ticker) noexcept
+    {
+        //! Coin need to be disabled to be removed
+        assert(not get_coin_info(ticker).currently_enabled);
+
+        //! Remove from our cfg
+        if (is_this_ticker_present_in_normal_cfg(ticker))
+        {
+            fs::path       cfg_path = get_atomic_dex_config_folder();
+            std::string    filename = std::string(atomic_dex::get_raw_version()) + "-coins." + m_current_wallet_name + ".json";
+            std::ifstream  ifs((cfg_path / filename).c_str());
+            nlohmann::json config_json_data;
+            assert(ifs.is_open());
+
+            //! Read Contents
+            ifs >> config_json_data;
+
+            this->m_coins_informations.erase(ticker);
+
+            config_json_data.erase(config_json_data.find(ticker));
+
+            //! Close
+            ifs.close();
+
+            //! Write contents
+            std::ofstream ofs(cfg_path.c_str(), std::ios::trunc);
+            assert(ofs.is_open());
+            ofs << config_json_data;
+        }
+
+        if (is_this_ticker_present_in_raw_cfg(ticker))
+        {
+            fs::path       mm2_cfg_path = ag::core::assets_real_path() / "tools/mm2/coins";
+            std::ifstream  ifs(mm2_cfg_path.c_str());
+            nlohmann::json config_json_data;
+            assert(ifs.is_open());
+
+            //! Read Contents
+            ifs >> config_json_data;
+
+            config_json_data.erase(std::find_if(begin(config_json_data), end(config_json_data), [ticker](nlohmann::json current_elem) {
+                return current_elem.at("coin").get<std::string>() == ticker;
+            }));
+
+            //! Close
+            ifs.close();
+
+            //! Write contents
+            std::ofstream ofs(mm2_cfg_path.c_str(), std::ios::trunc);
+            assert(ofs.is_open());
+            ofs << config_json_data;
+        }
     }
 } // namespace atomic_dex
