@@ -161,13 +161,8 @@ Item {
                         }
 
                         // Right click menu
-                        Menu {
+                        CoinMenu {
                             id: context_menu
-                            Action {
-                                text: API.app.settings_pg.empty_string + (qsTr("Disable %1", "TICKER").arg(ticker))
-                                onTriggered: API.app.disable_coins([ticker])
-                                enabled: General.canDisable(ticker)
-                            }
                         }
 
                         readonly property double side_margin: 16
