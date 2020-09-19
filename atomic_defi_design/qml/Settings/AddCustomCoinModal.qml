@@ -137,11 +137,14 @@ BasicModal {
             text_value: API.app.settings_pg.empty_string + (General.cex_icon + ' <a href="https://etherscan.io/tokens">' + qsTr('Get the contract address from Etherscan') + '</a>')
         }
 
-        DefaultAnimatedImage {
-            visible: input_contract_address.visible
+
+        InnerBackground {
             Layout.alignment: Qt.AlignHCenter
-            playing: root.visible && visible
-            source: General.image_path + "guide_contract_address.gif"
+            content: DefaultAnimatedImage {
+                visible: input_contract_address.visible
+                playing: root.visible && visible
+                source: General.image_path + "guide_contract_address.gif"
+            }
         }
 
         // Buttons
@@ -251,11 +254,14 @@ BasicModal {
             text_value: API.app.settings_pg.empty_string + (General.cex_icon + ' <a href="https://coinpaprika.com/">' + qsTr('Get the Coinpaprika ID') + '</a>')
         }
 
-        DefaultAnimatedImage {
-            visible: input_coinpaprika_id.visible
+        InnerBackground {
             Layout.alignment: Qt.AlignHCenter
-            playing: root.visible && visible
-            source: General.image_path + "guide_coinpaprika_id.gif"
+            content: DefaultAnimatedImage {
+                id: guide_coinpaprika_id
+                visible: input_coinpaprika_id.visible
+                playing: root.visible && visible
+                source: General.image_path + "guide_coinpaprika_id.gif"
+            }
         }
 
         DefaultCheckBox {
