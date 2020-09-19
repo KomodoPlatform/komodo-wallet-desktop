@@ -85,6 +85,7 @@ namespace atomic_dex
         void                                 init_lang() noexcept;
 
         //! Public QML API
+        Q_INVOKABLE void                       remove_custom_coin(const QString& ticker) noexcept;
         Q_INVOKABLE [[nodiscard]] QStringList  get_available_langs() const;
         Q_INVOKABLE [[nodiscard]] QStringList  get_available_fiats() const;
         Q_INVOKABLE [[nodiscard]] QStringList  get_available_currencies() const;
