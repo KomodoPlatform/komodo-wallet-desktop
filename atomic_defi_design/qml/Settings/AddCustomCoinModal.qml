@@ -132,6 +132,7 @@ BasicModal {
         }
 
         DefaultText {
+            visible: input_contract_address.visible
             Layout.fillWidth: true
             text_value: API.app.settings_pg.empty_string + (General.cex_icon + ' <a href="https://etherscan.io/tokens">' + qsTr('Get the contract address from Etherscan') + '</a>')
         }
@@ -242,6 +243,19 @@ BasicModal {
             Layout.fillWidth: true
             title: API.app.settings_pg.empty_string + (qsTr("Coinpaprika ID"))
             field.placeholderText: API.app.settings_pg.empty_string + (qsTr("Enter the Coinpaprika ID"))
+        }
+
+        DefaultText {
+            visible: input_coinpaprika_id.visible
+            Layout.fillWidth: true
+            text_value: API.app.settings_pg.empty_string + (General.cex_icon + ' <a href="https://coinpaprika.com/">' + qsTr('Get the Coinpaprika ID') + '</a>')
+        }
+
+        DefaultAnimatedImage {
+            visible: input_coinpaprika_id.visible
+            Layout.alignment: Qt.AlignHCenter
+            playing: root.visible && visible
+            source: General.image_path + "guide_coinpaprika_id.gif"
         }
 
         DefaultCheckBox {
