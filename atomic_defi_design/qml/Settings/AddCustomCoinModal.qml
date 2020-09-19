@@ -30,16 +30,13 @@ BasicModal {
     }
 
     onCustom_erc_token_dataChanged: {
-        const adex_cfg = custom_erc_token_data.adex_cfg
-        if(!adex_cfg) return
-
-        const ticker = Object.keys(adex_cfg)[0]
-        const token_data = adex_cfg[Object.keys(adex_cfg)[0]]
+        const mm2_cfg = custom_erc_token_data.mm2_cfg
+        if(!mm2_cfg) return
 
         var fields = General.clone(config_fields)
 
-        fields.ticker = token_data.coin
-        fields.name = token_data.name
+        fields.ticker = mm2_cfg.coin
+        fields.name = mm2_cfg.name
 
         config_fields = General.clone(fields)
 
