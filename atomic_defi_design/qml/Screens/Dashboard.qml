@@ -251,6 +251,10 @@ Item {
     CexInfoModal {
         id: cex_rates_modal
     }
+
+    RestartModal {
+        id: restart_modal
+    }
 }
 
 

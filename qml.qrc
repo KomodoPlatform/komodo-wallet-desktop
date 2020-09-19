@@ -190,6 +190,7 @@
         <file>atomic_defi_design/qml/Components/SidebarPanel.qml</file>
         <file>atomic_defi_design/qml/Components/SetupPage.qml</file>
         <file>atomic_defi_design/qml/Components/Separator.qml</file>
+        <file>atomic_defi_design/qml/Components/RestartModal.qml</file>
         <file>atomic_defi_design/qml/Components/HorizontalLine.qml</file>
         <file>atomic_defi_design/qml/Components/VerticalLine.qml</file>
         <file>atomic_defi_design/qml/Components/VerticalLineBasic.qml</file>

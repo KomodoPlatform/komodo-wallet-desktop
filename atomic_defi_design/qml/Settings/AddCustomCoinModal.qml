@@ -338,8 +338,8 @@ BasicModal {
                 Layout.fillWidth: true
                 onClicked: {
                     API.app.settings_pg.submit()
-                    API.app.restart()
-                    //root.nextPage()
+                    root.nextPage()
+                    restart_modal.open()
                 }
             }
         ]
