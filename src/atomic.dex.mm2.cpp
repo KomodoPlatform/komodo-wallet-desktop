@@ -1475,6 +1475,7 @@ namespace atomic_dex
         //! Remove from our cfg
         if (is_this_ticker_present_in_normal_cfg(ticker))
         {
+            spdlog::trace("remove it from normal cfg: {}", ticker);
             fs::path       cfg_path = get_atomic_dex_config_folder();
             std::string    filename = std::string(atomic_dex::get_raw_version()) + "-coins." + m_current_wallet_name + ".json";
             std::ifstream  ifs((cfg_path / filename).c_str());
@@ -1499,6 +1500,7 @@ namespace atomic_dex
 
         if (is_this_ticker_present_in_raw_cfg(ticker))
         {
+            spdlog::trace("remove it from mm2 cfg: {}", ticker);
             fs::path       mm2_cfg_path = ag::core::assets_real_path() / "tools/mm2/coins";
             std::ifstream  ifs(mm2_cfg_path.c_str());
             nlohmann::json config_json_data;
