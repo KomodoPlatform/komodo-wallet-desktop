@@ -83,6 +83,7 @@ namespace atomic_dex
       signals:
         void portfolioProxyChanged();
         void lengthChanged();
+        void portfolioItemDataChanged();
 
       private:
         //! From project
