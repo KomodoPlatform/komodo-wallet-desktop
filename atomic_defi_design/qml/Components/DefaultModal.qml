@@ -14,6 +14,23 @@ Popup {
     Overlay.modal: Rectangle {
         color: "#AA000000"
     }
+
+    // Fade in animation
+    onVisibleChanged: {
+        if(visible) {
+            opacity = 0
+            fade_animation.start()
+        }
+    }
+
+    NumberAnimation {
+        id: fade_animation
+        target: root
+        property: "opacity"
+        duration: Style.animationDuration
+        to: 1
+    }
+
     background: FloatingBackground { }
 }
 
