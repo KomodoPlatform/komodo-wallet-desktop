@@ -13,9 +13,20 @@ DefaultComboBox {
     mainBorderColor: Style.getCoinColor(ticker)
 
     contentItem: DexComboBoxLine {
+        id: line
         padding: 10
 
+        Component.onCompleted: API.app.portfolio_pg.portfolio_mdl.portfolioItemDataChanged.connect(forceUpdateDetails)
+
+        function forceUpdateDetails() {
+            console.log("Portfolio item data changed, force-updating the selected ticker details!")
+            ++update_count
+        }
+
+        property int update_count: 0
+
         details: ({
+            update_count:           line.update_count,
             ticker:                 model.data(model.index(combo.currentIndex, 0), 257),
             name:                   model.data(model.index(combo.currentIndex, 0), 258),
             balance:                model.data(model.index(combo.currentIndex, 0), 259),
