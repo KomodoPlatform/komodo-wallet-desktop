@@ -50,5 +50,6 @@ FloatingBackground {
         onClicked: {
             if(parent.enabled) parent.clicked()
         }
+        cursorShape: Qt.PointingHandCursor
     }
 }
