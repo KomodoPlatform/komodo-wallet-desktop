@@ -435,7 +435,7 @@ namespace atomic_dex
     bool
     mm2::process_batch_enable_answer(const json& answer)
     {
-        spdlog::trace("ANSWER JSON -> {}", answer.dump(4));
+        //spdlog::trace("ANSWER JSON -> {}", answer.dump(4));
         if (answer.count("coin") == 1)
         {
             auto        ticker          = answer.at("coin").get<std::string>();
