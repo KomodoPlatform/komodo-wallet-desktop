@@ -12,7 +12,7 @@ BasicModal {
 
     }
 
-    width: 400
+    width: 500
 
     ModalContent {
         title: API.app.settings_pg.empty_string + (qsTr("Receive"))
