@@ -20,6 +20,8 @@ MouseArea {
             openContextMenu(mouse.x, mouse.y)
     }
 
+    cursorShape: Qt.IBeamCursor
+
     Menu {
         id: contextMenu
 
