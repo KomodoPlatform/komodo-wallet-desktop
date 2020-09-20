@@ -18,6 +18,7 @@ Menu {
             const cloneTicker = General.clone(ticker)
             API.app.disable_coins([ticker])
             API.app.settings_pg.remove_custom_coin(cloneTicker)
+            restart_modal.open()
         }
         enabled: disable_action.enabled && API.app.get_coin_info(ticker).is_custom_coin
     }
