@@ -1493,7 +1493,7 @@ namespace atomic_dex
             ifs.close();
 
             //! Write contents
-            std::ofstream ofs(cfg_path.c_str(), std::ios::trunc);
+            std::ofstream ofs((cfg_path / filename).c_str(), std::ios::trunc);
             assert(ofs.is_open());
             ofs << config_json_data;
         }
