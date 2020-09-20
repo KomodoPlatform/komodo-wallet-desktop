@@ -47,6 +47,7 @@ namespace atomic_dex
         std::string                     coinpaprika_id;
         bool                            is_erc_20{false};
         bool                            is_qrc_20{false};
+        bool                            is_custom_coin{false};
         std::string                     type;
         std::vector<std::string>        explorer_url; ///< usefull for transaction, take this url and append transaction id
         std::string                     tx_uri{"tx/"};

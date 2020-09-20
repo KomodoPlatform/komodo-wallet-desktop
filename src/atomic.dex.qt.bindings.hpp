@@ -151,7 +151,8 @@ namespace atomic_dex
             {"type", coin.type},
             {"explorer_url", coin.explorer_url},
             {"tx_uri", coin.tx_uri},
-            {"address_uri", coin.address_url}};
+            {"address_uri", coin.address_url},
+            {"is_custom_coin", coin.is_custom_coin}};
         return j;
     }
 

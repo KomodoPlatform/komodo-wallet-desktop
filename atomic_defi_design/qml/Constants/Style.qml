@@ -1,5 +1,5 @@
 pragma Singleton
-import QtQuick 2.10
+import QtQuick 2.14
 
 QtObject {
     readonly property FontLoader mySystemFontThin: FontLoader { source: "../../assets/fonts/Montserrat-Thin.ttf" }
@@ -12,6 +12,9 @@ QtObject {
     readonly property string listItemPrefix:  " ⚬   "
     readonly property string successCharacter:  "✓"
     readonly property string failureCharacter:  "✘"
+
+
+    readonly property int animationDuration: 125
 
     readonly property int materialElevation: 5
 
@@ -47,14 +50,26 @@ QtObject {
     readonly property int textSize11: 132
     readonly property int textSize12: 144
 
-    readonly property int rectangleCornerRadius: 11
+    readonly property int rectangleCornerRadius: 7
     readonly property int itemPadding: 12
     readonly property int buttonSpacing: 12
     readonly property int rowSpacing: 12
+    readonly property int rowSpacingSmall: 6
     readonly property int iconTextMargin: 5
     readonly property int sidebarLineHeight: 44
+    readonly property double hoverLightMultiplier: 1.5
+    readonly property double hoverOpacity: 0.6
 
     property bool dark_theme: true
+
+
+    function applyOpacity(hex, opacity="00") {
+        return "#" + opacity + hex.substr(hex.length - 6)
+    }
+
+    function colorOnlyIf(condition, color) {
+        return applyOpacity(color, condition ? "FF" : "00")
+    }
 
     readonly property string sidebar_atomicdex_logo: dark_theme ? "atomicdex-logo.svg" : "atomicdex-logo-dark.svg"
     readonly property string colorRed: dark_theme ? "#D13990" : "#D13990"
@@ -123,8 +138,7 @@ QtObject {
     readonly property string colorGradientLine1:  dark_theme ? "#00FFFFFF" : "#00CFD4DB"
     readonly property string colorGradientLine2:  dark_theme ? "#0FFFFFFF" : "#FFCFD4DB"
 
-    readonly property string colorWalletsHighlightGradient1:  dark_theme ? "#801B5E7D" : "#801B5E7D"
-    readonly property string colorWalletsHighlightGradient2:  dark_theme ? "#001B5E7D" : "#001B5E7D"
+    readonly property string colorWalletsHighlightGradient:  dark_theme ? "#1B5E7D" : "#1B5E7D"
     readonly property string colorWalletsSidebarDropShadow:  dark_theme ? "#B0000000" : "#BECDE2"
 
     readonly property string colorScrollbar:  dark_theme ? "#202339" : "#C4CCDA"
@@ -139,8 +153,7 @@ QtObject {
     readonly property string colorSidebarHighlightGradient4:  dark_theme ? "#001B5E7D" : "#006bcef4"
     readonly property string colorSidebarDropShadow:  dark_theme ? "#90000000" : "#BECDE2"
 
-    readonly property string colorCoinListHighlightGradient1:  dark_theme ? "#002C2E40" : "#00E0E6F0"
-    readonly property string colorCoinListHighlightGradient2:  dark_theme ? "#FF2C2E40" : "#FFE0E6F0"
+    readonly property string colorCoinListHighlightGradient:  dark_theme ? "#2C2E40" : "#E0E6F0"
 
     readonly property string colorRectangleBorderGradient1:  dark_theme ? "#2A2F48" : "#00FFFFFF"
     readonly property string colorRectangleBorderGradient2:  dark_theme ? "#0D1021" : "#00FFFFFF"
@@ -190,7 +203,6 @@ QtObject {
         })
     readonly property string colorPlaceholderText: Style.colorWhite9
 
-    readonly property int modalTitleMargin: 10
     readonly property string modalValueColor: colorWhite4
 
     function getValueColor(v) {

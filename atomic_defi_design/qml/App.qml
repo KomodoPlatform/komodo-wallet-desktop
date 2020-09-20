@@ -14,7 +14,7 @@ Rectangle {
     property string selected_wallet_name: ""
 
     function firstPage() {
-        return !API.get().first_run() && selected_wallet_name !== "" ? idx_login : idx_first_launch
+        return !API.app.first_run() && selected_wallet_name !== "" ? idx_login : idx_first_launch
     }
 
     function cleanApp() {
@@ -24,13 +24,8 @@ Rectangle {
     function onDisconnect() { openFirstLaunch() }
 
     function openFirstLaunch(force=false, set_wallet_name=true) {
-        if(set_wallet_name) selected_wallet_name = API.get().wallet_default_name
+        if(set_wallet_name) selected_wallet_name = API.app.wallet_default_name
         cleanApp()
-
-        if(API.design_editor) {
-            current_page = idx_dashboard
-            return
-        }
 
         current_page = force ? idx_first_launch : firstPage()
         first_launch.updateWallets()

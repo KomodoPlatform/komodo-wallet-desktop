@@ -21,6 +21,7 @@
 #include <QJsonArray>
 #include <QJsonDocument>
 #include <QJsonObject>
+#include <QProcess>
 #include <QTimer>
 
 #if defined(_WIN32) || defined(WIN32)
@@ -203,7 +204,7 @@ namespace atomic_dex
         {
             auto& mm2_s = system_manager_.create_system<mm2>(system_manager_);
 
-            system_manager_.create_system<coinpaprika_provider>(mm2_s, system_manager_.get_system<settings_page>().get_cfg());
+            system_manager_.create_system<coinpaprika_provider>(mm2_s);
             system_manager_.create_system<cex_prices_provider>(mm2_s);
 
             connect_signals();
@@ -310,14 +311,14 @@ namespace atomic_dex
         get_dispatcher().sink<refresh_update_status>().connect<&application::on_refresh_update_status_event>(*this);
         //! MM2 system need to be created before the GUI and give the instance to the gui
         auto& mm2_system           = system_manager_.create_system<mm2>(system_manager_);
-        auto& settings_page_system = system_manager_.create_system<settings_page>(m_app, this);
+        auto& settings_page_system = system_manager_.create_system<settings_page>(system_manager_, m_app, this);
         auto& portfolio_system     = system_manager_.create_system<portfolio_page>(system_manager_, this);
         portfolio_system.get_portfolio()->set_cfg(settings_page_system.get_cfg());
 
         system_manager_.create_system<wallet_page>(system_manager_, this);
         system_manager_.create_system<global_price_service>(system_manager_, settings_page_system.get_cfg());
         system_manager_.create_system<band_oracle_price_service>();
-        system_manager_.create_system<coinpaprika_provider>(mm2_system, settings_page_system.get_cfg());
+        system_manager_.create_system<coinpaprika_provider>(mm2_system);
         system_manager_.create_system<cex_prices_provider>(mm2_system);
         system_manager_.create_system<update_system_service>();
         system_manager_.create_system<trading_page>(
@@ -902,7 +903,7 @@ namespace atomic_dex
     application::login(const QString& password, const QString& wallet_name)
     {
         auto& wallet_manager = this->system_manager_.get_system<qt_wallet_manager>();
-        bool res = wallet_manager.login(password, wallet_name, get_mm2(), [this, &wallet_name]() {
+        bool  res            = wallet_manager.login(password, wallet_name, get_mm2(), [this, &wallet_name]() {
             this->set_wallet_default_name(wallet_name);
             this->set_status("initializing_mm2");
         });
@@ -1031,5 +1032,17 @@ namespace atomic_dex
     application::get_internet_checker() const noexcept
     {
         return qobject_cast<internet_service_checker*>(m_manager_models.at("internet_service"));
+    }
+} // namespace atomic_dex
+
+//! App restart
+namespace atomic_dex
+{
+    void
+    application::restart()
+    {
+        qApp->quit();
+
+        QProcess::startDetached(qApp->arguments()[0], qApp->arguments(), qApp->applicationDirPath());
     }
 } // namespace atomic_dex

@@ -11,50 +11,87 @@ DefaultModal {
     padding: 10
 
     width: 900
-    height: Math.min(header.height + flickable.contentHeight + footer.height + root.padding*2 + outer_layout.spacing*2, window.height - 90)
+    height: column_layout.height + verticalPadding * 2
 
-    property alias title: header.title
+    property alias currentIndex: stack_layout.currentIndex
+    property int targetPageIndex: currentIndex
+    property alias count: stack_layout.count
+    default property alias pages: stack_layout.data
 
-    default property alias content: inner_layout.data
-    property alias footer: footer.data
+    function nextPage() {
+        if(currentIndex === count - 1) root.close()
+        else {
+            targetPageIndex = currentIndex + 1
+            page_change_animation.start()
+        }
+    }
 
-    // Inside modal
-    ColumnLayout {
-        id: outer_layout
+    function previousPage() {
+        if(currentIndex === 0) root.close()
+        else {
+            targetPageIndex = currentIndex - 1
+            page_change_animation.start()
+        }
+    }
+
+    onOpened: {
+        stack_layout.opacity = 1
+    }
+
+    SequentialAnimation {
+        id: page_change_animation
+        NumberAnimation { id: fade_out; target: root; property: "opacity"; to: 0; duration: Style.animationDuration }
+        PropertyAction { target: root; property: "currentIndex"; value: targetPageIndex }
+        NumberAnimation { target: root; property: "opacity"; to: 1; duration: fade_out.duration }
+    }
+
+    Column {
+        id: column_layout
+        spacing: Style.rowSpacing
         width: parent.width
-        height: parent.height
         anchors.horizontalCenter: parent.horizontalCenter
 
-        spacing: 10
+        Row {
+            id: page_indicator
+            visible: root.count > 1
+            anchors.horizontalCenter: parent.horizontalCenter
 
-        ModalHeader {
-            id: header
-        }
+            layoutDirection: Qt.RightToLeft
 
-        DefaultFlickable {
-            id: flickable
+            Repeater {
+                model: root.count
+                delegate: Item {
+                    id: bundle
+                    property color color: root.currentIndex >= (root.count-1 - index) ? Style.colorGreen : Style.colorTheme5
+                    width: (index === root.count-1 ? 0 : circle.width*2) + circle.width*0.5
+                    height: circle.height * 1.5
+                    InnerBackground {
+                        id: rectangle
+                        height: circle.height/4
+                        anchors.left: parent.left
+                        anchors.verticalCenter: parent.verticalCenter
+                        anchors.leftMargin: -circle.width*0.5
+                        anchors.right: circle.horizontalCenter
+                        color: bundle.color
+                    }
 
-            flickableDirection: Flickable.VerticalFlick
-
-            Layout.fillWidth: true
-            Layout.fillHeight: true
-
-            readonly property int padding: 25
-            contentWidth: inner_layout.width + flickable.padding
-            contentHeight: inner_layout.height + flickable.padding
-
-            ColumnLayout {
-                id: inner_layout
-                anchors.centerIn: parent
-                width: root.width - root.padding*2 - flickable.padding
-                            - (flickable.scrollbar_visible ? 20 : 0) // Scrollbar margin
+                    FloatingBackground {
+                        id: circle
+                        width: 24
+                        height: width
+                        anchors.right: parent.right
+                        anchors.verticalCenter: parent.verticalCenter
+                        color: bundle.color
+                    }
+                }
             }
         }
 
-        // Buttons
-        RowLayout {
-            id: footer
-            spacing: 20
+        // Inside modal
+        StackLayout {
+            id: stack_layout
+            width: parent.width
+            height: stack_layout.children[stack_layout.currentIndex].height
         }
     }
 }

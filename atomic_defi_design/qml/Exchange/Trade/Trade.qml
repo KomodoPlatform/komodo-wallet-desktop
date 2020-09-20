@@ -57,7 +57,7 @@ Item {
     // Price
     property string cex_price
     function updateCexPrice(base, rel) {
-        cex_price = API.get().get_cex_rates(base, rel)
+        cex_price = API.app.get_cex_rates(base, rel)
     }
 
     readonly property var empty_order: ({ "is_asks":false,"price":"0","price_denom":"0","price_numer":"0","volume":"0"})
@@ -142,7 +142,7 @@ Item {
 
     function getTradeInfo(base, rel, amount, set_as_current=true) {
         if(inCurrentPage()) {
-            let info = API.get().get_trade_infos(base, rel, amount)
+            let info = API.app.get_trade_infos(base, rel, amount)
 
             console.log("Getting Trade info with parameters: ", base, rel, amount, " -  Result: ", JSON.stringify(info))
 
@@ -187,7 +187,7 @@ Item {
     function onOpened() {
         if(!initialized_orderbook_pair) {
             initialized_orderbook_pair = true
-            API.get().trading_pg.set_current_orderbook("KMD", "BTC")
+            API.app.trading_pg.set_current_orderbook("KMD", "BTC")
         }
 
         reset(true)
@@ -219,14 +219,14 @@ Item {
 
         if(is_swap) {
             console.log("Swapping current pair, it was: ", base, rel)
-            API.get().trading_pg.swap_market_pair()
+            API.app.trading_pg.swap_market_pair()
             const tmp = base
             base = rel
             rel = tmp
         }
         else {
             console.log("Setting current orderbook with params: ", base, rel)
-            API.get().trading_pg.set_current_orderbook(base, rel)
+            API.app.trading_pg.set_current_orderbook(base, rel)
         }
 
         reset(true, is_left_side)
@@ -277,13 +277,13 @@ Item {
         console.log("QML place order: trade info:", JSON.stringify(curr_trade_info))
 
         if(sell_mode)
-            API.get().trading_pg.place_sell_order(base, rel, price, volume, is_created_order, price_denom, price_numer, nota, confs)
+            API.app.trading_pg.place_sell_order(base, rel, price, volume, is_created_order, price_denom, price_numer, nota, confs)
         else
-            API.get().trading_pg.place_buy_order(base, rel, price, volume, is_created_order, price_denom, price_numer, nota, confs)
+            API.app.trading_pg.place_buy_order(base, rel, price, volume, is_created_order, price_denom, price_numer, nota, confs)
     }
 
-    readonly property bool buy_sell_rpc_busy: API.get().trading_pg.buy_sell_rpc_busy
-    readonly property var buy_sell_last_rpc_data: API.get().trading_pg.buy_sell_last_rpc_data
+    readonly property bool buy_sell_rpc_busy: API.app.trading_pg.buy_sell_rpc_busy
+    readonly property var buy_sell_last_rpc_data: API.app.trading_pg.buy_sell_last_rpc_data
 
     onBuy_sell_last_rpc_dataChanged: {
         const response = General.clone(buy_sell_last_rpc_data)
@@ -356,21 +356,43 @@ Item {
                     TickerSelector {
                         id: selector_left
                         left_side: true
-                        ticker_list: API.get().trading_pg.market_pairs_mdl.left_selection_box
-                        ticker: API.get().trading_pg.market_pairs_mdl.left_selected_coin
+                        ticker_list: API.app.trading_pg.market_pairs_mdl.left_selection_box
+                        ticker: API.app.trading_pg.market_pairs_mdl.left_selected_coin
                         Layout.alignment: Qt.AlignLeft | Qt.AlignVCenter
                         Layout.fillWidth: true
                     }
 
                     // Swap button
-                    DefaultImage {
-                        source: General.image_path + "trade_icon.svg"
-                        Layout.preferredWidth: 16
-                        Layout.preferredHeight: Layout.preferredWidth
+                    Item {
                         Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
+                        Layout.preferredWidth: right_arrow.width
+                        Layout.preferredHeight: selector_left.height * 0.9
+
+                        DefaultText {
+                            id: right_arrow
+                            anchors.right: parent.right
+                            anchors.top: parent.top
+                            anchors.topMargin: -font.pixelSize/4
+                            text_value: "→"
+                            font.family: "Impact"
+                            font.pixelSize: 30
+                            font.bold: true
+                            color: Qt.lighter(Style.getCoinColor(selector_left.ticker), swap_button.containsMouse ? Style.hoverLightMultiplier : 1.0)
+                        }
+                        DefaultText {
+                            anchors.left: parent.left
+                            anchors.bottom: parent.bottom
+                            text_value: "←"
+                            font.family: right_arrow.font.family
+                            font.pixelSize: right_arrow.font.pixelSize
+                            font.bold: right_arrow.font.bold
+                            color: Qt.lighter(Style.getCoinColor(selector_right.ticker), swap_button.containsMouse ? Style.hoverLightMultiplier : 1.0)
+                        }
 
                         MouseArea {
+                            id: swap_button
                             anchors.fill: parent
+                            hoverEnabled: true
                             onClicked: {
                                 if(!block_everything)
                                     setPair(true, right_ticker)
@@ -381,8 +403,8 @@ Item {
                     TickerSelector {
                         id: selector_right
                         left_side: false
-                        ticker_list: API.get().trading_pg.market_pairs_mdl.right_selection_box
-                        ticker: API.get().trading_pg.market_pairs_mdl.right_selected_coin
+                        ticker_list: API.app.trading_pg.market_pairs_mdl.right_selection_box
+                        ticker: API.app.trading_pg.market_pairs_mdl.right_selected_coin
                         Layout.alignment: Qt.AlignRight | Qt.AlignVCenter
                         Layout.fillWidth: true
                     }

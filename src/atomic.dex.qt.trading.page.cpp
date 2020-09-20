@@ -44,6 +44,7 @@ namespace atomic_dex
     void
     trading_page::on_process_orderbook_finished_event(const atomic_dex::process_orderbook_finished& evt) noexcept
     {
+        spdlog::debug("{} l{} f[{}]", __FUNCTION__, __LINE__, fs::path(__FILE__).filename().string());
         if (not m_about_to_exit_the_app)
         {
             m_actions_queue.push(trading_actions::post_process_orderbook_finished);
@@ -129,6 +130,8 @@ namespace atomic_dex
                 auto  answers          = ::mm2::api::basic_batch_answer(resp);
                 auto  my_orders_answer = ::mm2::api::rpc_process_answer_batch<t_my_orders_answer>(answers[1], "my_orders");
                 mm2_system.add_orders_answer(my_orders_answer);
+                spdlog::trace("refreshing orderbook after cancelling order: {}", answers.dump(4));
+                mm2_system.process_orderbook(false);
             })
             .then(&handle_exception_pplx_task);
     }

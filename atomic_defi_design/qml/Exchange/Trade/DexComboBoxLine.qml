@@ -12,7 +12,8 @@ RowLayout {
 
     property int padding: 0
     property var details
-    readonly property color color: Style.getCoinColor(details.ticker)
+    property color color: Style.getCoinColor(details.ticker)
+    Behavior on color { ColorAnimation { duration: Style.animationDuration } }
 
     DefaultImage {
         id: icon
@@ -30,13 +31,13 @@ RowLayout {
             anchors.verticalCenter: parent.verticalCenter
 
             DefaultText {
-                text_value: API.get().settings_pg.empty_string + (`<font color="${root.color}"><b>${details.ticker}</b></font>&nbsp;&nbsp;&nbsp;<font color="${Style.colorText}">${details.name}</font>`)
+                text_value: API.app.settings_pg.empty_string + (`<font color="${root.color}"><b>${details.ticker}</b></font>&nbsp;&nbsp;&nbsp;<font color="${Style.colorText}">${details.name}</font>`)
                 color: Style.colorText
                 font.pixelSize: Style.textSizeSmall3
             }
 
             DefaultText {
-                text_value: API.get().settings_pg.empty_string + (details.balance + "  (" + General.formatFiat("", details.main_currency_balance, API.get().settings_pg.current_currency) + ")")
+                text_value: API.app.settings_pg.empty_string + (details.balance + "  (" + General.formatFiat("", details.main_currency_balance, API.app.settings_pg.current_currency) + ")")
                 color: Style.colorText2
                 font.pixelSize: Style.textSizeSmall2
             }

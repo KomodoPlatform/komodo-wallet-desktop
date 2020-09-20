@@ -51,8 +51,6 @@ Item {
                 width: list_bg.width
                 anchors.horizontalCenter: list_bg.horizontalCenter
 
-                radius: 100
-
                 content: RowLayout {
                     id: search_row
 
@@ -74,7 +72,7 @@ Item {
 
                             visible: false
                         }
-                        ColorOverlay {
+                        DefaultColorOverlay {
                             id: search_button_overlay
 
                             anchors.fill: search_button
@@ -137,8 +135,8 @@ Item {
                         height: 44
                         radius: Style.rectangleCornerRadius
 
-                        start_color: api_wallet_page.ticker === ticker ? Style.colorCoinListHighlightGradient1 : mouse_area.containsMouse ? Style.colorCoinListHighlightGradient1 : "transparent"
-                        end_color: api_wallet_page.ticker === ticker ? Style.colorCoinListHighlightGradient2 : mouse_area.containsMouse ? Style.colorWhite8 : "transparent"
+                        start_color: Style.applyOpacity(Style.colorCoinListHighlightGradient)
+                        end_color: api_wallet_page.ticker === ticker ? Style.colorCoinListHighlightGradient : mouse_area.containsMouse ? Style.colorWhite8 : start_color
 
                         // Click area
                         MouseArea {
@@ -148,24 +146,23 @@ Item {
 
                             acceptedButtons: Qt.LeftButton | Qt.RightButton
                             onClicked: {
+                                if(!can_change_ticker) return
+
                                 if (mouse.button === Qt.RightButton) context_menu.popup()
                                 else api_wallet_page.ticker = ticker
 
                                 main.send_modal.reset()
                             }
                             onPressAndHold: {
+                                if(!can_change_ticker) return
+
                                 if (mouse.source === Qt.MouseEventNotSynthesized) context_menu.popup()
                             }
                         }
 
                         // Right click menu
-                        Menu {
+                        CoinMenu {
                             id: context_menu
-                            Action {
-                                text: API.get().settings_pg.empty_string + (qsTr("Disable %1", "TICKER").arg(ticker))
-                                onTriggered: API.get().disable_coins([ticker])
-                                enabled: General.canDisable(ticker)
-                            }
                         }
 
                         readonly property double side_margin: 16
@@ -189,7 +186,7 @@ Item {
                             // Ticker
                             DefaultText {
                                 Layout.alignment: Qt.AlignRight
-                                text_value: API.get().settings_pg.empty_string + (ticker)
+                                text_value: API.app.settings_pg.empty_string + (ticker)
                                 font.pixelSize: text.length > 6 ? Style.textSizeSmall2 : Style.textSizeSmall4
                             }
 
@@ -197,7 +194,7 @@ Item {
                                 visible: mouse_area.containsMouse
                                 background: FloatingBackground { auto_set_size: false }
                                 contentItem:  DefaultText {
-                                    text_value: API.get().settings_pg.empty_string + (name.replace(" (TESTCOIN)", ""))
+                                    text_value: API.app.settings_pg.empty_string + (name.replace(" (TESTCOIN)", ""))
                                     font.pixelSize: Style.textSizeSmall4
                                 }
                             }

@@ -21,7 +21,7 @@ Item {
         visible: false
     }
 
-    ColorOverlay {
+    DefaultColorOverlay {
         id: img_overlay
 
         anchors.fill: img

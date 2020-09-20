@@ -53,37 +53,37 @@
 <context>
     <name>CamouflagePasswordModal</name>
     <message>
-        <location filename="../../qml/Settings/CamouflagePasswordModal.qml" line="24"/>
+        <location filename="../../qml/Settings/CamouflagePasswordModal.qml" line="17"/>
         <source>Setup Camouflage Password</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Settings/CamouflagePasswordModal.qml" line="46"/>
+        <location filename="../../qml/Settings/CamouflagePasswordModal.qml" line="38"/>
         <source>Camouflage Password is a secret password for emergency situations.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Settings/CamouflagePasswordModal.qml" line="55"/>
+        <location filename="../../qml/Settings/CamouflagePasswordModal.qml" line="47"/>
         <source>Using it to login will display your balance lower than it actually is.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Settings/CamouflagePasswordModal.qml" line="63"/>
+        <location filename="../../qml/Settings/CamouflagePasswordModal.qml" line="55"/>
         <source>Here you enter the suffix and at login you need to enter {real_password}{suffix}</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Settings/CamouflagePasswordModal.qml" line="71"/>
+        <location filename="../../qml/Settings/CamouflagePasswordModal.qml" line="63"/>
         <source>Enter a suffix</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Settings/CamouflagePasswordModal.qml" line="78"/>
+        <location filename="../../qml/Settings/CamouflagePasswordModal.qml" line="70"/>
         <source>Cancel</source>
         <translation type="unfinished">İptal</translation>
     </message>
     <message>
-        <location filename="../../qml/Settings/CamouflagePasswordModal.qml" line="84"/>
+        <location filename="../../qml/Settings/CamouflagePasswordModal.qml" line="76"/>
         <source>Save</source>
         <translation type="unfinished"></translation>
     </message>
@@ -99,124 +99,119 @@
 <context>
     <name>ClaimRewardsModal</name>
     <message>
-        <location filename="../../qml/Wallet/ClaimRewardsModal.qml" line="70"/>
+        <location filename="../../qml/Wallet/ClaimRewardsModal.qml" line="73"/>
         <source>Failed to prepare to claim rewards</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/ClaimRewardsModal.qml" line="74"/>
-        <source>Failed to get the rewards info</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../qml/Wallet/ClaimRewardsModal.qml" line="114"/>
+        <location filename="../../qml/Wallet/ClaimRewardsModal.qml" line="115"/>
         <source>Claim your %1 reward?</source>
         <comment>TICKER</comment>
         <translation>%1 ödülünüzü alacak mısınız?</translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/ClaimRewardsModal.qml" line="130"/>
+        <location filename="../../qml/Wallet/ClaimRewardsModal.qml" line="131"/>
         <source>No UTXOs eligible for claiming</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/ClaimRewardsModal.qml" line="133"/>
+        <location filename="../../qml/Wallet/ClaimRewardsModal.qml" line="134"/>
         <source>You will receive %1</source>
         <comment>AMT TICKER</comment>
         <translation>%1 alacaksınız</translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/ClaimRewardsModal.qml" line="131"/>
+        <location filename="../../qml/Wallet/ClaimRewardsModal.qml" line="132"/>
         <source>Transaction fee is higher than the reward!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/ClaimRewardsModal.qml" line="137"/>
+        <location filename="../../qml/Wallet/ClaimRewardsModal.qml" line="138"/>
         <source>Refresh</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/ClaimRewardsModal.qml" line="145"/>
+        <location filename="../../qml/Wallet/ClaimRewardsModal.qml" line="146"/>
         <source>Read more about KMD active users rewards</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/ClaimRewardsModal.qml" line="164"/>
+        <location filename="../../qml/Wallet/ClaimRewardsModal.qml" line="165"/>
         <source>UTXO</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/ClaimRewardsModal.qml" line="179"/>
+        <location filename="../../qml/Wallet/ClaimRewardsModal.qml" line="180"/>
         <source>Amount</source>
         <translation type="unfinished">Miktar</translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/ClaimRewardsModal.qml" line="195"/>
+        <location filename="../../qml/Wallet/ClaimRewardsModal.qml" line="196"/>
         <source>Reward</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/ClaimRewardsModal.qml" line="211"/>
+        <location filename="../../qml/Wallet/ClaimRewardsModal.qml" line="212"/>
         <source>Accruing Start</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/ClaimRewardsModal.qml" line="227"/>
+        <location filename="../../qml/Wallet/ClaimRewardsModal.qml" line="228"/>
         <source>Accruing Stop</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/ClaimRewardsModal.qml" line="243"/>
+        <location filename="../../qml/Wallet/ClaimRewardsModal.qml" line="244"/>
         <source>Time Left</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/ClaimRewardsModal.qml" line="259"/>
+        <location filename="../../qml/Wallet/ClaimRewardsModal.qml" line="260"/>
         <source>Error</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/ClaimRewardsModal.qml" line="387"/>
+        <location filename="../../qml/Wallet/ClaimRewardsModal.qml" line="388"/>
         <source>Locktime is not set</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/ClaimRewardsModal.qml" line="390"/>
+        <location filename="../../qml/Wallet/ClaimRewardsModal.qml" line="391"/>
         <source>Locktime is less than the threshold</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/ClaimRewardsModal.qml" line="393"/>
+        <location filename="../../qml/Wallet/ClaimRewardsModal.qml" line="394"/>
         <source>UTXO height is greater than end of the era</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/ClaimRewardsModal.qml" line="396"/>
+        <location filename="../../qml/Wallet/ClaimRewardsModal.qml" line="397"/>
         <source>UTXO amount is less than 10</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/ClaimRewardsModal.qml" line="399"/>
+        <location filename="../../qml/Wallet/ClaimRewardsModal.qml" line="400"/>
         <source>One hour did not pass yet</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/ClaimRewardsModal.qml" line="402"/>
+        <location filename="../../qml/Wallet/ClaimRewardsModal.qml" line="403"/>
         <source>Transaction is in mempool</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/ClaimRewardsModal.qml" line="405"/>
+        <location filename="../../qml/Wallet/ClaimRewardsModal.qml" line="406"/>
         <source>Unknown problem</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/ClaimRewardsModal.qml" line="429"/>
+        <location filename="../../qml/Wallet/ClaimRewardsModal.qml" line="430"/>
         <source>Cancel</source>
         <translation>İptal</translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/ClaimRewardsModal.qml" line="434"/>
+        <location filename="../../qml/Wallet/ClaimRewardsModal.qml" line="435"/>
         <source>Confirm</source>
         <translation>Onayla</translation>
     </message>
@@ -224,12 +219,12 @@
 <context>
     <name>ConfirmTradeModal</name>
     <message>
-        <location filename="../../qml/Exchange/Trade/ConfirmTradeModal.qml" line="27"/>
+        <location filename="../../qml/Exchange/Trade/ConfirmTradeModal.qml" line="20"/>
         <source>Confirm Exchange Details</source>
         <translation>Al-Sat Detaylarını Onayla</translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/ConfirmTradeModal.qml" line="76"/>
+        <location filename="../../qml/Exchange/Trade/ConfirmTradeModal.qml" line="68"/>
         <source>This swap request can not be undone and is a final event!</source>
         <translation>Bu takas isteği geri döndürülemez!</translation>
     </message>
@@ -238,49 +233,49 @@
         <translation type="vanished">Bu işlem 10 dakika kadar sürebilir - Programı KAPATMAYINIZ!</translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/ConfirmTradeModal.qml" line="108"/>
+        <location filename="../../qml/Exchange/Trade/ConfirmTradeModal.qml" line="100"/>
         <source>Security configuration</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/ConfirmTradeModal.qml" line="115"/>
+        <location filename="../../qml/Exchange/Trade/ConfirmTradeModal.qml" line="107"/>
         <source>dPoW protected</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/ConfirmTradeModal.qml" line="122"/>
-        <location filename="../../qml/Exchange/Trade/ConfirmTradeModal.qml" line="157"/>
+        <location filename="../../qml/Exchange/Trade/ConfirmTradeModal.qml" line="114"/>
+        <location filename="../../qml/Exchange/Trade/ConfirmTradeModal.qml" line="148"/>
         <source>Read more about dPoW</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/ConfirmTradeModal.qml" line="134"/>
+        <location filename="../../qml/Exchange/Trade/ConfirmTradeModal.qml" line="125"/>
         <source>Use custom protection settings for incoming %1 transactions</source>
         <comment>TICKER</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/ConfirmTradeModal.qml" line="151"/>
+        <location filename="../../qml/Exchange/Trade/ConfirmTradeModal.qml" line="142"/>
         <source>Enable Komodo dPoW security</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/ConfirmTradeModal.qml" line="116"/>
+        <location filename="../../qml/Exchange/Trade/ConfirmTradeModal.qml" line="108"/>
         <source>%1 confirmations for incoming %2 transactions</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/ConfirmTradeModal.qml" line="82"/>
+        <location filename="../../qml/Exchange/Trade/ConfirmTradeModal.qml" line="74"/>
         <source>This transaction can take up to 60 mins - DO NOT close this application!</source>
         <translation type="unfinished">Bu işlem 10 dakika kadar sürebilir - Programı KAPATMAYINIZ! {60 ?}</translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/ConfirmTradeModal.qml" line="176"/>
+        <location filename="../../qml/Exchange/Trade/ConfirmTradeModal.qml" line="167"/>
         <source>Required Confirmations</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/ConfirmTradeModal.qml" line="212"/>
+        <location filename="../../qml/Exchange/Trade/ConfirmTradeModal.qml" line="203"/>
         <source>Warning, this atomic swap is not dPoW protected!</source>
         <translation type="unfinished"></translation>
     </message>
@@ -289,12 +284,12 @@
         <translation type="obsolete">Onay Sayısı</translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/ConfirmTradeModal.qml" line="221"/>
+        <location filename="../../qml/Exchange/Trade/ConfirmTradeModal.qml" line="212"/>
         <source>Cancel</source>
         <translation>İptal</translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/ConfirmTradeModal.qml" line="227"/>
+        <location filename="../../qml/Exchange/Trade/ConfirmTradeModal.qml" line="218"/>
         <source>Confirm</source>
         <translation>Onayla</translation>
     </message>
@@ -318,18 +313,18 @@
         <translation type="vanished">DApps</translation>
     </message>
     <message>
-        <location filename="../../qml/Screens/Dashboard.qml" line="138"/>
-        <location filename="../../qml/Screens/Dashboard.qml" line="149"/>
+        <location filename="../../qml/Screens/Dashboard.qml" line="139"/>
+        <location filename="../../qml/Screens/Dashboard.qml" line="150"/>
         <source>Content for this section will be added later. Stay tuned!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Screens/Dashboard.qml" line="251"/>
+        <location filename="../../qml/Screens/Dashboard.qml" line="252"/>
         <source>Market Data</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Screens/Dashboard.qml" line="255"/>
+        <location filename="../../qml/Screens/Dashboard.qml" line="256"/>
         <source>Market data (prices, charts, etc.) marked with the ⓘ icon originates from third-party sources.&lt;br&gt;&lt;br&gt;Data is sourced via &lt;a href=&quot;https://bandprotocol.com/&quot;&gt;Band Decentralized Oracle&lt;/a&gt; and &lt;a href=&quot;https://coinpaprika.com&quot;&gt;Coinpaprika&lt;/a&gt;.&lt;br&gt;&lt;br&gt;&lt;b&gt;Oracle Supported Pairs:&lt;/b&gt;&lt;br&gt;%1&lt;br&gt;&lt;br&gt;&lt;b&gt;Last reference (Band Oracle):&lt;/b&gt;&lt;br&gt;&lt;a href=&quot;%2&quot;&gt;%2&lt;/a&gt;</source>
         <translation type="unfinished"></translation>
     </message>
@@ -337,38 +332,38 @@
 <context>
     <name>DeleteWalletModal</name>
     <message>
-        <location filename="../../qml/Settings/DeleteWalletModal.qml" line="27"/>
+        <location filename="../../qml/Settings/DeleteWalletModal.qml" line="20"/>
         <source>Delete Wallet</source>
         <translation>Cüzdanı Sil</translation>
     </message>
     <message>
-        <location filename="../../qml/Settings/DeleteWalletModal.qml" line="50"/>
+        <location filename="../../qml/Settings/DeleteWalletModal.qml" line="42"/>
         <source>Are you sure you want to delete %1 wallet?</source>
         <comment>WALLET_NAME</comment>
         <translation>%1 cüzdanınızı silmek istediğinizden emin misiniz?</translation>
     </message>
     <message>
-        <location filename="../../qml/Settings/DeleteWalletModal.qml" line="59"/>
+        <location filename="../../qml/Settings/DeleteWalletModal.qml" line="51"/>
         <source>If so, make sure you record your seed phrase in order to restore your wallet in future.</source>
         <translation>Öyleyse, cüzdanınızı gelecekte kurtarabilmeniz için seed satırınızı kaydettiğinizden emin olunuz.</translation>
     </message>
     <message>
-        <location filename="../../qml/Settings/DeleteWalletModal.qml" line="68"/>
+        <location filename="../../qml/Settings/DeleteWalletModal.qml" line="60"/>
         <source>Enter the password of your wallet</source>
         <translation>Cüzdanınızın şifresini giriniz</translation>
     </message>
     <message>
-        <location filename="../../qml/Settings/DeleteWalletModal.qml" line="72"/>
+        <location filename="../../qml/Settings/DeleteWalletModal.qml" line="64"/>
         <source>Wrong Password</source>
         <translation>Yanlış Parola</translation>
     </message>
     <message>
-        <location filename="../../qml/Settings/DeleteWalletModal.qml" line="80"/>
+        <location filename="../../qml/Settings/DeleteWalletModal.qml" line="72"/>
         <source>Cancel</source>
         <translation>İptal</translation>
     </message>
     <message>
-        <location filename="../../qml/Settings/DeleteWalletModal.qml" line="86"/>
+        <location filename="../../qml/Settings/DeleteWalletModal.qml" line="78"/>
         <source>Delete</source>
         <translation>Sil</translation>
     </message>
@@ -376,12 +371,12 @@
 <context>
     <name>EnableCoinModal</name>
     <message>
-        <location filename="../../qml/Wallet/EnableCoinModal.qml" line="59"/>
+        <location filename="../../qml/Wallet/EnableCoinModal.qml" line="57"/>
         <source>Enable coins</source>
         <translation>Kriptopara etkinleştir</translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/EnableCoinModal.qml" line="67"/>
+        <location filename="../../qml/Wallet/EnableCoinModal.qml" line="64"/>
         <source>Search</source>
         <translation>Ara</translation>
     </message>
@@ -411,7 +406,7 @@
         <translation>Kapat</translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/EnableCoinModal.qml" line="119"/>
+        <location filename="../../qml/Wallet/EnableCoinModal.qml" line="120"/>
         <source>Enable</source>
         <translation>Etkinleştir</translation>
     </message>
@@ -419,37 +414,37 @@
 <context>
     <name>EulaModal</name>
     <message>
-        <location filename="../../qml/Components/EulaModal.qml" line="29"/>
+        <location filename="../../qml/Components/EulaModal.qml" line="20"/>
         <source>Disclaimer &amp; Terms of Service</source>
         <translation>Sorumluluk Reddi &amp; Kullanım Şartları</translation>
     </message>
     <message>
-        <location filename="../../qml/Components/EulaModal.qml" line="59"/>
+        <location filename="../../qml/Components/EulaModal.qml" line="48"/>
         <source>Accept EULA</source>
         <translation>Son Kullanıcı Lisans Sözleşmesi (EULA) &apos;ni kabul ediyorum</translation>
     </message>
     <message>
-        <location filename="../../qml/Components/EulaModal.qml" line="65"/>
+        <location filename="../../qml/Components/EulaModal.qml" line="54"/>
         <source>Accept Terms and Conditions</source>
         <translation>Şartları ve koşulları kabul ediyorum</translation>
     </message>
     <message>
-        <location filename="../../qml/Components/EulaModal.qml" line="71"/>
+        <location filename="../../qml/Components/EulaModal.qml" line="60"/>
         <source>Close</source>
         <translation>Kapat</translation>
     </message>
     <message>
-        <location filename="../../qml/Components/EulaModal.qml" line="71"/>
+        <location filename="../../qml/Components/EulaModal.qml" line="60"/>
         <source>Cancel</source>
         <translation>İptal</translation>
     </message>
     <message>
-        <location filename="../../qml/Components/EulaModal.qml" line="78"/>
+        <location filename="../../qml/Components/EulaModal.qml" line="67"/>
         <source>Confirm</source>
         <translation>Onayla</translation>
     </message>
     <message>
-        <location filename="../../qml/Components/EulaModal.qml" line="90"/>
+        <location filename="../../qml/Components/EulaModal.qml" line="78"/>
         <source>&lt;h2&gt;This End-User License Agreement (&apos;EULA&apos;) is a legal agreement between you and Komodo Platform.&lt;/h2&gt;
 
 &lt;p&gt;This EULA agreement governs your acquisition and use of our atomicDEX Pro software (&apos;Software&apos;, &apos;Mobile Application&apos;, &apos;Application&apos; or &apos;App&apos;) directly from Komodo Platform or indirectly through a Komodo Platform authorized entity, reseller or distributor (a &apos;Distributor&apos;).&lt;/p&gt;
@@ -540,112 +535,112 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Exchange.qml" line="212"/>
+        <location filename="../../qml/Exchange/Exchange.qml" line="226"/>
         <source>Started</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Exchange.qml" line="214"/>
+        <location filename="../../qml/Exchange/Exchange.qml" line="228"/>
         <source>Negotiated</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Exchange.qml" line="216"/>
+        <location filename="../../qml/Exchange/Exchange.qml" line="230"/>
         <source>Taker fee sent</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Exchange.qml" line="218"/>
+        <location filename="../../qml/Exchange/Exchange.qml" line="232"/>
         <source>Maker payment received</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Exchange.qml" line="220"/>
+        <location filename="../../qml/Exchange/Exchange.qml" line="234"/>
         <source>Maker payment wait confirm started</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Exchange.qml" line="222"/>
+        <location filename="../../qml/Exchange/Exchange.qml" line="236"/>
         <source>Maker payment validated and confirmed</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Exchange.qml" line="224"/>
+        <location filename="../../qml/Exchange/Exchange.qml" line="238"/>
         <source>Taker payment sent</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Exchange.qml" line="226"/>
+        <location filename="../../qml/Exchange/Exchange.qml" line="240"/>
         <source>Taker payment spent</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Exchange.qml" line="228"/>
+        <location filename="../../qml/Exchange/Exchange.qml" line="242"/>
         <source>Maker payment spent</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Exchange.qml" line="230"/>
+        <location filename="../../qml/Exchange/Exchange.qml" line="244"/>
         <source>Finished</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Exchange.qml" line="232"/>
+        <location filename="../../qml/Exchange/Exchange.qml" line="246"/>
         <source>Start failed</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Exchange.qml" line="234"/>
+        <location filename="../../qml/Exchange/Exchange.qml" line="248"/>
         <source>Negotiate failed</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Exchange.qml" line="236"/>
+        <location filename="../../qml/Exchange/Exchange.qml" line="250"/>
         <source>Taker fee validate failed</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Exchange.qml" line="238"/>
+        <location filename="../../qml/Exchange/Exchange.qml" line="252"/>
         <source>Maker payment transaction failed</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Exchange.qml" line="240"/>
+        <location filename="../../qml/Exchange/Exchange.qml" line="254"/>
         <source>Maker payment Data send failed</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Exchange.qml" line="242"/>
+        <location filename="../../qml/Exchange/Exchange.qml" line="256"/>
         <source>Maker payment wait confirm failed</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Exchange.qml" line="244"/>
+        <location filename="../../qml/Exchange/Exchange.qml" line="258"/>
         <source>Taker payment validate failed</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Exchange.qml" line="246"/>
+        <location filename="../../qml/Exchange/Exchange.qml" line="260"/>
         <source>Taker payment wait confirm failed</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Exchange.qml" line="248"/>
+        <location filename="../../qml/Exchange/Exchange.qml" line="262"/>
         <source>Taker payment spend failed</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Exchange.qml" line="250"/>
+        <location filename="../../qml/Exchange/Exchange.qml" line="264"/>
         <source>Maker payment wait refund started</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Exchange.qml" line="252"/>
+        <location filename="../../qml/Exchange/Exchange.qml" line="266"/>
         <source>Maker payment refunded</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Exchange.qml" line="254"/>
+        <location filename="../../qml/Exchange/Exchange.qml" line="268"/>
         <source>Maker payment refund failed</source>
         <translation type="unfinished"></translation>
     </message>
@@ -781,6 +776,19 @@
     </message>
 </context>
 <context>
+    <name>LogModal</name>
+    <message>
+        <location filename="../../qml/Components/LogModal.qml" line="13"/>
+        <source>Log</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../qml/Components/LogModal.qml" line="26"/>
+        <source>Close</source>
+        <translation type="unfinished">Kapat</translation>
+    </message>
+</context>
+<context>
     <name>Login</name>
     <message>
         <location filename="../../qml/Screens/Login.qml" line="28"/>
@@ -802,75 +810,85 @@
 <context>
     <name>Main</name>
     <message>
-        <location filename="../../qml/Wallet/Main.qml" line="100"/>
+        <location filename="../../qml/Wallet/Main.qml" line="102"/>
         <source>Wallet Balance</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/Main.qml" line="127"/>
+        <location filename="../../qml/Wallet/Main.qml" line="129"/>
         <source>Price</source>
         <translation type="unfinished">Fiyat</translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/Main.qml" line="145"/>
+        <location filename="../../qml/Wallet/Main.qml" line="147"/>
         <source>Change 24h</source>
         <translation type="unfinished">Değişim 24sa</translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/Main.qml" line="167"/>
+        <location filename="../../qml/Wallet/Main.qml" line="169"/>
         <source>Portfolio %</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/Main.qml" line="320"/>
+        <location filename="../../qml/Wallet/Main.qml" line="322"/>
         <source>%1 / %2 Price</source>
         <comment>TICKER</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/Main.qml" line="344"/>
+        <location filename="../../qml/Wallet/Main.qml" line="346"/>
         <source>Volume 24h</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/Main.qml" line="200"/>
+        <location filename="../../qml/Wallet/Main.qml" line="202"/>
         <source>Send</source>
         <translation type="unfinished">Gönder</translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/Main.qml" line="220"/>
+        <location filename="../../qml/Wallet/Main.qml" line="222"/>
         <source>Receive</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/Main.qml" line="239"/>
+        <location filename="../../qml/Wallet/Main.qml" line="241"/>
         <source>Swap</source>
         <translation type="unfinished">Takasla</translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/Main.qml" line="263"/>
+        <location filename="../../qml/Wallet/Main.qml" line="265"/>
         <source>Claim Rewards</source>
         <translation type="unfinished">Ödül Al</translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/Main.qml" line="364"/>
+        <location filename="../../qml/Wallet/Main.qml" line="366"/>
         <source>Loading</source>
         <translation type="unfinished">Yükleniyor</translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/Main.qml" line="376"/>
+        <location filename="../../qml/Wallet/Main.qml" line="378"/>
         <source>Scanning blocks for TX History...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/Main.qml" line="377"/>
+        <location filename="../../qml/Wallet/Main.qml" line="379"/>
         <source>Syncing TX History...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/Main.qml" line="408"/>
+        <location filename="../../qml/Wallet/Main.qml" line="410"/>
         <source>No transactions</source>
         <translation type="unfinished">İşlem yok</translation>
+    </message>
+    <message>
+        <location filename="../../qml/Wallet/Main.qml" line="410"/>
+        <source>Refreshing</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../qml/Wallet/Main.qml" line="442"/>
+        <source>Fetching transactions</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -986,7 +1004,7 @@
 <context>
     <name>NotificationsPanel</name>
     <message>
-        <location filename="../../qml/Dashboard/NotificationsPanel.qml" line="48"/>
+        <location filename="../../qml/Dashboard/NotificationsPanel.qml" line="97"/>
         <source>Swap status updated</source>
         <translation type="unfinished"></translation>
     </message>
@@ -995,27 +1013,42 @@
         <translation type="obsolete">AtomıcDEX Pro</translation>
     </message>
     <message>
-        <location filename="../../qml/Dashboard/NotificationsPanel.qml" line="97"/>
+        <location filename="../../qml/Dashboard/NotificationsPanel.qml" line="107"/>
+        <source>You sent %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../qml/Dashboard/NotificationsPanel.qml" line="107"/>
+        <source>You received %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../qml/Dashboard/NotificationsPanel.qml" line="108"/>
+        <source>Your wallet balance changed</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../qml/Dashboard/NotificationsPanel.qml" line="134"/>
         <source>atomicDEX Pro</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Dashboard/NotificationsPanel.qml" line="112"/>
+        <location filename="../../qml/Dashboard/NotificationsPanel.qml" line="149"/>
         <source>Notifications</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Dashboard/NotificationsPanel.qml" line="130"/>
+        <location filename="../../qml/Dashboard/NotificationsPanel.qml" line="167"/>
         <source>Clear</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Dashboard/NotificationsPanel.qml" line="157"/>
+        <location filename="../../qml/Dashboard/NotificationsPanel.qml" line="194"/>
         <source>There isn&apos;t any notification</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Dashboard/NotificationsPanel.qml" line="256"/>
+        <location filename="../../qml/Dashboard/NotificationsPanel.qml" line="293"/>
         <source>Close</source>
         <translation type="unfinished">Kapat</translation>
     </message>
@@ -1225,42 +1258,42 @@
 <context>
     <name>OrderModal</name>
     <message>
-        <location filename="../../qml/Exchange/OrderModal.qml" line="32"/>
+        <location filename="../../qml/Exchange/OrderModal.qml" line="20"/>
         <source>Swap Details</source>
         <translation>Takas Detayları</translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/OrderModal.qml" line="32"/>
+        <location filename="../../qml/Exchange/OrderModal.qml" line="20"/>
         <source>Order Details</source>
         <translation>Emir Detayları</translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/OrderModal.qml" line="96"/>
+        <location filename="../../qml/Exchange/OrderModal.qml" line="72"/>
         <source>Maker Order</source>
         <translation>Satıcı Emri</translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/OrderModal.qml" line="96"/>
+        <location filename="../../qml/Exchange/OrderModal.qml" line="72"/>
         <source>Taker Order</source>
         <translation>Alıcı Emri</translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/OrderModal.qml" line="105"/>
+        <location filename="../../qml/Exchange/OrderModal.qml" line="81"/>
         <source>Refund State</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/OrderModal.qml" line="107"/>
+        <location filename="../../qml/Exchange/OrderModal.qml" line="83"/>
         <source>Your swap failed but the auto-refund process for your payment started already. Please wait and keep application opened until you receive your payment back</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/OrderModal.qml" line="115"/>
+        <location filename="../../qml/Exchange/OrderModal.qml" line="91"/>
         <source>Date</source>
         <translation>Tarih</translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/OrderModal.qml" line="123"/>
+        <location filename="../../qml/Exchange/OrderModal.qml" line="99"/>
         <source>ID</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1273,27 +1306,27 @@
         <translation type="vanished">UUID</translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/OrderModal.qml" line="133"/>
+        <location filename="../../qml/Exchange/OrderModal.qml" line="109"/>
         <source>Maker Payment Sent ID</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/OrderModal.qml" line="133"/>
+        <location filename="../../qml/Exchange/OrderModal.qml" line="109"/>
         <source>Maker Payment Spent ID</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/OrderModal.qml" line="143"/>
+        <location filename="../../qml/Exchange/OrderModal.qml" line="119"/>
         <source>Taker Payment Spent ID</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/OrderModal.qml" line="143"/>
+        <location filename="../../qml/Exchange/OrderModal.qml" line="119"/>
         <source>Taker Payment Sent ID</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/OrderModal.qml" line="200"/>
+        <location filename="../../qml/Exchange/OrderModal.qml" line="173"/>
         <source>Cancel Order</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1306,17 +1339,17 @@
         <translation type="vanished">Alıcı Ödeme ID</translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/OrderModal.qml" line="152"/>
+        <location filename="../../qml/Exchange/OrderModal.qml" line="128"/>
         <source>Error ID</source>
         <translation>Hata ID</translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/OrderModal.qml" line="160"/>
+        <location filename="../../qml/Exchange/OrderModal.qml" line="136"/>
         <source>Error Log</source>
         <translation>Hata Kaydı</translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/OrderModal.qml" line="190"/>
+        <location filename="../../qml/Exchange/OrderModal.qml" line="163"/>
         <source>Close</source>
         <translation>Kapat</translation>
     </message>
@@ -1325,7 +1358,7 @@
         <translation type="vanished">İptal</translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/OrderModal.qml" line="205"/>
+        <location filename="../../qml/Exchange/OrderModal.qml" line="178"/>
         <source>View at Explorer</source>
         <translation>Explorer&apos;da Görüntüle</translation>
     </message>
@@ -1395,12 +1428,12 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/OrderbookSection.qml" line="53"/>
+        <location filename="../../qml/Exchange/Trade/OrderbookSection.qml" line="49"/>
         <source>Quantity</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/OrderbookSection.qml" line="70"/>
+        <location filename="../../qml/Exchange/Trade/OrderbookSection.qml" line="64"/>
         <source>Total</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1505,37 +1538,37 @@
 <context>
     <name>Portfolio</name>
     <message>
-        <location filename="../../qml/Portfolio/Portfolio.qml" line="78"/>
+        <location filename="../../qml/Portfolio/Portfolio.qml" line="89"/>
         <source>TOTAL</source>
         <translation>TOPLAM</translation>
     </message>
     <message>
-        <location filename="../../qml/Portfolio/Portfolio.qml" line="129"/>
+        <location filename="../../qml/Portfolio/Portfolio.qml" line="142"/>
         <source>Search</source>
         <translation>Ara</translation>
     </message>
     <message>
-        <location filename="../../qml/Portfolio/Portfolio.qml" line="164"/>
+        <location filename="../../qml/Portfolio/Portfolio.qml" line="177"/>
         <source>Coin</source>
         <translation>Kriptopara</translation>
     </message>
     <message>
-        <location filename="../../qml/Portfolio/Portfolio.qml" line="176"/>
+        <location filename="../../qml/Portfolio/Portfolio.qml" line="189"/>
         <source>Balance</source>
         <translation>Bakiye</translation>
     </message>
     <message>
-        <location filename="../../qml/Portfolio/Portfolio.qml" line="188"/>
+        <location filename="../../qml/Portfolio/Portfolio.qml" line="201"/>
         <source>Change 24h</source>
         <translation>Değişim 24sa</translation>
     </message>
     <message>
-        <location filename="../../qml/Portfolio/Portfolio.qml" line="200"/>
+        <location filename="../../qml/Portfolio/Portfolio.qml" line="213"/>
         <source>Trend 7d</source>
         <translation>Trend 7g</translation>
     </message>
     <message>
-        <location filename="../../qml/Portfolio/Portfolio.qml" line="212"/>
+        <location filename="../../qml/Portfolio/Portfolio.qml" line="225"/>
         <source>Price</source>
         <translation>Fiyat</translation>
     </message>
@@ -1544,7 +1577,7 @@
         <translation type="vanished">Yükleniyor</translation>
     </message>
     <message>
-        <location filename="../../qml/Portfolio/Portfolio.qml" line="261"/>
+        <location filename="../../qml/Portfolio/Portfolio.qml" line="283"/>
         <source>Disable %1</source>
         <comment>TICKER</comment>
         <translation>%1&apos;i Etkinsizleştir</translation>
@@ -1600,17 +1633,17 @@
 <context>
     <name>ReceiveModal</name>
     <message>
-        <location filename="../../qml/Wallet/ReceiveModal.qml" line="21"/>
+        <location filename="../../qml/Wallet/ReceiveModal.qml" line="17"/>
         <source>Receive</source>
         <translation>Al</translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/ReceiveModal.qml" line="26"/>
+        <location filename="../../qml/Wallet/ReceiveModal.qml" line="21"/>
         <source>Share this address to receive coins</source>
         <translation>Kriptopara almak için bu adresi paylaşın</translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/ReceiveModal.qml" line="46"/>
+        <location filename="../../qml/Wallet/ReceiveModal.qml" line="41"/>
         <source>Close</source>
         <translation>Kapat</translation>
     </message>
@@ -1658,37 +1691,37 @@
 <context>
     <name>RecoverSeedModal</name>
     <message>
-        <location filename="../../qml/Settings/RecoverSeedModal.qml" line="43"/>
+        <location filename="../../qml/Settings/RecoverSeedModal.qml" line="36"/>
         <source>View Seed</source>
         <translation>Seed&apos;i Gör</translation>
     </message>
     <message>
-        <location filename="../../qml/Settings/RecoverSeedModal.qml" line="54"/>
+        <location filename="../../qml/Settings/RecoverSeedModal.qml" line="46"/>
         <source>Please enter your password to view the seed.</source>
         <translation>Seed&apos;i görmek için lütfen parolanızı giriniz.</translation>
     </message>
     <message>
-        <location filename="../../qml/Settings/RecoverSeedModal.qml" line="65"/>
+        <location filename="../../qml/Settings/RecoverSeedModal.qml" line="57"/>
         <source>Wrong Password</source>
         <translation>Yanlış Parola</translation>
     </message>
     <message>
-        <location filename="../../qml/Settings/RecoverSeedModal.qml" line="74"/>
+        <location filename="../../qml/Settings/RecoverSeedModal.qml" line="66"/>
         <source>Seed</source>
         <translation>Seed</translation>
     </message>
     <message>
-        <location filename="../../qml/Settings/RecoverSeedModal.qml" line="83"/>
+        <location filename="../../qml/Settings/RecoverSeedModal.qml" line="75"/>
         <source>Cancel</source>
         <translation>İptal</translation>
     </message>
     <message>
-        <location filename="../../qml/Settings/RecoverSeedModal.qml" line="83"/>
+        <location filename="../../qml/Settings/RecoverSeedModal.qml" line="75"/>
         <source>Close</source>
         <translation>Kapat</translation>
     </message>
     <message>
-        <location filename="../../qml/Settings/RecoverSeedModal.qml" line="91"/>
+        <location filename="../../qml/Settings/RecoverSeedModal.qml" line="83"/>
         <source>View</source>
         <translation>Gör</translation>
     </message>
@@ -1714,140 +1747,140 @@
 <context>
     <name>SendModal</name>
     <message>
-        <location filename="../../qml/Wallet/SendModal.qml" line="171"/>
+        <location filename="../../qml/Wallet/SendModal.qml" line="198"/>
         <source>Prepare to Send</source>
         <translation>Gönderi Hazırlığı</translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/SendModal.qml" line="181"/>
-        <location filename="../../qml/Wallet/SendModal.qml" line="332"/>
+        <location filename="../../qml/Wallet/SendModal.qml" line="208"/>
+        <location filename="../../qml/Wallet/SendModal.qml" line="372"/>
         <source>Recipient&apos;s address</source>
         <translation>Alıcı adresi</translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/SendModal.qml" line="182"/>
+        <location filename="../../qml/Wallet/SendModal.qml" line="209"/>
         <source>Enter address of the recipient</source>
         <translation>Alıcının adresini giriniz</translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/SendModal.qml" line="187"/>
+        <location filename="../../qml/Wallet/SendModal.qml" line="215"/>
         <source>Address Book</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/SendModal.qml" line="202"/>
+        <location filename="../../qml/Wallet/SendModal.qml" line="231"/>
         <source>The address has to be mixed case.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/SendModal.qml" line="207"/>
+        <location filename="../../qml/Wallet/SendModal.qml" line="236"/>
         <source>Fix</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/SendModal.qml" line="219"/>
+        <location filename="../../qml/Wallet/SendModal.qml" line="249"/>
         <source>Amount to send</source>
         <translation>Gönderilecek miktar</translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/SendModal.qml" line="220"/>
+        <location filename="../../qml/Wallet/SendModal.qml" line="250"/>
         <source>Enter the amount to send</source>
         <translation>Gönderilecek miktarı giriniz</translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/SendModal.qml" line="226"/>
+        <location filename="../../qml/Wallet/SendModal.qml" line="257"/>
         <source>MAX</source>
         <translation type="unfinished">MAKS</translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/SendModal.qml" line="234"/>
+        <location filename="../../qml/Wallet/SendModal.qml" line="266"/>
         <source>Enable Custom Fees</source>
         <translation>Özel Ücretleri Etkinleştir</translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/SendModal.qml" line="245"/>
+        <location filename="../../qml/Wallet/SendModal.qml" line="278"/>
         <source>Only use custom fees if you know what you are doing!</source>
         <translation>Özel ücretler hakkında bilginiz yoksa kullanmayınız!</translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/SendModal.qml" line="253"/>
+        <location filename="../../qml/Wallet/SendModal.qml" line="286"/>
         <source>Custom Fee</source>
         <translation>Özel Ücret</translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/SendModal.qml" line="254"/>
+        <location filename="../../qml/Wallet/SendModal.qml" line="287"/>
         <source>Enter the custom fee</source>
         <translation>Özel ücreti giriniz</translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/SendModal.qml" line="264"/>
+        <location filename="../../qml/Wallet/SendModal.qml" line="298"/>
         <source>Gas Limit</source>
         <translation>Gas Limiti</translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/SendModal.qml" line="265"/>
+        <location filename="../../qml/Wallet/SendModal.qml" line="299"/>
         <source>Enter the gas limit</source>
         <translation>Gas limitini giriniz</translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/SendModal.qml" line="271"/>
+        <location filename="../../qml/Wallet/SendModal.qml" line="306"/>
         <source>Gas Price</source>
         <translation>Gas Fiyatı</translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/SendModal.qml" line="272"/>
+        <location filename="../../qml/Wallet/SendModal.qml" line="307"/>
         <source>Enter the gas price</source>
         <translation>Gas fiyatını giriniz</translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/SendModal.qml" line="286"/>
+        <location filename="../../qml/Wallet/SendModal.qml" line="322"/>
         <source>Custom Fee can&apos;t be higher than the amount</source>
         <translation>Özel Ücret miktardan daha yüksek olamaz</translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/SendModal.qml" line="296"/>
+        <location filename="../../qml/Wallet/SendModal.qml" line="332"/>
         <source>Not enough funds.</source>
         <translation>Yetersiz bakiye.</translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/SendModal.qml" line="296"/>
+        <location filename="../../qml/Wallet/SendModal.qml" line="332"/>
         <source>You have %1</source>
         <comment>AMT TICKER</comment>
         <translation>%1&apos;niz var</translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/SendModal.qml" line="308"/>
+        <location filename="../../qml/Wallet/SendModal.qml" line="348"/>
         <source>Close</source>
         <translation>Kapat</translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/SendModal.qml" line="313"/>
+        <location filename="../../qml/Wallet/SendModal.qml" line="353"/>
         <source>Prepare</source>
         <translation>Hazırla</translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/SendModal.qml" line="327"/>
-        <location filename="../../qml/Wallet/SendModal.qml" line="362"/>
+        <location filename="../../qml/Wallet/SendModal.qml" line="367"/>
+        <location filename="../../qml/Wallet/SendModal.qml" line="407"/>
         <source>Send</source>
         <translation>Gönder</translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/SendModal.qml" line="338"/>
+        <location filename="../../qml/Wallet/SendModal.qml" line="378"/>
         <source>Amount</source>
         <translation>Miktar</translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/SendModal.qml" line="344"/>
+        <location filename="../../qml/Wallet/SendModal.qml" line="384"/>
         <source>Fees</source>
         <translation>Ücret</translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/SendModal.qml" line="350"/>
+        <location filename="../../qml/Wallet/SendModal.qml" line="390"/>
         <source>Date</source>
         <translation>Tarih</translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/SendModal.qml" line="357"/>
+        <location filename="../../qml/Wallet/SendModal.qml" line="401"/>
         <source>Back</source>
         <translation>Geri</translation>
     </message>
@@ -1978,7 +2011,7 @@
         <translation type="vanished">Ayarlar</translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/Sidebar.qml" line="163"/>
+        <location filename="../../qml/Wallet/Sidebar.qml" line="165"/>
         <source>Disable %1</source>
         <comment>TICKER</comment>
         <translation type="unfinished">%1&apos;i Etkinsizleştir</translation>
@@ -2064,19 +2097,74 @@
     </message>
     <message>
         <location filename="../../qml/Support/Support.qml" line="165"/>
-        <source>No! AtomicDeFi is non-custodial. We never store any sensitive data, including your private keys, seed phrases, or PIN. All of these are only stored on the user’s device and never leave it. You are in full control of your assets.</source>
+        <source>No! atomicDEX is non-custodial. We never store any sensitive data, including your private keys, seed phrases, or PIN. All of these are only stored on the user’s device and never leave it. You are in full control of your assets.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../qml/Support/Support.qml" line="171"/>
-        <source>How is trading on AtomicDeFi different from trading on other DEXs?</source>
+        <source>How is trading on atomicDEX different from trading on other DEXs?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../qml/Support/Support.qml" line="172"/>
         <source>Other DEXs generally only allow you to trade assets that are based on a single blockchain network, use proxy tokens, and only allow placing a single order with the same funds.
 
-AtomicDeFi enables you to natively trade across two different blockchain networks without proxy tokens. You can also place multiple orders with the same funds, for example selling 0.1 BTC for KMD, QTUM, or VRSC -- the first that fills automatically cancels all other orders.</source>
+atomicDEX enables you to natively trade across two different blockchain networks without proxy tokens. You can also place multiple orders with the same funds, for example selling 0.1 BTC for KMD, QTUM, or VRSC -- the first that fills automatically cancels all other orders.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../qml/Support/Support.qml" line="192"/>
+        <source>How are the fees on atomicDEX calculated?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../qml/Support/Support.qml" line="193"/>
+        <source>There are two fee categories to consider when trading on atomicDEX.
+
+1. atomicDEX charges a 0.15% trading fee for taker orders, and maker orders have zero fees.
+2. Both makers and takers will need to pay normal transaction fees when making atomic swaps.
+
+Network fees can vary greatly depending on your selected trading pair. This is why atomicDEX supports advanced fee management. We give you the option to choose between quicker swaps or lower fees!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../qml/Support/Support.qml" line="205"/>
+        <source>Yes! Unlike most open source blockchain projects, atomicDEX offers 24/7 support. Join our Discord, we are happy to help!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../qml/Support/Support.qml" line="212"/>
+        <source>No! atomicDEX is fully decentralized. It is not possible to limit user access by any third party.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../qml/Support/Support.qml" line="218"/>
+        <source>Who is behind atomicDEX?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../qml/Support/Support.qml" line="219"/>
+        <source>atomicDEX is developed by the Komodo team. Komodo is one of the most established blockchain projects working on innovative solutions like atomic swaps, Delayed Proof-of-Work, and an interoperable multi-chain architecture.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../qml/Support/Support.qml" line="225"/>
+        <source>Is it possible to develop my own white-label exchange on atomicDEX?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../qml/Support/Support.qml" line="226"/>
+        <source>Absolutely! You can read our developer documentation for more details or contact us with your partnership inquiries. Have a specific technical question? The atomicDEX developer community is always ready to help!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../qml/Support/Support.qml" line="232"/>
+        <source>Which devices can I use atomicDEX on?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../qml/Support/Support.qml" line="233"/>
+        <source>atomicDEX is available for mobile on both Android and iPhone, and for desktop on Windows, Linux and Mac operating systems.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -2100,68 +2188,13 @@ AtomicDeFi enables you to natively trade across two different blockchain network
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Support/Support.qml" line="192"/>
-        <source>How are the fees on AtomicDeFi calculated?</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../qml/Support/Support.qml" line="193"/>
-        <source>There are two fee categories to consider when trading on AtomicDeFi.
-
-1. AtomicDeFi charges a 0.15% trading fee for taker orders, and maker orders have zero fees.
-2. Both makers and takers will need to pay normal transaction fees when making atomic swaps.
-
-Network fees can vary greatly depending on your selected trading pair. This is why AtomicDeFi supports advanced fee management. We give you the option to choose between quicker swaps or lower fees!</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../../qml/Support/Support.qml" line="204"/>
         <source>Do you provide user support?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Support/Support.qml" line="205"/>
-        <source>Yes! Unlike most open source blockchain projects, AtomicDeFi offers 24/7 support. Join our Discord, we are happy to help!</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../../qml/Support/Support.qml" line="211"/>
         <source>Do you have country restrictions?</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../qml/Support/Support.qml" line="212"/>
-        <source>No! AtomicDeFi is fully decentralized. It is not possible to limit user access by any third party.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../qml/Support/Support.qml" line="218"/>
-        <source>Who is behind AtomicDeFi?</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../qml/Support/Support.qml" line="219"/>
-        <source>AtomicDeFi is developed by the Komodo team. Komodo is one of the most established blockchain projects working on innovative solutions like atomic swaps, Delayed Proof-of-Work, and an interoperable multi-chain architecture.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../qml/Support/Support.qml" line="225"/>
-        <source>Is it possible to develop my own white-label exchange on AtomicDeFi?</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../qml/Support/Support.qml" line="226"/>
-        <source>Absolutely! You can read our developer documentation for more details or contact us with your partnership inquiries. Have a specific technical question? The AtomicDeFi developer community is always ready to help!</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../qml/Support/Support.qml" line="232"/>
-        <source>Which devices can I use AtomicDeFi on?</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../qml/Support/Support.qml" line="233"/>
-        <source>AtomicDeFi is available for mobile on both Android and iPhone, and for desktop on Windows, Linux and Mac operating systems.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -2188,8 +2221,21 @@ Network fees can vary greatly depending on your selected trading pair. This is w
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/SwapProgress.qml" line="98"/>
+        <location filename="../../qml/Exchange/SwapProgress.qml" line="100"/>
         <source>Progress details</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>TextAreaWithTitle</name>
+    <message>
+        <location filename="../../qml/Components/TextAreaWithTitle.qml" line="39"/>
+        <source>Save</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../qml/Components/TextAreaWithTitle.qml" line="39"/>
+        <source>Edit</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -2249,17 +2295,17 @@ Network fees can vary greatly depending on your selected trading pair. This is w
 <context>
     <name>TransactionDetailsModal</name>
     <message>
-        <location filename="../../qml/Wallet/TransactionDetailsModal.qml" line="25"/>
+        <location filename="../../qml/Wallet/TransactionDetailsModal.qml" line="23"/>
         <source>Transaction Details</source>
         <translation>İşlem Detayları</translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/TransactionDetailsModal.qml" line="30"/>
+        <location filename="../../qml/Wallet/TransactionDetailsModal.qml" line="27"/>
         <source>Amount</source>
         <translation>Miktar</translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/TransactionDetailsModal.qml" line="38"/>
+        <location filename="../../qml/Wallet/TransactionDetailsModal.qml" line="37"/>
         <source>Fees</source>
         <translation>Ücret</translation>
     </message>
@@ -2269,42 +2315,52 @@ Network fees can vary greatly depending on your selected trading pair. This is w
         <translation>Tarih</translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/TransactionDetailsModal.qml" line="46"/>
+        <location filename="../../qml/Wallet/TransactionDetailsModal.qml" line="47"/>
         <source>Unconfirmed</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/TransactionDetailsModal.qml" line="51"/>
+        <location filename="../../qml/Wallet/TransactionDetailsModal.qml" line="52"/>
         <source>Transaction Hash</source>
         <translation>İşlem Hash&apos;i</translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/TransactionDetailsModal.qml" line="58"/>
+        <location filename="../../qml/Wallet/TransactionDetailsModal.qml" line="60"/>
         <source>Confirmations</source>
         <translation>Onay Sayısı</translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/TransactionDetailsModal.qml" line="64"/>
+        <location filename="../../qml/Wallet/TransactionDetailsModal.qml" line="67"/>
         <source>Block Height</source>
         <translation>Blok Uzunluğu</translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/TransactionDetailsModal.qml" line="69"/>
+        <location filename="../../qml/Wallet/TransactionDetailsModal.qml" line="73"/>
         <source>From</source>
         <translation>Gönderen</translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/TransactionDetailsModal.qml" line="74"/>
+        <location filename="../../qml/Wallet/TransactionDetailsModal.qml" line="79"/>
         <source>To</source>
         <translation>Alan</translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/TransactionDetailsModal.qml" line="81"/>
+        <location filename="../../qml/Wallet/TransactionDetailsModal.qml" line="87"/>
+        <source>Notes</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../qml/Wallet/TransactionDetailsModal.qml" line="99"/>
         <source>Close</source>
         <translation>Kapat</translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/TransactionDetailsModal.qml" line="86"/>
+        <location filename="../../qml/Wallet/TransactionDetailsModal.qml" line="108"/>
+        <source>Refund</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../qml/Wallet/TransactionDetailsModal.qml" line="121"/>
         <source>View at Explorer</source>
         <translation>Explorer&apos;da Görüntüle</translation>
     </message>
@@ -2312,22 +2368,22 @@ Network fees can vary greatly depending on your selected trading pair. This is w
 <context>
     <name>Transactions</name>
     <message>
-        <location filename="../../qml/Wallet/Transactions.qml" line="51"/>
+        <location filename="../../qml/Wallet/Transactions.qml" line="47"/>
         <source>Received</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/Transactions.qml" line="51"/>
+        <location filename="../../qml/Wallet/Transactions.qml" line="47"/>
         <source>Sent</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/Transactions.qml" line="84"/>
+        <location filename="../../qml/Wallet/Transactions.qml" line="80"/>
         <source>fees</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/Transactions.qml" line="95"/>
+        <location filename="../../qml/Wallet/Transactions.qml" line="91"/>
         <source>Unconfirmed</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2335,52 +2391,52 @@ Network fees can vary greatly depending on your selected trading pair. This is w
 <context>
     <name>UpdateModal</name>
     <message>
-        <location filename="../../qml/Components/UpdateModal.qml" line="37"/>
+        <location filename="../../qml/Components/UpdateModal.qml" line="16"/>
         <source>Available</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Components/UpdateModal.qml" line="37"/>
+        <location filename="../../qml/Components/UpdateModal.qml" line="16"/>
         <source>Required</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Components/UpdateModal.qml" line="37"/>
+        <location filename="../../qml/Components/UpdateModal.qml" line="16"/>
         <source>Recommended</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Components/UpdateModal.qml" line="37"/>
+        <location filename="../../qml/Components/UpdateModal.qml" line="16"/>
         <source>Up to date</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Components/UpdateModal.qml" line="46"/>
+        <location filename="../../qml/Components/UpdateModal.qml" line="15"/>
         <source>New Update!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Components/UpdateModal.qml" line="46"/>
+        <location filename="../../qml/Components/UpdateModal.qml" line="15"/>
         <source>Changelog</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Components/UpdateModal.qml" line="60"/>
+        <location filename="../../qml/Components/UpdateModal.qml" line="34"/>
         <source>Problem occured</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Components/UpdateModal.qml" line="71"/>
+        <location filename="../../qml/Components/UpdateModal.qml" line="42"/>
         <source>Skip</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Components/UpdateModal.qml" line="71"/>
+        <location filename="../../qml/Components/UpdateModal.qml" line="42"/>
         <source>Close</source>
         <translation type="unfinished">Kapat</translation>
     </message>
     <message>
-        <location filename="../../qml/Components/UpdateModal.qml" line="79"/>
+        <location filename="../../qml/Components/UpdateModal.qml" line="51"/>
         <source>Download</source>
         <translation type="unfinished"></translation>
     </message>

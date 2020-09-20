@@ -4,6 +4,7 @@ import QtQuick.Controls 2.12
 
 import QtGraphicalEffects 1.0
 import "../Constants"
+import "../Components"
 
 Item {
     property int sort_type
@@ -16,6 +17,7 @@ Item {
 
     // Click area
     MouseArea {
+        id: click_area
         anchors.fill: parent
         hoverEnabled: true
         onClicked: {
@@ -33,9 +35,10 @@ Item {
 
     DefaultText {
         id: title
-        color: Style.colorWhite1
         anchors.left: icon_at_left ? parent.left : undefined
         anchors.right: icon_at_left ? undefined : parent.right
+
+        color: Qt.lighter(Style.colorWhite4, click_area.containsMouse ? Style.hoverLightMultiplier : 1.0)
     }
 
 
@@ -56,7 +59,7 @@ Item {
         visible: false
     }
 
-    ColorOverlay {
+    DefaultColorOverlay {
         visible: current_sort === sort_type
         anchors.fill: arrow_icon
         source: arrow_icon

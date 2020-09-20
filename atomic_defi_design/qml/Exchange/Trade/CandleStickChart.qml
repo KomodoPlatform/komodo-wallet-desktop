@@ -21,8 +21,8 @@ Item {
     }
 
     Component.onCompleted: {
-        API.get().trading_pg.candlestick_charts_mdl.modelReset.connect(chartUpdated)
-        API.get().trading_pg.candlestick_charts_mdl.chartFullyModelReset.connect(chartFullyReset)
+        API.app.trading_pg.candlestick_charts_mdl.modelReset.connect(chartUpdated)
+        API.app.trading_pg.candlestick_charts_mdl.chartFullyModelReset.connect(chartFullyReset)
     }
 
     function chartFullyReset() {
@@ -208,7 +208,7 @@ Item {
 
             HCandlestickModelMapper {
                 id: cs_mapper
-                model: API.get().trading_pg.candlestick_charts_mdl
+                model: API.app.trading_pg.candlestick_charts_mdl
 
                 timestampColumn: 0
                 openColumn: 1
@@ -275,7 +275,8 @@ Item {
         // Horizontal line
         Canvas {
             id: horizontal_line
-            readonly property color color: series.last_value_green ? Style.colorGreen : Style.colorRed
+            property color color: series.last_value_green ? Style.colorGreen : Style.colorRed
+            Behavior on color { ColorAnimation { duration: Style.animationDuration } }
             onColorChanged: requestPaint()
 
             anchors.left: parent.left
@@ -295,7 +296,7 @@ Item {
                 ctx.stroke()
             }
 
-            Rectangle {
+            AnimatedRectangle {
                 color: parent.color
                 anchors.right: parent.right
                 anchors.verticalCenter: parent.verticalCenter
@@ -314,7 +315,7 @@ Item {
         }
 
         // Cursor Horizontal line
-        Rectangle {
+        AnimatedRectangle {
             id: cursor_horizontal_line
             anchors.left: parent.left
             width: parent.width
@@ -324,7 +325,7 @@ Item {
 
             color: Style.colorBlue
 
-            Rectangle {
+            AnimatedRectangle {
                 color: parent.color
                 anchors.right: parent.right
                 anchors.verticalCenter: parent.verticalCenter
@@ -341,7 +342,7 @@ Item {
         }
 
         // Cursor Vertical line
-        Rectangle {
+        AnimatedRectangle {
             id: cursor_vertical_line
 
             anchors.top: parent.top
@@ -351,7 +352,7 @@ Item {
             visible: cursor_horizontal_line.visible
             color: cursor_horizontal_line.color
 
-            Rectangle {
+            AnimatedRectangle {
                 color: parent.color
                 anchors.top: parent.bottom
                 anchors.horizontalCenter: parent.horizontalCenter
@@ -387,7 +388,6 @@ Item {
             anchors.leftMargin: 35
             width: 75
             height: 30
-            flat: true
             font.pixelSize: Style.textSizeSmall3
 
             currentIndex: 5 // 1h
@@ -462,11 +462,11 @@ Item {
             }
 
             function capDateStart(timestamp, current_distance) {
-                return Math.max(timestamp, first_value_timestamp - current_distance*0.9)
+                return Math.max(timestamp, first_value_timestamp - getMinTimeDifference() * 4)
             }
 
             function capDateEnd(timestamp, current_distance) {
-                return Math.min(timestamp, last_value_timestamp + current_distance*0.9)
+                return Math.min(timestamp, last_value_timestamp + getMinTimeDifference() * 4)
             }
 
             function capPriceMin(price) {
@@ -599,7 +599,7 @@ Item {
                     const cp = chart.mapToValue(Qt.point(mouse_x, mouse_y), series)
 
                     // Find closest real data
-                    const realData = API.get().trading_pg.candlestick_charts_mdl.find_closest_ohlc_data(cp.x / 1000)
+                    const realData = API.app.trading_pg.candlestick_charts_mdl.find_closest_ohlc_data(cp.x / 1000)
                     const realDataFound = realData.timestamp
                     if(realDataFound) {
                         cursor_vertical_line.x = chart.mapToPosition(Qt.point(realData.timestamp*1000, 0), series).x
@@ -637,7 +637,7 @@ Item {
 
     DefaultText {
         visible: !pair_supported
-        text_value: API.get().settings_pg.empty_string + (qsTr("There is no chart data for this pair yet"))
+        text_value: API.app.settings_pg.empty_string + (qsTr("There is no chart data for this pair yet"))
         anchors.centerIn: parent
     }
 }

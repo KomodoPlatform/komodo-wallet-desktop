@@ -4,7 +4,7 @@
 import QtQuick 2.14
 import "../Constants"
 
-Rectangle {
+AnimatedRectangle {
     function show(text, duration, info, is_error) {
         title = text
         details = info

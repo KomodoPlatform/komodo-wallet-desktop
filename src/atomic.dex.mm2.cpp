@@ -365,6 +365,8 @@ namespace atomic_dex
                         std::size_t idx = 0;
                         for (auto&& answer: answers)
                         {
+                            // spdlog::trace("answer {}",  answer.dump(4));
+
                             if (answer.contains("balance"))
                             {
                                 this->process_balance_answer(answer);
@@ -433,6 +435,7 @@ namespace atomic_dex
     bool
     mm2::process_batch_enable_answer(const json& answer)
     {
+        spdlog::trace("ANSWER JSON -> {}", answer.dump(4));
         if (answer.count("coin") == 1)
         {
             auto        ticker          = answer.at("coin").get<std::string>();
@@ -757,7 +760,8 @@ namespace atomic_dex
         _putenv(env_mm2.str().c_str());
         spdlog::debug("env: {}", std::getenv("MM_CONF_PATH"));
 #else
-        options.environment = std::unordered_map<std::string, std::string>{{"MM_CONF_PATH", mm2_cfg_path.string()}};
+        options.environment =
+            std::unordered_map<std::string, std::string>{{"MM_CONF_PATH", mm2_cfg_path.string()}, {"MM_LOG", get_mm2_atomic_dex_current_log_file().string()}};
 #endif
         options.working_directory = strdup(tools_path.string().c_str());
 
@@ -788,7 +792,6 @@ namespace atomic_dex
                 std::this_thread::sleep_for(1s);
             }
 
-            //::mm2::api::create_mm2_httpclient();
             web::http::client::http_client_config cfg;
             using namespace std::chrono_literals;
             cfg.set_timeout(30s);
@@ -1018,30 +1021,6 @@ namespace atomic_dex
         m_orderbook_thread_active = false;
     }
 
-    /*t_buy_answer
-    mm2::place_buy_order(t_buy_request&& request, const t_float_50& total, t_mm2_ec& ec) const
-    {
-        spdlog::debug("{} l{} f[{}]", __FUNCTION__, __LINE__, fs::path(__FILE__).filename().string());
-
-        t_mm2_ec balance_ec;
-
-        if (not do_i_have_enough_funds(request.rel, total))
-        {
-            ec = dextop_error::balance_not_enough_found;
-            return {};
-        }
-
-        auto answer = ::mm2::api::rpc_buy(std::move(request), m_mm2_client);
-
-        if (answer.error.has_value())
-        {
-            ec = dextop_error::rpc_buy_error;
-            return {};
-        }
-
-        return answer;
-    }*/
-
     bool
     mm2::do_i_have_enough_funds(const std::string& ticker, const t_float_50& amount) const
     {
@@ -1114,30 +1093,6 @@ namespace atomic_dex
     {
         return m_swaps_registry.at("result");
     }
-
-    /*t_sell_answer
-    mm2::place_sell_order(t_sell_request&& request, const t_float_50& total, t_mm2_ec& ec) const
-    {
-        spdlog::debug("{} l{} f[{}]", __FUNCTION__, __LINE__, fs::path(__FILE__).filename().string());
-
-        t_mm2_ec balance_ec;
-
-        if (not do_i_have_enough_funds(request.base, total))
-        {
-            ec = dextop_error::balance_not_enough_found;
-            return {.error = ec.message()};
-        }
-
-        auto answer = ::mm2::api::rpc_sell(std::move(request), m_mm2_client);
-
-        if (answer.error.has_value())
-        {
-            ec = dextop_error::rpc_sell_error;
-            return answer;
-        }
-
-        return answer;
-    }*/
 
     t_tx_state
     mm2::get_tx_state(t_mm2_ec& ec) const
@@ -1307,14 +1262,24 @@ namespace atomic_dex
                 .date              = current.timestamp_as_date,
                 .timestamp         = current.timestamp,
                 .tx_hash           = current.tx_hash,
-                .fees              = current.fee_details.normal_fees.has_value() ? current.fee_details.normal_fees.value().amount
-                                                                                 : current.fee_details.erc_fees.value().total_fee,
                 .my_balance_change = current.my_balance_change,
                 .total_amount      = current.total_amount,
                 .block_height      = current.block_height,
 
                 .ec = dextop_error::success,
             };
+            if (current.fee_details.normal_fees.has_value())
+            {
+                current_info.fees = current.fee_details.normal_fees.value().amount;
+            }
+            else if (current.fee_details.erc_fees.has_value())
+            {
+                current_info.fees = current.fee_details.erc_fees.value().total_fee;
+            }
+            else if (current.fee_details.qrc_fees.has_value())
+            {
+                current_info.fees = current.fee_details.qrc_fees->miner_fee;
+            }
 
             if (current_info.timestamp == 0)
             {
@@ -1340,6 +1305,7 @@ namespace atomic_dex
     {
         t_balance_answer answer_r;
         ::mm2::api::from_json(answer, answer_r);
+        spdlog::trace("{} address = {}", answer_r.coin, answer_r.address);
         if (is_pin_cfg_enabled())
         {
             if (m_balance_informations.find(answer_r.coin) != m_balance_informations.end())
@@ -1417,5 +1383,143 @@ namespace atomic_dex
     mm2::get_cancellation_token() const noexcept
     {
         return m_token_source.get_token();
+    }
+
+    void
+    mm2::add_new_coin(const nlohmann::json& coin_cfg_json, const nlohmann::json& raw_coin_cfg_json) noexcept
+    {
+        //! Normal cfg part
+        spdlog::trace("[{}], [{}]", coin_cfg_json.dump(4), raw_coin_cfg_json.dump(4));
+        if (not coin_cfg_json.empty() && not is_this_ticker_present_in_normal_cfg(coin_cfg_json.begin().key()))
+        {
+            spdlog::trace("Adding entry : {} to adex current wallet coins file", coin_cfg_json.dump(4));
+            fs::path       cfg_path = get_atomic_dex_config_folder();
+            std::string    filename = std::string(atomic_dex::get_raw_version()) + "-coins." + m_current_wallet_name + ".json";
+            std::ifstream  ifs((cfg_path / filename).c_str());
+            nlohmann::json config_json_data;
+            assert(ifs.is_open());
+
+            //! Read Contents
+            ifs >> config_json_data;
+
+            //! Modify contents
+            // config_json_data
+            config_json_data[coin_cfg_json.begin().key()] = coin_cfg_json.at(coin_cfg_json.begin().key());
+            // config_json_data.push_back(coin_cfg_json);
+
+            //! Close
+            ifs.close();
+
+            //! Write contents
+            std::ofstream ofs((cfg_path / filename).c_str(), std::ios::trunc);
+            assert(ofs.is_open());
+            ofs << config_json_data;
+        }
+        if (not raw_coin_cfg_json.empty() && not is_this_ticker_present_in_raw_cfg(raw_coin_cfg_json.at("coin").get<std::string>()))
+        {
+            fs::path mm2_cfg_path = ag::core::assets_real_path() / "tools/mm2/coins";
+            spdlog::trace("Adding entry : {} to mm2 coins file {}", raw_coin_cfg_json.dump(4), mm2_cfg_path.string());
+            std::ifstream  ifs(mm2_cfg_path.c_str());
+            nlohmann::json config_json_data;
+            assert(ifs.is_open());
+
+            //! Read Contents
+            ifs >> config_json_data;
+
+            //! Modify contents
+            config_json_data.push_back(raw_coin_cfg_json);
+
+            //! Close
+            ifs.close();
+
+            //! Write contents
+            std::ofstream ofs(mm2_cfg_path.c_str(), std::ios::trunc);
+            assert(ofs.is_open());
+            ofs << config_json_data;
+        }
+    }
+
+    bool
+    mm2::is_this_ticker_present_in_raw_cfg(const std::string& ticker) const noexcept
+    {
+        return m_mm2_raw_coins_cfg.find(ticker) != m_mm2_raw_coins_cfg.end();
+    }
+
+    bool
+    mm2::is_this_ticker_present_in_normal_cfg(const std::string& ticker) const noexcept
+    {
+        return m_coins_informations.find(ticker) != m_coins_informations.end();
+    }
+
+    t_coins
+    mm2::get_custom_coins() const noexcept
+    {
+        t_coins out;
+
+        for (auto&& [key, value]: m_coins_informations)
+        {
+            if (value.is_custom_coin)
+            {
+                out.push_back(value);
+            }
+        }
+        return out;
+    }
+
+    void
+    mm2::remove_custom_coin(const std::string& ticker) noexcept
+    {
+        //! Coin need to be disabled to be removed
+        assert(not get_coin_info(ticker).currently_enabled);
+
+        //! Remove from our cfg
+        if (is_this_ticker_present_in_normal_cfg(ticker))
+        {
+            spdlog::trace("remove it from normal cfg: {}", ticker);
+            fs::path       cfg_path = get_atomic_dex_config_folder();
+            std::string    filename = std::string(atomic_dex::get_raw_version()) + "-coins." + m_current_wallet_name + ".json";
+            std::ifstream  ifs((cfg_path / filename).c_str());
+            nlohmann::json config_json_data;
+            assert(ifs.is_open());
+
+            //! Read Contents
+            ifs >> config_json_data;
+
+            this->m_coins_informations.erase(ticker);
+
+            config_json_data.erase(config_json_data.find(ticker));
+
+            //! Close
+            ifs.close();
+
+            //! Write contents
+            std::ofstream ofs((cfg_path / filename).c_str(), std::ios::trunc);
+            assert(ofs.is_open());
+            ofs << config_json_data;
+        }
+
+        if (is_this_ticker_present_in_raw_cfg(ticker))
+        {
+            spdlog::trace("remove it from mm2 cfg: {}", ticker);
+            fs::path       mm2_cfg_path = ag::core::assets_real_path() / "tools/mm2/coins";
+            std::ifstream  ifs(mm2_cfg_path.c_str());
+            nlohmann::json config_json_data;
+            assert(ifs.is_open());
+
+            //! Read Contents
+            ifs >> config_json_data;
+
+            config_json_data.erase(std::find_if(begin(config_json_data), end(config_json_data), [ticker](nlohmann::json current_elem) {
+                return current_elem.at("coin").get<std::string>() == ticker;
+            }));
+
+            //! Close
+            ifs.close();
+
+            //! Write contents
+            std::ofstream ofs(mm2_cfg_path.c_str(), std::ios::trunc);
+            assert(ofs.is_open());
+            ofs << config_json_data;
+        }
     }
 } // namespace atomic_dex

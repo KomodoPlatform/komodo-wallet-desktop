@@ -127,14 +127,7 @@ namespace atomic_dex
         //! Balance factor
         double m_balance_factor{1.0};
 
-        //! Refresh the current orderbook (internally call process_orderbook)
-        void fetch_current_orderbook_thread(bool is_a_reset = false);
-
-        //! Refresh the balance registry (internal)
-        // void process_balance(const std::string& ticker) const;
-
         //! Refresh the orderbook registry (internal)
-        void           process_orderbook(bool is_a_reset = false);
         nlohmann::json prepare_batch_orderbook();
 
         //! Batch process fees and fetch current_orderbook thread
@@ -192,6 +185,13 @@ namespace atomic_dex
         //! Enable multiple coins
         void enable_multiple_coins(const std::vector<std::string>& tickers) noexcept;
 
+        //! Add a new coin in the coin_info cfg add_new_coin(normal_cfg, mm2_cfg)
+        void                  add_new_coin(const nlohmann::json& coin_cfg_json, const nlohmann::json& raw_coin_cfg_json) noexcept;
+        void                  remove_custom_coin(const std::string& ticker) noexcept;
+        [[nodiscard]] bool    is_this_ticker_present_in_raw_cfg(const std::string& ticker) const noexcept;
+        [[nodiscard]] bool    is_this_ticker_present_in_normal_cfg(const std::string& ticker) const noexcept;
+        [[nodiscard]] t_coins get_custom_coins() const noexcept;
+
         //! Disable a single coin
         bool disable_coin(const std::string& ticker, std::error_code& ec) noexcept;
 
@@ -213,11 +213,10 @@ namespace atomic_dex
         //! Retrieve my balance with locked funds for a given ticker as a string.
         [[nodiscard]] std::string my_balance_with_locked_funds(const std::string& ticker, t_mm2_ec& ec) const;
 
-        //! Place a buy order, Doesn't work if i don't have enough funds.
-        //t_buy_answer place_buy_order(t_buy_request&& request, const t_float_50& total, t_mm2_ec& ec) const;
+        //! Refresh the current orderbook (internally call process_orderbook)
+        void fetch_current_orderbook_thread(bool is_a_reset = false);
 
-        //! Place a buy order, Doesn't work if i don't have enough funds.
-        //t_sell_answer place_sell_order(t_sell_request&& request, const t_float_50& total, t_mm2_ec& ec) const;
+        void process_orderbook(bool is_a_reset = false);
 
         //! Last 50 transactions maximum
         [[nodiscard]] t_transactions get_tx_history(t_mm2_ec& ec) const;

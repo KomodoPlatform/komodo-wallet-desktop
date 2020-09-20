@@ -7,7 +7,7 @@ import "../Constants"
 ListView {
     id: root
 
-    property bool scrollbar_visible: contentHeight > height
+    property bool scrollbar_visible: contentItem.childrenRect.height > height
     readonly property double scrollbar_margin: scrollbar_visible ? 8 : 0
 
     boundsBehavior: Flickable.StopAtBounds

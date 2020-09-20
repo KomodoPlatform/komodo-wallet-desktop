@@ -4,7 +4,7 @@ import QtQuick.Controls 2.12
 
 import "../Constants"
 
-Rectangle {
+AnimatedRectangle {
     visible: update_modal.update_needed && update_modal.status_good
 
     color: Style.colorGreen
@@ -22,7 +22,7 @@ Rectangle {
         anchors.horizontalCenterOffset: -parent.radius * 0.5
         anchors.verticalCenterOffset: parent.radius * 0.4
 
-        text: API.get().settings_pg.empty_string + (General.download_icon + " " + qsTr("New update available!") + " " + qsTr("Version:") + " " + API.get().update_status.new_version + "  -  " + qsTr("Click here for the details."))
+        text: API.app.settings_pg.empty_string + (General.download_icon + " " + qsTr("New update available!") + " " + qsTr("Version:") + " " + API.app.update_status.new_version + "  -  " + qsTr("Click here for the details."))
         font.pixelSize: Style.textSizeSmall3
         color: Style.colorWhite10
     }
