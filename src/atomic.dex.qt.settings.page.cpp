@@ -348,6 +348,7 @@ namespace atomic_dex
     void
     settings_page::remove_custom_coin(const QString& ticker) noexcept
     {
+        spdlog::trace("remove ticker: {}", ticker.toStdString());
         this->m_system_manager.get_system<mm2>().remove_custom_coin(ticker.toStdString());
     }
 } // namespace atomic_dex
