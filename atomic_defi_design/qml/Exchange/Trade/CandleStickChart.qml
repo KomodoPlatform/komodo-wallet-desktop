@@ -375,6 +375,8 @@ Item {
 
             onWheel: updater.delta_wheel_y += wheel.angleDelta.y
 
+            cursorShape: containsPress ? Qt.ClosedHandCursor : Qt.OpenHandCursor
+
             // Drag scroll
             hoverEnabled: true
         }
