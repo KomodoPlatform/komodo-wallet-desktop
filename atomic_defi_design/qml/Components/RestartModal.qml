@@ -24,6 +24,7 @@ BasicModal {
 
     onTime_leftChanged: {
         if(time_left <= 0) {
+            restart_timer.stop()
             time_left = 0
             API.app.restart()
         }
