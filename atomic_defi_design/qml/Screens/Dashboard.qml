@@ -247,6 +247,10 @@ Item {
         smooth: true
     }
 
+    AddCustomCoinModal {
+        id: add_custom_coin_modal
+    }
+
     // CEX Rates info
     CexInfoModal {
         id: cex_rates_modal

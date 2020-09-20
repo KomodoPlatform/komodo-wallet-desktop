@@ -59,6 +59,19 @@ BasicModal {
     ModalContent {
         title: API.app.settings_pg.empty_string + (qsTr("Enable coins"))
 
+        DefaultButton {
+            Layout.fillWidth: true
+            text: API.app.settings_pg.empty_string + (qsTr("Add a Custom Coin to the list"))
+            onClicked: {
+                root.close()
+                add_custom_coin_modal.open()
+            }
+        }
+
+        HorizontalLine {
+            Layout.fillWidth: true
+        }
+
         // Search input
         DefaultTextField {
             id: input_coin_filter

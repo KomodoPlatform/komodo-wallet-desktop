@@ -15,6 +15,7 @@ BasicModal {
 
     readonly property double total_time: 5
     property double time_left: total_time
+    property bool restart_requested: false
     Timer {
         id: restart_timer
         interval: 100
@@ -23,8 +24,10 @@ BasicModal {
     }
 
     onTime_leftChanged: {
-        if(time_left <= 0) {
+        if(time_left <= 0 && !restart_requested) {
+            console.log("Restarting the application...")
             restart_timer.stop()
+            restart_requested = true
             time_left = 0
             API.app.restart()
         }
