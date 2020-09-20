@@ -211,6 +211,7 @@ namespace atomic_dex
                     qint64  timestamp  = duration_cast<seconds>(system_clock::now().time_since_epoch()).count();
                     QString human_date = QString::fromStdString(to_human_date<std::chrono::seconds>(timestamp, "%e %b %Y, %H:%M"));
                     this->m_dispatcher.trigger<balance_update_notification>(am_i_sender, amount, QString::fromStdString(ticker), human_date, timestamp);
+                    emit portfolioItemDataChanged();
                 }
                 if (ticker == mm2_system.get_current_ticker() && (is_change_b || is_change_mc || is_change_mcpfo))
                 {
