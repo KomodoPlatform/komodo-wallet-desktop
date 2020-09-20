@@ -66,6 +66,11 @@ ComboBox {
             implicitHeight: contentHeight + 5 // Scrollbar appears if this extra space is not added
             model: control.popup.visible ? control.delegateModel : null
             currentIndex: control.highlightedIndex
+
+            DefaultMouseArea {
+                anchors.fill: parent
+                acceptedButtons: Qt.NoButton
+            }
         }
 
         background: AnimatedRectangle {
