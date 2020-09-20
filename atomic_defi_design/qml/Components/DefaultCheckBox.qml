@@ -6,6 +6,11 @@ import "../Constants"
 
 CheckBox {
     font.family: Style.font_family
+
+    DefaultMouseArea {
+        anchors.fill: parent
+        acceptedButtons: Qt.NoButton
+    }
 }
 
 /*##^##

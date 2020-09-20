@@ -95,6 +95,11 @@ ComboBox {
         defaultColor: control.contentItem.color
         source: "qrc:/qt-project.org/imports/QtQuick/Controls.2/images/double-arrow.png"
     }
+
+    DefaultMouseArea {
+        anchors.fill: parent
+        acceptedButtons: Qt.NoButton
+    }
 }
 
 /*##^##
