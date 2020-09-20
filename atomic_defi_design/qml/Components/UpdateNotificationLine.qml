@@ -27,7 +27,7 @@ AnimatedRectangle {
         color: Style.colorWhite10
     }
 
-    MouseArea {
+    DefaultMouseArea {
         anchors.fill: parent
         onClicked: update_modal.open()
     }

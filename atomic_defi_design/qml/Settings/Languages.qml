@@ -41,7 +41,7 @@ ColumnLayout {
                         width: Style.textSize2
 
                         // Click area
-                        MouseArea {
+                        DefaultMouseArea {
                             id: mouse_area
                             anchors.fill: parent
                             acceptedButtons: Qt.LeftButton | Qt.RightButton

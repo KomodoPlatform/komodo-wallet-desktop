@@ -195,7 +195,7 @@ Item {
     }
 
     // Notifications panel button
-    MouseArea {
+    DefaultMouseArea {
         id: notifications_modal_button
         x: sidebar.app_logo.x
         y: sidebar.app_logo.y

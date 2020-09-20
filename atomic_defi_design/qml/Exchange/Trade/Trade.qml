@@ -389,7 +389,7 @@ Item {
                             color: Qt.lighter(Style.getCoinColor(selector_right.ticker), swap_button.containsMouse ? Style.hoverLightMultiplier : 1.0)
                         }
 
-                        MouseArea {
+                        DefaultMouseArea {
                             id: swap_button
                             anchors.fill: parent
                             hoverEnabled: true

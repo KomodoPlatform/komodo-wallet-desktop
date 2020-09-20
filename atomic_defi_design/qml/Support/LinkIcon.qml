@@ -25,7 +25,7 @@ Circle {
 
         anchors.centerIn: parent
 
-        MouseArea {
+        DefaultMouseArea {
             id: mouse_area
             anchors.fill: parent
             hoverEnabled: true

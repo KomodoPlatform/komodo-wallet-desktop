@@ -30,7 +30,7 @@ ColumnLayout {
 
             color: Qt.lighter(Style.colorWhite4, mouse_area.containsMouse ? Style.hoverLightMultiplier : 1.0)
 
-            MouseArea {
+            DefaultMouseArea {
                 id: mouse_area
                 enabled: expandable
                 anchors.fill: parent

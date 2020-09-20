@@ -43,13 +43,12 @@ FloatingBackground {
         color: !parent.enabled ? colorTextDisabled : mouse_area.containsMouse ? colorTextHovered : colorTextEnabled
     }
 
-    MouseArea {
+    DefaultMouseArea {
         id: mouse_area
         anchors.fill: parent
         hoverEnabled: true
         onClicked: {
             if(parent.enabled) parent.clicked()
         }
-        cursorShape: Qt.PointingHandCursor
     }
 }

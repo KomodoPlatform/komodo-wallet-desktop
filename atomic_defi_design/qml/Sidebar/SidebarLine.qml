@@ -86,7 +86,7 @@ Item {
         smooth: true
     }
 
-    MouseArea {
+    DefaultMouseArea {
         id: mouse_area
         hoverEnabled: true
         width: parent.width

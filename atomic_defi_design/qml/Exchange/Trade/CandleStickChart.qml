@@ -369,7 +369,7 @@ Item {
             }
         }
 
-        MouseArea {
+        DefaultMouseArea {
             id: mouse_area
             anchors.fill: parent
 

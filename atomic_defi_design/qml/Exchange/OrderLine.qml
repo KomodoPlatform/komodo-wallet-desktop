@@ -13,7 +13,7 @@ AnimatedRectangle {
 
     color: Style.colorOnlyIf(mouse_area.containsMouse, Style.colorTheme8)
 
-    MouseArea {
+    DefaultMouseArea {
         id: mouse_area
         anchors.fill: parent
         hoverEnabled: true

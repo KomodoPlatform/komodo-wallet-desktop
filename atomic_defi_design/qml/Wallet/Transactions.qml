@@ -22,7 +22,7 @@ DefaultListView {
 
         color: Style.colorOnlyIf(mouse_area.containsMouse, Style.colorTheme6)
 
-        MouseArea {
+        DefaultMouseArea {
             id: mouse_area
             anchors.fill: parent
             hoverEnabled: true

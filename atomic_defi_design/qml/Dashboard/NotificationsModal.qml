@@ -237,7 +237,7 @@ BasicModal {
                             color: Style.colorWhite10
                         }
 
-                        MouseArea {
+                        DefaultMouseArea {
                             id: remove_button_area
                             anchors.fill: parent
                             hoverEnabled: true

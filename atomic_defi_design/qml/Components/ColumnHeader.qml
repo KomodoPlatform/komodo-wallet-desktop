@@ -16,7 +16,7 @@ Item {
     height: title.height
 
     // Click area
-    MouseArea {
+    DefaultMouseArea {
         id: click_area
         anchors.fill: parent
         hoverEnabled: true

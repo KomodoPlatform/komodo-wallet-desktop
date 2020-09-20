@@ -50,7 +50,7 @@ ColumnLayout {
         font.bold: true
         color: disabled ? Style.colorTextDisabled : Style.colorText
 
-        MouseArea {
+        DefaultMouseArea {
             anchors.fill: parent
             onClicked: { if(!back_button.disabled) closeAddressBook() }
         }
@@ -191,7 +191,7 @@ ColumnLayout {
                                 font.bold: true
                                 color: Style.colorGreen
 
-                                MouseArea {
+                                DefaultMouseArea {
                                     anchors.fill: parent
                                     onClicked: {
                                         if(edit_contact.enabled) {
@@ -319,7 +319,7 @@ ColumnLayout {
 
                                 color: Style.colorOnlyIf(mouse_area.containsMouse, Style.colorTheme6)
 
-                                MouseArea {
+                                DefaultMouseArea {
                                     id: mouse_area
                                     anchors.fill: parent
                                     hoverEnabled: true
@@ -338,7 +338,7 @@ ColumnLayout {
                                     font.bold: true
                                     color: enabled ? Style.colorGreen : Style.colorTextDisabled
 
-                                    MouseArea {
+                                    DefaultMouseArea {
                                         anchors.fill: parent
                                         onClicked: {
                                             if(edit_icon.enabled) {

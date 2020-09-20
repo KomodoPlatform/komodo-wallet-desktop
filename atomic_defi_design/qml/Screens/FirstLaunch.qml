@@ -82,7 +82,7 @@ SetupPage {
                         height: bg.row_height
 
                         // Click area
-                        MouseArea {
+                        DefaultMouseArea {
                             id: mouse_area
                             anchors.fill: parent
                             hoverEnabled: true

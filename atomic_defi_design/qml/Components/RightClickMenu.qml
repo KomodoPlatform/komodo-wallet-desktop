@@ -4,7 +4,7 @@ import QtQuick.Controls 2.12
 
 import "../Constants"
 
-MouseArea {
+DefaultMouseArea {
     function openContextMenu(x, y) {
         contextMenu.x = x;
         contextMenu.y = y;

@@ -19,7 +19,7 @@ Text {
     onLinkActivated: Qt.openUrlExternally(link)
     linkColor: color
 
-    MouseArea {
+    DefaultMouseArea {
         anchors.fill: parent
         cursorShape: parent.hoveredLink ? Qt.PointingHandCursor : Qt.ArrowCursor
         acceptedButtons: Qt.NoButton

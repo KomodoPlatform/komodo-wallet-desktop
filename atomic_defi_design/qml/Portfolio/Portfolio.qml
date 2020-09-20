@@ -102,7 +102,7 @@ ColumnLayout {
             }
         }
 
-        MouseArea {
+        DefaultMouseArea {
             id: currency_change_button
 
             anchors.fill: top_layout
@@ -263,7 +263,7 @@ ColumnLayout {
             }
 
             // Click area
-            MouseArea {
+            DefaultMouseArea {
                 id: mouse_area
                 anchors.fill: parent
                 hoverEnabled: true

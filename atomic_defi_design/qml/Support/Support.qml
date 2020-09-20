@@ -67,7 +67,7 @@ Item {
                 }
 
 
-                MouseArea {
+                DefaultMouseArea {
                     id: changelog_button
 
                     anchors.centerIn: parent

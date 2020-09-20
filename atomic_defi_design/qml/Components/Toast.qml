@@ -80,7 +80,7 @@ AnimatedRectangle {
     property string details: ""
     property bool isError: false
 
-    MouseArea {
+    DefaultMouseArea {
         anchors.fill: parent
         onClicked: {
             if(details !== "") {

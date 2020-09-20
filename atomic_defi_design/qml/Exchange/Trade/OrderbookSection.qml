@@ -110,7 +110,7 @@ ColumnLayout {
                 anchors.right: is_asks ? undefined : parent.right
             }
 
-            MouseArea {
+            DefaultMouseArea {
                 id: mouse_area
                 anchors.fill: parent
                 hoverEnabled: true
@@ -178,7 +178,7 @@ ColumnLayout {
 
                 color: cancel_button.containsMouse ? Style.colorText : Style.colorText2
 
-                MouseArea {
+                DefaultMouseArea {
                     id: cancel_button
                     anchors.fill: parent
                     hoverEnabled: true

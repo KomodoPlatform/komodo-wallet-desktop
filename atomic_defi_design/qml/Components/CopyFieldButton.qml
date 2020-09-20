@@ -13,7 +13,7 @@ DefaultImage {
     y: -height
     antialiasing: true
 
-    MouseArea {
+    DefaultMouseArea {
         anchors { horizontalCenter: parent.horizontalCenter; verticalCenter: parent.verticalCenter }
         height: input_field.height; width: input_field.height
         onClicked: () => {
