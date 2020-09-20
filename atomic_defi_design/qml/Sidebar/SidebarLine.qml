@@ -24,7 +24,7 @@ Item {
 
     height: Style.sidebarLineHeight
 
-    Switch {
+    DefaultSwitch {
         id: switch_input
         visible: dashboard_index === General.idx_dashboard_light_ui ||
                  dashboard_index === General.idx_dashboard_privacy_mode

@@ -72,7 +72,7 @@ Item {
                 Layout.topMargin: 10
             }
 
-            Switch {
+            DefaultSwitch {
                 Layout.alignment: Qt.AlignHCenter
                 Layout.leftMargin: combo_fiat.Layout.leftMargin
                 Layout.rightMargin: Layout.leftMargin

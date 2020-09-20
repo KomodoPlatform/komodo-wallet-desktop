@@ -134,7 +134,7 @@ BasicModal {
                 Layout.alignment: Qt.AlignHCenter
 
                 // dPoW configuration switch
-                Switch {
+                DefaultSwitch {
                     id: enable_dpow_confs
                     Layout.alignment: Qt.AlignHCenter
 

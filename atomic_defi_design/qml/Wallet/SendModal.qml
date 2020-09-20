@@ -247,7 +247,7 @@ BasicModal {
                 field.enabled: !root.is_send_busy
             }
 
-            Switch {
+            DefaultSwitch {
                 id: input_max_amount
                 Layout.alignment: Qt.AlignRight | Qt.AlignBottom
                 text: API.app.settings_pg.empty_string + (qsTr("MAX"))
@@ -257,7 +257,7 @@ BasicModal {
         }
 
         // Custom fees switch
-        Switch {
+        DefaultSwitch {
             id: custom_fees_switch
             text: API.app.settings_pg.empty_string + (qsTr("Enable Custom Fees"))
             onCheckedChanged: input_custom_fees.field.text = ""

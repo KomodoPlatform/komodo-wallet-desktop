@@ -52,7 +52,7 @@ Item {
                 id: layout
                 anchors.centerIn: parent
                              
-                Switch {
+                DefaultSwitch {
                     id: show_all_coins
                     Layout.leftMargin: 15
                     text: API.app.settings_pg.empty_string + (qsTr("Show All Coins"))
