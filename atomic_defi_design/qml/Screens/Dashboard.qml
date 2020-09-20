@@ -50,7 +50,7 @@ Item {
         news.reset()
         dapps.reset()
         settings.reset()
-        notifications_panel.reset()
+        notifications_modal.reset()
     }
 
     function inCurrentPage() {
@@ -173,25 +173,6 @@ Item {
         id: sidebar
     }
 
-    // Global click
-    MouseArea {
-        anchors.fill: parent
-        propagateComposedEvents: true
-
-        onClicked: mouse.accepted = false
-        onReleased: mouse.accepted = false
-        onPressAndHold: mouse.accepted = false
-        onDoubleClicked: mouse.accepted = false
-        onPositionChanged: mouse.accepted = false
-        onPressed: {
-            // Close notifications panel on outside click
-            if(notifications_panel.visible)
-                notifications_panel.visible = false
-
-            mouse.accepted = false
-        }
-    }
-
     // Unread notifications count
     AnimatedRectangle {
         radius: 1337
@@ -201,21 +182,21 @@ Item {
 
         x: sidebar.app_logo.x + sidebar.app_logo.width - 20
         y: sidebar.app_logo.y
-        color: Qt.lighter(notifications_panel.notifications_list.length > 0 ? Style.colorRed : Style.colorWhite7, notifications_panel_button.containsMouse ? Style.hoverLightMultiplier : 1)
+        color: Qt.lighter(notifications_modal.notifications_list.length > 0 ? Style.colorRed : Style.colorWhite7, notifications_modal_button.containsMouse ? Style.hoverLightMultiplier : 1)
 
         DefaultText {
             id: count_text
             anchors.centerIn: parent
-            text_value: notifications_panel.notifications_list.length
+            text_value: notifications_modal.notifications_list.length
             font.pixelSize: Style.textSizeSmall1
             font.bold: true
-            color: notifications_panel.notifications_list.length > 0 ? Style.colorWhite9 : Style.colorWhite12
+            color: notifications_modal.notifications_list.length > 0 ? Style.colorWhite9 : Style.colorWhite12
         }
     }
 
     // Notifications panel button
     MouseArea {
-        id: notifications_panel_button
+        id: notifications_modal_button
         x: sidebar.app_logo.x
         y: sidebar.app_logo.y
         width: sidebar.app_logo.width
@@ -223,15 +204,11 @@ Item {
 
         hoverEnabled: true
 
-        onClicked: notifications_panel.visible = !notifications_panel.visible
+        onClicked: notifications_modal.open()
     }
 
-    NotificationsPanel {
-        id: notifications_panel
-        width: 600
-        height: 500
-        anchors.left: sidebar.right
-        anchors.top: parent.top
+    NotificationsModal {
+        id: notifications_modal
     }
 
     DropShadow {

@@ -6,14 +6,15 @@ import Qt.labs.platform 1.0
 import "../Constants"
 import "../Components"
 
-FloatingBackground {
+BasicModal {
     id: root
 
+    width: 600
     property var notifications_list: ([])
 
     function reset() {
-        visible = false
         notifications_list = []
+        root.close()
     }
 
     function showApp() {
@@ -33,14 +34,6 @@ FloatingBackground {
         window.requestActivate()
     }
 
-    visible: false
-
-    MouseArea {
-        anchors.fill: parent
-        preventStealing: true
-        hoverEnabled: true
-    }
-
     function performLastNotificationAction() {
         if(notifications_list.length === 0) return
 
@@ -48,7 +41,7 @@ FloatingBackground {
 
         switch(notification.click_action) {
         case "open_notifications":
-            root.visible = true
+            root.open()
             break
         case "open_wallet_page":
             api_wallet_page.ticker = notification.params.ticker
@@ -153,59 +146,20 @@ FloatingBackground {
         }
     }
 
-    ColumnLayout {
-        anchors.fill: parent
-        anchors.margins: 40
+    ModalContent {
+        title: API.app.settings_pg.empty_string + (qsTr("Notifications"))
 
-        spacing: 10
-
-        RowLayout {
-            Layout.fillWidth: true
-            Layout.alignment: Qt.AlignLeft | Qt.AlignBottom
-            DefaultText {
-                text_value: API.app.settings_pg.empty_string + (qsTr("Notifications"))
-                font.pixelSize: Style.textSize2
-                Layout.fillWidth: true
-                Layout.alignment: Qt.AlignLeft | Qt.AlignVCenter
-            }
-
-            AnimatedRectangle {
-                radius: 3
-
-                width: mark_all_as_read.width + 10
-                height: mark_all_as_read.height + 10
-
-                Layout.alignment: Qt.AlignRight | Qt.AlignVCenter
-
-                color: Qt.lighter(Style.colorTheme1, mark_all_as_read_mouse_area.containsMouse ? Style.hoverLightMultiplier : 1.0)
-
-                DefaultText {
-                    id: mark_all_as_read
-                    text_value: API.app.settings_pg.empty_string + (qsTr("Clear") + " ✔️")
-                    font.pixelSize: Style.textSizeSmall3
-                    anchors.centerIn: parent
-                    color: Style.colorWhite10
-                }
-
-                MouseArea {
-                    id: mark_all_as_read_mouse_area
-                    anchors.fill: parent
-                    hoverEnabled: true
-                    onClicked: {
-                        notifications_list = []
-                    }
-                }
-            }
-        }
-
-        HorizontalLine {
-            Layout.alignment: Qt.AlignTop
+        DefaultButton {
+            visible: list.visible
+            text: API.app.settings_pg.empty_string + (qsTr("Clear all") + " ✔️")
+            onClicked: notifications_list = []
             Layout.fillWidth: true
         }
 
         InnerBackground {
             Layout.fillWidth: true
-            Layout.fillHeight: true
+
+            Layout.preferredHeight: 500
 
             DefaultText {
                 anchors.centerIn: parent
@@ -298,23 +252,13 @@ FloatingBackground {
         }
 
 
-        RowLayout {
-            Layout.alignment: Qt.AlignBottom | Qt.AlignRight
-            Layout.bottomMargin: parent.spacing
-            spacing: 10
-
-//            DefaultButton {
-//                text: API.app.settings_pg.empty_string + (qsTr("Pop Test Notification"))
-//                onClicked: {
-//                    onSwapStatusUpdated("ongoing", "finished", Date.now().toString(), "BTC", "KMD", "13.3.1337")
-//                }
-//            }
-
+        footer: [
             DefaultButton {
+                Layout.fillWidth: true
                 text: API.app.settings_pg.empty_string + (qsTr("Close"))
-                onClicked: root.visible = false
+                onClicked: root.close()
             }
-        }
+        ]
     }
 }
 
