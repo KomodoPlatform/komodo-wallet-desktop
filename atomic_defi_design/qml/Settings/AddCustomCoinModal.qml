@@ -52,7 +52,7 @@ BasicModal {
 
         addToConfig(input_type,             "type",             input_type.currentText)
         addToConfig(input_ticker,           "ticker",           input_ticker.field.text.toUpperCase())
-        addToConfig(input_logo,             "image_path",       input_logo.path.replace("file://", ""))
+        addToConfig(input_logo,             "image_path",       input_logo.path.replace(General.os_file_prefix, ""))
         addToConfig(input_name,             "name",             input_name.field.text)
         addToConfig(input_contract_address, "contract_address", input_contract_address.field.text)
         addToConfig(input_active,           "active",           input_active.checked)

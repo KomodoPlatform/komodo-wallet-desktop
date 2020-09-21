@@ -7,6 +7,7 @@ QtObject {
     readonly property int minimumWidth: 1280
     readonly property int minimumHeight: 800
 
+    readonly property string os_file_prefix: Qt.platform.os == "windows" ? "file:///" : "file://"
     readonly property string assets_path: Qt.resolvedUrl(".") + "../../assets/"
     readonly property string image_path: assets_path + "images/"
     readonly property string coin_icons_path: image_path + "coins/"
