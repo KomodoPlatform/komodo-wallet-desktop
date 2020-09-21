@@ -195,8 +195,6 @@ Item {
     }
 
     function setPair(is_left_side, changed_ticker) {
-        swap_cooldown.restart()
-
         let base = left_ticker
         let rel = right_ticker
 
@@ -204,18 +202,24 @@ Item {
         // Set the new one if it's a change
         if(changed_ticker) {
             if(is_left_side) {
+                if(base === changed_ticker) return
+
                 // Check if it's a swap
                 if(base !== changed_ticker && rel === changed_ticker)
                     is_swap = true
                 else base = changed_ticker
             }
             else {
+                if(rel === changed_ticker) return
+
                 // Check if it's a swap
                 if(rel !== changed_ticker && base === changed_ticker)
                     is_swap = true
                 else rel = changed_ticker
             }
         }
+
+        swap_cooldown.restart()
 
         if(is_swap) {
             console.log("Swapping current pair, it was: ", base, rel)
