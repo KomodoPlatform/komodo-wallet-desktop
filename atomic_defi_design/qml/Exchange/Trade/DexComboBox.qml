@@ -1,7 +1,9 @@
 import QtQuick 2.14
 import QtQuick.Layouts 1.12
-import QtQuick.Controls 2.14
 import QtGraphicalEffects 1.0
+import QtQuick.Window 2.12
+import QtQuick.Controls 2.14
+import QtQuick.Controls.impl 2.12
 import QtQuick.Controls.Universal 2.12
 
 import "../../Components"
@@ -43,6 +45,62 @@ DefaultComboBox {
 
         contentItem: DexComboBoxLine {
             details: model
+        }
+    }
+
+    // Dropdown itself
+    popup: Popup {
+        id: popup
+        readonly property double max_height: control.Window.height - bottomMargin - mapToItem(control.Window.contentItem, x, y).y
+        y: control.height - 1
+        width: control.width
+        height: Math.min(contentItem.implicitHeight, popup.max_height)
+
+        bottomMargin: 20
+
+        padding: 1
+
+        contentItem: ColumnLayout {
+            // Search input
+            DefaultTextField {
+                id: input_coin_filter
+
+                function reset() {
+                    if(text === "") resetCoinFilter()
+                    else text = ""
+
+                    //applyCurrentSort()
+                }
+
+                placeholderText: API.app.settings_pg.empty_string + (qsTr("Search"))
+                selectByMouse: true
+
+                onTextChanged: {
+                    ticker_list.setFilterFixedString(text)
+                }
+                Layout.fillWidth: true
+                Layout.leftMargin: 6
+                Layout.rightMargin: Layout.leftMargin
+                Layout.topMargin: Layout.leftMargin
+            }
+
+            DefaultListView {
+                implicitHeight: contentHeight + 5 // Scrollbar appears if this extra space is not added
+                model: control.popup.visible ? control.delegateModel : null
+                currentIndex: control.highlightedIndex
+
+                Layout.maximumHeight: popup.max_height - 100
+                DefaultMouseArea {
+                    anchors.fill: parent
+                    acceptedButtons: Qt.NoButton
+                }
+            }
+        }
+
+        background: AnimatedRectangle {
+            color: Style.colorTheme9
+            border.color: control.mainBorderColor
+            radius: Style.rectangleCornerRadius
         }
     }
 }
