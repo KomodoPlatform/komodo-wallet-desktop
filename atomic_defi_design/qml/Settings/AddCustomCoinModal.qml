@@ -30,6 +30,7 @@ BasicModal {
     }
 
     onCustom_erc_token_dataChanged: {
+        const data = custom_erc_token_data
         const mm2_cfg = custom_erc_token_data.mm2_cfg
         if(!mm2_cfg) return
 
@@ -37,6 +38,7 @@ BasicModal {
 
         fields.ticker = mm2_cfg.coin
         fields.name = mm2_cfg.name
+        fields.error_code = data.error_code
 
         config_fields = General.clone(fields)
 
@@ -302,7 +304,8 @@ BasicModal {
         title: API.app.settings_pg.empty_string + (qsTr("Preview"))
 
         DefaultText {
-            visible: has_contract_address
+            id: warning_message
+            visible: coin_name.visible
             Layout.fillWidth: true
             text_value: API.app.settings_pg.empty_string + (qsTr("WARNING: Application will restart immidiately to apply the changes!"))
             color: Style.colorRed
@@ -310,6 +313,7 @@ BasicModal {
         }
 
         HorizontalLine {
+            visible: warning_message.visible
             Layout.fillWidth: true
         }
 
@@ -322,8 +326,20 @@ BasicModal {
         }
 
         DefaultText {
+            id: error_text
             Layout.alignment: Qt.AlignHCenter
-            visible: has_contract_address
+            Layout.fillWidth: true
+            horizontalAlignment: Text.AlignHCenter
+            visible: config_fields.error_code !== undefined
+            text_value: API.app.settings_pg.empty_string + (qsTr("Coin not found, please go back and make sure Contract Address is correct"))
+            font.pixelSize: Style.textSize2
+            color: Style.colorRed
+        }
+
+        DefaultText {
+            id: coin_name
+            Layout.alignment: Qt.AlignHCenter
+            visible: has_contract_address && !error_text.visible
             text_value: API.app.settings_pg.empty_string + (config_fields.name + " (" + config_fields.ticker + ")")
             font.pixelSize: Style.textSize2
         }
@@ -366,6 +382,7 @@ BasicModal {
             PrimaryButton {
                 text: API.app.settings_pg.empty_string + (qsTr("Submit & Restart"))
                 Layout.fillWidth: true
+                enabled: !error_text.visible
                 onClicked: {
                     API.app.settings_pg.submit()
                     root.close()
