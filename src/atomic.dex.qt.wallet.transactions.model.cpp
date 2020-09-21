@@ -204,8 +204,19 @@ namespace atomic_dex
             spdlog::trace("other time insertion, from {} to {}", m_file_count, m_file_count + transactions.size());
             beginInsertRows(QModelIndex(), m_file_count, m_file_count + transactions.size() - 1);
             m_file_count += transactions.size();
-            m_model_data.insert(end(m_model_data), begin(transactions), end(transactions));
+            if (m_model_data.size() < 50)
+            {
+                m_model_data.insert(begin(m_model_data), begin(transactions), end(transactions));
+            }
+            else
+            {
+                m_model_data.insert(begin(m_model_data) + 50, begin(transactions), end(transactions));
+            }
             endInsertRows();
+            if (this->canFetchMore(QModelIndex()) && m_model_data.size() >= 50)
+            {
+                this->fetchMore(QModelIndex());
+            }
         }
         spdlog::trace("transactions model size: {}", rowCount());
         emit lengthChanged();
