@@ -16,7 +16,11 @@ RowLayout {
     property var ticker_list
     property string ticker
 
-    onTickerChanged: combo.currentIndex = combo.indexOfValue(ticker)
+    function renewIndex() {
+        combo.currentIndex = combo.indexOfValue(ticker)
+    }
+
+    onTickerChanged: renewIndex()
 
     DexComboBox {
         id: combo
@@ -45,7 +49,7 @@ RowLayout {
 
         onCurrentValueChanged: {
             combo.index_changed = false
-            setPair(left_side, currentValue)
+            if(currentValue !== undefined) setPair(left_side, currentValue)
         }
 
         Layout.fillWidth: true

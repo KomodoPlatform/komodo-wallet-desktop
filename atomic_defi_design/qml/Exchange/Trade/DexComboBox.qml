@@ -26,14 +26,25 @@ DefaultComboBox {
         }
 
         property int update_count: 0
+        property var prev_details
 
-        details: ({
-            update_count:           line.update_count,
-            ticker:                 model.data(model.index(combo.currentIndex, 0), 257),
-            name:                   model.data(model.index(combo.currentIndex, 0), 258),
-            balance:                model.data(model.index(combo.currentIndex, 0), 259),
-            main_currency_balance:  model.data(model.index(combo.currentIndex, 0), 260)
-        })
+        details: {
+            const idx = combo.currentIndex
+
+            if(idx === -1) return prev_details
+
+            const new_details = {
+                update_count:           line.update_count,
+                ticker:                 model.data(model.index(idx, 0), 257),
+                name:                   model.data(model.index(idx, 0), 258),
+                balance:                model.data(model.index(idx, 0), 259),
+                main_currency_balance:  model.data(model.index(idx, 0), 260)
+            }
+
+            prev_details = new_details
+
+            return new_details
+         }
     }
 
     // Each dropdown item
@@ -66,10 +77,16 @@ DefaultComboBox {
                 id: input_coin_filter
 
                 function reset() {
-                    if(text === "") resetCoinFilter()
-                    else text = ""
+                    text = ""
+                    renewIndex()
 
                     //applyCurrentSort()
+                }
+
+                Connections {
+                    target: popup
+                    function onOpened() { input_coin_filter.reset() }
+                    function onClosed() { input_coin_filter.reset() }
                 }
 
                 placeholderText: API.app.settings_pg.empty_string + (qsTr("Search"))
