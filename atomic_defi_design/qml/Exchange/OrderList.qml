@@ -2,13 +2,14 @@ import QtQuick 2.14
 import QtQuick.Layouts 1.12
 import QtQuick.Controls 2.12
 
-import "../../Components"
-import "../../Constants"
+import "../Components"
+import "../Constants"
 import ".."
 
 InnerBackground {
     property string title
     property var items
+    property alias empty_text: no_orders.text_value
 
     Layout.fillWidth: true
     Layout.fillHeight: true
@@ -33,6 +34,7 @@ InnerBackground {
 
         // No orders
         DefaultText {
+            id: no_orders
             wrapMode: Text.Wrap
             visible: items.length === 0
             Layout.alignment: Qt.AlignHCenter

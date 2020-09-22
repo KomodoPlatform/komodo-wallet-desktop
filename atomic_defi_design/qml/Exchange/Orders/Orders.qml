@@ -106,6 +106,7 @@ Item {
 
             OrderList {
                 title: API.app.settings_pg.empty_string + (show_all_coins.checked ? qsTr("All Orders") : qsTr("All %1 Orders", "TICKER").arg(base))
+                empty_text: API.app.settings_pg.empty_string + (qsTr("You don't have any orders."))
                 items: orders_model
             }
         }

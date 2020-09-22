@@ -39,8 +39,9 @@ Item {
         height: parent.height
         spacing: 15
 
-        SwapList {
+        OrderList {
             title: API.app.settings_pg.empty_string + (qsTr("Recent Swaps"))
+            empty_text: API.app.settings_pg.empty_string + (qsTr("You don't have recent orders."))
             items: API.app.orders_mdl
         }
     }
