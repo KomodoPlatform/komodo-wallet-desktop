@@ -63,10 +63,12 @@ else ()
             URL https://github.com/KomodoPlatform/atomicDEX-API/releases/download/beta-2.0.2380/mm2-ccf11f241-Windows_NT-Release.zip)
 endif ()
 
+FetchContent_Declare(qmaterial URL https://github.com/KomodoPlatform/Qaterial/archive/master.zip)
+
 FetchContent_Declare(jl777-coins
         URL https://github.com/KomodoPlatform/coins/archive/master.zip)
 
-FetchContent_MakeAvailable(mm2 jl777-coins)
+FetchContent_MakeAvailable(mm2 jl777-coins qmaterial)
 
 ##! Configure our needs.
 if (UNIX)
@@ -215,6 +217,7 @@ target_link_libraries(atomicDexPro_shared_deps
         spdlog::spdlog
         spdlog::spdlog_header_only
         cpprestsdk::cpprest
+        Qaterial
         #Taskflow::Taskflow
         )
 
