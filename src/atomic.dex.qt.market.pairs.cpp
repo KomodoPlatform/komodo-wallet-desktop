@@ -30,13 +30,13 @@ namespace atomic_dex
         m_left_selection_box->setSourceModel(portfolio_mdl);
         m_left_selection_box->setDynamicSortFilter(true);
         m_left_selection_box->sort_by_name(true);
-        this->m_left_selection_box->setFilterRole(portfolio_model::PortfolioRoles::NameRole);
+        this->m_left_selection_box->setFilterRole(portfolio_model::PortfolioRoles::NameAndTicker);
         this->m_left_selection_box->setFilterCaseSensitivity(Qt::CaseInsensitive);
 
         m_right_selection_box->setSourceModel(portfolio_mdl);
         m_right_selection_box->setDynamicSortFilter(true);
         m_right_selection_box->sort_by_name(true);
-        this->m_right_selection_box->setFilterRole(portfolio_model::PortfolioRoles::NameRole);
+        this->m_right_selection_box->setFilterRole(portfolio_model::PortfolioRoles::NameAndTicker);
         this->m_right_selection_box->setFilterCaseSensitivity(Qt::CaseInsensitive);
     }
 

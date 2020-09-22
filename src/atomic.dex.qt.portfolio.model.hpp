@@ -46,7 +46,8 @@ namespace atomic_dex
             MainCurrencyPriceForOneUnit,
             Trend7D,
             Excluded,
-            Display
+            Display,
+            NameAndTicker
         };
         Q_ENUM(PortfolioRoles)
 
