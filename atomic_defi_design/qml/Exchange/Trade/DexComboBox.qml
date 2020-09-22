@@ -85,7 +85,10 @@ DefaultComboBox {
 
                 Connections {
                     target: popup
-                    function onOpened() { input_coin_filter.reset() }
+                    function onOpened() {
+                        input_coin_filter.reset()
+                        input_coin_filter.forceActiveFocus()
+                    }
                     function onClosed() { input_coin_filter.reset() }
                 }
 

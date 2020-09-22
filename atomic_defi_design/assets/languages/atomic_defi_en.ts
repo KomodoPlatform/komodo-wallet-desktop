@@ -4,144 +4,149 @@
 <context>
     <name>AddCustomCoinModal</name>
     <message>
-        <location filename="../../qml/Settings/AddCustomCoinModal.qml" line="80"/>
+        <location filename="../../qml/Settings/AddCustomCoinModal.qml" line="82"/>
         <source>Choose the asset type</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Settings/AddCustomCoinModal.qml" line="85"/>
+        <location filename="../../qml/Settings/AddCustomCoinModal.qml" line="87"/>
         <source>Type</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Settings/AddCustomCoinModal.qml" line="93"/>
+        <location filename="../../qml/Settings/AddCustomCoinModal.qml" line="95"/>
         <source>Cancel</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Settings/AddCustomCoinModal.qml" line="99"/>
-        <location filename="../../qml/Settings/AddCustomCoinModal.qml" line="156"/>
-        <location filename="../../qml/Settings/AddCustomCoinModal.qml" line="215"/>
+        <location filename="../../qml/Settings/AddCustomCoinModal.qml" line="101"/>
+        <location filename="../../qml/Settings/AddCustomCoinModal.qml" line="158"/>
+        <location filename="../../qml/Settings/AddCustomCoinModal.qml" line="217"/>
         <source>Next</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Settings/AddCustomCoinModal.qml" line="111"/>
-        <location filename="../../qml/Settings/AddCustomCoinModal.qml" line="128"/>
+        <location filename="../../qml/Settings/AddCustomCoinModal.qml" line="113"/>
+        <location filename="../../qml/Settings/AddCustomCoinModal.qml" line="130"/>
         <source>Enter the contract address</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Settings/AddCustomCoinModal.qml" line="111"/>
+        <location filename="../../qml/Settings/AddCustomCoinModal.qml" line="113"/>
         <source>Choose the asset ticker</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Settings/AddCustomCoinModal.qml" line="118"/>
+        <location filename="../../qml/Settings/AddCustomCoinModal.qml" line="120"/>
         <source>Ticker</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Settings/AddCustomCoinModal.qml" line="119"/>
+        <location filename="../../qml/Settings/AddCustomCoinModal.qml" line="121"/>
         <source>Enter the ticker</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Settings/AddCustomCoinModal.qml" line="127"/>
+        <location filename="../../qml/Settings/AddCustomCoinModal.qml" line="129"/>
         <source>Contract Address</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Settings/AddCustomCoinModal.qml" line="134"/>
+        <location filename="../../qml/Settings/AddCustomCoinModal.qml" line="136"/>
         <source>Get the contract address from Etherscan</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Settings/AddCustomCoinModal.qml" line="150"/>
-        <location filename="../../qml/Settings/AddCustomCoinModal.qml" line="209"/>
-        <location filename="../../qml/Settings/AddCustomCoinModal.qml" line="280"/>
-        <location filename="../../qml/Settings/AddCustomCoinModal.qml" line="361"/>
+        <location filename="../../qml/Settings/AddCustomCoinModal.qml" line="152"/>
+        <location filename="../../qml/Settings/AddCustomCoinModal.qml" line="211"/>
+        <location filename="../../qml/Settings/AddCustomCoinModal.qml" line="282"/>
+        <location filename="../../qml/Settings/AddCustomCoinModal.qml" line="377"/>
         <source>Previous</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Settings/AddCustomCoinModal.qml" line="167"/>
+        <location filename="../../qml/Settings/AddCustomCoinModal.qml" line="169"/>
         <source>Choose the asset logo</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Settings/AddCustomCoinModal.qml" line="171"/>
+        <location filename="../../qml/Settings/AddCustomCoinModal.qml" line="173"/>
         <source>Browse</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Settings/AddCustomCoinModal.qml" line="183"/>
+        <location filename="../../qml/Settings/AddCustomCoinModal.qml" line="185"/>
         <source>Please choose the asset logo</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Settings/AddCustomCoinModal.qml" line="225"/>
+        <location filename="../../qml/Settings/AddCustomCoinModal.qml" line="227"/>
         <source>Configuration</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Settings/AddCustomCoinModal.qml" line="230"/>
+        <location filename="../../qml/Settings/AddCustomCoinModal.qml" line="232"/>
         <source>All configuration fields will be fetched using the contract address you provided.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Settings/AddCustomCoinModal.qml" line="238"/>
+        <location filename="../../qml/Settings/AddCustomCoinModal.qml" line="240"/>
         <source>Name</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Settings/AddCustomCoinModal.qml" line="239"/>
+        <location filename="../../qml/Settings/AddCustomCoinModal.qml" line="241"/>
         <source>Enter the name</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Settings/AddCustomCoinModal.qml" line="245"/>
+        <location filename="../../qml/Settings/AddCustomCoinModal.qml" line="247"/>
         <source>Coinpaprika ID</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Settings/AddCustomCoinModal.qml" line="246"/>
+        <location filename="../../qml/Settings/AddCustomCoinModal.qml" line="248"/>
         <source>Enter the Coinpaprika ID</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Settings/AddCustomCoinModal.qml" line="252"/>
+        <location filename="../../qml/Settings/AddCustomCoinModal.qml" line="254"/>
         <source>Get the Coinpaprika ID</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Settings/AddCustomCoinModal.qml" line="269"/>
+        <location filename="../../qml/Settings/AddCustomCoinModal.qml" line="271"/>
         <source>Active</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Settings/AddCustomCoinModal.qml" line="286"/>
-        <location filename="../../qml/Settings/AddCustomCoinModal.qml" line="302"/>
+        <location filename="../../qml/Settings/AddCustomCoinModal.qml" line="288"/>
+        <location filename="../../qml/Settings/AddCustomCoinModal.qml" line="304"/>
         <source>Preview</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Settings/AddCustomCoinModal.qml" line="307"/>
+        <location filename="../../qml/Settings/AddCustomCoinModal.qml" line="310"/>
         <source>WARNING: Application will restart immidiately to apply the changes!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Settings/AddCustomCoinModal.qml" line="337"/>
+        <location filename="../../qml/Settings/AddCustomCoinModal.qml" line="334"/>
+        <source>Coin not found, please go back and make sure Contract Address is correct</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../qml/Settings/AddCustomCoinModal.qml" line="353"/>
         <source>Config Fields</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Settings/AddCustomCoinModal.qml" line="350"/>
+        <location filename="../../qml/Settings/AddCustomCoinModal.qml" line="366"/>
         <source>Fetched Data</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Settings/AddCustomCoinModal.qml" line="367"/>
+        <location filename="../../qml/Settings/AddCustomCoinModal.qml" line="383"/>
         <source>Submit &amp; Restart</source>
         <translation type="unfinished"></translation>
     </message>
@@ -459,8 +464,8 @@
 <context>
     <name>Dashboard</name>
     <message>
-        <location filename="../../qml/Screens/Dashboard.qml" line="144"/>
-        <location filename="../../qml/Screens/Dashboard.qml" line="155"/>
+        <location filename="../../qml/Screens/Dashboard.qml" line="143"/>
+        <location filename="../../qml/Screens/Dashboard.qml" line="154"/>
         <source>Content for this section will be added later. Stay tuned!</source>
         <translation type="unfinished"></translation>
     </message>
@@ -501,6 +506,14 @@
     <message>
         <location filename="../../qml/Settings/DeleteWalletModal.qml" line="79"/>
         <source>Delete</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>DexComboBox</name>
+    <message>
+        <location filename="../../qml/Exchange/Trade/DexComboBox.qml" line="95"/>
+        <source>Search</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -817,7 +830,7 @@
 <context>
     <name>General</name>
     <message numerus="yes">
-        <location filename="../../qml/Constants/General.qml" line="104"/>
+        <location filename="../../qml/Constants/General.qml" line="105"/>
         <source>%n day(s)</source>
         <translation type="unfinished">
             <numerusform></numerusform>
@@ -825,7 +838,7 @@
         </translation>
     </message>
     <message numerus="yes">
-        <location filename="../../qml/Constants/General.qml" line="114"/>
+        <location filename="../../qml/Constants/General.qml" line="115"/>
         <source>%nd</source>
         <comment>day</comment>
         <translation type="unfinished">
@@ -834,7 +847,7 @@
         </translation>
     </message>
     <message numerus="yes">
-        <location filename="../../qml/Constants/General.qml" line="115"/>
+        <location filename="../../qml/Constants/General.qml" line="116"/>
         <source>%nh</source>
         <comment>hours</comment>
         <translation type="unfinished">
@@ -843,7 +856,7 @@
         </translation>
     </message>
     <message numerus="yes">
-        <location filename="../../qml/Constants/General.qml" line="116"/>
+        <location filename="../../qml/Constants/General.qml" line="117"/>
         <source>%nm</source>
         <comment>minutes</comment>
         <translation type="unfinished">
@@ -852,7 +865,7 @@
         </translation>
     </message>
     <message numerus="yes">
-        <location filename="../../qml/Constants/General.qml" line="117"/>
+        <location filename="../../qml/Constants/General.qml" line="118"/>
         <source>%ns</source>
         <comment>seconds</comment>
         <translation type="unfinished">
@@ -861,7 +874,7 @@
         </translation>
     </message>
     <message numerus="yes">
-        <location filename="../../qml/Constants/General.qml" line="118"/>
+        <location filename="../../qml/Constants/General.qml" line="119"/>
         <source>%nms</source>
         <comment>milliseconds</comment>
         <translation type="unfinished">
@@ -870,7 +883,7 @@
         </translation>
     </message>
     <message>
-        <location filename="../../qml/Constants/General.qml" line="119"/>
+        <location filename="../../qml/Constants/General.qml" line="120"/>
         <source>-</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2240,12 +2253,12 @@ Network fees can vary greatly depending on your selected trading pair. This is w
 <context>
     <name>Trade</name>
     <message>
-        <location filename="../../qml/Exchange/Trade/Trade.qml" line="305"/>
+        <location filename="../../qml/Exchange/Trade/Trade.qml" line="309"/>
         <source>Placed the order</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/Trade.qml" line="296"/>
+        <location filename="../../qml/Exchange/Trade/Trade.qml" line="300"/>
         <source>Failed to place the order</source>
         <translation type="unfinished"></translation>
     </message>
