@@ -133,11 +133,11 @@
         <file>atomic_defi_design/qml/Exchange/Trade/CandleStickChart.qml</file>
         <file>atomic_defi_design/qml/Exchange/Trade/TickerSelector.qml</file>
         <file>atomic_defi_design/qml/Exchange/Orders/Orders.qml</file>
-        <file>atomic_defi_design/qml/Exchange/Orders/OrderList.qml</file>
+        <file>atomic_defi_design/qml/Exchange/OrderList.qml</file>
         <file>atomic_defi_design/qml/Exchange/History/History.qml</file>
-        <file>atomic_defi_design/qml/Exchange/History/SwapList.qml</file>
         <file>atomic_defi_design/qml/Exchange/Exchange.qml</file>
         <file>atomic_defi_design/qml/Exchange/ExchangeTab.qml</file>
+        <file>atomic_defi_design/qml/Exchange/OrderList.qml</file>
         <file>atomic_defi_design/qml/Exchange/OrderLine.qml</file>
         <file>atomic_defi_design/qml/Exchange/SwapProgress.qml</file>
         <file>atomic_defi_design/qml/Exchange/OrderModal.qml</file>
