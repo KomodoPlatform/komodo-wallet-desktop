@@ -247,7 +247,7 @@ namespace atomic_dex
         }
         nlohmann::json json_data = ::mm2::api::template_request("withdraw");
         ::mm2::api::to_json(json_data, withdraw_req);
-        spdlog::trace("final json: {}", json_data.dump(4));
+        //spdlog::trace("final json: {}", json_data.dump(4));
         batch.push_back(json_data);
 
         //! Answer
@@ -346,6 +346,7 @@ namespace atomic_dex
         ::mm2::api::async_rpc_batch_standalone(batch, mm2_system.get_mm2_client(), mm2_system.get_cancellation_token())
             .then([this](web::http::http_response resp) {
                 std::string body = TO_STD_STR(resp.extract_string(true).get());
+                //spdlog::trace("resp claiming: {}", body);
                 if (resp.status_code() == 200)
                 {
                     auto           answers              = nlohmann::json::parse(body);
