@@ -114,8 +114,16 @@ namespace atomic_dex
     {
         QModelIndex idx = this->sourceModel()->index(source_row, 0, source_parent);
         assert(this->sourceModel()->hasIndex(idx.row(), 0));
-        auto data = this->sourceModel()->data(idx, orders_model::OrdersRoles::OrderStatusRole).toString();
+        auto data      = this->sourceModel()->data(idx, orders_model::OrdersRoles::OrderStatusRole).toString();
+        auto timestamp = this->sourceModel()->data(idx, orders_model::OrdersRoles::UnixTimestampRole).toULongLong();
+        auto date      = QDateTime::fromMSecsSinceEpoch(timestamp).date();
+        //qDebug() << date;
+
         assert(not data.isEmpty());
+        if (not date_in_range(date))
+        {
+            return false;
+        }
         if (this->m_is_history)
         {
             if (data == "matching" || data == "ongoing" || data == "matched" || data == "refunding")
@@ -131,5 +139,39 @@ namespace atomic_dex
             }
         }
         return QSortFilterProxyModel::filterAcceptsRow(source_row, source_parent);
+    }
+
+    QDate
+    orders_proxy_model::filter_minimum_date() const
+    {
+        return m_min_date;
+    }
+
+    void
+    orders_proxy_model::set_filter_minimum_date(QDate date)
+    {
+        m_min_date = date;
+        emit filterMinimumDateChanged();
+        invalidateFilter();
+    }
+
+    QDate
+    orders_proxy_model::filter_maximum_date() const
+    {
+        return m_max_date;
+    }
+
+    void
+    orders_proxy_model::set_filter_maximum_date(QDate date)
+    {
+        m_max_date = date;
+        emit filterMaximumDateChanged();
+        invalidateFilter();
+    }
+
+    bool
+    orders_proxy_model::date_in_range(QDate date) const
+    {
+        return (!m_min_date.isValid() || date > m_min_date) && (!m_max_date.isValid() || date < m_max_date);
     }
 } // namespace atomic_dex
