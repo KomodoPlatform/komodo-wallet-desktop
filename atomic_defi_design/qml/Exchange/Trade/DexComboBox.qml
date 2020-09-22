@@ -97,6 +97,7 @@ DefaultComboBox {
 
                 onTextChanged: {
                     ticker_list.setFilterFixedString(text)
+                    renewIndex()
                 }
                 Layout.fillWidth: true
                 Layout.leftMargin: 6
