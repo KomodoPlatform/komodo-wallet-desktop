@@ -137,6 +137,7 @@
         <file>atomic_defi_design/qml/Exchange/History/History.qml</file>
         <file>atomic_defi_design/qml/Exchange/Exchange.qml</file>
         <file>atomic_defi_design/qml/Exchange/ExchangeTab.qml</file>
+        <file>atomic_defi_design/qml/Exchange/OrdersPage.qml</file>
         <file>atomic_defi_design/qml/Exchange/OrderList.qml</file>
         <file>atomic_defi_design/qml/Exchange/OrderLine.qml</file>
         <file>atomic_defi_design/qml/Exchange/SwapProgress.qml</file>
