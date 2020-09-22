@@ -10,7 +10,7 @@ Window {
     height: General.height
     minimumWidth: General.minimumWidth
     minimumHeight: General.minimumHeight
-    title: API.get().settings_pg.empty_string + (qsTr("atomicDEX Pro"))
+    title: API.app.settings_pg.empty_string + (qsTr("atomicDEX Pro"))
     flags: Qt.Window | Qt.WindowFullscreenButtonHint
 
     Component.onCompleted: showMaximized()
@@ -22,7 +22,7 @@ Window {
         if(visibility !== 3)
             true_visibility = visibility
 
-        API.get().change_state(visibility)
+        API.app.change_state(visibility)
     }
 
     App {

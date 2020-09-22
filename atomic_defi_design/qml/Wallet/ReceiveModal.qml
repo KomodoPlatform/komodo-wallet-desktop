@@ -5,32 +5,28 @@ import QtQuick.Controls 2.12
 import "../Components"
 import "../Constants"
 
-DefaultModal {
+BasicModal {
     id: root
 
     function reset() {
 
     }
 
-    width: 400
-    // Inside modal
-    ColumnLayout {
-        width: parent.width
+    width: 500
 
-        ModalHeader {
-            title: API.get().settings_pg.empty_string + (qsTr("Receive"))
-        }
+    ModalContent {
+        title: API.app.settings_pg.empty_string + (qsTr("Receive"))
 
         // Receive address
         TextAreaWithTitle {
-            title: API.get().settings_pg.empty_string + (qsTr("Share this address to receive coins"))
-            field.text: API.get().settings_pg.empty_string + (current_ticker_infos.address)
+            title: API.app.settings_pg.empty_string + (qsTr("Share this address to receive coins"))
+            field.text: API.app.settings_pg.empty_string + (current_ticker_infos.address)
             field.readOnly: true
             field.wrapMode: TextEdit.NoWrap
             copyable: true
         }
 
-        Image{
+        Image {
             Layout.alignment: Qt.AlignHCenter
 
             source: "image://QZXing/encode/" + current_ticker_infos.address +
@@ -41,13 +37,13 @@ DefaultModal {
         }
 
         // Buttons
-        RowLayout {
+        footer: [
             DefaultButton {
-                text: API.get().settings_pg.empty_string + (qsTr("Close"))
+                text: API.app.settings_pg.empty_string + (qsTr("Close"))
                 Layout.fillWidth: true
                 onClicked: root.close()
             }
-        }
+        ]
     }
 }
 

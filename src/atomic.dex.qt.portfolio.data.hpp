@@ -47,5 +47,7 @@ namespace atomic_dex
         bool is_excluded{false};
 
         QString display;
+
+        QString ticker_and_name;
     };
 } // namespace atomic_dex

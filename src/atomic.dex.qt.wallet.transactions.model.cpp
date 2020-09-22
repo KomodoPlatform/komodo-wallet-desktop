@@ -4,6 +4,7 @@
 //! Project Headers
 #include "atomic.dex.global.price.service.hpp"
 #include "atomic.dex.qt.settings.page.hpp"
+#include "atomic.dex.qt.wallet.manager.hpp"
 #include "atomic.dex.qt.wallet.transactions.model.hpp"
 
 namespace
@@ -55,7 +56,8 @@ namespace atomic_dex
             {ToRole, "to"},
             {BlockheightRole, "blockheight"},
             {ConfirmationsRole, "confirmations"},
-            {UnconfirmedRole, "unconfirmed"}};
+            {UnconfirmedRole, "unconfirmed"},
+            {TransactionNoteRole, "transaction_note"}};
     }
 
     int
@@ -105,6 +107,14 @@ namespace atomic_dex
         case UnconfirmedRole:
             item.unconfirmed = value.toBool();
             break;
+        case TransactionNoteRole:
+        {
+            item.transaction_note = value.toString().toStdString();
+            auto& wallet_manager  = this->m_system_manager.get_system<qt_wallet_manager>();
+            wallet_manager.update_transactions_notes(item.tx_hash, item.transaction_note);
+            wallet_manager.update_wallet_cfg();
+            break;
+        }
         }
         emit dataChanged(index, index, {role});
         return true;
@@ -160,6 +170,8 @@ namespace atomic_dex
             return static_cast<quint64>(item.confirmations);
         case UnconfirmedRole:
             return item.unconfirmed;
+        case TransactionNoteRole:
+            return QString::fromStdString(item.transaction_note);
         }
         return {};
     }
@@ -192,8 +204,19 @@ namespace atomic_dex
             spdlog::trace("other time insertion, from {} to {}", m_file_count, m_file_count + transactions.size());
             beginInsertRows(QModelIndex(), m_file_count, m_file_count + transactions.size() - 1);
             m_file_count += transactions.size();
-            m_model_data.insert(end(m_model_data), begin(transactions), end(transactions));
+            if (m_model_data.size() < 50)
+            {
+                m_model_data.insert(begin(m_model_data), begin(transactions), end(transactions));
+            }
+            else
+            {
+                m_model_data.insert(begin(m_model_data) + 50, begin(transactions), end(transactions));
+            }
             endInsertRows();
+            if (this->canFetchMore(QModelIndex()) && m_model_data.size() >= 50)
+            {
+                this->fetchMore(QModelIndex());
+            }
         }
         spdlog::trace("transactions model size: {}", rowCount());
         emit lengthChanged();
@@ -272,7 +295,7 @@ namespace atomic_dex
     }
 
     bool
-    atomic_dex::transactions_model::canFetchMore(const QModelIndex& parent) const
+    atomic_dex::transactions_model::canFetchMore([[maybe_unused]] const QModelIndex& parent) const
     {
         return (m_file_count < m_model_data.size());
     }

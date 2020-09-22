@@ -6,10 +6,8 @@ import "../Components"
 import "../Constants"
 import ".."
 
-DefaultModal {
+BasicModal {
     id: root
-
-    width: 900
 
     onClosed: {
         accept_eula.checked = false
@@ -19,16 +17,8 @@ DefaultModal {
     property var onConfirm: () => {}
     property bool close_only: false
 
-    // Inside modal
-    ColumnLayout {
-        id: modal_layout
-
-        width: parent.width
-
-        ModalHeader {
-            title: API.get().settings_pg.empty_string + (qsTr("Disclaimer & Terms of Service"))
-        }
-
+    ModalContent {
+        title: API.app.settings_pg.empty_string + (qsTr("Disclaimer & Terms of Service"))
 
         InnerBackground {
             id: eula_rect
@@ -45,7 +35,7 @@ DefaultModal {
 
                 DefaultText {
                     id: eula_text
-                    text_value: API.get().settings_pg.empty_string + (getEula())
+                    text_value: API.app.settings_pg.empty_string + (getEula())
 
                     width: eula_rect.width - 40
                 }
@@ -56,26 +46,26 @@ DefaultModal {
         DefaultCheckBox {
             id: accept_eula
             visible: !close_only
-            text: API.get().settings_pg.empty_string + (qsTr("Accept EULA"))
+            text: API.app.settings_pg.empty_string + (qsTr("Accept EULA"))
         }
 
         DefaultCheckBox {
             id: accept_tac
             visible: !close_only
-            text: API.get().settings_pg.empty_string + (qsTr("Accept Terms and Conditions"))
+            text: API.app.settings_pg.empty_string + (qsTr("Accept Terms and Conditions"))
         }
 
         // Buttons
-        RowLayout {
+        footer: [
             DefaultButton {
-                text: API.get().settings_pg.empty_string + (close_only ? qsTr("Close") : qsTr("Cancel"))
+                text: API.app.settings_pg.empty_string + (close_only ? qsTr("Close") : qsTr("Cancel"))
                 Layout.fillWidth: true
                 onClicked: root.close()
-            }
+            },
 
             PrimaryButton {
                 visible: !close_only
-                text: API.get().settings_pg.empty_string + (qsTr("Confirm"))
+                text: API.app.settings_pg.empty_string + (qsTr("Confirm"))
                 Layout.fillWidth: true
                 enabled: accept_eula.checked && accept_tac.checked
                 onClicked: {
@@ -83,7 +73,7 @@ DefaultModal {
                     root.close()
                 }
             }
-        }
+        ]
     }
 
     function getEula() {

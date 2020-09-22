@@ -77,7 +77,7 @@ namespace atomic_dex
         std::optional<std::string>    name;
         std::optional<std::string>    fname;
         std::optional<std::string>    etomic;
-        int64_t                       rpcport;
+        std::optional<int64_t>        rpcport;
         std::optional<int64_t>        pubtype;
         std::optional<int64_t>        p2_shtype;
         std::optional<int64_t>        wiftype;
@@ -142,7 +142,7 @@ namespace atomic_dex
         x.name                   = atomic_dex::get_optional<std::string>(j, "name");
         x.fname                  = atomic_dex::get_optional<std::string>(j, "fname");
         x.etomic                 = atomic_dex::get_optional<std::string>(j, "etomic");
-        x.rpcport                = j.at("rpcport").get<int64_t>();
+        x.rpcport                = atomic_dex::get_optional<int64_t>(j, "rpcport"); // j.at("rpcport").get<int64_t>();
         x.pubtype                = atomic_dex::get_optional<int64_t>(j, "pubtype");
         x.p2_shtype              = atomic_dex::get_optional<int64_t>(j, "p2shtype");
         x.wiftype                = atomic_dex::get_optional<int64_t>(j, "wiftype");

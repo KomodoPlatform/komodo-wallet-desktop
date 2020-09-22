@@ -10,15 +10,17 @@ TextEdit {
 
     font.family: Style.font_family
     font.pixelSize: Style.textSize
-    color: Style.colorText
     text: privacy && General.privacy_mode ? General.privacy_text : text_value
     wrapMode: Text.WordWrap
     selectByMouse: true
     readOnly: true
 
+    color: Style.colorText
+    Behavior on color { ColorAnimation { duration: Style.animationDuration } }
+
     onLinkActivated: Qt.openUrlExternally(link)
 
-    MouseArea {
+    DefaultMouseArea {
         anchors.fill: parent
         cursorShape: parent.hoveredLink ? Qt.PointingHandCursor : Qt.ArrowCursor
         acceptedButtons: Qt.NoButton

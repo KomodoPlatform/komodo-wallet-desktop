@@ -18,15 +18,15 @@ Item {
     }
 
     function onOpened() {
-        API.get().orders_mdl.orders_proxy_mdl.setFilterFixedString("")
-        API.get().orders_mdl.orders_proxy_mdl.is_history = true
-        API.get().refresh_orders_and_swaps()
+        API.app.orders_mdl.orders_proxy_mdl.setFilterFixedString("")
+        API.app.orders_mdl.orders_proxy_mdl.is_history = true
+        API.app.refresh_orders_and_swaps()
     }
 
     property string recover_funds_result: '{}'
 
     function onRecoverFunds(order_id) {
-        const result = API.get().recover_fund(order_id)
+        const result = API.app.recover_fund(order_id)
         console.log("Refund result: ", result)
         recover_funds_result = result
         recover_funds_modal.open()
@@ -39,9 +39,10 @@ Item {
         height: parent.height
         spacing: 15
 
-        SwapList {
-            title: API.get().settings_pg.empty_string + (qsTr("Recent Swaps"))
-            items: API.get().orders_mdl
+        OrderList {
+            title: API.app.settings_pg.empty_string + (qsTr("Recent Swaps"))
+            empty_text: API.app.settings_pg.empty_string + (qsTr("You don't have recent orders."))
+            items: API.app.orders_mdl
         }
     }
 
@@ -52,7 +53,7 @@ Item {
     LogModal {
         id: recover_funds_modal
 
-        title: API.get().settings_pg.empty_string + (qsTr("Recover Funds Result"))
+        header: API.app.settings_pg.empty_string + (qsTr("Recover Funds Result"))
         field.text: General.prettifyJSON(recover_funds_result)
 
         onClosed: recover_funds_result = "{}"

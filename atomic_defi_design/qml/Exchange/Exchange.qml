@@ -13,7 +13,11 @@ Item {
     readonly property int layout_margin: 15
 
     property int prev_page: -1
-    property int current_page: API.design_editor ? General.idx_exchange_trade : General.idx_exchange_trade
+    property int current_page: General.idx_exchange_trade
+
+    function cancelOrder(order_id) {
+        API.app.trading_pg.cancel_order(order_id)
+    }
 
     function reset() {
         current_page = General.idx_exchange_trade
@@ -40,11 +44,11 @@ Item {
         if(prev_page !== current_page) {
             // Handle DEX enter/exit
             if(current_page === General.idx_exchange_trade) {
-                API.get().trading_pg.on_gui_enter_dex()
+                API.app.trading_pg.on_gui_enter_dex()
                 exchange_trade.onOpened()
             }
             else if(prev_page === General.idx_exchange_trade) {
-                API.get().trading_pg.on_gui_leave_dex()
+                API.app.trading_pg.on_gui_leave_dex()
             }
 
             // Opening of other pages
@@ -92,7 +96,7 @@ Item {
 
                     ExchangeTab {
                         dashboard_index: General.idx_exchange_trade
-                        text_value: API.get().settings_pg.empty_string + (qsTr("Trade"))
+                        text_value: API.app.settings_pg.empty_string + (qsTr("Trade"))
                     }
 
                     VerticalLineBasic {
@@ -103,7 +107,7 @@ Item {
 
                     ExchangeTab {
                         dashboard_index: General.idx_exchange_orders
-                        text_value: API.get().settings_pg.empty_string + (qsTr("Orders"))
+                        text_value: API.app.settings_pg.empty_string + (qsTr("Orders"))
                     }
 
                     VerticalLineBasic {
@@ -113,7 +117,7 @@ Item {
 
                     ExchangeTab {
                         dashboard_index: General.idx_exchange_history
-                        text_value: API.get().settings_pg.empty_string + (qsTr("History"))
+                        text_value: API.app.settings_pg.empty_string + (qsTr("History"))
                     }
                 }
             }
@@ -135,7 +139,6 @@ Item {
                     General.prevent_coin_disabling.restart()
                     exchange_trade.reset(false)
                     exchange.current_page = General.idx_exchange_orders
-                    exchange_orders.onOrderPlaced()
                 }
             }
 

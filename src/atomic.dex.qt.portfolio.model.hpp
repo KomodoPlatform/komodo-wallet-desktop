@@ -35,7 +35,6 @@ namespace atomic_dex
         Q_OBJECT
         Q_PROPERTY(portfolio_proxy_model* portfolio_proxy_mdl READ get_portfolio_proxy_mdl NOTIFY portfolioProxyChanged);
         Q_PROPERTY(int length READ get_length NOTIFY lengthChanged);
-        Q_ENUMS(PortfolioRoles)
       public:
         enum PortfolioRoles
         {
@@ -47,8 +46,10 @@ namespace atomic_dex
             MainCurrencyPriceForOneUnit,
             Trend7D,
             Excluded,
-            Display
+            Display,
+            NameAndTicker
         };
+        Q_ENUM(PortfolioRoles)
 
       private:
         //! Typedef
@@ -83,6 +84,7 @@ namespace atomic_dex
       signals:
         void portfolioProxyChanged();
         void lengthChanged();
+        void portfolioItemDataChanged();
 
       private:
         //! From project
@@ -98,3 +100,5 @@ namespace atomic_dex
     };
 
 } // namespace atomic_dex
+
+using t_portfolio_roles = atomic_dex::portfolio_model::PortfolioRoles;

@@ -15,6 +15,8 @@ Rectangle {
 
     property color start_color: Style.colorGradient1
     property color end_color: Style.colorGradient2
+    Behavior on start_color { ColorAnimation { duration: Style.animationDuration } }
+    Behavior on end_color { ColorAnimation { duration: Style.animationDuration } }
 
     gradient: Gradient {
         id: gradient

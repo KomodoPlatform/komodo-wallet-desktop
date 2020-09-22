@@ -9,6 +9,8 @@ TextArea {
 
     font.family: Style.font_family
     placeholderTextColor: Style.colorPlaceholderText
+    Behavior on color { ColorAnimation { duration: Style.animationDuration } }
+    Behavior on placeholderTextColor { ColorAnimation { duration: Style.animationDuration } }
 
     property bool remove_newline: true
     wrapMode: TextEdit.Wrap

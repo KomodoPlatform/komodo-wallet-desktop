@@ -42,7 +42,7 @@ ColumnLayout {
 
         let sum = 0
         for(let i = 0; i < events.length; ++i)
-            sum += API.get().orders_mdl.average_events_time_registry[events[i]]
+            sum += API.app.orders_mdl.average_events_time_registry[events[i]]
 
         return sum
     }
@@ -79,6 +79,8 @@ ColumnLayout {
 
     property string last_uuid: ""
     onTotal_time_passedChanged: {
+        if(!details) return
+
         // Reset for different order
         if(details.order_id !== last_uuid) {
             simulated_time = 0
@@ -94,7 +96,7 @@ ColumnLayout {
 
     // Title
     DefaultText {
-        text_value: API.get().settings_pg.empty_string + (
+        text_value: API.app.settings_pg.empty_string + (
                         `<font color="${Style.colorText}">` + qsTr("Progress details") + `</font>` +
                         `<font color="${Style.colorTextDisabled}"> | </font>` +
                         getTimeText(total_time_passed + simulated_time, total_time_passed_estimated))
@@ -164,11 +166,11 @@ ColumnLayout {
 
                     font.pixelSize: Style.textSizeSmall4
 
-                    text_value: API.get().settings_pg.empty_string + (getEventText(modelData))
+                    text_value: API.app.settings_pg.empty_string + (getEventText(modelData))
                     color: event ? Style.colorText : is_current_event ? Style.colorText2 : Style.colorTextDisabled
                 }
 
-                Rectangle {
+                AnimatedRectangle {
                     id: bar
                     visible: is_active
                     width: 300
@@ -176,7 +178,7 @@ ColumnLayout {
 
                     color: Style.colorWhite8
 
-                    Rectangle {
+                    AnimatedRectangle {
                         width: parent.width * (total_time_passed > 0 ? (time_passed / (total_time_passed + simulated_time)) : 0)
                         height: parent.height
                         color: Style.colorGreen
@@ -187,7 +189,7 @@ ColumnLayout {
                     visible: bar.visible
                     font.pixelSize: Style.textSizeSmall2
 
-                    text_value: API.get().settings_pg.empty_string + (!is_active ? '' : getTimeText(time_passed, API.get().orders_mdl.average_events_time_registry[modelData]))
+                    text_value: API.app.settings_pg.empty_string + (!is_active ? '' : getTimeText(time_passed, API.app.orders_mdl.average_events_time_registry[modelData]))
                 }
             }
         }

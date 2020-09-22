@@ -1,5 +1,5 @@
 pragma Singleton
-import QtQuick 2.10
+import QtQuick 2.14
 
 QtObject {
     readonly property FontLoader mySystemFontThin: FontLoader { source: "../../assets/fonts/Montserrat-Thin.ttf" }
@@ -12,6 +12,9 @@ QtObject {
     readonly property string listItemPrefix:  " ⚬   "
     readonly property string successCharacter:  "✓"
     readonly property string failureCharacter:  "✘"
+
+
+    readonly property int animationDuration: 125
 
     readonly property int materialElevation: 5
 
@@ -47,15 +50,26 @@ QtObject {
     readonly property int textSize11: 132
     readonly property int textSize12: 144
 
-    readonly property int rectangleCornerRadius: 11
+    readonly property int rectangleCornerRadius: 7
     readonly property int itemPadding: 12
     readonly property int buttonSpacing: 12
     readonly property int rowSpacing: 12
+    readonly property int rowSpacingSmall: 6
     readonly property int iconTextMargin: 5
     readonly property int sidebarLineHeight: 44
-    readonly property int scrollbarOffset: 5
+    readonly property double hoverLightMultiplier: 1.5
+    readonly property double hoverOpacity: 0.6
 
     property bool dark_theme: true
+
+
+    function applyOpacity(hex, opacity="00") {
+        return "#" + opacity + hex.substr(hex.length - 6)
+    }
+
+    function colorOnlyIf(condition, color) {
+        return applyOpacity(color, condition ? "FF" : "00")
+    }
 
     readonly property string sidebar_atomicdex_logo: dark_theme ? "atomicdex-logo.svg" : "atomicdex-logo-dark.svg"
     readonly property string colorRed: dark_theme ? "#D13990" : "#D13990"
@@ -124,8 +138,7 @@ QtObject {
     readonly property string colorGradientLine1:  dark_theme ? "#00FFFFFF" : "#00CFD4DB"
     readonly property string colorGradientLine2:  dark_theme ? "#0FFFFFFF" : "#FFCFD4DB"
 
-    readonly property string colorWalletsHighlightGradient1:  dark_theme ? "#801B5E7D" : "#801B5E7D"
-    readonly property string colorWalletsHighlightGradient2:  dark_theme ? "#001B5E7D" : "#001B5E7D"
+    readonly property string colorWalletsHighlightGradient:  dark_theme ? "#1B5E7D" : "#1B5E7D"
     readonly property string colorWalletsSidebarDropShadow:  dark_theme ? "#B0000000" : "#BECDE2"
 
     readonly property string colorScrollbar:  dark_theme ? "#202339" : "#C4CCDA"
@@ -140,8 +153,7 @@ QtObject {
     readonly property string colorSidebarHighlightGradient4:  dark_theme ? "#001B5E7D" : "#006bcef4"
     readonly property string colorSidebarDropShadow:  dark_theme ? "#90000000" : "#BECDE2"
 
-    readonly property string colorCoinListHighlightGradient1:  dark_theme ? "#002C2E40" : "#00E0E6F0"
-    readonly property string colorCoinListHighlightGradient2:  dark_theme ? "#FF2C2E40" : "#FFE0E6F0"
+    readonly property string colorCoinListHighlightGradient:  dark_theme ? "#2C2E40" : "#E0E6F0"
 
     readonly property string colorRectangleBorderGradient1:  dark_theme ? "#2A2F48" : "#00FFFFFF"
     readonly property string colorRectangleBorderGradient2:  dark_theme ? "#0D1021" : "#00FFFFFF"
@@ -191,7 +203,6 @@ QtObject {
         })
     readonly property string colorPlaceholderText: Style.colorWhite9
 
-    readonly property int modalTitleMargin: 10
     readonly property string modalValueColor: colorWhite4
 
     function getValueColor(v) {
@@ -201,4 +212,59 @@ QtObject {
 
         return Style.colorWhite4
     }
+
+    function getCoinColor(ticker) {
+        const c = colorCoin[ticker]
+        return c || Style.colorTheme2
+    }
+
+    readonly property var colorCoin: ({
+                                          "BCH": "#8DC351",
+                                          "BTC": "#F7931A",
+                                          "FTC": "#27323A",
+                                          "DOGE": "#C3A634",
+                                          "ETH": "#627EEA",
+                                          "KMD": "#2B6680",
+                                          "MORTY": "#684B31",
+                                          "RICK": "#A5CBDD",
+                                          "EMC2": "#00CCFF",
+                                          "DASH": "#008CE7",
+                                          "RVN": "#384182",
+                                          "DGB": "#006AD2",
+                                          "XZC": "#23B852",
+                                          "LTC": "#BFBBBB",
+                                          "ZEC": "#ECB244",
+                                          "ZER": "#15182A",
+                                          "NAV": "#7D59B5",
+                                          "ECA": "#A915DC",
+                                          "QTUM": "#2E9AD0",
+                                          "CHIPS": "#598182",
+                                          "AXE": "#C63877",
+                                          "PANGEA": "#D88245",
+                                          "JUMBLR": "#2B4649",
+                                          "DEX": "#43B7B6",
+                                          "CRYPTO": "#F58736",
+                                          "LABS": "#C1F6E1",
+                                          "MGW": "#854F2F",
+                                          "RFOX": "#D83331",
+                                          "BOTS": "#F69B57",
+                                          "MCL": "#EA0000",
+                                          "CCL": "#FFE400",
+                                          "BET": "#F69B57",
+                                          "SUPERNET": "#F69B57",
+                                          "OOT": "#25AAE1",
+                                          "HUSH": "#454545",
+                                          "REVS": "#F69B57",
+                                          "ILN": "#523170",
+                                          "VRSC": "#3164D3",
+                                          "THC": "#819F6F",
+                                          "BAT": "#FF5000",
+                                          "BUSD": "#EDB70B",
+                                          "DAI": "#B68900",
+                                          "USDC": "#317BCB",
+                                          "PAX": "#EDE70A",
+                                          "TUSD": "#2E3181",
+                                          "AWC": "#31A5F6",
+                                          "VRA": "#D70A41"
+                                      })
 }

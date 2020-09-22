@@ -151,10 +151,18 @@ namespace atomic_dex
             obj["tx_state"]                           = QString::fromStdString(tx_state.state);
             obj["fiat_amount"]                        = QString::fromStdString(price_service.get_price_in_fiat(config.current_currency, ticker, ec));
             obj["trend_7d"]                           = nlohmann_json_array_to_qt_json_array(paprika.get_ticker_historical(ticker).answer);
-            obj["fee_ticker"]                         = coin_info.is_erc_20 ? "ETH" : QString::fromStdString(ticker);
-            obj["blocks_left"]                        = static_cast<qint64>(tx_state.blocks_left);
-            obj["transactions_left"]                  = static_cast<qint64>(tx_state.transactions_left);
-            obj["current_block"]                      = static_cast<qint64>(tx_state.current_block);
+            obj["fee_ticker"]                         = QString::fromStdString(ticker);
+            if (coin_info.is_qrc_20)
+            {
+                obj["fee_ticker"] = "QTUM";
+            }
+            else if (coin_info.is_erc_20)
+            {
+                obj["fee_ticker"] = "ETH";
+            }
+            obj["blocks_left"]       = static_cast<qint64>(tx_state.blocks_left);
+            obj["transactions_left"] = static_cast<qint64>(tx_state.transactions_left);
+            obj["current_block"]     = static_cast<qint64>(tx_state.current_block);
         }
         return obj;
     }
@@ -222,22 +230,31 @@ namespace atomic_dex
         {
             qDebug() << fees_data;
             auto json_fees    = nlohmann::json::parse(QString(QJsonDocument(QVariant(fees_data).toJsonObject()).toJson()).toStdString());
-            bool is_erc_20    = mm2_system.get_coin_info(ticker).is_erc_20;
+            auto coin_info    = mm2_system.get_coin_info(ticker);
             withdraw_req.fees = t_withdraw_fees{
-                .type      = is_erc_20 ? "EthGas" : "UtxoFixed",
+                .type      = "UtxoFixed",
                 .amount    = json_fees.at("fees_amount").get<std::string>(),
                 .gas_price = json_fees.at("gas_price").get<std::string>(),
                 .gas_limit = json_fees.at("gas_limit").get<int>()};
+            if (coin_info.is_erc_20)
+            {
+                withdraw_req.fees->type = "EthGas";
+            }
+            else if (coin_info.is_qrc_20)
+            {
+                withdraw_req.fees->type = "Qrc20Gas";
+            }
         }
         nlohmann::json json_data = ::mm2::api::template_request("withdraw");
         ::mm2::api::to_json(json_data, withdraw_req);
+        //spdlog::trace("final json: {}", json_data.dump(4));
         batch.push_back(json_data);
 
         //! Answer
         auto answer_functor = [this](web::http::http_response resp) {
             std::string body = TO_STD_STR(resp.extract_string(true).get());
             spdlog::trace("resp: {}", body);
-            if (resp.status_code() == 200)
+            if (resp.status_code() == 200 && body.find("error") == std::string::npos)
             {
                 auto           answers              = nlohmann::json::parse(body);
                 auto           withdraw_answer      = ::mm2::api::rpc_process_answer_batch<t_withdraw_answer>(answers[0], "withdraw");
@@ -247,6 +264,10 @@ namespace atomic_dex
                 if (j_out.at("withdraw_answer").at("fee_details").contains("total_fee") && !j_out.at("withdraw_answer").at("fee_details").contains("amount"))
                 {
                     j_out["withdraw_answer"]["fee_details"]["amount"] = j_out["withdraw_answer"]["fee_details"]["total_fee"];
+                }
+                if (j_out.at("withdraw_answer").at("fee_details").contains("miner_fee") && !j_out.at("withdraw_answer").at("fee_details").contains("amount"))
+                {
+                    j_out["withdraw_answer"]["fee_details"]["amount"] = j_out["withdraw_answer"]["fee_details"]["miner_fee"];
                 }
                 this->set_rpc_send_data(nlohmann_json_object_to_qt_json_object(j_out));
             }
@@ -325,6 +346,7 @@ namespace atomic_dex
         ::mm2::api::async_rpc_batch_standalone(batch, mm2_system.get_mm2_client(), mm2_system.get_cancellation_token())
             .then([this](web::http::http_response resp) {
                 std::string body = TO_STD_STR(resp.extract_string(true).get());
+                //spdlog::trace("resp claiming: {}", body);
                 if (resp.status_code() == 200)
                 {
                     auto           answers              = nlohmann::json::parse(body);

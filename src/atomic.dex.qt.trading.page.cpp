@@ -18,9 +18,9 @@
 #include "atomic.dex.pch.hpp"
 
 //! Project Headers
-#include "atomic.dex.qt.trading.page.hpp"
 #include "atomic.dex.mm2.hpp"
 #include "atomic.dex.provider.cex.prices.hpp"
+#include "atomic.dex.qt.trading.page.hpp"
 #include "atomic.dex.qt.utilities.hpp"
 
 //! Consttructor / Destructor
@@ -44,6 +44,7 @@ namespace atomic_dex
     void
     trading_page::on_process_orderbook_finished_event(const atomic_dex::process_orderbook_finished& evt) noexcept
     {
+        spdlog::debug("{} l{} f[{}]", __FUNCTION__, __LINE__, fs::path(__FILE__).filename().string());
         if (not m_about_to_exit_the_app)
         {
             m_actions_queue.push(trading_actions::post_process_orderbook_finished);
@@ -122,13 +123,15 @@ namespace atomic_dex
         batch.push_back(cancel_request);
         nlohmann::json my_orders_request = ::mm2::api::template_request("my_orders");
         batch.push_back(my_orders_request);
-        auto&     mm2_system = m_system_manager.get_system<mm2>();
+        auto& mm2_system = m_system_manager.get_system<mm2>();
         ::mm2::api::async_rpc_batch_standalone(batch, mm2_system.get_mm2_client(), pplx::cancellation_token::none())
             .then([this](web::http::http_response resp) {
                 auto& mm2_system       = m_system_manager.get_system<mm2>();
                 auto  answers          = ::mm2::api::basic_batch_answer(resp);
                 auto  my_orders_answer = ::mm2::api::rpc_process_answer_batch<t_my_orders_answer>(answers[1], "my_orders");
                 mm2_system.add_orders_answer(my_orders_answer);
+                spdlog::trace("refreshing orderbook after cancelling order: {}", answers.dump(4));
+                mm2_system.process_orderbook(false);
             })
             .then(&handle_exception_pplx_task);
     }
@@ -156,7 +159,7 @@ namespace atomic_dex
         batch.push_back(cancel_request);
         nlohmann::json my_orders_request = ::mm2::api::template_request("my_orders");
         batch.push_back(my_orders_request);
-        auto&     mm2_system = m_system_manager.get_system<mm2>();
+        auto& mm2_system = m_system_manager.get_system<mm2>();
         ::mm2::api::async_rpc_batch_standalone(batch, mm2_system.get_mm2_client(), pplx::cancellation_token::none())
             .then([this](web::http::http_response resp) {
                 auto& mm2_system       = m_system_manager.get_system<mm2>();
@@ -179,11 +182,13 @@ namespace atomic_dex
         common_cancel_all_orders(true, ticker);
     }
 
-    QString
+    void
     trading_page::place_buy_order(
         const QString& base, const QString& rel, const QString& price, const QString& volume, bool is_created_order, const QString& price_denom,
         const QString& price_numer, const QString& base_nota, const QString& base_confs)
     {
+        this->set_buy_sell_rpc_busy(true);
+        this->set_buy_sell_last_rpc_data(QJsonObject{{}});
         t_float_50 price_f;
         t_float_50 amount_f;
         t_float_50 total_amount;
@@ -202,21 +207,45 @@ namespace atomic_dex
             .price_numer      = price_numer.toStdString(),
             .base_nota        = base_nota.isEmpty() ? std::optional<bool>{std::nullopt} : boost::lexical_cast<bool>(base_nota.toStdString()),
             .base_confs       = base_confs.isEmpty() ? std::optional<std::size_t>{std::nullopt} : base_confs.toUInt()};
-        std::error_code ec;
-        auto            answer = m_system_manager.get_system<mm2>().place_buy_order(std::move(req), total_amount, ec);
+        nlohmann::json batch;
+        nlohmann::json buy_request = ::mm2::api::template_request("buy");
+        ::mm2::api::to_json(buy_request, req);
+        batch.push_back(buy_request);
+        auto& mm2_system = m_system_manager.get_system<mm2>();
 
-        if (answer.error.has_value())
-        {
-            return QString::fromStdString(answer.error.value());
-        }
-        return "";
+        //! Answer
+        auto answer_functor = [this](web::http::http_response resp) {
+            std::string body = TO_STD_STR(resp.extract_string(true).get());
+            if (resp.status_code() == 200)
+            {
+                auto           answers = nlohmann::json::parse(body);
+                nlohmann::json answer  = answers[0];
+                this->set_buy_sell_last_rpc_data(nlohmann_json_object_to_qt_json_object(answer));
+                auto& mm2_system = m_system_manager.get_system<mm2>();
+                spdlog::trace("order successfully placed, refreshing orders and swap");
+                mm2_system.batch_fetch_orders_and_swap();
+            }
+            else
+            {
+                auto error_json = QJsonObject({{"error_code", resp.status_code()}, {"error_message", QString::fromStdString(body)}});
+                this->set_buy_sell_last_rpc_data(error_json);
+            }
+            this->set_buy_sell_rpc_busy(false);
+        };
+
+        //! Async call
+        ::mm2::api::async_rpc_batch_standalone(batch, mm2_system.get_mm2_client(), mm2_system.get_cancellation_token())
+            .then(answer_functor)
+            .then(&handle_exception_pplx_task);
     }
 
-    QString
+    void
     trading_page::place_sell_order(
         const QString& base, const QString& rel, const QString& price, const QString& volume, bool is_created_order, const QString& price_denom,
         const QString& price_numer, const QString& rel_nota, const QString& rel_confs)
     {
+        this->set_buy_sell_rpc_busy(true);
+        this->set_buy_sell_last_rpc_data(QJsonObject{{}});
         t_float_50 amount_f;
         amount_f.assign(volume.toStdString());
 
@@ -230,14 +259,36 @@ namespace atomic_dex
             .price_numer      = price_numer.toStdString(),
             .rel_nota         = rel_nota.isEmpty() ? std::optional<bool>{std::nullopt} : boost::lexical_cast<bool>(rel_nota.toStdString()),
             .rel_confs        = rel_confs.isEmpty() ? std::optional<std::size_t>{std::nullopt} : rel_confs.toUInt()};
-        std::error_code ec;
-        auto            answer = m_system_manager.get_system<mm2>().place_sell_order(std::move(req), amount_f, ec);
+        nlohmann::json batch;
+        nlohmann::json sell_request = ::mm2::api::template_request("sell");
+        ::mm2::api::to_json(sell_request, req);
+        batch.push_back(sell_request);
+        auto& mm2_system = m_system_manager.get_system<mm2>();
 
-        if (answer.error.has_value())
-        {
-            return QString::fromStdString(answer.error.value());
-        }
-        return "";
+        //! Answer
+        auto answer_functor = [this](web::http::http_response resp) {
+            std::string body = TO_STD_STR(resp.extract_string(true).get());
+            if (resp.status_code() == 200)
+            {
+                auto           answers = nlohmann::json::parse(body);
+                nlohmann::json answer  = answers[0];
+                this->set_buy_sell_last_rpc_data(nlohmann_json_object_to_qt_json_object(answer));
+                auto& mm2_system = m_system_manager.get_system<mm2>();
+                spdlog::trace("order successfully placed, refreshing orders and swap");
+                mm2_system.batch_fetch_orders_and_swap();
+            }
+            else
+            {
+                auto error_json = QJsonObject({{"error_code", resp.status_code()}, {"error_message", QString::fromStdString(body)}});
+                this->set_buy_sell_last_rpc_data(error_json);
+            }
+            this->set_buy_sell_rpc_busy(false);
+        };
+
+        //! Async call
+        ::mm2::api::async_rpc_batch_standalone(batch, mm2_system.get_mm2_client(), mm2_system.get_cancellation_token())
+            .then(answer_functor)
+            .then(&handle_exception_pplx_task);
     }
 } // namespace atomic_dex
 
@@ -342,5 +393,33 @@ namespace atomic_dex
     trading_page::get_market_pairs_mdl() const noexcept
     {
         return qobject_cast<market_pairs*>(m_models[models::market_selector]);
+    }
+
+    bool
+    trading_page::is_buy_sell_rpc_busy() const noexcept
+    {
+        return m_rpc_buy_sell_busy.load();
+    }
+    void
+    trading_page::set_buy_sell_rpc_busy(bool status) noexcept
+    {
+        if (m_rpc_buy_sell_busy != status)
+        {
+            m_rpc_buy_sell_busy = status;
+            emit buySellRpcStatusChanged();
+        }
+    }
+
+    QVariant
+    trading_page::get_buy_sell_last_rpc_data() const noexcept
+    {
+        return m_rpc_buy_sell_result.get();
+    }
+
+    void
+    trading_page::set_buy_sell_last_rpc_data(QVariant rpc_data) noexcept
+    {
+        m_rpc_buy_sell_result = rpc_data.toJsonObject();
+        emit buySellLastRpcDataChanged();
     }
 } // namespace atomic_dex

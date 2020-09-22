@@ -34,11 +34,22 @@ namespace atomic_dex
 
     void to_json(nlohmann::json& j, const contact& cfg);
 
+    struct transactions_contents
+    {
+        std::string note;
+        std::string category;
+    };
+
+    void to_json(nlohmann::json& j, const transactions_contents& cfg);
+    void from_json(const nlohmann::json& j, transactions_contents& cfg);
+
     struct wallet_cfg
     {
-        std::string          name{};
-        std::string          protection_pass{"default_protection_pass"};
-        std::vector<contact> address_book{};
+        using t_synchronized_transactions_details = boost::synchronized_value<std::unordered_map<std::string, transactions_contents>>;
+        std::string                         name{};
+        std::string                         protection_pass{"default_protection_pass"};
+        std::vector<contact>                address_book{};
+        t_synchronized_transactions_details transactions_details;
     };
 
     void from_json(const nlohmann::json& j, wallet_cfg& cfg);

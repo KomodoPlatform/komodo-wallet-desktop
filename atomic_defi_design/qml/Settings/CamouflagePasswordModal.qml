@@ -5,7 +5,7 @@ import QtQuick.Controls 2.12
 import "../Components"
 import "../Constants"
 
-DefaultModal {
+BasicModal {
     id: root
 
     width: 1100
@@ -14,15 +14,8 @@ DefaultModal {
         input_password.reset()
     }
 
-    // Inside modal
-    ColumnLayout {
-        id: modal_layout
-
-        width: parent.width
-
-        ModalHeader {
-            title: API.get().settings_pg.empty_string + (qsTr("Setup Camouflage Password"))
-        }
+    ModalContent {
+        title: API.app.settings_pg.empty_string + (qsTr("Setup Camouflage Password"))
 
         FloatingBackground {
             id: warning_bg
@@ -43,7 +36,7 @@ DefaultModal {
                     horizontalAlignment: Text.AlignHCenter
                     anchors.horizontalCenter: parent.horizontalCenter
 
-                    text_value: API.get().settings_pg.empty_string + (qsTr("Camouflage Password is a secret password for emergency situations."))
+                    text_value: API.app.settings_pg.empty_string + (qsTr("Camouflage Password is a secret password for emergency situations."))
                     font.pixelSize: Style.textSize2
                 }
 
@@ -52,7 +45,7 @@ DefaultModal {
                     horizontalAlignment: Text.AlignHCenter
                     anchors.horizontalCenter: parent.horizontalCenter
 
-                    text_value: API.get().settings_pg.empty_string + (qsTr("Using it to login will display your balance lower than it actually is."))
+                    text_value: API.app.settings_pg.empty_string + (qsTr("Using it to login will display your balance lower than it actually is."))
                 }
 
                 DefaultText {
@@ -60,7 +53,7 @@ DefaultModal {
                     horizontalAlignment: Text.AlignHCenter
                     anchors.horizontalCenter: parent.horizontalCenter
 
-                    text_value: API.get().settings_pg.empty_string + (qsTr("Here you enter the suffix and at login you need to enter {real_password}{suffix}"))
+                    text_value: API.app.settings_pg.empty_string + (qsTr("Here you enter the suffix and at login you need to enter {real_password}{suffix}"))
                 }
             }
         }
@@ -68,27 +61,27 @@ DefaultModal {
         PasswordForm {
             id: input_password
             Layout.fillWidth: true
-            field.placeholderText: API.get().settings_pg.empty_string + (qsTr("Enter a suffix"))
+            field.placeholderText: API.app.settings_pg.empty_string + (qsTr("Enter a suffix"))
             high_security: false
         }
 
         // Buttons
-        RowLayout {
+        footer: [
             DefaultButton {
-                text: API.get().settings_pg.empty_string + (qsTr("Cancel"))
+                text: API.app.settings_pg.empty_string + (qsTr("Cancel"))
                 Layout.fillWidth: true
                 onClicked: root.close()
-            }
+            },
 
             PrimaryButton {
-                text: API.get().settings_pg.empty_string + (qsTr("Save"))
+                text: API.app.settings_pg.empty_string + (qsTr("Save"))
                 Layout.fillWidth: true
                 enabled: input_password.isValid()
                 onClicked: {
-                    API.get().set_emergency_password(input_password.field.text)
+                    API.app.set_emergency_password(input_password.field.text)
                     root.close()
                 }
             }
-        }
+        ]
     }
 }

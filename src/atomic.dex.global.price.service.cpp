@@ -105,7 +105,9 @@ namespace atomic_dex
         system(registry), m_system_manager(system_manager), m_cfg(cfg)
     {
         m_update_clock = std::chrono::high_resolution_clock::now();
-        async_fetch_fiat_rates().then([this](web::http::http_response resp) { this->m_other_fiats_rates = process_fetch_fiat_answer(resp); });
+        async_fetch_fiat_rates()
+            .then([this](web::http::http_response resp) { this->m_other_fiats_rates = process_fetch_fiat_answer(resp); })
+            .then(&handle_exception_pplx_task);
         refresh_other_coins_rates("kmd-komodo", "KMD");
         refresh_other_coins_rates("btc-bitcoin", "BTC");
     }
@@ -122,7 +124,9 @@ namespace atomic_dex
         const auto s   = std::chrono::duration_cast<std::chrono::seconds>(now - m_update_clock);
         if (s >= 2min)
         {
-            async_fetch_fiat_rates().then([this](web::http::http_response resp) { this->m_other_fiats_rates = process_fetch_fiat_answer(resp); });
+            async_fetch_fiat_rates()
+                .then([this](web::http::http_response resp) { this->m_other_fiats_rates = process_fetch_fiat_answer(resp); })
+                .then(&handle_exception_pplx_task);
             refresh_other_coins_rates("kmd-komodo", "KMD");
             refresh_other_coins_rates("btc-bitcoin", "BTC");
             m_update_clock = std::chrono::high_resolution_clock::now();

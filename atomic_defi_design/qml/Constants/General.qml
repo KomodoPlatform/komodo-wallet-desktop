@@ -1,16 +1,22 @@
 pragma Singleton
-import QtQuick 2.10
+import QtQuick 2.14
 
 QtObject {
     readonly property int width: 1280
     readonly property int height: 800
     readonly property int minimumWidth: 1280
     readonly property int minimumHeight: 800
+
+    readonly property string os_file_prefix: Qt.platform.os == "windows" ? "file:///" : "file://"
     readonly property string assets_path: Qt.resolvedUrl(".") + "../../assets/"
     readonly property string image_path: assets_path + "images/"
     readonly property string coin_icons_path: image_path + "coins/"
+    readonly property string custom_coin_icons_path: os_file_prefix + API.app.settings_pg.get_custom_coins_icons_path() + "/"
     function coinIcon(ticker) {
-        return ticker === "" ? "" : coin_icons_path + ticker.toLowerCase() + ".png"
+        if(ticker === "") return ""
+
+        const coin_info = API.app.get_coin_info(ticker)
+        return (coin_info.is_custom_coin ? custom_coin_icons_path : coin_icons_path) + ticker.toLowerCase() + ".png"
     }
 
     readonly property string cex_icon: 'ⓘ'
@@ -18,7 +24,7 @@ QtObject {
     readonly property string right_arrow_icon: "⮕"
     readonly property string privacy_text: "*****"
 
-    readonly property string version_string: "Pro v" + API.get().get_version()
+    readonly property string version_string: "Pro v" + API.app.get_version()
 
     property bool privacy_mode: false
 
@@ -125,12 +131,13 @@ QtObject {
     }
 
     function prettifyJSON(j) {
-        return JSON.stringify(JSON.parse(j), null, 4)
+        const j_obj = typeof j === "string" ? JSON.parse(j) : j
+        return JSON.stringify(j_obj, null, 4)
     }
 
     function viewTxAtExplorer(ticker, id, add_0x=true) {
         if(id !== '') {
-            const coin_info = API.get().get_coin_info(ticker)
+            const coin_info = API.app.get_coin_info(ticker)
             const id_prefix = add_0x && coin_info.type === 'ERC-20' ? '0x' : ''
             Qt.openUrlExternally(coin_info.explorer_url + coin_info.tx_uri + id_prefix + id)
         }
@@ -138,7 +145,7 @@ QtObject {
 
     function viewAddressAtExplorer(ticker, address) {
         if(address !== '') {
-            const coin_info = API.get().get_coin_info(ticker)
+            const coin_info = API.app.get_coin_info(ticker)
             Qt.openUrlExternally(coin_info.explorer_url + coin_info.address_uri + address)
         }
     }
@@ -179,7 +186,7 @@ QtObject {
 
     function formatFiat(received, amount, fiat) {
         return diffPrefix(received) +
-                (fiat === API.get().settings_pg.current_fiat ? API.get().settings_pg.current_fiat_sign : API.get().settings_pg.current_currency_sign)
+                (fiat === API.app.settings_pg.current_fiat ? API.app.settings_pg.current_fiat_sign : API.app.settings_pg.current_currency_sign)
                 + " " + nFormatter(parseFloat(amount), 2)
     }
 
@@ -239,12 +246,12 @@ QtObject {
     function hasEnoughFunds(sell, base, rel, price, volume) {
         if(sell) {
             if(volume === "") return true
-            return API.get().do_i_have_enough_funds(base, volume)
+            return API.app.do_i_have_enough_funds(base, volume)
         }
         else {
             if(price === "") return true
             const needed_amount = parseFloat(price) * parseFloat(volume)
-            return API.get().do_i_have_enough_funds(rel, needed_amount)
+            return API.app.do_i_have_enough_funds(rel, needed_amount)
         }
     }
 
@@ -261,9 +268,9 @@ QtObject {
         return exists(v) && v !== ""
     }
 
-    function isEthNeeded() {
-        for(const c of API.get().enabled_coins)
-            if(c.type === "ERC-20" && c.ticker !== "ETH") return true
+    function isParentCoinNeeded(ticker, type) {
+        for(const c of API.app.enabled_coins)
+            if(c.type === type && c.ticker !== ticker) return true
 
         return false
     }
@@ -275,22 +282,30 @@ QtObject {
             return false
 
         if(ticker === "KMD" || ticker === "BTC") return false
-
-        if(ticker === "ETH") return !General.isEthNeeded()
+        else if(ticker === "ETH") return !General.isParentCoinNeeded("ETH", "ERC-20")
+        else if(ticker === "QTUM") return !General.isParentCoinNeeded("QTUM", "QRC-20")
 
         return true
     }
 
-    function isEthEnabled() {
-        for(const c of API.get().enabled_coins)
-            if(c.ticker === "ETH") return true
+    function tokenUnitName(type) {
+        return type === "ERC-20" ? "Gwei" : "Satoshi"
+    }
+
+    function isTokenType(type) {
+        return type === "ERC-20" || type === "QRC-20"
+    }
+
+    function isCoinEnabled(ticker) {
+        for(const c of API.app.enabled_coins)
+            if(c.ticker === ticker) return true
 
         return false
     }
 
-    function enableEthIfNeeded() {
-        if(!isEthEnabled() && isEthNeeded()) {
-            API.get().enable_coins(["ETH"])
+    function enableParentCoinIfNeeded(ticker, type) {
+        if(!isCoinEnabled(ticker) && isParentCoinNeeded(ticker, type)) {
+            API.app.enable_coins([ticker])
             return true
         }
 

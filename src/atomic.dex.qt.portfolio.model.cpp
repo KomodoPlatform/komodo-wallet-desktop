@@ -53,7 +53,7 @@ namespace atomic_dex
         this->m_model_proxy->setSourceModel(this);
         this->m_model_proxy->setDynamicSortFilter(true);
         this->m_model_proxy->sort_by_currency_balance(false);
-        this->m_model_proxy->setFilterRole(NameRole);
+        this->m_model_proxy->setFilterRole(NameAndTicker);
         this->m_model_proxy->setFilterCaseSensitivity(Qt::CaseInsensitive);
     }
 
@@ -91,7 +91,8 @@ namespace atomic_dex
                 .trend_7d    = nlohmann_json_array_to_qt_json_array(paprika.get_ticker_historical(coin.ticker).answer),
                 .is_excluded = false,
             };
-            data.display = data.ticker + " (" + data.balance + ")";
+            data.display         = data.ticker + " (" + data.balance + ")";
+            data.ticker_and_name = data.ticker + data.name;
             spdlog::trace(
                 "inserting ticker {} with name {} balance {} main currency balance {}", coin.ticker, coin.name, data.balance.toStdString(),
                 data.main_currency_balance.toStdString());
@@ -211,6 +212,7 @@ namespace atomic_dex
                     qint64  timestamp  = duration_cast<seconds>(system_clock::now().time_since_epoch()).count();
                     QString human_date = QString::fromStdString(to_human_date<std::chrono::seconds>(timestamp, "%e %b %Y, %H:%M"));
                     this->m_dispatcher.trigger<balance_update_notification>(am_i_sender, amount, QString::fromStdString(ticker), human_date, timestamp);
+                    emit portfolioItemDataChanged();
                 }
                 if (ticker == mm2_system.get_current_ticker() && (is_change_b || is_change_mc || is_change_mcpfo))
                 {
@@ -249,6 +251,8 @@ namespace atomic_dex
             return item.is_excluded;
         case Display:
             return item.display;
+        case NameAndTicker:
+            return item.ticker_and_name;
         }
         return {};
     }
@@ -285,6 +289,8 @@ namespace atomic_dex
         case Display:
             item.display = value.toString();
             break;
+        case NameAndTicker:
+            item.ticker_and_name = value.toString();
         default:
             return false;
         }
@@ -334,7 +340,7 @@ namespace atomic_dex
                 {BalanceRole, "balance"},  {MainCurrencyBalanceRole, "main_currency_balance"},
                 {Change24H, "change_24h"}, {MainCurrencyPriceForOneUnit, "main_currency_price_for_one_unit"},
                 {Trend7D, "trend_7d"},     {Excluded, "excluded"},
-                {Display, "display"}};
+                {Display, "display"},      {NameAndTicker, "name_and_ticker"}};
     }
 
     portfolio_proxy_model*

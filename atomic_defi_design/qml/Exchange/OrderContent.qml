@@ -38,7 +38,7 @@ Item {
     // Base Amount
     DefaultText {
         id: base_amount
-        text_value: API.get().settings_pg.empty_string + (!details ? "" :
+        text_value: API.app.settings_pg.empty_string + (!details ? "" :
                                                          "~ " + General.formatCrypto("", details.base_amount, details.base_coin))
         font.pixelSize: in_modal ? Style.textSize2 : Style.textSize
 
@@ -60,7 +60,7 @@ Item {
     // Rel Amount
     DefaultText {
         id: rel_amount
-        text_value: API.get().settings_pg.empty_string + (!details ? "" :
+        text_value: API.app.settings_pg.empty_string + (!details ? "" :
                                                          "~ " + General.formatCrypto("", details.rel_amount, details.rel_coin))
         font.pixelSize: base_amount.font.pixelSize
 
@@ -73,7 +73,7 @@ Item {
     DefaultText {
         id: order_id
         visible: !in_modal && is_placed_order
-        text_value: API.get().settings_pg.empty_string + (!details ? "" :
+        text_value: API.app.settings_pg.empty_string + (!details ? "" :
                                                          qsTr("ID") + ": " + details.order_id)
         color: Style.colorTheme2
         anchors.top: base_amount.bottom
@@ -87,7 +87,7 @@ Item {
         color: !details ? "white" : visible ? getStatusColor(details.order_status) : ''
         anchors.horizontalCenter: parent.horizontalCenter
         anchors.top: base_icon.top
-        text_value: API.get().settings_pg.empty_string + (!details ? "" :
+        text_value: API.app.settings_pg.empty_string + (!details ? "" :
                                                          visible ? getStatusTextWithPrefix(details.order_status) : '')
     }
 
@@ -95,7 +95,7 @@ Item {
     DefaultText {
         id: date
         visible: !details ? false : !in_modal && details.date !== ''
-        text_value: API.get().settings_pg.empty_string + (!details ? "" :
+        text_value: API.app.settings_pg.empty_string + (!details ? "" :
                                                          details.date)
         color: Style.colorTheme2
         anchors.top: order_id.bottom
@@ -105,7 +105,7 @@ Item {
     // Maker/Taker
     DefaultText {
         visible: !in_modal && is_placed_order
-        text_value: API.get().settings_pg.empty_string + (!details ? "" :
+        text_value: API.app.settings_pg.empty_string + (!details ? "" :
                                                          details.is_maker ? qsTr("Maker Order"): qsTr("Taker Order"))
         color: Style.colorThemeDarkLight
         anchors.verticalCenter: date.verticalCenter
@@ -118,8 +118,8 @@ Item {
                             !in_modal && details.cancellable
         anchors.right: parent.right
         anchors.bottom: date.bottom
-        text: API.get().settings_pg.empty_string + (qsTr("Cancel"))
-        onClicked: onCancelOrder(details.order_id)
+        text: API.app.settings_pg.empty_string + (qsTr("Cancel"))
+        onClicked: cancelOrder(details.order_id)
     }
 
     // Recover Funds button
@@ -128,7 +128,7 @@ Item {
                             !in_modal && details.recoverable
         anchors.right: parent.right
         anchors.bottom: date.bottom
-        text: API.get().settings_pg.empty_string + (qsTr("Recover Funds"))
+        text: API.app.settings_pg.empty_string + (qsTr("Recover Funds"))
         onClicked: { if(details) onRecoverFunds(details.order_id) }
     }
 }

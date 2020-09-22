@@ -5,7 +5,7 @@ import QtQuick.Controls 2.12
 import "../Components"
 import "../Constants"
 
-ColumnLayout {
+ModalContent {
     property var result: ({ balance_change:"", fees: "", date: "", explorer_url: "" })
     property alias address: address.text
     property string custom_amount
@@ -13,54 +13,53 @@ ColumnLayout {
 
     function onClose() {}
 
-    ModalHeader {
-        title: API.get().settings_pg.empty_string + (qsTr("Transaction Complete!"))
-    }
+    title: API.app.settings_pg.empty_string + (qsTr("Transaction Complete!"))
 
     // Address
     TextWithTitle {
         id: address
-        title: API.get().settings_pg.empty_string + (qsTr("Recipient's address"))
+        title: API.app.settings_pg.empty_string + (qsTr("Recipient's address"))
         visible: text !== ""
     }
 
     // Amount
     TextWithTitle {
-        title: API.get().settings_pg.empty_string + (qsTr("Amount"))
-        text: API.get().settings_pg.empty_string + (General.formatCrypto("", custom_amount !== "" ? custom_amount : result.balance_change, api_wallet_page.ticker))
+        title: API.app.settings_pg.empty_string + (qsTr("Amount"))
+        text: API.app.settings_pg.empty_string + (General.formatCrypto("", custom_amount !== "" ? custom_amount : result.balance_change, api_wallet_page.ticker))
     }
 
     // Fees
     TextWithTitle {
-        title: API.get().settings_pg.empty_string + (qsTr("Fees"))
-        text: API.get().settings_pg.empty_string + (General.formatCrypto("", result.fees, current_ticker_infos.fee_ticker))
+        title: API.app.settings_pg.empty_string + (qsTr("Fees"))
+        text: API.app.settings_pg.empty_string + (General.formatCrypto("", result.fees, current_ticker_infos.fee_ticker))
     }
 
     // Date
     TextWithTitle {
-        title: API.get().settings_pg.empty_string + (qsTr("Date"))
-        text: API.get().settings_pg.empty_string + (result.date)
+        title: API.app.settings_pg.empty_string + (qsTr("Date"))
+        text: API.app.settings_pg.empty_string + (result.date)
     }
 
     // Transaction Hash
     TextWithTitle {
         id: tx_hash
-        title: API.get().settings_pg.empty_string + (qsTr("Transaction Hash"))
+        title: API.app.settings_pg.empty_string + (qsTr("Transaction Hash"))
     }
 
     // Buttons
-    RowLayout {
+    footer: [
         DefaultButton {
-            text: API.get().settings_pg.empty_string + (qsTr("Close"))
+            text: API.app.settings_pg.empty_string + (qsTr("Close"))
             Layout.fillWidth: true
             onClicked: onClose()
-        }
+        },
+
         PrimaryButton {
-            text: API.get().settings_pg.empty_string + (qsTr("View at Explorer"))
+            text: API.app.settings_pg.empty_string + (qsTr("View at Explorer"))
             Layout.fillWidth: true
             onClicked: General.viewTxAtExplorer(api_wallet_page.ticker, tx_hash.text)
         }
-    }
+    ]
 }
 
 /*##^##

@@ -24,7 +24,7 @@ ColumnLayout {
             id: price_header
             font.pixelSize: Style.textSizeSmall3
 
-            text_value: API.get().settings_pg.empty_string + (is_asks ? qsTr("Ask Price") + "\n(" + right_ticker + ")":
+            text_value: API.app.settings_pg.empty_string + (is_asks ? qsTr("Ask Price") + "\n(" + right_ticker + ")":
                                                             qsTr("Bid Price") + "\n(" + right_ticker + ")")
 
             color: is_asks ? Style.colorRed : Style.colorGreen
@@ -46,7 +46,7 @@ ColumnLayout {
 
             font.pixelSize: price_header.font.pixelSize
 
-            text_value: API.get().settings_pg.empty_string + (qsTr("Quantity") + "\n(" + left_ticker + ")")
+            text_value: API.app.settings_pg.empty_string + (qsTr("Quantity") + "\n(" + left_ticker + ")")
             color: Style.colorWhite1
             anchors.verticalCenter: parent.verticalCenter
         }
@@ -61,7 +61,7 @@ ColumnLayout {
 
             font.pixelSize: price_header.font.pixelSize
 
-            text_value: API.get().settings_pg.empty_string + (qsTr("Total") + "\n(" + right_ticker + ")")
+            text_value: API.app.settings_pg.empty_string + (qsTr("Total") + "\n(" + right_ticker + ")")
             color: Style.colorWhite1
             anchors.verticalCenter: parent.verticalCenter
         }
@@ -88,7 +88,7 @@ ColumnLayout {
             height: 20
 
             // Hover / My Order line
-            Rectangle {
+            AnimatedRectangle {
                 visible: mouse_area.containsMouse || is_mine
                 width: parent.width
                 height: parent.height
@@ -100,7 +100,7 @@ ColumnLayout {
             }
 
             // Depth line
-            Rectangle {
+            AnimatedRectangle {
                 width: parent.width * depth
                 height: parent.height
                 color: price_value.color
@@ -110,7 +110,7 @@ ColumnLayout {
                 anchors.right: is_asks ? undefined : parent.right
             }
 
-            MouseArea {
+            DefaultMouseArea {
                 id: mouse_area
                 anchors.fill: parent
                 hoverEnabled: true
@@ -131,7 +131,7 @@ ColumnLayout {
                 font.pixelSize: Style.textSizeSmall1
                 font.family: "Arial"
 
-                text_value: API.get().settings_pg.empty_string + (General.formatDouble(price, General.amountPrecision, true))
+                text_value: API.app.settings_pg.empty_string + (General.formatDouble(price, General.amountPrecision, true))
                 color: price_header.color
                 anchors.verticalCenter: parent.verticalCenter
             }
@@ -145,7 +145,7 @@ ColumnLayout {
                 font.pixelSize: price_value.font.pixelSize
                 font.family: price_value.font.family
 
-                text_value: API.get().settings_pg.empty_string + (General.formatDouble(quantity, General.amountPrecision, true))
+                text_value: API.app.settings_pg.empty_string + (General.formatDouble(quantity, General.amountPrecision, true))
                 color: Style.colorWhite4
                 anchors.verticalCenter: parent.verticalCenter
             }
@@ -159,9 +159,36 @@ ColumnLayout {
                 font.pixelSize: price_value.font.pixelSize
                 font.family: price_value.font.family
 
-                text_value: API.get().settings_pg.empty_string + (General.formatDouble(total, General.amountPrecision, true))
+                text_value: API.app.settings_pg.empty_string + (General.formatDouble(total, General.amountPrecision, true))
                 color: Style.colorWhite4
                 anchors.verticalCenter: parent.verticalCenter
+            }
+
+            DefaultText {
+                id: cancel_button_text
+                property bool requested_cancel: false
+                visible: is_mine && !requested_cancel
+
+                font.pixelSize: Style.textSizeSmall4
+                text_value: "x"
+                anchors.verticalCenter: parent.verticalCenter
+                anchors.verticalCenterOffset: -font.pixelSize * 0.25
+                anchors.left: parent.left
+                anchors.leftMargin: 6
+
+                color: cancel_button.containsMouse ? Style.colorText : Style.colorText2
+
+                DefaultMouseArea {
+                    id: cancel_button
+                    anchors.fill: parent
+                    hoverEnabled: true
+                    onClicked: {
+                        if(!is_mine) return
+
+                        cancel_button_text.requested_cancel = true
+                        cancelOrder(uuid)
+                    }
+                }
             }
 
             // Line

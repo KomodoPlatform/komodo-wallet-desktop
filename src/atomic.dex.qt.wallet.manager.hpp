@@ -31,9 +31,10 @@
 
 namespace atomic_dex
 {
-    class qt_wallet_manager
+    class qt_wallet_manager : public ag::ecs::pre_update_system<qt_wallet_manager>
     {
       public:
+        qt_wallet_manager(entt::registry& registry);
         QString get_wallet_default_name() const noexcept;
         void    just_set_wallet_name(QString wallet_name);
 
@@ -55,9 +56,12 @@ namespace atomic_dex
         static bool delete_wallet(const QString& wallet_name) noexcept;
 
         static bool confirm_password(const QString& wallet_name, const QString& password);
+        void        update() noexcept override;
 
         bool update_wallet_cfg() noexcept;
 
+        std::string                     retrieve_transactions_notes(const std::string& tx_hash) const;
+        void                            update_transactions_notes(const std::string& tx_hash, const std::string& notes);
         void                            update_contact_ticker(const QString& contact_name, const QString& old_ticker, const QString& new_ticker);
         void                            update_contact_address(const QString& contact_name, const QString& ticker, const QString& address);
         void                            update_or_insert_contact_name(const QString& old_contact_name, const QString& contact_name);
@@ -78,8 +82,8 @@ namespace atomic_dex
     {
         load_wallet_cfg(wallet_name.toStdString());
         std::error_code ec;
-        std::string password_std = password.toStdString();
-        bool with_pin_cfg = false;
+        std::string     password_std = password.toStdString();
+        bool            with_pin_cfg = false;
         if (password.contains(QString::fromStdString(m_wallet_cfg.protection_pass)))
         {
             password_std = password_std.substr(0, password.size() - m_wallet_cfg.protection_pass.size());
@@ -125,3 +129,5 @@ namespace atomic_dex
         return false;
     }
 } // namespace atomic_dex
+
+REFL_AUTO(type(atomic_dex::qt_wallet_manager))

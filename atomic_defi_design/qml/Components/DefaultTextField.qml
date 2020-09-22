@@ -12,14 +12,14 @@ TextField {
 
     font.family: Style.font_family
     placeholderTextColor: Style.colorPlaceholderText
+    Behavior on color { ColorAnimation { duration: Style.animationDuration } }
+    Behavior on placeholderTextColor { ColorAnimation { duration: Style.animationDuration } }
 
     // Right click Context Menu
     selectByMouse: true
     persistentSelection: true
 
-    background: InnerBackground {
-        radius: 100
-    }
+    background: InnerBackground { }
 
     leftPadding: Math.max(0, left_text.width + 20)
     rightPadding: Math.max(0, right_text.width + 20)

@@ -4,7 +4,7 @@
 import QtQuick 2.14
 import "../Constants"
 
-Rectangle {
+AnimatedRectangle {
     function show(text, duration, info, is_error) {
         title = text
         details = info
@@ -80,7 +80,7 @@ Rectangle {
     property string details: ""
     property bool isError: false
 
-    MouseArea {
+    DefaultMouseArea {
         anchors.fill: parent
         onClicked: {
             if(details !== "") {

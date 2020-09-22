@@ -98,6 +98,8 @@ namespace atomic_dex
             return false;
         case portfolio_model::Display:
             return false;
+        case portfolio_model::NameAndTicker:
+            return false;
         }
     }
 

@@ -72,7 +72,14 @@ namespace atomic_dex
         j.at("active").get_to(cfg.active);
         j.at("currently_enabled").get_to(cfg.currently_enabled);
         j.at("coinpaprika_id").get_to(cfg.coinpaprika_id);
-        j.at("is_erc_20").get_to(cfg.is_erc_20);
+        if (j.contains("is_custom_coin"))
+        {
+            cfg.is_custom_coin = true;
+        }
+        cfg.is_erc_20 = cfg.type == "ERC-20";
+        cfg.is_qrc_20 = cfg.type == "QRC-20";
+        spdlog::debug("coin: {} is of type: {}", cfg.ticker, cfg.type);
+        // j.at("is_erc_20").get_to(cfg.is_erc_20);
         j.at("explorer_url").get_to(cfg.explorer_url);
         if (j.contains("explorer_tx_url"))
         {

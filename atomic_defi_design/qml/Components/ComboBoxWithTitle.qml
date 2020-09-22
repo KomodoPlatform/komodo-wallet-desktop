@@ -7,11 +7,12 @@ import "../Constants"
 ColumnLayout {
     property alias title: title_text.text
     property alias field: input_field
+    property alias model: input_field.model
+    property alias currentIndex: input_field.currentIndex
+    property alias currentText: input_field.currentText
 
-    RowLayout {
-        DefaultText {
-            id: title_text
-        }
+    DefaultText {
+        id: title_text
     }
 
     DefaultComboBox {

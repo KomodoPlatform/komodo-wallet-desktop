@@ -29,8 +29,6 @@ namespace mm2::api
     static inline void
     reset_client()
     {
-        // g_mm2_http_client->
-        // g_mm2_http_client = nullptr;
     }
 
     nlohmann::json rpc_batch_standalone(nlohmann::json batch_array, std::shared_ptr<t_http_client> mm2_client);
@@ -228,10 +226,22 @@ namespace mm2::api
 
     void from_json(const nlohmann::json& j, fee_erc_coin& cfg);
 
+    struct fee_qrc_coin
+    {
+        std::string coin;
+        std::string miner_fee;
+        std::size_t gas_limit;
+        std::size_t gas_price;
+        std::string total_gas_fee;
+    };
+
+    void from_json(const nlohmann::json& j, fee_qrc_coin& cfg);
+
     struct fees_data
     {
         std::optional<fee_regular_coin> normal_fees; ///< btc, kmd based coins
         std::optional<fee_erc_coin>     erc_fees;    ///< eth based coins
+        std::optional<fee_qrc_coin>     qrc_fees;    // Qtum based coin
     };
 
     void from_json(const nlohmann::json& j, fees_data& cfg);
@@ -332,9 +342,9 @@ namespace mm2::api
 
     struct withdraw_fees
     {
-        std::string                type;      ///< UtxoFixed, UtxoPerKbyte, EthGas
-        std::optional<std::string> amount;    ///< for utxo only
-        std::optional<std::string> gas_price; ///< price EthGas
+        std::string                type;      ///< UtxoFixed, UtxoPerKbyte, EthGas, Qrc20Gas
+        std::optional<std::string> amount;    ///< Utxo only
+        std::optional<std::string> gas_price; ///< price EthGas or Qrc20Gas
         std::optional<int>         gas_limit; ///< sets the gas limit for transaction
     };
 
@@ -711,7 +721,7 @@ namespace mm2::api
         int            rpc_result_code;
     };
 
-    //kmd_rewards_info_answer rpc_kmd_rewards_info(std::shared_ptr<t_http_client> mm2_client);
+    // kmd_rewards_info_answer rpc_kmd_rewards_info(std::shared_ptr<t_http_client> mm2_client);
     kmd_rewards_info_answer process_kmd_rewards_answer(nlohmann::json result);
 
     nlohmann::json rpc_batch_electrum(std::vector<electrum_request> requests, std::shared_ptr<t_http_client> mm2_client);

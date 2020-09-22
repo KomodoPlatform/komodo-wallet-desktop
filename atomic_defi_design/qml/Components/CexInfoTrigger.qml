@@ -4,7 +4,7 @@ import QtQuick.Controls 2.12
 
 import "../Constants"
 
-MouseArea {
+DefaultMouseArea {
     anchors.fill: parent
     onClicked: cex_rates_modal.open()
 }

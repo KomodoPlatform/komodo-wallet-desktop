@@ -24,7 +24,7 @@ Item {
 
     height: Style.sidebarLineHeight
 
-    Switch {
+    DefaultSwitch {
         id: switch_input
         visible: dashboard_index === General.idx_dashboard_light_ui ||
                  dashboard_index === General.idx_dashboard_privacy_mode
@@ -55,7 +55,7 @@ Item {
         color: "#40000000"
         smooth: true
     }
-    ColorOverlay {
+    DefaultColorOverlay {
         id: img_color
         visible: img.source != ""
         anchors.fill: img
@@ -86,7 +86,7 @@ Item {
         smooth: true
     }
 
-    MouseArea {
+    DefaultMouseArea {
         id: mouse_area
         hoverEnabled: true
         width: parent.width

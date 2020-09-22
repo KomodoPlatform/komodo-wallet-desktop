@@ -5,7 +5,7 @@ import QtQuick.Controls 2.12
 import "../Components"
 import "../Constants"
 
-DefaultModal {
+BasicModal {
     id: root
 
     property bool wrong_password: false
@@ -17,15 +17,8 @@ DefaultModal {
         input_password.reset()
     }
 
-    // Inside modal
-    ColumnLayout {
-        id: modal_layout
-
-        width: parent.width
-
-        ModalHeader {
-            title: API.get().settings_pg.empty_string + (qsTr("Delete Wallet"))
-        }
+    ModalContent {
+        title: API.app.settings_pg.empty_string + (qsTr("Delete Wallet"))
 
         FloatingBackground {
             Layout.alignment: Qt.AlignHCenter
@@ -47,7 +40,7 @@ DefaultModal {
                     horizontalAlignment: Text.AlignHCenter
                     anchors.horizontalCenter: parent.horizontalCenter
 
-                    text_value: API.get().settings_pg.empty_string + (qsTr("Are you sure you want to delete %1 wallet?", "WALLET_NAME").arg(API.get().wallet_default_name))
+                    text_value: API.app.settings_pg.empty_string + (qsTr("Are you sure you want to delete %1 wallet?", "WALLET_NAME").arg(API.app.wallet_default_name))
                     font.pixelSize: Style.textSize2
                 }
 
@@ -56,7 +49,7 @@ DefaultModal {
                     horizontalAlignment: Text.AlignHCenter
                     anchors.horizontalCenter: parent.horizontalCenter
 
-                    text_value: API.get().settings_pg.empty_string + (qsTr("If so, make sure you record your seed phrase in order to restore your wallet in future."))
+                    text_value: API.app.settings_pg.empty_string + (qsTr("If so, make sure you record your seed phrase in order to restore your wallet in future."))
                 }
             }
         }
@@ -65,33 +58,33 @@ DefaultModal {
             id: input_password
             Layout.fillWidth: true
             confirm: false
-            field.placeholderText: API.get().settings_pg.empty_string + (qsTr("Enter the password of your wallet"))
+            field.placeholderText: API.app.settings_pg.empty_string + (qsTr("Enter the password of your wallet"))
         }
 
         DefaultText {
-            text_value: API.get().settings_pg.empty_string + (qsTr("Wrong Password"))
+            text_value: API.app.settings_pg.empty_string + (qsTr("Wrong Password"))
             color: Style.colorRed
             visible: wrong_password
         }
 
         // Buttons
-        RowLayout {
+        footer: [
             DefaultButton {
-                text: API.get().settings_pg.empty_string + (qsTr("Cancel"))
+                text: API.app.settings_pg.empty_string + (qsTr("Cancel"))
                 Layout.fillWidth: true
                 onClicked: root.close()
-            }
+            },
 
             DangerButton {
-                text: API.get().settings_pg.empty_string + (qsTr("Delete"))
+                text: API.app.settings_pg.empty_string + (qsTr("Delete"))
                 Layout.fillWidth: true
                 enabled: input_password.isValid()
                 onClicked: {
-                    if(API.get().confirm_password(API.get().wallet_default_name, input_password.field.text)) {
+                    if(API.app.confirm_password(API.app.wallet_default_name, input_password.field.text)) {
                         root.close()
                         wrong_password = false
 
-                        API.get().delete_wallet(API.get().wallet_default_name)
+                        API.app.delete_wallet(API.app.wallet_default_name)
                         disconnect()
                     }
                     else {
@@ -99,6 +92,6 @@ DefaultModal {
                     }
                 }
             }
-        }
+        ]
     }
 }

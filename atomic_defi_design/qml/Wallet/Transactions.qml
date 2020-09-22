@@ -15,14 +15,14 @@ DefaultListView {
     }
 
     // Row
-    delegate: Rectangle {
+    delegate: AnimatedRectangle {
         id: rectangle
         implicitWidth: list.width
         height: row_height
 
-        color: mouse_area.containsMouse ? Style.colorTheme6 : "transparent"
+        color: Style.colorOnlyIf(mouse_area.containsMouse, Style.colorTheme6)
 
-        MouseArea {
+        DefaultMouseArea {
             id: mouse_area
             anchors.fill: parent
             hoverEnabled: true
@@ -32,29 +32,39 @@ DefaultListView {
             }
         }
 
+        Circle {
+            id: note_tag
+            width: 6
+            color: Style.colorOrange
+            anchors.left: parent.left
+            anchors.leftMargin: 15
+            anchors.verticalCenter: parent.verticalCenter
+            visible: transaction_note !== ""
+        }
+
         Arrow {
             id: received_icon
             up: am_i_sender
             color: !am_i_sender ? Style.colorGreen : Style.colorRed
             anchors.verticalCenter: parent.verticalCenter
-            anchors.left: parent.left
-            anchors.leftMargin: 15
+            anchors.left: note_tag.right
+            anchors.leftMargin: 10
         }
 
         // Description
         DefaultText {
             id: description
-            text_value: API.get().settings_pg.empty_string + (am_i_sender ? qsTr("Sent") : qsTr("Received"))
+            text_value: API.app.settings_pg.empty_string + (am_i_sender ? qsTr("Sent") : qsTr("Received"))
             font.pixelSize: Style.textSizeSmall3
             anchors.verticalCenter: parent.verticalCenter
             anchors.left: received_icon.right
-            anchors.leftMargin: 25
+            anchors.leftMargin: 10
         }
 
         // Crypto
         DefaultText {
             id: crypto_amount
-            text_value: API.get().settings_pg.empty_string + (General.formatCrypto(!am_i_sender, amount, api_wallet_page.ticker))
+            text_value: API.app.settings_pg.empty_string + (General.formatCrypto(!am_i_sender, amount, api_wallet_page.ticker))
             font.pixelSize: description.font.pixelSize
             anchors.verticalCenter: parent.verticalCenter
             anchors.left: parent.left
@@ -65,7 +75,7 @@ DefaultListView {
 
         // Fiat
         DefaultText {
-            text_value: API.get().settings_pg.empty_string + (General.formatFiat(!am_i_sender, amount_fiat, API.get().settings_pg.current_currency))
+            text_value: API.app.settings_pg.empty_string + (General.formatFiat(!am_i_sender, amount_fiat, API.app.settings_pg.current_currency))
             font.pixelSize: description.font.pixelSize
             anchors.verticalCenter: parent.verticalCenter
             anchors.left: parent.left
@@ -76,7 +86,7 @@ DefaultListView {
 
         // Fee
         DefaultText {
-            text_value: API.get().settings_pg.empty_string + (General.formatCrypto(!(parseFloat(fees) > 0), Math.abs(parseFloat(fees)),
+            text_value: API.app.settings_pg.empty_string + (General.formatCrypto(!(parseFloat(fees) > 0), Math.abs(parseFloat(fees)),
                                                                        current_ticker_infos.fee_ticker) + " " + qsTr("fees"))
             font.pixelSize: description.font.pixelSize
             anchors.verticalCenter: parent.verticalCenter
@@ -88,7 +98,7 @@ DefaultListView {
         // Date
         DefaultText {
             font.pixelSize: description.font.pixelSize
-            text_value: API.get().settings_pg.empty_string + (unconfirmed ? qsTr("Unconfirmed"):  date)
+            text_value: API.app.settings_pg.empty_string + (unconfirmed ? qsTr("Unconfirmed") :  date)
             anchors.verticalCenter: parent.verticalCenter
             anchors.right: parent.right
             anchors.rightMargin: 20

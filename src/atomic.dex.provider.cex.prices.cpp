@@ -111,16 +111,7 @@ namespace atomic_dex
                     }
                     spdlog::error("http error: {}", answer.error.value_or("dummy"));
                 })
-                .then([](pplx::task<void> previous_task) {
-                    try
-                    {
-                        previous_task.wait(); // or get(), same difference
-                    }
-                    catch (const std::exception& e)
-                    {
-                        spdlog::trace("ppl task error: {}", e.what());
-                    }
-                });
+                .then(&handle_exception_pplx_task);
             ;
 
             return false;

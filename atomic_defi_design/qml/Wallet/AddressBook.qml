@@ -34,7 +34,8 @@ ColumnLayout {
 
     readonly property var essential_coins: General.all_coins.filter(c => {
                     if(c.type === "ERC-20" && c.ticker !== "ETH") return false
-                    if(c.type === "Smart Chain" && c.ticker !== "KMD") return false
+                    else if(c.type === "QRC-20" && c.ticker !== "QTUM") return false
+                    else if(c.type === "Smart Chain" && c.ticker !== "KMD") return false
 
                     return true
                 })
@@ -45,11 +46,11 @@ ColumnLayout {
         id: back_button
         property bool disabled: global_edit_in_progress
         Layout.leftMargin: layout_margin
-        text_value: API.get().settings_pg.empty_string + ("< " + qsTr("Back"))
+        text_value: API.app.settings_pg.empty_string + ("< " + qsTr("Back"))
         font.bold: true
         color: disabled ? Style.colorTextDisabled : Style.colorText
 
-        MouseArea {
+        DefaultMouseArea {
             anchors.fill: parent
             onClicked: { if(!back_button.disabled) closeAddressBook() }
         }
@@ -60,7 +61,7 @@ ColumnLayout {
         Layout.fillWidth: true
 
         DefaultText {
-            text_value: API.get().settings_pg.empty_string + (qsTr("Address Book"))
+            text_value: API.app.settings_pg.empty_string + (qsTr("Address Book"))
             font.bold: true
             font.pixelSize: Style.textSize3
             Layout.fillWidth: true
@@ -69,10 +70,10 @@ ColumnLayout {
         DefaultButton {
             Layout.rightMargin: layout_margin
             Layout.alignment: Qt.AlignRight
-            text: API.get().settings_pg.empty_string + (qsTr("New Contact"))
+            text: API.app.settings_pg.empty_string + (qsTr("New Contact"))
             enabled: !global_edit_in_progress
             onClicked: {
-                API.get().addressbook_mdl.add_contact_entry()
+                API.app.addressbook_mdl.add_contact_entry()
             }
         }
     }
@@ -86,7 +87,7 @@ ColumnLayout {
         id: list
         Layout.fillWidth: true
         Layout.fillHeight: true
-        model: API.get().addressbook_mdl.addressbook_proxy_mdl
+        model: API.app.addressbook_mdl.addressbook_proxy_mdl
 
         delegate: Item {
             id: contact
@@ -102,7 +103,7 @@ ColumnLayout {
 
             function kill() {
                 if(address_book.initialized)
-                    API.get().addressbook_mdl.remove_at(index)
+                    API.app.addressbook_mdl.remove_at(index)
             }
 
             Connections {
@@ -169,7 +170,7 @@ ColumnLayout {
                                 id: name_input
 
                                 color: Style.colorText
-                                placeholderText: API.get().settings_pg.empty_string + (qsTr("Enter the contact name"))
+                                placeholderText: API.app.settings_pg.empty_string + (qsTr("Enter the contact name"))
                                 width: 150
                                 onTextChanged: {
                                     const max_length = 50
@@ -190,7 +191,7 @@ ColumnLayout {
                                 font.bold: true
                                 color: Style.colorGreen
 
-                                MouseArea {
+                                DefaultMouseArea {
                                     anchors.fill: parent
                                     onClicked: {
                                         if(edit_contact.enabled) {
@@ -262,7 +263,7 @@ ColumnLayout {
                             id: address_list
 
                             model: modelData
-                            delegate: Rectangle {
+                            delegate: AnimatedRectangle {
                                 id: address_line
 
                                 property bool initialized: false
@@ -315,9 +316,10 @@ ColumnLayout {
                                 width: contact_bg.width
                                 height: 50
 
-                                color: mouse_area.containsMouse ? Style.colorTheme6 : "transparent"
 
-                                MouseArea {
+                                color: Style.colorOnlyIf(mouse_area.containsMouse, Style.colorTheme6)
+
+                                DefaultMouseArea {
                                     id: mouse_area
                                     anchors.fill: parent
                                     hoverEnabled: true
@@ -327,7 +329,7 @@ ColumnLayout {
                                 DefaultText {
                                     id: edit_icon
                                     anchors.left: parent.left
-                                    anchors.leftMargin: layout_margin
+                                    anchors.leftMargin: layout_margin * 0.5
                                     anchors.verticalCenter: parent.verticalCenter
 
                                     visible: !editing_address && enabled
@@ -336,7 +338,7 @@ ColumnLayout {
                                     font.bold: true
                                     color: enabled ? Style.colorGreen : Style.colorTextDisabled
 
-                                    MouseArea {
+                                    DefaultMouseArea {
                                         anchors.fill: parent
                                         onClicked: {
                                             if(edit_icon.enabled) {
@@ -366,7 +368,7 @@ ColumnLayout {
                                     anchors.verticalCenter: parent.verticalCenter
                                     visible: !combo_base.visible
 
-                                    text_value: API.get().settings_pg.empty_string + (type)
+                                    text_value: API.app.settings_pg.empty_string + (type)
                                 }
 
                                 DefaultComboBox {
@@ -375,6 +377,7 @@ ColumnLayout {
                                     anchors.left: icon.right
                                     anchors.leftMargin: 10
                                     anchors.verticalCenter: parent.verticalCenter
+                                    width: 125
                                     visible: editing_address
 
                                     model: selectable_coins
@@ -389,9 +392,9 @@ ColumnLayout {
 
                                 // Address name
                                 DefaultText {
-                                    anchors.left: parent.left
+                                    anchors.left: combo_base.right
                                     anchors.verticalCenter: parent.verticalCenter
-                                    anchors.leftMargin: layout_margin * 5
+                                    anchors.leftMargin: layout_margin
                                     text: address
                                     visible: !address_input.visible
                                     font.pixelSize: Style.textSizeSmall3
@@ -405,18 +408,18 @@ ColumnLayout {
                                 }
                                 AddressField {
                                     id: address_input
-                                    anchors.left: parent.left
+                                    anchors.left: combo_base.right
                                     anchors.verticalCenter: parent.verticalCenter
-                                    anchors.leftMargin: layout_margin * 7
+                                    anchors.leftMargin: layout_margin
                                     font.pixelSize: Style.textSizeSmall3
-                                    placeholderText: API.get().settings_pg.empty_string + (qsTr("Enter the address"))
+                                    placeholderText: API.app.settings_pg.empty_string + (qsTr("Enter the address"))
                                     width: 400
                                     visible: editing_address
                                 }
 
                                 RowLayout {
                                     anchors.right: parent.right
-                                    anchors.rightMargin: layout_margin
+                                    anchors.rightMargin: layout_margin * 0.5
                                     anchors.verticalCenter: parent.verticalCenter
 
                                     PrimaryButton {
@@ -438,7 +441,7 @@ ColumnLayout {
                                         Layout.leftMargin: layout_margin
 
                                         font.pixelSize: Style.textSizeSmall3
-                                        text: API.get().settings_pg.empty_string + (qsTr("Explorer"))
+                                        text: API.app.settings_pg.empty_string + (qsTr("Explorer"))
                                         enabled: address !== "" && type !== ""
                                         visible: !editing_address
                                         onClicked: General.viewAddressAtExplorer(type, address)
@@ -449,9 +452,9 @@ ColumnLayout {
                                         Layout.leftMargin: layout_margin
 
                                         font.pixelSize: Style.textSizeSmall3
-                                        text: API.get().settings_pg.empty_string + (qsTr("Send"))
+                                        text: API.app.settings_pg.empty_string + (qsTr("Send"))
                                         minWidth: height
-                                        enabled: address !== "" && type !== "" && API.get().enabled_coins.map(c => c.ticker).indexOf(type) !== -1
+                                        enabled: address !== "" && type !== "" && API.app.enabled_coins.map(c => c.ticker).indexOf(type) !== -1
                                         visible: !editing_address
                                         onClicked: {
                                             api_wallet_page.ticker = type

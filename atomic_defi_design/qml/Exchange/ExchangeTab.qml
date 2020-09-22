@@ -19,7 +19,7 @@ DefaultText {
     font.weight: highlight ? Font.Medium : Font.Light
     color: highlight ? Style.colorWhite1 : mouse_area.containsMouse ? Style.colorWhite4 : Style.colorWhite5
 
-    MouseArea {
+    DefaultMouseArea {
         id: mouse_area
         hoverEnabled: true
         width: parent.width

@@ -6,7 +6,6 @@ import "../Constants"
 
 ColumnLayout {
     property alias title: title.text
-    property double bottomMargin: -1337
 
     // Title
     DefaultText {
@@ -16,6 +15,5 @@ ColumnLayout {
 
     HorizontalLine {
         Layout.fillWidth: true
-        Layout.bottomMargin: bottomMargin === -1337 ? Style.modalTitleMargin : bottomMargin
     }
 }

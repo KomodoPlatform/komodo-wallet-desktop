@@ -23,9 +23,14 @@
 
 namespace
 {
-    t_http_client_ptr g_google_proxy_http_client{std::make_unique<web::http::client::http_client>(FROM_STD_STR("https://www.google.com"))};
-    t_http_client_ptr g_paprika_proxy_http_client{std::make_unique<web::http::client::http_client>(FROM_STD_STR("https://api.coinpaprika.com"))};
-    t_http_client_ptr g_ohlc_proxy_http_client{std::make_unique<web::http::client::http_client>(FROM_STD_STR("https://komodo.live:3333"))};
+    web::http::client::http_client_config g_cfg{[]() {
+        web::http::client::http_client_config cfg;
+        cfg.set_timeout(std::chrono::seconds(5));
+        return cfg;
+    }()};
+    t_http_client_ptr g_google_proxy_http_client{std::make_unique<web::http::client::http_client>(FROM_STD_STR("https://www.google.com"), g_cfg)};
+    t_http_client_ptr g_paprika_proxy_http_client{std::make_unique<web::http::client::http_client>(FROM_STD_STR("https://api.coinpaprika.com"), g_cfg)};
+    t_http_client_ptr g_ohlc_proxy_http_client{std::make_unique<web::http::client::http_client>(FROM_STD_STR("https://komodo.live:3333"), g_cfg)};
 
     pplx::task<web::http::http_response>
     async_check_retrieve(t_http_client_ptr& client, const std::string& uri)
@@ -122,14 +127,15 @@ namespace atomic_dex
                     this->set_internet_alive(true);
                 }
             })
-            .then([](pplx::task<void> previous_task) {
+            .then([this](pplx::task<void> previous_task) {
                 try
                 {
-                    previous_task.wait(); // or get(), same difference
+                    previous_task.wait();
                 }
                 catch (const std::exception& e)
                 {
-                    spdlog::trace("ppl task error: {}", e.what());
+                    spdlog::error("pplx task error: {}, setting internet to false", e.what());
+                    this->set_internet_alive(false);
                 }
             });
     }

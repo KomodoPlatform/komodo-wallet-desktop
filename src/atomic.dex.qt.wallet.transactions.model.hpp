@@ -33,7 +33,8 @@ namespace atomic_dex
             ToRole,
             BlockheightRole,
             ConfirmationsRole,
-            UnconfirmedRole
+            UnconfirmedRole,
+            TransactionNoteRole
         };
 
         transactions_model(ag::ecs::system_manager& system_manager, QObject* parent = nullptr) noexcept;

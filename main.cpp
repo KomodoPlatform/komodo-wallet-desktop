@@ -16,6 +16,7 @@
 //! Project Headers
 #include "atomic.dex.app.hpp"
 #include "atomic.dex.kill.hpp"
+#include "atomic.dex.qt.portfolio.model.hpp"
 
 #ifdef __APPLE__
 #    include "atomic.dex.osx.manager.hpp"
@@ -138,12 +139,14 @@ init_timezone_db()
 #endif
 }
 
-static void init_restclient()
+static void
+init_restclient()
 {
     RestClient::init();
 }
 
-static void disable_restclient()
+static void
+disable_restclient()
 {
     RestClient::disable();
 }
@@ -157,6 +160,10 @@ int
 main([[maybe_unused]] int argc, [[maybe_unused]] char* argv[])
 #endif
 {
+#if defined(WINDOWS_RELEASE_MAIN)
+    int    argc = __argc;
+    char** argv = __argv;
+#endif
     init_logging();
     connect_signals_handler();
     init_restclient();
@@ -170,8 +177,10 @@ main([[maybe_unused]] int argc, [[maybe_unused]] char* argv[])
     atomic_dex::application atomic_app;
 
     //! QT
-    int                           ac  = 0;
-    std::shared_ptr<QApplication> app = std::make_shared<QApplication>(ac, nullptr);
+    // int                           ac  = 0;
+    std::shared_ptr<QApplication> app = std::make_shared<QApplication>(argc, argv);
+    app->setOrganizationName("KomodoPlatform");
+    app->setOrganizationDomain("com");
 
     atomic_app.set_qt_app(app);
 
@@ -185,6 +194,7 @@ main([[maybe_unused]] int argc, [[maybe_unused]] char* argv[])
     qmlRegisterSingletonType(QUrl("qrc:/atomic_defi_design/qml/Constants/General.qml"), "App", 1, 0, "General");
     qmlRegisterSingletonType(QUrl("qrc:/atomic_defi_design/qml/Constants/Style.qml"), "App", 1, 0, "Style");
     qmlRegisterSingletonType(QUrl("qrc:/atomic_defi_design/qml/Constants/API.qml"), "App", 1, 0, "API");
+    qRegisterMetaType<t_portfolio_roles>("PortfolioRoles");
 
     const QUrl url(QStringLiteral("qrc:/atomic_defi_design/qml/main.qml"));
     QObject::connect(

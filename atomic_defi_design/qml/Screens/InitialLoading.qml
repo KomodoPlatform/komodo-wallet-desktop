@@ -12,7 +12,7 @@ SetupPage {
     // Override
     property var onLoaded: () => {}
 
-    readonly property string current_status: API.get().initial_loading_status
+    readonly property string current_status: API.app.initial_loading_status
 
     onCurrent_statusChanged: {
         if(current_status === "complete")
@@ -25,7 +25,7 @@ SetupPage {
 
     content: ColumnLayout {
         DefaultText {
-            text_value: API.get().settings_pg.empty_string + (qsTr("Loading, please wait"))
+            text_value: API.app.settings_pg.empty_string + (qsTr("Loading, please wait"))
             Layout.bottomMargin: 10
         }
 
@@ -38,7 +38,7 @@ SetupPage {
             }
 
             DefaultText {
-                text_value: API.get().settings_pg.empty_string + ((current_status === "initializing_mm2" ? qsTr("Initializing MM2") :
+                text_value: API.app.settings_pg.empty_string + ((current_status === "initializing_mm2" ? qsTr("Initializing MM2") :
                        current_status === "enabling_coins" ? qsTr("Enabling coins") : qsTr("Getting ready")) + "...")
             }
         }

@@ -16,7 +16,7 @@ Item {
     height: parent.height
 
     // Cursor
-    Rectangle {
+    AnimatedRectangle {
         id: cursor
         width: 185 - cursor_round_edge.radius
         anchors.right: parent.right
@@ -91,7 +91,7 @@ Item {
 
 
     // Cursor left edge
-    Rectangle {
+    AnimatedRectangle {
         id: cursor_round_edge
         color: Style.colorSidebarHighlightGradient1
         width: radius*2
@@ -113,6 +113,8 @@ Item {
                     return sidebar_bottom.y + (dashboard.current_page - General.idx_dashboard_settings) * Style.sidebarLineHeight
             }
         }
+
+        Behavior on y { SmoothedAnimation { duration: Style.animationDuration; velocity: -1 } }
     }
 
     // Content
@@ -141,7 +143,7 @@ Item {
             anchors.horizontalCenter: parent.horizontalCenter
             anchors.top: parent.top
             anchors.topMargin: parent.width * 0.85
-            text_value: API.get().settings_pg.empty_string + (General.version_string)
+            text_value: API.app.settings_pg.empty_string + (General.version_string)
             font.pixelSize: Style.textSizeSmall1
             color: Style.colorThemeDarkLight
         }
