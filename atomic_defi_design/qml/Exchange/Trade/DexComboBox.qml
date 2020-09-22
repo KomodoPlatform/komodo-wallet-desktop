@@ -102,6 +102,14 @@ DefaultComboBox {
                 Layout.leftMargin: 6
                 Layout.rightMargin: Layout.leftMargin
                 Layout.topMargin: Layout.leftMargin
+
+                Keys.onPressed: {
+                    if(event.key === Qt.Key_Return) {
+                        control.currentIndex = 0
+                        popup.close()
+                        event.accepted = true
+                    }
+                }
             }
 
             DefaultListView {
