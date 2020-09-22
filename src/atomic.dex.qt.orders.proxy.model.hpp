@@ -24,6 +24,8 @@ namespace atomic_dex
     {
         Q_OBJECT
         Q_PROPERTY(bool is_history READ am_i_in_history WRITE set_is_history NOTIFY isHistoryChanged);
+        Q_PROPERTY(QDate filter_minimum_date READ filter_minimum_date WRITE set_filter_minimum_date NOTIFY filterMinimumDateChanged);
+        Q_PROPERTY(QDate filter_maximum_date READ filter_maximum_date WRITE set_filter_maximum_date NOTIFY filterMaximumDateChanged);
 
       public:
         //! Constructor
@@ -36,8 +38,17 @@ namespace atomic_dex
 
         void set_is_history(bool is_history) noexcept;
 
+        [[nodiscard]] QDate filter_minimum_date() const;
+        void  set_filter_minimum_date(QDate date);
+
+        [[nodiscard]] QDate filter_maximum_date() const;
+        void set_filter_maximum_date(QDate date);
+
+
       signals:
         void isHistoryChanged();
+        void filterMinimumDateChanged();
+        void filterMaximumDateChanged();
 
       protected:
         //! Override member functions
@@ -45,6 +56,11 @@ namespace atomic_dex
         bool               filterAcceptsRow(int source_row, const QModelIndex& source_parent) const override;
 
       private:
+        bool date_in_range(QDate date) const;
+
         bool m_is_history{false};
+
+        QDate m_min_date;
+        QDate m_max_date;
     };
 } // namespace atomic_dex
