@@ -4,6 +4,7 @@
 #include <QQmlApplicationEngine>
 #include <QScreen>
 #include <QWindow>
+#include <Qaterial/Qaterial.hpp>
 #include <QtQml>
 
 #define QZXING_QML
@@ -186,9 +187,15 @@ main([[maybe_unused]] int argc, [[maybe_unused]] char* argv[])
 
     //! QT QML
     QQmlApplicationEngine engine;
+
+    engine.addImportPath("qrc:///");
     QZXing::registerQMLTypes();
     QZXing::registerQMLImageProvider(engine);
     engine.rootContext()->setContextProperty("atomic_app", &atomic_app);
+    // Load Qaterial.
+
+    //qaterial::loadQmlResources();
+    //qaterial::registerQmlTypes();
     engine.addImportPath("qrc:/atomic_defi_design/imports");
     engine.addImportPath("qrc:/atomic_defi_design/Constants");
     qmlRegisterSingletonType(QUrl("qrc:/atomic_defi_design/qml/Constants/General.qml"), "App", 1, 0, "General");
