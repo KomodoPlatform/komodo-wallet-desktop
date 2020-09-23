@@ -17,6 +17,7 @@
 #pragma once
 
 #include <QSortFilterProxyModel>
+#include <QDate>
 
 namespace atomic_dex
 {
