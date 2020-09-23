@@ -1,5 +1,5 @@
 pragma Singleton
-import QtQuick 2.14
+import QtQuick 2.15
 
 QtObject {
     readonly property FontLoader mySystemFontThin: FontLoader { source: "../../assets/fonts/Montserrat-Thin.ttf" }

@@ -1,9 +1,10 @@
-import QtQuick 2.14
-import QtQuick.Window 2.12
+import QtQuick 2.15
+import QtQuick.Controls 2.15
+
 import "Screens"
 import "Constants"
 
-Window {
+ApplicationWindow {
     id: window
     visible: true
     width: General.width
