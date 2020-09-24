@@ -1,7 +1,20 @@
 pragma Singleton
 import QtQuick 2.15
 
+import Qaterial 1.0 as Qaterial
+
 QtObject {
+    function setQaterialStyle() {
+        Qaterial.Style.accentColorLight = Style.colorTheme4
+        Qaterial.Style.accentColorDark = Style.colorTheme4
+    }
+
+    Component.onCompleted: {
+        setQaterialStyle()
+    }
+
+    onDark_themeChanged: setQaterialStyle()
+
     readonly property FontLoader mySystemFontThin: FontLoader { source: "../../assets/fonts/Montserrat-Thin.ttf" }
     readonly property FontLoader mySystemFontLight: FontLoader { source: "../../assets/fonts/Montserrat-Light.ttf" }
     readonly property FontLoader mySystemFont: FontLoader { source: "../../assets/fonts/Montserrat-Regular.ttf" }
