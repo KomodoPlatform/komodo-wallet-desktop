@@ -113,14 +113,17 @@ namespace atomic_dex
     }
 
     void
-    trading_page::cancel_order(const QString& order_id)
+    trading_page::cancel_order(const QStringList& orders_id)
     {
-        nlohmann::json                        batch = nlohmann::json::array();
-        ::mm2::api::cancel_all_orders_request req;
-        nlohmann::json                        cancel_request = ::mm2::api::template_request("cancel_order");
-        ::mm2::api::cancel_order_request      cancel_req{order_id.toStdString()};
-        to_json(cancel_request, cancel_req);
-        batch.push_back(cancel_request);
+        nlohmann::json batch = nlohmann::json::array();
+        for (auto&& order_id: orders_id)
+        {
+            ::mm2::api::cancel_all_orders_request req;
+            nlohmann::json                        cancel_request = ::mm2::api::template_request("cancel_order");
+            ::mm2::api::cancel_order_request      cancel_req{order_id.toStdString()};
+            to_json(cancel_request, cancel_req);
+            batch.push_back(cancel_request);
+        }
         nlohmann::json my_orders_request = ::mm2::api::template_request("my_orders");
         batch.push_back(my_orders_request);
         auto& mm2_system = m_system_manager.get_system<mm2>();
@@ -128,9 +131,9 @@ namespace atomic_dex
             .then([this](web::http::http_response resp) {
                 auto& mm2_system       = m_system_manager.get_system<mm2>();
                 auto  answers          = ::mm2::api::basic_batch_answer(resp);
-                auto  my_orders_answer = ::mm2::api::rpc_process_answer_batch<t_my_orders_answer>(answers[1], "my_orders");
+                auto  my_orders_answer = ::mm2::api::rpc_process_answer_batch<t_my_orders_answer>(answers[answers.size() - 1], "my_orders");
                 mm2_system.add_orders_answer(my_orders_answer);
-                spdlog::trace("refreshing orderbook after cancelling order: {}", answers.dump(4));
+                //spdlog::trace("refreshing orderbook after cancelling order: {}", answers.dump(4));
                 mm2_system.process_orderbook(false);
             })
             .then(&handle_exception_pplx_task);

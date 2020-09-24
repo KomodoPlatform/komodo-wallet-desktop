@@ -102,7 +102,7 @@ namespace atomic_dex
         Q_INVOKABLE void    set_current_orderbook(const QString& base, const QString& rel);
         Q_INVOKABLE void    on_gui_enter_dex();
         Q_INVOKABLE void    on_gui_leave_dex();
-        Q_INVOKABLE void    cancel_order(const QString& order_id);
+        Q_INVOKABLE void    cancel_order(const QStringList& orders_id);
         Q_INVOKABLE void    cancel_all_orders();
         Q_INVOKABLE void    cancel_all_orders_by_ticker(const QString& ticker);
         Q_INVOKABLE void place_buy_order(
