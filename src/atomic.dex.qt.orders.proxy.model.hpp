@@ -46,6 +46,7 @@ namespace atomic_dex
         void set_filter_maximum_date(QDate date);
 
         Q_INVOKABLE QStringList get_filtered_ids() const noexcept;
+        Q_INVOKABLE void set_coin_filter(const QString& to_filter);
 
 
       signals:

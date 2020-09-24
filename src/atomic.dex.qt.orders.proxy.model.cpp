@@ -191,4 +191,11 @@ namespace atomic_dex
         }
         return out;
     }
+
+    void
+    orders_proxy_model::set_coin_filter(const QString& to_filter)
+    {
+        this->setFilterFixedString(to_filter);
+        emit qobject_cast<orders_model*>(this->sourceModel())->lengthChanged();
+    }
 } // namespace atomic_dex
