@@ -11,6 +11,10 @@ import ".."
 Item {
     id: root
 
+    readonly property date year_ago: new Date(new Date().setFullYear(new Date().getFullYear() - 1))
+    readonly property date now: new Date()
+
+
     property string base
     property var list_model: API.app.orders_mdl
     property var list_model_proxy: API.app.orders_mdl.orders_proxy_mdl
@@ -64,16 +68,6 @@ Item {
                 id: layout
                 anchors.centerIn: parent
 
-                Qaterial.TextFieldDatePicker
-                {
-                 //Define the interval of dates
-                  from: new Date(2000,0, 5)
-                  to: new Date(2001, 5, 12)
-
-                 //select a Date
-                  date: new Date(2000, 5, 14)
-                }
-
                 DefaultSwitch {
                     id: show_all_coins
                     Layout.leftMargin: 15
@@ -116,6 +110,20 @@ Item {
                         else API.app.trading_pg.cancel_all_orders_by_ticker(base)
                     }
                     Layout.rightMargin: 15
+                }
+
+                Qaterial.TextFieldDatePicker {
+                    id: min_date
+                    from: year_ago
+                    to: now
+                    date: year_ago
+                }
+
+                Qaterial.TextFieldDatePicker {
+                    id: max_date
+                    from: year_ago
+                    to: now
+                    date: now
                 }
             }
         }
