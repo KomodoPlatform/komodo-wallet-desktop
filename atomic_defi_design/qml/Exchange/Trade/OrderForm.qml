@@ -15,6 +15,8 @@ FloatingBackground {
     property alias column_layout: form_layout
     property string total_amount: "0"
 
+    readonly property bool form_currently_visible: is_sell_form === sell_mode
+
     function getFiatText(v, ticker) {
         return General.formatFiat('', v === '' ? 0 : API.app.get_fiat_from_amount(ticker, v), API.app.settings_pg.current_fiat) + " " +  General.cex_icon
     }
@@ -79,7 +81,7 @@ FloatingBackground {
         const rel = rel_ticker
         const amount = getMaxVolume()
 
-        if(base === '' || rel === '') return 0
+        if(base === '' || rel === '' || !form_currently_visible) return 0
 
         const info = getTradeInfo(base, rel, amount, set_as_current)
         const my_amt = parseFloat(valid_trade_info ? info.input_final_value : amount)
@@ -149,6 +151,8 @@ FloatingBackground {
     }
 
     function onInputChanged() {
+        if(!form_currently_visible) return
+
         if(capVolume()) updateTradeInfo()
 
         // Recalculate total amount
