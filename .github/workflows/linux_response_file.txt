@@ -3,6 +3,7 @@ entt
 boost-multiprecision
 boost-random
 boost-lockfree
+boost-stacktrace
 doctest
 curl
 nlohmann-json

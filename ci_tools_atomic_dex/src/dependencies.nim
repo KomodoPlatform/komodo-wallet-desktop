@@ -11,6 +11,7 @@ let g_packages = [
     (name: "boost-multiprecision", head: false),
     (name: "boost-random", head: false),
     (name: "boost-lockfree", head: false),
+    (name: "boost-stacktrace", head: false),
     (name: "doctest", head: false),
     (name: "fmt", head: false),
     (name: "curl", head: false),
