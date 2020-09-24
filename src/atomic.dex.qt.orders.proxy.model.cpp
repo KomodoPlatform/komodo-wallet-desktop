@@ -153,6 +153,7 @@ namespace atomic_dex
         m_min_date = date;
         emit filterMinimumDateChanged();
         invalidateFilter();
+        emit qobject_cast<orders_model*>(this->sourceModel())->lengthChanged();
     }
 
     QDate
@@ -167,12 +168,13 @@ namespace atomic_dex
         m_max_date = date;
         emit filterMaximumDateChanged();
         invalidateFilter();
+        emit qobject_cast<orders_model*>(this->sourceModel())->lengthChanged();
     }
 
     bool
     orders_proxy_model::date_in_range(QDate date) const
     {
-        return (!m_min_date.isValid() || date > m_min_date) && (!m_max_date.isValid() || date < m_max_date);
+        return (!m_min_date.isValid() || date >= m_min_date) && (!m_max_date.isValid() || date <= m_max_date);
     }
 
     QStringList
