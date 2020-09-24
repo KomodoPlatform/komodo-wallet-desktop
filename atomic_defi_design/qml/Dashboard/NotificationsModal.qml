@@ -124,7 +124,7 @@ BasicModal {
             showApp()
         }
 
-        tooltip: qsTr("atomicDEX Pro")
+        tooltip: qsTr("AtomicDEX Pro")
 
 //        onActivated: showApp()
 
