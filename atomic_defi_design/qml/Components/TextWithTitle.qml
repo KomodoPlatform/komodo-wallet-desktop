@@ -46,6 +46,7 @@ ColumnLayout {
         id: text
         Layout.fillWidth: true
         color: Style.modalValueColor
+        textFormat: TextEdit.AutoText
 
         readonly property bool show_content: !expandable || expanded
 

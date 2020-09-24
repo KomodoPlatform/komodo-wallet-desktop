@@ -113,7 +113,6 @@ BasicModal {
                     visible: config_section.is_dpow_configurable
                     Layout.alignment: Qt.AlignHCenter
                     text_value: API.app.settings_pg.empty_string + (General.cex_icon + ' <a href="https://komodoplatform.com/security-delayed-proof-of-work-dpow/">' + qsTr('Read more about dPoW') + '</a>')
-                    wrapMode: Text.WordWrap
                     font.pixelSize: Style.textSizeSmall2
                 }
             }
@@ -147,7 +146,6 @@ BasicModal {
                     visible: enable_dpow_confs.visible && enable_dpow_confs.enabled
                     Layout.alignment: Qt.AlignHCenter
                     text_value: API.app.settings_pg.empty_string + (General.cex_icon + ' <a href="https://komodoplatform.com/security-delayed-proof-of-work-dpow/">' + qsTr('Read more about dPoW') + '</a>')
-                    wrapMode: Text.WordWrap
                     font.pixelSize: Style.textSizeSmall2
                 }
 

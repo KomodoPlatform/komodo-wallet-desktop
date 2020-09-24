@@ -606,16 +606,16 @@
         <location filename="../../qml/Components/EulaModal.qml" line="80"/>
         <source>&lt;h2&gt;This End-User License Agreement (&apos;EULA&apos;) is a legal agreement between you and Komodo Platform.&lt;/h2&gt;
 
-&lt;p&gt;This EULA agreement governs your acquisition and use of our atomicDEX Pro software (&apos;Software&apos;, &apos;Mobile Application&apos;, &apos;Application&apos; or &apos;App&apos;) directly from Komodo Platform or indirectly through a Komodo Platform authorized entity, reseller or distributor (a &apos;Distributor&apos;).&lt;/p&gt;
-&lt;p&gt;Please read this EULA agreement carefully before completing the installation process and using the atomicDEX Pro software. It provides a license to use the atomicDEX Pro software and contains warranty information and liability disclaimers.&lt;/p&gt;
-&lt;p&gt;If you register for the beta program of the atomicDEX Pro software, this EULA agreement will also govern that trial. By clicking &apos;accept&apos; or installing and/or using the atomicDEX Pro software, you are confirming your acceptance of the Software and agreeing to become bound by the terms of this EULA agreement.&lt;/p&gt;
+&lt;p&gt;This EULA agreement governs your acquisition and use of our AtomicDEX Pro software (&apos;Software&apos;, &apos;Mobile Application&apos;, &apos;Application&apos; or &apos;App&apos;) directly from Komodo Platform or indirectly through a Komodo Platform authorized entity, reseller or distributor (a &apos;Distributor&apos;).&lt;/p&gt;
+&lt;p&gt;Please read this EULA agreement carefully before completing the installation process and using the AtomicDEX Pro software. It provides a license to use the AtomicDEX Pro software and contains warranty information and liability disclaimers.&lt;/p&gt;
+&lt;p&gt;If you register for the beta program of the AtomicDEX Pro software, this EULA agreement will also govern that trial. By clicking &apos;accept&apos; or installing and/or using the AtomicDEX Pro software, you are confirming your acceptance of the Software and agreeing to become bound by the terms of this EULA agreement.&lt;/p&gt;
 &lt;p&gt;If you are entering into this EULA agreement on behalf of a company or other legal entity, you represent that you have the authority to bind such entity and its affiliates to these terms and conditions. If you do not have such authority or if you do not agree with the terms and conditions of this EULA agreement, do not install or use the Software, and you must not accept this EULA agreement.&lt;/p&gt;
 &lt;p&gt;This EULA agreement shall apply only to the Software supplied by Komodo Platform herewith regardless of whether other software is referred to or described herein. The terms also apply to any Komodo Platform updates, supplements, Internet-based services, and support services for the Software, unless other terms accompany those items on delivery. If so, those terms apply.&lt;/p&gt;
 
 &lt;h3&gt;License Grant&lt;/h3&gt;
-&lt;p&gt;Komodo Platform hereby grants you a personal, non-transferable, non-exclusive licence to use the atomicDEX Pro software on your devices in accordance with the terms of this EULA agreement.&lt;/p&gt;
+&lt;p&gt;Komodo Platform hereby grants you a personal, non-transferable, non-exclusive licence to use the AtomicDEX Pro software on your devices in accordance with the terms of this EULA agreement.&lt;/p&gt;
 
-&lt;p&gt;You are permitted to load the atomicDEX Pro software (for example a PC, laptop, mobile or tablet) under your control. You are responsible for ensuring your device meets the minimum security and resource requirements of the atomicDEX Pro software.&lt;/p&gt;
+&lt;p&gt;You are permitted to load the AtomicDEX Pro software (for example a PC, laptop, mobile or tablet) under your control. You are responsible for ensuring your device meets the minimum security and resource requirements of the AtomicDEX Pro software.&lt;/p&gt;
 
 &lt;p&gt;&lt;b&gt;You are not permitted to:&lt;/b&gt;&lt;/p&gt;
 &lt;ul&gt;
@@ -891,13 +891,13 @@
 <context>
     <name>History</name>
     <message>
-        <location filename="../../qml/Exchange/History/History.qml" line="43"/>
+        <location filename="../../qml/Exchange/History/History.qml" line="12"/>
         <source>Recent Swaps</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/History/History.qml" line="55"/>
-        <source>Recover Funds Result</source>
+        <location filename="../../qml/Exchange/History/History.qml" line="13"/>
+        <source>You don&apos;t have recent orders.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1180,7 +1180,7 @@
     </message>
     <message>
         <location filename="../../qml/Dashboard/NotificationsModal.qml" line="127"/>
-        <source>atomicDEX Pro</source>
+        <source>AtomicDEX Pro</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -1361,7 +1361,7 @@
 <context>
     <name>OrderList</name>
     <message>
-        <location filename="../../qml/Exchange/Orders/OrderList.qml" line="42"/>
+        <location filename="../../qml/Exchange/OrderList.qml" line="44"/>
         <source>You don&apos;t have any orders.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1480,30 +1480,37 @@
 <context>
     <name>Orders</name>
     <message>
-        <location filename="../../qml/Exchange/Orders/Orders.qml" line="58"/>
+        <location filename="../../qml/Exchange/Orders/Orders.qml" line="12"/>
+        <source>Orders</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../qml/Exchange/Orders/Orders.qml" line="13"/>
+        <source>You don&apos;t have any orders.</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>OrdersPage</name>
+    <message>
+        <location filename="../../qml/Exchange/OrdersPage.qml" line="80"/>
         <source>Show All Coins</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Orders/Orders.qml" line="89"/>
+        <location filename="../../qml/Exchange/OrdersPage.qml" line="112"/>
         <source>Cancel All Orders</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Orders/Orders.qml" line="89"/>
+        <location filename="../../qml/Exchange/OrdersPage.qml" line="112"/>
         <source>Cancel All %1 Orders</source>
         <comment>TICKER</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Orders/Orders.qml" line="108"/>
-        <source>All Orders</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../qml/Exchange/Orders/Orders.qml" line="108"/>
-        <source>All %1 Orders</source>
-        <comment>TICKER</comment>
+        <location filename="../../qml/Exchange/OrdersPage.qml" line="144"/>
+        <source>Recover Funds Result</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -2092,74 +2099,79 @@
     </message>
     <message>
         <location filename="../../qml/Support/Support.qml" line="148"/>
-        <source>No! atomicDEX is non-custodial. We never store any sensitive data, including your private keys, seed phrases, or PIN. All of these are only stored on the user’s device and never leave it. You are in full control of your assets.</source>
+        <source>No! AtomicDEX is non-custodial. We never store any sensitive data, including your private keys, seed phrases, or PIN. This data is  only stored on the user’s device and never leaves it. You are in full control of your assets.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../qml/Support/Support.qml" line="152"/>
-        <source>How is trading on atomicDEX different from trading on other DEXs?</source>
+        <source>How is trading on AtomicDEX different from trading on other DEXs?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../qml/Support/Support.qml" line="153"/>
         <source>Other DEXs generally only allow you to trade assets that are based on a single blockchain network, use proxy tokens, and only allow placing a single order with the same funds.
 
-atomicDEX enables you to natively trade across two different blockchain networks without proxy tokens. You can also place multiple orders with the same funds, for example selling 0.1 BTC for KMD, QTUM, or VRSC -- the first that fills automatically cancels all other orders.</source>
+AtomicDEX enables you to natively trade across two different blockchain networks without proxy tokens. You can also place multiple orders with the same funds. For example, you can sell 0.1 BTC for KMD, QTUM, or VRSC — the first order that fills automatically cancels all other orders.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../qml/Support/Support.qml" line="160"/>
+        <source>Several factors determine the processing time for each swap. The block time of the traded assets depends on each network (Bitcoin typically being the slowest) Additionally, the user can customize security preferences. For example,  (you can ask AtomicDEX to consider a KMD transaction as final after just 3 confirmations which makes the swap time shorter compared to waiting for a [notarization] (https://komodoplatform.com/security-delayed-proof-of-work-dpow/).</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../qml/Support/Support.qml" line="165"/>
+        <source>Yes. You must remain connected to the internet and have your app running to successfully complete each atomic swap (very short breaks in connectivity are usually fine). Otherwise, there is risk of trade cancellation if you are a maker, and risk of loss of funds if you are a taker. The atomic swap protocol requires both participants to stay online and monitor the involved blockchains for the process to stay atomic.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../qml/Support/Support.qml" line="169"/>
-        <source>How are the fees on atomicDEX calculated?</source>
+        <source>How are the fees on AtomicDEX calculated?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../qml/Support/Support.qml" line="170"/>
-        <source>There are two fee categories to consider when trading on atomicDEX.
+        <source>There are two fee categories to consider when trading on AtomicDEX.
 
-1. atomicDEX charges a 0.15% trading fee for taker orders, and maker orders have zero fees.
-2. Both makers and takers will need to pay normal transaction fees when making atomic swaps.
+1. AtomicDEX charges approximately 0.13% (1/777 of trading volume but not lower than 0.0001) as the trading fee for taker orders, and maker orders have zero fees.
+2. Both makers and takers will need to pay normal network fees to the involved blockchains when making atomic swap transactions.
 
-Network fees can vary greatly depending on your selected trading pair. This is why atomicDEX supports advanced fee management. We give you the option to choose between quicker swaps or lower fees!</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../qml/Support/Support.qml" line="180"/>
-        <source>Yes! Unlike most open source blockchain projects, atomicDEX offers 24/7 support. Join our Discord, we are happy to help!</source>
+Network fees can vary greatly depending on your selected trading pair.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../qml/Support/Support.qml" line="185"/>
-        <source>No! atomicDEX is fully decentralized. It is not possible to limit user access by any third party.</source>
+        <source>No! AtomicDEX is fully decentralized. It is not possible to limit user access by any third party.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../qml/Support/Support.qml" line="189"/>
-        <source>Who is behind atomicDEX?</source>
+        <source>Who is behind AtomicDEX?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../qml/Support/Support.qml" line="190"/>
-        <source>atomicDEX is developed by the Komodo team. Komodo is one of the most established blockchain projects working on innovative solutions like atomic swaps, Delayed Proof-of-Work, and an interoperable multi-chain architecture.</source>
+        <source>AtomicDEX is developed by the Komodo team. Komodo is one of the most established blockchain projects working on innovative solutions like atomic swaps, Delayed Proof of Work, and an interoperable multi-chain architecture.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../qml/Support/Support.qml" line="194"/>
-        <source>Is it possible to develop my own white-label exchange on atomicDEX?</source>
+        <source>Is it possible to develop my own white-label exchange on AtomicDEX?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../qml/Support/Support.qml" line="195"/>
-        <source>Absolutely! You can read our developer documentation for more details or contact us with your partnership inquiries. Have a specific technical question? The atomicDEX developer community is always ready to help!</source>
+        <source>Absolutely! You can read our developer documentation for more details or contact us with your partnership inquiries. Have a specific technical question? The AtomicDEX developer community is always ready to help!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../qml/Support/Support.qml" line="199"/>
-        <source>Which devices can I use atomicDEX on?</source>
+        <source>Which devices can I use AtomicDEX on?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../qml/Support/Support.qml" line="200"/>
-        <source>atomicDEX is available for mobile on both Android and iPhone, and for desktop on Windows, Linux and Mac operating systems.</source>
+        <source>AtomicDEX is available for mobile on both Android and iPhone, and for desktop on Windows, Mac, and Linux operating systems.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -2168,18 +2180,8 @@ Network fees can vary greatly depending on your selected trading pair. This is w
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Support/Support.qml" line="160"/>
-        <source>Several factors determine the processing time for each swap, the block time of the traded assets (Bitcoin is typically the slowest), network congestion, and your selected network fee (e.g. amount of gas you pay for ETH or ERC-20 swaps).</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../../qml/Support/Support.qml" line="164"/>
         <source>Do I need to be online for the duration of the swap?</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../qml/Support/Support.qml" line="165"/>
-        <source>Yes. You must remain connected to the internet and have your app running to successfully complete each atomic swap (very short cuts in connectivity are usually fine). Otherwise, your trade will automatically be canceled.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -2188,16 +2190,13 @@ Network fees can vary greatly depending on your selected trading pair. This is w
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Support/Support.qml" line="184"/>
-        <source>Do you have country restrictions?</source>
+        <location filename="../../qml/Support/Support.qml" line="180"/>
+        <source>Yes! AtomicDEX offers support through the [Komodo Discord server](https://komodoplatform.com/discord). The team and the community are always happy to help!</source>
         <translation type="unfinished"></translation>
     </message>
-</context>
-<context>
-    <name>SwapList</name>
     <message>
-        <location filename="../../qml/Exchange/History/SwapList.qml" line="44"/>
-        <source>You don&apos;t have recent orders.</source>
+        <location filename="../../qml/Support/Support.qml" line="184"/>
+        <source>Do you have country restrictions?</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -2446,8 +2445,8 @@ Network fees can vary greatly depending on your selected trading pair. This is w
 <context>
     <name>main</name>
     <message>
-        <location filename="../../qml/main.qml" line="13"/>
-        <source>atomicDEX Pro</source>
+        <location filename="../../qml/main.qml" line="15"/>
+        <source>AtomicDEX Pro</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

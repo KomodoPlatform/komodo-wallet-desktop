@@ -157,7 +157,7 @@ AtomicDEX enables you to natively trade across two different blockchain networks
 
             FAQLine {
                 title: API.app.settings_pg.empty_string + (qsTr("How long does each atomic swap take?"))
-                text: API.app.settings_pg.empty_string + (qsTr("Several factors determine the processing time for each swap. The block time of the traded assets depends on each network (Bitcoin typically being the slowest) Additionally, the user can customize security preferences. For example,  (you can ask AtomicDEX to consider a KMD transaction as final after just 3 confirmations which makes the swap time shorter compared to waiting for a [notarization] (https://komodoplatform.com/security-delayed-proof-of-work-dpow/)."))
+                text: API.app.settings_pg.empty_string + (qsTr('Several factors determine the processing time for each swap. The block time of the traded assets depends on each network (Bitcoin typically being the slowest) Additionally, the user can customize security preferences. For example,  (you can ask AtomicDEX to consider a KMD transaction as final after just 3 confirmations which makes the swap time shorter compared to waiting for a <a href="https://komodoplatform.com/security-delayed-proof-of-work-dpow/">notarization</a>.'))
             }
 
             FAQLine {
@@ -177,7 +177,7 @@ Network fees can vary greatly depending on your selected trading pair."))
 
             FAQLine {
                 title: API.app.settings_pg.empty_string + (qsTr("Do you provide user support?"))
-                text: API.app.settings_pg.empty_string + (qsTr("Yes! AtomicDEX offers support through the [Komodo Discord server](https://komodoplatform.com/discord). The team and the community are always happy to help!"))
+                text: API.app.settings_pg.empty_string + (qsTr('Yes! AtomicDEX offers support through the <a href="https://komodoplatform.com/discord">Komodo Discord server</a>. The team and the community are always happy to help!'))
             }
 
             FAQLine {
