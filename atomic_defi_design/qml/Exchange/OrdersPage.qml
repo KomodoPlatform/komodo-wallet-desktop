@@ -2,6 +2,8 @@ import QtQuick 2.15
 import QtQuick.Layouts 1.15
 import QtQuick.Controls 2.15
 
+import Qaterial 1.0 as Qaterial
+
 import "../Components"
 import "../Constants"
 import ".."
@@ -61,6 +63,16 @@ Item {
             RowLayout {
                 id: layout
                 anchors.centerIn: parent
+
+                Qaterial.TextFieldDatePicker
+                {
+                 //Define the interval of dates
+                  from: new Date(2000,0, 5)
+                  to: new Date(2001, 5, 12)
+
+                 //select a Date
+                  date: new Date(2000, 5, 14)
+                }
 
                 DefaultSwitch {
                     id: show_all_coins
