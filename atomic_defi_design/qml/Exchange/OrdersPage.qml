@@ -11,8 +11,8 @@ import ".."
 Item {
     id: root
 
-    readonly property date year_ago: new Date(new Date().setFullYear(new Date().getFullYear() - 1))
-    readonly property date now: new Date()
+    readonly property date default_min_date: new Date(new Date().setFullYear(new Date().getFullYear() - 1))
+    readonly property date default_max_date: new Date(new Date().setFullYear(new Date().getFullYear() + 1))
 
 
     property string base
@@ -35,6 +35,11 @@ Item {
 
     function applyFilter() {
         list_model_proxy.setFilterFixedString(show_all_coins.checked ? "" : base)
+    function applyDateFilter() {
+        list_model_proxy.filter_minimum_date = show_all_coins.checked ? default_min_date : min_date.date
+        list_model_proxy.filter_maximum_date = show_all_coins.checked ? default_max_date : max_date.date
+    }
+
     }
 
     onBaseChanged: applyFilter()
@@ -114,18 +119,22 @@ Item {
 
                 Qaterial.TextFieldDatePicker {
                     id: min_date
+                    enabled: !show_all_coins.checked
                     title: API.app.settings_pg.empty_string + (qsTr("From"))
-                    from: year_ago
-                    to: now
-                    date: year_ago
+                    from: default_min_date
+                    to: default_max_date
+                    date: default_min_date
+                    onAccepted: applyDateFilter()
                 }
 
                 Qaterial.TextFieldDatePicker {
                     id: max_date
+                    enabled: min_date.enabled
                     title: API.app.settings_pg.empty_string + (qsTr("To"))
-                    from: year_ago
-                    to: now
-                    date: now
+                    from: default_min_date
+                    to: default_max_date
+                    date: default_max_date
+                    onAccepted: applyDateFilter()
                 }
             }
         }
