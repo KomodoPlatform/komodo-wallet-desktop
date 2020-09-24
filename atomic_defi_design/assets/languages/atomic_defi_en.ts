@@ -288,82 +288,82 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/ClaimRewardsModal.qml" line="154"/>
+        <location filename="../../qml/Wallet/ClaimRewardsModal.qml" line="153"/>
         <source>UTXO</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/ClaimRewardsModal.qml" line="169"/>
+        <location filename="../../qml/Wallet/ClaimRewardsModal.qml" line="168"/>
         <source>Amount</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/ClaimRewardsModal.qml" line="185"/>
+        <location filename="../../qml/Wallet/ClaimRewardsModal.qml" line="184"/>
         <source>Reward</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/ClaimRewardsModal.qml" line="201"/>
+        <location filename="../../qml/Wallet/ClaimRewardsModal.qml" line="200"/>
         <source>Accruing Start</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/ClaimRewardsModal.qml" line="217"/>
+        <location filename="../../qml/Wallet/ClaimRewardsModal.qml" line="216"/>
         <source>Accruing Stop</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/ClaimRewardsModal.qml" line="233"/>
+        <location filename="../../qml/Wallet/ClaimRewardsModal.qml" line="232"/>
         <source>Time Left</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/ClaimRewardsModal.qml" line="249"/>
+        <location filename="../../qml/Wallet/ClaimRewardsModal.qml" line="248"/>
         <source>Error</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/ClaimRewardsModal.qml" line="377"/>
+        <location filename="../../qml/Wallet/ClaimRewardsModal.qml" line="376"/>
         <source>Locktime is not set</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/ClaimRewardsModal.qml" line="380"/>
+        <location filename="../../qml/Wallet/ClaimRewardsModal.qml" line="379"/>
         <source>Locktime is less than the threshold</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/ClaimRewardsModal.qml" line="383"/>
+        <location filename="../../qml/Wallet/ClaimRewardsModal.qml" line="382"/>
         <source>UTXO height is greater than end of the era</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/ClaimRewardsModal.qml" line="386"/>
+        <location filename="../../qml/Wallet/ClaimRewardsModal.qml" line="385"/>
         <source>UTXO amount is less than 10</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/ClaimRewardsModal.qml" line="389"/>
+        <location filename="../../qml/Wallet/ClaimRewardsModal.qml" line="388"/>
         <source>One hour did not pass yet</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/ClaimRewardsModal.qml" line="392"/>
+        <location filename="../../qml/Wallet/ClaimRewardsModal.qml" line="391"/>
         <source>Transaction is in mempool</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/ClaimRewardsModal.qml" line="395"/>
+        <location filename="../../qml/Wallet/ClaimRewardsModal.qml" line="394"/>
         <source>Unknown problem</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/ClaimRewardsModal.qml" line="419"/>
+        <location filename="../../qml/Wallet/ClaimRewardsModal.qml" line="418"/>
         <source>Cancel</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/ClaimRewardsModal.qml" line="425"/>
+        <location filename="../../qml/Wallet/ClaimRewardsModal.qml" line="424"/>
         <source>Confirm</source>
         <translation type="unfinished"></translation>
     </message>
@@ -417,38 +417,38 @@
     </message>
     <message>
         <location filename="../../qml/Exchange/Trade/ConfirmTradeModal.qml" line="115"/>
-        <location filename="../../qml/Exchange/Trade/ConfirmTradeModal.qml" line="149"/>
+        <location filename="../../qml/Exchange/Trade/ConfirmTradeModal.qml" line="148"/>
         <source>Read more about dPoW</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/ConfirmTradeModal.qml" line="126"/>
+        <location filename="../../qml/Exchange/Trade/ConfirmTradeModal.qml" line="125"/>
         <source>Use custom protection settings for incoming %1 transactions</source>
         <comment>TICKER</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/ConfirmTradeModal.qml" line="143"/>
+        <location filename="../../qml/Exchange/Trade/ConfirmTradeModal.qml" line="142"/>
         <source>Enable Komodo dPoW security</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/ConfirmTradeModal.qml" line="168"/>
+        <location filename="../../qml/Exchange/Trade/ConfirmTradeModal.qml" line="166"/>
         <source>Required Confirmations</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/ConfirmTradeModal.qml" line="204"/>
+        <location filename="../../qml/Exchange/Trade/ConfirmTradeModal.qml" line="202"/>
         <source>Warning, this atomic swap is not dPoW protected!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/ConfirmTradeModal.qml" line="217"/>
+        <location filename="../../qml/Exchange/Trade/ConfirmTradeModal.qml" line="215"/>
         <source>Cancel</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/ConfirmTradeModal.qml" line="223"/>
+        <location filename="../../qml/Exchange/Trade/ConfirmTradeModal.qml" line="221"/>
         <source>Confirm</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1494,22 +1494,36 @@
     <name>OrdersPage</name>
     <message>
         <location filename="../../qml/Exchange/OrdersPage.qml" line="80"/>
-        <source>Show All Coins</source>
+        <source>Disable Filters</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/OrdersPage.qml" line="112"/>
+        <location filename="../../qml/Exchange/OrdersPage.qml" line="104"/>
+        <source>All</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../qml/Exchange/OrdersPage.qml" line="141"/>
         <source>Cancel All Orders</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/OrdersPage.qml" line="112"/>
-        <source>Cancel All %1 Orders</source>
-        <comment>TICKER</comment>
+        <location filename="../../qml/Exchange/OrdersPage.qml" line="141"/>
+        <source>Cancel Filtered Orders</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/OrdersPage.qml" line="144"/>
+        <location filename="../../qml/Exchange/OrdersPage.qml" line="153"/>
+        <source>From</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../qml/Exchange/OrdersPage.qml" line="163"/>
+        <source>To</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../qml/Exchange/OrdersPage.qml" line="193"/>
         <source>Recover Funds Result</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2115,11 +2129,6 @@ AtomicDEX enables you to natively trade across two different blockchain networks
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Support/Support.qml" line="160"/>
-        <source>Several factors determine the processing time for each swap. The block time of the traded assets depends on each network (Bitcoin typically being the slowest) Additionally, the user can customize security preferences. For example,  (you can ask AtomicDEX to consider a KMD transaction as final after just 3 confirmations which makes the swap time shorter compared to waiting for a [notarization] (https://komodoplatform.com/security-delayed-proof-of-work-dpow/).</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../../qml/Support/Support.qml" line="165"/>
         <source>Yes. You must remain connected to the internet and have your app running to successfully complete each atomic swap (very short breaks in connectivity are usually fine). Otherwise, there is risk of trade cancellation if you are a maker, and risk of loss of funds if you are a taker. The atomic swap protocol requires both participants to stay online and monitor the involved blockchains for the process to stay atomic.</source>
         <translation type="unfinished"></translation>
@@ -2137,6 +2146,11 @@ AtomicDEX enables you to natively trade across two different blockchain networks
 2. Both makers and takers will need to pay normal network fees to the involved blockchains when making atomic swap transactions.
 
 Network fees can vary greatly depending on your selected trading pair.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../qml/Support/Support.qml" line="180"/>
+        <source>Yes! AtomicDEX offers support through the &lt;a href=&quot;https://komodoplatform.com/discord&quot;&gt;Komodo Discord server&lt;/a&gt;. The team and the community are always happy to help!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -2180,6 +2194,11 @@ Network fees can vary greatly depending on your selected trading pair.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../../qml/Support/Support.qml" line="160"/>
+        <source>Several factors determine the processing time for each swap. The block time of the traded assets depends on each network (Bitcoin typically being the slowest) Additionally, the user can customize security preferences. For example,  (you can ask AtomicDEX to consider a KMD transaction as final after just 3 confirmations which makes the swap time shorter compared to waiting for a &lt;a href=&quot;https://komodoplatform.com/security-delayed-proof-of-work-dpow/&quot;&gt;notarization&lt;/a&gt;.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="../../qml/Support/Support.qml" line="164"/>
         <source>Do I need to be online for the duration of the swap?</source>
         <translation type="unfinished"></translation>
@@ -2187,11 +2206,6 @@ Network fees can vary greatly depending on your selected trading pair.</source>
     <message>
         <location filename="../../qml/Support/Support.qml" line="179"/>
         <source>Do you provide user support?</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../qml/Support/Support.qml" line="180"/>
-        <source>Yes! AtomicDEX offers support through the [Komodo Discord server](https://komodoplatform.com/discord). The team and the community are always happy to help!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>

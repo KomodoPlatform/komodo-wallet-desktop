@@ -37,7 +37,7 @@ Item {
     }
 
     function applyTickerFilter() {
-        list_model_proxy.setFilterFixedString(show_all_coins.checked ? "" : combo_base.currentValue + "/" + combo_rel.currentValue)
+        list_model_proxy.set_coin_filter(show_all_coins.checked ? "" : combo_base.currentValue + "/" + combo_rel.currentValue)
     }
 
     function applyFilter() {
