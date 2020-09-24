@@ -195,7 +195,7 @@ main([[maybe_unused]] int argc, [[maybe_unused]] char* argv[])
     // Load Qaterial.
 
     qaterial::loadQmlResources(false);
-    qaterial::registerQmlTypes();
+    //qaterial::registerQmlTypes("Qaterial", 1, 0);
     engine.addImportPath("qrc:/atomic_defi_design/imports");
     engine.addImportPath("qrc:/atomic_defi_design/Constants");
     qmlRegisterSingletonType(QUrl("qrc:/atomic_defi_design/qml/Constants/General.qml"), "App", 1, 0, "General");

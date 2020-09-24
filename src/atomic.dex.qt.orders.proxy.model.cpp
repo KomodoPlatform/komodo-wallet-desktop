@@ -117,7 +117,7 @@ namespace atomic_dex
         auto data      = this->sourceModel()->data(idx, orders_model::OrdersRoles::OrderStatusRole).toString();
         auto timestamp = this->sourceModel()->data(idx, orders_model::OrdersRoles::UnixTimestampRole).toULongLong();
         auto date      = QDateTime::fromMSecsSinceEpoch(timestamp).date();
-        //qDebug() << date;
+        // qDebug() << date;
 
         assert(not data.isEmpty());
         if (not date_in_range(date))
@@ -173,5 +173,20 @@ namespace atomic_dex
     orders_proxy_model::date_in_range(QDate date) const
     {
         return (!m_min_date.isValid() || date > m_min_date) && (!m_max_date.isValid() || date < m_max_date);
+    }
+
+    QStringList
+    orders_proxy_model::get_filtered_ids() const noexcept
+    {
+        QStringList out;
+        int         nb_items = this->rowCount();
+        out.reserve(nb_items);
+        qDebug() << nb_items;
+        for (int cur_idx = 0; cur_idx < nb_items; ++cur_idx)
+        {
+            QModelIndex idx = this->index(cur_idx, 0);
+            out << this->data(idx, orders_model::OrdersRoles::OrderIdRole).toString();
+        }
+        return out;
     }
 } // namespace atomic_dex
