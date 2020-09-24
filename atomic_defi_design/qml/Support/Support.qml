@@ -145,39 +145,39 @@ Item {
             // FAQ Lines
             FAQLine {
                 title: API.app.settings_pg.empty_string + (qsTr("Do you store my private keys?"))
-                text: API.app.settings_pg.empty_string + (qsTr("No! atomicDEX is non-custodial. We never store any sensitive data, including your private keys, seed phrases, or PIN. All of these are only stored on the user’s device and never leave it. You are in full control of your assets."))
+                text: API.app.settings_pg.empty_string + (qsTr("No! atomicDEX is non-custodial. We never store any sensitive data, including your private keys, seed phrases, or PIN. This data is  only stored on the user’s device and never leaves it. You are in full control of your assets."))
             }
 
             FAQLine {
                 title: API.app.settings_pg.empty_string + (qsTr("How is trading on atomicDEX different from trading on other DEXs?"))
                 text: API.app.settings_pg.empty_string + (qsTr("Other DEXs generally only allow you to trade assets that are based on a single blockchain network, use proxy tokens, and only allow placing a single order with the same funds.
 
-atomicDEX enables you to natively trade across two different blockchain networks without proxy tokens. You can also place multiple orders with the same funds, for example selling 0.1 BTC for KMD, QTUM, or VRSC -- the first that fills automatically cancels all other orders."))
+atomicDEX enables you to natively trade across two different blockchain networks without proxy tokens. You can also place multiple orders with the same funds. For example, you can sell 0.1 BTC for KMD, QTUM, or VRSC — the first order that fills automatically cancels all other orders."))
             }
 
             FAQLine {
                 title: API.app.settings_pg.empty_string + (qsTr("How long does each atomic swap take?"))
-                text: API.app.settings_pg.empty_string + (qsTr("Several factors determine the processing time for each swap, the block time of the traded assets (Bitcoin is typically the slowest), network congestion, and your selected network fee (e.g. amount of gas you pay for ETH or ERC-20 swaps)."))
+                text: API.app.settings_pg.empty_string + (qsTr("Several factors determine the processing time for each swap. The block time of the traded assets depends on each network (Bitcoin typically being the slowest) Additionally, the user can customize security preferences. For example,  (you can ask atomicDEX to consider a KMD transaction as final after just 3 confirmations which makes the swap time shorter compared to waiting for a [notarization] (https://komodoplatform.com/security-delayed-proof-of-work-dpow/)."))
             }
 
             FAQLine {
                 title: API.app.settings_pg.empty_string + (qsTr("Do I need to be online for the duration of the swap?"))
-                text: API.app.settings_pg.empty_string + (qsTr("Yes. You must remain connected to the internet and have your app running to successfully complete each atomic swap (very short cuts in connectivity are usually fine). Otherwise, your trade will automatically be canceled."))
+                text: API.app.settings_pg.empty_string + (qsTr("Yes. You must remain connected to the internet and have your app running to successfully complete each atomic swap (very short breaks in connectivity are usually fine). Otherwise, there is risk of trade cancellation if you are a maker, and risk of loss of funds if you are a taker. The atomic swap protocol requires both participants to stay online and monitor the involved blockchains for the process to stay atomic."))
             }
 
             FAQLine {
                 title: API.app.settings_pg.empty_string + (qsTr("How are the fees on atomicDEX calculated?"))
                 text: API.app.settings_pg.empty_string + (qsTr("There are two fee categories to consider when trading on atomicDEX.
 
-1. atomicDEX charges a 0.15% trading fee for taker orders, and maker orders have zero fees.
-2. Both makers and takers will need to pay normal transaction fees when making atomic swaps.
+1. atomicDEX charges approximately 0.13% (1/777 of trading volume but not lower than 0.0001) as the trading fee for taker orders, and maker orders have zero fees.
+2. Both makers and takers will need to pay normal network fees to the involved blockchains when making atomic swap transactions.
 
-Network fees can vary greatly depending on your selected trading pair. This is why atomicDEX supports advanced fee management. We give you the option to choose between quicker swaps or lower fees!"))
+Network fees can vary greatly depending on your selected trading pair."))
             }
 
             FAQLine {
                 title: API.app.settings_pg.empty_string + (qsTr("Do you provide user support?"))
-                text: API.app.settings_pg.empty_string + (qsTr("Yes! Unlike most open source blockchain projects, atomicDEX offers 24/7 support. Join our Discord, we are happy to help!"))
+                text: API.app.settings_pg.empty_string + (qsTr("Yes! atomicDEX offers support through the [Komodo Discord server](https://komodoplatform.com/discord). The team and the community are always happy to help!"))
             }
 
             FAQLine {
@@ -187,7 +187,7 @@ Network fees can vary greatly depending on your selected trading pair. This is w
 
             FAQLine {
                 title: API.app.settings_pg.empty_string + (qsTr("Who is behind atomicDEX?"))
-                text: API.app.settings_pg.empty_string + (qsTr("atomicDEX is developed by the Komodo team. Komodo is one of the most established blockchain projects working on innovative solutions like atomic swaps, Delayed Proof-of-Work, and an interoperable multi-chain architecture."))
+                text: API.app.settings_pg.empty_string + (qsTr("atomicDEX is developed by the Komodo team. Komodo is one of the most established blockchain projects working on innovative solutions like atomic swaps, Delayed Proof of Work, and an interoperable multi-chain architecture."))
             }
 
             FAQLine {
@@ -197,7 +197,7 @@ Network fees can vary greatly depending on your selected trading pair. This is w
 
             FAQLine {
                 title: API.app.settings_pg.empty_string + (qsTr("Which devices can I use atomicDEX on?"))
-                text: API.app.settings_pg.empty_string + (qsTr("atomicDEX is available for mobile on both Android and iPhone, and for desktop on Windows, Linux and Mac operating systems."))
+                text: API.app.settings_pg.empty_string + (qsTr("atomicDEX is available for mobile on both Android and iPhone, and for desktop on Windows, Mac, and Linux operating systems."))
             }
         }
     }
