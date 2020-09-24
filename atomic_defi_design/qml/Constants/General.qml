@@ -239,6 +239,12 @@ QtObject {
         })
     }
 
+    function tickersOfCoins(coins) {
+        return coins.map(c => {
+            return { value: c.ticker, text: c.ticker }
+        })
+    }
+
     function getMinTradeAmount() {
         return 0.00777
     }

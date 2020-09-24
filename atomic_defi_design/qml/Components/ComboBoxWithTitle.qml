@@ -10,6 +10,9 @@ ColumnLayout {
     property alias model: input_field.model
     property alias currentIndex: input_field.currentIndex
     property alias currentText: input_field.currentText
+    property alias currentValue: input_field.currentValue
+    property alias textRole: input_field.textRole
+    property alias valueRole: input_field.valueRole
 
     DefaultText {
         id: title_text

@@ -14,8 +14,6 @@ Item {
     readonly property date default_min_date: new Date(new Date().setFullYear(new Date().getFullYear() - 1))
     readonly property date default_max_date: new Date(new Date().setFullYear(new Date().getFullYear() + 1))
 
-
-    property string base
     property var list_model: API.app.orders_mdl
     property var list_model_proxy: API.app.orders_mdl.orders_proxy_mdl
     property int page_index
@@ -33,16 +31,19 @@ Item {
                 exchange.current_page === page_index
     }
 
-    function applyFilter() {
-        list_model_proxy.setFilterFixedString(show_all_coins.checked ? "" : base)
     function applyDateFilter() {
         list_model_proxy.filter_minimum_date = show_all_coins.checked ? default_min_date : min_date.date
         list_model_proxy.filter_maximum_date = show_all_coins.checked ? default_max_date : max_date.date
     }
 
+    function applyTickerFilter() {
+        list_model_proxy.setFilterFixedString(show_all_coins.checked ? "" : combo_base.currentValue + "/" + combo_rel.currentValue)
     }
 
-    onBaseChanged: applyFilter()
+    function applyFilter() {
+        applyDateFilter()
+        applyTickerFilter()
+    }
 
     function reset() {  }
 
@@ -85,7 +86,7 @@ Item {
                 // Base
                 DefaultImage {
                     Layout.leftMargin: 15
-                    source: General.coinIcon(base)
+                    source: General.coinIcon(combo_base.currentValue)
                     Layout.preferredWidth: 32
                     Layout.preferredHeight: Layout.preferredWidth
                 }
@@ -93,26 +94,55 @@ Item {
                 DefaultComboBox {
                     id: combo_base
                     enabled: !show_all_coins.checked
-                    Layout.preferredWidth: 325
+                    Layout.preferredWidth: 140
                     Layout.topMargin: 10
-                    Layout.bottomMargin: 10
-                    Layout.rightMargin: 15
+                    Layout.bottomMargin: Layout.topMargin
 
                     textRole: "text"
+                    valueRole: "value"
 
-                    model: General.fullNamesOfCoins(API.app.enabled_coins)
-                    onCurrentTextChanged: {
-                        base = model[currentIndex].value
-                    }
+                    model: ([{ value: "", text: qsTr("All") }].concat(General.tickersOfCoins(General.all_coins)))
+                    onCurrentValueChanged: applyTickerFilter()
+                }
+
+                // Swap icon
+                DefaultImage {
+                    source: General.image_path + "exchange-exchange.svg"
+                    width: Style.textSize
+                    height: width
+                    Layout.rightMargin: 15
+                    Layout.leftMargin: Layout.rightMargin
+                }
+
+                DefaultComboBox {
+                    id: combo_rel
+                    enabled: !show_all_coins.checked
+                    Layout.preferredWidth: 140
+                    Layout.topMargin: combo_base.Layout.topMargin
+                    Layout.bottomMargin: combo_base.Layout.bottomMargin
+
+                    textRole: "text"
+                    valueRole: "value"
+
+                    model: combo_base.model
+                    onCurrentValueChanged: applyTickerFilter()
+                }
+
+                // Rel
+                DefaultImage {
+                    Layout.rightMargin: 15
+                    source: General.coinIcon(combo_rel.currentValue)
+                    Layout.preferredWidth: 32
+                    Layout.preferredHeight: Layout.preferredWidth
                 }
 
                 DangerButton {
                     visible: !root.is_history
-                    text: API.app.settings_pg.empty_string + (show_all_coins.checked ? qsTr("Cancel All Orders") : qsTr("Cancel All %1 Orders", "TICKER").arg(base))
+                    text: API.app.settings_pg.empty_string + (show_all_coins.checked ? qsTr("Cancel All Orders") : qsTr("Cancel All %1 Orders", "TICKER").arg(combo_base.currentValue))
                     enabled: list_model.length > 0
                     onClicked: {
                         if(show_all_coins.checked) API.app.trading_pg.cancel_all_orders()
-                        else API.app.trading_pg.cancel_all_orders_by_ticker(base)
+                        else API.app.trading_pg.cancel_all_orders_by_ticker(combo_base.currentValue)
                     }
                     Layout.rightMargin: 15
                 }
