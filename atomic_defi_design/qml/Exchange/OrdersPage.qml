@@ -71,7 +71,7 @@ Item {
                 DefaultSwitch {
                     id: show_all_coins
                     Layout.leftMargin: 15
-                    text: API.app.settings_pg.empty_string + (qsTr("Show All Coins"))
+                    text: API.app.settings_pg.empty_string + (qsTr("Disable Filters"))
 
                     checked: true
                     onCheckedChanged: applyFilter()
@@ -114,6 +114,7 @@ Item {
 
                 Qaterial.TextFieldDatePicker {
                     id: min_date
+                    title: API.app.settings_pg.empty_string + (qsTr("From"))
                     from: year_ago
                     to: now
                     date: year_ago
@@ -121,6 +122,7 @@ Item {
 
                 Qaterial.TextFieldDatePicker {
                     id: max_date
+                    title: API.app.settings_pg.empty_string + (qsTr("To"))
                     from: year_ago
                     to: now
                     date: now
