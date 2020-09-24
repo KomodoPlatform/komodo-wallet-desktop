@@ -138,11 +138,11 @@ Item {
 
                 DangerButton {
                     visible: !root.is_history
-                    text: API.app.settings_pg.empty_string + (show_all_coins.checked ? qsTr("Cancel All Orders") : qsTr("Cancel All %1 Orders", "TICKER").arg(combo_base.currentValue))
+                    text: API.app.settings_pg.empty_string + (show_all_coins.checked ? qsTr("Cancel All Orders") : qsTr("Cancel Filtered Orders"))
                     enabled: list_model.length > 0
                     onClicked: {
                         if(show_all_coins.checked) API.app.trading_pg.cancel_all_orders()
-                        else API.app.trading_pg.cancel_all_orders_by_ticker(combo_base.currentValue)
+                        else API.app.trading_pg.cancel_order(list_model_proxy.get_filtered_ids())
                     }
                     Layout.rightMargin: 15
                 }
