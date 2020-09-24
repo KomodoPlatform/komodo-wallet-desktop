@@ -45,6 +45,8 @@ namespace atomic_dex
         [[nodiscard]] QDate filter_maximum_date() const;
         void set_filter_maximum_date(QDate date);
 
+        Q_INVOKABLE QStringList get_filtered_ids() const noexcept;
+
 
       signals:
         void isHistoryChanged();
