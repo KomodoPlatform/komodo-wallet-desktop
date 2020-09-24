@@ -79,7 +79,7 @@ FloatingBackground {
 
         const base = base_ticker
         const rel = rel_ticker
-        const amount = getMaxVolume()
+        const amount = getMaxBalance()
 
         if(base === '' || rel === '' || !form_currently_visible) return 0
 
