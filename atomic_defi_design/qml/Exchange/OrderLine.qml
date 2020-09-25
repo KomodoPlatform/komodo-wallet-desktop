@@ -17,13 +17,25 @@ AnimatedRectangle {
     color: Style.colorOnlyIf(mouse_area.containsMouse, Style.colorTheme8)
 
     // Swap icon
-    DefaultImage {
+    RowLayout {
         visible: !status_text.visible
-        source: General.image_path + "exchange-exchange.svg"
-        width: base_amount.font.pixelSize
-        height: width
         anchors.verticalCenter: parent.verticalCenter
         anchors.horizontalCenter: parent.horizontalCenter
+
+        spacing: 5
+
+        DefaultImage {
+            Layout.alignment: Qt.AlignVCenter
+            source: General.image_path + "exchange-exchange.svg"
+            width: base_amount.font.pixelSize
+            height: width
+        }
+
+        DefaultText {
+            Layout.alignment: Qt.AlignVCenter
+            font.pixelSize: base_amount.font.pixelSize
+            text_value: API.app.settings_pg.empty_string + (qsTr("Listed"))
+        }
     }
 
     // Matching icon
@@ -37,6 +49,7 @@ AnimatedRectangle {
                  (details.is_swap || !details.is_maker)
 
         DefaultText {
+            Layout.alignment: Qt.AlignVCenter
             font.pixelSize: base_amount.font.pixelSize
             color: !details ? "white" : getStatusColor(details.order_status)
             text_value: API.app.settings_pg.empty_string + (!details ? "" :
@@ -44,6 +57,7 @@ AnimatedRectangle {
         }
 
         DefaultBusyIndicator {
+            Layout.alignment: Qt.AlignVCenter
             visible: !isSwapDone(details.order_status)
             Layout.preferredWidth: 20
             Layout.preferredHeight: Layout.preferredWidth
