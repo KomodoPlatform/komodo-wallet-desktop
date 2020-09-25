@@ -94,7 +94,7 @@ Item {
                 DefaultComboBox {
                     id: combo_base
                     enabled: !show_all_coins.checked
-                    Layout.preferredWidth: 140
+                    Layout.preferredWidth: 120
                     Layout.topMargin: 10
                     Layout.bottomMargin: Layout.topMargin
 
@@ -117,7 +117,7 @@ Item {
                 DefaultComboBox {
                     id: combo_rel
                     enabled: !show_all_coins.checked
-                    Layout.preferredWidth: 140
+                    Layout.preferredWidth: 120
                     Layout.topMargin: combo_base.Layout.topMargin
                     Layout.bottomMargin: combo_base.Layout.bottomMargin
 
