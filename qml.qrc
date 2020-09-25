@@ -157,6 +157,7 @@
         <file>atomic_defi_design/qml/Components/ColumnHeader.qml</file>
         <file>atomic_defi_design/qml/Components/RightClickMenu.qml</file>
         <file>atomic_defi_design/qml/Components/PlusButton.qml</file>
+        <file>atomic_defi_design/qml/Components/SwapIcon.qml</file>
         <file>atomic_defi_design/qml/Components/AddressField.qml</file>
         <file>atomic_defi_design/qml/Components/AddressFieldWithTitle.qml</file>
         <file>atomic_defi_design/qml/Components/AmountField.qml</file>

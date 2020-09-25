@@ -367,31 +367,14 @@ Item {
                     }
 
                     // Swap button
-                    Item {
+                    SwapIcon {
                         Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
                         Layout.preferredWidth: right_arrow.width
                         Layout.preferredHeight: selector_left.height * 0.9
 
-                        DefaultText {
-                            id: right_arrow
-                            anchors.right: parent.right
-                            anchors.top: parent.top
-                            anchors.topMargin: -font.pixelSize/4
-                            text_value: "→"
-                            font.family: "Impact"
-                            font.pixelSize: 30
-                            font.bold: true
-                            color: Qt.lighter(Style.getCoinColor(selector_left.ticker), swap_button.containsMouse ? Style.hoverLightMultiplier : 1.0)
-                        }
-                        DefaultText {
-                            anchors.left: parent.left
-                            anchors.bottom: parent.bottom
-                            text_value: "←"
-                            font.family: right_arrow.font.family
-                            font.pixelSize: right_arrow.font.pixelSize
-                            font.bold: right_arrow.font.bold
-                            color: Qt.lighter(Style.getCoinColor(selector_right.ticker), swap_button.containsMouse ? Style.hoverLightMultiplier : 1.0)
-                        }
+                        top_arrow_ticker: selector_left.ticker
+                        bottom_arrow_ticker: selector_right.ticker
+                        hovered: swap_button.containsMouse
 
                         DefaultMouseArea {
                             id: swap_button

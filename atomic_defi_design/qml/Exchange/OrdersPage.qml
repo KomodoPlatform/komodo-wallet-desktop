@@ -105,13 +105,26 @@ Item {
                     onCurrentValueChanged: applyTickerFilter()
                 }
 
-                // Swap icon
-                DefaultImage {
-                    source: General.image_path + "exchange-exchange.svg"
-                    width: Style.textSize
-                    height: width
+                // Swap button
+                SwapIcon {
+                    Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
                     Layout.rightMargin: 15
                     Layout.leftMargin: Layout.rightMargin
+
+                    top_arrow_ticker: combo_base.currentValue
+                    bottom_arrow_ticker: combo_rel.currentValue
+                    hovered: swap_button.containsMouse
+
+                    DefaultMouseArea {
+                        id: swap_button
+                        anchors.fill: parent
+                        hoverEnabled: true
+                        onClicked: {
+                            const base_idx = combo_base.currentIndex
+                            combo_base.currentIndex = combo_rel.currentIndex
+                            combo_rel.currentIndex = base_idx
+                        }
+                    }
                 }
 
                 DefaultComboBox {

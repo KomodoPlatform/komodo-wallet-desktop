@@ -50,12 +50,13 @@ Item {
     }
 
     // Swap icon
-    DefaultImage {
-        source: General.image_path + "exchange-exchange.svg"
-        width: base_amount.font.pixelSize
-        height: width
+    SwapIcon {
         anchors.verticalCenter: base_icon.bottom
         anchors.horizontalCenter: parent.horizontalCenter
+        top_arrow_ticker: !details ? "KMD" :
+                                     details.base_coin
+        bottom_arrow_ticker: !details ? "KMD" :
+                                        details.rel_coin
     }
 
     // Rel Amount
