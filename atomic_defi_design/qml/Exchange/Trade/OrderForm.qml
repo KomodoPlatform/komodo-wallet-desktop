@@ -304,14 +304,12 @@ FloatingBackground {
                 enabled: input_volume.field.enabled && !buyWithNoPrice() && to > 0
                 property bool updating_from_text_field: false
                 property bool updating_text_field: false
-                readonly property int precision: General.getRecommendedPrecision(to)
                 Layout.fillWidth: true
                 Layout.leftMargin: top_line.Layout.leftMargin
                 Layout.rightMargin: top_line.Layout.rightMargin
                 Layout.bottomMargin: top_line.Layout.rightMargin*0.5
                 from: 0
                 to: Math.max(0, parseFloat(getVolumeCap()))
-                stepSize: 1/Math.pow(10, precision)
                 live: false
 
                 onValueChanged: {
@@ -329,7 +327,7 @@ FloatingBackground {
                     anchors.horizontalCenter: parent.handle.horizontalCenter
                     anchors.bottom: parent.handle.top
 
-                    text_value: General.formatDouble(input_volume_slider.getRealValue(), input_volume_slider.precision)
+                    text_value: General.formatDouble(input_volume_slider.getRealValue(), General.getRecommendedPrecision(input_volume_slider.to))
                     font.pixelSize: input_volume.field.font.pixelSize
                 }
 
