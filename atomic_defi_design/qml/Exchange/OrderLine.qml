@@ -16,6 +16,42 @@ AnimatedRectangle {
 
     color: Style.colorOnlyIf(mouse_area.containsMouse, Style.colorTheme8)
 
+    // Swap icon
+    DefaultImage {
+        visible: !status_text.visible
+        source: General.image_path + "exchange-exchange.svg"
+        width: base_amount.font.pixelSize
+        height: width
+        anchors.verticalCenter: parent.verticalCenter
+        anchors.horizontalCenter: parent.horizontalCenter
+    }
+
+    // Matching icon
+    RowLayout {
+        id: status_text
+        anchors.verticalCenter: parent.verticalCenter
+        anchors.horizontalCenter: parent.horizontalCenter
+
+        spacing: 5
+        visible: !details ? false :
+                 (details.is_swap || !details.is_maker)
+
+        DefaultText {
+            font.pixelSize: base_amount.font.pixelSize
+            color: !details ? "white" : getStatusColor(details.order_status)
+            text_value: API.app.settings_pg.empty_string + (!details ? "" :
+                                                             visible ? getStatusTextWithPrefix(details.order_status, true) : '')
+        }
+
+        DefaultBusyIndicator {
+            visible: !isSwapDone(details.order_status)
+            Layout.preferredWidth: 20
+            Layout.preferredHeight: Layout.preferredWidth
+        }
+    }
+
+
+
     DefaultMouseArea {
         id: mouse_area
         anchors.fill: parent
@@ -34,7 +70,7 @@ AnimatedRectangle {
         width: Style.textSize2
 
         anchors.left: parent.left
-        anchors.leftMargin: parent.width * 0.275
+        anchors.leftMargin: parent.width * 0.225
         anchors.verticalCenter: parent.verticalCenter
     }
 
@@ -47,7 +83,7 @@ AnimatedRectangle {
         color: Style.getCoinColor(!details ? "white" : details.base_coin)
 
         anchors.left: base_icon.right
-        anchors.leftMargin: 20
+        anchors.leftMargin: 10
         anchors.verticalCenter: parent.verticalCenter
         privacy: is_placed_order
     }
@@ -78,15 +114,6 @@ AnimatedRectangle {
         anchors.verticalCenter: parent.verticalCenter
     }
 
-    // Swap icon
-    DefaultImage {
-        source: General.image_path + "exchange-exchange.svg"
-        width: base_amount.font.pixelSize
-        height: width
-        anchors.verticalCenter: parent.verticalCenter
-        anchors.horizontalCenter: parent.horizontalCenter
-    }
-
     // Date
     DefaultText {
         font.pixelSize: base_amount.font.pixelSize
@@ -101,7 +128,7 @@ AnimatedRectangle {
     DefaultText {
         font.pixelSize: base_amount.font.pixelSize
         text_value: API.app.settings_pg.empty_string + (!details ? "" :
-                                                        details.order_id.substring(0, 18) + "...")
+                                                        details.order_id)
         anchors.verticalCenter: parent.verticalCenter
         anchors.right: parent.right
         anchors.rightMargin: 20
