@@ -136,6 +136,7 @@ Item {
                     Layout.preferredHeight: Layout.preferredWidth
                 }
 
+                // Cancel button
                 DangerButton {
                     visible: !root.is_history
                     text: API.app.settings_pg.empty_string + (show_all_coins.checked ? qsTr("Cancel All Orders") : qsTr("Cancel Filtered Orders"))
@@ -143,6 +144,17 @@ Item {
                     onClicked: {
                         if(show_all_coins.checked) API.app.trading_pg.cancel_all_orders()
                         else API.app.trading_pg.cancel_order(list_model_proxy.get_filtered_ids())
+                    }
+                    Layout.rightMargin: 15
+                }
+
+                // Export button
+                PrimaryButton {
+                    visible: root.is_history
+                    text: API.app.settings_pg.empty_string + (qsTr("Export CSV"))
+                    enabled: list_model.length > 0
+                    onClicked: {
+                        // TODO: Export CSV
                     }
                     Layout.rightMargin: 15
                 }
