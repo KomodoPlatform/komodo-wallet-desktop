@@ -128,7 +128,7 @@ AnimatedRectangle {
     DefaultText {
         font.pixelSize: base_amount.font.pixelSize
         text_value: API.app.settings_pg.empty_string + (!details ? "" :
-                                                        details.order_id)
+                                                        details.order_id.substring(0, 18) + "...")
         anchors.verticalCenter: parent.verticalCenter
         anchors.right: parent.right
         anchors.rightMargin: 20
