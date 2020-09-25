@@ -99,12 +99,12 @@ namespace atomic_dex
         void disable_coin(const QString& coin) noexcept;
 
         //! Public QML API
-        Q_INVOKABLE void    set_current_orderbook(const QString& base, const QString& rel);
-        Q_INVOKABLE void    on_gui_enter_dex();
-        Q_INVOKABLE void    on_gui_leave_dex();
-        Q_INVOKABLE void    cancel_order(const QStringList& orders_id);
-        Q_INVOKABLE void    cancel_all_orders();
-        Q_INVOKABLE void    cancel_all_orders_by_ticker(const QString& ticker);
+        Q_INVOKABLE void set_current_orderbook(const QString& base, const QString& rel);
+        Q_INVOKABLE void on_gui_enter_dex();
+        Q_INVOKABLE void on_gui_leave_dex();
+        Q_INVOKABLE void cancel_order(const QStringList& orders_id);
+        Q_INVOKABLE void cancel_all_orders();
+        Q_INVOKABLE void cancel_all_orders_by_ticker(const QString& ticker);
         Q_INVOKABLE void place_buy_order(
             const QString& base, const QString& rel, const QString& price, const QString& volume, bool is_created_order, const QString& price_denom,
             const QString& price_numer, const QString& base_nota = "", const QString& base_confs = "");

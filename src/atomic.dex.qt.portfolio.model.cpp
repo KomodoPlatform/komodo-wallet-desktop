@@ -157,6 +157,7 @@ namespace atomic_dex
                         using namespace std::chrono;
                         qint64  timestamp  = duration_cast<seconds>(system_clock::now().time_since_epoch()).count();
                         QString human_date = QString::fromStdString(to_human_date<std::chrono::seconds>(timestamp, "%e %b %Y, %H:%M"));
+                        spdlog::debug("balance update notification from update_currency_values prev[{}], new[{}]", prev_balance.toString().toStdString(), new_balance.toString().toStdString());
                         this->m_dispatcher.trigger<balance_update_notification>(am_i_sender, amount, QString::fromStdString(ticker), human_date, timestamp);
                     }
                     // spdlog::trace("updated currency values of: {}", ticker);
@@ -211,6 +212,7 @@ namespace atomic_dex
                     using namespace std::chrono;
                     qint64  timestamp  = duration_cast<seconds>(system_clock::now().time_since_epoch()).count();
                     QString human_date = QString::fromStdString(to_human_date<std::chrono::seconds>(timestamp, "%e %b %Y, %H:%M"));
+                    spdlog::debug("balance update notification from update_balance_values prev[{}], new[{}]", prev_balance.toString().toStdString(), new_balance.toString().toStdString());
                     this->m_dispatcher.trigger<balance_update_notification>(am_i_sender, amount, QString::fromStdString(ticker), human_date, timestamp);
                     emit portfolioItemDataChanged();
                 }

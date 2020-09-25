@@ -543,6 +543,7 @@ namespace atomic_dex
         spdlog::debug("{} l{} f[{}]", __FUNCTION__, __LINE__, fs::path(__FILE__).filename().string());
         QVariantMap out;
 
+        //! If the initial amount is < minimal trade amount it's not required to continue
         if (t_float_50(amount.toStdString()) < t_float_50("0.00777"))
         {
             out.insert("not_enough_balance_to_pay_the_fees", true);
@@ -551,14 +552,23 @@ namespace atomic_dex
             out.insert("tx_fee", "0");
             return out;
         }
+
+        //! Get the trading fee -> 1 / (777 * amount);
         t_float_50 trade_fee_f = get_mm2().get_trade_fee(ticker.toStdString(), amount.toStdString(), false);
+
+        //! Get the fixed fee (from mm2)
         auto       answer      = get_mm2().get_trade_fixed_fee(ticker.toStdString());
 
+        //! Is fixed fee are available
         if (!answer.amount.empty())
         {
+            //! ERC fees will be use only if rel is an ERC-20 token
             t_float_50 erc_fees = 0;
+
+            // > mm2
             t_float_50 tx_fee_f = t_float_50(answer.amount) * 2;
 
+            //! If receive ticker exist we try to apply erc fees
             if (receive_ticker != "")
             {
                 get_mm2().apply_erc_fees(receive_ticker.toStdString(), erc_fees);
@@ -569,6 +579,7 @@ namespace atomic_dex
             const std::string amount_std      = t_float_50(amount.toStdString()) < minimal_trade_amount() ? minimal_trade_amount_str() : amount.toStdString();
             t_float_50        final_balance_f = t_float_50(amount_std) - (trade_fee_f + tx_fee_f);
             std::string       final_balance   = amount.toStdString();
+            //spdlog::trace("{} = {} - ({} + {})", final_balance_f.str(8), amount_std, trade_fee_f.str(8), tx_fee_f.str(8));
             if (final_balance_f.convert_to<float>() > 0.0)
             {
                 final_balance = get_formated_float(final_balance_f);

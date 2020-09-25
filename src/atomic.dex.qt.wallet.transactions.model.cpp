@@ -206,7 +206,7 @@ namespace atomic_dex
             m_file_count += transactions.size();
             if (m_model_data.size() < 50)
             {
-                m_model_data.insert(begin(m_model_data), begin(transactions), end(transactions));
+                m_model_data.insert(end(m_model_data), begin(transactions), end(transactions));
             }
             else
             {
@@ -250,14 +250,34 @@ namespace atomic_dex
         spdlog::trace("new transactions size is: {}, old one is: {}", transactions.size(), m_model_data.size());
         if (difference > 0)
         {
-            //! There is new transactions
-            to_init = t_transactions(transactions.begin(), transactions.begin() + difference);
+            //! Take all the unconfirmed transaction
+            for (auto&& cur_tx: transactions)
+            {
+                //! If unconfirmed == false, means we don't have unconfirmed transactions anymore
+                if (cur_tx.unconfirmed == false)
+                    break;
+                else
+                {
+                    if (const auto res = this->match(this->index(0, 0), TxHashRole, QString::fromStdString(cur_tx.tx_hash)); res.isEmpty())
+                    {
+                        to_init.push_back(cur_tx);
+                    }
+                }
+            }
+
+            if (to_init.empty())
+            {
+                to_init.insert(end(to_init), begin(transactions), begin(transactions) + difference);
+            }
+            //! There is new transactions take the diff
+            // to_init = t_transactions(transactions.begin(), transactions.begin() + difference);
         }
         spdlog::trace("updating transactions");
         std::for_each(begin(transactions) + difference, end(transactions), [this](const tx_infos& tx) { this->update_transaction(tx); });
         if (not to_init.empty())
         {
             spdlog::trace("to init transactions started: {}", to_init.size());
+            spdlog::trace("hash: {}", to_init[0].tx_hash);
             this->init_transactions(to_init);
         }
     }
