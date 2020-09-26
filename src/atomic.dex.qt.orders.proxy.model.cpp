@@ -206,17 +206,26 @@ namespace atomic_dex
         const fs::path csv_path = get_atomic_dex_export_folder() / (filename.toStdString() + std::string(".csv"));
         std::ofstream  ofs(csv_path.string(), std::ios::out | std::ios::trunc);
         int            nb_items = this->rowCount();
-        ofs << "Date, BaseCoin, BaseAmount, Status, RelCoin, RelAmount, UUID" << std::endl;
+        ofs << "Date, BaseCoin, BaseAmount, Status, RelCoin, RelAmount, UUID, ErrorState" << std::endl;
         for (int cur_idx = 0; cur_idx < nb_items; ++cur_idx)
         {
             QModelIndex idx = this->index(cur_idx, 0);
             ofs << this->data(idx, orders_model::OrdersRoles::HumanDateRole).toString().toStdString() << ",";
             ofs << this->data(idx, orders_model::OrdersRoles::BaseCoinRole).toString().toStdString() << ",";
             ofs << this->data(idx, orders_model::OrdersRoles::BaseCoinAmountRole).toString().toStdString() << ",";
-            ofs << this->data(idx, orders_model::OrdersRoles::OrderStatusRole).toString().toStdString() << ",";
+            auto status = this->data(idx, orders_model::OrdersRoles::OrderStatusRole).toString().toStdString();
+            ofs << status << ",";
             ofs << this->data(idx, orders_model::OrdersRoles::RelCoinRole).toString().toStdString() << ",";
             ofs << this->data(idx, orders_model::OrdersRoles::RelCoinAmountRole).toString().toStdString() << ",";
-            ofs << this->data(idx, orders_model::OrdersRoles::OrderIdRole).toString().toStdString() << std::endl;
+            ofs << this->data(idx, orders_model::OrdersRoles::OrderIdRole).toString().toStdString();
+            if (status == "failed")
+            {
+                ofs << "," << this->data(idx, orders_model::OrdersRoles::OrderErrorStateRole).toString().toStdString() << std::endl;
+            }
+            else
+            {
+                ofs << ",Success" << std::endl;
+            }
         }
         ofs.close();
     }
