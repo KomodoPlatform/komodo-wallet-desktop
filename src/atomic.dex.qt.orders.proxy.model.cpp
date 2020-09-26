@@ -22,6 +22,7 @@
 //! Project
 #include "atomic.dex.qt.orders.model.hpp"
 #include "atomic.dex.qt.orders.proxy.model.hpp"
+#include "atomic.dex.utilities.hpp"
 
 namespace atomic_dex
 {
@@ -197,5 +198,26 @@ namespace atomic_dex
     {
         this->setFilterFixedString(to_filter);
         emit qobject_cast<orders_model*>(this->sourceModel())->lengthChanged();
+    }
+
+    void
+    orders_proxy_model::export_csv_visible_history(const QString& filename)
+    {
+        const fs::path csv_path = get_atomic_dex_export_folder() / (filename.toStdString() + std::string(".csv"));
+        std::ofstream  ofs(csv_path.string(), std::ios::out | std::ios::trunc);
+        int            nb_items = this->rowCount();
+        ofs << "Date, BaseCoin, BaseAmount, Status, RelCoin, RelAmount, UUID" << std::endl;
+        for (int cur_idx = 0; cur_idx < nb_items; ++cur_idx)
+        {
+            QModelIndex idx = this->index(cur_idx, 0);
+            ofs << this->data(idx, orders_model::OrdersRoles::HumanDateRole).toString().toStdString() << ",";
+            ofs << this->data(idx, orders_model::OrdersRoles::BaseCoinRole).toString().toStdString() << ",";
+            ofs << this->data(idx, orders_model::OrdersRoles::BaseCoinAmountRole).toString().toStdString() << ",";
+            ofs << this->data(idx, orders_model::OrdersRoles::OrderStatusRole).toString().toStdString() << ",";
+            ofs << this->data(idx, orders_model::OrdersRoles::RelCoinRole).toString().toStdString() << ",";
+            ofs << this->data(idx, orders_model::OrdersRoles::RelCoinAmountRole).toString().toStdString() << ",";
+            ofs << this->data(idx, orders_model::OrdersRoles::OrderIdRole).toString().toStdString() << std::endl;
+        }
+        ofs.close();
     }
 } // namespace atomic_dex

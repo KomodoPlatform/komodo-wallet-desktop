@@ -168,6 +168,7 @@ Item {
                     enabled: list_model.length > 0
                     onClicked: {
                         // TODO: Export CSV
+                        API.app.orders_mdl.orders_proxy_mdl.export_csv_visible_history("swap_history")
                     }
                     Layout.rightMargin: 15
                 }
