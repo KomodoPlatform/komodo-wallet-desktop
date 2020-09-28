@@ -48,7 +48,8 @@ namespace atomic_dex
             Excluded,
             Display,
             NameAndTicker,
-            IsMultiTickerCurrentlyEnabled
+            IsMultiTickerCurrentlyEnabled,
+            MultiTickerData
         };
         Q_ENUM(PortfolioRoles)
 

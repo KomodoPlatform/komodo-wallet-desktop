@@ -367,6 +367,7 @@ namespace atomic_dex
         dispatcher_.sink<process_orderbook_finished>().connect<&trading_page::on_process_orderbook_finished_event>(*this);
         dispatcher_.sink<start_fetching_new_ohlc_data>().connect<&trading_page::on_start_fetching_new_ohlc_data_event>(*this);
         dispatcher_.sink<refresh_ohlc_needed>().connect<&trading_page::on_refresh_ohlc_event>(*this);
+        dispatcher_.sink<multi_ticker_enabled>().connect<&trading_page::on_multi_ticker_enabled>(*this);
     }
 
     void
@@ -375,6 +376,7 @@ namespace atomic_dex
         dispatcher_.sink<process_orderbook_finished>().disconnect<&trading_page::on_process_orderbook_finished_event>(*this);
         dispatcher_.sink<start_fetching_new_ohlc_data>().disconnect<&trading_page::on_start_fetching_new_ohlc_data_event>(*this);
         dispatcher_.sink<refresh_ohlc_needed>().disconnect<&trading_page::on_refresh_ohlc_event>(*this);
+        dispatcher_.sink<multi_ticker_enabled>().disconnect<&trading_page::on_multi_ticker_enabled>(*this);
     }
 
     void
@@ -476,5 +478,11 @@ namespace atomic_dex
             m_fetching_multi_ticker_fees_busy = status;
             emit multiTickerFeesStatusChanged();
         }
+    }
+
+    void
+    trading_page::on_multi_ticker_enabled(const multi_ticker_enabled& evt) noexcept
+    {
+        this->fetch_additional_fees(evt.ticker);
     }
 } // namespace atomic_dex

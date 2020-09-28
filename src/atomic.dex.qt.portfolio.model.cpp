@@ -261,6 +261,8 @@ namespace atomic_dex
             return item.ticker_and_name;
         case IsMultiTickerCurrentlyEnabled:
             return item.is_multi_ticker_enabled;
+        case MultiTickerData:
+            return item.multi_ticker_data.has_value() ? item.multi_ticker_data.value() : QJsonObject{};
         }
         return {};
     }
@@ -302,6 +304,10 @@ namespace atomic_dex
             break;
         case IsMultiTickerCurrentlyEnabled:
             item.is_multi_ticker_enabled = value.toBool();
+            this->m_dispatcher.trigger<multi_ticker_enabled>(item.ticker);
+            break;
+        case MultiTickerData:
+            item.multi_ticker_data = value.toJsonObject();
             break;
         default:
             return false;
@@ -359,7 +365,8 @@ namespace atomic_dex
             {Excluded, "excluded"},
             {Display, "display"},
             {NameAndTicker, "name_and_ticker"},
-            {IsMultiTickerCurrentlyEnabled, "is_multi_ticker_currently_enabled"}};
+            {IsMultiTickerCurrentlyEnabled, "is_multi_ticker_currently_enabled"},
+            {MultiTickerData, "multi_ticker_data"}};
     }
 
     portfolio_proxy_model*

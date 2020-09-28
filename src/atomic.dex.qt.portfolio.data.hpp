@@ -17,6 +17,7 @@
 #pragma once
 
 #include <QJsonArray>
+#include <QJsonObject>
 #include <QString>
 
 namespace atomic_dex
@@ -51,5 +52,7 @@ namespace atomic_dex
         QString ticker_and_name;
 
         bool is_multi_ticker_enabled{false};
+
+        std::optional<QJsonObject> multi_ticker_data{std::nullopt};
     };
 } // namespace atomic_dex
