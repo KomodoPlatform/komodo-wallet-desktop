@@ -9,7 +9,7 @@ import ".."
 OrdersPage {
     page_index: General.idx_exchange_history
 
-    title: API.app.settings_pg.empty_string + (qsTr("Recent Swaps"))
+    title: API.app.settings_pg.empty_string + (showing_all_coins ? qsTr("Recent Swaps") : qsTr("Filtered Swaps"))
     empty_text: API.app.settings_pg.empty_string + (qsTr("You don't have recent orders."))
     is_history: true
 }

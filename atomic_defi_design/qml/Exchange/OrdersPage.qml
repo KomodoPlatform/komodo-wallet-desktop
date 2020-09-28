@@ -21,6 +21,7 @@ Item {
     property alias title: order_list.title
     property alias empty_text: order_list.empty_text
     property alias items: order_list.items
+    property alias showing_all_coins: show_all_coins.checked
 
     property bool is_history: false
 
