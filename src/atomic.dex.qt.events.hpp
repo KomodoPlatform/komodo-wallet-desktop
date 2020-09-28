@@ -38,4 +38,9 @@ namespace atomic_dex
         QString human_date;
         qint64  timestamp;
     };
+
+    struct multi_ticker_enabled
+    {
+        QString ticker;
+    };
 } // namespace atomic_dex

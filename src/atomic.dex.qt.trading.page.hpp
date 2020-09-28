@@ -23,6 +23,7 @@
 #include "atomic.dex.events.hpp"
 #include "atomic.dex.qt.actions.hpp"
 #include "atomic.dex.qt.candlestick.charts.model.hpp"
+#include "atomic.dex.qt.events.hpp"
 #include "atomic.dex.qt.market.pairs.hpp"
 #include "atomic.dex.qt.orderbook.hpp"
 #include "atomic.dex.qt.portfolio.model.hpp"
@@ -136,6 +137,7 @@ namespace atomic_dex
         void on_process_orderbook_finished_event(const process_orderbook_finished& evt) noexcept;
         void on_start_fetching_new_ohlc_data_event(const start_fetching_new_ohlc_data& evt);
         void on_refresh_ohlc_event(const refresh_ohlc_needed& evt) noexcept;
+        void on_multi_ticker_enabled(const multi_ticker_enabled& evt) noexcept;
 
       signals:
         void orderbookChanged();
