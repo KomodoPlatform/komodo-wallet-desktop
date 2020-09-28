@@ -353,7 +353,7 @@ Item {
                     id: selectors
                     anchors.left: parent.left
                     anchors.right: parent.right
-                    anchors.bottom: orderbook.top
+                    anchors.bottom: orderbook_area.top
                     anchors.bottomMargin: layout_margin
                     spacing: 20
 
@@ -396,13 +396,25 @@ Item {
                     }
                 }
 
-                Orderbook {
-                    id: orderbook
+                StackLayout {
+                    id: orderbook_area
                     height: 250
                     anchors.left: parent.left
                     anchors.right: parent.right
                     anchors.bottom: price_line.top
                     anchors.bottomMargin: layout_margin
+
+                    currentIndex: multi_order_switch.checked ? 1 : 0
+
+                    Orderbook {
+                        Layout.fillWidth: true
+                        Layout.fillHeight: true
+                    }
+
+                    MultiOrder {
+                        Layout.fillWidth: true
+                        Layout.fillHeight: true
+                    }
                 }
 
 
@@ -449,6 +461,41 @@ Item {
                     anchors.left: parent.left
                     anchors.right: parent.right
                     anchors.top: parent.top
+                }
+
+                // Multi-Order
+                FloatingBackground {
+                    anchors.left: parent.left
+                    anchors.right: parent.right
+                    anchors.top: form_base.visible ? form_base.bottom : form_rel.bottom
+                    anchors.topMargin: layout_margin
+                    height: column_layout.height + 30
+
+                    ColumnLayout {
+                        id: column_layout
+                        anchors.left: parent.left
+                        anchors.right: parent.right
+                        anchors.leftMargin: 10
+                        anchors.rightMargin: anchors.rightMargin
+                        anchors.verticalCenter: parent.verticalCenter
+                        DefaultSwitch {
+                            id: multi_order_switch
+                            text: API.app.settings_pg.empty_string + (qsTr("Multi-Order"))
+                        }
+
+                        DefaultText {
+                            id: first_text
+                            Layout.fillWidth: true
+                            text_value: API.app.settings_pg.empty_string + (qsTr("Select additional assets for multi-order creation."))
+                            font.pixelSize: Style.textSizeSmall2
+                        }
+
+                        DefaultText {
+                            Layout.fillWidth: true
+                            text_value: API.app.settings_pg.empty_string + (qsTr("Same funds will be used until an order matches."))
+                            font.pixelSize: first_text.font.pixelSize
+                        }
+                    }
                 }
             }
         }
