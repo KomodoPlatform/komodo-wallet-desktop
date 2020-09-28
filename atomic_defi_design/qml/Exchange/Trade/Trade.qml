@@ -369,7 +369,6 @@ Item {
                     // Swap button
                     SwapIcon {
                         Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
-                        Layout.preferredWidth: right_arrow.width
                         Layout.preferredHeight: selector_left.height * 0.9
 
                         top_arrow_ticker: selector_left.ticker
