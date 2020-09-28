@@ -84,7 +84,6 @@ AnimatedRectangle {
         text_value: API.app.settings_pg.empty_string + (!details ? "" :
                                                          General.formatCrypto("", details.base_amount, details.base_coin))
         font.pixelSize: Style.textSizeSmall4
-        color: Style.getCoinColor(!details ? "white" : details.base_coin)
 
         anchors.left: base_icon.right
         anchors.leftMargin: 10
@@ -98,7 +97,6 @@ AnimatedRectangle {
         text_value: API.app.settings_pg.empty_string + (!details ? "" :
                                                          General.formatCrypto("", details.rel_amount, details.rel_coin))
         font.pixelSize: base_amount.font.pixelSize
-        color: Style.getCoinColor(!details ? "white" : details.rel_coin)
 
         anchors.right: rel_icon.left
         anchors.rightMargin: base_amount.anchors.leftMargin

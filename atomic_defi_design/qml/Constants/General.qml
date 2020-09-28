@@ -226,7 +226,9 @@ QtObject {
     }
 
     function formatCrypto(received, amount, ticker, fiat_amount, fiat) {
-        return diffPrefix(received) + ticker + " " + formatDouble(amount) + (fiat_amount ? " (" + formatFiat("", fiat_amount, fiat) + ")" : "")
+        return diffPrefix(received) +
+                (received === "" ? `<font color="${Style.getCoinColor(ticker)}">${ticker}</font>` : ticker)
+                + " " + formatDouble(amount) + (fiat_amount ? " (" + formatFiat("", fiat_amount, fiat) + ")" : "")
     }
 
     function fullCoinName(name, ticker) {
