@@ -16,6 +16,7 @@ AnimatedRectangle {
 
     color: Style.colorOnlyIf(mouse_area.containsMouse, Style.colorTheme8)
 
+
     // Swap icon
     SwapIcon {
         visible: !status_text.visible
@@ -117,13 +118,36 @@ AnimatedRectangle {
         anchors.verticalCenter: parent.verticalCenter
     }
 
+
+    DefaultText {
+        id: cancel_button_text
+        visible: !details ? false :
+                            details.cancellable
+
+        font.pixelSize: Style.textSizeSmall4
+        text_value: "x"
+        anchors.verticalCenter: parent.verticalCenter
+        anchors.verticalCenterOffset: -font.pixelSize * 0.125
+        anchors.left: parent.left
+        anchors.leftMargin: 20
+
+        color: cancel_button.containsMouse ? Style.colorText : Style.colorText2
+
+        DefaultMouseArea {
+            id: cancel_button
+            anchors.fill: parent
+            hoverEnabled: true
+            onClicked: { if(details) cancelOrder(details.order_id) }
+        }
+    }
+
     // Date
     DefaultText {
         font.pixelSize: base_amount.font.pixelSize
         text_value: API.app.settings_pg.empty_string + (!details ? "" :
                                                         details.date)
         anchors.verticalCenter: parent.verticalCenter
-        anchors.left: parent.left
+        anchors.left: cancel_button_text.left
         anchors.leftMargin: 20
     }
 
