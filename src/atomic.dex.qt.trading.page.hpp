@@ -40,6 +40,8 @@ namespace atomic_dex
         Q_PROPERTY(market_pairs* market_pairs_mdl READ get_market_pairs_mdl NOTIFY marketPairsChanged)
         Q_PROPERTY(QVariant buy_sell_last_rpc_data READ get_buy_sell_last_rpc_data WRITE set_buy_sell_last_rpc_data NOTIFY buySellLastRpcDataChanged)
         Q_PROPERTY(bool buy_sell_rpc_busy READ is_buy_sell_rpc_busy WRITE set_buy_sell_rpc_busy NOTIFY buySellRpcStatusChanged)
+        Q_PROPERTY(bool fetching_multi_ticker_fees_busy READ is_fetching_multi_ticker_fees_busy WRITE set_fetching_multi_ticker_fees_busy NOTIFY
+                       multiTickerFeesStatusChanged)
 
         //! Private enum
         enum models
@@ -76,6 +78,7 @@ namespace atomic_dex
         t_models_actions         m_models_actions;
         t_actions_queue          m_actions_queue{g_max_actions_size};
         std::atomic_bool         m_rpc_buy_sell_busy{false};
+        std::atomic_bool         m_fetching_multi_ticker_fees_busy{false};
         t_qt_synchronized_json   m_rpc_buy_sell_result;
 
         //! Privae function
@@ -113,6 +116,7 @@ namespace atomic_dex
             const QString& price_numer, const QString& rel_nota = "", const QString& rel_confs = "");
         Q_INVOKABLE void     swap_market_pair();
         Q_INVOKABLE QVariant get_raw_mm2_coin_cfg(const QString& ticker) const noexcept;
+        Q_INVOKABLE void     fetch_additional_fees(const QString& ticker) noexcept; ///< for multi ticker
 
         //! Properties
         [[nodiscard]] qt_orderbook_wrapper*     get_orderbook_wrapper() const noexcept;
@@ -120,8 +124,13 @@ namespace atomic_dex
         [[nodiscard]] market_pairs*             get_market_pairs_mdl() const noexcept;
         [[nodiscard]] bool                      is_buy_sell_rpc_busy() const noexcept;
         void                                    set_buy_sell_rpc_busy(bool status) noexcept;
-        [[nodiscard]] QVariant                  get_buy_sell_last_rpc_data() const noexcept;
-        void                                    set_buy_sell_last_rpc_data(QVariant rpc_data) noexcept;
+
+        //! For multi ticker part
+        [[nodiscard]] bool is_fetching_multi_ticker_fees_busy() const noexcept;
+        void               set_fetching_multi_ticker_fees_busy(bool status) noexcept;
+
+        [[nodiscard]] QVariant get_buy_sell_last_rpc_data() const noexcept;
+        void                   set_buy_sell_last_rpc_data(QVariant rpc_data) noexcept;
 
         //! Events Callbacks
         void on_process_orderbook_finished_event(const process_orderbook_finished& evt) noexcept;
@@ -134,6 +143,7 @@ namespace atomic_dex
         void marketPairsChanged();
         void buySellLastRpcDataChanged();
         void buySellRpcStatusChanged();
+        void multiTickerFeesStatusChanged();
     };
 } // namespace atomic_dex
 

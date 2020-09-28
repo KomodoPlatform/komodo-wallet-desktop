@@ -133,7 +133,7 @@ namespace atomic_dex
                 auto  answers          = ::mm2::api::basic_batch_answer(resp);
                 auto  my_orders_answer = ::mm2::api::rpc_process_answer_batch<t_my_orders_answer>(answers[answers.size() - 1], "my_orders");
                 mm2_system.add_orders_answer(my_orders_answer);
-                //spdlog::trace("refreshing orderbook after cancelling order: {}", answers.dump(4));
+                // spdlog::trace("refreshing orderbook after cancelling order: {}", answers.dump(4));
                 mm2_system.process_orderbook(false);
             })
             .then(&handle_exception_pplx_task);
@@ -183,6 +183,41 @@ namespace atomic_dex
     trading_page::cancel_all_orders_by_ticker(const QString& ticker)
     {
         common_cancel_all_orders(true, ticker);
+    }
+
+    void
+    trading_page::fetch_additional_fees(const QString& ticker) noexcept
+    {
+        //! Async start
+        this->set_fetching_multi_ticker_fees_busy(true);
+
+        //! Batch preparation
+        nlohmann::json          batch = nlohmann::json::array();
+        t_get_trade_fee_request req_base{.coin = ticker.toStdString()};
+        nlohmann::json          current_request = ::mm2::api::template_request("get_trade_fee");
+        ::mm2::api::to_json(current_request, req_base);
+        batch.push_back(current_request);
+
+        //! System
+        auto& mm2_system = m_system_manager.get_system<mm2>();
+
+        auto answer_functor = [this, ticker_std = ticker.toStdString()](web::http::http_response resp) {
+            std::string body = TO_STD_STR(resp.extract_string(true).get());
+            if (resp.status_code() == 200)
+            {
+                auto           answers    = nlohmann::json::parse(body);
+                nlohmann::json answer     = answers[0];
+                auto&          mm2_system = this->m_system_manager.get_system<mm2>();
+                // mm2_system.
+                auto trade_fee_base_answer = ::mm2::api::rpc_process_answer_batch<t_get_trade_fee_answer>(answer, "get_trade_fee");
+                mm2_system.add_get_trade_fee_answer(ticker_std, trade_fee_base_answer);
+            }
+            this->set_fetching_multi_ticker_fees_busy(false);
+        };
+
+        ::mm2::api::async_rpc_batch_standalone(batch, mm2_system.get_mm2_client(), mm2_system.get_cancellation_token())
+            .then(answer_functor)
+            .then(&handle_exception_pplx_task);
     }
 
     void
@@ -403,6 +438,7 @@ namespace atomic_dex
     {
         return m_rpc_buy_sell_busy.load();
     }
+
     void
     trading_page::set_buy_sell_rpc_busy(bool status) noexcept
     {
@@ -424,5 +460,21 @@ namespace atomic_dex
     {
         m_rpc_buy_sell_result = rpc_data.toJsonObject();
         emit buySellLastRpcDataChanged();
+    }
+
+    bool
+    trading_page::is_fetching_multi_ticker_fees_busy() const noexcept
+    {
+        return m_fetching_multi_ticker_fees_busy.load();
+    }
+
+    void
+    trading_page::set_fetching_multi_ticker_fees_busy(bool status) noexcept
+    {
+        if (m_fetching_multi_ticker_fees_busy != status)
+        {
+            m_fetching_multi_ticker_fees_busy = status;
+            emit multiTickerFeesStatusChanged();
+        }
     }
 } // namespace atomic_dex

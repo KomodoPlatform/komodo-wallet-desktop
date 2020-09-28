@@ -556,7 +556,7 @@ namespace atomic_dex
         //! Get the trading fee -> 1 / (777 * amount);
         t_float_50 trade_fee_f = get_mm2().get_trade_fee(ticker.toStdString(), amount.toStdString(), false);
 
-        //! Get the fixed fee (from mm2)
+        //! Get the transaction fees (from mm2)
         auto       answer      = get_mm2().get_trade_fixed_fee(ticker.toStdString());
 
         //! Is fixed fee are available
