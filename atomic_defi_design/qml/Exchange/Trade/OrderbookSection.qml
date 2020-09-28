@@ -172,7 +172,7 @@ ColumnLayout {
                 font.pixelSize: Style.textSizeSmall4
                 text_value: "x"
                 anchors.verticalCenter: parent.verticalCenter
-                anchors.verticalCenterOffset: -font.pixelSize * 0.25
+                anchors.verticalCenterOffset: -font.pixelSize * 0.125
                 anchors.left: parent.left
                 anchors.leftMargin: 6
 
