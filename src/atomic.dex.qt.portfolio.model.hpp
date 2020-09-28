@@ -47,7 +47,8 @@ namespace atomic_dex
             Trend7D,
             Excluded,
             Display,
-            NameAndTicker
+            NameAndTicker,
+            IsMultiTickerCurrentlyEnabled
         };
         Q_ENUM(PortfolioRoles)
 

@@ -100,6 +100,8 @@ namespace atomic_dex
             return false;
         case portfolio_model::NameAndTicker:
             return false;
+        case portfolio_model::IsMultiTickerCurrentlyEnabled:
+            return false;
         }
     }
 

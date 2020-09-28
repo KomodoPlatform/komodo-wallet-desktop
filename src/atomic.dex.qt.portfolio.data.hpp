@@ -49,5 +49,7 @@ namespace atomic_dex
         QString display;
 
         QString ticker_and_name;
+
+        bool is_multi_ticker_enabled{false};
     };
 } // namespace atomic_dex

@@ -157,7 +157,9 @@ namespace atomic_dex
                         using namespace std::chrono;
                         qint64  timestamp  = duration_cast<seconds>(system_clock::now().time_since_epoch()).count();
                         QString human_date = QString::fromStdString(to_human_date<std::chrono::seconds>(timestamp, "%e %b %Y, %H:%M"));
-                        spdlog::debug("balance update notification from update_currency_values prev[{}], new[{}]", prev_balance.toString().toStdString(), new_balance.toString().toStdString());
+                        spdlog::debug(
+                            "balance update notification from update_currency_values prev[{}], new[{}]", prev_balance.toString().toStdString(),
+                            new_balance.toString().toStdString());
                         this->m_dispatcher.trigger<balance_update_notification>(am_i_sender, amount, QString::fromStdString(ticker), human_date, timestamp);
                     }
                     // spdlog::trace("updated currency values of: {}", ticker);
@@ -212,7 +214,9 @@ namespace atomic_dex
                     using namespace std::chrono;
                     qint64  timestamp  = duration_cast<seconds>(system_clock::now().time_since_epoch()).count();
                     QString human_date = QString::fromStdString(to_human_date<std::chrono::seconds>(timestamp, "%e %b %Y, %H:%M"));
-                    spdlog::debug("balance update notification from update_balance_values prev[{}], new[{}]", prev_balance.toString().toStdString(), new_balance.toString().toStdString());
+                    spdlog::debug(
+                        "balance update notification from update_balance_values prev[{}], new[{}]", prev_balance.toString().toStdString(),
+                        new_balance.toString().toStdString());
                     this->m_dispatcher.trigger<balance_update_notification>(am_i_sender, amount, QString::fromStdString(ticker), human_date, timestamp);
                     emit portfolioItemDataChanged();
                 }
@@ -255,6 +259,8 @@ namespace atomic_dex
             return item.display;
         case NameAndTicker:
             return item.ticker_and_name;
+        case IsMultiTickerCurrentlyEnabled:
+            return item.is_multi_ticker_enabled;
         }
         return {};
     }
@@ -293,6 +299,10 @@ namespace atomic_dex
             break;
         case NameAndTicker:
             item.ticker_and_name = value.toString();
+            break;
+        case IsMultiTickerCurrentlyEnabled:
+            item.is_multi_ticker_enabled = value.toBool();
+            break;
         default:
             return false;
         }
@@ -338,11 +348,18 @@ namespace atomic_dex
     QHash<int, QByteArray>
     portfolio_model::roleNames() const
     {
-        return {{TickerRole, "ticker"},    {NameRole, "name"},
-                {BalanceRole, "balance"},  {MainCurrencyBalanceRole, "main_currency_balance"},
-                {Change24H, "change_24h"}, {MainCurrencyPriceForOneUnit, "main_currency_price_for_one_unit"},
-                {Trend7D, "trend_7d"},     {Excluded, "excluded"},
-                {Display, "display"},      {NameAndTicker, "name_and_ticker"}};
+        return {
+            {TickerRole, "ticker"},
+            {NameRole, "name"},
+            {BalanceRole, "balance"},
+            {MainCurrencyBalanceRole, "main_currency_balance"},
+            {Change24H, "change_24h"},
+            {MainCurrencyPriceForOneUnit, "main_currency_price_for_one_unit"},
+            {Trend7D, "trend_7d"},
+            {Excluded, "excluded"},
+            {Display, "display"},
+            {NameAndTicker, "name_and_ticker"},
+            {IsMultiTickerCurrentlyEnabled, "is_multi_ticker_currently_enabled"}};
     }
 
     portfolio_proxy_model*

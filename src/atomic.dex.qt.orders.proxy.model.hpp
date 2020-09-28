@@ -47,7 +47,7 @@ namespace atomic_dex
 
         Q_INVOKABLE QStringList get_filtered_ids() const noexcept;
         Q_INVOKABLE void set_coin_filter(const QString& to_filter);
-        Q_INVOKABLE void export_csv_visible_history(const QString& filename);
+        Q_INVOKABLE void export_csv_visible_history(const QString& path);
 
 
       signals:

@@ -201,9 +201,10 @@ namespace atomic_dex
     }
 
     void
-    orders_proxy_model::export_csv_visible_history(const QString& filename)
+    orders_proxy_model::export_csv_visible_history(const QString& path)
     {
-        const fs::path csv_path = get_atomic_dex_export_folder() / (filename.toStdString() + std::string(".csv"));
+        const fs::path csv_path = path.toStdString();
+        spdlog::info("exporting csv with path: {}", csv_path.string());
         std::ofstream  ofs(csv_path.string(), std::ios::out | std::ios::trunc);
         int            nb_items = this->rowCount();
         ofs << "Date, BaseCoin, BaseAmount, Status, RelCoin, RelAmount, UUID, ErrorState" << std::endl;
