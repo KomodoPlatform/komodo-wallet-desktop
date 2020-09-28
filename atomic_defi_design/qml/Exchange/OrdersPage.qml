@@ -1,6 +1,7 @@
 import QtQuick 2.15
 import QtQuick.Layouts 1.15
 import QtQuick.Controls 2.15
+import QtQuick.Dialogs 1.3
 
 import Qaterial 1.0 as Qaterial
 
@@ -187,11 +188,31 @@ Item {
                     text: API.app.settings_pg.empty_string + (qsTr("Export CSV"))
                     enabled: list_model.length > 0
                     onClicked: {
-                        // TODO: Export CSV
-                        API.app.orders_mdl.orders_proxy_mdl.export_csv_visible_history("swap_history")
+                        export_csv_dialog.folder = General.os_file_prefix + API.app.get_export_folder()
+                        export_csv_dialog.open()
                     }
                 }
 
+                FileDialog {
+                    id: export_csv_dialog
+
+                    title: API.app.settings_pg.empty_string + (qsTr("Please choose the CSV export name and location"))
+                    selectMultiple: false
+                    selectExisting: false
+                    selectFolder: false
+
+                    defaultSuffix: "csv"
+
+                    onAccepted: {
+                        const path = fileUrl.toString()
+                        console.log("Exporting to CSV: " + path)
+                        API.app.orders_mdl.orders_proxy_mdl.export_csv_visible_history(path.replace(General.os_file_prefix, ""))
+                        Qt.openUrlExternally(General.os_file_prefix + API.app.get_export_folder())
+                    }
+                    onRejected: {
+                        console.log("CSV export cancelled")
+                    }
+                }
             }
         }
 
