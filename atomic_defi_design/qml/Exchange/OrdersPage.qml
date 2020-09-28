@@ -33,12 +33,12 @@ Item {
     }
 
     function applyDateFilter() {
-        list_model_proxy.filter_minimum_date = enable_filters.checked ? min_date.date : default_min_date
-        list_model_proxy.filter_maximum_date = enable_filters.checked ? max_date.date : default_max_date
+        list_model_proxy.filter_minimum_date = filter_enabled ? min_date.date : default_min_date
+        list_model_proxy.filter_maximum_date = filter_enabled ? max_date.date : default_max_date
     }
 
     function applyTickerFilter() {
-        list_model_proxy.set_coin_filter(enable_filters.checked ? combo_base.currentValue + "/" + combo_rel.currentValue : "")
+        list_model_proxy.set_coin_filter(filter_enabled ? combo_base.currentValue + "/" + combo_rel.currentValue : "")
     }
 
     function applyFilter() {
@@ -94,7 +94,7 @@ Item {
 
                 DefaultComboBox {
                     id: combo_base
-                    enabled: enable_filters.checked
+                    enabled: filter_enabled
                     Layout.preferredWidth: 120
                     Layout.topMargin: 10
                     Layout.bottomMargin: Layout.topMargin
@@ -130,7 +130,7 @@ Item {
 
                 DefaultComboBox {
                     id: combo_rel
-                    enabled: enable_filters.checked
+                    enabled: filter_enabled
                     Layout.preferredWidth: 120
                     Layout.topMargin: combo_base.Layout.topMargin
                     Layout.bottomMargin: combo_base.Layout.bottomMargin
@@ -152,7 +152,7 @@ Item {
 
                 Qaterial.TextFieldDatePicker {
                     id: min_date
-                    enabled: enable_filters.checked
+                    enabled: filter_enabled
                     title: API.app.settings_pg.empty_string + (qsTr("From"))
                     from: default_min_date
                     to: default_max_date
@@ -173,10 +173,10 @@ Item {
                 // Cancel button
                 DangerButton {
                     visible: !root.is_history
-                    text: API.app.settings_pg.empty_string + (enable_filters.checked ? qsTr("Cancel Filtered Orders") : qsTr("Cancel All Orders"))
+                    text: API.app.settings_pg.empty_string + (filter_enabled ? qsTr("Cancel Filtered Orders") : qsTr("Cancel All Orders"))
                     enabled: list_model.length > 0
                     onClicked: {
-                        if(enable_filters.checked) API.app.trading_pg.cancel_order(list_model_proxy.get_filtered_ids())
+                        if(filter_enabled) API.app.trading_pg.cancel_order(list_model_proxy.get_filtered_ids())
                         else API.app.trading_pg.cancel_all_orders()
                     }
                 }
