@@ -14,8 +14,6 @@ Item {
     readonly property bool block_everything: chart.is_fetching || swap_cooldown.running || fetching_multi_ticker_fees_busy
 
     readonly property bool fetching_multi_ticker_fees_busy: API.app.trading_pg.fetching_multi_ticker_fees_busy
-    onFetching_multi_ticker_fees_busyChanged: console.log("Connections onFetching_multi_ticker_fees_busyChanged")
-
     readonly property alias multi_order_enabled: multi_order_switch.checked
 
     property bool sell_mode: true
@@ -486,7 +484,7 @@ Item {
                         DefaultSwitch {
                             id: multi_order_switch
                             text: API.app.settings_pg.empty_string + (qsTr("Multi-Order"))
-                            enabled: !fetching_multi_ticker_fees_busy
+                            enabled: !block_everything
                         }
 
                         DefaultText {

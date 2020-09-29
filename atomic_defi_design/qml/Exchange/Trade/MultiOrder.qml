@@ -25,7 +25,6 @@ InnerBackground {
                 target: exchange_trade
 
                 function onFetching_multi_ticker_fees_busyChanged() {
-                    console.log("Connections onFetching_multi_ticker_fees_busyChanged")
                     if(fetching_multi_ticker_fees_busy || !enable_ticker.checked) return undefined
                     if(!multi_order_line.info_needs_update) return trade_info
 
@@ -64,8 +63,8 @@ InnerBackground {
                 anchors.rightMargin: 10
                 anchors.right: parent.right
                 anchors.verticalCenter: parent.verticalCenter
+                enabled: !block_everything
                 onCheckedChanged: {
-                    //console.log(multi_order_line)
                     model.is_multi_ticker_currently_enabled = checked
                     if(checked) info_needs_update = true
                 }
