@@ -48,7 +48,7 @@ InnerBackground {
                     base: left_ticker,
                     rel: model.ticker,
                     price: "" + multi_order_line.price,
-                    volume: "" + multi_order_line.volume,
+                    volume: getCurrentForm().getVolume(),
                     is_created_order: true,
                     base_nota: "",
                     base_confs: "",
