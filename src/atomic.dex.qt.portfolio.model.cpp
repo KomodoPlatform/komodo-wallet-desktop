@@ -308,9 +308,10 @@ namespace atomic_dex
             break;
         case MultiTickerData:
             qDebug() << value;
-            //qDebug() << "inserting: " << value.toJsonObject();
-            //assert(not value.toJsonObject().isEmpty());
-            item.multi_ticker_data = nlohmann_json_object_to_qt_json_object(nlohmann::json::parse(value.toString().toStdString()));
+            if (value.isValid())
+            {
+                item.multi_ticker_data = nlohmann_json_object_to_qt_json_object(nlohmann::json::parse(value.toString().toStdString()));
+            }
             break;
         default:
             return false;
