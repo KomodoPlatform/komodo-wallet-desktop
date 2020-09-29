@@ -57,7 +57,7 @@ InnerBackground {
                 }
 
                 console.log("Setting multi-order params for ", model.ticker, ":", General.prettifyJSON(params))
-                model.multi_ticker_data = params
+                model.multi_ticker_data = JSON.stringify(params)
             }
 
             Connections {
