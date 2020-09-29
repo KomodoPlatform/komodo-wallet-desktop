@@ -493,8 +493,12 @@ namespace atomic_dex
         int                    nb_items = model->rowCount();
         for (int cur_idx = 0; cur_idx < nb_items; ++cur_idx)
         {
-            QModelIndex idx = model->index(cur_idx, 0);
-            qDebug() << model->data(idx, portfolio_model::PortfolioRoles::MultiTickerData).toJsonObject();
+            QModelIndex idx                  = model->index(cur_idx, 0);
+            bool        multi_ticker_enabled = model->data(idx, portfolio_model::PortfolioRoles::IsMultiTickerCurrentlyEnabled).toBool();
+            if (multi_ticker_enabled)
+            {
+                qDebug() << model->data(idx, portfolio_model::PortfolioRoles::MultiTickerData).toJsonObject();
+            }
         }
     }
 } // namespace atomic_dex
