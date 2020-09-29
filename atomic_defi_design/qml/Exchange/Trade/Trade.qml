@@ -16,6 +16,10 @@ Item {
     readonly property bool fetching_multi_ticker_fees_busy: API.app.trading_pg.fetching_multi_ticker_fees_busy
     readonly property alias multi_order_enabled: multi_order_switch.checked
 
+    signal prepareMultiOrder()
+
+
+
     property bool sell_mode: true
     property string left_ticker: selector_left.ticker
     property string right_ticker: selector_right.ticker
@@ -521,6 +525,20 @@ Item {
 
                                 text_value: API.app.settings_pg.empty_string + (qsTr("Same funds will be used until an order matches."))
                                 font.pixelSize: first_text.font.pixelSize
+                            }
+
+                            PrimaryButton {
+                                text: API.app.settings_pg.empty_string + (qsTr("Submit Trade"))
+                                Layout.leftMargin: multi_order_switch.Layout.leftMargin
+                                Layout.rightMargin: Layout.leftMargin
+                                Layout.fillWidth: true
+                                enabled: multi_order_enabled && getCurrentForm().can_submit_trade
+                                onClicked: {
+                                    prepareMultiOrder()
+
+                                    console.log("Submitting multiple sell order")
+                                    API.app.trading_pg.place_multiple_sell_order()
+                                }
                             }
                         }
                     }

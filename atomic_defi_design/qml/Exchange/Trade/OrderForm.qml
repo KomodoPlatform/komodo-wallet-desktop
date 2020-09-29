@@ -16,6 +16,7 @@ FloatingBackground {
     property string total_amount: "0"
 
     readonly property bool form_currently_visible: is_sell_form === sell_mode
+    readonly property bool can_submit_trade: valid_trade_info && !notEnoughBalanceForFees() && isValid()
 
     function getVolume() {
         return input_volume.field.text === '' ? '0' :  input_volume.field.text
@@ -429,7 +430,7 @@ FloatingBackground {
 
             text: API.app.settings_pg.empty_string + (qsTr("Start Swap"))
             font.bold: true
-            enabled: valid_trade_info && !notEnoughBalanceForFees() && isValid()
+            enabled: !multi_order_enabled && can_submit_trade
             onClicked: confirm_trade_modal.open()
         }
 

@@ -38,7 +38,26 @@ InnerBackground {
                 info_needs_update = false
                 trade_info = undefined
                 enable_ticker.checked = false
-                // TODO: Reset multi-ticker-data
+                model.multi_ticker_data = {}
+            }
+
+            function setMultiTickerData() {
+                if(!model.is_multi_ticker_currently_enabled) return
+
+                const params = {
+                    base: left_ticker,
+                    rel: model.ticker,
+                    price: multi_order_line.price,
+                    volume: multi_order_line.volume,
+                    is_created_order: true,
+                    base_nota: "",
+                    base_confs: "",
+                    rel_nota: "",
+                    rel_confs: ""
+                }
+
+                console.log("Setting multi-order params for ", model.ticker, ":", General.prettifyJSON(params))
+                model.multi_ticker_data = params
             }
 
             Connections {
@@ -46,6 +65,10 @@ InnerBackground {
 
                 function onMulti_order_enabledChanged() {
                     multi_order_line.reset()
+                }
+
+                function onPrepareMultiOrder() {
+                    multi_order_line.setMultiTickerData()
                 }
 
                 function onFetching_multi_ticker_fees_busyChanged() {
