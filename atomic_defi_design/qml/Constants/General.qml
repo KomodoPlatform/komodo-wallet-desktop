@@ -324,36 +324,43 @@ QtObject {
         return Math.floor(Math.random() * (max - min + 1)) + min
     }
 
-    function getFiatText(v, ticker) {
-        return General.formatFiat('', v === '' ? 0 : API.app.get_fiat_from_amount(ticker, v), API.app.settings_pg.current_fiat) + " " +  General.cex_icon
+    function getFiatText(v, ticker, has_info_icon=true) {
+        return General.formatFiat('', v === '' ? 0 : API.app.get_fiat_from_amount(ticker, v), API.app.settings_pg.current_fiat)
+                + (has_info_icon ? " " +  General.cex_icon : "")
     }
 
     function hasParentCoinFees(trade_info) {
         return General.isFilled(trade_info.erc_fees) && parseFloat(trade_info.erc_fees) > 0
     }
 
-    function feeText(trade_info, base_ticker) {
+    function feeText(trade_info, base_ticker, has_info_icon=true) {
         if(!trade_info) return ""
+
+        const tx_fee = txFeeText(trade_info, base_ticker, has_info_icon)
+        const trading_fee = tradingFeeText(trade_info, base_ticker, has_info_icon)
+
+        return tx_fee + "\n" + trading_fee
+    }
+
+    function txFeeText(trade_info, base_ticker, has_info_icon=true) {
         const has_parent_coin_fees = hasParentCoinFees(trade_info)
         return (qsTr('Transaction Fee') + ': ' + General.formatCrypto("", trade_info.tx_fee, trade_info.is_ticker_of_fees_eth ? "ETH" : base_ticker)) +
-                // ETH Fees
-                (has_parent_coin_fees ? " + " + General.formatCrypto("", trade_info.erc_fees, 'ETH') : '') +
+                             // ETH Fees
+                             (has_parent_coin_fees ? " + " + General.formatCrypto("", trade_info.erc_fees, 'ETH') : '') +
 
-              // Fiat part
-              (" ("+
-                  getFiatText(!has_parent_coin_fees ? trade_info.tx_fee : General.formatDouble((parseFloat(trade_info.tx_fee) + parseFloat(trade_info.erc_fees))),
-                              trade_info.is_ticker_of_fees_eth ? 'ETH' : base_ticker)
-               +")")
+                           // Fiat part
+                           (" ("+
+                               getFiatText(!has_parent_coin_fees ? trade_info.tx_fee : General.formatDouble((parseFloat(trade_info.tx_fee) + parseFloat(trade_info.erc_fees))),
+                                           trade_info.is_ticker_of_fees_eth ? 'ETH' : base_ticker, has_info_icon)
+                            +")")
+    }
 
-              + "\n" +
+    function tradingFeeText(trade_info, base_ticker, has_info_icon=true) {
+        return qsTr('Trading Fee') + ': ' + General.formatCrypto("", trade_info.trade_fee, base_ticker) +
 
-                // Trading fee
-                qsTr('Trading Fee') + ': ' + General.formatCrypto("", trade_info.trade_fee, base_ticker) +
-
-              // Fiat part
-              (" ("+
-                  getFiatText(trade_info.trade_fee, base_ticker)
-               +")")
-
+                // Fiat part
+                (" ("+
+                    getFiatText(trade_info.trade_fee, base_ticker, has_info_icon)
+                 +")")
     }
 }

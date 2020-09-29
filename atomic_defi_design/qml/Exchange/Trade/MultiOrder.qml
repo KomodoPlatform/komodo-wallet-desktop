@@ -21,6 +21,9 @@ InnerBackground {
 
             property var trade_info
 
+            readonly property string base: sell_mode ? left_ticker : model.ticker
+            readonly property string rel: sell_mode ? model.ticker : left_ticker
+
             Connections {
                 target: exchange_trade
 
@@ -28,8 +31,8 @@ InnerBackground {
                     if(fetching_multi_ticker_fees_busy || !enable_ticker.checked) return undefined
                     if(!multi_order_line.info_needs_update) return trade_info
 
-                    const base = sell_mode ? left_ticker : model.ticker
-                    const rel =  sell_mode ? model.ticker : left_ticker
+                    const base = multi_order_line.base
+                    const rel = multi_order_line.rel
 
                     const amt = API.app.get_balance(base)
                     console.log("Updating trading info for ", base, "/", rel, " with amount:", amt)
@@ -67,6 +70,39 @@ InnerBackground {
                 onCheckedChanged: {
                     model.is_multi_ticker_currently_enabled = checked
                     if(checked) info_needs_update = true
+                }
+            }
+
+
+            DefaultText {
+                anchors.verticalCenter: enable_ticker.verticalCenter
+                anchors.right: enable_ticker.left
+                anchors.rightMargin: 10
+                visible: multi_order_line.trade_info !== undefined
+
+                text_value: API.app.settings_pg.empty_string + (General.cex_icon)
+
+                DefaultMouseArea {
+                    id: mouse_area
+                    anchors.fill: parent
+                    enabled: parent.visible
+                    hoverEnabled: true
+                }
+
+                DefaultTooltip {
+                    visible: mouse_area.containsMouse
+
+                    contentItem: ColumnLayout {
+                        DefaultText {
+                            id: tx_fee_text
+                            text_value: API.app.settings_pg.empty_string + (General.txFeeText(multi_order_line.trade_info, multi_order_line.base, false))
+                            font.pixelSize: Style.textSizeSmall4
+                        }
+                        DefaultText {
+                            text_value: API.app.settings_pg.empty_string + (General.tradingFeeText(multi_order_line.trade_info, multi_order_line.base, false))
+                            font.pixelSize: tx_fee_text.font.pixelSize
+                        }
+                    }
                 }
             }
 
