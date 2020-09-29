@@ -307,7 +307,10 @@ namespace atomic_dex
             this->m_dispatcher.trigger<multi_ticker_enabled>(item.ticker);
             break;
         case MultiTickerData:
-            item.multi_ticker_data = value.toJsonObject();
+            qDebug() << value;
+            //qDebug() << "inserting: " << value.toJsonObject();
+            //assert(not value.toJsonObject().isEmpty());
+            item.multi_ticker_data = nlohmann_json_object_to_qt_json_object(nlohmann::json::parse(value.toString().toStdString()));
             break;
         default:
             return false;

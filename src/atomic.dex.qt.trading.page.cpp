@@ -497,7 +497,8 @@ namespace atomic_dex
             bool        multi_ticker_enabled = model->data(idx, portfolio_model::PortfolioRoles::IsMultiTickerCurrentlyEnabled).toBool();
             if (multi_ticker_enabled)
             {
-                qDebug() << model->data(idx, portfolio_model::PortfolioRoles::MultiTickerData).toJsonObject();
+                QJsonObject obj = model->data(idx, portfolio_model::PortfolioRoles::MultiTickerData).toJsonObject();
+                qDebug() << obj;
             }
         }
     }
