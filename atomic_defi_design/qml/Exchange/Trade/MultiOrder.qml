@@ -57,8 +57,12 @@ InnerBackground {
 
             DefaultText {
                 anchors.centerIn: parent
-                text_value: !trade_info ? "" :
-                            trade_info.tx_fee + " + " + trade_info.trade_fee
+                text_value: {
+                    let price_field_text = getCurrentForm().price_field.text
+                    if(price_field_text === '') price_field_text = '0'
+                    const price_field_fiat = API.app.get_fiat_from_amount(exchange_trade.rel_ticker, price_field_text)
+                    return price_field_fiat
+                }
             }
 
             DefaultSwitch {
