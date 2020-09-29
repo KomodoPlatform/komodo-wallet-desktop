@@ -17,10 +17,6 @@ FloatingBackground {
 
     readonly property bool form_currently_visible: is_sell_form === sell_mode
 
-    function getFiatText(v, ticker) {
-        return General.formatFiat('', v === '' ? 0 : API.app.get_fiat_from_amount(ticker, v), API.app.settings_pg.current_fiat) + " " +  General.cex_icon
-    }
-
     function getVolume() {
         return input_volume.field.text === '' ? '0' :  input_volume.field.text
     }
@@ -30,7 +26,7 @@ FloatingBackground {
     }
 
     function hasParentCoinFees() {
-        return General.isFilled(curr_trade_info.erc_fees) && parseFloat(curr_trade_info.erc_fees) > 0
+        return General.hasParentCoinFees(curr_trade_info)
     }
 
     function hasEnoughParentCoinForFees() {
@@ -248,7 +244,7 @@ FloatingBackground {
                     anchors.top: input_price.bottom
                     anchors.topMargin: 7
 
-                    text_value: getFiatText(input_price.field.text, right_ticker)
+                    text_value: General.getFiatText(input_price.field.text, right_ticker)
                     font.pixelSize: input_price.field.font.pixelSize
 
                     CexInfoTrigger {}
@@ -288,7 +284,7 @@ FloatingBackground {
                     anchors.top: input_volume.bottom
                     anchors.topMargin: price_usd_value.anchors.topMargin
 
-                    text_value: getFiatText(input_volume.field.text, left_ticker)
+                    text_value: General.getFiatText(input_volume.field.text, left_ticker)
                     font.pixelSize: input_volume.field.font.pixelSize
 
                     CexInfoTrigger {}
@@ -376,32 +372,8 @@ FloatingBackground {
 
                         DefaultText {
                             id: tx_fee_text
-                            text_value: API.app.settings_pg.empty_string + ((qsTr('Transaction Fee') + ': ' + General.formatCrypto("", curr_trade_info.tx_fee, curr_trade_info.is_ticker_of_fees_eth ? "ETH" : base_ticker)) +
-                                                                    // ETH Fees
-                                                                    (hasParentCoinFees() ? " + " + General.formatCrypto("", curr_trade_info.erc_fees, 'ETH') : '') +
-
-                                                                  // Fiat part
-                                                                  (" ("+
-                                                                      getFiatText(!hasParentCoinFees() ? curr_trade_info.tx_fee : General.formatDouble((parseFloat(curr_trade_info.tx_fee) + parseFloat(curr_trade_info.erc_fees))),
-                                                                                  curr_trade_info.is_ticker_of_fees_eth ? 'ETH' : base_ticker)
-                                                                   +")")
-
-
-                                                                  )
+                            text_value: API.app.settings_pg.empty_string + (General.feeText(curr_trade_info, base_ticker))
                             font.pixelSize: Style.textSizeSmall1
-
-                            CexInfoTrigger {}
-                        }
-
-                        DefaultText {
-                            text_value: API.app.settings_pg.empty_string + (qsTr('Trading Fee') + ': ' + General.formatCrypto("", curr_trade_info.trade_fee, base_ticker) +
-
-                                                                  // Fiat part
-                                                                  (" ("+
-                                                                      getFiatText(curr_trade_info.trade_fee, base_ticker)
-                                                                   +")")
-                                                                  )
-                            font.pixelSize: tx_fee_text.font.pixelSize
 
                             CexInfoTrigger {}
                         }
@@ -436,7 +408,7 @@ FloatingBackground {
             }
 
             DefaultText {
-                text_value: getFiatText(total_amount, right_ticker)
+                text_value: General.getFiatText(total_amount, right_ticker)
                 font.pixelSize: input_price.field.font.pixelSize
 
                 CexInfoTrigger {}
