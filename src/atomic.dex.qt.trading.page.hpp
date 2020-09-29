@@ -118,6 +118,7 @@ namespace atomic_dex
         Q_INVOKABLE void     swap_market_pair();
         Q_INVOKABLE QVariant get_raw_mm2_coin_cfg(const QString& ticker) const noexcept;
         Q_INVOKABLE void     fetch_additional_fees(const QString& ticker) noexcept; ///< for multi ticker
+        Q_INVOKABLE void     place_multiple_sell_order() noexcept; ///< multi ticker
 
         //! Properties
         [[nodiscard]] qt_orderbook_wrapper*     get_orderbook_wrapper() const noexcept;
