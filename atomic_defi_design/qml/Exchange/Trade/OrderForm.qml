@@ -372,7 +372,7 @@ FloatingBackground {
 
                         DefaultText {
                             id: tx_fee_text
-                            text_value: API.app.settings_pg.empty_string + (General.feeText(curr_trade_info, base_ticker))
+                            text_value: API.app.settings_pg.empty_string + (General.feeText(curr_trade_info, base_ticker, true, true))
                             font.pixelSize: Style.textSizeSmall1
 
                             CexInfoTrigger {}
