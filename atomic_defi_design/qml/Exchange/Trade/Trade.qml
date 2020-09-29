@@ -472,32 +472,50 @@ Item {
                     anchors.right: parent.right
                     anchors.top: form_base.visible ? form_base.bottom : form_rel.bottom
                     anchors.topMargin: layout_margin
-                    height: column_layout.height + 30
+
+                    height: column_layout.height
 
                     ColumnLayout {
                         id: column_layout
-                        anchors.left: parent.left
-                        anchors.right: parent.right
-                        anchors.leftMargin: 10
-                        anchors.rightMargin: anchors.rightMargin
-                        anchors.verticalCenter: parent.verticalCenter
-                        DefaultSwitch {
-                            id: multi_order_switch
-                            text: API.app.settings_pg.empty_string + (qsTr("Multi-Order"))
-                            enabled: !block_everything
-                        }
 
-                        DefaultText {
-                            id: first_text
-                            Layout.fillWidth: true
-                            text_value: API.app.settings_pg.empty_string + (qsTr("Select additional assets for multi-order creation."))
-                            font.pixelSize: Style.textSizeSmall2
-                        }
+                        width: parent.width
 
-                        DefaultText {
+                        ColumnLayout {
                             Layout.fillWidth: true
-                            text_value: API.app.settings_pg.empty_string + (qsTr("Same funds will be used until an order matches."))
-                            font.pixelSize: first_text.font.pixelSize
+                            Layout.leftMargin: layout_margin
+                            Layout.rightMargin: layout_margin
+                            Layout.topMargin: layout_margin
+                            Layout.bottomMargin: layout_margin
+
+                            DefaultSwitch {
+                                id: multi_order_switch
+                                Layout.leftMargin: 15
+                                Layout.rightMargin: Layout.leftMargin
+                                Layout.fillWidth: true
+
+                                text: API.app.settings_pg.empty_string + (qsTr("Multi-Order"))
+                                enabled: !block_everything
+                            }
+
+                            DefaultText {
+                                id: first_text
+
+                                Layout.leftMargin: multi_order_switch.Layout.leftMargin
+                                Layout.rightMargin: Layout.leftMargin
+                                Layout.fillWidth: true
+
+                                text_value: API.app.settings_pg.empty_string + (qsTr("Select additional assets for multi-order creation."))
+                                font.pixelSize: Style.textSizeSmall2
+                            }
+
+                            DefaultText {
+                                Layout.leftMargin: multi_order_switch.Layout.leftMargin
+                                Layout.rightMargin: Layout.leftMargin
+                                Layout.fillWidth: true
+
+                                text_value: API.app.settings_pg.empty_string + (qsTr("Same funds will be used until an order matches."))
+                                font.pixelSize: first_text.font.pixelSize
+                            }
                         }
                     }
                 }
