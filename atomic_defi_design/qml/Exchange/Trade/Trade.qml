@@ -491,6 +491,7 @@ Item {
                             Layout.rightMargin: layout_margin
                             Layout.topMargin: layout_margin
                             Layout.bottomMargin: layout_margin
+                            spacing: layout_margin
 
                             DefaultSwitch {
                                 id: multi_order_switch
@@ -527,7 +528,7 @@ Item {
                                 font.pixelSize: first_text.font.pixelSize
                             }
 
-                            PrimaryButton {
+                            DefaultButton {
                                 text: API.app.settings_pg.empty_string + (qsTr("Submit Trade"))
                                 Layout.leftMargin: multi_order_switch.Layout.leftMargin
                                 Layout.rightMargin: Layout.leftMargin
