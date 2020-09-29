@@ -34,8 +34,19 @@ InnerBackground {
 
             readonly property double volume: parseFloat(getCurrentForm().getVolume()) * price
 
+            function reset() {
+                info_needs_update = false
+                trade_info = undefined
+                enable_ticker.checked = false
+                // TODO: Reset multi-ticker-data
+            }
+
             Connections {
                 target: exchange_trade
+
+                function onMulti_order_enabledChanged() {
+                    multi_order_line.reset()
+                }
 
                 function onFetching_multi_ticker_fees_busyChanged() {
                     if(fetching_multi_ticker_fees_busy || !enable_ticker.checked) return undefined
