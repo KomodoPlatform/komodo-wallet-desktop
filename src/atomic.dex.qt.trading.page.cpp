@@ -485,4 +485,16 @@ namespace atomic_dex
     {
         this->fetch_additional_fees(evt.ticker);
     }
+
+    void
+    trading_page::place_multiple_sell_order() noexcept
+    {
+        portfolio_proxy_model* model    = this->get_market_pairs_mdl()->get_multiple_selection_box();
+        int                    nb_items = model->rowCount();
+        for (int cur_idx = 0; cur_idx < nb_items; ++cur_idx)
+        {
+            QModelIndex idx = model->index(cur_idx, 0);
+            qDebug() << model->data(idx, portfolio_model::PortfolioRoles::MultiTickerData).toJsonObject();
+        }
+    }
 } // namespace atomic_dex
