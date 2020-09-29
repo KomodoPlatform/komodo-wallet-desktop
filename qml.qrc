@@ -173,6 +173,7 @@
         <file>atomic_defi_design/qml/Components/PrimaryButton.qml</file>
         <file>atomic_defi_design/qml/Components/InnerBackground.qml</file>
         <file>atomic_defi_design/qml/Components/FloatingBackground.qml</file>
+        <file>atomic_defi_design/qml/Components/DefaultTooltip.qml</file>
         <file>atomic_defi_design/qml/Components/DefaultImage.qml</file>
         <file>atomic_defi_design/qml/Components/DefaultAnimatedImage.qml</file>
         <file>atomic_defi_design/qml/Components/DefaultInnerShadow.qml</file>
