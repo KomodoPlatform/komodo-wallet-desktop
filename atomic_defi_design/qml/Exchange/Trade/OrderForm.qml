@@ -22,7 +22,7 @@ FloatingBackground {
     }
 
     function fieldsAreFilled() {
-        return input_volume.field.text !== '' && input_price.field.text !== ''
+        return !General.isZero(getVolume())  && !General.isZero(getCurrentPrice())
     }
 
     function hasParentCoinFees() {
