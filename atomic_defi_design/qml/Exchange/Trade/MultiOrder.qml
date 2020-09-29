@@ -10,7 +10,7 @@ InnerBackground {
         id: list
         anchors.fill: parent
 
-        model: API.app.trading_pg.market_pairs_mdl.left_selection_box
+        model: API.app.trading_pg.market_pairs_mdl.multiple_selection_box
 
         delegate: Item {
             id: multi_order_line
@@ -65,7 +65,8 @@ InnerBackground {
                 anchors.right: parent.right
                 anchors.verticalCenter: parent.verticalCenter
                 onCheckedChanged: {
-                    model.is_multi_ticker_enabled = checked
+                    //console.log(multi_order_line)
+                    model.is_multi_ticker_currently_enabled = checked
                     if(checked) info_needs_update = true
                 }
             }

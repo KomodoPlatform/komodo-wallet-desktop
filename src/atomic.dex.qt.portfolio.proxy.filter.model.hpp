@@ -23,6 +23,7 @@ namespace atomic_dex
     class portfolio_proxy_model final : public QSortFilterProxyModel
     {
         Q_OBJECT
+        QString m_excluded_coin{""};
       public:
         //! Constructor
         portfolio_proxy_model(QObject* parent);
@@ -36,6 +37,8 @@ namespace atomic_dex
         Q_INVOKABLE void sort_by_currency_balance(bool is_ascending);
         Q_INVOKABLE void sort_by_change_last24h(bool is_ascending);
         Q_INVOKABLE void sort_by_currency_unit(bool is_ascending);
+
+        void set_excluded_coin(const QString& ticker);
 
         void reset();
 

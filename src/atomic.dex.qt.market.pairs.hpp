@@ -35,11 +35,13 @@ namespace atomic_dex
         Q_PROPERTY(QString right_selected_coin READ get_right_selected_coin WRITE set_right_selected_coin NOTIFY rightSelectedCoinChanged)
         Q_PROPERTY(portfolio_proxy_model* left_selection_box READ get_left_selection_box NOTIFY leftSelectionBoxChanged)
         Q_PROPERTY(portfolio_proxy_model* right_selection_box READ get_right_selection_box NOTIFY rightSelectionBoxChanged)
+        Q_PROPERTY(portfolio_proxy_model* multiple_selection_box READ get_multiple_selection_box NOTIFY multipleSelectionBoxChanged)
 
         QString                m_left_selected_coin;
         QString                m_right_selected_coin;
         portfolio_proxy_model* m_left_selection_box;
         portfolio_proxy_model* m_right_selection_box;
+        portfolio_proxy_model* m_multiple_selection_box;
 
 
       public:
@@ -52,6 +54,7 @@ namespace atomic_dex
         [[nodiscard]] QString                get_right_selected_coin() const noexcept;
         [[nodiscard]] portfolio_proxy_model* get_left_selection_box() const noexcept;
         [[nodiscard]] portfolio_proxy_model* get_right_selection_box() const noexcept;
+        [[nodiscard]] portfolio_proxy_model* get_multiple_selection_box() const noexcept;
         void                                 set_left_selected_coin(QString left_coin) noexcept;
         void                                 set_right_selected_coin(QString right_coin) noexcept;
         void                                 reset();
@@ -61,5 +64,6 @@ namespace atomic_dex
         void rightSelectedCoinChanged();
         void leftSelectionBoxChanged();
         void rightSelectionBoxChanged();
+        void multipleSelectionBoxChanged();
     };
 } // namespace atomic_dex
