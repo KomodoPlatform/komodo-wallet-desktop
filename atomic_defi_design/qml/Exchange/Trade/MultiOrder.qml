@@ -38,7 +38,7 @@ InnerBackground {
                 info_needs_update = false
                 trade_info = undefined
                 enable_ticker.checked = false
-                model.multi_ticker_data = {}
+                model.multi_ticker_data = "{}"
             }
 
             function setMultiTickerData() {
