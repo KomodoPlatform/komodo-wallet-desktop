@@ -60,8 +60,10 @@ InnerBackground {
                 text_value: {
                     let price_field_text = getCurrentForm().price_field.text
                     if(price_field_text === '') price_field_text = '0'
-                    const price_field_fiat = API.app.get_fiat_from_amount(exchange_trade.rel_ticker, price_field_text)
-                    return price_field_fiat
+                    const rel_price_for_one_unit = parseFloat(model.main_currency_price_for_one_unit)
+                    const price_field_fiat = parseFloat(price_field_text) * rel_price_for_one_unit
+                    const rel_price_relative = rel_price_for_one_unit === 0 ? 0 : price_field_fiat / rel_price_for_one_unit
+                    return General.formatCrypto("", rel_price_relative, multi_order_line.rel)
                 }
             }
 
