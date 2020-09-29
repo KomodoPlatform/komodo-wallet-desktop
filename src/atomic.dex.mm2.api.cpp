@@ -748,7 +748,7 @@ namespace mm2::api
               .order_type       = is_maker ? "maker" : "taker",
               .base_amount      = is_maker ? value.at("max_base_vol").get<std::string>() : value.at("request").at("base_amount").get<std::string>(),
               .rel_amount       = is_maker ? (t_float_50(contents.price) * t_float_50(contents.base_amount)).convert_to<std::string>() : value.at("request").at("rel_amount").get<std::string>(),
-              .human_timestamp  = to_human_date(time_key, "%F    %T"),
+              .human_timestamp  = to_human_date<std::chrono::seconds>(time_key / 1000, "%F    %T"),
               .action = action};
           out.try_emplace(time_key, std::move(contents));
         };
