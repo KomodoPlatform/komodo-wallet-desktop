@@ -55,6 +55,7 @@ Item {
         form_base.reset()
         form_rel.reset()
         resetTradeInfo()
+        multi_order_switch.checked = false
     }
 
     // Price
@@ -407,7 +408,7 @@ Item {
                     anchors.bottom: price_line.top
                     anchors.bottomMargin: layout_margin
 
-                    currentIndex: multi_order_switch.checked ? 1 : 0
+                    currentIndex: multi_order_enabled ? 1 : 0
 
                     Orderbook {
                         Layout.fillWidth: true
@@ -495,6 +496,11 @@ Item {
 
                                 text: API.app.settings_pg.empty_string + (qsTr("Multi-Order"))
                                 enabled: !block_everything
+                                onCheckedChanged: {
+                                    if(checked) {
+                                        getCurrentForm().field.text = getCurrentForm().getVolumeCap()
+                                    }
+                                }
                             }
 
                             DefaultText {

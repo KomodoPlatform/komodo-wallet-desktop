@@ -261,6 +261,7 @@ FloatingBackground {
                 AmountFieldWithInfo {
                     id: input_volume
                     width: parent.width
+                    enabled: !multi_order_enabled
 
                     field.left_text: API.app.settings_pg.empty_string + (qsTr("Volume"))
                     field.right_text: left_ticker
