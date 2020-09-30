@@ -473,6 +473,8 @@ Item {
 
                 // Multi-Order
                 FloatingBackground {
+                    visible: sell_mode
+
                     anchors.left: parent.left
                     anchors.right: parent.right
                     anchors.top: form_base.visible ? form_base.bottom : form_rel.bottom
