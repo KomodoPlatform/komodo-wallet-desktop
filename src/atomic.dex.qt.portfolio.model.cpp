@@ -314,7 +314,7 @@ namespace atomic_dex
             }
             break;
         case MultiTickerData:
-            item.multi_ticker_data = value.value<QJSValue>().toVariant().toJsonObject();
+            item.multi_ticker_data = QJsonObject::fromVariantMap(value.value<QVariantMap>());
             // qDebug() << value;
             /*if (value.isValid())
             {
