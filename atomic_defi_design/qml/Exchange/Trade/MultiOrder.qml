@@ -34,11 +34,15 @@ InnerBackground {
 
             readonly property double volume: parseFloat(getCurrentForm().getVolume()) * price
 
+            function resetData() {
+                trade_info = undefined
+                model.multi_ticker_data = "{}"
+            }
+
             function reset() {
                 info_needs_update = false
-                trade_info = undefined
+                resetData()
                 enable_ticker.checked = false
-                model.multi_ticker_data = "{}"
             }
 
             function setMultiTickerData() {
@@ -122,6 +126,7 @@ InnerBackground {
                 enabled: !block_everything
                 onCheckedChanged: {
                     model.is_multi_ticker_currently_enabled = checked
+                    resetData()
                     if(checked) info_needs_update = true
                 }
             }
