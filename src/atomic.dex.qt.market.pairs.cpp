@@ -24,7 +24,7 @@ namespace atomic_dex
 {
     market_pairs::market_pairs(portfolio_model* portfolio_mdl, QObject* parent) :
         QObject(parent), m_left_selection_box(new portfolio_proxy_model(nullptr)), m_right_selection_box(new portfolio_proxy_model(nullptr)),
-        m_multiple_selection_box(new portfolio_proxy_model(nullptr))
+        m_multiple_selection_box(new portfolio_proxy_model(nullptr)), m_multi_order_coins(new portfolio_proxy_model(nullptr))
     {
         spdlog::trace("{} l{} f[{}]", __FUNCTION__, __LINE__, fs::path(__FILE__).filename().string());
         spdlog::trace("market pairs model created");
@@ -45,6 +45,12 @@ namespace atomic_dex
         m_multiple_selection_box->setDynamicSortFilter(true);
         m_multiple_selection_box->sort_by_name(true);
         this->m_multiple_selection_box->setFilterRole(portfolio_model::PortfolioRoles::NameAndTicker);
+        this->m_multiple_selection_box->setFilterCaseSensitivity(Qt::CaseInsensitive);
+
+        m_multi_order_coins->setSourceModel(portfolio_mdl);
+        m_multi_order_coins->setDynamicSortFilter(true);
+        m_multi_order_coins->sort_by_name(true);
+        this->m_multi_order_coins->setFilterRole(portfolio_model::PortfolioRoles::IsMultiTickerCurrentlyEnabled);
         this->m_multiple_selection_box->setFilterCaseSensitivity(Qt::CaseInsensitive);
     }
 
@@ -112,6 +118,12 @@ namespace atomic_dex
     market_pairs::get_multiple_selection_box() const noexcept
     {
         return m_multiple_selection_box;
+    }
+
+    portfolio_proxy_model*
+    market_pairs::get_multiple_order_coins() const noexcept
+    {
+        return m_multi_order_coins;
     }
 
     void

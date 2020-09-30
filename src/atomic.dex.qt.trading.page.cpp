@@ -502,7 +502,6 @@ namespace atomic_dex
             if (multi_ticker_enabled)
             {
                 QJsonObject obj = model->data(idx, portfolio_model::PortfolioRoles::MultiTickerData).toJsonObject();
-                //qDebug() << obj;
                 if (not obj.isEmpty())
                 {
                     nlohmann::json json = nlohmann::json::parse(QJsonDocument(obj).toJson(QJsonDocument::Compact).toStdString());
