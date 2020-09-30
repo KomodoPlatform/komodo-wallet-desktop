@@ -498,25 +498,32 @@ namespace atomic_dex
         {
             QModelIndex idx                  = model->index(cur_idx, 0);
             bool        multi_ticker_enabled = model->data(idx, portfolio_model::PortfolioRoles::IsMultiTickerCurrentlyEnabled).toBool();
-            qDebug() << model->data(idx, portfolio_model::PortfolioRoles::TickerRole).toString();
+            std::string ticker               = model->data(idx, portfolio_model::PortfolioRoles::TickerRole).toString().toStdString();
             if (multi_ticker_enabled)
             {
-                QJsonObject    obj  = model->data(idx, portfolio_model::PortfolioRoles::MultiTickerData).toJsonObject();
-                qDebug() << obj;
-                nlohmann::json json = nlohmann::json::parse(QJsonDocument(obj).toJson(QJsonDocument::Compact).toStdString());
-                t_sell_request req{
-                    .base             = json.at("base").get<std::string>(),
-                    .rel              = json.at("rel").get<std::string>(),
-                    .price            = json.at("price").get<std::string>(),
-                    .volume           = json.at("volume").get<std::string>(),
-                    .is_created_order = json.at("is_created_order").get<bool>(),
-                    .price_denom      = "",
-                    .price_numer      = "",
-                    .rel_nota         = "",
-                    .rel_confs        = 0};
-                nlohmann::json sell_request = ::mm2::api::template_request("sell");
-                ::mm2::api::to_json(sell_request, req);
-                batch.push_back(sell_request);
+                QJsonObject obj = model->data(idx, portfolio_model::PortfolioRoles::MultiTickerData).toJsonObject();
+                //qDebug() << obj;
+                if (not obj.isEmpty())
+                {
+                    nlohmann::json json = nlohmann::json::parse(QJsonDocument(obj).toJson(QJsonDocument::Compact).toStdString());
+                    t_sell_request req{
+                        .base             = json.at("base").get<std::string>(),
+                        .rel              = json.at("rel").get<std::string>(),
+                        .price            = json.at("price").get<std::string>(),
+                        .volume           = json.at("volume").get<std::string>(),
+                        .is_created_order = json.at("is_created_order").get<bool>(),
+                        .price_denom      = "",
+                        .price_numer      = "",
+                        .rel_nota         = "",
+                        .rel_confs        = 0};
+                    nlohmann::json sell_request = ::mm2::api::template_request("sell");
+                    ::mm2::api::to_json(sell_request, req);
+                    batch.push_back(sell_request);
+                }
+                else
+                {
+                    spdlog::error("empty json send from the front end for ticker: {} - ignoring", ticker);
+                }
             }
         }
         // spdlog::trace("batch multiple sell -> {}", batch.dump(4));
