@@ -63,6 +63,8 @@ InnerBackground {
                             // Retrigger the data changes
                             enable_ticker.checked = true
                         }
+
+                        price = auto_price
                     }
 
                     function setMultiTickerData() {
