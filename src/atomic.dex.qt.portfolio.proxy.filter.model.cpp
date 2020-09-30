@@ -113,11 +113,15 @@ namespace atomic_dex
         QModelIndex idx = this->sourceModel()->index(source_row, 0, source_parent);
         assert(this->sourceModel()->hasIndex(idx.row(), 0));
         QString ticker = this->sourceModel()->data(idx, atomic_dex::portfolio_model::TickerRole).toString();
-        /*bool is_excluded = this->sourceModel()->data(idx, atomic_dex::portfolio_model::Excluded).toBool();
-        if (is_excluded)
+        if (this->filterRole() == atomic_dex::portfolio_model::IsMultiTickerCurrentlyEnabled)
         {
-            return false;
-        }*/
+            bool is_enabled = this->sourceModel()->data(idx, atomic_dex::portfolio_model::IsMultiTickerCurrentlyEnabled).toBool();
+            if (not is_enabled)
+            {
+                return false;
+            }
+        }
+
         if (m_excluded_coin == ticker)
         {
             return false;
