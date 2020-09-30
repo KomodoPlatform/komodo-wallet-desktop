@@ -14,6 +14,7 @@
  *                                                                            *
  ******************************************************************************/
 
+#include <QJSValue>
 #include <taskflow/taskflow.hpp>
 
 //! PCH
@@ -313,11 +314,12 @@ namespace atomic_dex
             }
             break;
         case MultiTickerData:
+            item.multi_ticker_data = value.value<QJSValue>().toVariant().toJsonObject();
             // qDebug() << value;
-            if (value.isValid())
+            /*if (value.isValid())
             {
                 item.multi_ticker_data = nlohmann_json_object_to_qt_json_object(nlohmann::json::parse(value.toString().toStdString()));
-            }
+            }*/
             break;
         default:
             return false;
