@@ -130,13 +130,19 @@ InnerBackground {
                 anchors.right: parent.right
                 anchors.verticalCenter: parent.verticalCenter
                 enabled: !block_everything
+                Component.onCompleted: checked = model.is_multi_ticker_currently_enabled
                 onCheckedChanged: {
                     model.is_multi_ticker_currently_enabled = checked
-                    resetData()
+
                     if(checked) {
                         let d = getData()
-                        d.info_needs_update = true
-                        setData(d)
+                        if(!d.trade_info) {
+                            d.info_needs_update = true
+                            setData(d)
+                        }
+                    }
+                    else if(!checked) {
+                        resetData()
                     }
                 }
             }
