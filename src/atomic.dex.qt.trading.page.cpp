@@ -498,9 +498,11 @@ namespace atomic_dex
         {
             QModelIndex idx                  = model->index(cur_idx, 0);
             bool        multi_ticker_enabled = model->data(idx, portfolio_model::PortfolioRoles::IsMultiTickerCurrentlyEnabled).toBool();
+            qDebug() << model->data(idx, portfolio_model::PortfolioRoles::TickerRole).toString();
             if (multi_ticker_enabled)
             {
                 QJsonObject    obj  = model->data(idx, portfolio_model::PortfolioRoles::MultiTickerData).toJsonObject();
+                qDebug() << obj;
                 nlohmann::json json = nlohmann::json::parse(QJsonDocument(obj).toJson(QJsonDocument::Compact).toStdString());
                 t_sell_request req{
                     .base             = json.at("base").get<std::string>(),
