@@ -70,6 +70,11 @@ InnerBackground {
                     function setMultiTickerData() {
                         if(!model.is_multi_ticker_currently_enabled) return
 
+                        if(multi_order_line.price <= 0) {
+                            console.log(model.ticker + " price is not higher than zero, not creating an order for this one")
+                            return
+                        }
+
                         let params = getData()
                         params.base = left_ticker
                         params.rel = model.ticker
