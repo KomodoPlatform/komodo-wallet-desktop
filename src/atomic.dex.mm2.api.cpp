@@ -728,7 +728,7 @@ namespace mm2::api
     {
         static_cast<void>(answer);
         // clang-format off
-        auto filler_functor = [](const std::string& key, const nlohmann::json& value, std::map<std::size_t, my_order_contents>& out, bool is_maker)
+        auto filler_functor = [](const std::string& key, const nlohmann::json& value, std::map<std::string, my_order_contents>& out, bool is_maker)
         {
           using namespace date;
           const auto        time_key = value.at("created_at").get<std::size_t>();
@@ -750,7 +750,7 @@ namespace mm2::api
               .rel_amount       = is_maker ? (t_float_50(contents.price) * t_float_50(contents.base_amount)).convert_to<std::string>() : value.at("request").at("rel_amount").get<std::string>(),
               .human_timestamp  = to_human_date<std::chrono::seconds>(time_key / 1000, "%F    %T"),
               .action = action};
-          out.try_emplace(time_key, std::move(contents));
+          out.try_emplace(contents.order_id, std::move(contents));
         };
         // clang-format on
 

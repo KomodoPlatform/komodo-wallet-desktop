@@ -18,9 +18,9 @@
 #include "atomic.dex.pch.hpp"
 
 //! Project
-#include "atomic.dex.qt.orders.model.hpp"
 #include "atomic.dex.mm2.hpp"
 #include "atomic.dex.qt.events.hpp"
+#include "atomic.dex.qt.orders.model.hpp"
 #include "atomic.dex.qt.utilities.hpp"
 
 //! Utils
@@ -469,6 +469,13 @@ namespace atomic_dex
             functor_process_orders(orders.maker_orders);
             functor_process_orders(orders.taker_orders);
 
+            spdlog::trace(
+                "size of raw orders: {}, taker orders size: {}, maker orders size: {}",
+                orders.maker_orders.size() + orders.taker_orders.size(),
+                orders.taker_orders.size(),
+                orders.maker_orders.size());
+
+            spdlog::trace("size of id registry: {}", m_orders_id_registry.size());
             //! Check for cleaning orders that are not present anymore
             std::unordered_set<std::string> to_remove;
             for (auto&& id: this->m_orders_id_registry)
@@ -588,9 +595,7 @@ namespace atomic_dex
         for (auto&& cur_hist_swap: m_model_data)
         {
             if ((cur_hist_swap.base_coin == coin || cur_hist_swap.rel_coin == coin) &&
-                (cur_hist_swap.order_status == "matched" ||
-                 cur_hist_swap.order_status == "ongoing" ||
-                 cur_hist_swap.order_status == "matching"))
+                (cur_hist_swap.order_status == "matched" || cur_hist_swap.order_status == "ongoing" || cur_hist_swap.order_status == "matching"))
             {
                 return true;
             }
