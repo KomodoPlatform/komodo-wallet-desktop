@@ -246,6 +246,7 @@ QtObject {
                                           "CRYPTO": "#F58736",
                                           "LABS": "#C1F6E1",
                                           "MGW": "#854F2F",
+                                          "MONA": "#DEC799",
                                           "RFOX": "#D83331",
                                           "BOTS": "#F69B57",
                                           "MCL": "#EA0000",
