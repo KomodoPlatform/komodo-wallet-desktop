@@ -179,38 +179,13 @@ InnerBackground {
                         }
                     }
 
-
-                    DefaultText {
+                    FeeIcon {
                         id: fee_info_button
                         anchors.verticalCenter: enable_ticker.verticalCenter
                         anchors.right: enable_ticker.left
                         anchors.rightMargin: 10
-                        visible: model.multi_ticker_data.trade_info !== undefined
-
-                        text_value: API.app.settings_pg.empty_string + (General.cex_icon)
-
-                        DefaultMouseArea {
-                            id: mouse_area
-                            anchors.fill: parent
-                            enabled: parent.visible
-                            hoverEnabled: true
-                        }
-
-                        DefaultTooltip {
-                            visible: mouse_area.containsMouse
-
-                            contentItem: ColumnLayout {
-                                DefaultText {
-                                    id: tx_fee_text
-                                    text_value: API.app.settings_pg.empty_string + (General.txFeeText(model.multi_ticker_data.trade_info, multi_order_line.base, false))
-                                    font.pixelSize: Style.textSizeSmall4
-                                }
-                                DefaultText {
-                                    text_value: API.app.settings_pg.empty_string + (General.tradingFeeText(model.multi_ticker_data.trade_info, multi_order_line.base, false))
-                                    font.pixelSize: tx_fee_text.font.pixelSize
-                                }
-                            }
-                        }
+                        trade_info: model.multi_ticker_data.trade_info
+                        base: multi_order_line.base
                     }
 
                     HorizontalLine {

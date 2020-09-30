@@ -131,6 +131,7 @@
         <file>atomic_defi_design/qml/Exchange/Trade/DexComboBoxLine.qml</file>
         <file>atomic_defi_design/qml/Exchange/Trade/OrderbookSection.qml</file>
         <file>atomic_defi_design/qml/Exchange/Trade/Orderbook.qml</file>
+        <file>atomic_defi_design/qml/Exchange/Trade/FeeIcon.qml</file>
         <file>atomic_defi_design/qml/Exchange/Trade/MultiOrder.qml</file>
         <file>atomic_defi_design/qml/Exchange/Trade/CandleStickChart.qml</file>
         <file>atomic_defi_design/qml/Exchange/Trade/TickerSelector.qml</file>

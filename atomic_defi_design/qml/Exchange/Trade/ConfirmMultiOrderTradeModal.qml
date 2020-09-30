@@ -43,6 +43,14 @@ BasicModal {
                     date: "",
                     order_id: "",
                 })
+
+                FeeIcon {
+                    anchors.verticalCenter: parent.verticalCenter
+                    anchors.right: parent.right
+                    anchors.rightMargin: 30
+                    trade_info: order_data.trade_info
+                    base: order_data.base
+                }
             }
         }
 
