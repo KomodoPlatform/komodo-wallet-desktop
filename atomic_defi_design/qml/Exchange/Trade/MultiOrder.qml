@@ -17,10 +17,6 @@ InnerBackground {
             width: list.width
             height: 60
 
-            property bool info_needs_update: false
-
-            property var trade_info
-
             readonly property string base: sell_mode ? left_ticker : model.ticker
             readonly property string rel: sell_mode ? model.ticker : left_ticker
 
@@ -34,30 +30,61 @@ InnerBackground {
 
             readonly property double volume: parseFloat(getCurrentForm().getVolume()) * price
 
-            function reset() {
-                info_needs_update = false
-                trade_info = undefined
-                enable_ticker.checked = false
+            function resetData() {
                 model.multi_ticker_data = "{}"
+            }
+
+            function getData() {
+                return model.multi_ticker_data || {}
+            }
+
+            function setData(d) {
+                model.multi_ticker_data = JSON.stringify(d)
+            }
+
+            function reset() {
+                resetData()
+                enable_ticker.checked = false
             }
 
             function setMultiTickerData() {
                 if(!model.is_multi_ticker_currently_enabled) return
 
-                const params = {
-                    base: left_ticker,
-                    rel: model.ticker,
-                    price: "" + multi_order_line.price,
-                    volume: getCurrentForm().getVolume(),
-                    is_created_order: true,
-                    base_nota: "",
-                    base_confs: "",
-                    rel_nota: "",
-                    rel_confs: ""
-                }
+                let params = General.clone(model.multi_ticker_data)
+                params.base = left_ticker
+                params.rel = model.ticker
+                params.price = "" + multi_order_line.price
+                params.volume = getCurrentForm().getVolume()
+                params.is_created_order = true
+                params.base_nota = ""
+                params.base_confs = ""
+                params.rel_nota = ""
+                params.rel_confs = ""
 
                 console.log("Setting multi-order params for ", model.ticker, ":", General.prettifyJSON(params))
                 model.multi_ticker_data = JSON.stringify(params)
+            }
+
+            function updateTradeInfo() {
+                if(fetching_multi_ticker_fees_busy || !enable_ticker.checked) return
+                if(!model.multi_ticker_data.info_needs_update) return
+
+                const base = multi_order_line.base
+                const rel = multi_order_line.rel
+
+                const amt = API.app.get_balance(base)
+                console.log("Updating trading info for ", base, "/", rel, " with amount:", amt)
+                let info = API.app.get_trade_infos(base, rel, amt)
+                console.log(General.prettifyJSON(info))
+                if(info.input_final_value === undefined || info.input_final_value === "nan" || info.input_final_value === "NaN") {
+                    console.log("Bad trade info!")
+                    return
+                }
+
+                let d = getData()
+                d.info_needs_update = false
+                d.trade_info = info
+                setData(d)
             }
 
             Connections {
@@ -72,24 +99,7 @@ InnerBackground {
                 }
 
                 function onFetching_multi_ticker_fees_busyChanged() {
-                    if(fetching_multi_ticker_fees_busy || !enable_ticker.checked) return undefined
-                    if(!multi_order_line.info_needs_update) return trade_info
-
-                    const base = multi_order_line.base
-                    const rel = multi_order_line.rel
-
-                    const amt = API.app.get_balance(base)
-                    console.log("Updating trading info for ", base, "/", rel, " with amount:", amt)
-                    let info = API.app.get_trade_infos(base, rel, amt)
-                    console.log(General.prettifyJSON(info))
-                    if(info.input_final_value === undefined || info.input_final_value === "nan" || info.input_final_value === "NaN") {
-                        console.log("Bad trade info!")
-                        return undefined
-                    }
-
-                    multi_order_line.info_needs_update = false
-
-                    multi_order_line.trade_info = info
+                    multi_order_line.updateTradeInfo()
                 }
             }
 
@@ -120,9 +130,20 @@ InnerBackground {
                 anchors.right: parent.right
                 anchors.verticalCenter: parent.verticalCenter
                 enabled: !block_everything
+                Component.onCompleted: checked = model.is_multi_ticker_currently_enabled
                 onCheckedChanged: {
                     model.is_multi_ticker_currently_enabled = checked
-                    if(checked) info_needs_update = true
+
+                    if(checked) {
+                        let d = getData()
+                        if(!d.trade_info) {
+                            d.info_needs_update = true
+                            setData(d)
+                        }
+                    }
+                    else if(!checked) {
+                        resetData()
+                    }
                 }
             }
 
@@ -131,7 +152,7 @@ InnerBackground {
                 anchors.verticalCenter: enable_ticker.verticalCenter
                 anchors.right: enable_ticker.left
                 anchors.rightMargin: 10
-                visible: multi_order_line.trade_info !== undefined
+                visible: model.multi_ticker_data.trade_info !== undefined
 
                 text_value: API.app.settings_pg.empty_string + (General.cex_icon)
 
@@ -148,11 +169,11 @@ InnerBackground {
                     contentItem: ColumnLayout {
                         DefaultText {
                             id: tx_fee_text
-                            text_value: API.app.settings_pg.empty_string + (General.txFeeText(multi_order_line.trade_info, multi_order_line.base, false))
+                            text_value: API.app.settings_pg.empty_string + (General.txFeeText(model.multi_ticker_data.trade_info, multi_order_line.base, false))
                             font.pixelSize: Style.textSizeSmall4
                         }
                         DefaultText {
-                            text_value: API.app.settings_pg.empty_string + (General.tradingFeeText(multi_order_line.trade_info, multi_order_line.base, false))
+                            text_value: API.app.settings_pg.empty_string + (General.tradingFeeText(model.multi_ticker_data.trade_info, multi_order_line.base, false))
                             font.pixelSize: tx_fee_text.font.pixelSize
                         }
                     }

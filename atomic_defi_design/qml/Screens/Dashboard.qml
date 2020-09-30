@@ -56,7 +56,8 @@ Item {
         return app.current_page === idx_dashboard
     }
 
-    property var portfolio_coins: API.app.portfolio_pg.portfolio_mdl.portfolio_proxy_mdl
+    readonly property var portfolio_mdl: API.app.portfolio_pg.portfolio_mdl
+    property var portfolio_coins: portfolio_mdl.portfolio_proxy_mdl
 
     function resetCoinFilter() {
         portfolio_coins.setFilterFixedString("")
