@@ -538,9 +538,7 @@ Item {
                                 enabled: multi_order_enabled && getCurrentForm().can_submit_trade
                                 onClicked: {
                                     prepareMultiOrder()
-
-                                    console.log("Submitting multiple sell order")
-                                    API.app.trading_pg.place_multiple_sell_order()
+                                    confirm_multi_order_trade_modal.open()
                                 }
                             }
                         }
@@ -551,6 +549,10 @@ Item {
 
         ConfirmTradeModal {
             id: confirm_trade_modal
+        }
+
+        ConfirmMultiOrderTradeModal {
+            id: confirm_multi_order_trade_modal
         }
     }
 }

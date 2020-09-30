@@ -124,6 +124,7 @@
         <file>atomic_defi_design/qml/Constants/Style.qml</file>
         <file>atomic_defi_design/qml/Exchange/Trade/Trade.qml</file>
         <file>atomic_defi_design/qml/Exchange/Trade/ConfirmTradeModal.qml</file>
+        <file>atomic_defi_design/qml/Exchange/Trade/ConfirmMultiOrderTradeModal.qml</file>
         <file>atomic_defi_design/qml/Exchange/Trade/PriceLine.qml</file>
         <file>atomic_defi_design/qml/Exchange/Trade/OrderForm.qml</file>
         <file>atomic_defi_design/qml/Exchange/Trade/DexComboBox.qml</file>

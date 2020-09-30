@@ -30,7 +30,7 @@ InnerBackground {
                     readonly property string base: sell_mode ? left_ticker : model.ticker
                     readonly property string rel: sell_mode ? model.ticker : left_ticker
 
-                    readonly property double auto_price: {
+                    readonly property string auto_price: {
                         const current_price = parseFloat(getCurrentPrice())
                         const rel_price_for_one_unit = parseFloat(model.main_currency_price_for_one_unit)
                         const price_field_fiat = current_price * API.app.get_fiat_from_amount(rel_ticker, "1")
@@ -40,9 +40,9 @@ InnerBackground {
 
                     onAuto_priceChanged: price = auto_price
 
-                    property double price: auto_price
+                    property string price: auto_price
 
-                    readonly property double volume: parseFloat(getCurrentForm().getVolume()) * price
+                    readonly property double volume: parseFloat(getCurrentForm().getVolume()) * parseFloat(price)
 
                     function resetData() {
                         model.multi_ticker_data = {}
@@ -70,21 +70,26 @@ InnerBackground {
                     function setMultiTickerData() {
                         if(!model.is_multi_ticker_currently_enabled) return
 
-                        if(multi_order_line.price <= 0) {
+                        if(parseFloat(multi_order_line.price) <= 0) {
+                            toast.show(qsTr("%1 price is zero!", "TICKER").arg(model.ticker), General.time_toast_important_error)
+
                             console.log(model.ticker + " price is not higher than zero, not creating an order for this one")
+                            reset(true)
                             return
                         }
 
                         let params = getData()
                         params.base = left_ticker
                         params.rel = model.ticker
-                        params.price = "" + multi_order_line.price
+                        params.price = multi_order_line.price
                         params.volume = getCurrentForm().getVolume()
                         params.is_created_order = true
                         params.base_nota = ""
                         params.base_confs = ""
                         params.rel_nota = ""
                         params.rel_confs = ""
+
+                        params.rel_volume = "" + multi_order_line.volume
 
                         console.log("Setting multi-order params for ", model.ticker, ":", General.prettifyJSON(params))
                         setData(params)
