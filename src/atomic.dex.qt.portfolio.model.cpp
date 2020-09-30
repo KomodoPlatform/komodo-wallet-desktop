@@ -303,11 +303,17 @@ namespace atomic_dex
             item.ticker_and_name = value.toString();
             break;
         case IsMultiTickerCurrentlyEnabled:
-            item.is_multi_ticker_enabled = value.toBool();
-            this->m_dispatcher.trigger<multi_ticker_enabled>(item.ticker);
+            if (item.is_multi_ticker_enabled != value.toBool())
+            {
+                item.is_multi_ticker_enabled = value.toBool();
+                if (item.is_multi_ticker_enabled == true)
+                {
+                    this->m_dispatcher.trigger<multi_ticker_enabled>(item.ticker);
+                }
+            }
             break;
         case MultiTickerData:
-            qDebug() << value;
+            // qDebug() << value;
             if (value.isValid())
             {
                 item.multi_ticker_data = nlohmann_json_object_to_qt_json_object(nlohmann::json::parse(value.toString().toStdString()));
