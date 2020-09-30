@@ -13,6 +13,7 @@ InnerBackground {
         contentWidth: width
         contentHeight: column.height
 
+
         Column {
             id: column
 
@@ -23,6 +24,8 @@ InnerBackground {
                     id: multi_order_line
                     width: list.width
                     height: 60
+
+                    readonly property bool is_parent_coin: model.ticker === rel_ticker
 
                     readonly property string base: sell_mode ? left_ticker : model.ticker
                     readonly property string rel: sell_mode ? model.ticker : left_ticker
@@ -49,9 +52,13 @@ InnerBackground {
                         model.multi_ticker_data = d
                     }
 
-                    function reset() {
-                        resetData()
+                    function reset(multi_order_enabled) {
+                        // Clear first
                         enable_ticker.checked = false
+                        if(is_parent_coin && multi_order_enabled) {
+                            // Retrigger the data changes
+                            enable_ticker.checked = true
+                        }
                     }
 
                     function setMultiTickerData() {
@@ -98,7 +105,7 @@ InnerBackground {
                         target: exchange_trade
 
                         function onMulti_order_enabledChanged() {
-                            multi_order_line.reset()
+                            multi_order_line.reset(multi_order_enabled)
                         }
 
                         function onPrepareMultiOrder() {
@@ -136,8 +143,9 @@ InnerBackground {
                         anchors.rightMargin: 10
                         anchors.right: parent.right
                         anchors.verticalCenter: parent.verticalCenter
-                        enabled: !block_everything
-                        Component.onCompleted: checked = model.is_multi_ticker_currently_enabled
+                        enabled: !block_everything && !is_parent_coin
+                        Component.onCompleted: checked = model.is_multi_ticker_currently_enabled || is_parent_coin
+                        checked: is_parent_coin
                         onCheckedChanged: {
                             model.is_multi_ticker_currently_enabled = checked
 
