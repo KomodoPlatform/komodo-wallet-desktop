@@ -30,13 +30,17 @@ InnerBackground {
                     readonly property string base: sell_mode ? left_ticker : model.ticker
                     readonly property string rel: sell_mode ? model.ticker : left_ticker
 
-                    readonly property double price: {
+                    readonly property double auto_price: {
                         const current_price = parseFloat(getCurrentPrice())
                         const rel_price_for_one_unit = parseFloat(model.main_currency_price_for_one_unit)
                         const price_field_fiat = current_price * API.app.get_fiat_from_amount(rel_ticker, "1")
                         const rel_price_relative = rel_price_for_one_unit === 0 ? 0 : price_field_fiat / rel_price_for_one_unit
-                        return rel_price_relative
+                        return General.formatDouble(rel_price_relative)
                     }
+
+                    onAuto_priceChanged: price = auto_price
+
+                    property double price: auto_price
 
                     readonly property double volume: parseFloat(getCurrentForm().getVolume()) * price
 
@@ -121,21 +125,22 @@ InnerBackground {
                         anchors.fill: parent
                         details: model
                         padding: 10
+                        bottom_text: API.app.settings_pg.empty_string + (qsTr("Volume") + ": " + General.formatCrypto("", multi_order_line.volume, multi_order_line.rel))
                     }
 
-                    DefaultText {
-                        id: price_text
-                        anchors.centerIn: parent
-                        text_value: API.app.settings_pg.empty_string + (qsTr("Price") + ": " + General.formatCrypto("", multi_order_line.price, multi_order_line.rel))
-                        font.pixelSize: Style.textSizeSmall3
-                    }
+                    AmountFieldWithInfo {
+                        id: input_price
+                        width: 200
+                        anchors.right: fee_info_button.left
+                        anchors.rightMargin: 30
+                        anchors.verticalCenter: parent.verticalCenter
 
-                    DefaultText {
-                        anchors.left: price_text.left
-                        anchors.top: price_text.bottom
-                        anchors.topMargin: 6
-                        text_value: API.app.settings_pg.empty_string + (qsTr("Volume") + ": " + General.formatCrypto("", multi_order_line.volume, multi_order_line.rel))
-                        font.pixelSize: Style.textSizeSmall3
+                        field.left_text: API.app.settings_pg.empty_string + (qsTr("Price"))
+                        field.right_text: model.ticker
+                        field.onTextChanged: multi_order_line.price = field.text
+
+                        field.text: multi_order_line.price
+                        field.enabled: !is_parent_coin
                     }
 
                     DefaultSwitch {
@@ -164,6 +169,7 @@ InnerBackground {
 
 
                     DefaultText {
+                        id: fee_info_button
                         anchors.verticalCenter: enable_ticker.verticalCenter
                         anchors.right: enable_ticker.left
                         anchors.rightMargin: 10
