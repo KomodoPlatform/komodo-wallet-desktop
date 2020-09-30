@@ -31,7 +31,7 @@ InnerBackground {
             readonly property double volume: parseFloat(getCurrentForm().getVolume()) * price
 
             function resetData() {
-                model.multi_ticker_data = "{}"
+                model.multi_ticker_data = {}
             }
 
             function getData() {
@@ -39,7 +39,7 @@ InnerBackground {
             }
 
             function setData(d) {
-                model.multi_ticker_data = JSON.stringify(d)
+                model.multi_ticker_data = d
             }
 
             function reset() {
@@ -62,7 +62,7 @@ InnerBackground {
                 params.rel_confs = ""
 
                 console.log("Setting multi-order params for ", model.ticker, ":", General.prettifyJSON(params))
-                model.multi_ticker_data = JSON.stringify(params)
+                setData(params)
             }
 
             function updateTradeInfo() {
