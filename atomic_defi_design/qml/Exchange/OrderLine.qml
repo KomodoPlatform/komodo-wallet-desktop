@@ -162,7 +162,7 @@ AnimatedRectangle {
     }
 
     HorizontalLine {
-        visible: index !== items.length -1
+        visible: !items ? true : index !== items.length -1
         width: parent.width
         color: Style.colorWhite9
         anchors.bottom: parent.bottom

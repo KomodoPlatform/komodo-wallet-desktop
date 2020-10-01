@@ -78,6 +78,14 @@ InnerBackground {
                             return
                         }
 
+                        if(multi_order_line.volume < General.getMinTradeAmount()) {
+                            toast.show(qsTr("%1 receive volume is lower than minimum trade amount", "TICKER").arg(model.ticker) + " : " + General.getMinTradeAmount(), General.time_toast_important_error)
+
+                            console.log(model.ticker + " receive volume is lower than minimum trade amount, not creating an order for this one")
+                            reset(true)
+                            return
+                        }
+
                         let params = getData()
                         params.base = left_ticker
                         params.rel = model.ticker
@@ -91,7 +99,6 @@ InnerBackground {
 
                         params.rel_volume = "" + multi_order_line.volume
 
-                        console.log("Setting multi-order params for ", model.ticker, ":", General.prettifyJSON(params))
                         setData(params)
                     }
 
