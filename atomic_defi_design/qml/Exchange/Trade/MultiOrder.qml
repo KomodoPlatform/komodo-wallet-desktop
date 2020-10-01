@@ -137,7 +137,7 @@ InnerBackground {
                         anchors.fill: parent
                         details: model
                         padding: 10
-                        bottom_text: API.app.settings_pg.empty_string + (qsTr("Volume") + ": " + General.formatCrypto("", multi_order_line.volume, multi_order_line.rel))
+                        bottom_text: API.app.settings_pg.empty_string + (qsTr("You'll receive %1", "AMOUNT TICKER").arg(General.formatCrypto("", multi_order_line.volume, multi_order_line.rel)))
                     }
 
                     AmountFieldWithInfo {
