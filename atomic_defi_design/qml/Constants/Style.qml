@@ -234,7 +234,7 @@ QtObject {
     readonly property var colorCoin: ({
                                           "BCH": "#8DC351",
                                           "BTC": "#F7931A",
-                                          "FTC": "#27323A",
+                                          "FTC": "#FFFFFF",
                                           "DOGE": "#C3A634",
                                           "ETH": "#627EEA",
                                           "KMD": "#2B6680",
@@ -247,7 +247,7 @@ QtObject {
                                           "XZC": "#23B852",
                                           "LTC": "#BFBBBB",
                                           "ZEC": "#ECB244",
-                                          "ZER": "#15182A",
+                                          "ZER": "#FFFFFF",
                                           "NAV": "#7D59B5",
                                           "ECA": "#A915DC",
                                           "QTUM": "#2E9AD0",
