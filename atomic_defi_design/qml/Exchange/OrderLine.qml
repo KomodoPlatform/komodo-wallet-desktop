@@ -44,7 +44,7 @@ AnimatedRectangle {
             font.pixelSize: base_amount.font.pixelSize
             color: !details ? "white" : getStatusColor(details.order_status)
             text_value: API.app.settings_pg.empty_string + (!details ? "" :
-                                                             visible ? getStatusTextWithPrefix(details.order_status, true) : '')
+                                                             visible ? getStatusStep(details.order_status) : '')
         }
 
         DefaultBusyIndicator {
