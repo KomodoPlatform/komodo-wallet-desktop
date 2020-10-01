@@ -15,7 +15,7 @@ Qaterial.ApplicationWindow {
 
     property int real_visibility
 
-    visibility: "Maximized"
+    Component.onCompleted: showMaximized()
 
     onVisibilityChanged: {
         // 3 is minimized, ignore that
