@@ -614,8 +614,8 @@ namespace mm2::api
 
     struct my_orders_answer
     {
-        std::map<std::size_t, my_order_contents> maker_orders;
-        std::map<std::size_t, my_order_contents> taker_orders;
+        std::map<std::string, my_order_contents> maker_orders;
+        std::map<std::string, my_order_contents> taker_orders;
         int                                      rpc_result_code;
         std::string                              raw_result;
     };

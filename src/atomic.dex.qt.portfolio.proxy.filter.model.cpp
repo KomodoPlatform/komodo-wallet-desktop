@@ -18,8 +18,8 @@
 #include "atomic.dex.pch.hpp"
 
 //! Project Headers
-#include "atomic.dex.qt.portfolio.proxy.filter.model.hpp"
 #include "atomic.dex.qt.portfolio.model.hpp"
+#include "atomic.dex.qt.portfolio.proxy.filter.model.hpp"
 
 namespace atomic_dex
 {
@@ -112,8 +112,17 @@ namespace atomic_dex
     {
         QModelIndex idx = this->sourceModel()->index(source_row, 0, source_parent);
         assert(this->sourceModel()->hasIndex(idx.row(), 0));
-        bool is_excluded = this->sourceModel()->data(idx, atomic_dex::portfolio_model::Excluded).toBool();
-        if (is_excluded)
+        QString ticker = this->sourceModel()->data(idx, atomic_dex::portfolio_model::TickerRole).toString();
+        if (this->filterRole() == atomic_dex::portfolio_model::IsMultiTickerCurrentlyEnabled)
+        {
+            bool is_enabled = this->sourceModel()->data(idx, atomic_dex::portfolio_model::IsMultiTickerCurrentlyEnabled).toBool();
+            if (not is_enabled)
+            {
+                return false;
+            }
+        }
+
+        if (m_excluded_coin == ticker)
         {
             return false;
         }
@@ -125,5 +134,12 @@ namespace atomic_dex
     {
         this->beginResetModel();
         this->endResetModel();
+    }
+
+    void
+    portfolio_proxy_model::set_excluded_coin(const QString& ticker)
+    {
+        m_excluded_coin = ticker;
+        this->invalidateFilter();
     }
 } // namespace atomic_dex

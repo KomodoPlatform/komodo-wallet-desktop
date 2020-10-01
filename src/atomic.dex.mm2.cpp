@@ -1062,7 +1062,7 @@ namespace atomic_dex
         auto  result                = m_orders_registry.at("result");
         auto& taker                 = result.taker_orders;
         auto& maker                 = result.maker_orders;
-        auto  is_ticker_not_present = [&ticker](const std::pair<std::size_t, t_my_order_contents>& contents) {
+        auto  is_ticker_not_present = [&ticker](const std::pair<std::string, t_my_order_contents>& contents) {
             return contents.second.base != ticker && contents.second.rel != ticker;
         };
 

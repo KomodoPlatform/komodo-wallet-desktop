@@ -18,7 +18,7 @@ DefaultComboBox {
         id: line
         padding: 10
 
-        Component.onCompleted: API.app.portfolio_pg.portfolio_mdl.portfolioItemDataChanged.connect(forceUpdateDetails)
+        Component.onCompleted: portfolio_mdl.portfolioItemDataChanged.connect(forceUpdateDetails)
 
         function forceUpdateDetails() {
             console.log("Portfolio item data changed, force-updating the selected ticker details!")

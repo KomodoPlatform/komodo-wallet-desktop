@@ -8,6 +8,7 @@ import "../Constants"
 
 AnimatedRectangle {
     property var details
+    property alias clickable: mouse_area.enabled
     readonly property bool is_placed_order: !details ? false :
                                                        details.order_id !== ''
 
@@ -59,7 +60,7 @@ AnimatedRectangle {
     DefaultMouseArea {
         id: mouse_area
         anchors.fill: parent
-        hoverEnabled: true
+        hoverEnabled: enabled
         onClicked: {
             order_modal.details = details
             order_modal.open()
@@ -152,7 +153,7 @@ AnimatedRectangle {
     // Order ID
     DefaultText {
         font.pixelSize: base_amount.font.pixelSize
-        text_value: API.app.settings_pg.empty_string + (!details ? "" :
+        text_value: API.app.settings_pg.empty_string + (!details || details.order_id === "" ? "" :
                                                         details.order_id.substring(0, 18) + "...")
         anchors.verticalCenter: parent.verticalCenter
         anchors.right: parent.right

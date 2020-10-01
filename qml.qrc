@@ -124,12 +124,15 @@
         <file>atomic_defi_design/qml/Constants/Style.qml</file>
         <file>atomic_defi_design/qml/Exchange/Trade/Trade.qml</file>
         <file>atomic_defi_design/qml/Exchange/Trade/ConfirmTradeModal.qml</file>
+        <file>atomic_defi_design/qml/Exchange/Trade/ConfirmMultiOrderTradeModal.qml</file>
         <file>atomic_defi_design/qml/Exchange/Trade/PriceLine.qml</file>
         <file>atomic_defi_design/qml/Exchange/Trade/OrderForm.qml</file>
         <file>atomic_defi_design/qml/Exchange/Trade/DexComboBox.qml</file>
         <file>atomic_defi_design/qml/Exchange/Trade/DexComboBoxLine.qml</file>
         <file>atomic_defi_design/qml/Exchange/Trade/OrderbookSection.qml</file>
         <file>atomic_defi_design/qml/Exchange/Trade/Orderbook.qml</file>
+        <file>atomic_defi_design/qml/Exchange/Trade/FeeIcon.qml</file>
+        <file>atomic_defi_design/qml/Exchange/Trade/MultiOrder.qml</file>
         <file>atomic_defi_design/qml/Exchange/Trade/CandleStickChart.qml</file>
         <file>atomic_defi_design/qml/Exchange/Trade/TickerSelector.qml</file>
         <file>atomic_defi_design/qml/Exchange/Orders/Orders.qml</file>
@@ -172,6 +175,7 @@
         <file>atomic_defi_design/qml/Components/PrimaryButton.qml</file>
         <file>atomic_defi_design/qml/Components/InnerBackground.qml</file>
         <file>atomic_defi_design/qml/Components/FloatingBackground.qml</file>
+        <file>atomic_defi_design/qml/Components/DefaultTooltip.qml</file>
         <file>atomic_defi_design/qml/Components/DefaultImage.qml</file>
         <file>atomic_defi_design/qml/Components/DefaultAnimatedImage.qml</file>
         <file>atomic_defi_design/qml/Components/DefaultInnerShadow.qml</file>

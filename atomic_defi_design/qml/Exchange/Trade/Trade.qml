@@ -11,7 +11,14 @@ Item {
 
     property string action_result
 
-    readonly property bool block_everything: chart.is_fetching || swap_cooldown.running
+    readonly property bool block_everything: chart.is_fetching || swap_cooldown.running || fetching_multi_ticker_fees_busy
+
+    readonly property bool fetching_multi_ticker_fees_busy: API.app.trading_pg.fetching_multi_ticker_fees_busy
+    readonly property alias multi_order_enabled: multi_order_switch.checked
+
+    signal prepareMultiOrder()
+
+
 
     property bool sell_mode: true
     property string left_ticker: selector_left.ticker
@@ -52,6 +59,7 @@ Item {
         form_base.reset()
         form_rel.reset()
         resetTradeInfo()
+        multi_order_switch.checked = false
     }
 
     // Price
@@ -353,7 +361,7 @@ Item {
                     id: selectors
                     anchors.left: parent.left
                     anchors.right: parent.right
-                    anchors.bottom: orderbook.top
+                    anchors.bottom: orderbook_area.top
                     anchors.bottomMargin: layout_margin
                     spacing: 20
 
@@ -396,13 +404,25 @@ Item {
                     }
                 }
 
-                Orderbook {
-                    id: orderbook
+                StackLayout {
+                    id: orderbook_area
                     height: 250
                     anchors.left: parent.left
                     anchors.right: parent.right
                     anchors.bottom: price_line.top
                     anchors.bottomMargin: layout_margin
+
+                    currentIndex: multi_order_enabled ? 1 : 0
+
+                    Orderbook {
+                        Layout.fillWidth: true
+                        Layout.fillHeight: true
+                    }
+
+                    MultiOrder {
+                        Layout.fillWidth: true
+                        Layout.fillHeight: true
+                    }
                 }
 
 
@@ -450,11 +470,89 @@ Item {
                     anchors.right: parent.right
                     anchors.top: parent.top
                 }
+
+                // Multi-Order
+                FloatingBackground {
+                    visible: sell_mode
+
+                    anchors.left: parent.left
+                    anchors.right: parent.right
+                    anchors.top: form_base.visible ? form_base.bottom : form_rel.bottom
+                    anchors.topMargin: layout_margin
+
+                    height: column_layout.height
+
+                    ColumnLayout {
+                        id: column_layout
+
+                        width: parent.width
+
+                        ColumnLayout {
+                            Layout.fillWidth: true
+                            Layout.leftMargin: layout_margin
+                            Layout.rightMargin: layout_margin
+                            Layout.topMargin: layout_margin
+                            Layout.bottomMargin: layout_margin
+                            spacing: layout_margin
+
+                            DefaultSwitch {
+                                id: multi_order_switch
+                                Layout.leftMargin: 15
+                                Layout.rightMargin: Layout.leftMargin
+                                Layout.fillWidth: true
+
+                                text: API.app.settings_pg.empty_string + (qsTr("Multi-Order"))
+                                enabled: !block_everything
+                                onCheckedChanged: {
+                                    if(checked) {
+                                        getCurrentForm().field.text = getCurrentForm().getVolumeCap()
+                                    }
+                                }
+                            }
+
+                            DefaultText {
+                                id: first_text
+
+                                Layout.leftMargin: multi_order_switch.Layout.leftMargin
+                                Layout.rightMargin: Layout.leftMargin
+                                Layout.fillWidth: true
+
+                                text_value: API.app.settings_pg.empty_string + (qsTr("Select additional assets for multi-order creation."))
+                                font.pixelSize: Style.textSizeSmall2
+                            }
+
+                            DefaultText {
+                                Layout.leftMargin: multi_order_switch.Layout.leftMargin
+                                Layout.rightMargin: Layout.leftMargin
+                                Layout.fillWidth: true
+
+                                text_value: API.app.settings_pg.empty_string + (qsTr("Same funds will be used until an order matches."))
+                                font.pixelSize: first_text.font.pixelSize
+                            }
+
+                            DefaultButton {
+                                text: API.app.settings_pg.empty_string + (qsTr("Submit Trade"))
+                                Layout.leftMargin: multi_order_switch.Layout.leftMargin
+                                Layout.rightMargin: Layout.leftMargin
+                                Layout.fillWidth: true
+                                enabled: multi_order_enabled && getCurrentForm().can_submit_trade
+                                onClicked: {
+                                    prepareMultiOrder()
+                                    confirm_multi_order_trade_modal.open()
+                                }
+                            }
+                        }
+                    }
+                }
             }
         }
 
         ConfirmTradeModal {
             id: confirm_trade_modal
+        }
+
+        ConfirmMultiOrderTradeModal {
+            id: confirm_multi_order_trade_modal
         }
     }
 }

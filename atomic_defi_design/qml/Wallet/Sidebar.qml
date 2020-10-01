@@ -190,12 +190,14 @@ Item {
                                 font.pixelSize: text.length > 6 ? Style.textSizeSmall2 : Style.textSizeSmall4
                             }
 
-                            ToolTip {
+                            DefaultTooltip {
                                 visible: mouse_area.containsMouse
-                                background: FloatingBackground { auto_set_size: false }
-                                contentItem:  DefaultText {
-                                    text_value: API.app.settings_pg.empty_string + (name.replace(" (TESTCOIN)", ""))
-                                    font.pixelSize: Style.textSizeSmall4
+
+                                contentItem: ColumnLayout {
+                                    DefaultText {
+                                        text_value: API.app.settings_pg.empty_string + (name.replace(" (TESTCOIN)", ""))
+                                        font.pixelSize: Style.textSizeSmall4
+                                    }
                                 }
                             }
                         }

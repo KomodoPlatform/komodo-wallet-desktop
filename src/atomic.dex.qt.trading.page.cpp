@@ -14,6 +14,8 @@
  *                                                                            *
  ******************************************************************************/
 
+#include <QJsonDocument>
+
 //! PCH
 #include "atomic.dex.pch.hpp"
 
@@ -484,5 +486,62 @@ namespace atomic_dex
     trading_page::on_multi_ticker_enabled(const multi_ticker_enabled& evt) noexcept
     {
         this->fetch_additional_fees(evt.ticker);
+    }
+
+    void
+    trading_page::place_multiple_sell_order() noexcept
+    {
+        nlohmann::json         batch    = nlohmann::json::array();
+        portfolio_proxy_model* model    = this->get_market_pairs_mdl()->get_multiple_selection_box();
+        int                    nb_items = model->rowCount();
+        for (int cur_idx = 0; cur_idx < nb_items; ++cur_idx)
+        {
+            QModelIndex idx                  = model->index(cur_idx, 0);
+            bool        multi_ticker_enabled = model->data(idx, portfolio_model::PortfolioRoles::IsMultiTickerCurrentlyEnabled).toBool();
+            std::string ticker               = model->data(idx, portfolio_model::PortfolioRoles::TickerRole).toString().toStdString();
+            if (multi_ticker_enabled)
+            {
+                QJsonObject obj = model->data(idx, portfolio_model::PortfolioRoles::MultiTickerData).toJsonObject();
+                if (not obj.isEmpty())
+                {
+                    nlohmann::json json = nlohmann::json::parse(QJsonDocument(obj).toJson(QJsonDocument::Compact).toStdString());
+                    t_sell_request req{
+                        .base             = json.at("base").get<std::string>(),
+                        .rel              = json.at("rel").get<std::string>(),
+                        .price            = json.at("price").get<std::string>(),
+                        .volume           = json.at("volume").get<std::string>(),
+                        .is_created_order = json.at("is_created_order").get<bool>(),
+                        .price_denom      = "",
+                        .price_numer      = "",
+                        .rel_nota         = "",
+                        .rel_confs        = 0};
+                    nlohmann::json sell_request = ::mm2::api::template_request("sell");
+                    ::mm2::api::to_json(sell_request, req);
+                    batch.push_back(sell_request);
+                }
+                else
+                {
+                    spdlog::error("empty json send from the front end for ticker: {} - ignoring", ticker);
+                }
+            }
+        }
+        // spdlog::trace("batch multiple sell -> {}", batch.dump(4));
+        auto& mm2_system     = m_system_manager.get_system<mm2>();
+        auto  answer_functor = [this](web::http::http_response resp) {
+            std::string body = TO_STD_STR(resp.extract_string(true).get());
+            if (resp.status_code() == 200)
+            {
+                auto answers = nlohmann::json::parse(body);
+                // spdlog::trace("batch multiple sell answer -> {}", answers.dump(4));
+            }
+            else
+            {
+                auto error_json = QJsonObject({{"error_code", resp.status_code()}, {"error_message", QString::fromStdString(body)}});
+            }
+        };
+
+        ::mm2::api::async_rpc_batch_standalone(batch, mm2_system.get_mm2_client(), mm2_system.get_cancellation_token())
+            .then(answer_functor)
+            .then(&handle_exception_pplx_task);
     }
 } // namespace atomic_dex
