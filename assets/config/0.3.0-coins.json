@@ -355,6 +355,29 @@
     "active": false,
     "currently_enabled": false
   },
+  "GLEEC": {
+    "coin": "GLEEC",
+    "name": "Gleec",
+    "coinpaprika_id": "gleec-gleec-coin",
+    "coingecko_id": "gleec-coin",
+    "electrum": [
+      {
+        "url": "electrum1.cipig.net:10069"
+      },
+      {
+        "url": "electrum2.cipig.net:10069"
+      },
+      {
+        "url": "electrum3.cipig.net:10069"
+      }
+    ],
+    "explorer_url": [
+      "https://gleechain.com/"
+    ],
+    "type": "UTXO",
+    "active": false,
+    "currently_enabled": false
+  },
   "HODL": {
     "coin": "HODL",
     "name": "HODL",
