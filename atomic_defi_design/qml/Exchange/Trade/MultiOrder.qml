@@ -142,13 +142,13 @@ InnerBackground {
 
                     AmountFieldWithInfo {
                         id: input_price
-                        width: 200
+                        width: 220
                         anchors.right: fee_info_button.left
                         anchors.rightMargin: 30
                         anchors.verticalCenter: parent.verticalCenter
 
                         field.left_text: API.app.settings_pg.empty_string + (qsTr("Price"))
-                        field.right_text: model.ticker
+                        field.right_text: model.ticker + "/" + multi_order_line.base
                         field.onTextChanged: multi_order_line.price = field.text
 
                         field.text: multi_order_line.price
