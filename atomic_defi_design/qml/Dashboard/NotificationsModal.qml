@@ -197,7 +197,7 @@ BasicModal {
                         DefaultText {
                             text_value: API.app.settings_pg.empty_string + (modelData.title)
                             font.pixelSize: Style.textSizeSmall4
-                            font.bold: true
+                            font.weight: Font.Bold
                         }
 
                         DefaultText {

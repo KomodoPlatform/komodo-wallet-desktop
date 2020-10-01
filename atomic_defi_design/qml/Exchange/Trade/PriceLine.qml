@@ -49,7 +49,7 @@ RowLayout {
             Layout.alignment: Qt.AlignHCenter
             text_value: API.app.settings_pg.empty_string + (General.formatCrypto("", "1", right_ticker) + " = " + General.formatCrypto("", General.formatDouble(1 / parseFloat(price)), left_ticker))
             font.pixelSize: fontSizeBigger
-            font.bold: true
+            font.weight: Font.Bold
         }
 
         // Price
@@ -128,7 +128,7 @@ RowLayout {
             Layout.alignment: Qt.AlignHCenter
             text_value: API.app.settings_pg.empty_string + (General.formatCrypto("", "1", right_ticker) + " = " + General.formatCrypto("", General.formatDouble(1 / parseFloat(cex_price)), left_ticker))
             font.pixelSize: fontSizeBigger
-            font.bold: true
+            font.weight: Font.Bold
         }
 
         // Price

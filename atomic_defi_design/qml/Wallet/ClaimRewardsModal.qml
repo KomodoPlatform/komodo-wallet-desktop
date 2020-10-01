@@ -152,7 +152,7 @@ BasicModal {
 
                 text_value: API.app.settings_pg.empty_string + (qsTr("UTXO"))
 
-                font.bold: true
+                font.weight: Font.Bold
                 horizontalAlignment: Text.AlignLeft
 
                 anchors.left: parent.left
@@ -168,7 +168,7 @@ BasicModal {
                 text_value: API.app.settings_pg.empty_string + (qsTr("Amount"))
 
                 font.pixelSize: utxo_header.font.pixelSize
-                font.bold: utxo_header.font.bold
+                font.weight: utxo_header.font.weight
                 horizontalAlignment: utxo_header.horizontalAlignment
 
                 anchors.left: parent.left
@@ -184,7 +184,7 @@ BasicModal {
                 text_value: API.app.settings_pg.empty_string + (qsTr("Reward"))
 
                 font.pixelSize: utxo_header.font.pixelSize
-                font.bold: utxo_header.font.bold
+                font.weight: utxo_header.font.weight
                 horizontalAlignment: Text.AlignLeft
 
                 anchors.left: parent.left
@@ -200,7 +200,7 @@ BasicModal {
                 text_value: API.app.settings_pg.empty_string + (qsTr("Accruing Start"))
 
                 font.pixelSize: utxo_header.font.pixelSize
-                font.bold: utxo_header.font.bold
+                font.weight: utxo_header.font.weight
                 horizontalAlignment: Text.AlignLeft
 
                 anchors.left: parent.left
@@ -216,7 +216,7 @@ BasicModal {
                 text_value: API.app.settings_pg.empty_string + (qsTr("Accruing Stop"))
 
                 font.pixelSize: utxo_header.font.pixelSize
-                font.bold: utxo_header.font.bold
+                font.weight: utxo_header.font.weight
                 horizontalAlignment: Text.AlignLeft
 
                 anchors.left: parent.left
@@ -232,7 +232,7 @@ BasicModal {
                 text_value: API.app.settings_pg.empty_string + (qsTr("Time Left"))
 
                 font.pixelSize: utxo_header.font.pixelSize
-                font.bold: utxo_header.font.bold
+                font.weight: utxo_header.font.weight
                 horizontalAlignment: Text.AlignLeft
 
                 anchors.left: parent.left
@@ -248,7 +248,7 @@ BasicModal {
                 text_value: API.app.settings_pg.empty_string + (qsTr("Error"))
 
                 font.pixelSize: utxo_header.font.pixelSize
-                font.bold: utxo_header.font.bold
+                font.weight: utxo_header.font.weight
                 horizontalAlignment: Text.AlignLeft
 
                 anchors.left: parent.left

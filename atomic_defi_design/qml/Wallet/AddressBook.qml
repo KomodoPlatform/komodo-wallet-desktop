@@ -47,7 +47,7 @@ ColumnLayout {
         property bool disabled: global_edit_in_progress
         Layout.leftMargin: layout_margin
         text_value: API.app.settings_pg.empty_string + ("< " + qsTr("Back"))
-        font.bold: true
+        font.weight: Font.Bold
         color: disabled ? Style.colorTextDisabled : Style.colorText
 
         DefaultMouseArea {
@@ -62,7 +62,7 @@ ColumnLayout {
 
         DefaultText {
             text_value: API.app.settings_pg.empty_string + (qsTr("Address Book"))
-            font.bold: true
+            font.weight: Font.Bold
             font.pixelSize: Style.textSize3
             Layout.fillWidth: true
         }
@@ -188,7 +188,7 @@ ColumnLayout {
                                 visible: !editing && enabled
                                 enabled: !global_edit_in_progress
                                 text: "✎"
-                                font.bold: true
+                                font.weight: Font.Bold
                                 color: Style.colorGreen
 
                                 DefaultMouseArea {
@@ -335,7 +335,7 @@ ColumnLayout {
                                     visible: !editing_address && enabled
                                     enabled: !global_edit_in_progress
                                     text: "✎"
-                                    font.bold: true
+                                    font.weight: Font.Bold
                                     color: enabled ? Style.colorGreen : Style.colorTextDisabled
 
                                     DefaultMouseArea {

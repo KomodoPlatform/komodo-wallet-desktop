@@ -409,7 +409,7 @@ FloatingBackground {
             Layout.bottomMargin: layout_margin
 
             DefaultText {
-                font.bold: true
+                font.weight: Font.Bold
                 font.pixelSize: Style.textSizeSmall3
                 text_value: API.app.settings_pg.empty_string + (qsTr("Total") + ": " + General.formatCrypto("", total_amount, right_ticker))
             }
@@ -435,7 +435,7 @@ FloatingBackground {
             width: 170
 
             text: API.app.settings_pg.empty_string + (qsTr("Start Swap"))
-            font.bold: true
+            font.weight: Font.Bold
             enabled: !multi_order_enabled && can_submit_trade
             onClicked: confirm_trade_modal.open()
         }
