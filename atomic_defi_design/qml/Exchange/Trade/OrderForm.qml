@@ -39,11 +39,17 @@ FloatingBackground {
         return parseFloat(is_sell_form ? input_volume.field.text : total_amount) >= General.getMinTradeAmount()
     }
 
+    function receiveHigherThanMinTradeAmount() {
+        if(input_volume.field.text === '') return false
+        return parseFloat(is_sell_form ? total_amount : input_volume.field.text) >= General.getMinTradeAmount()
+    }
+
     function isValid() {
         let valid = true
 
         if(valid) valid = fieldsAreFilled()
         if(valid) valid = higherThanMinTradeAmount()
+        if(valid) valid = receiveHigherThanMinTradeAmount()
 
         if(valid) valid = !notEnoughBalance()
         if(valid) valid = API.app.do_i_have_enough_funds(base_ticker, General.formatDouble(getNeededAmountToSpend(input_volume.field.text)))
@@ -469,6 +475,9 @@ FloatingBackground {
 
                                // Trade amount is lower than the minimum
                                (getCurrentForm().fieldsAreFilled() && !getCurrentForm().higherThanMinTradeAmount()) ? ((qsTr("Volume is lower than minimum trade amount")) + " : " + General.getMinTradeAmount()) :
+
+                               // Trade receive amount is lower than the minimum
+                               (getCurrentForm().fieldsAreFilled() && !getCurrentForm().receiveHigherThanMinTradeAmount()) ? ((qsTr("Receive volume is lower than minimum trade amount")) + " : " + General.getMinTradeAmount()) :
 
                                 // Fields are filled, fee can be checked
                                 notEnoughBalanceForFees() ?
