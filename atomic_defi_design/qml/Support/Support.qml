@@ -150,9 +150,9 @@ Item {
 
             FAQLine {
                 title: qsTr("How is trading on AtomicDEX different from trading on other DEXs?")
-                text: qsTr(`Other DEXs generally only allow you to trade assets that are based on a single blockchain network, use proxy tokens, and only allow placing a single order with the same funds.
+                text: qsTr("Other DEXs generally only allow you to trade assets that are based on a single blockchain network, use proxy tokens, and only allow placing a single order with the same funds.
 
-AtomicDEX enables you to natively trade across two different blockchain networks without proxy tokens. You can also place multiple orders with the same funds. For example, you can sell 0.1 BTC for KMD, QTUM, or VRSC — the first order that fills automatically cancels all other orders.`)
+AtomicDEX enables you to natively trade across two different blockchain networks without proxy tokens. You can also place multiple orders with the same funds. For example, you can sell 0.1 BTC for KMD, QTUM, or VRSC — the first order that fills automatically cancels all other orders.")
             }
 
             FAQLine {
@@ -167,12 +167,12 @@ AtomicDEX enables you to natively trade across two different blockchain networks
 
             FAQLine {
                 title: qsTr("How are the fees on AtomicDEX calculated?")
-                text: qsTr(`There are two fee categories to consider when trading on AtomicDEX.
+                text: qsTr("There are two fee categories to consider when trading on AtomicDEX.
 
 1. AtomicDEX charges approximately 0.13% (1/777 of trading volume but not lower than 0.0001) as the trading fee for taker orders, and maker orders have zero fees.
 2. Both makers and takers will need to pay normal network fees to the involved blockchains when making atomic swap transactions.
 
-Network fees can vary greatly depending on your selected trading pair.`)
+Network fees can vary greatly depending on your selected trading pair.")
             }
 
             FAQLine {
