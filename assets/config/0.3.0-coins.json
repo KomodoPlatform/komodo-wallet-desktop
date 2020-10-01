@@ -355,6 +355,29 @@
     "active": false,
     "currently_enabled": false
   },
+  "GLEEC": {
+    "coin": "GLEEC",
+    "name": "Gleec",
+    "coinpaprika_id": "gleec-gleec-coin",
+    "coingecko_id": "gleec-coin",
+    "electrum": [
+      {
+        "url": "electrum1.cipig.net:10069"
+      },
+      {
+        "url": "electrum2.cipig.net:10069"
+      },
+      {
+        "url": "electrum3.cipig.net:10069"
+      }
+    ],
+    "explorer_url": [
+      "https://gleechain.com/"
+    ],
+    "type": "UTXO",
+    "active": false,
+    "currently_enabled": false
+  },
   "HODL": {
     "coin": "HODL",
     "name": "HODL",
@@ -917,6 +940,29 @@
     "active": false,
     "currently_enabled": false
   },
+  "MONA": {
+    "coin": "MONA",
+    "name": "MonaCoin",
+    "coinpaprika_id": "mona-monacoin",
+    "coingecko_id": "monacoin",
+    "electrum": [
+      {
+        "url": "electrumx3.monacoin.nl:50001"
+      },
+      {
+        "url": "electrumx1.monacoin.ninja:50001"
+      },
+      {
+        "url": "electrumx.tamami-foundation.org:50001"
+      }
+    ],
+    "explorer_url": [
+      "https://mona.chainsight.info/"
+    ],
+    "type": "UTXO",
+    "active": false,
+    "currently_enabled": false
+  },
   "NAV": {
     "coin": "NAV",
     "name": "NavCoin",
@@ -1023,7 +1069,6 @@
       "https://explorer.spaceworks.co/"
     ],
     "type": "Smart Chain",
-    "is_erc_20": false,
     "active": false,
     "currently_enabled": false
   },

@@ -148,7 +148,12 @@ Install vcpkg from within the `ci_tools_atomic_dex` folder:
 
 ```
 nimble build
-./ci_tools_atomic_dex --install_vcpkg
+cd vcpkg-repo
+# Windows
+.\bootstrap-vcpkg.bat
+# Linux / OSX
+./bootstrap-vcpkg.sh
+cd -
 ```
 
 ### Windows
