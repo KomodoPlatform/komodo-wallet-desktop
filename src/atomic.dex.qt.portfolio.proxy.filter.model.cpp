@@ -104,6 +104,8 @@ namespace atomic_dex
             return false;
         case portfolio_model::MultiTickerData:
             return false;
+        case portfolio_model::MainFiatPriceForOneUnit:
+            return false;
         }
     }
 

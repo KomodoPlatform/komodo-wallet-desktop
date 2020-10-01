@@ -525,14 +525,13 @@ namespace atomic_dex
                 }
             }
         }
-        // spdlog::trace("batch multiple sell -> {}", batch.dump(4));
+
         auto& mm2_system     = m_system_manager.get_system<mm2>();
         auto  answer_functor = [this](web::http::http_response resp) {
             std::string body = TO_STD_STR(resp.extract_string(true).get());
             if (resp.status_code() == 200)
             {
                 auto answers = nlohmann::json::parse(body);
-                // spdlog::trace("batch multiple sell answer -> {}", answers.dump(4));
             }
             else
             {
@@ -543,5 +542,12 @@ namespace atomic_dex
         ::mm2::api::async_rpc_batch_standalone(batch, mm2_system.get_mm2_client(), mm2_system.get_cancellation_token())
             .then(answer_functor)
             .then(&handle_exception_pplx_task);
+    }
+
+    void
+    trading_page::switch_market_mode() noexcept
+    {
+        m_market_mode = m_market_mode == market_mode::buy ? market_mode::sell : market_mode::buy;
+        spdlog::info("switching market_mode, new mode: {}", m_market_mode == market_mode::buy ? "buy" : "sell");
     }
 } // namespace atomic_dex

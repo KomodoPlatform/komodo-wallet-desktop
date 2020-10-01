@@ -42,6 +42,9 @@ namespace atomic_dex
         //! eg: 9400 $
         QString main_currency_price_for_one_unit;
 
+        //! eg: Real fiat values eg: 9400$
+        QString main_fiat_price_for_one_unit;
+
         //! Paprika data rates
         QJsonArray trend_7d;
 

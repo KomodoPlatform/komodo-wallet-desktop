@@ -66,6 +66,12 @@ namespace atomic_dex
             refresh_ohlc                    = 1,
         };
 
+        enum market_mode
+        {
+            sell = 0,
+            buy  = 1
+        };
+
         //! Private typedefs
         using t_models               = std::array<QObject*, models_size>;
         using t_models_actions       = std::array<std::atomic_bool, models_actions_size>;
@@ -81,6 +87,7 @@ namespace atomic_dex
         std::atomic_bool         m_rpc_buy_sell_busy{false};
         std::atomic_bool         m_fetching_multi_ticker_fees_busy{false};
         t_qt_synchronized_json   m_rpc_buy_sell_result;
+        market_mode              m_market_mode{sell};
 
         //! Privae function
         void common_cancel_all_orders(bool by_coin = false, const QString& ticker = "");
@@ -103,22 +110,36 @@ namespace atomic_dex
         void disable_coin(const QString& coin) noexcept;
 
         //! Public QML API
-        Q_INVOKABLE void set_current_orderbook(const QString& base, const QString& rel);
         Q_INVOKABLE void on_gui_enter_dex();
         Q_INVOKABLE void on_gui_leave_dex();
         Q_INVOKABLE void cancel_order(const QStringList& orders_id);
         Q_INVOKABLE void cancel_all_orders();
         Q_INVOKABLE void cancel_all_orders_by_ticker(const QString& ticker);
+
+
+        Q_INVOKABLE QVariant get_raw_mm2_coin_cfg(const QString& ticker) const noexcept;
+
+        //! Trading business
+        Q_INVOKABLE void swap_market_pair();                                             ///< market_selector (button to switch market selector and orderbook)
+        Q_INVOKABLE void set_current_orderbook(const QString& base, const QString& rel); ///< market_selector (called and selecting another coin)
+
+        Q_INVOKABLE void switch_market_mode() noexcept; ///< trading_widget (when clicking on buy or sell)
         Q_INVOKABLE void place_buy_order(
-            const QString& base, const QString& rel, const QString& price, const QString& volume, bool is_created_order, const QString& price_denom,
-            const QString& price_numer, const QString& base_nota = "", const QString& base_confs = "");
+            const QString& base,
+            const QString& rel,
+            const QString& price,
+            const QString& volume,
+            bool is_created_order,
+            const QString& price_denom,
+            const QString& price_numer,
+            const QString& base_nota = "",
+            const QString& base_confs = "");
         Q_INVOKABLE void place_sell_order(
             const QString& base, const QString& rel, const QString& price, const QString& volume, bool is_created_order, const QString& price_denom,
             const QString& price_numer, const QString& rel_nota = "", const QString& rel_confs = "");
-        Q_INVOKABLE void     swap_market_pair();
-        Q_INVOKABLE QVariant get_raw_mm2_coin_cfg(const QString& ticker) const noexcept;
-        Q_INVOKABLE void     fetch_additional_fees(const QString& ticker) noexcept; ///< for multi ticker
-        Q_INVOKABLE void     place_multiple_sell_order() noexcept; ///< multi ticker
+
+        Q_INVOKABLE void fetch_additional_fees(const QString& ticker) noexcept; ///< multi ticker (when enabling a coin of the list)
+        Q_INVOKABLE void place_multiple_sell_order() noexcept;                  ///< multi ticker (when confirming a multi order)
 
         //! Properties
         [[nodiscard]] qt_orderbook_wrapper*     get_orderbook_wrapper() const noexcept;

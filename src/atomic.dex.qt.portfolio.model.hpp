@@ -44,6 +44,7 @@ namespace atomic_dex
             MainCurrencyBalanceRole,
             Change24H,
             MainCurrencyPriceForOneUnit,
+            MainFiatPriceForOneUnit,
             Trend7D,
             Excluded,
             Display,
