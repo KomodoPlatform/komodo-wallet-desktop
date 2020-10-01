@@ -19,6 +19,7 @@
 //! QT
 #include <QApplication>
 #include <QObject>
+#include <QQmlApplicationEngine>
 #include <QString>
 #include <QTranslator>
 
@@ -48,6 +49,7 @@ namespace atomic_dex
         //! Private member fields Fields
         ag::ecs::system_manager&      m_system_manager;
         std::shared_ptr<QApplication> m_app;
+        QQmlApplicationEngine*        m_qml_engine{nullptr};
         atomic_dex::cfg               m_config{load_cfg()};
         QTranslator                   m_translator;
         QString                       m_empty_string{""};
@@ -83,6 +85,7 @@ namespace atomic_dex
         [[nodiscard]] atomic_dex::cfg&       get_cfg() noexcept;
         [[nodiscard]] const atomic_dex::cfg& get_cfg() const noexcept;
         void                                 init_lang() noexcept;
+        void                                 set_qml_engine(QQmlApplicationEngine* engine) noexcept;
 
         //! Public QML API
         Q_INVOKABLE void                       remove_custom_coin(const QString& ticker) noexcept;

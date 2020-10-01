@@ -205,11 +205,12 @@ main([[maybe_unused]] int argc, [[maybe_unused]] char* argv[])
     std::shared_ptr<QApplication> app = std::make_shared<QApplication>(argc, argv);
     app->setOrganizationName("KomodoPlatform");
     app->setOrganizationDomain("com");
+    QQmlApplicationEngine engine;
 
-    atomic_app.set_qt_app(app);
+    atomic_app.set_qt_app(app, &engine);
 
     //! QT QML
-    QQmlApplicationEngine engine;
+
 
     engine.addImportPath("qrc:///");
     QZXing::registerQMLTypes();
