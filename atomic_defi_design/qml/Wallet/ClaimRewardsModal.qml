@@ -8,8 +8,11 @@ import "../Constants"
 BasicModal {
     id: root
 
-    readonly property bool positive_claim_amount: parseFloat(prepare_claim_rewards_result.withdraw_answer.my_balance_change) > 0
+    readonly property bool empty_data: !prepare_claim_rewards_result || !prepare_claim_rewards_result.withdraw_answer
+    readonly property bool positive_claim_amount: empty_data ? false :
+                                                parseFloat(prepare_claim_rewards_result.withdraw_answer.my_balance_change) > 0
     readonly property bool has_eligible_utxo: {
+        if(empty_data) return false
         const utxos = prepare_claim_rewards_result.kmd_rewards_info.result
         if(!utxos) return false
 
@@ -273,7 +276,8 @@ BasicModal {
             Layout.maximumHeight: 500
             clip: true
 
-            model: prepare_claim_rewards_result.kmd_rewards_info.result
+            model: empty_data ? [] :
+                    prepare_claim_rewards_result.kmd_rewards_info.result
 
             delegate: Item {
                 width: root.width
@@ -402,7 +406,8 @@ BasicModal {
 
                 // Line
                 HorizontalLine {
-                    visible: prepare_claim_rewards_result.kmd_rewards_info.result &&
+                    visible: empty_data ? false :
+                             prepare_claim_rewards_result.kmd_rewards_info.result &&
                              index !== prepare_claim_rewards_result.kmd_rewards_info.result.length - 1
                     width: parent.width
                     color: Style.colorWhite9
@@ -431,9 +436,9 @@ BasicModal {
     // Result Page
     SendResult {
         result: ({
-            balance_change: prepare_claim_rewards_result.withdraw_answer.my_balance_change,
-            fees: prepare_claim_rewards_result.withdraw_answer.fee_details.amount,
-            date: prepare_claim_rewards_result.withdraw_answer.date
+            balance_change: empty_data ? "" : prepare_claim_rewards_result.withdraw_answer.my_balance_change,
+            fees: empty_data ? "" : prepare_claim_rewards_result.withdraw_answer.fee_details.amount,
+            date: empty_data ? "" : prepare_claim_rewards_result.withdraw_answer.date
         })
         tx_hash: broadcast_result
 

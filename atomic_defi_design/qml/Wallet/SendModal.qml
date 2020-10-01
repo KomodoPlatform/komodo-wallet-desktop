@@ -8,6 +8,8 @@ import "../Constants"
 BasicModal {
     id: root
 
+    readonly property bool empty_data: !send_result || !send_result.withdraw_answer
+
     property alias address_field: input_address.field
     property alias amount_field: input_amount.field
 
@@ -371,13 +373,15 @@ BasicModal {
         // Fees
         TextWithTitle {
             title: qsTr("Fees")
-            text: General.formatCrypto("", send_result.withdraw_answer.fee_details.amount, current_ticker_infos.fee_ticker)
+            text: empty_data ? "" :
+                  General.formatCrypto("", send_result.withdraw_answer.fee_details.amount, current_ticker_infos.fee_ticker)
         }
 
         // Date
         TextWithTitle {
             title: qsTr("Date")
-            text: send_result.withdraw_answer.date
+            text: empty_data ? "" :
+                  send_result.withdraw_answer.date
         }
 
         DefaultBusyIndicator {
@@ -405,9 +409,9 @@ BasicModal {
     // Result Page
     SendResult {
         result: ({
-            balance_change: send_result.withdraw_answer.my_balance_change,
-            fees: send_result.withdraw_answer.fee_details.amount,
-            date: send_result.withdraw_answer.date
+            balance_change: empty_data ? "" : send_result.withdraw_answer.my_balance_change,
+            fees: empty_data ? "" : send_result.withdraw_answer.fee_details.amount,
+            date: empty_data ? "" : send_result.withdraw_answer.date
         })
         address: input_address.field.text
         tx_hash: broadcast_result
