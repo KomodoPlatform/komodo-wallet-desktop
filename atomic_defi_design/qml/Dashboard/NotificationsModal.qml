@@ -18,7 +18,7 @@ BasicModal {
     }
 
     function showApp() {
-        switch(window.true_visibility) {
+        switch(window.real_visibility) {
             case 4:
                 window.showMaximized()
                 break

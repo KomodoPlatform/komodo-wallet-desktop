@@ -8,21 +8,19 @@ import "Constants"
 Qaterial.ApplicationWindow {
     id: window
     visible: true
-    width: General.width
-    height: General.height
     minimumWidth: General.minimumWidth
     minimumHeight: General.minimumHeight
     title: qsTr("AtomicDEX Pro")
-    flags: Qt.Window | Qt.WindowFullscreenButtonHint
+    flags: Qt.WindowFullscreenButtonHint
 
-    Component.onCompleted: showMaximized()
+    property int real_visibility
 
-    property int true_visibility
+    visibility: "Maximized"
 
     onVisibilityChanged: {
         // 3 is minimized, ignore that
         if(visibility !== 3)
-            true_visibility = visibility
+            real_visibility = visibility
 
         API.app.change_state(visibility)
     }
