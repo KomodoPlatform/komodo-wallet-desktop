@@ -129,7 +129,6 @@ ColumnLayout {
                 anchors.rightMargin: price_header.anchors.rightMargin
 
                 font.pixelSize: Style.textSizeSmall1
-                font.family: "Arial"
 
                 text_value: API.app.settings_pg.empty_string + (General.formatDouble(price, General.amountPrecision, true))
                 color: price_header.color
