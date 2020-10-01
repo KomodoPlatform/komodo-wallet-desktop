@@ -81,7 +81,7 @@ ChartView {
             titleVisible: false
             lineVisible: false
             labelsFont.family: Style.font_family
-            labelsFont.weight: Font.Bold
+            labelsFont.weight: Font.Medium
             gridLineColor: Style.colorThemeDark2
             labelsColor: Style.colorThemeDark3
             format: "<br>MMM d"

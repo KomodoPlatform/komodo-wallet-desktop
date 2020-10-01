@@ -196,7 +196,7 @@ FloatingBackground {
                     text: API.app.settings_pg.empty_string + (qsTr("Sell %1", "TICKER").arg(left_ticker))
                     color: sell_mode ? Style.colorButtonEnabled.default : Style.colorButtonDisabled.default
                     colorTextEnabled: sell_mode ? Style.colorButtonEnabled.danger : Style.colorButtonDisabled.danger
-                    font.weight: Font.Bold
+                    font.weight: Font.Medium
                     onClicked: sell_mode = true
                 }
                 DefaultButton {
@@ -205,7 +205,7 @@ FloatingBackground {
                     text: API.app.settings_pg.empty_string + (qsTr("Buy %1", "TICKER").arg(left_ticker))
                     color: sell_mode ? Style.colorButtonDisabled.default : Style.colorButtonEnabled.default
                     colorTextEnabled: sell_mode ? Style.colorButtonDisabled.primary : Style.colorButtonEnabled.primary
-                    font.weight: Font.Bold
+                    font.weight: Font.Medium
                     onClicked: sell_mode = false
                 }
             }
@@ -409,7 +409,7 @@ FloatingBackground {
             Layout.bottomMargin: layout_margin
 
             DefaultText {
-                font.weight: Font.Bold
+                font.weight: Font.Medium
                 font.pixelSize: Style.textSizeSmall3
                 text_value: API.app.settings_pg.empty_string + (qsTr("Total") + ": " + General.formatCrypto("", total_amount, right_ticker))
             }
@@ -435,7 +435,7 @@ FloatingBackground {
             width: 170
 
             text: API.app.settings_pg.empty_string + (qsTr("Start Swap"))
-            font.weight: Font.Bold
+            font.weight: Font.Medium
             enabled: !multi_order_enabled && can_submit_trade
             onClicked: confirm_trade_modal.open()
         }

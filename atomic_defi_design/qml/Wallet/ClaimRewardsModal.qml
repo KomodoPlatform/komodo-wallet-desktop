@@ -152,7 +152,7 @@ BasicModal {
 
                 text_value: API.app.settings_pg.empty_string + (qsTr("UTXO"))
 
-                font.weight: Font.Bold
+                font.weight: Font.Medium
                 horizontalAlignment: Text.AlignLeft
 
                 anchors.left: parent.left

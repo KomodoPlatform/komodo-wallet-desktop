@@ -189,7 +189,7 @@ Item {
             anchors.centerIn: parent
             text_value: notifications_modal.notifications_list.length
             font.pixelSize: Style.textSizeSmall1
-            font.weight: Font.Bold
+            font.weight: Font.Medium
             color: notifications_modal.notifications_list.length > 0 ? Style.colorWhite9 : Style.colorWhite12
         }
     }

@@ -99,7 +99,7 @@ BasicModal {
                 DefaultText {
                     Layout.alignment: Qt.AlignHCenter
                     text_value: API.app.settings_pg.empty_string + (qsTr("Security configuration"))
-                    font.weight: Font.Bold
+                    font.weight: Font.Medium
                 }
 
                 DefaultText {

@@ -6,7 +6,7 @@ import "../Constants"
 
 DefaultButton {
     button_type: "primary"
-    font.weight: Font.Bold
+    font.weight: Font.Medium
 }
 
 /*##^##

@@ -24,7 +24,7 @@ Item {
         text_value: "→"
         font.family: "Impact"
         font.pixelSize: 30
-        font.weight: Font.Bold
+        font.weight: Font.Medium
         color: Qt.lighter(Style.getCoinColor(top_arrow_ticker), hovered ? Style.hoverLightMultiplier : 1.0)
     }
 

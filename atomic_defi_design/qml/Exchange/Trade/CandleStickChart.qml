@@ -111,7 +111,7 @@ Item {
                 titleVisible: false
                 lineVisible: true
                 labelsFont.family: Style.font_family
-                labelsFont.weight: Font.Bold
+                labelsFont.weight: Font.Medium
                 gridLineColor: Style.colorChartGrid
                 labelsColor: Style.colorChartText
                 color: Style.colorChartLegendLine
@@ -242,7 +242,7 @@ Item {
                 titleVisible: false
                 lineVisible: true
                 labelsFont.family: Style.font_family
-                labelsFont.weight: Font.Bold
+                labelsFont.weight: Font.Medium
                 gridLineColor: Style.colorChartGrid
                 labelsColor: Style.colorChartText
                 color: Style.colorChartLegendLine

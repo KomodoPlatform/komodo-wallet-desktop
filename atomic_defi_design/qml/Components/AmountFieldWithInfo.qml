@@ -15,5 +15,5 @@ TextFieldWithTitle {
     field.horizontalAlignment: Qt.AlignRight
 
     field.font.pixelSize: Style.textSizeSmall1
-    field.font.weight: Font.Bold
+    field.font.weight: Font.Medium
 }
