@@ -35,10 +35,10 @@ BasicModal {
 
 
     ModalContent {
-        title: API.app.settings_pg.empty_string + (qsTr("Applying the changes") + "...")
+        title: qsTr("Applying the changes") + "..."
 
         DefaultText {
-            text_value: API.app.settings_pg.empty_string + (qsTr("Restarting the application..."))
+            text_value: qsTr("Restarting the application...")
 
             Layout.alignment: Qt.AlignHCenter
         }
@@ -48,7 +48,7 @@ BasicModal {
         }
 
         DefaultText {
-            text_value: API.app.settings_pg.empty_string + (General.formatDouble(time_left, 1, true))
+            text_value: General.formatDouble(time_left, 1, true)
 
             Layout.alignment: Qt.AlignHCenter
         }

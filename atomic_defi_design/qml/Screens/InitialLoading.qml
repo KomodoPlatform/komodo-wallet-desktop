@@ -25,7 +25,7 @@ SetupPage {
 
     content: ColumnLayout {
         DefaultText {
-            text_value: API.app.settings_pg.empty_string + (qsTr("Loading, please wait"))
+            text_value: qsTr("Loading, please wait")
             Layout.bottomMargin: 10
         }
 
@@ -38,8 +38,8 @@ SetupPage {
             }
 
             DefaultText {
-                text_value: API.app.settings_pg.empty_string + ((current_status === "initializing_mm2" ? qsTr("Initializing MM2") :
-                       current_status === "enabling_coins" ? qsTr("Enabling coins") : qsTr("Getting ready")) + "...")
+                text_value: (current_status === "initializing_mm2" ? qsTr("Initializing MM2") :
+                             current_status === "enabling_coins" ? qsTr("Enabling coins") : qsTr("Getting ready")) + "..."
             }
         }
     }

@@ -6,8 +6,8 @@ import QtQuick.Controls 2.15
 import "../Constants"
 TextFieldWithTitle {
     id: input_wallet_name
-    title: API.app.settings_pg.empty_string + (qsTr("Wallet Name"))
-    field.placeholderText: API.app.settings_pg.empty_string + (qsTr("Enter the name of your wallet here"))
+    title: qsTr("Wallet Name")
+    field.placeholderText: qsTr("Enter the name of your wallet here")
     field.validator: RegExpValidator { regExp: /[a-zA-Z0-9]+/ }
 
     required: true

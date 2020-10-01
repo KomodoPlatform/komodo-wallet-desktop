@@ -36,7 +36,7 @@ ComboBox {
             Layout.fillWidth: true
             Layout.alignment: Qt.AlignVCenter | Qt.AlignLeft
 
-            text_value: API.app.settings_pg.empty_string + (control.mainLineText)
+            text_value: control.mainLineText
             color: !control.enabled ? Style.colorTextDisabled : control.pressed ? Style.colorText2 : Style.colorText
         }
     }
@@ -87,7 +87,7 @@ ComboBox {
         highlighted: control.highlightedIndex === index
 
         contentItem: DefaultText {
-            text_value: API.app.settings_pg.empty_string + (control.dropdownLineText(model))
+            text_value: control.dropdownLineText(model)
             color: Style.colorText
         }
     }

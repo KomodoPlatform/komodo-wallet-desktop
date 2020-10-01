@@ -141,7 +141,7 @@ Item {
                 Layout.fillHeight: true
                 DefaultText {
                     anchors.centerIn: parent
-                    text_value: API.app.settings_pg.empty_string + (qsTr("Content for this section will be added later. Stay tuned!"))
+                    text_value: qsTr("Content for this section will be added later. Stay tuned!")
                 }
             }
 
@@ -152,7 +152,7 @@ Item {
                 Layout.fillHeight: true
                 DefaultText {
                     anchors.centerIn: parent
-                    text_value: API.app.settings_pg.empty_string + (qsTr("Content for this section will be added later. Stay tuned!"))
+                    text_value: qsTr("Content for this section will be added later. Stay tuned!")
                 }
             }
 

@@ -102,7 +102,7 @@ BasicModal {
     // Inside modal
     width: 1200
     ModalContent {
-        title: API.app.settings_pg.empty_string + (qsTr("Claim your %1 reward?", "TICKER").arg(api_wallet_page.ticker))
+        title: qsTr("Claim your %1 reward?", "TICKER").arg(api_wallet_page.ticker)
 
         DefaultBusyIndicator {
             visible: !can_claim || is_broadcast_busy
@@ -116,15 +116,14 @@ BasicModal {
             DefaultText {
                 Layout.fillWidth: true
                 color: can_confirm ? Style.colorText : Style.colorRed
-                text_value: API.app.settings_pg.empty_string + (
-                                 !has_eligible_utxo ? ("❌ " + qsTr("No UTXOs eligible for claiming")) :
-                                 !positive_claim_amount ? ("❌ " + qsTr("Transaction fee is higher than the reward!")) :
+                text_value: !has_eligible_utxo ? ("❌ " + qsTr("No UTXOs eligible for claiming")) :
+                            !positive_claim_amount ? ("❌ " + qsTr("Transaction fee is higher than the reward!")) :
 
-                                 qsTr("You will receive %1", "AMT TICKER").arg(General.formatCrypto("", prepare_claim_rewards_result.withdraw_answer.my_balance_change, api_wallet_page.ticker)))
+                            qsTr("You will receive %1", "AMT TICKER").arg(General.formatCrypto("", prepare_claim_rewards_result.withdraw_answer.my_balance_change, api_wallet_page.ticker))
             }
 
             PrimaryButton {
-                text: API.app.settings_pg.empty_string + (qsTr("Refresh"))
+                text: qsTr("Refresh")
                 onClicked: prepareClaimRewards()
 
                 enabled: can_claim
@@ -132,7 +131,7 @@ BasicModal {
         }
 
         DefaultText {
-            text_value: API.app.settings_pg.empty_string + (General.cex_icon + ' <a href="https://support.komodoplatform.com/support/solutions/articles/29000024428-komodo-5-active-user-reward-all-you-need-to-know">' + qsTr('Read more about KMD active users rewards') + '</a>')
+            text_value: General.cex_icon + ' <a href="https://support.komodoplatform.com/support/solutions/articles/29000024428-komodo-5-active-user-reward-all-you-need-to-know">' + qsTr('Read more about KMD active users rewards') + '</a>'
             font.pixelSize: Style.textSizeSmall2
         }
 
@@ -150,7 +149,7 @@ BasicModal {
                 id: utxo_header
                 font.pixelSize: Style.textSizeSmall4
 
-                text_value: API.app.settings_pg.empty_string + (qsTr("UTXO"))
+                text_value: qsTr("UTXO")
 
                 font.weight: Font.Medium
                 horizontalAlignment: Text.AlignLeft
@@ -165,7 +164,7 @@ BasicModal {
             DefaultText {
                 id: amount_header
 
-                text_value: API.app.settings_pg.empty_string + (qsTr("Amount"))
+                text_value: qsTr("Amount")
 
                 font.pixelSize: utxo_header.font.pixelSize
                 font.weight: utxo_header.font.weight
@@ -181,7 +180,7 @@ BasicModal {
             DefaultText {
                 id: reward_header
 
-                text_value: API.app.settings_pg.empty_string + (qsTr("Reward"))
+                text_value: qsTr("Reward")
 
                 font.pixelSize: utxo_header.font.pixelSize
                 font.weight: utxo_header.font.weight
@@ -197,7 +196,7 @@ BasicModal {
             DefaultText {
                 id: accruing_start_header
 
-                text_value: API.app.settings_pg.empty_string + (qsTr("Accruing Start"))
+                text_value: qsTr("Accruing Start")
 
                 font.pixelSize: utxo_header.font.pixelSize
                 font.weight: utxo_header.font.weight
@@ -213,7 +212,7 @@ BasicModal {
             DefaultText {
                 id: accruing_stop_header
 
-                text_value: API.app.settings_pg.empty_string + (qsTr("Accruing Stop"))
+                text_value: qsTr("Accruing Stop")
 
                 font.pixelSize: utxo_header.font.pixelSize
                 font.weight: utxo_header.font.weight
@@ -229,7 +228,7 @@ BasicModal {
             DefaultText {
                 id: time_left_header
 
-                text_value: API.app.settings_pg.empty_string + (qsTr("Time Left"))
+                text_value: qsTr("Time Left")
 
                 font.pixelSize: utxo_header.font.pixelSize
                 font.weight: utxo_header.font.weight
@@ -245,7 +244,7 @@ BasicModal {
             DefaultText {
                 id: error_header
 
-                text_value: API.app.settings_pg.empty_string + (qsTr("Error"))
+                text_value: qsTr("Error")
 
                 font.pixelSize: utxo_header.font.pixelSize
                 font.weight: utxo_header.font.weight
@@ -289,7 +288,7 @@ BasicModal {
 
                     font.pixelSize: utxo_header.font.pixelSize
 
-                    text_value: API.app.settings_pg.empty_string + ("#" + (index + 1))
+                    text_value: "#" + (index + 1)
                     anchors.verticalCenter: parent.verticalCenter
                 }
 
@@ -302,7 +301,7 @@ BasicModal {
 
                     font.pixelSize: utxo_value.font.pixelSize
 
-                    text_value: API.app.settings_pg.empty_string + (modelData.amount)
+                    text_value: modelData.amount
                     anchors.verticalCenter: parent.verticalCenter
                 }
 
@@ -315,7 +314,7 @@ BasicModal {
 
                     font.pixelSize: utxo_value.font.pixelSize
 
-                    text_value: API.app.settings_pg.empty_string + (modelData.accrued_rewards.Accrued || "-")
+                    text_value: modelData.accrued_rewards.Accrued || "-"
                     anchors.verticalCenter: parent.verticalCenter
                 }
 
@@ -328,7 +327,7 @@ BasicModal {
 
                     font.pixelSize: utxo_value.font.pixelSize
 
-                    text_value: API.app.settings_pg.empty_string + (modelData.accrue_start_at_human_date || "-")
+                    text_value: modelData.accrue_start_at_human_date || "-"
                     anchors.verticalCenter: parent.verticalCenter
                 }
 
@@ -341,7 +340,7 @@ BasicModal {
 
                     font.pixelSize: utxo_value.font.pixelSize
 
-                    text_value: API.app.settings_pg.empty_string + (modelData.accrue_stop_at_human_date || "-")
+                    text_value: modelData.accrue_stop_at_human_date || "-"
                     anchors.verticalCenter: parent.verticalCenter
                 }
 
@@ -354,7 +353,7 @@ BasicModal {
 
                     font.pixelSize: utxo_value.font.pixelSize
 
-                    text_value: API.app.settings_pg.empty_string + (modelData.accrue_stop_at ? General.secondsToTimeLeft(Date.now()/1000, modelData.accrue_stop_at) : '-')
+                    text_value: modelData.accrue_stop_at ? General.secondsToTimeLeft(Date.now()/1000, modelData.accrue_stop_at) : '-'
                     anchors.verticalCenter: parent.verticalCenter
                 }
 
@@ -395,7 +394,7 @@ BasicModal {
                             break
                         }
 
-                        return API.app.settings_pg.empty_string + ("❌ " + val)
+                        return "❌ " + val
                     }
 
                     anchors.verticalCenter: parent.verticalCenter
@@ -415,13 +414,13 @@ BasicModal {
         // Buttons
         footer: [
             DefaultButton {
-                text: API.app.settings_pg.empty_string + (qsTr("Cancel"))
+                text: qsTr("Cancel")
                 Layout.fillWidth: true
                 onClicked: root.close()
             },
 
             PrimaryButton {
-                text: API.app.settings_pg.empty_string + (qsTr("Confirm"))
+                text: qsTr("Confirm")
                 Layout.fillWidth: true
                 onClicked: claimRewards()
                 enabled: can_confirm

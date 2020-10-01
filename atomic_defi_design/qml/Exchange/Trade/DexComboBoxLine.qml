@@ -33,16 +33,16 @@ RowLayout {
             anchors.verticalCenter: parent.verticalCenter
 
             DefaultText {
-                text_value: API.app.settings_pg.empty_string + (!details ? "" :
-                                `<font color="${root.color}"><b>${details.ticker}</b></font>&nbsp;&nbsp;&nbsp;<font color="${Style.colorText}">${details.name}</font>`)
+                text_value: !details ? "" :
+                            `<font color="${root.color}"><b>${details.ticker}</b></font>&nbsp;&nbsp;&nbsp;<font color="${Style.colorText}">${details.name}</font>`
                 color: Style.colorText
                 font.pixelSize: Style.textSizeSmall3
             }
 
             DefaultText {
                 id: bottom_line
-                text_value: API.app.settings_pg.empty_string + (!details ? "" :
-                                details.balance + "  (" + General.formatFiat("", details.main_currency_balance, API.app.settings_pg.current_currency) + ")")
+                text_value: !details ? "" :
+                            details.balance + "  (" + General.formatFiat("", details.main_currency_balance, API.app.settings_pg.current_currency) + ")"
                 color: Style.colorText2
                 font.pixelSize: Style.textSizeSmall2
             }

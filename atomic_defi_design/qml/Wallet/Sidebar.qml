@@ -186,7 +186,7 @@ Item {
                             // Ticker
                             DefaultText {
                                 Layout.alignment: Qt.AlignRight
-                                text_value: API.app.settings_pg.empty_string + (ticker)
+                                text_value: ticker
                                 font.pixelSize: text.length > 6 ? Style.textSizeSmall2 : Style.textSizeSmall4
                             }
 
@@ -195,7 +195,7 @@ Item {
 
                                 contentItem: ColumnLayout {
                                     DefaultText {
-                                        text_value: API.app.settings_pg.empty_string + (name.replace(" (TESTCOIN)", ""))
+                                        text_value: name.replace(" (TESTCOIN)", "")
                                         font.pixelSize: Style.textSizeSmall4
                                     }
                                 }

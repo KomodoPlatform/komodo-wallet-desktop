@@ -19,7 +19,7 @@ InnerBackground {
         height: parent.height
 
         DefaultText {
-            text_value: API.app.settings_pg.empty_string + (title + " (" + items.length + ")")
+            text_value: title + " (" + items.length + ")"
 
             Layout.alignment: Qt.AlignHCenter | Qt.AlignTop
             Layout.topMargin: 10
@@ -41,7 +41,7 @@ InnerBackground {
             Layout.topMargin: 20
             color: Style.colorWhite5
 
-            text_value: API.app.settings_pg.empty_string + (qsTr("You don't have any orders."))
+            text_value: qsTr("You don't have any orders.")
         }
 
         // List

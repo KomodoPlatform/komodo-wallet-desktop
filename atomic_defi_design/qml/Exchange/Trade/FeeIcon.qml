@@ -11,7 +11,7 @@ DefaultText {
 
     visible: trade_info !== undefined
 
-    text_value: API.app.settings_pg.empty_string + (General.cex_icon)
+    text_value: General.cex_icon
 
     DefaultMouseArea {
         id: mouse_area
@@ -26,11 +26,11 @@ DefaultText {
         contentItem: ColumnLayout {
             DefaultText {
                 id: tx_fee_text
-                text_value: API.app.settings_pg.empty_string + (General.txFeeText(trade_info, base, false))
+                text_value: General.txFeeText(trade_info, base, false)
                 font.pixelSize: Style.textSizeSmall4
             }
             DefaultText {
-                text_value: API.app.settings_pg.empty_string + (General.tradingFeeText(trade_info, base, false))
+                text_value: General.tradingFeeText(trade_info, base, false)
                 font.pixelSize: tx_fee_text.font.pixelSize
             }
         }

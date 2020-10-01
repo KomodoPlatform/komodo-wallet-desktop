@@ -193,7 +193,7 @@ FloatingBackground {
                 DefaultButton {
                     Layout.fillWidth: true
                     font.pixelSize: Style.textSize
-                    text: API.app.settings_pg.empty_string + (qsTr("Sell %1", "TICKER").arg(left_ticker))
+                    text: qsTr("Sell %1", "TICKER").arg(left_ticker)
                     color: sell_mode ? Style.colorButtonEnabled.default : Style.colorButtonDisabled.default
                     colorTextEnabled: sell_mode ? Style.colorButtonEnabled.danger : Style.colorButtonDisabled.danger
                     font.weight: Font.Medium
@@ -202,7 +202,7 @@ FloatingBackground {
                 DefaultButton {
                     Layout.fillWidth: true
                     font.pixelSize: Style.textSize
-                    text: API.app.settings_pg.empty_string + (qsTr("Buy %1", "TICKER").arg(left_ticker))
+                    text: qsTr("Buy %1", "TICKER").arg(left_ticker)
                     color: sell_mode ? Style.colorButtonDisabled.default : Style.colorButtonEnabled.default
                     colorTextEnabled: sell_mode ? Style.colorButtonDisabled.primary : Style.colorButtonEnabled.primary
                     font.weight: Font.Medium
@@ -227,7 +227,7 @@ FloatingBackground {
                     id: input_price
                     width: parent.width
 
-                    field.left_text: API.app.settings_pg.empty_string + (qsTr("Price"))
+                    field.left_text: qsTr("Price")
                     field.right_text: right_ticker
 
                     field.onTextChanged: {
@@ -269,9 +269,9 @@ FloatingBackground {
                     width: parent.width
                     enabled: !multi_order_enabled
 
-                    field.left_text: API.app.settings_pg.empty_string + (qsTr("Volume"))
+                    field.left_text: qsTr("Volume")
                     field.right_text: left_ticker
-                    field.placeholderText: API.app.settings_pg.empty_string + (is_sell_form ? qsTr("Amount to sell") : qsTr("Amount to receive"))
+                    field.placeholderText: is_sell_form ? qsTr("Amount to sell") : qsTr("Amount to receive")
                     field.onTextChanged: {
                         const before_checks = field.text
                         onInputChanged()
@@ -338,21 +338,21 @@ FloatingBackground {
                     anchors.left: parent.left
                     anchors.top: parent.bottom
 
-                    text_value: API.app.settings_pg.empty_string + (qsTr("Min"))
+                    text_value: qsTr("Min")
                     font.pixelSize: input_volume.field.font.pixelSize
                 }
                 DefaultText {
                     anchors.horizontalCenter: parent.horizontalCenter
                     anchors.top: parent.bottom
 
-                    text_value: API.app.settings_pg.empty_string + (qsTr("Half"))
+                    text_value: qsTr("Half")
                     font.pixelSize: input_volume.field.font.pixelSize
                 }
                 DefaultText {
                     anchors.right: parent.right
                     anchors.top: parent.bottom
 
-                    text_value: API.app.settings_pg.empty_string + (qsTr("Max"))
+                    text_value: qsTr("Max")
                     font.pixelSize: input_volume.field.font.pixelSize
                 }
             }
@@ -379,7 +379,7 @@ FloatingBackground {
 
                         DefaultText {
                             id: tx_fee_text
-                            text_value: API.app.settings_pg.empty_string + (General.feeText(curr_trade_info, base_ticker, true, true))
+                            text_value: General.feeText(curr_trade_info, base_ticker, true, true)
                             font.pixelSize: Style.textSizeSmall1
 
                             CexInfoTrigger {}
@@ -390,9 +390,9 @@ FloatingBackground {
                     DefaultText {
                         visible: !fees.visible
 
-                        text_value: API.app.settings_pg.empty_string + (!visible ? "" :
-                                                    notEnoughBalance() ? (qsTr('Minimum fee') + ":     " + General.formatCrypto("", General.formatDouble(parseFloat(getMaxBalance()) - parseFloat(getMaxVolume())), base_ticker))
-                                                                       : qsTr('Fees will be calculated'))
+                        text_value: !visible ? "" :
+                                    notEnoughBalance() ? (qsTr('Minimum fee') + ":     " + General.formatCrypto("", General.formatDouble(parseFloat(getMaxBalance()) - parseFloat(getMaxVolume())), base_ticker))
+                                                        : qsTr('Fees will be calculated')
                         Layout.alignment: Qt.AlignCenter
                         font.pixelSize: tx_fee_text.font.pixelSize
                     }
@@ -411,7 +411,7 @@ FloatingBackground {
             DefaultText {
                 font.weight: Font.Medium
                 font.pixelSize: Style.textSizeSmall3
-                text_value: API.app.settings_pg.empty_string + (qsTr("Total") + ": " + General.formatCrypto("", total_amount, right_ticker))
+                text_value: qsTr("Total") + ": " + General.formatCrypto("", total_amount, right_ticker)
             }
 
             DefaultText {
@@ -434,7 +434,7 @@ FloatingBackground {
 
             width: 170
 
-            text: API.app.settings_pg.empty_string + (qsTr("Start Swap"))
+            text: qsTr("Start Swap")
             font.weight: Font.Medium
             enabled: !multi_order_enabled && can_submit_trade
             onClicked: confirm_trade_modal.open()
@@ -463,29 +463,28 @@ FloatingBackground {
                 font.pixelSize: Style.textSizeSmall4
                 color: Style.colorRed
 
-                text_value: API.app.settings_pg.empty_string + (
-                                // Balance check can be done without price too, prioritize that for sell
-                                notEnoughBalance() ? (qsTr("Tradable (after fees) %1 balance is lower than minimum trade amount").arg(base_ticker) + " : " + General.getMinTradeAmount()) :
+                text_value: // Balance check can be done without price too, prioritize that for sell
+                            notEnoughBalance() ? (qsTr("Tradable (after fees) %1 balance is lower than minimum trade amount").arg(base_ticker) + " : " + General.getMinTradeAmount()) :
 
-                                // Fill the price field
-                                General.isZero(getCurrentPrice()) ? (qsTr("Please fill the price field")) :
+                            // Fill the price field
+                            General.isZero(getCurrentPrice()) ? (qsTr("Please fill the price field")) :
 
-                                // Fill the volume field
-                                General.isZero(getCurrentForm().getVolume()) ? (qsTr("Please fill the volume field")) :
+                            // Fill the volume field
+                            General.isZero(getCurrentForm().getVolume()) ? (qsTr("Please fill the volume field")) :
 
-                               // Trade amount is lower than the minimum
-                               (getCurrentForm().fieldsAreFilled() && !getCurrentForm().higherThanMinTradeAmount()) ? ((qsTr("Volume is lower than minimum trade amount")) + " : " + General.getMinTradeAmount()) :
+                            // Trade amount is lower than the minimum
+                            (getCurrentForm().fieldsAreFilled() && !getCurrentForm().higherThanMinTradeAmount()) ? ((qsTr("Volume is lower than minimum trade amount")) + " : " + General.getMinTradeAmount()) :
 
-                               // Trade receive amount is lower than the minimum
-                               (getCurrentForm().fieldsAreFilled() && !getCurrentForm().receiveHigherThanMinTradeAmount()) ? ((qsTr("Receive volume is lower than minimum trade amount")) + " : " + General.getMinTradeAmount()) :
+                            // Trade receive amount is lower than the minimum
+                            (getCurrentForm().fieldsAreFilled() && !getCurrentForm().receiveHigherThanMinTradeAmount()) ? ((qsTr("Receive volume is lower than minimum trade amount")) + " : " + General.getMinTradeAmount()) :
 
-                                // Fields are filled, fee can be checked
-                                notEnoughBalanceForFees() ?
-                                    (qsTr("Not enough balance for the fees. Need at least %1 more", "AMT TICKER").arg(General.formatCrypto("", curr_trade_info.amount_needed, base_ticker))) :
+                            // Fields are filled, fee can be checked
+                            notEnoughBalanceForFees() ?
+                                (qsTr("Not enough balance for the fees. Need at least %1 more", "AMT TICKER").arg(General.formatCrypto("", curr_trade_info.amount_needed, base_ticker))) :
 
-                                // Not enough ETH for fees
-                                (getCurrentForm().hasParentCoinFees() && !getCurrentForm().hasEnoughParentCoinForFees()) ? (qsTr("Not enough ETH for the transaction fee")) : ""
-                          )
+                            // Not enough ETH for fees
+                            (getCurrentForm().hasParentCoinFees() && !getCurrentForm().hasEnoughParentCoinForFees()) ? (qsTr("Not enough ETH for the transaction fee")) : ""
+                          
             }
         }
     }

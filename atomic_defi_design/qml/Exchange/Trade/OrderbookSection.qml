@@ -24,8 +24,8 @@ ColumnLayout {
             id: price_header
             font.pixelSize: Style.textSizeSmall3
 
-            text_value: API.app.settings_pg.empty_string + (is_asks ? qsTr("Ask Price") + "\n(" + right_ticker + ")":
-                                                            qsTr("Bid Price") + "\n(" + right_ticker + ")")
+            text_value: is_asks ? qsTr("Ask Price") + "\n(" + right_ticker + ")":
+                                  qsTr("Bid Price") + "\n(" + right_ticker + ")"
 
             color: is_asks ? Style.colorRed : Style.colorGreen
             horizontalAlignment: Text.AlignRight
@@ -46,7 +46,7 @@ ColumnLayout {
 
             font.pixelSize: price_header.font.pixelSize
 
-            text_value: API.app.settings_pg.empty_string + (qsTr("Quantity") + "\n(" + left_ticker + ")")
+            text_value: qsTr("Quantity") + "\n(" + left_ticker + ")"
             color: Style.colorWhite1
             anchors.verticalCenter: parent.verticalCenter
         }
@@ -61,7 +61,7 @@ ColumnLayout {
 
             font.pixelSize: price_header.font.pixelSize
 
-            text_value: API.app.settings_pg.empty_string + (qsTr("Total") + "\n(" + right_ticker + ")")
+            text_value: qsTr("Total") + "\n(" + right_ticker + ")"
             color: Style.colorWhite1
             anchors.verticalCenter: parent.verticalCenter
         }
@@ -130,7 +130,7 @@ ColumnLayout {
 
                 font.pixelSize: Style.textSizeSmall1
 
-                text_value: API.app.settings_pg.empty_string + (General.formatDouble(price, General.amountPrecision, true))
+                text_value: General.formatDouble(price, General.amountPrecision, true)
                 color: price_header.color
                 anchors.verticalCenter: parent.verticalCenter
             }
@@ -144,7 +144,7 @@ ColumnLayout {
                 font.pixelSize: price_value.font.pixelSize
                 font.family: price_value.font.family
 
-                text_value: API.app.settings_pg.empty_string + (General.formatDouble(quantity, General.amountPrecision, true))
+                text_value: General.formatDouble(quantity, General.amountPrecision, true)
                 color: Style.colorWhite4
                 anchors.verticalCenter: parent.verticalCenter
             }
@@ -158,7 +158,7 @@ ColumnLayout {
                 font.pixelSize: price_value.font.pixelSize
                 font.family: price_value.font.family
 
-                text_value: API.app.settings_pg.empty_string + (General.formatDouble(total, General.amountPrecision, true))
+                text_value: General.formatDouble(total, General.amountPrecision, true)
                 color: Style.colorWhite4
                 anchors.verticalCenter: parent.verticalCenter
             }

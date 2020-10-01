@@ -41,8 +41,8 @@ ColumnLayout {
         hide_hint: true
         visible: confirm
         id: input_confirm_password
-        title: API.app.settings_pg.empty_string + (qsTr("Confirm Password"))
-        field.placeholderText: API.app.settings_pg.empty_string + (qsTr("Enter the same password to confirm"))
+        title: qsTr("Confirm Password")
+        field.placeholderText: qsTr("Enter the same password to confirm")
         high_security: form.high_security
     }
 }

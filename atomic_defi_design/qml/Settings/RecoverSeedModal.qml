@@ -34,7 +34,7 @@ BasicModal {
     }
 
     ModalContent {
-        title: API.app.settings_pg.empty_string + (qsTr("View Seed"))
+        title: qsTr("View Seed")
 
         ColumnLayout {
             visible: seed === ''
@@ -44,7 +44,7 @@ BasicModal {
                 Layout.bottomMargin: 10
                 Layout.alignment: Qt.AlignHCenter
 
-                text_value: API.app.settings_pg.empty_string + (qsTr("Please enter your password to view the seed."))
+                text_value: qsTr("Please enter your password to view the seed.")
             }
 
             PasswordForm {
@@ -55,7 +55,7 @@ BasicModal {
             }
 
             DefaultText {
-                text_value: API.app.settings_pg.empty_string + (qsTr("Wrong Password"))
+                text_value: qsTr("Wrong Password")
                 color: Style.colorRed
                 visible: wrong_password
             }
@@ -64,7 +64,7 @@ BasicModal {
         TextAreaWithTitle {
             visible: seed !== ''
 
-            title: API.app.settings_pg.empty_string + (qsTr("Seed"))
+            title: qsTr("Seed")
             field.text: seed
             field.readOnly: true
             copyable: true
@@ -73,7 +73,7 @@ BasicModal {
         // Buttons
         footer: [
             DefaultButton {
-                text: API.app.settings_pg.empty_string + (seed === '' ? qsTr("Cancel") : qsTr("Close"))
+                text: seed === '' ? qsTr("Cancel") : qsTr("Close")
                 Layout.fillWidth: true
                 onClicked: root.close()
             },
@@ -81,7 +81,7 @@ BasicModal {
             PrimaryButton {
                 id: submit_button
                 visible: seed === ''
-                text: API.app.settings_pg.empty_string + (qsTr("View"))
+                text: qsTr("View")
                 Layout.fillWidth: true
                 enabled: input_password.isValid()
                 onClicked: tryViewSeed()

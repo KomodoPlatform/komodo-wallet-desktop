@@ -130,28 +130,28 @@ BasicModal {
 
         menu: Menu {
             MenuItem {
-                text: API.app.settings_pg.empty_string + (qsTr("Show"))
+                text: qsTr("Show")
                 onTriggered: showApp()
             }
 
             MenuItem {
-                text: API.app.settings_pg.empty_string + (qsTr("Restart"))
+                text: qsTr("Restart")
                 onTriggered: API.app.restart()
             }
 
             MenuItem {
-                text: API.app.settings_pg.empty_string + (qsTr("Quit"))
+                text: qsTr("Quit")
                 onTriggered: Qt.quit()
             }
         }
     }
 
     ModalContent {
-        title: API.app.settings_pg.empty_string + (qsTr("Notifications"))
+        title: qsTr("Notifications")
 
         DefaultButton {
             visible: list.visible
-            text: API.app.settings_pg.empty_string + (qsTr("Clear all") + " ✔️")
+            text: qsTr("Clear all") + " ✔️"
             onClicked: notifications_list = []
             Layout.fillWidth: true
         }
@@ -164,7 +164,7 @@ BasicModal {
             DefaultText {
                 anchors.centerIn: parent
                 visible: !list.visible
-                text_value: API.app.settings_pg.empty_string + (qsTr("There isn't any notification"))
+                text_value: qsTr("There isn't any notification")
                 font.pixelSize: Style.textSizeSmall2
             }
 
@@ -185,7 +185,7 @@ BasicModal {
                         anchors.topMargin: 10
                         anchors.right: parent.right
                         anchors.rightMargin: 25
-                        text_value: API.app.settings_pg.empty_string + (modelData.time)
+                        text_value: modelData.time
                         font.pixelSize: Style.textSizeSmall
                     }
 
@@ -195,13 +195,13 @@ BasicModal {
                         anchors.leftMargin: 10
 
                         DefaultText {
-                            text_value: API.app.settings_pg.empty_string + (modelData.title)
+                            text_value: modelData.title
                             font.pixelSize: Style.textSizeSmall4
                             font.weight: Font.Medium
                         }
 
                         DefaultText {
-                            text_value: API.app.settings_pg.empty_string + (modelData.message)
+                            text_value: modelData.message
                             font.pixelSize: Style.textSizeSmall1
                         }
                     }
@@ -231,7 +231,7 @@ BasicModal {
 
                         DefaultText {
                             id: remove_button
-                            text_value: API.app.settings_pg.empty_string + ("✔️")
+                            text_value: "✔️"
                             anchors.centerIn: parent
                             font.pixelSize: Style.textSizeSmall3
                             color: Style.colorWhite10
@@ -255,7 +255,7 @@ BasicModal {
         footer: [
             DefaultButton {
                 Layout.fillWidth: true
-                text: API.app.settings_pg.empty_string + (qsTr("Close"))
+                text: qsTr("Close")
                 onClicked: root.close()
             }
         ]

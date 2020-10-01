@@ -26,7 +26,7 @@ Column {
         id: utxo_list
 
         delegate: DefaultCheckBox {
-            text: API.app.settings_pg.empty_string + "         " + (model.modelData.name + " (" + model.modelData.ticker + ")")
+            text: "         " + model.modelData.name + " (" + model.modelData.ticker + ")"
             leftPadding: indicator.width
             ButtonGroup.group: childGroup
 

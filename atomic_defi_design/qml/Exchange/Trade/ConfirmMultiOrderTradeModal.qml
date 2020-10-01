@@ -18,7 +18,7 @@ BasicModal {
     }
 
     ModalContent {
-        title: API.app.settings_pg.empty_string + (qsTr("Confirm Multi Order Details"))
+        title: qsTr("Confirm Multi Order Details")
 
         DefaultListView {
             id: list
@@ -70,27 +70,27 @@ BasicModal {
                 DefaultText {
                     Layout.alignment: Qt.AlignHCenter
 
-                    text_value: API.app.settings_pg.empty_string + (qsTr("These swaps requests can not be undone and this is the final event!"))
+                    text_value: qsTr("These swaps requests can not be undone and this is the final event!")
                 }
 
                 DefaultText {
                     Layout.alignment: Qt.AlignHCenter
 
-                    text_value: API.app.settings_pg.empty_string + (qsTr("These transactions can take up to 60 mins - DO NOT close this application!"))
+                    text_value: qsTr("These transactions can take up to 60 mins - DO NOT close this application!")
                     font.pixelSize: Style.textSizeSmall4
                 }
 
                 DefaultText {
                     Layout.alignment: Qt.AlignHCenter
 
-                    text_value: API.app.settings_pg.empty_string + (qsTr("Same funds will be used until an order matches."))
+                    text_value: qsTr("Same funds will be used until an order matches.")
                     font.pixelSize: Style.textSizeSmall4
                 }
 
                 DefaultText {
                     Layout.alignment: Qt.AlignHCenter
 
-                    text_value: API.app.settings_pg.empty_string + (qsTr("Note that if one order is filled other will not be cancelled."))
+                    text_value: qsTr("Note that if one order is filled other will not be cancelled.")
                     font.pixelSize: Style.textSizeSmall4
                 }
             }
@@ -99,13 +99,13 @@ BasicModal {
         // Buttons
         footer: [
             DefaultButton {
-                text: API.app.settings_pg.empty_string + (qsTr("Cancel"))
+                text: qsTr("Cancel")
                 Layout.fillWidth: true
                 onClicked: root.close()
             },
 
             PrimaryButton {
-                text: API.app.settings_pg.empty_string + (qsTr("Confirm"))
+                text: qsTr("Confirm")
                 Layout.fillWidth: true
                 onClicked: {
                     console.log("Submitting multiple sell order")

@@ -79,7 +79,7 @@ Item {
                 DefaultSwitch {
                     id: enable_filters
                     Layout.leftMargin: 15
-                    text: API.app.settings_pg.empty_string + (qsTr("Enable Filters"))
+                    text: qsTr("Enable Filters")
 
                     checked: false
                     onCheckedChanged: applyFilter()
@@ -154,7 +154,7 @@ Item {
                 Qaterial.TextFieldDatePicker {
                     id: min_date
                     enabled: filter_enabled
-                    title: API.app.settings_pg.empty_string + (qsTr("From"))
+                    title: qsTr("From")
                     from: default_min_date
                     to: default_max_date
                     date: default_min_date
@@ -164,7 +164,7 @@ Item {
                 Qaterial.TextFieldDatePicker {
                     id: max_date
                     enabled: min_date.enabled
-                    title: API.app.settings_pg.empty_string + (qsTr("To"))
+                    title: qsTr("To")
                     from: default_min_date
                     to: default_max_date
                     date: default_max_date
@@ -174,7 +174,7 @@ Item {
                 // Cancel button
                 DangerButton {
                     visible: !root.is_history
-                    text: API.app.settings_pg.empty_string + (filter_enabled ? qsTr("Cancel Filtered Orders") : qsTr("Cancel All Orders"))
+                    text: filter_enabled ? qsTr("Cancel Filtered Orders") : qsTr("Cancel All Orders")
                     enabled: list_model.length > 0
                     onClicked: {
                         if(filter_enabled) API.app.trading_pg.cancel_order(list_model_proxy.get_filtered_ids())
@@ -185,7 +185,7 @@ Item {
                 // Export button
                 PrimaryButton {
                     visible: root.is_history
-                    text: API.app.settings_pg.empty_string + (qsTr("Export CSV"))
+                    text: qsTr("Export CSV")
                     enabled: list_model.length > 0
                     onClicked: {
                         export_csv_dialog.folder = General.os_file_prefix + API.app.get_export_folder()
@@ -196,7 +196,7 @@ Item {
                 FileDialog {
                     id: export_csv_dialog
 
-                    title: API.app.settings_pg.empty_string + (qsTr("Please choose the CSV export name and location"))
+                    title: qsTr("Please choose the CSV export name and location")
                     selectMultiple: false
                     selectExisting: false
                     selectFolder: false
@@ -237,7 +237,7 @@ Item {
     LogModal {
         id: recover_funds_modal
 
-        header: API.app.settings_pg.empty_string + (qsTr("Recover Funds Result"))
+        header: qsTr("Recover Funds Result")
         field.text: General.prettifyJSON(recover_funds_result)
 
         onClosed: recover_funds_result = "{}"

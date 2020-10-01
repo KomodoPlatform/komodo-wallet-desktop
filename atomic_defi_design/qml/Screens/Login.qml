@@ -25,7 +25,7 @@ SetupPage {
         }
         else {
             console.log("Failed: Login")
-            text_error = API.app.settings_pg.empty_string + (qsTr("Failed to login"))
+            text_error = qsTr("Failed to login")
             return false
         }
     }
@@ -53,7 +53,7 @@ SetupPage {
         width: 400
 
         DefaultText {
-            text_value: API.app.settings_pg.empty_string + (qsTr("Login") + ": " + selected_wallet_name)
+            text_value: qsTr("Login") + ": " + selected_wallet_name
         }
 
         HorizontalLine {
@@ -70,7 +70,7 @@ SetupPage {
             spacing: Style.buttonSpacing
 
             DefaultButton {
-                text: API.app.settings_pg.empty_string + (qsTr("Back"))
+                text: qsTr("Back")
                 Layout.fillWidth: true
                 onClicked: {
                     reset()
@@ -81,14 +81,14 @@ SetupPage {
             PrimaryButton {
                 id: submit_button
                 Layout.fillWidth: true
-                text: API.app.settings_pg.empty_string + (qsTr("Login"))
+                text: qsTr("Login")
                 onClicked: trySubmit()
                 enabled: input_password.isValid()
             }
         }
 
         DefaultText {
-            text_value: API.app.settings_pg.empty_string + (text_error)
+            text_value: text_error
             color: Style.colorRed
             visible: text !== ''
         }

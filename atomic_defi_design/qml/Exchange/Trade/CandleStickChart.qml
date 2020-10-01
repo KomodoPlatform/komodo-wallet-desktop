@@ -639,7 +639,7 @@ Item {
 
     DefaultText {
         visible: !pair_supported
-        text_value: API.app.settings_pg.empty_string + (qsTr("There is no chart data for this pair yet"))
+        text_value: qsTr("There is no chart data for this pair yet")
         anchors.centerIn: parent
     }
 }

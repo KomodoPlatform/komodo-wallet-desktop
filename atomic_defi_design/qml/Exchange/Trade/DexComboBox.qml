@@ -92,7 +92,7 @@ DefaultComboBox {
                     function onClosed() { input_coin_filter.reset() }
                 }
 
-                placeholderText: API.app.settings_pg.empty_string + (qsTr("Search"))
+                placeholderText: qsTr("Search")
                 selectByMouse: true
 
                 onTextChanged: {

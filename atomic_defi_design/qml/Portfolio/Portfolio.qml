@@ -86,7 +86,7 @@ ColumnLayout {
                 Layout.topMargin: 50
                 Layout.bottomMargin: 0
                 Layout.alignment: Qt.AlignHCenter
-                text_value: API.app.settings_pg.empty_string + (qsTr("TOTAL"))
+                text_value: qsTr("TOTAL")
                 font.pixelSize: Style.textSize
                 color: Qt.lighter(Style.colorWhite5, currency_change_button.containsMouse ? Style.hoverLightMultiplier : 1.0)
             }
@@ -95,7 +95,7 @@ ColumnLayout {
             DefaultText {
                 Layout.alignment: Qt.AlignHCenter
                 Layout.bottomMargin: 30
-                text_value: API.app.settings_pg.empty_string + (General.formatFiat("", API.app.portfolio_pg.balance_fiat_all, API.app.settings_pg.current_currency))
+                text_value: General.formatFiat("", API.app.portfolio_pg.balance_fiat_all, API.app.settings_pg.current_currency)
                 font.pixelSize: Style.textSize4
                 color: Qt.lighter(Style.colorWhite4, currency_change_button.containsMouse ? Style.hoverLightMultiplier : 1.0)
                 privacy: true
@@ -143,7 +143,7 @@ ColumnLayout {
             anchors.bottom: parent.bottom
             anchors.bottomMargin: 10
 
-            placeholderText: API.app.settings_pg.empty_string + (qsTr("Search"))
+            placeholderText: qsTr("Search")
             selectByMouse: true
 
             onTextChanged: {
@@ -178,7 +178,7 @@ ColumnLayout {
             anchors.leftMargin: 40
             anchors.verticalCenter: parent.verticalCenter
 
-            text: API.app.settings_pg.empty_string + (qsTr("Coin"))
+            text: qsTr("Coin")
             sort_type: sort_by_name
         }
 
@@ -190,7 +190,7 @@ ColumnLayout {
             anchors.leftMargin: parent.width * 0.265
             anchors.verticalCenter: parent.verticalCenter
 
-            text: API.app.settings_pg.empty_string + (qsTr("Balance"))
+            text: qsTr("Balance")
             sort_type: sort_by_value
         }
 
@@ -202,7 +202,7 @@ ColumnLayout {
             anchors.rightMargin: parent.width * 0.37
             anchors.verticalCenter: parent.verticalCenter
 
-            text: API.app.settings_pg.empty_string + (qsTr("Change 24h"))
+            text: qsTr("Change 24h")
             sort_type: sort_by_change
         }
 
@@ -214,7 +214,7 @@ ColumnLayout {
             anchors.rightMargin: parent.width * 0.24
             anchors.verticalCenter: parent.verticalCenter
 
-            text: API.app.settings_pg.empty_string + (qsTr("Trend 7d"))
+            text: qsTr("Trend 7d")
             sort_type: sort_by_trend
         }
 
@@ -226,7 +226,7 @@ ColumnLayout {
             anchors.rightMargin: coin_header.anchors.leftMargin
             anchors.verticalCenter: parent.verticalCenter
 
-            text: API.app.settings_pg.empty_string + (qsTr("Price"))
+            text: qsTr("Price")
             sort_type: sort_by_price
         }
 
@@ -304,7 +304,7 @@ ColumnLayout {
             DefaultText {
                 anchors.left: icon.right
                 anchors.leftMargin: 10
-                text_value: API.app.settings_pg.empty_string + (name)
+                text_value: name
                 anchors.verticalCenter: parent.verticalCenter
             }
 
@@ -314,7 +314,7 @@ ColumnLayout {
                 anchors.left: parent.left
                 anchors.leftMargin: balance_header.anchors.leftMargin
 
-                text_value: API.app.settings_pg.empty_string + (General.formatCrypto("", balance, ticker,  main_currency_balance, API.app.settings_pg.current_currency))
+                text_value: General.formatCrypto("", balance, ticker,  main_currency_balance, API.app.settings_pg.current_currency)
                 color: Style.colorWhite4
                 anchors.verticalCenter: parent.verticalCenter
                 privacy: true
@@ -328,7 +328,7 @@ ColumnLayout {
 
                 text_value: {
                     const v = parseFloat(change_24h)
-                    return API.app.settings_pg.empty_string + (v === 0 ? '-' : General.formatPercent(v))
+                    return v === 0 ? '-' : General.formatPercent(v)
                 }
                 color: Style.getValueColor(change_24h)
                 anchors.verticalCenter: parent.verticalCenter
@@ -340,7 +340,7 @@ ColumnLayout {
                 anchors.right: parent.right
                 anchors.rightMargin: price_header.anchors.rightMargin
 
-                text_value: API.app.settings_pg.empty_string + (General.formatFiat('', main_currency_price_for_one_unit, API.app.settings_pg.current_currency))
+                text_value: General.formatFiat('', main_currency_price_for_one_unit, API.app.settings_pg.current_currency)
                 color: Style.colorThemeDarkLight
                 anchors.verticalCenter: parent.verticalCenter
 
@@ -394,7 +394,7 @@ ColumnLayout {
                     id: type_tag
                     anchors.verticalCenter: parent.verticalCenter
                     anchors.horizontalCenter: parent.horizontalCenter
-                    text: API.app.settings_pg.empty_string + (API.app.get_coin_info(ticker).type === "ERC-20" ? "ERC-20" : "QRC-20")
+                    text: API.app.get_coin_info(ticker).type === "ERC-20" ? "ERC-20" : "QRC-20"
                     font.pixelSize: Style.textSizeSmall1
                 }
             }

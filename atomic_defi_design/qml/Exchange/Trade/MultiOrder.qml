@@ -144,7 +144,7 @@ InnerBackground {
                         anchors.fill: parent
                         details: model
                         padding: 10
-                        bottom_text: API.app.settings_pg.empty_string + (qsTr("You'll receive %1", "AMOUNT TICKER").arg(General.formatCrypto("", multi_order_line.volume, multi_order_line.rel)))
+                        bottom_text: qsTr("You'll receive %1", "AMOUNT TICKER").arg(General.formatCrypto("", multi_order_line.volume, multi_order_line.rel))
                     }
 
                     AmountFieldWithInfo {
@@ -154,7 +154,7 @@ InnerBackground {
                         anchors.rightMargin: 30
                         anchors.verticalCenter: parent.verticalCenter
 
-                        field.left_text: API.app.settings_pg.empty_string + (qsTr("Price"))
+                        field.left_text: qsTr("Price")
                         field.right_text: model.ticker + "/" + multi_order_line.base
                         field.onTextChanged: multi_order_line.price = field.text
 

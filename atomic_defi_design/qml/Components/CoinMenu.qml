@@ -7,13 +7,13 @@ import "../Constants"
 Menu {
     Action {
         id: disable_action
-        text: API.app.settings_pg.empty_string + (qsTr("Disable %1", "TICKER").arg(ticker))
+        text: qsTr("Disable %1", "TICKER").arg(ticker)
         onTriggered: API.app.disable_coins([ticker])
         enabled: General.canDisable(ticker)
     }
 
     Action {
-        text: API.app.settings_pg.empty_string + (qsTr("Disable and Delete %1", "TICKER").arg(ticker))
+        text: qsTr("Disable and Delete %1", "TICKER").arg(ticker)
         onTriggered: {
             const cloneTicker = General.clone(ticker)
             API.app.disable_coins([ticker])

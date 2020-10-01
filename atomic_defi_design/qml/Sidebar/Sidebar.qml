@@ -143,7 +143,7 @@ Item {
             anchors.horizontalCenter: parent.horizontalCenter
             anchors.top: parent.top
             anchors.topMargin: parent.width * 0.85
-            text_value: API.app.settings_pg.empty_string + (General.version_string)
+            text_value: General.version_string
             font.pixelSize: Style.textSizeSmall1
             color: Style.colorThemeDarkLight
         }

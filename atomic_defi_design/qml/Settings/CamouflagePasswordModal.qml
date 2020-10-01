@@ -15,7 +15,7 @@ BasicModal {
     }
 
     ModalContent {
-        title: API.app.settings_pg.empty_string + (qsTr("Setup Camouflage Password"))
+        title: qsTr("Setup Camouflage Password")
 
         FloatingBackground {
             id: warning_bg
@@ -36,7 +36,7 @@ BasicModal {
                     horizontalAlignment: Text.AlignHCenter
                     anchors.horizontalCenter: parent.horizontalCenter
 
-                    text_value: API.app.settings_pg.empty_string + (qsTr("Camouflage Password is a secret password for emergency situations."))
+                    text_value: qsTr("Camouflage Password is a secret password for emergency situations.")
                     font.pixelSize: Style.textSize2
                 }
 
@@ -45,7 +45,7 @@ BasicModal {
                     horizontalAlignment: Text.AlignHCenter
                     anchors.horizontalCenter: parent.horizontalCenter
 
-                    text_value: API.app.settings_pg.empty_string + (qsTr("Using it to login will display your balance lower than it actually is."))
+                    text_value: qsTr("Using it to login will display your balance lower than it actually is.")
                 }
 
                 DefaultText {
@@ -53,7 +53,7 @@ BasicModal {
                     horizontalAlignment: Text.AlignHCenter
                     anchors.horizontalCenter: parent.horizontalCenter
 
-                    text_value: API.app.settings_pg.empty_string + (qsTr("Here you enter the suffix and at login you need to enter {real_password}{suffix}"))
+                    text_value: qsTr("Here you enter the suffix and at login you need to enter {real_password}{suffix}")
                 }
             }
         }
@@ -61,20 +61,20 @@ BasicModal {
         PasswordForm {
             id: input_password
             Layout.fillWidth: true
-            field.placeholderText: API.app.settings_pg.empty_string + (qsTr("Enter a suffix"))
+            field.placeholderText: qsTr("Enter a suffix")
             high_security: false
         }
 
         // Buttons
         footer: [
             DefaultButton {
-                text: API.app.settings_pg.empty_string + (qsTr("Cancel"))
+                text: qsTr("Cancel")
                 Layout.fillWidth: true
                 onClicked: root.close()
             },
 
             PrimaryButton {
-                text: API.app.settings_pg.empty_string + (qsTr("Save"))
+                text: qsTr("Save")
                 Layout.fillWidth: true
                 enabled: input_password.isValid()
                 onClicked: {

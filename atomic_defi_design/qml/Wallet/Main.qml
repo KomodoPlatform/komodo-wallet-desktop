@@ -79,14 +79,14 @@ Item {
 
                             DefaultText {
                                 id: name
-                                text_value: API.app.settings_pg.empty_string + (current_ticker_infos.name)
+                                text_value: current_ticker_infos.name
                                 Layout.alignment: Qt.AlignLeft
                                 font.pixelSize: Style.textSizeMid
                             }
 
                             DefaultText {
                                 id: name_value
-                                text_value: API.app.settings_pg.empty_string + (General.formatCrypto("", current_ticker_infos.balance, api_wallet_page.ticker))
+                                text_value: General.formatCrypto("", current_ticker_infos.balance, api_wallet_page.ticker)
                                 Layout.alignment: Qt.AlignLeft
                                 font.pixelSize: name.font.pixelSize
                                 privacy: true
@@ -99,14 +99,14 @@ Item {
                         Layout.alignment: Qt.AlignLeft
                         spacing: balance_layout.spacing
                         DefaultText {
-                            text_value: API.app.settings_pg.empty_string + (qsTr("Wallet Balance"))
+                            text_value: qsTr("Wallet Balance")
                             Layout.alignment: Qt.AlignLeft
                             font.pixelSize: name.font.pixelSize
                             color: price.color
                         }
 
                         DefaultText {
-                            text_value: API.app.settings_pg.empty_string + (General.formatFiat("", current_ticker_infos.fiat_amount, API.app.settings_pg.current_currency))
+                            text_value: General.formatFiat("", current_ticker_infos.fiat_amount, API.app.settings_pg.current_currency)
                             Layout.alignment: Qt.AlignLeft
                             font.pixelSize: name.font.pixelSize
                             privacy: true
@@ -126,14 +126,14 @@ Item {
                         spacing: balance_layout.spacing
                         DefaultText {
                             id: price
-                            text_value: API.app.settings_pg.empty_string + (qsTr("Price"))
+                            text_value: qsTr("Price")
                             Layout.alignment: Qt.AlignLeft
                             font.pixelSize: name.font.pixelSize
                             color: Style.colorText2
                         }
 
                         DefaultText {
-                            text_value: API.app.settings_pg.empty_string + (General.formatFiat('', current_ticker_infos.current_currency_ticker_price, API.app.settings_pg.current_currency))
+                            text_value: General.formatFiat('', current_ticker_infos.current_currency_ticker_price, API.app.settings_pg.current_currency)
                             Layout.alignment: Qt.AlignLeft
                             font.pixelSize: name.font.pixelSize
                         }
@@ -144,7 +144,7 @@ Item {
                         Layout.alignment: Qt.AlignHCenter
                         spacing: balance_layout.spacing
                         DefaultText {
-                            text_value: API.app.settings_pg.empty_string + (qsTr("Change 24h"))
+                            text_value: qsTr("Change 24h")
                             Layout.alignment: Qt.AlignLeft
                             font.pixelSize: name.font.pixelSize
                             color: price.color
@@ -153,7 +153,7 @@ Item {
                         DefaultText {
                             text_value: {
                                 const v = parseFloat(current_ticker_infos.change_24h)
-                                return API.app.settings_pg.empty_string + (v === 0 ? '-' : General.formatPercent(v))
+                                return v === 0 ? '-' : General.formatPercent(v)
                             }
                             Layout.alignment: Qt.AlignLeft
                             font.pixelSize: name.font.pixelSize
@@ -166,7 +166,7 @@ Item {
                         Layout.alignment: Qt.AlignHCenter
                         spacing: balance_layout.spacing
                         DefaultText {
-                            text_value: API.app.settings_pg.empty_string + (qsTr("Portfolio %"))
+                            text_value: qsTr("Portfolio %")
                             Layout.alignment: Qt.AlignLeft
                             font.pixelSize: name.font.pixelSize
                             color: price.color
@@ -178,7 +178,7 @@ Item {
                                 const portfolio_balance = parseFloat(API.app.portfolio_pg.balance_fiat_all)
                                 if(fiat_amount <= 0 || portfolio_balance <= 0) return "-"
 
-                                return API.app.settings_pg.empty_string + (General.formatPercent((100 * fiat_amount/portfolio_balance).toFixed(2), false))
+                                return General.formatPercent((100 * fiat_amount/portfolio_balance).toFixed(2), false)
                             }
                             Layout.alignment: Qt.AlignLeft
                             font.pixelSize: name.font.pixelSize
@@ -199,7 +199,7 @@ Item {
                 DefaultButton {
                     id: send_button
                     enabled: parseFloat(current_ticker_infos.balance) > 0
-                    text: API.app.settings_pg.empty_string + (qsTr("Send"))
+                    text: qsTr("Send")
                     onClicked: send_modal.open()
                     Layout.fillWidth: true
                     font.pixelSize: Style.textSize
@@ -219,7 +219,7 @@ Item {
                 }
 
                 DefaultButton {
-                    text: API.app.settings_pg.empty_string + (qsTr("Receive"))
+                    text: qsTr("Receive")
                     onClicked: receive_modal.open()
                     Layout.fillWidth: true
                     font.pixelSize: send_button.font.pixelSize
@@ -238,7 +238,7 @@ Item {
                 }
 
                 DefaultButton {
-                    text: API.app.settings_pg.empty_string + (qsTr("Swap"))
+                    text: qsTr("Swap")
                     onClicked: onClickedSwap()
                     Layout.fillWidth: true
                     font.pixelSize: send_button.font.pixelSize
@@ -262,7 +262,7 @@ Item {
 
                 PrimaryButton {
                     id: button_claim_rewards
-                    text: API.app.settings_pg.empty_string + (qsTr("Claim Rewards"))
+                    text: qsTr("Claim Rewards")
                     Layout.fillWidth: true
                     font.pixelSize: send_button.font.pixelSize
 
@@ -318,7 +318,7 @@ Item {
 
                             DefaultText {
                                 id: left_text
-                                text_value: API.app.settings_pg.empty_string + (qsTr("%1 / %2 Price", "TICKER").arg(api_wallet_page.ticker).arg(API.app.settings_pg.current_fiat) + " " + General.cex_icon)
+                                text_value: qsTr("%1 / %2 Price", "TICKER").arg(api_wallet_page.ticker).arg(API.app.settings_pg.current_fiat) + " " + General.cex_icon
                                 font.pixelSize: Style.textSizeSmall3
 
                                 CexInfoTrigger {}
@@ -341,7 +341,7 @@ Item {
                             }
 
                             DefaultText {
-                                text_value: API.app.settings_pg.empty_string + (qsTr("Volume 24h") + " (" + API.app.settings_pg.current_fiat + ")")
+                                text_value: qsTr("Volume 24h") + " (" + API.app.settings_pg.current_fiat + ")"
                                 font: left_text.font
                             }
                         }
@@ -361,7 +361,7 @@ Item {
                     anchors.horizontalCenter: parent.horizontalCenter
                     anchors.verticalCenter: parent.verticalCenter
                     DefaultText {
-                        text_value: API.app.settings_pg.empty_string + (qsTr("Loading"))
+                        text_value: qsTr("Loading")
                         Layout.alignment: Qt.AlignHCenter
                         font.pixelSize: Style.textSize2
                     }
@@ -371,11 +371,10 @@ Item {
                     }
 
                     DefaultText {
-                        text_value: API.app.settings_pg.empty_string + (
-                          General.isTokenType(current_ticker_infos.type) ?
-                          (qsTr("Scanning blocks for TX History...") + " " + loadingPercentage(current_ticker_infos.blocks_left)) :
-                          (qsTr("Syncing TX History...") + " " + loadingPercentage(current_ticker_infos.transactions_left))
-                        )
+                        text_value: General.isTokenType(current_ticker_infos.type) ?
+                                    (qsTr("Scanning blocks for TX History...") + " " + loadingPercentage(current_ticker_infos.blocks_left)) :
+                                    (qsTr("Syncing TX History...") + " " + loadingPercentage(current_ticker_infos.transactions_left))
+                        
                         Layout.alignment: Qt.AlignHCenter
                     }
                 }
@@ -405,7 +404,7 @@ Item {
                     DefaultText {
                         anchors.centerIn: parent
                         visible: current_ticker_infos.tx_state !== "InProgress" && transactions_mdl.length === 0
-                        text_value: API.app.settings_pg.empty_string + (api_wallet_page.tx_fetching_busy ? (qsTr("Refreshing") + "...") : qsTr("No transactions"))
+                        text_value: api_wallet_page.tx_fetching_busy ? (qsTr("Refreshing") + "...") : qsTr("No transactions")
                         font.pixelSize: Style.textSize
                         color: Style.colorWhite4
                     }
@@ -437,7 +436,7 @@ Item {
                 DefaultText {
                     id: fetching_text
                     Layout.alignment: Qt.AlignVCenter
-                    text_value: API.app.settings_pg.empty_string + (qsTr("Fetching transactions") + "...")
+                    text_value: qsTr("Fetching transactions") + "..."
                     font.pixelSize: Style.textSizeSmall3
                 }
             }

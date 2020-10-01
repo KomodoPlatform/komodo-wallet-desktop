@@ -49,7 +49,7 @@ SetupPage {
                 guess_text_error = ""
             }
             else {
-                guess_text_error = API.app.settings_pg.empty_string + (qsTr("Wrong word, please check again"))
+                guess_text_error = qsTr("Wrong word, please check again")
             }
         }
 
@@ -83,7 +83,7 @@ SetupPage {
         }
         else {
             console.log("Failed: Create wallet")
-            text_error = API.app.settings_pg.empty_string + (qsTr("Failed to create a wallet"))
+            text_error = qsTr("Failed to create a wallet")
             return false
         }
     }
@@ -97,7 +97,7 @@ SetupPage {
         spacing: Style.rowSpacing
 
         DefaultText {
-            text_value: API.app.settings_pg.empty_string + (qsTr("New User"))
+            text_value: qsTr("New User")
         }
 
         HorizontalLine {
@@ -149,7 +149,7 @@ SetupPage {
 
             TextAreaWithTitle {
                 id: input_generated_seed
-                title: API.app.settings_pg.empty_string + (qsTr("Generated Seed"))
+                title: qsTr("Generated Seed")
                 field.text: current_mnemonic
                 field.readOnly: true
                 copyable: true
@@ -175,14 +175,14 @@ SetupPage {
                         width: parent.width - 40
                         horizontalAlignment: Text.AlignHCenter
                         anchors.horizontalCenter: parent.horizontalCenter
-                        text_value: API.app.settings_pg.empty_string + (qsTr("Important: Back up your seed phrase before proceeding!"))
+                        text_value: qsTr("Important: Back up your seed phrase before proceeding!")
                     }
 
                     DefaultText {
                         width: parent.width - 40
                         horizontalAlignment: Text.AlignHCenter
                         anchors.horizontalCenter: parent.horizontalCenter
-                        text_value: API.app.settings_pg.empty_string + (qsTr("We recommend storing it offline."))
+                        text_value: qsTr("We recommend storing it offline.")
                         font.pixelSize: Style.textSizeSmall4
                         color: Style.colorWhite4
                     }
@@ -191,8 +191,8 @@ SetupPage {
 
             TextAreaWithTitle {
                 id: input_confirm_seed
-                title: API.app.settings_pg.empty_string + (qsTr("Confirm Seed"))
-                field.placeholderText: API.app.settings_pg.empty_string + (qsTr("Enter the generated seed here"))
+                title: qsTr("Confirm Seed")
+                field.placeholderText: qsTr("Enter the generated seed here")
                 onReturn: completeForm
             }
 
@@ -208,7 +208,7 @@ SetupPage {
 
                 DefaultButton {
                     Layout.fillWidth: true
-                    text: API.app.settings_pg.empty_string + (qsTr("Back"))
+                    text: qsTr("Back")
                     onClicked: {
                         reset()
                         onClickedBack()
@@ -218,7 +218,7 @@ SetupPage {
                 PrimaryButton {
                     id: continue_button
                     Layout.fillWidth: true
-                    text: API.app.settings_pg.empty_string + (qsTr("Continue"))
+                    text: qsTr("Continue")
                     onClicked: completeForm()
                     enabled:    // Fields are not empty
                                 input_wallet_name.field.acceptableInput === true &&
@@ -229,7 +229,7 @@ SetupPage {
             }
 
             DefaultText {
-                text_value: API.app.settings_pg.empty_string + (text_error)
+                text_value: text_error
                 color: Style.colorRed
                 visible: text !== ''
             }
@@ -257,13 +257,13 @@ SetupPage {
                     DefaultText {
                         width: parent.width - 40
                         anchors.horizontalCenter: parent.horizontalCenter
-                        text_value: API.app.settings_pg.empty_string + (qsTr("Let's double check your seed phrase"))
+                        text_value: qsTr("Let's double check your seed phrase")
                     }
 
                     DefaultText {
                         width: parent.width - 40
                         anchors.horizontalCenter: parent.horizontalCenter
-                        text_value: API.app.settings_pg.empty_string + (qsTr("Your seed phrase is important - that's why we like to make sure it's correct. We'll ask you three different questions about your seed phrase to make sure you'll be able to easily restore your wallet whenever you want."))
+                        text_value: qsTr("Your seed phrase is important - that's why we like to make sure it's correct. We'll ask you three different questions about your seed phrase to make sure you'll be able to easily restore your wallet whenever you want.")
                         font.pixelSize: Style.textSizeSmall4
                         color: Style.colorWhite4
                     }
@@ -273,8 +273,8 @@ SetupPage {
 
             TextFieldWithTitle {
                 id: input_seed_word
-                title: API.app.settings_pg.empty_string + (qsTr("What's the %n. word in your seed phrase?", "", current_word_idx + 1))
-                field.placeholderText: API.app.settings_pg.empty_string + (qsTr("Enter the %n. word", "", current_word_idx + 1))
+                title: qsTr("What's the %n. word in your seed phrase?", "", current_word_idx + 1)
+                field.placeholderText: qsTr("Enter the %n. word", "", current_word_idx + 1)
                 field.validator: RegExpValidator { regExp: /[a-z]+/ }
                 field.onAccepted: tryGuess()
             }
@@ -282,21 +282,21 @@ SetupPage {
             RowLayout {
                 DefaultButton {
                     Layout.fillWidth: true
-                    text: API.app.settings_pg.empty_string + (qsTr("Go back and check again"))
+                    text: qsTr("Go back and check again")
                     onClicked: form_is_filled = false
                 }
 
                 PrimaryButton {
                     id: submit_button
                     Layout.fillWidth: true
-                    text: API.app.settings_pg.empty_string + (qsTr("Continue"))
+                    text: qsTr("Continue")
                     onClicked: tryGuess()
                     enabled: validGuessField(input_seed_word.field)
                 }
             }
 
             DefaultText {
-                text_value: API.app.settings_pg.empty_string + (guess_text_error)
+                text_value: guess_text_error
                 color: Style.colorRed
                 visible: text !== ''
             }

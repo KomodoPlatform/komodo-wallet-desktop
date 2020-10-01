@@ -43,8 +43,8 @@ AnimatedRectangle {
             Layout.alignment: Qt.AlignVCenter
             font.pixelSize: base_amount.font.pixelSize
             color: !details ? "white" : getStatusColor(details.order_status)
-            text_value: API.app.settings_pg.empty_string + (!details ? "" :
-                                                             visible ? getStatusStep(details.order_status) : '')
+            text_value: !details ? "" :
+                        visible ? getStatusStep(details.order_status) : ''
         }
 
         DefaultBusyIndicator {
@@ -82,8 +82,8 @@ AnimatedRectangle {
     // Base Amount
     DefaultText {
         id: base_amount
-        text_value: API.app.settings_pg.empty_string + (!details ? "" :
-                                                         General.formatCrypto("", details.base_amount, details.base_coin))
+        text_value: !details ? "" :
+                    General.formatCrypto("", details.base_amount, details.base_coin)
         font.pixelSize: Style.textSizeSmall4
 
         anchors.left: base_icon.right
@@ -95,8 +95,8 @@ AnimatedRectangle {
     // Rel Amount
     DefaultText {
         id: rel_amount
-        text_value: API.app.settings_pg.empty_string + (!details ? "" :
-                                                         General.formatCrypto("", details.rel_amount, details.rel_coin))
+        text_value: !details ? "" :
+                    General.formatCrypto("", details.rel_amount, details.rel_coin)
         font.pixelSize: base_amount.font.pixelSize
 
         anchors.right: rel_icon.left
@@ -121,7 +121,7 @@ AnimatedRectangle {
     DefaultText {
         id: cancel_button_text
         visible: !details ? false :
-                            details.cancellable
+                 details.cancellable
 
         font.pixelSize: Style.textSizeSmall4
         text_value: "x"
@@ -143,8 +143,8 @@ AnimatedRectangle {
     // Date
     DefaultText {
         font.pixelSize: base_amount.font.pixelSize
-        text_value: API.app.settings_pg.empty_string + (!details ? "" :
-                                                        details.date)
+        text_value: !details ? "" :
+                    details.date
         anchors.verticalCenter: parent.verticalCenter
         anchors.left: cancel_button_text.left
         anchors.leftMargin: 20
@@ -153,8 +153,8 @@ AnimatedRectangle {
     // Order ID
     DefaultText {
         font.pixelSize: base_amount.font.pixelSize
-        text_value: API.app.settings_pg.empty_string + (!details || details.order_id === "" ? "" :
-                                                        details.order_id.substring(0, 5) + "..." + details.order_id.substring(details.order_id.length-5))
+        text_value: !details || details.order_id === "" ? "" :
+                    details.order_id.substring(0, 5) + "..." + details.order_id.substring(details.order_id.length-5)
         anchors.verticalCenter: parent.verticalCenter
         anchors.right: parent.right
         anchors.rightMargin: 20

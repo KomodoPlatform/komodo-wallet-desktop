@@ -17,13 +17,13 @@ BasicModal {
     onClosed: details = undefined
 
     ModalContent {
-        title: API.app.settings_pg.empty_string + (!details ? "" :
-                                                    details.is_swap ? qsTr("Swap Details") : qsTr("Order Details"))
+        title: !details ? "" :
+                details.is_swap ? qsTr("Swap Details") : qsTr("Order Details")
 
         // Complete image
         DefaultImage {
             visible: !details ? false :
-                                details.is_swap && details.order_status === "successful"
+                        details.is_swap && details.order_status === "successful"
             Layout.alignment: Qt.AlignHCenter
             source: General.image_path + "exchange-trade-complete.svg"
         }
@@ -31,9 +31,9 @@ BasicModal {
         // Loading symbol
         DefaultBusyIndicator {
             visible: !details ? false :
-                                 details.is_swap &&
-                                 details.order_status !== "successful" &&
-                                 details.order_status !== "failed"
+                        details.is_swap &&
+                        details.order_status !== "successful" &&
+                        details.order_status !== "failed"
             Layout.alignment: Qt.AlignHCenter
         }
 
@@ -45,9 +45,9 @@ BasicModal {
             visible: !details ? false :
                                 details.is_swap || !details.is_maker
             color: !details ? "white" :
-                              visible ? getStatusColor(details.order_status) : ''
-            text_value: API.app.settings_pg.empty_string + (!details ? "" :
-                                                             visible ? getStatusTextWithPrefix(details.order_status) : '')
+                    visible ? getStatusColor(details.order_status) : ''
+            text_value: !details ? "" :
+                        visible ? getStatusTextWithPrefix(details.order_status) : ''
         }
 
         OrderContent {
@@ -69,8 +69,8 @@ BasicModal {
 
         // Maker/Taker
         DefaultText {
-            text_value: API.app.settings_pg.empty_string + (!details ? "" :
-                                                             details.is_maker ? qsTr("Maker Order"): qsTr("Taker Order"))
+            text_value: !details ? "" :
+                        details.is_maker ? qsTr("Maker Order"): qsTr("Taker Order")
             color: Style.colorThemeDarkLight
             Layout.alignment: Qt.AlignRight
         }
@@ -79,9 +79,9 @@ BasicModal {
         TextFieldWithTitle {
             Layout.topMargin: -20
 
-            title: API.app.settings_pg.empty_string + (qsTr("Refund State"))
+            title: qsTr("Refund State")
             field.text: !details ? "" :
-                                   details.order_status === "refunding" ? qsTr("Your swap failed but the auto-refund process for your payment started already. Please wait and keep application opened until you receive your payment back") : ""
+                        details.order_status === "refunding" ? qsTr("Your swap failed but the auto-refund process for your payment started already. Please wait and keep application opened until you receive your payment back") : ""
             field.readOnly: true
 
             visible: field.text !== ''
@@ -89,54 +89,54 @@ BasicModal {
 
         // Date
         TextWithTitle {
-            title: API.app.settings_pg.empty_string + (qsTr("Date"))
-            text: API.app.settings_pg.empty_string + (!details ? "" :
-                                                       details.date)
+            title: qsTr("Date")
+            text: !details ? "" :
+                details.date
             visible: text !== ''
         }
 
         // ID
         TextWithTitle {
-            title: API.app.settings_pg.empty_string + (qsTr("ID"))
-            text: API.app.settings_pg.empty_string + (!details ? "" :
-                                                       details.order_id)
+            title: qsTr("ID")
+            text: !details ? "" :
+                details.order_id
             visible: text !== ''
             privacy: true
         }
 
         // Payment ID
         TextWithTitle {
-            title: API.app.settings_pg.empty_string + (!details ? "" :
-                                                        details.is_maker ? qsTr("Maker Payment Sent ID") : qsTr("Maker Payment Spent ID"))
-            text: API.app.settings_pg.empty_string + (!details ? "" :
-                                                       details.maker_payment_id)
+            title: !details ? "" :
+                details.is_maker ? qsTr("Maker Payment Sent ID") : qsTr("Maker Payment Spent ID")
+            text: !details ? "" :
+                    details.maker_payment_id
             visible: text !== ''
             privacy: true
         }
 
         // Payment ID
         TextWithTitle {
-            title: API.app.settings_pg.empty_string + (!details ? "" :
-                                                        details.is_maker ? qsTr("Taker Payment Spent ID") : qsTr("Taker Payment Sent ID"))
-            text: API.app.settings_pg.empty_string + (!details ? "" :
-                                                       details.taker_payment_id)
+            title: !details ? "" :
+                    details.is_maker ? qsTr("Taker Payment Spent ID") : qsTr("Taker Payment Sent ID")
+            text: !details ? "" :
+                    details.taker_payment_id
             visible: text !== ''
             privacy: true
         }
 
         // Error ID
         TextWithTitle {
-            title: API.app.settings_pg.empty_string + (qsTr("Error ID"))
-            text: API.app.settings_pg.empty_string + (!details ? "" :
-                                                       details.order_error_state)
+            title: qsTr("Error ID")
+            text: !details ? "" :
+                    details.order_error_state
             visible: text !== ''
         }
 
         // Error Details
         TextFieldWithTitle {
-            title: API.app.settings_pg.empty_string + (qsTr("Error Log"))
-            field.text: API.app.settings_pg.empty_string + (!details ? "" :
-                                                             details.order_error_message)
+            title: qsTr("Error Log")
+            field.text: !details ? "" :
+                        details.order_error_message
             field.readOnly: true
             copyable: true
 
@@ -161,7 +161,7 @@ BasicModal {
         // Buttons
         footer: [
             DefaultButton {
-                text: API.app.settings_pg.empty_string + (qsTr("Close"))
+                text: qsTr("Close")
                 Layout.fillWidth: true
                 onClicked: root.close()
             },
@@ -171,12 +171,12 @@ BasicModal {
                 visible: !details ? false :
                                     details.cancellable
                 Layout.fillWidth: true
-                text: API.app.settings_pg.empty_string + (qsTr("Cancel Order"))
+                text: qsTr("Cancel Order")
                 onClicked: { if(details) cancelOrder(details.order_id) }
             },
 
             PrimaryButton {
-                text: API.app.settings_pg.empty_string + (qsTr("View at Explorer"))
+                text: qsTr("View at Explorer")
                 Layout.fillWidth: true
                 visible: !details ? false :
                                     details.maker_payment_id !== '' || details.taker_payment_id !== ''

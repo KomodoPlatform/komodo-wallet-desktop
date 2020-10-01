@@ -501,7 +501,7 @@ Item {
                                 Layout.rightMargin: Layout.leftMargin
                                 Layout.fillWidth: true
 
-                                text: API.app.settings_pg.empty_string + (qsTr("Multi-Order"))
+                                text: qsTr("Multi-Order")
                                 enabled: !block_everything
                                 onCheckedChanged: {
                                     if(checked) {
@@ -517,7 +517,7 @@ Item {
                                 Layout.rightMargin: Layout.leftMargin
                                 Layout.fillWidth: true
 
-                                text_value: API.app.settings_pg.empty_string + (qsTr("Select additional assets for multi-order creation."))
+                                text_value: qsTr("Select additional assets for multi-order creation.")
                                 font.pixelSize: Style.textSizeSmall2
                             }
 
@@ -526,12 +526,12 @@ Item {
                                 Layout.rightMargin: Layout.leftMargin
                                 Layout.fillWidth: true
 
-                                text_value: API.app.settings_pg.empty_string + (qsTr("Same funds will be used until an order matches."))
+                                text_value: qsTr("Same funds will be used until an order matches.")
                                 font.pixelSize: first_text.font.pixelSize
                             }
 
                             DefaultButton {
-                                text: API.app.settings_pg.empty_string + (qsTr("Submit Trade"))
+                                text: qsTr("Submit Trade")
                                 Layout.leftMargin: multi_order_switch.Layout.leftMargin
                                 Layout.rightMargin: Layout.leftMargin
                                 Layout.fillWidth: true

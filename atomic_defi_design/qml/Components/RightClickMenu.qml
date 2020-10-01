@@ -26,17 +26,17 @@ DefaultMouseArea {
         id: contextMenu
 
         MenuItem {
-            text: API.app.settings_pg.empty_string + (qsTr("Cut"))
+            text: qsTr("Cut")
             enabled: !text_field.readOnly && text_field.selectedText.length > 0 && text_field.echoMode !== TextInput.Password
             onTriggered: text_field.cut()
         }
         MenuItem {
-            text: API.app.settings_pg.empty_string + (qsTr("Copy"))
+            text: qsTr("Copy")
             enabled: text_field.selectedText.length > 0 && text_field.echoMode !== TextInput.Password
             onTriggered: text_field.copy()
         }
         MenuItem {
-            text: API.app.settings_pg.empty_string + (qsTr("Paste"))
+            text: qsTr("Paste")
             enabled: !text_field.readOnly
             onTriggered: text_field.paste()
         }
