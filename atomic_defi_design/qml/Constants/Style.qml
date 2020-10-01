@@ -222,6 +222,7 @@ QtObject {
                                           "BCH": "#8DC351",
                                           "BTC": "#F7931A",
                                           "FTC": "#27323A",
+                                          "GLEEC": "#8C41FF",
                                           "DOGE": "#C3A634",
                                           "ETH": "#627EEA",
                                           "KMD": "#2B6680",
