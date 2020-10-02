@@ -17,6 +17,7 @@ Item {
     readonly property alias multi_order_enabled: multi_order_switch.checked
 
     signal prepareMultiOrder()
+    property bool multi_order_values_are_valid: true
 
 
 
@@ -537,8 +538,10 @@ Item {
                                 Layout.fillWidth: true
                                 enabled: multi_order_enabled && getCurrentForm().can_submit_trade
                                 onClicked: {
+                                    multi_order_values_are_valid = true
                                     prepareMultiOrder()
-                                    confirm_multi_order_trade_modal.open()
+                                    if(multi_order_values_are_valid)
+                                        confirm_multi_order_trade_modal.open()
                                 }
                             }
                         }

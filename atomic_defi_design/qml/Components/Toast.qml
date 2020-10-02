@@ -16,8 +16,6 @@ AnimatedRectangle {
         animation.start();
     }
 
-    property bool selfDestroying: false
-
     id: root
 
     readonly property real defaultTime: 2000
@@ -27,7 +25,7 @@ AnimatedRectangle {
     property real margin: 10
 
     anchors {
-        horizontalCenter: parent.horizontalCenter
+        horizontalCenter: !parent ? undefined : parent.horizontalCenter
         margins: margin
     }
 
@@ -58,7 +56,7 @@ AnimatedRectangle {
         running: false
 
         NumberAnimation {
-            to: .7
+            to: .9
             duration: fadeTime
         }
 
@@ -72,7 +70,7 @@ AnimatedRectangle {
         }
 
         onRunningChanged: {
-            if (!running && selfDestroying) root.destroy()
+            if (!running) toast.model.remove(index)
         }
     }
 
@@ -85,7 +83,7 @@ AnimatedRectangle {
         onClicked: {
             if(details !== "") {
                 showError(title, details)
-                root.visible = false
+                animation.running = false
             }
         }
     }

@@ -106,6 +106,8 @@ namespace atomic_dex
             return false;
         case portfolio_model::MainFiatPriceForOneUnit:
             return false;
+        case portfolio_model::CoinType:
+            return false;
         }
     }
 
@@ -115,6 +117,12 @@ namespace atomic_dex
         QModelIndex idx = this->sourceModel()->index(source_row, 0, source_parent);
         assert(this->sourceModel()->hasIndex(idx.row(), 0));
         QString ticker = this->sourceModel()->data(idx, atomic_dex::portfolio_model::TickerRole).toString();
+        QString type   = this->sourceModel()->data(idx, atomic_dex::portfolio_model::CoinType).toString();
+        //! TODO: Remove when QRC-20 swap is supported
+        if (am_i_a_market_selector && ticker != "QTUM" && type == "QRC-20")
+        {
+            return false;
+        }
         if (this->filterRole() == atomic_dex::portfolio_model::IsMultiTickerCurrentlyEnabled)
         {
             bool is_enabled = this->sourceModel()->data(idx, atomic_dex::portfolio_model::IsMultiTickerCurrentlyEnabled).toBool();
@@ -143,5 +151,11 @@ namespace atomic_dex
     {
         m_excluded_coin = ticker;
         this->invalidateFilter();
+    }
+
+    void
+    portfolio_proxy_model::is_a_market_selector(bool is_market_selector) noexcept
+    {
+        this->am_i_a_market_selector = is_market_selector;
     }
 } // namespace atomic_dex

@@ -27,6 +27,9 @@ namespace atomic_dex
         //! eg: BTC,ETH,KMD (constant)
         QString ticker;
 
+        //! eg: ERC-20/QRC-20/etc
+        QString coin_type;
+
         //! eg: Bitcoin
         QString name;
 

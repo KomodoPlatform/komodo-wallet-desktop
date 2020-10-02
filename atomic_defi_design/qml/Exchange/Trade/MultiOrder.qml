@@ -32,6 +32,7 @@ InnerBackground {
 
                     readonly property string auto_price: {
                         const current_price = parseFloat(getCurrentPrice())
+                        if(rel === right_ticker) return current_price
                         const rel_price_for_one_unit = parseFloat(model.main_fiat_price_for_one_unit)
                         const price_field_fiat = current_price * API.app.get_fiat_from_amount(rel_ticker, "1")
                         const rel_price_relative = rel_price_for_one_unit === 0 ? 0 : price_field_fiat / rel_price_for_one_unit
@@ -74,7 +75,7 @@ InnerBackground {
                             toast.show(qsTr("%1 price is zero!", "TICKER").arg(model.ticker), General.time_toast_important_error)
 
                             console.log(model.ticker + " price is not higher than zero, not creating an order for this one")
-                            reset(true)
+                            multi_order_values_are_valid = false
                             return
                         }
 
@@ -82,7 +83,7 @@ InnerBackground {
                             toast.show(qsTr("%1 receive volume is lower than minimum trade amount", "TICKER").arg(model.ticker) + " : " + General.getMinTradeAmount(), General.time_toast_important_error)
 
                             console.log(model.ticker + " receive volume is lower than minimum trade amount, not creating an order for this one")
-                            reset(true)
+                            multi_order_values_are_valid = false
                             return
                         }
 

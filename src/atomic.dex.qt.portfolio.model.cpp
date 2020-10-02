@@ -83,6 +83,7 @@ namespace atomic_dex
             const QString   change_24h = retrieve_change_24h(paprika, coin, *m_config);
             portfolio_data  data{
                 .ticker                = QString::fromStdString(coin.ticker),
+                .coin_type = QString::fromStdString(coin.type),
                 .name                  = QString::fromStdString(coin.name),
                 .balance               = QString::fromStdString(mm2_system.my_balance(coin.ticker, ec)),
                 .main_currency_balance = QString::fromStdString(price_service.get_price_in_fiat(m_config->current_currency, coin.ticker, ec)),
@@ -273,6 +274,8 @@ namespace atomic_dex
             return item.is_multi_ticker_enabled;
         case MultiTickerData:
             return item.multi_ticker_data.has_value() ? item.multi_ticker_data.value() : QJsonObject{};
+        case CoinType:
+            return item.coin_type;
         }
         return {};
     }
@@ -288,6 +291,9 @@ namespace atomic_dex
         portfolio_data& item = m_model_data[index.row()];
         switch (static_cast<PortfolioRoles>(role))
         {
+        case CoinType:
+            item.coin_type = value.toString();
+            break;
         case BalanceRole:
             item.balance = value.toString();
             break;
@@ -380,6 +386,7 @@ namespace atomic_dex
     {
         return {
             {TickerRole, "ticker"},
+            {CoinType, "type"},
             {NameRole, "name"},
             {BalanceRole, "balance"},
             {MainCurrencyBalanceRole, "main_currency_balance"},

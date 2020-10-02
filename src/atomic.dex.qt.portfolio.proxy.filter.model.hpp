@@ -24,6 +24,7 @@ namespace atomic_dex
     {
         Q_OBJECT
         QString m_excluded_coin{""};
+        bool    am_i_a_market_selector{false};
       public:
         //! Constructor
         portfolio_proxy_model(QObject* parent);
@@ -39,6 +40,7 @@ namespace atomic_dex
         Q_INVOKABLE void sort_by_currency_unit(bool is_ascending);
 
         void set_excluded_coin(const QString& ticker);
+        void is_a_market_selector(bool is_market_selector) noexcept;
 
         void reset();
 
