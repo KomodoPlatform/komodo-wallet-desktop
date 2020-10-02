@@ -164,6 +164,7 @@ namespace atomic_dex
             obj["transactions_left"] = static_cast<qint64>(tx_state.transactions_left);
             obj["current_block"]     = static_cast<qint64>(tx_state.current_block);
         }
+        //qDebug() << obj;
         return obj;
     }
 

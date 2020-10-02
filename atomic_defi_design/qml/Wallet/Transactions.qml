@@ -86,8 +86,8 @@ DefaultListView {
 
         // Fee
         DefaultText {
-            text_value: General.formatCrypto(!(parseFloat(fees) > 0), Math.abs(parseFloat(fees),
-                                                                       current_ticker_infos.fee_ticker) + " " + qsTr("fees"))
+            text_value: General.formatCrypto(!(parseFloat(fees) > 0), Math.abs(parseFloat(fees)),
+                                                                       current_ticker_infos.fee_ticker + " " + qsTr("fees"))
             font.pixelSize: description.font.pixelSize
             anchors.verticalCenter: parent.verticalCenter
             anchors.left: parent.left
