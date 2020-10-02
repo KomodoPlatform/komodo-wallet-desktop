@@ -74,7 +74,7 @@ InnerBackground {
                             toast.show(qsTr("%1 price is zero!", "TICKER").arg(model.ticker), General.time_toast_important_error)
 
                             console.log(model.ticker + " price is not higher than zero, not creating an order for this one")
-                            reset(true)
+                            multi_order_values_are_valid = false
                             return
                         }
 
@@ -82,7 +82,7 @@ InnerBackground {
                             toast.show(qsTr("%1 receive volume is lower than minimum trade amount", "TICKER").arg(model.ticker) + " : " + General.getMinTradeAmount(), General.time_toast_important_error)
 
                             console.log(model.ticker + " receive volume is lower than minimum trade amount, not creating an order for this one")
-                            reset(true)
+                            multi_order_values_are_valid = false
                             return
                         }
 
