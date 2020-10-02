@@ -83,7 +83,7 @@ AnimatedRectangle {
         onClicked: {
             if(details !== "") {
                 showError(title, details)
-                root.visible = false
+                animation.running = false
             }
         }
     }
