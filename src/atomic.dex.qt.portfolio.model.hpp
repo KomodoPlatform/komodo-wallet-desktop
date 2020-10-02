@@ -50,7 +50,8 @@ namespace atomic_dex
             Display,
             NameAndTicker,
             IsMultiTickerCurrentlyEnabled,
-            MultiTickerData
+            MultiTickerData,
+            CoinType
         };
         Q_ENUM(PortfolioRoles)
 
