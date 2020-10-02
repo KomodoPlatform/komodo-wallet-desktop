@@ -56,7 +56,7 @@ AnimatedRectangle {
         running: false
 
         NumberAnimation {
-            to: .7
+            to: .9
             duration: fadeTime
         }
 

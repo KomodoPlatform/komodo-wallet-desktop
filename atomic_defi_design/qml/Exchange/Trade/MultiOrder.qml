@@ -32,6 +32,7 @@ InnerBackground {
 
                     readonly property string auto_price: {
                         const current_price = parseFloat(getCurrentPrice())
+                        if(rel === right_ticker) return current_price
                         const rel_price_for_one_unit = parseFloat(model.main_fiat_price_for_one_unit)
                         const price_field_fiat = current_price * API.app.get_fiat_from_amount(rel_ticker, "1")
                         const rel_price_relative = rel_price_for_one_unit === 0 ? 0 : price_field_fiat / rel_price_for_one_unit
