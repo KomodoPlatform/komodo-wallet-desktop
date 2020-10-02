@@ -14,6 +14,8 @@ BasicModal {
         if(!details) root.close()
     }
 
+    onOpened: swap_progress.updateSimulatedTime()
+
     onClosed: details = undefined
 
     ModalContent {

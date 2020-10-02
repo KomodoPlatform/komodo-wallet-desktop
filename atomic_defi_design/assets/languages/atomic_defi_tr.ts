@@ -1163,25 +1163,25 @@
 <context>
     <name>MultiOrder</name>
     <message>
-        <location filename="../../qml/Exchange/Trade/MultiOrder.qml" line="74"/>
+        <location filename="../../qml/Exchange/Trade/MultiOrder.qml" line="75"/>
         <source>%1 price is zero!</source>
         <comment>TICKER</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/MultiOrder.qml" line="82"/>
+        <location filename="../../qml/Exchange/Trade/MultiOrder.qml" line="83"/>
         <source>%1 receive volume is lower than minimum trade amount</source>
         <comment>TICKER</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/MultiOrder.qml" line="147"/>
+        <location filename="../../qml/Exchange/Trade/MultiOrder.qml" line="148"/>
         <source>You&apos;ll receive %1</source>
         <comment>AMOUNT TICKER</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/MultiOrder.qml" line="157"/>
+        <location filename="../../qml/Exchange/Trade/MultiOrder.qml" line="158"/>
         <source>Price</source>
         <translation type="unfinished">Fiyat</translation>
     </message>
@@ -2482,6 +2482,13 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../../qml/Support/Support.qml" line="153"/>
+        <source>Other DEXs generally only allow you to trade assets that are based on a single blockchain network, use proxy tokens, and only allow placing a single order with the same funds.
+
+AtomicDEX enables you to natively trade across two different blockchain networks without proxy tokens. You can also place multiple orders with the same funds. For example, you can sell 0.1 BTC for KMD, QTUM, or VRSC — the first order that fills automatically cancels all other orders.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="../../qml/Support/Support.qml" line="165"/>
         <source>Yes. You must remain connected to the internet and have your app running to successfully complete each atomic swap (very short breaks in connectivity are usually fine). Otherwise, there is risk of trade cancellation if you are a maker, and risk of loss of funds if you are a taker. The atomic swap protocol requires both participants to stay online and monitor the involved blockchains for the process to stay atomic.</source>
         <translation type="unfinished"></translation>
@@ -2489,6 +2496,16 @@
     <message>
         <location filename="../../qml/Support/Support.qml" line="169"/>
         <source>How are the fees on AtomicDEX calculated?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../qml/Support/Support.qml" line="170"/>
+        <source>There are two fee categories to consider when trading on AtomicDEX.
+
+1. AtomicDEX charges approximately 0.13% (1/777 of trading volume but not lower than 0.0001) as the trading fee for taker orders, and maker orders have zero fees.
+2. Both makers and takers will need to pay normal network fees to the involved blockchains when making atomic swap transactions.
+
+Network fees can vary greatly depending on your selected trading pair.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -2608,7 +2625,7 @@
 <context>
     <name>Toast</name>
     <message>
-        <location filename="../../qml/Components/Toast.qml" line="53"/>
+        <location filename="../../qml/Components/Toast.qml" line="51"/>
         <source>Click here to see the details</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2628,32 +2645,32 @@
         <translation type="vanished">Al-Sat</translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/Trade.qml" line="317"/>
+        <location filename="../../qml/Exchange/Trade/Trade.qml" line="318"/>
         <source>Placed the order</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/Trade.qml" line="504"/>
+        <location filename="../../qml/Exchange/Trade/Trade.qml" line="505"/>
         <source>Multi-Order</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/Trade.qml" line="520"/>
+        <location filename="../../qml/Exchange/Trade/Trade.qml" line="521"/>
         <source>Select additional assets for multi-order creation.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/Trade.qml" line="529"/>
+        <location filename="../../qml/Exchange/Trade/Trade.qml" line="530"/>
         <source>Same funds will be used until an order matches.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/Trade.qml" line="534"/>
+        <location filename="../../qml/Exchange/Trade/Trade.qml" line="535"/>
         <source>Submit Trade</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Trade/Trade.qml" line="308"/>
+        <location filename="../../qml/Exchange/Trade/Trade.qml" line="309"/>
         <source>Failed to place the order</source>
         <translation type="unfinished"></translation>
     </message>

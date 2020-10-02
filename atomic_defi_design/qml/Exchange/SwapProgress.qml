@@ -25,7 +25,6 @@ ColumnLayout {
         return false
     }
 
-    property double previous_total_time_passed: 0
     readonly property double total_time_passed: {
         if(!details) return 0
 
@@ -37,6 +36,7 @@ ColumnLayout {
 
         return sum
     }
+
     readonly property double total_time_passed_estimated: {
         const events = all_events
 
@@ -62,12 +62,38 @@ ColumnLayout {
         return idx + 1
     }
 
+    // Simulated time of the running event
     property double simulated_time: 0
+    function updateSimulatedTime() {
+        if(!details) {
+            simulated_time = 0
+            return
+        }
+
+        const events = details.events
+        if(events.length === 0) {
+            simulated_time = 0
+            return
+        }
+
+        const last_event = events[events.length - 1]
+        if(!last_event.timestamp) {
+            simulated_time = 0
+            return
+        }
+
+        if(current_event_idx !== -1) {
+            const diff = Date.now() - last_event.timestamp
+            simulated_time = diff - (diff % 1000)
+        }
+        else simulated_time = 0
+    }
+
     Timer {
         running: current_event_idx !== -1
         interval: 1000
         repeat: true
-        onTriggered: simulated_time += interval
+        onTriggered: updateSimulatedTime()
     }
 
     function getTimeText(duration, estimated) {
@@ -77,22 +103,7 @@ ColumnLayout {
                  General.durationTextShort(estimated) + `</font>`
     }
 
-    property string last_uuid: ""
-    onTotal_time_passedChanged: {
-        if(!details) return
-
-        // Reset for different order
-        if(details.order_id !== last_uuid) {
-            simulated_time = 0
-            if(details) last_uuid = details.order_id
-        }
-        else {
-            // Subtract the real time from the simulation, and continue
-            simulated_time = Math.max(0, simulated_time - (total_time_passed - previous_total_time_passed))
-        }
-
-        previous_total_time_passed = total_time_passed
-    }
+    onTotal_time_passedChanged: updateSimulatedTime()
 
     // Title
     DefaultText {
