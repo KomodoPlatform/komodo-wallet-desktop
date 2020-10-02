@@ -1,6 +1,6 @@
-import QtQuick 2.14
-import QtQuick.Layouts 1.12
-import QtQuick.Controls 2.12
+import QtQuick 2.15
+import QtQuick.Layouts 1.15
+import QtQuick.Controls 2.15
 
 import "../Components"
 import "../Constants"
@@ -25,7 +25,7 @@ SetupPage {
 
     content: ColumnLayout {
         DefaultText {
-            text_value: API.app.settings_pg.empty_string + (qsTr("Loading, please wait"))
+            text_value: qsTr("Loading, please wait")
             Layout.bottomMargin: 10
         }
 
@@ -38,8 +38,8 @@ SetupPage {
             }
 
             DefaultText {
-                text_value: API.app.settings_pg.empty_string + ((current_status === "initializing_mm2" ? qsTr("Initializing MM2") :
-                       current_status === "enabling_coins" ? qsTr("Enabling coins") : qsTr("Getting ready")) + "...")
+                text_value: (current_status === "initializing_mm2" ? qsTr("Initializing MM2") :
+                             current_status === "enabling_coins" ? qsTr("Enabling coins") : qsTr("Getting ready")) + "..."
             }
         }
     }

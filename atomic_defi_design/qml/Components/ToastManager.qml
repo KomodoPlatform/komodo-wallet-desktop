@@ -1,7 +1,7 @@
 // This is a modified version of QML Toast Implementation of jonmcclung
 // https://gist.github.com/jonmcclung/bae669101d17b103e94790341301c129
 
-import QtQuick 2.14
+import QtQuick 2.15
 
 ListView {
     function show(text, duration=-1, info="", is_error=true) {

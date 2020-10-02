@@ -92,8 +92,9 @@ namespace atomic_dex
         [[maybe_unused]] auto res = this->m_translator.load("atomic_defi_" + new_lang, QLatin1String(":/atomic_defi_design/assets/languages"));
         assert(res);
         this->m_app->installTranslator(&m_translator);
+        this->m_qml_engine->retranslate();
         emit onLangChanged();
-        emit langChanged();
+        //emit langChanged();
     }
 
     bool
@@ -350,5 +351,11 @@ namespace atomic_dex
     {
         spdlog::trace("remove ticker: {}", ticker.toStdString());
         this->m_system_manager.get_system<mm2>().remove_custom_coin(ticker.toStdString());
+    }
+
+    void
+    settings_page::set_qml_engine(QQmlApplicationEngine* engine) noexcept
+    {
+        m_qml_engine = engine;
     }
 } // namespace atomic_dex

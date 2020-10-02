@@ -1,6 +1,6 @@
-import QtQuick 2.14
-import QtQuick.Layouts 1.12
-import QtQuick.Controls 2.12
+import QtQuick 2.15
+import QtQuick.Layouts 1.15
+import QtQuick.Controls 2.15
 
 import "../Components"
 import "../Constants"
@@ -15,12 +15,12 @@ BasicModal {
     width: 500
 
     ModalContent {
-        title: API.app.settings_pg.empty_string + (qsTr("Receive"))
+        title: qsTr("Receive")
 
         // Receive address
         TextAreaWithTitle {
-            title: API.app.settings_pg.empty_string + (qsTr("Share this address to receive coins"))
-            field.text: API.app.settings_pg.empty_string + (current_ticker_infos.address)
+            title: qsTr("Share this address to receive coins")
+            field.text: current_ticker_infos.address
             field.readOnly: true
             field.wrapMode: TextEdit.NoWrap
             copyable: true
@@ -39,7 +39,7 @@ BasicModal {
         // Buttons
         footer: [
             DefaultButton {
-                text: API.app.settings_pg.empty_string + (qsTr("Close"))
+                text: qsTr("Close")
                 Layout.fillWidth: true
                 onClicked: root.close()
             }

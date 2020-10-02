@@ -1,6 +1,6 @@
-import QtQuick 2.14
-import QtQuick.Layouts 1.12
-import QtQuick.Controls 2.12
+import QtQuick 2.15
+import QtQuick.Layouts 1.15
+import QtQuick.Controls 2.15
 
 import "../Components"
 import "../Constants"
@@ -35,10 +35,10 @@ BasicModal {
 
 
     ModalContent {
-        title: API.app.settings_pg.empty_string + (qsTr("Applying the changes") + "...")
+        title: qsTr("Applying the changes") + "..."
 
         DefaultText {
-            text_value: API.app.settings_pg.empty_string + (qsTr("Restarting the application..."))
+            text_value: qsTr("Restarting the application...")
 
             Layout.alignment: Qt.AlignHCenter
         }
@@ -48,7 +48,7 @@ BasicModal {
         }
 
         DefaultText {
-            text_value: API.app.settings_pg.empty_string + (General.formatDouble(time_left, 1, true))
+            text_value: General.formatDouble(time_left, 1, true)
 
             Layout.alignment: Qt.AlignHCenter
         }

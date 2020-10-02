@@ -14,6 +14,7 @@
  *                                                                            *
  ******************************************************************************/
 
+#include <QJSValue>
 #include <taskflow/taskflow.hpp>
 
 //! PCH
@@ -88,8 +89,9 @@ namespace atomic_dex
                 .change_24h            = change_24h,
                 .main_currency_price_for_one_unit =
                     QString::fromStdString(price_service.get_rate_conversion(m_config->current_currency, coin.ticker, ec, true)),
-                .trend_7d    = nlohmann_json_array_to_qt_json_array(paprika.get_ticker_historical(coin.ticker).answer),
-                .is_excluded = false,
+                .main_fiat_price_for_one_unit = QString::fromStdString(price_service.get_rate_conversion(m_config->current_fiat, coin.ticker, ec)),
+                .trend_7d                     = nlohmann_json_array_to_qt_json_array(paprika.get_ticker_historical(coin.ticker).answer),
+                .is_excluded                  = false,
             };
             data.display         = data.ticker + " (" + data.balance + ")";
             data.ticker_and_name = data.ticker + data.name;
@@ -117,6 +119,7 @@ namespace atomic_dex
         const auto&        paprika       = this->m_system_manager.get_system<coinpaprika_provider>();
         t_coins            coins         = mm2_system.get_enabled_coins();
         const std::string& currency      = m_config->current_currency;
+        const std::string& fiat          = m_config->current_fiat;
         tf::Executor       executor;
         tf::Taskflow       taskflow;
         for (auto&& coin: coins)
@@ -127,7 +130,7 @@ namespace atomic_dex
                 spdlog::debug("ticker: {} not inserted yet in the model, skipping", coin.ticker);
                 continue;
             }
-            auto update_functor = [coin, &paprika, &mm2_system, &price_service, currency, this]() {
+            auto update_functor = [coin, &paprika, &mm2_system, &price_service, currency, fiat, this]() {
                 const std::string& ticker = coin.ticker;
                 if (const auto res = this->match(this->index(0, 0), TickerRole, QString::fromStdString(ticker)); not res.isEmpty())
                 {
@@ -137,6 +140,8 @@ namespace atomic_dex
                     update_value(MainCurrencyBalanceRole, main_currency_balance_value, idx, *this);
                     const QString currency_price_for_one_unit = QString::fromStdString(price_service.get_rate_conversion(currency, ticker, ec, true));
                     update_value(MainCurrencyPriceForOneUnit, currency_price_for_one_unit, idx, *this);
+                    const QString currency_fiat_for_one_unit = QString::fromStdString(price_service.get_rate_conversion(fiat, ticker, ec, false));
+                    update_value(MainFiatPriceForOneUnit, currency_fiat_for_one_unit, idx, *this);
                     QString change24_h = retrieve_change_24h(paprika, coin, *m_config);
                     update_value(Change24H, change24_h, idx, *this);
                     const QString balance                           = QString::fromStdString(mm2_system.my_balance(coin.ticker, ec));
@@ -157,6 +162,9 @@ namespace atomic_dex
                         using namespace std::chrono;
                         qint64  timestamp  = duration_cast<seconds>(system_clock::now().time_since_epoch()).count();
                         QString human_date = QString::fromStdString(to_human_date<std::chrono::seconds>(timestamp, "%e %b %Y, %H:%M"));
+                        spdlog::debug(
+                            "balance update notification from update_currency_values prev[{}], new[{}]", prev_balance.toString().toStdString(),
+                            new_balance.toString().toStdString());
                         this->m_dispatcher.trigger<balance_update_notification>(am_i_sender, amount, QString::fromStdString(ticker), human_date, timestamp);
                     }
                     // spdlog::trace("updated currency values of: {}", ticker);
@@ -186,6 +194,7 @@ namespace atomic_dex
                 const auto&        paprika       = this->m_system_manager.get_system<coinpaprika_provider>();
                 std::error_code    ec;
                 const std::string& currency                     = m_config->current_currency;
+                const std::string& fiat                         = m_config->current_fiat;
                 const QModelIndex& idx                          = res.at(0);
                 const QString      balance                      = QString::fromStdString(mm2_system.my_balance(ticker, ec));
                 auto&& [prev_balance, new_balance, is_change_b] = update_value(BalanceRole, balance, idx, *this);
@@ -193,7 +202,9 @@ namespace atomic_dex
                 auto&& [_1, _2, is_change_mc]                   = update_value(MainCurrencyBalanceRole, main_currency_balance_value, idx, *this);
                 const QString currency_price_for_one_unit       = QString::fromStdString(price_service.get_rate_conversion(currency, ticker, ec, true));
                 auto&& [_3, _4, is_change_mcpfo]                = update_value(MainCurrencyPriceForOneUnit, currency_price_for_one_unit, idx, *this);
-                const QString display                           = QString::fromStdString(ticker) + " (" + balance + ")";
+                const QString currency_fiat_for_one_unit        = QString::fromStdString(price_service.get_rate_conversion(fiat, ticker, ec, false));
+                update_value(MainFiatPriceForOneUnit, currency_fiat_for_one_unit, idx, *this);
+                const QString display = QString::fromStdString(ticker) + " (" + balance + ")";
                 update_value(Display, display, idx, *this);
                 QString change24_h = retrieve_change_24h(paprika, coin, *m_config);
                 update_value(Change24H, change24_h, idx, *this);
@@ -211,6 +222,9 @@ namespace atomic_dex
                     using namespace std::chrono;
                     qint64  timestamp  = duration_cast<seconds>(system_clock::now().time_since_epoch()).count();
                     QString human_date = QString::fromStdString(to_human_date<std::chrono::seconds>(timestamp, "%e %b %Y, %H:%M"));
+                    spdlog::debug(
+                        "balance update notification from update_balance_values prev[{}], new[{}]", prev_balance.toString().toStdString(),
+                        new_balance.toString().toStdString());
                     this->m_dispatcher.trigger<balance_update_notification>(am_i_sender, amount, QString::fromStdString(ticker), human_date, timestamp);
                     emit portfolioItemDataChanged();
                 }
@@ -243,6 +257,8 @@ namespace atomic_dex
             return item.change_24h;
         case MainCurrencyPriceForOneUnit:
             return item.main_currency_price_for_one_unit;
+        case MainFiatPriceForOneUnit:
+            return item.main_fiat_price_for_one_unit;
         case NameRole:
             return item.name;
         case Trend7D:
@@ -253,6 +269,10 @@ namespace atomic_dex
             return item.display;
         case NameAndTicker:
             return item.ticker_and_name;
+        case IsMultiTickerCurrentlyEnabled:
+            return item.is_multi_ticker_enabled;
+        case MultiTickerData:
+            return item.multi_ticker_data.has_value() ? item.multi_ticker_data.value() : QJsonObject{};
         }
         return {};
     }
@@ -280,6 +300,9 @@ namespace atomic_dex
         case MainCurrencyPriceForOneUnit:
             item.main_currency_price_for_one_unit = value.toString();
             break;
+        case MainFiatPriceForOneUnit:
+            item.main_fiat_price_for_one_unit = value.toString();
+            break;
         case Trend7D:
             item.trend_7d = value.toJsonArray();
             break;
@@ -291,6 +314,25 @@ namespace atomic_dex
             break;
         case NameAndTicker:
             item.ticker_and_name = value.toString();
+            break;
+        case IsMultiTickerCurrentlyEnabled:
+            if (item.is_multi_ticker_enabled != value.toBool())
+            {
+                item.is_multi_ticker_enabled = value.toBool();
+                if (item.is_multi_ticker_enabled == true)
+                {
+                    this->m_dispatcher.trigger<multi_ticker_enabled>(item.ticker);
+                }
+            }
+            break;
+        case MultiTickerData:
+            item.multi_ticker_data = QJsonObject::fromVariantMap(value.value<QVariantMap>());
+            // qDebug() << value;
+            /*if (value.isValid())
+            {
+                item.multi_ticker_data = nlohmann_json_object_to_qt_json_object(nlohmann::json::parse(value.toString().toStdString()));
+            }*/
+            break;
         default:
             return false;
         }
@@ -336,11 +378,20 @@ namespace atomic_dex
     QHash<int, QByteArray>
     portfolio_model::roleNames() const
     {
-        return {{TickerRole, "ticker"},    {NameRole, "name"},
-                {BalanceRole, "balance"},  {MainCurrencyBalanceRole, "main_currency_balance"},
-                {Change24H, "change_24h"}, {MainCurrencyPriceForOneUnit, "main_currency_price_for_one_unit"},
-                {Trend7D, "trend_7d"},     {Excluded, "excluded"},
-                {Display, "display"},      {NameAndTicker, "name_and_ticker"}};
+        return {
+            {TickerRole, "ticker"},
+            {NameRole, "name"},
+            {BalanceRole, "balance"},
+            {MainCurrencyBalanceRole, "main_currency_balance"},
+            {Change24H, "change_24h"},
+            {MainCurrencyPriceForOneUnit, "main_currency_price_for_one_unit"},
+            {MainFiatPriceForOneUnit, "main_fiat_price_for_one_unit"},
+            {Trend7D, "trend_7d"},
+            {Excluded, "excluded"},
+            {Display, "display"},
+            {NameAndTicker, "name_and_ticker"},
+            {IsMultiTickerCurrentlyEnabled, "is_multi_ticker_currently_enabled"},
+            {MultiTickerData, "multi_ticker_data"}};
     }
 
     portfolio_proxy_model*

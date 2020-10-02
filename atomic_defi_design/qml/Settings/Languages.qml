@@ -1,6 +1,6 @@
-import QtQuick 2.14
-import QtQuick.Layouts 1.12
-import QtQuick.Controls 2.12
+import QtQuick 2.15
+import QtQuick.Layouts 1.15
+import QtQuick.Controls 2.15
 
 import QtGraphicalEffects 1.0
 import "../Components"
@@ -12,7 +12,7 @@ ColumnLayout {
         spacing: 20
         DefaultText {
             Layout.alignment: Qt.AlignVCenter
-            text_value: API.app.settings_pg.empty_string + (qsTr("Language") + ":")
+            text_value: qsTr("Language") + ":"
             font.pixelSize: Style.textSizeSmall2
         }
 

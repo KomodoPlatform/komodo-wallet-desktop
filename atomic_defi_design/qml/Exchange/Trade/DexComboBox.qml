@@ -1,10 +1,10 @@
-import QtQuick 2.14
-import QtQuick.Layouts 1.12
+import QtQuick 2.15
+import QtQuick.Layouts 1.15
 import QtGraphicalEffects 1.0
-import QtQuick.Window 2.12
-import QtQuick.Controls 2.14
-import QtQuick.Controls.impl 2.12
-import QtQuick.Controls.Universal 2.12
+import QtQuick.Window 2.15
+import QtQuick.Controls 2.15
+import QtQuick.Controls.impl 2.15
+import QtQuick.Controls.Universal 2.15
 
 import "../../Components"
 import "../../Constants"
@@ -18,7 +18,7 @@ DefaultComboBox {
         id: line
         padding: 10
 
-        Component.onCompleted: API.app.portfolio_pg.portfolio_mdl.portfolioItemDataChanged.connect(forceUpdateDetails)
+        Component.onCompleted: portfolio_mdl.portfolioItemDataChanged.connect(forceUpdateDetails)
 
         function forceUpdateDetails() {
             console.log("Portfolio item data changed, force-updating the selected ticker details!")
@@ -92,7 +92,7 @@ DefaultComboBox {
                     function onClosed() { input_coin_filter.reset() }
                 }
 
-                placeholderText: API.app.settings_pg.empty_string + (qsTr("Search"))
+                placeholderText: qsTr("Search")
                 selectByMouse: true
 
                 onTextChanged: {

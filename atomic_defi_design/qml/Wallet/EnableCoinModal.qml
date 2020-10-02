@@ -1,6 +1,6 @@
-import QtQuick 2.14
-import QtQuick.Layouts 1.12
-import QtQuick.Controls 2.12
+import QtQuick 2.15
+import QtQuick.Layouts 1.15
+import QtQuick.Controls 2.15
 
 import "../Components"
 import "../Constants"
@@ -57,11 +57,11 @@ BasicModal {
     }
 
     ModalContent {
-        title: API.app.settings_pg.empty_string + (qsTr("Enable coins"))
+        title: qsTr("Enable coins")
 
         DefaultButton {
             Layout.fillWidth: true
-            text: API.app.settings_pg.empty_string + (qsTr("Add a Custom Coin to the list"))
+            text: qsTr("Add a Custom Coin to the list")
             onClicked: {
                 root.close()
                 add_custom_coin_modal.open()
@@ -77,7 +77,7 @@ BasicModal {
             id: input_coin_filter
 
             Layout.fillWidth: true
-            placeholderText: API.app.settings_pg.empty_string + (qsTr("Search"))
+            placeholderText: qsTr("Search")
             selectByMouse: true
         }
 
@@ -96,25 +96,25 @@ BasicModal {
 
                 CoinList {
                     id: coins_utxo
-                    group_title: API.app.settings_pg.empty_string + qsTr("Select all UTXO coins")
+                    group_title: qsTr("Select all UTXO coins")
                     model: General.filterCoins(API.app.enableable_coins, input_coin_filter.text, "UTXO")
                 }
 
                 CoinList {
                     id: coins_smartchains
-                    group_title: API.app.settings_pg.empty_string + qsTr("Select all SmartChains")
+                    group_title: qsTr("Select all SmartChains")
                     model: General.filterCoins(API.app.enableable_coins, input_coin_filter.text, "Smart Chain")
                 }
 
                 CoinList {
                     id: coins_erc
-                    group_title: API.app.settings_pg.empty_string + qsTr("Select all ERC tokens")
+                    group_title: qsTr("Select all ERC tokens")
                     model: General.filterCoins(API.app.enableable_coins, input_coin_filter.text, "ERC-20")
                 }
 
                 CoinList {
                     id: coins_qrc
-                    group_title: API.app.settings_pg.empty_string + qsTr("Select all QRC tokens")
+                    group_title: qsTr("Select all QRC tokens")
                     model: General.filterCoins(API.app.enableable_coins, input_coin_filter.text, "QRC-20")
                 }
             }
@@ -125,13 +125,13 @@ BasicModal {
         DefaultText {
             visible: API.app.enableable_coins.length === 0
 
-            text_value: API.app.settings_pg.empty_string + (qsTr("All coins are already enabled!"))
+            text_value: qsTr("All coins are already enabled!")
         }
 
         // Buttons
         footer: [
             DefaultButton {
-                text: API.app.settings_pg.empty_string + (qsTr("Close"))
+                text: qsTr("Close")
                 Layout.fillWidth: true
                 onClicked: root.close()
             },
@@ -139,7 +139,7 @@ BasicModal {
             PrimaryButton {
                 visible: API.app.enableable_coins.length > 0
                 enabled: Object.keys(selected_to_enable).length > 0
-                text: API.app.settings_pg.empty_string + (qsTr("Enable"))
+                text: qsTr("Enable")
                 Layout.fillWidth: true
                 onClicked: enableCoins()
             }

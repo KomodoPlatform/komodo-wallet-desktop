@@ -1,6 +1,6 @@
-import QtQuick 2.14
-import QtQuick.Layouts 1.12
-import QtQuick.Controls 2.12
+import QtQuick 2.15
+import QtQuick.Layouts 1.15
+import QtQuick.Controls 2.15
 
 import QtGraphicalEffects 1.0
 
@@ -143,7 +143,7 @@ Item {
             anchors.horizontalCenter: parent.horizontalCenter
             anchors.top: parent.top
             anchors.topMargin: parent.width * 0.85
-            text_value: API.app.settings_pg.empty_string + (General.version_string)
+            text_value: General.version_string
             font.pixelSize: Style.textSizeSmall1
             color: Style.colorThemeDarkLight
         }

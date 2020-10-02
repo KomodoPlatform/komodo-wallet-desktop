@@ -17,6 +17,7 @@
 #pragma once
 
 #include <QSortFilterProxyModel>
+#include <QDate>
 
 namespace atomic_dex
 {
@@ -43,6 +44,10 @@ namespace atomic_dex
 
         [[nodiscard]] QDate filter_maximum_date() const;
         void set_filter_maximum_date(QDate date);
+
+        Q_INVOKABLE QStringList get_filtered_ids() const noexcept;
+        Q_INVOKABLE void set_coin_filter(const QString& to_filter);
+        Q_INVOKABLE void export_csv_visible_history(const QString& path);
 
 
       signals:

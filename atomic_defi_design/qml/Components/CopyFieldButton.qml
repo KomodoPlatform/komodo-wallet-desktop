@@ -1,6 +1,6 @@
-import QtQuick 2.14
-import QtQuick.Layouts 1.12
-import QtQuick.Controls 2.12
+import QtQuick 2.15
+import QtQuick.Layouts 1.15
+import QtQuick.Controls 2.15
 
 import "../Constants"
 
@@ -24,7 +24,7 @@ DefaultImage {
         onClicked: () => {
             input_field.selectAll()
             input_field.copy()
-            toast.show(API.app.settings_pg.empty_string + (qsTr("Copied to Clipboard")), General.time_toast_basic_info, "", false)
+            toast.show(qsTr("Copied to Clipboard")), General.time_toast_basic_info, "", false
         }
     }
 }

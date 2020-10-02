@@ -1,6 +1,6 @@
-import QtQuick 2.14
-import QtQuick.Layouts 1.12
-import QtQuick.Controls 2.12
+import QtQuick 2.15
+import QtQuick.Layouts 1.15
+import QtQuick.Controls 2.15
 
 import "../Components"
 import "../Constants"
@@ -13,49 +13,49 @@ ModalContent {
 
     function onClose() {}
 
-    title: API.app.settings_pg.empty_string + (qsTr("Transaction Complete!"))
+    title: qsTr("Transaction Complete!")
 
     // Address
     TextWithTitle {
         id: address
-        title: API.app.settings_pg.empty_string + (qsTr("Recipient's address"))
+        title: qsTr("Recipient's address")
         visible: text !== ""
     }
 
     // Amount
     TextWithTitle {
-        title: API.app.settings_pg.empty_string + (qsTr("Amount"))
-        text: API.app.settings_pg.empty_string + (General.formatCrypto("", custom_amount !== "" ? custom_amount : result.balance_change, api_wallet_page.ticker))
+        title: qsTr("Amount")
+        text: General.formatCrypto("", custom_amount !== "" ? custom_amount : result.balance_change, api_wallet_page.ticker)
     }
 
     // Fees
     TextWithTitle {
-        title: API.app.settings_pg.empty_string + (qsTr("Fees"))
-        text: API.app.settings_pg.empty_string + (General.formatCrypto("", result.fees, current_ticker_infos.fee_ticker))
+        title: qsTr("Fees")
+        text: General.formatCrypto("", result.fees, current_ticker_infos.fee_ticker)
     }
 
     // Date
     TextWithTitle {
-        title: API.app.settings_pg.empty_string + (qsTr("Date"))
-        text: API.app.settings_pg.empty_string + (result.date)
+        title: qsTr("Date")
+        text: result.date
     }
 
     // Transaction Hash
     TextWithTitle {
         id: tx_hash
-        title: API.app.settings_pg.empty_string + (qsTr("Transaction Hash"))
+        title: qsTr("Transaction Hash")
     }
 
     // Buttons
     footer: [
         DefaultButton {
-            text: API.app.settings_pg.empty_string + (qsTr("Close"))
+            text: qsTr("Close")
             Layout.fillWidth: true
             onClicked: onClose()
         },
 
         PrimaryButton {
-            text: API.app.settings_pg.empty_string + (qsTr("View at Explorer"))
+            text: qsTr("View at Explorer")
             Layout.fillWidth: true
             onClicked: General.viewTxAtExplorer(api_wallet_page.ticker, tx_hash.text)
         }

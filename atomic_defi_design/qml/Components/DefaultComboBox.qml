@@ -1,9 +1,9 @@
-import QtQuick 2.14
-import QtQuick.Layouts 1.12
-import QtQuick.Window 2.12
-import QtQuick.Controls 2.14
-import QtQuick.Controls.impl 2.12
-import QtQuick.Controls.Universal 2.12
+import QtQuick 2.15
+import QtQuick.Layouts 1.15
+import QtQuick.Window 2.15
+import QtQuick.Controls 2.15
+import QtQuick.Controls.impl 2.15
+import QtQuick.Controls.Universal 2.15
 import "../Constants"
 
 ComboBox {
@@ -36,7 +36,7 @@ ComboBox {
             Layout.fillWidth: true
             Layout.alignment: Qt.AlignVCenter | Qt.AlignLeft
 
-            text_value: API.app.settings_pg.empty_string + (control.mainLineText)
+            text_value: control.mainLineText
             color: !control.enabled ? Style.colorTextDisabled : control.pressed ? Style.colorText2 : Style.colorText
         }
     }
@@ -87,7 +87,7 @@ ComboBox {
         highlighted: control.highlightedIndex === index
 
         contentItem: DefaultText {
-            text_value: API.app.settings_pg.empty_string + (control.dropdownLineText(model))
+            text_value: control.dropdownLineText(model)
             color: Style.colorText
         }
     }

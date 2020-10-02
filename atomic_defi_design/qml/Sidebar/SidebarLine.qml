@@ -1,6 +1,6 @@
-import QtQuick 2.14
-import QtQuick.Layouts 1.12
-import QtQuick.Controls 2.12
+import QtQuick 2.15
+import QtQuick.Layouts 1.15
+import QtQuick.Controls 2.15
 
 import QtGraphicalEffects 1.0
 import "../Components"
@@ -60,7 +60,7 @@ Item {
         visible: img.source != ""
         anchors.fill: img
         source: img
-        color: txt.font.bold ? Style.colorSidebarIconHighlighted : txt.color
+        color: txt.font.weight === Font.Medium ? Style.colorSidebarIconHighlighted : txt.color
     }
 
     DefaultText {
@@ -69,7 +69,7 @@ Item {
         anchors.leftMargin: 70
         anchors.verticalCenter: parent.verticalCenter
         font.pixelSize: Style.textSizeSmall4
-        font.weight: selected ? Font.Bold : Font.Medium
+        font.weight: selected ? Font.Medium : Font.Normal
         color: selected ? Style.colorWhite1 : mouse_area.containsMouse ? Style.colorThemePassiveLight : Style.colorThemePassive
     }
     DropShadow {

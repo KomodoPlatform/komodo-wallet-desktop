@@ -284,6 +284,9 @@ namespace atomic_dex
         //! Wallet api
         [[nodiscard]] std::string get_current_ticker() const noexcept;
         bool                      set_current_ticker(const std::string& ticker) noexcept;
+
+        //! Multi ticker
+        void add_get_trade_fee_answer(const std::string& ticker, t_get_trade_fee_answer answer) noexcept;
     };
 } // namespace atomic_dex
 

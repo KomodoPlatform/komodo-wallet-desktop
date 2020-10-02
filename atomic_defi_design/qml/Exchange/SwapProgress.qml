@@ -1,6 +1,6 @@
-import QtQuick 2.14
-import QtQuick.Layouts 1.12
-import QtQuick.Controls 2.12
+import QtQuick 2.15
+import QtQuick.Layouts 1.15
+import QtQuick.Controls 2.15
 
 import "../Components"
 import "../Constants"
@@ -96,10 +96,9 @@ ColumnLayout {
 
     // Title
     DefaultText {
-        text_value: API.app.settings_pg.empty_string + (
-                        `<font color="${Style.colorText}">` + qsTr("Progress details") + `</font>` +
-                        `<font color="${Style.colorTextDisabled}"> | </font>` +
-                        getTimeText(total_time_passed + simulated_time, total_time_passed_estimated))
+        text_value: `<font color="${Style.colorText}">` + qsTr("Progress details") + `</font>` +
+                    `<font color="${Style.colorTextDisabled}"> | </font>` +
+                    getTimeText(total_time_passed + simulated_time, total_time_passed_estimated)
         font.pixelSize: Style.textSize1
         Layout.bottomMargin: 10
     }
@@ -166,7 +165,7 @@ ColumnLayout {
 
                     font.pixelSize: Style.textSizeSmall4
 
-                    text_value: API.app.settings_pg.empty_string + (getEventText(modelData))
+                    text_value: getEventText(modelData)
                     color: event ? Style.colorText : is_current_event ? Style.colorText2 : Style.colorTextDisabled
                 }
 
@@ -189,7 +188,7 @@ ColumnLayout {
                     visible: bar.visible
                     font.pixelSize: Style.textSizeSmall2
 
-                    text_value: API.app.settings_pg.empty_string + (!is_active ? '' : getTimeText(time_passed, API.app.orders_mdl.average_events_time_registry[modelData]))
+                    text_value: !is_active ? '' : getTimeText(time_passed, API.app.orders_mdl.average_events_time_registry[modelData])
                 }
             }
         }

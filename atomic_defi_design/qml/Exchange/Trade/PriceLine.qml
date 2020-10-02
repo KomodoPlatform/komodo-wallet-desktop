@@ -1,6 +1,6 @@
-import QtQuick 2.14
-import QtQuick.Layouts 1.12
-import QtQuick.Controls 2.12
+import QtQuick 2.15
+import QtQuick.Layouts 1.15
+import QtQuick.Controls 2.15
 
 import "../../Components"
 import "../../Constants"
@@ -29,7 +29,7 @@ RowLayout {
     DefaultText {
         visible: !price_entered && invalid_cex_price
         Layout.alignment: Qt.AlignHCenter
-        text_value: API.app.settings_pg.empty_string + (qsTr("Set swap price for evaluation"))
+        text_value: qsTr("Set swap price for evaluation")
         font.pixelSize: fontSizeBigger
     }
 
@@ -40,22 +40,22 @@ RowLayout {
 
         DefaultText {
             Layout.alignment: Qt.AlignHCenter
-            text_value: API.app.settings_pg.empty_string + (qsTr("Exchange rate") + (orderIsSelected() ? (" (" + qsTr("Selected") + ")") : ""))
+            text_value: qsTr("Exchange rate") + (orderIsSelected() ? (" (" + qsTr("Selected") + ")") : "")
             font.pixelSize: fontSize
         }
 
         // Price reversed
         DefaultText {
             Layout.alignment: Qt.AlignHCenter
-            text_value: API.app.settings_pg.empty_string + ("1 " + right_ticker + " = " + General.formatCrypto("", General.formatDouble(1 / parseFloat(price)), left_ticker))
+            text_value: General.formatCrypto("", "1", right_ticker) + " = " + General.formatCrypto("", General.formatDouble(1 / parseFloat(price)), left_ticker)
             font.pixelSize: fontSizeBigger
-            font.bold: true
+            font.weight: Font.Medium
         }
 
         // Price
         DefaultText {
             Layout.alignment: Qt.AlignHCenter
-            text_value: API.app.settings_pg.empty_string + ("1 " + left_ticker + " = " + General.formatCrypto("", price, right_ticker))
+            text_value: General.formatCrypto("", price, right_ticker) + " = " + General.formatCrypto("", "1", left_ticker)
             font.pixelSize: fontSize
         }
     }
@@ -72,14 +72,14 @@ RowLayout {
             Layout.bottomMargin: Layout.topMargin
             Layout.alignment: Qt.AlignHCenter
             color: price_diff <= 0 ? Style.colorGreen : Style.colorRed
-            text_value: API.app.settings_pg.empty_string + ((price_diff > 0 ? qsTr("Expensive") : qsTr("Expedient")) + ":&nbsp;&nbsp;&nbsp;&nbsp;" + qsTr("%1 compared to CEX", "PRICE_DIFF%").arg("<b>" + General.formatPercent(limitDigits(price_diff)) + "</b>"))
+            text_value: (price_diff > 0 ? qsTr("Expensive") : qsTr("Expedient")) + ":&nbsp;&nbsp;&nbsp;&nbsp;" + qsTr("%1 compared to CEX", "PRICE_DIFF%").arg("<b>" + General.formatPercent(limitDigits(price_diff)) + "</b>")
             font.pixelSize: fontSize
         }
 
         RowLayout {
             Layout.alignment: Qt.AlignHCenter
             DefaultText {
-                text_value: API.app.settings_pg.empty_string + (General.formatPercent(line_scale))
+                text_value: General.formatPercent(line_scale)
                 font.pixelSize: fontSize
             }
 
@@ -100,7 +100,7 @@ RowLayout {
             }
 
             DefaultText {
-                text_value: API.app.settings_pg.empty_string + (General.formatPercent(-line_scale))
+                text_value: General.formatPercent(-line_scale)
                 font.pixelSize: fontSize
             }
         }
@@ -117,7 +117,7 @@ RowLayout {
 
         DefaultText {
             Layout.alignment: Qt.AlignHCenter
-            text_value: API.app.settings_pg.empty_string + (General.cex_icon + " " + qsTr("CEXchange rate"))
+            text_value: General.cex_icon + " " + qsTr("CEXchange rate")
             font.pixelSize: fontSize
 
             CexInfoTrigger {}
@@ -126,15 +126,15 @@ RowLayout {
         // Price reversed
         DefaultText {
             Layout.alignment: Qt.AlignHCenter
-            text_value: API.app.settings_pg.empty_string + ("1 " + right_ticker + " = " + General.formatCrypto("", General.formatDouble(1 / parseFloat(cex_price)), left_ticker))
+            text_value: General.formatCrypto("", "1", right_ticker) + " = " + General.formatCrypto("", General.formatDouble(1 / parseFloat(cex_price)), left_ticker)
             font.pixelSize: fontSizeBigger
-            font.bold: true
+            font.weight: Font.Medium
         }
 
         // Price
         DefaultText {
             Layout.alignment: Qt.AlignHCenter
-            text_value: API.app.settings_pg.empty_string + ("1 " + left_ticker + " = " + General.formatCrypto("", cex_price, right_ticker))
+            text_value: General.formatCrypto("", cex_price, right_ticker) + " = " + General.formatCrypto("", "1", left_ticker)
             font.pixelSize: fontSize
         }
     }

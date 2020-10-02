@@ -1,6 +1,6 @@
-import QtQuick 2.14
-import QtQuick.Layouts 1.12
-import QtQuick.Controls 2.12
+import QtQuick 2.15
+import QtQuick.Layouts 1.15
+import QtQuick.Controls 2.15
 
 import QtGraphicalEffects 1.0
 import "../Components"
@@ -46,8 +46,8 @@ ColumnLayout {
         id: back_button
         property bool disabled: global_edit_in_progress
         Layout.leftMargin: layout_margin
-        text_value: API.app.settings_pg.empty_string + ("< " + qsTr("Back"))
-        font.bold: true
+        text_value: "< " + qsTr("Back")
+        font.weight: Font.Medium
         color: disabled ? Style.colorTextDisabled : Style.colorText
 
         DefaultMouseArea {
@@ -61,8 +61,8 @@ ColumnLayout {
         Layout.fillWidth: true
 
         DefaultText {
-            text_value: API.app.settings_pg.empty_string + (qsTr("Address Book"))
-            font.bold: true
+            text_value: qsTr("Address Book")
+            font.weight: Font.Medium
             font.pixelSize: Style.textSize3
             Layout.fillWidth: true
         }
@@ -70,7 +70,7 @@ ColumnLayout {
         DefaultButton {
             Layout.rightMargin: layout_margin
             Layout.alignment: Qt.AlignRight
-            text: API.app.settings_pg.empty_string + (qsTr("New Contact"))
+            text: qsTr("New Contact")
             enabled: !global_edit_in_progress
             onClicked: {
                 API.app.addressbook_mdl.add_contact_entry()
@@ -170,7 +170,7 @@ ColumnLayout {
                                 id: name_input
 
                                 color: Style.colorText
-                                placeholderText: API.app.settings_pg.empty_string + (qsTr("Enter the contact name"))
+                                placeholderText: qsTr("Enter the contact name")
                                 width: 150
                                 onTextChanged: {
                                     const max_length = 50
@@ -188,7 +188,7 @@ ColumnLayout {
                                 visible: !editing && enabled
                                 enabled: !global_edit_in_progress
                                 text: "✎"
-                                font.bold: true
+                                font.weight: Font.Medium
                                 color: Style.colorGreen
 
                                 DefaultMouseArea {
@@ -335,7 +335,7 @@ ColumnLayout {
                                     visible: !editing_address && enabled
                                     enabled: !global_edit_in_progress
                                     text: "✎"
-                                    font.bold: true
+                                    font.weight: Font.Medium
                                     color: enabled ? Style.colorGreen : Style.colorTextDisabled
 
                                     DefaultMouseArea {
@@ -368,7 +368,7 @@ ColumnLayout {
                                     anchors.verticalCenter: parent.verticalCenter
                                     visible: !combo_base.visible
 
-                                    text_value: API.app.settings_pg.empty_string + (type)
+                                    text_value: type
                                 }
 
                                 DefaultComboBox {
@@ -412,7 +412,7 @@ ColumnLayout {
                                     anchors.verticalCenter: parent.verticalCenter
                                     anchors.leftMargin: layout_margin
                                     font.pixelSize: Style.textSizeSmall3
-                                    placeholderText: API.app.settings_pg.empty_string + (qsTr("Enter the address"))
+                                    placeholderText: qsTr("Enter the address")
                                     width: 400
                                     visible: editing_address
                                 }
@@ -441,7 +441,7 @@ ColumnLayout {
                                         Layout.leftMargin: layout_margin
 
                                         font.pixelSize: Style.textSizeSmall3
-                                        text: API.app.settings_pg.empty_string + (qsTr("Explorer"))
+                                        text: qsTr("Explorer")
                                         enabled: address !== "" && type !== ""
                                         visible: !editing_address
                                         onClicked: General.viewAddressAtExplorer(type, address)
@@ -452,7 +452,7 @@ ColumnLayout {
                                         Layout.leftMargin: layout_margin
 
                                         font.pixelSize: Style.textSizeSmall3
-                                        text: API.app.settings_pg.empty_string + (qsTr("Send"))
+                                        text: qsTr("Send")
                                         minWidth: height
                                         enabled: address !== "" && type !== "" && API.app.enabled_coins.map(c => c.ticker).indexOf(type) !== -1
                                         visible: !editing_address

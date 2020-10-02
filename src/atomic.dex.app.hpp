@@ -21,6 +21,7 @@
 #include <QApplication>
 #include <QImage>
 #include <QObject>
+#include <QQmlApplicationEngine>
 #include <QSize>
 #include <QStringList>
 #include <QTranslator>
@@ -144,7 +145,7 @@ namespace atomic_dex
         //! Properties Setter
         void set_wallet_default_name(QString wallet_default_name) noexcept;
         void set_status(QString status) noexcept;
-        void set_qt_app(std::shared_ptr<QApplication> app) noexcept;
+        void set_qt_app(std::shared_ptr<QApplication> app, QQmlApplicationEngine* qml_engine) noexcept;
 
         //! Launch the internal loop for the SDK.
         void launch();

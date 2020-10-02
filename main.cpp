@@ -4,6 +4,7 @@
 #include <QQmlApplicationEngine>
 #include <QScreen>
 #include <QWindow>
+#include <Qaterial/Qaterial.hpp>
 #include <QtQml>
 
 #define QZXING_QML
@@ -12,6 +13,11 @@
 
 //! PCH Headers
 #include "atomic.dex.pch.hpp"
+
+#if defined(linux)
+#    define BOOST_STACKTRACE_USE_ADDR2LINE
+#    include <boost/stacktrace.hpp>
+#endif
 
 //! Project Headers
 #include "atomic.dex.app.hpp"
@@ -33,6 +39,9 @@ signal_handler(int signal)
 {
     spdlog::trace("sigabort received, cleaning mm2");
     atomic_dex::kill_executable("mm2");
+#if defined(linux)
+    boost::stacktrace::safe_dump_to("./backtrace.dump");
+#endif
     std::exit(signal);
 }
 
@@ -40,7 +49,22 @@ static void
 connect_signals_handler()
 {
     spdlog::info("connecting signal SIGABRT to the signal handler");
+#if defined(linux)
+    if (boost::filesystem::exists("./backtrace.dump"))
+    {
+        // there is a backtrace
+        std::ifstream ifs("./backtrace.dump");
+
+        boost::stacktrace::stacktrace st = boost::stacktrace::stacktrace::from_dump(ifs);
+        std::cout << "Previous run crashed:\n" << st << std::endl;
+
+        // cleaning up
+        ifs.close();
+        boost::filesystem::remove("./backtrace.dump");
+    }
+#endif
     std::signal(SIGABRT, signal_handler);
+    std::signal(SIGSEGV, signal_handler);
 }
 
 static void
@@ -181,14 +205,21 @@ main([[maybe_unused]] int argc, [[maybe_unused]] char* argv[])
     std::shared_ptr<QApplication> app = std::make_shared<QApplication>(argc, argv);
     app->setOrganizationName("KomodoPlatform");
     app->setOrganizationDomain("com");
+    QQmlApplicationEngine engine;
 
-    atomic_app.set_qt_app(app);
+    atomic_app.set_qt_app(app, &engine);
 
     //! QT QML
-    QQmlApplicationEngine engine;
+
+
+    engine.addImportPath("qrc:///");
     QZXing::registerQMLTypes();
     QZXing::registerQMLImageProvider(engine);
     engine.rootContext()->setContextProperty("atomic_app", &atomic_app);
+    // Load Qaterial.
+
+    qaterial::loadQmlResources(false);
+    // qaterial::registerQmlTypes("Qaterial", 1, 0);
     engine.addImportPath("qrc:/atomic_defi_design/imports");
     engine.addImportPath("qrc:/atomic_defi_design/Constants");
     qmlRegisterSingletonType(QUrl("qrc:/atomic_defi_design/qml/Constants/General.qml"), "App", 1, 0, "General");

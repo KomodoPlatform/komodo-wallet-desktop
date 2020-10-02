@@ -1,6 +1,6 @@
-import QtQuick 2.14
-import QtQuick.Layouts 1.12
-import QtQuick.Controls 2.12
+import QtQuick 2.15
+import QtQuick.Layouts 1.15
+import QtQuick.Controls 2.15
 
 import QtGraphicalEffects 1.0
 import "../Components"
@@ -186,16 +186,18 @@ Item {
                             // Ticker
                             DefaultText {
                                 Layout.alignment: Qt.AlignRight
-                                text_value: API.app.settings_pg.empty_string + (ticker)
+                                text_value: ticker
                                 font.pixelSize: text.length > 6 ? Style.textSizeSmall2 : Style.textSizeSmall4
                             }
 
-                            ToolTip {
+                            DefaultTooltip {
                                 visible: mouse_area.containsMouse
-                                background: FloatingBackground { auto_set_size: false }
-                                contentItem:  DefaultText {
-                                    text_value: API.app.settings_pg.empty_string + (name.replace(" (TESTCOIN)", ""))
-                                    font.pixelSize: Style.textSizeSmall4
+
+                                contentItem: ColumnLayout {
+                                    DefaultText {
+                                        text_value: name.replace(" (TESTCOIN)", "")
+                                        font.pixelSize: Style.textSizeSmall4
+                                    }
                                 }
                             }
                         }

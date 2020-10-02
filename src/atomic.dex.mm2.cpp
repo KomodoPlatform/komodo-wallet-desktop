@@ -435,7 +435,7 @@ namespace atomic_dex
     bool
     mm2::process_batch_enable_answer(const json& answer)
     {
-        //spdlog::trace("ANSWER JSON -> {}", answer.dump(4));
+        // spdlog::trace("ANSWER JSON -> {}", answer.dump(4));
         if (answer.count("coin") == 1)
         {
             auto        ticker          = answer.at("coin").get<std::string>();
@@ -1062,7 +1062,7 @@ namespace atomic_dex
         auto  result                = m_orders_registry.at("result");
         auto& taker                 = result.taker_orders;
         auto& maker                 = result.maker_orders;
-        auto  is_ticker_not_present = [&ticker](const std::pair<std::size_t, t_my_order_contents>& contents) {
+        auto  is_ticker_not_present = [&ticker](const std::pair<std::string, t_my_order_contents>& contents) {
             return contents.second.base != ticker && contents.second.rel != ticker;
         };
 
@@ -1521,5 +1521,10 @@ namespace atomic_dex
             assert(ofs.is_open());
             ofs << config_json_data;
         }
+    }
+
+    void mm2::add_get_trade_fee_answer(const std::string& ticker, t_get_trade_fee_answer answer) noexcept
+    {
+        this->m_trade_fees_registry.insert_or_assign(ticker, answer);
     }
 } // namespace atomic_dex

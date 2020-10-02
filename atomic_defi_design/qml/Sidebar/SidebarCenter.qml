@@ -1,6 +1,6 @@
-import QtQuick 2.14
-import QtQuick.Layouts 1.12
-import QtQuick.Controls 2.12
+import QtQuick 2.15
+import QtQuick.Layouts 1.15
+import QtQuick.Controls 2.15
 
 import "../Constants"
 
@@ -12,7 +12,7 @@ ColumnLayout {
 
     SidebarLine {
         dashboard_index: General.idx_dashboard_portfolio
-        text_value: API.app.settings_pg.empty_string + (qsTr("Dashboard"))
+        text_value: qsTr("Dashboard")
         image: General.image_path + "menu-assets-portfolio.svg"
         Layout.fillWidth: true
         separator: false
@@ -20,28 +20,28 @@ ColumnLayout {
 
     SidebarLine {
         dashboard_index: General.idx_dashboard_wallet
-        text_value: API.app.settings_pg.empty_string + (qsTr("Wallet"))
+        text_value: qsTr("Wallet")
         image: General.image_path + "menu-assets-white.svg"
         Layout.fillWidth: true
     }
 
     SidebarLine {
         dashboard_index: General.idx_dashboard_exchange
-        text_value: API.app.settings_pg.empty_string + (qsTr("DEX"))
+        text_value: qsTr("DEX")
         image: General.image_path + "menu-exchange-white.svg"
         Layout.fillWidth: true
     }
 
     SidebarLine {
         dashboard_index: General.idx_dashboard_news
-        text_value: API.app.settings_pg.empty_string + (qsTr("News"))
+        text_value: qsTr("News")
         image: General.image_path + "menu-news-white.svg"
         Layout.fillWidth: true
     }
 
     SidebarLine {
         dashboard_index: General.idx_dashboard_dapps
-        text_value: API.app.settings_pg.empty_string + (qsTr("Dapps"))
+        text_value: qsTr("Dapps")
         image: General.image_path + "menu-dapp-white.svg"
         Layout.fillWidth: true
     }

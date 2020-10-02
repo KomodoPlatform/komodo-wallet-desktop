@@ -1,6 +1,6 @@
-import QtQuick 2.14
-import QtQuick.Layouts 1.12
-import QtQuick.Controls 2.12
+import QtQuick 2.15
+import QtQuick.Layouts 1.15
+import QtQuick.Controls 2.15
 
 import QtGraphicalEffects 1.0
 import "../Components"
@@ -56,7 +56,8 @@ Item {
         return app.current_page === idx_dashboard
     }
 
-    property var portfolio_coins: API.app.portfolio_pg.portfolio_mdl.portfolio_proxy_mdl
+    readonly property var portfolio_mdl: API.app.portfolio_pg.portfolio_mdl
+    property var portfolio_coins: portfolio_mdl.portfolio_proxy_mdl
 
     function resetCoinFilter() {
         portfolio_coins.setFilterFixedString("")
@@ -140,7 +141,7 @@ Item {
                 Layout.fillHeight: true
                 DefaultText {
                     anchors.centerIn: parent
-                    text_value: API.app.settings_pg.empty_string + (qsTr("Content for this section will be added later. Stay tuned!"))
+                    text_value: qsTr("Content for this section will be added later. Stay tuned!")
                 }
             }
 
@@ -151,7 +152,7 @@ Item {
                 Layout.fillHeight: true
                 DefaultText {
                     anchors.centerIn: parent
-                    text_value: API.app.settings_pg.empty_string + (qsTr("Content for this section will be added later. Stay tuned!"))
+                    text_value: qsTr("Content for this section will be added later. Stay tuned!")
                 }
             }
 
@@ -188,7 +189,7 @@ Item {
             anchors.centerIn: parent
             text_value: notifications_modal.notifications_list.length
             font.pixelSize: Style.textSizeSmall1
-            font.bold: true
+            font.weight: Font.Medium
             color: notifications_modal.notifications_list.length > 0 ? Style.colorWhite9 : Style.colorWhite12
         }
     }

@@ -1,12 +1,14 @@
-import QtQuick 2.14
-import QtQuick.Layouts 1.12
-import QtQuick.Controls 2.12
+import QtQuick 2.15
+import QtQuick.Layouts 1.15
+import QtQuick.Controls 2.15
 
 import "../Components"
 import "../Constants"
 
 BasicModal {
     id: root
+
+    readonly property bool empty_data: !send_result || !send_result.withdraw_answer
 
     property alias address_field: input_address.field
     property alias amount_field: input_amount.field
@@ -191,7 +193,7 @@ BasicModal {
     ModalContent {
         Layout.fillWidth: true
 
-        title: API.app.settings_pg.empty_string + (qsTr("Prepare to Send"))
+        title: qsTr("Prepare to Send")
 
         // Send address
         RowLayout {
@@ -200,14 +202,14 @@ BasicModal {
             AddressFieldWithTitle {
                 id: input_address
                 Layout.alignment: Qt.AlignLeft
-                title: API.app.settings_pg.empty_string + (qsTr("Recipient's address"))
-                field.placeholderText: API.app.settings_pg.empty_string + (qsTr("Enter address of the recipient"))
+                title: qsTr("Recipient's address")
+                field.placeholderText: qsTr("Enter address of the recipient")
                 field.enabled: !root.is_send_busy
             }
 
             DefaultButton {
                 Layout.alignment: Qt.AlignRight | Qt.AlignBottom
-                text: API.app.settings_pg.empty_string + (qsTr("Address Book"))
+                text: qsTr("Address Book")
                 onClicked: {
                     openAddressBook()
                     root.close()
@@ -223,12 +225,12 @@ BasicModal {
             DefaultText {
                 Layout.alignment: Qt.AlignLeft
                 color: Style.colorRed
-                text_value: API.app.settings_pg.empty_string + (qsTr("The address has to be mixed case."))
+                text_value: qsTr("The address has to be mixed case.")
             }
 
             DefaultButton {
                 Layout.alignment: Qt.AlignRight
-                text: API.app.settings_pg.empty_string + (qsTr("Fix"))
+                text: qsTr("Fix")
                 onClicked: input_address.field.text = API.app.to_eth_checksum_qt(input_address.field.text.toLowerCase())
                 enabled: !root.is_send_busy
             }
@@ -242,15 +244,15 @@ BasicModal {
                 id: input_amount
 
                 field.visible: !input_max_amount.checked
-                title: API.app.settings_pg.empty_string + (qsTr("Amount to send"))
-                field.placeholderText: API.app.settings_pg.empty_string + (qsTr("Enter the amount to send"))
+                title: qsTr("Amount to send")
+                field.placeholderText: qsTr("Enter the amount to send")
                 field.enabled: !root.is_send_busy
             }
 
             DefaultSwitch {
                 id: input_max_amount
                 Layout.alignment: Qt.AlignRight | Qt.AlignBottom
-                text: API.app.settings_pg.empty_string + (qsTr("MAX"))
+                text: qsTr("MAX")
                 onCheckedChanged: input_amount.field.text = ""
                 enabled: !root.is_send_busy
             }
@@ -259,7 +261,7 @@ BasicModal {
         // Custom fees switch
         DefaultSwitch {
             id: custom_fees_switch
-            text: API.app.settings_pg.empty_string + (qsTr("Enable Custom Fees"))
+            text: qsTr("Enable Custom Fees")
             onCheckedChanged: input_custom_fees.field.text = ""
             enabled: !root.is_send_busy
         }
@@ -271,7 +273,7 @@ BasicModal {
             DefaultText {
                 font.pixelSize: Style.textSize
                 color: Style.colorRed
-                text_value: API.app.settings_pg.empty_string + (qsTr("Only use custom fees if you know what you are doing!"))
+                text_value: qsTr("Only use custom fees if you know what you are doing!")
             }
 
             // Normal coins, Custom fees input
@@ -279,8 +281,8 @@ BasicModal {
                 visible: !isSpecialToken()
 
                 id: input_custom_fees
-                title: API.app.settings_pg.empty_string + (qsTr("Custom Fee") + " [" + api_wallet_page.ticker + "]")
-                field.placeholderText: API.app.settings_pg.empty_string + (qsTr("Enter the custom fee"))
+                title: qsTr("Custom Fee") + " [" + api_wallet_page.ticker + "]"
+                field.placeholderText: qsTr("Enter the custom fee")
                 field.enabled: !root.is_send_busy
             }
 
@@ -291,16 +293,16 @@ BasicModal {
                 // Gas input
                 AmountIntField {
                     id: input_custom_fees_gas
-                    title: API.app.settings_pg.empty_string + (qsTr("Gas Limit") + " [" + General.tokenUnitName(current_ticker_infos.type) + "]")
-                    field.placeholderText: API.app.settings_pg.empty_string + (qsTr("Enter the gas limit"))
+                    title: qsTr("Gas Limit") + " [" + General.tokenUnitName(current_ticker_infos.type) + "]"
+                    field.placeholderText: qsTr("Enter the gas limit")
                     field.enabled: !root.is_send_busy
                 }
 
                 // Gas price input
                 AmountIntField {
                     id: input_custom_fees_gas_price
-                    title: API.app.settings_pg.empty_string + (qsTr("Gas Price") + " [" + General.tokenUnitName(current_ticker_infos.type) + "]")
-                    field.placeholderText: API.app.settings_pg.empty_string + (qsTr("Enter the gas price"))
+                    title: qsTr("Gas Price") + " [" + General.tokenUnitName(current_ticker_infos.type) + "]"
+                    field.placeholderText: qsTr("Enter the gas price")
                     field.enabled: !root.is_send_busy
                 }
             }
@@ -315,7 +317,7 @@ BasicModal {
 
             color: Style.colorRed
 
-            text_value: API.app.settings_pg.empty_string + (qsTr("Custom Fee can't be higher than the amount"))
+            text_value: qsTr("Custom Fee can't be higher than the amount")
         }
 
         // Not enough funds error
@@ -325,7 +327,7 @@ BasicModal {
 
             color: Style.colorRed
 
-            text_value: API.app.settings_pg.empty_string + (qsTr("Not enough funds.") + "\n" + qsTr("You have %1", "AMT TICKER").arg(General.formatCrypto("", API.app.get_balance(api_wallet_page.ticker), api_wallet_page.ticker)))
+            text_value: qsTr("Not enough funds.") + "\n" + qsTr("You have %1", "AMT TICKER").arg(General.formatCrypto("", API.app.get_balance(api_wallet_page.ticker), api_wallet_page.ticker))
         }
 
         DefaultBusyIndicator {
@@ -335,13 +337,13 @@ BasicModal {
         // Buttons
         footer: [
             DefaultButton {
-                text: API.app.settings_pg.empty_string + (qsTr("Close"))
+                text: qsTr("Close")
                 Layout.fillWidth: true
                 onClicked: root.close()
             },
 
             PrimaryButton {
-                text: API.app.settings_pg.empty_string + (qsTr("Prepare"))
+                text: qsTr("Prepare")
                 Layout.fillWidth: true
 
                 enabled: fieldAreFilled() && hasFunds() && !hasErc20CaseIssue(input_address.field.text) && !root.is_send_busy
@@ -354,30 +356,32 @@ BasicModal {
 
     // Send Page
     ModalContent {
-        title: API.app.settings_pg.empty_string + (qsTr("Send"))
+        title: qsTr("Send")
 
         // Address
         TextWithTitle {
-            title: API.app.settings_pg.empty_string + (qsTr("Recipient's address"))
-            text: API.app.settings_pg.empty_string + (input_address.field.text)
+            title: qsTr("Recipient's address")
+            text: input_address.field.text
         }
 
         // Amount
         TextWithTitle {
-            title: API.app.settings_pg.empty_string + (qsTr("Amount"))
-            text: API.app.settings_pg.empty_string + (General.formatCrypto("", input_amount.field.text, api_wallet_page.ticker))
+            title: qsTr("Amount")
+            text: General.formatCrypto("", input_amount.field.text, api_wallet_page.ticker)
         }
 
         // Fees
         TextWithTitle {
-            title: API.app.settings_pg.empty_string + (qsTr("Fees"))
-            text: API.app.settings_pg.empty_string + (General.formatCrypto("", send_result.withdraw_answer.fee_details.amount, current_ticker_infos.fee_ticker))
+            title: qsTr("Fees")
+            text: empty_data ? "" :
+                  General.formatCrypto("", send_result.withdraw_answer.fee_details.amount, current_ticker_infos.fee_ticker)
         }
 
         // Date
         TextWithTitle {
-            title: API.app.settings_pg.empty_string + (qsTr("Date"))
-            text: API.app.settings_pg.empty_string + (send_result.withdraw_answer.date)
+            title: qsTr("Date")
+            text: empty_data ? "" :
+                  send_result.withdraw_answer.date
         }
 
         DefaultBusyIndicator {
@@ -387,14 +391,14 @@ BasicModal {
         // Buttons
         footer: [
             DefaultButton {
-                text: API.app.settings_pg.empty_string + (qsTr("Back"))
+                text: qsTr("Back")
                 Layout.fillWidth: true
                 onClicked: root.currentIndex = 0
                 enabled: !root.is_broadcast_busy
             },
 
             PrimaryButton {
-                text: API.app.settings_pg.empty_string + (qsTr("Send"))
+                text: qsTr("Send")
                 Layout.fillWidth: true
                 onClicked: sendCoin()
                 enabled: !root.is_broadcast_busy
@@ -405,9 +409,9 @@ BasicModal {
     // Result Page
     SendResult {
         result: ({
-            balance_change: send_result.withdraw_answer.my_balance_change,
-            fees: send_result.withdraw_answer.fee_details.amount,
-            date: send_result.withdraw_answer.date
+            balance_change: empty_data ? "" : send_result.withdraw_answer.my_balance_change,
+            fees: empty_data ? "" : send_result.withdraw_answer.fee_details.amount,
+            date: empty_data ? "" : send_result.withdraw_answer.date
         })
         address: input_address.field.text
         tx_hash: broadcast_result

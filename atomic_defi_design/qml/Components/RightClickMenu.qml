@@ -1,6 +1,6 @@
-import QtQuick 2.14
-import QtQuick.Layouts 1.12
-import QtQuick.Controls 2.12
+import QtQuick 2.15
+import QtQuick.Layouts 1.15
+import QtQuick.Controls 2.15
 
 import "../Constants"
 
@@ -26,17 +26,17 @@ DefaultMouseArea {
         id: contextMenu
 
         MenuItem {
-            text: API.app.settings_pg.empty_string + (qsTr("Cut"))
+            text: qsTr("Cut")
             enabled: !text_field.readOnly && text_field.selectedText.length > 0 && text_field.echoMode !== TextInput.Password
             onTriggered: text_field.cut()
         }
         MenuItem {
-            text: API.app.settings_pg.empty_string + (qsTr("Copy"))
+            text: qsTr("Copy")
             enabled: text_field.selectedText.length > 0 && text_field.echoMode !== TextInput.Password
             onTriggered: text_field.copy()
         }
         MenuItem {
-            text: API.app.settings_pg.empty_string + (qsTr("Paste"))
+            text: qsTr("Paste")
             enabled: !text_field.readOnly
             onTriggered: text_field.paste()
         }

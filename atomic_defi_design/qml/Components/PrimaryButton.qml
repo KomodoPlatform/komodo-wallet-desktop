@@ -1,12 +1,12 @@
-import QtQuick 2.14
-import QtQuick.Layouts 1.12
-import QtQuick.Controls 2.12
+import QtQuick 2.15
+import QtQuick.Layouts 1.15
+import QtQuick.Controls 2.15
 
 import "../Constants"
 
 DefaultButton {
     button_type: "primary"
-    font.bold: true
+    font.weight: Font.Medium
 }
 
 /*##^##

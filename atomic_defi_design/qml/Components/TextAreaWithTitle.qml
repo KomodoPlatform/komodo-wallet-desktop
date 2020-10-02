@@ -1,6 +1,6 @@
-import QtQuick 2.14
-import QtQuick.Layouts 1.12
-import QtQuick.Controls 2.12
+import QtQuick 2.15
+import QtQuick.Layouts 1.15
+import QtQuick.Controls 2.15
 
 import "../Constants"
 
@@ -36,7 +36,7 @@ ColumnLayout {
             id: save_button
             button_type: input_field.enabled ? "danger" : "primary"
             Layout.alignment: Qt.AlignVCenter
-            text: API.app.settings_pg.empty_string + (input_field.enabled ? qsTr("Save") : qsTr("Edit"))
+            text: input_field.enabled ? qsTr("Save") : qsTr("Edit")
             visible: saveable
             onClicked: {
                 if(input_field.enabled) saved()

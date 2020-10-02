@@ -1,26 +1,26 @@
-import QtQuick 2.14
-import QtQuick.Window 2.12
+import QtQuick 2.15
+import QtQuick.Controls 2.15
+import Qaterial 1.0 as Qaterial
+
 import "Screens"
 import "Constants"
 
-Window {
+Qaterial.ApplicationWindow {
     id: window
     visible: true
-    width: General.width
-    height: General.height
     minimumWidth: General.minimumWidth
     minimumHeight: General.minimumHeight
-    title: API.app.settings_pg.empty_string + (qsTr("atomicDEX Pro"))
-    flags: Qt.Window | Qt.WindowFullscreenButtonHint
+    title: qsTr("AtomicDEX Pro")
+    flags: Qt.WindowFullscreenButtonHint
+
+    property int real_visibility
 
     Component.onCompleted: showMaximized()
-
-    property int true_visibility
 
     onVisibilityChanged: {
         // 3 is minimized, ignore that
         if(visibility !== 3)
-            true_visibility = visibility
+            real_visibility = visibility
 
         API.app.change_state(visibility)
     }

@@ -1,6 +1,6 @@
-import QtQuick 2.14
-import QtQuick.Layouts 1.12
-import QtQuick.Controls 2.12
+import QtQuick 2.15
+import QtQuick.Layouts 1.15
+import QtQuick.Controls 2.15
 
 import "../Constants"
 
@@ -12,8 +12,8 @@ BasicModal {
     readonly property bool required_update: update_needed && (API.app.update_status.status === "required")
     readonly property bool suggest_update: update_needed && (required_update || API.app.update_status.status === "recommended")
 
-    readonly property string update_title: API.app.settings_pg.empty_string + (!update_needed ? qsTr("Changelog") : (qsTr("New Update!") + " " + (API.app.update_status.current_version + "  " + General.right_arrow_icon + "  " + API.app.update_status.new_version)))
-    readonly property string update_state: API.app.settings_pg.empty_string + (!update_needed ? qsTr("Up to date") : !suggest_update ? qsTr("Available") : required_update ? qsTr("Required") : qsTr("Recommended"))
+    readonly property string update_title: !update_needed ? qsTr("Changelog") : (qsTr("New Update!") + " " + (API.app.update_status.current_version + "  " + General.right_arrow_icon + "  " + API.app.update_status.new_version))
+    readonly property string update_state: !update_needed ? qsTr("Up to date") : !suggest_update ? qsTr("Available") : required_update ? qsTr("Required") : qsTr("Recommended")
     readonly property string update_color: !update_needed || !suggest_update ? Style.colorGreen : required_update ? Style.colorRed : Style.colorOrange
 
     onSuggest_updateChanged: {
@@ -40,7 +40,7 @@ BasicModal {
         footer: [
             DefaultButton {
                 Layout.fillWidth: true
-                text: API.app.settings_pg.empty_string + (update_needed ? qsTr("Skip") : qsTr("Close"))
+                text: update_needed ? qsTr("Skip") : qsTr("Close")
                 onClicked: root.close()
                 visible: !required_update
             },
@@ -49,7 +49,7 @@ BasicModal {
                 Layout.fillWidth: true
                 visible: update_needed
                 enabled: status_good
-                text: API.app.settings_pg.empty_string + (qsTr("Download"))
+                text: qsTr("Download")
                 onClicked: Qt.openUrlExternally(API.app.update_status.download_url)
             }
         ]

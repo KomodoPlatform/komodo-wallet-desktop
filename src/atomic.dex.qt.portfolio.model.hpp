@@ -44,10 +44,13 @@ namespace atomic_dex
             MainCurrencyBalanceRole,
             Change24H,
             MainCurrencyPriceForOneUnit,
+            MainFiatPriceForOneUnit,
             Trend7D,
             Excluded,
             Display,
-            NameAndTicker
+            NameAndTicker,
+            IsMultiTickerCurrentlyEnabled,
+            MultiTickerData
         };
         Q_ENUM(PortfolioRoles)
 

@@ -1,6 +1,6 @@
-import QtQuick 2.14
-import QtQuick.Layouts 1.12
-import QtQuick.Controls 2.12
+import QtQuick 2.15
+import QtQuick.Layouts 1.15
+import QtQuick.Controls 2.15
 
 import "../Components"
 import "../Constants"
@@ -96,7 +96,7 @@ Item {
 
                     ExchangeTab {
                         dashboard_index: General.idx_exchange_trade
-                        text_value: API.app.settings_pg.empty_string + (qsTr("Trade"))
+                        text_value: qsTr("Trade")
                     }
 
                     VerticalLineBasic {
@@ -107,7 +107,7 @@ Item {
 
                     ExchangeTab {
                         dashboard_index: General.idx_exchange_orders
-                        text_value: API.app.settings_pg.empty_string + (qsTr("Orders"))
+                        text_value: qsTr("Orders")
                     }
 
                     VerticalLineBasic {
@@ -117,7 +117,7 @@ Item {
 
                     ExchangeTab {
                         dashboard_index: General.idx_exchange_history
-                        text_value: API.app.settings_pg.empty_string + (qsTr("History"))
+                        text_value: qsTr("History")
                     }
                 }
             }
@@ -168,22 +168,22 @@ Item {
         }
     }
 
-    function getStatusText(status) {
+    function getStatusText(status, short_text=false) {
         switch(status) {
             case "matching":
-                return qsTr("Order Matching")
+                return short_text ? qsTr("Matching") : qsTr("Order Matching")
             case "matched":
-                return qsTr("Order Matched")
+                return short_text ? qsTr("Matched") : qsTr("Order Matched")
             case "ongoing":
-                return qsTr("Swap Ongoing")
+                return short_text ? qsTr("Ongoing") : qsTr("Swap Ongoing")
             case "successful":
-                return qsTr("Swap Successful")
+                return short_text ? qsTr("Successful") : qsTr("Swap Successful")
             case "refunding":
-                return qsTr("Refunding")
+                return short_text ? qsTr("Refunding") : qsTr("Refunding")
             case "failed":
-                return qsTr("Swap Failed")
+                return short_text ? qsTr("Failed") : qsTr("Swap Failed")
             default:
-                return qsTr("Unknown State")
+                return short_text ? qsTr("Unknown") : qsTr("Unknown State")
         }
     }
 
@@ -219,8 +219,8 @@ Item {
         }
     }
 
-    function getStatusTextWithPrefix(status) {
-        return getStatusStep(status) + " " + getStatusText(status)
+    function getStatusTextWithPrefix(status, short_text=false) {
+        return getStatusStep(status) + " " + getStatusText(status, short_text)
     }
 
     function getEventText(event_name) {

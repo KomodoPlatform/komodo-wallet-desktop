@@ -1,6 +1,6 @@
-import QtQuick 2.14
-import QtQuick.Layouts 1.12
-import QtQuick.Controls 2.12
+import QtQuick 2.15
+import QtQuick.Layouts 1.15
+import QtQuick.Controls 2.15
 
 import QtGraphicalEffects 1.0
 import "../Components"
@@ -38,7 +38,7 @@ Item {
 
             ComboBoxWithTitle {
                 id: combo_fiat
-                title: API.app.settings_pg.empty_string + (qsTr("Fiat"))
+                title: qsTr("Fiat")
                 Layout.fillWidth: true
                 Layout.leftMargin: 30
                 Layout.rightMargin: Layout.leftMargin
@@ -76,7 +76,7 @@ Item {
                 Layout.alignment: Qt.AlignHCenter
                 Layout.leftMargin: combo_fiat.Layout.leftMargin
                 Layout.rightMargin: Layout.leftMargin
-                text: API.app.settings_pg.empty_string + (qsTr("Enable Desktop Notifications"))
+                text: qsTr("Enable Desktop Notifications")
                 Component.onCompleted: checked = API.app.settings_pg.notification_enabled
                 onCheckedChanged: API.app.settings_pg.notification_enabled = checked
             }
@@ -85,7 +85,7 @@ Item {
                 Layout.fillWidth: true
                 Layout.leftMargin: combo_fiat.Layout.leftMargin
                 Layout.rightMargin: Layout.leftMargin
-                text: API.app.settings_pg.empty_string + (qsTr("Open Logs Folder"))
+                text: qsTr("Open Logs Folder")
                 onClicked: openLogsFolder()
             }
 
@@ -93,7 +93,7 @@ Item {
                 Layout.fillWidth: true
                 Layout.leftMargin: combo_fiat.Layout.leftMargin
                 Layout.rightMargin: Layout.leftMargin
-                text: API.app.settings_pg.empty_string + (qsTr("View Seed"))
+                text: qsTr("View Seed")
                 onClicked: recover_seed_modal.open()
             }
 
@@ -111,7 +111,7 @@ Item {
                 Layout.fillWidth: true
                 Layout.leftMargin: combo_fiat.Layout.leftMargin
                 Layout.rightMargin: Layout.leftMargin
-                text: API.app.settings_pg.empty_string + (qsTr("Disclaimer and ToS"))
+                text: qsTr("Disclaimer and ToS")
                 onClicked: eula.open()
             }
 
@@ -128,7 +128,7 @@ Item {
 
             DefaultButton {
                 visible: !API.app.is_pin_cfg_enabled()
-                text: API.app.settings_pg.empty_string + (qsTr("Setup Camouflage Password"))
+                text: qsTr("Setup Camouflage Password")
                 Layout.fillWidth: true
                 Layout.leftMargin: combo_fiat.Layout.leftMargin
                 Layout.rightMargin: Layout.leftMargin
@@ -140,7 +140,7 @@ Item {
             }
 
             DangerButton {
-                text: API.app.settings_pg.empty_string + (qsTr("Delete Wallet"))
+                text: qsTr("Delete Wallet")
                 Layout.fillWidth: true
                 Layout.leftMargin: combo_fiat.Layout.leftMargin
                 Layout.rightMargin: Layout.leftMargin
@@ -155,7 +155,7 @@ Item {
                 Layout.fillWidth: true
                 Layout.leftMargin: combo_fiat.Layout.leftMargin
                 Layout.rightMargin: Layout.leftMargin
-                text: API.app.settings_pg.empty_string + (qsTr("Log out"))
+                text: qsTr("Log out")
                 onClicked: disconnect()
             }
         }
@@ -166,7 +166,7 @@ Item {
         anchors.bottom: parent.bottom
         anchors.bottomMargin: 10
         anchors.rightMargin: anchors.bottomMargin
-        text_value: API.app.settings_pg.empty_string + (qsTr("mm2 version") + ":  " + mm2_version)
+        text_value: qsTr("mm2 version") + ":  " + mm2_version
         font.pixelSize: Style.textSizeSmall
     }
 }

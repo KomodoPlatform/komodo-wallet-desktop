@@ -1,19 +1,19 @@
-import QtQuick 2.14
-import QtQuick.Layouts 1.12
-import QtQuick.Controls 2.12
-import QtQuick.Controls.Universal 2.12
+import QtQuick 2.15
+import QtQuick.Layouts 1.15
+import QtQuick.Controls 2.15
+import QtQuick.Controls.Universal 2.15
 import "../Constants"
 
 Menu {
     Action {
         id: disable_action
-        text: API.app.settings_pg.empty_string + (qsTr("Disable %1", "TICKER").arg(ticker))
+        text: qsTr("Disable %1", "TICKER").arg(ticker)
         onTriggered: API.app.disable_coins([ticker])
         enabled: General.canDisable(ticker)
     }
 
     Action {
-        text: API.app.settings_pg.empty_string + (qsTr("Disable and Delete %1", "TICKER").arg(ticker))
+        text: qsTr("Disable and Delete %1", "TICKER").arg(ticker)
         onTriggered: {
             const cloneTicker = General.clone(ticker)
             API.app.disable_coins([ticker])

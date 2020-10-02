@@ -1,6 +1,6 @@
-import QtQuick 2.14
-import QtQuick.Layouts 1.12
-import QtQuick.Controls 2.12
+import QtQuick 2.15
+import QtQuick.Layouts 1.15
+import QtQuick.Controls 2.15
 
 import "../Constants"
 
@@ -32,7 +32,7 @@ ColumnLayout {
         DefaultText {
             visible: required && input_field.text === ''
             font.pixelSize: Style.textSizeSmall2
-            text_value: API.app.settings_pg.empty_string + (qsTr("Required"))
+            text_value: qsTr("Required")
             color: Style.colorRed
         }
     }

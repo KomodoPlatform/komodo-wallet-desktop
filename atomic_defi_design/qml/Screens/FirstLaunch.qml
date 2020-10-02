@@ -1,6 +1,6 @@
-import QtQuick 2.14
-import QtQuick.Layouts 1.12
-import QtQuick.Controls 2.12
+import QtQuick 2.15
+import QtQuick.Layouts 1.15
+import QtQuick.Controls 2.15
 
 import "../Components"
 import "../Constants"
@@ -25,7 +25,7 @@ SetupPage {
         width: 400
         spacing: Style.rowSpacing
         DefaultText {
-            text_value: API.app.settings_pg.empty_string + (qsTr("Welcome"))
+            text_value: qsTr("Welcome")
         }
 
         HorizontalLine {
@@ -38,13 +38,13 @@ SetupPage {
 
             DefaultButton {
                 Layout.fillWidth: true
-                text: API.app.settings_pg.empty_string + (qsTr("Recover Seed"))
+                text: qsTr("Recover Seed")
                 onClicked: onClickedRecoverSeed()
             }
 
             DefaultButton {
                 Layout.fillWidth: true
-                text: API.app.settings_pg.empty_string + (qsTr("New User"))
+                text: qsTr("New User")
                 onClicked: onClickedNewUser()
             }
         }
@@ -57,7 +57,7 @@ SetupPage {
 
             // Name
             DefaultText {
-                text_value: API.app.settings_pg.empty_string + (qsTr("Wallets"))
+                text_value: qsTr("Wallets")
                 font.pixelSize: Style.textSizeSmall2
             }
 
@@ -97,7 +97,7 @@ SetupPage {
                             anchors.left: parent.left
                             anchors.leftMargin: 40
 
-                            text_value: API.app.settings_pg.empty_string + (model.modelData)
+                            text_value: model.modelData
                             anchors.verticalCenter: parent.verticalCenter
                             font.pixelSize: Style.textSizeSmall2
                         }

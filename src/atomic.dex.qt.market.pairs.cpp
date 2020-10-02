@@ -23,10 +23,12 @@
 namespace atomic_dex
 {
     market_pairs::market_pairs(portfolio_model* portfolio_mdl, QObject* parent) :
-        QObject(parent), m_left_selection_box(new portfolio_proxy_model(nullptr)), m_right_selection_box(new portfolio_proxy_model(nullptr))
+        QObject(parent), m_left_selection_box(new portfolio_proxy_model(nullptr)), m_right_selection_box(new portfolio_proxy_model(nullptr)),
+        m_multiple_selection_box(new portfolio_proxy_model(nullptr)), m_multi_order_coins(new portfolio_proxy_model(nullptr))
     {
         spdlog::trace("{} l{} f[{}]", __FUNCTION__, __LINE__, fs::path(__FILE__).filename().string());
         spdlog::trace("market pairs model created");
+
         m_left_selection_box->setSourceModel(portfolio_mdl);
         m_left_selection_box->setDynamicSortFilter(true);
         m_left_selection_box->sort_by_name(true);
@@ -38,6 +40,18 @@ namespace atomic_dex
         m_right_selection_box->sort_by_name(true);
         this->m_right_selection_box->setFilterRole(portfolio_model::PortfolioRoles::NameAndTicker);
         this->m_right_selection_box->setFilterCaseSensitivity(Qt::CaseInsensitive);
+
+        m_multiple_selection_box->setSourceModel(portfolio_mdl);
+        m_multiple_selection_box->setDynamicSortFilter(true);
+        m_multiple_selection_box->sort_by_name(true);
+        this->m_multiple_selection_box->setFilterRole(portfolio_model::PortfolioRoles::NameAndTicker);
+        this->m_multiple_selection_box->setFilterCaseSensitivity(Qt::CaseInsensitive);
+
+        m_multi_order_coins->setSourceModel(portfolio_mdl);
+        m_multi_order_coins->setDynamicSortFilter(true);
+        m_multi_order_coins->sort_by_name(true);
+        this->m_multi_order_coins->setFilterRole(portfolio_model::PortfolioRoles::IsMultiTickerCurrentlyEnabled);
+        this->m_multiple_selection_box->setFilterCaseSensitivity(Qt::CaseInsensitive);
     }
 
     market_pairs::~market_pairs() noexcept
@@ -46,6 +60,7 @@ namespace atomic_dex
         spdlog::trace("market pairs destroyed");
         delete m_left_selection_box;
         delete m_right_selection_box;
+        delete m_multiple_selection_box;
     }
 } // namespace atomic_dex
 
@@ -69,22 +84,9 @@ namespace atomic_dex
     {
         if (left_coin != m_left_selected_coin)
         {
-            //! Set current value back to false
-            if (not m_left_selected_coin.isEmpty())
-            {
-                auto current_res_left =
-                    m_left_selection_box->match(m_left_selection_box->index(0, 0), portfolio_model::PortfolioRoles::TickerRole, m_left_selected_coin);
-                if (not current_res_left.empty())
-                {
-                    m_left_selection_box->setData(current_res_left.at(0), portfolio_model::PortfolioRoles::Excluded, false);
-                }
-            }
-
             //! Set new one to true
             m_left_selected_coin = std::move(left_coin);
-            auto res_left = m_left_selection_box->match(m_left_selection_box->index(0, 0), portfolio_model::PortfolioRoles::TickerRole, m_left_selected_coin);
-            assert(not res_left.empty());
-            m_left_selection_box->setData(res_left.at(0), portfolio_model::PortfolioRoles::Excluded, true);
+            m_multiple_selection_box->set_excluded_coin(m_left_selected_coin);
             emit leftSelectedCoinChanged();
         }
     }
@@ -94,23 +96,8 @@ namespace atomic_dex
     {
         if (right_coin != m_right_selected_coin)
         {
-            //! Set current value back to false
-            if (not m_right_selected_coin.isEmpty())
-            {
-                auto current_res_right =
-                    m_right_selection_box->match(m_right_selection_box->index(0, 0), portfolio_model::PortfolioRoles::TickerRole, m_right_selected_coin);
-                if (not current_res_right.empty())
-                {
-                    m_right_selection_box->setData(current_res_right.at(0), portfolio_model::PortfolioRoles::Excluded, false);
-                }
-            }
-
             //! Set new one to true
             m_right_selected_coin = std::move(right_coin);
-            auto res_right =
-                m_right_selection_box->match(m_right_selection_box->index(0, 0), portfolio_model::PortfolioRoles::TickerRole, m_right_selected_coin);
-            assert(not res_right.empty());
-            m_right_selection_box->setData(res_right.at(0), portfolio_model::PortfolioRoles::Excluded, true);
             emit rightSelectedCoinChanged();
         }
     }
@@ -125,6 +112,18 @@ namespace atomic_dex
     market_pairs::get_right_selection_box() const noexcept
     {
         return m_right_selection_box;
+    }
+
+    portfolio_proxy_model*
+    market_pairs::get_multiple_selection_box() const noexcept
+    {
+        return m_multiple_selection_box;
+    }
+
+    portfolio_proxy_model*
+    market_pairs::get_multiple_order_coins() const noexcept
+    {
+        return m_multi_order_coins;
     }
 
     void

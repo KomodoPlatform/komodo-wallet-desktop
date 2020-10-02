@@ -136,6 +136,9 @@ namespace atomic_dex
     std::string
     global_price_service::get_rate_conversion(const std::string& fiat, const std::string& ticker, std::error_code& ec, bool adjusted) const noexcept
     {
+        //! FIXME: fix zatJum crash report, frontend QML try to retrieve price before program is even launched
+        if (ticker.empty())
+            return "0";
         auto&       paprika         = m_system_manager.get_system<coinpaprika_provider>();
         auto&       band_service    = m_system_manager.get_system<band_oracle_price_service>();
         std::string current_price   = band_service.retrieve_if_this_ticker_supported(ticker);
