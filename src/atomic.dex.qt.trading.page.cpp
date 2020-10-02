@@ -258,12 +258,20 @@ namespace atomic_dex
             std::string body = TO_STD_STR(resp.extract_string(true).get());
             if (resp.status_code() == 200)
             {
-                auto           answers = nlohmann::json::parse(body);
-                nlohmann::json answer  = answers[0];
-                this->set_buy_sell_last_rpc_data(nlohmann_json_object_to_qt_json_object(answer));
-                auto& mm2_system = m_system_manager.get_system<mm2>();
-                spdlog::trace("order successfully placed, refreshing orders and swap");
-                mm2_system.batch_fetch_orders_and_swap();
+                if (body.find("error") == std::string::npos)
+                {
+                    auto           answers = nlohmann::json::parse(body);
+                    nlohmann::json answer  = answers[0];
+                    this->set_buy_sell_last_rpc_data(nlohmann_json_object_to_qt_json_object(answer));
+                    auto& mm2_system = m_system_manager.get_system<mm2>();
+                    spdlog::trace("order successfully placed, refreshing orders and swap");
+                    mm2_system.batch_fetch_orders_and_swap();
+                }
+                else
+                {
+                    auto error_json = QJsonObject({{"error_code", -1}, {"error_message", QString::fromStdString(body)}});
+                    this->set_buy_sell_last_rpc_data(error_json);
+                }
             }
             else
             {
@@ -310,12 +318,20 @@ namespace atomic_dex
             std::string body = TO_STD_STR(resp.extract_string(true).get());
             if (resp.status_code() == 200)
             {
-                auto           answers = nlohmann::json::parse(body);
-                nlohmann::json answer  = answers[0];
-                this->set_buy_sell_last_rpc_data(nlohmann_json_object_to_qt_json_object(answer));
-                auto& mm2_system = m_system_manager.get_system<mm2>();
-                spdlog::trace("order successfully placed, refreshing orders and swap");
-                mm2_system.batch_fetch_orders_and_swap();
+                if (body.find("error") == std::string::npos)
+                {
+                    auto           answers = nlohmann::json::parse(body);
+                    nlohmann::json answer  = answers[0];
+                    this->set_buy_sell_last_rpc_data(nlohmann_json_object_to_qt_json_object(answer));
+                    auto& mm2_system = m_system_manager.get_system<mm2>();
+                    spdlog::trace("order successfully placed, refreshing orders and swap");
+                    mm2_system.batch_fetch_orders_and_swap();
+                }
+                else
+                {
+                    auto error_json = QJsonObject({{"error_code", -1}, {"error_message", QString::fromStdString(body)}});
+                    this->set_buy_sell_last_rpc_data(error_json);
+                }
             }
             else
             {
