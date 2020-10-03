@@ -341,9 +341,7 @@ jobs:
           $DWFOLDER = ($PWD | select -exp Path)
           Expand-Archive -LiteralPath $DWFILE -DestinationPath $DWFOLDER
           $ENV:PATH=$ENV:PATH+';'+($PWD | select -exp Path)+'\nim-1.2.6\bin;'+$ENV:UserProfile+'.nimble\bin'
-          cd nim-1.2.6
-          finish.exe -y
-          cd ..
+          & $DWFOLDER\nim-1.2.6\finish.exe -y
           
           Invoke-Expression (New-Object System.Net.WebClient).DownloadString('https://get.scoop.sh')
           scoop install llvm --global
