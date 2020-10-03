@@ -20,6 +20,29 @@
 //! Project headers
 #include "atomic.dex.qt.ip.checker.service.hpp"
 
+namespace
+{
+    web::http::client::http_client_config g_cfg{[]() {
+        web::http::client::http_client_config cfg;
+        cfg.set_timeout(std::chrono::seconds(5));
+        return cfg;
+    }()};
+
+    t_http_client_ptr g_ip_proxy_client{std::make_unique<web::http::client::http_client>(FROM_STD_STR("https://komodo.live:3335"), g_cfg)};
+    t_http_client_ptr g_ipify_client{std::make_unique<web::http::client::http_client>(FROM_STD_STR("https://api.ipify.org"), g_cfg)};
+
+    pplx::task<web::http::http_response>
+    async_check_retrieve(t_http_client_ptr& client, const std::string& uri)
+    {
+        web::http::http_request req;
+        req.set_method(web::http::methods::GET);
+        if (not uri.empty())
+        {
+            req.set_request_uri(FROM_STD_STR(uri));
+        }
+        return client->request(req);
+    }
+} // namespace
 
 //! Constructor
 namespace atomic_dex

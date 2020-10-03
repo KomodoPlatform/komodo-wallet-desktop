@@ -50,7 +50,6 @@ namespace atomic_dex
         void update() noexcept final;
 
         [[nodiscard]] bool is_my_ip_authorized() const noexcept;
-
     };
 } // namespace atomic_dex
 
