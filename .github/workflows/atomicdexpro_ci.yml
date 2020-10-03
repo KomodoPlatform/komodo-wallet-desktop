@@ -335,8 +335,17 @@ jobs:
         shell: powershell
         run: |
           Set-ExecutionPolicy RemoteSigned -scope CurrentUser
+          
+          $DWFILE = ($PWD | select -exp Path) + '\nim-1.2.6.zip'
+          (New-Object System.Net.WebClient).DownloadFile('https://nim-lang.org/download/nim-1.2.6_x64.zip', $DWFILE)
+          $DWFOLDER = ($PWD | select -exp Path)
+          Expand-Archive -LiteralPath $DWFILE -DestinationPath $DWFOLDER
+          $ENV:PATH=$ENV:PATH+';'+($PWD | select -exp Path)+'\nim-1.2.6\bin;'+$ENV:UserProfile+'.nimble\bin'
+          cd nim-1.2.6
+          finish.exe -y
+          cd ..
+          
           Invoke-Expression (New-Object System.Net.WebClient).DownloadString('https://get.scoop.sh')
-          scoop install nim --global
           scoop install llvm --global
           scoop install ninja --global
           scoop install cmake --global
