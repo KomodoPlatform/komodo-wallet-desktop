@@ -337,7 +337,7 @@ jobs:
           Set-ExecutionPolicy RemoteSigned -scope CurrentUser
           
           $DWFILE = ($PWD | select -exp Path) + '\nim-1.2.6.zip'
-          (New-Object System.Net.WebClient).DownloadFile('https://nim-lang.org/download/nim-1.2.6_x64.zip', $DWFILE)
+          (New-Object System.Net.WebClient).DownloadFile('https://github.com/KomodoPlatform/nim_kmd_package_list/raw/master/nim-1.2.6_x64.zip', $DWFILE)
           $DWFOLDER = ($PWD | select -exp Path)
           Expand-Archive -LiteralPath $DWFILE -DestinationPath $DWFOLDER
           $ENV:PATH=$ENV:PATH+';'+($PWD | select -exp Path)+'\nim-1.2.6\bin;'+$ENV:UserProfile+'.nimble\bin'
