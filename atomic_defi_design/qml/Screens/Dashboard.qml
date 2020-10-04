@@ -35,6 +35,8 @@ Item {
     property int prev_page: -1
     property int current_page: getMainPage()
 
+    readonly property bool is_dex_banned: true
+
     function reset() {
         // Fill all coins list
         General.all_coins = API.app.get_all_coins()

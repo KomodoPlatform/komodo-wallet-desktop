@@ -7,6 +7,11 @@ import "../Components"
 import "../Constants"
 
 Item {
+    id: root
+
+    property bool section_enabled: true
+    property alias mouse_area: mouse_area
+
     property int dashboard_index
     property alias image: img.source
     property alias text_value: txt.text
@@ -70,7 +75,10 @@ Item {
         anchors.verticalCenter: parent.verticalCenter
         font.pixelSize: Style.textSizeSmall4
         font.weight: selected ? Font.Medium : Font.Normal
-        color: selected ? Style.colorWhite1 : mouse_area.containsMouse ? Style.colorThemePassiveLight : Style.colorThemePassive
+        color: !section_enabled ? Style.colorTextDisabled :
+                selected ? Style.colorWhite1 :
+                mouse_area.containsMouse ? Style.colorThemePassiveLight :
+                                           Style.colorThemePassive
     }
     DropShadow {
         visible: selected
@@ -92,6 +100,8 @@ Item {
         width: parent.width
         height: parent.height
         onClicked: function() {
+            if(!section_enabled) return
+
             if(dashboard_index === General.idx_dashboard_light_ui) {
                 toggleDarkUI()
             }
