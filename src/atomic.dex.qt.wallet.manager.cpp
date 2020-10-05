@@ -19,6 +19,9 @@
 //! PCH
 #include "atomic.dex.pch.hpp"
 
+//! Deps
+#include <sodium/utils.h>
+
 //! Project Headers
 #include "atomic.dex.qt.wallet.manager.hpp"
 

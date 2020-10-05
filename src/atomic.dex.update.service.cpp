@@ -17,6 +17,9 @@
 //! PCH
 #include "atomic.dex.pch.hpp"
 
+//! Deps
+#include <boost/algorithm/string/replace.hpp>
+
 //! Project headers
 #include "atomic.dex.events.hpp"
 #include "atomic.dex.update.service.hpp"

@@ -17,6 +17,9 @@
 //! PCH
 #include "atomic.dex.pch.hpp"
 
+//! Deps
+#include <boost/algorithm/string/case_conv.hpp>
+
 //! Project
 #include "atomic.dex.mm2.hpp"
 #include "atomic.dex.qt.events.hpp"

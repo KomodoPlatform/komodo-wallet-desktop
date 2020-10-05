@@ -16,6 +16,9 @@
 
 #pragma once
 
+//! Deps
+#include <boost/lockfree/queue.hpp>
+
 //! QT
 #include <QObject>
 

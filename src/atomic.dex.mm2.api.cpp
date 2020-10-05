@@ -37,38 +37,6 @@ namespace
             answer.result = j.at("result").get<RpcSuccessReturnType>();
         }
     }
-
-    template <typename TRequestCollections>
-    nlohmann::json
-    batch_enabling(const std::string& method, TRequestCollections requests)
-    {
-        spdlog::info("Processing rpc call: batch {}", method);
-
-        nlohmann::json req_json_data = nlohmann::json::array();
-        for (auto&& request: requests)
-        {
-            nlohmann::json json_data = ::mm2::api::template_request(method);
-            to_json(json_data, request);
-            req_json_data.push_back(json_data);
-        }
-
-        // auto resp = mm2::api::get_client()->post("", req_json_data.dump());
-        auto resp = RestClient::post(mm2::api::g_endpoint, "application/json", req_json_data.dump());
-
-        spdlog::info("{} resp code: {}", __FUNCTION__, resp.code);
-
-        nlohmann::json answer;
-        try
-        {
-            answer = nlohmann::json::parse(resp.body);
-        }
-        catch (const nlohmann::detail::parse_error& err)
-        {
-            spdlog::error("{}", err.what());
-            answer["error"] = resp.body;
-        }
-        return answer;
-    }
 } // namespace
 
 //! Implementation RPC [max_taker_vol]
@@ -1070,23 +1038,27 @@ namespace mm2::api
     std::string
     rpc_version()
     {
-        spdlog::info("Processing rpc call: version");
-
-        nlohmann::json       json_data = template_request("version");
-        RestClient::Response resp;
-
-        auto json_copy        = json_data;
-        json_copy["userpass"] = "*******";
-        spdlog::debug("{} request: {}", __FUNCTION__, json_copy.dump());
-
-        // resp = get_client()->post("", json_data.dump());
-        resp = RestClient::post(g_endpoint, "application/json", json_data.dump());
-        if (resp.code == 200)
+        nlohmann::json json_data = template_request("version");
+        try
         {
-            auto answer = nlohmann::json::parse(resp.body);
-            return answer.at("result").get<std::string>();
+            auto                    client = std::make_unique<web::http::client::http_client>(FROM_STD_STR("http://127.0.0.1:7783"));
+            web::http::http_request request;
+            request.set_method(web::http::methods::POST);
+            request.set_body(FROM_STD_STR(json_data.dump()));
+            web::http::http_response resp = client->request(request).get();
+            if (resp.status_code() == 200)
+            {
+                std::string    body      = TO_STD_STR(resp.extract_string(true).get());
+                nlohmann::json body_json = nlohmann::json::parse(body);
+                return body_json.at("result").get<std::string>();
+            }
+
+            return "error occured during rpc_version";
         }
-        return "error occured during rpc_version";
+        catch (const web::http::http_exception& exception)
+        {
+            return "error occured during rpc_version";
+        }
     }
 
     kmd_rewards_info_answer
@@ -1108,42 +1080,6 @@ namespace mm2::api
         }
         return out;
     }
-
-    /*kmd_rewards_info_answer
-    rpc_kmd_rewards_info(std::shared_ptr<t_http_client> mm2_http_client)
-    {
-        spdlog::info("Processing rpc call: kmd_rewards_info");
-        kmd_rewards_info_answer out;
-
-        nlohmann::json json_data = template_request("kmd_rewards_info");
-
-        auto json_copy        = json_data;
-        json_copy["userpass"] = "*******";
-        spdlog::debug("{} request: {}", __FUNCTION__, json_copy.dump());
-
-        web::http::http_request request;
-        request.set_method(web::http::methods::POST);
-        request.set_body(json_data.dump());
-        auto resp                                        = mm2_http_client->request(request).get();
-        out.rpc_result_code                              = resp.status_code();
-        out.result                                       = nlohmann::json::parse(TO_STD_STR(resp.extract_string(true).get()));
-        auto transform_timestamp_into_human_date_functor = [](nlohmann::json& obj, const std::string& field) {
-            if (obj.contains(field))
-            {
-                auto obj_timestamp         = obj.at(field).get<std::size_t>();
-                obj[field + "_human_date"] = to_human_date<std::chrono::seconds>(obj_timestamp, "%e %b %Y, %H:%M");
-            }
-        };
-
-        if (resp.status_code() == 200)
-        {
-            for (auto&& obj: out.result.at("result"))
-            {
-                for (const auto& field: {"accrue_start_at", "accrue_stop_at", "locktime"}) { transform_timestamp_into_human_date_functor(obj, field); }
-            }
-        }
-        return out;
-    }*/
 
     pplx::task<web::http::http_response>
     async_rpc_batch_standalone(nlohmann::json batch_array, std::shared_ptr<t_http_client> mm2_http_client, pplx::cancellation_token token)
@@ -1205,18 +1141,6 @@ namespace mm2::api
             return answer;
         }
         return nlohmann::json::array();
-    }
-
-    nlohmann::json
-    rpc_batch_electrum(std::vector<electrum_request> requests)
-    {
-        return batch_enabling("electrum", requests);
-    }
-
-    nlohmann::json
-    rpc_batch_enable(std::vector<enable_request> requests)
-    {
-        return batch_enabling("enable", requests);
     }
 
     static inline std::string&

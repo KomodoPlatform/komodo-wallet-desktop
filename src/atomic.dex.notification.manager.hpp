@@ -19,6 +19,9 @@
 //! QT Include
 #include <QObject>
 
+//! Deps
+#include <entt/signal/dispatcher.hpp>
+
 //! Project Headers
 #include "atomic.dex.qt.events.hpp"
 

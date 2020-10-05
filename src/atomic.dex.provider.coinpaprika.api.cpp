@@ -17,6 +17,9 @@
 //! PCH
 #include "atomic.dex.pch.hpp"
 
+//! Deps
+#include <range/v3/view.hpp>
+
 //! Project Headers
 #include "atomic.dex.provider.coinpaprika.api.hpp"
 #include "atomic.dex.utilities.hpp"

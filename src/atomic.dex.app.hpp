@@ -29,6 +29,9 @@
 
 #include "atomic.dex.pch.hpp"
 
+//! Deps
+#include <antara/gaming/world/world.app.hpp>
+
 //! Project Headers
 #include "atomic.dex.cfg.hpp"
 #include "atomic.dex.global.price.service.hpp"
