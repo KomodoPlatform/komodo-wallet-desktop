@@ -39,7 +39,7 @@ ColumnLayout {
 
             contentItem: ColumnLayout {
                 DefaultText {
-                    text_value: qsTr("DEX section is not usable in your country.")
+                    text_value: qsTr("DEX features are not allowed in %1", "COUNTRY").arg(API.app.ip_checker.ip_country)
                     font.pixelSize: Style.textSizeSmall4
                 }
             }
