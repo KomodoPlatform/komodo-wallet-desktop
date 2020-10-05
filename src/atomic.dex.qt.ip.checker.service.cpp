@@ -59,15 +59,17 @@ namespace atomic_dex
                         spdlog::info("Successfully retrieve ip informations of {}", ip);
                         std::string body   = TO_STD_STR(resp.extract_string(true).get());
                         auto        answer = nlohmann::json::parse(body);
+                        this->m_country    = answer.at("country").get<std::string>();
                         if (this->m_non_authorized_countries.count(answer.at("country").get<std::string>()) == 1)
                         {
                             this->m_external_ip_authorized = false;
+                            emit this->ipCountryChanged();
                             emit this->ipAuthorizedStatusChanged();
-                            spdlog::error("ip {} is not authorized in your country", ip);
+                            spdlog::error("ip {} is not authorized in your country: {}", ip, m_country.get());
                         }
                         else
                         {
-                            spdlog::info("ip {} is authorized in your country -> {}", ip, body);
+                            spdlog::info("ip {} is authorized in your country -> {}", ip, m_country.get());
                         }
                     }
                 })
@@ -99,5 +101,11 @@ namespace atomic_dex
     ip_service_checker::is_my_ip_authorized() const noexcept
     {
         return m_external_ip_authorized.load();
+    }
+
+    QString
+    atomic_dex::ip_service_checker::my_country_ip() const noexcept
+    {
+        return QString::fromStdString(m_country.get());
     }
 } // namespace atomic_dex

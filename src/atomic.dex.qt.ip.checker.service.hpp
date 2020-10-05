@@ -27,6 +27,7 @@ namespace atomic_dex
 
         //! Properties
         Q_PROPERTY(bool ip_authorized READ is_my_ip_authorized NOTIFY ipAuthorizedStatusChanged)
+        Q_PROPERTY(QString ip_country READ my_country_ip NOTIFY ipCountryChanged)
 
         //! Private typedefs
         using t_update_time_point = std::chrono::high_resolution_clock::time_point;
@@ -35,11 +36,13 @@ namespace atomic_dex
         t_update_time_point                    m_update_clock;
         double                                 m_timer;
         boost::synchronized_value<std::string> m_external_ip;
+        boost::synchronized_value<std::string> m_country;
         std::atomic_bool                       m_external_ip_authorized{true}; ///< true by default
         const std::unordered_set<std::string>  m_non_authorized_countries{"CA", "IL", "IR", "SS", "USA", "HK", "SG"};
 
       signals:
         void ipAuthorizedStatusChanged();
+        void ipCountryChanged();
 
       public:
         //! Constructor
@@ -49,7 +52,8 @@ namespace atomic_dex
         //! Public override
         void update() noexcept final;
 
-        [[nodiscard]] bool is_my_ip_authorized() const noexcept;
+        [[nodiscard]] bool    is_my_ip_authorized() const noexcept;
+        [[nodiscard]] QString my_country_ip() const noexcept;
     };
 } // namespace atomic_dex
 
