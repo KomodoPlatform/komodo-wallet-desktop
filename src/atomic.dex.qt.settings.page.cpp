@@ -83,10 +83,6 @@ namespace atomic_dex
             {
                 return QLocale::Language::French;
             }
-            if (current_lang == "ru")
-            {
-                return QLocale::Language::Russian;
-            }
             return QLocale::Language::AnyLanguage;
         };
 
@@ -98,7 +94,7 @@ namespace atomic_dex
         this->m_app->installTranslator(&m_translator);
         this->m_qml_engine->retranslate();
         emit onLangChanged();
-        // emit langChanged();
+        //emit langChanged();
     }
 
     bool
