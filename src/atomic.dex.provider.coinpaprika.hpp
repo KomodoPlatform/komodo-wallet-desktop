@@ -37,10 +37,10 @@ namespace atomic_dex
         using t_providers_registry = t_concurrent_reg<std::string, std::string>;
 
         //! Private fields
-        mm2&                         m_mm2_instance;
-        t_providers_registry         m_usd_rate_providers{};
-        t_ticker_infos_registry      m_ticker_infos_registry{};
-        t_ticker_historical_registry m_ticker_historical_registry{};
+        mm2&                         m_mm2_instance;                 ///< represent the MM2 instance
+        t_providers_registry         m_usd_rate_providers{};         ///< USD Rate Providers
+        t_ticker_infos_registry      m_ticker_infos_registry{};      ///< Ticker info registry, key is the ticker
+        t_ticker_historical_registry m_ticker_historical_registry{}; ///< Ticker historical registry, key is the ticker
 
       public:
         //! Constructor
@@ -48,6 +48,8 @@ namespace atomic_dex
 
         //! Destructor
         ~coinpaprika_provider() noexcept final;
+
+        //! Public API
 
         //! Get the rate conversion for the given fiat.
         std::string get_rate_conversion(const std::string& fiat, const std::string& ticker, std::error_code& ec) const noexcept;
@@ -58,6 +60,8 @@ namespace atomic_dex
         //! Get the ticker informations.
         t_ticker_historical_answer get_ticker_historical(const std::string& ticker) const noexcept;
 
+        //! Events
+
         //! Event that occur when the mm2 process is launched correctly.
         void on_mm2_started(const mm2_started& evt) noexcept;
 
@@ -67,10 +71,11 @@ namespace atomic_dex
         //! Event that occur when a coin is correctly disabled.
         void on_coin_disabled(const coin_disabled& evt) noexcept;
 
-        //! override update
+
+        //! Override ag::ecs functions
         void update() noexcept final;
 
-        //! Manual update of the provider
+        //! Update all the data of the provider in an async way
         void update_ticker_and_provider();
     };
 } // namespace atomic_dex
