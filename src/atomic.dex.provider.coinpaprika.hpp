@@ -71,7 +71,6 @@ namespace atomic_dex
         //! Event that occur when a coin is correctly disabled.
         void on_coin_disabled(const coin_disabled& evt) noexcept;
 
-
         //! Override ag::ecs functions
         void update() noexcept final;
 

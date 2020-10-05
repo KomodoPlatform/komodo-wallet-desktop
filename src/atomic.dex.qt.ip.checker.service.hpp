@@ -16,6 +16,15 @@
 
 #pragma once
 
+//! STD
+#include <unordered_set>
+
+//! Deps
+#include <boost/thread/synchronized_value.hpp>
+#include <range/v3/view.hpp>
+#include <antara/gaming/ecs/system.hpp>
+
+//! QT
 #include <QObject>
 
 namespace atomic_dex

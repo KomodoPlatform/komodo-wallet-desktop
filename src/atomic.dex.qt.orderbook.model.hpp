@@ -19,6 +19,9 @@
 //! QT
 #include <QAbstractListModel>
 
+//! STD
+#include <unordered_set>
+
 //! Project
 #include "atomic.dex.mm2.api.hpp"
 #include "atomic.dex.qt.orderbook.proxy.model.hpp"

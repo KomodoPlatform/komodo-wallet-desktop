@@ -16,6 +16,9 @@
 
 #pragma once
 
+//! Deps
+#include <boost/thread/synchronized_value.hpp>
+
 namespace atomic_dex
 {
     struct contact_contents

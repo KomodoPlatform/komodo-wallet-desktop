@@ -1,5 +1,9 @@
 #pragma once
 
+//! Deps
+#include <date/date.h>
+#include <date/tz.h>
+
 //! QT Headers
 #include <QCryptographicHash>
 #include <QString>

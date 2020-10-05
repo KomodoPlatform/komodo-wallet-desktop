@@ -16,6 +16,9 @@
 
 #pragma once
 
+#include <antara/gaming/ecs/system.hpp>
+#include <boost/thread/synchronized_value.hpp>
+
 namespace atomic_dex
 {
     class update_system_service final : public ag::ecs::pre_update_system<update_system_service>

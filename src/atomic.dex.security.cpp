@@ -17,6 +17,12 @@
 //! PCH Headers
 #include "atomic.dex.pch.hpp"
 
+//! Deps
+#include <boost/random/random_device.hpp>
+#include <boost/random/uniform_int_distribution.hpp>
+#include <sodium/crypto_pwhash.h>
+#include <sodium/utils.h>
+
 //! Project Headers
 #include "atomic.dex.mm2.error.code.hpp"
 #include "atomic.dex.security.hpp"

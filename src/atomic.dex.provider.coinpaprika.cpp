@@ -35,30 +35,30 @@ namespace
         std::shared_ptr<std::atomic_uint16_t> idx, entt::dispatcher* dispatcher, std::uint16_t target_size, std::vector<std::string> tickers)
     {
         spdlog::trace("async ticker info started");
-        async_ticker_info(request)
-            .then([request, current_coin, &reg, idx, dispatcher, target_size, tickers](web::http::http_response resp) {
-                auto answer = process_generic_resp<ticker_info_answer>(resp);
-                spdlog::trace("async ticker info finished");
-                if (answer.rpc_result_code == e_http_code::too_many_requests)
+        auto answer_functor = [request, current_coin, &reg, idx, dispatcher, target_size, tickers](web::http::http_response resp) {
+            auto answer = process_generic_resp<ticker_info_answer>(resp);
+            spdlog::trace("async ticker info finished");
+            if (answer.rpc_result_code == e_http_code::too_many_requests)
+            {
+                std::this_thread::sleep_for(1s);
+                process_async_ticker_infos(request, current_coin, reg, std::move(idx), dispatcher, target_size, tickers);
+            }
+            else
+            {
+                reg.insert_or_assign(current_coin.ticker, answer);
+                if (idx != nullptr && dispatcher != nullptr)
                 {
-                    std::this_thread::sleep_for(1s);
-                    process_async_ticker_infos(request, current_coin, reg, std::move(idx), dispatcher, target_size, tickers);
-                }
-                else
-                {
-                    reg.insert_or_assign(current_coin.ticker, answer);
-                    if (idx != nullptr && dispatcher != nullptr)
+                    auto cur = idx->fetch_add(1) + 1;
+                    // spdlog::trace("cur: {}, target size: {}, remaining before adding in the model: {}", cur, target_size, target_size - cur);
+                    if (cur == target_size)
                     {
-                        auto cur = idx->fetch_add(1) + 1;
-                        // spdlog::trace("cur: {}, target size: {}, remaining before adding in the model: {}", cur, target_size, target_size - cur);
-                        if (cur == target_size)
-                        {
-                            dispatcher->trigger<atomic_dex::coin_fully_initialized>(tickers);
-                        }
+                        dispatcher->trigger<atomic_dex::coin_fully_initialized>(tickers);
                     }
                 }
-            })
-            .then(&handle_exception_pplx_task);
+            }
+        };
+
+        async_ticker_info(request).then(answer_functor).then(&handle_exception_pplx_task);
     }
 
     void

@@ -17,6 +17,11 @@
 //! PCH
 #include "atomic.dex.pch.hpp"
 
+//! Deps
+#include <boost/random/random_device.hpp>
+#include <wally_bip39.h>
+
+//! QT
 #include <QDebug>
 #include <QJsonArray>
 #include <QJsonDocument>

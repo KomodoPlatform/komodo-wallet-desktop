@@ -16,11 +16,17 @@
 
 #pragma once
 
+//! STD
+#include <unordered_set>
+
 //! QT
 #include <QAbstractListModel>
 #include <QJsonObject>
 #include <QVariant>
 #include <QVector>
+
+//! Deps
+#include <antara/gaming/ecs/system.manager.hpp>
 
 //! Project
 #include "atomic.dex.mm2.api.hpp"
@@ -92,14 +98,14 @@ namespace atomic_dex
         ag::ecs::system_manager& m_system_manager;
         entt::dispatcher&        m_dispatcher;
 
-        using t_orders_datas         = QVector<order_data>;
-        using t_orders_id_registry   = std::unordered_set<std::string>;
-        using t_swaps_id_registry    = std::unordered_set<std::string>;
+        using t_orders_datas       = QVector<order_data>;
+        using t_orders_id_registry = std::unordered_set<std::string>;
+        using t_swaps_id_registry  = std::unordered_set<std::string>;
 
-        t_orders_id_registry   m_orders_id_registry;
-        t_swaps_id_registry    m_swaps_id_registry;
-        t_orders_datas         m_model_data;
-        QVariant               m_json_time_registry;
+        t_orders_id_registry m_orders_id_registry;
+        t_swaps_id_registry  m_swaps_id_registry;
+        t_orders_datas       m_model_data;
+        QVariant             m_json_time_registry;
 
         orders_proxy_model* m_model_proxy;
 
