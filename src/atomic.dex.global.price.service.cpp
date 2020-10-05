@@ -73,12 +73,12 @@ namespace
 namespace atomic_dex
 {
     void
-    global_price_service::refresh_other_coins_rates(const std::string& quote_id, const std::string& ticker)
+    global_price_service::refresh_other_coins_rates(const std::string& quote_id, const std::string& ticker, bool with_update_providers)
     {
         using namespace std::chrono_literals;
         coinpaprika::api::price_converter_request request{.base_currency_id = "usd-us-dollars", .quote_currency_id = quote_id};
         coinpaprika::api::async_price_converter(request)
-            .then([this, quote_id, ticker](web::http::http_response resp) {
+            .then([this, quote_id, ticker, with_update_providers](web::http::http_response resp) {
                 auto answer = coinpaprika::api::process_generic_resp<t_price_converter_answer>(resp);
                 if (answer.rpc_result_code == e_http_code::too_many_requests)
                 {
@@ -97,6 +97,10 @@ namespace atomic_dex
                     else
                         this->m_coin_rate_providers.insert_or_assign(ticker, "0.00");
                 }
+                if (with_update_providers)
+                {
+                    this->m_system_manager.get_system<coinpaprika_provider>().update_ticker_and_provider();
+                }
             })
             .then(&handle_exception_pplx_task);
     }
@@ -106,10 +110,12 @@ namespace atomic_dex
     {
         m_update_clock = std::chrono::high_resolution_clock::now();
         async_fetch_fiat_rates()
-            .then([this](web::http::http_response resp) { this->m_other_fiats_rates = process_fetch_fiat_answer(resp); })
+            .then([this](web::http::http_response resp) {
+                this->m_other_fiats_rates = process_fetch_fiat_answer(resp);
+                refresh_other_coins_rates("kmd-komodo", "KMD");
+                refresh_other_coins_rates("btc-bitcoin", "BTC");
+            })
             .then(&handle_exception_pplx_task);
-        refresh_other_coins_rates("kmd-komodo", "KMD");
-        refresh_other_coins_rates("btc-bitcoin", "BTC");
     }
 } // namespace atomic_dex
 
@@ -125,10 +131,13 @@ namespace atomic_dex
         if (s >= 2min)
         {
             async_fetch_fiat_rates()
-                .then([this](web::http::http_response resp) { this->m_other_fiats_rates = process_fetch_fiat_answer(resp); })
+                .then([this](web::http::http_response resp) {
+                    this->m_other_fiats_rates = process_fetch_fiat_answer(resp);
+                    refresh_other_coins_rates("kmd-komodo", "KMD");
+                    refresh_other_coins_rates("btc-bitcoin", "BTC", true);
+                })
                 .then(&handle_exception_pplx_task);
-            refresh_other_coins_rates("kmd-komodo", "KMD");
-            refresh_other_coins_rates("btc-bitcoin", "BTC");
+
             m_update_clock = std::chrono::high_resolution_clock::now();
         }
     }

@@ -543,7 +543,7 @@ namespace atomic_dex
         }
 
         auto& mm2_system     = m_system_manager.get_system<mm2>();
-        auto  answer_functor = [this](web::http::http_response resp) {
+        auto  answer_functor = [](web::http::http_response resp) {
             std::string body = TO_STD_STR(resp.extract_string(true).get());
             if (resp.status_code() == 200)
             {

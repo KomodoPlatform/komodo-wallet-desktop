@@ -38,12 +38,9 @@ namespace atomic_dex
 
         //! Private fields
         mm2&                         m_mm2_instance;
-        //atomic_dex::cfg&             m_cfg;
         t_providers_registry         m_usd_rate_providers{};
         t_ticker_infos_registry      m_ticker_infos_registry{};
         t_ticker_historical_registry m_ticker_historical_registry{};
-        std::thread                  m_provider_rates_thread;
-        timed_waiter                 m_provider_thread_timer;
 
       public:
         //! Constructor
@@ -70,7 +67,11 @@ namespace atomic_dex
         //! Event that occur when a coin is correctly disabled.
         void on_coin_disabled(const coin_disabled& evt) noexcept;
 
+        //! override update
         void update() noexcept final;
+
+        //! Manual update of the provider
+        void update_ticker_and_provider();
     };
 } // namespace atomic_dex
 
