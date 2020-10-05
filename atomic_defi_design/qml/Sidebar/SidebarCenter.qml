@@ -3,6 +3,7 @@ import QtQuick.Layouts 1.15
 import QtQuick.Controls 2.15
 
 import "../Constants"
+import "../Components"
 
 ColumnLayout {
     id: window_layout
@@ -26,10 +27,23 @@ ColumnLayout {
     }
 
     SidebarLine {
+        id: dex_line
+        section_enabled: !is_dex_banned
         dashboard_index: General.idx_dashboard_exchange
         text_value: qsTr("DEX")
         image: General.image_path + "menu-exchange-white.svg"
         Layout.fillWidth: true
+
+        DefaultTooltip {
+            visible: dex_line.mouse_area.containsMouse && !dex_line.section_enabled
+
+            contentItem: ColumnLayout {
+                DefaultText {
+                    text_value: qsTr("DEX section is not usable in your country.")
+                    font.pixelSize: Style.textSizeSmall4
+                }
+            }
+        }
     }
 
     SidebarLine {

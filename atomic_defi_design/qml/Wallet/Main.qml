@@ -238,6 +238,7 @@ Item {
                 }
 
                 DefaultButton {
+                    visible: !is_dex_banned
                     text: qsTr("Swap")
                     onClicked: onClickedSwap()
                     Layout.fillWidth: true
