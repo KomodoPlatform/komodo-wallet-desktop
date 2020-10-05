@@ -1044,7 +1044,7 @@ namespace mm2::api
             auto                    client = std::make_unique<web::http::client::http_client>(FROM_STD_STR("http://127.0.0.1:7783"));
             web::http::http_request request;
             request.set_method(web::http::methods::POST);
-            request.set_body(FROM_STD_STR(json_data.dump()));
+            request.set_body(json_data.dump());
             web::http::http_response resp = client->request(request).get();
             if (resp.status_code() == 200)
             {
@@ -1059,6 +1059,7 @@ namespace mm2::api
         {
             return "error occured during rpc_version";
         }
+        return "";
     }
 
     kmd_rewards_info_answer

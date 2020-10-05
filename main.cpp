@@ -1,3 +1,5 @@
+#include <csignal>
+
 #include <QApplication>
 #include <QDebug>
 #include <QDesktopWidget>
