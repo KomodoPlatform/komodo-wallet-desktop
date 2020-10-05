@@ -243,7 +243,7 @@ namespace atomic_dex
 
         t_coins coins = m_mm2_instance.get_enabled_coins();
 
-        auto idx{std::__1::make_shared<std::atomic_uint16_t>(0)};
+        auto idx{std::make_shared<std::atomic_uint16_t>(0)};
         auto target_size = coins.size();
         for (auto&& current_coin: coins)
         {
