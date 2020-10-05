@@ -48,6 +48,7 @@
 #include "atomic.dex.provider.cex.prices.hpp"
 #include "atomic.dex.provider.coinpaprika.hpp"
 #include "atomic.dex.qt.bindings.hpp"
+#include "atomic.dex.qt.ip.checker.service.hpp"
 #include "atomic.dex.qt.settings.page.hpp"
 #include "atomic.dex.qt.wallet.page.hpp"
 #include "atomic.dex.security.hpp"
@@ -310,6 +311,7 @@ namespace atomic_dex
     {
         get_dispatcher().sink<refresh_update_status>().connect<&application::on_refresh_update_status_event>(*this);
         //! MM2 system need to be created before the GUI and give the instance to the gui
+        system_manager_.create_system<ip_service_checker>();
         auto& mm2_system           = system_manager_.create_system<mm2>(system_manager_);
         auto& settings_page_system = system_manager_.create_system<settings_page>(system_manager_, m_app, this);
         auto& portfolio_system     = system_manager_.create_system<portfolio_page>(system_manager_, this);
@@ -557,7 +559,7 @@ namespace atomic_dex
         t_float_50 trade_fee_f = get_mm2().get_trade_fee(ticker.toStdString(), amount.toStdString(), false);
 
         //! Get the transaction fees (from mm2)
-        auto       answer      = get_mm2().get_trade_fixed_fee(ticker.toStdString());
+        auto answer = get_mm2().get_trade_fixed_fee(ticker.toStdString());
 
         //! Is fixed fee are available
         if (!answer.amount.empty())
@@ -579,7 +581,7 @@ namespace atomic_dex
             const std::string amount_std      = t_float_50(amount.toStdString()) < minimal_trade_amount() ? minimal_trade_amount_str() : amount.toStdString();
             t_float_50        final_balance_f = t_float_50(amount_std) - (trade_fee_f + tx_fee_f);
             std::string       final_balance   = amount.toStdString();
-            //spdlog::trace("{} = {} - ({} + {})", final_balance_f.str(8), amount_std, trade_fee_f.str(8), tx_fee_f.str(8));
+            // spdlog::trace("{} = {} - ({} + {})", final_balance_f.str(8), amount_std, trade_fee_f.str(8), tx_fee_f.str(8));
             if (final_balance_f.convert_to<float>() > 0.0)
             {
                 final_balance = get_formated_float(final_balance_f);
@@ -1045,6 +1047,18 @@ namespace atomic_dex
     application::get_internet_checker() const noexcept
     {
         return qobject_cast<internet_service_checker*>(m_manager_models.at("internet_service"));
+    }
+} // namespace atomic_dex
+
+//! IP checker
+namespace atomic_dex
+{
+    ip_service_checker*
+    application::get_ip_checker() const noexcept
+    {
+        ip_service_checker* ptr = const_cast<ip_service_checker*>(std::addressof(system_manager_.get_system<ip_service_checker>()));
+        assert(ptr != nullptr);
+        return ptr;
     }
 } // namespace atomic_dex
 

@@ -47,7 +47,44 @@ namespace
 //! Constructor
 namespace atomic_dex
 {
-    ip_service_checker::ip_service_checker(entt::registry& registry, QObject* parent) : QObject(parent), system(registry) {}
+    ip_service_checker::ip_service_checker(entt::registry& registry, QObject* parent) : QObject(parent), system(registry)
+    {
+        using namespace std::chrono_literals;
+        m_update_clock            = std::chrono::high_resolution_clock::now();
+        auto ip_validator_functor = [this](std::string ip) {
+            async_check_retrieve(g_ip_proxy_client, "/api/v1/ip_infos/" + ip)
+                .then([this, ip](web::http::http_response resp) {
+                    if (resp.status_code() == 200)
+                    {
+                        spdlog::info("Successfully retrieve ip informations of {}", ip);
+                        std::string body   = TO_STD_STR(resp.extract_string(true).get());
+                        auto        answer = nlohmann::json::parse(body);
+                        if (this->m_non_authorized_countries.count(answer.at("country").get<std::string>()) == 1)
+                        {
+                            this->m_external_ip_authorized = false;
+                            emit this->ipAuthorizedStatusChanged();
+                            spdlog::error("ip {} is not authorized in your country", ip);
+                        }
+                        else
+                        {
+                            spdlog::info("ip {} is authorized in your country -> {}", ip, body);
+                        }
+                    }
+                })
+                .then(&handle_exception_pplx_task);
+        };
+        async_check_retrieve(g_ipify_client, "")
+            .then([this, ip_validator_functor](web::http::http_response resp) {
+                if (resp.status_code() == 200)
+                {
+                    std::string ip      = TO_STD_STR(resp.extract_string(true).get());
+                    this->m_external_ip = ip;
+                    spdlog::info("my ip address is: [{}]", ip);
+                    ip_validator_functor(ip);
+                }
+            })
+            .then(&handle_exception_pplx_task);
+    }
 } // namespace atomic_dex
 
 //! Override

@@ -32,11 +32,11 @@ namespace atomic_dex
         using t_update_time_point = std::chrono::high_resolution_clock::time_point;
 
         //! Private members
-        t_update_time_point              m_update_clock;
-        double                           m_timer;
-        std::string                      m_external_ip;
-        std::atomic_bool                 m_external_ip_authorized{true}; ///< true by default
-        const std::array<const char*, 7> m_non_authorized_countries{"CA", "IL", "IR", "SS", "USA", "HK", "SG"};
+        t_update_time_point                    m_update_clock;
+        double                                 m_timer;
+        boost::synchronized_value<std::string> m_external_ip;
+        std::atomic_bool                       m_external_ip_authorized{true}; ///< true by default
+        const std::unordered_set<std::string>  m_non_authorized_countries{"CA", "IL", "IR", "SS", "USA", "HK", "SG"};
 
       signals:
         void ipAuthorizedStatusChanged();
