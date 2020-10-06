@@ -29,6 +29,7 @@ QtObject {
     readonly property string listItemPrefix:  " ⚬   "
     readonly property string successCharacter:  "✓"
     readonly property string failureCharacter:  "✘"
+    readonly property string warningCharacter:  "⚠"
 
 
     readonly property int animationDuration: 125

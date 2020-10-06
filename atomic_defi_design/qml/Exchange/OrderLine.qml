@@ -150,8 +150,32 @@ AnimatedRectangle {
         anchors.leftMargin: 20
     }
 
+    // Recoverable
+    DefaultText {
+        font.pixelSize: base_amount.font.pixelSize
+        visible: !details ? false :
+                 details.recoverable && details.order_status !== "refunding"
+        anchors.verticalCenter: parent.verticalCenter
+        anchors.right: parent.right
+        anchors.rightMargin: 150
+        text_value: Style.warningCharacter
+        color: Style.colorYellow
+
+        DefaultTooltip {
+            visible: parent.visible && mouse_area.containsMouse
+
+            contentItem: ColumnLayout {
+                DefaultText {
+                    text_value: qsTr("Funds are recoverable")
+                    font.pixelSize: Style.textSizeSmall4
+                }
+            }
+        }
+    }
+
     // Order ID
     DefaultText {
+        id: order_id
         font.pixelSize: base_amount.font.pixelSize
         text_value: !details || details.order_id === "" ? "" :
                     details.order_id.substring(0, 5) + "..." + details.order_id.substring(details.order_id.length-5)
