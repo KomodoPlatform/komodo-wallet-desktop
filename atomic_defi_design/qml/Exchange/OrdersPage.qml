@@ -42,6 +42,10 @@ Item {
 
     function applyDateFilter() {
         list_model_proxy.filter_minimum_date = filter_enabled ? min_date.date : default_min_date
+
+        if(max_date.date < min_date.date)
+            max_date.date = min_date.date
+
         list_model_proxy.filter_maximum_date = filter_enabled ? max_date.date : default_max_date
     }
 
@@ -172,7 +176,7 @@ Item {
                     id: max_date
                     enabled: min_date.enabled
                     title: qsTr("To")
-                    from: default_min_date
+                    from: min_date.date
                     to: default_max_date
                     date: default_max_date
                     onAccepted: applyDateFilter()
