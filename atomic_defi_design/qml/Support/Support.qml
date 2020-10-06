@@ -199,6 +199,11 @@ Network fees can vary greatly depending on your selected trading pair.")
                 title: qsTr("Which devices can I use AtomicDEX on?")
                 text: qsTr("AtomicDEX is available for mobile on both Android and iPhone, and for desktop on Windows, Mac, and Linux operating systems.")
             }
+
+            FAQLine {
+                title: qsTr("Compliance Info")
+                text: qsTr("Due to regulatory and legal circumstances the citizens of certain jurisdictions including, but not limited to, the United States of America, Canada, Hong Kong, Israel, Singapore, Sudan, Austria, Iran and any other state, country or other jurisdiction that is embargoed by the United States of America or the European Union are not allowed to use this application.")
+            }
         }
     }
 }
