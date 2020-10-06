@@ -28,6 +28,13 @@ Item {
 
     property string recover_funds_result: '{}'
 
+    function onRecoverFunds(order_id) {
+        const result = API.app.recover_fund(order_id)
+        console.log("Refund result: ", result)
+        recover_funds_result = result
+        recover_funds_modal.open()
+    }
+
     function inCurrentPage() {
         return  exchange.inCurrentPage() &&
                 exchange.current_page === page_index

@@ -174,7 +174,16 @@ BasicModal {
                                     details.cancellable
                 Layout.fillWidth: true
                 text: qsTr("Cancel Order")
-                onClicked: { if(details) cancelOrder(details.order_id) }
+                onClicked: cancelOrder(details.order_id)
+            },
+
+            // Recover Funds button
+            PrimaryButton {
+                visible: !details ? false :
+                                    details.recoverable && details.order_status !== "refunding"
+                Layout.fillWidth: true
+                text: qsTr("Recover Funds")
+                onClicked: onRecoverFunds(details.order_id)
             },
 
             PrimaryButton {
