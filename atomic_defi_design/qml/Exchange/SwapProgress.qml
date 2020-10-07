@@ -71,7 +71,7 @@ ColumnLayout {
         }
 
         const events = details.events
-        if(events.length === 0) {
+        if(!events || events.length === 0) {
             simulated_time = 0
             return
         }
