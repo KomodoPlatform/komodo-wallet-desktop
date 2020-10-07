@@ -435,7 +435,6 @@ namespace atomic_dex
     bool
     mm2::process_batch_enable_answer(const json& answer)
     {
-        // spdlog::trace("ANSWER JSON -> {}", answer.dump(4));
         if (answer.count("coin") == 1)
         {
             auto        ticker          = answer.at("coin").get<std::string>();
@@ -444,6 +443,7 @@ namespace atomic_dex
             m_coins_informations.assign(coin_info.ticker, coin_info);
             return true;
         }
+        spdlog::trace("bad answer json -> {}", answer.dump(4));
         return false;
     }
 
@@ -1523,7 +1523,8 @@ namespace atomic_dex
         }
     }
 
-    void mm2::add_get_trade_fee_answer(const std::string& ticker, t_get_trade_fee_answer answer) noexcept
+    void
+    mm2::add_get_trade_fee_answer(const std::string& ticker, t_get_trade_fee_answer answer) noexcept
     {
         this->m_trade_fees_registry.insert_or_assign(ticker, answer);
     }
