@@ -20,9 +20,9 @@
 #include <unordered_set>
 
 //! Deps
+#include <antara/gaming/ecs/system.hpp>
 #include <boost/thread/synchronized_value.hpp>
 #include <range/v3/view.hpp>
-#include <antara/gaming/ecs/system.hpp>
 
 //! QT
 #include <QObject>
@@ -47,7 +47,7 @@ namespace atomic_dex
         boost::synchronized_value<std::string> m_external_ip;
         boost::synchronized_value<std::string> m_country;
         std::atomic_bool                       m_external_ip_authorized{true}; ///< true by default
-        const std::unordered_set<std::string>  m_non_authorized_countries{"CA", "IL", "IR", "SS", "USA", "HK", "SG"};
+        const std::unordered_set<std::string>  m_non_authorized_countries{"CA", "IL", "IR", "SS", "USA", "HK", "SG", "AT"};
 
       signals:
         void ipAuthorizedStatusChanged();
