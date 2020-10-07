@@ -435,7 +435,7 @@ namespace atomic_dex
     bool
     mm2::process_batch_enable_answer(const json& answer)
     {
-        if (answer.count("coin") == 1)
+        if (answer.contains("coin"))
         {
             auto        ticker          = answer.at("coin").get<std::string>();
             coin_config coin_info       = m_coins_informations.at(ticker);
@@ -443,7 +443,7 @@ namespace atomic_dex
             m_coins_informations.assign(coin_info.ticker, coin_info);
             return true;
         }
-        spdlog::trace("bad answer json -> {}", answer.dump(4));
+        spdlog::trace("bad answer json for enable/electrum details: {}", answer.dump(4));
         return false;
     }
 
