@@ -370,7 +370,7 @@ ColumnLayout {
                 anchors.verticalCenter: parent.verticalCenter
                 legend.visible: false
 
-                onHistoricalChanged: updateChart(chart, historical, change_24h_value.color)
+                onHistoricalChanged: updateChart(chart, historical, Style.getValueColor(change_24h))
                 backgroundColor: "transparent"
             }
 

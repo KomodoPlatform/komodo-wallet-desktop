@@ -22,7 +22,7 @@ namespace atomic_dex
         t_json_synchronized       m_other_fiats_rates;
         t_update_time_point       m_update_clock;
 
-        void refresh_other_coins_rates(const std::string& quote_id, const std::string& ticker);
+        void refresh_other_coins_rates(const std::string& quote_id, const std::string& ticker, bool with_update_providers = false);
 
       public:
         explicit global_price_service(entt::registry& registry, ag::ecs::system_manager& system_manager, atomic_dex::cfg& cfg);

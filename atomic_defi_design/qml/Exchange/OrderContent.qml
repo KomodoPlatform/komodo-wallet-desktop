@@ -122,14 +122,4 @@ Item {
         text: qsTr("Cancel")
         onClicked: cancelOrder(details.order_id)
     }
-
-    // Recover Funds button
-    PrimaryButton {
-        visible: !details ? false :
-                            !in_modal && details.recoverable
-        anchors.right: parent.right
-        anchors.bottom: date.bottom
-        text: qsTr("Recover Funds")
-        onClicked: { if(details) onRecoverFunds(details.order_id) }
-    }
 }

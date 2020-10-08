@@ -2,6 +2,8 @@
 
 //#include "atomic.dex.pch.hpp"
 
+#include <antara/gaming/core/real.path.hpp>
+
 #ifndef NLOHMANN_OPT_HELPER
 #    define NLOHMANN_OPT_HELPER
 namespace nlohmann

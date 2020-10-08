@@ -17,6 +17,10 @@
 //! PCH
 #include "atomic.dex.pch.hpp"
 
+//! Deps
+#include <range/v3/algorithm/any_of.hpp>
+#include <antara/gaming/core/real.path.hpp>
+
 //! Project Header
 #include "atomic.dex.cfg.hpp"
 

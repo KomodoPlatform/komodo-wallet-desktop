@@ -212,6 +212,7 @@ Item {
             case "successful":
                 return Style.successCharacter
             case "refunding":
+                return Style.warningCharacter
             case "failed":
                 return Style.failureCharacter
             default:

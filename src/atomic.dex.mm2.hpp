@@ -16,6 +16,14 @@
 
 #pragma once
 
+//! Deps
+#include <antara/gaming/ecs/system.hpp>
+#include <antara/gaming/ecs/system.manager.hpp>
+#include <boost/thread/synchronized_value.hpp>
+#include <folly/Memory.h>
+#include <folly/concurrency/ConcurrentHashMap.h>
+#include <reproc++/reproc.hpp>
+
 //! Project Headers
 #include "atomic.dex.coins.config.hpp"
 #include "atomic.dex.events.hpp"

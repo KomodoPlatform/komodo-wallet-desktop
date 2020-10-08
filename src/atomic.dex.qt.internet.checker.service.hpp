@@ -16,6 +16,9 @@
 
 #pragma once
 
+//! Deps
+#include <antara/gaming/ecs/system.hpp>
+
 //! QT
 #include <QObject>
 

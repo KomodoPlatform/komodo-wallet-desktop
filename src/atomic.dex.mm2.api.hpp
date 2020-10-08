@@ -16,6 +16,9 @@
 
 #pragma once
 
+//! Deps
+#include <meta/detection/detection.hpp>
+
 //! Project Headers
 #include "atomic.dex.coins.config.hpp"
 

@@ -198,7 +198,7 @@ BasicModal {
                     DefaultText {
                         Layout.alignment: Qt.AlignHCenter
 
-                        text_value: "⚠️ " + qsTr("Warning, this atomic swap is not dPoW protected!")
+                        text_value: Style.warningCharacter + " " + qsTr("Warning, this atomic swap is not dPoW protected!")
                     }
                 }
             }
