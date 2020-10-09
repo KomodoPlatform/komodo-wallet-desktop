@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.5)
 
-project(atomicDexPro LANGUAGES CXX VERSION 0.3.0)
+project(atomicdex-desktop LANGUAGES CXX VERSION 0.3.0)
 
 
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
@@ -99,7 +99,7 @@ get_resources_basics_assets(${CMAKE_CURRENT_SOURCE_DIR})
 
 ##! Osx bundle icon
 set(ICON)
-configure_icon_osx(data/osx/atomicDexPro.icns ICON atomicDexPro.icns)
+configure_icon_osx(data/osx/atomicdex-desktop.icns ICON atomicdex-desktop.icns)
 ##! End antara
 
 find_package(date CONFIG REQUIRED)
@@ -141,8 +141,8 @@ message(STATUS "${QM_FILES}")
 message(STATUS "${TS_FILES}")
 
 ##! Atomic QT Shared Deps Between main executable and unit tests
-add_library(atomicDexPro_shared_deps INTERFACE)
-target_sources(atomicDexPro_shared_deps INTERFACE
+add_library(atomicdex-desktop_shared_deps INTERFACE)
+target_sources(atomicdex-desktop_shared_deps INTERFACE
         ${CMAKE_SOURCE_DIR}/src/atomic.dex.kill.cpp
         ${CMAKE_SOURCE_DIR}/src/atomic.dex.qt.internet.checker.service.cpp
         ${CMAKE_SOURCE_DIR}/src/atomic.dex.qt.ip.checker.service.cpp
@@ -188,16 +188,16 @@ target_sources(atomicDexPro_shared_deps INTERFACE
         ${qmFiles}
         )
 
-target_compile_definitions(atomicDexPro_shared_deps
+target_compile_definitions(atomicdex-desktop_shared_deps
         INTERFACE
         $<$<OR:$<CONFIG:Debug>,$<CONFIG:RelWithDebInfo>>:QT_QML_DEBUG>
         $<$<PLATFORM_ID:Windows>:HAS_REMOTE_API>
         $<$<PLATFORM_ID:Windows>:AUTO_DOWNLOAD>
         )
 
-#target_compile_options(atomicDexPro_shared_deps INTERFACE -fstandalone-debug)
+#target_compile_options(atomicdex-desktop_shared_deps INTERFACE -fstandalone-debug)
 
-target_link_libraries(atomicDexPro_shared_deps
+target_link_libraries(atomicdex-desktop_shared_deps
         INTERFACE
         Qt5::Core
         Qt5::Quick
@@ -222,7 +222,7 @@ target_link_libraries(atomicDexPro_shared_deps
         #Taskflow::Taskflow
         )
 
-target_include_directories(atomicDexPro_shared_deps
+target_include_directories(atomicdex-desktop_shared_deps
         INTERFACE
         ${CMAKE_CURRENT_SOURCE_DIR}/src
         $<$<PLATFORM_ID:Darwin>:${CMAKE_CURRENT_SOURCE_DIR}/src/osx>
@@ -230,13 +230,13 @@ target_include_directories(atomicDexPro_shared_deps
         )
 
 ##! Main executable
-add_executable(atomicDexPro MACOSX_BUNDLE ${ICON}
-        ${CMAKE_CURRENT_SOURCE_DIR}/data/windows/atomicDexPro.rc
+add_executable(atomicdex-desktop MACOSX_BUNDLE ${ICON}
+        ${CMAKE_CURRENT_SOURCE_DIR}/data/windows/atomicdex-desktop.rc
         main.cpp
         )
 
 ##! Testing executable
-add_executable(atomicDexPro_tests MACOSX_BUNDLE ${ICON}
+add_executable(atomicdex-desktop_tests MACOSX_BUNDLE ${ICON}
         src/atomic.dex.tests.cpp
         src/atomic.dex.wallet.config.tests.cpp
         src/atomic.dex.utilities.tests.cpp
@@ -244,15 +244,15 @@ add_executable(atomicDexPro_tests MACOSX_BUNDLE ${ICON}
         src/atomic.dex.qt.utilities.tests.cpp
         src/atomic.dex.provider.cex.prices.api.tests.cpp)
 
-target_link_libraries(atomicDexPro
+target_link_libraries(atomicdex-desktop
         PRIVATE
-        atomicDexPro_shared_deps
+        atomicdex-desktop_shared_deps
         $<$<PLATFORM_ID:Darwin>:/usr/local/lib/libcurl.a>
         )
 
-target_link_libraries(atomicDexPro_tests
+target_link_libraries(atomicdex-desktop_tests
         PRIVATE
-        atomicDexPro_shared_deps
+        atomicdex-desktop_shared_deps
         $<$<PLATFORM_ID:Darwin>:/usr/local/lib/libcurl.a>
         doctest::doctest)
 
@@ -271,8 +271,8 @@ set_target_properties(${PROJECT_NAME}_tests
 if (NOT APPLE)
     target_precompile_headers(${PROJECT_NAME} PRIVATE src/atomic.dex.pch.hpp)
 endif ()
-#target_enable_tsan(atomicDexPro_tests)
-#target_enable_asan(atomicDexPro)
+#target_enable_tsan(atomicdex-desktop_tests)
+#target_enable_asan(atomicdex-desktop)
 
 ##! Move assets
 if (LINUX)
@@ -280,27 +280,27 @@ if (LINUX)
     set(output_dir_at "${exe_runtime_directory_at}/AntaraAtomicDexAppDir")
 
     magic_game_app_image_generation("${CMAKE_CURRENT_SOURCE_DIR}/data/linux"
-            "atomicDexPro.desktop"
-            "atomicDexPro.appdata.xml"
-            "atomicDexPro_64.png"
-            atomicDexPro
+            "atomicdex-desktop.desktop"
+            "atomicdex-desktop.appdata.xml"
+            "atomicdex-desktop_64.png"
+            atomicdex-desktop
             AntaraAtomicDexAppDir
             ${CMAKE_CURRENT_SOURCE_DIR}/assets
             )
 
     magic_game_app_image_generation("${CMAKE_CURRENT_SOURCE_DIR}/data/linux"
-            "atomicDexPro.desktop"
-            "atomicDexPro.appdata.xml"
-            "atomicDexPro_64.png"
-            atomicDexPro_tests
+            "atomicdex-desktop.desktop"
+            "atomicdex-desktop.appdata.xml"
+            "atomicdex-desktop_64.png"
+            atomicdex-desktop_tests
             AntaraAtomicDexTestsAppDir
             ${CMAKE_CURRENT_SOURCE_DIR}/assets
             )
 
     set(from_dir "${CMAKE_CURRENT_SOURCE_DIR}/data/linux")
-    set(desktop_file "atomicDexPro.desktop")
-    set(appdata_file "atomicDexPro.appdata.xml")
-    set(app_icon "atomicDexPro_64.png")
+    set(desktop_file "atomicdex-desktop.desktop")
+    set(appdata_file "atomicdex-desktop.appdata.xml")
+    set(app_icon "atomicdex-desktop_64.png")
     message(STATUS "${output_dir_at}")
     configure_file(${from_dir}/${desktop_file} ${output_dir_at}/usr/share/applications/${desktop_file} COPYONLY)
     configure_file(${from_dir}/${appdata_file} ${output_dir_at}/usr/share/metainfo/${appdata_file} COPYONLY)
@@ -314,8 +314,8 @@ if (WIN32)
     set_target_properties(Folly::folly PROPERTIES INTERFACE_COMPILE_OPTIONS "")
     if (CMAKE_BUILD_TYPE MATCHES Release)
         message(STATUS "disabling console")
-        target_compile_definitions(atomicDexPro PRIVATE WINDOWS_RELEASE_MAIN)
-        target_link_options(atomicDexPro PUBLIC --for-linker -subsystem:windows)
+        target_compile_definitions(atomicdex-desktop PRIVATE WINDOWS_RELEASE_MAIN)
+        target_link_options(atomicdex-desktop PUBLIC --for-linker -subsystem:windows)
     endif ()
 endif ()
 
