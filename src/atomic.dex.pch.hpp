@@ -236,14 +236,5 @@ handle_exception_pplx_task(pplx::task<void> previous_task)
 
 //! SDK Headers
 #include <antara/gaming/core/open.url.browser.hpp>
-/*#include <antara/gaming/core/open.url.browser.hpp>
-#include <antara/gaming/core/real.path.hpp>
-#include <antara/gaming/ecs/system.hpp>
-#include <antara/gaming/ecs/virtual.input.system.hpp>
-#include <antara/gaming/event/key.pressed.hpp>
-#include <antara/gaming/event/quit.game.hpp>
-#include <antara/gaming/graphics/component.canvas.hpp>
-#include <antara/gaming/timer/time.step.hpp>
-#include <antara/gaming/world/world.app.hpp>*/
 
 namespace ag = antara::gaming;

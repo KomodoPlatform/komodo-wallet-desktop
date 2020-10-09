@@ -698,17 +698,12 @@
     </message>
     <message>
         <location filename="../../qml/Exchange/Exchange.qml" line="174"/>
-        <source>Order Matching</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../qml/Exchange/Exchange.qml" line="174"/>
         <source>Matching</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Exchange.qml" line="176"/>
-        <source>Order Matched</source>
+        <location filename="../../qml/Exchange/Exchange.qml" line="174"/>
+        <source>Order Matching</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -717,8 +712,8 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Exchange.qml" line="178"/>
-        <source>Swap Ongoing</source>
+        <location filename="../../qml/Exchange/Exchange.qml" line="176"/>
+        <source>Order Matched</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -727,13 +722,18 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Exchange.qml" line="180"/>
-        <source>Swap Successful</source>
+        <location filename="../../qml/Exchange/Exchange.qml" line="178"/>
+        <source>Swap Ongoing</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../qml/Exchange/Exchange.qml" line="180"/>
         <source>Successful</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../qml/Exchange/Exchange.qml" line="180"/>
+        <source>Swap Successful</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -743,22 +743,22 @@
     </message>
     <message>
         <location filename="../../qml/Exchange/Exchange.qml" line="184"/>
-        <source>Swap Failed</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../qml/Exchange/Exchange.qml" line="184"/>
         <source>Failed</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/Exchange.qml" line="186"/>
-        <source>Unknown State</source>
+        <location filename="../../qml/Exchange/Exchange.qml" line="184"/>
+        <source>Swap Failed</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../qml/Exchange/Exchange.qml" line="186"/>
         <source>Unknown</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../qml/Exchange/Exchange.qml" line="186"/>
+        <source>Unknown State</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -970,12 +970,12 @@
     <name>History</name>
     <message>
         <location filename="../../qml/Exchange/History/History.qml" line="12"/>
-        <source>Recent Swaps</source>
+        <source>Filtered Swaps</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../qml/Exchange/History/History.qml" line="12"/>
-        <source>Filtered Swaps</source>
+        <source>Recent Swaps</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -1117,12 +1117,12 @@
     </message>
     <message>
         <location filename="../../qml/Wallet/Main.qml" line="408"/>
-        <source>No transactions</source>
+        <source>Refreshing</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../qml/Wallet/Main.qml" line="408"/>
-        <source>Refreshing</source>
+        <source>No transactions</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -1605,18 +1605,13 @@
 <context>
     <name>OrdersPage</name>
     <message>
+        <location filename="../../qml/Exchange/OrdersPage.qml" line="93"/>
+        <source>Enable Filters</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="../../qml/Exchange/OrdersPage.qml" line="117"/>
         <source>All</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../qml/Exchange/OrdersPage.qml" line="188"/>
-        <source>Cancel All Orders</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../qml/Exchange/OrdersPage.qml" line="188"/>
-        <source>Cancel Filtered Orders</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -1625,13 +1620,18 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/OrdersPage.qml" line="93"/>
-        <source>Enable Filters</source>
+        <location filename="../../qml/Exchange/OrdersPage.qml" line="178"/>
+        <source>To</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/OrdersPage.qml" line="178"/>
-        <source>To</source>
+        <location filename="../../qml/Exchange/OrdersPage.qml" line="188"/>
+        <source>Cancel Filtered Orders</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../qml/Exchange/OrdersPage.qml" line="188"/>
+        <source>Cancel All Orders</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -2257,6 +2257,21 @@ AtomicDEX enables you to natively trade across two different blockchain networks
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../../qml/Support/Support.qml" line="159"/>
+        <source>How long does each atomic swap take?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../qml/Support/Support.qml" line="160"/>
+        <source>Several factors determine the processing time for each swap. The block time of the traded assets depends on each network (Bitcoin typically being the slowest) Additionally, the user can customize security preferences. For example,  (you can ask AtomicDEX to consider a KMD transaction as final after just 3 confirmations which makes the swap time shorter compared to waiting for a &lt;a href=&quot;https://komodoplatform.com/security-delayed-proof-of-work-dpow/&quot;&gt;notarization&lt;/a&gt;.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../qml/Support/Support.qml" line="164"/>
+        <source>Do I need to be online for the duration of the swap?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="../../qml/Support/Support.qml" line="165"/>
         <source>Yes. You must remain connected to the internet and have your app running to successfully complete each atomic swap (very short breaks in connectivity are usually fine). Otherwise, there is risk of trade cancellation if you are a maker, and risk of loss of funds if you are a taker. The atomic swap protocol requires both participants to stay online and monitor the involved blockchains for the process to stay atomic.</source>
         <translation type="unfinished"></translation>
@@ -2274,6 +2289,11 @@ AtomicDEX enables you to natively trade across two different blockchain networks
 2. Both makers and takers will need to pay normal network fees to the involved blockchains when making atomic swap transactions.
 
 Network fees can vary greatly depending on your selected trading pair.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../qml/Support/Support.qml" line="179"/>
+        <source>Do you provide user support?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -2319,26 +2339,6 @@ Network fees can vary greatly depending on your selected trading pair.</source>
     <message>
         <location filename="../../qml/Support/Support.qml" line="200"/>
         <source>Due to regulatory and legal circumstances the citizens of certain jurisdictions including, but not limited to, the United States of America, Canada, Hong Kong, Israel, Singapore, Sudan, Austria, Iran and any other state, country or other jurisdiction that is embargoed by the United States of America or the European Union are not allowed to use this application.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../qml/Support/Support.qml" line="159"/>
-        <source>How long does each atomic swap take?</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../qml/Support/Support.qml" line="160"/>
-        <source>Several factors determine the processing time for each swap. The block time of the traded assets depends on each network (Bitcoin typically being the slowest) Additionally, the user can customize security preferences. For example,  (you can ask AtomicDEX to consider a KMD transaction as final after just 3 confirmations which makes the swap time shorter compared to waiting for a &lt;a href=&quot;https://komodoplatform.com/security-delayed-proof-of-work-dpow/&quot;&gt;notarization&lt;/a&gt;.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../qml/Support/Support.qml" line="164"/>
-        <source>Do I need to be online for the duration of the swap?</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../qml/Support/Support.qml" line="179"/>
-        <source>Do you provide user support?</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -2394,6 +2394,11 @@ Network fees can vary greatly depending on your selected trading pair.</source>
 <context>
     <name>Trade</name>
     <message>
+        <location filename="../../qml/Exchange/Trade/Trade.qml" line="309"/>
+        <source>Failed to place the order</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="../../qml/Exchange/Trade/Trade.qml" line="318"/>
         <source>Placed the order</source>
         <translation type="unfinished"></translation>
@@ -2416,11 +2421,6 @@ Network fees can vary greatly depending on your selected trading pair.</source>
     <message>
         <location filename="../../qml/Exchange/Trade/Trade.qml" line="535"/>
         <source>Submit Trade</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../qml/Exchange/Trade/Trade.qml" line="309"/>
-        <source>Failed to place the order</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -2501,12 +2501,12 @@ Network fees can vary greatly depending on your selected trading pair.</source>
     <name>Transactions</name>
     <message>
         <location filename="../../qml/Wallet/Transactions.qml" line="57"/>
-        <source>Received</source>
+        <source>Sent</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../qml/Wallet/Transactions.qml" line="57"/>
-        <source>Sent</source>
+        <source>Received</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -2523,6 +2523,21 @@ Network fees can vary greatly depending on your selected trading pair.</source>
 <context>
     <name>UpdateModal</name>
     <message>
+        <location filename="../../qml/Components/UpdateModal.qml" line="15"/>
+        <source>Changelog</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../qml/Components/UpdateModal.qml" line="15"/>
+        <source>New Update!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../qml/Components/UpdateModal.qml" line="16"/>
+        <source>Up to date</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="../../qml/Components/UpdateModal.qml" line="16"/>
         <source>Available</source>
         <translation type="unfinished"></translation>
@@ -2535,21 +2550,6 @@ Network fees can vary greatly depending on your selected trading pair.</source>
     <message>
         <location filename="../../qml/Components/UpdateModal.qml" line="16"/>
         <source>Recommended</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../qml/Components/UpdateModal.qml" line="16"/>
-        <source>Up to date</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../qml/Components/UpdateModal.qml" line="15"/>
-        <source>New Update!</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../qml/Components/UpdateModal.qml" line="15"/>
-        <source>Changelog</source>
         <translation type="unfinished"></translation>
     </message>
     <message>

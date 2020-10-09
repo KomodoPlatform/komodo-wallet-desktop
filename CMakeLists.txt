@@ -8,13 +8,6 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
-#find_program(IWYU_PATH NAMES include-what-you-use iwyu)
-#if(NOT IWYU_PATH)
-#    message(FATAL_ERROR "Could not find the program include-what-you-use")
-#endif()
-#set(CMAKE_CXX_INCLUDE_WHAT_YOU_USE ${IWYU_PATH})
-#set(CMAKE_C_INCLUDE_WHAT_YOU_USE ${IWYU_PATH})
-#include_directories("/usr/lib/llvm-10/include/c++/v1/")
 
 
 if (WIN32)
@@ -27,20 +20,20 @@ endif ()
 include(FetchContent)
 
 ##! We declare information about the dependance that we want to fetch.
-FetchContent_Declare(
-        antara-gaming-sdk
-        URL https://github.com/KomodoPlatform/antara-gaming-sdk/archive/master.zip
+#FetchContent_Declare(
+#        antara-gaming-sdk
+#        URL https://github.com/KomodoPlatform/antara-gaming-sdk/archive/master.zip
 
-)
+#)
 
-set(ANTARA_USE_VCPKG ON)
-set(ENABLE_BLOCKCHAIN_MODULES ON)
+#set(ANTARA_USE_VCPKG ON)
+#set(ENABLE_BLOCKCHAIN_MODULES ON)
 
-FetchContent_GetProperties(antara-gaming-sdk)
-if (NOT antara-gaming-sdk_POPULATED)
-    FetchContent_Populate(antara-gaming-sdk)
-    add_subdirectory(${antara-gaming-sdk_SOURCE_DIR} ${antara-gaming-sdk_BINARY_DIR} EXCLUDE_FROM_ALL)
-endif ()
+#FetchContent_GetProperties(antara-gaming-sdk)
+#if (NOT antara-gaming-sdk_POPULATED)
+#    FetchContent_Populate(antara-gaming-sdk)
+#    add_subdirectory(${antara-gaming-sdk_SOURCE_DIR} ${antara-gaming-sdk_BINARY_DIR} EXCLUDE_FROM_ALL)
+#endif ()
 
 if (${CMAKE_SYSTEM_NAME} STREQUAL "Linux")
     set(LINUX TRUE)
@@ -91,11 +84,15 @@ if (NOT libqr_code_POPULATED)
     add_subdirectory(${libqr_code_SOURCE_DIR}/src ${libqr_code_BINARY_DIR} EXCLUDE_FROM_ALL)
 endif ()
 
+set(CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake)
+include(antara)
 ##! Calling this macros provided by the sdk will if you are on Apple init the environment for this OS (std::filesystem).
 init_antara_env()
 
+add_subdirectory(vendor/antara-gaming_sdk/modules)
+
 ##! Get basis assets (default fonts, etc)
-get_resources_basics_assets(${CMAKE_CURRENT_SOURCE_DIR})
+#get_resources_basics_assets(${CMAKE_CURRENT_SOURCE_DIR})
 
 ##! Osx bundle icon
 set(ICON)
@@ -206,12 +203,12 @@ target_link_libraries(atomicdex-desktop_shared_deps
         Qt5::Widgets
         qzxing
         antara::world
+        #antara::http_client
         Boost::filesystem
         Boost::random
         unofficial-sodium::sodium
         unofficial-btc::bitcoin
         reproc++
-        antara::http_client
         Folly::folly
         date::tz
         Folly::folly_deps

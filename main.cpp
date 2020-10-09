@@ -17,8 +17,8 @@
 #include "atomic.dex.pch.hpp"
 
 //! Deps
-#include <wally.hpp>
 #include <sodium/core.h>
+#include <wally.hpp>
 
 #if defined(linux)
 #    define BOOST_STACKTRACE_USE_ADDR2LINE
@@ -169,18 +169,6 @@ init_timezone_db()
 #endif
 }
 
-/*static void
-init_restclient()
-{
-    RestClient::init();
-}
-
-static void
-disable_restclient()
-{
-    RestClient::disable();
-}*/
-
 #if defined(WINDOWS_RELEASE_MAIN)
 INT WINAPI
 WinMain(HINSTANCE hInst, HINSTANCE, LPSTR strCmdLine, INT)
@@ -196,7 +184,6 @@ main([[maybe_unused]] int argc, [[maybe_unused]] char* argv[])
 #endif
     init_logging();
     connect_signals_handler();
-    //init_restclient();
     init_timezone_db();
     init_wally();
     init_sodium();
@@ -256,7 +243,6 @@ main([[maybe_unused]] int argc, [[maybe_unused]] char* argv[])
 
     auto res = app->exec();
 
-    //disable_restclient();
     clean_wally();
 
     return res;
