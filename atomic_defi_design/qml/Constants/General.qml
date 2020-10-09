@@ -24,7 +24,7 @@ QtObject {
     readonly property string right_arrow_icon: "⮕"
     readonly property string privacy_text: "*****"
 
-    readonly property string version_string: "Pro v" + API.app.get_version()
+    readonly property string version_string: "Desktop v" + API.app.get_version()
 
     property bool privacy_mode: false
 
