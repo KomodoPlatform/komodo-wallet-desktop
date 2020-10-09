@@ -18,6 +18,7 @@
 #include "atomic.dex.pch.hpp"
 
 //! Deps
+#include <nlohmann/json.hpp>
 #include <boost/algorithm/string/case_conv.hpp>
 
 //! Project headers

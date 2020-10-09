@@ -1,6 +1,10 @@
 #pragma once
 
+//! STD
+#include <random>
+
 //! Deps
+#include <nlohmann/json.hpp>
 #include <date/date.h>
 #include <date/tz.h>
 
@@ -208,6 +212,11 @@ namespace atomic_dex::utils
 {
     struct my_json_sax : nlohmann::json_sax<nlohmann::json>
     {
+        bool binary([[maybe_unused]] binary_t& val) override
+        {
+            return true;
+        }
+
         bool
         null() override
         {

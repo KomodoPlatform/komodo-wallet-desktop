@@ -16,6 +16,9 @@
 
 #pragma once
 
+//! Deps
+#include <nlohmann/json_fwd.hpp>
+
 namespace atomic_dex
 {
     struct cfg

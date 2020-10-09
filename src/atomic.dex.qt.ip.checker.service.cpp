@@ -17,7 +17,11 @@
 //! PCH
 #include "atomic.dex.pch.hpp"
 
+//! Deps
+#include <nlohmann/json.hpp>
+
 //! Project headers
+#include "atomic.dex.cpprestsdk.utilities.hpp"
 #include "atomic.dex.qt.ip.checker.service.hpp"
 
 namespace

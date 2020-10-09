@@ -17,6 +17,7 @@
 #pragma once
 
 //! Deps
+#include <nlohmann/json_fwd.hpp>
 #include <boost/thread/synchronized_value.hpp>
 
 namespace atomic_dex

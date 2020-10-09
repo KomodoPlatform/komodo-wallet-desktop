@@ -16,7 +16,11 @@
 
 #pragma once
 
+//! QT  
 #include <QObject>
+
+//! Deps
+#include <nlohmann/json_fwd.hpp>
 
 namespace atomic_dex
 {

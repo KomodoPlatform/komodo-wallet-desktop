@@ -17,6 +17,9 @@
 //! PCH
 #include "atomic.dex.pch.hpp"
 
+//! Deps
+#include <nlohmann/json.hpp>
+
 //! Project Headers
 #include "atomic.dex.wallet.config.hpp"
 

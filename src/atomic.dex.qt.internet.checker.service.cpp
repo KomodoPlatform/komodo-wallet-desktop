@@ -17,7 +17,11 @@
 //! PCH
 #include "atomic.dex.pch.hpp"
 
+//! Deps
+#include <nlohmann/json.hpp>
+
 //! Our project
+#include "atomic.dex.cpprestsdk.utilities.hpp"
 #include "atomic.dex.qt.internet.checker.service.hpp"
 #include "atomic.dex.qt.utilities.hpp"
 

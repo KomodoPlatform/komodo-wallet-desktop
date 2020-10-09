@@ -16,6 +16,12 @@
 
 #pragma once
 
+//! Deps
+#include <nlohmann/json.hpp>
+
+//! Project Headers
+#include "atomic.dex.cpprestsdk.utilities.hpp"
+
 namespace atomic_dex
 {
     struct ohlc_request

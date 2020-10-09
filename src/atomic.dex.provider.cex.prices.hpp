@@ -17,6 +17,7 @@
 #pragma once
 
 //! Project header
+#include <nlohmann/json_fwd.hpp>
 #include "atomic.dex.ma.series.data.hpp"
 #include "atomic.dex.mm2.hpp"
 

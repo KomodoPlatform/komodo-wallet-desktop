@@ -18,9 +18,11 @@
 #include "atomic.dex.pch.hpp"
 
 //! Deps
+#include <nlohmann/json.hpp>
 #include <boost/algorithm/string/replace.hpp>
 
 //! Project headers
+#include "atomic.dex.cpprestsdk.utilities.hpp"
 #include "atomic.dex.events.hpp"
 #include "atomic.dex.update.service.hpp"
 #include "atomic.dex.version.hpp"

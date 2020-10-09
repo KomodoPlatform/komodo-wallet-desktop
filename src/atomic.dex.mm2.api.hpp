@@ -17,10 +17,12 @@
 #pragma once
 
 //! Deps
+#include <nlohmann/json.hpp>
 #include <meta/detection/detection.hpp>
 
 //! Project Headers
 #include "atomic.dex.coins.config.hpp"
+#include "atomic.dex.cpprestsdk.utilities.hpp"
 
 namespace mm2::api
 {

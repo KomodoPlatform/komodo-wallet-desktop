@@ -14,41 +14,30 @@
  *                                                                            *
  ******************************************************************************/
 
-#pragma once
-
 //! Deps
-#include <nlohmann/json_fwd.hpp>
-#include <boost/thread/synchronized_value.hpp>
+#include <spdlog/spdlog.h>
+#include <nlohmann/json.hpp>
 
 //! Project Headers
-#include <antara/gaming/ecs/system.hpp>
+#include "atomic.dex.cpprestsdk.utilities.hpp"
 
-namespace atomic_dex
+t_http_request create_json_post_request(nlohmann::json&& json_data)
 {
-    class update_system_service final : public ag::ecs::pre_update_system<update_system_service>
+    t_http_request req;
+    req.set_method(web::http::methods::POST);
+    req.headers().set_content_type(FROM_STD_STR("application/json"));
+    req.set_body(json_data.dump());
+    return req;
+}
+
+void handle_exception_pplx_task(pplx::task<void> previous_task)
+{
+    try
     {
-        //! Private typedefs
-        using t_update_time_point = std::chrono::high_resolution_clock::time_point;
-        using t_json_synchronized = boost::synchronized_value<nlohmann::json>;
-
-        //! Private members
-        t_json_synchronized m_update_status;
-        t_update_time_point m_update_clock;
-
-        //! Private API
-        void fetch_update_status() noexcept;
-
-      public:
-        //! Constructor
-        explicit update_system_service(entt::registry& registry);
-        ~update_system_service() noexcept final = default;
-
-        //! Public override
-        void update() noexcept final;
-
-        //! Public API
-        [[nodiscard]] nlohmann::json get_update_status() const noexcept;
-    };
-} // namespace atomic_dex
-
-REFL_AUTO(type(atomic_dex::update_system_service))
+        previous_task.wait();
+    }
+    catch (const std::exception& e)
+    {
+        spdlog::error("pplx task error: {}", e.what());
+    }
+}

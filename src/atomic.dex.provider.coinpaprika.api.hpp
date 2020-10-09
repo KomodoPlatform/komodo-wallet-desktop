@@ -16,7 +16,11 @@
 
 #pragma once
 
+//! Deps
+#include <nlohmann/json.hpp>
+
 //! Project Headers
+#include "atomic.dex.cpprestsdk.utilities.hpp"
 #include "atomic.dex.http.code.hpp"
 
 namespace atomic_dex

@@ -14,6 +14,7 @@
  *                                                                            *
  ******************************************************************************/
 
+#include <nlohmann/json.hpp>
 #include "atomic.dex.pch.hpp"
 #include "atomic.dex.wallet.config.hpp"
 #include <doctest/doctest.h>

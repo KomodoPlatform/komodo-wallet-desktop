@@ -18,6 +18,7 @@
 #include "atomic.dex.pch.hpp"
 
 //! Deps
+#include <nlohmann/json.hpp>
 #include <range/v3/algorithm/any_of.hpp>
 #include <antara/gaming/core/real.path.hpp>
 
