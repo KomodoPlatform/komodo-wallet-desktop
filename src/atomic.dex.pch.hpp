@@ -1,65 +1,8 @@
 #pragma once
 
-/*
-#ifdef ENABLE_CODE_RELOAD_WINDOWS
-#    define NOMINMAX
-#    include "API/LPP_API.h"
-#    include <Windows.h>
+#if defined(_WIN32) || defined(WIN32)
+	#define GLOG_NO_ABBREVIATED_SEVERITIES
 #endif
-
-
-#if defined(ENABLE_CODE_RELOAD_UNIX)
-
-#    include <jet/live/Live.hpp>
-#    include <jet/live/Utility.hpp>
-
-#endif*/
-
-//! C System Headers
-/*#include <cctype>
-#include <climits>
-#include <cmath>
-#include <csignal>
-#include <cstddef>
-#include <cstdlib>
-#include <cstring>
-#include <ctime>
-
-//! C++ System Headers
-#include <algorithm>
-#include <array>
-#include <atomic>
-#include <chrono>
-#include <condition_variable>
-#include <exception>
-#include <fstream>
-#include <functional>
-#include <future>
-#include <iterator>
-#include <limits>
-#include <list>
-#include <map>
-#include <memory>
-#include <mutex>
-#include <new>
-#include <numeric>
-#include <optional>
-#include <queue>
-#include <random>
-#include <set>
-#include <sstream>
-#include <stdexcept>
-#include <string>
-#include <system_error>
-#include <thread>
-#include <tuple>
-#include <type_traits>
-#include <typeinfo>
-#include <unordered_map>
-#include <unordered_set>
-#include <utility>
-#include <variant>
-#include <vector>*/
 
 //! Global Helpers
 #include <boost/filesystem.hpp>
@@ -100,31 +43,10 @@ struct overloaded : Ts...
 template <class... Ts>
 overloaded(Ts...) -> overloaded<Ts...>;
 
-/*//! Folly Headers
-#include <folly/Memory.h>
-#include <folly/SharedMutex.h>
-#include <folly/concurrency/ConcurrentHashMap.h>
 
-namespace folly
-{
-    // Explicitly instantiate SharedMutex here:
-    template class SharedMutexImpl<true>;
-    template class SharedMutexImpl<false>;
-} // namespace folly*/
 
 //! Boost Headers
 #include <boost/algorithm/string/trim.hpp>
-/*#include <boost/algorithm/string/case_conv.hpp>
-#include <boost/algorithm/string/erase.hpp>
-#include <boost/algorithm/string/join.hpp>
-#include <boost/algorithm/string/replace.hpp>
-#include <boost/algorithm/string/split.hpp>
-
-#include <boost/lockfree/queue.hpp>
-#include <boost/random/random_device.hpp>
-#include <boost/random/uniform_int_distribution.hpp>
-#include <boost/thread/synchronized_value.hpp>*/
-//#include <boost/filesystem.hpp>
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wunused-parameter"
 #include <boost/multiprecision/cpp_dec_float.hpp>
@@ -157,22 +79,6 @@ adjust_precision(const std::string& current)
 }
 
 #pragma clang diagnostic pop
-
-//! Ranges
-/*#include <range/v3/view/iota.hpp> ///< ranges::view::ints
-#include <range/v3/view/zip.hpp> ///< ranges::view::zip
-
-#if defined(_WIN32) || defined(WIN32)
-#    include <wally.hpp>
-#else
-#    include <boost/random/random_device.hpp>
-#    include <wally.hpp>
-#endif*/
-
-//#include <date/date.h>
-//#include <date/tz.h>
-
-//#define ENTT_STANDARD_CPP
 
 #if defined(_WIN32) || defined(WIN32)
 #    define and &&
