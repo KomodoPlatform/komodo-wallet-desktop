@@ -181,11 +181,6 @@ Network fees can vary greatly depending on your selected trading pair.")
             }
 
             FAQLine {
-                title: qsTr("Do you have country restrictions?")
-                text: qsTr("No! AtomicDEX is fully decentralized. It is not possible to limit user access by any third party.")
-            }
-
-            FAQLine {
                 title: qsTr("Who is behind AtomicDEX?")
                 text: qsTr("AtomicDEX is developed by the Komodo team. Komodo is one of the most established blockchain projects working on innovative solutions like atomic swaps, Delayed Proof of Work, and an interoperable multi-chain architecture.")
             }
