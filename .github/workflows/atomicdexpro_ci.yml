@@ -279,7 +279,7 @@ jobs:
           cd ci_tools_atomic_dex
           nimble build -y
           ./ci_tools_atomic_dex bundle release --osx_sdk=$HOME/sdk/MacOSX10.13.sdk --compiler=/usr/local/opt/llvm@9/bin/clang++
-          ls bundle-Release/atomicDexPro.dmg
+          ls bundle-Release/atomicdex-desktop.dmg
 
       - name: Running Tests (MacOS)
         env: # Or as an environment variable
@@ -290,7 +290,7 @@ jobs:
           export QT_ROOT=${{ github.workspace }}/Qt/5.15.0
           echo "Running tests"
           ./ci_tools_atomic_dex tests release
-          cd build-Release/bin/atomicDexPro_tests.app/Contents/MacOS
+          cd build-Release/bin/atomicdex-desktop_tests.app/Contents/MacOS
           cat atomic-dex-tests-result.xml
           curl https://report.ci/upload.py --output upload.py
           ls
@@ -302,7 +302,7 @@ jobs:
         uses: actions/upload-artifact@v1
         with:
           name: dexpro-mac-release.dmg
-          path: ./ci_tools_atomic_dex/bundle-Release/atomicDexPro.dmg
+          path: ./ci_tools_atomic_dex/bundle-Release/atomicdex-desktop.dmg
 
   windows-build:
     name: Win Build
