@@ -15,13 +15,14 @@
  ******************************************************************************/
 
 //! Deps
-#include <spdlog/spdlog.h>
 #include <nlohmann/json.hpp>
+#include <spdlog/spdlog.h>
 
 //! Project Headers
 #include "atomic.dex.cpprestsdk.utilities.hpp"
 
-t_http_request create_json_post_request(nlohmann::json&& json_data)
+t_http_request
+create_json_post_request(nlohmann::json&& json_data)
 {
     t_http_request req;
     req.set_method(web::http::methods::POST);
@@ -30,7 +31,8 @@ t_http_request create_json_post_request(nlohmann::json&& json_data)
     return req;
 }
 
-void handle_exception_pplx_task(pplx::task<void> previous_task)
+void
+handle_exception_pplx_task(pplx::task<void> previous_task)
 {
     try
     {

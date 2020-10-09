@@ -144,7 +144,7 @@ target_sources(atomicdex-desktop_shared_deps INTERFACE
         ${CMAKE_SOURCE_DIR}/src/atomic.dex.qt.internet.checker.service.cpp
         ${CMAKE_SOURCE_DIR}/src/atomic.dex.qt.ip.checker.service.cpp
         ${CMAKE_SOURCE_DIR}/src/atomic.dex.app.cpp
-        ${CMAKE_SOURCE_DIR}/src/atomic.dex.cpprestsdk.utilities.hpp
+        ${CMAKE_SOURCE_DIR}/src/atomic.dex.cpprestsdk.utilities.cpp
         ${CMAKE_SOURCE_DIR}/src/atomic.dex.cfg.cpp
         ${CMAKE_SOURCE_DIR}/src/atomic.dex.mm2.cpp
         ${CMAKE_SOURCE_DIR}/src/atomic.dex.coins.config.cpp
@@ -217,7 +217,6 @@ target_link_libraries(atomicdex-desktop_shared_deps
         spdlog::spdlog_header_only
         cpprestsdk::cpprest
         Qaterial
-        #Taskflow::Taskflow
         )
 
 target_include_directories(atomicdex-desktop_shared_deps

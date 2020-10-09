@@ -194,7 +194,6 @@ main([[maybe_unused]] int argc, [[maybe_unused]] char* argv[])
     atomic_dex::application atomic_app;
 
     //! QT
-    // int                           ac  = 0;
     std::shared_ptr<QApplication> app = std::make_shared<QApplication>(argc, argv);
     app->setOrganizationName("KomodoPlatform");
     app->setOrganizationDomain("com");
@@ -203,8 +202,6 @@ main([[maybe_unused]] int argc, [[maybe_unused]] char* argv[])
     atomic_app.set_qt_app(app, &engine);
 
     //! QT QML
-
-
     engine.addImportPath("qrc:///");
     QZXing::registerQMLTypes();
     QZXing::registerQMLImageProvider(engine);
