@@ -1400,11 +1400,6 @@
         <source>Cancel</source>
         <translation>İptal</translation>
     </message>
-    <message>
-        <location filename="../../qml/Exchange/OrderContent.qml" line="132"/>
-        <source>Recover Funds</source>
-        <translation type="unfinished"></translation>
-    </message>
 </context>
 <context>
     <name>OrderForm</name>
@@ -1566,6 +1561,11 @@
         <source>Swap Failed</source>
         <translation type="vanished">Takas Başarısız</translation>
     </message>
+    <message>
+        <location filename="../../qml/Exchange/OrderLine.qml" line="169"/>
+        <source>Funds are recoverable</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>OrderList</name>
@@ -1615,6 +1615,11 @@
     <message>
         <location filename="../../qml/Exchange/OrderModal.qml" line="102"/>
         <source>ID</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../qml/Exchange/OrderModal.qml" line="185"/>
+        <source>Recover Funds</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -1678,7 +1683,7 @@
         <translation type="vanished">İptal</translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/OrderModal.qml" line="181"/>
+        <location filename="../../qml/Exchange/OrderModal.qml" line="190"/>
         <source>View at Explorer</source>
         <translation>Explorer&apos;da Görüntüle</translation>
     </message>
@@ -1783,47 +1788,47 @@
 <context>
     <name>OrdersPage</name>
     <message>
-        <location filename="../../qml/Exchange/OrdersPage.qml" line="106"/>
+        <location filename="../../qml/Exchange/OrdersPage.qml" line="117"/>
         <source>All</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/OrdersPage.qml" line="177"/>
+        <location filename="../../qml/Exchange/OrdersPage.qml" line="188"/>
         <source>Cancel All Orders</source>
         <translation type="unfinished">Tüm Emirleri İptal Et</translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/OrdersPage.qml" line="177"/>
+        <location filename="../../qml/Exchange/OrdersPage.qml" line="188"/>
         <source>Cancel Filtered Orders</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/OrdersPage.qml" line="157"/>
+        <location filename="../../qml/Exchange/OrdersPage.qml" line="168"/>
         <source>From</source>
         <translation type="unfinished">Gönderen</translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/OrdersPage.qml" line="82"/>
+        <location filename="../../qml/Exchange/OrdersPage.qml" line="93"/>
         <source>Enable Filters</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/OrdersPage.qml" line="167"/>
+        <location filename="../../qml/Exchange/OrdersPage.qml" line="178"/>
         <source>To</source>
         <translation type="unfinished">Alan</translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/OrdersPage.qml" line="188"/>
+        <location filename="../../qml/Exchange/OrdersPage.qml" line="199"/>
         <source>Export CSV</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/OrdersPage.qml" line="199"/>
+        <location filename="../../qml/Exchange/OrdersPage.qml" line="210"/>
         <source>Please choose the CSV export name and location</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/OrdersPage.qml" line="240"/>
+        <location filename="../../qml/Exchange/OrdersPage.qml" line="251"/>
         <source>Recover Funds Result</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2520,47 +2525,42 @@ Network fees can vary greatly depending on your selected trading pair.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Support/Support.qml" line="185"/>
-        <source>No! AtomicDEX is fully decentralized. It is not possible to limit user access by any third party.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../qml/Support/Support.qml" line="189"/>
+        <location filename="../../qml/Support/Support.qml" line="184"/>
         <source>Who is behind AtomicDEX?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Support/Support.qml" line="190"/>
+        <location filename="../../qml/Support/Support.qml" line="185"/>
         <source>AtomicDEX is developed by the Komodo team. Komodo is one of the most established blockchain projects working on innovative solutions like atomic swaps, Delayed Proof of Work, and an interoperable multi-chain architecture.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Support/Support.qml" line="194"/>
+        <location filename="../../qml/Support/Support.qml" line="189"/>
         <source>Is it possible to develop my own white-label exchange on AtomicDEX?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Support/Support.qml" line="195"/>
+        <location filename="../../qml/Support/Support.qml" line="190"/>
         <source>Absolutely! You can read our developer documentation for more details or contact us with your partnership inquiries. Have a specific technical question? The AtomicDEX developer community is always ready to help!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Support/Support.qml" line="199"/>
+        <location filename="../../qml/Support/Support.qml" line="194"/>
         <source>Which devices can I use AtomicDEX on?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Support/Support.qml" line="200"/>
+        <location filename="../../qml/Support/Support.qml" line="195"/>
         <source>AtomicDEX is available for mobile on both Android and iPhone, and for desktop on Windows, Mac, and Linux operating systems.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Support/Support.qml" line="204"/>
+        <location filename="../../qml/Support/Support.qml" line="199"/>
         <source>Compliance Info</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Support/Support.qml" line="205"/>
+        <location filename="../../qml/Support/Support.qml" line="200"/>
         <source>Due to regulatory and legal circumstances the citizens of certain jurisdictions including, but not limited to, the United States of America, Canada, Hong Kong, Israel, Singapore, Sudan, Austria, Iran and any other state, country or other jurisdiction that is embargoed by the United States of America or the European Union are not allowed to use this application.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2582,11 +2582,6 @@ Network fees can vary greatly depending on your selected trading pair.</source>
     <message>
         <location filename="../../qml/Support/Support.qml" line="179"/>
         <source>Do you provide user support?</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../qml/Support/Support.qml" line="184"/>
-        <source>Do you have country restrictions?</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
