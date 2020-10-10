@@ -1,8 +1,7 @@
 #pragma once
 
-#include "atomic.dex.cfg.hpp"
-#include "atomic.dex.mm2.hpp"
-#include "atomic.dex.provider.coinpaprika.api.hpp"
+#include "atomicdex/config/app.cfg.hpp"
+#include "atomicdex/services/mm2/mm2.service.hpp"
 
 namespace atomic_dex
 {

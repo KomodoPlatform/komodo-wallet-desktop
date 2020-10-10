@@ -1,9 +1,9 @@
-#include "atomic.dex.pch.hpp"
+#include "src/atomicdex/pch.hpp"
 
 //! Project Headers
-#include "atomic.dex.band.oracle.price.service.hpp"
-#include "atomic.dex.global.price.service.hpp"
-#include "atomic.dex.provider.coinpaprika.hpp"
+#include "atomicdex/services/price/coinpaprika/coinpaprika.provider.hpp"
+#include "atomicdex/services/price/global.provider.hpp"
+#include "atomicdex/services/price/oracle/band.provider.hpp"
 
 namespace
 {
@@ -200,7 +200,7 @@ namespace atomic_dex
     global_price_service::get_price_as_currency_from_tx(
         const std::string& currency, const std::string& ticker, const tx_infos& tx, std::error_code& ec) const noexcept
     {
-        auto& mm2_instance = m_system_manager.get_system<mm2>();
+        auto& mm2_instance = m_system_manager.get_system<mm2_service>();
 
         if (mm2_instance.get_coin_info(ticker).coinpaprika_id == "test-coin")
         {
@@ -218,7 +218,7 @@ namespace atomic_dex
     std::string
     global_price_service::get_price_in_fiat_all(const std::string& fiat, std::error_code& ec) const noexcept
     {
-        auto&   mm2_instance = m_system_manager.get_system<mm2>();
+        auto&   mm2_instance = m_system_manager.get_system<mm2_service>();
         t_coins coins        = mm2_instance.get_enabled_coins();
         try
         {
@@ -268,7 +268,7 @@ namespace atomic_dex
     global_price_service::get_price_as_currency_from_amount(
         const std::string& currency, const std::string& ticker, const std::string& amount, std::error_code& ec) const noexcept
     {
-        auto& mm2_instance = m_system_manager.get_system<mm2>();
+        auto& mm2_instance = m_system_manager.get_system<mm2_service>();
 
         if (mm2_instance.get_coin_info(ticker).coinpaprika_id == "test-coin")
         {
@@ -288,7 +288,7 @@ namespace atomic_dex
     std::string
     global_price_service::get_price_in_fiat(const std::string& fiat, const std::string& ticker, std::error_code& ec, bool skip_precision) const noexcept
     {
-        auto& mm2_instance = m_system_manager.get_system<mm2>();
+        auto& mm2_instance = m_system_manager.get_system<mm2_service>();
 
         if (m_supported_fiat_registry.count(fiat) == 0u)
         {

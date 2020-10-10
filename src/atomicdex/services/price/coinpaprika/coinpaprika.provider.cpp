@@ -15,11 +15,11 @@
  ******************************************************************************/
 
 //! PCH
-#include "atomic.dex.pch.hpp"
+#include "src/atomicdex/pch.hpp"
 
 //! Project Headers
-#include "atomic.dex.http.code.hpp"
-#include "atomic.dex.provider.coinpaprika.hpp"
+#include "atomicdex/services/price/coinpaprika/coinpaprika.provider.hpp"
+#include "src/atomicdex/constants/http.code.hpp"
 
 namespace
 {
@@ -207,7 +207,7 @@ namespace atomic_dex
 {
     namespace bm = boost::multiprecision;
 
-    coinpaprika_provider::coinpaprika_provider(entt::registry& registry, mm2& mm2_instance) : system(registry), m_mm2_instance(mm2_instance)
+    coinpaprika_provider::coinpaprika_provider(entt::registry& registry, mm2_service& mm2_instance) : system(registry), m_mm2_instance(mm2_instance)
     {
         spdlog::debug("{} l{} f[{}]", __FUNCTION__, __LINE__, fs::path(__FILE__).filename().string());
         disable();

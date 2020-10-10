@@ -17,10 +17,10 @@
 #pragma once
 
 //! Project Headers
-#include "atomic.dex.cfg.hpp"
-#include "atomic.dex.events.hpp"
-#include "atomic.dex.mm2.hpp"
-#include "atomic.dex.provider.coinpaprika.api.hpp"
+#include "atomicdex/api/coinpaprika/coinpaprika.hpp"
+#include "atomicdex/config/app.cfg.hpp"
+#include "atomicdex/events/events.hpp"
+#include "atomicdex/services/mm2/mm2.service.hpp"
 
 namespace atomic_dex
 {
@@ -37,14 +37,14 @@ namespace atomic_dex
         using t_providers_registry = t_concurrent_reg<std::string, std::string>;
 
         //! Private fields
-        mm2&                         m_mm2_instance;                 ///< represent the MM2 instance
+        mm2_service&                         m_mm2_instance;                 ///< represent the MM2 instance
         t_providers_registry         m_usd_rate_providers{};         ///< USD Rate Providers
         t_ticker_infos_registry      m_ticker_infos_registry{};      ///< Ticker info registry, key is the ticker
         t_ticker_historical_registry m_ticker_historical_registry{}; ///< Ticker historical registry, key is the ticker
 
       public:
         //! Constructor
-        coinpaprika_provider(entt::registry& registry, mm2& mm2_instance);
+        coinpaprika_provider(entt::registry& registry, mm2_service& mm2_instance);
 
         //! Destructor
         ~coinpaprika_provider() noexcept final;
