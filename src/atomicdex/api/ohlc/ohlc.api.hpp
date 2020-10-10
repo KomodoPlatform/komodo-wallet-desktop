@@ -16,6 +16,9 @@
 
 #pragma once
 
+//! SDT
+#include <optional>
+
 //! Deps
 #include <nlohmann/json.hpp>
 

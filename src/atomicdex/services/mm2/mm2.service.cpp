@@ -15,14 +15,15 @@
  ******************************************************************************/
 
 //! PCH
-#include "src/atomicdex/pch.hpp"
+#include "atomicdex/pch.hpp"
 
 //! Project Headers
 #include "atomicdex/config/mm2.cfg.hpp"
 #include "atomicdex/services/mm2/mm2.service.hpp"
-#include "src/atomicdex/managers/qt.wallet.manager.hpp"
-#include "src/atomicdex/utilities/security.utilities.hpp"
-#include "src/atomicdex/version/version.hpp"
+#include "atomicdex/managers/qt.wallet.manager.hpp"
+#include "atomicdex/utilities/kill.hpp"
+#include "atomicdex/utilities/security.utilities.hpp"
+#include "atomicdex/version/version.hpp"
 
 //! Anonymous functions
 namespace
