@@ -14,7 +14,7 @@
 #include "QZXing.h"
 
 //! PCH Headers
-#include "atomic.dex.pch.hpp"
+#include "atomicdex/pch.hpp"
 
 //! Deps
 #include <sodium/core.h>
@@ -26,12 +26,12 @@
 #endif
 
 //! Project Headers
-#include "atomic.dex.app.hpp"
-#include "atomic.dex.kill.hpp"
-#include "atomic.dex.qt.portfolio.model.hpp"
+#include "atomicdex/app.hpp"
+#include "atomicdex/models/qt.portfolio.model.hpp"
+#include "atomicdex/utilities/kill.hpp"
 
 #ifdef __APPLE__
-#    include "atomic.dex.osx.manager.hpp"
+#    include "atomicdex/platform/osx/manager.hpp"
 #endif
 
 inline constexpr size_t g_qsize_spdlog             = 10240;
@@ -43,8 +43,8 @@ inline constexpr size_t g_spdlog_max_file_rotation = 3;
 void
 signal_handler(int signal)
 {
-    spdlog::trace("sigabort received, cleaning mm2");
-    atomic_dex::kill_executable("mm2");
+    spdlog::trace("sigabort received, cleaning mm2.service");
+    atomic_dex::kill_executable("mm2.service");
 #if defined(linux)
     boost::stacktrace::safe_dump_to("./backtrace.dump");
 #endif
@@ -93,8 +93,8 @@ init_sodium()
 static void
 clean_previous_run()
 {
-    spdlog::info("cleaning previous mm2 instance");
-    atomic_dex::kill_executable("mm2");
+    spdlog::info("cleaning previous mm2.service instance");
+    atomic_dex::kill_executable("mm2.service");
 }
 
 static void

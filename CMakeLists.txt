@@ -19,22 +19,6 @@ endif ()
 ##! We include the module from CMake for fetching dependencies
 include(FetchContent)
 
-##! We declare information about the dependance that we want to fetch.
-#FetchContent_Declare(
-#        antara-gaming-sdk
-#        URL https://github.com/KomodoPlatform/antara-gaming-sdk/archive/master.zip
-
-#)
-
-#set(ANTARA_USE_VCPKG ON)
-#set(ENABLE_BLOCKCHAIN_MODULES ON)
-
-#FetchContent_GetProperties(antara-gaming-sdk)
-#if (NOT antara-gaming-sdk_POPULATED)
-#    FetchContent_Populate(antara-gaming-sdk)
-#    add_subdirectory(${antara-gaming-sdk_SOURCE_DIR} ${antara-gaming-sdk_BINARY_DIR} EXCLUDE_FROM_ALL)
-#endif ()
-
 if (${CMAKE_SYSTEM_NAME} STREQUAL "Linux")
     set(LINUX TRUE)
 endif ()
@@ -138,49 +122,76 @@ message(STATUS "${TS_FILES}")
 ##! Atomic QT Shared Deps Between main executable and unit tests
 add_library(atomicdex-desktop_shared_deps INTERFACE)
 target_sources(atomicdex-desktop_shared_deps INTERFACE
-        ${CMAKE_SOURCE_DIR}/src/atomic.dex.kill.cpp
-        ${CMAKE_SOURCE_DIR}/src/atomic.dex.qt.internet.checker.service.cpp
-        ${CMAKE_SOURCE_DIR}/src/atomic.dex.qt.ip.checker.service.cpp
-        ${CMAKE_SOURCE_DIR}/src/atomic.dex.app.cpp
-        ${CMAKE_SOURCE_DIR}/src/atomic.dex.cpprestsdk.utilities.cpp
-        ${CMAKE_SOURCE_DIR}/src/atomic.dex.cfg.cpp
-        ${CMAKE_SOURCE_DIR}/src/atomic.dex.mm2.cpp
-        ${CMAKE_SOURCE_DIR}/src/atomic.dex.coins.config.cpp
-        ${CMAKE_SOURCE_DIR}/src/atomic.dex.mm2.api.cpp
-        ${CMAKE_SOURCE_DIR}/src/atomic.dex.mm2.error.code.cpp
-        ${CMAKE_SOURCE_DIR}/src/atomic.dex.provider.coinpaprika.api.cpp
-        ${CMAKE_SOURCE_DIR}/src/atomic.dex.qt.bindings.cpp
-        ${CMAKE_SOURCE_DIR}/src/atomic.dex.provider.coinpaprika.cpp
-        ${CMAKE_SOURCE_DIR}/src/atomic.dex.provider.cex.prices.api.cpp
-        ${CMAKE_SOURCE_DIR}/src/atomic.dex.provider.cex.prices.cpp
-        ${CMAKE_SOURCE_DIR}/src/atomic.dex.qt.wallet.manager.cpp
-        ${CMAKE_SOURCE_DIR}/src/atomic.dex.qt.utilities.cpp
-        ${CMAKE_SOURCE_DIR}/src/atomic.dex.wallet.config.cpp
-        ${CMAKE_SOURCE_DIR}/src/atomic.dex.security.cpp
-        ${CMAKE_SOURCE_DIR}/src/atomic.dex.update.service.cpp
-        ${CMAKE_SOURCE_DIR}/src/atomic.dex.notification.manager.cpp
-        ${CMAKE_SOURCE_DIR}/src/atomic.dex.qt.orders.model.cpp
-        ${CMAKE_SOURCE_DIR}/src/atomic.dex.qt.orders.proxy.model.cpp
-        ${CMAKE_SOURCE_DIR}/src/atomic.dex.qt.candlestick.charts.model.cpp
-        ${CMAKE_SOURCE_DIR}/src/atomic.dex.qt.addressbook.model.cpp
-        ${CMAKE_SOURCE_DIR}/src/atomic.dex.qt.addressbook.proxy.filter.model.cpp
-        ${CMAKE_SOURCE_DIR}/src/atomic.dex.qt.contact.model.cpp
-        ${CMAKE_SOURCE_DIR}/src/atomic.dex.qt.trading.page.cpp
-        ${CMAKE_SOURCE_DIR}/src/atomic.dex.qt.market.pairs.cpp
-        ${CMAKE_SOURCE_DIR}/src/atomic.dex.qt.settings.page.cpp
-        ${CMAKE_SOURCE_DIR}/src/atomic.dex.qt.orderbook.cpp
-        ${CMAKE_SOURCE_DIR}/src/atomic.dex.qt.orderbook.model.cpp
-        ${CMAKE_SOURCE_DIR}/src/atomic.dex.qt.orderbook.proxy.model.cpp
-        ${CMAKE_SOURCE_DIR}/src/atomic.dex.qt.portfolio.model.cpp
-        ${CMAKE_SOURCE_DIR}/src/atomic.dex.qt.portfolio.page.cpp
-        ${CMAKE_SOURCE_DIR}/src/atomic.dex.qt.portfolio.proxy.filter.model.cpp
-        ${CMAKE_SOURCE_DIR}/src/atomic.dex.global.price.service.cpp
-        ${CMAKE_SOURCE_DIR}/src/atomic.dex.band.oracle.price.service.cpp
-        ${CMAKE_SOURCE_DIR}/src/atomic.dex.qt.wallet.transactions.model.cpp
-        ${CMAKE_SOURCE_DIR}/src/atomic.dex.qt.wallet.transactions.proxy.filter.model.cpp
-        ${CMAKE_SOURCE_DIR}/src/atomic.dex.qt.wallet.page.cpp
-        $<$<PLATFORM_ID:Darwin>:${CMAKE_SOURCE_DIR}/src/osx/atomic.dex.osx.manager.mm>
+        ##! App
+        ${CMAKE_SOURCE_DIR}/src/atomicdex/app.cpp
+
+        ##! Utilities
+        ${CMAKE_SOURCE_DIR}/src/atomicdex/utilities/kill.cpp
+        ${CMAKE_SOURCE_DIR}/src/atomicdex/utilities/cpprestsdk.utilities.cpp
+        ${CMAKE_SOURCE_DIR}/src/atomicdex/utilities/qt.utilities.cpp
+        ${CMAKE_SOURCE_DIR}/src/atomicdex/utilities/qt.bindings.cpp
+        ${CMAKE_SOURCE_DIR}/src/atomicdex/utilities/security.utilities.cpp
+
+        ##! Constants
+        ${CMAKE_SOURCE_DIR}/src/atomicdex/constants/mm2.error.code.cpp
+
+        ##! Config
+        ${CMAKE_SOURCE_DIR}/src/atomicdex/config/app.cfg.cpp
+        ${CMAKE_SOURCE_DIR}/src/atomicdex/config/coins.cfg.cpp
+        ${CMAKE_SOURCE_DIR}/src/atomicdex/config/wallet.cfg.cpp
+
+        ##! Managers
+        ${CMAKE_SOURCE_DIR}/src/atomicdex/managers/notification.manager.cpp
+        ${CMAKE_SOURCE_DIR}/src/atomicdex/managers/qt.wallet.manager.cpp
+
+        ##! API
+        ${CMAKE_SOURCE_DIR}/src/atomicdex/api/ohlc/ohlc.api.cpp
+        ${CMAKE_SOURCE_DIR}/src/atomicdex/api/mm2/mm2.cpp
+        ${CMAKE_SOURCE_DIR}/src/atomicdex/api/coinpaprika/coinpaprika.cpp
+
+        ##! Models
+        ${CMAKE_SOURCE_DIR}/src/atomicdex/models/qt.orders.model.cpp
+        ${CMAKE_SOURCE_DIR}/src/atomicdex/models/qt.orders.proxy.model.cpp
+        ${CMAKE_SOURCE_DIR}/src/atomicdex/models/qt.candlestick.charts.model.cpp
+        ${CMAKE_SOURCE_DIR}/src/atomicdex/models/qt.addressbook.model.cpp
+        ${CMAKE_SOURCE_DIR}/src/atomicdex/models/qt.addressbook.proxy.filter.model.cpp
+        ${CMAKE_SOURCE_DIR}/src/atomicdex/models/qt.contact.model.cpp
+        ${CMAKE_SOURCE_DIR}/src/atomicdex/models/qt.orderbook.model.cpp
+        ${CMAKE_SOURCE_DIR}/src/atomicdex/models/qt.orderbook.proxy.model.cpp
+        ${CMAKE_SOURCE_DIR}/src/atomicdex/models/qt.portfolio.model.cpp
+        ${CMAKE_SOURCE_DIR}/src/atomicdex/models/qt.wallet.transactions.model.cpp
+        ${CMAKE_SOURCE_DIR}/src/atomicdex/models/qt.wallet.transactions.proxy.filter.model.cpp
+        ${CMAKE_SOURCE_DIR}/src/atomicdex/models/qt.portfolio.proxy.filter.model.cpp
+
+        ##ToClass
+
+        ##! Widgets
+        ${CMAKE_SOURCE_DIR}/src/atomicdex/widgets/dex/qt.market.pairs.cpp
+        ${CMAKE_SOURCE_DIR}/src/atomicdex/widgets/dex/qt.orderbook.cpp
+
+        ##! Pages
+        ${CMAKE_SOURCE_DIR}/src/atomicdex/pages/qt.trading.page.cpp
+        ${CMAKE_SOURCE_DIR}/src/atomicdex/pages/qt.settings.page.cpp
+        ${CMAKE_SOURCE_DIR}/src/atomicdex/pages/qt.portfolio.page.cpp
+        ${CMAKE_SOURCE_DIR}/src/atomicdex/pages/qt.wallet.page.cpp
+
+        ##! Services
+        ${CMAKE_SOURCE_DIR}/src/atomicdex/services/price/global.provider.cpp
+        ${CMAKE_SOURCE_DIR}/src/atomicdex/services/price/coinpaprika/coinpaprika.provider.cpp
+        ${CMAKE_SOURCE_DIR}/src/atomicdex/services/price/oracle/band.provider.cpp
+        ${CMAKE_SOURCE_DIR}/src/atomicdex/services/update/update.checker.service.cpp
+        ${CMAKE_SOURCE_DIR}/src/atomicdex/services/ohlc/ohlc.provider.cpp
+        ${CMAKE_SOURCE_DIR}/src/atomicdex/services/mm2/mm2.service.cpp
+        ${CMAKE_SOURCE_DIR}/src/atomicdex/services/internet/internet.checker.service.cpp
+        ${CMAKE_SOURCE_DIR}/src/atomicdex/services/ip/ip.checker.service.cpp
+
+        ##! Platform
+        $<$<PLATFORM_ID:Darwin>:${CMAKE_SOURCE_DIR}/src/atomicdex/platform/osx/manager.mm>
+
+        ##! QRC
         ${CMAKE_SOURCE_DIR}/qml.qrc
+
+        ##! Linguistic Files
         ${qmFiles}
         )
 
@@ -202,7 +213,6 @@ target_link_libraries(atomicdex-desktop_shared_deps
         Qt5::Widgets
         qzxing
         antara::world
-        #antara::http_client
         Boost::filesystem
         Boost::random
         unofficial-sodium::sodium
@@ -232,18 +242,20 @@ add_executable(atomicdex-desktop MACOSX_BUNDLE ${ICON}
 
 ##! Testing executable
 add_executable(atomicdex-desktop_tests MACOSX_BUNDLE ${ICON}
-        src/atomic.dex.tests.cpp
-        src/atomic.dex.wallet.config.tests.cpp
-        src/atomic.dex.utilities.tests.cpp
-        src/atomic.dex.provider.cex.prices.tests.cpp
-        src/atomic.dex.qt.utilities.tests.cpp
-        src/atomic.dex.provider.cex.prices.api.tests.cpp)
+        src/atomicdex/tests/atomic.dex.tests.cpp
+        src/atomicdex/tests/atomic.dex.wallet.config.tests.cpp
+        src/atomicdex/tests/atomic.dex.utilities.tests.cpp
+        src/atomicdex/tests/atomic.dex.provider.cex.prices.tests.cpp
+        src/atomicdex/tests/atomic.dex.qt.utilities.tests.cpp
+        src/atomicdex/tests/atomic.dex.provider.cex.prices.api.tests.cpp)
 
 target_link_libraries(atomicdex-desktop
         PRIVATE
         atomicdex-desktop_shared_deps
         $<$<PLATFORM_ID:Darwin>:/usr/local/lib/libcurl.a>
         )
+
+target_include_directories(atomicdex-desktop PUBLIC src)
 
 target_link_libraries(atomicdex-desktop_tests
         PRIVATE
@@ -264,7 +276,7 @@ set_target_properties(${PROJECT_NAME}_tests
 
 
 if (NOT APPLE)
-    target_precompile_headers(${PROJECT_NAME} PRIVATE src/atomic.dex.pch.hpp)
+    target_precompile_headers(${PROJECT_NAME} PRIVATE src/atomicdex/pch.hpp)
 endif ()
 #target_enable_tsan(atomicdex-desktop_tests)
 #target_enable_asan(atomicdex-desktop)
