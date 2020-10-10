@@ -38,7 +38,7 @@ find_package(range-v3 CONFIG REQUIRED)
 
 FetchContent_Declare(
         refl-cpp
-        URL https://github.com/veselink1/refl-cpp/archive/v0.6.3.zip
+        URL https://github.com/KomodoPlatform/refl-cpp/archive/v0.6.5.zip
 )
 
 FetchContent_Declare(
