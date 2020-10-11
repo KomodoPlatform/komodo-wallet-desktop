@@ -1,41 +1,41 @@
-[![Build Status](https://travis-ci.org/KomodoPlatform/komodo.svg?branch=master)](https://travis-ci.org/KomodoPlatform/atomicdex-pro)
-[![Version](https://img.shields.io/github/v/release/komodoplatform/atomicdex-pro?include_prereleases)](https://github.com/KomodoPlatform/atomicdex-pro/releases)
-[![Issues](https://img.shields.io/github/issues-raw/komodoplatform/atomicdex-pro)](https://github.com/KomodoPlatform/atomicdex-pro/issues)
-[![PRs](https://img.shields.io/github/issues-pr-closed/komodoplatform/atomicdex-pro)](https://github.com/KomodoPlatform/atomicdex-pro/pulls)
-[![Commits](https://img.shields.io/github/commit-activity/y/komodoplatform/atomicdex-pro)](https://github.com/KomodoPlatform/atomicdex-pro/commits/dev)
-[![Contributors](https://img.shields.io/github/contributors/komodoplatform/atomicdex-pro)](https://github.com/KomodoPlatform/atomicdex-pro/graphs/contributors)
-[![Last Commit](https://img.shields.io/github/last-commit/komodoplatform/atomicdex-pro/dev)](https://github.com/KomodoPlatform/atomicdex-pro/graphs/commit-activity)
+[![Build Status](https://travis-ci.org/KomodoPlatform/komodo.svg?branch=master)](https://travis-ci.org/KomodoPlatform/atomicdex-desktop)
+[![Version](https://img.shields.io/github/v/release/komodoplatform/atomicdex-desktop?include_prereleases)](https://github.com/KomodoPlatform/atomicdex-desktop/releases)
+[![Issues](https://img.shields.io/github/issues-raw/komodoplatform/atomicdex-desktop)](https://github.com/KomodoPlatform/atomicdex-desktop/issues)
+[![PRs](https://img.shields.io/github/issues-pr-closed/komodoplatform/atomicdex-desktop)](https://github.com/KomodoPlatform/atomicdex-desktop/pulls)
+[![Commits](https://img.shields.io/github/commit-activity/y/komodoplatform/atomicdex-desktop)](https://github.com/KomodoPlatform/atomicdex-desktop/commits/dev)
+[![Contributors](https://img.shields.io/github/contributors/komodoplatform/atomicdex-desktop)](https://github.com/KomodoPlatform/atomicdex-desktop/graphs/contributors)
+[![Last Commit](https://img.shields.io/github/last-commit/komodoplatform/atomicdex-desktop/dev)](https://github.com/KomodoPlatform/atomicdex-desktop/graphs/commit-activity)
 
-[![gitstars](https://img.shields.io/github/stars/komodoplatform/atomicdex-pro?style=social)](https://github.com/KomodoPlatform/atomicdex-pro/stargazers)
+[![gitstars](https://img.shields.io/github/stars/komodoplatform/atomicdex-desktop?style=social)](https://github.com/KomodoPlatform/atomicdex-desktop/stargazers)
 [![twitter](https://img.shields.io/twitter/follow/atomicdex?style=social)](https://twitter.com/atomicdex)
 [![discord](https://img.shields.io/discord/412898016371015680)](https://discord.gg/tvp96Gf)
-[![discord](https://img.shields.io/github/downloads/komodoplatform/atomicdex-pro/total)](https://github.com/KomodoPlatform/atomicdex-pro/release)
+[![discord](https://img.shields.io/github/downloads/komodoplatform/atomicdex-desktop/total)](https://github.com/KomodoPlatform/atomicdex-desktop/release)
 
 #
 
-# AtomicDEX-PRO alpha
+# AtomicDEX-Desktop alpha
 
 [![atomicDEX](https://i.ibb.co/D5GJLWy/adex.png)](https://atomicdex.io)
 
-## [AtomicDEX](https://atomicdex.io) Desktop GUI application for Linux, MacOS and Windows. 
+## [AtomicDEX](https://atomicdex.io) Desktop GUI application for Linux, MacOS and Windows.
 
 [![atomicDEX mobile](https://i.imgur.com/kxkOQ5v.gif)](https://atomicdex.io)
 
 
 ## Get Started
 
-Follow the OS specific [build instructions](https://github.com/KomodoPlatform/atomicDEX-Pro/tree/master/ci_tools_atomic_dex#linux-quickstart) if you know what you are doing.
+Follow the OS specific [build instructions](https://github.com/KomodoPlatform/atomicDEX-Desktop/tree/master/ci_tools_atomic_dex#linux-quickstart) if you know what you are doing.
 
-You can [download](https://github.com/KomodoPlatform/atomicDEX-Pro/releases) the pre-built <b>alpha</b> binaries on our [github release page](https://github.com/KomodoPlatform/atomicDEX-Pro/releases).
+You can [download](https://github.com/KomodoPlatform/atomicDEX-Desktop/releases) the pre-built <b>alpha</b> binaries on our [github release page](https://github.com/KomodoPlatform/atomicDEX-Desktop/releases).
 
 Please join our [discord server](https://komodoplatform.com/discord) discussions around atomicDEX and general UI/UX feedback.
 
-## AtomicDEX mobile 
+## AtomicDEX mobile
 
 Check out AtomicDEX mobile, available for [Android and iOS](https://atomicdex.io) [![atomicDEX mobile](https://s5.gifyu.com/images/atomicdex_animation_small2.gif)](https://atomicdex.io)
 ## License
 
-For details please refer to our [license](https://github.com/KomodoPlatform/atomicDEX-Pro/blob/master/LICENSE).
+For details please refer to our [license](https://github.com/KomodoPlatform/atomicDEX-Desktop/blob/master/LICENSE).
 
 This is experimental alpha software - use at your own risk!
 
@@ -134,7 +134,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 ## Dependencies Managed by Self-Hosting github fork
 
-- [qsxing](https://github.com/KomodoPlatform/qzxing/archive/master.zip) 
+- [qsxing](https://github.com/KomodoPlatform/qzxing/archive/master.zip)
 Qt/QML wrapper library for the ZXing library. 1D/2D barcode image processing library
 - [libwally](https://github.com/KomodoPlatform/libwally-core) Useful primitives for wallets (Windows/OSX)
 - [libbitcoin-system](https://github.com/KomodoPlatform/libbitcoin-system) Bitcoin Cross-Platform C++ Development Toolkit https://libbitcoin.org/
