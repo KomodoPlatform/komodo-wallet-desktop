@@ -12,6 +12,10 @@ ninja:compiler.libcxx=libc++
 boost:compiler=apple-clang
 boost:compiler.version=12.0
 boost:compiler.libcxx=libc++
+libmysqlclient:compiler=apple-clang
+libmysqlclient:compiler.version=12.0
+libmysqlclient:compiler.libcxx=libc++
+
 
 [options]
 boost:shared=False
@@ -25,3 +29,5 @@ ninja:CC=clang
 ninja:CXX=clang++
 boost:CC=clang
 boost:CXX=clang++
+libmysqlclient:CC=clang
+libmysqlclient:CXX=clang++

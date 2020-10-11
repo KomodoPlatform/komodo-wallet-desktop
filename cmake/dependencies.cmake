@@ -57,6 +57,8 @@ add_library(komodo-folly::folly ALIAS komodo-folly)
 
 find_package(Qt5 COMPONENTS Core Quick LinguistTools Svg Charts Widgets REQUIRED)
 
+#find_package(Qt5)
+
 set(BUILD_TESTING OFF CACHE BOOL "Override option" FORCE)
 set(REPROC++ ON CACHE BOOL "" FORCE)
 

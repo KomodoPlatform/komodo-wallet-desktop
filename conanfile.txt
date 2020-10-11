@@ -12,12 +12,21 @@ openssl/1.1.1h
 entt/3.3.2
 cpprestsdk/2.10.16
 taskflow/2.5.0
+qt/5.15.0
 
 [options]
 nlohmann_json:multiple_headers=True
+qt:qttools=True
+qt:qtdeclarative=True
+qt:qtrepotools=True
+qt:qtlocation=True
+qt:qttranslations=True
+qt:qtsvg=True
+qt:qtcharts=True
 
 [build_requires]
 
 [generators]
+cmake
 cmake_find_package
 cmake_paths
