@@ -9,11 +9,19 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-
-if (WIN32)
-    find_package(ZLIB)
-    set(BUILD_SHARED_LIBS OFF CACHE BOOL "Override option" FORCE)
+if (EXISTS ${CMAKE_BINARY_DIR}/conan_paths.cmake)
+    set(CONAN_ENABLED ON)
+    message(STATUS "Conan package manager enabled")
+    include(${CMAKE_BINARY_DIR}/conan_paths.cmake)
+    #    include(${CMAKE_BINARY_DIR}/conanbuildinfo_multi.cmake)
+else ()
+    message(STATUS "VCPKG package manager enabled")
 endif ()
+
+list(APPEND CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake)
+include(antara)
+##! Calling this macros provided by the sdk will if you are on Apple init the environment for this OS (std::filesystem).
+init_antara_env()
 
 ##! Antara
 ##! We include the module from CMake for fetching dependencies
@@ -68,11 +76,6 @@ if (NOT libqr_code_POPULATED)
     add_subdirectory(${libqr_code_SOURCE_DIR}/src ${libqr_code_BINARY_DIR} EXCLUDE_FROM_ALL)
 endif ()
 
-set(CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake)
-include(antara)
-##! Calling this macros provided by the sdk will if you are on Apple init the environment for this OS (std::filesystem).
-init_antara_env()
-
 add_subdirectory(vendor/antara-gaming_sdk/modules)
 
 ##! Get basis assets (default fonts, etc)
@@ -83,14 +86,14 @@ set(ICON)
 configure_icon_osx(data/osx/atomicdex-desktop.icns ICON atomicdex-desktop.icns)
 ##! End antara
 
-find_package(date CONFIG REQUIRED)
-find_package(doctest CONFIG REQUIRED)
-find_package(folly CONFIG REQUIRED)
-find_package(spdlog CONFIG REQUIRED)
-find_package(cpprestsdk CONFIG REQUIRED)
-find_package(Boost REQUIRED COMPONENTS filesystem random)
-find_package(Qt5 COMPONENTS Core Quick LinguistTools Svg Charts Widgets REQUIRED)
-find_package(unofficial-sodium CONFIG REQUIRED)
+add_library(komodo-sodium INTERFACE)
+if (CONAN_ENABLED)
+    find_package(libsodium REQUIRED)
+else ()
+    find_package(unofficial-sodium CONFIG REQUIRED)
+    target_link_libraries(komodo-sodium INTERFACE unofficial-sodium::sodium)
+endif ()
+add_library(komodo-sodium::sodium ALIAS komodo-sodium)
 add_library(unofficial-bitcoin INTERFACE)
 if (WIN32)
     target_link_directories(unofficial-bitcoin INTERFACE wally)
@@ -213,16 +216,17 @@ target_link_libraries(atomicdex-desktop_shared_deps
         Qt5::Widgets
         qzxing
         antara::world
-        Boost::filesystem
         Boost::random
-        unofficial-sodium::sodium
+        Boost::filesystem
+        komodo-sodium::sodium
         unofficial-btc::bitcoin
         reproc++
-        Folly::folly
-        date::tz
-        Folly::folly_deps
-        spdlog::spdlog
-        spdlog::spdlog_header_only
+        komodo-date::date
+        komodo-folly::folly
+        komodo-taskflow::taskflow
+        nlohmann_json::nlohmann_json
+        #spdlog::spdlog
+        #spdlog::spdlog_header_only
         cpprestsdk::cpprest
         Qaterial
         )
