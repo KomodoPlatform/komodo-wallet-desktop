@@ -151,7 +151,7 @@ namespace atomic_dex
         spdlog::info("fetching internet status begin");
 
         query_internet(g_google_proxy_http_client, "", &internet_service_checker::is_google_reacheable);
-        query_internet(g_paprika_proxy_http_client, "/v1/coins/btc-bitcoin", &internet_service_checker::is_google_reacheable);
+        query_internet(g_paprika_proxy_http_client, "/v1/coins/btc-bitcoin", &internet_service_checker::is_paprika_provider_alive);
         query_internet(g_ohlc_proxy_http_client, "/api/v1/ohlc/tickers_list", &internet_service_checker::is_our_private_endpoint_reacheable);
     }
 } // namespace atomic_dex
