@@ -5,7 +5,7 @@ fmt/6.0.0@bincrafters/stable
 nlohmann_json/3.9.1
 range-v3/0.11.0@ericniebler/stable
 date/3.0.0
-folly/2020.08.10.00
+folly/2019.10.21.00
 spdlog/1.8.0
 boost/1.74.0
 openssl/1.1.1h
@@ -23,6 +23,9 @@ qt:qtlocation=True
 qt:qttranslations=True
 qt:qtsvg=True
 qt:qtcharts=True
+qt:qtmultimedia=True
+qt:qtquickcontrols=True
+qt:qtquickcontrols2=True
 
 [build_requires]
 
@@ -30,3 +33,6 @@ qt:qtcharts=True
 cmake
 cmake_find_package
 cmake_paths
+
+[imports]
+bin, *.dll -> ./bin

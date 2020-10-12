@@ -25,17 +25,29 @@ add_library(komodo-taskflow::taskflow ALIAS komodo-taskflow)
 if (CONAN_ENABLED)
     if (NOT TARGET Boost::filesystem)
         #message(FATAL_ERROR "Boost Filesystem not found")
-        add_library(Boost::filesystem INTERFACE IMPORTED)
-        target_link_libraries(Boost::filesystem INTERFACE
-                CONAN_LIB::Boost_boost_filesystem
-                CONAN_LIB::Boost_boost_system
-                Boost::Boost)
+		add_library(Boost::filesystem INTERFACE IMPORTED)
+		if (WIN32)
+			target_link_libraries(Boost::filesystem INTERFACE
+					CONAN_LIB::Boost_libboost_filesystem
+					CONAN_LIB::Boost_libboost_system
+					Boost::Boost)
+		else()
+			
+			target_link_libraries(Boost::filesystem INTERFACE
+					CONAN_LIB::Boost_boost_filesystem
+					CONAN_LIB::Boost_boost_system
+					Boost::Boost)
+		endif()
     endif ()
 
     if (NOT TARGET Boost::random)
         #message(FATAL_ERROR "Boost Filesystem not found")
         add_library(Boost::random INTERFACE IMPORTED)
-        target_link_libraries(Boost::random INTERFACE CONAN_LIB::Boost_boost_random)
+		if (WIN32)
+			target_link_libraries(Boost::random INTERFACE CONAN_LIB::Boost_libboost_random)
+		else()
+			target_link_libraries(Boost::random INTERFACE CONAN_LIB::Boost_boost_random)
+		endif()
     endif ()
 endif ()
 
