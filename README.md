@@ -22,18 +22,18 @@
 
 ## Useful links
 
-- :book: [AtomicDex Documentation](https://developers.komodoplatform.com/basic-docs/atomicdex/atomicdex-tutorials/introduction-to-atomicdex.html)
-- :link: [AtomicDex Website](https://atomicdex.io/)
-- :speech_balloon: [AtomicDex Discord](https://discord.gg/tvp96Gf)
-- :hammer_and_wrench: [AtomicDex Development Boards](https://github.com/KomodoPlatform/atomicDEX-Desktop/projects)
+- :book: [AtomicDEX Documentation](https://developers.komodoplatform.com/basic-docs/atomicdex/atomicdex-tutorials/introduction-to-atomicdex.html)
+- :link: [AtomicDEX Website](https://atomicdex.io/)
+- :speech_balloon: [AtomicDEX Discord](https://discord.gg/tvp96Gf)
+- :hammer_and_wrench: [AtomicDEX Development Boards](https://github.com/KomodoPlatform/atomicDEX-Desktop/projects)
 
 ## What is AtomicDEX?
 
 AtomicDEX is a secure wallet and non-custodial decentralized exchange rolled into one application. Store your coins, trade peer-to-peer with minimal fees and never give up control over your digital assets.
 
-## On which platforms can I use AtomicDex Desktop?
+## On which platforms can I use AtomicDEX Desktop?
 
-AtomicDex Desktop has been tested on the following platforms :
+AtomicDEX Desktop has been tested on the following platforms :
 
 - Windows 10
 - Linux (Ubuntu 18.04)
