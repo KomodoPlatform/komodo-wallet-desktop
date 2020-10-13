@@ -171,7 +171,7 @@ init_timezone_db()
 
 #if defined(WINDOWS_RELEASE_MAIN)
 INT WINAPI
-WinMain(HINSTANCE hInst, HINSTANCE, LPSTR strCmdLine, INT)
+WinMain([[maybe_unused]] HINSTANCE hInst, HINSTANCE, [[maybe_unused]] LPSTR strCmdLine, INT)
 #else
 
 int

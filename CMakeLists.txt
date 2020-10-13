@@ -304,14 +304,36 @@ if (LINUX)
 endif ()
 
 if (WIN32)
+	add_compile_definitions(_CRT_SECURE_NO_WARNINGS)
     file(COPY assets DESTINATION ${CMAKE_BINARY_DIR}/bin/)
     configure_file(wally/wally.dll ${CMAKE_BINARY_DIR}/bin/ COPYONLY)
     set_target_properties(Folly::folly PROPERTIES INTERFACE_COMPILE_OPTIONS "")
     if (CMAKE_BUILD_TYPE MATCHES Release)
         message(STATUS "disabling console")
         target_compile_definitions(atomicdex-desktop PRIVATE WINDOWS_RELEASE_MAIN)
+		target_compile_options(atomicdex-desktop PRIVATE -Wno-deprecated-declarations)
         target_link_options(atomicdex-desktop PUBLIC --for-linker -subsystem:windows)
     endif ()
+	set(WINDEPLOYQT_PATH "")
+	if (CONAN_ENABLED)
+		set(WINDEPLOYQT_PATH ${CONAN_QT_ROOT}/bin/windeployqt.exe)
+	else()
+		set(WINDEPLOYQT_PATH $ENV{QT_INSTALL_CMAKE_PATH}/bin/windeployqt.exe)
+	endif()
+	
+	if (EXISTS ${WINDEPLOYQT_PATH})
+		message(STATUS "windeployqt path is -> ${WINDEPLOYQT_PATH}")
+	else ()
+		message(FATAL_ERROR "Didn't find windeployqt ${WINDEPLOYQT_PATH}")
+	endif ()
+	#bin --qmldir
+	add_custom_command(TARGET atomicdex-desktop PRE_BUILD
+                   COMMAND ${CMAKE_COMMAND} -E copy_directory
+                       ${CMAKE_SOURCE_DIR}/ci_tools_atomic_dex/windows_misc $<TARGET_FILE_DIR:atomicdex-desktop>)
+	add_custom_command(TARGET atomicdex-desktop
+        POST_BUILD
+        COMMAND ${WINDEPLOYQT_PATH} ${CMAKE_BINARY_DIR}/bin --qmldir ${CMAKE_SOURCE_DIR}/atomic_defi_design/qml
+        )
 endif ()
 
 if (APPLE)

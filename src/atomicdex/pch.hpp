@@ -1,7 +1,9 @@
 #pragma once
 
 #if defined(_WIN32) || defined(WIN32)
-	#define GLOG_NO_ABBREVIATED_SEVERITIES
+	#ifndef GLOG_NO_ABBREVIATED_SEVERITIES
+		#define GLOG_NO_ABBREVIATED_SEVERITIES
+	#endif
 #endif
 
 //! Global Helpers
