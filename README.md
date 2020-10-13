@@ -44,7 +44,7 @@ AtomicDEX Desktop has been tested on the following platforms :
 
 You can [download](https://github.com/KomodoPlatform/atomicDEX-Desktop/releases) the pre-built <b>beta</b> binaries on our [GitHub release page](https://github.com/KomodoPlatform/atomicDEX-Desktop/releases).
 
-Please join our [discord server](https://komodoplatform.com/discord) discussions around atomicDEX and general UI/UX feedback.
+Please join our [Discord Server](https://komodoplatform.com/discord) discussions around atomicDEX and general UI/UX feedback.
 
 ## AtomicDEX mobile
 
