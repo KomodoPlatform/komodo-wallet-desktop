@@ -142,64 +142,6 @@ macro(magic_game_app_image_generation from_dir desktop_file appdata_file app_ico
     endif ()
 endmacro()
 
-macro(import_antara_dlls TARGET_NAME)
-    if (WIN32)
-        get_target_property(target_runtime_directory ${TARGET_NAME} RUNTIME_OUTPUT_DIRECTORY)
-        message(STATUS "target: ${TARGET_NAME}, output_directory: ${target_runtime_directory}")
-        set(ANTARA_DLLS "")
-        if (ENABLE_BLOCKCHAIN_MODULES)
-            message(STATUS "importing blockchain DLLs")
-            ADD_CUSTOM_COMMAND(TARGET ${TARGET_NAME} POST_BUILD
-                    COMMAND ${CMAKE_COMMAND} -E copy_directory "${reproc_BINARY_DIR}/reproc/lib" "${target_runtime_directory}"
-                    COMMENT "copying dlls …"
-                    $<TARGET_FILE_DIR:${TARGET_NAME}>
-                    )
-
-            ADD_CUSTOM_COMMAND(TARGET ${TARGET_NAME} POST_BUILD
-                    COMMAND ${CMAKE_COMMAND} -E copy_directory "${reproc_BINARY_DIR}/reproc++/lib" "${target_runtime_directory}"
-                    COMMENT "copying dlls …"
-                    $<TARGET_FILE_DIR:${TARGET_NAME}>
-                    )
-        endif ()
-        if (USE_IMGUI_ANTARA_WRAPPER)
-            if (USE_SFML_ANTARA_WRAPPER)
-                ADD_CUSTOM_COMMAND(TARGET ${TARGET_NAME}  POST_BUILD
-                        COMMAND ${CMAKE_COMMAND} -E copy "${imgui-sfml_BINARY_DIR}/ImGui-SFML.dll" "${target_runtime_directory}"
-                        COMMENT "copying dlls …"
-                        $<TARGET_FILE_DIR:${TARGET_NAME}>
-                        )
-            endif ()
-        endif ()
-
-        if (USE_SFML_ANTARA_WRAPPER)
-            ADD_CUSTOM_COMMAND(TARGET ${TARGET_NAME} POST_BUILD
-                    COMMAND ${CMAKE_COMMAND} -E copy_directory "${SFML_BINARY_DIR}/lib" "${target_runtime_directory}"
-                    COMMENT "copying dlls …"
-                    $<TARGET_FILE_DIR:${TARGET_NAME}>
-                    )
-            ADD_CUSTOM_COMMAND(TARGET ${TARGET_NAME} POST_BUILD
-                    COMMAND ${CMAKE_COMMAND} -E copy_directory "${SFML_SOURCE_DIR}/extlibs/bin/x64" "${target_runtime_directory}"
-                    COMMENT "copying dlls …"
-                    $<TARGET_FILE_DIR:${TARGET_NAME}>
-                   )
-        endif ()
-
-    endif ()
-endmacro()
-
-
-macro(get_nspv_assets output_dir)
-    IF (UNIX)
-        configure_file(${nspv_SOURCE_DIR}/nspv ${output_dir}/assets/tools/nspv COPYONLY)
-        configure_file(${nspv_SOURCE_DIR}/coins ${output_dir}/assets/tools/coins COPYONLY)
-    endif ()
-    IF (WIN32)
-        configure_file(${nspv_SOURCE_DIR}/nspv.exe ${output_dir}/assets/tools/nspv.exe COPYONLY)
-        configure_file(${nspv_SOURCE_DIR}/libwinpthread-1.dll ${output_dir}/assets/tools/libwinpthread-1.dll COPYONLY)
-        configure_file(${nspv_SOURCE_DIR}/coins ${output_dir}/assets/tools/coins COPYONLY)
-    endif ()
-endmacro()
-
 macro(init_antara_env)
     init_apple_env()
     download_app_image()

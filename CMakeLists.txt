@@ -13,19 +13,17 @@ if (EXISTS ${CMAKE_BINARY_DIR}/conan_paths.cmake)
     set(CONAN_ENABLED ON)
     message(STATUS "Conan package manager enabled")
     include(${CMAKE_BINARY_DIR}/conan_paths.cmake)
-    #include(${CMAKE_SOURCE_DIR}/build/conanbuildinfo.cmake)
-    #conan_basic_setup()
-    #    include(${CMAKE_BINARY_DIR}/conanbuildinfo_multi.cmake)
 else ()
     message(STATUS "VCPKG package manager enabled")
 endif ()
 
+##! Antara
 list(APPEND CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake)
 include(antara)
 ##! Calling this macros provided by the sdk will if you are on Apple init the environment for this OS (std::filesystem).
 init_antara_env()
 
-##! Antara
+
 ##! We include the module from CMake for fetching dependencies
 include(FetchContent)
 
@@ -38,7 +36,7 @@ if (UNIX AND NOT APPLE)
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -stdlib=libc++")
 endif ()
 
-##! We fetch our dependence
+##! We fetch our dependencies
 if (APPLE)
     FetchContent_Declare(mm2
             URL https://github.com/KomodoPlatform/atomicDEX-API/releases/download/beta-2.0.2422/mm2-31d1803b0-Darwin-Release.zip)
@@ -69,47 +67,12 @@ else ()
     configure_file(${mm2_SOURCE_DIR}/vcruntime140.dll ${CMAKE_BINARY_DIR}/bin/assets/tools/mm2/vcruntime140.dll COPYONLY)
 endif ()
 
-FetchContent_Declare(libqr_code
-        URL https://github.com/KomodoPlatform/qzxing/archive/master.zip)
-
-FetchContent_GetProperties(libqr_code)
-if (NOT libqr_code_POPULATED)
-    FetchContent_Populate(libqr_code)
-    add_subdirectory(${libqr_code_SOURCE_DIR}/src ${libqr_code_BINARY_DIR} EXCLUDE_FROM_ALL)
-endif ()
-
 add_subdirectory(vendor/antara-gaming_sdk/modules)
-
-##! Get basis assets (default fonts, etc)
-#get_resources_basics_assets(${CMAKE_CURRENT_SOURCE_DIR})
 
 ##! Osx bundle icon
 set(ICON)
 configure_icon_osx(data/osx/atomicdex-desktop.icns ICON atomicdex-desktop.icns)
 ##! End antara
-
-add_library(komodo-sodium INTERFACE)
-if (CONAN_ENABLED)
-    find_package(libsodium REQUIRED)
-else ()
-    find_package(unofficial-sodium CONFIG REQUIRED)
-    target_link_libraries(komodo-sodium INTERFACE unofficial-sodium::sodium)
-endif ()
-add_library(komodo-sodium::sodium ALIAS komodo-sodium)
-add_library(unofficial-bitcoin INTERFACE)
-if (WIN32)
-    target_link_directories(unofficial-bitcoin INTERFACE wally)
-    target_link_libraries(unofficial-bitcoin INTERFACE wally)
-    target_include_directories(unofficial-bitcoin INTERFACE wally)
-else ()
-    find_library(unofficial-secp secp256k1)
-    find_library(unofficial-wally wallycore)
-    find_path(unofficial-wally-headers wally_core.h)
-    target_link_libraries(unofficial-bitcoin INTERFACE ${unofficial-wally} ${unofficial-secp})
-    target_include_directories(unofficial-bitcoin INTERFACE ${unofficial-wally-headers})
-    message(STATUS "Found wally -> ${unofficial-wally} ${unofficial-wally-headers}")
-endif ()
-add_library(unofficial-btc::bitcoin ALIAS unofficial-bitcoin)
 
 set(CMAKE_AUTOUIC ON)
 set(CMAKE_AUTOMOC ON)
