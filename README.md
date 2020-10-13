@@ -31,6 +31,15 @@
 
 AtomicDEX is a secure wallet and non-custodial decentralized exchange rolled into one application. Store your coins, trade peer-to-peer with minimal fees and never give up control over your digital assets.
 
+## On which platforms can I use AtomicDex Desktop ?
+
+AtomicDex Desktop has been tested on the following platforms :
+
+- Windows 10
+- Linux (Ubuntu 18.04)
+- MacOS (10.13 - 10.15.7)
+
+
 ## Get Started
 
 You can [download](https://github.com/KomodoPlatform/atomicDEX-Desktop/releases) the pre-built <b>beta</b> binaries on our [github release page](https://github.com/KomodoPlatform/atomicDEX-Desktop/releases).
