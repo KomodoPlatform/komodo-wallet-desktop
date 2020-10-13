@@ -9,7 +9,6 @@ BasicModal {
     id: root
 
     property bool wrong_password: false
-    property string seed: ''
 
     function tryViewSeed() {
         if(!submit_button.enabled) return
@@ -17,8 +16,9 @@ BasicModal {
         const result = API.app.retrieve_seed(API.app.wallet_default_name, input_password.field.text)
 
         if(result !== 'wrong password') {
-            seed = result
+            seed_text.field.text = result
             wrong_password = false
+            root.nextPage()
         }
         else {
             wrong_password = true
@@ -28,17 +28,16 @@ BasicModal {
     width: 500
 
     onClosed: {
-        seed = ''
         wrong_password = false
         input_password.reset()
+        seed_text.reset()
+        currentIndex = 0
     }
 
     ModalContent {
         title: qsTr("View Seed")
 
         ColumnLayout {
-            visible: seed === ''
-
             DefaultText {
                 Layout.topMargin: 10
                 Layout.bottomMargin: 10
@@ -61,11 +60,30 @@ BasicModal {
             }
         }
 
-        TextAreaWithTitle {
-            visible: seed !== ''
+        // Buttons
+        footer: [
+            DefaultButton {
+                text: qsTr("Cancel")
+                Layout.fillWidth: true
+                onClicked: root.close()
+            },
 
+            PrimaryButton {
+                id: submit_button
+                text: qsTr("View")
+                Layout.fillWidth: true
+                enabled: input_password.isValid()
+                onClicked: tryViewSeed()
+            }
+        ]
+    }
+
+    ModalContent {
+        title: qsTr("View Seed")
+
+        TextAreaWithTitle {
+            id: seed_text
             title: qsTr("Seed")
-            field.text: seed
             field.readOnly: true
             copyable: true
         }
@@ -73,18 +91,9 @@ BasicModal {
         // Buttons
         footer: [
             DefaultButton {
-                text: seed === '' ? qsTr("Cancel") : qsTr("Close")
+                text: qsTr("Close")
                 Layout.fillWidth: true
                 onClicked: root.close()
-            },
-
-            PrimaryButton {
-                id: submit_button
-                visible: seed === ''
-                text: qsTr("View")
-                Layout.fillWidth: true
-                enabled: input_password.isValid()
-                onClicked: tryViewSeed()
             }
         ]
     }
