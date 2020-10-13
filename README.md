@@ -33,7 +33,7 @@ AtomicDEX is a secure wallet and non-custodial decentralized exchange rolled int
 
 ## On which platforms can I use AtomicDEX Desktop?
 
-AtomicDEX Desktop has been tested on the following platforms :
+AtomicDEX Desktop has been tested on the following platforms:
 
 - Windows 10
 - Linux (Ubuntu 18.04)
@@ -80,7 +80,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 | reproc        | 13.0.1        | A cross-platform (C99/C++11) process library                                                                                                    | Process             |
 | qzxing        | HEAD          | Qt/QML wrapper library for the ZXing library. 1D/2D barcode image processing library                                                            | QR                  |
 
-## How do I build it ?
+## How do I build it?
 
 ### Prerequisites
 
@@ -219,7 +219,7 @@ cd -
 
 ## Build AtomicDEX Desktop (With the CI Tools)
 
-Please clone with submodules initialization : `git clone --recurse-submodules --remote-submodules https://github.com/KomodoPlatform/atomicDEX-Desktop.git`
+Please clone with submodules initialization: `git clone --recurse-submodules --remote-submodules https://github.com/KomodoPlatform/atomicDEX-Desktop.git`
 
 Install vcpkg from within the `ci_tools_atomic_dex` folder:
 
@@ -279,7 +279,7 @@ nimble build
 
 ## Build + Bundle AtomicDEX Desktop (With CMake + Conan)
 
-Please clone without submodules initialization : `git clone https://github.com/KomodoPlatform/atomicDEX-Desktop.git`
+Please clone without submodules initialization: `git clone https://github.com/KomodoPlatform/atomicDEX-Desktop.git`
 
 In your command line, from within the `atomicDEX-Desktop`, run:
 
