@@ -15,9 +15,6 @@ TextArea {
     property bool remove_newline: true
     wrapMode: TextEdit.Wrap
 
-    KeyNavigation.priority: KeyNavigation.BeforeItem
-    KeyNavigation.backtab: nextItemInFocusChain(false)
-    KeyNavigation.tab: nextItemInFocusChain(true)
     Keys.onPressed: {
         if(event.key === Qt.Key_Return) {
             if(onReturn !== undefined) {
