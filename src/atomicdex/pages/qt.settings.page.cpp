@@ -19,7 +19,7 @@
 #include <QLocale>
 
 //! PCH
-#include "src/atomicdex/pch.hpp"
+#include "atomicdex/pch.hpp"
 
 //! Deps
 #include <boost/algorithm/string/case_conv.hpp>
@@ -27,10 +27,10 @@
 //! Project Headers
 #include "atomicdex/events/events.hpp"
 #include "atomicdex/services/mm2/mm2.service.hpp"
+#include "atomicdex/utilities/global.utilities.hpp"
+#include "atomicdex/utilities/qt.bindings.hpp"
+#include "atomicdex/utilities/qt.utilities.hpp"
 #include "qt.settings.page.hpp"
-#include "src/atomicdex/utilities/global.utilities.hpp"
-#include "src/atomicdex/utilities/qt.bindings.hpp"
-#include "src/atomicdex/utilities/qt.utilities.hpp"
 
 //! Constructo destructor
 namespace atomic_dex
@@ -85,6 +85,10 @@ namespace atomic_dex
             if (current_lang == "fr")
             {
                 return QLocale::Language::French;
+            }
+            if (current_lang == "ru")
+            {
+                return QLocale::Language::Russian;
             }
             return QLocale::Language::AnyLanguage;
         };
