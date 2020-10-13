@@ -1,4 +1,4 @@
-name: AtomicDEX Pro CI
+name: AtomicDex-Desktop CI
 
 on:
   pull_request:
