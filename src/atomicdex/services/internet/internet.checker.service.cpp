@@ -124,7 +124,7 @@ namespace atomic_dex
     {
         async_check_retrieve(client, uri)
             .then([this, p](web::http::http_response resp) {
-                bool res = resp.status_code() == 200;
+                bool res = resp.status_code() == web::http::status_codes::OK;
                 this->*p = res;
                 if (res)
                 {
