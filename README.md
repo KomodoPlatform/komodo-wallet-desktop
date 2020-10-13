@@ -18,7 +18,7 @@
 
 | CI/CD Names | Status |
 |-------------|--------|
-| Windows/Linux/MacOS  | [![GitHub All Releases](https://img.shields.io/github/workflow/status/KomodoPlatform/atomicDEX-Desktop/AtomicDex-Desktop%20CI/master?style=for-the-badge)](https://github.com/KomodoPlatform/atomicDEX-Desktop/actions) |
+| Windows/Linux/macOS  | [![GitHub All Releases](https://img.shields.io/github/workflow/status/KomodoPlatform/atomicDEX-Desktop/AtomicDex-Desktop%20CI/master?style=for-the-badge)](https://github.com/KomodoPlatform/atomicDEX-Desktop/actions) |
 
 ## Useful links
 
@@ -37,7 +37,7 @@ AtomicDex Desktop has been tested on the following platforms :
 
 - Windows 10
 - Linux (Ubuntu 18.04)
-- MacOS (10.13 - 10.15.7)
+- macOS (10.13 - 10.15.7)
 
 
 ## Get Started
