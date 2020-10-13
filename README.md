@@ -12,7 +12,7 @@
 [![gitstars](https://img.shields.io/github/stars/KomodoPlatform/atomicDEX-Desktop?style=social)](https://github.com/KomodoPlatform/atomicdex-desktop/stargazers)
 [![twitter](https://img.shields.io/twitter/follow/atomicdex?style=social)](https://twitter.com/atomicdex)
 
-[![atomicDEX Gif](https://i.imgur.com/kxkOQ5v.gif)](https://atomicdex.io)
+[![atomicDEX Gif](https://i.imgur.com/KN4i6XS.gif)](https://atomicdex.io)
 
 ## CI/CD status
 
