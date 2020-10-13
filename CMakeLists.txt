@@ -3,6 +3,8 @@ cmake_minimum_required(VERSION 3.5)
 project(atomicdex-desktop LANGUAGES CXX VERSION 0.3.0)
 
 
+option(DISABLE_GEOBLOCKING "Enable to disable geoblocking (for dev purpose)" OFF)
+
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
@@ -77,20 +79,25 @@ configure_icon_osx(data/osx/atomicdex-desktop.icns ICON atomicdex-desktop.icns)
 set(CMAKE_AUTOUIC ON)
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
+
+##Lang
 set_directory_properties(PROPERTIES CLEAN_NO_CUSTOM TRUE)
+
 set(TS_FILES
         ${CMAKE_SOURCE_DIR}/atomic_defi_design/assets/languages/atomic_defi_en.ts
         ${CMAKE_SOURCE_DIR}/atomic_defi_design/assets/languages/atomic_defi_fr.ts
         ${CMAKE_SOURCE_DIR}/atomic_defi_design/assets/languages/atomic_defi_tr.ts)
+
 set_source_files_properties(${TS_FILES} PROPERTIES OUTPUT_LOCATION "${CMAKE_SOURCE_DIR}/atomic_defi_design/assets/languages/")
+
 qt5_create_translation(QM_FILES
         ${PROJECT_SOURCE_DIR}/atomic_defi_design/qml
         ${TS_FILES}
         OPTIONS -source-language en_US -no-obsolete)
-#qt5_create_translation(QM_FILES ${CMAKE_SOURCE_DIR}/atomic_defi_design/qml ${TS_FILES})
-#qt5_add_translation(qmFiles ${TS_FILES})
+
 message(STATUS "QM FILES -> ${QM_FILES}")
 message(STATUS "TS FILES -> ${TS_FILES}")
+##! End Lang
 
 ##! Atomic QT Shared Deps Between main executable and unit tests
 add_library(atomicdex-desktop_shared_deps INTERFACE)
@@ -176,6 +183,11 @@ target_compile_definitions(atomicdex-desktop_shared_deps
         $<$<PLATFORM_ID:Windows>:AUTO_DOWNLOAD>
         )
 
+
+if (DISABLE_GEOBLOCKING)
+    message(STATUS "Disabling Geoblocking for dev purpose")
+    target_compile_definitions(atomicdex-desktop_shared_deps INTERFACE -DDISABLE_GEOBLOCKING)
+endif()
 #target_compile_options(atomicdex-desktop_shared_deps INTERFACE -fstandalone-debug)
 
 target_link_libraries(atomicdex-desktop_shared_deps
