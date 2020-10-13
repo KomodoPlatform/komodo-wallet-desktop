@@ -112,7 +112,7 @@ scoop install cmake --global
 scoop install git --global
 ```
 
-- next add a `QT_INSTALL_CMAKE_PATH` environment variable pointing to the msvc_2019x64 location
+- Next, add a `QT_INSTALL_CMAKE_PATH` environment variable pointing to the msvc_2019x64 location
 
 e.g.: `$Env:QT_INSTALL_CMAKE_PATH = "C:\Qt\5.15.0\msvc2019_64"`
 
