@@ -127,7 +127,7 @@
     </message>
     <message>
         <location filename="../../qml/Settings/AddCustomCoinModal.qml" line="310"/>
-        <source>WARNING: Application will restart immediately to apply the changes!</source>
+        <source>WARNING: Application will restart immidiately to apply the changes!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>

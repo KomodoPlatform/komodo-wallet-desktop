@@ -82,7 +82,11 @@ set(TS_FILES
         ${CMAKE_SOURCE_DIR}/atomic_defi_design/assets/languages/atomic_defi_fr.ts
         ${CMAKE_SOURCE_DIR}/atomic_defi_design/assets/languages/atomic_defi_tr.ts)
 set_source_files_properties(${TS_FILES} PROPERTIES OUTPUT_LOCATION "${CMAKE_SOURCE_DIR}/atomic_defi_design/assets/languages/")
-qt5_create_translation(QM_FILES ${CMAKE_SOURCE_DIR}/atomic_defi_design/qml ${TS_FILES})
+qt5_create_translation(QM_FILES
+        ${PROJECT_SOURCE_DIR}/atomic_defi_design/qml
+        ${TS_FILES}
+        OPTIONS -source-language en_US -no-obsolete)
+#qt5_create_translation(QM_FILES ${CMAKE_SOURCE_DIR}/atomic_defi_design/qml ${TS_FILES})
 #qt5_add_translation(qmFiles ${TS_FILES})
 message(STATUS "${QM_FILES}")
 message(STATUS "${TS_FILES}")
@@ -158,9 +162,6 @@ target_sources(atomicdex-desktop_shared_deps INTERFACE
 
         ##! QRC
         ${CMAKE_SOURCE_DIR}/qml.qrc
-
-        ##! Linguistic Files
-        ${qmFiles}
         )
 
 target_compile_definitions(atomicdex-desktop_shared_deps
@@ -207,6 +208,8 @@ target_include_directories(atomicdex-desktop_shared_deps
 add_executable(atomicdex-desktop MACOSX_BUNDLE ${ICON}
         ${CMAKE_CURRENT_SOURCE_DIR}/data/windows/atomicdex-desktop.rc
         main.cpp
+        ${QM_FILES}
+        ${TS_FILES}
         )
 
 ##! Testing executable
@@ -216,7 +219,9 @@ add_executable(atomicdex-desktop_tests MACOSX_BUNDLE ${ICON}
         src/atomicdex/tests/atomic.dex.utilities.tests.cpp
         src/atomicdex/tests/atomic.dex.provider.cex.prices.tests.cpp
         src/atomicdex/tests/atomic.dex.qt.utilities.tests.cpp
-        src/atomicdex/tests/atomic.dex.provider.cex.prices.api.tests.cpp)
+        src/atomicdex/tests/atomic.dex.provider.cex.prices.api.tests.cpp
+        ${QM_FILES}
+        ${TS_FILES})
 
 target_link_libraries(atomicdex-desktop
         PRIVATE
