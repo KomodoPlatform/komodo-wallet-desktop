@@ -27,11 +27,11 @@
 - :speech_balloon: [AtomicDex Discord](https://discord.gg/tvp96Gf)
 - :hammer_and_wrench: [AtomicDex Development Boards](https://github.com/KomodoPlatform/atomicDEX-Desktop/projects)
 
-## What is AtomicDEX ?
+## What is AtomicDEX?
 
 AtomicDEX is a secure wallet and non-custodial decentralized exchange rolled into one application. Store your coins, trade peer-to-peer with minimal fees and never give up control over your digital assets.
 
-## On which platforms can I use AtomicDex Desktop ?
+## On which platforms can I use AtomicDex Desktop?
 
 AtomicDex Desktop has been tested on the following platforms :
 
@@ -309,3 +309,16 @@ make
 ## If you want to bundle
 make install
 ```
+
+## Contributors / Thanks
+
+<table>
+  <tr>
+    <td align="center"><a href="https://github.com/Milerius"><img src="https://avatars1.githubusercontent.com/u/21139416?s=400&u=12e0a99353ae95365801542b85e2fd69abd44a81&v=4" width="100px;" alt="Milerius"/><br /><sub><b>Milerius</b></sub></a><br /><a href="https://github.com/KomodoPlatform/AtomicDex-Desktop/commits?author=Milerius" title="Lead Back-End Dev / Code">✍️💻</a></td>
+    <td align="center"><a href="https://github.com/naezith"><img src="https://avatars2.githubusercontent.com/u/6732486?s=400&u=5d242e560be002ad4af597dd284eb3242ab28016&v=4" width="100px;" alt="naezith"/><br /><sub><b>naezith</b></sub></a><br /><a href="https://github.com/KomodoPlatform/AtomicDex-Desktop/commits?author=naezith" title="Lead Front-End Dev / Code">✍️💻</a></td>
+    <td align="center"><a href="https://github.com/tonymorony"><img src="https://avatars3.githubusercontent.com/u/24797699?s=400&u=335984bcb93856f260ac6d139b18f0c596306e08&v=4" width="100px;" alt="Anton TonyL Lysakov"/><br /><sub><b>Anton "TonyL" Lysakov</b></sub></a><br /><a href="https://github.com/KomodoPlatform/AtomicDex-Desktop/commits?author=tonymorony" title="Lead QA / CI">🛠💻</a></td>
+  </tr>
+  <tr>
+    
+  </tr>
+</table>
