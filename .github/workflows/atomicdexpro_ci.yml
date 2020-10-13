@@ -147,7 +147,6 @@ jobs:
           cd ci_tools_atomic_dex
           nimble build -y
 
-          #./ci_tools_atomic_dex --install_dependencies
           ./ci_tools_atomic_dex build release
           ./ci_tools_atomic_dex bundle release
 
@@ -234,23 +233,6 @@ jobs:
           ./configure --disable-shared --enable-static --without-libidn2 --without-ssl --without-nghttp2 --disable-ldap --with-darwinssl
           make -j3 install
           cd ../
-
-          # get libbitcoin
-          #git clone --depth 1 --branch version5 --single-branch "https://github.com/libbitcoin/secp256k1"
-          #cd secp256k1
-          #./autogen.sh
-          #./configure --disable-shared --disable-tests --enable-module-recovery
-          #make -j3
-          #sudo make install
-          #cd ../
-
-          #git clone --depth 1 --branch version3 --single-branch https://github.com/KomodoPlatform/libbitcoin-system.git
-          #cd libbitcoin-system
-          #./autogen.sh
-          #./configure --with-boost --disable-shared
-          #make -j3
-          #sudo make install
-          #sudo update_dyld_shared_cache
 
           git clone https://github.com/KomodoPlatform/libwally-core.git
           cd libwally-core
@@ -366,16 +348,7 @@ jobs:
           (Get-Content $file) -replace $regex, ' -DVCPKG_TARGET_TRIPLET=x64-windows ' | Set-Content $file
           nimble build -y
 
-          # downloading debug dlls because powershell build doesnt put it
-          #$SHAORIG = "8B06E02CE77C48D6EE1993E2D532FE0B12650C77B24609BF4003ADE97826E8FE"
-          #$DWFILE = ($PWD | select -exp Path) + '\debuglibs-win-dexpro.zip'
-          #(New-Object System.Net.WebClient).DownloadFile('https://github.com/KomodoPlatform/depot/releases/download/0.1/debuglibs-win-atomicdexpro.zip', $DWFILE)
-          #$SHADW = Get-FileHash -Algorithm SHA256 .\debuglibs-win-dexpro.zip | select -exp Hash
-          #if ($SHADW -ne $SHAORIG) {Throw "Wrong hash: $SHADW =! $SHAORIG"}
-
-          #cmd /c '.\ci_tools_atomic_dex.exe --install_dependencies 2>&1'
           cmd /c '.\ci_tools_atomic_dex.exe build release 2>&1'
-          #7z e -o'build-release\bin\' .\debuglibs-win-dexpro.zip
           cmd /c '.\ci_tools_atomic_dex.exe bundle release 2>&1'
           ls bundle-Release/bundle.zip
 
