@@ -19,7 +19,7 @@ BasicModal {
 
         // Receive address
         TextAreaWithTitle {
-            title: qsTr("Share this address to receive coins")
+            title: qsTr("Only send %1 to this address", "TICKER").arg(api_wallet_page.ticker)
             field.text: current_ticker_infos.address
             field.readOnly: true
             field.wrapMode: TextEdit.NoWrap
