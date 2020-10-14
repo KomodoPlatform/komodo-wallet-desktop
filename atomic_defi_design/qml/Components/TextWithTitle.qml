@@ -41,7 +41,7 @@ ColumnLayout {
         }
     }
 
-    DefaultTextEdit {
+    DefaultText {
         clip: true
         id: text
         Layout.fillWidth: true
