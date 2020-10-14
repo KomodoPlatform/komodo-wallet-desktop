@@ -108,7 +108,7 @@ BasicModal {
 
                 CoinList {
                     id: coins_erc
-                    group_title: qsTr("Select all ERC tokens")
+                    group_title: qsTr("Select all Ethereum assets")
                     model: General.filterCoins(API.app.enableable_coins, input_coin_filter.text, "ERC-20")
                 }
 
