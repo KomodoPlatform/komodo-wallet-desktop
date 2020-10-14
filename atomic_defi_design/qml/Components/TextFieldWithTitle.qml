@@ -24,7 +24,7 @@ ColumnLayout {
     spacing: Style.rowSpacingSmall
 
     RowLayout {
-        DefaultText {
+        TitleText {
             id: title_text
             visible: text !== ''
         }

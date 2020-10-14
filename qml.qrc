@@ -215,6 +215,7 @@
         <file>atomic_defi_design/qml/Components/VerticalLine.qml</file>
         <file>atomic_defi_design/qml/Components/VerticalLineBasic.qml</file>
         <file>atomic_defi_design/qml/Components/ComboBoxWithTitle.qml</file>
+        <file>atomic_defi_design/qml/Components/TitleText.qml</file>
         <file>atomic_defi_design/qml/Components/TextWithTitle.qml</file>
         <file>atomic_defi_design/qml/Components/TextFieldWithTitle.qml</file>
         <file>atomic_defi_design/qml/Components/TextAreaWithTitle.qml</file>

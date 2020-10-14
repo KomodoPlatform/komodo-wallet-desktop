@@ -24,7 +24,7 @@ ColumnLayout {
             Layout.alignment: Qt.AlignVCenter
         }
 
-        DefaultText {
+        TitleText {
             id: title
             Layout.fillWidth: true
 
