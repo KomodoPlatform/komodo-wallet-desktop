@@ -19,10 +19,8 @@ SetupPage {
             onLoaded()
     }
 
-
-    image_scale: 0.7
-    image_path: General.image_path + "komodo-icon.png"
-
+    image_path: General.image_path + Style.sidebar_atomicdex_logo
+    image_margin: 30
     content: ColumnLayout {
         DefaultText {
             text_value: qsTr("Loading, please wait")
