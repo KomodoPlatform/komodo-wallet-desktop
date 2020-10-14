@@ -42,7 +42,7 @@ SetupPage {
         spacing: Style.rowSpacing
 
         DefaultText {
-            text_value: qsTr("Recovery")
+            text_value: qsTr("Recover Wallet")
         }
 
         HorizontalLine {

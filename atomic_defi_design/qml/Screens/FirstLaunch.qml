@@ -38,13 +38,13 @@ SetupPage {
 
             DefaultButton {
                 Layout.fillWidth: true
-                text: qsTr("Recover Seed")
+                text: qsTr("Recover Wallet")
                 onClicked: onClickedRecoverSeed()
             }
 
             DefaultButton {
                 Layout.fillWidth: true
-                text: qsTr("New User")
+                text: qsTr("New Wallet")
                 onClicked: onClickedNewUser()
             }
         }
@@ -57,7 +57,7 @@ SetupPage {
 
             // Name
             DefaultText {
-                text_value: qsTr("Wallets")
+                text_value: qsTr("My Wallets")
                 font.pixelSize: Style.textSizeSmall2
             }
 
