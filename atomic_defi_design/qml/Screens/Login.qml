@@ -81,7 +81,7 @@ SetupPage {
             PrimaryButton {
                 id: submit_button
                 Layout.fillWidth: true
-                text: qsTr("Wallet Name")
+                text: qsTr("Login")
                 onClicked: trySubmit()
                 enabled: input_password.isValid()
             }

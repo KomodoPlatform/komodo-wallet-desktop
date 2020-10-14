@@ -46,19 +46,19 @@ ColumnLayout {
         }
     }
 
-    SidebarLine {
-        dashboard_index: General.idx_dashboard_news
-        text_value: qsTr("News")
-        image: General.image_path + "menu-news-white.svg"
-        Layout.fillWidth: true
-    }
+//    SidebarLine {
+//        dashboard_index: General.idx_dashboard_news
+//        text_value: qsTr("News")
+//        image: General.image_path + "menu-news-white.svg"
+//        Layout.fillWidth: true
+//    }
 
-    SidebarLine {
-        dashboard_index: General.idx_dashboard_dapps
-        text_value: qsTr("Dapps")
-        image: General.image_path + "menu-dapp-white.svg"
-        Layout.fillWidth: true
-    }
+//    SidebarLine {
+//        dashboard_index: General.idx_dashboard_dapps
+//        text_value: qsTr("Dapps")
+//        image: General.image_path + "menu-dapp-white.svg"
+//        Layout.fillWidth: true
+//    }
 }
 
 
