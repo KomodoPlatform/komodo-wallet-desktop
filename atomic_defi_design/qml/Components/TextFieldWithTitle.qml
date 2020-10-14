@@ -43,7 +43,6 @@ ColumnLayout {
         echoMode: hidable && hiding ? TextInput.Password : TextInput.Normal
 
         Layout.fillWidth: true
-        selectByMouse: true
 
         HideFieldButton {
             id: hide_button

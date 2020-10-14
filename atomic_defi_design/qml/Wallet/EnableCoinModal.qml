@@ -95,7 +95,6 @@ BasicModal {
 
             Layout.fillWidth: true
             placeholderText: qsTr("Search")
-            selectByMouse: true
         }
 
         DefaultFlickable {
