@@ -116,7 +116,7 @@ jobs:
           mkdir build_2
           cd build_2
           cmake -DCMAKE_BUILD_TYPE=Release -DTBB_TEST:BOOL=OFF ../
-          make install
+          sudo make -j4 install
           cd ../..
 
       - name: prepare build (Linux)
