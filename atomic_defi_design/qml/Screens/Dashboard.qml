@@ -48,6 +48,7 @@ Item {
         portfolio.reset()
         wallet.reset()
         exchange.reset()
+        addressbook.reset()
         news.reset()
         dapps.reset()
         settings.reset()
@@ -134,6 +135,10 @@ Item {
 
             Exchange {
                 id: exchange
+            }
+
+            AddressBook {
+                id: addressbook
             }
 
             Item {

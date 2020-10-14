@@ -10,11 +10,17 @@ import "../Constants"
 ColumnLayout {
     id: address_book
 
+    function reset() {
+
+    }
+
+    readonly property int layout_margin: 30
+
     property bool global_edit_in_progress: false
     Layout.fillWidth: true
 
     property bool initialized: false
-    property bool inCurrentPage: wallet.inCurrentPage() && main_layout.currentIndex === 1
+    property bool inCurrentPage: dashboard.inCurrentPage() && dashboard.current_page === General.idx_dashboard_addressbook
 
     onInCurrentPageChanged: {
         if(inCurrentPage) {
@@ -26,9 +32,6 @@ ColumnLayout {
                 console.log("Cleaning up the empty items at address book...")
                 global_edit_in_progress = false
             }
-            // Open main wallet page
-            if(main_layout.currentIndex === 1)
-                closeAddressBook()
         }
     }
 
@@ -42,21 +45,9 @@ ColumnLayout {
 
     spacing: 20
 
-    DefaultText {
-        id: back_button
-        property bool disabled: global_edit_in_progress
-        Layout.leftMargin: layout_margin
-        text_value: "< " + qsTr("Back")
-        font.weight: Font.Medium
-        color: disabled ? Style.colorTextDisabled : Style.colorText
-
-        DefaultMouseArea {
-            anchors.fill: parent
-            onClicked: { if(!back_button.disabled) closeAddressBook() }
-        }
-    }
-
     RowLayout {
+        Layout.topMargin: layout_margin
+
         Layout.leftMargin: layout_margin
         Layout.fillWidth: true
 
@@ -458,9 +449,9 @@ ColumnLayout {
                                         visible: !editing_address
                                         onClicked: {
                                             api_wallet_page.ticker = type
-                                            closeAddressBook()
-                                            send_modal.address_field.text = address
-                                            send_modal.open()
+                                            dashboard.current_page = General.idx_dashboard_wallet
+                                            wallet.send_modal.address_field.text = address
+                                            wallet.send_modal.open()
                                         }
                                     }
 
