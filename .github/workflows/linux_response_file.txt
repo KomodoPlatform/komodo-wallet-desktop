@@ -13,4 +13,3 @@ spdlog
 date
 cpprestsdk
 cpp-taskflow
-tbb
