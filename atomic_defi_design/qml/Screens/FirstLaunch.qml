@@ -38,14 +38,14 @@ SetupPage {
 
             DefaultButton {
                 Layout.fillWidth: true
-                text: qsTr("Recover Wallet")
-                onClicked: onClickedRecoverSeed()
+                text: qsTr("New Wallet")
+                onClicked: onClickedNewUser()
             }
 
             DefaultButton {
                 Layout.fillWidth: true
-                text: qsTr("New Wallet")
-                onClicked: onClickedNewUser()
+                text: qsTr("Recover Wallet")
+                onClicked: onClickedRecoverSeed()
             }
         }
 
