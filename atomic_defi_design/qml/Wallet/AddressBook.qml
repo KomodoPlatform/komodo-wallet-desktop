@@ -205,7 +205,7 @@ ColumnLayout {
                                 visible: editing
                                 enabled: name_input.length > 0
                                 font.pixelSize: Style.textSizeSmall3
-                                text: "💾"
+                                text:  qsTr("Save")
                                 minWidth: height
                                 onClicked: {
                                     modelData.name = name_input.text
@@ -232,7 +232,7 @@ ColumnLayout {
                                 Layout.leftMargin: layout_margin
 
                                 font.pixelSize: Style.textSizeSmall3
-                                text: "🗑"
+                                text:  qsTr("Delete")
                                 minWidth: height
                                 onClicked: {
                                     global_edit_in_progress = false
@@ -418,7 +418,7 @@ ColumnLayout {
 
                                         visible: editing_address
                                         font.pixelSize: Style.textSizeSmall3
-                                        text: "💾"
+                                        text:  qsTr("Save")
                                         enabled: address_input.length > 0
                                         minWidth: height
                                         onClicked: {
@@ -461,7 +461,7 @@ ColumnLayout {
                                         Layout.leftMargin: layout_margin
 
                                         font.pixelSize: Style.textSizeSmall3
-                                        text: "🗑"
+                                        text:  qsTr("Delete")
                                         minWidth: height
                                         onClicked: {
                                             global_edit_in_progress = false
