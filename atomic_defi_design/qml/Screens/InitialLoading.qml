@@ -39,7 +39,7 @@ SetupPage {
 
             DefaultText {
                 text_value: (current_status === "initializing_mm2" ? qsTr("Initializing MM2") :
-                             current_status === "enabling_coins" ? qsTr("Enabling coins") : qsTr("Getting ready")) + "..."
+                             current_status === "enabling_coins" ? qsTr("Enabling assets") : qsTr("Getting ready")) + "..."
             }
         }
     }
