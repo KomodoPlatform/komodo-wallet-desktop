@@ -202,11 +202,12 @@ target_link_libraries(atomicdex-desktop_shared_deps
         antara::world
         Boost::random
         Boost::filesystem
-        komodo-sodium::sodium
         unofficial-btc::bitcoin
         reproc++
         komodo-date::date
-        komodo-folly::folly
+        TBB::tbb
+        komodo-sodium::sodium
+        #komodo-folly::folly
         komodo-taskflow::taskflow
         nlohmann_json::nlohmann_json
         #spdlog::spdlog

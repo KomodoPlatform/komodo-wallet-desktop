@@ -1,5 +1,9 @@
 #pragma once
 
+//! STD
+#include <unordered_set>
+
+//! Headers
 #include "atomicdex/config/app.cfg.hpp"
 #include "atomicdex/services/mm2/mm2.service.hpp"
 
