@@ -25,7 +25,7 @@ SetupPage {
         }
         else {
             console.log("Failed: Login")
-            text_error = qsTr("Failed to login")
+            text_error = qsTr("Incorrect Password")
             return false
         }
     }
@@ -81,7 +81,7 @@ SetupPage {
             PrimaryButton {
                 id: submit_button
                 Layout.fillWidth: true
-                text: qsTr("Login")
+                text: qsTr("Wallet Name")
                 onClicked: trySubmit()
                 enabled: input_password.isValid()
             }
