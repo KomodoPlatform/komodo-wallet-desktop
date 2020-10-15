@@ -93,7 +93,6 @@ DefaultComboBox {
                 }
 
                 placeholderText: qsTr("Search")
-                selectByMouse: true
 
                 onTextChanged: {
                     ticker_list.setFilterFixedString(text)

@@ -27,7 +27,7 @@ ColumnLayout {
     }
 
     RowLayout {
-        DefaultText {
+        TitleText {
             id: title_text
             Layout.alignment: Qt.AlignVCenter
         }

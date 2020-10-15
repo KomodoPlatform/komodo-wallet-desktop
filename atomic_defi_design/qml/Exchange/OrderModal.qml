@@ -187,7 +187,7 @@ BasicModal {
             },
 
             PrimaryButton {
-                text: qsTr("View at Explorer")
+                text: qsTr("View on Explorer")
                 Layout.fillWidth: true
                 visible: !details ? false :
                                     details.maker_payment_id !== '' || details.taker_payment_id !== ''

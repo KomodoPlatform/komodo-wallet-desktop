@@ -25,7 +25,7 @@ SetupPage {
         }
         else {
             console.log("Failed: Login")
-            text_error = qsTr("Failed to login")
+            text_error = qsTr("Incorrect Password")
             return false
         }
     }

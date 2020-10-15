@@ -31,12 +31,13 @@ QtObject {
     readonly property int idx_dashboard_portfolio: 0
     readonly property int idx_dashboard_wallet: 1
     readonly property int idx_dashboard_exchange: 2
-    readonly property int idx_dashboard_news: 3
-    readonly property int idx_dashboard_dapps: 4
-    readonly property int idx_dashboard_settings: 5
-    readonly property int idx_dashboard_support: 6
-    readonly property int idx_dashboard_light_ui: 7
-    readonly property int idx_dashboard_privacy_mode: 8
+    readonly property int idx_dashboard_addressbook: 3
+    readonly property int idx_dashboard_news: 4
+    readonly property int idx_dashboard_dapps: 5
+    readonly property int idx_dashboard_settings: 6
+    readonly property int idx_dashboard_support: 7
+    readonly property int idx_dashboard_light_ui: 8
+    readonly property int idx_dashboard_privacy_mode: 9
 
     readonly property int idx_exchange_trade: 0
     readonly property int idx_exchange_orders: 1

@@ -192,7 +192,7 @@ Network fees can vary greatly depending on your selected trading pair.")
 
             FAQLine {
                 title: qsTr("Which devices can I use AtomicDEX on?")
-                text: qsTr("AtomicDEX is available for mobile on both Android and iPhone, and for desktop on Windows, Mac, and Linux operating systems.")
+                text: qsTr('AtomicDEX is available for mobile on both <a href="https://atomicdex.io/">Android and iPhone, and for desktop on Windows, Mac, and Linux</a> operating systems.')
             }
 
             FAQLine {
