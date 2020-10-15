@@ -45,7 +45,7 @@ namespace
             }
             else
             {
-                reg.insert_or_assign(current_coin.ticker, answer);
+                reg[current_coin.ticker] = answer;
                 if (idx != nullptr && dispatcher != nullptr)
                 {
                     auto cur = idx->fetch_add(1) + 1;
@@ -91,7 +91,7 @@ namespace
                 {
                     if (answer.raw_result.find("error") == std::string::npos)
                     {
-                        reg.insert_or_assign(current_coin.ticker, answer);
+                        reg[current_coin.ticker] = answer;
                     }
 
                     if (idx != nullptr && dispatcher != nullptr)
@@ -153,12 +153,12 @@ namespace
                     {
                         if (not answer.price.empty())
                         {
-                            rate_providers.insert_or_assign(current_coin.ticker, answer.price);
+                            rate_providers[current_coin.ticker] = answer.price;
                             // dispatcher->trigger<fiat_rate_updated>(current_coin.ticker);
                         }
                     }
                     else
-                        rate_providers.insert_or_assign(current_coin.ticker, "0.00");
+                        rate_providers[current_coin.ticker] = "0.00";
                     if (idx != nullptr && dispatcher != nullptr)
                     {
                         auto cur = idx->fetch_add(1) + 1;
@@ -198,7 +198,7 @@ namespace
         }
         else
         {
-            rate_providers.insert_or_assign(current_coin.ticker, "1.00");
+            rate_providers[current_coin.ticker] = "1.00";
         }
     }
 } // namespace
@@ -314,7 +314,7 @@ namespace atomic_dex
         spdlog::debug("{} l{} f[{}]", __FUNCTION__, __LINE__, fs::path(__FILE__).filename().string());
         const auto config = m_mm2_instance.get_coin_info(evt.ticker);
 
-        m_usd_rate_providers.erase(config.ticker);
+        m_usd_rate_providers.unsafe_erase(config.ticker);
     }
 
     t_ticker_info_answer

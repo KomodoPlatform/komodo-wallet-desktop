@@ -9,6 +9,8 @@ import "../Constants"
 RowLayout {
     id: wallet
 
+    property alias send_modal: main.send_modal
+
     function inCurrentPage() {
         return  dashboard.inCurrentPage() &&
                 dashboard.current_page === General.idx_dashboard_wallet

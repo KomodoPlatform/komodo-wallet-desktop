@@ -19,10 +19,8 @@ SetupPage {
             onLoaded()
     }
 
-
-    image_scale: 0.7
-    image_path: General.image_path + "komodo-icon.png"
-
+    image_path: General.image_path + Style.sidebar_atomicdex_logo
+    image_margin: 30
     content: ColumnLayout {
         DefaultText {
             text_value: qsTr("Loading, please wait")
@@ -39,7 +37,7 @@ SetupPage {
 
             DefaultText {
                 text_value: (current_status === "initializing_mm2" ? qsTr("Initializing MM2") :
-                             current_status === "enabling_coins" ? qsTr("Enabling coins") : qsTr("Getting ready")) + "..."
+                             current_status === "enabling_coins" ? qsTr("Enabling assets") : qsTr("Getting ready")) + "..."
             }
         }
     }

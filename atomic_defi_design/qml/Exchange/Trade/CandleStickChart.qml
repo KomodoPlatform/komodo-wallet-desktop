@@ -632,9 +632,20 @@ Item {
         }
     }
 
-    DefaultBusyIndicator {
+    RowLayout {
         visible: pair_supported && !chart.visible
         anchors.centerIn: parent
+
+        DefaultBusyIndicator {
+            Layout.alignment: Qt.AlignHCenter
+            Layout.leftMargin: -15
+            Layout.rightMargin: Layout.leftMargin*0.75
+            scale: 0.5
+        }
+
+        DefaultText {
+            text_value: qsTr("Loading market data") + "..."
+        }
     }
 
     DefaultText {

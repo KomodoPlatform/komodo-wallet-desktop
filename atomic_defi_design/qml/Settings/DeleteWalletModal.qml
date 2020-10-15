@@ -49,7 +49,7 @@ BasicModal {
                     horizontalAlignment: Text.AlignHCenter
                     anchors.horizontalCenter: parent.horizontalCenter
 
-                    text_value: qsTr("If so, make sure you record your seed phrase in order to restore your wallet in future.")
+                    text_value: qsTr("If so, make sure you record your seed phrase in order to restore your wallet in the future.")
                 }
             }
         }
@@ -58,7 +58,7 @@ BasicModal {
             id: input_password
             Layout.fillWidth: true
             confirm: false
-            field.placeholderText: qsTr("Enter the password of your wallet")
+            field.placeholderText: qsTr("Enter your wallet password")
         }
 
         DefaultText {

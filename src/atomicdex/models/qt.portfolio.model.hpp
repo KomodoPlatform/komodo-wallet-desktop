@@ -16,6 +16,9 @@
 
 #pragma once
 
+//! STD Headers
+#include <unordered_set>
+
 //! QT Headers
 #include <QAbstractListModel>
 #include <QString>
@@ -23,10 +26,10 @@
 
 //! Project headers
 #include "atomicdex/config/app.cfg.hpp"
+#include "atomicdex/data/wallet/qt.portfolio.data.hpp"
 #include "atomicdex/events/events.hpp"
+#include "atomicdex/models/qt.portfolio.proxy.filter.model.hpp"
 #include "atomicdex/services/mm2/mm2.service.hpp"
-#include "qt.portfolio.proxy.filter.model.hpp"
-#include "src/atomicdex/data/wallet/qt.portfolio.data.hpp"
 
 namespace atomic_dex
 {

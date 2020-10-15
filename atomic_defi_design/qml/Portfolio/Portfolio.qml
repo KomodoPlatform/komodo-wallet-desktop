@@ -144,7 +144,6 @@ ColumnLayout {
             anchors.bottomMargin: 10
 
             placeholderText: qsTr("Search")
-            selectByMouse: true
 
             onTextChanged: {
                 portfolio_coins.setFilterFixedString(text)
@@ -178,7 +177,7 @@ ColumnLayout {
             anchors.leftMargin: 40
             anchors.verticalCenter: parent.verticalCenter
 
-            text: qsTr("Coin")
+            text: qsTr("Asset")
             sort_type: sort_by_name
         }
 
