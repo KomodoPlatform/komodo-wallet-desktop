@@ -301,13 +301,19 @@ conan install --profile ../conan_profiles/osx_clang_release --build=missing ../
 cmake  -DCMAKE_BUILD_TYPE=Release ../
 
 ## On Windows
-cmake -GNMake -DCMAKE_BUILD_TYPE=Release -DCMAKE_CXX_COMPILER=clang++ -DCMAKE_C_COMPILER=clang ../
+cmake -GNinja -DCMAKE_BUILD_TYPE=Release -DCMAKE_CXX_COMPILER=clang++ -DCMAKE_C_COMPILER=clang ../
 
-## If you want to build
+## If you want to build (OSX/Linux)
 make
 
-## If you want to bundle
+## If you want to bundle (OSX/Linux)
 make install
+
+## If you want to build (Windows)
+ninja
+
+## If you want to bundle (Windows)
+ninja install
 ```
 
 ## Contributors / Thanks
