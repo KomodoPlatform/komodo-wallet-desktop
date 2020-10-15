@@ -18,7 +18,7 @@
 
 | CI/CD Names | Status |
 |-------------|--------|
-| Windows/Linux/macOS  | [![GitHub All Releases](https://img.shields.io/github/workflow/status/KomodoPlatform/atomicDEX-Desktop/AtomicDex-Desktop%20CI/master?style=for-the-badge)](https://github.com/KomodoPlatform/atomicDEX-Desktop/actions) |
+| Windows/Linux/macOS  | [![GitHub All Releases](https://img.shields.io/github/workflow/status/KomodoPlatform/atomicDEX-Desktop/AtomicDex-Desktop%20CI?style=for-the-badge)](https://github.com/KomodoPlatform/atomicDEX-Desktop/actions) |
 
 ## Useful links
 
