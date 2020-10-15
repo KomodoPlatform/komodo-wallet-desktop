@@ -51,13 +51,30 @@ BasicModal {
     function enableCoins() {
         const coins_to_enable = Object.keys(selected_to_enable)
         console.log("QML enable_coins:", JSON.stringify(coins_to_enable))
-        API.app.enable_coins(coins_to_enable)
+        if(coins_to_enable.length > 0)
+            API.app.enable_coins(coins_to_enable)
+        reset()
+        root.close()
+    }
+
+    function enableAllCoins() {
+        const coins_to_enable = API.app.enableable_coins.map(c => c.ticker)
+        console.log("QML enable_coins:", JSON.stringify(coins_to_enable))
+        if(coins_to_enable.length > 0)
+            API.app.enable_coins(coins_to_enable)
         reset()
         root.close()
     }
 
     ModalContent {
-        title: qsTr("Enable coins")
+        title: qsTr("Enable assets")
+
+        DefaultButton {
+            Layout.fillWidth: true
+            text: qsTr("Enable All Assets")
+            visible: API.app.enableable_coins.length > 0
+            onClicked: enableAllCoins()
+        }
 
         DefaultButton {
             Layout.fillWidth: true
@@ -78,14 +95,13 @@ BasicModal {
 
             Layout.fillWidth: true
             placeholderText: qsTr("Search")
-            selectByMouse: true
         }
 
         DefaultFlickable {
             id: flickable
             visible: API.app.enableable_coins.length > 0
 
-            height: 450
+            height: 375
             Layout.fillWidth: true
 
             contentWidth: col.width
@@ -108,7 +124,7 @@ BasicModal {
 
                 CoinList {
                     id: coins_erc
-                    group_title: qsTr("Select all ERC tokens")
+                    group_title: qsTr("Select all Ethereum assets")
                     model: General.filterCoins(API.app.enableable_coins, input_coin_filter.text, "ERC-20")
                 }
 

@@ -190,17 +190,6 @@
     </message>
 </context>
 <context>
-    <name>App</name>
-    <message>
-        <source>version</source>
-        <translation type="vanished">versiyon</translation>
-    </message>
-    <message>
-        <source>gui version</source>
-        <translation type="vanished">gui versiyonu</translation>
-    </message>
-</context>
-<context>
     <name>CamouflagePasswordModal</name>
     <message>
         <location filename="../../qml/Settings/CamouflagePasswordModal.qml" line="18"/>
@@ -445,10 +434,6 @@
         <translation>Bu takas isteği geri döndürülemez!</translation>
     </message>
     <message>
-        <source>This transaction can take up to 10 mins - DO NOT close this application!</source>
-        <translation type="vanished">Bu işlem 10 dakika kadar sürebilir - Programı KAPATMAYINIZ!</translation>
-    </message>
-    <message>
         <location filename="../../qml/Exchange/Trade/ConfirmTradeModal.qml" line="101"/>
         <source>Security configuration</source>
         <translation type="unfinished"></translation>
@@ -496,10 +481,6 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Confirmations</source>
-        <translation type="obsolete">Onay Sayısı</translation>
-    </message>
-    <message>
         <location filename="../../qml/Exchange/Trade/ConfirmTradeModal.qml" line="214"/>
         <source>Cancel</source>
         <translation>İptal</translation>
@@ -520,14 +501,6 @@
 </context>
 <context>
     <name>Dashboard</name>
-    <message>
-        <source>News</source>
-        <translation type="vanished">Haberler</translation>
-    </message>
-    <message>
-        <source>DApps</source>
-        <translation type="vanished">DApps</translation>
-    </message>
     <message>
         <location filename="../../qml/Screens/Dashboard.qml" line="146"/>
         <location filename="../../qml/Screens/Dashboard.qml" line="157"/>
@@ -671,16 +644,16 @@
         <location filename="../../qml/Components/EulaModal.qml" line="80"/>
         <source>&lt;h2&gt;This End-User License Agreement (&apos;EULA&apos;) is a legal agreement between you and Komodo Platform.&lt;/h2&gt;
 
-&lt;p&gt;This EULA agreement governs your acquisition and use of our AtomicDEX Pro software (&apos;Software&apos;, &apos;Mobile Application&apos;, &apos;Application&apos; or &apos;App&apos;) directly from Komodo Platform or indirectly through a Komodo Platform authorized entity, reseller or distributor (a &apos;Distributor&apos;).&lt;/p&gt;
-&lt;p&gt;Please read this EULA agreement carefully before completing the installation process and using the AtomicDEX Pro software. It provides a license to use the AtomicDEX Pro software and contains warranty information and liability disclaimers.&lt;/p&gt;
-&lt;p&gt;If you register for the beta program of the AtomicDEX Pro software, this EULA agreement will also govern that trial. By clicking &apos;accept&apos; or installing and/or using the AtomicDEX Pro software, you are confirming your acceptance of the Software and agreeing to become bound by the terms of this EULA agreement.&lt;/p&gt;
+&lt;p&gt;This EULA agreement governs your acquisition and use of our AtomicDEX Desktop software (&apos;Software&apos;, &apos;Mobile Application&apos;, &apos;Application&apos; or &apos;App&apos;) directly from Komodo Platform or indirectly through a Komodo Platform authorized entity, reseller or distributor (a &apos;Distributor&apos;).&lt;/p&gt;
+&lt;p&gt;Please read this EULA agreement carefully before completing the installation process and using the AtomicDEX Desktop software. It provides a license to use the AtomicDEX Desktop software and contains warranty information and liability disclaimers.&lt;/p&gt;
+&lt;p&gt;If you register for the beta program of the AtomicDEX Desktop software, this EULA agreement will also govern that trial. By clicking &apos;accept&apos; or installing and/or using the AtomicDEX Desktop software, you are confirming your acceptance of the Software and agreeing to become bound by the terms of this EULA agreement.&lt;/p&gt;
 &lt;p&gt;If you are entering into this EULA agreement on behalf of a company or other legal entity, you represent that you have the authority to bind such entity and its affiliates to these terms and conditions. If you do not have such authority or if you do not agree with the terms and conditions of this EULA agreement, do not install or use the Software, and you must not accept this EULA agreement.&lt;/p&gt;
 &lt;p&gt;This EULA agreement shall apply only to the Software supplied by Komodo Platform herewith regardless of whether other software is referred to or described herein. The terms also apply to any Komodo Platform updates, supplements, Internet-based services, and support services for the Software, unless other terms accompany those items on delivery. If so, those terms apply.&lt;/p&gt;
 
 &lt;h3&gt;License Grant&lt;/h3&gt;
-&lt;p&gt;Komodo Platform hereby grants you a personal, non-transferable, non-exclusive licence to use the AtomicDEX Pro software on your devices in accordance with the terms of this EULA agreement.&lt;/p&gt;
+&lt;p&gt;Komodo Platform hereby grants you a personal, non-transferable, non-exclusive licence to use the AtomicDEX Desktop software on your devices in accordance with the terms of this EULA agreement.&lt;/p&gt;
 
-&lt;p&gt;You are permitted to load the AtomicDEX Pro software (for example a PC, laptop, mobile or tablet) under your control. You are responsible for ensuring your device meets the minimum security and resource requirements of the AtomicDEX Pro software.&lt;/p&gt;
+&lt;p&gt;You are permitted to load the AtomicDEX Desktop software (for example a PC, laptop, mobile or tablet) under your control. You are responsible for ensuring your device meets the minimum security and resource requirements of the AtomicDEX Desktop software.&lt;/p&gt;
 
 &lt;p&gt;&lt;b&gt;You are not permitted to:&lt;/b&gt;&lt;/p&gt;
 &lt;ul&gt;
@@ -902,10 +875,6 @@
 <context>
     <name>FirstLaunch</name>
     <message>
-        <source>Welcome!</source>
-        <translation type="vanished">Hoş geldiniz!</translation>
-    </message>
-    <message>
         <location filename="../../qml/Screens/FirstLaunch.qml" line="28"/>
         <source>Welcome</source>
         <translation type="unfinished"></translation>
@@ -1025,10 +994,6 @@
         <location filename="../../qml/Screens/InitialLoading.qml" line="42"/>
         <source>Enabling coins</source>
         <translation>Kriptoparalar etkinleştiriliyor</translation>
-    </message>
-    <message>
-        <source>Complete</source>
-        <translation type="vanished">Tamamlandı</translation>
     </message>
     <message>
         <location filename="../../qml/Screens/InitialLoading.qml" line="42"/>
@@ -1268,10 +1233,6 @@
         <source>Go back and check again</source>
         <translation>Geri dönüp tekrar kontrol et</translation>
     </message>
-    <message>
-        <source>Create</source>
-        <translation type="vanished">Oluştur</translation>
-    </message>
 </context>
 <context>
     <name>NoConnection</name>
@@ -1320,8 +1281,8 @@
     </message>
     <message>
         <location filename="../../qml/Dashboard/NotificationsModal.qml" line="127"/>
-        <source>AtomicDEX Pro</source>
-        <translation type="unfinished">AtomıcDEX Pro</translation>
+        <source>AtomicDEX Desktop</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../qml/Dashboard/NotificationsModal.qml" line="133"/>
@@ -1360,26 +1321,7 @@
     </message>
 </context>
 <context>
-    <name>NotificationsPanel</name>
-    <message>
-        <source>AtomicDEX Pro</source>
-        <translation type="obsolete">AtomıcDEX Pro</translation>
-    </message>
-    <message>
-        <source>Close</source>
-        <translation type="obsolete">Kapat</translation>
-    </message>
-</context>
-<context>
     <name>OrderContent</name>
-    <message>
-        <source>Swap ID</source>
-        <translation type="vanished">Takas ID</translation>
-    </message>
-    <message>
-        <source>UUID</source>
-        <translation type="vanished">UUID</translation>
-    </message>
     <message>
         <location filename="../../qml/Exchange/OrderContent.qml" line="78"/>
         <source>ID</source>
@@ -1400,30 +1342,9 @@
         <source>Cancel</source>
         <translation>İptal</translation>
     </message>
-    <message>
-        <location filename="../../qml/Exchange/OrderContent.qml" line="132"/>
-        <source>Recover Funds</source>
-        <translation type="unfinished"></translation>
-    </message>
 </context>
 <context>
     <name>OrderForm</name>
-    <message>
-        <source>Sell</source>
-        <translation type="vanished">Satılacak</translation>
-    </message>
-    <message>
-        <source>Receive</source>
-        <translation type="vanished">Alınacak</translation>
-    </message>
-    <message>
-        <source>MAX</source>
-        <translation type="vanished">MAKS</translation>
-    </message>
-    <message>
-        <source>Amount</source>
-        <translation type="obsolete">Miktar</translation>
-    </message>
     <message>
         <location filename="../../qml/Exchange/Trade/OrderForm.qml" line="274"/>
         <source>Amount to sell</source>
@@ -1433,10 +1354,6 @@
         <location filename="../../qml/Exchange/Trade/OrderForm.qml" line="274"/>
         <source>Amount to receive</source>
         <translation>Alınacak miktar</translation>
-    </message>
-    <message>
-        <source>Please fill the send amount</source>
-        <translation type="vanished">Lütfen gönderilecek miktarı giriniz</translation>
     </message>
     <message>
         <location filename="../../qml/Exchange/Trade/OrderForm.qml" line="230"/>
@@ -1462,14 +1379,6 @@
         <location filename="../../qml/Exchange/Trade/OrderForm.qml" line="355"/>
         <source>Max</source>
         <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Transaction Fee</source>
-        <translation type="vanished">İşlem Ücreti</translation>
-    </message>
-    <message>
-        <source>Trading Fee</source>
-        <translation type="vanished">Al-Sat Ücreti</translation>
     </message>
     <message>
         <location filename="../../qml/Exchange/Trade/OrderForm.qml" line="394"/>
@@ -1539,32 +1448,13 @@
         <comment>TICKER</comment>
         <translation type="unfinished"></translation>
     </message>
-    <message>
-        <source>Trade</source>
-        <translation type="obsolete">Al-Sat</translation>
-    </message>
 </context>
 <context>
     <name>OrderLine</name>
     <message>
-        <source>Order Matching</source>
-        <translation type="vanished">Emir Eşleşiyor</translation>
-    </message>
-    <message>
-        <source>Order Matched</source>
-        <translation type="vanished">Emir Eşleşti</translation>
-    </message>
-    <message>
-        <source>Swap Ongoing</source>
-        <translation type="vanished">Takas Devam Ediyor</translation>
-    </message>
-    <message>
-        <source>Swap Successful</source>
-        <translation type="vanished">Takas Başarılı</translation>
-    </message>
-    <message>
-        <source>Swap Failed</source>
-        <translation type="vanished">Takas Başarısız</translation>
+        <location filename="../../qml/Exchange/OrderLine.qml" line="169"/>
+        <source>Funds are recoverable</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1618,12 +1508,9 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Swap ID</source>
-        <translation type="vanished">Takas ID</translation>
-    </message>
-    <message>
-        <source>UUID</source>
-        <translation type="vanished">UUID</translation>
+        <location filename="../../qml/Exchange/OrderModal.qml" line="185"/>
+        <source>Recover Funds</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../qml/Exchange/OrderModal.qml" line="112"/>
@@ -1651,14 +1538,6 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Taker Payment ID</source>
-        <translation type="vanished">Alıcı Ödeme ID</translation>
-    </message>
-    <message>
-        <source>Maker Payment ID</source>
-        <translation type="vanished">Alıcı Ödeme ID</translation>
-    </message>
-    <message>
         <location filename="../../qml/Exchange/OrderModal.qml" line="131"/>
         <source>Error ID</source>
         <translation>Hata ID</translation>
@@ -1674,65 +1553,9 @@
         <translation>Kapat</translation>
     </message>
     <message>
-        <source>Cancel</source>
-        <translation type="vanished">İptal</translation>
-    </message>
-    <message>
-        <location filename="../../qml/Exchange/OrderModal.qml" line="181"/>
+        <location filename="../../qml/Exchange/OrderModal.qml" line="190"/>
         <source>View at Explorer</source>
         <translation>Explorer&apos;da Görüntüle</translation>
-    </message>
-</context>
-<context>
-    <name>OrderReceiveModal</name>
-    <message>
-        <source>Receive</source>
-        <translation type="vanished">Al</translation>
-    </message>
-    <message>
-        <source>Search</source>
-        <translation type="vanished">Ara</translation>
-    </message>
-    <message>
-        <source>Click to create an order</source>
-        <translation type="vanished">Emir oluşturmak için tıkla</translation>
-    </message>
-    <message numerus="yes">
-        <source>Click to see %n order(s)</source>
-        <translation type="vanished">
-            <numerusform>%n emri görüntüle</numerusform>
-        </translation>
-    </message>
-    <message>
-        <source>Close</source>
-        <translation type="vanished">Kapat</translation>
-    </message>
-</context>
-<context>
-    <name>OrderbookModal</name>
-    <message>
-        <source>Orderbook</source>
-        <translation type="vanished">Emir Defteri</translation>
-    </message>
-    <message>
-        <source>Price</source>
-        <translation type="vanished">Fiyat</translation>
-    </message>
-    <message>
-        <source>Volume</source>
-        <translation type="vanished">Hacim</translation>
-    </message>
-    <message>
-        <source>Receive</source>
-        <translation type="vanished">Alınacak</translation>
-    </message>
-    <message>
-        <source>Close</source>
-        <translation type="vanished">Kapat</translation>
-    </message>
-    <message>
-        <source>Create your own order</source>
-        <translation type="vanished">Kendi emrini oluştur</translation>
     </message>
 </context>
 <context>
@@ -1761,15 +1584,6 @@
 <context>
     <name>Orders</name>
     <message>
-        <source>Cancel All Orders</source>
-        <translation type="vanished">Tüm Emirleri İptal Et</translation>
-    </message>
-    <message>
-        <source>All %1 Orders</source>
-        <comment>TICKER</comment>
-        <translation type="vanished">Tüm %1 Emirleri</translation>
-    </message>
-    <message>
         <location filename="../../qml/Exchange/Orders/Orders.qml" line="12"/>
         <source>Orders</source>
         <translation type="unfinished">Emirler</translation>
@@ -1783,47 +1597,47 @@
 <context>
     <name>OrdersPage</name>
     <message>
-        <location filename="../../qml/Exchange/OrdersPage.qml" line="106"/>
+        <location filename="../../qml/Exchange/OrdersPage.qml" line="117"/>
         <source>All</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/OrdersPage.qml" line="177"/>
+        <location filename="../../qml/Exchange/OrdersPage.qml" line="188"/>
         <source>Cancel All Orders</source>
         <translation type="unfinished">Tüm Emirleri İptal Et</translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/OrdersPage.qml" line="177"/>
+        <location filename="../../qml/Exchange/OrdersPage.qml" line="188"/>
         <source>Cancel Filtered Orders</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/OrdersPage.qml" line="157"/>
+        <location filename="../../qml/Exchange/OrdersPage.qml" line="168"/>
         <source>From</source>
         <translation type="unfinished">Gönderen</translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/OrdersPage.qml" line="82"/>
+        <location filename="../../qml/Exchange/OrdersPage.qml" line="93"/>
         <source>Enable Filters</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/OrdersPage.qml" line="167"/>
+        <location filename="../../qml/Exchange/OrdersPage.qml" line="178"/>
         <source>To</source>
         <translation type="unfinished">Alan</translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/OrdersPage.qml" line="188"/>
+        <location filename="../../qml/Exchange/OrdersPage.qml" line="199"/>
         <source>Export CSV</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/OrdersPage.qml" line="199"/>
+        <location filename="../../qml/Exchange/OrdersPage.qml" line="210"/>
         <source>Please choose the CSV export name and location</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Exchange/OrdersPage.qml" line="240"/>
+        <location filename="../../qml/Exchange/OrdersPage.qml" line="251"/>
         <source>Recover Funds Result</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1871,10 +1685,6 @@
         <translation type="unfinished">
             <numerusform></numerusform>
         </translation>
-    </message>
-    <message>
-        <source>At least 16 characters</source>
-        <translation type="vanished">En az 16 karakter uzunluğu</translation>
     </message>
     <message>
         <location filename="../../qml/Components/PasswordField.qml" line="100"/>
@@ -1932,26 +1742,9 @@
         <source>Price</source>
         <translation>Fiyat</translation>
     </message>
-    <message>
-        <source>Loading</source>
-        <translation type="vanished">Yükleniyor</translation>
-    </message>
-    <message>
-        <source>Disable %1</source>
-        <comment>TICKER</comment>
-        <translation type="vanished">%1&apos;i Etkinsizleştir</translation>
-    </message>
 </context>
 <context>
     <name>PriceLine</name>
-    <message>
-        <source>Price</source>
-        <translation type="vanished">Fiyat</translation>
-    </message>
-    <message>
-        <source>Selected Price</source>
-        <translation type="vanished">Seçilen Fiyat</translation>
-    </message>
     <message>
         <location filename="../../qml/Exchange/Trade/PriceLine.qml" line="32"/>
         <source>Set swap price for evaluation</source>
@@ -2308,10 +2101,6 @@
 <context>
     <name>Settings</name>
     <message>
-        <source>Settings</source>
-        <translation type="vanished">Ayarlar</translation>
-    </message>
-    <message>
         <location filename="../../qml/Settings/Settings.qml" line="41"/>
         <source>Fiat</source>
         <translation>Döviz</translation>
@@ -2347,10 +2136,6 @@
         <translation>mm2 versiyonu</translation>
     </message>
     <message>
-        <source>Language</source>
-        <translation type="vanished">Dil</translation>
-    </message>
-    <message>
         <location filename="../../qml/Settings/Settings.qml" line="143"/>
         <source>Delete Wallet</source>
         <translation>Cüzdanı Sil</translation>
@@ -2359,38 +2144,6 @@
         <location filename="../../qml/Settings/Settings.qml" line="158"/>
         <source>Log out</source>
         <translation>Çıkış</translation>
-    </message>
-</context>
-<context>
-    <name>Sidebar</name>
-    <message>
-        <source>Portfolio</source>
-        <translation type="vanished">Portföy</translation>
-    </message>
-    <message>
-        <source>Wallet</source>
-        <translation type="vanished">Cüzdan</translation>
-    </message>
-    <message>
-        <source>DEX</source>
-        <translation type="vanished">DEX</translation>
-    </message>
-    <message>
-        <source>News</source>
-        <translation type="vanished">Haberler</translation>
-    </message>
-    <message>
-        <source>DApps</source>
-        <translation type="vanished">DApps</translation>
-    </message>
-    <message>
-        <source>Settings</source>
-        <translation type="vanished">Ayarlar</translation>
-    </message>
-    <message>
-        <source>Disable %1</source>
-        <comment>TICKER</comment>
-        <translation type="obsolete">%1&apos;i Etkinsizleştir</translation>
     </message>
 </context>
 <context>
@@ -2488,13 +2241,6 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Support/Support.qml" line="153"/>
-        <source>Other DEXs generally only allow you to trade assets that are based on a single blockchain network, use proxy tokens, and only allow placing a single order with the same funds.
-
-AtomicDEX enables you to natively trade across two different blockchain networks without proxy tokens. You can also place multiple orders with the same funds. For example, you can sell 0.1 BTC for KMD, QTUM, or VRSC — the first order that fills automatically cancels all other orders.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../../qml/Support/Support.qml" line="165"/>
         <source>Yes. You must remain connected to the internet and have your app running to successfully complete each atomic swap (very short breaks in connectivity are usually fine). Otherwise, there is risk of trade cancellation if you are a maker, and risk of loss of funds if you are a taker. The atomic swap protocol requires both participants to stay online and monitor the involved blockchains for the process to stay atomic.</source>
         <translation type="unfinished"></translation>
@@ -2505,68 +2251,60 @@ AtomicDEX enables you to natively trade across two different blockchain networks
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Support/Support.qml" line="170"/>
-        <source>There are two fee categories to consider when trading on AtomicDEX.
-
-1. AtomicDEX charges approximately 0.13% (1/777 of trading volume but not lower than 0.0001) as the trading fee for taker orders, and maker orders have zero fees.
-2. Both makers and takers will need to pay normal network fees to the involved blockchains when making atomic swap transactions.
-
-Network fees can vary greatly depending on your selected trading pair.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../../qml/Support/Support.qml" line="180"/>
         <source>Yes! AtomicDEX offers support through the &lt;a href=&quot;https://komodoplatform.com/discord&quot;&gt;Komodo Discord server&lt;/a&gt;. The team and the community are always happy to help!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Support/Support.qml" line="185"/>
-        <source>No! AtomicDEX is fully decentralized. It is not possible to limit user access by any third party.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../qml/Support/Support.qml" line="189"/>
+        <location filename="../../qml/Support/Support.qml" line="184"/>
         <source>Who is behind AtomicDEX?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Support/Support.qml" line="190"/>
+        <location filename="../../qml/Support/Support.qml" line="185"/>
         <source>AtomicDEX is developed by the Komodo team. Komodo is one of the most established blockchain projects working on innovative solutions like atomic swaps, Delayed Proof of Work, and an interoperable multi-chain architecture.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Support/Support.qml" line="194"/>
+        <location filename="../../qml/Support/Support.qml" line="189"/>
         <source>Is it possible to develop my own white-label exchange on AtomicDEX?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Support/Support.qml" line="195"/>
+        <location filename="../../qml/Support/Support.qml" line="190"/>
         <source>Absolutely! You can read our developer documentation for more details or contact us with your partnership inquiries. Have a specific technical question? The AtomicDEX developer community is always ready to help!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Support/Support.qml" line="199"/>
+        <location filename="../../qml/Support/Support.qml" line="194"/>
         <source>Which devices can I use AtomicDEX on?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Support/Support.qml" line="200"/>
+        <location filename="../../qml/Support/Support.qml" line="195"/>
         <source>AtomicDEX is available for mobile on both Android and iPhone, and for desktop on Windows, Mac, and Linux operating systems.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Support/Support.qml" line="204"/>
+        <location filename="../../qml/Support/Support.qml" line="199"/>
         <source>Compliance Info</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Support/Support.qml" line="205"/>
+        <location filename="../../qml/Support/Support.qml" line="200"/>
         <source>Due to regulatory and legal circumstances the citizens of certain jurisdictions including, but not limited to, the United States of America, Canada, Hong Kong, Israel, Singapore, Sudan, Austria, Iran and any other state, country or other jurisdiction that is embargoed by the United States of America or the European Union are not allowed to use this application.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../qml/Support/Support.qml" line="159"/>
         <source>How long does each atomic swap take?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../qml/Support/Support.qml" line="153"/>
+        <source>Other DEXs generally only allow you to trade assets that are based on a single blockchain network, use proxy tokens, and only allow placing a single order with the same funds.
+
+AtomicDEX enables you to natively trade across two different blockchain networks without proxy tokens. You can also place multiple orders with the same funds. For example, you can sell 0.1 BTC for KMD, QTUM, or VRSC — the first order that fills automatically cancels all other orders.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -2580,21 +2318,19 @@ Network fees can vary greatly depending on your selected trading pair.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../../qml/Support/Support.qml" line="170"/>
+        <source>There are two fee categories to consider when trading on AtomicDEX.
+
+1. AtomicDEX charges approximately 0.13% (1/777 of trading volume but not lower than 0.0001) as the trading fee for taker orders, and maker orders have zero fees.
+2. Both makers and takers will need to pay normal network fees to the involved blockchains when making atomic swap transactions.
+
+Network fees can vary greatly depending on your selected trading pair.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="../../qml/Support/Support.qml" line="179"/>
         <source>Do you provide user support?</source>
         <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../qml/Support/Support.qml" line="184"/>
-        <source>Do you have country restrictions?</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
-    <name>SwapList</name>
-    <message>
-        <source>You don&apos;t have recent orders.</source>
-        <translation type="vanished">Yakın zamanda bir emriniz yok.</translation>
     </message>
 </context>
 <context>
@@ -2649,18 +2385,6 @@ Network fees can vary greatly depending on your selected trading pair.</source>
 <context>
     <name>Trade</name>
     <message>
-        <source>No balance available</source>
-        <translation type="vanished">Bakiye yok</translation>
-    </message>
-    <message>
-        <source>Please enable a coin with balance or deposit funds</source>
-        <translation type="vanished">Lütfen bakiyeniz bulunan bir kriptopara etkinleştirin ya da mevcut bakiyenizi doldurun</translation>
-    </message>
-    <message>
-        <source>Trade</source>
-        <translation type="vanished">Al-Sat</translation>
-    </message>
-    <message>
         <location filename="../../qml/Exchange/Trade/Trade.qml" line="318"/>
         <source>Placed the order</source>
         <translation type="unfinished"></translation>
@@ -2689,18 +2413,6 @@ Network fees can vary greatly depending on your selected trading pair.</source>
         <location filename="../../qml/Exchange/Trade/Trade.qml" line="309"/>
         <source>Failed to place the order</source>
         <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Price</source>
-        <translation type="vanished">Fiyat</translation>
-    </message>
-    <message>
-        <source>Selected Price</source>
-        <translation type="vanished">Seçilen Fiyat</translation>
-    </message>
-    <message>
-        <source>Failed to place the order.</source>
-        <translation type="vanished">Emir verme başarısız oldu.</translation>
     </message>
 </context>
 <context>
@@ -2871,48 +2583,6 @@ Network fees can vary greatly depending on your selected trading pair.</source>
     </message>
 </context>
 <context>
-    <name>Wallet</name>
-    <message>
-        <source>Send</source>
-        <translation type="vanished">Gönder</translation>
-    </message>
-    <message>
-        <source>Receive</source>
-        <translation type="vanished">Al</translation>
-    </message>
-    <message>
-        <source>Swap</source>
-        <translation type="vanished">Takasla</translation>
-    </message>
-    <message>
-        <source>Claim Rewards</source>
-        <translation type="vanished">Ödül Al</translation>
-    </message>
-    <message>
-        <source>No transactions</source>
-        <translation type="vanished">İşlem yok</translation>
-    </message>
-    <message>
-        <source>Loading</source>
-        <translation type="vanished">Yükleniyor</translation>
-    </message>
-    <message numerus="yes">
-        <source>Syncing %n TX(s)...</source>
-        <translation type="vanished">
-            <numerusform>%n işlem senkronize ediliyor...</numerusform>
-        </translation>
-    </message>
-    <message>
-        <source>Search</source>
-        <translation type="vanished">Ara</translation>
-    </message>
-    <message>
-        <source>Disable %1</source>
-        <comment>TICKER</comment>
-        <translation type="vanished">%1&apos;i Etkinsizleştir</translation>
-    </message>
-</context>
-<context>
     <name>WalletNameField</name>
     <message>
         <location filename="../../qml/Components/WalletNameField.qml" line="9"/>
@@ -2928,13 +2598,9 @@ Network fees can vary greatly depending on your selected trading pair.</source>
 <context>
     <name>main</name>
     <message>
-        <source>atomicDEX</source>
-        <translation type="vanished">atomicDEX</translation>
-    </message>
-    <message>
         <location filename="../../qml/main.qml" line="13"/>
-        <source>AtomicDEX Pro</source>
-        <translation>AtomıcDEX Pro</translation>
+        <source>AtomicDEX Desktop</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 </TS>

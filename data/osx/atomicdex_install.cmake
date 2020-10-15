@@ -12,24 +12,28 @@ if (APPLE)
             $<TARGET_FILE:${PROJECT_NAME}>)
 endif ()
 
+macro(finalize_bundling)
+    message(STATUS "Post bundling")
+endmacro()
+
 if (APPLE)
+    set(CMAKE_INSTALL_PREFIX ${CMAKE_SOURCE_DIR}/bundled/osx)
     install(TARGETS ${PROJECT_NAME}
             BUNDLE DESTINATION . COMPONENT Runtime
             RUNTIME DESTINATION bin COMPONENT Runtime
             )
-
     # Note Mac specific extension .app
     set(APPS "\${CMAKE_INSTALL_PREFIX}/${PROJECT_NAME}.app")
+
 
     # Directories to look for dependencies
     set(DIRS ${CMAKE_BINARY_DIR})
 
-    install(CODE "include(BundleUtilities)
-    fixup_bundle(\"${APPS}\" \"\" \"${DIRS}\")")
+    install(SCRIPT ${CMAKE_SOURCE_DIR}/data/osx/osx_post_install.cmake)
 
-    set(CPACK_GENERATOR "DRAGNDROP")
-    set(CPACK_DMG_DS_STORE_SETUP_SCRIPT "${CMAKE_CURRENT_SOURCE_DIR}/data/osx/Packaging_CMakeDMGSetup.scpt")
-    set(CPACK_DMG_BACKGROUND_IMAGE "${CMAKE_CURRENT_SOURCE_DIR}/data/osx/Packaging_CMakeDMGBackground.tif")
-    set(CPACK_PACKAGE_NAME "${PROJECT_NAME}")
-    include(CPack)
+    #set(CPACK_GENERATOR "DRAGNDROP")
+    #set(CPACK_DMG_DS_STORE_SETUP_SCRIPT "${CMAKE_CURRENT_SOURCE_DIR}/data/osx/Packaging_CMakeDMGSetup.scpt")
+    #set(CPACK_DMG_BACKGROUND_IMAGE "${CMAKE_CURRENT_SOURCE_DIR}/data/osx/Packaging_CMakeDMGBackground.tif")
+    #set(CPACK_PACKAGE_NAME "${PROJECT_NAME}")
+    #include(CPack)
 endif ()

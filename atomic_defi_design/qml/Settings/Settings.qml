@@ -29,7 +29,7 @@ Item {
         anchors.centerIn: parent
         Layout.alignment: Qt.AlignHCenter
 
-        width: 400
+        width: 650
         height: 750
 
         content: ColumnLayout {

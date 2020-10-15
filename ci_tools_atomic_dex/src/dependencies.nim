@@ -7,7 +7,6 @@ when defined(windows):
 
 let g_packages = [
     (name: "entt", head: false),
-    (name: "folly", head: false),
     (name: "boost-multiprecision", head: false),
     (name: "boost-random", head: false),
     (name: "boost-lockfree", head: false),

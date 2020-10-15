@@ -127,7 +127,7 @@ BasicModal {
             },
 
             PrimaryButton {
-                text: qsTr("View at Explorer")
+                text: qsTr("View on Explorer")
                 Layout.fillWidth: true
                 onClicked: General.viewTxAtExplorer(api_wallet_page.ticker, details.tx_hash, false)
             }

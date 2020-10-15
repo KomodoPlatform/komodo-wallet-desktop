@@ -24,7 +24,7 @@ ColumnLayout {
     spacing: Style.rowSpacingSmall
 
     RowLayout {
-        DefaultText {
+        TitleText {
             id: title_text
             visible: text !== ''
         }
@@ -43,7 +43,6 @@ ColumnLayout {
         echoMode: hidable && hiding ? TextInput.Password : TextInput.Normal
 
         Layout.fillWidth: true
-        selectByMouse: true
 
         HideFieldButton {
             id: hide_button
