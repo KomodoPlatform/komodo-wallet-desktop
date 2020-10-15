@@ -851,29 +851,6 @@
     "active": false,
     "currently_enabled": false
   },
-  "HUSH": {
-    "coin": "HUSH",
-    "type": "Smart Chain",
-    "name": "Hush",
-    "coingecko_id": "hush",
-    "coinpaprika_id": "hush-hush",
-    "electrum": [
-      {
-        "url": "electrum1.cipig.net:10064"
-      },
-      {
-        "url": "electrum2.cipig.net:10064"
-      },
-      {
-        "url": "electrum3.cipig.net:10064"
-      }
-    ],
-    "explorer_url": [
-      "https://explorer.myhush.org/"
-    ],
-    "active": false,
-    "currently_enabled": false
-  },
   "SUPERNET": {
     "coin": "SUPERNET",
     "name": "Supernet",
