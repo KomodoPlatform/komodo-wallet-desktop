@@ -93,8 +93,8 @@ init_sodium()
 static void
 clean_previous_run()
 {
-    spdlog::info("cleaning previous mm2.service instance");
-    atomic_dex::kill_executable("mm2.service");
+    spdlog::info("cleaning previous mm2 instance");
+    atomic_dex::kill_executable("mm2");
 }
 
 static void
