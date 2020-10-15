@@ -1171,6 +1171,7 @@
         "url": "electrum3.cipig.net:10058"
       }
     ],
+    "explorer_tx_url": "transaction/",
     "explorer_url": [
       "https://explorer.zcha.in/"
     ],

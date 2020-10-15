@@ -14,11 +14,11 @@
 #include "QZXing.h"
 
 //! PCH Headers
-#include "atomic.dex.pch.hpp"
+#include "atomicdex/pch.hpp"
 
 //! Deps
-#include <wally.hpp>
 #include <sodium/core.h>
+#include <wally.hpp>
 
 #if defined(linux)
 #    define BOOST_STACKTRACE_USE_ADDR2LINE
@@ -26,12 +26,12 @@
 #endif
 
 //! Project Headers
-#include "atomic.dex.app.hpp"
-#include "atomic.dex.kill.hpp"
-#include "atomic.dex.qt.portfolio.model.hpp"
+#include "atomicdex/app.hpp"
+#include "atomicdex/models/qt.portfolio.model.hpp"
+#include "atomicdex/utilities/kill.hpp"
 
 #ifdef __APPLE__
-#    include "atomic.dex.osx.manager.hpp"
+#    include "atomicdex/platform/osx/manager.hpp"
 #endif
 
 inline constexpr size_t g_qsize_spdlog             = 10240;
@@ -43,8 +43,8 @@ inline constexpr size_t g_spdlog_max_file_rotation = 3;
 void
 signal_handler(int signal)
 {
-    spdlog::trace("sigabort received, cleaning mm2");
-    atomic_dex::kill_executable("mm2");
+    spdlog::trace("sigabort received, cleaning mm2.service");
+    atomic_dex::kill_executable("mm2.service");
 #if defined(linux)
     boost::stacktrace::safe_dump_to("./backtrace.dump");
 #endif
@@ -93,8 +93,8 @@ init_sodium()
 static void
 clean_previous_run()
 {
-    spdlog::info("cleaning previous mm2 instance");
-    atomic_dex::kill_executable("mm2");
+    spdlog::info("cleaning previous mm2.service instance");
+    atomic_dex::kill_executable("mm2.service");
 }
 
 static void
@@ -169,21 +169,9 @@ init_timezone_db()
 #endif
 }
 
-/*static void
-init_restclient()
-{
-    RestClient::init();
-}
-
-static void
-disable_restclient()
-{
-    RestClient::disable();
-}*/
-
 #if defined(WINDOWS_RELEASE_MAIN)
 INT WINAPI
-WinMain(HINSTANCE hInst, HINSTANCE, LPSTR strCmdLine, INT)
+WinMain([[maybe_unused]] HINSTANCE hInst, HINSTANCE, [[maybe_unused]] LPSTR strCmdLine, INT)
 #else
 
 int
@@ -196,7 +184,6 @@ main([[maybe_unused]] int argc, [[maybe_unused]] char* argv[])
 #endif
     init_logging();
     connect_signals_handler();
-    //init_restclient();
     init_timezone_db();
     init_wally();
     init_sodium();
@@ -207,7 +194,6 @@ main([[maybe_unused]] int argc, [[maybe_unused]] char* argv[])
     atomic_dex::application atomic_app;
 
     //! QT
-    // int                           ac  = 0;
     std::shared_ptr<QApplication> app = std::make_shared<QApplication>(argc, argv);
     app->setOrganizationName("KomodoPlatform");
     app->setOrganizationDomain("com");
@@ -216,8 +202,6 @@ main([[maybe_unused]] int argc, [[maybe_unused]] char* argv[])
     atomic_app.set_qt_app(app, &engine);
 
     //! QT QML
-
-
     engine.addImportPath("qrc:///");
     QZXing::registerQMLTypes();
     QZXing::registerQMLImageProvider(engine);
@@ -256,7 +240,6 @@ main([[maybe_unused]] int argc, [[maybe_unused]] char* argv[])
 
     auto res = app->exec();
 
-    //disable_restclient();
     clean_wally();
 
     return res;

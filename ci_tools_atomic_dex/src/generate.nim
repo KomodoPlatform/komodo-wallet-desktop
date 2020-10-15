@@ -32,7 +32,7 @@ proc generate_solution*(build_type: string, osx_sdk_path: string, compiler_path:
     echo "cmd line: " & cmd_line
     discard execCmd(cmd_line)
     when defined(windows):
-        if os.existsFile(os.getCurrentDir().joinPath("bin").joinPath("atomicDexPro.exe")):
+        if os.existsFile(os.getCurrentDir().joinPath("bin").joinPath("atomicdex-desktop.exe")):
           discard execCmd(get_windows_deploy_cmd())
         else:
-          echo "atomicDexPro is not yet built"
+          echo "atomicdex-desktop is not yet built"

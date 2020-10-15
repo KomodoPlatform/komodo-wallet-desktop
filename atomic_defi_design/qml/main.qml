@@ -10,7 +10,7 @@ Qaterial.ApplicationWindow {
     visible: true
     minimumWidth: General.minimumWidth
     minimumHeight: General.minimumHeight
-    title: qsTr("AtomicDEX Pro")
+    title: qsTr("AtomicDEX Desktop")
     flags: Qt.Window | Qt.WindowFullscreenButtonHint
 
     property int real_visibility

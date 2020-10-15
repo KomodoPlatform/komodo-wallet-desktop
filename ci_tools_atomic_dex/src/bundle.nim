@@ -42,21 +42,21 @@ proc bundle*(build_type: string, osx_sdk_path: string, compiler_path: string) =
         if not os.existsDir(qt_macdeploy_path.parentDir):
             qt_macdeploy_path = os.getEnv("QT_ROOT").joinPath("bin").joinPath("macdeployqt")
         let
-            dmg_name = "atomicDexPro"
-            app_name = "atomicDexPro"
-            atomicDexPro_app_dir = os.getCurrentDir().joinPath("bin")
-            atomicDexPro_app_path = atomicDexPro_app_dir.joinPath(app_name & ".app")
-            atomicDexPro_qml_dir = os.getCurrentDir().parentDir().parentDir().joinPath("atomic_defi_design/qml")
-            bundling_cmd = qt_mac_deploy_path & " " & atomicDexPro_app_path & " -qmldir=" & atomicDexPro_qml_dir
+            dmg_name = "atomicdex-desktop"
+            app_name = "atomicdex-desktop"
+            atomicdex_desktop_app_dir = os.getCurrentDir().joinPath("bin")
+            atomicdex_desktop_app_path = atomicdex_desktop_app_dir.joinPath(app_name & ".app")
+            atomicdex_desktop_qml_dir = os.getCurrentDir().parentDir().parentDir().joinPath("atomic_defi_design/qml")
+            bundling_cmd = qt_mac_deploy_path & " " & atomicdex_desktop_app_path & " -qmldir=" & atomicdex_desktop_qml_dir
             bundle_path = os.getCurrentDir().parentDir().joinPath("bundle-" & build_type)
             dmg_packager_path = os.getCurrentDir().parentDir().joinPath("dmg-packager").joinPath("package.sh")
-            dmg_packaging_cmd = dmg_packager_path & " \"" & dmg_name & "\" " & app_name & " " & atomicDexPro_app_dir & "/"
-            created_dmg_path = atomicDexPro_app_path.parentDir().joinPath(dmg_name & ".dmg")
+            dmg_packaging_cmd = dmg_packager_path & " \"" & dmg_name & "\" " & app_name & " " & atomicdex_desktop_app_dir & "/"
+            created_dmg_path = atomicdex_desktop_app_path.parentDir().joinPath(dmg_name & ".dmg")
             final_dmg_path = bundle_path.joinPath(dmg_name & ".dmg")
-        
+
         echo "Bundling cmd: " & bundling_cmd
         discard osproc.execCmd(bundling_cmd)
-        fix_osx_libraries(atomicDexPro_app_path)
+        fix_osx_libraries(atomicdex_desktop_app_path)
 
         echo "DMG Packaging cmd: " & dmg_packaging_cmd
         discard osproc.execCmd(dmg_packaging_cmd)
@@ -68,7 +68,7 @@ proc bundle*(build_type: string, osx_sdk_path: string, compiler_path: string) =
         os.copyFile(created_dmg_path, final_dmg_path)
 
     when defined(windows):
-        let 
+        let
             build_path =  os.getCurrentDir().parentDir().joinPath("build-" & build_type).joinPath("bin")
             mm2_path =  os.getCurrentDir().parentDir().joinPath("build-" & build_type).joinPath("bin").joinPath("assets").joinPath("tools").joinPath("mm2")
             dll_path   = os.getCurrentDir().parentDir().joinPath("windows_misc")
@@ -82,7 +82,7 @@ proc bundle*(build_type: string, osx_sdk_path: string, compiler_path: string) =
             copy_dll_mm2_cmd = "powershell.exe -nologo -noprofile -command \"& { " & pwsh_cmd_mm2 & " }\""
             copy_dll_vcpkg_cmd = "powershell.exe -nologo -noprofile -command \"& { " & pwsh_cmd_vcpkg & " }\""
             bundle_cmd = "powershell.exe -nologo -noprofile -command \"& { Add-Type -A 'System.IO.Compression.FileSystem'; [IO.Compression.ZipFile]::CreateFromDirectory('bin', 'bin.zip'); }\""
-            
+
         echo copy_dll_cmd
         discard osproc.execCmd(copy_dll_cmd)
         discard osproc.execCmd(copy_dll_cmd)
@@ -93,10 +93,10 @@ proc bundle*(build_type: string, osx_sdk_path: string, compiler_path: string) =
     when defined(linux):
         let
             build_path =  os.getCurrentDir().parentDir().joinPath("build-" & build_type).joinPath("bin")
-            desktop_path = build_path.joinPath("AntaraAtomicDexAppDir/usr/share/applications/atomicDexPro.desktop")
-            atomicDexPro_qml_dir = os.getCurrentDir().parentDir().parentDir().joinPath("atomic_defi_design/qml")
+            desktop_path = build_path.joinPath("AntaraAtomicDexAppDir/usr/share/applications/atomicdex-desktop.desktop")
+            atomicdex_desktop_qml_dir = os.getCurrentDir().parentDir().parentDir().joinPath("atomic_defi_design/qml")
             linux_deploy_tool = os.getCurrentDir().parentDir().joinPath("linux_misc").joinPath("linuxdeployqt-continuous-x86_64.AppImage")
-            bundling_cmd = linux_deploy_tool & " " & desktop_path & " -qmldir=" & atomicDexPro_qml_dir & " -bundle-non-qt-libs"
+            bundling_cmd = linux_deploy_tool & " " & desktop_path & " -qmldir=" & atomicdex_desktop_qml_dir & " -bundle-non-qt-libs"
             bundle_path = os.getCurrentDir().parentDir().joinPath("bundle-" & build_type)
             tar_cmd = "tar -czvf AntaraAtomicDexAppDir.tar.gz -C " & build_path.joinPath("AntaraAtomicDexAppDir").parentDir() & " ."
 

@@ -97,7 +97,7 @@ SetupPage {
         spacing: Style.rowSpacing
 
         DefaultText {
-            text_value: qsTr("New User")
+            text_value: qsTr("New Wallet")
         }
 
         HorizontalLine {

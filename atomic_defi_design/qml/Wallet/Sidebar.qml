@@ -101,7 +101,6 @@ Item {
 
                         background: null
 
-                        selectByMouse: true
                         Layout.fillWidth: true
                     }
                 }
