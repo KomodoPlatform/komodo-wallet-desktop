@@ -53,7 +53,6 @@ namespace atomic_dex
     void
     band_oracle_price_service::fetch_oracle() noexcept
     {
-        using namespace std::string_literals;
         spdlog::info("start fetching oracle");
         async_fetch_oracle_result()
             .then([this](web::http::http_response resp) {
@@ -64,7 +63,7 @@ namespace atomic_dex
                     nlohmann::json           j    = nlohmann::json::parse(body);
                     band_oracle_price_result result;
                     from_json(j, result);
-                    this->m_oracle_price_result["result"s] = result;
+                    this->m_oracle_price_result.insert_or_assign("result", result);
                     using namespace std::chrono_literals;
                     auto       last_oracle_timestamp     = result.band_oracle_data.at("BTC").timestamp;
                     const auto now                       = std::chrono::system_clock::now();

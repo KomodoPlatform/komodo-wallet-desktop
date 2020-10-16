@@ -6,8 +6,7 @@ fmt/7.0.3
 nlohmann_json/3.9.1
 range-v3/0.11.0@ericniebler/stable
 date/3.0.0
-tbb/2020.2
-libsodium/1.0.18
+folly/2019.10.21.00
 spdlog/1.8.0
 boost/1.74.0
 openssl/1.1.1h
