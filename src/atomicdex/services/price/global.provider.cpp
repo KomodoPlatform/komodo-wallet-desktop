@@ -164,12 +164,12 @@ namespace atomic_dex
             current_price                = tmp_current_price.str();
         }
 
-        if (fiat == "KMD" || (fiat == "BTC" && not is_oracle_ready))
+        if ((fiat == "KMD" && not is_oracle_ready) || (fiat == "BTC" && not is_oracle_ready))
         {
             t_float_50 tmp_current_price = t_float_50(current_price) * t_float_50(m_coin_rate_providers.at(fiat));
             current_price                = tmp_current_price.str();
         }
-        else if (fiat == "BTC" && is_oracle_ready)
+        else if ((fiat == "BTC" || fiat == "KMD") && is_oracle_ready)
         {
             t_float_50 tmp_current_price = t_float_50(current_price) * band_service.retrieve_rates(fiat);
             current_price                = tmp_current_price.str();
