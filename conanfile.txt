@@ -2,7 +2,7 @@
 zstd/1.4.5
 zlib/1.2.11
 doctest/2.3.4@bincrafters/stable
-fmt/6.0.0@bincrafters/stable
+fmt/7.0.3
 nlohmann_json/3.9.1
 range-v3/0.11.0@ericniebler/stable
 date/3.0.0
