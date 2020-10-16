@@ -158,6 +158,7 @@ namespace atomic_dex
             {
                 system_manager_.get_system<wallet_page>().set_current_ticker("KMD");
             }
+            this->dispatcher_.trigger<update_portfolio_values>(false);
         }
 
         return false;
