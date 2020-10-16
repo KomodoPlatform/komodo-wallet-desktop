@@ -289,7 +289,7 @@ namespace atomic_dex
                 }
                 
                 // Add fees amount in fiat currency.
-                auto fee = j_out["withdraw_answer"]["fee_details"]["amount"];
+                auto fee = j_out["withdraw_answer"]["fee_details"]["amount"].get<std::string>();
                 if (coin_info.coinpaprika_id == "test-coin")
                 {
                     j_out["withdraw_answer"]["fee_details"]["amount_fiat"] = "0";
