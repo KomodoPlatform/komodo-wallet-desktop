@@ -30,7 +30,7 @@ namespace atomic_dex
         t_update_time_point          m_update_clock;
         t_oracle_price_synchronized  m_oracle_price_result;
         std::atomic_bool             m_oracle_ready{false};
-        std::vector<std::string>     m_supported_tickers{"BTC", "ETH", "DAI", "BAT", "KMD", "BCH", "LTC", "ZEC", "XZC", "RVN"};
+        std::vector<std::string>     m_supported_tickers{"BTC", "ETH", "DAI", "BAT", "KMD", "BCH", "LTC", "ZEC", "XZC", "RVN", "DOGE", "DGB"};
 
         void                                 fetch_oracle() noexcept;
         pplx::task<web::http::http_response> async_fetch_oracle_result() noexcept;
