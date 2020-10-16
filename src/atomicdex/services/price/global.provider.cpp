@@ -76,7 +76,6 @@ namespace atomic_dex
     global_price_service::refresh_other_coins_rates(const std::string& quote_id, const std::string& ticker, bool with_update_providers)
     {
         using namespace std::chrono_literals;
-        using namespace std::string_literals;
         coinpaprika::api::price_converter_request request{.base_currency_id = "usd-us-dollars", .quote_currency_id = quote_id};
         coinpaprika::api::async_price_converter(request)
             .then([this, quote_id, ticker, with_update_providers](web::http::http_response resp) {
@@ -92,11 +91,11 @@ namespace atomic_dex
                     {
                         if (not answer.price.empty())
                         {
-                            this->m_coin_rate_providers[ticker] = answer.price;
+                            this->m_coin_rate_providers.insert_or_assign(ticker, answer.price);
                         }
                     }
                     else
-                        this->m_coin_rate_providers[ticker] = "0.00"s;
+                        this->m_coin_rate_providers.insert_or_assign(ticker, "0.00");
                 }
                 if (with_update_providers)
                 {

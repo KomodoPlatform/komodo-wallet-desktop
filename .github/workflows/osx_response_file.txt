@@ -1,5 +1,5 @@
 entt
-tbb
+folly
 boost-multiprecision
 boost-random
 boost-lockfree
