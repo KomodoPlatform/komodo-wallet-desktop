@@ -258,6 +258,7 @@ namespace atomic_dex
             const auto& current_fiat = settings_system.get_current_fiat().toStdString();
             std::error_code ec;
             std::string body = TO_STD_STR(resp.extract_string(true).get());
+            spdlog::trace("resp: {}", body);
             if (resp.status_code() == 200 && body.find("error") == std::string::npos)
             {
                 auto           answers              = nlohmann::json::parse(body);
