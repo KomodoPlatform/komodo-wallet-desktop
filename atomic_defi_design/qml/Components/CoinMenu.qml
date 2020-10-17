@@ -5,14 +5,28 @@ import QtQuick.Controls.Universal 2.15
 import "../Constants"
 
 Menu {
-    Action {
+    // Ugly but required hack for automatic menu width, otherwise long texts are being cut
+    width: {
+        let result = 0
+        let padding = 0
+
+        for (let i = 0; i < count; ++i) {
+            let item = itemAt(i)
+            result = Math.max(item.contentItem.implicitWidth, result)
+            padding = Math.max(item.padding, padding)
+        }
+
+        return result + padding * 2
+    }
+
+    MenuItem {
         id: disable_action
         text: qsTr("Disable %1", "TICKER").arg(ticker)
         onTriggered: API.app.disable_coins([ticker])
         enabled: General.canDisable(ticker)
     }
 
-    Action {
+    MenuItem {
         text: qsTr("Disable and Delete %1", "TICKER").arg(ticker)
         onTriggered: {
             const cloneTicker = General.clone(ticker)
@@ -21,6 +35,18 @@ Menu {
             restart_modal.open()
         }
         enabled: disable_action.enabled && API.app.get_coin_info(ticker).is_custom_coin
+    }
+
+    MenuItem {
+        readonly property string coin_type: API.app.get_coin_info(ticker).type
+        enabled: General.isParentCoin(ticker)
+        text: enabled ? qsTr("Disable %1 and all %2 assets").arg(ticker).arg(coin_type) : "-"
+        onTriggered: {
+            const coins_to_disable = API.app.enabled_coins.filter(c => c.type === coin_type && !General.isParentCoin(c.ticker)).map(c => c.ticker)
+            if(coins_to_disable.length > 0)
+                API.app.disable_coins(coins_to_disable)
+            API.app.disable_coins([ticker])
+        }
     }
 }
 

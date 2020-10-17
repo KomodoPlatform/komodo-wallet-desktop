@@ -299,8 +299,19 @@ QtObject {
         return type === "ERC-20" ? "Gwei" : "Satoshi"
     }
 
+    function isParentCoin(ticker) {
+        return ticker === "ETH" || ticker === "QTUM"
+    }
+
     function isTokenType(type) {
         return type === "ERC-20" || type === "QRC-20"
+    }
+
+    function getParentCoin(type) {
+        if(type === "ERC-20") return "ETH"
+        else if(type === "QRC-20") return "QTUM"
+        else if(type === "Smart Chain") return "KMD"
+        return "?"
     }
 
     function isCoinEnabled(ticker) {
