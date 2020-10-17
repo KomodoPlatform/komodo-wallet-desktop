@@ -252,7 +252,7 @@ namespace atomic_dex
         batch.push_back(json_data);
 
         //! Answer
-        auto answer_functor = [this, coin_info, ticker](web::http::http_response resp) {
+        auto answer_functor = [this, coin_info, ticker, amount](web::http::http_response resp) {
             const auto& settings_system = m_system_manager.get_system<settings_page>();
             const auto& global_price_system = m_system_manager.get_system<global_price_service>();
             const auto& current_fiat = settings_system.get_current_fiat().toStdString();
@@ -274,8 +274,8 @@ namespace atomic_dex
                 }
                 else
                 {
-                    auto amount = j_out.at("withdraw_answer").at("total_amount").get<std::string>();
-                    j_out["withdraw_answer"]["total_amount_fiat"] = global_price_system.get_price_as_currency_from_amount(current_fiat, ticker, amount, ec);
+                    j_out["withdraw_answer"]["total_amount_fiat"] =
+                        global_price_system.get_price_as_currency_from_amount(current_fiat, ticker, amount.toStdString(), ec);
                 }
                 
                 // Add fees amount.
