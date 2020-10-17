@@ -121,12 +121,15 @@ SetupPage {
 
         HorizontalLine {
             light: true
-            Layout.fillWidth: true
         }
 
         Languages {
         }
     }
+
+
+
+    bottom_content: LinksRow {}
 }
 
 /*##^##

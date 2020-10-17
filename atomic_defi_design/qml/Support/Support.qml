@@ -36,36 +36,12 @@ Item {
             Item {
                 Layout.topMargin: parent.spacing
                 Layout.fillWidth: true
-                Layout.preferredHeight: discord_icon.height
+                Layout.preferredHeight: 80
 
-                RowLayout {
-                    id: row_layout
-                    spacing: 10
+                LinksRow {
                     anchors.left: parent.left
                     anchors.verticalCenter: parent.verticalCenter
-
-                    LinkIcon {
-                        id: discord_icon
-                        link: "https://komodoplatform.com/discord"
-                        source: General.image_path + "icon-discord.png"
-                    }
-
-                    LinkIcon {
-                        link: "https://twitter.com/AtomicDEX"
-                        source: General.image_path + "icon-twitter.png"
-                    }
-
-                    LinkIcon {
-                        link: "https://support.komodoplatform.com/support/home"
-                        source: General.image_path + "icon-support.png"
-                    }
-
-//                    LinkIcon {
-//                        link: "mailto:support@komodoplatform.com"
-//                        source: General.image_path + "icon-email.png"
-//                    }
                 }
-
 
                 DefaultMouseArea {
                     id: changelog_button
