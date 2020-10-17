@@ -124,6 +124,8 @@ SetupPage {
         }
 
         Languages {
+            Layout.alignment: Qt.AlignHCenter
+            show_label: false
         }
     }
 
