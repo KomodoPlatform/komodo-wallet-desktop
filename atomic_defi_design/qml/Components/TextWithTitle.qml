@@ -28,7 +28,7 @@ ColumnLayout {
             id: title
             Layout.fillWidth: true
 
-            color: Qt.lighter(Style.colorWhite4, mouse_area.containsMouse ? Style.hoverLightMultiplier : 1.0)
+            color: !expandable ? Style.colorText : Qt.lighter(Style.colorWhite4, mouse_area.containsMouse ? Style.hoverLightMultiplier : 1.0)
 
             DefaultMouseArea {
                 id: mouse_area
