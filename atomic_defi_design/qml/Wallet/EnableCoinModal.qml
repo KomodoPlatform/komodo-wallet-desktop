@@ -88,7 +88,7 @@ BasicModal {
 
         DefaultButton {
             Layout.fillWidth: true
-            text: qsTr("Add a Custom Coin to the list")
+            text: qsTr("Add a custom asset to the list")
             onClicked: {
                 root.close()
                 add_custom_coin_modal.open()
@@ -122,7 +122,7 @@ BasicModal {
 
                 CoinList {
                     id: coins_utxo
-                    group_title: qsTr("Select all UTXO coins")
+                    group_title: qsTr("Select all UTXO assets")
                     model: General.filterCoins(API.app.enableable_coins, input_coin_filter.text, "UTXO")
                 }
 
@@ -151,7 +151,7 @@ BasicModal {
         DefaultText {
             visible: API.app.enableable_coins.length === 0
 
-            text_value: qsTr("All coins are already enabled!")
+            text_value: qsTr("All assets are already enabled!")
         }
 
         // Buttons
