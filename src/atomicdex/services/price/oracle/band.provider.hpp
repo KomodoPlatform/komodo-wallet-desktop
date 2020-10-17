@@ -4,13 +4,18 @@
 
 namespace atomic_dex
 {
+    struct band_data
+    {
+        std::size_t timestamp;
+        std::string human_date;
+        t_float_50  price;
+        t_float_50  rate;
+        std::string reference;
+    };
+
     struct band_oracle_price_result
     {
-        std::size_t                                 timestamp;
-        std::string                                 human_date;
-        std::unordered_map<std::string, t_float_50> prices;
-        std::unordered_map<std::string, t_float_50> rates;
-        std::string                                 reference;
+        std::unordered_map<std::string, band_data> band_oracle_data;
     };
 
     void from_json(const nlohmann::json& j, band_oracle_price_result& result);
@@ -20,11 +25,12 @@ namespace atomic_dex
         using t_update_time_point         = std::chrono::high_resolution_clock::time_point;
         using t_oracle_price_synchronized = t_concurrent_reg<std::string, band_oracle_price_result>;
 
-        static constexpr const char* m_band_endpoint{"https://feeds.bandprotocol.com"};
+        static constexpr const char* m_band_endpoint{"https://poa-api.bandchain.org/oracle/request_prices"};
         t_http_client_ptr            m_band_http_client{std::make_unique<t_http_client>(FROM_STD_STR(m_band_endpoint))};
         t_update_time_point          m_update_clock;
         t_oracle_price_synchronized  m_oracle_price_result;
         std::atomic_bool             m_oracle_ready{false};
+        std::vector<std::string>     m_supported_tickers{"BTC", "ETH", "DAI", "BAT", "KMD", "BCH", "LTC", "ZEC", "XZC", "RVN", "DOGE", "DGB"};
 
         void                                 fetch_oracle() noexcept;
         pplx::task<web::http::http_response> async_fetch_oracle_result() noexcept;
