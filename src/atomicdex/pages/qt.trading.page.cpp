@@ -292,6 +292,12 @@ namespace atomic_dex
         const QString& base, const QString& rel, const QString& price, const QString& volume, bool is_created_order, const QString& price_denom,
         const QString& price_numer, const QString& rel_nota, const QString& rel_confs)
     {
+        auto max_taker_vol = this->get_orderbook_wrapper()->get_base_max_taker_vol().toJsonObject();
+        // qDebug() << "max_taker_vol: " << max_taker_vol;
+        spdlog::info(
+            "place_sell_order with: base({}), rel ({}), price ({}), volume ({}), is_created_order ({}), price_denom ({}), price_numer ({}), max_taker_vol ({})",
+            base.toStdString(), rel.toStdString(), price.toStdString(), volume.toStdString(), is_created_order, price_numer.toStdString(),
+            price_denom.toStdString(), max_taker_vol.value("decimal").toString().toStdString());
         this->set_buy_sell_rpc_busy(true);
         this->set_buy_sell_last_rpc_data(QJsonObject{{}});
         t_float_50 amount_f;

@@ -367,14 +367,14 @@ BasicModal {
         // Amount
         TextWithTitle {
             title: qsTr("Amount")
-            text: General.formatCrypto("", input_amount.field.text, api_wallet_page.ticker)
+            text: General.formatCrypto("", input_amount.field.text, api_wallet_page.ticker, send_result.withdraw_answer.total_amount_fiat, API.app.settings_pg.current_currency)
         }
 
         // Fees
         TextWithTitle {
             title: qsTr("Fees")
             text: empty_data ? "" :
-                  General.formatCrypto("", send_result.withdraw_answer.fee_details.amount, current_ticker_infos.fee_ticker)
+                  General.formatCrypto("", send_result.withdraw_answer.fee_details.amount, current_ticker_infos.fee_ticker, send_result.withdraw_answer.fee_details.amount_fiat, API.app.settings_pg.current_currency)
         }
 
         // Date
