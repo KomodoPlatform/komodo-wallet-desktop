@@ -140,7 +140,7 @@ BasicModal {
 
                 CoinList {
                     id: coins_qrc
-                    group_title: qsTr("Select all QRC tokens")
+                    group_title: qsTr("Select all QRC assets")
                     model: General.filterCoins(API.app.enableable_coins, input_coin_filter.text, "QRC-20")
                 }
             }
