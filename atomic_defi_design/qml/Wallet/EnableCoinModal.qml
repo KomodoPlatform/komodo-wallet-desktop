@@ -57,13 +57,23 @@ BasicModal {
         root.close()
     }
 
-    function enableAllCoins() {
-        const coins_to_enable = API.app.enableable_coins.map(c => c.ticker)
-        console.log("QML enable_coins:", JSON.stringify(coins_to_enable))
-        if(coins_to_enable.length > 0)
-            API.app.enable_coins(coins_to_enable)
-        reset()
-        root.close()
+    readonly property bool all_coins_are_selected:  coins_utxo.parent_box.checkState === Qt.Checked &&
+                                                    coins_smartchains.parent_box.checkState === Qt.Checked &&
+                                                    coins_erc.parent_box.checkState === Qt.Checked &&
+                                                    coins_qrc.parent_box.checkState === Qt.Checked
+    function toggleAllCoins() {
+        if(all_coins_are_selected) {
+            coins_utxo.parent_box.checkState = Qt.Unchecked
+            coins_smartchains.parent_box.checkState = Qt.Unchecked
+            coins_erc.parent_box.checkState = Qt.Unchecked
+            coins_qrc.parent_box.checkState = Qt.Unchecked
+        }
+        else {
+            coins_utxo.parent_box.checkState = Qt.Checked
+            coins_smartchains.parent_box.checkState = Qt.Checked
+            coins_erc.parent_box.checkState = Qt.Checked
+            coins_qrc.parent_box.checkState = Qt.Checked
+        }
     }
 
     ModalContent {
@@ -71,9 +81,9 @@ BasicModal {
 
         DefaultButton {
             Layout.fillWidth: true
-            text: qsTr("Enable All Assets")
+            text: all_coins_are_selected ? qsTr("Clear All Selection") : qsTr("Enable All Assets")
             visible: API.app.enableable_coins.length > 0
-            onClicked: enableAllCoins()
+            onClicked: toggleAllCoins()
         }
 
         DefaultButton {
