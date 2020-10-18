@@ -19,8 +19,8 @@
 
 //! Project Headers
 #include "atomicdex/config/mm2.cfg.hpp"
-#include "atomicdex/services/mm2/mm2.service.hpp"
 #include "atomicdex/managers/qt.wallet.manager.hpp"
+#include "atomicdex/services/mm2/mm2.service.hpp"
 #include "atomicdex/utilities/kill.hpp"
 #include "atomicdex/utilities/security.utilities.hpp"
 #include "atomicdex/version/version.hpp"
@@ -365,8 +365,6 @@ namespace atomic_dex
                         std::size_t idx = 0;
                         for (auto&& answer: answers)
                         {
-                            // spdlog::trace("answer {}",  answer.dump(4));
-
                             if (answer.contains("balance"))
                             {
                                 this->process_balance_answer(answer);
@@ -374,6 +372,10 @@ namespace atomic_dex
                             else if (answer.contains("result"))
                             {
                                 this->process_tx_answer(answer);
+                            }
+                            else
+                            {
+                                spdlog::error("error answer for tx or my_balance: {}", answer.dump(4));
                             }
                             ++idx;
                         }
@@ -435,6 +437,14 @@ namespace atomic_dex
     std::pair<bool, std::string>
     mm2_service::process_batch_enable_answer(const json& answer)
     {
+        std::string error = answer.dump(4);
+
+        if (answer.contains("Error") || error.find("error") != std::string::npos || error.find("Error") != std::string::npos)
+        {
+            spdlog::trace("bad answer json for enable/electrum details: {}", error);
+            return {false, error};
+        }
+
         if (answer.contains("coin"))
         {
             auto        ticker          = answer.at("coin").get<std::string>();
@@ -443,7 +453,7 @@ namespace atomic_dex
             m_coins_informations.assign(coin_info.ticker, coin_info);
             return {true, ""};
         }
-        std::string error = answer.dump(4);
+
         spdlog::trace("bad answer json for enable/electrum details: {}", error);
         return {false, error};
     }
