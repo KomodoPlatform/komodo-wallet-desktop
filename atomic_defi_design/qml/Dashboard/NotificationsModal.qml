@@ -35,10 +35,8 @@ BasicModal {
         window.requestActivate()
     }
 
-    function performLastNotificationAction() {
-        if(notifications_list.length === 0) return
-
-        const notification = notifications_list[0]
+    function performNotificationAction(notification) {
+        root.close()
 
         switch(notification.click_action) {
         case "open_notifications":
@@ -52,14 +50,17 @@ BasicModal {
             dashboard.current_page = General.idx_dashboard_exchange
             exchange.current_page = exchange.isSwapDone(notification.params.new_swap_status) ? General.idx_exchange_history : General.idx_exchange_orders
             break
+        case "open_log_modal":
+            showError(notification.title, notification.long_message)
+            break
         default:
             console.log("Unknown notification click action", notification.click_action)
             break
         }
     }
 
-    function newNotification(event_name, params, id, title, message, human_date, click_action = "open_notifications") {
-        const obj = { event_name, params, id, title, message, human_date, click_action }
+    function newNotification(event_name, params, id, title, message, human_date, click_action = "open_notifications", long_message = "") {
+        const obj = { event_name, params, id, title, message, human_date, click_action, long_message }
 
         // Update if it already exists
         let updated_existing_one = false
@@ -117,7 +118,9 @@ BasicModal {
                         timestamp,
                         title,
                         check_internet_connection_text,
-                        human_date)
+                        human_date,
+                        "open_log_modal",
+                        error)
 
         toast.show(title, General.time_toast_important_error, error)
     }
@@ -130,7 +133,9 @@ BasicModal {
                         timestamp,
                         title,
                         base_uri,
-                        human_date)
+                        human_date,
+                        "open_log_modal",
+                        error)
 
         toast.show(title, General.time_toast_important_error, qsTr("Could not reach to endpoint") + ". " + check_internet_connection_text + "\n\n" + base_uri)
     }
@@ -153,7 +158,9 @@ BasicModal {
         visible: true
         iconSource: General.image_path + "tray-icon.png"
         onMessageClicked: {
-            performLastNotificationAction()
+            if(notifications_list.length > 0)
+                performNotificationAction(notifications_list[0])
+
             showApp()
         }
 
@@ -217,7 +224,7 @@ BasicModal {
                         anchors.top: parent.top
                         anchors.topMargin: 10
                         anchors.right: parent.right
-                        anchors.rightMargin: 150
+                        anchors.rightMargin: 200
                         text_value: modelData.human_date
                         font.pixelSize: Style.textSizeSmall
                     }
@@ -249,7 +256,19 @@ BasicModal {
                         light: true
                     }
 
+                    // Info button
                     Qaterial.AppBarButton {
+                        anchors.verticalCenter: action_button.verticalCenter
+                        anchors.right: action_button.left
+                        anchors.rightMargin: 15
+
+                        icon.source: General.qaterialIcon("information-variant")
+                        onClicked: performNotificationAction(modelData)
+                    }
+
+                    // Action button
+                    Qaterial.AppBarButton {
+                        id: action_button
                         anchors.bottom: parent.bottom
                         anchors.bottomMargin: 5
                         anchors.right: parent.right
