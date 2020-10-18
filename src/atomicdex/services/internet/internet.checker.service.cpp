@@ -21,9 +21,9 @@
 #include <nlohmann/json.hpp>
 
 //! Our project
+#include "atomicdex/services/internet/internet.checker.service.hpp"
 #include "atomicdex/utilities/cpprestsdk.utilities.hpp"
-#include "internet.checker.service.hpp"
-#include "src/atomicdex/utilities/qt.utilities.hpp"
+#include "atomicdex/utilities/qt.utilities.hpp"
 
 namespace
 {
@@ -35,6 +35,8 @@ namespace
     t_http_client_ptr g_google_proxy_http_client{std::make_unique<web::http::client::http_client>(FROM_STD_STR("https://www.google.com"), g_cfg)};
     t_http_client_ptr g_paprika_proxy_http_client{std::make_unique<web::http::client::http_client>(FROM_STD_STR("https://api.coinpaprika.com"), g_cfg)};
     t_http_client_ptr g_ohlc_proxy_http_client{std::make_unique<web::http::client::http_client>(FROM_STD_STR("https://komodo.live:3333"), g_cfg)};
+    t_http_client_ptr g_cipig_proxy_http_client{std::make_unique<web::http::client::http_client>(FROM_STD_STR("https://dexapi.cipig.net:10000"), g_cfg)};
+
 
     pplx::task<web::http::http_response>
     async_check_retrieve(t_http_client_ptr& client, const std::string& uri)
@@ -55,10 +57,10 @@ namespace atomic_dex
     void
     atomic_dex::internet_service_checker::set_internet_alive(bool internet_status) noexcept
     {
-        if (internet_status == true)
+        /*if (internet_status == true)
         {
             spdlog::info("fetching internet status finished, internet status is: {}", true);
-        }
+        }*/
         if (internet_status != is_internet_reacheable)
         {
             is_internet_reacheable = internet_status;
@@ -122,16 +124,19 @@ namespace atomic_dex
     void
     internet_service_checker::query_internet(t_http_client_ptr& client, const std::string uri, std::atomic_bool internet_service_checker::*p) noexcept
     {
+        std::string base_uri = TO_STD_STR(client->base_uri().to_string());
+        spdlog::trace("Checking connectivity for endpoint: {}", base_uri);
         async_check_retrieve(client, uri)
-            .then([this, p](web::http::http_response resp) {
+            .then([this, p, base_uri](web::http::http_response resp) {
                 bool res = resp.status_code() == web::http::status_codes::OK;
                 this->*p = res;
                 if (res)
                 {
+                    spdlog::info("Connectivity is true for: {}", base_uri);
                     this->set_internet_alive(true);
                 }
             })
-            .then([this](pplx::task<void> previous_task) {
+            .then([this, base_uri](pplx::task<void> previous_task) {
                 try
                 {
                     previous_task.wait();
@@ -139,6 +144,7 @@ namespace atomic_dex
                 catch (const std::exception& e)
                 {
                     spdlog::error("pplx task error: {}, setting internet to false", e.what());
+                    spdlog::info("Connectivity is false for: {}", base_uri);
                     this->set_internet_alive(false);
                 }
             });
@@ -153,5 +159,6 @@ namespace atomic_dex
         query_internet(g_google_proxy_http_client, "", &internet_service_checker::is_google_reacheable);
         query_internet(g_paprika_proxy_http_client, "/v1/coins/btc-bitcoin", &internet_service_checker::is_paprika_provider_alive);
         query_internet(g_ohlc_proxy_http_client, "/api/v1/ohlc/tickers_list", &internet_service_checker::is_our_private_endpoint_reacheable);
+        query_internet(g_cipig_proxy_http_client, "", &internet_service_checker::is_cipig_electrum_alive);
     }
 } // namespace atomic_dex

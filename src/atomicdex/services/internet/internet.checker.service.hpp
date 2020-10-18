@@ -46,6 +46,7 @@ namespace atomic_dex
         std::atomic_bool    is_cipig_electrum_alive{true};
         std::atomic_bool    is_google_reacheable{true};
         std::atomic_bool    is_our_private_endpoint_reacheable{true};
+        std::atomic_bool    is_cipig_endpoint_reacheable{true};
 
         //! Private functions
         void fetch_internet_connection();
