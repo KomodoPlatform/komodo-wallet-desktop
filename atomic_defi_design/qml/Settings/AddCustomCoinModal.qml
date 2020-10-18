@@ -331,7 +331,7 @@ BasicModal {
             Layout.fillWidth: true
             horizontalAlignment: Text.AlignHCenter
             visible: config_fields.error_code !== undefined
-            text_value: qsTr("Coin not found, please go back and make sure Contract Address is correct")
+            text_value: qsTr("Asset not found, please go back and make sure Contract Address is correct")
             font.pixelSize: Style.textSize2
             color: Style.colorRed
         }

@@ -24,7 +24,7 @@ DefaultImage {
         onClicked: () => {
             input_field.selectAll()
             input_field.copy()
-            toast.show(qsTr("Copied to Clipboard")), General.time_toast_basic_info, "", false
+            toast.show(qsTr("Copied to Clipboard"), General.time_toast_basic_info, "", false)
         }
     }
 }

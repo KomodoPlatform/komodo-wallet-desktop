@@ -220,6 +220,8 @@ QtObject {
           "danger": Style.colorWhite11
         })
     readonly property string colorPlaceholderText: Style.colorWhite9
+    readonly property string colorSelectedText: Style.colorTheme9
+    readonly property string colorSelection: Style.colorTheme0
 
     readonly property string modalValueColor: colorWhite4
 

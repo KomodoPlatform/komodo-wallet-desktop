@@ -5,5 +5,5 @@ import QtQuick.Controls 2.15
 import "../Constants"
 
 DefaultText {
-    font.weight: Font.Bold
+    font.pixelSize: Style.textSizeMid
 }

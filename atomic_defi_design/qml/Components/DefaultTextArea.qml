@@ -8,7 +8,11 @@ TextArea {
     id: text_field
 
     font.family: Style.font_family
+
     placeholderTextColor: Style.colorPlaceholderText
+    selectedTextColor: Style.colorSelectedText
+    selectionColor: Style.colorSelection
+
     Behavior on color { ColorAnimation { duration: Style.animationDuration } }
     Behavior on placeholderTextColor { ColorAnimation { duration: Style.animationDuration } }
 
@@ -41,7 +45,7 @@ TextArea {
     selectByMouse: true
     persistentSelection: true
 
-    background: InnerBackground { }
+    background: InnerBackground { auto_set_size: false }
 
     RightClickMenu { }
 }
