@@ -439,7 +439,10 @@ namespace atomic_dex
     {
         std::string error = answer.dump(4);
 
-        if (answer.contains("Error") || error.find("error") != std::string::npos || error.find("Error") != std::string::npos)
+        if (answer.contains("error") ||
+            answer.contains("Error") ||
+            error.find("error") != std::string::npos ||
+            error.find("Error") != std::string::npos)
         {
             spdlog::trace("bad answer json for enable/electrum details: {}", error);
             return {false, error};
