@@ -620,6 +620,7 @@ namespace atomic_dex
     {
         this->m_app = app;
         connect(m_app.get(), SIGNAL(aboutToQuit()), this, SLOT(exit_handler()));
+        connect(qGuiApp, &QGuiApplication::applicationStateChanged, this, &application::app_state_changed);
         auto& settings_system = system_manager_.get_system<settings_page>();
         settings_system.set_qml_engine(engine);
         settings_system.init_lang();
@@ -997,6 +998,25 @@ namespace atomic_dex
     {
         spdlog::trace("will quit app, prevent all threading event");
         m_event_actions[events_action::about_to_exit_app] = true;
+    }
+
+    void
+    application::app_state_changed()
+    {
+        switch(m_app->applicationState()) {
+        case Qt::ApplicationSuspended:
+            spdlog::info("Application suspended");
+            break;
+        case Qt::ApplicationHidden:
+            spdlog::info("Application hidden");
+            break;
+        case Qt::ApplicationInactive:
+            spdlog::info("Application inactive");
+            break;
+        case Qt::ApplicationActive:
+            spdlog::info("Application active");
+            break;
+        }
     }
 
 } // namespace atomic_dex

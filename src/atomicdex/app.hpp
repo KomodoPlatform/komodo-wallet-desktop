@@ -224,5 +224,6 @@ namespace atomic_dex
         void ipCheckerChanged();
       public slots:
         void exit_handler();
+        void app_state_changed();
     };
 } // namespace atomic_dex
