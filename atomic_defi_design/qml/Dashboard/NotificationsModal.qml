@@ -108,7 +108,7 @@ BasicModal {
     function onEnablingCoinFailedStatus(coin, error, human_date, timestamp) {
         const title = qsTr("Failed to enable %1", "TICKER").arg(coin)
 
-        error = qsTr("Can't connect to electrums X, Y, Z. Please check your internet connection (e.g. VPN service or firewall might block it).")
+        error = qsTr("Can't connect to electrums. Please check your internet connection (e.g. VPN service or firewall might block it).")
                 + "\n\n" + error
 
         newNotification("onEnablingCoinFailedStatus",
@@ -121,11 +121,25 @@ BasicModal {
         toast.show(title, General.time_toast_important_error, error)
     }
 
+    function onEndpointNonReacheableStatus(base_uri, human_date, timestamp) {
+        const title = qsTr("Endpoint not reachable")
+
+        newNotification("onEndpointNonReacheableStatus",
+                        { base_uri, human_date, timestamp },
+                        timestamp,
+                        title,
+                        base_uri.length <= 25 ? base_uri : base_uri.substring(0, 25) + "...",
+                        human_date)
+
+        toast.show(title, General.time_toast_important_error, qsTr("Could not reach to endpoint") + "\n\n" + base_uri)
+    }
+
     // System
     Component.onCompleted: {
         API.app.notification_mgr.updateSwapStatus.connect(onUpdateSwapStatus)
         API.app.notification_mgr.balanceUpdateStatus.connect(onBalanceUpdateStatus)
         API.app.notification_mgr.enablingCoinFailedStatus.connect(onEnablingCoinFailedStatus)
+        API.app.notification_mgr.endpointNonReacheableStatus.connect(onEndpointNonReacheableStatus)
     }
 
     function displayMessage(title, message) {
