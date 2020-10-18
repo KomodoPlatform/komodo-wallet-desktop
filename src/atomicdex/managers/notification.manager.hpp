@@ -23,7 +23,8 @@
 #include <entt/signal/dispatcher.hpp>
 
 //! Project Headers
-#include "src/atomicdex/events/qt.events.hpp"
+#include "atomicdex/events/events.hpp"
+#include "atomicdex/events/qt.events.hpp"
 
 namespace atomic_dex
 {
@@ -40,11 +41,13 @@ namespace atomic_dex
 
         //! Callbacks
         void on_swap_status_notification(const swap_status_notification& evt);
+        void on_enabling_coin_failed(const enabling_coin_failed& evt);
         void on_balance_update_notification(const balance_update_notification& evt);
 
       signals:
         void updateSwapStatus(QString old_swap_status, QString new_swap_status, QString swap_uuid, QString base_coin, QString rel_coin, QString human_date);
         void balanceUpdateStatus(bool am_i_sender, QString amount, QString ticker, QString human_date, qint64 timestamp);
+        void enablingCoinFailedStatus(QString coin, QString error);
 
       private:
         entt::dispatcher& m_dispatcher;

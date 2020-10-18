@@ -432,7 +432,7 @@ namespace atomic_dex
         return std::make_tuple(batch_array, tickers_idx, erc_to_fetch);
     }
 
-    bool
+    std::pair<bool, std::string>
     mm2_service::process_batch_enable_answer(const json& answer)
     {
         if (answer.contains("coin"))
@@ -441,10 +441,11 @@ namespace atomic_dex
             coin_config coin_info       = m_coins_informations.at(ticker);
             coin_info.currently_enabled = true;
             m_coins_informations.assign(coin_info.ticker, coin_info);
-            return true;
+            return {true, ""};
         }
-        spdlog::trace("bad answer json for enable/electrum details: {}", answer.dump(4));
-        return false;
+        std::string error = answer.dump(4);
+        spdlog::trace("bad answer json for enable/electrum details: {}", error);
+        return {false, error};
     }
 
     void
@@ -510,12 +511,13 @@ namespace atomic_dex
                             std::size_t idx = 0;
                             for (auto&& answer: answers)
                             {
-                                bool res = this->process_batch_enable_answer(answer);
+                                auto [res, error] = this->process_batch_enable_answer(answer);
                                 if (not res && idx < tickers.size())
                                 {
                                     spdlog::trace(
                                         "bad answer for: [{}] -> removing it from enabling, idx: {}, tickers size: {}, answers size: {}", tickers[idx], idx,
                                         tickers.size(), answers.size());
+                                    this->dispatcher_.trigger<enabling_coin_failed>(tickers[idx], error);
                                     tickers.erase(tickers.begin() + idx);
                                 }
                                 idx += 1;

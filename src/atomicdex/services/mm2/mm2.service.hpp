@@ -150,7 +150,7 @@ namespace atomic_dex
         void process_tx_etherscan(const std::string& ticker, bool is_a_refresh);
 
         //!
-        bool process_batch_enable_answer(const nlohmann::json& answer);
+        std::pair<bool, std::string> process_batch_enable_answer(const nlohmann::json& answer);
 
       public:
         //! Constructor
