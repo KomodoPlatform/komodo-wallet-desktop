@@ -149,26 +149,36 @@ namespace atomic_dex
         QStringList coins_copy;
         for (auto&& coin: coins)
         {
-            if (not get_orders()->swap_is_in_progress(coin))
+            if (not get_orders()->swap_is_in_progress(coin) && coin != "KMD" && coin != "BTC")
             {
-                coins_copy.push_back(coin);
+                if (coin == "ETH" || coin == "QTUM")
+                {
+                    coins_copy.push_back(coin);
+                }
+                else
+                {
+                    coins_copy.push_front(coin);
+                }
             }
         }
 
-        std::vector<std::string> coins_std;
-        system_manager_.get_system<portfolio_page>().get_portfolio()->disable_coins(coins_copy);
-        system_manager_.get_system<trading_page>().disable_coins(coins_copy);
-        coins_std.reserve(coins_copy.size());
-        for (auto&& coin: coins_copy)
+        if (not coins_copy.empty())
         {
-            if (QString::fromStdString(get_mm2().get_current_ticker()) == coin && m_kmd_fully_enabled)
+            std::vector<std::string> coins_std;
+            system_manager_.get_system<portfolio_page>().get_portfolio()->disable_coins(coins_copy);
+            system_manager_.get_system<trading_page>().disable_coins(coins_copy);
+            coins_std.reserve(coins_copy.size());
+            for (auto&& coin: coins_copy)
             {
-                system_manager_.get_system<wallet_page>().set_current_ticker("KMD");
+                if (QString::fromStdString(get_mm2().get_current_ticker()) == coin && m_kmd_fully_enabled)
+                {
+                    system_manager_.get_system<wallet_page>().set_current_ticker("KMD");
+                }
+                coins_std.push_back(coin.toStdString());
             }
-            coins_std.push_back(coin.toStdString());
+            get_mm2().disable_multiple_coins(coins_std);
+            this->dispatcher_.trigger<update_portfolio_values>(false);
         }
-        get_mm2().disable_multiple_coins(coins_std);
-        this->dispatcher_.trigger<update_portfolio_values>(false);
 
         return true;
     }
