@@ -53,6 +53,10 @@ Menu {
             if(ticker !== "KMD")
                 API.app.disable_coins([ticker])
         }
+    MenuItem {
+        enabled: !prevent_coin_disabling.running
+        text: qsTr("Disable all assets")
+        onTriggered: API.app.disable_coins(API.app.enabled_coins.map(c => c.ticker))
     }
 }
 
