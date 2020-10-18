@@ -2,6 +2,7 @@ import QtQuick 2.15
 import QtQuick.Layouts 1.15
 import QtQuick.Controls 2.15
 import Qt.labs.platform 1.0
+import Qaterial 1.0 as Qaterial
 
 import "../Constants"
 import "../Components"
@@ -105,11 +106,11 @@ BasicModal {
                         "open_wallet_page")
     }
 
+    readonly property string check_internet_connection_text: qsTr("Please check your internet connection (e.g. VPN service or firewall might block it).")
     function onEnablingCoinFailedStatus(coin, error, human_date, timestamp) {
         const title = qsTr("Failed to enable %1", "TICKER").arg(coin)
 
-        error = qsTr("Can't connect to electrums. Please check your internet connection (e.g. VPN service or firewall might block it).")
-                + "\n\n" + error
+        error = check_internet_connection_text + "\n\n" + error
 
         newNotification("onEnablingCoinFailedStatus",
                         { coin, error, human_date, timestamp },
@@ -131,7 +132,7 @@ BasicModal {
                         base_uri.length <= 25 ? base_uri : base_uri.substring(0, 25) + "...",
                         human_date)
 
-        toast.show(title, General.time_toast_important_error, qsTr("Could not reach to endpoint") + "\n\n" + base_uri)
+        toast.show(title, General.time_toast_important_error, qsTr("Could not reach to endpoint") + ". " + check_internet_connection_text + "\n\n" + base_uri)
     }
 
     // System
@@ -181,11 +182,11 @@ BasicModal {
     ModalContent {
         title: qsTr("Notifications")
 
-        DefaultButton {
+        Qaterial.AppBarButton {
             visible: list.visible
-            text: qsTr("Clear all") + " ✔️"
+
+            icon.source: General.qaterialIcon("check-all")
             onClicked: notifications_list = []
-            Layout.fillWidth: true
         }
 
         InnerBackground {
@@ -248,46 +249,37 @@ BasicModal {
                         light: true
                     }
 
-                    AnimatedRectangle {
-                        radius: Style.rectangleCornerRadius
-
-                        width: height
-                        height: action_button.height * 1.2
-
+                    Qaterial.AppBarButton {
                         anchors.bottom: parent.bottom
                         anchors.bottomMargin: 5
                         anchors.right: parent.right
                         anchors.rightMargin: anchors.bottomMargin + 20
 
-                        color: Qt.lighter(Style.colorTheme1, action_button_area.containsMouse ? Style.hoverLightMultiplier : 1.0)
-
-                        DefaultText {
-                            id: action_button
-                            text_value: {
-                                switch(modelData.event_name) {
-                                case "onEnablingCoinFailedStatus": return qsTr("↻")
-                                default: return "✔️"
-                                }
+                        icon.source: {
+                            let name
+                            switch(modelData.event_name) {
+                            case "onEnablingCoinFailedStatus":
+                                name = "repeat"
+                                break
+                            default:
+                                name = "check"
+                                break
                             }
-                            anchors.centerIn: parent
-                            font.pixelSize: Style.textSizeSmall3
-                            color: Style.colorWhite10
+
+                            return General.qaterialIcon(name)
                         }
+                        onClicked: {
+                            // Action might create another event so we save it and then remove the current one, then take the action
+                            const event_before_removal = General.clone(modelData)
 
-                        DefaultMouseArea {
-                            id: action_button_area
-                            anchors.fill: parent
-                            hoverEnabled: true
-                            onClicked: {
-                                // Remove notification
-                                notifications_list.splice(index, 1)
-                                notifications_list = notifications_list
+                            // Remove notification
+                            notifications_list.splice(index, 1)
+                            notifications_list = notifications_list
 
-                                // Action
-                                if(modelData.event_name === "onEnablingCoinFailedStatus") {
-                                    console.log("Retrying to enable", modelData.params.coin, "asset...")
-                                    API.app.enable_coins([modelData.params.coin])
-                                }
+                            // Action
+                            if(event_before_removal.event_name === "onEnablingCoinFailedStatus") {
+                                console.log("Retrying to enable", event_before_removal.params.coin, "asset...")
+                                API.app.enable_coins([event_before_removal.params.coin])
                             }
                         }
                     }

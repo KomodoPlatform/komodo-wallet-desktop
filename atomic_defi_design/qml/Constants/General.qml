@@ -19,6 +19,10 @@ QtObject {
         return (coin_info.is_custom_coin ? custom_coin_icons_path : coin_icons_path) + ticker.toLowerCase() + ".png"
     }
 
+    function qaterialIcon(name) {
+        return "qrc:/Qaterial/Icons/" + name + ".svg"
+    }
+
     readonly property string cex_icon: 'ⓘ'
     readonly property string download_icon: '📥'
     readonly property string right_arrow_icon: "⮕"
