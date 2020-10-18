@@ -110,7 +110,7 @@ namespace atomic_dex
         void connect_signals();
         void disconnect_signals();
         void clear_models();
-        void disable_coin(const QString& coin) noexcept;
+        void disable_coins(const QStringList& coins) noexcept;
 
         //! Public QML API
         Q_INVOKABLE void on_gui_enter_dex();

@@ -146,22 +146,31 @@ namespace atomic_dex
     bool
     application::disable_coins(const QStringList& coins)
     {
-        if (not get_orders()->swap_is_in_progress(coins[0]))
+        QStringList coins_copy;
+        for (auto&& coin: coins)
         {
-            std::vector<std::string> coins_std;
-            system_manager_.get_system<portfolio_page>().get_portfolio()->disable_coins(coins);
-            system_manager_.get_system<trading_page>().disable_coin(coins[0]);
-            coins_std.reserve(coins.size());
-            for (auto&& coin: coins) { coins_std.push_back(coin.toStdString()); }
-            get_mm2().disable_multiple_coins(coins_std);
-            if (QString::fromStdString(get_mm2().get_current_ticker()) == coins[0] && m_kmd_fully_enabled)
+            if (not get_orders()->swap_is_in_progress(coin))
+            {
+                coins_copy.push_back(coin);
+            }
+        }
+
+        std::vector<std::string> coins_std;
+        system_manager_.get_system<portfolio_page>().get_portfolio()->disable_coins(coins_copy);
+        system_manager_.get_system<trading_page>().disable_coins(coins_copy);
+        coins_std.reserve(coins_copy.size());
+        for (auto&& coin: coins_copy)
+        {
+            if (QString::fromStdString(get_mm2().get_current_ticker()) == coin && m_kmd_fully_enabled)
             {
                 system_manager_.get_system<wallet_page>().set_current_ticker("KMD");
             }
-            this->dispatcher_.trigger<update_portfolio_values>(false);
+            coins_std.push_back(coin.toStdString());
         }
+        get_mm2().disable_multiple_coins(coins_std);
+        this->dispatcher_.trigger<update_portfolio_values>(false);
 
-        return false;
+        return true;
     }
 
     bool
