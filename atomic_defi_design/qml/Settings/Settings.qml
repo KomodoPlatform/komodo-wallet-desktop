@@ -143,7 +143,7 @@ Item {
                 Layout.fillWidth: true
                 Layout.leftMargin: combo_fiat.Layout.leftMargin
                 Layout.rightMargin: Layout.leftMargin
-                text: qsTr("Reset asset configurations")
+                text: qsTr("Reset assets configuration")
                 onClicked: {
                     restart_modal.task_before_restart = () => { API.app.settings_pg.reset_coin_cfg() }
                     restart_modal.open()
