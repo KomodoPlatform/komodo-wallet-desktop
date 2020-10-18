@@ -39,7 +39,7 @@ Menu {
 
     MenuItem {
         readonly property string coin_type: API.app.get_coin_info(ticker).type
-        enabled: General.isParentCoin(ticker)
+        enabled: !prevent_coin_disabling.running && General.isParentCoin(ticker)
         text: enabled ? ticker === "KMD" ? qsTr("Disable all Smartchains") :
                                            qsTr("Disable %1 and all %2 assets").arg(ticker).arg(coin_type) : "-"
         onTriggered: {
