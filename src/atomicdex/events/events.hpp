@@ -39,6 +39,11 @@ namespace atomic_dex
         std::string reason;
     };
 
+    struct endpoint_nonreacheable
+    {
+        std::string base_uri;
+    };
+
     struct update_portfolio_values
     {
         bool with_update_model{true};
