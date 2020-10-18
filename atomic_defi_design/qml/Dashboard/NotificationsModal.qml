@@ -10,7 +10,7 @@ import "../Components"
 BasicModal {
     id: root
 
-    width: 800
+    width: 900
     property var notifications_list: ([])
 
     function reset() {
@@ -58,8 +58,8 @@ BasicModal {
         }
     }
 
-    function newNotification(event_name, params, id, title, message, time, click_action = "open_notifications") {
-        const obj = { event_name, params, id, title, message, time, click_action }
+    function newNotification(event_name, params, id, title, message, human_date, click_action = "open_notifications") {
+        const obj = { event_name, params, id, title, message, human_date, click_action }
 
         // Update if it already exists
         let updated_existing_one = false
@@ -116,7 +116,7 @@ BasicModal {
                         { coin, error, human_date, timestamp },
                         timestamp,
                         title,
-                        qsTr("Please check your internet connection (VPN, Firewall)"),
+                        check_internet_connection_text,
                         human_date)
 
         toast.show(title, General.time_toast_important_error, error)
@@ -129,7 +129,7 @@ BasicModal {
                         { base_uri, human_date, timestamp },
                         timestamp,
                         title,
-                        base_uri.length <= 25 ? base_uri : base_uri.substring(0, 25) + "...",
+                        base_uri,
                         human_date)
 
         toast.show(title, General.time_toast_important_error, qsTr("Could not reach to endpoint") + ". " + check_internet_connection_text + "\n\n" + base_uri)
@@ -217,8 +217,8 @@ BasicModal {
                         anchors.top: parent.top
                         anchors.topMargin: 10
                         anchors.right: parent.right
-                        anchors.rightMargin: 25
-                        text_value: modelData.time
+                        anchors.rightMargin: 150
+                        text_value: modelData.human_date
                         font.pixelSize: Style.textSizeSmall
                     }
 
