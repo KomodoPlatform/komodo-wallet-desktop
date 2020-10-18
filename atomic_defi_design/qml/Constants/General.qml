@@ -384,4 +384,11 @@ QtObject {
                     getFiatText(trade_info.trade_fee, base_ticker, has_info_icon)
                  +")")
     }
+
+    function checkIfWalletExists(name) {
+        if(API.app.get_wallets().indexOf(name) !== -1)
+            return qsTr("Wallet %1 already exists", "WALLETNAME").arg(name)
+
+        return ""
+    }
 }
