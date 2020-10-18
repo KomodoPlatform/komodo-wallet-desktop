@@ -9,7 +9,7 @@ import "../Components"
 BasicModal {
     id: root
 
-    width: 600
+    width: 800
     property var notifications_list: ([])
 
     function reset() {
@@ -57,8 +57,8 @@ BasicModal {
         }
     }
 
-    function newNotification(params, id, title, message, time, click_action = "open_notifications") {
-        const obj = { params, id, title, message, time, click_action }
+    function newNotification(event_name, params, id, title, message, time, click_action = "open_notifications") {
+        const obj = { event_name, params, id, title, message, time, click_action }
 
         // Update if it already exists
         let updated_existing_one = false
@@ -85,7 +85,8 @@ BasicModal {
 
     // Events
     function onUpdateSwapStatus(old_swap_status, new_swap_status, swap_uuid, base_coin, rel_coin, human_date) {
-        newNotification({ old_swap_status, new_swap_status, swap_uuid, base_coin, rel_coin, human_date },
+        newNotification("onUpdateSwapStatus",
+                        { old_swap_status, new_swap_status, swap_uuid, base_coin, rel_coin, human_date },
                         swap_uuid,
                         base_coin + "/" + rel_coin + " - " + qsTr("Swap status updated"),
                         exchange.getStatusText(old_swap_status) + " " + General.right_arrow_icon + " " + exchange.getStatusText(new_swap_status),
@@ -95,7 +96,8 @@ BasicModal {
 
     function onBalanceUpdateStatus(am_i_sender, amount, ticker, human_date, timestamp) {
         const change = General.formatCrypto("", amount, ticker)
-        newNotification({ am_i_sender, amount, ticker, human_date, timestamp },
+        newNotification("onBalanceUpdateStatus",
+                        { am_i_sender, amount, ticker, human_date, timestamp },
                         timestamp,
                         am_i_sender ? qsTr("You sent %1").arg(change) : qsTr("You received %1").arg(change),
                         qsTr("Your wallet balance changed"),
@@ -103,11 +105,27 @@ BasicModal {
                         "open_wallet_page")
     }
 
+    function onEnablingCoinFailedStatus(coin, error, human_date, timestamp) {
+        const title = qsTr("Failed to enable %1", "TICKER").arg(coin)
+
+        error = qsTr("Can't connect to electrums X, Y, Z. Please check your internet connection (e.g. VPN service or firewall might block it).")
+                + "\n\n" + error
+
+        newNotification("onEnablingCoinFailedStatus",
+                        { coin, error, human_date, timestamp },
+                        timestamp,
+                        title,
+                        qsTr("Please check your internet connection (VPN, Firewall)"),
+                        human_date)
+
+        toast.show(title, General.time_toast_important_error)
+    }
 
     // System
     Component.onCompleted: {
         API.app.notification_mgr.updateSwapStatus.connect(onUpdateSwapStatus)
         API.app.notification_mgr.balanceUpdateStatus.connect(onBalanceUpdateStatus)
+        API.app.notification_mgr.enablingCoinFailedStatus.connect(onEnablingCoinFailedStatus)
     }
 
     function displayMessage(title, message) {
