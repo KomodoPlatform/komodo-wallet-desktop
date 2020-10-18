@@ -81,7 +81,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 | reproc        | 13.0.1        | A cross-platform (C99/C++11) process library                                                                                                    | Process             |
 | qzxing        | HEAD          | Qt/QML wrapper library for the ZXing library. 1D/2D barcode image processing library                                                            | QR                  |
 
-## How do i build it ?
+## How do I build it ?
 
 Build instructions can be found [here](https://github.com/KomodoPlatform/atomicDEX-Desktop/wiki/Build-Instructions)
 
