@@ -439,10 +439,7 @@ namespace atomic_dex
     {
         std::string error = answer.dump(4);
 
-        if (answer.contains("error") ||
-            answer.contains("Error") ||
-            error.find("error") != std::string::npos ||
-            error.find("Error") != std::string::npos)
+        if (answer.contains("error") || answer.contains("Error") || error.find("error") != std::string::npos || error.find("Error") != std::string::npos)
         {
             spdlog::trace("bad answer json for enable/electrum details: {}", error);
             return {false, error};
@@ -510,6 +507,7 @@ namespace atomic_dex
             }
         }
 
+        // spdlog::trace("{}", batch_array.dump(4));
         auto functor = [this](nlohmann::json batch_array, std::vector<std::string> tickers) {
             ::mm2::api::async_rpc_batch_standalone(batch_array, this->m_mm2_client, m_token_source.get_token())
                 .then([this, tickers](web::http::http_response resp) mutable {
