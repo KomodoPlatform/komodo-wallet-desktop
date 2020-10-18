@@ -145,6 +145,7 @@ namespace atomic_dex
                 {
                     spdlog::error("pplx task error: {}, setting internet to false", e.what());
                     spdlog::info("Connectivity is false for: {}", base_uri);
+                    this->dispatcher_.trigger<endpoint_nonreacheable>(base_uri);
                     this->set_internet_alive(false);
                 }
             });
