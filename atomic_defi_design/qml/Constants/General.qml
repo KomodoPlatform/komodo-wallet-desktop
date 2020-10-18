@@ -304,7 +304,7 @@ QtObject {
     }
 
     function isParentCoin(ticker) {
-        return ticker === "ETH" || ticker === "QTUM"
+        return ticker === "KMD" || ticker === "ETH" || ticker === "QTUM"
     }
 
     function isTokenType(type) {
