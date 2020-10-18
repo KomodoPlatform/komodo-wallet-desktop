@@ -16,6 +16,7 @@ BasicModal {
     readonly property double total_time: 5
     property double time_left: total_time
     property bool restart_requested: false
+    property var task_before_restart: () => {}
     Timer {
         id: restart_timer
         interval: 100
@@ -29,6 +30,7 @@ BasicModal {
             restart_timer.stop()
             restart_requested = true
             time_left = 0
+            task_before_restart()
             API.app.restart()
         }
     }

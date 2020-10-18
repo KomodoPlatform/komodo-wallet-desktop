@@ -39,13 +39,13 @@ Menu {
 
     MenuItem {
         readonly property string coin_type: API.app.get_coin_info(ticker).type
-        enabled: !prevent_coin_disabling.running
+        enabled: !General.prevent_coin_disabling.running
         text: qsTr("Disable all %1 assets").arg(coin_type)
         onTriggered: API.app.disable_coins(API.app.enabled_coins.filter(c => c.type === coin_type).map(c => c.ticker))
     }
 
     MenuItem {
-        enabled: !prevent_coin_disabling.running
+        enabled: !General.prevent_coin_disabling.running
         text: qsTr("Disable all assets")
         onTriggered: API.app.disable_coins(API.app.enabled_coins.map(c => c.ticker))
     }
