@@ -15,10 +15,11 @@
  ******************************************************************************/
 
 //! PCH
-#include "src/atomicdex/pch.hpp"
+#include "atomicdex/pch.hpp"
 
 //! Project Headers
-#include "notification.manager.hpp"
+#include "atomicdex/managers/notification.manager.hpp"
+#include "atomicdex/utilities/global.utilities.hpp"
 
 namespace atomic_dex
 {
@@ -65,6 +66,9 @@ namespace atomic_dex
     void
     notification_manager::on_enabling_coin_failed(const enabling_coin_failed& evt)
     {
-        emit enablingCoinFailedStatus(QString::fromStdString(evt.coin), QString::fromStdString(evt.reason));
+        using namespace std::chrono;
+        qint64  timestamp  = duration_cast<seconds>(system_clock::now().time_since_epoch()).count();
+        QString human_date = QString::fromStdString(to_human_date<std::chrono::seconds>(timestamp, "%e %b %Y, %H:%M"));
+        emit    enablingCoinFailedStatus(QString::fromStdString(evt.coin), QString::fromStdString(evt.reason), human_date, timestamp);
     }
 } // namespace atomic_dex
