@@ -118,7 +118,7 @@ BasicModal {
                         qsTr("Please check your internet connection (VPN, Firewall)"),
                         human_date)
 
-        toast.show(title, General.time_toast_important_error)
+        toast.show(title, General.time_toast_important_error, error)
     }
 
     // System
@@ -238,30 +238,42 @@ BasicModal {
                         radius: Style.rectangleCornerRadius
 
                         width: height
-                        height: remove_button.height * 1.2
+                        height: action_button.height * 1.2
 
                         anchors.bottom: parent.bottom
                         anchors.bottomMargin: 5
                         anchors.right: parent.right
                         anchors.rightMargin: anchors.bottomMargin + 20
 
-                        color: Qt.lighter(Style.colorTheme1, remove_button_area.containsMouse ? Style.hoverLightMultiplier : 1.0)
+                        color: Qt.lighter(Style.colorTheme1, action_button_area.containsMouse ? Style.hoverLightMultiplier : 1.0)
 
                         DefaultText {
-                            id: remove_button
-                            text_value: "✔️"
+                            id: action_button
+                            text_value: {
+                                switch(modelData.event_name) {
+                                case "onEnablingCoinFailedStatus": return qsTr("↻")
+                                default: return "✔️"
+                                }
+                            }
                             anchors.centerIn: parent
                             font.pixelSize: Style.textSizeSmall3
                             color: Style.colorWhite10
                         }
 
                         DefaultMouseArea {
-                            id: remove_button_area
+                            id: action_button_area
                             anchors.fill: parent
                             hoverEnabled: true
                             onClicked: {
+                                // Remove notification
                                 notifications_list.splice(index, 1)
                                 notifications_list = notifications_list
+
+                                // Action
+                                if(modelData.event_name === "onEnablingCoinFailedStatus") {
+                                    console.log("Retrying to enable", modelData.params.coin, "asset...")
+                                    API.app.enable_coins([modelData.params.coin])
+                                }
                             }
                         }
                     }
