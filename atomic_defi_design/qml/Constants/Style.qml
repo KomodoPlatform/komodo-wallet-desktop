@@ -275,7 +275,6 @@ QtObject {
                                           "BET": "#F69B57",
                                           "SUPERNET": "#F69B57",
                                           "OOT": "#25AAE1",
-                                          "HUSH": "#737373",
                                           "REVS": "#F69B57",
                                           "ILN": "#523170",
                                           "VRSC": "#3164D3",
