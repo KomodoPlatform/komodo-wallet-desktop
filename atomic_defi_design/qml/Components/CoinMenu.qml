@@ -39,20 +39,11 @@ Menu {
 
     MenuItem {
         readonly property string coin_type: API.app.get_coin_info(ticker).type
-        enabled: !prevent_coin_disabling.running && General.isParentCoin(ticker)
-        text: enabled ? ticker === "KMD" ? qsTr("Disable all Smartchains") :
-                                           qsTr("Disable %1 and all %2 assets").arg(ticker).arg(coin_type) : "-"
-        onTriggered: {
-            const coins_to_disable = API.app.enabled_coins.filter(c => c.type === coin_type && !General.isParentCoin(c.ticker)).map(c => c.ticker)
+        enabled: !prevent_coin_disabling.running
+        text: qsTr("Disable all %1 assets").arg(coin_type)
+        onTriggered: API.app.disable_coins(API.app.enabled_coins.filter(c => c.type === coin_type).map(c => c.ticker))
+    }
 
-            // Disable children assets
-            if(coins_to_disable.length > 0)
-                API.app.disable_coins(coins_to_disable)
-
-            // Disable the parent asset
-            if(ticker !== "KMD")
-                API.app.disable_coins([ticker])
-        }
     MenuItem {
         enabled: !prevent_coin_disabling.running
         text: qsTr("Disable all assets")
