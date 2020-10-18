@@ -26,7 +26,7 @@
 - :link: [AtomicDEX Website](https://atomicdex.io/)
 - :speech_balloon: [AtomicDEX Discord](https://discord.gg/tvp96Gf)
 - :hammer_and_wrench: [AtomicDEX Development Boards](https://github.com/KomodoPlatform/atomicDEX-Desktop/projects)
-- :open_book: [AtomicDex Wiki](https://github.com/KomodoPlatform/atomicDEX-Desktop/wiki/)
+- :notebook_with_decorative_cover: [AtomicDex Wiki](https://github.com/KomodoPlatform/atomicDEX-Desktop/wiki/)
 
 ## What is AtomicDEX?
 
