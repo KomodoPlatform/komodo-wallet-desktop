@@ -174,7 +174,7 @@ jobs:
         env:
           QT_VERSION: ${{ matrix.qt }}
         run: |
-          .\ci_tools_atomic_dexci_scripts\windows_script.ps1
+          .\ci_tools_atomic_dex\ci_scripts\windows_script.ps1
 
       - name: Running Tests (Linux)
         env: # Or as an environment variable
