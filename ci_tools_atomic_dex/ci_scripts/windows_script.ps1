@@ -19,6 +19,7 @@ scoop cache rm cmake
 scoop cache rm ninja
 scoop cache rm llvm
 scoop cache rm nim
+$Env:QT_INSTALL_CMAKE_PATH = "C:\Qt\$Env:QT_VERSION\msvc2019_64"
 cd ci_tools_atomic_dex
 $file = 'src\generate.nim'
 $regex = '(?<=g_vcpkg_cmake_script_path & ")[^"]*'
