@@ -370,8 +370,11 @@ namespace atomic_dex
         for (auto&& coin: coins)
         {
             auto res = this->match(this->index(0, 0), TickerRole, coin);
-            assert(not res.empty());
-            this->removeRow(res.at(0).row());
+            //assert(not res.empty());
+            if (not res.empty())
+            {
+                this->removeRow(res.at(0).row());
+            }
         }
     }
 
