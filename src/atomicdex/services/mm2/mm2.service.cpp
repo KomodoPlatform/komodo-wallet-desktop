@@ -19,8 +19,8 @@
 
 //! Project Headers
 #include "atomicdex/config/mm2.cfg.hpp"
-#include "atomicdex/services/mm2/mm2.service.hpp"
 #include "atomicdex/managers/qt.wallet.manager.hpp"
+#include "atomicdex/services/mm2/mm2.service.hpp"
 #include "atomicdex/utilities/kill.hpp"
 #include "atomicdex/utilities/security.utilities.hpp"
 #include "atomicdex/version/version.hpp"
@@ -365,8 +365,6 @@ namespace atomic_dex
                         std::size_t idx = 0;
                         for (auto&& answer: answers)
                         {
-                            // spdlog::trace("answer {}",  answer.dump(4));
-
                             if (answer.contains("balance"))
                             {
                                 this->process_balance_answer(answer);
@@ -374,6 +372,10 @@ namespace atomic_dex
                             else if (answer.contains("result"))
                             {
                                 this->process_tx_answer(answer);
+                            }
+                            else
+                            {
+                                spdlog::error("error answer for tx or my_balance: {}", answer.dump(4));
                             }
                             ++idx;
                         }
@@ -432,19 +434,28 @@ namespace atomic_dex
         return std::make_tuple(batch_array, tickers_idx, erc_to_fetch);
     }
 
-    bool
+    std::pair<bool, std::string>
     mm2_service::process_batch_enable_answer(const json& answer)
     {
+        std::string error = answer.dump(4);
+
+        if (answer.contains("error") || answer.contains("Error") || error.find("error") != std::string::npos || error.find("Error") != std::string::npos)
+        {
+            spdlog::trace("bad answer json for enable/electrum details: {}", error);
+            return {false, error};
+        }
+
         if (answer.contains("coin"))
         {
             auto        ticker          = answer.at("coin").get<std::string>();
             coin_config coin_info       = m_coins_informations.at(ticker);
             coin_info.currently_enabled = true;
             m_coins_informations.assign(coin_info.ticker, coin_info);
-            return true;
+            return {true, ""};
         }
-        spdlog::trace("bad answer json for enable/electrum details: {}", answer.dump(4));
-        return false;
+
+        spdlog::trace("bad answer json for enable/electrum details: {}", error);
+        return {false, error};
     }
 
     void
@@ -496,6 +507,7 @@ namespace atomic_dex
             }
         }
 
+        // spdlog::trace("{}", batch_array.dump(4));
         auto functor = [this](nlohmann::json batch_array, std::vector<std::string> tickers) {
             ::mm2::api::async_rpc_batch_standalone(batch_array, this->m_mm2_client, m_token_source.get_token())
                 .then([this, tickers](web::http::http_response resp) mutable {
@@ -510,12 +522,13 @@ namespace atomic_dex
                             std::size_t idx = 0;
                             for (auto&& answer: answers)
                             {
-                                bool res = this->process_batch_enable_answer(answer);
+                                auto [res, error] = this->process_batch_enable_answer(answer);
                                 if (not res && idx < tickers.size())
                                 {
                                     spdlog::trace(
                                         "bad answer for: [{}] -> removing it from enabling, idx: {}, tickers size: {}, answers size: {}", tickers[idx], idx,
                                         tickers.size(), answers.size());
+                                    this->dispatcher_.trigger<enabling_coin_failed>(tickers[idx], error);
                                     tickers.erase(tickers.begin() + idx);
                                 }
                                 idx += 1;

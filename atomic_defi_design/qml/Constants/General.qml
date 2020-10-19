@@ -19,6 +19,10 @@ QtObject {
         return (coin_info.is_custom_coin ? custom_coin_icons_path : coin_icons_path) + ticker.toLowerCase() + ".png"
     }
 
+    function qaterialIcon(name) {
+        return "qrc:/Qaterial/Icons/" + name + ".svg"
+    }
+
     readonly property string cex_icon: 'ⓘ'
     readonly property string download_icon: '📥'
     readonly property string right_arrow_icon: "⮕"
@@ -299,8 +303,19 @@ QtObject {
         return type === "ERC-20" ? "Gwei" : "Satoshi"
     }
 
+    function isParentCoin(ticker) {
+        return ticker === "KMD" || ticker === "ETH" || ticker === "QTUM"
+    }
+
     function isTokenType(type) {
         return type === "ERC-20" || type === "QRC-20"
+    }
+
+    function getParentCoin(type) {
+        if(type === "ERC-20") return "ETH"
+        else if(type === "QRC-20") return "QTUM"
+        else if(type === "Smart Chain") return "KMD"
+        return "?"
     }
 
     function isCoinEnabled(ticker) {
@@ -368,5 +383,12 @@ QtObject {
                 (" ("+
                     getFiatText(trade_info.trade_fee, base_ticker, has_info_icon)
                  +")")
+    }
+
+    function checkIfWalletExists(name) {
+        if(API.app.get_wallets().indexOf(name) !== -1)
+            return qsTr("Wallet %1 already exists", "WALLETNAME").arg(name)
+
+        return ""
     }
 }

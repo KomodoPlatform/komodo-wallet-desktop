@@ -33,6 +33,17 @@ namespace atomic_dex
     using refresh_all_portfolio_balance = entt::tag<"refresh_all_portfolio_balance"_hs>;
     using band_oracle_refreshed         = entt::tag<"band_oracle_refreshed"_hs>;
 
+    struct enabling_coin_failed
+    {
+        std::string coin;
+        std::string reason;
+    };
+
+    struct endpoint_nonreacheable
+    {
+        std::string base_uri;
+    };
+
     struct update_portfolio_values
     {
         bool with_update_model{true};

@@ -22,6 +22,7 @@ SetupPage {
     image_path: General.image_path + Style.sidebar_atomicdex_logo
     image_margin: 30
     content: ColumnLayout {
+        id: content_column
         width: 400
         spacing: Style.rowSpacing
         DefaultText {
@@ -63,7 +64,7 @@ SetupPage {
 
             InnerBackground {
                 id: bg
-                Layout.fillWidth: true
+                width: content_column.width
                 readonly property int row_height: 40
                 Layout.minimumHeight: row_height
                 Layout.preferredHeight: row_height * Math.min(wallets.length, 3)
@@ -120,12 +121,17 @@ SetupPage {
 
         HorizontalLine {
             light: true
-            Layout.fillWidth: true
         }
 
         Languages {
+            Layout.alignment: Qt.AlignHCenter
+            show_label: false
         }
     }
+
+
+
+    bottom_content: LinksRow {}
 }
 
 /*##^##

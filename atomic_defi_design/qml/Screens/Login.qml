@@ -53,7 +53,7 @@ SetupPage {
         width: 400
 
         DefaultText {
-            text_value: qsTr("Login") + ": " + selected_wallet_name
+            text_value: qsTr("Wallet Name") + ": " + selected_wallet_name
         }
 
         HorizontalLine {

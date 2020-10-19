@@ -57,13 +57,23 @@ BasicModal {
         root.close()
     }
 
-    function enableAllCoins() {
-        const coins_to_enable = API.app.enableable_coins.map(c => c.ticker)
-        console.log("QML enable_coins:", JSON.stringify(coins_to_enable))
-        if(coins_to_enable.length > 0)
-            API.app.enable_coins(coins_to_enable)
-        reset()
-        root.close()
+    readonly property bool all_coins_are_selected:  coins_utxo.parent_box.checkState === Qt.Checked &&
+                                                    coins_smartchains.parent_box.checkState === Qt.Checked &&
+                                                    coins_erc.parent_box.checkState === Qt.Checked &&
+                                                    coins_qrc.parent_box.checkState === Qt.Checked
+    function toggleAllCoins() {
+        if(all_coins_are_selected) {
+            coins_utxo.parent_box.checkState = Qt.Unchecked
+            coins_smartchains.parent_box.checkState = Qt.Unchecked
+            coins_erc.parent_box.checkState = Qt.Unchecked
+            coins_qrc.parent_box.checkState = Qt.Unchecked
+        }
+        else {
+            coins_utxo.parent_box.checkState = Qt.Checked
+            coins_smartchains.parent_box.checkState = Qt.Checked
+            coins_erc.parent_box.checkState = Qt.Checked
+            coins_qrc.parent_box.checkState = Qt.Checked
+        }
     }
 
     ModalContent {
@@ -71,14 +81,14 @@ BasicModal {
 
         DefaultButton {
             Layout.fillWidth: true
-            text: qsTr("Enable All Assets")
+            text: all_coins_are_selected ? qsTr("Clear All Selection") : qsTr("Enable All Assets")
             visible: API.app.enableable_coins.length > 0
-            onClicked: enableAllCoins()
+            onClicked: toggleAllCoins()
         }
 
         DefaultButton {
             Layout.fillWidth: true
-            text: qsTr("Add a Custom Coin to the list")
+            text: qsTr("Add a custom asset to the list")
             onClicked: {
                 root.close()
                 add_custom_coin_modal.open()
@@ -112,7 +122,7 @@ BasicModal {
 
                 CoinList {
                     id: coins_utxo
-                    group_title: qsTr("Select all UTXO coins")
+                    group_title: qsTr("Select all UTXO assets")
                     model: General.filterCoins(API.app.enableable_coins, input_coin_filter.text, "UTXO")
                 }
 
@@ -130,7 +140,7 @@ BasicModal {
 
                 CoinList {
                     id: coins_qrc
-                    group_title: qsTr("Select all QRC tokens")
+                    group_title: qsTr("Select all QRC assets")
                     model: General.filterCoins(API.app.enableable_coins, input_coin_filter.text, "QRC-20")
                 }
             }
@@ -141,7 +151,7 @@ BasicModal {
         DefaultText {
             visible: API.app.enableable_coins.length === 0
 
-            text_value: qsTr("All coins are already enabled!")
+            text_value: qsTr("All assets are already enabled!")
         }
 
         // Buttons

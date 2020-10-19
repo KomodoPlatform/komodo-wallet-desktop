@@ -115,6 +115,9 @@ SetupPage {
         function completeForm() {
             if(!continue_button.enabled) return
 
+            text_error = General.checkIfWalletExists(input_wallet_name.field.text)
+            if(text_error !== "") return
+
             input_seed_word.field.text = ""
             guess_text_error = ""
             guess_count = 1

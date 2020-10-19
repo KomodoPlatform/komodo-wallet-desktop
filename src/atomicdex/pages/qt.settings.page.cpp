@@ -26,11 +26,12 @@
 
 //! Project Headers
 #include "atomicdex/events/events.hpp"
+#include "atomicdex/managers/qt.wallet.manager.hpp"
+#include "atomicdex/pages/qt.settings.page.hpp"
 #include "atomicdex/services/mm2/mm2.service.hpp"
 #include "atomicdex/utilities/global.utilities.hpp"
 #include "atomicdex/utilities/qt.bindings.hpp"
 #include "atomicdex/utilities/qt.utilities.hpp"
-#include "qt.settings.page.hpp"
 
 //! Constructo destructor
 namespace atomic_dex
@@ -364,5 +365,27 @@ namespace atomic_dex
     settings_page::set_qml_engine(QQmlApplicationEngine* engine) noexcept
     {
         m_qml_engine = engine;
+    }
+
+    void
+    settings_page::reset_coin_cfg()
+    {
+        using namespace std::string_literals;
+        const std::string wallet_name     = qt_wallet_manager::get_default_wallet_name().toStdString();
+        const std::string wallet_cfg_file = std::string(atomic_dex::get_raw_version()) + "-coins"s + "."s + wallet_name + ".json"s;
+        const fs::path    wallet_cfg_path = get_atomic_dex_config_folder() / wallet_cfg_file;
+        if (fs::exists(wallet_cfg_path))
+        {
+            boost::system::error_code ec;
+            fs::remove(wallet_cfg_path, ec);
+            if (ec)
+            {
+                spdlog::error("error when removing {}: {}", wallet_cfg_path.string(), ec.message());
+            }
+            else
+            {
+                spdlog::info("Successfully removed {}", wallet_cfg_path.string());
+            }
+        }
     }
 } // namespace atomic_dex

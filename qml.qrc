@@ -202,6 +202,8 @@
         <file>atomic_defi_design/qml/Components/DefaultCheckBox.qml</file>
         <file>atomic_defi_design/qml/Components/GradientRectangle.qml</file>
         <file>atomic_defi_design/qml/Components/LogModal.qml</file>
+        <file>atomic_defi_design/qml/Components/LinkIcon.qml</file>
+        <file>atomic_defi_design/qml/Components/LinksRow.qml</file>
         <file>atomic_defi_design/qml/Components/UpdateModal.qml</file>
         <file>atomic_defi_design/qml/Components/UpdateNotificationLine.qml</file>
         <file>atomic_defi_design/qml/Components/DefaultModal.qml</file>
@@ -246,6 +248,5 @@
         <file>atomic_defi_design/qml/Settings/Languages.qml</file>
         <file>atomic_defi_design/qml/Support/Support.qml</file>
         <file>atomic_defi_design/qml/Support/FAQLine.qml</file>
-        <file>atomic_defi_design/qml/Support/LinkIcon.qml</file>
     </qresource>
 </RCC>
