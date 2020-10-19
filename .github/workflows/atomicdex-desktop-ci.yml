@@ -188,6 +188,182 @@ jobs:
           name: dexpro-ubuntu-release.tar.gz
           path: ./ci_tools_atomic_dex/bundle-Release/AntaraAtomicDexAppDir.tar.gz
 
+  linux-build-debug:
+    name: Linux Build Debug
+    runs-on: ubuntu-16.04
+
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          submodules: 'true'
+
+      - name: Install QT (Linux)
+        uses: KomodoPlatform/install-qt-action@v2
+        with:
+          version: '5.15.0'
+          host: 'linux'
+          target: 'desktop'
+          dir: '${{ github.workspace }}'
+          modules: 'qtcharts qtwidgets debug_info'
+          aqtversion: '==0.8'
+          py7zrversion: '==0.6'
+
+      - name: Setup Nim (Linux)
+        uses: KomodoPlatform/setup-nim-action@v1.0.2
+        with:
+          nim-version: '1.2.0'
+
+      - name: Install deps (Linux)
+        env:
+          DEBIAN_FRONTEND: noninteractive
+        run: |
+          echo ${{ github.sha }}
+          sudo apt-get update  # prevents repo404 errors on apt-remove below
+          sudo apt-get remove php* msodbcsql17 mysql*
+          sudo apt-get update
+          sudo ACCEPT_EULA=Y apt-get upgrade -y
+
+          # base deps
+          sudo apt-get install build-essential \
+                               libgl1-mesa-dev \
+                               ninja-build \
+                               curl \
+                               wget \
+                               software-properties-common \
+                               lsb-release \
+                               libpulse-dev \
+                               libtool \
+                               autoconf \
+                               unzip \
+                               libssl-dev \
+                               libxkbcommon-x11-0 \
+                               libxcb-icccm4 \
+                               libxcb-image0 \
+                               libxcb1-dev \
+                               libxcb-keysyms1-dev \
+                               libxcb-render-util0-dev \
+                               libxcb-xinerama0 \
+                               libgstreamer-plugins-base1.0-dev \
+                               git -y
+
+
+          # get llvm
+          wget https://apt.llvm.org/llvm.sh
+          chmod +x llvm.sh
+          sudo ./llvm.sh 10
+
+          # set clang version
+          sudo update-alternatives --install /usr/bin/clang++ clang++ /usr/bin/clang++-10 777
+          sudo update-alternatives --install /usr/bin/clang clang /usr/bin/clang-10 777
+
+          # set gnu compilers version
+          sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-9 777
+          sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-9 777
+
+
+
+          sudo apt-get update
+          sudo apt-get install libc++abi-10-dev libc++-10-dev -y
+
+          export CXXFLAGS=-stdlib=libc++
+          export LDFLAGS=-stdlib=libc++
+          export CXX=clang++-10
+          export CC=clang-10
+
+          # get right cmake version
+          wget https://github.com/Kitware/CMake/releases/download/v3.17.3/cmake-3.17.3-Linux-x86_64.tar.gz
+          tar xvf cmake-3.17.3-Linux-x86_64.tar.gz
+          cd cmake-3.17.3-Linux-x86_64
+          sudo cp -r * /usr/
+          sudo cp -r * /usr/local/
+          cmake --version
+
+          # get libwally
+          git clone https://github.com/KomodoPlatform/libwally-core.git
+          cd libwally-core
+          ./tools/autogen.sh
+          ./configure --disable-shared
+          sudo make -j3 install
+          cd ..
+
+          #git clone https://github.com/oneapi-src/oneTBB.git
+          #cd oneTBB
+          #git checkout master
+          #mkdir build_2
+          #cd build_2
+          #cmake -DCMAKE_BUILD_TYPE=Release -DTBB_TEST:BOOL=OFF ../
+          #sudo make -j4 install
+          #cd ../..
+
+      - name: prepare build (Linux)
+        run: |
+         # duplicating because got suspicion that update-alternatives doesnt save between steps
+
+          # set clang version
+          sudo update-alternatives --install /usr/bin/clang++ clang++ /usr/bin/clang++-10 777
+          sudo update-alternatives --install /usr/bin/clang clang /usr/bin/clang-10 777
+
+          # set gnu compilers version
+          sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-9 777
+          sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-9 777
+
+      - name: vcpkg deps (Linux)
+        env: # Or as an environment variable
+          CXXFLAGS: -stdlib=libc++
+          LDFLAGS: -stdlib=libc++
+          CXX: clang++-10
+          CC: clang-10
+        uses: KomodoPlatform/run-vcpkg@v3
+        with:
+          vcpkgArguments: '@${{ github.workspace }}/.github/workflows/linux_response_file.txt'
+          vcpkgDirectory: '${{ github.workspace }}/ci_tools_atomic_dex/vcpkg-repo'
+          appendedCacheKey: ${{ hashFiles('.github/workflows/linux_response_file.txt') }}
+
+      - name: build (Linux)
+        run: |
+          export QT_INSTALL_CMAKE_PATH=${{ github.workspace }}/Qt/5.15.0/gcc_64/lib/cmake
+          export QT_ROOT=${{ github.workspace }}/Qt/5.15.0
+          export PATH=${{ github.workspace }}/Qt/5.15.0/gcc_64/bin:$PATH
+          export PATH=$HOME/.nimble/bin:$PATH
+          export CXXFLAGS=-stdlib=libc++
+          export LDFLAGS=-stdlib=libc++
+          export CXX=clang++-10
+          export CC=clang-10
+          cd ci_tools_atomic_dex
+          nimble build -y
+
+          ./ci_tools_atomic_dex build debug
+          ./ci_tools_atomic_dex bundle debug
+
+
+      - name: Running Tests (Linux)
+        env: # Or as an environment variable
+          REPORT_CI_TOKEN: ${{ secrets.REPORT_CI_TOKEN_SECRET }}
+        working-directory: ci_tools_atomic_dex
+        run: |
+          export QT_INSTALL_CMAKE_PATH=${{ github.workspace }}/Qt/5.15.0/gcc_64/lib/cmake
+          export QT_ROOT=${{ github.workspace }}/Qt/5.15.0
+          export PATH=${{ github.workspace }}/Qt/5.15.0/gcc_64/bin:$PATH
+          export PATH=$HOME/.nimble/bin:$PATH
+          export CXXFLAGS=-stdlib=libc++
+          export LDFLAGS=-stdlib=libc++
+          export CXX=clang++-10
+          export CC=clang-10
+          echo "Running tests"
+          ./ci_tools_atomic_dex tests debug
+          cd build-Debug/bin/AntaraAtomicDexTestsAppDir/usr/bin
+          cat atomic-dex-tests-result.xml
+          curl https://report.ci/upload.py --output upload.py
+          ls
+          python upload.py --sha `git rev-parse HEAD` -n "[Doctest Linux]" --include='atomic-dex-tests-result.xml' --framework=doctest --merge ".*"
+          echo "Uploading tests on Linux finished"
+
+      - name: Upload bundle artifact (Linux)
+        uses: actions/upload-artifact@v1
+        with:
+          name: dexpro-ubuntu-debug.tar.gz
+          path: ./ci_tools_atomic_dex/bundle-Debug/AntaraAtomicDexAppDir.tar.gz
 
   macos-build:
     name: MacOS Build
