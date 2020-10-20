@@ -6,55 +6,55 @@
     <message>
         <location filename="../../qml/Settings/AddCustomCoinModal.qml" line="82"/>
         <source>Choose the asset type</source>
-        <translation type="unfinished"></translation>
+        <translation>Varlık tipini seçin</translation>
     </message>
     <message>
         <location filename="../../qml/Settings/AddCustomCoinModal.qml" line="87"/>
         <source>Type</source>
-        <translation type="unfinished"></translation>
+        <translation>Tip</translation>
     </message>
     <message>
         <location filename="../../qml/Settings/AddCustomCoinModal.qml" line="95"/>
         <source>Cancel</source>
-        <translation type="unfinished">İptal</translation>
+        <translation>İptal</translation>
     </message>
     <message>
         <location filename="../../qml/Settings/AddCustomCoinModal.qml" line="101"/>
         <location filename="../../qml/Settings/AddCustomCoinModal.qml" line="158"/>
         <location filename="../../qml/Settings/AddCustomCoinModal.qml" line="217"/>
         <source>Next</source>
-        <translation type="unfinished"></translation>
+        <translation>İleri</translation>
     </message>
     <message>
         <location filename="../../qml/Settings/AddCustomCoinModal.qml" line="113"/>
         <location filename="../../qml/Settings/AddCustomCoinModal.qml" line="130"/>
         <source>Enter the contract address</source>
-        <translation type="unfinished"></translation>
+        <translation>Kontrat adresini girin</translation>
     </message>
     <message>
         <location filename="../../qml/Settings/AddCustomCoinModal.qml" line="113"/>
         <source>Choose the asset ticker</source>
-        <translation type="unfinished"></translation>
+        <translation>Varlık kodunu girin</translation>
     </message>
     <message>
         <location filename="../../qml/Settings/AddCustomCoinModal.qml" line="120"/>
         <source>Ticker</source>
-        <translation type="unfinished"></translation>
+        <translation>Varlık Kodu</translation>
     </message>
     <message>
         <location filename="../../qml/Settings/AddCustomCoinModal.qml" line="121"/>
         <source>Enter the ticker</source>
-        <translation type="unfinished"></translation>
+        <translation>Varlık kodunu girin</translation>
     </message>
     <message>
         <location filename="../../qml/Settings/AddCustomCoinModal.qml" line="129"/>
         <source>Contract Address</source>
-        <translation type="unfinished"></translation>
+        <translation>Kontrat Adresi</translation>
     </message>
     <message>
         <location filename="../../qml/Settings/AddCustomCoinModal.qml" line="136"/>
         <source>Get the contract address from Etherscan</source>
-        <translation type="unfinished"></translation>
+        <translation>Etherscan&apos;den kontrat adresini alın</translation>
     </message>
     <message>
         <location filename="../../qml/Settings/AddCustomCoinModal.qml" line="152"/>
@@ -62,93 +62,93 @@
         <location filename="../../qml/Settings/AddCustomCoinModal.qml" line="282"/>
         <location filename="../../qml/Settings/AddCustomCoinModal.qml" line="377"/>
         <source>Previous</source>
-        <translation type="unfinished"></translation>
+        <translation>Geri</translation>
     </message>
     <message>
         <location filename="../../qml/Settings/AddCustomCoinModal.qml" line="169"/>
         <source>Choose the asset logo</source>
-        <translation type="unfinished"></translation>
+        <translation>Varlık logosunu seçin</translation>
     </message>
     <message>
         <location filename="../../qml/Settings/AddCustomCoinModal.qml" line="173"/>
         <source>Browse</source>
-        <translation type="unfinished"></translation>
+        <translation>Göz at</translation>
     </message>
     <message>
         <location filename="../../qml/Settings/AddCustomCoinModal.qml" line="185"/>
         <source>Please choose the asset logo</source>
-        <translation type="unfinished"></translation>
+        <translation>Lütfen varlık logosunu seçin</translation>
     </message>
     <message>
         <location filename="../../qml/Settings/AddCustomCoinModal.qml" line="227"/>
         <source>Configuration</source>
-        <translation type="unfinished"></translation>
+        <translation>Konfigürasyon</translation>
     </message>
     <message>
         <location filename="../../qml/Settings/AddCustomCoinModal.qml" line="232"/>
         <source>All configuration fields will be fetched using the contract address you provided.</source>
-        <translation type="unfinished"></translation>
+        <translation>Tüm konfigürasyon bilgileri verdiğiniz kontrat adresinden edinilip doldurulacak.</translation>
     </message>
     <message>
         <location filename="../../qml/Settings/AddCustomCoinModal.qml" line="240"/>
         <source>Name</source>
-        <translation type="unfinished"></translation>
+        <translation>İsim</translation>
     </message>
     <message>
         <location filename="../../qml/Settings/AddCustomCoinModal.qml" line="241"/>
         <source>Enter the name</source>
-        <translation type="unfinished"></translation>
+        <translation>İsmi girin</translation>
     </message>
     <message>
         <location filename="../../qml/Settings/AddCustomCoinModal.qml" line="247"/>
         <source>Coinpaprika ID</source>
-        <translation type="unfinished"></translation>
+        <translation>Coinpaprika ID</translation>
     </message>
     <message>
         <location filename="../../qml/Settings/AddCustomCoinModal.qml" line="248"/>
         <source>Enter the Coinpaprika ID</source>
-        <translation type="unfinished"></translation>
+        <translation>Coinpaprika ID&apos;sini girin</translation>
     </message>
     <message>
         <location filename="../../qml/Settings/AddCustomCoinModal.qml" line="254"/>
         <source>Get the Coinpaprika ID</source>
-        <translation type="unfinished"></translation>
+        <translation>Coinpaprika ID&apos;sini bul</translation>
     </message>
     <message>
         <location filename="../../qml/Settings/AddCustomCoinModal.qml" line="271"/>
         <source>Active</source>
-        <translation type="unfinished"></translation>
+        <translation>Aktif</translation>
     </message>
     <message>
         <location filename="../../qml/Settings/AddCustomCoinModal.qml" line="288"/>
         <location filename="../../qml/Settings/AddCustomCoinModal.qml" line="304"/>
         <source>Preview</source>
-        <translation type="unfinished"></translation>
+        <translation>Görüntüle</translation>
     </message>
     <message>
         <location filename="../../qml/Settings/AddCustomCoinModal.qml" line="310"/>
         <source>WARNING: Application will restart immidiately to apply the changes!</source>
-        <translation type="unfinished"></translation>
+        <translation>DİKKAT: Program değişiklikleri uygulamak için yeniden başlatılacak!</translation>
     </message>
     <message>
         <location filename="../../qml/Settings/AddCustomCoinModal.qml" line="334"/>
         <source>Asset not found, please go back and make sure Contract Address is correct</source>
-        <translation type="unfinished"></translation>
+        <translation>Varlık bulunamadı, lütfen geri dönün ve Kontrat Adresi&apos;nin doğruluğundan emin olun</translation>
     </message>
     <message>
         <location filename="../../qml/Settings/AddCustomCoinModal.qml" line="353"/>
         <source>Config Fields</source>
-        <translation type="unfinished"></translation>
+        <translation>Konfig Alanları</translation>
     </message>
     <message>
         <location filename="../../qml/Settings/AddCustomCoinModal.qml" line="366"/>
         <source>Fetched Data</source>
-        <translation type="unfinished"></translation>
+        <translation>Çekilen Veri</translation>
     </message>
     <message>
         <location filename="../../qml/Settings/AddCustomCoinModal.qml" line="383"/>
         <source>Submit &amp; Restart</source>
-        <translation type="unfinished"></translation>
+        <translation>Yolla ve Yeniden Başlat</translation>
     </message>
 </context>
 <context>
@@ -156,44 +156,44 @@
     <message>
         <location filename="../../qml/Wallet/AddressBook.qml" line="55"/>
         <source>Address Book</source>
-        <translation type="unfinished"></translation>
+        <translation>Adres Defteri</translation>
     </message>
     <message>
         <location filename="../../qml/Wallet/AddressBook.qml" line="64"/>
         <source>New Contact</source>
-        <translation type="unfinished"></translation>
+        <translation>Yeni Kişi</translation>
     </message>
     <message>
         <location filename="../../qml/Wallet/AddressBook.qml" line="164"/>
         <source>Enter the contact name</source>
-        <translation type="unfinished"></translation>
+        <translation>Kişi ismini girin</translation>
     </message>
     <message>
         <location filename="../../qml/Wallet/AddressBook.qml" line="208"/>
         <location filename="../../qml/Wallet/AddressBook.qml" line="421"/>
         <source>Save</source>
-        <translation type="unfinished"></translation>
+        <translation>Kaydet</translation>
     </message>
     <message>
         <location filename="../../qml/Wallet/AddressBook.qml" line="235"/>
         <location filename="../../qml/Wallet/AddressBook.qml" line="464"/>
         <source>Delete</source>
-        <translation type="unfinished">Sil</translation>
+        <translation>Sil</translation>
     </message>
     <message>
         <location filename="../../qml/Wallet/AddressBook.qml" line="406"/>
         <source>Enter the address</source>
-        <translation type="unfinished"></translation>
+        <translation>Adresi girin</translation>
     </message>
     <message>
         <location filename="../../qml/Wallet/AddressBook.qml" line="435"/>
         <source>Explorer</source>
-        <translation type="unfinished"></translation>
+        <translation>Web&apos;de Göster</translation>
     </message>
     <message>
         <location filename="../../qml/Wallet/AddressBook.qml" line="446"/>
         <source>Send</source>
-        <translation type="unfinished">Gönder</translation>
+        <translation>Gönder</translation>
     </message>
 </context>
 <context>
@@ -201,37 +201,37 @@
     <message>
         <location filename="../../qml/Settings/CamouflagePasswordModal.qml" line="18"/>
         <source>Setup Camouflage Password</source>
-        <translation type="unfinished"></translation>
+        <translation>Kamuflaj Parolasını Ayarla</translation>
     </message>
     <message>
         <location filename="../../qml/Settings/CamouflagePasswordModal.qml" line="39"/>
         <source>Camouflage Password is a secret password for emergency situations.</source>
-        <translation type="unfinished"></translation>
+        <translation>Kamuflaj Parolası acil durumlar için olan gizli bir paroladır.</translation>
     </message>
     <message>
         <location filename="../../qml/Settings/CamouflagePasswordModal.qml" line="48"/>
         <source>Using it to login will display your balance lower than it actually is.</source>
-        <translation type="unfinished"></translation>
+        <translation>Bu parolayla giriş yapınca bakiyeniz normalinden daha az görünecektir.</translation>
     </message>
     <message>
         <location filename="../../qml/Settings/CamouflagePasswordModal.qml" line="56"/>
         <source>Here you enter the suffix and at login you need to enter {real_password}{suffix}</source>
-        <translation type="unfinished"></translation>
+        <translation>Buraya son eki gireceksiniz, giriş yaparken ise {gerçek_şifre}{son ek} şeklinde giriş yapacaksınız</translation>
     </message>
     <message>
         <location filename="../../qml/Settings/CamouflagePasswordModal.qml" line="64"/>
         <source>Enter a suffix</source>
-        <translation type="unfinished"></translation>
+        <translation>Son eki giriniz</translation>
     </message>
     <message>
         <location filename="../../qml/Settings/CamouflagePasswordModal.qml" line="71"/>
         <source>Cancel</source>
-        <translation type="unfinished">İptal</translation>
+        <translation>İptal</translation>
     </message>
     <message>
         <location filename="../../qml/Settings/CamouflagePasswordModal.qml" line="77"/>
         <source>Save</source>
-        <translation type="unfinished"></translation>
+        <translation>Kaydet</translation>
     </message>
 </context>
 <context>
@@ -239,12 +239,12 @@
     <message>
         <location filename="../../qml/Exchange/Trade/CandleStickChart.qml" line="647"/>
         <source>Loading market data</source>
-        <translation type="unfinished"></translation>
+        <translation>Borsa bilgisi yükleniyor</translation>
     </message>
     <message>
         <location filename="../../qml/Exchange/Trade/CandleStickChart.qml" line="653"/>
         <source>There is no chart data for this pair yet</source>
-        <translation type="unfinished"></translation>
+        <translation>Bu parite için henüz grafik verisi yok</translation>
     </message>
 </context>
 <context>
@@ -252,7 +252,7 @@
     <message>
         <location filename="../../qml/Components/CexInfoModal.qml" line="14"/>
         <source>Market Data</source>
-        <translation type="unfinished"></translation>
+        <translation>Borsa Verisi</translation>
     </message>
 </context>
 <context>
