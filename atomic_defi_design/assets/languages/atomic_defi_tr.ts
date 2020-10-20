@@ -260,7 +260,7 @@
     <message>
         <location filename="../../qml/Wallet/ClaimRewardsModal.qml" line="76"/>
         <source>Failed to prepare to claim rewards</source>
-        <translation type="unfinished"></translation>
+        <translation>Ödül alımı hazırlığı başarısız sonuçlandı</translation>
     </message>
     <message>
         <location filename="../../qml/Wallet/ClaimRewardsModal.qml" line="108"/>
@@ -271,7 +271,7 @@
     <message>
         <location filename="../../qml/Wallet/ClaimRewardsModal.qml" line="122"/>
         <source>No UTXOs eligible for claiming</source>
-        <translation type="unfinished"></translation>
+        <translation>Ödül alımı için uygun UTXO yok</translation>
     </message>
     <message>
         <location filename="../../qml/Wallet/ClaimRewardsModal.qml" line="125"/>
@@ -282,87 +282,87 @@
     <message>
         <location filename="../../qml/Wallet/ClaimRewardsModal.qml" line="123"/>
         <source>Transaction fee is higher than the reward!</source>
-        <translation type="unfinished"></translation>
+        <translation>İşlem komisyonu ödülden daha yüksek!</translation>
     </message>
     <message>
         <location filename="../../qml/Wallet/ClaimRewardsModal.qml" line="129"/>
         <source>Refresh</source>
-        <translation type="unfinished"></translation>
+        <translation>Yenile</translation>
     </message>
     <message>
         <location filename="../../qml/Wallet/ClaimRewardsModal.qml" line="137"/>
         <source>Read more about KMD active users rewards</source>
-        <translation type="unfinished"></translation>
+        <translation>KMD aktif kullanıcı ödülleri hakkında daha fazla bilgi</translation>
     </message>
     <message>
         <location filename="../../qml/Wallet/ClaimRewardsModal.qml" line="155"/>
         <source>UTXO</source>
-        <translation type="unfinished"></translation>
+        <translation>UTXO</translation>
     </message>
     <message>
         <location filename="../../qml/Wallet/ClaimRewardsModal.qml" line="170"/>
         <source>Amount</source>
-        <translation type="unfinished">Miktar</translation>
+        <translation>Miktar</translation>
     </message>
     <message>
         <location filename="../../qml/Wallet/ClaimRewardsModal.qml" line="186"/>
         <source>Reward</source>
-        <translation type="unfinished"></translation>
+        <translation>Ödül</translation>
     </message>
     <message>
         <location filename="../../qml/Wallet/ClaimRewardsModal.qml" line="202"/>
         <source>Accruing Start</source>
-        <translation type="unfinished"></translation>
+        <translation>Tahakkuk Başlangıcı</translation>
     </message>
     <message>
         <location filename="../../qml/Wallet/ClaimRewardsModal.qml" line="218"/>
         <source>Accruing Stop</source>
-        <translation type="unfinished"></translation>
+        <translation>Tahakkuk Bitişi</translation>
     </message>
     <message>
         <location filename="../../qml/Wallet/ClaimRewardsModal.qml" line="234"/>
         <source>Time Left</source>
-        <translation type="unfinished"></translation>
+        <translation>Kalan Zaman</translation>
     </message>
     <message>
         <location filename="../../qml/Wallet/ClaimRewardsModal.qml" line="250"/>
         <source>Error</source>
-        <translation type="unfinished"></translation>
+        <translation>hata</translation>
     </message>
     <message>
         <location filename="../../qml/Wallet/ClaimRewardsModal.qml" line="379"/>
         <source>Locktime is not set</source>
-        <translation type="unfinished"></translation>
+        <translation>Kilit süresi ayarlanmamış</translation>
     </message>
     <message>
         <location filename="../../qml/Wallet/ClaimRewardsModal.qml" line="382"/>
         <source>Locktime is less than the threshold</source>
-        <translation type="unfinished"></translation>
+        <translation>Kilit süresi limitin altında</translation>
     </message>
     <message>
         <location filename="../../qml/Wallet/ClaimRewardsModal.qml" line="385"/>
         <source>UTXO height is greater than end of the era</source>
-        <translation type="unfinished"></translation>
+        <translation>UTXO uzunluğu çağ sonundan daha büyük</translation>
     </message>
     <message>
         <location filename="../../qml/Wallet/ClaimRewardsModal.qml" line="388"/>
         <source>UTXO amount is less than 10</source>
-        <translation type="unfinished"></translation>
+        <translation>UTXO miktarı 10&apos;dan az</translation>
     </message>
     <message>
         <location filename="../../qml/Wallet/ClaimRewardsModal.qml" line="391"/>
         <source>One hour did not pass yet</source>
-        <translation type="unfinished"></translation>
+        <translation>Henüz bir saat geçmedi</translation>
     </message>
     <message>
         <location filename="../../qml/Wallet/ClaimRewardsModal.qml" line="394"/>
         <source>Transaction is in mempool</source>
-        <translation type="unfinished"></translation>
+        <translation>İşlem mempool&apos;da</translation>
     </message>
     <message>
         <location filename="../../qml/Wallet/ClaimRewardsModal.qml" line="397"/>
         <source>Unknown problem</source>
-        <translation type="unfinished"></translation>
+        <translation>Bilinmeyen hata</translation>
     </message>
     <message>
         <location filename="../../qml/Wallet/ClaimRewardsModal.qml" line="422"/>
@@ -381,23 +381,23 @@
         <location filename="../../qml/Components/CoinMenu.qml" line="24"/>
         <source>Disable %1</source>
         <comment>TICKER</comment>
-        <translation type="unfinished">%1&apos;i Etkinsizleştir</translation>
+        <translation>%1&apos;i Etkinsizleştir</translation>
     </message>
     <message>
         <location filename="../../qml/Components/CoinMenu.qml" line="30"/>
         <source>Disable and Delete %1</source>
         <comment>TICKER</comment>
-        <translation type="unfinished"></translation>
+        <translation>%1&apos;i etkinsizleştir ve sil</translation>
     </message>
     <message>
         <location filename="../../qml/Components/CoinMenu.qml" line="43"/>
         <source>Disable all %1 assets</source>
-        <translation type="unfinished"></translation>
+        <translation>Tüm %1 tipi varlıkları etkinsizleştir</translation>
     </message>
     <message>
         <location filename="../../qml/Components/CoinMenu.qml" line="49"/>
         <source>Disable all assets</source>
-        <translation type="unfinished"></translation>
+        <translation>Tüm varlıkları etkinsizleştir</translation>
     </message>
 </context>
 <context>
@@ -405,42 +405,42 @@
     <message>
         <location filename="../../qml/Exchange/Trade/ConfirmMultiOrderTradeModal.qml" line="21"/>
         <source>Confirm Multi Order Details</source>
-        <translation type="unfinished"></translation>
+        <translation>Çoklu Emir Detaylarını Onayla</translation>
     </message>
     <message>
         <location filename="../../qml/Exchange/Trade/ConfirmMultiOrderTradeModal.qml" line="73"/>
         <source>These swaps requests can not be undone and this is the final event!</source>
-        <translation type="unfinished"></translation>
+        <translation>Bu takas isteği geri döndürülemez ve bu son işlemdir!</translation>
     </message>
     <message>
         <location filename="../../qml/Exchange/Trade/ConfirmMultiOrderTradeModal.qml" line="79"/>
         <source>These transactions can take up to 60 mins - DO NOT close this application!</source>
-        <translation type="unfinished"></translation>
+        <translation>Bu işlemler 60 dakikayı bulabilir - Programı KAPATMAYIN!</translation>
     </message>
     <message>
         <location filename="../../qml/Exchange/Trade/ConfirmMultiOrderTradeModal.qml" line="86"/>
         <source>Same funds will be used until an order matches.</source>
-        <translation type="unfinished"></translation>
+        <translation>Bir emir eşleşene kadar tüm emirler aynı fonu kullanacaktır.</translation>
     </message>
     <message>
         <location filename="../../qml/Exchange/Trade/ConfirmMultiOrderTradeModal.qml" line="93"/>
         <source>Note that if one order is filled other will not be cancelled.</source>
-        <translation type="unfinished"></translation>
+        <translation>Bir emir doldurulduğunda diğerlerinin iptal edilmeyeceğini unutmayın.</translation>
     </message>
     <message>
         <location filename="../../qml/Exchange/Trade/ConfirmMultiOrderTradeModal.qml" line="102"/>
         <source>Cancel</source>
-        <translation type="unfinished">İptal</translation>
+        <translation>İptal</translation>
     </message>
     <message>
         <location filename="../../qml/Exchange/Trade/ConfirmMultiOrderTradeModal.qml" line="108"/>
         <source>Confirm</source>
-        <translation type="unfinished">Onayla</translation>
+        <translation>Onayla</translation>
     </message>
     <message>
         <location filename="../../qml/Exchange/Trade/ConfirmMultiOrderTradeModal.qml" line="118"/>
         <source>Placed multiple orders</source>
-        <translation type="unfinished"></translation>
+        <translation>Çoklu emir yerleştirildi</translation>
     </message>
 </context>
 <context>
@@ -458,49 +458,49 @@
     <message>
         <location filename="../../qml/Exchange/Trade/ConfirmTradeModal.qml" line="101"/>
         <source>Security configuration</source>
-        <translation type="unfinished"></translation>
+        <translation>Güvenlik konfigürasyonu</translation>
     </message>
     <message>
         <location filename="../../qml/Exchange/Trade/ConfirmTradeModal.qml" line="107"/>
         <source>dPoW protected</source>
-        <translation type="unfinished"></translation>
+        <translation>dPoW korumalı</translation>
     </message>
     <message>
         <location filename="../../qml/Exchange/Trade/ConfirmTradeModal.qml" line="114"/>
         <location filename="../../qml/Exchange/Trade/ConfirmTradeModal.qml" line="147"/>
         <source>Read more about dPoW</source>
-        <translation type="unfinished"></translation>
+        <translation>dPoW hakkında daha fazla bilgi</translation>
     </message>
     <message>
         <location filename="../../qml/Exchange/Trade/ConfirmTradeModal.qml" line="124"/>
         <source>Use custom protection settings for incoming %1 transactions</source>
         <comment>TICKER</comment>
-        <translation type="unfinished"></translation>
+        <translation>%1 işlemleri için özel güvenlik ayarları kullan</translation>
     </message>
     <message>
         <location filename="../../qml/Exchange/Trade/ConfirmTradeModal.qml" line="141"/>
         <source>Enable Komodo dPoW security</source>
-        <translation type="unfinished"></translation>
+        <translation>Komodo dPoW güvenliğini etkinleştir</translation>
     </message>
     <message>
         <location filename="../../qml/Exchange/Trade/ConfirmTradeModal.qml" line="108"/>
         <source>%1 confirmations for incoming %2 transactions</source>
-        <translation type="unfinished"></translation>
+        <translation>Gelen %2 işlemleri için %1 onay</translation>
     </message>
     <message>
         <location filename="../../qml/Exchange/Trade/ConfirmTradeModal.qml" line="75"/>
         <source>This transaction can take up to 60 mins - DO NOT close this application!</source>
-        <translation type="unfinished">Bu işlem 10 dakika kadar sürebilir - Programı KAPATMAYINIZ! {60 ?}</translation>
+        <translation>Bu işlem 60 dakikayı bulabilir - Programı KAPATMAYINIZ!</translation>
     </message>
     <message>
         <location filename="../../qml/Exchange/Trade/ConfirmTradeModal.qml" line="165"/>
         <source>Required Confirmations</source>
-        <translation type="unfinished"></translation>
+        <translation>Gereken Onaylar</translation>
     </message>
     <message>
         <location filename="../../qml/Exchange/Trade/ConfirmTradeModal.qml" line="201"/>
         <source>Warning, this atomic swap is not dPoW protected!</source>
-        <translation type="unfinished"></translation>
+        <translation>Uyarı, bu atomik takas dPoW korumalı değil!</translation>
     </message>
     <message>
         <location filename="../../qml/Exchange/Trade/ConfirmTradeModal.qml" line="214"/>
@@ -527,7 +527,7 @@
         <location filename="../../qml/Screens/Dashboard.qml" line="151"/>
         <location filename="../../qml/Screens/Dashboard.qml" line="162"/>
         <source>Content for this section will be added later. Stay tuned!</source>
-        <translation type="unfinished"></translation>
+        <translation>Bu kısmın içeriği daha sonra eklenecektir. Takipte kalın!</translation>
     </message>
 </context>
 <context>
