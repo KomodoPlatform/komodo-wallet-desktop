@@ -395,9 +395,17 @@ QtObject {
     readonly property var supported_pairs: ({
                                                 "KMD/BTC": "BINANCE:KMDBTC",
                                                 "KMD/ETH": "BINANCE:KMDETH",
+                                                "KMD/BUSD": "BINANCE:KMDBUSD",
+                                                "KMD/USDT": "BINANCE:KMDUSDT",
                                                 "ETH/BTC": "BINANCE:ETHBTC",
                                                 "ETH/USDC": "BINANCE:ETHUSDC",
+                                                "ETH/BUSD": "BINANCE:ETHBUSD",
                                                 "BTC/UDSC": "BINANCE:BTCUSDC",
-                                                "BTC/BUSD": "BINANCE:BTCBUSD"
+                                                "BTC/BUSD": "BINANCE:BTCBUSD",
+                                                "LTC/BTC": "BINANCE:LTCBTC",
+                                                "LTC/ETH": "BINANCE:LTCETH",
+                                                "LTC/BUSD": "BINANCE:LTCBUSD",
+                                                "LTC/USDC": "BINANCE:LTCUSDC",
+                                                "BCH/BTC": "BINANCE:BCHBTC"
                                             })
 }
