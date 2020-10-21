@@ -32,9 +32,7 @@ namespace atomic_dex
         entt::registry& registry, ag::ecs::system_manager& system_manager, std::atomic_bool& exit_status, portfolio_model* portfolio, QObject* parent) :
         QObject(parent),
         system(registry), m_system_manager(system_manager),
-        m_about_to_exit_the_app(exit_status), m_models{
-                                                  {new qt_orderbook_wrapper(m_system_manager, this), new candlestick_charts_model(m_system_manager, this),
-                                                   new market_pairs(portfolio, this)}}
+        m_about_to_exit_the_app(exit_status), m_models{{new qt_orderbook_wrapper(m_system_manager, this), new market_pairs(portfolio, this)}}
     {
         //!
     }
@@ -54,13 +52,13 @@ namespace atomic_dex
         }
     }
 
-    void
+    /*void
     trading_page::on_start_fetching_new_ohlc_data_event(const start_fetching_new_ohlc_data& evt)
     {
         get_candlestick_charts()->set_is_currently_fetching(evt.is_a_reset);
-    }
+    }*/
 
-    void
+    /*void
     atomic_dex::trading_page::on_refresh_ohlc_event(const atomic_dex::refresh_ohlc_needed& evt) noexcept
     {
         if (not m_about_to_exit_the_app)
@@ -68,7 +66,7 @@ namespace atomic_dex
             m_actions_queue.push(trading_actions::refresh_ohlc);
             m_models_actions[candlestick_need_a_reset] = evt.is_a_reset;
         }
-    }
+    }*/
 } // namespace atomic_dex
 
 //! Public QML API
@@ -86,9 +84,9 @@ namespace atomic_dex
     void
     trading_page::set_current_orderbook(const QString& base, const QString& rel)
     {
-        auto& provider        = m_system_manager.get_system<ohlc_provider>();
+        /*auto& provider        = m_system_manager.get_system<ohlc_provider>();
         auto [normal, quoted] = provider.is_pair_supported(base.toStdString(), rel.toStdString());
-        get_candlestick_charts()->set_is_pair_supported(normal || quoted);
+        get_candlestick_charts()->set_is_pair_supported(normal || quoted);*/
         auto* market_selector_mdl = get_market_pairs_mdl();
         market_selector_mdl->set_left_selected_coin(base);
         market_selector_mdl->set_right_selected_coin(rel);
@@ -392,8 +390,8 @@ namespace atomic_dex
     trading_page::connect_signals()
     {
         dispatcher_.sink<process_orderbook_finished>().connect<&trading_page::on_process_orderbook_finished_event>(*this);
-        dispatcher_.sink<start_fetching_new_ohlc_data>().connect<&trading_page::on_start_fetching_new_ohlc_data_event>(*this);
-        dispatcher_.sink<refresh_ohlc_needed>().connect<&trading_page::on_refresh_ohlc_event>(*this);
+        // dispatcher_.sink<start_fetching_new_ohlc_data>().connect<&trading_page::on_start_fetching_new_ohlc_data_event>(*this);
+        // dispatcher_.sink<refresh_ohlc_needed>().connect<&trading_page::on_refresh_ohlc_event>(*this);
         dispatcher_.sink<multi_ticker_enabled>().connect<&trading_page::on_multi_ticker_enabled>(*this);
     }
 
@@ -401,8 +399,8 @@ namespace atomic_dex
     atomic_dex::trading_page::disconnect_signals()
     {
         dispatcher_.sink<process_orderbook_finished>().disconnect<&trading_page::on_process_orderbook_finished_event>(*this);
-        dispatcher_.sink<start_fetching_new_ohlc_data>().disconnect<&trading_page::on_start_fetching_new_ohlc_data_event>(*this);
-        dispatcher_.sink<refresh_ohlc_needed>().disconnect<&trading_page::on_refresh_ohlc_event>(*this);
+        // dispatcher_.sink<start_fetching_new_ohlc_data>().disconnect<&trading_page::on_start_fetching_new_ohlc_data_event>(*this);
+        // dispatcher_.sink<refresh_ohlc_needed>().disconnect<&trading_page::on_refresh_ohlc_event>(*this);
         dispatcher_.sink<multi_ticker_enabled>().disconnect<&trading_page::on_multi_ticker_enabled>(*this);
     }
 
@@ -420,9 +418,6 @@ namespace atomic_dex
         {
             switch (last_action)
             {
-            case trading_actions::refresh_ohlc:
-                m_models_actions[candlestick_need_a_reset] ? get_candlestick_charts()->init_data() : get_candlestick_charts()->update_data();
-                break;
             case trading_actions::post_process_orderbook_finished:
             {
                 std::error_code    ec;
@@ -450,11 +445,11 @@ namespace atomic_dex
         return qobject_cast<qt_orderbook_wrapper*>(m_models[models::orderbook]);
     }
 
-    candlestick_charts_model*
+    /*candlestick_charts_model*
     trading_page::get_candlestick_charts() const noexcept
     {
         return qobject_cast<candlestick_charts_model*>(m_models[models::ohlc]);
-    }
+    }*/
 
     market_pairs*
     trading_page::get_market_pairs_mdl() const noexcept
