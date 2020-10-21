@@ -132,7 +132,7 @@
     </message>
     <message>
         <location filename="../../qml/Settings/AddCustomCoinModal.qml" line="334"/>
-        <source>Coin not found, please go back and make sure Contract Address is correct</source>
+        <source>Asset not found, please go back and make sure Contract Address is correct</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -378,15 +378,25 @@
 <context>
     <name>CoinMenu</name>
     <message>
-        <location filename="../../qml/Components/CoinMenu.qml" line="10"/>
+        <location filename="../../qml/Components/CoinMenu.qml" line="24"/>
         <source>Disable %1</source>
         <comment>TICKER</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Components/CoinMenu.qml" line="16"/>
+        <location filename="../../qml/Components/CoinMenu.qml" line="30"/>
         <source>Disable and Delete %1</source>
         <comment>TICKER</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../qml/Components/CoinMenu.qml" line="43"/>
+        <source>Disable all %1 assets</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../qml/Components/CoinMenu.qml" line="49"/>
+        <source>Disable all assets</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -570,57 +580,62 @@
 <context>
     <name>EnableCoinModal</name>
     <message>
-        <location filename="../../qml/Wallet/EnableCoinModal.qml" line="70"/>
+        <location filename="../../qml/Wallet/EnableCoinModal.qml" line="80"/>
         <source>Enable assets</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/EnableCoinModal.qml" line="74"/>
+        <location filename="../../qml/Wallet/EnableCoinModal.qml" line="84"/>
         <source>Enable All Assets</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/EnableCoinModal.qml" line="81"/>
-        <source>Add a Custom Coin to the list</source>
+        <location filename="../../qml/Wallet/EnableCoinModal.qml" line="84"/>
+        <source>Clear All Selection</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/EnableCoinModal.qml" line="97"/>
+        <location filename="../../qml/Wallet/EnableCoinModal.qml" line="91"/>
+        <source>Add a custom asset to the list</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../qml/Wallet/EnableCoinModal.qml" line="125"/>
+        <source>Select all UTXO assets</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../qml/Wallet/EnableCoinModal.qml" line="143"/>
+        <source>Select all QRC assets</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../qml/Wallet/EnableCoinModal.qml" line="154"/>
+        <source>All assets are already enabled!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../qml/Wallet/EnableCoinModal.qml" line="107"/>
         <source>Search</source>
         <translation>Rechercher</translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/EnableCoinModal.qml" line="115"/>
-        <source>Select all UTXO coins</source>
-        <translation>Selectionnez toutes les pièces UTXO</translation>
-    </message>
-    <message>
-        <location filename="../../qml/Wallet/EnableCoinModal.qml" line="121"/>
+        <location filename="../../qml/Wallet/EnableCoinModal.qml" line="131"/>
         <source>Select all SmartChains</source>
         <translation>Selectionnez toutes les SmartChains</translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/EnableCoinModal.qml" line="127"/>
+        <location filename="../../qml/Wallet/EnableCoinModal.qml" line="137"/>
         <source>Select all Ethereum assets</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/EnableCoinModal.qml" line="133"/>
-        <source>Select all QRC tokens</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../qml/Wallet/EnableCoinModal.qml" line="144"/>
-        <source>All coins are already enabled!</source>
-        <translation>Toutes les pièces sont déjà activées !</translation>
-    </message>
-    <message>
-        <location filename="../../qml/Wallet/EnableCoinModal.qml" line="150"/>
+        <location filename="../../qml/Wallet/EnableCoinModal.qml" line="160"/>
         <source>Close</source>
         <translation>Fermer</translation>
     </message>
     <message>
-        <location filename="../../qml/Wallet/EnableCoinModal.qml" line="158"/>
+        <location filename="../../qml/Wallet/EnableCoinModal.qml" line="168"/>
         <source>Enable</source>
         <translation>Activer</translation>
     </message>
@@ -892,22 +907,22 @@
 <context>
     <name>FirstLaunch</name>
     <message>
-        <location filename="../../qml/Screens/FirstLaunch.qml" line="28"/>
+        <location filename="../../qml/Screens/FirstLaunch.qml" line="29"/>
         <source>Welcome</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Screens/FirstLaunch.qml" line="41"/>
+        <location filename="../../qml/Screens/FirstLaunch.qml" line="42"/>
         <source>New Wallet</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Screens/FirstLaunch.qml" line="47"/>
+        <location filename="../../qml/Screens/FirstLaunch.qml" line="48"/>
         <source>Recover Wallet</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Screens/FirstLaunch.qml" line="60"/>
+        <location filename="../../qml/Screens/FirstLaunch.qml" line="61"/>
         <source>My Wallets</source>
         <translation type="unfinished"></translation>
     </message>
@@ -915,7 +930,7 @@
 <context>
     <name>General</name>
     <message numerus="yes">
-        <location filename="../../qml/Constants/General.qml" line="106"/>
+        <location filename="../../qml/Constants/General.qml" line="110"/>
         <source>%n day(s)</source>
         <translation type="unfinished">
             <numerusform></numerusform>
@@ -923,7 +938,7 @@
         </translation>
     </message>
     <message numerus="yes">
-        <location filename="../../qml/Constants/General.qml" line="116"/>
+        <location filename="../../qml/Constants/General.qml" line="120"/>
         <source>%nd</source>
         <comment>day</comment>
         <translation type="unfinished">
@@ -932,7 +947,7 @@
         </translation>
     </message>
     <message numerus="yes">
-        <location filename="../../qml/Constants/General.qml" line="117"/>
+        <location filename="../../qml/Constants/General.qml" line="121"/>
         <source>%nh</source>
         <comment>hours</comment>
         <translation type="unfinished">
@@ -941,7 +956,7 @@
         </translation>
     </message>
     <message numerus="yes">
-        <location filename="../../qml/Constants/General.qml" line="118"/>
+        <location filename="../../qml/Constants/General.qml" line="122"/>
         <source>%nm</source>
         <comment>minutes</comment>
         <translation type="unfinished">
@@ -950,7 +965,7 @@
         </translation>
     </message>
     <message numerus="yes">
-        <location filename="../../qml/Constants/General.qml" line="119"/>
+        <location filename="../../qml/Constants/General.qml" line="123"/>
         <source>%ns</source>
         <comment>seconds</comment>
         <translation type="unfinished">
@@ -959,7 +974,7 @@
         </translation>
     </message>
     <message numerus="yes">
-        <location filename="../../qml/Constants/General.qml" line="120"/>
+        <location filename="../../qml/Constants/General.qml" line="124"/>
         <source>%nms</source>
         <comment>milliseconds</comment>
         <translation type="unfinished">
@@ -968,19 +983,25 @@
         </translation>
     </message>
     <message>
-        <location filename="../../qml/Constants/General.qml" line="121"/>
+        <location filename="../../qml/Constants/General.qml" line="125"/>
         <source>-</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Constants/General.qml" line="350"/>
+        <location filename="../../qml/Constants/General.qml" line="365"/>
         <source>Transaction Fee</source>
         <translation type="unfinished">Frais de transactions</translation>
     </message>
     <message>
-        <location filename="../../qml/Constants/General.qml" line="365"/>
+        <location filename="../../qml/Constants/General.qml" line="380"/>
         <source>Trading Fee</source>
         <translation type="unfinished">Frais d&apos;échanges</translation>
+    </message>
+    <message>
+        <location filename="../../qml/Constants/General.qml" line="390"/>
+        <source>Wallet %1 already exists</source>
+        <comment>WALLETNAME</comment>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1027,20 +1048,33 @@
 <context>
     <name>Languages</name>
     <message>
-        <location filename="../../qml/Settings/Languages.qml" line="15"/>
+        <location filename="../../qml/Settings/Languages.qml" line="18"/>
         <source>Language</source>
         <translation>Langue</translation>
     </message>
 </context>
 <context>
-    <name>LogModal</name>
+    <name>LinksRow</name>
     <message>
-        <location filename="../../qml/Components/LogModal.qml" line="14"/>
-        <source>Log</source>
+        <location filename="../../qml/Components/LinksRow.qml" line="14"/>
+        <source>Join the Komodo Discord server</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Components/LogModal.qml" line="27"/>
+        <location filename="../../qml/Components/LinksRow.qml" line="20"/>
+        <source>Follow @atomicdex on Twitter</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../qml/Components/LinksRow.qml" line="26"/>
+        <source>Go to Komodo Support Guides</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>LogModal</name>
+    <message>
+        <location filename="../../qml/Components/LogModal.qml" line="28"/>
         <source>Close</source>
         <translation type="unfinished">Fermer</translation>
     </message>
@@ -1191,17 +1225,17 @@
         <translation>Impossible de créer un portefeuille</translation>
     </message>
     <message>
-        <location filename="../../qml/Screens/NewUser.qml" line="178"/>
+        <location filename="../../qml/Screens/NewUser.qml" line="181"/>
         <source>Important: Back up your seed phrase before proceeding!</source>
         <translation>Important: sauvegardez votre phrase de recupération avant de continuer !</translation>
     </message>
     <message>
-        <location filename="../../qml/Screens/NewUser.qml" line="185"/>
+        <location filename="../../qml/Screens/NewUser.qml" line="188"/>
         <source>We recommend storing it offline.</source>
         <translation>Nous vous recommandons de le stocker hors ligne.</translation>
     </message>
     <message>
-        <location filename="../../qml/Screens/NewUser.qml" line="152"/>
+        <location filename="../../qml/Screens/NewUser.qml" line="155"/>
         <source>Generated Seed</source>
         <translation>Générer un Seed</translation>
     </message>
@@ -1211,38 +1245,38 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Screens/NewUser.qml" line="194"/>
+        <location filename="../../qml/Screens/NewUser.qml" line="197"/>
         <source>Confirm Seed</source>
         <translation>Confirmer la phrase de récupération</translation>
     </message>
     <message>
-        <location filename="../../qml/Screens/NewUser.qml" line="195"/>
+        <location filename="../../qml/Screens/NewUser.qml" line="198"/>
         <source>Enter the generated seed here</source>
         <translation>Veuillez entrez la phrase de récupération ici</translation>
     </message>
     <message>
-        <location filename="../../qml/Screens/NewUser.qml" line="211"/>
+        <location filename="../../qml/Screens/NewUser.qml" line="214"/>
         <source>Back</source>
         <translation>Retour</translation>
     </message>
     <message>
-        <location filename="../../qml/Screens/NewUser.qml" line="221"/>
-        <location filename="../../qml/Screens/NewUser.qml" line="292"/>
+        <location filename="../../qml/Screens/NewUser.qml" line="224"/>
+        <location filename="../../qml/Screens/NewUser.qml" line="295"/>
         <source>Continue</source>
         <translation>Continuer</translation>
     </message>
     <message>
-        <location filename="../../qml/Screens/NewUser.qml" line="260"/>
+        <location filename="../../qml/Screens/NewUser.qml" line="263"/>
         <source>Let&apos;s double check your seed phrase</source>
         <translation>Vérifions à nouveau votre phrase de récupération</translation>
     </message>
     <message>
-        <location filename="../../qml/Screens/NewUser.qml" line="266"/>
+        <location filename="../../qml/Screens/NewUser.qml" line="269"/>
         <source>Your seed phrase is important - that&apos;s why we like to make sure it&apos;s correct. We&apos;ll ask you three different questions about your seed phrase to make sure you&apos;ll be able to easily restore your wallet whenever you want.</source>
         <translation>Votre phrase de récupération est importante - c&apos;est pourquoi nous aimons nous assurer qu&apos;elle est correcte. Nous vous poserons trois questions différentes au sujet de votre phrase source pour vous assurer que vous pourrez facilement restaurer votre portefeuille à tout moment.</translation>
     </message>
     <message numerus="yes">
-        <location filename="../../qml/Screens/NewUser.qml" line="276"/>
+        <location filename="../../qml/Screens/NewUser.qml" line="279"/>
         <source>What&apos;s the %n. word in your seed phrase?</source>
         <translation>
             <numerusform>Quel est le mot numéro %n dans votre phrase de récupération ?</numerusform>
@@ -1250,7 +1284,7 @@
         </translation>
     </message>
     <message numerus="yes">
-        <location filename="../../qml/Screens/NewUser.qml" line="277"/>
+        <location filename="../../qml/Screens/NewUser.qml" line="280"/>
         <source>Enter the %n. word</source>
         <translation>
             <numerusform>Entrez le mot numéro %n</numerusform>
@@ -1258,7 +1292,7 @@
         </translation>
     </message>
     <message>
-        <location filename="../../qml/Screens/NewUser.qml" line="285"/>
+        <location filename="../../qml/Screens/NewUser.qml" line="288"/>
         <source>Go back and check again</source>
         <translation>Revenez en arrière et vérifiez à nouveau</translation>
     </message>
@@ -1289,62 +1323,78 @@
 <context>
     <name>NotificationsModal</name>
     <message>
-        <location filename="../../qml/Dashboard/NotificationsModal.qml" line="90"/>
+        <location filename="../../qml/Dashboard/NotificationsModal.qml" line="93"/>
         <source>Swap status updated</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Dashboard/NotificationsModal.qml" line="100"/>
+        <location filename="../../qml/Dashboard/NotificationsModal.qml" line="104"/>
         <source>You sent %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Dashboard/NotificationsModal.qml" line="100"/>
+        <location filename="../../qml/Dashboard/NotificationsModal.qml" line="104"/>
         <source>You received %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Dashboard/NotificationsModal.qml" line="101"/>
+        <location filename="../../qml/Dashboard/NotificationsModal.qml" line="105"/>
         <source>Your wallet balance changed</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Dashboard/NotificationsModal.qml" line="127"/>
-        <source>AtomicDEX Desktop</source>
+        <location filename="../../qml/Dashboard/NotificationsModal.qml" line="110"/>
+        <source>Please check your internet connection (e.g. VPN service or firewall might block it).</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Dashboard/NotificationsModal.qml" line="133"/>
-        <source>Show</source>
+        <location filename="../../qml/Dashboard/NotificationsModal.qml" line="112"/>
+        <source>Failed to enable %1</source>
+        <comment>TICKER</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Dashboard/NotificationsModal.qml" line="138"/>
-        <source>Restart</source>
+        <location filename="../../qml/Dashboard/NotificationsModal.qml" line="129"/>
+        <source>Endpoint not reachable</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Dashboard/NotificationsModal.qml" line="143"/>
-        <source>Quit</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../qml/Dashboard/NotificationsModal.qml" line="150"/>
-        <source>Notifications</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../qml/Dashboard/NotificationsModal.qml" line="154"/>
-        <source>Clear all</source>
+        <location filename="../../qml/Dashboard/NotificationsModal.qml" line="140"/>
+        <source>Could not reach to endpoint</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../qml/Dashboard/NotificationsModal.qml" line="167"/>
+        <source>AtomicDEX Desktop</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../qml/Dashboard/NotificationsModal.qml" line="173"/>
+        <source>Show</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../qml/Dashboard/NotificationsModal.qml" line="178"/>
+        <source>Restart</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../qml/Dashboard/NotificationsModal.qml" line="183"/>
+        <source>Quit</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../qml/Dashboard/NotificationsModal.qml" line="190"/>
+        <source>Notifications</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../qml/Dashboard/NotificationsModal.qml" line="207"/>
         <source>There isn&apos;t any notification</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Dashboard/NotificationsModal.qml" line="258"/>
+        <location filename="../../qml/Dashboard/NotificationsModal.qml" line="313"/>
         <source>Close</source>
         <translation type="unfinished">Fermer</translation>
     </message>
@@ -1839,29 +1889,29 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Screens/RecoverSeed.qml" line="83"/>
-        <location filename="../../qml/Screens/RecoverSeed.qml" line="102"/>
+        <location filename="../../qml/Screens/RecoverSeed.qml" line="86"/>
+        <location filename="../../qml/Screens/RecoverSeed.qml" line="105"/>
         <source>Seed</source>
         <translation>Phrase de récupération</translation>
     </message>
     <message>
-        <location filename="../../qml/Screens/RecoverSeed.qml" line="84"/>
-        <location filename="../../qml/Screens/RecoverSeed.qml" line="103"/>
+        <location filename="../../qml/Screens/RecoverSeed.qml" line="87"/>
+        <location filename="../../qml/Screens/RecoverSeed.qml" line="106"/>
         <source>Enter the seed</source>
         <translation>Entrez la phrase de récupération</translation>
     </message>
     <message>
-        <location filename="../../qml/Screens/RecoverSeed.qml" line="120"/>
+        <location filename="../../qml/Screens/RecoverSeed.qml" line="123"/>
         <source>Allow custom seed</source>
         <translation>Autoriser les phrases de récupération personnalisées</translation>
     </message>
     <message>
-        <location filename="../../qml/Screens/RecoverSeed.qml" line="135"/>
+        <location filename="../../qml/Screens/RecoverSeed.qml" line="138"/>
         <source>Back</source>
         <translation>Retour</translation>
     </message>
     <message>
-        <location filename="../../qml/Screens/RecoverSeed.qml" line="145"/>
+        <location filename="../../qml/Screens/RecoverSeed.qml" line="148"/>
         <source>Confirm</source>
         <translation>Confirmer</translation>
     </message>
@@ -1908,12 +1958,12 @@
 <context>
     <name>RestartModal</name>
     <message>
-        <location filename="../../qml/Components/RestartModal.qml" line="38"/>
+        <location filename="../../qml/Components/RestartModal.qml" line="40"/>
         <source>Applying the changes</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Components/RestartModal.qml" line="41"/>
+        <location filename="../../qml/Components/RestartModal.qml" line="43"/>
         <source>Restarting the application...</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2158,17 +2208,22 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Settings/Settings.qml" line="143"/>
+        <location filename="../../qml/Settings/Settings.qml" line="146"/>
+        <source>Reset assets configuration</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../qml/Settings/Settings.qml" line="154"/>
         <source>Delete Wallet</source>
         <translation>Supprimez le portefeuille</translation>
     </message>
     <message>
-        <location filename="../../qml/Settings/Settings.qml" line="158"/>
+        <location filename="../../qml/Settings/Settings.qml" line="169"/>
         <source>Log out</source>
         <translation>Déconnection</translation>
     </message>
     <message>
-        <location filename="../../qml/Settings/Settings.qml" line="169"/>
+        <location filename="../../qml/Settings/Settings.qml" line="180"/>
         <source>mm2 version</source>
         <translation>Version de mm2</translation>
     </message>
@@ -2223,124 +2278,124 @@
 <context>
     <name>Support</name>
     <message>
-        <location filename="../../qml/Support/Support.qml" line="93"/>
+        <location filename="../../qml/Support/Support.qml" line="69"/>
         <source>Update available</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Support/Support.qml" line="93"/>
+        <location filename="../../qml/Support/Support.qml" line="69"/>
         <source>Up to date</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Support/Support.qml" line="108"/>
+        <location filename="../../qml/Support/Support.qml" line="84"/>
         <source>Changelog</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Support/Support.qml" line="120"/>
+        <location filename="../../qml/Support/Support.qml" line="96"/>
         <source>Open Logs Folder</source>
         <translation type="unfinished">Ouvrir le répertoire de logs</translation>
     </message>
     <message>
-        <location filename="../../qml/Support/Support.qml" line="131"/>
+        <location filename="../../qml/Support/Support.qml" line="107"/>
         <source>Frequently Asked Questions</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Support/Support.qml" line="147"/>
+        <location filename="../../qml/Support/Support.qml" line="123"/>
         <source>Do you store my private keys?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Support/Support.qml" line="148"/>
+        <location filename="../../qml/Support/Support.qml" line="124"/>
         <source>No! AtomicDEX is non-custodial. We never store any sensitive data, including your private keys, seed phrases, or PIN. This data is  only stored on the user’s device and never leaves it. You are in full control of your assets.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Support/Support.qml" line="152"/>
+        <location filename="../../qml/Support/Support.qml" line="128"/>
         <source>How is trading on AtomicDEX different from trading on other DEXs?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Support/Support.qml" line="165"/>
+        <location filename="../../qml/Support/Support.qml" line="141"/>
         <source>Yes. You must remain connected to the internet and have your app running to successfully complete each atomic swap (very short breaks in connectivity are usually fine). Otherwise, there is risk of trade cancellation if you are a maker, and risk of loss of funds if you are a taker. The atomic swap protocol requires both participants to stay online and monitor the involved blockchains for the process to stay atomic.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Support/Support.qml" line="169"/>
+        <location filename="../../qml/Support/Support.qml" line="145"/>
         <source>How are the fees on AtomicDEX calculated?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Support/Support.qml" line="180"/>
+        <location filename="../../qml/Support/Support.qml" line="156"/>
         <source>Yes! AtomicDEX offers support through the &lt;a href=&quot;https://komodoplatform.com/discord&quot;&gt;Komodo Discord server&lt;/a&gt;. The team and the community are always happy to help!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Support/Support.qml" line="184"/>
+        <location filename="../../qml/Support/Support.qml" line="160"/>
         <source>Who is behind AtomicDEX?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Support/Support.qml" line="185"/>
+        <location filename="../../qml/Support/Support.qml" line="161"/>
         <source>AtomicDEX is developed by the Komodo team. Komodo is one of the most established blockchain projects working on innovative solutions like atomic swaps, Delayed Proof of Work, and an interoperable multi-chain architecture.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Support/Support.qml" line="189"/>
+        <location filename="../../qml/Support/Support.qml" line="165"/>
         <source>Is it possible to develop my own white-label exchange on AtomicDEX?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Support/Support.qml" line="190"/>
+        <location filename="../../qml/Support/Support.qml" line="166"/>
         <source>Absolutely! You can read our developer documentation for more details or contact us with your partnership inquiries. Have a specific technical question? The AtomicDEX developer community is always ready to help!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Support/Support.qml" line="194"/>
+        <location filename="../../qml/Support/Support.qml" line="170"/>
         <source>Which devices can I use AtomicDEX on?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Support/Support.qml" line="195"/>
+        <location filename="../../qml/Support/Support.qml" line="171"/>
         <source>AtomicDEX is available for mobile on both &lt;a href=&quot;https://atomicdex.io/&quot;&gt;Android and iPhone, and for desktop on Windows, Mac, and Linux&lt;/a&gt; operating systems.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Support/Support.qml" line="199"/>
+        <location filename="../../qml/Support/Support.qml" line="175"/>
         <source>Compliance Info</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Support/Support.qml" line="200"/>
+        <location filename="../../qml/Support/Support.qml" line="176"/>
         <source>Due to regulatory and legal circumstances the citizens of certain jurisdictions including, but not limited to, the United States of America, Canada, Hong Kong, Israel, Singapore, Sudan, Austria, Iran and any other state, country or other jurisdiction that is embargoed by the United States of America or the European Union are not allowed to use this application.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Support/Support.qml" line="159"/>
+        <location filename="../../qml/Support/Support.qml" line="135"/>
         <source>How long does each atomic swap take?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Support/Support.qml" line="153"/>
+        <location filename="../../qml/Support/Support.qml" line="129"/>
         <source>Other DEXs generally only allow you to trade assets that are based on a single blockchain network, use proxy tokens, and only allow placing a single order with the same funds.
 
 AtomicDEX enables you to natively trade across two different blockchain networks without proxy tokens. You can also place multiple orders with the same funds. For example, you can sell 0.1 BTC for KMD, QTUM, or VRSC — the first order that fills automatically cancels all other orders.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Support/Support.qml" line="160"/>
+        <location filename="../../qml/Support/Support.qml" line="136"/>
         <source>Several factors determine the processing time for each swap. The block time of the traded assets depends on each network (Bitcoin typically being the slowest) Additionally, the user can customize security preferences. For example,  (you can ask AtomicDEX to consider a KMD transaction as final after just 3 confirmations which makes the swap time shorter compared to waiting for a &lt;a href=&quot;https://komodoplatform.com/security-delayed-proof-of-work-dpow/&quot;&gt;notarization&lt;/a&gt;.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Support/Support.qml" line="164"/>
+        <location filename="../../qml/Support/Support.qml" line="140"/>
         <source>Do I need to be online for the duration of the swap?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Support/Support.qml" line="170"/>
+        <location filename="../../qml/Support/Support.qml" line="146"/>
         <source>There are two fee categories to consider when trading on AtomicDEX.
 
 1. AtomicDEX charges approximately 0.13% (1/777 of trading volume but not lower than 0.0001) as the trading fee for taker orders, and maker orders have zero fees.
@@ -2350,7 +2405,7 @@ Network fees can vary greatly depending on your selected trading pair.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Support/Support.qml" line="179"/>
+        <location filename="../../qml/Support/Support.qml" line="155"/>
         <source>Do you provide user support?</source>
         <translation type="unfinished"></translation>
     </message>

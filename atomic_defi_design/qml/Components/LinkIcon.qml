@@ -9,6 +9,7 @@ import "../Constants"
 Circle {
     property string link
     property alias source: icon.source
+    property alias text: tooltip_text.text_value
 
     Layout.preferredWidth: 60
     Layout.preferredHeight: Layout.preferredWidth
@@ -30,6 +31,16 @@ Circle {
             anchors.fill: parent
             hoverEnabled: true
             onClicked: Qt.openUrlExternally(link)
+        }
+
+        DefaultTooltip {
+            visible: mouse_area.containsMouse
+
+            contentItem: ColumnLayout {
+                DefaultText {
+                    id: tooltip_text
+                }
+            }
         }
     }
 }
