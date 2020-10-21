@@ -353,9 +353,10 @@ Item {
                     anchors.bottom: selectors.top
                     anchors.bottomMargin: layout_margin * 2
 
-                    CandleStickChart {
+                    content: CandleStickChart {
                         id: chart
-                        anchors.fill: parent
+                        width: graph_bg.width
+                        height: graph_bg.height
                     }
                 }
 

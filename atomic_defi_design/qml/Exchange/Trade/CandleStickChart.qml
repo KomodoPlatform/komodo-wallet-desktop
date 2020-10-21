@@ -101,6 +101,7 @@ body { margin: 0; }
     WebEngineView {
         id: chart
         anchors.fill: parent
+        anchors.margins: -1
         visible: !is_fetching && pair_supported
     }
 }
