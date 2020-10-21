@@ -193,10 +193,12 @@ Item {
     }
 
     property bool initialized_orderbook_pair: false
+    readonly property string default_base: "KMD"
+    readonly property string default_rel: "BTC"
     function onOpened() {
         if(!initialized_orderbook_pair) {
             initialized_orderbook_pair = true
-            API.app.trading_pg.set_current_orderbook("KMD", "BTC")
+            API.app.trading_pg.set_current_orderbook(default_base, default_rel)
         }
 
         reset(true)
@@ -245,6 +247,7 @@ Item {
         reset(true, is_left_side)
         updateTradeInfo()
         updateCexPrice(base, rel)
+        chart.loadChart(base, rel)
         exchange.onTradeTickerChanged(base)
     }
 

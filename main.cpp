@@ -8,6 +8,7 @@
 #include <QWindow>
 #include <Qaterial/Qaterial.hpp>
 #include <QtQml>
+#include <QtWebEngine>
 
 #define QZXING_QML
 
@@ -194,6 +195,8 @@ main([[maybe_unused]] int argc, [[maybe_unused]] char* argv[])
     atomic_dex::application atomic_app;
 
     //! QT
+    QCoreApplication::setAttribute(Qt::AA_ShareOpenGLContexts);
+    QtWebEngine::initialize();
     std::shared_ptr<QApplication> app = std::make_shared<QApplication>(argc, argv);
     app->setOrganizationName("KomodoPlatform");
     app->setOrganizationDomain("com");

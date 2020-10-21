@@ -199,6 +199,9 @@ target_link_libraries(atomicdex-desktop_shared_deps
         Qt5::Quick
         Qt5::Svg
         Qt5::Charts
+        Qt5::WebEngine
+        Qt5::WebEngineCore
+        Qt5::WebEngineWidgets
         Qt5::Widgets
         qzxing
         antara::world
