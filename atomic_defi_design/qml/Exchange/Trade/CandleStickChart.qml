@@ -78,7 +78,12 @@ Item {
         loaded_symbol = symbol
         console.log("Loading TradingView chart", symbol)
 
-        chart.loadHtml(`<!-- TradingView Widget BEGIN -->
+        chart.loadHtml(`
+<style>
+body { margin: 0; background: ${ graph_bg.color } }
+</style>
+
+<!-- TradingView Widget BEGIN -->
 <div class="tradingview-widget-container">
 <div id="tradingview_af406"></div>
 <script type="text/javascript" src="https://s3.tradingview.com/tv.js"></script>
@@ -98,11 +103,7 @@ new TradingView.widget(
 );
 </script>
 </div>
-<!-- TradingView Widget END -->
-
-<style>
-body { margin: 0; }
-</style>`)
+<!-- TradingView Widget END -->`)
     }
 
     WebEngineView {
