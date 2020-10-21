@@ -13,7 +13,7 @@ Item {
     id: root
 
     property bool pair_supported: false
-    readonly property bool is_fetching: chart.loadProgress < 90
+    readonly property bool is_fetching: chart.loadProgress < 100
 
     RowLayout {
         visible: pair_supported && !chart.visible
