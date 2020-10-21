@@ -395,6 +395,9 @@ QtObject {
     readonly property var supported_pairs: ({
                                                 "KMD/BTC": "BINANCE:KMDBTC",
                                                 "KMD/ETH": "BINANCE:KMDETH",
-                                                "ETH/BTC": "BINANCE:ETHBTC"
+                                                "ETH/BTC": "BINANCE:ETHBTC",
+                                                "ETH/USDC": "BINANCE:ETHUSDC",
+                                                "BTC/UDSC": "BINANCE:BTCUSDC",
+                                                "BTC/BUSD": "BINANCE:BTCBUSD"
                                             })
 }
