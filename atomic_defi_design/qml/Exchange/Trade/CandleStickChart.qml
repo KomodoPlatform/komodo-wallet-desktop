@@ -39,6 +39,13 @@ Item {
 
     Component.onCompleted: loadChart(default_base, default_rel)
 
+    Connections {
+        target: exchange_trade
+        function onPairChanged(base, rel) {
+            root.loadChart(base, rel)
+        }
+    }
+
     property string loaded_symbol
     function loadChart(base, rel) {
         const pair = base + "/" + rel
