@@ -354,21 +354,21 @@ namespace atomic_dex
         const auto rel_coin_info = m_system_manager.get_system<mm2_service>().get_coin_info(data.rel_coin.toStdString());
         if (base_coin_info.coinpaprika_id == "test-coin")
         {
+            data.base_amount_fiat = QString::fromStdString("0");
+        }
+        else
+        {
             data.base_amount_fiat = QString::fromStdString(
                 global_price_system.get_price_as_currency_from_amount(current_fiat, data.base_coin.toStdString(), data.base_amount.toStdString(), ec));
         }
-        else
-        {
-            data.base_amount_fiat = QString::fromStdString("0");
-        }
         if (rel_coin_info.coinpaprika_id == "test-coin")
+        {
+            data.rel_amount_fiat = QString::fromStdString("0");
+        }
+        else
         {
             data.rel_amount_fiat = QString::fromStdString(
                 global_price_system.get_price_as_currency_from_amount(current_fiat, data.rel_coin.toStdString(), data.rel_amount.toStdString(), ec));
-        }
-        else
-        {
-            data.rel_amount_fiat = QString::fromStdString("0");
         }
         
         data.ticker_pair = data.base_coin + "/" + data.rel_coin;
