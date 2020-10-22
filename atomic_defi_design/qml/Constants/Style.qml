@@ -268,6 +268,7 @@ QtObject {
                                           "LABS": "#C1F6E1",
                                           "MGW": "#854F2F",
                                           "MONA": "#DEC799",
+                                          "NMC": "#186C9D",
                                           "RFOX": "#D83331",
                                           "BOTS": "#F69B57",
                                           "MCL": "#EA0000",
