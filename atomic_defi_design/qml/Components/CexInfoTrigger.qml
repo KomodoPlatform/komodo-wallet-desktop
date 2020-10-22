@@ -16,7 +16,7 @@ DefaultMouseArea {
         delay: 500
 
         contentItem: DefaultText {
-            text_value: "Price oracle powered by Band Protocol"
+            text_value: qsTr("Price oracle powered by Band Protocol")
         }
     }
 }
