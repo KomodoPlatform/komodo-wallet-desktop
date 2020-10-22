@@ -40,7 +40,7 @@ namespace atomic_dex
 
         //! Q Properties definitions
         Q_PROPERTY(qt_orderbook_wrapper* orderbook READ get_orderbook_wrapper NOTIFY orderbookChanged)
-        Q_PROPERTY(candlestick_charts_model* candlestick_charts_mdl READ get_candlestick_charts NOTIFY candlestickChartsChanged)
+        //Q_PROPERTY(candlestick_charts_model* candlestick_charts_mdl READ get_candlestick_charts NOTIFY candlestickChartsChanged)
         Q_PROPERTY(market_pairs* market_pairs_mdl READ get_market_pairs_mdl NOTIFY marketPairsChanged)
         Q_PROPERTY(QVariant buy_sell_last_rpc_data READ get_buy_sell_last_rpc_data WRITE set_buy_sell_last_rpc_data NOTIFY buySellLastRpcDataChanged)
         Q_PROPERTY(bool buy_sell_rpc_busy READ is_buy_sell_rpc_busy WRITE set_buy_sell_rpc_busy NOTIFY buySellRpcStatusChanged)
@@ -51,22 +51,19 @@ namespace atomic_dex
         enum models
         {
             orderbook       = 0,
-            ohlc            = 1,
-            market_selector = 2,
-            models_size     = 3
+            market_selector = 1,
+            models_size     = 2
         };
 
         enum models_actions
         {
-            candlestick_need_a_reset = 0,
-            orderbook_need_a_reset   = 1,
-            models_actions_size      = 2
+            orderbook_need_a_reset   = 0,
+            models_actions_size      = 1
         };
 
         enum class trading_actions
         {
             post_process_orderbook_finished = 0,
-            refresh_ohlc                    = 1,
         };
 
         enum market_mode
@@ -146,7 +143,7 @@ namespace atomic_dex
 
         //! Properties
         [[nodiscard]] qt_orderbook_wrapper*     get_orderbook_wrapper() const noexcept;
-        [[nodiscard]] candlestick_charts_model* get_candlestick_charts() const noexcept;
+        //[[nodiscard]] candlestick_charts_model* get_candlestick_charts() const noexcept;
         [[nodiscard]] market_pairs*             get_market_pairs_mdl() const noexcept;
         [[nodiscard]] bool                      is_buy_sell_rpc_busy() const noexcept;
         void                                    set_buy_sell_rpc_busy(bool status) noexcept;

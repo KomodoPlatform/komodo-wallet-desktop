@@ -65,7 +65,7 @@ jobs:
           host: 'linux'
           target: 'desktop'
           dir: '${{ github.workspace }}'
-          modules: 'qtcharts qtwidgets debug_info'
+          modules: 'qtcharts qtwidgets debug_info qtwebengine qtwebview'
           aqtversion: '==0.8'
           py7zrversion: '==0.6'
 
@@ -77,7 +77,7 @@ jobs:
           host: 'mac'
           target: 'desktop'
           dir: '${{ github.workspace }}'
-          modules: 'qtcharts qtwidgets debug_info'
+          modules: 'qtcharts qtwidgets debug_info qtwebview qtwebengine'
 
       - name: Install QT (Windows)
         if: runner.os == 'Windows'
@@ -88,7 +88,7 @@ jobs:
           target: 'desktop'
           arch: 'win64_msvc2019_64'
           dir: 'C:\'
-          modules: 'qtcharts qtwidgets debug_info'
+          modules: 'qtcharts qtwidgets debug_info qtwebview qtwebengine'
 
       - name: Install nim (Linux)
         if: runner.os == 'Linux'

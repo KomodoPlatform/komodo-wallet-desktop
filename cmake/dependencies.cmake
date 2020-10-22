@@ -65,7 +65,7 @@ else ()
 endif ()
 add_library(komodo-folly::folly ALIAS komodo-folly)
 
-find_package(Qt5 COMPONENTS Core Quick LinguistTools Svg Charts Widgets REQUIRED)
+find_package(Qt5 COMPONENTS Core Quick LinguistTools Svg Charts WebEngine WebEngineCore WebEngineWidgets Widgets REQUIRED)
 
 #find_package(Qt5)
 

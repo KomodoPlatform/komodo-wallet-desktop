@@ -28,6 +28,8 @@ qt:qtquickcontrols=True
 qt:qtquickcontrols2=True
 qt:qtmultimedia=True
 qt:qtimageformats=True
+qt:qtwebengine=True
+qt:qtwebview=True
 
 [build_requires]
 
