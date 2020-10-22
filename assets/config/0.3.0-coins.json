@@ -962,6 +962,32 @@
     "active": false,
     "currently_enabled": false
   },
+  "NMC": {
+    "coin": "NMC",
+    "name": "Namecoin",
+    "coinpaprika_id": "nmc-namecoin",
+    "coingecko_id": "namecoin",
+    "electrum": [
+      {
+        "url": "electrumx1.nmc.bitclc.net:50001"
+      },
+      {
+        "url": "electrumx2.nmc.bitclc.net:50001"
+      },
+      {
+        "url": "electrumx3.nmc.bitclc.net:50001"
+      },
+      {
+        "url": "electrumx4.nmc.bitclc.net:50001"
+      }
+    ],
+    "explorer_url": [
+      "https://nmc.tokenview.com/en/"
+    ],
+    "type": "UTXO",
+    "active": false,
+    "currently_enabled": false
+  },
   "OOT": {
     "coin": "OOT",
     "name": "Utrum",
