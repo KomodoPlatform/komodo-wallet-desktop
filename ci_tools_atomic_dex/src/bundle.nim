@@ -113,7 +113,7 @@ proc bundle*(build_type: string, osx_sdk_path: string, compiler_path: string) =
         for idx, cur_lib in list_of_libs:
             os.copyFile("/usr/lib/x86_64-linux-gnu/" & cur_lib, output_dir & "/" & cur_lib)
         var list_of_other_libs = ["libfreebl3.chk", "libfreebl3.so", "libnssckbi.so", "libnssdbm3.chk", "libnssdbm3.so", "libnsssysinit.so", "libsoftokn3.chk", "libsoftokn3.so"]
-        for idx, cur_lib in list_of_libs:
+        for idx, cur_lib in list_of_other_libs:
            os.copyFile("/usr/lib/x86_64-linux-gnu/nss/" & cur_lib, output_dir & "/" & cur_lib)
         #discard os.copyFile("/usr/lib/x86_64-linux-gnu/libnss3.so", output_dir.joinPath("libnss3.so").string)
 
