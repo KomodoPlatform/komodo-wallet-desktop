@@ -83,7 +83,7 @@ AnimatedRectangle {
     DefaultText {
         id: base_amount
         text_value: !details ? "" :
-                    General.formatCrypto("", details.base_amount, details.base_coin)
+                    General.formatCrypto("", details.base_amount, details.base_coin, details.base_amount_fiat, API.app.settings_pg.current_currency)
         font.pixelSize: Style.textSizeSmall4
 
         anchors.left: base_icon.right
@@ -96,7 +96,7 @@ AnimatedRectangle {
     DefaultText {
         id: rel_amount
         text_value: !details ? "" :
-                    General.formatCrypto("", details.rel_amount, details.rel_coin)
+                    General.formatCrypto("", details.rel_amount, details.rel_coin, details.rel_amount_fiat, API.app.settings_pg.current_currency)
         font.pixelSize: base_amount.font.pixelSize
 
         anchors.right: rel_icon.left

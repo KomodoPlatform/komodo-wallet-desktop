@@ -23,8 +23,10 @@
 //! Project
 #include "atomicdex/services/mm2/mm2.service.hpp"
 #include "qt.orders.model.hpp"
-#include "src/atomicdex/events/qt.events.hpp"
-#include "src/atomicdex/utilities/qt.utilities.hpp"
+#include "atomicdex/events/qt.events.hpp"
+#include "atomicdex/utilities/qt.utilities.hpp"
+#include "atomicdex/services/price/global.provider.hpp"
+#include "atomicdex/pages/qt.settings.page.hpp"
 
 //! Utils
 namespace
@@ -114,8 +116,14 @@ namespace atomic_dex
         case BaseCoinAmountRole:
             item.base_amount = value.toString();
             break;
+        case BaseCoinAmountFiatRole:
+            item.base_amount_fiat = value.toString();
+            break;
         case RelCoinAmountRole:
             item.rel_amount = value.toString();
+            break;
+        case RelCoinAmountFiatRole:
+            item.rel_amount_fiat = value.toString();
             break;
         case OrderTypeRole:
             item.order_type = value.toString();
@@ -183,8 +191,12 @@ namespace atomic_dex
             return item.ticker_pair;
         case BaseCoinAmountRole:
             return item.base_amount;
+        case BaseCoinAmountFiatRole:
+            return item.base_amount_fiat;
         case RelCoinAmountRole:
             return item.rel_amount;
+        case RelCoinAmountFiatRole:
+            return item.rel_amount_fiat;
         case OrderTypeRole:
             return item.order_type;
         case HumanDateRole:
@@ -309,6 +321,11 @@ namespace atomic_dex
     void
     orders_model::initialize_swap(const ::mm2::api::swap_contents& contents) noexcept
     {
+        const auto& settings_system = m_system_manager.get_system<settings_page>();
+        const auto& global_price_system = m_system_manager.get_system<global_price_service>();
+        const auto& current_fiat = settings_system.get_current_fiat().toStdString();
+        std::error_code ec;
+        
         spdlog::trace("inserting in model order id {}", contents.uuid);
         beginInsertRows(QModelIndex(), this->m_model_data.count(), this->m_model_data.count());
         bool       is_maker = boost::algorithm::to_lower_copy(contents.type) == "maker";
@@ -331,6 +348,29 @@ namespace atomic_dex
             .events           = nlohmann_json_array_to_qt_json_array(contents.events),
             .error_events     = vector_std_string_to_qt_string_list(contents.error_events),
             .success_events   = vector_std_string_to_qt_string_list(contents.success_events)};
+        
+        //! Sets amounts in fiat.
+        const auto base_coin_info = m_system_manager.get_system<mm2_service>().get_coin_info(data.base_coin.toStdString());
+        const auto rel_coin_info = m_system_manager.get_system<mm2_service>().get_coin_info(data.rel_coin.toStdString());
+        if (base_coin_info.coinpaprika_id == "test-coin")
+        {
+            data.base_amount_fiat = QString::fromStdString("0");
+        }
+        else
+        {
+            data.base_amount_fiat = QString::fromStdString(
+                global_price_system.get_price_as_currency_from_amount(current_fiat, data.base_coin.toStdString(), data.base_amount.toStdString(), ec));
+        }
+        if (rel_coin_info.coinpaprika_id == "test-coin")
+        {
+            data.rel_amount_fiat = QString::fromStdString("0");
+        }
+        else
+        {
+            data.rel_amount_fiat = QString::fromStdString(
+                global_price_system.get_price_as_currency_from_amount(current_fiat, data.rel_coin.toStdString(), data.rel_amount.toStdString(), ec));
+        }
+        
         data.ticker_pair = data.base_coin + "/" + data.rel_coin;
         if (data.order_status == "failed")
         {
@@ -400,6 +440,11 @@ namespace atomic_dex
     void
     orders_model::initialize_order(const ::mm2::api::my_order_contents& contents) noexcept
     {
+        const auto& settings_system = m_system_manager.get_system<settings_page>();
+        const auto& global_price_system = m_system_manager.get_system<global_price_service>();
+        const auto& current_fiat = settings_system.get_current_fiat().toStdString();
+        std::error_code ec;
+    
         spdlog::trace("inserting in model order id {}", contents.order_id);
         beginInsertRows(QModelIndex(), this->m_model_data.count(), this->m_model_data.count());
         order_data data{
@@ -423,6 +468,29 @@ namespace atomic_dex
             data.base_amount = QString::fromStdString(contents.base_amount);
             data.rel_amount  = QString::fromStdString(contents.rel_amount);
         }
+        
+        //! Sets amounts in fiat.
+        const auto base_coin_info = m_system_manager.get_system<mm2_service>().get_coin_info(data.base_coin.toStdString());
+        const auto rel_coin_info = m_system_manager.get_system<mm2_service>().get_coin_info(data.rel_coin.toStdString());
+        if (base_coin_info.coinpaprika_id == "test-coin")
+        {
+            data.base_amount_fiat = QString::fromStdString(
+                global_price_system.get_price_as_currency_from_amount(current_fiat, data.base_coin.toStdString(), data.base_amount.toStdString(), ec));
+        }
+        else
+        {
+            data.base_amount_fiat = QString::fromStdString("0");
+        }
+        if (rel_coin_info.coinpaprika_id == "test-coin")
+        {
+            data.rel_amount_fiat = QString::fromStdString(
+                global_price_system.get_price_as_currency_from_amount(current_fiat, data.rel_coin.toStdString(), data.rel_amount.toStdString(), ec));
+        }
+        else
+        {
+            data.rel_amount_fiat = QString::fromStdString("0");
+        }
+        
         data.ticker_pair = data.base_coin + "/" + data.rel_coin;
         this->m_orders_id_registry.emplace(contents.order_id);
         this->m_model_data.push_back(std::move(data));
@@ -534,7 +602,9 @@ namespace atomic_dex
             {RelCoinRole, "rel_coin"},
             {TickerPairRole, "ticker_pair"},
             {BaseCoinAmountRole, "base_amount"},
+            {BaseCoinAmountFiatRole, "base_amount_fiat"},
             {RelCoinAmountRole, "rel_amount"},
+            {RelCoinAmountFiatRole, "rel_amount_fiat"},
             {OrderTypeRole, "type"},
             {IsMakerRole, "is_maker"},
             {HumanDateRole, "date"},
