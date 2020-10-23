@@ -107,6 +107,16 @@ proc bundle*(build_type: string, osx_sdk_path: string, compiler_path: string) =
         discard os.existsOrCreateDir(bundle_path)
         os.setCurrentDir(bundle_path)
 
+        echo "Copying extra lib before"
+        var output_dir = $build_path.joinPath("AntaraAtomicDexAppDir").joinPath("usr").joinPath("lib")
+        var list_of_libs = ["libnss3.so", "libnssutil3.so", "libsmime3.so", "libssl3.so"]
+        for idx, cur_lib in list_of_libs:
+            os.copyFile("/usr/lib/x86_64-linux-gnu/" & cur_lib, output_dir & "/" & cur_lib)
+        var list_of_other_libs = ["libfreebl3.chk", "libfreebl3.so", "libnssckbi.so", "libnssdbm3.chk", "libnssdbm3.so", "libnsssysinit.so", "libsoftokn3.chk", "libsoftokn3.so"]
+        for idx, cur_lib in list_of_libs:
+           os.copyFile("/usr/lib/x86_64-linux-gnu/nss/" & cur_lib, output_dir & "/" & cur_lib)
+        #discard os.copyFile("/usr/lib/x86_64-linux-gnu/libnss3.so", output_dir.joinPath("libnss3.so").string)
+
         echo "Tar cmd: " & tar_cmd
         discard osproc.execCmd(tar_cmd)
 
