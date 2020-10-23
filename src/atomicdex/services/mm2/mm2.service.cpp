@@ -520,6 +520,7 @@ namespace atomic_dex
                         if (answers.count("error") == 0)
                         {
                             std::size_t idx = 0;
+                            std::unordered_set<std::string> to_remove;
                             for (auto&& answer: answers)
                             {
                                 auto [res, error] = this->process_batch_enable_answer(answer);
@@ -529,10 +530,13 @@ namespace atomic_dex
                                         "bad answer for: [{}] -> removing it from enabling, idx: {}, tickers size: {}, answers size: {}", tickers[idx], idx,
                                         tickers.size(), answers.size());
                                     this->dispatcher_.trigger<enabling_coin_failed>(tickers[idx], error);
-                                    tickers.erase(tickers.begin() + idx);
+                                    to_remove.emplace(tickers[idx]);
                                 }
                                 idx += 1;
                             }
+
+                            for (auto&& t: to_remove) tickers.erase(std::remove(tickers.begin(), tickers.end(), t), tickers.end());
+
                             batch_balance_and_tx(false, tickers, true);
                             //! At this point, task is finished, let's refresh.
                         }
