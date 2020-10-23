@@ -96,7 +96,7 @@ proc bundle*(build_type: string, osx_sdk_path: string, compiler_path: string) =
             desktop_path = build_path.joinPath("AntaraAtomicDexAppDir/usr/share/applications/atomicdex-desktop.desktop")
             atomicdex_desktop_qml_dir = os.getCurrentDir().parentDir().parentDir().joinPath("atomic_defi_design/qml")
             linux_deploy_tool = os.getCurrentDir().parentDir().joinPath("linux_misc").joinPath("linuxdeployqt-continuous-x86_64.AppImage")
-            bundling_cmd = linux_deploy_tool & " " & desktop_path & " -qmldir=" & atomicdex_desktop_qml_dir & " -bundle-non-qt-libs"
+            bundling_cmd = linux_deploy_tool & " " & desktop_path & " -qmldir=" & atomicdex_desktop_qml_dir & " -bundle-non-qt-libs -exclude-libs=\"libnss3.so,libnssutil3.so\""
             bundle_path = os.getCurrentDir().parentDir().joinPath("bundle-" & build_type)
             tar_cmd = "tar -czvf AntaraAtomicDexAppDir.tar.gz -C " & build_path.joinPath("AntaraAtomicDexAppDir").parentDir() & " ."
 
@@ -106,6 +106,16 @@ proc bundle*(build_type: string, osx_sdk_path: string, compiler_path: string) =
         echo "Creating bundle folder: " & bundle_path
         discard os.existsOrCreateDir(bundle_path)
         os.setCurrentDir(bundle_path)
+
+        echo "Copying extra lib before"
+        var output_dir = $build_path.joinPath("AntaraAtomicDexAppDir").joinPath("usr").joinPath("lib")
+        var list_of_libs = ["libsmime3.so", "libssl3.so"]
+        for idx, cur_lib in list_of_libs:
+            os.copyFile("/usr/lib/x86_64-linux-gnu/" & cur_lib, output_dir & "/" & cur_lib)
+        var list_of_other_libs = ["libfreebl3.chk", "libfreebl3.so", "libnssckbi.so", "libnssdbm3.chk", "libnssdbm3.so", "libnsssysinit.so", "libsoftokn3.chk", "libsoftokn3.so"]
+        for idx, cur_lib in list_of_other_libs:
+           os.copyFile("/usr/lib/x86_64-linux-gnu/nss/" & cur_lib, output_dir & "/" & cur_lib)
+        #discard os.copyFile("/usr/lib/x86_64-linux-gnu/libnss3.so", output_dir.joinPath("libnss3.so").string)
 
         echo "Tar cmd: " & tar_cmd
         discard osproc.execCmd(tar_cmd)
