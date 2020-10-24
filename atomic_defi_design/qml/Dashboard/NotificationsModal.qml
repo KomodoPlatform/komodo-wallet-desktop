@@ -337,6 +337,7 @@ BasicModal {
                                 restart_modal.open()
                                 break
                             default:
+                                removeNotification()
                                 break
                             }
                         }
