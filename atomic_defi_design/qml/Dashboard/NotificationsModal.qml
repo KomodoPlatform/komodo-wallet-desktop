@@ -140,12 +140,26 @@ BasicModal {
         toast.show(title, General.time_toast_important_error, qsTr("Could not reach to endpoint") + ". " + check_internet_connection_text + "\n\n" + base_uri)
     }
 
+    function onMismatchCustomCoinConfiguration(asset, human_date, timestamp) {
+        const title = qsTr("Mismatch at %1 custom asset configuration", "TICKER").arg(asset)
+
+        newNotification("onMismatchCustomCoinConfiguration",
+                        { asset, human_date, timestamp },
+                        timestamp,
+                        title,
+                        qsTr("Application needs to be restarted for %1 custom asset.", "TICKER").arg(asset),
+                        human_date)
+
+        toast.show(title, General.time_toast_important_error, "", true, true)
+    }
+
     // System
     Component.onCompleted: {
         API.app.notification_mgr.updateSwapStatus.connect(onUpdateSwapStatus)
         API.app.notification_mgr.balanceUpdateStatus.connect(onBalanceUpdateStatus)
         API.app.notification_mgr.enablingCoinFailedStatus.connect(onEnablingCoinFailedStatus)
         API.app.notification_mgr.endpointNonReacheableStatus.connect(onEndpointNonReacheableStatus)
+        API.app.notification_mgr.mismatchCustomCoinConfiguration.connect(onMismatchCustomCoinConfiguration)
     }
 
     function displayMessage(title, message) {
@@ -258,6 +272,7 @@ BasicModal {
 
                     // Info button
                     Qaterial.AppBarButton {
+                        visible: modelData.click_action !== "open_notifications"
                         anchors.verticalCenter: action_button.verticalCenter
                         anchors.right: action_button.left
                         anchors.rightMargin: 15
@@ -280,6 +295,9 @@ BasicModal {
                             case "onEnablingCoinFailedStatus":
                                 name = "repeat"
                                 break
+                            case "onMismatchCustomCoinConfiguration":
+                                name = "restart-alert"
+                                break
                             default:
                                 name = "check"
                                 break
@@ -287,18 +305,30 @@ BasicModal {
 
                             return General.qaterialIcon(name)
                         }
+
+                        function removeNotification() {
+                            notifications_list.splice(index, 1)
+                            notifications_list = notifications_list
+                        }
+
                         onClicked: {
                             // Action might create another event so we save it and then remove the current one, then take the action
                             const event_before_removal = General.clone(modelData)
 
-                            // Remove notification
-                            notifications_list.splice(index, 1)
-                            notifications_list = notifications_list
-
                             // Action
-                            if(event_before_removal.event_name === "onEnablingCoinFailedStatus") {
+                            switch(event_before_removal.event_name) {
+                            case "onEnablingCoinFailedStatus":
+                                removeNotification()
                                 console.log("Retrying to enable", event_before_removal.params.coin, "asset...")
                                 API.app.enable_coins([event_before_removal.params.coin])
+                                break
+                            case "onMismatchCustomCoinConfiguration":
+                                console.log("Restarting for", event_before_removal.params.asset, "custom asset configuration mismatch...")
+                                root.close()
+                                restart_modal.open()
+                                break
+                            default:
+                                break
                             }
                         }
                     }
