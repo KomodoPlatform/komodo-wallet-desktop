@@ -519,7 +519,7 @@ namespace atomic_dex
 
                         if (answers.count("error") == 0)
                         {
-                            std::size_t idx = 0;
+                            std::size_t                     idx = 0;
                             std::unordered_set<std::string> to_remove;
                             for (auto&& answer: answers)
                             {
@@ -535,7 +535,17 @@ namespace atomic_dex
                                 idx += 1;
                             }
 
-                            for (auto&& t: to_remove) tickers.erase(std::remove(tickers.begin(), tickers.end(), t), tickers.end());
+                            for (auto&& t: to_remove)
+                            {
+                                auto& mm2 = this->m_system_manager.get_system<mm2_service>();
+                                //! erase
+                                tickers.erase(std::remove(tickers.begin(), tickers.end(), t), tickers.end());
+                                if (mm2.get_coin_info(t).is_custom_coin)
+                                {
+                                    spdlog::info("Couldn't enable the custom coin {}, removing it from both cfg", t);
+                                    mm2.remove_custom_coin(t);
+                                }
+                            }
 
                             batch_balance_and_tx(false, tickers, true);
                             //! At this point, task is finished, let's refresh.
