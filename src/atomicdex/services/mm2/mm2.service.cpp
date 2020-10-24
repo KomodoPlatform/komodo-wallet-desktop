@@ -512,6 +512,7 @@ namespace atomic_dex
                     {
                         spdlog::warn("Configuration mismatch between mm2 cfg and coin cfg for ticker {}, readjusting...", coin_info.ticker);
                         this->add_new_coin(empty, coin_info.custom_backup.value());
+                        this->dispatcher_.trigger<missmatch_configuration_custom_coin>(coin_info.ticker);
                     }
                 }
             }
