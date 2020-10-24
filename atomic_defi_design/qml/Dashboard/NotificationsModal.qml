@@ -109,6 +109,15 @@ BasicModal {
 
     readonly property string check_internet_connection_text: qsTr("Please check your internet connection (e.g. VPN service or firewall might block it).")
     function onEnablingCoinFailedStatus(coin, error, human_date, timestamp) {
+        // Check if there is mismatch error, ignore this one
+        for(let n of notifications_list) {
+            if(n.event_name === "onMismatchCustomCoinConfiguration" && n.params.asset === coin) {
+                console.log("Ignoring onEnablingCoinFailedStatus event because onMismatchCustomCoinConfiguration exists for", coin)
+                return
+            }
+        }
+
+        // Display the notification
         const title = qsTr("Failed to enable %1", "TICKER").arg(coin)
 
         error = check_internet_connection_text + "\n\n" + error
