@@ -262,13 +262,16 @@ namespace atomic_dex
             out["adex_cfg"]     = nlohmann::json::object();
             if (resp.status_code() == 200)
             {
-                nlohmann::json  body_json = nlohmann::json::parse(body).at("result")[0];
-                std::string     ticker    = body_json.at("symbol").get<std::string>();
-                const fs::path& suffix    = fs::path(icon_filepath.toStdString()).extension();
-                fs::copy_file(
-                    icon_filepath.toStdString(),
-                    fs::path(get_custom_coins_icons_path().toStdString()) / (boost::algorithm::to_lower_copy(ticker) + suffix.string()),
-                    fs::copy_option::overwrite_if_exists);
+                nlohmann::json body_json = nlohmann::json::parse(body).at("result")[0];
+                auto           ticker    = body_json.at("symbol").get<std::string>();
+                if (not icon_filepath.isEmpty())
+                {
+                    const fs::path& suffix = fs::path(icon_filepath.toStdString()).extension();
+                    fs::copy_file(
+                        icon_filepath.toStdString(),
+                        fs::path(get_custom_coins_icons_path().toStdString()) / (boost::algorithm::to_lower_copy(ticker) + suffix.string()),
+                        fs::copy_option::overwrite_if_exists);
+                }
                 if (not is_this_ticker_present_in_raw_cfg(QString::fromStdString(ticker)))
                 {
                     out["mm2_cfg"]["protocol"]                              = nlohmann::json::object();
@@ -301,6 +304,7 @@ namespace atomic_dex
                     out["adex_cfg"][ticker]["active"]            = false;
                     out["adex_cfg"][ticker]["currently_enabled"] = false;
                     out["adex_cfg"][ticker]["is_custom_coin"]    = true;
+                    out["adex_cfg"][ticker]["mm2_backup"]        = out["mm2_cfg"];
                 }
             }
             else

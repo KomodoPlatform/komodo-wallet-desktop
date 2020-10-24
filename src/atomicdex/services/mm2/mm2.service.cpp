@@ -504,6 +504,15 @@ namespace atomic_dex
                 nlohmann::json   j = ::mm2::api::template_request("enable");
                 ::mm2::api::to_json(j, request);
                 batch_array.push_back(j);
+                if (coin_info.is_custom_coin && !this->is_this_ticker_present_in_raw_cfg(coin_info.ticker))
+                {
+                    nlohmann::json empty = "{}"_json;
+                    if (coin_info.custom_backup.has_value())
+                    {
+                        spdlog::warn("Configuration mismatch between mm2 cfg and coin cfg for ticker {}, readjusting...", coin_info.ticker);
+                        this->add_new_coin(empty, coin_info.custom_backup.value());
+                    }
+                }
             }
         }
 
@@ -535,17 +544,7 @@ namespace atomic_dex
                                 idx += 1;
                             }
 
-                            for (auto&& t: to_remove)
-                            {
-                                auto& mm2 = this->m_system_manager.get_system<mm2_service>();
-                                //! erase
-                                tickers.erase(std::remove(tickers.begin(), tickers.end(), t), tickers.end());
-                                if (mm2.get_coin_info(t).is_custom_coin)
-                                {
-                                    spdlog::info("Couldn't enable the custom coin {}, removing it from both cfg", t);
-                                    mm2.remove_custom_coin(t);
-                                }
-                            }
+                            for (auto&& t: to_remove) { tickers.erase(std::remove(tickers.begin(), tickers.end(), t), tickers.end()); }
 
                             batch_balance_and_tx(false, tickers, true);
                             //! At this point, task is finished, let's refresh.
