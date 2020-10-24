@@ -504,6 +504,7 @@ namespace atomic_dex
                 nlohmann::json   j = ::mm2::api::template_request("enable");
                 ::mm2::api::to_json(j, request);
                 batch_array.push_back(j);
+                //! If the coin is a custom coin and not present, then we have a config missmatch, we re-add it to the mm2 coins cfg but this need a app restart.
                 if (coin_info.is_custom_coin && !this->is_this_ticker_present_in_raw_cfg(coin_info.ticker))
                 {
                     nlohmann::json empty = "{}"_json;
