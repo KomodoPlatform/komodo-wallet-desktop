@@ -48,7 +48,7 @@ namespace atomic_dex
         m_dispatcher.sink<balance_update_notification>().connect<&notification_manager::on_balance_update_notification>(*this);
         m_dispatcher.sink<enabling_coin_failed>().connect<&notification_manager::on_enabling_coin_failed>(*this);
         m_dispatcher.sink<endpoint_nonreacheable>().connect<&notification_manager::on_endpoint_nonreacheable>(*this);
-        m_dispatcher.sink<missmatch_configuration_custom_coin>().connect<&notification_manager::on_missmatch_custom_coins_configuration>(*this);
+        m_dispatcher.sink<mismatch_configuration_custom_coin>().connect<&notification_manager::on_mismatch_custom_coins_configuration>(*this);
     }
 
     void
@@ -58,7 +58,7 @@ namespace atomic_dex
         m_dispatcher.sink<balance_update_notification>().disconnect<&notification_manager::on_balance_update_notification>(*this);
         m_dispatcher.sink<enabling_coin_failed>().disconnect<&notification_manager::on_enabling_coin_failed>(*this);
         m_dispatcher.sink<endpoint_nonreacheable>().disconnect<&notification_manager::on_endpoint_nonreacheable>(*this);
-        m_dispatcher.sink<missmatch_configuration_custom_coin>().disconnect<&notification_manager::on_missmatch_custom_coins_configuration>(*this);
+        m_dispatcher.sink<mismatch_configuration_custom_coin>().disconnect<&notification_manager::on_mismatch_custom_coins_configuration>(*this);
     }
 
     void
@@ -85,11 +85,11 @@ namespace atomic_dex
         emit    endpointNonReacheableStatus(QString::fromStdString(evt.base_uri), human_date, timestamp);
     }
     void
-    notification_manager::on_missmatch_custom_coins_configuration(const missmatch_configuration_custom_coin& evt)
+    notification_manager::on_mismatch_custom_coins_configuration(const mismatch_configuration_custom_coin& evt)
     {
         using namespace std::chrono;
         qint64  timestamp  = duration_cast<seconds>(system_clock::now().time_since_epoch()).count();
         QString human_date = QString::fromStdString(to_human_date<std::chrono::seconds>(timestamp, "%e %b %Y, %H:%M"));
-        emit    missmatchCustomCoinConfiguration(QString::fromStdString(evt.coin), human_date, timestamp);
+        emit    mismatchCustomCoinConfiguration(QString::fromStdString(evt.coin), human_date, timestamp);
     }
 } // namespace atomic_dex

@@ -504,7 +504,7 @@ namespace atomic_dex
                 nlohmann::json   j = ::mm2::api::template_request("enable");
                 ::mm2::api::to_json(j, request);
                 batch_array.push_back(j);
-                //! If the coin is a custom coin and not present, then we have a config missmatch, we re-add it to the mm2 coins cfg but this need a app restart.
+                //! If the coin is a custom coin and not present, then we have a config mismatch, we re-add it to the mm2 coins cfg but this need a app restart.
                 if (coin_info.is_custom_coin && !this->is_this_ticker_present_in_raw_cfg(coin_info.ticker))
                 {
                     nlohmann::json empty = "{}"_json;
@@ -512,7 +512,7 @@ namespace atomic_dex
                     {
                         spdlog::warn("Configuration mismatch between mm2 cfg and coin cfg for ticker {}, readjusting...", coin_info.ticker);
                         this->add_new_coin(empty, coin_info.custom_backup.value());
-                        this->dispatcher_.trigger<missmatch_configuration_custom_coin>(coin_info.ticker);
+                        this->dispatcher_.trigger<mismatch_configuration_custom_coin>(coin_info.ticker);
                     }
                 }
             }

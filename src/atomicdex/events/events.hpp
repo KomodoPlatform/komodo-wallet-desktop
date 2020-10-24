@@ -39,7 +39,7 @@ namespace atomic_dex
         std::string reason;
     };
 
-    struct missmatch_configuration_custom_coin
+    struct mismatch_configuration_custom_coin
     {
         std::string coin;
     };
