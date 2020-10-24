@@ -161,7 +161,11 @@ QtObject {
 
     function filterCoins(list, text, type) {
         return list.filter(c => (c.ticker.indexOf(text.toUpperCase()) !== -1 || c.name.toUpperCase().indexOf(text.toUpperCase()) !== -1) &&
-                           (type === undefined || c.type === type))
+                           (type === undefined || c.type === type)).sort((a, b) => {
+                               if(a.ticker < b.ticker) return -1
+                               if(a.ticker > b.ticker) return 1
+                               return 0
+                           })
     }
 
     function validFiatRates(data, fiat) {
