@@ -213,6 +213,7 @@ Item {
                     selectFolder: false
 
                     defaultSuffix: "csv"
+                    nameFilters: [ "CSV files (*.csv)", "All files (*)" ]
 
                     onAccepted: {
                         const path = fileUrl.toString()
