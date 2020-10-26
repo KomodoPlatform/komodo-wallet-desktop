@@ -125,8 +125,8 @@ jobs:
       - name: vcpkg deps (MacOS)
         if: runner.os == 'macOS'
         env: # Or as an environment variable
-          CXX: clang++
-          CC: clang
+          CXX: /usr/local/opt/llvm@9/bin/clang++
+          CC: /usr/local/opt/llvm@9/bin/clang
         uses: KomodoPlatform/run-vcpkg@v3
         with:
           vcpkgArguments: '@${{ github.workspace }}/.github/workflows/osx_response_file.txt'
