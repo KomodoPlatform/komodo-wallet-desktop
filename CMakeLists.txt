@@ -4,6 +4,8 @@ project(atomicdex-desktop LANGUAGES CXX VERSION 0.3.0)
 
 
 option(DISABLE_GEOBLOCKING "Enable to disable geoblocking (for dev purpose)" OFF)
+set(FETCHCONTENT_QUIET OFF CACHE BOOL "Override option" FORCE)
+
 
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
