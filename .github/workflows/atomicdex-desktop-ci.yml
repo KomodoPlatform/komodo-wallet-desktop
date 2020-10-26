@@ -125,8 +125,8 @@ jobs:
       - name: vcpkg deps (MacOS)
         if: runner.os == 'macOS'
         env: # Or as an environment variable
-          CXX: /usr/local/opt/llvm@9/bin/clang++
-          CC: /usr/local/opt/llvm@9/bin/clang
+          CXX: clang++
+          CC: clang
         uses: KomodoPlatform/run-vcpkg@v3
         with:
           vcpkgArguments: '@${{ github.workspace }}/.github/workflows/osx_response_file.txt'
@@ -165,7 +165,7 @@ jobs:
           export QT_ROOT=${{ github.workspace }}/Qt/${{ matrix.qt }}
           cd ci_tools_atomic_dex
           nimble build -y
-          ./ci_tools_atomic_dex bundle release --osx_sdk=$HOME/sdk/MacOSX10.13.sdk --compiler=/usr/local/opt/llvm@9/bin/clang++
+          ./ci_tools_atomic_dex bundle release --osx_sdk=$HOME/sdk/MacOSX10.14.sdk --compiler=clang++
           ls bundle-Release/atomicdex-desktop.dmg
 
       - name: Build AtomicDEX (Windows)

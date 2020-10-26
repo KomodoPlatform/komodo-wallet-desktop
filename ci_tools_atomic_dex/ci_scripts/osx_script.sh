@@ -13,7 +13,10 @@ brew install autoconf \
             gcc \
             gnu-sed \
             llvm@9
-export CC=/usr/local/opt/llvm@9/bin/clang
+export CC=clang
+export CXX=clang++
+export MACOSX_DEPLOYMENT_TARGET=10.14
+
 # get curl
 git clone https://github.com/curl/curl.git
 cd curl
