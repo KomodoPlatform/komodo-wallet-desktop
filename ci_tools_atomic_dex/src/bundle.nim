@@ -8,30 +8,32 @@ proc fix_osx_libraries(atomic_app_path: string) =
     let 
         framework_path = atomic_app_path.joinPath("Contents/Frameworks")
         orig_path = os.getCurrentDir()
+        cmd_fix = "install_name_tool -add_rpath @executable_path/../../../../../../Frameworks " & framework_path.joinPath("QtWebEngineCore.framework/Helpers/QtWebEngineProcess.app/Contents/MacOS/QtWebEngineProcess")
     echo "CWD: " & orig_path
     echo "Framework path: " & framework_path 
     os.setCurrentDir(framework_path)
     echo "CWD: " & framework_path
-    let libs = [(loname: "libboost_chrono-mt.dylib", lname: "libboost_locale-mt.dylib"),
-                (loname: "libboost_thread-mt.dylib", lname: "libboost_locale-mt.dylib"), 
-                (loname: "libboost_thread-mt.dylib", lname: "libboost_log-mt.dylib"),
-                (loname: "libboost_regex-mt.dylib", lname: "libboost_log-mt.dylib"),
-                (loname: "libboost_filesystem-mt.dylib", lname: "libboost_log-mt.dylib"),
-                (loname: "libboost_atomic-mt.dylib", lname: "libboost_log-mt.dylib"),
-                (loname: "libboost_chrono-mt.dylib", lname: "libboost_log-mt.dylib"),
-                (loname: "libboost_date_time-mt.dylib", lname: "libboost_log-mt.dylib"),
-                (loname: "libicuuc.64.dylib", lname: "libicui18n.64.dylib"),
-                (loname: "libicudata.64.dylib", lname: "libicui18n.64.dylib"),
-                (loname: "libicudata.64.dylib", lname: "libicuuc.64.dylib")
-               ]
-    for idx, info in libs:
-        let cmd_fix = "install_name_tool -change @loader_path/" & info.loname & " @executable_path/../Frameworks/" & info.loname & " " & info.lname
-        echo "Fixing cmd: " & cmd_fix
-        discard osproc.execCmd(cmd_fix)
-    discard osproc.execCmd("install_name_tool -change @executable_path/../Frameworks/libboost_filesystem-mt.dylib @executable_path/../Frameworks/libboost_filesystem.dylib libboost_log-mt.dylib")
-    discard osproc.execCmd("install_name_tool -change @loader_path/libboost_system-mt.dylib @executable_path/../Frameworks/libboost_system.dylib libboost_locale-mt.dylib")
-    os.setCurrentDir(orig_path)
-    echo "CWD: " & os.getCurrentDir()
+    discard osproc.execCmd(cmd_fix)
+    #let libs = [(loname: "libboost_chrono-mt.dylib", lname: "libboost_locale-mt.dylib"),
+    #            (loname: "libboost_thread-mt.dylib", lname: "libboost_locale-mt.dylib"), 
+    #            (loname: "libboost_thread-mt.dylib", lname: "libboost_log-mt.dylib"),
+    #            (loname: "libboost_regex-mt.dylib", lname: "libboost_log-mt.dylib"),
+    #            (loname: "libboost_filesystem-mt.dylib", lname: "libboost_log-mt.dylib"),
+    #            (loname: "libboost_atomic-mt.dylib", lname: "libboost_log-mt.dylib"),
+    #            (loname: "libboost_chrono-mt.dylib", lname: "libboost_log-mt.dylib"),
+    #            (loname: "libboost_date_time-mt.dylib", lname: "libboost_log-mt.dylib"),
+    #            (loname: "libicuuc.64.dylib", lname: "libicui18n.64.dylib"),
+    #            (loname: "libicudata.64.dylib", lname: "libicui18n.64.dylib"),
+    #            (loname: "libicudata.64.dylib", lname: "libicuuc.64.dylib")
+    #           ]
+    #for idx, info in libs:
+    #    let cmd_fix = "install_name_tool -change @loader_path/" & info.loname & " @executable_path/../Frameworks/" & info.loname & " " & info.lname
+    #    echo "Fixing cmd: " & cmd_fix
+    #    discard osproc.execCmd(cmd_fix)
+    #discard osproc.execCmd("install_name_tool -change @executable_path/../Frameworks/libboost_filesystem-mt.dylib @executable_path/../Frameworks/libboost_filesystem.dylib libboost_log-mt.dylib")
+    #discard osproc.execCmd("install_name_tool -change @loader_path/libboost_system-mt.dylib @executable_path/../Frameworks/libboost_system.dylib libboost_locale-mt.dylib")
+    #os.setCurrentDir(orig_path)
+    #echo "CWD: " & os.getCurrentDir()
 
 
 proc bundle*(build_type: string, osx_sdk_path: string, compiler_path: string) =
@@ -47,7 +49,7 @@ proc bundle*(build_type: string, osx_sdk_path: string, compiler_path: string) =
             atomicdex_desktop_app_dir = os.getCurrentDir().joinPath("bin")
             atomicdex_desktop_app_path = atomicdex_desktop_app_dir.joinPath(app_name & ".app")
             atomicdex_desktop_qml_dir = os.getCurrentDir().parentDir().parentDir().joinPath("atomic_defi_design/qml")
-            bundling_cmd = qt_mac_deploy_path & " " & atomicdex_desktop_app_path & " -qmldir=" & atomicdex_desktop_qml_dir
+            bundling_cmd = qt_macdeploy_path & " " & atomicdex_desktop_app_path & " -qmldir=" & atomicdex_desktop_qml_dir
             bundle_path = os.getCurrentDir().parentDir().joinPath("bundle-" & build_type)
             dmg_packager_path = os.getCurrentDir().parentDir().joinPath("dmg-packager").joinPath("package.sh")
             dmg_packaging_cmd = dmg_packager_path & " \"" & dmg_name & "\" " & app_name & " " & atomicdex_desktop_app_dir & "/"
