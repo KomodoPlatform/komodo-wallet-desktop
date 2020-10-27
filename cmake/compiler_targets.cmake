@@ -53,58 +53,8 @@ target_compile_options(antara_optimize_settings INTERFACE
         $<$<AND:$<CONFIG:Release>,$<CXX_COMPILER_ID:Clang>,$<PLATFORM_ID:Windows>,$<BOOL:${ClangCL}>>:/Ox -DNDEBUG>
         )
 
-
-if (NOT "${CMAKE_CXX_COMPILER_ID}" STREQUAL "MSVC")
-    if (NOT APPLE)
-        find_package(OpenMP)
-        if (OpenMP_CXX_FOUND)
-            message(STATUS "OpenMP found, adding it to targets")
-            target_link_libraries(antara_optimize_settings INTERFACE OpenMP::OpenMP_CXX)
-        endif ()
-    else ()
-        find_library(OpenMP_LIBRARY
-                NAMES omp
-                )
-
-        find_path(OpenMP_INCLUDE_DIR
-                omp.h
-                )
-
-        mark_as_advanced(OpenMP_LIBRARY OpenMP_INCLUDE_DIR)
-
-        include(FindPackageHandleStandardArgs)
-        find_package_handle_standard_args(OpenMP DEFAULT_MSG
-                OpenMP_LIBRARY OpenMP_INCLUDE_DIR)
-
-        if (OpenMP_FOUND)
-            set(OpenMP_LIBRARIES ${OpenMP_LIBRARY})
-            set(OpenMP_INCLUDE_DIRS ${OpenMP_INCLUDE_DIR})
-            set(OpenMP_COMPILE_OPTIONS -Xpreprocessor -fopenmp)
-
-            add_library(OpenMP::OpenMP SHARED IMPORTED)
-            set_target_properties(OpenMP::OpenMP PROPERTIES
-                    IMPORTED_LOCATION ${OpenMP_LIBRARIES}
-                    INTERFACE_INCLUDE_DIRECTORIES "${OpenMP_INCLUDE_DIRS}"
-                    INTERFACE_COMPILE_OPTIONS "${OpenMP_COMPILE_OPTIONS}"
-                    )
-            target_link_libraries(antara_optimize_settings INTERFACE OpenMP::OpenMP)
-        endif ()
-    endif ()
-endif ()
-
-## Cross filesystem
-add_library(antara_cross_filesystem INTERFACE)
-add_library(antara::cross_filesystem ALIAS antara_cross_filesystem)
-
-target_link_libraries(antara_cross_filesystem INTERFACE
-        $<$<AND:$<PLATFORM_ID:Linux>,$<VERSION_LESS:$<CXX_COMPILER_VERSION>,9.0>>:stdc++fs>
-        #$<$<AND:$<PLATFORM_ID:Darwin>,$<VERSION_LESS:$<CXX_COMPILER_VERSION>,9.0>>:c++fs>
-        )
-target_compile_options(antara_cross_filesystem INTERFACE
-        $<$<AND:$<PLATFORM_ID:Darwin>,$<VERSION_GREATER:$<CXX_COMPILER_VERSION>,8.0>>:-mmacosx-version-min=10.14>)
-
 add_library(antara_default_settings INTERFACE)
 set(THREADS_PREFER_PTHREAD_FLAG ON)
 find_package(Threads REQUIRED)
-target_link_libraries(antara_default_settings INTERFACE antara::error_settings antara::optimize_settings antara::defaults_features antara::cross_filesystem Threads::Threads)
+target_link_libraries(antara_default_settings INTERFACE antara::error_settings antara::optimize_settings antara::defaults_features Threads::Threads)
 add_library(antara::default_settings ALIAS antara_default_settings)
