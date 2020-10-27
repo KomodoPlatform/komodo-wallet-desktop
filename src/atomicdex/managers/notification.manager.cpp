@@ -38,7 +38,10 @@ namespace atomic_dex
     void
     notification_manager::on_swap_status_notification(const atomic_dex::swap_status_notification& evt)
     {
-        emit updateSwapStatus(evt.prev_status, evt.new_status, evt.uuid, evt.base, evt.rel, evt.human_date);
+        using namespace std::chrono;
+        qint64  timestamp  = duration_cast<seconds>(system_clock::now().time_since_epoch()).count();
+        QString human_date = QString::fromStdString(to_human_date<std::chrono::seconds>(timestamp, "%e %b %Y, %H:%M"));
+        emit updateSwapStatus(evt.prev_status, evt.new_status, evt.uuid, evt.base, evt.rel, human_date);
     }
 
     void
