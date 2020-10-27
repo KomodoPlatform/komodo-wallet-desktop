@@ -45,13 +45,13 @@ endif ()
 ##! We fetch our dependencies
 if (APPLE)
     FetchContent_Declare(mm2
-            URL http://195.201.0.6/libp2p-swap-messages-rebroadcast/mm2-f6f2b2e9a-Darwin-Release.zip)
+            URL http://195.201.0.6/libp2p-swap-messages-rebroadcast/mm2-80400e212-Darwin-Release.zip)
 elseif (UNIX AND NOT APPLE)
     FetchContent_Declare(mm2
-            URL http://195.201.0.6/libp2p-swap-messages-rebroadcast/mm2-f6f2b2e9a-Linux-Release.zip)
+            URL http://195.201.0.6/libp2p-swap-messages-rebroadcast/mm2-80400e212-Linux-Release.zip)
 else ()
     FetchContent_Declare(mm2
-            URL http://195.201.0.6/libp2p-swap-messages-rebroadcast/mm2-f6f2b2e9a-Windows_NT-Release.zip)
+            URL http://195.201.0.6/libp2p-swap-messages-rebroadcast/mm2-80400e212-Windows_NT-Release.zip)
 endif ()
 
 FetchContent_Declare(qmaterial URL https://github.com/KomodoPlatform/Qaterial/archive/master.zip)
