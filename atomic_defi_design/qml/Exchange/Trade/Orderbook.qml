@@ -1,6 +1,6 @@
-import QtQuick 2.14
-import QtQuick.Layouts 1.12
-import QtQuick.Controls 2.12
+import QtQuick 2.15
+import QtQuick.Layouts 1.15
+import QtQuick.Controls 2.15
 
 import "../../Components"
 import "../../Constants"
@@ -14,7 +14,7 @@ InnerBackground {
             anchors.top: parent.top
             anchors.bottom: parent.bottom
             anchors.right: separator.left
-            model: API.get().trading_pg.orderbook.bids.proxy_mdl
+            model: API.app.trading_pg.orderbook.bids.proxy_mdl
         }
 
         VerticalLine {
@@ -31,7 +31,7 @@ InnerBackground {
             anchors.left: separator.right
 
             is_asks: true
-            model: API.get().trading_pg.orderbook.asks.proxy_mdl
+            model: API.app.trading_pg.orderbook.asks.proxy_mdl
         }
     }
 }

@@ -1,6 +1,6 @@
-import QtQuick 2.14
-import QtQuick.Layouts 1.12
-import QtQuick.Controls 2.12
+import QtQuick 2.15
+import QtQuick.Layouts 1.15
+import QtQuick.Controls 2.15
 
 import QtGraphicalEffects 1.0
 import "../Components"
@@ -11,13 +11,10 @@ Item {
     id: root
 
     function reset() {
-        input_coin_filter_text = ''
         resetted()
     }
 
     signal resetted()
-
-    property string input_coin_filter_text
 
     Layout.alignment: Qt.AlignLeft
     width: 175
@@ -54,8 +51,6 @@ Item {
                 width: list_bg.width
                 anchors.horizontalCenter: list_bg.horizontalCenter
 
-                radius: 100
-
                 content: RowLayout {
                     id: search_row
 
@@ -77,7 +72,7 @@ Item {
 
                             visible: false
                         }
-                        ColorOverlay {
+                        DefaultColorOverlay {
                             id: search_button_overlay
 
                             anchors.fill: search_button
@@ -94,16 +89,18 @@ Item {
                             target: root
 
                             function onResetted() {
-                                input_coin_filter.text = ""
+                                if(input_coin_filter.text === "") resetCoinFilter()
+                                else input_coin_filter.text = ""
+
+                                //portfolio_coins.sort_by_name(true)
                             }
                         }
 
-                        onTextChanged: input_coin_filter_text = text
+                        onTextChanged: portfolio_coins.setFilterFixedString(text)
                         font.pixelSize: Style.textSizeSmall3
 
                         background: null
 
-                        selectByMouse: true
                         Layout.fillWidth: true
                     }
                 }
@@ -130,42 +127,41 @@ Item {
                     id: list
                     implicitHeight: Math.min(contentItem.childrenRect.height, coins_bar.height - 250)
 
-                    model: General.filterCoins(API.get().enabled_coins, input_coin_filter_text)
+                    model: portfolio_coins
 
                     delegate: GradientRectangle {
                         width: list_bg.width - list_bg.border.width*2 - 2
                         height: 44
                         radius: Style.rectangleCornerRadius
 
-                        start_color: API.get().current_coin_info.ticker === model.modelData.ticker ? Style.colorCoinListHighlightGradient1 : mouse_area.containsMouse ? Style.colorCoinListHighlightGradient1 : "transparent"
-                        end_color: API.get().current_coin_info.ticker === model.modelData.ticker ? Style.colorCoinListHighlightGradient2 : mouse_area.containsMouse ? Style.colorWhite8 : "transparent"
+                        start_color: Style.applyOpacity(Style.colorCoinListHighlightGradient)
+                        end_color: api_wallet_page.ticker === ticker ? Style.colorCoinListHighlightGradient : mouse_area.containsMouse ? Style.colorWhite8 : start_color
 
                         // Click area
-                        MouseArea {
+                        DefaultMouseArea {
                             id: mouse_area
                             anchors.fill: parent
                             hoverEnabled: true
 
                             acceptedButtons: Qt.LeftButton | Qt.RightButton
                             onClicked: {
+                                if(!can_change_ticker) return
+
                                 if (mouse.button === Qt.RightButton) context_menu.popup()
-                                else API.get().current_coin_info.ticker = model.modelData.ticker
+                                else api_wallet_page.ticker = ticker
 
                                 main.send_modal.reset()
                             }
                             onPressAndHold: {
+                                if(!can_change_ticker) return
+
                                 if (mouse.source === Qt.MouseEventNotSynthesized) context_menu.popup()
                             }
                         }
 
                         // Right click menu
-                        Menu {
+                        CoinMenu {
                             id: context_menu
-                            Action {
-                                text: API.get().settings_pg.empty_string + (qsTr("Disable %1", "TICKER").arg(model.modelData.ticker))
-                                onTriggered: API.get().disable_coins([model.modelData.ticker])
-                                enabled: General.canDisable(model.modelData.ticker)
-                            }
                         }
 
                         readonly property double side_margin: 16
@@ -176,7 +172,7 @@ Item {
                             anchors.left: parent.left
                             anchors.leftMargin: side_margin - scrollbar_margin
 
-                            source: General.coinIcon(model.modelData.ticker)
+                            source: General.coinIcon(ticker)
                             width: Style.textSizeSmall4*2
                             anchors.verticalCenter: parent.verticalCenter
                         }
@@ -189,16 +185,18 @@ Item {
                             // Ticker
                             DefaultText {
                                 Layout.alignment: Qt.AlignRight
-                                text_value: API.get().settings_pg.empty_string + (model.modelData.ticker)
+                                text_value: ticker
                                 font.pixelSize: text.length > 6 ? Style.textSizeSmall2 : Style.textSizeSmall4
                             }
 
-                            ToolTip {
+                            DefaultTooltip {
                                 visible: mouse_area.containsMouse
-                                background: FloatingBackground { auto_set_size: false }
-                                contentItem:  DefaultText {
-                                    text_value: API.get().settings_pg.empty_string + (model.modelData.name.replace(" (TESTCOIN)", ""))
-                                    font.pixelSize: Style.textSizeSmall4
+
+                                contentItem: ColumnLayout {
+                                    DefaultText {
+                                        text_value: name.replace(" (TESTCOIN)", "")
+                                        font.pixelSize: Style.textSizeSmall4
+                                    }
                                 }
                             }
                         }

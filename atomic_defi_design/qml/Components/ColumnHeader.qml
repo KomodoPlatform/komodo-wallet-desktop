@@ -1,9 +1,10 @@
-import QtQuick 2.14
-import QtQuick.Layouts 1.12
-import QtQuick.Controls 2.12
+import QtQuick 2.15
+import QtQuick.Layouts 1.15
+import QtQuick.Controls 2.15
 
 import QtGraphicalEffects 1.0
 import "../Constants"
+import "../Components"
 
 Item {
     property int sort_type
@@ -15,7 +16,8 @@ Item {
     height: title.height
 
     // Click area
-    MouseArea {
+    DefaultMouseArea {
+        id: click_area
         anchors.fill: parent
         hoverEnabled: true
         onClicked: {
@@ -27,22 +29,16 @@ Item {
                 ascending = false
             }
 
-            // Apply the sort
-            switch(current_sort) {
-                case sort_by_name: API.get().portfolio_pg.portfolio_mdl.portfolio_proxy_mdl.sort_by_name(ascending); break
-                case sort_by_value: API.get().portfolio_pg.portfolio_mdl.portfolio_proxy_mdl.sort_by_currency_balance(ascending); break
-                case sort_by_price: API.get().portfolio_pg.portfolio_mdl.portfolio_proxy_mdl.sort_by_currency_unit(ascending); break
-                case sort_by_trend:
-                case sort_by_change: API.get().portfolio_pg.portfolio_mdl.portfolio_proxy_mdl.sort_by_change_last24h(ascending); break
-            }
+            applyCurrentSort()
         }
     }
 
     DefaultText {
         id: title
-        color: Style.colorWhite1
         anchors.left: icon_at_left ? parent.left : undefined
         anchors.right: icon_at_left ? undefined : parent.right
+
+        color: Qt.lighter(Style.colorWhite4, click_area.containsMouse ? Style.hoverLightMultiplier : 1.0)
     }
 
 
@@ -63,7 +59,7 @@ Item {
         visible: false
     }
 
-    ColorOverlay {
+    DefaultColorOverlay {
         visible: current_sort === sort_type
         anchors.fill: arrow_icon
         source: arrow_icon

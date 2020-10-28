@@ -1,6 +1,6 @@
-import QtQuick 2.14
-import QtQuick.Layouts 1.12
-import QtQuick.Controls 2.12
+import QtQuick 2.15
+import QtQuick.Layouts 1.15
+import QtQuick.Controls 2.15
 
 import QtGraphicalEffects 1.0
 import "../Components"
@@ -16,10 +16,10 @@ DefaultText {
     id: txt
     font.pixelSize: Style.textSizeMid2
     font.family: Style.font_family
-    font.weight: highlight ? Font.Medium : Font.Light
+    font.weight: Font.Normal
     color: highlight ? Style.colorWhite1 : mouse_area.containsMouse ? Style.colorWhite4 : Style.colorWhite5
 
-    MouseArea {
+    DefaultMouseArea {
         id: mouse_area
         hoverEnabled: true
         width: parent.width

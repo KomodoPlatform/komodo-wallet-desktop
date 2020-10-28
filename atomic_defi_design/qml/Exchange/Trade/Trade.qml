@@ -1,6 +1,6 @@
-import QtQuick 2.14
-import QtQuick.Layouts 1.12
-import QtQuick.Controls 2.12
+import QtQuick 2.15
+import QtQuick.Layouts 1.15
+import QtQuick.Controls 2.15
 
 import "../../Components"
 import "../../Constants"
@@ -11,7 +11,15 @@ Item {
 
     property string action_result
 
-    readonly property bool block_everything: chart.is_fetching || swap_cooldown.running
+    readonly property bool block_everything: swap_cooldown.running || fetching_multi_ticker_fees_busy
+
+    readonly property bool fetching_multi_ticker_fees_busy: API.app.trading_pg.fetching_multi_ticker_fees_busy
+    readonly property alias multi_order_enabled: multi_order_switch.checked
+
+    signal prepareMultiOrder()
+    property bool multi_order_values_are_valid: true
+
+
 
     property bool sell_mode: true
     property string left_ticker: selector_left.ticker
@@ -52,12 +60,13 @@ Item {
         form_base.reset()
         form_rel.reset()
         resetTradeInfo()
+        multi_order_switch.checked = false
     }
 
     // Price
     property string cex_price
     function updateCexPrice(base, rel) {
-        cex_price = API.get().get_cex_rates(base, rel)
+        cex_price = API.app.get_cex_rates(base, rel)
     }
 
     readonly property var empty_order: ({ "is_asks":false,"price":"0","price_denom":"0","price_numer":"0","volume":"0"})
@@ -142,7 +151,7 @@ Item {
 
     function getTradeInfo(base, rel, amount, set_as_current=true) {
         if(inCurrentPage()) {
-            let info = API.get().get_trade_infos(base, rel, amount)
+            let info = API.app.get_trade_infos(base, rel, amount)
 
             console.log("Getting Trade info with parameters: ", base, rel, amount, " -  Result: ", JSON.stringify(info))
 
@@ -179,24 +188,27 @@ Item {
 
     // Trade
     function open(ticker) {
-        // TODO: setPair(true, ticker)
+        setPair(true, ticker)
         onOpened()
     }
 
     property bool initialized_orderbook_pair: false
+    readonly property string default_base: "KMD"
+    readonly property string default_rel: "BTC"
     function onOpened() {
         if(!initialized_orderbook_pair) {
             initialized_orderbook_pair = true
-            API.get().trading_pg.set_current_orderbook("KMD", "BTC")
+            API.app.trading_pg.set_current_orderbook(default_base, default_rel)
         }
 
         reset(true)
         setPair(true)
     }
 
-    function setPair(is_left_side, changed_ticker) {
-        swap_cooldown.restart()
 
+    signal pairChanged(string base, string rel)
+
+    function setPair(is_left_side, changed_ticker) {
         let base = left_ticker
         let rel = right_ticker
 
@@ -204,12 +216,16 @@ Item {
         // Set the new one if it's a change
         if(changed_ticker) {
             if(is_left_side) {
+                if(base === changed_ticker) return
+
                 // Check if it's a swap
                 if(base !== changed_ticker && rel === changed_ticker)
                     is_swap = true
                 else base = changed_ticker
             }
             else {
+                if(rel === changed_ticker) return
+
                 // Check if it's a swap
                 if(rel !== changed_ticker && base === changed_ticker)
                     is_swap = true
@@ -217,21 +233,24 @@ Item {
             }
         }
 
+        swap_cooldown.restart()
+
         if(is_swap) {
             console.log("Swapping current pair, it was: ", base, rel)
-            API.get().trading_pg.swap_market_pair()
+            API.app.trading_pg.swap_market_pair()
             const tmp = base
             base = rel
             rel = tmp
         }
         else {
             console.log("Setting current orderbook with params: ", base, rel)
-            API.get().trading_pg.set_current_orderbook(base, rel)
+            API.app.trading_pg.set_current_orderbook(base, rel)
         }
 
         reset(true, is_left_side)
         updateTradeInfo()
         updateCexPrice(base, rel)
+        pairChanged(base, rel)
         exchange.onTradeTickerChanged(base)
     }
 
@@ -271,29 +290,40 @@ Item {
         const price_numer = preffered_order.price_numer
         const price = getCurrentPrice()
         const volume = current_form.field.text
-        console.log("QML place order: max balance:", current_form.getMaxVolume())
+        console.log("QML place order: max_taker_volume:", current_form.getMaxVolume())
         console.log("QML place order: params:", base, " <-> ", rel, "  /  price:", price, "  /  volume:", volume, "  /  is_created_order:", is_created_order, "  /  price_denom:", price_denom, "  /  price_numer:", price_numer,
                     "  /  nota:", nota, "  /  confs:", confs)
         console.log("QML place order: trade info:", JSON.stringify(curr_trade_info))
 
-        let result
-
         if(sell_mode)
-            result = API.get().trading_pg.place_sell_order(base, rel, price, volume, is_created_order, price_denom, price_numer, nota, confs)
+            API.app.trading_pg.place_sell_order(base, rel, price, volume, is_created_order, price_denom, price_numer, nota, confs)
         else
-            result = API.get().trading_pg.place_buy_order(base, rel, price, volume, is_created_order, price_denom, price_numer, nota, confs)
+            API.app.trading_pg.place_buy_order(base, rel, price, volume, is_created_order, price_denom, price_numer, nota, confs)
+    }
 
-        if(result === "") {
-            action_result = "success"
+    readonly property bool buy_sell_rpc_busy: API.app.trading_pg.buy_sell_rpc_busy
+    readonly property var buy_sell_last_rpc_data: API.app.trading_pg.buy_sell_last_rpc_data
 
-            toast.show(qsTr("Placed the order"), General.time_toast_basic_info, result, false)
+    onBuy_sell_last_rpc_dataChanged: {
+        const response = General.clone(buy_sell_last_rpc_data)
 
-            onOrderSuccess()
-        }
-        else {
+        if(response.error_code) {
+            confirm_trade_modal.close()
+
             action_result = "error"
 
-            toast.show(qsTr("Failed to place the order"), General.time_toast_important_error, result)
+            toast.show(qsTr("Failed to place the order"), General.time_toast_important_error, response.error_message)
+
+            return
+        }
+        else if(response.result && response.result.uuid) { // Make sure there is information
+            confirm_trade_modal.close()
+
+            action_result = "success"
+
+            toast.show(qsTr("Placed the order"), General.time_toast_basic_info, General.prettifyJSON(response.result), false)
+
+            onOrderSuccess()
         }
     }
 
@@ -326,9 +356,10 @@ Item {
                     anchors.bottom: selectors.top
                     anchors.bottomMargin: layout_margin * 2
 
-                    CandleStickChart {
+                    content: CandleStickChart {
                         id: chart
-                        anchors.fill: parent
+                        width: graph_bg.width
+                        height: graph_bg.height
                     }
                 }
 
@@ -336,28 +367,34 @@ Item {
                 // Ticker Selectors
                 RowLayout {
                     id: selectors
-                    anchors.horizontalCenter: parent.horizontalCenter
-                    anchors.bottom: orderbook.top
+                    anchors.left: parent.left
+                    anchors.right: parent.right
+                    anchors.bottom: orderbook_area.top
                     anchors.bottomMargin: layout_margin
-                    spacing: 40
+                    spacing: 20
 
                     TickerSelector {
                         id: selector_left
                         left_side: true
-                        ticker_list: API.get().trading_pg.market_pairs_mdl.left_selection_box
-                        ticker: API.get().trading_pg.market_pairs_mdl.left_selected_coin
+                        ticker_list: API.app.trading_pg.market_pairs_mdl.left_selection_box
+                        ticker: API.app.trading_pg.market_pairs_mdl.left_selected_coin
                         Layout.alignment: Qt.AlignLeft | Qt.AlignVCenter
+                        Layout.fillWidth: true
                     }
 
                     // Swap button
-                    DefaultImage {
-                        source: General.image_path + "trade_icon.svg"
-                        Layout.preferredWidth: 16
-                        Layout.preferredHeight: Layout.preferredWidth
+                    SwapIcon {
                         Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
+                        Layout.preferredHeight: selector_left.height * 0.9
 
-                        MouseArea {
+                        top_arrow_ticker: selector_left.ticker
+                        bottom_arrow_ticker: selector_right.ticker
+                        hovered: swap_button.containsMouse
+
+                        DefaultMouseArea {
+                            id: swap_button
                             anchors.fill: parent
+                            hoverEnabled: true
                             onClicked: {
                                 if(!block_everything)
                                     setPair(true, right_ticker)
@@ -368,19 +405,32 @@ Item {
                     TickerSelector {
                         id: selector_right
                         left_side: false
-                        ticker_list: API.get().trading_pg.market_pairs_mdl.right_selection_box
-                        ticker: API.get().trading_pg.market_pairs_mdl.right_selected_coin
+                        ticker_list: API.app.trading_pg.market_pairs_mdl.right_selection_box
+                        ticker: API.app.trading_pg.market_pairs_mdl.right_selected_coin
                         Layout.alignment: Qt.AlignRight | Qt.AlignVCenter
+                        Layout.fillWidth: true
                     }
                 }
 
-                Orderbook {
-                    id: orderbook
+                StackLayout {
+                    id: orderbook_area
                     height: 250
                     anchors.left: parent.left
                     anchors.right: parent.right
                     anchors.bottom: price_line.top
                     anchors.bottomMargin: layout_margin
+
+                    currentIndex: multi_order_enabled ? 1 : 0
+
+                    Orderbook {
+                        Layout.fillWidth: true
+                        Layout.fillHeight: true
+                    }
+
+                    MultiOrder {
+                        Layout.fillWidth: true
+                        Layout.fillHeight: true
+                    }
                 }
 
 
@@ -428,11 +478,91 @@ Item {
                     anchors.right: parent.right
                     anchors.top: parent.top
                 }
+
+                // Multi-Order
+                FloatingBackground {
+                    visible: sell_mode
+
+                    anchors.left: parent.left
+                    anchors.right: parent.right
+                    anchors.top: form_base.visible ? form_base.bottom : form_rel.bottom
+                    anchors.topMargin: layout_margin
+
+                    height: column_layout.height
+
+                    ColumnLayout {
+                        id: column_layout
+
+                        width: parent.width
+
+                        ColumnLayout {
+                            Layout.fillWidth: true
+                            Layout.leftMargin: layout_margin
+                            Layout.rightMargin: layout_margin
+                            Layout.topMargin: layout_margin
+                            Layout.bottomMargin: layout_margin
+                            spacing: layout_margin
+
+                            DefaultSwitch {
+                                id: multi_order_switch
+                                Layout.leftMargin: 15
+                                Layout.rightMargin: Layout.leftMargin
+                                Layout.fillWidth: true
+
+                                text: qsTr("Multi-Order")
+                                enabled: !block_everything
+                                onCheckedChanged: {
+                                    if(checked) {
+                                        getCurrentForm().field.text = getCurrentForm().getVolumeCap()
+                                    }
+                                }
+                            }
+
+                            DefaultText {
+                                id: first_text
+
+                                Layout.leftMargin: multi_order_switch.Layout.leftMargin
+                                Layout.rightMargin: Layout.leftMargin
+                                Layout.fillWidth: true
+
+                                text_value: qsTr("Select additional assets for multi-order creation.")
+                                font.pixelSize: Style.textSizeSmall2
+                            }
+
+                            DefaultText {
+                                Layout.leftMargin: multi_order_switch.Layout.leftMargin
+                                Layout.rightMargin: Layout.leftMargin
+                                Layout.fillWidth: true
+
+                                text_value: qsTr("Same funds will be used until an order matches.")
+                                font.pixelSize: first_text.font.pixelSize
+                            }
+
+                            DefaultButton {
+                                text: qsTr("Submit Trade")
+                                Layout.leftMargin: multi_order_switch.Layout.leftMargin
+                                Layout.rightMargin: Layout.leftMargin
+                                Layout.fillWidth: true
+                                enabled: multi_order_enabled && getCurrentForm().can_submit_trade
+                                onClicked: {
+                                    multi_order_values_are_valid = true
+                                    prepareMultiOrder()
+                                    if(multi_order_values_are_valid)
+                                        confirm_multi_order_trade_modal.open()
+                                }
+                            }
+                        }
+                    }
+                }
             }
         }
 
         ConfirmTradeModal {
             id: confirm_trade_modal
+        }
+
+        ConfirmMultiOrderTradeModal {
+            id: confirm_multi_order_trade_modal
         }
     }
 }

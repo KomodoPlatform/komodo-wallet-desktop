@@ -1,6 +1,6 @@
-import QtQuick 2.14
-import QtQuick.Layouts 1.12
-import QtQuick.Controls 2.12
+import QtQuick 2.15
+import QtQuick.Layouts 1.15
+import QtQuick.Controls 2.15
 
 import "../Components"
 import "../Constants"
@@ -26,7 +26,7 @@ Column {
         id: utxo_list
 
         delegate: DefaultCheckBox {
-            text: API.get().settings_pg.empty_string + "         " + (model.modelData.name + " (" + model.modelData.ticker + ")")
+            text: "         " + model.modelData.name + " (" + model.modelData.ticker + ")"
             leftPadding: indicator.width
             ButtonGroup.group: childGroup
 

@@ -1,11 +1,11 @@
-import QtQuick 2.14
-import QtQuick.Layouts 1.12
-import QtQuick.Controls 2.12
+import QtQuick 2.15
+import QtQuick.Layouts 1.15
+import QtQuick.Controls 2.15
 
 import QtGraphicalEffects 1.0
 import "../Constants"
 
-Rectangle {
+AnimatedRectangle {
     height: 2
     property bool light: false
 

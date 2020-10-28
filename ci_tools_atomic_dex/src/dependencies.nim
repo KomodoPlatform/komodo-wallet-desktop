@@ -11,6 +11,7 @@ let g_packages = [
     (name: "boost-multiprecision", head: false),
     (name: "boost-random", head: false),
     (name: "boost-lockfree", head: false),
+    (name: "boost-stacktrace", head: false),
     (name: "doctest", head: false),
     (name: "fmt", head: false),
     (name: "curl", head: false),
@@ -18,6 +19,8 @@ let g_packages = [
     (name: "range-v3", head: false),
     (name: "libsodium", head: false),
     (name: "spdlog", head: false),
+    (name: "cpprestsdk", head: false),
+    (name: "cpp-taskflow", head: false),
     (name: g_date, head: false)]
 
 proc download_packages*() =

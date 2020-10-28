@@ -1,12 +1,17 @@
-import QtQuick 2.14
-import QtQuick.Layouts 1.12
-import QtQuick.Controls 2.12
+import QtQuick 2.15
+import QtQuick.Layouts 1.15
+import QtQuick.Controls 2.15
 
 import QtGraphicalEffects 1.0
 import "../Components"
 import "../Constants"
 
 Item {
+    id: root
+
+    property bool section_enabled: true
+    property alias mouse_area: mouse_area
+
     property int dashboard_index
     property alias image: img.source
     property alias text_value: txt.text
@@ -24,7 +29,7 @@ Item {
 
     height: Style.sidebarLineHeight
 
-    Switch {
+    DefaultSwitch {
         id: switch_input
         visible: dashboard_index === General.idx_dashboard_light_ui ||
                  dashboard_index === General.idx_dashboard_privacy_mode
@@ -55,12 +60,12 @@ Item {
         color: "#40000000"
         smooth: true
     }
-    ColorOverlay {
+    DefaultColorOverlay {
         id: img_color
         visible: img.source != ""
         anchors.fill: img
         source: img
-        color: txt.font.bold ? Style.colorSidebarIconHighlighted : txt.color
+        color: txt.font.weight === Font.Medium ? Style.colorSidebarIconHighlighted : txt.color
     }
 
     DefaultText {
@@ -69,8 +74,11 @@ Item {
         anchors.leftMargin: 70
         anchors.verticalCenter: parent.verticalCenter
         font.pixelSize: Style.textSizeSmall4
-        font.weight: selected ? Font.Bold : Font.Medium
-        color: selected ? Style.colorWhite1 : mouse_area.containsMouse ? Style.colorThemePassiveLight : Style.colorThemePassive
+        font.weight: selected ? Font.Medium : Font.Normal
+        color: !section_enabled ? Style.colorTextDisabled :
+                selected ? Style.colorWhite1 :
+                mouse_area.containsMouse ? Style.colorThemePassiveLight :
+                                           Style.colorThemePassive
     }
     DropShadow {
         visible: selected
@@ -86,12 +94,14 @@ Item {
         smooth: true
     }
 
-    MouseArea {
+    DefaultMouseArea {
         id: mouse_area
         hoverEnabled: true
         width: parent.width
         height: parent.height
         onClicked: function() {
+            if(!section_enabled) return
+
             if(dashboard_index === General.idx_dashboard_light_ui) {
                 toggleDarkUI()
             }

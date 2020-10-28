@@ -1,16 +1,26 @@
 pragma Singleton
-import QtQuick 2.10
+import QtQuick 2.15
 
 QtObject {
     readonly property int width: 1280
     readonly property int height: 800
     readonly property int minimumWidth: 1280
     readonly property int minimumHeight: 800
+
+    readonly property string os_file_prefix: Qt.platform.os == "windows" ? "file:///" : "file://"
     readonly property string assets_path: Qt.resolvedUrl(".") + "../../assets/"
     readonly property string image_path: assets_path + "images/"
     readonly property string coin_icons_path: image_path + "coins/"
+    readonly property string custom_coin_icons_path: os_file_prefix + API.app.settings_pg.get_custom_coins_icons_path() + "/"
     function coinIcon(ticker) {
-        return ticker === "" ? "" : coin_icons_path + ticker.toLowerCase() + ".png"
+        if(ticker === "") return ""
+
+        const coin_info = API.app.get_coin_info(ticker)
+        return (coin_info.is_custom_coin ? custom_coin_icons_path : coin_icons_path) + ticker.toLowerCase() + ".png"
+    }
+
+    function qaterialIcon(name) {
+        return "qrc:/Qaterial/Icons/" + name + ".svg"
     }
 
     readonly property string cex_icon: 'ⓘ'
@@ -18,19 +28,20 @@ QtObject {
     readonly property string right_arrow_icon: "⮕"
     readonly property string privacy_text: "*****"
 
-    readonly property string version_string: "Pro v" + API.get().get_version()
+    readonly property string version_string: "Desktop v" + API.app.get_version()
 
     property bool privacy_mode: false
 
     readonly property int idx_dashboard_portfolio: 0
     readonly property int idx_dashboard_wallet: 1
     readonly property int idx_dashboard_exchange: 2
-    readonly property int idx_dashboard_news: 3
-    readonly property int idx_dashboard_dapps: 4
-    readonly property int idx_dashboard_settings: 5
-    readonly property int idx_dashboard_support: 6
-    readonly property int idx_dashboard_light_ui: 7
-    readonly property int idx_dashboard_privacy_mode: 8
+    readonly property int idx_dashboard_addressbook: 3
+    readonly property int idx_dashboard_news: 4
+    readonly property int idx_dashboard_dapps: 5
+    readonly property int idx_dashboard_settings: 6
+    readonly property int idx_dashboard_support: 7
+    readonly property int idx_dashboard_light_ui: 8
+    readonly property int idx_dashboard_privacy_mode: 9
 
     readonly property int idx_exchange_trade: 0
     readonly property int idx_exchange_orders: 1
@@ -45,7 +56,7 @@ QtObject {
     readonly property var reg_pass_special: /(?=.*[@#$%{}[\]()\/\\'"`~,;:.<>+\-_=!^&*|?])/
     readonly property var reg_pass_count_low_security: /(?=.{1,})/
     readonly property var reg_pass_count: /(?=.{16,})/
-    
+
     readonly property double time_toast_important_error: 10000
     readonly property double time_toast_basic_info: 3000
 
@@ -125,12 +136,13 @@ QtObject {
     }
 
     function prettifyJSON(j) {
-        return JSON.stringify(JSON.parse(j), null, 4)
+        const j_obj = typeof j === "string" ? JSON.parse(j) : j
+        return JSON.stringify(j_obj, null, 4)
     }
 
-    function viewTxAtExplorer(ticker, id, add_0x=false) {
+    function viewTxAtExplorer(ticker, id, add_0x=true) {
         if(id !== '') {
-            const coin_info = API.get().get_coin_info(ticker)
+            const coin_info = API.app.get_coin_info(ticker)
             const id_prefix = add_0x && coin_info.type === 'ERC-20' ? '0x' : ''
             Qt.openUrlExternally(coin_info.explorer_url + coin_info.tx_uri + id_prefix + id)
         }
@@ -138,7 +150,7 @@ QtObject {
 
     function viewAddressAtExplorer(ticker, address) {
         if(address !== '') {
-            const coin_info = API.get().get_coin_info(ticker)
+            const coin_info = API.app.get_coin_info(ticker)
             Qt.openUrlExternally(coin_info.explorer_url + coin_info.address_uri + address)
         }
     }
@@ -149,7 +161,11 @@ QtObject {
 
     function filterCoins(list, text, type) {
         return list.filter(c => (c.ticker.indexOf(text.toUpperCase()) !== -1 || c.name.toUpperCase().indexOf(text.toUpperCase()) !== -1) &&
-                           (type === undefined || c.type === type))
+                           (type === undefined || c.type === type)).sort((a, b) => {
+                               if(a.ticker < b.ticker) return -1
+                               if(a.ticker > b.ticker) return 1
+                               return 0
+                           })
     }
 
     function validFiatRates(data, fiat) {
@@ -179,7 +195,7 @@ QtObject {
 
     function formatFiat(received, amount, fiat) {
         return diffPrefix(received) +
-                (fiat === API.get().settings_pg.current_fiat ? API.get().settings_pg.current_fiat_sign : API.get().settings_pg.current_currency_sign)
+                (fiat === API.app.settings_pg.current_fiat ? API.app.settings_pg.current_fiat_sign : API.app.settings_pg.current_currency_sign)
                 + " " + nFormatter(parseFloat(amount), 2)
     }
 
@@ -207,13 +223,15 @@ QtObject {
         return Math.min(Math.max(lim - getDigitCount(v), 0), amountPrecision)
     }
 
-    function formatDouble(v, precision) {
+    function formatDouble(v, precision, trail_zeros) {
         if(precision === recommendedPrecision) precision = getRecommendedPrecision(v)
 
         if(precision === 0) return parseInt(v).toString()
 
         // Remove more than n decimals, then convert to string without trailing zeros
-        return parseFloat(v).toFixed(precision || amountPrecision).replace(/\.?0+$/,"")
+        const full_double = parseFloat(v).toFixed(precision || amountPrecision)
+
+        return trail_zeros ? full_double : full_double.replace(/\.?0+$/,"")
     }
 
     function formatCrypto(received, amount, ticker, fiat_amount, fiat) {
@@ -230,6 +248,12 @@ QtObject {
         })
     }
 
+    function tickersOfCoins(coins) {
+        return coins.map(c => {
+            return { value: c.ticker, text: c.ticker }
+        })
+    }
+
     function getMinTradeAmount() {
         return 0.00777
     }
@@ -237,12 +261,12 @@ QtObject {
     function hasEnoughFunds(sell, base, rel, price, volume) {
         if(sell) {
             if(volume === "") return true
-            return API.get().do_i_have_enough_funds(base, volume)
+            return API.app.do_i_have_enough_funds(base, volume)
         }
         else {
             if(price === "") return true
             const needed_amount = parseFloat(price) * parseFloat(volume)
-            return API.get().do_i_have_enough_funds(rel, needed_amount)
+            return API.app.do_i_have_enough_funds(rel, needed_amount)
         }
     }
 
@@ -259,17 +283,12 @@ QtObject {
         return exists(v) && v !== ""
     }
 
-    function isEthNeeded() {
-        for(const c of API.get().enabled_coins)
-            if(c.type === "ERC-20" && c.ticker !== "ETH") return true
+    function isParentCoinNeeded(ticker, type) {
+        for(const c of API.app.enabled_coins)
+            if(c.type === type && c.ticker !== ticker) return true
 
         return false
     }
-
-    function txFeeTicker(info) {
-        return info.type === "ERC-20" ? "ETH" : info.ticker
-    }
-
 
     property Timer prevent_coin_disabling: Timer { interval: 5000 }
 
@@ -277,25 +296,42 @@ QtObject {
         if(prevent_coin_disabling.running)
             return false
 
-        if(API.get().enabled_coins.length <= 2 ||
-                ticker === "KMD" ||
-                ticker === "BTC") return false
-
-        if(ticker === "ETH") return !General.isEthNeeded()
+        if(ticker === "KMD" || ticker === "BTC") return false
+        else if(ticker === "ETH") return !General.isParentCoinNeeded("ETH", "ERC-20")
+        else if(ticker === "QTUM") return !General.isParentCoinNeeded("QTUM", "QRC-20")
 
         return true
     }
 
-    function isEthEnabled() {
-        for(const c of API.get().enabled_coins)
-            if(c.ticker === "ETH") return true
+    function tokenUnitName(type) {
+        return type === "ERC-20" ? "Gwei" : "Satoshi"
+    }
+
+    function isParentCoin(ticker) {
+        return ticker === "KMD" || ticker === "ETH" || ticker === "QTUM"
+    }
+
+    function isTokenType(type) {
+        return type === "ERC-20" || type === "QRC-20"
+    }
+
+    function getParentCoin(type) {
+        if(type === "ERC-20") return "ETH"
+        else if(type === "QRC-20") return "QTUM"
+        else if(type === "Smart Chain") return "KMD"
+        return "?"
+    }
+
+    function isCoinEnabled(ticker) {
+        for(const c of API.app.enabled_coins)
+            if(c.ticker === ticker) return true
 
         return false
     }
 
-    function enableEthIfNeeded() {
-        if(!isEthEnabled() && isEthNeeded()) {
-            API.get().enable_coins(["ETH"])
+    function enableParentCoinIfNeeded(ticker, type) {
+        if(!isCoinEnabled(ticker) && isParentCoinNeeded(ticker, type)) {
+            API.app.enable_coins([ticker])
             return true
         }
 
@@ -307,4 +343,102 @@ QtObject {
         max = Math.floor(max)
         return Math.floor(Math.random() * (max - min + 1)) + min
     }
+
+    function getFiatText(v, ticker, has_info_icon=true) {
+        return General.formatFiat('', v === '' ? 0 : API.app.get_fiat_from_amount(ticker, v), API.app.settings_pg.current_fiat)
+                + (has_info_icon ? " " +  General.cex_icon : "")
+    }
+
+    function hasParentCoinFees(trade_info) {
+        return General.isFilled(trade_info.erc_fees) && parseFloat(trade_info.erc_fees) > 0
+    }
+
+    function feeText(trade_info, base_ticker, has_info_icon=true, has_limited_space=false) {
+        if(!trade_info) return ""
+
+        const tx_fee = txFeeText(trade_info, base_ticker, has_info_icon, has_limited_space)
+        const trading_fee = tradingFeeText(trade_info, base_ticker, has_info_icon)
+
+        return tx_fee + "\n" + trading_fee
+    }
+
+    function txFeeText(trade_info, base_ticker, has_info_icon=true, has_limited_space=false) {
+        if(!trade_info) return ""
+
+        const has_parent_coin_fees = hasParentCoinFees(trade_info)
+        const main_fee = (qsTr('Transaction Fee') + ': ' + General.formatCrypto("", trade_info.tx_fee, trade_info.is_ticker_of_fees_eth ? "ETH" : base_ticker)) +
+                             // ETH Fees
+                             (has_parent_coin_fees ? " + " + General.formatCrypto("", trade_info.erc_fees, 'ETH') : '')
+
+        let fiat_part = "("
+        fiat_part += getFiatText(trade_info.tx_fee, trade_info.is_ticker_of_fees_eth ? 'ETH' : base_ticker, false)
+        if(has_parent_coin_fees) fiat_part += (has_limited_space ? "\n\t\t+ " : " + ") + getFiatText(trade_info.erc_fees, 'ETH', has_info_icon)
+        fiat_part += ")"
+
+        return main_fee + " " + fiat_part
+    }
+
+    function tradingFeeText(trade_info, base_ticker, has_info_icon=true) {
+        if(!trade_info) return ""
+
+        return qsTr('Trading Fee') + ': ' + General.formatCrypto("", trade_info.trade_fee, base_ticker) +
+
+                // Fiat part
+                (" ("+
+                    getFiatText(trade_info.trade_fee, base_ticker, has_info_icon)
+                 +")")
+    }
+
+    function checkIfWalletExists(name) {
+        if(API.app.get_wallets().indexOf(name) !== -1)
+            return qsTr("Wallet %1 already exists", "WALLETNAME").arg(name)
+
+        return ""
+    }
+
+    readonly property var supported_pairs: ({
+                                                "KMD/BTC": "BINANCE:KMDBTC",
+                                                "KMD/ETH": "BINANCE:KMDETH",
+                                                "KMD/BUSD": "BINANCE:KMDBUSD",
+                                                "KMD/USDT": "BINANCE:KMDUSDT",
+                                                "ETH/BTC": "BINANCE:ETHBTC",
+                                                "ETH/USDC": "BINANCE:ETHUSDC",
+                                                "ETH/BUSD": "BINANCE:ETHBUSD",
+                                                "BTC/UDSC": "BINANCE:BTCUSDC",
+                                                "BTC/BUSD": "BINANCE:BTCBUSD",
+                                                "LTC/BTC": "BINANCE:LTCBTC",
+                                                "LTC/ETH": "BINANCE:LTCETH",
+                                                "LTC/BUSD": "BINANCE:LTCBUSD",
+                                                "LTC/USDC": "BINANCE:LTCUSDC",
+                                                "BCH/BTC": "BINANCE:BCHBTC",
+                                                "BCH/ETH": "BITTREX:BCHETH",
+                                                "BCH/BUSD": "BINANCE:BCHBUSD",
+                                                "BCH/USDC": "BINANCE:BCHUSDC",
+                                                "BCH/PAX": "BINANCE:BCHPAX",
+                                                "BAT/BUSD": "BINANCE:BATBUSD",
+                                                "BAT/USDC": "BINANCE:BATUSDC",
+                                                "BAT/BTC": "BINANCE:BATBTC",
+                                                "BAT/ETH": "BITTREX:BATETH",
+                                                "DASH/BUSD": "BINANCE:DASHBUSD",
+                                                "DASH/ETH": "BINANCE:DASHETH",
+                                                "DASH/BTC": "BINANCE:DASHBTC",
+                                                "QTUM/BUSD": "BINANCE:QTUMBUSD",
+                                                "QTUM/ETH": "BINANCE:QTUMETH",
+                                                "QTUM/BTC": "BINANCE:QTUMBTC",
+                                                "RVN/BUSD": "BINANCE:RVNBUSD",
+                                                "RVN/BTC": "BINANCE:RVNBTC",
+                                                "XZC/ETH": "BINANCE:XZCETH",
+                                                "XZC/BTC": "BINANCE:XZCBTC",
+                                                "DOGE/BTC": "BINANCE:DOGEBTC",
+                                                "DOGE/BUSD": "BINANCE:DOGEBUSD",
+                                                "DGB/BUSD": "BINANCE:DGBBUSD",
+                                                "DGB/BTC": "BINANCE:DGBBTC",
+                                                "FTC/BTC": "BITTREX:FTCBTC",
+                                                "EMC2/BTC": "BITTREX:EMC2BTC",
+                                                "DAI/BTC": "BITTREX:DAIBTC",
+                                                "ZEC/BUSD": "BINANCE:ZECBUSD",
+                                                "ZEC/ETH": "BINANCE:ZECETH",
+                                                "ZEC/BTC": "BINANCE:ZECBTC",
+                                                "ZEC/USDC": "BINANCE:ZECUSDC"
+                                            })
 }

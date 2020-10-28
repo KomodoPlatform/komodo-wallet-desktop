@@ -1,6 +1,6 @@
-import QtQuick 2.14
-import QtQuick.Layouts 1.12
-import QtQuick.Controls 2.12
+import QtQuick 2.15
+import QtQuick.Layouts 1.15
+import QtQuick.Controls 2.15
 
 import "../Components"
 import "../Constants"
@@ -10,66 +10,72 @@ DefaultListView {
 
     readonly property int row_height: 45
 
-    model: {
-        const confirmed = API.get().current_coin_info.transactions.filter(t => t.timestamp !== 0)
-        const unconfirmed = API.get().current_coin_info.transactions.filter(t => t.timestamp === 0)
-        return unconfirmed.concat(confirmed)
+    TransactionDetailsModal {
+        id: tx_details_modal
     }
 
     // Row
-    delegate: Rectangle {
+    delegate: AnimatedRectangle {
         id: rectangle
         implicitWidth: list.width
         height: row_height
 
-        color: mouse_area.containsMouse ? Style.colorTheme6 : "transparent"
+        color: Style.colorOnlyIf(mouse_area.containsMouse, Style.colorTheme6)
 
-        MouseArea {
+        DefaultMouseArea {
             id: mouse_area
             anchors.fill: parent
             hoverEnabled: true
-            onClicked: tx_details_modal.open()
+            onClicked: {
+                tx_details_modal.details = model
+                tx_details_modal.open()
+            }
         }
 
-        TransactionDetailsModal {
-            id: tx_details_modal
-            details: model.modelData
+        Circle {
+            id: note_tag
+            width: 6
+            color: Style.colorOrange
+            anchors.left: parent.left
+            anchors.leftMargin: 15
+            anchors.verticalCenter: parent.verticalCenter
+            visible: transaction_note !== ""
         }
 
         Arrow {
             id: received_icon
-            up: !model.modelData.received
-            color: model.modelData.received ? Style.colorGreen : Style.colorRed
+            up: am_i_sender
+            color: !am_i_sender ? Style.colorGreen : Style.colorRed
             anchors.verticalCenter: parent.verticalCenter
-            anchors.left: parent.left
-            anchors.leftMargin: 15
+            anchors.left: note_tag.right
+            anchors.leftMargin: 10
         }
 
         // Description
         DefaultText {
             id: description
-            text_value: API.get().settings_pg.empty_string + (model.modelData.received ? qsTr("Received") : qsTr("Sent"))
+            text_value: am_i_sender ? qsTr("Sent") : qsTr("Received")
             font.pixelSize: Style.textSizeSmall3
             anchors.verticalCenter: parent.verticalCenter
             anchors.left: received_icon.right
-            anchors.leftMargin: 25
+            anchors.leftMargin: 10
         }
 
         // Crypto
         DefaultText {
             id: crypto_amount
-            text_value: API.get().settings_pg.empty_string + (General.formatCrypto(model.modelData.received, model.modelData.amount, API.get().current_coin_info.ticker))
+            text_value: General.formatCrypto(!am_i_sender, amount, api_wallet_page.ticker)
             font.pixelSize: description.font.pixelSize
             anchors.verticalCenter: parent.verticalCenter
             anchors.left: parent.left
             anchors.leftMargin: parent.width * 0.2
-            color: model.modelData.received ? Style.colorGreen : Style.colorRed
+            color: am_i_sender ? Style.colorRed : Style.colorGreen
             privacy: true
         }
 
         // Fiat
         DefaultText {
-            text_value: API.get().settings_pg.empty_string + (General.formatFiat(model.modelData.received, model.modelData.amount_fiat, API.get().settings_pg.current_currency))
+            text_value: General.formatFiat(!am_i_sender, amount_fiat, API.app.settings_pg.current_currency)
             font.pixelSize: description.font.pixelSize
             anchors.verticalCenter: parent.verticalCenter
             anchors.left: parent.left
@@ -80,8 +86,8 @@ DefaultListView {
 
         // Fee
         DefaultText {
-            text_value: API.get().settings_pg.empty_string + (General.formatCrypto(!(parseFloat(model.modelData.fees) > 0), Math.abs(parseFloat(model.modelData.fees)),
-                                                                       General.txFeeTicker(API.get().current_coin_info)) + " " + qsTr("fees"))
+            text_value: General.formatCrypto(!(parseFloat(fees) > 0), Math.abs(parseFloat(fees)),
+                                                                       current_ticker_infos.fee_ticker + " " + qsTr("fees"))
             font.pixelSize: description.font.pixelSize
             anchors.verticalCenter: parent.verticalCenter
             anchors.left: parent.left
@@ -92,7 +98,7 @@ DefaultListView {
         // Date
         DefaultText {
             font.pixelSize: description.font.pixelSize
-            text_value: API.get().settings_pg.empty_string + (model.modelData.timestamp === 0 ? qsTr("Unconfirmed"):  model.modelData.date)
+            text_value: unconfirmed ? qsTr("Unconfirmed") :  date
             anchors.verticalCenter: parent.verticalCenter
             anchors.right: parent.right
             anchors.rightMargin: 20
@@ -100,7 +106,7 @@ DefaultListView {
         }
 
         HorizontalLine {
-            visible: index !== API.get().current_coin_info.transactions.length -1
+            visible: index !== transactions_mdl.length -1
             width: parent.width - 4
 
             anchors.horizontalCenter: parent.horizontalCenter

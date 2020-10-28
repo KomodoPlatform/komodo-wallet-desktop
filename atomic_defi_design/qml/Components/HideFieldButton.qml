@@ -1,6 +1,6 @@
-import QtQuick 2.14
-import QtQuick.Layouts 1.12
-import QtQuick.Controls 2.12
+import QtQuick 2.15
+import QtQuick.Layouts 1.15
+import QtQuick.Controls 2.15
 
 import "../Constants"
 
@@ -16,11 +16,14 @@ DefaultImage {
     anchors.verticalCenter: parent.verticalCenter
     antialiasing: true
 
+    opacity: mouse_area.containsMouse ? Style.hoverOpacity : 1
 
-    MouseArea {
+    DefaultMouseArea {
         id: mouse_area
         anchors { horizontalCenter: parent.horizontalCenter; verticalCenter: parent.verticalCenter }
         height: input_field.height; width: input_field.height
+
+        hoverEnabled: true
         onClicked: if(use_default_behaviour) hiding = !hiding
     }
 }

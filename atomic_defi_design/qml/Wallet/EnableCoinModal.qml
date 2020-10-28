@@ -1,12 +1,14 @@
-import QtQuick 2.14
-import QtQuick.Layouts 1.12
-import QtQuick.Controls 2.12
+import QtQuick 2.15
+import QtQuick.Layouts 1.15
+import QtQuick.Controls 2.15
 
 import "../Components"
 import "../Constants"
 
-DefaultModal {
+BasicModal {
     id: root
+
+    width: 400
 
     property var selected_to_enable: ({})
 
@@ -21,6 +23,8 @@ DefaultModal {
         coins_smartchains.parent_box.checkState = Qt.Unchecked
         coins_erc.parent_box.checkState = Qt.Checked
         coins_erc.parent_box.checkState = Qt.Unchecked
+        coins_qrc.parent_box.checkState = Qt.Checked
+        coins_qrc.parent_box.checkState = Qt.Unchecked
     }
 
     function reset() {
@@ -47,16 +51,52 @@ DefaultModal {
     function enableCoins() {
         const coins_to_enable = Object.keys(selected_to_enable)
         console.log("QML enable_coins:", JSON.stringify(coins_to_enable))
-        API.get().enable_coins(coins_to_enable)
+        if(coins_to_enable.length > 0)
+            API.app.enable_coins(coins_to_enable)
         reset()
         root.close()
     }
 
-    // Inside modal
-    ColumnLayout {
-        id: modal_layout
-        ModalHeader {
-            title: API.get().settings_pg.empty_string + (qsTr("Enable coins"))
+    readonly property bool all_coins_are_selected:  coins_utxo.parent_box.checkState === Qt.Checked &&
+                                                    coins_smartchains.parent_box.checkState === Qt.Checked &&
+                                                    coins_erc.parent_box.checkState === Qt.Checked &&
+                                                    coins_qrc.parent_box.checkState === Qt.Checked
+    function toggleAllCoins() {
+        if(all_coins_are_selected) {
+            coins_utxo.parent_box.checkState = Qt.Unchecked
+            coins_smartchains.parent_box.checkState = Qt.Unchecked
+            coins_erc.parent_box.checkState = Qt.Unchecked
+            coins_qrc.parent_box.checkState = Qt.Unchecked
+        }
+        else {
+            coins_utxo.parent_box.checkState = Qt.Checked
+            coins_smartchains.parent_box.checkState = Qt.Checked
+            coins_erc.parent_box.checkState = Qt.Checked
+            coins_qrc.parent_box.checkState = Qt.Checked
+        }
+    }
+
+    ModalContent {
+        title: qsTr("Enable assets")
+
+        DefaultButton {
+            Layout.fillWidth: true
+            text: all_coins_are_selected ? qsTr("Clear All Selection") : qsTr("Enable All Assets")
+            visible: API.app.enableable_coins.length > 0
+            onClicked: toggleAllCoins()
+        }
+
+        DefaultButton {
+            Layout.fillWidth: true
+            text: qsTr("Add a custom asset to the list")
+            onClicked: {
+                root.close()
+                add_custom_coin_modal.open()
+            }
+        }
+
+        HorizontalLine {
+            Layout.fillWidth: true
         }
 
         // Search input
@@ -64,14 +104,16 @@ DefaultModal {
             id: input_coin_filter
 
             Layout.fillWidth: true
-            placeholderText: API.get().settings_pg.empty_string + (qsTr("Search"))
-            selectByMouse: true
+            placeholderText: qsTr("Search")
         }
 
         DefaultFlickable {
-            visible: API.get().enableable_coins.length > 0
-            width: 350
-            height: 400
+            id: flickable
+            visible: API.app.enableable_coins.length > 0
+
+            height: 375
+            Layout.fillWidth: true
+
             contentWidth: col.width
             contentHeight: col.height
 
@@ -80,20 +122,26 @@ DefaultModal {
 
                 CoinList {
                     id: coins_utxo
-                    group_title: API.get().settings_pg.empty_string + qsTr("Select all UTXO coins")
-                    model: General.filterCoins(API.get().enableable_coins, input_coin_filter.text, "UTXO")
+                    group_title: qsTr("Select all UTXO assets")
+                    model: General.filterCoins(API.app.enableable_coins, input_coin_filter.text, "UTXO")
                 }
 
                 CoinList {
                     id: coins_smartchains
-                    group_title: API.get().settings_pg.empty_string + qsTr("Select all SmartChains")
-                    model: General.filterCoins(API.get().enableable_coins, input_coin_filter.text, "Smart Chain")
+                    group_title: qsTr("Select all SmartChains")
+                    model: General.filterCoins(API.app.enableable_coins, input_coin_filter.text, "Smart Chain")
                 }
 
                 CoinList {
                     id: coins_erc
-                    group_title: API.get().settings_pg.empty_string + qsTr("Select all ERC tokens")
-                    model: General.filterCoins(API.get().enableable_coins, input_coin_filter.text, "ERC-20")
+                    group_title: qsTr("Select all Ethereum assets")
+                    model: General.filterCoins(API.app.enableable_coins, input_coin_filter.text, "ERC-20")
+                }
+
+                CoinList {
+                    id: coins_qrc
+                    group_title: qsTr("Select all QRC assets")
+                    model: General.filterCoins(API.app.enableable_coins, input_coin_filter.text, "QRC-20")
                 }
             }
         }
@@ -101,26 +149,27 @@ DefaultModal {
 
         // Info text
         DefaultText {
-            visible: API.get().enableable_coins.length === 0
+            visible: API.app.enableable_coins.length === 0
 
-            text_value: API.get().settings_pg.empty_string + (qsTr("All coins are already enabled!"))
+            text_value: qsTr("All assets are already enabled!")
         }
 
         // Buttons
-        RowLayout {
+        footer: [
             DefaultButton {
-                text: API.get().settings_pg.empty_string + (qsTr("Close"))
+                text: qsTr("Close")
                 Layout.fillWidth: true
                 onClicked: root.close()
-            }
+            },
+
             PrimaryButton {
-                visible: API.get().enableable_coins.length > 0
+                visible: API.app.enableable_coins.length > 0
                 enabled: Object.keys(selected_to_enable).length > 0
-                text: API.get().settings_pg.empty_string + (qsTr("Enable"))
+                text: qsTr("Enable")
                 Layout.fillWidth: true
                 onClicked: enableCoins()
             }
-        }
+        ]
     }
 }
 

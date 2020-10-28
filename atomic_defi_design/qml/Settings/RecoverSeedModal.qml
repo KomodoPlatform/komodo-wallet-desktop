@@ -1,24 +1,24 @@
-import QtQuick 2.14
-import QtQuick.Layouts 1.12
-import QtQuick.Controls 2.12
+import QtQuick 2.15
+import QtQuick.Layouts 1.15
+import QtQuick.Controls 2.15
 
 import "../Components"
 import "../Constants"
 
-DefaultModal {
+BasicModal {
     id: root
 
     property bool wrong_password: false
-    property string seed: ''
 
     function tryViewSeed() {
         if(!submit_button.enabled) return
 
-        const result = API.get().retrieve_seed(API.get().wallet_default_name, input_password.field.text)
+        const result = API.app.retrieve_seed(API.app.wallet_default_name, input_password.field.text)
 
         if(result !== 'wrong password') {
-            seed = result
+            seed_text.field.text = result
             wrong_password = false
+            root.nextPage()
         }
         else {
             wrong_password = true
@@ -28,30 +28,22 @@ DefaultModal {
     width: 500
 
     onClosed: {
-        seed = ''
         wrong_password = false
         input_password.reset()
+        seed_text.reset()
+        currentIndex = 0
     }
 
-    // Inside modal
-    ColumnLayout {
-        id: modal_layout
-
-        width: parent.width
-
-        ModalHeader {
-            title: API.get().settings_pg.empty_string + (qsTr("View Seed"))
-        }
+    ModalContent {
+        title: qsTr("View Seed")
 
         ColumnLayout {
-            visible: seed === ''
-
             DefaultText {
                 Layout.topMargin: 10
                 Layout.bottomMargin: 10
                 Layout.alignment: Qt.AlignHCenter
 
-                text_value: API.get().settings_pg.empty_string + (qsTr("Please enter your password to view the seed."))
+                text_value: qsTr("Please enter your password to view the seed.")
             }
 
             PasswordForm {
@@ -62,37 +54,47 @@ DefaultModal {
             }
 
             DefaultText {
-                text_value: API.get().settings_pg.empty_string + (qsTr("Wrong Password"))
+                text_value: qsTr("Wrong Password")
                 color: Style.colorRed
                 visible: wrong_password
             }
         }
 
-        TextAreaWithTitle {
-            visible: seed !== ''
+        // Buttons
+        footer: [
+            DefaultButton {
+                text: qsTr("Cancel")
+                Layout.fillWidth: true
+                onClicked: root.close()
+            },
 
-            title: API.get().settings_pg.empty_string + (qsTr("Seed"))
-            field.text: seed
+            PrimaryButton {
+                id: submit_button
+                text: qsTr("View")
+                Layout.fillWidth: true
+                enabled: input_password.isValid()
+                onClicked: tryViewSeed()
+            }
+        ]
+    }
+
+    ModalContent {
+        title: qsTr("View Seed")
+
+        TextAreaWithTitle {
+            id: seed_text
+            title: qsTr("Seed")
             field.readOnly: true
             copyable: true
         }
 
         // Buttons
-        RowLayout {
+        footer: [
             DefaultButton {
-                text: API.get().settings_pg.empty_string + (seed === '' ? qsTr("Cancel") : qsTr("Close"))
+                text: qsTr("Close")
                 Layout.fillWidth: true
                 onClicked: root.close()
             }
-
-            PrimaryButton {
-                id: submit_button
-                visible: seed === ''
-                text: API.get().settings_pg.empty_string + (qsTr("View"))
-                Layout.fillWidth: true
-                enabled: input_password.isValid()
-                onClicked: tryViewSeed()
-            }
-        }
+        ]
     }
 }

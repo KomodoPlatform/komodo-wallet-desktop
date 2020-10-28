@@ -11,3 +11,5 @@ range-v3
 libsodium
 spdlog
 date
+cpprestsdk
+cpp-taskflow

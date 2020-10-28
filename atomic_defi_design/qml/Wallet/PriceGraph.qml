@@ -1,6 +1,6 @@
-import QtQuick 2.14
-import QtQuick.Layouts 1.12
-import QtQuick.Controls 2.12
+import QtQuick 2.15
+import QtQuick.Layouts 1.15
+import QtQuick.Controls 2.15
 
 import QtCharts 2.3
 import "../Components"
@@ -82,6 +82,7 @@ ChartView {
             lineVisible: false
             labelsFont.family: Style.font_family
             labelsFont.weight: Font.Bold
+            labelsFont.pixelSize: Style.textSizeSmall3
             gridLineColor: Style.colorThemeDark2
             labelsColor: Style.colorThemeDark3
             format: "<br>MMM d"
@@ -158,7 +159,7 @@ ChartView {
         }
     }
 
-    property var historical: API.get().current_coin_info.trend_7d
+    property var historical: current_ticker_infos.trend_7d
     onHistoricalChanged: {
         updateChart(historical)
     }

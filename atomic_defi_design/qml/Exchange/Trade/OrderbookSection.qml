@@ -1,6 +1,6 @@
-import QtQuick 2.14
-import QtQuick.Layouts 1.12
-import QtQuick.Controls 2.12
+import QtQuick 2.15
+import QtQuick.Layouts 1.15
+import QtQuick.Controls 2.15
 
 import "../../Components"
 import "../../Constants"
@@ -24,16 +24,14 @@ ColumnLayout {
             id: price_header
             font.pixelSize: Style.textSizeSmall3
 
-            text_value: API.get().settings_pg.empty_string + (is_asks ? qsTr("Ask Price") + "\n(" + right_ticker + ")":
-                                                            qsTr("Bid Price") + "\n(" + right_ticker + ")")
+            text_value: is_asks ? qsTr("Ask Price") + "\n(" + right_ticker + ")":
+                                  qsTr("Bid Price") + "\n(" + right_ticker + ")"
 
             color: is_asks ? Style.colorRed : Style.colorGreen
-            horizontalAlignment: is_asks ? Text.AlignLeft : Text.AlignRight
+            horizontalAlignment: Text.AlignRight
 
-            anchors.left: is_asks ? parent.left : undefined
-            anchors.right: is_asks ? undefined : parent.right
-            anchors.leftMargin: is_asks ? parent.width * 0.03 : undefined
-            anchors.rightMargin: is_asks ? undefined : parent.width * 0.03
+            anchors.right: parent.right
+            anchors.rightMargin: parent.width * 0.68
 
             anchors.verticalCenter: parent.verticalCenter
         }
@@ -41,16 +39,14 @@ ColumnLayout {
         // Quantity
         DefaultText {
             id: quantity_header
-            anchors.left: is_asks ? parent.left : undefined
-            anchors.right: is_asks ? undefined : parent.right
-            anchors.leftMargin: is_asks ? parent.width * 0.32 : undefined
-            anchors.rightMargin: is_asks ? undefined : parent.width * 0.32
+            anchors.right: parent.right
+            anchors.rightMargin: parent.width * 0.35
 
             horizontalAlignment: price_header.horizontalAlignment
 
             font.pixelSize: price_header.font.pixelSize
 
-            text_value: API.get().settings_pg.empty_string + (qsTr("Quantity") + "\n(" + left_ticker + ")")
+            text_value: qsTr("Quantity") + "\n(" + left_ticker + ")"
             color: Style.colorWhite1
             anchors.verticalCenter: parent.verticalCenter
         }
@@ -58,16 +54,14 @@ ColumnLayout {
         // Total
         DefaultText {
             id: total_header
-            anchors.left: is_asks ? parent.left : undefined
-            anchors.right: is_asks ? undefined : parent.right
-            anchors.leftMargin: is_asks ? parent.width * 0.65 : undefined
-            anchors.rightMargin: is_asks ? undefined : parent.width * 0.65
+            anchors.right: parent.right
+            anchors.rightMargin: parent.width * 0.02
 
             horizontalAlignment: price_header.horizontalAlignment
 
             font.pixelSize: price_header.font.pixelSize
 
-            text_value: API.get().settings_pg.empty_string + (qsTr("Total") + "\n(" + right_ticker + ")")
+            text_value: qsTr("Total") + "\n(" + right_ticker + ")"
             color: Style.colorWhite1
             anchors.verticalCenter: parent.verticalCenter
         }
@@ -94,7 +88,7 @@ ColumnLayout {
             height: 20
 
             // Hover / My Order line
-            Rectangle {
+            AnimatedRectangle {
                 visible: mouse_area.containsMouse || is_mine
                 width: parent.width
                 height: parent.height
@@ -106,7 +100,7 @@ ColumnLayout {
             }
 
             // Depth line
-            Rectangle {
+            AnimatedRectangle {
                 width: parent.width * depth
                 height: parent.height
                 color: price_value.color
@@ -116,7 +110,7 @@ ColumnLayout {
                 anchors.right: is_asks ? undefined : parent.right
             }
 
-            MouseArea {
+            DefaultMouseArea {
                 id: mouse_area
                 anchors.fill: parent
                 hoverEnabled: true
@@ -131,14 +125,12 @@ ColumnLayout {
             DefaultText {
                 id: price_value
 
-                anchors.left: is_asks ? parent.left : undefined
-                anchors.right: is_asks ? undefined : parent.right
-                anchors.leftMargin: price_header.anchors.leftMargin
+                anchors.right: parent.right
                 anchors.rightMargin: price_header.anchors.rightMargin
 
-                font.pixelSize: Style.textSizeSmall2
+                font.pixelSize: Style.textSizeSmall1
 
-                text_value: API.get().settings_pg.empty_string + (General.formatDouble(price))
+                text_value: General.formatDouble(price, General.amountPrecision, true)
                 color: price_header.color
                 anchors.verticalCenter: parent.verticalCenter
             }
@@ -146,14 +138,13 @@ ColumnLayout {
             // Quantity
             DefaultText {
                 id: quantity_value
-                anchors.left: is_asks ? parent.left : undefined
-                anchors.right: is_asks ? undefined : parent.right
-                anchors.leftMargin: quantity_header.anchors.leftMargin
+                anchors.right: parent.right
                 anchors.rightMargin: quantity_header.anchors.rightMargin
 
                 font.pixelSize: price_value.font.pixelSize
+                font.family: price_value.font.family
 
-                text_value: API.get().settings_pg.empty_string + (quantity)
+                text_value: General.formatDouble(quantity, General.amountPrecision, true)
                 color: Style.colorWhite4
                 anchors.verticalCenter: parent.verticalCenter
             }
@@ -161,16 +152,42 @@ ColumnLayout {
             // Total
             DefaultText {
                 id: total_value
-                anchors.left: is_asks ? parent.left : undefined
-                anchors.right: is_asks ? undefined : parent.right
-                anchors.leftMargin: total_header.anchors.leftMargin
+                anchors.right: parent.right
                 anchors.rightMargin: total_header.anchors.rightMargin
 
                 font.pixelSize: price_value.font.pixelSize
+                font.family: price_value.font.family
 
-                text_value: API.get().settings_pg.empty_string + (total)
+                text_value: General.formatDouble(total, General.amountPrecision, true)
                 color: Style.colorWhite4
                 anchors.verticalCenter: parent.verticalCenter
+            }
+
+            DefaultText {
+                id: cancel_button_text
+                property bool requested_cancel: false
+                visible: is_mine && !requested_cancel
+
+                font.pixelSize: Style.textSizeSmall4
+                text_value: "x"
+                anchors.verticalCenter: parent.verticalCenter
+                anchors.verticalCenterOffset: -font.pixelSize * 0.125
+                anchors.left: parent.left
+                anchors.leftMargin: 6
+
+                color: cancel_button.containsMouse ? Style.colorText : Style.colorText2
+
+                DefaultMouseArea {
+                    id: cancel_button
+                    anchors.fill: parent
+                    hoverEnabled: true
+                    onClicked: {
+                        if(!is_mine) return
+
+                        cancel_button_text.requested_cancel = true
+                        cancelOrder(uuid)
+                    }
+                }
             }
 
             // Line

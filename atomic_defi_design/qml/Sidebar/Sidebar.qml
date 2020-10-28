@@ -1,6 +1,6 @@
-import QtQuick 2.14
-import QtQuick.Layouts 1.12
-import QtQuick.Controls 2.12
+import QtQuick 2.15
+import QtQuick.Layouts 1.15
+import QtQuick.Controls 2.15
 
 import QtGraphicalEffects 1.0
 
@@ -16,7 +16,7 @@ Item {
     height: parent.height
 
     // Cursor
-    Rectangle {
+    AnimatedRectangle {
         id: cursor
         width: 185 - cursor_round_edge.radius
         anchors.right: parent.right
@@ -91,7 +91,7 @@ Item {
 
 
     // Cursor left edge
-    Rectangle {
+    AnimatedRectangle {
         id: cursor_round_edge
         color: Style.colorSidebarHighlightGradient1
         width: radius*2
@@ -105,6 +105,7 @@ Item {
                 case General.idx_dashboard_portfolio:
                 case General.idx_dashboard_wallet:
                 case General.idx_dashboard_exchange:
+                case General.idx_dashboard_addressbook:
                 case General.idx_dashboard_news:
                 case General.idx_dashboard_dapps:
                     return sidebar_center.y + dashboard.current_page * Style.sidebarLineHeight
@@ -113,6 +114,8 @@ Item {
                     return sidebar_bottom.y + (dashboard.current_page - General.idx_dashboard_settings) * Style.sidebarLineHeight
             }
         }
+
+        Behavior on y { SmoothedAnimation { duration: Style.animationDuration; velocity: -1 } }
     }
 
     // Content
@@ -123,7 +126,7 @@ Item {
 
         DefaultImage {
             id: app_logo
-            source: General.image_path + Style.sidebar_atomicdefi_logo
+            source: General.image_path + Style.sidebar_atomicdex_logo
             anchors.horizontalCenter: parent.horizontalCenter
             y: parent.width * 0.25
             transformOrigin: Item.Center
@@ -141,7 +144,7 @@ Item {
             anchors.horizontalCenter: parent.horizontalCenter
             anchors.top: parent.top
             anchors.topMargin: parent.width * 0.85
-            text_value: API.get().settings_pg.empty_string + (General.version_string)
+            text_value: General.version_string
             font.pixelSize: Style.textSizeSmall1
             color: Style.colorThemeDarkLight
         }

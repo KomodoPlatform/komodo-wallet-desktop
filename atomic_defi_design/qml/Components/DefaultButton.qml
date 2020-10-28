@@ -1,6 +1,6 @@
-import QtQuick 2.14
-import QtQuick.Layouts 1.12
-import QtQuick.Controls 2.12
+import QtQuick 2.15
+import QtQuick.Layouts 1.15
+import QtQuick.Controls 2.15
 import QtGraphicalEffects 1.0
 
 import "../Constants"
@@ -27,12 +27,9 @@ FloatingBackground {
     id: button_bg
 
     implicitWidth: Math.max(minWidth, text_obj.width + 20 + Math.abs(text_offset))
-    implicitHeight: text_obj.height*2.5
-
-    radius: 100
+    implicitHeight: text_obj.height * 2.5
 
     color: !enabled ? colorDisabled : mouse_area.containsMouse ? colorHovered : colorEnabled
-    border.width: 0
 
     DefaultText {
         id: text_obj
@@ -46,7 +43,7 @@ FloatingBackground {
         color: !parent.enabled ? colorTextDisabled : mouse_area.containsMouse ? colorTextHovered : colorTextEnabled
     }
 
-    MouseArea {
+    DefaultMouseArea {
         id: mouse_area
         anchors.fill: parent
         hoverEnabled: true

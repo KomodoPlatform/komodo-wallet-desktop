@@ -1,6 +1,6 @@
-import QtQuick 2.14
-import QtQuick.Layouts 1.12
-import QtQuick.Controls 2.12
+import QtQuick 2.15
+import QtQuick.Layouts 1.15
+import QtQuick.Controls 2.15
 
 import "../Components"
 import "../Constants"
@@ -17,7 +17,7 @@ SetupPage {
     }
 
     function onClickedConfirm(password, seed, wallet_name) {
-        if(API.get().create(password, seed, wallet_name)) {
+        if(API.app.create(password, seed, wallet_name)) {
             console.log("Success: Recover seed")
             selected_wallet_name = wallet_name
             postConfirmSuccess()
@@ -25,7 +25,7 @@ SetupPage {
         }
         else {
             console.log("Failed: Recover seed")
-            text_error = API.get().settings_pg.empty_string + (qsTr("Failed to recover the seed"))
+            text_error = qsTr("Failed to recover the seed")
             return false
         }
     }
@@ -42,7 +42,7 @@ SetupPage {
         spacing: Style.rowSpacing
 
         DefaultText {
-            text_value: API.get().settings_pg.empty_string + (qsTr("Recovery"))
+            text_value: qsTr("Recover Wallet")
         }
 
         HorizontalLine {
@@ -60,6 +60,9 @@ SetupPage {
 
         function trySubmit() {
             if(!submit_button.enabled) return
+
+            text_error = General.checkIfWalletExists(input_wallet_name.field.text)
+            if(text_error !== "") return
 
             eula.open()
         }
@@ -80,8 +83,8 @@ SetupPage {
         TextFieldWithTitle {
             id: input_seed_hidden
             visible: !input_seed.visible
-            title: API.get().settings_pg.empty_string + (qsTr("Seed"))
-            field.placeholderText: API.get().settings_pg.empty_string + (qsTr("Enter the seed"))
+            title: qsTr("Seed")
+            field.placeholderText: qsTr("Enter the seed")
             field.onTextChanged: {
                 input_seed.field.text = field.text
             }
@@ -99,8 +102,8 @@ SetupPage {
         TextAreaWithTitle {
             id: input_seed
             visible: false
-            title: API.get().settings_pg.empty_string + (qsTr("Seed"))
-            field.placeholderText: API.get().settings_pg.empty_string + (qsTr("Enter the seed"))
+            title: qsTr("Seed")
+            field.placeholderText: qsTr("Enter the seed")
             field.onTextChanged: {
                 input_seed_hidden.field.text = field.text
             }
@@ -117,7 +120,7 @@ SetupPage {
 
         DefaultCheckBox {
             id: allow_custom_seed
-            text: API.get().settings_pg.empty_string + (qsTr("Allow custom seed"))
+            text: qsTr("Allow custom seed")
         }
 
         PasswordForm {
@@ -132,7 +135,7 @@ SetupPage {
 
             DefaultButton {
                 Layout.fillWidth: true
-                text: API.get().settings_pg.empty_string + (qsTr("Back"))
+                text: qsTr("Back")
                 onClicked: {
                     reset()
                     onClickedBack()
@@ -142,18 +145,18 @@ SetupPage {
             PrimaryButton {
                 id: submit_button
                 Layout.fillWidth: true
-                text: API.get().settings_pg.empty_string + (qsTr("Confirm"))
+                text: qsTr("Confirm")
                 onClicked: trySubmit()
                 enabled:     // Fields are not empty
                              input_wallet_name.field.acceptableInput === true &&
                              input_seed.field.text !== '' &&
                              input_password.isValid() &&
-                             (allow_custom_seed.checked || API.get().mnemonic_validate(input_seed.field.text))
+                             (allow_custom_seed.checked || API.app.mnemonic_validate(input_seed.field.text))
             }
         }
 
         DefaultText {
-            text_value: API.get().settings_pg.empty_string + (text_error)
+            text_value: text_error
             color: Style.colorRed
             visible: text !== ''
         }

@@ -1,6 +1,6 @@
-import QtQuick 2.14
-import QtQuick.Layouts 1.12
-import QtQuick.Controls 2.14
+import QtQuick 2.15
+import QtQuick.Layouts 1.15
+import QtQuick.Controls 2.15
 import QtGraphicalEffects 1.0
 
 import "../../Components"
@@ -10,31 +10,25 @@ RowLayout {
     id: root
 
     spacing: 5
-    Layout.preferredWidth: 250
     layoutDirection: left_side ? Qt.LeftToRight : Qt.RightToLeft
 
     property bool left_side: false
     property var ticker_list
     property string ticker
 
-    DefaultImage {
-        source: General.coinIcon(ticker)
-        Layout.preferredWidth: 32
-        Layout.preferredHeight: Layout.preferredWidth
-    }
-
-
-    onTickerChanged: {
+    function renewIndex() {
         combo.currentIndex = combo.indexOfValue(ticker)
     }
 
-    DefaultComboBox {
+    onTickerChanged: renewIndex()
+
+    DexComboBox {
         id: combo
 
         enabled: !block_everything
 
         model: ticker_list
-        textRole: "display"
+
         valueRole: "ticker"
 
         property bool index_changed: false
@@ -55,7 +49,7 @@ RowLayout {
 
         onCurrentValueChanged: {
             combo.index_changed = false
-            setPair(left_side, currentValue)
+            if(currentValue !== undefined) setPair(left_side, currentValue)
         }
 
         Layout.fillWidth: true

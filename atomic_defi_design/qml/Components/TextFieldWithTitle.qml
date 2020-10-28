@@ -1,6 +1,6 @@
-import QtQuick 2.14
-import QtQuick.Layouts 1.12
-import QtQuick.Controls 2.12
+import QtQuick 2.15
+import QtQuick.Layouts 1.15
+import QtQuick.Controls 2.15
 
 import "../Constants"
 
@@ -21,8 +21,10 @@ ColumnLayout {
         hiding = true
     }
 
+    spacing: Style.rowSpacingSmall
+
     RowLayout {
-        DefaultText {
+        TitleText {
             id: title_text
             visible: text !== ''
         }
@@ -30,7 +32,7 @@ ColumnLayout {
         DefaultText {
             visible: required && input_field.text === ''
             font.pixelSize: Style.textSizeSmall2
-            text_value: API.get().settings_pg.empty_string + (qsTr("Required"))
+            text_value: qsTr("Required")
             color: Style.colorRed
         }
     }
@@ -41,7 +43,6 @@ ColumnLayout {
         echoMode: hidable && hiding ? TextInput.Password : TextInput.Normal
 
         Layout.fillWidth: true
-        selectByMouse: true
 
         HideFieldButton {
             id: hide_button

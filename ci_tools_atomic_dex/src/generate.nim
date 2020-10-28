@@ -24,7 +24,7 @@ proc generate_solution*(build_type: string, osx_sdk_path: string, compiler_path:
     when defined(osx):
         cmd_line = cmd_line & " -DVCPKG_APPLOCAL_DEPS=OFF"
     if not osx_sdk_path.isNil() and osx_sdk_path != "nil":
-        cmd_line = cmd_line & " -DCMAKE_OSX_SYSROOT=" & osx_sdk_path & " -DCMAKE_OSX_DEPLOYMENT_TARGET=10.13"
+        cmd_line = cmd_line & " -DCMAKE_OSX_SYSROOT=" & osx_sdk_path & " -DCMAKE_OSX_DEPLOYMENT_TARGET=10.14"
     if not compiler_path.isNil() and compiler_path != "nil":
         cmd_line = cmd_line & " -DCMAKE_CXX_COMPILER=" & compiler_path
     when defined(windows) or defined(linux):
@@ -32,7 +32,7 @@ proc generate_solution*(build_type: string, osx_sdk_path: string, compiler_path:
     echo "cmd line: " & cmd_line
     discard execCmd(cmd_line)
     when defined(windows):
-        if os.existsFile(os.getCurrentDir().joinPath("bin").joinPath("atomicDeFi.exe")):
+        if os.existsFile(os.getCurrentDir().joinPath("bin").joinPath("atomicdex-desktop.exe")):
           discard execCmd(get_windows_deploy_cmd())
         else:
-          echo "atomicDeFi is not yet built"
+          echo "atomicdex-desktop is not yet built"

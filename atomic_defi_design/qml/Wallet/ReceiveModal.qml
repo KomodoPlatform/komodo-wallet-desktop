@@ -1,39 +1,35 @@
-import QtQuick 2.14
-import QtQuick.Layouts 1.12
-import QtQuick.Controls 2.12
+import QtQuick 2.15
+import QtQuick.Layouts 1.15
+import QtQuick.Controls 2.15
 
 import "../Components"
 import "../Constants"
 
-DefaultModal {
+BasicModal {
     id: root
 
     function reset() {
 
     }
 
-    width: 400
-    // Inside modal
-    ColumnLayout {
-        width: parent.width
+    width: 500
 
-        ModalHeader {
-            title: API.get().settings_pg.empty_string + (qsTr("Receive"))
-        }
+    ModalContent {
+        title: qsTr("Receive")
 
         // Receive address
         TextAreaWithTitle {
-            title: API.get().settings_pg.empty_string + (qsTr("Share this address to receive coins"))
-            field.text: API.get().settings_pg.empty_string + (API.get().current_coin_info.address)
+            title: qsTr("Only send %1 to this address", "TICKER").arg(api_wallet_page.ticker)
+            field.text: current_ticker_infos.address
             field.readOnly: true
             field.wrapMode: TextEdit.NoWrap
             copyable: true
         }
 
-        Image{
+        Image {
             Layout.alignment: Qt.AlignHCenter
 
-            source: "image://QZXing/encode/" + API.get().current_coin_info.address +
+            source: "image://QZXing/encode/" + current_ticker_infos.address +
                             "?correctionLevel=H" +
                             "&format=qrcode&border=true"
             sourceSize.width: 240
@@ -41,13 +37,13 @@ DefaultModal {
         }
 
         // Buttons
-        RowLayout {
+        footer: [
             DefaultButton {
-                text: API.get().settings_pg.empty_string + (qsTr("Close"))
+                text: qsTr("Close")
                 Layout.fillWidth: true
                 onClicked: root.close()
             }
-        }
+        ]
     }
 }
 

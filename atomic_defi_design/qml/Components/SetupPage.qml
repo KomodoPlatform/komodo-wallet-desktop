@@ -1,6 +1,6 @@
-import QtQuick 2.14
-import QtQuick.Layouts 1.12
-import QtQuick.Controls 2.12
+import QtQuick 2.15
+import QtQuick.Layouts 1.15
+import QtQuick.Controls 2.15
 
 import "../Constants"
 
@@ -9,6 +9,7 @@ Item {
     property alias image_path: image.source
     property alias image_scale: image.scale
     property alias content: inner_space.sourceComponent
+    property alias bottom_content: bottom_content.sourceComponent
     property double image_margin: 5
 
     ColumnLayout {
@@ -45,6 +46,11 @@ Item {
             Loader {
                 id: inner_space
             }
+        }
+
+        Loader {
+            id: bottom_content
+            Layout.alignment: Qt.AlignHCenter
         }
     }
 }

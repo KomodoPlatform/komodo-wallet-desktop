@@ -1,6 +1,6 @@
-import QtQuick 2.14
-import QtQuick.Layouts 1.12
-import QtQuick.Controls 2.12
+import QtQuick 2.15
+import QtQuick.Layouts 1.15
+import QtQuick.Controls 2.15
 
 import "../Constants"
 
@@ -55,8 +55,8 @@ ColumnLayout {
     TextFieldWithTitle {
         id: pw
         hidable: true
-        title: API.get().settings_pg.empty_string + (qsTr("Password"))
-        field.placeholderText: API.get().settings_pg.empty_string + (new_password ? qsTr("Enter a password for your wallet") : qsTr("Enter the password of your wallet"))
+        title: qsTr("Password")
+        field.placeholderText: qsTr("Enter your wallet password")
         field.validator: RegExpValidator { regExp: General.reg_pass_input }
     }
 
@@ -69,35 +69,35 @@ ColumnLayout {
         DefaultText {
             visible: high_security
             font.pixelSize: Style.textSizeSmall3
-            text_value: API.get().settings_pg.empty_string + (hintPrefix(hasEnoughLowercaseCharacters()) + qsTr("At least 1 lowercase alphabetical character"))
+            text_value: hintPrefix(hasEnoughLowercaseCharacters()) + qsTr("At least 1 lowercase alphabetical character")
             color: hintColor(hasEnoughLowercaseCharacters())
         }
         DefaultText {
             visible: high_security
             font.pixelSize: Style.textSizeSmall3
-            text_value: API.get().settings_pg.empty_string + (hintPrefix(hasEnoughUppercaseCharacters()) + qsTr("At least 1 uppercase alphabetical character"))
+            text_value: hintPrefix(hasEnoughUppercaseCharacters()) + qsTr("At least 1 uppercase alphabetical character")
             color: hintColor(hasEnoughUppercaseCharacters())
         }
         DefaultText {
             visible: high_security
             font.pixelSize: Style.textSizeSmall3
-            text_value: API.get().settings_pg.empty_string + (hintPrefix(hasEnoughNumericCharacters()) + qsTr("At least 1 numeric character"))
+            text_value: hintPrefix(hasEnoughNumericCharacters()) + qsTr("At least 1 numeric character")
             color: hintColor(hasEnoughNumericCharacters())
         }
         DefaultText {
             visible: high_security
             font.pixelSize: Style.textSizeSmall3
-            text_value: API.get().settings_pg.empty_string + (hintPrefix(hasEnoughSpecialCharacters()) + qsTr("At least 1 special character (eg. !@#$%)"))
+            text_value: hintPrefix(hasEnoughSpecialCharacters()) + qsTr("At least 1 special character (eg. !@#$%)")
             color: hintColor(hasEnoughSpecialCharacters())
         }
         DefaultText {
             font.pixelSize: Style.textSizeSmall3
-            text_value: API.get().settings_pg.empty_string + (hintPrefix(hasEnoughCharacters()) + qsTr("At least %n character(s)", "", high_security ? 16 : 1))
+            text_value: hintPrefix(hasEnoughCharacters()) + qsTr("At least %n character(s)", "", high_security ? 16 : 1)
             color: hintColor(hasEnoughCharacters())
         }
         DefaultText {
             font.pixelSize: Style.textSizeSmall3
-            text_value: API.get().settings_pg.empty_string + (hintPrefix(passwordsDoMatch()) + qsTr("Password and Confirm Password have to be same"))
+            text_value: hintPrefix(passwordsDoMatch()) + qsTr("Password and Confirm Password have to be same")
             color: hintColor(passwordsDoMatch())
         }
     }

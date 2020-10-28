@@ -1,6 +1,6 @@
-import QtQuick 2.14
-import QtQuick.Layouts 1.12
-import QtQuick.Controls 2.12
+import QtQuick 2.15
+import QtQuick.Layouts 1.15
+import QtQuick.Controls 2.15
 
 import "Screens"
 import "Constants"
@@ -8,7 +8,7 @@ import "Components"
 
 Rectangle {
     id: app
-    visible: !API.get().internet_checker.internet_reacheable
+    visible: !API.app.internet_checker.internet_reacheable
     color: Style.colorTheme8
 
     ColumnLayout {
@@ -17,19 +17,19 @@ Rectangle {
         anchors.verticalCenter: parent.verticalCenter
 
         DefaultText {
-            text_value: API.get().settings_pg.empty_string + (qsTr("No connection"))
+            text_value: qsTr("No connection")
             Layout.alignment: Qt.AlignHCenter
             font.pixelSize: Style.textSize3
         }
 
         DefaultText {
-            text_value: API.get().settings_pg.empty_string + (qsTr("Please make sure you are connected to the internet"))
+            text_value: qsTr("Please make sure you are connected to the internet")
             Layout.alignment: Qt.AlignHCenter
         }
 
 
         DefaultText {
-            text_value: API.get().settings_pg.empty_string + (qsTr("Will automatically retry in %1 seconds").arg(General.formatDouble(API.get().internet_checker.seconds_left_to_auto_retry, 0)))
+            text_value: qsTr("Will automatically retry in %1 seconds").arg(General.formatDouble(API.app.internet_checker.seconds_left_to_auto_retry, 0))
             Layout.alignment: Qt.AlignHCenter
         }
 
@@ -38,8 +38,8 @@ Rectangle {
         }
 
         DefaultButton {
-            text: API.get().settings_pg.empty_string + (qsTr("Retry"))
-            onClicked: API.get().internet_checker.retry()
+            text: qsTr("Retry")
+            onClicked: API.app.internet_checker.retry()
             Layout.alignment: Qt.AlignHCenter
         }
     }

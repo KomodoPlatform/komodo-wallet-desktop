@@ -1,6 +1,6 @@
-import QtQuick 2.14
-import QtQuick.Layouts 1.12
-import QtQuick.Controls 2.12
+import QtQuick 2.15
+import QtQuick.Layouts 1.15
+import QtQuick.Controls 2.15
 
 import "../Constants"
 
@@ -12,14 +12,17 @@ TextField {
 
     font.family: Style.font_family
     placeholderTextColor: Style.colorPlaceholderText
+    selectedTextColor: Style.colorSelectedText
+    selectionColor: Style.colorSelection
+
+    Behavior on color { ColorAnimation { duration: Style.animationDuration } }
+    Behavior on placeholderTextColor { ColorAnimation { duration: Style.animationDuration } }
 
     // Right click Context Menu
     selectByMouse: true
     persistentSelection: true
 
-    background: InnerBackground {
-        radius: 100
-    }
+    background: InnerBackground { auto_set_size: false }
 
     leftPadding: Math.max(0, left_text.width + 20)
     rightPadding: Math.max(0, right_text.width + 20)

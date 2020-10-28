@@ -1,10 +1,10 @@
 // This is a modified version of QML Toast Implementation of jonmcclung
 // https://gist.github.com/jonmcclung/bae669101d17b103e94790341301c129
 
-import QtQuick 2.14
+import QtQuick 2.15
 import "../Constants"
 
-Rectangle {
+AnimatedRectangle {
     function show(text, duration, info, is_error) {
         title = text
         details = info
@@ -16,8 +16,6 @@ Rectangle {
         animation.start();
     }
 
-    property bool selfDestroying: false
-
     id: root
 
     readonly property real defaultTime: 2000
@@ -27,7 +25,7 @@ Rectangle {
     property real margin: 10
 
     anchors {
-        horizontalCenter: parent.horizontalCenter
+        horizontalCenter: !parent ? undefined : parent.horizontalCenter
         margins: margin
     }
 
@@ -58,7 +56,7 @@ Rectangle {
         running: false
 
         NumberAnimation {
-            to: .7
+            to: .9
             duration: fadeTime
         }
 
@@ -72,7 +70,7 @@ Rectangle {
         }
 
         onRunningChanged: {
-            if (!running && selfDestroying) root.destroy()
+            if (!running) toast.model.remove(index)
         }
     }
 
@@ -80,12 +78,16 @@ Rectangle {
     property string details: ""
     property bool isError: false
 
-    MouseArea {
+    DefaultMouseArea {
         anchors.fill: parent
         onClicked: {
-            if(details !== "") {
+            if(open_notifications_modal) {
+                dashboard.notifications_modal.open()
+                animation.running = false
+            }
+            else if(details !== "") {
                 showError(title, details)
-                root.visible = false
+                animation.running = false
             }
         }
     }

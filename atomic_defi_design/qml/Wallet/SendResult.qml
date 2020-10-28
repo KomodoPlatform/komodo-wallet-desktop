@@ -1,11 +1,11 @@
-import QtQuick 2.14
-import QtQuick.Layouts 1.12
-import QtQuick.Controls 2.12
+import QtQuick 2.15
+import QtQuick.Layouts 1.15
+import QtQuick.Controls 2.15
 
 import "../Components"
 import "../Constants"
 
-ColumnLayout {
+ModalContent {
     property var result: ({ balance_change:"", fees: "", date: "", explorer_url: "" })
     property alias address: address.text
     property string custom_amount
@@ -13,54 +13,53 @@ ColumnLayout {
 
     function onClose() {}
 
-    ModalHeader {
-        title: API.get().settings_pg.empty_string + (qsTr("Transaction Complete!"))
-    }
+    title: qsTr("Transaction Complete!")
 
     // Address
     TextWithTitle {
         id: address
-        title: API.get().settings_pg.empty_string + (qsTr("Recipient's address"))
+        title: qsTr("Recipient's address")
         visible: text !== ""
     }
 
     // Amount
     TextWithTitle {
-        title: API.get().settings_pg.empty_string + (qsTr("Amount"))
-        text: API.get().settings_pg.empty_string + (General.formatCrypto("", custom_amount !== "" ? custom_amount : result.balance_change, API.get().current_coin_info.ticker))
+        title: qsTr("Amount")
+        text: General.formatCrypto("", custom_amount !== "" ? custom_amount : result.balance_change, api_wallet_page.ticker)
     }
 
     // Fees
     TextWithTitle {
-        title: API.get().settings_pg.empty_string + (qsTr("Fees"))
-        text: API.get().settings_pg.empty_string + (General.formatCrypto("", result.fees, General.txFeeTicker(API.get().current_coin_info)))
+        title: qsTr("Fees")
+        text: General.formatCrypto("", result.fees, current_ticker_infos.fee_ticker)
     }
 
     // Date
     TextWithTitle {
-        title: API.get().settings_pg.empty_string + (qsTr("Date"))
-        text: API.get().settings_pg.empty_string + (result.date)
+        title: qsTr("Date")
+        text: result.date
     }
 
     // Transaction Hash
     TextWithTitle {
         id: tx_hash
-        title: API.get().settings_pg.empty_string + (qsTr("Transaction Hash"))
+        title: qsTr("Transaction Hash")
     }
 
     // Buttons
-    RowLayout {
+    footer: [
         DefaultButton {
-            text: API.get().settings_pg.empty_string + (qsTr("Close"))
+            text: qsTr("Close")
             Layout.fillWidth: true
             onClicked: onClose()
-        }
+        },
+
         PrimaryButton {
-            text: API.get().settings_pg.empty_string + (qsTr("View at Explorer"))
+            text: qsTr("View on Explorer")
             Layout.fillWidth: true
-            onClicked: General.viewTxAtExplorer(API.get().current_coin_info.ticker, tx_hash.text)
+            onClicked: General.viewTxAtExplorer(api_wallet_page.ticker, tx_hash.text)
         }
-    }
+    ]
 }
 
 /*##^##

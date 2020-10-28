@@ -1,6 +1,6 @@
-import QtQuick 2.14
-import QtQuick.Layouts 1.12
-import QtQuick.Controls 2.12
+import QtQuick 2.15
+import QtQuick.Layouts 1.15
+import QtQuick.Controls 2.15
 
 import QtGraphicalEffects 1.0
 
@@ -15,6 +15,8 @@ Rectangle {
 
     property color start_color: Style.colorGradient1
     property color end_color: Style.colorGradient2
+    Behavior on start_color { ColorAnimation { duration: Style.animationDuration } }
+    Behavior on end_color { ColorAnimation { duration: Style.animationDuration } }
 
     gradient: Gradient {
         id: gradient

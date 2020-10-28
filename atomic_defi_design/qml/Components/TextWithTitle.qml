@@ -1,6 +1,6 @@
-import QtQuick 2.14
-import QtQuick.Layouts 1.12
-import QtQuick.Controls 2.12
+import QtQuick 2.15
+import QtQuick.Layouts 1.15
+import QtQuick.Controls 2.15
 
 import "../Constants"
 
@@ -20,27 +20,40 @@ ColumnLayout {
             id: arrow_icon
             visible: expandable
             up: expanded
-            color: expanded ? Style.colorRed : Style.colorGreen
+            color: mouse_area.containsMouse ? Style.colorOrange : expanded ? Style.colorRed : Style.colorGreen
             Layout.alignment: Qt.AlignVCenter
         }
 
-        DefaultText {
+        TitleText {
             id: title
             Layout.fillWidth: true
 
-            MouseArea {
+            color: !expandable ? Style.colorText : Qt.lighter(Style.colorWhite4, mouse_area.containsMouse ? Style.hoverLightMultiplier : 1.0)
+
+            DefaultMouseArea {
+                id: mouse_area
                 enabled: expandable
                 anchors.fill: parent
                 anchors.leftMargin: -arrow_icon.width - row_layout.spacing
+                hoverEnabled: true
                 onClicked: expanded = !expanded
             }
         }
     }
 
-    DefaultText {
-        visible: !expandable || expanded
+    DefaultTextEdit {
+        clip: true
         id: text
         Layout.fillWidth: true
         color: Style.modalValueColor
+        textFormat: TextEdit.AutoText
+
+        readonly property bool show_content: !expandable || expanded
+
+        Layout.preferredHeight: show_content ? contentHeight : 0
+        Behavior on Layout.preferredHeight { SmoothedAnimation { id: expand_animation; duration: Style.animationDuration * 2; velocity: -1 } }
+
+        opacity: show_content ? 1 : 0
+        Behavior on opacity { SmoothedAnimation { duration: expand_animation.duration; velocity: -1 } }
     }
 }

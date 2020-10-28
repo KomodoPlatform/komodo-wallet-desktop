@@ -1,6 +1,6 @@
-import QtQuick 2.14
-import QtQuick.Layouts 1.12
-import QtQuick.Controls 2.12
+import QtQuick 2.15
+import QtQuick.Layouts 1.15
+import QtQuick.Controls 2.15
 
 import QtGraphicalEffects 1.0
 import QtCharts 2.3
@@ -23,11 +23,27 @@ ColumnLayout {
     property int current_sort: sort_by_value
     property bool ascending: false
 
-    function reset() { }
+    function applyCurrentSort() {
+        // Apply the sort
+        switch(current_sort) {
+            case sort_by_name: portfolio_coins.sort_by_name(ascending); break
+            case sort_by_value: portfolio_coins.sort_by_currency_balance(ascending); break
+            case sort_by_price: portfolio_coins.sort_by_currency_unit(ascending); break
+            case sort_by_trend:
+            case sort_by_change: portfolio_coins.sort_by_change_last24h(ascending); break
+        }
+    }
 
-    function onOpened() { }
+    function reset() {
+        input_coin_filter.reset()
+    }
 
-    function updateChart(chart, historical) {
+    function onOpened() {
+        // Reset the coin name filter
+        input_coin_filter.reset()
+    }
+
+    function updateChart(chart, historical, color) {
         chart.removeAllSeries()
 
         let i
@@ -36,7 +52,7 @@ ColumnLayout {
             let series = chart.createSeries(ChartView.SeriesTypeSpline, "Price", chart.axes[0], chart.axes[1]);
 
             series.style = Qt.SolidLine
-            series.color = Style.colorTheme1
+            series.color = color
 
             let min = 999999999
             let max = -999999999
@@ -70,31 +86,35 @@ ColumnLayout {
                 Layout.topMargin: 50
                 Layout.bottomMargin: 0
                 Layout.alignment: Qt.AlignHCenter
-                text_value: API.get().settings_pg.empty_string + (qsTr("TOTAL"))
+                text_value: qsTr("TOTAL")
                 font.pixelSize: Style.textSize
-                color: Style.colorWhite5
+                color: Qt.lighter(Style.colorWhite5, currency_change_button.containsMouse ? Style.hoverLightMultiplier : 1.0)
             }
 
             // Total Balance
             DefaultText {
                 Layout.alignment: Qt.AlignHCenter
                 Layout.bottomMargin: 30
-                text_value: API.get().settings_pg.empty_string + (General.formatFiat("", API.get().balance_fiat_all, API.get().settings_pg.current_currency))
+                text_value: General.formatFiat("", API.app.portfolio_pg.balance_fiat_all, API.app.settings_pg.current_currency)
                 font.pixelSize: Style.textSize4
+                color: Qt.lighter(Style.colorWhite4, currency_change_button.containsMouse ? Style.hoverLightMultiplier : 1.0)
                 privacy: true
             }
         }
 
-        MouseArea {
+        DefaultMouseArea {
+            id: currency_change_button
+
             anchors.fill: top_layout
 
+            hoverEnabled: true
             onClicked: {
-                const current_fiat = API.get().settings_pg.current_currency
-                const available_fiats = API.get().settings_pg.get_available_currencies()
+                const current_fiat = API.app.settings_pg.current_currency
+                const available_fiats = API.app.settings_pg.get_available_currencies()
                 const current_index = available_fiats.indexOf(current_fiat)
                 const next_index = (current_index + 1) % available_fiats.length
                 const next_fiat = available_fiats[next_index]
-                API.get().settings_pg.current_currency = next_fiat
+                API.app.settings_pg.current_currency = next_fiat
             }
         }
 
@@ -113,19 +133,20 @@ ColumnLayout {
             id: input_coin_filter
 
             function reset() {
-                visible = false
-                text = ""
+                if(text === "") resetCoinFilter()
+                else text = ""
+
+                //applyCurrentSort()
             }
 
             anchors.horizontalCenter: add_coin_button.horizontalCenter
             anchors.bottom: parent.bottom
             anchors.bottomMargin: 10
 
-            placeholderText: API.get().settings_pg.empty_string + (qsTr("Search"))
-            selectByMouse: true
+            placeholderText: qsTr("Search")
 
             onTextChanged: {
-                API.get().portfolio_pg.portfolio_mdl.portfolio_proxy_mdl.setFilterFixedString(text)
+                portfolio_coins.setFilterFixedString(text)
             }
 
             width: 120
@@ -156,7 +177,7 @@ ColumnLayout {
             anchors.leftMargin: 40
             anchors.verticalCenter: parent.verticalCenter
 
-            text: API.get().settings_pg.empty_string + (qsTr("Coin"))
+            text: qsTr("Asset")
             sort_type: sort_by_name
         }
 
@@ -168,7 +189,7 @@ ColumnLayout {
             anchors.leftMargin: parent.width * 0.265
             anchors.verticalCenter: parent.verticalCenter
 
-            text: API.get().settings_pg.empty_string + (qsTr("Balance"))
+            text: qsTr("Balance")
             sort_type: sort_by_value
         }
 
@@ -180,7 +201,7 @@ ColumnLayout {
             anchors.rightMargin: parent.width * 0.37
             anchors.verticalCenter: parent.verticalCenter
 
-            text: API.get().settings_pg.empty_string + (qsTr("Change 24h"))
+            text: qsTr("Change 24h")
             sort_type: sort_by_change
         }
 
@@ -192,7 +213,7 @@ ColumnLayout {
             anchors.rightMargin: parent.width * 0.24
             anchors.verticalCenter: parent.verticalCenter
 
-            text: API.get().settings_pg.empty_string + (qsTr("Trend 7d"))
+            text: qsTr("Trend 7d")
             sort_type: sort_by_trend
         }
 
@@ -204,7 +225,7 @@ ColumnLayout {
             anchors.rightMargin: coin_header.anchors.leftMargin
             anchors.verticalCenter: parent.verticalCenter
 
-            text: API.get().settings_pg.empty_string + (qsTr("Price"))
+            text: qsTr("Price")
             sort_type: sort_by_price
         }
 
@@ -226,37 +247,45 @@ ColumnLayout {
 
         model: portfolio_coins
 
-        delegate: Rectangle {
-            color: mouse_area.containsMouse ? Style.colorTheme5 : index % 2 == 0 ? Style.colorTheme6 : Style.colorTheme7
+        delegate: AnimatedRectangle {
+            color: Qt.lighter(mouse_area.containsMouse ? Style.colorTheme5 : index % 2 == 0 ? Style.colorTheme6 : Style.colorTheme7, mouse_area.containsMouse ? Style.hoverLightMultiplier : 1.0)
             width: portfolio.width
             height: 50
 
+            AnimatedRectangle {
+                id: main_color
+                color: Style.getCoinColor(ticker)
+                width: 10
+                anchors.top: parent.top
+                anchors.bottom: parent.bottom
+                anchors.left: parent.left
+            }
+
             // Click area
-            MouseArea {
+            DefaultMouseArea {
                 id: mouse_area
                 anchors.fill: parent
                 hoverEnabled: true
                 acceptedButtons: Qt.LeftButton | Qt.RightButton
                 onClicked: {
+                    if(!can_change_ticker) return
+
                     if (mouse.button === Qt.RightButton) context_menu.popup()
                     else {
-                        API.get().current_coin_info.ticker = ticker
+                        api_wallet_page.ticker = ticker
                         dashboard.current_page = General.idx_dashboard_wallet
                     }
                 }
                 onPressAndHold: {
+                    if(!can_change_ticker) return
+
                     if (mouse.source === Qt.MouseEventNotSynthesized) context_menu.popup()
                 }
             }
 
             // Right click menu
-            Menu {
+            CoinMenu {
                 id: context_menu
-                Action {
-                    text: API.get().settings_pg.empty_string + (qsTr("Disable %1", "TICKER").arg(ticker))
-                    onTriggered: API.get().disable_coins([ticker])
-                    enabled: General.canDisable(ticker)
-                }
             }
 
             // Icon
@@ -274,7 +303,7 @@ ColumnLayout {
             DefaultText {
                 anchors.left: icon.right
                 anchors.leftMargin: 10
-                text_value: API.get().settings_pg.empty_string + (name)
+                text_value: name
                 anchors.verticalCenter: parent.verticalCenter
             }
 
@@ -284,7 +313,7 @@ ColumnLayout {
                 anchors.left: parent.left
                 anchors.leftMargin: balance_header.anchors.leftMargin
 
-                text_value: API.get().settings_pg.empty_string + (General.formatCrypto("", balance, ticker,  main_currency_balance, API.get().settings_pg.current_currency))
+                text_value: General.formatCrypto("", balance, ticker,  main_currency_balance, API.app.settings_pg.current_currency)
                 color: Style.colorWhite4
                 anchors.verticalCenter: parent.verticalCenter
                 privacy: true
@@ -292,12 +321,13 @@ ColumnLayout {
 
             // Change 24h
             DefaultText {
+                id: change_24h_value
                 anchors.right: parent.right
                 anchors.rightMargin: change_24h_header.anchors.rightMargin
 
                 text_value: {
                     const v = parseFloat(change_24h)
-                    return API.get().settings_pg.empty_string + (v === 0 ? '-' : General.formatPercent(v))
+                    return v === 0 ? '-' : General.formatPercent(v)
                 }
                 color: Style.getValueColor(change_24h)
                 anchors.verticalCenter: parent.verticalCenter
@@ -305,12 +335,26 @@ ColumnLayout {
 
             // Price
             DefaultText {
+                id: price_value
                 anchors.right: parent.right
                 anchors.rightMargin: price_header.anchors.rightMargin
 
-                text_value: API.get().settings_pg.empty_string + (General.formatFiat('', main_currency_price_for_one_unit, API.get().settings_pg.current_currency))
+                text_value: General.formatFiat('', main_currency_price_for_one_unit, API.app.settings_pg.current_currency)
                 color: Style.colorThemeDarkLight
                 anchors.verticalCenter: parent.verticalCenter
+
+            }
+
+            DefaultImage {
+                visible: API.app.portfolio_pg.oracle_price_supported_pairs.join(",").indexOf(ticker) !== -1
+                source: General.coinIcon('BAND')
+                width: 12
+                height: width
+                anchors.top: price_value.top
+                anchors.left: price_value.right
+                anchors.leftMargin: 5
+
+                CexInfoTrigger {}
             }
 
             // 7d Trend
@@ -325,9 +369,33 @@ ColumnLayout {
                 anchors.verticalCenter: parent.verticalCenter
                 legend.visible: false
 
-                onHistoricalChanged: updateChart(chart, historical)
-
+                onHistoricalChanged: updateChart(chart, historical, Style.getValueColor(change_24h))
                 backgroundColor: "transparent"
+            }
+
+            AnimatedRectangle {
+                anchors.left: chart.right
+                anchors.leftMargin: -25
+                anchors.verticalCenter: parent.verticalCenter
+
+                visible: {
+                    const type = API.app.get_coin_info(ticker).type
+                    return (type === "ERC-20" && ticker !== "ETH") ||
+                           (type === "QRC-20" && ticker !== "QTUM")
+                }
+                radius: 20
+
+                height: type_tag.font.pixelSize * 1.5
+                width: type_tag.width + 8
+
+                color: Style.getCoinColor(API.app.get_coin_info(ticker).type === "ERC-20" ? "ETH" : "QTUM")
+                DefaultText {
+                    id: type_tag
+                    anchors.verticalCenter: parent.verticalCenter
+                    anchors.horizontalCenter: parent.horizontalCenter
+                    text: API.app.get_coin_info(ticker).type === "ERC-20" ? "ERC-20" : "QRC-20"
+                    font.pixelSize: Style.textSizeSmall1
+                }
             }
         }
     }

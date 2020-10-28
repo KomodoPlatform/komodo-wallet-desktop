@@ -1,6 +1,6 @@
-import QtQuick 2.14
-import QtQuick.Layouts 1.12
-import QtQuick.Controls 2.12
+import QtQuick 2.15
+import QtQuick.Layouts 1.15
+import QtQuick.Controls 2.15
 
 import "../Components"
 import "../Constants"
@@ -12,20 +12,18 @@ SetupPage {
     // Override
     property var onLoaded: () => {}
 
-    readonly property string current_status: API.get().initial_loading_status
+    readonly property string current_status: API.app.initial_loading_status
 
     onCurrent_statusChanged: {
         if(current_status === "complete")
             onLoaded()
     }
 
-
-    image_scale: 0.7
-    image_path: General.image_path + "komodo-icon.png"
-
+    image_path: General.image_path + Style.sidebar_atomicdex_logo
+    image_margin: 30
     content: ColumnLayout {
         DefaultText {
-            text_value: API.get().settings_pg.empty_string + (qsTr("Loading, please wait"))
+            text_value: qsTr("Loading, please wait")
             Layout.bottomMargin: 10
         }
 
@@ -38,8 +36,8 @@ SetupPage {
             }
 
             DefaultText {
-                text_value: API.get().settings_pg.empty_string + ((current_status === "initializing_mm2" ? qsTr("Initializing MM2") :
-                       current_status === "enabling_coins" ? qsTr("Enabling coins") : qsTr("Getting ready")) + "...")
+                text_value: (current_status === "initializing_mm2" ? qsTr("Initializing MM2") :
+                             current_status === "enabling_coins" ? qsTr("Enabling assets") : qsTr("Getting ready")) + "..."
             }
         }
     }
