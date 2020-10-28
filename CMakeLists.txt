@@ -197,14 +197,14 @@ endif()
 
 target_link_libraries(atomicdex-desktop_shared_deps
         INTERFACE
-        Qt5::Core
-        Qt5::Quick
-        Qt5::Svg
-        Qt5::Charts
-        Qt5::WebEngine
-        Qt5::WebEngineCore
-        Qt5::WebEngineWidgets
-        Qt5::Widgets
+        Qt::Core
+        Qt::Quick
+        Qt::Svg
+        Qt::Charts
+        Qt::WebEngine
+        Qt::WebEngineCore
+        Qt::WebEngineWidgets
+        Qt::Widgets
         qzxing
         antara::world
         Boost::random
