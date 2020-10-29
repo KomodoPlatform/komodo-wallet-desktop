@@ -24,8 +24,8 @@
 #include <meta/detection/detection.hpp>
 
 //! Project Headers
-#include "src/atomicdex/config/coins.cfg.hpp"
-#include "src/atomicdex/utilities/cpprestsdk.utilities.hpp"
+#include "atomicdex/config/coins.cfg.hpp"
+#include "atomicdex/utilities/cpprestsdk.utilities.hpp"
 
 namespace mm2::api
 {
