@@ -12,7 +12,7 @@
 #include "atomicdex/services/price/global.provider.hpp"
 #include "qt.settings.page.hpp"
 #include "qt.wallet.page.hpp"
-#include "src/atomicdex/utilities/qt.utilities.hpp"
+#include "atomicdex/utilities/qt.utilities.hpp"
 
 namespace atomic_dex
 {
