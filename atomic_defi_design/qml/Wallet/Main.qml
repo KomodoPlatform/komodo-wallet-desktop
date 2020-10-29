@@ -267,6 +267,16 @@ Item {
             ClaimRewardsModal {
                 id: claim_rewards_modal
             }
+
+            // Faucet for RICK/MORTY coins
+            PrimaryButton {
+                id: button_claim_faucet
+                text: qsTr("Faucet")
+                Layout.fillWidth: true
+                font.pixelSize: send_button.font.pixelSize
+
+                visible: current_ticker_infos.is_test_coin
+            }
         }
 
 
