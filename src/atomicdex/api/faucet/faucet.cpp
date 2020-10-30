@@ -22,7 +22,7 @@
 
 namespace
 {
-    inline constexpr const char*    g_faucet_api_endpoint   = "http://116.203.120.91:8080/faucet/";
+    inline constexpr const char*    g_faucet_api_endpoint   = "https://faucet.komodo.live/faucet/";
     inline auto                     g_faucet_api_client     = std::make_unique<web::http::client::http_client>(FROM_STD_STR(g_faucet_api_endpoint));
 }
 

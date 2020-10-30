@@ -145,7 +145,8 @@ namespace atomic_dex
                         {"change_24h", "0"},      {"tx_state", "InProgress"},
                         {"fiat_amount", "0.00"},  {"trend_7d", QJsonArray()},
                         {"fee_ticker", "KMD"},    {"blocks_left", 1},
-                        {"transactions_left", 0}, {"current_block", 1}};
+                        {"transactions_left", 0}, {"current_block", 1},
+                        {"is_smartchain_test_coin", false}};
         std::error_code ec;
         auto&           mm2_system = m_system_manager.get_system<mm2_service>();
         if (mm2_system.is_mm2_running())
