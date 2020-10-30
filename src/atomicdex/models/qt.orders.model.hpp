@@ -31,7 +31,7 @@
 //! Project
 #include "atomicdex/api/mm2/mm2.hpp"
 #include "qt.orders.proxy.model.hpp"
-#include "src/atomicdex/data/dex/qt.orders.data.hpp"
+#include "atomicdex/data/dex/qt.orders.data.hpp"
 
 namespace atomic_dex
 {
