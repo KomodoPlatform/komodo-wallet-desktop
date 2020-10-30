@@ -8,6 +8,7 @@
 
 //! Project Headers
 #include "atomicdex/services/mm2/mm2.service.hpp"
+#include "atomicdex/api/faucet/faucet.hpp"
 #include "atomicdex/services/price/coinpaprika/coinpaprika.provider.hpp"
 #include "atomicdex/services/price/global.provider.hpp"
 #include "qt.settings.page.hpp"
@@ -65,6 +66,23 @@ namespace atomic_dex
         {
             m_is_claiming_busy = status;
             emit rpcClaimingStatusChanged();
+        }
+    }
+    
+    
+    bool
+    wallet_page::is_claiming_faucet_busy() const noexcept
+    {
+        return m_is_claiming_faucet_busy.load();
+    }
+    
+    void
+    wallet_page::set_claiming_faucet_is_busy(bool status) noexcept
+    {
+        if (m_is_claiming_faucet_busy != status)
+        {
+            m_is_claiming_faucet_busy = status;
+            emit claimingFaucetStatusChanged();
         }
     }
 
@@ -180,6 +198,20 @@ namespace atomic_dex
     {
         m_claiming_rpc_result = rpc_data.toJsonObject();
         emit claimingRpcDataChanged();
+    }
+    
+    
+    QVariant
+    wallet_page::get_rpc_claiming_faucet_data() const noexcept
+    {
+        return m_claiming_rpc_faucet_result.get();
+    }
+    
+    void
+    wallet_page::set_rpc_claiming_faucet_data(QVariant rpc_data) noexcept
+    {
+        m_claiming_rpc_faucet_result = rpc_data.toJsonObject();
+        emit claimingFaucetRpcDataChanged();
     }
 
     QString
@@ -401,6 +433,40 @@ namespace atomic_dex
                     this->set_rpc_claiming_data(error_json);
                 }
                 this->set_claiming_is_busy(false);
+            })
+            .then(&handle_exception_pplx_task);
+    }
+    
+    void wallet_page::claim_faucet()
+    {
+        const auto&                mm2_system    = m_system_manager.get_system<mm2_service>();
+        const auto&                ticker        = mm2_system.get_current_ticker();
+        const auto&                coin_info     = mm2_system.get_coin_info(ticker);
+        std::error_code            ec;
+        faucet::api::claim_request claim_request {.coin_name = coin_info.ticker,
+                                                  .wallet_address = mm2_system.address(ticker, ec)};
+        
+        this->set_claiming_faucet_is_busy(true);
+        faucet::api::claim(claim_request)
+            .then([this](web::http::http_response resp) {
+                std::string               resp_body = TO_STD_STR(resp.extract_string(true).get());
+                faucet::api::claim_result result;
+                
+                if (resp.status_code() == e_http_code::ok) //! request success.
+                {
+                    auto resp_body_json = nlohmann::json::parse(resp_body);
+                    
+                    result = faucet::api::claim_result {.message = resp_body_json.at("Result")["Message"].get<std::string>(),
+                                                        .status  = resp_body_json.at("Status").get<std::string>()};
+                }
+                else                                       //! request error.
+                {
+                    result = faucet::api::claim_result {.message = resp_body, .status = "Request Error"};
+                }
+                this->set_rpc_claiming_faucet_data(
+                    QJsonObject({ {"message", QString::fromStdString(result.message)},
+                                  {"status", QString::fromStdString(result.status)} }));
+                this->set_claiming_faucet_is_busy(false);
             })
             .then(&handle_exception_pplx_task);
     }

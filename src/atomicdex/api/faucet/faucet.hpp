@@ -32,4 +32,10 @@ namespace atomic_dex::faucet::api
     
     pplx::task<web::http::http_response>
     claim(claim_request& claim_req);
+    
+    struct claim_result
+    {
+        std::string message;
+        std::string status;
+    };
 }
