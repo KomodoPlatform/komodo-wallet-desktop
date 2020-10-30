@@ -78,10 +78,12 @@ namespace atomic_dex
         this->m_model_proxy->setSortRole(UnixTimestampRole);
         this->m_model_proxy->setFilterRole(TickerPairRole);
         this->m_model_proxy->sort(0, Qt::DescendingOrder);
+        this->m_dispatcher.sink<current_currency_changed>().connect<&orders_model::on_current_currency_changed>(this);
     }
 
     orders_model::~orders_model() noexcept
     {
+        this->m_dispatcher.sink<current_currency_changed>().disconnect<&orders_model::on_current_currency_changed>(this);
         spdlog::trace("{} l{} f[{}]", __FUNCTION__, __LINE__, fs::path(__FILE__).filename().string());
         spdlog::trace("orders model destroyed");
     }
@@ -116,13 +118,13 @@ namespace atomic_dex
         case BaseCoinAmountRole:
             item.base_amount = value.toString();
             break;
-        case BaseCoinAmountFiatRole:
+        case BaseCoinAmountCurrentCurrencyRole:
             item.base_amount_fiat = value.toString();
             break;
         case RelCoinAmountRole:
             item.rel_amount = value.toString();
             break;
-        case RelCoinAmountFiatRole:
+        case RelCoinAmountCurrentCurrencyRole:
             item.rel_amount_fiat = value.toString();
             break;
         case OrderTypeRole:
@@ -191,11 +193,11 @@ namespace atomic_dex
             return item.ticker_pair;
         case BaseCoinAmountRole:
             return item.base_amount;
-        case BaseCoinAmountFiatRole:
+        case BaseCoinAmountCurrentCurrencyRole:
             return item.base_amount_fiat;
         case RelCoinAmountRole:
             return item.rel_amount;
-        case RelCoinAmountFiatRole:
+        case RelCoinAmountCurrentCurrencyRole:
             return item.rel_amount_fiat;
         case OrderTypeRole:
             return item.order_type;
@@ -321,11 +323,6 @@ namespace atomic_dex
     void
     orders_model::initialize_swap(const ::mm2::api::swap_contents& contents) noexcept
     {
-        const auto& settings_system = m_system_manager.get_system<settings_page>();
-        const auto& global_price_system = m_system_manager.get_system<global_price_service>();
-        const auto& current_fiat = settings_system.get_current_fiat().toStdString();
-        std::error_code ec;
-        
         spdlog::trace("inserting in model order id {}", contents.uuid);
         beginInsertRows(QModelIndex(), this->m_model_data.count(), this->m_model_data.count());
         bool       is_maker = boost::algorithm::to_lower_copy(contents.type) == "maker";
@@ -348,28 +345,12 @@ namespace atomic_dex
             .events           = nlohmann_json_array_to_qt_json_array(contents.events),
             .error_events     = vector_std_string_to_qt_string_list(contents.error_events),
             .success_events   = vector_std_string_to_qt_string_list(contents.success_events)};
-        
+    
         //! Sets amounts in fiat.
-        const auto base_coin_info = m_system_manager.get_system<mm2_service>().get_coin_info(data.base_coin.toStdString());
-        const auto rel_coin_info = m_system_manager.get_system<mm2_service>().get_coin_info(data.rel_coin.toStdString());
-        if (base_coin_info.coinpaprika_id == "test-coin")
-        {
-            data.base_amount_fiat = QString::fromStdString("0");
-        }
-        else
-        {
-            data.base_amount_fiat = QString::fromStdString(
-                global_price_system.get_price_as_currency_from_amount(current_fiat, data.base_coin.toStdString(), data.base_amount.toStdString(), ec));
-        }
-        if (rel_coin_info.coinpaprika_id == "test-coin")
-        {
-            data.rel_amount_fiat = QString::fromStdString("0");
-        }
-        else
-        {
-            data.rel_amount_fiat = QString::fromStdString(
-                global_price_system.get_price_as_currency_from_amount(current_fiat, data.rel_coin.toStdString(), data.rel_amount.toStdString(), ec));
-        }
+        auto&& [base_fiat_value, rel_fiat_value] = determine_amounts_in_current_currency(
+            data.base_coin.toStdString(), data.base_amount.toStdString(), data.rel_coin.toStdString(), data.rel_amount.toStdString());
+        data.base_amount_fiat = QString::fromStdString(base_fiat_value);
+        data.rel_amount_fiat = QString::fromStdString(rel_fiat_value);
         
         data.ticker_pair = data.base_coin + "/" + data.rel_coin;
         if (data.order_status == "failed")
@@ -425,6 +406,12 @@ namespace atomic_dex
 
             update_value(OrdersRoles::SuccessEventsRole, vector_std_string_to_qt_string_list(contents.success_events), idx, *this);
             update_value(OrdersRoles::ErrorEventsRole, vector_std_string_to_qt_string_list(contents.error_events), idx, *this);
+            
+            //! Updates values in current currency of amounts traded.
+            auto&& [base_coin_amount_fiat, rel_coin_amount_fiat] = determine_amounts_in_current_currency(contents);
+            update_value(OrdersRoles::BaseCoinAmountCurrentCurrencyRole, QString::fromStdString(base_coin_amount_fiat), idx, *this);
+            update_value(OrdersRoles::RelCoinAmountCurrentCurrencyRole, QString::fromStdString(rel_coin_amount_fiat), idx, *this);
+            
             emit lengthChanged();
         }
         else
@@ -440,11 +427,6 @@ namespace atomic_dex
     void
     orders_model::initialize_order(const ::mm2::api::my_order_contents& contents) noexcept
     {
-        const auto& settings_system = m_system_manager.get_system<settings_page>();
-        const auto& global_price_system = m_system_manager.get_system<global_price_service>();
-        const auto& current_fiat = settings_system.get_current_fiat().toStdString();
-        std::error_code ec;
-    
         spdlog::trace("inserting in model order id {}", contents.order_id);
         beginInsertRows(QModelIndex(), this->m_model_data.count(), this->m_model_data.count());
         order_data data{
@@ -470,26 +452,10 @@ namespace atomic_dex
         }
         
         //! Sets amounts in fiat.
-        const auto base_coin_info = m_system_manager.get_system<mm2_service>().get_coin_info(data.base_coin.toStdString());
-        const auto rel_coin_info = m_system_manager.get_system<mm2_service>().get_coin_info(data.rel_coin.toStdString());
-        if (base_coin_info.coinpaprika_id == "test-coin")
-        {
-            data.base_amount_fiat = QString::fromStdString(
-                global_price_system.get_price_as_currency_from_amount(current_fiat, data.base_coin.toStdString(), data.base_amount.toStdString(), ec));
-        }
-        else
-        {
-            data.base_amount_fiat = QString::fromStdString("0");
-        }
-        if (rel_coin_info.coinpaprika_id == "test-coin")
-        {
-            data.rel_amount_fiat = QString::fromStdString(
-                global_price_system.get_price_as_currency_from_amount(current_fiat, data.rel_coin.toStdString(), data.rel_amount.toStdString(), ec));
-        }
-        else
-        {
-            data.rel_amount_fiat = QString::fromStdString("0");
-        }
+        auto&& [base_fiat_value, rel_fiat_value] = determine_amounts_in_current_currency(
+            data.base_coin.toStdString(), data.base_amount.toStdString(), data.rel_coin.toStdString(), data.rel_amount.toStdString());
+        data.base_amount_fiat = QString::fromStdString(base_fiat_value);
+        data.rel_amount_fiat = QString::fromStdString(rel_fiat_value);
         
         data.ticker_pair = data.base_coin + "/" + data.rel_coin;
         this->m_orders_id_registry.emplace(contents.order_id);
@@ -497,7 +463,6 @@ namespace atomic_dex
         endInsertRows();
         emit lengthChanged();
     }
-
 
     void
     orders_model::update_existing_order(const ::mm2::api::my_order_contents& contents) noexcept
@@ -602,9 +567,9 @@ namespace atomic_dex
             {RelCoinRole, "rel_coin"},
             {TickerPairRole, "ticker_pair"},
             {BaseCoinAmountRole, "base_amount"},
-            {BaseCoinAmountFiatRole, "base_amount_fiat"},
+            {BaseCoinAmountCurrentCurrencyRole, "base_amount_current_currency"},
             {RelCoinAmountRole, "rel_amount"},
-            {RelCoinAmountFiatRole, "rel_amount_fiat"},
+            {RelCoinAmountCurrentCurrencyRole, "rel_amount_current_currency"},
             {OrderTypeRole, "type"},
             {IsMakerRole, "is_maker"},
             {HumanDateRole, "date"},
@@ -644,6 +609,48 @@ namespace atomic_dex
         this->m_orders_id_registry.clear();
         this->m_model_data.clear();
         this->endResetModel();
+    }
+    
+    std::pair<std::string, std::string> orders_model::determine_amounts_in_current_currency(const std::string& base_coin, const std::string& base_amount,
+                                                                      const std::string& rel_coin, const std::string& rel_amount) noexcept
+    {
+        const auto&     settings_system     = m_system_manager.get_system<settings_page>();
+        const auto&     mm2                 = m_system_manager.get_system<mm2_service>();
+        const auto&     base_coin_info      = mm2.get_coin_info(base_coin);
+        const auto&     rel_coin_info       = mm2.get_coin_info(rel_coin);
+        const auto&     global_price_system = m_system_manager.get_system<global_price_service>();
+        const auto&     current_fiat        = settings_system.get_current_fiat().toStdString();
+        std::string     base_amount_fiat    = "0";
+        std::string     rel_amount_fiat     = "0";
+        std::error_code ec;
+
+        if (base_coin_info.coinpaprika_id != "test-coin")
+        {
+            base_amount_fiat = global_price_system.get_price_as_currency_from_amount(current_fiat, base_coin, base_amount, ec);
+        }
+        if (rel_coin_info.coinpaprika_id != "test-coin")
+        {
+            rel_amount_fiat = global_price_system.get_price_as_currency_from_amount(current_fiat, rel_coin, rel_amount, ec);
+        }
+        return std::make_pair(base_amount_fiat, rel_amount_fiat);
+    }
+    
+    std::pair<std::string, std::string> orders_model::determine_amounts_in_current_currency(const ::mm2::api::swap_contents& contents)
+    {
+        bool is_maker = boost::algorithm::to_lower_copy(contents.type) == "maker";
+        
+        if (is_maker)
+        {
+            return determine_amounts_in_current_currency(contents.maker_coin, contents.maker_amount, contents.taker_coin, contents.taker_amount);
+        }
+        return determine_amounts_in_current_currency(contents.taker_coin, contents.taker_amount, contents.maker_coin, contents.maker_amount);
+    }
+    
+    void orders_model::on_current_currency_changed(const current_currency_changed&) noexcept
+    {
+        spdlog::trace("updated orders model");
+        refresh_or_insert_orders();
+        refresh_or_insert_swaps();
     }
 } // namespace atomic_dex
 

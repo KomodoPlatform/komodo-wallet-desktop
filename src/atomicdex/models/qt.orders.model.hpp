@@ -32,6 +32,7 @@
 #include "atomicdex/api/mm2/mm2.hpp"
 #include "qt.orders.proxy.model.hpp"
 #include "atomicdex/data/dex/qt.orders.data.hpp"
+#include "atomicdex/events/events.hpp"
 
 namespace atomic_dex
 {
@@ -49,9 +50,9 @@ namespace atomic_dex
             RelCoinRole,
             TickerPairRole,
             BaseCoinAmountRole,
-            BaseCoinAmountFiatRole,
+            BaseCoinAmountCurrentCurrencyRole,
             RelCoinAmountRole,
-            RelCoinAmountFiatRole,
+            RelCoinAmountCurrentCurrencyRole,
             OrderTypeRole,
             IsMakerRole,
             HumanDateRole,
@@ -69,7 +70,6 @@ namespace atomic_dex
             SuccessEventsRole,
             ErrorEventsRole
         };
-
 
         orders_model(ag::ecs::system_manager& system_manager, entt::dispatcher& dispatcher, QObject* parent = nullptr) noexcept;
         ~orders_model() noexcept final;
@@ -109,14 +109,23 @@ namespace atomic_dex
         t_orders_datas       m_model_data;
         QVariant             m_json_time_registry;
 
-        orders_proxy_model* m_model_proxy;
+        orders_proxy_model*  m_model_proxy;
 
         //! Private api
-        void    initialize_order(const ::mm2::api::my_order_contents& contents) noexcept;
-        void    update_existing_order(const ::mm2::api::my_order_contents& contents) noexcept;
-        void    initialize_swap(const ::mm2::api::swap_contents& contents) noexcept;
-        void    update_swap(const ::mm2::api::swap_contents& contents) noexcept;
-        QString determine_order_status_from_last_event(const ::mm2::api::swap_contents& contents) noexcept;
-        QString determine_payment_id(const ::mm2::api::swap_contents& contents, bool am_i_maker, bool want_taker_id) noexcept;
+        void                                initialize_order(const ::mm2::api::my_order_contents& contents) noexcept;
+        void                                update_existing_order(const ::mm2::api::my_order_contents& contents) noexcept;
+        void                                initialize_swap(const ::mm2::api::swap_contents& contents) noexcept;
+        void                                update_swap(const ::mm2::api::swap_contents& contents) noexcept;
+        QString                             determine_order_status_from_last_event(const ::mm2::api::swap_contents& contents) noexcept;
+        QString                             determine_payment_id(const ::mm2::api::swap_contents& contents, bool am_i_maker, bool want_taker_id) noexcept;
+        
+        /// Returns the fiat values of base and relative amounts.
+        [[nodiscard]]
+        std::pair<std::string, std::string> determine_amounts_in_current_currency(const std::string& base_coin, const std::string& base_amount,
+                                                                                  const std::string& rel_coin, const std::string& rel_amount) noexcept;
+        [[nodiscard ]]
+        std::pair<std::string, std::string> determine_amounts_in_current_currency(const ::mm2::api::swap_contents& contents);
+    
+        void on_current_currency_changed(const current_currency_changed&) noexcept;
     };
 } // namespace atomic_dex
