@@ -275,7 +275,7 @@ Item {
                 Layout.fillWidth: true
                 font.pixelSize: send_button.font.pixelSize
                 enabled: parseFloat(current_ticker_infos.balance) > 0
-                visible: enabled && current_ticker_infos.is_test_coin
+                visible: enabled && current_ticker_infos.is_smartchain_test_coin
 
                 onClicked: {
                     api_wallet_page.claim_faucet()

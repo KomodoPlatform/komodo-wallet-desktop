@@ -178,10 +178,10 @@ namespace atomic_dex
             {
                 obj["fee_ticker"] = "ETH";
             }
-            obj["blocks_left"]       = static_cast<qint64>(tx_state.blocks_left);
-            obj["transactions_left"] = static_cast<qint64>(tx_state.transactions_left);
-            obj["current_block"]     = static_cast<qint64>(tx_state.current_block);
-            obj["is_test_coin"]      = coin_info.ticker == "RICK" || coin_info.ticker == "MORTY";
+            obj["blocks_left"]             = static_cast<qint64>(tx_state.blocks_left);
+            obj["transactions_left"]       = static_cast<qint64>(tx_state.transactions_left);
+            obj["current_block"]           = static_cast<qint64>(tx_state.current_block);
+            obj["is_smartchain_test_coin"] = coin_info.ticker == "RICK" || coin_info.ticker == "MORTY";
         }
         // qDebug() << obj;
         return obj;
