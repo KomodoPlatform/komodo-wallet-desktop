@@ -105,11 +105,11 @@ DefaultComboBox {
 
                 Keys.onPressed: {
                     if(event.key === Qt.Key_Return) {
-                        if(ticker_list.length > 0) {
+                        if(control.count > 0) {
                             control.currentIndex = 0
-                            popup.close()
-                            event.accepted = true
                         }
+                        popup.close()
+                        event.accepted = true
                     }
                 }
             }
