@@ -16,12 +16,10 @@
 
 #pragma once
 
-//! C++ System Headers
-#include <boost/filesystem.hpp>
-//#include <filesystem> ///< std::filesystem::path
+#include "portable.filesystem.hpp"
 
 namespace antara::gaming::core
 {
-    boost::filesystem::path binary_real_path() noexcept;
-    boost::filesystem::path assets_real_path() noexcept;
+    fs::path binary_real_path() noexcept;
+    fs::path assets_real_path() noexcept;
 } // namespace antara::gaming::core

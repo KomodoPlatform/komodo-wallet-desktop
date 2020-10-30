@@ -77,7 +77,7 @@ namespace
             ofs << actual_config_data;
 
             //! Delete old cfg
-            boost::system::error_code ec;
+            fs_error_code ec;
             fs::remove(precedent_version_cfg_path, ec);
             if (ec)
             {
