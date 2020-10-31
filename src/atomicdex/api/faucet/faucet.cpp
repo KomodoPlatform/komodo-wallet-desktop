@@ -33,11 +33,11 @@ namespace atomic_dex::faucet::api
     {
         web::http::http_request http_request;
         web::uri_builder        uri_builder;
-        
-        uri_builder.append_path(claim_req.coin_name);
-        uri_builder.append_path(claim_req.wallet_address);
-        http_request.set_method(web::http::methods::GET);
+    
+        uri_builder.append_path(FROM_STD_STR(claim_req.coin_name));
+        uri_builder.append_path(FROM_STD_STR(claim_req.wallet_address));
         http_request.set_request_uri(uri_builder.to_uri());
+        http_request.set_method(web::http::methods::GET);
         return g_faucet_api_client->request(http_request);
     }
 }
