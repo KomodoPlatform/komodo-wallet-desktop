@@ -17,11 +17,11 @@
 #pragma once
 
 //! PCH
-#include "src/atomicdex/pch.hpp"
+#include "atomicdex/pch.hpp"
 
 //! Deps
-#include <nlohmann/json.hpp>
 #include <meta/detection/detection.hpp>
+#include <nlohmann/json.hpp>
 
 //! Project Headers
 #include "atomicdex/config/coins.cfg.hpp"

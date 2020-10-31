@@ -57,7 +57,7 @@ connect_signals_handler()
 {
     spdlog::info("connecting signal SIGABRT to the signal handler");
 #if defined(linux)
-    if (boost::filesystem::exists("./backtrace.dump"))
+    if (fs::exists("./backtrace.dump"))
     {
         // there is a backtrace
         std::ifstream ifs("./backtrace.dump");
@@ -67,7 +67,7 @@ connect_signals_handler()
 
         // cleaning up
         ifs.close();
-        boost::filesystem::remove("./backtrace.dump");
+        fs::remove("./backtrace.dump");
     }
 #endif
     std::signal(SIGABRT, signal_handler);

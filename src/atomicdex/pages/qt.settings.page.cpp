@@ -270,7 +270,7 @@ namespace atomic_dex
                     fs::copy_file(
                         icon_filepath.toStdString(),
                         fs::path(get_custom_coins_icons_path().toStdString()) / (boost::algorithm::to_lower_copy(ticker) + suffix.string()),
-                        fs::copy_option::overwrite_if_exists);
+                        get_override_options());
                 }
                 if (not is_this_ticker_present_in_raw_cfg(QString::fromStdString(ticker)))
                 {
@@ -380,7 +380,7 @@ namespace atomic_dex
         const fs::path    wallet_cfg_path = get_atomic_dex_config_folder() / wallet_cfg_file;
         if (fs::exists(wallet_cfg_path))
         {
-            boost::system::error_code ec;
+            fs_error_code ec;
             fs::remove(wallet_cfg_path, ec);
             if (ec)
             {
