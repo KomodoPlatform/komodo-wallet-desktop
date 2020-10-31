@@ -123,7 +123,7 @@ namespace atomic_dex
         [[nodiscard]]
         std::pair<std::string, std::string> determine_amounts_in_current_currency(const std::string& base_coin, const std::string& base_amount,
                                                                                   const std::string& rel_coin, const std::string& rel_amount) noexcept;
-        [[nodiscard ]]
+        [[nodiscard]]
         std::pair<std::string, std::string> determine_amounts_in_current_currency(const ::mm2::api::swap_contents& contents);
     
         void on_current_currency_changed(const current_currency_changed&) noexcept;
