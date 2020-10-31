@@ -86,8 +86,12 @@ QtObject {
         return applyOpacity(color, condition ? "FF" : "00")
     }
 
+    readonly property string colorQtThemeAccent: colorGreen
+    readonly property string colorQtThemeForeground: colorWhite1
+    readonly property string colorQtThemeBackground: colorTheme9
+
     readonly property string sidebar_atomicdex_logo: dark_theme ? "atomicdex-logo.svg" : "atomicdex-logo-dark.svg"
-    readonly property string colorRed: dark_theme ? "#D13990" : "#9a1165"
+    readonly property string colorRed: dark_theme ? "#D13990" : "#9a1165" // Light is 15% darker than Red2, same with the green set
     readonly property string colorRed2:  dark_theme ? "#b61477" : "#b61477"
     readonly property string colorRed3:  dark_theme ? "#6d0c47" : "#D13990"
     readonly property string colorYellow:  dark_theme ? "#FFC305" : "#FFC305"
