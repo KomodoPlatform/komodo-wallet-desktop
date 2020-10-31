@@ -96,9 +96,9 @@ QtObject {
     readonly property string colorYellow:  dark_theme ? "#FFC305" : "#FFC305"
     readonly property string colorOrange:  dark_theme ? "#F7931A" : "#F7931A"
     readonly property string colorBlue:  dark_theme ? "#3B78D1" : "#3B78D1"
-    readonly property string colorGreen:  dark_theme ? "#74FBEE" : "#74FBEE"
+    readonly property string colorGreen:  dark_theme ? "#74FBEE" : "#109f8d"
     readonly property string colorGreen2:  dark_theme ? "#14bca6" : "#14bca6"
-    readonly property string colorGreen3:  dark_theme ? "#07433b" : "#07433b"
+    readonly property string colorGreen3:  dark_theme ? "#07433b" : "#74FBEE"
 
     readonly property string colorWhite1:  dark_theme ? "#FFFFFF" : "#000000"
     readonly property string colorWhite2:  dark_theme ? "#F9F9F9" : "#111111"
@@ -114,7 +114,6 @@ QtObject {
     readonly property string colorWhite12:  dark_theme ? "#111111" : "#F9F9F9"
     readonly property string colorWhite13:  dark_theme ? "#000000" : "#FFFFFF"
 
-    readonly property string colorTheme0:  dark_theme ? "#41EAD4" : "#41EAD4"
     readonly property string colorTheme1:  dark_theme ? "#3CC9BF" : "#3CC9BF"
     readonly property string colorTheme2:  dark_theme ? "#36A8AA" : "#36A8AA"
     readonly property string colorTheme3:  dark_theme ? "#318795" : "#318795"
@@ -221,7 +220,7 @@ QtObject {
         })
     readonly property string colorPlaceholderText: Style.colorWhite9
     readonly property string colorSelectedText: Style.colorTheme9
-    readonly property string colorSelection: Style.colorTheme0
+    readonly property string colorSelection: Style.colorGreen2
 
     readonly property string modalValueColor: colorWhite4
 
