@@ -17,12 +17,12 @@
 #include <QDebug>
 
 //! PCH
-#include "src/atomicdex/pch.hpp"
+#include "atomicdex/pch.hpp"
 
 //! Project
-#include "qt.orders.model.hpp"
-#include "qt.orders.proxy.model.hpp"
-#include "src/atomicdex/utilities/global.utilities.hpp"
+#include "atomicdex/utilities/global.utilities.hpp"
+#include "atomicdex/models/qt.orders.model.hpp"
+#include "atomicdex/models/qt.orders.proxy.model.hpp"
 
 namespace atomic_dex
 {
@@ -209,8 +209,8 @@ namespace atomic_dex
     {
         const fs::path csv_path = path.toStdString();
         spdlog::info("exporting csv with path: {}", csv_path.string());
-        std::ofstream  ofs(csv_path.string(), std::ios::out | std::ios::trunc);
-        int            nb_items = this->rowCount();
+        std::ofstream ofs(csv_path.string(), std::ios::out | std::ios::trunc);
+        int           nb_items = this->rowCount();
         ofs << "Date, BaseCoin, BaseAmount, Status, RelCoin, RelAmount, UUID, ErrorState" << std::endl;
         for (int cur_idx = 0; cur_idx < nb_items; ++cur_idx)
         {

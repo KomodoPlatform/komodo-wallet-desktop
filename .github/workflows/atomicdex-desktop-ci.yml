@@ -104,6 +104,10 @@ jobs:
           echo ${{ github.sha }}
           sudo ./ci_tools_atomic_dex/ci_scripts/linux_script.sh
 
+      - name: Clone custom ports (All OS)
+        run: |
+          git clone https://github.com/KomodoPlatform/vcpkg-custom-ports ${{ github.workspace }}/ci_tools_atomic_dex/vcpkg-custom-ports
+
       - name: vcpkg deps (Linux)
         if: runner.os == 'Linux'
         env: # Or as an environment variable
@@ -113,7 +117,7 @@ jobs:
           CC: clang-10
         uses: KomodoPlatform/run-vcpkg@v3
         with:
-          vcpkgArguments: '@${{ github.workspace }}/.github/workflows/linux_response_file.txt'
+          vcpkgArguments: '@${{ github.workspace }}/.github/workflows/linux_response_file.txt --overlay-ports=${{ github.workspace }}/ci_tools_atomic_dex/vcpkg-custom-ports/ports'
           vcpkgDirectory: '${{ github.workspace }}/ci_tools_atomic_dex/vcpkg-repo'
           appendedCacheKey: ${{ hashFiles('.github/workflows/linux_response_file.txt') }}
 
@@ -129,7 +133,7 @@ jobs:
           CC: /usr/local/opt/llvm@9/bin/clang
         uses: KomodoPlatform/run-vcpkg@v3
         with:
-          vcpkgArguments: '@${{ github.workspace }}/.github/workflows/osx_response_file.txt'
+          vcpkgArguments: '@${{ github.workspace }}/.github/workflows/osx_response_file.txt --overlay-ports=${{ github.workspace }}/ci_tools_atomic_dex/vcpkg-custom-ports/ports'
           vcpkgDirectory: '${{ github.workspace }}/ci_tools_atomic_dex/vcpkg-repo'
           appendedCacheKey: ${{ hashFiles('.github/workflows/osx_response_file.txt') }}
 
@@ -137,7 +141,7 @@ jobs:
         if: runner.os == 'Windows'
         uses: KomodoPlatform/run-vcpkg@v3
         with:
-          vcpkgArguments: '@${{ github.workspace }}/.github/workflows/windows_response_file.txt'
+          vcpkgArguments: '@${{ github.workspace }}/.github/workflows/windows_response_file.txt --overlay-ports=${{ github.workspace }}/ci_tools_atomic_dex/vcpkg-custom-ports/ports'
           vcpkgDirectory: '${{ github.workspace }}/ci_tools_atomic_dex/vcpkg-repo'
           appendedCacheKey: ${{ hashFiles('.github/workflows/windows_response_file.txt') }}
 

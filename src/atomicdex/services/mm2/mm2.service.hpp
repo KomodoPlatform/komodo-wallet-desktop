@@ -27,10 +27,10 @@
 //! Project Headers
 #include "atomicdex/api/mm2/mm2.hpp"
 #include "atomicdex/config/coins.cfg.hpp"
+#include "atomicdex/config/raw.mm2.coins.cfg.hpp"
+#include "atomicdex/constants/mm2.error.code.hpp"
 #include "atomicdex/events/events.hpp"
-#include "src/atomicdex/config/raw.mm2.coins.cfg.hpp"
-#include "src/atomicdex/constants/mm2.error.code.hpp"
-#include "src/atomicdex/utilities/global.utilities.hpp"
+#include "atomicdex/utilities/global.utilities.hpp"
 
 namespace atomic_dex
 {

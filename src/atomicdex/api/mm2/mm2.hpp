@@ -17,15 +17,15 @@
 #pragma once
 
 //! PCH
-#include "src/atomicdex/pch.hpp"
+#include "atomicdex/pch.hpp"
 
 //! Deps
-#include <nlohmann/json.hpp>
 #include <meta/detection/detection.hpp>
+#include <nlohmann/json.hpp>
 
 //! Project Headers
-#include "src/atomicdex/config/coins.cfg.hpp"
-#include "src/atomicdex/utilities/cpprestsdk.utilities.hpp"
+#include "atomicdex/config/coins.cfg.hpp"
+#include "atomicdex/utilities/cpprestsdk.utilities.hpp"
 
 namespace mm2::api
 {
