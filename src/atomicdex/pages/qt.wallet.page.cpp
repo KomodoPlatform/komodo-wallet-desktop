@@ -450,23 +450,10 @@ namespace atomic_dex
         this->set_claiming_faucet_is_busy(true);
         faucet::api::claim(claim_request)
             .then([this](web::http::http_response resp) {
-                std::string               resp_body = TO_STD_STR(resp.extract_string(true).get());
-                faucet::api::claim_result result;
-                
-                if (resp.status_code() == e_http_code::ok) //! request success.
-                {
-                    auto resp_body_json = nlohmann::json::parse(resp_body);
-                    
-                    result = faucet::api::claim_result {.message = resp_body_json.at("Result")["Message"].get<std::string>(),
-                                                        .status  = resp_body_json.at("Status").get<std::string>()};
-                }
-                else                                       //! request error.
-                {
-                    result = faucet::api::claim_result {.message = resp_body, .status = "Request Error"};
-                }
+                auto claim_result = faucet::api::get_claim_result(resp);
                 this->set_rpc_claiming_faucet_data(
-                    QJsonObject({ {"message", QString::fromStdString(result.message)},
-                                  {"status", QString::fromStdString(result.status)} }));
+                    QJsonObject({ {"message", QString::fromStdString(claim_result.message)},
+                                  {"status", QString::fromStdString(claim_result.status)} }));
                 this->set_claiming_faucet_is_busy(false);
             })
             .then(&handle_exception_pplx_task);

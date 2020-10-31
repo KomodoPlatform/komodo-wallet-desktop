@@ -19,6 +19,7 @@
 
 //! Project Headers
 #include "faucet.hpp"
+#include "atomicdex/constants/http.code.hpp"
 
 namespace
 {
@@ -29,7 +30,7 @@ namespace
 namespace atomic_dex::faucet::api
 {
     pplx::task<web::http::http_response>
-    claim(claim_request& claim_req)
+    claim(const claim_request& claim_req)
     {
         web::http::http_request http_request;
         web::uri_builder        uri_builder;
@@ -39,5 +40,22 @@ namespace atomic_dex::faucet::api
         http_request.set_request_uri(uri_builder.to_uri());
         http_request.set_method(web::http::methods::GET);
         return g_faucet_api_client->request(http_request);
+    }
+    
+    claim_result
+    get_claim_result(const web::http::http_response& claim_response)
+    {
+        std::string resp_body = TO_STD_STR(claim_response.extract_string(true).get());
+        
+        //! request success.
+        if (claim_response.status_code() == e_http_code::ok)
+        {
+            auto resp_body_json = nlohmann::json::parse(resp_body);
+        
+            return faucet::api::claim_result {.message = resp_body_json.at("Result")["Message"].get<std::string>(),
+                                              .status  = resp_body_json.at("Status").get<std::string>()};
+        }
+        //! request error.
+        return faucet::api::claim_result {.message = resp_body, .status = "Request Error"};
     }
 }
