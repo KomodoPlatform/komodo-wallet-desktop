@@ -4,8 +4,13 @@ project(atomicdex-desktop LANGUAGES CXX VERSION 0.3.0)
 
 
 option(DISABLE_GEOBLOCKING "Enable to disable geoblocking (for dev purpose)" OFF)
+option(PREFER_BOOST_FILESYSTEM "Enable to use boost filesystem instead of std::filesystem" OFF)
 set(FETCHCONTENT_QUIET OFF CACHE BOOL "Override option" FORCE)
 
+if (PREFER_BOOST_FILESYSTEM)
+    message(STATUS "Boost filesystem over std::filesystem")
+    add_compile_definitions(PREFER_BOOST_FILESYSTEM)
+endif()
 
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)

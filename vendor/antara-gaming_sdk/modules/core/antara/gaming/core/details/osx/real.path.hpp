@@ -19,9 +19,10 @@
 #include <array>
 #include <cassert>
 #include <climits>
-#include <filesystem>
 #include <mach-o/dyld.h>
 #include <string>
+
+#include "../../portable.filesystem.hpp"
 
 namespace antara::gaming::core::details
 {
@@ -29,8 +30,9 @@ namespace antara::gaming::core::details
     replace_all_mute(std::string& s, const std::string& from, const std::string& to) noexcept
     {
         if (not from.empty())
-            for (std::size_t pos = 0; (pos = s.find(from, pos) + 1); pos += to.size())
-                s.replace(--pos, from.size(), to);
+        {
+            for (std::size_t pos = 0; (pos = s.find(from, pos) + 1); pos += to.size()) s.replace(--pos, from.size(), to);
+        }
         return s;
     }
 
@@ -40,7 +42,7 @@ namespace antara::gaming::core::details
         return replace_all_mute(s, from, to);
     }
 
-    boost::filesystem::path
+    fs::path
     binary_real_path() noexcept
     {
         std::array<char, PATH_MAX + 1> dir_name_buffer{};
@@ -49,10 +51,10 @@ namespace antara::gaming::core::details
         assert(result == 0);
         std::string tmp_path(dir_name_buffer.data());
         auto        final_path = replace_all_copy(tmp_path, "./", "");
-        return boost::filesystem::path(final_path);
+        return fs::path(final_path);
     }
 
-    boost::filesystem::path
+    fs::path
     assets_real_path() noexcept
     {
         return binary_real_path().parent_path().parent_path() / "Resources/assets";
