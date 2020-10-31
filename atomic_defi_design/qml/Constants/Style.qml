@@ -31,10 +31,7 @@ QtObject {
     readonly property string failureCharacter:  "✘"
     readonly property string warningCharacter:  "⚠"
 
-
     readonly property int animationDuration: 125
-
-    readonly property int materialElevation: 5
 
     readonly property int textSizeVerySmall1: 1
     readonly property int textSizeVerySmall2: 2
@@ -90,9 +87,9 @@ QtObject {
     }
 
     readonly property string sidebar_atomicdex_logo: dark_theme ? "atomicdex-logo.svg" : "atomicdex-logo-dark.svg"
-    readonly property string colorRed: dark_theme ? "#D13990" : "#D13990"
+    readonly property string colorRed: dark_theme ? "#D13990" : "#9a1165"
     readonly property string colorRed2:  dark_theme ? "#b61477" : "#b61477"
-    readonly property string colorRed3:  dark_theme ? "#6d0c47" : "#6d0c47"
+    readonly property string colorRed3:  dark_theme ? "#6d0c47" : "#D13990"
     readonly property string colorYellow:  dark_theme ? "#FFC305" : "#FFC305"
     readonly property string colorOrange:  dark_theme ? "#F7931A" : "#F7931A"
     readonly property string colorBlue:  dark_theme ? "#3B78D1" : "#3B78D1"
