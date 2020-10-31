@@ -21,11 +21,11 @@
 #include <boost/algorithm/string/case_conv.hpp>
 
 //! Project
-#include "atomicdex/services/mm2/mm2.service.hpp"
 #include "qt.orders.model.hpp"
 #include "atomicdex/events/qt.events.hpp"
 #include "atomicdex/utilities/qt.utilities.hpp"
 #include "atomicdex/services/price/global.provider.hpp"
+#include "atomicdex/services/mm2/mm2.service.hpp"
 #include "atomicdex/pages/qt.settings.page.hpp"
 
 //! Utils
@@ -42,15 +42,15 @@ namespace
         }
         return std::make_tuple(value, value, false);
     }
-
+    
     std::pair<QString, QString>
     extract_error(const ::mm2::api::swap_contents& contents)
     {
         for (auto&& cur_event: contents.events)
         {
             if (std::any_of(begin(contents.error_events), end(contents.error_events), [&cur_event](auto&& error_str) {
-                    return cur_event.at("state").get<std::string>() == error_str;
-                }))
+              return cur_event.at("state").get<std::string>() == error_str;
+            }))
             {
                 //! It's an error
                 if (cur_event.contains("data") && cur_event.at("data").contains("error"))
@@ -72,27 +72,31 @@ namespace atomic_dex
     {
         spdlog::trace("{} l{} f[{}]", __FUNCTION__, __LINE__, fs::path(__FILE__).filename().string());
         spdlog::trace("orders model created");
-
+        
         this->m_model_proxy->setSourceModel(this);
         this->m_model_proxy->setDynamicSortFilter(true);
         this->m_model_proxy->setSortRole(UnixTimestampRole);
         this->m_model_proxy->setFilterRole(TickerPairRole);
         this->m_model_proxy->sort(0, Qt::DescendingOrder);
+        
+        this->m_dispatcher.sink<current_currency_changed>().connect<&orders_model::on_current_currency_changed>(this);
     }
-
+    
     orders_model::~orders_model() noexcept
     {
+        this->m_dispatcher.sink<current_currency_changed>().disconnect<&orders_model::on_current_currency_changed>(this);
+        
         spdlog::trace("{} l{} f[{}]", __FUNCTION__, __LINE__, fs::path(__FILE__).filename().string());
         spdlog::trace("orders model destroyed");
     }
-
+    
     int
     orders_model::rowCount([[maybe_unused]] const QModelIndex& parent) const
     {
         return this->m_model_data.count();
     }
-
-
+    
+    
     bool
     orders_model::setData(const QModelIndex& index, const QVariant& value, int role)
     {
@@ -100,7 +104,7 @@ namespace atomic_dex
         {
             return false;
         }
-
+        
         order_data& item = m_model_data[index.row()];
         switch (static_cast<OrdersRoles>(role))
         {
@@ -116,13 +120,13 @@ namespace atomic_dex
         case BaseCoinAmountRole:
             item.base_amount = value.toString();
             break;
-        case BaseCoinAmountFiatRole:
+        case BaseCoinAmountCurrentCurrencyRole:
             item.base_amount_fiat = value.toString();
             break;
         case RelCoinAmountRole:
             item.rel_amount = value.toString();
             break;
-        case RelCoinAmountFiatRole:
+        case RelCoinAmountCurrentCurrencyRole:
             item.rel_amount_fiat = value.toString();
             break;
         case OrderTypeRole:
@@ -167,11 +171,11 @@ namespace atomic_dex
         case ErrorEventsRole:
             item.error_events = value.toStringList();
         }
-
+        
         emit dataChanged(index, index, {role});
         return true;
     }
-
+    
     QVariant
     orders_model::data(const QModelIndex& index, int role) const
     {
@@ -179,7 +183,7 @@ namespace atomic_dex
         {
             return {};
         }
-
+        
         const order_data& item = m_model_data.at(index.row());
         switch (static_cast<OrdersRoles>(role))
         {
@@ -191,11 +195,11 @@ namespace atomic_dex
             return item.ticker_pair;
         case BaseCoinAmountRole:
             return item.base_amount;
-        case BaseCoinAmountFiatRole:
+        case BaseCoinAmountCurrentCurrencyRole:
             return item.base_amount_fiat;
         case RelCoinAmountRole:
             return item.rel_amount;
-        case RelCoinAmountFiatRole:
+        case RelCoinAmountCurrentCurrencyRole:
             return item.rel_amount_fiat;
         case OrderTypeRole:
             return item.order_type;
@@ -232,12 +236,12 @@ namespace atomic_dex
         }
         return {};
     }
-
+    
     bool
     orders_model::removeRows(int position, int rows, [[maybe_unused]] const QModelIndex& parent)
     {
         spdlog::trace("(orders_model::removeRows) removing {} elements at position {}", rows, position);
-
+        
         beginRemoveRows(QModelIndex(), position, position + rows - 1);
         for (int row = 0; row < rows; ++row)
         {
@@ -245,21 +249,21 @@ namespace atomic_dex
             emit lengthChanged();
         }
         endRemoveRows();
-
+        
         return true;
     }
-
-
+    
+    
     QString
     orders_model::determine_payment_id(const ::mm2::api::swap_contents& contents, bool am_i_maker, bool want_taker_id) noexcept
     {
         QString result = "";
-
+        
         if (contents.events.empty())
         {
             return result;
         }
-
+        
         std::string search_name;
         if (am_i_maker)
         {
@@ -278,7 +282,7 @@ namespace atomic_dex
         }
         return result;
     }
-
+    
     QString
     orders_model::determine_order_status_from_last_event(const ::mm2::api::swap_contents& contents) noexcept
     {
@@ -291,14 +295,14 @@ namespace atomic_dex
         {
             return "matched";
         }
-
+        
         if (last_event == "TakerPaymentWaitRefundStarted" || last_event == "MakerPaymentWaitRefundStarted")
         {
             return "refunding";
         }
-
+        
         QString status = "ongoing";
-
+        
         if (last_event == "Finished")
         {
             status = "successful";
@@ -307,25 +311,20 @@ namespace atomic_dex
             {
                 if (cur_event.contains("data") && cur_event.at("data").contains("error") &&
                     std::any_of(begin(contents.error_events), end(contents.error_events), [&cur_event](auto&& error_str) {
-                        return cur_event.at("state").get<std::string>() == error_str;
+                      return cur_event.at("state").get<std::string>() == error_str;
                     }))
                 {
                     status = "failed";
                 }
             }
         }
-
+        
         return status;
     }
-
+    
     void
     orders_model::initialize_swap(const ::mm2::api::swap_contents& contents) noexcept
     {
-        const auto& settings_system = m_system_manager.get_system<settings_page>();
-        const auto& global_price_system = m_system_manager.get_system<global_price_service>();
-        const auto& current_fiat = settings_system.get_current_fiat().toStdString();
-        std::error_code ec;
-        
         spdlog::trace("inserting in model order id {}", contents.uuid);
         beginInsertRows(QModelIndex(), this->m_model_data.count(), this->m_model_data.count());
         bool       is_maker = boost::algorithm::to_lower_copy(contents.type) == "maker";
@@ -350,26 +349,10 @@ namespace atomic_dex
             .success_events   = vector_std_string_to_qt_string_list(contents.success_events)};
         
         //! Sets amounts in fiat.
-        const auto base_coin_info = m_system_manager.get_system<mm2_service>().get_coin_info(data.base_coin.toStdString());
-        const auto rel_coin_info = m_system_manager.get_system<mm2_service>().get_coin_info(data.rel_coin.toStdString());
-        if (base_coin_info.coinpaprika_id == "test-coin")
-        {
-            data.base_amount_fiat = QString::fromStdString("0");
-        }
-        else
-        {
-            data.base_amount_fiat = QString::fromStdString(
-                global_price_system.get_price_as_currency_from_amount(current_fiat, data.base_coin.toStdString(), data.base_amount.toStdString(), ec));
-        }
-        if (rel_coin_info.coinpaprika_id == "test-coin")
-        {
-            data.rel_amount_fiat = QString::fromStdString("0");
-        }
-        else
-        {
-            data.rel_amount_fiat = QString::fromStdString(
-                global_price_system.get_price_as_currency_from_amount(current_fiat, data.rel_coin.toStdString(), data.rel_amount.toStdString(), ec));
-        }
+        auto&& [base_fiat_value, rel_fiat_value] = determine_amounts_in_current_currency(
+            data.base_coin.toStdString(), data.base_amount.toStdString(), data.rel_coin.toStdString(), data.rel_amount.toStdString());
+        data.base_amount_fiat = QString::fromStdString(base_fiat_value);
+        data.rel_amount_fiat = QString::fromStdString(rel_fiat_value);
         
         data.ticker_pair = data.base_coin + "/" + data.rel_coin;
         if (data.order_status == "failed")
@@ -378,13 +361,13 @@ namespace atomic_dex
             data.order_error_state   = error.first;
             data.order_error_message = error.second;
         }
-
+        
         if (data.order_status == "matched")
         {
             using namespace std::string_literals;
             m_dispatcher.trigger<swap_status_notification>(data.order_id, "matching", "matched", data.base_coin, data.rel_coin, data.human_date);
         }
-
+        
         if (this->m_swaps_id_registry.find(contents.uuid) == m_swaps_id_registry.end())
         {
             this->m_swaps_id_registry.emplace(contents.uuid);
@@ -393,7 +376,7 @@ namespace atomic_dex
         endInsertRows();
         emit lengthChanged();
     }
-
+    
     void
     orders_model::update_swap(const ::mm2::api::swap_contents& contents) noexcept
     {
@@ -403,7 +386,7 @@ namespace atomic_dex
             bool               is_maker = boost::algorithm::to_lower_copy(contents.type) == "maker";
             update_value(OrdersRoles::IsRecoverableRole, contents.funds_recoverable, idx, *this);
             auto&& [prev_value, new_value, is_change] =
-                update_value(OrdersRoles::OrderStatusRole, determine_order_status_from_last_event(contents), idx, *this);
+            update_value(OrdersRoles::OrderStatusRole, determine_order_status_from_last_event(contents), idx, *this);
             update_value(
                 OrdersRoles::UnixTimestampRole, not contents.events.empty() ? contents.events.back().at("timestamp").get<unsigned long long>() : 0, idx, *this);
             auto&& [prev_value_d, new_value_d, _] = update_value(
@@ -422,9 +405,15 @@ namespace atomic_dex
             update_value(OrdersRoles::OrderErrorStateRole, state, idx, *this);
             update_value(OrdersRoles::OrderErrorMessageRole, msg, idx, *this);
             update_value(OrdersRoles::EventsRole, nlohmann_json_array_to_qt_json_array(contents.events), idx, *this);
-
+            
             update_value(OrdersRoles::SuccessEventsRole, vector_std_string_to_qt_string_list(contents.success_events), idx, *this);
             update_value(OrdersRoles::ErrorEventsRole, vector_std_string_to_qt_string_list(contents.error_events), idx, *this);
+            
+            //! Updates values in current currency of amounts traded.
+            auto&& [base_coin_amount_fiat, rel_coin_amount_fiat] = determine_amounts_in_current_currency(contents);
+            update_value(OrdersRoles::BaseCoinAmountCurrentCurrencyRole, QString::fromStdString(base_coin_amount_fiat), idx, *this);
+            update_value(OrdersRoles::RelCoinAmountCurrentCurrencyRole, QString::fromStdString(rel_coin_amount_fiat), idx, *this);
+            
             emit lengthChanged();
         }
         else
@@ -436,15 +425,10 @@ namespace atomic_dex
             initialize_swap(contents);
         }
     }
-
+    
     void
     orders_model::initialize_order(const ::mm2::api::my_order_contents& contents) noexcept
     {
-        const auto& settings_system = m_system_manager.get_system<settings_page>();
-        const auto& global_price_system = m_system_manager.get_system<global_price_service>();
-        const auto& current_fiat = settings_system.get_current_fiat().toStdString();
-        std::error_code ec;
-    
         spdlog::trace("inserting in model order id {}", contents.order_id);
         beginInsertRows(QModelIndex(), this->m_model_data.count(), this->m_model_data.count());
         order_data data{
@@ -470,26 +454,10 @@ namespace atomic_dex
         }
         
         //! Sets amounts in fiat.
-        const auto base_coin_info = m_system_manager.get_system<mm2_service>().get_coin_info(data.base_coin.toStdString());
-        const auto rel_coin_info = m_system_manager.get_system<mm2_service>().get_coin_info(data.rel_coin.toStdString());
-        if (base_coin_info.coinpaprika_id == "test-coin")
-        {
-            data.base_amount_fiat = QString::fromStdString(
-                global_price_system.get_price_as_currency_from_amount(current_fiat, data.base_coin.toStdString(), data.base_amount.toStdString(), ec));
-        }
-        else
-        {
-            data.base_amount_fiat = QString::fromStdString("0");
-        }
-        if (rel_coin_info.coinpaprika_id == "test-coin")
-        {
-            data.rel_amount_fiat = QString::fromStdString(
-                global_price_system.get_price_as_currency_from_amount(current_fiat, data.rel_coin.toStdString(), data.rel_amount.toStdString(), ec));
-        }
-        else
-        {
-            data.rel_amount_fiat = QString::fromStdString("0");
-        }
+        auto&& [base_fiat_value, rel_fiat_value] = determine_amounts_in_current_currency(
+            data.base_coin.toStdString(), data.base_amount.toStdString(), data.rel_coin.toStdString(), data.rel_amount.toStdString());
+        data.base_amount_fiat = QString::fromStdString(base_fiat_value);
+        data.rel_amount_fiat = QString::fromStdString(rel_fiat_value);
         
         data.ticker_pair = data.base_coin + "/" + data.rel_coin;
         this->m_orders_id_registry.emplace(contents.order_id);
@@ -497,8 +465,7 @@ namespace atomic_dex
         endInsertRows();
         emit lengthChanged();
     }
-
-
+    
     void
     orders_model::update_existing_order(const ::mm2::api::my_order_contents& contents) noexcept
     {
@@ -511,51 +478,51 @@ namespace atomic_dex
             emit lengthChanged();
         }
     }
-
+    
     void
     orders_model::refresh_or_insert_orders() noexcept
     {
-        const auto&     mm2_system = this->m_system_manager.get_system<mm2_service>();
         std::error_code ec;
-        const auto      orders = mm2_system.get_raw_orders(ec);
-
+        const auto&     mm2    = m_system_manager.get_system<mm2_service>();
+        const auto      orders = mm2.get_raw_orders(ec);
+        
         if (!ec)
         {
             auto functor_process_orders = [this](auto&& orders) {
-                for (auto&& [key, value]: orders)
-                {
-                    if (this->m_orders_id_registry.find(value.order_id) != this->m_orders_id_registry.end())
-                    {
-                        //! Find update needed
-                        this->update_existing_order(value);
-                    }
-                    else
-                    {
-                        //! Not found, insert and initialize.
-                        this->initialize_order(value);
-                    }
-                }
+              for (auto&& [key, value]: orders)
+              {
+                  if (this->m_orders_id_registry.find(value.order_id) != this->m_orders_id_registry.end())
+                  {
+                      //! Find update needed
+                      this->update_existing_order(value);
+                  }
+                  else
+                  {
+                      //! Not found, insert and initialize.
+                      this->initialize_order(value);
+                  }
+              }
             };
-
+            
             functor_process_orders(orders.maker_orders);
             functor_process_orders(orders.taker_orders);
-
+            
             spdlog::trace(
                 "size of raw orders: {}, taker orders size: {}, maker orders size: {}",
                 orders.maker_orders.size() + orders.taker_orders.size(),
                 orders.taker_orders.size(),
                 orders.maker_orders.size());
-
+            
             spdlog::trace("size of id registry: {}", m_orders_id_registry.size());
             //! Check for cleaning orders that are not present anymore
             std::unordered_set<std::string> to_remove;
             for (auto&& id: this->m_orders_id_registry)
             {
                 //! Check if the current id from the model registry is present in the orders collection
-
+                
                 //! Check in maker_orders
                 bool res = std::none_of(begin(orders.maker_orders), end(orders.maker_orders), [id](auto&& contents) { return contents.second.order_id == id; });
-
+                
                 //! And compute with taker orders
                 res &= std::none_of(begin(orders.taker_orders), end(orders.taker_orders), [id](auto&& contents) { return contents.second.order_id == id; });
                 if (res)
@@ -574,12 +541,13 @@ namespace atomic_dex
             for (auto&& cur_to_remove: to_remove) { m_orders_id_registry.erase(cur_to_remove); }
         }
     }
-
+    
     void
     orders_model::refresh_or_insert_swaps() noexcept
     {
-        const auto& mm2_system = this->m_system_manager.get_system<mm2_service>();
-        const auto  result     = mm2_system.get_swaps();
+        const auto& mm2    = m_system_manager.get_system<mm2_service>();
+        const auto  result = mm2.get_swaps();
+        
         this->set_average_events_time_registry(nlohmann_json_object_to_qt_json_object(result.average_events_time));
         for (auto&& current_swap: result.swaps)
         {
@@ -593,7 +561,7 @@ namespace atomic_dex
             }
         }
     }
-
+    
     QHash<int, QByteArray>
     orders_model::roleNames() const
     {
@@ -602,9 +570,9 @@ namespace atomic_dex
             {RelCoinRole, "rel_coin"},
             {TickerPairRole, "ticker_pair"},
             {BaseCoinAmountRole, "base_amount"},
-            {BaseCoinAmountFiatRole, "base_amount_fiat"},
+            {BaseCoinAmountCurrentCurrencyRole, "base_amount_current_currency"},
             {RelCoinAmountRole, "rel_amount"},
-            {RelCoinAmountFiatRole, "rel_amount_fiat"},
+            {RelCoinAmountCurrentCurrencyRole, "rel_amount_current_currency"},
             {OrderTypeRole, "type"},
             {IsMakerRole, "is_maker"},
             {HumanDateRole, "date"},
@@ -622,19 +590,19 @@ namespace atomic_dex
             {SuccessEventsRole, "success_events"},
             {ErrorEventsRole, "error_events"}};
     }
-
+    
     int
     orders_model::get_length() const noexcept
     {
         return this->m_model_proxy->rowCount(QModelIndex());
     }
-
+    
     orders_proxy_model*
     orders_model::get_orders_proxy_mdl() const noexcept
     {
         return m_model_proxy;
     }
-
+    
     void
     orders_model::clear_registry() noexcept
     {
@@ -645,6 +613,48 @@ namespace atomic_dex
         this->m_model_data.clear();
         this->endResetModel();
     }
+    
+    std::pair<std::string, std::string> orders_model::determine_amounts_in_current_currency(const std::string& base_coin, const std::string& base_amount,
+                                                                                            const std::string& rel_coin, const std::string& rel_amount) noexcept
+    {
+        const auto&     mm2                 = m_system_manager.get_system<mm2_service>();
+        const auto&     base_coin_info      = mm2.get_coin_info(base_coin);
+        const auto&     rel_coin_info       = mm2.get_coin_info(rel_coin);
+        const auto&     settings_system     = m_system_manager.get_system<settings_page>();
+        const auto&     current_fiat        = settings_system.get_current_fiat().toStdString();
+        const auto&     global_price_system = m_system_manager.get_system<global_price_service>();
+        std::string     base_amount_fiat    = "0";
+        std::string     rel_amount_fiat     = "0";
+        std::error_code ec;
+        
+        if (base_coin_info.coinpaprika_id != "test-coin")
+        {
+            base_amount_fiat = global_price_system.get_price_as_currency_from_amount(current_fiat, base_coin, base_amount, ec);
+        }
+        if (rel_coin_info.coinpaprika_id != "test-coin")
+        {
+            rel_amount_fiat = global_price_system.get_price_as_currency_from_amount(current_fiat, rel_coin, rel_amount, ec);
+        }
+        return std::make_pair(base_amount_fiat, rel_amount_fiat);
+    }
+    
+    std::pair<std::string, std::string> orders_model::determine_amounts_in_current_currency(const ::mm2::api::swap_contents& contents)
+    {
+        bool is_maker = boost::algorithm::to_lower_copy(contents.type) == "maker";
+        
+        if (is_maker)
+        {
+            return determine_amounts_in_current_currency(contents.maker_coin, contents.maker_amount, contents.taker_coin, contents.taker_amount);
+        }
+        return determine_amounts_in_current_currency(contents.taker_coin, contents.taker_amount, contents.maker_coin, contents.maker_amount);
+    }
+    
+    void orders_model::on_current_currency_changed([[maybe_unused]] const current_currency_changed&) noexcept
+    {
+        auto& mm2 = m_system_manager.get_system<mm2_service>();
+        
+        mm2.batch_fetch_orders_and_swap();
+    }
 } // namespace atomic_dex
 
 namespace atomic_dex
@@ -654,14 +664,14 @@ namespace atomic_dex
     {
         return m_json_time_registry;
     }
-
+    
     void
     atomic_dex::orders_model::set_average_events_time_registry(const QVariant& average_time_registry) noexcept
     {
         m_json_time_registry = average_time_registry;
         emit onAverageEventsTimeRegistryChanged();
     }
-
+    
     bool
     atomic_dex::orders_model::swap_is_in_progress(const QString& coin) const noexcept
     {
