@@ -238,6 +238,8 @@ namespace atomic_dex
 
         auto res = app->exec();
 
+        spdlog::drop_all();
+
         clean_wally();
 
         return res;
