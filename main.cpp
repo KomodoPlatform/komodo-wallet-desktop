@@ -102,7 +102,7 @@ static void
 init_logging()
 {
     //! Log Initialization
-    std::string path = get_atomic_dex_current_log_file().string();
+    std::string path = atomic_dex::utils::get_atomic_dex_current_log_file().string();
     spdlog::init_thread_pool(g_qsize_spdlog, g_spdlog_thread_count);
     auto tp            = spdlog::thread_pool();
     auto stdout_sink   = std::make_shared<spdlog::sinks::stdout_color_sink_mt>();

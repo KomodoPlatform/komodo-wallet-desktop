@@ -14,9 +14,6 @@
  *                                                                            *
  ******************************************************************************/
 
-//! PCH
-#include "atomicdex/pch.hpp"
-
 //! Project Headers
 #include "atomicdex/managers/notification.manager.hpp"
 #include "atomicdex/utilities/global.utilities.hpp"
@@ -40,8 +37,8 @@ namespace atomic_dex
     {
         using namespace std::chrono;
         qint64  timestamp  = duration_cast<seconds>(system_clock::now().time_since_epoch()).count();
-        QString human_date = QString::fromStdString(to_human_date<std::chrono::seconds>(timestamp, "%e %b %Y, %H:%M"));
-        emit updateSwapStatus(evt.prev_status, evt.new_status, evt.uuid, evt.base, evt.rel, human_date);
+        QString human_date = QString::fromStdString(utils::to_human_date<std::chrono::seconds>(timestamp, "%e %b %Y, %H:%M"));
+        emit    updateSwapStatus(evt.prev_status, evt.new_status, evt.uuid, evt.base, evt.rel, human_date);
     }
 
     void
@@ -75,7 +72,7 @@ namespace atomic_dex
     {
         using namespace std::chrono;
         qint64  timestamp  = duration_cast<seconds>(system_clock::now().time_since_epoch()).count();
-        QString human_date = QString::fromStdString(to_human_date<std::chrono::seconds>(timestamp, "%e %b %Y, %H:%M"));
+        QString human_date = QString::fromStdString(utils::to_human_date<std::chrono::seconds>(timestamp, "%e %b %Y, %H:%M"));
         emit    enablingCoinFailedStatus(QString::fromStdString(evt.coin), QString::fromStdString(evt.reason), human_date, timestamp);
     }
 
@@ -84,7 +81,7 @@ namespace atomic_dex
     {
         using namespace std::chrono;
         qint64  timestamp  = duration_cast<seconds>(system_clock::now().time_since_epoch()).count();
-        QString human_date = QString::fromStdString(to_human_date<std::chrono::seconds>(timestamp, "%e %b %Y, %H:%M"));
+        QString human_date = QString::fromStdString(utils::to_human_date<std::chrono::seconds>(timestamp, "%e %b %Y, %H:%M"));
         emit    endpointNonReacheableStatus(QString::fromStdString(evt.base_uri), human_date, timestamp);
     }
     void
@@ -92,7 +89,7 @@ namespace atomic_dex
     {
         using namespace std::chrono;
         qint64  timestamp  = duration_cast<seconds>(system_clock::now().time_since_epoch()).count();
-        QString human_date = QString::fromStdString(to_human_date<std::chrono::seconds>(timestamp, "%e %b %Y, %H:%M"));
+        QString human_date = QString::fromStdString(utils::to_human_date<std::chrono::seconds>(timestamp, "%e %b %Y, %H:%M"));
         emit    mismatchCustomCoinConfiguration(QString::fromStdString(evt.coin), human_date, timestamp);
     }
 } // namespace atomic_dex

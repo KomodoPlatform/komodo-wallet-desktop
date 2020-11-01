@@ -1,5 +1,16 @@
 cmake_minimum_required(VERSION 3.5)
 
+if (EXISTS ${CMAKE_BINARY_DIR}/conan_paths.cmake)
+    set(CONAN_ENABLED ON)
+    message(STATUS "Conan package manager enabled")
+    include(${CMAKE_BINARY_DIR}/conan_paths.cmake)
+else ()
+    message(STATUS "VCPKG package manager enabled")
+    set(CMAKE_TOOLCHAIN_FILE
+            "${CMAKE_CURRENT_SOURCE_DIR}/ci_tools_atomic_dex/vcpkg-repo/scripts/buildsystems/vcpkg.cmake"
+            CACHE STRING "")
+endif ()
+
 project(atomicdex-desktop LANGUAGES CXX VERSION 0.3.0)
 
 
@@ -18,14 +29,6 @@ set(CMAKE_POLICY_WARNING_CMP0100 OFF)
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
-
-if (EXISTS ${CMAKE_BINARY_DIR}/conan_paths.cmake)
-    set(CONAN_ENABLED ON)
-    message(STATUS "Conan package manager enabled")
-    include(${CMAKE_BINARY_DIR}/conan_paths.cmake)
-else ()
-    message(STATUS "VCPKG package manager enabled")
-endif ()
 
 ##! Antara
 list(APPEND CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake)
@@ -110,8 +113,8 @@ message(STATUS "TS FILES -> ${TS_FILES}")
 ##! End Lang
 
 ##! Atomic QT Shared Deps Between main executable and unit tests
-add_library(atomicdex-desktop_shared_deps INTERFACE)
-target_sources(atomicdex-desktop_shared_deps INTERFACE
+add_library(atomicdex-desktop_shared_deps STATIC)
+target_sources(atomicdex-desktop_shared_deps PRIVATE
         ##! App
         ${CMAKE_SOURCE_DIR}/src/atomicdex/app.cpp
 
@@ -121,6 +124,7 @@ target_sources(atomicdex-desktop_shared_deps INTERFACE
         ${CMAKE_SOURCE_DIR}/src/atomicdex/utilities/qt.utilities.cpp
         ${CMAKE_SOURCE_DIR}/src/atomicdex/utilities/qt.bindings.cpp
         ${CMAKE_SOURCE_DIR}/src/atomicdex/utilities/security.utilities.cpp
+        ${CMAKE_SOURCE_DIR}/src/atomicdex/utilities/global.utilities.cpp
 
         ##! Constants
         ${CMAKE_SOURCE_DIR}/src/atomicdex/constants/mm2.error.code.cpp
@@ -177,17 +181,10 @@ target_sources(atomicdex-desktop_shared_deps INTERFACE
 
         ##! Platform
         $<$<PLATFORM_ID:Darwin>:${CMAKE_SOURCE_DIR}/src/atomicdex/platform/osx/manager.mm>
-
-        ##! QRC
-        ${CMAKE_SOURCE_DIR}/qml.qrc
-
-        ##! Linguistic
-        ${QM_FILES}
-        ${TS_FILES}
         )
 
 target_compile_definitions(atomicdex-desktop_shared_deps
-        INTERFACE
+        PUBLIC
         $<$<OR:$<CONFIG:Debug>,$<CONFIG:RelWithDebInfo>>:QT_QML_DEBUG>
         $<$<PLATFORM_ID:Windows>:HAS_REMOTE_API>
         $<$<PLATFORM_ID:Windows>:AUTO_DOWNLOAD>
@@ -196,12 +193,12 @@ target_compile_definitions(atomicdex-desktop_shared_deps
 
 if (DISABLE_GEOBLOCKING)
     message(STATUS "Disabling Geoblocking for dev purpose")
-    target_compile_definitions(atomicdex-desktop_shared_deps INTERFACE -DDISABLE_GEOBLOCKING)
+    target_compile_definitions(atomicdex-desktop_shared_deps PUBLIC -DDISABLE_GEOBLOCKING)
 endif()
 #target_compile_options(atomicdex-desktop_shared_deps INTERFACE -fstandalone-debug)
 
 target_link_libraries(atomicdex-desktop_shared_deps
-        INTERFACE
+        PUBLIC
         Qt::Core
         Qt::Quick
         Qt::Svg
@@ -228,7 +225,7 @@ target_link_libraries(atomicdex-desktop_shared_deps
         )
 
 target_include_directories(atomicdex-desktop_shared_deps
-        INTERFACE
+        PUBLIC
         ${CMAKE_CURRENT_SOURCE_DIR}/src
         $<$<PLATFORM_ID:Darwin>:${CMAKE_CURRENT_SOURCE_DIR}/src/osx>
         ${libqr_code_SOURCE_DIR}/src
@@ -238,6 +235,12 @@ target_include_directories(atomicdex-desktop_shared_deps
 add_executable(atomicdex-desktop MACOSX_BUNDLE ${ICON}
         ${CMAKE_CURRENT_SOURCE_DIR}/data/windows/atomicdex-desktop.rc
         main.cpp
+        ##! QRC
+        ${CMAKE_SOURCE_DIR}/qml.qrc
+
+        ##! Linguistic
+        ${QM_FILES}
+        ${TS_FILES}
         )
 
 ##! Testing executable
@@ -247,18 +250,23 @@ add_executable(atomicdex-desktop_tests MACOSX_BUNDLE ${ICON}
         src/atomicdex/tests/atomic.dex.utilities.tests.cpp
         src/atomicdex/tests/atomic.dex.provider.cex.prices.tests.cpp
         src/atomicdex/tests/atomic.dex.qt.utilities.tests.cpp
-        src/atomicdex/tests/atomic.dex.provider.cex.prices.api.tests.cpp)
+        src/atomicdex/tests/atomic.dex.provider.cex.prices.api.tests.cpp
+        ##! QRC
+        ${CMAKE_SOURCE_DIR}/qml.qrc
+
+        ##! Linguistic
+        ${QM_FILES}
+        ${TS_FILES})
 
 target_link_libraries(atomicdex-desktop
-        PRIVATE
+        PUBLIC
         atomicdex-desktop_shared_deps
-        $<$<PLATFORM_ID:Darwin>:/usr/local/lib/libcurl.a>
         )
 
 target_include_directories(atomicdex-desktop PUBLIC src)
 
 target_link_libraries(atomicdex-desktop_tests
-        PRIVATE
+        PUBLIC
         atomicdex-desktop_shared_deps
         $<$<PLATFORM_ID:Darwin>:/usr/local/lib/libcurl.a>
         doctest::doctest)
@@ -275,9 +283,15 @@ set_target_properties(${PROJECT_NAME}_tests
         )
 
 
-if (NOT APPLE)
-    target_precompile_headers(${PROJECT_NAME} PRIVATE src/atomicdex/pch.hpp)
-endif ()
+
+target_precompile_headers(atomicdex-desktop_shared_deps PRIVATE src/atomicdex/pch.hpp)
+if (APPLE)
+    set_target_properties(atomicdex-desktop_shared_deps PROPERTIES UNITY_BUILD ON)
+    set_source_files_properties(src/atomicdex/platform/osx/manager.mm PROPERTIES SKIP_PRECOMPILE_HEADERS ON)
+    set_property(SOURCE src/atomicdex/platform/osx/manager.mm PROPERTY SKIP_UNITY_BUILD_INCLUSION ON)
+    set_source_files_properties(src/atomicdex/platform/osx/manager.mm PROPERTIES SKIP_UNITY_BUILD_INCLUSION ON)
+endif()
+
 #target_enable_tsan(atomicdex-desktop_tests)
 #target_enable_asan(atomicdex-desktop)
 

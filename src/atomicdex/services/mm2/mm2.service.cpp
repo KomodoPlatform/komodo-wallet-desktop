@@ -36,7 +36,7 @@ namespace
         using namespace std::string_literals;
         spdlog::debug("{} l{} f[{}]", __FUNCTION__, __LINE__, fs::path(__FILE__).filename().string());
 
-        fs::path    cfg_path                   = get_atomic_dex_config_folder();
+        fs::path    cfg_path                   = atomic_dex::utils::get_atomic_dex_config_folder();
         std::string filename                   = std::string(atomic_dex::get_precedent_raw_version()) + "-coins." + wallet_name + ".json";
         fs::path    precedent_version_cfg_path = cfg_path / filename;
 
@@ -89,7 +89,7 @@ namespace
     void
     update_coin_status(const std::string& wallet_name, const std::vector<std::string> tickers, bool status = true)
     {
-        fs::path       cfg_path = get_atomic_dex_config_folder();
+        fs::path       cfg_path = atomic_dex::utils::get_atomic_dex_config_folder();
         std::string    filename = std::string(atomic_dex::get_raw_version()) + "-coins." + wallet_name + ".json";
         std::ifstream  ifs((cfg_path / filename).c_str());
         nlohmann::json config_json_data;
@@ -113,7 +113,7 @@ namespace
         spdlog::debug("{} l{} f[{}]", __FUNCTION__, __LINE__, fs::path(__FILE__).filename().string());
 
         check_for_reconfiguration(wallet_name);
-        const auto  cfg_path = get_atomic_dex_config_folder();
+        const auto  cfg_path = atomic_dex::utils::get_atomic_dex_config_folder();
         std::string filename = std::string(atomic_dex::get_raw_version()) + "-coins." + wallet_name + ".json";
         spdlog::info("Retrieving Wallet information of {}", (cfg_path / filename).string());
         if (exists(cfg_path / filename))
@@ -763,7 +763,7 @@ namespace atomic_dex
     void
     mm2_service::spawn_mm2_instance(std::string wallet_name, std::string passphrase, bool with_pin_cfg)
     {
-        this->m_balance_factor = determine_balance_factor(with_pin_cfg);
+        this->m_balance_factor = utils::determine_balance_factor(with_pin_cfg);
         spdlog::trace("balance factor is: {}", m_balance_factor);
         spdlog::debug("{} l{} f[{}]", __FUNCTION__, __LINE__, fs::path(__FILE__).filename().string());
         this->m_current_wallet_name = std::move(wallet_name);
@@ -788,8 +788,8 @@ namespace atomic_dex
         _putenv(env_mm2.str().c_str());
         spdlog::debug("env: {}", std::getenv("MM_CONF_PATH"));
 #else
-        options.environment =
-            std::unordered_map<std::string, std::string>{{"MM_CONF_PATH", mm2_cfg_path.string()}, {"MM_LOG", get_mm2_atomic_dex_current_log_file().string()}};
+        options.environment = std::unordered_map<std::string, std::string>{
+            {"MM_CONF_PATH", mm2_cfg_path.string()}, {"MM_LOG", utils::get_mm2_atomic_dex_current_log_file().string()}};
 #endif
         options.working_directory = strdup(tools_path.string().c_str());
 
@@ -1313,7 +1313,7 @@ namespace atomic_dex
             {
                 using namespace std::chrono;
                 current_info.timestamp   = duration_cast<seconds>(system_clock::now().time_since_epoch()).count();
-                current_info.date        = to_human_date<std::chrono::seconds>(current_info.timestamp, "%e %b %Y, %H:%M");
+                current_info.date        = utils::to_human_date<std::chrono::seconds>(current_info.timestamp, "%e %b %Y, %H:%M");
                 current_info.unconfirmed = true;
             }
 
@@ -1421,7 +1421,7 @@ namespace atomic_dex
         if (not coin_cfg_json.empty() && not is_this_ticker_present_in_normal_cfg(coin_cfg_json.begin().key()))
         {
             spdlog::trace("Adding entry : {} to adex current wallet coins file", coin_cfg_json.dump(4));
-            fs::path       cfg_path = get_atomic_dex_config_folder();
+            fs::path       cfg_path = utils::get_atomic_dex_config_folder();
             std::string    filename = std::string(atomic_dex::get_raw_version()) + "-coins." + m_current_wallet_name + ".json";
             std::ifstream  ifs((cfg_path / filename).c_str());
             nlohmann::json config_json_data;
@@ -1431,9 +1431,7 @@ namespace atomic_dex
             ifs >> config_json_data;
 
             //! Modify contents
-            // config_json_data
             config_json_data[coin_cfg_json.begin().key()] = coin_cfg_json.at(coin_cfg_json.begin().key());
-            // config_json_data.push_back(coin_cfg_json);
 
             //! Close
             ifs.close();
@@ -1504,7 +1502,7 @@ namespace atomic_dex
         if (is_this_ticker_present_in_normal_cfg(ticker))
         {
             spdlog::trace("remove it from normal cfg: {}", ticker);
-            fs::path       cfg_path = get_atomic_dex_config_folder();
+            fs::path       cfg_path = utils::get_atomic_dex_config_folder();
             std::string    filename = std::string(atomic_dex::get_raw_version()) + "-coins." + m_current_wallet_name + ".json";
             std::ifstream  ifs((cfg_path / filename).c_str());
             nlohmann::json config_json_data;

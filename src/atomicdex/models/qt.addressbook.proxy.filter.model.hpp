@@ -16,6 +16,7 @@
 
 #pragma once
 
+//! Qt
 #include <QSortFilterProxyModel>
 
 namespace atomic_dex

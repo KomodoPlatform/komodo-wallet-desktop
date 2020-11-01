@@ -18,12 +18,12 @@
 #include <QJsonDocument>
 #include <QJsonObject>
 
-//! PCH
-#include "src/atomicdex/pch.hpp"
+//! Deps
+#include <nlohmann/json.hpp>
 
 //! Project Headers
-#include "qt.candlestick.charts.model.hpp"
-#include "src/atomicdex/services/ohlc/ohlc.provider.hpp"
+#include "atomicdex/models/qt.candlestick.charts.model.hpp"
+#include "atomicdex/services/ohlc/ohlc.provider.hpp"
 
 namespace atomic_dex
 {
@@ -140,8 +140,9 @@ namespace atomic_dex
         }
         emit chartFullyModelReset();
 
-        if (m_model_data.empty()) {
-            //this->set_is_currently_fetching(false);
+        if (m_model_data.empty())
+        {
+            // this->set_is_currently_fetching(false);
             return;
         }
         double max_value = std::numeric_limits<double>::min();
@@ -486,8 +487,8 @@ namespace atomic_dex
         QVariantMap out;
 
         auto it = std::lower_bound(rbegin(m_model_data), rend(m_model_data), timestamp, [](const nlohmann::json& current_json, int timestamp) {
-          int res = current_json.at("timestamp").get<int>();
-          return timestamp < res;
+            int res = current_json.at("timestamp").get<int>();
+            return timestamp < res;
         });
 
         if (it != m_model_data.rend())

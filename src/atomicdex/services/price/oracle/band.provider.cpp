@@ -74,7 +74,7 @@ namespace atomic_dex
                     {
                         spdlog::warn(
                             "last oracle too much outdated: {}, fallback to coinpaprika",
-                            to_human_date<std::chrono::seconds>(last_oracle_timestamp, "%e %b %Y, %H:%M"));
+                            utils::to_human_date<std::chrono::seconds>(last_oracle_timestamp, "%e %b %Y, %H:%M"));
                     }
                     this->dispatcher_.trigger<band_oracle_refreshed>();
                 }

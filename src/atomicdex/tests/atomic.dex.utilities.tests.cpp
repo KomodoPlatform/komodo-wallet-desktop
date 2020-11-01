@@ -14,20 +14,20 @@
  *                                                                            *
  ******************************************************************************/
 
-#include "src/atomicdex/pch.hpp"
-#include "src/atomicdex/utilities/global.utilities.hpp"
+#include "atomicdex/pch.hpp"
+#include "atomicdex/utilities/global.utilities.hpp"
 #include <doctest/doctest.h>
 
 TEST_CASE("AtomicDex Pro get_atomic_dex_data_folder()")
 {
-    auto result = get_atomic_dex_data_folder();
+    auto result = atomic_dex::utils::get_atomic_dex_data_folder();
     MESSAGE("Result is [" << result << "]");
     CHECK_FALSE(result.string().empty());
 }
 
 TEST_CASE("AtomicDex Pro get_atomic_dex_logs_folder()")
 {
-    auto result = get_atomic_dex_logs_folder();
+    auto result = atomic_dex::utils::get_atomic_dex_logs_folder();
     MESSAGE("Result is [" << result.string() << "]");
     CHECK_FALSE(result.string().empty());
     CHECK(fs::exists(result));
@@ -35,7 +35,7 @@ TEST_CASE("AtomicDex Pro get_atomic_dex_logs_folder()")
 
 TEST_CASE("AtomicDex Pro get_atomic_dex_current_log_file()")
 {
-    auto result = get_atomic_dex_current_log_file();
+    auto result = atomic_dex::utils::get_atomic_dex_current_log_file();
     MESSAGE("Result is [" << result.string() << "]");
     CHECK_FALSE(result.string().empty());
     CHECK_FALSE(fs::exists(result));

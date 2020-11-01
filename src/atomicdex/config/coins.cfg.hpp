@@ -19,9 +19,6 @@
 //! QT  
 #include <QObject>
 
-//! Deps
-#include <nlohmann/json.hpp>
-
 namespace atomic_dex
 {
     struct electrum_server
