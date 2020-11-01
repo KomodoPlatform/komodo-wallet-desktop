@@ -189,9 +189,11 @@ target_sources(atomicdex-desktop_shared_deps PRIVATE
 
 target_compile_definitions(atomicdex-desktop_shared_deps
         PUBLIC
-        $<$<OR:$<CONFIG:Debug>,$<CONFIG:RelWithDebInfo>>:QT_QML_DEBUG>
-        $<$<PLATFORM_ID:Windows>:HAS_REMOTE_API>
-        $<$<PLATFORM_ID:Windows>:AUTO_DOWNLOAD>
+            $<$<OR:$<CONFIG:Debug>,$<CONFIG:RelWithDebInfo>>:QT_QML_DEBUG>
+            $<$<PLATFORM_ID:Windows>:HAS_REMOTE_API>
+            $<$<PLATFORM_ID:Windows>:AUTO_DOWNLOAD>
+        PRIVATE
+            ENTT_API_EXPORT
         )
 
 
@@ -247,6 +249,8 @@ add_executable(atomicdex-desktop MACOSX_BUNDLE ${ICON}
         ${QM_FILES}
         ${TS_FILES}
         )
+
+target_compile_definitions(atomicdex-desktop PRIVATE ENTT_API_IMPORT)
 
 ##! Testing executable
 add_executable(atomicdex-desktop_tests MACOSX_BUNDLE ${ICON}

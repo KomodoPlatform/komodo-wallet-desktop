@@ -69,7 +69,7 @@ namespace atomic_dex
 
     orders_model::~orders_model() noexcept
     {
-        this->m_dispatcher.sink<current_currency_changed>().disconnect<&orders_model::on_current_currency_changed>(this);
+        //this->m_dispatcher.sink<current_currency_changed>().disconnect<&orders_model::on_current_currency_changed>(this);
 
         spdlog::trace("{} l{} f[{}]", __FUNCTION__, __LINE__, fs::path(__FILE__).filename().string());
         spdlog::trace("orders model destroyed");

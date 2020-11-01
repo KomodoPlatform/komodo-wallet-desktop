@@ -25,6 +25,7 @@
 #include "atomicdex/models/qt.portfolio.model.hpp"
 #include "atomicdex/pages/qt.wallet.page.hpp"
 #include "atomicdex/services/price/global.provider.hpp"
+#include "atomicdex/utilities/global.utilities.hpp"
 #include "atomicdex/utilities/qt.utilities.hpp"
 
 namespace atomic_dex

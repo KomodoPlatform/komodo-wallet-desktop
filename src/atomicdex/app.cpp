@@ -752,11 +752,7 @@ namespace atomic_dex
 {
     application::~application() noexcept
     {
-        if (auto addressbook = qobject_cast<addressbook_model*>(m_manager_models.at("addressbook")); addressbook->rowCount() > 0)
-        {
-            addressbook->removeRows(0, addressbook->rowCount());
-        }
-        export_swaps_json();
+
     }
 } // namespace atomic_dex
 
