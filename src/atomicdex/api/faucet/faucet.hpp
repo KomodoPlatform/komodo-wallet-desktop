@@ -16,12 +16,30 @@
 
 #pragma once
 
-namespace atomic_dex
+//! C++ headers
+#include <string>
+
+//! Project Headers
+#include "atomicdex/utilities/cpprestsdk.utilities.hpp"
+
+namespace atomic_dex::faucet::api
 {
-    enum e_http_code
+    struct claim_request
     {
-        ok                = 200,
-        bad_request       = 400,
-        too_many_requests = 429
+        std::string coin_name;
+        std::string wallet_address;
     };
+    
+    pplx::task<web::http::http_response>
+    claim(const claim_request& claim_request);
+    
+    struct claim_result
+    {
+        std::string message;
+        std::string status;
+    };
+    
+    [[nodiscard]]
+    claim_result
+    get_claim_result(const web::http::http_response& claim_response);
 }

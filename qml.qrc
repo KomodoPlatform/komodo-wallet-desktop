@@ -229,6 +229,7 @@
         <file>atomic_defi_design/qml/Portfolio/Portfolio.qml</file>
         <file>atomic_defi_design/qml/Wallet/Wallet.qml</file>
         <file>atomic_defi_design/qml/Wallet/ClaimRewardsModal.qml</file>
+        <file>atomic_defi_design/qml/Wallet/ClaimFaucetResultModal.qml</file>
         <file>atomic_defi_design/qml/Wallet/ReceiveModal.qml</file>
         <file>atomic_defi_design/qml/Wallet/SendModal.qml</file>
         <file>atomic_defi_design/qml/Wallet/SendResult.qml</file>

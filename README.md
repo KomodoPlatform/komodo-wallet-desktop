@@ -122,4 +122,9 @@ Build instructions can be found [here](https://github.com/KomodoPlatform/atomicD
         <a href="https://github.com/dathbezumniy"><img src="https://avatars2.githubusercontent.com/u/11756768?s=60&v=4" width="100px;" alt="dathbezumniy"/><br /><sub><b>dathbezumniy</b></sub></a><br /><a href="https://github.com/KomodoPlatform/AtomicDex-Desktop/commits?author=dathbezumniy" title="Junior QA Engineer">🛠💻</a>
     </td>
   </tr>
+  <tr>
+    <td align="center">
+        <a href="https://github.com/SylEze"><img src="https://avatars1.githubusercontent.com/u/14373103?s=460&u=b303a2d2261008814800c2d7809efc6af685a460&v=4"width="100px;" alt="syl"/><br /><sub><b>syl</b></sub></a><br /><a href="https://github.com/KomodoPlatform/AtomicDex-Desktop/commits?author=SylEze" title="Frontend and Back-End Dev / Code">✍️💻</a>
+    </td>
+  </tr>
 </table>
