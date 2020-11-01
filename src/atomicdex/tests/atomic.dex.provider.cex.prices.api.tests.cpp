@@ -14,9 +14,12 @@
  *                                                                            *
  ******************************************************************************/
 
-#include "src/atomicdex/api/ohlc/ohlc.api.hpp"
-#include "src/atomicdex/pch.hpp"
+//! Deps
+#include <nlohmann/json.hpp>
+
+#include "atomicdex/api/ohlc/ohlc.api.hpp"
 #include <doctest/doctest.h>
+
 
 TEST_CASE("ohlc answer success")
 {
@@ -50,8 +53,8 @@ TEST_CASE("rpc ohlc")
 {
     //
     atomic_dex::ohlc_request req{.base_asset = "kmd", .quote_asset = "btc"};
-    auto answer_rpc = atomic_dex::async_rpc_ohlc_get_data(std::move(req)).get();
-    auto answer = atomic_dex::ohlc_answer_from_async_resp(answer_rpc);
+    auto                     answer_rpc = atomic_dex::async_rpc_ohlc_get_data(std::move(req)).get();
+    auto                     answer     = atomic_dex::ohlc_answer_from_async_resp(answer_rpc);
     CHECK_FALSE(answer.error.has_value());
     CHECK(answer.result.has_value());
     CHECK_GT(answer.result.value().result.size(), 0);
