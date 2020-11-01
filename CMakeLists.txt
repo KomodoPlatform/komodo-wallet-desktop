@@ -9,6 +9,9 @@ else ()
     set(CMAKE_TOOLCHAIN_FILE
             "${CMAKE_CURRENT_SOURCE_DIR}/ci_tools_atomic_dex/vcpkg-repo/scripts/buildsystems/vcpkg.cmake"
             CACHE STRING "")
+	if (WIN32)
+		set(VCPKG_TARGET_TRIPLET "x64-windows" CACHE STRING "")
+	endif()	
 endif ()
 
 project(atomicdex-desktop LANGUAGES CXX VERSION 0.3.0)
@@ -113,10 +116,11 @@ message(STATUS "TS FILES -> ${TS_FILES}")
 ##! End Lang
 
 ##! Atomic QT Shared Deps Between main executable and unit tests
-add_library(atomicdex-desktop_shared_deps STATIC)
+add_library(atomicdex-desktop_shared_deps SHARED)
 target_sources(atomicdex-desktop_shared_deps PRIVATE
         ##! App
         ${CMAKE_SOURCE_DIR}/src/atomicdex/app.cpp
+        ${CMAKE_SOURCE_DIR}/src/atomicdex/app.entry.cpp
 
         ##! Utilities
         ${CMAKE_SOURCE_DIR}/src/atomicdex/utilities/kill.cpp
@@ -227,8 +231,9 @@ target_link_libraries(atomicdex-desktop_shared_deps
 target_include_directories(atomicdex-desktop_shared_deps
         PUBLIC
         ${CMAKE_CURRENT_SOURCE_DIR}/src
-        $<$<PLATFORM_ID:Darwin>:${CMAKE_CURRENT_SOURCE_DIR}/src/osx>
-        ${libqr_code_SOURCE_DIR}/src
+		PRIVATE
+			$<$<PLATFORM_ID:Darwin>:${CMAKE_CURRENT_SOURCE_DIR}/src/osx>
+			${libqr_code_SOURCE_DIR}/src
         )
 
 ##! Main executable
@@ -330,6 +335,7 @@ if (LINUX)
 endif ()
 
 if (WIN32)
+	set_target_properties(atomicdex-desktop_shared_deps PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 	add_compile_definitions(_CRT_SECURE_NO_WARNINGS)
     file(COPY assets DESTINATION ${CMAKE_BINARY_DIR}/bin/)
     configure_file(wally/wally.dll ${CMAKE_BINARY_DIR}/bin/ COPYONLY)
