@@ -2,6 +2,7 @@
     #include <windows.h>
 #endif
 
+#include "atomicdex/pch.hpp"
 #include "atomicdex/app.entry.hpp"
 
 #if defined(WINDOWS_RELEASE_MAIN)
@@ -17,5 +18,6 @@ main([[maybe_unused]] int argc, [[maybe_unused]] char* argv[])
     char** argv = __argv;
 #endif
     int res = atomic_dex::run_app(argc, argv);
+    spdlog::shutdown();
     return res;
 }
