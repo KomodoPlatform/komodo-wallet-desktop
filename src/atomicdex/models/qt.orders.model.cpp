@@ -617,25 +617,16 @@ namespace atomic_dex
     std::pair<std::string, std::string> orders_model::determine_amounts_in_current_currency(const std::string& base_coin, const std::string& base_amount,
                                                                                             const std::string& rel_coin, const std::string& rel_amount) noexcept
     {
-        const auto&     mm2                 = m_system_manager.get_system<mm2_service>();
-        const auto&     base_coin_info      = mm2.get_coin_info(base_coin);
-        const auto&     rel_coin_info       = mm2.get_coin_info(rel_coin);
-        const auto&     settings_system     = m_system_manager.get_system<settings_page>();
-        const auto&     current_fiat        = settings_system.get_current_fiat().toStdString();
-        const auto&     global_price_system = m_system_manager.get_system<global_price_service>();
-        std::string     base_amount_fiat    = "0";
-        std::string     rel_amount_fiat     = "0";
+        const auto&     settings_system         = m_system_manager.get_system<settings_page>();
+        const auto&     current_currency        = settings_system.get_current_currency().toStdString();
+        const auto&     global_price_system     = m_system_manager.get_system<global_price_service>();
+        std::string     base_amount_in_currency;
+        std::string     rel_amount_in_currency;
         std::error_code ec;
-        
-        if (base_coin_info.coinpaprika_id != "test-coin")
-        {
-            base_amount_fiat = global_price_system.get_price_as_currency_from_amount(current_fiat, base_coin, base_amount, ec);
-        }
-        if (rel_coin_info.coinpaprika_id != "test-coin")
-        {
-            rel_amount_fiat = global_price_system.get_price_as_currency_from_amount(current_fiat, rel_coin, rel_amount, ec);
-        }
-        return std::make_pair(base_amount_fiat, rel_amount_fiat);
+    
+        base_amount_in_currency = global_price_system.get_price_as_currency_from_amount(current_currency, base_coin, base_amount, ec);
+        rel_amount_in_currency = global_price_system.get_price_as_currency_from_amount(current_currency, rel_coin, rel_amount, ec);
+        return std::make_pair(base_amount_in_currency, rel_amount_in_currency);
     }
     
     std::pair<std::string, std::string> orders_model::determine_amounts_in_current_currency(const ::mm2::api::swap_contents& contents)
@@ -649,7 +640,7 @@ namespace atomic_dex
         return determine_amounts_in_current_currency(contents.taker_coin, contents.taker_amount, contents.maker_coin, contents.maker_amount);
     }
     
-    void orders_model::on_current_currency_changed([[maybe_unused]] const current_currency_changed&) noexcept
+    void orders_model::on_current_currency_changed(const current_currency_changed&) noexcept
     {
         auto& mm2 = m_system_manager.get_system<mm2_service>();
         
