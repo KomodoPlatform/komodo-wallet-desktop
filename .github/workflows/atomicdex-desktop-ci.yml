@@ -104,10 +104,6 @@ jobs:
           echo ${{ github.sha }}
           sudo ./ci_tools_atomic_dex/ci_scripts/linux_script.sh
 
-      - name: Clone custom ports (All OS)
-        run: |
-          git clone https://github.com/KomodoPlatform/vcpkg-custom-ports ${{ github.workspace }}/ci_tools_atomic_dex/vcpkg-custom-ports
-
       - name: vcpkg deps (Linux)
         if: runner.os == 'Linux'
         env: # Or as an environment variable
