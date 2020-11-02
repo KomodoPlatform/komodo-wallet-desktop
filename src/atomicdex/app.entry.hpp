@@ -5,5 +5,5 @@
 
 namespace atomic_dex
 {
-    ENTT_API int run_app(int argc, char **argv);
+    //ENTT_API int run_app(int argc, char **argv);
 }

@@ -28,6 +28,7 @@
 #include <QVariantMap>
 
 //! Deps
+#include <entt/core/attribute.h>
 #include <antara/gaming/world/world.app.hpp>
 
 //! Project Headers
@@ -56,7 +57,7 @@ Q_DECLARE_METATYPE(portfolio_page_ptr)
 
 namespace atomic_dex
 {
-    struct application : public QObject, public ag::world::app
+    struct ENTT_API application : public QObject, public ag::world::app
     {
         Q_OBJECT
 

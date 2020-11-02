@@ -81,7 +81,7 @@ namespace atomic_dex::utils
         return fs_logs_path;
     }
 
-    fs::path
+    ENTT_API fs::path
     get_atomic_dex_current_log_file()
     {
         using namespace std::chrono;

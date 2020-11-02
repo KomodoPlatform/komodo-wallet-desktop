@@ -21,6 +21,7 @@ using t_rational = boost::multiprecision::cpp_rational;
 #include <date/date.h>
 #include <date/tz.h>
 #include <nlohmann/json.hpp>
+#include <entt/core/attribute.h>
 
 namespace atomic_dex::utils
 {
@@ -58,7 +59,7 @@ namespace atomic_dex::utils
 
     fs::path get_atomic_dex_logs_folder() noexcept;
 
-    fs::path get_atomic_dex_current_log_file();
+    ENTT_API fs::path get_atomic_dex_current_log_file();
 
     fs::path get_mm2_atomic_dex_current_log_file();
 
