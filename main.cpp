@@ -170,74 +170,74 @@ init_timezone_db()
 #endif
 }
 
-    int
-    run_app(int argc, char** argv)
-    {
-        init_logging();
-        connect_signals_handler();
-        init_timezone_db();
-        init_wally();
-        init_sodium();
-        clean_previous_run();
-        init_dpi();
+int
+run_app(int argc, char** argv)
+{
+    init_logging();
+    connect_signals_handler();
+    init_timezone_db();
+    init_wally();
+    init_sodium();
+    clean_previous_run();
+    init_dpi();
 
-        int res = 0;
-        
-            //! App declaration
-            atomic_dex::application atomic_app;
+    int res = 0;
 
-            //! QT
-            QCoreApplication::setAttribute(Qt::AA_ShareOpenGLContexts);
-            QtWebEngine::initialize();
-            std::shared_ptr<QApplication> app = std::make_shared<QApplication>(argc, argv);
-            app->setOrganizationName("KomodoPlatform");
-            app->setOrganizationDomain("com");
-            QQmlApplicationEngine engine;
+    //! App declaration
+    atomic_dex::application atomic_app;
 
-            atomic_app.set_qt_app(app, &engine);
+    //! QT
+    QCoreApplication::setAttribute(Qt::AA_ShareOpenGLContexts);
+    QtWebEngine::initialize();
+    std::shared_ptr<QApplication> app = std::make_shared<QApplication>(argc, argv);
+    app->setOrganizationName("KomodoPlatform");
+    app->setOrganizationDomain("com");
+    QQmlApplicationEngine engine;
 
-            //! QT QML
-            engine.addImportPath("qrc:///");
-            QZXing::registerQMLTypes();
-            QZXing::registerQMLImageProvider(engine);
-            engine.rootContext()->setContextProperty("atomic_app", &atomic_app);
-            // Load Qaterial.
+    atomic_app.set_qt_app(app, &engine);
 
-            qaterial::loadQmlResources(false);
-            // qaterial::registerQmlTypes("Qaterial", 1, 0);
-            engine.addImportPath("qrc:/atomic_defi_design/imports");
-            engine.addImportPath("qrc:/atomic_defi_design/Constants");
-            qmlRegisterSingletonType(QUrl("qrc:/atomic_defi_design/qml/Constants/General.qml"), "App", 1, 0, "General");
-            qmlRegisterSingletonType(QUrl("qrc:/atomic_defi_design/qml/Constants/Style.qml"), "App", 1, 0, "Style");
-            qmlRegisterSingletonType(QUrl("qrc:/atomic_defi_design/qml/Constants/API.qml"), "App", 1, 0, "API");
-            qRegisterMetaType<t_portfolio_roles>("PortfolioRoles");
+    //! QT QML
+    engine.addImportPath("qrc:///");
+    QZXing::registerQMLTypes();
+    QZXing::registerQMLImageProvider(engine);
+    engine.rootContext()->setContextProperty("atomic_app", &atomic_app);
+    // Load Qaterial.
 
-            const QUrl url(QStringLiteral("qrc:/atomic_defi_design/qml/main.qml"));
-            QObject::connect(
-                &engine, &QQmlApplicationEngine::objectCreated, app.get(),
-                [url](QObject* obj, const QUrl& objUrl) {
-                    if ((obj == nullptr) && url == objUrl)
-                    {
-                        QCoreApplication::exit(-1);
-                    }
-                },
-                Qt::QueuedConnection);
+    qaterial::loadQmlResources(false);
+    // qaterial::registerQmlTypes("Qaterial", 1, 0);
+    engine.addImportPath("qrc:/atomic_defi_design/imports");
+    engine.addImportPath("qrc:/atomic_defi_design/Constants");
+    qmlRegisterSingletonType(QUrl("qrc:/atomic_defi_design/qml/Constants/General.qml"), "App", 1, 0, "General");
+    qmlRegisterSingletonType(QUrl("qrc:/atomic_defi_design/qml/Constants/Style.qml"), "App", 1, 0, "Style");
+    qmlRegisterSingletonType(QUrl("qrc:/atomic_defi_design/qml/Constants/API.qml"), "App", 1, 0, "API");
+    qRegisterMetaType<t_portfolio_roles>("PortfolioRoles");
 
-            engine.load(url);
+    const QUrl url(QStringLiteral("qrc:/atomic_defi_design/qml/main.qml"));
+    QObject::connect(
+        &engine, &QQmlApplicationEngine::objectCreated, app.get(),
+        [url](QObject* obj, const QUrl& objUrl) {
+            if ((obj == nullptr) && url == objUrl)
+            {
+                QCoreApplication::exit(-1);
+            }
+        },
+        Qt::QueuedConnection);
+
+    engine.load(url);
 
 
 #ifdef __APPLE__
-            QWindowList windows = QGuiApplication::allWindows();
-            QWindow*    win     = windows.first();
-            atomic_dex::mac_window_setup(win->winId());
+    QWindowList windows = QGuiApplication::allWindows();
+    QWindow*    win     = windows.first();
+    atomic_dex::mac_window_setup(win->winId());
 #endif
-            atomic_app.launch();
+    atomic_app.launch();
 
-            res = app->exec();
+    res = app->exec();
 
-            clean_wally();
-        return res;
-    }
+    clean_wally();
+    return res;
+}
 
 #if defined(WINDOWS_RELEASE_MAIN)
 INT WINAPI
@@ -246,7 +246,7 @@ WinMain([[maybe_unused]] HINSTANCE hInst, HINSTANCE, [[maybe_unused]] LPSTR strC
 int
 main([[maybe_unused]] int argc, [[maybe_unused]] char* argv[])
 #endif
-{    
+{
 #if defined(WINDOWS_RELEASE_MAIN)
     int    argc = __argc;
     char** argv = __argv;
