@@ -15,26 +15,12 @@ using t_rational = boost::multiprecision::cpp_rational;
 
 //! QT Headers
 #include <QCryptographicHash>
-#include <QModelIndex>
 #include <QString>
-#include <QVariant>
 
 //! Deps
 #include <date/date.h>
 #include <date/tz.h>
 #include <nlohmann/json.hpp>
-
-template <typename TModel>
-auto
-update_value(int role, const QVariant& value, const QModelIndex& idx, TModel& model)
-{
-    if (auto prev_value = model.data(idx, role); value != prev_value)
-    {
-        model.setData(idx, value, role);
-        return std::make_tuple(prev_value, value, true);
-    }
-    return std::make_tuple(value, value, false);
-}
 
 namespace atomic_dex::utils
 {

@@ -752,7 +752,6 @@ namespace atomic_dex
 {
     application::~application() noexcept
     {
-
     }
 } // namespace atomic_dex
 

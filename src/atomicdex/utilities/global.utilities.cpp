@@ -198,19 +198,19 @@ namespace atomic_dex::utils
     }
 
     bool
-    my_json_sax::number_integer([[maybe_unused]] long long int val)
+    my_json_sax::number_integer([[maybe_unused]] number_integer_t val)
     {
         return true;
     }
 
     bool
-    my_json_sax::number_unsigned([[maybe_unused]] unsigned long long int val)
+    my_json_sax::number_unsigned([[maybe_unused]] number_unsigned_t val)
     {
         return true;
     }
 
     bool
-    my_json_sax::number_float([[maybe_unused]] double val, const string_t& s)
+    my_json_sax::number_float([[maybe_unused]] number_float_t val, const string_t& s)
     {
         this->float_as_string = s;
         return true;

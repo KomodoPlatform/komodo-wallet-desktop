@@ -189,7 +189,7 @@ namespace atomic_dex
 
         if (ec)
         {
-            spdlog::error("error: {}", ec.message());
+            //std::cerr << "error: " << ec.message() << std::endl;
         }
 #endif
 
