@@ -173,6 +173,7 @@
         <file>atomic_defi_design/qml/Components/AmountField.qml</file>
         <file>atomic_defi_design/qml/Components/AmountFieldWithInfo.qml</file>
         <file>atomic_defi_design/qml/Components/AmountIntField.qml</file>
+        <file>atomic_defi_design/qml/Components/ComponentWithTitle.qml</file>
         <file>atomic_defi_design/qml/Components/CopyFieldButton.qml</file>
         <file>atomic_defi_design/qml/Components/HideFieldButton.qml</file>
         <file>atomic_defi_design/qml/Components/PasswordField.qml</file>
