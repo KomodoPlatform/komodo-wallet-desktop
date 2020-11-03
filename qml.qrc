@@ -220,6 +220,7 @@
         <file>atomic_defi_design/qml/Components/ComboBoxWithTitle.qml</file>
         <file>atomic_defi_design/qml/Components/TitleText.qml</file>
         <file>atomic_defi_design/qml/Components/TextWithTitle.qml</file>
+        <file>atomic_defi_design/qml/Components/TextEditWithTitle.qml</file>
         <file>atomic_defi_design/qml/Components/TextFieldWithTitle.qml</file>
         <file>atomic_defi_design/qml/Components/TextAreaWithTitle.qml</file>
         <file>atomic_defi_design/qml/Components/ModalHeader.qml</file>
