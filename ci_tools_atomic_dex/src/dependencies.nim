@@ -4,7 +4,6 @@ import vcpkg
 
 proc download_packages*() =
     echo "Downloading packages ... please wait"
-    #/Users/foo/CLionProjects/atomicDEX-Pro/ci_tools_atomic_dex/vcpkg-repo/vcpkg
     let response_file_directory = g_vcpkg_local_path.parentDir().parentDir().parentDir().joinPath(".github").joinPath("workflows")
     let custom_ports_path = g_vcpkg_local_path.parentDir().parentDir().joinPath("vcpkg-custom-ports").joinPath("ports")
     when defined(windows):

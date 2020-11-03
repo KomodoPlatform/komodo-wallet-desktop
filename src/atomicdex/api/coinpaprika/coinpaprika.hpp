@@ -16,12 +16,9 @@
 
 #pragma once
 
-//! Deps
-#include <nlohmann/json.hpp>
-
 //! Project Headers
 #include "atomicdex/utilities/cpprestsdk.utilities.hpp"
-#include "src/atomicdex/constants/http.code.hpp"
+#include "atomicdex/constants/http.code.hpp"
 
 namespace atomic_dex
 {

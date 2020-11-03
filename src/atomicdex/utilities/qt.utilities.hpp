@@ -20,6 +20,8 @@
 #include <QJsonObject>
 #include <QString>
 #include <QVariantList>
+#include <QModelIndex>
+#include <QVariant>
 
 //! Project Headers
 #include "atomicdex/config/coins.cfg.hpp"
@@ -28,6 +30,18 @@
 
 namespace atomic_dex
 {
+    template <typename TModel>
+    auto
+    update_value(int role, const QVariant& value, const QModelIndex& idx, TModel& model)
+    {
+        if (auto prev_value = model.data(idx, role); value != prev_value)
+        {
+            model.setData(idx, value, role);
+            return std::make_tuple(prev_value, value, true);
+        }
+        return std::make_tuple(value, value, false);
+    }
+
     bool        am_i_able_to_reach_this_endpoint(const QString& endpoint);
     QStringList vector_std_string_to_qt_string_list(const std::vector<std::string>& vec);
     QJsonArray  nlohmann_json_array_to_qt_json_array(const nlohmann::json& j);

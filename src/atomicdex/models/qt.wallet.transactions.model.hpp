@@ -21,8 +21,8 @@
 #include <QObject>
 
 //! Project Headers
+#include "atomicdex/models/qt.wallet.transactions.proxy.filter.model.hpp"
 #include "atomicdex/services/mm2/mm2.service.hpp"
-#include "qt.wallet.transactions.proxy.filter.model.hpp"
 
 namespace atomic_dex
 {

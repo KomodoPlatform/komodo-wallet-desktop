@@ -14,34 +14,19 @@
  *                                                                            *
  ******************************************************************************/
 
+//! Qt
 #include <QJSValue>
+
+//! Deps
 #include <taskflow/taskflow.hpp>
 
-//! PCH
-#include "src/atomicdex/pch.hpp"
-
 //! Project Headers
+#include "atomicdex/events/qt.events.hpp"
+#include "atomicdex/models/qt.portfolio.model.hpp"
+#include "atomicdex/pages/qt.wallet.page.hpp"
 #include "atomicdex/services/price/global.provider.hpp"
-#include "qt.portfolio.model.hpp"
-#include "src/atomicdex/events/qt.events.hpp"
-#include "src/atomicdex/pages/qt.wallet.page.hpp"
-#include "src/atomicdex/utilities/qt.utilities.hpp"
-
-//! Utils
-namespace
-{
-    template <typename TModel>
-    auto
-    update_value(int role, const QVariant& value, const QModelIndex& idx, TModel& model)
-    {
-        if (auto prev_value = model.data(idx, role); value != prev_value)
-        {
-            model.setData(idx, value, role);
-            return std::make_tuple(prev_value, value, true);
-        }
-        return std::make_tuple(value, value, false);
-    }
-} // namespace
+#include "atomicdex/utilities/global.utilities.hpp"
+#include "atomicdex/utilities/qt.utilities.hpp"
 
 namespace atomic_dex
 {
@@ -83,7 +68,7 @@ namespace atomic_dex
             const QString   change_24h = retrieve_change_24h(paprika, coin, *m_config);
             portfolio_data  data{
                 .ticker                = QString::fromStdString(coin.ticker),
-                .coin_type = QString::fromStdString(coin.type),
+                .coin_type             = QString::fromStdString(coin.type),
                 .name                  = QString::fromStdString(coin.name),
                 .balance               = QString::fromStdString(mm2_system.my_balance(coin.ticker, ec)),
                 .main_currency_balance = QString::fromStdString(price_service.get_price_in_fiat(m_config->current_currency, coin.ticker, ec)),
@@ -162,7 +147,7 @@ namespace atomic_dex
                         QString    amount   = QString::fromStdString(amount_f.str(8, std::ios_base::fixed));
                         using namespace std::chrono;
                         qint64  timestamp  = duration_cast<seconds>(system_clock::now().time_since_epoch()).count();
-                        QString human_date = QString::fromStdString(to_human_date<std::chrono::seconds>(timestamp, "%e %b %Y, %H:%M"));
+                        QString human_date = QString::fromStdString(utils::to_human_date<std::chrono::seconds>(timestamp, "%e %b %Y, %H:%M"));
                         spdlog::debug(
                             "balance update notification from update_currency_values prev[{}], new[{}]", prev_balance.toString().toStdString(),
                             new_balance.toString().toStdString());
@@ -222,7 +207,7 @@ namespace atomic_dex
                     QString    amount   = QString::fromStdString(amount_f.str(8, std::ios_base::fixed));
                     using namespace std::chrono;
                     qint64  timestamp  = duration_cast<seconds>(system_clock::now().time_since_epoch()).count();
-                    QString human_date = QString::fromStdString(to_human_date<std::chrono::seconds>(timestamp, "%e %b %Y, %H:%M"));
+                    QString human_date = QString::fromStdString(utils::to_human_date<std::chrono::seconds>(timestamp, "%e %b %Y, %H:%M"));
                     spdlog::debug(
                         "balance update notification from update_balance_values prev[{}], new[{}]", prev_balance.toString().toStdString(),
                         new_balance.toString().toStdString());
@@ -370,7 +355,7 @@ namespace atomic_dex
         for (auto&& coin: coins)
         {
             auto res = this->match(this->index(0, 0), TickerRole, coin);
-            //assert(not res.empty());
+            // assert(not res.empty());
             if (not res.empty())
             {
                 this->removeRow(res.at(0).row());

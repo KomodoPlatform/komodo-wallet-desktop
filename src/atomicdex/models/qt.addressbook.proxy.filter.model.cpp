@@ -14,12 +14,9 @@
  *                                                                            *
  ******************************************************************************/
 
-//! PCH
-#include "src/atomicdex/pch.hpp"
-
 //! Project Headers
-#include "qt.addressbook.model.hpp"
-#include "qt.addressbook.proxy.filter.model.hpp"
+#include "atomicdex/models/qt.addressbook.model.hpp"
+#include "atomicdex/models/qt.addressbook.proxy.filter.model.hpp"
 
 namespace atomic_dex
 {

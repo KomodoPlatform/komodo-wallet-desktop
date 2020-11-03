@@ -14,11 +14,8 @@
  *                                                                            *
  ******************************************************************************/
 
-//! PCH
-#include "src/atomicdex/pch.hpp"
-
 //! Project
-#include "qt.orderbook.model.hpp"
+#include "atomicdex/models/qt.orderbook.model.hpp"
 
 namespace
 {

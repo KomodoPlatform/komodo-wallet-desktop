@@ -1,26 +1,25 @@
-//! PCH
-#include "src/atomicdex/pch.hpp"
+/******************************************************************************
+ * Copyright © 2013-2019 The Komodo Platform Developers.                      *
+ *                                                                            *
+ * See the AUTHORS, DEVELOPER-AGREEMENT and LICENSE files at                  *
+ * the top-level directory of this distribution for the individual copyright  *
+ * holder information and the developer policies on copyright and licensing.  *
+ *                                                                            *
+ * Unless otherwise agreed in a custom licensing agreement, no part of the    *
+ * Komodo Platform software, including this file may be copied, modified,     *
+ * propagated or distributed except according to the terms contained in the   *
+ * LICENSE file                                                               *
+ *                                                                            *
+ * Removal or modification of this copyright notice is prohibited.            *
+ *                                                                            *
+ ******************************************************************************/
 
 //! Project Headers
+#include "atomicdex/models/qt.wallet.transactions.model.hpp"
+#include "atomicdex/managers/qt.wallet.manager.hpp"
+#include "atomicdex/pages/qt.settings.page.hpp"
 #include "atomicdex/services/price/global.provider.hpp"
-#include "qt.wallet.transactions.model.hpp"
-#include "src/atomicdex/managers/qt.wallet.manager.hpp"
-#include "src/atomicdex/pages/qt.settings.page.hpp"
-
-namespace
-{
-    template <typename TModel>
-    auto
-    update_value(int role, const QVariant& value, const QModelIndex& idx, TModel& model)
-    {
-        if (auto prev_value = model.data(idx, role); value != prev_value)
-        {
-            model.setData(idx, value, role);
-            return std::make_tuple(prev_value, value, true);
-        }
-        return std::make_tuple(value, value, false);
-    }
-} // namespace
+#include "atomicdex/utilities/global.utilities.hpp"
 
 namespace atomic_dex
 {

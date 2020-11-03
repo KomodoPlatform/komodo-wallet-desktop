@@ -24,10 +24,10 @@
 
 //! Project Headers
 #include "atomicdex/config/wallet.cfg.hpp"
+#include "atomicdex/data/wallet/qt.addressbook.contact.contents.hpp"
 #include "atomicdex/services/mm2/mm2.service.hpp"
-#include "src/atomicdex/data/wallet/qt.addressbook.contact.contents.hpp"
-#include "src/atomicdex/utilities/security.utilities.hpp"
-#include "src/atomicdex/version/version.hpp"
+#include "atomicdex/utilities/security.utilities.hpp"
+#include "atomicdex/version/version.hpp"
 
 namespace atomic_dex
 {
@@ -104,7 +104,7 @@ namespace atomic_dex
             using namespace std::string_literals;
 
             const std::string wallet_cfg_file = std::string(atomic_dex::get_raw_version()) + "-coins"s + "."s + wallet_name.toStdString() + ".json"s;
-            const fs::path    wallet_cfg_path = get_atomic_dex_config_folder() / wallet_cfg_file;
+            const fs::path    wallet_cfg_path = utils::get_atomic_dex_config_folder() / wallet_cfg_file;
 
 
             if (not fs::exists(wallet_cfg_path))
@@ -114,7 +114,7 @@ namespace atomic_dex
                 fs::copy(cfg_path / filename, wallet_cfg_path);
             }
 
-            const fs::path seed_path = get_atomic_dex_config_folder() / (wallet_name.toStdString() + ".seed"s);
+            const fs::path seed_path = utils::get_atomic_dex_config_folder() / (wallet_name.toStdString() + ".seed"s);
             auto           seed      = atomic_dex::decrypt(seed_path, key.data(), ec);
             if (ec == dextop_error::corrupted_file_or_wrong_password)
             {

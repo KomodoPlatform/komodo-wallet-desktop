@@ -16,8 +16,9 @@
 
 #pragma once
 
-#include <QSortFilterProxyModel>
+//! Qt
 #include <QDate>
+#include <QSortFilterProxyModel>
 
 namespace atomic_dex
 {
@@ -40,14 +41,14 @@ namespace atomic_dex
         void set_is_history(bool is_history) noexcept;
 
         [[nodiscard]] QDate filter_minimum_date() const;
-        void  set_filter_minimum_date(QDate date);
+        void                set_filter_minimum_date(QDate date);
 
         [[nodiscard]] QDate filter_maximum_date() const;
-        void set_filter_maximum_date(QDate date);
+        void                set_filter_maximum_date(QDate date);
 
         Q_INVOKABLE QStringList get_filtered_ids() const noexcept;
-        Q_INVOKABLE void set_coin_filter(const QString& to_filter);
-        Q_INVOKABLE void export_csv_visible_history(const QString& path);
+        Q_INVOKABLE void        set_coin_filter(const QString& to_filter);
+        Q_INVOKABLE void        export_csv_visible_history(const QString& path);
 
 
       signals:
@@ -58,10 +59,10 @@ namespace atomic_dex
       protected:
         //! Override member functions
         [[nodiscard]] bool lessThan(const QModelIndex& source_left, const QModelIndex& source_right) const final;
-        bool               filterAcceptsRow(int source_row, const QModelIndex& source_parent) const override;
+        [[nodiscard]] bool filterAcceptsRow(int source_row, const QModelIndex& source_parent) const override;
 
       private:
-        bool date_in_range(QDate date) const;
+        [[nodiscard]] bool date_in_range(QDate date) const;
 
         bool m_is_history{false};
 
