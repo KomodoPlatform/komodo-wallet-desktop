@@ -16,21 +16,24 @@
 
 #pragma once
 
-//! QT Headers
+//! Qt Headers
 #include <QAbstractListModel>
 #include <QString>
 #include <QVector>
 
+//! Deps
+#include <entt/core/attribute.h>
+
 //! Project headers
 #include "atomicdex/config/app.cfg.hpp"
-#include "atomicdex/events/events.hpp"
-#include "atomicdex/services/mm2/mm2.service.hpp"
-#include "qt.portfolio.proxy.filter.model.hpp"
 #include "atomicdex/data/wallet/qt.portfolio.data.hpp"
+#include "atomicdex/events/events.hpp"
+#include "atomicdex/models/qt.portfolio.proxy.filter.model.hpp"
+#include "atomicdex/services/mm2/mm2.service.hpp"
 
 namespace atomic_dex
 {
-    class portfolio_model final : public QAbstractListModel
+    class ENTT_API portfolio_model final : public QAbstractListModel
     {
         Q_OBJECT
         Q_PROPERTY(portfolio_proxy_model* portfolio_proxy_mdl READ get_portfolio_proxy_mdl NOTIFY portfolioProxyChanged);

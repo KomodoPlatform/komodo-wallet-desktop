@@ -14,12 +14,9 @@
  *                                                                            *
  ******************************************************************************/
 
-//! PCH
-#include "src/atomicdex/pch.hpp"
-
 //! Project Headers
-#include "qt.portfolio.model.hpp"
-#include "qt.portfolio.proxy.filter.model.hpp"
+#include "atomicdex/models/qt.portfolio.model.hpp"
+#include "atomicdex/models/qt.portfolio.proxy.filter.model.hpp"
 
 namespace atomic_dex
 {

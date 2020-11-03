@@ -17,6 +17,8 @@
 #pragma once
 
 #include <entt/core/type_traits.hpp>
+#include <entt/core/hashed_string.hpp>
+#include <entt/core/type_info.hpp>
 
 namespace atomic_dex
 {
@@ -32,8 +34,6 @@ namespace atomic_dex
     using process_swaps_finished        = entt::tag<"gui_process_swaps_finished"_hs>;
     using refresh_all_portfolio_balance = entt::tag<"refresh_all_portfolio_balance"_hs>;
     using band_oracle_refreshed         = entt::tag<"band_oracle_refreshed"_hs>;
-    
-    /// \brief      May be triggered when the active currency is changed.
     using current_currency_changed      = entt::tag<"update_orders_and_swap_values"_hs>;
 
     struct enabling_coin_failed

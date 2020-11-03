@@ -16,9 +16,13 @@
 
 #pragma once
 
+//! Qt
 #include <QJsonArray>
 #include <QJsonObject>
 #include <QString>
+
+//! STD
+#include <optional>
 
 namespace atomic_dex
 {

@@ -18,8 +18,7 @@ proc generate_solution*(build_type: string, osx_sdk_path: string, compiler_path:
         echo "existing directory: " & full_name
     os.setCurrentDir(os.getCurrentDir().joinPath(full_name))
     assert(os.existsEnv("QT_INSTALL_CMAKE_PATH"))
-    var cmd_line = "cmake -GNinja -DCMAKE_BUILD_TYPE=" &  build_type & " -DCMAKE_TOOLCHAIN_FILE=" & 
-                    g_vcpkg_cmake_script_path & " " & 
+    var cmd_line = "cmake -GNinja -DCMAKE_BUILD_TYPE=" &  build_type & " " &
                     os.getCurrentDir().parentDir().parentDir() & " -DCMAKE_PREFIX_PATH=" & os.getEnv("QT_INSTALL_CMAKE_PATH")
     when defined(osx):
         cmd_line = cmd_line & " -DVCPKG_APPLOCAL_DEPS=OFF"
@@ -31,8 +30,3 @@ proc generate_solution*(build_type: string, osx_sdk_path: string, compiler_path:
         cmd_line = cmd_line & " -DCMAKE_CXX_COMPILER=clang++ -DCMAKE_C_COMPILER=clang"
     echo "cmd line: " & cmd_line
     discard execCmd(cmd_line)
-    when defined(windows):
-        if os.existsFile(os.getCurrentDir().joinPath("bin").joinPath("atomicdex-desktop.exe")):
-          discard execCmd(get_windows_deploy_cmd())
-        else:
-          echo "atomicdex-desktop is not yet built"

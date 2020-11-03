@@ -22,7 +22,7 @@
 
 namespace atomic_dex
 {
-    void
+    ENTT_API void
     kill_executable(const char* exec_name)
     {
 #if defined(__APPLE__) || defined(__linux__)

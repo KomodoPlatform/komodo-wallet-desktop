@@ -1,12 +1,8 @@
 #pragma once
 
-//! PCH
-#include "src/atomicdex/pch.hpp"
-
 //! Deps
 #include <antara/gaming/core/real.path.hpp>
 #include <nlohmann/json.hpp>
-
 
 #ifndef NLOHMANN_OPT_HELPER
 #    define NLOHMANN_OPT_HELPER

@@ -1,3 +1,6 @@
 [submodule "ci_tools_atomic_dex/vcpkg-repo"]
 	path = ci_tools_atomic_dex/vcpkg-repo
 	url = https://github.com/KomodoPlatform/vcpkg
+[submodule "ci_tools_atomic_dex/vcpkg-custom-ports"]
+	path = ci_tools_atomic_dex/vcpkg-custom-ports
+	url = https://github.com/KomodoPlatform/vcpkg-custom-ports

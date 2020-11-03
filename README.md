@@ -63,20 +63,20 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 | Dependencies  | Version       | Description                                                                                                                                     | Categories          |
 |---------------|---------------|-------------------------------------------------------------------------------------------------------------------------------------------------|---------------------|
-| boost         | 1.74          | Boost provides free peer-reviewed portable C++ source libraries.                                                                                | General Programming |
-| zstd          | 1.4.5         | Zstandard - Fast real-time compression algorithm                                                                                                | Compression         |
-| zlib          | 1.2.11        | A massively spiffy yet delicately unobtrusive compression library.                                                                              | Compression         |
-| doctest       | 2.3.4         | The fastest feature-rich C++11/14/17/20 single-header testing framework                                                                         | Testing             |
-| fmt           | 6.0.0         | A modern formatting library                                                                                                                     | Formatting          |
+| boost         | 1.73          | Boost provides free peer-reviewed portable C++ source libraries.                                                                                | General Programming |
+| zstd          | 1.4.4         | Zstandard - Fast real-time compression algorithm                                                                                                | Compression         |
+| zlib          | 1.2.11-6        | A massively spiffy yet delicately unobtrusive compression library.                                                                              | Compression         |
+| doctest       | 2.3.8         | The fastest feature-rich C++11/14/17/20 single-header testing framework                                                                         | Testing             |
+| fmt           | 7.1.0         | A modern formatting library                                                                                                                     | Formatting          |
 | nlohmann_json | 3.9.1         | JSON for Modern C++                                                                                                                             | Parsing             |
 | range-v3      | 0.11.0        | Range library for C++14/17/20, basis for C++20's std::ranges                                                                                    | Algorithm           |
-| date          | 3.0.0         | A date and time library based on the C++11/14/17 <chrono> header                                                                                | Timezone/Calendar   |
-| folly         | 2019.10.21.00 | An open-source C++ library developed and used at Facebook.                                                                                      | Threading           |
+| date          | 2019-11-08         | A date and time library based on the C++11/14/17 <chrono> header                                                                                | Timezone/Calendar   |
+| folly         | 2020.10.19.00 | An open-source C++ library developed and used at Facebook.                                                                                      | Threading           |
 | spdlog        | 1.8.0         | Fast C++ logging library.                                                                                                                       | Logging             |
 | openssl       | 1.1.1h        | TLS/SSL and crypto library                                                                                                                      | Network/Crypto      |
-| entt          | 3.3.2         | Gaming meets modern C++ - a fast and reliable entity component system (ECS) and much more                                                       | Architecture        |
-| cpprestsdk    | 2.10.16       | The C++ REST SDK is a Microsoft project for cloud-based client-server  communication in native code using a modern asynchronous C++ API design. | HTTP                |
-| taskflow      | 2.5.0         | Parallel and Heterogeneous Task Programming in Modern C++                                                                                       | Threading           |
+| entt          | 3.5.1         | Gaming meets modern C++ - a fast and reliable entity component system (ECS) and much more                                                       | Architecture        |
+| cpprestsdk    | 2.10.15-1       | The C++ REST SDK is a Microsoft project for cloud-based client-server  communication in native code using a modern asynchronous C++ API design. | HTTP                |
+| taskflow      | 2.2.0         | Parallel and Heterogeneous Task Programming in Modern C++                                                                                       | Threading           |
 | qt            | 5.15.0        | Qt is a cross-platform application development framework for desktop, embedded and mobile.                                                      | GUI                 |
 | reproc        | 13.0.1        | A cross-platform (C99/C++11) process library                                                                                                    | Process             |
 | qzxing        | HEAD          | Qt/QML wrapper library for the ZXing library. 1D/2D barcode image processing library                                                            | QR                  |

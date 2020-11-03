@@ -14,12 +14,9 @@
  *                                                                            *
  ******************************************************************************/
 
-//! PCH Headers
-#include "src/atomicdex/pch.hpp"
-
 //! Project Headers
 #include "atomicdex/api/mm2/mm2.hpp"
-#include "src/atomicdex/utilities/global.utilities.hpp"
+#include "atomicdex/utilities/global.utilities.hpp"
 
 //! Utilities
 namespace
@@ -157,7 +154,7 @@ namespace mm2::api
     {
         j.at("address").get_to(cfg.address);
         j.at("balance").get_to(cfg.balance);
-        cfg.balance = adjust_precision(cfg.balance);
+        cfg.balance = atomic_dex::utils::adjust_precision(cfg.balance);
         j.at("coin").get_to(cfg.coin);
         if (cfg.coin == "BCH")
         {
@@ -238,7 +235,7 @@ namespace mm2::api
         j.at("tx_hash").get_to(cfg.tx_hash);
         j.at("tx_hex").get_to(cfg.tx_hex);
 
-        std::string s         = to_human_date<std::chrono::seconds>(cfg.timestamp, "%e %b %Y, %H:%M");
+        std::string s         = atomic_dex::utils::to_human_date<std::chrono::seconds>(cfg.timestamp, "%e %b %Y, %H:%M");
         cfg.timestamp_as_date = std::move(s);
     }
 
@@ -446,9 +443,9 @@ namespace mm2::api
             boost::trim_right_if(contents.price, boost::is_any_of("0"));
             contents.price = contents.price;
         }
-        contents.maxvolume = adjust_precision(contents.maxvolume);
+        contents.maxvolume = atomic_dex::utils::adjust_precision(contents.maxvolume);
         t_float_50 total_f = t_float_50(contents.price) * t_float_50(contents.maxvolume);
-        contents.total     = adjust_precision(total_f.str());
+        contents.total     = atomic_dex::utils::adjust_precision(total_f.str());
     }
 
     void
@@ -467,7 +464,7 @@ namespace mm2::api
         j.at("netid").get_to(answer.netid);
         j.at("timestamp").get_to(answer.timestamp);
 
-        answer.human_timestamp = to_human_date(answer.timestamp, "%Y-%m-%d %I:%M:%S");
+        answer.human_timestamp = atomic_dex::utils::to_human_date(answer.timestamp, "%Y-%m-%d %I:%M:%S");
 
         t_float_50 result_asks_f("0");
         for (auto&& cur_asks: answer.asks) { result_asks_f = result_asks_f + t_float_50(cur_asks.maxvolume); }
@@ -479,7 +476,7 @@ namespace mm2::api
         {
             cur_bids.total        = cur_bids.maxvolume;
             t_float_50 new_volume = t_float_50(cur_bids.maxvolume) / t_float_50(cur_bids.price);
-            cur_bids.maxvolume    = adjust_precision(new_volume.str());
+            cur_bids.maxvolume    = atomic_dex::utils::adjust_precision(new_volume.str());
             result_bids_f         = result_bids_f + t_float_50(cur_bids.maxvolume);
         }
 
@@ -487,13 +484,13 @@ namespace mm2::api
         for (auto&& cur_asks: answer.asks)
         {
             t_float_50 percent_f   = t_float_50(cur_asks.maxvolume) / result_asks_f;
-            cur_asks.depth_percent = adjust_precision(percent_f.str());
+            cur_asks.depth_percent = atomic_dex::utils::adjust_precision(percent_f.str());
         }
 
         for (auto&& cur_bids: answer.bids)
         {
             t_float_50 percent_f   = t_float_50(cur_bids.maxvolume) / result_bids_f;
-            cur_bids.depth_percent = adjust_precision(percent_f.str());
+            cur_bids.depth_percent = atomic_dex::utils::adjust_precision(percent_f.str());
         }
     }
 
@@ -708,7 +705,7 @@ namespace mm2::api
           }
           my_order_contents contents{
               .order_id         = key,
-              .price            = is_maker ? adjust_precision(value.at("price").get<std::string>()) : "0",
+              .price            = is_maker ? atomic_dex::utils::adjust_precision(value.at("price").get<std::string>()) : "0",
               .base             = is_maker ? value.at("base").get<std::string>() : value.at("request").at("base").get<std::string>(),
               .rel              = is_maker ? value.at("rel").get<std::string>() : value.at("request").at("rel").get<std::string>(),
               .cancellable      = value.at("cancellable").get<bool>(),
@@ -716,7 +713,7 @@ namespace mm2::api
               .order_type       = is_maker ? "maker" : "taker",
               .base_amount      = is_maker ? value.at("max_base_vol").get<std::string>() : value.at("request").at("base_amount").get<std::string>(),
               .rel_amount       = is_maker ? (t_float_50(contents.price) * t_float_50(contents.base_amount)).convert_to<std::string>() : value.at("request").at("rel_amount").get<std::string>(),
-              .human_timestamp  = to_human_date<std::chrono::seconds>(time_key / 1000, "%F    %T"),
+              .human_timestamp  = atomic_dex::utils::to_human_date<std::chrono::seconds>(time_key / 1000, "%F    %T"),
               .action = action};
           out.try_emplace(contents.order_id, std::move(contents));
         };
@@ -764,16 +761,16 @@ namespace mm2::api
         j.at("type").get_to(contents.type);
         j.at("recoverable").get_to(contents.funds_recoverable);
 
-        contents.taker_amount = adjust_precision(contents.taker_amount);
-        contents.maker_amount = adjust_precision(contents.maker_amount);
+        contents.taker_amount = atomic_dex::utils::adjust_precision(contents.taker_amount);
+        contents.maker_amount = atomic_dex::utils::adjust_precision(contents.maker_amount);
         contents.events       = nlohmann::json::array();
         if (j.contains("my_info"))
         {
             contents.my_info = j.at("my_info");
             if (not contents.my_info.is_null())
             {
-                contents.my_info["other_amount"] = adjust_precision(contents.my_info["other_amount"].get<std::string>());
-                contents.my_info["my_amount"]    = adjust_precision(contents.my_info["my_amount"].get<std::string>());
+                contents.my_info["other_amount"] = atomic_dex::utils::adjust_precision(contents.my_info["other_amount"].get<std::string>());
+                contents.my_info["my_amount"]    = atomic_dex::utils::adjust_precision(contents.my_info["my_amount"].get<std::string>());
             }
         }
         using t_event_timestamp_registry = std::unordered_map<std::string, std::uint64_t>;
@@ -786,7 +783,7 @@ namespace mm2::api
         {
             const nlohmann::json& j_evt      = content.at("event");
             auto                  timestamp  = content.at("timestamp").get<std::size_t>();
-            std::string           human_date = to_human_date<std::chrono::seconds>(timestamp / 1000, "%F    %H:%M:%S");
+            std::string           human_date = atomic_dex::utils::to_human_date<std::chrono::seconds>(timestamp / 1000, "%F    %H:%M:%S");
             auto                  evt_type   = j_evt.at("type").get<std::string>();
 
             auto rate_bundler = [&event_timestamp_registry,
@@ -1071,7 +1068,7 @@ namespace mm2::api
             if (obj.contains(field))
             {
                 auto obj_timestamp         = obj.at(field).get<std::size_t>();
-                obj[field + "_human_date"] = to_human_date<std::chrono::seconds>(obj_timestamp, "%e %b %Y, %H:%M");
+                obj[field + "_human_date"] = atomic_dex::utils::to_human_date<std::chrono::seconds>(obj_timestamp, "%e %b %Y, %H:%M");
             }
         };
 

@@ -16,9 +16,6 @@
 
 #pragma once
 
-//! PCH
-#include "atomicdex/pch.hpp"
-
 //! Deps
 #include <meta/detection/detection.hpp>
 #include <nlohmann/json.hpp>
