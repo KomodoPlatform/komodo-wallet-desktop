@@ -54,11 +54,11 @@ namespace atomic_dex
             break;
         case orders_model::BaseCoinAmountRole:
             break;
-        case orders_model::BaseCoinAmountFiatRole:
+        case orders_model::BaseCoinAmountCurrentCurrencyRole:
             break;
         case orders_model::RelCoinAmountRole:
             break;
-        case orders_model::RelCoinAmountFiatRole:
+        case orders_model::RelCoinAmountCurrentCurrencyRole:
             break;
         case orders_model::OrderTypeRole:
             break;

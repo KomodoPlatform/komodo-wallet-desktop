@@ -138,6 +138,7 @@ target_sources(atomicdex-desktop_shared_deps INTERFACE
         ${CMAKE_SOURCE_DIR}/src/atomicdex/api/ohlc/ohlc.api.cpp
         ${CMAKE_SOURCE_DIR}/src/atomicdex/api/mm2/mm2.cpp
         ${CMAKE_SOURCE_DIR}/src/atomicdex/api/coinpaprika/coinpaprika.cpp
+        ${CMAKE_SOURCE_DIR}/src/atomicdex/api/faucet/faucet.cpp
 
         ##! Models
         ${CMAKE_SOURCE_DIR}/src/atomicdex/models/qt.orders.model.cpp
