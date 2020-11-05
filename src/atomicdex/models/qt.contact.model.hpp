@@ -42,8 +42,7 @@ namespace atomic_dex
         QString get_name() const noexcept;
 
         void set_name(const QString& name) noexcept;
-
-      public:
+        
         explicit contact_model(atomic_dex::qt_wallet_manager& wallet_manager_, QObject* parent = nullptr) noexcept;
         ~contact_model() noexcept final;
         QVariant               data(const QModelIndex& index, int role) const final;
