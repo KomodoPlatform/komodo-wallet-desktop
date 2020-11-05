@@ -144,7 +144,6 @@ ColumnLayout {
             anchors.bottomMargin: 10
 
             placeholderText: qsTr("Search")
-            selectByMouse: true
 
             onTextChanged: {
                 portfolio_coins.setFilterFixedString(text)
@@ -178,7 +177,7 @@ ColumnLayout {
             anchors.leftMargin: 40
             anchors.verticalCenter: parent.verticalCenter
 
-            text: qsTr("Coin")
+            text: qsTr("Asset")
             sort_type: sort_by_name
         }
 
@@ -370,7 +369,11 @@ ColumnLayout {
                 anchors.verticalCenter: parent.verticalCenter
                 legend.visible: false
 
-                onHistoricalChanged: updateChart(chart, historical, Style.getValueColor(change_24h))
+                function refresh() { updateChart(chart, historical, Style.getValueColor(change_24h)) }
+
+                property bool dark_theme: Style.dark_theme
+                onDark_themeChanged: refresh()
+                onHistoricalChanged: refresh()
                 backgroundColor: "transparent"
             }
 

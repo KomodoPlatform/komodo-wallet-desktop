@@ -8,16 +8,20 @@ TextArea {
     id: text_field
 
     font.family: Style.font_family
+
     placeholderTextColor: Style.colorPlaceholderText
+    selectedTextColor: Style.colorSelectedText
+    selectionColor: Style.colorSelection
+
     Behavior on color { ColorAnimation { duration: Style.animationDuration } }
     Behavior on placeholderTextColor { ColorAnimation { duration: Style.animationDuration } }
 
     property bool remove_newline: true
     wrapMode: TextEdit.Wrap
 
-    KeyNavigation.priority: KeyNavigation.BeforeItem
-    KeyNavigation.backtab: nextItemInFocusChain(false)
-    KeyNavigation.tab: nextItemInFocusChain(true)
+    Keys.onBacktabPressed: nextItemInFocusChain(false).forceActiveFocus(Qt.TabFocusReason)
+    Keys.onTabPressed: nextItemInFocusChain().forceActiveFocus(Qt.TabFocusReason)
+
     Keys.onPressed: {
         if(event.key === Qt.Key_Return) {
             if(onReturn !== undefined) {
@@ -41,7 +45,7 @@ TextArea {
     selectByMouse: true
     persistentSelection: true
 
-    background: InnerBackground { }
+    background: InnerBackground { auto_set_size: false }
 
     RightClickMenu { }
 }

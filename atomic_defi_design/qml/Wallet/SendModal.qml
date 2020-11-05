@@ -211,7 +211,7 @@ BasicModal {
                 Layout.alignment: Qt.AlignRight | Qt.AlignBottom
                 text: qsTr("Address Book")
                 onClicked: {
-                    openAddressBook()
+                    dashboard.current_page = General.idx_dashboard_addressbook
                     root.close()
                 }
                 enabled: !root.is_send_busy
@@ -359,26 +359,26 @@ BasicModal {
         title: qsTr("Send")
 
         // Address
-        TextWithTitle {
+        TextEditWithTitle {
             title: qsTr("Recipient's address")
             text: input_address.field.text
         }
 
         // Amount
-        TextWithTitle {
+        TextEditWithTitle {
             title: qsTr("Amount")
-            text: General.formatCrypto("", input_amount.field.text, api_wallet_page.ticker)
+            text: General.formatCrypto("", input_amount.field.text, api_wallet_page.ticker, send_result.withdraw_answer.total_amount_fiat, API.app.settings_pg.current_currency)
         }
 
         // Fees
-        TextWithTitle {
+        TextEditWithTitle {
             title: qsTr("Fees")
             text: empty_data ? "" :
-                  General.formatCrypto("", send_result.withdraw_answer.fee_details.amount, current_ticker_infos.fee_ticker)
+                  General.formatCrypto("", send_result.withdraw_answer.fee_details.amount, current_ticker_infos.fee_ticker, send_result.withdraw_answer.fee_details.amount_fiat, API.app.settings_pg.current_currency)
         }
 
         // Date
-        TextWithTitle {
+        TextEditWithTitle {
             title: qsTr("Date")
             text: empty_data ? "" :
                   send_result.withdraw_answer.date

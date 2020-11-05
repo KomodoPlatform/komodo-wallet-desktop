@@ -7,10 +7,13 @@ import "../Components"
 import "../Constants"
 
 ColumnLayout {
+    property alias show_label: label.visible
+
     RowLayout {
         Layout.alignment: Qt.AlignVCenter
         spacing: 20
         DefaultText {
+            id: label
             Layout.alignment: Qt.AlignVCenter
             text_value: qsTr("Language") + ":"
             font.pixelSize: Style.textSizeSmall2

@@ -7,11 +7,11 @@ import "../Constants"
 BasicModal {
     id: root
 
-    property alias header: text_area.title
+    property alias header: modal_content.title
     property alias field: text_area.field
 
     ModalContent {
-        title: qsTr("Log")
+        id: modal_content
 
         TextAreaWithTitle {
             id: text_area
@@ -19,6 +19,7 @@ BasicModal {
             field.readOnly: true
             copyable: true
             remove_newline: false
+            title: ""
         }
 
         // Buttons

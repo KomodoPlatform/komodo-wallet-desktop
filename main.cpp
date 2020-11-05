@@ -8,17 +8,18 @@
 #include <QWindow>
 #include <Qaterial/Qaterial.hpp>
 #include <QtQml>
+#include <QtWebEngine>
 
 #define QZXING_QML
 
 #include "QZXing.h"
 
 //! PCH Headers
-#include "atomic.dex.pch.hpp"
+#include "atomicdex/pch.hpp"
 
 //! Deps
-#include <wally.hpp>
 #include <sodium/core.h>
+#include <wally.hpp>
 
 #if defined(linux)
 #    define BOOST_STACKTRACE_USE_ADDR2LINE
@@ -26,12 +27,12 @@
 #endif
 
 //! Project Headers
-#include "atomic.dex.app.hpp"
-#include "atomic.dex.kill.hpp"
-#include "atomic.dex.qt.portfolio.model.hpp"
+#include "atomicdex/app.hpp"
+#include "atomicdex/models/qt.portfolio.model.hpp"
+#include "atomicdex/utilities/kill.hpp"
 
 #ifdef __APPLE__
-#    include "atomic.dex.osx.manager.hpp"
+#    include "atomicdex/platform/osx/manager.hpp"
 #endif
 
 inline constexpr size_t g_qsize_spdlog             = 10240;
@@ -43,8 +44,8 @@ inline constexpr size_t g_spdlog_max_file_rotation = 3;
 void
 signal_handler(int signal)
 {
-    spdlog::trace("sigabort received, cleaning mm2");
-    atomic_dex::kill_executable("mm2");
+    spdlog::trace("sigabort received, cleaning mm2.service");
+    atomic_dex::kill_executable("mm2.service");
 #if defined(linux)
     boost::stacktrace::safe_dump_to("./backtrace.dump");
 #endif
@@ -56,7 +57,7 @@ connect_signals_handler()
 {
     spdlog::info("connecting signal SIGABRT to the signal handler");
 #if defined(linux)
-    if (boost::filesystem::exists("./backtrace.dump"))
+    if (fs::exists("./backtrace.dump"))
     {
         // there is a backtrace
         std::ifstream ifs("./backtrace.dump");
@@ -66,7 +67,7 @@ connect_signals_handler()
 
         // cleaning up
         ifs.close();
-        boost::filesystem::remove("./backtrace.dump");
+        fs::remove("./backtrace.dump");
     }
 #endif
     std::signal(SIGABRT, signal_handler);
@@ -101,7 +102,7 @@ static void
 init_logging()
 {
     //! Log Initialization
-    std::string path = get_atomic_dex_current_log_file().string();
+    std::string path = atomic_dex::utils::get_atomic_dex_current_log_file().string();
     spdlog::init_thread_pool(g_qsize_spdlog, g_spdlog_thread_count);
     auto tp            = spdlog::thread_pool();
     auto stdout_sink   = std::make_shared<spdlog::sinks::stdout_color_sink_mt>();
@@ -169,45 +170,25 @@ init_timezone_db()
 #endif
 }
 
-/*static void
-init_restclient()
-{
-    RestClient::init();
-}
-
-static void
-disable_restclient()
-{
-    RestClient::disable();
-}*/
-
-#if defined(WINDOWS_RELEASE_MAIN)
-INT WINAPI
-WinMain(HINSTANCE hInst, HINSTANCE, LPSTR strCmdLine, INT)
-#else
-
 int
-main([[maybe_unused]] int argc, [[maybe_unused]] char* argv[])
-#endif
+run_app(int argc, char** argv)
 {
-#if defined(WINDOWS_RELEASE_MAIN)
-    int    argc = __argc;
-    char** argv = __argv;
-#endif
     init_logging();
     connect_signals_handler();
-    //init_restclient();
     init_timezone_db();
     init_wally();
     init_sodium();
     clean_previous_run();
     init_dpi();
 
+    int res = 0;
+
     //! App declaration
     atomic_dex::application atomic_app;
 
     //! QT
-    // int                           ac  = 0;
+    QCoreApplication::setAttribute(Qt::AA_ShareOpenGLContexts);
+    QtWebEngine::initialize();
     std::shared_ptr<QApplication> app = std::make_shared<QApplication>(argc, argv);
     app->setOrganizationName("KomodoPlatform");
     app->setOrganizationDomain("com");
@@ -216,8 +197,6 @@ main([[maybe_unused]] int argc, [[maybe_unused]] char* argv[])
     atomic_app.set_qt_app(app, &engine);
 
     //! QT QML
-
-
     engine.addImportPath("qrc:///");
     QZXing::registerQMLTypes();
     QZXing::registerQMLImageProvider(engine);
@@ -254,10 +233,28 @@ main([[maybe_unused]] int argc, [[maybe_unused]] char* argv[])
 #endif
     atomic_app.launch();
 
-    auto res = app->exec();
+    res = app->exec();
 
-    //disable_restclient();
     clean_wally();
+    return res;
+}
 
+#if defined(WINDOWS_RELEASE_MAIN)
+INT WINAPI
+WinMain([[maybe_unused]] HINSTANCE hInst, HINSTANCE, [[maybe_unused]] LPSTR strCmdLine, INT)
+#else
+int
+main([[maybe_unused]] int argc, [[maybe_unused]] char* argv[])
+#endif
+{
+#if defined(WINDOWS_RELEASE_MAIN)
+    int    argc = __argc;
+    char** argv = __argv;
+#endif
+
+    //! run app
+    int res = run_app(argc, argv);
+    spdlog::info("Shutdown all loggers");
+    spdlog::drop_all();
     return res;
 }

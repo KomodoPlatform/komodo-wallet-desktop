@@ -17,6 +17,7 @@ import "../Sidebar"
 Item {
     id: dashboard
 
+    property alias notifications_modal: notifications_modal
     Layout.fillWidth: true
 
     function getMainPage() {
@@ -48,6 +49,7 @@ Item {
         portfolio.reset()
         wallet.reset()
         exchange.reset()
+        addressbook.reset()
         news.reset()
         dapps.reset()
         settings.reset()
@@ -134,6 +136,10 @@ Item {
 
             Exchange {
                 id: exchange
+            }
+
+            AddressBook {
+                id: addressbook
             }
 
             Item {

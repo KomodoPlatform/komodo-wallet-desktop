@@ -14,7 +14,7 @@ ColumnLayout {
     property alias textRole: input_field.textRole
     property alias valueRole: input_field.valueRole
 
-    DefaultText {
+    TitleText {
         id: title_text
     }
 

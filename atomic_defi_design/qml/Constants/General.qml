@@ -19,24 +19,29 @@ QtObject {
         return (coin_info.is_custom_coin ? custom_coin_icons_path : coin_icons_path) + ticker.toLowerCase() + ".png"
     }
 
+    function qaterialIcon(name) {
+        return "qrc:/Qaterial/Icons/" + name + ".svg"
+    }
+
     readonly property string cex_icon: 'ⓘ'
     readonly property string download_icon: '📥'
     readonly property string right_arrow_icon: "⮕"
     readonly property string privacy_text: "*****"
 
-    readonly property string version_string: "Pro v" + API.app.get_version()
+    readonly property string version_string: "Desktop v" + API.app.get_version()
 
     property bool privacy_mode: false
 
     readonly property int idx_dashboard_portfolio: 0
     readonly property int idx_dashboard_wallet: 1
     readonly property int idx_dashboard_exchange: 2
-    readonly property int idx_dashboard_news: 3
-    readonly property int idx_dashboard_dapps: 4
-    readonly property int idx_dashboard_settings: 5
-    readonly property int idx_dashboard_support: 6
-    readonly property int idx_dashboard_light_ui: 7
-    readonly property int idx_dashboard_privacy_mode: 8
+    readonly property int idx_dashboard_addressbook: 3
+    readonly property int idx_dashboard_news: 4
+    readonly property int idx_dashboard_dapps: 5
+    readonly property int idx_dashboard_settings: 6
+    readonly property int idx_dashboard_support: 7
+    readonly property int idx_dashboard_light_ui: 8
+    readonly property int idx_dashboard_privacy_mode: 9
 
     readonly property int idx_exchange_trade: 0
     readonly property int idx_exchange_orders: 1
@@ -156,7 +161,11 @@ QtObject {
 
     function filterCoins(list, text, type) {
         return list.filter(c => (c.ticker.indexOf(text.toUpperCase()) !== -1 || c.name.toUpperCase().indexOf(text.toUpperCase()) !== -1) &&
-                           (type === undefined || c.type === type))
+                           (type === undefined || c.type === type)).sort((a, b) => {
+                               if(a.ticker < b.ticker) return -1
+                               if(a.ticker > b.ticker) return 1
+                               return 0
+                           })
     }
 
     function validFiatRates(data, fiat) {
@@ -298,8 +307,19 @@ QtObject {
         return type === "ERC-20" ? "Gwei" : "Satoshi"
     }
 
+    function isParentCoin(ticker) {
+        return ticker === "KMD" || ticker === "ETH" || ticker === "QTUM"
+    }
+
     function isTokenType(type) {
         return type === "ERC-20" || type === "QRC-20"
+    }
+
+    function getParentCoin(type) {
+        if(type === "ERC-20") return "ETH"
+        else if(type === "QRC-20") return "QTUM"
+        else if(type === "Smart Chain") return "KMD"
+        return "?"
     }
 
     function isCoinEnabled(ticker) {
@@ -368,4 +388,57 @@ QtObject {
                     getFiatText(trade_info.trade_fee, base_ticker, has_info_icon)
                  +")")
     }
+
+    function checkIfWalletExists(name) {
+        if(API.app.get_wallets().indexOf(name) !== -1)
+            return qsTr("Wallet %1 already exists", "WALLETNAME").arg(name)
+
+        return ""
+    }
+
+    readonly property var supported_pairs: ({
+                                                "KMD/BTC": "BINANCE:KMDBTC",
+                                                "KMD/ETH": "BINANCE:KMDETH",
+                                                "KMD/BUSD": "BINANCE:KMDBUSD",
+                                                "KMD/USDT": "BINANCE:KMDUSDT",
+                                                "ETH/BTC": "BINANCE:ETHBTC",
+                                                "ETH/USDC": "BINANCE:ETHUSDC",
+                                                "ETH/BUSD": "BINANCE:ETHBUSD",
+                                                "BTC/UDSC": "BINANCE:BTCUSDC",
+                                                "BTC/BUSD": "BINANCE:BTCBUSD",
+                                                "LTC/BTC": "BINANCE:LTCBTC",
+                                                "LTC/ETH": "BINANCE:LTCETH",
+                                                "LTC/BUSD": "BINANCE:LTCBUSD",
+                                                "LTC/USDC": "BINANCE:LTCUSDC",
+                                                "BCH/BTC": "BINANCE:BCHBTC",
+                                                "BCH/ETH": "BITTREX:BCHETH",
+                                                "BCH/BUSD": "BINANCE:BCHBUSD",
+                                                "BCH/USDC": "BINANCE:BCHUSDC",
+                                                "BCH/PAX": "BINANCE:BCHPAX",
+                                                "BAT/BUSD": "BINANCE:BATBUSD",
+                                                "BAT/USDC": "BINANCE:BATUSDC",
+                                                "BAT/BTC": "BINANCE:BATBTC",
+                                                "BAT/ETH": "BITTREX:BATETH",
+                                                "DASH/BUSD": "BINANCE:DASHBUSD",
+                                                "DASH/ETH": "BINANCE:DASHETH",
+                                                "DASH/BTC": "BINANCE:DASHBTC",
+                                                "QTUM/BUSD": "BINANCE:QTUMBUSD",
+                                                "QTUM/ETH": "BINANCE:QTUMETH",
+                                                "QTUM/BTC": "BINANCE:QTUMBTC",
+                                                "RVN/BUSD": "BINANCE:RVNBUSD",
+                                                "RVN/BTC": "BINANCE:RVNBTC",
+                                                "XZC/ETH": "BINANCE:XZCETH",
+                                                "XZC/BTC": "BINANCE:XZCBTC",
+                                                "DOGE/BTC": "BINANCE:DOGEBTC",
+                                                "DOGE/BUSD": "BINANCE:DOGEBUSD",
+                                                "DGB/BUSD": "BINANCE:DGBBUSD",
+                                                "DGB/BTC": "BINANCE:DGBBTC",
+                                                "FTC/BTC": "BITTREX:FTCBTC",
+                                                "EMC2/BTC": "BITTREX:EMC2BTC",
+                                                "DAI/BTC": "BITTREX:DAIBTC",
+                                                "ZEC/BUSD": "BINANCE:ZECBUSD",
+                                                "ZEC/ETH": "BINANCE:ZECETH",
+                                                "ZEC/BTC": "BINANCE:ZECBTC",
+                                                "ZEC/USDC": "BINANCE:ZECUSDC"
+                                            })
 }

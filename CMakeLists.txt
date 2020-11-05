@@ -1,57 +1,59 @@
 cmake_minimum_required(VERSION 3.5)
 
-project(atomicDexPro LANGUAGES CXX VERSION 0.3.0)
+if (EXISTS ${CMAKE_BINARY_DIR}/conan_paths.cmake)
+    set(CONAN_ENABLED ON)
+    message(STATUS "Conan package manager enabled")
+    include(${CMAKE_BINARY_DIR}/conan_paths.cmake)
+else ()
+    message(STATUS "VCPKG package manager enabled")
+    set(CMAKE_TOOLCHAIN_FILE
+            "${CMAKE_CURRENT_SOURCE_DIR}/ci_tools_atomic_dex/vcpkg-repo/scripts/buildsystems/vcpkg.cmake"
+            CACHE STRING "")
+    if (WIN32)
+        set(VCPKG_TARGET_TRIPLET "x64-windows" CACHE STRING "")
+    endif ()
+endif ()
 
+project(atomicdex-desktop LANGUAGES CXX VERSION 0.3.0)
+
+
+option(DISABLE_GEOBLOCKING "Enable to disable geoblocking (for dev purpose)" OFF)
+option(PREFER_BOOST_FILESYSTEM "Enable to use boost filesystem instead of std::filesystem" OFF)
+set(FETCHCONTENT_QUIET OFF CACHE BOOL "Override option" FORCE)
+
+if (PREFER_BOOST_FILESYSTEM)
+    message(STATUS "Boost filesystem over std::filesystem")
+    add_compile_definitions(PREFER_BOOST_FILESYSTEM)
+endif ()
 
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+set(CMAKE_POLICY_WARNING_CMP0100 OFF)
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
-#find_program(IWYU_PATH NAMES include-what-you-use iwyu)
-#if(NOT IWYU_PATH)
-#    message(FATAL_ERROR "Could not find the program include-what-you-use")
-#endif()
-#set(CMAKE_CXX_INCLUDE_WHAT_YOU_USE ${IWYU_PATH})
-#set(CMAKE_C_INCLUDE_WHAT_YOU_USE ${IWYU_PATH})
-#include_directories("/usr/lib/llvm-10/include/c++/v1/")
-
-
-if (WIN32)
-    find_package(ZLIB)
-    set(BUILD_SHARED_LIBS OFF CACHE BOOL "Override option" FORCE)
-endif ()
 
 ##! Antara
+list(APPEND CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake)
+include(antara)
+##! Calling this macros provided by the sdk will if you are on Apple init the environment for this OS (std::filesystem).
+init_antara_env()
+
+
 ##! We include the module from CMake for fetching dependencies
 include(FetchContent)
-
-##! We declare information about the dependance that we want to fetch.
-FetchContent_Declare(
-        antara-gaming-sdk
-        URL https://github.com/KomodoPlatform/antara-gaming-sdk/archive/master.zip
-
-)
-
-set(ANTARA_USE_VCPKG ON)
-set(ENABLE_BLOCKCHAIN_MODULES ON)
-
-FetchContent_GetProperties(antara-gaming-sdk)
-if (NOT antara-gaming-sdk_POPULATED)
-    FetchContent_Populate(antara-gaming-sdk)
-    add_subdirectory(${antara-gaming-sdk_SOURCE_DIR} ${antara-gaming-sdk_BINARY_DIR} EXCLUDE_FROM_ALL)
-endif ()
 
 if (${CMAKE_SYSTEM_NAME} STREQUAL "Linux")
     set(LINUX TRUE)
 endif ()
 
 if (UNIX AND NOT APPLE)
+    message("Forcing stdlib C++")
     set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -stdlib=libc++ -lc++abi")
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -stdlib=libc++")
 endif ()
 
-##! We fetch our dependence
+##! We fetch our dependencies
 if (APPLE)
     FetchContent_Declare(mm2
             URL https://github.com/KomodoPlatform/atomicDEX-API/releases/download/beta-2.0.2422/mm2-31d1803b0-Darwin-Release.zip)
@@ -82,177 +84,203 @@ else ()
     configure_file(${mm2_SOURCE_DIR}/vcruntime140.dll ${CMAKE_BINARY_DIR}/bin/assets/tools/mm2/vcruntime140.dll COPYONLY)
 endif ()
 
-FetchContent_Declare(libqr_code
-        URL https://github.com/KomodoPlatform/qzxing/archive/master.zip)
-
-FetchContent_GetProperties(libqr_code)
-if (NOT libqr_code_POPULATED)
-    FetchContent_Populate(libqr_code)
-    add_subdirectory(${libqr_code_SOURCE_DIR}/src ${libqr_code_BINARY_DIR} EXCLUDE_FROM_ALL)
-endif ()
-
-##! Calling this macros provided by the sdk will if you are on Apple init the environment for this OS (std::filesystem).
-init_antara_env()
-
-##! Get basis assets (default fonts, etc)
-get_resources_basics_assets(${CMAKE_CURRENT_SOURCE_DIR})
+add_subdirectory(vendor/antara-gaming_sdk/modules)
 
 ##! Osx bundle icon
 set(ICON)
-configure_icon_osx(data/osx/atomicDexPro.icns ICON atomicDexPro.icns)
+configure_icon_osx(data/osx/atomicdex-desktop.icns ICON atomicdex-desktop.icns)
 ##! End antara
-
-find_package(date CONFIG REQUIRED)
-#find_package(httplib)
-find_package(doctest CONFIG REQUIRED)
-find_package(folly CONFIG REQUIRED)
-find_package(spdlog CONFIG REQUIRED)
-#find_package(Taskflow CONFIG REQUIRED)
-find_package(cpprestsdk CONFIG REQUIRED)
-find_package(Boost REQUIRED COMPONENTS filesystem random)
-find_package(Qt5 COMPONENTS Core Quick LinguistTools Svg Charts Widgets REQUIRED)
-find_package(unofficial-sodium CONFIG REQUIRED)
-add_library(unofficial-bitcoin INTERFACE)
-if (WIN32)
-    target_link_directories(unofficial-bitcoin INTERFACE wally)
-    target_link_libraries(unofficial-bitcoin INTERFACE wally)
-    target_include_directories(unofficial-bitcoin INTERFACE wally)
-else ()
-    find_library(unofficial-secp secp256k1)
-    find_library(unofficial-wally wallycore)
-    find_path(unofficial-wally-headers wally_core.h)
-    target_link_libraries(unofficial-bitcoin INTERFACE ${unofficial-wally} ${unofficial-secp})
-    target_include_directories(unofficial-bitcoin INTERFACE ${unofficial-wally-headers})
-    message(STATUS "Found wally -> ${unofficial-wally} ${unofficial-wally-headers}")
-endif ()
-add_library(unofficial-btc::bitcoin ALIAS unofficial-bitcoin)
 
 set(CMAKE_AUTOUIC ON)
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
+
+##Lang
+set_directory_properties(PROPERTIES CLEAN_NO_CUSTOM TRUE)
+
 set(TS_FILES
         ${CMAKE_SOURCE_DIR}/atomic_defi_design/assets/languages/atomic_defi_en.ts
         ${CMAKE_SOURCE_DIR}/atomic_defi_design/assets/languages/atomic_defi_fr.ts
-        ${CMAKE_SOURCE_DIR}/atomic_defi_design/assets/languages/atomic_defi_tr.ts)
+        ${CMAKE_SOURCE_DIR}/atomic_defi_design/assets/languages/atomic_defi_tr.ts
+        ${CMAKE_SOURCE_DIR}/atomic_defi_design/assets/languages/atomic_defi_ru.ts)
+
 set_source_files_properties(${TS_FILES} PROPERTIES OUTPUT_LOCATION "${CMAKE_SOURCE_DIR}/atomic_defi_design/assets/languages/")
-qt5_create_translation(QM_FILES ${CMAKE_SOURCE_DIR}/atomic_defi_design/qml ${TS_FILES})
-#qt5_add_translation(qmFiles ${TS_FILES})
-message(STATUS "${QM_FILES}")
-message(STATUS "${TS_FILES}")
+
+qt5_create_translation(QM_FILES
+        ${PROJECT_SOURCE_DIR}/atomic_defi_design/qml
+        ${TS_FILES}
+        OPTIONS -source-language en_US -no-obsolete)
+
+message(STATUS "QM FILES -> ${QM_FILES}")
+message(STATUS "TS FILES -> ${TS_FILES}")
+##! End Lang
 
 ##! Atomic QT Shared Deps Between main executable and unit tests
-add_library(atomicDexPro_shared_deps INTERFACE)
-target_sources(atomicDexPro_shared_deps INTERFACE
-        ${CMAKE_SOURCE_DIR}/src/atomic.dex.kill.cpp
-        ${CMAKE_SOURCE_DIR}/src/atomic.dex.qt.internet.checker.service.cpp
-        ${CMAKE_SOURCE_DIR}/src/atomic.dex.qt.ip.checker.service.cpp
-        ${CMAKE_SOURCE_DIR}/src/atomic.dex.app.cpp
-        ${CMAKE_SOURCE_DIR}/src/atomic.dex.cfg.cpp
-        ${CMAKE_SOURCE_DIR}/src/atomic.dex.mm2.cpp
-        ${CMAKE_SOURCE_DIR}/src/atomic.dex.coins.config.cpp
-        ${CMAKE_SOURCE_DIR}/src/atomic.dex.mm2.api.cpp
-        ${CMAKE_SOURCE_DIR}/src/atomic.dex.mm2.error.code.cpp
-        ${CMAKE_SOURCE_DIR}/src/atomic.dex.provider.coinpaprika.api.cpp
-        ${CMAKE_SOURCE_DIR}/src/atomic.dex.qt.bindings.cpp
-        ${CMAKE_SOURCE_DIR}/src/atomic.dex.provider.coinpaprika.cpp
-        ${CMAKE_SOURCE_DIR}/src/atomic.dex.provider.cex.prices.api.cpp
-        ${CMAKE_SOURCE_DIR}/src/atomic.dex.provider.cex.prices.cpp
-        ${CMAKE_SOURCE_DIR}/src/atomic.dex.qt.wallet.manager.cpp
-        ${CMAKE_SOURCE_DIR}/src/atomic.dex.qt.utilities.cpp
-        ${CMAKE_SOURCE_DIR}/src/atomic.dex.wallet.config.cpp
-        ${CMAKE_SOURCE_DIR}/src/atomic.dex.security.cpp
-        ${CMAKE_SOURCE_DIR}/src/atomic.dex.update.service.cpp
-        ${CMAKE_SOURCE_DIR}/src/atomic.dex.notification.manager.cpp
-        ${CMAKE_SOURCE_DIR}/src/atomic.dex.qt.orders.model.cpp
-        ${CMAKE_SOURCE_DIR}/src/atomic.dex.qt.orders.proxy.model.cpp
-        ${CMAKE_SOURCE_DIR}/src/atomic.dex.qt.candlestick.charts.model.cpp
-        ${CMAKE_SOURCE_DIR}/src/atomic.dex.qt.addressbook.model.cpp
-        ${CMAKE_SOURCE_DIR}/src/atomic.dex.qt.addressbook.proxy.filter.model.cpp
-        ${CMAKE_SOURCE_DIR}/src/atomic.dex.qt.contact.model.cpp
-        ${CMAKE_SOURCE_DIR}/src/atomic.dex.qt.trading.page.cpp
-        ${CMAKE_SOURCE_DIR}/src/atomic.dex.qt.market.pairs.cpp
-        ${CMAKE_SOURCE_DIR}/src/atomic.dex.qt.settings.page.cpp
-        ${CMAKE_SOURCE_DIR}/src/atomic.dex.qt.orderbook.cpp
-        ${CMAKE_SOURCE_DIR}/src/atomic.dex.qt.orderbook.model.cpp
-        ${CMAKE_SOURCE_DIR}/src/atomic.dex.qt.orderbook.proxy.model.cpp
-        ${CMAKE_SOURCE_DIR}/src/atomic.dex.qt.portfolio.model.cpp
-        ${CMAKE_SOURCE_DIR}/src/atomic.dex.qt.portfolio.page.cpp
-        ${CMAKE_SOURCE_DIR}/src/atomic.dex.qt.portfolio.proxy.filter.model.cpp
-        ${CMAKE_SOURCE_DIR}/src/atomic.dex.global.price.service.cpp
-        ${CMAKE_SOURCE_DIR}/src/atomic.dex.band.oracle.price.service.cpp
-        ${CMAKE_SOURCE_DIR}/src/atomic.dex.qt.wallet.transactions.model.cpp
-        ${CMAKE_SOURCE_DIR}/src/atomic.dex.qt.wallet.transactions.proxy.filter.model.cpp
-        ${CMAKE_SOURCE_DIR}/src/atomic.dex.qt.wallet.page.cpp
-        $<$<PLATFORM_ID:Darwin>:${CMAKE_SOURCE_DIR}/src/osx/atomic.dex.osx.manager.mm>
-        ${CMAKE_SOURCE_DIR}/qml.qrc
-        ${qmFiles}
+if (LINUX)
+    add_library(atomicdex-desktop_shared_deps STATIC)
+else ()
+    add_library(atomicdex-desktop_shared_deps SHARED)
+endif ()
+target_sources(atomicdex-desktop_shared_deps PRIVATE
+        ##! App
+        ${CMAKE_SOURCE_DIR}/src/atomicdex/app.cpp
+
+        ##! Utilities
+        ${CMAKE_SOURCE_DIR}/src/atomicdex/utilities/kill.cpp
+        ${CMAKE_SOURCE_DIR}/src/atomicdex/utilities/cpprestsdk.utilities.cpp
+        ${CMAKE_SOURCE_DIR}/src/atomicdex/utilities/qt.utilities.cpp
+        ${CMAKE_SOURCE_DIR}/src/atomicdex/utilities/qt.bindings.cpp
+        ${CMAKE_SOURCE_DIR}/src/atomicdex/utilities/security.utilities.cpp
+        ${CMAKE_SOURCE_DIR}/src/atomicdex/utilities/global.utilities.cpp
+
+        ##! Constants
+        ${CMAKE_SOURCE_DIR}/src/atomicdex/constants/mm2.error.code.cpp
+
+        ##! Config
+        ${CMAKE_SOURCE_DIR}/src/atomicdex/config/app.cfg.cpp
+        ${CMAKE_SOURCE_DIR}/src/atomicdex/config/coins.cfg.cpp
+        ${CMAKE_SOURCE_DIR}/src/atomicdex/config/wallet.cfg.cpp
+
+        ##! Managers
+        ${CMAKE_SOURCE_DIR}/src/atomicdex/managers/notification.manager.cpp
+        ${CMAKE_SOURCE_DIR}/src/atomicdex/managers/qt.wallet.manager.cpp
+
+        ##! API
+        ${CMAKE_SOURCE_DIR}/src/atomicdex/api/ohlc/ohlc.api.cpp
+        ${CMAKE_SOURCE_DIR}/src/atomicdex/api/mm2/mm2.cpp
+        ${CMAKE_SOURCE_DIR}/src/atomicdex/api/coinpaprika/coinpaprika.cpp
+        ${CMAKE_SOURCE_DIR}/src/atomicdex/api/faucet/faucet.cpp
+
+        ##! Models
+        ${CMAKE_SOURCE_DIR}/src/atomicdex/models/qt.orders.model.cpp
+        ${CMAKE_SOURCE_DIR}/src/atomicdex/models/qt.orders.proxy.model.cpp
+        ${CMAKE_SOURCE_DIR}/src/atomicdex/models/qt.candlestick.charts.model.cpp
+        ${CMAKE_SOURCE_DIR}/src/atomicdex/models/qt.addressbook.model.cpp
+        ${CMAKE_SOURCE_DIR}/src/atomicdex/models/qt.addressbook.proxy.filter.model.cpp
+        ${CMAKE_SOURCE_DIR}/src/atomicdex/models/qt.contact.model.cpp
+        ${CMAKE_SOURCE_DIR}/src/atomicdex/models/qt.orderbook.model.cpp
+        ${CMAKE_SOURCE_DIR}/src/atomicdex/models/qt.orderbook.proxy.model.cpp
+        ${CMAKE_SOURCE_DIR}/src/atomicdex/models/qt.portfolio.model.cpp
+        ${CMAKE_SOURCE_DIR}/src/atomicdex/models/qt.wallet.transactions.model.cpp
+        ${CMAKE_SOURCE_DIR}/src/atomicdex/models/qt.wallet.transactions.proxy.filter.model.cpp
+        ${CMAKE_SOURCE_DIR}/src/atomicdex/models/qt.portfolio.proxy.filter.model.cpp
+
+        ##ToClass
+
+        ##! Widgets
+        ${CMAKE_SOURCE_DIR}/src/atomicdex/widgets/dex/qt.market.pairs.cpp
+        ${CMAKE_SOURCE_DIR}/src/atomicdex/widgets/dex/qt.orderbook.cpp
+
+        ##! Pages
+        ${CMAKE_SOURCE_DIR}/src/atomicdex/pages/qt.trading.page.cpp
+        ${CMAKE_SOURCE_DIR}/src/atomicdex/pages/qt.settings.page.cpp
+        ${CMAKE_SOURCE_DIR}/src/atomicdex/pages/qt.portfolio.page.cpp
+        ${CMAKE_SOURCE_DIR}/src/atomicdex/pages/qt.wallet.page.cpp
+
+        ##! Services
+        ${CMAKE_SOURCE_DIR}/src/atomicdex/services/price/global.provider.cpp
+        ${CMAKE_SOURCE_DIR}/src/atomicdex/services/price/coinpaprika/coinpaprika.provider.cpp
+        ${CMAKE_SOURCE_DIR}/src/atomicdex/services/price/oracle/band.provider.cpp
+        ${CMAKE_SOURCE_DIR}/src/atomicdex/services/update/update.checker.service.cpp
+        ${CMAKE_SOURCE_DIR}/src/atomicdex/services/ohlc/ohlc.provider.cpp
+        ${CMAKE_SOURCE_DIR}/src/atomicdex/services/mm2/mm2.service.cpp
+        ${CMAKE_SOURCE_DIR}/src/atomicdex/services/internet/internet.checker.service.cpp
+        ${CMAKE_SOURCE_DIR}/src/atomicdex/services/ip/ip.checker.service.cpp
+
+        ##! Platform
+        $<$<PLATFORM_ID:Darwin>:${CMAKE_SOURCE_DIR}/src/atomicdex/platform/osx/manager.mm>
         )
 
-target_compile_definitions(atomicDexPro_shared_deps
-        INTERFACE
+target_compile_definitions(atomicdex-desktop_shared_deps
+        PUBLIC
         $<$<OR:$<CONFIG:Debug>,$<CONFIG:RelWithDebInfo>>:QT_QML_DEBUG>
         $<$<PLATFORM_ID:Windows>:HAS_REMOTE_API>
         $<$<PLATFORM_ID:Windows>:AUTO_DOWNLOAD>
+        PRIVATE
+        ENTT_API_EXPORT
         )
 
-#target_compile_options(atomicDexPro_shared_deps INTERFACE -fstandalone-debug)
 
-target_link_libraries(atomicDexPro_shared_deps
-        INTERFACE
-        Qt5::Core
-        Qt5::Quick
-        Qt5::Svg
-        Qt5::Charts
-        Qt5::Widgets
+if (DISABLE_GEOBLOCKING)
+    message(STATUS "Disabling Geoblocking for dev purpose")
+    target_compile_definitions(atomicdex-desktop_shared_deps PUBLIC -DDISABLE_GEOBLOCKING)
+endif ()
+#target_compile_options(atomicdex-desktop_shared_deps INTERFACE -fstandalone-debug)
+
+target_link_libraries(atomicdex-desktop_shared_deps
+        PUBLIC
+        Qt::Core
+        Qt::Quick
+        Qt::Svg
+        Qt::Charts
+        Qt::WebEngine
+        Qt::WebEngineCore
+        Qt::WebEngineWidgets
+        Qt::Widgets
         qzxing
         antara::world
-        Boost::filesystem
         Boost::random
-        unofficial-sodium::sodium
+        Boost::filesystem
+        komodo-sodium::sodium
         unofficial-btc::bitcoin
         reproc++
-        antara::http_client
-        Folly::folly
-        date::tz
-        Folly::folly_deps
-        spdlog::spdlog
-        spdlog::spdlog_header_only
+        komodo-date::date
+        komodo-folly::folly
+        komodo-taskflow::taskflow
+        nlohmann_json::nlohmann_json
+        #spdlog::spdlog
+        #spdlog::spdlog_header_only
         cpprestsdk::cpprest
         Qaterial
-        #Taskflow::Taskflow
         )
 
-target_include_directories(atomicDexPro_shared_deps
-        INTERFACE
+target_include_directories(atomicdex-desktop_shared_deps
+        PUBLIC
         ${CMAKE_CURRENT_SOURCE_DIR}/src
+        PRIVATE
         $<$<PLATFORM_ID:Darwin>:${CMAKE_CURRENT_SOURCE_DIR}/src/osx>
         ${libqr_code_SOURCE_DIR}/src
         )
 
 ##! Main executable
-add_executable(atomicDexPro MACOSX_BUNDLE ${ICON}
-        ${CMAKE_CURRENT_SOURCE_DIR}/data/windows/atomicDexPro.rc
+add_executable(atomicdex-desktop MACOSX_BUNDLE ${ICON}
+        ${CMAKE_CURRENT_SOURCE_DIR}/data/windows/atomicdex-desktop.rc
         main.cpp
+        ##! QRC
+        ${CMAKE_SOURCE_DIR}/qml.qrc
+
+        ##! Linguistic
+        ${QM_FILES}
+        ${TS_FILES}
         )
+
+target_compile_definitions(atomicdex-desktop PRIVATE ENTT_API_IMPORT)
 
 ##! Testing executable
-add_executable(atomicDexPro_tests MACOSX_BUNDLE ${ICON}
-        src/atomic.dex.tests.cpp
-        src/atomic.dex.wallet.config.tests.cpp
-        src/atomic.dex.utilities.tests.cpp
-        src/atomic.dex.provider.cex.prices.tests.cpp
-        src/atomic.dex.qt.utilities.tests.cpp
-        src/atomic.dex.provider.cex.prices.api.tests.cpp)
+add_executable(atomicdex-desktop_tests MACOSX_BUNDLE ${ICON}
+        src/atomicdex/tests/atomic.dex.tests.cpp
+        src/atomicdex/tests/atomic.dex.wallet.config.tests.cpp
+        src/atomicdex/tests/atomic.dex.utilities.tests.cpp
+        src/atomicdex/tests/atomic.dex.provider.cex.prices.tests.cpp
+        src/atomicdex/tests/atomic.dex.qt.utilities.tests.cpp
+        src/atomicdex/tests/atomic.dex.provider.cex.prices.api.tests.cpp
+        ##! QRC
+        ${CMAKE_SOURCE_DIR}/qml.qrc
 
-target_link_libraries(atomicDexPro
-        PRIVATE
-        atomicDexPro_shared_deps
-        $<$<PLATFORM_ID:Darwin>:/usr/local/lib/libcurl.a>
+        ##! Linguistic
+        ${QM_FILES}
+        ${TS_FILES})
+
+target_link_libraries(atomicdex-desktop
+        PUBLIC
+        atomicdex-desktop_shared_deps
         )
 
-target_link_libraries(atomicDexPro_tests
-        PRIVATE
-        atomicDexPro_shared_deps
+target_include_directories(atomicdex-desktop PUBLIC src)
+
+target_link_libraries(atomicdex-desktop_tests
+        PUBLIC
+        atomicdex-desktop_shared_deps
         $<$<PLATFORM_ID:Darwin>:/usr/local/lib/libcurl.a>
         doctest::doctest)
 
@@ -268,11 +296,16 @@ set_target_properties(${PROJECT_NAME}_tests
         )
 
 
-if (NOT APPLE)
-    target_precompile_headers(${PROJECT_NAME} PRIVATE src/atomic.dex.pch.hpp)
+target_precompile_headers(atomicdex-desktop_shared_deps PRIVATE src/atomicdex/pch.hpp)
+set_target_properties(atomicdex-desktop_shared_deps PROPERTIES UNITY_BUILD ON)
+if (APPLE)
+    set_source_files_properties(src/atomicdex/platform/osx/manager.mm PROPERTIES SKIP_PRECOMPILE_HEADERS ON)
+    set_property(SOURCE src/atomicdex/platform/osx/manager.mm PROPERTY SKIP_UNITY_BUILD_INCLUSION ON)
+    set_source_files_properties(src/atomicdex/platform/osx/manager.mm PROPERTIES SKIP_UNITY_BUILD_INCLUSION ON)
 endif ()
-#target_enable_tsan(atomicDexPro_tests)
-#target_enable_asan(atomicDexPro)
+
+#target_enable_tsan(atomicdex-desktop_tests)
+#target_enable_asan(atomicdex-desktop)
 
 ##! Move assets
 if (LINUX)
@@ -280,27 +313,27 @@ if (LINUX)
     set(output_dir_at "${exe_runtime_directory_at}/AntaraAtomicDexAppDir")
 
     magic_game_app_image_generation("${CMAKE_CURRENT_SOURCE_DIR}/data/linux"
-            "atomicDexPro.desktop"
-            "atomicDexPro.appdata.xml"
-            "atomicDexPro_64.png"
-            atomicDexPro
+            "atomicdex-desktop.desktop"
+            "atomicdex-desktop.appdata.xml"
+            "atomicdex-desktop_64.png"
+            atomicdex-desktop
             AntaraAtomicDexAppDir
             ${CMAKE_CURRENT_SOURCE_DIR}/assets
             )
 
     magic_game_app_image_generation("${CMAKE_CURRENT_SOURCE_DIR}/data/linux"
-            "atomicDexPro.desktop"
-            "atomicDexPro.appdata.xml"
-            "atomicDexPro_64.png"
-            atomicDexPro_tests
+            "atomicdex-desktop.desktop"
+            "atomicdex-desktop.appdata.xml"
+            "atomicdex-desktop_64.png"
+            atomicdex-desktop_tests
             AntaraAtomicDexTestsAppDir
             ${CMAKE_CURRENT_SOURCE_DIR}/assets
             )
 
     set(from_dir "${CMAKE_CURRENT_SOURCE_DIR}/data/linux")
-    set(desktop_file "atomicDexPro.desktop")
-    set(appdata_file "atomicDexPro.appdata.xml")
-    set(app_icon "atomicDexPro_64.png")
+    set(desktop_file "atomicdex-desktop.desktop")
+    set(appdata_file "atomicdex-desktop.appdata.xml")
+    set(app_icon "atomicdex-desktop-64.png")
     message(STATUS "${output_dir_at}")
     configure_file(${from_dir}/${desktop_file} ${output_dir_at}/usr/share/applications/${desktop_file} COPYONLY)
     configure_file(${from_dir}/${appdata_file} ${output_dir_at}/usr/share/metainfo/${appdata_file} COPYONLY)
@@ -309,14 +342,38 @@ if (LINUX)
 endif ()
 
 if (WIN32)
+    set_target_properties(atomicdex-desktop_shared_deps PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
+    add_compile_definitions(_CRT_SECURE_NO_WARNINGS)
     file(COPY assets DESTINATION ${CMAKE_BINARY_DIR}/bin/)
     configure_file(wally/wally.dll ${CMAKE_BINARY_DIR}/bin/ COPYONLY)
     set_target_properties(Folly::folly PROPERTIES INTERFACE_COMPILE_OPTIONS "")
     if (CMAKE_BUILD_TYPE MATCHES Release)
         message(STATUS "disabling console")
-        target_compile_definitions(atomicDexPro PRIVATE WINDOWS_RELEASE_MAIN)
-        target_link_options(atomicDexPro PUBLIC --for-linker -subsystem:windows)
+        target_compile_definitions(atomicdex-desktop PRIVATE WINDOWS_RELEASE_MAIN)
+        target_compile_options(atomicdex-desktop PRIVATE -Wno-deprecated-declarations)
+        target_link_options(atomicdex-desktop PUBLIC --for-linker -subsystem:windows)
     endif ()
+    set(WINDEPLOYQT_PATH "")
+    if (CONAN_ENABLED)
+        set(WINDEPLOYQT_PATH ${CONAN_QT_ROOT}/bin/windeployqt.exe)
+    else ()
+        set(WINDEPLOYQT_PATH $ENV{QT_INSTALL_CMAKE_PATH}/bin/windeployqt.exe)
+    endif ()
+
+    if (EXISTS ${WINDEPLOYQT_PATH})
+        message(STATUS "windeployqt path is -> ${WINDEPLOYQT_PATH}")
+    else ()
+        message(FATAL_ERROR "Didn't find windeployqt ${WINDEPLOYQT_PATH}")
+    endif ()
+    #bin --qmldir
+    add_custom_command(TARGET atomicdex-desktop PRE_BUILD
+            COMMAND ${CMAKE_COMMAND} -E copy_directory
+            ${CMAKE_SOURCE_DIR}/ci_tools_atomic_dex/windows_misc $<TARGET_FILE_DIR:atomicdex-desktop>)
+    message(STATUS "${WINDEPLOYQT_PATH} ${CMAKE_BINARY_DIR}/bin/${PROJECT_NAME}.exe ${CMAKE_BINARY_DIR}/bin/${PROJECT_NAME}_shared_deps.dll --qmldir ${CMAKE_SOURCE_DIR}/atomic_defi_design/qml")
+    add_custom_command(TARGET atomicdex-desktop
+            POST_BUILD
+            COMMAND ${WINDEPLOYQT_PATH} ${CMAKE_BINARY_DIR}/bin/${PROJECT_NAME}.exe ${CMAKE_BINARY_DIR}/bin/${PROJECT_NAME}_shared_deps.dll --qmldir ${CMAKE_SOURCE_DIR}/atomic_defi_design/qml
+            )
 endif ()
 
 if (APPLE)

@@ -11,7 +11,7 @@ Item {
 
     property string action_result
 
-    readonly property bool block_everything: chart.is_fetching || swap_cooldown.running || fetching_multi_ticker_fees_busy
+    readonly property bool block_everything: swap_cooldown.running || fetching_multi_ticker_fees_busy
 
     readonly property bool fetching_multi_ticker_fees_busy: API.app.trading_pg.fetching_multi_ticker_fees_busy
     readonly property alias multi_order_enabled: multi_order_switch.checked
@@ -193,15 +193,20 @@ Item {
     }
 
     property bool initialized_orderbook_pair: false
+    readonly property string default_base: "KMD"
+    readonly property string default_rel: "BTC"
     function onOpened() {
         if(!initialized_orderbook_pair) {
             initialized_orderbook_pair = true
-            API.app.trading_pg.set_current_orderbook("KMD", "BTC")
+            API.app.trading_pg.set_current_orderbook(default_base, default_rel)
         }
 
         reset(true)
         setPair(true)
     }
+
+
+    signal pairChanged(string base, string rel)
 
     function setPair(is_left_side, changed_ticker) {
         let base = left_ticker
@@ -245,6 +250,7 @@ Item {
         reset(true, is_left_side)
         updateTradeInfo()
         updateCexPrice(base, rel)
+        pairChanged(base, rel)
         exchange.onTradeTickerChanged(base)
     }
 
@@ -350,9 +356,10 @@ Item {
                     anchors.bottom: selectors.top
                     anchors.bottomMargin: layout_margin * 2
 
-                    CandleStickChart {
+                    content: CandleStickChart {
                         id: chart
-                        anchors.fill: parent
+                        width: graph_bg.width
+                        height: graph_bg.height
                     }
                 }
 

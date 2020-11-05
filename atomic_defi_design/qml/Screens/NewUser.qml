@@ -97,7 +97,7 @@ SetupPage {
         spacing: Style.rowSpacing
 
         DefaultText {
-            text_value: qsTr("New User")
+            text_value: qsTr("New Wallet")
         }
 
         HorizontalLine {
@@ -114,6 +114,9 @@ SetupPage {
 
         function completeForm() {
             if(!continue_button.enabled) return
+
+            text_error = General.checkIfWalletExists(input_wallet_name.field.text)
+            if(text_error !== "") return
 
             input_seed_word.field.text = ""
             guess_text_error = ""

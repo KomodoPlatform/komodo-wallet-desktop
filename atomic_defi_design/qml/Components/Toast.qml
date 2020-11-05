@@ -81,7 +81,11 @@ AnimatedRectangle {
     DefaultMouseArea {
         anchors.fill: parent
         onClicked: {
-            if(details !== "") {
+            if(open_notifications_modal) {
+                dashboard.notifications_modal.open()
+                animation.running = false
+            }
+            else if(details !== "") {
                 showError(title, details)
                 animation.running = false
             }

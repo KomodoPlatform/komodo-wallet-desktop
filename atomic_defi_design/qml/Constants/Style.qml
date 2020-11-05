@@ -31,10 +31,7 @@ QtObject {
     readonly property string failureCharacter:  "✘"
     readonly property string warningCharacter:  "⚠"
 
-
     readonly property int animationDuration: 125
-
-    readonly property int materialElevation: 5
 
     readonly property int textSizeVerySmall1: 1
     readonly property int textSizeVerySmall2: 2
@@ -89,32 +86,35 @@ QtObject {
         return applyOpacity(color, condition ? "FF" : "00")
     }
 
+    readonly property string colorQtThemeAccent: colorGreen
+    readonly property string colorQtThemeForeground: colorWhite1
+    readonly property string colorQtThemeBackground: colorTheme9
+
     readonly property string sidebar_atomicdex_logo: dark_theme ? "atomicdex-logo.svg" : "atomicdex-logo-dark.svg"
-    readonly property string colorRed: dark_theme ? "#D13990" : "#D13990"
+    readonly property string colorRed: dark_theme ? "#D13990" : "#9a1165" // Light is 15% darker than Red2, same with the green set
     readonly property string colorRed2:  dark_theme ? "#b61477" : "#b61477"
-    readonly property string colorRed3:  dark_theme ? "#6d0c47" : "#6d0c47"
+    readonly property string colorRed3:  dark_theme ? "#6d0c47" : "#D13990"
     readonly property string colorYellow:  dark_theme ? "#FFC305" : "#FFC305"
     readonly property string colorOrange:  dark_theme ? "#F7931A" : "#F7931A"
     readonly property string colorBlue:  dark_theme ? "#3B78D1" : "#3B78D1"
-    readonly property string colorGreen:  dark_theme ? "#74FBEE" : "#74FBEE"
+    readonly property string colorGreen:  dark_theme ? "#74FBEE" : "#109f8d"
     readonly property string colorGreen2:  dark_theme ? "#14bca6" : "#14bca6"
-    readonly property string colorGreen3:  dark_theme ? "#07433b" : "#07433b"
+    readonly property string colorGreen3:  dark_theme ? "#07433b" : "#74FBEE"
 
-    readonly property string colorWhite1:  dark_theme ? "#FFFFFF" : "#FFFFFF"
-    readonly property string colorWhite2:  dark_theme ? "#F9F9F9" : "#F9F9F9"
-    readonly property string colorWhite3:  dark_theme ? "#F0F0F0" : "#F0F0F0"
-    readonly property string colorWhite4:  dark_theme ? "#C9C9C9" : "#C9C9C9"
-    readonly property string colorWhite5:  dark_theme ? "#8E9293" : "#8E9293"
-    readonly property string colorWhite6:  dark_theme ? "#777777" : "#777777"
+    readonly property string colorWhite1:  dark_theme ? "#FFFFFF" : "#000000"
+    readonly property string colorWhite2:  dark_theme ? "#F9F9F9" : "#111111"
+    readonly property string colorWhite3:  dark_theme ? "#F0F0F0" : "#222222"
+    readonly property string colorWhite4:  dark_theme ? "#C9C9C9" : "#333333"
+    readonly property string colorWhite5:  dark_theme ? "#8E9293" : "#444444"
+    readonly property string colorWhite6:  dark_theme ? "#777777" : "#555555"
     readonly property string colorWhite7:  dark_theme ? "#666666" : "#666666"
-    readonly property string colorWhite8:  dark_theme ? "#555555" : "#555555"
-    readonly property string colorWhite9:  dark_theme ? "#444444" : "#444444"
-    readonly property string colorWhite10:  dark_theme ? "#333333" : "#333333"
-    readonly property string colorWhite11:  dark_theme ? "#222222" : "#222222"
-    readonly property string colorWhite12:  dark_theme ? "#111111" : "#111111"
-    readonly property string colorWhite13:  dark_theme ? "#000000" : "#000000"
+    readonly property string colorWhite8:  dark_theme ? "#555555" : "#777777"
+    readonly property string colorWhite9:  dark_theme ? "#444444" : "#8E9293"
+    readonly property string colorWhite10:  dark_theme ? "#333333" : "#C9C9C9"
+    readonly property string colorWhite11:  dark_theme ? "#222222" : "#F0F0F0"
+    readonly property string colorWhite12:  dark_theme ? "#111111" : "#F9F9F9"
+    readonly property string colorWhite13:  dark_theme ? "#000000" : "#FFFFFF"
 
-    readonly property string colorTheme0:  dark_theme ? "#41EAD4" : "#41EAD4"
     readonly property string colorTheme1:  dark_theme ? "#3CC9BF" : "#3CC9BF"
     readonly property string colorTheme2:  dark_theme ? "#36A8AA" : "#36A8AA"
     readonly property string colorTheme3:  dark_theme ? "#318795" : "#318795"
@@ -173,8 +173,8 @@ QtObject {
 
     readonly property string colorCoinListHighlightGradient:  dark_theme ? "#2C2E40" : "#E0E6F0"
 
-    readonly property string colorRectangleBorderGradient1:  dark_theme ? "#2A2F48" : "#00FFFFFF"
-    readonly property string colorRectangleBorderGradient2:  dark_theme ? "#0D1021" : "#00FFFFFF"
+    readonly property string colorRectangleBorderGradient1:  dark_theme ? "#2A2F48" : "#DDDDDD"
+    readonly property string colorRectangleBorderGradient2:  dark_theme ? "#0D1021" : "#EFEFEF"
 
     readonly property string colorChartText:  dark_theme ? "#405366" : "#B5B9C1"
     readonly property string colorChartLegendLine:  dark_theme ? "#3F5265" : "#BDC0C8"
@@ -220,6 +220,8 @@ QtObject {
           "danger": Style.colorWhite11
         })
     readonly property string colorPlaceholderText: Style.colorWhite9
+    readonly property string colorSelectedText: Style.colorTheme9
+    readonly property string colorSelection: Style.colorGreen2
 
     readonly property string modalValueColor: colorWhite4
 
@@ -266,6 +268,7 @@ QtObject {
                                           "LABS": "#C1F6E1",
                                           "MGW": "#854F2F",
                                           "MONA": "#DEC799",
+                                          "NMC": "#186C9D",
                                           "RFOX": "#D83331",
                                           "BOTS": "#F69B57",
                                           "MCL": "#EA0000",
@@ -273,7 +276,6 @@ QtObject {
                                           "BET": "#F69B57",
                                           "SUPERNET": "#F69B57",
                                           "OOT": "#25AAE1",
-                                          "HUSH": "#737373",
                                           "REVS": "#F69B57",
                                           "ILN": "#523170",
                                           "VRSC": "#3164D3",

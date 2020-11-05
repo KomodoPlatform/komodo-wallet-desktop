@@ -56,7 +56,7 @@ ColumnLayout {
         id: pw
         hidable: true
         title: qsTr("Password")
-        field.placeholderText: new_password ? qsTr("Enter a password for your wallet") : qsTr("Enter the password of your wallet")
+        field.placeholderText: qsTr("Enter your wallet password")
         field.validator: RegExpValidator { regExp: General.reg_pass_input }
     }
 
