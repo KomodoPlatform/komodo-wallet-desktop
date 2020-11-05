@@ -9,12 +9,13 @@ ComponentWithTitle {
     property alias value_color: text.color
     property alias privacy: text.privacy
 
-    DefaultText {
+    DefaultTextEdit {
         id: text
 
         clip: true
         Layout.fillWidth: true
         color: Style.modalValueColor
+        textFormat: TextEdit.AutoText
 
         Layout.preferredHeight: show_content ? contentHeight : 0
         Behavior on Layout.preferredHeight { SmoothedAnimation { id: expand_animation; duration: Style.animationDuration * 2; velocity: -1 } }
