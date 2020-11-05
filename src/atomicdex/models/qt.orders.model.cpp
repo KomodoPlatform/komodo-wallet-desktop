@@ -69,7 +69,7 @@ namespace atomic_dex
 
     orders_model::~orders_model() noexcept
     {
-        //this->m_dispatcher.sink<current_currency_changed>().disconnect<&orders_model::on_current_currency_changed>(this);
+        // this->m_dispatcher.sink<current_currency_changed>().disconnect<&orders_model::on_current_currency_changed>(this);
 
         spdlog::trace("{} l{} f[{}]", __FUNCTION__, __LINE__, fs::path(__FILE__).filename().string());
         spdlog::trace("orders model destroyed");
@@ -460,6 +460,11 @@ namespace atomic_dex
             update_value(OrdersRoles::CancellableRole, contents.cancellable, idx, *this);
             update_value(OrdersRoles::IsMakerRole, contents.order_type == "maker", idx, *this);
             update_value(OrdersRoles::OrderTypeRole, QString::fromStdString(contents.order_type), idx, *this);
+            if (contents.order_type == "maker")
+            {
+                update_value(OrdersRoles::BaseCoinAmountRole, QString::fromStdString(contents.base_amount), idx, *this);
+                update_value(OrdersRoles::RelCoinAmountRole, QString::fromStdString(contents.rel_amount), idx, *this);
+            }
             emit lengthChanged();
         }
     }
@@ -601,15 +606,15 @@ namespace atomic_dex
     orders_model::determine_amounts_in_current_currency(
         const std::string& base_coin, const std::string& base_amount, const std::string& rel_coin, const std::string& rel_amount) noexcept
     {
-        const auto&     settings_system         = m_system_manager.get_system<settings_page>();
-        const auto&     current_currency        = settings_system.get_current_currency().toStdString();
-        const auto&     global_price_system     = m_system_manager.get_system<global_price_service>();
+        const auto&     settings_system     = m_system_manager.get_system<settings_page>();
+        const auto&     current_currency    = settings_system.get_current_currency().toStdString();
+        const auto&     global_price_system = m_system_manager.get_system<global_price_service>();
         std::string     base_amount_in_currency;
         std::string     rel_amount_in_currency;
         std::error_code ec;
-    
+
         base_amount_in_currency = global_price_system.get_price_as_currency_from_amount(current_currency, base_coin, base_amount, ec);
-        rel_amount_in_currency = global_price_system.get_price_as_currency_from_amount(current_currency, rel_coin, rel_amount, ec);
+        rel_amount_in_currency  = global_price_system.get_price_as_currency_from_amount(current_currency, rel_coin, rel_amount, ec);
         return std::make_pair(base_amount_in_currency, rel_amount_in_currency);
     }
 
@@ -624,7 +629,7 @@ namespace atomic_dex
         }
         return determine_amounts_in_current_currency(contents.taker_coin, contents.taker_amount, contents.maker_coin, contents.maker_amount);
     }
-  
+
     void
     orders_model::on_current_currency_changed([[maybe_unused]] const current_currency_changed&) noexcept
     {

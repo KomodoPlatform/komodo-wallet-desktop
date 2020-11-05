@@ -124,7 +124,6 @@ endif ()
 target_sources(atomicdex-desktop_shared_deps PRIVATE
         ##! App
         ${CMAKE_SOURCE_DIR}/src/atomicdex/app.cpp
-        ${CMAKE_SOURCE_DIR}/src/atomicdex/app.entry.cpp
 
         ##! Utilities
         ${CMAKE_SOURCE_DIR}/src/atomicdex/utilities/kill.cpp
