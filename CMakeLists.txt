@@ -10,6 +10,8 @@ endif ()
 
 ############################ VCPKG PREREQUISITES ##############
 message(STATUS "VCPKG package manager enabled")
+set(VCPKG_OVERLAY_PORTS "${CMAKE_CURRENT_SOURCE_DIR}/ci_tools_atomic_dex/vcpkg-custom-ports/ports" CACHE STRING "")
+set(_VCPKG_INSTALLED_DIR "${CMAKE_CURRENT_SOURCE_DIR}/ci_tools_atomic_dex/vcpkg-repo/installed")
 set(CMAKE_TOOLCHAIN_FILE
         "${CMAKE_CURRENT_SOURCE_DIR}/ci_tools_atomic_dex/vcpkg-repo/scripts/buildsystems/vcpkg.cmake"
         CACHE STRING "")
@@ -27,9 +29,7 @@ if (APPLE)
 endif ()
 ############################ END VCPKG PREREQUISITES ##############################
 
-
 project(atomicdex-desktop LANGUAGES CXX VERSION 0.3.0)
-
 
 option(DISABLE_GEOBLOCKING "Enable to disable geoblocking (for dev purpose)" OFF)
 option(PREFER_BOOST_FILESYSTEM "Enable to use boost filesystem instead of std::filesystem" OFF)
