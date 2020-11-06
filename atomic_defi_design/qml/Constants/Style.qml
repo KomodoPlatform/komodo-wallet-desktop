@@ -287,6 +287,7 @@ QtObject {
                                           "PAX": "#EDE70A",
                                           "TUSD": "#2E3181",
                                           "AWC": "#31A5F6",
-                                          "VRA": "#D70A41"
+                                          "VRA": "#D70A41",
+                                          "SPACE": "#E44C65"
                                       })
 }
