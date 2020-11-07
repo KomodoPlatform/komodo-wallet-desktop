@@ -36,7 +36,8 @@ namespace atomic_dex
         enum ContactRoles
         {
             TypeRole = Qt::UserRole + 1,
-            AddressRole
+            AddressRole,
+            CategoriesRole
         };
 
         QString get_name() const noexcept;

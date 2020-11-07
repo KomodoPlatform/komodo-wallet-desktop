@@ -18,7 +18,7 @@
 #include <QJsonDocument>
 
 //! Project
-#include "atomicdex/models/qt.contact.model.hpp"
+#include "atomicdex/models/qt.addressbook.contact.model.hpp"
 
 namespace atomic_dex
 {
@@ -69,6 +69,8 @@ namespace atomic_dex
             return item.type;
         case AddressRole:
             return item.address;
+        case CategoriesRole:
+            return item.categories;
         default:
             return {};
         }
@@ -182,6 +184,7 @@ namespace atomic_dex
         return {
             {TypeRole, "type"},
             {AddressRole, "address"},
+            {CategoriesRole, "categories"}
         };
     }
 } // namespace atomic_dex

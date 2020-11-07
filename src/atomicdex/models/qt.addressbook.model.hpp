@@ -25,7 +25,7 @@
 #include "atomicdex/data/wallet/qt.addressbook.contact.contents.hpp"
 #include "atomicdex/managers/qt.wallet.manager.hpp"
 #include "atomicdex/models/qt.addressbook.proxy.filter.model.hpp"
-#include "atomicdex/models/qt.contact.model.hpp"
+#include "atomicdex/models/qt.addressbook.contact.model.hpp"
 
 namespace atomic_dex
 {
