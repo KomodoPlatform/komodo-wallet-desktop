@@ -2266,11 +2266,6 @@
         <source>Privacy</source>
         <translation type="unfinished"></translation>
     </message>
-    <message>
-        <location filename="../../qml/Sidebar/SidebarBottom.qml" line="40"/>
-        <source>Light UI</source>
-        <translation type="unfinished"></translation>
-    </message>
 </context>
 <context>
     <name>SidebarCenter</name>
