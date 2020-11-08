@@ -264,6 +264,7 @@ QtObject {
                                           "PANGEA": "#D88245",
                                           "JUMBLR": "#2B4649",
                                           "DEX": "#43B7B6",
+                                          "COQUI": "#79A541",
                                           "CRYPTO": "#F58736",
                                           "LABS": "#C1F6E1",
                                           "MGW": "#854F2F",

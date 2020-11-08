@@ -177,6 +177,29 @@
     "active": false,
     "currently_enabled": false
   },
+  "COQUI": {
+    "coin": "COQUI",
+    "name": "Coqui Cash",
+    "coinpaprika_id": "test-coin",
+    "coingecko_id": "test-coin",
+    "electrum": [
+      {
+        "url": "electrum1.cipig.net:10011"
+      },
+      {
+        "url": "electrum2.cipig.net:10011"
+      },
+      {
+        "url": "electrum3.cipig.net:10011"
+      }
+    ],
+    "explorer_url": [
+      "https://coquicash.explorer.dexstats.info/"
+    ],
+    "type": "Smart Chain",
+    "active": false,
+    "currently_enabled": false
+  },
   "CRYPTO": {
     "coin": "CRYPTO",
     "name": "CRYPTO",
