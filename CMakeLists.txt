@@ -295,7 +295,6 @@ target_include_directories(atomicdex-desktop PUBLIC src)
 target_link_libraries(atomicdex-desktop_tests
         PUBLIC
         atomicdex-desktop_shared_deps
-        $<$<PLATFORM_ID:Darwin>:/usr/local/lib/libcurl.a>
         doctest::doctest)
 
 ##! Setting output directory
