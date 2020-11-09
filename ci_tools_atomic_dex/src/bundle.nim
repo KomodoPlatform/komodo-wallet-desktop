@@ -77,7 +77,7 @@ proc bundle*(build_type: string, osx_sdk_path: string, compiler_path: string) =
             build_path =  os.getCurrentDir().parentDir().joinPath("build-" & build_type).joinPath("bin")
             desktop_path = build_path.joinPath("AntaraAtomicDexAppDir/usr/share/applications/atomicdex-desktop.desktop")
             atomicdex_desktop_qml_dir = os.getCurrentDir().parentDir().parentDir().joinPath("atomic_defi_design/qml")
-            linux_deploy_tool = os.getCurrentDir().parentDir().joinPath("linux_misc").joinPath("linuxdeployqt-continuous-x86_64.AppImage")
+            linux_deploy_tool = os.getCurrentDir().parentDir().joinPath("linux_misc").joinPath("linuxdeployqt-7-x86_64.AppImage")
             bundling_cmd = linux_deploy_tool & " " & desktop_path & " -qmldir=" & atomicdex_desktop_qml_dir & " -bundle-non-qt-libs -exclude-libs=\"libnss3.so,libnssutil3.so\""
             bundle_path = os.getCurrentDir().parentDir().joinPath("bundle-" & build_type)
             tar_cmd = "tar -czvf AntaraAtomicDexAppDir.tar.gz -C " & build_path.joinPath("AntaraAtomicDexAppDir").parentDir() & " ."
