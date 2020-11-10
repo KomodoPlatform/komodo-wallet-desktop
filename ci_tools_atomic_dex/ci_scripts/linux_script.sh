@@ -10,6 +10,7 @@ sudo apt-get install build-essential \
                     ninja-build \
                     curl \
                     wget \
+                    zstd \
                     software-properties-common \
                     lsb-release \
                     libpulse-dev \
@@ -59,3 +60,10 @@ cd libwally-core
 ./configure --disable-shared
 sudo make -j3 install
 cd ..
+
+#wget https://ftp.gnu.org/gnu/tar/tar-1.32.tar.gz
+#tar xvf tar-1.32.tar.gz
+#cd tar-1.32
+#./configure
+#sudo make -j install
+#sudo update-alternatives --install /usr/bin/tar tar /usr/local/bin/tar 777

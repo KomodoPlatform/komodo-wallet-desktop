@@ -1,4 +1,7 @@
 message(STATUS "Hello post install ${CMAKE_SOURCE_DIR}")
+execute_process(COMMAND bash -c "echo -n `git rev-parse --short HEAD`"
+        OUTPUT_VARIABLE VERSION_ID
+        )
 get_filename_component(PROJECT_ROOT_DIR ${CMAKE_SOURCE_DIR} DIRECTORY)
 message(STATUS "PROJECT_ROOT_DIR -> ${PROJECT_ROOT_DIR}")
 set(PROJECT_QML_DIR ${PROJECT_ROOT_DIR}/atomic_defi_design/qml)
@@ -49,3 +52,14 @@ execute_process(COMMAND ${LINUX_DEPLOY_PATH} ${PROJECT_BIN_PATH} -qmldir=${PROJE
         WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
         ECHO_OUTPUT_VARIABLE
         ECHO_ERROR_VARIABLE)
+message(STATUS "Copying ${PROJECT_APP_PATH} to ${TARGET_APP_PATH}/${PROJECT_APP_DIR}")
+file(COPY ${PROJECT_APP_PATH} DESTINATION ${TARGET_APP_PATH})
+execute_process(COMMAND zip -r atomicdex-desktop-${VERSION_ID}.zip AntaraAtomicDexAppDir
+        WORKING_DIRECTORY ${TARGET_APP_PATH}
+        ECHO_OUTPUT_VARIABLE
+        ECHO_ERROR_VARIABLE)
+execute_process(COMMAND tar --zstd -cf atomicdex-desktop-${VERSION_ID}.tar.zst AntaraAtomicDexAppDir
+        WORKING_DIRECTORY ${TARGET_APP_PATH}
+        ECHO_OUTPUT_VARIABLE
+        ECHO_ERROR_VARIABLE)
+file(COPY ${CMAKE_SOURCE_DIR}/atomicdex-desktop-${VERSION_ID}-x86_64.AppImage DESTINATION ${TARGET_APP_PATH})
