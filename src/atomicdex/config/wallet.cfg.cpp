@@ -30,20 +30,20 @@ namespace atomic_dex
         {
             j.at("protection_pass").get_to(cfg.protection_pass);
         }
-        if (j.contains("addressbook"))
+        if (j.contains("addressbook_contacts"))
         {
-            for (const auto& cur: j.at("addressbook"))
+            for (const auto& cur: j.at("addressbook_contacts"))
             {
-                contact current_contact;
+                addressbook_contact current_contact;
                 cur.at("name").get_to(current_contact.name);
-                for (const auto& cur_addr: cur.at("addresses"))
+                for (const auto& cur_wallet: cur.at("wallets_info"))
                 {
-                    contact_contents contents;
-                    cur_addr.at("type").get_to(contents.type);
-                    cur_addr.at("address").get_to(contents.address);
-                    current_contact.contents.emplace_back(std::move(contents));
+                    addressbook_contact_wallet_info wallet_info;
+                    cur_wallet.at("type").get_to(wallet_info.type);
+                    cur_wallet.at("addresses").get_to(wallet_info.addresses);
+                    current_contact.wallets_info.emplace_back(std::move(wallet_info));
                 }
-                cfg.address_book.emplace_back(std::move(current_contact));
+                cfg.addressbook_contacts.emplace_back(std::move(current_contact));
             }
         }
         if (j.contains("transactions_details"))
@@ -53,17 +53,18 @@ namespace atomic_dex
     }
 
     void
-    to_json(nlohmann::json& j, const contact_contents& cfg)
+    to_json(nlohmann::json& j, const addressbook_contact_wallet_info& cfg)
     {
-        j["type"]    = cfg.type;
-        j["address"] = cfg.address;
+        j["type"]      = cfg.type;
+        j["addresses"] = cfg.addresses;
     }
 
     void
-    to_json(nlohmann::json& j, const contact& cfg)
+    to_json(nlohmann::json& j, const addressbook_contact& cfg)
     {
-        j["name"]      = cfg.name;
-        j["addresses"] = cfg.contents;
+        j["name"]         = cfg.name;
+        j["wallets_info"] = cfg.wallets_info;
+        j["categories"]   = cfg.categories;
     }
 
     void
@@ -71,7 +72,7 @@ namespace atomic_dex
     {
         j["name"]                 = cfg.name;
         j["protection_pass"]      = cfg.protection_pass;
-        j["addressbook"]          = cfg.address_book;
+        j["addressbook_contacts"] = cfg.addressbook_contacts;
         j["transactions_details"] = cfg.transactions_details.get();
     }
 

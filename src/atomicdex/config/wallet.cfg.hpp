@@ -22,21 +22,22 @@
 
 namespace atomic_dex
 {
-    struct contact_contents
+    struct addressbook_contact_wallet_info
     {
-        std::string type{};
-        std::string address{};
+        std::string                        type;      /// \brief The type of wallet (e.g. BTC, erc-20, LTC...).
+        std::map<std::string, std::string> addresses; /// \brief Every address associated to a name (e.g. "Binance wallet":"address_value").
     };
 
-    void to_json(nlohmann::json& j, const contact_contents& cfg);
+    void to_json(nlohmann::json& j, const addressbook_contact_wallet_info& cfg);
 
-    struct contact
+    struct addressbook_contact
     {
-        std::string                   name{};
-        std::vector<contact_contents> contents{};
+        std::string                                  name;         /// \brief The name of the contact.
+        std::vector<addressbook_contact_wallet_info> wallets_info; /// \brief Contains information about contact's wallets.
+        std::vector<std::string>                     categories;   /// \brief Categories of the contact.
     };
 
-    void to_json(nlohmann::json& j, const contact& cfg);
+    void to_json(nlohmann::json& j, const addressbook_contact& cfg);
 
     struct transactions_contents
     {
@@ -52,7 +53,7 @@ namespace atomic_dex
         using t_synchronized_transactions_details = boost::synchronized_value<std::unordered_map<std::string, transactions_contents>>;
         std::string                         name{};
         std::string                         protection_pass{"default_protection_pass"};
-        std::vector<contact>                address_book{};
+        std::vector<addressbook_contact>    addressbook_contacts;
         t_synchronized_transactions_details transactions_details;
     };
 
