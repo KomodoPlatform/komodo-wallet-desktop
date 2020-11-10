@@ -109,9 +109,9 @@ jobs:
         env: # Or as an environment variable
           CXXFLAGS: -stdlib=libc++
           LDFLAGS: -stdlib=libc++
-          CXX: clang++-10
-          CC: clang-10
-        uses: KomodoPlatform/run-vcpkg@v3
+          CXX: clang++-11
+          CC: clang-11
+        uses: KomodoPlatform/run-vcpkg@v5
         with:
           vcpkgArguments: '@${{ github.workspace }}/.github/workflows/linux_response_file.txt --overlay-ports=${{ github.workspace }}/ci_tools_atomic_dex/vcpkg-custom-ports/ports'
           vcpkgDirectory: '${{ github.workspace }}/ci_tools_atomic_dex/vcpkg-repo'
@@ -127,7 +127,7 @@ jobs:
         env: # Or as an environment variable
           CXX: /usr/local/opt/llvm@9/bin/clang++
           CC: /usr/local/opt/llvm@9/bin/clang
-        uses: KomodoPlatform/run-vcpkg@v3
+        uses: KomodoPlatform/run-vcpkg@v5
         with:
           vcpkgArguments: '@${{ github.workspace }}/.github/workflows/osx_response_file.txt --overlay-ports=${{ github.workspace }}/ci_tools_atomic_dex/vcpkg-custom-ports/ports'
           vcpkgDirectory: '${{ github.workspace }}/ci_tools_atomic_dex/vcpkg-repo'
@@ -135,7 +135,7 @@ jobs:
 
       - name: vcpkg deps (Windows)
         if: runner.os == 'Windows'
-        uses: KomodoPlatform/run-vcpkg@v3
+        uses: KomodoPlatform/run-vcpkg@v5
         with:
           vcpkgArguments: '@${{ github.workspace }}/.github/workflows/windows_response_file.txt --overlay-ports=${{ github.workspace }}/ci_tools_atomic_dex/vcpkg-custom-ports/ports'
           vcpkgDirectory: '${{ github.workspace }}/ci_tools_atomic_dex/vcpkg-repo'
@@ -150,8 +150,8 @@ jobs:
           export PATH=$HOME/.nimble/bin:$PATH
           export CXXFLAGS=-stdlib=libc++
           export LDFLAGS=-stdlib=libc++
-          export CXX=clang++-10
-          export CC=clang-10
+          export CXX=clang++-11
+          export CC=clang-11
           cd ci_tools_atomic_dex
           nimble build -y
 
@@ -188,8 +188,8 @@ jobs:
           export PATH=$HOME/.nimble/bin:$PATH
           export CXXFLAGS=-stdlib=libc++
           export LDFLAGS=-stdlib=libc++
-          export CXX=clang++-10
-          export CC=clang-10
+          export CXX=clang++-11
+          export CC=clang-11
           echo "Running tests"
           ./ci_tools_atomic_dex tests release
           cd build-Release/bin/AntaraAtomicDexTestsAppDir/usr/bin
