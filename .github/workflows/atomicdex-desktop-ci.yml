@@ -234,9 +234,9 @@ jobs:
 
       - name: Upload bundle artifact (Linux ZST)
         if: runner.os == 'Linux'
+        run: |
+          echo "artifact_name=atomicdex-desktop-linux-$(git rev-parse --short HEAD).tar.zst" >> $GITHUB_ENV
         uses: actions/upload-artifact@v2
-        env:
-          artifact_name: atomicdex-desktop-linux-$(git rev-parse --short HEAD).tar.zst
         with:
           name: ${{ env.artifact_name }}
           path: ./bundled/linux/atomicdex-desktop/${{ env.artifact_name }}
@@ -244,8 +244,8 @@ jobs:
       - name: Upload bundle artifact (Linux ZIP)
         if: runner.os == 'Linux'
         uses: actions/upload-artifact@v2
-        env:
-          artifact_name: atomicdex-desktop-linux-$(git rev-parse --short HEAD).zip
+        run: |
+          echo "artifact_name=atomicdex-desktop-linux-$(git rev-parse --short HEAD).zip" >> $GITHUB_ENV
         with:
           name: ${{ env.artifact_name }}
           path: ./bundled/linux/atomicdex-desktop/${{ env.artifact_name }}
@@ -253,8 +253,8 @@ jobs:
       - name: Upload bundle artifact (Linux AppImage)
         if: runner.os == 'Linux'
         uses: actions/upload-artifact@v2
-        env:
-          artifact_name: atomicdex-desktop-$(git rev-parse --short HEAD)-x86_64.AppImage
+        run: |
+          echo "artifact_name=atomicdex-desktop-$(git rev-parse --short HEAD)-x86_64.AppImage" >> $GITHUB_ENV
         with:
           name: ${{ env.artifact_name }}
           path: ./bundled/linux/atomicdex-desktop/${{ env.artifact_name }}
