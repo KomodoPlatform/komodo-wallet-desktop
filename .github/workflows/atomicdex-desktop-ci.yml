@@ -235,6 +235,9 @@ jobs:
       - name: Upload env variable for artifacts (Linux)
         if: runner.os == 'Linux'
         run: |
+          echo "target_name_zstd=atomicdex-desktop-${{ matrix.name }}-$(git rev-parse --short HEAD).tar.zst" >> $GITHUB_ENV
+          echo "target_name_zip=atomicdex-desktop-${{ matrix.name }}-$(git rev-parse --short HEAD).zip" >> $GITHUB_ENV
+          echo "target_name_appimage=atomicdex-desktop-${{ matrix.name }}-$(git rev-parse --short HEAD)-x86_64.AppImage" >> $GITHUB_ENV
           echo "artifact_name_zstd=atomicdex-desktop-linux-$(git rev-parse --short HEAD).tar.zst" >> $GITHUB_ENV
           echo "artifact_name_zip=atomicdex-desktop-linux-$(git rev-parse --short HEAD).zip" >> $GITHUB_ENV
           echo "artifact_name_appimage=atomicdex-desktop-$(git rev-parse --short HEAD)-x86_64.AppImage" >> $GITHUB_ENV
@@ -244,21 +247,21 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: ${{ env.artifact_name_zstd }}
-          path: ./bundled/linux/${{ env.artifact_name_zstd }}
+          path: ./bundled/linux/${{ env.target_name_zstd }}
 
       - name: Upload bundle artifact (Linux ZIP)
         if: runner.os == 'Linux'
         uses: actions/upload-artifact@v2
         with:
           name: ${{ env.artifact_name_zip }}
-          path: ./bundled/linux/${{ env.artifact_name_zip }}
+          path: ./bundled/linux/${{ env.target_name_zip }}
 
       - name: Upload bundle artifact (Linux AppImage)
         if: runner.os == 'Linux'
         uses: actions/upload-artifact@v2
         with:
           name: ${{ env.artifact_name_appimage }}
-          path: ./bundled/linux/${{ env.artifact_name_appimage }}
+          path: ./bundled/linux/${{ env.target_name_appimage }}
 
       - name: Upload artifacts (MacOS)
         if: runner.os == 'macOS'
