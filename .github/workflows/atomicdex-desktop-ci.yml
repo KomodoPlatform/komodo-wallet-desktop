@@ -235,19 +235,24 @@ jobs:
       - name: Upload bundle artifact (Linux ZST)
         if: runner.os == 'Linux'
         uses: actions/upload-artifact@v2
+        env:
+          VERSION_ID: $(git rev-parse --short HEAD)
         with:
+          name: atomicdex-desktop-linux.zst
           path: ./bunled/linux/atomicdex-desktop/*.zst
 
       - name: Upload bundle artifact (Linux ZIP)
         if: runner.os == 'Linux'
         uses: actions/upload-artifact@v2
         with:
+          name: atomicdex-desktop-linux.zip
           path: ./bunled/linux/atomicdex-desktop/*.zip
 
       - name: Upload bundle artifact (Linux AppImage)
         if: runner.os == 'Linux'
         uses: actions/upload-artifact@v2
         with:
+          name: atomicdex-desktop-linux-x86_64.AppImage
           path: ./bunled/linux/atomicdex-desktop/*.AppImage
 
       - name: Upload artifacts (MacOS)
