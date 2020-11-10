@@ -232,10 +232,15 @@ jobs:
           Invoke-WebRequest -Uri https://report.ci/upload.py -OutFile upload.py
           python upload.py --sha $(git rev-parse HEAD) -n "[Doctest Windows]" --include='atomic-dex-tests-result.xml' --framework=doctest --merge ".*"
 
-      - name: Upload bundle artifact (Linux ZSTD)
+      - name: Upload env variable for artifacts (Linux)
         if: runner.os == 'Linux'
         run: |
           echo "artifact_name_zstd=atomicdex-desktop-linux-$(git rev-parse --short HEAD).tar.zst" >> $GITHUB_ENV
+          echo "artifact_name_zip=atomicdex-desktop-linux-$(git rev-parse --short HEAD).zip" >> $GITHUB_ENV
+          echo "artifact_name_appimage=atomicdex-desktop-$(git rev-parse --short HEAD)-x86_64.AppImage" >> $GITHUB_ENV
+
+      - name: Upload bundle artifact (Linux ZSTD)
+        if: runner.os == 'Linux'
         uses: actions/upload-artifact@v2
         with:
           name: ${{ env.artifact_name_zstd }}
@@ -244,8 +249,6 @@ jobs:
       - name: Upload bundle artifact (Linux ZIP)
         if: runner.os == 'Linux'
         uses: actions/upload-artifact@v2
-        run: |
-          echo "artifact_name_zip=atomicdex-desktop-linux-$(git rev-parse --short HEAD).zip" >> $GITHUB_ENV
         with:
           name: ${{ env.artifact_name_zip }}
           path: ./bundled/linux/atomicdex-desktop/${{ env.artifact_name_zip }}
@@ -253,8 +256,6 @@ jobs:
       - name: Upload bundle artifact (Linux AppImage)
         if: runner.os == 'Linux'
         uses: actions/upload-artifact@v2
-        run: |
-          echo "artifact_name_appimage=atomicdex-desktop-$(git rev-parse --short HEAD)-x86_64.AppImage" >> $GITHUB_ENV
         with:
           name: ${{ env.artifact_name_appimage }}
           path: ./bundled/linux/atomicdex-desktop/${{ env.artifact_name_appimage }}
