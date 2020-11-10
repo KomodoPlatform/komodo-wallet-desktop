@@ -2,7 +2,7 @@ name: AtomicDex-Desktop CI
 
 on:
   pull_request:
-    types: [opened, synchronize, reopened]
+    types: [ opened, synchronize, reopened ]
   push:
     branches:
       - master
@@ -10,7 +10,7 @@ on:
     - cron: '0 0 * * 1'
 
 jobs:
-  
+
   ci-flow:
     name: ${{ matrix.name }}
     runs-on: ${{ matrix.os }}
@@ -18,14 +18,14 @@ jobs:
     strategy:
       matrix:
         name: [
-          ubuntu-qt-5-15-0,
-          ubuntu-qt-5-15-1,
-          osx-qt-5-15-0,
-          osx-qt-5-15-1,
-          windows-10-qt-5-15-0,
-          windows-10-qt-5-15-1
+            ubuntu-qt-5-15-0,
+            ubuntu-qt-5-15-1,
+            osx-qt-5-15-0,
+            osx-qt-5-15-1,
+            windows-10-qt-5-15-0,
+            windows-10-qt-5-15-1
         ]
-    
+
         include:
           - name: ubuntu-qt-5-15-0
             os: ubuntu-16.04
@@ -50,13 +50,13 @@ jobs:
           - name: windows-10-qt-5-15-1
             os: windows-latest
             qt: '5.15.1'
-    
+
     steps:
       - uses: actions/checkout@v2
         with:
           ref: ${{ github.event.pull_request.head.sha }}
           submodules: 'true'
-      
+
       - name: Install QT (Linux)
         if: runner.os == 'Linux'
         uses: KomodoPlatform/install-qt-action@v2
@@ -232,23 +232,34 @@ jobs:
           Invoke-WebRequest -Uri https://report.ci/upload.py -OutFile upload.py
           python upload.py --sha $(git rev-parse HEAD) -n "[Doctest Windows]" --include='atomic-dex-tests-result.xml' --framework=doctest --merge ".*"
 
-      - name: Upload bundle artifact (Linux)
+      - name: Upload bundle artifact (Linux ZST)
         if: runner.os == 'Linux'
-        uses: actions/upload-artifact@v1
+        uses: actions/upload-artifact@v2
         with:
-          name: ${{ matrix.name }}-release.tar.gz
-          path: ./ci_tools_atomic_dex/bundle-Release/AntaraAtomicDexAppDir.tar.gz
+          path: ./bunled/linux/atomicdex-desktop/*.zst
+
+      - name: Upload bundle artifact (Linux ZIP)
+        if: runner.os == 'Linux'
+        uses: actions/upload-artifact@v2
+        with:
+          path: ./bunled/linux/atomicdex-desktop/*.zip
+
+      - name: Upload bundle artifact (Linux AppImage)
+        if: runner.os == 'Linux'
+        uses: actions/upload-artifact@v2
+        with:
+          path: ./bunled/linux/atomicdex-desktop/*.AppImage
 
       - name: Upload artifacts (MacOS)
         if: runner.os == 'macOS'
-        uses: actions/upload-artifact@v1
+        uses: actions/upload-artifact@v2
         with:
           name: ${{ matrix.name }}-release.dmg
           path: ./ci_tools_atomic_dex/bundle-Release/atomicdex-desktop.dmg
 
       - name: Upload artifacts (Windows)
         if: runner.os == 'Windows'
-        uses: actions/upload-artifact@v1
+        uses: actions/upload-artifact@v2
         with:
           name: ${{ matrix.name }}-release.zip
           path: ./ci_tools_atomic_dex/bundle-Release/bundle.zip
