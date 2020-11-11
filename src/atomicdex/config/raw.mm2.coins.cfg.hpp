@@ -212,7 +212,7 @@ namespace atomic_dex
     {
         t_mm2_raw_coins_registry out;
         // fs::path                 file_path{ag::core::assets_real_path() / "tools" / "mm2" / "coins"};
-        fs::path file_path{atomic_dex::utils::get_raw_mm2_coins_path() / "coins.json"};
+        fs::path file_path{atomic_dex::utils::get_current_configs_path() / "coins.json"};
         if (not fs::exists(file_path))
         {
             fs::path original_mm2_coins_path{ag::core::assets_real_path() / "tools" / "mm2" / "coins"};

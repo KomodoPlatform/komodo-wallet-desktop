@@ -178,7 +178,7 @@ namespace atomic_dex::utils
     }
 
     fs::path
-    get_raw_mm2_coins_path()
+    get_current_configs_path()
     {
         const auto fs_raw_mm2_shared_folder = get_atomic_dex_data_folder() / get_raw_version() / "configs";
         create_if_doesnt_exist(fs_raw_mm2_shared_folder);
