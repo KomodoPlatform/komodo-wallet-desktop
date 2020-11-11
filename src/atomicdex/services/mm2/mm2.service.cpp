@@ -189,7 +189,7 @@ namespace atomic_dex
 
         if (ec)
         {
-            //std::cerr << "error: " << ec.message() << std::endl;
+            // std::cerr << "error: " << ec.message() << std::endl;
         }
 #endif
 
@@ -786,10 +786,16 @@ namespace atomic_dex
         std::ostringstream env_mm2;
         env_mm2 << "MM_CONF_PATH=" << mm2_cfg_path.string();
         _putenv(env_mm2.str().c_str());
+        env_mm2.clear();
+        env_mm2 << "MM_COINS_PATH=" << (utils::get_raw_mm2_coins_path() / "coins.json").string();
+        _putenv(env_mm2.str().c_str());
         spdlog::debug("env: {}", std::getenv("MM_CONF_PATH"));
+        spdlog::debug("env: {}", std::getenv("MM_COINS_PATH"));
 #else
         options.environment = std::unordered_map<std::string, std::string>{
-            {"MM_CONF_PATH", mm2_cfg_path.string()}, {"MM_LOG", utils::get_mm2_atomic_dex_current_log_file().string()}};
+            {"MM_CONF_PATH", mm2_cfg_path.string()},
+            {"MM_LOG", utils::get_mm2_atomic_dex_current_log_file().string()},
+            {"MM_COINS_PATH", (utils::get_raw_mm2_coins_path() / "coins.json").string()}};
 #endif
         options.working_directory = strdup(tools_path.string().c_str());
 
@@ -1443,7 +1449,7 @@ namespace atomic_dex
         }
         if (not raw_coin_cfg_json.empty() && not is_this_ticker_present_in_raw_cfg(raw_coin_cfg_json.at("coin").get<std::string>()))
         {
-            fs::path mm2_cfg_path = ag::core::assets_real_path() / "tools/mm2/coins";
+            const fs::path mm2_cfg_path{atomic_dex::utils::get_raw_mm2_coins_path() / "coins.json"};
             spdlog::trace("Adding entry : {} to mm2 coins file {}", raw_coin_cfg_json.dump(4), mm2_cfg_path.string());
             std::ifstream  ifs(mm2_cfg_path.c_str());
             nlohmann::json config_json_data;
@@ -1527,7 +1533,7 @@ namespace atomic_dex
         if (is_this_ticker_present_in_raw_cfg(ticker))
         {
             spdlog::trace("remove it from mm2 cfg: {}", ticker);
-            fs::path       mm2_cfg_path = ag::core::assets_real_path() / "tools/mm2/coins";
+            fs::path       mm2_cfg_path{atomic_dex::utils::get_raw_mm2_coins_path() / "coins.json"};
             std::ifstream  ifs(mm2_cfg_path.c_str());
             nlohmann::json config_json_data;
             assert(ifs.is_open());

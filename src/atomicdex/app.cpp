@@ -1119,14 +1119,14 @@ namespace atomic_dex
 
         qApp->quit();
 
-        if (appimage == nullptr)
+        if (appimage == nullptr || not QString(appimage).contains("atomicdex-desktop"))
         {
             QProcess::startDetached(qApp->arguments()[0], qApp->arguments(), qApp->applicationDirPath());
         }
         else
         {
             QString path(appimage);
-            QProcess::startDetached(path);
+            QProcess::startDetached(path, qApp->arguments());
         }
     }
 } // namespace atomic_dex
