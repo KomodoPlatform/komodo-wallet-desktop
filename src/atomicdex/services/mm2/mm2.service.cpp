@@ -782,21 +782,13 @@ namespace atomic_dex
         const std::array<std::string, 1> args = {(tools_path / "mm2").string()};
         reproc::options                  options;
         options.redirect.parent = true;
-#if defined(WIN32)
-        std::ostringstream env_mm2;
-        env_mm2 << "MM_CONF_PATH=" << mm2_cfg_path.string();
-        _putenv(env_mm2.str().c_str());
-        env_mm2.clear();
-        env_mm2 << "MM_COINS_PATH=" << (utils::get_current_configs_path() / "coins.json").string();
-        _putenv(env_mm2.str().c_str());
-        spdlog::debug("env: {}", std::getenv("MM_CONF_PATH"));
-        spdlog::debug("env: {}", std::getenv("MM_COINS_PATH"));
-#else
-        options.environment = std::unordered_map<std::string, std::string>{
+
+        options.env.behavior = reproc::env::extend;
+        options.env.extra    = std::unordered_map<std::string, std::string>{
             {"MM_CONF_PATH", mm2_cfg_path.string()},
             {"MM_LOG", utils::get_mm2_atomic_dex_current_log_file().string()},
             {"MM_COINS_PATH", (utils::get_current_configs_path() / "coins.json").string()}};
-#endif
+
         options.working_directory = strdup(tools_path.string().c_str());
 
         spdlog::debug("command line: {}, from directory: {}", args[0], options.working_directory);
