@@ -54,54 +54,26 @@ proc bundle*(build_type: string, osx_sdk_path: string, compiler_path: string) =
             build_path =  os.getCurrentDir().parentDir().joinPath("build-" & build_type).joinPath("bin")
             mm2_path =  os.getCurrentDir().parentDir().joinPath("build-" & build_type).joinPath("bin").joinPath("assets").joinPath("tools").joinPath("mm2")
             dll_path   = os.getCurrentDir().parentDir().joinPath("windows_misc")
-            dll_path_vcpkg = os.getCurrentDir().parentDir().joinPath("vcpkg-repo").joinPath("installed").joinPath("x64-windows").joinPath("bin")
+            #dll_path_vcpkg = os.getCurrentDir().parentDir().joinPath("vcpkg-repo").joinPath("installed").joinPath("x64-windows").joinPath("bin")
             bundle_path = os.getCurrentDir().parentDir().joinPath("bundle-" & build_type)
             #Copy-Item C:\Code\Trunk -Filter *.csproj.user -Destination C:\Code\F2 -Recurse
-            pwsh_cmd = "Get-ChildItem " & dll_path & " | Copy-Item -Destination " & build_path & " -Recurse -filter *.dll"
-            pwsh_cmd_vcpkg = "Get-ChildItem " & dll_path_vcpkg & " | Copy-Item -Destination " & build_path & " -Recurse -filter *.dll"
+            #pwsh_cmd = "Get-ChildItem " & dll_path & " | Copy-Item -Destination " & build_path & " -Recurse -filter *.dll"
+            #pwsh_cmd_vcpkg = "Get-ChildItem " & dll_path_vcpkg & " | Copy-Item -Destination " & build_path & " -Recurse -filter *.dll"
             pwsh_cmd_mm2 = "Get-ChildItem " & dll_path & " | Copy-Item -Destination " & mm2_path & " -Recurse -filter *.dll"
-            copy_dll_cmd = "powershell.exe -nologo -noprofile -command \"& { " & pwsh_cmd & " }\""
+            #copy_dll_cmd = "powershell.exe -nologo -noprofile -command \"& { " & pwsh_cmd & " }\""
             copy_dll_mm2_cmd = "powershell.exe -nologo -noprofile -command \"& { " & pwsh_cmd_mm2 & " }\""
-            copy_dll_vcpkg_cmd = "powershell.exe -nologo -noprofile -command \"& { " & pwsh_cmd_vcpkg & " }\""
+            #copy_dll_vcpkg_cmd = "powershell.exe -nologo -noprofile -command \"& { " & pwsh_cmd_vcpkg & " }\""
             bundle_cmd = "powershell.exe -nologo -noprofile -command \"& { Add-Type -A 'System.IO.Compression.FileSystem'; [IO.Compression.ZipFile]::CreateFromDirectory('bin', 'bin.zip'); }\""
 
-        echo copy_dll_cmd
-        discard osproc.execCmd(copy_dll_cmd)
-        discard osproc.execCmd(copy_dll_cmd)
-        discard osproc.execCmd(copy_dll_vcpkg_cmd)
+        #echo copy_dll_cmd
+        #discard osproc.execCmd(copy_dll_cmd)
+        #discard osproc.execCmd(copy_dll_cmd)
+        #discard osproc.execCmd(copy_dll_vcpkg_cmd)
         discard osproc.execCmd(bundle_cmd)
         discard os.existsOrCreateDir(bundle_path)
         os.moveFile("bin.zip", bundle_path.joinPath("bundle.zip"))
     when defined(linux):
         echo "current dir is: " & os.getCurrentDir()
         discard osproc.execCmd("ninja install")
-        #let
-        #    build_path =  os.getCurrentDir().parentDir().joinPath("build-" & build_type).joinPath("bin")
-        #    desktop_path = build_path.joinPath("AntaraAtomicDexAppDir/usr/share/applications/atomicdex-desktop.desktop")
-        #    atomicdex_desktop_qml_dir = os.getCurrentDir().parentDir().parentDir().joinPath("atomic_defi_design/qml")
-        #    linux_deploy_tool = os.getCurrentDir().parentDir().joinPath("linux_misc").joinPath("linuxdeployqt-7-x86_64.AppImage")
-        #    bundling_cmd = linux_deploy_tool & " " & desktop_path & " -qmldir=" & atomicdex_desktop_qml_dir & " -bundle-non-qt-libs -exclude-libs=\"libnss3.so,libnssutil3.so\""
-        #    bundle_path = os.getCurrentDir().parentDir().joinPath("bundle-" & build_type)
-        #    tar_cmd = "tar -czvf AntaraAtomicDexAppDir.tar.gz -C " & build_path.joinPath("AntaraAtomicDexAppDir").parentDir() & " ."
-
-        #echo "Bundling cmd: " & bundling_cmd
-        #discard osproc.execCmd(bundling_cmd)
-        
-        #echo "Creating bundle folder: " & bundle_path
-        #discard os.existsOrCreateDir(bundle_path)
-        #os.setCurrentDir(bundle_path)
-
-        #echo "Copying extra lib before"
-        #var output_dir = $build_path.joinPath("AntaraAtomicDexAppDir").joinPath("usr").joinPath("lib")
-        #var list_of_libs = ["libsmime3.so", "libssl3.so"]
-        #for idx, cur_lib in list_of_libs:
-        #    os.copyFile("/usr/lib/x86_64-linux-gnu/" & cur_lib, output_dir & "/" & cur_lib)
-        #var list_of_other_libs = ["libfreebl3.chk", "libfreebl3.so", "libnssckbi.so", "libnssdbm3.chk", "libnssdbm3.so", "libnsssysinit.so", "libsoftokn3.chk", "libsoftokn3.so"]
-        #for idx, cur_lib in list_of_other_libs:
-        #   os.copyFile("/usr/lib/x86_64-linux-gnu/nss/" & cur_lib, output_dir & "/" & cur_lib)
-        #discard os.copyFile("/usr/lib/x86_64-linux-gnu/libnss3.so", output_dir.joinPath("libnss3.so").string)
-
-        #echo "Tar cmd: " & tar_cmd
-        #discard osproc.execCmd(tar_cmd)
 
 
