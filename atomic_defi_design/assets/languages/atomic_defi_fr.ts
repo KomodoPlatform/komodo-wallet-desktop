@@ -6,55 +6,55 @@
     <message>
         <location filename="../../qml/Settings/AddCustomCoinModal.qml" line="82"/>
         <source>Choose the asset type</source>
-        <translation type="unfinished"></translation>
+        <translation>Choisir le type d&apos;actif</translation>
     </message>
     <message>
         <location filename="../../qml/Settings/AddCustomCoinModal.qml" line="87"/>
         <source>Type</source>
-        <translation type="unfinished"></translation>
+        <translation>Type</translation>
     </message>
     <message>
         <location filename="../../qml/Settings/AddCustomCoinModal.qml" line="95"/>
         <source>Cancel</source>
-        <translation type="unfinished">Annuler</translation>
+        <translation>Annuler</translation>
     </message>
     <message>
         <location filename="../../qml/Settings/AddCustomCoinModal.qml" line="101"/>
         <location filename="../../qml/Settings/AddCustomCoinModal.qml" line="158"/>
         <location filename="../../qml/Settings/AddCustomCoinModal.qml" line="217"/>
         <source>Next</source>
-        <translation type="unfinished"></translation>
+        <translation>Suivant</translation>
     </message>
     <message>
         <location filename="../../qml/Settings/AddCustomCoinModal.qml" line="113"/>
         <location filename="../../qml/Settings/AddCustomCoinModal.qml" line="130"/>
         <source>Enter the contract address</source>
-        <translation type="unfinished"></translation>
+        <translation>Entrer l&apos;adresse du contrat</translation>
     </message>
     <message>
         <location filename="../../qml/Settings/AddCustomCoinModal.qml" line="113"/>
         <source>Choose the asset ticker</source>
-        <translation type="unfinished"></translation>
+        <translation>Choisissez le symbole de l&apos;actif</translation>
     </message>
     <message>
         <location filename="../../qml/Settings/AddCustomCoinModal.qml" line="120"/>
         <source>Ticker</source>
-        <translation type="unfinished"></translation>
+        <translation>Symbole</translation>
     </message>
     <message>
         <location filename="../../qml/Settings/AddCustomCoinModal.qml" line="121"/>
         <source>Enter the ticker</source>
-        <translation type="unfinished"></translation>
+        <translation>Entrez le symbole</translation>
     </message>
     <message>
         <location filename="../../qml/Settings/AddCustomCoinModal.qml" line="129"/>
         <source>Contract Address</source>
-        <translation type="unfinished"></translation>
+        <translation>Adresse du contrat</translation>
     </message>
     <message>
         <location filename="../../qml/Settings/AddCustomCoinModal.qml" line="136"/>
         <source>Get the contract address from Etherscan</source>
-        <translation type="unfinished"></translation>
+        <translation>Récuperer le contrat de l&apos;adresse depuis Etherscan</translation>
     </message>
     <message>
         <location filename="../../qml/Settings/AddCustomCoinModal.qml" line="152"/>
@@ -62,93 +62,93 @@
         <location filename="../../qml/Settings/AddCustomCoinModal.qml" line="282"/>
         <location filename="../../qml/Settings/AddCustomCoinModal.qml" line="377"/>
         <source>Previous</source>
-        <translation type="unfinished"></translation>
+        <translation>Précedent</translation>
     </message>
     <message>
         <location filename="../../qml/Settings/AddCustomCoinModal.qml" line="169"/>
         <source>Choose the asset logo</source>
-        <translation type="unfinished"></translation>
+        <translation>Choisissez le logo de l&apos;actif</translation>
     </message>
     <message>
         <location filename="../../qml/Settings/AddCustomCoinModal.qml" line="173"/>
         <source>Browse</source>
-        <translation type="unfinished"></translation>
+        <translation>Naviguer</translation>
     </message>
     <message>
         <location filename="../../qml/Settings/AddCustomCoinModal.qml" line="185"/>
         <source>Please choose the asset logo</source>
-        <translation type="unfinished"></translation>
+        <translation>S&apos;il-vous-plaît choissisez le logo de l&apos;actif</translation>
     </message>
     <message>
         <location filename="../../qml/Settings/AddCustomCoinModal.qml" line="227"/>
         <source>Configuration</source>
-        <translation type="unfinished"></translation>
+        <translation>Configuration</translation>
     </message>
     <message>
         <location filename="../../qml/Settings/AddCustomCoinModal.qml" line="232"/>
         <source>All configuration fields will be fetched using the contract address you provided.</source>
-        <translation type="unfinished"></translation>
+        <translation>Tous les champs de configuration vont être récupérés à partir de l&apos;adresse du contrat que vous avez fournis.</translation>
     </message>
     <message>
         <location filename="../../qml/Settings/AddCustomCoinModal.qml" line="240"/>
         <source>Name</source>
-        <translation type="unfinished"></translation>
+        <translation>Nom</translation>
     </message>
     <message>
         <location filename="../../qml/Settings/AddCustomCoinModal.qml" line="241"/>
         <source>Enter the name</source>
-        <translation type="unfinished"></translation>
+        <translation>Entrez le nom</translation>
     </message>
     <message>
         <location filename="../../qml/Settings/AddCustomCoinModal.qml" line="247"/>
         <source>Coinpaprika ID</source>
-        <translation type="unfinished"></translation>
+        <translation>ID Coinpaprika</translation>
     </message>
     <message>
         <location filename="../../qml/Settings/AddCustomCoinModal.qml" line="248"/>
         <source>Enter the Coinpaprika ID</source>
-        <translation type="unfinished"></translation>
+        <translation>Entrez l&apos;identifiiant Coinpaprika</translation>
     </message>
     <message>
         <location filename="../../qml/Settings/AddCustomCoinModal.qml" line="254"/>
         <source>Get the Coinpaprika ID</source>
-        <translation type="unfinished"></translation>
+        <translation>Récuperez l&apos;identifiant Coinpaprika</translation>
     </message>
     <message>
         <location filename="../../qml/Settings/AddCustomCoinModal.qml" line="271"/>
         <source>Active</source>
-        <translation type="unfinished"></translation>
+        <translation>Actif</translation>
     </message>
     <message>
         <location filename="../../qml/Settings/AddCustomCoinModal.qml" line="288"/>
         <location filename="../../qml/Settings/AddCustomCoinModal.qml" line="304"/>
         <source>Preview</source>
-        <translation type="unfinished"></translation>
+        <translation>Pré-visualisation</translation>
     </message>
     <message>
         <location filename="../../qml/Settings/AddCustomCoinModal.qml" line="310"/>
         <source>WARNING: Application will restart immidiately to apply the changes!</source>
-        <translation type="unfinished"></translation>
+        <translation>AVERTISSEMENT: l&apos;application redémarrera immédiatement pour appliquer les modifications!</translation>
     </message>
     <message>
         <location filename="../../qml/Settings/AddCustomCoinModal.qml" line="334"/>
         <source>Asset not found, please go back and make sure Contract Address is correct</source>
-        <translation type="unfinished"></translation>
+        <translation>Actif introuvable, veuillez revenir en arrière et vous assurer que l&apos;adresse du contrat est correcte</translation>
     </message>
     <message>
         <location filename="../../qml/Settings/AddCustomCoinModal.qml" line="353"/>
         <source>Config Fields</source>
-        <translation type="unfinished"></translation>
+        <translation>Champs de configuration</translation>
     </message>
     <message>
         <location filename="../../qml/Settings/AddCustomCoinModal.qml" line="366"/>
         <source>Fetched Data</source>
-        <translation type="unfinished"></translation>
+        <translation>Données récupérées</translation>
     </message>
     <message>
         <location filename="../../qml/Settings/AddCustomCoinModal.qml" line="383"/>
         <source>Submit &amp; Restart</source>
-        <translation type="unfinished"></translation>
+        <translation>Soumettre et redémarrer</translation>
     </message>
 </context>
 <context>
@@ -2263,17 +2263,17 @@
     <message>
         <location filename="../../qml/Sidebar/SidebarBottom.qml" line="15"/>
         <source>Settings</source>
-        <translation type="unfinished"></translation>
+        <translation>Réglages</translation>
     </message>
     <message>
         <location filename="../../qml/Sidebar/SidebarBottom.qml" line="23"/>
         <source>Support</source>
-        <translation type="unfinished"></translation>
+        <translation>Support</translation>
     </message>
     <message>
         <location filename="../../qml/Sidebar/SidebarBottom.qml" line="31"/>
         <source>Privacy</source>
-        <translation type="unfinished"></translation>
+        <translation>Intimité</translation>
     </message>
 </context>
 <context>
@@ -2281,28 +2281,28 @@
     <message>
         <location filename="../../qml/Sidebar/SidebarCenter.qml" line="16"/>
         <source>Dashboard</source>
-        <translation type="unfinished"></translation>
+        <translation>Tableau de bord</translation>
     </message>
     <message>
         <location filename="../../qml/Sidebar/SidebarCenter.qml" line="24"/>
         <source>Wallet</source>
-        <translation type="unfinished">Portefeuille</translation>
+        <translation>Portefeuille</translation>
     </message>
     <message>
         <location filename="../../qml/Sidebar/SidebarCenter.qml" line="33"/>
         <source>DEX</source>
-        <translation type="unfinished">DEX</translation>
+        <translation>DEX</translation>
     </message>
     <message>
         <location filename="../../qml/Sidebar/SidebarCenter.qml" line="42"/>
         <source>DEX features are not allowed in %1</source>
         <comment>COUNTRY</comment>
-        <translation type="unfinished"></translation>
+        <translation>Les fonctionnalités DEX ne sont pas autorisées dans %1</translation>
     </message>
     <message>
         <location filename="../../qml/Sidebar/SidebarCenter.qml" line="51"/>
         <source>Address Book</source>
-        <translation type="unfinished"></translation>
+        <translation>Carnet d&apos;adresses</translation>
     </message>
 </context>
 <context>
@@ -2310,119 +2310,122 @@
     <message>
         <location filename="../../qml/Support/Support.qml" line="69"/>
         <source>Update available</source>
-        <translation type="unfinished"></translation>
+        <translation>Mise à jour disponible</translation>
     </message>
     <message>
         <location filename="../../qml/Support/Support.qml" line="69"/>
         <source>Up to date</source>
-        <translation type="unfinished"></translation>
+        <translation>À jour</translation>
     </message>
     <message>
         <location filename="../../qml/Support/Support.qml" line="84"/>
         <source>Changelog</source>
-        <translation type="unfinished"></translation>
+        <translatorcomment>Anglicisme</translatorcomment>
+        <translation>Changelog</translation>
     </message>
     <message>
         <location filename="../../qml/Support/Support.qml" line="96"/>
         <source>Open Logs Folder</source>
-        <translation type="unfinished">Ouvrir le répertoire de logs</translation>
+        <translation>Ouvrir le répertoire de logs</translation>
     </message>
     <message>
         <location filename="../../qml/Support/Support.qml" line="107"/>
         <source>Frequently Asked Questions</source>
-        <translation type="unfinished"></translation>
+        <translation>Foire aux questions</translation>
     </message>
     <message>
         <location filename="../../qml/Support/Support.qml" line="123"/>
         <source>Do you store my private keys?</source>
-        <translation type="unfinished"></translation>
+        <translation>Stockez-vous mes clés privées ?</translation>
     </message>
     <message>
         <location filename="../../qml/Support/Support.qml" line="124"/>
         <source>No! AtomicDEX is non-custodial. We never store any sensitive data, including your private keys, seed phrases, or PIN. This data is  only stored on the user’s device and never leaves it. You are in full control of your assets.</source>
-        <translation type="unfinished"></translation>
+        <translation>Non! AtomicDEX n&apos;est pas dépositaire. Nous ne stockons jamais de données sensibles, y compris vos clés privées, vos phrases de sauvegarde ou votre code PIN. Ces données ne sont stockées que sur l&apos;appareil de l&apos;utilisateur et ne le quittent jamais. Vous avez le contrôle total de vos actifs.</translation>
     </message>
     <message>
         <location filename="../../qml/Support/Support.qml" line="128"/>
         <source>How is trading on AtomicDEX different from trading on other DEXs?</source>
-        <translation type="unfinished"></translation>
+        <translation>En quoi le trading sur AtomicDEX est-il différent du trading sur d&apos;autres DEX ?</translation>
     </message>
     <message>
         <location filename="../../qml/Support/Support.qml" line="141"/>
         <source>Yes. You must remain connected to the internet and have your app running to successfully complete each atomic swap (very short breaks in connectivity are usually fine). Otherwise, there is risk of trade cancellation if you are a maker, and risk of loss of funds if you are a taker. The atomic swap protocol requires both participants to stay online and monitor the involved blockchains for the process to stay atomic.</source>
-        <translation type="unfinished"></translation>
+        <translation>Oui. Vous devez rester connecté à Internet et faire fonctionner votre application pour réussir chaque échange atomique (de très courtes interruptions de connectivité conviennent généralement). Sinon, il existe un risque d&apos;annulation de transaction si vous êtes un créateur et un risque de perte de fonds si vous êtes preneur. Le protocole d&apos;échange atomique exige que les deux participants restent en ligne et surveillent les chaînes de blocs impliquées pour que le processus reste atomique.</translation>
     </message>
     <message>
         <location filename="../../qml/Support/Support.qml" line="145"/>
         <source>How are the fees on AtomicDEX calculated?</source>
-        <translation type="unfinished"></translation>
+        <translation>Comment sont calculés les frais sur AtomicDEX ?</translation>
     </message>
     <message>
         <location filename="../../qml/Support/Support.qml" line="156"/>
         <source>Yes! AtomicDEX offers support through the &lt;a href=&quot;https://komodoplatform.com/discord&quot;&gt;Komodo Discord server&lt;/a&gt;. The team and the community are always happy to help!</source>
-        <translation type="unfinished"></translation>
+        <translation>Oui ! AtomicDEX offre une assistance via le &lt;a href=&quot;https://komodoplatform.com/discord&quot;&gt; serveur Komodo Discord &lt;/a&gt;. L&apos;équipe et la communauté sont toujours ravies de vous aider !</translation>
     </message>
     <message>
         <location filename="../../qml/Support/Support.qml" line="160"/>
         <source>Who is behind AtomicDEX?</source>
-        <translation type="unfinished"></translation>
+        <translation>Qui est derrière AtomicDEX ?</translation>
     </message>
     <message>
         <location filename="../../qml/Support/Support.qml" line="161"/>
         <source>AtomicDEX is developed by the Komodo team. Komodo is one of the most established blockchain projects working on innovative solutions like atomic swaps, Delayed Proof of Work, and an interoperable multi-chain architecture.</source>
-        <translation type="unfinished"></translation>
+        <translation>AtomicDEX est développé par l&apos;équipe Komodo. Komodo est l&apos;un des projets blockchain les plus établis travaillant sur des solutions innovantes telles que les swaps atomiques, DPow et une architecture multi-chaînes interopérable.</translation>
     </message>
     <message>
         <location filename="../../qml/Support/Support.qml" line="165"/>
         <source>Is it possible to develop my own white-label exchange on AtomicDEX?</source>
-        <translation type="unfinished"></translation>
+        <translation>Est-il possible de développer mon propre échange en marque blanche sur AtomicDEX ?</translation>
     </message>
     <message>
         <location filename="../../qml/Support/Support.qml" line="166"/>
         <source>Absolutely! You can read our developer documentation for more details or contact us with your partnership inquiries. Have a specific technical question? The AtomicDEX developer community is always ready to help!</source>
-        <translation type="unfinished"></translation>
+        <translation>Absolument ! Vous pouvez lire notre documentation développeur pour plus de détails ou nous contacter avec vos demandes de partenariat. Vous avez une question technique spécifique ? La communauté de développeurs AtomicDEX est toujours prête à vous aider !</translation>
     </message>
     <message>
         <location filename="../../qml/Support/Support.qml" line="170"/>
         <source>Which devices can I use AtomicDEX on?</source>
-        <translation type="unfinished"></translation>
+        <translation>Sur quels appareils puis-je utiliser AtomicDEX ?</translation>
     </message>
     <message>
         <location filename="../../qml/Support/Support.qml" line="171"/>
         <source>AtomicDEX is available for mobile on both &lt;a href=&quot;https://atomicdex.io/&quot;&gt;Android and iPhone, and for desktop on Windows, Mac, and Linux&lt;/a&gt; operating systems.</source>
-        <translation type="unfinished"></translation>
+        <translation>AtomicDEX est disponible pour mobile sur les deux &lt;a href=&quot;https://atomicdex.io/&quot;&gt; Android et iPhone, et pour le bureau sur les systèmes d&apos;exploitation Windows, Mac et Linux &lt;/a&gt;.</translation>
     </message>
     <message>
         <location filename="../../qml/Support/Support.qml" line="175"/>
         <source>Compliance Info</source>
-        <translation type="unfinished"></translation>
+        <translation>Informations de conformité</translation>
     </message>
     <message>
         <location filename="../../qml/Support/Support.qml" line="176"/>
         <source>Due to regulatory and legal circumstances the citizens of certain jurisdictions including, but not limited to, the United States of America, Canada, Hong Kong, Israel, Singapore, Sudan, Austria, Iran and any other state, country or other jurisdiction that is embargoed by the United States of America or the European Union are not allowed to use this application.</source>
-        <translation type="unfinished"></translation>
+        <translation>En raison de circonstances réglementaires et juridiques, les citoyens de certaines juridictions, y compris, mais sans s&apos;y limiter, les États-Unis d&apos;Amérique, le Canada, Hong Kong, Israël, Singapour, le Soudan, l&apos;Autriche, l&apos;Iran et tout autre État, pays ou autre juridiction sous embargo par les États-Unis d&apos;Amérique ou l&apos;Union européenne ne sont pas autorisés à utiliser cette application.</translation>
     </message>
     <message>
         <location filename="../../qml/Support/Support.qml" line="135"/>
         <source>How long does each atomic swap take?</source>
-        <translation type="unfinished"></translation>
+        <translation>Combien de temps dure chaque échange atomique ?</translation>
     </message>
     <message>
         <location filename="../../qml/Support/Support.qml" line="129"/>
         <source>Other DEXs generally only allow you to trade assets that are based on a single blockchain network, use proxy tokens, and only allow placing a single order with the same funds.
 
 AtomicDEX enables you to natively trade across two different blockchain networks without proxy tokens. You can also place multiple orders with the same funds. For example, you can sell 0.1 BTC for KMD, QTUM, or VRSC — the first order that fills automatically cancels all other orders.</source>
-        <translation type="unfinished"></translation>
+        <translation>D&apos;autres DEX ne vous permettent généralement d&apos;échanger que des actifs basés sur un seul réseau de blockchain, d&apos;utiliser des jetons proxy et de ne passer qu&apos;une seule commande avec les mêmes fonds.
+
+AtomicDEX vous permet de négocier nativement sur deux réseaux blockchain différents sans jetons proxy. Vous pouvez également passer plusieurs commandes avec les mêmes fonds. Par exemple, vous pouvez vendre 0,1 BTC pour KMD, QTUM ou VRSC - la première commande qui se remplit annule automatiquement toutes les autres commandes.</translation>
     </message>
     <message>
         <location filename="../../qml/Support/Support.qml" line="136"/>
         <source>Several factors determine the processing time for each swap. The block time of the traded assets depends on each network (Bitcoin typically being the slowest) Additionally, the user can customize security preferences. For example,  (you can ask AtomicDEX to consider a KMD transaction as final after just 3 confirmations which makes the swap time shorter compared to waiting for a &lt;a href=&quot;https://komodoplatform.com/security-delayed-proof-of-work-dpow/&quot;&gt;notarization&lt;/a&gt;.</source>
-        <translation type="unfinished"></translation>
+        <translation>Plusieurs facteurs déterminent le temps de traitement de chaque swap. Le temps de blocage des actifs échangés dépend de chaque réseau (Bitcoin étant généralement le plus lent). En outre, l&apos;utilisateur peut personnaliser les préférences de sécurité. Par exemple, (vous pouvez demander à AtomicDEX de considérer une transaction KMD comme finale après seulement 3 confirmations, ce qui raccourcit le temps de swap par rapport à l&apos;attente d&apos;une &lt;a href = &quot;https://komodoplatform.com/security-delayed-proof-of -work-dpow / &quot;&gt; notarisation &lt;/a&gt;.</translation>
     </message>
     <message>
         <location filename="../../qml/Support/Support.qml" line="140"/>
         <source>Do I need to be online for the duration of the swap?</source>
-        <translation type="unfinished"></translation>
+        <translation>Dois-je être en ligne pendant toute la durée du swap ?</translation>
     </message>
     <message>
         <location filename="../../qml/Support/Support.qml" line="146"/>
@@ -2432,12 +2435,17 @@ AtomicDEX enables you to natively trade across two different blockchain networks
 2. Both makers and takers will need to pay normal network fees to the involved blockchains when making atomic swap transactions.
 
 Network fees can vary greatly depending on your selected trading pair.</source>
-        <translation type="unfinished"></translation>
+        <translation>Il y a deux catégories de frais à considérer lors de la négociation sur AtomicDEX.
+
+1. AtomicDEX facture environ 0,13% (1/777 du volume des transactions mais pas moins de 0,0001) comme frais de négociation pour les ordres preneurs, et les ordres fabricants n&apos;ont aucun frais.
+2. Les fabricants et les preneurs devront payer des frais de réseau normaux aux blockchains impliquées lors de transactions d&apos;échange atomique.
+
+Les frais de réseau peuvent varier considérablement en fonction de votre paire de trading sélectionnée.</translation>
     </message>
     <message>
         <location filename="../../qml/Support/Support.qml" line="155"/>
         <source>Do you provide user support?</source>
-        <translation type="unfinished"></translation>
+        <translation>Fournissez-vous un support utilisateur ?</translation>
     </message>
 </context>
 <context>
@@ -2446,18 +2454,18 @@ Network fees can vary greatly depending on your selected trading pair.</source>
         <location filename="../../qml/Exchange/SwapProgress.qml" line="100"/>
         <source>act</source>
         <comment>SHORT FOR ACTUAL TIME</comment>
-        <translation type="unfinished"></translation>
+        <translation>act</translation>
     </message>
     <message>
         <location filename="../../qml/Exchange/SwapProgress.qml" line="102"/>
         <source>est</source>
         <comment>SHORT FOR ESTIMATED</comment>
-        <translation type="unfinished"></translation>
+        <translation>est</translation>
     </message>
     <message>
         <location filename="../../qml/Exchange/SwapProgress.qml" line="110"/>
         <source>Progress details</source>
-        <translation type="unfinished"></translation>
+        <translation>Détails de la progression</translation>
     </message>
 </context>
 <context>
@@ -2465,12 +2473,12 @@ Network fees can vary greatly depending on your selected trading pair.</source>
     <message>
         <location filename="../../qml/Components/TextAreaWithTitle.qml" line="39"/>
         <source>Save</source>
-        <translation type="unfinished"></translation>
+        <translation>Sauvegarder</translation>
     </message>
     <message>
         <location filename="../../qml/Components/TextAreaWithTitle.qml" line="39"/>
         <source>Edit</source>
-        <translation type="unfinished"></translation>
+        <translation>Éditer</translation>
     </message>
 </context>
 <context>
@@ -2478,7 +2486,7 @@ Network fees can vary greatly depending on your selected trading pair.</source>
     <message>
         <location filename="../../qml/Components/TextFieldWithTitle.qml" line="35"/>
         <source>Required</source>
-        <translation type="unfinished"></translation>
+        <translation>Requis</translation>
     </message>
 </context>
 <context>
@@ -2486,7 +2494,7 @@ Network fees can vary greatly depending on your selected trading pair.</source>
     <message>
         <location filename="../../qml/Components/Toast.qml" line="51"/>
         <source>Click here to see the details</source>
-        <translation type="unfinished"></translation>
+        <translation>Cliquez ici pour voir les détails</translation>
     </message>
 </context>
 <context>
@@ -2494,32 +2502,32 @@ Network fees can vary greatly depending on your selected trading pair.</source>
     <message>
         <location filename="../../qml/Exchange/Trade/Trade.qml" line="324"/>
         <source>Placed the order</source>
-        <translation type="unfinished"></translation>
+        <translation>Placer l&apos;ordre</translation>
     </message>
     <message>
         <location filename="../../qml/Exchange/Trade/Trade.qml" line="512"/>
         <source>Multi-Order</source>
-        <translation type="unfinished"></translation>
+        <translation>Multiple ordres</translation>
     </message>
     <message>
         <location filename="../../qml/Exchange/Trade/Trade.qml" line="528"/>
         <source>Select additional assets for multi-order creation.</source>
-        <translation type="unfinished"></translation>
+        <translation>Sélectionnez des actifs supplémentaires pour la création de plusieurs ordres.</translation>
     </message>
     <message>
         <location filename="../../qml/Exchange/Trade/Trade.qml" line="537"/>
         <source>Same funds will be used until an order matches.</source>
-        <translation type="unfinished"></translation>
+        <translation>Les mêmes fonds seront utilisés jusqu&apos;à ce qu&apos;une commande corresponde.</translation>
     </message>
     <message>
         <location filename="../../qml/Exchange/Trade/Trade.qml" line="542"/>
         <source>Submit Trade</source>
-        <translation type="unfinished"></translation>
+        <translation>Soumettre l&apos;échange</translation>
     </message>
     <message>
         <location filename="../../qml/Exchange/Trade/Trade.qml" line="315"/>
         <source>Failed to place the order</source>
-        <translation type="unfinished"></translation>
+        <translation>Échec lors du placement de l&apos;ordre</translation>
     </message>
 </context>
 <context>
@@ -2547,7 +2555,7 @@ Network fees can vary greatly depending on your selected trading pair.</source>
     <message>
         <location filename="../../qml/Wallet/TransactionDetailsModal.qml" line="48"/>
         <source>Unconfirmed</source>
-        <translation type="unfinished"></translation>
+        <translation>Non confirmé</translation>
     </message>
     <message>
         <location filename="../../qml/Wallet/TransactionDetailsModal.qml" line="53"/>
@@ -2577,7 +2585,7 @@ Network fees can vary greatly depending on your selected trading pair.</source>
     <message>
         <location filename="../../qml/Wallet/TransactionDetailsModal.qml" line="88"/>
         <source>Notes</source>
-        <translation type="unfinished"></translation>
+        <translation>Remarques</translation>
     </message>
     <message>
         <location filename="../../qml/Wallet/TransactionDetailsModal.qml" line="108"/>
@@ -2587,12 +2595,12 @@ Network fees can vary greatly depending on your selected trading pair.</source>
     <message>
         <location filename="../../qml/Wallet/TransactionDetailsModal.qml" line="117"/>
         <source>Refund</source>
-        <translation type="unfinished"></translation>
+        <translation>Remboursement</translation>
     </message>
     <message>
         <location filename="../../qml/Wallet/TransactionDetailsModal.qml" line="130"/>
         <source>View on Explorer</source>
-        <translation type="unfinished"></translation>
+        <translation>Voir dans l&apos;explorateur</translation>
     </message>
 </context>
 <context>
@@ -2600,22 +2608,22 @@ Network fees can vary greatly depending on your selected trading pair.</source>
     <message>
         <location filename="../../qml/Wallet/Transactions.qml" line="57"/>
         <source>Received</source>
-        <translation type="unfinished"></translation>
+        <translation>Reçue</translation>
     </message>
     <message>
         <location filename="../../qml/Wallet/Transactions.qml" line="57"/>
         <source>Sent</source>
-        <translation type="unfinished"></translation>
+        <translation>Envoyer</translation>
     </message>
     <message>
         <location filename="../../qml/Wallet/Transactions.qml" line="90"/>
         <source>fees</source>
-        <translation type="unfinished"></translation>
+        <translation>frais</translation>
     </message>
     <message>
         <location filename="../../qml/Wallet/Transactions.qml" line="101"/>
         <source>Unconfirmed</source>
-        <translation type="unfinished"></translation>
+        <translation>Non confirmé</translation>
     </message>
 </context>
 <context>
@@ -2623,52 +2631,52 @@ Network fees can vary greatly depending on your selected trading pair.</source>
     <message>
         <location filename="../../qml/Components/UpdateModal.qml" line="16"/>
         <source>Available</source>
-        <translation type="unfinished"></translation>
+        <translation>Disponible</translation>
     </message>
     <message>
         <location filename="../../qml/Components/UpdateModal.qml" line="16"/>
         <source>Required</source>
-        <translation type="unfinished"></translation>
+        <translation>Obligatoire</translation>
     </message>
     <message>
         <location filename="../../qml/Components/UpdateModal.qml" line="16"/>
         <source>Recommended</source>
-        <translation type="unfinished"></translation>
+        <translation>Conseillé</translation>
     </message>
     <message>
         <location filename="../../qml/Components/UpdateModal.qml" line="16"/>
         <source>Up to date</source>
-        <translation type="unfinished"></translation>
+        <translation>À jour</translation>
     </message>
     <message>
         <location filename="../../qml/Components/UpdateModal.qml" line="15"/>
         <source>New Update!</source>
-        <translation type="unfinished"></translation>
+        <translation>Nouvelle mise à jour !</translation>
     </message>
     <message>
         <location filename="../../qml/Components/UpdateModal.qml" line="15"/>
         <source>Changelog</source>
-        <translation type="unfinished"></translation>
+        <translation>Changelog</translation>
     </message>
     <message>
         <location filename="../../qml/Components/UpdateModal.qml" line="35"/>
         <source>Problem occured</source>
-        <translation type="unfinished"></translation>
+        <translation>Un problème est survenu</translation>
     </message>
     <message>
         <location filename="../../qml/Components/UpdateModal.qml" line="43"/>
         <source>Skip</source>
-        <translation type="unfinished"></translation>
+        <translation>Passer</translation>
     </message>
     <message>
         <location filename="../../qml/Components/UpdateModal.qml" line="43"/>
         <source>Close</source>
-        <translation type="unfinished">Fermer</translation>
+        <translation>Fermer</translation>
     </message>
     <message>
         <location filename="../../qml/Components/UpdateModal.qml" line="52"/>
         <source>Download</source>
-        <translation type="unfinished"></translation>
+        <translation>Téléchargement</translation>
     </message>
 </context>
 <context>
@@ -2676,17 +2684,17 @@ Network fees can vary greatly depending on your selected trading pair.</source>
     <message>
         <location filename="../../qml/Components/UpdateNotificationLine.qml" line="25"/>
         <source>New update available!</source>
-        <translation type="unfinished"></translation>
+        <translation>Nouvelle mise à jour disponible!</translation>
     </message>
     <message>
         <location filename="../../qml/Components/UpdateNotificationLine.qml" line="25"/>
         <source>Version:</source>
-        <translation type="unfinished"></translation>
+        <translation>Version:</translation>
     </message>
     <message>
         <location filename="../../qml/Components/UpdateNotificationLine.qml" line="25"/>
         <source>Click here for the details.</source>
-        <translation type="unfinished"></translation>
+        <translation>Cliquez ici pour les details.</translation>
     </message>
 </context>
 <context>
@@ -2707,7 +2715,7 @@ Network fees can vary greatly depending on your selected trading pair.</source>
     <message>
         <location filename="../../qml/main.qml" line="20"/>
         <source>AtomicDEX Desktop</source>
-        <translation type="unfinished"></translation>
+        <translation>AtomicDEX Desktop</translation>
     </message>
 </context>
 </TS>
