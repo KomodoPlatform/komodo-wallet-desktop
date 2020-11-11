@@ -144,6 +144,7 @@ target_sources(atomicdex-desktop_shared_deps PRIVATE
         ##! Managers
         ${CMAKE_SOURCE_DIR}/src/atomicdex/managers/notification.manager.cpp
         ${CMAKE_SOURCE_DIR}/src/atomicdex/managers/qt.wallet.manager.cpp
+        ${CMAKE_SOURCE_DIR}/src/atomicdex/managers/addressbook.manager.cpp
 
         ##! API
         ${CMAKE_SOURCE_DIR}/src/atomicdex/api/ohlc/ohlc.api.cpp
