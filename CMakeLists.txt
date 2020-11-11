@@ -1,21 +1,35 @@
-cmake_minimum_required(VERSION 3.5)
+cmake_minimum_required(VERSION 3.15)
 
-if (EXISTS ${CMAKE_BINARY_DIR}/conan_paths.cmake)
-    set(CONAN_ENABLED ON)
-    message(STATUS "Conan package manager enabled")
-    include(${CMAKE_BINARY_DIR}/conan_paths.cmake)
-else ()
-    message(STATUS "VCPKG package manager enabled")
-    set(CMAKE_TOOLCHAIN_FILE
-            "${CMAKE_CURRENT_SOURCE_DIR}/ci_tools_atomic_dex/vcpkg-repo/scripts/buildsystems/vcpkg.cmake"
-            CACHE STRING "")
-    if (WIN32)
-        set(VCPKG_TARGET_TRIPLET "x64-windows" CACHE STRING "")
+################# BUILD TYPE ##################################
+if (NOT EXISTS ${CMAKE_BINARY_DIR}/CMakeCache.txt)
+    if (NOT CMAKE_BUILD_TYPE)
+        set(CMAKE_BUILD_TYPE "Release" CACHE STRING "" FORCE)
     endif ()
 endif ()
+################# END BUILD TYPE ###############################
+
+############################ VCPKG PREREQUISITES ##############
+message(STATUS "VCPKG package manager enabled")
+set(VCPKG_OVERLAY_PORTS "${CMAKE_CURRENT_SOURCE_DIR}/ci_tools_atomic_dex/vcpkg-custom-ports/ports" CACHE STRING "")
+set(_VCPKG_INSTALLED_DIR "${CMAKE_CURRENT_SOURCE_DIR}/ci_tools_atomic_dex/vcpkg-repo/installed")
+set(CMAKE_TOOLCHAIN_FILE
+        "${CMAKE_CURRENT_SOURCE_DIR}/ci_tools_atomic_dex/vcpkg-repo/scripts/buildsystems/vcpkg.cmake"
+        CACHE STRING "")
+if (WIN32)
+    set(VCPKG_TARGET_TRIPLET "x64-windows" CACHE STRING "")
+endif ()
+find_program(ANTARA_CXX_COMPILER clang++)
+find_program(ANTARA_C_COMPILER clang)
+message(STATUS "Compiler: ${ANTARA_CXX_COMPILER} and ${ANTARA_C_COMPILER}")
+set(CMAKE_CXX_COMPILER "${ANTARA_CXX_COMPILER}" CACHE STRING "")
+set(CMAKE_C_COMPILER "${ANTARA_C_COMPILER}" CACHE STRING "")
+set(CMAKE_PREFIX_PATH "$ENV{QT_INSTALL_CMAKE_PATH}" CACHE STRING "")
+if (APPLE)
+    set(VCPKG_APPLOCAL_DEPS OFF CACHE BOOL "")
+endif ()
+############################ END VCPKG PREREQUISITES ##############################
 
 project(atomicdex-desktop LANGUAGES CXX VERSION 0.3.0)
-
 
 option(DISABLE_GEOBLOCKING "Enable to disable geoblocking (for dev purpose)" OFF)
 option(PREFER_BOOST_FILESYSTEM "Enable to use boost filesystem instead of std::filesystem" OFF)
@@ -283,7 +297,6 @@ target_include_directories(atomicdex-desktop PUBLIC src)
 target_link_libraries(atomicdex-desktop_tests
         PUBLIC
         atomicdex-desktop_shared_deps
-        $<$<PLATFORM_ID:Darwin>:/usr/local/lib/libcurl.a>
         doctest::doctest)
 
 ##! Setting output directory
@@ -341,6 +354,7 @@ if (LINUX)
     configure_file(${from_dir}/${appdata_file} ${output_dir_at}/usr/share/metainfo/${appdata_file} COPYONLY)
     configure_file(${from_dir}/${app_icon} ${output_dir_at}/usr/share/icons/hicolor/64x64/apps/${app_icon} COPYONLY)
     configure_file(${from_dir}/${app_icon} ${output_dir_at}/usr/share/icons/default/64x64/apps/${app_icon} COPYONLY)
+    include (data/linux/atomicdex_install.cmake)
 endif ()
 
 if (WIN32)

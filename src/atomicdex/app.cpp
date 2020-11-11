@@ -750,9 +750,7 @@ namespace atomic_dex
 //! Constructor / Destructor
 namespace atomic_dex
 {
-    application::~application() noexcept
-    {
-    }
+    application::~application() noexcept {}
 } // namespace atomic_dex
 
 //! Misc QML Utilities
@@ -1113,8 +1111,22 @@ namespace atomic_dex
     void
     application::restart()
     {
+        const char* appimage = nullptr;
+        if (appimage = std::getenv("APPIMAGE"); appimage)
+        {
+            spdlog::info("APPIMAGE path is {}", appimage);
+        }
+
         qApp->quit();
 
-        QProcess::startDetached(qApp->arguments()[0], qApp->arguments(), qApp->applicationDirPath());
+        if (appimage == nullptr || not QString(appimage).contains("atomicdex-desktop"))
+        {
+            QProcess::startDetached(qApp->arguments()[0], qApp->arguments(), qApp->applicationDirPath());
+        }
+        else
+        {
+            QString path(appimage);
+            QProcess::startDetached(path, qApp->arguments());
+        }
     }
 } // namespace atomic_dex

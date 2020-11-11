@@ -264,6 +264,7 @@ QtObject {
                                           "PANGEA": "#D88245",
                                           "JUMBLR": "#2B4649",
                                           "DEX": "#43B7B6",
+                                          "COQUI": "#79A541",
                                           "CRYPTO": "#F58736",
                                           "LABS": "#C1F6E1",
                                           "MGW": "#854F2F",
@@ -287,6 +288,7 @@ QtObject {
                                           "PAX": "#EDE70A",
                                           "TUSD": "#2E3181",
                                           "AWC": "#31A5F6",
-                                          "VRA": "#D70A41"
+                                          "VRA": "#D70A41",
+                                          "SPACE": "#E44C65"
                                       })
 }

@@ -391,24 +391,24 @@
 <context>
     <name>CoinMenu</name>
     <message>
-        <location filename="../../qml/Components/CoinMenu.qml" line="24"/>
+        <location filename="../../qml/Components/CoinMenu.qml" line="29"/>
         <source>Disable %1</source>
         <comment>TICKER</comment>
         <translation>%1&apos;i Etkinsizleştir</translation>
     </message>
     <message>
-        <location filename="../../qml/Components/CoinMenu.qml" line="30"/>
+        <location filename="../../qml/Components/CoinMenu.qml" line="35"/>
         <source>Disable and Delete %1</source>
         <comment>TICKER</comment>
         <translation>%1&apos;i etkinsizleştir ve sil</translation>
     </message>
     <message>
-        <location filename="../../qml/Components/CoinMenu.qml" line="43"/>
+        <location filename="../../qml/Components/CoinMenu.qml" line="48"/>
         <source>Disable all %1 assets</source>
         <translation>Tüm %1 tipi varlıkları etkinsizleştir</translation>
     </message>
     <message>
-        <location filename="../../qml/Components/CoinMenu.qml" line="49"/>
+        <location filename="../../qml/Components/CoinMenu.qml" line="54"/>
         <source>Disable all assets</source>
         <translation>Tüm varlıkları etkinsizleştir</translation>
     </message>
@@ -2264,11 +2264,6 @@
     <message>
         <location filename="../../qml/Sidebar/SidebarBottom.qml" line="31"/>
         <source>Privacy</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../qml/Sidebar/SidebarBottom.qml" line="40"/>
-        <source>Light UI</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

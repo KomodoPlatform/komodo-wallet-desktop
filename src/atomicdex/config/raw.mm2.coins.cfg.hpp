@@ -4,6 +4,9 @@
 #include <antara/gaming/core/real.path.hpp>
 #include <nlohmann/json.hpp>
 
+//! Project
+#include "atomicdex/utilities/global.utilities.hpp"
+
 #ifndef NLOHMANN_OPT_HELPER
 #    define NLOHMANN_OPT_HELPER
 namespace nlohmann
@@ -208,8 +211,17 @@ namespace atomic_dex
     parse_raw_mm2_coins_file()
     {
         t_mm2_raw_coins_registry out;
-        fs::path                 file_path{ag::core::assets_real_path() / "tools" / "mm2" / "coins"};
-        std::ifstream            ifs(file_path.string());
+        // fs::path                 file_path{ag::core::assets_real_path() / "tools" / "mm2" / "coins"};
+        fs::path file_path{atomic_dex::utils::get_current_configs_path() / "coins.json"};
+        if (not fs::exists(file_path))
+        {
+            fs::path original_mm2_coins_path{ag::core::assets_real_path() / "tools" / "mm2" / "coins"};
+            //! Copy our json to current version
+            spdlog::info("Copying mm2 coins cfg: {} to {}", original_mm2_coins_path.string(), file_path.string());
+
+            fs::copy_file(original_mm2_coins_path, file_path, get_override_options());
+        }
+        std::ifstream ifs(file_path.string());
         assert(ifs.is_open());
         try
         {
