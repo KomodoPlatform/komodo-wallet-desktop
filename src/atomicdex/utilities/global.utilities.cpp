@@ -3,6 +3,7 @@
 
 //! Project Headers
 #include "atomicdex/utilities/global.utilities.hpp"
+#include "atomicdex/version/version.hpp"
 
 namespace atomic_dex::utils
 {
@@ -82,7 +83,7 @@ namespace atomic_dex::utils
     }
 
     ENTT_API fs::path
-    get_atomic_dex_current_log_file()
+             get_atomic_dex_current_log_file()
     {
         using namespace std::chrono;
         using namespace date;
@@ -174,6 +175,14 @@ namespace atomic_dex::utils
             }
         }
         address = final_eth_address;
+    }
+
+    fs::path
+    get_current_configs_path()
+    {
+        const auto fs_raw_mm2_shared_folder = get_atomic_dex_data_folder() / get_raw_version() / "configs";
+        create_if_doesnt_exist(fs_raw_mm2_shared_folder);
+        return fs_raw_mm2_shared_folder;
     }
 } // namespace atomic_dex::utils
 

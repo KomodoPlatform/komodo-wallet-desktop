@@ -391,24 +391,24 @@
 <context>
     <name>CoinMenu</name>
     <message>
-        <location filename="../../qml/Components/CoinMenu.qml" line="24"/>
+        <location filename="../../qml/Components/CoinMenu.qml" line="29"/>
         <source>Disable %1</source>
         <comment>TICKER</comment>
         <translation>Удалить %1</translation>
     </message>
     <message>
-        <location filename="../../qml/Components/CoinMenu.qml" line="30"/>
+        <location filename="../../qml/Components/CoinMenu.qml" line="35"/>
         <source>Disable and Delete %1</source>
         <comment>TICKER</comment>
         <translation>Удалить токен %1 из AtomicDex</translation>
     </message>
     <message>
-        <location filename="../../qml/Components/CoinMenu.qml" line="43"/>
+        <location filename="../../qml/Components/CoinMenu.qml" line="48"/>
         <source>Disable all %1 assets</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qml/Components/CoinMenu.qml" line="49"/>
+        <location filename="../../qml/Components/CoinMenu.qml" line="54"/>
         <source>Disable all assets</source>
         <translation type="unfinished"></translation>
     </message>
