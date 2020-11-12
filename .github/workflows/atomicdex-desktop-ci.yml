@@ -264,12 +264,18 @@ jobs:
           name: ${{ env.artifact_name_appimage }}
           path: ./bundled/linux/${{ env.target_name_appimage }}
 
+      - name: Upload env variable for artifacts (macOS)
+        if: runner.os == 'macOS'
+        run: |
+          ls ./bundled/osx/
+          echo "artifact_name_dmg=atomicdex-desktop-${{ matrix.name }}-$(git rev-parse --short HEAD).dmg" >> $GITHUB_ENV
+
       - name: Upload artifacts (MacOS)
         if: runner.os == 'macOS'
         uses: actions/upload-artifact@v2
         with:
-          name: ${{ matrix.name }}-release.dmg
-          path: ./ci_tools_atomic_dex/bundle-Release/atomicdex-desktop.dmg
+          name: ${{ env.artifact_name_dmg }}
+          path: ./bundled/osx/atomicdex-desktop.dmg
 
       - name: Upload artifacts (Windows)
         if: runner.os == 'Windows'
