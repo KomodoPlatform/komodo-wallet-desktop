@@ -44,7 +44,7 @@ jobs:
 
       - name: Install QT (Linux)
         if: runner.os == 'Linux'
-        uses: smk762/install-qt-action@v2.9.0
+        uses: KomodoPlatform/install-qt-action@v2
         with:
           version: ${{ matrix.qt }}
           host: 'linux'
@@ -56,7 +56,7 @@ jobs:
 
       - name: Install QT (MacOS)
         if: runner.os == 'macOS'
-        uses: smk762/install-qt-action@v2.9.0
+        uses: KomodoPlatform/install-qt-action@v2
         with:
           version: ${{ matrix.qt }}
           host: 'mac'
@@ -66,7 +66,7 @@ jobs:
 
       - name: Install QT (Windows)
         if: runner.os == 'Windows'
-        uses: smk762/install-qt-action@v2.9.0
+        uses: KomodoPlatform/install-qt-action@v2
         with:
           version: ${{ matrix.qt }}
           host: 'windows'
@@ -203,6 +203,7 @@ jobs:
           echo "Running tests"
           $Env:REPORT_CI_TOKEN = "${{ secrets.REPORT_CI_TOKEN_SECRET }}"
           $Env:QT_INSTALL_CMAKE_PATH = "C:\Qt\${{ matrix.qt }}\msvc2019_64"
+          $Env:QT_ROOT = "C:\Qt\${{ matrix.qt }}"
           cmd /c '.\ci_tools_atomic_dex.exe tests release 2>&1'
           cd build-Release
           cd bin
