@@ -166,7 +166,6 @@ jobs:
           cd ci_tools_atomic_dex
           nimble build -y
           ./ci_tools_atomic_dex bundle release --osx_sdk=$HOME/sdk/MacOSX10.14.sdk --compiler=clang++
-          ls bundle-Release/atomicdex-desktop.dmg
 
       - name: Build AtomicDEX (Windows)
         if: runner.os == 'Windows'
