@@ -59,7 +59,7 @@ jobs:
 
       - name: Install QT (Linux)
         if: runner.os == 'Linux'
-        uses: KomodoPlatform/install-qt-action@v2
+        uses: smk762/install-qt-action@v2
         with:
           version: ${{ matrix.qt }}
           host: 'linux'
@@ -71,7 +71,7 @@ jobs:
 
       - name: Install QT (MacOS)
         if: runner.os == 'macOS'
-        uses: KomodoPlatform/install-qt-action@v2
+        uses: smk762/install-qt-action@v2
         with:
           version: ${{ matrix.qt }}
           host: 'mac'
@@ -81,7 +81,7 @@ jobs:
 
       - name: Install QT (Windows)
         if: runner.os == 'Windows'
-        uses: KomodoPlatform/install-qt-action@v2
+        uses: smk762/install-qt-action@v2
         with:
           version: ${{ matrix.qt }}
           host: 'windows'
@@ -92,7 +92,7 @@ jobs:
 
       - name: Install nim (Linux)
         if: runner.os == 'Linux'
-        uses: KomodoPlatform/setup-nim-action@v1.0.2
+        uses: smk762/setup-nim-action@v1.0.2
         with:
           nim-version: '1.2.0'
 
@@ -111,7 +111,7 @@ jobs:
           LDFLAGS: -stdlib=libc++
           CXX: clang++-11
           CC: clang-11
-        uses: KomodoPlatform/run-vcpkg@v5
+        uses: smk762/run-vcpkg@v5
         with:
           vcpkgArguments: '@${{ github.workspace }}/.github/workflows/linux_response_file.txt --overlay-ports=${{ github.workspace }}/ci_tools_atomic_dex/vcpkg-custom-ports/ports'
           vcpkgDirectory: '${{ github.workspace }}/ci_tools_atomic_dex/vcpkg-repo'
@@ -127,7 +127,7 @@ jobs:
         env: # Or as an environment variable
           CXX: /usr/local/opt/llvm@9/bin/clang++
           CC: /usr/local/opt/llvm@9/bin/clang
-        uses: KomodoPlatform/run-vcpkg@v5
+        uses: smk762/run-vcpkg@v5
         with:
           vcpkgArguments: '@${{ github.workspace }}/.github/workflows/osx_response_file.txt --overlay-ports=${{ github.workspace }}/ci_tools_atomic_dex/vcpkg-custom-ports/ports'
           vcpkgDirectory: '${{ github.workspace }}/ci_tools_atomic_dex/vcpkg-repo'
@@ -135,7 +135,7 @@ jobs:
 
       - name: vcpkg deps (Windows)
         if: runner.os == 'Windows'
-        uses: KomodoPlatform/run-vcpkg@v5
+        uses: smk762/run-vcpkg@v5
         with:
           vcpkgArguments: '@${{ github.workspace }}/.github/workflows/windows_response_file.txt --overlay-ports=${{ github.workspace }}/ci_tools_atomic_dex/vcpkg-custom-ports/ports'
           vcpkgDirectory: '${{ github.workspace }}/ci_tools_atomic_dex/vcpkg-repo'
