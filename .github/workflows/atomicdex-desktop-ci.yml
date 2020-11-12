@@ -154,7 +154,7 @@ jobs:
         if: runner.os == 'Windows'
         shell: powershell
         run: |
-          export QT_VERSION=${{ matrix.qt }}
+          $Env:QT_VERSION = "${{ matrix.qt }}"
           .\ci_tools_atomic_dex\ci_scripts\windows_script.ps1
 
       - name: Running Tests (Linux)
@@ -200,8 +200,8 @@ jobs:
         working-directory: ci_tools_atomic_dex
         if: runner.os == 'Windows'
         run: |
-          export REPORT_CI_TOKEN=${{ secrets.REPORT_CI_TOKEN_SECRET }}
           echo "Running tests"
+          $Env:REPORT_CI_TOKEN = "${{ secrets.REPORT_CI_TOKEN_SECRET }}"
           $Env:QT_INSTALL_CMAKE_PATH = "C:\Qt\${{ matrix.qt }}\msvc2019_64"
           cmd /c '.\ci_tools_atomic_dex.exe tests release 2>&1'
           cd build-Release
