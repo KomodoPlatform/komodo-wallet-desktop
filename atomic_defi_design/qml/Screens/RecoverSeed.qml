@@ -61,6 +61,9 @@ SetupPage {
         function trySubmit() {
             if(!submit_button.enabled) return
 
+            text_error = General.checkIfWalletExists(input_wallet_name.field.text)
+            if(text_error !== "") return
+
             eula.open()
         }
 

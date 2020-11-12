@@ -8,11 +8,12 @@
 
 //! Project Headers
 #include "atomicdex/services/mm2/mm2.service.hpp"
+#include "atomicdex/api/faucet/faucet.hpp"
 #include "atomicdex/services/price/coinpaprika/coinpaprika.provider.hpp"
 #include "atomicdex/services/price/global.provider.hpp"
 #include "qt.settings.page.hpp"
 #include "qt.wallet.page.hpp"
-#include "src/atomicdex/utilities/qt.utilities.hpp"
+#include "atomicdex/utilities/qt.utilities.hpp"
 
 namespace atomic_dex
 {
@@ -65,6 +66,23 @@ namespace atomic_dex
         {
             m_is_claiming_busy = status;
             emit rpcClaimingStatusChanged();
+        }
+    }
+    
+    
+    bool
+    wallet_page::is_claiming_faucet_busy() const noexcept
+    {
+        return m_is_claiming_faucet_busy.load();
+    }
+    
+    void
+    wallet_page::set_claiming_faucet_is_busy(bool status) noexcept
+    {
+        if (m_is_claiming_faucet_busy != status)
+        {
+            m_is_claiming_faucet_busy = status;
+            emit claimingFaucetStatusChanged();
         }
     }
 
@@ -127,7 +145,8 @@ namespace atomic_dex
                         {"change_24h", "0"},      {"tx_state", "InProgress"},
                         {"fiat_amount", "0.00"},  {"trend_7d", QJsonArray()},
                         {"fee_ticker", "KMD"},    {"blocks_left", 1},
-                        {"transactions_left", 0}, {"current_block", 1}};
+                        {"transactions_left", 0}, {"current_block", 1},
+                        {"is_smartchain_test_coin", false}};
         std::error_code ec;
         auto&           mm2_system = m_system_manager.get_system<mm2_service>();
         if (mm2_system.is_mm2_running())
@@ -160,9 +179,10 @@ namespace atomic_dex
             {
                 obj["fee_ticker"] = "ETH";
             }
-            obj["blocks_left"]       = static_cast<qint64>(tx_state.blocks_left);
-            obj["transactions_left"] = static_cast<qint64>(tx_state.transactions_left);
-            obj["current_block"]     = static_cast<qint64>(tx_state.current_block);
+            obj["blocks_left"]             = static_cast<qint64>(tx_state.blocks_left);
+            obj["transactions_left"]       = static_cast<qint64>(tx_state.transactions_left);
+            obj["current_block"]           = static_cast<qint64>(tx_state.current_block);
+            obj["is_smartchain_test_coin"] = coin_info.ticker == "RICK" || coin_info.ticker == "MORTY";
         }
         // qDebug() << obj;
         return obj;
@@ -179,6 +199,20 @@ namespace atomic_dex
     {
         m_claiming_rpc_result = rpc_data.toJsonObject();
         emit claimingRpcDataChanged();
+    }
+    
+    
+    QVariant
+    wallet_page::get_rpc_claiming_faucet_data() const noexcept
+    {
+        return m_claiming_rpc_faucet_result.get();
+    }
+    
+    void
+    wallet_page::set_rpc_claiming_faucet_data(QVariant rpc_data) noexcept
+    {
+        m_claiming_rpc_faucet_result = rpc_data.toJsonObject();
+        emit claimingFaucetRpcDataChanged();
     }
 
     QString
@@ -227,11 +261,11 @@ namespace atomic_dex
         auto&              mm2_system = m_system_manager.get_system<mm2_service>();
         const auto&        ticker     = mm2_system.get_current_ticker();
         t_withdraw_request withdraw_req{.coin = ticker, .to = address.toStdString(), .amount = max ? "0" : amount.toStdString(), .max = max};
+        auto               coin_info = mm2_system.get_coin_info(ticker);
         if (with_fees)
         {
             qDebug() << fees_data;
             auto json_fees    = nlohmann::json::parse(QString(QJsonDocument(QVariant(fees_data).toJsonObject()).toJson()).toStdString());
-            auto coin_info    = mm2_system.get_coin_info(ticker);
             withdraw_req.fees = t_withdraw_fees{
                 .type      = "UtxoFixed",
                 .amount    = json_fees.at("fees_amount").get<std::string>(),
@@ -250,10 +284,20 @@ namespace atomic_dex
         ::mm2::api::to_json(json_data, withdraw_req);
         // spdlog::trace("final json: {}", json_data.dump(4));
         batch.push_back(json_data);
+        std::string amount_std = amount.toStdString();
+        if (max)
+        {
+            std::error_code ec;
+            amount_std = mm2_system.my_balance(ticker, ec);
+        }
 
         //! Answer
-        auto answer_functor = [this](web::http::http_response resp) {
-            std::string body = TO_STD_STR(resp.extract_string(true).get());
+        auto answer_functor = [this, coin_info, ticker, amount_std](web::http::http_response resp) {
+            const auto&     settings_system     = m_system_manager.get_system<settings_page>();
+            const auto&     global_price_system = m_system_manager.get_system<global_price_service>();
+            const auto&     current_fiat        = settings_system.get_current_fiat().toStdString();
+            std::error_code ec;
+            std::string     body = TO_STD_STR(resp.extract_string(true).get());
             spdlog::trace("resp: {}", body);
             if (resp.status_code() == 200 && body.find("error") == std::string::npos)
             {
@@ -262,6 +306,18 @@ namespace atomic_dex
                 nlohmann::json j_out                = nlohmann::json::object();
                 j_out["withdraw_answer"]            = answers[0];
                 j_out.at("withdraw_answer")["date"] = withdraw_answer.result.value().timestamp_as_date;
+
+                // Add total amount in fiat currency.
+                if (coin_info.coinpaprika_id == "test-coin")
+                {
+                    j_out["withdraw_answer"]["total_amount_fiat"] = "0";
+                }
+                else
+                {
+                    j_out["withdraw_answer"]["total_amount_fiat"] = global_price_system.get_price_as_currency_from_amount(current_fiat, ticker, amount_std, ec);
+                }
+
+                // Add fees amount.
                 if (j_out.at("withdraw_answer").at("fee_details").contains("total_fee") && !j_out.at("withdraw_answer").at("fee_details").contains("amount"))
                 {
                     j_out["withdraw_answer"]["fee_details"]["amount"] = j_out["withdraw_answer"]["fee_details"]["total_fee"];
@@ -270,6 +326,19 @@ namespace atomic_dex
                 {
                     j_out["withdraw_answer"]["fee_details"]["amount"] = j_out["withdraw_answer"]["fee_details"]["miner_fee"];
                 }
+
+                // Add fees amount in fiat currency.
+                auto fee = j_out["withdraw_answer"]["fee_details"]["amount"].get<std::string>();
+                if (coin_info.coinpaprika_id == "test-coin")
+                {
+                    j_out["withdraw_answer"]["fee_details"]["amount_fiat"] = "0";
+                }
+                else
+                {
+                    j_out["withdraw_answer"]["fee_details"]["amount_fiat"] =
+                        global_price_system.get_price_as_currency_from_amount(current_fiat, ticker, fee, ec);
+                }
+
                 this->set_rpc_send_data(nlohmann_json_object_to_qt_json_object(j_out));
             }
             else
@@ -348,7 +417,7 @@ namespace atomic_dex
             .then([this](web::http::http_response resp) {
                 std::string body = TO_STD_STR(resp.extract_string(true).get());
                 // spdlog::trace("resp claiming: {}", body);
-                if (resp.status_code() == 200)
+                if (resp.status_code() == e_http_code::ok)
                 {
                     auto           answers              = nlohmann::json::parse(body);
                     auto           withdraw_answer      = ::mm2::api::rpc_process_answer_batch<t_withdraw_answer>(answers[0], "withdraw");
@@ -365,6 +434,27 @@ namespace atomic_dex
                     this->set_rpc_claiming_data(error_json);
                 }
                 this->set_claiming_is_busy(false);
+            })
+            .then(&handle_exception_pplx_task);
+    }
+    
+    void wallet_page::claim_faucet()
+    {
+        const auto&                mm2_system    = m_system_manager.get_system<mm2_service>();
+        const auto&                ticker        = mm2_system.get_current_ticker();
+        const auto&                coin_info     = mm2_system.get_coin_info(ticker);
+        std::error_code            ec;
+        faucet::api::claim_request claim_request {.coin_name = coin_info.ticker,
+                                                  .wallet_address = mm2_system.address(ticker, ec)};
+        
+        this->set_claiming_faucet_is_busy(true);
+        faucet::api::claim(claim_request)
+            .then([this](web::http::http_response resp) {
+                auto claim_result = faucet::api::get_claim_result(resp);
+                this->set_rpc_claiming_faucet_data(
+                    QJsonObject({ {"message", QString::fromStdString(claim_result.message)},
+                                  {"status", QString::fromStdString(claim_result.status)} }));
+                this->set_claiming_faucet_is_busy(false);
             })
             .then(&handle_exception_pplx_task);
     }

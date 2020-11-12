@@ -34,8 +34,9 @@ else ()
     message(FATAL_ERROR "Didn't find macdeployqt")
 endif ()
 
+##-------------------------------------------
 message(STATUS "Executing macdeployqt to fix dependencies")
-execute_process(COMMAND ${MAC_DEPLOY_PATH} ${PROJECT_APP_PATH} -qmldir=${PROJECT_QML_DIR}
+execute_process(COMMAND ${MAC_DEPLOY_PATH} ${PROJECT_APP_PATH} -qmldir=${PROJECT_QML_DIR} -always-overwrite
         WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
         RESULT_VARIABLE MACDEPLOYQT_RESULT
         OUTPUT_VARIABLE MACDEPLOYQT_OUTPUT
@@ -43,8 +44,25 @@ execute_process(COMMAND ${MAC_DEPLOY_PATH} ${PROJECT_APP_PATH} -qmldir=${PROJECT
 message(STATUS "Result -> ${MACDEPLOYQT_RESULT}")
 message(STATUS "Output -> ${MACDEPLOYQT_OUTPUT}")
 message(STATUS "Error -> ${MACDEPLOYQT_ERROR}")
+##-------------------------------------------
 
-message(STATUS "Pacaking the DMG")
+##-------------------------------------------
+message(STATUS "Fixing QTWebengineProcess")
+set(QTWEBENGINE_BUNDLED_PATH ${PROJECT_APP_PATH}/Contents/Frameworks/QtWebEngineCore.framework/Helpers/QtWebEngineProcess.app/Contents/MacOS/QtWebEngineProcess)
+message(STATUS "Executing: [install_name_tool -add_rpath @executable_path/../../../../../../Frameworks ${QTWEBENGINE_BUNDLED_PATH}]")
+execute_process(COMMAND install_name_tool -add_rpath "@executable_path/../../../../../../Frameworks" "${QTWEBENGINE_BUNDLED_PATH}"
+        WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
+        RESULT_VARIABLE QTWEBENGINE_FIX_RESULT
+        OUTPUT_VARIABLE QTWEBENGINE_FIX_OUTPUT
+        ERROR_VARIABLE QTWEBENGINE_FIX_ERROR)
+
+message(STATUS "Result -> ${QTWEBENGINE_FIX_RESULT}")
+message(STATUS "Output -> ${QTWEBENGINE_FIX_OUTPUT}")
+message(STATUS "Error -> ${QTWEBENGINE_FIX_ERROR}")
+##-------------------------------------------
+
+##-------------------------------------------
+message(STATUS "Packaging the DMG")
 set(PACKAGER_PATH ${PROJECT_ROOT_DIR}/ci_tools_atomic_dex/dmg-packager/package.sh)
 if (EXISTS ${PACKAGER_PATH})
     message(STATUS "packager path is -> ${PACKAGER_PATH}")
@@ -61,3 +79,4 @@ execute_process(COMMAND ${PACKAGER_PATH} atomicdex-desktop atomicdex-desktop ${P
 message(STATUS "Result -> ${PACKAGER_PATH_RESULT}")
 message(STATUS "Output -> ${PACKAGER_PATH_OUTPUT}")
 message(STATUS "Error -> ${PACKAGER_PATH_ERROR}")
+##-------------------------------------------

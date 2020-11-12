@@ -8,6 +8,7 @@
 #include <QWindow>
 #include <Qaterial/Qaterial.hpp>
 #include <QtQml>
+#include <QtWebEngine>
 
 #define QZXING_QML
 
@@ -56,7 +57,7 @@ connect_signals_handler()
 {
     spdlog::info("connecting signal SIGABRT to the signal handler");
 #if defined(linux)
-    if (boost::filesystem::exists("./backtrace.dump"))
+    if (fs::exists("./backtrace.dump"))
     {
         // there is a backtrace
         std::ifstream ifs("./backtrace.dump");
@@ -66,7 +67,7 @@ connect_signals_handler()
 
         // cleaning up
         ifs.close();
-        boost::filesystem::remove("./backtrace.dump");
+        fs::remove("./backtrace.dump");
     }
 #endif
     std::signal(SIGABRT, signal_handler);
@@ -93,15 +94,15 @@ init_sodium()
 static void
 clean_previous_run()
 {
-    spdlog::info("cleaning previous mm2.service instance");
-    atomic_dex::kill_executable("mm2.service");
+    spdlog::info("cleaning previous mm2 instance");
+    atomic_dex::kill_executable("mm2");
 }
 
 static void
 init_logging()
 {
     //! Log Initialization
-    std::string path = get_atomic_dex_current_log_file().string();
+    std::string path = atomic_dex::utils::get_atomic_dex_current_log_file().string();
     spdlog::init_thread_pool(g_qsize_spdlog, g_spdlog_thread_count);
     auto tp            = spdlog::thread_pool();
     auto stdout_sink   = std::make_shared<spdlog::sinks::stdout_color_sink_mt>();
@@ -169,19 +170,9 @@ init_timezone_db()
 #endif
 }
 
-#if defined(WINDOWS_RELEASE_MAIN)
-INT WINAPI
-WinMain([[maybe_unused]] HINSTANCE hInst, HINSTANCE, [[maybe_unused]] LPSTR strCmdLine, INT)
-#else
-
 int
-main([[maybe_unused]] int argc, [[maybe_unused]] char* argv[])
-#endif
+run_app(int argc, char** argv)
 {
-#if defined(WINDOWS_RELEASE_MAIN)
-    int    argc = __argc;
-    char** argv = __argv;
-#endif
     init_logging();
     connect_signals_handler();
     init_timezone_db();
@@ -190,10 +181,14 @@ main([[maybe_unused]] int argc, [[maybe_unused]] char* argv[])
     clean_previous_run();
     init_dpi();
 
+    int res = 0;
+
     //! App declaration
     atomic_dex::application atomic_app;
 
     //! QT
+    QCoreApplication::setAttribute(Qt::AA_ShareOpenGLContexts);
+    QtWebEngine::initialize();
     std::shared_ptr<QApplication> app = std::make_shared<QApplication>(argc, argv);
     app->setOrganizationName("KomodoPlatform");
     app->setOrganizationDomain("com");
@@ -238,9 +233,28 @@ main([[maybe_unused]] int argc, [[maybe_unused]] char* argv[])
 #endif
     atomic_app.launch();
 
-    auto res = app->exec();
+    res = app->exec();
 
     clean_wally();
+    return res;
+}
 
+#if defined(WINDOWS_RELEASE_MAIN)
+INT WINAPI
+WinMain([[maybe_unused]] HINSTANCE hInst, HINSTANCE, [[maybe_unused]] LPSTR strCmdLine, INT)
+#else
+int
+main([[maybe_unused]] int argc, [[maybe_unused]] char* argv[])
+#endif
+{
+#if defined(WINDOWS_RELEASE_MAIN)
+    int    argc = __argc;
+    char** argv = __argv;
+#endif
+
+    //! run app
+    int res = run_app(argc, argv);
+    spdlog::info("Shutdown all loggers");
+    spdlog::drop_all();
     return res;
 }

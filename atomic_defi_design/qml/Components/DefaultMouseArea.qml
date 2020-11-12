@@ -6,5 +6,5 @@ import QtGraphicalEffects 1.0
 import "../Constants"
 
 MouseArea {
-    cursorShape: Qt.PointingHandCursor
+    cursorShape: enabled ? Qt.PointingHandCursor : Qt.ArrowCursor
 }

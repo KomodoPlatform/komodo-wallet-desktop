@@ -21,9 +21,15 @@ namespace atomic_dex
 
         //! eg: 1
         QString base_amount;
+        
+        //! eg: 1 in fiat currency.
+        QString base_amount_fiat;
 
         //! eg: 1
         QString rel_amount;
+        
+        //! eg: 1 in fiat currency.
+        QString rel_amount_fiat;
 
         //! eg: Taker order;
         QString order_type;

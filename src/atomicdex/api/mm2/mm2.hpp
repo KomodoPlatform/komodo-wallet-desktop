@@ -16,16 +16,13 @@
 
 #pragma once
 
-//! PCH
-#include "src/atomicdex/pch.hpp"
-
 //! Deps
-#include <nlohmann/json.hpp>
 #include <meta/detection/detection.hpp>
+#include <nlohmann/json.hpp>
 
 //! Project Headers
-#include "src/atomicdex/config/coins.cfg.hpp"
-#include "src/atomicdex/utilities/cpprestsdk.utilities.hpp"
+#include "atomicdex/config/coins.cfg.hpp"
+#include "atomicdex/utilities/cpprestsdk.utilities.hpp"
 
 namespace mm2::api
 {
@@ -607,17 +604,17 @@ namespace mm2::api
     struct my_order_contents
     {
         //! New
-        std::string order_id;
-        std::string price;
-        std::string base;
-        std::string rel;
-        bool        cancellable;
-        std::size_t timestamp;
-        std::string order_type;
-        std::string base_amount;
-        std::string rel_amount;
-        std::string human_timestamp;
-        std::string action;
+        std::string                order_id;
+        std::string                price;
+        std::string                base;
+        std::string                rel;
+        bool                       cancellable;
+        std::size_t                timestamp;
+        std::string                order_type;
+        std::string                base_amount;
+        std::string                rel_amount;
+        std::string                human_timestamp;
+        std::string                action;
     };
 
     struct my_orders_answer

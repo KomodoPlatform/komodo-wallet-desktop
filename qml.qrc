@@ -64,6 +64,7 @@
         <file>atomic_defi_design/assets/images/coins/bots.png</file>
         <file>atomic_defi_design/assets/images/coins/busd.png</file>
         <file>atomic_defi_design/assets/images/coins/ccl.png</file>
+        <file>atomic_defi_design/assets/images/coins/coqui.png</file>
         <file>atomic_defi_design/assets/images/coins/crypto.png</file>
         <file>atomic_defi_design/assets/images/coins/dai.png</file>
         <file>atomic_defi_design/assets/images/coins/dash.png</file>
@@ -90,12 +91,12 @@
         <file>atomic_defi_design/assets/images/coins/mgw.png</file>
         <file>atomic_defi_design/assets/images/coins/morty.png</file>
         <file>atomic_defi_design/assets/images/coins/nav.png</file>
+        <file>atomic_defi_design/assets/images/coins/nmc.png</file>
         <file>atomic_defi_design/assets/images/coins/oot.png</file>
         <file>atomic_defi_design/assets/images/coins/pangea.png</file>
         <file>atomic_defi_design/assets/images/coins/pax.png</file>
         <file>atomic_defi_design/assets/images/coins/revs.png</file>
         <file>atomic_defi_design/assets/images/coins/rfox.png</file>
-        <file>atomic_defi_design/assets/images/coins/hush.png</file>
         <file>atomic_defi_design/assets/images/coins/qtum.png</file>
         <file>atomic_defi_design/assets/images/coins/qrc20.png</file>
         <file>atomic_defi_design/assets/images/coins/rvn.png</file>
@@ -173,6 +174,7 @@
         <file>atomic_defi_design/qml/Components/AmountField.qml</file>
         <file>atomic_defi_design/qml/Components/AmountFieldWithInfo.qml</file>
         <file>atomic_defi_design/qml/Components/AmountIntField.qml</file>
+        <file>atomic_defi_design/qml/Components/ComponentWithTitle.qml</file>
         <file>atomic_defi_design/qml/Components/CopyFieldButton.qml</file>
         <file>atomic_defi_design/qml/Components/HideFieldButton.qml</file>
         <file>atomic_defi_design/qml/Components/PasswordField.qml</file>
@@ -203,6 +205,8 @@
         <file>atomic_defi_design/qml/Components/DefaultCheckBox.qml</file>
         <file>atomic_defi_design/qml/Components/GradientRectangle.qml</file>
         <file>atomic_defi_design/qml/Components/LogModal.qml</file>
+        <file>atomic_defi_design/qml/Components/LinkIcon.qml</file>
+        <file>atomic_defi_design/qml/Components/LinksRow.qml</file>
         <file>atomic_defi_design/qml/Components/UpdateModal.qml</file>
         <file>atomic_defi_design/qml/Components/UpdateNotificationLine.qml</file>
         <file>atomic_defi_design/qml/Components/DefaultModal.qml</file>
@@ -217,6 +221,7 @@
         <file>atomic_defi_design/qml/Components/ComboBoxWithTitle.qml</file>
         <file>atomic_defi_design/qml/Components/TitleText.qml</file>
         <file>atomic_defi_design/qml/Components/TextWithTitle.qml</file>
+        <file>atomic_defi_design/qml/Components/TextEditWithTitle.qml</file>
         <file>atomic_defi_design/qml/Components/TextFieldWithTitle.qml</file>
         <file>atomic_defi_design/qml/Components/TextAreaWithTitle.qml</file>
         <file>atomic_defi_design/qml/Components/ModalHeader.qml</file>
@@ -227,6 +232,7 @@
         <file>atomic_defi_design/qml/Portfolio/Portfolio.qml</file>
         <file>atomic_defi_design/qml/Wallet/Wallet.qml</file>
         <file>atomic_defi_design/qml/Wallet/ClaimRewardsModal.qml</file>
+        <file>atomic_defi_design/qml/Wallet/ClaimFaucetResultModal.qml</file>
         <file>atomic_defi_design/qml/Wallet/ReceiveModal.qml</file>
         <file>atomic_defi_design/qml/Wallet/SendModal.qml</file>
         <file>atomic_defi_design/qml/Wallet/SendResult.qml</file>
@@ -247,6 +253,5 @@
         <file>atomic_defi_design/qml/Settings/Languages.qml</file>
         <file>atomic_defi_design/qml/Support/Support.qml</file>
         <file>atomic_defi_design/qml/Support/FAQLine.qml</file>
-        <file>atomic_defi_design/qml/Support/LinkIcon.qml</file>
     </qresource>
 </RCC>

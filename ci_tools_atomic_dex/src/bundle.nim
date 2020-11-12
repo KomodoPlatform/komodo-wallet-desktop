@@ -8,30 +8,12 @@ proc fix_osx_libraries(atomic_app_path: string) =
     let 
         framework_path = atomic_app_path.joinPath("Contents/Frameworks")
         orig_path = os.getCurrentDir()
+        cmd_fix = "install_name_tool -add_rpath @executable_path/../../../../../../Frameworks " & framework_path.joinPath("QtWebEngineCore.framework/Helpers/QtWebEngineProcess.app/Contents/MacOS/QtWebEngineProcess")
     echo "CWD: " & orig_path
     echo "Framework path: " & framework_path 
     os.setCurrentDir(framework_path)
     echo "CWD: " & framework_path
-    let libs = [(loname: "libboost_chrono-mt.dylib", lname: "libboost_locale-mt.dylib"),
-                (loname: "libboost_thread-mt.dylib", lname: "libboost_locale-mt.dylib"), 
-                (loname: "libboost_thread-mt.dylib", lname: "libboost_log-mt.dylib"),
-                (loname: "libboost_regex-mt.dylib", lname: "libboost_log-mt.dylib"),
-                (loname: "libboost_filesystem-mt.dylib", lname: "libboost_log-mt.dylib"),
-                (loname: "libboost_atomic-mt.dylib", lname: "libboost_log-mt.dylib"),
-                (loname: "libboost_chrono-mt.dylib", lname: "libboost_log-mt.dylib"),
-                (loname: "libboost_date_time-mt.dylib", lname: "libboost_log-mt.dylib"),
-                (loname: "libicuuc.64.dylib", lname: "libicui18n.64.dylib"),
-                (loname: "libicudata.64.dylib", lname: "libicui18n.64.dylib"),
-                (loname: "libicudata.64.dylib", lname: "libicuuc.64.dylib")
-               ]
-    for idx, info in libs:
-        let cmd_fix = "install_name_tool -change @loader_path/" & info.loname & " @executable_path/../Frameworks/" & info.loname & " " & info.lname
-        echo "Fixing cmd: " & cmd_fix
-        discard osproc.execCmd(cmd_fix)
-    discard osproc.execCmd("install_name_tool -change @executable_path/../Frameworks/libboost_filesystem-mt.dylib @executable_path/../Frameworks/libboost_filesystem.dylib libboost_log-mt.dylib")
-    discard osproc.execCmd("install_name_tool -change @loader_path/libboost_system-mt.dylib @executable_path/../Frameworks/libboost_system.dylib libboost_locale-mt.dylib")
-    os.setCurrentDir(orig_path)
-    echo "CWD: " & os.getCurrentDir()
+    discard osproc.execCmd(cmd_fix)
 
 
 proc bundle*(build_type: string, osx_sdk_path: string, compiler_path: string) =
@@ -47,7 +29,7 @@ proc bundle*(build_type: string, osx_sdk_path: string, compiler_path: string) =
             atomicdex_desktop_app_dir = os.getCurrentDir().joinPath("bin")
             atomicdex_desktop_app_path = atomicdex_desktop_app_dir.joinPath(app_name & ".app")
             atomicdex_desktop_qml_dir = os.getCurrentDir().parentDir().parentDir().joinPath("atomic_defi_design/qml")
-            bundling_cmd = qt_mac_deploy_path & " " & atomicdex_desktop_app_path & " -qmldir=" & atomicdex_desktop_qml_dir
+            bundling_cmd = qt_macdeploy_path & " " & atomicdex_desktop_app_path & " -qmldir=" & atomicdex_desktop_qml_dir
             bundle_path = os.getCurrentDir().parentDir().joinPath("bundle-" & build_type)
             dmg_packager_path = os.getCurrentDir().parentDir().joinPath("dmg-packager").joinPath("package.sh")
             dmg_packaging_cmd = dmg_packager_path & " \"" & dmg_name & "\" " & app_name & " " & atomicdex_desktop_app_dir & "/"
@@ -91,23 +73,35 @@ proc bundle*(build_type: string, osx_sdk_path: string, compiler_path: string) =
         discard os.existsOrCreateDir(bundle_path)
         os.moveFile("bin.zip", bundle_path.joinPath("bundle.zip"))
     when defined(linux):
-        let
-            build_path =  os.getCurrentDir().parentDir().joinPath("build-" & build_type).joinPath("bin")
-            desktop_path = build_path.joinPath("AntaraAtomicDexAppDir/usr/share/applications/atomicdex-desktop.desktop")
-            atomicdex_desktop_qml_dir = os.getCurrentDir().parentDir().parentDir().joinPath("atomic_defi_design/qml")
-            linux_deploy_tool = os.getCurrentDir().parentDir().joinPath("linux_misc").joinPath("linuxdeployqt-continuous-x86_64.AppImage")
-            bundling_cmd = linux_deploy_tool & " " & desktop_path & " -qmldir=" & atomicdex_desktop_qml_dir & " -bundle-non-qt-libs"
-            bundle_path = os.getCurrentDir().parentDir().joinPath("bundle-" & build_type)
-            tar_cmd = "tar -czvf AntaraAtomicDexAppDir.tar.gz -C " & build_path.joinPath("AntaraAtomicDexAppDir").parentDir() & " ."
+        echo "current dir is: " & os.getCurrentDir()
+        discard osproc.execCmd("ninja install")
+        #let
+        #    build_path =  os.getCurrentDir().parentDir().joinPath("build-" & build_type).joinPath("bin")
+        #    desktop_path = build_path.joinPath("AntaraAtomicDexAppDir/usr/share/applications/atomicdex-desktop.desktop")
+        #    atomicdex_desktop_qml_dir = os.getCurrentDir().parentDir().parentDir().joinPath("atomic_defi_design/qml")
+        #    linux_deploy_tool = os.getCurrentDir().parentDir().joinPath("linux_misc").joinPath("linuxdeployqt-7-x86_64.AppImage")
+        #    bundling_cmd = linux_deploy_tool & " " & desktop_path & " -qmldir=" & atomicdex_desktop_qml_dir & " -bundle-non-qt-libs -exclude-libs=\"libnss3.so,libnssutil3.so\""
+        #    bundle_path = os.getCurrentDir().parentDir().joinPath("bundle-" & build_type)
+        #    tar_cmd = "tar -czvf AntaraAtomicDexAppDir.tar.gz -C " & build_path.joinPath("AntaraAtomicDexAppDir").parentDir() & " ."
 
-        echo "Bundling cmd: " & bundling_cmd
-        discard osproc.execCmd(bundling_cmd)
+        #echo "Bundling cmd: " & bundling_cmd
+        #discard osproc.execCmd(bundling_cmd)
         
-        echo "Creating bundle folder: " & bundle_path
-        discard os.existsOrCreateDir(bundle_path)
-        os.setCurrentDir(bundle_path)
+        #echo "Creating bundle folder: " & bundle_path
+        #discard os.existsOrCreateDir(bundle_path)
+        #os.setCurrentDir(bundle_path)
 
-        echo "Tar cmd: " & tar_cmd
-        discard osproc.execCmd(tar_cmd)
+        #echo "Copying extra lib before"
+        #var output_dir = $build_path.joinPath("AntaraAtomicDexAppDir").joinPath("usr").joinPath("lib")
+        #var list_of_libs = ["libsmime3.so", "libssl3.so"]
+        #for idx, cur_lib in list_of_libs:
+        #    os.copyFile("/usr/lib/x86_64-linux-gnu/" & cur_lib, output_dir & "/" & cur_lib)
+        #var list_of_other_libs = ["libfreebl3.chk", "libfreebl3.so", "libnssckbi.so", "libnssdbm3.chk", "libnssdbm3.so", "libnsssysinit.so", "libsoftokn3.chk", "libsoftokn3.so"]
+        #for idx, cur_lib in list_of_other_libs:
+        #   os.copyFile("/usr/lib/x86_64-linux-gnu/nss/" & cur_lib, output_dir & "/" & cur_lib)
+        #discard os.copyFile("/usr/lib/x86_64-linux-gnu/libnss3.so", output_dir.joinPath("libnss3.so").string)
+
+        #echo "Tar cmd: " & tar_cmd
+        #discard osproc.execCmd(tar_cmd)
 
 

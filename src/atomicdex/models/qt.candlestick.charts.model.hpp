@@ -21,7 +21,7 @@
 #include <QDateTime>
 
 //! Deps
-#include <nlohmann/json.hpp>
+#include <nlohmann/json_fwd.hpp>
 #include <antara/gaming/ecs/system.manager.hpp>
 
 namespace atomic_dex

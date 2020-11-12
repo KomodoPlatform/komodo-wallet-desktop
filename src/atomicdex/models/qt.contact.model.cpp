@@ -17,11 +17,8 @@
 //! QT
 #include <QJsonDocument>
 
-//! PCH
-#include "src/atomicdex/pch.hpp"
-
 //! Project
-#include "qt.contact.model.hpp"
+#include "atomicdex/models/qt.contact.model.hpp"
 
 namespace atomic_dex
 {

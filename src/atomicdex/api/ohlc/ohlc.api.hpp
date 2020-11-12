@@ -16,11 +16,8 @@
 
 #pragma once
 
-//! SDT
+//! STD
 #include <optional>
-
-//! Deps
-#include <nlohmann/json.hpp>
 
 //! Project Headers
 #include "atomicdex/utilities/cpprestsdk.utilities.hpp"

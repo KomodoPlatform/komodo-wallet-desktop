@@ -24,7 +24,7 @@
 
 //! Project
 #include "atomicdex/api/mm2/mm2.hpp"
-#include "qt.orderbook.proxy.model.hpp"
+#include "atomicdex/models/qt.orderbook.proxy.model.hpp"
 
 namespace atomic_dex
 {

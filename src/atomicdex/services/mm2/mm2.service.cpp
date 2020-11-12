@@ -36,7 +36,7 @@ namespace
         using namespace std::string_literals;
         spdlog::debug("{} l{} f[{}]", __FUNCTION__, __LINE__, fs::path(__FILE__).filename().string());
 
-        fs::path    cfg_path                   = get_atomic_dex_config_folder();
+        fs::path    cfg_path                   = atomic_dex::utils::get_atomic_dex_config_folder();
         std::string filename                   = std::string(atomic_dex::get_precedent_raw_version()) + "-coins." + wallet_name + ".json";
         fs::path    precedent_version_cfg_path = cfg_path / filename;
 
@@ -77,7 +77,7 @@ namespace
             ofs << actual_config_data;
 
             //! Delete old cfg
-            boost::system::error_code ec;
+            fs_error_code ec;
             fs::remove(precedent_version_cfg_path, ec);
             if (ec)
             {
@@ -89,7 +89,7 @@ namespace
     void
     update_coin_status(const std::string& wallet_name, const std::vector<std::string> tickers, bool status = true)
     {
-        fs::path       cfg_path = get_atomic_dex_config_folder();
+        fs::path       cfg_path = atomic_dex::utils::get_atomic_dex_config_folder();
         std::string    filename = std::string(atomic_dex::get_raw_version()) + "-coins." + wallet_name + ".json";
         std::ifstream  ifs((cfg_path / filename).c_str());
         nlohmann::json config_json_data;
@@ -113,7 +113,7 @@ namespace
         spdlog::debug("{} l{} f[{}]", __FUNCTION__, __LINE__, fs::path(__FILE__).filename().string());
 
         check_for_reconfiguration(wallet_name);
-        const auto  cfg_path = get_atomic_dex_config_folder();
+        const auto  cfg_path = atomic_dex::utils::get_atomic_dex_config_folder();
         std::string filename = std::string(atomic_dex::get_raw_version()) + "-coins." + wallet_name + ".json";
         spdlog::info("Retrieving Wallet information of {}", (cfg_path / filename).string());
         if (exists(cfg_path / filename))
@@ -123,7 +123,7 @@ namespace
             nlohmann::json config_json_data;
             ifs >> config_json_data;
             auto res = config_json_data.get<std::unordered_map<std::string, atomic_dex::coin_config>>();
-            for (auto&& [key, value]: res) { coins_registry[key] = value; }
+            for (auto&& [key, value]: res) { coins_registry.insert_or_assign(key, value); }
             return true;
         }
         return false;
@@ -141,7 +141,7 @@ namespace atomic_dex
         dispatcher_.sink<gui_leave_trading>().connect<&mm2_service::on_gui_leave_trading>(*this);
         dispatcher_.sink<orderbook_refresh>().connect<&mm2_service::on_refresh_orderbook>(*this);
 
-        m_swaps_registry["result"] = t_my_recent_swaps_answer{.limit = 0, .total = 0};
+        m_swaps_registry.insert("result", t_my_recent_swaps_answer{.limit = 0, .total = 0});
     }
 
     void
@@ -189,7 +189,7 @@ namespace atomic_dex
 
         if (ec)
         {
-            spdlog::error("error: {}", ec.message());
+            // std::cerr << "error: " << ec.message() << std::endl;
         }
 #endif
 
@@ -310,8 +310,8 @@ namespace atomic_dex
             }
         }
 
-        coin_info.currently_enabled            = false;
-        m_coins_informations[coin_info.ticker] = coin_info;
+        coin_info.currently_enabled = false;
+        m_coins_informations.assign(coin_info.ticker, coin_info);
 
         dispatcher_.trigger<coin_disabled>(ticker);
         return true;
@@ -365,8 +365,6 @@ namespace atomic_dex
                         std::size_t idx = 0;
                         for (auto&& answer: answers)
                         {
-                            // spdlog::trace("answer {}",  answer.dump(4));
-
                             if (answer.contains("balance"))
                             {
                                 this->process_balance_answer(answer);
@@ -374,6 +372,10 @@ namespace atomic_dex
                             else if (answer.contains("result"))
                             {
                                 this->process_tx_answer(answer);
+                            }
+                            else
+                            {
+                                spdlog::error("error answer for tx or my_balance: {}", answer.dump(4));
                             }
                             ++idx;
                         }
@@ -432,19 +434,28 @@ namespace atomic_dex
         return std::make_tuple(batch_array, tickers_idx, erc_to_fetch);
     }
 
-    bool
+    std::pair<bool, std::string>
     mm2_service::process_batch_enable_answer(const json& answer)
     {
+        std::string error = answer.dump(4);
+
+        if (answer.contains("error") || answer.contains("Error") || error.find("error") != std::string::npos || error.find("Error") != std::string::npos)
+        {
+            spdlog::trace("bad answer json for enable/electrum details: {}", error);
+            return {false, error};
+        }
+
         if (answer.contains("coin"))
         {
-            auto        ticker                     = answer.at("coin").get<std::string>();
-            coin_config coin_info                  = m_coins_informations.at(ticker);
-            coin_info.currently_enabled            = true;
-            m_coins_informations[coin_info.ticker] = coin_info;
-            return true;
+            auto        ticker          = answer.at("coin").get<std::string>();
+            coin_config coin_info       = m_coins_informations.at(ticker);
+            coin_info.currently_enabled = true;
+            m_coins_informations.assign(coin_info.ticker, coin_info);
+            return {true, ""};
         }
-        spdlog::trace("bad answer json for enable/electrum details: {}", answer.dump(4));
-        return false;
+
+        spdlog::trace("bad answer json for enable/electrum details: {}", error);
+        return {false, error};
     }
 
     void
@@ -493,9 +504,21 @@ namespace atomic_dex
                 nlohmann::json   j = ::mm2::api::template_request("enable");
                 ::mm2::api::to_json(j, request);
                 batch_array.push_back(j);
+                //! If the coin is a custom coin and not present, then we have a config mismatch, we re-add it to the mm2 coins cfg but this need a app restart.
+                if (coin_info.is_custom_coin && !this->is_this_ticker_present_in_raw_cfg(coin_info.ticker))
+                {
+                    nlohmann::json empty = "{}"_json;
+                    if (coin_info.custom_backup.has_value())
+                    {
+                        spdlog::warn("Configuration mismatch between mm2 cfg and coin cfg for ticker {}, readjusting...", coin_info.ticker);
+                        this->add_new_coin(empty, coin_info.custom_backup.value());
+                        this->dispatcher_.trigger<mismatch_configuration_custom_coin>(coin_info.ticker);
+                    }
+                }
             }
         }
 
+        // spdlog::trace("{}", batch_array.dump(4));
         auto functor = [this](nlohmann::json batch_array, std::vector<std::string> tickers) {
             ::mm2::api::async_rpc_batch_standalone(batch_array, this->m_mm2_client, m_token_source.get_token())
                 .then([this, tickers](web::http::http_response resp) mutable {
@@ -507,19 +530,24 @@ namespace atomic_dex
 
                         if (answers.count("error") == 0)
                         {
-                            std::size_t idx = 0;
+                            std::size_t                     idx = 0;
+                            std::unordered_set<std::string> to_remove;
                             for (auto&& answer: answers)
                             {
-                                bool res = this->process_batch_enable_answer(answer);
+                                auto [res, error] = this->process_batch_enable_answer(answer);
                                 if (not res && idx < tickers.size())
                                 {
                                     spdlog::trace(
                                         "bad answer for: [{}] -> removing it from enabling, idx: {}, tickers size: {}, answers size: {}", tickers[idx], idx,
                                         tickers.size(), answers.size());
-                                    tickers.erase(tickers.begin() + idx);
+                                    this->dispatcher_.trigger<enabling_coin_failed>(tickers[idx], error);
+                                    to_remove.emplace(tickers[idx]);
                                 }
                                 idx += 1;
                             }
+
+                            for (auto&& t: to_remove) { tickers.erase(std::remove(tickers.begin(), tickers.end(), t), tickers.end()); }
+
                             batch_balance_and_tx(false, tickers, true);
                             //! At this point, task is finished, let's refresh.
                         }
@@ -631,20 +659,20 @@ namespace atomic_dex
                         auto trade_fee_base_answer = ::mm2::api::rpc_process_answer_batch<t_get_trade_fee_answer>(answer[0], "get_trade_fee");
                         if (trade_fee_base_answer.rpc_result_code == 200)
                         {
-                            this->m_trade_fees_registry[orderbook_ticker_base] = trade_fee_base_answer;
+                            this->m_trade_fees_registry.insert_or_assign(orderbook_ticker_base, trade_fee_base_answer);
                         }
 
                         auto trade_fee_rel_answer = ::mm2::api::rpc_process_answer_batch<t_get_trade_fee_answer>(answer[1], "get_trade_fee");
                         if (trade_fee_rel_answer.rpc_result_code == 200)
                         {
-                            this->m_trade_fees_registry[orderbook_ticker_rel] = trade_fee_rel_answer;
+                            this->m_trade_fees_registry.insert_or_assign(orderbook_ticker_rel, trade_fee_rel_answer);
                         }
 
                         auto orderbook_answer = ::mm2::api::rpc_process_answer_batch<t_orderbook_answer>(answer[2], "orderbook");
 
                         if (orderbook_answer.rpc_result_code == 200)
                         {
-                            m_current_orderbook[orderbook_ticker_base + "/" + orderbook_ticker_rel] = orderbook_answer;
+                            m_current_orderbook.insert_or_assign(orderbook_ticker_base + "/" + orderbook_ticker_rel, orderbook_answer);
                             this->dispatcher_.trigger<process_orderbook_finished>(is_a_reset);
                         }
 
@@ -685,7 +713,7 @@ namespace atomic_dex
 
                     if (orderbook_answer.rpc_result_code == 200)
                     {
-                        m_current_orderbook[base + "/" + rel] = orderbook_answer;
+                        m_current_orderbook.insert_or_assign(base + "/" + rel, orderbook_answer);
                         this->dispatcher_.trigger<process_orderbook_finished>(is_a_reset);
                     }
 
@@ -735,7 +763,7 @@ namespace atomic_dex
     void
     mm2_service::spawn_mm2_instance(std::string wallet_name, std::string passphrase, bool with_pin_cfg)
     {
-        this->m_balance_factor = determine_balance_factor(with_pin_cfg);
+        this->m_balance_factor = utils::determine_balance_factor(with_pin_cfg);
         spdlog::trace("balance factor is: {}", m_balance_factor);
         spdlog::debug("{} l{} f[{}]", __FUNCTION__, __LINE__, fs::path(__FILE__).filename().string());
         this->m_current_wallet_name = std::move(wallet_name);
@@ -754,15 +782,13 @@ namespace atomic_dex
         const std::array<std::string, 1> args = {(tools_path / "mm2").string()};
         reproc::options                  options;
         options.redirect.parent = true;
-#if defined(WIN32)
-        std::ostringstream env_mm2;
-        env_mm2 << "MM_CONF_PATH=" << mm2_cfg_path.string();
-        _putenv(env_mm2.str().c_str());
-        spdlog::debug("env: {}", std::getenv("MM_CONF_PATH"));
-#else
-        options.environment =
-            std::unordered_map<std::string, std::string>{{"MM_CONF_PATH", mm2_cfg_path.string()}, {"MM_LOG", get_mm2_atomic_dex_current_log_file().string()}};
-#endif
+
+        options.env.behavior = reproc::env::extend;
+        options.env.extra    = std::unordered_map<std::string, std::string>{
+            {"MM_CONF_PATH", mm2_cfg_path.string()},
+            {"MM_LOG", utils::get_mm2_atomic_dex_current_log_file().string()},
+            {"MM_COINS_PATH", (utils::get_current_configs_path() / "coins.json").string()}};
+
         options.working_directory = strdup(tools_path.string().c_str());
 
         spdlog::debug("command line: {}, from directory: {}", args[0], options.working_directory);
@@ -884,14 +910,14 @@ namespace atomic_dex
         batch.push_back(my_swaps);
         ::mm2::api::async_rpc_batch_standalone(batch, m_mm2_client, m_token_source.get_token())
             .then([this](web::http::http_response resp) {
-                auto answers                = ::mm2::api::basic_batch_answer(resp);
-                auto my_orders_answer       = ::mm2::api::rpc_process_answer_batch<t_my_orders_answer>(answers[0], "my_orders");
-                m_orders_registry["result"] = my_orders_answer;
+                auto answers          = ::mm2::api::basic_batch_answer(resp);
+                auto my_orders_answer = ::mm2::api::rpc_process_answer_batch<t_my_orders_answer>(answers[0], "my_orders");
+                m_orders_registry.insert_or_assign("result", my_orders_answer);
                 this->dispatcher_.trigger<process_orders_finished>();
                 auto swap_answer = ::mm2::api::rpc_process_answer_batch<::mm2::api::my_recent_swaps_answer>(answers[1], "my_orders");
                 if (swap_answer.result.has_value())
                 {
-                    m_swaps_registry["result"] = swap_answer.result.value();
+                    m_swaps_registry.insert_or_assign("result", swap_answer.result.value());
                     this->dispatcher_.trigger<process_swaps_finished>();
                 }
             })
@@ -906,7 +932,7 @@ namespace atomic_dex
         auto                      answer = rpc_my_recent_swaps(std::move(request), m_mm2_client);
         if (answer.result.has_value())
         {
-            m_swaps_registry["result"] = answer.result.value();
+            m_swaps_registry.insert_or_assign("result", answer.result.value());
             this->dispatcher_.trigger<process_swaps_finished>();
         }
     }
@@ -914,7 +940,7 @@ namespace atomic_dex
     void
     mm2_service::process_orders()
     {
-        m_orders_registry["result"] = ::mm2::api::rpc_my_orders(m_mm2_client);
+        m_orders_registry.insert_or_assign("result", ::mm2::api::rpc_my_orders(m_mm2_client));
         this->dispatcher_.trigger<process_orders_finished>();
     }
 
@@ -984,8 +1010,8 @@ namespace atomic_dex
 
                     // std::sort(begin(out), end(out), [](auto&& a, auto&& b) { return a.timestamp > b.timestamp; });
 
-                    m_tx_informations[ticker] = std::move(out);
-                    m_tx_state[ticker]        = std::move(state);
+                    m_tx_informations.insert_or_assign(ticker, std::move(out));
+                    m_tx_state.insert_or_assign(ticker, std::move(state));
                     this->dispatcher_.trigger<tx_fetch_finished>();
                 }
             })
@@ -1198,9 +1224,9 @@ namespace atomic_dex
     void
     mm2_service::reset_fake_balance_to_zero(const std::string& ticker) noexcept
     {
-        auto answer                    = m_balance_informations.at(ticker);
-        answer.balance                 = "0";
-        m_balance_informations[ticker] = answer;
+        auto answer    = m_balance_informations.at(ticker);
+        answer.balance = "0";
+        m_balance_informations.assign(ticker, answer);
         this->dispatcher_.trigger<ticker_balance_updated>(std::vector<std::string>{ticker});
     }
 
@@ -1219,8 +1245,8 @@ namespace atomic_dex
         }
         else
         {
-            answer.balance                 = result.str(8, std::ios_base::fixed);
-            m_balance_informations[ticker] = answer;
+            answer.balance = result.str(8, std::ios_base::fixed);
+            m_balance_informations.assign(ticker, answer);
             this->dispatcher_.trigger<ticker_balance_updated>(std::vector<std::string>{ticker});
         }
     }
@@ -1285,7 +1311,7 @@ namespace atomic_dex
             {
                 using namespace std::chrono;
                 current_info.timestamp   = duration_cast<seconds>(system_clock::now().time_since_epoch()).count();
-                current_info.date        = to_human_date<std::chrono::seconds>(current_info.timestamp, "%e %b %Y, %H:%M");
+                current_info.date        = utils::to_human_date<std::chrono::seconds>(current_info.timestamp, "%e %b %Y, %H:%M");
                 current_info.unconfirmed = true;
             }
 
@@ -1295,8 +1321,8 @@ namespace atomic_dex
             out.push_back(std::move(current_info));
         }
 
-        m_tx_informations["result"] = std::move(out);
-        m_tx_state["result"]        = std::move(state);
+        m_tx_informations.insert_or_assign("result", std::move(out));
+        m_tx_state.insert_or_assign("result", std::move(state));
         this->dispatcher_.trigger<tx_fetch_finished>();
     }
 
@@ -1314,9 +1340,9 @@ namespace atomic_dex
             }
         }
 
-        t_float_50 result                     = t_float_50(answer_r.balance) * m_balance_factor;
-        answer_r.balance                      = result.str(8, std::ios_base::fixed);
-        m_balance_informations[answer_r.coin] = answer_r;
+        t_float_50 result = t_float_50(answer_r.balance) * m_balance_factor;
+        answer_r.balance  = result.str(8, std::ios_base::fixed);
+        m_balance_informations.insert_or_assign(answer_r.coin, answer_r);
     }
 
     nlohmann::json
@@ -1352,7 +1378,7 @@ namespace atomic_dex
     void
     mm2_service::add_orders_answer(t_my_orders_answer answer)
     {
-        m_orders_registry["result"] = answer;
+        m_orders_registry.insert_or_assign("result", answer);
         this->dispatcher_.trigger<process_orders_finished>();
     }
 
@@ -1393,7 +1419,7 @@ namespace atomic_dex
         if (not coin_cfg_json.empty() && not is_this_ticker_present_in_normal_cfg(coin_cfg_json.begin().key()))
         {
             spdlog::trace("Adding entry : {} to adex current wallet coins file", coin_cfg_json.dump(4));
-            fs::path       cfg_path = get_atomic_dex_config_folder();
+            fs::path       cfg_path = utils::get_atomic_dex_config_folder();
             std::string    filename = std::string(atomic_dex::get_raw_version()) + "-coins." + m_current_wallet_name + ".json";
             std::ifstream  ifs((cfg_path / filename).c_str());
             nlohmann::json config_json_data;
@@ -1403,9 +1429,7 @@ namespace atomic_dex
             ifs >> config_json_data;
 
             //! Modify contents
-            // config_json_data
             config_json_data[coin_cfg_json.begin().key()] = coin_cfg_json.at(coin_cfg_json.begin().key());
-            // config_json_data.push_back(coin_cfg_json);
 
             //! Close
             ifs.close();
@@ -1417,7 +1441,7 @@ namespace atomic_dex
         }
         if (not raw_coin_cfg_json.empty() && not is_this_ticker_present_in_raw_cfg(raw_coin_cfg_json.at("coin").get<std::string>()))
         {
-            fs::path mm2_cfg_path = ag::core::assets_real_path() / "tools/mm2/coins";
+            const fs::path mm2_cfg_path{atomic_dex::utils::get_current_configs_path() / "coins.json"};
             spdlog::trace("Adding entry : {} to mm2 coins file {}", raw_coin_cfg_json.dump(4), mm2_cfg_path.string());
             std::ifstream  ifs(mm2_cfg_path.c_str());
             nlohmann::json config_json_data;
@@ -1476,7 +1500,7 @@ namespace atomic_dex
         if (is_this_ticker_present_in_normal_cfg(ticker))
         {
             spdlog::trace("remove it from normal cfg: {}", ticker);
-            fs::path       cfg_path = get_atomic_dex_config_folder();
+            fs::path       cfg_path = utils::get_atomic_dex_config_folder();
             std::string    filename = std::string(atomic_dex::get_raw_version()) + "-coins." + m_current_wallet_name + ".json";
             std::ifstream  ifs((cfg_path / filename).c_str());
             nlohmann::json config_json_data;
@@ -1485,7 +1509,7 @@ namespace atomic_dex
             //! Read Contents
             ifs >> config_json_data;
 
-            this->m_coins_informations.unsafe_erase(ticker);
+            this->m_coins_informations.erase(ticker);
 
             config_json_data.erase(config_json_data.find(ticker));
 
@@ -1501,7 +1525,7 @@ namespace atomic_dex
         if (is_this_ticker_present_in_raw_cfg(ticker))
         {
             spdlog::trace("remove it from mm2 cfg: {}", ticker);
-            fs::path       mm2_cfg_path = ag::core::assets_real_path() / "tools/mm2/coins";
+            fs::path       mm2_cfg_path{atomic_dex::utils::get_current_configs_path() / "coins.json"};
             std::ifstream  ifs(mm2_cfg_path.c_str());
             nlohmann::json config_json_data;
             assert(ifs.is_open());
@@ -1526,6 +1550,6 @@ namespace atomic_dex
     void
     mm2_service::add_get_trade_fee_answer(const std::string& ticker, t_get_trade_fee_answer answer) noexcept
     {
-        this->m_trade_fees_registry[ticker] = answer;
+        this->m_trade_fees_registry.insert_or_assign(ticker, answer);
     }
 } // namespace atomic_dex

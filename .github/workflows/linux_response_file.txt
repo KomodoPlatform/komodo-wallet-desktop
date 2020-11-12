@@ -5,7 +5,6 @@ boost-random
 boost-lockfree
 boost-stacktrace
 doctest
-curl
 nlohmann-json
 range-v3
 libsodium
@@ -13,3 +12,4 @@ spdlog
 date
 cpprestsdk
 cpp-taskflow
+folly

@@ -13,7 +13,7 @@ Item {
     id: root
 
     readonly property date default_min_date: new Date("2019-01-01")
-    readonly property date default_max_date: new Date(new Date().setDate(new Date().getDate() + 1))
+    readonly property date default_max_date: new Date(new Date().setDate(new Date().getDate() + 30))
 
     property var list_model: API.app.orders_mdl
     property var list_model_proxy: API.app.orders_mdl.orders_proxy_mdl
@@ -213,12 +213,18 @@ Item {
                     selectFolder: false
 
                     defaultSuffix: "csv"
+                    nameFilters: [ "CSV files (*.csv)", "All files (*)" ]
 
                     onAccepted: {
                         const path = fileUrl.toString()
+
+                        // Export
                         console.log("Exporting to CSV: " + path)
                         API.app.orders_mdl.orders_proxy_mdl.export_csv_visible_history(path.replace(General.os_file_prefix, ""))
-                        Qt.openUrlExternally(General.os_file_prefix + API.app.get_export_folder())
+
+                        // Open the save folder
+                        const folder_path = path.substring(0, path.lastIndexOf("/"))
+                        Qt.openUrlExternally(folder_path)
                     }
                     onRejected: {
                         console.log("CSV export cancelled")

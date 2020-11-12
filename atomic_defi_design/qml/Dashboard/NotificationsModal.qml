@@ -2,6 +2,7 @@ import QtQuick 2.15
 import QtQuick.Layouts 1.15
 import QtQuick.Controls 2.15
 import Qt.labs.platform 1.0
+import Qaterial 1.0 as Qaterial
 
 import "../Constants"
 import "../Components"
@@ -9,7 +10,7 @@ import "../Components"
 BasicModal {
     id: root
 
-    width: 600
+    width: 900
     property var notifications_list: ([])
 
     function reset() {
@@ -34,10 +35,8 @@ BasicModal {
         window.requestActivate()
     }
 
-    function performLastNotificationAction() {
-        if(notifications_list.length === 0) return
-
-        const notification = notifications_list[0]
+    function performNotificationAction(notification) {
+        root.close()
 
         switch(notification.click_action) {
         case "open_notifications":
@@ -51,14 +50,17 @@ BasicModal {
             dashboard.current_page = General.idx_dashboard_exchange
             exchange.current_page = exchange.isSwapDone(notification.params.new_swap_status) ? General.idx_exchange_history : General.idx_exchange_orders
             break
+        case "open_log_modal":
+            showError(notification.title, notification.long_message)
+            break
         default:
             console.log("Unknown notification click action", notification.click_action)
             break
         }
     }
 
-    function newNotification(params, id, title, message, time, click_action = "open_notifications") {
-        const obj = { params, id, title, message, time, click_action }
+    function newNotification(event_name, params, id, title, message, human_date, click_action = "open_notifications", long_message = "") {
+        const obj = { event_name, params, id, title, message, human_date, click_action, long_message }
 
         // Update if it already exists
         let updated_existing_one = false
@@ -85,7 +87,8 @@ BasicModal {
 
     // Events
     function onUpdateSwapStatus(old_swap_status, new_swap_status, swap_uuid, base_coin, rel_coin, human_date) {
-        newNotification({ old_swap_status, new_swap_status, swap_uuid, base_coin, rel_coin, human_date },
+        newNotification("onUpdateSwapStatus",
+                        { old_swap_status, new_swap_status, swap_uuid, base_coin, rel_coin, human_date },
                         swap_uuid,
                         base_coin + "/" + rel_coin + " - " + qsTr("Swap status updated"),
                         exchange.getStatusText(old_swap_status) + " " + General.right_arrow_icon + " " + exchange.getStatusText(new_swap_status),
@@ -95,7 +98,8 @@ BasicModal {
 
     function onBalanceUpdateStatus(am_i_sender, amount, ticker, human_date, timestamp) {
         const change = General.formatCrypto("", amount, ticker)
-        newNotification({ am_i_sender, amount, ticker, human_date, timestamp },
+        newNotification("onBalanceUpdateStatus",
+                        { am_i_sender, amount, ticker, human_date, timestamp },
                         timestamp,
                         am_i_sender ? qsTr("You sent %1").arg(change) : qsTr("You received %1").arg(change),
                         qsTr("Your wallet balance changed"),
@@ -103,11 +107,68 @@ BasicModal {
                         "open_wallet_page")
     }
 
+    readonly property string check_internet_connection_text: qsTr("Please check your internet connection (e.g. VPN service or firewall might block it).")
+    function onEnablingCoinFailedStatus(coin, error, human_date, timestamp) {
+        // Check if there is mismatch error, ignore this one
+        for(let n of notifications_list) {
+            if(n.event_name === "onMismatchCustomCoinConfiguration" && n.params.asset === coin) {
+                console.log("Ignoring onEnablingCoinFailedStatus event because onMismatchCustomCoinConfiguration exists for", coin)
+                return
+            }
+        }
+
+        // Display the notification
+        const title = qsTr("Failed to enable %1", "TICKER").arg(coin)
+
+        error = check_internet_connection_text + "\n\n" + error
+
+        newNotification("onEnablingCoinFailedStatus",
+                        { coin, error, human_date, timestamp },
+                        timestamp,
+                        title,
+                        check_internet_connection_text,
+                        human_date,
+                        "open_log_modal",
+                        error)
+
+        toast.show(title, General.time_toast_important_error, error)
+    }
+
+    function onEndpointNonReacheableStatus(base_uri, human_date, timestamp) {
+        const title = qsTr("Endpoint not reachable")
+
+        newNotification("onEndpointNonReacheableStatus",
+                        { base_uri, human_date, timestamp },
+                        timestamp,
+                        title,
+                        base_uri,
+                        human_date,
+                        "open_log_modal",
+                        error)
+
+        toast.show(title, General.time_toast_important_error, qsTr("Could not reach to endpoint") + ". " + check_internet_connection_text + "\n\n" + base_uri)
+    }
+
+    function onMismatchCustomCoinConfiguration(asset, human_date, timestamp) {
+        const title = qsTr("Mismatch at %1 custom asset configuration", "TICKER").arg(asset)
+
+        newNotification("onMismatchCustomCoinConfiguration",
+                        { asset, human_date, timestamp },
+                        timestamp,
+                        title,
+                        qsTr("Application needs to be restarted for %1 custom asset.", "TICKER").arg(asset),
+                        human_date)
+
+        toast.show(title, General.time_toast_important_error, "", true, true)
+    }
 
     // System
     Component.onCompleted: {
         API.app.notification_mgr.updateSwapStatus.connect(onUpdateSwapStatus)
         API.app.notification_mgr.balanceUpdateStatus.connect(onBalanceUpdateStatus)
+        API.app.notification_mgr.enablingCoinFailedStatus.connect(onEnablingCoinFailedStatus)
+        API.app.notification_mgr.endpointNonReacheableStatus.connect(onEndpointNonReacheableStatus)
+        API.app.notification_mgr.mismatchCustomCoinConfiguration.connect(onMismatchCustomCoinConfiguration)
     }
 
     function displayMessage(title, message) {
@@ -120,7 +181,9 @@ BasicModal {
         visible: true
         iconSource: General.image_path + "tray-icon.png"
         onMessageClicked: {
-            performLastNotificationAction()
+            if(notifications_list.length > 0)
+                performNotificationAction(notifications_list[0])
+
             showApp()
         }
 
@@ -149,11 +212,11 @@ BasicModal {
     ModalContent {
         title: qsTr("Notifications")
 
-        DefaultButton {
+        Qaterial.AppBarButton {
             visible: list.visible
-            text: qsTr("Clear all") + " ✔️"
+
+            icon.source: General.qaterialIcon("check-all")
             onClicked: notifications_list = []
-            Layout.fillWidth: true
         }
 
         InnerBackground {
@@ -184,8 +247,8 @@ BasicModal {
                         anchors.top: parent.top
                         anchors.topMargin: 10
                         anchors.right: parent.right
-                        anchors.rightMargin: 25
-                        text_value: modelData.time
+                        anchors.rightMargin: 200
+                        text_value: modelData.human_date
                         font.pixelSize: Style.textSizeSmall
                     }
 
@@ -216,34 +279,66 @@ BasicModal {
                         light: true
                     }
 
-                    AnimatedRectangle {
-                        radius: Style.rectangleCornerRadius
+                    // Info button
+                    Qaterial.AppBarButton {
+                        visible: modelData.click_action !== "open_notifications"
+                        anchors.verticalCenter: action_button.verticalCenter
+                        anchors.right: action_button.left
+                        anchors.rightMargin: 15
 
-                        width: height
-                        height: remove_button.height * 1.2
+                        icon.source: General.qaterialIcon("information-variant")
+                        onClicked: performNotificationAction(modelData)
+                    }
 
+                    // Action button
+                    Qaterial.AppBarButton {
+                        id: action_button
                         anchors.bottom: parent.bottom
                         anchors.bottomMargin: 5
                         anchors.right: parent.right
                         anchors.rightMargin: anchors.bottomMargin + 20
 
-                        color: Qt.lighter(Style.colorTheme1, remove_button_area.containsMouse ? Style.hoverLightMultiplier : 1.0)
+                        icon.source: {
+                            let name
+                            switch(modelData.event_name) {
+                            case "onEnablingCoinFailedStatus":
+                                name = "repeat"
+                                break
+                            case "onMismatchCustomCoinConfiguration":
+                                name = "restart-alert"
+                                break
+                            default:
+                                name = "check"
+                                break
+                            }
 
-                        DefaultText {
-                            id: remove_button
-                            text_value: "✔️"
-                            anchors.centerIn: parent
-                            font.pixelSize: Style.textSizeSmall3
-                            color: Style.colorWhite10
+                            return General.qaterialIcon(name)
                         }
 
-                        DefaultMouseArea {
-                            id: remove_button_area
-                            anchors.fill: parent
-                            hoverEnabled: true
-                            onClicked: {
-                                notifications_list.splice(index, 1)
-                                notifications_list = notifications_list
+                        function removeNotification() {
+                            notifications_list.splice(index, 1)
+                            notifications_list = notifications_list
+                        }
+
+                        onClicked: {
+                            // Action might create another event so we save it and then remove the current one, then take the action
+                            const event_before_removal = General.clone(modelData)
+
+                            // Action
+                            switch(event_before_removal.event_name) {
+                            case "onEnablingCoinFailedStatus":
+                                removeNotification()
+                                console.log("Retrying to enable", event_before_removal.params.coin, "asset...")
+                                API.app.enable_coins([event_before_removal.params.coin])
+                                break
+                            case "onMismatchCustomCoinConfiguration":
+                                console.log("Restarting for", event_before_removal.params.asset, "custom asset configuration mismatch...")
+                                root.close()
+                                restart_modal.open()
+                                break
+                            default:
+                                removeNotification()
+                                break
                             }
                         }
                     }

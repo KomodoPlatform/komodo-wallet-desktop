@@ -4,8 +4,8 @@
 import QtQuick 2.15
 
 ListView {
-    function show(text, duration=-1, info="", is_error=true) {
-        model.insert(0, { text, duration, info, is_error })
+    function show(text, duration=-1, info="", is_error=true, open_notifications_modal=false) {
+        model.insert(0, { text, duration, info, is_error, open_notifications_modal })
     }
 
     id: root
@@ -26,7 +26,7 @@ ListView {
     }
     
     delegate: Toast {
-        Component.onCompleted: show(text, duration, info, is_error)
+        Component.onCompleted: show(text, duration, info, is_error, open_notifications_modal)
     }
 
     model: ListModel { id: model }

@@ -2,7 +2,7 @@ name: AtomicDex-Desktop CI
 
 on:
   pull_request:
-    types: [opened, synchronize, reopened]
+    types: [ opened, synchronize, reopened ]
   push:
     branches:
       - master
@@ -11,9 +11,45 @@ on:
 
 jobs:
 
-  linux-build:
-    name: Linux Build
-    runs-on: ubuntu-16.04
+  ci-flow:
+    name: ${{ matrix.name }}
+    runs-on: ${{ matrix.os }}
+
+    strategy:
+      matrix:
+        name: [
+            ubuntu-qt-5-15-0,
+            ubuntu-qt-5-15-1,
+            osx-qt-5-15-0,
+            osx-qt-5-15-1,
+            windows-10-qt-5-15-0,
+            windows-10-qt-5-15-1
+        ]
+
+        include:
+          - name: ubuntu-qt-5-15-0
+            os: ubuntu-16.04
+            qt: '5.15.0'
+
+          - name: ubuntu-qt-5-15-1
+            os: ubuntu-16.04
+            qt: '5.15.1'
+
+          - name: osx-qt-5-15-0
+            os: macos-latest
+            qt: '5.15.0'
+
+          - name: osx-qt-5-15-1
+            os: macos-latest
+            qt: '5.15.1'
+
+          - name: windows-10-qt-5-15-0
+            os: windows-latest
+            qt: '5.15.0'
+
+          - name: windows-10-qt-5-15-1
+            os: windows-latest
+            qt: '5.15.1'
 
     steps:
       - uses: actions/checkout@v2
@@ -22,157 +58,138 @@ jobs:
           submodules: 'true'
 
       - name: Install QT (Linux)
+        if: runner.os == 'Linux'
         uses: KomodoPlatform/install-qt-action@v2
         with:
-          version: '5.15.0'
+          version: ${{ matrix.qt }}
           host: 'linux'
           target: 'desktop'
           dir: '${{ github.workspace }}'
-          modules: 'qtcharts qtwidgets debug_info'
+          modules: 'qtcharts qtwidgets debug_info qtwebengine qtwebview'
           aqtversion: '==0.8'
           py7zrversion: '==0.6'
 
-      - name: Setup Nim (Linux)
+      - name: Install QT (MacOS)
+        if: runner.os == 'macOS'
+        uses: KomodoPlatform/install-qt-action@v2
+        with:
+          version: ${{ matrix.qt }}
+          host: 'mac'
+          target: 'desktop'
+          dir: '${{ github.workspace }}'
+          modules: 'qtcharts qtwidgets debug_info qtwebview qtwebengine'
+
+      - name: Install QT (Windows)
+        if: runner.os == 'Windows'
+        uses: KomodoPlatform/install-qt-action@v2
+        with:
+          version: ${{ matrix.qt }}
+          host: 'windows'
+          target: 'desktop'
+          arch: 'win64_msvc2019_64'
+          dir: 'C:\'
+          modules: 'qtcharts qtwidgets debug_info qtwebview qtwebengine'
+
+      - name: Install nim (Linux)
+        if: runner.os == 'Linux'
         uses: KomodoPlatform/setup-nim-action@v1.0.2
         with:
           nim-version: '1.2.0'
 
       - name: Install deps (Linux)
+        if: runner.os == 'Linux'
         env:
           DEBIAN_FRONTEND: noninteractive
         run: |
           echo ${{ github.sha }}
-          sudo apt-get update  # prevents repo404 errors on apt-remove below
-          sudo apt-get remove php* msodbcsql17 mysql*
-          sudo apt-get update
-          sudo ACCEPT_EULA=Y apt-get upgrade -y
-
-          # base deps
-          sudo apt-get install build-essential \
-                               libgl1-mesa-dev \
-                               ninja-build \
-                               curl \
-                               wget \
-                               software-properties-common \
-                               lsb-release \
-                               libpulse-dev \
-                               libtool \
-                               autoconf \
-                               unzip \
-                               libssl-dev \
-                               libxkbcommon-x11-0 \
-                               libxcb-icccm4 \
-                               libxcb-image0 \
-                               libxcb1-dev \
-                               libxcb-keysyms1-dev \
-                               libxcb-render-util0-dev \
-                               libxcb-xinerama0 \
-                               libgstreamer-plugins-base1.0-dev \
-                               git -y
-
-
-          # get llvm
-          wget https://apt.llvm.org/llvm.sh
-          chmod +x llvm.sh
-          sudo ./llvm.sh 10
-
-          # set clang version
-          sudo update-alternatives --install /usr/bin/clang++ clang++ /usr/bin/clang++-10 777
-          sudo update-alternatives --install /usr/bin/clang clang /usr/bin/clang-10 777
-
-          # set gnu compilers version
-          sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-9 777
-          sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-9 777
-
-
-
-          sudo apt-get update
-          sudo apt-get install libc++abi-10-dev libc++-10-dev -y
-
-          export CXXFLAGS=-stdlib=libc++
-          export LDFLAGS=-stdlib=libc++
-          export CXX=clang++-10
-          export CC=clang-10
-
-          # get right cmake version
-          wget https://github.com/Kitware/CMake/releases/download/v3.17.3/cmake-3.17.3-Linux-x86_64.tar.gz
-          tar xvf cmake-3.17.3-Linux-x86_64.tar.gz
-          cd cmake-3.17.3-Linux-x86_64
-          sudo cp -r * /usr/
-          sudo cp -r * /usr/local/
-          cmake --version
-
-          # get libwally
-          git clone https://github.com/KomodoPlatform/libwally-core.git
-          cd libwally-core
-          ./tools/autogen.sh
-          ./configure --disable-shared
-          sudo make -j3 install
-          cd ..
-
-          git clone https://github.com/oneapi-src/oneTBB.git
-          cd oneTBB
-          git checkout master
-          mkdir build_2
-          cd build_2
-          cmake -DCMAKE_BUILD_TYPE=Release -DTBB_TEST:BOOL=OFF ../
-          sudo make -j4 install
-          cd ../..
-
-      - name: prepare build (Linux)
-        run: |
-         # duplicating because got suspicion that update-alternatives doesnt save between steps
-
-          # set clang version
-          sudo update-alternatives --install /usr/bin/clang++ clang++ /usr/bin/clang++-10 777
-          sudo update-alternatives --install /usr/bin/clang clang /usr/bin/clang-10 777
-
-          # set gnu compilers version
-          sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-9 777
-          sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-9 777
+          sudo ./ci_tools_atomic_dex/ci_scripts/linux_script.sh
 
       - name: vcpkg deps (Linux)
+        if: runner.os == 'Linux'
         env: # Or as an environment variable
           CXXFLAGS: -stdlib=libc++
           LDFLAGS: -stdlib=libc++
-          CXX: clang++-10
-          CC: clang-10
-        uses: KomodoPlatform/run-vcpkg@v3
+          CXX: clang++-11
+          CC: clang-11
+        uses: KomodoPlatform/run-vcpkg@v5
         with:
-          vcpkgArguments: '@${{ github.workspace }}/.github/workflows/linux_response_file.txt'
+          vcpkgArguments: '@${{ github.workspace }}/.github/workflows/linux_response_file.txt --overlay-ports=${{ github.workspace }}/ci_tools_atomic_dex/vcpkg-custom-ports/ports'
           vcpkgDirectory: '${{ github.workspace }}/ci_tools_atomic_dex/vcpkg-repo'
           appendedCacheKey: ${{ hashFiles('.github/workflows/linux_response_file.txt') }}
 
-      - name: build (Linux)
+      - name: Install deps (MacOS)
+        if: runner.os == 'macOS'
         run: |
-          export QT_INSTALL_CMAKE_PATH=${{ github.workspace }}/Qt/5.15.0/gcc_64/lib/cmake
-          export QT_ROOT=${{ github.workspace }}/Qt/5.15.0
-          export PATH=${{ github.workspace }}/Qt/5.15.0/gcc_64/bin:$PATH
+          ./ci_tools_atomic_dex/ci_scripts/osx_script.sh
+
+      - name: vcpkg deps (MacOS)
+        if: runner.os == 'macOS'
+        env: # Or as an environment variable
+          CXX: /usr/local/opt/llvm@9/bin/clang++
+          CC: /usr/local/opt/llvm@9/bin/clang
+        uses: KomodoPlatform/run-vcpkg@v5
+        with:
+          vcpkgArguments: '@${{ github.workspace }}/.github/workflows/osx_response_file.txt --overlay-ports=${{ github.workspace }}/ci_tools_atomic_dex/vcpkg-custom-ports/ports'
+          vcpkgDirectory: '${{ github.workspace }}/ci_tools_atomic_dex/vcpkg-repo'
+          appendedCacheKey: ${{ hashFiles('.github/workflows/osx_response_file.txt') }}
+
+      - name: vcpkg deps (Windows)
+        if: runner.os == 'Windows'
+        uses: KomodoPlatform/run-vcpkg@v5
+        with:
+          vcpkgArguments: '@${{ github.workspace }}/.github/workflows/windows_response_file.txt --overlay-ports=${{ github.workspace }}/ci_tools_atomic_dex/vcpkg-custom-ports/ports'
+          vcpkgDirectory: '${{ github.workspace }}/ci_tools_atomic_dex/vcpkg-repo'
+          appendedCacheKey: ${{ hashFiles('.github/workflows/windows_response_file.txt') }}
+
+      - name: Build AtomicDEX (Linux)
+        if: runner.os == 'Linux'
+        run: |
+          export QT_INSTALL_CMAKE_PATH=${{ github.workspace }}/Qt/${{ matrix.qt }}/gcc_64/lib/cmake
+          export QT_ROOT=${{ github.workspace }}/Qt/${{ matrix.qt }}
+          export PATH=${{ github.workspace }}/Qt/${{ matrix.qt }}/gcc_64/bin:$PATH
           export PATH=$HOME/.nimble/bin:$PATH
           export CXXFLAGS=-stdlib=libc++
           export LDFLAGS=-stdlib=libc++
-          export CXX=clang++-10
-          export CC=clang-10
+          export CXX=clang++-11
+          export CC=clang-11
           cd ci_tools_atomic_dex
           nimble build -y
 
           ./ci_tools_atomic_dex build release
           ./ci_tools_atomic_dex bundle release
 
+      - name: Build AtomicDEX (MacOS)
+        if: runner.os == 'macOS'
+        run: |
+          export QT_INSTALL_CMAKE_PATH=${{ github.workspace }}/Qt/${{ matrix.qt }}/clang_64/lib/cmake
+          export QT_ROOT=${{ github.workspace }}/Qt/${{ matrix.qt }}
+          cd ci_tools_atomic_dex
+          nimble build -y
+          ./ci_tools_atomic_dex bundle release --osx_sdk=$HOME/sdk/MacOSX10.14.sdk --compiler=clang++
+          ls bundle-Release/atomicdex-desktop.dmg
+
+      - name: Build AtomicDEX (Windows)
+        if: runner.os == 'Windows'
+        shell: powershell
+        env:
+          QT_VERSION: ${{ matrix.qt }}
+        run: |
+          .\ci_tools_atomic_dex\ci_scripts\windows_script.ps1
 
       - name: Running Tests (Linux)
         env: # Or as an environment variable
           REPORT_CI_TOKEN: ${{ secrets.REPORT_CI_TOKEN_SECRET }}
         working-directory: ci_tools_atomic_dex
+        if: runner.os == 'Linux'
         run: |
-          export QT_INSTALL_CMAKE_PATH=${{ github.workspace }}/Qt/5.15.0/gcc_64/lib/cmake
-          export QT_ROOT=${{ github.workspace }}/Qt/5.15.0
-          export PATH=${{ github.workspace }}/Qt/5.15.0/gcc_64/bin:$PATH
+          export QT_INSTALL_CMAKE_PATH=${{ github.workspace }}/Qt/${{ matrix.qt }}/gcc_64/lib/cmake
+          export QT_ROOT=${{ github.workspace }}/Qt/${{ matrix.qt }}
+          export PATH=${{ github.workspace }}/Qt/${{ matrix.qt }}/gcc_64/bin:$PATH
           export PATH=$HOME/.nimble/bin:$PATH
           export CXXFLAGS=-stdlib=libc++
           export LDFLAGS=-stdlib=libc++
-          export CXX=clang++-10
-          export CC=clang-10
+          export CXX=clang++-11
+          export CC=clang-11
           echo "Running tests"
           ./ci_tools_atomic_dex tests release
           cd build-Release/bin/AntaraAtomicDexTestsAppDir/usr/bin
@@ -182,103 +199,14 @@ jobs:
           python upload.py --sha `git rev-parse HEAD` -n "[Doctest Linux]" --include='atomic-dex-tests-result.xml' --framework=doctest --merge ".*"
           echo "Uploading tests on Linux finished"
 
-      - name: Upload bundle artifact (Linux)
-        uses: actions/upload-artifact@v1
-        with:
-          name: dexpro-ubuntu-release.tar.gz
-          path: ./ci_tools_atomic_dex/bundle-Release/AntaraAtomicDexAppDir.tar.gz
-
-
-  macos-build:
-    name: MacOS Build
-    runs-on: macos-latest
-
-    steps:
-      - uses: actions/checkout@v2
-        with:
-          ref: ${{ github.event.pull_request.head.sha }}
-          submodules: 'true'
-
-      - name: Cache Qt (Mac)
-        id: cache-qt-mac
-        uses: actions/cache@v1
-        with:
-          path: '${{ github.workspace }}/Qt/5.15.0'
-          key: ${{ runner.os }}-qt
-
-      - name: Install QT (MacOS)
-        if: steps.cache-qt-mac.outputs.cache-hit != 'true'
-        uses: KomodoPlatform/install-qt-action@v2
-        with:
-          version: '5.15.0'
-          host: 'mac'
-          target: 'desktop'
-          dir: '${{ github.workspace }}'
-          modules: 'qtcharts qtwidgets debug_info'
-
-      - name: Install deps (MacOS)
-        run: |
-          brew install autoconf \
-                       automake \
-                       libtool \
-                       pkgconfig \
-                       wget \
-                       nim \
-                       cmake \
-                       ninja \
-                       git \
-                       boost \
-                       gcc \
-                       gnu-sed \
-                       llvm@9
-
-          export CC=/usr/local/opt/llvm@9/bin/clang
-
-          # get curl
-          git clone https://github.com/curl/curl.git
-          cd curl
-          git checkout curl-7_70_0
-          ./buildconf
-          ./configure --disable-shared --enable-static --without-libidn2 --without-ssl --without-nghttp2 --disable-ldap --with-darwinssl
-          make -j3 install
-          cd ../
-
-          git clone https://github.com/KomodoPlatform/libwally-core.git
-          cd libwally-core
-          ./tools/autogen.sh
-          ./configure --disable-shared
-          sudo make -j3 install
-          cd ..
-
-          # get SDKs 
-          git clone https://github.com/phracker/MacOSX-SDKs $HOME/sdk
-
-      - name: vcpkg deps (MacOS)
-        env: # Or as an environment variable
-          CXX: /usr/local/opt/llvm@9/bin/clang++
-          CC: /usr/local/opt/llvm@9/bin/clang
-        uses: KomodoPlatform/run-vcpkg@v3
-        with:
-          vcpkgArguments: '@${{ github.workspace }}/.github/workflows/osx_response_file.txt'
-          vcpkgDirectory: '${{ github.workspace }}/ci_tools_atomic_dex/vcpkg-repo'
-          appendedCacheKey: ${{ hashFiles('.github/workflows/osx_response_file.txt') }}
-
-      - name: Build (MacOS)
-        run: |
-          export QT_INSTALL_CMAKE_PATH=${{ github.workspace }}/Qt/5.15.0/clang_64/lib/cmake
-          export QT_ROOT=${{ github.workspace }}/Qt/5.15.0
-          cd ci_tools_atomic_dex
-          nimble build -y
-          ./ci_tools_atomic_dex bundle release --osx_sdk=$HOME/sdk/MacOSX10.13.sdk --compiler=/usr/local/opt/llvm@9/bin/clang++
-          ls bundle-Release/atomicdex-desktop.dmg
-
       - name: Running Tests (MacOS)
         env: # Or as an environment variable
           REPORT_CI_TOKEN: ${{ secrets.REPORT_CI_TOKEN_SECRET }}
         working-directory: ci_tools_atomic_dex
+        if: runner.os == 'macOS'
         run: |
-          export QT_INSTALL_CMAKE_PATH=${{ github.workspace }}/Qt/5.15.0/clang_64/lib/cmake
-          export QT_ROOT=${{ github.workspace }}/Qt/5.15.0
+          export QT_INSTALL_CMAKE_PATH=${{ github.workspace }}/Qt/${{ matrix.qt }}/clang_64/lib/cmake
+          export QT_ROOT=${{ github.workspace }}/Qt/${{ matrix.qt }}
           echo "Running tests"
           ./ci_tools_atomic_dex tests release
           cd build-Release/bin/atomicdex-desktop_tests.app/Contents/MacOS
@@ -288,87 +216,15 @@ jobs:
           python upload.py --sha `git rev-parse HEAD` -n "[Doctest MacOS]" --include='atomic-dex-tests-result.xml' --framework=doctest --merge ".*"
           echo "Uploading tests on OSX finished"
 
-
-      - name: Upload artifacts (MacOS)
-        uses: actions/upload-artifact@v1
-        with:
-          name: dexpro-mac-release.dmg
-          path: ./ci_tools_atomic_dex/bundle-Release/atomicdex-desktop.dmg
-
-  windows-build:
-    name: Win Build
-    runs-on: windows-latest
-
-    steps:
-      - uses: actions/checkout@v2
-        with:
-          ref: ${{ github.event.pull_request.head.sha }}
-          submodules: 'true'
-
-      - name: Install QT (Win)
-        uses: KomodoPlatform/install-qt-action@v2
-        with:
-          version: '5.15.0'
-          host: 'windows'
-          target: 'desktop'
-          arch: 'win64_msvc2019_64'
-          dir: 'C:\'
-          modules: 'qtcharts qtwidgets debug_info'
-
-      - name: vcpkg deps (Windows)
-        uses: KomodoPlatform/run-vcpkg@v3
-        with:
-          vcpkgArguments: '@${{ github.workspace }}/.github/workflows/windows_response_file.txt'
-          vcpkgDirectory: '${{ github.workspace }}/ci_tools_atomic_dex/vcpkg-repo'
-          appendedCacheKey: ${{ hashFiles('.github/workflows/windows_response_file.txt') }}
-
-      - name: Build (Win)
-        shell: powershell
-        run: |
-          Set-ExecutionPolicy RemoteSigned -scope CurrentUser
-          
-          $DWFILE = ($PWD | select -exp Path) + '\nim-1.2.6.zip'
-          (New-Object System.Net.WebClient).DownloadFile('https://github.com/KomodoPlatform/nim_kmd_package_list/raw/master/nim-1.2.6_x64.zip', $DWFILE)
-          $DWFOLDER = ($PWD | select -exp Path)
-          Expand-Archive -LiteralPath $DWFILE -DestinationPath $DWFOLDER
-          $ENV:PATH=$ENV:PATH+';'+($PWD | select -exp Path)+'\nim-1.2.6\bin;'+$ENV:UserProfile+'.nimble\bin'
-          & $DWFOLDER\nim-1.2.6\finish.exe -y
-          
-          Invoke-Expression (New-Object System.Net.WebClient).DownloadString('https://get.scoop.sh')
-          scoop install llvm --global
-          scoop install ninja --global
-          scoop install cmake --global
-          scoop install git --global
-          scoop install 7zip  --global
-
-          scoop cache rm 7zip
-          scoop cache rm git
-          scoop cache rm cmake
-          scoop cache rm ninja
-          scoop cache rm llvm
-          scoop cache rm nim
-
-          $Env:QT_INSTALL_CMAKE_PATH = "C:\Qt\5.15.0\msvc2019_64"
-
-          cd ci_tools_atomic_dex
-
-          $file = 'src\generate.nim'
-          $regex = '(?<=g_vcpkg_cmake_script_path & ")[^"]*'
-          (Get-Content $file) -replace $regex, ' -DVCPKG_TARGET_TRIPLET=x64-windows ' | Set-Content $file
-          nimble build -y
-
-          cmd /c '.\ci_tools_atomic_dex.exe build release 2>&1'
-          cmd /c '.\ci_tools_atomic_dex.exe bundle release 2>&1'
-          ls bundle-Release/bundle.zip
-
       - name: Running Tests (Windows)
         shell: powershell
         env: # Or as an environment variable
           REPORT_CI_TOKEN: ${{ secrets.REPORT_CI_TOKEN_SECRET }}
         working-directory: ci_tools_atomic_dex
+        if: runner.os == 'Windows'
         run: |
           echo "Running tests"
-          $Env:QT_INSTALL_CMAKE_PATH = "C:\Qt\5.15.0\msvc2019_64"
+          $Env:QT_INSTALL_CMAKE_PATH = "C:\Qt\${{ matrix.qt }}\msvc2019_64"
           cmd /c '.\ci_tools_atomic_dex.exe tests release 2>&1'
           cd build-Release
           cd bin
@@ -376,8 +232,48 @@ jobs:
           Invoke-WebRequest -Uri https://report.ci/upload.py -OutFile upload.py
           python upload.py --sha $(git rev-parse HEAD) -n "[Doctest Windows]" --include='atomic-dex-tests-result.xml' --framework=doctest --merge ".*"
 
-      - name: Upload artifacts (Windows)
-        uses: actions/upload-artifact@v1
+      - name: Upload env variable for artifacts (Linux)
+        if: runner.os == 'Linux'
+        run: |
+          ls ./bundled/linux/
+          echo "artifact_name_zstd=atomicdex-desktop-${{ matrix.name }}-$(git rev-parse --short HEAD).tar.zst" >> $GITHUB_ENV
+          echo "artifact_name_zip=atomicdex-desktop-${{ matrix.name }}-$(git rev-parse --short HEAD).zip" >> $GITHUB_ENV
+          echo "artifact_name_appimage=atomicdex-desktop-${{ matrix.name }}-$(git rev-parse --short HEAD)-x86_64.AppImage" >> $GITHUB_ENV
+          echo "target_name_zstd=atomicdex-desktop-linux-$(git rev-parse --short HEAD).tar.zst" >> $GITHUB_ENV
+          echo "target_name_zip=atomicdex-desktop-linux-$(git rev-parse --short HEAD).zip" >> $GITHUB_ENV
+          echo "target_name_appimage=atomicdex-desktop-$(git rev-parse --short HEAD)-x86_64.AppImage" >> $GITHUB_ENV
+
+      - name: Upload bundle artifact (Linux ZSTD)
+        if: runner.os == 'Linux'
+        uses: actions/upload-artifact@v2
         with:
-          name: dexpro-win-release.zip
+          name: ${{ env.artifact_name_zstd }}
+          path: ./bundled/linux/${{ env.target_name_zstd }}
+
+      - name: Upload bundle artifact (Linux ZIP)
+        if: runner.os == 'Linux'
+        uses: actions/upload-artifact@v2
+        with:
+          name: ${{ env.artifact_name_zip }}
+          path: ./bundled/linux/${{ env.target_name_zip }}
+
+      - name: Upload bundle artifact (Linux AppImage)
+        if: runner.os == 'Linux'
+        uses: actions/upload-artifact@v2
+        with:
+          name: ${{ env.artifact_name_appimage }}
+          path: ./bundled/linux/${{ env.target_name_appimage }}
+
+      - name: Upload artifacts (MacOS)
+        if: runner.os == 'macOS'
+        uses: actions/upload-artifact@v2
+        with:
+          name: ${{ matrix.name }}-release.dmg
+          path: ./ci_tools_atomic_dex/bundle-Release/atomicdex-desktop.dmg
+
+      - name: Upload artifacts (Windows)
+        if: runner.os == 'Windows'
+        uses: actions/upload-artifact@v2
+        with:
+          name: ${{ matrix.name }}-release.zip
           path: ./ci_tools_atomic_dex/bundle-Release/bundle.zip

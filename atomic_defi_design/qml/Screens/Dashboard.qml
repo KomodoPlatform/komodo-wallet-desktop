@@ -17,6 +17,7 @@ import "../Sidebar"
 Item {
     id: dashboard
 
+    property alias notifications_modal: notifications_modal
     Layout.fillWidth: true
 
     function getMainPage() {

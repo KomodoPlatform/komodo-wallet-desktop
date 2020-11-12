@@ -11,7 +11,7 @@ ColumnLayout {
 
     Layout.fillWidth: true
 
-    DefaultText {
+    TitleText {
         id: title
     }
 

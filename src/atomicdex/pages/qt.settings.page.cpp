@@ -26,11 +26,12 @@
 
 //! Project Headers
 #include "atomicdex/events/events.hpp"
+#include "atomicdex/managers/qt.wallet.manager.hpp"
+#include "atomicdex/pages/qt.settings.page.hpp"
 #include "atomicdex/services/mm2/mm2.service.hpp"
 #include "atomicdex/utilities/global.utilities.hpp"
 #include "atomicdex/utilities/qt.bindings.hpp"
 #include "atomicdex/utilities/qt.utilities.hpp"
-#include "qt.settings.page.hpp"
 
 //! Constructo destructor
 namespace atomic_dex
@@ -146,6 +147,7 @@ namespace atomic_dex
             spdlog::info("change currency {} to {}", m_config.current_currency, current_currency.toStdString());
             atomic_dex::change_currency(m_config, current_currency.toStdString());
             this->dispatcher_.trigger<update_portfolio_values>();
+            this->dispatcher_.trigger<current_currency_changed>();
             emit onCurrencyChanged();
             emit onCurrencySignChanged();
             emit onFiatSignChanged();
@@ -244,7 +246,7 @@ namespace atomic_dex
     QString
     settings_page::get_custom_coins_icons_path() const noexcept
     {
-        return QString::fromStdString(get_runtime_coins_path().string());
+        return QString::fromStdString(utils::get_runtime_coins_path().string());
     }
 
     void
@@ -261,13 +263,16 @@ namespace atomic_dex
             out["adex_cfg"]     = nlohmann::json::object();
             if (resp.status_code() == 200)
             {
-                nlohmann::json  body_json = nlohmann::json::parse(body).at("result")[0];
-                std::string     ticker    = body_json.at("symbol").get<std::string>();
-                const fs::path& suffix    = fs::path(icon_filepath.toStdString()).extension();
-                fs::copy_file(
-                    icon_filepath.toStdString(),
-                    fs::path(get_custom_coins_icons_path().toStdString()) / (boost::algorithm::to_lower_copy(ticker) + suffix.string()),
-                    fs::copy_option::overwrite_if_exists);
+                nlohmann::json body_json = nlohmann::json::parse(body).at("result")[0];
+                auto           ticker    = body_json.at("symbol").get<std::string>();
+                if (not icon_filepath.isEmpty())
+                {
+                    const fs::path& suffix = fs::path(icon_filepath.toStdString()).extension();
+                    fs::copy_file(
+                        icon_filepath.toStdString(),
+                        fs::path(get_custom_coins_icons_path().toStdString()) / (boost::algorithm::to_lower_copy(ticker) + suffix.string()),
+                        get_override_options());
+                }
                 if (not is_this_ticker_present_in_raw_cfg(QString::fromStdString(ticker)))
                 {
                     out["mm2_cfg"]["protocol"]                              = nlohmann::json::object();
@@ -276,7 +281,7 @@ namespace atomic_dex
                     out["mm2_cfg"]["protocol"]["protocol_data"]["platform"] = "ETH";
                     std::string out_address                                 = contract_address.toStdString();
                     boost::algorithm::to_lower(out_address);
-                    to_eth_checksum(out_address);
+                    utils::to_eth_checksum(out_address);
                     out["mm2_cfg"]["protocol"]["protocol_data"]["contract_address"] = out_address;
                     out["mm2_cfg"]["rpc_port"]                                      = 80;
                     out["mm2_cfg"]["coin"]                                          = ticker;
@@ -300,6 +305,7 @@ namespace atomic_dex
                     out["adex_cfg"][ticker]["active"]            = false;
                     out["adex_cfg"][ticker]["currently_enabled"] = false;
                     out["adex_cfg"][ticker]["is_custom_coin"]    = true;
+                    out["adex_cfg"][ticker]["mm2_backup"]        = out["mm2_cfg"];
                 }
             }
             else
@@ -364,5 +370,27 @@ namespace atomic_dex
     settings_page::set_qml_engine(QQmlApplicationEngine* engine) noexcept
     {
         m_qml_engine = engine;
+    }
+
+    void
+    settings_page::reset_coin_cfg()
+    {
+        using namespace std::string_literals;
+        const std::string wallet_name     = qt_wallet_manager::get_default_wallet_name().toStdString();
+        const std::string wallet_cfg_file = std::string(atomic_dex::get_raw_version()) + "-coins"s + "."s + wallet_name + ".json"s;
+        const fs::path    wallet_cfg_path = utils::get_atomic_dex_config_folder() / wallet_cfg_file;
+        if (fs::exists(wallet_cfg_path))
+        {
+            fs_error_code ec;
+            fs::remove(wallet_cfg_path, ec);
+            if (ec)
+            {
+                spdlog::error("error when removing {}: {}", wallet_cfg_path.string(), ec.message());
+            }
+            else
+            {
+                spdlog::info("Successfully removed {}", wallet_cfg_path.string());
+            }
+        }
     }
 } // namespace atomic_dex

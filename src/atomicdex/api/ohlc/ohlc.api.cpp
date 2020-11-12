@@ -14,13 +14,11 @@
  *                                                                            *
  ******************************************************************************/
 
-#include "src/atomicdex/pch.hpp"
-
 //! Deps
 #include <nlohmann/json.hpp>
 
 //! Project Headers
-#include "ohlc.api.hpp"
+#include "atomicdex/api/ohlc/ohlc.api.hpp"
 
 namespace atomic_dex
 {

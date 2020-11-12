@@ -16,9 +16,6 @@
 
 #pragma once
 
-//! PCH
-#include "atomicdex/pch.hpp"
-
 //! QT Headers
 #include <QAbstractListModel>
 #include <QApplication>
@@ -31,6 +28,7 @@
 #include <QVariantMap>
 
 //! Deps
+#include <entt/core/attribute.h>
 #include <antara/gaming/world/world.app.hpp>
 
 //! Project Headers
@@ -59,7 +57,7 @@ Q_DECLARE_METATYPE(portfolio_page_ptr)
 
 namespace atomic_dex
 {
-    struct application : public QObject, public ag::world::app
+    struct ENTT_API application : public QObject, public ag::world::app
     {
         Q_OBJECT
 
@@ -224,5 +222,6 @@ namespace atomic_dex
         void ipCheckerChanged();
       public slots:
         void exit_handler();
+        void app_state_changed();
     };
 } // namespace atomic_dex

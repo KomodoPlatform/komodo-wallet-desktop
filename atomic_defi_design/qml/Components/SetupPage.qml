@@ -9,6 +9,7 @@ Item {
     property alias image_path: image.source
     property alias image_scale: image.scale
     property alias content: inner_space.sourceComponent
+    property alias bottom_content: bottom_content.sourceComponent
     property double image_margin: 5
 
     ColumnLayout {
@@ -45,6 +46,11 @@ Item {
             Loader {
                 id: inner_space
             }
+        }
+
+        Loader {
+            id: bottom_content
+            Layout.alignment: Qt.AlignHCenter
         }
     }
 }

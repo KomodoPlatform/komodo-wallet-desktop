@@ -16,8 +16,11 @@
 
 #pragma once
 
-//! QT  
+//! QT
 #include <QObject>
+
+//! STD
+#include <optional>
 
 //! Deps
 #include <nlohmann/json_fwd.hpp>
@@ -56,6 +59,7 @@ namespace atomic_dex
         std::vector<std::string>        explorer_url; ///< usefull for transaction, take this url and append transaction id
         std::string                     tx_uri{"tx/"};
         std::string                     address_url{"address/"};
+        std::optional<nlohmann::json>   custom_backup;
     };
 
     void from_json(const nlohmann::json& j, coin_config& cfg);
