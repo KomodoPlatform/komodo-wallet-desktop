@@ -24,8 +24,8 @@ namespace atomic_dex
 {
     struct addressbook_contact_wallet_info
     {
-        std::string                        type;      /// \brief The type of wallet (e.g. BTC, erc-20, LTC...).
-        std::map<std::string, std::string> addresses; /// \brief Every address associated to a name (e.g. "Binance wallet":"address_value").
+        std::string                                  type;      /// \brief The type of wallet (e.g. BTC, erc-20, LTC...).
+        std::unordered_map<std::string, std::string> addresses; /// \brief Every address associated to a name (e.g. "Binance wallet":"address_value").
     };
 
     void to_json(nlohmann::json& j, const addressbook_contact_wallet_info& cfg);
