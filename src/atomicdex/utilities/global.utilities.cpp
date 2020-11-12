@@ -65,6 +65,12 @@ namespace atomic_dex::utils
 #endif
         return appdata_path;
     }
+    
+    fs::path
+    get_atomic_dex_addressbook_folder()
+    {
+        return get_atomic_dex_data_folder() / "addressbook";
+    }
 
     fs::path
     get_runtime_coins_path() noexcept

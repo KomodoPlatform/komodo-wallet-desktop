@@ -52,8 +52,13 @@ namespace atomic_dex::utils
             return date::format(std::move(format), tp);
         }
     }
-
+    
     fs::path get_atomic_dex_data_folder();
+    
+    /// \brief  Gets the path where addressbook configs are stored.
+    /// \return An fs::path object.
+    [[nodiscard]]
+    fs::path get_atomic_dex_addressbook_folder();
 
     fs::path get_runtime_coins_path() noexcept;
 
