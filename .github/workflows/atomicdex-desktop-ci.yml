@@ -87,14 +87,10 @@ jobs:
           echo "DEBIAN_FRONTEND=noninteractive" >> $GITHUB_ENV
           echo ${{ github.sha }}
           sudo ./ci_tools_atomic_dex/ci_scripts/linux_script.sh
-          export CXXFLAGS=-stdlib=libc++
-          export LDFLAGS=-stdlib=libc++
-          export CXX=clang++-11
-          export CC=clang-11
 
       - name: vcpkg deps (Linux)
         if: runner.os == 'Linux'
-        uses: smk762/run-vcpkg@v5
+        uses: KomodoPlatform/run-vcpkg@v5
         with:
           vcpkgArguments: '@${{ github.workspace }}/.github/workflows/linux_response_file.txt --overlay-ports=${{ github.workspace }}/ci_tools_atomic_dex/vcpkg-custom-ports/ports'
           vcpkgDirectory: '${{ github.workspace }}/ci_tools_atomic_dex/vcpkg-repo'
@@ -104,12 +100,10 @@ jobs:
         if: runner.os == 'macOS'
         run: |
           ./ci_tools_atomic_dex/ci_scripts/osx_script.sh
-          export CXX=/usr/local/opt/llvm@9/bin/clang++
-          export CC=/usr/local/opt/llvm@9/bin/clang
 
       - name: vcpkg deps (MacOS)
         if: runner.os == 'macOS'
-        uses: smk762/run-vcpkg@v5
+        uses: KomodoPlatform/run-vcpkg@v5
         with:
           vcpkgArguments: '@${{ github.workspace }}/.github/workflows/osx_response_file.txt --overlay-ports=${{ github.workspace }}/ci_tools_atomic_dex/vcpkg-custom-ports/ports'
           vcpkgDirectory: '${{ github.workspace }}/ci_tools_atomic_dex/vcpkg-repo'
@@ -117,7 +111,7 @@ jobs:
 
       - name: vcpkg deps (Windows)
         if: runner.os == 'Windows'
-        uses: smk762/run-vcpkg@v5
+        uses: KomodoPlatform/run-vcpkg@v5
         with:
           vcpkgArguments: '@${{ github.workspace }}/.github/workflows/windows_response_file.txt --overlay-ports=${{ github.workspace }}/ci_tools_atomic_dex/vcpkg-custom-ports/ports'
           vcpkgDirectory: '${{ github.workspace }}/ci_tools_atomic_dex/vcpkg-repo'
