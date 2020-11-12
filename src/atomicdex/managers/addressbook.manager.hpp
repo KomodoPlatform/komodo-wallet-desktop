@@ -17,20 +17,21 @@
 #pragma once
 
 //! Project Headers
-#include "atomicdex/config/wallet.cfg.hpp"
+#include "atomicdex/config/addressbook.cfg.hpp"
 
 namespace atomic_dex
 {
     class addressbook_manager
     {
-        wallet_cfg& wallet_configuration;
+        std::string    m_wallet_name;
+        nlohmann::json m_data;
         
       public:
         /// \defgroup Constructors
         /// {@
         
-        explicit addressbook_manager(wallet_cfg& wallet_configuration) noexcept;
-        ~addressbook_manager() = default;
+        addressbook_manager(const std::string& wallet_name) noexcept;
+        ~addressbook_manager() noexcept = default;
         
         /// @} End of Constructors section.
         
@@ -40,16 +41,8 @@ namespace atomic_dex
         /// \brief Creates a new contact.
         /// \param name         The name of the contact.
         /// \param wallets_info The address information list of the contact.
-        void add_contact(const std::string& name, const std::vector<addressbook_contact_wallet_info>& wallets_info);
-    
-        /// \brief Creates a new contact.
-        /// \param name         The name of the contact.
-        /// \param wallets_info The address information list of the contact.
-        /// \param categories   The categories of the contact.
-        void add_contact(const std::string& name,
-                         const std::vector<addressbook_contact_wallet_info>& wallets_info,
-                         const std::vector<std::string>& categories);
-    
+        void add_contact(const std::string& name);
+
         /// \brief   Removes a contact.
         /// \warning If the contact does not exist yet, the behavior is undefined.
         /// \param   name The name of the targeted contact.
@@ -57,7 +50,7 @@ namespace atomic_dex
     
         /// \brief Removes every contact.
         void remove_all_contacts();
-    
+        
         /// \brief   Changes the name of a contact.
         /// \warning If the contact does not exist, the behavior is undefined.
         /// \param   name     Current name of the contact.
@@ -109,27 +102,36 @@ namespace atomic_dex
         /// \brief   Gets a contact from its name.
         /// \warning If the contact does not exist yet, the behavior is undefined.
         /// \param   name Name of the contact.
-        /// \return  A const reference to an addressbook_contact.
         [[nodiscard]]
-        const addressbook_contact& get_contact(const std::string& name) const noexcept;
+        const nlohmann::json& get_contact(const std::string& name) const noexcept;
         
         /// \brief   Gets a contact from its name.
         /// \warning If the contact does not exist yet, the behavior is undefined.
         /// \param   name Name of the contact.
-        /// \return  A reference to an addressbook_contact.
         [[nodiscard]]
-        addressbook_contact& get_contact(const std::string& name) noexcept;
+        nlohmann::json& get_contact(const std::string& name) noexcept;
+
+        [[nodiscard]]
+        /// \brief  Gets the existing contacts.
+        const nlohmann::json& get_contacts() const noexcept;
+    
+        [[nodiscard]]
+        const nlohmann::json& get_wallets_info(const std::string& name) const;
         
         [[nodiscard]]
-        addressbook_contact_wallet_info& get_contact_wallet_info(const std::string& name, const std::string& type);
+        nlohmann::json& get_wallets_info(const std::string& name);
+    
+        [[nodiscard]]
+        const nlohmann::json& get_wallet_info(const std::string& name, const std::string& type) const;
         
         [[nodiscard]]
-        addressbook_contact_wallet_info& get_or_create_contact_wallet_info(const std::string& name, const std::string& type);
+        nlohmann::json& get_wallet_info(const std::string& name, const std::string& type);
         
         [[nodiscard]]
-        /// \brief  Gets the existings contacts.
-        /// \return A reference to an std::vector of addressbook_contact objects.
-        const std::vector<addressbook_contact>& get_contacts() const noexcept;
+        const nlohmann::json& get_categories(const std::string& name) const;
+        
+        [[nodiscard]]
+        nlohmann::json& get_categories(const std::string& name);
         
         /// @} End of Accessors section.
         
@@ -150,6 +152,22 @@ namespace atomic_dex
         [[nodiscard]]
         bool has_wallet_info(const std::string& name, const std::string& type) const noexcept;
         
+        /// \brief   Tells if a contact belong to a category.
+        /// \warning If the contact does not exist yet, the behavior is undefined.
+        /// \param   name     Contact name.
+        /// \param   category A category.
+        /// \return  True if the contact belongs to the category, false otherwise.
+        [[nodiscard]]
+        bool has_category(const std::string& name, const std::string& category) const noexcept;
+        
         /// @} End of Lookup section.
+        
+        /// \defgroup Misc
+        /// {@
+        
+        /// \brief Saves the current state of the addressbook inside the configuration file.
+        void update_configuration() const;
+        
+        /// @} End of Misc section.
     };
 }

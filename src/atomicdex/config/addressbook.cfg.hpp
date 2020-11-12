@@ -13,32 +13,15 @@
  * Removal or modification of this copyright notice is prohibited.            *
  *                                                                            *
  ******************************************************************************/
-
+ 
 #pragma once
 
-//! Deps
-#include <nlohmann/json_fwd.hpp>
-#include <boost/thread/synchronized_value.hpp>
+//! Deps.
+#include <nlohmann/json.hpp>
 
 namespace atomic_dex
 {
-    struct transactions_contents
-    {
-        std::string note;
-        std::string category;
-    };
-
-    void to_json(nlohmann::json& j, const transactions_contents& cfg);
-    void from_json(const nlohmann::json& j, transactions_contents& cfg);
-
-    struct wallet_cfg
-    {
-        using t_synchronized_transactions_details = boost::synchronized_value<std::unordered_map<std::string, transactions_contents>>;
-        std::string                         name{};
-        std::string                         protection_pass{"default_protection_pass"};
-        t_synchronized_transactions_details transactions_details;
-    };
-
-    void from_json(const nlohmann::json& j, wallet_cfg& cfg);
-    void to_json(nlohmann::json& j, const wallet_cfg& cfg);
-} // namespace atomic_dex
+    nlohmann::json load_addressbook_cfg(const std::string& wallet_name);
+    
+    void update_addressbook_cfg(const nlohmann::json& json, const std::string& wallet_name);
+}

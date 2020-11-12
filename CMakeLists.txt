@@ -154,6 +154,7 @@ target_sources(atomicdex-desktop_shared_deps PRIVATE
         ${CMAKE_SOURCE_DIR}/src/atomicdex/config/app.cfg.cpp
         ${CMAKE_SOURCE_DIR}/src/atomicdex/config/coins.cfg.cpp
         ${CMAKE_SOURCE_DIR}/src/atomicdex/config/wallet.cfg.cpp
+        ${CMAKE_SOURCE_DIR}/src/atomicdex/config/addressbook.cfg.cpp
 
         ##! Managers
         ${CMAKE_SOURCE_DIR}/src/atomicdex/managers/notification.manager.cpp

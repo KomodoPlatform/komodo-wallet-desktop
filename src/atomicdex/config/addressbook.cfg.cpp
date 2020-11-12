@@ -13,32 +13,43 @@
  * Removal or modification of this copyright notice is prohibited.            *
  *                                                                            *
  ******************************************************************************/
+ 
+//! STD
+#include <fstream> //> std::ifstream, std::ofstream.
 
-#pragma once
-
-//! Deps
-#include <nlohmann/json_fwd.hpp>
-#include <boost/thread/synchronized_value.hpp>
+//! Project Headers
+#include "addressbook.cfg.hpp"
+#include "atomicdex/utilities/global.utilities.hpp"
 
 namespace atomic_dex
 {
-    struct transactions_contents
+    nlohmann::json load_addressbook_cfg(const std::string& wallet_name)
     {
-        std::string note;
-        std::string category;
-    };
-
-    void to_json(nlohmann::json& j, const transactions_contents& cfg);
-    void from_json(const nlohmann::json& j, transactions_contents& cfg);
-
-    struct wallet_cfg
+        nlohmann::json out;
+        fs::path       source_folder{utils::get_atomic_dex_addressbook_folder()};
+        fs::path       in_path      {source_folder / wallet_name};
+        
+        utils::create_if_doesnt_exist(source_folder);
+        {
+            std::ifstream input{in_path.string()};
+            
+            assert(input.is_open());
+            input >> out;
+            return out;
+        }
+    }
+    
+    void update_addressbook_cfg(const nlohmann::json& in, const std::string& wallet_name)
     {
-        using t_synchronized_transactions_details = boost::synchronized_value<std::unordered_map<std::string, transactions_contents>>;
-        std::string                         name{};
-        std::string                         protection_pass{"default_protection_pass"};
-        t_synchronized_transactions_details transactions_details;
-    };
-
-    void from_json(const nlohmann::json& j, wallet_cfg& cfg);
-    void to_json(nlohmann::json& j, const wallet_cfg& cfg);
-} // namespace atomic_dex
+        fs::path out_folder{utils::get_atomic_dex_data_folder()};
+        fs::path out_path  {out_folder / wallet_name};
+        
+        utils::create_if_doesnt_exist(out_path);
+        {
+            std::ofstream output{out_path.string(), std::ios::trunc};
+            
+            assert(output.is_open());
+            output << in;
+        }
+    }
+}

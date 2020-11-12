@@ -30,22 +30,6 @@ namespace atomic_dex
         {
             j.at("protection_pass").get_to(cfg.protection_pass);
         }
-        if (j.contains("addressbook_contacts"))
-        {
-            for (const auto& cur: j.at("addressbook_contacts"))
-            {
-                addressbook_contact current_contact;
-                cur.at("name").get_to(current_contact.name);
-                for (const auto& cur_wallet: cur.at("wallets_info"))
-                {
-                    addressbook_contact_wallet_info wallet_info;
-                    cur_wallet.at("type").get_to(wallet_info.type);
-                    cur_wallet.at("addresses").get_to(wallet_info.addresses);
-                    current_contact.wallets_info.emplace_back(std::move(wallet_info));
-                }
-                cfg.addressbook_contacts.emplace_back(std::move(current_contact));
-            }
-        }
         if (j.contains("transactions_details"))
         {
             cfg.transactions_details = j.at("transactions_details").get<decltype(cfg.transactions_details)::value_type>();
@@ -53,26 +37,10 @@ namespace atomic_dex
     }
 
     void
-    to_json(nlohmann::json& j, const addressbook_contact_wallet_info& cfg)
-    {
-        j["type"]      = cfg.type;
-        j["addresses"] = cfg.addresses;
-    }
-
-    void
-    to_json(nlohmann::json& j, const addressbook_contact& cfg)
-    {
-        j["name"]         = cfg.name;
-        j["wallets_info"] = cfg.wallets_info;
-        j["categories"]   = cfg.categories;
-    }
-
-    void
     to_json(nlohmann::json& j, const wallet_cfg& cfg)
     {
         j["name"]                 = cfg.name;
         j["protection_pass"]      = cfg.protection_pass;
-        j["addressbook_contacts"] = cfg.addressbook_contacts;
         j["transactions_details"] = cfg.transactions_details.get();
     }
 
