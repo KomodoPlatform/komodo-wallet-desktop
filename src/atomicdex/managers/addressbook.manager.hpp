@@ -58,6 +58,12 @@ namespace atomic_dex
         /// \brief Removes every contact.
         void remove_all_contacts();
     
+        /// \brief   Changes the name of a contact.
+        /// \warning If the contact does not exist, the behavior is undefined.
+        /// \param   name     Current name of the contact.
+        /// \param   new_name New name to use.
+        void change_contact_name(const std::string& name, const std::string& new_name);
+    
         /// \brief   Sets or creates wallet information for a contact.
         /// \warning If the contact does not exist yet, the behavior is undefined.
         /// \param   name    The name of the contact.

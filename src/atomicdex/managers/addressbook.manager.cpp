@@ -53,6 +53,13 @@ namespace atomic_dex
         wallet_configuration.addressbook_contacts.clear();
     }
     
+    void addressbook_manager::change_contact_name(const std::string& name, const std::string& new_name)
+    {
+        auto& contact = get_contact(name);
+        
+        contact.name = new_name;
+    }
+    
     void addressbook_manager::set_contact_wallet_info(
         const std::string& name, const std::string& type, const std::string& key, const std::string& address)
     {
