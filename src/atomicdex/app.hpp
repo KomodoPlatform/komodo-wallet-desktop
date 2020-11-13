@@ -43,6 +43,7 @@
 #include "atomicdex/pages/qt.settings.page.hpp"
 #include "atomicdex/pages/qt.trading.page.hpp"
 #include "atomicdex/pages/qt.wallet.page.hpp"
+#include "atomicdex/pages/qt.addressbook.page.hpp"
 #include "atomicdex/services/internet/internet.checker.service.hpp"
 #include "atomicdex/services/ip/ip.checker.service.hpp"
 #include "atomicdex/services/mm2/mm2.service.hpp"
@@ -74,6 +75,7 @@ namespace atomic_dex
         Q_PROPERTY(trading_page* trading_pg READ get_trading_page NOTIFY tradingPageChanged)
         Q_PROPERTY(wallet_page* wallet_pg READ get_wallet_page NOTIFY walletPageChanged)
         Q_PROPERTY(settings_page* settings_pg READ get_settings_page NOTIFY settingsPageChanged)
+        Q_PROPERTY(addressbook_page* addressbook_pg READ get_addressbook_page NOTIFY addressbookPageChanged)
         Q_PROPERTY(QString wallet_default_name READ get_wallet_default_name WRITE set_wallet_default_name NOTIFY onWalletDefaultNameChanged)
         Q_PROPERTY(QString initial_loading_status READ get_status WRITE set_status NOTIFY onStatusChanged)
 
@@ -138,6 +140,7 @@ namespace atomic_dex
         notification_manager*      get_notification_manager() const noexcept;
         trading_page*              get_trading_page() const noexcept;
         settings_page*             get_settings_page() const noexcept;
+        addressbook_page*          get_addressbook_page() const noexcept;
         internet_service_checker*  get_internet_checker() const noexcept;
         ip_service_checker*        get_ip_checker() const noexcept;
         QVariantList               get_enabled_coins() const noexcept;
@@ -218,6 +221,7 @@ namespace atomic_dex
         void ordersChanged();
         void tradingPageChanged();
         void settingsPageChanged();
+        void addressbookPageChanged();
         void internetCheckerChanged();
         void ipCheckerChanged();
       public slots:

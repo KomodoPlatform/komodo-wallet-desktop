@@ -42,16 +42,16 @@ namespace atomic_dex
         QVariant left_data  = sourceModel()->data(source_left, role);
         QVariant right_data = sourceModel()->data(source_right, role);
 
-        switch (static_cast<atomic_dex::addressbook_model::AddressBookRoles>(role))
-        {
-        case addressbook_model::SubModelRole:
-            QObject*       left_obj      = qvariant_cast<QObject*>(left_data);
-            contact_model* left_contact  = qobject_cast<contact_model*>(left_obj);
-            QObject*       right_obj     = qvariant_cast<QObject*>(right_data);
-            contact_model* right_contact = qobject_cast<contact_model*>(right_obj);
-            spdlog::trace("comparing {} to {}", left_contact->get_name().toLower().toStdString(), right_contact->get_name().toLower().toStdString());
-            return left_contact->get_name().toLower() < right_contact->get_name().toLower();
-        }
+//        switch (static_cast<atomic_dex::addressbook_model::AddressBookRoles>(role))
+//        {
+//        case addressbook_model::NameRole:
+//            QObject*       left_obj      = qvariant_cast<QObject*>(left_data);
+//            contact_model* left_contact  = qobject_cast<contact_model*>(left_obj);
+//            QObject*       right_obj     = qvariant_cast<QObject*>(right_data);
+//            contact_model* right_contact = qobject_cast<contact_model*>(right_obj);
+//            spdlog::trace("comparing {} to {}", left_contact->get_name().toLower().toStdString(), right_contact->get_name().toLower().toStdString());
+//            return left_contact->get_name().toLower() < right_contact->get_name().toLower();
+//        }
         return false;
     }
 } // namespace atomic_dex

@@ -24,14 +24,15 @@ namespace atomic_dex
     class addressbook_proxy_model final : public QSortFilterProxyModel
     {
         Q_OBJECT
-      public:
+        
+    public:
         //! Constructor
         addressbook_proxy_model(QObject* parent);
 
         //! Destructor
         ~addressbook_proxy_model() final;
 
-      protected:
+    protected:
         //! Override member functions
         [[nodiscard]] bool lessThan(const QModelIndex& source_left, const QModelIndex& source_right) const final;
     };

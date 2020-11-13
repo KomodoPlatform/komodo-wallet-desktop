@@ -52,7 +52,7 @@ namespace atomic_dex
         
         /// @} End of Constructors section.
     
-        //! Public override
+        /// \brief pre_update_system implementation.
         void update() noexcept final;
 
         /// \defgroup QML API

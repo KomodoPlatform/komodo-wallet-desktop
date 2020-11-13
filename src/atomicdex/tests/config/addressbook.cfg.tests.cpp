@@ -13,16 +13,4 @@
  * Removal or modification of this copyright notice is prohibited.            *
  *                                                                            *
  ******************************************************************************/
-
-#pragma once
-
-#include <QString>
-
-namespace atomic_dex
-{
-    struct qt_contact_address_contents
-    {
-        QString type;
-        QString address;
-    };
-} // namespace atomic_dex
+ 

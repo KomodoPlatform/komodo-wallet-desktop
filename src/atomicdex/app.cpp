@@ -63,6 +63,7 @@
 #include "atomicdex/utilities/qt.bindings.hpp"
 #include "atomicdex/utilities/security.utilities.hpp"
 #include "atomicdex/version/version.hpp"
+#include "atomicdex/managers/addressbook.manager.hpp"
 
 namespace
 {
@@ -330,13 +331,22 @@ namespace atomic_dex
     application::application(QObject* pParent) noexcept :
         QObject(pParent),
         m_update_status(QJsonObject{
-            {"update_needed", false}, {"changelog", ""}, {"current_version", ""}, {"download_url", ""}, {"new_version", ""}, {"rpc_code", 0}, {"status", ""}}),
-        m_manager_models{
-            {"addressbook", new addressbook_model(system_manager_.create_system<qt_wallet_manager>(), this)},
-            {"orders", new orders_model(this->system_manager_, this->dispatcher_, this)},
-            {"internet_service", std::addressof(system_manager_.create_system<internet_service_checker>(this))},
-            {"notifications", new notification_manager(this->dispatcher_, this)}}
+            {"update_needed", false}, {"changelog", ""}, {"current_version", ""}, {"download_url", ""}, {"new_version", ""}, {"rpc_code", 0}, {"status", ""}})
     {
+        //! Creates managers
+        {
+            system_manager_.create_system<qt_wallet_manager>();
+            system_manager_.create_system<addressbook_manager>(system_manager_);
+        }
+        
+        //! Creates models
+        {
+            m_manager_models.emplace("addressbook", new addressbook_model(system_manager_, this));
+            m_manager_models.emplace("orders", new orders_model(system_manager_, this->dispatcher_, this));
+            m_manager_models.emplace("internet_service", std::addressof(system_manager_.create_system<internet_service_checker>(this)));
+            m_manager_models.emplace("notifications", new notification_manager(dispatcher_, this));
+        }
+        
         get_dispatcher().sink<refresh_update_status>().connect<&application::on_refresh_update_status_event>(*this);
         //! MM2 system need to be created before the GUI and give the instance to the gui
         system_manager_.create_system<ip_service_checker>();
@@ -353,6 +363,7 @@ namespace atomic_dex
         system_manager_.create_system<update_service_checker>();
         system_manager_.create_system<trading_page>(
             system_manager_, m_event_actions.at(events_action::about_to_exit_app), portfolio_system.get_portfolio(), this);
+        system_manager_.create_system<addressbook_page>(system_manager_);
 
         connect_signals();
         if (is_there_a_default_wallet())
@@ -533,7 +544,13 @@ namespace atomic_dex
         get_dispatcher().sink<process_swaps_finished>().disconnect<&application::on_process_swaps_finished_event>(*this);
 
         m_event_actions[events_action::need_a_full_refresh_of_mm2] = true;
-
+    
+        //! Saves and clear addressbook.
+        auto& addrbook_manager = this->system_manager_.get_system<addressbook_manager>();
+        addrbook_manager.save_configuration();
+        addrbook_manager.remove_all_contacts();
+        
+        //! Resets wallet name.
         auto& wallet_manager = this->system_manager_.get_system<qt_wallet_manager>();
         wallet_manager.just_set_wallet_name("");
         emit onWalletDefaultNameChanged();
@@ -947,8 +964,7 @@ namespace atomic_dex
         });
         if (res)
         {
-            addressbook_model* addressbook = qobject_cast<addressbook_model*>(m_manager_models.at("addressbook"));
-            addressbook->initializeFromCfg();
+            this->system_manager_.get_system<addressbook_manager>().load_configuration();
         }
         return res;
     }
@@ -1072,6 +1088,18 @@ namespace atomic_dex
         return ptr;
     }
 } // namespace atomic_dex
+
+//! Addressbook
+namespace atomic_dex
+{
+    addressbook_page*
+    application::get_addressbook_page() const noexcept
+    {
+        auto* ptr = const_cast<addressbook_page*>(std::addressof(system_manager_.get_system<addressbook_page>()));
+        assert(ptr);
+        return ptr;
+    }
+}
 
 //! Notification
 namespace atomic_dex

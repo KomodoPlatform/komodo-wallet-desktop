@@ -15,7 +15,6 @@
  ******************************************************************************/
 
 //! STD
-#include <algorithm>
 #include <utility>
 #include <stdexcept> //> std::invalid_argument.
 
@@ -25,8 +24,8 @@
 //! Constructors
 namespace atomic_dex
 {
-    addressbook_manager::addressbook_manager(entt::registry& entity_registry, std::string wallet_name) noexcept :
-        system(entity_registry), m_wallet_name(std::move(wallet_name)), m_data(load_addressbook_cfg(m_wallet_name))
+    addressbook_manager::addressbook_manager(entt::registry& entity_registry, const ag::ecs::system_manager& system_manager) noexcept :
+        system(entity_registry), m_system_manager(system_manager)
     {}
 }
 
@@ -224,8 +223,13 @@ namespace atomic_dex
         // TODO: Maybe add an auto save each X minutes ?
     }
     
-    void addressbook_manager::update_configuration() const
+    void addressbook_manager::load_configuration()
     {
-        update_addressbook_cfg(m_data, m_wallet_name);
+        m_data = load_addressbook_cfg(m_system_manager.get_system<qt_wallet_manager>().get_wallet_default_name().toStdString());
+    }
+    
+    void addressbook_manager::save_configuration() const
+    {
+        update_addressbook_cfg(m_data, m_system_manager.get_system<qt_wallet_manager>().get_wallet_default_name().toStdString());
     }
 }

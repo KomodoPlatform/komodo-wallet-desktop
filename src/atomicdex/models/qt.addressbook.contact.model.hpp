@@ -16,56 +16,83 @@
 
 #pragma once
 
-//! QT
-#include <QAbstractListModel>
-#include <QString>
-#include <QVariantList>
+//! Qt
+#include <QAbstractListModel> //> QAbstractListModel.
+#include <QObject>            //> Q_OBJECT, Q_PROPERTY, QObject.
 
-//! Project
-#include "atomicdex/managers/qt.wallet.manager.hpp"
+//! Deps
+#include <spdlog/spdlog.h>
+
+//! Project Headers
+#include "atomicdex/managers/addressbook.manager.hpp" //> addressbook_manager.
 
 namespace atomic_dex
 {
-    class contact_model final : public QAbstractListModel
+    class addressbook_contact_model final : public QAbstractListModel
     {
+        friend class addressbook_model;
+        
+        /// \brief Tells QT this class uses signal/slots mechanisms and/or has GUI elements.
         Q_OBJECT
-        Q_PROPERTY(QString name READ get_name WRITE set_name NOTIFY nameChanged)
-        Q_PROPERTY(QList<QVariant> readonly_addresses READ get_addresses NOTIFY addressesChanged)
-        Q_ENUMS(ContactRoles)
-      public:
-        enum ContactRoles
+        
+        /// \defgroup Members
+        /// {@
+        
+        addressbook_manager& m_addressbook_manager;
+        
+        QString              m_name;
+        
+        QStringList          m_categories;
+
+        QVector<QJsonObject> m_wallets_info;
+    
+        /// @} End of Members section.
+        
+    public:
+        enum contact_wallet_info_role
         {
             TypeRole = Qt::UserRole + 1,
-            AddressRole,
-            CategoriesRole
+            AddressesRole
         };
-
-        QString get_name() const noexcept;
-
+        
+        /// \defgroup Constructors
+        /// {@
+        
+        explicit addressbook_contact_model(addressbook_manager& addrbook_manager, QObject* parent = nullptr);
+        ~addressbook_contact_model() noexcept;
+    
+        /// @} End of Constructors section.
+    
+        /// \defgroup QAbstractListModel implementation.
+        /// {@
+    
+        [[nodiscard]] QVariant               data(const QModelIndex& index, int role) const final;
+        bool                                 setData(const QModelIndex& index, const QVariant& value, int role) final;
+        [[nodiscard]] int                    rowCount(const QModelIndex& parent = QModelIndex()) const final;
+        bool                                 insertRows(int position, int rows, const QModelIndex& parent) final;
+        bool                                 removeRows(int position, int rows, const QModelIndex& parent = QModelIndex()) final;
+        [[nodiscard]] QHash<int, QByteArray> roleNames() const final;
+    
+        /// @} End of QAbstractListModel implementation section.
+    
+        [[nodiscard]]
+        const QString& get_name() const noexcept;
+        
         void set_name(const QString& name) noexcept;
         
-        explicit contact_model(atomic_dex::qt_wallet_manager& wallet_manager_, QObject* parent = nullptr) noexcept;
-        ~contact_model() noexcept final;
-        QVariant               data(const QModelIndex& index, int role) const final;
-        int                    rowCount(const QModelIndex& parent) const final;
-        QHash<int, QByteArray> roleNames() const final;
-        bool                   setData(const QModelIndex& index, const QVariant& value, int role) final;
-        bool                   insertRows(int position, int rows, const QModelIndex& parent) final;
-        bool                   removeRows(int position, int rows, const QModelIndex& parent) final;
-        QVariantList           get_addresses() const noexcept;
-        Q_INVOKABLE void       add_address_content();
-        Q_INVOKABLE void       remove_at(int position);
-
+        [[nodiscard]]
+        const QJsonArray& get_categories() const noexcept;
+        
+        /// \defgroup QML API.
+        /// {@
+        
+      private:
+        Q_PROPERTY(QString name READ get_name WRITE set_name NOTIFY nameChanged)
+        
       signals:
         void nameChanged();
-        void addressesChanged();
-
-      public:
-        //! Contact stuff
-        QString                                          m_name;
-        QVector<atomic_dex::qt_contact_address_contents> m_addresses;
-
-      private:
-        atomic_dex::qt_wallet_manager& m_wallet_manager;
+        void categoriesChanged();
+        
+        /// @} End of QML API section.
     };
-} // namespace atomic_dex
+}

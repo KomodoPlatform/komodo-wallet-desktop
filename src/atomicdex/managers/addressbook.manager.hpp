@@ -21,6 +21,7 @@
 
 //! Project Headers
 #include "atomicdex/config/addressbook.cfg.hpp"
+#include "qt.wallet.manager.hpp"
 
 namespace ag = antara::gaming;
 
@@ -28,15 +29,15 @@ namespace atomic_dex
 {
     class addressbook_manager final : public ag::ecs::pre_update_system<addressbook_manager>
     {
-        std::string    m_wallet_name;
-        nlohmann::json m_data;
+        const ag::ecs::system_manager& m_system_manager;
+        nlohmann::json                 m_data;
         
       public:
         /// \defgroup Constructors
         /// {@
         
-        addressbook_manager(entt::registry& entity_registry, std::string wallet_name) noexcept;
-        ~addressbook_manager() noexcept = default;
+        addressbook_manager(entt::registry& entity_registry, const ag::ecs::system_manager& system_manager) noexcept;
+        ~addressbook_manager() noexcept final = default;
         
         /// @} End of Constructors section.
     
@@ -173,9 +174,14 @@ namespace atomic_dex
         /// \defgroup Misc
         /// {@
         
+        /// \brief Loads the address book configuration.
+        void load_configuration();
+        
         /// \brief Saves the current state of the addressbook inside the configuration file.
-        void update_configuration() const;
+        void save_configuration() const;
         
         /// @} End of Misc section.
     };
 }
+
+REFL_AUTO(type(atomic_dex::addressbook_manager))
