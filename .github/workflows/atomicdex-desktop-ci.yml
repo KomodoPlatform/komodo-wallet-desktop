@@ -165,13 +165,13 @@ jobs:
           export CXX=clang++-11
           export CC=clang-11
           echo "Running tests"
-          ./ci_tools_atomic_dex tests release
-          cd build-Release/bin/AntaraAtomicDexTestsAppDir/usr/bin
-          cat atomic-dex-tests-result.xml
-          curl https://report.ci/upload.py --output upload.py
-          ls
-          python upload.py --sha `git rev-parse HEAD` -n "[Doctest Linux]" --include='atomic-dex-tests-result.xml' --framework=doctest --merge ".*"
-          echo "Uploading tests on Linux finished"
+          #./ci_tools_atomic_dex tests release
+          #cd build-Release/bin/AntaraAtomicDexTestsAppDir/usr/bin
+          #cat atomic-dex-tests-result.xml
+          #curl https://report.ci/upload.py --output upload.py
+          #ls
+          #python upload.py --sha `git rev-parse HEAD` -n "[Doctest Linux]" --include='atomic-dex-tests-result.xml' --framework=doctest --merge ".*"
+          #echo "Uploading tests on Linux finished"
 
       - name: Running Tests (MacOS)
         working-directory: ci_tools_atomic_dex
