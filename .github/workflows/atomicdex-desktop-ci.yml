@@ -44,7 +44,7 @@ jobs:
 
       - name: Install QT (Linux)
         if: runner.os == 'Linux'
-        uses: smk762/install-qt-action@v2.9.0
+        uses: KomodoPlatform/install-qt-action@v2.8.0
         with:
           version: ${{ matrix.qt }}
           host: 'linux'
@@ -56,7 +56,7 @@ jobs:
 
       - name: Install QT (MacOS)
         if: runner.os == 'macOS'
-        uses: smk762/install-qt-action@v2.9.0
+        uses: KomodoPlatform/install-qt-action@v2.8.0
         with:
           version: ${{ matrix.qt }}
           host: 'mac'
@@ -66,7 +66,7 @@ jobs:
 
       - name: Install QT (Windows)
         if: runner.os == 'Windows'
-        uses: smk762/install-qt-action@v2.9.0
+        uses: KomodoPlatform/install-qt-action@v2.8.0
         with:
           version: ${{ matrix.qt }}
           host: 'windows'
@@ -165,13 +165,13 @@ jobs:
           export CXX=clang++-11
           export CC=clang-11
           echo "Running tests"
-          #./ci_tools_atomic_dex tests release
-          #cd build-Release/bin/AntaraAtomicDexTestsAppDir/usr/bin
-          #cat atomic-dex-tests-result.xml
-          #curl https://report.ci/upload.py --output upload.py
-          #ls
-          #python upload.py --sha `git rev-parse HEAD` -n "[Doctest Linux]" --include='atomic-dex-tests-result.xml' --framework=doctest --merge ".*"
-          #echo "Uploading tests on Linux finished"
+          ./ci_tools_atomic_dex tests release
+          cd build-Release/bin/AntaraAtomicDexTestsAppDir/usr/bin
+          cat atomic-dex-tests-result.xml
+          curl https://report.ci/upload.py --output upload.py
+          ls
+          python upload.py --sha `git rev-parse HEAD` -n "[Doctest Linux]" --include='atomic-dex-tests-result.xml' --framework=doctest --merge ".*"
+          echo "Uploading tests on Linux finished"
 
       - name: Running Tests (MacOS)
         working-directory: ci_tools_atomic_dex
