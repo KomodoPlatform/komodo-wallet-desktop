@@ -19,11 +19,8 @@ jobs:
       matrix:
         name: [
             ubuntu-qt-5-15-0,
-            ubuntu-qt-5-15-1,
             osx-qt-5-15-0,
-            osx-qt-5-15-1,
-            windows-10-qt-5-15-0,
-            windows-10-qt-5-15-1
+            windows-10-qt-5-15-0
         ]
 
         include:
@@ -31,25 +28,13 @@ jobs:
             os: ubuntu-16.04
             qt: '5.15.0'
 
-          - name: ubuntu-qt-5-15-1
-            os: ubuntu-16.04
-            qt: '5.15.1'
-
           - name: osx-qt-5-15-0
             os: macos-latest
             qt: '5.15.0'
 
-          - name: osx-qt-5-15-1
-            os: macos-latest
-            qt: '5.15.1'
-
           - name: windows-10-qt-5-15-0
             os: windows-latest
             qt: '5.15.0'
-
-          - name: windows-10-qt-5-15-1
-            os: windows-latest
-            qt: '5.15.1'
 
     steps:
       - uses: actions/checkout@v2
@@ -166,7 +151,6 @@ jobs:
           cd ci_tools_atomic_dex
           nimble build -y
           ./ci_tools_atomic_dex bundle release --osx_sdk=$HOME/sdk/MacOSX10.14.sdk --compiler=clang++
-          ls bundle-Release/atomicdex-desktop.dmg
 
       - name: Build AtomicDEX (Windows)
         if: runner.os == 'Windows'
@@ -264,12 +248,18 @@ jobs:
           name: ${{ env.artifact_name_appimage }}
           path: ./bundled/linux/${{ env.target_name_appimage }}
 
+      - name: Upload env variable for artifacts (macOS)
+        if: runner.os == 'macOS'
+        run: |
+          ls ./bundled/osx/
+          echo "artifact_name_dmg=atomicdex-desktop-${{ matrix.name }}-$(git rev-parse --short HEAD).dmg" >> $GITHUB_ENV
+
       - name: Upload artifacts (MacOS)
         if: runner.os == 'macOS'
         uses: actions/upload-artifact@v2
         with:
-          name: ${{ matrix.name }}-release.dmg
-          path: ./ci_tools_atomic_dex/bundle-Release/atomicdex-desktop.dmg
+          name: ${{ env.artifact_name_dmg }}
+          path: ./bundled/osx/atomicdex-desktop.dmg
 
       - name: Upload artifacts (Windows)
         if: runner.os == 'Windows'
