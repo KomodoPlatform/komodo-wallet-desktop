@@ -16,6 +16,8 @@
 
 //! STD
 #include <algorithm>
+#include <utility>
+#include <stdexcept> //> std::invalid_argument.
 
 //! Project Headers.
 #include "addressbook.manager.hpp"
@@ -23,8 +25,8 @@
 //! Constructors
 namespace atomic_dex
 {
-    addressbook_manager::addressbook_manager(const std::string& wallet_name) noexcept :
-        m_wallet_name(wallet_name), m_data(load_addressbook_cfg(m_wallet_name))
+    addressbook_manager::addressbook_manager(entt::registry& entity_registry, std::string wallet_name) noexcept :
+        system(entity_registry), m_wallet_name(std::move(wallet_name)), m_data(load_addressbook_cfg(m_wallet_name))
     {}
 }
 
@@ -33,14 +35,28 @@ namespace atomic_dex
 {
     void addressbook_manager::add_contact(const std::string& name)
     {
-        m_data[name] = nlohmann::json::object();
-        m_data.at(name)["categories"] = nlohmann::json::array();
-        m_data.at(name)["wallets_info"] = nlohmann::json::object();
+        nlohmann::json contact = nlohmann::json::object();
+    
+        contact["name"] = name;
+        contact["categories"] = nlohmann::json::array();
+        contact["wallets_info"] = nlohmann::json::array();
+        if (!m_data.is_array())
+        {
+            m_data = nlohmann::json::array();
+        }
+        m_data.push_back(std::move(contact));
     }
 
     void addressbook_manager::remove_contact(const std::string& name)
     {
-        m_data.erase(name);
+        for (auto it = m_data.begin(); it != m_data.end(); ++it)
+        {
+            if (it.value().at("name") == name)
+            {
+                m_data.erase(it);
+                return;
+            }
+        }
     }
     
     void addressbook_manager::remove_all_contacts()
@@ -50,34 +66,43 @@ namespace atomic_dex
     
     void addressbook_manager::change_contact_name(const std::string& name, const std::string& new_name)
     {
-        m_data[new_name] = m_data.at(name);
-        m_data.erase(name);
+        auto& contact = get_contact(name);
+        
+        contact["name"] = new_name;
     }
     
     void addressbook_manager::set_contact_wallet_info(
         const std::string& name, const std::string& type, const std::string& key, const std::string& address)
     {
         auto& wallets_info = get_wallets_info(name);
-        
-        if (!wallets_info.contains(type))
+        if (!has_wallet_info(name, key))
         {
-            wallets_info[type] = nlohmann::json::object();
+            wallets_info.push_back(nlohmann::json::object({"type", type}));
         }
-        wallets_info[type][key] = address;
+        auto& wallet_info = get_wallet_info(name, type);
+    
+        wallet_info["addresses"][key] = address;
     }
     
     void addressbook_manager::remove_contact_wallet_info(const std::string& name, const std::string& type)
     {
         auto& wallets_info = get_wallets_info(name);
 
-        wallets_info.erase(type);
+        for (auto it = wallets_info.begin(); it != wallets_info.end(); ++it)
+        {
+            if (it.value().at("type") == type)
+            {
+                wallets_info.erase(it);
+                return;
+            }
+        }
     }
     
     void addressbook_manager::remove_contact_wallet_info(const std::string& name, const std::string& type, const std::string& key)
     {
         auto& wallet_info = get_wallet_info(name, type);
         
-        wallet_info.erase(key);
+        wallet_info.at("addresses").erase(key);
     }
     
     bool addressbook_manager::add_contact_category(const std::string& name, const std::string& category)
@@ -103,12 +128,19 @@ namespace atomic_dex
 //! Accessors
 namespace atomic_dex
 {
-    const nlohmann::json& addressbook_manager::get_contact(const std::string& name) const noexcept
+    const nlohmann::json& addressbook_manager::get_contact(const std::string& name) const
     {
-        return m_data.at(name);
+        for (auto it = m_data.begin(); it != m_data.end(); ++it)
+        {
+            if (it.value().at("name") == name)
+            {
+                return it.value();
+            }
+        }
+        throw std::invalid_argument("(addressbook_manager) given contact name does not exist");
     }
     
-    nlohmann::json& addressbook_manager::get_contact(const std::string& name) noexcept
+    nlohmann::json& addressbook_manager::get_contact(const std::string& name)
     {
         return const_cast<nlohmann::json&>(std::as_const(*this).get_contact(name));
     }
@@ -120,7 +152,7 @@ namespace atomic_dex
     
     const nlohmann::json& addressbook_manager::get_wallets_info(const std::string& name) const
     {
-        return m_data.at(name).at("wallets_info");
+        return get_contact(name).at("wallets_info");
     }
     
     nlohmann::json& addressbook_manager::get_wallets_info(const std::string& name)
@@ -140,7 +172,7 @@ namespace atomic_dex
     
     const nlohmann::json& addressbook_manager::get_categories(const std::string& name) const
     {
-        return m_data.at(name).at("categories");
+        return get_contact(name).at("categories");
     }
     
     nlohmann::json& addressbook_manager::get_categories(const std::string& name)
@@ -154,12 +186,28 @@ namespace atomic_dex
 {
     bool addressbook_manager::has_contact(const std::string& name) const noexcept
     {
-        return m_data.contains(name);
+        for (auto it = m_data.begin(); it != m_data.end(); ++it)
+        {
+            if (it.value().at("name") == name)
+            {
+                return true;
+            }
+        }
+        return false;
     }
     
     bool addressbook_manager::has_wallet_info(const std::string& name, const std::string& type) const noexcept
     {
-        return get_wallets_info(name).contains(type);
+        const auto& wallets_info = get_wallets_info(name);
+        
+        for (const auto& wallet_info : wallets_info)
+        {
+            if (wallet_info.at("type") == type)
+            {
+                return true;
+            }
+        }
+        return false;
     }
     
     bool addressbook_manager::has_category(const std::string& name, const std::string& category) const noexcept
@@ -171,6 +219,11 @@ namespace atomic_dex
 //! Misc
 namespace atomic_dex
 {
+    void addressbook_manager::update() noexcept
+    {
+        // TODO: Maybe add an auto save each X minutes ?
+    }
+    
     void addressbook_manager::update_configuration() const
     {
         update_addressbook_cfg(m_data, m_wallet_name);

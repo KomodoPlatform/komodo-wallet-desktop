@@ -16,12 +16,17 @@
 
 #pragma once
 
+//! Deps
+#include <antara/gaming/ecs/system.manager.hpp>
+
 //! Project Headers
 #include "atomicdex/config/addressbook.cfg.hpp"
 
+namespace ag = antara::gaming;
+
 namespace atomic_dex
 {
-    class addressbook_manager
+    class addressbook_manager final : public ag::ecs::pre_update_system<addressbook_manager>
     {
         std::string    m_wallet_name;
         nlohmann::json m_data;
@@ -30,10 +35,13 @@ namespace atomic_dex
         /// \defgroup Constructors
         /// {@
         
-        addressbook_manager(const std::string& wallet_name) noexcept;
+        addressbook_manager(entt::registry& entity_registry, std::string wallet_name) noexcept;
         ~addressbook_manager() noexcept = default;
         
         /// @} End of Constructors section.
+    
+        /// \brief pre_update_system implementation.
+        void update() noexcept final;
         
         /// \defgroup Modifiers
         /// {@
@@ -103,13 +111,13 @@ namespace atomic_dex
         /// \warning If the contact does not exist yet, the behavior is undefined.
         /// \param   name Name of the contact.
         [[nodiscard]]
-        const nlohmann::json& get_contact(const std::string& name) const noexcept;
+        const nlohmann::json& get_contact(const std::string& name) const;
         
         /// \brief   Gets a contact from its name.
         /// \warning If the contact does not exist yet, the behavior is undefined.
         /// \param   name Name of the contact.
         [[nodiscard]]
-        nlohmann::json& get_contact(const std::string& name) noexcept;
+        nlohmann::json& get_contact(const std::string& name);
 
         [[nodiscard]]
         /// \brief  Gets the existing contacts.
