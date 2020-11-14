@@ -95,7 +95,10 @@ jobs:
         run: |
           export DEBIAN_FRONTEND=noninteractive
           echo "CHOOSENIM_CHOOSE_VERSION=1.4.0" >> $GITHUB_ENV
-          curl https://nim-lang.org/choosenim/init.sh -sSf | sh
+          curl https://nim-lang.org/choosenim/init.sh > choosenim.sh
+          chmod +x choosenim.sh
+          ./choosenim.sh -y
+          export PATH=$HOME/.nimble/bin:$PATH
 
       - name: Install deps (Linux)
         if: runner.os == 'Linux'
