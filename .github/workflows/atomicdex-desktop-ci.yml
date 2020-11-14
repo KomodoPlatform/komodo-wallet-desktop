@@ -94,7 +94,7 @@ jobs:
         if: runner.os == 'Linux'
         run: |
           echo "CHOOSENIM_CHOOSE_VERSION=1.4.0" >> $GITHUB_ENV
-          wget -qO - https://nim-lang.org/choosenim/init.sh | sh
+          curl https://nim-lang.org/choosenim/init.sh -sSf | sh
 
       - name: Install deps (Linux)
         if: runner.os == 'Linux'
