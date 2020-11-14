@@ -200,6 +200,7 @@
         <file>atomic_defi_design/qml/Components/DefaultTextArea.qml</file>
         <file>atomic_defi_design/qml/Components/DefaultListView.qml</file>
         <file>atomic_defi_design/qml/Components/DefaultFlickable.qml</file>
+        <file>atomic_defi_design/qml/Components/DefaultSlider.qml</file>
         <file>atomic_defi_design/qml/Components/DefaultSwitch.qml</file>
         <file>atomic_defi_design/qml/Components/DefaultComboBox.qml</file>
         <file>atomic_defi_design/qml/Components/DefaultCheckBox.qml</file>
