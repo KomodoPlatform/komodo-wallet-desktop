@@ -98,7 +98,7 @@ jobs:
           curl https://nim-lang.org/choosenim/init.sh > choosenim.sh
           chmod +x choosenim.sh
           ./choosenim.sh -y
-          export PATH=$HOME/.nimble/bin:$PATH
+          export PATH=/home/runner/.nimble/bin:$PATH
 
       - name: Install deps (Linux)
         if: runner.os == 'Linux'
