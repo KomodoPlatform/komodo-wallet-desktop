@@ -170,6 +170,7 @@ QtObject {
     readonly property string colorSidebarHighlightGradient3:  dark_theme ? "#5F1B5E7D" : "#A06dc9f3"
     readonly property string colorSidebarHighlightGradient4:  dark_theme ? "#001B5E7D" : "#006bcef4"
     readonly property string colorSidebarDropShadow:  dark_theme ? "#90000000" : "#BECDE2"
+    readonly property string colorSidebarSelectedText:  dark_theme ? "#FFFFFF" : "#FFFFFF"
 
     readonly property string colorCoinListHighlightGradient:  dark_theme ? "#2C2E40" : "#E0E6F0"
 
@@ -186,7 +187,6 @@ QtObject {
 
     readonly property string colorLineBasic:  dark_theme ? "#303344" : "#303344"
 
-    readonly property string colorSidebarSelectedText:  dark_theme ? "#FFFFFF" : "#FFFFFF"
 
     readonly property string colorText: dark_theme ? Style.colorWhite1 : "#405366"
     readonly property string colorText2: dark_theme ? "#79808C" : "#3C5368"
