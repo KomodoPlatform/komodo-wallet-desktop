@@ -59,7 +59,7 @@ jobs:
 
       - name: Install QT (Linux)
         if: runner.os == 'Linux'
-        uses: KomodoPlatform/install-qt-action@v2
+        uses: smk762/install-qt-action@v2.9.0
         with:
           version: ${{ matrix.qt }}
           host: 'linux'
@@ -71,7 +71,7 @@ jobs:
 
       - name: Install QT (MacOS)
         if: runner.os == 'macOS'
-        uses: KomodoPlatform/install-qt-action@v2
+        uses: smk762/install-qt-action@v2.9.0
         with:
           version: ${{ matrix.qt }}
           host: 'mac'
@@ -81,7 +81,7 @@ jobs:
 
       - name: Install QT (Windows)
         if: runner.os == 'Windows'
-        uses: KomodoPlatform/install-qt-action@v2
+        uses: smk762/install-qt-action@v2.9.0
         with:
           version: ${{ matrix.qt }}
           host: 'windows'
@@ -92,25 +92,27 @@ jobs:
 
       - name: Install nim (Linux)
         if: runner.os == 'Linux'
-        uses: KomodoPlatform/setup-nim-action@v1.0.2
+        uses: smk762/setup-nim-action@v1.1.4
         with:
-          nim-version: '1.2.0'
+          nim-version: '1.4.0'
 
       - name: Install deps (Linux)
         if: runner.os == 'Linux'
-        env:
-          DEBIAN_FRONTEND: noninteractive
         run: |
+          echo "DEBIAN_FRONTEND=noninteractive" >> $GITHUB_ENV
           echo ${{ github.sha }}
           sudo ./ci_tools_atomic_dex/ci_scripts/linux_script.sh
 
+      - name: Upload env variable for vpkg (Linux)
+        if: runner.os == 'Linux'
+        run: |
+          echo "CXXFLAGS=-stdlib=libc++" >> $GITHUB_ENV
+          echo "LDFLAGS=-stdlib=libc++" >> $GITHUB_ENV
+          echo "CXX=clang++-11" >> $GITHUB_ENV
+          echo "CC=clang-11" >> $GITHUB_ENV
+
       - name: vcpkg deps (Linux)
         if: runner.os == 'Linux'
-        env: # Or as an environment variable
-          CXXFLAGS: -stdlib=libc++
-          LDFLAGS: -stdlib=libc++
-          CXX: clang++-11
-          CC: clang-11
         uses: KomodoPlatform/run-vcpkg@v5
         with:
           vcpkgArguments: '@${{ github.workspace }}/.github/workflows/linux_response_file.txt --overlay-ports=${{ github.workspace }}/ci_tools_atomic_dex/vcpkg-custom-ports/ports'
@@ -122,11 +124,14 @@ jobs:
         run: |
           ./ci_tools_atomic_dex/ci_scripts/osx_script.sh
 
+      - name: Upload env variable for vpkg (Linux)
+        if: runner.os == 'macOS'
+        run: |
+          echo "CXX=/usr/local/opt/llvm@9/bin/clang++" >> $GITHUB_ENV
+          echo "CC=/usr/local/opt/llvm@9/bin/clang" >> $GITHUB_ENV
+
       - name: vcpkg deps (MacOS)
         if: runner.os == 'macOS'
-        env: # Or as an environment variable
-          CXX: /usr/local/opt/llvm@9/bin/clang++
-          CC: /usr/local/opt/llvm@9/bin/clang
         uses: KomodoPlatform/run-vcpkg@v5
         with:
           vcpkgArguments: '@${{ github.workspace }}/.github/workflows/osx_response_file.txt --overlay-ports=${{ github.workspace }}/ci_tools_atomic_dex/vcpkg-custom-ports/ports'
@@ -170,17 +175,15 @@ jobs:
       - name: Build AtomicDEX (Windows)
         if: runner.os == 'Windows'
         shell: powershell
-        env:
-          QT_VERSION: ${{ matrix.qt }}
         run: |
+          $Env:QT_VERSION = "${{ matrix.qt }}"
           .\ci_tools_atomic_dex\ci_scripts\windows_script.ps1
 
       - name: Running Tests (Linux)
-        env: # Or as an environment variable
-          REPORT_CI_TOKEN: ${{ secrets.REPORT_CI_TOKEN_SECRET }}
         working-directory: ci_tools_atomic_dex
         if: runner.os == 'Linux'
         run: |
+          export REPORT_CI_TOKEN=${{ secrets.REPORT_CI_TOKEN_SECRET }}
           export QT_INSTALL_CMAKE_PATH=${{ github.workspace }}/Qt/${{ matrix.qt }}/gcc_64/lib/cmake
           export QT_ROOT=${{ github.workspace }}/Qt/${{ matrix.qt }}
           export PATH=${{ github.workspace }}/Qt/${{ matrix.qt }}/gcc_64/bin:$PATH
@@ -199,11 +202,10 @@ jobs:
           echo "Uploading tests on Linux finished"
 
       - name: Running Tests (MacOS)
-        env: # Or as an environment variable
-          REPORT_CI_TOKEN: ${{ secrets.REPORT_CI_TOKEN_SECRET }}
         working-directory: ci_tools_atomic_dex
         if: runner.os == 'macOS'
         run: |
+          export REPORT_CI_TOKEN=${{ secrets.REPORT_CI_TOKEN_SECRET }}
           export QT_INSTALL_CMAKE_PATH=${{ github.workspace }}/Qt/${{ matrix.qt }}/clang_64/lib/cmake
           export QT_ROOT=${{ github.workspace }}/Qt/${{ matrix.qt }}
           echo "Running tests"
@@ -217,12 +219,11 @@ jobs:
 
       - name: Running Tests (Windows)
         shell: powershell
-        env: # Or as an environment variable
-          REPORT_CI_TOKEN: ${{ secrets.REPORT_CI_TOKEN_SECRET }}
         working-directory: ci_tools_atomic_dex
         if: runner.os == 'Windows'
         run: |
           echo "Running tests"
+          $Env:REPORT_CI_TOKEN = "${{ secrets.REPORT_CI_TOKEN_SECRET }}"
           $Env:QT_INSTALL_CMAKE_PATH = "C:\Qt\${{ matrix.qt }}\msvc2019_64"
           cmd /c '.\ci_tools_atomic_dex.exe tests release 2>&1'
           cd build-Release
