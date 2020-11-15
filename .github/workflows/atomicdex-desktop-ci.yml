@@ -280,10 +280,16 @@ jobs:
         with:
           name: ${{ env.artifact_name_dmg }}
           path: ./bundled/osx/atomicdex-desktop.dmg
+          
+      - name: Upload env variable for artifacts (Windows)
+        if: runner.os == 'Windows'
+        run: |
+          echo "on_windows"
+          echo "artifact_name_zip=atomicdex-desktop-${{ matrix.name }}-$(git rev-parse --short HEAD).zip" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
 
       - name: Upload artifacts (Windows)
         if: runner.os == 'Windows'
         uses: actions/upload-artifact@v2
         with:
-          name: ${{ matrix.name }}-release.zip
+          name: ${{ env.artifact_name_zip }}
           path: ./ci_tools_atomic_dex/bundle-Release/bundle.zip
