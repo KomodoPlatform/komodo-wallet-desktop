@@ -1,6 +1,12 @@
 function Component()
 {
-    // Install to @RootDir@ instead of @HomeDir@ on Windows
+   
+}
+
+Component.prototype.createOperations = function()
+{
+	component.createOperations();
+
     if (installer.value("os") === "win") {
 		// Start Menu Shortcut
         component.addOperation("CreateShortcut", 
