@@ -51,11 +51,11 @@ else()
 	message(STATUS "atomicdex_desktop.7z already exists skipping")
 endif()
 
-file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/bin/atomicdex_desktop.7z DESTINATION ${PROJECT_ROOT_DIR}/ci_tools_atomic_dex/installer/AtomicDexDesktopInstaller/packages/com.komodoplatform.atomicdex/data)
+file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/bin/atomicdex_desktop.7z DESTINATION ${PROJECT_ROOT_DIR}/ci_tools_atomic_dex/installer/windows/packages/com.komodoplatform.atomicdex/data)
 
 
 execute_process(COMMAND ${IFW_BINDIR}/binarycreator.exe -c ./config/config.xml -p ./packages/ atomicdex_desktop_installer.exe
-	WORKING_DIRECTORY ${PROJECT_ROOT_DIR}/ci_tools_atomic_dex/installer/AtomicDexDesktopInstaller
+	WORKING_DIRECTORY ${PROJECT_ROOT_DIR}/ci_tools_atomic_dex/installer/windows
 	ECHO_OUTPUT_VARIABLE
 	ECHO_ERROR_VARIABLE)
-file(COPY ${PROJECT_ROOT_DIR}/ci_tools_atomic_dex/installer/AtomicDexDesktopInstaller/atomicdex_desktop_installer.exe DESTINATION ${TARGET_APP_PATH})
+file(COPY ${PROJECT_ROOT_DIR}/ci_tools_atomic_dex/installer/windows/atomicdex_desktop_installer.exe DESTINATION ${TARGET_APP_PATH})
