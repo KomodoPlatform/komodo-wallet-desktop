@@ -294,10 +294,20 @@ jobs:
         run: |
           echo "on_windows"
           echo "artifact_name_zip=atomicdex-desktop-${{ matrix.name }}-$(git rev-parse --short HEAD).zip" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
+          echo "artifact_name_installer=atomicdex-desktop-installer-${{ matrix.name }}-$(git rev-parse --short HEAD).exe" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
 
-      - name: Upload artifacts (Windows)
+      - name: Upload artifacts (Windows zip)
         if: runner.os == 'Windows'
         uses: actions/upload-artifact@v2
         with:
           name: ${{ env.artifact_name_zip }}
-          path: ./ci_tools_atomic_dex/bundle-Release/bundle.zip
+          path: ./bundled/windows/bin.zip
+      
+      - name: Upload artifacts (Windows installer)
+        if: runner.os == 'Windows'
+        uses: actions/upload-artifact@v2
+        with:
+          name: ${{ env.artifact_name_installer }}
+          path: ./bundled/windows/atomicdex_desktop_installer.exe
+      
+      

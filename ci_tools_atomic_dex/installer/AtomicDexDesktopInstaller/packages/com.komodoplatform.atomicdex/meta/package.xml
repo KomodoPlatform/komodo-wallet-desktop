@@ -7,4 +7,5 @@
     <Licenses>
         <License name="GNU General Public License v2.0" file="license.txt" />
     </Licenses>
+	<Script>installscript.qs</Script>
 </Package>
