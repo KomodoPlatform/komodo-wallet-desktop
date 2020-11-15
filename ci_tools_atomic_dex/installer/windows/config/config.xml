@@ -5,11 +5,13 @@
     <Title>AtomicDEX Desktop Installer</Title>
     <ProductUrl>https://atomicdex.io/</ProductUrl>
     <Publisher>KomodoPlatform</Publisher>
-    <TargetDir>@HomeDir@/AtomicDexDesktop</TargetDir>
+	<TargetDir>@ApplicationsDirX64@/AtomicDEX Desktop</TargetDir>
     <RunProgram>@TargetDir@/atomicdex-desktop.exe</RunProgram>
-    <StartMenuDir>AtomicDexDesktop</StartMenuDir>
+	<RunProgramDescription>Run AtomicDEX Desktop now.</RunProgramDescription>
+    <StartMenuDir>AtomicDEX Desktop</StartMenuDir>
     <MaintenanceToolName>AtomicDex Desktop MaintenanceTool</MaintenanceToolName>
-    <InstallerWindowIcon>atomicdex-desktop.png</InstallerWindowIcon>
-    <Logo>atomicdex-desktop-logo.png</Logo>
+	<InstallerWindowIcon>install_icon</InstallerWindowIcon>
+    <InstallerApplicationIcon>install_icon</InstallerApplicationIcon>
+    <Logo>install_icon.png</Logo>
     <WizardStyle>Mac</WizardStyle>
 </Installer>
