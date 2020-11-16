@@ -79,6 +79,12 @@ jobs:
           dir: '${{ github.workspace }}'
           modules: 'qtcharts qtwidgets debug_info qtwebview qtwebengine'
 
+      - name: Install QT IFW (MacOS)
+        if: runner.os == 'macOS'
+        run: |
+           python3  -m aqt tool mac tools_ifw 4.0 qt.tools.ifw.40 --outputdir ${{ github.workspace }}/Qt
+           echo "${{ github.workspace }}/Qt/Tools/QtInstallerFramework/4.0/bin" >> $GITHUB_PATH
+
       - name: Install QT (Windows)
         if: runner.os == 'Windows'
         uses: KomodoPlatform/install-qt-action@v2.9.0
