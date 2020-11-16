@@ -103,3 +103,8 @@ execute_process(COMMAND ${IFW_BINDIR}/binarycreator -c ./config/config.xml -p ./
         ECHO_ERROR_VARIABLE)
 
 file(COPY ${PROJECT_ROOT_DIR}/ci_tools_atomic_dex/installer/osx/atomicdex_desktop_installer.app DESTINATION ${TARGET_APP_PATH})
+
+execute_process(COMMAND ${IFW_BINDIR}/archivegen atomicdex_desktop_installer.7z atomicdex_desktop_installer.app
+        WORKING_DIRECTORY ${TARGET_APP_PATH}
+        ECHO_OUTPUT_VARIABLE
+        ECHO_ERROR_VARIABLE)

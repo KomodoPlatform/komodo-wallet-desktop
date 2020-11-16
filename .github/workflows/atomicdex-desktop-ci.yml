@@ -287,7 +287,7 @@ jobs:
         run: |
           ls ./bundled/osx/
           echo "artifact_name_dmg=atomicdex-desktop-${{ matrix.name }}-$(git rev-parse --short HEAD).dmg" >> $GITHUB_ENV
-          echo "artifact_name_installer=atomicdex-desktop-installer-${{ matrix.name }}-$(git rev-parse --short HEAD).app" >> $GITHUB_ENV
+          echo "artifact_name_installer=atomicdex-desktop-installer-${{ matrix.name }}-$(git rev-parse --short HEAD).7z" >> $GITHUB_ENV
 
       - name: Upload artifacts (MacOS dmg)
         if: runner.os == 'macOS'
@@ -301,7 +301,7 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: ${{ env.artifact_name_installer }}
-          path: ./bundled/osx/atomicdex_desktop_installer.app
+          path: ./bundled/osx/atomicdex_desktop_installer.7z
           
       - name: Upload env variable for artifacts (Windows)
         if: runner.os == 'Windows'
