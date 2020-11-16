@@ -79,6 +79,12 @@ jobs:
           dir: '${{ github.workspace }}'
           modules: 'qtcharts qtwidgets debug_info qtwebview qtwebengine'
 
+      - name: Install QT IFW (MacOS)
+        if: runner.os == 'macOS'
+        run: |
+           python3  -m aqt tool mac tools_ifw 4.0 qt.tools.ifw.40 --outputdir ${{ github.workspace }}/Qt
+           echo "${{ github.workspace }}/Qt/Tools/QtInstallerFramework/4.0/bin" >> $GITHUB_PATH
+
       - name: Install QT (Windows)
         if: runner.os == 'Windows'
         uses: KomodoPlatform/install-qt-action@v2.9.0
@@ -281,13 +287,21 @@ jobs:
         run: |
           ls ./bundled/osx/
           echo "artifact_name_dmg=atomicdex-desktop-${{ matrix.name }}-$(git rev-parse --short HEAD).dmg" >> $GITHUB_ENV
+          echo "artifact_name_installer=atomicdex-desktop-installer-${{ matrix.name }}-$(git rev-parse --short HEAD).7z" >> $GITHUB_ENV
 
-      - name: Upload artifacts (MacOS)
+      - name: Upload artifacts (MacOS dmg)
         if: runner.os == 'macOS'
         uses: actions/upload-artifact@v2
         with:
           name: ${{ env.artifact_name_dmg }}
           path: ./bundled/osx/atomicdex-desktop.dmg
+
+      - name: Upload artifacts (MacOS installer)
+        if: runner.os == 'macOS'
+        uses: actions/upload-artifact@v2
+        with:
+          name: ${{ env.artifact_name_installer }}
+          path: ./bundled/osx/atomicdex_desktop_installer.7z
           
       - name: Upload env variable for artifacts (Windows)
         if: runner.os == 'Windows'
