@@ -300,7 +300,7 @@ jobs:
         if: runner.os == 'macOS'
         uses: actions/upload-artifact@v2
         with:
-          name: ${{ env.artifact_name_dmg }}
+          name: ${{ env.artifact_name_installer }}
           path: ./bundled/osx/atomicdex_desktop_installer.app
           
       - name: Upload env variable for artifacts (Windows)
