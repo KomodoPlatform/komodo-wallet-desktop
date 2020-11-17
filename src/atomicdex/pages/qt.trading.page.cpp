@@ -575,6 +575,10 @@ namespace atomic_dex
         {
             m_price = std::move(price);
             spdlog::trace("price is [{}]", m_price.toStdString());
+            if (m_market_mode == MarketMode::Buy)
+            {
+                this->determine_max_volume();
+            }
             emit priceChanged();
         }
     }
@@ -631,7 +635,26 @@ namespace atomic_dex
         }
         else
         {
-            // If it's buy side, then volume input needs to be calculated with the current price
+            if (not m_price.isEmpty())
+            {
+                t_float_50 max_vol(get_orderbook_wrapper()->get_base_max_taker_vol().toJsonObject()["decimal"].toString().toStdString());
+                t_float_50 price_f(m_price.toStdString());
+                t_float_50 res = max_vol / price_f;
+                this->set_max_volume(QString::fromStdString(res.str(8, std::ios_base::fixed)));
+                this->cap_volume();
+            }
+        }
+    }
+
+    void
+    trading_page::cap_volume() noexcept
+    {
+        if (auto std_volume = this->get_volume().toStdString(); not std_volume.empty())
+        {
+            if (t_float_50(std_volume) > t_float_50(this->get_max_volume().toStdString()))
+            {
+                this->set_volume(this->get_max_volume());
+            }
         }
     }
 } // namespace atomic_dex

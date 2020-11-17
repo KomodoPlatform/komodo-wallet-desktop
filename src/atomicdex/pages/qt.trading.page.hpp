@@ -100,6 +100,7 @@ namespace atomic_dex
         void common_cancel_all_orders(bool by_coin = false, const QString& ticker = "");
         void clear_forms() noexcept;
         void determine_max_volume() noexcept;
+        void cap_volume() noexcept;
 
       public:
         //! Constructor
