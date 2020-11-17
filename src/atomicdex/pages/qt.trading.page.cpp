@@ -555,4 +555,19 @@ namespace atomic_dex
             emit marketModeChanged();
         }
     }
+
+    QString
+    trading_page::get_price() const noexcept
+    {
+        return m_price;
+    }
+    void
+    trading_page::set_price(QString price) noexcept
+    {
+        if (m_price != price)
+        {
+            m_price = std::move(price);
+            emit priceChanged();
+        }
+    }
 } // namespace atomic_dex
