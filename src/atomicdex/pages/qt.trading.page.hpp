@@ -47,9 +47,12 @@ namespace atomic_dex
         Q_PROPERTY(bool buy_sell_rpc_busy READ is_buy_sell_rpc_busy WRITE set_buy_sell_rpc_busy NOTIFY buySellRpcStatusChanged)
         Q_PROPERTY(bool fetching_multi_ticker_fees_busy READ is_fetching_multi_ticker_fees_busy WRITE set_fetching_multi_ticker_fees_busy NOTIFY
                        multiTickerFeesStatusChanged)
+
+        //! Trading logic
         Q_PROPERTY(MarketMode market_mode READ get_market_mode WRITE set_market_mode NOTIFY marketModeChanged)
         Q_PROPERTY(QString price READ get_price WRITE set_price NOTIFY priceChanged)
         Q_PROPERTY(QString volume READ get_volume WRITE set_volume NOTIFY volumeChanged)
+        Q_PROPERTY(QString max_volume READ get_max_volume WRITE set_max_volume NOTIFY maxVolumeChanged)
 
 
         //! Private enum
@@ -91,10 +94,12 @@ namespace atomic_dex
         MarketMode m_market_mode{MarketModeGadget::Sell};
         QString    m_price{""};
         QString    m_volume{""};
+        QString    m_max_volume{"0"};
 
         //! Private function
         void common_cancel_all_orders(bool by_coin = false, const QString& ticker = "");
         void clear_forms() noexcept;
+        void determine_max_volume() noexcept;
 
       public:
         //! Constructor
@@ -150,6 +155,8 @@ namespace atomic_dex
         void                     set_price(QString price) noexcept;
         [[nodiscard]] QString    get_volume() const noexcept;
         void                     set_volume(QString volume) noexcept;
+        [[nodiscard]] QString    get_max_volume() const noexcept;
+        void                     set_max_volume(QString max_volume) noexcept;
 
         //! For multi ticker part
         [[nodiscard]] bool is_fetching_multi_ticker_fees_busy() const noexcept;
@@ -175,6 +182,7 @@ namespace atomic_dex
         void priceChanged();
         void volumeChanged();
         void marketModeChanged();
+        void maxVolumeChanged();
     };
 } // namespace atomic_dex
 
