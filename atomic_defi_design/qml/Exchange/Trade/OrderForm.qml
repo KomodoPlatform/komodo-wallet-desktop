@@ -225,16 +225,16 @@ FloatingBackground {
                 AmountFieldWithInfo {
                     id: input_price
 
-                    Binding { target: API.app.trading_pg; property: "price"; value: input_price.field.displayText }
-
                     width: parent.width
 
                     field.left_text: qsTr("Price")
                     field.right_text: right_ticker
 
+                    field.text: API.app.trading_pg.price
                     field.onTextChanged: {
                         // Will move to backend
 //                        onInputChanged()
+                        API.app.trading_pg.price = field.text
                     }
 
                     function resetPrice() {
