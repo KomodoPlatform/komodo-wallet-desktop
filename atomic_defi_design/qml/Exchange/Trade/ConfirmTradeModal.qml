@@ -166,7 +166,7 @@ BasicModal {
                         color: parent.enabled ? Style.colorText : Style.colorTextDisabled
                     }
 
-                    Slider {
+                    DefaultSlider {
                         id: required_confirmation_count
                         readonly property int default_confirmation_count: 3
                         Layout.alignment: Qt.AlignHCenter

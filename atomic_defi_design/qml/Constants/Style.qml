@@ -119,11 +119,11 @@ QtObject {
     readonly property string colorTheme2:  dark_theme ? "#36A8AA" : "#36A8AA"
     readonly property string colorTheme3:  dark_theme ? "#318795" : "#318795"
     readonly property string colorTheme4:  dark_theme ? "#2B6680" : "#2B6680"
-    readonly property string colorTheme5:  dark_theme ? "#23273C" : "#F2F3F7"
-    readonly property string colorTheme6:  dark_theme ? "#22263A" : "#F2F3F7"
-    readonly property string colorTheme7:  dark_theme ? "#15182A" : "#F9F9FB"
-    readonly property string colorTheme8:  dark_theme ? "#171A2C" : "#F2F3F7"
-    readonly property string colorTheme9:  dark_theme ? "#0E1021" : "#F2F3F7"
+    readonly property string colorTheme5:  dark_theme ? "#23273C" : "#ececf2"
+    readonly property string colorTheme6:  dark_theme ? "#22263A" : "#efeff5"
+    readonly property string colorTheme7:  dark_theme ? "#15182A" : "#f2f2f7"
+    readonly property string colorTheme8:  dark_theme ? "#171A2C" : "#f6f6f9"
+    readonly property string colorTheme9:  dark_theme ? "#0E1021" : "#F9F9FB"
     readonly property string colorTheme10:  dark_theme ? "#2579E0" : "#2579E0"
     readonly property string colorTheme11:  dark_theme ? "#00A3FF" : "#00A3FF"
     readonly property string colorThemeLine:  dark_theme ? "#1D1F23" : "#1D1F23"
@@ -134,7 +134,7 @@ QtObject {
     readonly property string colorThemeDark3:  dark_theme ? "#78808D" : "#78808D"
     readonly property string colorThemeDarkLight:  dark_theme ? "#78808D" : "#456078"
 
-    readonly property string colorRectangle:  dark_theme ? colorTheme7 : colorTheme8
+    readonly property string colorRectangle:  dark_theme ? colorTheme7 : colorTheme7
     readonly property string colorInnerBackground:  dark_theme ? colorTheme7 : colorTheme7
 
     readonly property string colorGradient1:  dark_theme ? colorTheme9 : colorTheme9
@@ -170,6 +170,7 @@ QtObject {
     readonly property string colorSidebarHighlightGradient3:  dark_theme ? "#5F1B5E7D" : "#A06dc9f3"
     readonly property string colorSidebarHighlightGradient4:  dark_theme ? "#001B5E7D" : "#006bcef4"
     readonly property string colorSidebarDropShadow:  dark_theme ? "#90000000" : "#BECDE2"
+    readonly property string colorSidebarSelectedText:  dark_theme ? "#FFFFFF" : "#FFFFFF"
 
     readonly property string colorCoinListHighlightGradient:  dark_theme ? "#2C2E40" : "#E0E6F0"
 
@@ -185,6 +186,7 @@ QtObject {
     readonly property string colorChartMA2:  dark_theme ? "#F1D17F" : "#F1D17F"
 
     readonly property string colorLineBasic:  dark_theme ? "#303344" : "#303344"
+
 
     readonly property string colorText: dark_theme ? Style.colorWhite1 : "#405366"
     readonly property string colorText2: dark_theme ? "#79808C" : "#3C5368"
