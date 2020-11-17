@@ -279,9 +279,9 @@ FloatingBackground {
                     field.right_text: left_ticker
                     field.placeholderText: sell_mode ? qsTr("Amount to sell") : qsTr("Amount to receive")
 
-                    field.text: API.app.trading_pg.volume
+                    field.text: backend_volume
                     field.onTextChanged: {
-                        API.app.trading_pg.volume = field.text
+                        setVolume(field.text)
 
                         // Will move to backend
 //                        onInputChanged()
@@ -318,9 +318,9 @@ FloatingBackground {
                 to: Math.max(0, parseFloat(getVolumeCap()))
                 live: false
 
-                value: API.app.trading_pg.volume === "" ? 0 : parseFloat(API.app.trading_pg.volume)
+                value: backend_volume === "" ? 0 : parseFloat(backend_volume)
 
-                onValueChanged: { if(pressed) API.app.trading_pg.volume = General.formatDouble(value) }
+                onValueChanged: { if(pressed) setVolume(General.formatDouble(value)) }
 
                 DefaultText {
                     visible: parent.pressed

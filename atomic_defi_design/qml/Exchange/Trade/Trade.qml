@@ -21,9 +21,14 @@ Item {
     signal prepareMultiOrder()
     property bool multi_order_values_are_valid: true
 
+    readonly property string backend_volume: API.app.trading_pg.volume
+    function setVolume(v) {
+        API.app.trading_pg.volume = v
+    }
+
     readonly property bool sell_mode: API.app.trading_pg.market_mode == MarketMode.Sell
-    function setMarketMode(m) {
-        API.app.trading_pg.market_mode = m
+    function setMarketMode(v) {
+        API.app.trading_pg.market_mode = v
     }
 
     property string left_ticker: selector_left.ticker
