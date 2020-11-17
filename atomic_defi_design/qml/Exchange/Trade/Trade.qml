@@ -60,10 +60,13 @@ Item {
     }
 
     function reset(reset_result=true, is_base) {
-        if(reset_result) action_result = ""
-        resetPreferredPrice()
-        form_base.reset()
-        resetTradeInfo()
+        // Will move to backend
+//        if(reset_result) action_result = ""
+//        resetPreferredPrice()
+//        form_base.reset()
+//        resetTradeInfo()
+//        multi_order_switch.checked = false
+
         multi_order_switch.checked = false
     }
 
@@ -250,11 +253,11 @@ Item {
             API.app.trading_pg.set_current_orderbook(base, rel)
         }
 
-        reset(true, is_left_side)
-        updateTradeInfo()
-        updateCexPrice(base, rel)
-        pairChanged(base, rel)
-        exchange.onTradeTickerChanged(base)
+//        reset(true, is_left_side)
+//        updateTradeInfo()
+//        updateCexPrice(base, rel)
+//        pairChanged(base, rel)
+//        exchange.onTradeTickerChanged(base)
     }
 
     function trade(base, rel, options, default_config) {
@@ -396,9 +399,8 @@ Item {
                             anchors.fill: parent
                             hoverEnabled: true
                             onClicked: {
-                                // Will move to backend
-//                                if(!block_everything)
-//                                    setPair(true, right_ticker)
+                                if(!block_everything)
+                                    setPair(true, right_ticker)
                             }
                         }
                     }

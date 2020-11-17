@@ -36,22 +36,20 @@ RowLayout {
         onCurrentIndexChanged: combo.index_changed = true
 
         onDisplayTextChanged: {
-            // Will move to backend
-//            if(currentText.indexOf(ticker) === -1) {
-//                const target_index = indexOfValue(ticker)
-//                if(currentIndex !== target_index) {
-//                    if(!combo.index_changed) {
-//                        currentIndex = target_index
-//                    }
-//                    else combo.index_changed = false
-//                }
-//            }
+            if(currentText.indexOf(ticker) === -1) {
+                const target_index = indexOfValue(ticker)
+                if(currentIndex !== target_index) {
+                    if(!combo.index_changed) {
+                        currentIndex = target_index
+                    }
+                    else combo.index_changed = false
+                }
+            }
         }
 
         onCurrentValueChanged: {
-            // Will move to backend
-//            combo.index_changed = false
-//            if(currentValue !== undefined) setPair(left_side, currentValue)
+            combo.index_changed = false
+            if(currentValue !== undefined) setPair(left_side, currentValue)
         }
 
         Layout.fillWidth: true

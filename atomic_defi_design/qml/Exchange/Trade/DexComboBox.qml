@@ -78,9 +78,8 @@ DefaultComboBox {
                 id: input_coin_filter
 
                 function reset() {
-                    // Will move to backend
-//                    text = ""
-//                    renewIndex()
+                    text = ""
+                    renewIndex()
                 }
 
                 Connections {
@@ -95,9 +94,8 @@ DefaultComboBox {
                 placeholderText: qsTr("Search")
 
                 onTextChanged: {
-                    // Will move to backend
-//                    ticker_list.setFilterFixedString(text)
-//                    renewIndex()
+                    ticker_list.setFilterFixedString(text)
+                    renewIndex()
                 }
                 Layout.fillWidth: true
                 Layout.leftMargin: 6
@@ -105,12 +103,11 @@ DefaultComboBox {
                 Layout.topMargin: Layout.leftMargin
 
                 Keys.onPressed: {
-                    // Will move to backend
-//                    if(event.key === Qt.Key_Return) {
-//                        control.currentIndex = 0
-//                        popup.close()
-//                        event.accepted = true
-//                    }
+                    if(event.key === Qt.Key_Return) {
+                        control.currentIndex = 0
+                        popup.close()
+                        event.accepted = true
+                    }
                 }
             }
 
