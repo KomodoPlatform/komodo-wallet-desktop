@@ -35,17 +35,26 @@ namespace atomic_dex
 {
     class trading_page final : public QObject, public ag::ecs::pre_update_system<trading_page>
     {
+      public:
+        enum e_market_mode
+        {
+            sell = 0,
+            buy  = 1
+        };
+        Q_ENUM(e_market_mode)
+      private:
         //! Q_Object definition
         Q_OBJECT
 
         //! Q Properties definitions
         Q_PROPERTY(qt_orderbook_wrapper* orderbook READ get_orderbook_wrapper NOTIFY orderbookChanged)
-        //Q_PROPERTY(candlestick_charts_model* candlestick_charts_mdl READ get_candlestick_charts NOTIFY candlestickChartsChanged)
         Q_PROPERTY(market_pairs* market_pairs_mdl READ get_market_pairs_mdl NOTIFY marketPairsChanged)
         Q_PROPERTY(QVariant buy_sell_last_rpc_data READ get_buy_sell_last_rpc_data WRITE set_buy_sell_last_rpc_data NOTIFY buySellLastRpcDataChanged)
         Q_PROPERTY(bool buy_sell_rpc_busy READ is_buy_sell_rpc_busy WRITE set_buy_sell_rpc_busy NOTIFY buySellRpcStatusChanged)
         Q_PROPERTY(bool fetching_multi_ticker_fees_busy READ is_fetching_multi_ticker_fees_busy WRITE set_fetching_multi_ticker_fees_busy NOTIFY
                        multiTickerFeesStatusChanged)
+        Q_PROPERTY(e_market_mode market_mode READ get_market_mode WRITE set_market_mode NOTIFY marketModeChanged)
+
 
         //! Private enum
         enum models
@@ -57,19 +66,13 @@ namespace atomic_dex
 
         enum models_actions
         {
-            orderbook_need_a_reset   = 0,
-            models_actions_size      = 1
+            orderbook_need_a_reset = 0,
+            models_actions_size    = 1
         };
 
         enum class trading_actions
         {
             post_process_orderbook_finished = 0,
-        };
-
-        enum market_mode
-        {
-            sell = 0,
-            buy  = 1
         };
 
         //! Private typedefs
@@ -87,7 +90,7 @@ namespace atomic_dex
         std::atomic_bool         m_rpc_buy_sell_busy{false};
         std::atomic_bool         m_fetching_multi_ticker_fees_busy{false};
         t_qt_synchronized_json   m_rpc_buy_sell_result;
-        market_mode              m_market_mode{sell};
+        e_market_mode            m_market_mode{sell};
 
         //! Privae function
         void common_cancel_all_orders(bool by_coin = false, const QString& ticker = "");
@@ -125,15 +128,8 @@ namespace atomic_dex
 
         Q_INVOKABLE void switch_market_mode() noexcept; ///< trading_widget (when clicking on buy or sell)
         Q_INVOKABLE void place_buy_order(
-            const QString& base,
-            const QString& rel,
-            const QString& price,
-            const QString& volume,
-            bool is_created_order,
-            const QString& price_denom,
-            const QString& price_numer,
-            const QString& base_nota = "",
-            const QString& base_confs = "");
+            const QString& base, const QString& rel, const QString& price, const QString& volume, bool is_created_order, const QString& price_denom,
+            const QString& price_numer, const QString& base_nota = "", const QString& base_confs = "");
         Q_INVOKABLE void place_sell_order(
             const QString& base, const QString& rel, const QString& price, const QString& volume, bool is_created_order, const QString& price_denom,
             const QString& price_numer, const QString& rel_nota = "", const QString& rel_confs = "");
@@ -142,11 +138,12 @@ namespace atomic_dex
         Q_INVOKABLE void place_multiple_sell_order() noexcept;                  ///< multi ticker (when confirming a multi order)
 
         //! Properties
-        [[nodiscard]] qt_orderbook_wrapper*     get_orderbook_wrapper() const noexcept;
-        //[[nodiscard]] candlestick_charts_model* get_candlestick_charts() const noexcept;
-        [[nodiscard]] market_pairs*             get_market_pairs_mdl() const noexcept;
-        [[nodiscard]] bool                      is_buy_sell_rpc_busy() const noexcept;
-        void                                    set_buy_sell_rpc_busy(bool status) noexcept;
+        [[nodiscard]] qt_orderbook_wrapper* get_orderbook_wrapper() const noexcept;
+        [[nodiscard]] market_pairs*         get_market_pairs_mdl() const noexcept;
+        [[nodiscard]] bool                  is_buy_sell_rpc_busy() const noexcept;
+        void                                set_buy_sell_rpc_busy(bool status) noexcept;
+        e_market_mode                       get_market_mode() const noexcept;
+        void set_market_mode(e_market_mode market_mode) noexcept;
 
         //! For multi ticker part
         [[nodiscard]] bool is_fetching_multi_ticker_fees_busy() const noexcept;
@@ -157,7 +154,6 @@ namespace atomic_dex
 
         //! Events Callbacks
         void on_process_orderbook_finished_event(const process_orderbook_finished& evt) noexcept;
-        void on_start_fetching_new_ohlc_data_event(const start_fetching_new_ohlc_data& evt);
         void on_refresh_ohlc_event(const refresh_ohlc_needed& evt) noexcept;
         void on_multi_ticker_enabled(const multi_ticker_enabled& evt) noexcept;
 
@@ -168,6 +164,7 @@ namespace atomic_dex
         void buySellLastRpcDataChanged();
         void buySellRpcStatusChanged();
         void multiTickerFeesStatusChanged();
+        void marketModeChanged();
     };
 } // namespace atomic_dex
 

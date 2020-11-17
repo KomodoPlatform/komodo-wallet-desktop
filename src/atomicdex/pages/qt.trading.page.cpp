@@ -51,22 +51,6 @@ namespace atomic_dex
             m_models_actions[orderbook_need_a_reset] = evt.is_a_reset;
         }
     }
-
-    /*void
-    trading_page::on_start_fetching_new_ohlc_data_event(const start_fetching_new_ohlc_data& evt)
-    {
-        get_candlestick_charts()->set_is_currently_fetching(evt.is_a_reset);
-    }*/
-
-    /*void
-    atomic_dex::trading_page::on_refresh_ohlc_event(const atomic_dex::refresh_ohlc_needed& evt) noexcept
-    {
-        if (not m_about_to_exit_the_app)
-        {
-            m_actions_queue.push(trading_actions::refresh_ohlc);
-            m_models_actions[candlestick_need_a_reset] = evt.is_a_reset;
-        }
-    }*/
 } // namespace atomic_dex
 
 //! Public QML API
@@ -390,8 +374,6 @@ namespace atomic_dex
     trading_page::connect_signals()
     {
         dispatcher_.sink<process_orderbook_finished>().connect<&trading_page::on_process_orderbook_finished_event>(*this);
-        // dispatcher_.sink<start_fetching_new_ohlc_data>().connect<&trading_page::on_start_fetching_new_ohlc_data_event>(*this);
-        // dispatcher_.sink<refresh_ohlc_needed>().connect<&trading_page::on_refresh_ohlc_event>(*this);
         dispatcher_.sink<multi_ticker_enabled>().connect<&trading_page::on_multi_ticker_enabled>(*this);
     }
 
@@ -399,8 +381,6 @@ namespace atomic_dex
     atomic_dex::trading_page::disconnect_signals()
     {
         dispatcher_.sink<process_orderbook_finished>().disconnect<&trading_page::on_process_orderbook_finished_event>(*this);
-        // dispatcher_.sink<start_fetching_new_ohlc_data>().disconnect<&trading_page::on_start_fetching_new_ohlc_data_event>(*this);
-        // dispatcher_.sink<refresh_ohlc_needed>().disconnect<&trading_page::on_refresh_ohlc_event>(*this);
         dispatcher_.sink<multi_ticker_enabled>().disconnect<&trading_page::on_multi_ticker_enabled>(*this);
     }
 
@@ -444,12 +424,6 @@ namespace atomic_dex
     {
         return qobject_cast<qt_orderbook_wrapper*>(m_models[models::orderbook]);
     }
-
-    /*candlestick_charts_model*
-    trading_page::get_candlestick_charts() const noexcept
-    {
-        return qobject_cast<candlestick_charts_model*>(m_models[models::ohlc]);
-    }*/
 
     market_pairs*
     trading_page::get_market_pairs_mdl() const noexcept
@@ -564,10 +538,43 @@ namespace atomic_dex
             .then(&handle_exception_pplx_task);
     }
 
+} // namespace atomic_dex
+
+//! Function related to trading
+namespace atomic_dex
+{
     void
     trading_page::switch_market_mode() noexcept
     {
-        m_market_mode = m_market_mode == market_mode::buy ? market_mode::sell : market_mode::buy;
-        spdlog::info("switching market_mode, new mode: {}", m_market_mode == market_mode::buy ? "buy" : "sell");
+        if (this->get_market_mode() == e_market_mode::buy)
+        {
+            this->set_market_mode(e_market_mode::sell);
+        }
+        else
+        {
+            this->set_market_mode(e_market_mode::buy);
+        }
+
+        spdlog::info("switching market_mode, new mode: {}", m_market_mode == e_market_mode::buy ? "buy" : "sell");
+    }
+} // namespace atomic_dex
+
+//! Properties related to trading
+namespace atomic_dex
+{
+    trading_page::e_market_mode
+    trading_page::get_market_mode() const noexcept
+    {
+        return m_market_mode;
+    }
+
+    void
+    trading_page::set_market_mode(e_market_mode market_mode) noexcept
+    {
+        if (this->m_market_mode != market_mode)
+        {
+            this->m_market_mode = market_mode;
+            emit marketModeChanged();
+        }
     }
 } // namespace atomic_dex
