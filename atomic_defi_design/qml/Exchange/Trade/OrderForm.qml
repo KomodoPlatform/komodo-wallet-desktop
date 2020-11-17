@@ -262,6 +262,7 @@ FloatingBackground {
                 }
             }
 
+
             Item {
                 Layout.fillWidth: true
                 Layout.leftMargin: top_line.Layout.leftMargin
@@ -283,16 +284,7 @@ FloatingBackground {
                         API.app.trading_pg.volume = field.text
 
                         // Will move to backend
-//                        const before_checks = field.text
 //                        onInputChanged()
-//                        const after_checks = field.text
-
-//                        // Update slider only if the value is not from slider, or value got corrected here
-//                        if(before_checks !== after_checks || !input_volume_slider.updating_text_field) {
-//                            input_volume_slider.updating_from_text_field = true
-//                            input_volume_slider.value = parseFloat(field.text)
-//                            input_volume_slider.updating_from_text_field = false
-//                        }
                     }
                 }
 
@@ -310,6 +302,7 @@ FloatingBackground {
 
             DefaultSlider {
                 id: input_volume_slider
+
                 function getRealValue() {
                     return input_volume_slider.position * (input_volume_slider.to - input_volume_slider.from)
                 }
@@ -325,16 +318,9 @@ FloatingBackground {
                 to: Math.max(0, parseFloat(getVolumeCap()))
                 live: false
 
-                onValueChanged: {
-                    // Will move to backend
-//                    if(updating_from_text_field) return
+                value: API.app.trading_pg.volume === "" ? 0 : parseFloat(API.app.trading_pg.volume)
 
-//                    if(pressed) {
-//                        updating_text_field = true
-//                        input_volume.field.text = General.formatDouble(value)
-//                        updating_text_field = false
-//                    }
-                }
+                onValueChanged: { if(pressed) API.app.trading_pg.volume = General.formatDouble(value) }
 
                 DefaultText {
                     visible: parent.pressed
