@@ -137,7 +137,8 @@ Item {
 
 
     function getTradeInfo(base, rel, amount, set_as_current=true) {
-        if(inCurrentPage()) {
+        // Will move to backend
+        /*if(inCurrentPage()) {
             let info = API.app.get_trade_infos(base, rel, amount)
 
             console.log("Getting Trade info with parameters: ", base, rel, amount, " -  Result: ", JSON.stringify(info))
@@ -154,7 +155,7 @@ Item {
 
             return info
         }
-        else return curr_trade_info
+        else */return curr_trade_info
     }
 
 

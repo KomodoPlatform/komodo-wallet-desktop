@@ -104,25 +104,27 @@ InnerBackground {
                     }
 
                     function updateTradeInfo() {
-                        if(fetching_multi_ticker_fees_busy || !enable_ticker.checked) return
-                        if(!model.multi_ticker_data.info_needs_update) return
+                        // Will move to backend
+                        return
+//                        if(fetching_multi_ticker_fees_busy || !enable_ticker.checked) return
+//                        if(!model.multi_ticker_data.info_needs_update) return
 
-                        const base = multi_order_line.base
-                        const rel = multi_order_line.rel
+//                        const base = multi_order_line.base
+//                        const rel = multi_order_line.rel
 
-                        const amt = API.app.get_balance(base)
-                        console.log("Updating trading info for ", base, "/", rel, " with amount:", amt)
-                        let info = API.app.get_trade_infos(base, rel, amt)
-                        console.log(General.prettifyJSON(info))
-                        if(info.input_final_value === undefined || info.input_final_value === "nan" || info.input_final_value === "NaN") {
-                            console.log("Bad trade info!")
-                            return
-                        }
+//                        const amt = API.app.get_balance(base)
+//                        console.log("Updating trading info for ", base, "/", rel, " with amount:", amt)
+//                        let info = API.app.get_trade_infos(base, rel, amt)
+//                        console.log(General.prettifyJSON(info))
+//                        if(info.input_final_value === undefined || info.input_final_value === "nan" || info.input_final_value === "NaN") {
+//                            console.log("Bad trade info!")
+//                            return
+//                        }
 
-                        let d = getData()
-                        d.info_needs_update = false
-                        d.trade_info = info
-                        setData(d)
+//                        let d = getData()
+//                        d.info_needs_update = false
+//                        d.trade_info = info
+//                        setData(d)
                     }
 
                     Connections {
