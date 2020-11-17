@@ -298,7 +298,7 @@ FloatingBackground {
                 }
             }
 
-            Slider {
+            DefaultSlider {
                 id: input_volume_slider
                 function getRealValue() {
                     return input_volume_slider.position * (input_volume_slider.to - input_volume_slider.from)
