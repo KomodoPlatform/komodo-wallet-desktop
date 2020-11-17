@@ -134,8 +134,46 @@ namespace atomic_dex
     {
         this->m_left_selected_coin  = "";
         this->m_right_selected_coin = "";
+        this->m_base_selected_coin  = "";
+        this->m_rel_selected_coin   = "";
         emit rightSelectedCoinChanged();
         emit leftSelectedCoinChanged();
+        emit baseSelectedCoinChanged();
+        emit relSelectedCoinChanged();
+    }
+
+    QString
+    market_pairs::get_base_selected_coin() const noexcept
+    {
+        return m_base_selected_coin;
+    }
+
+    QString
+    market_pairs::get_rel_selected_coin() const noexcept
+    {
+        return m_rel_selected_coin;
+    }
+
+    void
+    market_pairs::set_base_selected_coin(QString base_coin) noexcept
+    {
+        if (base_coin != m_base_selected_coin)
+        {
+            //! Set new one to true
+            m_base_selected_coin = std::move(base_coin);
+            emit baseSelectedCoinChanged();
+        }
+    }
+
+    void
+    market_pairs::set_rel_selected_coin(QString rel_coin) noexcept
+    {
+        if (rel_coin != m_rel_selected_coin)
+        {
+            //! Set new one to true
+            m_rel_selected_coin = std::move(rel_coin);
+            emit relSelectedCoinChanged();
+        }
     }
 } // namespace atomic_dex
 

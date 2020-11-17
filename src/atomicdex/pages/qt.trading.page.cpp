@@ -49,6 +49,7 @@ namespace atomic_dex
         {
             m_actions_queue.push(trading_actions::post_process_orderbook_finished);
             m_models_actions[orderbook_need_a_reset] = evt.is_a_reset;
+            determine_max_volume();
         }
     }
 } // namespace atomic_dex
@@ -71,6 +72,8 @@ namespace atomic_dex
         auto* market_selector_mdl = get_market_pairs_mdl();
         market_selector_mdl->set_left_selected_coin(base);
         market_selector_mdl->set_right_selected_coin(rel);
+        market_selector_mdl->set_base_selected_coin(m_market_mode == MarketMode::Sell ? base : rel);
+        market_selector_mdl->set_rel_selected_coin(m_market_mode == MarketMode::Sell ? rel : base);
         dispatcher_.trigger<orderbook_refresh>(base.toStdString(), rel.toStdString());
     }
 
@@ -553,6 +556,8 @@ namespace atomic_dex
             this->m_market_mode = market_mode;
             spdlog::info("switching market_mode, new mode: {}", m_market_mode == MarketMode::Buy ? "buy" : "sell");
             this->clear_forms();
+            auto*             market_selector_mdl = get_market_pairs_mdl();
+            set_current_orderbook(market_selector_mdl->get_left_selected_coin(), market_selector_mdl->get_right_selected_coin());
             emit marketModeChanged();
         }
     }
@@ -578,6 +583,7 @@ namespace atomic_dex
     {
         this->set_price("");
         this->set_volume("");
+        this->set_max_volume("0");
     }
 
     QString
@@ -594,5 +600,31 @@ namespace atomic_dex
             spdlog::trace("volume is [{}]", m_volume.toStdString());
             emit volumeChanged();
         }
+    }
+
+    QString
+    trading_page::get_max_volume() const noexcept
+    {
+        return m_max_volume;
+    }
+
+    void
+    trading_page::set_max_volume(QString max_volume) noexcept
+    {
+        if (m_max_volume != max_volume)
+        {
+            m_max_volume = std::move(max_volume);
+            spdlog::trace("max_volume is [{}]", m_max_volume.toStdString());
+            emit maxVolumeChanged();
+        }
+    }
+
+    void
+    trading_page::determine_max_volume() noexcept
+    {
+        auto*             market_selector_mdl = get_market_pairs_mdl();
+        const std::string base_ticker         = market_selector_mdl->get_base_selected_coin().toStdString();
+        const std::string rel_ticker          = market_selector_mdl->get_rel_selected_coin().toStdString();
+        spdlog::info("determine max volume for pair [base_ticker: {} / rel_ticker: {}]", base_ticker, rel_ticker);
     }
 } // namespace atomic_dex
