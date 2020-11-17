@@ -536,25 +536,6 @@ namespace atomic_dex
 
 } // namespace atomic_dex
 
-//! Function related to trading
-namespace atomic_dex
-{
-    void
-    trading_page::switch_market_mode() noexcept
-    {
-        if (this->get_market_mode() == t_market_mode::buy)
-        {
-            this->set_market_mode(t_market_mode::sell);
-        }
-        else
-        {
-            this->set_market_mode(t_market_mode::buy);
-        }
-
-        spdlog::info("switching market_mode, new mode: {}", m_market_mode == t_market_mode::buy ? "buy" : "sell");
-    }
-} // namespace atomic_dex
-
 //! Properties related to trading
 namespace atomic_dex
 {
@@ -570,6 +551,7 @@ namespace atomic_dex
         if (this->m_market_mode != market_mode)
         {
             this->m_market_mode = market_mode;
+            spdlog::info("switching market_mode, new mode: {}", m_market_mode == t_market_mode::buy ? "buy" : "sell");
             emit marketModeChanged();
         }
     }

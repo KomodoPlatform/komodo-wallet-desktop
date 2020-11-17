@@ -120,7 +120,6 @@ namespace atomic_dex
         Q_INVOKABLE void swap_market_pair();                                             ///< market_selector (button to switch market selector and orderbook)
         Q_INVOKABLE void set_current_orderbook(const QString& base, const QString& rel); ///< market_selector (called and selecting another coin)
 
-        Q_INVOKABLE void switch_market_mode() noexcept; ///< trading_widget (when clicking on buy or sell)
         Q_INVOKABLE void place_buy_order(
             const QString& base, const QString& rel, const QString& price, const QString& volume, bool is_created_order, const QString& price_denom,
             const QString& price_numer, const QString& base_nota = "", const QString& base_confs = "");
