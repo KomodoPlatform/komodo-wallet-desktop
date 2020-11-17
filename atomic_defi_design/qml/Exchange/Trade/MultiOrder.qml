@@ -129,15 +129,18 @@ InnerBackground {
                         target: exchange_trade
 
                         function onMulti_order_enabledChanged() {
-                            multi_order_line.reset(multi_order_enabled)
+                            // Will move to backend
+//                            multi_order_line.reset(multi_order_enabled)
                         }
 
                         function onPrepareMultiOrder() {
-                            multi_order_line.setMultiTickerData()
+                            // Will move to backend
+//                            multi_order_line.setMultiTickerData()
                         }
 
                         function onFetching_multi_ticker_fees_busyChanged() {
-                            multi_order_line.updateTradeInfo()
+                            // Will move to backend
+//                            multi_order_line.updateTradeInfo()
                         }
                     }
 
@@ -172,18 +175,19 @@ InnerBackground {
                         Component.onCompleted: checked = model.is_multi_ticker_currently_enabled || is_parent_coin
                         checked: is_parent_coin
                         onCheckedChanged: {
-                            model.is_multi_ticker_currently_enabled = checked
+                            // Will move to backend
+//                            model.is_multi_ticker_currently_enabled = checked
 
-                            if(checked) {
-                                let d = getData()
-                                if(!d.trade_info) {
-                                    d.info_needs_update = true
-                                    setData(d)
-                                }
-                            }
-                            else if(!checked) {
-                                resetData()
-                            }
+//                            if(checked) {
+//                                let d = getData()
+//                                if(!d.trade_info) {
+//                                    d.info_needs_update = true
+//                                    setData(d)
+//                                }
+//                            }
+//                            else if(!checked) {
+//                                resetData()
+//                            }
                         }
                     }
 

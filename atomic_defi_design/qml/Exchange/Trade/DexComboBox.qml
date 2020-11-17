@@ -33,6 +33,7 @@ DefaultComboBox {
 
             if(idx === -1) return prev_details
 
+            // Update count triggers the change for auto-update
             const new_details = {
                 update_count:           line.update_count,
                 ticker:                 model.data(model.index(idx, 0), 257),
@@ -77,10 +78,9 @@ DefaultComboBox {
                 id: input_coin_filter
 
                 function reset() {
-                    text = ""
-                    renewIndex()
-
-                    //applyCurrentSort()
+                    // Will move to backend
+//                    text = ""
+//                    renewIndex()
                 }
 
                 Connections {
@@ -95,8 +95,9 @@ DefaultComboBox {
                 placeholderText: qsTr("Search")
 
                 onTextChanged: {
-                    ticker_list.setFilterFixedString(text)
-                    renewIndex()
+                    // Will move to backend
+//                    ticker_list.setFilterFixedString(text)
+//                    renewIndex()
                 }
                 Layout.fillWidth: true
                 Layout.leftMargin: 6
@@ -104,11 +105,12 @@ DefaultComboBox {
                 Layout.topMargin: Layout.leftMargin
 
                 Keys.onPressed: {
-                    if(event.key === Qt.Key_Return) {
-                        control.currentIndex = 0
-                        popup.close()
-                        event.accepted = true
-                    }
+                    // Will move to backend
+//                    if(event.key === Qt.Key_Return) {
+//                        control.currentIndex = 0
+//                        popup.close()
+//                        event.accepted = true
+//                    }
                 }
             }
 

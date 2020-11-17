@@ -115,9 +115,10 @@ ColumnLayout {
                 anchors.fill: parent
                 hoverEnabled: true
                 onClicked: {
-                    if(is_mine) return
+                    // Will move to backend
+//                    if(is_mine) return
 
-                    selectOrder(is_asks, price, quantity, price_denom, price_numer)
+//                    selectOrder(is_asks, price, quantity, price_denom, price_numer)
                 }
             }
 
@@ -182,10 +183,11 @@ ColumnLayout {
                     anchors.fill: parent
                     hoverEnabled: true
                     onClicked: {
-                        if(!is_mine) return
+                        // Will move to backend
+//                        if(!is_mine) return
 
-                        cancel_button_text.requested_cancel = true
-                        cancelOrder(uuid)
+//                        cancel_button_text.requested_cancel = true
+//                        cancelOrder(uuid)
                     }
                 }
             }

@@ -108,16 +108,17 @@ BasicModal {
                 text: qsTr("Confirm")
                 Layout.fillWidth: true
                 onClicked: {
-                    console.log("Submitting multiple sell order")
-                    API.app.trading_pg.place_multiple_sell_order()
+                    // Will move to backend
+//                    console.log("Submitting multiple sell order")
+//                    API.app.trading_pg.place_multiple_sell_order()
 
-                    root.close()
+//                    root.close()
 
-                    action_result = "success"
+//                    action_result = "success"
 
-                    toast.show(qsTr("Placed multiple orders"), General.time_toast_basic_info, "", false)
+//                    toast.show(qsTr("Placed multiple orders"), General.time_toast_basic_info, "", false)
 
-                    onOrderSuccess()
+//                    onOrderSuccess()
                 }
             }
         ]

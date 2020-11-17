@@ -197,7 +197,10 @@ FloatingBackground {
                     color: sell_mode ? Style.colorButtonEnabled.default : Style.colorButtonDisabled.default
                     colorTextEnabled: sell_mode ? Style.colorButtonEnabled.danger : Style.colorButtonDisabled.danger
                     font.weight: Font.Medium
-                    onClicked: sell_mode = true
+                    onClicked: {
+                        // Will move to backend
+//                        sell_mode = true
+                    }
                 }
                 DefaultButton {
                     Layout.fillWidth: true
@@ -206,7 +209,10 @@ FloatingBackground {
                     color: sell_mode ? Style.colorButtonDisabled.default : Style.colorButtonEnabled.default
                     colorTextEnabled: sell_mode ? Style.colorButtonDisabled.primary : Style.colorButtonEnabled.primary
                     font.weight: Font.Medium
-                    onClicked: sell_mode = false
+                    onClicked: {
+                        // Will move to backend
+//                        sell_mode = false
+                    }
                 }
             }
 
@@ -231,16 +237,21 @@ FloatingBackground {
                     field.right_text: right_ticker
 
                     field.onTextChanged: {
-                        onInputChanged()
+                        // Will move to backend
+//                        onInputChanged()
                     }
 
                     function resetPrice() {
                         if(orderIsSelected()) resetPreferredPrice()
                     }
 
-                    field.onPressed: resetPrice()
+                    field.onPressed: {
+                        // Will move to backend
+//                        resetPrice()
+                    }
                     field.onFocusChanged: {
-                        if(field.activeFocus) resetPrice()
+                        // Will move to backend
+//                        if(field.activeFocus) resetPrice()
                     }
                 }
 
@@ -273,16 +284,17 @@ FloatingBackground {
                     field.right_text: left_ticker
                     field.placeholderText: is_sell_form ? qsTr("Amount to sell") : qsTr("Amount to receive")
                     field.onTextChanged: {
-                        const before_checks = field.text
-                        onInputChanged()
-                        const after_checks = field.text
+                        // Will move to backend
+//                        const before_checks = field.text
+//                        onInputChanged()
+//                        const after_checks = field.text
 
-                        // Update slider only if the value is not from slider, or value got corrected here
-                        if(before_checks !== after_checks || !input_volume_slider.updating_text_field) {
-                            input_volume_slider.updating_from_text_field = true
-                            input_volume_slider.value = parseFloat(field.text)
-                            input_volume_slider.updating_from_text_field = false
-                        }
+//                        // Update slider only if the value is not from slider, or value got corrected here
+//                        if(before_checks !== after_checks || !input_volume_slider.updating_text_field) {
+//                            input_volume_slider.updating_from_text_field = true
+//                            input_volume_slider.value = parseFloat(field.text)
+//                            input_volume_slider.updating_from_text_field = false
+//                        }
                     }
                 }
 
@@ -316,13 +328,14 @@ FloatingBackground {
                 live: false
 
                 onValueChanged: {
-                    if(updating_from_text_field) return
+                    // Will move to backend
+//                    if(updating_from_text_field) return
 
-                    if(pressed) {
-                        updating_text_field = true
-                        input_volume.field.text = General.formatDouble(value)
-                        updating_text_field = false
-                    }
+//                    if(pressed) {
+//                        updating_text_field = true
+//                        input_volume.field.text = General.formatDouble(value)
+//                        updating_text_field = false
+//                    }
                 }
 
                 DefaultText {

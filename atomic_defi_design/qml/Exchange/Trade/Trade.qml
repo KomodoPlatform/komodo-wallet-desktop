@@ -188,8 +188,9 @@ Item {
 
     // Trade
     function open(ticker) {
-        setPair(true, ticker)
-        onOpened()
+        // Will move to backend
+        //setPair(true, ticker)
+        //onOpened()
     }
 
     property bool initialized_orderbook_pair: false
@@ -396,8 +397,9 @@ Item {
                             anchors.fill: parent
                             hoverEnabled: true
                             onClicked: {
-                                if(!block_everything)
-                                    setPair(true, right_ticker)
+                                // Will move to backend
+//                                if(!block_everything)
+//                                    setPair(true, right_ticker)
                             }
                         }
                     }
@@ -512,9 +514,10 @@ Item {
                                 text: qsTr("Multi-Order")
                                 enabled: !block_everything
                                 onCheckedChanged: {
-                                    if(checked) {
-                                        getCurrentForm().field.text = getCurrentForm().getVolumeCap()
-                                    }
+                                    // Will move to backend
+//                                    if(checked) {
+//                                        getCurrentForm().field.text = getCurrentForm().getVolumeCap()
+//                                    }
                                 }
                             }
 
@@ -545,10 +548,11 @@ Item {
                                 Layout.fillWidth: true
                                 enabled: multi_order_enabled && getCurrentForm().can_submit_trade
                                 onClicked: {
-                                    multi_order_values_are_valid = true
-                                    prepareMultiOrder()
-                                    if(multi_order_values_are_valid)
-                                        confirm_multi_order_trade_modal.open()
+                                    // Will move to backend
+//                                    multi_order_values_are_valid = true
+//                                    prepareMultiOrder()
+//                                    if(multi_order_values_are_valid)
+//                                        confirm_multi_order_trade_modal.open()
                                 }
                             }
                         }
