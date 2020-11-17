@@ -2,6 +2,8 @@ import QtQuick 2.15
 import QtQuick.Layouts 1.15
 import QtQuick.Controls 2.15
 
+import AtomicDEX.MarketMode 1.0
+
 import "../../Components"
 import "../../Constants"
 import "../../Wallet"
@@ -19,9 +21,11 @@ Item {
     signal prepareMultiOrder()
     property bool multi_order_values_are_valid: true
 
+    readonly property bool sell_mode: API.app.trading_pg.market_mode === MarketMode.Sell
+    function setMarketMode(m) {
+        API.app.trading_pg.market_mode = m
+    }
 
-
-    property bool sell_mode: true
     property string left_ticker: selector_left.ticker
     property string right_ticker: selector_right.ticker
     property string base_ticker: sell_mode ? left_ticker : right_ticker
@@ -51,7 +55,7 @@ Item {
     function fullReset() {
         initialized_orderbook_pair = false
         reset(true)
-        sell_mode = true
+        setMarketMode(MarketMode.Sell)
     }
 
     function reset(reset_result=true, is_base) {
@@ -82,7 +86,7 @@ Item {
     }
 
     function selectOrder(is_asks, price, quantity, price_denom, price_numer) {
-        sell_mode = !is_asks
+        setMarketMode(!is_asks ? MarketMode.Sell : MarketMode.Buy)
 
         preffered_order.is_asks = is_asks
         preffered_order.price = price

@@ -3,6 +3,8 @@ import QtQuick.Layouts 1.15
 import QtQuick.Controls 2.15
 import QtGraphicalEffects 1.0
 
+import AtomicDEX.MarketMode 1.0
+
 import "../../Components"
 import "../../Constants"
 
@@ -197,10 +199,7 @@ FloatingBackground {
                     color: sell_mode ? Style.colorButtonEnabled.default : Style.colorButtonDisabled.default
                     colorTextEnabled: sell_mode ? Style.colorButtonEnabled.danger : Style.colorButtonDisabled.danger
                     font.weight: Font.Medium
-                    onClicked: {
-                        // Will move to backend
-//                        sell_mode = true
-                    }
+                    onClicked: setMarketMode(MarketMode.Sell)
                 }
                 DefaultButton {
                     Layout.fillWidth: true
@@ -209,10 +208,7 @@ FloatingBackground {
                     color: sell_mode ? Style.colorButtonDisabled.default : Style.colorButtonEnabled.default
                     colorTextEnabled: sell_mode ? Style.colorButtonDisabled.primary : Style.colorButtonEnabled.primary
                     font.weight: Font.Medium
-                    onClicked: {
-                        // Will move to backend
-//                        sell_mode = false
-                    }
+                    onClicked: setMarketMode(MarketMode.Buy)
                 }
             }
 
