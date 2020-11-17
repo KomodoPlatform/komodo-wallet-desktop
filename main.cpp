@@ -200,6 +200,9 @@ run_app(int argc, char** argv)
     engine.addImportPath("qrc:///");
     QZXing::registerQMLTypes();
     QZXing::registerQMLImageProvider(engine);
+    qRegisterMetaType<MarketMode>("MarketMode");
+    qmlRegisterUncreatableType<atomic_dex::MarketModeGadget>("AtomicDEX.MarketMode", 1, 0, "MarketMode", "Not creatable as it is an enum type");
+
     engine.rootContext()->setContextProperty("atomic_app", &atomic_app);
     // Load Qaterial.
 
@@ -210,8 +213,6 @@ run_app(int argc, char** argv)
     qmlRegisterSingletonType(QUrl("qrc:/atomic_defi_design/qml/Constants/General.qml"), "App", 1, 0, "General");
     qmlRegisterSingletonType(QUrl("qrc:/atomic_defi_design/qml/Constants/Style.qml"), "App", 1, 0, "Style");
     qmlRegisterSingletonType(QUrl("qrc:/atomic_defi_design/qml/Constants/API.qml"), "App", 1, 0, "API");
-    qRegisterMetaType<t_market_mode>("MarketMode");
-    qmlRegisterUncreatableType<atomic_dex::MarketMode>("AtomicDEX.MarketMode", 1, 0, "MarketMode", "Not creatable as it is an enum type");
     qRegisterMetaType<t_portfolio_roles>("PortfolioRoles");
 
     const QUrl url(QStringLiteral("qrc:/atomic_defi_design/qml/main.qml"));

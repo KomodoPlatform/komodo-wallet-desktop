@@ -6,5 +6,5 @@
 
 namespace atomic_dex
 {
-    MarketMode::MarketMode() {}
+    MarketModeGadget::MarketModeGadget() {}
 } // namespace atomic_dex

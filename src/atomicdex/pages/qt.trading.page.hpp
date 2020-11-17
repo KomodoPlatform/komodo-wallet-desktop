@@ -47,7 +47,7 @@ namespace atomic_dex
         Q_PROPERTY(bool buy_sell_rpc_busy READ is_buy_sell_rpc_busy WRITE set_buy_sell_rpc_busy NOTIFY buySellRpcStatusChanged)
         Q_PROPERTY(bool fetching_multi_ticker_fees_busy READ is_fetching_multi_ticker_fees_busy WRITE set_fetching_multi_ticker_fees_busy NOTIFY
                        multiTickerFeesStatusChanged)
-        Q_PROPERTY(t_market_mode market_mode READ get_market_mode WRITE set_market_mode NOTIFY marketModeChanged)
+        Q_PROPERTY(MarketMode market_mode READ get_market_mode WRITE set_market_mode NOTIFY marketModeChanged)
 
 
         //! Private enum
@@ -84,7 +84,7 @@ namespace atomic_dex
         std::atomic_bool         m_rpc_buy_sell_busy{false};
         std::atomic_bool         m_fetching_multi_ticker_fees_busy{false};
         t_qt_synchronized_json   m_rpc_buy_sell_result;
-        t_market_mode            m_market_mode{MarketMode::Sell};
+        MarketMode               m_market_mode{MarketModeGadget::Sell};
 
         //! Privae function
         void common_cancel_all_orders(bool by_coin = false, const QString& ticker = "");
@@ -135,8 +135,8 @@ namespace atomic_dex
         [[nodiscard]] market_pairs*         get_market_pairs_mdl() const noexcept;
         [[nodiscard]] bool                  is_buy_sell_rpc_busy() const noexcept;
         void                                set_buy_sell_rpc_busy(bool status) noexcept;
-        t_market_mode                       get_market_mode() const noexcept;
-        void                                set_market_mode(t_market_mode market_mode) noexcept;
+        MarketMode                          get_market_mode() const noexcept;
+        void                                set_market_mode(MarketMode market_mode) noexcept;
 
         //! For multi ticker part
         [[nodiscard]] bool is_fetching_multi_ticker_fees_busy() const noexcept;
