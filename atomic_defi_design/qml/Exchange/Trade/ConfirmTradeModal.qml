@@ -31,8 +31,8 @@ BasicModal {
             details: ({
                     base_coin: base_ticker,
                     rel_coin: rel_ticker,
-                    base_amount: sell_mode ? getCurrentForm().field.text : getCurrentForm().total_amount,
-                    rel_amount: sell_mode ? getCurrentForm().total_amount : getCurrentForm().field.text,
+                    base_amount: sell_mode ? form_base.field.text : form_base.total_amount,
+                    rel_amount: sell_mode ? form_base.total_amount : form_base.field.text,
 
                     order_id: '',
                     date: '',

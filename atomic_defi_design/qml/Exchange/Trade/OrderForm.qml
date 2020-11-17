@@ -76,40 +76,7 @@ FloatingBackground {
         return getMaxBalance()
     }
 
-    function getMaxTradableVolume(set_as_current) {
-        // set_as_current should be true if input_volume is updated
-        // if it's called for cap check, it should be false because that's not the current input_volume
-
-        const base = base_ticker
-        const rel = rel_ticker
-        const amount = getMaxBalance()
-
-        if(base === '' || rel === '') return 0
-
-        const info = getTradeInfo(base, rel, amount, set_as_current)
-        const my_amt = parseFloat(valid_trade_info ? info.input_final_value : amount)
-        if(sell_mode) return my_amt
-
-        // If it's buy side, then volume input needs to be calculated with the current price
-        const price = parseFloat(getCurrentPrice())
-        return price === 0 ? 0 : my_amt / price
-    }
-
-    function reset(is_base) {
-    }
-
-    function getVolumeCap() {
-        // Cap with balance
-        let cap = getMaxTradableVolume(false)
-
-        // Cap with order volume
-        if(orderIsSelected()) {
-            const order_buy_volume = parseFloat(preffered_order.volume)
-            if(cap > order_buy_volume)
-                cap = order_buy_volume
-        }
-
-        return cap
+    function reset() {
     }
 
     function buyWithNoPrice() {
@@ -467,20 +434,20 @@ FloatingBackground {
                             General.isZero(getCurrentPrice()) ? (qsTr("Please fill the price field")) :
 
                             // Fill the volume field
-                            General.isZero(getCurrentForm().getVolume()) ? (qsTr("Please fill the volume field")) :
+                            General.isZero(form_base.getVolume()) ? (qsTr("Please fill the volume field")) :
 
                             // Trade amount is lower than the minimum
-                            (getCurrentForm().fieldsAreFilled() && !getCurrentForm().higherThanMinTradeAmount()) ? ((qsTr("Volume is lower than minimum trade amount")) + " : " + General.getMinTradeAmount()) :
+                            (form_base.fieldsAreFilled() && !form_base.higherThanMinTradeAmount()) ? ((qsTr("Volume is lower than minimum trade amount")) + " : " + General.getMinTradeAmount()) :
 
                             // Trade receive amount is lower than the minimum
-                            (getCurrentForm().fieldsAreFilled() && !getCurrentForm().receiveHigherThanMinTradeAmount()) ? ((qsTr("Receive volume is lower than minimum trade amount")) + " : " + General.getMinTradeAmount()) :
+                            (form_base.fieldsAreFilled() && !form_base.receiveHigherThanMinTradeAmount()) ? ((qsTr("Receive volume is lower than minimum trade amount")) + " : " + General.getMinTradeAmount()) :
 
                             // Fields are filled, fee can be checked
                             notEnoughBalanceForFees() ?
                                 (qsTr("Not enough balance for the fees. Need at least %1 more", "AMT TICKER").arg(General.formatCrypto("", curr_trade_info.amount_needed, base_ticker))) :
 
                             // Not enough ETH for fees
-                            (getCurrentForm().hasParentCoinFees() && !getCurrentForm().hasEnoughParentCoinForFees()) ? (qsTr("Not enough ETH for the transaction fee")) : ""
+                            (form_base.hasParentCoinFees() && !form_base.hasEnoughParentCoinForFees()) ? (qsTr("Not enough ETH for the transaction fee")) : ""
                           
             }
         }

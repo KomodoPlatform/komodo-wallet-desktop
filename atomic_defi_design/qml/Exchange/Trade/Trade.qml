@@ -46,10 +46,6 @@ Item {
     // Override
     property var onOrderSuccess: () => {}
 
-    function getCurrentForm() {
-        return form_base
-    }
-
     onSell_modeChanged: reset()
 
     // Local
@@ -106,11 +102,11 @@ Item {
 //            form_base.price_field.text = price_text
 //        }
 
-        getCurrentForm().field.forceActiveFocus()
+        form_base.field.forceActiveFocus()
     }
 
     function getCalculatedPrice() {
-        let price = getCurrentForm().price_field.text
+        let price = form_base.price_field.text
         return General.isZero(price) ? "0" : price
     }
 
@@ -150,7 +146,7 @@ Item {
     }
 
     function notEnoughBalance() {
-        return getCurrentForm().notEnoughBalance()
+        return form_base.notEnoughBalance()
     }
 
 
@@ -182,13 +178,13 @@ Item {
     function updateTradeInfo(force=false) {
         const base = base_ticker
         const rel = rel_ticker
-        const amount = sell_mode ? getCurrentForm().getVolume() :
-                                   General.formatDouble(getCurrentForm().getNeededAmountToSpend(getCurrentForm().getVolume()))
+        const amount = sell_mode ? form_base.getVolume() :
+                                   General.formatDouble(form_base.getNeededAmountToSpend(form_base.getVolume()))
         if(force || (General.isFilled(base) && General.isFilled(rel) && !General.isZero(amount))) {
             getTradeInfo(base, rel, amount)
 
             // Since new implementation does not update fees instantly, re-cap the volume every time, just in case
-            getCurrentForm().capVolume()
+            form_base.capVolume()
         }
     }
 
@@ -289,15 +285,12 @@ Item {
             }
         }
 
-
-        const current_form = getCurrentForm()
-
         const is_created_order = !orderIsSelected()
         const price_denom = preffered_order.price_denom
         const price_numer = preffered_order.price_numer
         const price = getCurrentPrice()
-        const volume = current_form.field.text
-        console.log("QML place order: max_taker_volume:", current_form.getMaxVolume())
+        const volume = form_base.field.text
+        console.log("QML place order: max_taker_volume:", form_base.getMaxVolume())
         console.log("QML place order: params:", base, " <-> ", rel, "  /  price:", price, "  /  volume:", volume, "  /  is_created_order:", is_created_order, "  /  price_denom:", price_denom, "  /  price_numer:", price_numer,
                     "  /  nota:", nota, "  /  confs:", confs)
         console.log("QML place order: trade info:", JSON.stringify(curr_trade_info))
@@ -507,14 +500,7 @@ Item {
                                 text: qsTr("Multi-Order")
                                 enabled: !block_everything
                                 onCheckedChanged: {
-                                    if(checked) {
-                                        getCurrentForm().field.text = max_volume
-                                    }
-
-                                    // Will move to backend
-//                                    if(checked) {
-//                                        getCurrentForm().field.text = getCurrentForm().getVolumeCap()
-//                                    }
+                                    if(checked) form_base.field.text = max_volume
                                 }
                             }
 
@@ -543,7 +529,7 @@ Item {
                                 Layout.leftMargin: multi_order_switch.Layout.leftMargin
                                 Layout.rightMargin: Layout.leftMargin
                                 Layout.fillWidth: true
-                                enabled: multi_order_enabled && getCurrentForm().can_submit_trade
+                                enabled: multi_order_enabled && form_base.can_submit_trade
                                 onClicked: {
                                     // Will move to backend
 //                                    multi_order_values_are_valid = true

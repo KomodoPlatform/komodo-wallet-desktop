@@ -43,7 +43,7 @@ InnerBackground {
 
                     property string price: auto_price
 
-                    readonly property double volume: parseFloat(getCurrentForm().getVolume()) * parseFloat(price)
+                    readonly property double volume: parseFloat(form_base.getVolume()) * parseFloat(price)
 
                     function resetData() {
                         model.multi_ticker_data = {}
@@ -91,7 +91,7 @@ InnerBackground {
                         params.base = left_ticker
                         params.rel = model.ticker
                         params.price = multi_order_line.price
-                        params.volume = getCurrentForm().getVolume()
+                        params.volume = form_base.getVolume()
                         params.is_created_order = true
                         params.base_nota = ""
                         params.base_confs = ""
