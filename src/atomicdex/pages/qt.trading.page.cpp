@@ -577,5 +577,22 @@ namespace atomic_dex
     trading_page::clear_forms() noexcept
     {
         this->set_price("");
+        this->set_volume("");
+    }
+
+    QString
+    trading_page::get_volume() const noexcept
+    {
+        return m_volume;
+    }
+    void
+    trading_page::set_volume(QString volume) noexcept
+    {
+        if (m_volume != volume)
+        {
+            m_volume = std::move(volume);
+            spdlog::trace("volume is [{}]", m_volume.toStdString());
+            emit volumeChanged();
+        }
     }
 } // namespace atomic_dex

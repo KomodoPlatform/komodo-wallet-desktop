@@ -49,6 +49,7 @@ namespace atomic_dex
                        multiTickerFeesStatusChanged)
         Q_PROPERTY(MarketMode market_mode READ get_market_mode WRITE set_market_mode NOTIFY marketModeChanged)
         Q_PROPERTY(QString price READ get_price WRITE set_price NOTIFY priceChanged)
+        Q_PROPERTY(QString volume READ get_volume WRITE set_volume NOTIFY volumeChanged)
 
 
         //! Private enum
@@ -89,6 +90,7 @@ namespace atomic_dex
         //! Trading Logic
         MarketMode m_market_mode{MarketModeGadget::Sell};
         QString    m_price{""};
+        QString    m_volume{""};
 
         //! Private function
         void common_cancel_all_orders(bool by_coin = false, const QString& ticker = "");
@@ -146,6 +148,8 @@ namespace atomic_dex
         void                     set_market_mode(MarketMode market_mode) noexcept;
         [[nodiscard]] QString    get_price() const noexcept;
         void                     set_price(QString price) noexcept;
+        [[nodiscard]] QString    get_volume() const noexcept;
+        void                     set_volume(QString volume) noexcept;
 
         //! For multi ticker part
         [[nodiscard]] bool is_fetching_multi_ticker_fees_busy() const noexcept;
@@ -169,6 +173,7 @@ namespace atomic_dex
 
         //! Trading logic
         void priceChanged();
+        void volumeChanged();
         void marketModeChanged();
     };
 } // namespace atomic_dex
