@@ -552,6 +552,7 @@ namespace atomic_dex
         {
             this->m_market_mode = market_mode;
             spdlog::info("switching market_mode, new mode: {}", m_market_mode == MarketMode::Buy ? "buy" : "sell");
+            this->clear_forms();
             emit marketModeChanged();
         }
     }
@@ -567,7 +568,14 @@ namespace atomic_dex
         if (m_price != price)
         {
             m_price = std::move(price);
+            spdlog::trace("price is [{}]", m_price.toStdString());
             emit priceChanged();
         }
+    }
+
+    void
+    trading_page::clear_forms() noexcept
+    {
+        this->set_price("");
     }
 } // namespace atomic_dex

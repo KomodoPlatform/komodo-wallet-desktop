@@ -92,6 +92,7 @@ namespace atomic_dex
 
         //! Private function
         void common_cancel_all_orders(bool by_coin = false, const QString& ticker = "");
+        void clear_forms() noexcept;
 
       public:
         //! Constructor
