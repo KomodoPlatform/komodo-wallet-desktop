@@ -96,9 +96,6 @@ FloatingBackground {
     }
 
     function reset(is_base) {
-        // Will move to backend
-//        input_price.field.text = ''
-//        input_volume.field.text = ''
     }
 
     function getVolumeCap() {
@@ -232,9 +229,10 @@ FloatingBackground {
 
                     field.text: API.app.trading_pg.price
                     field.onTextChanged: {
+                        API.app.trading_pg.price = field.text
+
                         // Will move to backend
 //                        onInputChanged()
-                        API.app.trading_pg.price = field.text
                     }
 
                     function resetPrice() {
@@ -279,7 +277,11 @@ FloatingBackground {
                     field.left_text: qsTr("Volume")
                     field.right_text: left_ticker
                     field.placeholderText: sell_mode ? qsTr("Amount to sell") : qsTr("Amount to receive")
+
+                    field.text: API.app.trading_pg.volume
                     field.onTextChanged: {
+                        API.app.trading_pg.volume = field.text
+
                         // Will move to backend
 //                        const before_checks = field.text
 //                        onInputChanged()

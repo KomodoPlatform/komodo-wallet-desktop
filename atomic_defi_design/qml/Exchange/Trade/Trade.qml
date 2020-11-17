@@ -126,17 +126,18 @@ Item {
         valid_trade_info = false
     }
 
-    Timer {
-        id: trade_info_timer
-        repeat: true
-        running: true
-        interval: 500
-        onTriggered: {
-            if(inCurrentPage() && !valid_trade_info) {
-                updateTradeInfo()
-            }
-        }
-    }
+    // Will move to backend
+//    Timer {
+//        id: trade_info_timer
+//        repeat: true
+//        running: true
+//        interval: 500
+//        onTriggered: {
+//            if(inCurrentPage() && !valid_trade_info) {
+//                updateTradeInfo()
+//            }
+//        }
+//    }
 
     function notEnoughBalanceForFees() {
         return valid_trade_info && curr_trade_info.not_enough_balance_to_pay_the_fees
