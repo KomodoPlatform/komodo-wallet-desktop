@@ -21,13 +21,18 @@ Item {
     signal prepareMultiOrder()
     property bool multi_order_values_are_valid: true
 
-    readonly property bool sell_mode: API.app.trading_pg.market_mode == MarketMode.Sell
-    function setMarketMode(m) {
-        API.app.trading_pg.market_mode = m
+    readonly property string backend_volume: API.app.trading_pg.volume
+    function setVolume(v) {
+        API.app.trading_pg.volume = v
     }
 
-    property string left_ticker: selector_left.ticker
-    property string right_ticker: selector_right.ticker
+    readonly property bool sell_mode: API.app.trading_pg.market_mode == MarketMode.Sell
+    function setMarketMode(v) {
+        API.app.trading_pg.market_mode = v
+    }
+
+    property string left_ticker: API.app.trading_pg.market_pairs_mdl.left_selected_coin
+    property string right_ticker: API.app.trading_pg.market_pairs_mdl.right_selected_coin
     property string base_ticker: sell_mode ? left_ticker : right_ticker
     property string rel_ticker: sell_mode ? right_ticker : left_ticker
 
@@ -126,17 +131,18 @@ Item {
         valid_trade_info = false
     }
 
-    Timer {
-        id: trade_info_timer
-        repeat: true
-        running: true
-        interval: 500
-        onTriggered: {
-            if(inCurrentPage() && !valid_trade_info) {
-                updateTradeInfo()
-            }
-        }
-    }
+    // Will move to backend
+//    Timer {
+//        id: trade_info_timer
+//        repeat: true
+//        running: true
+//        interval: 500
+//        onTriggered: {
+//            if(inCurrentPage() && !valid_trade_info) {
+//                updateTradeInfo()
+//            }
+//        }
+//    }
 
     function notEnoughBalanceForFees() {
         return valid_trade_info && curr_trade_info.not_enough_balance_to_pay_the_fees
@@ -377,7 +383,7 @@ Item {
                         id: selector_left
                         left_side: true
                         ticker_list: API.app.trading_pg.market_pairs_mdl.left_selection_box
-                        ticker: API.app.trading_pg.market_pairs_mdl.left_selected_coin
+                        ticker: left_ticker
                         Layout.alignment: Qt.AlignLeft | Qt.AlignVCenter
                         Layout.fillWidth: true
                     }
@@ -407,7 +413,7 @@ Item {
                         id: selector_right
                         left_side: false
                         ticker_list: API.app.trading_pg.market_pairs_mdl.right_selection_box
-                        ticker: API.app.trading_pg.market_pairs_mdl.right_selected_coin
+                        ticker: right_ticker
                         Layout.alignment: Qt.AlignRight | Qt.AlignVCenter
                         Layout.fillWidth: true
                     }

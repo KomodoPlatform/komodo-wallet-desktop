@@ -224,6 +224,7 @@ QtObject {
     }
 
     function formatDouble(v, precision, trail_zeros) {
+        if(v === '') return "0"
         if(precision === recommendedPrecision) precision = getRecommendedPrecision(v)
 
         if(precision === 0) return parseInt(v).toString()
