@@ -98,8 +98,9 @@ FloatingBackground {
     }
 
     function reset(is_base) {
-        input_price.field.text = ''
-        input_volume.field.text = ''
+        // Will move to backend
+//        input_price.field.text = ''
+//        input_volume.field.text = ''
     }
 
     function getVolumeCap() {
@@ -227,6 +228,9 @@ FloatingBackground {
 
                 AmountFieldWithInfo {
                     id: input_price
+
+                    Binding { target: API.app.trading_pg; property: "price"; value: input_price.field.displayText }
+
                     width: parent.width
 
                     field.left_text: qsTr("Price")
