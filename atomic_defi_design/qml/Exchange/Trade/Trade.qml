@@ -87,23 +87,7 @@ Item {
     function selectOrder(is_asks, price, quantity, price_denom, price_numer) {
         setMarketMode(!is_asks ? MarketMode.Sell : MarketMode.Buy)
 
-        preffered_order.is_asks = is_asks
-        preffered_order.price = price
-        preffered_order.volume = quantity
-        preffered_order.price_denom = price_denom
-        preffered_order.price_numer = price_numer
-        preffered_order = preffered_order
-
-        const volume_text = General.formatDouble(quantity)
-        const price_text = General.formatDouble(price)
-        if(is_asks) {
-            form_rel.field.text = volume_text
-            form_rel.price_field.text = price_text
-        }
-        else {
-            form_base.field.text = volume_text
-            form_base.price_field.text = price_text
-        }
+//        API.app.trading_pg.preffered_order = { price, quantity, price_denom, price_numer }
 
         getCurrentForm().field.forceActiveFocus()
     }
