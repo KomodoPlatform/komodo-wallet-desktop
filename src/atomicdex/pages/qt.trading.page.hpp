@@ -23,25 +23,19 @@
 #include <QObject>
 
 //! Project Headers
+#include "atomicdex/constants/qt.actions.hpp"
+#include "atomicdex/constants/qt.trading.enums.hpp"
 #include "atomicdex/events/events.hpp"
-#include "src/atomicdex/constants/qt.actions.hpp"
-#include "src/atomicdex/events/qt.events.hpp"
-#include "src/atomicdex/models/qt.candlestick.charts.model.hpp"
-#include "src/atomicdex/models/qt.portfolio.model.hpp"
-#include "src/atomicdex/widgets/dex/qt.market.pairs.hpp"
-#include "src/atomicdex/widgets/dex/qt.orderbook.hpp"
+#include "atomicdex/events/qt.events.hpp"
+#include "atomicdex/models/qt.candlestick.charts.model.hpp"
+#include "atomicdex/models/qt.portfolio.model.hpp"
+#include "atomicdex/widgets/dex/qt.market.pairs.hpp"
+#include "atomicdex/widgets/dex/qt.orderbook.hpp"
 
 namespace atomic_dex
 {
     class trading_page final : public QObject, public ag::ecs::pre_update_system<trading_page>
     {
-      public:
-        enum e_market_mode
-        {
-            sell = 0,
-            buy  = 1
-        };
-        Q_ENUM(e_market_mode)
       private:
         //! Q_Object definition
         Q_OBJECT
@@ -53,7 +47,7 @@ namespace atomic_dex
         Q_PROPERTY(bool buy_sell_rpc_busy READ is_buy_sell_rpc_busy WRITE set_buy_sell_rpc_busy NOTIFY buySellRpcStatusChanged)
         Q_PROPERTY(bool fetching_multi_ticker_fees_busy READ is_fetching_multi_ticker_fees_busy WRITE set_fetching_multi_ticker_fees_busy NOTIFY
                        multiTickerFeesStatusChanged)
-        Q_PROPERTY(e_market_mode market_mode READ get_market_mode WRITE set_market_mode NOTIFY marketModeChanged)
+        Q_PROPERTY(t_market_mode market_mode READ get_market_mode WRITE set_market_mode NOTIFY marketModeChanged)
 
 
         //! Private enum
@@ -90,7 +84,7 @@ namespace atomic_dex
         std::atomic_bool         m_rpc_buy_sell_busy{false};
         std::atomic_bool         m_fetching_multi_ticker_fees_busy{false};
         t_qt_synchronized_json   m_rpc_buy_sell_result;
-        e_market_mode            m_market_mode{sell};
+        t_market_mode            m_market_mode{MarketMode::sell};
 
         //! Privae function
         void common_cancel_all_orders(bool by_coin = false, const QString& ticker = "");
@@ -142,8 +136,8 @@ namespace atomic_dex
         [[nodiscard]] market_pairs*         get_market_pairs_mdl() const noexcept;
         [[nodiscard]] bool                  is_buy_sell_rpc_busy() const noexcept;
         void                                set_buy_sell_rpc_busy(bool status) noexcept;
-        e_market_mode                       get_market_mode() const noexcept;
-        void set_market_mode(e_market_mode market_mode) noexcept;
+        t_market_mode                       get_market_mode() const noexcept;
+        void                                set_market_mode(t_market_mode market_mode) noexcept;
 
         //! For multi ticker part
         [[nodiscard]] bool is_fetching_multi_ticker_fees_busy() const noexcept;

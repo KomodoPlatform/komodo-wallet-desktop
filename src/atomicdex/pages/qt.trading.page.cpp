@@ -68,9 +68,6 @@ namespace atomic_dex
     void
     trading_page::set_current_orderbook(const QString& base, const QString& rel)
     {
-        /*auto& provider        = m_system_manager.get_system<ohlc_provider>();
-        auto [normal, quoted] = provider.is_pair_supported(base.toStdString(), rel.toStdString());
-        get_candlestick_charts()->set_is_pair_supported(normal || quoted);*/
         auto* market_selector_mdl = get_market_pairs_mdl();
         market_selector_mdl->set_left_selected_coin(base);
         market_selector_mdl->set_right_selected_coin(rel);
@@ -189,11 +186,10 @@ namespace atomic_dex
             std::string body = TO_STD_STR(resp.extract_string(true).get());
             if (resp.status_code() == 200)
             {
-                auto           answers    = nlohmann::json::parse(body);
-                nlohmann::json answer     = answers[0];
-                auto&          mm2_system = this->m_system_manager.get_system<mm2_service>();
-                // mm2_system.
-                auto trade_fee_base_answer = ::mm2::api::rpc_process_answer_batch<t_get_trade_fee_answer>(answer, "get_trade_fee");
+                auto           answers               = nlohmann::json::parse(body);
+                nlohmann::json answer                = answers[0];
+                auto&          mm2_system            = this->m_system_manager.get_system<mm2_service>();
+                auto           trade_fee_base_answer = ::mm2::api::rpc_process_answer_batch<t_get_trade_fee_answer>(answer, "get_trade_fee");
                 mm2_system.add_get_trade_fee_answer(ticker_std, trade_fee_base_answer);
             }
             this->set_fetching_multi_ticker_fees_busy(false);
@@ -546,30 +542,30 @@ namespace atomic_dex
     void
     trading_page::switch_market_mode() noexcept
     {
-        if (this->get_market_mode() == e_market_mode::buy)
+        if (this->get_market_mode() == t_market_mode::buy)
         {
-            this->set_market_mode(e_market_mode::sell);
+            this->set_market_mode(t_market_mode::sell);
         }
         else
         {
-            this->set_market_mode(e_market_mode::buy);
+            this->set_market_mode(t_market_mode::buy);
         }
 
-        spdlog::info("switching market_mode, new mode: {}", m_market_mode == e_market_mode::buy ? "buy" : "sell");
+        spdlog::info("switching market_mode, new mode: {}", m_market_mode == t_market_mode::buy ? "buy" : "sell");
     }
 } // namespace atomic_dex
 
 //! Properties related to trading
 namespace atomic_dex
 {
-    trading_page::e_market_mode
+    t_market_mode
     trading_page::get_market_mode() const noexcept
     {
         return m_market_mode;
     }
 
     void
-    trading_page::set_market_mode(e_market_mode market_mode) noexcept
+    trading_page::set_market_mode(t_market_mode market_mode) noexcept
     {
         if (this->m_market_mode != market_mode)
         {

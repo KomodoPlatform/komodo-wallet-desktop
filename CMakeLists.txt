@@ -149,6 +149,7 @@ target_sources(atomicdex-desktop_shared_deps PRIVATE
 
         ##! Constants
         ${CMAKE_SOURCE_DIR}/src/atomicdex/constants/mm2.error.code.cpp
+        ${CMAKE_SOURCE_DIR}/src/atomicdex/constants/qt.trading.enums.cpp
 
         ##! Config
         ${CMAKE_SOURCE_DIR}/src/atomicdex/config/app.cfg.cpp
