@@ -41,7 +41,7 @@ Item {
     property var onOrderSuccess: () => {}
 
     function getCurrentForm() {
-        return sell_mode ? form_base : form_rel
+        return form_base
     }
 
     onSell_modeChanged: reset()
@@ -61,7 +61,6 @@ Item {
         if(reset_result) action_result = ""
         resetPreferredPrice()
         form_base.reset()
-        form_rel.reset()
         resetTradeInfo()
         multi_order_switch.checked = false
     }
@@ -88,6 +87,18 @@ Item {
         setMarketMode(!is_asks ? MarketMode.Sell : MarketMode.Buy)
 
 //        API.app.trading_pg.preffered_order = { price, quantity, price_denom, price_numer }
+
+        // Will move to backend
+//        const volume_text = General.formatDouble(quantity)
+//        const price_text = General.formatDouble(price)
+//        if(is_asks) {
+//            form_rel.field.text = volume_text
+//            form_rel.price_field.text = price_text
+//        }
+//        else {
+//            form_base.field.text = volume_text
+//            form_base.price_field.text = price_text
+//        }
 
         getCurrentForm().field.forceActiveFocus()
     }
@@ -450,19 +461,6 @@ Item {
                 // Sell
                 OrderForm {
                     id: form_base
-                    visible: sell_mode
-
-                    anchors.left: parent.left
-                    anchors.right: parent.right
-                    anchors.top: parent.top
-
-                    is_sell_form: true
-                }
-
-                // Receive
-                OrderForm {
-                    id: form_rel
-                    visible: !form_base.visible
 
                     anchors.left: parent.left
                     anchors.right: parent.right
@@ -475,7 +473,7 @@ Item {
 
                     anchors.left: parent.left
                     anchors.right: parent.right
-                    anchors.top: form_base.visible ? form_base.bottom : form_rel.bottom
+                    anchors.top: form_base.bottom
                     anchors.topMargin: layout_margin
 
                     height: column_layout.height

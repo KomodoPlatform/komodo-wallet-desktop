@@ -13,11 +13,9 @@ FloatingBackground {
 
     property alias field: input_volume.field
     property alias price_field: input_price.field
-    property bool is_sell_form: false
     property alias column_layout: form_layout
     property string total_amount: "0"
 
-    readonly property bool form_currently_visible: is_sell_form === sell_mode
     readonly property bool can_submit_trade: valid_trade_info && !notEnoughBalanceForFees() && isValid()
 
     function getVolume() {
@@ -38,12 +36,12 @@ FloatingBackground {
 
     function higherThanMinTradeAmount() {
         if(input_volume.field.text === '') return false
-        return parseFloat(is_sell_form ? input_volume.field.text : total_amount) >= General.getMinTradeAmount()
+        return parseFloat(sell_mode ? input_volume.field.text : total_amount) >= General.getMinTradeAmount()
     }
 
     function receiveHigherThanMinTradeAmount() {
         if(input_volume.field.text === '') return false
-        return parseFloat(is_sell_form ? total_amount : input_volume.field.text) >= General.getMinTradeAmount()
+        return parseFloat(sell_mode ? total_amount : input_volume.field.text) >= General.getMinTradeAmount()
     }
 
     function isValid() {
@@ -69,7 +67,7 @@ FloatingBackground {
 
     function getMaxVolume() {
         // base in this orderbook is always the left side, so when it's buy, we want the right side balance (rel in the backend)
-        const value = is_sell_form ? API.app.trading_pg.orderbook.base_max_taker_vol.decimal :
+        const value = sell_mode ? API.app.trading_pg.orderbook.base_max_taker_vol.decimal :
                                   API.app.trading_pg.orderbook.rel_max_taker_vol.decimal
 
         if(General.isFilled(value))
@@ -86,11 +84,11 @@ FloatingBackground {
         const rel = rel_ticker
         const amount = getMaxBalance()
 
-        if(base === '' || rel === '' || !form_currently_visible) return 0
+        if(base === '' || rel === '') return 0
 
         const info = getTradeInfo(base, rel, amount, set_as_current)
         const my_amt = parseFloat(valid_trade_info ? info.input_final_value : amount)
-        if(is_sell_form) return my_amt
+        if(sell_mode) return my_amt
 
         // If it's buy side, then volume input needs to be calculated with the current price
         const price = parseFloat(getCurrentPrice())
@@ -118,7 +116,7 @@ FloatingBackground {
     }
 
     function buyWithNoPrice() {
-        return !is_sell_form && General.isZero(getCurrentPrice())
+        return !sell_mode && General.isZero(getCurrentPrice())
     }
 
     function capVolume() {
@@ -148,7 +146,7 @@ FloatingBackground {
 
     function getNeededAmountToSpend(volume) {
         volume = parseFloat(volume)
-        if(is_sell_form) return volume
+        if(sell_mode) return volume
         else        return volume * parseFloat(getCurrentPrice())
     }
 
@@ -157,8 +155,6 @@ FloatingBackground {
     }
 
     function onInputChanged() {
-        if(!form_currently_visible) return
-
         if(capVolume()) updateTradeInfo()
 
         // Recalculate total amount
@@ -282,7 +278,7 @@ FloatingBackground {
 
                     field.left_text: qsTr("Volume")
                     field.right_text: left_ticker
-                    field.placeholderText: is_sell_form ? qsTr("Amount to sell") : qsTr("Amount to receive")
+                    field.placeholderText: sell_mode ? qsTr("Amount to sell") : qsTr("Amount to receive")
                     field.onTextChanged: {
                         // Will move to backend
 //                        const before_checks = field.text
@@ -443,7 +439,7 @@ FloatingBackground {
             Layout.rightMargin: Layout.leftMargin
             Layout.bottomMargin: layout_margin
 
-            button_type: is_sell_form ? "danger" : "primary"
+            button_type: sell_mode ? "danger" : "primary"
 
             width: 170
 
