@@ -13,8 +13,8 @@ namespace atomic_dex
 
         enum e_market_mode
         {
-            sell = 0,
-            buy  = 1
+            Sell = 0,
+            Buy  = 1
         };
 
         Q_ENUM(e_market_mode)

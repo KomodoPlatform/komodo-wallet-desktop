@@ -84,7 +84,7 @@ namespace atomic_dex
         std::atomic_bool         m_rpc_buy_sell_busy{false};
         std::atomic_bool         m_fetching_multi_ticker_fees_busy{false};
         t_qt_synchronized_json   m_rpc_buy_sell_result;
-        t_market_mode            m_market_mode{MarketMode::sell};
+        t_market_mode            m_market_mode{MarketMode::Sell};
 
         //! Privae function
         void common_cancel_all_orders(bool by_coin = false, const QString& ticker = "");

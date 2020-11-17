@@ -551,7 +551,7 @@ namespace atomic_dex
         if (this->m_market_mode != market_mode)
         {
             this->m_market_mode = market_mode;
-            spdlog::info("switching market_mode, new mode: {}", m_market_mode == t_market_mode::buy ? "buy" : "sell");
+            spdlog::info("switching market_mode, new mode: {}", m_market_mode == t_market_mode::Buy ? "buy" : "sell");
             emit marketModeChanged();
         }
     }
