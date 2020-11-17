@@ -627,8 +627,6 @@ namespace atomic_dex
     void
     trading_page::determine_max_volume() noexcept
     {
-        // auto* market_selector_mdl = get_market_pairs_mdl();
-        // spdlog::info("determine max volume for pair [base_ticker: {} / rel_ticker: {}]", base_ticker, rel_ticker);
         if (this->m_market_mode == MarketMode::Sell)
         {
             this->set_max_volume(get_orderbook_wrapper()->get_base_max_taker_vol().toJsonObject()["decimal"].toString());
