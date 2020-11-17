@@ -31,10 +31,10 @@ Item {
         API.app.trading_pg.market_mode = v
     }
 
-    property string left_ticker: API.app.trading_pg.market_pairs_mdl.left_selected_coin
-    property string right_ticker: API.app.trading_pg.market_pairs_mdl.right_selected_coin
-    property string base_ticker: sell_mode ? left_ticker : right_ticker
-    property string rel_ticker: sell_mode ? right_ticker : left_ticker
+    readonly property string left_ticker: API.app.trading_pg.market_pairs_mdl.left_selected_coin
+    readonly property string right_ticker: API.app.trading_pg.market_pairs_mdl.right_selected_coin
+    readonly property string base_ticker: API.app.trading_pg.market_pairs_mdl.base_selected_coin
+    readonly property string rel_ticker: API.app.trading_pg.market_pairs_mdl.rel_selected_coin
 
     Timer {
         id: swap_cooldown
