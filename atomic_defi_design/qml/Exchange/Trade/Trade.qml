@@ -31,8 +31,8 @@ Item {
         API.app.trading_pg.market_mode = v
     }
 
-    property string left_ticker: selector_left.ticker
-    property string right_ticker: selector_right.ticker
+    property string left_ticker: API.app.trading_pg.market_pairs_mdl.left_selected_coin
+    property string right_ticker: API.app.trading_pg.market_pairs_mdl.right_selected_coin
     property string base_ticker: sell_mode ? left_ticker : right_ticker
     property string rel_ticker: sell_mode ? right_ticker : left_ticker
 
@@ -383,7 +383,7 @@ Item {
                         id: selector_left
                         left_side: true
                         ticker_list: API.app.trading_pg.market_pairs_mdl.left_selection_box
-                        ticker: API.app.trading_pg.market_pairs_mdl.left_selected_coin
+                        ticker: left_ticker
                         Layout.alignment: Qt.AlignLeft | Qt.AlignVCenter
                         Layout.fillWidth: true
                     }
@@ -413,7 +413,7 @@ Item {
                         id: selector_right
                         left_side: false
                         ticker_list: API.app.trading_pg.market_pairs_mdl.right_selection_box
-                        ticker: API.app.trading_pg.market_pairs_mdl.right_selected_coin
+                        ticker: right_ticker
                         Layout.alignment: Qt.AlignRight | Qt.AlignVCenter
                         Layout.fillWidth: true
                     }
