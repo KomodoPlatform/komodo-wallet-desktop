@@ -21,7 +21,7 @@ Item {
     signal prepareMultiOrder()
     property bool multi_order_values_are_valid: true
 
-    readonly property bool sell_mode: API.app.trading_pg.market_mode === MarketMode.Sell
+    readonly property bool sell_mode: API.app.trading_pg.market_mode == MarketMode.Sell
     function setMarketMode(m) {
         API.app.trading_pg.market_mode = m
     }
@@ -55,7 +55,6 @@ Item {
     function fullReset() {
         initialized_orderbook_pair = false
         reset(true)
-        setMarketMode(MarketMode.Sell)
     }
 
     function reset(reset_result=true, is_base) {
