@@ -70,6 +70,7 @@ namespace atomic_dex
     trading_page::set_current_orderbook(const QString& base, const QString& rel)
     {
         auto* market_selector_mdl = get_market_pairs_mdl();
+        this->clear_forms();
         market_selector_mdl->set_left_selected_coin(base);
         market_selector_mdl->set_right_selected_coin(rel);
         market_selector_mdl->set_base_selected_coin(m_market_mode == MarketMode::Sell ? base : rel);
@@ -556,7 +557,7 @@ namespace atomic_dex
             this->m_market_mode = market_mode;
             spdlog::info("switching market_mode, new mode: {}", m_market_mode == MarketMode::Buy ? "buy" : "sell");
             this->clear_forms();
-            auto*             market_selector_mdl = get_market_pairs_mdl();
+            auto* market_selector_mdl = get_market_pairs_mdl();
             set_current_orderbook(market_selector_mdl->get_left_selected_coin(), market_selector_mdl->get_right_selected_coin());
             emit marketModeChanged();
         }
@@ -622,9 +623,15 @@ namespace atomic_dex
     void
     trading_page::determine_max_volume() noexcept
     {
-        auto*             market_selector_mdl = get_market_pairs_mdl();
-        const std::string base_ticker         = market_selector_mdl->get_base_selected_coin().toStdString();
-        const std::string rel_ticker          = market_selector_mdl->get_rel_selected_coin().toStdString();
-        spdlog::info("determine max volume for pair [base_ticker: {} / rel_ticker: {}]", base_ticker, rel_ticker);
+        // auto* market_selector_mdl = get_market_pairs_mdl();
+        // spdlog::info("determine max volume for pair [base_ticker: {} / rel_ticker: {}]", base_ticker, rel_ticker);
+        if (this->m_market_mode == MarketMode::Sell)
+        {
+            this->set_max_volume(get_orderbook_wrapper()->get_base_max_taker_vol().toJsonObject()["decimal"].toString());
+        }
+        else
+        {
+            // If it's buy side, then volume input needs to be calculated with the current price
+        }
     }
 } // namespace atomic_dex
