@@ -126,7 +126,7 @@ FloatingBackground {
             let amt = input_volume_value
 
             // Cap the value
-            const cap_val = getVolumeCap()
+            const cap_val = max_volume
             if(amt > cap_val)
                 amt = cap_val
 
@@ -315,7 +315,7 @@ FloatingBackground {
                 Layout.rightMargin: top_line.Layout.rightMargin
                 Layout.bottomMargin: top_line.Layout.rightMargin*0.5
                 from: 0
-                to: Math.max(0, parseFloat(getVolumeCap()))
+                to: Math.max(0, parseFloat(max_volume))
                 live: false
 
                 value: backend_volume === "" ? 0 : parseFloat(backend_volume)

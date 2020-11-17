@@ -21,6 +21,7 @@ Item {
     signal prepareMultiOrder()
     property bool multi_order_values_are_valid: true
 
+    readonly property string max_volume: API.app.trading_pg.max_volume
     readonly property string backend_volume: API.app.trading_pg.volume
     function setVolume(v) {
         API.app.trading_pg.volume = v
@@ -506,6 +507,10 @@ Item {
                                 text: qsTr("Multi-Order")
                                 enabled: !block_everything
                                 onCheckedChanged: {
+                                    if(checked) {
+                                        getCurrentForm().field.text = max_volume
+                                    }
+
                                     // Will move to backend
 //                                    if(checked) {
 //                                        getCurrentForm().field.text = getCurrentForm().getVolumeCap()
