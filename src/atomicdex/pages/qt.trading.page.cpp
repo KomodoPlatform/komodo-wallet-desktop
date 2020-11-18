@@ -724,6 +724,8 @@ namespace atomic_dex
         if (is_swap)
         {
             swap_market_pair();
+            base = market_pair->get_left_selected_coin();
+            rel  = market_pair->get_right_selected_coin();
         }
         else
         {
