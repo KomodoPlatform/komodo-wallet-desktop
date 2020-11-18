@@ -679,7 +679,7 @@ namespace atomic_dex
         }
     }
 
-    void
+    bool
     trading_page::set_pair(bool is_left_side, QString changed_ticker) noexcept
     {
         auto* const market_pair = get_market_pairs_mdl();
@@ -693,7 +693,7 @@ namespace atomic_dex
             {
                 if (base == changed_ticker)
                 {
-                    return;
+                    return false;
                 }
                 if (base != changed_ticker && rel == changed_ticker)
                 {
@@ -708,7 +708,7 @@ namespace atomic_dex
             {
                 if (rel == changed_ticker)
                 {
-                    return;
+                    return false;
                 }
                 if (rel != changed_ticker && base == changed_ticker)
                 {
@@ -731,5 +731,6 @@ namespace atomic_dex
         {
             set_current_orderbook(base, rel);
         }
+        return true;
     }
 } // namespace atomic_dex
