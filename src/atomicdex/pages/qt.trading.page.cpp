@@ -616,6 +616,7 @@ namespace atomic_dex
             spdlog::trace("volume is [{}]", m_volume.toStdString());
             this->determine_total_amount();
             emit volumeChanged();
+            this->cap_volume();
         }
     }
 
@@ -650,10 +651,7 @@ namespace atomic_dex
                 this->set_max_volume(QString::fromStdString(max_vol_str));
 
                 //! It's a selected order let's cap again
-                if (m_preffered_order.has_value())
-                {
-                    this->cap_volume();
-                }
+                this->cap_volume();
             }
             else
             {
