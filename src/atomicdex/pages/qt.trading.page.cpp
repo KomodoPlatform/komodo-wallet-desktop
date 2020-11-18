@@ -575,6 +575,7 @@ namespace atomic_dex
         {
             m_price = std::move(price);
             spdlog::trace("price is [{}]", m_price.toStdString());
+            //! When price change in MarketMode::Buy you want to redetermine max_volume
             if (m_market_mode == MarketMode::Buy)
             {
                 this->determine_max_volume();
@@ -629,10 +630,12 @@ namespace atomic_dex
     {
         if (this->m_market_mode == MarketMode::Sell)
         {
+            //! In MarketMode::Sell mode max volume is just the base_max_taker_vol
             this->set_max_volume(get_orderbook_wrapper()->get_base_max_taker_vol().toJsonObject()["decimal"].toString());
         }
         else
         {
+            //! In MarketMode::Buy mode the max volume is base_max_taker_vol / price
             if (not m_price.isEmpty())
             {
                 t_float_50 max_vol(get_orderbook_wrapper()->get_base_max_taker_vol().toJsonObject()["decimal"].toString().toStdString());
@@ -647,6 +650,10 @@ namespace atomic_dex
     void
     trading_page::cap_volume() noexcept
     {
+        /*
+         * cap_volume is called only in MarketMode::Buy,
+         * if the current volume text field is > the new max_volume then set volume to max_volume
+         */
         if (auto std_volume = this->get_volume().toStdString(); not std_volume.empty())
         {
             if (t_float_50(std_volume) > t_float_50(this->get_max_volume().toStdString()))
