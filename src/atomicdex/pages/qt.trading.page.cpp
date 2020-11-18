@@ -70,9 +70,14 @@ namespace atomic_dex
     trading_page::set_current_orderbook(const QString& base, const QString& rel)
     {
         auto* market_selector_mdl = get_market_pairs_mdl();
-        this->clear_forms();
+
+        if (base != market_selector_mdl->get_left_selected_coin() || rel != market_selector_mdl->get_right_selected_coin())
+        {
+            this->clear_forms();
+        }
         market_selector_mdl->set_left_selected_coin(base);
         market_selector_mdl->set_right_selected_coin(rel);
+
         market_selector_mdl->set_base_selected_coin(m_market_mode == MarketMode::Sell ? base : rel);
         market_selector_mdl->set_rel_selected_coin(m_market_mode == MarketMode::Sell ? rel : base);
         dispatcher_.trigger<orderbook_refresh>(base.toStdString(), rel.toStdString());
@@ -588,6 +593,7 @@ namespace atomic_dex
     void
     trading_page::clear_forms() noexcept
     {
+        spdlog::info("clearing forms");
         this->set_price("");
         this->set_volume("");
         this->set_max_volume("0");
@@ -795,7 +801,7 @@ namespace atomic_dex
     {
         if (m_total_amount != total_amount)
         {
-            m_max_volume = std::move(total_amount);
+            m_total_amount = std::move(total_amount);
             spdlog::trace("total_amount is [{}]", m_total_amount.toStdString());
             emit totalAmountChanged();
         }
