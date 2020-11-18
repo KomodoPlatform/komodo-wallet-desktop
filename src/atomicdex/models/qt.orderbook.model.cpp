@@ -160,8 +160,8 @@ namespace atomic_dex
             {IsMineRole, "is_mine"},
             {PriceDenomRole, "price_denom"},
             {PriceNumerRole, "price_numer"},
-            {QuantityDenomRole, "volume_denom"},
-            {QuantityNumerRole, "volume_numer"},
+            {QuantityDenomRole, "quantity_denom"},
+            {QuantityNumerRole, "quantity_numer"},
             {PercentDepthRole, "depth"}};
     }
 
