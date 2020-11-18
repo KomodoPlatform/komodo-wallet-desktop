@@ -191,73 +191,41 @@ Item {
         }
     }
 
-    // Trade
-    function open(ticker) {
-        // Will move to backend
-        //setPair(true, ticker)
-        //onOpened()
-    }
 
     property bool initialized_orderbook_pair: false
     readonly property string default_base: "KMD"
     readonly property string default_rel: "BTC"
-    function onOpened() {
+
+    // Trade
+    function open(ticker) {
+        onOpened(ticker)
+    }
+
+    function onOpened(ticker="") {
         if(!initialized_orderbook_pair) {
             initialized_orderbook_pair = true
             API.app.trading_pg.set_current_orderbook(default_base, default_rel)
         }
 
         reset(true)
-        setPair(true)
+        setPair(true, ticker)
     }
 
 
     signal pairChanged(string base, string rel)
 
     function setPair(is_left_side, changed_ticker) {
-        let base = left_ticker
-        let rel = right_ticker
-
-        let is_swap = false
-        // Set the new one if it's a change
-        if(changed_ticker) {
-            if(is_left_side) {
-                if(base === changed_ticker) return
-
-                // Check if it's a swap
-                if(base !== changed_ticker && rel === changed_ticker)
-                    is_swap = true
-                else base = changed_ticker
-            }
-            else {
-                if(rel === changed_ticker) return
-
-                // Check if it's a swap
-                if(rel !== changed_ticker && base === changed_ticker)
-                    is_swap = true
-                else rel = changed_ticker
-            }
-        }
-
         swap_cooldown.restart()
 
-        if(is_swap) {
-            console.log("Swapping current pair, it was: ", base, rel)
-            API.app.trading_pg.swap_market_pair()
-            const tmp = base
-            base = rel
-            rel = tmp
-        }
-        else {
-            console.log("Setting current orderbook with params: ", base, rel)
-            API.app.trading_pg.set_current_orderbook(base, rel)
-        }
+        if(API.app.trading_pg.set_pair(is_left_side, changed_ticker)) {
+//            reset(true, is_left_side)
+//            updateTradeInfo()
+//            updateCexPrice(base, rel)
 
-//        reset(true, is_left_side)
-//        updateTradeInfo()
-//        updateCexPrice(base, rel)
-//        pairChanged(base, rel)
-//        exchange.onTradeTickerChanged(base)
+            // Will move to backend
+            pairChanged(base_ticker, rel_ticker)
+            exchange.onTradeTickerChanged(base_ticker)
+        }
     }
 
     function trade(base, rel, options, default_config) {
