@@ -54,6 +54,7 @@ namespace atomic_dex
         Q_PROPERTY(QString price READ get_price WRITE set_price NOTIFY priceChanged)
         Q_PROPERTY(QString volume READ get_volume WRITE set_volume NOTIFY volumeChanged)
         Q_PROPERTY(QString max_volume READ get_max_volume WRITE set_max_volume NOTIFY maxVolumeChanged)
+        Q_PROPERTY(QVariantMap preffered_order READ get_preffered_order WRITE set_preffered_order NOTIFY prefferedOrderChanged)
 
 
         //! Private enum
@@ -92,11 +93,12 @@ namespace atomic_dex
         t_qt_synchronized_json   m_rpc_buy_sell_result;
 
         //! Trading Logic
-        MarketMode   m_market_mode{MarketModeGadget::Sell};
-        TradingError m_last_trading_error{TradingErrorGadget::None};
-        QString      m_price{""};
-        QString      m_volume{""};
-        QString      m_max_volume{"0"};
+        MarketMode                    m_market_mode{MarketModeGadget::Sell};
+        TradingError                  m_last_trading_error{TradingErrorGadget::None};
+        QString                       m_price{""};
+        QString                       m_volume{""};
+        QString                       m_max_volume{"0"};
+        std::optional<nlohmann::json> m_preffered_order;
 
         //! Private function
         void common_cancel_all_orders(bool by_coin = false, const QString& ticker = "");
@@ -132,7 +134,7 @@ namespace atomic_dex
         Q_INVOKABLE QVariant get_raw_mm2_coin_cfg(const QString& ticker) const noexcept;
 
         //! Trading business
-        Q_INVOKABLE void swap_market_pair();                                             ///< market_selector (button to switch market selector and orderbook)
+        Q_INVOKABLE void swap_market_pair(); ///< market_selector (button to switch market selector and orderbook)
         Q_INVOKABLE bool set_pair(bool is_left_side, QString changed_ticker) noexcept;
         Q_INVOKABLE void set_current_orderbook(const QString& base, const QString& rel); ///< market_selector (called and selecting another coin)
 
@@ -163,6 +165,8 @@ namespace atomic_dex
         void                       set_volume(QString volume) noexcept;
         [[nodiscard]] QString      get_max_volume() const noexcept;
         void                       set_max_volume(QString max_volume) noexcept;
+        [[nodiscard]] QVariantMap  get_preffered_order() noexcept;
+        void                       set_preffered_order(QVariantMap price_object) noexcept;
 
         //! For multi ticker part
         [[nodiscard]] bool is_fetching_multi_ticker_fees_busy() const noexcept;
@@ -190,6 +194,7 @@ namespace atomic_dex
         void marketModeChanged();
         void maxVolumeChanged();
         void tradingErrorChanged();
+        void prefferedOrderChanged();
     };
 } // namespace atomic_dex
 

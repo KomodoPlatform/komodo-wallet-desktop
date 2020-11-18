@@ -590,6 +590,8 @@ namespace atomic_dex
         this->set_price("");
         this->set_volume("");
         this->set_max_volume("0");
+        this->m_preffered_order = std::nullopt;
+        emit prefferedOrderChanged();
     }
 
     QString
@@ -631,17 +633,34 @@ namespace atomic_dex
         if (this->m_market_mode == MarketMode::Sell)
         {
             //! In MarketMode::Sell mode max volume is just the base_max_taker_vol
-            this->set_max_volume(get_orderbook_wrapper()->get_base_max_taker_vol().toJsonObject()["decimal"].toString());
+            const auto max_taker_vol = get_orderbook_wrapper()->get_base_max_taker_vol().toJsonObject()["decimal"].toString().toStdString();
+            if (not max_taker_vol.empty())
+            {
+                spdlog::info("max_taker_vol is valid, processing...");
+                const auto max_vol_str = utils::format_float(t_float_50(max_taker_vol));
+                this->set_max_volume(QString::fromStdString(max_vol_str));
+
+                //! It's a selected order let's cap again
+                if (m_preffered_order.has_value())
+                {
+                    this->cap_volume();
+                }
+            }
+            else
+            {
+                spdlog::warn("max_taker_vol cannot be empty, is it called before being determinated ?");
+            }
         }
         else
         {
             //! In MarketMode::Buy mode the max volume is base_max_taker_vol / price
             if (not m_price.isEmpty())
             {
-                t_float_50 max_vol(get_orderbook_wrapper()->get_base_max_taker_vol().toJsonObject()["decimal"].toString().toStdString());
+                t_float_50 max_vol(get_orderbook_wrapper()->get_rel_max_taker_vol().toJsonObject()["decimal"].toString().toStdString());
+                max_vol = std::max(t_float_50(0), max_vol);
                 t_float_50 price_f(m_price.toStdString());
-                t_float_50 res = max_vol / price_f;
-                this->set_max_volume(QString::fromStdString(res.str(8, std::ios_base::fixed)));
+                t_float_50 res = price_f > t_float_50(0) ? max_vol / price_f : t_float_50(0);
+                this->set_max_volume(QString::fromStdString(utils::format_float(res)));
                 this->cap_volume();
             }
         }
@@ -651,7 +670,7 @@ namespace atomic_dex
     trading_page::cap_volume() noexcept
     {
         /*
-         * cap_volume is called only in MarketMode::Buy,
+         * cap_volume is called only in MarketMode::Buy, and in Sell mode if prefered order
          * if the current volume text field is > the new max_volume then set volume to max_volume
          */
         if (auto std_volume = this->get_volume().toStdString(); not std_volume.empty())
@@ -732,5 +751,34 @@ namespace atomic_dex
             set_current_orderbook(base, rel);
         }
         return true;
+    }
+
+    QVariantMap
+    trading_page::get_preffered_order() noexcept
+    {
+        if (m_preffered_order.has_value())
+        {
+            return nlohmann_json_object_to_qt_json_object(m_preffered_order.value()).toVariantMap();
+        }
+
+        return QVariantMap();
+    }
+
+    void
+    trading_page::set_preffered_order(QVariantMap price_object) noexcept
+    {
+        if (auto preffered_order = nlohmann::json::parse(QString(QJsonDocument(QJsonObject::fromVariantMap(price_object)).toJson()).toStdString());
+            preffered_order != m_preffered_order)
+        {
+            m_preffered_order = std::move(preffered_order);
+            spdlog::info("new preffered order: {}", m_preffered_order.value().dump(4));
+            emit prefferedOrderChanged();
+            if (not m_preffered_order->empty() && m_preffered_order->contains("price"))
+            {
+                this->set_price(QString::fromStdString(utils::format_float(t_float_50(m_preffered_order->at("price").get<std::string>()))));
+                this->set_volume(QString::fromStdString(utils::format_float(t_float_50(m_preffered_order->at("quantity").get<std::string>()))));
+                this->determine_max_volume();
+            }
+        }
     }
 } // namespace atomic_dex

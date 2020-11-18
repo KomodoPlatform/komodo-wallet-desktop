@@ -28,6 +28,7 @@ namespace atomic_dex::utils
     //! Float numbers helpers
     std::string get_formated_float(t_float_50 value);
     std::string adjust_precision(const std::string& current);
+    std::string format_float(t_float_50 value);
 
     //! Fs helpers
     void create_if_doesnt_exist(const fs::path& path);
