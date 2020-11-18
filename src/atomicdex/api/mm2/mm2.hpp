@@ -412,6 +412,8 @@ namespace mm2::api
         std::string price;
         std::string price_fraction_numer;
         std::string price_fraction_denom;
+        std::string max_volume_fraction_numer;
+        std::string max_volume_fraction_denom;
         std::string maxvolume;
         std::string pubkey;
         std::size_t age;
@@ -604,17 +606,17 @@ namespace mm2::api
     struct my_order_contents
     {
         //! New
-        std::string                order_id;
-        std::string                price;
-        std::string                base;
-        std::string                rel;
-        bool                       cancellable;
-        std::size_t                timestamp;
-        std::string                order_type;
-        std::string                base_amount;
-        std::string                rel_amount;
-        std::string                human_timestamp;
-        std::string                action;
+        std::string order_id;
+        std::string price;
+        std::string base;
+        std::string rel;
+        bool        cancellable;
+        std::size_t timestamp;
+        std::string order_type;
+        std::string base_amount;
+        std::string rel_amount;
+        std::string human_timestamp;
+        std::string action;
     };
 
     struct my_orders_answer

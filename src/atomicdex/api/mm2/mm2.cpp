@@ -431,6 +431,8 @@ namespace mm2::api
         // contents.price = t_float_50(contents.price).str(8, std::ios_base::fixed);
         j.at("price_fraction").at("numer").get_to(contents.price_fraction_numer);
         j.at("price_fraction").at("denom").get_to(contents.price_fraction_denom);
+        j.at("max_volume_fraction").at("numer").get_to(contents.max_volume_fraction_numer);
+        j.at("max_volume_fraction").at("denom").get_to(contents.max_volume_fraction_denom);
         j.at("maxvolume").get_to(contents.maxvolume);
         j.at("pubkey").get_to(contents.pubkey);
         j.at("age").get_to(contents.age);

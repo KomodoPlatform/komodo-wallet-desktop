@@ -49,6 +49,8 @@ namespace atomic_dex
             IsMineRole,
             PriceDenomRole,
             PriceNumerRole,
+            QuantityDenomRole,
+            QuantityNumerRole,
             PercentDepthRole
         };
 

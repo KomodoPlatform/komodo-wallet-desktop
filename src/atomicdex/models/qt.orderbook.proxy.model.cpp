@@ -57,6 +57,10 @@ namespace atomic_dex
             break;
         case orderbook_model::PercentDepthRole:
             break;
+        case orderbook_model::QuantityDenomRole:
+            break;
+        case orderbook_model::QuantityNumerRole:
+            break;
         }
         return true;
     }
