@@ -774,7 +774,6 @@ namespace atomic_dex
             preffered_order != m_preffered_order)
         {
             m_preffered_order = std::move(preffered_order);
-            spdlog::info("new preffered order: {}", m_preffered_order.value().dump(4));
             emit prefferedOrderChanged();
             if (not m_preffered_order->empty() && m_preffered_order->contains("price"))
             {
@@ -805,9 +804,12 @@ namespace atomic_dex
     void
     trading_page::determine_total_amount() noexcept
     {
-        t_float_50 price(m_price.toStdString());
-        t_float_50 volume(m_volume.toStdString());
-        t_float_50 total_amount_f = volume * price;
-        this->set_total_amount(QString::fromStdString(utils::format_float(total_amount_f)));
+        if (not m_price.isEmpty() && not m_volume.isEmpty())
+        {
+            t_float_50 price(m_price.toStdString());
+            t_float_50 volume(m_volume.toStdString());
+            t_float_50 total_amount_f = volume * price;
+            this->set_total_amount(QString::fromStdString(utils::format_float(total_amount_f)));
+        }
     }
 } // namespace atomic_dex
