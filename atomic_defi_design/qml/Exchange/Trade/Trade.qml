@@ -36,6 +36,8 @@ Item {
     readonly property string right_ticker: API.app.trading_pg.market_pairs_mdl.right_selected_coin
     readonly property string base_ticker: API.app.trading_pg.market_pairs_mdl.base_selected_coin
     readonly property string rel_ticker: API.app.trading_pg.market_pairs_mdl.rel_selected_coin
+    readonly property string base_amount: API.app.trading_pg.base_amount
+    readonly property string rel_amount: API.app.trading_pg.rel_amount
 
     Timer {
         id: swap_cooldown
@@ -86,12 +88,6 @@ Item {
         setMarketMode(!is_asks ? MarketMode.Sell : MarketMode.Buy)
 
         API.app.trading_pg.preffered_order = { price, quantity, price_denom, price_numer, quantity_denom, quantity_numer }
-
-        // Will move to backend
-//        const volume_text = General.formatDouble(quantity)
-//        const price_text = General.formatDouble(price)
-//        form_base.field.text = volume_text
-//        form_base.price_field.text = price_text
 
         form_base.field.forceActiveFocus()
     }
