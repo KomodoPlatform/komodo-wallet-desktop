@@ -1,10 +1,13 @@
 #pragma once
 
+//! Deps
+#include <entt/core/attribute.h>
+
 #include <QObject>
 
 namespace atomic_dex
 {
-    class MarketModeGadget
+    class ENTT_API MarketModeGadget
     {
         Q_GADGET
 
@@ -21,7 +24,7 @@ namespace atomic_dex
         explicit MarketModeGadget();
     };
 
-    class TradingErrorGadget
+    class ENTT_API TradingErrorGadget
     {
         Q_GADGET
 
