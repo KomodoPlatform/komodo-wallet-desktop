@@ -781,4 +781,21 @@ namespace atomic_dex
             }
         }
     }
+
+    QString
+    trading_page::get_total_amount() const noexcept
+    {
+        return m_total_amount;
+    }
+
+    void
+    trading_page::set_total_amount(QString total_amount) noexcept
+    {
+        if (m_total_amount != total_amount)
+        {
+            m_max_volume = std::move(total_amount);
+            spdlog::trace("total_amount is [{}]", m_total_amount.toStdString());
+            emit totalAmountChanged();
+        }
+    }
 } // namespace atomic_dex
