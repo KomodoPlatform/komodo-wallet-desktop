@@ -37,12 +37,12 @@ FloatingBackground {
     // Will move to backend
 //    function higherThanMinTradeAmount() {
 //        if(input_volume.field.text === '') return false
-//        return parseFloat(sell_mode ? input_volume.field.text : total_amount) >= General.getMinTradeAmount()
+//        return parseFloat(base_amount) >= General.getMinTradeAmount()
 //    }
 
 //    function receiveHigherThanMinTradeAmount() {
 //        if(input_volume.field.text === '') return false
-//        return parseFloat(sell_mode ? total_amount : input_volume.field.text) >= General.getMinTradeAmount()
+//        return parseFloat(rel_amount) >= General.getMinTradeAmount()
 //    }
 
     function isValid() {
