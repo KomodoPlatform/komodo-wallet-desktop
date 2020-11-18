@@ -202,18 +202,17 @@ FloatingBackground {
 //                        onInputChanged()
                     }
 
-                    function resetPrice() {
-                        if(orderIsSelected()) resetPreferredPrice()
-                    }
+                    // Will move to backend
+//                    function resetPrice() {
+//                        if(orderIsSelected()) resetPreferredPrice()
+//                    }
 
-                    field.onPressed: {
-                        // Will move to backend
+//                    field.onPressed: {
 //                        resetPrice()
-                    }
-                    field.onFocusChanged: {
-                        // Will move to backend
+//                    }
+//                    field.onFocusChanged: {
 //                        if(field.activeFocus) resetPrice()
-                    }
+//                    }
                 }
 
                 DefaultText {

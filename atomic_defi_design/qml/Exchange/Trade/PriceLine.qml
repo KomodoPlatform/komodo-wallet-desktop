@@ -7,7 +7,8 @@ import "../../Constants"
 
 // Price
 RowLayout {
-    readonly property double price: !orderIsSelected() ? getCalculatedPrice() : preffered_order.price
+    // Will move to backend
+    readonly property double price: orderIsSelected() ? preffered_order.price : getCalculatedPrice()
     readonly property bool invalid_cex_price: parseFloat(cex_price) === 0
     readonly property double price_diff: invalid_cex_price ? 0 : 100 * (1 - parseFloat(price) / parseFloat(cex_price)) *
                                                                                                             (sell_mode ? 1 : -1)

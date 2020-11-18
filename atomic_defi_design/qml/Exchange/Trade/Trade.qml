@@ -76,16 +76,10 @@ Item {
         cex_price = API.app.get_cex_rates(base, rel)
     }
 
-    readonly property var empty_order: ({ "is_asks":false,"price":"0","price_denom":"0","price_numer":"0","volume":"0"})
-    property var preffered_order: General.clone(empty_order)
-
+    readonly property var preffered_order: API.app.trading_pg.preffered_order
 
     function orderIsSelected() {
-        return preffered_order.price !== empty_order.price
-    }
-
-    function resetPreferredPrice() {
-        preffered_order = General.clone(empty_order)
+        return preffered_order.price !== undefined
     }
 
     function selectOrder(is_asks, price, quantity, price_denom, price_numer, quantity_denom, quantity_numer) {
@@ -107,8 +101,9 @@ Item {
         return General.isZero(price) ? "0" : price
     }
 
+    // Will move to backend
     function getCurrentPrice() {
-        return !orderIsSelected() ? getCalculatedPrice() : preffered_order.price
+        return orderIsSelected() ? preffered_order.price : getCalculatedPrice()
     }
 
     function hasValidPrice() {
