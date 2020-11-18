@@ -678,4 +678,56 @@ namespace atomic_dex
             emit tradingErrorChanged();
         }
     }
+
+    void
+    trading_page::set_pair(bool is_left_side, QString changed_ticker) noexcept
+    {
+        auto* const market_pair = get_market_pairs_mdl();
+        auto        base        = market_pair->get_left_selected_coin();
+        auto        rel         = market_pair->get_right_selected_coin();
+
+        bool is_swap = false;
+        if (not changed_ticker.isEmpty())
+        {
+            if (is_left_side)
+            {
+                if (base == changed_ticker)
+                {
+                    return;
+                }
+                if (base != changed_ticker && rel == changed_ticker)
+                {
+                    is_swap = true;
+                }
+                else
+                {
+                    base = changed_ticker;
+                }
+            }
+            else
+            {
+                if (rel == changed_ticker)
+                {
+                    return;
+                }
+                if (rel != changed_ticker && base == changed_ticker)
+                {
+                    is_swap = true;
+                }
+                else
+                {
+                    rel = changed_ticker;
+                }
+            }
+        }
+
+        if (is_swap)
+        {
+            swap_market_pair();
+        }
+        else
+        {
+            set_current_orderbook(base, rel);
+        }
+    }
 } // namespace atomic_dex
