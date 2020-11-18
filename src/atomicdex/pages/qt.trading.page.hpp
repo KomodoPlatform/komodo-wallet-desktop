@@ -50,6 +50,7 @@ namespace atomic_dex
 
         //! Trading logic
         Q_PROPERTY(MarketMode market_mode READ get_market_mode WRITE set_market_mode NOTIFY marketModeChanged)
+        Q_PROPERTY(TradingError last_trading_error READ get_trading_error WRITE set_trading_error NOTIFY tradingErrorChanged)
         Q_PROPERTY(QString price READ get_price WRITE set_price NOTIFY priceChanged)
         Q_PROPERTY(QString volume READ get_volume WRITE set_volume NOTIFY volumeChanged)
         Q_PROPERTY(QString max_volume READ get_max_volume WRITE set_max_volume NOTIFY maxVolumeChanged)
@@ -91,10 +92,11 @@ namespace atomic_dex
         t_qt_synchronized_json   m_rpc_buy_sell_result;
 
         //! Trading Logic
-        MarketMode m_market_mode{MarketModeGadget::Sell};
-        QString    m_price{""};
-        QString    m_volume{""};
-        QString    m_max_volume{"0"};
+        MarketMode   m_market_mode{MarketModeGadget::Sell};
+        TradingError m_last_trading_error{TradingErrorGadget::None};
+        QString      m_price{""};
+        QString      m_volume{""};
+        QString      m_max_volume{"0"};
 
         //! Private function
         void common_cancel_all_orders(bool by_coin = false, const QString& ticker = "");
@@ -150,14 +152,16 @@ namespace atomic_dex
         void                                set_buy_sell_rpc_busy(bool status) noexcept;
 
         //! Trading Logic
-        [[nodiscard]] MarketMode get_market_mode() const noexcept;
-        void                     set_market_mode(MarketMode market_mode) noexcept;
-        [[nodiscard]] QString    get_price() const noexcept;
-        void                     set_price(QString price) noexcept;
-        [[nodiscard]] QString    get_volume() const noexcept;
-        void                     set_volume(QString volume) noexcept;
-        [[nodiscard]] QString    get_max_volume() const noexcept;
-        void                     set_max_volume(QString max_volume) noexcept;
+        [[nodiscard]] MarketMode   get_market_mode() const noexcept;
+        void                       set_market_mode(MarketMode market_mode) noexcept;
+        [[nodiscard]] TradingError get_trading_error() const noexcept;
+        void                       set_trading_error(TradingError trading_error) noexcept;
+        [[nodiscard]] QString      get_price() const noexcept;
+        void                       set_price(QString price) noexcept;
+        [[nodiscard]] QString      get_volume() const noexcept;
+        void                       set_volume(QString volume) noexcept;
+        [[nodiscard]] QString      get_max_volume() const noexcept;
+        void                       set_max_volume(QString max_volume) noexcept;
 
         //! For multi ticker part
         [[nodiscard]] bool is_fetching_multi_ticker_fees_busy() const noexcept;
@@ -184,6 +188,7 @@ namespace atomic_dex
         void volumeChanged();
         void marketModeChanged();
         void maxVolumeChanged();
+        void tradingErrorChanged();
     };
 } // namespace atomic_dex
 

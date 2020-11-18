@@ -548,8 +548,10 @@ namespace atomic_dex
 
                             for (auto&& t: to_remove) { tickers.erase(std::remove(tickers.begin(), tickers.end(), t), tickers.end()); }
 
-                            batch_balance_and_tx(false, tickers, true);
-                            //! At this point, task is finished, let's refresh.
+                            if (not tickers.empty())
+                            {
+                                batch_balance_and_tx(false, tickers, true);
+                            }
                         }
                     }
                     catch (const std::exception& error)
@@ -778,7 +780,7 @@ namespace atomic_dex
 
         std::ofstream ofs(mm2_cfg_path.string());
         ofs << json_cfg.dump();
-        //std::cout << json_cfg.dump() << std::endl;
+        // std::cout << json_cfg.dump() << std::endl;
         ofs.close();
         const std::array<std::string, 1> args = {(tools_path / "mm2").string()};
         reproc::options                  options;

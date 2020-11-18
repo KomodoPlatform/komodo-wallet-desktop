@@ -23,9 +23,9 @@
 
 #if defined(linux) || defined(__APPLE__)
 #    define BOOST_STACKTRACE_USE_ADDR2LINE
-#if defined(__APPLE__)
-#define _GNU_SOURCE
-#endif
+#    if defined(__APPLE__)
+#        define _GNU_SOURCE
+#    endif
 #    include <boost/stacktrace.hpp>
 #endif
 
@@ -205,6 +205,8 @@ run_app(int argc, char** argv)
     QZXing::registerQMLImageProvider(engine);
     qRegisterMetaType<MarketMode>("MarketMode");
     qmlRegisterUncreatableType<atomic_dex::MarketModeGadget>("AtomicDEX.MarketMode", 1, 0, "MarketMode", "Not creatable as it is an enum type");
+    qRegisterMetaType<TradingError>("TradingError");
+    qmlRegisterUncreatableType<atomic_dex::TradingErrorGadget>("AtomicDEX.TradingError", 1, 0, "TradingError", "Not creatable as it is an enum type");
 
     engine.rootContext()->setContextProperty("atomic_app", &atomic_app);
     // Load Qaterial.

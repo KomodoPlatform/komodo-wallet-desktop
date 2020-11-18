@@ -655,4 +655,20 @@ namespace atomic_dex
             }
         }
     }
+
+    TradingError
+    trading_page::get_trading_error() const noexcept
+    {
+        return m_last_trading_error;
+    }
+
+    void
+    trading_page::set_trading_error(TradingError trading_error) noexcept
+    {
+        if (m_last_trading_error != trading_error)
+        {
+            m_last_trading_error = trading_error;
+            emit tradingErrorChanged();
+        }
+    }
 } // namespace atomic_dex
