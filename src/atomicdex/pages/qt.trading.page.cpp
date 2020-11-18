@@ -804,6 +804,8 @@ namespace atomic_dex
             m_total_amount = std::move(total_amount);
             spdlog::trace("total_amount is [{}]", m_total_amount.toStdString());
             emit totalAmountChanged();
+            emit baseAmountChanged();
+            emit relAmountChanged();
         }
     }
 
@@ -817,5 +819,17 @@ namespace atomic_dex
             t_float_50 total_amount_f = volume * price;
             this->set_total_amount(QString::fromStdString(utils::format_float(total_amount_f)));
         }
+    }
+
+    QString
+    trading_page::get_base_amount() const noexcept
+    {
+        return m_market_mode == MarketMode::Sell ? m_volume : m_total_amount;
+    }
+
+    QString
+    trading_page::get_rel_amount() const noexcept
+    {
+        return m_market_mode == MarketMode::Sell ? m_total_amount : m_volume;
     }
 } // namespace atomic_dex

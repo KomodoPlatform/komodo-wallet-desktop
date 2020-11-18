@@ -55,6 +55,8 @@ namespace atomic_dex
         Q_PROPERTY(QString volume READ get_volume WRITE set_volume NOTIFY volumeChanged)
         Q_PROPERTY(QString max_volume READ get_max_volume WRITE set_max_volume NOTIFY maxVolumeChanged)
         Q_PROPERTY(QString total_amount READ get_total_amount WRITE set_total_amount NOTIFY totalAmountChanged)
+        Q_PROPERTY(QString base_amount READ get_base_amount NOTIFY baseAmountChanged)
+        Q_PROPERTY(QString rel_amount READ get_rel_amount NOTIFY relAmountChanged)
         Q_PROPERTY(QVariantMap preffered_order READ get_preffered_order WRITE set_preffered_order NOTIFY prefferedOrderChanged)
 
 
@@ -170,6 +172,8 @@ namespace atomic_dex
         void                       set_max_volume(QString max_volume) noexcept;
         [[nodiscard]] QString      get_total_amount() const noexcept;
         void                       set_total_amount(QString total_amount) noexcept;
+        [[nodiscard]] QString      get_base_amount() const noexcept;
+        [[nodiscard]] QString      get_rel_amount() const noexcept;
         [[nodiscard]] QVariantMap  get_preffered_order() noexcept;
         void                       set_preffered_order(QVariantMap price_object) noexcept;
 
@@ -201,6 +205,8 @@ namespace atomic_dex
         void tradingErrorChanged();
         void prefferedOrderChanged();
         void totalAmountChanged();
+        void baseAmountChanged();
+        void relAmountChanged();
     };
 } // namespace atomic_dex
 
