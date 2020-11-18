@@ -580,6 +580,7 @@ namespace atomic_dex
             {
                 this->determine_max_volume();
             }
+            this->determine_total_amount();
             emit priceChanged();
         }
     }
@@ -590,6 +591,7 @@ namespace atomic_dex
         this->set_price("");
         this->set_volume("");
         this->set_max_volume("0");
+        this->set_total_amount("0");
         this->m_preffered_order = std::nullopt;
         emit prefferedOrderChanged();
     }
@@ -606,6 +608,7 @@ namespace atomic_dex
         {
             m_volume = std::move(volume);
             spdlog::trace("volume is [{}]", m_volume.toStdString());
+            this->determine_total_amount();
             emit volumeChanged();
         }
     }
@@ -797,5 +800,14 @@ namespace atomic_dex
             spdlog::trace("total_amount is [{}]", m_total_amount.toStdString());
             emit totalAmountChanged();
         }
+    }
+
+    void
+    trading_page::determine_total_amount() noexcept
+    {
+        t_float_50 price(m_price.toStdString());
+        t_float_50 volume(m_volume.toStdString());
+        t_float_50 total_amount_f = volume * price;
+        this->set_total_amount(QString::fromStdString(utils::format_float(total_amount_f)));
     }
 } // namespace atomic_dex
