@@ -7,4 +7,5 @@
 namespace atomic_dex
 {
     MarketModeGadget::MarketModeGadget() {}
+    TradingErrorGadget::TradingErrorGadget() {}
 } // namespace atomic_dex

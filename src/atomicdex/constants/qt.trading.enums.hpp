@@ -36,11 +36,13 @@ namespace atomic_dex
             RelNotEnoughFunds                        = 2,
             BalanceIsLessThanTheMinimalTradingAmount = 3
         };
+
+        Q_ENUM(TradingErrorEnum)
+
+      private:
+        explicit TradingErrorGadget();
     };
 } // namespace atomic_dex
 
 using MarketMode   = atomic_dex::MarketModeGadget::MarketModeEnum;
 using TradingError = atomic_dex::TradingErrorGadget::TradingErrorEnum;
-
-Q_DECLARE_METATYPE(MarketMode)
-Q_DECLARE_METATYPE(TradingError)
