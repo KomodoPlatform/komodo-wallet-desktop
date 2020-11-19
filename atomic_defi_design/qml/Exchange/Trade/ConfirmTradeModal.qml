@@ -221,13 +221,12 @@ BasicModal {
                 Layout.fillWidth: true
                 enabled: !buy_sell_rpc_busy
                 onClicked: {
-                    // Will move to backend
-//                    trade(left_ticker, right_ticker, {
-//                            enable_custom_config: enable_custom_config.checked,
-//                            is_dpow_configurable: config_section.is_dpow_configurable,
-//                            enable_dpow_confs: enable_dpow_confs.checked,
-//                            required_confirmation_count: required_confirmation_count.value,
-//                          }, config_section.default_config)
+                    trade({
+                            enable_custom_config: enable_custom_config.checked,
+                            is_dpow_configurable: config_section.is_dpow_configurable,
+                            enable_dpow_confs: enable_dpow_confs.checked,
+                            required_confirmation_count: required_confirmation_count.value,
+                          }, config_section.default_config)
                 }
             }
         ]

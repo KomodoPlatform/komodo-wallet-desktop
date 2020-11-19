@@ -214,7 +214,7 @@ Item {
         }
     }
 
-    function trade(base, rel, options, default_config) {
+    function trade(options, default_config) {
         updateTradeInfo(true) // Force update trade info and cap the value for one last time
 
         console.log("Trade config: ", JSON.stringify(options))
