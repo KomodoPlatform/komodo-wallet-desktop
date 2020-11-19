@@ -978,6 +978,10 @@ namespace atomic_dex
         {
             current_trading_error = TradingError::BalanceIsLessThanTheMinimalTradingAmount;
         }
+        else if (m_fees.contains("total_base_fees") && t_float_50(m_fees["total_base_fees_fp"].toString().toStdString()) > max_balance_without_dust)
+        {
+            current_trading_error = TradingError::BaseNotEnoughFunds;
+        }
         else if (m_fees.contains("rel_transaction_fees_ticker")) //! Checking rel coin if specific fees aka: ETH, QTUM, QRC-20, ERC-20 ?
         {
             const auto rel_ticker = m_fees["rel_transaction_fees_ticker"].toString().toStdString();
@@ -985,13 +989,6 @@ namespace atomic_dex
             if (not mm2.do_i_have_enough_funds(rel_ticker, rel_amount))
             {
                 current_trading_error = TradingError::RelTransactionFeesNotEnough;
-            }
-        }
-        else if (m_fees.contains("total_base_fees"))
-        {
-            if (t_float_50(m_fees["total_base_fees_fp"].toString().toStdString()) > max_balance_without_dust)
-            {
-                current_trading_error = TradingError::BaseNotEnoughFunds;
             }
         }
 
