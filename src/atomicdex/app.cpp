@@ -493,7 +493,7 @@ namespace atomic_dex
     {
         spdlog::debug("{} l{}", __FUNCTION__, __LINE__);
 
-        //! Clear pending events
+        //! Clears pending events
         while (not this->m_actions_queue.empty())
         {
             [[maybe_unused]] action act;
@@ -507,11 +507,11 @@ namespace atomic_dex
             free((void*)ticker);
         }
 
-        //! Clear models
+        //! Clears models
         addressbook_model* addressbook = qobject_cast<addressbook_model*>(m_manager_models.at("addressbook"));
-        if (auto count = addressbook->rowCount(); count > 0)
+        if (auto count = addressbook->rowCount(QModelIndex()); count > 0)
         {
-            addressbook->removeRows(0, count);
+            addressbook->removeRows(0, count, QModelIndex());
         }
 
         orders_model* orders = qobject_cast<orders_model*>(m_manager_models.at("orders"));
@@ -864,16 +864,6 @@ namespace atomic_dex
     }
 } // namespace atomic_dex
 
-//! Addressbook
-namespace atomic_dex
-{
-    addressbook_model*
-    application::get_addressbook() const noexcept
-    {
-        return qobject_cast<addressbook_model*>(m_manager_models.at("addressbook"));
-    }
-} // namespace atomic_dex
-
 //! Orders
 namespace atomic_dex
 {
@@ -964,7 +954,8 @@ namespace atomic_dex
         });
         if (res)
         {
-            this->system_manager_.get_system<addressbook_manager>().load_configuration();
+            system_manager_.get_system<addressbook_manager>().load_configuration();
+            qobject_cast<addressbook_model*>(m_manager_models.at("addressbook"))->init_from_manager();
         }
         return res;
     }

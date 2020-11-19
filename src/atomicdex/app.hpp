@@ -65,7 +65,6 @@ namespace atomic_dex
         //! Properties
         Q_PROPERTY(QList<QVariant> enabled_coins READ get_enabled_coins NOTIFY enabledCoinsChanged)
         Q_PROPERTY(QList<QVariant> enableable_coins READ get_enableable_coins NOTIFY enableableCoinsChanged)
-        Q_PROPERTY(addressbook_model* addressbook_mdl READ get_addressbook NOTIFY addressbookChanged)
         Q_PROPERTY(orders_model* orders_mdl READ get_orders NOTIFY ordersChanged)
         Q_PROPERTY(QVariant update_status READ get_update_status NOTIFY updateStatusChanged)
         Q_PROPERTY(portfolio_page_ptr portfolio_pg READ get_portfolio_page NOTIFY portfolioPageChanged)
@@ -133,7 +132,6 @@ namespace atomic_dex
         mm2_service&               get_mm2() noexcept;
         const mm2_service&         get_mm2() const noexcept;
         entt::dispatcher&          get_dispatcher() noexcept;
-        addressbook_model*         get_addressbook() const noexcept;
         portfolio_page*            get_portfolio_page() const noexcept;
         wallet_page*               get_wallet_page() const noexcept;
         orders_model*              get_orders() const noexcept;
@@ -214,7 +212,6 @@ namespace atomic_dex
         void onStatusChanged();
         void onWalletDefaultNameChanged();
         void myOrdersUpdated();
-        void addressbookChanged();
         void portfolioPageChanged();
         void walletPageChanged();
         void updateStatusChanged();
