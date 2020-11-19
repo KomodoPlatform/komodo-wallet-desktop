@@ -35,10 +35,12 @@ namespace atomic_dex
             TradingFeesNotEnoughFunds    = 1, ///< If trading_fee_ticker != transaction_fee_ticker this error can happens BAT <-> ETH (not enough BAT)
             BaseNotEnoughFunds           = 2, ///< can be set only if trading_fee_ticker == transaction_fee_ticker <-> KMD <-> BTC (not enough KMD)
             BaseTransactionFeesNotEnough = 3, ///< If trading_fee_ticker != transaction_fee_ticker this error can happens BAT <-> ETH (not enough ETH)
-            RelTransactionFeesNotEnough  = 4,
-            BalanceIsLessThanTheMinimalTradingAmount = 5,
-            PriceFieldNotFilled                      = 6,
-            VolumeFieldNotFilled                     = 7
+            RelTransactionFeesNotEnough  = 4, ///< KMD <-> ETH (not enough ETH)
+            BalanceIsLessThanTheMinimalTradingAmount = 5, ///< max_trading_vol < 0.00777
+            PriceFieldNotFilled                      = 6, ///< Price empty or 0
+            VolumeFieldNotFilled                     = 7, ///< Volume empty or 0
+            VolumeIsLowerThanTheMinimum              = 8, ///< Volume field < 0.00777
+            ReceiveVolumeIsLowerThanTheMinimum       = 9
         };
 
         Q_ENUM(TradingErrorEnum)

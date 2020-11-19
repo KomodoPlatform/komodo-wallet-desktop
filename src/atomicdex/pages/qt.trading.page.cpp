@@ -731,6 +731,12 @@ namespace atomic_dex
             case TradingErrorGadget::VolumeFieldNotFilled:
                 spdlog::warn("last_trading_error is VolumeFieldNotFilled");
                 break;
+            case TradingErrorGadget::VolumeIsLowerThanTheMinimum:
+                spdlog::warn("last_trading_error is VolumeIsLowerThanTheMinimum");
+                break;
+            case TradingErrorGadget::ReceiveVolumeIsLowerThanTheMinimum:
+                spdlog::warn("last_trading_error is ReceiveVolumeIsLowerThanTheMinimum");
+                break;
             }
             emit tradingErrorChanged();
         }
@@ -966,7 +972,11 @@ namespace atomic_dex
                 .toString()
                 .toStdString());
 
-        if (m_volume.isEmpty() || m_volume == "0") ///< Volume is not set correctly
+        if (max_balance_without_dust < utils::minimal_trade_amount()) //<! Checking balance < minimal_trading_amount
+        {
+            current_trading_error = TradingError::BalanceIsLessThanTheMinimalTradingAmount;
+        }
+        else if (m_volume.isEmpty() || m_volume == "0") ///< Volume is not set correctly
         {
             current_trading_error = TradingError::VolumeFieldNotFilled;
         }
@@ -974,9 +984,13 @@ namespace atomic_dex
         {
             current_trading_error = TradingError::PriceFieldNotFilled;
         }
-        else if (max_balance_without_dust < t_float_50("0.00777")) //<! Checking balance < minimal_trading_amount
+        else if (t_float_50(get_base_amount().toStdString()) < utils::minimal_trade_amount())
         {
-            current_trading_error = TradingError::BalanceIsLessThanTheMinimalTradingAmount;
+            current_trading_error = TradingError::VolumeIsLowerThanTheMinimum;
+        }
+        else if (t_float_50(get_rel_amount().toStdString()) < utils::minimal_trade_amount())
+        {
+            current_trading_error = TradingError::ReceiveVolumeIsLowerThanTheMinimum;
         }
         else if (m_fees.contains("total_base_fees") && t_float_50(m_fees["total_base_fees_fp"].toString().toStdString()) > max_balance_without_dust)
         {
