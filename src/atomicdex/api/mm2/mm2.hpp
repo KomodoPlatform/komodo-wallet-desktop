@@ -475,6 +475,9 @@ namespace mm2::api
         bool                       is_created_order;
         std::string                price_denom;
         std::string                price_numer;
+        std::string                volume_denom;
+        std::string                volume_numer;
+        bool                       is_exact_selected_order_volume;
         std::optional<bool>        base_nota{std::nullopt};
         std::optional<std::size_t> base_confs{std::nullopt};
     };
@@ -521,6 +524,9 @@ namespace mm2::api
         bool                       is_created_order;
         std::string                price_denom;
         std::string                price_numer;
+        std::string                volume_denom;
+        std::string                volume_numer;
+        bool                       is_exact_selected_order_volume;
         std::optional<bool>        rel_nota;
         std::optional<std::size_t> rel_confs;
     };

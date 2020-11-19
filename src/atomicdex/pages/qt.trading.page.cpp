@@ -210,30 +210,31 @@ namespace atomic_dex
     }
 
     void
-    trading_page::place_buy_order(
-        const QString& base, const QString& rel, const QString& price, const QString& volume, bool is_created_order, const QString& price_denom,
-        const QString& price_numer, const QString& base_nota, const QString& base_confs)
+    trading_page::place_buy_order(const QString& base_nota, const QString& base_confs)
     {
         this->set_buy_sell_rpc_busy(true);
         this->set_buy_sell_last_rpc_data(QJsonObject{{}});
-        t_float_50 price_f;
-        t_float_50 amount_f;
-        t_float_50 total_amount;
 
-        price_f.assign(price.toStdString());
-        amount_f.assign(volume.toStdString());
-        total_amount = price_f * amount_f;
+        const auto* market_selector   = get_market_pairs_mdl();
+        const auto& base              = market_selector->get_left_selected_coin();
+        const auto& rel               = market_selector->get_right_selected_coin();
+        const bool  is_selected_order = m_preffered_order.has_value();
 
         t_buy_request req{
             .base             = base.toStdString(),
             .rel              = rel.toStdString(),
-            .price            = price.toStdString(),
-            .volume           = volume.toStdString(),
-            .is_created_order = is_created_order,
-            .price_denom      = price_denom.toStdString(),
-            .price_numer      = price_numer.toStdString(),
-            .base_nota        = base_nota.isEmpty() ? std::optional<bool>{std::nullopt} : boost::lexical_cast<bool>(base_nota.toStdString()),
-            .base_confs       = base_confs.isEmpty() ? std::optional<std::size_t>{std::nullopt} : base_confs.toUInt()};
+            .price            = is_selected_order ? m_preffered_order->at("price").get<std::string>() : m_price.toStdString(),
+            .volume           = m_volume.toStdString(),
+            .is_created_order = not is_selected_order,
+            .price_denom      = is_selected_order ? m_preffered_order->at("price_denom").get<std::string>() : "",
+            .price_numer      = is_selected_order ? m_preffered_order->at("price_numer").get<std::string>() : "",
+            .volume_denom     = is_selected_order ? m_preffered_order->at("quantity_denom").get<std::string>() : "",
+            .volume_numer     = is_selected_order ? m_preffered_order->at("quantity_numer").get<std::string>() : "",
+            .is_exact_selected_order_volume =
+                is_selected_order ? QString::fromStdString(utils::format_float(t_float_50(m_preffered_order->at("quantity").get<std::string>()))) == m_volume
+                                  : false,
+            .base_nota  = base_nota.isEmpty() ? std::optional<bool>{std::nullopt} : boost::lexical_cast<bool>(base_nota.toStdString()),
+            .base_confs = base_confs.isEmpty() ? std::optional<std::size_t>{std::nullopt} : base_confs.toUInt()};
         nlohmann::json batch;
         nlohmann::json buy_request = ::mm2::api::template_request("buy");
         ::mm2::api::to_json(buy_request, req);
@@ -241,6 +242,7 @@ namespace atomic_dex
         auto& mm2_system = m_system_manager.get_system<mm2_service>();
 
         //! Answer
+        // spdlog::info("buy_request is : {}", batch.dump(4));
         auto answer_functor = [this](web::http::http_response resp) {
             std::string body = TO_STD_STR(resp.extract_string(true).get());
             if (resp.status_code() == 200)
@@ -275,37 +277,38 @@ namespace atomic_dex
     }
 
     void
-    trading_page::place_sell_order(
-        const QString& base, const QString& rel, const QString& price, const QString& volume, bool is_created_order, const QString& price_denom,
-        const QString& price_numer, const QString& rel_nota, const QString& rel_confs)
+    trading_page::place_sell_order(const QString& rel_nota, const QString& rel_confs)
     {
-        auto max_taker_vol = this->get_orderbook_wrapper()->get_base_max_taker_vol().toJsonObject();
-        // qDebug() << "max_taker_vol: " << max_taker_vol;
-        spdlog::info(
-            "place_sell_order with: base({}), rel ({}), price ({}), volume ({}), is_created_order ({}), price_denom ({}), price_numer ({}), max_taker_vol ({})",
-            base.toStdString(), rel.toStdString(), price.toStdString(), volume.toStdString(), is_created_order, price_numer.toStdString(),
-            price_denom.toStdString(), max_taker_vol.value("decimal").toString().toStdString());
         this->set_buy_sell_rpc_busy(true);
         this->set_buy_sell_last_rpc_data(QJsonObject{{}});
-        t_float_50 amount_f;
-        amount_f.assign(volume.toStdString());
+
+        const auto* market_selector   = get_market_pairs_mdl();
+        const auto& base              = market_selector->get_left_selected_coin();
+        const auto& rel               = market_selector->get_right_selected_coin();
+        const bool  is_selected_order = m_preffered_order.has_value();
 
         t_sell_request req{
             .base             = base.toStdString(),
             .rel              = rel.toStdString(),
-            .price            = price.toStdString(),
-            .volume           = volume.toStdString(),
-            .is_created_order = is_created_order,
-            .price_denom      = price_denom.toStdString(),
-            .price_numer      = price_numer.toStdString(),
-            .rel_nota         = rel_nota.isEmpty() ? std::optional<bool>{std::nullopt} : boost::lexical_cast<bool>(rel_nota.toStdString()),
-            .rel_confs        = rel_confs.isEmpty() ? std::optional<std::size_t>{std::nullopt} : rel_confs.toUInt()};
+            .price            = is_selected_order ? m_preffered_order->at("price").get<std::string>() : m_price.toStdString(),
+            .volume           = m_volume.toStdString(),
+            .is_created_order = not is_selected_order,
+            .price_denom      = is_selected_order ? m_preffered_order->at("price_denom").get<std::string>() : "",
+            .price_numer      = is_selected_order ? m_preffered_order->at("price_numer").get<std::string>() : "",
+            .volume_denom     = is_selected_order ? m_preffered_order->at("quantity_denom").get<std::string>() : "",
+            .volume_numer     = is_selected_order ? m_preffered_order->at("quantity_numer").get<std::string>() : "",
+            .is_exact_selected_order_volume =
+                is_selected_order ? QString::fromStdString(utils::format_float(t_float_50(m_preffered_order->at("quantity").get<std::string>()))) == m_volume
+                                  : false,
+            .rel_nota  = rel_nota.isEmpty() ? std::optional<bool>{std::nullopt} : boost::lexical_cast<bool>(rel_nota.toStdString()),
+            .rel_confs = rel_confs.isEmpty() ? std::optional<std::size_t>{std::nullopt} : rel_confs.toUInt()};
         nlohmann::json batch;
         nlohmann::json sell_request = ::mm2::api::template_request("sell");
         ::mm2::api::to_json(sell_request, req);
         batch.push_back(sell_request);
         auto& mm2_system = m_system_manager.get_system<mm2_service>();
 
+        spdlog::info("batch sell request: {}", batch.dump(4));
         //! Answer
         auto answer_functor = [this](web::http::http_response resp) {
             std::string body = TO_STD_STR(resp.extract_string(true).get());
@@ -580,13 +583,25 @@ namespace atomic_dex
         if (m_price != price)
         {
             m_price = std::move(price);
+            if (this->m_preffered_order.has_value() && this->m_preffered_order->contains("locked"))
+            {
+                spdlog::warn("releasing preffered order because price has been modified");
+                this->m_preffered_order = std::nullopt;
+                emit prefferedOrderChanged();
+            }
             spdlog::trace("price is [{}]", m_price.toStdString());
+
             //! When price change in MarketMode::Buy you want to redetermine max_volume
             if (m_market_mode == MarketMode::Buy)
             {
                 this->determine_max_volume();
             }
             this->determine_total_amount();
+
+            if (this->m_preffered_order.has_value())
+            {
+                this->m_preffered_order.value()["locked"] = true;
+            }
             emit priceChanged();
         }
     }

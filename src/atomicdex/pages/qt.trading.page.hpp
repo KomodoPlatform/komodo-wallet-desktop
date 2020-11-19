@@ -147,12 +147,8 @@ namespace atomic_dex
         Q_INVOKABLE bool set_pair(bool is_left_side, QString changed_ticker) noexcept;
         Q_INVOKABLE void set_current_orderbook(const QString& base, const QString& rel); ///< market_selector (called and selecting another coin)
 
-        Q_INVOKABLE void place_buy_order(
-            const QString& base, const QString& rel, const QString& price, const QString& volume, bool is_created_order, const QString& price_denom,
-            const QString& price_numer, const QString& base_nota = "", const QString& base_confs = "");
-        Q_INVOKABLE void place_sell_order(
-            const QString& base, const QString& rel, const QString& price, const QString& volume, bool is_created_order, const QString& price_denom,
-            const QString& price_numer, const QString& rel_nota = "", const QString& rel_confs = "");
+        Q_INVOKABLE void place_buy_order(const QString& base_nota = "", const QString& base_confs = "");
+        Q_INVOKABLE void place_sell_order(const QString& rel_nota = "", const QString& rel_confs = "");
 
         Q_INVOKABLE void fetch_additional_fees(const QString& ticker) noexcept; ///< multi ticker (when enabling a coin of the list)
         Q_INVOKABLE void place_multiple_sell_order() noexcept;                  ///< multi ticker (when confirming a multi order)
