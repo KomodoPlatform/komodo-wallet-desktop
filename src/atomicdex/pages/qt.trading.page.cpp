@@ -924,8 +924,8 @@ namespace atomic_dex
 
         //! Check minimal trading amount
         const std::string base = this->get_market_pairs_mdl()->get_base_selected_coin().toStdString();
-        // const auto&       mm2  = this->m_system_manager.get_system<mm2_service>();
-        t_float_50 max_balance_without_dust(
+        const auto&       mm2  = this->m_system_manager.get_system<mm2_service>();
+        t_float_50        max_balance_without_dust(
             (m_market_mode == MarketMode::Sell ? get_orderbook_wrapper()->get_base_max_taker_vol() : get_orderbook_wrapper()->get_rel_max_taker_vol())
                 .toJsonObject()["decimal"]
                 .toString()
@@ -934,6 +934,16 @@ namespace atomic_dex
         if (max_balance_without_dust < t_float_50("0.00777"))
         {
             current_trading_error = TradingError::BalanceIsLessThanTheMinimalTradingAmount;
+        }
+
+        if (m_fees.contains("rel_transaction_fees_ticker"))
+        {
+            const auto rel_ticker = m_fees["rel_transaction_fees_ticker"].toString().toStdString();
+            t_float_50 rel_amount(m_fees["rel_transaction_fees"].toString().toStdString());
+            if (not mm2.do_i_have_enough_funds(rel_ticker, rel_amount))
+            {
+                current_trading_error = TradingError::RelNotEnoughFunds;
+            }
         }
 
         this->set_trading_error(current_trading_error);
