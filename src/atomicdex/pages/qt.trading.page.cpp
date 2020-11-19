@@ -719,6 +719,18 @@ namespace atomic_dex
             case TradingErrorGadget::BalanceIsLessThanTheMinimalTradingAmount:
                 spdlog::warn("last_trading_error is BalanceIsLessThanTheMinimalTradingAmount");
                 break;
+            case TradingErrorGadget::TradingFeesNotEnoughFunds:
+                spdlog::warn("last_trading_error is TradingFeesNotEnoughFunds");
+                break;
+            case TradingErrorGadget::BaseTransactionFeesNotEnough:
+                spdlog::warn("last_trading_error is BaseTransactionFeesNotEnough");
+                break;
+            case TradingErrorGadget::PriceFieldNotFilled:
+                spdlog::warn("last_trading_error is PriceFieldNotFilled");
+                break;
+            case TradingErrorGadget::VolumeFieldNotFilled:
+                spdlog::warn("last_trading_error is VolumeFieldNotFilled");
+                break;
             }
             emit tradingErrorChanged();
         }
@@ -946,14 +958,19 @@ namespace atomic_dex
                 .toString()
                 .toStdString());
 
-        //! Checking balance < minimal_trading_amount
-        if (max_balance_without_dust < t_float_50("0.00777"))
+        if (m_volume.isEmpty() || m_volume == "0") ///< Volume is not set correctly
+        {
+            current_trading_error = TradingError::VolumeFieldNotFilled;
+        }
+        else if (m_price.isEmpty() || m_price == "0") ///< Price is not set correctly
+        {
+            current_trading_error = TradingError::PriceFieldNotFilled;
+        }
+        else if (max_balance_without_dust < t_float_50("0.00777")) //<! Checking balance < minimal_trading_amount
         {
             current_trading_error = TradingError::BalanceIsLessThanTheMinimalTradingAmount;
         }
-
-        //! Checking rel coin if specific fees aka: ETH, QTUM, QRC-20, ERC-20 ?
-        if (m_fees.contains("rel_transaction_fees_ticker"))
+        else if (m_fees.contains("rel_transaction_fees_ticker")) //! Checking rel coin if specific fees aka: ETH, QTUM, QRC-20, ERC-20 ?
         {
             const auto rel_ticker = m_fees["rel_transaction_fees_ticker"].toString().toStdString();
             t_float_50 rel_amount(m_fees["rel_transaction_fees"].toString().toStdString());
@@ -963,6 +980,7 @@ namespace atomic_dex
             }
         }
 
+        //! Check for base coin
         this->set_trading_error(current_trading_error);
     }
 } // namespace atomic_dex

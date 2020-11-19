@@ -31,10 +31,14 @@ namespace atomic_dex
       public:
         enum TradingErrorEnum
         {
-            None                                     = 0,
-            BaseNotEnoughFunds                       = 1,
-            RelNotEnoughFunds                        = 2,
-            BalanceIsLessThanTheMinimalTradingAmount = 3
+            None                         = 0,
+            TradingFeesNotEnoughFunds    = 1, ///< If trading_fee_ticker != transaction_fee_ticker this error can happens BAT <-> ETH (not enough BAT)
+            BaseNotEnoughFunds           = 2, ///< can be set only if trading_fee_ticker == transaction_fee_ticker <-> KMD <-> BTC (not enough KMD)
+            BaseTransactionFeesNotEnough = 3, ///< If trading_fee_ticker != transaction_fee_ticker this error can happens BAT <-> ETH (not enough ETH)
+            RelNotEnoughFunds            = 4,
+            BalanceIsLessThanTheMinimalTradingAmount = 5,
+            PriceFieldNotFilled                      = 6,
+            VolumeFieldNotFilled                     = 7
         };
 
         Q_ENUM(TradingErrorEnum)
