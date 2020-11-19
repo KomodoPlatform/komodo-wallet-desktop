@@ -599,6 +599,8 @@ namespace atomic_dex
         this->set_max_volume("0");
         this->set_total_amount("0");
         this->m_preffered_order = std::nullopt;
+        this->m_fees            = QVariantMap();
+        emit feesChanged();
         emit prefferedOrderChanged();
     }
 
@@ -908,6 +910,8 @@ namespace atomic_dex
             fees["rel_transaction_fees"]        = QString::fromStdString(utils::format_float(specific_fees));
             fees["rel_transaction_fees_ticker"] = QString::fromStdString(extra_fees_ticker);
         }
+
+        qDebug() << "fees_output: " << fees;
 
         this->set_fees(fees);
     }
