@@ -411,6 +411,7 @@ namespace atomic_dex
                 {
                     auto* wrapper = get_orderbook_wrapper();
                     m_models_actions[orderbook_need_a_reset] ? wrapper->reset_orderbook(result) : wrapper->refresh_orderbook(result);
+                    this->determine_error_cases();
                 }
                 break;
             }
@@ -594,10 +595,11 @@ namespace atomic_dex
     trading_page::clear_forms() noexcept
     {
         spdlog::info("clearing forms");
-        this->set_price("");
-        this->set_volume("");
+        this->set_price("0");
+        this->set_volume("0");
         this->set_max_volume("0");
         this->set_total_amount("0");
+        this->set_trading_error(TradingError::None);
         this->m_preffered_order = std::nullopt;
         this->m_fees            = QVariantMap();
         emit feesChanged();
@@ -854,7 +856,15 @@ namespace atomic_dex
             t_float_50 total_amount_f = volume * price;
             this->set_total_amount(QString::fromStdString(utils::format_float(total_amount_f)));
             this->determine_fees();
-            this->determine_error_cases();
+            if (const std::string max_dust_str =
+                    ((m_market_mode == MarketMode::Sell) ? get_orderbook_wrapper()->get_base_max_taker_vol() : get_orderbook_wrapper()->get_rel_max_taker_vol())
+                        .toJsonObject()["decimal"]
+                        .toString()
+                        .toStdString();
+                not max_dust_str.empty())
+            {
+                this->determine_error_cases();
+            }
         }
     }
 
@@ -966,11 +976,13 @@ namespace atomic_dex
         //! Check minimal trading amount
         const std::string base = this->get_market_pairs_mdl()->get_base_selected_coin().toStdString();
         const auto&       mm2  = this->m_system_manager.get_system<mm2_service>();
-        t_float_50        max_balance_without_dust(
-            (m_market_mode == MarketMode::Sell ? get_orderbook_wrapper()->get_base_max_taker_vol() : get_orderbook_wrapper()->get_rel_max_taker_vol())
+        const std::string max_dust_str =
+            ((m_market_mode == MarketMode::Sell) ? get_orderbook_wrapper()->get_base_max_taker_vol() : get_orderbook_wrapper()->get_rel_max_taker_vol())
                 .toJsonObject()["decimal"]
                 .toString()
-                .toStdString());
+                .toStdString();
+        assert(not max_dust_str.empty());
+        t_float_50 max_balance_without_dust(max_dust_str);
 
         if (max_balance_without_dust < utils::minimal_trade_amount()) //<! Checking balance < minimal_trading_amount
         {
