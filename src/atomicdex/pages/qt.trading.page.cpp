@@ -820,6 +820,7 @@ namespace atomic_dex
             t_float_50 volume(m_volume.toStdString());
             t_float_50 total_amount_f = volume * price;
             this->set_total_amount(QString::fromStdString(utils::format_float(total_amount_f)));
+            this->determine_fees();
         }
     }
 
@@ -910,8 +911,6 @@ namespace atomic_dex
             fees["rel_transaction_fees"]        = QString::fromStdString(utils::format_float(specific_fees));
             fees["rel_transaction_fees_ticker"] = QString::fromStdString(extra_fees_ticker);
         }
-
-        qDebug() << "fees_output: " << fees;
 
         this->set_fees(fees);
     }
