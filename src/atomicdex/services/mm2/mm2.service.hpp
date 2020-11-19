@@ -247,11 +247,11 @@ namespace atomic_dex
         //! Get Specific info about one coin
         [[nodiscard]] coin_config get_coin_info(const std::string& ticker) const;
 
-        [[nodiscard]] t_float_50  get_trading_fees(const std::string& ticker, const std::string& sell_amount, bool is_max) const;
+        [[nodiscard]] t_float_50 get_trading_fees(const std::string& ticker, const std::string& sell_amount, bool is_max) const;
 
         [[nodiscard]] t_get_trade_fee_answer get_transaction_fees(const std::string& ticker) const;
 
-        void apply_specific_fees(const std::string& ticker, t_float_50& value);
+        std::string apply_specific_fees(const std::string& ticker, t_float_50& value) const;
 
         //! Get Current orderbook
         [[nodiscard]] t_orderbook_answer get_orderbook(t_mm2_ec& ec) const noexcept;

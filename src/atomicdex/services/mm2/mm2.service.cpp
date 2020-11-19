@@ -1162,20 +1162,22 @@ namespace atomic_dex
         return t_float_50(1) / t_float_50(777) * sell_amount_f;
     }
 
-    void
-    mm2_service::apply_specific_fees(const std::string& ticker, t_float_50& value)
+    std::string
+    mm2_service::apply_specific_fees(const std::string& ticker, t_float_50& value) const
     {
         if (auto coin_info = get_coin_info(ticker); coin_info.is_erc_20 || coin_info.is_qrc_20)
         {
             spdlog::info("Calculating specific fees of rel ticker: {}", ticker);
-            t_get_trade_fee_request rec_req{.coin = ticker};
-            const auto              amount = get_transaction_fees(ticker).amount;
-            if (!amount.empty())
+            const auto& answer = get_transaction_fees(ticker);
+            const auto  amount = answer.amount;
+            if (not amount.empty())
             {
-                t_float_50 rec_amount = t_float_50(amount);
-                value += rec_amount;
+                value += t_float_50(amount);
             }
+            return answer.coin;
         }
+
+        return "";
     }
 
     t_get_trade_fee_answer

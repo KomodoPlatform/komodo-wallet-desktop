@@ -879,7 +879,7 @@ namespace atomic_dex
         const t_float_50 trade_fee_f = mm2.get_trading_fees(base.toStdString(), m_total_amount.toStdString(), is_max);
 
         //! Transaction Fees
-        const auto answer = mm2.get_transaction_fees(base.toStdString());
+        const auto answer   = mm2.get_transaction_fees(base.toStdString());
         t_float_50 tx_fee_f = 0;
 
         //! If answer is valid
@@ -887,6 +887,9 @@ namespace atomic_dex
         {
             tx_fee_f = t_float_50(answer.amount) * 2;
         }
+
+        t_float_50        specific_fees(0);
+        const std::string extra_fees_ticker = mm2.apply_specific_fees(rel.toStdString(), specific_fees);
 
         //! Write output
         QVariantMap fees;
@@ -897,7 +900,14 @@ namespace atomic_dex
         fees["trading_fee_ticker"] = base;
 
         //! Base transaction fees
-        fees["base_transaction_fees"] = QString::fromStdString(utils::format_float(tx_fee_f));
+        fees["base_transaction_fees"]        = QString::fromStdString(utils::format_float(tx_fee_f));
+        fees["base_transaction_fees_ticker"] = QString::fromStdString(answer.coin);
+
+        if (not extra_fees_ticker.empty())
+        {
+            fees["rel_transaction_fees"]        = QString::fromStdString(utils::format_float(specific_fees));
+            fees["rel_transaction_fees_ticker"] = QString::fromStdString(extra_fees_ticker);
+        }
 
         this->set_fees(fees);
     }
