@@ -47,7 +47,7 @@ FloatingBackground {
 //    }
 
     function isValid() {
-        return last_trading_error == TradingError.None
+        return last_trading_error === TradingError.None
         // Will move to backend
 //        let valid = true
 
@@ -410,26 +410,18 @@ FloatingBackground {
                 color: Style.colorRed
 
                 text_value: {
-                    console.log("API.app.trading_pg.last_trading_error:", API.app.trading_pg.last_trading_error,
-                                "\n?== BalanceIsLessThanTheMinimalTradingAmount?: ", API.app.trading_pg.last_trading_error == TradingError.BalanceIsLessThanTheMinimalTradingAmount,
-                                "\nLOCAL last_trading_error: " + last_trading_error,
-                                "\n?is undefined?: ", last_trading_error === undefined,
-                                "\n?== BalanceIsLessThanTheMinimalTradingAmount?: ", last_trading_error == TradingError.BalanceIsLessThanTheMinimalTradingAmount)
-                    // No error
-                    if(last_trading_error === TradingError.None)
+                    switch(last_trading_error) {
+                    case TradingError.None:
                         return ""
-
-                    // BaseNotEnoughFunds
-                    if(last_trading_error === TradingError.BaseNotEnoughFunds)
+                    case TradingError.BaseNotEnoughFunds:
                         return qsTr("Not enough %1 balance").arg(base_ticker)
-
-                    // RelNotEnoughFunds
-                    if(last_trading_error === TradingError.RelNotEnoughFunds)
+                    case TradingError.RelNotEnoughFunds:
                         return qsTr("Not enough %1 balance").arg(rel_ticker)
-
-                    // Balance check can be done without price too
-                    if(last_trading_error === TradingError.BalanceIsLessThanTheMinimalTradingAmount)
+                    case TradingError.BalanceIsLessThanTheMinimalTradingAmount:
                         return qsTr("Tradable (after fees) %1 balance is lower than minimum trade amount").arg(base_ticker) + " : " + General.getMinTradeAmount()
+                    default:
+                        return qsTr("Unknown Error") + ": " + last_trading_error
+                    }
 
                     // Fill the price field
                         //?
@@ -443,7 +435,6 @@ FloatingBackground {
                         //?
                     // Not enough ETH for fees
                         //?
-                    return qsTr("Unknown Error") + ": " + last_trading_error
                 }
                     // Will move to backend
 //                            // Balance check can be done without price too, prioritize that for sell
