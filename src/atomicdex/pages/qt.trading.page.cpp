@@ -705,6 +705,21 @@ namespace atomic_dex
         if (m_last_trading_error != trading_error)
         {
             m_last_trading_error = trading_error;
+            switch (m_last_trading_error)
+            {
+            case TradingErrorGadget::None:
+                spdlog::info("last_trading_error is None");
+                break;
+            case TradingErrorGadget::BaseNotEnoughFunds:
+                spdlog::warn("last_trading_error is BaseNotEnoughFunds");
+                break;
+            case TradingErrorGadget::RelNotEnoughFunds:
+                spdlog::warn("last_trading_error is RelNotEnoughFunds");
+                break;
+            case TradingErrorGadget::BalanceIsLessThanTheMinimalTradingAmount:
+                spdlog::warn("last_trading_error is BalanceIsLessThanTheMinimalTradingAmount");
+                break;
+            }
             emit tradingErrorChanged();
         }
     }

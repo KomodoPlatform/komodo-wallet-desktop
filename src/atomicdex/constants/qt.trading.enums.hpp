@@ -12,13 +12,13 @@ namespace atomic_dex
         Q_GADGET
 
       public:
-        enum e_market_mode
+        enum MarketModeEnum
         {
             Sell = 0,
             Buy  = 1
         };
 
-        Q_ENUM(e_market_mode)
+        Q_ENUM(MarketModeEnum)
 
       private:
         explicit MarketModeGadget();
@@ -29,7 +29,7 @@ namespace atomic_dex
         Q_GADGET
 
       public:
-        enum e_trading_error
+        enum TradingErrorEnum
         {
             None                                     = 0,
             BaseNotEnoughFunds                       = 1,
@@ -39,5 +39,8 @@ namespace atomic_dex
     };
 } // namespace atomic_dex
 
-using MarketMode   = atomic_dex::MarketModeGadget::e_market_mode;
-using TradingError = atomic_dex::TradingErrorGadget::e_trading_error;
+using MarketMode   = atomic_dex::MarketModeGadget::MarketModeEnum;
+using TradingError = atomic_dex::TradingErrorGadget::TradingErrorEnum;
+
+Q_DECLARE_METATYPE(MarketMode)
+Q_DECLARE_METATYPE(TradingError)
