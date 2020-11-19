@@ -416,19 +416,19 @@ FloatingBackground {
                                 "\n?is undefined?: ", last_trading_error === undefined,
                                 "\n?== BalanceIsLessThanTheMinimalTradingAmount?: ", last_trading_error == TradingError.BalanceIsLessThanTheMinimalTradingAmount)
                     // No error
-                    if(last_trading_error == TradingError.None)
+                    if(last_trading_error === TradingError.None)
                         return ""
 
                     // BaseNotEnoughFunds
-                    if(last_trading_error == TradingError.BaseNotEnoughFunds)
+                    if(last_trading_error === TradingError.BaseNotEnoughFunds)
                         return qsTr("Not enough %1 balance").arg(base_ticker)
 
                     // RelNotEnoughFunds
-                    if(last_trading_error == TradingError.RelNotEnoughFunds)
+                    if(last_trading_error === TradingError.RelNotEnoughFunds)
                         return qsTr("Not enough %1 balance").arg(rel_ticker)
 
                     // Balance check can be done without price too
-                    if(last_trading_error == TradingError.BalanceIsLessThanTheMinimalTradingAmount)
+                    if(last_trading_error === TradingError.BalanceIsLessThanTheMinimalTradingAmount)
                         return qsTr("Tradable (after fees) %1 balance is lower than minimum trade amount").arg(base_ticker) + " : " + General.getMinTradeAmount()
 
                     // Fill the price field
