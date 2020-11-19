@@ -243,19 +243,12 @@ Item {
         }
 
         const is_created_order = !orderIsSelected()
-        const price_denom = preffered_order.price_denom
-        const price_numer = preffered_order.price_numer
-        const price = getCurrentPrice()
-        const volume = form_base.field.text
-        console.log("QML place order: max_taker_volume:", form_base.getMaxVolume())
-        console.log("QML place order: params:", base, " <-> ", rel, "  /  price:", price, "  /  volume:", volume, "  /  is_created_order:", is_created_order, "  /  price_denom:", price_denom, "  /  price_numer:", price_numer,
-                    "  /  nota:", nota, "  /  confs:", confs)
-        console.log("QML place order: trade info:", JSON.stringify(curr_trade_info))
+        console.log("QML place order: params:", "  /  is_created_order:", is_created_order, " / nota:", nota, "  /  confs:", confs)
 
         if(sell_mode)
-            API.app.trading_pg.place_sell_order(base, rel, price, volume, is_created_order, price_denom, price_numer, nota, confs)
+            API.app.trading_pg.place_sell_order(nota, confs)
         else
-            API.app.trading_pg.place_buy_order(base, rel, price, volume, is_created_order, price_denom, price_numer, nota, confs)
+            API.app.trading_pg.place_buy_order(nota, confs)
     }
 
     readonly property bool buy_sell_rpc_busy: API.app.trading_pg.buy_sell_rpc_busy
