@@ -713,8 +713,8 @@ namespace atomic_dex
             case TradingErrorGadget::BaseNotEnoughFunds:
                 spdlog::warn("last_trading_error is BaseNotEnoughFunds");
                 break;
-            case TradingErrorGadget::RelNotEnoughFunds:
-                spdlog::warn("last_trading_error is RelNotEnoughFunds");
+            case TradingErrorGadget::RelTransactionFeesNotEnough:
+                spdlog::warn("last_trading_error is RelTransactionFeesNotEnough");
                 break;
             case TradingErrorGadget::BalanceIsLessThanTheMinimalTradingAmount:
                 spdlog::warn("last_trading_error is BalanceIsLessThanTheMinimalTradingAmount");
@@ -976,7 +976,7 @@ namespace atomic_dex
             t_float_50 rel_amount(m_fees["rel_transaction_fees"].toString().toStdString());
             if (not mm2.do_i_have_enough_funds(rel_ticker, rel_amount))
             {
-                current_trading_error = TradingError::RelNotEnoughFunds;
+                current_trading_error = TradingError::RelTransactionFeesNotEnough;
             }
         }
 
