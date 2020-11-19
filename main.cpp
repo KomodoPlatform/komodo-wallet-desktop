@@ -49,7 +49,7 @@ signal_handler(int signal)
 {
     spdlog::trace("sigabort received, cleaning mm2.service");
     atomic_dex::kill_executable("mm2.service");
-#if defined(linux)
+#if defined(linux) || defined(__APPLE__)
     boost::stacktrace::safe_dump_to("./backtrace.dump");
 #endif
     std::exit(signal);
@@ -59,7 +59,7 @@ static void
 connect_signals_handler()
 {
     spdlog::info("connecting signal SIGABRT to the signal handler");
-#if defined(linux)
+#if defined(linux) || defined(__APPLE__)
     if (fs::exists("./backtrace.dump"))
     {
         // there is a backtrace
