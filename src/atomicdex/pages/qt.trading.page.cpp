@@ -648,9 +648,11 @@ namespace atomic_dex
             {
                 spdlog::info("max_taker_vol is valid, processing...");
                 const auto max_vol_str = utils::format_float(t_float_50(max_taker_vol));
+
+                //! max_volume is max_taker_vol
                 this->set_max_volume(QString::fromStdString(max_vol_str));
 
-                //! It's a selected order let's cap again
+                //! Capping it
                 this->cap_volume();
             }
             else
@@ -829,5 +831,74 @@ namespace atomic_dex
     trading_page::get_rel_amount() const noexcept
     {
         return m_market_mode == MarketMode::Sell ? m_total_amount : m_volume;
+    }
+
+    QVariantMap
+    trading_page::get_fees() const noexcept
+    {
+        return m_fees;
+    }
+
+    void
+    trading_page::set_fees(QVariantMap fees) noexcept
+    {
+        if (fees != m_fees)
+        {
+            m_fees = std::move(fees);
+            emit feesChanged();
+        }
+    }
+
+    void
+    trading_page::determine_fees() noexcept
+    {
+        const auto* market_pair = get_market_pairs_mdl();
+        const auto& mm2         = this->m_system_manager.get_system<mm2_service>();
+
+        //! Send
+        const auto base = market_pair->get_base_selected_coin();
+
+        //! Receive
+        const auto rel = market_pair->get_rel_selected_coin();
+
+        //! (send) BCH <-> ETH (receive)
+        bool is_max = false;
+
+        //! If We are in sell mode check if it's max
+        if (m_market_mode == MarketMode::Sell)
+        {
+            if (m_volume == m_max_volume) //! It's capped, means max_trade_vol means all the fees are included
+            {
+                is_max = true;
+            }
+        }
+
+        //! Trading fees
+
+        //! 1 / 777 * total_amount (if max is true, total_amount will be the balance);
+        const t_float_50 trade_fee_f = mm2.get_trading_fees(base.toStdString(), m_total_amount.toStdString(), is_max);
+
+        //! Transaction Fees
+        const auto answer = mm2.get_transaction_fees(base.toStdString());
+        t_float_50 tx_fee_f = 0;
+
+        //! If answer is valid
+        if (!answer.amount.empty())
+        {
+            tx_fee_f = t_float_50(answer.amount) * 2;
+        }
+
+        //! Write output
+        QVariantMap fees;
+
+        fees["trading_fee"] = QString::fromStdString(utils::format_float(trade_fee_f));
+
+        //! for BCH <-> ETH, trading_fee_ticker will be BCH
+        fees["trading_fee_ticker"] = base;
+
+        //! Base transaction fees
+        fees["base_transaction_fees"] = QString::fromStdString(utils::format_float(tx_fee_f));
+
+        this->set_fees(fees);
     }
 } // namespace atomic_dex

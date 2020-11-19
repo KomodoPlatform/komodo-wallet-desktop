@@ -57,6 +57,7 @@ namespace atomic_dex
         Q_PROPERTY(QString total_amount READ get_total_amount WRITE set_total_amount NOTIFY totalAmountChanged)
         Q_PROPERTY(QString base_amount READ get_base_amount NOTIFY baseAmountChanged)
         Q_PROPERTY(QString rel_amount READ get_rel_amount NOTIFY relAmountChanged)
+        Q_PROPERTY(QVariantMap fees READ get_fees WRITE set_fees NOTIFY feesChanged)
         Q_PROPERTY(QVariantMap preffered_order READ get_preffered_order WRITE set_preffered_order NOTIFY prefferedOrderChanged)
 
 
@@ -103,11 +104,13 @@ namespace atomic_dex
         QString                       m_max_volume{"0"};
         QString                       m_total_amount{"0"};
         std::optional<nlohmann::json> m_preffered_order;
+        QVariantMap                   m_fees;
 
         //! Private function
         void common_cancel_all_orders(bool by_coin = false, const QString& ticker = "");
         void clear_forms() noexcept;
         void determine_max_volume() noexcept;
+        void determine_fees() noexcept;
         void determine_total_amount() noexcept;
         void cap_volume() noexcept;
 
@@ -176,6 +179,8 @@ namespace atomic_dex
         [[nodiscard]] QString      get_rel_amount() const noexcept;
         [[nodiscard]] QVariantMap  get_preffered_order() noexcept;
         void                       set_preffered_order(QVariantMap price_object) noexcept;
+        [[nodiscard]] QVariantMap  get_fees() const noexcept;
+        void                       set_fees(QVariantMap fees) noexcept;
 
         //! For multi ticker part
         [[nodiscard]] bool is_fetching_multi_ticker_fees_busy() const noexcept;
@@ -207,6 +212,7 @@ namespace atomic_dex
         void totalAmountChanged();
         void baseAmountChanged();
         void relAmountChanged();
+        void feesChanged();
     };
 } // namespace atomic_dex
 

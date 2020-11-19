@@ -1150,9 +1150,9 @@ namespace atomic_dex
     }
 
     t_float_50
-    mm2_service::get_trade_fee(const std::string& ticker, const std::string& amount, bool is_max) const
+    mm2_service::get_trading_fees(const std::string& ticker, const std::string& sell_amount, bool is_max) const
     {
-        t_float_50 sell_amount_f(amount);
+        t_float_50 sell_amount_f(sell_amount);
         if (is_max)
         {
             std::error_code ec;
@@ -1162,23 +1162,14 @@ namespace atomic_dex
         return t_float_50(1) / t_float_50(777) * sell_amount_f;
     }
 
-    std::string
-    mm2_service::get_trade_fee_str(const std::string& ticker, const std::string& sell_amount, bool is_max) const
-    {
-        std::stringstream ss;
-        ss.precision(8);
-        ss << std::fixed << get_trade_fee(ticker, sell_amount, is_max);
-        return ss.str();
-    }
-
     void
-    mm2_service::apply_erc_fees(const std::string& ticker, t_float_50& value)
+    mm2_service::apply_specific_fees(const std::string& ticker, t_float_50& value)
     {
-        if (get_coin_info(ticker).is_erc_20)
+        if (auto coin_info = get_coin_info(ticker); coin_info.is_erc_20 || coin_info.is_qrc_20)
         {
-            spdlog::info("Calculating erc fees of rel ticker: {}", ticker);
+            spdlog::info("Calculating specific fees of rel ticker: {}", ticker);
             t_get_trade_fee_request rec_req{.coin = ticker};
-            auto                    amount = get_trade_fixed_fee(ticker).amount;
+            const auto              amount = get_transaction_fees(ticker).amount;
             if (!amount.empty())
             {
                 t_float_50 rec_amount = t_float_50(amount);
@@ -1188,7 +1179,7 @@ namespace atomic_dex
     }
 
     t_get_trade_fee_answer
-    mm2_service::get_trade_fixed_fee(const std::string& ticker) const
+    mm2_service::get_transaction_fees(const std::string& ticker) const
     {
         return m_trade_fees_registry.find(ticker) != m_trade_fees_registry.cend() ? m_trade_fees_registry.at(ticker) : t_get_trade_fee_answer{};
     }

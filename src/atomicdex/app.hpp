@@ -200,7 +200,7 @@ namespace atomic_dex
         Q_INVOKABLE bool           export_swaps(const QString& csv_filename) noexcept;
         Q_INVOKABLE bool           export_swaps_json() noexcept;
         Q_INVOKABLE static QString get_regex_password_policy() noexcept;
-        Q_INVOKABLE QVariantMap    get_trade_infos(const QString& ticker, const QString& receive_ticker, const QString& amount);
+        //Q_INVOKABLE QVariantMap    get_trade_infos(const QString& ticker, const QString& receive_ticker, const QString& amount);
         Q_INVOKABLE QVariantList   get_all_coins() const noexcept;
 
       signals:
