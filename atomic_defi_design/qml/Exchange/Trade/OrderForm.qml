@@ -427,6 +427,10 @@ FloatingBackground {
                         return qsTr("Please fill the price field")
                     case TradingError.VolumeFieldNotFilled:
                         return qsTr("Please fill the volume field")
+                    case TradingError.VolumeIsLowerThanTheMinimum:
+                        return qsTr("%1 volume is lower than minimum trade amount").arg(base_ticker) + " : " + General.getMinTradeAmount()
+                    case TradingError.ReceiveVolumeIsLowerThanTheMinimum:
+                        return qsTr("%1 volume is lower than minimum trade amount").arg(rel_ticker) + " : " + General.getMinTradeAmount()
                     default:
                         return qsTr("Unknown Error") + ": " + last_trading_error
                     }
