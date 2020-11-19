@@ -651,10 +651,17 @@ namespace atomic_dex
             if (not max_taker_vol.empty())
             {
                 spdlog::info("max_taker_vol is valid, processing...");
-                const auto max_vol_str = utils::format_float(t_float_50(max_taker_vol));
+                if (t_float_50(max_taker_vol) < 0)
+                {
+                    this->set_max_volume("0");
+                }
+                else
+                {
+                    const auto max_vol_str = utils::format_float(t_float_50(max_taker_vol));
 
-                //! max_volume is max_taker_vol
-                this->set_max_volume(QString::fromStdString(max_vol_str));
+                    //! max_volume is max_taker_vol
+                    this->set_max_volume(QString::fromStdString(max_vol_str));
+                }
 
                 //! Capping it
                 this->cap_volume();
