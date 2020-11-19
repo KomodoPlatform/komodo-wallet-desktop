@@ -31,8 +31,9 @@ namespace atomic_dex
       public:
         enum e_trading_error
         {
-            None           = 0,
-            NotEnoughFunds = 1
+            None                                     = 0,
+            NotEnoughFunds                           = 1,
+            BalanceIsLessThanTheMinimalTradingAmount = 2
         };
     };
 } // namespace atomic_dex

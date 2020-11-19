@@ -821,6 +821,7 @@ namespace atomic_dex
             t_float_50 total_amount_f = volume * price;
             this->set_total_amount(QString::fromStdString(utils::format_float(total_amount_f)));
             this->determine_fees();
+            this->determine_error_cases();
         }
     }
 
@@ -914,5 +915,27 @@ namespace atomic_dex
         }
 
         this->set_fees(fees);
+    }
+
+    void
+    trading_page::determine_error_cases() noexcept
+    {
+        TradingError current_trading_error = TradingError::None;
+
+        //! Check minimal trading amount
+        const std::string base = this->get_market_pairs_mdl()->get_base_selected_coin().toStdString();
+        // const auto&       mm2  = this->m_system_manager.get_system<mm2_service>();
+        t_float_50 max_balance_without_dust(
+            (m_market_mode == MarketMode::Sell ? get_orderbook_wrapper()->get_base_max_taker_vol() : get_orderbook_wrapper()->get_rel_max_taker_vol())
+                .toJsonObject()["decimal"]
+                .toString()
+                .toStdString());
+
+        if (max_balance_without_dust < t_float_50("0.00777"))
+        {
+            current_trading_error = TradingError::BalanceIsLessThanTheMinimalTradingAmount;
+        }
+
+        this->set_trading_error(current_trading_error);
     }
 } // namespace atomic_dex

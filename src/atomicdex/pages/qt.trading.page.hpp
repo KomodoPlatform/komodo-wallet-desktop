@@ -112,6 +112,7 @@ namespace atomic_dex
         void determine_max_volume() noexcept;
         void determine_fees() noexcept;
         void determine_total_amount() noexcept;
+        void determine_error_cases() noexcept;
         void cap_volume() noexcept;
 
       public:
