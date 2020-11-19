@@ -4,6 +4,7 @@ import QtQuick.Controls 2.15
 import QtGraphicalEffects 1.0
 
 import AtomicDEX.MarketMode 1.0
+import AtomicDEX.TradingError 1.0
 
 import "../../Components"
 import "../../Constants"
@@ -46,18 +47,18 @@ FloatingBackground {
 //    }
 
     function isValid() {
-        let valid = true
-
-        if(valid) valid = fieldsAreFilled()
+        return last_trading_error == TradingError.None
         // Will move to backend
+//        let valid = true
+
+//        if(valid) valid = fieldsAreFilled()
 //        if(valid) valid = higherThanMinTradeAmount()
 //        if(valid) valid = receiveHigherThanMinTradeAmount()
+//        if(valid) valid = !notEnoughBalance()
+//        if(valid) valid = API.app.do_i_have_enough_funds(base_ticker, General.formatDouble(getNeededAmountToSpend(input_volume.field.text)))
+//        if(valid && hasParentCoinFees()) valid = hasEnoughParentCoinForFees()
 
-        if(valid) valid = !notEnoughBalance()
-        if(valid) valid = API.app.do_i_have_enough_funds(base_ticker, General.formatDouble(getNeededAmountToSpend(input_volume.field.text)))
-        if(valid && hasParentCoinFees()) valid = hasEnoughParentCoinForFees()
-
-        return valid
+//        return valid
     }
 
     function getMaxBalance() {
@@ -408,7 +409,42 @@ FloatingBackground {
                 font.pixelSize: Style.textSizeSmall4
                 color: Style.colorRed
 
-                text_value: "Errors will be moved to backend"
+                text_value: {
+                    console.log("API.app.trading_pg.last_trading_error:", API.app.trading_pg.last_trading_error,
+                                "\n?== BalanceIsLessThanTheMinimalTradingAmount?: ", API.app.trading_pg.last_trading_error == TradingError.BalanceIsLessThanTheMinimalTradingAmount,
+                                "\nLOCAL last_trading_error: " + last_trading_error,
+                                "\n?is undefined?: ", last_trading_error === undefined,
+                                "\n?== BalanceIsLessThanTheMinimalTradingAmount?: ", last_trading_error == TradingError.BalanceIsLessThanTheMinimalTradingAmount)
+                    // No error
+                    if(last_trading_error == TradingError.None)
+                        return ""
+
+                    // BaseNotEnoughFunds
+                    if(last_trading_error == TradingError.BaseNotEnoughFunds)
+                        return qsTr("Not enough %1 balance").arg(base_ticker)
+
+                    // RelNotEnoughFunds
+                    if(last_trading_error == TradingError.RelNotEnoughFunds)
+                        return qsTr("Not enough %1 balance").arg(rel_ticker)
+
+                    // Balance check can be done without price too
+                    if(last_trading_error == TradingError.BalanceIsLessThanTheMinimalTradingAmount)
+                        return qsTr("Tradable (after fees) %1 balance is lower than minimum trade amount").arg(base_ticker) + " : " + General.getMinTradeAmount()
+
+                    // Fill the price field
+                        //?
+                    // Fill the volume field
+                        //?
+                    // Trade amount is lower than the minimum
+                        //?
+                    // Trade receive amount is lower than the minimum
+                        //?
+                    // Fields are filled, fee can be checked
+                        //?
+                    // Not enough ETH for fees
+                        //?
+                    return qsTr("Unknown Error") + ": " + last_trading_error
+                }
                     // Will move to backend
 //                            // Balance check can be done without price too, prioritize that for sell
 //                            notEnoughBalance() ? (qsTr("Tradable (after fees) %1 balance is lower than minimum trade amount").arg(base_ticker) + " : " + General.getMinTradeAmount()) :
@@ -418,7 +454,6 @@ FloatingBackground {
 
 //                            // Fill the volume field
 //                            General.isZero(form_base.getVolume()) ? (qsTr("Please fill the volume field")) :
-
 
 //                            // Trade amount is lower than the minimum
 //                            (form_base.fieldsAreFilled() && !form_base.higherThanMinTradeAmount()) ? ((qsTr("Volume is lower than minimum trade amount")) + " : " + General.getMinTradeAmount()) :
