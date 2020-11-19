@@ -15,7 +15,7 @@
  ******************************************************************************/
  
 //! STD
-#include <fstream> //> std::fstream, std::ofstream.
+#include <fstream> //> std::fstream, std::ifstream, std::ofstream.
 
 //! Project Headers
 #include "addressbook.cfg.hpp"
@@ -32,13 +32,14 @@ namespace atomic_dex
         
         utils::create_if_doesnt_exist(source_folder);
         {
-            //! Ensure file exists, if not, create it.
-            input.open(in_path.string(), std::ios::out);
-            assert(input.is_open());
-            input.close();
-            assert(!input.is_open());
-            
-            //! Reads content
+            //! Creates file if it does not exist.
+            if (!std::ifstream(in_path.string()))
+            {
+                input.open(in_path.string(), std::ios::out);
+                assert(input.is_open());
+                input.close();
+                assert(!input.is_open());
+            }
             input.open(in_path.string(), std::ios::in);
             assert(input.is_open());
             try
