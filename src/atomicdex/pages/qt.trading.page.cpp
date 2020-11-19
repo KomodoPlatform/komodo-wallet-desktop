@@ -931,11 +931,13 @@ namespace atomic_dex
                 .toString()
                 .toStdString());
 
+        //! Checking balance < minimal_trading_amount
         if (max_balance_without_dust < t_float_50("0.00777"))
         {
             current_trading_error = TradingError::BalanceIsLessThanTheMinimalTradingAmount;
         }
 
+        //! Checking rel coin if specific fees aka: ETH, QTUM, QRC-20, ERC-20 ?
         if (m_fees.contains("rel_transaction_fees_ticker"))
         {
             const auto rel_ticker = m_fees["rel_transaction_fees_ticker"].toString().toStdString();
