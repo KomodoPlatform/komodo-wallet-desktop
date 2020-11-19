@@ -31,7 +31,7 @@ FloatingBackground {
     }
 
     function hasEnoughParentCoinForFees() {
-        return General.isCoinEnabled("ETH") && API.app.do_i_have_enough_funds("ETH", curr_trade_info.erc_fees)
+        return General.isCoinEnabled(curr_trade_info.rel_transaction_fees) && API.app.do_i_have_enough_funds(curr_trade_info.rel_transaction_fees_ticker, curr_trade_info.rel_transaction_fees)
     }
 
     // Will move to backend
