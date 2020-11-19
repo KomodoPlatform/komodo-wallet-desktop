@@ -941,6 +941,14 @@ namespace atomic_dex
             fees["rel_transaction_fees_ticker"] = QString::fromStdString(extra_fees_ticker);
         }
 
+        if (base.toStdString() == answer.coin)
+        {
+            //! It's the same coin for trading_fees and transaction fees let's add a total
+            t_float_50 total_base_fees_f = trade_fee_f + tx_fee_f;
+            fees["total_base_fees"]      = QString::fromStdString(utils::format_float(total_base_fees_f));
+            fees["total_base_fees_fp"]   = QString::fromStdString(total_base_fees_f.str(50, std::ios_base::fixed));
+        }
+
         this->set_fees(fees);
     }
 
@@ -977,6 +985,13 @@ namespace atomic_dex
             if (not mm2.do_i_have_enough_funds(rel_ticker, rel_amount))
             {
                 current_trading_error = TradingError::RelTransactionFeesNotEnough;
+            }
+        }
+        else if (m_fees.contains("total_base_fees"))
+        {
+            if (t_float_50(m_fees["total_base_fees_fp"].toString().toStdString()) > max_balance_without_dust)
+            {
+                current_trading_error = TradingError::BaseNotEnoughFunds;
             }
         }
 
