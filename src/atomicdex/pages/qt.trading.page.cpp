@@ -994,9 +994,15 @@ namespace atomic_dex
         }
         else if (const auto trading_fee_ticker = m_fees["trading_fee_ticker"].toString();
                  m_fees["trading_fee_ticker"] != m_fees["base_transaction_fees_ticker"] &&
-                 not mm2.do_i_have_enough_funds(trading_fee_ticker.toStdString(), t_float_50(m_fees["trading_fee"].toString().toStdString())))
+                 t_float_50(m_fees["trading_fee"].toString().toStdString()) > max_balance_without_dust)
         {
             current_trading_error = TradingError::TradingFeesNotEnoughFunds;
+        }
+        else if (const auto transaction_fee_ticker = m_fees["trading_fee_ticker"].toString();
+                 m_fees["trading_fee_ticker"] != m_fees["base_transaction_fees_ticker"] &&
+                 not mm2.do_i_have_enough_funds(transaction_fee_ticker.toStdString(), t_float_50(m_fees["base_transaction_fees"].toString().toStdString())))
+        {
+            current_trading_error = TradingError::BaseTransactionFeesNotEnough;
         }
         else if (m_fees.contains("total_base_fees") && t_float_50(m_fees["total_base_fees_fp"].toString().toStdString()) > max_balance_without_dust)
         {
