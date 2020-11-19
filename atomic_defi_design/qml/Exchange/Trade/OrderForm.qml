@@ -413,12 +413,20 @@ FloatingBackground {
                     switch(last_trading_error) {
                     case TradingError.None:
                         return ""
+                    case TradingError.TradingFeesNotEnoughFunds:
+                        return qsTr("Not enough balance for trading fees: %1", "AMT TICKER").arg(General.formatCrypto("", curr_trade_info.trading_fee, curr_trade_info.trading_fee_ticker))
                     case TradingError.BaseNotEnoughFunds:
-                        return qsTr("Not enough %1 balance").arg(base_ticker)
-                    case TradingError.RelNotEnoughFunds:
-                        return qsTr("Not enough %1 balance").arg(rel_ticker)
+                        return qsTr("Not enough balance for fees: %1", "AMT TICKER").arg(General.formatCrypto("", curr_trade_info.total_base_fees, base_ticker))
+                    case TradingError.BaseTransactionFeesNotEnough:
+                        return qsTr("Not enough balance for transaction fees: %1", "AMT TICKER").arg(General.formatCrypto("", curr_trade_info.base_transaction_fees, curr_trade_info.base_transaction_fees_ticker))
+                    case TradingError.RelTransactionFeesNotEnough:
+                        return qsTr("Not enough balance for transaction fees: %1", "AMT TICKER").arg(General.formatCrypto("", curr_trade_info.rel_transaction_fees, curr_trade_info.rel_transaction_fee_ticker))
                     case TradingError.BalanceIsLessThanTheMinimalTradingAmount:
                         return qsTr("Tradable (after fees) %1 balance is lower than minimum trade amount").arg(base_ticker) + " : " + General.getMinTradeAmount()
+                    case TradingError.PriceFieldNotFilled:
+                        return qsTr("Please fill the price field")
+                    case TradingError.VolumeFieldNotFilled:
+                        return qsTr("Please fill the volume field")
                     default:
                         return qsTr("Unknown Error") + ": " + last_trading_error
                     }
@@ -427,9 +435,9 @@ FloatingBackground {
                         //?
                     // Fill the volume field
                         //?
-                    // Trade amount is lower than the minimum
+                    // Volume is lower than the minimum
                         //?
-                    // Trade receive amount is lower than the minimum
+                    // Receive volume is lower than the minimum
                         //?
                     // Fields are filled, fee can be checked
                         //?
@@ -452,7 +460,7 @@ FloatingBackground {
 //                            // Trade receive amount is lower than the minimum
 //                            (form_base.fieldsAreFilled() && !form_base.receiveHigherThanMinTradeAmount()) ? ((qsTr("Receive volume is lower than minimum trade amount")) + " : " + General.getMinTradeAmount()) :
 
-//                            // Fields are filled, fee can be checked
+//                            // Fields are filled, fee can be checked. Not enough fees, need AMT TICKER more
 //                            notEnoughBalanceForFees() ?
 //                                (qsTr("Not enough balance for the fees. Need at least %1 more", "AMT TICKER").arg(General.formatCrypto("", curr_trade_info.amount_needed, base_ticker))) :
 
