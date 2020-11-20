@@ -43,6 +43,7 @@ namespace atomic_dex
         enum OrderbookRoles
         {
             PriceRole,
+            CoinRole,
             QuantityRole,
             TotalRole,
             UUIDRole,

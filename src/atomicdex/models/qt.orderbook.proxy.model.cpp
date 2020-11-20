@@ -61,6 +61,8 @@ namespace atomic_dex
             break;
         case orderbook_model::QuantityNumerRole:
             break;
+        case orderbook_model::CoinRole:
+            break;
         }
         return true;
     }
