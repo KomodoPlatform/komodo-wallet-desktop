@@ -50,7 +50,7 @@ namespace atomic_dex
     int
     atomic_dex::addressbook_model::rowCount([[maybe_unused]] const QModelIndex& parent) const
     {
-        return m_addressbook_manager.get_contacts().size();
+        return m_contact_models.size();
     }
     
     QVariant
