@@ -43,9 +43,7 @@ namespace atomic_dex
     public:
         enum AddressBookRoles
         {
-            NameRole = Qt::UserRole + 1,
-            WalletsInfoRole,
-            CategoriesRole
+            SubModelRole = Qt::UserRole + 1,
         };
 
     public:

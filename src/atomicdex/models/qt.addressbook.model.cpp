@@ -32,7 +32,7 @@ namespace atomic_dex
         spdlog::trace("{} l{} f[{}]", __FUNCTION__, __LINE__, fs::path(__FILE__).filename().string());
         spdlog::trace("addressbook model created");
         this->m_addressbook_proxy->setSourceModel(this);
-        this->m_addressbook_proxy->setSortRole(NameRole);
+        this->m_addressbook_proxy->setSortRole(SubModelRole);
         this->m_addressbook_proxy->setDynamicSortFilter(true);
         this->m_addressbook_proxy->sort(0);
     }
